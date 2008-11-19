@@ -30,34 +30,22 @@
 			properties="isMapped, isVirtual"
 			class="org.eclipse.jpt.core.internal.context.PersistentAttributePropertyTester">
 		</propertyTester>
-  <propertyTester
-        class="org.eclipse.jpt.core.internal.JpaTester"
-        id="org.eclipse.jpt.core.propertyTester.jpaSourceFolder"
-        namespace="org.eclipse.wst.common.project.facet.core"
-        properties="projectFacet"
-        type="org.eclipse.jdt.core.IPackageFragmentRoot">
-  </propertyTester>
-  <propertyTester
-        class="org.eclipse.jpt.core.internal.JpaTester"
-        id="org.eclipse.jpt.core.propertyTester.jpaPackage"
-        namespace="org.eclipse.wst.common.project.facet.core"
-        properties="projectFacet"
-        type="org.eclipse.jdt.core.IPackageFragment">
-  </propertyTester>
-  <propertyTester
-        class="org.eclipse.jpt.core.internal.JptPlatformTester"
-        id="org.eclipse.jpt.core.propertyTester.jptPlatformResource"
-        namespace="org.eclipse.jpt.core"
-        properties="jptPlatform"
-        type="org.eclipse.core.resources.IResource">
-  </propertyTester>
-  <propertyTester
-        class="org.eclipse.jpt.core.internal.JptPlatformTester"
-        id="org.eclipse.jpt.core.propertyTester.jptPlatformJavaElement"
-        namespace="org.eclipse.jpt.core"
-        properties="jptPlatform"
-        type="org.eclipse.jdt.core.IJavaElement">
-  </propertyTester>
+		
+		<propertyTester
+			id="org.eclipse.jpt.core.propertyTester.platformResource"
+			type="org.eclipse.core.resources.IResource"
+			namespace="org.eclipse.jpt.core"
+			properties="jpaPlatform"
+			class="org.eclipse.jpt.core.internal.JpaPlatformTester">
+		</propertyTester>
+		
+		<propertyTester
+			id="org.eclipse.jpt.core.propertyTester.javaElement"
+			type="org.eclipse.jdt.core.IJavaElement"
+			namespace="org.eclipse.jpt.core"
+			properties="jpaPlatform"
+			class="org.eclipse.jpt.core.internal.JpaPlatformTester">
+		</propertyTester>
 		
 	</extension>
 	

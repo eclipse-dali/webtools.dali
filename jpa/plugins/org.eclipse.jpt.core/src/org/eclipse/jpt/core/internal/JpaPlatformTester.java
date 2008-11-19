@@ -14,10 +14,10 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jpt.core.JptCorePlugin;
 
-public class JptPlatformTester extends PropertyTester {
+public class JpaPlatformTester extends PropertyTester {
 	
 	public boolean test(Object receiver, String property, Object[] args, Object expectedValue) {
-		if (!property.equals("jptPlatform")) { //$NON-NLS-1$
+		if (! property.equals("jpaPlatform")) { //$NON-NLS-1$
 			return false;
 		}
 		IProject project = null;

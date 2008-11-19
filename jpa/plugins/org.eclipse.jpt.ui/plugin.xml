@@ -447,7 +447,8 @@
 			<triggerPoints>
 				<and>
 					<adapt type="org.eclipse.core.resources.IProject"> 
-						<test forcePluginActivation="true"
+						<test 
+							forcePluginActivation="true"
 							property="org.eclipse.wst.common.project.facet.core.projectFacet"
 							value="jpt.jpa" />
 					</adapt>
@@ -469,58 +470,52 @@
 					</and>
 				</enablement>
 			</actionProvider>
-        <commonWizard
-              menuGroupId="org.eclipse.jpt.ui"
-              type="new"
-              wizardId="org.eclipse.jpt.ui.wizard.newEntity">
-           <enablement>
-              <and>
-                 <or>
-                    <instanceof
-                          value="org.eclipse.core.resources.IProject">
-                    </instanceof>
-                    <instanceof
-                          value="org.eclipse.jdt.core.IPackageFragment">
-                    </instanceof>
-                    <instanceof
-                          value="org.eclipse.jdt.core.IPackageFragmentRoot">
-                    </instanceof>
-                 </or>
-                 <test
-                       forcePluginActivation="true"
-                       property="org.eclipse.wst.common.project.facet.core.projectFacet"
-                       value="jpt.jpa">
-                 </test>
-              </and>
-           </enablement>
-        </commonWizard>
-        <commonWizard
-              menuGroupId="org.eclipse.jpt.ui"
-              type="new"
-              wizardId="org.eclipse.jpt.ui.wizard.newMappingFile">
-           <enablement>
-              <and>
-                 <or>
-                    <instanceof
-                          value="org.eclipse.core.resources.IProject">
-                    </instanceof>
-                    <instanceof
-                          value="org.eclipse.jdt.core.IPackageFragmentRoot">
-                    </instanceof>
-                    <instanceof
-                          value="org.eclipse.jdt.core.IPackageFragment">
-                    </instanceof>
-                    <instanceof
-                          value="org.eclipse.core.resources.IFolder">
-                    </instanceof>
-                 </or>
-                 <test
-                       forcePluginActivation="true"
-                       property="org.eclipse.wst.common.project.facet.core.projectFacet"
-                       value="jpt.jpa">
-                 </test></and>
-           </enablement>
-        </commonWizard>
+			
+			<commonWizard
+				menuGroupId="org.eclipse.jpt.ui"
+				type="new"
+				wizardId="org.eclipse.jpt.ui.wizard.newEntity">
+				<enablement>
+					<and>
+						<or>
+							<instanceof
+								value="org.eclipse.core.resources.IProject"/>
+							<instanceof
+								value="org.eclipse.jdt.core.IPackageFragment"/>
+							<instanceof
+								value="org.eclipse.jdt.core.IPackageFragmentRoot"/>
+						</or>
+						<adapt type="org.eclipse.core.resources.IResource">
+							<test 
+								forcePluginActivation="true"
+								property="org.eclipse.wst.common.project.facet.core.projectFacet"
+								value="jpt.jpa" />
+						</adapt>
+					</and>
+				</enablement>
+			</commonWizard>
+			
+			<commonWizard
+				menuGroupId="org.eclipse.jpt.ui"
+				type="new"
+				wizardId="org.eclipse.jpt.ui.wizard.newMappingFile">
+				<enablement>
+					<and>
+						<or>
+							<instanceof value="org.eclipse.core.resources.IProject"/>
+							<instanceof value="org.eclipse.core.resources.IFolder"/>
+							<instanceof value="org.eclipse.jdt.core.IPackageFragmentRoot"/>
+							<instanceof value="org.eclipse.jdt.core.IPackageFragment"/>
+						</or>
+						<adapt type="org.eclipse.core.resources.IResource">
+							<test 
+								forcePluginActivation="true"
+								property="org.eclipse.wst.common.project.facet.core.projectFacet"
+								value="jpt.jpa" />
+						</adapt>
+					</and>
+				</enablement>
+			</commonWizard>
 			
 			<!--
 			
@@ -589,132 +584,71 @@
 <!-- Extension: Persistence Perspective                                                  -->
 <!-- =================================================================================== -->
 	
- <extension
-       point="org.eclipse.ui.perspectives">
-    <perspective
-          class="org.eclipse.jpt.ui.internal.perspective.JpaPerspectiveFactory"
-          icon="icons/full/eview16/jpa_perspective.gif"
-          id="org.eclipse.jpt.ui.jpaPerspective"
-          name="%jpaPerspective">
-       <description>
-          %jpaPerspectiveDescription
-       </description>
-    </perspective>
- </extension>
- <extension
-       point="org.eclipse.ui.perspectiveExtensions">
-    <perspectiveExtension
-          targetID="org.eclipse.jpt.ui.jpaPerspective">
-       <newWizardShortcut
-             id="org.eclipse.jpt.ui.wizard.newJpaProject">
-       </newWizardShortcut>
-       <newWizardShortcut
-             id="org.eclipse.jpt.ui.wizard.newEntity">
-       </newWizardShortcut>
-       <newWizardShortcut
-             id="org.eclipse.jpt.ui.wizard.newMappingFile">
-       </newWizardShortcut>
-       <newWizardShortcut
-             id="org.eclipse.jdt.ui.wizards.NewPackageCreationWizard">
-       </newWizardShortcut>
-       <newWizardShortcut
-             id="org.eclipse.jdt.ui.wizards.NewClassCreationWizard">
-       </newWizardShortcut>
-       <newWizardShortcut
-             id="org.eclipse.jdt.ui.wizards.NewInterfaceCreationWizard">
-       </newWizardShortcut>
-       <newWizardShortcut
-             id="org.eclipse.jdt.ui.wizards.NewEnumCreationWizard">
-       </newWizardShortcut>
-       <newWizardShortcut
-             id="org.eclipse.jdt.ui.wizards.NewAnnotationCreationWizard">
-       </newWizardShortcut>
-       <newWizardShortcut
-             id="org.eclipse.jdt.ui.wizards.NewSourceFolderCreationWizard">
-       </newWizardShortcut>
-       <newWizardShortcut
-             id="org.eclipse.jdt.ui.wizards.NewJavaWorkingSetWizard">
-       </newWizardShortcut>
-       <newWizardShortcut
-             id="org.eclipse.ui.wizards.new.file">
-       </newWizardShortcut>
-       <newWizardShortcut
-             id="org.eclipse.ui.wizards.new.folder">
-       </newWizardShortcut>
-       <newWizardShortcut
-             id="org.eclipse.ui.editors.wizards.UntitledTextFileWizard">
-       </newWizardShortcut>
-       <perspectiveShortcut
-             id="org.eclipse.jdt.ui.JavaPerspective">
-       </perspectiveShortcut>
-       <perspectiveShortcut
-             id="org.eclipse.debug.ui.DebugPerspective">
-       </perspectiveShortcut>
-       <perspectiveShortcut
-             id="org.eclipse.jst.j2ee.J2EEPerspective">
-       </perspectiveShortcut>
-       <perspectiveShortcut
-             id="org.eclipse.jdt.ui.JavaBrowsingPerspective">
-       </perspectiveShortcut>
-       <actionSet
-             id="org.eclipse.debug.ui.launchActionSet">
-       </actionSet>
-       <actionSet
-             id="org.eclipse.jdt.ui.JavaActionSet">
-       </actionSet>
-       <actionSet
-             id="org.eclipse.jdt.ui.JavaElementCreationActionSet">
-       </actionSet>
-       <actionSet
-             id="org.eclipse.ui.NavigateActionSet">
-       </actionSet>
-       <actionSet
-             id="org.eclipse.jpt.ui.JptCreationActionSet">
-       </actionSet>
-       <viewShortcut
-             id="org.eclipse.jdt.ui.PackageExplorer">
-       </viewShortcut>
-       <viewShortcut
-             id="org.eclipse.jdt.ui.TypeHierarchy">
-       </viewShortcut>
-       <viewShortcut
-             id="org.eclipse.jdt.ui.SourceView">
-       </viewShortcut>
-       <viewShortcut
-             id="org.eclipse.jdt.ui.JavadocView">
-       </viewShortcut>
-       <viewShortcut
-             id="org.eclipse.ui.navigator.ProjectExplorer">
-       </viewShortcut>
-       <viewShortcut
-             id="org.eclipse.ui.views.ContentOutline">
-       </viewShortcut>
-       <viewShortcut
-             id="org.eclipse.ui.views.ProblemView">
-       </viewShortcut>
-       <viewShortcut
-             id="org.eclipse.ui.views.ResourceNavigator">
-       </viewShortcut>
-       <viewShortcut
-             id="org.eclipse.jpt.ui.jpaStructureView">
-       </viewShortcut>
-       <viewShortcut
-             id="org.eclipse.jpt.ui.jpaDetailsView">
-       </viewShortcut>
-       <viewShortcut
-             id="org.eclipse.datatools.connectivity.DataSourceExplorerNavigator">
-       </viewShortcut>
-    </perspectiveExtension>
-    <perspectiveExtension
-          targetID="org.eclipse.jst.j2ee.J2EEPerspective">
-       <newWizardShortcut
-             id="org.eclipse.jpt.ui.wizard.newJpaProject">
-       </newWizardShortcut>
-       <perspectiveShortcut
-             id="org.eclipse.jpt.ui.jpaPerspective">
-       </perspectiveShortcut>
-    </perspectiveExtension>
- </extension>
+	<extension
+		point="org.eclipse.ui.perspectives">
+		
+		<perspective
+			class="org.eclipse.jpt.ui.internal.perspective.JpaPerspectiveFactory"
+			icon="icons/full/eview16/jpa_perspective.gif"
+			id="org.eclipse.jpt.ui.jpaPerspective"
+			name="%jpaPerspective">
+			<description>%jpaPerspectiveDescription</description>
+		</perspective>
+	</extension>
+	
+	
+	<extension
+		point="org.eclipse.ui.perspectiveExtensions">
+		
+		<perspectiveExtension
+			targetID="org.eclipse.jpt.ui.jpaPerspective">
+			
+			<newWizardShortcut id="org.eclipse.jpt.ui.wizard.newJpaProject"/>
+			<newWizardShortcut id="org.eclipse.jpt.ui.wizard.newEntity"/>
+			<newWizardShortcut id="org.eclipse.jpt.ui.wizard.newMappingFile"/>
+			<newWizardShortcut id="org.eclipse.jdt.ui.wizards.NewPackageCreationWizard"/>
+			<newWizardShortcut id="org.eclipse.jdt.ui.wizards.NewClassCreationWizard"/>
+			<newWizardShortcut id="org.eclipse.jdt.ui.wizards.NewInterfaceCreationWizard"/>
+			<newWizardShortcut id="org.eclipse.jdt.ui.wizards.NewEnumCreationWizard"/>
+			<newWizardShortcut id="org.eclipse.jdt.ui.wizards.NewAnnotationCreationWizard"/>
+			<newWizardShortcut id="org.eclipse.jdt.ui.wizards.NewSourceFolderCreationWizard"/>
+			<newWizardShortcut id="org.eclipse.jdt.ui.wizards.NewJavaWorkingSetWizard"/>
+			<newWizardShortcut id="org.eclipse.ui.wizards.new.file"/>
+			<newWizardShortcut id="org.eclipse.ui.wizards.new.folder"/>
+			<newWizardShortcut id="org.eclipse.ui.editors.wizards.UntitledTextFileWizard"/>
+			
+			<perspectiveShortcut id="org.eclipse.jdt.ui.JavaPerspective"/>
+			<perspectiveShortcut id="org.eclipse.debug.ui.DebugPerspective"/>
+			<perspectiveShortcut id="org.eclipse.jst.j2ee.J2EEPerspective"/>
+			<perspectiveShortcut id="org.eclipse.jdt.ui.JavaBrowsingPerspective"/>
+			
+			<actionSet id="org.eclipse.debug.ui.launchActionSet"/>
+			<actionSet id="org.eclipse.jdt.ui.JavaActionSet"/>
+			<actionSet id="org.eclipse.jdt.ui.JavaElementCreationActionSet"/>
+			<actionSet id="org.eclipse.ui.NavigateActionSet"/>
+			<actionSet id="org.eclipse.jpt.ui.JptCreationActionSet"/>
+			
+			<viewShortcut id="org.eclipse.jdt.ui.PackageExplorer"/>
+			<viewShortcut id="org.eclipse.jdt.ui.TypeHierarchy"/>
+			<viewShortcut id="org.eclipse.jdt.ui.SourceView"/>
+			<viewShortcut id="org.eclipse.jdt.ui.JavadocView"/>
+			<viewShortcut id="org.eclipse.ui.navigator.ProjectExplorer"/>
+			<viewShortcut id="org.eclipse.ui.views.ContentOutline"/>
+			<viewShortcut id="org.eclipse.ui.views.ProblemView"/>
+			<viewShortcut id="org.eclipse.ui.views.ResourceNavigator"/>
+			<viewShortcut id="org.eclipse.jpt.ui.jpaStructureView"/>
+			<viewShortcut id="org.eclipse.jpt.ui.jpaDetailsView"/>
+			<viewShortcut id="org.eclipse.datatools.connectivity.DataSourceExplorerNavigator"/>
+			
+		</perspectiveExtension>
+    	
+		<perspectiveExtension
+			targetID="org.eclipse.jst.j2ee.J2EEPerspective">
+			<newWizardShortcut id="org.eclipse.jpt.ui.wizard.newJpaProject"/>
+			<perspectiveShortcut id="org.eclipse.jpt.ui.jpaPerspective"/>
+		</perspectiveExtension>
+		
+	</extension>
 	
 	
 	<extension
@@ -729,7 +663,7 @@
 				label="%jpaMenuName"/>
 
 			<enablement>
-					<test property="org.eclipse.wst.common.project.facet.core.projectFacet" value="jpt.jpa"/>
+				<test property="org.eclipse.wst.common.project.facet.core.projectFacet" value="jpt.jpa"/>
 			</enablement>
 
 			<action
