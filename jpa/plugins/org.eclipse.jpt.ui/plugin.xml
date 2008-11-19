@@ -315,7 +315,7 @@
 				<visibleWhen>
 					<with
 						variable="selection">
-						<iterate>
+						<iterate ifEmpty="false">
 							<instanceof value="org.eclipse.jpt.core.context.orm.EntityMappings"/>
 						</iterate>
 					</with>
@@ -326,7 +326,7 @@
 				<visibleWhen>
 					<with
 						variable="selection">
-						<iterate>
+						<iterate ifEmpty="false">
 							<instanceof value="org.eclipse.jpt.core.context.orm.OrmPersistentType"/>
 						</iterate>
 					</with>
@@ -337,7 +337,7 @@
 				<visibleWhen>
 					<with
 						variable="selection">
-						<iterate>
+						<iterate ifEmpty="false">
 							<and>
 								<instanceof value="org.eclipse.jpt.core.context.orm.OrmPersistentAttribute"/>
 								<test property="org.eclipse.jpt.core.isVirtual" value="true"/>
@@ -351,7 +351,7 @@
 				<visibleWhen>
 					<with
 						variable="selection">
-						<iterate>
+						<iterate ifEmpty="false">
 							<and>
 								<instanceof value="org.eclipse.jpt.core.context.orm.OrmPersistentAttribute"/>
 								<test property="org.eclipse.jpt.core.isVirtual" value="true"/>
@@ -365,7 +365,7 @@
 				<visibleWhen>
 					<with
 						variable="selection">
-						<iterate>
+						<iterate ifEmpty="false">
 							<and>
 								<instanceof value="org.eclipse.jpt.core.context.orm.OrmPersistentAttribute"/>
 								<test property="org.eclipse.jpt.core.isVirtual" value="false"/>
@@ -382,7 +382,7 @@
 				<visibleWhen>
 					<with
 						variable="selection">
-						<iterate>
+						<iterate ifEmpty="false">
 							<instanceof value="org.eclipse.jpt.core.context.PersistentType"/>
 						</iterate>
 					</with>
@@ -400,7 +400,7 @@
 				<visibleWhen>
 					<with
 						variable="selection">
-						<iterate>
+						<iterate ifEmpty="false">
 							<and>
 								<instanceof value="org.eclipse.jpt.core.context.PersistentAttribute"/>
 								<test property="org.eclipse.jpt.core.isVirtual" value="false"/>
