@@ -1100,16 +1100,20 @@ public class AbstractPersistenceUnit extends AbstractXmlContextNode
 		while (stream.hasNext() && ! foundDefaultsToUse) {
 			MappingFileRef mappingFileRef = stream.next();
 			MappingFile mappingFile = mappingFileRef.getMappingFile();
-			if (mappingFile != null && mappingFile.getRoot() != null 
-					&& mappingFile.getRoot().getPersistenceUnitDefaults() != null) {
+			if (mappingFile != null 
+					&& mappingFile.getRoot() != null 
+					&& mappingFile.getRoot().getPersistenceUnitDefaults() != null
+					&& mappingFile.getRoot().getPersistenceUnitDefaults().resourceExists()) {
 				foundDefaultsToUse = true;
 			}
 		}
 		while (stream.hasNext()) {
 			MappingFileRef mappingFileRef = stream.next();
 			MappingFile mappingFile = mappingFileRef.getMappingFile();
-			if (mappingFile != null && mappingFile.getRoot() != null 
-					&& mappingFile.getRoot().getPersistenceUnitDefaults() != null) {
+			if (mappingFile != null 
+				&& mappingFile.getRoot() != null 
+				&& mappingFile.getRoot().getPersistenceUnitDefaults() != null
+				&& mappingFile.getRoot().getPersistenceUnitDefaults().resourceExists()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.NORMAL_SEVERITY,

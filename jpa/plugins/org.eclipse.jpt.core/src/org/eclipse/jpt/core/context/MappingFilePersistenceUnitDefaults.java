@@ -26,4 +26,11 @@ public interface MappingFilePersistenceUnitDefaults
 	String getSchema();
 	
 	boolean isCascadePersist();
+	
+	/**
+	 * Return whether the underlying resource exists for the MappingFilePersistenceUnitDefaults object
+	 * If there is a node in the orm.xml file for persistence-unit-default, this returns true, otherwise false.
+	 * @return
+	 */
+	boolean resourceExists();
 }

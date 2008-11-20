@@ -42,6 +42,7 @@ public interface MappingFileRoot extends XmlContextNode, JpaStructureNode
 	/**
 	 * Return the defaults defined within this mapping file *for the persistence unit*.
 	 * Return null if none exists.
+	 * @see MappingFilePersistenceUnitDefaults.resourceExists()
 	 */
 	MappingFilePersistenceUnitDefaults getPersistenceUnitDefaults();
 }
