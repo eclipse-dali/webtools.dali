@@ -13,13 +13,11 @@ package org.eclipse.jpt.eclipselink.core.internal.context.persistence.customizat
  *  Profiler
  */
 public enum Profiler {
-	dms_performance_profiler, 
 	performance_profiler, 
 	query_monitor,
 	no_profiler;
 
 	// EclipseLink value string
-	public static final String DMS_PERFORMANCE_PROFILER = "DMSPerformanceProfiler";
 	public static final String PERFORMANCE_PROFILER = "PerformanceProfiler";
 	public static final String QUERY_MONITOR = "QueryMonitor";
 	public static final String NO_PROFILER = "NoProfiler";

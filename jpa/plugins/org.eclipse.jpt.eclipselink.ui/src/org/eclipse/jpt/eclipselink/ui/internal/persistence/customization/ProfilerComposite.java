@@ -94,9 +94,6 @@ public class ProfilerComposite extends Pane<Customization>
 			case no_profiler: {
 				return EclipseLinkUiMessages.ProfilerComposite_no_profiler;
 			}
-			case dms_performance_profiler: {
-				return EclipseLinkUiMessages.ProfilerComposite_dms_performance_profiler;
-			}
 			case performance_profiler: {
 				return EclipseLinkUiMessages.ProfilerComposite_performance_profiler;
 			}

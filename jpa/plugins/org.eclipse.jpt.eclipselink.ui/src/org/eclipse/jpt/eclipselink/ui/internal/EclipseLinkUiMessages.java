@@ -225,7 +225,6 @@ public class EclipseLinkUiMessages extends NLS
 	public static String PersistenceXmlCustomizationTab_profilerLabel;
 	public static String PersistenceXmlCustomizationTab_browse;
 	
-	public static String ProfilerComposite_dms_performance_profiler;
 	public static String ProfilerComposite_performance_profiler;
 	public static String ProfilerComposite_query_monitor;
 	public static String ProfilerComposite_no_profiler;
