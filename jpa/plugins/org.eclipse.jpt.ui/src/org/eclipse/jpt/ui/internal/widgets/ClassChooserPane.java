@@ -196,7 +196,7 @@ public abstract class ClassChooserPane<T extends Model> extends ChooserPane<T>
 				getShell(),
 				service,
 				scope,
-				IJavaElementSearchConstants.CONSIDER_CLASSES,
+				getTypeDialogStyle(),
 				false,
 				getClassName() != null ? ClassTools.shortNameForClassNamed(getClassName()) : ""
 			);
@@ -216,6 +216,10 @@ public abstract class ClassChooserPane<T extends Model> extends ChooserPane<T>
 		return null;
 	}
 
+	protected int getTypeDialogStyle() {
+		return IJavaElementSearchConstants.CONSIDER_CLASSES;
+	}
+	
 	/**
 	 * Returns the class name from its subject.
 	 *

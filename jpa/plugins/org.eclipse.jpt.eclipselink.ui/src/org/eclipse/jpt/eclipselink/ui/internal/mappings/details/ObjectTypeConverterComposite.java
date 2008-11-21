@@ -10,6 +10,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.mappings.details;
 
 import java.util.ListIterator;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.ui.IJavaElementSearchConstants;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.window.Window;
@@ -212,6 +213,11 @@ public class ObjectTypeConverterComposite extends FormPane<ObjectTypeConverter>
 					getSubject().setObjectType(className);
 				}
 			}
+			@Override
+			protected int getTypeDialogStyle() {
+				return IJavaElementSearchConstants.CONSIDER_CLASSES_AND_ENUMS;
+			}
+			
 		};
 	}
 	
