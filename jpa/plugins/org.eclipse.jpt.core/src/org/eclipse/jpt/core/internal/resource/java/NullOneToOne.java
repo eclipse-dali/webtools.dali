@@ -78,7 +78,9 @@ public class NullOneToOne extends AbstractJavaResourceNode implements OneToOneAn
 	}
 
 	public void setMappedBy(String mappedBy) {
-		
+		if (mappedBy != null) {
+			createOneToOneResource().setMappedBy(mappedBy);
+		}
 	}
 
 	public String getFullyQualifiedTargetEntity() {
@@ -100,7 +102,7 @@ public class NullOneToOne extends AbstractJavaResourceNode implements OneToOneAn
 	}
 
 	public void setCascadeAll(boolean all) {
-		
+		createOneToOneResource().setCascadeAll(all);
 	}
 
 	public boolean isCascadeMerge() {
@@ -108,7 +110,7 @@ public class NullOneToOne extends AbstractJavaResourceNode implements OneToOneAn
 	}
 
 	public void setCascadeMerge(boolean merge) {
-		
+		createOneToOneResource().setCascadeMerge(merge);
 	}
 
 	public boolean isCascadePersist() {
@@ -116,7 +118,7 @@ public class NullOneToOne extends AbstractJavaResourceNode implements OneToOneAn
 	}
 
 	public void setCascadePersist(boolean persist) {
-		
+		createOneToOneResource().setCascadePersist(persist);
 	}
 
 	public boolean isCascadeRefresh() {
@@ -124,7 +126,7 @@ public class NullOneToOne extends AbstractJavaResourceNode implements OneToOneAn
 	}
 
 	public void setCascadeRefresh(boolean refresh) {
-		
+		createOneToOneResource().setCascadeRefresh(refresh);
 	}
 
 	public boolean isCascadeRemove() {
@@ -132,7 +134,7 @@ public class NullOneToOne extends AbstractJavaResourceNode implements OneToOneAn
 	}
 
 	public void setCascadeRemove(boolean remove) {
-		
+		createOneToOneResource().setCascadeRemove(remove);
 	}
 
 	public void update(CompilationUnit astRoot) {

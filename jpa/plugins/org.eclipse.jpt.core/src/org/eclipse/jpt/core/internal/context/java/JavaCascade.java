@@ -43,6 +43,12 @@ public class JavaCascade extends AbstractJavaJpaContextNode implements Cascade
 		this.relationshipMapping.setCascadeAll(newAll);
 		firePropertyChanged(Cascade.ALL_PROPERTY, oldAll, newAll);
 	}
+	
+	protected void setAll_(boolean newAll) {
+		boolean oldAll = this.all;
+		this.all = newAll;
+		firePropertyChanged(Cascade.ALL_PROPERTY, oldAll, newAll);
+	}
 
 	public boolean isPersist() {
 		return this.persist;
@@ -52,6 +58,12 @@ public class JavaCascade extends AbstractJavaJpaContextNode implements Cascade
 		boolean oldPersist = this.persist;
 		this.persist = newPersist;
 		this.relationshipMapping.setCascadePersist(newPersist);
+		firePropertyChanged(Cascade.PERSIST_PROPERTY, oldPersist, newPersist);
+	}
+
+	protected void setPersist_(boolean newPersist) {
+		boolean oldPersist = this.persist;
+		this.persist = newPersist;
 		firePropertyChanged(Cascade.PERSIST_PROPERTY, oldPersist, newPersist);
 	}
 
@@ -66,6 +78,12 @@ public class JavaCascade extends AbstractJavaJpaContextNode implements Cascade
 		firePropertyChanged(Cascade.MERGE_PROPERTY, oldMerge, newMerge);
 	}
 
+	protected void setMerge_(boolean newMerge) {
+		boolean oldMerge = this.merge;
+		this.merge = newMerge;
+		firePropertyChanged(Cascade.MERGE_PROPERTY, oldMerge, newMerge);
+	}
+
 	public boolean isRemove() {
 		return this.remove;
 	}
@@ -77,6 +95,12 @@ public class JavaCascade extends AbstractJavaJpaContextNode implements Cascade
 		firePropertyChanged(Cascade.REMOVE_PROPERTY, oldRemove, newRemove);
 	}
 
+	protected void setRemove_(boolean newRemove) {
+		boolean oldRemove = this.remove;
+		this.remove = newRemove;
+		firePropertyChanged(Cascade.REMOVE_PROPERTY, oldRemove, newRemove);
+	}
+
 	public boolean isRefresh() {
 		return this.refresh;
 	}
@@ -85,6 +109,12 @@ public class JavaCascade extends AbstractJavaJpaContextNode implements Cascade
 		boolean oldRefresh = this.refresh;
 		this.refresh = newRefresh;
 		this.relationshipMapping.setCascadeRefresh(newRefresh);
+		firePropertyChanged(Cascade.REFRESH_PROPERTY, oldRefresh, newRefresh);
+	}
+
+	protected void setRefresh_(boolean newRefresh) {
+		boolean oldRefresh = this.refresh;
+		this.refresh = newRefresh;
 		firePropertyChanged(Cascade.REFRESH_PROPERTY, oldRefresh, newRefresh);
 	}
 
@@ -103,10 +133,10 @@ public class JavaCascade extends AbstractJavaJpaContextNode implements Cascade
 	
 	public void update(RelationshipMappingAnnotation relationshipMapping) {
 		this.relationshipMapping = relationshipMapping;
-		this.setAll(relationshipMapping.isCascadeAll());
-		this.setPersist(relationshipMapping.isCascadePersist());
-		this.setMerge(relationshipMapping.isCascadeMerge());
-		this.setRemove(relationshipMapping.isCascadeRemove());
-		this.setRefresh(relationshipMapping.isCascadeRefresh());
+		this.setAll_(relationshipMapping.isCascadeAll());
+		this.setPersist_(relationshipMapping.isCascadePersist());
+		this.setMerge_(relationshipMapping.isCascadeMerge());
+		this.setRemove_(relationshipMapping.isCascadeRemove());
+		this.setRefresh_(relationshipMapping.isCascadeRefresh());
 	}
 }

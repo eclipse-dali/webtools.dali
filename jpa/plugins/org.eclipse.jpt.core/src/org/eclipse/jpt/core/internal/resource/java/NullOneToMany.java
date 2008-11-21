@@ -14,7 +14,6 @@ import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.FetchType;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.resource.java.OneToManyAnnotation;
-import org.eclipse.jpt.core.resource.java.OneToOneAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 
 
@@ -41,7 +40,7 @@ public class NullOneToMany extends AbstractJavaResourceNode implements OneToMany
 	}
 
 	public String getAnnotationName() {
-		return OneToOneAnnotation.ANNOTATION_NAME;
+		return OneToManyAnnotation.ANNOTATION_NAME;
 	}
 	
 	@Override
@@ -69,7 +68,9 @@ public class NullOneToMany extends AbstractJavaResourceNode implements OneToMany
 	}
 
 	public void setMappedBy(String mappedBy) {
-		
+		if (mappedBy != null) {
+			createOneToManyResource().setMappedBy(mappedBy);
+		}				
 	}
 
 	public String getFullyQualifiedTargetEntity() {
@@ -91,7 +92,7 @@ public class NullOneToMany extends AbstractJavaResourceNode implements OneToMany
 	}
 
 	public void setCascadeAll(boolean all) {
-		
+		createOneToManyResource().setCascadeAll(all);
 	}
 
 	public boolean isCascadeMerge() {
@@ -99,7 +100,7 @@ public class NullOneToMany extends AbstractJavaResourceNode implements OneToMany
 	}
 
 	public void setCascadeMerge(boolean merge) {
-		
+		createOneToManyResource().setCascadeMerge(merge);
 	}
 
 	public boolean isCascadePersist() {
@@ -107,7 +108,7 @@ public class NullOneToMany extends AbstractJavaResourceNode implements OneToMany
 	}
 
 	public void setCascadePersist(boolean persist) {
-		
+		createOneToManyResource().setCascadePersist(persist);
 	}
 
 	public boolean isCascadeRefresh() {
@@ -115,7 +116,7 @@ public class NullOneToMany extends AbstractJavaResourceNode implements OneToMany
 	}
 
 	public void setCascadeRefresh(boolean refresh) {
-		
+		createOneToManyResource().setCascadeRefresh(refresh);
 	}
 
 	public boolean isCascadeRemove() {
@@ -123,7 +124,7 @@ public class NullOneToMany extends AbstractJavaResourceNode implements OneToMany
 	}
 
 	public void setCascadeRemove(boolean remove) {
-		
+		createOneToManyResource().setCascadeRemove(remove);
 	}
 
 	public void update(CompilationUnit astRoot) {
