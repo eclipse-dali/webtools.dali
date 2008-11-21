@@ -17,6 +17,7 @@ import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
+import org.eclipse.jpt.ui.details.DefaultAttributeMappingUiProvider;
 import org.eclipse.jpt.ui.details.JpaDetailsProvider;
 import org.eclipse.jpt.ui.details.TypeMappingUiProvider;
 import org.eclipse.jpt.ui.navigator.JpaNavigatorProvider;
@@ -54,9 +55,9 @@ public interface JpaPlatformUi
 	// TODO - binary java type support
 	JpaStructureProvider buildStructureProvider(JpaFile jpaFile);
 
-	Iterator<AttributeMappingUiProvider<? extends AttributeMapping>> defaultJavaAttributeMappingUiProviders();
+	Iterator<DefaultAttributeMappingUiProvider<? extends AttributeMapping>> defaultJavaAttributeMappingUiProviders();
 
-	Iterator<AttributeMappingUiProvider<? extends AttributeMapping>> defaultOrmAttributeMappingUiProviders();
+	Iterator<DefaultAttributeMappingUiProvider<? extends AttributeMapping>> defaultOrmAttributeMappingUiProviders();
 
 	JpaDetailsProvider getDetailsProvider(JpaStructureNode contextNode);
 

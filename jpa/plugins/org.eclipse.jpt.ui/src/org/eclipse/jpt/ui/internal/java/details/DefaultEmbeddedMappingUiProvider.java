@@ -13,7 +13,7 @@ import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.EmbeddedMapping;
 import org.eclipse.jpt.ui.JpaUiFactory;
 import org.eclipse.jpt.ui.WidgetFactory;
-import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
+import org.eclipse.jpt.ui.details.DefaultAttributeMappingUiProvider;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.JpaMappingImageHelper;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
@@ -22,7 +22,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
 public class DefaultEmbeddedMappingUiProvider
-	implements AttributeMappingUiProvider<EmbeddedMapping>
+	implements DefaultAttributeMappingUiProvider<EmbeddedMapping>
 {
 	// singleton
 	private static final DefaultEmbeddedMappingUiProvider INSTANCE = new DefaultEmbeddedMappingUiProvider();
@@ -30,7 +30,7 @@ public class DefaultEmbeddedMappingUiProvider
 	/**
 	 * Return the singleton.
 	 */
-	public static AttributeMappingUiProvider<EmbeddedMapping> instance() {
+	public static DefaultAttributeMappingUiProvider<EmbeddedMapping> instance() {
 		return INSTANCE;
 	}
 
@@ -42,9 +42,13 @@ public class DefaultEmbeddedMappingUiProvider
 	}
 
 	public String getMappingKey() {
-		return MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY;
+		return null;
 	}
 
+	public String getDefaultMappingKey() {
+		return MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY;
+	}
+	
 	public String getLabel() {
 		return JptUiMappingsMessages.DefaultEmbeddedMappingUiProvider_label;
 	}
@@ -54,7 +58,7 @@ public class DefaultEmbeddedMappingUiProvider
 	}
 
 	public Image getImage() {
-		return JpaMappingImageHelper.imageForAttributeMapping(getMappingKey());
+		return JpaMappingImageHelper.imageForAttributeMapping(getDefaultMappingKey());
 	}
 
 	public JpaComposite buildAttributeMappingComposite(

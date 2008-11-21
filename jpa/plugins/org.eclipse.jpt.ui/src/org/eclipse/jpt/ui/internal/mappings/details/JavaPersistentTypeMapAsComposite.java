@@ -13,7 +13,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.ui.details.MappingUiProvider;
+import org.eclipse.jpt.ui.details.DefaultMappingUiProvider;
 import org.eclipse.jpt.ui.details.TypeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.JpaMappingImageHelper;
 import org.eclipse.jpt.ui.internal.java.details.NullTypeMappingUiProvider;
@@ -48,8 +48,8 @@ public class JavaPersistentTypeMapAsComposite extends PersistentTypeMapAsComposi
 	}
 
 	@Override
-	protected MappingUiProvider<JavaPersistentType> getDefaultProvider() {
-		return new MappingUiProvider<JavaPersistentType>() {
+	protected DefaultMappingUiProvider<JavaPersistentType> getDefaultProvider() {
+		return new DefaultMappingUiProvider<JavaPersistentType>() {
 
 			public Image getImage() {
 				return JpaMappingImageHelper.imageForTypeMapping(null);
@@ -64,6 +64,10 @@ public class JavaPersistentTypeMapAsComposite extends PersistentTypeMapAsComposi
 			}
 			
 			public String getMappingKey() {
+				return null;
+			}
+			
+			public String getDefaultMappingKey() {
 				return null;
 			}
 		};

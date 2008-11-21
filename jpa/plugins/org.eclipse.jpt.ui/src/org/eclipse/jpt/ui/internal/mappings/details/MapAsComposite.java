@@ -22,6 +22,7 @@ import org.eclipse.jface.resource.JFaceColors;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jpt.ui.JptUiPlugin;
+import org.eclipse.jpt.ui.details.DefaultMappingUiProvider;
 import org.eclipse.jpt.ui.details.MappingUiProvider;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
@@ -98,11 +99,11 @@ public abstract class MapAsComposite<T extends Model> extends Pane<T> {
 	 *
 	 * @return A provider that acts as a default mapping provider
 	 */
-	protected abstract MappingUiProvider<?> getDefaultProvider();
+	protected abstract DefaultMappingUiProvider<?> getDefaultProvider();
 
-	protected MappingUiProvider<?> getDefaultProvider(String mappingKey) {
-		for (MappingUiProvider<?> provider : CollectionTools.iterable(this.mappingChangeHandler.defaultProviders())) {
-			if (provider.getMappingKey().equals(mappingKey)) {
+	protected DefaultMappingUiProvider<?> getDefaultProvider(String mappingKey) {
+		for (DefaultMappingUiProvider<?> provider : CollectionTools.iterable(this.mappingChangeHandler.defaultProviders())) {
+			if (provider.getDefaultMappingKey() == mappingKey) {
 				return provider;
 			}
 		}
@@ -459,7 +460,7 @@ public abstract class MapAsComposite<T extends Model> extends Pane<T> {
 		 *
 		 * @return The supported types of mapping
 		 */
-		Iterator<? extends MappingUiProvider<?>> defaultProviders();
+		Iterator<? extends DefaultMappingUiProvider<?>> defaultProviders();
 	}
 
 	/**

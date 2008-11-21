@@ -14,7 +14,7 @@ import org.eclipse.jpt.core.context.OneToOneMapping;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.ui.JpaUiFactory;
 import org.eclipse.jpt.ui.WidgetFactory;
-import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
+import org.eclipse.jpt.ui.details.DefaultAttributeMappingUiProvider;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.JpaMappingImageHelper;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -22,7 +22,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
 public class DefaultOneToOneMappingUiProvider
-	implements AttributeMappingUiProvider<OneToOneMapping>
+	implements DefaultAttributeMappingUiProvider<OneToOneMapping>
 {
 	// singleton
 	private static final DefaultOneToOneMappingUiProvider INSTANCE = new DefaultOneToOneMappingUiProvider();
@@ -30,7 +30,7 @@ public class DefaultOneToOneMappingUiProvider
 	/**
 	 * Return the singleton.
 	 */
-	public static AttributeMappingUiProvider<OneToOneMapping> instance() {
+	public static DefaultAttributeMappingUiProvider<OneToOneMapping> instance() {
 		return INSTANCE;
 	}
 
@@ -42,9 +42,13 @@ public class DefaultOneToOneMappingUiProvider
 	}
 
 	public String getMappingKey() {
-		return MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY;
+		return null;
 	}
 
+	public String getDefaultMappingKey() {
+		return MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY;
+	}
+	
 	public String getLabel() {
 		return EclipseLinkUiMappingsMessages.DefaultOneToOneMappingUiProvider_label;
 	}
@@ -54,7 +58,7 @@ public class DefaultOneToOneMappingUiProvider
 	}
 
 	public Image getImage() {
-		return JpaMappingImageHelper.imageForAttributeMapping(getMappingKey());
+		return JpaMappingImageHelper.imageForAttributeMapping(getDefaultMappingKey());
 	}
 
 	public JpaComposite buildAttributeMappingComposite(JpaUiFactory factory,

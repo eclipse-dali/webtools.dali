@@ -17,6 +17,7 @@ import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
+import org.eclipse.jpt.ui.details.DefaultAttributeMappingUiProvider;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.details.PersistentAttributeDetailsPage;
 import org.eclipse.jpt.ui.internal.mappings.details.OrmPersistentAttributeMapAsComposite;
@@ -92,12 +93,12 @@ public class OrmPersistentAttributeDetailsPage extends PersistentAttributeDetail
 	}
 
 	@Override
-	protected AttributeMappingUiProvider<AttributeMapping> getDefaultAttributeMappingUiProvider(String key) {
+	protected DefaultAttributeMappingUiProvider<AttributeMapping> getDefaultAttributeMappingUiProvider(String key) {
 		throw new UnsupportedOperationException("Xml attributeMappings should not be default");
 	}
 
 	@Override
-	protected Iterator<AttributeMappingUiProvider<? extends AttributeMapping>> defaultAttributeMappingUiProviders() {
+	protected Iterator<DefaultAttributeMappingUiProvider<? extends AttributeMapping>> defaultAttributeMappingUiProviders() {
 		return jpaPlatformUi().defaultOrmAttributeMappingUiProviders();
 	}
 

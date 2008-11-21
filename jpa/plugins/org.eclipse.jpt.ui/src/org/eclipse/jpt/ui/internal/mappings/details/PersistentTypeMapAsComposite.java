@@ -14,6 +14,7 @@ import java.util.Iterator;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.ui.JpaPlatformUi;
+import org.eclipse.jpt.ui.details.DefaultMappingUiProvider;
 import org.eclipse.jpt.ui.details.MappingUiProvider;
 import org.eclipse.jpt.ui.details.TypeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
@@ -89,7 +90,7 @@ public abstract class PersistentTypeMapAsComposite<T extends PersistentType> ext
 				return typeMappingUiProviders();
 			}
 			
-			public Iterator<? extends MappingUiProvider<?>> defaultProviders() {
+			public Iterator<? extends DefaultMappingUiProvider<?>> defaultProviders() {
 				return EmptyIterator.instance();
 			}
 		};

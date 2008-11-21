@@ -15,6 +15,7 @@ import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
+import org.eclipse.jpt.ui.details.DefaultAttributeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.details.PersistentAttributeDetailsPage;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.swt.SWT;
@@ -85,9 +86,9 @@ public class JavaPersistentAttributeDetailsPage extends PersistentAttributeDetai
 	}
 
 	@Override
-	protected AttributeMappingUiProvider<? extends AttributeMapping> getDefaultAttributeMappingUiProvider(String key) {
-		for (Iterator<AttributeMappingUiProvider<? extends AttributeMapping>> i = defaultAttributeMappingUiProviders(); i.hasNext(); ) {
-			AttributeMappingUiProvider<? extends AttributeMapping> provider = i.next();
+	protected DefaultAttributeMappingUiProvider<? extends AttributeMapping> getDefaultAttributeMappingUiProvider(String key) {
+		for (Iterator<DefaultAttributeMappingUiProvider<? extends AttributeMapping>> i = defaultAttributeMappingUiProviders(); i.hasNext(); ) {
+			DefaultAttributeMappingUiProvider<? extends AttributeMapping> provider = i.next();
 
 			if (provider.getMappingKey() == key) {
 				return provider;
@@ -98,7 +99,7 @@ public class JavaPersistentAttributeDetailsPage extends PersistentAttributeDetai
 	}
 
 	@Override
-	protected Iterator<AttributeMappingUiProvider<? extends AttributeMapping>> defaultAttributeMappingUiProviders() {
+	protected Iterator<DefaultAttributeMappingUiProvider<? extends AttributeMapping>> defaultAttributeMappingUiProviders() {
 		return jpaPlatformUi().defaultJavaAttributeMappingUiProviders();
 	}
 
@@ -123,7 +124,7 @@ public class JavaPersistentAttributeDetailsPage extends PersistentAttributeDetai
 		mappingPane.setLayoutData(gridData);
 	}
 
-	protected AttributeMappingUiProvider<AttributeMapping> nullAttributeMappingUiProvider() {
+	protected DefaultAttributeMappingUiProvider<AttributeMapping> nullAttributeMappingUiProvider() {
 		return NullAttributeMappingUiProvider.instance();
 	}
 }

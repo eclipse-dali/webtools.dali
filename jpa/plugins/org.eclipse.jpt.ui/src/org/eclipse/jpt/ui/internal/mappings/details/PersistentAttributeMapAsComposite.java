@@ -16,6 +16,8 @@ import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.ui.JpaPlatformUi;
 import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
+import org.eclipse.jpt.ui.details.DefaultAttributeMappingUiProvider;
+import org.eclipse.jpt.ui.details.DefaultMappingUiProvider;
 import org.eclipse.jpt.ui.details.MappingUiProvider;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.platform.JpaPlatformUiRegistry;
@@ -66,7 +68,7 @@ public abstract class PersistentAttributeMapAsComposite<T extends PersistentAttr
 	protected abstract Iterator<AttributeMappingUiProvider<? extends AttributeMapping>> attributeMappingUiProviders();
 
 	@Override
-	protected MappingUiProvider<?> getDefaultProvider() {
+	protected DefaultMappingUiProvider<?> getDefaultProvider() {
 		String mappingKey = getSubject().getDefaultMappingKey();
 
 		if (mappingKey == null) {
@@ -119,7 +121,7 @@ public abstract class PersistentAttributeMapAsComposite<T extends PersistentAttr
 				return attributeMappingUiProviders();
 			}
 			
-			public Iterator<? extends MappingUiProvider<?>> defaultProviders() {
+			public Iterator<? extends DefaultMappingUiProvider<?>> defaultProviders() {
 				return defaultAttributeMappingUiProviders();
 			}
 			
@@ -131,7 +133,7 @@ public abstract class PersistentAttributeMapAsComposite<T extends PersistentAttr
 	 *
 	 * @return The supported default types of mapping
 	 */
-	protected abstract Iterator<AttributeMappingUiProvider<? extends AttributeMapping>>
+	protected abstract Iterator<DefaultAttributeMappingUiProvider<? extends AttributeMapping>>
 		defaultAttributeMappingUiProviders();
 
 	/**

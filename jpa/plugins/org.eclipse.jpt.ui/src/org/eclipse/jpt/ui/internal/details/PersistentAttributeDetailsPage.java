@@ -18,6 +18,7 @@ import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
+import org.eclipse.jpt.ui.details.DefaultAttributeMappingUiProvider;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.Tracing;
@@ -134,15 +135,10 @@ public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribu
 		return this.mappingPageBook;
 	}
 
-	protected abstract AttributeMappingUiProvider<? extends AttributeMapping>
-		getDefaultAttributeMappingUiProvider(String key);
+	protected abstract DefaultAttributeMappingUiProvider<? extends AttributeMapping> getDefaultAttributeMappingUiProvider(String key);
 
-	protected abstract Iterator<AttributeMappingUiProvider<? extends AttributeMapping>>
-		defaultAttributeMappingUiProviders();
+	protected abstract Iterator<DefaultAttributeMappingUiProvider<? extends AttributeMapping>> defaultAttributeMappingUiProviders();
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected void doDispose() {
 		log(Tracing.UI_DETAILS_VIEW, "PersistentAttributeDetailsPage.doDispose()");
@@ -156,27 +152,18 @@ public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribu
 		super.doDispose();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected void doPopulate() {
 		super.doPopulate();
 		updateMappingPage();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected void initialize() {
 		super.initialize();
 		this.mappingComposites = new HashMap<String, JpaComposite>();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected void log(String flag, String message) {
 		super.log(flag, message);

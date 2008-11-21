@@ -13,6 +13,7 @@ import java.util.Iterator;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
+import org.eclipse.jpt.ui.details.DefaultAttributeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.swt.widgets.Composite;
 
@@ -46,7 +47,7 @@ public class OrmPersistentAttributeMapAsComposite extends PersistentAttributeMap
 	}
 
 	@Override
-	protected Iterator<AttributeMappingUiProvider<? extends AttributeMapping>> defaultAttributeMappingUiProviders() {
+	protected Iterator<DefaultAttributeMappingUiProvider<? extends AttributeMapping>> defaultAttributeMappingUiProviders() {
 		return getJpaPlatformUi().defaultOrmAttributeMappingUiProviders();
 	}
 }

@@ -12,7 +12,7 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 import java.util.Iterator;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.ui.details.MappingUiProvider;
+import org.eclipse.jpt.ui.details.DefaultMappingUiProvider;
 import org.eclipse.jpt.ui.details.TypeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.swt.widgets.Composite;
@@ -42,7 +42,7 @@ public class OrmPersistentTypeMapAsComposite extends PersistentTypeMapAsComposit
 	}
 
 	@Override
-	protected MappingUiProvider<?> getDefaultProvider() {
+	protected DefaultMappingUiProvider<?> getDefaultProvider() {
 		return null;
 	}
 

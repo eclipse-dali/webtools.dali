@@ -27,6 +27,7 @@ import org.eclipse.jpt.core.internal.XmlJpaFile;
 import org.eclipse.jpt.ui.JpaPlatformUi;
 import org.eclipse.jpt.ui.JpaUiFactory;
 import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
+import org.eclipse.jpt.ui.details.DefaultAttributeMappingUiProvider;
 import org.eclipse.jpt.ui.details.JpaDetailsProvider;
 import org.eclipse.jpt.ui.details.TypeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.details.BasicMappingUiProvider;
@@ -65,11 +66,11 @@ public abstract class BaseJpaPlatformUi implements JpaPlatformUi
 
 	private List<TypeMappingUiProvider<? extends TypeMapping>> javaTypeMappingUiProviders;
 	private List<AttributeMappingUiProvider<? extends AttributeMapping>> javaAttributeMappingUiProviders;
-	private List<AttributeMappingUiProvider<? extends AttributeMapping>> defaultJavaAttributeMappingUiProviders;
+	private List<DefaultAttributeMappingUiProvider<? extends AttributeMapping>> defaultJavaAttributeMappingUiProviders;
 
 	private List<TypeMappingUiProvider<? extends TypeMapping>> ormTypeMappingUiProviders;
 	private List<AttributeMappingUiProvider<? extends AttributeMapping>> ormAttributeMappingUiProviders;
-	private List<AttributeMappingUiProvider<? extends AttributeMapping>> defaultOrmAttributeMappingUiProviders;
+	private List<DefaultAttributeMappingUiProvider<? extends AttributeMapping>> defaultOrmAttributeMappingUiProviders;
 
 	private JpaUiFactory jpaUiFactory;
 
@@ -192,13 +193,13 @@ public abstract class BaseJpaPlatformUi implements JpaPlatformUi
 		providers.add(VersionMappingUiProvider.instance());
 	}
 
-	public ListIterator<AttributeMappingUiProvider<? extends AttributeMapping>> defaultJavaAttributeMappingUiProviders() {
+	public ListIterator<DefaultAttributeMappingUiProvider<? extends AttributeMapping>> defaultJavaAttributeMappingUiProviders() {
 		if (this.defaultJavaAttributeMappingUiProviders == null) {
-			this.defaultJavaAttributeMappingUiProviders = new ArrayList<AttributeMappingUiProvider<? extends AttributeMapping>>();
+			this.defaultJavaAttributeMappingUiProviders = new ArrayList<DefaultAttributeMappingUiProvider<? extends AttributeMapping>>();
 			this.addDefaultJavaAttributeMappingUiProvidersTo(this.defaultJavaAttributeMappingUiProviders);
 		}
 
-		return new CloneListIterator<AttributeMappingUiProvider<? extends AttributeMapping>>(
+		return new CloneListIterator<DefaultAttributeMappingUiProvider<? extends AttributeMapping>>(
 			this.defaultJavaAttributeMappingUiProviders
 		);
 	}
@@ -207,7 +208,7 @@ public abstract class BaseJpaPlatformUi implements JpaPlatformUi
 	 * Override this to specify more or different default java attribute mapping ui providers.
 	 * The default includes the JPA spec-defined basic, embedded
 	 */
-	protected void addDefaultJavaAttributeMappingUiProvidersTo(List<AttributeMappingUiProvider<? extends AttributeMapping>> providers) {
+	protected void addDefaultJavaAttributeMappingUiProvidersTo(List<DefaultAttributeMappingUiProvider<? extends AttributeMapping>> providers) {
 		providers.add(DefaultBasicMappingUiProvider.instance());
 		providers.add(DefaultEmbeddedMappingUiProvider.instance());
 	}
@@ -218,13 +219,13 @@ public abstract class BaseJpaPlatformUi implements JpaPlatformUi
 
 	// *************** ORM mapping UI providers ***************
 
-	public Iterator<AttributeMappingUiProvider<? extends AttributeMapping>> defaultOrmAttributeMappingUiProviders() {
+	public Iterator<DefaultAttributeMappingUiProvider<? extends AttributeMapping>> defaultOrmAttributeMappingUiProviders() {
 		if (this.defaultOrmAttributeMappingUiProviders == null) {
-			this.defaultOrmAttributeMappingUiProviders = new ArrayList<AttributeMappingUiProvider<? extends AttributeMapping>>();
+			this.defaultOrmAttributeMappingUiProviders = new ArrayList<DefaultAttributeMappingUiProvider<? extends AttributeMapping>>();
 			this.addDefaultOrmAttributeMappingUiProvidersTo(this.defaultOrmAttributeMappingUiProviders);
 		}
 
-		return new CloneListIterator<AttributeMappingUiProvider<? extends AttributeMapping>>(
+		return new CloneListIterator<DefaultAttributeMappingUiProvider<? extends AttributeMapping>>(
 			this.defaultOrmAttributeMappingUiProviders
 		);
 	}
@@ -233,7 +234,7 @@ public abstract class BaseJpaPlatformUi implements JpaPlatformUi
 	 * Override this to specify more or different default ORM attribute mapping
 	 * ui providers. The default has no specific mappings.
 	 */
-	protected void addDefaultOrmAttributeMappingUiProvidersTo(List<AttributeMappingUiProvider<? extends AttributeMapping>> providers) {
+	protected void addDefaultOrmAttributeMappingUiProvidersTo(List<DefaultAttributeMappingUiProvider<? extends AttributeMapping>> providers) {
 	}
 
 	public Iterator<AttributeMappingUiProvider<? extends AttributeMapping>> ormAttributeMappingUiProviders() {

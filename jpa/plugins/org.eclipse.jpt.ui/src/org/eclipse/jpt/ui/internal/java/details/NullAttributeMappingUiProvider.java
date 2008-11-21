@@ -13,7 +13,7 @@ import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.ui.JpaUiFactory;
 import org.eclipse.jpt.ui.WidgetFactory;
-import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
+import org.eclipse.jpt.ui.details.DefaultAttributeMappingUiProvider;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.JpaMappingImageHelper;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
@@ -23,7 +23,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
 public class NullAttributeMappingUiProvider
-	implements AttributeMappingUiProvider<AttributeMapping>
+	implements DefaultAttributeMappingUiProvider<AttributeMapping>
 {
 
 	// singleton
@@ -32,7 +32,7 @@ public class NullAttributeMappingUiProvider
 	/**
 	 * Return the singleton.
 	 */
-	public static AttributeMappingUiProvider<AttributeMapping> instance() {
+	public static DefaultAttributeMappingUiProvider<AttributeMapping> instance() {
 		return INSTANCE;
 	}
 
@@ -44,9 +44,13 @@ public class NullAttributeMappingUiProvider
 	}
 
 	public String getMappingKey() {
-		return MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY;
+		return null;
 	}
 
+	public String getDefaultMappingKey() {
+		return MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY;
+	}
+	
 	public String getLabel() {
 		return JptUiMappingsMessages.NullAttributeMappingUiProvider_label;
 	}
