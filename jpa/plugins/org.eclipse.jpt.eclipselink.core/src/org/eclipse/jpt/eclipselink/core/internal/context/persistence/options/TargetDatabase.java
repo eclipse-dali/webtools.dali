@@ -52,9 +52,9 @@ public enum TargetDatabase {
     static final String MYSQL = "MySQL";
     static final String ORACLE = "Oracle";
     static final String ORACLE11 = "Oracle11";
-    static final String ORACLE10 = "Oracle10";
-    static final String ORACLE9 = "Oracle9";
-    static final String ORACLE8 = "Oracle8";
+    static final String ORACLE10 = "Oracle10g";
+    static final String ORACLE9 = "Oracle9i";
+    static final String ORACLE8 = "Oracle8i";
     static final String POINTBASE = "PointBase";
     static final String POSTGRESQL = "PostgreSQL";
     static final String SQLANYWHERE = "SQLAnywhere";
