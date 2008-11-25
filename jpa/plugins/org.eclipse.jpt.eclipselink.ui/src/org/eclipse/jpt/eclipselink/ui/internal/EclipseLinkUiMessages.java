@@ -302,8 +302,12 @@ public class EclipseLinkUiMessages extends NLS
 	public static String TargetDatabaseComposite_hsql;
 	public static String TargetDatabaseComposite_informix;
 	public static String TargetDatabaseComposite_javadb;
-	public static String TargetDatabaseComposite_mysqlplatform;
+	public static String TargetDatabaseComposite_mysql;
 	public static String TargetDatabaseComposite_oracle;
+	public static String TargetDatabaseComposite_oracle11;
+	public static String TargetDatabaseComposite_oracle10;
+	public static String TargetDatabaseComposite_oracle9;
+	public static String TargetDatabaseComposite_oracle8;
 	public static String TargetDatabaseComposite_pointbase;
 	public static String TargetDatabaseComposite_postgresql;
 	public static String TargetDatabaseComposite_sqlanywhere;

@@ -24,8 +24,12 @@ public enum TargetDatabase {
 			hsql,
 			informix,
 			javadb,
-			mysqlplatform,
+			mysql,
 			oracle,
+			oracle11,
+			oracle10,
+			oracle9,
+			oracle8,
 			pointbase,
 			postgresql,
 			sqlanywhere,
@@ -45,11 +49,15 @@ public enum TargetDatabase {
     static final String HSQL = "HSQL";
     static final String INFORMIX = "Informix";
     static final String JAVADB = "JavaDB";
-    static final String MYSQLPLATFORM = "MySQLPlatform";
+    static final String MYSQL = "MySQL";
     static final String ORACLE = "Oracle";
+    static final String ORACLE11 = "Oracle11";
+    static final String ORACLE10 = "Oracle10";
+    static final String ORACLE9 = "Oracle9";
+    static final String ORACLE8 = "Oracle8";
     static final String POINTBASE = "PointBase";
     static final String POSTGRESQL = "PostgreSQL";
-    static final String SQLANYWHERE = "SQLAnyWhere";
+    static final String SQLANYWHERE = "SQLAnywhere";
     static final String SQLSERVER = "SQLServer";
     static final String SYBASE = "Sybase";
     static final String TIMESTEN = "TimesTen";
