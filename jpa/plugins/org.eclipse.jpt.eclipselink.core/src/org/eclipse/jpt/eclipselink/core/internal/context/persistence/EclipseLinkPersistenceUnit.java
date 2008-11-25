@@ -56,13 +56,13 @@ public class EclipseLinkPersistenceUnit extends AbstractPersistenceUnit
 {
 	protected MappingFileRef impliedEclipseLinkMappingFileRef;
 	
-	private final GeneralProperties generalProperties;
-	private final Connection connection;
-	private final Customization customization;
-	private final Caching caching;
-	private final Logging logging;
-	private final Options options;
-	private final SchemaGeneration schemaGeneration;
+	private GeneralProperties generalProperties;
+	private Connection connection;
+	private Customization customization;
+	private Caching caching;
+	private Logging logging;
+	private Options options;
+	private SchemaGeneration schemaGeneration;
 	
 	private final ListValueModel<Property> propertiesAdapter;
 	private final ListValueModel<Property> propertyListAdapter;
@@ -75,6 +75,12 @@ public class EclipseLinkPersistenceUnit extends AbstractPersistenceUnit
 		super(parent);
 		this.propertiesAdapter = this.buildPropertiesAdapter();
 		this.propertyListAdapter = this.buildPropertyListAdapter(this.propertiesAdapter);		
+		this.initialize(persistenceUnit);
+	}
+
+	@Override
+	protected void initializeProperties(XmlPersistenceUnit xpu) {
+		super.initializeProperties(xpu);
 		this.generalProperties = new EclipseLinkGeneralProperties(this, this.propertyListAdapter);
 		this.connection = new EclipseLinkConnection(this, this.propertyListAdapter);
 		this.customization = new EclipseLinkCustomization(this, this.propertyListAdapter);
@@ -82,9 +88,7 @@ public class EclipseLinkPersistenceUnit extends AbstractPersistenceUnit
 		this.logging = new EclipseLinkLogging(this, this.propertyListAdapter);
 		this.options = new EclipseLinkOptions(this, this.propertyListAdapter);
 		this.schemaGeneration = new EclipseLinkSchemaGeneration(this, this.propertyListAdapter);
-		this.initialize(persistenceUnit);
 	}
-
 	// ********** internal methods **********
 
 	private ListValueModel<Property> buildPropertyListAdapter(ListValueModel<Property> propertiesAdapter) {

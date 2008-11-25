@@ -714,6 +714,7 @@ public class AbstractPersistenceUnit extends AbstractXmlContextNode
 		this.xmlPersistenceUnit = xpu;
 		this.name = xpu.getName();
 		
+		initializeProperties(xpu);
 		//initialize specified classRefs before mappingFileRefs because of 
 		//JpaFile rootStructureNode, we want the mapping file to "win",
 		//as it would in a Jpa runtime implementation
@@ -722,7 +723,6 @@ public class AbstractPersistenceUnit extends AbstractXmlContextNode
 		//initialize implied classRefs last since they depend on both
 		//specified classRefs and mappingFileRefs
 		initializeImpliedClassRefs(xpu);
-		initializeProperties(xpu);
 		initializePersistenceUnitDefaults();
 		this.specifiedExcludeUnlistedClasses = xpu.getExcludeUnlistedClasses();
 		this.specifiedTransactionType = specifiedTransactionType(xpu);
