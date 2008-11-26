@@ -44,7 +44,8 @@ public class JptCoreMessages {
 	public static String RESOURCE_MODEL_PROVIDER_REGISTRY_DUPLICATE_FILE_CONTENT_TYPE;
 	public static String RESOURCE_MODEL_PROVIDER_REGISTRY_FAILED_INSTANTIATION;
 	public static String UPDATE_JOB_NAME;
-
+	public static String PLATFORM_ID_DOES_NOT_EXIST;
+	
 	private static final String BUNDLE_NAME = "jpa_core"; //$NON-NLS-1$
 	private static final Class<?> BUNDLE_CLASS = JptCoreMessages.class;
 	static {

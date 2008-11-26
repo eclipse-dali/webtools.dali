@@ -23,6 +23,7 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jpt.core.JpaModel;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.utility.internal.iterators.SingleElementIterator;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
 import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 import org.eclipse.wst.validation.internal.core.ValidationException;
@@ -52,7 +53,16 @@ public class JpaValidator implements IValidatorJob {
 
 	private Iterator<IMessage> validationMessages(IValidationContext context) {
 		IProject project = ((IProjectValidationContext) context).getProject();
-		return JptCorePlugin.getJpaProject(project).validationMessages();
+		JpaProject jpaProject = JptCorePlugin.getJpaProject(project);
+		if (jpaProject != null) {
+			return jpaProject.validationMessages();
+		}
+		return new SingleElementIterator<IMessage>(
+			DefaultJpaValidationMessages.buildMessage(
+			IMessage.HIGH_SEVERITY,
+			JpaValidationMessages.NO_JPA_PROJECT,
+			project
+		));
 	}
 
 	public void cleanup(IReporter reporter) {

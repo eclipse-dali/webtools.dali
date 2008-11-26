@@ -298,7 +298,7 @@ public class JptCorePlugin extends Plugin {
 	 * Return the JPA platform associated with the specified Eclipse project.
 	 */
 	public static JpaPlatform getJpaPlatform(IProject project) {
-		return JpaPlatformRegistry.instance().getJpaPlatform(getJpaPlatformId(project));
+		return JpaPlatformRegistry.instance().getJpaPlatform(project);
 	}
 	
 	/**

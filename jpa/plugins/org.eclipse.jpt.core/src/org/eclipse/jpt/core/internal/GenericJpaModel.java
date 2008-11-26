@@ -22,6 +22,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaModel;
+import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.JpaProject.Config;
@@ -409,7 +410,11 @@ public class GenericJpaModel
 		}
 
 		private JpaProject buildJpaProject() throws CoreException {
-			JpaProject result = this.config.getJpaPlatform().getJpaFactory().buildJpaProject(this.config);
+			JpaPlatform jpaPlatform = this.config.getJpaPlatform();
+			if (jpaPlatform == null) {
+				return null;
+			}
+			JpaProject result = jpaPlatform.getJpaFactory().buildJpaProject(this.config);
 			result.setUpdater(new AsynchronousJpaProjectUpdater(result));
 			return result;
 		}

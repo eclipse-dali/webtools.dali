@@ -9,22 +9,31 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.platform;
 
-import junit.framework.TestCase;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProperties;
+import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProvider;
 import org.eclipse.jpt.core.internal.platform.JpaPlatformRegistry;
 import org.eclipse.jpt.core.tests.extension.resource.ExtensionTestPlugin;
 import org.eclipse.jpt.core.tests.extension.resource.TestJpaPlatform;
+import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
+import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject;
+import org.eclipse.jpt.core.tests.internal.projects.TestJpaProject;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
+import org.eclipse.wst.common.project.facet.core.IActionConfigFactory;
 
-public class JpaPlatformExtensionTests extends TestCase
+@SuppressWarnings("nls")
+public class JpaPlatformExtensionTests extends ContextModelTestCase
 {
 	public static final String TEST_PLATFORM_ID = TestJpaPlatform.ID;
 	public static final String TEST_PLATFORM_LABEL = "Test Jpa Platform";
 	
+	protected TestJpaProject testProject;
+
 	public JpaPlatformExtensionTests(String name) {
 		super(name);
 	}
@@ -33,6 +42,18 @@ public class JpaPlatformExtensionTests extends TestCase
 	protected void setUp() throws Exception {
 		super.setUp();
 		verifyExtensionTestProjectExists();
+	}
+	
+	@Override
+	protected TestJavaProject buildJavaProject(boolean autoBuild) throws Exception {
+		return super.buildJpaProject(PROJECT_NAME, autoBuild, this.buildConfig());
+	}
+
+	protected IDataModel buildConfig() throws Exception {
+		IActionConfigFactory configFactory = new JpaFacetDataModelProvider();
+		IDataModel config = (IDataModel) configFactory.create();
+		config.setProperty(JpaFacetDataModelProperties.PLATFORM_ID, TEST_PLATFORM_ID);
+		return config;
 	}
 
 	public static void verifyExtensionTestProjectExists() {
@@ -65,7 +86,7 @@ public class JpaPlatformExtensionTests extends TestCase
 	}
 	
 	public void testJpaPlatform() {
-		assertNotNull(JpaPlatformRegistry.instance().getJpaPlatform(TEST_PLATFORM_ID));		
+		assertNotNull(JpaPlatformRegistry.instance().getJpaPlatform(this.testProject.getProject()));		
 	}
 
 }

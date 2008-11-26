@@ -85,6 +85,9 @@ public class JpaProjectPropertiesPage
 	}
 
 	private void setRuntime() {
+		if (getJpaProject() == null) {
+			return;
+		}
 		IFacetedProject facetedProject = null;
 		try {
 			facetedProject = ProjectFacetsManager.create(getJpaProject().getProject());
@@ -241,6 +244,9 @@ public class JpaProjectPropertiesPage
 		}
 		
 		void performDefaults() {
+			if (getJpaProject() == null) {
+				return;
+			}
 			String platformId = getJpaProject().getJpaPlatform().getId();
 			model.setProperty(PLATFORM_ID, platformId);
 		}
@@ -355,6 +361,9 @@ public class JpaProjectPropertiesPage
 		}
 
 		void performDefaults() {
+			if (getJpaProject() == null) {
+				return;
+			}
 			model.setProperty(CONNECTION, getJpaProject().getDataSource().getConnectionProfileName());
 			
 			String defaultSchema = getJpaProject().getUserOverrideDefaultSchema();
@@ -388,6 +397,9 @@ public class JpaProjectPropertiesPage
 		}
 		
 		void performDefaults() {
+			if (getJpaProject() == null) {
+				return;
+			}
 			boolean discoverClasses = getJpaProject().discoversAnnotatedClasses();
 			model.setProperty(DISCOVER_ANNOTATED_CLASSES, Boolean.valueOf(discoverClasses));
 		}

@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.platform;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
@@ -18,10 +19,12 @@ import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.core.internal.JptCoreMessages;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.ReadOnlyIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
+import org.eclipse.osgi.util.NLS;
 
 /**
  * Singleton registry for storing all the registered JPA platform configuration
@@ -176,10 +179,12 @@ public class JpaPlatformRegistry {
 	 * Unlike other registry methods, invoking this method may activate 
 	 * the plug-in.
 	 */
-	public JpaPlatform getJpaPlatform(String id) {
+	public JpaPlatform getJpaPlatform(IProject project) {
+		String id = JptCorePlugin.getJpaPlatformId(project);
 		IConfigurationElement configElement = this.jpaPlatformConfigurationElements.get(id);
 		if (configElement == null) {
-			throw new IllegalArgumentException(id);
+			JptCorePlugin.log(NLS.bind(JptCoreMessages.PLATFORM_ID_DOES_NOT_EXIST, id, project.getName()));
+			return null;
 		}
 		JpaPlatform platform;
 		try {
