@@ -34,7 +34,7 @@ import org.eclipse.swt.widgets.Composite;
 public class EclipseLinkOrmEntityComposite extends AbstractEntityComposite<OrmEntity>
 {
 	public EclipseLinkOrmEntityComposite(
-			PropertyValueModel<OrmEntity> subjectHolder,
+			PropertyValueModel<? extends OrmEntity> subjectHolder,
 			Composite parent, WidgetFactory widgetFactory) {
 		super(subjectHolder, parent, widgetFactory);
 	}

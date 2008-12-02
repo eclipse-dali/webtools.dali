@@ -10,63 +10,53 @@
 package org.eclipse.jpt.ui.internal.java.details;
 
 import org.eclipse.jpt.core.MappingKeys;
-import org.eclipse.jpt.core.context.EmbeddedMapping;
+import org.eclipse.jpt.core.context.java.JavaEmbeddedMapping;
 import org.eclipse.jpt.ui.JpaUiFactory;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.DefaultAttributeMappingUiProvider;
 import org.eclipse.jpt.ui.details.JpaComposite;
-import org.eclipse.jpt.ui.internal.JpaMappingImageHelper;
-import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.details.AbstractEmbeddedMappingUiProvider;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
 public class DefaultEmbeddedMappingUiProvider
-	implements DefaultAttributeMappingUiProvider<EmbeddedMapping>
+	extends AbstractEmbeddedMappingUiProvider<JavaEmbeddedMapping>
+	implements DefaultAttributeMappingUiProvider<JavaEmbeddedMapping>
 {
 	// singleton
-	private static final DefaultEmbeddedMappingUiProvider INSTANCE = new DefaultEmbeddedMappingUiProvider();
-
+	private static final DefaultEmbeddedMappingUiProvider INSTANCE = 
+		new DefaultEmbeddedMappingUiProvider();
+	
 	/**
 	 * Return the singleton.
 	 */
-	public static DefaultAttributeMappingUiProvider<EmbeddedMapping> instance() {
+	public static DefaultAttributeMappingUiProvider<JavaEmbeddedMapping> instance() {
 		return INSTANCE;
 	}
-
+	
+	
 	/**
 	 * Ensure single instance.
 	 */
 	private DefaultEmbeddedMappingUiProvider() {
 		super();
 	}
-
+	
+	
+	@Override
 	public String getMappingKey() {
 		return null;
 	}
-
+	
 	public String getDefaultMappingKey() {
 		return MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY;
 	}
 	
-	public String getLabel() {
-		return JptUiMappingsMessages.DefaultEmbeddedMappingUiProvider_label;
-	}
-
-	public String getLinkLabel() {
-		return JptUiMappingsMessages.DefaultEmbeddedMappingUiProvider_linkLabel;
-	}
-
-	public Image getImage() {
-		return JpaMappingImageHelper.imageForAttributeMapping(getDefaultMappingKey());
-	}
-
 	public JpaComposite buildAttributeMappingComposite(
-		JpaUiFactory factory,
-		PropertyValueModel<EmbeddedMapping> subjectHolder,
-		Composite parent,
-		WidgetFactory widgetFactory) {
-
-		return factory.createEmbeddedMappingComposite(subjectHolder, parent, widgetFactory);
+			JpaUiFactory factory,
+			PropertyValueModel<JavaEmbeddedMapping> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
+		return factory.createJavaEmbeddedMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 }

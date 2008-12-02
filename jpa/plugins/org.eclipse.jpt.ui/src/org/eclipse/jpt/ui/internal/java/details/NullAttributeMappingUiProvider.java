@@ -25,65 +25,66 @@ import org.eclipse.swt.widgets.Composite;
 public class NullAttributeMappingUiProvider
 	implements DefaultAttributeMappingUiProvider<AttributeMapping>
 {
-
 	// singleton
-	private static final NullAttributeMappingUiProvider INSTANCE = new NullAttributeMappingUiProvider();
-
+	private static final NullAttributeMappingUiProvider INSTANCE = 
+		new NullAttributeMappingUiProvider();
+	
 	/**
 	 * Return the singleton.
 	 */
 	public static DefaultAttributeMappingUiProvider<AttributeMapping> instance() {
 		return INSTANCE;
 	}
-
+	
+	
 	/**
 	 * Ensure single instance.
 	 */
 	private NullAttributeMappingUiProvider() {
 		super();
 	}
-
-	public String getMappingKey() {
-		return null;
-	}
-
-	public String getDefaultMappingKey() {
-		return MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY;
+	
+	
+	public Image getImage() {
+		return JpaMappingImageHelper.imageForAttributeMapping(getMappingKey());
 	}
 	
 	public String getLabel() {
 		return JptUiMappingsMessages.NullAttributeMappingUiProvider_label;
 	}
-
+	
 	public String getLinkLabel() {
 		return null;
 	}
-
-	public Image getImage() {
-		return JpaMappingImageHelper.imageForAttributeMapping(getMappingKey());
+	
+	public String getMappingKey() {
+		return null;
 	}
-
+	
+	public String getDefaultMappingKey() {
+		return MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY;
+	}
+	
 	public JpaComposite buildAttributeMappingComposite(
-		JpaUiFactory factory,
-		PropertyValueModel<AttributeMapping> subjectHolder,
-		Composite parent,
-		WidgetFactory widgetFactory) {
-
+			JpaUiFactory factory,
+			PropertyValueModel<AttributeMapping> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
 		return new NullComposite(subjectHolder, parent, widgetFactory);
 	}
-
+	
+	
 	public static class NullComposite extends FormPane<AttributeMapping>
-	                                  implements JpaComposite{
-
-		NullComposite(PropertyValueModel<AttributeMapping> subjectHolder,
-		              Composite parent,
-		              WidgetFactory widgetFactory) {
-
+		implements JpaComposite
+	{
+		NullComposite(
+				PropertyValueModel<AttributeMapping> subjectHolder,
+		        Composite parent,
+		        WidgetFactory widgetFactory) {
 			super(subjectHolder, parent, widgetFactory);
 		}
-
+		
 		@Override
-		protected void initializeLayout(Composite container) {
-		}
+		protected void initializeLayout(Composite container) {}
 	}
 }

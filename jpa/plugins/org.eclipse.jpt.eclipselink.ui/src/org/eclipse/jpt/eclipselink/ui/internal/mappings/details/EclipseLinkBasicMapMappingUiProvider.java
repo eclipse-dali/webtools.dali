@@ -10,8 +10,7 @@
 package org.eclipse.jpt.eclipselink.ui.internal.mappings.details;
 
 import org.eclipse.jpt.eclipselink.core.EclipseLinkMappingKeys;
-import org.eclipse.jpt.eclipselink.core.context.BasicCollectionMapping;
-import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkJpaUiFactory;
+import org.eclipse.jpt.eclipselink.core.context.BasicMapMapping;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.ui.JpaUiFactory;
 import org.eclipse.jpt.ui.JptUiPlugin;
@@ -23,48 +22,50 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
-public class BasicCollectionMappingUiProvider
-	implements AttributeMappingUiProvider<BasicCollectionMapping>
+public class EclipseLinkBasicMapMappingUiProvider
+	implements AttributeMappingUiProvider<BasicMapMapping>
 {
 	// singleton
-	private static final BasicCollectionMappingUiProvider INSTANCE = new BasicCollectionMappingUiProvider();
-	
-	/**
-	 * Ensure single instance.
-	 */
-	private BasicCollectionMappingUiProvider() {
-		super();
-	}
+	private static final EclipseLinkBasicMapMappingUiProvider INSTANCE = 
+		new EclipseLinkBasicMapMappingUiProvider();
 	
 	/**
 	 * Return the singleton.
 	 */
-	public static AttributeMappingUiProvider<BasicCollectionMapping> instance() {
+	public static AttributeMappingUiProvider<BasicMapMapping> instance() {
 		return INSTANCE;
 	}
 	
-	public JpaComposite buildAttributeMappingComposite(
-		JpaUiFactory factory,
-		PropertyValueModel<BasicCollectionMapping> subjectHolder,
-		Composite parent,
-		WidgetFactory widgetFactory) {
-		
-		return ((EclipseLinkJpaUiFactory) factory).createBasicCollectionMappingComposite(subjectHolder, parent, widgetFactory);
+	
+	/**
+	 * Ensure single instance.
+	 */
+	private EclipseLinkBasicMapMappingUiProvider() {
+		super();
 	}
+	
 	
 	public Image getImage() {
 		return JptUiPlugin.getImage(JptUiIcons.JPA_CONTENT);
 	}
 	
 	public String getLabel() {
-		return EclipseLinkUiMappingsMessages.BasicCollectionMappingUiProvider_label;
+		return EclipseLinkUiMappingsMessages.BasicMapMappingUiProvider_label;
 	}
 	
 	public String getLinkLabel() {
-		return EclipseLinkUiMappingsMessages.BasicCollectionMappingUiProvider_linkLabel;
+		return EclipseLinkUiMappingsMessages.BasicMapMappingUiProvider_linkLabel;
 	}
 	
 	public String getMappingKey() {
-		return EclipseLinkMappingKeys.BASIC_COLLECTION_ATTRIBUTE_MAPPING_KEY;
+		return EclipseLinkMappingKeys.BASIC_MAP_ATTRIBUTE_MAPPING_KEY;
+	}
+	
+	public JpaComposite buildAttributeMappingComposite(
+			JpaUiFactory factory,
+			PropertyValueModel<BasicMapMapping> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
+		return new BasicMapMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 }

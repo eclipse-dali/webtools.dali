@@ -11,22 +11,32 @@ package org.eclipse.jpt.ui.internal;
 
 import java.util.ArrayList;
 import java.util.ListIterator;
-import org.eclipse.jpt.core.context.BasicMapping;
-import org.eclipse.jpt.core.context.EmbeddedIdMapping;
-import org.eclipse.jpt.core.context.EmbeddedMapping;
-import org.eclipse.jpt.core.context.IdMapping;
-import org.eclipse.jpt.core.context.ManyToManyMapping;
-import org.eclipse.jpt.core.context.ManyToOneMapping;
-import org.eclipse.jpt.core.context.OneToManyMapping;
-import org.eclipse.jpt.core.context.OneToOneMapping;
-import org.eclipse.jpt.core.context.TransientMapping;
-import org.eclipse.jpt.core.context.VersionMapping;
+import org.eclipse.jpt.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.core.context.java.JavaEmbeddable;
+import org.eclipse.jpt.core.context.java.JavaEmbeddedIdMapping;
+import org.eclipse.jpt.core.context.java.JavaEmbeddedMapping;
 import org.eclipse.jpt.core.context.java.JavaEntity;
+import org.eclipse.jpt.core.context.java.JavaIdMapping;
+import org.eclipse.jpt.core.context.java.JavaManyToManyMapping;
+import org.eclipse.jpt.core.context.java.JavaManyToOneMapping;
 import org.eclipse.jpt.core.context.java.JavaMappedSuperclass;
+import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
+import org.eclipse.jpt.core.context.java.JavaOneToOneMapping;
+import org.eclipse.jpt.core.context.java.JavaTransientMapping;
+import org.eclipse.jpt.core.context.java.JavaVersionMapping;
+import org.eclipse.jpt.core.context.orm.OrmBasicMapping;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddable;
+import org.eclipse.jpt.core.context.orm.OrmEmbeddedIdMapping;
+import org.eclipse.jpt.core.context.orm.OrmEmbeddedMapping;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
+import org.eclipse.jpt.core.context.orm.OrmIdMapping;
+import org.eclipse.jpt.core.context.orm.OrmManyToManyMapping;
+import org.eclipse.jpt.core.context.orm.OrmManyToOneMapping;
 import org.eclipse.jpt.core.context.orm.OrmMappedSuperclass;
+import org.eclipse.jpt.core.context.orm.OrmOneToManyMapping;
+import org.eclipse.jpt.core.context.orm.OrmOneToOneMapping;
+import org.eclipse.jpt.core.context.orm.OrmTransientMapping;
+import org.eclipse.jpt.core.context.orm.OrmVersionMapping;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.ui.JpaUiFactory;
 import org.eclipse.jpt.ui.WidgetFactory;
@@ -46,8 +56,8 @@ import org.eclipse.jpt.ui.internal.mappings.details.OneToOneMappingComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.TransientMappingComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.VersionMappingComposite;
 import org.eclipse.jpt.ui.internal.orm.details.OrmEntityComposite;
-import org.eclipse.jpt.ui.internal.persistence.details.PersistenceUnitConnectionComposite;
 import org.eclipse.jpt.ui.internal.persistence.details.GenericPersistenceUnitGeneralComposite;
+import org.eclipse.jpt.ui.internal.persistence.details.PersistenceUnitConnectionComposite;
 import org.eclipse.jpt.ui.internal.persistence.details.PersistenceUnitPropertiesComposite;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -63,134 +73,8 @@ import org.eclipse.swt.widgets.Composite;
  */
 public abstract class BaseJpaUiFactory implements JpaUiFactory
 {
-	public JpaComposite createJavaBasicMappingComposite(
-		PropertyValueModel<BasicMapping> subjectHolder,
-		Composite parent,
-		WidgetFactory widgetFactory) {
-
-		return new BasicMappingComposite(subjectHolder, parent, widgetFactory);
-	}
+	// **************** persistence unit composites ****************************
 	
-	public JpaComposite createOrmBasicMappingComposite(
-		PropertyValueModel<BasicMapping> subjectHolder,
-		Composite parent,
-		WidgetFactory widgetFactory) {
-
-		return new BasicMappingComposite(subjectHolder, parent, widgetFactory);
-	}
-
-	public JpaComposite createJavaEmbeddableComposite(
-		PropertyValueModel<JavaEmbeddable> subjectHolder,
-		Composite parent,
-		WidgetFactory widgetFactory) {
-
-		return new EmbeddableComposite(subjectHolder, parent, widgetFactory);
-	}
-	
-	public JpaComposite createOrmEmbeddableComposite(
-		PropertyValueModel<OrmEmbeddable> subjectHolder,
-		Composite parent,
-		WidgetFactory widgetFactory) {
-
-		return new EmbeddableComposite(subjectHolder, parent, widgetFactory);
-	}
-
-	public JpaComposite createEmbeddedIdMappingComposite(
-		PropertyValueModel<EmbeddedIdMapping> subjectHolder,
-		Composite parent,
-		WidgetFactory widgetFactory) {
-
-		return new EmbeddedIdMappingComposite(subjectHolder, parent, widgetFactory);
-	}
-
-	public JpaComposite createEmbeddedMappingComposite(
-		PropertyValueModel<EmbeddedMapping> subjectHolder,
-		Composite parent,
-		WidgetFactory widgetFactory) {
-
-		return new EmbeddedMappingComposite(subjectHolder, parent, widgetFactory);
-	}
-
-	public JpaComposite createJavaEntityComposite(
-		PropertyValueModel<JavaEntity> subjectHolder,
-		Composite parent,
-		WidgetFactory widgetFactory) {
-
-		return new JavaEntityComposite(subjectHolder, parent, widgetFactory);
-	}
-
-	public JpaComposite createOrmEntityComposite(
-		PropertyValueModel<OrmEntity> subjectHolder,
-		Composite parent,
-		WidgetFactory widgetFactory) {
-
-		return new OrmEntityComposite(subjectHolder, parent, widgetFactory);
-	}
-
-	public JpaComposite createJavaIdMappingComposite(
-		PropertyValueModel<IdMapping> subjectHolder,
-		Composite parent,
-		WidgetFactory widgetFactory) {
-
-		return new IdMappingComposite(subjectHolder, parent, widgetFactory);
-	}
-
-	public JpaComposite createOrmIdMappingComposite(
-		PropertyValueModel<IdMapping> subjectHolder,
-		Composite parent,
-		WidgetFactory widgetFactory) {
-
-		return new IdMappingComposite(subjectHolder, parent, widgetFactory);
-	}
-
-	public JpaComposite createManyToManyMappingComposite(
-		PropertyValueModel<ManyToManyMapping> subjectHolder,
-		Composite parent,
-		WidgetFactory widgetFactory) {
-
-		return new ManyToManyMappingComposite(subjectHolder, parent, widgetFactory);
-	}
-
-	public JpaComposite createManyToOneMappingComposite(
-		PropertyValueModel<ManyToOneMapping> subjectHolder,
-		Composite parent,
-		WidgetFactory widgetFactory) {
-
-		return new ManyToOneMappingComposite(subjectHolder, parent, widgetFactory);
-	}
-
-	public JpaComposite createJavaMappedSuperclassComposite(
-		PropertyValueModel<JavaMappedSuperclass> subjectHolder,
-		Composite parent,
-		WidgetFactory widgetFactory) {
-
-		return new MappedSuperclassComposite(subjectHolder, parent, widgetFactory);
-	}
-	
-	public JpaComposite createOrmMappedSuperclassComposite(
-		PropertyValueModel<OrmMappedSuperclass> subjectHolder,
-		Composite parent,
-		WidgetFactory widgetFactory) {
-
-		return new MappedSuperclassComposite(subjectHolder, parent, widgetFactory);
-	}
-
-	public JpaComposite createOneToManyMappingComposite(
-		PropertyValueModel<OneToManyMapping> subjectHolder,
-		Composite parent,
-		WidgetFactory widgetFactory) {
-
-		return new OneToManyMappingComposite(subjectHolder, parent, widgetFactory);
-	}
-
-	public JpaComposite createOneToOneMappingComposite(
-		PropertyValueModel<OneToOneMapping> subjectHolder,
-		Composite parent,
-		WidgetFactory widgetFactory) {
-
-		return new OneToOneMappingComposite(subjectHolder, parent, widgetFactory);
-	}
-
 	public ListIterator<JpaPageComposite> createPersistenceUnitComposites(
 		PropertyValueModel<PersistenceUnit> subjectHolder,
 		Composite parent,
@@ -205,28 +89,198 @@ public abstract class BaseJpaUiFactory implements JpaUiFactory
 
 		return pages.listIterator();
 	}
-
-	public JpaComposite createTransientMappingComposite(
-		PropertyValueModel<TransientMapping> subjectHolder,
-		Composite parent,
-		WidgetFactory widgetFactory) {
-
-		return new TransientMappingComposite(subjectHolder, parent, widgetFactory);
+	
+	
+	// **************** java type mapping composites ***************************
+	
+	public JpaComposite createJavaMappedSuperclassComposite(
+			PropertyValueModel<JavaMappedSuperclass> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
+		return new MappedSuperclassComposite(subjectHolder, parent, widgetFactory);
 	}
-
+	
+	public JpaComposite createJavaEntityComposite(
+			PropertyValueModel<JavaEntity> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
+		return new JavaEntityComposite(subjectHolder, parent, widgetFactory);
+	}
+	
+	public JpaComposite createJavaEmbeddableComposite(
+			PropertyValueModel<JavaEmbeddable> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
+		return new EmbeddableComposite(subjectHolder, parent, widgetFactory);
+	}
+	
+	
+	// **************** orm type mapping composites ****************************
+	
+	public JpaComposite createOrmMappedSuperclassComposite(
+			PropertyValueModel<OrmMappedSuperclass> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
+		return new MappedSuperclassComposite(subjectHolder, parent, widgetFactory);
+	}
+	
+	public JpaComposite createOrmEntityComposite(
+			PropertyValueModel<OrmEntity> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
+		return new OrmEntityComposite(subjectHolder, parent, widgetFactory);
+	}
+	
+	public JpaComposite createOrmEmbeddableComposite(
+			PropertyValueModel<OrmEmbeddable> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
+		return new EmbeddableComposite(subjectHolder, parent, widgetFactory);
+	}
+	
+	
+	// **************** java attribute mapping composites **********************
+	
+	public JpaComposite createJavaIdMappingComposite(
+			PropertyValueModel<JavaIdMapping> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
+		return new IdMappingComposite(subjectHolder, parent, widgetFactory);
+	}
+	
+	public JpaComposite createJavaEmbeddedIdMappingComposite(
+			PropertyValueModel<JavaEmbeddedIdMapping> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
+		return new EmbeddedIdMappingComposite(subjectHolder, parent, widgetFactory);
+	}
+	
+	public JpaComposite createJavaBasicMappingComposite(
+			PropertyValueModel<JavaBasicMapping> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
+		return new BasicMappingComposite(subjectHolder, parent, widgetFactory);
+	}
+	
 	public JpaComposite createJavaVersionMappingComposite(
-		PropertyValueModel<VersionMapping> subjectHolder,
-		Composite parent,
-		WidgetFactory widgetFactory) {
-
+			PropertyValueModel<JavaVersionMapping> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
 		return new VersionMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 	
-	public JpaComposite createOrmVersionMappingComposite(
-		PropertyValueModel<VersionMapping> subjectHolder,
-		Composite parent,
-		WidgetFactory widgetFactory) {
+	public JpaComposite createJavaManyToOneMappingComposite(
+			PropertyValueModel<JavaManyToOneMapping> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
+		return new ManyToOneMappingComposite(subjectHolder, parent, widgetFactory);
+	}
+	
+	public JpaComposite createJavaOneToManyMappingComposite(
+			PropertyValueModel<JavaOneToManyMapping> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
+		return new OneToManyMappingComposite(subjectHolder, parent, widgetFactory);
+	}
+	
+	public JpaComposite createJavaOneToOneMappingComposite(
+			PropertyValueModel<JavaOneToOneMapping> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
+		return new OneToOneMappingComposite(subjectHolder, parent, widgetFactory);
+	}
+	
+	public JpaComposite createJavaManyToManyMappingComposite(
+			PropertyValueModel<JavaManyToManyMapping> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
+		return new ManyToManyMappingComposite(subjectHolder, parent, widgetFactory);
+	}
 
+	public JpaComposite createJavaEmbeddedMappingComposite(
+			PropertyValueModel<JavaEmbeddedMapping> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
+		return new EmbeddedMappingComposite(subjectHolder, parent, widgetFactory);
+	}
+	
+	public JpaComposite createJavaTransientMappingComposite(
+			PropertyValueModel<JavaTransientMapping> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
+		return new TransientMappingComposite(subjectHolder, parent, widgetFactory);
+	}
+	
+	
+	// **************** orm attribute mapping composites ***********************
+	
+	public JpaComposite createOrmIdMappingComposite(
+			PropertyValueModel<OrmIdMapping> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
+		return new IdMappingComposite(subjectHolder, parent, widgetFactory);
+	}
+	
+	public JpaComposite createOrmEmbeddedIdMappingComposite(
+			PropertyValueModel<OrmEmbeddedIdMapping> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
+		return new EmbeddedIdMappingComposite(subjectHolder, parent, widgetFactory);
+	}
+	
+	public JpaComposite createOrmBasicMappingComposite(
+			PropertyValueModel<OrmBasicMapping> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
+		return new BasicMappingComposite(subjectHolder, parent, widgetFactory);
+	}
+	
+	public JpaComposite createOrmVersionMappingComposite(
+			PropertyValueModel<OrmVersionMapping> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
 		return new VersionMappingComposite(subjectHolder, parent, widgetFactory);
+	}
+	
+	public JpaComposite createOrmManyToOneMappingComposite(
+			PropertyValueModel<OrmManyToOneMapping> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
+		return new ManyToOneMappingComposite(subjectHolder, parent, widgetFactory);
+	}
+	
+	public JpaComposite createOrmOneToManyMappingComposite(
+			PropertyValueModel<OrmOneToManyMapping> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
+		return new OneToManyMappingComposite(subjectHolder, parent, widgetFactory);
+	}
+	
+	public JpaComposite createOrmOneToOneMappingComposite(
+			PropertyValueModel<OrmOneToOneMapping> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
+		return new OneToOneMappingComposite(subjectHolder, parent, widgetFactory);
+	}
+	
+	public JpaComposite createOrmManyToManyMappingComposite(
+			PropertyValueModel<OrmManyToManyMapping> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
+		return new ManyToManyMappingComposite(subjectHolder, parent, widgetFactory);
+	}
+	
+	public JpaComposite createOrmEmbeddedMappingComposite(
+			PropertyValueModel<OrmEmbeddedMapping> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
+		return new EmbeddedMappingComposite(subjectHolder, parent, widgetFactory);
+	}
+	
+	public JpaComposite createOrmTransientMappingComposite(
+			PropertyValueModel<OrmTransientMapping> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
+		return new TransientMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 }

@@ -9,22 +9,21 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.java.details;
 
-import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.ui.JpaUiFactory;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.details.TypeMappingUiProvider;
-import org.eclipse.jpt.ui.internal.JpaMappingImageHelper;
-import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.details.AbstractEntityUiProvider;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
-public class JavaEntityUiProvider implements TypeMappingUiProvider<JavaEntity>
+public class JavaEntityUiProvider
+	extends AbstractEntityUiProvider<JavaEntity>
 {
 	// singleton
-	private static final JavaEntityUiProvider INSTANCE = new JavaEntityUiProvider();
+	private static final JavaEntityUiProvider INSTANCE = 
+		new JavaEntityUiProvider();
 
 	/**
 	 * Return the singleton.
@@ -32,36 +31,21 @@ public class JavaEntityUiProvider implements TypeMappingUiProvider<JavaEntity>
 	public static TypeMappingUiProvider<JavaEntity> instance() {
 		return INSTANCE;
 	}
-
+	
+	
 	/**
 	 * Ensure single instance.
 	 */
 	private JavaEntityUiProvider() {
 		super();
 	}
-
-	public String getMappingKey() {
-		return MappingKeys.ENTITY_TYPE_MAPPING_KEY;
-	}
-
-	public String getLabel() {
-		return JptUiMappingsMessages.EntityUiProvider_label;
-	}
-
-	public String getLinkLabel() {
-		return JptUiMappingsMessages.EntityUiProvider_linkLabel;
-	}
 	
-	public Image getImage() {
-		return JpaMappingImageHelper.imageForTypeMapping(getMappingKey());
-	}
-
+	
 	public JpaComposite buildPersistentTypeMappingComposite(
-		JpaUiFactory factory,
-		PropertyValueModel<JavaEntity> subjectHolder,
-		Composite parent,
-		WidgetFactory widgetFactory) {
-
+			JpaUiFactory factory,
+			PropertyValueModel<JavaEntity> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
 		return factory.createJavaEntityComposite(subjectHolder, parent, widgetFactory);
 	}
 }

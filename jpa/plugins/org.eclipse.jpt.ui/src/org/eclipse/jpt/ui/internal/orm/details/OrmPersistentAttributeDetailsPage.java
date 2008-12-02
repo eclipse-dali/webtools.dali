@@ -82,7 +82,7 @@ public class OrmPersistentAttributeDetailsPage extends PersistentAttributeDetail
 		//bug 192035 - no default mapping option in xml
 		return CollectionTools.array(attributeMappingUiProviders(), new AttributeMappingUiProvider[CollectionTools.size(attributeMappingUiProviders())]);
 	}
-
+	
 	private PropertyValueModel<Boolean> buildPaneEnablerHolder() {
 		return new TransformationPropertyValueModel<OrmPersistentAttribute, Boolean>(getSubjectHolder()) {
 			@Override
@@ -117,11 +117,7 @@ public class OrmPersistentAttributeDetailsPage extends PersistentAttributeDetail
 		ArrayList<Pane<?>> panes = new ArrayList<Pane<?>>(2);
 
 		// Map As composite
-		OrmPersistentAttributeMapAsComposite mapAsPane = new OrmPersistentAttributeMapAsComposite(
-			this,
-			addSubPane(container, 0, 0, 5, 0)
-		);
-
+		Pane mapAsPane = buildMapAsPane(addSubPane(container, 0, 0, 5, 0));
 		panes.add(mapAsPane);
 
 		// Entity type widgets
@@ -143,7 +139,11 @@ public class OrmPersistentAttributeDetailsPage extends PersistentAttributeDetail
 
 		installPaneEnabler(panes);
 	}
-
+	
+	protected Pane buildMapAsPane(Composite parent) {
+		return new OrmPersistentAttributeMapAsComposite(this, parent);		
+	}
+	
 	private void installPaneEnabler(ArrayList<Pane<?>> panes) {
 		new PaneEnabler(buildPaneEnablerHolder(), panes);
 	}

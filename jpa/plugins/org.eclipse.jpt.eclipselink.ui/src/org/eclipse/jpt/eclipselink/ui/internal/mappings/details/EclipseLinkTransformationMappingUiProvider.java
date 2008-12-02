@@ -11,7 +11,6 @@ package org.eclipse.jpt.eclipselink.ui.internal.mappings.details;
 
 import org.eclipse.jpt.eclipselink.core.EclipseLinkMappingKeys;
 import org.eclipse.jpt.eclipselink.core.context.TransformationMapping;
-import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkJpaUiFactory;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.ui.JpaUiFactory;
 import org.eclipse.jpt.ui.JptUiPlugin;
@@ -23,18 +22,12 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
-public class TransformationMappingUiProvider
+public class EclipseLinkTransformationMappingUiProvider
 	implements AttributeMappingUiProvider<TransformationMapping>
 {
 	// singleton
-	private static final TransformationMappingUiProvider INSTANCE = new TransformationMappingUiProvider();
-	
-	/**
-	 * Ensure single instance.
-	 */
-	private TransformationMappingUiProvider() {
-		super();
-	}
+	private static final EclipseLinkTransformationMappingUiProvider INSTANCE = 
+		new EclipseLinkTransformationMappingUiProvider();
 	
 	/**
 	 * Return the singleton.
@@ -43,14 +36,14 @@ public class TransformationMappingUiProvider
 		return INSTANCE;
 	}
 	
-	public JpaComposite buildAttributeMappingComposite(
-		JpaUiFactory factory,
-		PropertyValueModel<TransformationMapping> subjectHolder,
-		Composite parent,
-		WidgetFactory widgetFactory) {
-		
-		return ((EclipseLinkJpaUiFactory) factory).createTransformationMappingComposite(subjectHolder, parent, widgetFactory);
+	
+	/**
+	 * Ensure single instance.
+	 */
+	private EclipseLinkTransformationMappingUiProvider() {
+		super();
 	}
+	
 	
 	public Image getImage() {
 		return JptUiPlugin.getImage(JptUiIcons.JPA_CONTENT);
@@ -66,5 +59,14 @@ public class TransformationMappingUiProvider
 	
 	public String getMappingKey() {
 		return EclipseLinkMappingKeys.TRANSFORMATION_ATTRIBUTE_MAPPING_KEY;
+	}
+	
+	public JpaComposite buildAttributeMappingComposite(
+		JpaUiFactory factory,
+		PropertyValueModel<TransformationMapping> subjectHolder,
+		Composite parent,
+		WidgetFactory widgetFactory) {
+		
+		return new TransformationMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 }

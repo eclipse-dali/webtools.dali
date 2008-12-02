@@ -54,8 +54,6 @@ import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.EclipseLinkJpaFile;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaEntity;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaMappedSuperclass;
-import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaBasicCollectionMapping;
-import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaBasicMapMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaBasicMappingImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaEmbeddableImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaEntityImpl;
@@ -65,11 +63,11 @@ import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaMan
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaMappedSuperclassImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaOneToManyMappingImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaOneToOneMappingImpl;
-import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaTransformationMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaVersionMappingImpl;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaBasicCollectionMapping;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaBasicMapMapping;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaTransformationMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkEntityMappingsImpl;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmBasicCollectionMapping;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmBasicMapMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmBasicMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmEmbeddableImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmEntityImpl;
@@ -80,19 +78,21 @@ import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmMappe
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmOneToManyMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmOneToOneMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmPersistentType;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmTransformationMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmVersionMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmXml;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkVirtualXmlBasic;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.VirtualXmlBasicCollection;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.VirtualXmlBasicMap;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkVirtualXmlId;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkVirtualXmlManyToMany;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkVirtualXmlManyToOne;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkVirtualXmlOneToMany;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkVirtualXmlOneToOne;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.VirtualXmlTransformation;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkVirtualXmlVersion;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmBasicCollectionMapping;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmBasicMapMapping;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmTransformationMapping;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.VirtualXmlBasicCollection;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.VirtualXmlBasicMap;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.VirtualXmlTransformation;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmResource;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicCollection;
@@ -201,7 +201,10 @@ public class EclipseLinkJpaFactory
 
 	@Override
 	public OrmPersistentType buildOrmPersistentType(OrmPersistentTypeContext parent, String mappingKey) {
-		return new EclipseLinkOrmPersistentType(parent, mappingKey);
+		if (parent.getEResource().getType() == EclipseLinkJpaFile.ECLIPSELINK_ORM_RESOURCE_TYPE) {
+			return new EclipseLinkOrmPersistentType(parent, mappingKey);
+		}
+		return super.buildOrmPersistentType(parent, mappingKey);
 	}
 	
 	@Override

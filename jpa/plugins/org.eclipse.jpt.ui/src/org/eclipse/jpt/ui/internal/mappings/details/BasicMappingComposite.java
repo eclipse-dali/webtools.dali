@@ -17,6 +17,7 @@ import org.eclipse.jpt.core.context.EnumeratedConverter;
 import org.eclipse.jpt.core.context.TemporalConverter;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
+import org.eclipse.jpt.ui.internal.BaseJpaUiFactory;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
@@ -86,7 +87,7 @@ public class BasicMappingComposite extends FormPane<BasicMapping>
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public BasicMappingComposite(PropertyValueModel<BasicMapping> subjectHolder,
+	public BasicMappingComposite(PropertyValueModel<? extends BasicMapping> subjectHolder,
 	                             Composite parent,
 	                             WidgetFactory widgetFactory) {
 

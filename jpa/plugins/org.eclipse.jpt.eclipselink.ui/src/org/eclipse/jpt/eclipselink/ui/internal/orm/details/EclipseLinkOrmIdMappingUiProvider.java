@@ -9,60 +9,43 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.orm.details;
 
-import org.eclipse.jpt.core.MappingKeys;
-import org.eclipse.jpt.core.context.IdMapping;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmIdMapping;
 import org.eclipse.jpt.ui.JpaUiFactory;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
 import org.eclipse.jpt.ui.details.JpaComposite;
-import org.eclipse.jpt.ui.internal.JpaMappingImageHelper;
-import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.details.AbstractIdMappingUiProvider;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
 public class EclipseLinkOrmIdMappingUiProvider
-	implements AttributeMappingUiProvider<IdMapping>
+	extends AbstractIdMappingUiProvider<EclipseLinkOrmIdMapping>
 {
 	// singleton
-	private static final EclipseLinkOrmIdMappingUiProvider INSTANCE = new EclipseLinkOrmIdMappingUiProvider();
-
+	private static final EclipseLinkOrmIdMappingUiProvider INSTANCE = 
+		new EclipseLinkOrmIdMappingUiProvider();
+	
 	/**
 	 * Return the singleton.
 	 */
-	public static AttributeMappingUiProvider<IdMapping> instance() {
+	public static AttributeMappingUiProvider<EclipseLinkOrmIdMapping> instance() {
 		return INSTANCE;
 	}
-
+	
+	
 	/**
 	 * Ensure single instance.
 	 */
 	private EclipseLinkOrmIdMappingUiProvider() {
 		super();
 	}
-
-	public String getMappingKey() {
-		return MappingKeys.ID_ATTRIBUTE_MAPPING_KEY;
-	}
-
-	public String getLabel() {
-		return JptUiMappingsMessages.IdMappingUiProvider_label;
-	}
-
-	public String getLinkLabel() {
-		return JptUiMappingsMessages.IdMappingUiProvider_linkLabel;
-	}
-
-	public Image getImage() {
-		return JpaMappingImageHelper.imageForAttributeMapping(getMappingKey());
-	}
-
+	
+	
 	public JpaComposite buildAttributeMappingComposite(
-		JpaUiFactory factory,
-		PropertyValueModel<IdMapping> subjectHolder,
-		Composite parent,
-		WidgetFactory widgetFactory) {
-
-		return factory.createOrmIdMappingComposite(subjectHolder, parent, widgetFactory);
+			JpaUiFactory factory,
+			PropertyValueModel<EclipseLinkOrmIdMapping> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
+		return new EclipseLinkOrmIdMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 }

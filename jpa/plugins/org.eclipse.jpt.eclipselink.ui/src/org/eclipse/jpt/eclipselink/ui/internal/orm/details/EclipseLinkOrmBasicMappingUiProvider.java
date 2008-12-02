@@ -9,23 +9,29 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.orm.details;
 
-import org.eclipse.jpt.core.MappingKeys;
-import org.eclipse.jpt.core.context.BasicMapping;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmBasicMapping;
 import org.eclipse.jpt.ui.JpaUiFactory;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
 import org.eclipse.jpt.ui.details.JpaComposite;
-import org.eclipse.jpt.ui.internal.JpaMappingImageHelper;
-import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.details.AbstractBasicMappingUiProvider;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
 public class EclipseLinkOrmBasicMappingUiProvider
-	implements AttributeMappingUiProvider<BasicMapping>
+	extends AbstractBasicMappingUiProvider<EclipseLinkOrmBasicMapping>
 {
 	// singleton
-	private static final EclipseLinkOrmBasicMappingUiProvider INSTANCE = new EclipseLinkOrmBasicMappingUiProvider();
+	private static final EclipseLinkOrmBasicMappingUiProvider INSTANCE = 
+		new EclipseLinkOrmBasicMappingUiProvider();
+	
+	/**
+	 * Return the singleton.
+	 */
+	public static AttributeMappingUiProvider<EclipseLinkOrmBasicMapping> instance() {
+		return INSTANCE;
+	}
+	
 	
 	/**
 	 * Ensure single instance.
@@ -34,35 +40,13 @@ public class EclipseLinkOrmBasicMappingUiProvider
 		super();
 	}
 	
-	/**
-	 * Return the singleton.
-	 */
-	public static AttributeMappingUiProvider<BasicMapping> instance() {
-		return INSTANCE;
-	}
 	
 	public JpaComposite buildAttributeMappingComposite(
-		JpaUiFactory factory,
-		PropertyValueModel<BasicMapping> subjectHolder,
-		Composite parent,
-		WidgetFactory widgetFactory) {
+			JpaUiFactory factory,
+			PropertyValueModel<EclipseLinkOrmBasicMapping> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
 		
-		return factory.createOrmBasicMappingComposite(subjectHolder, parent, widgetFactory);
-	}
-	
-	public Image getImage() {
-		return JpaMappingImageHelper.imageForAttributeMapping(getMappingKey());
-	}
-	
-	public String getLabel() {
-		return JptUiMappingsMessages.BasicMappingUiProvider_label;
-	}
-	
-	public String getLinkLabel() {
-		return JptUiMappingsMessages.BasicMappingUiProvider_linkLabel;
-	}
-	
-	public String getMappingKey() {
-		return MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY;
+		return new EclipseLinkOrmBasicMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 }

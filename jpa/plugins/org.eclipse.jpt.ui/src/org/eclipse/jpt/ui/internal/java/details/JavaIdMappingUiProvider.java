@@ -7,62 +7,45 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.ui.internal.details;
+package org.eclipse.jpt.ui.internal.java.details;
 
-import org.eclipse.jpt.core.MappingKeys;
-import org.eclipse.jpt.core.context.IdMapping;
+import org.eclipse.jpt.core.context.java.JavaIdMapping;
 import org.eclipse.jpt.ui.JpaUiFactory;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
 import org.eclipse.jpt.ui.details.JpaComposite;
-import org.eclipse.jpt.ui.internal.JpaMappingImageHelper;
-import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.details.AbstractIdMappingUiProvider;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
-public class IdMappingUiProvider
-	implements AttributeMappingUiProvider<IdMapping>
+public class JavaIdMappingUiProvider
+	extends AbstractIdMappingUiProvider<JavaIdMapping>
 {
 	// singleton
-	private static final IdMappingUiProvider INSTANCE = new IdMappingUiProvider();
-
+	private static final JavaIdMappingUiProvider INSTANCE = 
+		new JavaIdMappingUiProvider();
+	
 	/**
 	 * Return the singleton.
 	 */
-	public static AttributeMappingUiProvider<IdMapping> instance() {
+	public static AttributeMappingUiProvider<JavaIdMapping> instance() {
 		return INSTANCE;
 	}
-
+	
+	
 	/**
 	 * Ensure single instance.
 	 */
-	private IdMappingUiProvider() {
+	private JavaIdMappingUiProvider() {
 		super();
 	}
-
-	public String getMappingKey() {
-		return MappingKeys.ID_ATTRIBUTE_MAPPING_KEY;
-	}
-
-	public String getLabel() {
-		return JptUiMappingsMessages.IdMappingUiProvider_label;
-	}
-
-	public String getLinkLabel() {
-		return JptUiMappingsMessages.IdMappingUiProvider_linkLabel;
-	}
-
-	public Image getImage() {
-		return JpaMappingImageHelper.imageForAttributeMapping(getMappingKey());
-	}
-
+	
+	
 	public JpaComposite buildAttributeMappingComposite(
-		JpaUiFactory factory,
-		PropertyValueModel<IdMapping> subjectHolder,
-		Composite parent,
-		WidgetFactory widgetFactory) {
-
+			JpaUiFactory factory,
+			PropertyValueModel<JavaIdMapping> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
 		return factory.createJavaIdMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 }

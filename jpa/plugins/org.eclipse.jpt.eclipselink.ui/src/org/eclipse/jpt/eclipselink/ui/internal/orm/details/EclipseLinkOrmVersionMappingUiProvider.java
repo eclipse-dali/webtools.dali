@@ -9,61 +9,43 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.orm.details;
 
-import org.eclipse.jpt.core.MappingKeys;
-import org.eclipse.jpt.core.context.VersionMapping;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmVersionMapping;
 import org.eclipse.jpt.ui.JpaUiFactory;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
 import org.eclipse.jpt.ui.details.JpaComposite;
-import org.eclipse.jpt.ui.internal.JpaMappingImageHelper;
-import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.details.AbstractVersionMappingUiProvider;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
 public class EclipseLinkOrmVersionMappingUiProvider
-	implements AttributeMappingUiProvider<VersionMapping>
+	extends AbstractVersionMappingUiProvider<EclipseLinkOrmVersionMapping>
 {
-
 	// singleton
-	private static final EclipseLinkOrmVersionMappingUiProvider INSTANCE = new EclipseLinkOrmVersionMappingUiProvider();
-
+	private static final EclipseLinkOrmVersionMappingUiProvider INSTANCE = 
+		new EclipseLinkOrmVersionMappingUiProvider();
+	
 	/**
 	 * Return the singleton.
 	 */
-	public static AttributeMappingUiProvider<VersionMapping> instance() {
+	public static AttributeMappingUiProvider<EclipseLinkOrmVersionMapping> instance() {
 		return INSTANCE;
 	}
-
+	
+	
 	/**
 	 * Ensure single instance.
 	 */
 	private EclipseLinkOrmVersionMappingUiProvider() {
 		super();
 	}
-
-	public String getMappingKey() {
-		return MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY;
-	}
-
-	public String getLabel() {
-		return JptUiMappingsMessages.VersionMappingUiProvider_label;
-	}
-
-	public String getLinkLabel() {
-		return JptUiMappingsMessages.VersionMappingUiProvider_linkLabel;
-	}
-
-	public Image getImage() {
-		return JpaMappingImageHelper.imageForAttributeMapping(getMappingKey());
-	}
-
+	
+	
 	public JpaComposite buildAttributeMappingComposite(
-		JpaUiFactory factory,
-		PropertyValueModel<VersionMapping> subjectHolder,
-		Composite parent,
-		WidgetFactory widgetFactory) {
-
-		return factory.createOrmVersionMappingComposite(subjectHolder, parent, widgetFactory);
+			JpaUiFactory factory,
+			PropertyValueModel<EclipseLinkOrmVersionMapping> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
+		return new EclipseLinkOrmVersionMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 }

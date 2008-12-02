@@ -9,59 +9,42 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.java.details;
 
-import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.java.JavaEmbeddable;
 import org.eclipse.jpt.ui.JpaUiFactory;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.details.TypeMappingUiProvider;
-import org.eclipse.jpt.ui.internal.JpaMappingImageHelper;
-import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.details.AbstractEmbeddableUiProvider;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
-public class JavaEmbeddableUiProvider implements TypeMappingUiProvider<JavaEmbeddable>
+public class JavaEmbeddableUiProvider 
+	extends AbstractEmbeddableUiProvider<JavaEmbeddable>
 {
 	// singleton
 	private static final JavaEmbeddableUiProvider INSTANCE = new JavaEmbeddableUiProvider();
-
+	
 	/**
 	 * Return the singleton.
 	 */
 	public static TypeMappingUiProvider<JavaEmbeddable> instance() {
 		return INSTANCE;
 	}
-
+	
+	
 	/**
 	 * Ensure single instance.
 	 */
 	private JavaEmbeddableUiProvider() {
 		super();
 	}
-
-	public String getMappingKey() {
-		return MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY;
-	}
-
-	public String getLabel() {
-		return JptUiMappingsMessages.EmbeddableUiProvider_label;
-	}
-
-	public String getLinkLabel() {
-		return JptUiMappingsMessages.EmbeddableUiProvider_linkLabel;
-	}
 	
-	public Image getImage() {
-		return JpaMappingImageHelper.imageForTypeMapping(getMappingKey());
-	}
-
+	
 	public JpaComposite buildPersistentTypeMappingComposite(
-		JpaUiFactory factory,
-		PropertyValueModel<JavaEmbeddable> subjectHolder,
-		Composite parent,
-		WidgetFactory widgetFactory) {
-
+			JpaUiFactory factory,
+			PropertyValueModel<JavaEmbeddable> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
 		return factory.createJavaEmbeddableComposite(subjectHolder, parent, widgetFactory);
 	}
 }

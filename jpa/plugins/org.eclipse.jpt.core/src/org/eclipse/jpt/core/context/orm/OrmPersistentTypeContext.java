@@ -11,8 +11,10 @@
 package org.eclipse.jpt.core.context.orm;
 
 import org.eclipse.jpt.core.context.PersistentTypeContext;
+import org.eclipse.jpt.core.context.XmlContextNode;
 
-public interface OrmPersistentTypeContext extends PersistentTypeContext
+public interface OrmPersistentTypeContext 
+	extends PersistentTypeContext, XmlContextNode
 {
 	/**
 	 * Return the default package to be used for persistent types in this context

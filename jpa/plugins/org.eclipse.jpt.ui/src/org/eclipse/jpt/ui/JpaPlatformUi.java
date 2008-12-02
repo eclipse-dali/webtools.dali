@@ -12,9 +12,12 @@ package org.eclipse.jpt.ui;
 import java.util.Iterator;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.core.JpaFile;
+import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.AttributeMapping;
+import org.eclipse.jpt.core.context.PersistentAttribute;
+import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
 import org.eclipse.jpt.ui.details.DefaultAttributeMappingUiProvider;
@@ -66,12 +69,22 @@ public interface JpaPlatformUi
 	void generateEntities(JpaProject project, IStructuredSelection selection);
 
 	JpaUiFactory getJpaUiFactory();
-
-	Iterator<AttributeMappingUiProvider<? extends AttributeMapping>> javaAttributeMappingUiProviders();
-
+	
+	/**
+	 * Return an iterator of mapping ui providers appropriate for the given persistent type
+	 */
+	Iterator<TypeMappingUiProvider<? extends TypeMapping>> typeMappingUiProviders(PersistentType type);
+	
 	Iterator<TypeMappingUiProvider<? extends TypeMapping>> javaTypeMappingUiProviders();
-
-	Iterator<AttributeMappingUiProvider<? extends AttributeMapping>> ormAttributeMappingUiProviders();
-
+	
 	Iterator<TypeMappingUiProvider<? extends TypeMapping>> ormTypeMappingUiProviders();
+	
+	/**
+	 * Return an iterator of mapping ui providers appropriate for the given persistent attribute
+	 */
+	Iterator<AttributeMappingUiProvider<? extends AttributeMapping>> attributeMappingUiProviders(PersistentAttribute attribute);
+	
+	Iterator<AttributeMappingUiProvider<? extends AttributeMapping>> javaAttributeMappingUiProviders();
+	
+	Iterator<AttributeMappingUiProvider<? extends AttributeMapping>> ormAttributeMappingUiProviders();
 }

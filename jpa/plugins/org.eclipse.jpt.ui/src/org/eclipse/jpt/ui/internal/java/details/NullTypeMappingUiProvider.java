@@ -23,33 +23,36 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
 @SuppressWarnings("nls")
-public class NullTypeMappingUiProvider implements TypeMappingUiProvider<TypeMapping>
+public class NullTypeMappingUiProvider 
+	implements TypeMappingUiProvider<TypeMapping>
 {
 	// singleton
 	private static final NullTypeMappingUiProvider INSTANCE = new NullTypeMappingUiProvider();
-
+	
 	/**
 	 * Return the singleton.
 	 */
 	public static TypeMappingUiProvider<TypeMapping> instance() {
 		return INSTANCE;
 	}
-
+	
+	
 	/**
 	 * Ensure single instance.
 	 */
 	private NullTypeMappingUiProvider() {
 		super();
 	}
-
+	
+	
 	public String getMappingKey() {
 		return null;
 	}
-
+	
 	public String getLabel() {
 		return JptUiMappingsMessages.NullTypeMappingUiProvider_label;
 	}
-
+	
 	public String getLinkLabel() {
 		return null;
 	}
@@ -59,29 +62,28 @@ public class NullTypeMappingUiProvider implements TypeMappingUiProvider<TypeMapp
 			MappingKeys.NULL_TYPE_MAPPING_KEY
 		);
 	}
-
+	
 	public JpaComposite buildPersistentTypeMappingComposite(
-		JpaUiFactory jpaUiFactory,
-		PropertyValueModel<TypeMapping> subjectHolder,
-		Composite parent,
-		WidgetFactory widgetFactory) {
-
+			JpaUiFactory jpaUiFactory,
+			PropertyValueModel<TypeMapping> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
 		return new NullComposite(subjectHolder, parent, widgetFactory);
 	}
-
-
-	public static class NullComposite extends FormPane<TypeMapping>
-	                                  implements JpaComposite
+	
+	
+	public static class NullComposite 
+		extends FormPane<TypeMapping>
+		implements JpaComposite 
 	{
-		NullComposite(PropertyValueModel<TypeMapping> subjectHolder,
-		              Composite parent,
-		              WidgetFactory widgetFactory) {
-
+		NullComposite(
+				PropertyValueModel<TypeMapping> subjectHolder,
+				Composite parent,
+			    WidgetFactory widgetFactory) {
 			super(subjectHolder, parent, widgetFactory);
 		}
 
 		@Override
-		protected void initializeLayout(Composite container) {
-		}
+		protected void initializeLayout(Composite container) {}
 	}
 }

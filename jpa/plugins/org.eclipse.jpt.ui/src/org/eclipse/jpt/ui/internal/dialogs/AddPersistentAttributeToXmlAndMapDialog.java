@@ -77,9 +77,9 @@ public class AddPersistentAttributeToXmlAndMapDialog extends StatusDialog
 				public void dispose() {}
 
 				public Object[] getElements(Object inputElement) {
-					return CollectionTools.array(((JpaPlatformUi) inputElement).ormAttributeMappingUiProviders());
+					return CollectionTools.array(((JpaPlatformUi) inputElement).attributeMappingUiProviders(unmappedPersistentAttribute));
 				}
-
+				
 				public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {}
 			});
 		mappingCombo.setLabelProvider(

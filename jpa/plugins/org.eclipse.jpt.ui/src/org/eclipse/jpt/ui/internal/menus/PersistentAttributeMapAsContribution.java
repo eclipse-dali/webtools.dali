@@ -11,12 +11,10 @@ package org.eclipse.jpt.ui.internal.menus;
 
 import java.util.Iterator;
 import org.eclipse.jpt.core.JpaStructureNode;
-import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.ui.JpaPlatformUi;
 import org.eclipse.jpt.ui.details.MappingUiProvider;
 import org.eclipse.jpt.ui.internal.commands.PersistentAttributeMapAsHandler;
-import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
 /**
  * This menu contribution is responsible to populate the Map As menu with the
@@ -56,14 +54,6 @@ public class PersistentAttributeMapAsContribution extends MapAsContribution
 	@Override
 	protected Iterator<? extends MappingUiProvider<?>> 
 			mappingUiProviders(JpaPlatformUi jpaPlatformUi, JpaStructureNode node) {
-		if (node instanceof JavaPersistentAttribute) {
-			return jpaPlatformUi.javaAttributeMappingUiProviders();
-		}
-		else if (node instanceof OrmPersistentAttribute) {
-			return jpaPlatformUi.ormAttributeMappingUiProviders();
-		}
-		else {
-			return EmptyIterator.instance();
-		}
+		return jpaPlatformUi.attributeMappingUiProviders((PersistentAttribute) node);
 	}
 }

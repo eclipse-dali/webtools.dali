@@ -9,59 +9,43 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.orm.details;
 
-import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.orm.OrmMappedSuperclass;
 import org.eclipse.jpt.ui.JpaUiFactory;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.details.TypeMappingUiProvider;
-import org.eclipse.jpt.ui.internal.JpaMappingImageHelper;
-import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.details.AbstractMappedSuperclassUiProvider;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
-public class OrmMappedSuperclassUiProvider implements TypeMappingUiProvider<OrmMappedSuperclass>
+public class OrmMappedSuperclassUiProvider 
+	extends AbstractMappedSuperclassUiProvider<OrmMappedSuperclass>
 {
 	// singleton
-	private static final OrmMappedSuperclassUiProvider INSTANCE = new OrmMappedSuperclassUiProvider();
-
+	private static final OrmMappedSuperclassUiProvider INSTANCE = 
+			new OrmMappedSuperclassUiProvider();
+	
 	/**
 	 * Return the singleton.
 	 */
 	public static TypeMappingUiProvider<OrmMappedSuperclass> instance() {
 		return INSTANCE;
 	}
-
+	
+	
 	/**
 	 * Ensure single instance.
 	 */
 	private OrmMappedSuperclassUiProvider() {
 		super();
 	}
-
-	public String getMappingKey() {
-		return MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY;
-	}
-
-	public String getLabel() {
-		return JptUiMappingsMessages.MappedSuperclassUiProvider_label;
-	}
-
-	public String getLinkLabel() {
-		return JptUiMappingsMessages.MappedSuperclassUiProvider_linkLabel;
-	}
-
-	public Image getImage() {
-		return JpaMappingImageHelper.imageForTypeMapping(getMappingKey());
-	}
-
+	
+	
 	public JpaComposite buildPersistentTypeMappingComposite(
-		JpaUiFactory factory,
-		PropertyValueModel<OrmMappedSuperclass> subjectHolder,
-		Composite parent,
-		WidgetFactory widgetFactory) {
-
+			JpaUiFactory factory,
+			PropertyValueModel<OrmMappedSuperclass> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
 		return factory.createOrmMappedSuperclassComposite(subjectHolder, parent, widgetFactory);
 	}
 }

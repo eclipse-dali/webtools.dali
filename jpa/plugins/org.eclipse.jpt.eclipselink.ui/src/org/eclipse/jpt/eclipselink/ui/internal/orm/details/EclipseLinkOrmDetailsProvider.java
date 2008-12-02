@@ -16,8 +16,6 @@ import org.eclipse.jpt.eclipselink.core.EclipseLinkJpaFile;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaDetailsPage;
 import org.eclipse.jpt.ui.details.JpaDetailsProvider;
-import org.eclipse.jpt.ui.internal.orm.details.OrmPersistentAttributeDetailsPage;
-import org.eclipse.jpt.ui.internal.orm.details.OrmPersistentTypeDetailsPage;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -28,10 +26,10 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.1
  * @since 2.1
  */
-public class OrmDetailsProvider
+public class EclipseLinkOrmDetailsProvider
 	implements JpaDetailsProvider
 {
-	public OrmDetailsProvider() {
+	public EclipseLinkOrmDetailsProvider() {
 		super();
 	}
 
@@ -49,11 +47,11 @@ public class OrmDetailsProvider
 		}
 
 		if (structureNode.getId() == OrmStructureNodes.PERSISTENT_TYPE_ID) {
-			return new OrmPersistentTypeDetailsPage(parent, widgetFactory);
+			return new EclipseLinkOrmPersistentTypeDetailsPage(parent, widgetFactory);
 		}
 
 		if (structureNode.getId() == OrmStructureNodes.PERSISTENT_ATTRIBUTE_ID) {
-			return new OrmPersistentAttributeDetailsPage(parent, widgetFactory);
+			return new EclipseLinkOrmPersistentAttributeDetailsPage(parent, widgetFactory);
 		}
 
 		return null;
