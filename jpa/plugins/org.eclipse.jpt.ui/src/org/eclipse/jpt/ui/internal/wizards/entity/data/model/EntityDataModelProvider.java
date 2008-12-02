@@ -19,6 +19,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.JavaConventions;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jpt.core.internal.resource.orm.OrmResourceModelProvider;
+import org.eclipse.jpt.core.resource.orm.OrmResource;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.wizards.entity.EntityWizardMsg;
 import org.eclipse.jpt.ui.internal.wizards.entity.data.operation.NewEntityClassOperation;
@@ -26,7 +27,6 @@ import org.eclipse.jst.j2ee.internal.common.J2EECommonMessages;
 import org.eclipse.jst.j2ee.internal.common.operations.NewJavaClassDataModelProvider;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModelOperation;
-import org.eclipse.wst.common.frameworks.datamodel.IDataModelProvider;
 import org.eclipse.wst.common.frameworks.internal.plugin.WTPCommonPlugin;
 
 public class EntityDataModelProvider extends NewJavaClassDataModelProvider implements IEntityDataModelProperties{
@@ -179,12 +179,12 @@ public class EntityDataModelProvider extends NewJavaClassDataModelProvider imple
 			IProject project = ProjectUtilities.getProject(projectName);
 			if (project != null) {
 				OrmResourceModelProvider modelProvider = OrmResourceModelProvider.getModelProvider(project, xmlName);
-				try {
-					modelProvider.getResource();
-				} catch (Exception e) {
+				OrmResource ormResource = modelProvider.getResource();
+				if (!ormResource.exists()) {
 					return new Status(
 						IStatus.ERROR, JptUiPlugin.PLUGIN_ID,
-						EntityWizardMsg.INVALID_XML_NAME);
+							EntityWizardMsg.INVALID_XML_NAME);
+						
 				}
 			}
 		}
