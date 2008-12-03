@@ -406,7 +406,7 @@ public class GenericOrmPersistentType
 	}
 	
 	public String getShortName(){
-		return getName().substring(getName().lastIndexOf('.') + 1);
+		return getName() == null ? null : getName().substring(getName().lastIndexOf('.') + 1);
 	}
 
 	public void classChanged(String oldClass, String newClass) {
