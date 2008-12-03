@@ -20,10 +20,11 @@ import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.db.TableCombo;
 import org.eclipse.jpt.ui.internal.mappings.details.JoinColumnsComposite.IJoinColumnsEditor;
-import org.eclipse.jpt.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.ui.internal.widgets.PostExecution;
-import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
+import org.eclipse.jpt.utility.internal.model.value.ListPropertyValueModelAdapter;
+import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -105,6 +106,97 @@ public class JoinTableComposite extends FormPane<JoinTable>
 	                          WidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
+	}
+
+	@Override
+	protected void initialize() {
+		super.initialize();
+
+		this.joinColumnsPaneEnablerHolder        = buildJoinColumnsPaneEnablerHolder();
+		this.inverseJoinColumnsPaneEnablerHolder = buildInverseJoinColumnsPaneEnablerHolder();
+	}
+	
+	private WritablePropertyValueModel<Boolean> buildInverseJoinColumnsPaneEnablerHolder() {
+		return new OverrideDefaultInverseJoinColumnHolder();
+	}
+
+	private WritablePropertyValueModel<Boolean> buildJoinColumnsPaneEnablerHolder() {
+		return new OverrideDefaultJoinColumnHolder();
+	}
+	@Override
+	protected void initializeLayout(Composite container) {
+
+		int groupBoxMargin = getGroupBoxMargin();
+
+		// Name widgets
+		TableCombo<JoinTable> tableCombo = addTableCombo(container);
+
+		addLabeledComposite(
+			addPane(container, groupBoxMargin),
+			JptUiMappingsMessages.JoinTableComposite_name,
+			tableCombo.getControl(),
+			JpaHelpContextIds.MAPPING_JOIN_TABLE_NAME
+		);
+
+		// Join Columns group pane
+		Group joinColumnGroupPane = addTitledGroup(
+			container,
+			JptUiMappingsMessages.JoinTableComposite_joinColumn
+		);
+
+		// Override Default Join Columns check box
+		this.overrideDefaultJoinColumnsCheckBox = addCheckBox(
+			addSubPane(joinColumnGroupPane, 8),
+			JptUiMappingsMessages.JoinTableComposite_overrideDefaultJoinColumns,
+			buildOverrideDefaultJoinColumnHolder(),
+			null
+		);
+
+		this.overrideDefaultJoinColumnsCheckBox.addSelectionListener(
+			buildOverrideDefaultSelectionListener()
+		);
+
+		JoinColumnsComposite<JoinTable> joinColumnsComposite = new JoinColumnsComposite<JoinTable>(
+			this,
+			joinColumnGroupPane,
+			buildJoinColumnsEditor()
+		);
+
+		installJoinColumnsPaneEnabler(joinColumnsComposite);
+
+		// Inverse Join Columns group pane
+		Group inverseJoinColumnGroupPane = addTitledGroup(
+			container,
+			JptUiMappingsMessages.JoinTableComposite_inverseJoinColumn
+		);
+
+		// Override Default Inverse Join Columns check box
+		this.overrideDefaultInverseJoinColumnsCheckBox = addCheckBox(
+			addSubPane(inverseJoinColumnGroupPane, 8),
+			JptUiMappingsMessages.JoinTableComposite_overrideDefaultInverseJoinColumns,
+			buildOverrideDefaultInverseJoinColumnHolder(),
+			null
+		);
+
+		this.overrideDefaultInverseJoinColumnsCheckBox.addSelectionListener(
+			buildOverrideDefaultInverseSelectionListener()
+		);
+
+		JoinColumnsComposite<JoinTable> inverseJoinColumnsComposite = new JoinColumnsComposite<JoinTable>(
+			this,
+			inverseJoinColumnGroupPane,
+			buildInverseJoinColumnsEditor()
+		);
+
+		installInverseJoinColumnsPaneEnabler(inverseJoinColumnsComposite);
+	}
+
+	private void installInverseJoinColumnsPaneEnabler(JoinColumnsComposite<JoinTable> pane) {
+		pane.installJoinColumnsPaneEnabler(this.inverseJoinColumnsPaneEnablerHolder);
+	}
+
+	private void installJoinColumnsPaneEnabler(JoinColumnsComposite<JoinTable> pane) {
+		pane.installJoinColumnsPaneEnabler(this.joinColumnsPaneEnablerHolder);
 	}
 
 	private void addInverseJoinColumn(JoinTable joinTable) {
@@ -189,12 +281,40 @@ public class JoinTableComposite extends FormPane<JoinTable>
 		return new JoinColumnsProvider();
 	}
 
-	private SimplePropertyValueModel<Boolean> buildJoinColumnsPaneEnablerHolder() {
-		return new SimplePropertyValueModel<Boolean>(null);
+	private WritablePropertyValueModel<Boolean> buildOverrideDefaultJoinColumnHolder() {
+		return new OverrideDefaultJoinColumnHolder();
 	}
 
-	private WritablePropertyValueModel<Boolean> buildOverrideDefaultHolder() {
-		return new SimplePropertyValueModel<Boolean>();
+	private WritablePropertyValueModel<Boolean> buildOverrideDefaultInverseJoinColumnHolder() {
+		return new OverrideDefaultInverseJoinColumnHolder();
+	}
+		
+	private ListValueModel<JoinColumn> buildSpecifiedJoinColumnsListHolder() {
+		return new ListAspectAdapter<JoinTable, JoinColumn>(getSubjectHolder(), JoinTable.SPECIFIED_JOIN_COLUMNS_LIST) {
+			@Override
+			protected ListIterator<JoinColumn> listIterator_() {
+				return subject.specifiedJoinColumns();
+			}
+
+			@Override
+			protected int size_() {
+				return subject.specifiedJoinColumnsSize();
+			}
+		};
+	}
+	
+	private ListValueModel<JoinColumn> buildSpecifiedInverseJoinColumnsListHolder() {
+		return new ListAspectAdapter<JoinTable, JoinColumn>(getSubjectHolder(), JoinTable.SPECIFIED_INVERSE_JOIN_COLUMNS_LIST) {
+			@Override
+			protected ListIterator<JoinColumn> listIterator_() {
+				return subject.specifiedInverseJoinColumns();
+			}
+
+			@Override
+			protected int size_() {
+				return subject.specifiedInverseJoinColumnsSize();
+			}
+		};
 	}
 
 	private SelectionListener buildOverrideDefaultInverseSelectionListener() {
@@ -268,9 +388,6 @@ public class JoinTableComposite extends FormPane<JoinTable>
 		};
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected void doPopulate() {
 		super.doPopulate();
@@ -307,89 +424,6 @@ public class JoinTableComposite extends FormPane<JoinTable>
 		updateJoinColumnPanesEnablement(enabled);
 	}
 
-	@Override
-	protected void initialize() {
-		super.initialize();
-
-		this.joinColumnsPaneEnablerHolder        = buildJoinColumnsPaneEnablerHolder();
-		this.inverseJoinColumnsPaneEnablerHolder = buildJoinColumnsPaneEnablerHolder();
-	}
-
-	@Override
-	protected void initializeLayout(Composite container) {
-
-		int groupBoxMargin = getGroupBoxMargin();
-
-		// Name widgets
-		TableCombo<JoinTable> tableCombo = addTableCombo(container);
-
-		addLabeledComposite(
-			addPane(container, groupBoxMargin),
-			JptUiMappingsMessages.JoinTableComposite_name,
-			tableCombo.getControl(),
-			JpaHelpContextIds.MAPPING_JOIN_TABLE_NAME
-		);
-
-		// Join Columns group pane
-		Group joinColumnGroupPane = addTitledGroup(
-			container,
-			JptUiMappingsMessages.JoinTableComposite_joinColumn
-		);
-
-		// Override Default Join Columns check box
-		this.overrideDefaultJoinColumnsCheckBox = addCheckBox(
-			addSubPane(joinColumnGroupPane, 8),
-			JptUiMappingsMessages.JoinTableComposite_overrideDefaultJoinColumns,
-			buildOverrideDefaultHolder(),
-			null
-		);
-
-		this.overrideDefaultJoinColumnsCheckBox.addSelectionListener(
-			buildOverrideDefaultSelectionListener()
-		);
-
-		JoinColumnsComposite<JoinTable> joinColumnsComposite = new JoinColumnsComposite<JoinTable>(
-			this,
-			joinColumnGroupPane,
-			buildJoinColumnsEditor()
-		);
-
-		installJoinColumnsPaneEnabler(joinColumnsComposite);
-
-		// Inverse Join Columns group pane
-		Group inverseJoinColumnGroupPane = addTitledGroup(
-			container,
-			JptUiMappingsMessages.JoinTableComposite_inverseJoinColumn
-		);
-
-		// Override Default Inverse Join Columns check box
-		this.overrideDefaultInverseJoinColumnsCheckBox = addCheckBox(
-			addSubPane(inverseJoinColumnGroupPane, 8),
-			JptUiMappingsMessages.JoinTableComposite_overrideDefaultInverseJoinColumns,
-			buildOverrideDefaultHolder(),
-			null
-		);
-
-		this.overrideDefaultInverseJoinColumnsCheckBox.addSelectionListener(
-			buildOverrideDefaultInverseSelectionListener()
-		);
-
-		JoinColumnsComposite<JoinTable> inverseJoinColumnsComposite = new JoinColumnsComposite<JoinTable>(
-			this,
-			inverseJoinColumnGroupPane,
-			buildInverseJoinColumnsEditor()
-		);
-
-		installInverseJoinColumnsPaneEnabler(inverseJoinColumnsComposite);
-	}
-
-	private void installInverseJoinColumnsPaneEnabler(JoinColumnsComposite<JoinTable> pane) {
-		new PaneEnabler(this.inverseJoinColumnsPaneEnablerHolder, pane);
-	}
-
-	private void installJoinColumnsPaneEnabler(JoinColumnsComposite<JoinTable> pane) {
-		new PaneEnabler(this.joinColumnsPaneEnablerHolder, pane);
-	}
 
 	private void updateInverseJoinColumns() {
 
@@ -436,11 +470,11 @@ public class JoinTableComposite extends FormPane<JoinTable>
 		boolean enabled        = globalEnablement && (subject != null) && subject.containsSpecifiedJoinColumns();
 		boolean inverseEnabled = globalEnablement && (subject != null) && subject.containsSpecifiedInverseJoinColumns();
 
-		this.overrideDefaultJoinColumnsCheckBox       .setSelection(enabled);
+		this.overrideDefaultJoinColumnsCheckBox.setSelection(enabled);
 		this.overrideDefaultInverseJoinColumnsCheckBox.setSelection(inverseEnabled);
 
-		this.joinColumnsPaneEnablerHolder       .setValue(enabled);
-		this.inverseJoinColumnsPaneEnablerHolder.setValue(inverseEnabled);
+		this.joinColumnsPaneEnablerHolder.setValue(Boolean.valueOf(enabled));
+		this.inverseJoinColumnsPaneEnablerHolder.setValue(Boolean.valueOf(inverseEnabled));
 	}
 
 	private void updateJoinColumns() {
@@ -475,7 +509,7 @@ public class JoinTableComposite extends FormPane<JoinTable>
 				}
 			}
 
-			this.joinColumnsPaneEnablerHolder.setValue(selected);
+			this.joinColumnsPaneEnablerHolder.setValue(Boolean.valueOf(selected));
 		}
 		finally {
 			setPopulating(false);
@@ -563,4 +597,42 @@ public class JoinTableComposite extends FormPane<JoinTable>
 			return JoinTable.SPECIFIED_JOIN_COLUMNS_LIST;
 		}
 	}
+	
+	
+	private class OverrideDefaultJoinColumnHolder extends ListPropertyValueModelAdapter<Boolean>
+	    implements WritablePropertyValueModel<Boolean> {
+	
+		public OverrideDefaultJoinColumnHolder() {
+			super(buildSpecifiedJoinColumnsListHolder());
+		}
+	
+		@Override
+		protected Boolean buildValue() {
+			return listHolder.size() > 0;
+		}
+	
+		public void setValue(Boolean value) {
+			updateJoinColumns();
+		}
+	}
+
+	
+	private class OverrideDefaultInverseJoinColumnHolder extends ListPropertyValueModelAdapter<Boolean>
+	    implements WritablePropertyValueModel<Boolean> {
+	
+		public OverrideDefaultInverseJoinColumnHolder() {
+			super(buildSpecifiedInverseJoinColumnsListHolder());
+		}
+	
+		@Override
+		protected Boolean buildValue() {
+			return listHolder.size() > 0;
+		}
+	
+		public void setValue(Boolean value) {
+			updateInverseJoinColumns();
+		}
+	}
+
+
 }

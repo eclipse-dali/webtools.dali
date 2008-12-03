@@ -190,8 +190,8 @@ public class JoinColumnComposite extends FormPane<SingleRelationshipMapping>
 		}
 	}
 
-	private SimplePropertyValueModel<Boolean> buildJoinColumnPaneEnablerHolder() {
-		return new SimplePropertyValueModel<Boolean>(null);
+	private WritablePropertyValueModel<Boolean> buildJoinColumnPaneEnablerHolder() {
+		return new OverrideDefaultJoinColumnHolder();
 	}
 
 	private Adapter buildJoinColumnsAdapter() {

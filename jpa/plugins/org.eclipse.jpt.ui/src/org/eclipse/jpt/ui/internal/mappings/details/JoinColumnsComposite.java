@@ -20,6 +20,7 @@ import org.eclipse.jpt.core.context.NamedColumn;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.ui.internal.widgets.AddRemovePane.AbstractAdapter;
@@ -60,6 +61,8 @@ public class JoinColumnsComposite<T extends JpaNode> extends FormPane<T>
 	 * The editor used to perform the common behaviors defined in the list pane.
 	 */
 	private IJoinColumnsEditor<T> joinColumnsEditor;
+
+	private AddRemoveListPane<T> listPane;
 
 	/**
 	 * Creates a new <code>JoinColumnsComposite</code>.
@@ -257,17 +260,22 @@ public class JoinColumnsComposite<T extends JpaNode> extends FormPane<T>
 	private void initializeLayout2() {
 
 		// Join Columns list pane
-		AddRemoveListPane<T> listPane = new AddRemoveListPane<T>(
+		this.listPane = new AddRemoveListPane<T>(
 			this,
 			getControl(),
 			buildJoinColumnsAdapter(),
 			buildJoinColumnsListModel(),
 			buildSelectedJoinColumnHolder(),
 			buildJoinColumnsListLabelProvider(),
-			JpaHelpContextIds.MAPPING_JOIN_TABLE_COLUMNS
+			JpaHelpContextIds.MAPPING_JOIN_TABLE_COLUMNS,
+			false
 		);
 	}
-
+	
+	protected void installJoinColumnsPaneEnabler(WritablePropertyValueModel<Boolean> joinColumnsPaneEnablerHolder) {
+		new PaneEnabler(joinColumnsPaneEnablerHolder, this.listPane);
+	}
+	
 	/**
 	 * The editor is used to complete the behavior of this pane.
 	 */
