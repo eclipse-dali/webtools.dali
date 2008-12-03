@@ -121,15 +121,31 @@ public class GenericPersistenceXml
 		}
 	}
 
-	public void update(PersistenceResource pr) {
-		this.persistenceResource = pr;
-		if (pr.getPersistence() != null) {
+	public void update(PersistenceResource persistenceResource) {
+		XmlPersistence oldXmlPersistence = 
+			(this.persistence == null) ? null : this.persistence.getXmlPersistence();
+		XmlPersistence newXmlPersistence = persistenceResource.getPersistence();
+		
+		this.persistenceResource = persistenceResource;
+		
+		// if the old and new xml persistences are different instances,
+		// we scrap the old and rebuild.  this can happen when the resource
+		// model drastically changes, such as a cvs checkout or an edit reversion
+		if (oldXmlPersistence != newXmlPersistence) {
+			if (this.persistence != null) {
+				this.getJpaFile(this.persistenceResource.getFile()).removeRootStructureNode(this.persistenceResource);
+				this.persistence.dispose();
+				this.setPersistence_(null);
+			}
+		}
+		
+		if (newXmlPersistence != null) {
 			if (this.persistence != null) {
 				this.getJpaFile(this.persistenceResource.getFile()).addRootStructureNode(this.persistenceResource, this.persistence);
-				this.persistence.update(pr.getPersistence());
+				this.persistence.update(newXmlPersistence);
 			}
 			else {
-				setPersistence_(buildPersistence(pr.getPersistence()));
+				setPersistence_(buildPersistence(newXmlPersistence));
 			}
 		}
 		else {

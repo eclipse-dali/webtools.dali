@@ -153,18 +153,37 @@ public class OrmXmlImpl
 	}
 
 	public void update(JpaXmlResource resource) {
+		OrmResource ormResource;
 		try {
-			this.ormResource = (OrmResource) resource;
-		} catch (ClassCastException cce) {
+			ormResource = (OrmResource) resource;
+		} 
+		catch (ClassCastException cce) {
 			throw new IllegalArgumentException(resource.toString());
 		}
-		XmlEntityMappings xmlEntityMappings = this.ormResource.getEntityMappings();
-		if (xmlEntityMappings != null) {
+		
+		XmlEntityMappings oldXmlEntityMappings = 
+			(this.entityMappings == null) ? null : this.entityMappings.getXmlEntityMappings();
+		XmlEntityMappings newXmlEntityMappings = ormResource.getEntityMappings();
+		
+		this.ormResource = ormResource;
+		
+		// if the old and new xml entity mappings are different instances,
+		// we scrap the old and rebuild.  this can happen when the resource
+		// model drastically changes, such as a cvs checkout or an edit reversion
+		if (oldXmlEntityMappings != newXmlEntityMappings) {
+			if (this.entityMappings != null) {
+				this.getJpaFile(this.ormResource.getFile()).removeRootStructureNode(this.ormResource);
+				this.entityMappings.dispose();
+				this.setEntityMappings(null);
+			}
+		}
+		
+		if (newXmlEntityMappings != null) {
 			if (this.entityMappings != null) {
 				this.getJpaFile(this.ormResource.getFile()).addRootStructureNode(this.ormResource, this.entityMappings);
 				this.entityMappings.update();
 			} else {
-				this.setEntityMappings(this.buildEntityMappings(xmlEntityMappings));
+				this.setEntityMappings(this.buildEntityMappings(newXmlEntityMappings));
 			}
 		} else {
 			if (this.entityMappings != null) {

@@ -149,6 +149,13 @@ public class GenericEntityMappings
 		return getPersistenceUnitMetadata().isXmlMappingMetadataComplete();
 	}
 	
+	
+	// **************** EntityMappings impl ************************************
+	
+	public XmlEntityMappings getXmlEntityMappings() {
+		return this.xmlEntityMappings;
+	}
+	
 	public void changeMapping(OrmPersistentType ormPersistentType, OrmTypeMapping oldMapping, OrmTypeMapping newMapping) {
 		ormPersistentType.dispose();
 		int sourceIndex = this.persistentTypes.indexOf(ormPersistentType);

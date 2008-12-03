@@ -13,6 +13,7 @@ import java.util.ListIterator;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.MappingFileRoot;
 import org.eclipse.jpt.core.context.QueryHolder;
+import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.db.Catalog;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.SchemaContainer;
@@ -27,6 +28,7 @@ import org.eclipse.jpt.db.SchemaContainer;
 public interface EntityMappings 
 	extends MappingFileRoot, OrmPersistentTypeContext, QueryHolder
 {
+	XmlEntityMappings getXmlEntityMappings();
 	
 	String getVersion();
 		
@@ -126,6 +128,7 @@ public interface EntityMappings
 	
 	void changeMapping(OrmPersistentType ormPersistentType, OrmTypeMapping oldMapping, OrmTypeMapping newMapping);
 	
+	
 	// **************** updating ***********************************************
 		
 	/**
@@ -134,8 +137,8 @@ public interface EntityMappings
 	 */
 	void update();
 	
+	
 	// *************************************************************************
 	
 	boolean containsOffset(int textOffset);
-
 }

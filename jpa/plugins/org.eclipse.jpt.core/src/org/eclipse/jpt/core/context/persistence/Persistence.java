@@ -10,13 +10,12 @@
 package org.eclipse.jpt.core.context.persistence;
 
 import java.util.ListIterator;
+import org.eclipse.jpt.core.JpaNode;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistence;
 
 /**
- * 
- * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -25,7 +24,15 @@ import org.eclipse.jpt.core.resource.persistence.XmlPersistence;
  */
 public interface Persistence extends XmlContextNode, JpaStructureNode
 {
+	/**
+	 * Return the resource model object associated with this context model object
+	 */
+	XmlPersistence getXmlPersistence();
 	
+	
+	/**
+	 * @see {@link JpaNode#getParent()}
+	 */
 	PersistenceXml getParent();
 	
 	// **************** persistence units **************************************
