@@ -15,8 +15,11 @@ import org.eclipse.jpt.ui.JpaUiFactory;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.DefaultAttributeMappingUiProvider;
 import org.eclipse.jpt.ui.details.JpaComposite;
+import org.eclipse.jpt.ui.internal.JpaMappingImageHelper;
 import org.eclipse.jpt.ui.internal.details.AbstractEmbeddedMappingUiProvider;
+import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
 public class DefaultEmbeddedMappingUiProvider
@@ -50,6 +53,21 @@ public class DefaultEmbeddedMappingUiProvider
 	
 	public String getDefaultMappingKey() {
 		return MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY;
+	}
+	
+	@Override
+	public String getLabel() {
+		return JptUiMappingsMessages.DefaultEmbeddedMappingUiProvider_label;
+	}
+
+	@Override
+	public String getLinkLabel() {
+		return JptUiMappingsMessages.DefaultEmbeddedMappingUiProvider_linkLabel;
+	}
+
+	@Override
+	public Image getImage() {
+		return JpaMappingImageHelper.imageForAttributeMapping(getDefaultMappingKey());
 	}
 	
 	public JpaComposite buildAttributeMappingComposite(
