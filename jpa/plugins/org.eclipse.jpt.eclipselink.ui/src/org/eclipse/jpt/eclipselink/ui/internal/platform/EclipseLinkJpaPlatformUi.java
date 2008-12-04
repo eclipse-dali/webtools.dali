@@ -44,6 +44,17 @@ import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
 import org.eclipse.jpt.ui.details.DefaultAttributeMappingUiProvider;
 import org.eclipse.jpt.ui.details.JpaDetailsProvider;
 import org.eclipse.jpt.ui.details.TypeMappingUiProvider;
+import org.eclipse.jpt.ui.internal.java.details.JavaBasicMappingUiProvider;
+import org.eclipse.jpt.ui.internal.java.details.JavaEmbeddedIdMappingUiProvider;
+import org.eclipse.jpt.ui.internal.java.details.JavaEmbeddedMappingUiProvider;
+import org.eclipse.jpt.ui.internal.java.details.JavaIdMappingUiProvider;
+import org.eclipse.jpt.ui.internal.java.details.JavaManyToManyMappingUiProvider;
+import org.eclipse.jpt.ui.internal.java.details.JavaManyToOneMappingUiProvider;
+import org.eclipse.jpt.ui.internal.java.details.JavaOneToManyMappingUiProvider;
+import org.eclipse.jpt.ui.internal.java.details.JavaOneToOneMappingUiProvider;
+import org.eclipse.jpt.ui.internal.java.details.JavaTransientMappingUiProvider;
+import org.eclipse.jpt.ui.internal.java.details.JavaVersionMappingUiProvider;
+import org.eclipse.jpt.ui.internal.java.details.NullAttributeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.orm.details.OrmEmbeddedIdMappingUiProvider;
 import org.eclipse.jpt.ui.internal.orm.details.OrmEmbeddedMappingUiProvider;
 import org.eclipse.jpt.ui.internal.orm.details.OrmManyToManyMappingUiProvider;
@@ -121,10 +132,20 @@ public class EclipseLinkJpaPlatformUi extends BaseJpaPlatformUi
 	@Override
 	protected void addJavaAttributeMappingUiProvidersTo(
 							List<AttributeMappingUiProvider<? extends AttributeMapping>> providers) {
-		super.addJavaAttributeMappingUiProvidersTo(providers);
+		providers.add(JavaIdMappingUiProvider.instance());
+		providers.add(JavaEmbeddedIdMappingUiProvider.instance());
+		providers.add(JavaBasicMappingUiProvider.instance());
 		providers.add(EclipseLinkBasicCollectionMappingUiProvider.instance());
 		providers.add(EclipseLinkBasicMapMappingUiProvider.instance());
+		providers.add(JavaVersionMappingUiProvider.instance());
+		providers.add(JavaManyToOneMappingUiProvider.instance());
+		providers.add(JavaOneToManyMappingUiProvider.instance());
+		providers.add(JavaOneToOneMappingUiProvider.instance());
+		providers.add(JavaManyToManyMappingUiProvider.instance());
+		providers.add(JavaEmbeddedMappingUiProvider.instance());
 		providers.add(EclipseLinkTransformationMappingUiProvider.instance());
+		providers.add(JavaTransientMappingUiProvider.instance());
+		providers.add(NullAttributeMappingUiProvider.instance());
 	}
 
 	@Override

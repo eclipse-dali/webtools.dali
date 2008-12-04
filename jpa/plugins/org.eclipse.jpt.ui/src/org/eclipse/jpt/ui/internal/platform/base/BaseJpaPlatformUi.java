@@ -229,9 +229,9 @@ public abstract class BaseJpaPlatformUi implements JpaPlatformUi
 		providers.add(JavaVersionMappingUiProvider.instance());
 		providers.add(JavaManyToOneMappingUiProvider.instance());
 		providers.add(JavaOneToManyMappingUiProvider.instance());
-		providers.add(JavaEmbeddedMappingUiProvider.instance());
 		providers.add(JavaOneToOneMappingUiProvider.instance());
 		providers.add(JavaManyToManyMappingUiProvider.instance());
+		providers.add(JavaEmbeddedMappingUiProvider.instance());
 		providers.add(JavaTransientMappingUiProvider.instance());
 		providers.add(NullAttributeMappingUiProvider.instance());
 	}
