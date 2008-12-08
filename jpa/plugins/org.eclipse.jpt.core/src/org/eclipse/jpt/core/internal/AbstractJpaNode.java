@@ -78,6 +78,9 @@ public abstract class AbstractJpaNode
 	
 	@SuppressWarnings("unchecked")
 	public Object getAdapter(Class adapter) {
+		if (adapter == IResource.class) {
+			return getResource();
+		}
 		return Platform.getAdapterManager().getAdapter(this, adapter);
 	}
 

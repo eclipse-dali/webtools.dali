@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.utility;
 
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+
 /**
  * A text range defines the offset into, length of, and line of a piece
  * of text.
@@ -74,20 +76,20 @@ public interface TextRange {
 		private Empty() {
 			super();
 		}
+		public int getLineNumber() {
+			return IMessage.LINENO_UNSET;
+		}
 		public int getOffset() {
-			return 0;
+			return IMessage.OFFSET_UNSET;
 		}
 		public int getLength() {
-			return 0;
+			return IMessage.OFFSET_UNSET;
 		}
 		public boolean includes(int index) {
 			return false;
 		}
 		public boolean touches(int index) {
 			return index == 0;  // ???
-		}
-		public int getLineNumber() {
-			return 0;
 		}
 		@Override
 		public boolean equals(Object o) {

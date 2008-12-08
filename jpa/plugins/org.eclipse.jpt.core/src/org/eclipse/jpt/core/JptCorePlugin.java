@@ -93,7 +93,7 @@ public class JptCorePlugin extends Plugin {
 	 * The identifier for the JPA validation marker
 	 * (value <code>"org.eclipse.jpt.core.jpaProblemMarker"</code>).
 	 */
-	public static final String VALIDATION_MARKER_ID = PLUGIN_ID + ".jpaProblemMarker";  //$NON-NLS-1$
+	public static final String VALIDATOR_ID = PLUGIN_ID + ".jpaValidator";  //$NON-NLS-1$
 
 	/**
 	 * Value of the content-type for orm.xml mappings files. Use this value to retrieve 

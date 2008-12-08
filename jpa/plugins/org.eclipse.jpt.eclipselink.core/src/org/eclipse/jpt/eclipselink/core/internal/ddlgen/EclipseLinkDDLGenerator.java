@@ -16,12 +16,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -36,8 +38,7 @@ import org.eclipse.jdt.launching.IVMInstall;
 import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.core.internal.validation.JpaHelper;
-import org.eclipse.jpt.core.internal.validation.JpaValidator;
+import org.eclipse.jpt.core.internal.JptCoreMessages;
 import org.eclipse.jpt.db.ConnectionProfile;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.connection.Connection;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.customization.Customization;
@@ -46,7 +47,7 @@ import org.eclipse.jpt.eclipselink.core.internal.context.persistence.logging.Log
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.schema.generation.DdlGenerationType;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.schema.generation.OutputMode;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.schema.generation.SchemaGeneration;
-import org.eclipse.wst.validation.internal.operations.ValidatorJob;
+import org.eclipse.wst.validation.ValidationFramework;
 
 /**
  *  EclipseLinkDLLGenerator launches the EclipseLink DDL generator in a separate VM.
@@ -188,15 +189,10 @@ public class EclipseLinkDDLGenerator
 	}
 
 	protected void validateProject() {
-		 JpaValidator validator = new JpaValidator();
-		 IProject project = this.jpaProject.getProject();
-		 JpaHelper helper = new JpaHelper();
-		 helper.setProject(project);
-
-		 ValidatorJob validatorJob = new ValidatorJob(validator, "JPA Validator", "", project, helper);
-		 validatorJob.setRule(ResourcesPlugin.getWorkspace().getRoot());
-		 validatorJob.setUser(true);
-		 validatorJob.schedule();
+		IProject project = this.jpaProject.getProject();
+		ValidateJob job = new ValidateJob(project);
+		job.setRule(project);
+		job.schedule();
 	}
 	
 	private IPath buildJdbcJarPath() {
@@ -465,5 +461,34 @@ public class EclipseLinkDDLGenerator
 	
 	private String buildDebugArgument() {
 		return (this.isDebug) ? " -debug" : "";
+	}
+	
+	
+	/**
+	 * Performs validation after tables have been generated
+	 */
+	private class ValidateJob extends Job 
+	{	
+		private IProject project;
+		
+		
+		public ValidateJob(IProject project) {
+			super(JptCoreMessages.VALIDATE_JOB);
+			this.project = project;
+		}
+		
+		
+		@Override
+		protected IStatus run(IProgressMonitor monitor) {
+			IStatus status = Status.OK_STATUS;
+			try {
+				ValidationFramework.getDefault().validate(
+					new IProject[] {this.project}, true, false, monitor);
+			}
+			catch (CoreException ce) {
+				status = Status.CANCEL_STATUS;
+			}
+			return status;
+		}
 	}
 }

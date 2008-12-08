@@ -51,22 +51,6 @@
 	
 	
 	<extension
-		point="org.eclipse.core.resources.markers"
-		id="jpaProblemMarker"
-		name="%JPA_PROBLEM_MARKER">
-
-		<persistent value="true"/>
-		
-		<!-- Can't use text marker until we have specific models for each input type (XML, java)
-		<super type="org.eclipse.core.resources.textmarker"/>
-		-->
-		
-		<super type="org.eclipse.wst.validation.problemmarker"/>
-
-	</extension>
-	
-	
-	<extension
 		point="org.eclipse.core.runtime.adapters">
 		
 		<factory
@@ -87,10 +71,19 @@
 	<extension
 		point="org.eclipse.core.runtime.contentTypes">
 		
+		<!-- "abstract" content type to be extended by all JPA XML file content types -->
+		<content-type
+			id="org.eclipse.jpt.core.content.baseJpaContent"
+			name="%BASE_JPA_CONTENT"
+			base-type="org.eclipse.core.runtime.xml">
+			<describer
+				class="org.eclipse.jpt.core.internal.resource.IndeterminateContentDescriber"/>
+		</content-type>
+		
 		<content-type
 			id="org.eclipse.jpt.core.content.orm"
 			name="%ORM_XML_CONTENT"
-			base-type="org.eclipse.core.runtime.xml">
+			base-type="org.eclipse.jpt.core.content.baseJpaContent">
 			<describer
 				class="org.eclipse.core.runtime.content.XMLRootElementContentDescriber2">
 				<parameter 
@@ -102,7 +95,7 @@
   		<content-type
 			id="org.eclipse.jpt.core.content.persistence"
 			name="%PERSISTENCE_XML_CONTENT"
-			base-type="org.eclipse.core.runtime.xml"
+			base-type="org.eclipse.jpt.core.content.baseJpaContent"
 			file-names="persistence.xml">
 			<describer
 				class="org.eclipse.core.runtime.content.XMLRootElementContentDescriber2">
@@ -253,36 +246,23 @@
 		
 	
 	<extension
-		point="org.eclipse.wst.validation.validator"
+		point="org.eclipse.wst.validation.validatorV2"
     	id="jpaValidator"
 		name="%JPA_VALIDATOR">
 		
-		<validator>
-			<enablement>
-				<and>
-					<test property="org.eclipse.wst.common.project.facet.core.projectFacet" value="jpt.jpa"/>
-				</and>
-			</enablement>
-			
-			<filter
-				objectClass="org.eclipse.core.resources.IFile"
-				nameFilter="orm.xml"/>
-			<filter
-				objectClass="org.eclipse.core.resources.IFile"
-				nameFilter="persistence.xml"/>
-			<filter
-				objectClass="org.eclipse.core.resources.IFile"
-				nameFilter="*.java"/>
-         	
-         	<run class="org.eclipse.jpt.core.internal.validation.JpaValidator"/>
-			<helper class="org.eclipse.jpt.core.internal.validation.JpaHelper"/>
-			
-			<markerId markerIdValue="jpaProblemMarker"/>
-			
-         	<!-- don't know what this does
-			<dependentValidator depValValue="true"/>
-			-->
-			
+		<validator
+			class="org.eclipse.jpt.core.internal.validation.JpaValidator">
+			<include>
+				<rules>
+					<facet id="jpt.jpa"/>
+				</rules>
+			</include>
+			<include>
+				<rules>
+					<contentType id="org.eclipse.jdt.core.javaSource"/>
+					<contentType id="org.eclipse.jpt.core.content.baseJpaContent" exactMatch="false"/>
+				</rules>
+			</include>
 		</validator>
 		
 	</extension>

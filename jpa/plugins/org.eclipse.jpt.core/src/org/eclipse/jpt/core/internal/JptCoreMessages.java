@@ -17,6 +17,7 @@ import org.eclipse.osgi.util.NLS;
 public class JptCoreMessages {
 
 	public static String NONE;
+	public static String VALIDATE_JOB;
 	public static String VALIDATE_PROJECT_NOT_SPECIFIED;
 	public static String VALIDATE_SOURCE_FOLDER_NOT_SPECIFIED;
 	public static String VALIDATE_SOURCE_FOLDER_ILLEGAL;
