@@ -466,8 +466,14 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 	}
 	
 	protected PersistentType parentPersistentType(String fullyQualifiedTypeName) {
-		PersistentType possibleParent = possibleParent(fullyQualifiedTypeName);
+		Collection<JavaResourcePersistentType> hierarchyTypes = new ArrayList<JavaResourcePersistentType>();
+		hierarchyTypes.add(this.resourcePersistentType);
+		PersistentType possibleParent = possibleParent(fullyQualifiedTypeName, hierarchyTypes);
 		if (possibleParent == null) {
+			return null;
+		}
+		if (CollectionTools.contains(possibleParent.inheritanceHierarchy(), this)) {
+			//short-circuit in this case, we have circular inheritance
 			return null;
 		}
 		if (possibleParent.isMapped()) {
@@ -479,15 +485,23 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 	/**
 	 * JPA spec supports the case where there are non-persistent types in the hierarchy
 	 * This will check for a PersistentType with the given name in this PersistenceUnit.
-	 * If it is not found then find the JavaPersistentTypeResource and look for its parent type
+	 * If it is not found then find the JavaPersistentTypeResource and look for its parent type.
+	 * 
+	 * The Collection hierarchyTypes is used to handle a cycle in the inheritance hierarchy and
+	 * prevent stackoverflows in this case.  You can still end up with cycles in the PersistentType hierarchy,
+	 * this is handled in parentPersistentType(String)
 	 */
-	protected PersistentType possibleParent(String fullyQualifiedTypeName) {
+	protected PersistentType possibleParent(String fullyQualifiedTypeName, Collection<JavaResourcePersistentType> hierarchyTypes) {
+		JavaResourcePersistentType jrpt = getJpaProject().getJavaResourcePersistentType(fullyQualifiedTypeName);
+		if (jrpt == null || hierarchyTypes.contains(jrpt)) {
+			return null;
+		}
+		hierarchyTypes.add(jrpt);
 		PersistentType possibleParent = getPersistentType(fullyQualifiedTypeName);
 		if (possibleParent != null) {
 			return possibleParent;
 		}
-		JavaResourcePersistentType jrpt = getJpaProject().getJavaResourcePersistentType(fullyQualifiedTypeName);
-		return (jrpt == null) ? null : this.possibleParent(jrpt.getSuperClassQualifiedName());
+		return this.possibleParent(jrpt.getSuperClassQualifiedName(), hierarchyTypes);
 	}
 	
 	protected PersistentType getPersistentType(String fullyQualifiedTypeName) {

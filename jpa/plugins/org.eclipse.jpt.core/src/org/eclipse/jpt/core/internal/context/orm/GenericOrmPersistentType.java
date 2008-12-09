@@ -524,7 +524,17 @@ public class GenericOrmPersistentType
 	
 	protected void updateParentPersistentType() {
 		JavaPersistentType javaPersistentType = getJavaPersistentType();
-		setParentPersistentType(javaPersistentType == null ? null : javaPersistentType.getParentPersistentType());
+		PersistentType parentPersistentType = javaPersistentType == null ? null : javaPersistentType.getParentPersistentType();
+		if (parentPersistentType == null) {
+			setParentPersistentType(null);
+		}
+		else if (CollectionTools.contains(parentPersistentType.inheritanceHierarchy(), this)) {
+			//short-circuit in this case, we have circular inheritance
+			setParentPersistentType(null);
+		}
+		else {
+			setParentPersistentType(parentPersistentType);
+		}
 	}
 	
 	protected void updatePersistentAttributes(AbstractXmlTypeMapping typeMapping) {
