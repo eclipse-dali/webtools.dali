@@ -11,6 +11,8 @@ package org.eclipse.jpt.eclipselink.core.internal.context.java;
 
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaOneToManyMapping;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
@@ -33,7 +35,12 @@ public class EclipseLinkJavaOneToManyMappingImpl extends GenericJavaOneToManyMap
 		this.privateOwned = new EclipseLinkJavaPrivateOwned(this);
 	}
 	
-	
+	// ********** NonOwningMapping implementation **********
+	@Override
+	public boolean mappedByIsValid(AttributeMapping mappedByMapping) {
+		return super.mappedByIsValid(mappedByMapping) || (mappedByMapping.getKey() == MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+	}
+
 	protected String getPrivateOwnedAnnotationName() {
 		return PrivateOwnedAnnotation.ANNOTATION_NAME;
 	}

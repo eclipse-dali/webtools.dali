@@ -11,6 +11,8 @@
 package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
 import java.util.List;
+import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmOneToManyMapping;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping;
@@ -36,6 +38,12 @@ public class EclipseLinkOrmOneToManyMapping extends GenericOrmOneToManyMapping
 		super(parent);
 		this.privateOwned = new EclipseLinkOrmPrivateOwned(this);
 		this.joinFetch = new EclipseLinkOrmJoinFetch(this);
+	}
+	
+	// ********** NonOwningMapping implementation **********
+	@Override
+	public boolean mappedByIsValid(AttributeMapping mappedByMapping) {
+		return super.mappedByIsValid(mappedByMapping) || (mappedByMapping.getKey() == MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 	}
 	
 	
