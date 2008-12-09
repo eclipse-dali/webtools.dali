@@ -16,6 +16,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jpt.core.IResourcePart;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementIterator;
@@ -108,7 +109,7 @@ public class JpaValidator extends AbstractValidator implements IValidator {
 	
 	private IMessage adjustMessage(IMessage message) {
 		IAdaptable targetObject = (IAdaptable) message.getTargetObject();
-		IResource targetResource = (IResource) targetObject.getAdapter(IResource.class);
+		IResource targetResource = ((IResourcePart) targetObject.getAdapter(IResourcePart.class)).getResource();
 		message.setTargetObject(targetResource);
 		if (message.getLineNumber() == IMessage.LINENO_UNSET) {
 			message.setAttribute(IMarker.LOCATION, " ");

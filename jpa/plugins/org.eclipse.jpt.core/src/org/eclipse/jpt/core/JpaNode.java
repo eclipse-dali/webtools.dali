@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core;
 
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jpt.utility.model.Model;
 
@@ -24,18 +23,12 @@ import org.eclipse.jpt.utility.model.Model;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface JpaNode
-	extends Model, IAdaptable
+	extends Model, IAdaptable, IResourcePart
 {
 	/**
 	 * Return the JPA project the node belongs to.
 	 */
 	JpaProject getJpaProject();
-
-	/**
-	 * Return the resource that most directly contains the node.
-	 * This is used by JpaHelper.
-	 */
-	IResource getResource();
 
 	/**
 	 * Return the JPA node's parent. The JPA project will not have a parent.

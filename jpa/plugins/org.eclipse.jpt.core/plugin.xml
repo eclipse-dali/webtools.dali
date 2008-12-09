@@ -65,6 +65,12 @@
 			<adapter type="org.eclipse.jpt.core.JpaProject"/>
 		</factory>
 		
+		<factory
+			class="org.eclipse.jpt.core.internal.ResourcePartAdapterFactory"
+			adaptableType="org.eclipse.core.resources.IResource">
+			<adapter type="org.eclipse.jpt.core.IResourcePart"/>
+		</factory>
+		
 	</extension>
 	
 	
