@@ -755,6 +755,10 @@ public class XmlOneToOneImpl extends AbstractXmlAttributeMapping implements XmlO
 		return getAttributeTextRange(OrmXmlMapper.MAPPED_BY);
 	}
 	
+	public TextRange getTargetEntityTextRange() {
+		return getAttributeTextRange(OrmXmlMapper.TARGET_ENTITY);
+	}
+	
 	public String getMappingKey() {
 		return MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY;
 	}

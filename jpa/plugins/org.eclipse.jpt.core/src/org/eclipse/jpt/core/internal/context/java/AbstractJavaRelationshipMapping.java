@@ -10,18 +10,24 @@
 package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Iterator;
+import java.util.List;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaRelationshipMapping;
 import org.eclipse.jpt.core.internal.context.MappingTools;
+import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.RelationshipMappingAnnotation;
+import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 /**
  * 
@@ -43,6 +49,11 @@ public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMapp
 	protected AbstractJavaRelationshipMapping(JavaPersistentAttribute parent) {
 		super(parent);
 		this.cascade = new JavaCascade(this);
+	}
+	
+	@Override
+	public JavaPersistentAttribute getParent() {
+		return (JavaPersistentAttribute) super.getParent();
 	}
 
 
@@ -204,5 +215,43 @@ public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMapp
 	protected Iterator<String> javaCandidateMappedByAttributeNames(Filter<String> filter) {
 		return StringTools.convertToJavaStringLiterals(this.candidateMappedByAttributeNames(filter));
 	}
+	
+	@Override
+	public void validate(List<IMessage> messages, CompilationUnit astRoot) {
+		super.validate(messages, astRoot);
+		validateTargetEntity(messages, astRoot);
+	}
+	
+	protected void validateTargetEntity(List<IMessage> messages, CompilationUnit astRoot) {
+		if (getTargetEntity() == null) {
+			messages.add(
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.TARGET_ENTITY_NOT_DEFINED,
+					new String[] {this.getAttributeName()}, 
+					this, 
+					this.getValidationTextRange(astRoot)
+				)
+			);
+		}
+		else if (getResolvedTargetEntity() == null) {
+			messages.add(
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.TARGET_ENTITY_IS_NOT_AN_ENTITY,
+					new String[] {getTargetEntity(), this.getAttributeName()}, 
+					this, 
+					this.getTargetEntityTextRange(astRoot)
+				)
+			);			
+		}
+	}
+	
+	protected TextRange getTextRange(TextRange textRange, CompilationUnit astRoot) {
+		return (textRange != null) ? textRange : this.getParent().getValidationTextRange(astRoot);
+	}
 
+	protected TextRange getTargetEntityTextRange(CompilationUnit astRoot) {
+		return this.getTextRange(this.getResourceMapping().getTargetEntityTextRange(astRoot), astRoot);
+	}
 }

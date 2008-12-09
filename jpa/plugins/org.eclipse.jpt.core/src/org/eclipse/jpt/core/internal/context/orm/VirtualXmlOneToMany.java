@@ -119,4 +119,8 @@ public class VirtualXmlOneToMany extends VirtualXmlAttributeMapping<JavaOneToMan
 	public TextRange getMappedByTextRange() {
 		return null;
 	}
+	
+	public TextRange getTargetEntityTextRange() {
+		return null;
+	}
 }

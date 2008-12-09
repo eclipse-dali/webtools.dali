@@ -20,6 +20,7 @@ import org.eclipse.jpt.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlJoinTable;
 import org.eclipse.jpt.core.resource.orm.XmlManyToOne;
+import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 
 /**
@@ -96,5 +97,9 @@ public class VirtualXmlManyToOne extends VirtualXmlAttributeMapping<JavaManyToOn
 
 	public void setTargetEntity(@SuppressWarnings("unused") String value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
+	}
+	
+	public TextRange getTargetEntityTextRange() {
+		return null;
 	}
 }

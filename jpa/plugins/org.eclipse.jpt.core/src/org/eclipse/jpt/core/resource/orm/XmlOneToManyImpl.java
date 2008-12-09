@@ -791,6 +791,10 @@ public class XmlOneToManyImpl extends AbstractXmlAttributeMapping implements Xml
 		return getAttributeTextRange(OrmXmlMapper.MAPPED_BY);
 	}
 	
+	public TextRange getTargetEntityTextRange() {
+		return getAttributeTextRange(OrmXmlMapper.TARGET_ENTITY);
+	}
+	
 	public String getMappingKey() {
 		return MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY;
 	}

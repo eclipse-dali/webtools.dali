@@ -118,4 +118,8 @@ public class VirtualXmlManyToMany extends VirtualXmlAttributeMapping<JavaManyToM
 	public TextRange getMappedByTextRange() {
 		return null;
 	}
+	
+	public TextRange getTargetEntityTextRange() {
+		return null;
+	}
 }

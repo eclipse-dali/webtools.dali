@@ -738,6 +738,10 @@ public class XmlManyToManyImpl extends AbstractXmlAttributeMapping implements Xm
 		return getAttributeTextRange(OrmXmlMapper.MAPPED_BY);
 	}
 	
+	public TextRange getTargetEntityTextRange() {
+		return getAttributeTextRange(OrmXmlMapper.TARGET_ENTITY);
+	}
+	
 	public String getMappingKey() {
 		return MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY;
 	}

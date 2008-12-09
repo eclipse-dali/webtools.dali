@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.resource.orm;
 
+import org.eclipse.jpt.core.utility.TextRange;
+
 
 /**
  * <!-- begin-user-doc -->
@@ -144,5 +146,10 @@ public interface XmlRelationshipMapping extends XmlAttributeMapping
 	 * @generated
 	 */
 	void setJoinTable(XmlJoinTable value);
+	
+	/**
+	 * Return the {@link TextRange} for the target-entity attribute.
+	 */
+	TextRange getTargetEntityTextRange();
 
 } // RelationshipMapping

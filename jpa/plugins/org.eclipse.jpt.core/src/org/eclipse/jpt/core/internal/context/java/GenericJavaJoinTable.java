@@ -539,16 +539,16 @@ public class GenericJavaJoinTable
 		}
 		
 		if ( ! this.isResolved()) {
-			String attributeName = this.getRelationshipMapping().getPersistentAttribute().getName();
-			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.JOIN_TABLE_CANNOT_BE_DETERMINED,
-					new String[] {attributeName},
-					this,
-					this.getNameTextRange(astRoot)
-				)
-			);
+			if (getName() != null) { //if name is null, the validation will be handled elsewhere, such as the target entity is not defined
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JpaValidationMessages.JOIN_TABLE_UNRESOLVED_NAME,
+							new String[] {this.getName()}, 
+							this, 
+							this.getNameTextRange(astRoot))
+					);				
+			}
 			return;
 		}
 		

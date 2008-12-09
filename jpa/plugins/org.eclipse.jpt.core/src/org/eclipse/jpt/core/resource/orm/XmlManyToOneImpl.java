@@ -19,6 +19,8 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.internal.resource.orm.translators.OrmXmlMapper;
+import org.eclipse.jpt.core.utility.TextRange;
 
 /**
  * <!-- begin-user-doc -->
@@ -631,7 +633,11 @@ public class XmlManyToOneImpl extends AbstractXmlAttributeMapping implements Xml
 		result.append(')');
 		return result.toString();
 	}
-	
+		
+	public TextRange getTargetEntityTextRange() {
+		return getAttributeTextRange(OrmXmlMapper.TARGET_ENTITY);
+	}
+
 	public String getMappingKey() {
 		return MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY;
 	}

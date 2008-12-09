@@ -127,4 +127,8 @@ public class VirtualXmlOneToOne extends VirtualXmlAttributeMapping<JavaOneToOneM
 	public TextRange getMappedByTextRange() {
 		return null;
 	}
+	
+	public TextRange getTargetEntityTextRange() {
+		return null;
+	}
 }

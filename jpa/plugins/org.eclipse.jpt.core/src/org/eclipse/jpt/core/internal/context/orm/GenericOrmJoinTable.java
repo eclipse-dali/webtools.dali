@@ -528,29 +528,29 @@ public class GenericOrmJoinTable
 			}
 			return;
 		}
-		
 		if ( ! this.isResolved()) {
-			if (mapping.getPersistentAttribute().isVirtual()) {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_TABLE_UNRESOLVED_NAME,
-						new String[] {mapping.getName(), this.getName()}, 
-						this,
-						this.getNameTextRange()
-					)
-				);
-			} else {
-				String attributeName = mapping.getPersistentAttribute().getName();
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.JOIN_TABLE_CANNOT_BE_DETERMINED,
-						new String[] {attributeName},
-						this,
-						this.getNameTextRange()
-					)
-				);
+			if (getName() != null) { //if name is null, the validation will be handled elsewhere, such as the target entity is not defined
+				if (mapping.getPersistentAttribute().isVirtual()) {
+					messages.add(
+						DefaultJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_TABLE_UNRESOLVED_NAME,
+							new String[] {mapping.getName(), this.getName()}, 
+							this,
+							this.getNameTextRange()
+						)
+					);
+				} 
+				else {
+					messages.add(
+						DefaultJpaValidationMessages.buildMessage(
+								IMessage.HIGH_SEVERITY,
+								JpaValidationMessages.JOIN_TABLE_UNRESOLVED_NAME,
+								new String[] {this.getName()}, 
+								this, 
+								this.getNameTextRange())
+						);				
+				}
 			}
 			return;
 		}
