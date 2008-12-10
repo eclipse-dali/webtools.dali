@@ -25,12 +25,10 @@ import org.eclipse.jpt.core.context.persistence.PersistenceStructureNodes;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.core.internal.resource.JpaResourceModelProviderManager;
-import org.eclipse.jpt.core.internal.resource.orm.OrmResourceModelProvider;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.JpaResourceModelProvider;
 import org.eclipse.jpt.core.resource.common.JpaXmlResource;
-import org.eclipse.jpt.core.resource.orm.OrmResource;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.StringTools;
@@ -96,7 +94,7 @@ public class GenericMappingFileRef extends AbstractXmlContextNode
 	protected void initialize(XmlMappingFileRef mappingFileRef) {
 		this.xmlMappingFileRef = mappingFileRef;
 		initializeFileName();
-		initializeOrmXml();
+		initializeMappingFile();
 	}
 	
 	protected void initializeFileName() {
@@ -108,14 +106,13 @@ public class GenericMappingFileRef extends AbstractXmlContextNode
 		}
 	}
 	
-	protected void initializeOrmXml() {
-		if (fileName != null) {
-			OrmResourceModelProvider modelProvider =
-				OrmResourceModelProvider.getModelProvider(getJpaProject().getProject(), fileName);
-			OrmResource ormResource = modelProvider.getResource();
-			
-			if (ormResource != null && ormResource.exists()) {
-				mappingFile = buildMappingFile(ormResource);
+	protected void initializeMappingFile() {
+		IFile platformFile = getPlatformFile();
+		if ((platformFile != null) && platformFile.exists()) {
+			JpaResourceModelProvider modelProvider = JpaResourceModelProviderManager.instance().getModelProvider(platformFile);
+			JpaXmlResource resource = (modelProvider == null) ? null : modelProvider.getResource();
+			if (resource != null && resource.exists()) {
+				this.mappingFile = buildMappingFile(resource);
 			}
 		}
 	}
@@ -136,26 +133,23 @@ public class GenericMappingFileRef extends AbstractXmlContextNode
 	}
 	
 	protected void updateMappingFile() {
-		if (fileName != null) {
-			IProject project = getJpaProject().getProject();
-			IVirtualFile vFile = ComponentCore.createFile(project, new Path(fileName));
-			IFile realFile = vFile.getUnderlyingFile();
-			
-			if ((realFile != null) && realFile.exists()) {
-				JpaResourceModelProvider modelProvider = JpaResourceModelProviderManager.instance().getModelProvider(realFile);
-				JpaXmlResource resource = (modelProvider == null) ? null : modelProvider.getResource();
-				if (resource != null) {
-					if (this.mappingFile != null && ! resource.equals(this.mappingFile.getXmlResource())) {
-						this.mappingFile.dispose();
-					}
-					if (this.mappingFile == null) {
-						setMappingFile(buildMappingFile(resource));
-					}
-					else {
-						this.mappingFile.update(resource);
-					}
-					return;
+		IFile platformFile = getPlatformFile();	
+		if ((platformFile != null) && platformFile.exists()) {
+			JpaResourceModelProvider modelProvider = JpaResourceModelProviderManager.instance().getModelProvider(platformFile);
+			JpaXmlResource resource = (modelProvider == null) ? null : modelProvider.getResource();
+			if (resource != null && resource.exists()) {
+				// this check is done to determine whether the resource type has 
+				// changed.  if so, the mapping file must be rebuilt.
+				if (this.mappingFile != null && ! resource.equals(this.mappingFile.getXmlResource())) {
+					this.mappingFile.dispose();
 				}
+				if (this.mappingFile == null) {
+					setMappingFile(buildMappingFile(resource));
+				}
+				else {
+					this.mappingFile.update(resource);
+				}
+				return;
 			}
 		}
 		
@@ -163,6 +157,15 @@ public class GenericMappingFileRef extends AbstractXmlContextNode
 			this.mappingFile.dispose();
 			setMappingFile(null);
 		}
+	}
+	
+	protected IFile getPlatformFile() {
+		if (fileName == null) {
+			return null;
+		}
+		IProject project = getJpaProject().getProject();
+		IVirtualFile vFile = ComponentCore.createFile(project, new Path(fileName));
+		return vFile.getUnderlyingFile();
 	}
 	
 	protected MappingFile buildMappingFile(JpaXmlResource resource) {
@@ -242,22 +245,30 @@ public class GenericMappingFileRef extends AbstractXmlContextNode
 					IMessage.HIGH_SEVERITY,
 					JpaValidationMessages.PERSISTENCE_UNIT_UNSPECIFIED_MAPPING_FILE,
 					this,
-					this.getValidationTextRange()
-				)
-			);
+					this.getValidationTextRange()));
 			return;
 		}
-
+		
 		if (this.mappingFile == null) {
-			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.PERSISTENCE_UNIT_NONEXISTENT_MAPPING_FILE,
-					new String[] {this.fileName},
-					this,
-					this.getValidationTextRange()
-				)
-			);
+			IFile platformFile = getPlatformFile();
+			if (platformFile != null && platformFile.exists()) {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.PERSISTENCE_UNIT_UNSUPPORTED_MAPPING_FILE_CONTENT,
+						new String[] {this.fileName},
+						this,
+						this.getValidationTextRange()));
+			}
+			else {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.PERSISTENCE_UNIT_NONEXISTENT_MAPPING_FILE,
+						new String[] {this.fileName},
+						this,
+						this.getValidationTextRange()));
+			}
 			return;
 		}
 
@@ -268,9 +279,7 @@ public class GenericMappingFileRef extends AbstractXmlContextNode
 					JpaValidationMessages.PERSISTENCE_UNIT_INVALID_MAPPING_FILE,
 					new String[] {this.fileName},
 					this,
-					this.getValidationTextRange()
-				)
-			);
+					this.getValidationTextRange()));
 		}
 
 		this.mappingFile.validate(messages);

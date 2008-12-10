@@ -283,10 +283,10 @@ public class GenericJpaFactory
 	}
 	
 	public XmlContextNode buildContextNode(JpaContextNode parent, JpaXmlResource resource) {
-		if (resource instanceof PersistenceResource) {
+		if (resource.getType() == JpaFile.PERSISTENCE_RESOURCE_TYPE) {
 			return this.buildPersistenceXml((JpaRootContextNode) parent, (PersistenceResource) resource);
 		}
-		if (resource instanceof OrmResource) {
+		if (resource.getType() == JpaFile.ORM_RESOURCE_TYPE) {
 			return this.buildOrmXml((MappingFileRef) parent, (OrmResource) resource);
 		}
 		return null;
