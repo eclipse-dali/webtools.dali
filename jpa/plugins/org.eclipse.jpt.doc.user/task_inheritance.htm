@@ -2,7 +2,7 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<!-- Run date = July 23, 2008 8:59:45 -->
+<!-- Run date = December 11, 2008 12:34:24 -->
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
 <title>Specifying entity inheritance</title>
  
@@ -12,7 +12,7 @@
 <meta name="date" content="2005-07-10T12:57:20+08:00" />
 <meta name="robots" content="noarchive" />
 <meta name="doctitle" content="Specifying entity inheritance" />
-<meta name="relnum" content="Release 2.0" />
+<meta name="relnum" content="Release 2.1" />
 <meta name="copyright" content="Copyright (c) 2000, 2008 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
@@ -23,7 +23,7 @@
 <p><a id="CIHCCCJD" name="CIHCCCJD"></a></p>
 <div class="sect1"><!-- infolevel="all" infotype="General" -->
 <h1>Specifying entity inheritance</h1>
-<p><a id="sthref80" name="sthref80"></a><a id="sthref81" name="sthref81"></a>An entity may inherit properties from other entities. You can specify a specific strategy to use for inheritance.</p>
+<p><a id="sthref82" name="sthref82"></a><a id="sthref83" name="sthref83"></a>An entity may inherit properties from other entities. You can specify a specific strategy to use for inheritance.</p>
 <p>Use this procedure to specify inheritance (<code>@Inheritance)</code> for an existing entity (<code>@Entity</code>):</p>
 <ol start="1">
 <li>
@@ -31,7 +31,7 @@
 </li>
 <li>
 <p>In the <span class="gui-object-title">JPA Details</span> view, select the <span class="gui-object-action">Inheritance</span> information.</p>
-<div class="figure"><a id="sthref82" name="sthref82"></a>
+<div class="figure"><a id="sthref84" name="sthref84"></a>
 <p class="titleinfigure">Specifying Inheritance</p>
 <img src="img/inheritance_tab.png" alt="Selecting the Inheritance area on the JPA Details view." title="Selecting the Inheritance area on the JPA Details view." /><br /></div>
 <!-- class="figure" --></li>
@@ -55,37 +55,37 @@
 <table class="RuleInformal" title="This table describes the options on the Persistence Properties view, Inheritance tab." summary="This table describes the options on the Persistence Properties view, Inheritance tab." dir="ltr" border="1" width="100%" frame="border" rules="all" cellpadding="3" cellspacing="0">
 <thead>
 <tr align="left" valign="top">
-<th align="left" valign="bottom" id="r1c1-t14">Property</th>
-<th align="left" valign="bottom" id="r1c2-t14">Description</th>
-<th align="left" valign="bottom" id="r1c3-t14">Default</th>
+<th align="left" valign="bottom" id="r1c1-t13">Property</th>
+<th align="left" valign="bottom" id="r1c2-t13">Description</th>
+<th align="left" valign="bottom" id="r1c3-t13">Default</th>
 </tr>
 </thead>
 <tbody>
 <tr align="left" valign="top">
-<td align="left" id="r2c1-t14" headers="r1c1-t14"><a id="sthref83" name="sthref83"></a><a id="sthref84" name="sthref84"></a>Discriminator Column</td>
-<td align="left" headers="r2c1-t14 r1c2-t14">Name of the discriminator column when using a <span class="bold">Single</span> or <span class="bold">Joined</span> inheritance strategy.
+<td align="left" id="r2c1-t13" headers="r1c1-t13"><a id="sthref85" name="sthref85"></a><a id="sthref86" name="sthref86"></a>Discriminator Column</td>
+<td align="left" headers="r2c1-t13 r1c2-t13">Name of the discriminator column when using a <span class="bold">Single</span> or <span class="bold">Joined</span> inheritance strategy.
 <p>This field corresponds to the <code>@DiscriminatorColumn</code> annotation.</p>
 </td>
-<td align="left" headers="r2c1-t14 r1c3-t14"><br /></td>
+<td align="left" headers="r2c1-t13 r1c3-t13"><br /></td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r3c1-t14" headers="r1c1-t14">Discriminator Type</td>
-<td align="left" headers="r3c1-t14 r1c2-t14">Set the discriminator type to <code>Char</code> or <code>Integer</code> (instead of its default: <code>String</code>). The <span class="bold">Discriminator Value</span> must conform to this type.</td>
-<td align="left" headers="r3c1-t14 r1c3-t14">String</td>
+<td align="left" id="r3c1-t13" headers="r1c1-t13">Discriminator Type</td>
+<td align="left" headers="r3c1-t13 r1c2-t13">Set the discriminator type to <code>Char</code> or <code>Integer</code> (instead of its default: <code>String</code>). The <span class="bold">Discriminator Value</span> must conform to this type.</td>
+<td align="left" headers="r3c1-t13 r1c3-t13">String</td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r4c1-t14" headers="r1c1-t14"><a id="sthref85" name="sthref85"></a><a id="sthref86" name="sthref86"></a>Discriminator Value</td>
-<td align="left" headers="r4c1-t14 r1c2-t14">Specify the discriminator value used to differentiate an entity in this inheritance hierarchy. The value must conform to the specified <span class="bold">Discriminator Type</span>.
+<td align="left" id="r4c1-t13" headers="r1c1-t13"><a id="sthref87" name="sthref87"></a><a id="sthref88" name="sthref88"></a>Discriminator Value</td>
+<td align="left" headers="r4c1-t13 r1c2-t13">Specify the discriminator value used to differentiate an entity in this inheritance hierarchy. The value must conform to the specified <span class="bold">Discriminator Type</span>.
 <p>This field corresponds to the <code>@DiscriminatorValue</code> annotation.</p>
 </td>
-<td align="left" headers="r4c1-t14 r1c3-t14"><br /></td>
+<td align="left" headers="r4c1-t13 r1c3-t13"><br /></td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r5c1-t14" headers="r1c1-t14">Override Default</td>
-<td align="left" headers="r5c1-t14 r1c2-t14">Use this field to specify custom primary key join columns.
+<td align="left" id="r5c1-t13" headers="r1c1-t13">Override Default</td>
+<td align="left" headers="r5c1-t13 r1c2-t13">Use this field to specify custom primary key join columns.
 <p>This field corresponds to the <code>@PrimaryKeyJoinClumn</code> annotation.</p>
 </td>
-<td align="left" headers="r5c1-t14 r1c3-t14"><br /></td>
+<td align="left" headers="r5c1-t13 r1c3-t13"><br /></td>
 </tr>
 </tbody>
 </table>
@@ -102,13 +102,13 @@
     referencedColumnName = "<span class="italic">&lt;REFERENCED_COLUMN_NAME&gt;</span>")
 
 </pre>
-<p><a id="sthref87" name="sthref87"></a><a id="sthref88" name="sthref88"></a><a id="sthref89" name="sthref89"></a>The following figures illustrates the different inheritance strategies.</p>
-<div class="figure"><a id="sthref90" name="sthref90"></a>
+<p><a id="sthref89" name="sthref89"></a><a id="sthref90" name="sthref90"></a><a id="sthref91" name="sthref91"></a>The following figures illustrates the different inheritance strategies.</p>
+<div class="figure"><a id="sthref92" name="sthref92"></a>
 <p class="titleinfigure">Single Table Inheritance</p>
 <img src="img/inheritance_single.png" alt="This figure illustrates entity inheritance in a single table." title="This figure illustrates entity inheritance in a single table." /><br /></div>
 <!-- class="figure" -->
-<div class="figure"><a id="sthref91" name="sthref91"></a>
-<p class="titleinfigure"><a id="sthref92" name="sthref92"></a><a id="sthref93" name="sthref93"></a>Joined Table Inheritance</p>
+<div class="figure"><a id="sthref93" name="sthref93"></a>
+<p class="titleinfigure"><a id="sthref94" name="sthref94"></a><a id="sthref95" name="sthref95"></a>Joined Table Inheritance</p>
 <img src="img/inheritance_join.png" alt="This figure illustrates a joined subclass inheritance strategy." title="This figure illustrates a joined subclass inheritance strategy." /><br /></div>
 <!-- class="figure" -->
 <br />

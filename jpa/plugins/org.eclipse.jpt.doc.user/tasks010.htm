@@ -2,7 +2,7 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<!-- Run date = July 23, 2008 8:59:46 -->
+<!-- Run date = December 11, 2008 12:34:24 -->
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
 <title>Basic mapping</title>
  
@@ -12,7 +12,7 @@
 <meta name="date" content="2005-07-10T12:57:20+08:00" />
 <meta name="robots" content="noarchive" />
 <meta name="doctitle" content="Basic mapping" />
-<meta name="relnum" content="Release 2.0" />
+<meta name="relnum" content="Release 2.1" />
 <meta name="copyright" content="Copyright (c) 2000, 2008 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
@@ -23,7 +23,7 @@
 <p><a id="BABBABCE" name="BABBABCE"></a></p>
 <div class="sect2"><!-- infolevel="all" infotype="General" -->
 <h1>Basic mapping</h1>
-<p><a id="sthref97" name="sthref97"></a><a id="sthref98" name="sthref98"></a><a id="sthref99" name="sthref99"></a><a id="sthref100" name="sthref100"></a>Use a <span class="bold">Basic Mapping</span> to map an attribute directly to a database column. Basic mappings may be used only with the following attribute types:</p>
+<p><a id="sthref99" name="sthref99"></a><a id="sthref100" name="sthref100"></a><a id="sthref101" name="sthref101"></a><a id="sthref102" name="sthref102"></a>Use a <span class="bold">Basic Mapping</span> to map an attribute directly to a database column. Basic mappings may be used only with the following attribute types:</p>
 <ul>
 <li>
 <p>Java primitive types and wrappers of the primitive types</p>
@@ -76,32 +76,32 @@
 <table class="RuleInformal" title="This table lists the fields in the Persistence Properties view for this mapping." summary="This table lists the fields in the Persistence Properties view for this mapping." dir="ltr" border="1" width="100%" frame="border" rules="all" cellpadding="3" cellspacing="0">
 <thead>
 <tr align="left" valign="top">
-<th align="left" valign="bottom" id="r1c1-t15">Property</th>
-<th align="left" valign="bottom" id="r1c2-t15">Description</th>
-<th align="left" valign="bottom" id="r1c3-t15">Default</th>
+<th align="left" valign="bottom" id="r1c1-t14">Property</th>
+<th align="left" valign="bottom" id="r1c2-t14">Description</th>
+<th align="left" valign="bottom" id="r1c3-t14">Default</th>
 </tr>
 </thead>
 <tbody>
 <tr align="left" valign="top">
-<td align="left" id="r2c1-t15" headers="r1c1-t15">Entity Map Hyperlink</td>
-<td align="left" headers="r2c1-t15 r1c2-t15">Defines this mapping as a <span class="bold">Basic Mapping</span>.
+<td align="left" id="r2c1-t14" headers="r1c1-t14">Entity Map Hyperlink</td>
+<td align="left" headers="r2c1-t14 r1c2-t14">Defines this mapping as a <span class="bold">Basic Mapping</span>.
 <p>This corresponds to the <code>@Basic</code> annotation.</p>
 </td>
-<td align="left" headers="r2c1-t15 r1c3-t15">Basic</td>
+<td align="left" headers="r2c1-t14 r1c3-t14">Basic</td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r3c1-t15" headers="r1c1-t15">Column</td>
-<td align="left" headers="r3c1-t15 r1c2-t15">The database column mapped to the entity attribute. See <a href="ref_mapping_general.htm#CACGCBHB">"Column"</a> for details.</td>
-<td align="left" headers="r3c1-t15 r1c3-t15">By default, the Column is assumed to be named identically to the attribute and always included in the <code>INSERT</code> and <code>UPDATE</code> statements.</td>
+<td align="left" id="r3c1-t14" headers="r1c1-t14">Column</td>
+<td align="left" headers="r3c1-t14 r1c2-t14">The database column mapped to the entity attribute. See <a href="ref_mapping_general.htm#CACGCBHB">"Column"</a> for details.</td>
+<td align="left" headers="r3c1-t14 r1c3-t14">By default, the Column is assumed to be named identically to the attribute and always included in the <code>INSERT</code> and <code>UPDATE</code> statements.</td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r4c1-t15" headers="r1c1-t15">Table</td>
-<td align="left" headers="r4c1-t15 r1c2-t15">Name of the database table.</td>
-<td align="left" headers="r4c1-t15 r1c3-t15"><br /></td>
+<td align="left" id="r4c1-t14" headers="r1c1-t14">Table</td>
+<td align="left" headers="r4c1-t14 r1c2-t14">Name of the database table.</td>
+<td align="left" headers="r4c1-t14 r1c3-t14"><br /></td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r5c1-t15" headers="r1c1-t15">Fetch</td>
-<td align="left" headers="r5c1-t15 r1c2-t15">Defines how data is loaded from the database. See <a href="ref_mapping_general.htm#CACGGGHB">"Fetch Type"</a> for details.
+<td align="left" id="r5c1-t14" headers="r1c1-t14">Fetch</td>
+<td align="left" headers="r5c1-t14 r1c2-t14">Defines how data is loaded from the database. See <a href="ref_mapping_general.htm#CACGGGHB">"Fetch Type"</a> for details.
 <ul>
 <li>
 <p>Eager</p>
@@ -111,16 +111,16 @@
 </li>
 </ul>
 </td>
-<td align="left" headers="r5c1-t15 r1c3-t15">Eager</td>
+<td align="left" headers="r5c1-t14 r1c3-t14">Eager</td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r6c1-t15" headers="r1c1-t15">Optional</td>
-<td align="left" headers="r6c1-t15 r1c2-t15">Specifies if this field is can be null.</td>
-<td align="left" headers="r6c1-t15 r1c3-t15">Yes</td>
+<td align="left" id="r6c1-t14" headers="r1c1-t14">Optional</td>
+<td align="left" headers="r6c1-t14 r1c2-t14">Specifies if this field is can be null.</td>
+<td align="left" headers="r6c1-t14 r1c3-t14">Yes</td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r7c1-t15" headers="r1c1-t15">Temporal</td>
-<td align="left" headers="r7c1-t15 r1c2-t15">Specifies the type of data. See <a href="ref_mapping_general.htm#CACEAJGD">"Temporal"</a> for details.
+<td align="left" id="r7c1-t14" headers="r1c1-t14">Temporal</td>
+<td align="left" headers="r7c1-t14 r1c2-t14">Specifies the type of data. See <a href="ref_mapping_general.htm#CACEAJGD">"Temporal"</a> for details.
 <ul>
 <li>
 <p>Date</p>
@@ -133,12 +133,12 @@
 </li>
 </ul>
 </td>
-<td align="left" headers="r7c1-t15 r1c3-t15"><br /></td>
+<td align="left" headers="r7c1-t14 r1c3-t14"><br /></td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r8c1-t15" headers="r1c1-t15">Lob</td>
-<td align="left" headers="r8c1-t15 r1c2-t15">Specifies if this is a large objects (BLOB or CLOB). See <a href="ref_mapping_general.htm#CACBBIBI">"Lob"</a> for details.</td>
-<td align="left" headers="r8c1-t15 r1c3-t15"><br /></td>
+<td align="left" id="r8c1-t14" headers="r1c1-t14">Lob</td>
+<td align="left" headers="r8c1-t14 r1c2-t14">Specifies if this is a large objects (BLOB or CLOB). See <a href="ref_mapping_general.htm#CACBBIBI">"Lob"</a> for details.</td>
+<td align="left" headers="r8c1-t14 r1c3-t14"><br /></td>
 </tr>
 </tbody>
 </table>

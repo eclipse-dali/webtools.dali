@@ -416,6 +416,67 @@
 		<topic label="JPA Facet page" href="ref_jpa_facet.htm"/>
 	</context>
 
+	<context id="caching_defaultType">
+		<description>Select the default caching strategy for the project. The default is Weak with hard subcache.</description>
+		<topic label="persistence.xml editor" href="ref_persistence_xml_editor" />
+		<topic label="Managing the persistence.xml file" href="task_manage_persistence" />
+	</context>
+	<context id="caching_defaultSize">
+		<description>Select the default size of the cache. The default is 100 items.</description>
+		<topic label="persistence.xml editor" href="ref_persistence_xml_editor" />
+		<topic label="Managing the persistence.xml file" href="task_manage_persistence" />
+	</context>
+	<context id="caching_defaultShared">
+		<description>Specify if cached instances should be in the shared cache or in a client isolated cache.</description>
+		<topic label="persistence.xml editor" href="ref_persistence_xml_editor" />
+		<topic label="Managing the persistence.xml file" href="task_manage_persistence" />
+	</context>
+	<context id="logging_level">
+		<description>Specifies the amount and detail of log output by selecting the log level. Default is Info level.</description>
+		<topic label="persistence.xml editor" href="ref_persistence_xml_editor" />
+		<topic label="Managing the persistence.xml file" href="task_manage_persistence" />
+	</context>
+	<context id="logging_timeStamp">
+		<description>Control whether the timestamp is logged in each log entry. Default is True.</description>
+		<topic label="persistence.xml editor" href="ref_persistence_xml_editor" />
+		<topic label="Managing the persistence.xml file" href="task_manage_persistence" />
+	</context>
+	<context id="logging_thread">
+		<description>Control whether a thread identifier is logged in each log entry. Default is True.</description>
+		<topic label="persistence.xml editor" href="ref_persistence_xml_editor" />
+		<topic label="Managing the persistence.xml file" href="task_manage_persistence" />
+	</context>
+	<context id="logging_session">
+		<description>Control whether an EclipseLink session identifier is logged in each log entry. Default is True.</description>
+		<topic label="persistence.xml editor" href="ref_persistence_xml_editor" />
+		<topic label="Managing the persistence.xml file" href="task_manage_persistence" />
+	</context>
+	<context id="logging_exceptions">
+		<description>Control whether the exceptions thrown from within the code are logged prior to returning the exception to the calling application. Ensures that all exceptions are logged and not masked by the application code.. Default is False.</description>
+		<topic label="persistence.xml editor" href="ref_persistence_xml_editor" />
+		<topic label="Managing the persistence.xml file" href="task_manage_persistence" />
+	</context>
+	<context id="options_sessionName">
+		<description>Specify the name by which the EclipseLink session is stored in the static session manager.</description>
+		<topic label="persistence.xml editor" href="ref_persistence_xml_editor" />
+		<topic label="Managing the persistence.xml file" href="task_manage_persistence" />
+	</context>
+	<context id="options_sessionsXml">
+		<description>Specify persistence information loaded from the EclipseLink session configuration file. You can use this option as an alternative to annotations and deployment XML.</description>
+		<topic label="persistence.xml editor" href="ref_persistence_xml_editor" />
+		<topic label="Managing the persistence.xml file" href="task_manage_persistence" />
+	</context>
+	<context id="options_targetDatabase">
+		<description></description>
+		<topic label="persistence.xml editor" href="ref_persistence_xml_editor" />
+		<topic label="Managing the persistence.xml file" href="task_manage_persistence" />
+	</context>
+	<context id="options_targetServer">
+		<description> </description>
+		<topic label="persistence.xml editor" href="ref_persistence_xml_editor" />
+		<topic label="Managing the persistence.xml file" href="task_manage_persistence" />
+	</context>
+
 
 
 

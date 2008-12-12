@@ -2,7 +2,7 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<!-- Run date = July 23, 2008 8:59:43 -->
+<!-- Run date = December 11, 2008 12:34:22 -->
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
 <title>Managing the orm.xml file</title>
  
@@ -12,7 +12,7 @@
 <meta name="date" content="2005-07-10T12:57:20+08:00" />
 <meta name="robots" content="noarchive" />
 <meta name="doctitle" content="Managing the orm.xml file" />
-<meta name="relnum" content="Release 2.0" />
+<meta name="relnum" content="Release 2.1" />
 <meta name="copyright" content="Copyright (c) 2000, 2008 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
@@ -20,38 +20,26 @@
 <!-- contents -->
 </head>
 <body>
-<div class="sect2"><!-- infolevel="all" infotype="General" --><a id="sthref48" name="sthref48"></a>
+<div class="sect2"><!-- infolevel="all" infotype="General" --><a id="sthref49" name="sthref49"></a>
 <h1>Creating an orm.xml file</h1>
-<p>If you opt not to create an <code>orm.xml</code> file when you create a JPA project, you can create one using the <a href="reference005.htm#CIAIJCCE">Mapping File Wizard</a>.</p>
+<p><a id="sthref50" name="sthref50"></a>If you opt not to create an <code>orm.xml</code> file when you create a JPA project, you can create one using the <a href="reference005.htm#CIAIJCCE">Mapping File Wizard</a>.</p>
 <p>Use this procedure to create an <code>orm.xml</code> file:</p>
 <ol start="1">
 <li>
 <p>From the Navigator or Package Explorer, select <span class="bold">File &gt; New &gt; Other</span>. The Select a Wizard dialog appears.</p>
-<div class="figure"><a id="sthref49" name="sthref49"></a>
+<div class="figure"><a id="sthref51" name="sthref51"></a>
 <p class="titleinfigure">The Select a Wizard Dialog</p>
 <img src="img/select_a_wizard_mapping.png" alt="The Select a Wizard dialog with Mapping file selected." title="The Select a Wizard dialog with Mapping file selected." /><br /></div>
 <!-- class="figure" --></li>
 <li>
 <p>Select <span class="bold">Mapping File</span> and then click <span class="bold">Next</span>. The Mapping File page appears.</p>
-<div class="figure"><a id="sthref50" name="sthref50"></a>
+<p>If you are using EclipseLink, you can select <span class="bold">EclipseLink Mapping File</span>.</p>
+<div class="figure"><a id="sthref52" name="sthref52"></a>
 <p class="titleinfigure">The Mapping File Page</p>
 <img src="img/mapping_file_new.png" alt="The Mapping File page." title="The Mapping File page." /><br /></div>
 <!-- class="figure" --></li>
 <li>
 <p>Define the properties in the page and click <span class="bold">Finish</span>. The <code>orm.xml</code> file appears in the src directory of the selected JPA project. You can manage the orm.xml file using the JPA Details view or through the XML Editor. See also <a href="ref_details_orm.htm#CACGDGHC">JPA Details view (for orm.xml)</a>.</p>
-<div align="center">
-<div class="inftblnote"><br />
-<table class="Note oac_no_warn" summary="" cellpadding="3" cellspacing="0">
-<tbody>
-<tr>
-<td align="left">
-<p class="notep1">Note:</p>
-The Mapping File Wizard will not allow you to proceed if you select a JPA project that already includes an <code>orm.xml</code> file.</td>
-</tr>
-</tbody>
-</table>
-<br /></div>
-<!-- class="inftblnote" --></div>
 </li>
 </ol>
 </div>

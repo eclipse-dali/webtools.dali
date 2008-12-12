@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='iso-8859-1'?>
 <!-- User Guide -->
   <toc label="Dali Java Persistence Tools User Guide">
-    <topic href="getting_started.htm" label="Getting started">
+      <topic href="getting_started.htm" label="Getting started">
       <topic href="getting_started001.htm" label="Requirements and installation" />
       <topic href="getting_started002.htm" label="Dali quick start">
         <topic href="getting_started003.htm" label="Creating a new JPA project" />
@@ -66,9 +66,9 @@
           <topic href="reference004.htm" label="Entity Properties page" />
         </topic>
         <topic href="reference005.htm" label="Mapping File Wizard">
-          <topic href="reference006.htm#sthref171" label="Mapping File" />
+          <topic href="reference006.htm5" label="Mapping File" />
         </topic>
-        <topic href="reference007.htm#sthref174" label="Generate DDL from Entities Wizard" />
+        <topic href="reference007.htm8" label="Generate DDL from Entities Wizard" />
       </topic>
       <topic label="Property pages">
         <topic href="ref_persistence_prop_view.htm" label="JPA Details view (for entities)">
@@ -76,7 +76,7 @@
           <topic href="reference010.htm" label="Attribute overrides" />
           <topic href="reference011.htm" label="Secondary table information" />
           <topic href="reference012.htm" label="Inheritance information" />
-          <topic href="reference013.htm#sthref187" label="Queries" />
+          <topic href="reference013.htm1" label="Queries" />
         </topic>
         <topic href="ref_persistence_map_view.htm" label="JPA Details view (for attributes)">
           <topic href="ref_mapping_general.htm" label="General information" />
@@ -87,18 +87,20 @@
         <topic href="ref_details_orm.htm" label="JPA Details view (for orm.xml)">
           <topic href="reference016.htm" label="General information" />
           <topic href="reference017.htm" label="Persistence Unit information" />
+          <topic href="reference018.htm" label="Generators" />
+          <topic href="reference019.htm" label="Queries" />
         </topic>
         <topic href="ref_persistence_outline.htm" label="JPA Structure view" />
-        <topic href="reference018.htm" label="persistence.xml Editor">
-          <topic href="reference019.htm" label="General" />
-          <topic href="reference020.htm" label="Connection" />
-          <topic href="reference021.htm" label="Customization" />
-          <topic href="reference022.htm" label="Caching" />
-          <topic href="reference023.htm" label="Logging" />
-          <topic href="reference024.htm" label="Options" />
-          <topic href="reference025.htm" label="Schema Generation" />
-          <topic href="reference026.htm" label="Properties" />
-          <topic href="reference027.htm" label="Source" />
+        <topic href="ref_persistence_xmll_editor.htm" label="persistence.xml Editor">
+          <topic href="reference020.htm" label="General" />
+          <topic href="reference021.htm" label="Connection" />
+          <topic href="reference022.htm" label="Customization" />
+          <topic href="reference023.htm" label="Caching" />
+          <topic href="reference024.htm" label="Logging" />
+          <topic href="reference025.htm" label="Options" />
+          <topic href="reference026.htm" label="Schema Generation" />
+          <topic href="reference027.htm" label="Properties" />
+          <topic href="reference028.htm" label="Source" />
         </topic>
       </topic>
       <topic label="Preferences">
@@ -106,25 +108,20 @@
       </topic>
       <topic label="Dialogs">
         <topic href="task_generate_entities.htm" label="Generate Entities from Tables dialog" />
-        <topic href="reference030.htm" label="Edit Join Columns Dialog" />
+        <topic href="reference031.htm" label="Edit Join Columns Dialog" />
       </topic>
       <topic href="ref_persistence_perspective.htm" label="JPA Development perspective" />
       <topic label="Icons and buttons">
-        <topic href="reference032.htm" label="Icons" />
-        <topic href="reference033.htm" label="Buttons" />
+        <topic href="reference033.htm" label="Icons" />
+        <topic href="reference034.htm" label="Buttons" />
       </topic>
-      <topic href="reference034.htm" label="Dali Developer Documentation" />
+      <topic href="reference035.htm" label="Dali Developer Documentation" />
     </topic>
     <topic href="tips_and_tricks.htm" label="Tips and tricks">
-      <topic href="whats_new001.htm" label="Create JPA Entity Wizard" />
-      <topic href="whats_new002.htm" label="Named Query Support" />
-      <topic href="whats_new003.htm" label="persistence.xml Editor" />
-      <topic href="whats_new004.htm" label="Override the Default Schema for Connection" />
-      <topic href="whats_new005.htm" label="New Mapping File Wizard" />
-      <topic href="whats_new006.htm" label="Convert to Java Project" />
-      <topic href="whats_new007.htm" label="Column Definition Support" />
+      <topic href="whats_new001.htm" label="EclipseLink Support" />
+      <topic href="whats_new002.htm" label="Multiple Mapping Files" />
     </topic>
     <topic href="legal.htm" label=" Legal">
       <topic href="about.htm" label="About this content" />
     </topic>
-</toc>
+  </toc>

@@ -2,7 +2,7 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<!-- Run date = July 23, 2008 8:59:43 -->
+<!-- Run date = December 11, 2008 12:34:21 -->
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
 <title>Managing the persistence.xml file</title>
  
@@ -12,7 +12,7 @@
 <meta name="date" content="2005-07-10T12:57:20+08:00" />
 <meta name="robots" content="noarchive" />
 <meta name="doctitle" content="Managing the persistence.xml file" />
-<meta name="relnum" content="Release 2.0" />
+<meta name="relnum" content="Release 2.1" />
 <meta name="copyright" content="Copyright (c) 2000, 2008 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
@@ -24,7 +24,7 @@
 <div class="sect1"><!-- infolevel="all" infotype="General" -->
 <h1><a id="sthref35" name="sthref35"></a>Managing the persistence.xml file</h1>
 <p><a id="sthref36" name="sthref36"></a>When you create a project, Eclipse creates the <code>META-INF\persistence.xml</code> file in the project's directory.</p>
-<p>You can create a stub <code>persistence.xml</code> file in the META-INF directory when you create a JPA project (see <a href="task_create_new_project.htm#CIHHEJCJ">"Creating a new JPA project"</a>). You can manage this file either through the XML editor (see <a href="tasks002.htm#CIHEJAIE">"Using the XML Editor to edit the persistence.xml file"</a>) or through the <a href="reference018.htm#CIACCHID">persistence.xml Editor</a>.</p>
+<p>You can create a stub <code>persistence.xml</code> file in the META-INF directory when you create a JPA project (see <a href="task_create_new_project.htm#CIHHEJCJ">"Creating a new JPA project"</a>). You can manage this file either through the XML editor (see <a href="tasks002.htm#CIHEJAIE">"Using the XML Editor to edit the persistence.xml file"</a>) or through the <a href="ref_persistence_xmll_editor.htm#CIACCHID">persistence.xml Editor</a>.</p>
 <div align="center">
 <div class="inftblnote"><br />
 <table class="Note oac_no_warn" summary="" cellpadding="3" cellspacing="0">
@@ -32,30 +32,30 @@
 <tr>
 <td align="left">
 <p class="notep1">Note:</p>
-In additon to the General, Connection, Properties and Source pages, the persistence.xml Editor pages for projects that use the EclipseLink platform include the following:
+Depending on your JPA implementation (for example, EclipseLink), the following additional pages may be available in the persistence.xml Editor:
 <ul>
 <li>
-<p><a href="reference021.htm#CIAJAFEG">Customization</a></p>
+<p><a href="reference022.htm#CIAJAFEG">Customization</a></p>
 <p>Use this page to define change-tracking and session customizer-related properties.</p>
 </li>
 <li>
-<p><a href="reference022.htm#CIABEDCH">Caching</a></p>
+<p><a href="reference023.htm#CIABEDCH">Caching</a></p>
 <p>Use this page to define caching properties.</p>
 </li>
 <li>
-<p><a href="reference023.htm#CIABGHHI">Logging</a></p>
+<p><a href="reference024.htm#CIABGHHI">Logging</a></p>
 <p>Use this page to define logging properties.</p>
 </li>
 <li>
-<p><a href="reference024.htm#CIAFJCHE">Options</a></p>
+<p><a href="reference025.htm#CIAFJCHE">Options</a></p>
 <p>Use this page to define session and target database properties.</p>
 </li>
 <li>
-<p><a href="reference025.htm#CIACCFCB">Schema Generation</a></p>
+<p><a href="reference026.htm#CIACCFCB">Schema Generation</a></p>
 <p>Use this page to define DDL-related properties.</p>
 </li>
 </ul>
-<p>For projects using the EclipseLink platform, the Connections page also includes JDBC connection pool properties.</p>
+<p>For projects using the EclipseLink JPA implementation, the Connections page also includes JDBC connection pool properties.</p>
 <p>If the project uses the Generic platform, then only the General, Connection, Properties and Source pages are available.</p>
 </td>
 </tr>
@@ -66,7 +66,7 @@ In additon to the General, Connection, Properties and Source pages, the persiste
 <p>To use the <code>persistence.xml</code> Editor:</p>
 <ol start="1">
 <li>
-<p>Open the <code>peristence.xml</code> file. The <a href="reference019.htm#CIACIFGJ">General</a> page of the editor appears.</p>
+<p>Open the <code>peristence.xml</code> file. The <a href="reference020.htm#CIACIFGJ">General</a> page of the editor appears.</p>
 </li>
 <li>
 <p>Use the General page to define the <code>persistence.xml</code> files <code>&lt;persistent-unit&gt;</code>-related attributes as well as the <code>&lt;provider&gt;</code>, and <code>&lt;class&gt;</code> elements (described in the following table).</p>
@@ -128,7 +128,7 @@ The persistence.xml Editor's Source page enables you to view and edit the raw XM
 <br /></div>
 <!-- class="inftblinformal" --></li>
 <li>
-<p>Use the <a href="reference020.htm#CIAFFJIE">Connection</a> page to define the <code>&lt;jta-data-source&gt;</code> and <code>&lt;non-jta-data-source&gt;</code> elements as follows:</p>
+<p>Use the <a href="reference021.htm#CIAFFJIE">Connection</a> page to define the <code>&lt;jta-data-source&gt;</code> and <code>&lt;non-jta-data-source&gt;</code> elements as follows:</p>
 <p>To configure the JTA (Java Transaction API) source used by the persistence provider:</p>
 <ol start="1">
 <li>
@@ -160,6 +160,7 @@ Select <span class="bold">Default()</span> to use the data source provided by th
 <!-- class="inftblnote" --></div>
 </li>
 </ol>
+<p><a id="sthref37" name="sthref37"></a>For projects using the Generic platform, you can also define the EclipseLink connection pool driver, connection pool driver, URL, user name and password.</p>
 </li>
 <li>
 <p>Use the table in the Properties page to set the vendor-specific <code>&lt;properties&gt;</code> element.</p>
@@ -190,7 +191,7 @@ If the project uses the EclipseLink platform, the connection page also includes 
 </ol>
 <img src="img/ngrelr.png" alt="Related reference" title="Related reference" /><br />
 <br />
-<a href="reference018.htm#CIACCHID">persistence.xml Editor</a>
+<a href="ref_persistence_xmll_editor.htm#CIACCHID">persistence.xml Editor</a>
 <p>&nbsp;</p>
 <img src="img/ngrelt.png" alt="Related task" title="Related task" /><br />
 <br />
