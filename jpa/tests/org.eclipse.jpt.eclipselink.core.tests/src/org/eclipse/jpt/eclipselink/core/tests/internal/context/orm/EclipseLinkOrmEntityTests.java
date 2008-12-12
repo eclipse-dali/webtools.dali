@@ -22,6 +22,7 @@ import org.eclipse.jpt.eclipselink.core.context.Caching;
 import org.eclipse.jpt.eclipselink.core.context.ChangeTrackingType;
 import org.eclipse.jpt.eclipselink.core.context.CustomConverter;
 import org.eclipse.jpt.eclipselink.core.context.ExistenceType;
+import org.eclipse.jpt.eclipselink.core.context.ExpiryTimeOfDay;
 import org.eclipse.jpt.eclipselink.core.context.ObjectTypeConverter;
 import org.eclipse.jpt.eclipselink.core.context.StructConverter;
 import org.eclipse.jpt.eclipselink.core.context.TypeConverter;
@@ -1501,7 +1502,46 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 		assertEquals(true, ormContextCaching.isDefaultShared());
 		assertEquals(null, ormContextCaching.getSpecifiedShared());
 	}
-	
+	public void testSetSpecifiedSharedFalseUnsetsOtherCacheSettings() throws Exception {
+		createTestEntityForCaching();
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		EclipseLinkOrmEntity ormContextEntity = (EclipseLinkOrmEntity) ormPersistentType.getMapping();
+		Caching ormContextCaching = ormContextEntity.getCaching();
+		XmlEntity resourceEntity = (XmlEntity) ormResource().getEntityMappings().getEntities().get(0);
+		
+		ormContextCaching.setSpecifiedType(CacheType.HARD_WEAK);
+		ormContextCaching.setSpecifiedSize(Integer.valueOf(500));
+		ormContextCaching.setSpecifiedAlwaysRefresh(Boolean.FALSE);
+		ormContextCaching.setSpecifiedRefreshOnlyIfNewer(Boolean.FALSE);
+		ormContextCaching.setSpecifiedDisableHits(Boolean.FALSE);
+		ormContextCaching.setSpecifiedCoordinationType(CacheCoordinationType.INVALIDATE_CHANGED_OBJECTS);
+		ormContextCaching.setSpecifiedExistenceType(ExistenceType.ASSUME_NON_EXISTENCE);
+		ormContextCaching.setExpiry(Integer.valueOf(8000));
+		
+		ormContextCaching.setSpecifiedShared(Boolean.FALSE);
+		
+		assertEquals(null, ormContextCaching.getSpecifiedType());
+		assertEquals(null, ormContextCaching.getSpecifiedSize());
+		assertEquals(null, ormContextCaching.getSpecifiedAlwaysRefresh());
+		assertEquals(null, ormContextCaching.getSpecifiedRefreshOnlyIfNewer());
+		assertEquals(null, ormContextCaching.getSpecifiedDisableHits());
+		assertEquals(null, ormContextCaching.getSpecifiedCoordinationType());
+		assertEquals(null, ormContextCaching.getExpiry());
+		
+		
+		//existence checking is the only thing that isn't unset when shared is set to false
+		assertEquals(ExistenceType.ASSUME_NON_EXISTENCE, ormContextCaching.getSpecifiedExistenceType());
+		
+		ormContextCaching.setSpecifiedShared(null);
+		ExpiryTimeOfDay timeOfDayExpiry = ormContextCaching.addExpiryTimeOfDay();
+		timeOfDayExpiry.setHour(Integer.valueOf(5));
+		
+		ormContextCaching.setSpecifiedShared(Boolean.FALSE);
+		assertNull(ormContextCaching.getExpiryTimeOfDay());		
+		assertEquals(Boolean.FALSE, resourceEntity.getCache().getShared());
+		assertNull(resourceEntity.getCache().getExpiryTimeOfDay());
+	}
+
 	public void testUpdateExistenceChecking() throws Exception {
 		createTestEntityForCaching();
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
@@ -1796,7 +1836,7 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 
 	public void testUpdateCustomConverters() throws Exception {
 		createTestEntityForConverters();
-		EclipseLinkPersistenceUnit persistenceUnit = (EclipseLinkPersistenceUnit) persistenceUnit();
+		EclipseLinkPersistenceUnit persistenceUnit = persistenceUnit();
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		EclipseLinkOrmEntity ormContextEntity = (EclipseLinkOrmEntity) ormPersistentType.getMapping();
 		ConverterHolder ormContextConverterHolder = ormContextEntity.getConverterHolder();
@@ -1873,7 +1913,7 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 
 	public void testModifyCustomConverters() throws Exception {
 		createTestEntityForConverters();
-		EclipseLinkPersistenceUnit persistenceUnit = (EclipseLinkPersistenceUnit) persistenceUnit();
+		EclipseLinkPersistenceUnit persistenceUnit = persistenceUnit();
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		EclipseLinkOrmEntity ormContextEntity = (EclipseLinkOrmEntity) ormPersistentType.getMapping();
 		ConverterHolder ormContextConverterHolder = ormContextEntity.getConverterHolder();
@@ -1960,7 +2000,7 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 	
 	public void testUpdateTypeConverters() throws Exception {
 		createTestEntityForTypeConverters();
-		EclipseLinkPersistenceUnit persistenceUnit = (EclipseLinkPersistenceUnit) persistenceUnit();
+		EclipseLinkPersistenceUnit persistenceUnit = persistenceUnit();
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		EclipseLinkOrmEntity ormContextEntity = (EclipseLinkOrmEntity) ormPersistentType.getMapping();
 		ConverterHolder ormContextConverterHolder = ormContextEntity.getConverterHolder();
@@ -2037,7 +2077,7 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 
 	public void testModifyTypeConverters() throws Exception {
 		createTestEntityForTypeConverters();
-		EclipseLinkPersistenceUnit persistenceUnit = (EclipseLinkPersistenceUnit) persistenceUnit();
+		EclipseLinkPersistenceUnit persistenceUnit = persistenceUnit();
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		EclipseLinkOrmEntity ormContextEntity = (EclipseLinkOrmEntity) ormPersistentType.getMapping();
 		ConverterHolder ormContextConverterHolder = ormContextEntity.getConverterHolder();
@@ -2124,7 +2164,7 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 	
 	public void testUpdateObjectTypeConverters() throws Exception {
 		createTestEntityForObjectTypeConverters();
-		EclipseLinkPersistenceUnit persistenceUnit = (EclipseLinkPersistenceUnit) persistenceUnit();
+		EclipseLinkPersistenceUnit persistenceUnit = persistenceUnit();
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		EclipseLinkOrmEntity ormContextEntity = (EclipseLinkOrmEntity) ormPersistentType.getMapping();
 		ConverterHolder ormContextConverterHolder = ormContextEntity.getConverterHolder();
@@ -2201,7 +2241,7 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 
 	public void testModifyObjectTypeConverters() throws Exception {
 		createTestEntityForObjectTypeConverters();
-		EclipseLinkPersistenceUnit persistenceUnit = (EclipseLinkPersistenceUnit) persistenceUnit();
+		EclipseLinkPersistenceUnit persistenceUnit = persistenceUnit();
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		EclipseLinkOrmEntity ormContextEntity = (EclipseLinkOrmEntity) ormPersistentType.getMapping();
 		ConverterHolder ormContextConverterHolder = ormContextEntity.getConverterHolder();
@@ -2288,7 +2328,7 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 	
 	public void testUpdateStructConverters() throws Exception {
 		createTestEntityForStructConverters();
-		EclipseLinkPersistenceUnit persistenceUnit = (EclipseLinkPersistenceUnit) persistenceUnit();
+		EclipseLinkPersistenceUnit persistenceUnit = persistenceUnit();
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		EclipseLinkOrmEntity ormContextEntity = (EclipseLinkOrmEntity) ormPersistentType.getMapping();
 		ConverterHolder ormContextConverterHolder = ormContextEntity.getConverterHolder();
@@ -2365,7 +2405,7 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 
 	public void testModifyStructConverters() throws Exception {
 		createTestEntityForStructConverters();
-		EclipseLinkPersistenceUnit persistenceUnit = (EclipseLinkPersistenceUnit) persistenceUnit();
+		EclipseLinkPersistenceUnit persistenceUnit = persistenceUnit();
 		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		EclipseLinkOrmEntity ormContextEntity = (EclipseLinkOrmEntity) ormPersistentType.getMapping();
 		ConverterHolder ormContextConverterHolder = ormContextEntity.getConverterHolder();

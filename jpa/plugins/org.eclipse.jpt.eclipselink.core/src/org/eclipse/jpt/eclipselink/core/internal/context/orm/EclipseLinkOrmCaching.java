@@ -137,6 +137,18 @@ public class EclipseLinkOrmCaching extends AbstractXmlContextNode
 			}
 		}
 		firePropertyChanged(SPECIFIED_SHARED_PROPERTY, oldSpecifiedShared, newSpecifiedShared);		
+		if (newSpecifiedShared == Boolean.FALSE) {
+			setSpecifiedType(null);
+			setSpecifiedSize(null);
+			setSpecifiedAlwaysRefresh(null);
+			setSpecifiedRefreshOnlyIfNewer(null);
+			setSpecifiedDisableHits(null);
+			setSpecifiedCoordinationType(null);
+			setExpiry(null);
+			if (this.expiryTimeOfDay != null) {
+				removeExpiryTimeOfDay();
+			}
+		}
 	}
 	
 	protected void setSpecifiedShared_(Boolean newSpecifiedShared) {
