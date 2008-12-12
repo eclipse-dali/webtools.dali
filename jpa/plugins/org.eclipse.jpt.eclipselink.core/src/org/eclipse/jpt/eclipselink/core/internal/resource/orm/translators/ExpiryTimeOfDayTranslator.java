@@ -17,7 +17,7 @@ public class ExpiryTimeOfDayTranslator extends Translator
 	
 	
 	public ExpiryTimeOfDayTranslator() {
-		super(EXPIRY_TIME_OF_DAY, ECLIPSELINK_ORM_PKG.getXmlCache_ExpiryTimeOfDay());
+		super(EXPIRY_TIME_OF_DAY, ECLIPSELINK_ORM_PKG.getXmlCache_ExpiryTimeOfDay(), END_TAG_NO_INDENT);
 	}
 	
 	@Override
