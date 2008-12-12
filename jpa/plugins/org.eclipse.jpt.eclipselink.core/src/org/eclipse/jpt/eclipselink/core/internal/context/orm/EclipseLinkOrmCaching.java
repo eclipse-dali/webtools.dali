@@ -410,6 +410,9 @@ public class EclipseLinkOrmCaching extends AbstractXmlContextNode
 			}
 		}
 		firePropertyChanged(EXPIRY_PROPERTY, oldExpiry, newExpiry);
+		if (newExpiry != null && this.expiryTimeOfDay != null) {
+			removeExpiryTimeOfDay();
+		}
 	}
 	
 	protected void setExpiry_(Integer newExpiry) {
