@@ -710,11 +710,20 @@ public class AbstractPersistenceUnit extends AbstractXmlContextNode
 	/**
 	 * Concrete subclass must call this in the constructor, not called here
 	 */
+	//be careful changing the order of this method, bug 258701 is one reason.
 	protected void initialize(XmlPersistenceUnit xpu) {
 		this.xmlPersistenceUnit = xpu;
 		this.name = xpu.getName();
-		
+		this.specifiedExcludeUnlistedClasses = xpu.getExcludeUnlistedClasses();
+		this.specifiedTransactionType = specifiedTransactionType(xpu);
+		this.defaultTransactionType = defaultTransacationType();
+		this.description = xpu.getDescription();
+		this.provider = xpu.getProvider();
+		this.jtaDataSource = xpu.getJtaDataSource();
+		this.nonJtaDataSource = xpu.getNonJtaDataSource();
+		this.specifiedExcludeUnlistedClasses = xpu.getExcludeUnlistedClasses();
 		initializeProperties(xpu);
+		
 		//initialize specified classRefs before mappingFileRefs because of 
 		//JpaFile rootStructureNode, we want the mapping file to "win",
 		//as it would in a Jpa runtime implementation
@@ -724,14 +733,6 @@ public class AbstractPersistenceUnit extends AbstractXmlContextNode
 		//specified classRefs and mappingFileRefs
 		initializeImpliedClassRefs(xpu);
 		initializePersistenceUnitDefaults();
-		this.specifiedExcludeUnlistedClasses = xpu.getExcludeUnlistedClasses();
-		this.specifiedTransactionType = specifiedTransactionType(xpu);
-		this.defaultTransactionType = defaultTransacationType();
-		this.description = xpu.getDescription();
-		this.provider = xpu.getProvider();
-		this.jtaDataSource = xpu.getJtaDataSource();
-		this.nonJtaDataSource = xpu.getNonJtaDataSource();
-		this.specifiedExcludeUnlistedClasses = xpu.getExcludeUnlistedClasses();
 	}
 	
 	protected void initializeMappingFileRefs(XmlPersistenceUnit xpu) {
