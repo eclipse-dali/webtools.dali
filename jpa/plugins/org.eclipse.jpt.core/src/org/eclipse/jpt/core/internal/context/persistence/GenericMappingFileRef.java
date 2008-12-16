@@ -164,7 +164,7 @@ public class GenericMappingFileRef extends AbstractXmlContextNode
 			return null;
 		}
 		IProject project = getJpaProject().getProject();
-		IVirtualFile vFile = ComponentCore.createFile(project, new Path(fileName));
+		IVirtualFile vFile = ComponentCore.createFile(project, new Path(JptCorePlugin.getDeploymentURI(project, fileName)));
 		return vFile.getUnderlyingFile();
 	}
 	
