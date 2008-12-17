@@ -23,3 +23,18 @@ Require-Bundle: org.eclipse.core.commands;bundle-version="[3.4.0,4.0.0)",
  org.junit;bundle-version="[3.8.2,4.0.0)"
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Import-Package: org.eclipse.jpt.utility.tests.internal
+Export-Package: org.eclipse.jpt.eclipselink.core.tests.internal;x-internal:=true,
+ org.eclipse.jpt.eclipselink.core.tests.internal.context;x-internal:=true,
+ org.eclipse.jpt.eclipselink.core.tests.internal.context.java;x-internal:=true,
+ org.eclipse.jpt.eclipselink.core.tests.internal.context.orm;x-internal:=true,
+ org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence;x-internal:=true,
+ org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.caching;x-internal:=true,
+ org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.connection;x-internal:=true,
+ org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.customization;x-internal:=true,
+ org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.general;x-internal:=true,
+ org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.logging;x-internal:=true,
+ org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.options;x-internal:=true,
+ org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.schema.generation;x-internal:=true,
+ org.eclipse.jpt.eclipselink.core.tests.internal.resource;x-internal:=true,
+ org.eclipse.jpt.eclipselink.core.tests.internal.resource.java;x-internal:=true,
+ org.eclipse.jpt.eclipselink.core.tests.internal.resource.orm;x-internal:=true
