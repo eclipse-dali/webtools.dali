@@ -18,7 +18,7 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jpt.core.context.NamedNativeQuery;
 import org.eclipse.jpt.core.context.NamedQuery;
 import org.eclipse.jpt.core.context.Query;
-import org.eclipse.jpt.core.context.QueryHolder;
+import org.eclipse.jpt.core.context.QueryContainer;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.util.ControlSwitcher;
@@ -77,9 +77,9 @@ import org.eclipse.ui.part.PageBook;
  * @version 2.0
  * @since 2.0
  */
-public class QueriesComposite extends Pane<QueryHolder>
+public class QueriesComposite extends Pane<QueryContainer>
 {
-	private AddRemoveListPane<QueryHolder> listPane;
+	private AddRemoveListPane<QueryContainer> listPane;
 	private NamedNativeQueryPropertyComposite namedNativeQueryPane;
 	private NamedQueryPropertyComposite namedQueryPane;
 	private WritablePropertyValueModel<Query> queryHolder;
@@ -90,7 +90,7 @@ public class QueriesComposite extends Pane<QueryHolder>
 	 * @param parentPane The parent controller of this one
 	 * @param parent The parent container
 	 */
-	public QueriesComposite(Pane<? extends QueryHolder> parentPane,
+	public QueriesComposite(Pane<? extends QueryContainer> parentPane,
 	                        Composite parent) {
 
 		super(parentPane, parent);
@@ -140,9 +140,9 @@ public class QueriesComposite extends Pane<QueryHolder>
 		};
 	}
 
-	private AddRemoveListPane<QueryHolder> addListPane(Composite container) {
+	private AddRemoveListPane<QueryContainer> addListPane(Composite container) {
 
-		return new AddRemoveListPane<QueryHolder>(
+		return new AddRemoveListPane<QueryContainer>(
 			this,
 			container,
 			buildQueriesAdapter(),
@@ -169,9 +169,9 @@ public class QueriesComposite extends Pane<QueryHolder>
 	}
 
 	private ListValueModel<NamedNativeQuery> buildNamedNativeQueriesListHolder() {
-		return new ListAspectAdapter<QueryHolder, NamedNativeQuery>(
+		return new ListAspectAdapter<QueryContainer, NamedNativeQuery>(
 			getSubjectHolder(),
-			QueryHolder.NAMED_NATIVE_QUERIES_LIST)
+			QueryContainer.NAMED_NATIVE_QUERIES_LIST)
 		{
 			@Override
 			protected ListIterator<NamedNativeQuery> listIterator_() {
@@ -195,9 +195,9 @@ public class QueriesComposite extends Pane<QueryHolder>
 	}
 
 	private ListValueModel<NamedQuery> buildNamedQueriesListHolder() {
-		return new ListAspectAdapter<QueryHolder, NamedQuery>(
+		return new ListAspectAdapter<QueryContainer, NamedQuery>(
 			getSubjectHolder(),
-			QueryHolder.NAMED_QUERIES_LIST)
+			QueryContainer.NAMED_QUERIES_LIST)
 		{
 			@Override
 			protected ListIterator<NamedQuery> listIterator_() {

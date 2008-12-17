@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context;
 
+import org.eclipse.jpt.core.JpaNode;
+
 /**
  * 
  * 
@@ -18,12 +20,13 @@ package org.eclipse.jpt.core.context;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface IdClass extends JpaContextNode
+public interface IdClassHolder
+	extends JpaNode
 {
 	String getIdClass();
 	
 	void setIdClass(String value);
 	
-		String ID_CLASS_PROPERTY = "idClassProperty";
+		String ID_CLASS_PROPERTY = "idClass"; //$NON-NLS-1$
 	
 }

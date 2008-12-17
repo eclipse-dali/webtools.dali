@@ -18,8 +18,12 @@ import java.util.ListIterator;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface QueryHolder extends JpaContextNode
+public interface QueryContainer
+	extends JpaContextNode
 {
+
+	// ********** named queries **********
+
 	/**
 	 * Return a list iterator of the named queries.
 	 * This will not be null.
@@ -51,7 +55,10 @@ public interface QueryHolder extends JpaContextNode
 	 */
 	void moveNamedQuery(int targetIndex, int sourceIndex);
 
-	String NAMED_QUERIES_LIST = "namedQueriesList";
+	String NAMED_QUERIES_LIST = "namedQueries"; //$NON-NLS-1$
+
+
+	// ********** named native queries **********
 
 	/**
 	 * Return a list iterator of the specified named native queries.
@@ -84,5 +91,6 @@ public interface QueryHolder extends JpaContextNode
 	 */
 	void moveNamedNativeQuery(int targetIndex, int sourceIndex);
 
-	String NAMED_NATIVE_QUERIES_LIST = "namedNativeQueriesList";
+	String NAMED_NATIVE_QUERIES_LIST = "namedNativeQueries"; //$NON-NLS-1$
+
 }

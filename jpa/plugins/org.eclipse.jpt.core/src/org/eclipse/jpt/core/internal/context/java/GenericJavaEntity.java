@@ -14,6 +14,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AssociationOverride;
@@ -25,7 +26,6 @@ import org.eclipse.jpt.core.context.DiscriminatorColumn;
 import org.eclipse.jpt.core.context.DiscriminatorType;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.Generator;
-import org.eclipse.jpt.core.context.IdClass;
 import org.eclipse.jpt.core.context.InheritanceType;
 import org.eclipse.jpt.core.context.NamedNativeQuery;
 import org.eclipse.jpt.core.context.NamedQuery;
@@ -33,7 +33,6 @@ import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.Query;
-import org.eclipse.jpt.core.context.QueryHolder;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.SecondaryTable;
 import org.eclipse.jpt.core.context.Table;
@@ -1066,12 +1065,12 @@ public class GenericJavaEntity
 		this.namedQueries.add(index, namedQuery);
 		NamedQueryAnnotation namedQueryAnnotation = (NamedQueryAnnotation) this.javaResourcePersistentType.addSupportingAnnotation(index, NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME);
 		namedQuery.initialize(namedQueryAnnotation);
-		fireItemAdded(QueryHolder.NAMED_QUERIES_LIST, index, namedQuery);
+		fireItemAdded(NAMED_QUERIES_LIST, index, namedQuery);
 		return namedQuery;
 	}
 	
 	protected void addNamedQuery(int index, JavaNamedQuery namedQuery) {
-		addItemToList(index, namedQuery, this.namedQueries, QueryHolder.NAMED_QUERIES_LIST);
+		addItemToList(index, namedQuery, this.namedQueries, NAMED_QUERIES_LIST);
 	}
 	
 	protected void addNamedQuery(JavaNamedQuery namedQuery) {
@@ -1085,17 +1084,17 @@ public class GenericJavaEntity
 	public void removeNamedQuery(int index) {
 		JavaNamedQuery removedNamedQuery = this.namedQueries.remove(index);
 		this.javaResourcePersistentType.removeSupportingAnnotation(index, NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME);
-		fireItemRemoved(QueryHolder.NAMED_QUERIES_LIST, index, removedNamedQuery);
+		fireItemRemoved(NAMED_QUERIES_LIST, index, removedNamedQuery);
 	}	
 	
 	protected void removeNamedQuery_(JavaNamedQuery namedQuery) {
-		removeItemFromList(namedQuery, this.namedQueries, QueryHolder.NAMED_QUERIES_LIST);
+		removeItemFromList(namedQuery, this.namedQueries, NAMED_QUERIES_LIST);
 	}
 	
 	public void moveNamedQuery(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.namedQueries, targetIndex, sourceIndex);
 		this.javaResourcePersistentType.moveSupportingAnnotation(targetIndex, sourceIndex, NamedQueriesAnnotation.ANNOTATION_NAME);
-		fireItemMoved(QueryHolder.NAMED_QUERIES_LIST, targetIndex, sourceIndex);		
+		fireItemMoved(NAMED_QUERIES_LIST, targetIndex, sourceIndex);		
 	}
 	
 	public ListIterator<JavaNamedNativeQuery> namedNativeQueries() {
@@ -1111,12 +1110,12 @@ public class GenericJavaEntity
 		this.namedNativeQueries.add(index, namedNativeQuery);
 		NamedNativeQueryAnnotation namedNativeQueryAnnotation = (NamedNativeQueryAnnotation) this.javaResourcePersistentType.addSupportingAnnotation(index, NamedNativeQueryAnnotation.ANNOTATION_NAME, NamedNativeQueriesAnnotation.ANNOTATION_NAME);
 		namedNativeQuery.initialize(namedNativeQueryAnnotation);		
-		fireItemAdded(QueryHolder.NAMED_NATIVE_QUERIES_LIST, index, namedNativeQuery);
+		fireItemAdded(NAMED_NATIVE_QUERIES_LIST, index, namedNativeQuery);
 		return namedNativeQuery;
 	}
 	
 	protected void addNamedNativeQuery(int index, JavaNamedNativeQuery namedNativeQuery) {
-		addItemToList(index, namedNativeQuery, this.namedNativeQueries, QueryHolder.NAMED_NATIVE_QUERIES_LIST);
+		addItemToList(index, namedNativeQuery, this.namedNativeQueries, NAMED_NATIVE_QUERIES_LIST);
 	}
 	
 	protected void addNamedNativeQuery(JavaNamedNativeQuery namedNativeQuery) {
@@ -1130,17 +1129,17 @@ public class GenericJavaEntity
 	public void removeNamedNativeQuery(int index) {
 		JavaNamedNativeQuery removedNamedNativeQuery = this.namedNativeQueries.remove(index);
 		this.javaResourcePersistentType.removeSupportingAnnotation(index, NamedNativeQueryAnnotation.ANNOTATION_NAME, NamedNativeQueriesAnnotation.ANNOTATION_NAME);
-		fireItemRemoved(QueryHolder.NAMED_NATIVE_QUERIES_LIST, index, removedNamedNativeQuery);
+		fireItemRemoved(NAMED_NATIVE_QUERIES_LIST, index, removedNamedNativeQuery);
 	}	
 	
 	protected void removeNamedNativeQuery_(JavaNamedNativeQuery namedNativeQuery) {
-		removeItemFromList(namedNativeQuery, this.namedNativeQueries, QueryHolder.NAMED_NATIVE_QUERIES_LIST);
+		removeItemFromList(namedNativeQuery, this.namedNativeQueries, NAMED_NATIVE_QUERIES_LIST);
 	}
 	
 	public void moveNamedNativeQuery(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.namedNativeQueries, targetIndex, sourceIndex);
 		this.javaResourcePersistentType.moveSupportingAnnotation(targetIndex, sourceIndex, NamedNativeQueriesAnnotation.ANNOTATION_NAME);
-		fireItemMoved(QueryHolder.NAMED_NATIVE_QUERIES_LIST, targetIndex, sourceIndex);		
+		fireItemMoved(NAMED_NATIVE_QUERIES_LIST, targetIndex, sourceIndex);		
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -1166,13 +1165,13 @@ public class GenericJavaEntity
 				removeResourceIdClass();
 			}
 		}
-		firePropertyChanged(IdClass.ID_CLASS_PROPERTY, oldIdClass, newIdClass);
+		firePropertyChanged(ID_CLASS_PROPERTY, oldIdClass, newIdClass);
 	}
 	
 	protected void setIdClass_(String newIdClass) {
 		String oldIdClass = this.idClass;
 		this.idClass = newIdClass;
-		firePropertyChanged(IdClass.ID_CLASS_PROPERTY, oldIdClass, newIdClass);
+		firePropertyChanged(ID_CLASS_PROPERTY, oldIdClass, newIdClass);
 	}
 
 	protected IdClassAnnotation getResourceIdClass() {

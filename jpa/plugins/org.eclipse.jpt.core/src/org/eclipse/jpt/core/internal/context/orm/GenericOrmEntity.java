@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.AttributeOverride;
@@ -22,7 +23,6 @@ import org.eclipse.jpt.core.context.ColumnMapping;
 import org.eclipse.jpt.core.context.DiscriminatorColumn;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.Generator;
-import org.eclipse.jpt.core.context.IdClass;
 import org.eclipse.jpt.core.context.InheritanceType;
 import org.eclipse.jpt.core.context.NamedNativeQuery;
 import org.eclipse.jpt.core.context.NamedQuery;
@@ -30,7 +30,6 @@ import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.Query;
-import org.eclipse.jpt.core.context.QueryHolder;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.SecondaryTable;
 import org.eclipse.jpt.core.context.Table;
@@ -972,12 +971,12 @@ public class GenericOrmEntity
 		OrmNamedQuery contextNamedQuery = buildNamedQuery(resourceNamedQuery);
 		this.namedQueries.add(index, contextNamedQuery);
 		this.resourceTypeMapping.getNamedQueries().add(index, resourceNamedQuery);
-		this.fireItemAdded(QueryHolder.NAMED_QUERIES_LIST, index, contextNamedQuery);
+		this.fireItemAdded(NAMED_QUERIES_LIST, index, contextNamedQuery);
 		return contextNamedQuery;
 	}
 	
 	protected void addNamedQuery(int index, OrmNamedQuery namedQuery) {
-		addItemToList(index, namedQuery, this.namedQueries, QueryHolder.NAMED_QUERIES_LIST);
+		addItemToList(index, namedQuery, this.namedQueries, NAMED_QUERIES_LIST);
 	}
 		
 	protected void addNamedQuery(OrmNamedQuery namedQuery) {
@@ -991,17 +990,17 @@ public class GenericOrmEntity
 	public void removeNamedQuery(int index) {
 		OrmNamedQuery namedQuery = this.namedQueries.remove(index);
 		this.resourceTypeMapping.getNamedQueries().remove(index);
-		fireItemRemoved(QueryHolder.NAMED_QUERIES_LIST, index, namedQuery);
+		fireItemRemoved(NAMED_QUERIES_LIST, index, namedQuery);
 	}
 	
 	protected void removeNamedQuery_(OrmNamedQuery namedQuery) {
-		removeItemFromList(namedQuery, this.namedQueries, QueryHolder.NAMED_QUERIES_LIST);
+		removeItemFromList(namedQuery, this.namedQueries, NAMED_QUERIES_LIST);
 	}
 	
 	public void moveNamedQuery(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.namedQueries, targetIndex, sourceIndex);
 		this.resourceTypeMapping.getNamedQueries().move(targetIndex, sourceIndex);
-		fireItemMoved(QueryHolder.NAMED_QUERIES_LIST, targetIndex, sourceIndex);		
+		fireItemMoved(NAMED_QUERIES_LIST, targetIndex, sourceIndex);		
 	}
 	
 	public ListIterator<OrmNamedNativeQuery> namedNativeQueries() {
@@ -1017,12 +1016,12 @@ public class GenericOrmEntity
 		OrmNamedNativeQuery contextNamedNativeQuery = buildNamedNativeQuery(resourceNamedNativeQuery);
 		this.namedNativeQueries.add(index, contextNamedNativeQuery);
 		this.resourceTypeMapping.getNamedNativeQueries().add(index, resourceNamedNativeQuery);
-		this.fireItemAdded(QueryHolder.NAMED_NATIVE_QUERIES_LIST, index, contextNamedNativeQuery);
+		this.fireItemAdded(NAMED_NATIVE_QUERIES_LIST, index, contextNamedNativeQuery);
 		return contextNamedNativeQuery;
 	}
 	
 	protected void addNamedNativeQuery(int index, OrmNamedNativeQuery namedNativeQuery) {
-		addItemToList(index, namedNativeQuery, this.namedNativeQueries, QueryHolder.NAMED_NATIVE_QUERIES_LIST);
+		addItemToList(index, namedNativeQuery, this.namedNativeQueries, NAMED_NATIVE_QUERIES_LIST);
 	}
 	
 	protected void addNamedNativeQuery(OrmNamedNativeQuery namedNativeQuery) {
@@ -1036,17 +1035,17 @@ public class GenericOrmEntity
 	public void removeNamedNativeQuery(int index) {
 		OrmNamedNativeQuery namedNativeQuery = this.namedNativeQueries.remove(index);
 		this.resourceTypeMapping.getNamedNativeQueries().remove(index);
-		fireItemRemoved(QueryHolder.NAMED_NATIVE_QUERIES_LIST, index, namedNativeQuery);
+		fireItemRemoved(NAMED_NATIVE_QUERIES_LIST, index, namedNativeQuery);
 	}
 
 	protected void removeNamedNativeQuery_(OrmNamedNativeQuery namedNativeQuery) {
-		removeItemFromList(namedNativeQuery, this.namedNativeQueries, QueryHolder.NAMED_NATIVE_QUERIES_LIST);
+		removeItemFromList(namedNativeQuery, this.namedNativeQueries, NAMED_NATIVE_QUERIES_LIST);
 	}
 		
 	public void moveNamedNativeQuery(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.namedNativeQueries, targetIndex, sourceIndex);
 		this.resourceTypeMapping.getNamedNativeQueries().move(targetIndex, sourceIndex);
-		fireItemMoved(QueryHolder.NAMED_NATIVE_QUERIES_LIST, targetIndex, sourceIndex);		
+		fireItemMoved(NAMED_NATIVE_QUERIES_LIST, targetIndex, sourceIndex);		
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -1073,13 +1072,13 @@ public class GenericOrmEntity
 				getResourceIdClass().setClassName(newIdClass);
 			}
 		}
-		firePropertyChanged(IdClass.ID_CLASS_PROPERTY, oldIdClass, newIdClass);
+		firePropertyChanged(ID_CLASS_PROPERTY, oldIdClass, newIdClass);
 	}
 	
 	protected void setIdClass_(String newIdClass) {
 		String oldIdClass = this.idClass;
 		this.idClass = newIdClass;
-		firePropertyChanged(IdClass.ID_CLASS_PROPERTY, oldIdClass, newIdClass);
+		firePropertyChanged(ID_CLASS_PROPERTY, oldIdClass, newIdClass);
 	}
 
 	protected XmlIdClass getResourceIdClass() {

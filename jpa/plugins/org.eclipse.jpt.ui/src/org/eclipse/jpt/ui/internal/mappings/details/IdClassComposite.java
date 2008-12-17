@@ -11,7 +11,7 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.core.context.IdClass;
+import org.eclipse.jpt.core.context.IdClassHolder;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.ui.internal.widgets.ClassChooserPane;
@@ -36,7 +36,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 2.0
  */
-public class IdClassComposite extends Pane<IdClass>
+public class IdClassComposite extends Pane<IdClassHolder>
 {
 	/**
 	 * Creates a new <code>IdClassComposite</code>.
@@ -44,19 +44,19 @@ public class IdClassComposite extends Pane<IdClass>
 	 * @param parentPane The parent pane of this one
 	 * @param parent The parent container
 	 */
-	public IdClassComposite(Pane<? extends IdClass> parentPane,
+	public IdClassComposite(Pane<? extends IdClassHolder> parentPane,
                            Composite parent) {
 
 		super(parentPane, parent);
 	}
 
-	private ClassChooserPane<IdClass> addClassChooser(Composite container) {
+	private ClassChooserPane<IdClassHolder> addClassChooser(Composite container) {
 
-		return new ClassChooserPane<IdClass>(this, container) {
+		return new ClassChooserPane<IdClassHolder>(this, container) {
 
 			@Override
 			protected WritablePropertyValueModel<String> buildTextHolder() {
-				return new PropertyAspectAdapter<IdClass, String>(getSubjectHolder(), IdClass.ID_CLASS_PROPERTY) {
+				return new PropertyAspectAdapter<IdClassHolder, String>(getSubjectHolder(), IdClassHolder.ID_CLASS_PROPERTY) {
 					@Override
 					protected String buildValue_() {
 						return subject.getIdClass();

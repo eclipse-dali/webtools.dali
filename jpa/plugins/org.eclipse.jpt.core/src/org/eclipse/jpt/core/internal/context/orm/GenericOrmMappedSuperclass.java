@@ -10,8 +10,8 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.Iterator;
+
 import org.eclipse.jpt.core.MappingKeys;
-import org.eclipse.jpt.core.context.IdClass;
 import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.java.JavaMappedSuperclass;
 import org.eclipse.jpt.core.context.orm.OrmMappedSuperclass;
@@ -73,13 +73,13 @@ public class GenericOrmMappedSuperclass extends AbstractOrmTypeMapping<XmlMapped
 				getResourceIdClass().setClassName(newIdClass);
 			}
 		}
-		firePropertyChanged(IdClass.ID_CLASS_PROPERTY, oldIdClass, newIdClass);
+		firePropertyChanged(ID_CLASS_PROPERTY, oldIdClass, newIdClass);
 	}
 	
 	protected void setIdClass_(String newIdClass) {
 		String oldIdClass = this.idClass;
 		this.idClass = newIdClass;
-		firePropertyChanged(IdClass.ID_CLASS_PROPERTY, oldIdClass, newIdClass);
+		firePropertyChanged(ID_CLASS_PROPERTY, oldIdClass, newIdClass);
 	}
 
 	protected XmlIdClass getResourceIdClass() {

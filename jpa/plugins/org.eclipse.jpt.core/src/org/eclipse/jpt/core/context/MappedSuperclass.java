@@ -18,7 +18,8 @@ package org.eclipse.jpt.core.context;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface MappedSuperclass extends TypeMapping, IdClass
+public interface MappedSuperclass
+	extends TypeMapping, IdClassHolder
 {
 	//nothing yet
 }

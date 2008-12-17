@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Iterator;
 import org.eclipse.jpt.core.MappingKeys;
-import org.eclipse.jpt.core.context.IdClass;
 import org.eclipse.jpt.core.context.java.JavaMappedSuperclass;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
@@ -78,13 +77,13 @@ public class GenericJavaMappedSuperclass extends AbstractJavaTypeMapping
 				removeResourceIdClass();
 			}
 		}
-		firePropertyChanged(IdClass.ID_CLASS_PROPERTY, oldIdClass, newIdClass);
+		firePropertyChanged(ID_CLASS_PROPERTY, oldIdClass, newIdClass);
 	}
 	
 	protected void setIdClass_(String newIdClass) {
 		String oldIdClass = this.idClass;
 		this.idClass = newIdClass;
-		firePropertyChanged(IdClass.ID_CLASS_PROPERTY, oldIdClass, newIdClass);
+		firePropertyChanged(ID_CLASS_PROPERTY, oldIdClass, newIdClass);
 	}
 
 	protected IdClassAnnotation getIdClassResource() {

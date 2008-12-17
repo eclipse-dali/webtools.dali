@@ -20,11 +20,8 @@ import java.util.ListIterator;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface Entity extends
-	TypeMapping,
-	GeneratorHolder,
-	QueryHolder,
-	IdClass
+public interface Entity
+	extends TypeMapping, GeneratorHolder, QueryContainer, IdClassHolder
 {
 	// **************** name **************************************
 
