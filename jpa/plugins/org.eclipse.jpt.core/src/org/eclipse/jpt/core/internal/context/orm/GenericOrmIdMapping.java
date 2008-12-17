@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.context.orm;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.Converter;
 import org.eclipse.jpt.core.context.Generator;
@@ -414,7 +415,9 @@ public class GenericOrmIdMapping
 		if (this.connectionProfileIsActive() && this.ownerIsEntity()) {
 			this.validateColumn(messages);
 		}
-		this.validateGeneratedValue(messages);
+		if (this.generatedValue != null) {
+			this.generatedValue.validate(messages);
+		}
 		this.validateGenerators(messages);
 	}
 	
@@ -469,32 +472,6 @@ public class GenericOrmIdMapping
 				);
 			}
 		}
-	}
-	
-	protected void validateGeneratedValue(List<IMessage> messages) {
-		if (this.generatedValue == null) {
-			return;
-		}
-
-		String generatorName = this.generatedValue.getGenerator();
-		if (generatorName == null) {
-			return;
-		}
-		
-		for (Iterator<Generator> stream = this.getPersistenceUnit().allGenerators(); stream.hasNext(); ) {
-			if (generatorName.equals(stream.next().getName())) {
-				return;
-			}
-		}
-		
-		messages.add(
-			DefaultJpaValidationMessages.buildMessage(
-				IMessage.HIGH_SEVERITY,
-				JpaValidationMessages.ID_MAPPING_UNRESOLVED_GENERATOR_NAME,
-				new String[] {generatorName},
-				this,
-				this.generatedValue.getGeneratorTextRange())
-			);
 	}
 	
 	protected void validateGenerators(List<IMessage> messages) {

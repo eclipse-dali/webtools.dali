@@ -11,8 +11,9 @@ package org.eclipse.jpt.ui.internal.views;
 import java.util.HashMap;
 import java.util.Map;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaStructureNode;
-import org.eclipse.jpt.core.utility.PlatformUtilities;
+import org.eclipse.jpt.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.ui.JpaPlatformUi;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.details.JpaDetailsPage;
@@ -47,10 +48,10 @@ public class JpaDetailsView extends AbstractJpaView
 
 	//TODO this is crap, a Map of Maps of Maps. Needs to be done differently, the factory/platform should handle caching instead
 	// key1 platform id
-	// key2 content type id
+	// key2 content type
 	// key3 structure node type
 	// value Composite page
-	private Map<String, Map<String, Map<String, JpaDetailsPage<? extends JpaStructureNode>>>> detailsPages;
+	private Map<String, Map<IContentType, Map<String, JpaDetailsPage<? extends JpaStructureNode>>>> detailsPages;
 
 	/**
 	 * Creates a new <code>JpaDetailsView</code>.
@@ -64,7 +65,7 @@ public class JpaDetailsView extends AbstractJpaView
 		super.initialize();
 
 		this.currentSelection = JpaSelection.NULL_SELECTION;
-		this.detailsPages     = new HashMap<String, Map<String, Map<String, JpaDetailsPage<? extends JpaStructureNode>>>>();
+		this.detailsPages     = new HashMap<String, Map<IContentType, Map<String, JpaDetailsPage<? extends JpaStructureNode>>>>();
 	}
 
 	private JpaDetailsPage<? extends JpaStructureNode> buildDetailsPage(JpaStructureNode structureNode) {
@@ -87,20 +88,19 @@ public class JpaDetailsView extends AbstractJpaView
 
 		if (page != null) {
 			String platformId = structureNode.getJpaProject().getJpaPlatform().getId();
-			this.detailsPages.get(platformId);
-			Map<String, Map<String, JpaDetailsPage<? extends JpaStructureNode>>> platformDetailsPages = this.detailsPages.get(platformId);
+			Map<IContentType, Map<String, JpaDetailsPage<? extends JpaStructureNode>>> platformDetailsPages = this.detailsPages.get(platformId);
 			if (platformDetailsPages == null) {
-				platformDetailsPages = new HashMap<String, Map<String, JpaDetailsPage<? extends JpaStructureNode>>>();
+				platformDetailsPages = new HashMap<IContentType, Map<String, JpaDetailsPage<? extends JpaStructureNode>>>();
 				this.detailsPages.put(platformId, platformDetailsPages);
 			}
 			//not sure how this couldn't be a file, at least not if we are in JpaDetailsView trying to view it
 			IFile file = (IFile) structureNode.getResource();
 			//also, don't see how the contentType can be null, so not checking, can't have a JpaStructureNode without a contentType
-			String contentTypeId = PlatformUtilities.getContentType(file).getId();
-			Map<String, JpaDetailsPage<? extends JpaStructureNode>> contentTypeDetailsPages = platformDetailsPages.get(contentTypeId);
+			IContentType contentType = PlatformTools.getContentType(file);
+			Map<String, JpaDetailsPage<? extends JpaStructureNode>> contentTypeDetailsPages = platformDetailsPages.get(contentType);
 			if (contentTypeDetailsPages == null) {
 				contentTypeDetailsPages = new HashMap<String, JpaDetailsPage<? extends JpaStructureNode>>();
-				platformDetailsPages.put(contentTypeId, contentTypeDetailsPages);
+				platformDetailsPages.put(contentType, contentTypeDetailsPages);
 			}
 			contentTypeDetailsPages.put(id, page);
 		}
@@ -119,28 +119,25 @@ public class JpaDetailsView extends AbstractJpaView
 		super.dispose();
 	}
 
-	protected String getContentTypeId(JpaStructureNode structureNode) {
+	protected IContentType getContentType(JpaStructureNode structureNode) {
 		//not sure how this couldn't be a file, at least not if we are in JpaDetailsView trying to view it
 		IFile file = (IFile) structureNode.getResource();
-		//also, don't see how the contentType can be null, so not checking, can't have a JpaStructureNode without a contentType
-		return PlatformUtilities.getContentType(file).getId();
+		//also, don't see how the content type can be null, so not checking, can't have a JpaStructureNode without a contentType
+		return PlatformTools.getContentType(file);
 	}
 	
 	private JpaDetailsPage<? extends JpaStructureNode> getDetailsPage(JpaStructureNode structureNode) {
 		String platformId = structureNode.getJpaProject().getJpaPlatform().getId();
 		if (this.detailsPages.containsKey(platformId)) {
-			Map<String, Map<String, JpaDetailsPage<? extends JpaStructureNode>>> platformDetailsPages = this.detailsPages.get(platformId);
-			String contentTypeId = getContentTypeId(structureNode);
-			if (platformDetailsPages.containsKey(contentTypeId)) {
-				Map<String, JpaDetailsPage<? extends JpaStructureNode>> contentTypeDetailsPages = platformDetailsPages.get(contentTypeId);	
-				if (contentTypeDetailsPages.containsKey(structureNode.getId())) {
-					JpaDetailsPage<? extends JpaStructureNode> page =  contentTypeDetailsPages.get(structureNode.getId());
-		
-					if ((page != null) &&
-							(page.getControl().isDisposed())) {
+			Map<IContentType, Map<String, JpaDetailsPage<? extends JpaStructureNode>>> platformDetailsPages = this.detailsPages.get(platformId);
+			IContentType contentType = this.getContentType(structureNode);
+			Map<String, JpaDetailsPage<? extends JpaStructureNode>> contentTypeDetailsPages = platformDetailsPages.get(contentType);
+			if (contentTypeDetailsPages != null) {
+				JpaDetailsPage<? extends JpaStructureNode> page =  contentTypeDetailsPages.get(structureNode.getId());
+				if (page != null) {
+					if (page.getControl().isDisposed()) {
 						platformDetailsPages.remove(structureNode.getId());
-					}
-					else {
+					} else {
 						return page;
 					}
 				}

@@ -24,13 +24,9 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface PersistentType extends JpaContextNode, JpaStructureNode
+public interface PersistentType
+	extends JpaContextNode, JpaStructureNode
 {
-	/**
-	 * Return the owning context
-	 */
-	PersistentTypeContext getContext();
-	
 	String getName();
 		String NAME_PROPERTY = "name"; //$NON-NLS-1$
 		
@@ -39,6 +35,18 @@ public interface PersistentType extends JpaContextNode, JpaStructureNode
 	AccessType getAccess();
 		String ACCESS_PROPERTY = "access"; //$NON-NLS-1$
 		
+	/**
+	 * Return the access type that overrides the client persistent type's
+	 * access type; null if there is no such access override
+	 */
+	AccessType getOverrideAccess();
+
+	/**
+	 * Return the client persistent type's default access type;
+	 * null if there is no such access default.
+	 */
+	AccessType getDefaultAccess();
+
 	TypeMapping getMapping();
 	String getMappingKey();
 	void setMappingKey(String key);
@@ -105,11 +113,13 @@ public interface PersistentType extends JpaContextNode, JpaStructureNode
 
 	/**
 	 * Includes the present persistent type.
+	 * This iterator will return elements infinitely if the hierarchy has a loop.
 	 */
 	Iterator<PersistentType> inheritanceHierarchy();
 	
 	/**
 	 * Excludes the present persistent type.
+	 * This iterator will return elements infinitely if the hierarchy has a loop.
 	 */
 	Iterator<PersistentType> ancestors();
 	
@@ -120,5 +130,25 @@ public interface PersistentType extends JpaContextNode, JpaStructureNode
 	 * Add to the list of current validation messages
 	 */
 	void validate(List<IMessage> messages);
+
+
+	// ********** owner interface **********
+
+	interface Owner
+		extends JpaContextNode
+	{
+		/**
+		 * Return the access type that overrides the client persistent type's
+		 * access type; null if there is no such access override
+		 */
+		AccessType getOverridePersistentTypeAccess();
+	
+		/**
+		 * Return the client persistent type's default access type;
+		 * null if there is no such access default.
+		 */
+		AccessType getDefaultPersistentTypeAccess();
+
+	}
 
 }

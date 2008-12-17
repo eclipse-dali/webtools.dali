@@ -14,6 +14,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
@@ -23,7 +24,6 @@ import org.eclipse.jpt.core.context.MappingFileRoot;
 import org.eclipse.jpt.core.context.NamedNativeQuery;
 import org.eclipse.jpt.core.context.NamedQuery;
 import org.eclipse.jpt.core.context.Query;
-import org.eclipse.jpt.core.context.QueryHolder;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.orm.OrmGenerator;
 import org.eclipse.jpt.core.context.orm.OrmNamedNativeQuery;
@@ -32,7 +32,6 @@ import org.eclipse.jpt.core.context.orm.OrmPersistenceUnitDefaults;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmQuery;
 import org.eclipse.jpt.core.context.orm.OrmSequenceGenerator;
-import org.eclipse.jpt.core.context.orm.OrmStructureNodes;
 import org.eclipse.jpt.core.context.orm.OrmTableGenerator;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmXml;
@@ -64,8 +63,6 @@ public class GenericEntityMappings
 	implements EntityMappings
 {
 	protected XmlEntityMappings xmlEntityMappings;
-	
-	protected String version;
 	
 	protected String description;
 
@@ -111,6 +108,10 @@ public class GenericEntityMappings
 	public OrmXml getParent() {
 		return (OrmXml) super.getParent();
 	}
+
+	protected OrmXml getOrmXml() {
+		return this.getParent();
+	}
 	
 	
 	// **************** JpaContextNode impl ************************************
@@ -124,19 +125,16 @@ public class GenericEntityMappings
 	// **************** JpaStructureNode impl **********************************
 	
 	public String getId() {
-		return OrmStructureNodes.ENTITY_MAPPINGS_ID;
+		return ENTITY_MAPPINGS_ID;
 	}
 	
 	
-	// **************** OrmPersistentTypeContext impl **************************
-	
+	// ********** PersistentType.Owner implementation **********
+
 	public AccessType getOverridePersistentTypeAccess() {
-		if (getPersistenceUnitMetadata().isXmlMappingMetadataComplete()) {
-			return getSpecifiedAccess();
-		}
-		return null;
+		return this.isXmlMappingMetadataComplete() ? this.getSpecifiedAccess() : null;
 	}
-	
+
 	public AccessType getDefaultPersistentTypeAccess() {
 		return getAccess();
 	}
@@ -145,8 +143,12 @@ public class GenericEntityMappings
 		return getPackage();
 	}
 	
+	protected boolean isXmlMappingMetadataComplete() {
+		return this.getPersistenceUnitMetadata().isXmlMappingMetadataComplete();
+	}
+	
 	public boolean isDefaultPersistentTypeMetadataComplete() {
-		return getPersistenceUnitMetadata().isXmlMappingMetadataComplete();
+		return this.isXmlMappingMetadataComplete();
 	}
 	
 	
@@ -194,7 +196,7 @@ public class GenericEntityMappings
 	}
 
 	public String getVersion() {
-		return this.version;
+		return this.xmlEntityMappings.getVersion();
 	}
 
 	public String getDescription() {
@@ -319,7 +321,7 @@ public class GenericEntityMappings
 	}
 
 
-	// ********** persistent types **********
+	// ********** ORM persistent types **********
 
 	public ListIterator<OrmPersistentType> ormPersistentTypes() {
 		return new CloneListIterator<OrmPersistentType>(this.persistentTypes);
@@ -384,6 +386,9 @@ public class GenericEntityMappings
 		removeItemFromList(ormPersistentType, this.persistentTypes, PERSISTENT_TYPES_LIST);
 	}
 
+
+	// ********** sequence generators **********
+
 	public ListIterator<OrmSequenceGenerator> sequenceGenerators() {
 		return new CloneListIterator<OrmSequenceGenerator>(this.sequenceGenerators);
 	}
@@ -429,6 +434,9 @@ public class GenericEntityMappings
 		fireItemMoved(EntityMappings.SEQUENCE_GENERATORS_LIST, targetIndex, sourceIndex);	
 	}
 	
+
+	// ********** table generators **********
+
 	public ListIterator<OrmTableGenerator> tableGenerators() {
 		return new CloneListIterator<OrmTableGenerator>(this.tableGenerators);
 	}
@@ -474,6 +482,9 @@ public class GenericEntityMappings
 		fireItemMoved(EntityMappings.TABLE_GENERATORS_LIST, targetIndex, sourceIndex);	
 	}
 
+
+	// ********** named queries **********
+
 	public ListIterator<OrmNamedQuery> namedQueries() {
 		return new CloneListIterator<OrmNamedQuery>(this.namedQueries);
 	}
@@ -487,12 +498,12 @@ public class GenericEntityMappings
 		OrmNamedQuery contextNamedQuery = buildNamedQuery(resourceNamedQuery);
 		this.namedQueries.add(index, contextNamedQuery);
 		this.xmlEntityMappings.getNamedQueries().add(index, resourceNamedQuery);
-		this.fireItemAdded(QueryHolder.NAMED_QUERIES_LIST, index, contextNamedQuery);
+		this.fireItemAdded(NAMED_QUERIES_LIST, index, contextNamedQuery);
 		return contextNamedQuery;
 	}
 	
 	protected void addNamedQuery(int index, OrmNamedQuery namedQuery) {
-		addItemToList(index, namedQuery, this.namedQueries, QueryHolder.NAMED_QUERIES_LIST);
+		addItemToList(index, namedQuery, this.namedQueries, NAMED_QUERIES_LIST);
 	}
 	
 	protected void addNamedQuery(OrmNamedQuery namedQuery) {
@@ -506,18 +517,21 @@ public class GenericEntityMappings
 	public void removeNamedQuery(int index) {
 		OrmNamedQuery namedQuery = this.namedQueries.remove(index);
 		this.xmlEntityMappings.getNamedQueries().remove(index);
-		fireItemRemoved(QueryHolder.NAMED_QUERIES_LIST, index, namedQuery);
+		fireItemRemoved(NAMED_QUERIES_LIST, index, namedQuery);
 	}
 
 	protected void removeNamedQuery_(OrmNamedQuery namedQuery) {
-		removeItemFromList(namedQuery, this.namedQueries, QueryHolder.NAMED_QUERIES_LIST);
+		removeItemFromList(namedQuery, this.namedQueries, NAMED_QUERIES_LIST);
 	}
 	
 	public void moveNamedQuery(int targetIndex, int sourceIndex) {
 		this.xmlEntityMappings.getNamedQueries().move(targetIndex, sourceIndex);
-		moveItemInList(targetIndex, sourceIndex, this.namedQueries, QueryHolder.NAMED_QUERIES_LIST);		
+		moveItemInList(targetIndex, sourceIndex, this.namedQueries, NAMED_QUERIES_LIST);		
 	}
 	
+
+	// ********** named native queries **********
+
 	public ListIterator<OrmNamedNativeQuery> namedNativeQueries() {
 		return new CloneListIterator<OrmNamedNativeQuery>(this.namedNativeQueries);
 	}
@@ -531,12 +545,12 @@ public class GenericEntityMappings
 		OrmNamedNativeQuery namedNativeQuery = buildNamedNativeQuery(resourceNamedNativeQuery);
 		this.namedNativeQueries.add(index, namedNativeQuery);
 		this.xmlEntityMappings.getNamedNativeQueries().add(index, resourceNamedNativeQuery);
-		this.fireItemAdded(QueryHolder.NAMED_NATIVE_QUERIES_LIST, index, namedNativeQuery);
+		this.fireItemAdded(NAMED_NATIVE_QUERIES_LIST, index, namedNativeQuery);
 		return namedNativeQuery;
 	}
 	
 	protected void addNamedNativeQuery(int index, OrmNamedNativeQuery namedNativeQuery) {
-		addItemToList(index, namedNativeQuery, this.namedNativeQueries, QueryHolder.NAMED_NATIVE_QUERIES_LIST);
+		addItemToList(index, namedNativeQuery, this.namedNativeQueries, NAMED_NATIVE_QUERIES_LIST);
 	}
 	
 	protected void addNamedNativeQuery(OrmNamedNativeQuery namedNativeQuery) {
@@ -550,17 +564,20 @@ public class GenericEntityMappings
 	public void removeNamedNativeQuery(int index) {
 		OrmNamedNativeQuery namedNativeQuery = this.namedNativeQueries.remove(index);
 		this.xmlEntityMappings.getNamedNativeQueries().remove(index);
-		fireItemRemoved(QueryHolder.NAMED_NATIVE_QUERIES_LIST, index, namedNativeQuery);
+		fireItemRemoved(NAMED_NATIVE_QUERIES_LIST, index, namedNativeQuery);
 	}
 
 	protected void removeNamedNativeQuery_(OrmNamedNativeQuery namedNativeQuery) {
-		removeItemFromList(namedNativeQuery, this.namedNativeQueries, QueryHolder.NAMED_NATIVE_QUERIES_LIST);
+		removeItemFromList(namedNativeQuery, this.namedNativeQueries, NAMED_NATIVE_QUERIES_LIST);
 	}
 	
 	public void moveNamedNativeQuery(int targetIndex, int sourceIndex) {
 		this.xmlEntityMappings.getNamedNativeQueries().move(targetIndex, sourceIndex);
-		moveItemInList(targetIndex, sourceIndex, this.namedNativeQueries, QueryHolder.NAMED_NATIVE_QUERIES_LIST);		
+		moveItemInList(targetIndex, sourceIndex, this.namedNativeQueries, NAMED_NATIVE_QUERIES_LIST);		
 	}
+
+
+	// ********** misc **********
 
 	//TODO what about qualified name?  package + class
 	//this needs to be handled both for className and persistentType.getName().
@@ -577,10 +594,16 @@ public class GenericEntityMappings
 	public OrmPersistenceUnitDefaults getPersistenceUnitDefaults() {
 		return getPersistenceUnitMetadata().getPersistenceUnitDefaults();
 	}
+
+	public String getOrmType() {
+		return this.getOrmXml().getType();
+	}
 	
+
+	// ********** initialization **********
+
 	protected void initialize(XmlEntityMappings entityMappings) {
 		this.xmlEntityMappings = entityMappings;
-		this.version = this.xmlEntityMappings.getVersion();
 		this.description = this.xmlEntityMappings.getDescription();
 		this.package_ = this.xmlEntityMappings.getPackage();
 
@@ -653,6 +676,9 @@ public class GenericEntityMappings
 			this.namedNativeQueries.add(buildNamedNativeQuery(namedNativeQuery));
 		}
 	}
+
+
+	// ********** update **********
 
 	public void update() {
 		this.setDescription(this.xmlEntityMappings.getDescription());
@@ -822,6 +848,9 @@ public class GenericEntityMappings
 		return getJpaFactory().buildOrmNamedNativeQuery(this, resourceNamedQuery);
 	}
 
+
+	// ********** text **********
+
 	public JpaStructureNode getStructureNode(int textOffset) {
 		for (OrmPersistentType persistentType: CollectionTools.iterable(ormPersistentTypes())) {
 			if (persistentType.contains(textOffset)) {
@@ -832,10 +861,7 @@ public class GenericEntityMappings
 	}
 	
 	public boolean containsOffset(int textOffset) {
-		if (this.xmlEntityMappings == null) {
-			return false;
-		}
-		return this.xmlEntityMappings.containsOffset(textOffset);
+		return (this.xmlEntityMappings != null) && this.xmlEntityMappings.containsOffset(textOffset);
 	}
 	
 	public TextRange getSelectionTextRange() {
@@ -847,7 +873,7 @@ public class GenericEntityMappings
 	}
 	
 	
-	// **************** validation *********************************************
+	// ********** validation **********
 	
 	@Override
 	public void validate(List<IMessage> messages) {
@@ -933,4 +959,5 @@ public class GenericEntityMappings
 			ormPersistentType.dispose();
 		}
 	}
+
 }

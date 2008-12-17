@@ -22,9 +22,9 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.JptCoreMessages;
+import org.eclipse.jpt.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.core.resource.JpaResourceModelProvider;
 import org.eclipse.jpt.core.resource.JpaResourceModelProviderFactory;
-import org.eclipse.jpt.core.utility.PlatformUtilities;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
@@ -144,9 +144,9 @@ public class JpaResourceModelProviderManager {
 		IProject project = file.getProject();
 		IPath path = file.getFullPath();
 
-		IContentType contentType = PlatformUtilities.getContentType(file);
+		IContentType contentType = PlatformTools.getContentType(file);
 		while (contentType != null) {
-			JpaResourceModelProvider modelProvider = this.getModelProvider(project, path, contentType.getId());
+			JpaResourceModelProvider modelProvider = this.getModelProvider(project, path, contentType);
 			if (modelProvider != null) {
 				return modelProvider;
 			}
@@ -165,13 +165,13 @@ public class JpaResourceModelProviderManager {
 	 * @param contentType the content type for which to create a model provider
 	 * @return the model provider for the file
 	 */
-	public JpaResourceModelProvider getModelProvider(IProject project, IPath filePath, String fileContentType) {
+	public JpaResourceModelProvider getModelProvider(IProject project, IPath filePath, IContentType fileContentType) {
 		JpaResourceModelProviderFactory factory = this.getFactory(fileContentType);
 		return (factory == null) ? null : factory.create(project, filePath);
 	}
 
-	private JpaResourceModelProviderFactory getFactory(String fileContentType) {
-		FactoryProvider fp = this.factoryProviders.get(fileContentType);
+	private JpaResourceModelProviderFactory getFactory(IContentType fileContentType) {
+		FactoryProvider fp = this.factoryProviders.get(fileContentType.getId());
 		return (fp == null) ? null : fp.getFactory();
 	}
 

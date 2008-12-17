@@ -21,7 +21,8 @@ import org.eclipse.jpt.core.utility.TextRange;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface GeneratedValueAnnotation extends JavaResourceNode
+public interface GeneratedValueAnnotation
+	extends JavaResourceNode
 {	
 	String ANNOTATION_NAME = JPA.GENERATED_VALUE;
 
@@ -36,7 +37,7 @@ public interface GeneratedValueAnnotation extends JavaResourceNode
 	 * Set to null to remove the strategy element.
 	 */
 	void setStrategy(GenerationType strategy);
-		String STRATEGY_PROPERTY = "strategyProperty";
+		String STRATEGY_PROPERTY = "strategy"; //$NON-NLS-1$
 		
 	/**
 	 * Corresponds to the generator element of the GeneratedValue annotation.
@@ -49,7 +50,7 @@ public interface GeneratedValueAnnotation extends JavaResourceNode
 	 * Set to null to remove the generator element.
 	 */
 	void setGenerator(String generator);
-		String GENERATOR_PROPERTY = "generatorProperty";
+		String GENERATOR_PROPERTY = "generator"; //$NON-NLS-1$
 	
 	
 	/**
@@ -63,5 +64,7 @@ public interface GeneratedValueAnnotation extends JavaResourceNode
 	 * does not exist return the {@link TextRange} for the GeneratedValue annotation.
 	 */
 	TextRange getStrategyTextRange(CompilationUnit astRoot);
+
+	boolean generatorTouches(int pos, CompilationUnit astRoot);
 
 }

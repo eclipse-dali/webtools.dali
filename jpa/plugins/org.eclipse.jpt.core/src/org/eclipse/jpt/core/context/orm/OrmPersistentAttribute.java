@@ -14,7 +14,7 @@ import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 
 /**
- * 
+ * ORM persistent attribute
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -22,30 +22,22 @@ import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface OrmPersistentAttribute extends PersistentAttribute, XmlContextNode
+public interface OrmPersistentAttribute
+	extends PersistentAttribute, XmlContextNode
 {
-	
-	/**
-	 * Overriden to return {@link OrmAttributeMapping}s
-	 */
+
+	// ********** covariant overrides **********
+
 	OrmAttributeMapping getMapping();
 	
-	/**
-	 * Overriden to return {@link OrmAttributeMapping}s
-	 */
 	OrmAttributeMapping getSpecifiedMapping();
 	
-	/**
-	 * Overriden to return {@link OrmTypeMapping}s
-	 */
 	OrmTypeMapping getTypeMapping();
 	
-	/**
-	 * Overriden to return {@link OrmPersistentType}s
-	 */
 	OrmPersistentType getPersistentType();
 	
-	boolean contains(int textOffset);
+
+	// ********** virtual <-> specified **********
 
 	/**
 	 * Make the persistent attribute virtual. The attribute will be removed
@@ -78,10 +70,17 @@ public interface OrmPersistentAttribute extends PersistentAttribute, XmlContextN
 	 */
 	void makeSpecified(String mappingKey);
 	
+
+	// ********** miscellaneous **********
+
+	boolean contains(int textOffset);
+
 	void nameChanged(String oldName, String newName);
 
+	String getOrmType();
+
 	
-	//******************* initialization/updating *******************
+	// ********** initialization/updating **********
 
 	void initialize(XmlAttributeMapping attributeMapping);
 	

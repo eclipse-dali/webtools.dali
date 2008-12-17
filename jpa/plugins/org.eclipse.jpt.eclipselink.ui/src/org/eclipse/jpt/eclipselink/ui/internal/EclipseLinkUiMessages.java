@@ -9,20 +9,13 @@
 *******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal;
 
-/**
- *  EclipseLinkUiMessages
- */
 import org.eclipse.osgi.util.NLS;
 
-public class EclipseLinkUiMessages extends NLS
-{
-	private static final String BUNDLE_NAME = "eclipselink_ui"; //$NON-NLS-1$
+/**
+ * Localized messages used by ElipseLink UI.
+ */
+public class EclipseLinkUiMessages {
 
-	static {
-		// initialize resource bundle
-		NLS.initializeMessages(BUNDLE_NAME, EclipseLinkUiMessages.class);
-	}
-	
 	public static String MappingFileWizard_title;
 	public static String MappingFileWizardPage_title;
 	public static String MappingFileWizardPage_desc;
@@ -327,11 +320,19 @@ public class EclipseLinkUiMessages extends NLS
 	public static String TargetServerComposite_weblogic_10;
 	public static String TargetServerComposite_jboss;
 
-	// DDLGeneration
+	// DDL Generation
 	public static String EclipseLinkDDLGeneratorUi_generatingDDLWarningTitle;
 	public static String EclipseLinkDDLGeneratorUi_generatingDDLWarningMessage;
+	public static String EclipseLinkDDLGeneratorUi_error;
 
+	private static final String BUNDLE_NAME = "eclipselink_ui"; //$NON-NLS-1$
+	private static final Class<?> BUNDLE_CLASS = EclipseLinkUiMessages.class;
+	static {
+		NLS.initializeMessages(BUNDLE_NAME, BUNDLE_CLASS);
+	}
+	
 	private EclipseLinkUiMessages() {
 		throw new UnsupportedOperationException();
 	}
+
 }

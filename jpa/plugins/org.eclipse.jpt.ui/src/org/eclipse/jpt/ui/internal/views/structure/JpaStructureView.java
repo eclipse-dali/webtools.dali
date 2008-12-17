@@ -1,11 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2006, 2008 Oracle. All rights reserved. This
- *  program and the accompanying materials are made available under the terms of
- *  the Eclipse Public License v1.0 which accompanies this distribution, and is
- *  available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: Oracle. - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.ui.internal.views.structure;
 
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -26,7 +27,8 @@ import org.eclipse.ui.part.MessagePage;
 import org.eclipse.ui.part.PageBook;
 import org.eclipse.ui.part.PageBookView;
 
-public class JpaStructureView extends PageBookView
+public class JpaStructureView
+	extends PageBookView
 {
 	public JpaStructureView() {
 		super();
@@ -37,10 +39,10 @@ public class JpaStructureView extends PageBookView
 		super.createPartControl(parent);
 		
 		JpaSelectionManager selectionManager =
-			SelectionManagerFactory.getSelectionManager(getViewSite().getWorkbenchWindow());
+			SelectionManagerFactory.getSelectionManager(this.getViewSite().getWorkbenchWindow());
 		
 		selectionManager.register(this);
-		select(selectionManager.getCurrentSelection());
+		this.select(selectionManager.getCurrentSelection());
 	}
 	
 	@Override
@@ -50,18 +52,14 @@ public class JpaStructureView extends PageBookView
 	
 	@Override
 	protected IWorkbenchPart getBootstrapPart() {
-		IWorkbenchPage page = getSite().getPage();
-        if (page != null) {
-			return page.getActiveEditor();
-		}
-
-        return null;
+		IWorkbenchPage page = this.getSite().getPage();
+        return (page == null) ? null : page.getActiveEditor();
 	}
 	
 	@Override
 	protected IPage createDefaultPage(PageBook book) {
 		MessagePage page = new MessagePage();
-        initPage(page);
+        this.initPage(page);
         page.createControl(book);
         page.setMessage(JptUiMessages.JpaStructureView_structureNotAvailable);
         return page;
@@ -69,58 +67,58 @@ public class JpaStructureView extends PageBookView
 	
 	@Override
 	protected PageRec doCreatePage(IWorkbenchPart part) {
-		JpaStructureProvider structureProvider = 
-			structureProvider(part);
-		if (structureProvider != null) {
-			JpaStructurePage page = new JpaStructurePage(this, structureProvider);
-			initPage(page);
-			page.createControl(getPageBook());
-			return new PageRec(part, page);
-		}
-		return null;
-	}
-	
-	private JpaStructureProvider structureProvider(IWorkbenchPart part) {
-		JpaFile jpaFile = 
-			(JpaFile) part.getAdapter(JpaFile.class);
-		
+		JpaFile jpaFile = (JpaFile) part.getAdapter(JpaFile.class);
 		if (jpaFile == null) {
 			return null;
 		}
-		
-		JpaPlatformUi platformUi = JptUiPlugin.getPlugin().jpaPlatformUi(jpaFile.getJpaProject().getJpaPlatform());
-		return platformUi.buildStructureProvider(jpaFile);
+
+		JpaStructureProvider structureProvider = this.getStructureProvider(jpaFile);
+		if (structureProvider == null) {
+			return null;
+		}
+
+		JpaStructurePage page = new JpaStructurePage(this, jpaFile, structureProvider);
+		this.initPage(page);
+		page.createControl(this.getPageBook());
+		return new PageRec(part, page);
+	}
+	
+	private JpaStructureProvider getStructureProvider(JpaFile jpaFile) {
+		return this.getPlatformUi(jpaFile).getStructureProvider(jpaFile);
+	}
+	
+	private JpaPlatformUi getPlatformUi(JpaFile jpaFile) {
+		return JptUiPlugin.getPlugin().getJpaPlatformUi(jpaFile.getJpaProject().getJpaPlatform());
 	}
 	
 	@Override
 	protected void doDestroyPage(IWorkbenchPart part, PageRec pageRecord) {
 		JpaStructurePage page = (JpaStructurePage) pageRecord.page;
-		removeSelectionChangedListener(page);
+		this.removeSelectionChangedListener(page);
         page.dispose();
         pageRecord.dispose();
 	}
 	
 	public JpaSelection getJpaSelection() {
-		if (getCurrentPage() != getDefaultPage()) {
-			return ((JpaStructurePage) getCurrentPage()).getJpaSelection();
+		if (this.getCurrentPage() != this.getDefaultPage()) {
+			return ((JpaStructurePage) this.getCurrentPage()).getJpaSelection();
 		}
-		else {
-			return JpaSelection.NULL_SELECTION;
-		}
+		return JpaSelection.NULL_SELECTION;
 	}
 	
 	public void select(JpaSelection newSelection) {
 		// correct page should be shown
-		if (getCurrentPage() != getDefaultPage()) {
-			((JpaStructurePage) getCurrentPage()).select(newSelection);
+		if (this.getCurrentPage() != this.getDefaultPage()) {
+			((JpaStructurePage) this.getCurrentPage()).select(newSelection);
 		}
 	}
 	
 	public void addSelectionChangedListener(ISelectionChangedListener listener) {
-		getSelectionProvider().addSelectionChangedListener(listener);
+		this.getSelectionProvider().addSelectionChangedListener(listener);
 	}
 	
 	public void removeSelectionChangedListener(ISelectionChangedListener listener) {
-		getSelectionProvider().removeSelectionChangedListener(listener);
+		this.getSelectionProvider().removeSelectionChangedListener(listener);
 	}
+
 }

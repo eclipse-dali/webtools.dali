@@ -175,8 +175,8 @@ public class GenericJpaModel
 	 * Forward the specified resource delta to the JPA project corresponding
 	 * to the specified Eclipse project.
 	 */
-	synchronized void synchronizeFiles(IProject project, IResourceDelta delta)  throws CoreException {
-		this.getJpaProjectHolder(project).synchronizeJpaFiles(delta);
+	synchronized void projectChanged(IProject project, IResourceDelta delta)  throws CoreException {
+		this.getJpaProjectHolder(project).projectChanged(delta);
 	}
 
 
@@ -330,7 +330,7 @@ public class GenericJpaModel
 
 		JpaProject jpaProject() throws CoreException;
 
-		void synchronizeJpaFiles(IResourceDelta delta) throws CoreException;
+		void projectChanged(IResourceDelta delta) throws CoreException;
 
 		void javaElementChanged(ElementChangedEvent event);
 
@@ -360,7 +360,7 @@ public class GenericJpaModel
 			return null;
 		}
 
-		public void synchronizeJpaFiles(IResourceDelta delta) throws CoreException {
+		public void projectChanged(IResourceDelta delta) throws CoreException {
 			// do nothing
 		}
 
@@ -419,9 +419,9 @@ public class GenericJpaModel
 			return result;
 		}
 
-		public void synchronizeJpaFiles(IResourceDelta delta) throws CoreException {
+		public void projectChanged(IResourceDelta delta) throws CoreException {
 			if (this.jpaProject != null) {
-				this.jpaProject.synchronizeJpaFiles(delta);
+				this.jpaProject.projectChanged(delta);
 			}
 		}
 

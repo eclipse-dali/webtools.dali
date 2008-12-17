@@ -17,7 +17,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JpaStructureNode;
-import org.eclipse.jpt.core.ResourceModelListener;
+import org.eclipse.jpt.core.JpaResourceModelListener;
 import org.eclipse.jpt.utility.internal.ListenerList;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 
@@ -32,23 +32,26 @@ public abstract class AbstractJpaFile
 	extends AbstractJpaNode
 	implements JpaFile
 {
-	private final IFile file;
+	protected final IFile file;
 
-	private final Hashtable<Object, JpaStructureNode> rootStructureNodes;
+	protected final String resourceType;
 
-	private final ResourceModelListener resourceModelListener;
+	protected final Hashtable<Object, JpaStructureNode> rootStructureNodes;
 
-	private final ListenerList<ResourceModelListener> resourceModelListenerList;
+	protected final JpaResourceModelListener resourceModelListener;
+
+	protected final ListenerList<JpaResourceModelListener> resourceModelListenerList;
 
 
 	// ********** construction **********
 
-	protected AbstractJpaFile(JpaProject jpaProject, IFile file) {
+	protected AbstractJpaFile(JpaProject jpaProject, IFile file, String resourceType) {
 		super(jpaProject);
 		this.file = file;
+		this.resourceType = resourceType;
 		this.rootStructureNodes = new Hashtable<Object, JpaStructureNode>();
 		this.resourceModelListener = this.buildResourceModelListener();
-		this.resourceModelListenerList = new ListenerList<ResourceModelListener>(ResourceModelListener.class);
+		this.resourceModelListenerList = new ListenerList<JpaResourceModelListener>(JpaResourceModelListener.class);
 	}
 
 	/**
@@ -64,8 +67,8 @@ public abstract class AbstractJpaFile
 		nonUpdateAspectNames.add(ROOT_STRUCTURE_NODES_COLLECTION);
 	}
 
-	protected ResourceModelListener buildResourceModelListener() {
-		return new ResourceModelListener() {
+	protected JpaResourceModelListener buildResourceModelListener() {
+		return new JpaResourceModelListener() {
 			public void resourceModelChanged() {
 				AbstractJpaFile.this.resourceModelChanged();
 			}
@@ -79,23 +82,27 @@ public abstract class AbstractJpaFile
 		return this.file;
 	}
 
+	public String getResourceType() {
+		return this.resourceType;
+	}
+
 
 	// ********** resource model listeners **********
 
-	protected ResourceModelListener getResourceModelListener() {
+	protected JpaResourceModelListener getResourceModelListener() {
 		return this.resourceModelListener;
 	}
 
-	public void addResourceModelListener(ResourceModelListener listener) {
+	public void addResourceModelListener(JpaResourceModelListener listener) {
 		this.resourceModelListenerList.add(listener);
 	}
 
-	public void removeResourceModelListener(ResourceModelListener listener) {
+	public void removeResourceModelListener(JpaResourceModelListener listener) {
 		this.resourceModelListenerList.remove(listener);
 	}
 
 	protected void resourceModelChanged() {
-		for (ResourceModelListener listener : this.resourceModelListenerList.getListeners()) {
+		for (JpaResourceModelListener listener : this.resourceModelListenerList.getListeners()) {
 			listener.resourceModelChanged();
 		}
 	}
@@ -144,7 +151,7 @@ public abstract class AbstractJpaFile
 	public void toString(StringBuilder sb) {
 		sb.append(this.file);
 		sb.append('[');
-		sb.append(this.getResourceType());
+		sb.append(this.resourceType);
 		sb.append(']');
 	}
 

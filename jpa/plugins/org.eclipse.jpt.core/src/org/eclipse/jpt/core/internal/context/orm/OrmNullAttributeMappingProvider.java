@@ -1,8 +1,8 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
- * This program and the accompanying materials are made available under the terms of
- * the Eclipse Public License v1.0, which accompanies this distribution and is available at
- * http://www.eclipse.org/legal/epl-v10.html.
+ * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
  * 
  * Contributors:
  *     Oracle - initial API and implementation
@@ -16,12 +16,13 @@ import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMappingProvider;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
-import org.eclipse.jpt.core.resource.orm.XmlNullAttributeMapping;
+import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 
-public class OrmNullAttributeMappingProvider implements OrmAttributeMappingProvider
+public class OrmNullAttributeMappingProvider
+	implements OrmAttributeMappingProvider
 {
 	// singleton
-	private static final OrmNullAttributeMappingProvider INSTANCE = new OrmNullAttributeMappingProvider();
+	private static final OrmAttributeMappingProvider INSTANCE = new OrmNullAttributeMappingProvider();
 
 	/**
 	 * Return the singleton.
@@ -45,7 +46,8 @@ public class OrmNullAttributeMappingProvider implements OrmAttributeMappingProvi
 		return factory.buildOrmNullAttributeMapping(parent);
 	}
 	
-	public XmlNullAttributeMapping buildVirtualResourceMapping(OrmTypeMapping ormTypeMapping, JavaAttributeMapping javaAttributeMapping, JpaFactory factory) {
+	public XmlAttributeMapping buildVirtualResourceMapping(OrmTypeMapping ormTypeMapping, JavaAttributeMapping javaAttributeMapping, JpaFactory factory) {
 		return factory.buildVirtualXmlNullAttributeMapping(ormTypeMapping, javaAttributeMapping);
 	}
+
 }

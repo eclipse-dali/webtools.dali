@@ -10,13 +10,13 @@
 package org.eclipse.jpt.core.internal.context;
 
 import java.util.List;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
 import org.eclipse.jpt.core.context.MappingFile;
 import org.eclipse.jpt.core.context.MappingFileRoot;
@@ -36,7 +36,8 @@ import org.eclipse.jpt.utility.internal.HashBag;
 import org.eclipse.wst.common.internal.emfworkbench.WorkbenchResourceHelper;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public class GenericRootContextNode extends AbstractJpaContextNode 
+public class GenericRootContextNode
+	extends AbstractJpaContextNode
 	implements JpaRootContextNode
 {
 	/* This object has no parent, so it must point to the JPA project */
@@ -49,7 +50,7 @@ public class GenericRootContextNode extends AbstractJpaContextNode
 	public GenericRootContextNode(JpaProject jpaProject) {
 		super(null);
 		if (jpaProject == null) {
-			throw new IllegalArgumentException("The JPA project must not be null"); //$NON-NLS-1$
+			throw new NullPointerException();
 		}
 		this.jpaProject = jpaProject;
 		
@@ -81,11 +82,6 @@ public class GenericRootContextNode extends AbstractJpaContextNode
 	
 	protected IProject getProject() {
 		return this.jpaProject.getProject();
-	}
-	
-	@Override
-	public JpaContextNode getParent() {
-		return null;
 	}
 	
 	
@@ -162,15 +158,13 @@ public class GenericRootContextNode extends AbstractJpaContextNode
 		PersistenceResource resource = modelProvider.getResource();
 		
 		if (resource.exists()) {
-			if (this.persistenceXml != null) {
+			if (this.persistenceXml == null) {
+				this.setPersistenceXml(this.buildPersistenceXml(resource));
+			} else {
 				this.persistenceXml.update(resource);
 			}
-			else {
-				setPersistenceXml(this.buildPersistenceXml(resource));
-			}
-		}
-		else {
-			setPersistenceXml(null);
+		} else {
+			this.setPersistenceXml(null);
 		}
 	}
 
@@ -231,7 +225,7 @@ public class GenericRootContextNode extends AbstractJpaContextNode
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.PERSISTENT_TYPE_UNSPECIFIED_CONTEXT,
 						new String[] {persistenceUnit.getName()},
-						jrpt.getJpaCompilationUnit().getCompilationUnit().getResource(),
+						jrpt.getJpaCompilationUnit().getFile(),
 						jrpt.getMappingAnnotation().getTextRange(JDTTools.buildASTRoot(jrpt.getJpaCompilationUnit().getCompilationUnit()))
 					)
 				);

@@ -10,6 +10,8 @@
 package org.eclipse.jpt.core.internal;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.JpaFile;
@@ -22,6 +24,7 @@ import org.eclipse.jpt.core.JpaProject;
 public class JavaJpaFileProvider
 	implements JpaFileProvider
 {
+	public static final String RESOURCE_TYPE = "Java"; //$NON-NLS-1$
 
 	// singleton
 	private static final JavaJpaFileProvider INSTANCE = new JavaJpaFileProvider();
@@ -34,18 +37,18 @@ public class JavaJpaFileProvider
 	}
 
 	/**
-	 * Ensure non-instantiability.
+	 * Ensure single instance.
 	 */
 	private JavaJpaFileProvider() {
 		super();
 	}
 
-	public String getContentId() {
-		return JavaCore.JAVA_SOURCE_CONTENT_TYPE;
+	public IContentType getContentType() {
+		return Platform.getContentTypeManager().getContentType(JavaCore.JAVA_SOURCE_CONTENT_TYPE);
 	}
 
 	public JpaFile buildJpaFile(JpaProject jpaProject, IFile file, JpaFactory factory) {
-		return factory.buildJavaJpaFile(jpaProject, file);
+		return factory.buildJavaJpaFile(jpaProject, file, RESOURCE_TYPE);
 	}
 
 }

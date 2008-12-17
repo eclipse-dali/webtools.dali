@@ -47,8 +47,8 @@ public class AsynchronousJpaProjectUpdater implements JpaProject.Updater {
 		this.job.schedule();
 	}
 
-	public void dispose() {
-		this.job.dispose();
+	public void stop() {
+		this.job.stop();
 	}
 
 	@Override
@@ -99,7 +99,7 @@ public class AsynchronousJpaProjectUpdater implements JpaProject.Updater {
 		 * Prevent the job from running again and wait for the current
 		 * execution, if there is any, to end before returning.
 		 */
-		protected void dispose() {
+		protected void stop() {
 			// this will prevent the job from being scheduled to run again
 			this.shouldSchedule = false;
 			// this will cancel the job if it has already been scheduled, but is currently WAITING

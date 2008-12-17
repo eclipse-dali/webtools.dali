@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.context.persistence;
 
 import org.eclipse.jpt.core.JpaStructureNode;
+import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.resource.persistence.XmlJavaClassRef;
@@ -23,7 +24,8 @@ import org.eclipse.jpt.core.resource.persistence.XmlJavaClassRef;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface ClassRef extends XmlContextNode, JpaStructureNode
+public interface ClassRef
+	extends XmlContextNode, JpaStructureNode, PersistentType.Owner
 {
 	/**
 	 * Return true if the IClassRef matches the fullyQualfiedTypeName
@@ -42,7 +44,7 @@ public interface ClassRef extends XmlContextNode, JpaStructureNode
 	/**
 	 * String constant associated with changes to the class name
 	 */
-	final static String CLASS_NAME_PROPERTY = "className";
+	final static String CLASS_NAME_PROPERTY = "className"; //$NON-NLS-1$
 	
 	/**
 	 * Return the class name of the class ref.
@@ -60,7 +62,7 @@ public interface ClassRef extends XmlContextNode, JpaStructureNode
 	/**
 	 * String constant associated with changes to the java persistent type
 	 */
-	final static String JAVA_PERSISTENT_TYPE_PROPERTY = "javaPersistentType";
+	final static String JAVA_PERSISTENT_TYPE_PROPERTY = "javaPersistentType"; //$NON-NLS-1$
 	
 	/**
 	 * Return the JavaPersistentType that corresponds to this IClassRef.

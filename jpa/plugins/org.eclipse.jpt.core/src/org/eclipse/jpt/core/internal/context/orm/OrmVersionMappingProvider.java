@@ -13,16 +13,17 @@ import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaVersionMapping;
+import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMappingProvider;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
-import org.eclipse.jpt.core.context.orm.OrmVersionMapping;
-import org.eclipse.jpt.core.resource.orm.XmlVersion;
+import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 
-public class OrmVersionMappingProvider implements OrmAttributeMappingProvider
+public class OrmVersionMappingProvider
+	implements OrmAttributeMappingProvider
 {
 	// singleton
-	private static final OrmVersionMappingProvider INSTANCE = new OrmVersionMappingProvider();
+	private static final OrmAttributeMappingProvider INSTANCE = new OrmVersionMappingProvider();
 
 	/**
 	 * Return the singleton.
@@ -42,11 +43,12 @@ public class OrmVersionMappingProvider implements OrmAttributeMappingProvider
 		return MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY;
 	}
 
-	public OrmVersionMapping buildMapping(OrmPersistentAttribute parent, JpaFactory factory) {
+	public OrmAttributeMapping buildMapping(OrmPersistentAttribute parent, JpaFactory factory) {
 		return factory.buildOrmVersionMapping(parent);
 	}
 	
-	public XmlVersion buildVirtualResourceMapping(OrmTypeMapping ormTypeMapping, JavaAttributeMapping javaAttributeMapping, JpaFactory factory) {
+	public XmlAttributeMapping buildVirtualResourceMapping(OrmTypeMapping ormTypeMapping, JavaAttributeMapping javaAttributeMapping, JpaFactory factory) {
 		return factory.buildVirtualXmlVersion(ormTypeMapping, (JavaVersionMapping) javaAttributeMapping);
 	}
+
 }

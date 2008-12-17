@@ -13,16 +13,17 @@ import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
+import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMappingProvider;
-import org.eclipse.jpt.core.context.orm.OrmOneToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
-import org.eclipse.jpt.core.resource.orm.XmlOneToMany;
+import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 
-public class OrmOneToManyMappingProvider implements OrmAttributeMappingProvider
+public class OrmOneToManyMappingProvider
+	implements OrmAttributeMappingProvider
 {
 	// singleton
-	private static final OrmOneToManyMappingProvider INSTANCE = new OrmOneToManyMappingProvider();
+	private static final OrmAttributeMappingProvider INSTANCE = new OrmOneToManyMappingProvider();
 
 	/**
 	 * Return the singleton.
@@ -42,11 +43,12 @@ public class OrmOneToManyMappingProvider implements OrmAttributeMappingProvider
 		return MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY;
 	}
 
-	public OrmOneToManyMapping buildMapping(OrmPersistentAttribute parent, JpaFactory factory) {
+	public OrmAttributeMapping buildMapping(OrmPersistentAttribute parent, JpaFactory factory) {
 		return factory.buildOrmOneToManyMapping(parent);
 	}
 	
-	public XmlOneToMany buildVirtualResourceMapping(OrmTypeMapping ormTypeMapping, JavaAttributeMapping javaAttributeMapping, JpaFactory factory) {
+	public XmlAttributeMapping buildVirtualResourceMapping(OrmTypeMapping ormTypeMapping, JavaAttributeMapping javaAttributeMapping, JpaFactory factory) {
 		return factory.buildVirtualXmlOneToMany(ormTypeMapping, (JavaOneToManyMapping) javaAttributeMapping);
 	}
+
 }

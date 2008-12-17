@@ -10,9 +10,9 @@
 package org.eclipse.jpt.core.internal.context;
 
 import java.util.List;
+
 import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.context.XmlContextNode;
-import org.eclipse.jpt.core.resource.common.JpaXmlResource;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public abstract class AbstractXmlContextNode
@@ -25,21 +25,10 @@ public abstract class AbstractXmlContextNode
 	protected AbstractXmlContextNode(JpaContextNode parent) {
 		super(parent);
 	}
-	
-	
-	/**
-	 * It is the responsibility of any root XML context nodes to override this 
-	 * behavior.
-	 * 
-	 * @see XmlContextNode#getEResource()
-	 */
-	public JpaXmlResource getEResource() {
-		return ((XmlContextNode) getParent()).getEResource();
-	}
-	
+
 
 	// ********** validation **********
-	
+
 	/**
 	 * All subclass implementations {@link #validate(List<IMessage>)} 
 	 * should be preceded by a "super" call to this method

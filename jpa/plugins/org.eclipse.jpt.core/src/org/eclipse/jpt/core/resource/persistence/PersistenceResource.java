@@ -9,9 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.resource.persistence;
 
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.internal.resource.persistence.translators.PersistenceTranslator;
 import org.eclipse.jpt.core.resource.common.JpaXmlResource;
 import org.eclipse.wst.common.internal.emf.resource.Renderer;
@@ -31,29 +29,12 @@ public class PersistenceResource
 		super(uri, renderer);
 	}
 
-	public Translator getRootTranslator() {
-		return PersistenceTranslator.INSTANCE;
-	}
-
-	@Override
-	public String getType() {
-		return JpaFile.PERSISTENCE_RESOURCE_TYPE;
-	}
-
 	public XmlPersistence getPersistence() {
 		return (XmlPersistence) this.getRootObject();
 	}
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public EList eAdapters() {
-		return super.eAdapters();
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public EList getContents() {
-		return super.getContents();
+	public Translator getRootTranslator() {
+		return PersistenceTranslator.INSTANCE;
 	}
 
 }

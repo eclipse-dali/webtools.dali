@@ -10,9 +10,9 @@
 package org.eclipse.jpt.eclipselink.ui.internal.orm.details;
 
 import org.eclipse.jpt.core.JpaStructureNode;
-import org.eclipse.jpt.core.context.XmlContextNode;
-import org.eclipse.jpt.core.context.orm.OrmStructureNodes;
-import org.eclipse.jpt.eclipselink.core.EclipseLinkJpaFile;
+import org.eclipse.jpt.core.context.orm.EntityMappings;
+import org.eclipse.jpt.core.context.orm.OrmStructureNode;
+import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmResource;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaDetailsPage;
 import org.eclipse.jpt.ui.details.JpaDetailsProvider;
@@ -29,7 +29,20 @@ import org.eclipse.swt.widgets.Composite;
 public class EclipseLinkOrmDetailsProvider
 	implements JpaDetailsProvider
 {
-	public EclipseLinkOrmDetailsProvider() {
+	// singleton
+	private static final JpaDetailsProvider INSTANCE = new EclipseLinkOrmDetailsProvider();
+
+	/**
+	 * Return the singleton.
+	 */
+	public static JpaDetailsProvider instance() {
+		return INSTANCE;
+	}
+
+	/**
+	 * Ensure single instance.
+	 */
+	private EclipseLinkOrmDetailsProvider() {
 		super();
 	}
 
@@ -38,22 +51,23 @@ public class EclipseLinkOrmDetailsProvider
 		JpaStructureNode structureNode,
 		WidgetFactory widgetFactory) {
 
-		if (structureNode.getId() == OrmStructureNodes.ENTITY_MAPPINGS_ID) {
+		if (structureNode.getId() == OrmStructureNode.ENTITY_MAPPINGS_ID) {
 			//TODO JpaPlatformUi really needs a complete overhaul, this is not a good solution
-			if ((((XmlContextNode) structureNode).getEResource()).getType() == EclipseLinkJpaFile.ECLIPSELINK_ORM_RESOURCE_TYPE) {
+			if (((EntityMappings) structureNode).getOrmType() == EclipseLinkOrmResource.TYPE) {
 				return new EntityMappingsDetailsPage(parent, widgetFactory);
 			}
 			return new org.eclipse.jpt.ui.internal.orm.details.EntityMappingsDetailsPage(parent, widgetFactory);
 		}
 
-		if (structureNode.getId() == OrmStructureNodes.PERSISTENT_TYPE_ID) {
+		if (structureNode.getId() == OrmStructureNode.PERSISTENT_TYPE_ID) {
 			return new EclipseLinkOrmPersistentTypeDetailsPage(parent, widgetFactory);
 		}
 
-		if (structureNode.getId() == OrmStructureNodes.PERSISTENT_ATTRIBUTE_ID) {
+		if (structureNode.getId() == OrmStructureNode.PERSISTENT_ATTRIBUTE_ID) {
 			return new EclipseLinkOrmPersistentAttributeDetailsPage(parent, widgetFactory);
 		}
 
 		return null;
 	}
+
 }

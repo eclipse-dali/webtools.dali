@@ -11,8 +11,10 @@ package org.eclipse.jpt.eclipselink.core.internal;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.osgi.framework.BundleContext;
 
@@ -31,7 +33,7 @@ public class JptEclipseLinkCorePlugin extends Plugin
 	 * 
 	 * @see org.eclipse.core.runtime.content.IContentTypeManager#getContentType(String)
 	 */
-	public static final String ECLIPSELINK_ORM_XML_CONTENT_TYPE = PLUGIN_ID + ".content.orm"; //$NON-NLS-1$
+	public static final IContentType ECLIPSELINK_ORM_XML_CONTENT_TYPE = Platform.getContentTypeManager().getContentType(PLUGIN_ID + ".content.orm"); //$NON-NLS-1$
 	
 	public static final String DEFAULT_ECLIPSELINK_ORM_XML_FILE_PATH = "META-INF/eclipselink-orm.xml"; //$NON-NLS-1$
 	

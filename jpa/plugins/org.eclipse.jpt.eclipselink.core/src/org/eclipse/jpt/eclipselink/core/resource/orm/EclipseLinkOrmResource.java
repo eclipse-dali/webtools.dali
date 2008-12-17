@@ -11,7 +11,6 @@ package org.eclipse.jpt.eclipselink.core.resource.orm;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.jpt.core.resource.orm.OrmResource;
-import org.eclipse.jpt.eclipselink.core.EclipseLinkJpaFile;
 import org.eclipse.jpt.eclipselink.core.internal.resource.orm.translators.EclipseLinkEntityMappingsTranslator;
 import org.eclipse.wst.common.internal.emf.resource.Renderer;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
@@ -29,6 +28,8 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
 public class EclipseLinkOrmResource
 	extends OrmResource
 {
+	public static final String TYPE = "eclipselink";
+
 	public EclipseLinkOrmResource(URI uri, Renderer renderer) {
 		super(uri, renderer);
 	}
@@ -45,7 +46,7 @@ public class EclipseLinkOrmResource
 
 	@Override
 	public String getType() {
-		return EclipseLinkJpaFile.ECLIPSELINK_ORM_RESOURCE_TYPE;
+		return TYPE;
 	}
 
 }

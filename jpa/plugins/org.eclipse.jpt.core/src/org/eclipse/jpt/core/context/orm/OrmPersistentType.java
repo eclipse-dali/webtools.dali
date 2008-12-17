@@ -24,23 +24,27 @@ import org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface OrmPersistentType extends PersistentType, XmlContextNode
+public interface OrmPersistentType
+	extends PersistentType, OrmStructureNode, XmlContextNode
 {
-	public OrmPersistentTypeContext getContext();
-	
 	/**
-	 * Overriden to return {@link OrmPersistentAttribute}s
+	 * covariant override
+	 */
+	EntityMappings getParent();
+
+	/**
+	 * "covariant" override
 	 */
 	@SuppressWarnings("unchecked")
 	ListIterator<OrmPersistentAttribute> attributes();
 	
 	/**
-	 * Overriden to return an {@link OrmPersistentAttribute}
+	 * covariant override
 	 */
 	OrmPersistentAttribute getAttributeNamed(String attributeName);
 
 	/**
-	 * Overriden to return an {@link OrmTypeMapping}
+	 * covariant override
 	 */
 	OrmTypeMapping getMapping();
 	
@@ -59,6 +63,7 @@ public interface OrmPersistentType extends PersistentType, XmlContextNode
 	
 	//TODO these are currently only used by tests, possibly remove them.  OrmPersistenAttributes.setVirtual(boolean) is used by the UI
 	OrmPersistentAttribute addSpecifiedPersistentAttribute(String mappingKey, String attributeName);
+
 	void removeSpecifiedPersistentAttribute(OrmPersistentAttribute ormPersistentAttribute);
 	
 	
@@ -105,7 +110,9 @@ public interface OrmPersistentType extends PersistentType, XmlContextNode
 	 */
 	void makePersistentAttributeSpecified(OrmPersistentAttribute ormPersistentAttribute, String mappingKey);
 
+
 	//******************* mapping morphing *******************
+
 	void changeMapping(OrmPersistentAttribute ormPersistentAttribute, OrmAttributeMapping oldMapping, OrmAttributeMapping newMapping);
 	
 	
@@ -135,15 +142,13 @@ public interface OrmPersistentType extends PersistentType, XmlContextNode
 	 */
 	void update(XmlEmbeddable embeddable);
 
-	
-	
 	boolean contains(int textOffset);
 	
 	/**
-	 * Return whether this {@link OrmPersistentType) applies to the
-	 * given fullyQualifiedTypeName.
+	 * Return whether the persistent type applies to the
+	 * specified type.
 	 */
-	boolean isFor(String fullyQualifiedTypeName);
+	boolean isFor(String typeName);
 	
 	void classChanged(String oldClass, String newClass);
 	
@@ -153,5 +158,15 @@ public interface OrmPersistentType extends PersistentType, XmlContextNode
 	 * @return
 	 */
 	JavaPersistentType getJavaPersistentType();
+
+	/**
+	 * Return the persistent type's default package.
+	 */
+	String getDefaultPackage();
+
+	/**
+	 * Return whether the persistent type is default metadata complete.
+	 */
+	boolean isDefaultMetadataComplete();
 
 }

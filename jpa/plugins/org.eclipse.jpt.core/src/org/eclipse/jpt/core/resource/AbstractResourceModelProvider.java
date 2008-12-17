@@ -30,6 +30,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.SafeRunner;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.content.IContentDescription;
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.common.util.EList;
@@ -116,7 +117,7 @@ public abstract class AbstractResourceModelProvider<R extends JpaXmlResource>
 			}
 			catch (ClassCastException cce) {
 				Resource.Factory resourceFactory = 
-					WTPResourceFactoryRegistry.INSTANCE.getFactory(fileUri, getContentType(getContentTypeDescriber()));
+					WTPResourceFactoryRegistry.INSTANCE.getFactory(fileUri, this.getContentType().getDefaultDescription());
 				this.resource = 
 					(R)((FlexibleProjectResourceSet) getResourceSet()).createResource(fileUri, resourceFactory);
 			}
@@ -158,21 +159,10 @@ public abstract class AbstractResourceModelProvider<R extends JpaXmlResource>
 		return resourceURI;
 	}
 	
-	protected IContentDescription getContentType(String contentTypeDescriber) {
-		if (contentTypeDescriber != null) {
-			return Platform.getContentTypeManager().getContentType(contentTypeDescriber).getDefaultDescription();
-		} else {
-			return null;
-		}
-	}
-	
 	/**
 	 * Used to optionally define an associated content type for XML file creation
-	 * @return
 	 */
-	protected String getContentTypeDescriber() {	
-		return null;
-	}
+	protected abstract IContentType getContentType();
 	
 	/**
 	 * Used to optionally fill in the root information of a resource if it does not 

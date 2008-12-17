@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,10 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.orm;
 
-import org.eclipse.jpt.core.JptCorePlugin;
-
 /**
- * 
+ * Extend the default provider to allow ORM-specific providers.
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -20,15 +18,8 @@ import org.eclipse.jpt.core.JptCorePlugin;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface OrmStructureNodes 
+public interface ExtendedOrmAttributeMappingProvider
+	extends OrmAttributeMappingProvider
 {
-	
-	String ENTITY_MAPPINGS_ID = 
-		JptCorePlugin.PLUGIN_ID + ".orm.entityMappings";
-	
-	String PERSISTENT_TYPE_ID = 
-		JptCorePlugin.PLUGIN_ID + ".orm.persistentType";
-	
-	String PERSISTENT_ATTRIBUTE_ID =
-		JptCorePlugin.PLUGIN_ID + ".orm.persistentAttribute";
+	String getOrmType();
 }

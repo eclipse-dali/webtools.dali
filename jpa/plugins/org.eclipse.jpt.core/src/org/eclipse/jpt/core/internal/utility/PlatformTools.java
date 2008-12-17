@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.utility;
+package org.eclipse.jpt.core.internal.utility;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,34 +15,37 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.core.runtime.content.IContentTypeManager;
 import org.eclipse.jpt.core.JptCorePlugin;
 
 /**
- * A collection of utilities for dealing with eclipse platform API 
+ * A collection of utilities for dealing with the Eclipse platform API.
  */
-public class PlatformUtilities
-{
+public class PlatformTools {
+
 	/**
-	 * Retrieves the content type for the IFile referenced.
-	 * (Makes sure to close the input stream)
+	 * Return the specified file's content type,
+	 * using the Eclipse platform's content type manager.
 	 */
 	public static IContentType getContentType(IFile file) {
-		InputStream inputStream = null;
+		String fileName = file.getName();
+		InputStream fileContents = null;
 		try {
-			inputStream = file.getContents();
+			fileContents = file.getContents();
 		} catch (CoreException ex) {
 			JptCorePlugin.log(ex);
-			return null;
+			// look for content type based on the file name only(?)
+			return findContentTypeFor(fileName);
 		}
 
 		IContentType contentType = null;
 		try {
-			contentType = Platform.getContentTypeManager().findContentTypeFor(inputStream, file.getName());
+			contentType = findContentTypeFor(fileContents, fileName);
 		} catch (IOException ex) {
 			JptCorePlugin.log(ex);
 		} finally {
 			try {
-				inputStream.close();
+				fileContents.close();
 			} catch (IOException ex) {
 				JptCorePlugin.log(ex);
 			}
@@ -50,7 +53,19 @@ public class PlatformUtilities
 		return contentType;
 	}
 
-	private PlatformUtilities() {
+	private static IContentType findContentTypeFor(InputStream fileContents, String fileName) throws IOException {
+		return getContentTypeManager().findContentTypeFor(fileContents, fileName);
+	}
+
+	private static IContentType findContentTypeFor(String fileName) {
+		return getContentTypeManager().findContentTypeFor(fileName);
+	}
+
+	private static IContentTypeManager getContentTypeManager() {
+		return Platform.getContentTypeManager();
+	}
+
+	private PlatformTools() {
 		super();
 		throw new UnsupportedOperationException();
 	}

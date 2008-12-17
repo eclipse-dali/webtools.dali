@@ -17,25 +17,30 @@ import org.eclipse.jpt.ui.details.JpaDetailsProvider;
 import org.eclipse.swt.widgets.Composite;
 
 /**
- * This provider is responsible for creating the <code>IJpaDetailsPage</code>
+ * This provider is responsible for creating the <code>JpaDetailsPage</code>
  * when the information comes from the Java source file.
- *
- * @version 2.0
- * @since 1.0
  */
 public class JavaDetailsProvider
 	implements JpaDetailsProvider
 {
+
+	// singleton
+	private static final JpaDetailsProvider INSTANCE = new JavaDetailsProvider();
+
 	/**
-	 * Creates a new <code>JavaDetailsProvider</code>.
+	 * Return the singleton.
 	 */
-	public JavaDetailsProvider() {
+	public static JpaDetailsProvider instance() {
+		return INSTANCE;
+	}
+
+	/**
+	 * Ensure single instance.
+	 */
+	private JavaDetailsProvider() {
 		super();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	public JpaDetailsPage<? extends JpaStructureNode> buildDetailsPage(
 		Composite parent,
 		JpaStructureNode structureNode,
@@ -51,4 +56,5 @@ public class JavaDetailsProvider
 
 		return null;
 	}
+
 }

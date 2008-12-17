@@ -11,6 +11,7 @@
 package org.eclipse.jpt.core.internal.context.persistence;
 
 import java.util.List;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.Path;
@@ -19,7 +20,6 @@ import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.MappingFile;
 import org.eclipse.jpt.core.context.MappingFilePersistenceUnitDefaults;
 import org.eclipse.jpt.core.context.PersistentType;
-import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.PersistenceStructureNodes;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
@@ -29,6 +29,7 @@ import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.JpaResourceModelProvider;
 import org.eclipse.jpt.core.resource.common.JpaXmlResource;
+import org.eclipse.jpt.core.resource.orm.OrmResource;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.StringTools;
@@ -169,13 +170,7 @@ public class GenericMappingFileRef extends AbstractXmlContextNode
 	}
 	
 	protected MappingFile buildMappingFile(JpaXmlResource resource) {
-		XmlContextNode context = this.getJpaFactory().buildContextNode(this, resource);
-		try {
-			return (MappingFile) context;
-		} catch (ClassCastException ex) {
-			// resource does not correspond to a mapping file
-			return null;
-		}
+		return this.getJpaPlatform().buildMappingFile(this, (OrmResource) resource);
 	}
 	
 	

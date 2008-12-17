@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.internal;
 import java.util.Iterator;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.jdt.core.ElementChangedEvent;
+import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.internal.resource.java.JpaCompilationUnitImpl;
@@ -29,14 +29,14 @@ public class JavaJpaFile
 	private final JpaCompilationUnit jpaCompilationUnit;
 
 
-	public JavaJpaFile(JpaProject jpaProject, IFile file) {
-		super(jpaProject, file);
+	public JavaJpaFile(JpaProject jpaProject, IFile file, String resourceType) {
+		super(jpaProject, file, resourceType);
 		this.jpaCompilationUnit = this.buildJpaCompilationUnit();
 	}
 
 	protected JpaCompilationUnit buildJpaCompilationUnit() {
 		return new JpaCompilationUnitImpl(
-					JavaCore.createCompilationUnitFrom(this.getFile()),
+					JavaCore.createCompilationUnitFrom(this.file),
 					this.getJpaPlatform().getAnnotationProvider(),
 					this.getJpaProject().getModifySharedDocumentCommandExecutorProvider(),
 					DefaultAnnotationEditFormatter.instance(),
@@ -46,10 +46,6 @@ public class JavaJpaFile
 
 	public Iterator<JavaResourcePersistentType> persistableTypes() {
 		return this.jpaCompilationUnit.persistableTypes();
-	}
-
-	public String getResourceType() {
-		return JAVA_RESOURCE_TYPE;
 	}
 
 	public void jpaFilesChanged() {
@@ -67,8 +63,16 @@ public class JavaJpaFile
 		super.resourceModelChanged();
 	}
 
-	public void javaElementChanged(ElementChangedEvent event) {
-		this.jpaCompilationUnit.javaElementChanged(event);
+	public void updateFromJava() {
+		this.jpaCompilationUnit.update();
+	}
+
+	public boolean updateFromJava(ICompilationUnit compilationUnit) {
+		if (this.jpaCompilationUnit.getCompilationUnit().equals(compilationUnit)) {
+			this.jpaCompilationUnit.update();
+			return true;
+		}
+		return false;
 	}
 
 }

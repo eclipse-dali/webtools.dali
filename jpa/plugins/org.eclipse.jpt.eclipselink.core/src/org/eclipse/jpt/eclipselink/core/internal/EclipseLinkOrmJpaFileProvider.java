@@ -10,11 +10,13 @@
 package org.eclipse.jpt.eclipselink.core.internal;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaFileProvider;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.internal.XmlJpaFile;
+import org.eclipse.jpt.core.resource.common.JpaXmlResource;
 import org.eclipse.jpt.eclipselink.core.internal.resource.orm.EclipseLinkOrmResourceModelProvider;
 
 /**
@@ -23,6 +25,7 @@ import org.eclipse.jpt.eclipselink.core.internal.resource.orm.EclipseLinkOrmReso
 public class EclipseLinkOrmJpaFileProvider
 	implements JpaFileProvider
 {
+	public static final String RESOURCE_TYPE = "EclipseLink ORM"; //$NON-NLS-1$
 
 	// singleton
 	private static final EclipseLinkOrmJpaFileProvider INSTANCE = new EclipseLinkOrmJpaFileProvider();
@@ -35,18 +38,22 @@ public class EclipseLinkOrmJpaFileProvider
 	}
 
 	/**
-	 * Ensure non-instantiability.
+	 * Ensure single instance.
 	 */
 	private EclipseLinkOrmJpaFileProvider() {
 		super();
 	}
 
-	public String getContentId() {
+	public IContentType getContentType() {
 		return JptEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_CONTENT_TYPE;
 	}
 
 	public JpaFile buildJpaFile(JpaProject jpaProject, IFile file, JpaFactory factory) {
-		return new XmlJpaFile(jpaProject, file, EclipseLinkOrmResourceModelProvider.getModelProvider(file).getResource());
+		return new XmlJpaFile(jpaProject, file, RESOURCE_TYPE, this.buildEclipseLinkOrmResource(file));
+	}
+
+	protected JpaXmlResource buildEclipseLinkOrmResource(IFile file) {
+		return EclipseLinkOrmResourceModelProvider.getModelProvider(file).getResource();
 	}
 
 }

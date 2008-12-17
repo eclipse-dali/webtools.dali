@@ -27,14 +27,27 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.ElementChangedEvent;
+import org.eclipse.jdt.core.IAnnotatable;
+import org.eclipse.jdt.core.IAnnotation;
+import org.eclipse.jdt.core.IClassFile;
+import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.IField;
+import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.IJavaElementDelta;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IMember;
+import org.eclipse.jdt.core.IMethod;
+import org.eclipse.jdt.core.IPackageFragment;
+import org.eclipse.jdt.core.IPackageFragmentRoot;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.core.JpaDataSource;
 import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.core.ResourceModelListener;
+import org.eclipse.jpt.core.JpaResourceModelListener;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
@@ -46,6 +59,7 @@ import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.SchemaContainer;
 import org.eclipse.jpt.utility.CommandExecutor;
 import org.eclipse.jpt.utility.CommandExecutorProvider;
+import org.eclipse.jpt.utility.internal.BitTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
@@ -58,8 +72,10 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 /**
  * 
  */
-public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
-
+public class GenericJpaProject
+	extends AbstractJpaNode
+	implements JpaProject
+{
 	/**
 	 * The Eclipse project corresponding to the JPA project.
 	 */
@@ -70,6 +86,40 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 	 * and all its contents.
 	 */
 	protected final JpaPlatform jpaPlatform;
+
+	/**
+	 * The JPA files associated with the JPA project:
+	 *     java
+	 *     persistence.xml
+	 *     orm.xml
+	 */
+	protected final Vector<JpaFile> jpaFiles;
+
+	/**
+	 * Resource models notify this listener when they change. A project update
+	 * should occur any time a resource model changes.
+	 */
+	protected final JpaResourceModelListener resourceModelListener;
+
+	/**
+	 * The root of the model representing the collated resources associated with 
+	 * the JPA project.
+	 */
+	protected final JpaRootContextNode rootContextNode;
+
+	/**
+	 * A pluggable updater that can be used to "update" the JPA project either
+	 * synchronously or asynchronously (or not at all). A synchronous updater
+	 * is the default, allowing a newly-constructed JPA project to be "updated"
+	 * upon return from the constructor. For performance reasons, a UI should
+	 * immediately change this to an asynchronous updater. A synchronous
+	 * updater can be used when the project is being manipulated by a "batch"
+	 * (or non-UI) client (e.g. when testing the "update" behavior). A null
+	 * updater can used during tests that do not care whether "updates" occur.
+	 * Clients will need to explicitly configure the updater if they require
+	 * something other than a synchronous updater.
+	 */
+	protected Updater updater;
 
 	/**
 	 * The data source that wraps the DTP model.
@@ -94,44 +144,10 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 	protected boolean discoversAnnotatedClasses;
 
 	/**
-	 * The JPA files associated with the JPA project:
-	 *     java
-	 *     persistence.xml
-	 *     orm.xml
-	 */
-	protected final Vector<JpaFile> jpaFiles;
-
-	/**
-	 * The root of the model representing the collated resources associated with 
-	 * the JPA project.
-	 */
-	protected JpaRootContextNode rootContextNode;
-
-	/**
 	 * Support for modifying documents shared with the UI.
 	 */
 	protected final ThreadLocal<CommandExecutor> threadLocalModifySharedDocumentCommandExecutor;
 	protected final CommandExecutorProvider modifySharedDocumentCommandExecutorProvider;
-
-	/**
-	 * A pluggable updater that can be used to "update" the JPA project either
-	 * synchronously or asynchronously (or not at all). A synchronous updater
-	 * is the default, allowing a newly-constructed JPA project to be "updated"
-	 * upon return from the constructor. For performance reasons, a UI should
-	 * immediately change this to an asynchronous updater. A synchronous
-	 * updater can be used when the project is being manipulated by a "batch"
-	 * (or non-UI) client (e.g. when testing the "update" behavior). A null
-	 * updater can used during tests that do not care whether "updates" occur.
-	 * Clients will need to explicitly configure the updater if they require
-	 * something other than a synchronous updater.
-	 */
-	protected Updater updater;
-
-	/**
-	 * Resource models notify this listener when they change. A project update
-	 * should occur any time a resource model changes.
-	 */
-	protected ResourceModelListener resourceModelListener;
 
 
 	// ********** constructor/initialization **********
@@ -169,15 +185,11 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 	
 	@Override
 	public IResource getResource() {
-		return getProject();
+		return this.project;
 	}
 
 	protected Vector<JpaFile> buildEmptyJpaFiles() {
 		return new Vector<JpaFile>();
-	}
-
-	protected ResourceDeltaVisitor buildResourceDeltaVisitor() {
-		return new ResourceDeltaVisitor();
 	}
 
 	protected ThreadLocal<CommandExecutor> buildThreadLocalModifySharedDocumentCommandExecutor() {
@@ -188,7 +200,7 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 		return new ModifySharedDocumentCommandExecutorProvider();
 	}
 
-	protected ResourceModelListener buildResourceModelListener() {
+	protected JpaResourceModelListener buildResourceModelListener() {
 		return new DefaultResourceModelListener();
 	}
 
@@ -448,10 +460,6 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 		}
 	}
 
-	protected boolean containsJpaFile(IFile file) {
-		return (this.getJpaFile(file) != null);
-	}
-
 
 	// ********** context model **********
 
@@ -508,9 +516,175 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 	// ********** Java change **********
 
 	public void javaElementChanged(ElementChangedEvent event) {
-		for (Iterator<JpaFile> stream = this.jpaFiles(); stream.hasNext(); ) {
-			stream.next().javaElementChanged(event);
+		this.synchWithJavaDelta(event.getDelta());
+	}
+
+	/**
+	 * We recurse back here when processing 'affectedChildren'.
+	 */
+	protected void synchWithJavaDelta(IJavaElementDelta delta) {
+		switch (delta.getElement().getElementType()) {
+			case IJavaElement.JAVA_MODEL :
+				this.javaModelChanged(delta);
+				break;
+			case IJavaElement.JAVA_PROJECT :
+				this.javaProjectChanged(delta);
+				break;
+			case IJavaElement.PACKAGE_FRAGMENT_ROOT :
+				this.javaPackageFragmentRootChanged(delta);
+				break;
+			case IJavaElement.PACKAGE_FRAGMENT :
+				this.javaPackageFragmentChanged(delta);
+				break;
+			case IJavaElement.COMPILATION_UNIT :
+				this.javaCompilationUnitChanged(delta);
+				break;
+			default :
+				break; // ignore the elements inside a compilation unit
 		}
+	}
+
+	// ***** model
+	protected void javaModelChanged(IJavaElementDelta delta) {
+		// process the java model's projects
+		this.synchWithJavaDeltaChildren(delta);
+	}
+
+	protected void synchWithJavaDeltaChildren(IJavaElementDelta delta) {
+		for (IJavaElementDelta child : delta.getAffectedChildren()) {
+			this.synchWithJavaDelta(child); // recurse
+		}
+	}
+
+	// ***** project
+	protected void javaProjectChanged(IJavaElementDelta delta) {
+		if ( ! delta.getElement().equals(this.getJavaProject())) {
+			return;  // ignore
+		}
+
+		// process the java project's package fragment roots
+		this.synchWithJavaDeltaChildren(delta);
+
+		if (this.classpathHasChanged(delta)) {
+			// the jars were processed above, now force all the JPA files to update
+			this.updateFromJava();
+		}
+	}
+
+	protected boolean classpathHasChanged(IJavaElementDelta delta) {
+		return BitTools.flagIsSet(delta.getFlags(), IJavaElementDelta.F_RESOLVED_CLASSPATH_CHANGED);
+	}
+
+	protected void updateFromJava() {
+		for (Iterator<JpaFile> stream = this.jpaFiles(); stream.hasNext(); ) {
+			stream.next().updateFromJava();
+		}
+	}
+
+	// ***** package fragment root
+	protected void javaPackageFragmentRootChanged(IJavaElementDelta delta) {
+		// process the java package fragment root's package fragments
+		this.synchWithJavaDeltaChildren(delta);
+
+		if (this.classpathEntryHasBeenAdded(delta)) {
+			this.dump(delta);
+		} else if (this.classpathEntryHasBeenRemoved(delta)) {  // should be mutually-exclusive w/added (?)
+			
+		}
+	}
+
+	protected void dump(IJavaElementDelta delta) {
+		try {
+			this.dump_(delta);
+		} catch (JavaModelException ex) {
+			throw new RuntimeException(ex);
+		}
+	}
+
+//	protected void remove() {
+//		removeDump_();
+//	}
+	protected void dump_(IJavaElementDelta delta) throws JavaModelException {
+//		System.out.println(delta);
+//		IPackageFragmentRoot pfr = (IPackageFragmentRoot) delta.getElement();
+//		System.out.println("kind: " + this.getKindString(pfr));
+//		System.out.println("archive: " + pfr.isArchive());
+//		System.out.println("external: " + pfr.isExternal());
+//		for (IJavaElement pf : pfr.getChildren()) {
+//			System.out.println("\tpackage fragment: " + pf);
+//			for (IJavaElement classFile : ((IPackageFragment) pf).getChildren()) {
+//				System.out.println("\t\tclass file: " + classFile);
+//				IType type = ((IClassFile) classFile).getType();
+//				System.out.println("\t\t\ttype: " + type);
+//				this.dumpAnnotations(type);
+//				for (IField field : type.getFields()) {
+//					System.out.println("\t\t\t\tfield: " + field);
+//					this.dumpAnnotations(field);
+//				}
+//				for (IMethod method : type.getMethods()) {
+//					System.out.println("\t\t\t\tmethod: " + method);
+//					this.dumpAnnotations(method);
+//				}
+//			}
+//		}
+//		System.out.flush();
+	}
+
+	protected String getKindString(IPackageFragmentRoot pfr) throws JavaModelException {
+		switch (pfr.getKind()) {
+			case IPackageFragmentRoot.K_BINARY:
+				return "BINARY";
+			case IPackageFragmentRoot.K_SOURCE:
+				return "SOURCE";
+			default:
+				return "[UNKNOWN]";
+		}
+	}
+
+	protected void dumpAnnotations(IAnnotatable annotatable) throws JavaModelException {
+		for (IAnnotation annotation : annotatable.getAnnotations()) {
+			System.out.println("\t\t\t\t\tannotation: " + annotation);
+		}
+	}
+
+	protected boolean classpathEntryHasBeenAdded(IJavaElementDelta delta) {
+		return BitTools.flagIsSet(delta.getFlags(), IJavaElementDelta.F_ADDED_TO_CLASSPATH);
+	}
+
+	protected boolean classpathEntryHasBeenRemoved(IJavaElementDelta delta) {
+		return BitTools.flagIsSet(delta.getFlags(), IJavaElementDelta.F_REMOVED_FROM_CLASSPATH);
+	}
+
+	// ***** package fragment
+	protected void javaPackageFragmentChanged(IJavaElementDelta delta) {
+		// process the java package fragment's compilation units
+		this.synchWithJavaDeltaChildren(delta);
+	}
+
+	// ***** compilation unit
+	protected void javaCompilationUnitChanged(IJavaElementDelta delta) {
+		if (this.javaCompilationUnitDeltaIsRelevant(delta)) {
+			ICompilationUnit compilationUnit = (ICompilationUnit) delta.getElement();
+			for (Iterator<JpaFile> stream = this.jpaFiles(); stream.hasNext(); ) {
+				if (stream.next().updateFromJava(compilationUnit)) {
+					break;  // stop with first update (?)
+				}
+			}
+		}
+		// ignore the java compilation unit's children
+	}
+
+	protected boolean javaCompilationUnitDeltaIsRelevant(IJavaElementDelta delta) {
+		// ignore changes to/from primary working copy - no content has changed;
+		// and make sure there are no other flags set that indicate *both* a
+		// change to/from primary working copy *and* content has changed
+		if (BitTools.onlyFlagIsSet(delta.getFlags(), IJavaElementDelta.F_PRIMARY_WORKING_COPY)) {
+			return false;
+		}
+
+		// ignore java notification for ADDED or REMOVED;
+		// these are handled via resource notification
+		return delta.getKind() == IJavaElementDelta.CHANGED;
 	}
 
 
@@ -564,32 +738,17 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 	}
 	
 	
-	// ********** root deploy location **********
-
-	protected static final String WEB_PROJECT_ROOT_DEPLOY_LOCATION = J2EEConstants.WEB_INF_CLASSES;
-
-	public String getRootDeployLocation() {
-		return this.isWebProject() ? WEB_PROJECT_ROOT_DEPLOY_LOCATION : ""; //$NON-NLS-1$
-	}
-
-	protected static final String JST_WEB_MODULE = IModuleConstants.JST_WEB_MODULE;
-
-	protected boolean isWebProject() {
-		return JptCorePlugin.projectHasWebFacet(this.project);
-	}
-
-
 	// ********** dispose **********
 
 	public void dispose() {
-		this.updater.dispose();
+		this.updater.stop();
 		this.dataSource.dispose();
 	}
 
 
 	// ********** resource model listener **********
 
-	protected class DefaultResourceModelListener implements ResourceModelListener {
+	protected class DefaultResourceModelListener implements JpaResourceModelListener {
 		protected DefaultResourceModelListener() {
 			super();
 		}
@@ -601,7 +760,7 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 
 	// ********** handling resource deltas **********
 
-	public void synchronizeJpaFiles(IResourceDelta delta) throws CoreException {
+	public void projectChanged(IResourceDelta delta) throws CoreException {
 		ResourceDeltaVisitor resourceDeltaVisitor = this.buildResourceDeltaVisitor();
 		delta.accept(resourceDeltaVisitor);
 		if (resourceDeltaVisitor.jpaFilesChanged()) {
@@ -609,6 +768,10 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 				stream.next().jpaFilesChanged();
 			}
 		}
+	}
+
+	protected ResourceDeltaVisitor buildResourceDeltaVisitor() {
+		return new ResourceDeltaVisitor();
 	}
 
 	/**
@@ -710,7 +873,7 @@ public class GenericJpaProject extends AbstractJpaNode implements JpaProject {
 		if (updater == null) {
 			throw new NullPointerException();
 		}
-		this.updater.dispose();
+		this.updater.stop();
 		this.setUpdater_(updater);
 	}
 

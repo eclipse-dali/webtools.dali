@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
-import org.eclipse.jpt.core.context.PersistentTypeContext;
+import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmPersistentType;
 import org.eclipse.jpt.core.resource.orm.Attributes;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
@@ -17,7 +17,7 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 public class EclipseLinkOrmPersistentType extends GenericOrmPersistentType
 {
 	
-	public EclipseLinkOrmPersistentType(PersistentTypeContext parent, String mappingKey) {
+	public EclipseLinkOrmPersistentType(EntityMappings parent, String mappingKey) {
 		super(parent, mappingKey);
 	}
 	

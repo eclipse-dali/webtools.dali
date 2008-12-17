@@ -224,6 +224,7 @@ public class JpaModelManager {
 	 * Check for:
 	 *   - project close/delete
 	 *   - file add/remove
+	 *   - project open/rename
 	 */
 	/* private */ void resourceChanged(IResourceChangeEvent event) {
 		if (! (event.getSource() instanceof IWorkspace)) {
@@ -249,30 +250,31 @@ public class JpaModelManager {
 	 * JPA project if appropriate.
 	 */
 	private void resourcePreDelete(IResourceChangeEvent event) {
-		debug("Resource (Project) PRE_DELETE: " + event.getResource()); //$NON-NLS-1$
-		this.jpaModel.projectPreDelete((IProject) event.getResource());
+		IProject project = (IProject) event.getResource();
+		debug("Resource (Project) PRE_DELETE: ", project); //$NON-NLS-1$
+		this.jpaModel.projectPreDelete(project);
 	}
 
 	/**
 	 * A resource has changed somehow.
 	 * Check for files being added or removed.
-	 * (The JPA project only handles added and removed files here, ignoring
-	 * changed files.)
+	 * (The JPA project only handles added and removed files here
+	 * Changed files are handlded via the Java Element Changed event.)
+	 * Also check for opened projects.
 	 */
 	private void resourcePostChange(IResourceChangeEvent event) {
 		debug("Resource POST_CHANGE"); //$NON-NLS-1$
-		this.synchronizeFiles(event.getDelta());
-		this.checkForOpenedProjects(event.getDelta());
+		this.resourceChanged(event.getDelta());
 	}
 
-	private void synchronizeFiles(IResourceDelta delta) {
+	private void resourceChanged(IResourceDelta delta) {
 		IResource resource = delta.getResource();
 		switch (resource.getType()) {
 			case IResource.ROOT :
-				this.synchronizeFiles(delta.getAffectedChildren());  // recurse
+				this.resourceChangedChildren(delta);
 				break;
 			case IResource.PROJECT :
-				this.synchronizeFiles((IProject) resource, delta);
+				this.projectChanged((IProject) resource, delta);
 				break;
 			case IResource.FILE :
 			case IResource.FOLDER :
@@ -281,18 +283,24 @@ public class JpaModelManager {
 		}
 	}
 
-	private void synchronizeFiles(IResourceDelta[] deltas) {
-		for (int i = 0; i < deltas.length; i++) {
-			this.synchronizeFiles(deltas[i]);  // recurse
+	private void resourceChangedChildren(IResourceDelta delta) {
+		for (IResourceDelta child : delta.getAffectedChildren()) {
+			this.resourceChanged(child);  // recurse
 		}
 	}
+
+	private void projectChanged(IProject project, IResourceDelta delta) {
+		this.projectChanged_(project, delta);
+		this.checkForOpenedProject(project, delta);
+	}
+
 
 	/**
 	 * Checked exceptions bite.
 	 */
-	private void synchronizeFiles(IProject project, IResourceDelta delta) {
+	private void projectChanged_(IProject project, IResourceDelta delta) {
 		try {
-			this.jpaModel.synchronizeFiles(project, delta);
+			this.jpaModel.projectChanged(project, delta);
 		} catch (CoreException ex) {
 			this.log(ex);  // problem traversing the project's resources - not much we can do
 		}
@@ -303,28 +311,6 @@ public class JpaModelManager {
 	 * Projects being deleted are handled in IResourceChangeEvent.PRE_DELETE.
 	 * Projects being closed are handled in IFacetedProjectEvent.Type.PROJECT_MODIFIED.
 	 */
-	private void checkForOpenedProjects(IResourceDelta delta) {
-		IResource resource = delta.getResource();
-		switch (resource.getType()) {
-			case IResource.ROOT :
-				this.checkForOpenedProjects(delta.getAffectedChildren());  // recurse
-				break;
-			case IResource.PROJECT :
-				this.checkForOpenedProject((IProject) resource, delta);
-				break;
-			case IResource.FILE :
-			case IResource.FOLDER :
-			default :
-				break;
-		}
-	}
-
-	private void checkForOpenedProjects(IResourceDelta[] deltas) {
-		for (int i = 0; i < deltas.length; i++) {
-			this.checkForOpenedProjects(deltas[i]);  // recurse
-		}
-	}
-
 	private void checkForOpenedProject(IProject project, IResourceDelta delta) {
 		switch (delta.getKind()) {
 			case IResourceDelta.CHANGED : 
@@ -351,7 +337,7 @@ public class JpaModelManager {
 	 */
 	private void checkDeltaFlagsForOpenedProject(IProject project, IResourceDelta delta) {
 		if (BitTools.flagIsSet(delta.getFlags(), IResourceDelta.OPEN) && project.isOpen()) {
-			debug("\tProject CHANGED - OPEN: " + project.getName()); //$NON-NLS-1$
+			debug("\tProject CHANGED - OPEN: ", project.getName()); //$NON-NLS-1$
 			this.jpaModel.checkForTransition(project);
 		}
 	}
@@ -362,7 +348,7 @@ public class JpaModelManager {
 	 */
 	private void checkDeltaFlagsForRenamedProject(IProject project, IResourceDelta delta) {
 		if (BitTools.flagIsSet(delta.getFlags(), IResourceDelta.MOVED_FROM) && project.isOpen()) {
-			debug("\tProject ADDED - MOVED_FROM: " + delta.getMovedFromPath()); //$NON-NLS-1$
+			debug("\tProject ADDED - MOVED_FROM: ", delta.getMovedFromPath()); //$NON-NLS-1$
 			this.jpaModel.checkForTransition(project);
 		}
 	}
@@ -393,14 +379,14 @@ public class JpaModelManager {
 	}
 
 	private void facetedProjectPostInstall(IProjectFacetActionEvent event) {
-		debug("Facet POST_INSTALL: " + event.getProjectFacet()); //$NON-NLS-1$
+		debug("Facet POST_INSTALL: ", event.getProjectFacet()); //$NON-NLS-1$
 		if (event.getProjectFacet().getId().equals(JptCorePlugin.FACET_ID)) {
 			this.jpaModel.jpaFacetedProjectPostInstall(event);
 		}
 	}
 
 	private void facetedProjectPreUninstall(IProjectFacetActionEvent event) {
-		debug("Facet PRE_UNINSTALL: " + event.getProjectFacet()); //$NON-NLS-1$
+		debug("Facet PRE_UNINSTALL: ", event.getProjectFacet()); //$NON-NLS-1$
 		if (event.getProjectFacet().getId().equals(JptCorePlugin.FACET_ID)) {
 			this.jpaModel.jpaFacetedProjectPreUninstall(event);
 		}
@@ -414,7 +400,7 @@ public class JpaModelManager {
 	 *   - one of a project's (facet) metadata files is edited directly
 	 */
 	private void facetedProjectModified(IProject project) {
-		debug("Facet PROJECT_MODIFIED: " + project.getName()); //$NON-NLS-1$
+		debug("Facet PROJECT_MODIFIED: ", project.getName()); //$NON-NLS-1$
 		this.jpaModel.checkForTransition(project);
 	}
 
@@ -555,10 +541,23 @@ public class JpaModelManager {
 	// @see JpaModelTests#testDEBUG()
 	private static final boolean DEBUG = false;
 
+	/**
+	 * trigger #toString() call and string concatenation only if DEBUG is true
+	 */
+	private static void debug(String message, Object object) {
+		if (DEBUG) {
+			debug_(message + object);
+		}
+	}
+
 	private static void debug(String message) {
 		if (DEBUG) {
-			System.out.println(Thread.currentThread().getName() + ": " + message); //$NON-NLS-1$
+			debug_(message);
 		}
+	}
+
+	private static void debug_(String message) {
+		System.out.println(Thread.currentThread().getName() + ": " + message); //$NON-NLS-1$
 	}
 
 }

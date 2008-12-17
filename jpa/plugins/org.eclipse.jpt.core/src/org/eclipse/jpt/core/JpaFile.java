@@ -10,8 +10,9 @@
 package org.eclipse.jpt.core;
 
 import java.util.Iterator;
+
 import org.eclipse.core.resources.IFile;
-import org.eclipse.jdt.core.ElementChangedEvent;
+import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 
 /**
@@ -41,10 +42,17 @@ public interface JpaFile
 	// ********** event handlers **********
 
 	/**
-	 * A JDT Java element has changed. Synchronize the JPA file's resource
-	 * model.
+	 * A "significant" JDT Java element has changed.
+	 * Synchronize the JPA file's resource model.
 	 */
-	void javaElementChanged(ElementChangedEvent event);
+	void updateFromJava();
+
+	/**
+	 * The specified compilation unit has changed.
+	 * If the change is relevant to the JPA file, synchronize its resource model
+	 * and return true.
+	 */
+	boolean updateFromJava(ICompilationUnit compilationUnit);
 
 	/**
 	 * Calculate any information that is dependent on other files
@@ -61,24 +69,6 @@ public interface JpaFile
 	 */
 	String getResourceType();
 
-	/**
-	 * Constant representing a Java resource type.
-	 * @see #getResourceType()
-	 */
-	static final String JAVA_RESOURCE_TYPE = "JAVA_RESOURCE_TYPE"; //$NON-NLS-1$
-
-	/**
-	 * Constant representing a persistence.xml resource type.
-	 * @see #getResourceType()
-	 */
-	static final String PERSISTENCE_RESOURCE_TYPE = "PERSISTENCE_RESOURCE_TYPE"; //$NON-NLS-1$
-
-	/**
-	 * Constant representing a mapping file (e.g. orm.xml) resource type.
-	 * @see #getResourceType()
-	 */
-	static final String ORM_RESOURCE_TYPE = "ORM_RESOURCE_TYPE"; //$NON-NLS-1$
-
 
 	// ********** resource model listeners **********
 
@@ -86,12 +76,12 @@ public interface JpaFile
 	 * Changes to the resource model result in events. In particular, the JPA
 	 * project performs an "update" whenever a resource changes.
 	 */
-	void addResourceModelListener(ResourceModelListener listener);
+	void addResourceModelListener(JpaResourceModelListener listener);
 
 	/**
 	 * @see #addResourceModelChangeListener(ResourceModelListener)
 	 */
-	void removeResourceModelListener(ResourceModelListener listener);
+	void removeResourceModelListener(JpaResourceModelListener listener);
 
 
 	// ********** root structure nodes **********
@@ -108,7 +98,7 @@ public interface JpaFile
 	int rootStructureNodesSize();
 
 	/**
-	 * Add a root context structure node.
+	 * Add a root structure node.
 	 * There is the potential for multiple root structure nodes 
 	 * for a particular key. For example, a Java file that is listed
 	 * both as a <class> in the persistence.xml and as an <entity> in

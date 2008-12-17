@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.internal;
 import java.util.Iterator;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.jdt.core.ElementChangedEvent;
+import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.resource.common.JpaXmlResource;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
@@ -31,8 +31,8 @@ public class XmlJpaFile
 	private final JpaXmlResource resource;
 
 
-	public XmlJpaFile(JpaProject jpaProject, IFile file, JpaXmlResource resource) {
-		super(jpaProject, file);
+	public XmlJpaFile(JpaProject jpaProject, IFile file, String resourceType, JpaXmlResource resource) {
+		super(jpaProject, file, resourceType);
 		this.resource = resource;
 		this.resource.setResourceModelListener(this.getResourceModelListener());
 	}
@@ -41,16 +41,16 @@ public class XmlJpaFile
 		return EmptyIterator.<JavaResourcePersistentType>instance();
 	}
 
-	public String getResourceType() {
-		return this.resource.getType();
+	public void updateFromJava() {
+		// ignore
 	}
 
-	public void javaElementChanged(ElementChangedEvent event) {
-		// nothing to do yet
+	public boolean updateFromJava(ICompilationUnit compilationUnit) {
+		return false;  // ignore
 	}
 
 	public void jpaFilesChanged() {
-		// nothing to do yet
+		// ignore
 	}
 
 }

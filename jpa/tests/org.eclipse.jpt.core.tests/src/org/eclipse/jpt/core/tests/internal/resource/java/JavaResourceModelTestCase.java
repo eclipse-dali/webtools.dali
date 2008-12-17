@@ -9,31 +9,23 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.resource.java;
 
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResourceProxy;
-import org.eclipse.core.resources.IResourceProxyVisitor;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.ElementChangedEvent;
-import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IElementChangedListener;
+import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.IJavaElementDelta;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.core.ResourceModelListener;
-import org.eclipse.jpt.core.context.JpaRootContextNode;
-import org.eclipse.jpt.core.internal.GenericJpaProject;
-import org.eclipse.jpt.core.internal.SimpleJpaProjectConfig;
+import org.eclipse.jpt.core.JpaAnnotationProvider;
+import org.eclipse.jpt.core.JpaResourceModelListener;
+import org.eclipse.jpt.core.internal.platform.GenericJpaAnnotationProvider;
 import org.eclipse.jpt.core.internal.resource.java.JpaCompilationUnitImpl;
 import org.eclipse.jpt.core.internal.utility.jdt.NullAnnotationEditFormatter;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.java.JpaCompilationUnit;
 import org.eclipse.jpt.core.tests.internal.utility.jdt.AnnotationTestCase;
 import org.eclipse.jpt.utility.CommandExecutorProvider;
+import org.eclipse.jpt.utility.internal.BitTools;
 import org.eclipse.jpt.utility.internal.ClassTools;
-import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 
 @SuppressWarnings("nls")
@@ -49,10 +41,11 @@ public class JavaResourceModelTestCase extends AnnotationTestCase
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
+		this.javaProject.addJar(org.eclipse.jpt.core.tests.internal.projects.TestJpaProject.jpaJarName());
 		this.javaElementChangeListener = new JavaElementChangeListener();
 		JavaCore.addElementChangedListener(this.javaElementChangeListener);
 	}
-	
+
 	@Override
 	protected void tearDown() throws Exception {
 		super.tearDown();
@@ -77,9 +70,49 @@ public class JavaResourceModelTestCase extends AnnotationTestCase
 	}
 
 	void javaElementChanged(ElementChangedEvent event) {
-		if (this.jpaCompilationUnit != null) {
-			this.jpaCompilationUnit.javaElementChanged(event);
+		if (this.jpaCompilationUnit == null) {
+			return;
 		}
+		this.synchWithJavaDelta(event.getDelta());
+	}
+
+	/**
+	 * NB: this is copied from GenericJpaProject, so it might need to be
+	 * kept in synch with that code if it changes... yech...
+	 */
+	protected void synchWithJavaDelta(IJavaElementDelta delta) {
+		switch (delta.getElement().getElementType()) {
+			case IJavaElement.JAVA_MODEL :
+			case IJavaElement.JAVA_PROJECT :
+			case IJavaElement.PACKAGE_FRAGMENT_ROOT :
+			case IJavaElement.PACKAGE_FRAGMENT :
+				this.synchWithJavaDeltaChildren(delta);
+				break;
+			case IJavaElement.COMPILATION_UNIT :
+				this.javaCompilationUnitChanged(delta);
+				break;
+			default :
+				break; // ignore the elements inside a compilation unit
+		}
+	}
+
+	protected void synchWithJavaDeltaChildren(IJavaElementDelta delta) {
+		for (IJavaElementDelta child : delta.getAffectedChildren()) {
+			this.synchWithJavaDelta(child); // recurse
+		}
+	}
+
+	protected void javaCompilationUnitChanged(IJavaElementDelta delta) {
+		if (this.deltaIsRelevant(delta)) {
+			this.jpaCompilationUnit.update();
+		}
+	}
+
+	protected boolean deltaIsRelevant(IJavaElementDelta delta) {
+		if (BitTools.onlyFlagIsSet(delta.getFlags(), IJavaElementDelta.F_PRIMARY_WORKING_COPY)) {
+			return false;
+		}
+		return delta.getKind() == IJavaElementDelta.CHANGED;
 	}
 
 	protected ICompilationUnit createAnnotationAndMembers(String annotationName, String annotationBody) throws Exception {
@@ -98,51 +131,7 @@ public class JavaResourceModelTestCase extends AnnotationTestCase
 		return this.javaProject.createCompilationUnit(packageName, enumName + ".java", "public enum " + enumName + " { " + enumBody + " }");
 	}
 
-	//build up a dummy JpaProject that does not have JpaFiles in it and does not update from java changes
-	protected JpaProject buildJpaProject() throws CoreException {
-		return new TestJpaProject(this.buildJpaProjectConfig(this.javaProject.getProject()));
-	}
-
-	protected class TestJpaProject extends GenericJpaProject {
-		protected TestJpaProject(JpaProject.Config config) throws CoreException {
-			super(config);
-			this.setUpdater(Updater.Null.instance());// ignore all updates, since there is no context model
-			this.addJar(org.eclipse.jpt.core.tests.internal.projects.TestJpaProject.jpaJarName());
-		}
-
-		protected void addJar(String jarPath) throws JavaModelException {
-			this.addClasspathEntry(JavaCore.newLibraryEntry(new Path(jarPath), null, null));
-		}
-
-		private void addClasspathEntry(IClasspathEntry entry) throws JavaModelException {
-			getJavaProject().setRawClasspath(CollectionTools.add(getJavaProject().getRawClasspath(), entry), null);
-		}
-		
-		@Override
-		protected IResourceProxyVisitor buildInitialResourceProxyVisitor() {
-			return new IResourceProxyVisitor() {
-				public boolean visit(IResourceProxy proxy) throws CoreException {
-					return false;  // ignore all the files in the Eclipse project
-				}
-			};
-		}
-		
-		@Override
-		protected JpaRootContextNode buildRootContextNode() {
-			return null;  // no root context
-		}
-	}
-
-	protected JpaProject.Config buildJpaProjectConfig(IProject project) {
-		SimpleJpaProjectConfig config = new SimpleJpaProjectConfig();
-		config.setProject(project);
-		config.setJpaPlatform(JptCorePlugin.getJpaPlatform(project));
-		config.setConnectionProfileName(JptCorePlugin.getConnectionProfileName(project));
-		config.setDiscoverAnnotatedClasses(JptCorePlugin.discoverAnnotatedClasses(project));
-		return config;
-	}
-
-	protected JavaResourcePersistentType buildJavaTypeResource(ICompilationUnit cu) throws CoreException {
+	protected JavaResourcePersistentType buildJavaTypeResource(ICompilationUnit cu) {
 		this.jpaCompilationUnit = this.buildJpaCompilationUnit(cu);
 		this.jpaCompilationUnit.resolveTypes();
 		return this.hackJavaResourcePersistentType();
@@ -152,22 +141,25 @@ public class JavaResourceModelTestCase extends AnnotationTestCase
 		return (JavaResourcePersistentType) ClassTools.fieldValue(this.jpaCompilationUnit, "persistentType");
 	}
 
-	protected JpaCompilationUnit buildJpaCompilationUnit(ICompilationUnit cu) throws CoreException {
+	protected JpaCompilationUnit buildJpaCompilationUnit(ICompilationUnit cu) {
 		if (this.jpaCompilationUnit != null) {
 			throw new IllegalStateException();
 		}
-		JpaProject jpaProject = buildJpaProject();
 		return new JpaCompilationUnitImpl(
 			cu,
-			jpaProject.getJpaPlatform().getAnnotationProvider(),
+			this.buildAnnotationProvider(),
 			CommandExecutorProvider.Default.instance(),
 			NullAnnotationEditFormatter.instance(),
 			this.buildResourceModelListener()
 		);
 	}
 
-	ResourceModelListener buildResourceModelListener() {
-		return new ResourceModelListener() {
+	protected JpaAnnotationProvider buildAnnotationProvider() {
+		return new GenericJpaAnnotationProvider() {/* dummy class to expose ctor */};
+	}
+
+	protected JpaResourceModelListener buildResourceModelListener() {
+		return new JpaResourceModelListener() {
 			public void resourceModelChanged() {
 				// ignore
 			}

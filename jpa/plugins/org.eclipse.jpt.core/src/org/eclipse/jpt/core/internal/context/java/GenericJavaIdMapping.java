@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Iterator;
 import java.util.List;
+
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.Converter;
@@ -430,7 +431,9 @@ public class GenericJavaIdMapping
 		if (this.ownerIsEntity() && this.connectionProfileIsActive()) {
 			this.validateColumn(messages, astRoot);
 		}
-		this.validateGeneratedValue(messages, astRoot);
+		if (this.generatedValue != null) {
+			this.generatedValue.validate(messages, astRoot);
+		}
 		this.validateGenerators(messages, astRoot);
 		if (this.specifiedConverter != null) {
 			this.specifiedConverter.validate(messages, astRoot);
@@ -462,32 +465,6 @@ public class GenericJavaIdMapping
 				)
 			);
 		}
-	}
-	
-	protected void validateGeneratedValue(List<IMessage> messages, CompilationUnit astRoot) {
-		if (this.generatedValue == null) {
-			return;
-		}
-
-		String generatorName = this.generatedValue.getGenerator();
-		if (generatorName == null) {
-			return;
-		}
-		
-		for (Iterator<Generator> stream = this.getPersistenceUnit().allGenerators(); stream.hasNext(); ) {
-			if (generatorName.equals(stream.next().getName())) {
-				return;
-			}
-		}
-		
-		messages.add(
-			DefaultJpaValidationMessages.buildMessage(
-				IMessage.HIGH_SEVERITY,
-				JpaValidationMessages.ID_MAPPING_UNRESOLVED_GENERATOR_NAME,
-				new String[] {generatorName},
-				this,
-				this.generatedValue.getGeneratorTextRange(astRoot))
-			);
 	}
 	
 	protected void validateGenerators(List<IMessage> messages, CompilationUnit astRoot) {

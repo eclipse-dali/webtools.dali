@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -22,7 +23,6 @@ import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PersistentType;
-import org.eclipse.jpt.core.context.PersistentTypeContext;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaStructureNodes;
@@ -42,7 +42,9 @@ import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implements JavaPersistentType
+public class GenericJavaPersistentType
+	extends AbstractJavaJpaContextNode
+	implements JavaPersistentType
 {
 	protected String name;
 	
@@ -56,7 +58,7 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 
 	protected JavaResourcePersistentType resourcePersistentType;
 
-	public GenericJavaPersistentType(PersistentTypeContext parent, JavaResourcePersistentType jrpt) {
+	public GenericJavaPersistentType(PersistentType.Owner parent, JavaResourcePersistentType jrpt) {
 		super(parent);
 		this.attributes = new ArrayList<JavaPersistentAttribute>();
 		this.initialize(jrpt);
@@ -64,7 +66,7 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 	
 	@Override
 	public IResource getResource() {
-		return this.resourcePersistentType.getJpaCompilationUnit().getCompilationUnit().getResource();
+		return this.resourcePersistentType.getJpaCompilationUnit().getFile();
 	}
 
 	//****************** JpaStructureNode implementation *******************
@@ -75,8 +77,9 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 	
 	//****************** PersistentType implementation *******************
 	
-	public PersistentTypeContext getContext() {
-		return (PersistentTypeContext) getParent();
+	@Override
+	public PersistentType.Owner getParent() {
+		return (PersistentType.Owner) super.getParent();
 	}
 	
 	public String getName() {
@@ -144,6 +147,14 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 		firePropertyChanged(PersistentType.ACCESS_PROPERTY, oldAccess, newAccess);
 	}
 
+	public AccessType getOverrideAccess() {
+		return this.getParent().getOverridePersistentTypeAccess();
+	}
+
+	public AccessType getDefaultAccess() {
+		return this.getParent().getDefaultPersistentTypeAccess();
+	}
+
 	protected Iterator<JavaPersistentAttribute> attributesNamed(final String attributeName) {
 		return new FilteringIterator<JavaPersistentAttribute, JavaPersistentAttribute>(attributes()) {
 			@Override
@@ -164,7 +175,7 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 			JavaPersistentAttribute attribute = stream.next();
 			return (stream.hasNext()) ? null /*more than one*/: attribute;
 		}
-		return (getParentPersistentType() == null) ? null : getParentPersistentType().resolveAttribute(attributeName);
+		return (this.parentPersistentType == null) ? null : this.parentPersistentType.resolveAttribute(attributeName);
 	}
 	
 	public ListIterator<JavaPersistentAttribute> attributes() {
@@ -281,18 +292,16 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 	
 	
 	public Iterator<PersistentType> inheritanceHierarchy() {
-		// using a chain iterator to traverse up the inheritance tree
-		return new ChainIterator<PersistentType>(this) {
-			@Override
-			protected PersistentType nextLink(PersistentType pt) {
-				return pt.getParentPersistentType();
-			}
-		};
+		return inheritanceHierarchyOf(this);
 	}
 
 	public Iterator<PersistentType> ancestors() {
+		return inheritanceHierarchyOf(this.parentPersistentType);
+	}
+
+	protected static Iterator<PersistentType> inheritanceHierarchyOf(PersistentType persistentType) {
 		// using a chain iterator to traverse up the inheritance tree
-		return new ChainIterator<PersistentType>(this.getParentPersistentType()) {
+		return new ChainIterator<PersistentType>(persistentType) {
 			@Override
 			protected PersistentType nextLink(PersistentType pt) {
 				return pt.getParentPersistentType();
@@ -320,42 +329,40 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 	// ******************** Updating **********************
 	protected void initialize(JavaResourcePersistentType jrpt) {
 		this.resourcePersistentType = jrpt;
-		this.parentPersistentType = this.parentPersistentType(jrpt);
-		this.access = this.access(jrpt);
-		this.name = this.name(jrpt);
-		this.initializeMapping(jrpt);
-		this.initializePersistentAttributes(jrpt);
+		this.parentPersistentType = this.buildParentPersistentType();
+		this.access = this.buildAccess();
+		this.name = this.buildName();
+		this.initializeMapping();
+		this.initializePersistentAttributes();
 	}
 	
-	protected void initializeMapping(JavaResourcePersistentType jrpt) {
-		this.mapping  = getJpaPlatform().buildJavaTypeMappingFromAnnotation(this.javaMappingAnnotationName(jrpt), this);
-		this.mapping.initialize(jrpt);
+	protected void initializeMapping() {
+		this.mapping = this.getJpaPlatform().buildJavaTypeMappingFromAnnotation(this.javaMappingAnnotationName(), this);
+		this.mapping.initialize(this.resourcePersistentType);
 	}
 	
-	protected void initializePersistentAttributes(JavaResourcePersistentType jrpt) {
-		for (Iterator<JavaResourcePersistentAttribute> stream = this.persistentAttributes(jrpt); stream.hasNext(); ) {
+	protected void initializePersistentAttributes() {
+		for (Iterator<JavaResourcePersistentAttribute> stream = this.persistentAttributes(); stream.hasNext(); ) {
 			this.attributes.add(this.createAttribute(stream.next()));
 		}
 	}
 
-	protected Iterator<JavaResourcePersistentAttribute> persistentAttributes(JavaResourcePersistentType jrpt) {
-		return (this.getAccess() == AccessType.PROPERTY) ? jrpt.persistableProperties() : jrpt.persistableFields();
+	protected Iterator<JavaResourcePersistentAttribute> persistentAttributes() {
+		return (this.access == AccessType.PROPERTY) ?
+				this.resourcePersistentType.persistableProperties() :
+				this.resourcePersistentType.persistableFields();
 	}
 
 	public void update(JavaResourcePersistentType jrpt) {
 		this.resourcePersistentType = jrpt;
-		getJpaFile(this.resourcePersistentType.getFile()).addRootStructureNode(this.resourcePersistentType.getQualifiedName(), this);
-		updateParentPersistentType(jrpt);
-		updateAccess(jrpt);
-		updateName(jrpt);
-		updateMapping(jrpt);
-		updatePersistentAttributes(jrpt);
+		this.getJpaFile(this.resourcePersistentType.getFile()).addRootStructureNode(this.resourcePersistentType.getQualifiedName(), this);
+		this.setParentPersistentType(this.buildParentPersistentType());
+		this.setAccess(this.buildAccess());
+		this.setName(this.buildName());	
+		this.updateMapping();
+		this.updatePersistentAttributes();
 	}
 	
-	protected void updateAccess(JavaResourcePersistentType jrpt) {
-		this.setAccess(this.access(jrpt));
-	}
-
 	/**
 	 * Check the access "specified" by the java resource model.
 	 * 		Check xml mapping specified access first
@@ -365,41 +372,43 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 	 * 		If still null check the persistence-unit default Access
 	 * 		Default to FIELD if all else fails.
 	 */
-	protected AccessType access(JavaResourcePersistentType jrpt) {
-		AccessType javaAccess = getContext().getOverridePersistentTypeAccess();
-		if (javaAccess == null) {
-			javaAccess = AccessType.fromJavaResourceModel(jrpt.getAccess());
+	protected AccessType buildAccess() {
+		AccessType accessType = this.getParent().getOverridePersistentTypeAccess();
+		if (accessType != null) {
+			return accessType;
 		}
-		if (javaAccess == null) {
-			if (getParentPersistentType() != null) {
-				javaAccess = getParentPersistentType().getAccess();
+
+		accessType = AccessType.fromJavaResourceModel(this.resourcePersistentType.getAccess());
+		if (accessType != null) {
+			return accessType;
+		}
+
+		if (this.parentPersistentType != null) {
+			accessType = this.parentPersistentType.getAccess();
+			if (accessType != null) {
+				return accessType;
 			}
 		}
-		if (javaAccess == null) {
-			javaAccess = getContext().getDefaultPersistentTypeAccess();
+
+		accessType = this.getParent().getDefaultPersistentTypeAccess();
+		if (accessType != null) {
+			return accessType;
 		}
-		if (javaAccess == null) {
-			// last ditch attempt to allow the user to annotate *something*
-			javaAccess = AccessType.FIELD;
-		}
-		return javaAccess;
+
+		// last ditch attempt to allow the user to annotate *something*
+		return AccessType.FIELD;
+	}
+
+	protected String buildName() {
+		return this.resourcePersistentType.getQualifiedName();
 	}
 	
-	protected void updateName(JavaResourcePersistentType jrpt) {
-		this.setName(this.name(jrpt));	
-	}
-	
-	protected String name(JavaResourcePersistentType jrpt) {
-		return jrpt.getQualifiedName();
-	}
-	
-	protected void updateMapping(JavaResourcePersistentType jrpt) {
-		String javaMappingAnnotationName = this.javaMappingAnnotationName(jrpt);
-		if (getMapping().getAnnotationName() != javaMappingAnnotationName) {
-			setMapping(createJavaTypeMappingFromAnnotation(javaMappingAnnotationName, jrpt));
-		}
-		else {
-			getMapping().update(jrpt);
+	protected void updateMapping() {
+		String javaMappingAnnotationName = this.javaMappingAnnotationName();
+		if (this.getMapping().getAnnotationName() == javaMappingAnnotationName) {
+			this.getMapping().update(this.resourcePersistentType);
+		} else {
+			this.setMapping(this.createJavaTypeMappingFromAnnotation(javaMappingAnnotationName));
 		}
 	}
 	
@@ -407,26 +416,23 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 		return getJpaPlatform().buildJavaTypeMappingFromMappingKey(key, this);
 	}
 	
-	protected JavaTypeMapping createJavaTypeMappingFromAnnotation(String annotationName, JavaResourcePersistentType jrpt) {
+	protected JavaTypeMapping createJavaTypeMappingFromAnnotation(String annotationName) {
 		JavaTypeMapping typeMapping = getJpaPlatform().buildJavaTypeMappingFromAnnotation(annotationName, this);
-		typeMapping.initialize(jrpt);
+		typeMapping.initialize(this.resourcePersistentType);
 		return typeMapping;
 	}
 
-	protected String javaMappingAnnotationName(JavaResourcePersistentType jrpt) {
-		Annotation mappingAnnotation = (Annotation) jrpt.getMappingAnnotation();
-		if (mappingAnnotation != null) {
-			return mappingAnnotation.getAnnotationName();
-		}
-		return null;
+	protected String javaMappingAnnotationName() {
+		Annotation mappingAnnotation = (Annotation) this.resourcePersistentType.getMappingAnnotation();
+		return (mappingAnnotation == null) ? null :  mappingAnnotation.getAnnotationName();
 	}
 
-	protected void updatePersistentAttributes(JavaResourcePersistentType jrpt) {
+	protected void updatePersistentAttributes() {
 		Collection<JavaPersistentAttribute> contextAttributesToRemove = CollectionTools.collection(attributes());
 		Collection<JavaPersistentAttribute> contextAttributesToUpdate = new ArrayList<JavaPersistentAttribute>();
 		int resourceIndex = 0;
 		
-		for (Iterator<JavaResourcePersistentAttribute> stream = this.persistentAttributes(jrpt); stream.hasNext(); ) {
+		for (Iterator<JavaResourcePersistentAttribute> stream = this.persistentAttributes(); stream.hasNext(); ) {
 			JavaResourcePersistentAttribute resourceAttribute = stream.next();
 			boolean contextAttributeFound = false;
 			for (JavaPersistentAttribute contextAttribute : contextAttributesToRemove) {
@@ -456,54 +462,41 @@ public class GenericJavaPersistentType extends AbstractJavaJpaContextNode implem
 	protected JavaPersistentAttribute createAttribute(JavaResourcePersistentAttribute jrpa) {
 		return getJpaFactory().buildJavaPersistentAttribute(this, jrpa);
 	}
-	
-	public void updateParentPersistentType(JavaResourcePersistentType jrpt) {
-		setParentPersistentType(parentPersistentType(jrpt));
-	}
-	
-	protected PersistentType parentPersistentType(JavaResourcePersistentType jrpt) {
-		return parentPersistentType(jrpt.getSuperClassQualifiedName());
-	}
-	
-	protected PersistentType parentPersistentType(String fullyQualifiedTypeName) {
-		Collection<JavaResourcePersistentType> hierarchyTypes = new ArrayList<JavaResourcePersistentType>();
-		hierarchyTypes.add(this.resourcePersistentType);
-		PersistentType possibleParent = possibleParent(fullyQualifiedTypeName, hierarchyTypes);
-		if (possibleParent == null) {
+
+	protected PersistentType buildParentPersistentType() {
+		HashSet<JavaResourcePersistentType> visitedResourceTypes = new HashSet<JavaResourcePersistentType>();
+		visitedResourceTypes.add(this.resourcePersistentType);
+		PersistentType parent = this.getParent(this.resourcePersistentType.getSuperClassQualifiedName(), visitedResourceTypes);
+		if (parent == null) {
 			return null;
 		}
-		if (CollectionTools.contains(possibleParent.inheritanceHierarchy(), this)) {
-			//short-circuit in this case, we have circular inheritance
-			return null;
+		if (CollectionTools.contains(parent.inheritanceHierarchy(), this)) {
+			return null;  // short-circuit in this case, we have circular inheritance
 		}
-		if (possibleParent.isMapped()) {
-			return possibleParent;
-		}
-		return possibleParent.getParentPersistentType();
+		return parent.isMapped() ? parent : parent.getParentPersistentType();
 	}
 
 	/**
-	 * JPA spec supports the case where there are non-persistent types in the hierarchy
-	 * This will check for a PersistentType with the given name in this PersistenceUnit.
-	 * If it is not found then find the JavaPersistentTypeResource and look for its parent type.
+	 * The JPA spec allows non-persistent types in a persistent type's
+	 * inheritance hierarchy. We check for a persistent type with the
+	 * specified name in the persistence unit. If it is not found we use
+	 * resource persistent type and look for *its* parent type.
 	 * 
-	 * The Collection hierarchyTypes is used to handle a cycle in the inheritance hierarchy and
-	 * prevent stackoverflows in this case.  You can still end up with cycles in the PersistentType hierarchy,
-	 * this is handled in parentPersistentType(String)
+	 * 'visitedResourceTypes' is used to detect a cycle in the resource type
+	 * inheritance hierarchy and prevent the resulting stack overflow.
+	 * Any cycles in the persistent type inheritance hierarchy are handled in
+	 * #buildParentPersistentType().
 	 */
-	protected PersistentType possibleParent(String fullyQualifiedTypeName, Collection<JavaResourcePersistentType> hierarchyTypes) {
-		JavaResourcePersistentType jrpt = getJpaProject().getJavaResourcePersistentType(fullyQualifiedTypeName);
-		if (jrpt == null || hierarchyTypes.contains(jrpt)) {
+	protected PersistentType getParent(String typeName, Collection<JavaResourcePersistentType> visitedResourceTypes) {
+		JavaResourcePersistentType resourceType = this.getJpaProject().getJavaResourcePersistentType(typeName);
+		if ((resourceType == null) || visitedResourceTypes.contains(resourceType)) {
 			return null;
 		}
-		hierarchyTypes.add(jrpt);
-		PersistentType possibleParent = getPersistentType(fullyQualifiedTypeName);
-		if (possibleParent != null) {
-			return possibleParent;
-		}
-		return this.possibleParent(jrpt.getSuperClassQualifiedName(), hierarchyTypes);
+		visitedResourceTypes.add(resourceType);
+		PersistentType parent = this.getPersistentType(typeName);
+		return (parent != null) ? parent : this.getParent(resourceType.getSuperClassQualifiedName(), visitedResourceTypes);  // recurse
 	}
-	
+
 	protected PersistentType getPersistentType(String fullyQualifiedTypeName) {
 		return getPersistenceUnit().getPersistentType(fullyQualifiedTypeName);
 	}

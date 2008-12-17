@@ -9,9 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.resource.orm;
 
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.internal.resource.orm.translators.EntityMappingsTranslator;
 import org.eclipse.jpt.core.resource.common.JpaXmlResource;
 import org.eclipse.wst.common.internal.emf.resource.Renderer;
@@ -27,33 +25,22 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
 public class OrmResource
 	extends JpaXmlResource 
 {
+	public static final String TYPE = "generic"; //$NON-NLS-1$
+
 	public OrmResource(URI uri, Renderer renderer) {
 		super(uri, renderer);
 	}
-	
-	
-	public Translator getRootTranslator() {
-		return EntityMappingsTranslator.INSTANCE;
-	}
-	
-	@Override
-	public String getType() {
-		return JpaFile.ORM_RESOURCE_TYPE;
-	}
-	
+
 	public XmlEntityMappings getEntityMappings() {
 		return (XmlEntityMappings) this.getRootObject();
 	}
-	
-	@SuppressWarnings("unchecked")
-	@Override
-	public EList eAdapters() {
-		return super.eAdapters();
+
+	public Translator getRootTranslator() {
+		return EntityMappingsTranslator.INSTANCE;
 	}
-	
-	@SuppressWarnings("unchecked")
-	@Override
-	public EList getContents() {
-		return super.getContents();
+
+	public String getType() {
+		return TYPE;
 	}
+
 }

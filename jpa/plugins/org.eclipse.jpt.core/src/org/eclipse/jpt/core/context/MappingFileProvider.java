@@ -7,9 +7,11 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.eclipselink.core;
+package org.eclipse.jpt.core.context;
 
-import org.eclipse.jpt.core.JpaFile;
+import org.eclipse.jpt.core.JpaFactory;
+import org.eclipse.jpt.core.context.persistence.MappingFileRef;
+import org.eclipse.jpt.core.resource.orm.OrmResource;
 
 /**
  * Provisional API: This interface is part of an interim API that is still
@@ -17,15 +19,17 @@ import org.eclipse.jpt.core.JpaFile;
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
- * 
- * @version 2.1
- * @since 2.1
  */
-public interface EclipseLinkJpaFile extends JpaFile {
+public interface MappingFileProvider {
+
 	/**
-	 * Constant representing an eclipselink mapping file (e.g. eclipselink-orm.xml) resource type
-	 * @see org.eclipse.jpt.core.ResourceModel#getResourceType()
+	 * Return the associated mapping file resource type.
 	 */
-	static final String ECLIPSELINK_ORM_RESOURCE_TYPE = "ECLIPSELINK_ORM_RESOURCE_TYPE"; //$NON-NLS-1$
+	String getResourceType();
+
+	/**
+	 * Build a mapping with the specified parent and resource.
+	 */
+	MappingFile buildMappingFile(MappingFileRef parent, OrmResource resource, JpaFactory factory);
 
 }

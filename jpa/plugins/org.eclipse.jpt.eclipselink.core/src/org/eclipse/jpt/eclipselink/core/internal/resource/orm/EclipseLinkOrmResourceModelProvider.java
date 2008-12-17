@@ -14,6 +14,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.resource.JpaResourceModelProviderManager;
@@ -69,9 +70,8 @@ public class EclipseLinkOrmResourceModelProvider
 		super(project, filePath);
 	}
 	
-	
 	@Override
-	protected String getContentTypeDescriber() {
+	protected IContentType getContentType() {
 		return JptEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_CONTENT_TYPE;
 	}
 	

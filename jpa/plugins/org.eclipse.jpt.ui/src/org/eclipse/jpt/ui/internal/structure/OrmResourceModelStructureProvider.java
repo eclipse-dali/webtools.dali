@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,17 +9,35 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.structure;
 
-import org.eclipse.jpt.core.internal.XmlJpaFile;
+import org.eclipse.jpt.core.internal.OrmJpaFileProvider;
 import org.eclipse.jpt.ui.jface.ItemLabelProviderFactory;
 import org.eclipse.jpt.ui.jface.TreeItemContentProviderFactory;
+import org.eclipse.jpt.ui.structure.JpaStructureProvider;
 
 public class OrmResourceModelStructureProvider
-	extends ResourceModelStructureProvider
+	implements JpaStructureProvider
 {
-	public OrmResourceModelStructureProvider(XmlJpaFile jpaFile) {
-		super(jpaFile);
+	// singleton
+	private static final JpaStructureProvider INSTANCE = new OrmResourceModelStructureProvider();
+
+	/**
+	 * Return the singleton.
+	 */
+	public static JpaStructureProvider instance() {
+		return INSTANCE;
+	}
+
+	/**
+	 * Ensure single instance.
+	 */
+	private OrmResourceModelStructureProvider() {
+		super();
 	}
 	
+	public String getResourceType() {
+		return OrmJpaFileProvider.RESOURCE_TYPE;
+	}
+
 	public TreeItemContentProviderFactory getTreeItemContentProviderFactory() {
 		return new OrmItemContentProviderFactory();
 	}
@@ -27,4 +45,5 @@ public class OrmResourceModelStructureProvider
 	public ItemLabelProviderFactory getItemLabelProviderFactory() {
 		return new OrmItemLabelProviderFactory();
 	}
+
 }

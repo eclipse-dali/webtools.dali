@@ -18,6 +18,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.core.runtime.preferences.DefaultScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.IScopeContext;
@@ -102,13 +103,13 @@ public class JptCorePlugin extends Plugin {
 	 * 
 	 * @see org.eclipse.core.runtime.content.IContentTypeManager#getContentType(String)
 	 */
-	public static final String ORM_XML_CONTENT_TYPE = PLUGIN_ID + ".content.orm"; //$NON-NLS-1$
+	public static final IContentType ORM_XML_CONTENT_TYPE = Platform.getContentTypeManager().getContentType(PLUGIN_ID + ".content.orm"); //$NON-NLS-1$
 
 	/**
 	 * Ditto for persistence.xml.
 	 * @see #ORM_XML_CONTENT_TYPE
 	 */
-	public static final String PERSISTENCE_XML_CONTENT_TYPE = PLUGIN_ID + ".content.persistence"; //$NON-NLS-1$
+	public static final IContentType PERSISTENCE_XML_CONTENT_TYPE = Platform.getContentTypeManager().getContentType(PLUGIN_ID + ".content.persistence"); //$NON-NLS-1$
 
 	/**
 	 * Web projects have some special exceptions.

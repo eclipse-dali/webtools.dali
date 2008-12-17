@@ -228,6 +228,50 @@ public interface PersistenceUnit extends XmlContextNode, JpaStructureNode
 	MappingFileRef getImpliedMappingFileRef();
 	
 	
+	// **************** jar files ***********************************
+	
+	/**
+	 * String constant associated with changes to the jar files list
+	 */
+	String JAR_FILES_LIST = "jarFiles"; //$NON-NLS-1$
+	
+	/**
+	 * Return an iterator on the list of jar files.
+	 * This will not be null.
+	 */
+	ListIterator<String> jarFiles();
+	
+	/**
+	 * Return the number of jar files.
+	 */
+	int jarFilesSize();
+	
+	/**
+	 * Add a jar file to the persistence unit.
+	 */
+	void addJarFile(String jarFile);
+	
+	/**
+	 * Add a jar file to the persistence unit at the specified index.
+	 */
+	void addJarFile(int index, String jarFile);
+	
+	/**
+	 * Remove the jar file from the persistence unit.
+	 */
+	void removeJarFile(String jarFile);
+	
+	/**
+	 * Remove the jar file at the specified index from the persistence unit.
+	 */
+	void removeJarFile(int index);
+	
+	/**
+	 * Move the jar file at the specified source index to the specified target index.
+	 */
+	void moveJarFile(int targetIndex, int sourceIndex);
+	
+	
 	// **************** class refs *********************************************
 	
 	/**
@@ -241,6 +285,7 @@ public interface PersistenceUnit extends XmlContextNode, JpaStructureNode
 	 */
 	int classRefsSize();
 	
+
 	// **************** specified class refs ***********************************
 	
 	/**

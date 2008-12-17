@@ -11,6 +11,7 @@
 package org.eclipse.jpt.core.internal.context.persistence;
 
 import java.util.List;
+
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
@@ -20,7 +21,6 @@ import org.eclipse.jpt.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.core.resource.common.JpaXmlResource;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.PersistenceResource;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistence;
@@ -48,21 +48,8 @@ public class GenericPersistenceXml
 	// **************** JpaNode impl *******************************************
 	
 	@Override
-	public JpaRootContextNode getParent() {
-		return (JpaRootContextNode) super.getParent();
-	}
-	
-	@Override
 	public IResource getResource() {
 		return this.persistenceResource.getFile();
-	}
-	
-	
-	// **************** XmlContextNode impl ************************************
-	
-	@Override
-	public JpaXmlResource getEResource() {
-		return this.persistenceResource;
 	}
 	
 	
@@ -105,7 +92,7 @@ public class GenericPersistenceXml
 		firePropertyChanged(PERSISTENCE_PROPERTY, oldPersistence, null);
 	}
 	
-	protected void setPersistence_(Persistence newPersistence) {
+	protected void setPersistence(Persistence newPersistence) {
 		Persistence oldPersistence = this.persistence;
 		this.persistence = newPersistence;
 		firePropertyChanged(PERSISTENCE_PROPERTY, oldPersistence, newPersistence);
@@ -135,7 +122,7 @@ public class GenericPersistenceXml
 			if (this.persistence != null) {
 				this.getJpaFile(this.persistenceResource.getFile()).removeRootStructureNode(this.persistenceResource);
 				this.persistence.dispose();
-				this.setPersistence_(null);
+				this.setPersistence(null);
 			}
 		}
 		
@@ -145,7 +132,7 @@ public class GenericPersistenceXml
 				this.persistence.update(newXmlPersistence);
 			}
 			else {
-				setPersistence_(buildPersistence(newXmlPersistence));
+				setPersistence(buildPersistence(newXmlPersistence));
 			}
 		}
 		else {
@@ -153,7 +140,7 @@ public class GenericPersistenceXml
 				this.getJpaFile(this.persistenceResource.getFile()).removeRootStructureNode(this.persistenceResource);
 				this.persistence.dispose();
 			}
-			setPersistence_(null);
+			setPersistence(null);
 		}
 	}
 	

@@ -14,6 +14,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.JpaConstants;
@@ -69,7 +70,7 @@ public class OrmResourceModelProvider
 	
 	
 	@Override
-	protected String getContentTypeDescriber() {
+	protected IContentType getContentType() {
 		return JptCorePlugin.ORM_XML_CONTENT_TYPE;
 	}
 	

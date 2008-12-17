@@ -11,11 +11,10 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.Iterator;
 import java.util.List;
-import org.eclipse.jpt.core.MappingKeys;
+
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.FetchType;
-import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmRelationshipMapping;
@@ -182,26 +181,20 @@ public abstract class AbstractOrmRelationshipMapping<T extends XmlRelationshipMa
 	protected abstract String defaultTargetEntity(JavaResourcePersistentAttribute persistentAttributeResource);
 
 	protected Entity buildResolvedTargetEntity() {
-		if (getTargetEntity() == null) {
+		String targetEntityName = this.getTargetEntity();
+		if (targetEntityName == null) {
 			return null;
 		}
-		PersistentType persistentType = getTargetPersistentType();
-		if (persistentType != null && persistentType.getMappingKey() == MappingKeys.ENTITY_TYPE_MAPPING_KEY) {
-			return (Entity) persistentType.getMapping();
+
+		// first try to resolve using only the locally specified name
+		Entity targetEntity = this.getPersistenceUnit().getEntity(targetEntityName);
+		if (targetEntity != null) {
+			return targetEntity;
 		}
-		return null;
-	}
-	
-	protected PersistentType getTargetPersistentType() {
-		// try to resolve by only the locally specified name
-		PersistentType persistentType = getPersistenceUnit().getPersistentType(getTargetEntity());
-		if (persistentType == null) {
-			// try to resolve by prepending the global package name
-			String packageName = 
-				getPersistentAttribute().getPersistentType().getContext().getDefaultPersistentTypePackage();
-			persistentType = getPersistenceUnit().getPersistentType(packageName + '.' + getTargetEntity());
-		}
-		return persistentType;
+
+		// then try to resolve by prepending the global package name
+		String packageName = this.getPersistentAttribute().getPersistentType().getDefaultPackage();
+		return this.getPersistenceUnit().getEntity(packageName + '.' + targetEntityName);
 	}
 
 

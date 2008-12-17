@@ -53,7 +53,7 @@ public class TestJavaProject extends TestFacetedProject {
 		this.sourceFolder = this.javaProject.getPackageFragmentRoot(this.getProject().getFolder("src"));
 	}
 
-	protected void addJar(String jarPath) throws JavaModelException {
+	public void addJar(String jarPath) throws JavaModelException {
 		this.addClasspathEntry(JavaCore.newLibraryEntry(new Path(jarPath), null, null));
 	}
 

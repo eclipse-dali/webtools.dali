@@ -108,7 +108,7 @@ public class JpaNavigatorContentProvider
 			if (project != null) {
 				JpaProject jpaProject = JptCorePlugin.getJpaProject(project);
 				if (jpaProject != null) {
-					JpaPlatformUi platformUi = JptUiPlugin.getPlugin().jpaPlatformUi(jpaProject.getJpaPlatform());
+					JpaPlatformUi platformUi = JptUiPlugin.getPlugin().getJpaPlatformUi(jpaProject.getJpaPlatform());
 					
 					return platformUi != null;
 				}	
@@ -129,7 +129,7 @@ public class JpaNavigatorContentProvider
 			if (project != null) {
 				JpaProject jpaProject = JptCorePlugin.getJpaProject(project);
 				if (jpaProject != null) {
-					JpaPlatformUi platformUi = JptUiPlugin.getPlugin().jpaPlatformUi(jpaProject.getJpaPlatform());
+					JpaPlatformUi platformUi = JptUiPlugin.getPlugin().getJpaPlatformUi(jpaProject.getJpaPlatform());
 					
 					if (platformUi != null) {
 						return new Object[] {jpaProject.getRootContextNode()};

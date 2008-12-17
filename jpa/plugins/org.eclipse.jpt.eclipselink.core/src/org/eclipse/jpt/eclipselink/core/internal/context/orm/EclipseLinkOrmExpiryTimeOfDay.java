@@ -11,8 +11,8 @@ package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
 import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.jpt.eclipselink.core.context.Caching;
 import org.eclipse.jpt.eclipselink.core.context.ExpiryTimeOfDay;
+import org.eclipse.jpt.eclipselink.core.context.orm.XmlCaching;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlTimeOfDay;
 
 public class EclipseLinkOrmExpiryTimeOfDay extends AbstractXmlContextNode
@@ -26,7 +26,7 @@ public class EclipseLinkOrmExpiryTimeOfDay extends AbstractXmlContextNode
 	
 	protected XmlTimeOfDay resourceTimeOfDay;
 	
-	public EclipseLinkOrmExpiryTimeOfDay(Caching parent) {
+	public EclipseLinkOrmExpiryTimeOfDay(XmlCaching parent) {
 		super(parent);
 	}
 	

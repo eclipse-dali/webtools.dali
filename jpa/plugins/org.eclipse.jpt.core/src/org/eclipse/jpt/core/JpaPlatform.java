@@ -10,13 +10,17 @@
 package org.eclipse.jpt.core;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.jpt.core.context.MappingFile;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
+import org.eclipse.jpt.core.context.persistence.MappingFileRef;
+import org.eclipse.jpt.core.resource.orm.OrmResource;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.db.ConnectionProfileFactory;
 import org.eclipse.jpt.db.DatabaseFinder;
@@ -78,8 +82,8 @@ public interface JpaPlatform
 	// ********** Java annotations **********
 
 	/**
-	 * Return an annotation provider responsible for determining what annotations
-	 * are supported and constructing java resource model objects
+	 * Return an annotation provider responsible for determining what Java
+	 * annotations are supported and constructing java resource model objects.
 	 */
 	JpaAnnotationProvider getAnnotationProvider();
 
@@ -137,7 +141,22 @@ public interface JpaPlatform
 	 */
 	String getDefaultJavaAttributeMappingKey(JavaPersistentAttribute attribute);
 
-	
+
+	// ********** Mapping File **********
+
+	MappingFile buildMappingFile(MappingFileRef parent, OrmResource resource);
+
+
+	// ********** ORM type mappings **********
+
+	/**
+	 * Build an ORM type mapping for the specified mapping key and persistent type.
+	 * Use identity when comparing keys; so clients must use the same key
+	 * constants as the providers.
+	 */
+	OrmTypeMapping buildOrmTypeMappingFromMappingKey(String key, OrmPersistentType type);
+
+
 	// ********** ORM attribute mappings **********
 
 	/**
@@ -153,7 +172,8 @@ public interface JpaPlatform
 	 * JavaAttributeMapping as necessary
 	 */
 	XmlAttributeMapping buildVirtualOrmResourceMappingFromMappingKey(String key, OrmTypeMapping ormTypeMapping, JavaAttributeMapping javaAttributeMapping);
-	
+
+
 	// ********** database **********
 
 	/**

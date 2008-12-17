@@ -95,6 +95,10 @@ public class GeneratedValueImpl extends AbstractResourceAnnotation<Member> imple
 		return this.getElementTextRange(GENERATOR_ADAPTER, astRoot);
 	}
 
+	public boolean generatorTouches(int pos, CompilationUnit astRoot) {
+		return this.elementTouches(GENERATOR_ADAPTER, pos, astRoot);
+	}
+
 	// ********** java annotations -> persistence model **********
 	public void update(CompilationUnit astRoot) {
 		this.setStrategy(this.strategy(astRoot));

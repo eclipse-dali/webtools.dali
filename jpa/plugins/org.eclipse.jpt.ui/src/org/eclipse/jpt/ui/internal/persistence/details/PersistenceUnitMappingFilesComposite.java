@@ -32,7 +32,7 @@ import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.core.utility.PlatformUtilities;
+import org.eclipse.jpt.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.JptUiIcons;
 import org.eclipse.jpt.ui.internal.persistence.JptUiPersistenceMessages;
@@ -366,8 +366,8 @@ public abstract class PersistenceUnitMappingFilesComposite extends Pane<Persiste
 		}
 	}
 
-	protected boolean isMappingFile(String contentTypeId) {
-		return contentTypeId.equals(JptCorePlugin.ORM_XML_CONTENT_TYPE);
+	protected boolean isMappingFile(IContentType contentType) {
+		return contentType.equals(JptCorePlugin.ORM_XML_CONTENT_TYPE);
 	}
 	
 	/**
@@ -389,8 +389,8 @@ public abstract class PersistenceUnitMappingFilesComposite extends Pane<Persiste
 		 * descriptor file. 
 		 */
 		private boolean isMappingFile(IFile file) {
-			IContentType contentType = PlatformUtilities.getContentType(file);
-			return (contentType == null) ? false : PersistenceUnitMappingFilesComposite.this.isMappingFile(contentType.getId());
+			IContentType contentType = PlatformTools.getContentType(file);
+			return (contentType != null) && PersistenceUnitMappingFilesComposite.this.isMappingFile(contentType);
 		}
 
 		private boolean isXmlFile(IFile file) {

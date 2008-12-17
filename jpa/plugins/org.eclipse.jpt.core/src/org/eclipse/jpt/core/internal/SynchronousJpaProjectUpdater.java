@@ -52,8 +52,8 @@ public class SynchronousJpaProjectUpdater implements JpaProject.Updater {
 		}
 	}
 
-	public void dispose() {
-		this.flags.dispose();
+	public void stop() {
+		this.flags.stop();
 	}
 
 	@Override
@@ -84,7 +84,7 @@ public class SynchronousJpaProjectUpdater implements JpaProject.Updater {
 		 * A client has requested an "update";
 		 * return whether the updater can start an "update".
 		 * Side-effects:
-		 *   - If we are supposed to stop, both the 'updating' and 'again' flags are cleared in #dispose().
+		 *   - If we are supposed to stop, both the 'updating' and 'again' flags are cleared in #stop().
 		 *   - If we are currently "updating", set the 'again' flag.
 		 *   - If we are not currently "updating", set the 'updating' flag and clear the 'again' flag.
 		 */
@@ -106,8 +106,8 @@ public class SynchronousJpaProjectUpdater implements JpaProject.Updater {
 		 * return whether the updater must execute another "update".
 		 * Side-effects:
 		 *   - If we are supposed to stop,
-		 *       the 'again' flag was cleared in #dispose();
-		 *       clear the 'updating' flag so #dispose() can complete.
+		 *       the 'again' flag was cleared in #stop();
+		 *       clear the 'updating' flag so #stop() can complete.
 		 *   - If we have to "update" again, clear the 'again' flag and leave the 'updating' flag set.
 		 *   - If we are finished (i.e. no recursive "update" requests occurred), clear the 'updating' flag.
 		 */
@@ -127,7 +127,7 @@ public class SynchronousJpaProjectUpdater implements JpaProject.Updater {
 		/**
 		 * Restore our start-up state and wait for any current update to complete.
 		 */
-		protected synchronized void dispose() {
+		protected synchronized void stop() {
 			this.stop = true;
 			this.again = false;
 			try {

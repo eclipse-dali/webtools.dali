@@ -10,7 +10,7 @@
 package org.eclipse.jpt.ui.internal.orm.details;
 
 import org.eclipse.jpt.core.JpaStructureNode;
-import org.eclipse.jpt.core.context.orm.OrmStructureNodes;
+import org.eclipse.jpt.core.context.orm.OrmStructureNode;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaDetailsPage;
 import org.eclipse.jpt.ui.details.JpaDetailsProvider;
@@ -20,14 +20,24 @@ import org.eclipse.swt.widgets.Composite;
  * This provider is responsible for creating the {@link JpaDetailsPage}
  * when the information comes from the XML file (either from the persistence
  * configuration or from the Mappings Descriptor).
- *
- * @version 2.0
- * @since 1.0
  */
 public class OrmDetailsProvider
 	implements JpaDetailsProvider
 {
-	public OrmDetailsProvider() {
+	// singleton
+	private static final JpaDetailsProvider INSTANCE = new OrmDetailsProvider();
+
+	/**
+	 * Return the singleton.
+	 */
+	public static JpaDetailsProvider instance() {
+		return INSTANCE;
+	}
+
+	/**
+	 * Ensure single instance.
+	 */
+	private OrmDetailsProvider() {
 		super();
 	}
 
@@ -36,18 +46,19 @@ public class OrmDetailsProvider
 		JpaStructureNode structureNode,
 		WidgetFactory widgetFactory) {
 
-		if (structureNode.getId() == OrmStructureNodes.ENTITY_MAPPINGS_ID) {
+		if (structureNode.getId() == OrmStructureNode.ENTITY_MAPPINGS_ID) {
 			return new EntityMappingsDetailsPage(parent, widgetFactory);
 		}
 
-		if (structureNode.getId() == OrmStructureNodes.PERSISTENT_TYPE_ID) {
+		if (structureNode.getId() == OrmStructureNode.PERSISTENT_TYPE_ID) {
 			return new OrmPersistentTypeDetailsPage(parent, widgetFactory);
 		}
 
-		if (structureNode.getId() == OrmStructureNodes.PERSISTENT_ATTRIBUTE_ID) {
+		if (structureNode.getId() == OrmStructureNode.PERSISTENT_ATTRIBUTE_ID) {
 			return new OrmPersistentAttributeDetailsPage(parent, widgetFactory);
 		}
 
 		return null;
 	}
+
 }

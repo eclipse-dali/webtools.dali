@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.internal.context.orm;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
-import org.eclipse.jpt.core.context.UniqueConstraint;
+
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.orm.OrmUniqueConstraint;
 import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
@@ -21,7 +21,8 @@ import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
-public class GenericOrmUniqueConstraint extends AbstractXmlContextNode
+public class GenericOrmUniqueConstraint
+	extends AbstractXmlContextNode
 	implements OrmUniqueConstraint
 {
 	
@@ -29,9 +30,9 @@ public class GenericOrmUniqueConstraint extends AbstractXmlContextNode
 	
 	protected XmlUniqueConstraint resourceUniqueConstraint;
 	
-	protected UniqueConstraint.Owner owner;
+	protected Owner owner;
 	
-	public GenericOrmUniqueConstraint(XmlContextNode parent, UniqueConstraint.Owner owner, XmlUniqueConstraint resourceUniqueConstraint) {
+	public GenericOrmUniqueConstraint(XmlContextNode parent, Owner owner, XmlUniqueConstraint resourceUniqueConstraint) {
 		super(parent);
 		this.owner = owner;
 		this.columnNames = new ArrayList<String>();
@@ -49,12 +50,19 @@ public class GenericOrmUniqueConstraint extends AbstractXmlContextNode
 	public void addColumnName(int index, String columnName) {
 		this.columnNames.add(index, columnName);
 		this.resourceUniqueConstraint.getColumnNames().add(index, columnName);
-		fireItemAdded(UniqueConstraint.COLUMN_NAMES_LIST, index, columnName);		
+		fireItemAdded(COLUMN_NAMES_LIST, index, columnName);		
 	}	
 	
 	protected void addColumnName_(int index, String columnName) {
-		this.columnNames.add(index, columnName);
-		fireItemAdded(UniqueConstraint.COLUMN_NAMES_LIST, index, columnName);		
+		this.addItemToList(index, columnName, this.columnNames, COLUMN_NAMES_LIST);
+	}	
+
+	protected void addColumnName_(String columnName) {
+		this.addItemToList(columnName, this.columnNames, COLUMN_NAMES_LIST);
+	}	
+
+	protected void setColumnName_(int index, String columnName) {
+		this.setItemInList(index, columnName, this.columnNames, COLUMN_NAMES_LIST);
 	}	
 
 	public void removeColumnName(String columnName) {
@@ -64,60 +72,55 @@ public class GenericOrmUniqueConstraint extends AbstractXmlContextNode
 	public void removeColumnName(int index) {
 		String removedColumnName = this.columnNames.remove(index);
 		this.resourceUniqueConstraint.getColumnNames().remove(index);
-		fireItemRemoved(UniqueConstraint.COLUMN_NAMES_LIST, index, removedColumnName);
+		fireItemRemoved(COLUMN_NAMES_LIST, index, removedColumnName);
 	}
 	
 	protected void removeColumnName_(int index) {
-		String removedColumnName = this.columnNames.remove(index);
-		fireItemRemoved(UniqueConstraint.COLUMN_NAMES_LIST, index, removedColumnName);
+		this.removeItemFromList(index, this.columnNames, COLUMN_NAMES_LIST);
 	}
 
 	public void moveColumnName(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.columnNames, targetIndex, sourceIndex);
 		this.resourceUniqueConstraint.getColumnNames().move(targetIndex, sourceIndex);
-		fireItemMoved(UniqueConstraint.COLUMN_NAMES_LIST, targetIndex, sourceIndex);		
+		fireItemMoved(COLUMN_NAMES_LIST, targetIndex, sourceIndex);		
 	}
 
 	public TextRange getValidationTextRange() {
 		return this.resourceUniqueConstraint.getValidationTextRange();
 	}
 	
-	protected void initialize(XmlUniqueConstraint resourceUniqueConstraint) {
-		this.resourceUniqueConstraint = resourceUniqueConstraint;
+	protected void initialize(XmlUniqueConstraint xmlUniqueConstraint) {
+		this.resourceUniqueConstraint = xmlUniqueConstraint;
 		this.initializeColumnNames();
 	}
 	
 	protected void initializeColumnNames() {
-		ListIterator<String> xmlColumnNames = new CloneListIterator<String>(this.resourceUniqueConstraint.getColumnNames());
-		
-		for (String annotationColumnName : CollectionTools.iterable(xmlColumnNames)) {
+		for (String annotationColumnName : this.resourceUniqueConstraint.getColumnNames()) {
 			this.columnNames.add(annotationColumnName);
 		}
 	}
 	
-	public void update(XmlUniqueConstraint resourceUniqueConstraint) {
-		this.resourceUniqueConstraint = resourceUniqueConstraint;
+	public void update(XmlUniqueConstraint xmlUniqueConstraint) {
+		this.resourceUniqueConstraint = xmlUniqueConstraint;
 		this.updateColumnNames();
 	}
 	
 	protected void updateColumnNames() {
-		ListIterator<String> xmlColumnNames = new CloneListIterator<String>(this.resourceUniqueConstraint.getColumnNames());
-		
 		int index = 0;
-		for (String xmlColumnName : CollectionTools.iterable(xmlColumnNames)) {
-			if (columnNamesSize() > index) {
-				if (this.columnNames.get(index) != xmlColumnName) {
-					addColumnName_(index, xmlColumnName);
+		for (String xmlColumnName : this.resourceUniqueConstraint.getColumnNames()) {
+			if (this.columnNames.size() > index) {
+				if ( ! this.columnNames.get(index).equals(xmlColumnName)) {
+					this.setColumnName_(index, xmlColumnName);
 				}
 			}
 			else {
-				addColumnName_(index, xmlColumnName);			
+				this.addColumnName_(xmlColumnName);			
 			}
 			index++;
 		}
 		
-		for ( ; index < columnNamesSize(); ) {
-			removeColumnName_(index);
+		while (index < this.columnNames.size()) {
+			this.removeColumnName_(index);
 		}
 	}
 }

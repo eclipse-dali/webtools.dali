@@ -10,9 +10,11 @@
 package org.eclipse.jpt.core.context.orm;
 
 import java.util.ListIterator;
+
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.MappingFileRoot;
-import org.eclipse.jpt.core.context.QueryHolder;
+import org.eclipse.jpt.core.context.PersistentType;
+import org.eclipse.jpt.core.context.QueryContainer;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.db.Catalog;
 import org.eclipse.jpt.db.Schema;
@@ -26,7 +28,7 @@ import org.eclipse.jpt.db.SchemaContainer;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface EntityMappings 
-	extends MappingFileRoot, OrmPersistentTypeContext, QueryHolder
+	extends OrmStructureNode, MappingFileRoot, PersistentType.Owner, QueryContainer
 {
 	XmlEntityMappings getXmlEntityMappings();
 	
@@ -122,12 +124,21 @@ public interface EntityMappings
 	
 	/**
 	 * Return the {@link OrmPersistentType) listed in this mapping file
-	 * with the given fullyQualifiedTypeName.  Return null if none exists.
+	 * with the given type name. Return null if none exists.
 	 */
-	OrmPersistentType getPersistentType(String fullyQualifiedTypeName);
+	OrmPersistentType getPersistentType(String typeName);
+	
+	/**
+	 * Return the default package to be used for persistent types in this context
+	 */
+	String getDefaultPersistentTypePackage();
+	
+	/**
+	 * Return the default metadata complete value for persistent types in this context
+	 */
+	boolean isDefaultPersistentTypeMetadataComplete();
 	
 	void changeMapping(OrmPersistentType ormPersistentType, OrmTypeMapping oldMapping, OrmTypeMapping newMapping);
-	
 	
 	// **************** updating ***********************************************
 		

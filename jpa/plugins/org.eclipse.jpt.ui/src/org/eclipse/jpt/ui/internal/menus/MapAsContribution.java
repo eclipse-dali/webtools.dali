@@ -97,7 +97,7 @@ public abstract class MapAsContribution extends CompoundContributionItem
 	protected Iterator<? extends MappingUiProvider<?>> 
 			mappingUiProviders(JpaStructureNode node) {
 		JpaPlatform jpaPlatform = node.getJpaProject().getJpaPlatform();
-		JpaPlatformUi jpaPlatformUi = JptUiPlugin.getPlugin().jpaPlatformUi(jpaPlatform);
+		JpaPlatformUi jpaPlatformUi = JptUiPlugin.getPlugin().getJpaPlatformUi(jpaPlatform);
 		return mappingUiProviders(jpaPlatformUi, node);
 	}
 	

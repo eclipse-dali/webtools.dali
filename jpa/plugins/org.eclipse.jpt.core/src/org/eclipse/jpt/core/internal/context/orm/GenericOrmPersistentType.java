@@ -15,26 +15,25 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PersistentType;
-import org.eclipse.jpt.core.context.PersistentTypeContext;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddable;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.orm.OrmMappedSuperclass;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.core.context.orm.OrmPersistentTypeContext;
-import org.eclipse.jpt.core.context.orm.OrmStructureNodes;
+import org.eclipse.jpt.core.context.orm.OrmStructureNode;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
-import org.eclipse.jpt.core.context.orm.OrmTypeMappingProvider;
 import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping;
 import org.eclipse.jpt.core.resource.orm.Attributes;
@@ -62,78 +61,75 @@ public class GenericOrmPersistentType
 
 	protected final List<OrmPersistentAttribute> virtualPersistentAttributes;
 
-	protected final Collection<OrmTypeMappingProvider> typeMappingProviders;
-
 	protected OrmTypeMapping ormTypeMapping;
 	
 	protected PersistentType parentPersistentType;
 	
 	
-	public GenericOrmPersistentType(PersistentTypeContext parent, String mappingKey) {
+	public GenericOrmPersistentType(EntityMappings parent, String mappingKey) {
 		super(parent);
-		this.typeMappingProviders = buildTypeMappingProviders();
 		this.ormTypeMapping = buildOrmTypeMapping(mappingKey);
 		this.specifiedPersistentAttributes = new ArrayList<OrmPersistentAttribute>();
 		this.virtualPersistentAttributes = new ArrayList<OrmPersistentAttribute>();
 	}
+
+
+	// ********** OrmPersistentType implementation **********
 	
+	@Override
+	public EntityMappings getParent() {
+		return (EntityMappings) super.getParent();
+	}
 	
-	//***************** PersistentType implementation **************************
-	
-	public OrmPersistentTypeContext getContext() {
-		return (OrmPersistentTypeContext) getParent();
+	protected EntityMappings getEntityMappings() {
+		return this.getParent();
+	}
+
+	public String getOrmType() {
+		return this.getEntityMappings().getOrmType();
+	}
+
+	public String getDefaultPackage() {
+		return this.getEntityMappings().getDefaultPersistentTypePackage();
+	}
+
+	public boolean isDefaultMetadataComplete() {
+		return this.getEntityMappings().isDefaultPersistentTypeMetadataComplete();
 	}
 	
 	public String getId() {
-		return OrmStructureNodes.PERSISTENT_TYPE_ID;
+		return PERSISTENT_TYPE_ID;
 	}
 
-	public boolean isFor(String fullyQualifiedTypeName) {
-		String className = getMapping().getClass_();
-		if (className == null) {
+	public boolean isFor(String typeName) {
+		String mappingClassName = this.getMapping().getClass_();
+		if (mappingClassName == null) {
 			return false;
 		}
-		if (className.equals(fullyQualifiedTypeName)) {
+		if (mappingClassName.equals(typeName)) {
 			return true;
 		}
-		if ((getContext().getDefaultPersistentTypePackage() + '.' +  className).equals(fullyQualifiedTypeName)) {
-			return true;
-		}
-		return false;
+		return (this.getDefaultPackage() + '.' +  mappingClassName).equals(typeName);
 	}
 	
 	protected OrmTypeMapping buildOrmTypeMapping(String key) {
-		return getTypeMappingProvider(key).buildMapping(this, getJpaFactory());
-	}
-
-	protected Collection<OrmTypeMappingProvider> buildTypeMappingProviders() {
-		Collection<OrmTypeMappingProvider> collection = new ArrayList<OrmTypeMappingProvider>();
-		collection.add(new OrmEntityProvider());
-		collection.add(new OrmMappedSuperclassProvider());
-		collection.add(new OrmEmbeddableProvider());
-		return collection;
-	}
-
-	protected OrmTypeMappingProvider getTypeMappingProvider(String key) {
-		for (OrmTypeMappingProvider provider : this.typeMappingProviders) {
-			if (provider.getKey().equals(key)) {
-				return provider;
-			}
-		}
-		throw new IllegalArgumentException();
+		return this.getJpaPlatform().buildOrmTypeMappingFromMappingKey(key, this);
 	}
 
 	public OrmTypeMapping getMapping() {
 		return this.ormTypeMapping;
 	}
 
+
+	// ********** PersistentType implementation **********
+	
 	public void setMappingKey(String newMappingKey) {
 		if (this.getMappingKey() == newMappingKey) {
 			return;
 		}
 		OrmTypeMapping oldMapping = getMapping();
 		this.ormTypeMapping = buildOrmTypeMapping(newMappingKey);
-		getContext().changeMapping(this, oldMapping, this.ormTypeMapping);
+		this.getEntityMappings().changeMapping(this, oldMapping, this.ormTypeMapping);
 		firePropertyChanged(MAPPING_PROPERTY, oldMapping, this.ormTypeMapping);
 	}
 	
@@ -183,6 +179,14 @@ public class GenericOrmPersistentType
 		return getMapping().getAccess();
 	}
 	
+	public AccessType getOverrideAccess() {
+		return this.getParent().getOverridePersistentTypeAccess();
+	}
+
+	public AccessType getDefaultAccess() {
+		return this.getParent().getDefaultPersistentTypeAccess();
+	}
+
 	public void changeMapping(OrmPersistentAttribute ormPersistentAttribute, OrmAttributeMapping oldMapping, OrmAttributeMapping newMapping) {
 		int sourceIndex = this.specifiedPersistentAttributes.indexOf(ormPersistentAttribute);
 		this.specifiedPersistentAttributes.remove(sourceIndex);

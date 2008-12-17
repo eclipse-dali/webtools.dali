@@ -13,16 +13,17 @@ import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaEmbeddedMapping;
+import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMappingProvider;
-import org.eclipse.jpt.core.context.orm.OrmEmbeddedMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
-import org.eclipse.jpt.core.resource.orm.XmlEmbedded;
+import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 
-public class OrmEmbeddedMappingProvider implements OrmAttributeMappingProvider
+public class OrmEmbeddedMappingProvider
+	implements OrmAttributeMappingProvider
 {
 	// singleton
-	private static final OrmEmbeddedMappingProvider INSTANCE = new OrmEmbeddedMappingProvider();
+	private static final OrmAttributeMappingProvider INSTANCE = new OrmEmbeddedMappingProvider();
 
 	/**
 	 * Return the singleton.
@@ -38,15 +39,16 @@ public class OrmEmbeddedMappingProvider implements OrmAttributeMappingProvider
 		super();
 	}
 
-	public OrmEmbeddedMapping buildMapping(OrmPersistentAttribute parent, JpaFactory factory) {
-		return factory.buildOrmEmbeddedMapping(parent);
-	}
-
 	public String getKey() {
 		return MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY;
 	}
 	
-	public XmlEmbedded buildVirtualResourceMapping(OrmTypeMapping ormTypeMapping, JavaAttributeMapping javaAttributeMapping, JpaFactory factory) {
+	public OrmAttributeMapping buildMapping(OrmPersistentAttribute parent, JpaFactory factory) {
+		return factory.buildOrmEmbeddedMapping(parent);
+	}
+
+	public XmlAttributeMapping buildVirtualResourceMapping(OrmTypeMapping ormTypeMapping, JavaAttributeMapping javaAttributeMapping, JpaFactory factory) {
 		return factory.buildVirtualXmlEmbedded(ormTypeMapping, (JavaEmbeddedMapping) javaAttributeMapping);
 	}
+
 }

@@ -17,9 +17,9 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 import java.util.Set;
+
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.Generator;
@@ -27,6 +27,7 @@ import org.eclipse.jpt.core.context.MappingFile;
 import org.eclipse.jpt.core.context.MappingFilePersistenceUnitDefaults;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.Query;
+import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.persistence.ClassRef;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.Persistence;
@@ -77,6 +78,8 @@ public class AbstractPersistenceUnit extends AbstractXmlContextNode
 	protected final List<MappingFileRef> specifiedMappingFileRefs = new ArrayList<MappingFileRef>();
 	
 	protected MappingFileRef impliedMappingFileRef;
+	
+	protected final List<String> jarFiles = new ArrayList<String>();
 	
 	protected final List<ClassRef> specifiedClassRefs = new ArrayList<ClassRef>();
 	
@@ -322,6 +325,63 @@ public class AbstractPersistenceUnit extends AbstractXmlContextNode
 		firePropertyChanged(IMPLIED_MAPPING_FILE_REF_PROPERTY, mappingFileRef, null);
 	}
 	
+	
+	// **************** jar files ***********************************
+	
+	public ListIterator<String> jarFiles() {
+		return new CloneListIterator<String>(this.jarFiles);
+	}
+	
+	public int jarFilesSize() {
+		return this.jarFiles.size();
+	}
+	
+	public void addJarFile(String jarFile) {
+		this.addJarFile(this.jarFiles.size(), jarFile);
+	}
+	
+	public void addJarFile(int index, String jarFile) {
+		this.jarFiles.add(index, jarFile);
+		this.xmlPersistenceUnit.getJarFiles().add(index, jarFile);
+		this.fireItemAdded(JAR_FILES_LIST, index, jarFile);
+	}
+
+	public void removeJarFile(String jarFile) {
+		this.removeJarFile(this.jarFiles.indexOf(jarFile));
+	}
+	
+	public void removeJarFile(int index) {
+		String jarFile = this.jarFiles.remove(index);
+		this.xmlPersistenceUnit.getJarFiles().remove(index);
+		this.fireItemRemoved(JAR_FILES_LIST, index, jarFile);
+	}
+	
+	protected void addJarFile_(String jarFile) {
+		this.addJarFile_(this.jarFiles.size(), jarFile);
+	}
+	
+	protected void addJarFile_(int index, String jarFile) {
+		this.addItemToList(index, jarFile, this.jarFiles, JAR_FILES_LIST);
+	}
+	
+	protected void removeJarFile_(String jarFile) {
+		this.removeItemFromList(jarFile, this.jarFiles, JAR_FILES_LIST);
+	}
+
+	protected void removeJarFile_(int index) {
+		this.removeItemFromList(index, this.jarFiles, JAR_FILES_LIST);
+	}
+
+	protected void setJarFile_(int index, String jarFile) {
+		this.setItemInList(index, jarFile, this.jarFiles, JAR_FILES_LIST);
+	}
+	
+	public void moveJarFile(int targetIndex, int sourceIndex) {
+		CollectionTools.move(this.jarFiles, targetIndex, sourceIndex);
+		this.xmlPersistenceUnit.getJarFiles().move(targetIndex, sourceIndex);
+		this.fireItemMoved(JAR_FILES_LIST, targetIndex, sourceIndex);		
+	}
+
 	
 	// **************** class refs *********************************************
 	
@@ -722,6 +782,7 @@ public class AbstractPersistenceUnit extends AbstractXmlContextNode
 		this.jtaDataSource = xpu.getJtaDataSource();
 		this.nonJtaDataSource = xpu.getNonJtaDataSource();
 		this.specifiedExcludeUnlistedClasses = xpu.getExcludeUnlistedClasses();
+		this.initializeJarFiles();
 		initializeProperties(xpu);
 		
 		//initialize specified classRefs before mappingFileRefs because of 
@@ -741,6 +802,12 @@ public class AbstractPersistenceUnit extends AbstractXmlContextNode
 		}
 		if (! impliedMappingFileIsSpecified() && impliedMappingFileExists()) {
 			impliedMappingFileRef = buildMappingFileRef(null);
+		}
+	}
+	
+	protected void initializeJarFiles() {
+		for (String jarFile : this.xmlPersistenceUnit.getJarFiles()) {
+			this.jarFiles.add(jarFile);
 		}
 	}
 	
@@ -789,6 +856,7 @@ public class AbstractPersistenceUnit extends AbstractXmlContextNode
 		updateProvider(persistenceUnit);
 		updateJtaDataSource(persistenceUnit);
 		updateNonJtaDataSource(persistenceUnit);
+		updateJarFiles(persistenceUnit);
 		//update specified classRefs before mappingFileRefs because of 
 		//JpaFile rootStructureNode, we want the mapping file to "win",
 		//as it would in a Jpa runtime implementation
@@ -901,6 +969,24 @@ public class AbstractPersistenceUnit extends AbstractXmlContextNode
 	
 	protected MappingFileRef buildMappingFileRef(XmlMappingFileRef xmlMappingFileRef) {
 		return getJpaFactory().buildMappingFileRef(this, xmlMappingFileRef);
+	}
+	
+	protected void updateJarFiles(XmlPersistenceUnit persistenceUnit) {
+		int index = 0;
+		for (String xmlJarFile : persistenceUnit.getJarFiles()) {
+			if (this.jarFiles.size() > index) {
+				if ( ! this.jarFiles.get(index).equals(xmlJarFile)) {
+					this.setJarFile_(index, xmlJarFile);
+				}
+			} else {
+				this.setJarFile_(index, xmlJarFile);			
+			}
+			index++;
+		}
+		
+		while (index < this.jarFiles.size()) {
+			this.removeJarFile_(index);
+		}
 	}
 	
 	//this is not being changed to match updateImpliedClassRefs.  In the xml,
@@ -1223,10 +1309,8 @@ public class AbstractPersistenceUnit extends AbstractXmlContextNode
 		if (persistentType == null) {
 			return null;
 		}
-		if (persistentType.getMappingKey() == MappingKeys.ENTITY_TYPE_MAPPING_KEY) {
-			return (Entity) persistentType.getMapping();
-		}
-		return null;
+		TypeMapping typeMapping = persistentType.getMapping();
+		return (typeMapping instanceof Entity) ? (Entity) typeMapping : null;
 	}
 	
 	public JpaStructureNode getStructureNode(int textOffset) {

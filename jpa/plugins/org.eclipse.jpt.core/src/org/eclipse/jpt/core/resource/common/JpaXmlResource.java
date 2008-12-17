@@ -12,12 +12,14 @@ package org.eclipse.jpt.core.resource.common;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jem.util.emf.workbench.WorkbenchResourceHelperBase;
 import org.eclipse.jem.util.plugin.JEMUtilPlugin;
-import org.eclipse.jpt.core.ResourceModelListener;
+import org.eclipse.jpt.core.JpaResourceModelListener;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.wst.common.internal.emf.resource.Renderer;
 import org.eclipse.wst.common.internal.emf.resource.TranslatorResourceImpl;
@@ -32,7 +34,7 @@ import org.eclipse.wst.common.internal.emf.resource.TranslatorResourceImpl;
 public abstract class JpaXmlResource
 	extends TranslatorResourceImpl
 {
-	private ResourceModelListener resourceModelListener;
+	private JpaResourceModelListener resourceModelListener;
 
 
 	// ********** constructor **********
@@ -127,8 +129,6 @@ public abstract class JpaXmlResource
 		return ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(fileName));
 	}
 
-	public abstract String getType();
-
 	@Override
 	public String toString() {
 		// implementation in TranslatorResourceImpl is a bit off...
@@ -138,7 +138,7 @@ public abstract class JpaXmlResource
 
 	// ********** resource model changes **********
 
-	public void setResourceModelListener(ResourceModelListener resourceModelListener) {
+	public void setResourceModelListener(JpaResourceModelListener resourceModelListener) {
 		this.resourceModelListener = resourceModelListener;
 	}
 
@@ -149,17 +149,17 @@ public abstract class JpaXmlResource
 	}
 
 
-	// ********** compiler warning fixes **********
+	// ********** cast things back to what they are in EMF **********
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public EList eAdapters() {
+	public EList<Adapter> eAdapters() {
 		return super.eAdapters();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public EList getContents() {
+	public EList<EObject> getContents() {
 		return super.getContents();
 	}
 

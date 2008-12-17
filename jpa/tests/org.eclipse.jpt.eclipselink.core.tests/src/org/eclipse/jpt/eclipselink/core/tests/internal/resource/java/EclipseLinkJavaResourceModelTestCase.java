@@ -9,41 +9,33 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.tests.internal.resource.java;
 
-import org.eclipse.core.resources.IProject;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.core.internal.SimpleJpaProjectConfig;
+import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.tests.internal.resource.java.JavaResourceModelTestCase;
-import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaPlatform;
+import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaAnnotationProvider;
 
 public class EclipseLinkJavaResourceModelTestCase extends JavaResourceModelTestCase
 {	
 
-	public static final String ECLIPSELINK_ANNOTATIONS_PACKAGE_NAME = "org.eclipse.persistence.annotations";
+	public static final String ECLIPSELINK_ANNOTATIONS_PACKAGE_NAME = "org.eclipse.persistence.annotations"; //$NON-NLS-1$
 	
 	public EclipseLinkJavaResourceModelTestCase(String name) {
 		super(name);
 	}
 	
+	@Override
 	protected ICompilationUnit createAnnotationAndMembers(String annotationName, String annotationBody) throws Exception {
 		return createAnnotationAndMembers(ECLIPSELINK_ANNOTATIONS_PACKAGE_NAME, annotationName, annotationBody);
 	}
 	
+	@Override
 	protected ICompilationUnit createEnumAndMembers(String enumName, String enumBody) throws Exception {
 		return createEnumAndMembers(ECLIPSELINK_ANNOTATIONS_PACKAGE_NAME, enumName, enumBody);
 	}
 
 	@Override
-	protected JpaProject.Config buildJpaProjectConfig(IProject project) {
-		JptCorePlugin.setJpaPlatformId(project, EclipseLinkJpaPlatform.ID);
-		
-		SimpleJpaProjectConfig config = new SimpleJpaProjectConfig();
-		config.setProject(project);
-		config.setJpaPlatform(JptCorePlugin.getJpaPlatform(project));
-		config.setConnectionProfileName(JptCorePlugin.getConnectionProfileName(project));
-		config.setDiscoverAnnotatedClasses(JptCorePlugin.discoverAnnotatedClasses(project));
-		return config;
+	protected JpaAnnotationProvider buildAnnotationProvider() {
+		return new EclipseLinkJpaAnnotationProvider();
 	}
 
 }

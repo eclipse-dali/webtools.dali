@@ -10,11 +10,11 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.List;
+
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.MappingFileRoot;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
-import org.eclipse.jpt.core.context.orm.OrmPersistenceUnitDefaults;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmXml;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
@@ -26,7 +26,7 @@ import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public class OrmXmlImpl
+public class GenericOrmXml
 	extends AbstractXmlContextNode
 	implements OrmXml
 {
@@ -35,13 +35,21 @@ public class OrmXmlImpl
 	protected EntityMappings entityMappings;
 	
 	
-	public OrmXmlImpl(MappingFileRef parent, OrmResource ormResource) {
+	public GenericOrmXml(MappingFileRef parent, OrmResource ormResource) {
 		super(parent);
 		this.initialize(ormResource);
 	}
 	
+	protected void initialize(OrmResource resource) {
+		this.ormResource = resource;
+		XmlEntityMappings xmlEntityMappings = resource.getEntityMappings();
+		if (xmlEntityMappings != null) {
+			this.entityMappings = this.buildEntityMappings(xmlEntityMappings);
+		}
+	}
+
 	
-	// **************** JpaNode impl *******************************************
+	// ********** overrides **********
 	
 	@Override
 	public MappingFileRef getParent() {
@@ -53,36 +61,28 @@ public class OrmXmlImpl
 		return this.ormResource.getFile();
 	}
 	
-	
-	// **************** JpaContextNode impl ************************************
-	
 	@Override
 	public MappingFileRoot getMappingFileRoot() {
-		// TODO Auto-generated method stub
 		return getEntityMappings();
 	}
 	
 	
-	// **************** XmlContextNode impl ************************************
-	
-	@Override
-	public JpaXmlResource getEResource() {
-		return this.ormResource;
-	}
-	
-	
-	// **************** JpaStructureNode impl **********************************
+	// ********** JpaStructureNode implementation **********
 	
 	public String getId() {
 		// isn't actually displayed, so needs no details page
 		return null;
 	}
+
+	public String getType() {
+		return this.ormResource.getType();
+	}
 	
 	
-	// **************** MappingFile impl ***************************************
+	// ********** MappingFile implementation **********
 	
 	public JpaXmlResource getXmlResource() {
-		return ormResource;
+		return this.ormResource;
 	}
 	
 	public MappingFileRoot getRoot() {
@@ -92,19 +92,18 @@ public class OrmXmlImpl
 	public OrmPersistentType getPersistentType(String fullyQualifiedTypeName) {
 		return (this.entityMappings == null) ? null : this.entityMappings.getPersistentType(fullyQualifiedTypeName);
 	}
+
 	
-	
-	
-	// **************** persistence ********************************************
+	// ********** entity mappings **********
 	
 	public EntityMappings getEntityMappings() {
 		return this.entityMappings;
 	}
 	
-	protected void setEntityMappings(EntityMappings newEntityMappings) {
-		EntityMappings oldEntityMappings = this.entityMappings;
-		this.entityMappings = newEntityMappings;
-		firePropertyChanged(ENTITY_MAPPINGS_PROPERTY, oldEntityMappings, newEntityMappings);
+	protected void setEntityMappings(EntityMappings entityMappings) {
+		EntityMappings old = this.entityMappings;
+		this.entityMappings = entityMappings;
+		this.firePropertyChanged(ENTITY_MAPPINGS_PROPERTY, old, entityMappings);
 	}
 
 	public EntityMappings addEntityMappings() {
@@ -112,10 +111,10 @@ public class OrmXmlImpl
 			throw new IllegalStateException();
 		}
 		
-		XmlEntityMappings xmlEntityMappings = buildEntityMappingsResource();
-		this.entityMappings = buildEntityMappings(xmlEntityMappings);
+		XmlEntityMappings xmlEntityMappings = this.buildEntityMappingsResource();
+		this.entityMappings = this.buildEntityMappings(xmlEntityMappings);
 		this.ormResource.getContents().add(xmlEntityMappings);
-		firePropertyChanged(ENTITY_MAPPINGS_PROPERTY, null, this.entityMappings);
+		this.firePropertyChanged(ENTITY_MAPPINGS_PROPERTY, null, this.entityMappings);
 		return this.entityMappings;
 	}
 	
@@ -127,46 +126,33 @@ public class OrmXmlImpl
 		if (this.entityMappings == null) {
 			throw new IllegalStateException();
 		}
-		getJpaFile(this.ormResource.getFile()).removeRootStructureNode(this.ormResource);
+		this.getJpaFile(this.ormResource.getFile()).removeRootStructureNode(this.ormResource);
 		this.entityMappings.dispose();
-		EntityMappings oldEntityMappings = this.entityMappings;
+		EntityMappings old = this.entityMappings;
 		
 		this.entityMappings = null;
 		XmlEntityMappings xmlEntityMappings = this.ormResource.getEntityMappings(); //TODO helper removeEntityMappings method on ormResource??
 		this.ormResource.getContents().remove(xmlEntityMappings);
-		firePropertyChanged(ENTITY_MAPPINGS_PROPERTY, oldEntityMappings, null);
-	}
-	
-	public OrmPersistenceUnitDefaults getPersistenceUnitDefaults() {
-		return (this.entityMappings == null) ? null : this.entityMappings.getPersistenceUnitDefaults();
+		firePropertyChanged(ENTITY_MAPPINGS_PROPERTY, old, null);
 	}
 	
 	
-	// **************** updating ***********************************************
+	// ********** updating **********
 	
-	protected void initialize(OrmResource resource) {
-		this.ormResource = resource;
-		XmlEntityMappings xmlEntityMappings = resource.getEntityMappings();
-		if (xmlEntityMappings != null) {
-			this.entityMappings = buildEntityMappings(xmlEntityMappings);
-		}
-	}
-
 	public void update(JpaXmlResource resource) {
-		OrmResource ormResource;
+		OrmResource newOrmResource;
 		try {
-			ormResource = (OrmResource) resource;
-		} 
-		catch (ClassCastException cce) {
-			throw new IllegalArgumentException(resource.toString());
+			newOrmResource = (OrmResource) resource;
+		} catch (ClassCastException ex) {
+			throw new IllegalArgumentException(resource.toString(), ex);
 		}
 		
 		XmlEntityMappings oldXmlEntityMappings = 
 			(this.entityMappings == null) ? null : this.entityMappings.getXmlEntityMappings();
-		XmlEntityMappings newXmlEntityMappings = ormResource.getEntityMappings();
+		XmlEntityMappings newXmlEntityMappings = newOrmResource.getEntityMappings();
 		
-		this.ormResource = ormResource;
-		
+		this.ormResource = newOrmResource;
+
 		// if the old and new xml entity mappings are different instances,
 		// we scrap the old and rebuild.  this can happen when the resource
 		// model drastically changes, such as a cvs checkout or an edit reversion
@@ -199,11 +185,11 @@ public class OrmXmlImpl
 	}
 	
 	
-	// *************************************************************************
+	// ********** text **********
 	
 	public JpaStructureNode getStructureNode(int textOffset) {
-		if (entityMappings.containsOffset(textOffset)) {
-			return entityMappings.getStructureNode(textOffset);
+		if (this.entityMappings.containsOffset(textOffset)) {
+			return this.entityMappings.getStructureNode(textOffset);
 		}
 		return this;
 	}
@@ -218,6 +204,8 @@ public class OrmXmlImpl
 	}
 	
 	
+	// ********** validation **********
+	
 	@Override
 	public void validate(List<IMessage> messages) {
 		super.validate(messages);
@@ -225,6 +213,9 @@ public class OrmXmlImpl
 			this.entityMappings.validate(messages);
 		}
 	}
+	
+	
+	// ********** dispose **********
 	
 	public void dispose() {
 		if (this.entityMappings != null) {

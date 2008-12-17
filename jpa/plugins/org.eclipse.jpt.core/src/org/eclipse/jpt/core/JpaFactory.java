@@ -13,9 +13,9 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.AttributeOverride;
-import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
-import org.eclipse.jpt.core.context.PersistentTypeContext;
+import org.eclipse.jpt.core.context.MappingFile;
+import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.UniqueConstraint;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
@@ -86,7 +86,6 @@ import org.eclipse.jpt.core.context.orm.OrmOneToOneMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistenceUnitDefaults;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.core.context.orm.OrmPersistentTypeContext;
 import org.eclipse.jpt.core.context.orm.OrmPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmQuery;
 import org.eclipse.jpt.core.context.orm.OrmQueryHint;
@@ -107,7 +106,6 @@ import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.core.context.persistence.Property;
-import org.eclipse.jpt.core.resource.common.JpaXmlResource;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.orm.OrmResource;
@@ -170,7 +168,7 @@ import org.eclipse.jpt.core.resource.persistence.XmlProperty;
  */
 public interface JpaFactory 
 {
-	// **************** Core Model *******************************************
+	// ********** Core Model **********
 	
 	/**
 	 * Construct a JpaProject for the specified config, to be
@@ -184,38 +182,33 @@ public interface JpaFactory
 	/**
 	 * Construct a Java JPA file for the specified JPA project and file.
 	 */
-	JpaFile buildJavaJpaFile(JpaProject jpaProject, IFile file);
+	JpaFile buildJavaJpaFile(JpaProject jpaProject, IFile file, String resourceType);
 	
 	/**
 	 * Construct a Persistence JPA file for the specified JPA project and file.
 	 */
-	JpaFile buildPersistenceJpaFile(JpaProject jpaProject, IFile file);
+	JpaFile buildPersistenceJpaFile(JpaProject jpaProject, IFile file, String resourceType);
 	
 	/**
 	 * Construct an ORM JPA file for the specified JPA project and file.
 	 */
-	JpaFile buildOrmJpaFile(JpaProject jpaProject, IFile file);
+	JpaFile buildOrmJpaFile(JpaProject jpaProject, IFile file, String resourceType);
 	
 	
-	// **************** Context Nodes *******************************************
+	// ********** Context Nodes **********
 	
 	/**
 	 * Build a (/an updated) root context node to be associated with the given 
 	 * JPA project.
 	 * The root context node will be built once, but updated many times.
-	 * @see JpaProject.update(ProgressMonitor)
+	 * @see JpaProject#update(org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	JpaRootContextNode buildRootContextNode(JpaProject jpaProject);
-	
-	/**
-	 * Build a context node that is appropriate to the given resource.
-	 * This may return null if the resource cannot be associated with an 
-	 * appropriate context node.
-	 */
-	XmlContextNode buildContextNode(JpaContextNode parent, JpaXmlResource resource);
+
+	MappingFile buildMappingFile(MappingFileRef parent, OrmResource resource);
 	
 	
-	// **************** Persistence Context Model ****************************
+	// ********** Persistence Context Model **********
 	
 	PersistenceXml buildPersistenceXml(JpaRootContextNode parent, PersistenceResource persistenceResource);
 	
@@ -235,7 +228,7 @@ public interface JpaFactory
 	Property buildProperty(PersistenceUnit parent, XmlProperty property);
 	
 	
-	// **************** ORM Context Model ************************************
+	// ********** ORM Context Model **********
 	
 	OrmXml buildOrmXml(MappingFileRef parent, OrmResource ormResource);
 	
@@ -245,7 +238,7 @@ public interface JpaFactory
 	
 	OrmPersistenceUnitDefaults buildPersistenceUnitDefaults(PersistenceUnitMetadata parent, XmlEntityMappings entityMappings);
 	
-	OrmPersistentType buildOrmPersistentType(OrmPersistentTypeContext parent, String mappingKey);
+	OrmPersistentType buildOrmPersistentType(EntityMappings parent, String mappingKey);
 	
 	OrmEntity buildOrmEntity(OrmPersistentType parent);
 	
@@ -310,7 +303,7 @@ public interface JpaFactory
 	OrmUniqueConstraint buildOrmUniqueConstraint(XmlContextNode parent, UniqueConstraint.Owner owner, XmlUniqueConstraint resourceUniqueConstraint);
 	
 	
-	// **************** orm virtual resource model ***********************************
+	// ********** ORM Virtual Resource Model **********
 	
 	XmlBasic buildVirtualXmlBasic(OrmTypeMapping ormTypeMapping, JavaBasicMapping javaBasicMapping);
 	
@@ -335,9 +328,9 @@ public interface JpaFactory
 	XmlNullAttributeMapping buildVirtualXmlNullAttributeMapping(OrmTypeMapping ormTypeMapping, JavaAttributeMapping javaAttributeMapping);
 	
 	
-	// **************** java context objects ***********************************
+	// ********** Java Context Model **********
 	
-	JavaPersistentType buildJavaPersistentType(PersistentTypeContext parent, JavaResourcePersistentType jrpt);
+	JavaPersistentType buildJavaPersistentType(PersistentType.Owner owner, JavaResourcePersistentType jrpt);
 	
 	JavaEntity buildJavaEntity(JavaPersistentType parent);
 	
@@ -387,7 +380,7 @@ public interface JpaFactory
 	
 	JavaTableGenerator buildJavaTableGenerator(JavaJpaContextNode parent);
 	
-	JavaGeneratedValue buildJavaGeneratedValue(JavaAttributeMapping parent);
+	JavaGeneratedValue buildJavaGeneratedValue(JavaIdMapping parent);
 	
 	JavaPrimaryKeyJoinColumn buildJavaPrimaryKeyJoinColumn(JavaJpaContextNode parent, JavaBaseJoinColumn.Owner owner);
 	
@@ -408,4 +401,5 @@ public interface JpaFactory
 	JavaTemporalConverter buildJavaTemporalConverter(JavaAttributeMapping parent, JavaResourcePersistentAttribute jrpa);
 	
 	JavaLobConverter buildJavaLobConverter(JavaAttributeMapping parent, JavaResourcePersistentAttribute jrpa);
+
 }

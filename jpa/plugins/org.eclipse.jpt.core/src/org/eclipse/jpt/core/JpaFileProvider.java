@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.content.IContentType;
 
 /**
  * Map a content type to a JPA file.
@@ -23,9 +24,9 @@ import org.eclipse.core.resources.IFile;
 public interface JpaFileProvider {
 
 	/**
-	 * Return the JPA file's content type ID.
+	 * Return the file content type the provider is for.
 	 */
-	String getContentId();
+	IContentType getContentType();
 
 	/**
 	 * Build a JPA file for the specified JPA project and file.

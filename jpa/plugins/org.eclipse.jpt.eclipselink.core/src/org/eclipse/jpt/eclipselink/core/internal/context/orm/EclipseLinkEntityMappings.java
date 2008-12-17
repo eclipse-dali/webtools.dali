@@ -9,12 +9,20 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
+import java.util.ListIterator;
+
 import org.eclipse.jpt.core.context.orm.EntityMappings;
+import org.eclipse.jpt.core.context.orm.OrmNamedNativeQuery;
+import org.eclipse.jpt.core.context.orm.OrmNamedQuery;
 
 public interface EclipseLinkEntityMappings 
 	extends EntityMappings
 {
 	
 	ConverterHolder getConverterHolder();
+
+	// hmmm - these suppress various warnings in EclipseLinkEntityMappingImpl...
+	ListIterator<OrmNamedQuery> namedQueries();
+	ListIterator<OrmNamedNativeQuery> namedNativeQueries();
 
 }

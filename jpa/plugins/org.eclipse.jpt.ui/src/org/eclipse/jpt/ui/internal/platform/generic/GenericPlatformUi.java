@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.platform.generic;
 
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.ui.JpaUiFactory;
@@ -17,34 +16,35 @@ import org.eclipse.jpt.ui.internal.GenericJpaUiFactory;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.platform.base.BaseJpaPlatformUi;
 import org.eclipse.jpt.ui.navigator.JpaNavigatorProvider;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
 
-public class GenericPlatformUi extends BaseJpaPlatformUi
+public class GenericPlatformUi
+	extends BaseJpaPlatformUi
 {
+
 	public GenericPlatformUi() {
 		super();
 	}
-	
-	
-	// **************** navigator content **************************************
-	
-	public JpaNavigatorProvider buildNavigatorProvider() {
-		return new GenericNavigatorProvider();
-	}
-	
-	
+
+
+	// ********** factory **********
+
 	@Override
-	protected JpaUiFactory createJpaUiFactory() {
+	protected JpaUiFactory buildJpaUiFactory() {
 		return new GenericJpaUiFactory();
 	}
 
-	public void generateDDL(JpaProject project, IStructuredSelection selection) {
-		this.displayNotSupportedMessage(JptUiMessages.GenericPlatformUiDialog_notSupportedMessageTitle, JptUiMessages.GenericPlatformUiDialog_notSupportedMessageText);
+
+	// ********** navigator provider **********
+
+	public JpaNavigatorProvider buildNavigatorProvider() {
+		return new GenericNavigatorProvider();
 	}
 
-	protected void displayNotSupportedMessage(String title, String message) {
-	    Shell currentShell = Display.getCurrent().getActiveShell();
-	    MessageDialog.openInformation(currentShell, title, message);
+
+	// ********** DDL generation **********
+
+	public void generateDDL(JpaProject project, IStructuredSelection selection) {
+		this.displayMessage(JptUiMessages.GenericPlatformUiDialog_notSupportedMessageTitle, JptUiMessages.GenericPlatformUiDialog_notSupportedMessageText);
 	}
+
 }

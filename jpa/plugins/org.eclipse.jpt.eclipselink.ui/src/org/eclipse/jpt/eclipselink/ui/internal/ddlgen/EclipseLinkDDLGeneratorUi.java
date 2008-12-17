@@ -10,6 +10,7 @@
 package org.eclipse.jpt.eclipselink.ui.internal.ddlgen;
 
 import java.util.Iterator;
+
 import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -17,7 +18,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.jpt.core.JpaPlatform;
@@ -27,6 +27,7 @@ import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.internal.ddlgen.EclipseLinkDDLGenerator;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.eclipselink.ui.internal.ddlgen.wizards.GenerateDDLWizard;
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
@@ -36,28 +37,21 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class EclipseLinkDDLGeneratorUi
 {
-	private JpaProject project;
-	private String projectLocation;
-	private IStructuredSelection selection;
-	
+	private final JpaProject project;
+	private static final String CR = StringTools.CR;
+
 	// ********** constructors **********
 	
-	public static void generate(JpaProject project, String projectLocation, IStructuredSelection selection) {
+	public static void generate(JpaProject project) {
+		new EclipseLinkDDLGeneratorUi(project).generate();
+	}
+
+	private EclipseLinkDDLGeneratorUi(JpaProject project) {
+		super();
 		if (project == null) {
 			throw new NullPointerException();
 		}
-		new EclipseLinkDDLGeneratorUi(project, projectLocation, selection).generate();
-	}
-
-	private EclipseLinkDDLGeneratorUi() {
-		super();
-	}
-
-	private EclipseLinkDDLGeneratorUi(JpaProject project, String projectLocation, IStructuredSelection selection) {
-		super();
 		this.project = project;
-		this.selection = selection;
-		this.projectLocation = projectLocation;
 	}
 
 	// ********** behavior **********
@@ -79,7 +73,7 @@ public class EclipseLinkDDLGeneratorUi
 				return;
 			}
 		}
-		IWorkspaceRunnable runnable = new GenerateDDLRunnable(puName, this.project, projectLocation);
+		IWorkspaceRunnable runnable = new GenerateDDLRunnable(puName, this.project);
 		try {
 			ResourcesPlugin.getWorkspace().run(runnable, new NullProgressMonitor());
 		} 
@@ -91,12 +85,11 @@ public class EclipseLinkDDLGeneratorUi
 	private Shell getCurrentShell() {
 	    return Display.getCurrent().getActiveShell();
 	}
-	
+
 	private boolean displayGeneratingDDLWarning() {
 		String message = org.eclipse.osgi.util.NLS.bind(
 			EclipseLinkUiMessages.EclipseLinkDDLGeneratorUi_generatingDDLWarningMessage,
-			System.getProperty("line.separator"),  
-			System.getProperty("line.separator") +  System.getProperty( "line.separator"));
+			CR,  CR + CR);
 			
 		return MessageDialog.openQuestion(
 			this.getCurrentShell(), 
@@ -123,18 +116,17 @@ public class EclipseLinkDDLGeneratorUi
 	static class GenerateDDLRunnable implements IWorkspaceRunnable {
 		private final String puName;
 		private final JpaProject project;
-		private  String projectLocation;
 
-		GenerateDDLRunnable(String puName, JpaProject project, String projectLocation) {
+		GenerateDDLRunnable(String puName, JpaProject project) {
 			super();
 			this.puName = puName;
 			this.project = project;
-			this.projectLocation = projectLocation;
 		}
 
 		public void run(IProgressMonitor monitor) throws CoreException {
+			String projectLocation = this.project.getProject().getLocation().toString();
 			try {
-				EclipseLinkDDLGenerator.generate(this.puName, this.project, this.projectLocation, monitor);
+				EclipseLinkDDLGenerator.generate(this.puName, this.project, projectLocation, monitor);
 			} 
 			catch (OperationCanceledException e) {
 				return;
@@ -154,7 +146,11 @@ public class EclipseLinkDDLGeneratorUi
 		}
 		
 		private void displayError(String message) {
-			MessageDialog.openError(getShell(), "Error", message);
+			MessageDialog.openError(
+					getShell(),
+					EclipseLinkUiMessages.EclipseLinkDDLGeneratorUi_error,
+					message
+				);
 		}
 
 		private Shell getShell() {

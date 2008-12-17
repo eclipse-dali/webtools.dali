@@ -20,36 +20,41 @@ import org.eclipse.jpt.core.context.persistence.MappingFileRef;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface OrmXml extends XmlContextNode, MappingFile
+public interface OrmXml
+	extends XmlContextNode, MappingFile
 {
-	// **************** JpaNode override ***************************************
-	
+	/**
+	 * covariant override
+	 */
 	MappingFileRef getParent();
-	
-	
-	// **************** persistence ********************************************
-	
+
+	String getType();
+
+
+	// ********** entity mappings **********
+
 	/**
 	 * String constant associated with changes to the entity-mappings property
 	 */
-	public final static String ENTITY_MAPPINGS_PROPERTY = "entityMappingsProperty";
-	
+	public final static String ENTITY_MAPPINGS_PROPERTY = "entityMappings"; //$NON-NLS-1$
+
 	/** 
 	 * Return the content represented by the root of the orm.xml file.
 	 * This may be null.
 	 */
 	EntityMappings getEntityMappings();
-	
+
 	/**
 	 * Add a entity-mappings node to the orm.xml file and return the object 
 	 * representing it.
 	 * Throws {@link IllegalStateException} if a entity-mappings node already exists.
 	 */
 	EntityMappings addEntityMappings();
-	
+
 	/**
 	 * Remove the entity-mappings node from the orm.xml file.
 	 * Throws {@link IllegalStateException} if a persistence node does not exist.
 	 */
 	void removeEntityMappings();
+
 }

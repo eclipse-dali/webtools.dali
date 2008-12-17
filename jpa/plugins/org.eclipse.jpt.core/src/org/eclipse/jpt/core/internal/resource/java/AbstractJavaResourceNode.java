@@ -68,7 +68,7 @@ public abstract class AbstractJavaResourceNode
 	}
 
 	public IFile getFile() {
-		return (IFile) this.getJpaCompilationUnit().getCompilationUnit().getResource();
+		return this.getJpaCompilationUnit().getFile();
 	}
 	
 

@@ -10,8 +10,9 @@
 package org.eclipse.jpt.core.context.orm;
 
 import java.util.Iterator;
+
 import org.eclipse.jpt.core.context.AccessType;
-import org.eclipse.jpt.core.context.PersistentTypeContext;
+import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
@@ -28,30 +29,31 @@ import org.eclipse.jpt.core.utility.TextRange;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface OrmTypeMapping extends TypeMapping, XmlContextNode, PersistentTypeContext
+public interface OrmTypeMapping
+	extends TypeMapping, XmlContextNode, PersistentType.Owner
 {
-	String JAVA_PERSISTENT_TYPE_PROPERTY = "javaPersistentTypeProperty";
+	String JAVA_PERSISTENT_TYPE_PROPERTY = "javaPersistentType"; //$NON-NLS-1$
 
 	String getClass_();
 	void setClass(String newClass);
-	String CLASS_PROPERTY = "classProperty";
+	String CLASS_PROPERTY = "class"; //$NON-NLS-1$
 
 	AccessType getAccess();
 	AccessType getDefaultAccess();
-	String DEFAULT_ACCESS_PROPERTY = "defaultAccessProperty";
+	String DEFAULT_ACCESS_PROPERTY = "defaultAccess"; //$NON-NLS-1$
 
 	AccessType getSpecifiedAccess();
 	void setSpecifiedAccess(AccessType newSpecifiedAccess);
-	String SPECIFIED_ACCESS_PROPERTY = "specifiedAccessProperty";
+	String SPECIFIED_ACCESS_PROPERTY = "specifiedAccess"; //$NON-NLS-1$
 
 	
 	boolean isMetadataComplete();
 	Boolean getSpecifiedMetadataComplete();
 	void setSpecifiedMetadataComplete(Boolean newSpecifiedMetadataComplete);
-		String SPECIFIED_METADATA_COMPLETE_PROPERTY = "specifiedMetadataCompleteProperty";
+		String SPECIFIED_METADATA_COMPLETE_PROPERTY = "specifiedMetadataComplete"; //$NON-NLS-1$
 
 	boolean isDefaultMetadataComplete();
-		String DEFAULT_METADATA_COMPLETE_PROPERTY = "defaultMetadataCompleteProperty";
+		String DEFAULT_METADATA_COMPLETE_PROPERTY = "defaultMetadataComplete"; //$NON-NLS-1$
 
 	
 	/**
@@ -76,12 +78,17 @@ public interface OrmTypeMapping extends TypeMapping, XmlContextNode, PersistentT
 	
 	JavaPersistentType getJavaPersistentType();
 
+	String getOrmType();
+
 	TextRange getSelectionTextRange();
 
 	TextRange getAttributesTextRange();
 	
 	boolean containsOffset(int textOffset);
 	
+
+	// ********** copvariant overrides **********
+
 	OrmPersistentType getPersistentType();
 	
 	@SuppressWarnings("unchecked")
@@ -89,4 +96,5 @@ public interface OrmTypeMapping extends TypeMapping, XmlContextNode, PersistentT
 	
 	@SuppressWarnings("unchecked")
 	Iterator<OrmPersistentAttribute> overridableAssociations();
+
 }

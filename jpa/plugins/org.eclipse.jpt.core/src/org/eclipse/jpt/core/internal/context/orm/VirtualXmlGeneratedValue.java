@@ -35,17 +35,11 @@ public class VirtualXmlGeneratedValue extends AbstractJpaEObject implements XmlG
 
 
 	public String getGenerator() {
-		if (this.metadataComplete) {
-			return null;
-		}
-		return this.getJavaGeneratedValue().getGenerator();
+		return this.metadataComplete ? null : this.getJavaGeneratedValue().getGenerator();
 	}
 
 	public GenerationType getStrategy() {
-		if (this.metadataComplete) {
-			return null;
-		}
-		return org.eclipse.jpt.core.context.GenerationType.toOrmResourceModel(this.getJavaGeneratedValue().getStrategy());
+		return this.metadataComplete ? null : org.eclipse.jpt.core.context.GenerationType.toOrmResourceModel(this.getJavaGeneratedValue().getStrategy());
 	}
 
 	public void setGenerator(@SuppressWarnings("unused")String value) {

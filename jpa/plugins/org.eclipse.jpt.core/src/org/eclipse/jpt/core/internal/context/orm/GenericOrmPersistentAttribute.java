@@ -15,7 +15,7 @@ import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.core.context.orm.OrmStructureNodes;
+import org.eclipse.jpt.core.context.orm.OrmStructureNode;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
@@ -24,7 +24,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 
 public class GenericOrmPersistentAttribute extends AbstractXmlContextNode
-	implements OrmPersistentAttribute
+	implements OrmStructureNode, OrmPersistentAttribute
 {
 	protected OrmAttributeMapping attributeMapping;
 	
@@ -38,7 +38,7 @@ public class GenericOrmPersistentAttribute extends AbstractXmlContextNode
 	}
 	
 	public String getId() {
-		return OrmStructureNodes.PERSISTENT_ATTRIBUTE_ID;
+		return PERSISTENT_ATTRIBUTE_ID;
 	}
 
 	public String getName() {
@@ -136,8 +136,8 @@ public class GenericOrmPersistentAttribute extends AbstractXmlContextNode
 		return this.attributeMapping.isIdMapping();
 	}
 	
-	public void initialize(XmlAttributeMapping attributeMapping) {
-		this.attributeMapping.initialize(attributeMapping);
+	public void initialize(XmlAttributeMapping xmlAttributeMapping) {
+		this.attributeMapping.initialize(xmlAttributeMapping);
 	}
 	
 	public void update() {
@@ -146,6 +146,10 @@ public class GenericOrmPersistentAttribute extends AbstractXmlContextNode
 	
 	public JpaStructureNode getStructureNode(@SuppressWarnings("unused") int offset) {
 		return this;
+	}
+
+	public String getOrmType() {
+		return this.getPersistentType().getOrmType();
 	}
 
 	public boolean contains(int textOffset) {
@@ -177,11 +181,11 @@ public class GenericOrmPersistentAttribute extends AbstractXmlContextNode
 
 	@Override
 	public void toString(StringBuilder sb) {
-		super.toString(sb);
-		sb.append(getName());
+		sb.append(this.getName());
 	}
 	
 	public void dispose() {
 		//nothing to dispose
 	}
+
 }

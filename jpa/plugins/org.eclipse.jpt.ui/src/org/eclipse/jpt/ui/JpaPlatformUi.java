@@ -10,15 +10,16 @@
 package org.eclipse.jpt.ui;
 
 import java.util.Iterator;
+
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.core.JpaFile;
-import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.TypeMapping;
+import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
 import org.eclipse.jpt.ui.details.DefaultAttributeMappingUiProvider;
 import org.eclipse.jpt.ui.details.JpaDetailsProvider;
@@ -36,7 +37,7 @@ import org.eclipse.jpt.ui.structure.JpaStructureProvider;
  * The "generic" extension supplies UI for the core platform extension with the same
  * ID.
  *
- * @see the org.eclipse.jpt.ui.jpaPlatform extension point
+ * See the extension point: org.eclipse.jpt.ui.jpaPlatform
  *
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -46,45 +47,81 @@ import org.eclipse.jpt.ui.structure.JpaStructureProvider;
  */
 public interface JpaPlatformUi
 {
+
+	// ********** factory **********
+
+	JpaUiFactory getJpaUiFactory();
+
+
+	// ********** details providers **********
+
+	JpaDetailsProvider getDetailsProvider(JpaStructureNode contextNode);
+
+	/**
+	 * Return an iterator of mapping ui providers appropriate for the given persistent type
+	 */
+	Iterator<TypeMappingUiProvider<? extends TypeMapping>> typeMappingUiProviders(PersistentType type);
+	
+	/**
+	 * Return an iterator of mapping ui providers appropriate for the given persistent attribute
+	 */
+	Iterator<AttributeMappingUiProvider<? extends AttributeMapping>> attributeMappingUiProviders(PersistentAttribute attribute);
+
+
+	// ********** Java type mapping UI providers **********
+
+	Iterator<TypeMappingUiProvider<? extends TypeMapping>> javaTypeMappingUiProviders();
+
+
+	// ********** Java attribute mapping UI providers **********
+
+	Iterator<AttributeMappingUiProvider<? extends AttributeMapping>> javaAttributeMappingUiProviders();
+
+
+	// ********** default Java attribute mapping UI providers **********
+
+	Iterator<DefaultAttributeMappingUiProvider<? extends AttributeMapping>> defaultJavaAttributeMappingUiProviders();
+
+
+	// ********** ORM type mapping UI providers **********
+
+	Iterator<TypeMappingUiProvider<? extends TypeMapping>> ormTypeMappingUiProviders();
+
+
+	// ********** ORM attribute mapping UI providers **********
+
+	Iterator<AttributeMappingUiProvider<? extends AttributeMapping>> ormAttributeMappingUiProviders();
+
+
+	// ********** default ORM attribute mapping UI providers **********
+
+	Iterator<DefaultAttributeMappingUiProvider<? extends AttributeMapping>> defaultOrmAttributeMappingUiProviders();
+
+
+	// ********** structure providers **********
+
+	/**
+	 * Return a structure provider for the specified JPA file.
+	 */
+	JpaStructureProvider getStructureProvider(JpaFile jpaFile);
+
+
+	// ********** navigator provider **********
+
 	/**
 	 * Return a *new* {@link JpaNavigatorProvider}, which determines
 	 * Project Explorer content and look
 	 */
 	JpaNavigatorProvider buildNavigatorProvider();
 
-	/**
-	 * Return a *new* structure provider for the given JPA file
-	 */
-	// TODO - binary java type support
-	JpaStructureProvider buildStructureProvider(JpaFile jpaFile);
 
-	Iterator<DefaultAttributeMappingUiProvider<? extends AttributeMapping>> defaultJavaAttributeMappingUiProviders();
-
-	Iterator<DefaultAttributeMappingUiProvider<? extends AttributeMapping>> defaultOrmAttributeMappingUiProviders();
-
-	JpaDetailsProvider getDetailsProvider(JpaStructureNode contextNode);
-
-	void generateDDL(JpaProject project, IStructuredSelection selection);
+	// ********** entity generation **********
 
 	void generateEntities(JpaProject project, IStructuredSelection selection);
 
-	JpaUiFactory getJpaUiFactory();
-	
-	/**
-	 * Return an iterator of mapping ui providers appropriate for the given persistent type
-	 */
-	Iterator<TypeMappingUiProvider<? extends TypeMapping>> typeMappingUiProviders(PersistentType type);
-	
-	Iterator<TypeMappingUiProvider<? extends TypeMapping>> javaTypeMappingUiProviders();
-	
-	Iterator<TypeMappingUiProvider<? extends TypeMapping>> ormTypeMappingUiProviders();
-	
-	/**
-	 * Return an iterator of mapping ui providers appropriate for the given persistent attribute
-	 */
-	Iterator<AttributeMappingUiProvider<? extends AttributeMapping>> attributeMappingUiProviders(PersistentAttribute attribute);
-	
-	Iterator<AttributeMappingUiProvider<? extends AttributeMapping>> javaAttributeMappingUiProviders();
-	
-	Iterator<AttributeMappingUiProvider<? extends AttributeMapping>> ormAttributeMappingUiProviders();
+
+	// ********** DDL generation **********
+
+	void generateDDL(JpaProject project, IStructuredSelection selection);
+
 }

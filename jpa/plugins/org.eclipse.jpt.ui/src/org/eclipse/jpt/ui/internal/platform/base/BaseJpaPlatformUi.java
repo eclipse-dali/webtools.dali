@@ -10,11 +10,11 @@
 package org.eclipse.jpt.ui.internal.platform.base;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaProject;
@@ -28,8 +28,6 @@ import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.core.internal.JavaJpaFile;
-import org.eclipse.jpt.core.internal.XmlJpaFile;
 import org.eclipse.jpt.ui.JpaPlatformUi;
 import org.eclipse.jpt.ui.JpaUiFactory;
 import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
@@ -72,126 +70,97 @@ import org.eclipse.jpt.ui.internal.structure.JavaResourceModelStructureProvider;
 import org.eclipse.jpt.ui.internal.structure.OrmResourceModelStructureProvider;
 import org.eclipse.jpt.ui.internal.structure.PersistenceResourceModelStructureProvider;
 import org.eclipse.jpt.ui.structure.JpaStructureProvider;
-import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
+import org.eclipse.jpt.utility.internal.iterators.ArrayListIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 
-public abstract class BaseJpaPlatformUi implements JpaPlatformUi
+public abstract class BaseJpaPlatformUi
+	implements JpaPlatformUi
 {
-	// TODO: Transformed into a List for testing.  Must overhaul.
-	private List<JpaDetailsProvider> detailsProviders;
+	private final JpaUiFactory jpaUiFactory;
 
-	private List<TypeMappingUiProvider<? extends TypeMapping>> javaTypeMappingUiProviders;
-	private List<AttributeMappingUiProvider<? extends AttributeMapping>> javaAttributeMappingUiProviders;
-	private List<DefaultAttributeMappingUiProvider<? extends AttributeMapping>> defaultJavaAttributeMappingUiProviders;
+	private JpaDetailsProvider[] detailsProviders;
 
-	private List<TypeMappingUiProvider<? extends TypeMapping>> ormTypeMappingUiProviders;
-	private List<AttributeMappingUiProvider<? extends AttributeMapping>> ormAttributeMappingUiProviders;
-	private List<DefaultAttributeMappingUiProvider<? extends AttributeMapping>> defaultOrmAttributeMappingUiProviders;
+	private TypeMappingUiProvider<? extends TypeMapping>[] javaTypeMappingUiProviders;
+	private AttributeMappingUiProvider<? extends AttributeMapping>[] javaAttributeMappingUiProviders;
+	private DefaultAttributeMappingUiProvider<? extends AttributeMapping>[] defaultJavaAttributeMappingUiProviders;
 
-	private JpaUiFactory jpaUiFactory;
+	private TypeMappingUiProvider<? extends TypeMapping>[] ormTypeMappingUiProviders;
+	private AttributeMappingUiProvider<? extends AttributeMapping>[] ormAttributeMappingUiProviders;
+	private DefaultAttributeMappingUiProvider<? extends AttributeMapping>[] defaultOrmAttributeMappingUiProviders;
 
+	private JpaStructureProvider[] jpaStructureProviders;
 
+	/**
+	 * zero-argument constructor
+	 */
 	protected BaseJpaPlatformUi() {
 		super();
-		this.jpaUiFactory = createJpaUiFactory();
+		this.jpaUiFactory = this.buildJpaUiFactory();
 	}
 
 
-	// **************** structure view content *********************************
-
-	public JpaStructureProvider buildStructureProvider(JpaFile jpaFile) {
-		String resourceType = jpaFile.getResourceType();
-
-		if (resourceType == JpaFile.JAVA_RESOURCE_TYPE) {
-			return new JavaResourceModelStructureProvider((JavaJpaFile) jpaFile);
-		}
-		if (resourceType == JpaFile.ORM_RESOURCE_TYPE) {
-			return new OrmResourceModelStructureProvider((XmlJpaFile) jpaFile);
-		}
-		if (resourceType == JpaFile.PERSISTENCE_RESOURCE_TYPE) {
-			return new PersistenceResourceModelStructureProvider((XmlJpaFile) jpaFile);
-		}
-
-		return null;
-	}
-
-
-	// ********** behavior **********
-
-	protected abstract JpaUiFactory createJpaUiFactory();
+	// ********** factory **********
 
 	public JpaUiFactory getJpaUiFactory() {
 		return this.jpaUiFactory;
 	}
-	
-	protected List<JpaDetailsProvider> getDetailsProviders() {
-		if (this.detailsProviders == null) {
-			this.detailsProviders = new ArrayList<JpaDetailsProvider>();
-			this.addDetailsProvidersTo(this.detailsProviders);
+
+	protected abstract JpaUiFactory buildJpaUiFactory();
+
+
+	// ********** details providers **********
+
+	public JpaDetailsProvider getDetailsProvider(JpaStructureNode structureNode) {
+		if (structureNode instanceof JavaJpaContextNode) {
+			return this.getDetailsProviders()[0];
 		}
-		return Collections.unmodifiableList(this.detailsProviders);
+		return this.getDetailsProviders()[1];
 	}
-	
-	public Iterator<JpaDetailsProvider> detailsProviders() {
-		return getDetailsProviders().iterator();
+
+	protected ListIterator<JpaDetailsProvider> detailsProviders() {
+		return new ArrayListIterator<JpaDetailsProvider>(this.getDetailsProviders());
+	}
+
+	protected JpaDetailsProvider[] getDetailsProviders() {
+		if (this.detailsProviders == null) {
+			this.detailsProviders = this.buildDetailsProviders();
+		}
+		return this.detailsProviders;
+	}
+
+	protected JpaDetailsProvider[] buildDetailsProviders() {
+		ArrayList<JpaDetailsProvider> providers = new ArrayList<JpaDetailsProvider>();
+		this.addDetailsProvidersTo(providers);
+		return providers.toArray(new JpaDetailsProvider[providers.size()]);
 	}
 
 	/**
 	 * Override this to specify more or different details providers.
 	 * The default includes the JPA spec-defined java and orm.xml
 	 */
-	protected void addDetailsProvidersTo(Collection<JpaDetailsProvider> providers) {
-		providers.add(new JavaDetailsProvider());
-		providers.add(new OrmDetailsProvider());
+	protected void addDetailsProvidersTo(List<JpaDetailsProvider> providers) {
+		providers.add(JavaDetailsProvider.instance());
+		providers.add(OrmDetailsProvider.instance());
 	}
 
-	public JpaDetailsProvider getDetailsProvider(JpaStructureNode structureNode) {
-		// TODO: To implement, this is written only for testing
-		if (structureNode instanceof JavaJpaContextNode) {
-			return getDetailsProviders().get(0);
-		}
-		return getDetailsProviders().get(1);
-//		for (Iterator<IJpaDetailsProvider> i = this.detailsProviders(); i.hasNext(); ) {
-//			IJpaDetailsProvider provider = i.next();
-//			if (provider.fileContentType().equals(fileContentType)) {
-//				return provider;
-//			}
-//		}
-//		return null;
-	}
-	
-	public Iterator<TypeMappingUiProvider<? extends TypeMapping>> typeMappingUiProviders(PersistentType type) {
-		if (type instanceof JavaPersistentType) {
-			return javaTypeMappingUiProviders();
-		}
-		else if (type instanceof OrmPersistentType) {
-			return ormTypeMappingUiProviders();
-		}
-		else {
-			return EmptyIterator.instance();
-		}
-	}
-	
-	public Iterator<AttributeMappingUiProvider<? extends AttributeMapping>> attributeMappingUiProviders(PersistentAttribute attribute) {
-		if (attribute instanceof JavaPersistentAttribute) {
-			return javaAttributeMappingUiProviders();
-		}
-		else if (attribute instanceof OrmPersistentAttribute) {
-			return ormAttributeMappingUiProviders();
-		}
-		else {
-			return EmptyIterator.instance();
-		}
-	}
+
+	// ********** Java type mapping UI providers **********
 
 	public ListIterator<TypeMappingUiProvider<? extends TypeMapping>> javaTypeMappingUiProviders() {
 		if (this.javaTypeMappingUiProviders == null) {
-			this.javaTypeMappingUiProviders = new ArrayList<TypeMappingUiProvider<? extends TypeMapping>>();
-			this.addJavaTypeMappingUiProvidersTo(this.javaTypeMappingUiProviders);
+			this.javaTypeMappingUiProviders = this.buildJavaTypeMappingUiProviders();
 		}
-		return new CloneListIterator<TypeMappingUiProvider<? extends TypeMapping>>(
-			this.javaTypeMappingUiProviders
-		);
+		return new ArrayListIterator<TypeMappingUiProvider<? extends TypeMapping>>(this.javaTypeMappingUiProviders);
+	}
+
+	protected TypeMappingUiProvider<? extends TypeMapping>[] buildJavaTypeMappingUiProviders() {
+		ArrayList<TypeMappingUiProvider<? extends TypeMapping>> providers = new ArrayList<TypeMappingUiProvider<? extends TypeMapping>>();
+		this.addJavaTypeMappingUiProvidersTo(providers);
+		@SuppressWarnings("unchecked")
+		TypeMappingUiProvider<? extends TypeMapping>[] providerArray = providers.toArray(new TypeMappingUiProvider[providers.size()]);
+		return providerArray;
 	}
 
 	/**
@@ -206,15 +175,22 @@ public abstract class BaseJpaPlatformUi implements JpaPlatformUi
 		providers.add(JavaEmbeddableUiProvider.instance());
 	}
 
+
+	// ********** Java attribute mapping UI providers **********
+
 	public ListIterator<AttributeMappingUiProvider<? extends AttributeMapping>> javaAttributeMappingUiProviders() {
 		if (this.javaAttributeMappingUiProviders == null) {
-			this.javaAttributeMappingUiProviders = new ArrayList<AttributeMappingUiProvider<? extends AttributeMapping>>();
-			this.addJavaAttributeMappingUiProvidersTo(this.javaAttributeMappingUiProviders);
+			this.javaAttributeMappingUiProviders = this.buildJavaAttributeMappingUiProviders();
 		}
+		return new ArrayListIterator<AttributeMappingUiProvider<? extends AttributeMapping>>(this.javaAttributeMappingUiProviders);
+	}
 
-		return new CloneListIterator<AttributeMappingUiProvider<? extends AttributeMapping>>(
-			this.javaAttributeMappingUiProviders
-		);
+	protected AttributeMappingUiProvider<? extends AttributeMapping>[] buildJavaAttributeMappingUiProviders() {
+		ArrayList<AttributeMappingUiProvider<? extends AttributeMapping>> providers = new ArrayList<AttributeMappingUiProvider<? extends AttributeMapping>>();
+		this.addJavaAttributeMappingUiProvidersTo(providers);
+		@SuppressWarnings("unchecked")
+		AttributeMappingUiProvider<? extends AttributeMapping>[] providerArray = providers.toArray(new AttributeMappingUiProvider[providers.size()]);
+		return providerArray;
 	}
 
 	/**
@@ -236,15 +212,22 @@ public abstract class BaseJpaPlatformUi implements JpaPlatformUi
 		providers.add(NullAttributeMappingUiProvider.instance());
 	}
 
+
+	// ********** default Java attribute mapping UI providers **********
+
 	public ListIterator<DefaultAttributeMappingUiProvider<? extends AttributeMapping>> defaultJavaAttributeMappingUiProviders() {
 		if (this.defaultJavaAttributeMappingUiProviders == null) {
-			this.defaultJavaAttributeMappingUiProviders = new ArrayList<DefaultAttributeMappingUiProvider<? extends AttributeMapping>>();
-			this.addDefaultJavaAttributeMappingUiProvidersTo(this.defaultJavaAttributeMappingUiProviders);
+			this.defaultJavaAttributeMappingUiProviders = this.buildDefaultJavaAttributeMappingUiProviders();
 		}
+		return new ArrayListIterator<DefaultAttributeMappingUiProvider<? extends AttributeMapping>>(this.defaultJavaAttributeMappingUiProviders);
+	}
 
-		return new CloneListIterator<DefaultAttributeMappingUiProvider<? extends AttributeMapping>>(
-			this.defaultJavaAttributeMappingUiProviders
-		);
+	protected DefaultAttributeMappingUiProvider<? extends AttributeMapping>[] buildDefaultJavaAttributeMappingUiProviders() {
+		ArrayList<DefaultAttributeMappingUiProvider<? extends AttributeMapping>> providers = new ArrayList<DefaultAttributeMappingUiProvider<? extends AttributeMapping>>();
+		this.addDefaultJavaAttributeMappingUiProvidersTo(providers);
+		@SuppressWarnings("unchecked")
+		DefaultAttributeMappingUiProvider<? extends AttributeMapping>[] providerArray = providers.toArray(new DefaultAttributeMappingUiProvider[providers.size()]);
+		return providerArray;
 	}
 
 	/**
@@ -256,23 +239,24 @@ public abstract class BaseJpaPlatformUi implements JpaPlatformUi
 		providers.add(DefaultEmbeddedMappingUiProvider.instance());
 	}
 
-	public void generateEntities(JpaProject project, IStructuredSelection selection) {
-		EntitiesGenerator.generate(project, selection);
-	}
 
-	// *************** ORM mapping UI providers ***************
-	
-	public Iterator<TypeMappingUiProvider<? extends TypeMapping>> ormTypeMappingUiProviders() {
+	// ********** ORM type mapping UI providers **********
+
+	public ListIterator<TypeMappingUiProvider<? extends TypeMapping>> ormTypeMappingUiProviders() {
 		if (this.ormTypeMappingUiProviders == null) {
-			this.ormTypeMappingUiProviders = new ArrayList<TypeMappingUiProvider<? extends TypeMapping>>();
-			this.addOrmTypeMappingUiProvidersTo(this.ormTypeMappingUiProviders);
+			this.ormTypeMappingUiProviders = this.buildOrmTypeMappingUiProviders();
 		}
-
-		return new CloneListIterator<TypeMappingUiProvider<? extends TypeMapping>>(
-			this.ormTypeMappingUiProviders
-		);
+		return new ArrayListIterator<TypeMappingUiProvider<? extends TypeMapping>>(this.ormTypeMappingUiProviders);
 	}
-	
+
+	protected TypeMappingUiProvider<? extends TypeMapping>[] buildOrmTypeMappingUiProviders() {
+		ArrayList<TypeMappingUiProvider<? extends TypeMapping>> providers = new ArrayList<TypeMappingUiProvider<? extends TypeMapping>>();
+		this.addOrmTypeMappingUiProvidersTo(providers);
+		@SuppressWarnings("unchecked")
+		TypeMappingUiProvider<? extends TypeMapping>[] providerArray = providers.toArray(new TypeMappingUiProvider[providers.size()]);
+		return providerArray;
+	}
+
 	/**
 	 * Override this to specify more or different ORM type mapping ui providers.
 	 * The default includes the JPA spec-defined entity, mapped superclass,
@@ -283,16 +267,23 @@ public abstract class BaseJpaPlatformUi implements JpaPlatformUi
 		providers.add(OrmMappedSuperclassUiProvider.instance());
 		providers.add(OrmEmbeddableUiProvider.instance());
 	}
-	
+
+
+	// ********** ORM attribute mapping UI providers **********
+
 	public Iterator<AttributeMappingUiProvider<? extends AttributeMapping>> ormAttributeMappingUiProviders() {
 		if (this.ormAttributeMappingUiProviders == null) {
-			this.ormAttributeMappingUiProviders = new ArrayList<AttributeMappingUiProvider<? extends AttributeMapping>>();
-			this.addOrmAttributeMappingUiProvidersTo(this.ormAttributeMappingUiProviders);
+			this.ormAttributeMappingUiProviders = this.buildOrmAttributeMappingUiProviders();
 		}
+		return new ArrayListIterator<AttributeMappingUiProvider<? extends AttributeMapping>>(this.ormAttributeMappingUiProviders);
+	}
 
-		return new CloneListIterator<AttributeMappingUiProvider<? extends AttributeMapping>>(
-			this.ormAttributeMappingUiProviders
-		);
+	protected AttributeMappingUiProvider<? extends AttributeMapping>[] buildOrmAttributeMappingUiProviders() {
+		ArrayList<AttributeMappingUiProvider<? extends AttributeMapping>> providers = new ArrayList<AttributeMappingUiProvider<? extends AttributeMapping>>();
+		this.addOrmAttributeMappingUiProvidersTo(providers);
+		@SuppressWarnings("unchecked")
+		AttributeMappingUiProvider<? extends AttributeMapping>[] providerArray = providers.toArray(new AttributeMappingUiProvider[providers.size()]);
+		return providerArray;
 	}
 
 	/**
@@ -302,33 +293,117 @@ public abstract class BaseJpaPlatformUi implements JpaPlatformUi
 	 * and version.
 	 */
 	protected void addOrmAttributeMappingUiProvidersTo(List<AttributeMappingUiProvider<? extends AttributeMapping>> providers) {
-		providers.add(OrmIdMappingUiProvider.instance());
-		providers.add(OrmEmbeddedIdMappingUiProvider.instance());
 		providers.add(OrmBasicMappingUiProvider.instance());
-		providers.add(OrmVersionMappingUiProvider.instance());
+		providers.add(OrmEmbeddedMappingUiProvider.instance());
+		providers.add(OrmEmbeddedIdMappingUiProvider.instance());
+		providers.add(OrmIdMappingUiProvider.instance());
+		providers.add(OrmManyToManyMappingUiProvider.instance());
 		providers.add(OrmManyToOneMappingUiProvider.instance());
 		providers.add(OrmOneToManyMappingUiProvider.instance());
 		providers.add(OrmOneToOneMappingUiProvider.instance());
-		providers.add(OrmManyToManyMappingUiProvider.instance());
-		providers.add(OrmEmbeddedMappingUiProvider.instance());
 		providers.add(OrmTransientMappingUiProvider.instance());
+		providers.add(OrmVersionMappingUiProvider.instance());
 	}
-	
+
+
+	// ********** default ORM attribute mapping UI providers **********
+
 	public Iterator<DefaultAttributeMappingUiProvider<? extends AttributeMapping>> defaultOrmAttributeMappingUiProviders() {
 		if (this.defaultOrmAttributeMappingUiProviders == null) {
-			this.defaultOrmAttributeMappingUiProviders = new ArrayList<DefaultAttributeMappingUiProvider<? extends AttributeMapping>>();
-			this.addDefaultOrmAttributeMappingUiProvidersTo(this.defaultOrmAttributeMappingUiProviders);
+			this.defaultOrmAttributeMappingUiProviders = this.buildDefaultOrmAttributeMappingUiProviders();
 		}
+		return new ArrayListIterator<DefaultAttributeMappingUiProvider<? extends AttributeMapping>>(this.defaultOrmAttributeMappingUiProviders);
+	}
 
-		return new CloneListIterator<DefaultAttributeMappingUiProvider<? extends AttributeMapping>>(
-			this.defaultOrmAttributeMappingUiProviders
-		);
+	protected DefaultAttributeMappingUiProvider<? extends AttributeMapping>[] buildDefaultOrmAttributeMappingUiProviders() {
+		ArrayList<DefaultAttributeMappingUiProvider<? extends AttributeMapping>> providers = new ArrayList<DefaultAttributeMappingUiProvider<? extends AttributeMapping>>();
+		this.addDefaultOrmAttributeMappingUiProvidersTo(providers);
+		@SuppressWarnings("unchecked")
+		DefaultAttributeMappingUiProvider<? extends AttributeMapping>[] providerArray = providers.toArray(new DefaultAttributeMappingUiProvider[providers.size()]);
+		return providerArray;
 	}
 
 	/**
 	 * Override this to specify more or different default ORM attribute mapping
 	 * ui providers. The default has no specific mappings.
 	 */
-	protected void addDefaultOrmAttributeMappingUiProvidersTo(List<DefaultAttributeMappingUiProvider<? extends AttributeMapping>> providers) {
+	protected void addDefaultOrmAttributeMappingUiProvidersTo(@SuppressWarnings("unused") List<DefaultAttributeMappingUiProvider<? extends AttributeMapping>> providers) {
+		// nothing by default
 	}
+
+
+	// ********** structure providers **********
+
+	public JpaStructureProvider getStructureProvider(JpaFile jpaFile) {
+		return this.getStructureProviderForResourceType(jpaFile.getResourceType());
+	}
+
+	protected JpaStructureProvider getStructureProviderForResourceType(String resourceType) {
+		for (JpaStructureProvider provider : this.getJpaStructureProviders()) {
+			if (provider.getResourceType() == resourceType) {
+				return provider;
+			}
+		}
+		throw new IllegalArgumentException("Unknown resource type: " + resourceType); //$NON-NLS-1$
+	}
+
+	protected synchronized JpaStructureProvider[] getJpaStructureProviders() {
+		if (this.jpaStructureProviders == null) {
+			this.jpaStructureProviders = this.buildJpaStructureProviders();
+		}
+		return this.jpaStructureProviders;
+	}
+
+	protected JpaStructureProvider[] buildJpaStructureProviders() {
+		ArrayList<JpaStructureProvider> providers = new ArrayList<JpaStructureProvider>();
+		this.addJpaStructureProvidersTo(providers);
+		return providers.toArray(new JpaStructureProvider[providers.size()]);
+	}
+
+	/**
+	 * Override this to specify more or different JPA structure providers.
+	 * The default includes support for Java, persistence.xml, and orm.xml
+	 * files
+	 */
+	protected void addJpaStructureProvidersTo(List<JpaStructureProvider> providers) {
+		providers.add(JavaResourceModelStructureProvider.instance());
+		providers.add(OrmResourceModelStructureProvider.instance());
+		providers.add(PersistenceResourceModelStructureProvider.instance());
+	}
+
+
+	// ********** entity generation **********
+
+	public void generateEntities(JpaProject project, IStructuredSelection selection) {
+		EntitiesGenerator.generate(project, selection);
+	}
+
+
+	// ********** convenience methods **********
+
+	protected void displayMessage(String title, String message) {
+	    Shell currentShell = Display.getCurrent().getActiveShell();
+	    MessageDialog.openInformation(currentShell, title, message);
+	}
+
+	public Iterator<TypeMappingUiProvider<? extends TypeMapping>> typeMappingUiProviders(PersistentType type) {
+		if (type instanceof JavaPersistentType) {
+			return javaTypeMappingUiProviders();
+		}
+		if (type instanceof OrmPersistentType) {
+			return ormTypeMappingUiProviders();
+		}
+		return EmptyIterator.instance();
+	}
+	
+	public Iterator<AttributeMappingUiProvider<? extends AttributeMapping>> attributeMappingUiProviders(PersistentAttribute attribute) {
+		if (attribute instanceof JavaPersistentAttribute) {
+			return javaAttributeMappingUiProviders();
+		}
+		if (attribute instanceof OrmPersistentAttribute) {
+			return ormAttributeMappingUiProviders();
+		}
+		return EmptyIterator.instance();
+	}
+
 }

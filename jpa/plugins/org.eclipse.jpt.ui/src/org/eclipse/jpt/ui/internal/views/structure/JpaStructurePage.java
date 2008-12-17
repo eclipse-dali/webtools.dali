@@ -24,6 +24,7 @@ import org.eclipse.jface.viewers.ITreeSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
 import org.eclipse.jpt.ui.internal.selection.DefaultJpaSelection;
@@ -41,7 +42,11 @@ import org.eclipse.ui.part.Page;
 public class JpaStructurePage extends Page
 	implements ISelectionProvider, ISelectionChangedListener
 {
-	private JpaStructureProvider structureProvider;
+	private final JpaStructureView jpaStructureView;
+	
+	private final JpaFile jpaFile;
+	
+	private final JpaStructureProvider structureProvider;
 	
 	private final ListenerList selectionChangedListenerList;
 	
@@ -49,10 +54,9 @@ public class JpaStructurePage extends Page
 	
 	private TreeViewer viewer;
 	
-	private JpaStructureView jpaStructureView;
-	
-	public JpaStructurePage(JpaStructureView jpaStructureView, JpaStructureProvider structureProvider) {
+	public JpaStructurePage(JpaStructureView jpaStructureView, JpaFile jpaFile, JpaStructureProvider structureProvider) {
 		this.jpaStructureView = jpaStructureView;
+		this.jpaFile = jpaFile;
 		this.structureProvider = structureProvider;
 		this.selectionChangedListenerList = new ListenerList();
 	}
@@ -76,7 +80,7 @@ public class JpaStructurePage extends Page
 		viewer.setContentProvider(contentAndLabelProvider);
 		// TODO Use problem decorator
 		viewer.setLabelProvider(contentAndLabelProvider);
-		viewer.setInput(structureProvider.getInput());
+		viewer.setInput(this.jpaFile);
 		viewer.addSelectionChangedListener(this);
 		initContextMenu();
 	}
@@ -84,7 +88,6 @@ public class JpaStructurePage extends Page
 	@Override
 	public void dispose() {
 		viewer.removeSelectionChangedListener(this);
-		structureProvider.dispose();
 		super.dispose();
 	}
 	
@@ -95,8 +98,8 @@ public class JpaStructurePage extends Page
         MenuManager mgr = new MenuManager();
         mgr.setRemoveAllWhenShown(true);
         mgr.addMenuListener(new IMenuListener() {
-            public void menuAboutToShow(IMenuManager mgr) {
-                fillContextMenu(mgr);
+            public void menuAboutToShow(IMenuManager menuManager) {
+                JpaStructurePage.this.fillContextMenu(menuManager);
             }
         });
         Menu menu = mgr.createContextMenu(viewer.getControl());

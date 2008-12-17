@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaFileProvider;
@@ -22,6 +23,7 @@ import org.eclipse.jpt.core.JptCorePlugin;
 public class OrmJpaFileProvider
 	implements JpaFileProvider
 {
+	public static final String RESOURCE_TYPE = "ORM"; //$NON-NLS-1$
 
 	// singleton
 	private static final OrmJpaFileProvider INSTANCE = new OrmJpaFileProvider();
@@ -34,18 +36,18 @@ public class OrmJpaFileProvider
 	}
 
 	/**
-	 * Ensure non-instantiability.
+	 * Ensure single instance.
 	 */
 	private OrmJpaFileProvider() {
 		super();
 	}
 
-	public String getContentId() {
+	public IContentType getContentType() {
 		return JptCorePlugin.ORM_XML_CONTENT_TYPE;
 	}
 
 	public JpaFile buildJpaFile(JpaProject jpaProject, IFile file, JpaFactory factory) {
-		return factory.buildOrmJpaFile(jpaProject, file);
+		return factory.buildOrmJpaFile(jpaProject, file, RESOURCE_TYPE);
 	}
 
 }

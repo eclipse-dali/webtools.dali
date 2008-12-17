@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.context;
 
 import java.util.List;
-import org.eclipse.jpt.core.resource.common.JpaXmlResource;
+
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
@@ -21,20 +21,14 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface XmlContextNode extends JpaContextNode
+public interface XmlContextNode
+	extends JpaContextNode
 {
-	/**
-	 * Return the EMF resource that this context node represents
-	 */
-	JpaXmlResource getEResource();
-	
-	
-	// **************** validation **************************************
-	
 	/**
 	 * Add to the list of current validation messages
 	 */
 	void validate(List<IMessage> messages);
 
 	TextRange getValidationTextRange();
+
 }

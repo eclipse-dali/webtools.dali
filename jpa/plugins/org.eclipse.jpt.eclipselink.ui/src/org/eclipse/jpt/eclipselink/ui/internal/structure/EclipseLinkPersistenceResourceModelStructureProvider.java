@@ -10,19 +10,42 @@
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.structure;
 
-import org.eclipse.jpt.core.internal.XmlJpaFile;
-import org.eclipse.jpt.ui.internal.structure.PersistenceResourceModelStructureProvider;
+import org.eclipse.jpt.core.internal.PersistenceJpaFileProvider;
+import org.eclipse.jpt.ui.internal.structure.PersistenceItemLabelProviderFactory;
+import org.eclipse.jpt.ui.jface.ItemLabelProviderFactory;
 import org.eclipse.jpt.ui.jface.TreeItemContentProviderFactory;
+import org.eclipse.jpt.ui.structure.JpaStructureProvider;
 
 public class EclipseLinkPersistenceResourceModelStructureProvider
-	extends PersistenceResourceModelStructureProvider
+	implements JpaStructureProvider
 {
-	public EclipseLinkPersistenceResourceModelStructureProvider(XmlJpaFile jpaFile) {
-		super(jpaFile);
+	// singleton
+	private static final JpaStructureProvider INSTANCE = new EclipseLinkPersistenceResourceModelStructureProvider();
+
+	/**
+	 * Return the singleton.
+	 */
+	public static JpaStructureProvider instance() {
+		return INSTANCE;
+	}
+
+	/**
+	 * Ensure single instance.
+	 */
+	private EclipseLinkPersistenceResourceModelStructureProvider() {
+		super();
 	}
 	
-	@Override
+	public String getResourceType() {
+		return PersistenceJpaFileProvider.RESOURCE_TYPE;
+	}
+
 	public TreeItemContentProviderFactory getTreeItemContentProviderFactory() {
 		return new EclipseLinkPersistenceItemContentProviderFactory();
 	}
+
+	public ItemLabelProviderFactory getItemLabelProviderFactory() {
+		return new PersistenceItemLabelProviderFactory();
+	}
+
 }

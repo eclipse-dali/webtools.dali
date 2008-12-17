@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.persistence.general;
 
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
@@ -56,9 +57,9 @@ public class EclipseLinkPersistenceUnitMappingFilesComposite extends Persistence
 	}
 	
 	@Override
-	protected boolean isMappingFile(String contentTypeId) {
-		return super.isMappingFile(contentTypeId) ||
-					contentTypeId.equals(JptEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_CONTENT_TYPE);
+	protected boolean isMappingFile(IContentType contentType) {
+		return super.isMappingFile(contentType) ||
+					contentType.equals(JptEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_CONTENT_TYPE);
 	}
 
 	@Override

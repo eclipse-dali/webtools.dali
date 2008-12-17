@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.resource.java;
 
 import java.util.Iterator;
 
-import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
@@ -26,7 +25,9 @@ import org.eclipse.jpt.utility.CommandExecutorProvider;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface JpaCompilationUnit extends JavaResourceNode {
+public interface JpaCompilationUnit
+	extends JavaResourceNode
+{
 
 	ICompilationUnit getCompilationUnit();
 
@@ -52,10 +53,10 @@ public interface JpaCompilationUnit extends JavaResourceNode {
 	void resolveTypes();
 
 	/**
-	 * JDT has fired an event indicating a Java element has changed.
-	 * If it is related to the compilation unit, update it with the changed
-	 * Java source code.
+	 * Something in Java has changed (typically either the compilation unit's
+	 * source code or the Java classpath); update the compilation unit's state
+	 * to be in synch with the source code etc.
 	 */
-	void javaElementChanged(ElementChangedEvent event);
+	void update();
 
 }

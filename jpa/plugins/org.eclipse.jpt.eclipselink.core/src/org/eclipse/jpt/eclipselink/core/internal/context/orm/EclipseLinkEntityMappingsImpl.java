@@ -10,7 +10,7 @@
 package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
 import java.util.List;
-import org.eclipse.jpt.core.context.orm.OrmStructureNodes;
+import org.eclipse.jpt.core.context.orm.OrmStructureNode;
 import org.eclipse.jpt.core.internal.context.orm.GenericEntityMappings;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntityMappings;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -35,13 +35,6 @@ public class EclipseLinkEntityMappingsImpl
 	public EclipseLinkOrmXml getParent() {
 		return (EclipseLinkOrmXml) super.getParent();
 	}	
-	
-	// **************** JpaStructureNode impl **********************************
-	
-	@Override
-	public String getId() {
-		return OrmStructureNodes.ENTITY_MAPPINGS_ID;
-	}
 	
 	
 	// **************** EclipseLinkEntityMappings impl **********************************

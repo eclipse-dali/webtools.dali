@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core;
 
-import java.util.EventListener;
+import org.eclipse.core.runtime.content.IContentType;
 
 /**
  * The listener is notified whenever anything in the JPA resource model changes.
@@ -20,8 +20,23 @@ import java.util.EventListener;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface ResourceModelListener
-	extends EventListener
-{
-	void resourceModelChanged();
+public interface JpaResourceModel {
+
+	/**
+	 * Return the resource model's content type.
+	 */
+	IContentType getContentType();
+
+	/**
+	 * Changes to the resource model result in events.
+	 * In particular, the JPA project performs an "update" whenever a resource
+	 * model changes.
+	 */
+	void addResourceModelListener(JpaResourceModelListener listener);
+
+	/**
+	 * @see #addResourceModelListener(ResourceModelListener)
+	 */
+	void removeResourceModelListener(JpaResourceModelListener listener);
+
 }
