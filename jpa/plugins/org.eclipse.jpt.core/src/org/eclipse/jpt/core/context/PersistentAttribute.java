@@ -21,10 +21,11 @@ import org.eclipse.jpt.core.JpaStructureNode;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface PersistentAttribute extends JpaContextNode, JpaStructureNode
+public interface PersistentAttribute
+	extends JpaContextNode, JpaStructureNode
 {
 	String getName();
-		String NAME_PROPERTY = "nameProperty";
+		String NAME_PROPERTY = "name"; //$NON-NLS-1$
 
 	/**
 	 * Return the key for the attribute's mapping.
@@ -55,8 +56,8 @@ public interface PersistentAttribute extends JpaContextNode, JpaStructureNode
 	 * cleared and the attribute's mapping to be its "default" mapping.
 	 */
 	void setSpecifiedMappingKey(String key);
-		String SPECIFIED_MAPPING_PROPERTY = "specifiedMappingProperty";
-		String DEFAULT_MAPPING_PROPERTY = "defaultMappingProperty";
+		String SPECIFIED_MAPPING_PROPERTY = "specifiedMapping"; //$NON-NLS-1$
+		String DEFAULT_MAPPING_PROPERTY = "defaultMapping"; //$NON-NLS-1$
 	
 	TypeMapping getTypeMapping();
 

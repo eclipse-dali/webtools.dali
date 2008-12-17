@@ -109,7 +109,7 @@ public interface TextRange {
 		}
 		@Override
 		public String toString() {
-			return "TextRange.Empty";
+			return "TextRange.Empty"; //$NON-NLS-1$
 		}
 	}
 

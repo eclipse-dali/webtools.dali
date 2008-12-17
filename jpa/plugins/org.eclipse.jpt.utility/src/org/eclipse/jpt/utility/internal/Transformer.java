@@ -41,7 +41,7 @@ public interface Transformer<T1, T2> {
 		}
 		@Override
 		public String toString() {
-			return "Transformer.Null";
+			return "Transformer.Null"; //$NON-NLS-1$
 		}
 	}
 
@@ -62,7 +62,7 @@ public interface Transformer<T1, T2> {
 		}
 		@Override
 		public String toString() {
-			return "Transformer.Disabled";
+			return "Transformer.Disabled"; //$NON-NLS-1$
 		}
 	}
 

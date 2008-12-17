@@ -62,7 +62,7 @@ public abstract class AbstractTextRange
 	public String toString() {
 		String start = String.valueOf(this.getOffset());
 		String end = String.valueOf(this.end());
-		return StringTools.buildToStringFor(this, start + ", " + end);
+		return StringTools.buildToStringFor(this, start + ", " + end); //$NON-NLS-1$
 	}
 
 }

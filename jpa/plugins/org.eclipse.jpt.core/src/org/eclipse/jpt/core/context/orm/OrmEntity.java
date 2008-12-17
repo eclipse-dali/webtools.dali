@@ -30,7 +30,7 @@ public interface OrmEntity
 	 * This will not be null.
 	 */
 	ListIterator<OrmSecondaryTable> virtualSecondaryTables();
-		String VIRTUAL_SECONDARY_TABLES_LIST = "virtualSecondaryTablesList";
+		String VIRTUAL_SECONDARY_TABLES_LIST = "virtualSecondaryTables"; //$NON-NLS-1$
 	
 	/**
 	 * Return the number of virtual secondary tables.
@@ -91,7 +91,7 @@ public interface OrmEntity
 	ListIterator<OrmPrimaryKeyJoinColumn> primaryKeyJoinColumns();
 	OrmPrimaryKeyJoinColumn getDefaultPrimaryKeyJoinColumn();
 	ListIterator<OrmPrimaryKeyJoinColumn> defaultPrimaryKeyJoinColumns();
-		String DEFAULT_PRIMARY_KEY_JOIN_COLUMNS_LIST = "defaultPrimaryKeyJoinColumnsList";
+		String DEFAULT_PRIMARY_KEY_JOIN_COLUMNS_LIST = "defaultPrimaryKeyJoinColumns"; //$NON-NLS-1$
 	@SuppressWarnings("unchecked")
 	ListIterator<OrmPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumns();
 	OrmPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn(int index);
