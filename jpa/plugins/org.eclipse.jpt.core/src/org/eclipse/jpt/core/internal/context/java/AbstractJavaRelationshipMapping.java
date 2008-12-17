@@ -174,14 +174,10 @@ public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMapp
 	protected abstract String buildDefaultTargetEntity(JavaResourcePersistentAttribute jrpa);
 	
 	protected Entity buildResolvedTargetEntity(T relationshipMappingAnnotation) {
-		String qualifiedTargetEntity = getDefaultTargetEntity();
-		if (getSpecifiedTargetEntity() != null) {
-			qualifiedTargetEntity = relationshipMappingAnnotation.getFullyQualifiedTargetEntity();
-		}
-		if (qualifiedTargetEntity == null) {
-			return null;
-		}
-		return getPersistenceUnit().getEntity(qualifiedTargetEntity);
+		String targetEntityName = (this.specifiedTargetEntity == null) ?
+						this.defaultTargetEntity :
+						relationshipMappingAnnotation.getFullyQualifiedTargetEntity();
+		return (targetEntityName == null) ? null : this.getPersistenceUnit().getEntity(targetEntityName);
 	}
 
 

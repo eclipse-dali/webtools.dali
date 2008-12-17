@@ -23,7 +23,8 @@ import org.eclipse.jpt.core.utility.TextRange;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface OrmGeneratedValue extends GeneratedValue, XmlContextNode
+public interface OrmGeneratedValue
+	extends GeneratedValue, XmlContextNode
 {
 	/**
 	 * Return the (best guess) text location of the generator.
@@ -35,4 +36,5 @@ public interface OrmGeneratedValue extends GeneratedValue, XmlContextNode
 	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
 	 */
 	void update(XmlGeneratedValue generatedValue);
+
 }

@@ -23,7 +23,8 @@ import org.eclipse.jpt.core.resource.orm.XmlEmbeddable;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface OrmEmbeddable extends Embeddable, OrmTypeMapping
+public interface OrmEmbeddable
+	extends Embeddable, OrmTypeMapping
 {
 	/**
 	 * Return the Java Embeddable this ORM Embeddable corresponds to.  
@@ -42,4 +43,5 @@ public interface OrmEmbeddable extends Embeddable, OrmTypeMapping
 	Iterator<OrmPersistentAttribute> overridableAttributes();
 
 	Iterator<OrmPersistentAttribute> overridableAssociations();
+
 }

@@ -568,7 +568,7 @@ public class GenericJavaJoinTable
 	/**
 	 * just a little common behavior
 	 */
-	abstract class AbstractJoinColumnOwner implements JavaJoinColumn.Owner
+	protected abstract class AbstractJoinColumnOwner implements JavaJoinColumn.Owner
 	{
 		AbstractJoinColumnOwner() {
 			super();
@@ -622,7 +622,7 @@ public class GenericJavaJoinTable
 	 * owner for "forward-pointer" JoinColumns;
 	 * these point at the target/inverse entity
 	 */
-	class InverseJoinColumnOwner extends AbstractJoinColumnOwner
+	protected class InverseJoinColumnOwner extends AbstractJoinColumnOwner
 	{
 		public InverseJoinColumnOwner() {
 			super();
@@ -670,7 +670,7 @@ public class GenericJavaJoinTable
 	 * owner for "back-pointer" JoinColumns;
 	 * these point at the source/owning entity
 	 */
-	class JoinColumnOwner extends AbstractJoinColumnOwner
+	protected class JoinColumnOwner extends AbstractJoinColumnOwner
 	{
 		public JoinColumnOwner() {
 			super();

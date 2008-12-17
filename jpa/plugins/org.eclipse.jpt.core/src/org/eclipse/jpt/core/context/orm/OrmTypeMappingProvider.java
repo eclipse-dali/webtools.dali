@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.context.orm;
 import org.eclipse.jpt.core.JpaFactory;
 
 /**
- * 
+ * Part of mechanism to extend the types of ORM type mappings.
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -20,10 +20,10 @@ import org.eclipse.jpt.core.JpaFactory;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface OrmTypeMappingProvider
-{
+public interface OrmTypeMappingProvider {
+
 	String getKey();
-	
+
 	OrmTypeMapping buildMapping(OrmPersistentType parent, JpaFactory factory);
-	
+
 }

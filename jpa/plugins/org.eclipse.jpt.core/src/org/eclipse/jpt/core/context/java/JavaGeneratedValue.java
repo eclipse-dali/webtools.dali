@@ -23,7 +23,8 @@ import org.eclipse.jpt.core.utility.TextRange;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface JavaGeneratedValue extends GeneratedValue, JavaJpaContextNode
+public interface JavaGeneratedValue
+	extends GeneratedValue, JavaJpaContextNode
 {
 
 	/**
@@ -31,12 +32,12 @@ public interface JavaGeneratedValue extends GeneratedValue, JavaJpaContextNode
 	 */
 	TextRange getGeneratorTextRange(CompilationUnit astRoot);
 	
-	void initialize(GeneratedValueAnnotation resourceGeneratedValue);
+	void initialize(GeneratedValueAnnotation generatedValueAnnotation);
 	
 	/**
 	 * Update the JavaGeneratedValue context model object to match the GeneratedValueAnnotation 
 	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
 	 */
-	void update(GeneratedValueAnnotation resourceGeneratedValue);
+	void update(GeneratedValueAnnotation generatedValueAnnotation);
 
 }

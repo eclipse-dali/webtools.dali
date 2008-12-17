@@ -23,7 +23,8 @@ import org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface OrmMappedSuperclass extends MappedSuperclass, OrmTypeMapping
+public interface OrmMappedSuperclass
+	extends MappedSuperclass, OrmTypeMapping
 {
 	/**
 	 * Return the Java Mapped Superclass this ORM MappedSuperclass corresponds to.  
@@ -42,4 +43,5 @@ public interface OrmMappedSuperclass extends MappedSuperclass, OrmTypeMapping
 	Iterator<OrmPersistentAttribute> overridableAttributes();
 
 	Iterator<OrmPersistentAttribute> overridableAssociations();
+
 }

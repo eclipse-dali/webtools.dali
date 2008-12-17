@@ -14,7 +14,7 @@ import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 
 /**
- * 
+ * Part of mechanism to extend the types of ORM attribute mappings.
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching

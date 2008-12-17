@@ -24,17 +24,17 @@ public interface GeneratedValue
 
 	GenerationType getStrategy();
 	GenerationType getDefaultStrategy();
-	GenerationType getSpecifiedStrategy();
-	void setSpecifiedStrategy(GenerationType value);
-		String SPECIFIED_STRATEGY_PROPERTY = "specifiedStrategy"; //$NON-NLS-1$
 		String DEFAULT_STRATEGY_PROPERTY = "defaultStrategy"; //$NON-NLS-1$
+		GenerationType DEFAULT_STRATEGY = GenerationType.AUTO;
+	GenerationType getSpecifiedStrategy();
+	void setSpecifiedStrategy(GenerationType strategy);
+		String SPECIFIED_STRATEGY_PROPERTY = "specifiedStrategy"; //$NON-NLS-1$
 	
 	String getGenerator();
 	String getDefaultGenerator();
-		GenerationType DEFAULT_STRATEGY = GenerationType.AUTO;
-	String getSpecifiedGenerator();
-	void setSpecifiedGenerator(String value);
-		String SPECIFIED_GENERATOR_PROPERTY = "specifiedGenerator"; //$NON-NLS-1$
 		String DEFAULT_GENERATOR_PROPERTY = "defaultGenerator"; //$NON-NLS-1$
+	String getSpecifiedGenerator();
+	void setSpecifiedGenerator(String generator);
+		String SPECIFIED_GENERATOR_PROPERTY = "specifiedGenerator"; //$NON-NLS-1$
 
 }

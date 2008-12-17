@@ -60,9 +60,6 @@ public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribu
 		super(parent, widgetFactory);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected void addPropertyNames(Collection<String> propertyNames) {
 		super.addPropertyNames(propertyNames);
@@ -292,9 +289,6 @@ public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribu
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected boolean repopulateWithNullSubject() {
 		return false;
