@@ -22,7 +22,7 @@ import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.core.utility.jdt.FieldAttribute;
 import org.eclipse.jpt.core.utility.jdt.Type;
-import org.eclipse.jpt.utility.CommandExecutorProvider;
+import org.eclipse.jpt.utility.CommandExecutor;
 
 /**
  * Adapt and extend a JDT field.
@@ -41,8 +41,8 @@ public class JDTFieldAttribute
 			String name,
 			int occurrence,
 			ICompilationUnit compilationUnit,
-			CommandExecutorProvider modifySharedDocumentCommandExecutorProvider) {
-		this(declaringType, name, occurrence, compilationUnit, modifySharedDocumentCommandExecutorProvider, DefaultAnnotationEditFormatter.instance());
+			CommandExecutor modifySharedDocumentCommandExecutor) {
+		this(declaringType, name, occurrence, compilationUnit, modifySharedDocumentCommandExecutor, DefaultAnnotationEditFormatter.instance());
 	}
 	
 	public JDTFieldAttribute(
@@ -50,16 +50,16 @@ public class JDTFieldAttribute
 			String name,
 			int occurrence,
 			ICompilationUnit compilationUnit,
-			CommandExecutorProvider modifySharedDocumentCommandExecutorProvider,
+			CommandExecutor modifySharedDocumentCommandExecutor,
 			AnnotationEditFormatter annotationEditFormatter) {
-		super(declaringType, name, occurrence, compilationUnit, modifySharedDocumentCommandExecutorProvider, annotationEditFormatter);
+		super(declaringType, name, occurrence, compilationUnit, modifySharedDocumentCommandExecutor, annotationEditFormatter);
 	}
 
 	/**
 	 * constructor for testing
 	 */
 	public JDTFieldAttribute(Type declaringType, String name, int occurrence, ICompilationUnit compilationUnit) {
-		this(declaringType, name, occurrence, compilationUnit, CommandExecutorProvider.Default.instance(), DefaultAnnotationEditFormatter.instance());
+		this(declaringType, name, occurrence, compilationUnit, CommandExecutor.Default.instance(), DefaultAnnotationEditFormatter.instance());
 	}
 
 

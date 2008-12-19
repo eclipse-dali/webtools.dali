@@ -23,7 +23,7 @@ import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.core.utility.jdt.MethodAttribute;
 import org.eclipse.jpt.core.utility.jdt.Type;
-import org.eclipse.jpt.utility.CommandExecutorProvider;
+import org.eclipse.jpt.utility.CommandExecutor;
 import org.eclipse.jpt.utility.JavaType;
 import org.eclipse.jpt.utility.MethodSignature;
 import org.eclipse.jpt.utility.internal.SimpleMethodSignature;
@@ -53,8 +53,8 @@ public class JDTMethodAttribute
 			MethodSignature signature,
 			int occurrence,
 			ICompilationUnit compilationUnit,
-			CommandExecutorProvider modifySharedDocumentCommandExecutorProvider) {
-		return newInstance(declaringType, signature, occurrence, compilationUnit, modifySharedDocumentCommandExecutorProvider, DefaultAnnotationEditFormatter.instance());
+			CommandExecutor modifySharedDocumentCommandExecutor) {
+		return newInstance(declaringType, signature, occurrence, compilationUnit, modifySharedDocumentCommandExecutor, DefaultAnnotationEditFormatter.instance());
 	}
 
 	public static JDTMethodAttribute newInstance(
@@ -62,9 +62,9 @@ public class JDTMethodAttribute
 			MethodSignature signature,
 			int occurrence,
 			ICompilationUnit compilationUnit,
-			CommandExecutorProvider modifySharedDocumentCommandExecutorProvider,
+			CommandExecutor modifySharedDocumentCommandExecutor,
 			AnnotationEditFormatter annotationEditFormatter) {
-		return new JDTMethodAttribute(declaringType, signature, occurrence, compilationUnit, modifySharedDocumentCommandExecutorProvider, annotationEditFormatter);
+		return new JDTMethodAttribute(declaringType, signature, occurrence, compilationUnit, modifySharedDocumentCommandExecutor, annotationEditFormatter);
 	}
 
 	public JDTMethodAttribute(
@@ -72,8 +72,8 @@ public class JDTMethodAttribute
 			MethodSignature methodSignature,
 			int occurrence,
 			ICompilationUnit compilationUnit,
-			CommandExecutorProvider modifySharedDocumentCommandExecutorProvider) {
-		this(declaringType, methodSignature, occurrence, compilationUnit, modifySharedDocumentCommandExecutorProvider, DefaultAnnotationEditFormatter.instance());
+			CommandExecutor modifySharedDocumentCommandExecutor) {
+		this(declaringType, methodSignature, occurrence, compilationUnit, modifySharedDocumentCommandExecutor, DefaultAnnotationEditFormatter.instance());
 	}
 
 	public JDTMethodAttribute(
@@ -81,9 +81,9 @@ public class JDTMethodAttribute
 			MethodSignature methodSignature,
 			int occurrence,
 			ICompilationUnit compilationUnit,
-			CommandExecutorProvider modifySharedDocumentCommandExecutorProvider,
+			CommandExecutor modifySharedDocumentCommandExecutor,
 			AnnotationEditFormatter annotationEditFormatter) {
-		super(declaringType, methodSignature.getName(), occurrence, compilationUnit, modifySharedDocumentCommandExecutorProvider, annotationEditFormatter);
+		super(declaringType, methodSignature.getName(), occurrence, compilationUnit, modifySharedDocumentCommandExecutor, annotationEditFormatter);
 		this.parameterTypes = methodSignature.getParameterTypes();
 	}
 
@@ -91,7 +91,7 @@ public class JDTMethodAttribute
 	 * constructor for testing
 	 */
 	public JDTMethodAttribute(Type declaringType, String name, String[] parameterTypeNames, int occurrence, ICompilationUnit compilationUnit) {
-		this(declaringType, new SimpleMethodSignature(name, parameterTypeNames), occurrence, compilationUnit, CommandExecutorProvider.Default.instance(), DefaultAnnotationEditFormatter.instance());
+		this(declaringType, new SimpleMethodSignature(name, parameterTypeNames), occurrence, compilationUnit, CommandExecutor.Default.instance(), DefaultAnnotationEditFormatter.instance());
 	}
 
 

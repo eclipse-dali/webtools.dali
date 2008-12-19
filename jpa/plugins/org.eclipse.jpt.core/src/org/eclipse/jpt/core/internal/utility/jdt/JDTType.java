@@ -19,7 +19,7 @@ import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.core.utility.jdt.Type;
-import org.eclipse.jpt.utility.CommandExecutorProvider;
+import org.eclipse.jpt.utility.CommandExecutor;
 
 /**
  * Adapt and extend a JDT type.
@@ -35,8 +35,8 @@ public class JDTType
 	public JDTType(
 			TypeDeclaration typeDeclaration,  // exclude annotations and enums
 			ICompilationUnit compilationUnit,
-			CommandExecutorProvider modifySharedDocumentCommandExecutorProvider) {
-		this(typeDeclaration, compilationUnit, modifySharedDocumentCommandExecutorProvider, DefaultAnnotationEditFormatter.instance());
+			CommandExecutor modifySharedDocumentCommandExecutor) {
+		this(typeDeclaration, compilationUnit, modifySharedDocumentCommandExecutor, DefaultAnnotationEditFormatter.instance());
 	}
 
 	/**
@@ -45,9 +45,9 @@ public class JDTType
 	public JDTType(
 			TypeDeclaration typeDeclaration,  // exclude annotations and enums
 			ICompilationUnit compilationUnit,
-			CommandExecutorProvider modifySharedDocumentCommandExecutorProvider,
+			CommandExecutor modifySharedDocumentCommandExecutor,
 			AnnotationEditFormatter annotationEditFormatter) {
-		this(null, typeDeclaration, 1, compilationUnit, modifySharedDocumentCommandExecutorProvider, annotationEditFormatter);
+		this(null, typeDeclaration, 1, compilationUnit, modifySharedDocumentCommandExecutor, annotationEditFormatter);
 	}
 
 	/**
@@ -58,8 +58,8 @@ public class JDTType
 			TypeDeclaration typeDeclaration,  // exclude annotations and enums
 			int occurrence,
 			ICompilationUnit compilationUnit,
-			CommandExecutorProvider modifySharedDocumentCommandExecutorProvider) {
-		this(declaringType, typeDeclaration, occurrence, compilationUnit, modifySharedDocumentCommandExecutorProvider, DefaultAnnotationEditFormatter.instance());
+			CommandExecutor modifySharedDocumentCommandExecutor) {
+		this(declaringType, typeDeclaration, occurrence, compilationUnit, modifySharedDocumentCommandExecutor, DefaultAnnotationEditFormatter.instance());
 	}
 
 	/**
@@ -70,16 +70,16 @@ public class JDTType
 			TypeDeclaration typeDeclaration,  // exclude annotations and enums
 			int occurrence,
 			ICompilationUnit compilationUnit,
-			CommandExecutorProvider modifySharedDocumentCommandExecutorProvider,
+			CommandExecutor modifySharedDocumentCommandExecutor,
 			AnnotationEditFormatter annotationEditFormatter) {
-		super(declaringType, typeDeclaration.getName().getFullyQualifiedName(), occurrence, compilationUnit, modifySharedDocumentCommandExecutorProvider, annotationEditFormatter);
+		super(declaringType, typeDeclaration.getName().getFullyQualifiedName(), occurrence, compilationUnit, modifySharedDocumentCommandExecutor, annotationEditFormatter);
 	}
 
 	/**
 	 * constructor for testing
 	 */
 	public JDTType(Type declaringType, String name, int occurrence, ICompilationUnit compilationUnit) {
-		super(declaringType, name, occurrence, compilationUnit, CommandExecutorProvider.Default.instance(), DefaultAnnotationEditFormatter.instance());
+		super(declaringType, name, occurrence, compilationUnit, CommandExecutor.Default.instance(), DefaultAnnotationEditFormatter.instance());
 	}
 
 

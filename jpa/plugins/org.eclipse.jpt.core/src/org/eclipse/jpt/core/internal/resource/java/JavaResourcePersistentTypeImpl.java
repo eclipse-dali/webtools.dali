@@ -74,7 +74,7 @@ public class JavaResourcePersistentTypeImpl
 		Type type = new JDTType(
 				typeDeclaration,
 				jpaCompilationUnit.getCompilationUnit(),
-				jpaCompilationUnit.getModifySharedDocumentCommandExecutorProvider(),
+				jpaCompilationUnit.getModifySharedDocumentCommandExecutor(),
 				jpaCompilationUnit.getAnnotationEditFormatter());
 		JavaResourcePersistentType jrpt = new JavaResourcePersistentTypeImpl(jpaCompilationUnit, type);
 		jrpt.initialize(astRoot);
@@ -95,7 +95,7 @@ public class JavaResourcePersistentTypeImpl
 				typeDeclaration,
 				occurrence,
 				jpaCompilationUnit.getCompilationUnit(),
-				jpaCompilationUnit.getModifySharedDocumentCommandExecutorProvider(),
+				jpaCompilationUnit.getModifySharedDocumentCommandExecutor(),
 				jpaCompilationUnit.getAnnotationEditFormatter());
 		JavaResourcePersistentType jrpt = new JavaResourcePersistentTypeImpl(jpaCompilationUnit, type);
 		jrpt.initialize(astRoot);

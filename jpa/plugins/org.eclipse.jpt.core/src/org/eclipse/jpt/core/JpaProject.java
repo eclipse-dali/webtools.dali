@@ -26,7 +26,6 @@ import org.eclipse.jpt.db.ConnectionProfile;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.SchemaContainer;
 import org.eclipse.jpt.utility.CommandExecutor;
-import org.eclipse.jpt.utility.CommandExecutorProvider;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 /**
@@ -358,10 +357,9 @@ public interface JpaProject
 	void setThreadLocalModifySharedDocumentCommandExecutor(CommandExecutor commandExecutor);
 
 	/**
-	 * Return the project-wide implementation of the CommandExecutorProvider
-	 * interface.
+	 * Return the project-wide implementation of the CommandExecutor interface.
 	 */
-	CommandExecutorProvider getModifySharedDocumentCommandExecutorProvider();
+	CommandExecutor getModifySharedDocumentCommandExecutor();
 
 
 	// ********** construction config **********

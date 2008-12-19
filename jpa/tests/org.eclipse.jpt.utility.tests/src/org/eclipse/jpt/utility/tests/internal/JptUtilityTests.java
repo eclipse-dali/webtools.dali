@@ -32,9 +32,12 @@ public class JptUtilityTests {
 		suite.addTestSuite(ClasspathTests.class);
 		suite.addTestSuite(ClassToolsTests.class);
 		suite.addTestSuite(CollectionToolsTests.class);
+		suite.addTestSuite(CommandExecutorTests.class);
+		suite.addTestSuite(CommandTests.class);
 		suite.addTestSuite(CounterTests.class);
 		suite.addTestSuite(EmptyIterableTests.class);
 		suite.addTestSuite(FileToolsTests.class);
+		suite.addTestSuite(FilterTests.class);
 		suite.addTestSuite(HashBagTests.class);
 		suite.addTestSuite(IdentityHashBagTests.class);
 		suite.addTestSuite(IndentingPrintWriterTests.class);

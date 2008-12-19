@@ -23,7 +23,7 @@ import org.eclipse.jpt.core.internal.utility.jdt.NullAnnotationEditFormatter;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.java.JpaCompilationUnit;
 import org.eclipse.jpt.core.tests.internal.utility.jdt.AnnotationTestCase;
-import org.eclipse.jpt.utility.CommandExecutorProvider;
+import org.eclipse.jpt.utility.CommandExecutor;
 import org.eclipse.jpt.utility.internal.BitTools;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.StringTools;
@@ -148,7 +148,7 @@ public class JavaResourceModelTestCase extends AnnotationTestCase
 		return new JpaCompilationUnitImpl(
 			cu,
 			this.buildAnnotationProvider(),
-			CommandExecutorProvider.Default.instance(),
+			CommandExecutor.Default.instance(),
 			NullAnnotationEditFormatter.instance(),
 			this.buildResourceModelListener()
 		);

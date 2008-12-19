@@ -10,8 +10,10 @@
 package org.eclipse.jpt.utility;
 
 /**
- * This interface allows clients to control how a command is executed
- * (e.g. dispatching the command to the UI thread).
+ * This interface allows clients to control how a command is executed.
+ * This is useful when the server provides the command but the client provides
+ * the context (e.g. the client would like to dispatch the command to the UI
+ * thread).
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -28,7 +30,7 @@ public interface CommandExecutor {
 
 
 	/**
-	 * Straightforward implementation of the command executor interface
+	 * Singleton implementation of the command executor interface
 	 * that simply executes the command without any sort of enhancement.
 	 */
 	final class Default implements CommandExecutor {
@@ -45,7 +47,7 @@ public interface CommandExecutor {
 		}
 		@Override
 		public String toString() {
-			return "CommandExecutor.Default";
+			return "CommandExecutor.Default"; //$NON-NLS-1$
 		}
 	}
 

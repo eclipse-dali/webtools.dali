@@ -10,7 +10,8 @@
 package org.eclipse.jpt.utility;
 
 /**
- * Simple interface for implementing the GOF Command design pattern.
+ * Simple interface for implementing the GOF Command design pattern,
+ * and it doesn't carry the baggage of java.lang.Runnable.
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -26,6 +27,10 @@ public interface Command {
 	 */
 	void execute();
 
+	/**
+	 * Singleton implementation of the command interface that will do nothing
+	 * when executed.
+	 */
 	final class Null implements Command {
 		public static final Command INSTANCE = new Null();
 		public static Command instance() {
@@ -40,10 +45,14 @@ public interface Command {
 		}
 		@Override
 		public String toString() {
-			return "Command.Null";
+			return "Command.Null"; //$NON-NLS-1$
 		}
 	}
 
+	/**
+	 * Singleton implementation of the command interface that will throw an
+	 * exception when executed.
+	 */
 	final class Disabled implements Command {
 		public static final Command INSTANCE = new Disabled();
 		public static Command instance() {
@@ -59,7 +68,7 @@ public interface Command {
 		}
 		@Override
 		public String toString() {
-			return "Command.Disabled";
+			return "Command.Disabled"; //$NON-NLS-1$
 		}
 	}
 

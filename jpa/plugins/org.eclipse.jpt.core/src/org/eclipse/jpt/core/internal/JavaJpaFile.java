@@ -38,7 +38,7 @@ public class JavaJpaFile
 		return new JpaCompilationUnitImpl(
 					JavaCore.createCompilationUnitFrom(this.file),
 					this.getJpaPlatform().getAnnotationProvider(),
-					this.getJpaProject().getModifySharedDocumentCommandExecutorProvider(),
+					this.getJpaProject().getModifySharedDocumentCommandExecutor(),
 					DefaultAnnotationEditFormatter.instance(),
 					this.getResourceModelListener()
 				);

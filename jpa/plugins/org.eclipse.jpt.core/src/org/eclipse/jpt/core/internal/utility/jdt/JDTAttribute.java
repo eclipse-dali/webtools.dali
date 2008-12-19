@@ -15,7 +15,7 @@ import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.core.utility.jdt.Attribute;
 import org.eclipse.jpt.core.utility.jdt.Type;
-import org.eclipse.jpt.utility.CommandExecutorProvider;
+import org.eclipse.jpt.utility.CommandExecutor;
 
 /**
  * Combine behavior common to JDTFieldAttribute and JDTMethodAttribute.
@@ -33,8 +33,8 @@ public abstract class JDTAttribute
 			String name,
 			int occurrence,
 			ICompilationUnit compilationUnit,
-			CommandExecutorProvider modifySharedDocumentCommandExecutorProvider) {
-		super(declaringType, name, occurrence, compilationUnit, modifySharedDocumentCommandExecutorProvider);
+			CommandExecutor modifySharedDocumentCommandExecutor) {
+		super(declaringType, name, occurrence, compilationUnit, modifySharedDocumentCommandExecutor);
 	}
 
 	protected JDTAttribute(
@@ -42,9 +42,9 @@ public abstract class JDTAttribute
 			String name,
 			int occurrence,
 			ICompilationUnit compilationUnit,
-			CommandExecutorProvider modifySharedDocumentCommandExecutorProvider,
+			CommandExecutor modifySharedDocumentCommandExecutor,
 			AnnotationEditFormatter annotationEditFormatter) {
-		super(declaringType, name, occurrence, compilationUnit, modifySharedDocumentCommandExecutorProvider, annotationEditFormatter);
+		super(declaringType, name, occurrence, compilationUnit, modifySharedDocumentCommandExecutor, annotationEditFormatter);
 	}
 
 

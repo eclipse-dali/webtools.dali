@@ -11,6 +11,7 @@ package org.eclipse.jpt.ui.internal;
 
 import org.eclipse.jpt.utility.Command;
 import org.eclipse.jpt.utility.CommandExecutor;
+import org.eclipse.jpt.utility.internal.CommandRunnable;
 import org.eclipse.swt.widgets.Display;
 
 /**
@@ -36,12 +37,8 @@ public final class SynchronousUiCommandExecutor
 		this.display().syncExec(this.buildRunnable(command));
 	}
 
-	private Runnable buildRunnable(final Command command) {
-		return new Runnable() {
-			public void run() {
-				command.execute();
-			}
-		};
+	private Runnable buildRunnable(Command command) {
+		return new CommandRunnable(command);
 	}
 
 	private Display display() {

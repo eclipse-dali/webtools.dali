@@ -26,7 +26,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.java.JpaCompilationUnit;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
-import org.eclipse.jpt.utility.CommandExecutorProvider;
+import org.eclipse.jpt.utility.CommandExecutor;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
 /**
@@ -40,7 +40,7 @@ public class JpaCompilationUnitImpl
 
 	private final JpaAnnotationProvider annotationProvider;
 
-	private final CommandExecutorProvider modifySharedDocumentCommandExecutorProvider;
+	private final CommandExecutor modifySharedDocumentCommandExecutor;
 
 	private final AnnotationEditFormatter annotationEditFormatter;
 
@@ -61,13 +61,13 @@ public class JpaCompilationUnitImpl
 	public JpaCompilationUnitImpl(
 			ICompilationUnit compilationUnit,
 			JpaAnnotationProvider annotationProvider, 
-			CommandExecutorProvider modifySharedDocumentCommandExecutorProvider,
+			CommandExecutor modifySharedDocumentCommandExecutor,
 			AnnotationEditFormatter annotationEditFormatter,
 			JpaResourceModelListener resourceModelListener) {
 		super(null);  // the JPA compilation unit is the root of its sub-tree
 		this.compilationUnit = compilationUnit;
 		this.annotationProvider = annotationProvider;
-		this.modifySharedDocumentCommandExecutorProvider = modifySharedDocumentCommandExecutorProvider;
+		this.modifySharedDocumentCommandExecutor = modifySharedDocumentCommandExecutor;
 		this.annotationEditFormatter = annotationEditFormatter;
 		this.resourceModelListener = resourceModelListener;
 		this.persistentType = this.buildPersistentType();
@@ -171,8 +171,8 @@ public class JpaCompilationUnitImpl
 		}
 	}
 
-	public CommandExecutorProvider getModifySharedDocumentCommandExecutorProvider() {
-		return this.modifySharedDocumentCommandExecutorProvider;
+	public CommandExecutor getModifySharedDocumentCommandExecutor() {
+		return this.modifySharedDocumentCommandExecutor;
 	}
 	
 	public AnnotationEditFormatter getAnnotationEditFormatter()  {

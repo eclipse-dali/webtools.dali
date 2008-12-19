@@ -57,10 +57,11 @@ import org.eclipse.jpt.db.ConnectionProfile;
 import org.eclipse.jpt.db.Database;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.SchemaContainer;
+import org.eclipse.jpt.utility.Command;
 import org.eclipse.jpt.utility.CommandExecutor;
-import org.eclipse.jpt.utility.CommandExecutorProvider;
 import org.eclipse.jpt.utility.internal.BitTools;
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.ThreadLocalCommandExecutor;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
@@ -146,8 +147,7 @@ public class GenericJpaProject
 	/**
 	 * Support for modifying documents shared with the UI.
 	 */
-	protected final ThreadLocal<CommandExecutor> threadLocalModifySharedDocumentCommandExecutor;
-	protected final CommandExecutorProvider modifySharedDocumentCommandExecutorProvider;
+	protected final ThreadLocalCommandExecutor modifySharedDocumentCommandExecutor;
 
 
 	// ********** constructor/initialization **********
@@ -165,8 +165,7 @@ public class GenericJpaProject
 		this.discoversAnnotatedClasses = config.discoverAnnotatedClasses();
 		this.jpaFiles = this.buildEmptyJpaFiles();
 
-		this.threadLocalModifySharedDocumentCommandExecutor = this.buildThreadLocalModifySharedDocumentCommandExecutor();
-		this.modifySharedDocumentCommandExecutorProvider = this.buildModifySharedDocumentCommandExecutorProvider();
+		this.modifySharedDocumentCommandExecutor = this.buildModifySharedDocumentCommandExecutor();
 
 		this.resourceModelListener = this.buildResourceModelListener();
 		// build the JPA files corresponding to the Eclipse project's files
@@ -192,12 +191,8 @@ public class GenericJpaProject
 		return new Vector<JpaFile>();
 	}
 
-	protected ThreadLocal<CommandExecutor> buildThreadLocalModifySharedDocumentCommandExecutor() {
-		return new ThreadLocal<CommandExecutor>();
-	}
-
-	protected CommandExecutorProvider buildModifySharedDocumentCommandExecutorProvider() {
-		return new ModifySharedDocumentCommandExecutorProvider();
+	protected ThreadLocalCommandExecutor buildModifySharedDocumentCommandExecutor() {
+		return new ThreadLocalCommandExecutor();
 	}
 
 	protected JpaResourceModelListener buildResourceModelListener() {
@@ -835,31 +830,12 @@ public class GenericJpaProject
 
 	// ********** support for modifying documents shared with the UI **********
 
-	/**
-	 * If there is no thread-specific command executor, use the default
-	 * implementation, which simply executes the command directly.
-	 */
-	protected CommandExecutor getThreadLocalModifySharedDocumentCommandExecutor() {
-		CommandExecutor ce = this.threadLocalModifySharedDocumentCommandExecutor.get();
-		return (ce != null) ? ce : CommandExecutor.Default.instance();
-	}
-
 	public void setThreadLocalModifySharedDocumentCommandExecutor(CommandExecutor commandExecutor) {
-		this.threadLocalModifySharedDocumentCommandExecutor.set(commandExecutor);
+		this.modifySharedDocumentCommandExecutor.setThreadLocalCommandExecutor(commandExecutor);
 	}
 
-	public CommandExecutorProvider getModifySharedDocumentCommandExecutorProvider() {
-		return this.modifySharedDocumentCommandExecutorProvider;
-	}
-
-	// ***** inner class
-	protected class ModifySharedDocumentCommandExecutorProvider implements CommandExecutorProvider {
-		protected ModifySharedDocumentCommandExecutorProvider() {
-			super();
-		}
-		public CommandExecutor getCommandExecutor() {
-			return GenericJpaProject.this.getThreadLocalModifySharedDocumentCommandExecutor();
-		}
+	public CommandExecutor getModifySharedDocumentCommandExecutor() {
+		return this.modifySharedDocumentCommandExecutor;
 	}
 
 

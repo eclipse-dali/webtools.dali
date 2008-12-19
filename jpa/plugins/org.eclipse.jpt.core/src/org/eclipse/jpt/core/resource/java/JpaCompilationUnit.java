@@ -14,7 +14,7 @@ import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
-import org.eclipse.jpt.utility.CommandExecutorProvider;
+import org.eclipse.jpt.utility.CommandExecutor;
 
 /**
  * 
@@ -35,7 +35,7 @@ public interface JpaCompilationUnit
 
 	JpaAnnotationProvider getAnnotationProvider();
 
-	CommandExecutorProvider getModifySharedDocumentCommandExecutorProvider();
+	CommandExecutor getModifySharedDocumentCommandExecutor();
 	
 	AnnotationEditFormatter getAnnotationEditFormatter();
 

@@ -70,7 +70,7 @@ public class JavaResourcePersistentAttributeImpl
 				name,
 				occurrence,
 				jpaCompilationUnit.getCompilationUnit(),
-				jpaCompilationUnit.getModifySharedDocumentCommandExecutorProvider(),
+				jpaCompilationUnit.getModifySharedDocumentCommandExecutor(),
 				jpaCompilationUnit.getAnnotationEditFormatter());
 		JavaResourcePersistentAttribute field = new JavaResourcePersistentAttributeImpl(parent, attribute);
 		field.initialize(astRoot);
@@ -92,7 +92,7 @@ public class JavaResourcePersistentAttributeImpl
 				signature,
 				occurrence,
 				jpaCompilationUnit.getCompilationUnit(),
-				jpaCompilationUnit.getModifySharedDocumentCommandExecutorProvider(),
+				jpaCompilationUnit.getModifySharedDocumentCommandExecutor(),
 				jpaCompilationUnit.getAnnotationEditFormatter());
 		JavaResourcePersistentAttribute field = new JavaResourcePersistentAttributeImpl(parent, attribute);
 		field.initialize(astRoot);

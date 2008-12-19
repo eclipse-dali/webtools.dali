@@ -24,7 +24,6 @@ import org.eclipse.jpt.core.utility.jdt.ModifiedDeclaration;
 import org.eclipse.jpt.core.utility.jdt.Type;
 import org.eclipse.jpt.utility.Command;
 import org.eclipse.jpt.utility.CommandExecutor;
-import org.eclipse.jpt.utility.CommandExecutorProvider;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.text.edits.MalformedTreeException;
 import org.eclipse.text.edits.TextEdit;
@@ -58,7 +57,7 @@ public abstract class JDTMember
 	 * (file) when it is open in an editor and should be modified on the UI
 	 * thread
 	 */
-	private final CommandExecutorProvider modifySharedDocumentCommandExecutorProvider;
+	private final CommandExecutor modifySharedDocumentCommandExecutor;
 
 	/** this will format the member's annotations a bit */
 	private final AnnotationEditFormatter annotationEditFormatter;
@@ -71,8 +70,8 @@ public abstract class JDTMember
 			String name,
 			int occurrence,
 			ICompilationUnit compilationUnit,
-			CommandExecutorProvider modifySharedDocumentCommandExecutorProvider) {
-		this(declaringType, name, occurrence, compilationUnit, modifySharedDocumentCommandExecutorProvider, DefaultAnnotationEditFormatter.instance());
+			CommandExecutor modifySharedDocumentCommandExecutor) {
+		this(declaringType, name, occurrence, compilationUnit, modifySharedDocumentCommandExecutor, DefaultAnnotationEditFormatter.instance());
 	}
 
 	protected JDTMember(
@@ -80,14 +79,14 @@ public abstract class JDTMember
 			String name,
 			int occurrence,
 			ICompilationUnit compilationUnit,
-			CommandExecutorProvider modifySharedDocumentCommandExecutorProvider,
+			CommandExecutor modifySharedDocumentCommandExecutor,
 			AnnotationEditFormatter annotationEditFormatter) {
 		super();
 		this.declaringType = declaringType;
 		this.name = name;
 		this.occurrence = occurrence;
 		this.compilationUnit = compilationUnit;
-		this.modifySharedDocumentCommandExecutorProvider = modifySharedDocumentCommandExecutorProvider;
+		this.modifySharedDocumentCommandExecutor = modifySharedDocumentCommandExecutor;
 		this.annotationEditFormatter = annotationEditFormatter;
 	}
 
@@ -175,7 +174,7 @@ public abstract class JDTMember
 
 		TextEdit edits = astRoot.rewrite(doc, this.compilationUnit.getJavaProject().getOptions(true));
 		if (sharedDocument) {
-			this.getModifySharedDocumentCommandExecutor().execute(new ModifySharedDocumentCommand(edits, doc));
+			this.modifySharedDocumentCommandExecutor.execute(new ModifySharedDocumentCommand(edits, doc));
 		} else {
 			this.applyEdits(edits, doc);
 		}
@@ -198,10 +197,6 @@ public abstract class JDTMember
 
 	protected CompilationUnit buildASTRoot() {
 		return JDTTools.buildASTRoot(this.compilationUnit);
-	}
-
-	protected CommandExecutor getModifySharedDocumentCommandExecutor() {
-		return this.modifySharedDocumentCommandExecutorProvider.getCommandExecutor();
 	}
 
 
