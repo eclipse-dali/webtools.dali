@@ -39,24 +39,35 @@ public interface JavaType
 	 */
 	int getArrayDepth();
 
+	/**
+	 * Return whether the type is an array (i.e. its "array depth" is greater
+	 * than zero).
+	 */
 	boolean isArray();
 
 	/**
+	 * Return whether the type is a "primitive" (e.g. 'int', 'float').
 	 * NB: void.class.isPrimitive() == true
 	 */
 	boolean isPrimitive();
 
 	/**
+	 * Return whether the type is a "primitive" (e.g. 'java.lang.Integer',
+	 * 'java.lang.Float').
 	 * NB: void.class.isPrimitive() == true
 	 */
 	boolean isPrimitiveWrapper();
 
 	/**
+	 * Return whether the type is a "variable primitive" (e.g. 'int', 'float',
+	 * but not 'void').
 	 * NB: variables cannot be declared 'void'
 	 */
 	boolean isVariablePrimitive();
 
 	/**
+	 * Return whether the type is a "variable primitive" (e.g.
+	 * 'java.lang.Integer', 'java.lang.Float', but not 'java.lang.Void').
 	 * NB: variables cannot be declared 'void'
 	 */
 	boolean isVariablePrimitiveWrapper();
@@ -73,12 +84,24 @@ public interface JavaType
 	 */
 	String getJavaClassName();
 
+	/**
+	 * Return whether the type is equal to the specified type.
+	 */
 	boolean equals(String otherElementTypeName, int otherArrayDepth);
 
+	/**
+	 * Return whether the type describes to the specified type.
+	 */
 	boolean describes(String className);
 
+	/**
+	 * Return whether the type describes to the specified type.
+	 */
 	boolean describes(Class<?> javaClass);
 
+	/**
+	 * Return whether the type is equal to the specified type.
+	 */
 	boolean equals(JavaType other);
 
 	/**

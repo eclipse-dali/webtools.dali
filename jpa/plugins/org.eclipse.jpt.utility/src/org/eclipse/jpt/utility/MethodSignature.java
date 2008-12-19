@@ -10,6 +10,7 @@
 package org.eclipse.jpt.utility;
 
 import java.io.PrintWriter;
+import java.lang.reflect.Method;
 
 /**
  * This interface describes a Java method signature; i.e. its "name"
@@ -38,24 +39,35 @@ public interface MethodSignature
 	 */
 	JavaType[] getParameterTypes();
 
+	/**
+	 * Return whether the method signature describes the specified method.
+	 */
+	boolean describes(Method method);
+
+	/**
+	 * Return whether the method signature equals the specified signature.
+	 */
 	boolean equals(String otherName, JavaType[] otherParameterTypes);
 
+	/**
+	 * Return whether the method signature equals the specified signature.
+	 */
 	boolean equals(MethodSignature other);
 
 	/**
-	 * Return a string representation of the method signature:
+	 * Return a string representation of the method's signature:
 	 *     "foo(int, java.lang.String)"
 	 */
 	String getSignature();
 
 	/**
-	 * Append a string representation of the method signature:
+	 * Append a string representation of the method's signature:
 	 *     "foo(int, java.lang.String)"
 	 */
 	void appendSignatureTo(StringBuilder sb);
 
 	/**
-	 * Print a string representation of the method signature:
+	 * Print a string representation of the method's signature:
 	 *     "foo(int, java.lang.String)"
 	 */
 	void printSignatureOn(PrintWriter pw);

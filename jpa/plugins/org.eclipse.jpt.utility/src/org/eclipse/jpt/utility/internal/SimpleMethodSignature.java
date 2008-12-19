@@ -31,9 +31,10 @@ public final class SimpleMethodSignature
 	 */
 	private final JavaType[] parameterTypes;
 
-	private static final long serialVersionUID = 1L;
-
 	public static final JavaType[] EMPTY_PARAMETER_TYPES = new JavaType[0];
+
+	private static final String PARAMETER_SEPARATOR = ", "; //$NON-NLS-1$
+	private static final long serialVersionUID = 1L;
 
 
 	// ********** constructors **********
@@ -53,10 +54,10 @@ public final class SimpleMethodSignature
 	public SimpleMethodSignature(String name, JavaType... parameterTypes) {
 		super();
 		if ((name == null) || (name.length() == 0)) {
-			throw new IllegalArgumentException("The name is required.");
+			throw new IllegalArgumentException("The name is required."); //$NON-NLS-1$
 		}
 		if (parameterTypes == null) {
-			throw new IllegalArgumentException("The parameter types are required.");
+			throw new IllegalArgumentException("The parameter types are required."); //$NON-NLS-1$
 		}
 		checkParameterTypes(parameterTypes);
 		this.name = name;
@@ -66,10 +67,10 @@ public final class SimpleMethodSignature
 	private static void checkParameterTypes(JavaType[] parameterTypes) {
 		for (int i = 0; i < parameterTypes.length; i++) {
 			if (parameterTypes[i] == null) {
-				throw new IllegalArgumentException("Missing parameter type: " + i);
+				throw new IllegalArgumentException("Missing parameter type: " + i); //$NON-NLS-1$
 			}
 			if (parameterTypes[i].getElementTypeName().equals(void.class.getName())) {
-				throw new IllegalArgumentException("A parameter type of 'void' is not allowed: " + i);
+				throw new IllegalArgumentException("A parameter type of 'void' is not allowed: " + i); //$NON-NLS-1$
 			}
 		}
 	}
@@ -84,12 +85,12 @@ public final class SimpleMethodSignature
 
 	private static JavaType[] buildParameterTypes(String[] parameterTypeNames) {
 		if (parameterTypeNames == null) {
-			throw new IllegalArgumentException("The parameter type names are required.");
+			throw new IllegalArgumentException("The parameter type names are required."); //$NON-NLS-1$
 		}
 		JavaType[] parameterTypes = new JavaType[parameterTypeNames.length];
 		for (int i = 0; i < parameterTypeNames.length; i++) {
 			if (parameterTypeNames[i] == null) {
-				throw new IllegalArgumentException("Missing parameter type name: " + i);
+				throw new IllegalArgumentException("Missing parameter type name: " + i); //$NON-NLS-1$
 			}
 			parameterTypes[i] = new SimpleJavaType(parameterTypeNames[i]);
 		}
@@ -106,12 +107,12 @@ public final class SimpleMethodSignature
 
 	private static String[] buildParameterTypeNames(Class<?>[] parameterJavaClasses) {
 		if (parameterJavaClasses == null) {
-			throw new IllegalArgumentException("The parameter Java classes are required.");
+			throw new IllegalArgumentException("The parameter Java classes are required."); //$NON-NLS-1$
 		}
 		String[] parameterTypeNames = new String[parameterJavaClasses.length];
 		for (int i = 0; i < parameterJavaClasses.length; i++) {
 			if (parameterJavaClasses[i] == null) {
-				throw new IllegalArgumentException("Missing parameter Java class: " + i);
+				throw new IllegalArgumentException("Missing parameter Java class: " + i); //$NON-NLS-1$
 			}
 			parameterTypeNames[i] = parameterJavaClasses[i].getName();
 		}
@@ -139,6 +140,25 @@ public final class SimpleMethodSignature
 
 	// ********** comparison **********
 
+	public boolean describes(Method method) {
+		return this.name.equals(method.getName())
+				&& this.parameterTypesDescribe(method.getParameterTypes());
+	}
+
+	private boolean parameterTypesDescribe(Class<?>[] otherParameterTypes) {
+		JavaType[] localParameterTypes = this.parameterTypes;
+		int len = localParameterTypes.length;
+		if (otherParameterTypes.length != len) {
+			return false;
+		}
+		for (int i = len; i-- > 0; ) {
+			if ( ! localParameterTypes[i].describes(otherParameterTypes[i])) {
+				return false;
+			}
+		}
+        return true;
+	}
+
 	public boolean equals(String otherName, JavaType[] otherParameterTypes) {
 		return this.name.equals(otherName)
 				&& Arrays.equals(this.parameterTypes, otherParameterTypes);
@@ -164,11 +184,12 @@ public final class SimpleMethodSignature
 	}
 
 	private int compareParameterTypes(JavaType[] otherParameterTypes) {
-		int len1 = this.parameterTypes.length;
+		JavaType[] localParameterTypes = this.parameterTypes;
+		int len1 = localParameterTypes.length;
 		int len2 = otherParameterTypes.length;
 		int min = Math.min(len1, len2);
 		for (int i = 0; i < min; i++) {
-			int compare = this.parameterTypes[i].compareTo(otherParameterTypes[i]);
+			int compare = localParameterTypes[i].compareTo(otherParameterTypes[i]);
 			if (compare != 0) {
 				return compare;
 			}
@@ -188,11 +209,13 @@ public final class SimpleMethodSignature
 	public void appendSignatureTo(StringBuilder sb) {
 		sb.append(this.name);
 		sb.append('(');
-		for (int i = 0; i < this.parameterTypes.length; i++) {
+		JavaType[] localParameterTypes = this.parameterTypes;
+		int len = localParameterTypes.length;
+		for (int i = 0; i < len; i++) {
 			if (i != 0) {
-				sb.append(", ");
+				sb.append(PARAMETER_SEPARATOR);
 			}
-			this.parameterTypes[i].appendDeclarationTo(sb);
+			localParameterTypes[i].appendDeclarationTo(sb);
 		}
 		sb.append(')');
 	}
@@ -200,11 +223,13 @@ public final class SimpleMethodSignature
 	public void printSignatureOn(PrintWriter pw) {
 		pw.print(this.name);
 		pw.print('(');
-		for (int i = 0; i < this.parameterTypes.length; i++) {
+		JavaType[] localParameterTypes = this.parameterTypes;
+		int len = localParameterTypes.length;
+		for (int i = 0; i < len; i++) {
 			if (i != 0) {
-				pw.print(", ");
+				pw.print(PARAMETER_SEPARATOR);
 			}
-			this.parameterTypes[i].printDeclarationOn(pw);
+			localParameterTypes[i].printDeclarationOn(pw);
 		}
 		pw.print(')');
 	}

@@ -32,6 +32,7 @@ public final class SimpleJavaType
 	 */
 	private final int arrayDepth;
 
+	private static final String BRACKETS = "[]"; //$NON-NLS-1$
 	private static final long serialVersionUID = 1L;
 
 
@@ -43,16 +44,16 @@ public final class SimpleJavaType
 	public SimpleJavaType(String elementTypeName, int arrayDepth) {
 		super();
 		if ((elementTypeName == null) || (elementTypeName.length() == 0)) {
-			throw new IllegalArgumentException("The element type name is required.");
+			throw new IllegalArgumentException("The element type name is required."); //$NON-NLS-1$
 		}
 		if (ClassTools.arrayDepthForClassNamed(elementTypeName) != 0) {		// e.g. "[Ljava.lang.Object;"
-			throw new IllegalArgumentException("The element type must not be an array: " + elementTypeName + '.');
+			throw new IllegalArgumentException("The element type must not be an array: " + elementTypeName + '.'); //$NON-NLS-1$
 		}
 		if (arrayDepth < 0) {
-			throw new IllegalArgumentException("The array depth must be greater than or equal to zero: " + arrayDepth + '.');
+			throw new IllegalArgumentException("The array depth must be greater than or equal to zero: " + arrayDepth + '.'); //$NON-NLS-1$
 		}
 		if (elementTypeName.equals(void.class.getName()) && (arrayDepth != 0)) {
-			throw new IllegalArgumentException("'void' must have an array depth of zero: " + arrayDepth + '.');
+			throw new IllegalArgumentException("'void' must have an array depth of zero: " + arrayDepth + '.'); //$NON-NLS-1$
 		}
 		this.elementTypeName = elementTypeName;
 		this.arrayDepth = arrayDepth;
@@ -166,7 +167,7 @@ public final class SimpleJavaType
 	 */
 	public String declaration() {
 		if (this.arrayDepth == 0) {
-			return this.elementTypeNameDeclaration();
+			return this.getElementTypeNameDeclaration();
 		}
 		StringBuilder sb = new StringBuilder(this.elementTypeName.length() + (2 * this.arrayDepth));
 		this.appendDeclarationTo(sb);
@@ -179,9 +180,9 @@ public final class SimpleJavaType
 	 *     "java.util.Map$Entry" => "java.util.Map.Entry"
 	 */
 	public void appendDeclarationTo(StringBuilder sb) {
-		sb.append(this.elementTypeNameDeclaration());
+		sb.append(this.getElementTypeNameDeclaration());
 		for (int i = this.arrayDepth; i-- > 0; ) {
-			sb.append("[]");
+			sb.append(BRACKETS);
 		}
 	}
 
@@ -191,9 +192,9 @@ public final class SimpleJavaType
 	 *     "java.util.Map$Entry" => "java.util.Map.Entry"
 	 */
 	public void printDeclarationOn(PrintWriter pw) {
-		pw.print(this.elementTypeNameDeclaration());
+		pw.print(this.getElementTypeNameDeclaration());
 		for (int i = this.arrayDepth; i-- > 0; ) {
-			pw.print("[]");
+			pw.print(BRACKETS);
 		}
 	}
 
@@ -202,7 +203,7 @@ public final class SimpleJavaType
 	 * but the '.' verions of the name is used in source code.
 	 * Very irritating....
 	 */
-	private String elementTypeNameDeclaration() {
+	private String getElementTypeNameDeclaration() {
 		return this.elementTypeName.replace('$', '.');
 	}
 
