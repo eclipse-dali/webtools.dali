@@ -133,7 +133,7 @@ public class JpaJavaCompletionProposalComputer implements IJavaCompletionProposa
 			this.prefix = prefix;
 		}
 		public boolean accept(String s) {
-			return StringTools.stringStartsWithIgnoreCase(s.toCharArray(), prefix);
+			return StringTools.stringStartsWithIgnoreCase(s.toCharArray(), this.prefix);
 		}
 	}
 

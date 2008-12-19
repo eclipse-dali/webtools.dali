@@ -308,7 +308,7 @@ public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribu
 		}
 
 		public boolean accept(AttributeMapping mapping) {
-			return (mapping == null) || mappingKey.equals(mapping.getKey());
+			return (mapping == null) || this.mappingKey.equals(mapping.getKey());
 		}
 	}
 }
