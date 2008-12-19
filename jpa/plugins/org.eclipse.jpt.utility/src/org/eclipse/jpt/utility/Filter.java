@@ -28,6 +28,10 @@ public interface Filter<T> {
 	boolean accept(T o);
 
 
+	/**
+	 * Singleton implemetation of the filter interface that accepts all the
+	 * objects (i.e. it does no filtering).
+	 */
 	final class Null<S> implements Filter<S> {
 		@SuppressWarnings("unchecked")
 		public static final Filter INSTANCE = new Null();
@@ -40,7 +44,7 @@ public interface Filter<T> {
 			super();
 		}
 		// nothing is filtered - everything is accepted
-		public boolean accept(S next) {
+		public boolean accept(S o) {
 			return true;
 		}
 		@Override
@@ -49,6 +53,35 @@ public interface Filter<T> {
 		}
 	}
 
+	/**
+	 * Singleton implemetation of the filter interface that accepts none of the
+	 * objects (i.e. it filters out all the objects).
+	 */
+	final class Opaque<S> implements Filter<S> {
+		@SuppressWarnings("unchecked")
+		public static final Filter INSTANCE = new Opaque();
+		@SuppressWarnings("unchecked")
+		public static <R> Filter<R> instance() {
+			return INSTANCE;
+		}
+		// ensure single instance
+		private Opaque() {
+			super();
+		}
+		// everything is filtered - nothing is accepted
+		public boolean accept(S o) {
+			return false;
+		}
+		@Override
+		public String toString() {
+			return "Filter.Opaque";  //$NON-NLS-1$
+		}
+	}
+
+	/**
+	 * Singleton implemetation of the filter interface that throws an exception
+	 * if called.
+	 */
 	final class Disabled<S> implements Filter<S> {
 		@SuppressWarnings("unchecked")
 		public static final Filter INSTANCE = new Disabled();
@@ -61,7 +94,7 @@ public interface Filter<T> {
 			super();
 		}
 		// throw an exception
-		public boolean accept(S next) {
+		public boolean accept(S o) {
 			throw new UnsupportedOperationException();
 		}
 		@Override

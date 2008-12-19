@@ -39,7 +39,7 @@ public interface BidiFilter<T> extends Filter<T> {
 			super();
 		}
 		// nothing is filtered - everything is accepted
-		public boolean accept(S next) {
+		public boolean accept(S o) {
 			return true;
 		}
 		// nothing is "reverse-filtered" - everything is accepted
@@ -48,7 +48,32 @@ public interface BidiFilter<T> extends Filter<T> {
 		}
 		@Override
 		public String toString() {
-			return "BidiFilter.Null";
+			return "BidiFilter.Null"; //$NON-NLS-1$
+		}
+	}
+
+	final class Opaque<S> implements BidiFilter<S> {
+		@SuppressWarnings("unchecked")
+		public static final BidiFilter INSTANCE = new Opaque();
+		@SuppressWarnings("unchecked")
+		public static <R> BidiFilter<R> instance() {
+			return INSTANCE;
+		}
+		// ensure single instance
+		private Opaque() {
+			super();
+		}
+		// everything is filtered - nothing is accepted
+		public boolean accept(S o) {
+			return false;
+		}
+		// everything is "reverse-filtered" - nothing is accepted
+		public boolean reverseAccept(S o) {
+			return false;
+		}
+		@Override
+		public String toString() {
+			return "BidiFilter.Opaque"; //$NON-NLS-1$
 		}
 	}
 
@@ -64,7 +89,7 @@ public interface BidiFilter<T> extends Filter<T> {
 			super();
 		}
 		// throw an exception
-		public boolean accept(S next) {
+		public boolean accept(S o) {
 			throw new UnsupportedOperationException();
 		}
 		// throw an exception
@@ -73,7 +98,7 @@ public interface BidiFilter<T> extends Filter<T> {
 		}
 		@Override
 		public String toString() {
-			return "BidiFilter.Disabled";
+			return "BidiFilter.Disabled"; //$NON-NLS-1$
 		}
 	}
 
