@@ -831,7 +831,7 @@ public class GenericJpaProject
 	// ********** support for modifying documents shared with the UI **********
 
 	public void setThreadLocalModifySharedDocumentCommandExecutor(CommandExecutor commandExecutor) {
-		this.modifySharedDocumentCommandExecutor.setThreadLocalCommandExecutor(commandExecutor);
+		this.modifySharedDocumentCommandExecutor.set(commandExecutor);
 	}
 
 	public CommandExecutor getModifySharedDocumentCommandExecutor() {

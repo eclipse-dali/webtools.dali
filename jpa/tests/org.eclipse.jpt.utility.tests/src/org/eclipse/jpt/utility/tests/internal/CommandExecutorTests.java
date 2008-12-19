@@ -75,7 +75,7 @@ public class CommandExecutorTests extends TestCase {
 			this.executionCount = executionCount;
 		}
 		public void run() {
-			this.threadLocalCommandExecutor.setThreadLocalCommandExecutor(this.testCommandExecutor);
+			this.threadLocalCommandExecutor.set(this.testCommandExecutor);
 			for (int i = 0; i < this.executionCount; i++) {
 				this.threadLocalCommandExecutor.execute(this.testCommand);
 			}

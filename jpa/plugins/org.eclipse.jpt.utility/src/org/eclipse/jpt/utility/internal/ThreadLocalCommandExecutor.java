@@ -17,9 +17,12 @@ import org.eclipse.jpt.utility.CommandExecutor;
  * specify a different Command Executor for each thread.
  */
 public class ThreadLocalCommandExecutor implements CommandExecutor {
-	protected final ThreadLocal<CommandExecutor> threadLocalCommandExecutor;
+	protected final ThreadLocal<CommandExecutor> threadLocal;
 	protected final CommandExecutor defaultCommandExecutor;
 
+	/**
+	 * The default command executor simply executes the command directly.
+	 */
 	public ThreadLocalCommandExecutor() {
 		this(CommandExecutor.Default.instance());
 	}
@@ -27,32 +30,36 @@ public class ThreadLocalCommandExecutor implements CommandExecutor {
 	public ThreadLocalCommandExecutor(CommandExecutor defaultCommandExecutor) {
 		super();
 		this.defaultCommandExecutor = defaultCommandExecutor;
-		this.threadLocalCommandExecutor = this.buildThreadLocalCommandExecutor();
+		this.threadLocal = this.buildThreadLocal();
 	}
 
-	protected ThreadLocal<CommandExecutor> buildThreadLocalCommandExecutor() {
+	protected ThreadLocal<CommandExecutor> buildThreadLocal() {
 		return new ThreadLocal<CommandExecutor>();
 	}
 
 	public void execute(Command command) {
-		this.getThreadLocalCommandExecutor().execute(command);
+		this.get().execute(command);
 	}
 
-	protected CommandExecutor getThreadLocalCommandExecutor() {
-		CommandExecutor ce = this.threadLocalCommandExecutor.get();
+	protected CommandExecutor get() {
+		CommandExecutor ce = this.threadLocal.get();
 		return (ce != null) ? ce : this.defaultCommandExecutor;
 	}
 
 	/**
 	 * Set the current thread's command executor to the specified value.
 	 */
-	public void setThreadLocalCommandExecutor(CommandExecutor commandExecutor) {
-		this.threadLocalCommandExecutor.set(commandExecutor);
+	public void set(CommandExecutor commandExecutor) {
+		this.threadLocal.set(commandExecutor);
 	}
 
+	/**
+	 * Return the string representation of the current thread's command
+	 * executor.
+	 */
 	@Override
 	public String toString() {
-		return this.getThreadLocalCommandExecutor().toString();
+		return this.get().toString();
 	}
 
 }

@@ -12,8 +12,10 @@ package org.eclipse.jpt.utility.tests.internal;
 import junit.framework.TestCase;
 
 import org.eclipse.jpt.utility.Command;
+import org.eclipse.jpt.utility.CommandExecutor;
 import org.eclipse.jpt.utility.internal.CommandRunnable;
 import org.eclipse.jpt.utility.internal.RunnableCommand;
+import org.eclipse.jpt.utility.internal.ThreadLocalCommand;
 
 public class CommandTests extends TestCase {
 
@@ -39,14 +41,14 @@ public class CommandTests extends TestCase {
 	}
 
 	public void testRunnableCommand() {
-		TestRunnable testRunnable = new TestRunnable();
+		SimpleTestRunnable testRunnable = new SimpleTestRunnable();
 		assertFalse(testRunnable.ran);
 		Command command = new RunnableCommand(testRunnable);
 		command.execute();
 		assertTrue(testRunnable.ran);
 	}
 
-	static class TestRunnable implements Runnable {
+	static class SimpleTestRunnable implements Runnable {
 		boolean ran = false;
 		public void run() {
 			this.ran = true;
@@ -55,16 +57,59 @@ public class CommandTests extends TestCase {
 
 	public void testCommandRunnable() {
 		TestCommand testCommand = new TestCommand();
-		assertFalse(testCommand.executed);
+		assertEquals(0, testCommand.count);
 		Runnable runnable = new CommandRunnable(testCommand);
 		runnable.run();
-		assertTrue(testCommand.executed);
+		assertEquals(1, testCommand.count);
 	}
 
 	static class TestCommand implements Command {
-		boolean executed = false;
+		int count = 0;
 		public void execute() {
-			this.executed = true;
+			this.count++;
+		}
+	}
+
+	public void testThreadLocalCommand() throws Exception {
+		ThreadLocalCommand threadLocalCommand = new ThreadLocalCommand();
+		TestRunnable testRunnable1 = new TestRunnable(threadLocalCommand, 1);
+		Thread thread1 = new Thread(testRunnable1);
+		thread1.run();
+
+		TestRunnable testRunnable2 = new TestRunnable(threadLocalCommand, 2);
+		Thread thread2 = new Thread(testRunnable2);
+		thread2.run();
+
+		thread1.join();
+		thread2.join();
+
+		assertEquals(1, testRunnable1.testCommand.count);
+
+		assertEquals(2, testRunnable2.testCommand.count);
+	}
+
+	static class TestCommandExecutor implements CommandExecutor {
+		int count = 0;
+		public void execute(Command command) {
+			this.count++;
+			command.execute();
+		}
+	}
+
+	static class TestRunnable implements Runnable {
+		final ThreadLocalCommand threadLocalCommand;
+		final int executionCount;
+		final TestCommand testCommand = new TestCommand();
+		TestRunnable(ThreadLocalCommand threadLocalCommand, int executionCount) {
+			super();
+			this.threadLocalCommand = threadLocalCommand;
+			this.executionCount = executionCount;
+		}
+		public void run() {
+			this.threadLocalCommand.set(this.testCommand);
+			for (int i = 0; i < this.executionCount; i++) {
+				this.threadLocalCommand.execute();
+			}
 		}
 	}
 
