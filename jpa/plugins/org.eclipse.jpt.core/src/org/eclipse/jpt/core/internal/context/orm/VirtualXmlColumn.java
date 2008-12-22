@@ -67,9 +67,9 @@ public class VirtualXmlColumn extends AbstractJpaEObject implements XmlColumn
 
 	public Integer getLength() {
 		if (this.isOrmMetadataComplete()) {
-			return this.column.getDefaultLength();
+			return Integer.valueOf(this.column.getDefaultLength());
 		}
-		return this.column.getLength();
+		return Integer.valueOf(this.column.getLength());
 	}
 
 	public void setLength(@SuppressWarnings("unused")Integer value) {
@@ -100,9 +100,9 @@ public class VirtualXmlColumn extends AbstractJpaEObject implements XmlColumn
 
 	public Integer getPrecision() {
 		if (this.isOrmMetadataComplete()) {
-			return this.column.getDefaultPrecision();
+			return Integer.valueOf(this.column.getDefaultPrecision());
 		}
-		return this.column.getPrecision();
+		return Integer.valueOf(this.column.getPrecision());
 	}
 
 	public void setPrecision(@SuppressWarnings("unused")Integer value) {
@@ -111,9 +111,9 @@ public class VirtualXmlColumn extends AbstractJpaEObject implements XmlColumn
 
 	public Integer getScale() {
 		if (this.isOrmMetadataComplete()) {
-			return this.column.getDefaultScale();
+			return Integer.valueOf(this.column.getDefaultScale());
 		}
-		return this.column.getScale();
+		return Integer.valueOf(this.column.getScale());
 	}
 
 	public void setScale(@SuppressWarnings("unused")Integer value) {

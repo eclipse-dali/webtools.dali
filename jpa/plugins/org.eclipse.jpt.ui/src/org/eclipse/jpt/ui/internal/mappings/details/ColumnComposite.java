@@ -188,10 +188,10 @@ public class ColumnComposite extends FormPane<Column> {
 	}
 
 	private WritablePropertyValueModel<String> buildColumnDefinitionHolder() {
-		return new PropertyAspectAdapter<Column, String>(getSubjectHolder(), Column.COLUMN_DEFINITION_PROPERTY) {
+		return new PropertyAspectAdapter<Column, String>(getSubjectHolder(), NamedColumn.COLUMN_DEFINITION_PROPERTY) {
 			@Override
 			protected String buildValue_() {
-				return subject.getColumnDefinition();
+				return this.subject.getColumnDefinition();
 			}
 
 			@Override
@@ -199,7 +199,7 @@ public class ColumnComposite extends FormPane<Column> {
 				if (value.length() == 0) {
 					value = null;
 				}
-				subject.setColumnDefinition(value);
+				this.subject.setColumnDefinition(value);
 			}
 		};
 	}
@@ -208,7 +208,7 @@ public class ColumnComposite extends FormPane<Column> {
 		return new PropertyAspectAdapter<Column, Integer>(getSubjectHolder(), Column.DEFAULT_LENGTH_PROPERTY) {
 			@Override
 			protected Integer buildValue_() {
-				return subject.getDefaultLength();
+				return Integer.valueOf(this.subject.getDefaultLength());
 			}
 
 			@Override
@@ -247,12 +247,12 @@ public class ColumnComposite extends FormPane<Column> {
 			@Override
 			protected String transform(Integer value) {
 
-				Integer defaultValue = (getSubject() != null) ? getSubject().getDefaultLength() :
+				int defaultValue = (getSubject() != null) ? getSubject().getDefaultLength() :
 				                                             Column.DEFAULT_LENGTH;
 
 				return NLS.bind(
 					JptUiMappingsMessages.DefaultWithValue,
-					defaultValue
+					Integer.valueOf(defaultValue)
 				);
 			}
 		};
@@ -262,7 +262,7 @@ public class ColumnComposite extends FormPane<Column> {
 		return new PropertyAspectAdapter<Column, Integer>(getSubjectHolder(), Column.DEFAULT_PRECISION_PROPERTY) {
 			@Override
 			protected Integer buildValue_() {
-				return subject.getDefaultPrecision();
+				return Integer.valueOf(this.subject.getDefaultPrecision());
 			}
 
 			@Override
@@ -301,12 +301,12 @@ public class ColumnComposite extends FormPane<Column> {
 			@Override
 			protected String transform(Integer value) {
 
-				Integer defaultValue = (getSubject() != null) ? getSubject().getDefaultPrecision() :
+				int defaultValue = (getSubject() != null) ? getSubject().getDefaultPrecision() :
 				                                             Column.DEFAULT_PRECISION;
 
 				return NLS.bind(
 					JptUiMappingsMessages.DefaultWithValue,
-					defaultValue
+					Integer.valueOf(defaultValue)
 				);
 			}
 		};
@@ -316,7 +316,7 @@ public class ColumnComposite extends FormPane<Column> {
 		return new PropertyAspectAdapter<Column, Integer>(getSubjectHolder(), Column.DEFAULT_SCALE_PROPERTY) {
 			@Override
 			protected Integer buildValue_() {
-				return subject.getDefaultScale();
+				return Integer.valueOf(this.subject.getDefaultScale());
 			}
 
 			@Override
@@ -355,27 +355,27 @@ public class ColumnComposite extends FormPane<Column> {
 			@Override
 			protected String transform(Integer value) {
 
-				Integer defaultValue = (getSubject() != null) ? getSubject().getDefaultScale() :
+				int defaultValue = (getSubject() != null) ? getSubject().getDefaultScale() :
 				                                             Column.DEFAULT_SCALE;
 
 				return NLS.bind(
 					JptUiMappingsMessages.DefaultWithValue,
-					defaultValue
+					Integer.valueOf(defaultValue)
 				);
 			}
 		};
 	}
 
 	private WritablePropertyValueModel<Boolean> buildInsertableHolder() {
-		return new PropertyAspectAdapter<Column, Boolean>(getSubjectHolder(), Column.SPECIFIED_INSERTABLE_PROPERTY) {
+		return new PropertyAspectAdapter<Column, Boolean>(getSubjectHolder(), BaseColumn.SPECIFIED_INSERTABLE_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
-				return subject.getSpecifiedInsertable();
+				return this.subject.getSpecifiedInsertable();
 			}
 
 			@Override
 			protected void setValue_(Boolean value) {
-				subject.setSpecifiedInsertable(value);
+				this.subject.setSpecifiedInsertable(value);
 			}
 		};
 	}
@@ -393,7 +393,7 @@ public class ColumnComposite extends FormPane<Column> {
 
 					if (defaultValue != null) {
 
-						String defaultStringValue = defaultValue ? JptUiMappingsMessages.Boolean_True :
+						String defaultStringValue = defaultValue.booleanValue() ? JptUiMappingsMessages.Boolean_True :
 						                                           JptUiMappingsMessages.Boolean_False;
 
 						return NLS.bind(
@@ -412,15 +412,15 @@ public class ColumnComposite extends FormPane<Column> {
 		return new PropertyAspectAdapter<Column, Integer>(getSubjectHolder(), Column.SPECIFIED_LENGTH_PROPERTY) {
 			@Override
 			protected Integer buildValue_() {
-				return subject.getSpecifiedLength();
+				return this.subject.getSpecifiedLength();
 			}
 
 			@Override
 			protected void setValue_(Integer value) {
-				if (value == -1) {
+				if (value.intValue() == -1) {
 					value = null;
 				}
-				subject.setSpecifiedLength(value);
+				this.subject.setSpecifiedLength(value);
 			}
 		};
 	}
@@ -433,12 +433,12 @@ public class ColumnComposite extends FormPane<Column> {
 		{
 			@Override
 			protected Boolean buildValue_() {
-				return subject.getSpecifiedNullable();
+				return this.subject.getSpecifiedNullable();
 			}
 
 			@Override
 			protected void setValue_(Boolean value) {
-				subject.setSpecifiedNullable(value);
+				this.subject.setSpecifiedNullable(value);
 			}
 
 			@Override
@@ -466,7 +466,7 @@ public class ColumnComposite extends FormPane<Column> {
 
 					if (defaultValue != null) {
 
-						String defaultStringValue = defaultValue ? JptUiMappingsMessages.Boolean_True :
+						String defaultStringValue = defaultValue.booleanValue() ? JptUiMappingsMessages.Boolean_True :
 						                                           JptUiMappingsMessages.Boolean_False;
 
 						return NLS.bind(
@@ -485,15 +485,15 @@ public class ColumnComposite extends FormPane<Column> {
 		return new PropertyAspectAdapter<Column, Integer>(getSubjectHolder(), Column.SPECIFIED_PRECISION_PROPERTY) {
 			@Override
 			protected Integer buildValue_() {
-				return subject.getSpecifiedPrecision();
+				return this.subject.getSpecifiedPrecision();
 			}
 
 			@Override
 			protected void setValue_(Integer value) {
-				if (value == -1) {
+				if (value.intValue() == -1) {
 					value = null;
 				}
-				subject.setSpecifiedPrecision(value);
+				this.subject.setSpecifiedPrecision(value);
 			}
 		};
 	}
@@ -502,15 +502,15 @@ public class ColumnComposite extends FormPane<Column> {
 		return new PropertyAspectAdapter<Column, Integer>(getSubjectHolder(), Column.SPECIFIED_SCALE_PROPERTY) {
 			@Override
 			protected Integer buildValue_() {
-				return subject.getSpecifiedScale();
+				return this.subject.getSpecifiedScale();
 			}
 
 			@Override
 			protected void setValue_(Integer value) {
-				if (value == -1) {
+				if (value.intValue() == -1) {
 					value = null;
 				}
-				subject.setSpecifiedScale(value);
+				this.subject.setSpecifiedScale(value);
 			}
 		};
 	}
@@ -560,12 +560,12 @@ public class ColumnComposite extends FormPane<Column> {
 		{
 			@Override
 			protected Boolean buildValue_() {
-				return subject.getSpecifiedUnique();
+				return this.subject.getSpecifiedUnique();
 			}
 
 			@Override
 			protected void setValue_(Boolean value) {
-				subject.setSpecifiedUnique(value);
+				this.subject.setSpecifiedUnique(value);
 			}
 
 			@Override
@@ -595,7 +595,7 @@ public class ColumnComposite extends FormPane<Column> {
 
 					if (defaultValue != null) {
 
-						String defaultStringValue = defaultValue ? JptUiMappingsMessages.Boolean_True :
+						String defaultStringValue = defaultValue.booleanValue() ? JptUiMappingsMessages.Boolean_True :
 						                                           JptUiMappingsMessages.Boolean_False;
 
 						return NLS.bind(
@@ -618,12 +618,12 @@ public class ColumnComposite extends FormPane<Column> {
 		{
 			@Override
 			protected Boolean buildValue_() {
-				return subject.getSpecifiedUpdatable();
+				return this.subject.getSpecifiedUpdatable();
 			}
 
 			@Override
 			protected void setValue_(Boolean value) {
-				subject.setSpecifiedUpdatable(value);
+				this.subject.setSpecifiedUpdatable(value);
 			}
 
 			@Override
@@ -653,7 +653,7 @@ public class ColumnComposite extends FormPane<Column> {
 
 					if (defaultValue != null) {
 
-						String defaultStringValue = defaultValue ? JptUiMappingsMessages.Boolean_True :
+						String defaultStringValue = defaultValue.booleanValue() ? JptUiMappingsMessages.Boolean_True :
 						                                           JptUiMappingsMessages.Boolean_False;
 
 						return NLS.bind(

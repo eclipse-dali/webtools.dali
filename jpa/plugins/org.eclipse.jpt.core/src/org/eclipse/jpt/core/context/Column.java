@@ -20,20 +20,20 @@ package org.eclipse.jpt.core.context;
  */
 public interface Column extends BaseColumn
 {
-	Integer getLength();
+	int getLength();
 
-	Integer getDefaultLength();
-	Integer DEFAULT_LENGTH = Integer.valueOf(255);
+	int getDefaultLength();
+		int DEFAULT_LENGTH = 255;
 		String DEFAULT_LENGTH_PROPERTY = "defaultLength"; //$NON-NLS-1$
 
 	Integer getSpecifiedLength();
 	void setSpecifiedLength(Integer newSpecifiedLength);
 		String SPECIFIED_LENGTH_PROPERTY = "spcifiedLength"; //$NON-NLS-1$
 		
-	Integer getPrecision();
+	int getPrecision();
 
-	Integer getDefaultPrecision();
-		Integer DEFAULT_PRECISION = Integer.valueOf(0);
+	int getDefaultPrecision();
+		int DEFAULT_PRECISION = 0;
 		String DEFAULT_PRECISION_PROPERTY = "defaultPrecision"; //$NON-NLS-1$
 
 	Integer getSpecifiedPrecision();
@@ -41,10 +41,10 @@ public interface Column extends BaseColumn
 		String SPECIFIED_PRECISION_PROPERTY = "spcifiedPrecision"; //$NON-NLS-1$
 
 	
-	Integer getScale();
+	int getScale();
 
-	Integer getDefaultScale();
-		Integer DEFAULT_SCALE = Integer.valueOf(0);
+	int getDefaultScale();
+		int DEFAULT_SCALE = 0;
 		String DEFAULT_SCALE_PROPERTY = "defaultScale"; //$NON-NLS-1$
 
 	Integer getSpecifiedScale();

@@ -36,7 +36,7 @@ public interface ColumnAnnotation extends BaseColumnAnnotation
 	 * Set to null to remove the length valuePair from the annotation
 	 */
 	void setLength(Integer length);
-		String LENGTH_PROPERTY = "lengthProperty";
+		String LENGTH_PROPERTY = "length"; //$NON-NLS-1$
 	
 	/**
 	 * Corresponds to the precision element of the javax.persistence.Column annotation.
@@ -49,7 +49,7 @@ public interface ColumnAnnotation extends BaseColumnAnnotation
 	 * Set to null to remove the precision valuePair from the annotation
 	 */
 	void setPrecision(Integer precision);
-		String PRECISION_PROPERTY = "precisionProperty";
+		String PRECISION_PROPERTY = "precision"; //$NON-NLS-1$
 	
 	/**
 	 * Corresponds to the scale element of the javax.persistence.Column annotation.
@@ -62,7 +62,7 @@ public interface ColumnAnnotation extends BaseColumnAnnotation
 	 * Set to null to remove the scale valuePair from the annotation
 	 */
 	void setScale(Integer scale);
-		String SCALE_PROPERTY = "scaleProperty";
+		String SCALE_PROPERTY = "scale"; //$NON-NLS-1$
 
 	/**
 	 * Return the {@link TextRange} for the length element. If length element

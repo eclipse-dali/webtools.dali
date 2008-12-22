@@ -22,6 +22,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
+@SuppressWarnings("nls")
 public class JavaColumnTests extends ContextModelTestCase
 {
 	private static final String COLUMN_NAME = "MY_COLUMN";
@@ -365,7 +366,7 @@ public class JavaColumnTests extends ContextModelTestCase
 
 		assertEquals(Column.DEFAULT_LENGTH, basicMapping.getColumn().getLength());
 		basicMapping.getColumn().setSpecifiedLength(Integer.valueOf(55));
-		assertEquals(Integer.valueOf(55), basicMapping.getColumn().getLength());
+		assertEquals(55, basicMapping.getColumn().getLength());
 	}
 	
 	public void testGetDefaultLength() throws Exception {
@@ -394,7 +395,7 @@ public class JavaColumnTests extends ContextModelTestCase
 		column.setLength(Integer.valueOf(66));
 		
 		assertEquals(Integer.valueOf(66), basicMapping.getColumn().getSpecifiedLength());
-		assertEquals(Integer.valueOf(66), basicMapping.getColumn().getLength());
+		assertEquals(66, basicMapping.getColumn().getLength());
 		
 		column.setLength(null);
 		
@@ -430,7 +431,7 @@ public class JavaColumnTests extends ContextModelTestCase
 
 		assertEquals(Column.DEFAULT_PRECISION, basicMapping.getColumn().getPrecision());
 		basicMapping.getColumn().setSpecifiedPrecision(Integer.valueOf(55));
-		assertEquals(Integer.valueOf(55), basicMapping.getColumn().getPrecision());
+		assertEquals(55, basicMapping.getColumn().getPrecision());
 	}
 	
 	public void testGetDefaultPrecision() throws Exception {
@@ -459,7 +460,7 @@ public class JavaColumnTests extends ContextModelTestCase
 		column.setPrecision(Integer.valueOf(66));
 		
 		assertEquals(Integer.valueOf(66), basicMapping.getColumn().getSpecifiedPrecision());
-		assertEquals(Integer.valueOf(66), basicMapping.getColumn().getPrecision());
+		assertEquals(66, basicMapping.getColumn().getPrecision());
 		
 		column.setPrecision(null);
 		
@@ -495,7 +496,7 @@ public class JavaColumnTests extends ContextModelTestCase
 
 		assertEquals(Column.DEFAULT_SCALE, basicMapping.getColumn().getScale());
 		basicMapping.getColumn().setSpecifiedScale(Integer.valueOf(55));
-		assertEquals(Integer.valueOf(55), basicMapping.getColumn().getScale());
+		assertEquals(55, basicMapping.getColumn().getScale());
 	}
 	
 	public void testGetDefaultScale() throws Exception {
@@ -524,7 +525,7 @@ public class JavaColumnTests extends ContextModelTestCase
 		column.setScale(Integer.valueOf(66));
 		
 		assertEquals(Integer.valueOf(66), basicMapping.getColumn().getSpecifiedScale());
-		assertEquals(Integer.valueOf(66), basicMapping.getColumn().getScale());
+		assertEquals(66, basicMapping.getColumn().getScale());
 		
 		column.setScale(null);
 		

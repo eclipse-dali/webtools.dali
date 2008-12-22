@@ -40,6 +40,7 @@ import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
+@SuppressWarnings("nls")
 public class OrmBasicMappingTests extends ContextModelTestCase
 {
 	public OrmBasicMappingTests(String name) {
@@ -404,9 +405,9 @@ public class OrmBasicMappingTests extends ContextModelTestCase
 		assertEquals(Boolean.TRUE, ormColumn.getDefaultUpdatable());
 		assertEquals(null, ormColumn.getColumnDefinition());
 		assertEquals(TYPE_NAME, ormColumn.getDefaultTable());
-		assertEquals(Integer.valueOf(255), ormColumn.getDefaultLength());
-		assertEquals(Integer.valueOf(0), ormColumn.getDefaultPrecision());
-		assertEquals(Integer.valueOf(0), ormColumn.getDefaultScale());
+		assertEquals(255, ormColumn.getDefaultLength());
+		assertEquals(0, ormColumn.getDefaultPrecision());
+		assertEquals(0, ormColumn.getDefaultScale());
 	}
 	
 	//@Basic(fetch=FetchType.LAZY, optional=false)
@@ -504,9 +505,9 @@ public class OrmBasicMappingTests extends ContextModelTestCase
 		assertEquals(Boolean.TRUE, ormColumn.getDefaultUpdatable());
 		assertEquals(null, ormColumn.getColumnDefinition());
 		assertEquals(TYPE_NAME, ormColumn.getDefaultTable());
-		assertEquals(Integer.valueOf(255), ormColumn.getDefaultLength());
-		assertEquals(Integer.valueOf(0), ormColumn.getDefaultPrecision());
-		assertEquals(Integer.valueOf(0), ormColumn.getDefaultScale());
+		assertEquals(255, ormColumn.getDefaultLength());
+		assertEquals(0, ormColumn.getDefaultPrecision());
+		assertEquals(0, ormColumn.getDefaultScale());
 
 	}
 	//3 things tested above

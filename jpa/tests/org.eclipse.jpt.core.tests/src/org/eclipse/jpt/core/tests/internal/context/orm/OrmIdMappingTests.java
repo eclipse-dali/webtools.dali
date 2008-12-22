@@ -43,6 +43,7 @@ import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
+@SuppressWarnings("nls")
 public class OrmIdMappingTests extends ContextModelTestCase
 {
 	public OrmIdMappingTests(String name) {
@@ -442,9 +443,9 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		assertEquals(Boolean.TRUE, ormColumn.getDefaultUpdatable());
 		assertEquals(null, ormColumn.getColumnDefinition());
 		assertEquals(TYPE_NAME, ormColumn.getDefaultTable());
-		assertEquals(Integer.valueOf(255), ormColumn.getDefaultLength());
-		assertEquals(Integer.valueOf(0), ormColumn.getDefaultPrecision());
-		assertEquals(Integer.valueOf(0), ormColumn.getDefaultScale());
+		assertEquals(255, ormColumn.getDefaultLength());
+		assertEquals(0, ormColumn.getDefaultPrecision());
+		assertEquals(0, ormColumn.getDefaultScale());
 	}
 	
 	//@Basic(fetch=FetchType.LAZY, optional=false)
@@ -523,9 +524,9 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		assertEquals(Boolean.TRUE, ormColumn.getUpdatable());
 		assertNull(ormColumn.getColumnDefinition());
 		assertEquals(TYPE_NAME, ormColumn.getTable());
-		assertEquals(Integer.valueOf(255), ormColumn.getLength());
-		assertEquals(Integer.valueOf(0), ormColumn.getPrecision());
-		assertEquals(Integer.valueOf(0), ormColumn.getScale());
+		assertEquals(255, ormColumn.getLength());
+		assertEquals(0, ormColumn.getPrecision());
+		assertEquals(0, ormColumn.getScale());
 	}
 	
 	public void testSpecifiedMapping() throws Exception {
@@ -563,9 +564,9 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		assertEquals(Boolean.TRUE, ormColumn.getDefaultUpdatable());
 		assertEquals(null, ormColumn.getColumnDefinition());
 		assertEquals(TYPE_NAME, ormColumn.getDefaultTable());
-		assertEquals(Integer.valueOf(255), ormColumn.getDefaultLength());
-		assertEquals(Integer.valueOf(0), ormColumn.getDefaultPrecision());
-		assertEquals(Integer.valueOf(0), ormColumn.getDefaultScale());
+		assertEquals(255, ormColumn.getDefaultLength());
+		assertEquals(0, ormColumn.getDefaultPrecision());
+		assertEquals(0, ormColumn.getDefaultScale());
 	}
 	
 	//3 things tested above

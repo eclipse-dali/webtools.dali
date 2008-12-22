@@ -31,6 +31,7 @@ import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
+@SuppressWarnings("nls")
 public class OrmColumnTests extends ContextModelTestCase
 {
 	public OrmColumnTests(String name) {
@@ -650,9 +651,9 @@ public class OrmColumnTests extends ContextModelTestCase
 		assertEquals(Boolean.TRUE, ormColumn.getSpecifiedUpdatable());
 		assertEquals(Boolean.TRUE, ormColumn.getSpecifiedNullable());
 		assertEquals(Boolean.FALSE, ormColumn.getSpecifiedUnique());
-		assertEquals(Column.DEFAULT_LENGTH, ormColumn.getSpecifiedLength());
-		assertEquals(Column.DEFAULT_PRECISION, ormColumn.getSpecifiedPrecision());
-		assertEquals(Column.DEFAULT_SCALE, ormColumn.getSpecifiedScale());
+		assertEquals(Column.DEFAULT_LENGTH, ormColumn.getSpecifiedLength().intValue());
+		assertEquals(Column.DEFAULT_PRECISION, ormColumn.getSpecifiedPrecision().intValue());
+		assertEquals(Column.DEFAULT_SCALE, ormColumn.getSpecifiedScale().intValue());
 	
 		//set Column annotation in Java
 		JavaBasicMapping javaBasicMapping = (JavaBasicMapping) ormPersistentType.getJavaPersistentType().getAttributeNamed("name").getMapping();
@@ -688,9 +689,9 @@ public class OrmColumnTests extends ContextModelTestCase
 		assertEquals(Boolean.TRUE, ormColumn.getSpecifiedUpdatable());
 		assertEquals(Boolean.TRUE, ormColumn.getSpecifiedNullable());
 		assertEquals(Boolean.FALSE, ormColumn.getSpecifiedUnique());
-		assertEquals(Column.DEFAULT_LENGTH, ormColumn.getSpecifiedLength());
-		assertEquals(Column.DEFAULT_PRECISION, ormColumn.getSpecifiedPrecision());
-		assertEquals(Column.DEFAULT_SCALE, ormColumn.getSpecifiedScale());
+		assertEquals(Column.DEFAULT_LENGTH, ormColumn.getSpecifiedLength().intValue());
+		assertEquals(Column.DEFAULT_PRECISION, ormColumn.getSpecifiedPrecision().intValue());
+		assertEquals(Column.DEFAULT_SCALE, ormColumn.getSpecifiedScale().intValue());
 	
 		entityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
 		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.FALSE);
@@ -701,9 +702,9 @@ public class OrmColumnTests extends ContextModelTestCase
 		assertEquals(Boolean.TRUE, ormColumn.getSpecifiedUpdatable());
 		assertEquals(Boolean.TRUE, ormColumn.getSpecifiedNullable());
 		assertEquals(Boolean.FALSE, ormColumn.getSpecifiedUnique());
-		assertEquals(Column.DEFAULT_LENGTH, ormColumn.getSpecifiedLength());
-		assertEquals(Column.DEFAULT_PRECISION, ormColumn.getSpecifiedPrecision());
-		assertEquals(Column.DEFAULT_SCALE, ormColumn.getSpecifiedScale());
+		assertEquals(Column.DEFAULT_LENGTH, ormColumn.getSpecifiedLength().intValue());
+		assertEquals(Column.DEFAULT_PRECISION, ormColumn.getSpecifiedPrecision().intValue());
+		assertEquals(Column.DEFAULT_SCALE, ormColumn.getSpecifiedScale().intValue());
 	
 		ormPersistentType.getMapping().setSpecifiedMetadataComplete(null);
 		assertEquals("name", ormColumn.getSpecifiedName());
@@ -713,9 +714,9 @@ public class OrmColumnTests extends ContextModelTestCase
 		assertEquals(Boolean.TRUE, ormColumn.getSpecifiedUpdatable());
 		assertEquals(Boolean.TRUE, ormColumn.getSpecifiedNullable());
 		assertEquals(Boolean.FALSE, ormColumn.getSpecifiedUnique());
-		assertEquals(Column.DEFAULT_LENGTH, ormColumn.getSpecifiedLength());
-		assertEquals(Column.DEFAULT_PRECISION, ormColumn.getSpecifiedPrecision());
-		assertEquals(Column.DEFAULT_SCALE, ormColumn.getSpecifiedScale());
+		assertEquals(Column.DEFAULT_LENGTH, ormColumn.getSpecifiedLength().intValue());
+		assertEquals(Column.DEFAULT_PRECISION, ormColumn.getSpecifiedPrecision().intValue());
+		assertEquals(Column.DEFAULT_SCALE, ormColumn.getSpecifiedScale().intValue());
 		
 		//set metadata-complete false, orm.xml virtual column gets setting from java annotation
 		entityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(false);

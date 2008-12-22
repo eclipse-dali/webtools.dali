@@ -47,11 +47,11 @@ public class GenericJavaColumn extends AbstractJavaBaseColumn<ColumnAnnotation> 
 		return this.getOwner().getResourceColumn();
 	}
 	
-	public Integer getLength() {
-		return (this.getSpecifiedLength() == null) ? getDefaultLength() : this.getSpecifiedLength();
+	public int getLength() {
+		return (this.getSpecifiedLength() == null) ? getDefaultLength() : this.getSpecifiedLength().intValue();
 	}
 
-	public Integer getDefaultLength() {
+	public int getDefaultLength() {
 		return Column.DEFAULT_LENGTH;
 	}
 	
@@ -72,11 +72,11 @@ public class GenericJavaColumn extends AbstractJavaBaseColumn<ColumnAnnotation> 
 		firePropertyChanged(SPECIFIED_LENGTH_PROPERTY, oldSpecifiedLength, newSpecifiedLength);
 	}
 
-	public Integer getPrecision() {
-		return (this.getSpecifiedPrecision() == null) ? getDefaultPrecision() : this.getSpecifiedPrecision();
+	public int getPrecision() {
+		return (this.getSpecifiedPrecision() == null) ? getDefaultPrecision() : this.getSpecifiedPrecision().intValue();
 	}
 
-	public Integer getDefaultPrecision() {
+	public int getDefaultPrecision() {
 		return Column.DEFAULT_PRECISION;
 	}
 	
@@ -97,11 +97,11 @@ public class GenericJavaColumn extends AbstractJavaBaseColumn<ColumnAnnotation> 
 		firePropertyChanged(SPECIFIED_PRECISION_PROPERTY, oldSpecifiedPrecision, newSpecifiedPrecision);
 	}
 
-	public Integer getScale() {
-		return (this.getSpecifiedScale() == null) ? getDefaultScale() : this.getSpecifiedScale();
+	public int getScale() {
+		return (this.getSpecifiedScale() == null) ? getDefaultScale() : this.getSpecifiedScale().intValue();
 	}
 
-	public Integer getDefaultScale() {
+	public int getDefaultScale() {
 		return Column.DEFAULT_SCALE;
 	}
 	
