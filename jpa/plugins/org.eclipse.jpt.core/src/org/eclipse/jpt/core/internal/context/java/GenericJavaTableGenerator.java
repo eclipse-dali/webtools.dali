@@ -511,7 +511,7 @@ public class GenericJavaTableGenerator
 		return (TableGeneratorAnnotation) super.getResourceGenerator();
 	}
 
-	public Integer getDefaultInitialValue() {
+	public int getDefaultInitialValue() {
 		return DEFAULT_INITIAL_VALUE;
 	}
 

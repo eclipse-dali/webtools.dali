@@ -49,12 +49,12 @@ public class OptionalComposite extends FormPane<Nullable>
 		return new PropertyAspectAdapter<Nullable, Boolean>(getSubjectHolder(), Nullable.SPECIFIED_OPTIONAL_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
-				return subject.getSpecifiedOptional();
+				return this.subject.getSpecifiedOptional();
 			}
 
 			@Override
 			protected void setValue_(Boolean value) {
-				subject.setSpecifiedOptional(value);
+				this.subject.setSpecifiedOptional(value);
 			}
 
 			@Override
@@ -79,19 +79,15 @@ public class OptionalComposite extends FormPane<Nullable>
 			protected String transform(Boolean value) {
 
 				if ((getSubject() != null) && (value == null)) {
+					boolean defaultValue = getSubject().isDefaultOptional();
 
-					Boolean defaultValue = getSubject().getDefaultOptional();
+					String defaultStringValue = defaultValue ? JptUiMappingsMessages.Boolean_True :
+					                                           JptUiMappingsMessages.Boolean_False;
 
-					if (defaultValue != null) {
-
-						String defaultStringValue = defaultValue ? JptUiMappingsMessages.Boolean_True :
-						                                           JptUiMappingsMessages.Boolean_False;
-
-						return NLS.bind(
-							JptUiMappingsMessages.BasicGeneralSection_optionalLabelDefault,
-							defaultStringValue
-						);
-					}
+					return NLS.bind(
+						JptUiMappingsMessages.BasicGeneralSection_optionalLabelDefault,
+						defaultStringValue
+					);
 				}
 
 				return JptUiMappingsMessages.BasicGeneralSection_optionalLabel;
@@ -99,9 +95,6 @@ public class OptionalComposite extends FormPane<Nullable>
 		};
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected void initializeLayout(Composite container) {
 

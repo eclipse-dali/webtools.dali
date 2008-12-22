@@ -33,22 +33,22 @@ public interface Generator
 
 	// ********** initial value **********
 
-	Integer getInitialValue();
+	int getInitialValue();
 	Integer getSpecifiedInitialValue();
 	void setSpecifiedInitialValue(Integer value);
 		String SPECIFIED_INITIAL_VALUE_PROPERTY = "specifiedInitialValue"; //$NON-NLS-1$
-	Integer getDefaultInitialValue();
+	int getDefaultInitialValue();
 		String DEFAULT_INITIAL_VALUE_PROPERTY = "defaultInitialValue"; //$NON-NLS-1$
 
 
 	// ********** allocation size **********
 	
-	Integer getAllocationSize();
+	int getAllocationSize();
 	Integer getSpecifiedAllocationSize();
 	void setSpecifiedAllocationSize(Integer value);
 		String SPECIFIED_ALLOCATION_SIZE_PROPERTY = "specifiedAllocationSize"; //$NON-NLS-1$
-	Integer getDefaultAllocationSize();
-	Integer DEFAULT_ALLOCATION_SIZE = Integer.valueOf(50);
+	int getDefaultAllocationSize();
+	int DEFAULT_ALLOCATION_SIZE = 50;
 		String DEFAULT_ALLOCATION_SIZE_PROPERTY = "defaultAllocationSize"; //$NON-NLS-1$
 
 

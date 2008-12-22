@@ -24,14 +24,14 @@ package org.eclipse.jpt.core.context;
  */
 public interface Nullable extends AttributeMapping
 {
-	Boolean getOptional();
+	boolean isOptional();
 	
-	Boolean getDefaultOptional();
-		String DEFAULT_OPTIONAL_PROPERTY = "defaultOptionalProperty";
-		Boolean DEFAULT_OPTIONAL = Boolean.TRUE;
+	boolean isDefaultOptional();
+		String DEFAULT_OPTIONAL_PROPERTY = "defaultOptional"; //$NON-NLS-1$
+		boolean DEFAULT_OPTIONAL = true;
 	
 	Boolean getSpecifiedOptional();
 	void setSpecifiedOptional(Boolean newSpecifiedOptional);
-		String SPECIFIED_OPTIONAL_PROPERTY = "specifiedOptionalProperty";
+		String SPECIFIED_OPTIONAL_PROPERTY = "specifiedOptional"; //$NON-NLS-1$
 	
 }

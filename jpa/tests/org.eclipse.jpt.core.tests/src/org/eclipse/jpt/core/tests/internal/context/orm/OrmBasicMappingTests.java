@@ -383,7 +383,7 @@ public class OrmBasicMappingTests extends ContextModelTestCase
 		assertNull(ormBasicMapping.getSpecifiedFetch());
 		assertNull(ormBasicMapping.getSpecifiedOptional());
 		assertEquals(FetchType.EAGER, ormBasicMapping.getFetch());
-		assertEquals(Boolean.TRUE, ormBasicMapping.getOptional());
+		assertEquals(true, ormBasicMapping.isOptional());
 
 		
 		OrmColumn ormColumn = ormBasicMapping.getColumn();
@@ -484,7 +484,7 @@ public class OrmBasicMappingTests extends ContextModelTestCase
 		assertNull(ormBasicMapping.getSpecifiedFetch());
 		assertNull(ormBasicMapping.getSpecifiedOptional());
 		assertEquals(FetchType.EAGER, ormBasicMapping.getDefaultFetch());
-		assertEquals(Boolean.TRUE, ormBasicMapping.getDefaultOptional());
+		assertEquals(true, ormBasicMapping.isDefaultOptional());
 		
 		OrmColumn ormColumn = ormBasicMapping.getColumn();
 		assertNull(ormColumn.getSpecifiedName());

@@ -76,11 +76,11 @@ public class GenericOrmBasicMapping extends AbstractOrmAttributeMapping<XmlBasic
 		firePropertyChanged(Fetchable.SPECIFIED_FETCH_PROPERTY, oldFetch, newSpecifiedFetch);
 	}
 
-	public Boolean getOptional() {
-		return (this.getSpecifiedOptional() == null) ? this.getDefaultOptional() : this.getSpecifiedOptional();
+	public boolean isOptional() {
+		return (this.getSpecifiedOptional() == null) ? this.isDefaultOptional() : this.getSpecifiedOptional().booleanValue();
 	}
 	
-	public Boolean getDefaultOptional() {
+	public boolean isDefaultOptional() {
 		return Nullable.DEFAULT_OPTIONAL;
 	}
 

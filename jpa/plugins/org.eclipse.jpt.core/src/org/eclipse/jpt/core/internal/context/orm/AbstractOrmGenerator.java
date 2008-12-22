@@ -32,10 +32,10 @@ public abstract class AbstractOrmGenerator<T extends XmlGenerator>
 	protected String name;
 
 	protected Integer specifiedInitialValue;
-	protected Integer defaultInitialValue;
+	protected int defaultInitialValue;
 
 	protected Integer specifiedAllocationSize;
-	protected Integer defaultAllocationSize;
+	protected int defaultAllocationSize;
 
 	protected T resourceGenerator;
 
@@ -71,8 +71,8 @@ public abstract class AbstractOrmGenerator<T extends XmlGenerator>
 
 	// ********** initial value **********
 
-	public Integer getInitialValue() {
-		return (this.specifiedInitialValue != null) ? this.specifiedInitialValue : this.defaultInitialValue;
+	public int getInitialValue() {
+		return (this.specifiedInitialValue != null) ? this.specifiedInitialValue.intValue() : this.defaultInitialValue;
 	}
 
 	public Integer getSpecifiedInitialValue() {
@@ -92,12 +92,12 @@ public abstract class AbstractOrmGenerator<T extends XmlGenerator>
 		this.firePropertyChanged(SPECIFIED_INITIAL_VALUE_PROPERTY, old, specifiedInitialValue);
 	}
 	
-	public Integer getDefaultInitialValue() {
+	public int getDefaultInitialValue() {
 		return this.defaultInitialValue;
 	}
 	
-	protected void setDefaultInitialValue(Integer defaultInitialValue) {
-		Integer old = this.defaultInitialValue;
+	protected void setDefaultInitialValue(int defaultInitialValue) {
+		int old = this.defaultInitialValue;
 		this.defaultInitialValue = defaultInitialValue;
 		this.firePropertyChanged(DEFAULT_INITIAL_VALUE_PROPERTY, old, defaultInitialValue);
 	}
@@ -105,8 +105,8 @@ public abstract class AbstractOrmGenerator<T extends XmlGenerator>
 
 	// ********** allocation size **********
 
-	public Integer getAllocationSize() {
-		return (this.specifiedAllocationSize != null) ? this.specifiedAllocationSize : this.defaultAllocationSize;
+	public int getAllocationSize() {
+		return (this.specifiedAllocationSize != null) ? this.specifiedAllocationSize.intValue() : this.defaultAllocationSize;
 	}
 
 	public Integer getSpecifiedAllocationSize() {
@@ -126,12 +126,12 @@ public abstract class AbstractOrmGenerator<T extends XmlGenerator>
 		this.firePropertyChanged(SPECIFIED_ALLOCATION_SIZE_PROPERTY, old, specifiedAllocationSize);
 	}
 
-	public Integer getDefaultAllocationSize() {
+	public int getDefaultAllocationSize() {
 		return this.defaultAllocationSize;
 	}
 	
-	protected void setDefaultAllocationSize(Integer defaultAllocationSize) {
-		Integer old = this.defaultAllocationSize;
+	protected void setDefaultAllocationSize(int defaultAllocationSize) {
+		int old = this.defaultAllocationSize;
 		this.defaultAllocationSize = defaultAllocationSize;
 		this.firePropertyChanged(DEFAULT_ALLOCATION_SIZE_PROPERTY, old, defaultAllocationSize);
 	}

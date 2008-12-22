@@ -133,7 +133,7 @@ public class GenericJavaSequenceGenerator extends AbstractJavaGenerator
 
 	// ********** misc **********
 
-	public Integer getDefaultInitialValue() {
+	public int getDefaultInitialValue() {
 		return SequenceGenerator.DEFAULT_INITIAL_VALUE;
 	}
 	

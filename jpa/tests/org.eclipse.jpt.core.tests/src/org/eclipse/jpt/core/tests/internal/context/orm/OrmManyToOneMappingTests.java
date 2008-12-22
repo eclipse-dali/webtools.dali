@@ -28,6 +28,7 @@ import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
+@SuppressWarnings("nls")
 public class OrmManyToOneMappingTests extends ContextModelTestCase
 {
 	public OrmManyToOneMappingTests(String name) {
@@ -391,7 +392,7 @@ public class OrmManyToOneMappingTests extends ContextModelTestCase
 		assertNull(ormManyToOneMapping.getSpecifiedOptional());
 		assertNull(ormManyToOneMapping.getSpecifiedTargetEntity());
 		assertEquals(FetchType.EAGER, ormManyToOneMapping.getFetch());
-		assertEquals(Boolean.TRUE, ormManyToOneMapping.getOptional());
+		assertEquals(true, ormManyToOneMapping.isOptional());
 		assertNull(ormManyToOneMapping.getTargetEntity());
 
 		
@@ -459,7 +460,7 @@ public class OrmManyToOneMappingTests extends ContextModelTestCase
 		OrmManyToOneMapping ormManyToOneMapping = (OrmManyToOneMapping) ormPersistentAttribute.getMapping();	
 		assertEquals("address", ormManyToOneMapping.getName());
 		assertEquals(FetchType.EAGER, ormManyToOneMapping.getDefaultFetch());
-		assertEquals(Boolean.TRUE, ormManyToOneMapping.getDefaultOptional());
+		assertEquals(true, ormManyToOneMapping.isDefaultOptional());
 		//TODO hmm, is this correct?
 		assertEquals("test.Address", ormManyToOneMapping.getDefaultTargetEntity());
 		
@@ -501,7 +502,7 @@ public class OrmManyToOneMappingTests extends ContextModelTestCase
 		assertNull(ormManyToOneMapping.getSpecifiedOptional());
 		assertNull(ormManyToOneMapping.getSpecifiedTargetEntity());
 		assertEquals(FetchType.EAGER, ormManyToOneMapping.getFetch());
-		assertEquals(Boolean.TRUE, ormManyToOneMapping.getOptional());
+		assertEquals(true, ormManyToOneMapping.isOptional());
 		assertEquals("test.Address", ormManyToOneMapping.getDefaultTargetEntity());
 		
 		assertFalse(ormManyToOneMapping.specifiedJoinColumns().hasNext());

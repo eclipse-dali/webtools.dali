@@ -67,8 +67,8 @@ public abstract class AbstractJavaGenerator
 
 	// ********** initial value **********
 
-	public Integer getInitialValue() {
-		return (this.specifiedInitialValue != null) ? this.specifiedInitialValue : this.getDefaultInitialValue();
+	public int getInitialValue() {
+		return (this.specifiedInitialValue != null) ? this.specifiedInitialValue.intValue() : this.getDefaultInitialValue();
 	}
 
 	public Integer getSpecifiedInitialValue() {
@@ -91,8 +91,8 @@ public abstract class AbstractJavaGenerator
 
 	// ********** allocation size **********
 
-	public Integer getAllocationSize() {
-		return (this.specifiedAllocationSize != null) ? this.specifiedAllocationSize : this.getDefaultAllocationSize();
+	public int getAllocationSize() {
+		return (this.specifiedAllocationSize != null) ? this.specifiedAllocationSize.intValue() : this.getDefaultAllocationSize();
 	}
 
 	public Integer getSpecifiedAllocationSize() {
@@ -112,7 +112,7 @@ public abstract class AbstractJavaGenerator
 		this.firePropertyChanged(Generator.SPECIFIED_ALLOCATION_SIZE_PROPERTY, old, specifiedAllocationSize);
 	}
 
-	public Integer getDefaultAllocationSize() {
+	public int getDefaultAllocationSize() {
 		return Generator.DEFAULT_ALLOCATION_SIZE;
 	}
 

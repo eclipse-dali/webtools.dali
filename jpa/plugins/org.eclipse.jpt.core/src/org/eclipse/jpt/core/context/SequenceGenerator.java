@@ -21,7 +21,7 @@ package org.eclipse.jpt.core.context;
 public interface SequenceGenerator
 	extends Generator
 {
-	Integer DEFAULT_INITIAL_VALUE = Integer.valueOf(1);
+	int DEFAULT_INITIAL_VALUE = 1;
 
 
 	// ********** sequence name **********

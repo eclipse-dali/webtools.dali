@@ -24,7 +24,7 @@ import org.eclipse.jpt.db.Table;
 public interface TableGenerator
 	extends Generator
 {
-	Integer DEFAULT_INITIAL_VALUE = Integer.valueOf(0);
+	int DEFAULT_INITIAL_VALUE = 0;
 
 
 	// ********** table **********

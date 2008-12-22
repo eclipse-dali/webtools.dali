@@ -52,6 +52,7 @@ import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
+@SuppressWarnings("nls")
 public class JavaBasicMappingTests extends ContextModelTestCase
 {
 
@@ -597,7 +598,7 @@ public class JavaBasicMappingTests extends ContextModelTestCase
 		
 		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
 		BasicMapping basicMapping = (BasicMapping) persistentAttribute.getMapping();
-		assertEquals(Boolean.TRUE, basicMapping.getDefaultOptional());
+		assertEquals(true, basicMapping.isDefaultOptional());
 	}
 	
 	public void testSpecifiedBasicGetDefaultOptional() throws Exception {
@@ -606,7 +607,7 @@ public class JavaBasicMappingTests extends ContextModelTestCase
 		
 		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
 		BasicMapping basicMapping = (BasicMapping) persistentAttribute.getSpecifiedMapping();
-		assertEquals(Boolean.TRUE, basicMapping.getDefaultOptional());
+		assertEquals(true, basicMapping.isDefaultOptional());
 	}
 	
 	public void testGetOptional() throws Exception {
@@ -616,10 +617,10 @@ public class JavaBasicMappingTests extends ContextModelTestCase
 		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
 		BasicMapping basicMapping = (BasicMapping) persistentAttribute.getSpecifiedMapping();
 
-		assertEquals(Boolean.TRUE, basicMapping.getOptional());
+		assertEquals(true, basicMapping.isOptional());
 		
-		basicMapping.setSpecifiedOptional(basicMapping.getOptional());
-		assertEquals(Boolean.TRUE, basicMapping.getOptional());
+		basicMapping.setSpecifiedOptional(Boolean.TRUE);
+		assertEquals(true, basicMapping.isOptional());
 	}
 	
 	public void testGetSpecifiedOptional() throws Exception {
@@ -725,7 +726,7 @@ public class JavaBasicMappingTests extends ContextModelTestCase
 		attributeResource.setMappingAnnotation(null);
 		
 		assertNull(persistentAttribute.getSpecifiedMapping());
-		assertEquals(Boolean.TRUE, ((BasicMapping) persistentAttribute.getMapping()).getOptional());
+		assertEquals(true, ((BasicMapping) persistentAttribute.getMapping()).isOptional());
 	}
 	
 	

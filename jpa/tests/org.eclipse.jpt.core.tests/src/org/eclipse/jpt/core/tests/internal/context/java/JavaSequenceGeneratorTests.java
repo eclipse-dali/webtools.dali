@@ -21,6 +21,7 @@ import org.eclipse.jpt.core.resource.java.SequenceGeneratorAnnotation;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
+@SuppressWarnings("nls")
 public class JavaSequenceGeneratorTests extends ContextModelTestCase
 {
 	private static final String SEQUENCE_GENERATOR_NAME = "MY_SEQUENCE_GENERATOR";
@@ -115,7 +116,7 @@ public class JavaSequenceGeneratorTests extends ContextModelTestCase
 		
 		sequenceGenerator.setInitialValue(Integer.valueOf(82));
 		
-		assertEquals(Integer.valueOf(82), idMapping.getSequenceGenerator().getInitialValue());
+		assertEquals(82, idMapping.getSequenceGenerator().getInitialValue());
 		assertEquals(Integer.valueOf(82), idMapping.getSequenceGenerator().getSpecifiedInitialValue());
 	}
 	
@@ -165,7 +166,7 @@ public class JavaSequenceGeneratorTests extends ContextModelTestCase
 		
 		sequenceGenerator.setAllocationSize(Integer.valueOf(20));
 		
-		assertEquals(Integer.valueOf(20), idMapping.getSequenceGenerator().getAllocationSize());
+		assertEquals(20, idMapping.getSequenceGenerator().getAllocationSize());
 		assertEquals(Integer.valueOf(20), idMapping.getSequenceGenerator().getSpecifiedAllocationSize());
 	}
 	

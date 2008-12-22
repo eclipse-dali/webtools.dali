@@ -40,6 +40,7 @@ import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
+@SuppressWarnings("nls")
 public class OrmOneToOneMappingTests extends ContextModelTestCase
 {
 	public OrmOneToOneMappingTests(String name) {
@@ -443,7 +444,7 @@ public class OrmOneToOneMappingTests extends ContextModelTestCase
 		assertNull(ormOneToOneMapping.getSpecifiedOptional());
 		assertNull(ormOneToOneMapping.getSpecifiedTargetEntity());
 		assertEquals(FetchType.EAGER, ormOneToOneMapping.getFetch());
-		assertEquals(Boolean.TRUE, ormOneToOneMapping.getOptional());
+		assertEquals(true, ormOneToOneMapping.isOptional());
 		assertNull(ormOneToOneMapping.getTargetEntity());
 
 		
@@ -513,7 +514,7 @@ public class OrmOneToOneMappingTests extends ContextModelTestCase
 		OrmOneToOneMapping ormOneToOneMapping = (OrmOneToOneMapping) ormPersistentAttribute.getMapping();	
 		assertEquals("address", ormOneToOneMapping.getName());
 		assertEquals(FetchType.EAGER, ormOneToOneMapping.getFetch());
-		assertEquals(Boolean.TRUE, ormOneToOneMapping.getOptional());
+		assertEquals(true, ormOneToOneMapping.isOptional());
 		assertEquals("test.Address", ormOneToOneMapping.getTargetEntity());
 		assertNull(ormOneToOneMapping.getMappedBy());
 
@@ -556,7 +557,7 @@ public class OrmOneToOneMappingTests extends ContextModelTestCase
 		assertNull(ormOneToOneMapping.getSpecifiedTargetEntity());
 		assertNull(ormOneToOneMapping.getMappedBy());
 		assertEquals(FetchType.EAGER, ormOneToOneMapping.getFetch());
-		assertEquals(Boolean.TRUE, ormOneToOneMapping.getOptional());
+		assertEquals(true, ormOneToOneMapping.isOptional());
 		//TODO default target entity in xml
 		//assertEquals("test.Address", ormOneToOneMapping.getDefaultTargetEntity());
 		

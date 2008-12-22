@@ -31,6 +31,7 @@ import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
+@SuppressWarnings("nls")
 public class JavaTableGeneratorTests extends ContextModelTestCase
 {
 	private static final String TABLE_GENERATOR_NAME = "MY_TABLE_GENERATOR";
@@ -397,7 +398,7 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		
 		tableGenerator.setInitialValue(Integer.valueOf(82));
 		
-		assertEquals(Integer.valueOf(82), idMapping.getTableGenerator().getInitialValue());
+		assertEquals(82, idMapping.getTableGenerator().getInitialValue());
 		assertEquals(Integer.valueOf(82), idMapping.getTableGenerator().getSpecifiedInitialValue());
 	}
 	
@@ -447,7 +448,7 @@ public class JavaTableGeneratorTests extends ContextModelTestCase
 		
 		tableGenerator.setAllocationSize(Integer.valueOf(20));
 		
-		assertEquals(Integer.valueOf(20), idMapping.getTableGenerator().getAllocationSize());
+		assertEquals(20, idMapping.getTableGenerator().getAllocationSize());
 		assertEquals(Integer.valueOf(20), idMapping.getTableGenerator().getSpecifiedAllocationSize());
 	}
 	

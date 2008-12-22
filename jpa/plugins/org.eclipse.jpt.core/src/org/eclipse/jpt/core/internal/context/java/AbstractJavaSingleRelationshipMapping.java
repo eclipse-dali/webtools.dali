@@ -165,8 +165,8 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 
 	// ********** optional **********
 
-	public Boolean getOptional() {
-		return (this.specifiedOptional != null) ? this.specifiedOptional : this.getDefaultOptional();
+	public boolean isOptional() {
+		return (this.specifiedOptional != null) ? this.specifiedOptional.booleanValue() : this.isDefaultOptional();
 	}
 
 	public Boolean getSpecifiedOptional() {
@@ -186,7 +186,7 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 		this.firePropertyChanged(Nullable.SPECIFIED_OPTIONAL_PROPERTY, old, optional);
 	}
 	
-	public Boolean getDefaultOptional() {
+	public boolean isDefaultOptional() {
 		return Nullable.DEFAULT_OPTIONAL;
 	}
 	

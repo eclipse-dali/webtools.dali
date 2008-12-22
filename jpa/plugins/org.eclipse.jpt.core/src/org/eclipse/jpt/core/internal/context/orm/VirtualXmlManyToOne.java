@@ -52,9 +52,9 @@ public class VirtualXmlManyToOne extends VirtualXmlAttributeMapping<JavaManyToOn
 
 	public Boolean getOptional() {
 		if (this.isOrmMetadataComplete()) {
-			return this.javaAttributeMapping.getDefaultOptional();
+			return Boolean.valueOf(this.javaAttributeMapping.isDefaultOptional());
 		}
-		return this.javaAttributeMapping.getOptional();
+		return Boolean.valueOf(this.javaAttributeMapping.isOptional());
 	}
 
 	public void setOptional(@SuppressWarnings("unused") Boolean newOptional) {
