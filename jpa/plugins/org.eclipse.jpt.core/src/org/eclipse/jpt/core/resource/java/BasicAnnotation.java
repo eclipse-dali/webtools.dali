@@ -37,7 +37,7 @@ public interface BasicAnnotation extends JavaResourceNode
 	 * Set to null to remove the fetch element.
 	 */
 	void setFetch(FetchType fetch);
-		String FETCH_PROPERTY = "fetchProperty";
+		String FETCH_PROPERTY = "fetch"; //$NON-NLS-1$
 		
 	/**
 	 * Corresponds to the optional element of the Basic annotation.
@@ -50,7 +50,7 @@ public interface BasicAnnotation extends JavaResourceNode
 	 * Set to null to remove the optional element.
 	 */
 	void setOptional(Boolean optional);
-		String OPTIONAL_PROPERTY = "optionalProperty";
+		String OPTIONAL_PROPERTY = "optional"; //$NON-NLS-1$
 	
 	/**
 	 * Return the {@link TextRange} for the fetch element.  If the fetch element 

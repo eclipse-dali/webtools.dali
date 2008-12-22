@@ -36,7 +36,7 @@ public interface DiscriminatorValueAnnotation extends JavaResourceNode
 	 * Setting the value to null will not remove the OrderBy annotation
 	 */
 	void setValue(String value);
-		String VALUE_PROPERTY = "valueProperty";
+		String VALUE_PROPERTY = "value"; //$NON-NLS-1$
 
 	/**
 	 * Return the {@link TextRange} for the value element. If value element

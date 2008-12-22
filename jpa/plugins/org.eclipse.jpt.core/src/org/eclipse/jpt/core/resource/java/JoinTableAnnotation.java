@@ -37,7 +37,7 @@ public interface JoinTableAnnotation extends TableAnnotation
 	void removeJoinColumn(int index);
 	
 	void moveJoinColumn(int targetIndex, int sourceIndex);
-		String JOIN_COLUMNS_LIST = "joinColumnsList";
+		String JOIN_COLUMNS_LIST = "joinColumns"; //$NON-NLS-1$
 	
 	ListIterator<JoinColumnAnnotation> inverseJoinColumns();
 	
@@ -52,6 +52,6 @@ public interface JoinTableAnnotation extends TableAnnotation
 	void removeInverseJoinColumn(int index);
 	
 	void moveInverseJoinColumn(int targetIndex, int sourceIndex);
-		String INVERSE_JOIN_COLUMNS_LIST = "inverseJoinColumnsList";
+		String INVERSE_JOIN_COLUMNS_LIST = "inverseJoinColumns"; //$NON-NLS-1$
 
 }

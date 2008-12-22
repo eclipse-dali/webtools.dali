@@ -22,5 +22,5 @@ public interface PrimaryKeyJoinColumnsAnnotation extends ContainerAnnotation<Nes
 {
 	String ANNOTATION_NAME = JPA.PRIMARY_KEY_JOIN_COLUMNS;
 
-	String PK_JOIN_COLUMNS_LIST = "pkJoinColumnsList";
+	String PK_JOIN_COLUMNS_LIST = "pkJoinColumns"; //$NON-NLS-1$
 }

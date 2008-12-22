@@ -34,7 +34,7 @@ public interface NamedColumnAnnotation extends JavaResourceNode
 	 * Set to null to remove the name valuePair from the annotation
 	 */
 	void setName(String name);
-		String NAME_PROPERTY = "nameProperty";
+		String NAME_PROPERTY = "name"; //$NON-NLS-1$
 		
 	/**
 	 * Corresponds to the columnDefinition element of the *Column annotation.
@@ -47,7 +47,7 @@ public interface NamedColumnAnnotation extends JavaResourceNode
 	 * Set to null to remove the columnDefinition valuePair from the annotation
 	 */
 	void setColumnDefinition(String columnDefinition);
-		String COLUMN_DEFINITION_PROPERTY = "columnDefinitionPropety";
+		String COLUMN_DEFINITION_PROPERTY = "columnDefinition"; //$NON-NLS-1$
 
 	/**
 	 * Return the {@link TextRange} for the name element. If the name element

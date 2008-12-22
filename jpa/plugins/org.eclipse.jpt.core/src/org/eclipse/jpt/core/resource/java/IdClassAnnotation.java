@@ -42,7 +42,7 @@ public interface IdClassAnnotation extends JavaResourceNode
 	 * annotation itself.
 	 */
 	void setValue(String value);
-		String VALUE_PROPERTY = "valueProperty";
+		String VALUE_PROPERTY = "value"; //$NON-NLS-1$
 		
 	/**
 	 * Returns the qualified value name as it is resolved in the AST
@@ -53,7 +53,7 @@ public interface IdClassAnnotation extends JavaResourceNode
 	 * @return
 	 */
 	String getFullyQualifiedClass();
-		String FULLY_QUALIFIED_CLASS_PROPERTY = "fullyQualifiedClassProperty";
+		String FULLY_QUALIFIED_CLASS_PROPERTY = "fullyQualifiedClass"; //$NON-NLS-1$
 
 	/**
 	 * Return the {@link TextRange} for the value element.  If the value element 

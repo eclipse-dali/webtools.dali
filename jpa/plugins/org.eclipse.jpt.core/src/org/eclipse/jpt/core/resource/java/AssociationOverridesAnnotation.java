@@ -22,5 +22,5 @@ public interface AssociationOverridesAnnotation extends ContainerAnnotation<Nest
 {
 	String ANNOTATION_NAME = JPA.ASSOCIATION_OVERRIDES;
 
-	String ASSOCIATION_OVERRIDES_LIST = "associationOveridesList";
+	String ASSOCIATION_OVERRIDES_LIST = "associationOverides"; //$NON-NLS-1$
 }

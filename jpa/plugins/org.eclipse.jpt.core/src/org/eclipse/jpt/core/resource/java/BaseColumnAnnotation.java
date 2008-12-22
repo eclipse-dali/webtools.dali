@@ -35,7 +35,7 @@ public interface BaseColumnAnnotation extends NamedColumnAnnotation
 	 * Set to null to remove the unique valuePair from the annotation
 	 */
 	void setUnique(Boolean unique);	
-		String UNIQUE_PROPERTY = "uniqueProperty";
+		String UNIQUE_PROPERTY = "unique"; //$NON-NLS-1$
 	
 	/**
 	 * Corresponds to the nullable element of the *Column annotation.
@@ -48,7 +48,7 @@ public interface BaseColumnAnnotation extends NamedColumnAnnotation
 	 * Set to null to remove the nullable valuePair from the annotation
 	 */
 	void setNullable(Boolean nullable);
-		String NULLABLE_PROPERTY = "nullableProperty";
+		String NULLABLE_PROPERTY = "nullable"; //$NON-NLS-1$
 	
 	/**
 	 * Corresponds to the insertable element of the *Column annotation.
@@ -61,7 +61,7 @@ public interface BaseColumnAnnotation extends NamedColumnAnnotation
 	 * Set to null to remove the insertable valuePair from the annotation
 	 */
 	void setInsertable(Boolean insertable);
-		String INSERTABLE_PROPERTY = "insertableProperty";
+		String INSERTABLE_PROPERTY = "insertable"; //$NON-NLS-1$
 	
 	/**
 	 * Corresponds to the updatable element of the *Column annotation.
@@ -74,7 +74,7 @@ public interface BaseColumnAnnotation extends NamedColumnAnnotation
 	 * Set to null to remove the updatable valuePair from the annotation
 	 */
 	void setUpdatable(Boolean updatable);
-		String UPDATABLE_PROPERTY = "updatableProperty";
+		String UPDATABLE_PROPERTY = "updatable"; //$NON-NLS-1$
 	
 	/**
 	 * Corresponds to the table element of the *Column annotation.
@@ -87,7 +87,7 @@ public interface BaseColumnAnnotation extends NamedColumnAnnotation
 	 * Set to null to remove the table valuePair from the annotation
 	 */
 	void setTable(String table);
-		String TABLE_PROPERTY = "tableProperty";
+		String TABLE_PROPERTY = "table"; //$NON-NLS-1$
 
 	
 	/**

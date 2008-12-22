@@ -22,6 +22,6 @@ public interface JoinColumnsAnnotation extends ContainerAnnotation<NestableJoinC
 {
 	String ANNOTATION_NAME = JPA.JOIN_COLUMNS;
 	
-	String JOIN_COLUMNS_LIST = "joinColumnsList";
+	String JOIN_COLUMNS_LIST = "joinColumns"; //$NON-NLS-1$
 	
 }

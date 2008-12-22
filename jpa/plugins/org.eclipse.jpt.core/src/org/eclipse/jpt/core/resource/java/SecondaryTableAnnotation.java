@@ -38,5 +38,5 @@ public interface SecondaryTableAnnotation extends TableAnnotation
 	
 	void movePkJoinColumn(int targetIndex, int sourceIndex);
 
-	String PK_JOIN_COLUMNS_LIST = "pkJoinColumnsList";
+	String PK_JOIN_COLUMNS_LIST = "pkJoinColumns"; //$NON-NLS-1$
 }

@@ -29,11 +29,11 @@ public interface DiscriminatorColumnAnnotation extends NamedColumnAnnotation
 	DiscriminatorType getDiscriminatorType();
 	
 	/**
-	 * Corresponds to the discriminatorType element of the javax.persistence.OrderBy annotation.
+	 * Corresponds to the discriminatorType element of the javax.persistence.DiscriminatorColumn annotation.
 	 * Set the discriminatorType to null to remove the discriminatorType valuePair
 	 */
 	void setDiscriminatorType(DiscriminatorType discriminatorType);
-		String DISCRIMINATOR_TYPE_PROPERTY = "discriminatorTypeProperty";
+		String DISCRIMINATOR_TYPE_PROPERTY = "discriminatorType"; //$NON-NLS-1$
 	
 	/**
 	 * Corresponds to the length element of the javax.persistence.DiscriminatorColumn annotation.
@@ -42,10 +42,10 @@ public interface DiscriminatorColumnAnnotation extends NamedColumnAnnotation
 	Integer getLength();
 	
 	/**
-	 * Corresponds to the length element of the javax.persistence.OrderBy annotation.
+	 * Corresponds to the length element of the javax.persistence.DiscriminatorColumn annotation.
 	 * Set the length to null to remove the length valuePair
 	 */
 	void setLength(Integer length);
-		String LENGTH_PROPERTY = "lengthProperty";
+		String LENGTH_PROPERTY = "length"; //$NON-NLS-1$
 
 }

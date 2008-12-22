@@ -66,7 +66,7 @@ public enum CascadeType {
 		else if (javaAnnotationValue.equals(REFRESH.getJavaAnnotationValue())) {
 			return REFRESH;
 		}
-		throw new IllegalArgumentException("Unknown cascade type: " + javaAnnotationValue);
+		throw new IllegalArgumentException("Unknown cascade type: " + javaAnnotationValue); //$NON-NLS-1$
 	}
 	
 	public static String[] toJavaAnnotationValue(CascadeType[] cascadeTypes) {

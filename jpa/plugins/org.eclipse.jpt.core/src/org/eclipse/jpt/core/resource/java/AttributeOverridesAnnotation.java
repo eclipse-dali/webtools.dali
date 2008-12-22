@@ -22,5 +22,5 @@ public interface AttributeOverridesAnnotation extends ContainerAnnotation<Nestab
 {
 	String ANNOTATION_NAME = JPA.ATTRIBUTE_OVERRIDES;
 
-	String ATTRIBUTE_OVERRIDES_LIST = "attributeOverridesList";
+	String ATTRIBUTE_OVERRIDES_LIST = "attributeOverrides"; //$NON-NLS-1$
 }

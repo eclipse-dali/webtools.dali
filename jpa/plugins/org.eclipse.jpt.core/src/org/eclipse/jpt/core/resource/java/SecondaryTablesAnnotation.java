@@ -22,5 +22,5 @@ public interface SecondaryTablesAnnotation extends ContainerAnnotation<NestableS
 {
 	String ANNOTATION_NAME = JPA.SECONDARY_TABLES;
 
-	String SECONDARY_TABLES_LIST = "secondaryTablesList";
+	String SECONDARY_TABLES_LIST = "secondaryTables"; //$NON-NLS-1$
 }

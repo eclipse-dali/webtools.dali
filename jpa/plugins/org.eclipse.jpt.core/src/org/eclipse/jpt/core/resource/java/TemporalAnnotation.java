@@ -36,7 +36,7 @@ public interface TemporalAnnotation extends JavaResourceNode
 	 * Set to null to remove the value element.
 	 */
 	void setValue(TemporalType value);
-		String VALUE_PROPERTY = "valueProperty";
+		String VALUE_PROPERTY = "value"; //$NON-NLS-1$
 	
 	/**
 	 * Return the {@link TextRange} for the value element.  If the value element 

@@ -47,7 +47,7 @@ public enum FetchType {
 			case LAZY :
 				return JPA.FETCH_TYPE__LAZY;
 			default :
-				throw new IllegalArgumentException("unknown fetch type: " + fetchType);
+				throw new IllegalArgumentException("unknown fetch type: " + fetchType); //$NON-NLS-1$
 		}
 	}
 }

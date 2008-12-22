@@ -26,11 +26,11 @@ public interface QueryAnnotation extends JavaResourceNode
 {
 	String getName();	
 	void setName(String name);
-		String NAME_PROPERTY = "nameProperty";
+		String NAME_PROPERTY = "name"; //$NON-NLS-1$
 	
 	String getQuery();	
 	void setQuery(String query);
-		String QUERY_PROPERTY = "queryProperty";
+		String QUERY_PROPERTY = "query"; //$NON-NLS-1$
 	
 	ListIterator<QueryHintAnnotation> hints();
 	
@@ -45,7 +45,7 @@ public interface QueryAnnotation extends JavaResourceNode
 	void removeHint(int index);
 	
 	void moveHint(int targetIndex, int sourceIndex);
-		String HINTS_LIST = "hintsList";
+		String HINTS_LIST = "hints"; //$NON-NLS-1$
 
 	/**
 	 * Return the {@link TextRange} for the name element. If name element

@@ -36,7 +36,7 @@ public interface JoinColumnAnnotation extends BaseColumnAnnotation
 	 * Set to null to remove the referencedColumnName valuePait from the Annotation
 	 */
 	void setReferencedColumnName(String referencedColumnName);
-		String REFERENCED_COLUMN_NAME_PROPERTY = "referencedColumnNameProperty";
+		String REFERENCED_COLUMN_NAME_PROPERTY = "referencedColumnName"; //$NON-NLS-1$
 	
 	/**
 	 * Return the {@link TextRange} for the referencedColumnName element. If the 

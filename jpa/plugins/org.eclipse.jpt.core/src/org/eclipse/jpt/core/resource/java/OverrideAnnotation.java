@@ -35,7 +35,7 @@ public interface OverrideAnnotation extends JavaResourceNode
 	 * Set to null to remove the name element.
 	 */
 	void setName(String name);
-		String NAME_PROPERTY = "nameProperty";
+		String NAME_PROPERTY = "name"; //$NON-NLS-1$
 
 	/**
 	 * Return the {@link TextRange} for the name element. If name element

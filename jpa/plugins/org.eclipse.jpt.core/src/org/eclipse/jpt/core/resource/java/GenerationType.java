@@ -59,7 +59,7 @@ public enum GenerationType {
 			case AUTO :
 				return JPA.GENERATION_TYPE__AUTO;
 			default :
-				throw new IllegalArgumentException("unknown generation type: " + generationType);
+				throw new IllegalArgumentException("unknown generation type: " + generationType); //$NON-NLS-1$
 		}
 	}
 }

@@ -36,7 +36,7 @@ public interface ManyToOneAnnotation extends RelationshipMappingAnnotation
 	 * Set to null to remove the optional element.
 	 */
 	void setOptional(Boolean optional);
-		String OPTIONAL_PROPERTY = "optionalProperty";
+		String OPTIONAL_PROPERTY = "optional"; //$NON-NLS-1$
 
 	/**
 	 * Return the {@link TextRange} for the optional element.  If the optional element 

@@ -47,7 +47,7 @@ public enum EnumType {
 			case STRING :
 				return JPA.ENUM_TYPE__STRING;
 			default :
-				throw new IllegalArgumentException("unknown enum type: " + enumType);
+				throw new IllegalArgumentException("unknown enum type: " + enumType); //$NON-NLS-1$
 		}
 	}
 }

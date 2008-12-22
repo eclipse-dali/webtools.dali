@@ -53,7 +53,7 @@ public enum InheritanceType {
 			case TABLE_PER_CLASS :
 				return JPA.INHERITANCE_TYPE__TABLE_PER_CLASS;
 			default :
-				throw new IllegalArgumentException("unknown inheritance type: " + inheritanceType);
+				throw new IllegalArgumentException("unknown inheritance type: " + inheritanceType); //$NON-NLS-1$
 		}
 	}
 }

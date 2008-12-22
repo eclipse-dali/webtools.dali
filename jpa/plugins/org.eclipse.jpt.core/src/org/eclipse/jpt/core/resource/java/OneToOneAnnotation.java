@@ -36,7 +36,7 @@ public interface OneToOneAnnotation extends RelationshipMappingAnnotation
 	 * Set to null to remove the optional element.
 	 */
 	void setOptional(Boolean optional);
-		String OPTIONAL_PROPERTY = "optionalProperty";
+		String OPTIONAL_PROPERTY = "optional"; //$NON-NLS-1$
 	
 	/**
 	 * Corresponds to the mappedBy element of the OneToOne annotation. 
@@ -49,7 +49,7 @@ public interface OneToOneAnnotation extends RelationshipMappingAnnotation
 	 * Set to null to remove the mappedBy element.
 	 */
 	void setMappedBy(String mappedBy);
-		String MAPPED_BY_PROPERTY = "mappedByProperty";
+		String MAPPED_BY_PROPERTY = "mappedBy"; //$NON-NLS-1$
 	
 	/**
 	 * Return the {@link TextRange} for the mappedBy element.  If the mappedBy element 

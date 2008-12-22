@@ -37,7 +37,7 @@ public interface EntityAnnotation extends JavaResourceNode
 	 */
 	void setName(String name);
 	
-	String NAME_PROPERTY = "nameProperty";
+	String NAME_PROPERTY = "name"; //$NON-NLS-1$
 	
 	/**
 	 * Return the {@link TextRange} for the name element.  If the name element 

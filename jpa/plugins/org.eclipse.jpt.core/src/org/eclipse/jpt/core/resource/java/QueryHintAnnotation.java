@@ -36,7 +36,7 @@ public interface QueryHintAnnotation extends JavaResourceNode
 	 * Setting to null will remove the name valuePair
 	 */
 	void setName(String name);
-		String NAME_PROPERTY = "nameProperty";
+		String NAME_PROPERTY = "name"; //$NON-NLS-1$
 		
 	/**
 	 * Corresponds to the value element of the QueryHint annotation.
@@ -49,7 +49,7 @@ public interface QueryHintAnnotation extends JavaResourceNode
 	 * Setting to null will remove the value valuePair
 	 */
 	void setValue(String value);
-		String VALUE_PROPERTY = "valueProperty";
+		String VALUE_PROPERTY = "value"; //$NON-NLS-1$
 
 	/**
 	 * Return the {@link TextRange} for the name element.  If the name element 

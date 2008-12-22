@@ -43,5 +43,5 @@ public interface AssociationOverrideAnnotation extends OverrideAnnotation
 	
 	void moveJoinColumn(int targetIndex, int sourceIndex);
 	
-		String JOIN_COLUMNS_LIST = "joinColumnsList";
+		String JOIN_COLUMNS_LIST = "joinColumns"; //$NON-NLS-1$
 }

@@ -41,7 +41,7 @@ public interface RelationshipMappingAnnotation extends JavaResourceNode
 	 * Set to null to remove the targetEntity element.
 	 */
 	void setTargetEntity(String targetEntity);
-		String TARGET_ENTITY_PROPERTY = "targetEntityProperty";
+		String TARGET_ENTITY_PROPERTY = "targetEntity"; //$NON-NLS-1$
 	
 	/**
 	 * Returns the qualified targetEntity name as it is resolved in the AST
@@ -52,7 +52,7 @@ public interface RelationshipMappingAnnotation extends JavaResourceNode
 	 * @return
 	 */
 	String getFullyQualifiedTargetEntity();
-		String FULLY_QUALFIEID_TARGET_ENTITY_PROPERTY = "fullyQualifiedTargetEntityProperty";
+		String FULLY_QUALFIEID_TARGET_ENTITY_PROPERTY = "fullyQualifiedTargetEntity"; //$NON-NLS-1$
 	
 	/**
 	 * Corresponds to the fetch element of the relationship 
@@ -67,27 +67,27 @@ public interface RelationshipMappingAnnotation extends JavaResourceNode
 	 * Set to null to remove the fetch element.
 	 */
 	void setFetch(FetchType fetch);
-		String FETCH_PROPERTY = "fetchProperty";
+		String FETCH_PROPERTY = "fetch"; //$NON-NLS-1$
 	
 	boolean isCascadeAll();	
 	void setCascadeAll(boolean all);
-		String CASCADE_ALL_PROPERTY = "cascadeAllProperty";
+		String CASCADE_ALL_PROPERTY = "cascadeAll"; //$NON-NLS-1$
 	
 	boolean isCascadeMerge();	
 	void setCascadeMerge(boolean merge);
-	String CASCADE_MERGE_PROPERTY = "cascadeMergeProperty";
+	String CASCADE_MERGE_PROPERTY = "cascadeMerge"; //$NON-NLS-1$
 
 	boolean isCascadePersist();	
 	void setCascadePersist(boolean persist);
-		String CASCADE_PERSIST_PROPERTY = "cascadePersistProperty";
+		String CASCADE_PERSIST_PROPERTY = "cascadePersist"; //$NON-NLS-1$
 
 	boolean isCascadeRefresh();	
 	void setCascadeRefresh(boolean refresh);
-		String CASCADE_REFRESH_PROPERTY = "cascadeRefreshProperty";
+		String CASCADE_REFRESH_PROPERTY = "cascadeRefresh"; //$NON-NLS-1$
 
 	boolean isCascadeRemove();	
 	void setCascadeRemove(boolean remove);
-		String CASCADE_REMOVE_PROPERTY = "cascadeRemoveProperty";
+		String CASCADE_REMOVE_PROPERTY = "cascadeRemove"; //$NON-NLS-1$
 
 	
 	/**

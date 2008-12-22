@@ -40,6 +40,6 @@ public interface AttributeOverrideAnnotation extends OverrideAnnotation
 	
 	ColumnAnnotation getNonNullColumn();
 	
-	String COLUMN_PROPERTY = "columnProperty";
+	String COLUMN_PROPERTY = "column"; //$NON-NLS-1$
 
 }

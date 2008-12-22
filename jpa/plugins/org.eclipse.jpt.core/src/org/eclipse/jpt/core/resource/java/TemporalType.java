@@ -53,7 +53,7 @@ public enum TemporalType {
 			case TIMESTAMP :
 				return JPA.TEMPORAL_TYPE__TIMESTAMP;
 			default :
-				throw new IllegalArgumentException("unknown temporal type: " + temporalType);
+				throw new IllegalArgumentException("unknown temporal type: " + temporalType); //$NON-NLS-1$
 		}
 	}
 }

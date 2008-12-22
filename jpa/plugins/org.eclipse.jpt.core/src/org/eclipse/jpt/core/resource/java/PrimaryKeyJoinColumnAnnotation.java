@@ -28,7 +28,7 @@ public interface PrimaryKeyJoinColumnAnnotation extends NamedColumnAnnotation
 	String getReferencedColumnName();
 	
 	void setReferencedColumnName(String referencedColumnName);
-		String REFERENCED_COLUMN_NAME_PROPERTY = "referencedColumnNameProperty";
+		String REFERENCED_COLUMN_NAME_PROPERTY = "referencedColumnName"; //$NON-NLS-1$
 
 	/**
 	 * Return whether the specified postition touches the referencedColumnName element.

@@ -53,7 +53,7 @@ public enum DiscriminatorType {
 			case INTEGER :
 				return JPA.DISCRIMINATOR_TYPE__INTEGER;
 			default :
-				throw new IllegalArgumentException("unknown discriminator type: " + discriminatorType);
+				throw new IllegalArgumentException("unknown discriminator type: " + discriminatorType); //$NON-NLS-1$
 		}
 	}
 }

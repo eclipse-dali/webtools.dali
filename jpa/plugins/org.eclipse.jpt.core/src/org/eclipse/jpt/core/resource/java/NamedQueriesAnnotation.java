@@ -22,5 +22,5 @@ public interface NamedQueriesAnnotation extends ContainerAnnotation<NestableName
 {
 	String ANNOTATION_NAME = JPA.NAMED_QUERIES;
 
-	String NAMED_QUERIES_LIST = "namedQueriesList";
+	String NAMED_QUERIES_LIST = "namedQueries"; //$NON-NLS-1$
 }

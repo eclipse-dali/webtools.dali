@@ -28,7 +28,7 @@ public interface InheritanceAnnotation extends JavaResourceNode
 	InheritanceType getStrategy();
 	
 	void setStrategy(InheritanceType strategy);
-		String STRATEGY_PROPERTY = "strategyProperty";
+		String STRATEGY_PROPERTY = "strategy"; //$NON-NLS-1$
 		
 	/**
 	 * Return the {@link TextRange} for the strategy element.  If the strategy element 

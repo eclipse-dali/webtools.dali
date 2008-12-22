@@ -37,7 +37,7 @@ public interface NamedNativeQueryAnnotation extends QueryAnnotation
 	 * Set to null to remove the resultClass element.
 	 */
 	void setResultClass(String resultClass);
-		String RESULT_CLASS_PROPERTY = "resultClassProperty";
+		String RESULT_CLASS_PROPERTY = "resultClass"; //$NON-NLS-1$
 	
 	/**
 	 * Corresponds to the resultSetMapping element of the NamedNativeQuery annotation.
@@ -50,10 +50,10 @@ public interface NamedNativeQueryAnnotation extends QueryAnnotation
 	 * Set to null to remove the resultSetMapping element.
 	 */
 	void setResultSetMapping(String resultSetMapping);
-		String RESULT_SET_MAPPING_PROPERTY = "resultSetMappingProperty";
+		String RESULT_SET_MAPPING_PROPERTY = "resultSetMapping"; //$NON-NLS-1$
 	
 	String getFullyQualifiedResultClass();
-	String FULLY_QUALIFIED_RESULT_CLASS_PROPERTY = "fullyQualifiedResultClassProperty";
+	String FULLY_QUALIFIED_RESULT_CLASS_PROPERTY = "fullyQualifiedResultClass"; //$NON-NLS-1$
 	
 	/**
 	 * Return the {@link TextRange} for the resultClass element. If resultClass element
