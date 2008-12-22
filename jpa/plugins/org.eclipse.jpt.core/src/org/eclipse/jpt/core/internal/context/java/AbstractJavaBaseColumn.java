@@ -97,11 +97,11 @@ public abstract class AbstractJavaBaseColumn<T extends BaseColumnAnnotation> ext
 		firePropertyChanged(BaseColumn.DEFAULT_TABLE_PROPERTY, oldDefaultTable, newDefaultTable);
 	}
 
-	public Boolean getUnique() {
-		return (this.getSpecifiedUnique() == null) ? this.getDefaultUnique() : this.getSpecifiedUnique();
+	public boolean isUnique() {
+		return (this.getSpecifiedUnique() == null) ? this.isDefaultUnique() : this.getSpecifiedUnique().booleanValue();
 	}
 	
-	public Boolean getDefaultUnique() {
+	public boolean isDefaultUnique() {
 		return BaseColumn.DEFAULT_UNIQUE;
 	}
 	
@@ -128,11 +128,11 @@ public abstract class AbstractJavaBaseColumn<T extends BaseColumnAnnotation> ext
 		firePropertyChanged(BaseColumn.SPECIFIED_UNIQUE_PROPERTY, oldSpecifiedUnique, newSpecifiedUnique);
 	}
 	
-	public Boolean getNullable() {
-		return (this.getSpecifiedNullable() == null) ? this.getDefaultNullable() : this.getSpecifiedNullable();
+	public boolean isNullable() {
+		return (this.getSpecifiedNullable() == null) ? this.isDefaultNullable() : this.getSpecifiedNullable().booleanValue();
 	}
 	
-	public Boolean getDefaultNullable() {
+	public boolean isDefaultNullable() {
 		return BaseColumn.DEFAULT_NULLABLE;
 	}
 	
@@ -159,11 +159,11 @@ public abstract class AbstractJavaBaseColumn<T extends BaseColumnAnnotation> ext
 		firePropertyChanged(BaseColumn.SPECIFIED_NULLABLE_PROPERTY, oldSpecifiedNullable, newSpecifiedNullable);
 	}
 	
-	public Boolean getInsertable() {
-		return (this.getSpecifiedInsertable() == null) ? this.getDefaultInsertable() : this.getSpecifiedInsertable();
+	public boolean isInsertable() {
+		return (this.getSpecifiedInsertable() == null) ? this.isDefaultInsertable() : this.getSpecifiedInsertable().booleanValue();
 	}
 	
-	public Boolean getDefaultInsertable() {
+	public boolean isDefaultInsertable() {
 		return BaseColumn.DEFAULT_INSERTABLE;
 	}
 	
@@ -190,11 +190,11 @@ public abstract class AbstractJavaBaseColumn<T extends BaseColumnAnnotation> ext
 		firePropertyChanged(BaseColumn.SPECIFIED_INSERTABLE_PROPERTY, oldSpecifiedInsertable, newSpecifiedInsertable);
 	}
 	
-	public Boolean getUpdatable() {
-		return (this.getSpecifiedUpdatable() == null) ? this.getDefaultUpdatable() : this.getSpecifiedUpdatable();
+	public boolean isUpdatable() {
+		return (this.getSpecifiedUpdatable() == null) ? this.isDefaultUpdatable() : this.getSpecifiedUpdatable().booleanValue();
 	}
 	
-	public Boolean getDefaultUpdatable() {
+	public boolean isDefaultUpdatable() {
 		return BaseColumn.DEFAULT_UPDATABLE;
 	}
 	

@@ -32,7 +32,6 @@ import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.osgi.util.NLS;
-import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -106,10 +105,10 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends Pan
 
 	private WritablePropertyValueModel<String> buildColumnDefinitionHolder(PropertyValueModel<DiscriminatorColumn> discriminatorColumnHolder) {
 
-		return new PropertyAspectAdapter<DiscriminatorColumn, String>(discriminatorColumnHolder, DiscriminatorColumn.COLUMN_DEFINITION_PROPERTY) {
+		return new PropertyAspectAdapter<DiscriminatorColumn, String>(discriminatorColumnHolder, NamedColumn.COLUMN_DEFINITION_PROPERTY) {
 			@Override
 			protected String buildValue_() {
-				return subject.getColumnDefinition();
+				return this.subject.getColumnDefinition();
 			}
 
 			@Override
@@ -117,7 +116,7 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends Pan
 				if (value.length() == 0) {
 					value = null;
 				}
-				subject.setColumnDefinition(value);
+				this.subject.setColumnDefinition(value);
 			}
 		};
 	}
@@ -132,7 +131,7 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends Pan
 		return new PropertyAspectAdapter<Entity, String>(getSubjectHolder(), Entity.DEFAULT_DISCRIMINATOR_VALUE_PROPERTY) {
 			@Override
 			protected String buildValue_() {
-				String name = subject.getDefaultDiscriminatorValue();
+				String name = this.subject.getDefaultDiscriminatorValue();
 
 				if (name == null) {
 					name = DEFAULT_KEY;
@@ -150,7 +149,7 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends Pan
 		return new PropertyAspectAdapter<DiscriminatorColumn, Integer>(buildDiscriminatorColumnHolder(), DiscriminatorColumn.DEFAULT_LENGTH_PROPERTY) {
 			@Override
 			protected Integer buildValue_() {
-				return subject.getDefaultLength();
+				return Integer.valueOf(this.subject.getDefaultLength());
 			}
 
 			@Override
@@ -161,7 +160,7 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends Pan
 
 				// Make sure the default value is appended to the text
 				if (oldValue == newValue && newValue == null) {
-					this.fireAspectChange(Integer.MIN_VALUE, newValue);
+					this.fireAspectChange(Integer.valueOf(Integer.MIN_VALUE), newValue);
 				}
 			}
 		};
@@ -189,12 +188,12 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends Pan
 			@Override
 			protected String transform(Integer value) {
 
-				Integer defaultValue = (getSubject() != null) ? getSubject().getDiscriminatorColumn().getDefaultLength() :
+				int defaultValue = (getSubject() != null) ? getSubject().getDiscriminatorColumn().getDefaultLength() :
 				                                             DiscriminatorColumn.DEFAULT_LENGTH;
 
 				return NLS.bind(
 					JptUiMappingsMessages.DefaultWithValue,
-					defaultValue
+					Integer.valueOf(defaultValue)
 				);
 			}
 		};
@@ -337,7 +336,7 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends Pan
 		return new PropertyAspectAdapter<Entity, String>(getSubjectHolder(), Entity.SPECIFIED_DISCRIMINATOR_VALUE_PROPERTY) {
 			@Override
 			protected String buildValue_() {
-				return subject.getSpecifiedDiscriminatorValue();
+				return this.subject.getSpecifiedDiscriminatorValue();
 			}
 
 			@Override
@@ -350,7 +349,7 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends Pan
 					value = null;
 				}
 
-				subject.setSpecifiedDiscriminatorValue(value);
+				this.subject.setSpecifiedDiscriminatorValue(value);
 			}
 		};
 	}
@@ -364,15 +363,15 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends Pan
 		return new PropertyAspectAdapter<DiscriminatorColumn, Integer>(discriminatorColumnHolder, DiscriminatorColumn.SPECIFIED_LENGTH_PROPERTY) {
 			@Override
 			protected Integer buildValue_() {
-				return subject.getSpecifiedLength();
+				return this.subject.getSpecifiedLength();
 			}
 
 			@Override
 			protected void setValue_(Integer value) {
-				if (value == -1) {
+				if (value.intValue() == -1) {
 					value = null;
 				}
-				subject.setSpecifiedLength(value);
+				this.subject.setSpecifiedLength(value);
 			}
 		};
 	}
@@ -489,7 +488,7 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends Pan
 		);
 
 		// Discrinator Value widgets
-		CCombo discriminatorValueCombo = addLabeledEditableCCombo(
+		addLabeledEditableCCombo(
 			subPane,
 			JptUiMappingsMessages.InheritanceComposite_discriminatorValue,
 			buildDiscriminatorValueListHolder(),

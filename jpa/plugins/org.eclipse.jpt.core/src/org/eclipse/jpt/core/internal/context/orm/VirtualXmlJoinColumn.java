@@ -39,9 +39,9 @@ public class VirtualXmlJoinColumn extends AbstractJpaEObject implements XmlJoinC
 
 	public Boolean getInsertable() {
 		if (this.metadataComplete) {
-			return this.javaJoinColumn.getDefaultInsertable();
+			return Boolean.valueOf(this.javaJoinColumn.isDefaultInsertable());
 		}
-		return this.javaJoinColumn.getInsertable();
+		return Boolean.valueOf(this.javaJoinColumn.isInsertable());
 	}
 
 	public void setInsertable(@SuppressWarnings("unused")Boolean value) {
@@ -72,9 +72,9 @@ public class VirtualXmlJoinColumn extends AbstractJpaEObject implements XmlJoinC
 	
 	public Boolean getNullable() {
 		if (this.metadataComplete) {
-			return this.javaJoinColumn.getDefaultNullable();
+			return Boolean.valueOf(this.javaJoinColumn.isDefaultNullable());
 		}
-		return this.javaJoinColumn.getNullable();
+		return Boolean.valueOf(this.javaJoinColumn.isNullable());
 	}
 
 	public void setNullable(@SuppressWarnings("unused")Boolean value) {
@@ -94,9 +94,9 @@ public class VirtualXmlJoinColumn extends AbstractJpaEObject implements XmlJoinC
 
 	public Boolean getUnique() {
 		if (this.metadataComplete) {
-			return this.javaJoinColumn.getDefaultUnique();
+			return Boolean.valueOf(this.javaJoinColumn.isDefaultUnique());
 		}
-		return this.javaJoinColumn.getUnique();
+		return Boolean.valueOf(this.javaJoinColumn.isUnique());
 	}
 
 	public void setUnique(@SuppressWarnings("unused")Boolean value) {
@@ -105,9 +105,9 @@ public class VirtualXmlJoinColumn extends AbstractJpaEObject implements XmlJoinC
 
 	public Boolean getUpdatable() {
 		if (this.metadataComplete) {
-			return this.javaJoinColumn.getDefaultUpdatable();
+			return Boolean.valueOf(this.javaJoinColumn.isDefaultUpdatable());
 		}
-		return this.javaJoinColumn.getUpdatable();
+		return Boolean.valueOf(this.javaJoinColumn.isUpdatable());
 	}
 
 	public void setUpdatable(@SuppressWarnings("unused") Boolean value) {

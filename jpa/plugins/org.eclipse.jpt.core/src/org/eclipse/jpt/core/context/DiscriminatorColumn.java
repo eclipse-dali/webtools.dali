@@ -33,14 +33,14 @@ public interface DiscriminatorColumn extends NamedColumn
 		String SPECIFIED_DISCRIMINATOR_TYPE_PROPERTY = "specifiedDiscriminatorType"; //$NON-NLS-1$
 
 
-	Integer getLength();
+	int getLength();
 
-	Integer getDefaultLength();
-		Integer DEFAULT_LENGTH = Integer.valueOf(31);
+	int getDefaultLength();
+		int DEFAULT_LENGTH = 31;
 		String DEFAULT_LENGTH_PROPERTY = "defaultLength"; //$NON-NLS-1$
 
 	Integer getSpecifiedLength();
 	void setSpecifiedLength(Integer value);
-		String SPECIFIED_LENGTH_PROPERTY = "spcifiedLength"; //$NON-NLS-1$
+		String SPECIFIED_LENGTH_PROPERTY = "specifiedLength"; //$NON-NLS-1$
 
 }

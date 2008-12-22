@@ -19,6 +19,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
+@SuppressWarnings("nls")
 public class JavaDiscriminatorColumnTests extends ContextModelTestCase
 {
 	private static final String DISCRIMINATOR_COLUMN_NAME = "MY_DISCRIMINATOR_COLUMN";
@@ -203,7 +204,7 @@ public class JavaDiscriminatorColumnTests extends ContextModelTestCase
 
 		assertEquals(DiscriminatorColumn.DEFAULT_LENGTH, javaEntity().getDiscriminatorColumn().getLength());
 		javaEntity().getDiscriminatorColumn().setSpecifiedLength(Integer.valueOf(55));
-		assertEquals(Integer.valueOf(55), javaEntity().getDiscriminatorColumn().getLength());
+		assertEquals(55, javaEntity().getDiscriminatorColumn().getLength());
 	}
 	
 	public void testGetDefaultLength() throws Exception {
@@ -227,7 +228,7 @@ public class JavaDiscriminatorColumnTests extends ContextModelTestCase
 		discriminatorColumn.setLength(Integer.valueOf(66));
 		
 		assertEquals(Integer.valueOf(66), javaEntity().getDiscriminatorColumn().getSpecifiedLength());
-		assertEquals(Integer.valueOf(66), javaEntity().getDiscriminatorColumn().getLength());		
+		assertEquals(66, javaEntity().getDiscriminatorColumn().getLength());		
 		discriminatorColumn.setName(null);
 		discriminatorColumn.setLength(null);
 		
@@ -264,7 +265,7 @@ public class JavaDiscriminatorColumnTests extends ContextModelTestCase
 
 		column.setLength(Integer.valueOf(78));
 		assertEquals(Integer.valueOf(78), javaEntity().getDiscriminatorColumn().getSpecifiedLength());
-		assertEquals(Integer.valueOf(78), javaEntity().getDiscriminatorColumn().getLength());
+		assertEquals(78, javaEntity().getDiscriminatorColumn().getLength());
 		
 		column.setLength(null);
 		assertNull(javaEntity().getDiscriminatorColumn().getSpecifiedLength());

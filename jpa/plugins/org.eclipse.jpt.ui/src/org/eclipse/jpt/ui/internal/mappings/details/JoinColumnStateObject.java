@@ -49,52 +49,52 @@ public abstract class JoinColumnStateObject extends BaseJoinColumnStateObject
 		super(owner, joinColumn);
 	}
 
-	public Boolean getDefaultInsertable() {
+	public boolean isDefaultInsertable() {
 
 		JoinColumn joinColumn = getJoinColumn();
 
 		if (joinColumn != null) {
-			return joinColumn.getDefaultInsertable();
+			return joinColumn.isDefaultInsertable();
 		}
 
 		return BaseColumn.DEFAULT_INSERTABLE;
 	}
 
-	public Boolean getDefaultNullable() {
+	public boolean isDefaultNullable() {
 
 		JoinColumn joinColumn = getJoinColumn();
 
 		if (joinColumn != null) {
-			return joinColumn.getDefaultNullable();
+			return joinColumn.isDefaultNullable();
 		}
 
 		return BaseColumn.DEFAULT_NULLABLE;
 	}
 
-	public Boolean getDefaultUnique() {
+	public boolean isDefaultUnique() {
 
 		JoinColumn joinColumn = getJoinColumn();
 
 		if (joinColumn != null) {
-			return joinColumn.getDefaultUnique();
+			return joinColumn.isDefaultUnique();
 		}
 
 		return BaseColumn.DEFAULT_UNIQUE;
 	}
 
-	public Boolean getDefaultUpdatable() {
+	public boolean isDefaultUpdatable() {
 
 		JoinColumn joinColumn = getJoinColumn();
 
 		if (joinColumn != null) {
-			return joinColumn.getDefaultUpdatable();
+			return joinColumn.isDefaultUpdatable();
 		}
 
 		return BaseColumn.DEFAULT_UPDATABLE;
 	}
 
 	public Boolean getInsertable() {
-		return insertable;
+		return this.insertable;
 	}
 
 	@Override
@@ -103,17 +103,17 @@ public abstract class JoinColumnStateObject extends BaseJoinColumnStateObject
 	}
 
 	public Boolean getNullable() {
-		return nullable;
+		return this.nullable;
 	}
 
 	protected abstract Schema getDbSchema();
 
 	public Boolean getUnique() {
-		return unique;
+		return this.unique;
 	}
 
 	public Boolean getUpdatable() {
-		return updatable;
+		return this.updatable;
 	}
 
 	@Override
@@ -124,10 +124,10 @@ public abstract class JoinColumnStateObject extends BaseJoinColumnStateObject
 		if (baseJoinColumn != null) {
 			JoinColumn joinColumn = (JoinColumn) baseJoinColumn;
 
-			insertable       = joinColumn.getSpecifiedInsertable();
-			nullable         = joinColumn.getSpecifiedNullable();
-			unique           = joinColumn.getSpecifiedUnique();
-			updatable        = joinColumn.getSpecifiedUpdatable();
+			this.insertable       = joinColumn.getSpecifiedInsertable();
+			this.nullable         = joinColumn.getSpecifiedNullable();
+			this.unique           = joinColumn.getSpecifiedUnique();
+			this.updatable        = joinColumn.getSpecifiedUpdatable();
 		}
 	}
 
@@ -196,23 +196,23 @@ public abstract class JoinColumnStateObject extends BaseJoinColumnStateObject
 		}
 
 		// Insertable
-		if (joinColumn.getSpecifiedInsertable() != insertable){
-			joinColumn.setSpecifiedInsertable(insertable);
+		if (joinColumn.getSpecifiedInsertable() != this.insertable){
+			joinColumn.setSpecifiedInsertable(this.insertable);
 		}
 
 		// Updatable
-		if (joinColumn.getSpecifiedUpdatable() != updatable){
-			joinColumn.setSpecifiedUpdatable(updatable);
+		if (joinColumn.getSpecifiedUpdatable() != this.updatable){
+			joinColumn.setSpecifiedUpdatable(this.updatable);
 		}
 
 		// Unique
-		if (joinColumn.getSpecifiedUnique() != unique){
-			joinColumn.setSpecifiedUnique(unique);
+		if (joinColumn.getSpecifiedUnique() != this.unique){
+			joinColumn.setSpecifiedUnique(this.unique);
 		}
 
 		// Nullable
-		if (joinColumn.getSpecifiedNullable() != nullable){
-			joinColumn.setSpecifiedNullable(nullable);
+		if (joinColumn.getSpecifiedNullable() != this.nullable){
+			joinColumn.setSpecifiedNullable(this.nullable);
 		}
 	}
 }

@@ -56,9 +56,9 @@ public class VirtualXmlColumn extends AbstractJpaEObject implements XmlColumn
 
 	public Boolean getInsertable() {
 		if (this.isOrmMetadataComplete()) {
-			return this.column.getDefaultInsertable();
+			return Boolean.valueOf(this.column.isDefaultInsertable());
 		}
-		return this.column.getInsertable();
+		return Boolean.valueOf(this.column.isInsertable());
 	}
 
 	public void setInsertable(@SuppressWarnings("unused")Boolean value) {
@@ -89,9 +89,9 @@ public class VirtualXmlColumn extends AbstractJpaEObject implements XmlColumn
 
 	public Boolean getNullable() {
 		if (this.isOrmMetadataComplete()) {
-			return this.column.getDefaultNullable();
+			return Boolean.valueOf(this.column.isDefaultNullable());
 		}
-		return this.column.getNullable();
+		return Boolean.valueOf(this.column.isNullable());
 	}
 
 	public void setNullable(@SuppressWarnings("unused")Boolean value) {
@@ -135,9 +135,9 @@ public class VirtualXmlColumn extends AbstractJpaEObject implements XmlColumn
 
 	public Boolean getUnique() {
 		if (this.isOrmMetadataComplete()) {
-			return this.column.getDefaultUnique();
+			return Boolean.valueOf(this.column.isDefaultUnique());
 		}
-		return this.column.getUnique();
+		return Boolean.valueOf(this.column.isUnique());
 	}
 
 	public void setUnique(@SuppressWarnings("unused")Boolean value) {
@@ -146,9 +146,9 @@ public class VirtualXmlColumn extends AbstractJpaEObject implements XmlColumn
 
 	public Boolean getUpdatable() {
 		if (this.isOrmMetadataComplete()) {
-			return this.column.getDefaultUpdatable();
+			return Boolean.valueOf(this.column.isDefaultUpdatable());
 		}
-		return this.column.getUpdatable();
+		return Boolean.valueOf(this.column.isUpdatable());
 	}
 
 	public void setUpdatable(@SuppressWarnings("unused")Boolean value) {

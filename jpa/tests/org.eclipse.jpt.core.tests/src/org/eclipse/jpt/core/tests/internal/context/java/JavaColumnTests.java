@@ -559,9 +559,9 @@ public class JavaColumnTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		BasicMapping basicMapping = (BasicMapping) javaPersistentType().attributes().next().getMapping();
 
-		assertEquals(BaseColumn.DEFAULT_UNIQUE, basicMapping.getColumn().getUnique());
+		assertEquals(BaseColumn.DEFAULT_UNIQUE, basicMapping.getColumn().isUnique());
 		basicMapping.getColumn().setSpecifiedUnique(Boolean.TRUE);
-		assertEquals(Boolean.TRUE, basicMapping.getColumn().getUnique());
+		assertEquals(true, basicMapping.getColumn().isUnique());
 	}
 	
 	public void testGetDefaultUnique() throws Exception {
@@ -570,10 +570,10 @@ public class JavaColumnTests extends ContextModelTestCase
 		
 		BasicMapping basicMapping = (BasicMapping) javaPersistentType().attributes().next().getMapping();
 
-		assertEquals(BaseColumn.DEFAULT_UNIQUE, basicMapping.getColumn().getDefaultUnique());
+		assertEquals(BaseColumn.DEFAULT_UNIQUE, basicMapping.getColumn().isDefaultUnique());
 		basicMapping.getColumn().setSpecifiedUnique(Boolean.TRUE);
 		
-		assertEquals(BaseColumn.DEFAULT_UNIQUE, basicMapping.getColumn().getDefaultUnique());
+		assertEquals(BaseColumn.DEFAULT_UNIQUE, basicMapping.getColumn().isDefaultUnique());
 	}	
 	
 	public void testGetSpecifiedUnique() throws Exception {
@@ -590,7 +590,7 @@ public class JavaColumnTests extends ContextModelTestCase
 		column.setUnique(Boolean.TRUE);
 		
 		assertEquals(Boolean.TRUE, basicMapping.getColumn().getSpecifiedUnique());
-		assertEquals(Boolean.TRUE, basicMapping.getColumn().getUnique());
+		assertEquals(true, basicMapping.getColumn().isUnique());
 		
 		column.setUnique(null);
 		
@@ -624,9 +624,9 @@ public class JavaColumnTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		BasicMapping basicMapping = (BasicMapping) javaPersistentType().attributes().next().getMapping();
 
-		assertEquals(BaseColumn.DEFAULT_INSERTABLE, basicMapping.getColumn().getInsertable());
+		assertEquals(BaseColumn.DEFAULT_INSERTABLE, basicMapping.getColumn().isInsertable());
 		basicMapping.getColumn().setSpecifiedInsertable(Boolean.TRUE);
-		assertEquals(Boolean.TRUE, basicMapping.getColumn().getInsertable());
+		assertEquals(true, basicMapping.getColumn().isInsertable());
 	}
 	
 	public void testGetDefaultInsertable() throws Exception {
@@ -635,10 +635,10 @@ public class JavaColumnTests extends ContextModelTestCase
 		
 		BasicMapping basicMapping = (BasicMapping) javaPersistentType().attributes().next().getMapping();
 
-		assertEquals(BaseColumn.DEFAULT_INSERTABLE, basicMapping.getColumn().getDefaultInsertable());
+		assertEquals(BaseColumn.DEFAULT_INSERTABLE, basicMapping.getColumn().isDefaultInsertable());
 		basicMapping.getColumn().setSpecifiedInsertable(Boolean.TRUE);
 		
-		assertEquals(BaseColumn.DEFAULT_INSERTABLE, basicMapping.getColumn().getDefaultInsertable());
+		assertEquals(BaseColumn.DEFAULT_INSERTABLE, basicMapping.getColumn().isDefaultInsertable());
 	}	
 	
 	public void testGetSpecifiedInsertable() throws Exception {
@@ -655,7 +655,7 @@ public class JavaColumnTests extends ContextModelTestCase
 		column.setInsertable(Boolean.TRUE);
 		
 		assertEquals(Boolean.TRUE, basicMapping.getColumn().getSpecifiedInsertable());
-		assertEquals(Boolean.TRUE, basicMapping.getColumn().getInsertable());
+		assertEquals(true, basicMapping.getColumn().isInsertable());
 		
 		column.setInsertable(null);
 		
@@ -689,9 +689,9 @@ public class JavaColumnTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		BasicMapping basicMapping = (BasicMapping) javaPersistentType().attributes().next().getMapping();
 
-		assertEquals(BaseColumn.DEFAULT_NULLABLE, basicMapping.getColumn().getNullable());
+		assertEquals(BaseColumn.DEFAULT_NULLABLE, basicMapping.getColumn().isNullable());
 		basicMapping.getColumn().setSpecifiedNullable(Boolean.TRUE);
-		assertEquals(Boolean.TRUE, basicMapping.getColumn().getNullable());
+		assertEquals(true, basicMapping.getColumn().isNullable());
 	}
 	
 	public void testGetDefaultNullable() throws Exception {
@@ -700,10 +700,10 @@ public class JavaColumnTests extends ContextModelTestCase
 		
 		BasicMapping basicMapping = (BasicMapping) javaPersistentType().attributes().next().getMapping();
 
-		assertEquals(BaseColumn.DEFAULT_NULLABLE, basicMapping.getColumn().getDefaultNullable());
+		assertEquals(BaseColumn.DEFAULT_NULLABLE, basicMapping.getColumn().isDefaultNullable());
 		basicMapping.getColumn().setSpecifiedNullable(Boolean.TRUE);
 		
-		assertEquals(BaseColumn.DEFAULT_NULLABLE, basicMapping.getColumn().getDefaultNullable());
+		assertEquals(BaseColumn.DEFAULT_NULLABLE, basicMapping.getColumn().isDefaultNullable());
 	}	
 	
 	public void testGetSpecifiedNullable() throws Exception {
@@ -720,7 +720,7 @@ public class JavaColumnTests extends ContextModelTestCase
 		column.setNullable(Boolean.TRUE);
 		
 		assertEquals(Boolean.TRUE, basicMapping.getColumn().getSpecifiedNullable());
-		assertEquals(Boolean.TRUE, basicMapping.getColumn().getNullable());
+		assertEquals(true, basicMapping.getColumn().isNullable());
 		
 		column.setNullable(null);
 		
@@ -754,9 +754,9 @@ public class JavaColumnTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		BasicMapping basicMapping = (BasicMapping) javaPersistentType().attributes().next().getMapping();
 
-		assertEquals(BaseColumn.DEFAULT_UPDATABLE, basicMapping.getColumn().getUpdatable());
+		assertEquals(BaseColumn.DEFAULT_UPDATABLE, basicMapping.getColumn().isUpdatable());
 		basicMapping.getColumn().setSpecifiedUpdatable(Boolean.TRUE);
-		assertEquals(Boolean.TRUE, basicMapping.getColumn().getUpdatable());
+		assertEquals(true, basicMapping.getColumn().isUpdatable());
 	}
 	
 	public void testGetDefaultUpdatable() throws Exception {
@@ -765,10 +765,10 @@ public class JavaColumnTests extends ContextModelTestCase
 		
 		BasicMapping basicMapping = (BasicMapping) javaPersistentType().attributes().next().getMapping();
 
-		assertEquals(BaseColumn.DEFAULT_UPDATABLE, basicMapping.getColumn().getDefaultUpdatable());
+		assertEquals(BaseColumn.DEFAULT_UPDATABLE, basicMapping.getColumn().isDefaultUpdatable());
 		basicMapping.getColumn().setSpecifiedUpdatable(Boolean.TRUE);
 		
-		assertEquals(BaseColumn.DEFAULT_UPDATABLE, basicMapping.getColumn().getDefaultUpdatable());
+		assertEquals(BaseColumn.DEFAULT_UPDATABLE, basicMapping.getColumn().isDefaultUpdatable());
 	}	
 	
 	public void testGetSpecifiedUpdatable() throws Exception {
@@ -785,7 +785,7 @@ public class JavaColumnTests extends ContextModelTestCase
 		column.setUpdatable(Boolean.TRUE);
 		
 		assertEquals(Boolean.TRUE, basicMapping.getColumn().getSpecifiedUpdatable());
-		assertEquals(Boolean.TRUE, basicMapping.getColumn().getUpdatable());
+		assertEquals(true, basicMapping.getColumn().isUpdatable());
 		
 		column.setUpdatable(null);
 		

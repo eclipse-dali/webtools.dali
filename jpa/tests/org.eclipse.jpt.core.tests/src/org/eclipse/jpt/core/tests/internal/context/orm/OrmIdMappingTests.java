@@ -437,10 +437,10 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		assertNull(ormColumn.getSpecifiedScale());
 		
 		assertEquals("foo", ormColumn.getDefaultName());
-		assertEquals(Boolean.FALSE, ormColumn.getDefaultUnique());
-		assertEquals(Boolean.TRUE, ormColumn.getDefaultNullable());
-		assertEquals(Boolean.TRUE, ormColumn.getDefaultInsertable());
-		assertEquals(Boolean.TRUE, ormColumn.getDefaultUpdatable());
+		assertEquals(false, ormColumn.isDefaultUnique());
+		assertEquals(true, ormColumn.isDefaultNullable());
+		assertEquals(true, ormColumn.isDefaultInsertable());
+		assertEquals(true, ormColumn.isDefaultUpdatable());
 		assertEquals(null, ormColumn.getColumnDefinition());
 		assertEquals(TYPE_NAME, ormColumn.getDefaultTable());
 		assertEquals(255, ormColumn.getDefaultLength());
@@ -518,10 +518,10 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		
 		OrmColumn ormColumn = ormIdMapping.getColumn();
 		assertEquals("id", ormColumn.getName());
-		assertEquals(Boolean.FALSE, ormColumn.getUnique());
-		assertEquals(Boolean.TRUE, ormColumn.getNullable());
-		assertEquals(Boolean.TRUE, ormColumn.getInsertable());
-		assertEquals(Boolean.TRUE, ormColumn.getUpdatable());
+		assertEquals(false, ormColumn.isDefaultUnique());
+		assertEquals(true, ormColumn.isDefaultNullable());
+		assertEquals(true, ormColumn.isDefaultInsertable());
+		assertEquals(true, ormColumn.isDefaultUpdatable());
 		assertNull(ormColumn.getColumnDefinition());
 		assertEquals(TYPE_NAME, ormColumn.getTable());
 		assertEquals(255, ormColumn.getLength());
@@ -558,10 +558,10 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		assertNull(ormColumn.getSpecifiedScale());
 		
 		assertEquals("id", ormColumn.getDefaultName());
-		assertEquals(Boolean.FALSE, ormColumn.getDefaultUnique());
-		assertEquals(Boolean.TRUE, ormColumn.getDefaultNullable());
-		assertEquals(Boolean.TRUE, ormColumn.getDefaultInsertable());
-		assertEquals(Boolean.TRUE, ormColumn.getDefaultUpdatable());
+		assertEquals(false, ormColumn.isDefaultUnique());
+		assertEquals(true, ormColumn.isDefaultNullable());
+		assertEquals(true, ormColumn.isDefaultInsertable());
+		assertEquals(true, ormColumn.isDefaultUpdatable());
 		assertEquals(null, ormColumn.getColumnDefinition());
 		assertEquals(TYPE_NAME, ormColumn.getDefaultTable());
 		assertEquals(255, ormColumn.getDefaultLength());

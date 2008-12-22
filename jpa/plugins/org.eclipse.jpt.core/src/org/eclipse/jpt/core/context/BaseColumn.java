@@ -31,41 +31,41 @@ public interface BaseColumn extends NamedColumn
 		String SPECIFIED_TABLE_PROPERTY = "specifiedTable"; //$NON-NLS-1$
 
 	
-	Boolean getUnique();
+	boolean isUnique();
 	
-	Boolean getDefaultUnique();
+	boolean isDefaultUnique();
 		String DEFAULT_UNIQUE_PROPERTY = "defaultUnique"; //$NON-NLS-1$
-		Boolean DEFAULT_UNIQUE = Boolean.FALSE;
+		boolean DEFAULT_UNIQUE = false;
 	Boolean getSpecifiedUnique();
 	void setSpecifiedUnique(Boolean newSpecifiedUnique);
 		String SPECIFIED_UNIQUE_PROPERTY = "specifiedUnique"; //$NON-NLS-1$
 	
 
-	Boolean getNullable();
+	boolean isNullable();
 		
-	Boolean getDefaultNullable();
+	boolean isDefaultNullable();
 		String DEFAULT_NULLABLE_PROPERTY = "defaultNullable"; //$NON-NLS-1$
-		Boolean DEFAULT_NULLABLE = Boolean.TRUE;
+		boolean DEFAULT_NULLABLE = true;
 	Boolean getSpecifiedNullable();
 	void setSpecifiedNullable(Boolean newSpecifiedNullable);
 		String SPECIFIED_NULLABLE_PROPERTY = "specifiedNullable"; //$NON-NLS-1$
 
 
-	Boolean getInsertable();
+	boolean isInsertable();
 	
-	Boolean getDefaultInsertable();
+	boolean isDefaultInsertable();
 		String DEFAULT_INSERTABLE_PROPERTY = "defaulInsertable"; //$NON-NLS-1$
-		Boolean DEFAULT_INSERTABLE = Boolean.TRUE;
+		boolean DEFAULT_INSERTABLE = true;
 	Boolean getSpecifiedInsertable();
 	void setSpecifiedInsertable(Boolean newSpecifiedInsertable);
 		String SPECIFIED_INSERTABLE_PROPERTY = "specifiedInsertable"; //$NON-NLS-1$
 	
 	
-	Boolean getUpdatable();
+	boolean isUpdatable();
 	
-	Boolean getDefaultUpdatable();
+	boolean isDefaultUpdatable();
 		String DEFAULT_UPDATABLE_PROPERTY = "defaulUpdatable"; //$NON-NLS-1$
-		Boolean DEFAULT_UPDATABLE = Boolean.TRUE;
+		boolean DEFAULT_UPDATABLE = true;
 	Boolean getSpecifiedUpdatable();
 	void setSpecifiedUpdatable(Boolean newSpecifiedUpdatable);
 		String SPECIFIED_UPDATABLE_PROPERTY = "specifiedUpdatable"; //$NON-NLS-1$

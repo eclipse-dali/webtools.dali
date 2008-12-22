@@ -26,6 +26,7 @@ import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
+@SuppressWarnings("nls")
 public class OrmDiscriminatorColumnTests extends ContextModelTestCase
 {
 	public OrmDiscriminatorColumnTests(String name) {

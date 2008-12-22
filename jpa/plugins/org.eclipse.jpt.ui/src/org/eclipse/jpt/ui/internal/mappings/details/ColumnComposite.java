@@ -388,19 +388,15 @@ public class ColumnComposite extends FormPane<Column> {
 			protected String transform(Boolean value) {
 
 				if ((getSubject() != null) && (value == null)) {
+					boolean defaultValue = getSubject().isDefaultInsertable();
 
-					Boolean defaultValue = getSubject().getDefaultInsertable();
+					String defaultStringValue = defaultValue ? JptUiMappingsMessages.Boolean_True :
+						                                       JptUiMappingsMessages.Boolean_False;
 
-					if (defaultValue != null) {
-
-						String defaultStringValue = defaultValue.booleanValue() ? JptUiMappingsMessages.Boolean_True :
-						                                           JptUiMappingsMessages.Boolean_False;
-
-						return NLS.bind(
-							JptUiMappingsMessages.ColumnComposite_insertableWithDefault,
-							defaultStringValue
-						);
-					}
+					return NLS.bind(
+						JptUiMappingsMessages.ColumnComposite_insertableWithDefault,
+						defaultStringValue
+					);
 				}
 
 				return JptUiMappingsMessages.ColumnComposite_insertable;
@@ -461,19 +457,15 @@ public class ColumnComposite extends FormPane<Column> {
 			protected String transform(Boolean value) {
 
 				if ((getSubject() != null) && (value == null)) {
+					boolean defaultValue = getSubject().isDefaultNullable();
 
-					Boolean defaultValue = getSubject().getDefaultNullable();
+					String defaultStringValue = defaultValue ? JptUiMappingsMessages.Boolean_True :
+					                                           JptUiMappingsMessages.Boolean_False;
 
-					if (defaultValue != null) {
-
-						String defaultStringValue = defaultValue.booleanValue() ? JptUiMappingsMessages.Boolean_True :
-						                                           JptUiMappingsMessages.Boolean_False;
-
-						return NLS.bind(
-							JptUiMappingsMessages.ColumnComposite_nullableWithDefault,
-							defaultStringValue
-						);
-					}
+					return NLS.bind(
+						JptUiMappingsMessages.ColumnComposite_nullableWithDefault,
+						defaultStringValue
+					);
 				}
 
 				return JptUiMappingsMessages.ColumnComposite_nullable;
@@ -590,19 +582,15 @@ public class ColumnComposite extends FormPane<Column> {
 			protected String transform(Boolean value) {
 
 				if ((getSubject() != null) && (value == null)) {
+					boolean defaultValue = getSubject().isDefaultUnique();
 
-					Boolean defaultValue = getSubject().getDefaultUnique();
+					String defaultStringValue = defaultValue ? JptUiMappingsMessages.Boolean_True :
+					                                           JptUiMappingsMessages.Boolean_False;
 
-					if (defaultValue != null) {
-
-						String defaultStringValue = defaultValue.booleanValue() ? JptUiMappingsMessages.Boolean_True :
-						                                           JptUiMappingsMessages.Boolean_False;
-
-						return NLS.bind(
-							JptUiMappingsMessages.ColumnComposite_uniqueWithDefault,
-							defaultStringValue
-						);
-					}
+					return NLS.bind(
+						JptUiMappingsMessages.ColumnComposite_uniqueWithDefault,
+						defaultStringValue
+					);
 				}
 
 				return JptUiMappingsMessages.ColumnComposite_unique;
@@ -648,19 +636,15 @@ public class ColumnComposite extends FormPane<Column> {
 			protected String transform(Boolean value) {
 
 				if ((getSubject() != null) && (value == null)) {
+					boolean defaultValue = getSubject().isDefaultUpdatable();
 
-					Boolean defaultValue = getSubject().getDefaultUpdatable();
+					String defaultStringValue = defaultValue ? JptUiMappingsMessages.Boolean_True :
+					                                           JptUiMappingsMessages.Boolean_False;
 
-					if (defaultValue != null) {
-
-						String defaultStringValue = defaultValue.booleanValue() ? JptUiMappingsMessages.Boolean_True :
-						                                           JptUiMappingsMessages.Boolean_False;
-
-						return NLS.bind(
-							JptUiMappingsMessages.ColumnComposite_updatableWithDefault,
-							defaultStringValue
-						);
-					}
+					return NLS.bind(
+						JptUiMappingsMessages.ColumnComposite_updatableWithDefault,
+						defaultStringValue
+					);
 				}
 
 				return JptUiMappingsMessages.ColumnComposite_updatable;

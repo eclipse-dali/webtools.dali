@@ -85,11 +85,11 @@ public class GenericJavaDiscriminatorColumn extends AbstractJavaNamedColumn<Disc
 		firePropertyChanged(DiscriminatorColumn.SPECIFIED_DISCRIMINATOR_TYPE_PROPERTY, oldDiscriminatorType, newSpecifiedDiscriminatorType);
 	}
 		
-	public Integer getLength() {
-		return (this.getSpecifiedLength() == null) ? this.getDefaultLength() : this.getSpecifiedLength();
+	public int getLength() {
+		return (this.getSpecifiedLength() == null) ? this.getDefaultLength() : this.getSpecifiedLength().intValue();
 	}
 
-	public Integer getDefaultLength() {
+	public int getDefaultLength() {
 		return DiscriminatorColumn.DEFAULT_LENGTH;
 	}
 

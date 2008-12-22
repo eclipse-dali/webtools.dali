@@ -757,10 +757,10 @@ public class OrmColumnTests extends ContextModelTestCase
 	
 		assertEquals("name", ormColumn.getDefaultName());
 		assertEquals(TYPE_NAME, ormColumn.getDefaultTable());
-		assertEquals(Boolean.TRUE, ormColumn.getDefaultInsertable());
-		assertEquals(Boolean.TRUE, ormColumn.getDefaultUpdatable());
-		assertEquals(Boolean.TRUE, ormColumn.getDefaultNullable());
-		assertEquals(Boolean.FALSE, ormColumn.getDefaultUnique());
+		assertEquals(true, ormColumn.isDefaultInsertable());
+		assertEquals(true, ormColumn.isDefaultUpdatable());
+		assertEquals(true, ormColumn.isDefaultNullable());
+		assertEquals(false, ormColumn.isDefaultUnique());
 		assertEquals(Column.DEFAULT_LENGTH, ormColumn.getDefaultLength());
 		assertEquals(Column.DEFAULT_PRECISION, ormColumn.getDefaultPrecision());
 		assertEquals(Column.DEFAULT_SCALE, ormColumn.getDefaultScale());

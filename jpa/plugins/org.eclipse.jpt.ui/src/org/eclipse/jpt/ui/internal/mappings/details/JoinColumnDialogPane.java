@@ -62,12 +62,12 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject> extends BaseJ
 		return new PropertyAspectAdapter<T, Boolean>(getSubjectHolder(), JoinColumnStateObject.INSERTABLE_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
-				return subject.getInsertable();
+				return this.subject.getInsertable();
 			}
 
 			@Override
 			protected void setValue_(Boolean value) {
-				subject.setInsertable(value);
+				this.subject.setInsertable(value);
 			}
 
 			@Override
@@ -92,19 +92,15 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject> extends BaseJ
 			protected String transform(Boolean value) {
 
 				if ((getSubject() != null) && (value == null)) {
+					boolean defaultValue = getSubject().isDefaultInsertable();
 
-					Boolean defaultValue = getSubject().getDefaultInsertable();
+					String defaultStringValue = defaultValue ? JptUiMappingsMessages.Boolean_True :
+					                                           JptUiMappingsMessages.Boolean_False;
 
-					if (defaultValue != null) {
-
-						String defaultStringValue = defaultValue ? JptUiMappingsMessages.Boolean_True :
-						                                           JptUiMappingsMessages.Boolean_False;
-
-						return NLS.bind(
-							JptUiMappingsMessages.JoinColumnDialogPane_insertableWithDefault,
-							defaultStringValue
-						);
-					}
+					return NLS.bind(
+						JptUiMappingsMessages.JoinColumnDialogPane_insertableWithDefault,
+						defaultStringValue
+					);
 				}
 
 				return JptUiMappingsMessages.JoinColumnDialogPane_insertable;
@@ -119,12 +115,12 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject> extends BaseJ
 		{
 			@Override
 			protected Boolean buildValue_() {
-				return subject.getNullable();
+				return this.subject.getNullable();
 			}
 
 			@Override
 			protected void setValue_(Boolean value) {
-				subject.setNullable(value);
+				this.subject.setNullable(value);
 			}
 
 			@Override
@@ -149,19 +145,15 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject> extends BaseJ
 			protected String transform(Boolean value) {
 
 				if ((getSubject() != null) && (value == null)) {
+					boolean defaultValue = getSubject().isDefaultNullable();
 
-					Boolean defaultValue = getSubject().getDefaultNullable();
+					String defaultStringValue = defaultValue ? JptUiMappingsMessages.Boolean_True :
+					                                           JptUiMappingsMessages.Boolean_False;
 
-					if (defaultValue != null) {
-
-						String defaultStringValue = defaultValue ? JptUiMappingsMessages.Boolean_True :
-						                                           JptUiMappingsMessages.Boolean_False;
-
-						return NLS.bind(
-							JptUiMappingsMessages.JoinColumnDialogPane_nullableWithDefault,
-							defaultStringValue
-						);
-					}
+					return NLS.bind(
+						JptUiMappingsMessages.JoinColumnDialogPane_nullableWithDefault,
+						defaultStringValue
+					);
 				}
 
 				return JptUiMappingsMessages.JoinColumnDialogPane_nullable;
@@ -176,12 +168,12 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject> extends BaseJ
 		{
 			@Override
 			protected Boolean buildValue_() {
-				return subject.getUnique();
+				return this.subject.getUnique();
 			}
 
 			@Override
 			protected void setValue_(Boolean value) {
-				subject.setUnique(value);
+				this.subject.setUnique(value);
 			}
 
 			@Override
@@ -206,19 +198,15 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject> extends BaseJ
 			protected String transform(Boolean value) {
 
 				if ((getSubject() != null) && (value == null)) {
+					boolean defaultValue = getSubject().isDefaultUnique();
 
-					Boolean defaultValue = getSubject().getDefaultUnique();
+					String defaultStringValue = defaultValue ? JptUiMappingsMessages.Boolean_True :
+					                                           JptUiMappingsMessages.Boolean_False;
 
-					if (defaultValue != null) {
-
-						String defaultStringValue = defaultValue ? JptUiMappingsMessages.Boolean_True :
-						                                           JptUiMappingsMessages.Boolean_False;
-
-						return NLS.bind(
-							JptUiMappingsMessages.JoinColumnDialogPane_uniqueWithDefault,
-							defaultStringValue
-						);
-					}
+					return NLS.bind(
+						JptUiMappingsMessages.JoinColumnDialogPane_uniqueWithDefault,
+						defaultStringValue
+					);
 				}
 
 				return JptUiMappingsMessages.JoinColumnDialogPane_unique;
@@ -230,12 +218,12 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject> extends BaseJ
 		return new PropertyAspectAdapter<T, Boolean>(getSubjectHolder(), JoinColumnStateObject.UPDATABLE_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
-				return subject.getUpdatable();
+				return this.subject.getUpdatable();
 			}
 
 			@Override
 			protected void setValue_(Boolean value) {
-				subject.setUpdatable(value);
+				this.subject.setUpdatable(value);
 			}
 
 			@Override
@@ -260,19 +248,15 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject> extends BaseJ
 			protected String transform(Boolean value) {
 
 				if ((getSubject() != null) && (value == null)) {
+					boolean defaultValue = getSubject().isDefaultUpdatable();
 
-					Boolean defaultValue = getSubject().getDefaultUpdatable();
+					String defaultStringValue = defaultValue ? JptUiMappingsMessages.Boolean_True :
+					                                           JptUiMappingsMessages.Boolean_False;
 
-					if (defaultValue != null) {
-
-						String defaultStringValue = defaultValue ? JptUiMappingsMessages.Boolean_True :
-						                                           JptUiMappingsMessages.Boolean_False;
-
-						return NLS.bind(
-							JptUiMappingsMessages.JoinColumnDialogPane_updatableWithDefault,
-							defaultStringValue
-						);
-					}
+					return NLS.bind(
+						JptUiMappingsMessages.JoinColumnDialogPane_updatableWithDefault,
+						defaultStringValue
+					);
 				}
 
 				return JptUiMappingsMessages.JoinColumnDialogPane_updatable;
