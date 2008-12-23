@@ -180,7 +180,7 @@ public class SessionCustomizersComposite extends Pane<Customization>
 	@Override
 	protected void initializeLayout(Composite container) {
 		// Description
-		addMultiLineLabel(
+		container = addTitledGroup(
 			container,
 			EclipseLinkUiMessages.PersistenceXmlCustomizationTab_sessionCustomizerLabel
 		);

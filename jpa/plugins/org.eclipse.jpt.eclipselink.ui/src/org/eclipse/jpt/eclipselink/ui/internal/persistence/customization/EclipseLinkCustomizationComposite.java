@@ -72,7 +72,7 @@ public class EclipseLinkCustomizationComposite extends FormPane<Customization>
 		new ExceptionHandlerComposite(this, defaultPane);
 
 		// Session Customizer
-		new SessionCustomizersComposite(this, defaultPane);
+		new SessionCustomizersComposite(this, composite);
 
 		// EntitiesList
 		new EntityListComposite(this, composite);
