@@ -174,15 +174,17 @@ public class EclipseLinkUiMessages {
 	public static String CachingEntityListComposite_dialogMessage;
 	public static String CachingEntityListComposite_dialogTitle;
 
+	public static String PersistenceXmlCachingTab_FlushClearCacheLabel;
+	
+	public static String FlushClearCacheComposite_drop;
+	public static String FlushClearCacheComposite_drop_invalidate;
+	public static String FlushClearCacheComposite_merge;
+	
 	// Customization
 	public static String PersistenceXmlCustomizationTab_title;
 	public static String PersistenceXmlCustomizationTab_sectionTitle;
 	public static String PersistenceXmlCustomizationTab_sectionDescription;
 	public static String PersistenceXmlCustomizationTab_defaultWithOneParam;
-	public static String PersistenceXmlCustomizationTab_defaultEmpty;
-
-	public static String PersistenceXmlCustomizationTab_throwExceptionsLabelDefault;
-	public static String PersistenceXmlCustomizationTab_throwExceptionsLabel;
 
 	public static String PersistenceXmlCustomizationTab_weavingLabel;
 
@@ -200,6 +202,12 @@ public class EclipseLinkUiMessages {
 
 	public static String PersistenceXmlCustomizationTab_weavingEagerLabelDefault;
 	public static String PersistenceXmlCustomizationTab_weavingEagerLabel;
+	public static String PersistenceXmlCustomizationTab_defaultEmpty;
+	
+	public static String PersistenceXmlCustomizationTab_throwExceptionsLabelDefault;
+	public static String PersistenceXmlCustomizationTab_throwExceptionsLabel;
+	
+	public static String PersistenceXmlCustomizationTab_exceptionHandlerLabel;
 
 	public static String WeavingComposite_true_;
 	public static String WeavingComposite_false_;
@@ -214,6 +222,11 @@ public class EclipseLinkUiMessages {
 	public static String PersistenceXmlCustomizationTab_customizerLabel;
 	public static String PersistenceXmlCustomizationTab_sessionCustomizerLabel;
 	public static String PersistenceXmlCustomizationTab_noName;
+
+	public static String PersistenceXmlCustomizationTab_validationOnlyLabel;
+	public static String PersistenceXmlCustomizationTab_validationOnlyLabelDefault;
+	
+	public static String PersistenceXmlCustomizationTab_classLoaderLabel;
 	
 	public static String PersistenceXmlCustomizationTab_profilerLabel;
 	public static String PersistenceXmlCustomizationTab_browse;
@@ -239,6 +252,7 @@ public class EclipseLinkUiMessages {
 	public static String LoggingLevelComposite_fine;
 	public static String LoggingLevelComposite_finer;
 	public static String LoggingLevelComposite_finest;
+	public static String LoggingLevelComposite_all;
 
 	public static String PersistenceXmlLoggingTab_loggerLabel;
 	public static String PersistenceXmlLoggingTab_browse;

@@ -66,6 +66,10 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 	public static final Boolean WEAVING_EAGER_TEST_VALUE = true;
 	public static final Boolean WEAVING_EAGER_TEST_VALUE_2 = ! WEAVING_EAGER_TEST_VALUE;
 
+	public static final String VALIDATION_ONLY_KEY = Customization.ECLIPSELINK_VALIDATION_ONLY;
+	public static final Boolean VALIDATION_ONLY_TEST_VALUE = false;
+	public static final Boolean VALIDATION_ONLY_TEST_VALUE_2 = ! VALIDATION_ONLY_TEST_VALUE;
+
 	private static final String SESSION_CUSTOMIZER_KEY = Customization.ECLIPSELINK_SESSION_CUSTOMIZER;
 	private static final String SESSION_CUSTOMIZER_TEST_VALUE = "java.lang.String";
 	private static final String SESSION_CUSTOMIZER_TEST_VALUE_2 = "java.lang.Boolean";
@@ -81,6 +85,14 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 	private static final String PROFILER_KEY = Customization.ECLIPSELINK_PROFILER;
 	private static final Profiler PROFILER_TEST_VALUE = Profiler.query_monitor;
 	private static final String PROFILER_TEST_VALUE_2 = "custom.profiler.test";
+	
+	public static final String CLASSLOADER_KEY = Customization.ECLIPSELINK_CLASSLOADER;
+	public static final String CLASSLOADER_TEST_VALUE = "custom.profiler.test";
+	public static final String CLASSLOADER_TEST_VALUE_2 = "oracle.custom.profiler.test";
+	
+	public static final String EXCEPTION_HANDLER_KEY = Customization.ECLIPSELINK_EXCEPTION_HANDLER;
+	public static final String EXCEPTION_HANDLER_TEST_VALUE = "acme.CustomSessionEventListener";
+	public static final String EXCEPTION_HANDLER_TEST_VALUE_2 = "oracle.sessions.CustomSessionEventListener";
 	
 	public CustomizationAdapterTests(String name) {
 		super(name);
@@ -99,9 +111,12 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 		this.customization.addPropertyChangeListener(Customization.WEAVING_INTERNAL_PROPERTY, propertyChangeListener);
 		this.customization.addPropertyChangeListener(Customization.WEAVING_EAGER_PROPERTY, propertyChangeListener);
 		this.customization.addPropertyChangeListener(Customization.WEAVING_PROPERTY, propertyChangeListener);
+		this.customization.addPropertyChangeListener(Customization.VALIDATION_ONLY_PROPERTY, propertyChangeListener);
 		this.customization.addPropertyChangeListener(Customization.DESCRIPTOR_CUSTOMIZER_PROPERTY, propertyChangeListener);
 		this.customization.addPropertyChangeListener(Customization.SESSION_CUSTOMIZER_PROPERTY, propertyChangeListener);
 		this.customization.addPropertyChangeListener(Customization.PROFILER_PROPERTY, propertyChangeListener);
+		this.customization.addPropertyChangeListener(customization.CLASSLOADER_PROPERTY, propertyChangeListener);
+		this.customization.addPropertyChangeListener(customization.EXCEPTION_HANDLER_PROPERTY, propertyChangeListener);
 
 		ListChangeListener sessionCustomizersChangeListener = this.buildSessionCustomizersChangeListener();
 		this.customization.addListChangeListener(Customization.SESSION_CUSTOMIZER_LIST_PROPERTY, sessionCustomizersChangeListener);
@@ -116,7 +131,7 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 	 */
 	@Override
 	protected void populatePu() {
-		this.modelPropertiesSizeOriginal = 10;
+		this.modelPropertiesSizeOriginal = 13;
 		this.propertiesTotal = this.modelPropertiesSizeOriginal + 4; // 4 misc properties
 		this.modelPropertiesSize = this.modelPropertiesSizeOriginal;
 		
@@ -127,6 +142,7 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 		this.persistenceUnitPut(WEAVING_FETCH_GROUPS_KEY, WEAVING_FETCH_GROUPS_TEST_VALUE.toString());
 		this.persistenceUnitPut(WEAVING_INTERNAL_KEY, WEAVING_INTERNAL_TEST_VALUE.toString());
 		this.persistenceUnitPut(WEAVING_EAGER_KEY, WEAVING_EAGER_TEST_VALUE.toString());
+		this.persistenceUnitPut(VALIDATION_ONLY_KEY, VALIDATION_ONLY_TEST_VALUE.toString());
 		this.persistenceUnitPut("misc.property.2", "value.2");
 		this.persistenceUnitPut(SESSION_CUSTOMIZER_KEY, SESSION_CUSTOMIZER_TEST_VALUE.toString());
 		this.persistenceUnitPut(WEAVING_KEY, WEAVING_TEST_VALUE);
@@ -134,6 +150,8 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 		this.persistenceUnitPut("misc.property.4", "value.4");
 		this.persistenceUnitPut(CUSTOMIZER_KEY, CUSTOMIZER_TEST_VALUE);
 		this.persistenceUnitPut(PROFILER_KEY, PROFILER_TEST_VALUE);
+		this.persistenceUnitPut(CLASSLOADER_KEY, CLASSLOADER_TEST_VALUE);
+		this.persistenceUnitPut(EXCEPTION_HANDLER_KEY, EXCEPTION_HANDLER_TEST_VALUE);
 		return;
 	}
 
@@ -264,6 +282,9 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 		this.verifyHasListeners(this.customization, Customization.WEAVING_LAZY_PROPERTY);
 		this.verifyHasListeners(this.customization, Customization.WEAVING_CHANGE_TRACKING_PROPERTY);
 		this.verifyHasListeners(this.customization, Customization.WEAVING_FETCH_GROUPS_PROPERTY);
+		this.verifyHasListeners(this.customization, Customization.VALIDATION_ONLY_PROPERTY);
+		this.verifyHasListeners(this.customization, Customization.CLASSLOADER_PROPERTY);
+		this.verifyHasListeners(this.customization, Customization.EXCEPTION_HANDLER_PROPERTY);
 		this.verifyHasListeners(propertyListAdapter);
 		
 		EclipseLinkCustomization elCustomization = (EclipseLinkCustomization) this.customization;
@@ -274,6 +295,9 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 		this.verifyHasListeners(this.customization, Customization.WEAVING_LAZY_PROPERTY);
 		this.verifyHasListeners(this.customization, Customization.WEAVING_CHANGE_TRACKING_PROPERTY);
 		this.verifyHasListeners(this.customization, Customization.WEAVING_FETCH_GROUPS_PROPERTY);
+		this.verifyHasListeners(this.customization, Customization.VALIDATION_ONLY_PROPERTY);
+		this.verifyHasListeners(this.customization, Customization.CLASSLOADER_PROPERTY);
+		this.verifyHasListeners(this.customization, Customization.EXCEPTION_HANDLER_PROPERTY);
 	}
 
 
@@ -426,6 +450,60 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 			WEAVING_KEY,
 			WEAVING_TEST_VALUE,
 			WEAVING_TEST_VALUE_2);
+	}
+
+	// ********** ValidationOnly tests **********
+	public void testSetValidationOnly() throws Exception {
+		this.verifyModelInitialized(
+			VALIDATION_ONLY_KEY,
+			VALIDATION_ONLY_TEST_VALUE);
+		this.verifySetProperty(
+			VALIDATION_ONLY_KEY,
+			VALIDATION_ONLY_TEST_VALUE,
+			VALIDATION_ONLY_TEST_VALUE_2);
+	}
+
+	public void testAddRemoveValidationOnly() throws Exception {
+		this.verifyAddRemoveProperty(
+			VALIDATION_ONLY_KEY,
+			VALIDATION_ONLY_TEST_VALUE,
+			VALIDATION_ONLY_TEST_VALUE_2);
+	}
+
+	// ********** ClassLoader tests **********
+	public void testSetClassLoader() throws Exception {
+		this.verifyModelInitialized(
+			CLASSLOADER_KEY,
+			CLASSLOADER_TEST_VALUE);
+		this.verifySetProperty(
+			CLASSLOADER_KEY,
+			CLASSLOADER_TEST_VALUE,
+			CLASSLOADER_TEST_VALUE_2);
+	}
+
+	public void testAddRemoveClassLoader() throws Exception {
+		this.verifyAddRemoveProperty(
+			CLASSLOADER_KEY,
+			CLASSLOADER_TEST_VALUE,
+			CLASSLOADER_TEST_VALUE_2);
+	}
+
+	// ********** ExceptionHandler tests **********
+	public void testSetExceptionHandler() throws Exception {
+		this.verifyModelInitialized(
+			EXCEPTION_HANDLER_KEY,
+			EXCEPTION_HANDLER_TEST_VALUE);
+		this.verifySetProperty(
+			EXCEPTION_HANDLER_KEY,
+			EXCEPTION_HANDLER_TEST_VALUE,
+			EXCEPTION_HANDLER_TEST_VALUE_2);
+	}
+
+	public void testAddRemoveExceptionHandler() throws Exception {
+		this.verifyAddRemoveProperty(
+			EXCEPTION_HANDLER_KEY,
+			EXCEPTION_HANDLER_TEST_VALUE,
+			EXCEPTION_HANDLER_TEST_VALUE_2);
 	}
 
 	// ********** Customization class **********
@@ -636,6 +714,12 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 			this.customization.setWeavingInternal((Boolean) newValue);
 		else if (propertyName.equals(Customization.WEAVING_EAGER_PROPERTY))
 			this.customization.setWeavingEager((Boolean) newValue);
+		else if (propertyName.equals(Customization.VALIDATION_ONLY_PROPERTY))
+			this.customization.setValidationOnly((Boolean) newValue);
+		else if (propertyName.equals(Customization.CLASSLOADER_PROPERTY))
+			this.customization.setClassLoader((String) newValue);
+		else if (propertyName.equals(Customization.EXCEPTION_HANDLER_PROPERTY))
+			this.customization.setExceptionHandler((String) newValue);
 		else if (propertyName.equals(Customization.SESSION_CUSTOMIZER_PROPERTY))
 			this.customization.addSessionCustomizer((String) newValue);
 		else if (propertyName.equals(Customization.WEAVING_PROPERTY))
@@ -667,6 +751,12 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 			modelValue = this.customization.getWeavingInternal();
 		else if (propertyName.equals(Customization.WEAVING_EAGER_PROPERTY))
 			modelValue = this.customization.getWeavingEager();
+		else if (propertyName.equals(Customization.VALIDATION_ONLY_PROPERTY))
+			modelValue = this.customization.getValidationOnly();
+		else if (propertyName.equals(Customization.CLASSLOADER_PROPERTY))
+			modelValue = this.customization.getClassLoader();
+		else if (propertyName.equals(Customization.EXCEPTION_HANDLER_PROPERTY))
+			modelValue = this.customization.getExceptionHandler();
 		else if (propertyName.equals(Customization.PROFILER_PROPERTY))
 			modelValue = this.customization.getProfiler();
 		else if (propertyName.equals(Customization.SESSION_CUSTOMIZER_PROPERTY)) {

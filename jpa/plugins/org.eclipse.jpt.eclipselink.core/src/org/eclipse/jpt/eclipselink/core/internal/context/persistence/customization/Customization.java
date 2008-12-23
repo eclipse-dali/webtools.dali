@@ -110,4 +110,28 @@ public interface Customization extends PersistenceUnitProperties
 		static final String DEFAULT_PROFILER = 
 			EclipseLinkPersistenceUnitProperties.getEclipseLinkStringValueOf(Profiler.no_profiler);
 
+	Boolean getDefaultValidationOnly();
+	Boolean getValidationOnly();
+	void setValidationOnly(Boolean newValidationOnly);
+		static final String VALIDATION_ONLY_PROPERTY = "validationOnlyProperty";
+		// EclipseLink key string
+		static final String ECLIPSELINK_VALIDATION_ONLY = "eclipselink.validation-only";
+		static final Boolean DEFAULT_VALIDATION_ONLY = Boolean.TRUE;
+
+	String getDefaultClassLoader();
+	String getClassLoader();
+	void setClassLoader(String newClassLoader);
+		static final String CLASSLOADER_PROPERTY = "classLoaderProperty";
+		// EclipseLink key string
+		static final String ECLIPSELINK_CLASSLOADER = "eclipselink.classloader";
+		static final String DEFAULT_CLASSLOADER = null;	// no default
+
+	String getDefaultExceptionHandler();
+	String getExceptionHandler();
+	void setExceptionHandler(String newExceptionHandler);
+		static final String EXCEPTION_HANDLER_PROPERTY = "exceptionHandlerProperty";
+		// EclipseLink key string
+		static final String ECLIPSELINK_EXCEPTION_HANDLER = "eclipselink.exception-handler";
+		static final String DEFAULT_EXCEPTION_HANDLER = null;	// no default
+
 }

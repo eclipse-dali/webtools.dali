@@ -18,6 +18,7 @@ import org.eclipse.jpt.eclipselink.core.internal.context.persistence.caching.Cac
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.caching.CacheType;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.caching.Caching;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.caching.EclipseLinkCaching;
+import org.eclipse.jpt.eclipselink.core.internal.context.persistence.caching.FlushClearCache;
 import org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.PersistenceUnitTestCase;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
@@ -61,6 +62,10 @@ public class CachingAdapterTests extends PersistenceUnitTestCase
 	public static final String CACHE_SIZE_KEY = Caching.ECLIPSELINK_CACHE_SIZE + ENTITY_TEST;
 	public static final Integer CACHE_SIZE_TEST_VALUE = 12345;
 	public static final Integer CACHE_SIZE_TEST_VALUE_2 = 67890;
+	
+	public static final String FLUSH_CLEAR_CACHE_KEY = Caching.ECLIPSELINK_FLUSH_CLEAR_CACHE;
+	public static final FlushClearCache FLUSH_CLEAR_CACHE_TEST_VALUE = FlushClearCache.drop;
+	public static final FlushClearCache FLUSH_CLEAR_CACHE_TEST_VALUE_2 = FlushClearCache.merge;
 
 	public CachingAdapterTests(String name) {
 		super(name);
@@ -78,6 +83,7 @@ public class CachingAdapterTests extends PersistenceUnitTestCase
 		this.caching.addPropertyChangeListener(Caching.CACHE_TYPE_PROPERTY, propertyChangeListener);
 		this.caching.addPropertyChangeListener(Caching.CACHE_SIZE_PROPERTY, propertyChangeListener);
 		this.caching.addPropertyChangeListener(Caching.SHARED_CACHE_PROPERTY, propertyChangeListener);
+		this.caching.addPropertyChangeListener(Caching.FLUSH_CLEAR_CACHE_PROPERTY, propertyChangeListener);
 		
 		ListChangeListener entitiesChangeListener = this.buildEntitiesChangeListener();
 		this.caching.addListChangeListener(Caching.ENTITIES_LIST_PROPERTY, entitiesChangeListener);
@@ -89,7 +95,7 @@ public class CachingAdapterTests extends PersistenceUnitTestCase
 	 */
 	@Override
 	protected void populatePu() {
-		this.modelPropertiesSizeOriginal = 6;
+		this.modelPropertiesSizeOriginal = 7;
 		this.propertiesTotal = this.modelPropertiesSizeOriginal + 4; // 4 misc properties
 		this.modelPropertiesSize = this.modelPropertiesSizeOriginal;
 		
@@ -103,6 +109,7 @@ public class CachingAdapterTests extends PersistenceUnitTestCase
 		this.persistenceUnitPut(CACHE_SIZE_KEY, CACHE_SIZE_TEST_VALUE);
 		this.persistenceUnitPut(CACHE_TYPE_KEY, CACHE_TYPE_TEST_VALUE);
 		this.persistenceUnitPut(SHARED_CACHE_KEY, SHARED_CACHE_TEST_VALUE);
+		this.persistenceUnitPut(FLUSH_CLEAR_CACHE_KEY, FLUSH_CLEAR_CACHE_TEST_VALUE);
 		return;
 	}
 
@@ -319,6 +326,24 @@ public class CachingAdapterTests extends PersistenceUnitTestCase
 			SHARED_CACHE_TEST_VALUE_2);
 	}
 
+	// ********** FlushClearCache tests **********
+	public void testSetFlushClearCache() throws Exception {
+		this.verifyModelInitialized(
+			FLUSH_CLEAR_CACHE_KEY,
+			FLUSH_CLEAR_CACHE_TEST_VALUE);
+		this.verifySetProperty(
+			FLUSH_CLEAR_CACHE_KEY,
+			FLUSH_CLEAR_CACHE_TEST_VALUE,
+			FLUSH_CLEAR_CACHE_TEST_VALUE_2);
+	}
+
+	public void testAddRemoveFlushClearCache() throws Exception {
+		this.verifyAddRemoveProperty(
+			FLUSH_CLEAR_CACHE_KEY,
+			FLUSH_CLEAR_CACHE_TEST_VALUE,
+			FLUSH_CLEAR_CACHE_TEST_VALUE_2);
+	}
+
 	// ****** convenience methods *******
 	@Override
 	protected PersistenceUnitProperties model() {
@@ -400,6 +425,8 @@ public class CachingAdapterTests extends PersistenceUnitTestCase
 			this.caching.setCacheSizeDefault((Integer) newValue);
 		else if (propertyName.equals(Caching.SHARED_CACHE_DEFAULT_PROPERTY))
 			this.caching.setSharedCacheDefault((Boolean) newValue);
+		else if (propertyName.equals(Caching.FLUSH_CLEAR_CACHE_PROPERTY))
+			this.caching.setFlushClearCache((FlushClearCache) newValue);
 		else
 			this.throwMissingDefinition("setProperty", propertyName);
 	}
@@ -430,6 +457,8 @@ public class CachingAdapterTests extends PersistenceUnitTestCase
 			modelValue = this.caching.getCacheType(ENTITY_TEST);
 		else if (propertyName.equals(Caching.SHARED_CACHE_PROPERTY))
 			modelValue = this.caching.getSharedCache(ENTITY_TEST);
+		else if (propertyName.equals(Caching.FLUSH_CLEAR_CACHE_PROPERTY))
+			modelValue = this.caching.getFlushClearCache();
 		else
 			this.throwMissingDefinition("getProperty", propertyName);
 		return modelValue;

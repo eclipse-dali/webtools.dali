@@ -28,16 +28,16 @@ public class EclipseLinkCachingComposite extends FormPane<Caching>
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		container = addSection(
+		container = this.addSection(
 			container,
 			EclipseLinkUiMessages.PersistenceXmlCachingTab_sectionTitle,
 			EclipseLinkUiMessages.PersistenceXmlCachingTab_sectionDescription
 		);
 
 		// Default pane
-		int groupBoxMargin = getGroupBoxMargin();
+		int groupBoxMargin = this.getGroupBoxMargin();
 
-		Composite defaultPane = addSubPane(
+		Composite defaultPane = this.addSubPane(
 			container,
 			0, groupBoxMargin, 0, groupBoxMargin
 		);
@@ -53,5 +53,8 @@ public class EclipseLinkCachingComposite extends FormPane<Caching>
 
 		// EntitiesList
 		new EntityListComposite(this, container);
+		
+		// Flush Clear Cache
+		new FlushClearCacheComposite(this, container);
 	}
 }

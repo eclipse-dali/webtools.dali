@@ -19,8 +19,9 @@ public enum LoggingLevel {
 			info, 
 			config, 
 			fine, 
-			finer, 
-			finest;
+			finer,
+			finest,
+			all;
 
 	// EclipseLink value string
 	public static final String OFF = "OFF";
@@ -31,4 +32,5 @@ public enum LoggingLevel {
 	public static final String FINE = "FINE";
 	public static final String FINER = "FINER";
 	public static final String FINEST = "FINEST";
+	public static final String ALL = "ALL";
 }

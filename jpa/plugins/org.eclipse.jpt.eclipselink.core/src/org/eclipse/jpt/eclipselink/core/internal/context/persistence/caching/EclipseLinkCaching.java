@@ -30,11 +30,10 @@ public class EclipseLinkCaching extends EclipseLinkPersistenceUnitProperties
 	private CacheType cacheTypeDefault;
 	private Integer cacheSizeDefault;
 	private Boolean sharedCacheDefault;
+	private FlushClearCache flushClearCache;
 
 	// key = Entity name ; value = Cache properties
 	private Map<String, CacheProperties> entitiesCacheProperties;
-
-	private static final long serialVersionUID = 1L;
 	
 	// ********** constructors **********
 	public EclipseLinkCaching(PersistenceUnit parent, ListValueModel<Property> propertyListAdapter) {
@@ -56,6 +55,8 @@ public class EclipseLinkCaching extends EclipseLinkPersistenceUnitProperties
 			this.getIntegerValue(ECLIPSELINK_CACHE_SIZE_DEFAULT);
 		this.sharedCacheDefault = 
 			this.getBooleanValue(ECLIPSELINK_CACHE_SHARED_DEFAULT);
+		this.flushClearCache = 
+			this.getEnumValue(ECLIPSELINK_FLUSH_CLEAR_CACHE, FlushClearCache.values());
 		
 		Set<Property> cacheTypeProperties = 
 			this.getPropertiesSetWithPrefix(ECLIPSELINK_CACHE_TYPE);
@@ -108,6 +109,9 @@ public class EclipseLinkCaching extends EclipseLinkPersistenceUnitProperties
 		propertyNames.put(
 			ECLIPSELINK_CACHE_SHARED_DEFAULT,
 			SHARED_CACHE_DEFAULT_PROPERTY);
+		propertyNames.put(
+			ECLIPSELINK_FLUSH_CLEAR_CACHE,
+			FLUSH_CLEAR_CACHE_PROPERTY);
 		
 		// Don't need to initialize propertyNames for: 
 		// cacheType, sharedCache, cacheSize
@@ -172,6 +176,9 @@ public class EclipseLinkCaching extends EclipseLinkPersistenceUnitProperties
 		}
 		else if (aspectName.equals(SHARED_CACHE_PROPERTY)) {
 			this.sharedCacheChanged(event);
+		}
+		else if (aspectName.equals(FLUSH_CLEAR_CACHE_PROPERTY)) {
+			this.flushClearCacheChanged(event);
 		}
 		else {
 			throw new IllegalArgumentException("Illegal event received - property not applicable: " + aspectName);
@@ -324,6 +331,31 @@ public class EclipseLinkCaching extends EclipseLinkPersistenceUnitProperties
 
 	public Boolean getDefaultSharedCacheDefault() {
 		return DEFAULT_SHARED_CACHE_DEFAULT;
+	}
+
+	// ********** FlushClearCache **********
+	
+	public FlushClearCache getFlushClearCache() {
+		return this.flushClearCache;
+	}
+	
+	public void setFlushClearCache(FlushClearCache newFlushClearCache) {
+		FlushClearCache old = this.flushClearCache;
+		this.flushClearCache = newFlushClearCache;
+		this.putProperty(FLUSH_CLEAR_CACHE_PROPERTY, newFlushClearCache);
+		this.firePropertyChanged(FLUSH_CLEAR_CACHE_PROPERTY, old, newFlushClearCache);
+	}
+
+	private void flushClearCacheChanged(PropertyChangeEvent event) {
+		String stringValue = (event.getNewValue() == null) ? null : ((Property) event.getNewValue()).getValue();
+		FlushClearCache newValue = getEnumValueOf(stringValue, FlushClearCache.values());
+		FlushClearCache old = this.flushClearCache;
+		this.flushClearCache = newValue;
+		this.firePropertyChanged(event.getAspectName(), old, newValue);
+	}
+	
+	public FlushClearCache getDefaultFlushClearCache() {
+		return DEFAULT_FLUSH_CLEAR_CACHE;
 	}
 
 	// ****** CacheProperties *******

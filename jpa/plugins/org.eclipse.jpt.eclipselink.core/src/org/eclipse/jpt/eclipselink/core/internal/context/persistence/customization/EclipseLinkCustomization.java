@@ -39,13 +39,14 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 	private Boolean weavingFetchGroups;
 	private Boolean weavingInternal;
 	private Boolean weavingEager;
+	private Boolean validationOnly;
 	private ArrayList<ClassRef> sessionCustomizers;
 	private String profiler; // storing EclipseLinkStringValue since value can be Profiler or custom class
+	private String classLoader;
+	private String exceptionHandler;
 
 	// key = Entity name ; value = Customizer properties
 	private Map<String, CustomizerProperties> entitiesCustomizerProperties;
-	
-	private static final long serialVersionUID = 1L;
 	
 	// ********** constructors **********
 	public EclipseLinkCustomization(PersistenceUnit parent, ListValueModel<Property> propertyListAdapter) {
@@ -76,6 +77,8 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 			this.getBooleanValue(ECLIPSELINK_WEAVING_INTERNAL);
 		this.weavingEager = 
 			this.getBooleanValue(ECLIPSELINK_WEAVING_EAGER);
+		this.validationOnly = 
+			this.getBooleanValue(ECLIPSELINK_VALIDATION_ONLY);
 		this.initializeSessionCustomizersFromPersistenceUnit();
 
 		Set<Property> properties = 
@@ -83,6 +86,10 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 		this.initializeEntitiesCustomizerClass(properties);
 		
 		this.profiler = this.getProfilerProtertyValue();
+		this.classLoader = 
+			this.getStringValue(ECLIPSELINK_CLASSLOADER);
+		this.exceptionHandler = 
+			this.getStringValue(ECLIPSELINK_EXCEPTION_HANDLER);
 	}
 
 	private void initializeSessionCustomizersFromPersistenceUnit() {
@@ -166,11 +173,20 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 			ECLIPSELINK_WEAVING_EAGER,
 			WEAVING_EAGER_PROPERTY);
 		propertyNames.put(
+			ECLIPSELINK_VALIDATION_ONLY,
+			VALIDATION_ONLY_PROPERTY);
+		propertyNames.put(
 			ECLIPSELINK_SESSION_CUSTOMIZER,
 			SESSION_CUSTOMIZER_PROPERTY);
 		propertyNames.put(
 			ECLIPSELINK_PROFILER,
 			PROFILER_PROPERTY);
+		propertyNames.put(
+			ECLIPSELINK_CLASSLOADER,
+			CLASSLOADER_PROPERTY);
+		propertyNames.put(
+			ECLIPSELINK_EXCEPTION_HANDLER,
+			EXCEPTION_HANDLER_PROPERTY);
 
 		// Don't need to initialize propertyNames for: 
 		// descriptorCustomizerProperty
@@ -231,6 +247,9 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 		else if (aspectName.equals(WEAVING_EAGER_PROPERTY)) {
 			this.weavingEagerChanged(event);
 		}
+		else if (aspectName.equals(VALIDATION_ONLY_PROPERTY)) {
+			this.validationOnlyChanged(event);
+		}
 		else if (aspectName.equals(SESSION_CUSTOMIZER_PROPERTY)) {
 			this.sessionCustomizersChanged(event);
 		}
@@ -239,6 +258,12 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 		}
 		else if (aspectName.equals(PROFILER_PROPERTY)) {
 			this.profilerChanged(event);
+		}
+		else if (aspectName.equals(CLASSLOADER_PROPERTY)) {
+			this.classLoaderChanged(event);
+		}
+		else if (aspectName.equals(EXCEPTION_HANDLER_PROPERTY)) {
+			this.exceptionHandlerChanged(event);
 		}
 		else {
 			throw new IllegalArgumentException("Illegal event received - property not applicable: " + aspectName);
@@ -397,6 +422,31 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 		return DEFAULT_WEAVING_EAGER;
 	}
 
+	// ********** ValidationOnly **********
+	public Boolean getValidationOnly() {
+		return this.validationOnly;
+	}
+
+	public void setValidationOnly(Boolean newValidationOnly) {
+		Boolean old = this.validationOnly;
+		this.validationOnly = newValidationOnly;
+		this.putProperty(VALIDATION_ONLY_PROPERTY, newValidationOnly);
+		this.firePropertyChanged(VALIDATION_ONLY_PROPERTY, old, newValidationOnly);
+	}
+
+	private void validationOnlyChanged(PropertyChangeEvent event) {
+		String stringValue = (event.getNewValue() == null) ? null : ((Property) event.getNewValue()).getValue();
+		Boolean newValue = getBooleanValueOf(stringValue);
+		
+		Boolean old = this.validationOnly;
+		this.validationOnly = newValue;
+		this.firePropertyChanged(event.getAspectName(), old, newValue);
+	}
+
+	public Boolean getDefaultValidationOnly() {
+		return DEFAULT_VALIDATION_ONLY;
+	}
+
 	// ********** SessionCustomizers **********
 	public ListIterator<ClassRef> sessionCustomizers(){
 		return new CloneListIterator<ClassRef>(this.sessionCustomizers);
@@ -450,7 +500,7 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 		return null;
 	}
 
-	private void sessionCustomizersChanged(PropertyChangeEvent event) {
+	private void sessionCustomizersChanged(@SuppressWarnings("unused") PropertyChangeEvent event) {
 
 		this.initializeSessionCustomizersFromPersistenceUnit();
 		this.fireListChanged(SESSION_CUSTOMIZER_LIST_PROPERTY);
@@ -479,6 +529,52 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 	
 	public Weaving getDefaultWeaving() {
 		return DEFAULT_WEAVING;
+	}
+
+	// ********** ClassLoader **********
+	public String getClassLoader() {
+		return this.classLoader;
+	}
+
+	public void setClassLoader(String newClassLoader) {
+		String old = this.classLoader;
+		this.classLoader = newClassLoader;
+		this.putProperty(CLASSLOADER_PROPERTY, newClassLoader);
+		this.firePropertyChanged(CLASSLOADER_PROPERTY, old, newClassLoader);
+	}
+
+	private void classLoaderChanged(PropertyChangeEvent event) {
+		String newValue = (event.getNewValue() == null) ? null : ((Property) event.getNewValue()).getValue();
+		String old = this.classLoader;
+		this.classLoader = newValue;
+		this.firePropertyChanged(event.getAspectName(), old, newValue);
+	}
+
+	public String getDefaultClassLoader() {
+		return DEFAULT_CLASSLOADER;
+	}
+
+	// ********** ExceptionHandler **********
+	public String getExceptionHandler() {
+		return this.exceptionHandler;
+	}
+
+	public void setExceptionHandler(String newExceptionHandler) {
+		String old = this.exceptionHandler;
+		this.exceptionHandler = newExceptionHandler;
+		this.putProperty(EXCEPTION_HANDLER_PROPERTY, newExceptionHandler);
+		this.firePropertyChanged(EXCEPTION_HANDLER_PROPERTY, old, newExceptionHandler);
+	}
+
+	private void exceptionHandlerChanged(PropertyChangeEvent event) {
+		String newValue = (event.getNewValue() == null) ? null : ((Property) event.getNewValue()).getValue();
+		String old = this.exceptionHandler;
+		this.exceptionHandler = newValue;
+		this.firePropertyChanged(event.getAspectName(), old, newValue);
+	}
+
+	public String getDefaultExceptionHandler() {
+		return DEFAULT_EXCEPTION_HANDLER;
 	}
 
 	// ********** DescriptorCustomizer **********
