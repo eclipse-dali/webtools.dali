@@ -45,7 +45,7 @@ public class JavaExistenceCheckingComposite extends FormPane<JavaCaching> {
 	public JavaExistenceCheckingComposite(FormPane<? extends JavaCaching> parentPane,
 	                          Composite parent) {
 
-		super(parentPane, parent);
+		super(parentPane, parent, false);
 	}
 
 	@Override

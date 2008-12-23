@@ -73,7 +73,7 @@ public abstract class AbstractPrimaryKeyJoinColumnsComposite<T extends Entity> e
 	public AbstractPrimaryKeyJoinColumnsComposite(Pane<? extends T> subjectHolder,
 	                                      Composite parent) {
 
-		super(subjectHolder, parent);
+		super(subjectHolder, parent, false);
 	}
 
 	private void addJoinColumn(PrimaryKeyJoinColumnStateObject stateObject) {

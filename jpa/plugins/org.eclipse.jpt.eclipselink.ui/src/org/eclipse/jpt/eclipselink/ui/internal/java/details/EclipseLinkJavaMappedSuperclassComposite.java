@@ -10,17 +10,11 @@
 package org.eclipse.jpt.eclipselink.ui.internal.java.details;
 
 import org.eclipse.jpt.core.context.java.JavaMappedSuperclass;
-import org.eclipse.jpt.eclipselink.core.context.ChangeTracking;
-import org.eclipse.jpt.eclipselink.core.context.Customizer;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkMappedSuperclass;
-import org.eclipse.jpt.eclipselink.core.context.ReadOnly;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaMappedSuperclass;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaCaching;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaConverterHolder;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
-import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.ChangeTrackingComposite;
-import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.CustomizerComposite;
-import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.ReadOnlyComposite;
+import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkMappedSuperclassAdvancedComposite;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.IdClassComposite;
@@ -104,42 +98,6 @@ public class EclipseLinkJavaMappedSuperclassComposite extends FormPane<JavaMappe
 	}
 	
 	protected void initializeAdvancedPane(Composite container) {
-
-		container = addCollapsableSection(
-			container,
-			EclipseLinkUiMappingsMessages.EclipseLinkTypeMappingComposite_advanced
-		);
-
-		
-		new ReadOnlyComposite(this, buildReadOnlyHolder(), container);
-		new CustomizerComposite(this, buildCustomizerHolder(), container);
-		new ChangeTrackingComposite(this, buildChangeTrackingHolder(), container);
-	}
-	
-	private PropertyValueModel<ReadOnly> buildReadOnlyHolder() {
-		return new PropertyAspectAdapter<JavaMappedSuperclass, ReadOnly>(getSubjectHolder()) {
-			@Override
-			protected ReadOnly buildValue_() {
-				return ((EclipseLinkMappedSuperclass) this.subject).getReadOnly();
-			}
-		};
-	}
-	
-	private PropertyValueModel<Customizer> buildCustomizerHolder() {
-		return new PropertyAspectAdapter<JavaMappedSuperclass, Customizer>(getSubjectHolder()) {
-			@Override
-			protected Customizer buildValue_() {
-				return ((EclipseLinkMappedSuperclass) this.subject).getCustomizer();
-			}
-		};
-	}
-	
-	private PropertyValueModel<ChangeTracking> buildChangeTrackingHolder() {
-		return new PropertyAspectAdapter<JavaMappedSuperclass, ChangeTracking>(getSubjectHolder()) {
-			@Override
-			protected ChangeTracking buildValue_() {
-				return ((EclipseLinkMappedSuperclass) this.subject).getChangeTracking();
-			}
-		};
+		new EclipseLinkMappedSuperclassAdvancedComposite(this, container);
 	}
 }

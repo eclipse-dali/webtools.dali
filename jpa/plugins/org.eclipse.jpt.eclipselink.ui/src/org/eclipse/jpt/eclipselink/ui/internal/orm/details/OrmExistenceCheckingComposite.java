@@ -42,7 +42,7 @@ public class OrmExistenceCheckingComposite extends FormPane<Caching> {
 	public OrmExistenceCheckingComposite(FormPane<? extends Caching> parentPane,
 	                          Composite parent) {
 
-		super(parentPane, parent);
+		super(parentPane, parent, false);
 	}
 
 	@Override

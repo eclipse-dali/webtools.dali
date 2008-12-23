@@ -11,7 +11,7 @@ package org.eclipse.jpt.ui.internal.java.details;
 
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.ui.internal.mappings.details.AbstractInheritanceComposite;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -31,7 +31,7 @@ public class JavaInheritanceComposite extends AbstractInheritanceComposite<JavaE
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public JavaInheritanceComposite(Pane<JavaEntity> parentPane,
+	public JavaInheritanceComposite(FormPane<JavaEntity> parentPane,
 	                            Composite parent) {
 
 		super(parentPane, parent);

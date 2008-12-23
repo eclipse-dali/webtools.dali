@@ -11,7 +11,7 @@ package org.eclipse.jpt.ui.internal.orm.details;
 
 import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.ui.internal.mappings.details.AbstractInheritanceComposite;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -31,7 +31,7 @@ public class OrmInheritanceComposite extends AbstractInheritanceComposite<OrmEnt
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public OrmInheritanceComposite(Pane<? extends OrmEntity> parentPane,
+	public OrmInheritanceComposite(FormPane<? extends OrmEntity> parentPane,
 	                            Composite parent) {
 
 		super(parentPane, parent);

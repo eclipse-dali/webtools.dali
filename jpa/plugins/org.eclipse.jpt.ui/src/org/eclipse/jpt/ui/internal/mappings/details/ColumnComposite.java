@@ -98,7 +98,7 @@ public class ColumnComposite extends FormPane<Column> {
 	                       PropertyValueModel<? extends Column> subjectHolder,
 	                       Composite parent) {
 
-		super(parentPane, subjectHolder, parent);
+		super(parentPane, subjectHolder, parent, false);
 	}
 
 	/**
@@ -652,97 +652,6 @@ public class ColumnComposite extends FormPane<Column> {
 		};
 	}
 
-	private void initializeDetailsPane(Composite container) {
-
-		// Insertable tri-state check box
-		addTriStateCheckBoxWithDefault(
-			addSubPane(container, 4),
-			JptUiMappingsMessages.ColumnComposite_insertable,
-			buildInsertableHolder(),
-			buildInsertableStringHolder(),
-			JpaHelpContextIds.MAPPING_COLUMN_INSERTABLE
-		);
-
-		// Updatable tri-state check box
-		addTriStateCheckBoxWithDefault(
-			container,
-			JptUiMappingsMessages.ColumnComposite_updatable,
-			buildUpdatableHolder(),
-			buildUpdatableStringHolder(),
-			JpaHelpContextIds.MAPPING_COLUMN_UPDATABLE
-		);
-
-		// Unique tri-state check box
-		addTriStateCheckBoxWithDefault(
-			container,
-			JptUiMappingsMessages.ColumnComposite_unique,
-			buildUniqueHolder(),
-			buildUniqueStringHolder(),
-			JpaHelpContextIds.MAPPING_COLUMN_UNIQUE
-		);
-
-		// Nullable tri-state check box
-		addTriStateCheckBoxWithDefault(
-			container,
-			JptUiMappingsMessages.ColumnComposite_nullable,
-			buildNullableHolder(),
-			buildNullableStringHolder(),
-			JpaHelpContextIds.MAPPING_COLUMN_NULLABLE
-		);
-
-		// Length widgets
-		Spinner lengthSpinner = addLabeledSpinner(
-			container,
-			JptUiMappingsMessages.ColumnComposite_length,
-			buildLengthHolder(),
-			-1,
-			-1,
-			Integer.MAX_VALUE,
-			addDefaultLengthLabel(container),
-			JpaHelpContextIds.MAPPING_COLUMN_LENGTH
-		);
-
-		updateGridData(container, lengthSpinner);
-
-		// Precision widgets
-		Spinner precisionSpinner = addLabeledSpinner(
-			container,
-			JptUiMappingsMessages.ColumnComposite_precision,
-			buildPrecisionHolder(),
-			-1,
-			-1,
-			Integer.MAX_VALUE,
-			addDefaultPrecisionLabel(container),
-			JpaHelpContextIds.MAPPING_COLUMN_PRECISION
-		);
-
-		updateGridData(container, precisionSpinner);
-
-		// Scale widgets
-		Spinner scaleSpinner = addLabeledSpinner(
-			container,
-			JptUiMappingsMessages.ColumnComposite_scale,
-			buildScaleHolder(),
-			-1,
-			-1,
-			Integer.MAX_VALUE,
-			addDefaultScaleLabel(container),
-			JpaHelpContextIds.MAPPING_COLUMN_SCALE
-		);
-
-		updateGridData(container, scaleSpinner);
-
-		// Column Definition widgets
-		addLabeledText(
-			container,
-			JptUiMappingsMessages.ColumnComposite_columnDefinition,
-			buildColumnDefinitionHolder()
-		);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected void initializeLayout(Composite container) {
 
@@ -775,37 +684,135 @@ public class ColumnComposite extends FormPane<Column> {
 			new SimplePropertyValueModel<Boolean>(Boolean.FALSE)
 		);
 
-		initializeDetailsPane(addSubPane(container, 0, 16));
+		new DetailsComposite(this, getSubjectHolder(), addSubPane(container, 0, 16));
 	}
+	
+	protected class DetailsComposite extends FormPane<Column> {
+		public DetailsComposite(FormPane<?> parentPane,
+            PropertyValueModel<? extends Column> subjectHolder,
+            Composite parent) {
 
-	/**
-	 * Changes the layout of the given container by changing which widget will
-	 * grab the excess of horizontal space. By default, the center control grabs
-	 * the excess space, we change it to be the right control.
-	 *
-	 * @param container The container containing the controls needing their
-	 * <code>GridData</code> to be modified from the default values
-	 * @param spinner The spinner that got created
-	 */
-	private void updateGridData(Composite container, Spinner spinner) {
-
-		// It is possible the spinner's parent is not the container of the
-		// label, spinner and right control (a pane is sometimes required for
-		// painting the spinner's border)
-		Composite paneContainer = spinner.getParent();
-
-		while (container != paneContainer.getParent()) {
-			paneContainer = paneContainer.getParent();
+			super(parentPane, subjectHolder, parent, false);
 		}
 
-		Control[] controls = paneContainer.getChildren();
+		@Override
+		protected void initializeLayout(Composite container) {
 
-		GridData gridData = new GridData();
-		gridData.grabExcessHorizontalSpace = false;
-		gridData.horizontalAlignment       = GridData.BEGINNING;
-		controls[1].setLayoutData(gridData);
+			// Insertable tri-state check box
+			addTriStateCheckBoxWithDefault(
+				addSubPane(container, 4),
+				JptUiMappingsMessages.ColumnComposite_insertable,
+				buildInsertableHolder(),
+				buildInsertableStringHolder(),
+				JpaHelpContextIds.MAPPING_COLUMN_INSERTABLE
+			);
 
-		controls[2].setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		removeAlignRight(controls[2]);
+			// Updatable tri-state check box
+			addTriStateCheckBoxWithDefault(
+				container,
+				JptUiMappingsMessages.ColumnComposite_updatable,
+				buildUpdatableHolder(),
+				buildUpdatableStringHolder(),
+				JpaHelpContextIds.MAPPING_COLUMN_UPDATABLE
+			);
+
+			// Unique tri-state check box
+			addTriStateCheckBoxWithDefault(
+				container,
+				JptUiMappingsMessages.ColumnComposite_unique,
+				buildUniqueHolder(),
+				buildUniqueStringHolder(),
+				JpaHelpContextIds.MAPPING_COLUMN_UNIQUE
+			);
+
+			// Nullable tri-state check box
+			addTriStateCheckBoxWithDefault(
+				container,
+				JptUiMappingsMessages.ColumnComposite_nullable,
+				buildNullableHolder(),
+				buildNullableStringHolder(),
+				JpaHelpContextIds.MAPPING_COLUMN_NULLABLE
+			);
+
+			// Length widgets
+			Spinner lengthSpinner = addLabeledSpinner(
+				container,
+				JptUiMappingsMessages.ColumnComposite_length,
+				buildLengthHolder(),
+				-1,
+				-1,
+				Integer.MAX_VALUE,
+				addDefaultLengthLabel(container),
+				JpaHelpContextIds.MAPPING_COLUMN_LENGTH
+			);
+
+			updateGridData(container, lengthSpinner);
+
+			// Precision widgets
+			Spinner precisionSpinner = addLabeledSpinner(
+				container,
+				JptUiMappingsMessages.ColumnComposite_precision,
+				buildPrecisionHolder(),
+				-1,
+				-1,
+				Integer.MAX_VALUE,
+				addDefaultPrecisionLabel(container),
+				JpaHelpContextIds.MAPPING_COLUMN_PRECISION
+			);
+
+			updateGridData(container, precisionSpinner);
+
+			// Scale widgets
+			Spinner scaleSpinner = addLabeledSpinner(
+				container,
+				JptUiMappingsMessages.ColumnComposite_scale,
+				buildScaleHolder(),
+				-1,
+				-1,
+				Integer.MAX_VALUE,
+				addDefaultScaleLabel(container),
+				JpaHelpContextIds.MAPPING_COLUMN_SCALE
+			);
+
+			updateGridData(container, scaleSpinner);
+
+			// Column Definition widgets
+			addLabeledText(
+				container,
+				JptUiMappingsMessages.ColumnComposite_columnDefinition,
+				buildColumnDefinitionHolder()
+			);
+		}
+		
+		/**
+		 * Changes the layout of the given container by changing which widget will
+		 * grab the excess of horizontal space. By default, the center control grabs
+		 * the excess space, we change it to be the right control.
+		 *
+		 * @param container The container containing the controls needing their
+		 * <code>GridData</code> to be modified from the default values
+		 * @param spinner The spinner that got created
+		 */
+		private void updateGridData(Composite container, Spinner spinner) {
+
+			// It is possible the spinner's parent is not the container of the
+			// label, spinner and right control (a pane is sometimes required for
+			// painting the spinner's border)
+			Composite paneContainer = spinner.getParent();
+
+			while (container != paneContainer.getParent()) {
+				paneContainer = paneContainer.getParent();
+			}
+
+			Control[] controls = paneContainer.getChildren();
+
+			GridData gridData = new GridData();
+			gridData.grabExcessHorizontalSpace = false;
+			gridData.horizontalAlignment       = GridData.BEGINNING;
+			controls[1].setLayoutData(gridData);
+
+			controls[2].setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+			removeAlignRight(controls[2]);
+		}
 	}
 }

@@ -94,7 +94,7 @@ public class OrmGeneratorsComposite extends Pane<EntityMappings>
 	public OrmGeneratorsComposite(Pane<? extends EntityMappings> parentPane,
 	                              Composite parent) {
 
-		super(parentPane, parent);
+		super(parentPane, parent, false);
 	}
 
 	private void addSequenceGenerator(ObjectListSelectionModel listSelectionModel) {

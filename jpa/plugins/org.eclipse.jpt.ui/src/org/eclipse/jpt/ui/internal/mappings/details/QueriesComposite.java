@@ -93,7 +93,7 @@ public class QueriesComposite extends Pane<QueryContainer>
 	public QueriesComposite(Pane<? extends QueryContainer> parentPane,
 	                        Composite parent) {
 
-		super(parentPane, parent);
+		super(parentPane, parent, false);
 	}
 
 	private void addNamedNativeQuery(ObjectListSelectionModel listSelectionModel) {

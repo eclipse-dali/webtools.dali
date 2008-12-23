@@ -47,7 +47,7 @@ public class OrmQueriesComposite extends Pane<EntityMappings> {
 	public OrmQueriesComposite(Pane<? extends EntityMappings> parentPane,
 	                           Composite parent) {
 
-		super(parentPane, parent);
+		super(parentPane, parent, false);
 	}
 
 	private PropertyValueModel<Boolean> buildPaneEnablerHolder() {
@@ -59,9 +59,6 @@ public class OrmQueriesComposite extends Pane<EntityMappings> {
 		};
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected void initializeLayout(Composite container) {
 

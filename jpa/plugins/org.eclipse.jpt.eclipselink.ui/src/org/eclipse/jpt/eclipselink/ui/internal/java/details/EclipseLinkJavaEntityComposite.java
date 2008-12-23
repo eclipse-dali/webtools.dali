@@ -9,19 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.java.details;
 
-import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.java.JavaEntity;
-import org.eclipse.jpt.eclipselink.core.context.ChangeTracking;
-import org.eclipse.jpt.eclipselink.core.context.Customizer;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkEntity;
-import org.eclipse.jpt.eclipselink.core.context.ReadOnly;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaEntity;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaCaching;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaConverterHolder;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
-import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.ChangeTrackingComposite;
-import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.CustomizerComposite;
-import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.ReadOnlyComposite;
+import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkEntityAdvancedComposite;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.java.details.JavaInheritanceComposite;
 import org.eclipse.jpt.ui.internal.java.details.JavaSecondaryTablesComposite;
@@ -121,42 +114,6 @@ public class EclipseLinkJavaEntityComposite extends AbstractEntityComposite<Java
 	}
 	
 	protected void initializeAdvancedPane(Composite container) {
-
-		container = addCollapsableSection(
-			container,
-			EclipseLinkUiMappingsMessages.EclipseLinkTypeMappingComposite_advanced
-		);
-
-		
-		new ReadOnlyComposite(this, buildReadOnlyHolder(), container);
-		new CustomizerComposite(this, buildCustomizerHolder(), container);
-		new ChangeTrackingComposite(this, buildChangeTrackingHolder(), container);
-	}
-	
-	private PropertyValueModel<ReadOnly> buildReadOnlyHolder() {
-		return new PropertyAspectAdapter<Entity, ReadOnly>(getSubjectHolder()) {
-			@Override
-			protected ReadOnly buildValue_() {
-				return ((EclipseLinkEntity) this.subject).getReadOnly();
-			}
-		};
-	}
-	
-	private PropertyValueModel<Customizer> buildCustomizerHolder() {
-		return new PropertyAspectAdapter<Entity, Customizer>(getSubjectHolder()) {
-			@Override
-			protected Customizer buildValue_() {
-				return ((EclipseLinkEntity) this.subject).getCustomizer();
-			}
-		};
-	}	
-	
-	private PropertyValueModel<ChangeTracking> buildChangeTrackingHolder() {
-		return new PropertyAspectAdapter<Entity, ChangeTracking>(getSubjectHolder()) {
-			@Override
-			protected ChangeTracking buildValue_() {
-				return ((EclipseLinkEntity) this.subject).getChangeTracking();
-			}
-		};
+		new EclipseLinkEntityAdvancedComposite(this, container);
 	}
 }

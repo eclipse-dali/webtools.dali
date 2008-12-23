@@ -58,7 +58,6 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 2.0
  */
-@SuppressWarnings("nls")
 public class PersistenceUnitMetadataComposite extends FormPane<PersistenceUnitMetadata>
 {
 	/**
@@ -72,7 +71,7 @@ public class PersistenceUnitMetadataComposite extends FormPane<PersistenceUnitMe
 	                                        PropertyValueModel<? extends PersistenceUnitMetadata> subjectHolder,
 	                                        Composite parent) {
 
-		super(parentPane, subjectHolder, parent);
+		super(parentPane, subjectHolder, parent, false);
 	}
 
 	private EnumFormComboViewer<OrmPersistenceUnitDefaults, AccessType> addAccessTypeCombo(Composite container) {

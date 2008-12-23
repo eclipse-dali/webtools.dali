@@ -10,14 +10,10 @@
 package org.eclipse.jpt.eclipselink.ui.internal.orm.details;
 
 import org.eclipse.jpt.core.context.orm.OrmEmbeddable;
-import org.eclipse.jpt.eclipselink.core.context.ChangeTracking;
-import org.eclipse.jpt.eclipselink.core.context.Customizer;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkEmbeddable;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.ConverterHolder;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmEmbeddable;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
-import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.ChangeTrackingComposite;
-import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.CustomizerComposite;
+import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkEmbeddableAdvancedComposite;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
@@ -78,30 +74,6 @@ public class EclipseLinkOrmEmbeddableComposite extends FormPane<OrmEmbeddable>
 	}
 	
 	protected void initializeAdvancedPane(Composite container) {
-		container = addCollapsableSection(
-			container,
-			EclipseLinkUiMappingsMessages.EclipseLinkTypeMappingComposite_advanced
-		);
-		
-		new CustomizerComposite(this, buildCustomizerHolder(), container);
-		new ChangeTrackingComposite(this, buildChangeTrackingHolder(), container);
-	}
-	
-	private PropertyValueModel<Customizer> buildCustomizerHolder() {
-		return new PropertyAspectAdapter<OrmEmbeddable, Customizer>(getSubjectHolder()) {
-			@Override
-			protected Customizer buildValue_() {
-				return ((EclipseLinkEmbeddable) this.subject).getCustomizer();
-			}
-		};
-	}
-	
-	private PropertyValueModel<ChangeTracking> buildChangeTrackingHolder() {
-		return new PropertyAspectAdapter<OrmEmbeddable, ChangeTracking>(getSubjectHolder()) {
-			@Override
-			protected ChangeTracking buildValue_() {
-				return ((EclipseLinkEmbeddable) this.subject).getChangeTracking();
-			}
-		};
+		new EclipseLinkEmbeddableAdvancedComposite(this, container);
 	}
 }

@@ -39,6 +39,7 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Group;
 
 /**
  * Here the layout of this pane:
@@ -223,14 +224,18 @@ public class ObjectTypeConverterComposite extends FormPane<ObjectTypeConverter>
 	
 	protected void addConversionValuesTable(Composite container) {
 		
-		int groupBoxMargin = getGroupBoxMargin();
+		// Join Columns group pane
+		Group conversionValuesGroupPane = addTitledGroup(
+			container,
+			"Conversion values"
+		);
 
 		WritablePropertyValueModel<ConversionValue> conversionValueHolder =
 			buildConversionValueHolder();
 		// Conversion Values add/remove list pane
 		new AddRemoveTablePane<ObjectTypeConverter>(
 			this,
-			addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin),
+			conversionValuesGroupPane,
 			buildConversionValuesAdapter(),
 			buildConversionValuesListModel(),
 			conversionValueHolder,

@@ -70,7 +70,7 @@ public abstract class CachingComposite<T extends Caching> extends FormPane<T>
         PropertyValueModel<T> subjectHolder,
         Composite parent) {
 
-		super(parentPane, subjectHolder, parent);
+		super(parentPane, subjectHolder, parent, false);
 	}
 
 	@Override
@@ -107,7 +107,7 @@ public abstract class CachingComposite<T extends Caching> extends FormPane<T>
 	}
 	
 	protected void initializeAdvancedPane(Composite container, Collection<Pane<?>> panes) {
-		panes.add(new ExpiryComposite(this, container));//don't add to panes, will handle its own enablement
+		panes.add(new ExpiryComposite(this, container));
 		panes.add(new AlwaysRefreshComposite(this, container));
 		panes.add(new RefreshOnlyIfNewerComposite(this, container));
 		panes.add(new DisableHitsComposite(this, container));
@@ -120,7 +120,7 @@ public abstract class CachingComposite<T extends Caching> extends FormPane<T>
 		return new PropertyAspectAdapter<Caching, Boolean>(getSubjectHolder(), Caching.SPECIFIED_SHARED_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
-				return this.subject.isShared();
+				return Boolean.valueOf(this.subject.isShared());
 			}
 		};
 	}	
@@ -159,19 +159,15 @@ public abstract class CachingComposite<T extends Caching> extends FormPane<T>
 			protected String transform(Boolean value) {
 
 				if ((getSubject() != null) && (value == null)) {
+					boolean defaultValue = getSubject().isDefaultShared();
 
-					Boolean defaultValue = getSubject().isDefaultShared();
+					String defaultStringValue = defaultValue ? JptUiMappingsMessages.Boolean_True :
+					                                           JptUiMappingsMessages.Boolean_False;
 
-					if (defaultValue != null) {
-
-						String defaultStringValue = defaultValue ? JptUiMappingsMessages.Boolean_True :
-						                                           JptUiMappingsMessages.Boolean_False;
-
-						return NLS.bind(
-							EclipseLinkUiMappingsMessages.CachingComposite_sharedLabelDefault,
-							defaultStringValue
-						);
-					}
+					return NLS.bind(
+						EclipseLinkUiMappingsMessages.CachingComposite_sharedLabelDefault,
+						defaultStringValue
+					);
 				}
 
 				return EclipseLinkUiMappingsMessages.CachingComposite_sharedLabel;
