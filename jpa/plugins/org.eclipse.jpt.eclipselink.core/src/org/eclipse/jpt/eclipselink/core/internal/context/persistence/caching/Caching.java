@@ -20,58 +20,58 @@ public interface Caching extends PersistenceUnitProperties
 	CacheType getDefaultCacheTypeDefault();
 	CacheType getCacheTypeDefault();
 	void setCacheTypeDefault(CacheType cacheTypeDefault);
-		static final String CACHE_TYPE_DEFAULT_PROPERTY = "cacheTypeDefaultProperty";
+		static final String CACHE_TYPE_DEFAULT_PROPERTY = "cacheTypeDefault"; //$NON-NLS-1$
 		// EclipseLink key string
-		static final String ECLIPSELINK_CACHE_TYPE_DEFAULT = "eclipselink.cache.type.default";
+		static final String ECLIPSELINK_CACHE_TYPE_DEFAULT = "eclipselink.cache.type.default"; //$NON-NLS-1$
 		static final CacheType DEFAULT_CACHE_TYPE_DEFAULT = CacheType.soft_weak;
 
 	Integer getDefaultCacheSizeDefault();
 	Integer getCacheSizeDefault();
 	void setCacheSizeDefault(Integer cacheSizeDefault);
-		static final String CACHE_SIZE_DEFAULT_PROPERTY = "cacheSizeDefaultProperty";
+		static final String CACHE_SIZE_DEFAULT_PROPERTY = "cacheSizeDefault"; //$NON-NLS-1$
 		// EclipseLink key string
-		static final String ECLIPSELINK_CACHE_SIZE_DEFAULT = "eclipselink.cache.size.default";
+		static final String ECLIPSELINK_CACHE_SIZE_DEFAULT = "eclipselink.cache.size.default"; //$NON-NLS-1$
 		static final Integer DEFAULT_CACHE_SIZE_DEFAULT = Integer.valueOf(100);
 
 	Boolean getDefaultSharedCacheDefault();
 	Boolean getSharedCacheDefault();
 	void setSharedCacheDefault(Boolean sharedCacheDefault);
-		static final String SHARED_CACHE_DEFAULT_PROPERTY = "sharedCacheDefaultProperty";
+		static final String SHARED_CACHE_DEFAULT_PROPERTY = "sharedCacheDefault"; //$NON-NLS-1$
 		// EclipseLink key string
-		static final String ECLIPSELINK_CACHE_SHARED_DEFAULT = "eclipselink.cache.shared.default";
+		static final String ECLIPSELINK_CACHE_SHARED_DEFAULT = "eclipselink.cache.shared.default"; //$NON-NLS-1$
 		static final Boolean DEFAULT_SHARED_CACHE_DEFAULT = Boolean.TRUE;
 
 
 	CacheType getDefaultCacheType();
 	CacheType getCacheType(String entityName);
 	void setCacheType(CacheType cacheType, String entityName);
-		static final String CACHE_TYPE_PROPERTY = "cacheTypeProperty";
+		static final String CACHE_TYPE_PROPERTY = "cacheType"; //$NON-NLS-1$
 		// EclipseLink key string
-		static final String ECLIPSELINK_CACHE_TYPE = "eclipselink.cache.type.";
+		static final String ECLIPSELINK_CACHE_TYPE = "eclipselink.cache.type."; //$NON-NLS-1$
 		static final CacheType DEFAULT_CACHE_TYPE = CacheType.soft_weak;
 
 	Integer getDefaultCacheSize();
 	Integer getCacheSize(String entityName);
 	void setCacheSize(Integer cacheSize, String entityName);
-		static final String CACHE_SIZE_PROPERTY = "cacheSizeProperty";
+		static final String CACHE_SIZE_PROPERTY = "cacheSize"; //$NON-NLS-1$
 		// EclipseLink key string
-		static final String ECLIPSELINK_CACHE_SIZE = "eclipselink.cache.size.";
+		static final String ECLIPSELINK_CACHE_SIZE = "eclipselink.cache.size."; //$NON-NLS-1$
 		static final Integer DEFAULT_CACHE_SIZE = Integer.valueOf(100);
 
 	Boolean getDefaultSharedCache();
 	Boolean getSharedCache(String entityName);
 	void setSharedCache(Boolean sharedCache, String entityName);
-		static final String SHARED_CACHE_PROPERTY = "sharedCacheProperty";
+		static final String SHARED_CACHE_PROPERTY = "sharedCache"; //$NON-NLS-1$
 		// EclipseLink key string
-		static final String ECLIPSELINK_SHARED_CACHE = "eclipselink.cache.shared.";
+		static final String ECLIPSELINK_SHARED_CACHE = "eclipselink.cache.shared."; //$NON-NLS-1$
 		static final Boolean DEFAULT_SHARED_CACHE = Boolean.TRUE;
 
 	FlushClearCache getDefaultFlushClearCache();
 	FlushClearCache getFlushClearCache();
 	void setFlushClearCache(FlushClearCache newFlushClearCache);
-		static final String FLUSH_CLEAR_CACHE_PROPERTY = "flushClearCacheProperty";
+		static final String FLUSH_CLEAR_CACHE_PROPERTY = "flushClearCache"; //$NON-NLS-1$
 		// EclipseLink key string
-		static final String ECLIPSELINK_FLUSH_CLEAR_CACHE = "eclipselink.flush-clear.cache";
+		static final String ECLIPSELINK_FLUSH_CLEAR_CACHE = "eclipselink.flush-clear.cache"; //$NON-NLS-1$
 		static final FlushClearCache DEFAULT_FLUSH_CLEAR_CACHE = FlushClearCache.drop_invalidate;
 
 
@@ -80,6 +80,6 @@ public interface Caching extends PersistenceUnitProperties
 	boolean entityExists(String entity);
 	String addEntity(String entity);
 	void removeEntity(String entity);
-		String ENTITIES_LIST_PROPERTY = "entitiesListProperty";
+		String ENTITIES_LIST_PROPERTY = "entities"; //$NON-NLS-1$
 
 }

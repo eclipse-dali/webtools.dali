@@ -20,9 +20,9 @@ public interface GeneralProperties extends PersistenceUnitProperties
 	Boolean getDefaultExcludeEclipselinkOrm();
 	Boolean getExcludeEclipselinkOrm();
 	void setExcludeEclipselinkOrm(Boolean newExcludeEclipselinkOrm);
-		static final String EXCLUDE_ECLIPSELINK_ORM_PROPERTY = "excludeEclipselinkOrmProperty";
+		static final String EXCLUDE_ECLIPSELINK_ORM_PROPERTY = "excludeEclipselinkOrm"; //$NON-NLS-1$
 		// EclipseLink key string
-		static final String ECLIPSELINK_EXCLUDE_ECLIPSELINK_ORM = "eclipselink.exclude-eclipselink-orm";
+		static final String ECLIPSELINK_EXCLUDE_ECLIPSELINK_ORM = "eclipselink.exclude-eclipselink-orm"; //$NON-NLS-1$
 		static final Boolean DEFAULT_EXCLUDE_ECLIPSELINK_ORM = Boolean.FALSE;
 		
 }

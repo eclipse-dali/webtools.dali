@@ -20,34 +20,34 @@ public interface Options extends PersistenceUnitProperties
 	String getDefaultSessionName();
 	String getSessionName();
 	void setSessionName(String newSessionName); 
-		static final String SESSION_NAME_PROPERTY = "sessionNameProperty";
+		static final String SESSION_NAME_PROPERTY = "sessionName"; //$NON-NLS-1$
 		// EclipseLink key string
-		static final String ECLIPSELINK_SESSION_NAME = "eclipselink.session-name";
-		static final String DEFAULT_SESSION_NAME = "";	// no default
+		static final String ECLIPSELINK_SESSION_NAME = "eclipselink.session-name"; //$NON-NLS-1$
+		static final String DEFAULT_SESSION_NAME = "";	// no default //$NON-NLS-1$
 
 	String getDefaultSessionsXml();
 	String getSessionsXml();
 	void setSessionsXml(String newSessionsXml);
-		static final String SESSIONS_XML_PROPERTY = "sessionsXmlProperty";
+		static final String SESSIONS_XML_PROPERTY = "sessionsXml"; //$NON-NLS-1$
 		// EclipseLink key string
-		static final String ECLIPSELINK_SESSIONS_XML = "eclipselink.sessions-xml";
-		static final String DEFAULT_SESSIONS_XML = "";	// no default
+		static final String ECLIPSELINK_SESSIONS_XML = "eclipselink.sessions-xml"; //$NON-NLS-1$
+		static final String DEFAULT_SESSIONS_XML = "";	// no default //$NON-NLS-1$
 		
 	Boolean getDefaultIncludeDescriptorQueries();
 	Boolean getIncludeDescriptorQueries();
 	void setIncludeDescriptorQueries(Boolean newIncludeDescriptorQueries);
-		static final String SESSION_INCLUDE_DESCRIPTOR_QUERIES_PROPERTY = "includeDescriptorQueriesProperty";
+		static final String SESSION_INCLUDE_DESCRIPTOR_QUERIES_PROPERTY = "includeDescriptorQueriesy"; //$NON-NLS-1$
 		// EclipseLink key string
-		static final String ECLIPSELINK_SESSION_INCLUDE_DESCRIPTOR_QUERIES = "eclipselink.session.include.descriptor.queries";
+		static final String ECLIPSELINK_SESSION_INCLUDE_DESCRIPTOR_QUERIES = "eclipselink.session.include.descriptor.queries"; //$NON-NLS-1$
 		static final Boolean DEFAULT_SESSION_INCLUDE_DESCRIPTOR_QUERIES = Boolean.TRUE;
 		
 	String getDefaultTargetDatabase();
 	String getTargetDatabase();
 	void setTargetDatabase(String newTargetDatabase);
 	void setTargetDatabase(TargetDatabase newTargetDatabase);
-		static final String TARGET_DATABASE_PROPERTY = "targetDatabaseProperty";
+		static final String TARGET_DATABASE_PROPERTY = "targetDatabase"; //$NON-NLS-1$
 		// EclipseLink key string
-		static final String ECLIPSELINK_TARGET_DATABASE = "eclipselink.target-database";
+		static final String ECLIPSELINK_TARGET_DATABASE = "eclipselink.target-database"; //$NON-NLS-1$
 		static final String DEFAULT_TARGET_DATABASE = 
 			EclipseLinkPersistenceUnitProperties.getEclipseLinkStringValueOf(TargetDatabase.auto);
 
@@ -55,27 +55,27 @@ public interface Options extends PersistenceUnitProperties
 	String getTargetServer();
 	void setTargetServer(String newTargetServer);
 	void setTargetServer(TargetServer newTargetServer);
-		static final String TARGET_SERVER_PROPERTY = "targetServerProperty";
+		static final String TARGET_SERVER_PROPERTY = "targetServer"; //$NON-NLS-1$
 		// EclipseLink key string
-		static final String ECLIPSELINK_TARGET_SERVER = "eclipselink.target-server";
+		static final String ECLIPSELINK_TARGET_SERVER = "eclipselink.target-server"; //$NON-NLS-1$
 		static final String DEFAULT_TARGET_SERVER = 
 			EclipseLinkPersistenceUnitProperties.getEclipseLinkStringValueOf(TargetServer.none);
 
 	String getDefaultEventListener();
 	String getEventListener();
 	void setEventListener(String newEventListener);
-		static final String SESSION_EVENT_LISTENER_PROPERTY = "eventListenerProperty";
+		static final String SESSION_EVENT_LISTENER_PROPERTY = "eventListener"; //$NON-NLS-1$
 		// EclipseLink key string
-		static final String ECLIPSELINK_SESSION_EVENT_LISTENER = "eclipselink.session-event-listener";
+		static final String ECLIPSELINK_SESSION_EVENT_LISTENER = "eclipselink.session-event-listener"; //$NON-NLS-1$
 		static final String DEFAULT_SESSION_EVENT_LISTENER = null;	// no default
 
 
 	Boolean getDefaultTemporalMutable();
 	Boolean getTemporalMutable();
 	void setTemporalMutable(Boolean temporalMutable);
-		static final String TEMPORAL_MUTABLE_PROPERTY = "temporalMutableProperty";
+		static final String TEMPORAL_MUTABLE_PROPERTY = "temporalMutable"; //$NON-NLS-1$
 		// EclipseLink key string
-		static final String ECLIPSELINK_TEMPORAL_MUTABLE = "eclipselink.temporal.mutable";
+		static final String ECLIPSELINK_TEMPORAL_MUTABLE = "eclipselink.temporal.mutable"; //$NON-NLS-1$
 		static final Boolean DEFAULT_TEMPORAL_MUTABLE = Boolean.FALSE;
 	
 }
