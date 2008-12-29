@@ -35,6 +35,7 @@ public class EclipseLinkJavaCustomConverter extends EclipseLinkJavaConverter
 		return EclipseLinkConverter.CUSTOM_CONVERTER;
 	}
 	
+	@Override
 	public String getAnnotationName() {
 		return ConverterAnnotation.ANNOTATION_NAME;
 	}
@@ -67,11 +68,13 @@ public class EclipseLinkJavaCustomConverter extends EclipseLinkJavaConverter
 	
 	// **************** resource interaction ***********************************
 	
+	@Override
 	protected void initialize(JavaResourcePersistentMember jrpm) {
 		super.initialize(jrpm);
 		this.converterClass = this.converterClass(getAnnotation());
 	}
 	
+	@Override
 	public void update(JavaResourcePersistentMember jrpm) {
 		super.update(jrpm);
 		this.setConverterClass_(this.converterClass(getAnnotation()));
