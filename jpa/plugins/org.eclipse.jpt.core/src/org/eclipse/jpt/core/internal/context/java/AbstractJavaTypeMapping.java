@@ -33,6 +33,11 @@ public abstract class AbstractJavaTypeMapping extends AbstractJavaJpaContextNode
 		super(parent);
 	}
 	
+	@Override
+	public JavaPersistentType getParent() {
+		return (JavaPersistentType) super.getParent();
+	}
+	
 	protected JavaResourceNode getResourceMapping() {
 		return this.javaResourcePersistentType.getMappingAnnotation(getAnnotationName());
 	}
@@ -40,7 +45,7 @@ public abstract class AbstractJavaTypeMapping extends AbstractJavaJpaContextNode
 	//***************** ITypeMapping implementation *****************
 	
 	public JavaPersistentType getPersistentType() {
-		return (JavaPersistentType) getParent();
+		return getParent();
 	}
 
 	public String getPrimaryTableName() {
