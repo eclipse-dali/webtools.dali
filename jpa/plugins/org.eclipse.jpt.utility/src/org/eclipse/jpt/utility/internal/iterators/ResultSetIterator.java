@@ -145,7 +145,7 @@ public class ResultSetIterator<E>
 			}
 			@Override
 			public String toString() {
-				return "ResultSetIterator.Adapter.Default";
+				return "ResultSetIterator.Adapter.Default"; //$NON-NLS-1$
 			}
 		}
 
