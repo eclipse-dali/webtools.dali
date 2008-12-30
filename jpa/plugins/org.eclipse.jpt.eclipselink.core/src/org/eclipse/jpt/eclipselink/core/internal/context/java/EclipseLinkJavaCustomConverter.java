@@ -98,7 +98,7 @@ public class EclipseLinkJavaCustomConverter extends EclipseLinkJavaConverter
 	}
 	
 	protected void validateConverterClass(List<IMessage> messages, CompilationUnit astRoot) {
-		if (! getAnnotation().implementsConverter()) {
+		if (! getAnnotation().converterClassImplementsInterface(ECLIPSELINK_CONVERTER_CLASS_NAME, astRoot)) {
 			messages.add(
 				DefaultEclipseLinkJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,

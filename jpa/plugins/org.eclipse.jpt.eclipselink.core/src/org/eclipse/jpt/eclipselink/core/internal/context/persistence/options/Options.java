@@ -68,7 +68,7 @@ public interface Options extends PersistenceUnitProperties
 		// EclipseLink key string
 		static final String ECLIPSELINK_SESSION_EVENT_LISTENER = "eclipselink.session-event-listener"; //$NON-NLS-1$
 		static final String DEFAULT_SESSION_EVENT_LISTENER = null;	// no default
-
+		String ECLIPSELINK_EVENT_LISTENER_CLASS_NAME = "org.eclipse.persistence.sessions.SessionEventListener"; //$NON-NLS-1$
 
 	Boolean getDefaultTemporalMutable();
 	Boolean getTemporalMutable();

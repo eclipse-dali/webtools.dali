@@ -9,7 +9,6 @@
 package org.eclipse.jpt.eclipselink.ui.internal.mappings.details;
 
 import java.util.ListIterator;
-import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.ui.IJavaElementSearchConstants;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -153,15 +152,10 @@ public class ObjectTypeConverterComposite extends FormPane<ObjectTypeConverter>
 			protected JpaProject getJpaProject() {
 				return getSubject().getJpaProject();
 			}
-
+			
 			@Override
-			protected void promptType() {
-				IType type = chooseType();
-
-				if (type != null) {
-					String className = type.getFullyQualifiedName('.');
-					getSubject().setDataType(className);
-				}
+			protected void setClassName(String className) {
+				getSubject().setDataType(className);
 			}
 		};
 	}
@@ -175,7 +169,7 @@ public class ObjectTypeConverterComposite extends FormPane<ObjectTypeConverter>
 				return new PropertyAspectAdapter<ObjectTypeConverter, String>(getSubjectHolder(), ObjectTypeConverter.OBJECT_TYPE_PROPERTY) {
 					@Override
 					protected String buildValue_() {
-						return subject.getObjectType();
+						return this.subject.getObjectType();
 					}
 
 					@Override
@@ -204,21 +198,16 @@ public class ObjectTypeConverterComposite extends FormPane<ObjectTypeConverter>
 			protected JpaProject getJpaProject() {
 				return getSubject().getJpaProject();
 			}
-
+			
 			@Override
-			protected void promptType() {
-				IType type = chooseType();
-
-				if (type != null) {
-					String className = type.getFullyQualifiedName('.');
-					getSubject().setObjectType(className);
-				}
+			protected void setClassName(String className) {
+				getSubject().setObjectType(className);
 			}
+			
 			@Override
 			protected int getTypeDialogStyle() {
 				return IJavaElementSearchConstants.CONSIDER_CLASSES_AND_ENUMS;
 			}
-			
 		};
 	}
 	
@@ -227,7 +216,7 @@ public class ObjectTypeConverterComposite extends FormPane<ObjectTypeConverter>
 		// Join Columns group pane
 		Group conversionValuesGroupPane = addTitledGroup(
 			container,
-			"Conversion values"
+			EclipseLinkUiMappingsMessages.ObjectTypeConverterComposite_conversionValuesGroupTitle
 		);
 
 		WritablePropertyValueModel<ConversionValue> conversionValueHolder =

@@ -8,7 +8,6 @@
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.mappings.details;
 
-import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.eclipselink.core.context.TypeConverter;
@@ -96,7 +95,7 @@ public class TypeConverterComposite extends FormPane<TypeConverter>
 				return new PropertyAspectAdapter<TypeConverter, String>(getSubjectHolder(), TypeConverter.DATA_TYPE_PROPERTY) {
 					@Override
 					protected String buildValue_() {
-						return subject.getDataType();
+						return this.subject.getDataType();
 					}
 
 					@Override
@@ -106,7 +105,7 @@ public class TypeConverterComposite extends FormPane<TypeConverter>
 							value = null;
 						}
 
-						subject.setDataType(value);
+						this.subject.setDataType(value);
 					}
 				};
 			}
@@ -127,13 +126,8 @@ public class TypeConverterComposite extends FormPane<TypeConverter>
 			}
 
 			@Override
-			protected void promptType() {
-				IType type = chooseType();
-
-				if (type != null) {
-					String className = type.getFullyQualifiedName('.');
-					getSubject().setDataType(className);
-				}
+			protected void setClassName(String className) {
+				getSubject().setDataType(className);
 			}
 		};
 	}
@@ -147,7 +141,7 @@ public class TypeConverterComposite extends FormPane<TypeConverter>
 				return new PropertyAspectAdapter<TypeConverter, String>(getSubjectHolder(), TypeConverter.OBJECT_TYPE_PROPERTY) {
 					@Override
 					protected String buildValue_() {
-						return subject.getObjectType();
+						return this.subject.getObjectType();
 					}
 
 					@Override
@@ -157,7 +151,7 @@ public class TypeConverterComposite extends FormPane<TypeConverter>
 							value = null;
 						}
 
-						subject.setObjectType(value);
+						this.subject.setObjectType(value);
 					}
 				};
 			}
@@ -176,15 +170,10 @@ public class TypeConverterComposite extends FormPane<TypeConverter>
 			protected JpaProject getJpaProject() {
 				return getSubject().getJpaProject();
 			}
-
+			
 			@Override
-			protected void promptType() {
-				IType type = chooseType();
-
-				if (type != null) {
-					String className = type.getFullyQualifiedName('.');
-					getSubject().setObjectType(className);
-				}
+			protected void setClassName(String className) {
+				getSubject().setObjectType(className);
 			}
 		};
 	}

@@ -40,16 +40,13 @@ public interface ConverterAnnotation extends NamedConverterAnnotation
 	 * Set to null to remove the converterClass element.
 	 */
 	void setConverterClass(String value);
-		String CONVERTER_CLASS_PROPERTY = "converterClassProperty"; //$NON-NLS-1$
+		String CONVERTER_CLASS_PROPERTY = "converterClass"; //$NON-NLS-1$
 		
 	/**
 	 * Return whether the converterClass implements the eclipselink Converter interface
-	 * @see ConverterAnnotation#ECLIPSELINK_CONVERTER_CLASS_NAME
-	 * @return
+	 * @see org.eclipse.jpt.eclipselink.core.context.CustomConverter#ECLIPSELINK_CONVERTER_CLASS_NAME
 	 */
-	boolean implementsConverter();
-		String IMPLEMENTS_CONVERTER_PROPERTY = "implementsConverterProperty"; //$NON-NLS-1$		
-		String ECLIPSELINK_CONVERTER_CLASS_NAME = "org.eclipse.persistence.mappings.converters.Converter"; //$NON-NLS-1$
+	boolean converterClassImplementsInterface(String interfaceName, CompilationUnit astRoot);
 
 	/**
 	 * Return the {@link TextRange} for the converterClass element.  If the converterClass element 

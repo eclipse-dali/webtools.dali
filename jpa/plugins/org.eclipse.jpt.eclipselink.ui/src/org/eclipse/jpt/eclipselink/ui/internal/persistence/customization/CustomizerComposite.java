@@ -9,8 +9,8 @@
 *******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.persistence.customization;
 
-import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JpaProject;
+import org.eclipse.jpt.eclipselink.core.context.Customizer;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.customization.Customization;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.ui.internal.widgets.ClassChooserPane;
@@ -76,20 +76,17 @@ public class CustomizerComposite extends Pane<EntityCustomizerProperties>
 			}
 
 			@Override
-			protected void promptType() {
-				IType type = chooseType();
-
-				if (type != null) {
-					String className = type.getFullyQualifiedName('.');
-					getSubject().setDescriptorCustomizer(className);
-				}
+			protected void setClassName(String className) {
+				getSubject().setDescriptorCustomizer(className);
+			}
+			
+			@Override
+			protected String getSuperInterfaceName() {
+				return Customizer.ECLIPSELINK_DESCRIPTOR_CUSTOMIZER_CLASS_NAME;
 			}
 		};
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected void initializeLayout(Composite container) {
 		this.initializeClassChooser(container);

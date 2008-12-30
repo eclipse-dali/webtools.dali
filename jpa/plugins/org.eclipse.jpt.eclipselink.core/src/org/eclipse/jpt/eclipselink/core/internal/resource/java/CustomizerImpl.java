@@ -39,7 +39,6 @@ public class CustomizerImpl extends AbstractResourceAnnotation<Type> implements 
 
 	
 	private String value;
-	private boolean implementsDescriptorCustomizer;
 	
 	protected CustomizerImpl(JavaResourcePersistentMember parent, Type type) {
 		super(parent, type, DECLARATION_ANNOTATION_ADAPTER);
@@ -48,14 +47,20 @@ public class CustomizerImpl extends AbstractResourceAnnotation<Type> implements 
 	
 	public void initialize(CompilationUnit astRoot) {
 		this.value = this.value(astRoot);
-		this.implementsDescriptorCustomizer = this.implementsDescriptorCustomizer(astRoot);
 	}
 	
 	public String getAnnotationName() {
 		return ANNOTATION_NAME;
 	}
 	
-	//*************** Customizer implementation ****************
+	//*************** CustomizerAnnotation implementation ****************
+	
+	public boolean customizerClassImplementsInterface(String interfaceName, CompilationUnit astRoot) {
+		if (this.value == null) {
+			return false;
+		}
+		return JDTTools.findTypeInHierarchy(this.valueAdapter.getExpression(astRoot), interfaceName) != null;
+	}
 
 	public String getValue() {
 		return this.value;
@@ -70,16 +75,6 @@ public class CustomizerImpl extends AbstractResourceAnnotation<Type> implements 
 		this.valueAdapter.setValue(newValue);
 		firePropertyChanged(VALUE_PROPERTY, oldValue, newValue);
 	}
-	
-	public boolean implementsDescriptorCustomizer() {
-		return this.implementsDescriptorCustomizer;
-	}
-	
-	protected void setImplementsDescriptorCustomizer(boolean newImplementsDescriptorCustomizer) {
-		boolean oldImplementsDescriptorCustomizer = this.implementsDescriptorCustomizer;
-		this.implementsDescriptorCustomizer = newImplementsDescriptorCustomizer;
-		firePropertyChanged(IMPLEMENTS_DESCRIPTOR_CUSTOMIZER_PROPERTY, oldImplementsDescriptorCustomizer, newImplementsDescriptorCustomizer);
-	}
 
 	public TextRange getValueTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(VALUE_ADAPTER, astRoot);
@@ -87,18 +82,10 @@ public class CustomizerImpl extends AbstractResourceAnnotation<Type> implements 
 	
 	public void update(CompilationUnit astRoot) {
 		this.setValue(this.value(astRoot));
-		this.setImplementsDescriptorCustomizer(this.implementsDescriptorCustomizer(astRoot));
 	}
 	
 	protected String value(CompilationUnit astRoot) {
 		return this.valueAdapter.getValue(astRoot);
-	}
-
-	private boolean implementsDescriptorCustomizer(CompilationUnit astRoot) {
-		if (this.value == null) {
-			return false;
-		}
-		return JDTTools.findTypeInHierarchy(this.valueAdapter.getExpression(astRoot), ECLIPSELINK_DESCRIPTOR_CUSTOMIZER_CLASS_NAME) != null;
 	}
 	
 	// ********** static methods **********

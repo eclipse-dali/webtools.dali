@@ -27,5 +27,6 @@ public interface CustomConverter extends EclipseLinkConverter
 	String getConverterClass();	
 	void setConverterClass(String converterClass);
 		String CONVERTER_CLASS_PROPERTY = "converterClassProperty"; //$NON-NLS-1$
+		String ECLIPSELINK_CONVERTER_CLASS_NAME = "org.eclipse.persistence.mappings.converters.Converter"; //$NON-NLS-1$
 
 }

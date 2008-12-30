@@ -18,9 +18,13 @@ public enum Profiler {
 	no_profiler;
 
 	// EclipseLink value string
-	public static final String PERFORMANCE_PROFILER = "PerformanceProfiler";
-	public static final String QUERY_MONITOR = "QueryMonitor";
-	public static final String NO_PROFILER = "NoProfiler";
+	public static final String PERFORMANCE_PROFILER = "PerformanceProfiler"; //$NON-NLS-1$
+	public static final String QUERY_MONITOR = "QueryMonitor"; //$NON-NLS-1$
+	public static final String NO_PROFILER = "NoProfiler"; //$NON-NLS-1$
+
+	// EclipseLink profiler class names
+	public static final String PERFORMANCE_PROFILER_CLASS_NAME = "org.eclipse.persistence.tools.profiler.PerformanceProfiler"; //$NON-NLS-1$
+	public static final String QUERY_MONITOR_CLASS_NAME = "org.eclipse.persistence.tools.profiler.QueryMonitor"; //$NON-NLS-1$
 
 	/**
 	 * Return the Profiler value corresponding to the given literal.
@@ -33,5 +37,16 @@ public enum Profiler {
 			}
 		}
 		return null;
+	}
+	
+	
+	public static String getProfilerClassName(String profilerValue) {
+		if (profilerValue == PERFORMANCE_PROFILER) {
+			return PERFORMANCE_PROFILER_CLASS_NAME;
+		}
+		if (profilerValue == QUERY_MONITOR) {
+			return QUERY_MONITOR_CLASS_NAME;
+		}
+		return profilerValue;
 	}
 }

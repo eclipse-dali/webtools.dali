@@ -9,7 +9,6 @@
 *******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.persistence.options;
 
-import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.options.Options;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
@@ -76,20 +75,17 @@ public class EventListenerComposite extends Pane<Options>
 			}
 
 			@Override
-			protected void promptType() {
-				IType type = chooseType();
-
-				if (type != null) {
-					String className = type.getFullyQualifiedName('.');
-					this.getSubject().setEventListener(className);
-				}
+			protected void setClassName(String className) {
+				this.getSubject().setEventListener(className);
+			}
+			
+			@Override
+			protected String getSuperInterfaceName() {
+				return Options.ECLIPSELINK_EVENT_LISTENER_CLASS_NAME;
 			}
 		};
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected void initializeLayout(Composite container) {
 		this.initializeClassChooser(container);

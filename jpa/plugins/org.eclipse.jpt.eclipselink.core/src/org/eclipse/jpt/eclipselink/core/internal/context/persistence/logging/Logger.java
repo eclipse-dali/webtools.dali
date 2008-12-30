@@ -18,9 +18,14 @@ public enum Logger {
 			server_logger;
 	
 	// EclipseLink value string
-	public static final String DEFAULT_LOGGER = "DefaultLogger";
-	public static final String JAVA_LOGGER = "JavaLogger";
-	public static final String SERVER_LOGGER = "ServerLogger";
+	public static final String DEFAULT_LOGGER = "DefaultLogger"; //$NON-NLS-1$
+	public static final String JAVA_LOGGER = "JavaLogger"; //$NON-NLS-1$
+	public static final String SERVER_LOGGER = "ServerLogger"; //$NON-NLS-1$
+	
+	// EclipseLink logger class names
+	public static final String DEFAULT_LOGGER_CLASS_NAME = "org.eclipse.persistence.logging.DefaultSessionLog"; //$NON-NLS-1$
+	public static final String JAVA_LOGGER_CLASS_NAME = "org.eclipse.persistence.logging.JavaLog"; //$NON-NLS-1$
+	public static final String SERVER_LOGGER_CLASS_NAME = "org.eclipse.persistence.platform.server.ServerLog"; //$NON-NLS-1$
 	
 	/**
 	 * Return the Logger value corresponding to the given literal.
@@ -33,5 +38,18 @@ public enum Logger {
 			}
 		}
 		return null;
+	}
+	
+	public static String getLoggerClassName(String loggerValue) {
+		if (loggerValue == DEFAULT_LOGGER) {
+			return DEFAULT_LOGGER_CLASS_NAME;
+		}
+		if (loggerValue == JAVA_LOGGER) {
+			return JAVA_LOGGER_CLASS_NAME;
+		}
+		if (loggerValue == SERVER_LOGGER) {
+			return SERVER_LOGGER_CLASS_NAME;
+		}
+		return loggerValue;
 	}
 }

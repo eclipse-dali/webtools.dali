@@ -9,7 +9,6 @@
 *******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.persistence.customization;
 
-import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.customization.Customization;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
@@ -76,20 +75,22 @@ public class ClassLoaderComposite extends Pane<Customization>
 			}
 
 			@Override
-			protected void promptType() {
-				IType type = chooseType();
-
-				if (type != null) {
-					String className = type.getFullyQualifiedName('.');
-					this.getSubject().setClassLoader(className);
-				}
+			protected void setClassName(String className) {
+				this.getSubject().setClassLoader(className);
+			}
+			
+			@Override
+			protected String getSuperclassName() {
+				return ClassLoader.class.getName();
+			}
+			
+			@Override
+			protected boolean allowTypeCreation() {
+				return false;
 			}
 		};
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected void initializeLayout(Composite container) {
 		this.initializeClassChooser(container);

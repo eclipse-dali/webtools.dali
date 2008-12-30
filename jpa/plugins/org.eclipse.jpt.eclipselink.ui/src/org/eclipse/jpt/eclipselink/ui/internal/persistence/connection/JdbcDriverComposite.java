@@ -9,7 +9,6 @@
 *******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.persistence.connection;
 
-import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.connection.Connection;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
@@ -74,22 +73,19 @@ public class JdbcDriverComposite extends Pane<Connection>
 			protected JpaProject getJpaProject() {
 				return getSubject().getJpaProject();
 			}
-
 			@Override
-			protected void promptType() {
-				IType type = chooseType();
-
-				if (type != null) {
-					String className = type.getFullyQualifiedName('.');
-					this.getSubject().setDriver(className);
-				}
+			protected void setClassName(String className) {
+				this.getSubject().setDriver(className);				
+			}
+			
+			@Override
+			protected boolean allowTypeCreation() {
+				//Does not make sense to allow the user to create a new Driver class
+				return false;
 			}
 		};
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected void initializeLayout(Composite container) {
 		this.initializeClassChooser(container);

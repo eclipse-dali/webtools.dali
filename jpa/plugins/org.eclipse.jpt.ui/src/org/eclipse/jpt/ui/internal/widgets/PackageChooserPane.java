@@ -16,6 +16,7 @@ import org.eclipse.jdt.internal.ui.refactoring.contentassist.ControlContentAssis
 import org.eclipse.jdt.internal.ui.refactoring.contentassist.JavaPackageCompletionProcessor;
 import org.eclipse.jdt.ui.JavaElementLabelProvider;
 import org.eclipse.jdt.ui.JavaUI;
+import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
@@ -25,6 +26,8 @@ import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
@@ -78,9 +81,6 @@ public abstract class PackageChooserPane<T extends Model> extends ChooserPane<T>
 		super(parentPane, subjectHolder, parent);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected final Runnable buildBrowseAction() {
 		return new Runnable() {
@@ -90,12 +90,9 @@ public abstract class PackageChooserPane<T extends Model> extends ChooserPane<T>
 		};
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected Control addMainControl(Composite container) {
-
+		Composite subPane = addSubPane(container);
 		WritablePropertyValueModel<String> textHolder = buildTextHolder();
 
 		textHolder.addPropertyChangeListener(
@@ -103,14 +100,19 @@ public abstract class PackageChooserPane<T extends Model> extends ChooserPane<T>
 			buildTextChangeListener()
 		);
 
-		Text text = addText(container, textHolder);
+		Text text = addText(subPane, textHolder);
+
+		Image image = FieldDecorationRegistry.getDefault().getFieldDecoration(FieldDecorationRegistry.DEC_CONTENT_PROPOSAL).getImage();
+		GridData data = new GridData(GridData.FILL_HORIZONTAL);
+		data.horizontalIndent = image.getBounds().width;
+		text.setLayoutData(data);
 
 		ControlContentAssistHelper.createTextContentAssistant(
 			text,
 			javaPackageCompletionProcessor
 		);
 
-		return text;
+		return subPane;
 	}
 
 	private PropertyChangeListener buildTextChangeListener() {

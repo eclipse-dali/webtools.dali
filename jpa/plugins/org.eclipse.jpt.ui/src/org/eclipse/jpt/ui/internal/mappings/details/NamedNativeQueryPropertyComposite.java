@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
-import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.context.NamedNativeQuery;
 import org.eclipse.jpt.core.context.Query;
@@ -78,12 +77,12 @@ public class NamedNativeQueryPropertyComposite extends Pane<NamedNativeQuery>
 				return new PropertyAspectAdapter<NamedNativeQuery, String>(getSubjectHolder(), NamedNativeQuery.RESULT_CLASS_PROPERTY) {
 					@Override
 					protected String buildValue_() {
-						return subject.getResultClass();
+						return this.subject.getResultClass();
 					}
 
 					@Override
 					protected void setValue_(String value) {
-						subject.setResultClass(value);
+						this.subject.setResultClass(value);
 					}
 				};
 			}
@@ -102,15 +101,10 @@ public class NamedNativeQueryPropertyComposite extends Pane<NamedNativeQuery>
 			protected JpaProject getJpaProject() {
 				return getSubject().getJpaProject();
 			}
-
+			
 			@Override
-			protected void promptType() {
-				IType type = chooseType();
-
-				if (type != null) {
-					String className = type.getFullyQualifiedName('.');
-					getSubject().setResultClass(className);
-				}
+			protected void setClassName(String className) {
+				getSubject().setResultClass(className);
 			}
 		};
 	}

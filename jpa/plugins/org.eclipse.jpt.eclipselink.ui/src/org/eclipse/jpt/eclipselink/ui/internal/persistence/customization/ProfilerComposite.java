@@ -14,26 +14,12 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
 
-import org.eclipse.core.resources.IProject;
-import org.eclipse.jdt.core.IJavaElement;
-import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.IPackageFragmentRoot;
-import org.eclipse.jdt.core.IType;
-import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.core.search.IJavaSearchScope;
-import org.eclipse.jdt.core.search.SearchEngine;
-import org.eclipse.jdt.ui.IJavaElementSearchConstants;
-import org.eclipse.jdt.ui.JavaUI;
-import org.eclipse.jface.window.Window;
+import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.customization.Customization;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.customization.Profiler;
-import org.eclipse.jpt.eclipselink.ui.JptEclipseLinkUiPlugin;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
-import org.eclipse.jpt.ui.JptUiPlugin;
-import org.eclipse.jpt.ui.internal.JptUiMessages;
+import org.eclipse.jpt.ui.internal.widgets.ClassChooserComboPane;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
-import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringConverter;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
@@ -47,19 +33,14 @@ import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.osgi.util.NLS;
-import org.eclipse.swt.custom.CCombo;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.dialogs.SelectionDialog;
-import org.eclipse.ui.progress.IProgressService;
 
 /**
  *  ProfilerComposite
  */
-public class ProfilerComposite extends Pane<Customization>
+public class ProfilerComposite extends ClassChooserComboPane<Customization>
 {
+
 	/**
 	 * Creates a new <code>ProfilerComposite</code>.
 	 *
@@ -73,11 +54,50 @@ public class ProfilerComposite extends Pane<Customization>
 		super(parentPane, parent);
 	}
 
+	@Override
+	protected String getClassName() {
+		return Profiler.getProfilerClassName(this.getSubject().getProfiler());
+	}
+
+    @Override
+    protected String getLabelText() {
+    	return EclipseLinkUiMessages.PersistenceXmlCustomizationTab_profilerLabel;
+    }
+    
+    @Override
+    protected JpaProject getJpaProject() {
+    	return getSubject().getJpaProject();
+    }
+    
+    @Override
+	protected WritablePropertyValueModel<String> buildTextHolder() {
+		return new PropertyAspectAdapter<Customization, String>(this.getSubjectHolder(), Customization.PROFILER_PROPERTY) {
+			@Override
+			protected String buildValue_() {
+
+				String name = this.subject.getProfiler();
+				if (name == null) {
+					name = ProfilerComposite.this.getDefaultValue(this.subject);
+				}
+				return name;
+			}
+
+			@Override
+			protected void setValue_(String value) {
+
+				if (getDefaultValue(this.subject).equals(value)) {
+					value = null;
+				}
+				this.subject.setProfiler(value);
+			}
+		};
+    }
+    
 	private PropertyValueModel<String> buildDefaultProfilerHolder() {
 		return new PropertyAspectAdapter<Customization, String>(this.getSubjectHolder(), Customization.DEFAULT_PROFILER) {
 			@Override
 			protected String buildValue_() {
-				return ProfilerComposite.this.getDefaultValue(subject);
+				return ProfilerComposite.this.getDefaultValue(this.subject);
 			}
 		};
 	}
@@ -116,7 +136,8 @@ public class ProfilerComposite extends Pane<Customization>
 		};
 	}
 
-	private StringConverter<String> buildProfilerConverter() {
+	@Override
+	protected StringConverter<String> buildClassConverter() {
 		return new StringConverter<String>() {
 			public String convertToString(String value) {
 				try {
@@ -131,30 +152,9 @@ public class ProfilerComposite extends Pane<Customization>
 		};
 	}
 
-	private WritablePropertyValueModel<String> buildProfilerHolder() {
-		return new PropertyAspectAdapter<Customization, String>(this.getSubjectHolder(), Customization.PROFILER_PROPERTY) {
-			@Override
-			protected String buildValue_() {
 
-				String name = subject.getProfiler();
-				if (name == null) {
-					name = ProfilerComposite.this.getDefaultValue(subject);
-				}
-				return name;
-			}
-
-			@Override
-			protected void setValue_(String value) {
-
-				if (getDefaultValue(subject).equals(value)) {
-					value = null;
-				}
-				subject.setProfiler(value);
-			}
-		};
-	}
-
-	private ListValueModel<String> buildProfilerListHolder() {
+	@Override
+	protected ListValueModel<String> buildClassListHolder() {
 		ArrayList<ListValueModel<String>> holders = new ArrayList<ListValueModel<String>>(2);
 		holders.add(this.buildDefaultProfilerListHolder());
 		holders.add(this.buildProfilersListHolder());
@@ -192,121 +192,16 @@ public class ProfilerComposite extends Pane<Customization>
 				defaultValue
 			);
 		}
-		else {
-			return EclipseLinkUiMessages.PersistenceXmlCustomizationTab_defaultEmpty;
-		}
+		return EclipseLinkUiMessages.PersistenceXmlCustomizationTab_defaultEmpty;
 	}
 	
-    @Override
-    protected void initializeLayout(Composite container) {
-
-    	CCombo combo = this.addProfilerCCombo(container);
-
-		this.addLabeledComposite(
-			container,
-			this.addLeftControl(container),
-			combo.getParent(),
-			this.addBrowseButton(container),
-			null
-		);
-    }
-
-    protected CCombo addProfilerCCombo(Composite container) {
-
-		return this.addEditableCCombo(
-			container,
-			this.buildProfilerListHolder(),
-			this.buildProfilerHolder(),
-			this.buildProfilerConverter()
-		);
-    }
-
-	protected Control addLeftControl(Composite container) {
-		return this.addLabel(container, EclipseLinkUiMessages.PersistenceXmlCustomizationTab_profilerLabel);
+	@Override
+	protected void setClassName(String className) {
+		this.getSubject().setProfiler(className);
 	}
 	
-	protected Button addBrowseButton(Composite parent) {
-		return this.addPushButton(
-			parent,
-			EclipseLinkUiMessages.PersistenceXmlCustomizationTab_browse,
-			this.buildBrowseAction()
-		);
-	}
-	
-	private Runnable buildBrowseAction() {
-		return new Runnable() {
-			public void run() {
-				promptType();
-			}
-		};
-	}
-	
-	protected void promptType() {
-		IType type = this.chooseType();
-
-		if (type != null) {
-			String className = type.getFullyQualifiedName('.');
-			this.getSubject().setProfiler(className);
-		}
-	}
-
-	/**
-	 * Prompts the user the Open Type dialog.
-	 *
-	 * @return Either the selected type or <code>null</code> if the user
-	 * cancelled the dialog
-	 */
-	protected IType chooseType() {
-
-		IPackageFragmentRoot root = this.getPackageFragmentRoot();
-
-		if (root == null) {
-			return null;
-		}
-
-		IJavaElement[] elements = new IJavaElement[] { root.getJavaProject() };
-		IJavaSearchScope scope = SearchEngine.createJavaSearchScope(elements);
-		IProgressService service = PlatformUI.getWorkbench().getProgressService();
-		SelectionDialog typeSelectionDialog;
-
-		try {
-			typeSelectionDialog = JavaUI.createTypeDialog(
-				getShell(),
-				service,
-				scope,
-				IJavaElementSearchConstants.CONSIDER_CLASSES,
-				false,
-				this.getClassName() != null ? ClassTools.shortNameForClassNamed(this.getClassName()) : ""
-			);
-		}
-		catch (JavaModelException e) {
-			JptUiPlugin.log(e);
-			return null;
-		}
-
-		typeSelectionDialog.setTitle(JptUiMessages.ClassChooserPane_dialogTitle);
-		typeSelectionDialog.setMessage(JptUiMessages.ClassChooserPane_dialogMessage);
-
-		if (typeSelectionDialog.open() == Window.OK) {
-			return (IType) typeSelectionDialog.getResult()[0];
-		}
-		return null;
-	}
-
-	protected String getClassName() {
-		return this.getSubject().getProfiler();
-	}
-
-	protected IPackageFragmentRoot getPackageFragmentRoot() {
-		IProject project = this.getSubject().getJpaProject().getProject();
-		IJavaProject root = JavaCore.create(project);
-
-		try {
-			return root.getAllPackageFragmentRoots()[0];
-		}
-		catch (JavaModelException e) {
-			JptEclipseLinkUiPlugin.log(e);
-		}
-		return null;
+	@Override
+	protected String getSuperInterfaceName() {
+		return Customization.ECLIPSELINK_SESSION_PROFILER_CLASS_NAME;
 	}
 }

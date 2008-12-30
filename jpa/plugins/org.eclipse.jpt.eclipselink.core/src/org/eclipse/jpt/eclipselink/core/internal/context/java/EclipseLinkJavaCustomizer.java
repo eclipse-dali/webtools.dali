@@ -123,7 +123,7 @@ public class EclipseLinkJavaCustomizer extends AbstractJavaJpaContextNode implem
 	
 	protected void validateConverterClass(List<IMessage> messages, CompilationUnit astRoot) {
 		CustomizerAnnotation resourceCustomizer = getResourceCustomizer();
-		if (resourceCustomizer != null && !resourceCustomizer.implementsDescriptorCustomizer()) {
+		if (resourceCustomizer != null && !resourceCustomizer.customizerClassImplementsInterface(ECLIPSELINK_DESCRIPTOR_CUSTOMIZER_CLASS_NAME, astRoot)) {
 			messages.add(
 				DefaultEclipseLinkJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,

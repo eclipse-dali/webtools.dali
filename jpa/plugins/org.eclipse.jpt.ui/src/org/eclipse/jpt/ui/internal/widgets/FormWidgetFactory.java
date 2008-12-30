@@ -189,7 +189,6 @@ public class FormWidgetFactory implements WidgetFactory {
 	 */
 	public Combo createEditableCombo(Composite parent) {
 		Combo combo = new Combo(parent, SWT.FLAT);
-		combo.setData(FormToolkit.KEY_DRAW_BORDER, FormToolkit.TEXT_BORDER);
 		return combo;
 	}
 

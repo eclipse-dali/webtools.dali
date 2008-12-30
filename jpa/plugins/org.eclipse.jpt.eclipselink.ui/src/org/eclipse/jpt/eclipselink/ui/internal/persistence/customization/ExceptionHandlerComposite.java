@@ -9,7 +9,6 @@
 *******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.persistence.customization;
 
-import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.customization.Customization;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
@@ -74,22 +73,19 @@ public class ExceptionHandlerComposite extends Pane<Customization>
 			protected JpaProject getJpaProject() {
 				return getSubject().getJpaProject();
 			}
-
+			
 			@Override
-			protected void promptType() {
-				IType type = chooseType();
-
-				if (type != null) {
-					String className = type.getFullyQualifiedName('.');
-					this.getSubject().setExceptionHandler(className);
-				}
+			protected void setClassName(String className) {
+				this.getSubject().setExceptionHandler(className);
+			}
+			
+			@Override
+			protected String getSuperInterfaceName() {
+				return Customization.ECLIPSELINK_EXCEPTION_HANDLER_CLASS_NAME;
 			}
 		};
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected void initializeLayout(Composite container) {
 		this.initializeClassChooser(container);

@@ -80,7 +80,7 @@ public class ConvertersComposite extends Pane<JavaConverterHolder>
 								PropertyValueModel<? extends JavaConverterHolder> subjectHolder,
 								Composite parent) {
 
-		super(parentPane, subjectHolder, parent);
+		super(parentPane, subjectHolder, parent, false);
 	}
 	
 	@Override
@@ -99,11 +99,13 @@ public class ConvertersComposite extends Pane<JavaConverterHolder>
 		);
 
 		// Custom Converter pane
-		new CustomConverterComposite(
+		CustomConverterComposite customConverterComposite = new CustomConverterComposite(
 			buildCustomConverterHolder(),
 			addSubPane(container, 0, converterCheckBox.getBorderWidth() + 16),
 			getWidgetFactory()
 		);
+		registerSubPane(customConverterComposite);
+	
 		
 		// Type Converter check box
 		Button typeConverterCheckBox = addCheckBox(
@@ -114,11 +116,12 @@ public class ConvertersComposite extends Pane<JavaConverterHolder>
 		);
 
 		// Type Converter pane
-		new TypeConverterComposite(
+		TypeConverterComposite typeConverterComposite = new TypeConverterComposite(
 			buildTypeConverterHolder(),
 			addSubPane(container, 0, typeConverterCheckBox.getBorderWidth() + 16),
 			getWidgetFactory()
 		);
+		registerSubPane(typeConverterComposite);
 		
 		// Object Type Converter check box
 		Button objectTypeConverterCheckBox = addCheckBox(
@@ -129,11 +132,12 @@ public class ConvertersComposite extends Pane<JavaConverterHolder>
 		);
 
 		// Object Type Converter pane
-		new ObjectTypeConverterComposite(
+		ObjectTypeConverterComposite objectTypeConverterComposite = new ObjectTypeConverterComposite(
 			buildObjectTypeConverterHolder(),
 			addSubPane(container, 0, objectTypeConverterCheckBox.getBorderWidth() + 16),
 			getWidgetFactory()
 		);
+		registerSubPane(objectTypeConverterComposite);
 		
 		// Struct Converter check box
 		Button structConverterCheckBox = addCheckBox(
@@ -144,11 +148,12 @@ public class ConvertersComposite extends Pane<JavaConverterHolder>
 		);
 
 		// Struct Converter pane
-		new StructConverterComposite(
+		StructConverterComposite structConverterComposite = new StructConverterComposite(
 			buildStructConverterHolder(),
 			addSubPane(container, 0, structConverterCheckBox.getBorderWidth() + 16),
 			getWidgetFactory()
 		);
+		registerSubPane(structConverterComposite);
 	}
 	
 	private WritablePropertyValueModel<Boolean> buildConverterBooleanHolder() {

@@ -8,7 +8,6 @@
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.mappings.details;
 
-import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.eclipselink.core.context.CustomConverter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
@@ -124,15 +123,15 @@ public class CustomConverterComposite extends FormPane<CustomConverter>
 			protected JpaProject getJpaProject() {
 				return getSubject().getJpaProject();
 			}
-
+			
 			@Override
-			protected void promptType() {
-				IType type = chooseType();
-
-				if (type != null) {
-					String className = type.getFullyQualifiedName('.');
-					getSubject().setConverterClass(className);
-				}
+			protected void setClassName(String className) {
+				getSubject().setConverterClass(className);
+			}
+			
+			@Override
+			protected String getSuperInterfaceName() {
+				return CustomConverter.ECLIPSELINK_CONVERTER_CLASS_NAME;
 			}
 		};
 	}

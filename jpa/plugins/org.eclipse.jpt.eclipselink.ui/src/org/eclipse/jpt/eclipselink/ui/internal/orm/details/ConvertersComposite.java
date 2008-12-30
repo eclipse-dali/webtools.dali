@@ -92,7 +92,7 @@ public class ConvertersComposite extends Pane<ConverterHolder>
 		PropertyValueModel<? extends ConverterHolder> subjectHolder,
 		Composite parent) {
 
-			super(parentPane, subjectHolder, parent);
+			super(parentPane, subjectHolder, parent, false);
 	}
 
 	@Override
@@ -120,24 +120,28 @@ public class ConvertersComposite extends Pane<ConverterHolder>
 			pageBook,
 			getWidgetFactory()
 		);
+		registerSubPane(this.converterComposite);
 		
 		this.objectTypeConverterComposite = new ObjectTypeConverterComposite(
 			buildObjectTypeConverterHolder(),
 			pageBook,
 			getWidgetFactory()
 		);
+		registerSubPane(this.objectTypeConverterComposite);
 		
 		this.structConverterComposite = new StructConverterComposite(
 			buildStructConverterHolder(),
 			pageBook,
 			getWidgetFactory()
 		);
+		registerSubPane(this.structConverterComposite);
 		
 		this.typeConverterComposite = new TypeConverterComposite(
 			buildTypeConverterHolder(),
 			pageBook,
 			getWidgetFactory()
 		);
+		registerSubPane(this.typeConverterComposite);
 
 		installPaneSwitcher(pageBook);
 	}

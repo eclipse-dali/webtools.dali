@@ -10,12 +10,19 @@
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.util.Collection;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.search.SearchEngine;
+import org.eclipse.jdt.internal.ui.refactoring.contentassist.ControlContentAssistHelper;
+import org.eclipse.jdt.internal.ui.refactoring.contentassist.JavaTypeCompletionProcessor;
 import org.eclipse.jdt.ui.IJavaElementSearchConstants;
 import org.eclipse.jdt.ui.JavaUI;
+import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.ui.JptUiPlugin;
@@ -28,11 +35,13 @@ import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.custom.BusyIndicator;
-import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
@@ -60,7 +69,9 @@ import org.eclipse.ui.forms.widgets.Hyperlink;
 @SuppressWarnings("nls")
 public class TargetEntityComposite extends FormPane<RelationshipMapping>
 {
-	private CCombo combo;
+	private JavaTypeCompletionProcessor javaTypeCompletionProcessor;
+
+	private Combo combo;
 
 	/**
 	 * Creates a new <code>TargetEntityComposite</code>.
@@ -88,16 +99,77 @@ public class TargetEntityComposite extends FormPane<RelationshipMapping>
 		super(subjectHolder, parent, widgetFactory);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected void addPropertyNames(Collection<String> propertyNames) {
 		super.addPropertyNames(propertyNames);
 		propertyNames.add(RelationshipMapping.DEFAULT_TARGET_ENTITY_PROPERTY);
 		propertyNames.add(RelationshipMapping.SPECIFIED_TARGET_ENTITY_PROPERTY);
 	}
+	@Override
+	protected void initialize() {
+		super.initialize();
 
+		// TODO bug 156185 - when this is fixed there should be api for this
+		this.javaTypeCompletionProcessor = new JavaTypeCompletionProcessor(false, false);
+	}
+
+	@Override
+	protected void initializeLayout(Composite container) {
+		Composite comboPane = addSubPane(container);
+		this.combo = addEditableCombo(comboPane);
+		this.combo.add(JptUiMappingsMessages.TargetEntityChooser_defaultEmpty);
+		this.combo.addModifyListener(buildTargetEntityModifyListener());
+
+		Image image = FieldDecorationRegistry.getDefault().getFieldDecoration(FieldDecorationRegistry.DEC_CONTENT_PROPOSAL).getImage();
+		GridData data = new GridData(GridData.FILL_HORIZONTAL);
+		data.horizontalIndent = image.getBounds().width;
+		this.combo.setLayoutData(data);
+
+		ControlContentAssistHelper.createComboContentAssistant(
+			this.combo,
+			javaTypeCompletionProcessor
+		);
+
+		
+		
+		SWTUtil.attachDefaultValueHandler(this.combo);
+
+		Hyperlink labelLink = addHyperlink(container,
+			JptUiMappingsMessages.TargetEntityChooser_label,
+			buildOpenTargetEntityAction()
+		);
+
+		addLabeledComposite(
+			container,
+			labelLink,
+			comboPane,
+			addTargetEntitySelectionButton(container),
+			JpaHelpContextIds.MAPPING_TARGET_ENTITY
+		);
+	}
+
+	private void openEditor() {
+
+		String targetEntity = getSubject().getTargetEntity();
+
+		if (targetEntity != null) {
+
+			try {
+				IType type = getSubject().getJpaProject().getJavaProject().findType(targetEntity);
+
+				if (type != null) {
+					IJavaElement javaElement = type.getParent();
+					JavaUI.openInEditor(javaElement, true, true);
+				}
+			}
+			catch (JavaModelException e) {
+				JptUiPlugin.log(e);
+			}
+			catch (PartInitException e) {
+				JptUiPlugin.log(e);
+			}
+		}
+	}
 	private Runnable buildOpenTargetEntityAction() {
 		return new Runnable() {
 			public void run() {
@@ -122,7 +194,7 @@ public class TargetEntityComposite extends FormPane<RelationshipMapping>
 		return new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
 				if (!isPopulating()) {
-					CCombo combo = (CCombo) e.widget;
+					Combo combo = (Combo) e.widget;
 					if (combo.getData("populating") != Boolean.TRUE) {//check !TRUE because null is a possibility as well
 						valueChanged(combo.getText());
 					}
@@ -164,64 +236,48 @@ public class TargetEntityComposite extends FormPane<RelationshipMapping>
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected void doPopulate() {
 
 		super.doPopulate();
 		populateCombo();
+		updatePackageFragment();
 	}
+	
+	private void updatePackageFragment() {
 
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected void initializeLayout(Composite container) {
+		if (getSubject() != null) {
+			IPackageFragmentRoot root = getPackageFragmentRoot();
 
-		combo = addEditableCCombo(container);
-		combo.add(JptUiMappingsMessages.TargetEntityChooser_defaultEmpty);
-		combo.addModifyListener(buildTargetEntityModifyListener());
-
-		SWTUtil.attachDefaultValueHandler(combo);
-
-		Hyperlink labelLink = addHyperlink(container,
-			JptUiMappingsMessages.TargetEntityChooser_label,
-			buildOpenTargetEntityAction()
-		);
-
-		addLabeledComposite(
-			container,
-			labelLink,
-			combo,
-			addTargetEntitySelectionButton(container),
-			JpaHelpContextIds.MAPPING_TARGET_ENTITY
-		);
-	}
-
-	private void openEditor() {
-
-		String targetEntity = getSubject().getTargetEntity();
-
-		if (targetEntity != null) {
-
-			try {
-				IType type = getSubject().getJpaProject().getJavaProject().findType(targetEntity);
-
-				if (type != null) {
-					IJavaElement javaElement = type.getParent();
-					JavaUI.openInEditor(javaElement, true, true);
-				}
-			}
-			catch (JavaModelException e) {
-				JptUiPlugin.log(e);
-			}
-			catch (PartInitException e) {
-				JptUiPlugin.log(e);
+			if (root != null) {
+				javaTypeCompletionProcessor.setPackageFragment(root.getPackageFragment(""));
+				return;
 			}
 		}
+
+		javaTypeCompletionProcessor.setPackageFragment(null);
 	}
+	
+	/**
+	 * Retrieves the ??
+	 *
+	 * @return Either the root of the package fragment or <code>null</code> if it
+	 * can't be retrieved
+	 */
+	protected IPackageFragmentRoot getPackageFragmentRoot() {
+		IProject project = getSubject().getJpaProject().getProject();
+		IJavaProject root = JavaCore.create(project);
+
+		try {
+			return root.getAllPackageFragmentRoots()[0];
+		}
+		catch (JavaModelException e) {
+			JptUiPlugin.log(e);
+		}
+		return null;
+	}
+
+
 
 	private void populateCombo() {
 

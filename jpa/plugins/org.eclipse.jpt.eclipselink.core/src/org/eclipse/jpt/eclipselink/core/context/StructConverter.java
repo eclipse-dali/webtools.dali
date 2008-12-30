@@ -26,5 +26,6 @@ public interface StructConverter extends EclipseLinkConverter
 	String getConverterClass();	
 	void setConverterClass(String converterClass);
 		String CONVERTER_CLASS_PROPERTY = "converterClassProperty"; //$NON-NLS-1$
+		String ECLIPSELINK_STRUCT_CONVERTER_CLASS_NAME = "org.eclipse.persistence.platform.database.converters.StructConverter"; //$NON-NLS-1$
 
 }

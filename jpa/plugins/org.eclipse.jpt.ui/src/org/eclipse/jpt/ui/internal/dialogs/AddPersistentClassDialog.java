@@ -9,13 +9,19 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.dialogs;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.search.IJavaSearchScope;
 import org.eclipse.jdt.core.search.SearchEngine;
+import org.eclipse.jdt.internal.ui.refactoring.contentassist.ControlContentAssistHelper;
+import org.eclipse.jdt.internal.ui.refactoring.contentassist.JavaTypeCompletionProcessor;
 import org.eclipse.jdt.ui.IJavaElementSearchConstants;
 import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.dialogs.StatusDialog;
@@ -159,13 +165,36 @@ public class AddPersistentClassDialog extends StatusDialog
 	}
 	
 	private Text createText(Composite container, int span) {
+		// TODO bug 156185 - when this is fixed there should be api for this
+		JavaTypeCompletionProcessor javaTypeCompletionProcessor = new JavaTypeCompletionProcessor(false, false);
+		javaTypeCompletionProcessor.setPackageFragment(getPackageFragmentRoot().getPackageFragment(""));
+		
 		Text text = new Text(container, SWT.BORDER | SWT.SINGLE);
-		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
+
+		ControlContentAssistHelper.createTextContentAssistant(
+			text,
+			javaTypeCompletionProcessor
+		);
+		
+		GridData gd = new GridData();
 		gd.horizontalSpan = span;
 		gd.widthHint = 250;
 		text.setLayoutData(gd);
 		return text;
 	}
+	protected IPackageFragmentRoot getPackageFragmentRoot() {
+		IProject project = getJpaProject().getProject();
+		IJavaProject root = JavaCore.create(project);
+
+		try {
+			return root.getAllPackageFragmentRoots()[0];
+		}
+		catch (JavaModelException e) {
+			JptUiPlugin.log(e);
+		}
+		return null;
+	}
+
 	
 	private Button createButton(Composite container, int span, String text) {
 		Button button = new Button(container, SWT.NONE);

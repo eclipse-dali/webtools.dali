@@ -43,15 +43,12 @@ public interface CustomizerAnnotation extends JavaResourceNode
 	 */
 	void setValue(String value);
 		String VALUE_PROPERTY = "valueProperty"; //$NON-NLS-1$
-		
+
 	/**
-	 * Return whether the value implements the eclipselink DescriptorCustomizer interface
-	 * @see CustomizerAnnotation#ECLIPSELINK_DESCRIPTOR_CUSTOMIZER_CLASS_NAME
-	 * @return
+	 * Return whether the converterClass implements the eclipselink Customizer interface
+	 * @see org.eclipse.jpt.eclipselink.core.context.Customizer#ECLIPSELINK_DESCRIPTOR_CUSTOMIZER_CLASS_NAME
 	 */
-	boolean implementsDescriptorCustomizer();
-		String IMPLEMENTS_DESCRIPTOR_CUSTOMIZER_PROPERTY = "implementsDescriptorCustomizerProperty"; //$NON-NLS-1$		
-		String ECLIPSELINK_DESCRIPTOR_CUSTOMIZER_CLASS_NAME = "org.eclipse.persistence.config.DescriptorCustomizer"; //$NON-NLS-1$
+	boolean customizerClassImplementsInterface(String interfaceName, CompilationUnit astRoot);
 
 	/**
 	 * Return the {@link TextRange} for the value element.  If the value element 

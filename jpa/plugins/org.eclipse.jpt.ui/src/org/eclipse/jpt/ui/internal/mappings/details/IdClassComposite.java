@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
-import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.context.IdClassHolder;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
@@ -59,7 +58,7 @@ public class IdClassComposite extends Pane<IdClassHolder>
 				return new PropertyAspectAdapter<IdClassHolder, String>(getSubjectHolder(), IdClassHolder.ID_CLASS_PROPERTY) {
 					@Override
 					protected String buildValue_() {
-						return subject.getIdClass();
+						return this.subject.getIdClass();
 					}
 
 					@Override
@@ -69,7 +68,7 @@ public class IdClassComposite extends Pane<IdClassHolder>
 							value = null;
 						}
 
-						subject.setIdClass(value);
+						this.subject.setIdClass(value);
 					}
 				};
 			}
@@ -88,22 +87,14 @@ public class IdClassComposite extends Pane<IdClassHolder>
 			protected JpaProject getJpaProject() {
 				return getSubject().getJpaProject();
 			}
-
+			
 			@Override
-			protected void promptType() {
-				IType type = chooseType();
-
-				if (type != null) {
-					String className = type.getFullyQualifiedName('.');
-					getSubject().setIdClass(className);
-				}
+			protected void setClassName(String className) {
+				getSubject().setIdClass(className);
 			}
 		};
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected void initializeLayout(Composite container) {
 		addClassChooser(container);

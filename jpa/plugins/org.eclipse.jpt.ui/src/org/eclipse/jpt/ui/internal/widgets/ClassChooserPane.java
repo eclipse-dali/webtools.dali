@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.widgets;
 
+import java.util.Collections;
+import java.util.List;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
@@ -20,9 +22,14 @@ import org.eclipse.jdt.core.search.IJavaSearchScope;
 import org.eclipse.jdt.core.search.SearchEngine;
 import org.eclipse.jdt.internal.ui.refactoring.contentassist.ControlContentAssistHelper;
 import org.eclipse.jdt.internal.ui.refactoring.contentassist.JavaTypeCompletionProcessor;
+import org.eclipse.jdt.internal.ui.wizards.NewClassCreationWizard;
 import org.eclipse.jdt.ui.IJavaElementSearchConstants;
 import org.eclipse.jdt.ui.JavaUI;
+import org.eclipse.jdt.ui.wizards.NewClassWizardPage;
+import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.window.Window;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
@@ -30,6 +37,8 @@ import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.model.Model;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
@@ -60,7 +69,7 @@ public abstract class ClassChooserPane<T extends Model> extends ChooserPane<T>
 	/**
 	 * The code completion manager.
 	 */
-	private JavaTypeCompletionProcessor javaTypeCompletionProcessor;
+	protected JavaTypeCompletionProcessor javaTypeCompletionProcessor;
 
 	/**
 	 * Creates a new <code>ClassChooserPane</code>.
@@ -106,26 +115,92 @@ public abstract class ClassChooserPane<T extends Model> extends ChooserPane<T>
 	}
 
 	protected void hyperLinkSelected() {
-		if (getClassName() == null) {
+		IType type = getType();
+		if (type != null) {
+			openEditor(type);	
+		}
+		else if (allowTypeCreation()){
 			createType();
 		}
-		else {
-			openEditor(getClassName());
+	}
+	
+	protected IType getType() {
+		if (getClassName() == null) {
+			return null;
 		}
+		IType type = null;
+		try {
+			type = getJpaProject().getJavaProject().findType(getClassName());
+		}
+		catch (JavaModelException e) {
+			JptUiPlugin.log(e);
+		}
+		return type;
 	}
 	
 	protected void createType() {
-		
+		NewClassWizardPage newClassWizardPage = new NewClassWizardPage();
+		newClassWizardPage.setSuperClass(getSuperclassName(), true);
+		newClassWizardPage.setSuperInterfaces(getSuperInterfaceNames(), true);
+		newClassWizardPage.setPackageFragmentRoot(getPackageFragmentRoot(), true);
+		if (getClassName() != null) {
+			newClassWizardPage.setTypeName(ClassTools.shortNameForClassNamed(getClassName()), true);
+			String packageName = ClassTools.packageNameForClassNamed(getClassName());
+			if (packageName != null) {
+				newClassWizardPage.setPackageFragment(getPackageFragmentRoot().getPackageFragment(packageName), true);
+			}
+		}
+		NewClassCreationWizard wizard = new NewClassCreationWizard(newClassWizardPage, false);
+		wizard.init(PlatformUI.getWorkbench(), new StructuredSelection(getJpaProject().getProject()));//TODO StructuredSelection
+		WizardDialog dialog = new WizardDialog(getShell(), wizard);
+		dialog.create();
+		int dResult = dialog.open();
+		if (dResult == Window.OK) {
+			String className = (newClassWizardPage.getCreatedType()).getFullyQualifiedName('.');
+			setClassName(className);
+		}
 	}
 	
-	protected void openEditor(String className) {
+	protected abstract void setClassName(String className);
+	
+	/**
+	 * Override this to set a superclass in the New Class wizard.  If no class is chosen, 
+	 * clicking the hyperlink label will open the new class wizard.
+	 */
+	protected String getSuperclassName() {
+		return "";
+	}
+	
+	/**
+	 * Override this to set a super interface in the New Class wizard.  If no class is chosen, 
+	 * clicking the hyperlink label will open the new class wizard.
+	 * @see getSuperInterfaceName
+	 */
+	protected List<String> getSuperInterfaceNames() {
+		return getSuperInterfaceName() != null ? Collections.singletonList(getSuperInterfaceName()) : Collections.<String>emptyList();
+	}
+	
+	/**
+	 * Override this to set a super interface in the New Class wizard.  If no class is chosen, 
+	 * clicking the hyperlink label will open the new class wizard.
+	 */
+	protected String getSuperInterfaceName() {
+		return null;
+	}
+	
+	/**
+	 * Override this if it does not make sense to allow the user to create a new type.
+	 * This will determine whether clicking the hyperlink opens the New Class wizard
+	 * @return
+	 */
+	protected boolean allowTypeCreation() {
+		return true;
+	}
+	
+	protected void openEditor(IType type) {
+		IJavaElement javaElement = type.getParent();
 		try {
-			IType type = getJpaProject().getJavaProject().findType(className);
-
-			if (type != null) {
-				IJavaElement javaElement = type.getParent();
-				JavaUI.openInEditor(javaElement, true, true);
-			}
+			JavaUI.openInEditor(javaElement, true, true);
 		}
 		catch (JavaModelException e) {
 			JptUiPlugin.log(e);
@@ -154,15 +229,20 @@ public abstract class ClassChooserPane<T extends Model> extends ChooserPane<T>
 	 */
 	@Override
 	protected Control addMainControl(Composite container) {
+		Composite subPane = addSubPane(container);
+		Text text = addText(subPane, buildTextHolder());
 
-		Text text = addText(container, buildTextHolder());
+		Image image = FieldDecorationRegistry.getDefault().getFieldDecoration(FieldDecorationRegistry.DEC_CONTENT_PROPOSAL).getImage();
+		GridData data = new GridData(GridData.FILL_HORIZONTAL);
+		data.horizontalIndent = image.getBounds().width;
+		text.setLayoutData(data);
 
 		ControlContentAssistHelper.createTextContentAssistant(
 			text,
 			javaTypeCompletionProcessor
 		);
 
-		return text;
+		return subPane;
 	}
 
 	/**
@@ -270,8 +350,15 @@ public abstract class ClassChooserPane<T extends Model> extends ChooserPane<T>
 	 * The browse button was clicked, its action invokes this action which should
 	 * prompt the user to select a class and set it.
 	 */
-	protected abstract void promptType();
+	protected void promptType() {
+		IType type = this.chooseType();
 
+		if (type != null) {
+			String className = type.getFullyQualifiedName('.');
+			setClassName(className);
+		}
+	}
+	
 	private void updatePackageFragment() {
 
 		if (getSubject() != null) {

@@ -8,7 +8,6 @@
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.mappings.details;
 
-import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.eclipselink.core.context.StructConverter;
@@ -95,7 +94,7 @@ public class StructConverterComposite extends FormPane<StructConverter>
 				return new PropertyAspectAdapter<StructConverter, String>(getSubjectHolder(), StructConverter.CONVERTER_CLASS_PROPERTY) {
 					@Override
 					protected String buildValue_() {
-						return subject.getConverterClass();
+						return this.subject.getConverterClass();
 					}
 
 					@Override
@@ -105,7 +104,7 @@ public class StructConverterComposite extends FormPane<StructConverter>
 							value = null;
 						}
 
-						subject.setConverterClass(value);
+						this.subject.setConverterClass(value);
 					}
 				};
 			}
@@ -124,19 +123,18 @@ public class StructConverterComposite extends FormPane<StructConverter>
 			protected JpaProject getJpaProject() {
 				return getSubject().getJpaProject();
 			}
-
+			
 			@Override
-			protected void promptType() {
-				IType type = chooseType();
-
-				if (type != null) {
-					String className = type.getFullyQualifiedName('.');
-					getSubject().setConverterClass(className);
-				}
+			protected void setClassName(String className) {
+				getSubject().setConverterClass(className);
+			}
+			
+			@Override
+			protected String getSuperInterfaceName() {
+				return StructConverter.ECLIPSELINK_STRUCT_CONVERTER_CLASS_NAME;
 			}
 		};
 	}
-
 
 	protected PropertyValueModel<Boolean> buildBooleanHolder() {
 		return new TransformationPropertyValueModel<StructConverter, Boolean>(getSubjectHolder()) {
