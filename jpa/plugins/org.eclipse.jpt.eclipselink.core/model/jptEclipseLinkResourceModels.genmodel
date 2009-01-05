@@ -89,7 +89,9 @@
     <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlChangeTrackingHolder">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlChangeTrackingHolder/changeTracking"/>
     </genClasses>
-    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlEmbeddable"/>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlEmbeddable">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlEmbeddable/properties"/>
+    </genClasses>
     <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlReadOnly">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlReadOnly/readOnly"/>
     </genClasses>
@@ -114,8 +116,12 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlCacheHolder/cache"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlCacheHolder/existenceChecking"/>
     </genClasses>
-    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlEntity"/>
-    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlMappedSuperclass"/>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlEntity">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlEntity/properties"/>
+    </genClasses>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlMappedSuperclass">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlMappedSuperclass/properties"/>
+    </genClasses>
     <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlMutable">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlMutable/mutable"/>
     </genClasses>

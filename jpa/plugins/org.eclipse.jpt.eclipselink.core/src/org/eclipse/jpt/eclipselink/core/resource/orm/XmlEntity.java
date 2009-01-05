@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2008  Oracle. 
+ *  Copyright (c) 2008, 2009  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -38,6 +38,12 @@ import org.eclipse.jpt.eclipselink.core.internal.resource.orm.translators.Eclips
  * 
  * <!-- end-user-doc -->
  *
+ * <p>
+ * The following features are supported:
+ * <ul>
+ *   <li>{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntity#getProperties <em>Properties</em>}</li>
+ * </ul>
+ * </p>
  *
  * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEntity()
  * @model kind="class"
@@ -150,6 +156,16 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 	 * @ordered
 	 */
 	protected EList<XmlStructConverter> structConverters;
+
+	/**
+	 * The cached value of the '{@link #getProperties() <em>Properties</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getProperties()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlProperty> properties;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -519,6 +535,29 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Properties</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlProperty}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Properties</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Properties</em>' containment reference list.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEntity_Properties()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public EList<XmlProperty> getProperties()
+	{
+		if (properties == null)
+		{
+			properties = new EObjectContainmentEList<XmlProperty>(XmlProperty.class, this, EclipseLinkOrmPackage.XML_ENTITY__PROPERTIES);
+		}
+		return properties;
+	}
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -542,6 +581,8 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 				return ((InternalEList<?>)getObjectTypeConverters()).basicRemove(otherEnd, msgs);
 			case EclipseLinkOrmPackage.XML_ENTITY__STRUCT_CONVERTERS:
 				return ((InternalEList<?>)getStructConverters()).basicRemove(otherEnd, msgs);
+			case EclipseLinkOrmPackage.XML_ENTITY__PROPERTIES:
+				return ((InternalEList<?>)getProperties()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -574,6 +615,8 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 				return getObjectTypeConverters();
 			case EclipseLinkOrmPackage.XML_ENTITY__STRUCT_CONVERTERS:
 				return getStructConverters();
+			case EclipseLinkOrmPackage.XML_ENTITY__PROPERTIES:
+				return getProperties();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -620,6 +663,10 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 				getStructConverters().clear();
 				getStructConverters().addAll((Collection<? extends XmlStructConverter>)newValue);
 				return;
+			case EclipseLinkOrmPackage.XML_ENTITY__PROPERTIES:
+				getProperties().clear();
+				getProperties().addAll((Collection<? extends XmlProperty>)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -661,6 +708,9 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 			case EclipseLinkOrmPackage.XML_ENTITY__STRUCT_CONVERTERS:
 				getStructConverters().clear();
 				return;
+			case EclipseLinkOrmPackage.XML_ENTITY__PROPERTIES:
+				getProperties().clear();
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -693,6 +743,8 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 				return objectTypeConverters != null && !objectTypeConverters.isEmpty();
 			case EclipseLinkOrmPackage.XML_ENTITY__STRUCT_CONVERTERS:
 				return structConverters != null && !structConverters.isEmpty();
+			case EclipseLinkOrmPackage.XML_ENTITY__PROPERTIES:
+				return properties != null && !properties.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
