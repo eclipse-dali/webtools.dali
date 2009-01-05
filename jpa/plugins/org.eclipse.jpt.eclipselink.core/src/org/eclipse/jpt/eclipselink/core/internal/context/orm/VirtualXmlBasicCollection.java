@@ -9,10 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.context.orm.VirtualXmlAttributeMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaBasicCollectionMapping;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlAccessMethods;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicCollection;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlProperty;
 
 /**
  * VirtualBasic is an implementation of Basic used when there is 
@@ -24,4 +27,19 @@ public class VirtualXmlBasicCollection extends VirtualXmlAttributeMapping<JavaBa
 	public VirtualXmlBasicCollection(OrmTypeMapping ormTypeMapping, JavaBasicCollectionMapping javaBasicCollectionMapping) {
 		super(ormTypeMapping, javaBasicCollectionMapping);
 	}
+	
+	public XmlAccessMethods getAccessMethods() {
+		return null;
+	}
+	
+	public void setAccessMethods(XmlAccessMethods value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$		
+	}
+	
+	
+	public EList<XmlProperty> getProperties() {
+		// TODO get from java annotations
+		return null;
+	}
+
 }

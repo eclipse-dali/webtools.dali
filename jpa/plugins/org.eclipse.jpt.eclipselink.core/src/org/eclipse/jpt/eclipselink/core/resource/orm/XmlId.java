@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.resource.orm;
 
+import org.eclipse.emf.common.util.EList;
+
 
 /**
  * <!-- begin-user-doc -->
@@ -26,11 +28,33 @@ package org.eclipse.jpt.eclipselink.core.resource.orm;
  * 
  * <!-- end-user-doc -->
  *
+ * <p>
+ * The following features are supported:
+ * <ul>
+ *   <li>{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlId#getProperties <em>Properties</em>}</li>
+ * </ul>
+ * </p>
  *
  * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlId()
  * @model kind="class" interface="true" abstract="true"
  * @generated
  */
-public interface XmlId extends org.eclipse.jpt.core.resource.orm.XmlId, XmlMutable, XmlConvertibleMapping
+public interface XmlId extends org.eclipse.jpt.core.resource.orm.XmlId, XmlMutable, XmlConvertibleMapping, XmlAccessMethodsHolder
 {
+
+	/**
+	 * Returns the value of the '<em><b>Properties</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlProperty}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Properties</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Properties</em>' containment reference list.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlId_Properties()
+	 * @model containment="true"
+	 * @generated
+	 */
+	EList<XmlProperty> getProperties();
 } // XmlId

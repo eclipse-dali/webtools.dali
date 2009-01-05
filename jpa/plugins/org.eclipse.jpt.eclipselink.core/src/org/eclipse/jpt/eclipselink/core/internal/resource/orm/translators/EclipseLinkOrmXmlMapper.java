@@ -17,6 +17,10 @@ public interface EclipseLinkOrmXmlMapper
 {
 	EclipseLinkOrmPackage ECLIPSELINK_ORM_PKG = EclipseLinkOrmPackage.eINSTANCE;
 	
+	String ACCESS_METHODS = "access-methods"; //$NON-NLS-1$
+	String ACCESS_METHODS__GET_METHOD = "get-method"; //$NON-NLS-1$
+	String ACCESS_METHODS__SET_METHOD = "set-method"; //$NON-NLS-1$
+	
 	String BASIC_COLLECTION = "basic-collection";  //$NON-NLS-1$
 	
 	String BASIC_MAP = "basic-map";  //$NON-NLS-1$
@@ -64,6 +68,11 @@ public interface EclipseLinkOrmXmlMapper
 	String OBJECT_TYPE_CONVERTER__DEFAULT_OBJECT_VALUE = "default-object-value"; //$NON-NLS-1$
 
 	String PRIVATE_OWNED = "private-owned";  //$NON-NLS-1$
+	
+	String PROPERTY = "property"; //$NON-NLS-1$
+	String PROPERTY__NAME = "name"; //$NON-NLS-1$
+	String PROPERTY__VALUE = "value"; //$NON-NLS-1$
+	String PROPERTY__VALUE_TYPE = "value-type"; //$NON-NLS-1$
 	
 	String READ_ONLY = "read-only";  //$NON-NLS-1$
 	

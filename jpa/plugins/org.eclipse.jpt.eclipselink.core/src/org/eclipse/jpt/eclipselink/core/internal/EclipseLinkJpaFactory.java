@@ -12,6 +12,8 @@ package org.eclipse.jpt.eclipselink.core.internal;
 import org.eclipse.jpt.core.context.MappingFile;
 import org.eclipse.jpt.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.core.context.java.JavaEmbeddable;
+import org.eclipse.jpt.core.context.java.JavaEmbeddedIdMapping;
+import org.eclipse.jpt.core.context.java.JavaEmbeddedMapping;
 import org.eclipse.jpt.core.context.java.JavaIdMapping;
 import org.eclipse.jpt.core.context.java.JavaManyToManyMapping;
 import org.eclipse.jpt.core.context.java.JavaManyToOneMapping;
@@ -23,6 +25,8 @@ import org.eclipse.jpt.core.context.java.JavaVersionMapping;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.orm.OrmBasicMapping;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddable;
+import org.eclipse.jpt.core.context.orm.OrmEmbeddedIdMapping;
+import org.eclipse.jpt.core.context.orm.OrmEmbeddedMapping;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.orm.OrmIdMapping;
 import org.eclipse.jpt.core.context.orm.OrmManyToManyMapping;
@@ -66,6 +70,8 @@ import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaTransformation
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkEntityMappingsImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmBasicMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmEmbeddableImpl;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmEmbeddedIdMapping;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmEmbeddedMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmEntityImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmIdMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmManyToManyMapping;
@@ -77,6 +83,8 @@ import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmPersi
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmVersionMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmXml;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkVirtualXmlBasic;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkVirtualXmlEmbedded;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkVirtualXmlEmbeddedId;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkVirtualXmlId;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkVirtualXmlManyToMany;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkVirtualXmlManyToOne;
@@ -93,6 +101,8 @@ import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLink
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmResource;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicCollection;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicMap;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbedded;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbeddedId;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlTransformation;
 
 public class EclipseLinkJpaFactory
@@ -138,6 +148,14 @@ public class EclipseLinkJpaFactory
 	
 	public XmlId buildEclipseLinkVirtualXmlId(OrmTypeMapping ormTypeMapping, JavaIdMapping javaIdMapping) {
 		return new EclipseLinkVirtualXmlId(ormTypeMapping, javaIdMapping);
+	}
+	
+	public XmlEmbeddedId buildEclipseLinkVirtualXmlEmbeddedId(OrmTypeMapping ormTypeMapping, JavaEmbeddedIdMapping javaEmbeddedIdMapping) {
+		return new EclipseLinkVirtualXmlEmbeddedId(ormTypeMapping, javaEmbeddedIdMapping);
+	}
+	
+	public XmlEmbedded buildEclipseLinkVirtualXmlEmbedded(OrmTypeMapping ormTypeMapping, JavaEmbeddedMapping javaEmbeddedMapping) {
+		return new EclipseLinkVirtualXmlEmbedded(ormTypeMapping, javaEmbeddedMapping);
 	}
 	
 	public XmlManyToMany buildEclipseLinkVirtualXmlManyToMany(OrmTypeMapping ormTypeMapping, JavaManyToManyMapping javaManyToManyMapping) {
@@ -191,6 +209,14 @@ public class EclipseLinkJpaFactory
 		return new EclipseLinkOrmIdMapping(parent);
 	}
 	
+	public OrmEmbeddedIdMapping buildEclipseLinkOrmEmbeddedIdMapping(OrmPersistentAttribute parent) {
+		return new EclipseLinkOrmEmbeddedIdMapping(parent);
+	}
+	
+	public OrmEmbeddedMapping buildEclipseLinkOrmEmbeddedMapping(OrmPersistentAttribute parent) {
+		return new EclipseLinkOrmEmbeddedMapping(parent);
+	}
+
 	public OrmManyToManyMapping buildEclipseLinkOrmManyToManyMapping(OrmPersistentAttribute parent) {
 		return new EclipseLinkOrmManyToManyMapping(parent);
 	}

@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.jpt.core.context.java.JavaOneToOneMapping;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.context.orm.VirtualXmlOneToOne;
@@ -16,8 +17,10 @@ import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.JoinFetch;
 import org.eclipse.jpt.eclipselink.core.context.JoinFetchType;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaOneToOneMappingImpl;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlAccessMethods;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlJoinFetchType;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlOneToOne;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlProperty;
 
 /**
  * VirtualBasic is an implementation of Basic used when there is 
@@ -51,7 +54,20 @@ public class EclipseLinkVirtualXmlOneToOne extends VirtualXmlOneToOne implements
 	public void setPrivateOwned(@SuppressWarnings("unused") boolean value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
-
+	
+	public XmlAccessMethods getAccessMethods() {
+		return null;
+	}
+	
+	public void setAccessMethods(XmlAccessMethods value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$		
+	}
+	
+	public EList<XmlProperty> getProperties() {
+		// TODO get from java annotations
+		return null;
+	}
+	
 	public TextRange getJoinFetchTextRange() {
 		return null;
 	}

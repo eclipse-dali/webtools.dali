@@ -13,6 +13,7 @@ package org.eclipse.jpt.eclipselink.core.internal.resource.orm.translators;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.jpt.core.internal.resource.orm.translators.ManyToOneTranslator;
+import org.eclipse.jpt.core.internal.resource.persistence.translators.PropertyTranslator;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -39,11 +40,21 @@ public class EclipseLinkManyToOneTranslator extends ManyToOneTranslator
 			createJoinColumnTranslator(),
 			createJoinTableTranslator(),
 			createCascadeTranslator(),
-			createJoinFetchTranslator()
+			createJoinFetchTranslator(),
+			createPropertyTranslator(),
+			createAccessMethodsTranslator()
 		};
 	}
 	
 	protected Translator createJoinFetchTranslator() {
 		return new Translator(JOIN_FETCH, ECLIPSELINK_ORM_PKG.getXmlJoinFetch_JoinFetch());
+	}
+	
+	protected Translator createPropertyTranslator() {
+		return new PropertyTranslator(PROPERTY, ECLIPSELINK_ORM_PKG.getXmlManyToOne_Properties());
+	}
+	
+	protected Translator createAccessMethodsTranslator() {
+		return new AccessMethodsTranslator();
 	}
 }

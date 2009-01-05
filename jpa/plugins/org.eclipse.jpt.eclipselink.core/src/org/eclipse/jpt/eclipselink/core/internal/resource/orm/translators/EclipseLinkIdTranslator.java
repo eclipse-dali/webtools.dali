@@ -13,6 +13,7 @@ package org.eclipse.jpt.eclipselink.core.internal.resource.orm.translators;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.jpt.core.internal.resource.orm.translators.IdTranslator;
+import org.eclipse.jpt.core.internal.resource.persistence.translators.PropertyTranslator;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -42,7 +43,9 @@ public class EclipseLinkIdTranslator extends IdTranslator
 			createObjectTypeConverterTranslator(),
 			createStructConverterTranslator(),
 			createTableGeneratorTranslator(),
-			createSequenceGeneratorTranslator()
+			createSequenceGeneratorTranslator(),
+			createPropertyTranslator(),
+			createAccessMethodsTranslator()
 		};
 	}
 	
@@ -68,5 +71,13 @@ public class EclipseLinkIdTranslator extends IdTranslator
 	
 	protected Translator createStructConverterTranslator() {
 		return new StructConverterTranslator(STRUCT_CONVERTER, ECLIPSELINK_ORM_PKG.getXmlConverterHolder_StructConverter());
+	}
+		
+	protected Translator createPropertyTranslator() {
+		return new PropertyTranslator(PROPERTY, ECLIPSELINK_ORM_PKG.getXmlId_Properties());
+	}
+	
+	protected Translator createAccessMethodsTranslator() {
+		return new AccessMethodsTranslator();
 	}
 }

@@ -100,7 +100,10 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 			case EclipseLinkOrmPackage.XML_CACHE: return (EObject)createXmlCache();
 			case EclipseLinkOrmPackage.XML_ENTITY: return (EObject)createXmlEntity();
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS: return (EObject)createXmlMappedSuperclass();
+			case EclipseLinkOrmPackage.XML_ACCESS_METHODS: return (EObject)createXmlAccessMethods();
 			case EclipseLinkOrmPackage.XML_ID_IMPL: return (EObject)createXmlIdImpl();
+			case EclipseLinkOrmPackage.XML_EMBEDDED_ID_IMPL: return (EObject)createXmlEmbeddedIdImpl();
+			case EclipseLinkOrmPackage.XML_EMBEDDED_IMPL: return (EObject)createXmlEmbeddedImpl();
 			case EclipseLinkOrmPackage.XML_BASIC_IMPL: return (EObject)createXmlBasicImpl();
 			case EclipseLinkOrmPackage.XML_VERSION_IMPL: return (EObject)createXmlVersionImpl();
 			case EclipseLinkOrmPackage.XML_ONE_TO_ONE_IMPL: return (EObject)createXmlOneToOneImpl();
@@ -111,6 +114,7 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 			case EclipseLinkOrmPackage.XML_BASIC_COLLECTION_IMPL: return (EObject)createXmlBasicCollectionImpl();
 			case EclipseLinkOrmPackage.XML_BASIC_MAP_IMPL: return (EObject)createXmlBasicMapImpl();
 			case EclipseLinkOrmPackage.XML_TRANSFORMATION_IMPL: return (EObject)createXmlTransformationImpl();
+			case EclipseLinkOrmPackage.XML_PROPERTY: return (EObject)createXmlProperty();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -237,6 +241,17 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public XmlAccessMethods createXmlAccessMethods()
+	{
+		XmlAccessMethods xmlAccessMethods = new XmlAccessMethods();
+		return xmlAccessMethods;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public XmlConverterImpl createXmlConverterImpl()
 	{
 		XmlConverterImpl xmlConverterImpl = new XmlConverterImpl();
@@ -296,6 +311,28 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 	{
 		XmlIdImpl xmlIdImpl = new XmlIdImpl();
 		return xmlIdImpl;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlEmbeddedIdImpl createXmlEmbeddedIdImpl()
+	{
+		XmlEmbeddedIdImpl xmlEmbeddedIdImpl = new XmlEmbeddedIdImpl();
+		return xmlEmbeddedIdImpl;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlEmbeddedImpl createXmlEmbeddedImpl()
+	{
+		XmlEmbeddedImpl xmlEmbeddedImpl = new XmlEmbeddedImpl();
+		return xmlEmbeddedImpl;
 	}
 
 	/**
@@ -406,6 +443,17 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 	{
 		XmlTransformationImpl xmlTransformationImpl = new XmlTransformationImpl();
 		return xmlTransformationImpl;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlProperty createXmlProperty()
+	{
+		XmlProperty xmlProperty = new XmlProperty();
+		return xmlProperty;
 	}
 
 	/**

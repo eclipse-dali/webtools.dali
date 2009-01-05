@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.jpt.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.context.orm.VirtualXmlBasic;
@@ -20,9 +21,11 @@ import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.eclipselink.core.context.ObjectTypeConverter;
 import org.eclipse.jpt.eclipselink.core.context.StructConverter;
 import org.eclipse.jpt.eclipselink.core.context.TypeConverter;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlAccessMethods;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasic;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConverter;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlObjectTypeConverter;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlProperty;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlStructConverter;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlTypeConverter;
 
@@ -136,5 +139,18 @@ public class EclipseLinkVirtualXmlBasic extends VirtualXmlBasic implements XmlBa
 
 	public void setTypeConverter(@SuppressWarnings("unused") XmlTypeConverter value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
+	}
+		
+	public XmlAccessMethods getAccessMethods() {
+		return null;
+	}
+	
+	public void setAccessMethods(XmlAccessMethods value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$		
+	}
+	
+	public EList<XmlProperty> getProperties() {
+		// TODO get from java annotations
+		return null;
 	}
 }

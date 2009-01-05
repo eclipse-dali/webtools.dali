@@ -13,6 +13,7 @@ package org.eclipse.jpt.eclipselink.core.internal.resource.orm.translators;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.jpt.core.internal.resource.orm.translators.VersionTranslator;
+import org.eclipse.jpt.core.internal.resource.persistence.translators.PropertyTranslator;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -40,6 +41,8 @@ public class EclipseLinkVersionTranslator extends VersionTranslator
 			createTypeConverterTranslator(),
 			createObjectTypeConverterTranslator(),
 			createStructConverterTranslator(),
+			createPropertyTranslator(),
+			createAccessMethodsTranslator()
 		};
 	}
 	
@@ -65,5 +68,13 @@ public class EclipseLinkVersionTranslator extends VersionTranslator
 	
 	protected Translator createStructConverterTranslator() {
 		return new StructConverterTranslator(STRUCT_CONVERTER, ECLIPSELINK_ORM_PKG.getXmlConverterHolder_StructConverter());
+	}
+	
+	protected Translator createPropertyTranslator() {
+		return new PropertyTranslator(PROPERTY, ECLIPSELINK_ORM_PKG.getXmlVersion_Properties());
+	}
+	
+	protected Translator createAccessMethodsTranslator() {
+		return new AccessMethodsTranslator();
 	}
 }
