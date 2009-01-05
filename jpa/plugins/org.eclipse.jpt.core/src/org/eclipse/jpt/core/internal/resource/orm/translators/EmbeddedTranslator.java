@@ -44,11 +44,11 @@ public class EmbeddedTranslator extends Translator
 		};
 	}
 	
-	private Translator createNameTranslator() {
+	protected Translator createNameTranslator() {
 		return new Translator(NAME, ORM_PKG.getXmlAttributeMapping_Name(), DOM_ATTRIBUTE);
 	}
 	
-	private Translator createAttributeOverrideTranslator() {
+	protected Translator createAttributeOverrideTranslator() {
 		return new AttributeOverrideTranslator(ATTRIBUTE_OVERRIDE, ORM_PKG.getBaseXmlEmbedded_AttributeOverrides());
 	}
 }

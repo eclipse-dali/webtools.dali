@@ -43,7 +43,7 @@ public class TransientTranslator extends Translator
 		};
 	}
 	
-	private Translator createNameTranslator() {
+	protected Translator createNameTranslator() {
 		return new Translator(NAME, ORM_PKG.getXmlAttributeMapping_Name(), DOM_ATTRIBUTE);
 	}
 }
