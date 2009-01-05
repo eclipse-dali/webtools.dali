@@ -26,6 +26,7 @@ package org.eclipse.jpt.eclipselink.core.resource.orm;
  * 
  * <!-- end-user-doc -->
  *
+ *
  * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlBasic()
  * @model kind="class" interface="true" abstract="true"
  * @generated

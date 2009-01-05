@@ -37,7 +37,8 @@ import org.eclipse.jpt.eclipselink.core.internal.resource.orm.translators.Eclips
  * @since 2.1
  * 
  * <!-- end-user-doc -->
- * 
+ *
+ *
  * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEntity()
  * @model kind="class"
  * @generated

@@ -27,7 +27,6 @@ import org.eclipse.emf.common.util.Enumerator;
  * @since 2.1
  * 
  * <!-- end-user-doc -->
- * 
  * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getCacheType()
  * @model
  * @generated

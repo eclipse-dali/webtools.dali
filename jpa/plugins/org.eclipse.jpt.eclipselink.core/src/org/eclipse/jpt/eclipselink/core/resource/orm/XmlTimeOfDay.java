@@ -30,7 +30,7 @@ import org.eclipse.jpt.core.resource.common.JpaEObject;
  * @since 2.1
  * 
  * <!-- end-user-doc -->
- * 
+ *
  * <p>
  * The following features are supported:
  * <ul>

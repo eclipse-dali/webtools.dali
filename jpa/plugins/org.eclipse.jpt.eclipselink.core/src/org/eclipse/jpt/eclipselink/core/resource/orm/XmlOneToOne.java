@@ -25,7 +25,8 @@ package org.eclipse.jpt.eclipselink.core.resource.orm;
  * @since 2.1
  * 
  * <!-- end-user-doc -->
- * 
+ *
+ *
  * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlOneToOne()
  * @model kind="class" interface="true" abstract="true"
  * @generated

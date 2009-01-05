@@ -32,7 +32,7 @@ import org.eclipse.jpt.core.utility.TextRange;
  * @since 2.1
  * 
  * <!-- end-user-doc -->
- * 
+ *
  * <p>
  * The following features are supported:
  * <ul>

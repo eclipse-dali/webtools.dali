@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: XmlJoinFetchType.java,v 1.2 2008/11/03 16:58:54 pfullbright Exp $
+ * $Id: XmlJoinFetchType.java,v 1.3 2009/01/05 21:39:49 kmoore Exp $
  */
 package org.eclipse.jpt.eclipselink.core.resource.orm;
 
@@ -27,7 +27,6 @@ import org.eclipse.emf.common.util.Enumerator;
  * @since 2.1
  * 
  * <!-- end-user-doc -->
- * 
  * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlJoinFetchType()
  * @model
  * @generated

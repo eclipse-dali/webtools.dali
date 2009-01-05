@@ -26,7 +26,7 @@ import org.eclipse.emf.common.util.EList;
  * @since 2.1
  * 
  * <!-- end-user-doc -->
- * 
+ *
  * <p>
  * The following features are supported:
  * <ul>

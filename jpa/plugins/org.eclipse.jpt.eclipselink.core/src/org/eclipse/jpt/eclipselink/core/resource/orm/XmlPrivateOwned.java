@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: XmlPrivateOwned.java,v 1.3 2008/11/03 16:58:54 pfullbright Exp $
+ * $Id: XmlPrivateOwned.java,v 1.4 2009/01/05 21:39:49 kmoore Exp $
  */
 package org.eclipse.jpt.eclipselink.core.resource.orm;
 
@@ -24,7 +24,7 @@ import org.eclipse.jpt.core.utility.TextRange;
  * @since 2.1
  * 
  * <!-- end-user-doc -->
- * 
+ *
  * <p>
  * The following features are supported:
  * <ul>

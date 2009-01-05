@@ -34,7 +34,8 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * @since 2.1
  * 
  * <!-- end-user-doc -->
- * 
+ *
+ *
  * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEmbeddable()
  * @model kind="class"
  * @generated

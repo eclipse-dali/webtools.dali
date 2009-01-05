@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: XmlNamedConverter.java,v 1.2 2008/11/03 16:58:54 pfullbright Exp $
+ * $Id: XmlNamedConverter.java,v 1.3 2009/01/05 21:39:49 kmoore Exp $
  */
 package org.eclipse.jpt.eclipselink.core.resource.orm;
 
@@ -23,7 +23,7 @@ import org.eclipse.jpt.core.resource.common.JpaEObject;
  * @since 2.1
  * 
  * <!-- end-user-doc -->
- * 
+ *
  * <p>
  * The following features are supported:
  * <ul>

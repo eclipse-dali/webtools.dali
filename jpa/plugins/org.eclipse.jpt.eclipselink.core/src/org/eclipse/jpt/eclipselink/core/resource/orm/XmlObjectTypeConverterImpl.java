@@ -35,7 +35,8 @@ import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
  * @since 2.1
  * 
  * <!-- end-user-doc -->
- * 
+ *
+ *
  * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlObjectTypeConverterImpl()
  * @model kind="class"
  * @generated
