@@ -97,6 +97,9 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS: return (EObject)createXmlEntityMappings();
 			case EclipseLinkOrmPackage.XML_CUSTOMIZER: return (EObject)createXmlCustomizer();
 			case EclipseLinkOrmPackage.XML_CHANGE_TRACKING: return (EObject)createXmlChangeTracking();
+			case EclipseLinkOrmPackage.XML_COPY_POLICY: return (EObject)createXmlCopyPolicy();
+			case EclipseLinkOrmPackage.XML_INSTANTIATION_POLICY: return (EObject)createXmlInstantiationPolicy();
+			case EclipseLinkOrmPackage.XML_CLONE_COPY_POLICY: return (EObject)createXmlCloneCopyPolicy();
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE: return (EObject)createXmlEmbeddable();
 			case EclipseLinkOrmPackage.XML_TIME_OF_DAY: return (EObject)createXmlTimeOfDay();
 			case EclipseLinkOrmPackage.XML_CACHE: return (EObject)createXmlCache();
@@ -207,6 +210,39 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 	{
 		XmlChangeTracking xmlChangeTracking = new XmlChangeTracking();
 		return xmlChangeTracking;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlCopyPolicy createXmlCopyPolicy()
+	{
+		XmlCopyPolicy xmlCopyPolicy = new XmlCopyPolicy();
+		return xmlCopyPolicy;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlInstantiationPolicy createXmlInstantiationPolicy()
+	{
+		XmlInstantiationPolicy xmlInstantiationPolicy = new XmlInstantiationPolicy();
+		return xmlInstantiationPolicy;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlCloneCopyPolicy createXmlCloneCopyPolicy()
+	{
+		XmlCloneCopyPolicy xmlCloneCopyPolicy = new XmlCloneCopyPolicy();
+		return xmlCloneCopyPolicy;
 	}
 
 	/**

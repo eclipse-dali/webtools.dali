@@ -42,7 +42,10 @@ public class EclipseLinkEmbeddableTranslator extends EmbeddableTranslator
 			createObjectTypeConverterTranslator(),
 			createStructConverterTranslator(),
 			createPropertyTranslator(),
-			createAttributesTranslator()
+			createAttributesTranslator(),
+			createCopyPolicyTranslator(),
+			createInstantiationCopyPolicyTranslator(),
+			createCloneCopyPolicyTranslator(),
 		};
 	}
 
@@ -77,5 +80,18 @@ public class EclipseLinkEmbeddableTranslator extends EmbeddableTranslator
 	
 	protected Translator createPropertyTranslator() {
 		return new PropertyTranslator(PROPERTY, ECLIPSELINK_ORM_PKG.getXmlEmbeddable_Properties());
+	}
+	
+	
+	protected Translator createCopyPolicyTranslator() {
+		return new CopyPolicyTranslator(COPY_POLICY, ECLIPSELINK_ORM_PKG.getXmlEmbeddable_CopyPolicy());
+	}
+	
+	protected Translator createInstantiationCopyPolicyTranslator() {
+		return new InstantiationCopyPolicyTranslator(INSTANTIATION_COPY_POLICY, ECLIPSELINK_ORM_PKG.getXmlEmbeddable_InstantiationCopyPolicy());
+	}
+	
+	protected Translator createCloneCopyPolicyTranslator() {
+		return new CloneCopyPolicyTranslator(CLONE_COPY_POLICY, ECLIPSELINK_ORM_PKG.getXmlEmbeddable_CloneCopyPolicy());
 	}
 }

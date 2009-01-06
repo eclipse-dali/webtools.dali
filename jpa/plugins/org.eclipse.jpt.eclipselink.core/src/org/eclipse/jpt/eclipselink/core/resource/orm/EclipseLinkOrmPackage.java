@@ -174,7 +174,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEmbeddable()
 	 * @generated
 	 */
-	public static final int XML_EMBEDDABLE = 19;
+	public static final int XML_EMBEDDABLE = 22;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlReadOnly <em>Xml Read Only</em>}' class.
@@ -184,7 +184,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlReadOnly()
 	 * @generated
 	 */
-	public static final int XML_READ_ONLY = 20;
+	public static final int XML_READ_ONLY = 23;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlTimeOfDay <em>Xml Time Of Day</em>}' class.
@@ -194,7 +194,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlTimeOfDay()
 	 * @generated
 	 */
-	public static final int XML_TIME_OF_DAY = 21;
+	public static final int XML_TIME_OF_DAY = 24;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlCache <em>Xml Cache</em>}' class.
@@ -204,7 +204,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlCache()
 	 * @generated
 	 */
-	public static final int XML_CACHE = 22;
+	public static final int XML_CACHE = 25;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlCacheHolder <em>Xml Cache Holder</em>}' class.
@@ -214,7 +214,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlCacheHolder()
 	 * @generated
 	 */
-	public static final int XML_CACHE_HOLDER = 23;
+	public static final int XML_CACHE_HOLDER = 26;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntity <em>Xml Entity</em>}' class.
@@ -224,7 +224,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEntity()
 	 * @generated
 	 */
-	public static final int XML_ENTITY = 24;
+	public static final int XML_ENTITY = 27;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlMappedSuperclass <em>Xml Mapped Superclass</em>}' class.
@@ -234,7 +234,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlMappedSuperclass()
 	 * @generated
 	 */
-	public static final int XML_MAPPED_SUPERCLASS = 25;
+	public static final int XML_MAPPED_SUPERCLASS = 28;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlMutable <em>Xml Mutable</em>}' class.
@@ -244,7 +244,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlMutable()
 	 * @generated
 	 */
-	public static final int XML_MUTABLE = 26;
+	public static final int XML_MUTABLE = 29;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlConvertibleMapping <em>Xml Convertible Mapping</em>}' class.
@@ -254,7 +254,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlConvertibleMapping()
 	 * @generated
 	 */
-	public static final int XML_CONVERTIBLE_MAPPING = 28;
+	public static final int XML_CONVERTIBLE_MAPPING = 31;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlId <em>Xml Id</em>}' class.
@@ -264,7 +264,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlId()
 	 * @generated
 	 */
-	public static final int XML_ID = 31;
+	public static final int XML_ID = 34;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlIdImpl <em>Xml Id Impl</em>}' class.
@@ -274,7 +274,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlIdImpl()
 	 * @generated
 	 */
-	public static final int XML_ID_IMPL = 32;
+	public static final int XML_ID_IMPL = 35;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasic <em>Xml Basic</em>}' class.
@@ -284,7 +284,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlBasic()
 	 * @generated
 	 */
-	public static final int XML_BASIC = 37;
+	public static final int XML_BASIC = 40;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicImpl <em>Xml Basic Impl</em>}' class.
@@ -294,7 +294,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlBasicImpl()
 	 * @generated
 	 */
-	public static final int XML_BASIC_IMPL = 38;
+	public static final int XML_BASIC_IMPL = 41;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlVersion <em>Xml Version</em>}' class.
@@ -304,7 +304,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlVersion()
 	 * @generated
 	 */
-	public static final int XML_VERSION = 39;
+	public static final int XML_VERSION = 42;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlVersionImpl <em>Xml Version Impl</em>}' class.
@@ -314,7 +314,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlVersionImpl()
 	 * @generated
 	 */
-	public static final int XML_VERSION_IMPL = 40;
+	public static final int XML_VERSION_IMPL = 43;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlPrivateOwned <em>Xml Private Owned</em>}' class.
@@ -324,7 +324,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlPrivateOwned()
 	 * @generated
 	 */
-	public static final int XML_PRIVATE_OWNED = 41;
+	public static final int XML_PRIVATE_OWNED = 44;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlJoinFetch <em>Xml Join Fetch</em>}' class.
@@ -334,7 +334,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlJoinFetch()
 	 * @generated
 	 */
-	public static final int XML_JOIN_FETCH = 42;
+	public static final int XML_JOIN_FETCH = 45;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlOneToOne <em>Xml One To One</em>}' class.
@@ -344,7 +344,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlOneToOne()
 	 * @generated
 	 */
-	public static final int XML_ONE_TO_ONE = 43;
+	public static final int XML_ONE_TO_ONE = 46;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlOneToOneImpl <em>Xml One To One Impl</em>}' class.
@@ -354,7 +354,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlOneToOneImpl()
 	 * @generated
 	 */
-	public static final int XML_ONE_TO_ONE_IMPL = 44;
+	public static final int XML_ONE_TO_ONE_IMPL = 47;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlOneToMany <em>Xml One To Many</em>}' class.
@@ -364,7 +364,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlOneToMany()
 	 * @generated
 	 */
-	public static final int XML_ONE_TO_MANY = 45;
+	public static final int XML_ONE_TO_MANY = 48;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlOneToManyImpl <em>Xml One To Many Impl</em>}' class.
@@ -374,7 +374,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlOneToManyImpl()
 	 * @generated
 	 */
-	public static final int XML_ONE_TO_MANY_IMPL = 46;
+	public static final int XML_ONE_TO_MANY_IMPL = 49;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlManyToOne <em>Xml Many To One</em>}' class.
@@ -384,7 +384,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlManyToOne()
 	 * @generated
 	 */
-	public static final int XML_MANY_TO_ONE = 47;
+	public static final int XML_MANY_TO_ONE = 50;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlManyToOneImpl <em>Xml Many To One Impl</em>}' class.
@@ -394,7 +394,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlManyToOneImpl()
 	 * @generated
 	 */
-	public static final int XML_MANY_TO_ONE_IMPL = 48;
+	public static final int XML_MANY_TO_ONE_IMPL = 51;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlManyToMany <em>Xml Many To Many</em>}' class.
@@ -404,7 +404,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlManyToMany()
 	 * @generated
 	 */
-	public static final int XML_MANY_TO_MANY = 49;
+	public static final int XML_MANY_TO_MANY = 52;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlManyToManyImpl <em>Xml Many To Many Impl</em>}' class.
@@ -414,7 +414,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlManyToManyImpl()
 	 * @generated
 	 */
-	public static final int XML_MANY_TO_MANY_IMPL = 50;
+	public static final int XML_MANY_TO_MANY_IMPL = 53;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlConverter <em>Xml Converter</em>}' class.
@@ -474,7 +474,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlConverterHolder()
 	 * @generated
 	 */
-	public static final int XML_CONVERTER_HOLDER = 27;
+	public static final int XML_CONVERTER_HOLDER = 30;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1330,6 +1330,90 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	public static final int XML_CHANGE_TRACKING_HOLDER_FEATURE_COUNT = 1;
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlCopyPolicy <em>Xml Copy Policy</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlCopyPolicy
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlCopyPolicy()
+	 * @generated
+	 */
+	public static final int XML_COPY_POLICY = 19;
+
+	/**
+	 * The feature id for the '<em><b>Class</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_COPY_POLICY__CLASS = 0;
+
+	/**
+	 * The number of structural features of the '<em>Xml Copy Policy</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_COPY_POLICY_FEATURE_COUNT = 1;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlInstantiationPolicy <em>Xml Instantiation Policy</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlInstantiationPolicy
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlInstantiationPolicy()
+	 * @generated
+	 */
+	public static final int XML_INSTANTIATION_POLICY = 20;
+
+	/**
+	 * The number of structural features of the '<em>Xml Instantiation Policy</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_INSTANTIATION_POLICY_FEATURE_COUNT = 0;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlCloneCopyPolicy <em>Xml Clone Copy Policy</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlCloneCopyPolicy
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlCloneCopyPolicy()
+	 * @generated
+	 */
+	public static final int XML_CLONE_COPY_POLICY = 21;
+
+	/**
+	 * The feature id for the '<em><b>Method</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_CLONE_COPY_POLICY__METHOD = 0;
+
+	/**
+	 * The feature id for the '<em><b>Working Copy Method</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_CLONE_COPY_POLICY__WORKING_COPY_METHOD = 1;
+
+	/**
+	 * The number of structural features of the '<em>Xml Clone Copy Policy</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_CLONE_COPY_POLICY_FEATURE_COUNT = 2;
+
+	/**
 	 * The feature id for the '<em><b>Class Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1429,13 +1513,40 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	public static final int XML_EMBEDDABLE__STRUCT_CONVERTERS = OrmPackage.XML_EMBEDDABLE_FEATURE_COUNT + 5;
 
 	/**
+	 * The feature id for the '<em><b>Copy Policy</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_EMBEDDABLE__COPY_POLICY = OrmPackage.XML_EMBEDDABLE_FEATURE_COUNT + 6;
+
+	/**
+	 * The feature id for the '<em><b>Instantiation Copy Policy</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_EMBEDDABLE__INSTANTIATION_COPY_POLICY = OrmPackage.XML_EMBEDDABLE_FEATURE_COUNT + 7;
+
+	/**
+	 * The feature id for the '<em><b>Clone Copy Policy</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_EMBEDDABLE__CLONE_COPY_POLICY = OrmPackage.XML_EMBEDDABLE_FEATURE_COUNT + 8;
+
+	/**
 	 * The feature id for the '<em><b>Properties</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_EMBEDDABLE__PROPERTIES = OrmPackage.XML_EMBEDDABLE_FEATURE_COUNT + 6;
+	public static final int XML_EMBEDDABLE__PROPERTIES = OrmPackage.XML_EMBEDDABLE_FEATURE_COUNT + 9;
 
 	/**
 	 * The number of structural features of the '<em>Xml Embeddable</em>' class.
@@ -1444,7 +1555,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_EMBEDDABLE_FEATURE_COUNT = OrmPackage.XML_EMBEDDABLE_FEATURE_COUNT + 7;
+	public static final int XML_EMBEDDABLE_FEATURE_COUNT = OrmPackage.XML_EMBEDDABLE_FEATURE_COUNT + 10;
 
 	/**
 	 * The feature id for the '<em><b>Read Only</b></em>' attribute.
@@ -1978,13 +2089,40 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	public static final int XML_ENTITY__STRUCT_CONVERTERS = OrmPackage.XML_ENTITY_FEATURE_COUNT + 8;
 
 	/**
+	 * The feature id for the '<em><b>Copy Policy</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ENTITY__COPY_POLICY = OrmPackage.XML_ENTITY_FEATURE_COUNT + 9;
+
+	/**
+	 * The feature id for the '<em><b>Instantiation Copy Policy</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ENTITY__INSTANTIATION_COPY_POLICY = OrmPackage.XML_ENTITY_FEATURE_COUNT + 10;
+
+	/**
+	 * The feature id for the '<em><b>Clone Copy Policy</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ENTITY__CLONE_COPY_POLICY = OrmPackage.XML_ENTITY_FEATURE_COUNT + 11;
+
+	/**
 	 * The feature id for the '<em><b>Named Stored Procedure Queries</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY__NAMED_STORED_PROCEDURE_QUERIES = OrmPackage.XML_ENTITY_FEATURE_COUNT + 9;
+	public static final int XML_ENTITY__NAMED_STORED_PROCEDURE_QUERIES = OrmPackage.XML_ENTITY_FEATURE_COUNT + 12;
 
 	/**
 	 * The feature id for the '<em><b>Properties</b></em>' containment reference list.
@@ -1993,7 +2131,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY__PROPERTIES = OrmPackage.XML_ENTITY_FEATURE_COUNT + 10;
+	public static final int XML_ENTITY__PROPERTIES = OrmPackage.XML_ENTITY_FEATURE_COUNT + 13;
 
 	/**
 	 * The number of structural features of the '<em>Xml Entity</em>' class.
@@ -2002,7 +2140,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_FEATURE_COUNT = OrmPackage.XML_ENTITY_FEATURE_COUNT + 11;
+	public static final int XML_ENTITY_FEATURE_COUNT = OrmPackage.XML_ENTITY_FEATURE_COUNT + 14;
 
 	/**
 	 * The feature id for the '<em><b>Class Name</b></em>' attribute.
@@ -2230,13 +2368,40 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	public static final int XML_MAPPED_SUPERCLASS__STRUCT_CONVERTERS = OrmPackage.XML_MAPPED_SUPERCLASS_FEATURE_COUNT + 8;
 
 	/**
+	 * The feature id for the '<em><b>Copy Policy</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MAPPED_SUPERCLASS__COPY_POLICY = OrmPackage.XML_MAPPED_SUPERCLASS_FEATURE_COUNT + 9;
+
+	/**
+	 * The feature id for the '<em><b>Instantiation Copy Policy</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MAPPED_SUPERCLASS__INSTANTIATION_COPY_POLICY = OrmPackage.XML_MAPPED_SUPERCLASS_FEATURE_COUNT + 10;
+
+	/**
+	 * The feature id for the '<em><b>Clone Copy Policy</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MAPPED_SUPERCLASS__CLONE_COPY_POLICY = OrmPackage.XML_MAPPED_SUPERCLASS_FEATURE_COUNT + 11;
+
+	/**
 	 * The feature id for the '<em><b>Properties</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MAPPED_SUPERCLASS__PROPERTIES = OrmPackage.XML_MAPPED_SUPERCLASS_FEATURE_COUNT + 9;
+	public static final int XML_MAPPED_SUPERCLASS__PROPERTIES = OrmPackage.XML_MAPPED_SUPERCLASS_FEATURE_COUNT + 12;
 
 	/**
 	 * The number of structural features of the '<em>Xml Mapped Superclass</em>' class.
@@ -2245,7 +2410,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MAPPED_SUPERCLASS_FEATURE_COUNT = OrmPackage.XML_MAPPED_SUPERCLASS_FEATURE_COUNT + 10;
+	public static final int XML_MAPPED_SUPERCLASS_FEATURE_COUNT = OrmPackage.XML_MAPPED_SUPERCLASS_FEATURE_COUNT + 13;
 
 	/**
 	 * The feature id for the '<em><b>Mutable</b></em>' attribute.
@@ -2399,7 +2564,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlAccessMethods()
 	 * @generated
 	 */
-	public static final int XML_ACCESS_METHODS = 29;
+	public static final int XML_ACCESS_METHODS = 32;
 
 	/**
 	 * The feature id for the '<em><b>Get Method</b></em>' attribute.
@@ -2436,7 +2601,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlAccessMethodsHolder()
 	 * @generated
 	 */
-	public static final int XML_ACCESS_METHODS_HOLDER = 30;
+	public static final int XML_ACCESS_METHODS_HOLDER = 33;
 
 	/**
 	 * The feature id for the '<em><b>Access Methods</b></em>' containment reference.
@@ -2770,7 +2935,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEmbeddedId()
 	 * @generated
 	 */
-	public static final int XML_EMBEDDED_ID = 33;
+	public static final int XML_EMBEDDED_ID = 36;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -2825,7 +2990,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEmbeddedIdImpl()
 	 * @generated
 	 */
-	public static final int XML_EMBEDDED_ID_IMPL = 34;
+	public static final int XML_EMBEDDED_ID_IMPL = 37;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -2880,7 +3045,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEmbedded()
 	 * @generated
 	 */
-	public static final int XML_EMBEDDED = 35;
+	public static final int XML_EMBEDDED = 38;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -2935,7 +3100,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEmbeddedImpl()
 	 * @generated
 	 */
-	public static final int XML_EMBEDDED_IMPL = 36;
+	public static final int XML_EMBEDDED_IMPL = 39;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -4484,7 +4649,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getAttributes()
 	 * @generated
 	 */
-	public static final int ATTRIBUTES = 51;
+	public static final int ATTRIBUTES = 54;
 
 	/**
 	 * The feature id for the '<em><b>Ids</b></em>' containment reference list.
@@ -4620,7 +4785,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlBasicCollection()
 	 * @generated
 	 */
-	public static final int XML_BASIC_COLLECTION = 52;
+	public static final int XML_BASIC_COLLECTION = 55;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -4666,7 +4831,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlBasicCollectionImpl()
 	 * @generated
 	 */
-	public static final int XML_BASIC_COLLECTION_IMPL = 53;
+	public static final int XML_BASIC_COLLECTION_IMPL = 56;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -4712,7 +4877,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlBasicMap()
 	 * @generated
 	 */
-	public static final int XML_BASIC_MAP = 54;
+	public static final int XML_BASIC_MAP = 57;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -4758,7 +4923,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlBasicMapImpl()
 	 * @generated
 	 */
-	public static final int XML_BASIC_MAP_IMPL = 55;
+	public static final int XML_BASIC_MAP_IMPL = 58;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -4804,7 +4969,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlTransformation()
 	 * @generated
 	 */
-	public static final int XML_TRANSFORMATION = 56;
+	public static final int XML_TRANSFORMATION = 59;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -4850,7 +5015,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlTransformationImpl()
 	 * @generated
 	 */
-	public static final int XML_TRANSFORMATION_IMPL = 57;
+	public static final int XML_TRANSFORMATION_IMPL = 60;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -4896,7 +5061,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlProperty()
 	 * @generated
 	 */
-	public static final int XML_PROPERTY = 58;
+	public static final int XML_PROPERTY = 61;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -4942,7 +5107,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlDirection()
 	 * @generated
 	 */
-	public static final int XML_DIRECTION = 59;
+	public static final int XML_DIRECTION = 62;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlChangeTrackingType <em>Xml Change Tracking Type</em>}' enum.
@@ -4952,7 +5117,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlChangeTrackingType()
 	 * @generated
 	 */
-	public static final int XML_CHANGE_TRACKING_TYPE = 60;
+	public static final int XML_CHANGE_TRACKING_TYPE = 63;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.CacheType <em>Cache Type</em>}' enum.
@@ -4962,7 +5127,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getCacheType()
 	 * @generated
 	 */
-	public static final int CACHE_TYPE = 61;
+	public static final int CACHE_TYPE = 64;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.CacheCoordinationType <em>Cache Coordination Type</em>}' enum.
@@ -4972,7 +5137,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getCacheCoordinationType()
 	 * @generated
 	 */
-	public static final int CACHE_COORDINATION_TYPE = 62;
+	public static final int CACHE_COORDINATION_TYPE = 65;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlJoinFetchType <em>Xml Join Fetch Type</em>}' enum.
@@ -4982,7 +5147,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlJoinFetchType()
 	 * @generated
 	 */
-	public static final int XML_JOIN_FETCH_TYPE = 64;
+	public static final int XML_JOIN_FETCH_TYPE = 67;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -4999,7 +5164,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getExistenceType()
 	 * @generated
 	 */
-	public static final int EXISTENCE_TYPE = 63;
+	public static final int EXISTENCE_TYPE = 66;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -5028,6 +5193,27 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @generated
 	 */
 	private EClass xmlChangeTrackingHolderEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass xmlCopyPolicyEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass xmlInstantiationPolicyEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass xmlCloneCopyPolicyEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -5666,6 +5852,93 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 
 
 	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlCopyPolicy <em>Xml Copy Policy</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Xml Copy Policy</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlCopyPolicy
+	 * @generated
+	 */
+	public EClass getXmlCopyPolicy()
+	{
+		return xmlCopyPolicyEClass;
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlCopyPolicy#getClass_ <em>Class</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Class</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlCopyPolicy#getClass_()
+	 * @see #getXmlCopyPolicy()
+	 * @generated
+	 */
+	public EAttribute getXmlCopyPolicy_Class()
+	{
+		return (EAttribute)xmlCopyPolicyEClass.getEStructuralFeatures().get(0);
+	}
+
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlInstantiationPolicy <em>Xml Instantiation Policy</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Xml Instantiation Policy</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlInstantiationPolicy
+	 * @generated
+	 */
+	public EClass getXmlInstantiationPolicy()
+	{
+		return xmlInstantiationPolicyEClass;
+	}
+
+
+	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlCloneCopyPolicy <em>Xml Clone Copy Policy</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Xml Clone Copy Policy</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlCloneCopyPolicy
+	 * @generated
+	 */
+	public EClass getXmlCloneCopyPolicy()
+	{
+		return xmlCloneCopyPolicyEClass;
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlCloneCopyPolicy#getMethod <em>Method</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Method</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlCloneCopyPolicy#getMethod()
+	 * @see #getXmlCloneCopyPolicy()
+	 * @generated
+	 */
+	public EAttribute getXmlCloneCopyPolicy_Method()
+	{
+		return (EAttribute)xmlCloneCopyPolicyEClass.getEStructuralFeatures().get(0);
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlCloneCopyPolicy#getWorkingCopyMethod <em>Working Copy Method</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Working Copy Method</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlCloneCopyPolicy#getWorkingCopyMethod()
+	 * @see #getXmlCloneCopyPolicy()
+	 * @generated
+	 */
+	public EAttribute getXmlCloneCopyPolicy_WorkingCopyMethod()
+	{
+		return (EAttribute)xmlCloneCopyPolicyEClass.getEStructuralFeatures().get(1);
+	}
+
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlConvertersHolder <em>Xml Converters Holder</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -6005,6 +6278,51 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	}
 
 	/**
+	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbeddable#getCopyPolicy <em>Copy Policy</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Copy Policy</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbeddable#getCopyPolicy()
+	 * @see #getXmlEmbeddable()
+	 * @generated
+	 */
+	public EReference getXmlEmbeddable_CopyPolicy()
+	{
+		return (EReference)xmlEmbeddableEClass.getEStructuralFeatures().get(0);
+	}
+
+
+	/**
+	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbeddable#getInstantiationCopyPolicy <em>Instantiation Copy Policy</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Instantiation Copy Policy</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbeddable#getInstantiationCopyPolicy()
+	 * @see #getXmlEmbeddable()
+	 * @generated
+	 */
+	public EReference getXmlEmbeddable_InstantiationCopyPolicy()
+	{
+		return (EReference)xmlEmbeddableEClass.getEStructuralFeatures().get(1);
+	}
+
+
+	/**
+	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbeddable#getCloneCopyPolicy <em>Clone Copy Policy</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Clone Copy Policy</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbeddable#getCloneCopyPolicy()
+	 * @see #getXmlEmbeddable()
+	 * @generated
+	 */
+	public EReference getXmlEmbeddable_CloneCopyPolicy()
+	{
+		return (EReference)xmlEmbeddableEClass.getEStructuralFeatures().get(2);
+	}
+
+
+	/**
 	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbeddable#getProperties <em>Properties</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -6015,7 +6333,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public EReference getXmlEmbeddable_Properties()
 	{
-		return (EReference)xmlEmbeddableEClass.getEStructuralFeatures().get(0);
+		return (EReference)xmlEmbeddableEClass.getEStructuralFeatures().get(3);
 	}
 
 
@@ -6310,6 +6628,51 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	}
 
 	/**
+	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntity#getCopyPolicy <em>Copy Policy</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Copy Policy</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntity#getCopyPolicy()
+	 * @see #getXmlEntity()
+	 * @generated
+	 */
+	public EReference getXmlEntity_CopyPolicy()
+	{
+		return (EReference)xmlEntityEClass.getEStructuralFeatures().get(0);
+	}
+
+
+	/**
+	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntity#getInstantiationCopyPolicy <em>Instantiation Copy Policy</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Instantiation Copy Policy</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntity#getInstantiationCopyPolicy()
+	 * @see #getXmlEntity()
+	 * @generated
+	 */
+	public EReference getXmlEntity_InstantiationCopyPolicy()
+	{
+		return (EReference)xmlEntityEClass.getEStructuralFeatures().get(1);
+	}
+
+
+	/**
+	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntity#getCloneCopyPolicy <em>Clone Copy Policy</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Clone Copy Policy</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntity#getCloneCopyPolicy()
+	 * @see #getXmlEntity()
+	 * @generated
+	 */
+	public EReference getXmlEntity_CloneCopyPolicy()
+	{
+		return (EReference)xmlEntityEClass.getEStructuralFeatures().get(2);
+	}
+
+
+	/**
 	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntity#getNamedStoredProcedureQueries <em>Named Stored Procedure Queries</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -6320,7 +6683,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public EReference getXmlEntity_NamedStoredProcedureQueries()
 	{
-		return (EReference)xmlEntityEClass.getEStructuralFeatures().get(0);
+		return (EReference)xmlEntityEClass.getEStructuralFeatures().get(3);
 	}
 
 
@@ -6335,7 +6698,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public EReference getXmlEntity_Properties()
 	{
-		return (EReference)xmlEntityEClass.getEStructuralFeatures().get(1);
+		return (EReference)xmlEntityEClass.getEStructuralFeatures().get(4);
 	}
 
 
@@ -6353,6 +6716,51 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	}
 
 	/**
+	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlMappedSuperclass#getCopyPolicy <em>Copy Policy</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Copy Policy</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlMappedSuperclass#getCopyPolicy()
+	 * @see #getXmlMappedSuperclass()
+	 * @generated
+	 */
+	public EReference getXmlMappedSuperclass_CopyPolicy()
+	{
+		return (EReference)xmlMappedSuperclassEClass.getEStructuralFeatures().get(0);
+	}
+
+
+	/**
+	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlMappedSuperclass#getInstantiationCopyPolicy <em>Instantiation Copy Policy</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Instantiation Copy Policy</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlMappedSuperclass#getInstantiationCopyPolicy()
+	 * @see #getXmlMappedSuperclass()
+	 * @generated
+	 */
+	public EReference getXmlMappedSuperclass_InstantiationCopyPolicy()
+	{
+		return (EReference)xmlMappedSuperclassEClass.getEStructuralFeatures().get(1);
+	}
+
+
+	/**
+	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlMappedSuperclass#getCloneCopyPolicy <em>Clone Copy Policy</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Clone Copy Policy</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlMappedSuperclass#getCloneCopyPolicy()
+	 * @see #getXmlMappedSuperclass()
+	 * @generated
+	 */
+	public EReference getXmlMappedSuperclass_CloneCopyPolicy()
+	{
+		return (EReference)xmlMappedSuperclassEClass.getEStructuralFeatures().get(2);
+	}
+
+
+	/**
 	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlMappedSuperclass#getProperties <em>Properties</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -6363,7 +6771,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public EReference getXmlMappedSuperclass_Properties()
 	{
-		return (EReference)xmlMappedSuperclassEClass.getEStructuralFeatures().get(0);
+		return (EReference)xmlMappedSuperclassEClass.getEStructuralFeatures().get(3);
 	}
 
 
@@ -7724,7 +8132,19 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		xmlChangeTrackingHolderEClass = createEClass(XML_CHANGE_TRACKING_HOLDER);
 		createEReference(xmlChangeTrackingHolderEClass, XML_CHANGE_TRACKING_HOLDER__CHANGE_TRACKING);
 
+		xmlCopyPolicyEClass = createEClass(XML_COPY_POLICY);
+		createEAttribute(xmlCopyPolicyEClass, XML_COPY_POLICY__CLASS);
+
+		xmlInstantiationPolicyEClass = createEClass(XML_INSTANTIATION_POLICY);
+
+		xmlCloneCopyPolicyEClass = createEClass(XML_CLONE_COPY_POLICY);
+		createEAttribute(xmlCloneCopyPolicyEClass, XML_CLONE_COPY_POLICY__METHOD);
+		createEAttribute(xmlCloneCopyPolicyEClass, XML_CLONE_COPY_POLICY__WORKING_COPY_METHOD);
+
 		xmlEmbeddableEClass = createEClass(XML_EMBEDDABLE);
+		createEReference(xmlEmbeddableEClass, XML_EMBEDDABLE__COPY_POLICY);
+		createEReference(xmlEmbeddableEClass, XML_EMBEDDABLE__INSTANTIATION_COPY_POLICY);
+		createEReference(xmlEmbeddableEClass, XML_EMBEDDABLE__CLONE_COPY_POLICY);
 		createEReference(xmlEmbeddableEClass, XML_EMBEDDABLE__PROPERTIES);
 
 		xmlReadOnlyEClass = createEClass(XML_READ_ONLY);
@@ -7752,10 +8172,16 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		createEAttribute(xmlCacheHolderEClass, XML_CACHE_HOLDER__EXISTENCE_CHECKING);
 
 		xmlEntityEClass = createEClass(XML_ENTITY);
+		createEReference(xmlEntityEClass, XML_ENTITY__COPY_POLICY);
+		createEReference(xmlEntityEClass, XML_ENTITY__INSTANTIATION_COPY_POLICY);
+		createEReference(xmlEntityEClass, XML_ENTITY__CLONE_COPY_POLICY);
 		createEReference(xmlEntityEClass, XML_ENTITY__NAMED_STORED_PROCEDURE_QUERIES);
 		createEReference(xmlEntityEClass, XML_ENTITY__PROPERTIES);
 
 		xmlMappedSuperclassEClass = createEClass(XML_MAPPED_SUPERCLASS);
+		createEReference(xmlMappedSuperclassEClass, XML_MAPPED_SUPERCLASS__COPY_POLICY);
+		createEReference(xmlMappedSuperclassEClass, XML_MAPPED_SUPERCLASS__INSTANTIATION_COPY_POLICY);
+		createEReference(xmlMappedSuperclassEClass, XML_MAPPED_SUPERCLASS__CLONE_COPY_POLICY);
 		createEReference(xmlMappedSuperclassEClass, XML_MAPPED_SUPERCLASS__PROPERTIES);
 
 		xmlMutableEClass = createEClass(XML_MUTABLE);
@@ -8058,7 +8484,19 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		initEClass(xmlChangeTrackingHolderEClass, XmlChangeTrackingHolder.class, "XmlChangeTrackingHolder", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getXmlChangeTrackingHolder_ChangeTracking(), this.getXmlChangeTracking(), null, "changeTracking", null, 0, 1, XmlChangeTrackingHolder.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+		initEClass(xmlCopyPolicyEClass, XmlCopyPolicy.class, "XmlCopyPolicy", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getXmlCopyPolicy_Class(), theXMLTypePackage.getString(), "class", null, 0, 1, XmlCopyPolicy.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(xmlInstantiationPolicyEClass, XmlInstantiationPolicy.class, "XmlInstantiationPolicy", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(xmlCloneCopyPolicyEClass, XmlCloneCopyPolicy.class, "XmlCloneCopyPolicy", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getXmlCloneCopyPolicy_Method(), theXMLTypePackage.getString(), "method", null, 0, 1, XmlCloneCopyPolicy.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXmlCloneCopyPolicy_WorkingCopyMethod(), theXMLTypePackage.getString(), "workingCopyMethod", null, 0, 1, XmlCloneCopyPolicy.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
 		initEClass(xmlEmbeddableEClass, XmlEmbeddable.class, "XmlEmbeddable", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getXmlEmbeddable_CopyPolicy(), this.getXmlCopyPolicy(), null, "copyPolicy", null, 0, 1, XmlEmbeddable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlEmbeddable_InstantiationCopyPolicy(), this.getXmlCopyPolicy(), null, "instantiationCopyPolicy", null, 0, 1, XmlEmbeddable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlEmbeddable_CloneCopyPolicy(), this.getXmlCopyPolicy(), null, "cloneCopyPolicy", null, 0, 1, XmlEmbeddable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getXmlEmbeddable_Properties(), this.getXmlProperty(), null, "properties", null, 0, -1, XmlEmbeddable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlReadOnlyEClass, XmlReadOnly.class, "XmlReadOnly", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -8086,10 +8524,16 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		initEAttribute(getXmlCacheHolder_ExistenceChecking(), this.getExistenceType(), "existenceChecking", "", 0, 1, XmlCacheHolder.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlEntityEClass, XmlEntity.class, "XmlEntity", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getXmlEntity_CopyPolicy(), this.getXmlCopyPolicy(), null, "copyPolicy", null, 0, 1, XmlEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlEntity_InstantiationCopyPolicy(), this.getXmlCopyPolicy(), null, "instantiationCopyPolicy", null, 0, 1, XmlEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlEntity_CloneCopyPolicy(), this.getXmlCopyPolicy(), null, "cloneCopyPolicy", null, 0, 1, XmlEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getXmlEntity_NamedStoredProcedureQueries(), this.getXmlNamedStoredProcedureQuery(), null, "namedStoredProcedureQueries", null, 0, -1, XmlEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getXmlEntity_Properties(), this.getXmlProperty(), null, "properties", null, 0, -1, XmlEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlMappedSuperclassEClass, XmlMappedSuperclass.class, "XmlMappedSuperclass", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getXmlMappedSuperclass_CopyPolicy(), this.getXmlCopyPolicy(), null, "copyPolicy", null, 0, 1, XmlMappedSuperclass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlMappedSuperclass_InstantiationCopyPolicy(), this.getXmlCopyPolicy(), null, "instantiationCopyPolicy", null, 0, 1, XmlMappedSuperclass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlMappedSuperclass_CloneCopyPolicy(), this.getXmlCopyPolicy(), null, "cloneCopyPolicy", null, 0, 1, XmlMappedSuperclass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getXmlMappedSuperclass_Properties(), this.getXmlProperty(), null, "properties", null, 0, -1, XmlMappedSuperclass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlMutableEClass, XmlMutable.class, "XmlMutable", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -8334,6 +8778,60 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		public static final EReference XML_CHANGE_TRACKING_HOLDER__CHANGE_TRACKING = eINSTANCE.getXmlChangeTrackingHolder_ChangeTracking();
 
 		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlCopyPolicy <em>Xml Copy Policy</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlCopyPolicy
+		 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlCopyPolicy()
+		 * @generated
+		 */
+		public static final EClass XML_COPY_POLICY = eINSTANCE.getXmlCopyPolicy();
+
+		/**
+		 * The meta object literal for the '<em><b>Class</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_COPY_POLICY__CLASS = eINSTANCE.getXmlCopyPolicy_Class();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlInstantiationPolicy <em>Xml Instantiation Policy</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlInstantiationPolicy
+		 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlInstantiationPolicy()
+		 * @generated
+		 */
+		public static final EClass XML_INSTANTIATION_POLICY = eINSTANCE.getXmlInstantiationPolicy();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlCloneCopyPolicy <em>Xml Clone Copy Policy</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlCloneCopyPolicy
+		 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlCloneCopyPolicy()
+		 * @generated
+		 */
+		public static final EClass XML_CLONE_COPY_POLICY = eINSTANCE.getXmlCloneCopyPolicy();
+
+		/**
+		 * The meta object literal for the '<em><b>Method</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_CLONE_COPY_POLICY__METHOD = eINSTANCE.getXmlCloneCopyPolicy_Method();
+
+		/**
+		 * The meta object literal for the '<em><b>Working Copy Method</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_CLONE_COPY_POLICY__WORKING_COPY_METHOD = eINSTANCE.getXmlCloneCopyPolicy_WorkingCopyMethod();
+
+		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlConvertersHolder <em>Xml Converters Holder</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -8528,6 +9026,30 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		public static final EClass XML_EMBEDDABLE = eINSTANCE.getXmlEmbeddable();
 
 		/**
+		 * The meta object literal for the '<em><b>Copy Policy</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EReference XML_EMBEDDABLE__COPY_POLICY = eINSTANCE.getXmlEmbeddable_CopyPolicy();
+
+		/**
+		 * The meta object literal for the '<em><b>Instantiation Copy Policy</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EReference XML_EMBEDDABLE__INSTANTIATION_COPY_POLICY = eINSTANCE.getXmlEmbeddable_InstantiationCopyPolicy();
+
+		/**
+		 * The meta object literal for the '<em><b>Clone Copy Policy</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EReference XML_EMBEDDABLE__CLONE_COPY_POLICY = eINSTANCE.getXmlEmbeddable_CloneCopyPolicy();
+
+		/**
 		 * The meta object literal for the '<em><b>Properties</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -8714,6 +9236,30 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		public static final EClass XML_ENTITY = eINSTANCE.getXmlEntity();
 
 		/**
+		 * The meta object literal for the '<em><b>Copy Policy</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EReference XML_ENTITY__COPY_POLICY = eINSTANCE.getXmlEntity_CopyPolicy();
+
+		/**
+		 * The meta object literal for the '<em><b>Instantiation Copy Policy</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EReference XML_ENTITY__INSTANTIATION_COPY_POLICY = eINSTANCE.getXmlEntity_InstantiationCopyPolicy();
+
+		/**
+		 * The meta object literal for the '<em><b>Clone Copy Policy</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EReference XML_ENTITY__CLONE_COPY_POLICY = eINSTANCE.getXmlEntity_CloneCopyPolicy();
+
+		/**
 		 * The meta object literal for the '<em><b>Named Stored Procedure Queries</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -8738,6 +9284,30 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EClass XML_MAPPED_SUPERCLASS = eINSTANCE.getXmlMappedSuperclass();
+
+		/**
+		 * The meta object literal for the '<em><b>Copy Policy</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EReference XML_MAPPED_SUPERCLASS__COPY_POLICY = eINSTANCE.getXmlMappedSuperclass_CopyPolicy();
+
+		/**
+		 * The meta object literal for the '<em><b>Instantiation Copy Policy</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EReference XML_MAPPED_SUPERCLASS__INSTANTIATION_COPY_POLICY = eINSTANCE.getXmlMappedSuperclass_InstantiationCopyPolicy();
+
+		/**
+		 * The meta object literal for the '<em><b>Clone Copy Policy</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EReference XML_MAPPED_SUPERCLASS__CLONE_COPY_POLICY = eINSTANCE.getXmlMappedSuperclass_CloneCopyPolicy();
 
 		/**
 		 * The meta object literal for the '<em><b>Properties</b></em>' containment reference list feature.

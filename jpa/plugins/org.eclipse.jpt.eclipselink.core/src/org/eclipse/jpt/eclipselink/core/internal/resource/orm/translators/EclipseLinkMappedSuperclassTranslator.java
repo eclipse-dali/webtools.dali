@@ -47,6 +47,9 @@ public class EclipseLinkMappedSuperclassTranslator extends MappedSuperclassTrans
 			createTypeConverterTranslator(),
 			createObjectTypeConverterTranslator(),
 			createStructConverterTranslator(),
+			createCopyPolicyTranslator(),
+			createInstantiationCopyPolicyTranslator(),
+			createCloneCopyPolicyTranslator(),
 			createExcludeDefaultListenersTranslator(),
 			createExcludeSuperclassListenersTranslator(),
 			createEntityListenersTranslator(),
@@ -105,5 +108,18 @@ public class EclipseLinkMappedSuperclassTranslator extends MappedSuperclassTrans
 	
 	protected Translator createPropertyTranslator() {
 		return new PropertyTranslator(PROPERTY, ECLIPSELINK_ORM_PKG.getXmlMappedSuperclass_Properties());
+	}
+	
+	
+	protected Translator createCopyPolicyTranslator() {
+		return new CopyPolicyTranslator(COPY_POLICY, ECLIPSELINK_ORM_PKG.getXmlMappedSuperclass_CopyPolicy());
+	}
+	
+	protected Translator createInstantiationCopyPolicyTranslator() {
+		return new InstantiationCopyPolicyTranslator(INSTANTIATION_COPY_POLICY, ECLIPSELINK_ORM_PKG.getXmlMappedSuperclass_InstantiationCopyPolicy());
+	}
+	
+	protected Translator createCloneCopyPolicyTranslator() {
+		return new CloneCopyPolicyTranslator(CLONE_COPY_POLICY, ECLIPSELINK_ORM_PKG.getXmlMappedSuperclass_CloneCopyPolicy());
 	}
 }

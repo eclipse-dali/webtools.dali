@@ -52,6 +52,9 @@ public class EclipseLinkEntityTranslator extends EntityTranslator
 			createTypeConverterTranslator(),
 			createObjectTypeConverterTranslator(),
 			createStructConverterTranslator(),
+			createCopyPolicyTranslator(),
+			createInstantiationCopyPolicyTranslator(),
+			createCloneCopyPolicyTranslator(),
 			createSequenceGeneratorTranslator(),
 			createTableGeneratorTranslator(),
 			createNamedQueryTranslator(),
@@ -122,5 +125,17 @@ public class EclipseLinkEntityTranslator extends EntityTranslator
 	
 	protected Translator createNamedStoredProcedureQueryTranslator() {
 		return new NamedStoredProcedureQueryTranslator(NAMED_STORED_PROCEDURE_QUERY, ECLIPSELINK_ORM_PKG.getXmlEntity_NamedStoredProcedureQueries());
+	}
+	
+	protected Translator createCopyPolicyTranslator() {
+		return new CopyPolicyTranslator(COPY_POLICY, ECLIPSELINK_ORM_PKG.getXmlEntity_CopyPolicy());
+	}
+	
+	protected Translator createInstantiationCopyPolicyTranslator() {
+		return new InstantiationCopyPolicyTranslator(INSTANTIATION_COPY_POLICY, ECLIPSELINK_ORM_PKG.getXmlEntity_InstantiationCopyPolicy());
+	}
+	
+	protected Translator createCloneCopyPolicyTranslator() {
+		return new CloneCopyPolicyTranslator(CLONE_COPY_POLICY, ECLIPSELINK_ORM_PKG.getXmlEntity_CloneCopyPolicy());
 	}
 }

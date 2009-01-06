@@ -47,6 +47,13 @@ public interface EclipseLinkOrmXmlMapper
 	String CONVERTER__CLASS = "class"; //$NON-NLS-1$
 	String CONVERTER__NAME = "name"; //$NON-NLS-1$
 	
+	String COPY_POLICY = "copy-policy"; //$NON-NLS-1$
+		String COPY_POLICY__CLASS = "class"; //$NON-NLS-1$
+	
+	String CLONE_COPY_POLICY = "clone-copy-policy"; //$NON-NLS-1$
+		String CLONE_COPY_POLICY__METHOD = "method"; //$NON-NLS-1$
+		String CLONE_COPY_POLICY__WORKING_COPY_METHOD = "working-copy-method"; //$NON-NLS-1$
+	
 	String CUSTOMIZER = "customizer";  //$NON-NLS-1$
 
 	String EXISTENCE_CHECKING = "existence-checking";  //$NON-NLS-1$
@@ -57,6 +64,8 @@ public interface EclipseLinkOrmXmlMapper
 	String EXPIRY_TIME_OF_DAY__SECOND = "second";  //$NON-NLS-1$
 	String EXPIRY_TIME_OF_DAY__MILLISECOND = "millisecond";  //$NON-NLS-1$
 	
+	String INSTANTIATION_COPY_POLICY = "instantiation-copy-policy"; //$NON-NLS-1$
+
 	String JOIN_FETCH = "join-fetch";  //$NON-NLS-1$
 	
 	String MUTABLE = "mutable";  //$NON-NLS-1$

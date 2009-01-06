@@ -38,6 +38,9 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <p>
  * The following features are supported:
  * <ul>
+ *   <li>{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbeddable#getCopyPolicy <em>Copy Policy</em>}</li>
+ *   <li>{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbeddable#getInstantiationCopyPolicy <em>Instantiation Copy Policy</em>}</li>
+ *   <li>{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbeddable#getCloneCopyPolicy <em>Clone Copy Policy</em>}</li>
  *   <li>{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbeddable#getProperties <em>Properties</em>}</li>
  * </ul>
  * </p>
@@ -107,6 +110,36 @@ public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddab
 	 * @ordered
 	 */
 	protected EList<XmlStructConverter> structConverters;
+
+	/**
+	 * The cached value of the '{@link #getCopyPolicy() <em>Copy Policy</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getCopyPolicy()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlCopyPolicy copyPolicy;
+
+	/**
+	 * The cached value of the '{@link #getInstantiationCopyPolicy() <em>Instantiation Copy Policy</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getInstantiationCopyPolicy()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlCopyPolicy instantiationCopyPolicy;
+
+	/**
+	 * The cached value of the '{@link #getCloneCopyPolicy() <em>Clone Copy Policy</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getCloneCopyPolicy()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlCopyPolicy cloneCopyPolicy;
 
 	/**
 	 * The cached value of the '{@link #getProperties() <em>Properties</em>}' containment reference list.
@@ -352,6 +385,186 @@ public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddab
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Copy Policy</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Copy Policy</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Copy Policy</em>' containment reference.
+	 * @see #setCopyPolicy(XmlCopyPolicy)
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEmbeddable_CopyPolicy()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public XmlCopyPolicy getCopyPolicy()
+	{
+		return copyPolicy;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetCopyPolicy(XmlCopyPolicy newCopyPolicy, NotificationChain msgs)
+	{
+		XmlCopyPolicy oldCopyPolicy = copyPolicy;
+		copyPolicy = newCopyPolicy;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_EMBEDDABLE__COPY_POLICY, oldCopyPolicy, newCopyPolicy);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbeddable#getCopyPolicy <em>Copy Policy</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Copy Policy</em>' containment reference.
+	 * @see #getCopyPolicy()
+	 * @generated
+	 */
+	public void setCopyPolicy(XmlCopyPolicy newCopyPolicy)
+	{
+		if (newCopyPolicy != copyPolicy)
+		{
+			NotificationChain msgs = null;
+			if (copyPolicy != null)
+				msgs = ((InternalEObject)copyPolicy).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_EMBEDDABLE__COPY_POLICY, null, msgs);
+			if (newCopyPolicy != null)
+				msgs = ((InternalEObject)newCopyPolicy).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_EMBEDDABLE__COPY_POLICY, null, msgs);
+			msgs = basicSetCopyPolicy(newCopyPolicy, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_EMBEDDABLE__COPY_POLICY, newCopyPolicy, newCopyPolicy));
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Instantiation Copy Policy</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Instantiation Copy Policy</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Instantiation Copy Policy</em>' containment reference.
+	 * @see #setInstantiationCopyPolicy(XmlCopyPolicy)
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEmbeddable_InstantiationCopyPolicy()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public XmlCopyPolicy getInstantiationCopyPolicy()
+	{
+		return instantiationCopyPolicy;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetInstantiationCopyPolicy(XmlCopyPolicy newInstantiationCopyPolicy, NotificationChain msgs)
+	{
+		XmlCopyPolicy oldInstantiationCopyPolicy = instantiationCopyPolicy;
+		instantiationCopyPolicy = newInstantiationCopyPolicy;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_EMBEDDABLE__INSTANTIATION_COPY_POLICY, oldInstantiationCopyPolicy, newInstantiationCopyPolicy);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbeddable#getInstantiationCopyPolicy <em>Instantiation Copy Policy</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Instantiation Copy Policy</em>' containment reference.
+	 * @see #getInstantiationCopyPolicy()
+	 * @generated
+	 */
+	public void setInstantiationCopyPolicy(XmlCopyPolicy newInstantiationCopyPolicy)
+	{
+		if (newInstantiationCopyPolicy != instantiationCopyPolicy)
+		{
+			NotificationChain msgs = null;
+			if (instantiationCopyPolicy != null)
+				msgs = ((InternalEObject)instantiationCopyPolicy).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_EMBEDDABLE__INSTANTIATION_COPY_POLICY, null, msgs);
+			if (newInstantiationCopyPolicy != null)
+				msgs = ((InternalEObject)newInstantiationCopyPolicy).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_EMBEDDABLE__INSTANTIATION_COPY_POLICY, null, msgs);
+			msgs = basicSetInstantiationCopyPolicy(newInstantiationCopyPolicy, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_EMBEDDABLE__INSTANTIATION_COPY_POLICY, newInstantiationCopyPolicy, newInstantiationCopyPolicy));
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Clone Copy Policy</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Clone Copy Policy</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Clone Copy Policy</em>' containment reference.
+	 * @see #setCloneCopyPolicy(XmlCopyPolicy)
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEmbeddable_CloneCopyPolicy()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public XmlCopyPolicy getCloneCopyPolicy()
+	{
+		return cloneCopyPolicy;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetCloneCopyPolicy(XmlCopyPolicy newCloneCopyPolicy, NotificationChain msgs)
+	{
+		XmlCopyPolicy oldCloneCopyPolicy = cloneCopyPolicy;
+		cloneCopyPolicy = newCloneCopyPolicy;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_EMBEDDABLE__CLONE_COPY_POLICY, oldCloneCopyPolicy, newCloneCopyPolicy);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbeddable#getCloneCopyPolicy <em>Clone Copy Policy</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Clone Copy Policy</em>' containment reference.
+	 * @see #getCloneCopyPolicy()
+	 * @generated
+	 */
+	public void setCloneCopyPolicy(XmlCopyPolicy newCloneCopyPolicy)
+	{
+		if (newCloneCopyPolicy != cloneCopyPolicy)
+		{
+			NotificationChain msgs = null;
+			if (cloneCopyPolicy != null)
+				msgs = ((InternalEObject)cloneCopyPolicy).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_EMBEDDABLE__CLONE_COPY_POLICY, null, msgs);
+			if (newCloneCopyPolicy != null)
+				msgs = ((InternalEObject)newCloneCopyPolicy).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_EMBEDDABLE__CLONE_COPY_POLICY, null, msgs);
+			msgs = basicSetCloneCopyPolicy(newCloneCopyPolicy, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_EMBEDDABLE__CLONE_COPY_POLICY, newCloneCopyPolicy, newCloneCopyPolicy));
+	}
+
+	/**
 	 * Returns the value of the '<em><b>Properties</b></em>' containment reference list.
 	 * The list contents are of type {@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlProperty}.
 	 * <!-- begin-user-doc -->
@@ -396,6 +609,12 @@ public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddab
 				return ((InternalEList<?>)getObjectTypeConverters()).basicRemove(otherEnd, msgs);
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__STRUCT_CONVERTERS:
 				return ((InternalEList<?>)getStructConverters()).basicRemove(otherEnd, msgs);
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__COPY_POLICY:
+				return basicSetCopyPolicy(null, msgs);
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__INSTANTIATION_COPY_POLICY:
+				return basicSetInstantiationCopyPolicy(null, msgs);
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__CLONE_COPY_POLICY:
+				return basicSetCloneCopyPolicy(null, msgs);
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__PROPERTIES:
 				return ((InternalEList<?>)getProperties()).basicRemove(otherEnd, msgs);
 		}
@@ -424,6 +643,12 @@ public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddab
 				return getObjectTypeConverters();
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__STRUCT_CONVERTERS:
 				return getStructConverters();
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__COPY_POLICY:
+				return getCopyPolicy();
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__INSTANTIATION_COPY_POLICY:
+				return getInstantiationCopyPolicy();
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__CLONE_COPY_POLICY:
+				return getCloneCopyPolicy();
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__PROPERTIES:
 				return getProperties();
 		}
@@ -463,6 +688,15 @@ public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddab
 				getStructConverters().clear();
 				getStructConverters().addAll((Collection<? extends XmlStructConverter>)newValue);
 				return;
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__COPY_POLICY:
+				setCopyPolicy((XmlCopyPolicy)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__INSTANTIATION_COPY_POLICY:
+				setInstantiationCopyPolicy((XmlCopyPolicy)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__CLONE_COPY_POLICY:
+				setCloneCopyPolicy((XmlCopyPolicy)newValue);
+				return;
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__PROPERTIES:
 				getProperties().clear();
 				getProperties().addAll((Collection<? extends XmlProperty>)newValue);
@@ -499,6 +733,15 @@ public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddab
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__STRUCT_CONVERTERS:
 				getStructConverters().clear();
 				return;
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__COPY_POLICY:
+				setCopyPolicy((XmlCopyPolicy)null);
+				return;
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__INSTANTIATION_COPY_POLICY:
+				setInstantiationCopyPolicy((XmlCopyPolicy)null);
+				return;
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__CLONE_COPY_POLICY:
+				setCloneCopyPolicy((XmlCopyPolicy)null);
+				return;
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__PROPERTIES:
 				getProperties().clear();
 				return;
@@ -528,6 +771,12 @@ public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddab
 				return objectTypeConverters != null && !objectTypeConverters.isEmpty();
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__STRUCT_CONVERTERS:
 				return structConverters != null && !structConverters.isEmpty();
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__COPY_POLICY:
+				return copyPolicy != null;
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__INSTANTIATION_COPY_POLICY:
+				return instantiationCopyPolicy != null;
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__CLONE_COPY_POLICY:
+				return cloneCopyPolicy != null;
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__PROPERTIES:
 				return properties != null && !properties.isEmpty();
 		}
