@@ -13,7 +13,6 @@ package org.eclipse.jpt.eclipselink.core.internal.resource.orm.translators;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.jpt.core.internal.resource.orm.translators.MappedSuperclassTranslator;
-import org.eclipse.jpt.core.internal.resource.persistence.translators.PropertyTranslator;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -105,6 +104,6 @@ public class EclipseLinkMappedSuperclassTranslator extends MappedSuperclassTrans
 	}
 	
 	protected Translator createPropertyTranslator() {
-		return new PropertyTranslator(PROPERTY, ECLIPSELINK_ORM_PKG.getXmlEntity_Properties());
+		return new PropertyTranslator(PROPERTY, ECLIPSELINK_ORM_PKG.getXmlMappedSuperclass_Properties());
 	}
 }
