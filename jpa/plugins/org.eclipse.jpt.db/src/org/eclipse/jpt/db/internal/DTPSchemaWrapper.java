@@ -212,6 +212,7 @@ final class DTPSchemaWrapper
 	 * return the column for the specified DTP column
 	 */
 	DTPColumnWrapper getColumn(org.eclipse.datatools.modelbase.sql.tables.Column dtpColumn) {
+		// try to short-circuit the search
 		return this.wraps(dtpColumn.getTable().getSchema()) ?
 						this.getColumn_(dtpColumn)
 					:

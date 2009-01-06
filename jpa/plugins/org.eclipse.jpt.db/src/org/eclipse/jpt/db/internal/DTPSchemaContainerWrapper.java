@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -30,8 +30,8 @@ abstract class DTPSchemaContainerWrapper
 
 	// ********** constructor **********
 
-	DTPSchemaContainerWrapper(DTPDatabaseObject parent, Object dtpObject) {
-		super(parent, dtpObject);
+	DTPSchemaContainerWrapper(DTPDatabaseObject parent, Object dtpSchemaContainer) {
+		super(parent, dtpSchemaContainer);
 	}
 
 
@@ -69,7 +69,8 @@ abstract class DTPSchemaContainerWrapper
 	}
 
 	/**
-	 * return the table for the specified DTP table
+	 * return the table for the specified DTP table;
+	 * this is only called from a schema (to its container)
 	 */
 	abstract DTPTableWrapper getTable(org.eclipse.datatools.modelbase.sql.tables.Table dtpTable);
 
@@ -81,7 +82,8 @@ abstract class DTPSchemaContainerWrapper
 	}
 
 	/**
-	 * return the column for the specified DTP column
+	 * return the column for the specified DTP column;
+	 * this is only called from a schema (to its container)
 	 */
 	abstract DTPColumnWrapper getColumn(org.eclipse.datatools.modelbase.sql.tables.Column dtpColumn);
 
@@ -142,7 +144,20 @@ abstract class DTPSchemaContainerWrapper
 	}
 
 	public DTPSchemaWrapper getDefaultSchema() {
-		return this.getDatabase().getDefaultSchema(this);
+		return this.getSchemaForIdentifiers(this.getDatabase().getDefaultSchemaIdentifiers());
+	}
+
+	/**
+	 * Return the first schema found.
+	 */
+	DTPSchemaWrapper getSchemaForIdentifiers(List<String> identifiers) {
+		for (String identifier : identifiers) {
+			DTPSchemaWrapper schema = this.getSchemaForIdentifier(identifier);
+			if (schema != null) {
+				return schema;
+			}
+		}
+		return null;
 	}
 
 

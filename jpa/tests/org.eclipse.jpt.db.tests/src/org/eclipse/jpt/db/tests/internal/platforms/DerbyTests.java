@@ -412,8 +412,57 @@ public class DerbyTests extends DTPPlatformTests {
 		this.connectionProfile.disconnect();
 	}
 
+	public void testCrossSchemaReference() throws Exception {
+		this.connectionProfile.connect();
+		TestConnectionListener listener = new TestConnectionListener();
+		this.connectionProfile.addConnectionListener(listener);
+
+		this.dropTable("XREF_TEST2", "EMP");
+		this.dropSchema("XREF_TEST2");
+		this.dropTable("XREF_TEST1", "ORG");
+		this.dropSchema("XREF_TEST1");
+
+		this.executeUpdate("CREATE SCHEMA XREF_TEST1");
+		this.executeUpdate("SET SCHEMA = XREF_TEST1");
+		this.executeUpdate("CREATE TABLE ORG (ID INTEGER PRIMARY KEY, NAME VARCHAR(20))");
+
+		this.executeUpdate("CREATE SCHEMA XREF_TEST2");
+		this.executeUpdate("SET SCHEMA = XREF_TEST2");
+		this.executeUpdate("CREATE TABLE EMP (ID INTEGER PRIMARY KEY, NAME VARCHAR(20), " +
+				"ORG_ID INTEGER REFERENCES XREF_TEST1.ORG(ID))");
+
+		((ICatalogObject) this.getDTPDatabase()).refresh();
+		Schema schema1 = this.getDatabase().getSchemaNamed("XREF_TEST1");
+		assertNotNull(schema1);
+		Table orgTable = schema1.getTableNamed("ORG");
+		assertNotNull(orgTable);
+
+		Schema schema2 = this.getDatabase().getSchemaNamed("XREF_TEST2");
+		assertNotNull(schema2);
+		Table empTable = schema2.getTableNamed("EMP");
+		assertNotNull(empTable);
+		assertEquals(1, empTable.foreignKeysSize());
+		ForeignKey fk = empTable.foreignKeys().next();
+		Table refTable = fk.getReferencedTable();
+		assertNotNull(refTable);
+		assertEquals("ORG", refTable.getName());
+		assertEquals(1, fk.columnPairsSize());
+		ForeignKey.ColumnPair cp = fk.columnPairs().next();
+		Column baseColumn = cp.getBaseColumn();
+		assertEquals("ORG_ID", baseColumn.getName());
+		Column refColumn = cp.getReferencedColumn();
+		assertEquals("ID", refColumn.getName());
+
+		this.dropTable("XREF_TEST2", "EMP");
+		this.dropSchema("XREF_TEST2");
+		this.dropTable("XREF_TEST1", "ORG");
+		this.dropSchema("XREF_TEST1");
+		this.connectionProfile.removeConnectionListener(listener);
+		this.connectionProfile.disconnect();
+	}
+
 	private void dropTable(String schemaName, String tableName) throws Exception {
-		Schema schema= this.getSchemaForIdentifier(schemaName);
+		Schema schema= this.getDatabase().getSchemaForIdentifier(schemaName);
 		if (schema != null) {
 			if (schema.getTableForIdentifier(tableName) != null) {
 				this.executeUpdate("DROP TABLE " + schemaName + '.' + tableName);
@@ -425,7 +474,7 @@ public class DerbyTests extends DTPPlatformTests {
 	 * NB: A Derby schema must be empty before it can be dropped.
 	 */
 	private void dropSchema(String name) throws Exception {
-		if (this.getSchemaForIdentifier(name) != null) {
+		if (this.getDatabase().getSchemaForIdentifier(name) != null) {
 			this.executeUpdate("DROP SCHEMA " + name + " RESTRICT");
 		}
 	}

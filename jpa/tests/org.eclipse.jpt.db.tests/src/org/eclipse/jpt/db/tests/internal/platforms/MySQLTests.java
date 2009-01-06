@@ -10,6 +10,7 @@
 package org.eclipse.jpt.db.tests.internal.platforms;
 
 import java.util.Properties;
+
 import org.eclipse.datatools.connectivity.drivers.jdbc.IJDBCDriverDefinitionConstants;
 import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObject;
 import org.eclipse.jpt.db.Column;
@@ -350,6 +351,43 @@ public class MySQLTests extends DTPPlatformTests {
 		this.dropTable(this.getDatabaseName(), "test");
 
 		this.dropDatabase(this.getDatabaseName());
+
+		this.connectionProfile.removeConnectionListener(listener);
+		this.connectionProfile.disconnect();
+	}
+
+	/**
+	 * We can only get a single "schema" per connection via DTP,
+	 * so cross-schema references are not visible.
+	 */
+	public void testCrossSchemaReference() throws Exception {
+		this.connectionProfile.connect();
+		TestConnectionListener listener = new TestConnectionListener();
+		this.connectionProfile.addConnectionListener(listener);
+
+		this.dropDatabase("xref_test2");
+		this.dropDatabase("xref_test1");
+
+		this.executeUpdate("CREATE DATABASE xref_test1");
+		this.getJDBCConnection().setCatalog("xref_test1");
+		this.executeUpdate("CREATE TABLE org (id INTEGER PRIMARY KEY, name VARCHAR(20))");
+
+		this.executeUpdate("CREATE DATABASE xref_test2");
+		this.getJDBCConnection().setCatalog("xref_test2");
+		this.executeUpdate("CREATE TABLE emp (id INTEGER PRIMARY KEY, name VARCHAR(20), " +
+				"org_id INTEGER, FOREIGN KEY (org_id) REFERENCES xref_test1.org(id))");
+
+		this.getJDBCConnection().setCatalog("xref_test2");
+		((ICatalogObject) this.getDTPDatabase()).refresh();
+		Schema schema2 = this.getDatabase().getDefaultSchema();
+		assertNotNull(schema2);
+		Table empTable = schema2.getTableNamed("emp");
+		assertNotNull(empTable);
+		// no foreign keys
+		assertEquals(0, empTable.foreignKeysSize());
+
+		this.dropDatabase("xref_test2");
+		this.dropDatabase("xref_test1");
 
 		this.connectionProfile.removeConnectionListener(listener);
 		this.connectionProfile.disconnect();

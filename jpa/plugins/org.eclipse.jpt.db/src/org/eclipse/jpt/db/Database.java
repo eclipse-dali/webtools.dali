@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -42,18 +42,36 @@ public interface Database
 	// ********** catalogs **********
 
 	/**
-	 * Return whether the database supports catalogs.
+	 * Return whether the database supports catalogs. If it does, all database
+	 * objects are contained by the database's catalogs; otherwise all database
+	 * objects are contained by the database's schemata.
+	 * 
+	 * Practically speaking:
+	 *     if #supportsCatalogs() returns 'true'
+	 *         #catalogs() returns catalogs that contain the database's schemata
+	 *         #schemata() returns an empty iterator
+	 *     else
+	 *         #catalogs() returns an empty iterator
+	 *         #schemata() returns the database's schemata
+	 * This is complicated by the presence of a "default" catalog that clients can
+	 * use to allow the specification of a catalog to be optional; but clients
+	 * must manage this explicitly.
+	 * 
+	 * @see #catalogs()
+	 * @see #schemata()
 	 */
 	boolean supportsCatalogs();
 
 	/**
 	 * Return the database's catalogs.
+	 * Return an empty iterator if the database does not support catalogs.
 	 * @see #supportsCatalogs()
 	 */
 	Iterator<Catalog> catalogs();
 
 	/**
 	 * Return the number of catalogs the database contains.
+	 * Return zero if the database does not support catalogs.
 	 * @see #supportsCatalogs()
 	 */
 	int catalogsSize();
@@ -61,6 +79,7 @@ public interface Database
 	/**
 	 * Return the catalog with specified name. The name must be an exact match
 	 * of the catalog's name.
+	 * Return null if the database does not support catalogs.
 	 * @see #supportsCatalogs()
 	 * @see #getCatalogForIdentifier(String)
 	 */
@@ -68,6 +87,7 @@ public interface Database
 
 	/**
 	 * Return the database's catalog identifiers, sorted by name.
+	 * Return an empty iterator if the database does not support catalogs.
 	 */
 	Iterator<String> sortedCatalogIdentifiers();
 
@@ -75,6 +95,7 @@ public interface Database
 	 * Return the catalog for the specified identifier. The identifier should
 	 * be an SQL identifier (i.e. quoted when case-sensitive or containing
 	 * special characters, unquoted otherwise).
+	 * Return null if the database does not support catalogs.
 	 * @see #supportsCatalogs()
 	 * @see #getCatalogNamed(String)
 	 */

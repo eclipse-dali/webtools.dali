@@ -10,6 +10,7 @@
 package org.eclipse.jpt.db.tests.internal.platforms;
 
 import java.sql.SQLException;
+
 import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObject;
 import org.eclipse.jpt.db.Column;
 import org.eclipse.jpt.db.ForeignKey;
@@ -80,6 +81,10 @@ public class Oracle10gTests extends DTPPlatformTests {
 	}
 
 	public void testDatabase() throws Exception {
+		if (this.connectionProfile.getUserName().toUpperCase().equals("SYS")) {
+			System.out.println("skipped test: " + this.getClass() + '.' + this.getName());
+			return;  // SYS does not have a schema
+		}
 		this.connectionProfile.connect();
 		TestConnectionListener listener = new TestConnectionListener();
 		this.connectionProfile.addConnectionListener(listener);
@@ -302,6 +307,56 @@ public class Oracle10gTests extends DTPPlatformTests {
 
 		this.dropTable("test");
 
+		this.connectionProfile.removeConnectionListener(listener);
+		this.connectionProfile.disconnect();
+	}
+
+	public void testCrossSchemaReference() throws Exception {
+		if ( ! this.connectionProfile.getUserName().toUpperCase().equals("SYS")) {
+			System.out.println("skipped test: " + this.getClass() + '.' + this.getName());
+			return;  // SYS does not have a schema
+		}
+		this.connectionProfile.connect();
+		TestConnectionListener listener = new TestConnectionListener();
+		this.connectionProfile.addConnectionListener(listener);
+
+		this.executeUpdateIgnoreErrors("DROP USER XREF_TEST2 CASCADE");
+		this.executeUpdateIgnoreErrors("DROP USER XREF_TEST1 CASCADE");
+
+		this.executeUpdate("CREATE USER XREF_TEST1 IDENTIFIED BY foo");
+		this.executeUpdate("ALTER USER XREF_TEST1 QUOTA UNLIMITED ON USERS");
+		this.executeUpdate("CREATE TABLE XREF_TEST1.ORG (ID NUMBER(10) PRIMARY KEY, NAME VARCHAR2(20))");
+
+		this.executeUpdate("CREATE USER XREF_TEST2 IDENTIFIED BY foo");
+		this.executeUpdate("ALTER USER XREF_TEST2 QUOTA UNLIMITED ON USERS");
+		this.executeUpdate("GRANT ALL ON XREF_TEST1.ORG TO XREF_TEST2");
+		this.executeUpdate("CREATE TABLE XREF_TEST2.EMP (ID NUMBER(10) PRIMARY KEY, NAME VARCHAR2(20), " +
+				"ORG_ID NUMBER(10) REFERENCES XREF_TEST1.ORG(ID))");
+
+		((ICatalogObject) this.getDTPDatabase()).refresh();
+		Schema schema1 = this.getDatabase().getSchemaNamed("XREF_TEST1");
+		assertNotNull(schema1);
+		Table orgTable = schema1.getTableNamed("ORG");
+		assertNotNull(orgTable);
+
+		Schema schema2 = this.getDatabase().getSchemaNamed("XREF_TEST2");
+		assertNotNull(schema2);
+		Table empTable = schema2.getTableNamed("EMP");
+		assertNotNull(empTable);
+		assertEquals(1, empTable.foreignKeysSize());
+		ForeignKey fk = empTable.foreignKeys().next();
+		Table refTable = fk.getReferencedTable();
+		assertNotNull(refTable);
+		assertEquals("ORG", refTable.getName());
+		assertEquals(1, fk.columnPairsSize());
+		ForeignKey.ColumnPair cp = fk.columnPairs().next();
+		Column baseColumn = cp.getBaseColumn();
+		assertEquals("ORG_ID", baseColumn.getName());
+		Column refColumn = cp.getReferencedColumn();
+		assertEquals("ID", refColumn.getName());
+
+		this.executeUpdate("DROP USER XREF_TEST2 CASCADE");
+		this.executeUpdate("DROP USER XREF_TEST1 CASCADE");
 		this.connectionProfile.removeConnectionListener(listener);
 		this.connectionProfile.disconnect();
 	}

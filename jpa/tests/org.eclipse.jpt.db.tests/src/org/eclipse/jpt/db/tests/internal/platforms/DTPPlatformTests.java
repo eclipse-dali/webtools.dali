@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,12 +19,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
+
 import junit.framework.TestCase;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
@@ -524,7 +524,15 @@ public abstract class DTPPlatformTests extends TestCase {
 		TestConnectionListener listener = new TestConnectionListener();
 		this.connectionProfile.addConnectionListener(listener);
 
-		assertEquals(this.supportsCatalogs(), this.connectionProfile.getDatabase().supportsCatalogs());
+		boolean supportsCatalogs = this.supportsCatalogs();
+		assertEquals(supportsCatalogs, this.connectionProfile.getDatabase().supportsCatalogs());
+		if (supportsCatalogs) {
+			assertTrue(this.connectionProfile.getDatabase().catalogsSize() > 0);
+			assertEquals(0, this.connectionProfile.getDatabase().schemataSize());
+		} else {
+			assertEquals(0, this.connectionProfile.getDatabase().catalogsSize());
+			assertTrue(this.connectionProfile.getDatabase().schemataSize() > 0);
+		}
 
 		this.connectionProfile.removeConnectionListener(listener);
 		this.connectionProfile.disconnect();
@@ -555,12 +563,12 @@ public abstract class DTPPlatformTests extends TestCase {
 		return this.connectionProfile.getDatabase();
 	}
 
-	protected Catalog getCatalogNamed(String catalogName) {
-		return this.connectionProfile.getDatabase().getCatalogNamed(catalogName);
+	protected Catalog getDefaultCatalog() {
+		return this.getDatabase().getDefaultCatalog();
 	}
 
-	protected Schema getSchemaForIdentifier(String schemaName) {
-		return this.connectionProfile.getDatabase().getSchemaForIdentifier(schemaName);
+	protected Catalog getCatalogNamed(String catalogName) {
+		return this.connectionProfile.getDatabase().getCatalogNamed(catalogName);
 	}
 
 	protected String getRequiredPlatformProperty(String propertyKey) {
@@ -709,7 +717,7 @@ public abstract class DTPPlatformTests extends TestCase {
 		return new ResultSetIterator<ArrayList<Object>>(resultSet, new ListResultSetIteratorAdapter(resultSet.getMetaData().getColumnCount()));
 	}
 
-	public class ListResultSetIteratorAdapter implements ResultSetIterator.Adapter<ArrayList<Object>> {
+	public static class ListResultSetIteratorAdapter implements ResultSetIterator.Adapter<ArrayList<Object>> {
 		private final int columnCount;
 		public ListResultSetIteratorAdapter(int columnCount) {
 			super();
@@ -721,49 +729,6 @@ public abstract class DTPPlatformTests extends TestCase {
 				list.add(rs.getObject(i));
 			}
 			return list;
-		}
-	}
-
-	protected ArrayList<HashMap<String, Object>> execute2(String sql) throws SQLException {
-		Statement jdbcStatement = this.createJDBCStatement();
-		jdbcStatement.execute(sql);
-		ArrayList<HashMap<String, Object>> rows = this.buildMaps(jdbcStatement.getResultSet());
-		jdbcStatement.close();
-		return rows;
-	}
-
-	protected ArrayList<HashMap<String, Object>> buildMaps(ResultSet resultSet) throws SQLException {
-		ArrayList<HashMap<String, Object>> rows = new ArrayList<HashMap<String, Object>>();
-		for (Iterator<HashMap<String, Object>> stream = this.buildMapIterator(resultSet); stream.hasNext(); ) {
-			rows.add(stream.next());
-		}
-		return rows;
-	}
-
-	protected Iterator<HashMap<String, Object>> buildMapIterator(ResultSet resultSet) throws SQLException {
-		return new ResultSetIterator<HashMap<String, Object>>(resultSet, new MapResultSetIteratorAdapter(this.buildColumnNames(resultSet)));
-	}
-
-	protected String[] buildColumnNames(ResultSet resultSet) throws SQLException {
-		String[] names = new String[resultSet.getMetaData().getColumnCount()];
-		for (int i = 0; i < names.length; i++) {
-			names[i] = resultSet.getMetaData().getColumnName(i + 1);  // NB: ResultSet index/subscript is 1-based
-		}
-		return names;
-	}
-
-	public class MapResultSetIteratorAdapter implements ResultSetIterator.Adapter<HashMap<String, Object>> {
-		private final String[] columnNames;
-		public MapResultSetIteratorAdapter(String[] columnNames) {
-			super();
-			this.columnNames = columnNames;
-		}
-		public HashMap<String, Object> buildNext(ResultSet rs) throws SQLException {
-			HashMap<String, Object> map = new HashMap<String, Object>(this.columnNames.length);
-			for (int i = 0; i < this.columnNames.length; i++) {
-				map.put(this.columnNames[i], rs.getObject(i + 1));  // NB: ResultSet index/subscript is 1-based
-			}
-			return map;
 		}
 	}
 
@@ -923,7 +888,7 @@ public abstract class DTPPlatformTests extends TestCase {
 	protected void dumpJDBCCatalogsOn(IndentingPrintWriter pw) throws SQLException {
 		pw.println("JDBC catalogs: ");
 		pw.indent();
-			ArrayList<ArrayList<Object>> rows = this.buildRows(this.getJDBCConnection().getMetaData().getCatalogs());
+			ArrayList<ArrayList<Object>> rows = this.buildRows(this.getDatabaseMetaData().getCatalogs());
 			for (Iterator<ArrayList<Object>> stream = rows.iterator(); stream.hasNext(); ) {
 				pw.println(stream.next().get(0));
 			}
@@ -942,7 +907,7 @@ public abstract class DTPPlatformTests extends TestCase {
 	protected void dumpJDBCSchemataOn(IndentingPrintWriter pw) throws SQLException {
 		pw.println("JDBC schemata: ");
 		pw.indent();
-			ArrayList<ArrayList<Object>> rows = this.buildRows(this.getJDBCConnection().getMetaData().getSchemas());
+			ArrayList<ArrayList<Object>> rows = this.buildRows(this.getDatabaseMetaData().getSchemas());
 			for (ArrayList<Object> row : rows) {
 				if (row.size() == 2) {  // catalogs were added in jdk 1.4
 					Object catalog = row.get(1);
@@ -955,35 +920,10 @@ public abstract class DTPPlatformTests extends TestCase {
 		pw.undent();
 	}
 
-	protected void dump(ResultSet resultSet) throws SQLException {
-		IndentingPrintWriter pw = new IndentingPrintWriter(new OutputStreamWriter(System.out));
-		// synchronize the console so everything is contiguous
-		synchronized (System.out) {
-			this.dumpOn(resultSet, pw);
-		}
-		pw.flush();
-	}
-
-	protected void dumpOn(ResultSet resultSet, IndentingPrintWriter pw) throws SQLException {
-		ArrayList<HashMap<String, Object>> maps = this.buildMaps(resultSet);
-		for (Iterator<HashMap<String, Object>> mapStream = maps.iterator(); mapStream.hasNext(); ) {
-			for (Iterator<Map.Entry<String, Object>> entryStream = mapStream.next().entrySet().iterator(); entryStream.hasNext(); ) {
-				Map.Entry<String, Object> entry = entryStream.next();
-				pw.print(entry.getKey());
-				pw.print(" = ");
-				pw.print(entry.getValue());
-				pw.println();
-			}
-			if (mapStream.hasNext()) {
-				pw.println();
-			}
-		}
-	}
-
 
 	// ********** connection profile listener **********
 
-	protected class TestConnectionProfileListener implements ConnectionProfileListener {
+	protected static class TestConnectionProfileListener implements ConnectionProfileListener {
 		public String addedName;
 		public String removedName;
 		public String renamedOldName;
@@ -1010,7 +950,7 @@ public abstract class DTPPlatformTests extends TestCase {
 
 	// ********** connection listener **********
 
-	protected class TestConnectionListener implements ConnectionListener {
+	protected static class TestConnectionListener implements ConnectionListener {
 		public ConnectionProfile openedProfile;
 		public ConnectionProfile modifiedProfile;
 		public ConnectionProfile okToCloseProfile;

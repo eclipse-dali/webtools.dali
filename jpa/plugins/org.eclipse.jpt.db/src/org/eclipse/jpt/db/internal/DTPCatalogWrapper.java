@@ -51,26 +51,29 @@ final class DTPCatalogWrapper
 
 	@Override
 	DTPSchemaWrapper getSchema(org.eclipse.datatools.modelbase.sql.schema.Schema dtpSchema) {
+		// try to short-circuit the search
 		return this.wraps(dtpSchema.getCatalog()) ?
 						this.getSchema_(dtpSchema)
 					:
-						this.getDatabase().getSchema(dtpSchema);
+						this.getDatabase().getSchemaFromCatalogs(dtpSchema);
 	}
 
 	@Override
 	DTPTableWrapper getTable(org.eclipse.datatools.modelbase.sql.tables.Table dtpTable) {
+		// try to short-circuit the search
 		return this.wraps(dtpTable.getSchema().getCatalog()) ?
 						this.getTable_(dtpTable)
 					:
-						this.getDatabase().getTable(dtpTable);
+						this.getDatabase().getTableFromCatalogs(dtpTable);
 	}
 
 	@Override
 	DTPColumnWrapper getColumn(org.eclipse.datatools.modelbase.sql.tables.Column dtpColumn) {
+		// try to short-circuit the search
 		return this.wraps(dtpColumn.getTable().getSchema().getCatalog()) ?
 						this.getColumn_(dtpColumn)
 					:
-						this.getDatabase().getColumn(dtpColumn);
+						this.getDatabase().getColumnFromCatalogs(dtpColumn);
 	}
 
 

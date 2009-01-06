@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,6 +15,7 @@ import org.eclipse.jpt.db.Column;
 import org.eclipse.jpt.db.ForeignKey;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.Table;
+import org.eclipse.jpt.db.tests.internal.platforms.DTPPlatformTests.TestConnectionListener;
 
 @SuppressWarnings("nls")
 public class SybaseTests extends DTPPlatformTests {
@@ -111,7 +112,9 @@ public class SybaseTests extends DTPPlatformTests {
 		assertNotNull(catalog2);
 		Schema schema2 = catalog2.getDefaultSchema();
 		assertNotNull(schema2);
-		assertNotSame(catalog1, this.getDatabase().getSchemaNamed("test1"));  // we should have a new schema after the refresh
+
+		assertNotSame(catalog1, this.getDatabase().getCatalogNamed("test1"));  // we should have a new catalog after the refresh
+		assertNotSame(schema1, this.getDatabase().getCatalogNamed("test1").getDefaultSchema());  // we should have a new schema after the refresh
 
 		this.executeUpdate("drop database test2");
 		this.executeUpdate("drop database test1");
@@ -375,6 +378,64 @@ public class SybaseTests extends DTPPlatformTests {
 
 		this.getJDBCConnection().setCatalog("master");
 		this.executeUpdate("drop database column_lookup_test");
+
+		this.connectionProfile.removeConnectionListener(listener);
+		this.connectionProfile.disconnect();
+	}
+
+	public void testCrossSchemaReference() throws Exception {
+		this.connectionProfile.connect();
+		TestConnectionListener listener = new TestConnectionListener();
+		this.connectionProfile.addConnectionListener(listener);
+
+		this.getJDBCConnection().setCatalog("master");
+		this.executeUpdateIgnoreErrors("drop database xref_test2");
+		this.executeUpdateIgnoreErrors("drop database xref_test1");
+
+		this.getJDBCConnection().setCatalog("master");
+		this.executeUpdate("create database xref_test1");
+		this.getJDBCConnection().setCatalog("xref_test1");
+		this.executeUpdate("create table org (id integer primary key, name varchar(20))");
+
+		this.getJDBCConnection().setCatalog("master");
+		this.executeUpdate("create database xref_test2");
+		this.getJDBCConnection().setCatalog("xref_test2");
+		this.executeUpdate("create table emp (id integer primary key, name varchar(20), " +
+				"org_id integer references xref_test1..org(id))");
+
+		((ICatalogObject) this.getDTPDatabase()).refresh();
+		Catalog catalog1 = this.getDatabase().getCatalogNamed("xref_test1");
+		assertNotNull(catalog1);
+		Schema schema1 = catalog1.getSchemaNamed("dbo");
+		assertNotNull(schema1);
+		Table orgTable = schema1.getTableNamed("org");
+		assertNotNull(orgTable);
+
+		Catalog catalog2 = this.getDatabase().getCatalogNamed("xref_test2");
+		assertNotNull(catalog2);
+		Schema schema2 = catalog2.getSchemaNamed("dbo");
+		assertNotNull(schema2);
+		Table empTable = schema2.getTableNamed("emp");
+		assertNotNull(empTable);
+		assertEquals(1, empTable.foreignKeysSize());
+		ForeignKey fk = empTable.foreignKeys().next();
+		Table refTable = fk.getReferencedTable();
+		assertNotNull(refTable);
+		assertEquals("org", refTable.getName());
+		assertEquals(1, fk.columnPairsSize());
+		ForeignKey.ColumnPair cp = fk.columnPairs().next();
+		Column baseColumn = cp.getBaseColumn();
+		assertEquals("org_id", baseColumn.getName());
+		Column refColumn = cp.getReferencedColumn();
+		assertEquals("id", refColumn.getName());
+
+		this.getJDBCConnection().setCatalog("xref_test2");
+		this.executeUpdate("drop table emp");
+		this.getJDBCConnection().setCatalog("xref_test1");
+		this.executeUpdate("drop table org");
+		this.getJDBCConnection().setCatalog("master");
+		this.executeUpdate("drop database xref_test2");
+		this.executeUpdate("drop database xref_test1");
 
 		this.connectionProfile.removeConnectionListener(listener);
 		this.connectionProfile.disconnect();
