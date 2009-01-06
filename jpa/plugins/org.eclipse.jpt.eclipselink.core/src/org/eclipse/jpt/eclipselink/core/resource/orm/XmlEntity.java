@@ -41,6 +41,7 @@ import org.eclipse.jpt.eclipselink.core.internal.resource.orm.translators.Eclips
  * <p>
  * The following features are supported:
  * <ul>
+ *   <li>{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntity#getNamedStoredProcedureQueries <em>Named Stored Procedure Queries</em>}</li>
  *   <li>{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntity#getProperties <em>Properties</em>}</li>
  * </ul>
  * </p>
@@ -156,6 +157,16 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 	 * @ordered
 	 */
 	protected EList<XmlStructConverter> structConverters;
+
+	/**
+	 * The cached value of the '{@link #getNamedStoredProcedureQueries() <em>Named Stored Procedure Queries</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getNamedStoredProcedureQueries()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlNamedStoredProcedureQuery> namedStoredProcedureQueries;
 
 	/**
 	 * The cached value of the '{@link #getProperties() <em>Properties</em>}' containment reference list.
@@ -535,6 +546,29 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Named Stored Procedure Queries</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlNamedStoredProcedureQuery}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Named Stored Procedure Queries</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Named Stored Procedure Queries</em>' containment reference list.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEntity_NamedStoredProcedureQueries()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public EList<XmlNamedStoredProcedureQuery> getNamedStoredProcedureQueries()
+	{
+		if (namedStoredProcedureQueries == null)
+		{
+			namedStoredProcedureQueries = new EObjectContainmentEList<XmlNamedStoredProcedureQuery>(XmlNamedStoredProcedureQuery.class, this, EclipseLinkOrmPackage.XML_ENTITY__NAMED_STORED_PROCEDURE_QUERIES);
+		}
+		return namedStoredProcedureQueries;
+	}
+
+	/**
 	 * Returns the value of the '<em><b>Properties</b></em>' containment reference list.
 	 * The list contents are of type {@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlProperty}.
 	 * <!-- begin-user-doc -->
@@ -581,6 +615,8 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 				return ((InternalEList<?>)getObjectTypeConverters()).basicRemove(otherEnd, msgs);
 			case EclipseLinkOrmPackage.XML_ENTITY__STRUCT_CONVERTERS:
 				return ((InternalEList<?>)getStructConverters()).basicRemove(otherEnd, msgs);
+			case EclipseLinkOrmPackage.XML_ENTITY__NAMED_STORED_PROCEDURE_QUERIES:
+				return ((InternalEList<?>)getNamedStoredProcedureQueries()).basicRemove(otherEnd, msgs);
 			case EclipseLinkOrmPackage.XML_ENTITY__PROPERTIES:
 				return ((InternalEList<?>)getProperties()).basicRemove(otherEnd, msgs);
 		}
@@ -615,6 +651,8 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 				return getObjectTypeConverters();
 			case EclipseLinkOrmPackage.XML_ENTITY__STRUCT_CONVERTERS:
 				return getStructConverters();
+			case EclipseLinkOrmPackage.XML_ENTITY__NAMED_STORED_PROCEDURE_QUERIES:
+				return getNamedStoredProcedureQueries();
 			case EclipseLinkOrmPackage.XML_ENTITY__PROPERTIES:
 				return getProperties();
 		}
@@ -663,6 +701,10 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 				getStructConverters().clear();
 				getStructConverters().addAll((Collection<? extends XmlStructConverter>)newValue);
 				return;
+			case EclipseLinkOrmPackage.XML_ENTITY__NAMED_STORED_PROCEDURE_QUERIES:
+				getNamedStoredProcedureQueries().clear();
+				getNamedStoredProcedureQueries().addAll((Collection<? extends XmlNamedStoredProcedureQuery>)newValue);
+				return;
 			case EclipseLinkOrmPackage.XML_ENTITY__PROPERTIES:
 				getProperties().clear();
 				getProperties().addAll((Collection<? extends XmlProperty>)newValue);
@@ -708,6 +750,9 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 			case EclipseLinkOrmPackage.XML_ENTITY__STRUCT_CONVERTERS:
 				getStructConverters().clear();
 				return;
+			case EclipseLinkOrmPackage.XML_ENTITY__NAMED_STORED_PROCEDURE_QUERIES:
+				getNamedStoredProcedureQueries().clear();
+				return;
 			case EclipseLinkOrmPackage.XML_ENTITY__PROPERTIES:
 				getProperties().clear();
 				return;
@@ -743,6 +788,8 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 				return objectTypeConverters != null && !objectTypeConverters.isEmpty();
 			case EclipseLinkOrmPackage.XML_ENTITY__STRUCT_CONVERTERS:
 				return structConverters != null && !structConverters.isEmpty();
+			case EclipseLinkOrmPackage.XML_ENTITY__NAMED_STORED_PROCEDURE_QUERIES:
+				return namedStoredProcedureQueries != null && !namedStoredProcedureQueries.isEmpty();
 			case EclipseLinkOrmPackage.XML_ENTITY__PROPERTIES:
 				return properties != null && !properties.isEmpty();
 		}

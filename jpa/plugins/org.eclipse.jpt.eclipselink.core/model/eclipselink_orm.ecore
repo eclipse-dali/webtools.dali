@@ -48,7 +48,38 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="structConverters" upperBound="-1"
         eType="#//XmlStructConverter" containment="true" resolveProxies="false"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlEntityMappings" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlEntityMappings #//XmlConvertersHolder"/>
+  <eClassifiers xsi:type="ecore:EEnum" name="XmlDirection">
+    <eLiterals name="IN"/>
+    <eLiterals name="OUT" value="1" literal="OUT"/>
+    <eLiterals name="IN_OUT" value="2" literal="IN_OUT"/>
+    <eLiterals name="OUT_CURSOR" value="3" literal="OUT_CURSOR"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlStoredProcedureParameter">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="direction" eType="#//XmlDirection"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="queryParameter" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="jdbcType" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//IntObject"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="jdbcTypeName" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlNamedStoredProcedureQuery">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="resultClass" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="resultSetMapping" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="procedureName" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="returnsResultSet" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="hints" upperBound="-1"
+        eType="ecore:EClass ../../org.eclipse.jpt.core/model/orm.ecore#//XmlQueryHint"
+        containment="true" resolveProxies="false"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parameters" upperBound="-1"
+        eType="ecore:EClass ../../org.eclipse.jpt.core/model/orm.ecore#//XmlQueryHint"
+        containment="true" resolveProxies="false"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlEntityMappings" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlEntityMappings #//XmlConvertersHolder">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="namedStoredProcedureQueries"
+        upperBound="-1" eType="#//XmlNamedStoredProcedureQuery" containment="true"
+        resolveProxies="false"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlCustomizer">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="customizerClassName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
@@ -125,6 +156,9 @@
         defaultValueLiteral=""/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlEntity" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlEntity #//XmlReadOnly #//XmlCustomizerHolder #//XmlChangeTrackingHolder #//XmlCacheHolder #//XmlConvertersHolder">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="namedStoredProcedureQueries"
+        upperBound="-1" eType="#//XmlNamedStoredProcedureQuery" containment="true"
+        resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="properties" upperBound="-1"
         eType="#//XmlProperty" containment="true" resolveProxies="false"/>
   </eClassifiers>

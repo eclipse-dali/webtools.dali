@@ -61,6 +61,21 @@ public interface EclipseLinkOrmXmlMapper
 	
 	String MUTABLE = "mutable";  //$NON-NLS-1$
 	
+	String NAMED_STORED_PROCEDURE_QUERY = "named-stored-procedure-query"; //$NON-NLS-1$
+		String NAMED_STORED_PROCEDURE_QUERY__NAME = "name"; //$NON-NLS-1$
+		String NAMED_STORED_PROCEDURE_QUERY__HINT = "hint"; //$NON-NLS-1$
+		String NAMED_STORED_PROCEDURE_QUERY__RESULT_CLASS = "result-class"; //$NON-NLS-1$
+		String NAMED_STORED_PROCEDURE_QUERY__RESULT_SET_MAPPING = "result-set-mapping"; //$NON-NLS-1$
+		String NAMED_STORED_PROCEDURE_QUERY__PROCEDURE_NAME = "procedure-name"; //$NON-NLS-1$
+		String NAMED_STORED_PROCEDURE_QUERY__RETURNS_RESULT_SET = "returns-result-set"; //$NON-NLS-1$
+	String NAMED_STORED_PROCEDURE_QUERY__PARAMETER = "parameter"; //$NON-NLS-1$
+		String PARAMETER__DIRECTION = "direction"; //$NON-NLS-1$
+		String PARAMETER__NAME = "name"; //$NON-NLS-1$
+		String PARAMETER__QUERY_PARAMETER = "query-parameter"; //$NON-NLS-1$
+		String PARAMETER__TYPE = "type"; //$NON-NLS-1$
+		String PARAMETER__JDBC_TYPE = "jdbc-type"; //$NON-NLS-1$
+		String PARAMETER__JDBC_TYPE_NAME = "jdbc-type-name"; //$NON-NLS-1$
+		
 	String OBJECT_TYPE_CONVERTER = "object-type-converter"; //$NON-NLS-1$
 	String OBJECT_TYPE_CONVERTER__NAME = "name"; //$NON-NLS-1$
 	String OBJECT_TYPE_CONVERTER__DATA_TYPE = "data-type"; //$NON-NLS-1$
@@ -75,6 +90,7 @@ public interface EclipseLinkOrmXmlMapper
 	String PROPERTY__VALUE_TYPE = "value-type"; //$NON-NLS-1$
 	
 	String READ_ONLY = "read-only";  //$NON-NLS-1$
+	
 	
 	String STRUCT_CONVERTER = "struct-converter"; //$NON-NLS-1$
 	String STRUCT_CONVERTER__NAME = "name"; //$NON-NLS-1$

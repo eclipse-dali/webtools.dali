@@ -56,6 +56,7 @@ public class EclipseLinkEntityTranslator extends EntityTranslator
 			createTableGeneratorTranslator(),
 			createNamedQueryTranslator(),
 			createNamedNativeQueryTranslator(),
+			createNamedStoredProcedureQueryTranslator(),
 			createSqlResultSetMappingTranslator(),
 			createExcludeDefaultListenersTranslator(),
 			createExcludeSuperclassListenersTranslator(),
@@ -117,5 +118,9 @@ public class EclipseLinkEntityTranslator extends EntityTranslator
 	
 	protected Translator createPropertyTranslator() {
 		return new PropertyTranslator(PROPERTY, ECLIPSELINK_ORM_PKG.getXmlEntity_Properties());
+	}
+	
+	protected Translator createNamedStoredProcedureQueryTranslator() {
+		return new NamedStoredProcedureQueryTranslator(NAMED_STORED_PROCEDURE_QUERY, ECLIPSELINK_ORM_PKG.getXmlEntity_NamedStoredProcedureQueries());
 	}
 }

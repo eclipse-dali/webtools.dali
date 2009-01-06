@@ -43,6 +43,7 @@ public class EclipseLinkEntityMappingsTranslator extends EntityMappingsTranslato
 			createTableGeneratorTranslator(),
 			createNamedQueryTranslator(),
 			createNamedNativeQueryTranslator(),
+			createNamedStoredProcedureQueryTranslator(),
 			createSqlResultSetMappingTranslator(),
 			createMappedSuperclassTranslator(),
 			createEntityTranslator(),
@@ -90,5 +91,9 @@ public class EclipseLinkEntityMappingsTranslator extends EntityMappingsTranslato
 	
 	protected Translator createStructConverterTranslator() {
 		return new StructConverterTranslator(STRUCT_CONVERTER, ECLIPSELINK_ORM_PKG.getXmlConvertersHolder_StructConverters());
+	}
+	
+	protected Translator createNamedStoredProcedureQueryTranslator() {
+		return new NamedStoredProcedureQueryTranslator(NAMED_STORED_PROCEDURE_QUERY, ECLIPSELINK_ORM_PKG.getXmlEntityMappings_NamedStoredProcedureQueries());
 	}
 }

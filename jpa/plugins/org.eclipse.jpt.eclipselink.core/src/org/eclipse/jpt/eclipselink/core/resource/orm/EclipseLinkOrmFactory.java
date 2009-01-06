@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2008  Oracle. 
+ *  Copyright (c) 2008, 2009  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -92,6 +92,8 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 			case EclipseLinkOrmPackage.XML_CONVERSION_VALUE_IMPL: return (EObject)createXmlConversionValueImpl();
 			case EclipseLinkOrmPackage.XML_OBJECT_TYPE_CONVERTER_IMPL: return (EObject)createXmlObjectTypeConverterImpl();
 			case EclipseLinkOrmPackage.XML_STRUCT_CONVERTER_IMPL: return (EObject)createXmlStructConverterImpl();
+			case EclipseLinkOrmPackage.XML_STORED_PROCEDURE_PARAMETER: return (EObject)createXmlStoredProcedureParameter();
+			case EclipseLinkOrmPackage.XML_NAMED_STORED_PROCEDURE_QUERY: return (EObject)createXmlNamedStoredProcedureQuery();
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS: return (EObject)createXmlEntityMappings();
 			case EclipseLinkOrmPackage.XML_CUSTOMIZER: return (EObject)createXmlCustomizer();
 			case EclipseLinkOrmPackage.XML_CHANGE_TRACKING: return (EObject)createXmlChangeTracking();
@@ -130,6 +132,8 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 	{
 		switch (eDataType.getClassifierID())
 		{
+			case EclipseLinkOrmPackage.XML_DIRECTION:
+				return createXmlDirectionFromString(eDataType, initialValue);
 			case EclipseLinkOrmPackage.XML_CHANGE_TRACKING_TYPE:
 				return createXmlChangeTrackingTypeFromString(eDataType, initialValue);
 			case EclipseLinkOrmPackage.CACHE_TYPE:
@@ -155,6 +159,8 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 	{
 		switch (eDataType.getClassifierID())
 		{
+			case EclipseLinkOrmPackage.XML_DIRECTION:
+				return convertXmlDirectionToString(eDataType, instanceValue);
 			case EclipseLinkOrmPackage.XML_CHANGE_TRACKING_TYPE:
 				return convertXmlChangeTrackingTypeToString(eDataType, instanceValue);
 			case EclipseLinkOrmPackage.CACHE_TYPE:
@@ -300,6 +306,28 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 	{
 		XmlStructConverterImpl xmlStructConverterImpl = new XmlStructConverterImpl();
 		return xmlStructConverterImpl;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlStoredProcedureParameter createXmlStoredProcedureParameter()
+	{
+		XmlStoredProcedureParameter xmlStoredProcedureParameter = new XmlStoredProcedureParameter();
+		return xmlStoredProcedureParameter;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlNamedStoredProcedureQuery createXmlNamedStoredProcedureQuery()
+	{
+		XmlNamedStoredProcedureQuery xmlNamedStoredProcedureQuery = new XmlNamedStoredProcedureQuery();
+		return xmlNamedStoredProcedureQuery;
 	}
 
 	/**
@@ -454,6 +482,28 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 	{
 		XmlProperty xmlProperty = new XmlProperty();
 		return xmlProperty;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlDirection createXmlDirectionFromString(EDataType eDataType, String initialValue)
+	{
+		XmlDirection result = XmlDirection.get(initialValue);
+		if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+		return result;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertXmlDirectionToString(EDataType eDataType, Object instanceValue)
+	{
+		return instanceValue == null ? null : instanceValue.toString();
 	}
 
 	/**
