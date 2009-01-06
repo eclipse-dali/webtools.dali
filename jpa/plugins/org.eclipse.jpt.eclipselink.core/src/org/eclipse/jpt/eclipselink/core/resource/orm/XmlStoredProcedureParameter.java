@@ -53,14 +53,10 @@ import org.eclipse.jpt.core.resource.common.JpaEObject;
 public class XmlStoredProcedureParameter extends AbstractJpaEObject implements JpaEObject
 {
 	/**
-	 * The default value of the '{@link #getDirection() <em>Direction</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getDirection()
-	 * @generated
-	 * @ordered
+	 * changed this to null and removed the generated flag so emf won't generate over it
+	 * we don't want a default for enums, just null if the tag does not exist
 	 */
-	protected static final XmlDirection DIRECTION_EDEFAULT = XmlDirection.IN;
+	protected static final XmlDirection DIRECTION_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getDirection() <em>Direction</em>}' attribute.

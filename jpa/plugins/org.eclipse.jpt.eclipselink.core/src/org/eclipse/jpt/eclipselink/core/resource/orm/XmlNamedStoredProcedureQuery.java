@@ -182,7 +182,7 @@ public class XmlNamedStoredProcedureQuery extends AbstractJpaEObject implements 
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<XmlQueryHint> parameters;
+	protected EList<XmlStoredProcedureParameter> parameters;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -405,7 +405,7 @@ public class XmlNamedStoredProcedureQuery extends AbstractJpaEObject implements 
 
 	/**
 	 * Returns the value of the '<em><b>Parameters</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.core.resource.orm.XmlQueryHint}.
+	 * The list contents are of type {@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlStoredProcedureParameter}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Parameters</em>' containment reference list isn't clear,
@@ -417,11 +417,11 @@ public class XmlNamedStoredProcedureQuery extends AbstractJpaEObject implements 
 	 * @model containment="true"
 	 * @generated
 	 */
-	public EList<XmlQueryHint> getParameters()
+	public EList<XmlStoredProcedureParameter> getParameters()
 	{
 		if (parameters == null)
 		{
-			parameters = new EObjectContainmentEList<XmlQueryHint>(XmlQueryHint.class, this, EclipseLinkOrmPackage.XML_NAMED_STORED_PROCEDURE_QUERY__PARAMETERS);
+			parameters = new EObjectContainmentEList<XmlStoredProcedureParameter>(XmlStoredProcedureParameter.class, this, EclipseLinkOrmPackage.XML_NAMED_STORED_PROCEDURE_QUERY__PARAMETERS);
 		}
 		return parameters;
 	}
@@ -504,7 +504,7 @@ public class XmlNamedStoredProcedureQuery extends AbstractJpaEObject implements 
 				return;
 			case EclipseLinkOrmPackage.XML_NAMED_STORED_PROCEDURE_QUERY__PARAMETERS:
 				getParameters().clear();
-				getParameters().addAll((Collection<? extends XmlQueryHint>)newValue);
+				getParameters().addAll((Collection<? extends XmlStoredProcedureParameter>)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
