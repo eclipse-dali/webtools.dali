@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved. This
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved. This
  * program and the accompanying materials are made available under the terms of
  * the Eclipse Public License v1.0 which accompanies this distribution, and is
  * available at http://www.eclipse.org/legal/epl-v10.html
@@ -55,6 +55,8 @@ public interface EclipseLinkOrmXmlMapper
 		String CLONE_COPY_POLICY__WORKING_COPY_METHOD = "working-copy-method"; //$NON-NLS-1$
 	
 	String CUSTOMIZER = "customizer";  //$NON-NLS-1$
+
+	String EXCLUDE_DEFAULT_MAPPINGS = "exclude-default-mappings";  //$NON-NLS-1$
 
 	String EXISTENCE_CHECKING = "existence-checking";  //$NON-NLS-1$
 	

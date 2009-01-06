@@ -108,6 +108,9 @@
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlEntityMappings">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlEntityMappings/namedStoredProcedureQueries"/>
     </genClasses>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlPersistenceUnitMetadata">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlPersistenceUnitMetadata/excludeDefaultMappings"/>
+    </genClasses>
     <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlCustomizer">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlCustomizer/customizerClassName"/>
     </genClasses>

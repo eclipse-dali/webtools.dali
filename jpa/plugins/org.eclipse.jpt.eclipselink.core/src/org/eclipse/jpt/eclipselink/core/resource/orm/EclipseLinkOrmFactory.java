@@ -95,6 +95,7 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 			case EclipseLinkOrmPackage.XML_STORED_PROCEDURE_PARAMETER: return (EObject)createXmlStoredProcedureParameter();
 			case EclipseLinkOrmPackage.XML_NAMED_STORED_PROCEDURE_QUERY: return (EObject)createXmlNamedStoredProcedureQuery();
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS: return (EObject)createXmlEntityMappings();
+			case EclipseLinkOrmPackage.XML_PERSISTENCE_UNIT_METADATA: return (EObject)createXmlPersistenceUnitMetadata();
 			case EclipseLinkOrmPackage.XML_CUSTOMIZER: return (EObject)createXmlCustomizer();
 			case EclipseLinkOrmPackage.XML_CHANGE_TRACKING: return (EObject)createXmlChangeTracking();
 			case EclipseLinkOrmPackage.XML_COPY_POLICY: return (EObject)createXmlCopyPolicy();
@@ -193,6 +194,17 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 	{
 		XmlEntityMappings xmlEntityMappings = new XmlEntityMappings();
 		return xmlEntityMappings;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlPersistenceUnitMetadata createXmlPersistenceUnitMetadata()
+	{
+		XmlPersistenceUnitMetadata xmlPersistenceUnitMetadata = new XmlPersistenceUnitMetadata();
+		return xmlPersistenceUnitMetadata;
 	}
 
 	/**

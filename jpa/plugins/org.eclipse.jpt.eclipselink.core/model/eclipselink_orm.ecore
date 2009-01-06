@@ -79,6 +79,10 @@
         upperBound="-1" eType="#//XmlNamedStoredProcedureQuery" containment="true"
         resolveProxies="false"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlPersistenceUnitMetadata" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlPersistenceUnitMetadata">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="excludeDefaultMappings"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlCustomizer">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="customizerClassName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved. This
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved. This
  * program and the accompanying materials are made available under the terms of
  * the Eclipse Public License v1.0 which accompanies this distribution, and is
  * available at http://www.eclipse.org/legal/epl-v10.html
@@ -29,18 +29,18 @@ public class PersistenceUnitMetadataTranslator extends Translator implements Orm
 		return this.children;
 	}
 	
-	private Translator[] createChildren() {
+	protected Translator[] createChildren() {
 		return new Translator[] {
 			createXmlMappingMetadataCompleteTranslator(),
 			createPersistenceUnitDefaultsTranslator(),
 		};
 	}
 
-	private Translator createXmlMappingMetadataCompleteTranslator() {
+	protected Translator createXmlMappingMetadataCompleteTranslator() {
 		return new EmptyTagBooleanTranslator(XML_MAPPING_METADATA_COMPLETE, ORM_PKG.getXmlPersistenceUnitMetadata_XmlMappingMetadataComplete());
 	}
 	
-	private Translator createPersistenceUnitDefaultsTranslator() {
+	protected Translator createPersistenceUnitDefaultsTranslator() {
 		return new PersistenceUnitDefaultsTranslator(PERSISTENCE_UNIT_DEFAULTS, ORM_PKG.getXmlPersistenceUnitMetadata_PersistenceUnitDefaults());
 	}
 }

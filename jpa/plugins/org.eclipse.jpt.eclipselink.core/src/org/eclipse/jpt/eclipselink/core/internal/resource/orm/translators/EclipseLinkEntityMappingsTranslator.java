@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved. This
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved. This
  * program and the accompanying materials are made available under the terms of
  * the Eclipse Public License v1.0 which accompanies this distribution, and is
  * available at http://www.eclipse.org/legal/epl-v10.html
@@ -59,6 +59,11 @@ public class EclipseLinkEntityMappingsTranslator extends EntityMappingsTranslato
 	@Override
 	protected Translator createSchemaLocationTranslator() {
 		return new ConstantAttributeTranslator(XSI_SCHEMA_LOCATION, ECLIPSELINK_ORM_NS_URL + ' ' + ECLIPSELINK_ORM_SCHEMA_LOC_1_0);
+	}
+	
+	@Override
+	protected Translator createPersistenceUnitMetadataTranslator() {
+		return new EclipseLinkPersistenceUnitMetadataTranslator(PERSISTENCE_UNIT_METADATA, ORM_PKG.getXmlEntityMappings_PersistenceUnitMetadata());
 	}
 	
 	@Override
