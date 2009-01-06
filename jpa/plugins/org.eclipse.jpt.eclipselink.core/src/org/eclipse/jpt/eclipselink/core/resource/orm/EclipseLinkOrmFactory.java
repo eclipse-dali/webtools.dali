@@ -103,6 +103,7 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE: return (EObject)createXmlEmbeddable();
 			case EclipseLinkOrmPackage.XML_TIME_OF_DAY: return (EObject)createXmlTimeOfDay();
 			case EclipseLinkOrmPackage.XML_CACHE: return (EObject)createXmlCache();
+			case EclipseLinkOrmPackage.XML_OPTIMISTIC_LOCKING: return (EObject)createXmlOptimisticLocking();
 			case EclipseLinkOrmPackage.XML_ENTITY: return (EObject)createXmlEntity();
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS: return (EObject)createXmlMappedSuperclass();
 			case EclipseLinkOrmPackage.XML_ACCESS_METHODS: return (EObject)createXmlAccessMethods();
@@ -145,6 +146,8 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 				return createCacheCoordinationTypeFromString(eDataType, initialValue);
 			case EclipseLinkOrmPackage.EXISTENCE_TYPE:
 				return createExistenceTypeFromString(eDataType, initialValue);
+			case EclipseLinkOrmPackage.XML_OPTIMISTIC_LOCKING_TYPE:
+				return createXmlOptimisticLockingTypeFromString(eDataType, initialValue);
 			case EclipseLinkOrmPackage.XML_JOIN_FETCH_TYPE:
 				return createXmlJoinFetchTypeFromString(eDataType, initialValue);
 			default:
@@ -172,6 +175,8 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 				return convertCacheCoordinationTypeToString(eDataType, instanceValue);
 			case EclipseLinkOrmPackage.EXISTENCE_TYPE:
 				return convertExistenceTypeToString(eDataType, instanceValue);
+			case EclipseLinkOrmPackage.XML_OPTIMISTIC_LOCKING_TYPE:
+				return convertXmlOptimisticLockingTypeToString(eDataType, instanceValue);
 			case EclipseLinkOrmPackage.XML_JOIN_FETCH_TYPE:
 				return convertXmlJoinFetchTypeToString(eDataType, instanceValue);
 			default:
@@ -591,6 +596,17 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public XmlOptimisticLocking createXmlOptimisticLocking()
+	{
+		XmlOptimisticLocking xmlOptimisticLocking = new XmlOptimisticLocking();
+		return xmlOptimisticLocking;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public XmlJoinFetchType createXmlJoinFetchTypeFromString(EDataType eDataType, String initialValue)
 	{
 		XmlJoinFetchType result = XmlJoinFetchType.get(initialValue);
@@ -670,6 +686,28 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 	 * @generated
 	 */
 	public String convertExistenceTypeToString(EDataType eDataType, Object instanceValue)
+	{
+		return instanceValue == null ? null : instanceValue.toString();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlOptimisticLockingType createXmlOptimisticLockingTypeFromString(EDataType eDataType, String initialValue)
+	{
+		XmlOptimisticLockingType result = XmlOptimisticLockingType.get(initialValue);
+		if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+		return result;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertXmlOptimisticLockingTypeToString(EDataType eDataType, Object instanceValue)
 	{
 		return instanceValue == null ? null : instanceValue.toString();
 	}

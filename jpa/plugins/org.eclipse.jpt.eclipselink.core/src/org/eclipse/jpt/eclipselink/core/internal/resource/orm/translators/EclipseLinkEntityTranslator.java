@@ -47,6 +47,7 @@ public class EclipseLinkEntityTranslator extends EntityTranslator
 			createInheritanceTranslator(),
 			createDiscriminatorValueTranslator(),
 			createDiscriminatorColumnTranslator(),
+			createOptimisticLockingTranslator(),
 			createCacheTranslator(),
 			createConverterTranslator(),
 			createTypeConverterTranslator(),
@@ -137,5 +138,9 @@ public class EclipseLinkEntityTranslator extends EntityTranslator
 	
 	protected Translator createCloneCopyPolicyTranslator() {
 		return new CloneCopyPolicyTranslator(CLONE_COPY_POLICY, ECLIPSELINK_ORM_PKG.getXmlEntity_CloneCopyPolicy());
+	}
+	
+	protected Translator createOptimisticLockingTranslator() {
+		return new OptimisticLockingTranslator(OPTIMISTIC_LOCKING, ECLIPSELINK_ORM_PKG.getXmlEntity_OptimisticLocking());
 	}
 }

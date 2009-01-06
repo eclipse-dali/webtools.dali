@@ -85,11 +85,17 @@ public interface EclipseLinkOrmXmlMapper
 		String PARAMETER__JDBC_TYPE = "jdbc-type"; //$NON-NLS-1$
 		String PARAMETER__JDBC_TYPE_NAME = "jdbc-type-name"; //$NON-NLS-1$
 		
+
 	String OBJECT_TYPE_CONVERTER = "object-type-converter"; //$NON-NLS-1$
 	String OBJECT_TYPE_CONVERTER__NAME = "name"; //$NON-NLS-1$
 	String OBJECT_TYPE_CONVERTER__DATA_TYPE = "data-type"; //$NON-NLS-1$
 	String OBJECT_TYPE_CONVERTER__OBJECT_TYPE = "object-type"; //$NON-NLS-1$
 	String OBJECT_TYPE_CONVERTER__DEFAULT_OBJECT_VALUE = "default-object-value"; //$NON-NLS-1$
+
+	String OPTIMISTIC_LOCKING = "optimistic-locking"; //$NON-NLS-1$
+		String OPTIMISTIC_LOCKING__SELECTED_COLUMN = "selected-column"; //$NON-NLS-1$
+		String OPTIMISTIC_LOCKING__TYPE = "type"; //$NON-NLS-1$
+		String OPTIMISTIC_LOCKING__CASCADE = "cascade"; //$NON-NLS-1$
 
 	String PRIVATE_OWNED = "private-owned";  //$NON-NLS-1$
 	

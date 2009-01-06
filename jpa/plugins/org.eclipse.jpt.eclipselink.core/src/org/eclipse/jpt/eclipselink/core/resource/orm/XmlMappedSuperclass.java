@@ -40,6 +40,7 @@ import org.eclipse.jpt.eclipselink.core.internal.resource.orm.translators.Eclips
  * <p>
  * The following features are supported:
  * <ul>
+ *   <li>{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlMappedSuperclass#getOptimisticLocking <em>Optimistic Locking</em>}</li>
  *   <li>{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlMappedSuperclass#getCopyPolicy <em>Copy Policy</em>}</li>
  *   <li>{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlMappedSuperclass#getInstantiationCopyPolicy <em>Instantiation Copy Policy</em>}</li>
  *   <li>{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlMappedSuperclass#getCloneCopyPolicy <em>Clone Copy Policy</em>}</li>
@@ -158,6 +159,16 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 	 * @ordered
 	 */
 	protected EList<XmlStructConverter> structConverters;
+
+	/**
+	 * The cached value of the '{@link #getOptimisticLocking() <em>Optimistic Locking</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getOptimisticLocking()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlOptimisticLocking optimisticLocking;
 
 	/**
 	 * The cached value of the '{@link #getCopyPolicy() <em>Copy Policy</em>}' containment reference.
@@ -567,6 +578,66 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Optimistic Locking</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Optimistic Locking</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Optimistic Locking</em>' containment reference.
+	 * @see #setOptimisticLocking(XmlOptimisticLocking)
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlMappedSuperclass_OptimisticLocking()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public XmlOptimisticLocking getOptimisticLocking()
+	{
+		return optimisticLocking;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetOptimisticLocking(XmlOptimisticLocking newOptimisticLocking, NotificationChain msgs)
+	{
+		XmlOptimisticLocking oldOptimisticLocking = optimisticLocking;
+		optimisticLocking = newOptimisticLocking;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__OPTIMISTIC_LOCKING, oldOptimisticLocking, newOptimisticLocking);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlMappedSuperclass#getOptimisticLocking <em>Optimistic Locking</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Optimistic Locking</em>' containment reference.
+	 * @see #getOptimisticLocking()
+	 * @generated
+	 */
+	public void setOptimisticLocking(XmlOptimisticLocking newOptimisticLocking)
+	{
+		if (newOptimisticLocking != optimisticLocking)
+		{
+			NotificationChain msgs = null;
+			if (optimisticLocking != null)
+				msgs = ((InternalEObject)optimisticLocking).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__OPTIMISTIC_LOCKING, null, msgs);
+			if (newOptimisticLocking != null)
+				msgs = ((InternalEObject)newOptimisticLocking).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__OPTIMISTIC_LOCKING, null, msgs);
+			msgs = basicSetOptimisticLocking(newOptimisticLocking, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__OPTIMISTIC_LOCKING, newOptimisticLocking, newOptimisticLocking));
+	}
+
+	/**
 	 * Returns the value of the '<em><b>Copy Policy</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -793,6 +864,8 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 				return ((InternalEList<?>)getObjectTypeConverters()).basicRemove(otherEnd, msgs);
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__STRUCT_CONVERTERS:
 				return ((InternalEList<?>)getStructConverters()).basicRemove(otherEnd, msgs);
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__OPTIMISTIC_LOCKING:
+				return basicSetOptimisticLocking(null, msgs);
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__COPY_POLICY:
 				return basicSetCopyPolicy(null, msgs);
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__INSTANTIATION_COPY_POLICY:
@@ -833,6 +906,8 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 				return getObjectTypeConverters();
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__STRUCT_CONVERTERS:
 				return getStructConverters();
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__OPTIMISTIC_LOCKING:
+				return getOptimisticLocking();
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__COPY_POLICY:
 				return getCopyPolicy();
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__INSTANTIATION_COPY_POLICY:
@@ -886,6 +961,9 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__STRUCT_CONVERTERS:
 				getStructConverters().clear();
 				getStructConverters().addAll((Collection<? extends XmlStructConverter>)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__OPTIMISTIC_LOCKING:
+				setOptimisticLocking((XmlOptimisticLocking)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__COPY_POLICY:
 				setCopyPolicy((XmlCopyPolicy)newValue);
@@ -941,6 +1019,9 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__STRUCT_CONVERTERS:
 				getStructConverters().clear();
 				return;
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__OPTIMISTIC_LOCKING:
+				setOptimisticLocking((XmlOptimisticLocking)null);
+				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__COPY_POLICY:
 				setCopyPolicy((XmlCopyPolicy)null);
 				return;
@@ -985,6 +1066,8 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 				return objectTypeConverters != null && !objectTypeConverters.isEmpty();
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__STRUCT_CONVERTERS:
 				return structConverters != null && !structConverters.isEmpty();
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__OPTIMISTIC_LOCKING:
+				return optimisticLocking != null;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__COPY_POLICY:
 				return copyPolicy != null;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__INSTANTIATION_COPY_POLICY:

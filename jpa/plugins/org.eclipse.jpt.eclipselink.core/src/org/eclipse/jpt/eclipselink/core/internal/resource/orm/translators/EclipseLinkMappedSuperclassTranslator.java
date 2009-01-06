@@ -42,6 +42,7 @@ public class EclipseLinkMappedSuperclassTranslator extends MappedSuperclassTrans
 			createCustomizerTranslator(),
 			createChangeTrackingTranslator(),
 			createIdClassTranslator(),
+			createOptimisticLockingTranslator(),
 			createCacheTranslator(),
 			createConverterTranslator(),
 			createTypeConverterTranslator(),
@@ -121,5 +122,10 @@ public class EclipseLinkMappedSuperclassTranslator extends MappedSuperclassTrans
 	
 	protected Translator createCloneCopyPolicyTranslator() {
 		return new CloneCopyPolicyTranslator(CLONE_COPY_POLICY, ECLIPSELINK_ORM_PKG.getXmlMappedSuperclass_CloneCopyPolicy());
+	}
+	
+	
+	protected Translator createOptimisticLockingTranslator() {
+		return new OptimisticLockingTranslator(OPTIMISTIC_LOCKING, ECLIPSELINK_ORM_PKG.getXmlMappedSuperclass_OptimisticLocking());
 	}
 }

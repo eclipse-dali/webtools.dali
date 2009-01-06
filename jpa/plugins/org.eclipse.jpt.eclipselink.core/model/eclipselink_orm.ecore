@@ -72,8 +72,7 @@
         eType="ecore:EClass ../../org.eclipse.jpt.core/model/orm.ecore#//XmlQueryHint"
         containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="parameters" upperBound="-1"
-        eType="ecore:EClass ../../org.eclipse.jpt.core/model/orm.ecore#//XmlQueryHint"
-        containment="true" resolveProxies="false"/>
+        eType="#//XmlStoredProcedureParameter" containment="true" resolveProxies="false"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlEntityMappings" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlEntityMappings #//XmlConvertersHolder">
     <eStructuralFeatures xsi:type="ecore:EReference" name="namedStoredProcedureQueries"
@@ -169,7 +168,22 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="existenceChecking" eType="#//ExistenceType"
         defaultValueLiteral=""/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="XmlOptimisticLockingType">
+    <eLiterals name="ALL_COLUMNS"/>
+    <eLiterals name="CHANGED_COLUMNS" value="1" literal="CHANGED_COLUMNS"/>
+    <eLiterals name="SELECTED_COLUMNS" value="2" literal="SELECTED_COLUMNS"/>
+    <eLiterals name="VERSION_COLUMN" value="3" literal="VERSION_COLUMN"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlOptimisticLocking">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="#//XmlOptimisticLockingType"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="cascade" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="selectedColumns" upperBound="-1"
+        eType="ecore:EClass ../../org.eclipse.jpt.core/model/orm.ecore#//XmlColumn"
+        containment="true" resolveProxies="false"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlEntity" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlEntity #//XmlReadOnly #//XmlCustomizerHolder #//XmlChangeTrackingHolder #//XmlCacheHolder #//XmlConvertersHolder">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="optimisticLocking" eType="#//XmlOptimisticLocking"
+        containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="copyPolicy" eType="#//XmlCopyPolicy"
         containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="instantiationCopyPolicy"
@@ -183,6 +197,8 @@
         eType="#//XmlProperty" containment="true" resolveProxies="false"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlMappedSuperclass" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlMappedSuperclass #//XmlReadOnly #//XmlCustomizerHolder #//XmlChangeTrackingHolder #//XmlCacheHolder #//XmlConvertersHolder">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="optimisticLocking" eType="#//XmlOptimisticLocking"
+        containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="copyPolicy" eType="#//XmlCopyPolicy"
         containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="instantiationCopyPolicy"

@@ -44,6 +44,12 @@
       <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//ExistenceType/ASSUME_EXISTENCE"/>
       <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//ExistenceType/ASSUME_NON_EXISTENCE"/>
     </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="eclipselink_orm.ecore#//XmlOptimisticLockingType">
+      <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//XmlOptimisticLockingType/ALL_COLUMNS"/>
+      <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//XmlOptimisticLockingType/CHANGED_COLUMNS"/>
+      <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//XmlOptimisticLockingType/SELECTED_COLUMNS"/>
+      <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//XmlOptimisticLockingType/VERSION_COLUMN"/>
+    </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="eclipselink_orm.ecore#//XmlJoinFetchType">
       <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//XmlJoinFetchType/INNER"/>
       <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//XmlJoinFetchType/OUTER"/>
@@ -152,7 +158,13 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlCacheHolder/cache"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlCacheHolder/existenceChecking"/>
     </genClasses>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlOptimisticLocking">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlOptimisticLocking/type"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlOptimisticLocking/cascade"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlOptimisticLocking/selectedColumns"/>
+    </genClasses>
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlEntity">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlEntity/optimisticLocking"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlEntity/copyPolicy"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlEntity/instantiationCopyPolicy"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlEntity/cloneCopyPolicy"/>
@@ -160,6 +172,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlEntity/properties"/>
     </genClasses>
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlMappedSuperclass">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlMappedSuperclass/optimisticLocking"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlMappedSuperclass/copyPolicy"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlMappedSuperclass/instantiationCopyPolicy"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlMappedSuperclass/cloneCopyPolicy"/>
