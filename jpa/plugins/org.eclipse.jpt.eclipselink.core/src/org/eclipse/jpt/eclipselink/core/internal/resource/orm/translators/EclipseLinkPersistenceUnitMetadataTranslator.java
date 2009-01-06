@@ -38,5 +38,4 @@ public class EclipseLinkPersistenceUnitMetadataTranslator extends PersistenceUni
 	protected Translator createExcludeDefaultMappingsTranslator() {
 		return new EmptyTagBooleanTranslator(EXCLUDE_DEFAULT_MAPPINGS, ECLIPSELINK_ORM_PKG.getXmlPersistenceUnitMetadata_ExcludeDefaultMappings());
 	}
-
 }

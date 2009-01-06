@@ -38,6 +38,7 @@ public class EclipseLinkMappedSuperclassTranslator extends MappedSuperclassTrans
 			createMetadataCompleteTranslator(),
 			createReadOnlyTranslator(),
 			createExistenceCheckingTranslator(),
+			createExcludeDefaultMappingsTranslator(),
 			createDescriptionTranslator(),
 			createCustomizerTranslator(),
 			createChangeTrackingTranslator(),
@@ -111,7 +112,6 @@ public class EclipseLinkMappedSuperclassTranslator extends MappedSuperclassTrans
 		return new PropertyTranslator(PROPERTY, ECLIPSELINK_ORM_PKG.getXmlMappedSuperclass_Properties());
 	}
 	
-	
 	protected Translator createCopyPolicyTranslator() {
 		return new CopyPolicyTranslator(COPY_POLICY, ECLIPSELINK_ORM_PKG.getXmlMappedSuperclass_CopyPolicy());
 	}
@@ -124,8 +124,11 @@ public class EclipseLinkMappedSuperclassTranslator extends MappedSuperclassTrans
 		return new CloneCopyPolicyTranslator(CLONE_COPY_POLICY, ECLIPSELINK_ORM_PKG.getXmlMappedSuperclass_CloneCopyPolicy());
 	}
 	
-	
 	protected Translator createOptimisticLockingTranslator() {
 		return new OptimisticLockingTranslator(OPTIMISTIC_LOCKING, ECLIPSELINK_ORM_PKG.getXmlMappedSuperclass_OptimisticLocking());
+	}
+
+	protected Translator createExcludeDefaultMappingsTranslator() {
+		return new Translator(EXCLUDE_DEFAULT_MAPPINGS, ECLIPSELINK_ORM_PKG.getXmlMappedSuperclass_ExcludeDefaultMappings(), DOM_ATTRIBUTE);
 	}
 }

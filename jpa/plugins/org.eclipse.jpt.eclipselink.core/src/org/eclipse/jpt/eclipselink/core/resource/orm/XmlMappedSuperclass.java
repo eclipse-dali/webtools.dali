@@ -45,6 +45,7 @@ import org.eclipse.jpt.eclipselink.core.internal.resource.orm.translators.Eclips
  *   <li>{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlMappedSuperclass#getInstantiationCopyPolicy <em>Instantiation Copy Policy</em>}</li>
  *   <li>{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlMappedSuperclass#getCloneCopyPolicy <em>Clone Copy Policy</em>}</li>
  *   <li>{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlMappedSuperclass#getProperties <em>Properties</em>}</li>
+ *   <li>{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlMappedSuperclass#getExcludeDefaultMappings <em>Exclude Default Mappings</em>}</li>
  * </ul>
  * </p>
  *
@@ -209,6 +210,26 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 	 * @ordered
 	 */
 	protected EList<XmlProperty> properties;
+
+	/**
+	 * The default value of the '{@link #getExcludeDefaultMappings() <em>Exclude Default Mappings</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getExcludeDefaultMappings()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final Boolean EXCLUDE_DEFAULT_MAPPINGS_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getExcludeDefaultMappings() <em>Exclude Default Mappings</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getExcludeDefaultMappings()
+	 * @generated
+	 * @ordered
+	 */
+	protected Boolean excludeDefaultMappings = EXCLUDE_DEFAULT_MAPPINGS_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -841,6 +862,41 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Exclude Default Mappings</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Exclude Default Mappings</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Exclude Default Mappings</em>' attribute.
+	 * @see #setExcludeDefaultMappings(Boolean)
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlMappedSuperclass_ExcludeDefaultMappings()
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.BooleanObject"
+	 * @generated
+	 */
+	public Boolean getExcludeDefaultMappings()
+	{
+		return excludeDefaultMappings;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlMappedSuperclass#getExcludeDefaultMappings <em>Exclude Default Mappings</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Exclude Default Mappings</em>' attribute.
+	 * @see #getExcludeDefaultMappings()
+	 * @generated
+	 */
+	public void setExcludeDefaultMappings(Boolean newExcludeDefaultMappings)
+	{
+		Boolean oldExcludeDefaultMappings = excludeDefaultMappings;
+		excludeDefaultMappings = newExcludeDefaultMappings;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__EXCLUDE_DEFAULT_MAPPINGS, oldExcludeDefaultMappings, excludeDefaultMappings));
+	}
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -916,6 +972,8 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 				return getCloneCopyPolicy();
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PROPERTIES:
 				return getProperties();
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__EXCLUDE_DEFAULT_MAPPINGS:
+				return getExcludeDefaultMappings();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -978,6 +1036,9 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 				getProperties().clear();
 				getProperties().addAll((Collection<? extends XmlProperty>)newValue);
 				return;
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__EXCLUDE_DEFAULT_MAPPINGS:
+				setExcludeDefaultMappings((Boolean)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -1034,6 +1095,9 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PROPERTIES:
 				getProperties().clear();
 				return;
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__EXCLUDE_DEFAULT_MAPPINGS:
+				setExcludeDefaultMappings(EXCLUDE_DEFAULT_MAPPINGS_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -1076,6 +1140,8 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 				return cloneCopyPolicy != null;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PROPERTIES:
 				return properties != null && !properties.isEmpty();
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__EXCLUDE_DEFAULT_MAPPINGS:
+				return EXCLUDE_DEFAULT_MAPPINGS_EDEFAULT == null ? excludeDefaultMappings != null : !EXCLUDE_DEFAULT_MAPPINGS_EDEFAULT.equals(excludeDefaultMappings);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -1205,6 +1271,8 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 		result.append(readOnly);
 		result.append(", existenceChecking: ");
 		result.append(existenceChecking);
+		result.append(", excludeDefaultMappings: ");
+		result.append(excludeDefaultMappings);
 		result.append(')');
 		return result.toString();
 	}

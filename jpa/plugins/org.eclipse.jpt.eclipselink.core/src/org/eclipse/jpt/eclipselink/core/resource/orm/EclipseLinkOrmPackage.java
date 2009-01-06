@@ -1595,13 +1595,22 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	public static final int XML_EMBEDDABLE__PROPERTIES = OrmPackage.XML_EMBEDDABLE_FEATURE_COUNT + 9;
 
 	/**
+	 * The feature id for the '<em><b>Exclude Default Mappings</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_EMBEDDABLE__EXCLUDE_DEFAULT_MAPPINGS = OrmPackage.XML_EMBEDDABLE_FEATURE_COUNT + 10;
+
+	/**
 	 * The number of structural features of the '<em>Xml Embeddable</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_EMBEDDABLE_FEATURE_COUNT = OrmPackage.XML_EMBEDDABLE_FEATURE_COUNT + 10;
+	public static final int XML_EMBEDDABLE_FEATURE_COUNT = OrmPackage.XML_EMBEDDABLE_FEATURE_COUNT + 11;
 
 	/**
 	 * The feature id for the '<em><b>Read Only</b></em>' attribute.
@@ -2235,13 +2244,22 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	public static final int XML_ENTITY__PROPERTIES = OrmPackage.XML_ENTITY_FEATURE_COUNT + 14;
 
 	/**
+	 * The feature id for the '<em><b>Exclude Default Mappings</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ENTITY__EXCLUDE_DEFAULT_MAPPINGS = OrmPackage.XML_ENTITY_FEATURE_COUNT + 15;
+
+	/**
 	 * The number of structural features of the '<em>Xml Entity</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_FEATURE_COUNT = OrmPackage.XML_ENTITY_FEATURE_COUNT + 15;
+	public static final int XML_ENTITY_FEATURE_COUNT = OrmPackage.XML_ENTITY_FEATURE_COUNT + 16;
 
 	/**
 	 * The feature id for the '<em><b>Class Name</b></em>' attribute.
@@ -2514,13 +2532,22 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	public static final int XML_MAPPED_SUPERCLASS__PROPERTIES = OrmPackage.XML_MAPPED_SUPERCLASS_FEATURE_COUNT + 13;
 
 	/**
+	 * The feature id for the '<em><b>Exclude Default Mappings</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MAPPED_SUPERCLASS__EXCLUDE_DEFAULT_MAPPINGS = OrmPackage.XML_MAPPED_SUPERCLASS_FEATURE_COUNT + 14;
+
+	/**
 	 * The number of structural features of the '<em>Xml Mapped Superclass</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MAPPED_SUPERCLASS_FEATURE_COUNT = OrmPackage.XML_MAPPED_SUPERCLASS_FEATURE_COUNT + 14;
+	public static final int XML_MAPPED_SUPERCLASS_FEATURE_COUNT = OrmPackage.XML_MAPPED_SUPERCLASS_FEATURE_COUNT + 15;
 
 	/**
 	 * The feature id for the '<em><b>Mutable</b></em>' attribute.
@@ -6508,6 +6535,21 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 
 
 	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbeddable#getExcludeDefaultMappings <em>Exclude Default Mappings</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Exclude Default Mappings</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbeddable#getExcludeDefaultMappings()
+	 * @see #getXmlEmbeddable()
+	 * @generated
+	 */
+	public EAttribute getXmlEmbeddable_ExcludeDefaultMappings()
+	{
+		return (EAttribute)xmlEmbeddableEClass.getEStructuralFeatures().get(4);
+	}
+
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlReadOnly <em>Xml Read Only</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -6947,6 +6989,21 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 
 
 	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntity#getExcludeDefaultMappings <em>Exclude Default Mappings</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Exclude Default Mappings</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntity#getExcludeDefaultMappings()
+	 * @see #getXmlEntity()
+	 * @generated
+	 */
+	public EAttribute getXmlEntity_ExcludeDefaultMappings()
+	{
+		return (EAttribute)xmlEntityEClass.getEStructuralFeatures().get(6);
+	}
+
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlMappedSuperclass <em>Xml Mapped Superclass</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -7031,6 +7088,21 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	public EReference getXmlMappedSuperclass_Properties()
 	{
 		return (EReference)xmlMappedSuperclassEClass.getEStructuralFeatures().get(4);
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlMappedSuperclass#getExcludeDefaultMappings <em>Exclude Default Mappings</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Exclude Default Mappings</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlMappedSuperclass#getExcludeDefaultMappings()
+	 * @see #getXmlMappedSuperclass()
+	 * @generated
+	 */
+	public EAttribute getXmlMappedSuperclass_ExcludeDefaultMappings()
+	{
+		return (EAttribute)xmlMappedSuperclassEClass.getEStructuralFeatures().get(5);
 	}
 
 
@@ -8422,6 +8494,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		createEReference(xmlEmbeddableEClass, XML_EMBEDDABLE__INSTANTIATION_COPY_POLICY);
 		createEReference(xmlEmbeddableEClass, XML_EMBEDDABLE__CLONE_COPY_POLICY);
 		createEReference(xmlEmbeddableEClass, XML_EMBEDDABLE__PROPERTIES);
+		createEAttribute(xmlEmbeddableEClass, XML_EMBEDDABLE__EXCLUDE_DEFAULT_MAPPINGS);
 
 		xmlReadOnlyEClass = createEClass(XML_READ_ONLY);
 		createEAttribute(xmlReadOnlyEClass, XML_READ_ONLY__READ_ONLY);
@@ -8459,6 +8532,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		createEReference(xmlEntityEClass, XML_ENTITY__CLONE_COPY_POLICY);
 		createEReference(xmlEntityEClass, XML_ENTITY__NAMED_STORED_PROCEDURE_QUERIES);
 		createEReference(xmlEntityEClass, XML_ENTITY__PROPERTIES);
+		createEAttribute(xmlEntityEClass, XML_ENTITY__EXCLUDE_DEFAULT_MAPPINGS);
 
 		xmlMappedSuperclassEClass = createEClass(XML_MAPPED_SUPERCLASS);
 		createEReference(xmlMappedSuperclassEClass, XML_MAPPED_SUPERCLASS__OPTIMISTIC_LOCKING);
@@ -8466,6 +8540,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		createEReference(xmlMappedSuperclassEClass, XML_MAPPED_SUPERCLASS__INSTANTIATION_COPY_POLICY);
 		createEReference(xmlMappedSuperclassEClass, XML_MAPPED_SUPERCLASS__CLONE_COPY_POLICY);
 		createEReference(xmlMappedSuperclassEClass, XML_MAPPED_SUPERCLASS__PROPERTIES);
+		createEAttribute(xmlMappedSuperclassEClass, XML_MAPPED_SUPERCLASS__EXCLUDE_DEFAULT_MAPPINGS);
 
 		xmlMutableEClass = createEClass(XML_MUTABLE);
 		createEAttribute(xmlMutableEClass, XML_MUTABLE__MUTABLE);
@@ -8786,6 +8861,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		initEReference(getXmlEmbeddable_InstantiationCopyPolicy(), this.getXmlCopyPolicy(), null, "instantiationCopyPolicy", null, 0, 1, XmlEmbeddable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getXmlEmbeddable_CloneCopyPolicy(), this.getXmlCopyPolicy(), null, "cloneCopyPolicy", null, 0, 1, XmlEmbeddable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getXmlEmbeddable_Properties(), this.getXmlProperty(), null, "properties", null, 0, -1, XmlEmbeddable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXmlEmbeddable_ExcludeDefaultMappings(), theXMLTypePackage.getBooleanObject(), "excludeDefaultMappings", null, 0, 1, XmlEmbeddable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlReadOnlyEClass, XmlReadOnly.class, "XmlReadOnly", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlReadOnly_ReadOnly(), theXMLTypePackage.getBooleanObject(), "readOnly", null, 0, 1, XmlReadOnly.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -8823,6 +8899,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		initEReference(getXmlEntity_CloneCopyPolicy(), this.getXmlCopyPolicy(), null, "cloneCopyPolicy", null, 0, 1, XmlEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getXmlEntity_NamedStoredProcedureQueries(), this.getXmlNamedStoredProcedureQuery(), null, "namedStoredProcedureQueries", null, 0, -1, XmlEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getXmlEntity_Properties(), this.getXmlProperty(), null, "properties", null, 0, -1, XmlEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXmlEntity_ExcludeDefaultMappings(), theXMLTypePackage.getBooleanObject(), "excludeDefaultMappings", null, 0, 1, XmlEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlMappedSuperclassEClass, XmlMappedSuperclass.class, "XmlMappedSuperclass", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getXmlMappedSuperclass_OptimisticLocking(), this.getXmlOptimisticLocking(), null, "optimisticLocking", null, 0, 1, XmlMappedSuperclass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -8830,6 +8907,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		initEReference(getXmlMappedSuperclass_InstantiationCopyPolicy(), this.getXmlCopyPolicy(), null, "instantiationCopyPolicy", null, 0, 1, XmlMappedSuperclass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getXmlMappedSuperclass_CloneCopyPolicy(), this.getXmlCopyPolicy(), null, "cloneCopyPolicy", null, 0, 1, XmlMappedSuperclass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getXmlMappedSuperclass_Properties(), this.getXmlProperty(), null, "properties", null, 0, -1, XmlMappedSuperclass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXmlMappedSuperclass_ExcludeDefaultMappings(), theXMLTypePackage.getBooleanObject(), "excludeDefaultMappings", null, 0, 1, XmlMappedSuperclass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlMutableEClass, XmlMutable.class, "XmlMutable", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlMutable_Mutable(), theXMLTypePackage.getBooleanObject(), "mutable", null, 0, 1, XmlMutable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -9377,6 +9455,14 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		public static final EReference XML_EMBEDDABLE__PROPERTIES = eINSTANCE.getXmlEmbeddable_Properties();
 
 		/**
+		 * The meta object literal for the '<em><b>Exclude Default Mappings</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_EMBEDDABLE__EXCLUDE_DEFAULT_MAPPINGS = eINSTANCE.getXmlEmbeddable_ExcludeDefaultMappings();
+
+		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlReadOnly <em>Xml Read Only</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -9637,6 +9723,14 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		public static final EReference XML_ENTITY__PROPERTIES = eINSTANCE.getXmlEntity_Properties();
 
 		/**
+		 * The meta object literal for the '<em><b>Exclude Default Mappings</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_ENTITY__EXCLUDE_DEFAULT_MAPPINGS = eINSTANCE.getXmlEntity_ExcludeDefaultMappings();
+
+		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlMappedSuperclass <em>Xml Mapped Superclass</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -9685,6 +9779,14 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EReference XML_MAPPED_SUPERCLASS__PROPERTIES = eINSTANCE.getXmlMappedSuperclass_Properties();
+
+		/**
+		 * The meta object literal for the '<em><b>Exclude Default Mappings</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_MAPPED_SUPERCLASS__EXCLUDE_DEFAULT_MAPPINGS = eINSTANCE.getXmlMappedSuperclass_ExcludeDefaultMappings();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlMutable <em>Xml Mutable</em>}' class.

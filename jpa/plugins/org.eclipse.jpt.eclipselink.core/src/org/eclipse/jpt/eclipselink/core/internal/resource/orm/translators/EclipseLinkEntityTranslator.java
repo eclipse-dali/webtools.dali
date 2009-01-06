@@ -37,6 +37,7 @@ public class EclipseLinkEntityTranslator extends EntityTranslator
 			createMetadataCompleteTranslator(),
 			createReadOnlyTranslator(),
 			createExistenceCheckingTranslator(),
+			createExcludeDefaultMappingsTranslator(),
 			createDescriptionTranslator(),
 			createCustomizerTranslator(),
 			createChangeTrackingTranslator(),
@@ -142,5 +143,9 @@ public class EclipseLinkEntityTranslator extends EntityTranslator
 	
 	protected Translator createOptimisticLockingTranslator() {
 		return new OptimisticLockingTranslator(OPTIMISTIC_LOCKING, ECLIPSELINK_ORM_PKG.getXmlEntity_OptimisticLocking());
+	}
+
+	protected Translator createExcludeDefaultMappingsTranslator() {
+		return new Translator(EXCLUDE_DEFAULT_MAPPINGS, ECLIPSELINK_ORM_PKG.getXmlEntity_ExcludeDefaultMappings(), DOM_ATTRIBUTE);
 	}
 }

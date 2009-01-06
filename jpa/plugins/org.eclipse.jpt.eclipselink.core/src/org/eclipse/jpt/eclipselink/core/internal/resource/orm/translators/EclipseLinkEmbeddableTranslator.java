@@ -34,6 +34,7 @@ public class EclipseLinkEmbeddableTranslator extends EmbeddableTranslator
 			createClassTranslator(),
 			createAccessTranslator(),
 			createMetadataCompleteTranslator(),
+			createExcludeDefaultMappingsTranslator(),
 			createDescriptionTranslator(),
 			createCustomizerTranslator(),
 			createChangeTrackingTranslator(),
@@ -82,7 +83,6 @@ public class EclipseLinkEmbeddableTranslator extends EmbeddableTranslator
 		return new PropertyTranslator(PROPERTY, ECLIPSELINK_ORM_PKG.getXmlEmbeddable_Properties());
 	}
 	
-	
 	protected Translator createCopyPolicyTranslator() {
 		return new CopyPolicyTranslator(COPY_POLICY, ECLIPSELINK_ORM_PKG.getXmlEmbeddable_CopyPolicy());
 	}
@@ -93,5 +93,10 @@ public class EclipseLinkEmbeddableTranslator extends EmbeddableTranslator
 	
 	protected Translator createCloneCopyPolicyTranslator() {
 		return new CloneCopyPolicyTranslator(CLONE_COPY_POLICY, ECLIPSELINK_ORM_PKG.getXmlEmbeddable_CloneCopyPolicy());
+	}
+	
+
+	protected Translator createExcludeDefaultMappingsTranslator() {
+		return new Translator(EXCLUDE_DEFAULT_MAPPINGS, ECLIPSELINK_ORM_PKG.getXmlEmbeddable_ExcludeDefaultMappings(), DOM_ATTRIBUTE);
 	}
 }
