@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -431,7 +431,7 @@ public class EntityGenerator {
 	}
 
 	private void printEntityOwnedManyToManyFieldOn(ManyToManyRelation relation, EntitySourceWriter pw) {
-		String fieldName = this.genTable.getAttributeNameFor(relation);
+		String fieldName = this.genTable.getAttributeNameForOwned(relation);
 		if (this.config.fieldAccessType()) {
 			this.printOwnedManyToManyAnnotationOn(fieldName, relation, pw);
 		}
@@ -468,7 +468,7 @@ public class EntityGenerator {
 
 		this.printJoinTableJoinColumnAnnotationsOn(
 				"inverseJoinColumns",  //$NON-NLS-1$
-				relation.getNonOwningGenTable().getAttributeNameFor(relation),
+				relation.getNonOwningGenTable().getAttributeNameForNonOwned(relation),
 				relation.getNonOwningForeignKey(),
 				printJoinTableAnnotation,
 				pw
@@ -553,7 +553,7 @@ public class EntityGenerator {
 	}
 
 	private void printEntityNonOwnedManyToManyFieldOn(ManyToManyRelation relation, EntitySourceWriter pw) {
-		String fieldName = this.genTable.getAttributeNameFor(relation);
+		String fieldName = this.genTable.getAttributeNameForNonOwned(relation);
 		if (this.config.fieldAccessType()) {
 			this.printNonOwnedManyToManyAnnotationOn(relation, pw);
 		}
@@ -710,7 +710,7 @@ public class EntityGenerator {
 	}
 
 	private void printEntityOwnedManyToManyPropertyOn(ManyToManyRelation relation, EntitySourceWriter pw) {
-		String propertyName = this.genTable.getAttributeNameFor(relation);
+		String propertyName = this.genTable.getAttributeNameForOwned(relation);
 		if (this.config.propertyAccessType()) {
 			this.printOwnedManyToManyAnnotationOn(propertyName, relation, pw);
 		}
@@ -728,7 +728,7 @@ public class EntityGenerator {
 	}
 
 	private void printEntityNonOwnedManyToManyPropertyOn(ManyToManyRelation relation, EntitySourceWriter pw) {
-		String propertyName = this.genTable.getAttributeNameFor(relation);
+		String propertyName = this.genTable.getAttributeNameForNonOwned(relation);
 		if (this.config.propertyAccessType()) {
 			this.printNonOwnedManyToManyAnnotationOn(relation, pw);
 		}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,11 +10,11 @@
 package org.eclipse.jpt.gen.internal;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+
 import org.eclipse.jpt.db.Column;
 import org.eclipse.jpt.db.ForeignKey;
 import org.eclipse.jpt.db.Table;
@@ -39,10 +39,13 @@ class GenTable {
 	private final ArrayList<OneToManyRelation> oneToManyRelations = new ArrayList<OneToManyRelation>();
 	private final HashSet<Column> foreignKeyColumns = new HashSet<Column>();
 
-	// key=column/relation; value=entity attribute (field/property) name
-	private final HashMap<Object, String> attributeNames = new HashMap<Object, String>();
-	// key to 'attributeNames' for the optional embedded ID attribute name
-	private static final Object EMBEDDED_ID_VIRTUAL_COLUMN = new Object();
+	private final HashSet<String> attributeNames = new HashSet<String>();
+	private String attributeNameForEmbeddedId;
+	private final HashMap<Column, String> basicAttributeNames = new HashMap<Column, String>();
+	private final HashMap<ManyToOneRelation, String> manyToOneAttributeNames = new HashMap<ManyToOneRelation, String>();
+	private final HashMap<OneToManyRelation, String> oneToManyAttributeNames = new HashMap<OneToManyRelation, String>();
+	private final HashMap<ManyToManyRelation, String> ownedManyToManyAttributeNames = new HashMap<ManyToManyRelation, String>();
+	private final HashMap<ManyToManyRelation, String> nonOwnedManyToManyAttributeNames = new HashMap<ManyToManyRelation, String>();
 
 
 	// ********** construction/initialization **********
@@ -145,12 +148,7 @@ class GenTable {
 	 * attribute names
 	 */
 	void buildAttributeNames() {
-		if ((this.table.primaryKeyColumnsSize() > 1) && this.getEntityConfig().generateEmbeddedIdForCompoundPK()) {
-			// if we are going to generate an EmbeddedId attribute, add it to
-			// 'attributeNames' so we don't collide with it later, when generating
-			// attribute names for the columns etc.
-			this.configureAttributeName(EMBEDDED_ID_VIRTUAL_COLUMN, this.getEntityConfig().getEmbeddedIdAttributeName());
-		}
+		this.buildAttributeNameForEmbeddedId();
 
 		// gather up all the table's columns...
 		Set<Column> columns = CollectionTools.set(this.table.columns(), this.table.columnsSize());
@@ -252,33 +250,30 @@ class GenTable {
 	}
 
 	/**
-	 * the key can be a column or relation or #EMBEDDED_ID_VIRTUAL_COLUMN
-	 */
-	private String getAttributeNameFor_(Object o) {
-		return this.attributeNames.get(o);
-	}
-
-	/**
 	 * this will return null if we don't want an embedded id attribute
 	 */
 	String getAttributeNameForEmbeddedId() {
-		return this.getAttributeNameFor_(EMBEDDED_ID_VIRTUAL_COLUMN);
+		return this.attributeNameForEmbeddedId;
 	}
 
 	String getAttributeNameFor(Column column) {
-		return this.getAttributeNameFor_(column);
+		return this.basicAttributeNames.get(column);
 	}
 
 	String getAttributeNameFor(ManyToOneRelation relation) {
-		return this.getAttributeNameFor_(relation);
+		return this.manyToOneAttributeNames.get(relation);
 	}
 
 	String getAttributeNameFor(OneToManyRelation relation) {
-		return this.getAttributeNameFor_(relation);
+		return this.oneToManyAttributeNames.get(relation);
 	}
 
-	String getAttributeNameFor(ManyToManyRelation relation) {
-		return this.getAttributeNameFor_(relation);
+	String getAttributeNameForOwned(ManyToManyRelation relation) {
+		return this.ownedManyToManyAttributeNames.get(relation);
+	}
+
+	String getAttributeNameForNonOwned(ManyToManyRelation relation) {
+		return this.nonOwnedManyToManyAttributeNames.get(relation);
 	}
 
 	String getName() {
@@ -293,64 +288,84 @@ class GenTable {
 	// ********** internal API **********
 
 	/**
-	 * while we are figuring out the names for the m:1 attributes, remove from the
+	 * if we are going to generate an EmbeddedId attribute, add its name to
+	 * 'attributeNames' so we don't collide with it later, when generating
+	 * attribute names for the columns etc.
+	 */
+	private void buildAttributeNameForEmbeddedId() {
+		if ((this.table.primaryKeyColumnsSize() > 1) && this.getEntityConfig().generateEmbeddedIdForCompoundPK()) {
+			this.attributeNameForEmbeddedId = this.configureAttributeName(this.getEntityConfig().getEmbeddedIdAttributeName());
+		}
+	}
+
+	/**
+	 * While we are figuring out the names for the m:1 attributes, remove from the
 	 * specified set of columns the columns that are only part of the foreign keys
-	 * (leaving the remaining columns for basic attributes)
+	 * (leaving the remaining columns for basic attributes).
+	 * Store the calculated names so we can get them back later, when we
+	 * are generating source.
 	 */
 	private void buildManyToOneAttributeNames(Set<Column> columns) {
 		for (ManyToOneRelation relation : this.manyToOneRelations) {
 			CollectionTools.removeAll(columns, relation.getForeignKey().nonPrimaryKeyBaseColumns());
 			CollectionTools.addAll(this.foreignKeyColumns, relation.getForeignKey().baseColumns());
-			relation.setMappedBy(this.configureAttributeName(relation, relation.getAttributeName()));
+			String attributeName = this.configureAttributeName(relation.getAttributeName());
+			relation.setMappedBy(attributeName);
+			this.manyToOneAttributeNames.put(relation, attributeName);
 		}
 	}
 
 	/**
-	 * build a unique attribute name for the specified "basic" columns,
-	 * checking for name collisions
+	 * Build a unique attribute name for the specified "basic" columns,
+	 * checking for name collisions.
+	 * Store the calculated names so we can get them back later, when we
+	 * are generating source.
 	 */
 	private void buildBasicAttributeNames(Set<Column> columns) {
 		for (Column column : columns) {
-			this.configureAttributeName(column, column.getName());
+			String attributeName = this.configureAttributeName(column.getName());
+			this.basicAttributeNames.put(column, attributeName);
 		}
 	}
 
 	private void buildOneToManyAttributeNames() {
 		for (OneToManyRelation relation : this.oneToManyRelations) {
-			this.configureAttributeName(relation, relation.getAttributeName());
+			String attributeName = this.configureAttributeName(relation.getAttributeName());
+			this.oneToManyAttributeNames.put(relation, attributeName);
 		}
 	}
 
 	private void buildOwnedManyToManyAttributeNames() {
 		for (ManyToManyRelation relation : this.ownedManyToManyRelations) {
-			relation.setMappedBy(this.configureAttributeName(relation, relation.getOwnedAttributeName()));
+			String attributeName = this.configureAttributeName(relation.getOwnedAttributeName());
+			relation.setMappedBy(attributeName);
+			this.ownedManyToManyAttributeNames.put(relation, attributeName);
 		}
 	}
 
 	private void buildNonOwnedManyToManyAttributeNames() {
 		for (ManyToManyRelation relation : this.nonOwnedManyToManyRelations) {
-			this.configureAttributeName(relation, relation.getNonOwnedAttributeName());
+			String attributeName = this.configureAttributeName(relation.getNonOwnedAttributeName());
+			this.nonOwnedManyToManyAttributeNames.put(relation, attributeName);
 		}
 	}
 
 	/**
 	 * Convert the specified attribute name to something unique for the entity,
 	 * converting it to something Java-like if the config flag is set.
-	 * Store the calculated name so we can get it back later, when we
-	 * are generating source.
+	 * Store the calculated name to prevent future name collisions.
 	 */
-	private String configureAttributeName(Object o, String attributeName) {
+	private String configureAttributeName(String attributeName) {
 		String result = attributeName;
-		Collection<String> existingAttributeNames = this.attributeNames.values();
 		if (this.getEntityConfig().convertToJavaStyleIdentifiers()) {
-			result = EntityGenTools.convertToUniqueJavaStyleAttributeName(result, existingAttributeNames);
+			result = EntityGenTools.convertToUniqueJavaStyleAttributeName(result, this.attributeNames);
 		} else {
 			// first, convert the attribute name to a legal Java identifier
 			result = NameTools.convertToJavaIdentifier(result);
 			// then make sure it's unique
-			result = NameTools.uniqueNameForIgnoreCase(attributeName, existingAttributeNames);
+			result = NameTools.uniqueNameForIgnoreCase(attributeName, this.attributeNames);
 		}
-		this.attributeNames.put(o, result);
+		this.attributeNames.add(result);
 		return result;
 	}
 
