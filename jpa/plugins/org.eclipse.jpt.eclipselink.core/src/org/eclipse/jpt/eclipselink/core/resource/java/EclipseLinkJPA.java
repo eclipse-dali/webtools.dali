@@ -143,6 +143,8 @@ public interface EclipseLinkJPA {
 		String TYPE_CONVERTER__NAME = "name";
 		String TYPE_CONVERTER__DATE_TYPE = "dataType";
 		String TYPE_CONVERTER__OBJECT_TYPE = "objectType";
+	
+	String VARIABLE_ONE_TO_ONE = PACKAGE_ + "VariableOneToOne";
 
 	String WRITE_TRANSFORMER = PACKAGE_ + "WriteTransformer";
 		String WRITE_TRANSFORMER__TRANSFORMER_CLASS = "transformerClass";

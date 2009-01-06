@@ -121,4 +121,7 @@ public interface EclipseLinkOrmXmlMapper
 	String TYPE_CONVERTER__NAME = "name"; //$NON-NLS-1$
 	String TYPE_CONVERTER__DATA_TYPE = "data-type"; //$NON-NLS-1$
 	String TYPE_CONVERTER__OBJECT_TYPE = "object-type"; //$NON-NLS-1$
+		
+	String VARIABLE_ONE_TO_ONE = "variable-one-to-one";  //$NON-NLS-1$
+
 }

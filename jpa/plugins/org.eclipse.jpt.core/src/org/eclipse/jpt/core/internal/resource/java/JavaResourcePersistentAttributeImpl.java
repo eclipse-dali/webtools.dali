@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -46,6 +46,10 @@ public class JavaResourcePersistentAttributeImpl
 	private boolean typeIsDateOrCalendar;
 
 	private boolean typeIsContainer;
+	
+	private boolean typeIsInterface;
+	
+	private boolean typeIsValueHolder;
 	
 	private String qualifiedReferenceEntityTypeName;
 	
@@ -113,6 +117,8 @@ public class JavaResourcePersistentAttributeImpl
 		this.typeIsSerializable = this.buildTypeIsSerializable(astRoot);
 		this.typeIsDateOrCalendar = this.buildTypeIsDateOrCalendar(astRoot);
 		this.typeIsContainer = this.buildTypeIsContainer(astRoot);
+		this.typeIsInterface = this.buildTypeIsInterface(astRoot);
+		this.typeIsValueHolder = this.buildTypeIsValueHolder(astRoot);
 		this.final_ = this.buildFinal(astRoot);
 		this.public_ = this.buildPublic(astRoot);
 	}
@@ -268,6 +274,27 @@ public class JavaResourcePersistentAttributeImpl
 		this.firePropertyChanged(TYPE_IS_CONTAINER_PROPERTY, old, typeIsContainer);
 	}
 	
+	public boolean typeIsInterface() {
+		return this.typeIsInterface;
+	}
+	
+	protected void setTypeIsInterface(boolean typeIsInterface) {
+		boolean old = this.typeIsInterface;
+		this.typeIsInterface = typeIsInterface;
+		this.firePropertyChanged(TYPE_IS_INTERFACE_PROPERTY, old, typeIsInterface);
+	}
+	
+	public boolean typeIsValueHolder() {
+		return this.typeIsValueHolder;
+	}
+	
+	protected void setTypeIsValueHolder(boolean typeIsValueHolder) {
+		boolean old = this.typeIsValueHolder;
+		this.typeIsValueHolder = typeIsValueHolder;
+		this.firePropertyChanged(TYPE_IS_VALUE_HOLDER_PROPERTY, old, typeIsValueHolder);
+	}
+	
+	
 	@Override
 	public void update(CompilationUnit astRoot) {
 		super.update(astRoot);
@@ -278,6 +305,8 @@ public class JavaResourcePersistentAttributeImpl
 		this.setTypeIsSerializable(this.buildTypeIsSerializable(astRoot));
 		this.setTypeIsDateOrCalendar(this.buildTypeIsDateOrCalendar(astRoot));
 		this.setTypeIsContainer(this.buildTypeIsContainer(astRoot));
+		this.setTypeIsInterface(this.buildTypeIsInterface(astRoot));
+		this.setTypeIsValueHolder(this.buildTypeIsValueHolder(astRoot));
 		this.setFinal(this.buildFinal(astRoot));
 		this.setPublic(this.buildPublic(astRoot));
 	}
@@ -353,12 +382,20 @@ public class JavaResourcePersistentAttributeImpl
 		return typeImplementsDateOrCalendar(this.getMember().getTypeBinding(astRoot));
 	}
 	
-
 	protected boolean buildTypeIsContainer(CompilationUnit astRoot) {
 		String typeName = buildReferenceEntityTypeName(this.getMember().getTypeBinding(astRoot));
 		return (typeName == null) ? false : typeNamedIsContainer(typeName);
 	}
 	
+	protected boolean buildTypeIsInterface(CompilationUnit astRoot) {
+		ITypeBinding typeBinding = getMember().getTypeBinding(astRoot);
+		return typeBinding == null ? false : typeBinding.isInterface();
+	}
+	
+	protected boolean buildTypeIsValueHolder(CompilationUnit astRoot) {
+		return typeIsValueHolder(this.getMember().getTypeBinding(astRoot));
+	}
+
 	private static final String MAP_TYPE_NAME = java.util.Map.class.getName();
 
 	/**
@@ -544,6 +581,17 @@ public class JavaResourcePersistentAttributeImpl
 	}
 
 	private static final String CALENDAR_TYPE_NAME = java.util.Calendar.class.getName();
+
+	/**
+	 * Return whether the specified type implements java.io.Serializable.
+	 */
+	private static boolean typeIsValueHolder(ITypeBinding typeBinding) {
+		if (typeBinding == null) {
+			return false;
+		}
+		return typeBinding.getQualifiedName().equals(VALUE_HOLDER_INTERFACE_NAME);
+	}
+	private static final String VALUE_HOLDER_INTERFACE_NAME = "org.eclipse.persistence.indirection.ValueHolderInterface"; //$NON-NLS-1$
 	
 	@Override
 	public void toString(StringBuilder sb) {

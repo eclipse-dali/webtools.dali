@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -30,6 +30,7 @@ import org.eclipse.jpt.eclipselink.core.internal.resource.java.ReadTransformerIm
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.StructConverterImpl.StructConverterAnnotationDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.TransformationImpl.TransformationAnnotationDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.TypeConverterImpl.TypeConverterAnnotationDefinition;
+import org.eclipse.jpt.eclipselink.core.internal.resource.java.VariableOneToOneImpl.VariableOneToOneAnnotationDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.WriteTransformerImpl.WriteTransformerAnnotationDefinition;
 
 public class EclipseLinkJpaAnnotationProvider
@@ -57,6 +58,7 @@ public class EclipseLinkJpaAnnotationProvider
 		definitions.add(BasicCollectionAnnotationDefinition.instance());
 		definitions.add(BasicMapAnnotationDefinition.instance());
 		definitions.add(TransformationAnnotationDefinition.instance());
+		definitions.add(VariableOneToOneAnnotationDefinition.instance());
 	}
 	
 	@Override

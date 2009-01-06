@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the terms of
  * the Eclipse Public License v1.0, which accompanies this distribution and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
@@ -14,7 +14,7 @@ import org.eclipse.osgi.util.NLS;
 /**
  * The localized strings used by the mapping panes.
  *
- * @version 2.0
+ * @version 2.2
  * @since 1.0
  */
 @SuppressWarnings("nls")
@@ -28,6 +28,9 @@ public class EclipseLinkUiMappingsMessages extends NLS {
 	
 	public static String TransformationMappingUiProvider_label;
 	public static String TransformationMappingUiProvider_linkLabel;
+
+	public static String VariableOneToOneMappingUiProvider_label;
+	public static String VariableOneToOneMappingUiProvider_linkLabel;
 
 	public static String CacheTypeComposite_label;
 	public static String CacheTypeComposite_full;
@@ -141,8 +144,10 @@ public class EclipseLinkUiMappingsMessages extends NLS {
 	public static String TypeConverterComposite_objectTypeLabel;
 
 	public static String DefaultOneToOneMappingUiProvider_label;
+	public static String DefaultVariableOneToOneMappingUiProvider_label;
 	public static String DefaultOneToManyMappingUiProvider_label;
 	public static String DefaultOneToOneMappingUiProvider_linkLabel;
+	public static String DefaultVariableOneToOneMappingUiProvider_linkLabel;
 	public static String DefaultOneToManyMappingUiProvider_linkLabel;
 	
 	public static String ConvertersComposite_Label;

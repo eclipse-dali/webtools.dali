@@ -203,6 +203,11 @@
     <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlAccessMethodsHolder">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlAccessMethodsHolder/accessMethods"/>
     </genClasses>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlProperty">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlProperty/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlProperty/value"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlProperty/valueType"/>
+    </genClasses>
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlId">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlId/properties"/>
     </genClasses>
@@ -245,11 +250,6 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlManyToMany/properties"/>
     </genClasses>
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlManyToManyImpl"/>
-    <genClasses ecoreClass="eclipselink_orm.ecore#//Attributes">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//Attributes/basicCollections"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//Attributes/basicMaps"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//Attributes/transformations"/>
-    </genClasses>
     <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlBasicCollection">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlBasicCollection/properties"/>
     </genClasses>
@@ -262,10 +262,15 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlTransformation/properties"/>
     </genClasses>
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlTransformationImpl"/>
-    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlProperty">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlProperty/name"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlProperty/value"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlProperty/valueType"/>
+    <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlVariableOneToOne">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlVariableOneToOne/properties"/>
+    </genClasses>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlVariableOneToOneImpl"/>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//Attributes">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//Attributes/basicCollections"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//Attributes/basicMaps"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//Attributes/transformations"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//Attributes/variableOneToOnes"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

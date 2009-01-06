@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -67,6 +67,7 @@ import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaVer
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaBasicCollectionMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaBasicMapMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaTransformationMapping;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaVariableOneToOneMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkEntityMappingsImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmBasicMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmEmbeddableImpl;
@@ -94,9 +95,11 @@ import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkVirtualX
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmBasicCollectionMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmBasicMapMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmTransformationMapping;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmVariableOneToOneMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.VirtualXmlBasicCollection;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.VirtualXmlBasicMap;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.VirtualXmlTransformation;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.VirtualXmlVariableOneToOne;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmResource;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicCollection;
@@ -104,6 +107,7 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicMap;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbedded;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbeddedId;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlTransformation;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlVariableOneToOne;
 
 public class EclipseLinkJpaFactory
 	extends GenericJpaFactory
@@ -301,6 +305,10 @@ public class EclipseLinkJpaFactory
 	public JavaTransformationMapping buildJavaTransformationMapping(JavaPersistentAttribute parent) {
 		return new JavaTransformationMapping(parent);
 	}
+
+	public JavaVariableOneToOneMapping buildJavaVariableOneToOneMapping(JavaPersistentAttribute parent) {
+		return new JavaVariableOneToOneMapping(parent);
+	}
 	
 	public OrmBasicCollectionMapping buildOrmBasicCollectionMapping(OrmPersistentAttribute parent) {
 		return new OrmBasicCollectionMapping(parent);
@@ -314,6 +322,10 @@ public class EclipseLinkJpaFactory
 		return new OrmTransformationMapping(parent);
 	}
 	
+	public OrmVariableOneToOneMapping buildOrmVariableOneToOneMapping(OrmPersistentAttribute parent) {
+		return new OrmVariableOneToOneMapping(parent);
+	}
+	
 	public XmlBasicCollection buildVirtualXmlBasicCollection(OrmTypeMapping ormTypeMapping, JavaBasicCollectionMapping javaBasicCollectionMapping) {
 		return new VirtualXmlBasicCollection(ormTypeMapping, javaBasicCollectionMapping);
 	}
@@ -325,5 +337,8 @@ public class EclipseLinkJpaFactory
 	public XmlTransformation buildVirtualXmlTransformation(OrmTypeMapping ormTypeMapping, JavaTransformationMapping javaTransformationMapping) {
 		return new VirtualXmlTransformation(ormTypeMapping, javaTransformationMapping);
 	}
-
+	
+	public XmlVariableOneToOne buildVirtualXmlVariableOneToOne(OrmTypeMapping ormTypeMapping, JavaVariableOneToOneMapping javaVariableOneToOneMapping) {
+		return new VirtualXmlVariableOneToOne(ormTypeMapping, javaVariableOneToOneMapping);
+	}
 }

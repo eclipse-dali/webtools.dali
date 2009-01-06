@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -26,9 +26,11 @@ import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkJpaUiFactory;
 import org.eclipse.jpt.eclipselink.ui.internal.ddlgen.EclipseLinkDDLGeneratorUi;
 import org.eclipse.jpt.eclipselink.ui.internal.java.details.DefaultOneToManyMappingUiProvider;
 import org.eclipse.jpt.eclipselink.ui.internal.java.details.DefaultOneToOneMappingUiProvider;
+import org.eclipse.jpt.eclipselink.ui.internal.java.details.DefaultVariableOneToOneMappingUiProvider;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkBasicCollectionMappingUiProvider;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkBasicMapMappingUiProvider;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkTransformationMappingUiProvider;
+import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkVariableOneToOneMappingUiProvider;
 import org.eclipse.jpt.eclipselink.ui.internal.orm.details.EclipseLinkOrmBasicMappingUiProvider;
 import org.eclipse.jpt.eclipselink.ui.internal.orm.details.EclipseLinkOrmDetailsProvider;
 import org.eclipse.jpt.eclipselink.ui.internal.orm.details.EclipseLinkOrmEmbeddableUiProvider;
@@ -121,6 +123,7 @@ public class EclipseLinkJpaPlatformUi
 		providers.add(JavaManyToOneMappingUiProvider.instance());
 		providers.add(JavaOneToManyMappingUiProvider.instance());
 		providers.add(JavaOneToOneMappingUiProvider.instance());
+		providers.add(EclipseLinkVariableOneToOneMappingUiProvider.instance());
 		providers.add(JavaManyToManyMappingUiProvider.instance());
 		providers.add(JavaEmbeddedMappingUiProvider.instance());
 		providers.add(EclipseLinkTransformationMappingUiProvider.instance());
@@ -136,6 +139,7 @@ public class EclipseLinkJpaPlatformUi
 		super.addDefaultJavaAttributeMappingUiProvidersTo(providers);
 		providers.add(DefaultOneToOneMappingUiProvider.instance());
 		providers.add(DefaultOneToManyMappingUiProvider.instance());
+		providers.add(DefaultVariableOneToOneMappingUiProvider.instance());
 	}
 
 
@@ -220,6 +224,7 @@ public class EclipseLinkJpaPlatformUi
 		providers.add(EclipseLinkOrmManyToOneMappingUiProvider.instance());
 		providers.add(EclipseLinkOrmOneToManyMappingUiProvider.instance());
 		providers.add(EclipseLinkOrmOneToOneMappingUiProvider.instance());
+		providers.add(EclipseLinkVariableOneToOneMappingUiProvider.instance());
 		providers.add(EclipseLinkOrmManyToManyMappingUiProvider.instance());
 		providers.add(OrmEmbeddedMappingUiProvider.instance());
 		providers.add(EclipseLinkTransformationMappingUiProvider.instance());

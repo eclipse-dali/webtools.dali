@@ -245,6 +245,11 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="accessMethods" eType="#//XmlAccessMethods"
         containment="true" resolveProxies="false"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlProperty">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="valueType" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlId" abstract="true" interface="true"
       eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlId #//XmlMutable #//XmlConvertibleMapping #//XmlAccessMethodsHolder">
     <eStructuralFeatures xsi:type="ecore:EReference" name="properties" upperBound="-1"
@@ -309,14 +314,6 @@
         eType="#//XmlProperty" containment="true" resolveProxies="false"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlManyToManyImpl" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlManyToManyImpl #//XmlManyToMany"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Attributes" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//Attributes">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="basicCollections" upperBound="-1"
-        eType="#//XmlBasicCollection" containment="true" resolveProxies="false"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="basicMaps" upperBound="-1"
-        eType="#//XmlBasicMap" containment="true" resolveProxies="false"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="transformations" upperBound="-1"
-        eType="#//XmlTransformation" containment="true" resolveProxies="false"/>
-  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlBasicCollection" abstract="true"
       interface="true" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlAttributeMapping #//XmlAccessMethodsHolder">
     <eStructuralFeatures xsi:type="ecore:EReference" name="properties" upperBound="-1"
@@ -335,9 +332,20 @@
         eType="#//XmlProperty" containment="true" resolveProxies="false"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlTransformationImpl" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//AbstractXmlAttributeMapping #//XmlTransformation"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlProperty">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="valueType" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlVariableOneToOne" abstract="true"
+      interface="true" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlAttributeMapping #//XmlAccessMethodsHolder">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="properties" upperBound="-1"
+        eType="#//XmlProperty" containment="true" resolveProxies="false"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlVariableOneToOneImpl" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//AbstractXmlAttributeMapping #//XmlVariableOneToOne"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Attributes" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//Attributes">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="basicCollections" upperBound="-1"
+        eType="#//XmlBasicCollection" containment="true" resolveProxies="false"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="basicMaps" upperBound="-1"
+        eType="#//XmlBasicMap" containment="true" resolveProxies="false"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="transformations" upperBound="-1"
+        eType="#//XmlTransformation" containment="true" resolveProxies="false"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="variableOneToOnes" upperBound="-1"
+        eType="#//XmlVariableOneToOne" containment="true" resolveProxies="false"/>
   </eClassifiers>
 </ecore:EPackage>

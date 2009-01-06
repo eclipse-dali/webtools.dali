@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2008  Oracle. 
+ *  Copyright (c) 2008, 2009  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -40,6 +40,7 @@ public class EclipseLinkAttributesTranslator extends AttributesTranslator
 			createManyToOneTranslator(),
 			createOneToManyTranslator(),
 			createOneToOneTranslator(),
+			createVariableOneToOneTranslator(),
 			createManyToManyTranslator(),
 			createEmbeddedTranslator(),
 			createTransformationTranslator(),
@@ -91,11 +92,10 @@ public class EclipseLinkAttributesTranslator extends AttributesTranslator
 	protected Translator createEmbeddedTranslator() {
 		return new EclipseLinkEmbeddedTranslator(EMBEDDED, ORM_PKG.getAttributes_Embeddeds());
 	}
-
-//	protected Translator createTransientTranslator() {
-//		return new TransientTranslator(TRANSIENT, ORM_PKG.getAttributes_Transients());
-//	}
 	
+	protected Translator createVariableOneToOneTranslator() {
+		return new VariableOneToOneTranslator(VARIABLE_ONE_TO_ONE, ECLIPSELINK_ORM_PKG.getAttributes_VariableOneToOnes());
+	}
 
 	protected Translator createBasicCollectionTranslator() {
 		return new BasicCollectionTranslator(BASIC_COLLECTION, ECLIPSELINK_ORM_PKG.getAttributes_BasicCollections());

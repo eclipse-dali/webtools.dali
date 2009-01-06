@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -51,6 +51,7 @@ import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
  *   <li>{@link org.eclipse.jpt.eclipselink.core.resource.orm.Attributes#getBasicCollections <em>Basic Collections</em>}</li>
  *   <li>{@link org.eclipse.jpt.eclipselink.core.resource.orm.Attributes#getBasicMaps <em>Basic Maps</em>}</li>
  *   <li>{@link org.eclipse.jpt.eclipselink.core.resource.orm.Attributes#getTransformations <em>Transformations</em>}</li>
+ *   <li>{@link org.eclipse.jpt.eclipselink.core.resource.orm.Attributes#getVariableOneToOnes <em>Variable One To Ones</em>}</li>
  * </ul>
  * </p>
  *
@@ -89,6 +90,16 @@ public class Attributes extends org.eclipse.jpt.core.resource.orm.Attributes
 	 * @ordered
 	 */
 	protected EList<XmlTransformation> transformations;
+
+	/**
+	 * The cached value of the '{@link #getVariableOneToOnes() <em>Variable One To Ones</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getVariableOneToOnes()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlVariableOneToOne> variableOneToOnes;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -181,6 +192,29 @@ public class Attributes extends org.eclipse.jpt.core.resource.orm.Attributes
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Variable One To Ones</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlVariableOneToOne}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Variable One To Ones</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Variable One To Ones</em>' containment reference list.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getAttributes_VariableOneToOnes()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public EList<XmlVariableOneToOne> getVariableOneToOnes()
+	{
+		if (variableOneToOnes == null)
+		{
+			variableOneToOnes = new EObjectContainmentEList<XmlVariableOneToOne>(XmlVariableOneToOne.class, this, EclipseLinkOrmPackage.ATTRIBUTES__VARIABLE_ONE_TO_ONES);
+		}
+		return variableOneToOnes;
+	}
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -196,6 +230,8 @@ public class Attributes extends org.eclipse.jpt.core.resource.orm.Attributes
 				return ((InternalEList<?>)getBasicMaps()).basicRemove(otherEnd, msgs);
 			case EclipseLinkOrmPackage.ATTRIBUTES__TRANSFORMATIONS:
 				return ((InternalEList<?>)getTransformations()).basicRemove(otherEnd, msgs);
+			case EclipseLinkOrmPackage.ATTRIBUTES__VARIABLE_ONE_TO_ONES:
+				return ((InternalEList<?>)getVariableOneToOnes()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -216,6 +252,8 @@ public class Attributes extends org.eclipse.jpt.core.resource.orm.Attributes
 				return getBasicMaps();
 			case EclipseLinkOrmPackage.ATTRIBUTES__TRANSFORMATIONS:
 				return getTransformations();
+			case EclipseLinkOrmPackage.ATTRIBUTES__VARIABLE_ONE_TO_ONES:
+				return getVariableOneToOnes();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -243,6 +281,10 @@ public class Attributes extends org.eclipse.jpt.core.resource.orm.Attributes
 				getTransformations().clear();
 				getTransformations().addAll((Collection<? extends XmlTransformation>)newValue);
 				return;
+			case EclipseLinkOrmPackage.ATTRIBUTES__VARIABLE_ONE_TO_ONES:
+				getVariableOneToOnes().clear();
+				getVariableOneToOnes().addAll((Collection<? extends XmlVariableOneToOne>)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -266,6 +308,9 @@ public class Attributes extends org.eclipse.jpt.core.resource.orm.Attributes
 			case EclipseLinkOrmPackage.ATTRIBUTES__TRANSFORMATIONS:
 				getTransformations().clear();
 				return;
+			case EclipseLinkOrmPackage.ATTRIBUTES__VARIABLE_ONE_TO_ONES:
+				getVariableOneToOnes().clear();
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -286,6 +331,8 @@ public class Attributes extends org.eclipse.jpt.core.resource.orm.Attributes
 				return basicMaps != null && !basicMaps.isEmpty();
 			case EclipseLinkOrmPackage.ATTRIBUTES__TRANSFORMATIONS:
 				return transformations != null && !transformations.isEmpty();
+			case EclipseLinkOrmPackage.ATTRIBUTES__VARIABLE_ONE_TO_ONES:
+				return variableOneToOnes != null && !variableOneToOnes.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
@@ -327,6 +374,10 @@ public class Attributes extends org.eclipse.jpt.core.resource.orm.Attributes
 		}
 		ListIterator<XmlOneToOne> oneToOnes = new CloneListIterator<XmlOneToOne>(this.getOneToOnes());//prevent ConcurrentModificiationException
 		for (XmlOneToOne mapping : CollectionTools.iterable(oneToOnes)) {
+			attributeMappings.add(mapping);
+		}
+		ListIterator<XmlVariableOneToOne> variableOneToOnes = new CloneListIterator<XmlVariableOneToOne>(this.getVariableOneToOnes());//prevent ConcurrentModificiationException
+		for (XmlVariableOneToOne mapping : CollectionTools.iterable(variableOneToOnes)) {
 			attributeMappings.add(mapping);
 		}
 		ListIterator<XmlManyToMany> manyToManys = new CloneListIterator<XmlManyToMany>(this.getManyToManys());//prevent ConcurrentModificiationException

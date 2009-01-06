@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -26,6 +26,7 @@ import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaOne
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaBasicCollectionMappingProvider;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaBasicMapMappingProvider;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaTransformationMappingProvider;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaVariableOneToOneMappingProvider;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmBasicMappingProvider;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmEmbeddableProvider;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmEmbeddedIdMappingProvider;
@@ -41,6 +42,7 @@ import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmVersi
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmBasicCollectionMappingProvider;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmBasicMapMappingProvider;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmTransformationMappingProvider;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmVariableOneToOneMappingProvider;
 
 /**
  * EclipseLink platform
@@ -85,6 +87,7 @@ public class EclipseLinkJpaPlatform
 		providers.add(JavaBasicCollectionMappingProvider.instance());
 		providers.add(JavaBasicMapMappingProvider.instance());
 		providers.add(JavaTransformationMappingProvider.instance());
+		providers.add(JavaVariableOneToOneMappingProvider.instance());
 	}
 
 	@Override
@@ -92,6 +95,7 @@ public class EclipseLinkJpaPlatform
 		// add these before calling super, so we can check for Basic last in case the reference object is Serializable
 		providers.add(EclipseLinkJavaOneToOneMappingProvider.instance());
 		providers.add(EclipseLinkJavaOneToManyMappingProvider.instance());
+		providers.add(JavaVariableOneToOneMappingProvider.instance());
 		super.addDefaultJavaAttributeMappingProvidersTo(providers);
 	}
 
@@ -116,6 +120,7 @@ public class EclipseLinkJpaPlatform
 		providers.add(OrmBasicCollectionMappingProvider.instance());
 		providers.add(OrmBasicMapMappingProvider.instance());
 		providers.add(OrmTransformationMappingProvider.instance());
+		providers.add(OrmVariableOneToOneMappingProvider.instance());
 	}
 
 	@Override

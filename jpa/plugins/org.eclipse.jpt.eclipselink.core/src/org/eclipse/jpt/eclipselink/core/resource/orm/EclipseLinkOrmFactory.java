@@ -108,6 +108,7 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 			case EclipseLinkOrmPackage.XML_ENTITY: return (EObject)createXmlEntity();
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS: return (EObject)createXmlMappedSuperclass();
 			case EclipseLinkOrmPackage.XML_ACCESS_METHODS: return (EObject)createXmlAccessMethods();
+			case EclipseLinkOrmPackage.XML_PROPERTY: return (EObject)createXmlProperty();
 			case EclipseLinkOrmPackage.XML_ID_IMPL: return (EObject)createXmlIdImpl();
 			case EclipseLinkOrmPackage.XML_EMBEDDED_ID_IMPL: return (EObject)createXmlEmbeddedIdImpl();
 			case EclipseLinkOrmPackage.XML_EMBEDDED_IMPL: return (EObject)createXmlEmbeddedImpl();
@@ -117,11 +118,11 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 			case EclipseLinkOrmPackage.XML_ONE_TO_MANY_IMPL: return (EObject)createXmlOneToManyImpl();
 			case EclipseLinkOrmPackage.XML_MANY_TO_ONE_IMPL: return (EObject)createXmlManyToOneImpl();
 			case EclipseLinkOrmPackage.XML_MANY_TO_MANY_IMPL: return (EObject)createXmlManyToManyImpl();
-			case EclipseLinkOrmPackage.ATTRIBUTES: return (EObject)createAttributes();
 			case EclipseLinkOrmPackage.XML_BASIC_COLLECTION_IMPL: return (EObject)createXmlBasicCollectionImpl();
 			case EclipseLinkOrmPackage.XML_BASIC_MAP_IMPL: return (EObject)createXmlBasicMapImpl();
 			case EclipseLinkOrmPackage.XML_TRANSFORMATION_IMPL: return (EObject)createXmlTransformationImpl();
-			case EclipseLinkOrmPackage.XML_PROPERTY: return (EObject)createXmlProperty();
+			case EclipseLinkOrmPackage.XML_VARIABLE_ONE_TO_ONE_IMPL: return (EObject)createXmlVariableOneToOneImpl();
+			case EclipseLinkOrmPackage.ATTRIBUTES: return (EObject)createAttributes();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -535,6 +536,17 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 	{
 		XmlProperty xmlProperty = new XmlProperty();
 		return xmlProperty;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlVariableOneToOneImpl createXmlVariableOneToOneImpl()
+	{
+		XmlVariableOneToOneImpl xmlVariableOneToOneImpl = new XmlVariableOneToOneImpl();
+		return xmlVariableOneToOneImpl;
 	}
 
 	/**

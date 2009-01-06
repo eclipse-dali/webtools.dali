@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -55,6 +55,18 @@ public interface JavaResourcePersistentAttribute
 	boolean typeIsContainer();
 		String TYPE_IS_CONTAINER_PROPERTY = "typeIsContainer"; //$NON-NLS-1$
 
+	/**
+	 * Return whether the attribute type is an interface
+	 */
+	boolean typeIsInterface();
+		String TYPE_IS_INTERFACE_PROPERTY = "typeIsInterface"; //$NON-NLS-1$
+	
+	/**
+	 * Return whether the attribute type is org.eclipse.persistence.indirection.ValueHolderInterface
+	 */
+	boolean typeIsValueHolder();
+		String TYPE_IS_VALUE_HOLDER_PROPERTY = "typeIsValueHolder"; //$NON-NLS-1$
+	
 	/**
 	 * Return the resolved qualified type name for the attribute.
 	 */
