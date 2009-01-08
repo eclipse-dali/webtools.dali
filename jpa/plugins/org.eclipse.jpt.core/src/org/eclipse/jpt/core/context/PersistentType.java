@@ -33,7 +33,6 @@ public interface PersistentType
 	String getShortName();
 	
 	AccessType getAccess();
-		String ACCESS_PROPERTY = "access"; //$NON-NLS-1$
 		
 	/**
 	 * Return the access type that overrides the client persistent type's

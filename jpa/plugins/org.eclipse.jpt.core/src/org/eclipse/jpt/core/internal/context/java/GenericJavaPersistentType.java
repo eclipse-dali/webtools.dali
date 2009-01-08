@@ -142,9 +142,7 @@ public class GenericJavaPersistentType
 	}
 	
 	protected void setAccess(AccessType newAccess) {
-		AccessType oldAccess = this.access;
 		this.access = newAccess;
-		firePropertyChanged(PersistentType.ACCESS_PROPERTY, oldAccess, newAccess);
 	}
 
 	public AccessType getOverrideAccess() {
