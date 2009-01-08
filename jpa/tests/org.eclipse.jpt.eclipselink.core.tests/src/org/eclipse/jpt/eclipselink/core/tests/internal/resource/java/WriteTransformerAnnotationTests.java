@@ -18,6 +18,7 @@ import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
 import org.eclipse.jpt.eclipselink.core.resource.java.WriteTransformerAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
+@SuppressWarnings("nls")
 public class WriteTransformerAnnotationTests extends EclipseLinkJavaResourceModelTestCase {
 	
 	public WriteTransformerAnnotationTests(String name) {

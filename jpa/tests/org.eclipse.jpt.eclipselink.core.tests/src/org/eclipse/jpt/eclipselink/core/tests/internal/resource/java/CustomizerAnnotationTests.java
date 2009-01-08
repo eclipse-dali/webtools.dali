@@ -16,6 +16,7 @@ import org.eclipse.jpt.eclipselink.core.resource.java.CustomizerAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
+@SuppressWarnings("nls")
 public class CustomizerAnnotationTests extends EclipseLinkJavaResourceModelTestCase {
 	
 	public CustomizerAnnotationTests(String name) {

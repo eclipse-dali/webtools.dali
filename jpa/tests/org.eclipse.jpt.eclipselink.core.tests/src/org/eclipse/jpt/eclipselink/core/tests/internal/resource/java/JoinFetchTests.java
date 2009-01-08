@@ -18,6 +18,7 @@ import org.eclipse.jpt.eclipselink.core.resource.java.JoinFetchAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.JoinFetchType;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
+@SuppressWarnings("nls")
 public class JoinFetchTests extends EclipseLinkJavaResourceModelTestCase {
 
 	public JoinFetchTests(String name) {

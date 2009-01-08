@@ -19,6 +19,7 @@ import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
 import org.eclipse.jpt.eclipselink.core.resource.java.TimeOfDayAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
+@SuppressWarnings("nls")
 public class CacheTests extends EclipseLinkJavaResourceModelTestCase {
 
 	public CacheTests(String name) {

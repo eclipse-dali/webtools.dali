@@ -16,6 +16,7 @@ import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
 import org.eclipse.jpt.eclipselink.core.resource.java.ReadOnlyAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
+@SuppressWarnings("nls")
 public class ReadOnlyTests extends EclipseLinkJavaResourceModelTestCase {
 
 	public ReadOnlyTests(String name) {

@@ -19,6 +19,7 @@ import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
 import org.eclipse.jpt.eclipselink.core.resource.java.ObjectTypeConverterAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
+@SuppressWarnings("nls")
 public class ObjectTypeConverterAnnotationTests extends EclipseLinkJavaResourceModelTestCase {
 	
 	public ObjectTypeConverterAnnotationTests(String name) {

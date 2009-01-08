@@ -17,6 +17,7 @@ import org.eclipse.jpt.eclipselink.core.resource.java.ExistenceCheckingAnnotatio
 import org.eclipse.jpt.eclipselink.core.resource.java.ExistenceType;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
+@SuppressWarnings("nls")
 public class ExistenceCheckingTests extends EclipseLinkJavaResourceModelTestCase {
 
 	public ExistenceCheckingTests(String name) {
