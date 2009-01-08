@@ -24,14 +24,14 @@ public interface PersistenceStructureNodes
 {
 	
 	String PERSISTENCE_ID = 
-		JptCorePlugin.PLUGIN_ID + ".persistence.persistence";
+		JptCorePlugin.PLUGIN_ID + ".persistence.persistence"; //$NON-NLS-1$
 	
 	String PERSISTENCE_UNIT_ID = 
-		JptCorePlugin.PLUGIN_ID + ".persistence.persistenceUnit";
+		JptCorePlugin.PLUGIN_ID + ".persistence.persistenceUnit"; //$NON-NLS-1$
 	
 	String CLASS_REF_ID =
-		JptCorePlugin.PLUGIN_ID + ".persistence.classRef";
+		JptCorePlugin.PLUGIN_ID + ".persistence.classRef"; //$NON-NLS-1$
 	
 	String MAPPING_FILE_REF_ID =
-		JptCorePlugin.PLUGIN_ID + ".persistence.mappingFileRef";
+		JptCorePlugin.PLUGIN_ID + ".persistence.mappingFileRef"; //$NON-NLS-1$
 }

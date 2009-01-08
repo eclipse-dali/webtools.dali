@@ -22,10 +22,10 @@ public interface NamedNativeQuery extends Query
 {
 	String getResultClass();
 	void setResultClass(String value);
-		String RESULT_CLASS_PROPERTY = "resultClassProperty";
+		String RESULT_CLASS_PROPERTY = "resultClass"; //$NON-NLS-1$
 
 	String getResultSetMapping();
 	void setResultSetMapping(String value);
-		String RESULT_SET_MAPPING_PROPERTY = "resultSetMappingProperty";
+		String RESULT_SET_MAPPING_PROPERTY = "resultSetMapping"; //$NON-NLS-1$
 
 }

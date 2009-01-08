@@ -28,7 +28,7 @@ public interface Column extends BaseColumn
 
 	Integer getSpecifiedLength();
 	void setSpecifiedLength(Integer newSpecifiedLength);
-		String SPECIFIED_LENGTH_PROPERTY = "spcifiedLength"; //$NON-NLS-1$
+		String SPECIFIED_LENGTH_PROPERTY = "specifiedLength"; //$NON-NLS-1$
 		
 	int getPrecision();
 
@@ -38,7 +38,7 @@ public interface Column extends BaseColumn
 
 	Integer getSpecifiedPrecision();
 	void setSpecifiedPrecision(Integer newSpecifiedPrecision);
-		String SPECIFIED_PRECISION_PROPERTY = "spcifiedPrecision"; //$NON-NLS-1$
+		String SPECIFIED_PRECISION_PROPERTY = "specifiedPrecision"; //$NON-NLS-1$
 
 	
 	int getScale();
@@ -49,7 +49,7 @@ public interface Column extends BaseColumn
 
 	Integer getSpecifiedScale();
 	void setSpecifiedScale(Integer newSpecifiedScale);
-		String SPECIFIED_SCALE_PROPERTY = "spcifiedScale"; //$NON-NLS-1$
+		String SPECIFIED_SCALE_PROPERTY = "specifiedScale"; //$NON-NLS-1$
 
 	/**
 	 * Return whether the column is found on the datasource

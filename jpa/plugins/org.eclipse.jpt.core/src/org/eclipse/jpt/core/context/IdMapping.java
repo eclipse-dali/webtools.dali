@@ -23,6 +23,6 @@ public interface IdMapping extends AttributeMapping, ColumnMapping, GeneratorHol
 	GeneratedValue getGeneratedValue();
 	GeneratedValue addGeneratedValue();
 	void removeGeneratedValue();
-		String GENERATED_VALUE_PROPERTY = "generatedValueProperty";
+		String GENERATED_VALUE_PROPERTY = "generatedValue"; //$NON-NLS-1$
 
 }

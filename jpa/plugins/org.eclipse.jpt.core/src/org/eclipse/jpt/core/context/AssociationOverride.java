@@ -31,8 +31,8 @@ public interface AssociationOverride extends BaseOverride
 	JoinColumn addSpecifiedJoinColumn(int index);
 	void removeSpecifiedJoinColumn(int index);
 	void moveSpecifiedJoinColumn(int targetIndex, int sourceIndex);
-		String SPECIFIED_JOIN_COLUMNS_LIST = "specifiedJoinColumnsList";
-		String DEFAULT_JOIN_COLUMNS_LIST = "defaultJoinColumnsList";
+		String SPECIFIED_JOIN_COLUMNS_LIST = "specifiedJoinColumns"; //$NON-NLS-1$
+		String DEFAULT_JOIN_COLUMNS_LIST = "defaultJoinColumns"; //$NON-NLS-1$
 		
 	boolean containsSpecifiedJoinColumns();
 

@@ -30,5 +30,5 @@ public interface EnumeratedConverter extends Converter
 
 	EnumType getSpecifiedEnumType();
 	void setSpecifiedEnumType(EnumType newSpecifiedEnumType);
-		String SPECIFIED_ENUM_TYPE_PROPERTY = "specifiedEnumTypeProperty";
+		String SPECIFIED_ENUM_TYPE_PROPERTY = "specifiedEnumType"; //$NON-NLS-1$
 }

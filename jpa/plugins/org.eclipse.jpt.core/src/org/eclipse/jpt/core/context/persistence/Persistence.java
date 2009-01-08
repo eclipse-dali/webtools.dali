@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.context.persistence;
 
 import java.util.ListIterator;
-import org.eclipse.jpt.core.JpaNode;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistence;
@@ -40,7 +39,7 @@ public interface Persistence extends XmlContextNode, JpaStructureNode
 	/**
 	 * String constant associated with changes to the persistence units list
 	 */
-	public final static String PERSISTENCE_UNITS_LIST = "persistenceUnits";
+	public final static String PERSISTENCE_UNITS_LIST = "persistenceUnits"; //$NON-NLS-1$
 	
 	/**
 	 * Return an iterator on the list of persistence units.

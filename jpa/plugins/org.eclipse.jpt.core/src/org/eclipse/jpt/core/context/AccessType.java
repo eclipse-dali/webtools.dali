@@ -34,7 +34,7 @@ public enum AccessType {
 			case PROPERTY:
 				return PROPERTY;
 			default:
-				throw new IllegalArgumentException("unknown access type: " + javaAccessType);
+				throw new IllegalArgumentException("unknown access type: " + javaAccessType); //$NON-NLS-1$
 		}
 	}
 	
@@ -48,7 +48,7 @@ public enum AccessType {
 			case PROPERTY:
 				return PROPERTY;
 			default:
-				throw new IllegalArgumentException("unknown access type: " + ormAccessType);
+				throw new IllegalArgumentException("unknown access type: " + ormAccessType); //$NON-NLS-1$
 		}
 	}
 	
@@ -62,7 +62,7 @@ public enum AccessType {
 			case PROPERTY:
 				return org.eclipse.jpt.core.resource.orm.AccessType.PROPERTY;
 			default:
-				throw new IllegalArgumentException("unknown access type: " + accessType);
+				throw new IllegalArgumentException("unknown access type: " + accessType); //$NON-NLS-1$
 		}
 	}
 

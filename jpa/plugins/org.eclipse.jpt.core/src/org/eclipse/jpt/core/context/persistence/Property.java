@@ -25,7 +25,7 @@ public interface Property extends XmlContextNode
 {
 	// **************** name ***************************************************
 	
-	final static String NAME_PROPERTY = "name";
+	final static String NAME_PROPERTY = "name"; //$NON-NLS-1$
 	
 	String getName();
 	
@@ -34,7 +34,7 @@ public interface Property extends XmlContextNode
 	
 	// **************** value **************************************************
 	
-	final static String VALUE_PROPERTY = "value";
+	final static String VALUE_PROPERTY = "value"; //$NON-NLS-1$
 	
 	void setValue(String value);
 	

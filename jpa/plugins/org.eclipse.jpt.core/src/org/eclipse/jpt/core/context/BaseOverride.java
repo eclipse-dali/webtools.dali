@@ -23,7 +23,7 @@ public interface BaseOverride extends JpaContextNode
 
 	String getName();
 	void setName(String value);
-		String NAME_PROPERTY = "nameProperty";
+		String NAME_PROPERTY = "name"; //$NON-NLS-1$
 	
 	/**
 	 * Return true if override exists as specified on the owning object, or false

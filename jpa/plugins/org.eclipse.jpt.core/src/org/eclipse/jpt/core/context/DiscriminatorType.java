@@ -37,7 +37,7 @@ public enum DiscriminatorType {
 			case INTEGER:
 				return INTEGER;
 			default:
-				throw new IllegalArgumentException("unknown discriminator type: " + javaDiscriminatorType);
+				throw new IllegalArgumentException("unknown discriminator type: " + javaDiscriminatorType); //$NON-NLS-1$
 		}
 	}
 	
@@ -53,7 +53,7 @@ public enum DiscriminatorType {
 			case INTEGER:
 				return org.eclipse.jpt.core.resource.java.DiscriminatorType.INTEGER;
 			default:
-				throw new IllegalArgumentException("unknown discriminator type: " + discriminatorType);
+				throw new IllegalArgumentException("unknown discriminator type: " + discriminatorType); //$NON-NLS-1$
 		}
 	}
 
@@ -69,7 +69,7 @@ public enum DiscriminatorType {
 			case INTEGER:
 				return INTEGER;
 			default:
-				throw new IllegalArgumentException("unknown discriminator type: " + ormDiscriminatorType);
+				throw new IllegalArgumentException("unknown discriminator type: " + ormDiscriminatorType); //$NON-NLS-1$
 		}
 	}
 	
@@ -85,7 +85,7 @@ public enum DiscriminatorType {
 			case INTEGER:
 				return org.eclipse.jpt.core.resource.orm.DiscriminatorType.INTEGER;
 			default:
-				throw new IllegalArgumentException("unknown discriminator type: " + discriminatorType);
+				throw new IllegalArgumentException("unknown discriminator type: " + discriminatorType); //$NON-NLS-1$
 		}
 	}
 

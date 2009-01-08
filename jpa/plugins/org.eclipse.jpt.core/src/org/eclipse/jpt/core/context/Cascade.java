@@ -23,21 +23,21 @@ public interface Cascade extends JpaContextNode
 
 	boolean isAll();
 	void setAll(boolean value);
-		String ALL_PROPERTY = "allProperty";
+		String ALL_PROPERTY = "all"; //$NON-NLS-1$
 
 	boolean isPersist();
 	void setPersist(boolean value);
-		String PERSIST_PROPERTY = "persistProperty";
+		String PERSIST_PROPERTY = "persist"; //$NON-NLS-1$
 
 	boolean isMerge();
 	void setMerge(boolean value);
-		String MERGE_PROPERTY = "mergeProperty";
+		String MERGE_PROPERTY = "merge"; //$NON-NLS-1$
 
 	boolean isRemove();
 	void setRemove(boolean value);
-		String REMOVE_PROPERTY = "removeProperty";
+		String REMOVE_PROPERTY = "remove"; //$NON-NLS-1$
 
 	boolean isRefresh();
 	void setRefresh(boolean value);
-		String REFRESH_PROPERTY = "refreshProperty";
+		String REFRESH_PROPERTY = "refresh"; //$NON-NLS-1$
 }

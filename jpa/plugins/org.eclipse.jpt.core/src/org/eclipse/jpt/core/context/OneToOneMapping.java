@@ -57,6 +57,6 @@ public interface OneToOneMapping
 	void movePrimaryKeyJoinColumn(int targetIndex, int sourceIndex);
 
 	boolean containsPrimaryKeyJoinColumns();
-		String PRIMARY_KEY_JOIN_COLUMNS_LIST = "primaryKeyJoinColumnsList";
+		String PRIMARY_KEY_JOIN_COLUMNS_LIST = "primaryKeyJoinColumns"; //$NON-NLS-1$
 
 }

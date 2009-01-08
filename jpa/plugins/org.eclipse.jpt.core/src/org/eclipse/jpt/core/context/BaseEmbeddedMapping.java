@@ -39,7 +39,7 @@ public interface BaseEmbeddedMapping extends AttributeMapping, AttributeOverride
 	 * This will not be null.
 	 */
 	<T extends AttributeOverride> ListIterator<T> specifiedAttributeOverrides();
-		String SPECIFIED_ATTRIBUTE_OVERRIDES_LIST = "specifiedAttributeOverridesList";
+		String SPECIFIED_ATTRIBUTE_OVERRIDES_LIST = "specifiedAttributeOverrides"; //$NON-NLS-1$
 	
 	/**
 	 * Return the number of specified attribute overrides.
@@ -51,7 +51,7 @@ public interface BaseEmbeddedMapping extends AttributeMapping, AttributeOverride
 	 * This will not be null.
 	 */
 	<T extends AttributeOverride> ListIterator<T> virtualAttributeOverrides();
-		String VIRTUAL_ATTRIBUTE_OVERRIDES_LIST = "virtualAttributeOverridesList";
+		String VIRTUAL_ATTRIBUTE_OVERRIDES_LIST = "virtualAttributeOverrides"; //$NON-NLS-1$
 
 	/**
 	 * Return the number of virtual attribute overrides.

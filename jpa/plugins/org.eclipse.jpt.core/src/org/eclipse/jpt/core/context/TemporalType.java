@@ -37,7 +37,7 @@ public enum TemporalType {
 			case TIMESTAMP:
 				return TIMESTAMP;
 			default:
-				throw new IllegalArgumentException("unknown temporal type: " + javaTemporalType);
+				throw new IllegalArgumentException("unknown temporal type: " + javaTemporalType); //$NON-NLS-1$
 		}
 	}
 	
@@ -53,7 +53,7 @@ public enum TemporalType {
 			case TIMESTAMP:
 				return org.eclipse.jpt.core.resource.java.TemporalType.TIMESTAMP;
 			default:
-				throw new IllegalArgumentException("unknown temporal type: " + temporalType);
+				throw new IllegalArgumentException("unknown temporal type: " + temporalType); //$NON-NLS-1$
 		}
 	}
 	
@@ -70,7 +70,7 @@ public enum TemporalType {
 			case TIMESTAMP:
 				return TIMESTAMP;
 			default:
-				throw new IllegalArgumentException("unknown temporal type: " + ormTemporalType);
+				throw new IllegalArgumentException("unknown temporal type: " + ormTemporalType); //$NON-NLS-1$
 		}
 	}
 	
@@ -86,7 +86,7 @@ public enum TemporalType {
 			case TIMESTAMP:
 				return org.eclipse.jpt.core.resource.orm.TemporalType.TIMESTAMP;
 			default:
-				throw new IllegalArgumentException("unknown temporal type: " + temporalType);
+				throw new IllegalArgumentException("unknown temporal type: " + temporalType); //$NON-NLS-1$
 		}
 	}
 

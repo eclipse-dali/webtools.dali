@@ -23,11 +23,11 @@ import org.eclipse.jpt.core.JptCorePlugin;
 public interface JavaStructureNodes 
 {
 	String COMPILATION_UNIT_ID = 
-		JptCorePlugin.PLUGIN_ID + ".java.compilationUnit";
+		JptCorePlugin.PLUGIN_ID + ".java.compilationUnit"; //$NON-NLS-1$
 	
 	String PERSISTENT_TYPE_ID = 
-		JptCorePlugin.PLUGIN_ID + ".java.persistentType";
+		JptCorePlugin.PLUGIN_ID + ".java.persistentType"; //$NON-NLS-1$
 	
 	String PERSISTENT_ATTRIBUTE_ID = 
-		JptCorePlugin.PLUGIN_ID + ".java.persistentAttribute";
+		JptCorePlugin.PLUGIN_ID + ".java.persistentAttribute"; //$NON-NLS-1$
 }

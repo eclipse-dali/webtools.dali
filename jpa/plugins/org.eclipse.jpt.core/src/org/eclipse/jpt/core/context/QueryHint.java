@@ -23,10 +23,10 @@ public interface QueryHint extends JpaContextNode
 
 	String getName();
 	void setName(String value);
-		String NAME_PROPERTY = "nameProperty";
+		String NAME_PROPERTY = "name"; //$NON-NLS-1$
 
 	String getValue();
 	void setValue(String value);
-		String VALUE_PROPERTY = "valueProperty";
+		String VALUE_PROPERTY = "value"; //$NON-NLS-1$
 	
 }

@@ -43,7 +43,7 @@ public interface JoinTable extends Table
 	 * This will not be null.
 	 */
 	<T extends JoinColumn> ListIterator<T> specifiedJoinColumns();
-		String SPECIFIED_JOIN_COLUMNS_LIST = "specifiedJoinColumnsList";
+		String SPECIFIED_JOIN_COLUMNS_LIST = "specifiedJoinColumns"; //$NON-NLS-1$
 	
 	/**
 	 * Return the number of specified join columns.
@@ -55,7 +55,7 @@ public interface JoinTable extends Table
 	 * only exists if there are no specified join columns.
 	 */
 	JoinColumn getDefaultJoinColumn();
-		String DEFAULT_JOIN_COLUMN = "defaultJoinColumn";
+		String DEFAULT_JOIN_COLUMN = "defaultJoinColumn"; //$NON-NLS-1$
 		
 	/**
 	 * Add a specified join column to the join table return the object 
@@ -99,7 +99,7 @@ public interface JoinTable extends Table
 	 * This will not be null.
 	 */
 	<T extends JoinColumn> ListIterator<T> specifiedInverseJoinColumns();
-		String SPECIFIED_INVERSE_JOIN_COLUMNS_LIST = "specifiedInverseJoinColumnsList";
+		String SPECIFIED_INVERSE_JOIN_COLUMNS_LIST = "specifiedInverseJoinColumns"; //$NON-NLS-1$
 	
 	/**
 	 * Return the number of specified inverse join columns.
@@ -111,7 +111,7 @@ public interface JoinTable extends Table
 	 * only exists if there are no specified inverse join columns.
 	 */
 	JoinColumn getDefaultInverseJoinColumn();
-		String DEFAULT_INVERSE_JOIN_COLUMN = "defaultInverseJoinColumn";
+		String DEFAULT_INVERSE_JOIN_COLUMN = "defaultInverseJoinColumn"; //$NON-NLS-1$
 	
 	/**
 	 * Add a specified inverse join column to the join table return the object 

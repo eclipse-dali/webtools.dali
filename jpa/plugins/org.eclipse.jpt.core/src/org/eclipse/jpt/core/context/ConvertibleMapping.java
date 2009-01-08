@@ -34,7 +34,7 @@ public interface ConvertibleMapping
 	 * model has a converter set (an xml mapping could return a default converter if one is set in java)
 	 */
 	Converter getDefaultConverter();
-		String DEFAULT_CONVERTER_PROPERTY = "defaultConverterProperty";
+		String DEFAULT_CONVERTER_PROPERTY = "defaultConverter"; //$NON-NLS-1$
 	
 	/**
 	 * Return the specified converter or null, if none is specified in the underlying resource model
@@ -51,7 +51,7 @@ public interface ConvertibleMapping
 	 * {@link Converter#NO_CONVERTER}
 	 */
 	void setSpecifiedConverter(String converterType);
-		String SPECIFIED_CONVERTER_PROPERTY = "specifiedConverterProperty";
+		String SPECIFIED_CONVERTER_PROPERTY = "specifiedConverter"; //$NON-NLS-1$
 	
 
 }

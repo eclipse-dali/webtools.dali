@@ -40,7 +40,7 @@ public enum GenerationType {
 			case AUTO:
 				return AUTO;
 			default:
-				throw new IllegalArgumentException("unknown generation type: " + javaGenerationType);
+				throw new IllegalArgumentException("unknown generation type: " + javaGenerationType); //$NON-NLS-1$
 		}
 	}
 	
@@ -58,7 +58,7 @@ public enum GenerationType {
 			case AUTO:
 				return org.eclipse.jpt.core.resource.java.GenerationType.AUTO;
 			default:
-				throw new IllegalArgumentException("unknown generation type: " + generationType);
+				throw new IllegalArgumentException("unknown generation type: " + generationType); //$NON-NLS-1$
 		}
 	}
 
@@ -76,7 +76,7 @@ public enum GenerationType {
 			case AUTO:
 				return AUTO;
 			default:
-				throw new IllegalArgumentException("unknown generation type: " + ormGenerationType);
+				throw new IllegalArgumentException("unknown generation type: " + ormGenerationType); //$NON-NLS-1$
 		}
 	}
 	
@@ -94,7 +94,7 @@ public enum GenerationType {
 			case AUTO:
 				return org.eclipse.jpt.core.resource.orm.GenerationType.AUTO;
 			default:
-				throw new IllegalArgumentException("unknown generation type: " + generationType);
+				throw new IllegalArgumentException("unknown generation type: " + generationType); //$NON-NLS-1$
 		}
 	}
 }

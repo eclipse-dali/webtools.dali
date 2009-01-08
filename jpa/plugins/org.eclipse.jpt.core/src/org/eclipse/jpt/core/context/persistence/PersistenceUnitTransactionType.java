@@ -38,7 +38,7 @@ public enum PersistenceUnitTransactionType
 			case RESOURCE_LOCAL:
 				return RESOURCE_LOCAL;
 			default:
-				throw new IllegalArgumentException("unknown transaction type: " + transactionType);
+				throw new IllegalArgumentException("unknown transaction type: " + transactionType); //$NON-NLS-1$
 		}
 	}
 	
@@ -52,7 +52,7 @@ public enum PersistenceUnitTransactionType
 			case RESOURCE_LOCAL:
 				return XmlPersistenceUnitTransactionType.RESOURCE_LOCAL;
 			default:
-				throw new IllegalArgumentException("unknown transaction type: " + transactionType);
+				throw new IllegalArgumentException("unknown transaction type: " + transactionType); //$NON-NLS-1$
 		}
 	}
 }

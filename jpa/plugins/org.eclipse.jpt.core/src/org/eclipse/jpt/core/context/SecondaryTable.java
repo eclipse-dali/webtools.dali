@@ -30,7 +30,7 @@ public interface SecondaryTable extends Table
 	 * This will not be null.
 	 */
 	<T extends PrimaryKeyJoinColumn> ListIterator<T> primaryKeyJoinColumns();
-		String SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST = "specifiedPrimaryKeyJoinColumnsList";
+		String SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST = "specifiedPrimaryKeyJoinColumns"; //$NON-NLS-1$
 
 	/**
 	 * Return the number of primary key join columns, both specified and default.
@@ -53,7 +53,7 @@ public interface SecondaryTable extends Table
 	 * only exists if there are no specified primary key join columns.
 	 */
 	PrimaryKeyJoinColumn getDefaultPrimaryKeyJoinColumn();
-		String DEFAULT_PRIMARY_KEY_JOIN_COLUMN = "defaultPrimaryKeyJoinColumn";
+		String DEFAULT_PRIMARY_KEY_JOIN_COLUMN = "defaultPrimaryKeyJoinColumn"; //$NON-NLS-1$
 
 	/**
 	 * Add a specified primary key join column to the secondary table return the object 

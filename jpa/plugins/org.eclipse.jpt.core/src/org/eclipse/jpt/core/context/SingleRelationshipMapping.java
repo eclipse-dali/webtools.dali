@@ -45,7 +45,7 @@ public interface SingleRelationshipMapping extends RelationshipMapping, Nullable
 	 * This will not be null.
 	 */
 	<T extends JoinColumn> ListIterator<T> specifiedJoinColumns();
-		String SPECIFIED_JOIN_COLUMNS_LIST = "specifiedJoinColumnsList";
+		String SPECIFIED_JOIN_COLUMNS_LIST = "specifiedJoinColumns"; //$NON-NLS-1$
 
 	/**
 	 * Return the number of specified join columns.
@@ -57,7 +57,7 @@ public interface SingleRelationshipMapping extends RelationshipMapping, Nullable
 	 * only exists if there are no specified join columns.
 	 */
 	JoinColumn getDefaultJoinColumn();
-		String DEFAULT_JOIN_COLUMN = "defaultJoinColumn";
+		String DEFAULT_JOIN_COLUMN = "defaultJoinColumn"; //$NON-NLS-1$
 
 	/**
 	 * Add a specified join column to the join table return the object 

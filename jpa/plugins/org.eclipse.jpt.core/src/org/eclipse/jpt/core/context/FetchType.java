@@ -34,7 +34,7 @@ public enum FetchType {
 			case LAZY:
 				return LAZY;
 			default:
-				throw new IllegalArgumentException("unknown fetch type: " + javaFetchType);
+				throw new IllegalArgumentException("unknown fetch type: " + javaFetchType); //$NON-NLS-1$
 		}
 	}
 
@@ -48,7 +48,7 @@ public enum FetchType {
 			case LAZY:
 				return org.eclipse.jpt.core.resource.java.FetchType.LAZY;
 			default:
-				throw new IllegalArgumentException("unknown fetch type: " + fetchType);
+				throw new IllegalArgumentException("unknown fetch type: " + fetchType); //$NON-NLS-1$
 		}
 	}
 	
@@ -63,7 +63,7 @@ public enum FetchType {
 			case LAZY:
 				return LAZY;
 			default:
-				throw new IllegalArgumentException("unknown fetch type: " + ormFetchType);
+				throw new IllegalArgumentException("unknown fetch type: " + ormFetchType); //$NON-NLS-1$
 		}
 	}
 	
@@ -77,7 +77,7 @@ public enum FetchType {
 			case LAZY:
 				return org.eclipse.jpt.core.resource.orm.FetchType.LAZY;
 			default:
-				throw new IllegalArgumentException("unknown fetch type: " + fetchType);
+				throw new IllegalArgumentException("unknown fetch type: " + fetchType); //$NON-NLS-1$
 		}
 	}
 

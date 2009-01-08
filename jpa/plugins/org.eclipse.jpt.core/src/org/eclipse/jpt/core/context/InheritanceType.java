@@ -38,7 +38,7 @@ public enum InheritanceType {
 			case TABLE_PER_CLASS:
 				return TABLE_PER_CLASS;
 			default:
-				throw new IllegalArgumentException("unknown inheritance type: " + javaInheritanceType);
+				throw new IllegalArgumentException("unknown inheritance type: " + javaInheritanceType); //$NON-NLS-1$
 		}
 	}
 	
@@ -54,7 +54,7 @@ public enum InheritanceType {
 			case TABLE_PER_CLASS:
 				return org.eclipse.jpt.core.resource.java.InheritanceType.TABLE_PER_CLASS;
 			default:
-				throw new IllegalArgumentException("unknown inheritance type: " + inheritanceType);
+				throw new IllegalArgumentException("unknown inheritance type: " + inheritanceType); //$NON-NLS-1$
 		}
 	}
 	
@@ -71,7 +71,7 @@ public enum InheritanceType {
 			case TABLE_PER_CLASS:
 				return TABLE_PER_CLASS;
 			default:
-				throw new IllegalArgumentException("unknown inheritance type: " + ormInheritanceType);
+				throw new IllegalArgumentException("unknown inheritance type: " + ormInheritanceType); //$NON-NLS-1$
 		}
 	}
 	
@@ -87,8 +87,7 @@ public enum InheritanceType {
 			case TABLE_PER_CLASS:
 				return org.eclipse.jpt.core.resource.orm.InheritanceType.TABLE_PER_CLASS;
 			default:
-				throw new IllegalArgumentException("unknown inheritance type: " + inheritanceType);
+				throw new IllegalArgumentException("unknown inheritance type: " + inheritanceType); //$NON-NLS-1$
 		}
 	}
-
 }

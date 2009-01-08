@@ -34,7 +34,7 @@ public enum EnumType {
 			case STRING:
 				return STRING;
 			default:
-				throw new IllegalArgumentException("unknown enum type: " + javaEnumType);
+				throw new IllegalArgumentException("unknown enum type: " + javaEnumType); //$NON-NLS-1$
 		}
 	}
 	
@@ -48,7 +48,7 @@ public enum EnumType {
 			case STRING:
 				return org.eclipse.jpt.core.resource.java.EnumType.STRING;
 			default:
-				throw new IllegalArgumentException("unknown enum type: " + enumType);
+				throw new IllegalArgumentException("unknown enum type: " + enumType); //$NON-NLS-1$
 		}
 	}
 	
@@ -63,7 +63,7 @@ public enum EnumType {
 			case STRING:
 				return STRING;
 			default:
-				throw new IllegalArgumentException("unknown enum type: " + ormEnumType);
+				throw new IllegalArgumentException("unknown enum type: " + ormEnumType); //$NON-NLS-1$
 		}
 	}
 	
@@ -77,7 +77,7 @@ public enum EnumType {
 			case STRING:
 				return org.eclipse.jpt.core.resource.orm.EnumType.STRING;
 			default:
-				throw new IllegalArgumentException("unknown enum type: " + enumType);
+				throw new IllegalArgumentException("unknown enum type: " + enumType); //$NON-NLS-1$
 		}
 	}
 }

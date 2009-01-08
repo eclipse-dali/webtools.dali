@@ -25,6 +25,6 @@ public interface TemporalConverter extends Converter
 {
 	TemporalType getTemporalType();
 	void setTemporalType(TemporalType temporalType);
-		String TEMPORAL_TYPE_PROPERTY = "temporalTypeProperty";
+		String TEMPORAL_TYPE_PROPERTY = "temporalType"; //$NON-NLS-1$
 
 }

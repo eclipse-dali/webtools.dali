@@ -29,7 +29,7 @@ public interface PersistenceXml extends XmlContextNode, JpaStructureNode
 	/**
 	 * String constant associated with changes to the persistence property
 	 */
-	public final static String PERSISTENCE_PROPERTY = "persistence";
+	public final static String PERSISTENCE_PROPERTY = "persistence"; //$NON-NLS-1$
 	
 	/** 
 	 * Return the content represented by the root of the persistence.xml file.

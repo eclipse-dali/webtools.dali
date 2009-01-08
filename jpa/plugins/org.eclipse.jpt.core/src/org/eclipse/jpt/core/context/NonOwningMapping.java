@@ -24,7 +24,7 @@ public interface NonOwningMapping extends RelationshipMapping
 {
 	String getMappedBy();
 	void setMappedBy(String value);
-		String MAPPED_BY_PROPERTY = "mappedByProperty";
+		String MAPPED_BY_PROPERTY = "mappedBy"; //$NON-NLS-1$
 
 	Iterator<String> candidateMappedByAttributeNames();
 
