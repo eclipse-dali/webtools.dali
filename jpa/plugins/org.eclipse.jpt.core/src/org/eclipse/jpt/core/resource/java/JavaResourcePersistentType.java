@@ -103,13 +103,14 @@ public interface JavaResourcePersistentType
 	// ********** methods **********
 
 	/**
-	 * Return the type's methods.
+	 * Return the type's methods. This returns *all* methods from the JDT Type
 	 */
 	Iterator<JavaResourcePersistentAttribute> methods();
 		String METHODS_COLLECTION = "methods"; //$NON-NLS-1$
 
 	/**
-	 * Return the type's persistable properties.
+	 * Return the type's persistable properties.  This returns only the getter methods
+	 * that match the JavaBeans criteria for JPA, hence the name properties instead of methods
 	 */
 	Iterator<JavaResourcePersistentAttribute> persistableProperties();
 
