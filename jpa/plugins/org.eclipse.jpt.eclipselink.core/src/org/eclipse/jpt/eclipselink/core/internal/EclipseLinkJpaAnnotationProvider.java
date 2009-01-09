@@ -10,7 +10,8 @@
 package org.eclipse.jpt.eclipselink.core.internal;
 
 import java.util.List;
-
+import org.eclipse.jpt.core.JpaAnnotationProvider;
+import org.eclipse.jpt.core.internal.platform.AbstractJpaAnnotationProvider;
 import org.eclipse.jpt.core.internal.platform.GenericJpaAnnotationProvider;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.BasicCollectionImpl.BasicCollectionAnnotationDefinition;
@@ -33,13 +34,42 @@ import org.eclipse.jpt.eclipselink.core.internal.resource.java.TypeConverterImpl
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.VariableOneToOneImpl.VariableOneToOneAnnotationDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.WriteTransformerImpl.WriteTransformerAnnotationDefinition;
 
+/**
+ * Provides annotations for 1.0 EclipseLink platform which includes JPA annotations and
+ * EclipseLink 1.0 annotations
+ */
 public class EclipseLinkJpaAnnotationProvider
-	extends GenericJpaAnnotationProvider
+	extends AbstractJpaAnnotationProvider
 {
+	// singleton
+	private static final JpaAnnotationProvider INSTANCE = new EclipseLinkJpaAnnotationProvider();
+
+	/**
+	 * Return the singleton.
+	 */
+	public static JpaAnnotationProvider instance() {
+		return INSTANCE;
+	}
+
+	/**
+	 * Ensure single instance.
+	 */
+	private EclipseLinkJpaAnnotationProvider() {
+		super();
+	}
+	
+	@Override
+	protected void addDelegateAnnotationProvidersTo(List<JpaAnnotationProvider> providers) {
+		providers.add(GenericJpaAnnotationProvider.instance());
+	}
+	
+	@Override
+	protected void addTypeMappingAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
+		//none
+	}
 	
 	@Override
 	protected void addTypeSupportingAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
-		super.addTypeSupportingAnnotationDefinitionsTo(definitions);
 		definitions.add(CacheAnnotationDefinition.instance());
 		definitions.add(ChangeTrackingAnnotationDefinition.instance());
 		definitions.add(ConverterAnnotationDefinition.instance());
@@ -54,7 +84,6 @@ public class EclipseLinkJpaAnnotationProvider
 	// 245996 addresses how the attribute mapping annotations should be ordered
 	@Override
 	protected void addAttributeMappingAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
-		super.addAttributeMappingAnnotationDefinitionsTo(definitions);
 		definitions.add(BasicCollectionAnnotationDefinition.instance());
 		definitions.add(BasicMapAnnotationDefinition.instance());
 		definitions.add(TransformationAnnotationDefinition.instance());
@@ -63,7 +92,6 @@ public class EclipseLinkJpaAnnotationProvider
 	
 	@Override
 	protected void addAttributeSupportingAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
-		super.addAttributeSupportingAnnotationDefinitionsTo(definitions);
 		definitions.add(ConvertAnnotationDefinition.instance());
 		definitions.add(ConverterAnnotationDefinition.instance());
 		definitions.add(JoinFetchAnnotationDefinition.instance());
@@ -75,5 +103,4 @@ public class EclipseLinkJpaAnnotationProvider
 		definitions.add(TypeConverterAnnotationDefinition.instance());		
 		definitions.add(WriteTransformerAnnotationDefinition.instance());		
 	}
-	
 }

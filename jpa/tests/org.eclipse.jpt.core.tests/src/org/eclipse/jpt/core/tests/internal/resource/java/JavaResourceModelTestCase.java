@@ -31,6 +31,8 @@ import org.eclipse.jpt.utility.internal.StringTools;
 @SuppressWarnings("nls")
 public class JavaResourceModelTestCase extends AnnotationTestCase
 {
+	public static final String JAVAX_PERSISTENCE_PACKAGE_NAME = "javax.persistence"; //$NON-NLS-1$
+
 	private JavaElementChangeListener javaElementChangeListener;
 	protected JpaCompilationUnit jpaCompilationUnit;
 	
@@ -116,7 +118,7 @@ public class JavaResourceModelTestCase extends AnnotationTestCase
 	}
 
 	protected ICompilationUnit createAnnotationAndMembers(String annotationName, String annotationBody) throws Exception {
-		return createAnnotationAndMembers("javax.persistence", annotationName, annotationBody);
+		return createAnnotationAndMembers(JAVAX_PERSISTENCE_PACKAGE_NAME, annotationName, annotationBody);
 	}
 	
 	protected ICompilationUnit createAnnotationAndMembers(String packageName, String annotationName, String annotationBody) throws Exception {
@@ -124,7 +126,7 @@ public class JavaResourceModelTestCase extends AnnotationTestCase
 	}
 	
 	protected ICompilationUnit createEnumAndMembers(String enumName, String enumBody) throws Exception {
-		return createEnumAndMembers("javax.persistence", enumName, enumBody);
+		return createEnumAndMembers(JAVAX_PERSISTENCE_PACKAGE_NAME, enumName, enumBody);
 	}
 	
 	protected ICompilationUnit createEnumAndMembers(String packageName, String enumName, String enumBody) throws Exception {
@@ -155,7 +157,7 @@ public class JavaResourceModelTestCase extends AnnotationTestCase
 	}
 
 	protected JpaAnnotationProvider buildAnnotationProvider() {
-		return new GenericJpaAnnotationProvider() {/* dummy class to expose ctor */};
+		return GenericJpaAnnotationProvider.instance();
 	}
 
 	protected JpaResourceModelListener buildResourceModelListener() {

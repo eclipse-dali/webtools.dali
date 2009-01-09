@@ -37,11 +37,15 @@ public interface JpaAnnotationProvider {
 	
 	/**
 	 * Build a type mapping annotation with the specified name.
+	 * Return null if this is not a valid type mapping annotationName,
+	 * check that it is valid using typeMappingAnnotationNames()
 	 */
 	Annotation buildTypeMappingAnnotation(JavaResourcePersistentType parent, Type type, String annotationName);
 
 	/**
 	 * Build a null type mapping annotation with the specified name.
+	 * Return null if this is not a valid type mapping annotationName,
+	 * check that it is valid using typeMappingAnnotationNames()
 	 */
 	Annotation buildNullTypeMappingAnnotation(JavaResourcePersistentType parent, Type type, String annotationName);
 
@@ -52,11 +56,15 @@ public interface JpaAnnotationProvider {
 	
 	/**
 	 * Build a type supporting annotation with the specified name.
+	 * Return null if this is not a valid type supporting annotationName,
+	 * check that it is valid using typeSupportingAnnotationNames()
 	 */
 	Annotation buildTypeSupportingAnnotation(JavaResourcePersistentType parent, Type type, String annotationName);
 	
 	/**
 	 * Build a null type supporting annotation with the specified name.
+	 * Return null if this is not a valid type supporting annotationName,
+	 * check that it is valid using typeSupportingAnnotationNames()
 	 */
 	Annotation buildNullTypeSupportingAnnotation(JavaResourcePersistentType parent, Type type, String annotationName);
 	
@@ -70,11 +78,15 @@ public interface JpaAnnotationProvider {
 	
 	/**
 	 * Build an attribute mapping annotation with the specified name.
+	 * Return null if this is not a valid attribute mapping annotationName,
+	 * check that it is valid using attributeMappingAnnotationNames()
 	 */
 	Annotation buildAttributeMappingAnnotation(JavaResourcePersistentAttribute parent, Attribute attribute, String annotationName);
 
 	/**
 	 * Build a null attribute mapping annotation with the specified name.
+	 * Return null if this is not a valid attribute mapping annotationName,
+	 * check that it is valid using attributeMappingAnnotationNames()
 	 */
 	Annotation buildNullAttributeMappingAnnotation(JavaResourcePersistentAttribute parent, Attribute attribute, String annotationName);
 
@@ -85,11 +97,15 @@ public interface JpaAnnotationProvider {
 	
 	/**
 	 * Build an attribute supporting annotation with the specified name.
+	 * Return null if this is not a valid attribute supporting annotationName,
+	 * check that it is valid using attributeSupportingAnnotationNames()
 	 */
 	Annotation buildAttributeSupportingAnnotation(JavaResourcePersistentAttribute parent, Attribute attribute, String annotationName);
 	
 	/**
 	 * Build a null attribute supporting annotation with the specified name.
+	 * Return null if this is not a valid attribute supporting annotationName,
+	 * check that it is valid using attributeSupportingAnnotationNames()
 	 */
 	Annotation buildNullAttributeSupportingAnnotation(JavaResourcePersistentAttribute parent, Attribute attribute, String annotationName);
 	

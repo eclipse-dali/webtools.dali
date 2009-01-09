@@ -77,8 +77,8 @@ public class EclipseLinkJpaPlatform
 
 	// ********* java annotations *********	
 	@Override
-	protected JpaAnnotationProvider buildAnnotationProvider() {
-		return new EclipseLinkJpaAnnotationProvider();
+	public JpaAnnotationProvider getAnnotationProvider() {
+		return  EclipseLinkJpaAnnotationProvider.instance();
 	}
 
 	@Override

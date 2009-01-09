@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -272,6 +272,16 @@ public interface JPA {
 		String TEMPORAL_TYPE__TIME = TEMPORAL_TYPE_ + "TIME";
 		String TEMPORAL_TYPE__TIMESTAMP = TEMPORAL_TYPE_ + "TIMESTAMP";
 
+	//JPA 2.0 interfaces
+		
+	String ACCESS = PACKAGE_ + "Access";
+		String ACCESS__VALUE = "value";
+		
+	String ACCESS_TYPE = PACKAGE_ + "AccessType";
+		String ACCESS_TYPE_ = ACCESS_TYPE + '.';
+		String ACCESS_TYPE__FIELD = ACCESS_TYPE_ + "FIELD";
+		String ACCESS_TYPE__PROPERTY = ACCESS_TYPE_ + "PROPERTY";
+	
 	// JPA interfaces
 	String ENTITY_MANAGER = PACKAGE_ + "EntityManager";
 	String ENTITY_MANAGER_FACTORY = PACKAGE_ + "EntityManagerFactory";
