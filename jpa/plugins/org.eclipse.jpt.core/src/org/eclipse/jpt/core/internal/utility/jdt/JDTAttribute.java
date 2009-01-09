@@ -54,10 +54,6 @@ public abstract class JDTAttribute
 		return false;
 	}
 
-	public boolean isMethod() {
-		return false;
-	}
-
 
 	// ********** internal **********
 

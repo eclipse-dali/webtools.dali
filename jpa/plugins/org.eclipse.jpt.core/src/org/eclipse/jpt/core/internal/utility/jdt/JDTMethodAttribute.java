@@ -168,11 +168,6 @@ public class JDTMethodAttribute
 		return null;
 	}
 
-	@Override
-	public boolean isMethod() {
-		return true;
-	}
-
 	public boolean isPersistable(CompilationUnit astRoot) {
 		IMethodBinding binding = this.getBinding(astRoot);
 		return (binding == null) ? false : JPTTools.methodIsPersistablePropertyGetter(binding);

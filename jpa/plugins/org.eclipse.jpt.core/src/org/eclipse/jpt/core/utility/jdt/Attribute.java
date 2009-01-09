@@ -44,10 +44,4 @@ public interface Attribute extends Member {
 	 */
 	boolean isField();
 
-	/**
-	 * Return whether the attribute is a property/method pair.
-	 */
-	// TODO rename to isProperty()?
-	boolean isMethod();
-
 }
