@@ -186,7 +186,55 @@ public class JavaOneToManyMappingTests extends ContextModelTestCase
 		});
 	}
 	
-	
+	private void createTestDepartment() throws Exception {
+		SourceWriter sourceWriter = new SourceWriter() {
+			public void appendSourceTo(StringBuilder sb) {
+				sb.append(CR);
+					sb.append("import ").append(JPA.ENTITY).append(";");
+					sb.append(CR);
+					sb.append("import ").append(JPA.ID).append(";");
+					sb.append(CR);
+					sb.append("import java.util.Map;");
+					sb.append(CR);
+					sb.append("import ").append(JPA.ONE_TO_MANY).append(";");
+				sb.append("@Entity");
+				sb.append(CR);
+				sb.append("public class ").append("Department").append(" ");
+				sb.append("{").append(CR);
+				sb.append(CR);
+				sb.append("    @Id").append(CR);
+				sb.append("    private int id;").append(CR);
+				sb.append(CR);
+				sb.append("    @OneToMany").append(CR);
+				sb.append("    private Map<Integer, Employee> employees;").append(CR);
+				sb.append(CR);
+				sb.append("}").append(CR);
+		}
+		};
+		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Department.java", sourceWriter);
+	}
+
+	private void createTestEmployee() throws Exception {
+		SourceWriter sourceWriter = new SourceWriter() {
+			public void appendSourceTo(StringBuilder sb) {
+				sb.append(CR);
+					sb.append("import ").append(JPA.ENTITY).append(";");
+					sb.append(CR);
+					sb.append("import ").append(JPA.ID).append(";");
+					sb.append(CR);
+			sb.append("@Entity");
+				sb.append(CR);
+				sb.append("public class ").append("Employee").append(" ");
+				sb.append("{").append(CR);
+				sb.append(CR);
+				sb.append("    @Id").append(CR);
+				sb.append("    private int empId;").append(CR);
+				sb.append(CR);
+				sb.append("}").append(CR);
+		}
+		};
+		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Employee.java", sourceWriter);
+	}	
 	public JavaOneToManyMappingTests(String name) {
 		super(name);
 	}
@@ -894,5 +942,16 @@ public class JavaOneToManyMappingTests extends ContextModelTestCase
 		attributeResource.removeAnnotation(OrderByAnnotation.ANNOTATION_NAME);
 		assertFalse(oneToManyMapping.isCustomOrdering());
 		assertNull(attributeResource.getAnnotation(OrderByAnnotation.ANNOTATION_NAME));
+	}
+	
+	public void testDefaultTargetEntityForMap() throws Exception {
+		createTestEmployee();
+		createTestDepartment();
+		addXmlClassRef(PACKAGE_NAME + ".Department");
+		addXmlClassRef(PACKAGE_NAME + ".Employee");
+		
+		JavaPersistentType departmentPersistentType = javaPersistentType();
+		OneToManyMapping employeesMapping = (OneToManyMapping) departmentPersistentType.getAttributeNamed("employees").getSpecifiedMapping();
+		assertEquals(PACKAGE_NAME + ".Employee", employeesMapping.getTargetEntity());
 	}
 }
