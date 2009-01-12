@@ -38,13 +38,11 @@ import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmVersionMapping;
-import org.eclipse.jpt.core.context.orm.OrmXml;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.platform.GenericJpaFactory;
 import org.eclipse.jpt.core.resource.orm.XmlBasic;
-import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.core.resource.orm.XmlId;
 import org.eclipse.jpt.core.resource.orm.XmlManyToMany;
 import org.eclipse.jpt.core.resource.orm.XmlManyToOne;
@@ -68,6 +66,7 @@ import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaBasicCollectio
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaBasicMapMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaTransformationMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaVariableOneToOneMapping;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkEntityMappings;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkEntityMappingsImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmBasicMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmEmbeddableImpl;
@@ -135,14 +134,6 @@ public class EclipseLinkJpaFactory
 		return new EclipseLinkPersistenceUnit(parent, persistenceUnit);
 	}
 	
-	@Override
-	public EntityMappings buildEntityMappings(OrmXml parent, XmlEntityMappings xmlEntityMappings) {
-		if (parent.getType() == EclipseLinkOrmResource.TYPE) {
-			return new EclipseLinkEntityMappingsImpl((EclipseLinkOrmXml) parent, (org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntityMappings) xmlEntityMappings);
-		}
-		return super.buildEntityMappings(parent, xmlEntityMappings);
-	}
-	
 	
 	// ********** EclipseLink-specific ORM Virtual Resource Model **********
 	
@@ -182,15 +173,31 @@ public class EclipseLinkJpaFactory
 		return new EclipseLinkVirtualXmlVersion(ormTypeMapping, javaVersionMapping);
 	}
 	
-
+	public XmlBasicCollection buildVirtualXmlBasicCollection(OrmTypeMapping ormTypeMapping, JavaBasicCollectionMapping javaBasicCollectionMapping) {
+		return new VirtualXmlBasicCollection(ormTypeMapping, javaBasicCollectionMapping);
+	}
+	
+	public XmlBasicMap buildVirtualXmlBasicMap(OrmTypeMapping ormTypeMapping, JavaBasicMapMapping javaBasicMapMapping) {
+		return new VirtualXmlBasicMap(ormTypeMapping, javaBasicMapMapping);
+	}
+	
+	public XmlTransformation buildVirtualXmlTransformation(OrmTypeMapping ormTypeMapping, JavaTransformationMapping javaTransformationMapping) {
+		return new VirtualXmlTransformation(ormTypeMapping, javaTransformationMapping);
+	}
+	
+	public XmlVariableOneToOne buildVirtualXmlVariableOneToOne(OrmTypeMapping ormTypeMapping, JavaVariableOneToOneMapping javaVariableOneToOneMapping) {
+		return new VirtualXmlVariableOneToOne(ormTypeMapping, javaVariableOneToOneMapping);
+	}
+	
+	
 	// ********** EclipseLink-specific ORM Context Model **********
+	
+	public EntityMappings buildEclipseLinkEntityMappings(EclipseLinkOrmXml parent, org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntityMappings xmlEntityMappings) {
+		return new EclipseLinkEntityMappingsImpl(parent, xmlEntityMappings);
+	}
 
-	@Override
-	public OrmPersistentType buildOrmPersistentType(EntityMappings parent, String mappingKey) {
-		if (parent.getOrmType() == EclipseLinkOrmResource.TYPE) {
-			return new EclipseLinkOrmPersistentType(parent, mappingKey);
-		}
-		return super.buildOrmPersistentType(parent, mappingKey);
+	public OrmPersistentType buildEclipseLinkOrmPersistentType(EclipseLinkEntityMappings parent, String mappingKey) {
+		return new EclipseLinkOrmPersistentType(parent, mappingKey);
 	}
 
 	public OrmEmbeddable buildEclipseLinkOrmEmbeddable(OrmPersistentType type) {
@@ -240,7 +247,22 @@ public class EclipseLinkJpaFactory
 	public OrmVersionMapping buildEclipseLinkOrmVersionMapping(OrmPersistentAttribute parent) {
 		return new EclipseLinkOrmVersionMapping(parent);
 	}
+		
+	public OrmBasicCollectionMapping buildOrmBasicCollectionMapping(OrmPersistentAttribute parent) {
+		return new OrmBasicCollectionMapping(parent);
+	}
 	
+	public OrmBasicMapMapping buildOrmBasicMapMapping(OrmPersistentAttribute parent) {
+		return new OrmBasicMapMapping(parent);
+	}
+	
+	public OrmTransformationMapping buildOrmTransformationMapping(OrmPersistentAttribute parent) {
+		return new OrmTransformationMapping(parent);
+	}
+	
+	public OrmVariableOneToOneMapping buildOrmVariableOneToOneMapping(OrmPersistentAttribute parent) {
+		return new OrmVariableOneToOneMapping(parent);
+	}
 	
 	// ********** Java Context Model **********
 
@@ -308,37 +330,5 @@ public class EclipseLinkJpaFactory
 
 	public JavaVariableOneToOneMapping buildJavaVariableOneToOneMapping(JavaPersistentAttribute parent) {
 		return new JavaVariableOneToOneMapping(parent);
-	}
-	
-	public OrmBasicCollectionMapping buildOrmBasicCollectionMapping(OrmPersistentAttribute parent) {
-		return new OrmBasicCollectionMapping(parent);
-	}
-	
-	public OrmBasicMapMapping buildOrmBasicMapMapping(OrmPersistentAttribute parent) {
-		return new OrmBasicMapMapping(parent);
-	}
-	
-	public OrmTransformationMapping buildOrmTransformationMapping(OrmPersistentAttribute parent) {
-		return new OrmTransformationMapping(parent);
-	}
-	
-	public OrmVariableOneToOneMapping buildOrmVariableOneToOneMapping(OrmPersistentAttribute parent) {
-		return new OrmVariableOneToOneMapping(parent);
-	}
-	
-	public XmlBasicCollection buildVirtualXmlBasicCollection(OrmTypeMapping ormTypeMapping, JavaBasicCollectionMapping javaBasicCollectionMapping) {
-		return new VirtualXmlBasicCollection(ormTypeMapping, javaBasicCollectionMapping);
-	}
-	
-	public XmlBasicMap buildVirtualXmlBasicMap(OrmTypeMapping ormTypeMapping, JavaBasicMapMapping javaBasicMapMapping) {
-		return new VirtualXmlBasicMap(ormTypeMapping, javaBasicMapMapping);
-	}
-	
-	public XmlTransformation buildVirtualXmlTransformation(OrmTypeMapping ormTypeMapping, JavaTransformationMapping javaTransformationMapping) {
-		return new VirtualXmlTransformation(ormTypeMapping, javaTransformationMapping);
-	}
-	
-	public XmlVariableOneToOne buildVirtualXmlVariableOneToOne(OrmTypeMapping ormTypeMapping, JavaVariableOneToOneMapping javaVariableOneToOneMapping) {
-		return new VirtualXmlVariableOneToOne(ormTypeMapping, javaVariableOneToOneMapping);
 	}
 }

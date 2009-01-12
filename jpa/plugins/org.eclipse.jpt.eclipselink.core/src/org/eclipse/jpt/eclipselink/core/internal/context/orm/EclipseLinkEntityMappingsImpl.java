@@ -10,8 +10,9 @@
 package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
 import java.util.List;
-import org.eclipse.jpt.core.context.orm.OrmStructureNode;
+import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.internal.context.orm.GenericEntityMappings;
+import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaFactory;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntityMappings;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
@@ -28,8 +29,17 @@ public class EclipseLinkEntityMappingsImpl
 		this.converterHolder.initialize(xmlEntityMappings);
 	}
 	
+	@Override
+	protected OrmPersistentType buildOrmPersistentType(String mappingKey) {
+		return getJpaFactory().buildEclipseLinkOrmPersistentType(this, mappingKey);
+	}
 	
 	// **************** JpaNode impl *******************************************
+	
+	@Override
+	protected EclipseLinkJpaFactory getJpaFactory() {
+		return (EclipseLinkJpaFactory) super.getJpaFactory();
+	}
 	
 	@Override
 	public EclipseLinkOrmXml getParent() {
