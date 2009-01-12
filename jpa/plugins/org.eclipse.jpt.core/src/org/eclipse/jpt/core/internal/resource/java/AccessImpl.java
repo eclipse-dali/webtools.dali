@@ -108,12 +108,11 @@ public class AccessImpl extends AbstractResourceAnnotation<Member> implements Ac
 		}
 		
 		public Annotation buildNullAnnotation(JavaResourcePersistentMember parent, Member member) {
-			return null;
+			return new NullAccessAnnotation(parent);
 		}
 
 		public String getAnnotationName() {
 			return ANNOTATION_NAME;
 		}
 	}
-
 }
