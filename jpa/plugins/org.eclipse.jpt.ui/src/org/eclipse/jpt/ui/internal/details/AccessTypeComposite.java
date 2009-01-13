@@ -50,6 +50,14 @@ public class AccessTypeComposite extends FormPane<OrmTypeMapping> {
 
 		super(parentPane, subjectHolder, parent);
 	}
+	
+	public AccessTypeComposite(FormPane<?> parentPane,
+        PropertyValueModel<? extends OrmTypeMapping> subjectHolder,
+        Composite parent,
+        boolean automaticallyAlignWidgets) {
+
+		super(parentPane, subjectHolder, parent, automaticallyAlignWidgets);
+	}
 
 	@Override
 	protected void initializeLayout(Composite container) {

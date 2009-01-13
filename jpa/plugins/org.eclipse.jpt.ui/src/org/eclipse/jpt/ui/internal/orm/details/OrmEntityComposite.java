@@ -76,7 +76,7 @@ public class OrmEntityComposite extends AbstractEntityComposite<OrmEntity>
 			addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin)
 		);
 
-		new AccessTypeComposite(this, getSubjectHolder(), addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin));
+		new AccessTypeComposite(this, getSubjectHolder(), addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin), false);
 
 		// Primary Key Class widgets
 		new IdClassComposite(
