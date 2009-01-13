@@ -16,7 +16,7 @@ import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMes
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkEmbeddableAdvancedComposite;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
-import org.eclipse.jpt.ui.internal.orm.details.AccessTypeComposite;
+import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
 import org.eclipse.jpt.ui.internal.orm.details.MetadataCompleteComposite;
 import org.eclipse.jpt.ui.internal.orm.details.OrmJavaClassChooser;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;

@@ -109,7 +109,7 @@ public abstract class AbstractEntityComposite<T extends Entity> extends FormPane
 	
 	protected abstract void addInheritanceComposite(Composite container);
 
-	private PropertyValueModel<Table> buildTableHolder() {
+	protected PropertyValueModel<Table> buildTableHolder() {
 		return new TransformationPropertyValueModel<Entity, Table>(getSubjectHolder()) {
 			@Override
 			protected Table transform_(Entity value) {

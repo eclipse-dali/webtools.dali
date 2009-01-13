@@ -12,6 +12,7 @@ package org.eclipse.jpt.ui.internal.orm.details;
 import org.eclipse.jpt.core.context.orm.OrmMappedSuperclass;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
+import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.IdClassComposite;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;

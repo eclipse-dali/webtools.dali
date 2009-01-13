@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,6 +20,9 @@ import org.eclipse.osgi.util.NLS;
 public class JptUiMessages {
 
 	public static String ChooserPane_browseButton;
+	public static String AccessTypeComposite_access;
+	public static String AccessTypeComposite_field;
+	public static String AccessTypeComposite_property;
 	public static String AddPersistentAttributeDialog_attributeLabel;
 	public static String AddPersistentAttributeDialog_mappingLabel;
 	public static String AddPersistentAttributeDialog_noMappingKeyError;

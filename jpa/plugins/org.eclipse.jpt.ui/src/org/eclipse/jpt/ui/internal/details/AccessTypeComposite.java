@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -7,14 +7,14 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.ui.internal.orm.details;
+package org.eclipse.jpt.ui.internal.details;
 
 import java.util.Collection;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
-import org.eclipse.jpt.ui.internal.orm.JptUiOrmMessages;
-import org.eclipse.jpt.ui.internal.widgets.FormPane;
+import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
@@ -27,10 +27,12 @@ import org.eclipse.swt.widgets.Composite;
  * |              ------------------------------------------------------------ |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see XmlTypeMapping
- * @see OrmPersistentTypeDetailsPage - A container of this pane
+ * @see AccessHolder
+ * @see OrmEntityComposite - A container of this pane
+ * @see OrmEmbeddableComposite - A container of this pane
+ * @see OrmMappedSuperclassComposite - A container of this pane
  *
- * @version 2.0
+ * @version 2.2
  * @since 1.0
  */
 public class AccessTypeComposite extends FormPane<OrmTypeMapping> {
@@ -49,6 +51,19 @@ public class AccessTypeComposite extends FormPane<OrmTypeMapping> {
 		super(parentPane, subjectHolder, parent);
 	}
 
+	@Override
+	protected void initializeLayout(Composite container) {
+
+		EnumFormComboViewer<OrmTypeMapping, AccessType> comboViewer =
+			addAccessTypeComboViewer(container);
+
+		addLabeledComposite(
+			container,
+			JptUiMessages.AccessTypeComposite_access,
+			comboViewer.getControl()
+		);
+	}
+	
 	private EnumFormComboViewer<OrmTypeMapping, AccessType> addAccessTypeComboViewer(Composite container) {
 
 		return new EnumFormComboViewer<OrmTypeMapping, AccessType>(this, container) {
@@ -73,7 +88,7 @@ public class AccessTypeComposite extends FormPane<OrmTypeMapping> {
 			@Override
 			protected String displayString(AccessType value) {
 				return buildDisplayString(
-					JptUiOrmMessages.class,
+					JptUiMessages.class,
 					AccessTypeComposite.this,
 					value
 				);
@@ -89,21 +104,5 @@ public class AccessTypeComposite extends FormPane<OrmTypeMapping> {
 				getSubject().setSpecifiedAccess(value);
 			}
 		};
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected void initializeLayout(Composite container) {
-
-		EnumFormComboViewer<OrmTypeMapping, AccessType> comboViewer =
-			addAccessTypeComboViewer(container);
-
-		addLabeledComposite(
-			container,
-			JptUiOrmMessages.AccessTypeComposite_access,
-			comboViewer.getControl()
-		);
 	}
 }

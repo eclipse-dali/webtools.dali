@@ -19,9 +19,6 @@ import org.eclipse.osgi.util.NLS;
  */
 public class JptUiOrmMessages {
 
-	public static String AccessTypeComposite_access;
-	public static String AccessTypeComposite_field;
-	public static String AccessTypeComposite_property;
 	public static String Boolean_False;
 	public static String Boolean_True;
 	public static String EntityMappingsDetailsPage_access;
