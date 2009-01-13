@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,6 +16,9 @@ import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMes
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkEmbeddableAdvancedComposite;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
+import org.eclipse.jpt.ui.internal.orm.details.AccessTypeComposite;
+import org.eclipse.jpt.ui.internal.orm.details.MetadataCompleteComposite;
+import org.eclipse.jpt.ui.internal.orm.details.OrmJavaClassChooser;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -50,14 +53,21 @@ public class EclipseLinkOrmEmbeddableComposite extends FormPane<OrmEmbeddable>
 
 	@Override
 	protected void initializeLayout(Composite container) {
+		initializeGeneralPane(container);
 		initializeConvertersPane(container);
 		initializeAdvancedPane(container);
+	}
+	
+	protected void initializeGeneralPane(Composite container) {
+		new OrmJavaClassChooser(this, getSubjectHolder(), container);
+		new AccessTypeComposite(this, getSubjectHolder(), container);
+		new MetadataCompleteComposite(this, getSubjectHolder(), container);
 	}
 
 	protected void initializeConvertersPane(Composite container) {
 
 		container = addCollapsableSection(
-			container,
+			addSubPane(container, 5),
 			EclipseLinkUiMappingsMessages.ConvertersComposite_Label
 		);
 
