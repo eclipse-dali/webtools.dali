@@ -13,6 +13,9 @@ import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.AbstractEntityComposite;
+import org.eclipse.jpt.ui.internal.mappings.details.EntityNameComposite;
+import org.eclipse.jpt.ui.internal.mappings.details.IdClassComposite;
+import org.eclipse.jpt.ui.internal.mappings.details.TableComposite;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
@@ -45,9 +48,6 @@ public class OrmEntityComposite extends AbstractEntityComposite<OrmEntity>
 	@Override
 	protected void initializeLayout(Composite container) {
 		int groupBoxMargin = getGroupBoxMargin();
-		new OrmJavaClassChooser(this, getSubjectHolder(), addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin));
-		new AccessTypeComposite(this, getSubjectHolder(), addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin));
-		new MetadataCompleteComposite(this, getSubjectHolder(), addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin));
 		
 		initializeGeneralPane(container);
 		initializeQueriesPane(container);
@@ -55,6 +55,37 @@ public class OrmEntityComposite extends AbstractEntityComposite<OrmEntity>
 		initializeAttributeOverridesPane(container);
 		initializeGeneratorsPane(container);
 		initializeSecondaryTablesPane(container);
+	}
+	@Override
+	protected void initializeGeneralPane(Composite container) {
+
+		int groupBoxMargin = getGroupBoxMargin();
+		
+		new OrmJavaClassChooser(this, getSubjectHolder(), addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin));
+
+		// Table widgets
+		new TableComposite(
+			this,
+			buildTableHolder(),
+			container
+		);
+		
+		// Entity Name widgets
+		new EntityNameComposite(
+			this,
+			addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin)
+		);
+
+		new AccessTypeComposite(this, getSubjectHolder(), addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin));
+
+		// Primary Key Class widgets
+		new IdClassComposite(
+			this,
+			addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin),
+			false
+		);
+		
+		new MetadataCompleteComposite(this, getSubjectHolder(), addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin));
 	}
 	
 	
