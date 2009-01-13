@@ -23,21 +23,22 @@ import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.TypeMapping;
-import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.ui.JpaPlatformUi;
 import org.eclipse.jpt.ui.JpaUiFactory;
+import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
 import org.eclipse.jpt.ui.details.DefaultAttributeMappingUiProvider;
+import org.eclipse.jpt.ui.details.JpaDetailsPage;
 import org.eclipse.jpt.ui.details.JpaDetailsProvider;
 import org.eclipse.jpt.ui.details.TypeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.details.DefaultBasicMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.details.DefaultEmbeddedMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.details.JavaBasicMappingUiProvider;
-import org.eclipse.jpt.ui.internal.java.details.JavaDetailsProvider;
+import org.eclipse.jpt.ui.internal.java.details.JavaPersistentAttributeDetailsProvider;
 import org.eclipse.jpt.ui.internal.java.details.JavaEmbeddableUiProvider;
 import org.eclipse.jpt.ui.internal.java.details.JavaEmbeddedIdMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.details.JavaEmbeddedMappingUiProvider;
@@ -48,12 +49,14 @@ import org.eclipse.jpt.ui.internal.java.details.JavaManyToOneMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.details.JavaMappedSuperclassUiProvider;
 import org.eclipse.jpt.ui.internal.java.details.JavaOneToManyMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.details.JavaOneToOneMappingUiProvider;
+import org.eclipse.jpt.ui.internal.java.details.JavaPersistentTypeDetailsProvider;
 import org.eclipse.jpt.ui.internal.java.details.JavaTransientMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.details.JavaVersionMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.details.NullAttributeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.details.NullTypeMappingUiProvider;
+import org.eclipse.jpt.ui.internal.orm.details.EntityMappingsDetailsProvider;
 import org.eclipse.jpt.ui.internal.orm.details.OrmBasicMappingUiProvider;
-import org.eclipse.jpt.ui.internal.orm.details.OrmDetailsProvider;
+import org.eclipse.jpt.ui.internal.orm.details.OrmPersistentAttributeDetailsProvider;
 import org.eclipse.jpt.ui.internal.orm.details.OrmEmbeddableUiProvider;
 import org.eclipse.jpt.ui.internal.orm.details.OrmEmbeddedIdMappingUiProvider;
 import org.eclipse.jpt.ui.internal.orm.details.OrmEmbeddedMappingUiProvider;
@@ -64,6 +67,7 @@ import org.eclipse.jpt.ui.internal.orm.details.OrmManyToOneMappingUiProvider;
 import org.eclipse.jpt.ui.internal.orm.details.OrmMappedSuperclassUiProvider;
 import org.eclipse.jpt.ui.internal.orm.details.OrmOneToManyMappingUiProvider;
 import org.eclipse.jpt.ui.internal.orm.details.OrmOneToOneMappingUiProvider;
+import org.eclipse.jpt.ui.internal.orm.details.OrmPersistentTypeDetailsProvider;
 import org.eclipse.jpt.ui.internal.orm.details.OrmTransientMappingUiProvider;
 import org.eclipse.jpt.ui.internal.orm.details.OrmVersionMappingUiProvider;
 import org.eclipse.jpt.ui.internal.structure.JavaResourceModelStructureProvider;
@@ -72,6 +76,7 @@ import org.eclipse.jpt.ui.internal.structure.PersistenceResourceModelStructurePr
 import org.eclipse.jpt.ui.structure.JpaStructureProvider;
 import org.eclipse.jpt.utility.internal.iterators.ArrayListIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
@@ -112,18 +117,23 @@ public abstract class BaseJpaPlatformUi
 
 	// ********** details providers **********
 
-	public JpaDetailsProvider getDetailsProvider(JpaStructureNode structureNode) {
-		if (structureNode instanceof JavaJpaContextNode) {
-			return this.getDetailsProviders()[0];
+	public JpaDetailsPage<? extends JpaStructureNode> buildJpaDetailsPage(Composite parent, JpaStructureNode structureNode, WidgetFactory widgetFactory) {
+		JpaDetailsProvider jpaDetailsProvider = getDetailsProvider(structureNode);
+		return jpaDetailsProvider == null ? null : jpaDetailsProvider.buildDetailsPage(parent, widgetFactory);
+	}
+	
+	protected JpaDetailsProvider getDetailsProvider(JpaStructureNode structureNode) {
+		for (JpaDetailsProvider provider : this.getDetailsProviders(structureNode)) {
+			if (provider.getId() == structureNode.getId()) {
+				return provider;
+			}
 		}
-		return this.getDetailsProviders()[1];
+		return null;
 	}
 
-	protected ListIterator<JpaDetailsProvider> detailsProviders() {
-		return new ArrayListIterator<JpaDetailsProvider>(this.getDetailsProviders());
-	}
-
-	protected JpaDetailsProvider[] getDetailsProviders() {
+	//TODO EclipseLinkJpaPlatformUi is using the JpaStructureNode to check if the orm type is  EclipseLinkOrmResource.TYPE, 
+	//we need another way to handle this
+	protected synchronized JpaDetailsProvider[] getDetailsProviders(JpaStructureNode structureNode) {
 		if (this.detailsProviders == null) {
 			this.detailsProviders = this.buildDetailsProviders();
 		}
@@ -141,8 +151,11 @@ public abstract class BaseJpaPlatformUi
 	 * The default includes the JPA spec-defined java and orm.xml
 	 */
 	protected void addDetailsProvidersTo(List<JpaDetailsProvider> providers) {
-		providers.add(JavaDetailsProvider.instance());
-		providers.add(OrmDetailsProvider.instance());
+		providers.add(JavaPersistentTypeDetailsProvider.instance());
+		providers.add(JavaPersistentAttributeDetailsProvider.instance());
+		providers.add(EntityMappingsDetailsProvider.instance());
+		providers.add(OrmPersistentTypeDetailsProvider.instance());
+		providers.add(OrmPersistentAttributeDetailsProvider.instance());
 	}
 
 

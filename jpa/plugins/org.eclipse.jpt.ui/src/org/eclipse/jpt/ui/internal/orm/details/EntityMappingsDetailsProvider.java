@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.orm.details;
 
-import org.eclipse.jpt.core.JpaStructureNode;
+import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.orm.OrmStructureNode;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaDetailsPage;
@@ -21,11 +21,11 @@ import org.eclipse.swt.widgets.Composite;
  * when the information comes from the XML file (either from the persistence
  * configuration or from the Mappings Descriptor).
  */
-public class OrmDetailsProvider
+public class EntityMappingsDetailsProvider
 	implements JpaDetailsProvider
 {
 	// singleton
-	private static final JpaDetailsProvider INSTANCE = new OrmDetailsProvider();
+	private static final JpaDetailsProvider INSTANCE = new EntityMappingsDetailsProvider();
 
 	/**
 	 * Return the singleton.
@@ -37,28 +37,18 @@ public class OrmDetailsProvider
 	/**
 	 * Ensure single instance.
 	 */
-	private OrmDetailsProvider() {
+	private EntityMappingsDetailsProvider() {
 		super();
 	}
-
-	public JpaDetailsPage<? extends JpaStructureNode> buildDetailsPage(
+	
+	public String getId() {
+		return OrmStructureNode.ENTITY_MAPPINGS_ID;
+	}
+	
+	public JpaDetailsPage<EntityMappings> buildDetailsPage(
 		Composite parent,
-		JpaStructureNode structureNode,
 		WidgetFactory widgetFactory) {
 
-		if (structureNode.getId() == OrmStructureNode.ENTITY_MAPPINGS_ID) {
-			return new EntityMappingsDetailsPage(parent, widgetFactory);
-		}
-
-		if (structureNode.getId() == OrmStructureNode.PERSISTENT_TYPE_ID) {
-			return new OrmPersistentTypeDetailsPage(parent, widgetFactory);
-		}
-
-		if (structureNode.getId() == OrmStructureNode.PERSISTENT_ATTRIBUTE_ID) {
-			return new OrmPersistentAttributeDetailsPage(parent, widgetFactory);
-		}
-
-		return null;
+		return new EntityMappingsDetailsPage(parent, widgetFactory);
 	}
-
 }

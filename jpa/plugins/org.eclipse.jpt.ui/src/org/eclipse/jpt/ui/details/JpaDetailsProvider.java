@@ -38,8 +38,13 @@ public interface JpaDetailsProvider
 	 * page to create
 	 * @param widgetFactory The factory used to create various widgets
 	 */
+	//TODO Should we pass in JpaUiFactory so these pages can be built using the factory and overriden?
 	JpaDetailsPage<? extends JpaStructureNode> buildDetailsPage(
 		Composite parent,
-		JpaStructureNode structureNode,
 		WidgetFactory widgetFactory);
+	
+	/**
+	 * Return the id of the corresponding JpaStructureNode.
+	 */
+	String getId();
 }

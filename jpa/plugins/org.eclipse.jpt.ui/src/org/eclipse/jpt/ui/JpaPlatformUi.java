@@ -19,13 +19,13 @@ import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.TypeMapping;
-import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
 import org.eclipse.jpt.ui.details.DefaultAttributeMappingUiProvider;
-import org.eclipse.jpt.ui.details.JpaDetailsProvider;
+import org.eclipse.jpt.ui.details.JpaDetailsPage;
 import org.eclipse.jpt.ui.details.TypeMappingUiProvider;
 import org.eclipse.jpt.ui.navigator.JpaNavigatorProvider;
 import org.eclipse.jpt.ui.structure.JpaStructureProvider;
+import org.eclipse.swt.widgets.Composite;
 
 /**
  * This interface is to be implemented by a JPA vendor to provide extensions to
@@ -55,8 +55,11 @@ public interface JpaPlatformUi
 
 	// ********** details providers **********
 
-	JpaDetailsProvider getDetailsProvider(JpaStructureNode contextNode);
-
+	JpaDetailsPage<? extends JpaStructureNode> buildJpaDetailsPage(
+		Composite parent,
+		JpaStructureNode structureNode,
+		WidgetFactory widgetFactory);
+	
 	/**
 	 * Return an iterator of mapping ui providers appropriate for the given persistent type
 	 */

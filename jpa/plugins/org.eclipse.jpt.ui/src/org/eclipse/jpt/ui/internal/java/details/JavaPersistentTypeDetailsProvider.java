@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.java.details;
 
-import org.eclipse.jpt.core.JpaStructureNode;
+import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaStructureNodes;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaDetailsPage;
@@ -20,12 +20,12 @@ import org.eclipse.swt.widgets.Composite;
  * This provider is responsible for creating the <code>JpaDetailsPage</code>
  * when the information comes from the Java source file.
  */
-public class JavaDetailsProvider
+public class JavaPersistentTypeDetailsProvider
 	implements JpaDetailsProvider
 {
 
 	// singleton
-	private static final JpaDetailsProvider INSTANCE = new JavaDetailsProvider();
+	private static final JpaDetailsProvider INSTANCE = new JavaPersistentTypeDetailsProvider();
 
 	/**
 	 * Return the singleton.
@@ -37,24 +37,19 @@ public class JavaDetailsProvider
 	/**
 	 * Ensure single instance.
 	 */
-	private JavaDetailsProvider() {
+	private JavaPersistentTypeDetailsProvider() {
 		super();
 	}
-
-	public JpaDetailsPage<? extends JpaStructureNode> buildDetailsPage(
+	
+	public String getId() {
+		return JavaStructureNodes.PERSISTENT_TYPE_ID;
+	}
+	
+	public JpaDetailsPage<JavaPersistentType> buildDetailsPage(
 		Composite parent,
-		JpaStructureNode structureNode,
 		WidgetFactory widgetFactory) {
 
-		if (structureNode.getId() == JavaStructureNodes.PERSISTENT_TYPE_ID) {
-			return new JavaPersistentTypeDetailsPage(parent, widgetFactory);
-		}
-
-		if (structureNode.getId() == JavaStructureNodes.PERSISTENT_ATTRIBUTE_ID) {
-			return new JavaPersistentAttributeDetailsPage(parent, widgetFactory);
-		}
-
-		return null;
+		return new JavaPersistentTypeDetailsPage(parent, widgetFactory);
 	}
 
 }

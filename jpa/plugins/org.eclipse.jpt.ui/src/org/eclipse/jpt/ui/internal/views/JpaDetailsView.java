@@ -17,7 +17,6 @@ import org.eclipse.jpt.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.ui.JpaPlatformUi;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.details.JpaDetailsPage;
-import org.eclipse.jpt.ui.details.JpaDetailsProvider;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.Tracing;
 import org.eclipse.jpt.ui.internal.platform.JpaPlatformUiRegistry;
@@ -69,22 +68,16 @@ public class JpaDetailsView extends AbstractJpaView
 	}
 
 	private JpaDetailsPage<? extends JpaStructureNode> buildDetailsPage(JpaStructureNode structureNode) {
-		JpaDetailsProvider detailsProvider = getDetailsProvider(structureNode);
-
-		if (detailsProvider == null) {
-			return null;
-		}
-
-		String id = structureNode.getId();
-
+		JpaPlatformUi jpaPlatformUi = getJpaPlatformUi(structureNode);
+		
 		Composite container = getWidgetFactory().createComposite(getPageBook());
 		container.setLayout(new FillLayout(SWT.HORIZONTAL));
 
-		JpaDetailsPage<? extends JpaStructureNode> page = detailsProvider.buildDetailsPage(
-			container,
-			structureNode,
-			getWidgetFactory()
-		);
+		JpaDetailsPage<? extends JpaStructureNode> page = jpaPlatformUi.buildJpaDetailsPage(container, structureNode, getWidgetFactory());
+		if (page == null) {
+			return null;
+		}
+		String id = structureNode.getId();
 
 		if (page != null) {
 			String platformId = structureNode.getJpaProject().getJpaPlatform().getId();
@@ -146,10 +139,9 @@ public class JpaDetailsView extends AbstractJpaView
 		return buildDetailsPage(structureNode);
 	}
 
-	private JpaDetailsProvider getDetailsProvider(JpaStructureNode structureNode) {
+	private JpaPlatformUi getJpaPlatformUi(JpaStructureNode structureNode) {
 		String platformId = structureNode.getJpaProject().getJpaPlatform().getId();
-		JpaPlatformUi jpaPlatformUI = JpaPlatformUiRegistry.instance().getJpaPlatformUi(platformId);
-		return jpaPlatformUI.getDetailsProvider(structureNode);
+		return JpaPlatformUiRegistry.instance().getJpaPlatformUi(platformId);
 	}
 
 	public JpaSelection getSelection() {
@@ -186,31 +178,37 @@ public class JpaDetailsView extends AbstractJpaView
 	 * @param newPage The new page to display
 	 */
 	@SuppressWarnings("unchecked")
-	private void setCurrentPage(JpaDetailsPage<? extends JpaStructureNode> page) {
-
+	private void setCurrentPage(JpaDetailsPage<? extends JpaStructureNode> newPage) {
+		//no need to show the page again if it is still the same, just set the new subject
+		if (this.currentPage != null && this.currentPage == newPage) {
+			log("JpaDetailsView.setCurrentPage() : page is same as currentPage, populating with new selection");
+			this.currentPage.setSubject(this.currentSelection.getSelectedNode());
+			return;
+		}
 		// Unpopulate old page
 		if (this.currentPage != null) {
 			try {
-				log("JpaDetailsView.setCurrentPage() : disposing of current page");
-
+				log("JpaDetailsView.setCurrentPage() : unpopulating current page");
 				this.currentPage.setSubject(null);
 			}
 			catch (Exception e) {
+				//catch and log the exception so that we can still continue on to show the new page?
+				//seems unlikely we will get an exception setting the subject to null, not positive if this is necessary
 				JptUiPlugin.log(e);
 			}
 		}
 
-		JpaDetailsPage<JpaStructureNode> newPage = (JpaDetailsPage<JpaStructureNode>) page;
+		this.currentPage = (JpaDetailsPage<JpaStructureNode>) newPage;
 
 		// Populate new page
-		if (page != null) {
+		if (this.currentPage != null) {
 			try {
 				log("JpaDetailsView.setCurrentPage() : populating new page");
-				newPage.setSubject(this.currentSelection.getSelectedNode());
+				this.currentPage.setSubject(this.currentSelection.getSelectedNode());
 			}
 			catch (Exception e) {
 				// Show error page
-				page = null;
+				this.currentPage = null;
 				JptUiPlugin.log(e);
 			}
 		}
@@ -218,18 +216,12 @@ public class JpaDetailsView extends AbstractJpaView
 			log("JpaDetailsView.setCurrentPage() : No page to populate");
 		}
 
-		//no need to show the page again if it is still the same
-		if (newPage != null && this.currentPage == newPage) {
-			return;
-		}
-		this.currentPage = newPage;
-
 		// Show new page
-		if (page == null) {
+		if (this.currentPage == null) {
 			showDefaultPage();
 		}
 		else {
-			showPage(page.getControl());
+			showPage(this.currentPage.getControl());
 		}
 	}
 }
