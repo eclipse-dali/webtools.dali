@@ -17,8 +17,14 @@ import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmEntit
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkEntityAdvancedComposite;
 import org.eclipse.jpt.ui.WidgetFactory;
+import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.AbstractEntityComposite;
+import org.eclipse.jpt.ui.internal.mappings.details.EntityNameComposite;
+import org.eclipse.jpt.ui.internal.mappings.details.IdClassComposite;
+import org.eclipse.jpt.ui.internal.mappings.details.TableComposite;
+import org.eclipse.jpt.ui.internal.orm.details.MetadataCompleteComposite;
 import org.eclipse.jpt.ui.internal.orm.details.OrmInheritanceComposite;
+import org.eclipse.jpt.ui.internal.orm.details.OrmJavaClassChooser;
 import org.eclipse.jpt.ui.internal.orm.details.OrmSecondaryTablesComposite;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -44,6 +50,19 @@ public class EclipseLinkOrmEntityComposite extends AbstractEntityComposite<OrmEn
 		initializeConvertersPane(container);
 		initializeSecondaryTablesPane(container);
 		initializeAdvancedPane(container);
+	}
+	
+	@Override
+	protected void initializeGeneralPane(Composite container) {
+		int groupBoxMargin = getGroupBoxMargin();
+		
+		new OrmJavaClassChooser(this, getSubjectHolder(), addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin));
+		new AccessTypeComposite(this, getSubjectHolder(), addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin));
+		new MetadataCompleteComposite(this, getSubjectHolder(), addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin));
+
+		new EntityNameComposite(this, addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin));
+		new TableComposite(this, buildTableHolder(), container);
+		new IdClassComposite(this, addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin), false);
 	}
 	
 	protected void initializeCachingPane(Composite container) {
