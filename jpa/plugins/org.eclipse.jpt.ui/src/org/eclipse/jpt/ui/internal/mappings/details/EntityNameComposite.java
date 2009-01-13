@@ -49,7 +49,7 @@ public class EntityNameComposite extends Pane<Entity>
 	public EntityNameComposite(Pane<? extends Entity> parentPane,
 	                           Composite parent) {
 
-		super(parentPane, parent, false);
+		super(parentPane, parent);
 	}
 
 	@Override

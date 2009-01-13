@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.orm.details;
 
-import org.eclipse.jpt.core.context.orm.OrmEmbeddable;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.ConverterHolder;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmEmbeddable;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
@@ -34,7 +33,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.1
  * @since 2.1
  */
-public class EclipseLinkOrmEmbeddableComposite extends FormPane<OrmEmbeddable>
+public class EclipseLinkOrmEmbeddableComposite extends FormPane<EclipseLinkOrmEmbeddable>
                                  implements JpaComposite
 {
 	/**
@@ -44,7 +43,7 @@ public class EclipseLinkOrmEmbeddableComposite extends FormPane<OrmEmbeddable>
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public EclipseLinkOrmEmbeddableComposite(PropertyValueModel<? extends OrmEmbeddable> subjectHolder,
+	public EclipseLinkOrmEmbeddableComposite(PropertyValueModel<? extends EclipseLinkOrmEmbeddable> subjectHolder,
 	                           Composite parent,
 	                           WidgetFactory widgetFactory) {
 
@@ -75,10 +74,10 @@ public class EclipseLinkOrmEmbeddableComposite extends FormPane<OrmEmbeddable>
 	}
 	
 	private PropertyValueModel<ConverterHolder> buildConverterHolder() {
-		return new PropertyAspectAdapter<OrmEmbeddable, ConverterHolder>(getSubjectHolder()) {
+		return new PropertyAspectAdapter<EclipseLinkOrmEmbeddable, ConverterHolder>(getSubjectHolder()) {
 			@Override
 			protected ConverterHolder buildValue_() {
-				return ((EclipseLinkOrmEmbeddable) this.subject).getConverterHolder();
+				return this.subject.getConverterHolder();
 			}
 		};
 	}

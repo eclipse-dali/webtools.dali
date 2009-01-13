@@ -33,7 +33,7 @@ public class OrmMappedSuperclassComposite extends FormPane<OrmMappedSuperclass>
 	protected void initializeLayout(Composite container) {
 		new OrmJavaClassChooser(this, getSubjectHolder(), container);
 		new AccessTypeComposite(this, getSubjectHolder(), container);
-		new MetadataCompleteComposite(this, getSubjectHolder(), container);
 		new IdClassComposite(this, container);
+		new MetadataCompleteComposite(this, getSubjectHolder(), container);
 	}
 }

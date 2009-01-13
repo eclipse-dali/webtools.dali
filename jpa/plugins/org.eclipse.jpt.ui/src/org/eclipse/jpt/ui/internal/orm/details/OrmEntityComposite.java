@@ -47,8 +47,6 @@ public class OrmEntityComposite extends AbstractEntityComposite<OrmEntity>
 	
 	@Override
 	protected void initializeLayout(Composite container) {
-		int groupBoxMargin = getGroupBoxMargin();
-		
 		initializeGeneralPane(container);
 		initializeQueriesPane(container);
 		initializeInheritancePane(container);
@@ -56,38 +54,18 @@ public class OrmEntityComposite extends AbstractEntityComposite<OrmEntity>
 		initializeGeneratorsPane(container);
 		initializeSecondaryTablesPane(container);
 	}
+	
 	@Override
 	protected void initializeGeneralPane(Composite container) {
-
 		int groupBoxMargin = getGroupBoxMargin();
 		
-		new OrmJavaClassChooser(this, getSubjectHolder(), addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin));
-
-		// Table widgets
-		new TableComposite(
-			this,
-			buildTableHolder(),
-			container
-		);
-		
-		// Entity Name widgets
-		new EntityNameComposite(
-			this,
-			addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin)
-		);
-
-		new AccessTypeComposite(this, getSubjectHolder(), addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin), false);
-
-		// Primary Key Class widgets
-		new IdClassComposite(
-			this,
-			addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin),
-			false
-		);
-		
+		new OrmJavaClassChooser(this, getSubjectHolder(), addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin), false);
+		new TableComposite(this, buildTableHolder(), container);
+		new EntityNameComposite(this, addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin));
+		new AccessTypeComposite(this, getSubjectHolder(), addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin));
+		new IdClassComposite(this, addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin), false);
 		new MetadataCompleteComposite(this, getSubjectHolder(), addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin));
 	}
-	
 	
 	@Override
 	protected void addSecondaryTablesComposite(Composite container) {

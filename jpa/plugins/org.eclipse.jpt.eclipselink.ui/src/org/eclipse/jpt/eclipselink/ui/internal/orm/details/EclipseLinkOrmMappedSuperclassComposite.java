@@ -10,9 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.orm.details;
 
-import org.eclipse.jpt.core.context.orm.OrmMappedSuperclass;
 import org.eclipse.jpt.eclipselink.core.context.Caching;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkMappedSuperclass;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.ConverterHolder;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmMappedSuperclass;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
@@ -28,10 +26,10 @@ import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
-public class EclipseLinkOrmMappedSuperclassComposite extends FormPane<OrmMappedSuperclass> implements JpaComposite
+public class EclipseLinkOrmMappedSuperclassComposite extends FormPane<EclipseLinkOrmMappedSuperclass> implements JpaComposite
 {
 	public EclipseLinkOrmMappedSuperclassComposite(
-			PropertyValueModel<? extends OrmMappedSuperclass> subjectHolder,
+			PropertyValueModel<? extends EclipseLinkOrmMappedSuperclass> subjectHolder,
 			Composite parent, WidgetFactory widgetFactory) {
 		super(subjectHolder, parent, widgetFactory);
 	}
@@ -48,8 +46,8 @@ public class EclipseLinkOrmMappedSuperclassComposite extends FormPane<OrmMappedS
 	protected void initializeGeneralPane(Composite container) {
 		new OrmJavaClassChooser(this, getSubjectHolder(), container);
 		new AccessTypeComposite(this, getSubjectHolder(), container);
-		new MetadataCompleteComposite(this, getSubjectHolder(), container);
 		new IdClassComposite(this, container);
+		new MetadataCompleteComposite(this, getSubjectHolder(), container);
 	}
 	
 	protected void initializeCachingPane(Composite container) {
@@ -62,13 +60,13 @@ public class EclipseLinkOrmMappedSuperclassComposite extends FormPane<OrmMappedS
 		new OrmCachingComposite(this, buildCachingHolder(), container);
 	}
 
-	private PropertyAspectAdapter<OrmMappedSuperclass, Caching> buildCachingHolder() {
-		return new PropertyAspectAdapter<OrmMappedSuperclass, Caching>(
+	private PropertyAspectAdapter<EclipseLinkOrmMappedSuperclass, Caching> buildCachingHolder() {
+		return new PropertyAspectAdapter<EclipseLinkOrmMappedSuperclass, Caching>(
 			getSubjectHolder())
 		{
 			@Override
 			protected Caching buildValue_() {
-				return ((EclipseLinkMappedSuperclass) this.subject).getCaching();
+				return this.subject.getCaching();
 			}
 		};
 	}
@@ -84,10 +82,10 @@ public class EclipseLinkOrmMappedSuperclassComposite extends FormPane<OrmMappedS
 	}
 	
 	private PropertyValueModel<ConverterHolder> buildConverterHolder() {
-		return new PropertyAspectAdapter<OrmMappedSuperclass, ConverterHolder>(getSubjectHolder()) {
+		return new PropertyAspectAdapter<EclipseLinkOrmMappedSuperclass, ConverterHolder>(getSubjectHolder()) {
 			@Override
 			protected ConverterHolder buildValue_() {
-				return ((EclipseLinkOrmMappedSuperclass) this.subject).getConverterHolder();
+				return this.subject.getConverterHolder();
 			}
 		};
 	}

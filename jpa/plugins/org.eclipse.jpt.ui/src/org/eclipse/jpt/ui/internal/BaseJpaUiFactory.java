@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -43,6 +43,7 @@ import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.details.JpaPageComposite;
 import org.eclipse.jpt.ui.internal.java.details.JavaEntityComposite;
+import org.eclipse.jpt.ui.internal.java.details.JavaMappedSuperclassComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.BasicMappingComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.EmbeddableComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.EmbeddedIdMappingComposite;
@@ -50,7 +51,6 @@ import org.eclipse.jpt.ui.internal.mappings.details.EmbeddedMappingComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.IdMappingComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.ManyToManyMappingComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.ManyToOneMappingComposite;
-import org.eclipse.jpt.ui.internal.mappings.details.MappedSuperclassComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.OneToManyMappingComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.OneToOneMappingComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.TransientMappingComposite;
@@ -99,7 +99,7 @@ public abstract class BaseJpaUiFactory implements JpaUiFactory
 			PropertyValueModel<JavaMappedSuperclass> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
-		return new MappedSuperclassComposite(subjectHolder, parent, widgetFactory);
+		return new JavaMappedSuperclassComposite(subjectHolder, parent, widgetFactory);
 	}
 	
 	public JpaComposite createJavaEntityComposite(

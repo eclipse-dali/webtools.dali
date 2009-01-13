@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,7 +18,6 @@ import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 /**
  * Here the layout of this pane:
@@ -57,19 +56,14 @@ public class OrmJavaClassChooser extends FormPane<OrmTypeMapping> {
 		super(parentPane, subjectHolder, parent);
 	}
 
-	/**
-	 * Creates a new <code>XmlJavaClassChooser</code>.
-	 *
-	 * @param subjectHolder The holder of this pane's subject
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
-	 */
-	public OrmJavaClassChooser(PropertyValueModel<? extends OrmTypeMapping> subjectHolder,
-	                           Composite parent,
-	                           TabbedPropertySheetWidgetFactory widgetFactory) {
+	public OrmJavaClassChooser(FormPane<?> parentPane,
+        PropertyValueModel<? extends OrmTypeMapping> subjectHolder,
+        Composite parent,
+        boolean automaticallyAlignWidgets) {
 
-		super(subjectHolder, parent, widgetFactory);
+		super(parentPane, subjectHolder, parent, automaticallyAlignWidgets);
 	}
+
 
 	private ClassChooserPane<OrmTypeMapping> addClassChooser(Composite container) {
 
