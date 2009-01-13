@@ -46,7 +46,14 @@ public class IdClassComposite extends Pane<IdClassHolder>
 	public IdClassComposite(Pane<? extends IdClassHolder> parentPane,
                            Composite parent) {
 
-		super(parentPane, parent, false);
+		super(parentPane, parent);
+	}
+	
+	public IdClassComposite(Pane<? extends IdClassHolder> parentPane,
+        					Composite parent,
+        					boolean automaticallyAlignWidgets) {
+
+		super(parentPane, parent, automaticallyAlignWidgets);
 	}
 
 	private ClassChooserPane<IdClassHolder> addClassChooser(Composite container) {

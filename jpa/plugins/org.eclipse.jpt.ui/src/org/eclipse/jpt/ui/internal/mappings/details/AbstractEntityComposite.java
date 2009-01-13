@@ -149,7 +149,8 @@ public abstract class AbstractEntityComposite<T extends Entity> extends FormPane
 		// Primary Key Class widgets
 		new IdClassComposite(
 			this,
-			addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin)
+			addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin),
+			false
 		);
 	}
 

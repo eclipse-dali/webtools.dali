@@ -12,7 +12,6 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 import org.eclipse.jpt.core.context.MappedSuperclass;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
-import org.eclipse.jpt.ui.internal.BaseJpaUiFactory;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -50,13 +49,8 @@ public class MappedSuperclassComposite extends FormPane<MappedSuperclass>
 		super(subjectHolder, parent, widgetFactory);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected void initializeLayout(Composite container) {
-
-		// Primary Key Class widgets
 		new IdClassComposite(this, container);
 	}
 }
