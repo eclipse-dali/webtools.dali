@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -40,7 +40,23 @@ public class OrmEntityComposite extends AbstractEntityComposite<OrmEntity>
 
 		super(subjectHolder, parent, widgetFactory);
 	}
-
+	
+	@Override
+	protected void initializeLayout(Composite container) {
+		int groupBoxMargin = getGroupBoxMargin();
+		new OrmJavaClassChooser(this, getSubjectHolder(), addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin));
+		new AccessTypeComposite(this, getSubjectHolder(), addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin));
+		new MetadataCompleteComposite(this, getSubjectHolder(), addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin));
+		
+		initializeGeneralPane(container);
+		initializeQueriesPane(container);
+		initializeInheritancePane(container);
+		initializeAttributeOverridesPane(container);
+		initializeGeneratorsPane(container);
+		initializeSecondaryTablesPane(container);
+	}
+	
+	
 	@Override
 	protected void addSecondaryTablesComposite(Composite container) {
 		new OrmSecondaryTablesComposite(this, container);

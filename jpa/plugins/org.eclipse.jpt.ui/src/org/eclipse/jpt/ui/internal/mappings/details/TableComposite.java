@@ -13,7 +13,6 @@ import java.util.Collection;
 import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.SchemaContainer;
-import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.db.CatalogCombo;
@@ -66,21 +65,7 @@ public class TableComposite extends FormPane<Table>
 	                      PropertyValueModel<? extends Table> subjectHolder,
 	                      Composite parent) {
 
-		super(parentPane, subjectHolder, parent);
-	}
-
-	/**
-	 * Creates a new <code>TableComposite</code>.
-	 *
-	 * @param subjectHolder The holder of the subject <code>ITable</code>
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
-	 */
-	public TableComposite(PropertyValueModel<? extends Table> subjectHolder,
-	                      Composite parent,
-	                      WidgetFactory widgetFactory) {
-
-		super(subjectHolder, parent, widgetFactory);
+		super(parentPane, subjectHolder, parent, false);
 	}
 
 	private CatalogCombo<Table> addCatalogCombo(Composite container) {

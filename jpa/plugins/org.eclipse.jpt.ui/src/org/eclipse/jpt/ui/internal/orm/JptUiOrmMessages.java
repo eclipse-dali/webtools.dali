@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,7 +14,7 @@ import org.eclipse.osgi.util.NLS;
 /**
  * Localized messages used by Dali ORM widgets.
  *
- * @version 2.0
+ * @version 2.2
  * @since 1.0
  */
 public class JptUiOrmMessages {
@@ -34,6 +34,8 @@ public class JptUiOrmMessages {
 	public static String EntityMappingsPage_catalogNoDefaultSpecified;
 	public static String EntityMappingsPage_schemaDefault;
 	public static String EntityMappingsPage_schemaNoDefaultSpecified;
+	public static String MetadataCompleteComposite_metadataComplete;
+	public static String MetadataCompleteComposite_metadataCompleteWithDefault;
 	public static String OrmGeneratorsComposite_addSequenceGenerator;
 	public static String OrmGeneratorsComposite_addSequenceGeneratorDescription;
 	public static String OrmGeneratorsComposite_addSequenceGeneratorDescriptionTitle;
@@ -54,8 +56,6 @@ public class JptUiOrmMessages {
 	public static String OrmGeneratorsComposite_label;
 	public static String OrmJavaAttributeChooser_javaAttribute;
 	public static String OrmJavaClassChooser_javaClass;
-	public static String OrmPersistentTypeDetailsPage_metadataComplete;
-	public static String OrmPersistentTypeDetailsPage_metadataCompleteWithDefault;
 	public static String OrmQueriesComposite_groupBox;
 	public static String OrmSequenceGeneratorComposite_name;
 	public static String OrmSequenceGeneratorComposite_sequence;

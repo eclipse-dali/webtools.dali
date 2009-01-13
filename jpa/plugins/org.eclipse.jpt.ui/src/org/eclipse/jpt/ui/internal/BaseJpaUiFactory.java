@@ -55,7 +55,9 @@ import org.eclipse.jpt.ui.internal.mappings.details.OneToManyMappingComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.OneToOneMappingComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.TransientMappingComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.VersionMappingComposite;
+import org.eclipse.jpt.ui.internal.orm.details.OrmEmbeddableComposite;
 import org.eclipse.jpt.ui.internal.orm.details.OrmEntityComposite;
+import org.eclipse.jpt.ui.internal.orm.details.OrmMappedSuperclassComposite;
 import org.eclipse.jpt.ui.internal.persistence.details.GenericPersistenceUnitGeneralComposite;
 import org.eclipse.jpt.ui.internal.persistence.details.PersistenceUnitConnectionComposite;
 import org.eclipse.jpt.ui.internal.persistence.details.PersistenceUnitPropertiesComposite;
@@ -121,7 +123,7 @@ public abstract class BaseJpaUiFactory implements JpaUiFactory
 			PropertyValueModel<OrmMappedSuperclass> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
-		return new MappedSuperclassComposite(subjectHolder, parent, widgetFactory);
+		return new OrmMappedSuperclassComposite(subjectHolder, parent, widgetFactory);
 	}
 	
 	public JpaComposite createOrmEntityComposite(
@@ -135,7 +137,7 @@ public abstract class BaseJpaUiFactory implements JpaUiFactory
 			PropertyValueModel<OrmEmbeddable> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
-		return new EmbeddableComposite(subjectHolder, parent, widgetFactory);
+		return new OrmEmbeddableComposite(subjectHolder, parent, widgetFactory);
 	}
 	
 	
