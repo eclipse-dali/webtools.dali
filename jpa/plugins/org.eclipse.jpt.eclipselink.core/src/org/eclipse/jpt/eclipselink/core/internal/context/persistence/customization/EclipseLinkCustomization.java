@@ -42,7 +42,6 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 	private Boolean validationOnly;
 	private ArrayList<ClassRef> sessionCustomizers;
 	private String profiler; // storing EclipseLinkStringValue since value can be Profiler or custom class
-	private String classLoader;
 	private String exceptionHandler;
 
 	// key = Entity name ; value = Customizer properties
@@ -86,8 +85,6 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 		this.initializeEntitiesCustomizerClass(properties);
 		
 		this.profiler = this.getProfilerProtertyValue();
-		this.classLoader = 
-			this.getStringValue(ECLIPSELINK_CLASSLOADER);
 		this.exceptionHandler = 
 			this.getStringValue(ECLIPSELINK_EXCEPTION_HANDLER);
 	}
@@ -182,9 +179,6 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 			ECLIPSELINK_PROFILER,
 			PROFILER_PROPERTY);
 		propertyNames.put(
-			ECLIPSELINK_CLASSLOADER,
-			CLASSLOADER_PROPERTY);
-		propertyNames.put(
 			ECLIPSELINK_EXCEPTION_HANDLER,
 			EXCEPTION_HANDLER_PROPERTY);
 
@@ -258,9 +252,6 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 		}
 		else if (aspectName.equals(PROFILER_PROPERTY)) {
 			this.profilerChanged(event);
-		}
-		else if (aspectName.equals(CLASSLOADER_PROPERTY)) {
-			this.classLoaderChanged(event);
 		}
 		else if (aspectName.equals(EXCEPTION_HANDLER_PROPERTY)) {
 			this.exceptionHandlerChanged(event);
@@ -529,29 +520,6 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 	
 	public Weaving getDefaultWeaving() {
 		return DEFAULT_WEAVING;
-	}
-
-	// ********** ClassLoader **********
-	public String getClassLoader() {
-		return this.classLoader;
-	}
-
-	public void setClassLoader(String newClassLoader) {
-		String old = this.classLoader;
-		this.classLoader = newClassLoader;
-		this.putProperty(CLASSLOADER_PROPERTY, newClassLoader);
-		this.firePropertyChanged(CLASSLOADER_PROPERTY, old, newClassLoader);
-	}
-
-	private void classLoaderChanged(PropertyChangeEvent event) {
-		String newValue = (event.getNewValue() == null) ? null : ((Property) event.getNewValue()).getValue();
-		String old = this.classLoader;
-		this.classLoader = newValue;
-		this.firePropertyChanged(event.getAspectName(), old, newValue);
-	}
-
-	public String getDefaultClassLoader() {
-		return DEFAULT_CLASSLOADER;
 	}
 
 	// ********** ExceptionHandler **********

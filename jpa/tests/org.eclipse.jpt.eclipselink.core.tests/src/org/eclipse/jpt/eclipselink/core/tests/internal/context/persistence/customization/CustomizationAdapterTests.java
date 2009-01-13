@@ -86,10 +86,6 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 	private static final Profiler PROFILER_TEST_VALUE = Profiler.query_monitor;
 	private static final String PROFILER_TEST_VALUE_2 = "custom.profiler.test";
 	
-	public static final String CLASSLOADER_KEY = Customization.ECLIPSELINK_CLASSLOADER;
-	public static final String CLASSLOADER_TEST_VALUE = "custom.profiler.test";
-	public static final String CLASSLOADER_TEST_VALUE_2 = "oracle.custom.profiler.test";
-	
 	public static final String EXCEPTION_HANDLER_KEY = Customization.ECLIPSELINK_EXCEPTION_HANDLER;
 	public static final String EXCEPTION_HANDLER_TEST_VALUE = "acme.CustomSessionEventListener";
 	public static final String EXCEPTION_HANDLER_TEST_VALUE_2 = "oracle.sessions.CustomSessionEventListener";
@@ -115,7 +111,6 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 		this.customization.addPropertyChangeListener(Customization.DESCRIPTOR_CUSTOMIZER_PROPERTY, propertyChangeListener);
 		this.customization.addPropertyChangeListener(Customization.SESSION_CUSTOMIZER_PROPERTY, propertyChangeListener);
 		this.customization.addPropertyChangeListener(Customization.PROFILER_PROPERTY, propertyChangeListener);
-		this.customization.addPropertyChangeListener(customization.CLASSLOADER_PROPERTY, propertyChangeListener);
 		this.customization.addPropertyChangeListener(customization.EXCEPTION_HANDLER_PROPERTY, propertyChangeListener);
 
 		ListChangeListener sessionCustomizersChangeListener = this.buildSessionCustomizersChangeListener();
@@ -131,7 +126,7 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 	 */
 	@Override
 	protected void populatePu() {
-		this.modelPropertiesSizeOriginal = 13;
+		this.modelPropertiesSizeOriginal = 12;
 		this.propertiesTotal = this.modelPropertiesSizeOriginal + 4; // 4 misc properties
 		this.modelPropertiesSize = this.modelPropertiesSizeOriginal;
 		
@@ -150,7 +145,6 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 		this.persistenceUnitPut("misc.property.4", "value.4");
 		this.persistenceUnitPut(CUSTOMIZER_KEY, CUSTOMIZER_TEST_VALUE);
 		this.persistenceUnitPut(PROFILER_KEY, PROFILER_TEST_VALUE);
-		this.persistenceUnitPut(CLASSLOADER_KEY, CLASSLOADER_TEST_VALUE);
 		this.persistenceUnitPut(EXCEPTION_HANDLER_KEY, EXCEPTION_HANDLER_TEST_VALUE);
 		return;
 	}
@@ -283,7 +277,6 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 		this.verifyHasListeners(this.customization, Customization.WEAVING_CHANGE_TRACKING_PROPERTY);
 		this.verifyHasListeners(this.customization, Customization.WEAVING_FETCH_GROUPS_PROPERTY);
 		this.verifyHasListeners(this.customization, Customization.VALIDATION_ONLY_PROPERTY);
-		this.verifyHasListeners(this.customization, Customization.CLASSLOADER_PROPERTY);
 		this.verifyHasListeners(this.customization, Customization.EXCEPTION_HANDLER_PROPERTY);
 		this.verifyHasListeners(propertyListAdapter);
 		
@@ -296,7 +289,6 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 		this.verifyHasListeners(this.customization, Customization.WEAVING_CHANGE_TRACKING_PROPERTY);
 		this.verifyHasListeners(this.customization, Customization.WEAVING_FETCH_GROUPS_PROPERTY);
 		this.verifyHasListeners(this.customization, Customization.VALIDATION_ONLY_PROPERTY);
-		this.verifyHasListeners(this.customization, Customization.CLASSLOADER_PROPERTY);
 		this.verifyHasListeners(this.customization, Customization.EXCEPTION_HANDLER_PROPERTY);
 	}
 
@@ -468,24 +460,6 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 			VALIDATION_ONLY_KEY,
 			VALIDATION_ONLY_TEST_VALUE,
 			VALIDATION_ONLY_TEST_VALUE_2);
-	}
-
-	// ********** ClassLoader tests **********
-	public void testSetClassLoader() throws Exception {
-		this.verifyModelInitialized(
-			CLASSLOADER_KEY,
-			CLASSLOADER_TEST_VALUE);
-		this.verifySetProperty(
-			CLASSLOADER_KEY,
-			CLASSLOADER_TEST_VALUE,
-			CLASSLOADER_TEST_VALUE_2);
-	}
-
-	public void testAddRemoveClassLoader() throws Exception {
-		this.verifyAddRemoveProperty(
-			CLASSLOADER_KEY,
-			CLASSLOADER_TEST_VALUE,
-			CLASSLOADER_TEST_VALUE_2);
 	}
 
 	// ********** ExceptionHandler tests **********
@@ -716,8 +690,6 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 			this.customization.setWeavingEager((Boolean) newValue);
 		else if (propertyName.equals(Customization.VALIDATION_ONLY_PROPERTY))
 			this.customization.setValidationOnly((Boolean) newValue);
-		else if (propertyName.equals(Customization.CLASSLOADER_PROPERTY))
-			this.customization.setClassLoader((String) newValue);
 		else if (propertyName.equals(Customization.EXCEPTION_HANDLER_PROPERTY))
 			this.customization.setExceptionHandler((String) newValue);
 		else if (propertyName.equals(Customization.SESSION_CUSTOMIZER_PROPERTY))
@@ -753,8 +725,6 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 			modelValue = this.customization.getWeavingEager();
 		else if (propertyName.equals(Customization.VALIDATION_ONLY_PROPERTY))
 			modelValue = this.customization.getValidationOnly();
-		else if (propertyName.equals(Customization.CLASSLOADER_PROPERTY))
-			modelValue = this.customization.getClassLoader();
 		else if (propertyName.equals(Customization.EXCEPTION_HANDLER_PROPERTY))
 			modelValue = this.customization.getExceptionHandler();
 		else if (propertyName.equals(Customization.PROFILER_PROPERTY))

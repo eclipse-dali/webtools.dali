@@ -119,14 +119,6 @@ public interface Customization extends PersistenceUnitProperties
 		static final String ECLIPSELINK_VALIDATION_ONLY = "eclipselink.validation-only"; //$NON-NLS-1$
 		static final Boolean DEFAULT_VALIDATION_ONLY = Boolean.TRUE;
 
-	String getDefaultClassLoader();
-	String getClassLoader();
-	void setClassLoader(String newClassLoader);
-		static final String CLASSLOADER_PROPERTY = "classLoader"; //$NON-NLS-1$
-		// EclipseLink key string
-		static final String ECLIPSELINK_CLASSLOADER = "eclipselink.classloader"; //$NON-NLS-1$
-		static final String DEFAULT_CLASSLOADER = null;	// no default
-
 	String getDefaultExceptionHandler();
 	String getExceptionHandler();
 	void setExceptionHandler(String newExceptionHandler);

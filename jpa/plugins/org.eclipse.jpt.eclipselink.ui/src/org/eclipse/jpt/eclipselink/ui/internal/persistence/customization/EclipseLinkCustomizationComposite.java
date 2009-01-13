@@ -80,9 +80,6 @@ public class EclipseLinkCustomizationComposite extends FormPane<Customization>
 		// Validation Only
 		new ValidationOnlyComposite(this, composite);
 
-		// Class Loader
-		new ClassLoaderComposite(this, composite);
-		
 		// Profiler:
 		new ProfilerComposite(this, composite);
 	}

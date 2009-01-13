@@ -226,8 +226,6 @@ public class EclipseLinkUiMessages {
 	public static String PersistenceXmlCustomizationTab_validationOnlyLabel;
 	public static String PersistenceXmlCustomizationTab_validationOnlyLabelDefault;
 	
-	public static String PersistenceXmlCustomizationTab_classLoaderLabel;
-	
 	public static String PersistenceXmlCustomizationTab_profilerLabel;
 	public static String PersistenceXmlCustomizationTab_browse;
 	
