@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,6 @@
 package org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.customization;
 
 import java.util.ListIterator;
-import org.eclipse.jpt.core.context.persistence.ClassRef;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.Property;
 import org.eclipse.jpt.core.internal.context.persistence.GenericProperty;
@@ -245,7 +244,7 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 	public void testSessionCustomizersList() throws Exception {
 		// add
 		this.clearEvent();
-		ClassRef classRef = this.customization.addSessionCustomizer(SESSION_CUSTOMIZER_TEST_VALUE_2);
+		String className = this.customization.addSessionCustomizer(SESSION_CUSTOMIZER_TEST_VALUE_2);
 		
 		// verify event received
 		assertNotNull("No Event Fired.", this.sessionCustomizersEvent);
@@ -255,7 +254,7 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 		// remove
 		this.clearEvent();
 		
-		this.customization.removeSessionCustomizer(classRef);
+		this.customization.removeSessionCustomizer(className);
 		// verify event received
 		assertNotNull("No Event Fired.", this.sessionCustomizersEvent);
 		// verify event for the expected property
@@ -730,9 +729,9 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 		else if (propertyName.equals(Customization.PROFILER_PROPERTY))
 			modelValue = this.customization.getProfiler();
 		else if (propertyName.equals(Customization.SESSION_CUSTOMIZER_PROPERTY)) {
-			ListIterator<ClassRef> iterator = this.customization.sessionCustomizers();
+			ListIterator<String> iterator = this.customization.sessionCustomizers();
 			if(iterator.hasNext()) {
-				modelValue = iterator.next().getClassName();
+				modelValue = iterator.next();
 			}
 		}
 		else if (propertyName.equals(Customization.DESCRIPTOR_CUSTOMIZER_PROPERTY))

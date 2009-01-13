@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2008 Oracle. All rights reserved.
+* Copyright (c) 2008, 2009 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,6 @@
 package org.eclipse.jpt.eclipselink.core.internal.context.persistence.customization;
 
 import java.util.ListIterator;
-import org.eclipse.jpt.core.context.persistence.ClassRef;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnitProperties;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.PersistenceUnitProperties;
 
@@ -83,11 +82,11 @@ public interface Customization extends PersistenceUnitProperties
 		static final String ECLIPSELINK_DESCRIPTOR_CUSTOMIZER = "eclipselink.descriptor.customizer."; //$NON-NLS-1$
 		static final String DEFAULT_DESCRIPTOR_CUSTOMIZER = null;	// no default
 
-	ListIterator<ClassRef> sessionCustomizers();
+	ListIterator<String> sessionCustomizers();
 	int sessionCustomizersSize();
 	boolean sessionCustomizerExists(String sessionCustomizerClassName);
-	ClassRef addSessionCustomizer(String newSessionCustomizerClassName);
-	void removeSessionCustomizer(ClassRef classRef);
+	String addSessionCustomizer(String newSessionCustomizerClassName);
+	void removeSessionCustomizer(String sessionCustomizerClassName);
 		static final String SESSION_CUSTOMIZER_LIST_PROPERTY = "sessionCustomizers"; //$NON-NLS-1$
 		static final String SESSION_CUSTOMIZER_PROPERTY = "sessionCustomizer"; //$NON-NLS-1$
 		// EclipseLink key string

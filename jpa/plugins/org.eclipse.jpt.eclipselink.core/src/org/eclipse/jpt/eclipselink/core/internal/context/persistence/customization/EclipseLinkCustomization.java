@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2008 Oracle. All rights reserved.
+* Copyright (c) 2008, 2009 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,11 +14,8 @@ import java.util.HashMap;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
-import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.core.context.persistence.ClassRef;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.Property;
-import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnitProperties;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
@@ -40,7 +37,7 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 	private Boolean weavingInternal;
 	private Boolean weavingEager;
 	private Boolean validationOnly;
-	private ArrayList<ClassRef> sessionCustomizers;
+	private ArrayList<String> sessionCustomizers;
 	private String profiler; // storing EclipseLinkStringValue since value can be Profiler or custom class
 	private String exceptionHandler;
 
@@ -93,26 +90,13 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 		Set<Property> properties = 
 			this.getPropertiesSetWithPrefix(ECLIPSELINK_SESSION_CUSTOMIZER);
 		
-		this.sessionCustomizers = new ArrayList<ClassRef>(properties.size());
+		this.sessionCustomizers = new ArrayList<String>(properties.size());
 		this.initializeSessionCustomizersWith(properties);
 	}
 
 	private void initializeSessionCustomizersWith(Set<Property> properties) {
 		for (Property property : properties) {
-			String className = property.getValue();
-			try {
-				IType sessionCustomizerClass = this.getJpaProject().getJavaProject().findType(className);
-				if(sessionCustomizerClass != null) {
-					className = sessionCustomizerClass.getFullyQualifiedName();
-				}
-				ClassRef classRef = 
-					this.getJpaProject().getJpaPlatform().getJpaFactory().buildClassRef(
-						this.getPersistenceUnit(), className);
-				this.sessionCustomizers.add(classRef);
-			}
-			catch (Exception e) {
-				JptEclipseLinkCorePlugin.log(e);
-			}
+			this.sessionCustomizers.add(property.getValue());
 		}
 	}
 
@@ -439,8 +423,8 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 	}
 
 	// ********** SessionCustomizers **********
-	public ListIterator<ClassRef> sessionCustomizers(){
-		return new CloneListIterator<ClassRef>(this.sessionCustomizers);
+	public ListIterator<String> sessionCustomizers(){
+		return new CloneListIterator<String>(this.sessionCustomizers);
 	}
 	
 	public int sessionCustomizersSize(){
@@ -449,43 +433,40 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 
 	public boolean sessionCustomizerExists(String sessionCustomizerClassName) {
 
-		for (ClassRef sessionCustomizer : this.sessionCustomizers) {
-			if(sessionCustomizer.getClassName().equals(sessionCustomizerClassName)) {
+		for (String sessionCustomizer : this.sessionCustomizers) {
+			if(sessionCustomizer.equals(sessionCustomizerClassName)) {
 				return true;
 			}
 		}
 		return false;
 	}
 
-	public ClassRef addSessionCustomizer(String newSessionCustomizerClassName){
+	public String addSessionCustomizer(String newSessionCustomizerClassName){
 
 		if( ! this.sessionCustomizerExists(newSessionCustomizerClassName)) {
-			ClassRef classRef = 
-				this.getJpaProject().getJpaPlatform().getJpaFactory().buildClassRef(
-					this.getPersistenceUnit(), newSessionCustomizerClassName);
-			this.sessionCustomizers.add(classRef);
-			this.putProperty(SESSION_CUSTOMIZER_PROPERTY, classRef.getClassName(), true);
+			this.sessionCustomizers.add(newSessionCustomizerClassName);
+			this.putProperty(SESSION_CUSTOMIZER_PROPERTY, newSessionCustomizerClassName, true);
 			this.fireListChanged(SESSION_CUSTOMIZER_LIST_PROPERTY);
-			return classRef;
+			return newSessionCustomizerClassName;
 		}
 		return null;
 	}
 	
-	public void removeSessionCustomizer(ClassRef classRef){
+	public void removeSessionCustomizer(String className){
 
-		if(this.removeSessionCustomizer(classRef.getClassName()) != null) {
-			this.removeProperty(SESSION_CUSTOMIZER_PROPERTY, classRef.getClassName());
+		if(this.removeSessionCustomizer_(className) != null) {
+			this.removeProperty(SESSION_CUSTOMIZER_PROPERTY, className);
 			this.fireListChanged(SESSION_CUSTOMIZER_LIST_PROPERTY);
 		}
 	}
 	
-	private ClassRef removeSessionCustomizer(String sessionCustomizerClassName){
+	private String removeSessionCustomizer_(String className){
 
-		for ( ListIterator<ClassRef> i = this.sessionCustomizers(); i.hasNext();) {
-			ClassRef classRef = i.next();
-			if(classRef.getClassName().equals(sessionCustomizerClassName)) {
-				this.sessionCustomizers.remove(classRef);
-				return classRef;
+		for ( ListIterator<String> i = this.sessionCustomizers(); i.hasNext();) {
+			String sessionCustomizer = i.next();
+			if(sessionCustomizer.equals(className)) {
+				this.sessionCustomizers.remove(sessionCustomizer);
+				return sessionCustomizer;
 			}
 		}
 		return null;

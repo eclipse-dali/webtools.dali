@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2008 Oracle. All rights reserved.
+* Copyright (c) 2008, 2009 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -24,7 +24,6 @@ import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.window.Window;
-import org.eclipse.jpt.core.context.persistence.ClassRef;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.customization.Customization;
 import org.eclipse.jpt.eclipselink.ui.JptEclipseLinkUiPlugin;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
@@ -71,7 +70,7 @@ public class SessionCustomizersComposite extends Pane<Customization>
 			String className = type.getFullyQualifiedName('.');
 			if( ! this.getSubject().sessionCustomizerExists(className)) {
 				
-				ClassRef classRef = this.getSubject().addSessionCustomizer(className);
+				String classRef = this.getSubject().addSessionCustomizer(className);
 				listSelectionModel.setSelectedValue(classRef);
 			}
 		}
@@ -85,7 +84,7 @@ public class SessionCustomizersComposite extends Pane<Customization>
 
 			public void removeSelectedItems(ObjectListSelectionModel listSelectionModel) {
 				for (Object item : listSelectionModel.selectedValues()) {
-					getSubject().removeSessionCustomizer((ClassRef) item);
+					getSubject().removeSessionCustomizer((String) item);
 				}
 			}
 		};
@@ -96,8 +95,7 @@ public class SessionCustomizersComposite extends Pane<Customization>
 
 			@Override
 			public String getText(Object element) {
-				ClassRef classRef = (ClassRef) element;
-				String name = classRef.getClassName();
+				String name = (String) element;
 
 				if (name == null) {
 					name = EclipseLinkUiMessages.PersistenceXmlCustomizationTab_noName;
@@ -107,18 +105,10 @@ public class SessionCustomizersComposite extends Pane<Customization>
 		};
 	}
 
-	private ListValueModel<ClassRef> buildItemListHolder() {
-		return new ItemPropertyListValueModelAdapter<ClassRef>(
-			buildListHolder(),
-			ClassRef.JAVA_PERSISTENT_TYPE_PROPERTY,
-			ClassRef.CLASS_NAME_PROPERTY
-		);
-	}
-
-	private ListValueModel<ClassRef> buildListHolder() {
-		return new ListAspectAdapter<Customization, ClassRef>(getSubjectHolder(), Customization.SESSION_CUSTOMIZER_LIST_PROPERTY) {
+	private ListValueModel<String> buildListHolder() {
+		return new ListAspectAdapter<Customization, String>(getSubjectHolder(), Customization.SESSION_CUSTOMIZER_LIST_PROPERTY) {
 			@Override
-			protected ListIterator<ClassRef> listIterator_() {
+			protected ListIterator<String> listIterator_() {
 				return subject.sessionCustomizers();
 			}
 
@@ -129,8 +119,8 @@ public class SessionCustomizersComposite extends Pane<Customization>
 		};
 	}
 
-	private WritablePropertyValueModel<ClassRef> buildSelectedItemHolder() {
-		return new SimplePropertyValueModel<ClassRef>();
+	private WritablePropertyValueModel<String> buildSelectedItemHolder() {
+		return new SimplePropertyValueModel<String>();
 	}
 
 	/**
@@ -190,7 +180,7 @@ public class SessionCustomizersComposite extends Pane<Customization>
 			this,
 			container,
 			buildAdapter(),
-			buildItemListHolder(),
+			buildListHolder(),
 			buildSelectedItemHolder(),
 			buildLabelProvider()
 		)
