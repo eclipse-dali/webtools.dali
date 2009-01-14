@@ -28,11 +28,11 @@ public class OrmXmlTests extends ContextModelTestCase
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		xmlPersistenceUnit().setName("foo");
+		getXmlPersistenceUnit().setName("foo");
 		XmlMappingFileRef mappingFileRef = PersistenceFactory.eINSTANCE.createXmlMappingFileRef();
 		mappingFileRef.setFileName(JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH);
-		xmlPersistenceUnit().getMappingFiles().add(mappingFileRef);
-		persistenceResource().save(null);
+		getXmlPersistenceUnit().getMappingFiles().add(mappingFileRef);
+		getPersistenceResource().save(null);
 	}
 	
 	protected PersistenceXml persistenceXml() {
@@ -40,11 +40,11 @@ public class OrmXmlTests extends ContextModelTestCase
 	}
 	
 	protected OrmXml ormXml() {
-		return (OrmXml) persistenceUnit().mappingFileRefs().next().getMappingFile();
+		return (OrmXml) getPersistenceUnit().mappingFileRefs().next().getMappingFile();
 	}
 	
 	public void testUpdateAddEntityMappings() throws Exception {
-		OrmResource ormResource = ormResource();
+		OrmResource ormResource = getOrmResource();
 		ormResource.getContents().clear();
 		ormResource.save(null);
 		
@@ -58,7 +58,7 @@ public class OrmXmlTests extends ContextModelTestCase
 	}
 	
 	public void testModifyAddEntityMappings() {
-		OrmResource ormResource = ormResource();
+		OrmResource ormResource = getOrmResource();
 		ormResource.getContents().remove(ormResource.getEntityMappings());
 		assertNull(ormResource.getEntityMappings());
 		
@@ -81,7 +81,7 @@ public class OrmXmlTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateRemoveEntityMappings() throws Exception {
-		OrmResource ormResource = ormResource();
+		OrmResource ormResource = getOrmResource();
 		
 		assertNotNull(ormXml().getRoot());
 		

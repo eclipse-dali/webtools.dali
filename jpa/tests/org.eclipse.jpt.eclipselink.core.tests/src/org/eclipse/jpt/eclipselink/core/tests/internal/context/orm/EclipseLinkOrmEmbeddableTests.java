@@ -165,10 +165,10 @@ public class EclipseLinkOrmEmbeddableTests extends EclipseLinkOrmContextModelTes
 	
 	public void testUpdateCustomizerClass() throws Exception {
 		createTestEmbeddableForCustomizer();
-		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		EclipseLinkJavaEmbeddable javaContextEmbeddable = (EclipseLinkJavaEmbeddable) ormPersistentType.getJavaPersistentType().getMapping();
 		EclipseLinkOrmEmbeddable ormContextEmbeddable = (EclipseLinkOrmEmbeddable) ormPersistentType.getMapping();
-		XmlEmbeddable resourceEmbeddable = (XmlEmbeddable) ormResource().getEntityMappings().getEmbeddables().get(0);
+		XmlEmbeddable resourceEmbeddable = (XmlEmbeddable) getOrmResource().getEntityMappings().getEmbeddables().get(0);
 
 
 		// check defaults
@@ -244,9 +244,9 @@ public class EclipseLinkOrmEmbeddableTests extends EclipseLinkOrmContextModelTes
 	
 	public void testModifyCustomizerClass() throws Exception {
 		createTestEmbeddableForCustomizer();
-		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		EclipseLinkOrmEmbeddable ormContextEmbeddable = (EclipseLinkOrmEmbeddable) ormPersistentType.getMapping();
-		XmlEmbeddable resourceEmbeddable = (XmlEmbeddable) ormResource().getEntityMappings().getEmbeddables().get(0);
+		XmlEmbeddable resourceEmbeddable = (XmlEmbeddable) getOrmResource().getEntityMappings().getEmbeddables().get(0);
 		
 		// check defaults
 		
@@ -276,10 +276,10 @@ public class EclipseLinkOrmEmbeddableTests extends EclipseLinkOrmContextModelTes
 	
 	public void testUpdateChangeTracking() throws Exception {
 		createTestEmbeddableForChangeTracking();
-		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		EclipseLinkJavaEmbeddable javaContextEmbeddable = (EclipseLinkJavaEmbeddable) ormPersistentType.getJavaPersistentType().getMapping();
 		EclipseLinkOrmEmbeddable ormContextEmbeddable = (EclipseLinkOrmEmbeddable) ormPersistentType.getMapping();
-		XmlEmbeddable resourceEmbeddable = (XmlEmbeddable) ormResource().getEntityMappings().getEmbeddables().get(0);
+		XmlEmbeddable resourceEmbeddable = (XmlEmbeddable) getOrmResource().getEntityMappings().getEmbeddables().get(0);
 		
 		// check defaults
 		
@@ -366,9 +366,9 @@ public class EclipseLinkOrmEmbeddableTests extends EclipseLinkOrmContextModelTes
 	
 	public void testModifyChangeTracking() throws Exception  {
 		createTestEmbeddableForChangeTracking();
-		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		EclipseLinkOrmEmbeddable ormContextEmbeddable = (EclipseLinkOrmEmbeddable) ormPersistentType.getMapping();
-		XmlEmbeddable resourceEmbeddable = (XmlEmbeddable) ormResource().getEntityMappings().getEmbeddables().get(0);
+		XmlEmbeddable resourceEmbeddable = (XmlEmbeddable) getOrmResource().getEntityMappings().getEmbeddables().get(0);
 		
 		// check defaults
 		
@@ -425,11 +425,11 @@ public class EclipseLinkOrmEmbeddableTests extends EclipseLinkOrmContextModelTes
 	
 	public void testUpdateCustomConverters() throws Exception {
 		createTestEmbeddableForCustomConverters();
-		EclipseLinkPersistenceUnit persistenceUnit = persistenceUnit();
-		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		EclipseLinkPersistenceUnit persistenceUnit = getPersistenceUnit();
+		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		EclipseLinkOrmEmbeddable ormContextEmbeddable = (EclipseLinkOrmEmbeddable) ormPersistentType.getMapping();
 		ConverterHolder ormContextConverterHolder = ormContextEmbeddable.getConverterHolder();
-		XmlEmbeddable resourceEmbeddable = (XmlEmbeddable) ormResource().getEntityMappings().getEmbeddables().get(0);
+		XmlEmbeddable resourceEmbeddable = (XmlEmbeddable) getOrmResource().getEntityMappings().getEmbeddables().get(0);
 		
 		assertEquals(0, ormContextConverterHolder.customConvertersSize());
 		assertEquals(0, resourceEmbeddable.getConverters().size());
@@ -502,10 +502,10 @@ public class EclipseLinkOrmEmbeddableTests extends EclipseLinkOrmContextModelTes
 
 	public void testModifyCustomConverters() throws Exception {
 		createTestEmbeddableForCustomConverters();
-		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		EclipseLinkOrmEmbeddable ormContextEmbeddable = (EclipseLinkOrmEmbeddable) ormPersistentType.getMapping();
 		ConverterHolder ormContextConverterHolder = ormContextEmbeddable.getConverterHolder();
-		XmlEmbeddable resourceEmbeddable = (XmlEmbeddable) ormResource().getEntityMappings().getEmbeddables().get(0);
+		XmlEmbeddable resourceEmbeddable = (XmlEmbeddable) getOrmResource().getEntityMappings().getEmbeddables().get(0);
 		
 		assertEquals(0, ormContextConverterHolder.customConvertersSize());
 		assertEquals(0, resourceEmbeddable.getConverters().size());
@@ -583,11 +583,11 @@ public class EclipseLinkOrmEmbeddableTests extends EclipseLinkOrmContextModelTes
 	
 	public void testUpdateTypeConverters() throws Exception {
 		createTestEmbeddableForTypeConverters();
-		EclipseLinkPersistenceUnit persistenceUnit = persistenceUnit();
-		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		EclipseLinkPersistenceUnit persistenceUnit = getPersistenceUnit();
+		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		EclipseLinkOrmEmbeddable ormContextEmbeddable = (EclipseLinkOrmEmbeddable) ormPersistentType.getMapping();
 		ConverterHolder ormContextConverterHolder = ormContextEmbeddable.getConverterHolder();
-		XmlEmbeddable resourceEmbeddable = (XmlEmbeddable) ormResource().getEntityMappings().getEmbeddables().get(0);
+		XmlEmbeddable resourceEmbeddable = (XmlEmbeddable) getOrmResource().getEntityMappings().getEmbeddables().get(0);
 		
 		assertEquals(0, ormContextConverterHolder.typeConvertersSize());
 		assertEquals(0, resourceEmbeddable.getTypeConverters().size());
@@ -660,11 +660,11 @@ public class EclipseLinkOrmEmbeddableTests extends EclipseLinkOrmContextModelTes
 
 	public void testModifyTypeConverters() throws Exception {
 		createTestEmbeddableForTypeConverters();
-		EclipseLinkPersistenceUnit persistenceUnit = persistenceUnit();
-		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		EclipseLinkPersistenceUnit persistenceUnit = getPersistenceUnit();
+		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		EclipseLinkOrmEmbeddable ormContextEmbeddable = (EclipseLinkOrmEmbeddable) ormPersistentType.getMapping();
 		ConverterHolder ormContextConverterHolder = ormContextEmbeddable.getConverterHolder();
-		XmlEmbeddable resourceEmbeddable = (XmlEmbeddable) ormResource().getEntityMappings().getEmbeddables().get(0);
+		XmlEmbeddable resourceEmbeddable = (XmlEmbeddable) getOrmResource().getEntityMappings().getEmbeddables().get(0);
 		
 		assertEquals(0, ormContextConverterHolder.typeConvertersSize());
 		assertEquals(0, resourceEmbeddable.getTypeConverters().size());
@@ -747,11 +747,11 @@ public class EclipseLinkOrmEmbeddableTests extends EclipseLinkOrmContextModelTes
 	
 	public void testUpdateObjectTypeConverters() throws Exception {
 		createTestEmbeddableForObjectTypeConverters();
-		EclipseLinkPersistenceUnit persistenceUnit = persistenceUnit();
-		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		EclipseLinkPersistenceUnit persistenceUnit = getPersistenceUnit();
+		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		EclipseLinkOrmEmbeddable ormContextEmbeddable = (EclipseLinkOrmEmbeddable) ormPersistentType.getMapping();
 		ConverterHolder ormContextConverterHolder = ormContextEmbeddable.getConverterHolder();
-		XmlEmbeddable resourceEmbeddable = (XmlEmbeddable) ormResource().getEntityMappings().getEmbeddables().get(0);
+		XmlEmbeddable resourceEmbeddable = (XmlEmbeddable) getOrmResource().getEntityMappings().getEmbeddables().get(0);
 		
 		assertEquals(0, ormContextConverterHolder.objectTypeConvertersSize());
 		assertEquals(0, resourceEmbeddable.getObjectTypeConverters().size());
@@ -824,11 +824,11 @@ public class EclipseLinkOrmEmbeddableTests extends EclipseLinkOrmContextModelTes
 
 	public void testModifyObjectTypeConverters() throws Exception {
 		createTestEmbeddableForObjectTypeConverters();
-		EclipseLinkPersistenceUnit persistenceUnit = persistenceUnit();
-		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		EclipseLinkPersistenceUnit persistenceUnit = getPersistenceUnit();
+		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		EclipseLinkOrmEmbeddable ormContextEmbeddable = (EclipseLinkOrmEmbeddable) ormPersistentType.getMapping();
 		ConverterHolder ormContextConverterHolder = ormContextEmbeddable.getConverterHolder();
-		XmlEmbeddable resourceEmbeddable = (XmlEmbeddable) ormResource().getEntityMappings().getEmbeddables().get(0);
+		XmlEmbeddable resourceEmbeddable = (XmlEmbeddable) getOrmResource().getEntityMappings().getEmbeddables().get(0);
 		
 		assertEquals(0, ormContextConverterHolder.objectTypeConvertersSize());
 		assertEquals(0, resourceEmbeddable.getObjectTypeConverters().size());
@@ -911,11 +911,11 @@ public class EclipseLinkOrmEmbeddableTests extends EclipseLinkOrmContextModelTes
 	
 	public void testUpdateStructConverters() throws Exception {
 		createTestEmbeddableForStructConverters();
-		EclipseLinkPersistenceUnit persistenceUnit = persistenceUnit();
-		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		EclipseLinkPersistenceUnit persistenceUnit = getPersistenceUnit();
+		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		EclipseLinkOrmEmbeddable ormContextEmbeddable = (EclipseLinkOrmEmbeddable) ormPersistentType.getMapping();
 		ConverterHolder ormContextConverterHolder = ormContextEmbeddable.getConverterHolder();
-		XmlEmbeddable resourceEmbeddable = (XmlEmbeddable) ormResource().getEntityMappings().getEmbeddables().get(0);
+		XmlEmbeddable resourceEmbeddable = (XmlEmbeddable) getOrmResource().getEntityMappings().getEmbeddables().get(0);
 		
 		assertEquals(0, ormContextConverterHolder.structConvertersSize());
 		assertEquals(0, resourceEmbeddable.getStructConverters().size());
@@ -988,11 +988,11 @@ public class EclipseLinkOrmEmbeddableTests extends EclipseLinkOrmContextModelTes
 
 	public void testModifyStructConverters() throws Exception {
 		createTestEmbeddableForStructConverters();
-		EclipseLinkPersistenceUnit persistenceUnit = persistenceUnit();
-		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		EclipseLinkPersistenceUnit persistenceUnit = getPersistenceUnit();
+		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		EclipseLinkOrmEmbeddable ormContextEmbeddable = (EclipseLinkOrmEmbeddable) ormPersistentType.getMapping();
 		ConverterHolder ormContextConverterHolder = ormContextEmbeddable.getConverterHolder();
-		XmlEmbeddable resourceEmbeddable = (XmlEmbeddable) ormResource().getEntityMappings().getEmbeddables().get(0);
+		XmlEmbeddable resourceEmbeddable = (XmlEmbeddable) getOrmResource().getEntityMappings().getEmbeddables().get(0);
 		
 		assertEquals(0, ormContextConverterHolder.structConvertersSize());
 		assertEquals(0, resourceEmbeddable.getStructConverters().size());

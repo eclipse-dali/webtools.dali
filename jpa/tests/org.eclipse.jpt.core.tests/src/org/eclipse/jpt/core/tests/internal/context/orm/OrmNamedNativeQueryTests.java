@@ -35,16 +35,16 @@ public class OrmNamedNativeQueryTests extends ContextModelTestCase
 		super.setUp();
 		XmlMappingFileRef mappingFileRef = PersistenceFactory.eINSTANCE.createXmlMappingFileRef();
 		mappingFileRef.setFileName(JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH);
-		xmlPersistenceUnit().getMappingFiles().add(mappingFileRef);
-		persistenceResource().save(null);
+		getXmlPersistenceUnit().getMappingFiles().add(mappingFileRef);
+		getPersistenceResource().save(null);
 	}
 
 	public void testUpdateName() throws Exception {
-		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmNamedNativeQuery ormNamedNativeQuery = ormEntity.addNamedNativeQuery(0);
 		
-		XmlNamedNativeQuery namedNativeQueryResource = ormResource().getEntityMappings().getEntities().get(0).getNamedNativeQueries().get(0);
+		XmlNamedNativeQuery namedNativeQueryResource = getOrmResource().getEntityMappings().getEntities().get(0).getNamedNativeQueries().get(0);
 		
 		assertNull(ormNamedNativeQuery.getName());
 		assertNull(namedNativeQueryResource.getName());
@@ -61,11 +61,11 @@ public class OrmNamedNativeQueryTests extends ContextModelTestCase
 	}
 	
 	public void testModifyName() throws Exception {
-		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmNamedNativeQuery ormNamedNativeQuery = ormEntity.addNamedNativeQuery(0);
 		
-		XmlNamedNativeQuery namedNativeQueryResource = ormResource().getEntityMappings().getEntities().get(0).getNamedNativeQueries().get(0);
+		XmlNamedNativeQuery namedNativeQueryResource = getOrmResource().getEntityMappings().getEntities().get(0).getNamedNativeQueries().get(0);
 		
 		assertNull(ormNamedNativeQuery.getName());
 		assertNull(namedNativeQueryResource.getName());
@@ -82,11 +82,11 @@ public class OrmNamedNativeQueryTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateQuery() throws Exception {
-		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmNamedNativeQuery ormNamedNativeQuery = ormEntity.addNamedNativeQuery(0);
 		
-		XmlNamedNativeQuery namedNativeQueryResource = ormResource().getEntityMappings().getEntities().get(0).getNamedNativeQueries().get(0);
+		XmlNamedNativeQuery namedNativeQueryResource = getOrmResource().getEntityMappings().getEntities().get(0).getNamedNativeQueries().get(0);
 		
 		assertNull(ormNamedNativeQuery.getQuery());
 		assertNull(namedNativeQueryResource.getQuery());
@@ -103,11 +103,11 @@ public class OrmNamedNativeQueryTests extends ContextModelTestCase
 	}
 	
 	public void testModifyQuery() throws Exception {
-		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmNamedNativeQuery ormNamedNativeQuery = ormEntity.addNamedNativeQuery(0);
 		
-		XmlNamedNativeQuery namedNativeQueryResource = ormResource().getEntityMappings().getEntities().get(0).getNamedNativeQueries().get(0);
+		XmlNamedNativeQuery namedNativeQueryResource = getOrmResource().getEntityMappings().getEntities().get(0).getNamedNativeQueries().get(0);
 		
 		assertNull(ormNamedNativeQuery.getQuery());
 		assertNull(namedNativeQueryResource.getQuery());
@@ -124,11 +124,11 @@ public class OrmNamedNativeQueryTests extends ContextModelTestCase
 	}
 	
 	public void testAddHint() throws Exception {
-		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmNamedNativeQuery ormNamedNativeQuery = ormEntity.addNamedNativeQuery(0);
 		
-		XmlNamedNativeQuery namedNativeQueryResource = ormResource().getEntityMappings().getEntities().get(0).getNamedNativeQueries().get(0);
+		XmlNamedNativeQuery namedNativeQueryResource = getOrmResource().getEntityMappings().getEntities().get(0).getNamedNativeQueries().get(0);
 
 		OrmQueryHint queryHint = ormNamedNativeQuery.addHint(0);
 		queryHint.setName("FOO");
@@ -160,11 +160,11 @@ public class OrmNamedNativeQueryTests extends ContextModelTestCase
 	}
 	
 	public void testRemoveHint() throws Exception {
-		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmNamedNativeQuery ormNamedNativeQuery = ormEntity.addNamedNativeQuery(0);
 		
-		XmlNamedNativeQuery namedNativeQueryResource = ormResource().getEntityMappings().getEntities().get(0).getNamedNativeQueries().get(0);
+		XmlNamedNativeQuery namedNativeQueryResource = getOrmResource().getEntityMappings().getEntities().get(0).getNamedNativeQueries().get(0);
 
 		ormNamedNativeQuery.addHint(0).setName("FOO");
 		ormNamedNativeQuery.addHint(1).setName("BAR");
@@ -186,11 +186,11 @@ public class OrmNamedNativeQueryTests extends ContextModelTestCase
 	}
 	
 	public void testMoveHint() throws Exception {
-		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmNamedNativeQuery ormNamedNativeQuery = ormEntity.addNamedNativeQuery(0);
 		
-		XmlNamedNativeQuery namedNativeQueryResource = ormResource().getEntityMappings().getEntities().get(0).getNamedNativeQueries().get(0);
+		XmlNamedNativeQuery namedNativeQueryResource = getOrmResource().getEntityMappings().getEntities().get(0).getNamedNativeQueries().get(0);
 
 		ormNamedNativeQuery.addHint(0).setName("FOO");
 		ormNamedNativeQuery.addHint(1).setName("BAR");
@@ -222,11 +222,11 @@ public class OrmNamedNativeQueryTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateHints() throws Exception {
-		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmNamedNativeQuery ormNamedNativeQuery = ormEntity.addNamedNativeQuery(0);
 		
-		XmlNamedNativeQuery namedNativeQueryResource = ormResource().getEntityMappings().getEntities().get(0).getNamedNativeQueries().get(0);
+		XmlNamedNativeQuery namedNativeQueryResource = getOrmResource().getEntityMappings().getEntities().get(0).getNamedNativeQueries().get(0);
 
 		namedNativeQueryResource.getHints().add(OrmFactory.eINSTANCE.createXmlQueryHint());
 		namedNativeQueryResource.getHints().add(OrmFactory.eINSTANCE.createXmlQueryHint());
@@ -273,11 +273,11 @@ public class OrmNamedNativeQueryTests extends ContextModelTestCase
 	
 	
 	public void testUpdateResultSetMapping() throws Exception {
-		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmNamedNativeQuery ormNamedNativeQuery = ormEntity.addNamedNativeQuery(0);
 		
-		XmlNamedNativeQuery namedNativeQueryResource = ormResource().getEntityMappings().getEntities().get(0).getNamedNativeQueries().get(0);
+		XmlNamedNativeQuery namedNativeQueryResource = getOrmResource().getEntityMappings().getEntities().get(0).getNamedNativeQueries().get(0);
 		
 		assertEquals(null, namedNativeQueryResource.getResultSetMapping());
 		assertEquals(null, ormNamedNativeQuery.getResultSetMapping());
@@ -294,11 +294,11 @@ public class OrmNamedNativeQueryTests extends ContextModelTestCase
 	}
 	
 	public void testModifyResultSetMapping() throws Exception {
-		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmNamedNativeQuery ormNamedNativeQuery = ormEntity.addNamedNativeQuery(0);
 		
-		XmlNamedNativeQuery namedNativeQueryResource = ormResource().getEntityMappings().getEntities().get(0).getNamedNativeQueries().get(0);
+		XmlNamedNativeQuery namedNativeQueryResource = getOrmResource().getEntityMappings().getEntities().get(0).getNamedNativeQueries().get(0);
 		
 		assertEquals(null, namedNativeQueryResource.getResultSetMapping());
 		assertEquals(null, ormNamedNativeQuery.getResultSetMapping());
@@ -315,11 +315,11 @@ public class OrmNamedNativeQueryTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateResultClass() throws Exception {
-		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmNamedNativeQuery ormNamedNativeQuery = ormEntity.addNamedNativeQuery(0);
 		
-		XmlNamedNativeQuery namedNativeQueryResource = ormResource().getEntityMappings().getEntities().get(0).getNamedNativeQueries().get(0);
+		XmlNamedNativeQuery namedNativeQueryResource = getOrmResource().getEntityMappings().getEntities().get(0).getNamedNativeQueries().get(0);
 		
 		assertEquals(null, namedNativeQueryResource.getResultClass());
 		assertEquals(null, ormNamedNativeQuery.getResultClass());
@@ -336,11 +336,11 @@ public class OrmNamedNativeQueryTests extends ContextModelTestCase
 	}
 	
 	public void testModifyResultClass() throws Exception {
-		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmNamedNativeQuery ormNamedNativeQuery = ormEntity.addNamedNativeQuery(0);
 		
-		XmlNamedNativeQuery namedNativeQueryResource = ormResource().getEntityMappings().getEntities().get(0).getNamedNativeQueries().get(0);
+		XmlNamedNativeQuery namedNativeQueryResource = getOrmResource().getEntityMappings().getEntities().get(0).getNamedNativeQueries().get(0);
 		
 		assertEquals(null, namedNativeQueryResource.getResultClass());
 		assertEquals(null, ormNamedNativeQuery.getResultClass());

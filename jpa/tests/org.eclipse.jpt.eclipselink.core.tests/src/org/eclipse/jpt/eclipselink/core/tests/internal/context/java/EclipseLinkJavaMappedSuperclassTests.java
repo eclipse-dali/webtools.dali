@@ -101,7 +101,7 @@ public class EclipseLinkJavaMappedSuperclassTests extends EclipseLinkJavaContext
 		createTestMappedSuperclassWithReadOnly();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		EclipseLinkMappedSuperclass mappedSuperclass = (EclipseLinkMappedSuperclass) javaPersistentType().getMapping();
+		EclipseLinkMappedSuperclass mappedSuperclass = (EclipseLinkMappedSuperclass) getJavaPersistentType().getMapping();
 		ReadOnly readOnly = mappedSuperclass.getReadOnly();
 		assertEquals(true, readOnly.isReadOnly());
 	}
@@ -110,7 +110,7 @@ public class EclipseLinkJavaMappedSuperclassTests extends EclipseLinkJavaContext
 		createTestMappedSuperclassWithReadOnly();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		EclipseLinkMappedSuperclass mappedSuperclass = (EclipseLinkMappedSuperclass) javaPersistentType().getMapping();
+		EclipseLinkMappedSuperclass mappedSuperclass = (EclipseLinkMappedSuperclass) getJavaPersistentType().getMapping();
 		ReadOnly readOnly = mappedSuperclass.getReadOnly();
 		assertEquals(Boolean.TRUE, readOnly.getSpecifiedReadOnly());
 	}
@@ -120,7 +120,7 @@ public class EclipseLinkJavaMappedSuperclassTests extends EclipseLinkJavaContext
 		createTestMappedSuperclassWithReadOnly();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		EclipseLinkMappedSuperclass mappedSuperclass = (EclipseLinkMappedSuperclass) javaPersistentType().getMapping();
+		EclipseLinkMappedSuperclass mappedSuperclass = (EclipseLinkMappedSuperclass) getJavaPersistentType().getMapping();
 		ReadOnly readOnly = mappedSuperclass.getReadOnly();
 		assertEquals(false, readOnly.isDefaultReadOnly());
 	}
@@ -129,13 +129,13 @@ public class EclipseLinkJavaMappedSuperclassTests extends EclipseLinkJavaContext
 		createTestMappedSuperclassWithReadOnly();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		EclipseLinkMappedSuperclass mappedSuperclass = (EclipseLinkMappedSuperclass) javaPersistentType().getMapping();
+		EclipseLinkMappedSuperclass mappedSuperclass = (EclipseLinkMappedSuperclass) getJavaPersistentType().getMapping();
 		ReadOnly readOnly = mappedSuperclass.getReadOnly();
 		assertEquals(true, readOnly.isReadOnly());
 		
 		readOnly.setSpecifiedReadOnly(Boolean.FALSE);
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		assertNull(typeResource.getSupportingAnnotation(ReadOnlyAnnotation.ANNOTATION_NAME));
 		assertEquals(null, readOnly.getSpecifiedReadOnly());//Boolean.FALSE and null really mean the same thing since there are only 2 states in the java resource model
 
@@ -152,12 +152,12 @@ public class EclipseLinkJavaMappedSuperclassTests extends EclipseLinkJavaContext
 		createTestMappedSuperclassWithReadOnly();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		EclipseLinkMappedSuperclass mappedSuperclass = (EclipseLinkMappedSuperclass) javaPersistentType().getMapping();
+		EclipseLinkMappedSuperclass mappedSuperclass = (EclipseLinkMappedSuperclass) getJavaPersistentType().getMapping();
 		ReadOnly readOnly = mappedSuperclass.getReadOnly();
 		assertEquals(Boolean.TRUE, readOnly.getSpecifiedReadOnly());
 		
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		typeResource.removeSupportingAnnotation(ReadOnlyAnnotation.ANNOTATION_NAME);
 		
 		assertEquals(null, readOnly.getSpecifiedReadOnly());
@@ -171,7 +171,7 @@ public class EclipseLinkJavaMappedSuperclassTests extends EclipseLinkJavaContext
 		createTestMappedSuperclassWithConvertAndCustomizerClass();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		Customizer customizer = ((EclipseLinkMappedSuperclass) javaPersistentType().getMapping()).getCustomizer();
+		Customizer customizer = ((EclipseLinkMappedSuperclass) getJavaPersistentType().getMapping()).getCustomizer();
 		
 		assertEquals("Foo", customizer.getSpecifiedCustomizerClass());
 	}
@@ -180,13 +180,13 @@ public class EclipseLinkJavaMappedSuperclassTests extends EclipseLinkJavaContext
 		createTestMappedSuperclassWithConvertAndCustomizerClass();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		Customizer customizer = ((EclipseLinkMappedSuperclass) javaPersistentType().getMapping()).getCustomizer();
+		Customizer customizer = ((EclipseLinkMappedSuperclass) getJavaPersistentType().getMapping()).getCustomizer();
 		assertEquals("Foo", customizer.getSpecifiedCustomizerClass());
 		
 		customizer.setSpecifiedCustomizerClass("Bar");
 		assertEquals("Bar", customizer.getSpecifiedCustomizerClass());
 			
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		CustomizerAnnotation customizerAnnotation = (CustomizerAnnotation) typeResource.getSupportingAnnotation(CustomizerAnnotation.ANNOTATION_NAME);		
 		assertEquals("Bar", customizerAnnotation.getValue());
 
@@ -206,12 +206,12 @@ public class EclipseLinkJavaMappedSuperclassTests extends EclipseLinkJavaContext
 	public void testGetCustomizerClassUpdatesFromResourceModelChange() throws Exception {
 		createTestMappedSuperclassWithConvertAndCustomizerClass();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		EclipseLinkMappedSuperclass mappedSuperclass = (EclipseLinkMappedSuperclass) javaPersistentType().getMapping();
+		EclipseLinkMappedSuperclass mappedSuperclass = (EclipseLinkMappedSuperclass) getJavaPersistentType().getMapping();
 		Customizer customizer = mappedSuperclass.getCustomizer();
 
 		assertEquals("Foo", customizer.getSpecifiedCustomizerClass());
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		CustomizerAnnotation customizerAnnotation = (CustomizerAnnotation) typeResource.getSupportingAnnotation(CustomizerAnnotation.ANNOTATION_NAME);
 		customizerAnnotation.setValue("Bar");
 		assertEquals("Bar", customizer.getSpecifiedCustomizerClass());
@@ -230,9 +230,9 @@ public class EclipseLinkJavaMappedSuperclassTests extends EclipseLinkJavaContext
 		createTestMappedSuperclassWithChangeTracking();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		EclipseLinkMappedSuperclass mappedSuperclass = (EclipseLinkMappedSuperclass) javaPersistentType().getMapping();
+		EclipseLinkMappedSuperclass mappedSuperclass = (EclipseLinkMappedSuperclass) getJavaPersistentType().getMapping();
 		ChangeTracking contextChangeTracking = mappedSuperclass.getChangeTracking();
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		ChangeTrackingAnnotation resourceChangeTracking = (ChangeTrackingAnnotation) typeResource.getSupportingAnnotation(ChangeTrackingAnnotation.ANNOTATION_NAME);
 		
 		// base annotated, test context value
@@ -301,9 +301,9 @@ public class EclipseLinkJavaMappedSuperclassTests extends EclipseLinkJavaContext
 		createTestMappedSuperclassWithChangeTracking();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		EclipseLinkMappedSuperclass mappedSuperclass = (EclipseLinkMappedSuperclass) javaPersistentType().getMapping();
+		EclipseLinkMappedSuperclass mappedSuperclass = (EclipseLinkMappedSuperclass) getJavaPersistentType().getMapping();
 		ChangeTracking contextChangeTracking = mappedSuperclass.getChangeTracking();
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		ChangeTrackingAnnotation resourceChangeTracking = (ChangeTrackingAnnotation) typeResource.getSupportingAnnotation(ChangeTrackingAnnotation.ANNOTATION_NAME);
 		
 		// base annotated, test resource value

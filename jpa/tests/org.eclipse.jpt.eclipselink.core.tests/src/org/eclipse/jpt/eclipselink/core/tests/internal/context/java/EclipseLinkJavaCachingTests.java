@@ -102,7 +102,7 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkJavaContextModelTest
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) javaPersistentType().getMapping();
+		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) getJavaPersistentType().getMapping();
 		JavaCaching caching = entity.getCaching();
 		
 		assertEquals(true, caching.isShared());
@@ -113,7 +113,7 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkJavaContextModelTest
 		assertEquals(Boolean.FALSE, entity.getCaching().getSpecifiedShared());
 		assertEquals(false, entity.getCaching().isShared());
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		
 		CacheAnnotation cacheAnnotation = (CacheAnnotation) typeResource.getSupportingAnnotation(EclipseLinkJPA.CACHE);
 		
@@ -124,7 +124,7 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkJavaContextModelTest
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) javaPersistentType().getMapping();
+		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) getJavaPersistentType().getMapping();
 		JavaCaching caching = entity.getCaching();
 		
 		caching.setSpecifiedType(CacheType.HARD_WEAK);
@@ -160,7 +160,7 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkJavaContextModelTest
 		assertNull(caching.getExpiryTimeOfDay());
 		
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		CacheAnnotation cacheAnnotation = (CacheAnnotation) typeResource.getSupportingAnnotation(EclipseLinkJPA.CACHE);
 		
 		assertEquals(Boolean.FALSE, cacheAnnotation.getShared());
@@ -171,12 +171,12 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkJavaContextModelTest
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) javaPersistentType().getMapping();
+		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) getJavaPersistentType().getMapping();
 		JavaCaching caching = entity.getCaching();
 		
 		assertEquals(true, caching.isShared());
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		CacheAnnotation cacheAnnotation = (CacheAnnotation) typeResource.addSupportingAnnotation(EclipseLinkJPA.CACHE);
 		cacheAnnotation.setShared(Boolean.FALSE);
 		
@@ -189,7 +189,7 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkJavaContextModelTest
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) javaPersistentType().getMapping();
+		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) getJavaPersistentType().getMapping();
 		JavaCaching caching = entity.getCaching();
 		
 		assertEquals(CacheType.SOFT_WEAK, caching.getType());
@@ -200,7 +200,7 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkJavaContextModelTest
 		assertEquals(CacheType.HARD_WEAK, entity.getCaching().getSpecifiedType());
 		assertEquals(CacheType.HARD_WEAK, entity.getCaching().getType());
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		
 		CacheAnnotation cacheAnnotation = (CacheAnnotation) typeResource.getSupportingAnnotation(EclipseLinkJPA.CACHE);
 		
@@ -221,12 +221,12 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkJavaContextModelTest
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) javaPersistentType().getMapping();
+		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) getJavaPersistentType().getMapping();
 		JavaCaching caching = entity.getCaching();
 		
 		assertEquals(CacheType.SOFT_WEAK, caching.getType());
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		CacheAnnotation cacheAnnotation = (CacheAnnotation) typeResource.addSupportingAnnotation(EclipseLinkJPA.CACHE);
 		cacheAnnotation.setType(org.eclipse.jpt.eclipselink.core.resource.java.CacheType.HARD_WEAK);
 		
@@ -239,7 +239,7 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkJavaContextModelTest
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) javaPersistentType().getMapping();
+		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) getJavaPersistentType().getMapping();
 		JavaCaching caching = entity.getCaching();
 		
 		assertEquals(false, caching.isAlwaysRefresh());
@@ -250,7 +250,7 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkJavaContextModelTest
 		assertEquals(Boolean.FALSE, entity.getCaching().getSpecifiedAlwaysRefresh());
 		assertEquals(false, entity.getCaching().isAlwaysRefresh());
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		
 		CacheAnnotation cacheAnnotation = (CacheAnnotation) typeResource.getSupportingAnnotation(EclipseLinkJPA.CACHE);
 		
@@ -261,12 +261,12 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkJavaContextModelTest
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) javaPersistentType().getMapping();
+		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) getJavaPersistentType().getMapping();
 		JavaCaching caching = entity.getCaching();
 		
 		assertEquals(false, caching.isAlwaysRefresh());
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		CacheAnnotation cacheAnnotation = (CacheAnnotation) typeResource.addSupportingAnnotation(EclipseLinkJPA.CACHE);
 		cacheAnnotation.setAlwaysRefresh(Boolean.TRUE);
 		
@@ -279,7 +279,7 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkJavaContextModelTest
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) javaPersistentType().getMapping();
+		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) getJavaPersistentType().getMapping();
 		JavaCaching caching = entity.getCaching();
 		
 		assertEquals(false, caching.isRefreshOnlyIfNewer());
@@ -290,7 +290,7 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkJavaContextModelTest
 		assertEquals(Boolean.TRUE, entity.getCaching().getSpecifiedRefreshOnlyIfNewer());
 		assertEquals(true, entity.getCaching().isRefreshOnlyIfNewer());
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		
 		CacheAnnotation cacheAnnotation = (CacheAnnotation) typeResource.getSupportingAnnotation(EclipseLinkJPA.CACHE);
 		
@@ -301,12 +301,12 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkJavaContextModelTest
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) javaPersistentType().getMapping();
+		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) getJavaPersistentType().getMapping();
 		JavaCaching caching = entity.getCaching();
 		
 		assertEquals(false, caching.isRefreshOnlyIfNewer());
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		CacheAnnotation cacheAnnotation = (CacheAnnotation) typeResource.addSupportingAnnotation(EclipseLinkJPA.CACHE);
 		cacheAnnotation.setRefreshOnlyIfNewer(Boolean.TRUE);
 		
@@ -319,7 +319,7 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkJavaContextModelTest
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) javaPersistentType().getMapping();
+		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) getJavaPersistentType().getMapping();
 		JavaCaching caching = entity.getCaching();
 		
 		assertEquals(false, caching.isDisableHits());
@@ -330,7 +330,7 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkJavaContextModelTest
 		assertEquals(Boolean.TRUE, entity.getCaching().getSpecifiedDisableHits());
 		assertEquals(true, entity.getCaching().isDisableHits());
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		
 		CacheAnnotation cacheAnnotation = (CacheAnnotation) typeResource.getSupportingAnnotation(EclipseLinkJPA.CACHE);
 		
@@ -341,12 +341,12 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkJavaContextModelTest
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) javaPersistentType().getMapping();
+		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) getJavaPersistentType().getMapping();
 		JavaCaching caching = entity.getCaching();
 		
 		assertEquals(false, caching.isDisableHits());
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		CacheAnnotation cacheAnnotation = (CacheAnnotation) typeResource.addSupportingAnnotation(EclipseLinkJPA.CACHE);
 		cacheAnnotation.setDisableHits(Boolean.TRUE);
 		
@@ -359,7 +359,7 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkJavaContextModelTest
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) javaPersistentType().getMapping();
+		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) getJavaPersistentType().getMapping();
 		JavaCaching caching = entity.getCaching();
 		
 		assertEquals(CacheCoordinationType.SEND_OBJECT_CHANGES, caching.getCoordinationType());
@@ -370,7 +370,7 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkJavaContextModelTest
 		assertEquals(CacheCoordinationType.INVALIDATE_CHANGED_OBJECTS, entity.getCaching().getSpecifiedCoordinationType());
 		assertEquals(CacheCoordinationType.INVALIDATE_CHANGED_OBJECTS, entity.getCaching().getCoordinationType());
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		
 		CacheAnnotation cacheAnnotation = (CacheAnnotation) typeResource.getSupportingAnnotation(EclipseLinkJPA.CACHE);
 		
@@ -391,12 +391,12 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkJavaContextModelTest
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) javaPersistentType().getMapping();
+		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) getJavaPersistentType().getMapping();
 		JavaCaching caching = entity.getCaching();
 		
 		assertEquals(CacheCoordinationType.SEND_OBJECT_CHANGES, caching.getCoordinationType());
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		CacheAnnotation cacheAnnotation = (CacheAnnotation) typeResource.addSupportingAnnotation(EclipseLinkJPA.CACHE);
 		cacheAnnotation.setCoordinationType(org.eclipse.jpt.eclipselink.core.resource.java.CacheCoordinationType.INVALIDATE_CHANGED_OBJECTS);
 		
@@ -409,12 +409,12 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkJavaContextModelTest
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) javaPersistentType().getMapping();
+		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) getJavaPersistentType().getMapping();
 		JavaCaching caching = entity.getCaching();
 		
 		assertEquals(false, caching.hasExistenceChecking());
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		typeResource.addSupportingAnnotation(EclipseLinkJPA.EXISTENCE_CHECKING);	
 		assertEquals(true, caching.hasExistenceChecking());
 	
@@ -426,9 +426,9 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkJavaContextModelTest
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) javaPersistentType().getMapping();
+		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) getJavaPersistentType().getMapping();
 		JavaCaching caching = entity.getCaching();
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		
 		assertEquals(false, caching.hasExistenceChecking());
 		assertNull(typeResource.getSupportingAnnotation(EclipseLinkJPA.EXISTENCE_CHECKING));
@@ -443,7 +443,7 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkJavaContextModelTest
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) javaPersistentType().getMapping();
+		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) getJavaPersistentType().getMapping();
 		JavaCaching caching = entity.getCaching();
 		
 		assertEquals(ExistenceType.CHECK_DATABASE, caching.getDefaultExistenceType());
@@ -456,12 +456,12 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkJavaContextModelTest
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) javaPersistentType().getMapping();
+		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) getJavaPersistentType().getMapping();
 		JavaCaching caching = entity.getCaching();
 		
 		assertEquals(ExistenceType.CHECK_DATABASE, caching.getExistenceType());
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		ExistenceCheckingAnnotation existenceCheckingAnnotation = (ExistenceCheckingAnnotation) typeResource.addSupportingAnnotation(EclipseLinkJPA.EXISTENCE_CHECKING);
 		existenceCheckingAnnotation.setValue(org.eclipse.jpt.eclipselink.core.resource.java.ExistenceType.ASSUME_NON_EXISTENCE);
 		
@@ -474,7 +474,7 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkJavaContextModelTest
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) javaPersistentType().getMapping();
+		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) getJavaPersistentType().getMapping();
 		JavaCaching caching = entity.getCaching();
 		
 		assertEquals(ExistenceType.CHECK_DATABASE, caching.getExistenceType());
@@ -486,7 +486,7 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkJavaContextModelTest
 		assertEquals(ExistenceType.ASSUME_NON_EXISTENCE, entity.getCaching().getSpecifiedExistenceType());
 		assertEquals(ExistenceType.ASSUME_NON_EXISTENCE, entity.getCaching().getExistenceType());
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		
 		ExistenceCheckingAnnotation existenceCheckingAnnotation = (ExistenceCheckingAnnotation) typeResource.getSupportingAnnotation(EclipseLinkJPA.EXISTENCE_CHECKING);
 		
@@ -507,11 +507,11 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkJavaContextModelTest
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) javaPersistentType().getMapping();
+		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) getJavaPersistentType().getMapping();
 		
 		assertNull(entity.getCaching().getExpiry());
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		CacheAnnotation cacheAnnotation = (CacheAnnotation) typeResource.addSupportingAnnotation(EclipseLinkJPA.CACHE);
 		assertNull(entity.getCaching().getExpiry());
 		
@@ -527,10 +527,10 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkJavaContextModelTest
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) javaPersistentType().getMapping();
+		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) getJavaPersistentType().getMapping();
 		JavaCaching caching = entity.getCaching();
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		
 		caching.setExpiry(Integer.valueOf(58));
 		CacheAnnotation cacheAnnotation = (CacheAnnotation) typeResource.getSupportingAnnotation(EclipseLinkJPA.CACHE);
@@ -546,10 +546,10 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkJavaContextModelTest
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) javaPersistentType().getMapping();
+		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) getJavaPersistentType().getMapping();
 		JavaCaching caching = entity.getCaching();
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		
 		caching.addExpiryTimeOfDay();
 		caching.getExpiryTimeOfDay().setHour(Integer.valueOf(5));
@@ -568,12 +568,12 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkJavaContextModelTest
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) javaPersistentType().getMapping();
+		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) getJavaPersistentType().getMapping();
 		JavaCaching caching = entity.getCaching();
 		
 		assertNull(caching.getExpiryTimeOfDay());
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		CacheAnnotation cacheAnnotation = (CacheAnnotation) typeResource.addSupportingAnnotation(EclipseLinkJPA.CACHE);
 
 		cacheAnnotation.addExpiryTimeOfDay();
@@ -585,12 +585,12 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkJavaContextModelTest
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) javaPersistentType().getMapping();
+		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) getJavaPersistentType().getMapping();
 		JavaCaching caching = entity.getCaching();
 		
 		assertNull(caching.getExpiryTimeOfDay());
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 
 		ExpiryTimeOfDay timeOfDayExpiry = caching.addExpiryTimeOfDay();
 		
@@ -604,12 +604,12 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkJavaContextModelTest
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) javaPersistentType().getMapping();
+		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) getJavaPersistentType().getMapping();
 		JavaCaching caching = entity.getCaching();
 		
 		assertNull(caching.getExpiryTimeOfDay());
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		CacheAnnotation cacheAnnotation = (CacheAnnotation) typeResource.addSupportingAnnotation(EclipseLinkJPA.CACHE);
 		cacheAnnotation.addExpiryTimeOfDay();
 
@@ -624,10 +624,10 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkJavaContextModelTest
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) javaPersistentType().getMapping();
+		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) getJavaPersistentType().getMapping();
 		JavaCaching caching = entity.getCaching();
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		caching.setExpiry(Integer.valueOf(800));
 		CacheAnnotation cacheAnnotation = (CacheAnnotation) typeResource.getSupportingAnnotation(EclipseLinkJPA.CACHE);
 		assertEquals(Integer.valueOf(800), cacheAnnotation.getExpiry());	
@@ -646,7 +646,7 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkJavaContextModelTest
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) javaPersistentType().getMapping();
+		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) getJavaPersistentType().getMapping();
 		JavaCaching caching = entity.getCaching();
 		
 		assertEquals(100, caching.getSize());
@@ -657,7 +657,7 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkJavaContextModelTest
 		assertEquals(new Integer(50), entity.getCaching().getSpecifiedSize());
 		assertEquals(50, entity.getCaching().getSize());
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		
 		CacheAnnotation cacheAnnotation = (CacheAnnotation) typeResource.getSupportingAnnotation(EclipseLinkJPA.CACHE);
 		
@@ -668,12 +668,12 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkJavaContextModelTest
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) javaPersistentType().getMapping();
+		EclipseLinkJavaEntity entity = (EclipseLinkJavaEntity) getJavaPersistentType().getMapping();
 		JavaCaching caching = entity.getCaching();
 		
 		assertEquals(100, caching.getSize());
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		CacheAnnotation cacheAnnotation = (CacheAnnotation) typeResource.addSupportingAnnotation(EclipseLinkJPA.CACHE);
 		cacheAnnotation.setSize(new Integer(50));
 		

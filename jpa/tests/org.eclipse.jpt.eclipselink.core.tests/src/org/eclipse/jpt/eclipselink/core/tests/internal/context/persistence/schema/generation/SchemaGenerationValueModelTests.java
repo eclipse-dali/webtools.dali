@@ -78,7 +78,7 @@ public class SchemaGenerationValueModelTests extends PersistenceUnitTestCase
 	}
 
 	@Override
-	protected PersistenceUnitProperties model() {
+	protected PersistenceUnitProperties getModel() {
 		return this.schemaGen;
 	}
 
@@ -175,7 +175,7 @@ public class SchemaGenerationValueModelTests extends PersistenceUnitTestCase
 		assertNotNull(this.ddlGenerationTypeEvent);
 		// testing PU properties
 		boolean containsDdlGenerationTypeProperty = 
-			this.persistenceUnit().containsProperty(SchemaGeneration.ECLIPSELINK_DDL_GENERATION_TYPE);
+			this.getPersistenceUnit().containsProperty(SchemaGeneration.ECLIPSELINK_DDL_GENERATION_TYPE);
 		assertFalse(containsDdlGenerationTypeProperty);
 		
 		/** ****** OutputMode ******* */
@@ -187,7 +187,7 @@ public class SchemaGenerationValueModelTests extends PersistenceUnitTestCase
 		assertNotNull(this.outputModeEvent);
 		// testing PU properties
 		boolean containsOutputModeProperty = 
-			this.persistenceUnit().containsProperty(SchemaGeneration.ECLIPSELINK_DDL_GENERATION_OUTPUT_MODE);
+			this.getPersistenceUnit().containsProperty(SchemaGeneration.ECLIPSELINK_DDL_GENERATION_OUTPUT_MODE);
 		assertFalse(containsOutputModeProperty);
 	}
 

@@ -75,7 +75,7 @@ public class GeneralPropertiesValueModelTests extends PersistenceUnitTestCase
 	}
 
 	@Override
-	protected PersistenceUnitProperties model() {
+	protected PersistenceUnitProperties getModel() {
 		return this.generalProperty;
 	}
 

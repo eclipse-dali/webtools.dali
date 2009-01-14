@@ -75,7 +75,7 @@ public class LoggingValueModelTests extends PersistenceUnitTestCase
 	}
 
 	@Override
-	protected PersistenceUnitProperties model() {
+	protected PersistenceUnitProperties getModel() {
 		return this.logging;
 	}
 

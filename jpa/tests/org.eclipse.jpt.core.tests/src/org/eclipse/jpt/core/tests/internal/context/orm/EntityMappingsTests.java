@@ -42,528 +42,528 @@ public class EntityMappingsTests extends ContextModelTestCase
 		super.setUp();
 		XmlMappingFileRef mappingFileRef = PersistenceFactory.eINSTANCE.createXmlMappingFileRef();
 		mappingFileRef.setFileName(JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH);
-		xmlPersistenceUnit().getMappingFiles().add(mappingFileRef);
-		persistenceResource().save(null);
+		getXmlPersistenceUnit().getMappingFiles().add(mappingFileRef);
+		getPersistenceResource().save(null);
 	}
 	
 	public void testGetVersion() throws Exception {
-		assertEquals("1.0", entityMappings().getVersion());
+		assertEquals("1.0", getEntityMappings().getVersion());
 	}
 	
 	public void testUpdateDescription() throws Exception {
-		assertNull(entityMappings().getDescription());
-		assertNull(ormResource().getEntityMappings().getDescription());
+		assertNull(getEntityMappings().getDescription());
+		assertNull(getOrmResource().getEntityMappings().getDescription());
 		
 		//set description in the resource model, verify context model updated
-		ormResource().getEntityMappings().setDescription("newDescription");
-		assertEquals("newDescription", entityMappings().getDescription());
-		assertEquals("newDescription", ormResource().getEntityMappings().getDescription());
+		getOrmResource().getEntityMappings().setDescription("newDescription");
+		assertEquals("newDescription", getEntityMappings().getDescription());
+		assertEquals("newDescription", getOrmResource().getEntityMappings().getDescription());
 	
 		//set description to null in the resource model
-		ormResource().getEntityMappings().setDescription(null);
-		assertNull(entityMappings().getDescription());
-		assertNull(ormResource().getEntityMappings().getDescription());
+		getOrmResource().getEntityMappings().setDescription(null);
+		assertNull(getEntityMappings().getDescription());
+		assertNull(getOrmResource().getEntityMappings().getDescription());
 	}
 	
 	public void testModifyDescription() throws Exception {
-		assertNull(entityMappings().getDescription());
-		assertNull(ormResource().getEntityMappings().getDescription());
+		assertNull(getEntityMappings().getDescription());
+		assertNull(getOrmResource().getEntityMappings().getDescription());
 		
 		//set description in the context model, verify resource model modified
-		entityMappings().setDescription("newDescription");
-		assertEquals("newDescription", entityMappings().getDescription());
-		assertEquals("newDescription", ormResource().getEntityMappings().getDescription());
+		getEntityMappings().setDescription("newDescription");
+		assertEquals("newDescription", getEntityMappings().getDescription());
+		assertEquals("newDescription", getOrmResource().getEntityMappings().getDescription());
 		
 		//set description to null in the context model
-		entityMappings().setDescription(null);
-		assertNull(entityMappings().getDescription());
-		assertNull(ormResource().getEntityMappings().getDescription());
+		getEntityMappings().setDescription(null);
+		assertNull(getEntityMappings().getDescription());
+		assertNull(getOrmResource().getEntityMappings().getDescription());
 	}
 	
 	public void testUpdatePackage() throws Exception {
-		assertNull(entityMappings().getPackage());
-		assertNull(ormResource().getEntityMappings().getPackage());
+		assertNull(getEntityMappings().getPackage());
+		assertNull(getOrmResource().getEntityMappings().getPackage());
 		
 		//set package in the resource model, verify context model updated
-		ormResource().getEntityMappings().setPackage("foo.model");
-		assertEquals("foo.model", entityMappings().getPackage());
-		assertEquals("foo.model", ormResource().getEntityMappings().getPackage());
+		getOrmResource().getEntityMappings().setPackage("foo.model");
+		assertEquals("foo.model", getEntityMappings().getPackage());
+		assertEquals("foo.model", getOrmResource().getEntityMappings().getPackage());
 		
 		//set package to null in the resource model
-		ormResource().getEntityMappings().setPackage(null);
-		assertNull(entityMappings().getPackage());
-		assertNull(ormResource().getEntityMappings().getPackage());
+		getOrmResource().getEntityMappings().setPackage(null);
+		assertNull(getEntityMappings().getPackage());
+		assertNull(getOrmResource().getEntityMappings().getPackage());
 	}
 	
 	public void testModifyPackage() throws Exception {
-		assertNull(entityMappings().getPackage());
-		assertNull(ormResource().getEntityMappings().getPackage());
+		assertNull(getEntityMappings().getPackage());
+		assertNull(getOrmResource().getEntityMappings().getPackage());
 		
 		//set package in the context model, verify resource model modified
-		entityMappings().setPackage("foo.model");
-		assertEquals("foo.model", entityMappings().getPackage());
-		assertEquals("foo.model", ormResource().getEntityMappings().getPackage());
+		getEntityMappings().setPackage("foo.model");
+		assertEquals("foo.model", getEntityMappings().getPackage());
+		assertEquals("foo.model", getOrmResource().getEntityMappings().getPackage());
 
 		//set package to null in the context model
-		entityMappings().setPackage(null);
-		assertNull(entityMappings().getPackage());
-		assertNull(ormResource().getEntityMappings().getPackage());
+		getEntityMappings().setPackage(null);
+		assertNull(getEntityMappings().getPackage());
+		assertNull(getOrmResource().getEntityMappings().getPackage());
 	}
 
 	public void testUpdateSpecifiedSchema() throws Exception {
-		assertNull(entityMappings().getSpecifiedSchema());
-		assertNull(ormResource().getEntityMappings().getSchema());
+		assertNull(getEntityMappings().getSpecifiedSchema());
+		assertNull(getOrmResource().getEntityMappings().getSchema());
 		
 		//set schema in the resource model, verify context model updated
-		ormResource().getEntityMappings().setSchema("MY_SCHEMA");
-		assertEquals("MY_SCHEMA", entityMappings().getSpecifiedSchema());
-		assertEquals("MY_SCHEMA", ormResource().getEntityMappings().getSchema());
+		getOrmResource().getEntityMappings().setSchema("MY_SCHEMA");
+		assertEquals("MY_SCHEMA", getEntityMappings().getSpecifiedSchema());
+		assertEquals("MY_SCHEMA", getOrmResource().getEntityMappings().getSchema());
 
 		//set schema to null in the resource model
-		ormResource().getEntityMappings().setSchema(null);
-		assertNull(entityMappings().getSpecifiedSchema());
-		assertNull(ormResource().getEntityMappings().getSchema());
+		getOrmResource().getEntityMappings().setSchema(null);
+		assertNull(getEntityMappings().getSpecifiedSchema());
+		assertNull(getOrmResource().getEntityMappings().getSchema());
 	}
 	
 	public void testModifySpecifiedSchema() throws Exception {
-		assertNull(entityMappings().getSpecifiedSchema());
-		assertNull(ormResource().getEntityMappings().getSchema());
+		assertNull(getEntityMappings().getSpecifiedSchema());
+		assertNull(getOrmResource().getEntityMappings().getSchema());
 		
 		//set schema in the context model, verify resource model modified
-		entityMappings().setSpecifiedSchema("MY_SCHEMA");
-		assertEquals("MY_SCHEMA", entityMappings().getSpecifiedSchema());
-		assertEquals("MY_SCHEMA", ormResource().getEntityMappings().getSchema());
+		getEntityMappings().setSpecifiedSchema("MY_SCHEMA");
+		assertEquals("MY_SCHEMA", getEntityMappings().getSpecifiedSchema());
+		assertEquals("MY_SCHEMA", getOrmResource().getEntityMappings().getSchema());
 
 		//set schema to null in the context model
-		entityMappings().setSpecifiedSchema(null);
-		assertNull(entityMappings().getSpecifiedSchema());
-		assertNull(ormResource().getEntityMappings().getSchema());
+		getEntityMappings().setSpecifiedSchema(null);
+		assertNull(getEntityMappings().getSpecifiedSchema());
+		assertNull(getOrmResource().getEntityMappings().getSchema());
 	}
 
 	public void testUpdateSpecifiedCatalog() throws Exception {
-		assertNull(entityMappings().getSpecifiedCatalog());
-		assertNull(ormResource().getEntityMappings().getCatalog());
+		assertNull(getEntityMappings().getSpecifiedCatalog());
+		assertNull(getOrmResource().getEntityMappings().getCatalog());
 		
 		//set catalog in the resource model, verify context model updated
-		ormResource().getEntityMappings().setCatalog("MY_CATALOG");
-		assertEquals("MY_CATALOG", entityMappings().getSpecifiedCatalog());
-		assertEquals("MY_CATALOG", ormResource().getEntityMappings().getCatalog());
+		getOrmResource().getEntityMappings().setCatalog("MY_CATALOG");
+		assertEquals("MY_CATALOG", getEntityMappings().getSpecifiedCatalog());
+		assertEquals("MY_CATALOG", getOrmResource().getEntityMappings().getCatalog());
 
 		//set catalog to null in the resource model
-		ormResource().getEntityMappings().setCatalog(null);
-		assertNull(entityMappings().getSpecifiedCatalog());
-		assertNull(ormResource().getEntityMappings().getCatalog());
+		getOrmResource().getEntityMappings().setCatalog(null);
+		assertNull(getEntityMappings().getSpecifiedCatalog());
+		assertNull(getOrmResource().getEntityMappings().getCatalog());
 	}
 	
 	public void testUpdateDefaultSchema() throws Exception {
-		assertNull(entityMappings().getDefaultSchema());
-		assertNull(entityMappings().getSpecifiedSchema());
-		assertNull(ormResource().getEntityMappings().getSchema());
+		assertNull(getEntityMappings().getDefaultSchema());
+		assertNull(getEntityMappings().getSpecifiedSchema());
+		assertNull(getOrmResource().getEntityMappings().getSchema());
 	
-		ormResource().getEntityMappings().setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createXmlPersistenceUnitMetadata());
+		getOrmResource().getEntityMappings().setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createXmlPersistenceUnitMetadata());
 		org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitDefaults persistenceUnitDefaults = OrmFactory.eINSTANCE.createXmlPersistenceUnitDefaults();
-		ormResource().getEntityMappings().getPersistenceUnitMetadata().setPersistenceUnitDefaults(persistenceUnitDefaults);
+		getOrmResource().getEntityMappings().getPersistenceUnitMetadata().setPersistenceUnitDefaults(persistenceUnitDefaults);
 		persistenceUnitDefaults.setSchema("MY_SCHEMA");
-		assertEquals("MY_SCHEMA", entityMappings().getDefaultSchema());
-		assertNull(entityMappings().getSpecifiedSchema());
-		assertNull(ormResource().getEntityMappings().getSchema());
-		assertEquals("MY_SCHEMA", ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getSchema());
+		assertEquals("MY_SCHEMA", getEntityMappings().getDefaultSchema());
+		assertNull(getEntityMappings().getSpecifiedSchema());
+		assertNull(getOrmResource().getEntityMappings().getSchema());
+		assertEquals("MY_SCHEMA", getOrmResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getSchema());
 	
 		persistenceUnitDefaults.setSchema(null);
-		assertNull(entityMappings().getDefaultSchema());
-		assertNull(entityMappings().getSpecifiedSchema());
-		assertNull(ormResource().getEntityMappings().getSchema());
-		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getSchema());
+		assertNull(getEntityMappings().getDefaultSchema());
+		assertNull(getEntityMappings().getSpecifiedSchema());
+		assertNull(getOrmResource().getEntityMappings().getSchema());
+		assertNull(getOrmResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getSchema());
 	}
 	
 	public void testUpdateSchema() throws Exception {
-		assertNull(entityMappings().getDefaultSchema());
-		assertNull(entityMappings().getSchema());
-		assertNull(entityMappings().getSpecifiedSchema());
-		assertNull(ormResource().getEntityMappings().getSchema());
+		assertNull(getEntityMappings().getDefaultSchema());
+		assertNull(getEntityMappings().getSchema());
+		assertNull(getEntityMappings().getSpecifiedSchema());
+		assertNull(getOrmResource().getEntityMappings().getSchema());
 	
-		ormResource().getEntityMappings().setSchema("MY_SCHEMA");
-		assertNull(entityMappings().getDefaultSchema());
-		assertEquals("MY_SCHEMA", entityMappings().getSchema());
-		assertEquals("MY_SCHEMA", entityMappings().getSpecifiedSchema());
-		assertEquals("MY_SCHEMA", ormResource().getEntityMappings().getSchema());
+		getOrmResource().getEntityMappings().setSchema("MY_SCHEMA");
+		assertNull(getEntityMappings().getDefaultSchema());
+		assertEquals("MY_SCHEMA", getEntityMappings().getSchema());
+		assertEquals("MY_SCHEMA", getEntityMappings().getSpecifiedSchema());
+		assertEquals("MY_SCHEMA", getOrmResource().getEntityMappings().getSchema());
 		
-		ormResource().getEntityMappings().setSchema(null);
-		assertNull(entityMappings().getDefaultSchema());
-		assertNull(entityMappings().getSchema());
-		assertNull(entityMappings().getSpecifiedSchema());
-		assertNull(ormResource().getEntityMappings().getSchema());
+		getOrmResource().getEntityMappings().setSchema(null);
+		assertNull(getEntityMappings().getDefaultSchema());
+		assertNull(getEntityMappings().getSchema());
+		assertNull(getEntityMappings().getSpecifiedSchema());
+		assertNull(getOrmResource().getEntityMappings().getSchema());
 
-		entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedSchema("DEFAULT_SCHEMA");
-		assertEquals("DEFAULT_SCHEMA", entityMappings().getDefaultSchema());
-		assertEquals("DEFAULT_SCHEMA", entityMappings().getSchema());
-		assertNull(entityMappings().getSpecifiedSchema());
-		assertNull(ormResource().getEntityMappings().getSchema());
+		getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedSchema("DEFAULT_SCHEMA");
+		assertEquals("DEFAULT_SCHEMA", getEntityMappings().getDefaultSchema());
+		assertEquals("DEFAULT_SCHEMA", getEntityMappings().getSchema());
+		assertNull(getEntityMappings().getSpecifiedSchema());
+		assertNull(getOrmResource().getEntityMappings().getSchema());
 		
-		entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedSchema(null);
-		assertNull(entityMappings().getDefaultSchema());
-		assertNull(entityMappings().getSchema());
-		assertNull(entityMappings().getSpecifiedSchema());
-		assertNull(ormResource().getEntityMappings().getSchema());
+		getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedSchema(null);
+		assertNull(getEntityMappings().getDefaultSchema());
+		assertNull(getEntityMappings().getSchema());
+		assertNull(getEntityMappings().getSpecifiedSchema());
+		assertNull(getOrmResource().getEntityMappings().getSchema());
 	}	
 	
 	public void testModifySpecifiedCatalog() throws Exception {
-		assertNull(entityMappings().getSpecifiedCatalog());
-		assertNull(ormResource().getEntityMappings().getCatalog());
+		assertNull(getEntityMappings().getSpecifiedCatalog());
+		assertNull(getOrmResource().getEntityMappings().getCatalog());
 		
 		//set catalog in the context model, verify resource model modified
-		entityMappings().setSpecifiedCatalog("MY_CATALOG");
-		assertEquals("MY_CATALOG", entityMappings().getSpecifiedCatalog());
-		assertEquals("MY_CATALOG", ormResource().getEntityMappings().getCatalog());
+		getEntityMappings().setSpecifiedCatalog("MY_CATALOG");
+		assertEquals("MY_CATALOG", getEntityMappings().getSpecifiedCatalog());
+		assertEquals("MY_CATALOG", getOrmResource().getEntityMappings().getCatalog());
 		
 		//set catalog to null in the context model
-		entityMappings().setSpecifiedCatalog(null);
-		assertNull(entityMappings().getSpecifiedCatalog());
-		assertNull(ormResource().getEntityMappings().getCatalog());
+		getEntityMappings().setSpecifiedCatalog(null);
+		assertNull(getEntityMappings().getSpecifiedCatalog());
+		assertNull(getOrmResource().getEntityMappings().getCatalog());
 	}
 	
 	public void testUpdateDefaultCatalog() throws Exception {
-		assertNull(entityMappings().getDefaultCatalog());
-		assertNull(entityMappings().getSpecifiedCatalog());
-		assertNull(ormResource().getEntityMappings().getCatalog());
+		assertNull(getEntityMappings().getDefaultCatalog());
+		assertNull(getEntityMappings().getSpecifiedCatalog());
+		assertNull(getOrmResource().getEntityMappings().getCatalog());
 	
-		ormResource().getEntityMappings().setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createXmlPersistenceUnitMetadata());
+		getOrmResource().getEntityMappings().setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createXmlPersistenceUnitMetadata());
 		org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitDefaults persistenceUnitDefaults = OrmFactory.eINSTANCE.createXmlPersistenceUnitDefaults();
-		ormResource().getEntityMappings().getPersistenceUnitMetadata().setPersistenceUnitDefaults(persistenceUnitDefaults);
+		getOrmResource().getEntityMappings().getPersistenceUnitMetadata().setPersistenceUnitDefaults(persistenceUnitDefaults);
 		persistenceUnitDefaults.setCatalog("MY_CATALOG");
-		assertEquals("MY_CATALOG", entityMappings().getDefaultCatalog());
-		assertNull(entityMappings().getSpecifiedCatalog());
-		assertNull(ormResource().getEntityMappings().getCatalog());
-		assertEquals("MY_CATALOG", ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getCatalog());
+		assertEquals("MY_CATALOG", getEntityMappings().getDefaultCatalog());
+		assertNull(getEntityMappings().getSpecifiedCatalog());
+		assertNull(getOrmResource().getEntityMappings().getCatalog());
+		assertEquals("MY_CATALOG", getOrmResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getCatalog());
 	
 		persistenceUnitDefaults.setCatalog(null);
-		assertNull(entityMappings().getDefaultCatalog());
-		assertNull(entityMappings().getSpecifiedCatalog());
-		assertNull(ormResource().getEntityMappings().getCatalog());
-		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getCatalog());
+		assertNull(getEntityMappings().getDefaultCatalog());
+		assertNull(getEntityMappings().getSpecifiedCatalog());
+		assertNull(getOrmResource().getEntityMappings().getCatalog());
+		assertNull(getOrmResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getCatalog());
 	}
 	
 	public void testUpdateCatalog() throws Exception {
-		assertNull(entityMappings().getDefaultCatalog());
-		assertNull(entityMappings().getCatalog());
-		assertNull(entityMappings().getSpecifiedCatalog());
-		assertNull(ormResource().getEntityMappings().getCatalog());
+		assertNull(getEntityMappings().getDefaultCatalog());
+		assertNull(getEntityMappings().getCatalog());
+		assertNull(getEntityMappings().getSpecifiedCatalog());
+		assertNull(getOrmResource().getEntityMappings().getCatalog());
 	
-		ormResource().getEntityMappings().setCatalog("MY_CATALOG");
-		assertNull(entityMappings().getDefaultCatalog());
-		assertEquals("MY_CATALOG", entityMappings().getCatalog());
-		assertEquals("MY_CATALOG", entityMappings().getSpecifiedCatalog());
-		assertEquals("MY_CATALOG", ormResource().getEntityMappings().getCatalog());
+		getOrmResource().getEntityMappings().setCatalog("MY_CATALOG");
+		assertNull(getEntityMappings().getDefaultCatalog());
+		assertEquals("MY_CATALOG", getEntityMappings().getCatalog());
+		assertEquals("MY_CATALOG", getEntityMappings().getSpecifiedCatalog());
+		assertEquals("MY_CATALOG", getOrmResource().getEntityMappings().getCatalog());
 		
-		ormResource().getEntityMappings().setCatalog(null);
-		assertNull(entityMappings().getDefaultCatalog());
-		assertNull(entityMappings().getCatalog());
-		assertNull(entityMappings().getSpecifiedCatalog());
-		assertNull(ormResource().getEntityMappings().getCatalog());
+		getOrmResource().getEntityMappings().setCatalog(null);
+		assertNull(getEntityMappings().getDefaultCatalog());
+		assertNull(getEntityMappings().getCatalog());
+		assertNull(getEntityMappings().getSpecifiedCatalog());
+		assertNull(getOrmResource().getEntityMappings().getCatalog());
 
-		entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedCatalog("DEFAULT_CATALOG");
-		assertEquals("DEFAULT_CATALOG", entityMappings().getDefaultCatalog());
-		assertEquals("DEFAULT_CATALOG", entityMappings().getCatalog());
-		assertNull(entityMappings().getSpecifiedCatalog());
-		assertNull(ormResource().getEntityMappings().getCatalog());
+		getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedCatalog("DEFAULT_CATALOG");
+		assertEquals("DEFAULT_CATALOG", getEntityMappings().getDefaultCatalog());
+		assertEquals("DEFAULT_CATALOG", getEntityMappings().getCatalog());
+		assertNull(getEntityMappings().getSpecifiedCatalog());
+		assertNull(getOrmResource().getEntityMappings().getCatalog());
 		
-		entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedCatalog(null);
-		assertNull(entityMappings().getDefaultCatalog());
-		assertNull(entityMappings().getCatalog());
-		assertNull(entityMappings().getSpecifiedCatalog());
-		assertNull(ormResource().getEntityMappings().getCatalog());
+		getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedCatalog(null);
+		assertNull(getEntityMappings().getDefaultCatalog());
+		assertNull(getEntityMappings().getCatalog());
+		assertNull(getEntityMappings().getSpecifiedCatalog());
+		assertNull(getOrmResource().getEntityMappings().getCatalog());
 	}	
 
 	public void testUpdateSpecifiedAccess() throws Exception {
-		assertNull(entityMappings().getSpecifiedAccess());
-		assertNull(ormResource().getEntityMappings().getAccess());
+		assertNull(getEntityMappings().getSpecifiedAccess());
+		assertNull(getOrmResource().getEntityMappings().getAccess());
 		
 		//set access in the resource model, verify context model updated
-		ormResource().getEntityMappings().setAccess(org.eclipse.jpt.core.resource.orm.AccessType.PROPERTY);
-		assertEquals(AccessType.PROPERTY, entityMappings().getSpecifiedAccess());
-		assertEquals(org.eclipse.jpt.core.resource.orm.AccessType.PROPERTY, ormResource().getEntityMappings().getAccess());
+		getOrmResource().getEntityMappings().setAccess(org.eclipse.jpt.core.resource.orm.AccessType.PROPERTY);
+		assertEquals(AccessType.PROPERTY, getEntityMappings().getSpecifiedAccess());
+		assertEquals(org.eclipse.jpt.core.resource.orm.AccessType.PROPERTY, getOrmResource().getEntityMappings().getAccess());
 		
 		//set access to null in the resource model
-		ormResource().getEntityMappings().setAccess(null);
-		assertNull(entityMappings().getSpecifiedAccess());
-		assertNull(ormResource().getEntityMappings().getAccess());
+		getOrmResource().getEntityMappings().setAccess(null);
+		assertNull(getEntityMappings().getSpecifiedAccess());
+		assertNull(getOrmResource().getEntityMappings().getAccess());
 	}
 	
 	public void testModifySpecifiedAccess() throws Exception {
-		assertNull(entityMappings().getSpecifiedAccess());
-		assertNull(ormResource().getEntityMappings().getAccess());
+		assertNull(getEntityMappings().getSpecifiedAccess());
+		assertNull(getOrmResource().getEntityMappings().getAccess());
 		
 		//set access in the context model, verify resource model modified
-		entityMappings().setSpecifiedAccess(AccessType.PROPERTY);
-		assertEquals(AccessType.PROPERTY, entityMappings().getSpecifiedAccess());
-		assertEquals(org.eclipse.jpt.core.resource.orm.AccessType.PROPERTY, ormResource().getEntityMappings().getAccess());
+		getEntityMappings().setSpecifiedAccess(AccessType.PROPERTY);
+		assertEquals(AccessType.PROPERTY, getEntityMappings().getSpecifiedAccess());
+		assertEquals(org.eclipse.jpt.core.resource.orm.AccessType.PROPERTY, getOrmResource().getEntityMappings().getAccess());
 		
 		//set access to null in the context model
-		entityMappings().setSpecifiedAccess(null);
-		assertNull(entityMappings().getSpecifiedAccess());
-		assertNull(ormResource().getEntityMappings().getAccess());
+		getEntityMappings().setSpecifiedAccess(null);
+		assertNull(getEntityMappings().getSpecifiedAccess());
+		assertNull(getOrmResource().getEntityMappings().getAccess());
 	}
 	
 	public void testUpdateDefaultAccess() throws Exception {
-		assertNull(entityMappings().getDefaultAccess());
-		assertNull(entityMappings().getSpecifiedAccess());
-		assertNull(ormResource().getEntityMappings().getAccess());
+		assertNull(getEntityMappings().getDefaultAccess());
+		assertNull(getEntityMappings().getSpecifiedAccess());
+		assertNull(getOrmResource().getEntityMappings().getAccess());
 	
-		ormResource().getEntityMappings().setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createXmlPersistenceUnitMetadata());
+		getOrmResource().getEntityMappings().setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createXmlPersistenceUnitMetadata());
 		org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitDefaults persistenceUnitDefaults = OrmFactory.eINSTANCE.createXmlPersistenceUnitDefaults();
-		ormResource().getEntityMappings().getPersistenceUnitMetadata().setPersistenceUnitDefaults(persistenceUnitDefaults);
+		getOrmResource().getEntityMappings().getPersistenceUnitMetadata().setPersistenceUnitDefaults(persistenceUnitDefaults);
 		persistenceUnitDefaults.setAccess(org.eclipse.jpt.core.resource.orm.AccessType.PROPERTY);
-		assertEquals(AccessType.PROPERTY, entityMappings().getDefaultAccess());
-		assertNull(entityMappings().getSpecifiedAccess());
-		assertNull(ormResource().getEntityMappings().getAccess());
+		assertEquals(AccessType.PROPERTY, getEntityMappings().getDefaultAccess());
+		assertNull(getEntityMappings().getSpecifiedAccess());
+		assertNull(getOrmResource().getEntityMappings().getAccess());
 		
 		persistenceUnitDefaults.setAccess(org.eclipse.jpt.core.resource.orm.AccessType.FIELD);
-		assertEquals(AccessType.FIELD, entityMappings().getDefaultAccess());
-		assertNull(entityMappings().getSpecifiedAccess());
-		assertNull(ormResource().getEntityMappings().getAccess());
+		assertEquals(AccessType.FIELD, getEntityMappings().getDefaultAccess());
+		assertNull(getEntityMappings().getSpecifiedAccess());
+		assertNull(getOrmResource().getEntityMappings().getAccess());
 		
 		persistenceUnitDefaults.setAccess(null);
-		assertNull(entityMappings().getDefaultAccess());
-		assertNull(entityMappings().getSpecifiedAccess());
-		assertNull(ormResource().getEntityMappings().getAccess());
+		assertNull(getEntityMappings().getDefaultAccess());
+		assertNull(getEntityMappings().getSpecifiedAccess());
+		assertNull(getOrmResource().getEntityMappings().getAccess());
 	}
 
 	public void testUpdateAccess() throws Exception {
-		assertNull(entityMappings().getAccess());
-		assertNull(entityMappings().getDefaultAccess());
-		assertNull(entityMappings().getSpecifiedAccess());
-		assertNull(ormResource().getEntityMappings().getAccess());
+		assertNull(getEntityMappings().getAccess());
+		assertNull(getEntityMappings().getDefaultAccess());
+		assertNull(getEntityMappings().getSpecifiedAccess());
+		assertNull(getOrmResource().getEntityMappings().getAccess());
 	
-		ormResource().getEntityMappings().setAccess(org.eclipse.jpt.core.resource.orm.AccessType.FIELD);
-		assertNull(entityMappings().getDefaultAccess());
-		assertEquals(AccessType.FIELD, entityMappings().getAccess());
-		assertEquals(AccessType.FIELD, entityMappings().getSpecifiedAccess());
-		assertEquals(org.eclipse.jpt.core.resource.orm.AccessType.FIELD, ormResource().getEntityMappings().getAccess());
+		getOrmResource().getEntityMappings().setAccess(org.eclipse.jpt.core.resource.orm.AccessType.FIELD);
+		assertNull(getEntityMappings().getDefaultAccess());
+		assertEquals(AccessType.FIELD, getEntityMappings().getAccess());
+		assertEquals(AccessType.FIELD, getEntityMappings().getSpecifiedAccess());
+		assertEquals(org.eclipse.jpt.core.resource.orm.AccessType.FIELD, getOrmResource().getEntityMappings().getAccess());
 		
-		ormResource().getEntityMappings().setAccess(null);
-		assertNull(entityMappings().getAccess());
-		assertNull(entityMappings().getDefaultAccess());
-		assertNull(entityMappings().getSpecifiedAccess());
-		assertNull(ormResource().getEntityMappings().getAccess());
+		getOrmResource().getEntityMappings().setAccess(null);
+		assertNull(getEntityMappings().getAccess());
+		assertNull(getEntityMappings().getDefaultAccess());
+		assertNull(getEntityMappings().getSpecifiedAccess());
+		assertNull(getOrmResource().getEntityMappings().getAccess());
 
-		entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(AccessType.FIELD);
-		assertEquals(AccessType.FIELD, entityMappings().getDefaultAccess());
-		assertEquals(AccessType.FIELD, entityMappings().getAccess());
-		assertNull(entityMappings().getSpecifiedAccess());
-		assertNull(ormResource().getEntityMappings().getAccess());
+		getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(AccessType.FIELD);
+		assertEquals(AccessType.FIELD, getEntityMappings().getDefaultAccess());
+		assertEquals(AccessType.FIELD, getEntityMappings().getAccess());
+		assertNull(getEntityMappings().getSpecifiedAccess());
+		assertNull(getOrmResource().getEntityMappings().getAccess());
 		
-		entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(null);
-		assertNull(entityMappings().getDefaultAccess());
-		assertNull(entityMappings().getAccess());
-		assertNull(entityMappings().getSpecifiedAccess());
-		assertNull(ormResource().getEntityMappings().getAccess());
+		getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(null);
+		assertNull(getEntityMappings().getDefaultAccess());
+		assertNull(getEntityMappings().getAccess());
+		assertNull(getEntityMappings().getSpecifiedAccess());
+		assertNull(getOrmResource().getEntityMappings().getAccess());
 	}	
 
 	
 	public void testUpdateOrmPersistentTypes() throws Exception {
-		assertFalse(entityMappings().ormPersistentTypes().hasNext());
-		assertTrue(ormResource().getEntityMappings().getMappedSuperclasses().isEmpty());
-		assertTrue(ormResource().getEntityMappings().getEntities().isEmpty());
-		assertTrue(ormResource().getEntityMappings().getEmbeddables().isEmpty());
+		assertFalse(getEntityMappings().ormPersistentTypes().hasNext());
+		assertTrue(getOrmResource().getEntityMappings().getMappedSuperclasses().isEmpty());
+		assertTrue(getOrmResource().getEntityMappings().getEntities().isEmpty());
+		assertTrue(getOrmResource().getEntityMappings().getEmbeddables().isEmpty());
 		
 		//add embeddable in the resource model, verify context model updated
 		XmlEmbeddable embeddable = OrmFactory.eINSTANCE.createXmlEmbeddable();
-		ormResource().getEntityMappings().getEmbeddables().add(embeddable);
+		getOrmResource().getEntityMappings().getEmbeddables().add(embeddable);
 		embeddable.setClassName("model.Foo");
-		assertTrue(entityMappings().ormPersistentTypes().hasNext());
-		assertEquals("model.Foo", entityMappings().ormPersistentTypes().next().getMapping().getClass_());
-		assertTrue(ormResource().getEntityMappings().getMappedSuperclasses().isEmpty());
-		assertTrue(ormResource().getEntityMappings().getEntities().isEmpty());
-		assertFalse(ormResource().getEntityMappings().getEmbeddables().isEmpty());
-		assertEquals("model.Foo", ormResource().getEntityMappings().getEmbeddables().get(0).getClassName());
+		assertTrue(getEntityMappings().ormPersistentTypes().hasNext());
+		assertEquals("model.Foo", getEntityMappings().ormPersistentTypes().next().getMapping().getClass_());
+		assertTrue(getOrmResource().getEntityMappings().getMappedSuperclasses().isEmpty());
+		assertTrue(getOrmResource().getEntityMappings().getEntities().isEmpty());
+		assertFalse(getOrmResource().getEntityMappings().getEmbeddables().isEmpty());
+		assertEquals("model.Foo", getOrmResource().getEntityMappings().getEmbeddables().get(0).getClassName());
 		
 		//add entity in the resource model, verify context model updated
 		XmlEntity entity = OrmFactory.eINSTANCE.createXmlEntity();
-		ormResource().getEntityMappings().getEntities().add(entity);
+		getOrmResource().getEntityMappings().getEntities().add(entity);
 		entity.setClassName("model.Foo2");
-		assertTrue(entityMappings().ormPersistentTypes().hasNext());
-		assertEquals("model.Foo2", entityMappings().ormPersistentTypes().next().getMapping().getClass_());
-		assertTrue(ormResource().getEntityMappings().getMappedSuperclasses().isEmpty());
-		assertFalse(ormResource().getEntityMappings().getEntities().isEmpty());
-		assertFalse(ormResource().getEntityMappings().getEmbeddables().isEmpty());
-		assertEquals("model.Foo2", ormResource().getEntityMappings().getEntities().get(0).getClassName());
+		assertTrue(getEntityMappings().ormPersistentTypes().hasNext());
+		assertEquals("model.Foo2", getEntityMappings().ormPersistentTypes().next().getMapping().getClass_());
+		assertTrue(getOrmResource().getEntityMappings().getMappedSuperclasses().isEmpty());
+		assertFalse(getOrmResource().getEntityMappings().getEntities().isEmpty());
+		assertFalse(getOrmResource().getEntityMappings().getEmbeddables().isEmpty());
+		assertEquals("model.Foo2", getOrmResource().getEntityMappings().getEntities().get(0).getClassName());
 
 		//add mapped-superclass in the resource model, verify context model updated
 		XmlMappedSuperclass mappedSuperclass = OrmFactory.eINSTANCE.createXmlMappedSuperclass();
-		ormResource().getEntityMappings().getMappedSuperclasses().add(mappedSuperclass);
+		getOrmResource().getEntityMappings().getMappedSuperclasses().add(mappedSuperclass);
 		mappedSuperclass.setClassName("model.Foo3");
-		assertTrue(entityMappings().ormPersistentTypes().hasNext());
-		assertEquals("model.Foo3", entityMappings().ormPersistentTypes().next().getMapping().getClass_());
-		assertFalse(ormResource().getEntityMappings().getMappedSuperclasses().isEmpty());
-		assertFalse(ormResource().getEntityMappings().getEntities().isEmpty());
-		assertFalse(ormResource().getEntityMappings().getEmbeddables().isEmpty());
-		assertEquals("model.Foo3", ormResource().getEntityMappings().getMappedSuperclasses().get(0).getClassName());
+		assertTrue(getEntityMappings().ormPersistentTypes().hasNext());
+		assertEquals("model.Foo3", getEntityMappings().ormPersistentTypes().next().getMapping().getClass_());
+		assertFalse(getOrmResource().getEntityMappings().getMappedSuperclasses().isEmpty());
+		assertFalse(getOrmResource().getEntityMappings().getEntities().isEmpty());
+		assertFalse(getOrmResource().getEntityMappings().getEmbeddables().isEmpty());
+		assertEquals("model.Foo3", getOrmResource().getEntityMappings().getMappedSuperclasses().get(0).getClassName());
 	}
 	
 	
 	public void testAddOrmPersistentType() throws Exception {
-		assertFalse(entityMappings().ormPersistentTypes().hasNext());
-		assertTrue(ormResource().getEntityMappings().getMappedSuperclasses().isEmpty());
-		assertTrue(ormResource().getEntityMappings().getEntities().isEmpty());
-		assertTrue(ormResource().getEntityMappings().getEmbeddables().isEmpty());
+		assertFalse(getEntityMappings().ormPersistentTypes().hasNext());
+		assertTrue(getOrmResource().getEntityMappings().getMappedSuperclasses().isEmpty());
+		assertTrue(getOrmResource().getEntityMappings().getEntities().isEmpty());
+		assertTrue(getOrmResource().getEntityMappings().getEmbeddables().isEmpty());
 		
 		//add embeddable in the context model, verify resource model modified
-		entityMappings().addOrmPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, "model.Foo");
-		assertTrue(entityMappings().ormPersistentTypes().hasNext());
-		assertEquals("model.Foo", entityMappings().ormPersistentTypes().next().getMapping().getClass_());
-		assertEquals(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, entityMappings().ormPersistentTypes().next().getMapping().getKey());
-		assertTrue(ormResource().getEntityMappings().getMappedSuperclasses().isEmpty());
-		assertTrue(ormResource().getEntityMappings().getEntities().isEmpty());
-		assertFalse(ormResource().getEntityMappings().getEmbeddables().isEmpty());
-		assertEquals("model.Foo", ormResource().getEntityMappings().getEmbeddables().get(0).getClassName());
+		getEntityMappings().addOrmPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, "model.Foo");
+		assertTrue(getEntityMappings().ormPersistentTypes().hasNext());
+		assertEquals("model.Foo", getEntityMappings().ormPersistentTypes().next().getMapping().getClass_());
+		assertEquals(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, getEntityMappings().ormPersistentTypes().next().getMapping().getKey());
+		assertTrue(getOrmResource().getEntityMappings().getMappedSuperclasses().isEmpty());
+		assertTrue(getOrmResource().getEntityMappings().getEntities().isEmpty());
+		assertFalse(getOrmResource().getEntityMappings().getEmbeddables().isEmpty());
+		assertEquals("model.Foo", getOrmResource().getEntityMappings().getEmbeddables().get(0).getClassName());
 
 		//add entity in the context model, verify resource model modified
-		entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo2");
-		assertTrue(entityMappings().ormPersistentTypes().hasNext());
-		assertEquals("model.Foo2", entityMappings().ormPersistentTypes().next().getMapping().getClass_());
-		assertEquals(MappingKeys.ENTITY_TYPE_MAPPING_KEY, entityMappings().ormPersistentTypes().next().getMapping().getKey());
-		assertTrue(ormResource().getEntityMappings().getMappedSuperclasses().isEmpty());
-		assertFalse(ormResource().getEntityMappings().getEntities().isEmpty());
-		assertFalse(ormResource().getEntityMappings().getEmbeddables().isEmpty());
-		assertEquals("model.Foo2", ormResource().getEntityMappings().getEntities().get(0).getClassName());
+		getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo2");
+		assertTrue(getEntityMappings().ormPersistentTypes().hasNext());
+		assertEquals("model.Foo2", getEntityMappings().ormPersistentTypes().next().getMapping().getClass_());
+		assertEquals(MappingKeys.ENTITY_TYPE_MAPPING_KEY, getEntityMappings().ormPersistentTypes().next().getMapping().getKey());
+		assertTrue(getOrmResource().getEntityMappings().getMappedSuperclasses().isEmpty());
+		assertFalse(getOrmResource().getEntityMappings().getEntities().isEmpty());
+		assertFalse(getOrmResource().getEntityMappings().getEmbeddables().isEmpty());
+		assertEquals("model.Foo2", getOrmResource().getEntityMappings().getEntities().get(0).getClassName());
 
 		//add mapped-superclass in the context model, verify resource model modified
-		entityMappings().addOrmPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, "model.Foo3");
-		assertTrue(entityMappings().ormPersistentTypes().hasNext());
-		assertEquals("model.Foo3", entityMappings().ormPersistentTypes().next().getMapping().getClass_());
-		assertEquals(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, entityMappings().ormPersistentTypes().next().getMapping().getKey());
-		assertFalse(ormResource().getEntityMappings().getMappedSuperclasses().isEmpty());
-		assertFalse(ormResource().getEntityMappings().getEntities().isEmpty());
-		assertFalse(ormResource().getEntityMappings().getEmbeddables().isEmpty());
-		assertEquals("model.Foo3", ormResource().getEntityMappings().getMappedSuperclasses().get(0).getClassName());
+		getEntityMappings().addOrmPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, "model.Foo3");
+		assertTrue(getEntityMappings().ormPersistentTypes().hasNext());
+		assertEquals("model.Foo3", getEntityMappings().ormPersistentTypes().next().getMapping().getClass_());
+		assertEquals(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, getEntityMappings().ormPersistentTypes().next().getMapping().getKey());
+		assertFalse(getOrmResource().getEntityMappings().getMappedSuperclasses().isEmpty());
+		assertFalse(getOrmResource().getEntityMappings().getEntities().isEmpty());
+		assertFalse(getOrmResource().getEntityMappings().getEmbeddables().isEmpty());
+		assertEquals("model.Foo3", getOrmResource().getEntityMappings().getMappedSuperclasses().get(0).getClassName());
 	}
 	
 	public void testRemoveOrmPersistentType() throws Exception {
-		assertFalse(entityMappings().ormPersistentTypes().hasNext());
-		assertTrue(ormResource().getEntityMappings().getMappedSuperclasses().isEmpty());
-		assertTrue(ormResource().getEntityMappings().getEntities().isEmpty());
-		assertTrue(ormResource().getEntityMappings().getEmbeddables().isEmpty());
+		assertFalse(getEntityMappings().ormPersistentTypes().hasNext());
+		assertTrue(getOrmResource().getEntityMappings().getMappedSuperclasses().isEmpty());
+		assertTrue(getOrmResource().getEntityMappings().getEntities().isEmpty());
+		assertTrue(getOrmResource().getEntityMappings().getEmbeddables().isEmpty());
 		
-		entityMappings().addOrmPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, "model.Foo");
-		entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo2");
-		entityMappings().addOrmPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, "model.Foo3");
+		getEntityMappings().addOrmPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, "model.Foo");
+		getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo2");
+		getEntityMappings().addOrmPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, "model.Foo3");
 		
 		//remove ormPersistentType from the context model, verify resource model modified
-		entityMappings().removeOrmPersistentType(1);
-		assertFalse(ormResource().getEntityMappings().getMappedSuperclasses().isEmpty());
-		assertTrue(ormResource().getEntityMappings().getEntities().isEmpty());
-		assertFalse(ormResource().getEntityMappings().getEmbeddables().isEmpty());
+		getEntityMappings().removeOrmPersistentType(1);
+		assertFalse(getOrmResource().getEntityMappings().getMappedSuperclasses().isEmpty());
+		assertTrue(getOrmResource().getEntityMappings().getEntities().isEmpty());
+		assertFalse(getOrmResource().getEntityMappings().getEmbeddables().isEmpty());
 		
-		entityMappings().removeOrmPersistentType(1);
-		assertFalse(ormResource().getEntityMappings().getMappedSuperclasses().isEmpty());
-		assertTrue(ormResource().getEntityMappings().getEntities().isEmpty());
-		assertTrue(ormResource().getEntityMappings().getEmbeddables().isEmpty());
+		getEntityMappings().removeOrmPersistentType(1);
+		assertFalse(getOrmResource().getEntityMappings().getMappedSuperclasses().isEmpty());
+		assertTrue(getOrmResource().getEntityMappings().getEntities().isEmpty());
+		assertTrue(getOrmResource().getEntityMappings().getEmbeddables().isEmpty());
 		
-		entityMappings().removeOrmPersistentType(0);
-		assertTrue(ormResource().getEntityMappings().getMappedSuperclasses().isEmpty());
-		assertTrue(ormResource().getEntityMappings().getEntities().isEmpty());
-		assertTrue(ormResource().getEntityMappings().getEmbeddables().isEmpty());
+		getEntityMappings().removeOrmPersistentType(0);
+		assertTrue(getOrmResource().getEntityMappings().getMappedSuperclasses().isEmpty());
+		assertTrue(getOrmResource().getEntityMappings().getEntities().isEmpty());
+		assertTrue(getOrmResource().getEntityMappings().getEmbeddables().isEmpty());
 	}
 	
 	public void testUpdateTableGenerators() throws Exception {
-		assertEquals(0, entityMappings().tableGeneratorsSize());
-		assertEquals(0, ormResource().getEntityMappings().getTableGenerators().size());
-		assertEquals(0, CollectionTools.size(entityMappings().getPersistenceUnit().allGenerators()));
+		assertEquals(0, getEntityMappings().tableGeneratorsSize());
+		assertEquals(0, getOrmResource().getEntityMappings().getTableGenerators().size());
+		assertEquals(0, CollectionTools.size(getEntityMappings().getPersistenceUnit().allGenerators()));
 		
 		XmlTableGenerator tableGeneratorResource = OrmFactory.eINSTANCE.createXmlTableGeneratorImpl();
-		ormResource().getEntityMappings().getTableGenerators().add(tableGeneratorResource);
+		getOrmResource().getEntityMappings().getTableGenerators().add(tableGeneratorResource);
 		tableGeneratorResource.setName("FOO");
 		
-		TableGenerator tableGenerator = entityMappings().tableGenerators().next();
+		TableGenerator tableGenerator = getEntityMappings().tableGenerators().next();
 		assertEquals("FOO", tableGenerator.getName());
-		assertEquals(1, CollectionTools.size(entityMappings().getPersistenceUnit().allGenerators()));
+		assertEquals(1, CollectionTools.size(getEntityMappings().getPersistenceUnit().allGenerators()));
 		
 		XmlTableGenerator tableGeneratorResource2 = OrmFactory.eINSTANCE.createXmlTableGeneratorImpl();
-		ormResource().getEntityMappings().getTableGenerators().add(0, tableGeneratorResource2);
+		getOrmResource().getEntityMappings().getTableGenerators().add(0, tableGeneratorResource2);
 		tableGeneratorResource2.setName("BAR");
 		
-		ListIterator<OrmTableGenerator> tableGenerators = entityMappings().tableGenerators();
+		ListIterator<OrmTableGenerator> tableGenerators = getEntityMappings().tableGenerators();
 		assertEquals("BAR", tableGenerators.next().getName());
 		assertEquals("FOO", tableGenerators.next().getName());
 		assertFalse(tableGenerators.hasNext());
-		assertEquals(2, CollectionTools.size(entityMappings().getPersistenceUnit().allGenerators()));
+		assertEquals(2, CollectionTools.size(getEntityMappings().getPersistenceUnit().allGenerators()));
 		
 		XmlTableGenerator tableGeneratorResource3 = OrmFactory.eINSTANCE.createXmlTableGeneratorImpl();
-		ormResource().getEntityMappings().getTableGenerators().add(1, tableGeneratorResource3);
+		getOrmResource().getEntityMappings().getTableGenerators().add(1, tableGeneratorResource3);
 		tableGeneratorResource3.setName("BAZ");
 		
-		tableGenerators = entityMappings().tableGenerators();
+		tableGenerators = getEntityMappings().tableGenerators();
 		assertEquals("BAR", tableGenerators.next().getName());
 		assertEquals("BAZ", tableGenerators.next().getName());
 		assertEquals("FOO", tableGenerators.next().getName());
 		assertFalse(tableGenerators.hasNext());
-		assertEquals(3, CollectionTools.size(entityMappings().getPersistenceUnit().allGenerators()));
+		assertEquals(3, CollectionTools.size(getEntityMappings().getPersistenceUnit().allGenerators()));
 		
-		ormResource().getEntityMappings().getTableGenerators().move(2, 0);
-		tableGenerators = entityMappings().tableGenerators();
+		getOrmResource().getEntityMappings().getTableGenerators().move(2, 0);
+		tableGenerators = getEntityMappings().tableGenerators();
 		assertEquals("BAZ", tableGenerators.next().getName());
 		assertEquals("FOO", tableGenerators.next().getName());
 		assertEquals("BAR", tableGenerators.next().getName());
 		assertFalse(tableGenerators.hasNext());
-		assertEquals(3, CollectionTools.size(entityMappings().getPersistenceUnit().allGenerators()));
+		assertEquals(3, CollectionTools.size(getEntityMappings().getPersistenceUnit().allGenerators()));
 		
-		ormResource().getEntityMappings().getTableGenerators().remove(0);
-		tableGenerators = entityMappings().tableGenerators();
+		getOrmResource().getEntityMappings().getTableGenerators().remove(0);
+		tableGenerators = getEntityMappings().tableGenerators();
 		assertEquals("FOO", tableGenerators.next().getName());
 		assertEquals("BAR", tableGenerators.next().getName());
 		assertFalse(tableGenerators.hasNext());
-		assertEquals(2, CollectionTools.size(entityMappings().getPersistenceUnit().allGenerators()));
+		assertEquals(2, CollectionTools.size(getEntityMappings().getPersistenceUnit().allGenerators()));
 		
-		ormResource().getEntityMappings().getTableGenerators().remove(1);
-		tableGenerators = entityMappings().tableGenerators();
+		getOrmResource().getEntityMappings().getTableGenerators().remove(1);
+		tableGenerators = getEntityMappings().tableGenerators();
 		assertEquals("FOO", tableGenerators.next().getName());
 		assertFalse(tableGenerators.hasNext());
-		assertEquals(1, CollectionTools.size(entityMappings().getPersistenceUnit().allGenerators()));
+		assertEquals(1, CollectionTools.size(getEntityMappings().getPersistenceUnit().allGenerators()));
 		
-		ormResource().getEntityMappings().getTableGenerators().clear();
-		tableGenerators = entityMappings().tableGenerators();
+		getOrmResource().getEntityMappings().getTableGenerators().clear();
+		tableGenerators = getEntityMappings().tableGenerators();
 		assertFalse(tableGenerators.hasNext());
-		assertEquals(0, CollectionTools.size(entityMappings().getPersistenceUnit().allGenerators()));
+		assertEquals(0, CollectionTools.size(getEntityMappings().getPersistenceUnit().allGenerators()));
 	}
 	
 	public void testAddTableGenerator() throws Exception {
-		assertEquals(0, entityMappings().tableGeneratorsSize());
-		assertEquals(0, ormResource().getEntityMappings().getTableGenerators().size());
-		entityMappings().addTableGenerator(0).setName("FOO");
+		assertEquals(0, getEntityMappings().tableGeneratorsSize());
+		assertEquals(0, getOrmResource().getEntityMappings().getTableGenerators().size());
+		getEntityMappings().addTableGenerator(0).setName("FOO");
 		
-		assertEquals("FOO", ormResource().getEntityMappings().getTableGenerators().get(0).getName());
+		assertEquals("FOO", getOrmResource().getEntityMappings().getTableGenerators().get(0).getName());
 		
-		entityMappings().addTableGenerator(0).setName("BAR");
-		assertEquals("BAR", ormResource().getEntityMappings().getTableGenerators().get(0).getName());
-		assertEquals("FOO", ormResource().getEntityMappings().getTableGenerators().get(1).getName());
-		assertEquals(2, ormResource().getEntityMappings().getTableGenerators().size());
+		getEntityMappings().addTableGenerator(0).setName("BAR");
+		assertEquals("BAR", getOrmResource().getEntityMappings().getTableGenerators().get(0).getName());
+		assertEquals("FOO", getOrmResource().getEntityMappings().getTableGenerators().get(1).getName());
+		assertEquals(2, getOrmResource().getEntityMappings().getTableGenerators().size());
 		
-		ListIterator<OrmTableGenerator> tableGenerators = entityMappings().tableGenerators();
+		ListIterator<OrmTableGenerator> tableGenerators = getEntityMappings().tableGenerators();
 		assertEquals("BAR", tableGenerators.next().getName());
 		assertEquals("FOO", tableGenerators.next().getName());
 		assertFalse(tableGenerators.hasNext());
 	}
 	
 	public void testRemoveTableGenerator() throws Exception {
-		assertEquals(0, entityMappings().tableGeneratorsSize());
-		assertEquals(0, ormResource().getEntityMappings().getTableGenerators().size());
+		assertEquals(0, getEntityMappings().tableGeneratorsSize());
+		assertEquals(0, getOrmResource().getEntityMappings().getTableGenerators().size());
 		
-		TableGenerator tableGenerator = entityMappings().addTableGenerator(0);
+		TableGenerator tableGenerator = getEntityMappings().addTableGenerator(0);
 		tableGenerator.setName("FOO");
-		TableGenerator tableGenerator2 = entityMappings().addTableGenerator(1);
+		TableGenerator tableGenerator2 = getEntityMappings().addTableGenerator(1);
 		tableGenerator2.setName("BAR");
-		TableGenerator tableGenerator3 = entityMappings().addTableGenerator(2);
+		TableGenerator tableGenerator3 = getEntityMappings().addTableGenerator(2);
 		tableGenerator3.setName("BAZ");
-		assertEquals("FOO", ormResource().getEntityMappings().getTableGenerators().get(0).getName());
-		assertEquals("BAR", ormResource().getEntityMappings().getTableGenerators().get(1).getName());
-		assertEquals("BAZ", ormResource().getEntityMappings().getTableGenerators().get(2).getName());
-		assertEquals(3, ormResource().getEntityMappings().getTableGenerators().size());
+		assertEquals("FOO", getOrmResource().getEntityMappings().getTableGenerators().get(0).getName());
+		assertEquals("BAR", getOrmResource().getEntityMappings().getTableGenerators().get(1).getName());
+		assertEquals("BAZ", getOrmResource().getEntityMappings().getTableGenerators().get(2).getName());
+		assertEquals(3, getOrmResource().getEntityMappings().getTableGenerators().size());
 		
-		entityMappings().removeTableGenerator(0);
-		assertEquals("BAR", ormResource().getEntityMappings().getTableGenerators().get(0).getName());
-		assertEquals("BAZ", ormResource().getEntityMappings().getTableGenerators().get(1).getName());
+		getEntityMappings().removeTableGenerator(0);
+		assertEquals("BAR", getOrmResource().getEntityMappings().getTableGenerators().get(0).getName());
+		assertEquals("BAZ", getOrmResource().getEntityMappings().getTableGenerators().get(1).getName());
 		
-		ListIterator<OrmTableGenerator> tableGenerators = entityMappings().tableGenerators();
+		ListIterator<OrmTableGenerator> tableGenerators = getEntityMappings().tableGenerators();
 		OrmTableGenerator xmlTableGenerator = tableGenerators.next();
 		assertEquals("BAR", xmlTableGenerator.getName());
 		assertEquals(tableGenerator2, xmlTableGenerator);
@@ -573,166 +573,166 @@ public class EntityMappingsTests extends ContextModelTestCase
 		assertFalse(tableGenerators.hasNext());
 
 		
-		entityMappings().removeTableGenerator(1);
-		assertEquals("BAR", ormResource().getEntityMappings().getTableGenerators().get(0).getName());
-		tableGenerators = entityMappings().tableGenerators();
+		getEntityMappings().removeTableGenerator(1);
+		assertEquals("BAR", getOrmResource().getEntityMappings().getTableGenerators().get(0).getName());
+		tableGenerators = getEntityMappings().tableGenerators();
 		xmlTableGenerator = tableGenerators.next();
 		assertEquals("BAR", xmlTableGenerator.getName());
 		assertEquals(tableGenerator2, xmlTableGenerator);
 		assertFalse(tableGenerators.hasNext());
 
 		
-		entityMappings().removeTableGenerator(0);
-		assertEquals(0, ormResource().getEntityMappings().getTableGenerators().size());
-		tableGenerators = entityMappings().tableGenerators();
+		getEntityMappings().removeTableGenerator(0);
+		assertEquals(0, getOrmResource().getEntityMappings().getTableGenerators().size());
+		tableGenerators = getEntityMappings().tableGenerators();
 		assertFalse(tableGenerators.hasNext());		
 	}
 	
 	public void testMoveTableGenerator() throws Exception {
-		assertEquals(0, entityMappings().tableGeneratorsSize());
-		assertEquals(0, ormResource().getEntityMappings().getTableGenerators().size());
+		assertEquals(0, getEntityMappings().tableGeneratorsSize());
+		assertEquals(0, getOrmResource().getEntityMappings().getTableGenerators().size());
 		
-		TableGenerator tableGenerator = entityMappings().addTableGenerator(0);
+		TableGenerator tableGenerator = getEntityMappings().addTableGenerator(0);
 		tableGenerator.setName("FOO");
-		TableGenerator tableGenerator2 = entityMappings().addTableGenerator(1);
+		TableGenerator tableGenerator2 = getEntityMappings().addTableGenerator(1);
 		tableGenerator2.setName("BAR");
-		TableGenerator tableGenerator3 = entityMappings().addTableGenerator(2);
+		TableGenerator tableGenerator3 = getEntityMappings().addTableGenerator(2);
 		tableGenerator3.setName("BAZ");
-		assertEquals("FOO", ormResource().getEntityMappings().getTableGenerators().get(0).getName());
-		assertEquals("BAR", ormResource().getEntityMappings().getTableGenerators().get(1).getName());
-		assertEquals("BAZ", ormResource().getEntityMappings().getTableGenerators().get(2).getName());
-		assertEquals(3, ormResource().getEntityMappings().getTableGenerators().size());
+		assertEquals("FOO", getOrmResource().getEntityMappings().getTableGenerators().get(0).getName());
+		assertEquals("BAR", getOrmResource().getEntityMappings().getTableGenerators().get(1).getName());
+		assertEquals("BAZ", getOrmResource().getEntityMappings().getTableGenerators().get(2).getName());
+		assertEquals(3, getOrmResource().getEntityMappings().getTableGenerators().size());
 		
-		entityMappings().moveTableGenerator(2, 0);
-		assertEquals("BAR", ormResource().getEntityMappings().getTableGenerators().get(0).getName());
-		assertEquals("BAZ", ormResource().getEntityMappings().getTableGenerators().get(1).getName());
-		assertEquals("FOO", ormResource().getEntityMappings().getTableGenerators().get(2).getName());
-		assertEquals(3, ormResource().getEntityMappings().getTableGenerators().size());
+		getEntityMappings().moveTableGenerator(2, 0);
+		assertEquals("BAR", getOrmResource().getEntityMappings().getTableGenerators().get(0).getName());
+		assertEquals("BAZ", getOrmResource().getEntityMappings().getTableGenerators().get(1).getName());
+		assertEquals("FOO", getOrmResource().getEntityMappings().getTableGenerators().get(2).getName());
+		assertEquals(3, getOrmResource().getEntityMappings().getTableGenerators().size());
 		
-		entityMappings().moveTableGenerator(0, 2);
-		assertEquals("FOO", ormResource().getEntityMappings().getTableGenerators().get(0).getName());
-		assertEquals("BAR", ormResource().getEntityMappings().getTableGenerators().get(1).getName());
-		assertEquals("BAZ", ormResource().getEntityMappings().getTableGenerators().get(2).getName());
-		assertEquals(3, ormResource().getEntityMappings().getTableGenerators().size());
+		getEntityMappings().moveTableGenerator(0, 2);
+		assertEquals("FOO", getOrmResource().getEntityMappings().getTableGenerators().get(0).getName());
+		assertEquals("BAR", getOrmResource().getEntityMappings().getTableGenerators().get(1).getName());
+		assertEquals("BAZ", getOrmResource().getEntityMappings().getTableGenerators().get(2).getName());
+		assertEquals(3, getOrmResource().getEntityMappings().getTableGenerators().size());
 	}
 	
 	public void testTableGeneratorsSize() throws Exception {
-		assertEquals(0, entityMappings().tableGeneratorsSize());
-		assertEquals(0, ormResource().getEntityMappings().getTableGenerators().size());
+		assertEquals(0, getEntityMappings().tableGeneratorsSize());
+		assertEquals(0, getOrmResource().getEntityMappings().getTableGenerators().size());
 		
 		
-		TableGenerator tableGenerator = entityMappings().addTableGenerator(0);
+		TableGenerator tableGenerator = getEntityMappings().addTableGenerator(0);
 		tableGenerator.setName("FOO");
-		TableGenerator tableGenerator2 = entityMappings().addTableGenerator(1);
+		TableGenerator tableGenerator2 = getEntityMappings().addTableGenerator(1);
 		tableGenerator2.setName("BAR");
-		TableGenerator tableGenerator3 = entityMappings().addTableGenerator(2);
+		TableGenerator tableGenerator3 = getEntityMappings().addTableGenerator(2);
 		tableGenerator3.setName("BAZ");
 	
-		assertEquals(3, entityMappings().tableGeneratorsSize());
+		assertEquals(3, getEntityMappings().tableGeneratorsSize());
 		
-		ormResource().getEntityMappings().getTableGenerators().remove(0);
-		assertEquals(2, entityMappings().tableGeneratorsSize());
+		getOrmResource().getEntityMappings().getTableGenerators().remove(0);
+		assertEquals(2, getEntityMappings().tableGeneratorsSize());
 	}
 
 	public void testUpdateSequenceGenerators() throws Exception {
-		assertEquals(0, entityMappings().sequenceGeneratorsSize());
-		assertEquals(0, ormResource().getEntityMappings().getSequenceGenerators().size());
-		assertEquals(0, CollectionTools.size(entityMappings().getPersistenceUnit().allGenerators()));
+		assertEquals(0, getEntityMappings().sequenceGeneratorsSize());
+		assertEquals(0, getOrmResource().getEntityMappings().getSequenceGenerators().size());
+		assertEquals(0, CollectionTools.size(getEntityMappings().getPersistenceUnit().allGenerators()));
 		
 		XmlSequenceGenerator sequenceGeneratorResource = OrmFactory.eINSTANCE.createXmlSequenceGeneratorImpl();
-		ormResource().getEntityMappings().getSequenceGenerators().add(sequenceGeneratorResource);
+		getOrmResource().getEntityMappings().getSequenceGenerators().add(sequenceGeneratorResource);
 		sequenceGeneratorResource.setName("FOO");
 		
-		SequenceGenerator sequenceGenerator = entityMappings().sequenceGenerators().next();
+		SequenceGenerator sequenceGenerator = getEntityMappings().sequenceGenerators().next();
 		assertEquals("FOO", sequenceGenerator.getName());
-		assertEquals(1, CollectionTools.size(entityMappings().getPersistenceUnit().allGenerators()));
+		assertEquals(1, CollectionTools.size(getEntityMappings().getPersistenceUnit().allGenerators()));
 		
 		XmlSequenceGenerator sequenceGeneratorResource2 = OrmFactory.eINSTANCE.createXmlSequenceGeneratorImpl();
-		ormResource().getEntityMappings().getSequenceGenerators().add(0, sequenceGeneratorResource2);
+		getOrmResource().getEntityMappings().getSequenceGenerators().add(0, sequenceGeneratorResource2);
 		sequenceGeneratorResource2.setName("BAR");
 		
-		ListIterator<OrmSequenceGenerator> sequenceGenerators = entityMappings().sequenceGenerators();
+		ListIterator<OrmSequenceGenerator> sequenceGenerators = getEntityMappings().sequenceGenerators();
 		assertEquals("BAR", sequenceGenerators.next().getName());
 		assertEquals("FOO", sequenceGenerators.next().getName());
 		assertFalse(sequenceGenerators.hasNext());
-		assertEquals(2, CollectionTools.size(entityMappings().getPersistenceUnit().allGenerators()));
+		assertEquals(2, CollectionTools.size(getEntityMappings().getPersistenceUnit().allGenerators()));
 		
 		XmlSequenceGenerator sequenceGeneratorResource3 = OrmFactory.eINSTANCE.createXmlSequenceGeneratorImpl();
-		ormResource().getEntityMappings().getSequenceGenerators().add(1, sequenceGeneratorResource3);
+		getOrmResource().getEntityMappings().getSequenceGenerators().add(1, sequenceGeneratorResource3);
 		sequenceGeneratorResource3.setName("BAZ");
 
-		sequenceGenerators = entityMappings().sequenceGenerators();
+		sequenceGenerators = getEntityMappings().sequenceGenerators();
 		assertEquals("BAR", sequenceGenerators.next().getName());
 		assertEquals("BAZ", sequenceGenerators.next().getName());
 		assertEquals("FOO", sequenceGenerators.next().getName());
 		assertFalse(sequenceGenerators.hasNext());
-		assertEquals(3, CollectionTools.size(entityMappings().getPersistenceUnit().allGenerators()));
+		assertEquals(3, CollectionTools.size(getEntityMappings().getPersistenceUnit().allGenerators()));
 		
-		ormResource().getEntityMappings().getSequenceGenerators().move(2, 0);
-		sequenceGenerators = entityMappings().sequenceGenerators();
+		getOrmResource().getEntityMappings().getSequenceGenerators().move(2, 0);
+		sequenceGenerators = getEntityMappings().sequenceGenerators();
 		assertEquals("BAZ", sequenceGenerators.next().getName());
 		assertEquals("FOO", sequenceGenerators.next().getName());
 		assertEquals("BAR", sequenceGenerators.next().getName());
 		assertFalse(sequenceGenerators.hasNext());
 		
-		ormResource().getEntityMappings().getSequenceGenerators().remove(0);
-		sequenceGenerators = entityMappings().sequenceGenerators();
+		getOrmResource().getEntityMappings().getSequenceGenerators().remove(0);
+		sequenceGenerators = getEntityMappings().sequenceGenerators();
 		assertEquals("FOO", sequenceGenerators.next().getName());
 		assertEquals("BAR", sequenceGenerators.next().getName());
 		assertFalse(sequenceGenerators.hasNext());
-		assertEquals(2, CollectionTools.size(entityMappings().getPersistenceUnit().allGenerators()));
+		assertEquals(2, CollectionTools.size(getEntityMappings().getPersistenceUnit().allGenerators()));
 
-		ormResource().getEntityMappings().getSequenceGenerators().remove(1);
-		sequenceGenerators = entityMappings().sequenceGenerators();
+		getOrmResource().getEntityMappings().getSequenceGenerators().remove(1);
+		sequenceGenerators = getEntityMappings().sequenceGenerators();
 		assertEquals("FOO", sequenceGenerators.next().getName());
 		assertFalse(sequenceGenerators.hasNext());
-		assertEquals(1, CollectionTools.size(entityMappings().getPersistenceUnit().allGenerators()));
+		assertEquals(1, CollectionTools.size(getEntityMappings().getPersistenceUnit().allGenerators()));
 		
-		ormResource().getEntityMappings().getSequenceGenerators().clear();
-		sequenceGenerators = entityMappings().sequenceGenerators();
+		getOrmResource().getEntityMappings().getSequenceGenerators().clear();
+		sequenceGenerators = getEntityMappings().sequenceGenerators();
 		assertFalse(sequenceGenerators.hasNext());
-		assertEquals(0, CollectionTools.size(entityMappings().getPersistenceUnit().allGenerators()));
+		assertEquals(0, CollectionTools.size(getEntityMappings().getPersistenceUnit().allGenerators()));
 	}
 	
 	public void testAddSequenceGenerator() throws Exception {
-		assertEquals(0, entityMappings().sequenceGeneratorsSize());
-		assertEquals(0, ormResource().getEntityMappings().getSequenceGenerators().size());
+		assertEquals(0, getEntityMappings().sequenceGeneratorsSize());
+		assertEquals(0, getOrmResource().getEntityMappings().getSequenceGenerators().size());
 		
-		entityMappings().addSequenceGenerator(0).setName("FOO");
+		getEntityMappings().addSequenceGenerator(0).setName("FOO");
 		
-		assertEquals("FOO", ormResource().getEntityMappings().getSequenceGenerators().get(0).getName());
+		assertEquals("FOO", getOrmResource().getEntityMappings().getSequenceGenerators().get(0).getName());
 		
-		entityMappings().addSequenceGenerator(0).setName("BAR");
-		assertEquals("BAR", ormResource().getEntityMappings().getSequenceGenerators().get(0).getName());
-		assertEquals("FOO", ormResource().getEntityMappings().getSequenceGenerators().get(1).getName());
-		assertEquals(2, ormResource().getEntityMappings().getSequenceGenerators().size());
+		getEntityMappings().addSequenceGenerator(0).setName("BAR");
+		assertEquals("BAR", getOrmResource().getEntityMappings().getSequenceGenerators().get(0).getName());
+		assertEquals("FOO", getOrmResource().getEntityMappings().getSequenceGenerators().get(1).getName());
+		assertEquals(2, getOrmResource().getEntityMappings().getSequenceGenerators().size());
 		
-		ListIterator<OrmSequenceGenerator> sequenceGenerators = entityMappings().sequenceGenerators();
+		ListIterator<OrmSequenceGenerator> sequenceGenerators = getEntityMappings().sequenceGenerators();
 		assertEquals("BAR", sequenceGenerators.next().getName());
 		assertEquals("FOO", sequenceGenerators.next().getName());
 		assertFalse(sequenceGenerators.hasNext());
 	}
 	
 	public void testRemoveSequenceGenerator() throws Exception {
-		assertEquals(0, entityMappings().sequenceGeneratorsSize());
-		assertEquals(0, ormResource().getEntityMappings().getSequenceGenerators().size());
+		assertEquals(0, getEntityMappings().sequenceGeneratorsSize());
+		assertEquals(0, getOrmResource().getEntityMappings().getSequenceGenerators().size());
 		
-		SequenceGenerator sequenceGenerator = entityMappings().addSequenceGenerator(0);
+		SequenceGenerator sequenceGenerator = getEntityMappings().addSequenceGenerator(0);
 		sequenceGenerator.setName("FOO");
-		SequenceGenerator sequenceGenerator2 = entityMappings().addSequenceGenerator(1);
+		SequenceGenerator sequenceGenerator2 = getEntityMappings().addSequenceGenerator(1);
 		sequenceGenerator2.setName("BAR");
-		SequenceGenerator sequenceGenerator3 = entityMappings().addSequenceGenerator(2);
+		SequenceGenerator sequenceGenerator3 = getEntityMappings().addSequenceGenerator(2);
 		sequenceGenerator3.setName("BAZ");
-		assertEquals("FOO", ormResource().getEntityMappings().getSequenceGenerators().get(0).getName());
-		assertEquals("BAR", ormResource().getEntityMappings().getSequenceGenerators().get(1).getName());
-		assertEquals("BAZ", ormResource().getEntityMappings().getSequenceGenerators().get(2).getName());
-		assertEquals(3, ormResource().getEntityMappings().getSequenceGenerators().size());
+		assertEquals("FOO", getOrmResource().getEntityMappings().getSequenceGenerators().get(0).getName());
+		assertEquals("BAR", getOrmResource().getEntityMappings().getSequenceGenerators().get(1).getName());
+		assertEquals("BAZ", getOrmResource().getEntityMappings().getSequenceGenerators().get(2).getName());
+		assertEquals(3, getOrmResource().getEntityMappings().getSequenceGenerators().size());
 		
-		entityMappings().removeSequenceGenerator(0);
-		assertEquals("BAR", ormResource().getEntityMappings().getSequenceGenerators().get(0).getName());
-		assertEquals("BAZ", ormResource().getEntityMappings().getSequenceGenerators().get(1).getName());
+		getEntityMappings().removeSequenceGenerator(0);
+		assertEquals("BAR", getOrmResource().getEntityMappings().getSequenceGenerators().get(0).getName());
+		assertEquals("BAZ", getOrmResource().getEntityMappings().getSequenceGenerators().get(1).getName());
 		
-		ListIterator<OrmSequenceGenerator> sequenceGenerators = entityMappings().sequenceGenerators();
+		ListIterator<OrmSequenceGenerator> sequenceGenerators = getEntityMappings().sequenceGenerators();
 		SequenceGenerator xmlSequenceGenerator = sequenceGenerators.next();
 		assertEquals("BAR", xmlSequenceGenerator.getName());
 		assertEquals(sequenceGenerator2, xmlSequenceGenerator);
@@ -742,326 +742,326 @@ public class EntityMappingsTests extends ContextModelTestCase
 		assertFalse(sequenceGenerators.hasNext());
 
 		
-		entityMappings().removeSequenceGenerator(1);
-		assertEquals("BAR", ormResource().getEntityMappings().getSequenceGenerators().get(0).getName());
-		sequenceGenerators = entityMappings().sequenceGenerators();
+		getEntityMappings().removeSequenceGenerator(1);
+		assertEquals("BAR", getOrmResource().getEntityMappings().getSequenceGenerators().get(0).getName());
+		sequenceGenerators = getEntityMappings().sequenceGenerators();
 		xmlSequenceGenerator = sequenceGenerators.next();
 		assertEquals("BAR", xmlSequenceGenerator.getName());
 		assertEquals(sequenceGenerator2, xmlSequenceGenerator);
 		assertFalse(sequenceGenerators.hasNext());
 
 		
-		entityMappings().removeSequenceGenerator(0);
-		assertEquals(0, ormResource().getEntityMappings().getSequenceGenerators().size());
-		sequenceGenerators = entityMappings().sequenceGenerators();
+		getEntityMappings().removeSequenceGenerator(0);
+		assertEquals(0, getOrmResource().getEntityMappings().getSequenceGenerators().size());
+		sequenceGenerators = getEntityMappings().sequenceGenerators();
 		assertFalse(sequenceGenerators.hasNext());		
 	}
 	
 	public void testMoveSequenceGenerator() throws Exception {
-		assertEquals(0, entityMappings().sequenceGeneratorsSize());
-		assertEquals(0, ormResource().getEntityMappings().getSequenceGenerators().size());
+		assertEquals(0, getEntityMappings().sequenceGeneratorsSize());
+		assertEquals(0, getOrmResource().getEntityMappings().getSequenceGenerators().size());
 		
-		SequenceGenerator sequenceGenerator = entityMappings().addSequenceGenerator(0);
+		SequenceGenerator sequenceGenerator = getEntityMappings().addSequenceGenerator(0);
 		sequenceGenerator.setName("FOO");
-		SequenceGenerator sequenceGenerator2 = entityMappings().addSequenceGenerator(1);
+		SequenceGenerator sequenceGenerator2 = getEntityMappings().addSequenceGenerator(1);
 		sequenceGenerator2.setName("BAR");
-		SequenceGenerator sequenceGenerator3 = entityMappings().addSequenceGenerator(2);
+		SequenceGenerator sequenceGenerator3 = getEntityMappings().addSequenceGenerator(2);
 		sequenceGenerator3.setName("BAZ");
-		assertEquals("FOO", ormResource().getEntityMappings().getSequenceGenerators().get(0).getName());
-		assertEquals("BAR", ormResource().getEntityMappings().getSequenceGenerators().get(1).getName());
-		assertEquals("BAZ", ormResource().getEntityMappings().getSequenceGenerators().get(2).getName());
-		assertEquals(3, ormResource().getEntityMappings().getSequenceGenerators().size());
+		assertEquals("FOO", getOrmResource().getEntityMappings().getSequenceGenerators().get(0).getName());
+		assertEquals("BAR", getOrmResource().getEntityMappings().getSequenceGenerators().get(1).getName());
+		assertEquals("BAZ", getOrmResource().getEntityMappings().getSequenceGenerators().get(2).getName());
+		assertEquals(3, getOrmResource().getEntityMappings().getSequenceGenerators().size());
 		
-		entityMappings().moveSequenceGenerator(2, 0);
-		assertEquals("BAR", ormResource().getEntityMappings().getSequenceGenerators().get(0).getName());
-		assertEquals("BAZ", ormResource().getEntityMappings().getSequenceGenerators().get(1).getName());
-		assertEquals("FOO", ormResource().getEntityMappings().getSequenceGenerators().get(2).getName());
-		assertEquals(3, ormResource().getEntityMappings().getSequenceGenerators().size());
+		getEntityMappings().moveSequenceGenerator(2, 0);
+		assertEquals("BAR", getOrmResource().getEntityMappings().getSequenceGenerators().get(0).getName());
+		assertEquals("BAZ", getOrmResource().getEntityMappings().getSequenceGenerators().get(1).getName());
+		assertEquals("FOO", getOrmResource().getEntityMappings().getSequenceGenerators().get(2).getName());
+		assertEquals(3, getOrmResource().getEntityMappings().getSequenceGenerators().size());
 		
-		entityMappings().moveSequenceGenerator(0, 2);
-		assertEquals("FOO", ormResource().getEntityMappings().getSequenceGenerators().get(0).getName());
-		assertEquals("BAR", ormResource().getEntityMappings().getSequenceGenerators().get(1).getName());
-		assertEquals("BAZ", ormResource().getEntityMappings().getSequenceGenerators().get(2).getName());
-		assertEquals(3, ormResource().getEntityMappings().getSequenceGenerators().size());
+		getEntityMappings().moveSequenceGenerator(0, 2);
+		assertEquals("FOO", getOrmResource().getEntityMappings().getSequenceGenerators().get(0).getName());
+		assertEquals("BAR", getOrmResource().getEntityMappings().getSequenceGenerators().get(1).getName());
+		assertEquals("BAZ", getOrmResource().getEntityMappings().getSequenceGenerators().get(2).getName());
+		assertEquals(3, getOrmResource().getEntityMappings().getSequenceGenerators().size());
 		
 	}
 	
 	public void testSequenceGeneratorsSize() throws Exception {
-		assertEquals(0, entityMappings().sequenceGeneratorsSize());
-		assertEquals(0, ormResource().getEntityMappings().getSequenceGenerators().size());
+		assertEquals(0, getEntityMappings().sequenceGeneratorsSize());
+		assertEquals(0, getOrmResource().getEntityMappings().getSequenceGenerators().size());
 		
 		
-		SequenceGenerator sequenceGenerator = entityMappings().addSequenceGenerator(0);
+		SequenceGenerator sequenceGenerator = getEntityMappings().addSequenceGenerator(0);
 		sequenceGenerator.setName("FOO");
-		SequenceGenerator sequenceGenerator2 = entityMappings().addSequenceGenerator(1);
+		SequenceGenerator sequenceGenerator2 = getEntityMappings().addSequenceGenerator(1);
 		sequenceGenerator2.setName("BAR");
-		SequenceGenerator sequenceGenerator3 = entityMappings().addSequenceGenerator(2);
+		SequenceGenerator sequenceGenerator3 = getEntityMappings().addSequenceGenerator(2);
 		sequenceGenerator3.setName("BAZ");
 	
-		assertEquals(3, entityMappings().sequenceGeneratorsSize());
+		assertEquals(3, getEntityMappings().sequenceGeneratorsSize());
 		
-		ormResource().getEntityMappings().getSequenceGenerators().remove(0);
-		assertEquals(2, entityMappings().sequenceGeneratorsSize());
+		getOrmResource().getEntityMappings().getSequenceGenerators().remove(0);
+		assertEquals(2, getEntityMappings().sequenceGeneratorsSize());
 	}
 
 	
 	public void testAddNamedQuery() throws Exception {
-		OrmNamedQuery namedQuery = entityMappings().addNamedQuery(0);
+		OrmNamedQuery namedQuery = getEntityMappings().addNamedQuery(0);
 		namedQuery.setName("FOO");
 				
-		assertEquals("FOO", ormResource().getEntityMappings().getNamedQueries().get(0).getName());
+		assertEquals("FOO", getOrmResource().getEntityMappings().getNamedQueries().get(0).getName());
 		
-		OrmNamedQuery namedQuery2 = entityMappings().addNamedQuery(0);
+		OrmNamedQuery namedQuery2 = getEntityMappings().addNamedQuery(0);
 		namedQuery2.setName("BAR");
 		
-		assertEquals("BAR", ormResource().getEntityMappings().getNamedQueries().get(0).getName());
-		assertEquals("FOO", ormResource().getEntityMappings().getNamedQueries().get(1).getName());
+		assertEquals("BAR", getOrmResource().getEntityMappings().getNamedQueries().get(0).getName());
+		assertEquals("FOO", getOrmResource().getEntityMappings().getNamedQueries().get(1).getName());
 		
-		OrmNamedQuery namedQuery3 = entityMappings().addNamedQuery(1);
+		OrmNamedQuery namedQuery3 = getEntityMappings().addNamedQuery(1);
 		namedQuery3.setName("BAZ");
 		
-		assertEquals("BAR", ormResource().getEntityMappings().getNamedQueries().get(0).getName());
-		assertEquals("BAZ", ormResource().getEntityMappings().getNamedQueries().get(1).getName());
-		assertEquals("FOO", ormResource().getEntityMappings().getNamedQueries().get(2).getName());
+		assertEquals("BAR", getOrmResource().getEntityMappings().getNamedQueries().get(0).getName());
+		assertEquals("BAZ", getOrmResource().getEntityMappings().getNamedQueries().get(1).getName());
+		assertEquals("FOO", getOrmResource().getEntityMappings().getNamedQueries().get(2).getName());
 		
-		ListIterator<OrmNamedQuery> namedQueries = entityMappings().namedQueries();
+		ListIterator<OrmNamedQuery> namedQueries = getEntityMappings().namedQueries();
 		assertEquals(namedQuery2, namedQueries.next());
 		assertEquals(namedQuery3, namedQueries.next());
 		assertEquals(namedQuery, namedQueries.next());
 		
-		namedQueries = entityMappings().namedQueries();
+		namedQueries = getEntityMappings().namedQueries();
 		assertEquals("BAR", namedQueries.next().getName());
 		assertEquals("BAZ", namedQueries.next().getName());
 		assertEquals("FOO", namedQueries.next().getName());
 	}
 	
 	public void testRemoveNamedQuery() throws Exception {
-		entityMappings().addNamedQuery(0).setName("FOO");
-		entityMappings().addNamedQuery(1).setName("BAR");
-		entityMappings().addNamedQuery(2).setName("BAZ");
+		getEntityMappings().addNamedQuery(0).setName("FOO");
+		getEntityMappings().addNamedQuery(1).setName("BAR");
+		getEntityMappings().addNamedQuery(2).setName("BAZ");
 		
-		assertEquals(3, ormResource().getEntityMappings().getNamedQueries().size());
+		assertEquals(3, getOrmResource().getEntityMappings().getNamedQueries().size());
 		
-		entityMappings().removeNamedQuery(0);
-		assertEquals(2, ormResource().getEntityMappings().getNamedQueries().size());
-		assertEquals("BAR", ormResource().getEntityMappings().getNamedQueries().get(0).getName());
-		assertEquals("BAZ", ormResource().getEntityMappings().getNamedQueries().get(1).getName());
+		getEntityMappings().removeNamedQuery(0);
+		assertEquals(2, getOrmResource().getEntityMappings().getNamedQueries().size());
+		assertEquals("BAR", getOrmResource().getEntityMappings().getNamedQueries().get(0).getName());
+		assertEquals("BAZ", getOrmResource().getEntityMappings().getNamedQueries().get(1).getName());
 
-		entityMappings().removeNamedQuery(0);
-		assertEquals(1, ormResource().getEntityMappings().getNamedQueries().size());
-		assertEquals("BAZ", ormResource().getEntityMappings().getNamedQueries().get(0).getName());
+		getEntityMappings().removeNamedQuery(0);
+		assertEquals(1, getOrmResource().getEntityMappings().getNamedQueries().size());
+		assertEquals("BAZ", getOrmResource().getEntityMappings().getNamedQueries().get(0).getName());
 		
-		entityMappings().removeNamedQuery(0);
-		assertEquals(0, ormResource().getEntityMappings().getNamedQueries().size());
+		getEntityMappings().removeNamedQuery(0);
+		assertEquals(0, getOrmResource().getEntityMappings().getNamedQueries().size());
 	}
 	
 	public void testMoveNamedQuery() throws Exception {
-		entityMappings().addNamedQuery(0).setName("FOO");
-		entityMappings().addNamedQuery(1).setName("BAR");
-		entityMappings().addNamedQuery(2).setName("BAZ");
+		getEntityMappings().addNamedQuery(0).setName("FOO");
+		getEntityMappings().addNamedQuery(1).setName("BAR");
+		getEntityMappings().addNamedQuery(2).setName("BAZ");
 		
-		assertEquals(3, ormResource().getEntityMappings().getNamedQueries().size());
+		assertEquals(3, getOrmResource().getEntityMappings().getNamedQueries().size());
 		
 		
-		entityMappings().moveNamedQuery(2, 0);
-		ListIterator<OrmNamedQuery> namedQueries = entityMappings().namedQueries();
+		getEntityMappings().moveNamedQuery(2, 0);
+		ListIterator<OrmNamedQuery> namedQueries = getEntityMappings().namedQueries();
 		assertEquals("BAR", namedQueries.next().getName());
 		assertEquals("BAZ", namedQueries.next().getName());
 		assertEquals("FOO", namedQueries.next().getName());
 
-		assertEquals("BAR", ormResource().getEntityMappings().getNamedQueries().get(0).getName());
-		assertEquals("BAZ", ormResource().getEntityMappings().getNamedQueries().get(1).getName());
-		assertEquals("FOO", ormResource().getEntityMappings().getNamedQueries().get(2).getName());
+		assertEquals("BAR", getOrmResource().getEntityMappings().getNamedQueries().get(0).getName());
+		assertEquals("BAZ", getOrmResource().getEntityMappings().getNamedQueries().get(1).getName());
+		assertEquals("FOO", getOrmResource().getEntityMappings().getNamedQueries().get(2).getName());
 
 
-		entityMappings().moveNamedQuery(0, 1);
-		namedQueries = entityMappings().namedQueries();
+		getEntityMappings().moveNamedQuery(0, 1);
+		namedQueries = getEntityMappings().namedQueries();
 		assertEquals("BAZ", namedQueries.next().getName());
 		assertEquals("BAR", namedQueries.next().getName());
 		assertEquals("FOO", namedQueries.next().getName());
 
-		assertEquals("BAZ", ormResource().getEntityMappings().getNamedQueries().get(0).getName());
-		assertEquals("BAR", ormResource().getEntityMappings().getNamedQueries().get(1).getName());
-		assertEquals("FOO", ormResource().getEntityMappings().getNamedQueries().get(2).getName());
+		assertEquals("BAZ", getOrmResource().getEntityMappings().getNamedQueries().get(0).getName());
+		assertEquals("BAR", getOrmResource().getEntityMappings().getNamedQueries().get(1).getName());
+		assertEquals("FOO", getOrmResource().getEntityMappings().getNamedQueries().get(2).getName());
 	}
 	
 	public void testUpdateNamedQueries() throws Exception {
-		assertEquals(0, CollectionTools.size(entityMappings().getPersistenceUnit().allQueries()));
+		assertEquals(0, CollectionTools.size(getEntityMappings().getPersistenceUnit().allQueries()));
 		
-		ormResource().getEntityMappings().getNamedQueries().add(OrmFactory.eINSTANCE.createXmlNamedQuery());
-		ormResource().getEntityMappings().getNamedQueries().add(OrmFactory.eINSTANCE.createXmlNamedQuery());
-		ormResource().getEntityMappings().getNamedQueries().add(OrmFactory.eINSTANCE.createXmlNamedQuery());
+		getOrmResource().getEntityMappings().getNamedQueries().add(OrmFactory.eINSTANCE.createXmlNamedQuery());
+		getOrmResource().getEntityMappings().getNamedQueries().add(OrmFactory.eINSTANCE.createXmlNamedQuery());
+		getOrmResource().getEntityMappings().getNamedQueries().add(OrmFactory.eINSTANCE.createXmlNamedQuery());
 		
-		ormResource().getEntityMappings().getNamedQueries().get(0).setName("FOO");
-		ormResource().getEntityMappings().getNamedQueries().get(1).setName("BAR");
-		ormResource().getEntityMappings().getNamedQueries().get(2).setName("BAZ");
+		getOrmResource().getEntityMappings().getNamedQueries().get(0).setName("FOO");
+		getOrmResource().getEntityMappings().getNamedQueries().get(1).setName("BAR");
+		getOrmResource().getEntityMappings().getNamedQueries().get(2).setName("BAZ");
 		
-		ListIterator<OrmNamedQuery> namedQueries = entityMappings().namedQueries();
+		ListIterator<OrmNamedQuery> namedQueries = getEntityMappings().namedQueries();
 		assertEquals("FOO", namedQueries.next().getName());
 		assertEquals("BAR", namedQueries.next().getName());
 		assertEquals("BAZ", namedQueries.next().getName());
 		assertFalse(namedQueries.hasNext());
-		assertEquals(3, CollectionTools.size(entityMappings().getPersistenceUnit().allQueries()));
+		assertEquals(3, CollectionTools.size(getEntityMappings().getPersistenceUnit().allQueries()));
 		
-		ormResource().getEntityMappings().getNamedQueries().move(2, 0);
-		namedQueries = entityMappings().namedQueries();
+		getOrmResource().getEntityMappings().getNamedQueries().move(2, 0);
+		namedQueries = getEntityMappings().namedQueries();
 		assertEquals("BAR", namedQueries.next().getName());
 		assertEquals("BAZ", namedQueries.next().getName());
 		assertEquals("FOO", namedQueries.next().getName());
 		assertFalse(namedQueries.hasNext());
 		
-		ormResource().getEntityMappings().getNamedQueries().move(0, 1);
-		namedQueries = entityMappings().namedQueries();
+		getOrmResource().getEntityMappings().getNamedQueries().move(0, 1);
+		namedQueries = getEntityMappings().namedQueries();
 		assertEquals("BAZ", namedQueries.next().getName());
 		assertEquals("BAR", namedQueries.next().getName());
 		assertEquals("FOO", namedQueries.next().getName());
 		assertFalse(namedQueries.hasNext());
 		
-		ormResource().getEntityMappings().getNamedQueries().remove(1);
-		namedQueries = entityMappings().namedQueries();
+		getOrmResource().getEntityMappings().getNamedQueries().remove(1);
+		namedQueries = getEntityMappings().namedQueries();
 		assertEquals("BAZ", namedQueries.next().getName());
 		assertEquals("FOO", namedQueries.next().getName());
 		assertFalse(namedQueries.hasNext());
-		assertEquals(2, CollectionTools.size(entityMappings().getPersistenceUnit().allQueries()));
+		assertEquals(2, CollectionTools.size(getEntityMappings().getPersistenceUnit().allQueries()));
 		
-		ormResource().getEntityMappings().getNamedQueries().remove(1);
-		namedQueries = entityMappings().namedQueries();
+		getOrmResource().getEntityMappings().getNamedQueries().remove(1);
+		namedQueries = getEntityMappings().namedQueries();
 		assertEquals("BAZ", namedQueries.next().getName());
 		assertFalse(namedQueries.hasNext());
-		assertEquals(1, CollectionTools.size(entityMappings().getPersistenceUnit().allQueries()));
+		assertEquals(1, CollectionTools.size(getEntityMappings().getPersistenceUnit().allQueries()));
 		
-		ormResource().getEntityMappings().getNamedQueries().remove(0);
-		assertFalse(entityMappings().namedQueries().hasNext());
-		assertEquals(0, CollectionTools.size(entityMappings().getPersistenceUnit().allQueries()));
+		getOrmResource().getEntityMappings().getNamedQueries().remove(0);
+		assertFalse(getEntityMappings().namedQueries().hasNext());
+		assertEquals(0, CollectionTools.size(getEntityMappings().getPersistenceUnit().allQueries()));
 	}
 	
 	public void testAddNamedNativeQuery() throws Exception {
-		OrmNamedNativeQuery namedNativeQuery = entityMappings().addNamedNativeQuery(0);
+		OrmNamedNativeQuery namedNativeQuery = getEntityMappings().addNamedNativeQuery(0);
 		namedNativeQuery.setName("FOO");
 				
-		assertEquals("FOO", ormResource().getEntityMappings().getNamedNativeQueries().get(0).getName());
+		assertEquals("FOO", getOrmResource().getEntityMappings().getNamedNativeQueries().get(0).getName());
 		
-		OrmNamedNativeQuery namedNativeQuery2 = entityMappings().addNamedNativeQuery(0);
+		OrmNamedNativeQuery namedNativeQuery2 = getEntityMappings().addNamedNativeQuery(0);
 		namedNativeQuery2.setName("BAR");
 		
-		assertEquals("BAR", ormResource().getEntityMappings().getNamedNativeQueries().get(0).getName());
-		assertEquals("FOO", ormResource().getEntityMappings().getNamedNativeQueries().get(1).getName());
+		assertEquals("BAR", getOrmResource().getEntityMappings().getNamedNativeQueries().get(0).getName());
+		assertEquals("FOO", getOrmResource().getEntityMappings().getNamedNativeQueries().get(1).getName());
 		
-		OrmNamedNativeQuery namedNativeQuery3 = entityMappings().addNamedNativeQuery(1);
+		OrmNamedNativeQuery namedNativeQuery3 = getEntityMappings().addNamedNativeQuery(1);
 		namedNativeQuery3.setName("BAZ");
 		
-		assertEquals("BAR", ormResource().getEntityMappings().getNamedNativeQueries().get(0).getName());
-		assertEquals("BAZ", ormResource().getEntityMappings().getNamedNativeQueries().get(1).getName());
-		assertEquals("FOO", ormResource().getEntityMappings().getNamedNativeQueries().get(2).getName());
+		assertEquals("BAR", getOrmResource().getEntityMappings().getNamedNativeQueries().get(0).getName());
+		assertEquals("BAZ", getOrmResource().getEntityMappings().getNamedNativeQueries().get(1).getName());
+		assertEquals("FOO", getOrmResource().getEntityMappings().getNamedNativeQueries().get(2).getName());
 		
-		ListIterator<OrmNamedNativeQuery> namedNativeQueries = entityMappings().namedNativeQueries();
+		ListIterator<OrmNamedNativeQuery> namedNativeQueries = getEntityMappings().namedNativeQueries();
 		assertEquals(namedNativeQuery2, namedNativeQueries.next());
 		assertEquals(namedNativeQuery3, namedNativeQueries.next());
 		assertEquals(namedNativeQuery, namedNativeQueries.next());
 		
-		namedNativeQueries = entityMappings().namedNativeQueries();
+		namedNativeQueries = getEntityMappings().namedNativeQueries();
 		assertEquals("BAR", namedNativeQueries.next().getName());
 		assertEquals("BAZ", namedNativeQueries.next().getName());
 		assertEquals("FOO", namedNativeQueries.next().getName());
 	}
 	
 	public void testRemoveNamedNativeQuery() throws Exception {
-		entityMappings().addNamedNativeQuery(0).setName("FOO");
-		entityMappings().addNamedNativeQuery(1).setName("BAR");
-		entityMappings().addNamedNativeQuery(2).setName("BAZ");
+		getEntityMappings().addNamedNativeQuery(0).setName("FOO");
+		getEntityMappings().addNamedNativeQuery(1).setName("BAR");
+		getEntityMappings().addNamedNativeQuery(2).setName("BAZ");
 		
-		assertEquals(3, ormResource().getEntityMappings().getNamedNativeQueries().size());
+		assertEquals(3, getOrmResource().getEntityMappings().getNamedNativeQueries().size());
 		
-		entityMappings().removeNamedNativeQuery(0);
-		assertEquals(2, ormResource().getEntityMappings().getNamedNativeQueries().size());
-		assertEquals("BAR", ormResource().getEntityMappings().getNamedNativeQueries().get(0).getName());
-		assertEquals("BAZ", ormResource().getEntityMappings().getNamedNativeQueries().get(1).getName());
+		getEntityMappings().removeNamedNativeQuery(0);
+		assertEquals(2, getOrmResource().getEntityMappings().getNamedNativeQueries().size());
+		assertEquals("BAR", getOrmResource().getEntityMappings().getNamedNativeQueries().get(0).getName());
+		assertEquals("BAZ", getOrmResource().getEntityMappings().getNamedNativeQueries().get(1).getName());
 
-		entityMappings().removeNamedNativeQuery(0);
-		assertEquals(1, ormResource().getEntityMappings().getNamedNativeQueries().size());
-		assertEquals("BAZ", ormResource().getEntityMappings().getNamedNativeQueries().get(0).getName());
+		getEntityMappings().removeNamedNativeQuery(0);
+		assertEquals(1, getOrmResource().getEntityMappings().getNamedNativeQueries().size());
+		assertEquals("BAZ", getOrmResource().getEntityMappings().getNamedNativeQueries().get(0).getName());
 		
-		entityMappings().removeNamedNativeQuery(0);
-		assertEquals(0, ormResource().getEntityMappings().getNamedNativeQueries().size());
+		getEntityMappings().removeNamedNativeQuery(0);
+		assertEquals(0, getOrmResource().getEntityMappings().getNamedNativeQueries().size());
 	}
 	
 	public void testMoveNamedNativeQuery() throws Exception {
-		entityMappings().addNamedNativeQuery(0).setName("FOO");
-		entityMappings().addNamedNativeQuery(1).setName("BAR");
-		entityMappings().addNamedNativeQuery(2).setName("BAZ");
+		getEntityMappings().addNamedNativeQuery(0).setName("FOO");
+		getEntityMappings().addNamedNativeQuery(1).setName("BAR");
+		getEntityMappings().addNamedNativeQuery(2).setName("BAZ");
 		
-		assertEquals(3, ormResource().getEntityMappings().getNamedNativeQueries().size());
+		assertEquals(3, getOrmResource().getEntityMappings().getNamedNativeQueries().size());
 		
 		
-		entityMappings().moveNamedNativeQuery(2, 0);
-		ListIterator<OrmNamedNativeQuery> namedNativeQueries = entityMappings().namedNativeQueries();
+		getEntityMappings().moveNamedNativeQuery(2, 0);
+		ListIterator<OrmNamedNativeQuery> namedNativeQueries = getEntityMappings().namedNativeQueries();
 		assertEquals("BAR", namedNativeQueries.next().getName());
 		assertEquals("BAZ", namedNativeQueries.next().getName());
 		assertEquals("FOO", namedNativeQueries.next().getName());
 
-		assertEquals("BAR", ormResource().getEntityMappings().getNamedNativeQueries().get(0).getName());
-		assertEquals("BAZ", ormResource().getEntityMappings().getNamedNativeQueries().get(1).getName());
-		assertEquals("FOO", ormResource().getEntityMappings().getNamedNativeQueries().get(2).getName());
+		assertEquals("BAR", getOrmResource().getEntityMappings().getNamedNativeQueries().get(0).getName());
+		assertEquals("BAZ", getOrmResource().getEntityMappings().getNamedNativeQueries().get(1).getName());
+		assertEquals("FOO", getOrmResource().getEntityMappings().getNamedNativeQueries().get(2).getName());
 
 
-		entityMappings().moveNamedNativeQuery(0, 1);
-		namedNativeQueries = entityMappings().namedNativeQueries();
+		getEntityMappings().moveNamedNativeQuery(0, 1);
+		namedNativeQueries = getEntityMappings().namedNativeQueries();
 		assertEquals("BAZ", namedNativeQueries.next().getName());
 		assertEquals("BAR", namedNativeQueries.next().getName());
 		assertEquals("FOO", namedNativeQueries.next().getName());
 
-		assertEquals("BAZ", ormResource().getEntityMappings().getNamedNativeQueries().get(0).getName());
-		assertEquals("BAR", ormResource().getEntityMappings().getNamedNativeQueries().get(1).getName());
-		assertEquals("FOO", ormResource().getEntityMappings().getNamedNativeQueries().get(2).getName());
+		assertEquals("BAZ", getOrmResource().getEntityMappings().getNamedNativeQueries().get(0).getName());
+		assertEquals("BAR", getOrmResource().getEntityMappings().getNamedNativeQueries().get(1).getName());
+		assertEquals("FOO", getOrmResource().getEntityMappings().getNamedNativeQueries().get(2).getName());
 	}
 	
 	public void testUpdateNamedNativeQueries() throws Exception {
-		assertEquals(0, CollectionTools.size(entityMappings().getPersistenceUnit().allQueries()));
+		assertEquals(0, CollectionTools.size(getEntityMappings().getPersistenceUnit().allQueries()));
 		
-		ormResource().getEntityMappings().getNamedNativeQueries().add(OrmFactory.eINSTANCE.createXmlNamedNativeQuery());
-		ormResource().getEntityMappings().getNamedNativeQueries().add(OrmFactory.eINSTANCE.createXmlNamedNativeQuery());
-		ormResource().getEntityMappings().getNamedNativeQueries().add(OrmFactory.eINSTANCE.createXmlNamedNativeQuery());
+		getOrmResource().getEntityMappings().getNamedNativeQueries().add(OrmFactory.eINSTANCE.createXmlNamedNativeQuery());
+		getOrmResource().getEntityMappings().getNamedNativeQueries().add(OrmFactory.eINSTANCE.createXmlNamedNativeQuery());
+		getOrmResource().getEntityMappings().getNamedNativeQueries().add(OrmFactory.eINSTANCE.createXmlNamedNativeQuery());
 		
-		ormResource().getEntityMappings().getNamedNativeQueries().get(0).setName("FOO");
-		ormResource().getEntityMappings().getNamedNativeQueries().get(1).setName("BAR");
-		ormResource().getEntityMappings().getNamedNativeQueries().get(2).setName("BAZ");
+		getOrmResource().getEntityMappings().getNamedNativeQueries().get(0).setName("FOO");
+		getOrmResource().getEntityMappings().getNamedNativeQueries().get(1).setName("BAR");
+		getOrmResource().getEntityMappings().getNamedNativeQueries().get(2).setName("BAZ");
 		
-		ListIterator<OrmNamedNativeQuery> namedNativeQueries = entityMappings().namedNativeQueries();
+		ListIterator<OrmNamedNativeQuery> namedNativeQueries = getEntityMappings().namedNativeQueries();
 		assertEquals("FOO", namedNativeQueries.next().getName());
 		assertEquals("BAR", namedNativeQueries.next().getName());
 		assertEquals("BAZ", namedNativeQueries.next().getName());
 		assertFalse(namedNativeQueries.hasNext());
-		assertEquals(3, CollectionTools.size(entityMappings().getPersistenceUnit().allQueries()));
+		assertEquals(3, CollectionTools.size(getEntityMappings().getPersistenceUnit().allQueries()));
 		
-		ormResource().getEntityMappings().getNamedNativeQueries().move(2, 0);
-		namedNativeQueries = entityMappings().namedNativeQueries();
+		getOrmResource().getEntityMappings().getNamedNativeQueries().move(2, 0);
+		namedNativeQueries = getEntityMappings().namedNativeQueries();
 		assertEquals("BAR", namedNativeQueries.next().getName());
 		assertEquals("BAZ", namedNativeQueries.next().getName());
 		assertEquals("FOO", namedNativeQueries.next().getName());
 		assertFalse(namedNativeQueries.hasNext());
 		
-		ormResource().getEntityMappings().getNamedNativeQueries().move(0, 1);
-		namedNativeQueries = entityMappings().namedNativeQueries();
+		getOrmResource().getEntityMappings().getNamedNativeQueries().move(0, 1);
+		namedNativeQueries = getEntityMappings().namedNativeQueries();
 		assertEquals("BAZ", namedNativeQueries.next().getName());
 		assertEquals("BAR", namedNativeQueries.next().getName());
 		assertEquals("FOO", namedNativeQueries.next().getName());
 		assertFalse(namedNativeQueries.hasNext());
 		
-		ormResource().getEntityMappings().getNamedNativeQueries().remove(1);
-		namedNativeQueries = entityMappings().namedNativeQueries();
+		getOrmResource().getEntityMappings().getNamedNativeQueries().remove(1);
+		namedNativeQueries = getEntityMappings().namedNativeQueries();
 		assertEquals("BAZ", namedNativeQueries.next().getName());
 		assertEquals("FOO", namedNativeQueries.next().getName());
 		assertFalse(namedNativeQueries.hasNext());
-		assertEquals(2, CollectionTools.size(entityMappings().getPersistenceUnit().allQueries()));
+		assertEquals(2, CollectionTools.size(getEntityMappings().getPersistenceUnit().allQueries()));
 		
-		ormResource().getEntityMappings().getNamedNativeQueries().remove(1);
-		namedNativeQueries = entityMappings().namedNativeQueries();
+		getOrmResource().getEntityMappings().getNamedNativeQueries().remove(1);
+		namedNativeQueries = getEntityMappings().namedNativeQueries();
 		assertEquals("BAZ", namedNativeQueries.next().getName());
 		assertFalse(namedNativeQueries.hasNext());
-		assertEquals(1, CollectionTools.size(entityMappings().getPersistenceUnit().allQueries()));
+		assertEquals(1, CollectionTools.size(getEntityMappings().getPersistenceUnit().allQueries()));
 		
-		ormResource().getEntityMappings().getNamedNativeQueries().remove(0);
-		assertFalse(entityMappings().namedNativeQueries().hasNext());
-		assertEquals(0, CollectionTools.size(entityMappings().getPersistenceUnit().allQueries()));
+		getOrmResource().getEntityMappings().getNamedNativeQueries().remove(0);
+		assertFalse(getEntityMappings().namedNativeQueries().hasNext());
+		assertEquals(0, CollectionTools.size(getEntityMappings().getPersistenceUnit().allQueries()));
 	}
 }

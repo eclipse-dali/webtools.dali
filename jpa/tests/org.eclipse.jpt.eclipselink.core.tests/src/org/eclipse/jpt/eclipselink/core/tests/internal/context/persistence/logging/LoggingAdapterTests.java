@@ -110,7 +110,7 @@ public class LoggingAdapterTests extends PersistenceUnitTestCase
 		// new
 		ListAspectAdapter<PersistenceUnit, Property> propertiesAdapter = 
 			(ListAspectAdapter<PersistenceUnit, Property>) this.subject.getPropertiesAdapter();
-		GenericProperty ctdProperty = (GenericProperty) this.persistenceUnit().getProperty(TIMESTAMP_KEY);
+		GenericProperty ctdProperty = (GenericProperty) this.getPersistenceUnit().getProperty(TIMESTAMP_KEY);
 		ListValueModel<Property> propertyListAdapter = this.subject.getPropertyListAdapter();
 		
 		assertTrue(propertiesAdapter.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
@@ -263,8 +263,8 @@ public class LoggingAdapterTests extends PersistenceUnitTestCase
 	 * Verifies setting custom logger and literals.
 	 */
 	protected void verifySetLogger(String elKey, Object testValue1, Object testValue2) throws Exception {
-		Property property = this.persistenceUnit().getProperty(elKey);
-		String propertyName = this.model().propertyIdFor(property);
+		Property property = this.getPersistenceUnit().getProperty(elKey);
+		String propertyName = this.getModel().propertyIdFor(property);
 		// test set custom logger.
 		this.clearEvent();
 		this.setProperty(propertyName, testValue2);
@@ -273,19 +273,19 @@ public class LoggingAdapterTests extends PersistenceUnitTestCase
 		// test set (Logger) null
 		this.clearEvent();
 		this.logging.setLogger((Logger) null);
-		assertFalse(this.persistenceUnit().containsProperty(elKey));
+		assertFalse(this.getPersistenceUnit().containsProperty(elKey));
 		this.verifyPutProperty(propertyName, null);
 		
 		// test set enum literal
 		this.clearEvent();
 		this.setProperty(propertyName, testValue1.toString());
-		assertTrue(this.persistenceUnit().containsProperty(elKey));
+		assertTrue(this.getPersistenceUnit().containsProperty(elKey));
 		this.verifyPutProperty(propertyName, this.getEclipseLinkStringValueOf(testValue1));
 
 		// test set (String) null
 		this.clearEvent();
 		this.logging.setLogger((String) null);
-		assertFalse(this.persistenceUnit().containsProperty(elKey));
+		assertFalse(this.getPersistenceUnit().containsProperty(elKey));
 		this.verifyPutProperty(propertyName, null);
 	}
 
@@ -349,7 +349,7 @@ public class LoggingAdapterTests extends PersistenceUnitTestCase
 	}
 	
 	@Override
-	protected PersistenceUnitProperties model() {
+	protected PersistenceUnitProperties getModel() {
 		return this.logging;
 	}
 }

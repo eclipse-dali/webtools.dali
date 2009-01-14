@@ -24,12 +24,12 @@ public class MappingFileRefTests extends ContextModelTestCase
 	}
 	
 	protected MappingFileRef mappingFileRef() {
-		return persistenceUnit().mappingFileRefs().next();
+		return getPersistenceUnit().mappingFileRefs().next();
 	}
 	
 	public void testUpdateFileName() {
-		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
-		PersistenceUnit persistenceUnit = persistenceUnit();
+		XmlPersistenceUnit xmlPersistenceUnit = getXmlPersistenceUnit();
+		PersistenceUnit persistenceUnit = getPersistenceUnit();
 		
 		// add mapping file ref
 		XmlMappingFileRef xmlFileRef = PersistenceFactory.eINSTANCE.createXmlMappingFileRef();
@@ -62,8 +62,8 @@ public class MappingFileRefTests extends ContextModelTestCase
 	}
 	
 	public void testModifyFileName() {
-		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
-		PersistenceUnit persistenceUnit = persistenceUnit();
+		XmlPersistenceUnit xmlPersistenceUnit = getXmlPersistenceUnit();
+		PersistenceUnit persistenceUnit = getPersistenceUnit();
 		
 		// add mapping file ref
 		XmlMappingFileRef xmlFileRef = PersistenceFactory.eINSTANCE.createXmlMappingFileRef();

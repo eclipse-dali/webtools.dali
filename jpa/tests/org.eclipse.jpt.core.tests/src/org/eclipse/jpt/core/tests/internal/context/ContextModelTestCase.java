@@ -82,7 +82,7 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 		return null;
 	}
 	
-	protected JpaProject jpaProject() {
+	protected JpaProject getJpaProject() {
 		return getJavaProject().getJpaProject();
 	}
 	
@@ -103,45 +103,45 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 		}
 	}
 	
-	protected PersistenceResource persistenceResource() {
+	protected PersistenceResource getPersistenceResource() {
 		return this.persistenceResourceModelProvider.getResource();
 	}
 	
-	protected OrmResource ormResource() {
+	protected OrmResource getOrmResource() {
 		return this.ormResourceModelProvider.getResource();
 	}
 	
-	protected XmlPersistence xmlPersistence() {
-		return persistenceResource().getPersistence();
+	protected XmlPersistence getXmlPersistence() {
+		return getPersistenceResource().getPersistence();
 	}
 	
-	protected EntityMappings entityMappings() {
-		MappingFile mappingFile = persistenceUnit().mappingFileRefs().next().getMappingFile();
+	protected EntityMappings getEntityMappings() {
+		MappingFile mappingFile = getPersistenceUnit().mappingFileRefs().next().getMappingFile();
 		return (mappingFile == null) ? null : (EntityMappings) mappingFile.getRoot();
 	}
 	
-	protected XmlPersistenceUnit xmlPersistenceUnit() {
-		return persistenceResource().getPersistence().getPersistenceUnits().get(0);
+	protected XmlPersistenceUnit getXmlPersistenceUnit() {
+		return getXmlPersistence().getPersistenceUnits().get(0);
 	}
 	
-	protected PersistenceUnit persistenceUnit() {
+	protected PersistenceUnit getPersistenceUnit() {
 		return getRootContextNode().getPersistenceXml().getPersistence().persistenceUnits().next();
 	}
 	
-	protected ClassRef classRef() {
-		return persistenceUnit().specifiedClassRefs().next();
+	protected ClassRef getSpecifiedClassRef() {
+		return getPersistenceUnit().specifiedClassRefs().next();
 	}
 	
-	protected JavaPersistentType javaPersistentType() {
-		return classRef().getJavaPersistentType();
+	protected JavaPersistentType getJavaPersistentType() {
+		return getSpecifiedClassRef().getJavaPersistentType();
 	}
 	
-	protected Entity javaEntity() {
-		return (Entity) javaPersistentType().getMapping();
+	protected Entity getJavaEntity() {
+		return (Entity) getJavaPersistentType().getMapping();
 	}
 	
 	protected void addXmlClassRef(String className) {
-		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
+		XmlPersistenceUnit xmlPersistenceUnit = getXmlPersistenceUnit();
 		
 		XmlJavaClassRef xmlClassRef = PersistenceFactory.eINSTANCE.createXmlJavaClassRef();
 		xmlClassRef.setJavaClass(className);
@@ -149,7 +149,7 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 	}
 	
 	protected void removeXmlClassRef(String className) {
-		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
+		XmlPersistenceUnit xmlPersistenceUnit = getXmlPersistenceUnit();
 		XmlJavaClassRef xmlJavaClassRefToRemove  = null;
 		for (XmlJavaClassRef xmlJavaClassRef : xmlPersistenceUnit.getClasses()) {
 			if (xmlJavaClassRef.getJavaClass().equals(className)) {

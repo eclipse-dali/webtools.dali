@@ -24,8 +24,8 @@ public class ClassRefTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateClassName() {
-		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
-		PersistenceUnit persistenceUnit = persistenceUnit();
+		XmlPersistenceUnit xmlPersistenceUnit = getXmlPersistenceUnit();
+		PersistenceUnit persistenceUnit = getPersistenceUnit();
 		
 		// add class ref
 		XmlJavaClassRef xmlClassRef = PersistenceFactory.eINSTANCE.createXmlJavaClassRef();
@@ -56,8 +56,8 @@ public class ClassRefTests extends ContextModelTestCase
 	}
 	
 	public void testModifyClassName() {
-		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
-		PersistenceUnit persistenceUnit = persistenceUnit();
+		XmlPersistenceUnit xmlPersistenceUnit = getXmlPersistenceUnit();
+		PersistenceUnit persistenceUnit = getPersistenceUnit();
 		
 		// add class ref
 		XmlJavaClassRef xmlClassRef = PersistenceFactory.eINSTANCE.createXmlJavaClassRef();
@@ -93,20 +93,20 @@ public class ClassRefTests extends ContextModelTestCase
 	public void testGetPersistentType() throws Exception {
 		createTestType();
 		
-		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
+		XmlPersistenceUnit xmlPersistenceUnit = getXmlPersistenceUnit();
 		
 		XmlJavaClassRef xmlClassRef = PersistenceFactory.eINSTANCE.createXmlJavaClassRef();
 		xmlClassRef.setJavaClass(FULLY_QUALIFIED_TYPE_NAME);
 		xmlPersistenceUnit.getClasses().add(xmlClassRef);
 		
-		ClassRef classRef = classRef();
+		ClassRef classRef = getSpecifiedClassRef();
 		
 		assertEquals(FULLY_QUALIFIED_TYPE_NAME, classRef.getJavaPersistentType().getName());
 		
 		//test setting to a class that does not exist in the project
 		xmlClassRef.setJavaClass("com.foo.Bar");
 		
-		classRef = classRef();		
+		classRef = getSpecifiedClassRef();		
 		assertNull(classRef.getJavaPersistentType());		
 	}
 }

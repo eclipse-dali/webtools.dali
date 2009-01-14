@@ -74,7 +74,7 @@ public class OptionsValueModelTests extends PersistenceUnitTestCase
 	}
 
 	@Override
-	protected PersistenceUnitProperties model() {
+	protected PersistenceUnitProperties getModel() {
 		return this.options;
 	}
 

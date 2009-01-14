@@ -31,21 +31,21 @@ public class PersistenceUnitDefaultsTests extends ContextModelTestCase
 		super.setUp();
 		XmlMappingFileRef mappingFileRef = PersistenceFactory.eINSTANCE.createXmlMappingFileRef();
 		mappingFileRef.setFileName(JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH);
-		xmlPersistenceUnit().getMappingFiles().add(mappingFileRef);
-		persistenceResource().save(null);
+		getXmlPersistenceUnit().getMappingFiles().add(mappingFileRef);
+		getPersistenceResource().save(null);
 	}
 	
 	protected OrmPersistenceUnitDefaults persistenceUnitDefaults() {
-		return entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults();
+		return getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults();
 	}
 	
 	public void testIsAllFeaturesUnset() throws Exception {
 		OrmPersistenceUnitDefaults persistenceUnitDefaults = persistenceUnitDefaults();
 		assertNull(persistenceUnitDefaults.getAccess());
-		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata());
+		assertNull(getOrmResource().getEntityMappings().getPersistenceUnitMetadata());
 		
 		XmlPersistenceUnitMetadata persistenceUnitMetadata = OrmFactory.eINSTANCE.createXmlPersistenceUnitMetadata();
-		ormResource().getEntityMappings().setPersistenceUnitMetadata(persistenceUnitMetadata);
+		getOrmResource().getEntityMappings().setPersistenceUnitMetadata(persistenceUnitMetadata);
 		assertTrue(persistenceUnitMetadata.isAllFeaturesUnset());
 		
 		org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitDefaults persistenceUnitDefaultsResource = OrmFactory.eINSTANCE.createXmlPersistenceUnitDefaults();
@@ -84,286 +84,286 @@ public class PersistenceUnitDefaultsTests extends ContextModelTestCase
 	public void testUpdateSchema() throws Exception {
 		OrmPersistenceUnitDefaults persistenceUnitDefaults = persistenceUnitDefaults();
 		assertNull(persistenceUnitDefaults.getSchema());
-		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata());
+		assertNull(getOrmResource().getEntityMappings().getPersistenceUnitMetadata());
 		
 		//set schema in the resource model, verify context model updated
-		ormResource().getEntityMappings().setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createXmlPersistenceUnitMetadata());
-		ormResource().getEntityMappings().getPersistenceUnitMetadata().setPersistenceUnitDefaults(OrmFactory.eINSTANCE.createXmlPersistenceUnitDefaults());
-		ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSchema("MY_SCHEMA");
+		getOrmResource().getEntityMappings().setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createXmlPersistenceUnitMetadata());
+		getOrmResource().getEntityMappings().getPersistenceUnitMetadata().setPersistenceUnitDefaults(OrmFactory.eINSTANCE.createXmlPersistenceUnitDefaults());
+		getOrmResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSchema("MY_SCHEMA");
 		assertEquals("MY_SCHEMA", persistenceUnitDefaults.getSchema());
-		assertEquals("MY_SCHEMA", ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getSchema());
+		assertEquals("MY_SCHEMA", getOrmResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getSchema());
 	
 		//set schema to null in the resource model
-		ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSchema(null);
+		getOrmResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSchema(null);
 		assertNull(persistenceUnitDefaults.getSchema());
-		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getSchema());
+		assertNull(getOrmResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getSchema());
 	}
 	
 	public void testModifySchema() throws Exception {		
 		OrmPersistenceUnitDefaults persistenceUnitDefaults = persistenceUnitDefaults();
 		assertNull(persistenceUnitDefaults.getSchema());
-		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata());
+		assertNull(getOrmResource().getEntityMappings().getPersistenceUnitMetadata());
 		
 		//set schema in the context model, verify resource model modified
 		persistenceUnitDefaults.setSpecifiedSchema("MY_SCHEMA");
 		assertEquals("MY_SCHEMA", persistenceUnitDefaults.getSchema());
-		assertEquals("MY_SCHEMA", ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getSchema());
+		assertEquals("MY_SCHEMA", getOrmResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getSchema());
 		
 		//set schema to null in the context model
 		persistenceUnitDefaults.setSpecifiedSchema(null);
 		assertNull(persistenceUnitDefaults.getSchema());
-		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata());
+		assertNull(getOrmResource().getEntityMappings().getPersistenceUnitMetadata());
 	}
 	
 	public void testModifySchema2() throws Exception {
 		OrmPersistenceUnitDefaults persistenceUnitDefaults = persistenceUnitDefaults();
 		assertNull(persistenceUnitDefaults.getSchema());
-		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata());
+		assertNull(getOrmResource().getEntityMappings().getPersistenceUnitMetadata());
 		
 		//set schema in the context model, verify resource model modified
 		persistenceUnitDefaults.setSpecifiedSchema("MY_SCHEMA");
 		assertEquals("MY_SCHEMA", persistenceUnitDefaults.getSchema());
-		assertEquals("MY_SCHEMA", ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getSchema());
+		assertEquals("MY_SCHEMA", getOrmResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getSchema());
 		
 		//set another element on the persistence-unit-defaults element so it doesn't get removed
-		ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setCatalog("MY_CATALOG");
+		getOrmResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setCatalog("MY_CATALOG");
 		//set schema to null in the context model
 		persistenceUnitDefaults.setSpecifiedSchema(null);
 		assertNull(persistenceUnitDefaults.getSchema());
-		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getSchema());
+		assertNull(getOrmResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getSchema());
 	}
 	
 	public void testModifySchema3() throws Exception {
 		OrmPersistenceUnitDefaults persistenceUnitDefaults = persistenceUnitDefaults();
 		assertNull(persistenceUnitDefaults.getSchema());
-		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata());
+		assertNull(getOrmResource().getEntityMappings().getPersistenceUnitMetadata());
 		//set another element on the persistence-unit-metadata element so only persistence-unit-defaults element gets removed
-		ormResource().getEntityMappings().setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createXmlPersistenceUnitMetadata());
-		ormResource().getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
+		getOrmResource().getEntityMappings().setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createXmlPersistenceUnitMetadata());
+		getOrmResource().getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
 		
 		//set schema in the context model, verify resource model modified
 		persistenceUnitDefaults.setSpecifiedSchema("MY_SCHEMA");
 		assertEquals("MY_SCHEMA", persistenceUnitDefaults.getSchema());
-		assertEquals("MY_SCHEMA", ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getSchema());
+		assertEquals("MY_SCHEMA", getOrmResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getSchema());
 		
 		//set schema to null in the context model
 		persistenceUnitDefaults.setSpecifiedSchema(null);
 		assertNull(persistenceUnitDefaults.getSchema());
-		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults());
+		assertNull(getOrmResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults());
 	}
 	
 	public void testUpdateCatalog() throws Exception {
 		OrmPersistenceUnitDefaults persistenceUnitDefaults = persistenceUnitDefaults();
 		assertNull(persistenceUnitDefaults.getCatalog());
-		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata());
+		assertNull(getOrmResource().getEntityMappings().getPersistenceUnitMetadata());
 		
 		//set catalog in the resource model, verify context model updated
-		ormResource().getEntityMappings().setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createXmlPersistenceUnitMetadata());
-		ormResource().getEntityMappings().getPersistenceUnitMetadata().setPersistenceUnitDefaults(OrmFactory.eINSTANCE.createXmlPersistenceUnitDefaults());
-		ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setCatalog("MY_CATALOG");
+		getOrmResource().getEntityMappings().setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createXmlPersistenceUnitMetadata());
+		getOrmResource().getEntityMappings().getPersistenceUnitMetadata().setPersistenceUnitDefaults(OrmFactory.eINSTANCE.createXmlPersistenceUnitDefaults());
+		getOrmResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setCatalog("MY_CATALOG");
 		assertEquals("MY_CATALOG", persistenceUnitDefaults.getCatalog());
-		assertEquals("MY_CATALOG", ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getCatalog());
+		assertEquals("MY_CATALOG", getOrmResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getCatalog());
 	
 		//set catalog to null in the resource model
-		ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setCatalog(null);
+		getOrmResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setCatalog(null);
 		assertNull(persistenceUnitDefaults.getCatalog());
-		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getCatalog());
+		assertNull(getOrmResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getCatalog());
 	}
 	
 	public void testModifyCatalog() throws Exception {		
 		OrmPersistenceUnitDefaults persistenceUnitDefaults = persistenceUnitDefaults();
 		assertNull(persistenceUnitDefaults.getCatalog());
-		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata());
+		assertNull(getOrmResource().getEntityMappings().getPersistenceUnitMetadata());
 		
 		//set catalog in the context model, verify resource model modified
 		persistenceUnitDefaults.setSpecifiedCatalog("MY_CATALOG");
 		assertEquals("MY_CATALOG", persistenceUnitDefaults.getCatalog());
-		assertEquals("MY_CATALOG", ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getCatalog());
+		assertEquals("MY_CATALOG", getOrmResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getCatalog());
 		
 		//set catalog to null in the context model
 		persistenceUnitDefaults.setSpecifiedCatalog(null);
 		assertNull(persistenceUnitDefaults.getCatalog());
-		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata());
+		assertNull(getOrmResource().getEntityMappings().getPersistenceUnitMetadata());
 	}
 	
 	public void testModifyCatalog2() throws Exception {
 		OrmPersistenceUnitDefaults persistenceUnitDefaults = persistenceUnitDefaults();
 		assertNull(persistenceUnitDefaults.getCatalog());
-		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata());
+		assertNull(getOrmResource().getEntityMappings().getPersistenceUnitMetadata());
 		
 		//set catalog in the context model, verify resource model modified
 		persistenceUnitDefaults.setSpecifiedCatalog("MY_CATALOG");
 		assertEquals("MY_CATALOG", persistenceUnitDefaults.getCatalog());
-		assertEquals("MY_CATALOG", ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getCatalog());
+		assertEquals("MY_CATALOG", getOrmResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getCatalog());
 		
 		//set another element on the persistence-unit-defaults element so it doesn't get removed
-		ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSchema("MY_SCHEMA");
+		getOrmResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSchema("MY_SCHEMA");
 		//set catalog to null in the context model
 		persistenceUnitDefaults.setSpecifiedCatalog(null);
 		assertNull(persistenceUnitDefaults.getCatalog());
-		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getCatalog());
+		assertNull(getOrmResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getCatalog());
 	}
 	
 	public void testModifyCatalog3() throws Exception {
 		OrmPersistenceUnitDefaults persistenceUnitDefaults = persistenceUnitDefaults();
 		assertNull(persistenceUnitDefaults.getCatalog());
-		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata());
+		assertNull(getOrmResource().getEntityMappings().getPersistenceUnitMetadata());
 		//set another element on the persistence-unit-metadata element so only persistence-unit-defaults element gets removed
-		ormResource().getEntityMappings().setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createXmlPersistenceUnitMetadata());
-		ormResource().getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
+		getOrmResource().getEntityMappings().setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createXmlPersistenceUnitMetadata());
+		getOrmResource().getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
 		
 		//set catalog in the context model, verify resource model modified
 		persistenceUnitDefaults.setSpecifiedCatalog("MY_CATALOG");
 		assertEquals("MY_CATALOG", persistenceUnitDefaults.getCatalog());
-		assertEquals("MY_CATALOG", ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getCatalog());
+		assertEquals("MY_CATALOG", getOrmResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getCatalog());
 		
 		//set catalog to null in the context model
 		persistenceUnitDefaults.setSpecifiedCatalog(null);
 		assertNull(persistenceUnitDefaults.getCatalog());
-		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults());
+		assertNull(getOrmResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults());
 	}
 	
 	public void testUpdateCascadePersist() throws Exception {
 		OrmPersistenceUnitDefaults persistenceUnitDefaults = persistenceUnitDefaults();
 		assertFalse(persistenceUnitDefaults.isCascadePersist());
-		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata());
+		assertNull(getOrmResource().getEntityMappings().getPersistenceUnitMetadata());
 		
 		//set cascadePersist in the resource model, verify context model updated
-		ormResource().getEntityMappings().setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createXmlPersistenceUnitMetadata());
-		ormResource().getEntityMappings().getPersistenceUnitMetadata().setPersistenceUnitDefaults(OrmFactory.eINSTANCE.createXmlPersistenceUnitDefaults());
-		ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setCascadePersist(true);
+		getOrmResource().getEntityMappings().setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createXmlPersistenceUnitMetadata());
+		getOrmResource().getEntityMappings().getPersistenceUnitMetadata().setPersistenceUnitDefaults(OrmFactory.eINSTANCE.createXmlPersistenceUnitDefaults());
+		getOrmResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setCascadePersist(true);
 		assertTrue(persistenceUnitDefaults.isCascadePersist());
-		assertTrue(ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().isCascadePersist());
+		assertTrue(getOrmResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().isCascadePersist());
 	
 		//set cascadePersist to null in the resource model, persistence-unit-defaults tag not removed
-		ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setCascadePersist(false);
+		getOrmResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setCascadePersist(false);
 		assertFalse(persistenceUnitDefaults.isCascadePersist());
-		assertFalse(ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().isCascadePersist());
+		assertFalse(getOrmResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().isCascadePersist());
 	}
 	
 	public void testModifyCascadePersist() throws Exception {		
 		OrmPersistenceUnitDefaults persistenceUnitDefaults = persistenceUnitDefaults();
 		assertFalse(persistenceUnitDefaults.isCascadePersist());
-		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata());
+		assertNull(getOrmResource().getEntityMappings().getPersistenceUnitMetadata());
 		
 		//set cascadePersist in the context model, verify resource model modified
 		persistenceUnitDefaults.setCascadePersist(true);
 		assertTrue(persistenceUnitDefaults.isCascadePersist());
-		assertTrue(ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().isCascadePersist());
+		assertTrue(getOrmResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().isCascadePersist());
 		
 		//set cascadePersist to null in the context model
 		persistenceUnitDefaults.setCascadePersist(false);
 		assertFalse(persistenceUnitDefaults.isCascadePersist());
-		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata());
+		assertNull(getOrmResource().getEntityMappings().getPersistenceUnitMetadata());
 	}
 	
 	public void testModifyCascadePersist2() throws Exception {
 		OrmPersistenceUnitDefaults persistenceUnitDefaults = persistenceUnitDefaults();
 		assertFalse(persistenceUnitDefaults.isCascadePersist());
-		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata());
+		assertNull(getOrmResource().getEntityMappings().getPersistenceUnitMetadata());
 		
 		//set cascadePersist in the context model, verify resource model modified
 		persistenceUnitDefaults.setCascadePersist(true);
 		assertTrue(persistenceUnitDefaults.isCascadePersist());
-		assertTrue(ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().isCascadePersist());
+		assertTrue(getOrmResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().isCascadePersist());
 		
 		//set another element on the persistence-unit-defaults element so it doesn't get removed
-		ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setCatalog("MY_CATALOG");
+		getOrmResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setCatalog("MY_CATALOG");
 		//set cascadePersist to null in the context model
 		persistenceUnitDefaults.setCascadePersist(false);
 		assertFalse(persistenceUnitDefaults.isCascadePersist());
-		assertFalse(ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().isCascadePersist());
+		assertFalse(getOrmResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().isCascadePersist());
 	}
 	
 	public void testModifyCascadePersist3() throws Exception {
 		OrmPersistenceUnitDefaults persistenceUnitDefaults = persistenceUnitDefaults();
 		assertFalse(persistenceUnitDefaults.isCascadePersist());
-		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata());
+		assertNull(getOrmResource().getEntityMappings().getPersistenceUnitMetadata());
 		//set another element on the persistence-unit-metadata element so only persistence-unit-defaults element gets removed
-		ormResource().getEntityMappings().setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createXmlPersistenceUnitMetadata());
-		ormResource().getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
+		getOrmResource().getEntityMappings().setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createXmlPersistenceUnitMetadata());
+		getOrmResource().getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
 		
 		//set cascadePersist in the context model, verify resource model modified
 		persistenceUnitDefaults.setCascadePersist(true);
 		assertTrue(persistenceUnitDefaults.isCascadePersist());
-		assertTrue(ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().isCascadePersist());
+		assertTrue(getOrmResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().isCascadePersist());
 		
 		//set cascadePersist to null in the context model
 		persistenceUnitDefaults.setCascadePersist(false);
 		assertFalse(persistenceUnitDefaults.isCascadePersist());
-		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults());
+		assertNull(getOrmResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults());
 	}
 	
 	
 	public void testUpdateAccess() throws Exception {
 		OrmPersistenceUnitDefaults persistenceUnitDefaults = persistenceUnitDefaults();
 		assertNull(persistenceUnitDefaults.getAccess());
-		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata());
+		assertNull(getOrmResource().getEntityMappings().getPersistenceUnitMetadata());
 		
 		//set access in the resource model, verify context model updated
-		ormResource().getEntityMappings().setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createXmlPersistenceUnitMetadata());
-		ormResource().getEntityMappings().getPersistenceUnitMetadata().setPersistenceUnitDefaults(OrmFactory.eINSTANCE.createXmlPersistenceUnitDefaults());
-		ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(org.eclipse.jpt.core.resource.orm.AccessType.FIELD);
+		getOrmResource().getEntityMappings().setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createXmlPersistenceUnitMetadata());
+		getOrmResource().getEntityMappings().getPersistenceUnitMetadata().setPersistenceUnitDefaults(OrmFactory.eINSTANCE.createXmlPersistenceUnitDefaults());
+		getOrmResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(org.eclipse.jpt.core.resource.orm.AccessType.FIELD);
 		assertEquals(AccessType.FIELD, persistenceUnitDefaults.getAccess());
-		assertEquals(org.eclipse.jpt.core.resource.orm.AccessType.FIELD, ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getAccess());
+		assertEquals(org.eclipse.jpt.core.resource.orm.AccessType.FIELD, getOrmResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getAccess());
 	
 		//set access to null in the resource model
-		ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(null);
+		getOrmResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(null);
 		assertNull(persistenceUnitDefaults.getAccess());
-		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getAccess());
+		assertNull(getOrmResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getAccess());
 	}
 	
 	public void testModifyAccess() throws Exception {		
 		OrmPersistenceUnitDefaults persistenceUnitDefaults = persistenceUnitDefaults();
 		assertNull(persistenceUnitDefaults.getAccess());
-		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata());
+		assertNull(getOrmResource().getEntityMappings().getPersistenceUnitMetadata());
 		
 		//set access in the context model, verify resource model modified
 		persistenceUnitDefaults.setAccess(AccessType.PROPERTY);
 		assertEquals(AccessType.PROPERTY, persistenceUnitDefaults.getAccess());
-		assertEquals(org.eclipse.jpt.core.resource.orm.AccessType.PROPERTY, ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getAccess());
+		assertEquals(org.eclipse.jpt.core.resource.orm.AccessType.PROPERTY, getOrmResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getAccess());
 		
 		//set access to null in the context model
 		persistenceUnitDefaults.setAccess(null);
 		assertNull(persistenceUnitDefaults.getAccess());
-		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata());
+		assertNull(getOrmResource().getEntityMappings().getPersistenceUnitMetadata());
 	}
 	
 	public void testModifyAccess2() throws Exception {
 		OrmPersistenceUnitDefaults persistenceUnitDefaults = persistenceUnitDefaults();
 		assertNull(persistenceUnitDefaults.getAccess());
-		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata());
+		assertNull(getOrmResource().getEntityMappings().getPersistenceUnitMetadata());
 		
 		//set access in the context model, verify resource model modified
 		persistenceUnitDefaults.setAccess(AccessType.FIELD);
 		assertEquals(AccessType.FIELD, persistenceUnitDefaults.getAccess());
-		assertEquals(org.eclipse.jpt.core.resource.orm.AccessType.FIELD, ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getAccess());
+		assertEquals(org.eclipse.jpt.core.resource.orm.AccessType.FIELD, getOrmResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getAccess());
 		
 		//set another element on the persistence-unit-defaults element so it doesn't get removed
-		ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setCascadePersist(true);
+		getOrmResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setCascadePersist(true);
 		//set access to null in the context model
 		persistenceUnitDefaults.setAccess(null);
 		assertNull(persistenceUnitDefaults.getAccess());
-		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getAccess());
+		assertNull(getOrmResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getAccess());
 	}
 	
 	public void testModifyAccess3() throws Exception {
 		OrmPersistenceUnitDefaults persistenceUnitDefaults = persistenceUnitDefaults();
 		assertNull(persistenceUnitDefaults.getAccess());
-		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata());
+		assertNull(getOrmResource().getEntityMappings().getPersistenceUnitMetadata());
 		//set another element on the persistence-unit-metadata element so only persistence-unit-defaults element gets removed
-		ormResource().getEntityMappings().setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createXmlPersistenceUnitMetadata());
-		ormResource().getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
+		getOrmResource().getEntityMappings().setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createXmlPersistenceUnitMetadata());
+		getOrmResource().getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
 		
 		//set access in the context model, verify resource model modified
 		persistenceUnitDefaults.setAccess(AccessType.FIELD);
 		assertEquals(AccessType.FIELD, persistenceUnitDefaults.getAccess());
-		assertEquals(org.eclipse.jpt.core.resource.orm.AccessType.FIELD, ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getAccess());
+		assertEquals(org.eclipse.jpt.core.resource.orm.AccessType.FIELD, getOrmResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().getAccess());
 		
 		//set access to null in the context model
 		persistenceUnitDefaults.setAccess(null);
 		assertNull(persistenceUnitDefaults.getAccess());
-		assertNull(ormResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults());
+		assertNull(getOrmResource().getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults());
 	}
 
 }

@@ -22,7 +22,7 @@ public class RootContextNodeTests extends ContextModelTestCase
 	}
 	
 	public void testModifyAddPersistenceXml() throws Exception {
-		PersistenceResource pr = persistenceResource();
+		PersistenceResource pr = getPersistenceResource();
 		deleteResource(pr);
 		
 		assertFalse(pr.exists());
@@ -67,7 +67,7 @@ public class RootContextNodeTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateAddPersistenceXml() throws Exception {
-		PersistenceResource pr = persistenceResource();
+		PersistenceResource pr = getPersistenceResource();
 		deleteResource(pr);
 		
 		assertFalse(pr.exists());
@@ -81,7 +81,7 @@ public class RootContextNodeTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateRemovePersistenceXml() throws Exception {
-		PersistenceResource pr = persistenceResource();
+		PersistenceResource pr = getPersistenceResource();
 		JpaRootContextNode baseJpaContent = getJavaProject().getJpaProject().getRootContextNode();
 		
 		assertNotNull(baseJpaContent.getPersistenceXml());

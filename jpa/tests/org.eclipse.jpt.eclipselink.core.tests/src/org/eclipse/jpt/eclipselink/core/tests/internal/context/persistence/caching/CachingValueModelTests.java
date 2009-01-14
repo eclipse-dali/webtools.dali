@@ -143,7 +143,7 @@ public class CachingValueModelTests extends PersistenceUnitTestCase
 	}
 
 	@Override
-	protected PersistenceUnitProperties model() {
+	protected PersistenceUnitProperties getModel() {
 		return this.caching;
 	}
 

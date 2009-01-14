@@ -115,7 +115,7 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		createTestEntityWithIdMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		IdMapping idMapping = (IdMapping) persistentAttribute.getMapping();
 		assertFalse(idMapping.isDefault());
 		idMapping.getColumn().setSpecifiedName("FOO");
@@ -130,7 +130,7 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		assertEquals("FOO", ((BasicMapping) persistentAttribute.getMapping()).getColumn().getSpecifiedName());
 		assertEquals(TemporalType.TIME, ((TemporalConverter) ((BasicMapping) persistentAttribute.getMapping()).getConverter()).getTemporalType());
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		assertNull(attributeResource.getMappingAnnotation(IdAnnotation.ANNOTATION_NAME));
 		assertNotNull(attributeResource.getMappingAnnotation(BasicAnnotation.ANNOTATION_NAME));
@@ -145,7 +145,7 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		createTestEntityWithIdMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		IdMapping idMapping = (IdMapping) persistentAttribute.getMapping();
 		assertFalse(idMapping.isDefault());
 		idMapping.getColumn().setSpecifiedName("FOO");
@@ -160,7 +160,7 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		assertEquals("FOO", ((BasicMapping) persistentAttribute.getMapping()).getColumn().getSpecifiedName());
 		assertEquals(TemporalType.TIME, ((TemporalConverter) ((BasicMapping) persistentAttribute.getMapping()).getConverter()).getTemporalType());
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		assertNull(attributeResource.getMappingAnnotation(IdAnnotation.ANNOTATION_NAME));
 		assertNotNull(attributeResource.getSupportingAnnotation(ColumnAnnotation.ANNOTATION_NAME));
@@ -174,7 +174,7 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		createTestEntityWithIdMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		IdMapping idMapping = (IdMapping) persistentAttribute.getMapping();
 		assertFalse(idMapping.isDefault());
 		idMapping.getColumn().setSpecifiedName("FOO");
@@ -189,7 +189,7 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		assertEquals("FOO", ((VersionMapping) persistentAttribute.getMapping()).getColumn().getSpecifiedName());
 		assertEquals(TemporalType.TIME, ((TemporalConverter) ((VersionMapping) persistentAttribute.getMapping()).getConverter()).getTemporalType());
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		assertNull(attributeResource.getMappingAnnotation(IdAnnotation.ANNOTATION_NAME));
 		assertNotNull(attributeResource.getMappingAnnotation(VersionAnnotation.ANNOTATION_NAME));
@@ -204,7 +204,7 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		createTestEntityWithIdMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		IdMapping idMapping = (IdMapping) persistentAttribute.getMapping();
 		assertFalse(idMapping.isDefault());
 		idMapping.getColumn().setSpecifiedName("FOO");
@@ -218,7 +218,7 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		persistentAttribute.setSpecifiedMappingKey(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
 		assertTrue(persistentAttribute.getMapping() instanceof EmbeddedMapping);
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		assertNull(attributeResource.getMappingAnnotation(IdAnnotation.ANNOTATION_NAME));
 		assertNotNull(attributeResource.getMappingAnnotation(EmbeddedAnnotation.ANNOTATION_NAME));
@@ -233,7 +233,7 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		createTestEntityWithIdMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		IdMapping idMapping = (IdMapping) persistentAttribute.getMapping();
 		assertFalse(idMapping.isDefault());
 		idMapping.getColumn().setSpecifiedName("FOO");
@@ -247,7 +247,7 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		persistentAttribute.setSpecifiedMappingKey(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
 		assertTrue(persistentAttribute.getMapping() instanceof TransientMapping);
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		assertNull(attributeResource.getMappingAnnotation(IdAnnotation.ANNOTATION_NAME));
 		assertNotNull(attributeResource.getMappingAnnotation(TransientAnnotation.ANNOTATION_NAME));
@@ -262,7 +262,7 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		createTestEntityWithIdMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		IdMapping idMapping = (IdMapping) persistentAttribute.getMapping();
 		assertFalse(idMapping.isDefault());
 		idMapping.getColumn().setSpecifiedName("FOO");
@@ -276,7 +276,7 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		persistentAttribute.setSpecifiedMappingKey(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY);
 		assertTrue(persistentAttribute.getMapping() instanceof EmbeddedIdMapping);
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		assertNull(attributeResource.getMappingAnnotation(IdAnnotation.ANNOTATION_NAME));
 		assertNotNull(attributeResource.getMappingAnnotation(EmbeddedIdAnnotation.ANNOTATION_NAME));
@@ -291,7 +291,7 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		createTestEntityWithIdMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		IdMapping idMapping = (IdMapping) persistentAttribute.getMapping();
 		assertFalse(idMapping.isDefault());
 		idMapping.getColumn().setSpecifiedName("FOO");
@@ -305,7 +305,7 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		persistentAttribute.setSpecifiedMappingKey(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 		assertTrue(persistentAttribute.getMapping() instanceof OneToOneMapping);
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		assertNull(attributeResource.getMappingAnnotation(IdAnnotation.ANNOTATION_NAME));
 		assertNotNull(attributeResource.getMappingAnnotation(OneToOneAnnotation.ANNOTATION_NAME));
@@ -320,7 +320,7 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		createTestEntityWithIdMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		IdMapping idMapping = (IdMapping) persistentAttribute.getMapping();
 		assertFalse(idMapping.isDefault());
 		idMapping.getColumn().setSpecifiedName("FOO");
@@ -334,7 +334,7 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		persistentAttribute.setSpecifiedMappingKey(MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY);
 		assertTrue(persistentAttribute.getMapping() instanceof OneToManyMapping);
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		assertNull(attributeResource.getMappingAnnotation(IdAnnotation.ANNOTATION_NAME));
 		assertNotNull(attributeResource.getMappingAnnotation(OneToManyAnnotation.ANNOTATION_NAME));
@@ -349,7 +349,7 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		createTestEntityWithIdMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		IdMapping idMapping = (IdMapping) persistentAttribute.getMapping();
 		assertFalse(idMapping.isDefault());
 		idMapping.getColumn().setSpecifiedName("FOO");
@@ -363,7 +363,7 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		persistentAttribute.setSpecifiedMappingKey(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 		assertTrue(persistentAttribute.getMapping() instanceof ManyToOneMapping);
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		assertNull(attributeResource.getMappingAnnotation(IdAnnotation.ANNOTATION_NAME));
 		assertNotNull(attributeResource.getMappingAnnotation(ManyToOneAnnotation.ANNOTATION_NAME));
@@ -378,7 +378,7 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		createTestEntityWithIdMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		IdMapping idMapping = (IdMapping) persistentAttribute.getMapping();
 		assertFalse(idMapping.isDefault());
 		idMapping.getColumn().setSpecifiedName("FOO");
@@ -392,7 +392,7 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		persistentAttribute.setSpecifiedMappingKey(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
 		assertTrue(persistentAttribute.getMapping() instanceof ManyToManyMapping);
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		assertNull(attributeResource.getMappingAnnotation(IdAnnotation.ANNOTATION_NAME));
 		assertNotNull(attributeResource.getMappingAnnotation(ManyToManyAnnotation.ANNOTATION_NAME));
@@ -407,7 +407,7 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		createTestEntityWithTemporal();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		IdMapping idMapping = (IdMapping) persistentAttribute.getSpecifiedMapping();
 
 		assertEquals(TemporalType.TIMESTAMP, ((TemporalConverter) idMapping.getConverter()).getTemporalType());
@@ -417,14 +417,14 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		createTestEntityWithIdMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		IdMapping idMapping = (IdMapping) persistentAttribute.getSpecifiedMapping();
 		assertEquals(Converter.NO_CONVERTER, idMapping.getConverter().getType());
 		
 		idMapping.setSpecifiedConverter(Converter.TEMPORAL_CONVERTER);
 		((TemporalConverter) idMapping.getConverter()).setTemporalType(TemporalType.TIME);
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		TemporalAnnotation temporal = (TemporalAnnotation) attributeResource.getSupportingAnnotation(TemporalAnnotation.ANNOTATION_NAME);
 		
@@ -438,13 +438,13 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		createTestEntityWithIdMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		IdMapping idMapping = (IdMapping) persistentAttribute.getSpecifiedMapping();
 
 		assertEquals(Converter.NO_CONVERTER, idMapping.getConverter().getType());
 		
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		TemporalAnnotation temporal = (TemporalAnnotation) attributeResource.addSupportingAnnotation(TemporalAnnotation.ANNOTATION_NAME);
 		temporal.setValue(org.eclipse.jpt.core.resource.java.TemporalType.DATE);
@@ -462,13 +462,13 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		createTestEntityWithIdMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		IdMapping idMapping = (IdMapping) persistentAttribute.getSpecifiedMapping();
 		
 		assertNull(idMapping.getColumn().getSpecifiedName());
 		assertEquals("id", idMapping.getColumn().getName());
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		ColumnAnnotation column = (ColumnAnnotation) attributeResource.addSupportingAnnotation(JPA.COLUMN);
 		column.setName("foo");
@@ -482,12 +482,12 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		createTestEntityWithIdMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		IdMapping idMapping = (IdMapping) persistentAttribute.getSpecifiedMapping();
 		assertNull(idMapping.getSequenceGenerator());
 		assertEquals(0, CollectionTools.size(idMapping.getPersistenceUnit().allGenerators()));
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		attributeResource.addSupportingAnnotation(JPA.SEQUENCE_GENERATOR);
 		assertNotNull(idMapping.getSequenceGenerator());
@@ -502,14 +502,14 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		createTestEntityWithIdMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		IdMapping idMapping = (IdMapping) persistentAttribute.getSpecifiedMapping();
 		
 		assertNull(idMapping.getSequenceGenerator());
 		
 		idMapping.addSequenceGenerator();
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 	
 		assertNotNull(attributeResource.getSupportingAnnotation(JPA.SEQUENCE_GENERATOR));
@@ -528,10 +528,10 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		createTestEntityWithIdMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		IdMapping idMapping = (IdMapping) persistentAttribute.getSpecifiedMapping();
 
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		attributeResource.addSupportingAnnotation(JPA.SEQUENCE_GENERATOR);
 		
@@ -554,12 +554,12 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		createTestEntityWithIdMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		IdMapping idMapping = (IdMapping) persistentAttribute.getSpecifiedMapping();
 		assertNull(idMapping.getTableGenerator());
 		assertEquals(0, CollectionTools.size(idMapping.getPersistenceUnit().allGenerators()));
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		attributeResource.addSupportingAnnotation(JPA.TABLE_GENERATOR);
 		assertNotNull(idMapping.getTableGenerator());		
@@ -574,14 +574,14 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		createTestEntityWithIdMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		IdMapping idMapping = (IdMapping) persistentAttribute.getSpecifiedMapping();
 		
 		assertNull(idMapping.getTableGenerator());
 		
 		idMapping.addTableGenerator();
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 	
 		assertNotNull(attributeResource.getSupportingAnnotation(JPA.TABLE_GENERATOR));
@@ -600,10 +600,10 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		createTestEntityWithIdMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		IdMapping idMapping = (IdMapping) persistentAttribute.getSpecifiedMapping();
 
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		attributeResource.addSupportingAnnotation(JPA.TABLE_GENERATOR);
 		
@@ -626,12 +626,12 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		createTestEntityWithIdMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		IdMapping idMapping = (IdMapping) persistentAttribute.getSpecifiedMapping();
 		
 		assertNull(idMapping.getGeneratedValue());
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		attributeResource.addSupportingAnnotation(JPA.GENERATED_VALUE);
 		
@@ -643,10 +643,10 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		createTestEntityWithIdMappingGeneratedValue();
 		
-		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		IdMapping idMapping = (IdMapping) persistentAttribute.getSpecifiedMapping();
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 
 		assertNotNull(idMapping.getGeneratedValue());
@@ -657,14 +657,14 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		createTestEntityWithIdMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		IdMapping idMapping = (IdMapping) persistentAttribute.getSpecifiedMapping();
 		
 		assertNull(idMapping.getGeneratedValue());
 		
 		idMapping.addGeneratedValue();
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 	
 		assertNotNull(attributeResource.getSupportingAnnotation(JPA.GENERATED_VALUE));
@@ -683,10 +683,10 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		createTestEntityWithIdMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		IdMapping idMapping = (IdMapping) persistentAttribute.getSpecifiedMapping();
 
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		attributeResource.addSupportingAnnotation(JPA.GENERATED_VALUE);
 		

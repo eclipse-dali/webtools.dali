@@ -120,7 +120,7 @@ public class EclipseLinkJavaOneToOneMappingTests extends EclipseLinkJavaContextM
 		createTestEntityWithPrivateOwnedOneToOne();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		EclipseLinkOneToOneMapping oneToOneMapping = (EclipseLinkOneToOneMapping) persistentAttribute.getSpecifiedMapping();
 		PrivateOwned privateOwnable = oneToOneMapping.getPrivateOwned();
 		assertEquals(true, privateOwnable.isPrivateOwned());
@@ -130,14 +130,14 @@ public class EclipseLinkJavaOneToOneMappingTests extends EclipseLinkJavaContextM
 		createTestEntityWithPrivateOwnedOneToOne();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		EclipseLinkOneToOneMapping oneToOneMapping = (EclipseLinkOneToOneMapping) persistentAttribute.getSpecifiedMapping();
 		PrivateOwned privateOwnable = oneToOneMapping.getPrivateOwned();
 		assertEquals(true, privateOwnable.isPrivateOwned());
 		
 		privateOwnable.setPrivateOwned(false);
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		assertNull(attributeResource.getSupportingAnnotation(PrivateOwnedAnnotation.ANNOTATION_NAME));
 		assertEquals(false, privateOwnable.isPrivateOwned());
@@ -151,13 +151,13 @@ public class EclipseLinkJavaOneToOneMappingTests extends EclipseLinkJavaContextM
 		createTestEntityWithPrivateOwnedOneToOne();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		EclipseLinkOneToOneMapping oneToOneMapping = (EclipseLinkOneToOneMapping) persistentAttribute.getSpecifiedMapping();
 		PrivateOwned privateOwnable = oneToOneMapping.getPrivateOwned();
 		assertEquals(true, privateOwnable.isPrivateOwned());
 		
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		attributeResource.removeSupportingAnnotation(PrivateOwnedAnnotation.ANNOTATION_NAME);
 		
@@ -171,10 +171,10 @@ public class EclipseLinkJavaOneToOneMappingTests extends EclipseLinkJavaContextM
 		createTestEntityWithJoinFetchOneToOne();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		EclipseLinkRelationshipMapping manyToManyMapping = (EclipseLinkRelationshipMapping) persistentAttribute.getSpecifiedMapping();
 		JoinFetch contextJoinFetch = manyToManyMapping.getJoinFetch();
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		JoinFetchAnnotation joinFetchAnnotation = (JoinFetchAnnotation) attributeResource.getSupportingAnnotation(JoinFetchAnnotation.ANNOTATION_NAME);
 		
@@ -216,10 +216,10 @@ public class EclipseLinkJavaOneToOneMappingTests extends EclipseLinkJavaContextM
 		createTestEntityWithJoinFetchOneToOne();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		EclipseLinkRelationshipMapping manyToManyMapping = (EclipseLinkRelationshipMapping) persistentAttribute.getSpecifiedMapping();
 		JoinFetch contextJoinFetch = manyToManyMapping.getJoinFetch();
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		JoinFetchAnnotation joinFetchAnnotation = (JoinFetchAnnotation) attributeResource.getSupportingAnnotation(JoinFetchAnnotation.ANNOTATION_NAME);
 		
@@ -262,7 +262,7 @@ public class EclipseLinkJavaOneToOneMappingTests extends EclipseLinkJavaContextM
 		createTestEntityWithDefaultOneToOne();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		ListIterator<JavaPersistentAttribute> attributes = javaPersistentType().attributes();
+		ListIterator<JavaPersistentAttribute> attributes = getJavaPersistentType().attributes();
 		JavaPersistentAttribute persistentAttribute = attributes.next();
 		assertNull(persistentAttribute.getSpecifiedMapping());
 		assertEquals(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, persistentAttribute.getDefaultMappingKey());	
@@ -274,7 +274,7 @@ public class EclipseLinkJavaOneToOneMappingTests extends EclipseLinkJavaContextM
 		createTestEntityWithDefaultOneToOne();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		ListIterator<JavaPersistentAttribute> attributes = javaPersistentType().attributes();
+		ListIterator<JavaPersistentAttribute> attributes = getJavaPersistentType().attributes();
 		JavaPersistentAttribute persistentAttribute = attributes.next();
 		assertNull(persistentAttribute.getSpecifiedMapping());
 		assertEquals(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, persistentAttribute.getDefaultMappingKey());
@@ -282,10 +282,10 @@ public class EclipseLinkJavaOneToOneMappingTests extends EclipseLinkJavaContextM
 		EclipseLinkOneToOneMapping oneToOneMapping = (EclipseLinkOneToOneMapping) persistentAttribute.getMapping();
 		oneToOneMapping.setSpecifiedFetch(FetchType.LAZY);
 		
-		EclipseLinkOneToOneMapping specifiedOneToOneMapping = (EclipseLinkOneToOneMapping) javaPersistentType().attributes().next().getSpecifiedMapping();
+		EclipseLinkOneToOneMapping specifiedOneToOneMapping = (EclipseLinkOneToOneMapping) getJavaPersistentType().attributes().next().getSpecifiedMapping();
 		assertEquals(FetchType.LAZY, specifiedOneToOneMapping.getFetch());
 
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		assertNotNull(attributeResource.getMappingAnnotation());
 		assertTrue(attributeResource.getMappingAnnotation() instanceof OneToOneAnnotation);
@@ -296,7 +296,7 @@ public class EclipseLinkJavaOneToOneMappingTests extends EclipseLinkJavaContextM
 		createTestEntityWithDefaultOneToOne();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		ListIterator<JavaPersistentAttribute> attributes = javaPersistentType().attributes();
+		ListIterator<JavaPersistentAttribute> attributes = getJavaPersistentType().attributes();
 		JavaPersistentAttribute persistentAttribute = attributes.next();
 		assertNull(persistentAttribute.getSpecifiedMapping());
 		assertEquals(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, persistentAttribute.getDefaultMappingKey());
@@ -304,10 +304,10 @@ public class EclipseLinkJavaOneToOneMappingTests extends EclipseLinkJavaContextM
 		EclipseLinkOneToOneMapping oneToOneMapping = (EclipseLinkOneToOneMapping) persistentAttribute.getMapping();
 		oneToOneMapping.setSpecifiedTargetEntity("Foo");
 		
-		EclipseLinkOneToOneMapping specifiedOneToOneMapping = (EclipseLinkOneToOneMapping) javaPersistentType().attributes().next().getSpecifiedMapping();
+		EclipseLinkOneToOneMapping specifiedOneToOneMapping = (EclipseLinkOneToOneMapping) getJavaPersistentType().attributes().next().getSpecifiedMapping();
 		assertEquals("Foo", specifiedOneToOneMapping.getSpecifiedTargetEntity());
 
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		assertNotNull(attributeResource.getMappingAnnotation());
 		assertTrue(attributeResource.getMappingAnnotation() instanceof OneToOneAnnotation);
@@ -318,7 +318,7 @@ public class EclipseLinkJavaOneToOneMappingTests extends EclipseLinkJavaContextM
 		createTestEntityWithDefaultOneToOne();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		ListIterator<JavaPersistentAttribute> attributes = javaPersistentType().attributes();
+		ListIterator<JavaPersistentAttribute> attributes = getJavaPersistentType().attributes();
 		JavaPersistentAttribute persistentAttribute = attributes.next();
 		assertNull(persistentAttribute.getSpecifiedMapping());
 		assertEquals(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, persistentAttribute.getDefaultMappingKey());
@@ -326,10 +326,10 @@ public class EclipseLinkJavaOneToOneMappingTests extends EclipseLinkJavaContextM
 		EclipseLinkOneToOneMapping oneToOneMapping = (EclipseLinkOneToOneMapping) persistentAttribute.getMapping();
 		oneToOneMapping.setMappedBy("Foo");
 		
-		EclipseLinkOneToOneMapping specifiedOneToOneMapping = (EclipseLinkOneToOneMapping) javaPersistentType().attributes().next().getSpecifiedMapping();
+		EclipseLinkOneToOneMapping specifiedOneToOneMapping = (EclipseLinkOneToOneMapping) getJavaPersistentType().attributes().next().getSpecifiedMapping();
 		assertEquals("Foo", specifiedOneToOneMapping.getMappedBy());
 
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		assertNotNull(attributeResource.getMappingAnnotation());
 		assertTrue(attributeResource.getMappingAnnotation() instanceof OneToOneAnnotation);
@@ -340,7 +340,7 @@ public class EclipseLinkJavaOneToOneMappingTests extends EclipseLinkJavaContextM
 		createTestEntityWithDefaultOneToOne();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		ListIterator<JavaPersistentAttribute> attributes = javaPersistentType().attributes();
+		ListIterator<JavaPersistentAttribute> attributes = getJavaPersistentType().attributes();
 		JavaPersistentAttribute persistentAttribute = attributes.next();
 		assertNull(persistentAttribute.getSpecifiedMapping());
 		assertEquals(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, persistentAttribute.getDefaultMappingKey());
@@ -348,10 +348,10 @@ public class EclipseLinkJavaOneToOneMappingTests extends EclipseLinkJavaContextM
 		EclipseLinkOneToOneMapping oneToOneMapping = (EclipseLinkOneToOneMapping) persistentAttribute.getMapping();
 		oneToOneMapping.getCascade().setAll(true);
 		
-		EclipseLinkOneToOneMapping specifiedOneToOneMapping = (EclipseLinkOneToOneMapping) javaPersistentType().attributes().next().getSpecifiedMapping();
+		EclipseLinkOneToOneMapping specifiedOneToOneMapping = (EclipseLinkOneToOneMapping) getJavaPersistentType().attributes().next().getSpecifiedMapping();
 		assertEquals(true, specifiedOneToOneMapping.getCascade().isAll());
 
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		assertNotNull(attributeResource.getMappingAnnotation());
 		assertTrue(attributeResource.getMappingAnnotation() instanceof OneToOneAnnotation);
@@ -362,7 +362,7 @@ public class EclipseLinkJavaOneToOneMappingTests extends EclipseLinkJavaContextM
 		createTestEntityWithDefaultOneToOne();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		ListIterator<JavaPersistentAttribute> attributes = javaPersistentType().attributes();
+		ListIterator<JavaPersistentAttribute> attributes = getJavaPersistentType().attributes();
 		JavaPersistentAttribute persistentAttribute = attributes.next();
 		assertNull(persistentAttribute.getSpecifiedMapping());
 		assertEquals(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, persistentAttribute.getDefaultMappingKey());
@@ -370,10 +370,10 @@ public class EclipseLinkJavaOneToOneMappingTests extends EclipseLinkJavaContextM
 		EclipseLinkOneToOneMapping oneToOneMapping = (EclipseLinkOneToOneMapping) persistentAttribute.getMapping();
 		oneToOneMapping.getCascade().setMerge(true);
 		
-		EclipseLinkOneToOneMapping specifiedOneToOneMapping = (EclipseLinkOneToOneMapping) javaPersistentType().attributes().next().getSpecifiedMapping();
+		EclipseLinkOneToOneMapping specifiedOneToOneMapping = (EclipseLinkOneToOneMapping) getJavaPersistentType().attributes().next().getSpecifiedMapping();
 		assertEquals(true, specifiedOneToOneMapping.getCascade().isMerge());
 
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		assertNotNull(attributeResource.getMappingAnnotation());
 		assertTrue(attributeResource.getMappingAnnotation() instanceof OneToOneAnnotation);
@@ -384,7 +384,7 @@ public class EclipseLinkJavaOneToOneMappingTests extends EclipseLinkJavaContextM
 		createTestEntityWithDefaultOneToOne();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		ListIterator<JavaPersistentAttribute> attributes = javaPersistentType().attributes();
+		ListIterator<JavaPersistentAttribute> attributes = getJavaPersistentType().attributes();
 		JavaPersistentAttribute persistentAttribute = attributes.next();
 		assertNull(persistentAttribute.getSpecifiedMapping());
 		assertEquals(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, persistentAttribute.getDefaultMappingKey());
@@ -392,10 +392,10 @@ public class EclipseLinkJavaOneToOneMappingTests extends EclipseLinkJavaContextM
 		EclipseLinkOneToOneMapping oneToOneMapping = (EclipseLinkOneToOneMapping) persistentAttribute.getMapping();
 		oneToOneMapping.getCascade().setPersist(true);
 		
-		EclipseLinkOneToOneMapping specifiedOneToOneMapping = (EclipseLinkOneToOneMapping) javaPersistentType().attributes().next().getSpecifiedMapping();
+		EclipseLinkOneToOneMapping specifiedOneToOneMapping = (EclipseLinkOneToOneMapping) getJavaPersistentType().attributes().next().getSpecifiedMapping();
 		assertEquals(true, specifiedOneToOneMapping.getCascade().isPersist());
 
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		assertNotNull(attributeResource.getMappingAnnotation());
 		assertTrue(attributeResource.getMappingAnnotation() instanceof OneToOneAnnotation);
@@ -406,7 +406,7 @@ public class EclipseLinkJavaOneToOneMappingTests extends EclipseLinkJavaContextM
 		createTestEntityWithDefaultOneToOne();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		ListIterator<JavaPersistentAttribute> attributes = javaPersistentType().attributes();
+		ListIterator<JavaPersistentAttribute> attributes = getJavaPersistentType().attributes();
 		JavaPersistentAttribute persistentAttribute = attributes.next();
 		assertNull(persistentAttribute.getSpecifiedMapping());
 		assertEquals(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, persistentAttribute.getDefaultMappingKey());
@@ -414,10 +414,10 @@ public class EclipseLinkJavaOneToOneMappingTests extends EclipseLinkJavaContextM
 		EclipseLinkOneToOneMapping oneToOneMapping = (EclipseLinkOneToOneMapping) persistentAttribute.getMapping();
 		oneToOneMapping.getCascade().setRefresh(true);
 		
-		EclipseLinkOneToOneMapping specifiedOneToOneMapping = (EclipseLinkOneToOneMapping) javaPersistentType().attributes().next().getSpecifiedMapping();
+		EclipseLinkOneToOneMapping specifiedOneToOneMapping = (EclipseLinkOneToOneMapping) getJavaPersistentType().attributes().next().getSpecifiedMapping();
 		assertEquals(true, specifiedOneToOneMapping.getCascade().isRefresh());
 
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		assertNotNull(attributeResource.getMappingAnnotation());
 		assertTrue(attributeResource.getMappingAnnotation() instanceof OneToOneAnnotation);
@@ -428,7 +428,7 @@ public class EclipseLinkJavaOneToOneMappingTests extends EclipseLinkJavaContextM
 		createTestEntityWithDefaultOneToOne();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		ListIterator<JavaPersistentAttribute> attributes = javaPersistentType().attributes();
+		ListIterator<JavaPersistentAttribute> attributes = getJavaPersistentType().attributes();
 		JavaPersistentAttribute persistentAttribute = attributes.next();
 		assertNull(persistentAttribute.getSpecifiedMapping());
 		assertEquals(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, persistentAttribute.getDefaultMappingKey());
@@ -436,10 +436,10 @@ public class EclipseLinkJavaOneToOneMappingTests extends EclipseLinkJavaContextM
 		EclipseLinkOneToOneMapping oneToOneMapping = (EclipseLinkOneToOneMapping) persistentAttribute.getMapping();
 		oneToOneMapping.getCascade().setRemove(true);
 		
-		EclipseLinkOneToOneMapping specifiedOneToOneMapping = (EclipseLinkOneToOneMapping) javaPersistentType().attributes().next().getSpecifiedMapping();
+		EclipseLinkOneToOneMapping specifiedOneToOneMapping = (EclipseLinkOneToOneMapping) getJavaPersistentType().attributes().next().getSpecifiedMapping();
 		assertEquals(true, specifiedOneToOneMapping.getCascade().isRemove());
 
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		assertNotNull(attributeResource.getMappingAnnotation());
 		assertTrue(attributeResource.getMappingAnnotation() instanceof OneToOneAnnotation);

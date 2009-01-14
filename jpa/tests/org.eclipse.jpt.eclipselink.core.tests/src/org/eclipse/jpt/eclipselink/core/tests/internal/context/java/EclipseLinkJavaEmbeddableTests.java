@@ -78,7 +78,7 @@ public class EclipseLinkJavaEmbeddableTests extends EclipseLinkJavaContextModelT
 		createTestEmbeddableWithConvertAndCustomizerClass();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		Customizer customizer = ((EclipseLinkEmbeddable) javaPersistentType().getMapping()).getCustomizer();
+		Customizer customizer = ((EclipseLinkEmbeddable) getJavaPersistentType().getMapping()).getCustomizer();
 		
 		assertEquals("Foo", customizer.getSpecifiedCustomizerClass());
 	}
@@ -87,13 +87,13 @@ public class EclipseLinkJavaEmbeddableTests extends EclipseLinkJavaContextModelT
 		createTestEmbeddableWithConvertAndCustomizerClass();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		Customizer customizer = ((EclipseLinkEmbeddable) javaPersistentType().getMapping()).getCustomizer();
+		Customizer customizer = ((EclipseLinkEmbeddable) getJavaPersistentType().getMapping()).getCustomizer();
 		assertEquals("Foo", customizer.getSpecifiedCustomizerClass());
 		
 		customizer.setSpecifiedCustomizerClass("Bar");
 		assertEquals("Bar", customizer.getSpecifiedCustomizerClass());
 			
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		CustomizerAnnotation customizerAnnotation = (CustomizerAnnotation) typeResource.getSupportingAnnotation(CustomizerAnnotation.ANNOTATION_NAME);		
 		assertEquals("Bar", customizerAnnotation.getValue());
 
@@ -113,12 +113,12 @@ public class EclipseLinkJavaEmbeddableTests extends EclipseLinkJavaContextModelT
 	public void testGetCustomizerClassUpdatesFromResourceModelChange() throws Exception {
 		createTestEmbeddableWithConvertAndCustomizerClass();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		EclipseLinkEmbeddable embeddable = (EclipseLinkEmbeddable) javaPersistentType().getMapping();
+		EclipseLinkEmbeddable embeddable = (EclipseLinkEmbeddable) getJavaPersistentType().getMapping();
 		Customizer customizer = embeddable.getCustomizer();
 
 		assertEquals("Foo", customizer.getSpecifiedCustomizerClass());
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		CustomizerAnnotation customizerAnnotation = (CustomizerAnnotation) typeResource.getSupportingAnnotation(CustomizerAnnotation.ANNOTATION_NAME);
 		customizerAnnotation.setValue("Bar");
 		assertEquals("Bar", customizer.getSpecifiedCustomizerClass());
@@ -137,9 +137,9 @@ public class EclipseLinkJavaEmbeddableTests extends EclipseLinkJavaContextModelT
 		createTestEmbeddableWithChangeTracking();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		EclipseLinkEmbeddable embeddable = (EclipseLinkEmbeddable) javaPersistentType().getMapping();
+		EclipseLinkEmbeddable embeddable = (EclipseLinkEmbeddable) getJavaPersistentType().getMapping();
 		ChangeTracking contextChangeTracking = embeddable.getChangeTracking();
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		ChangeTrackingAnnotation resourceChangeTracking = (ChangeTrackingAnnotation) typeResource.getSupportingAnnotation(ChangeTrackingAnnotation.ANNOTATION_NAME);
 		
 		// base annotated, test context value
@@ -208,9 +208,9 @@ public class EclipseLinkJavaEmbeddableTests extends EclipseLinkJavaContextModelT
 		createTestEmbeddableWithChangeTracking();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		EclipseLinkEmbeddable embeddable = (EclipseLinkEmbeddable) javaPersistentType().getMapping();
+		EclipseLinkEmbeddable embeddable = (EclipseLinkEmbeddable) getJavaPersistentType().getMapping();
 		ChangeTracking contextChangeTracking = embeddable.getChangeTracking();
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		ChangeTrackingAnnotation resourceChangeTracking = (ChangeTrackingAnnotation) typeResource.getSupportingAnnotation(ChangeTrackingAnnotation.ANNOTATION_NAME);
 		
 		// base annotated, test resource value

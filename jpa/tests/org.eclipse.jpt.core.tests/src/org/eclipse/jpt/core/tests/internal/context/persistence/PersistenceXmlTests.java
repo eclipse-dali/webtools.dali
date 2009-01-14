@@ -26,7 +26,7 @@ public class PersistenceXmlTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateAddPersistence() throws Exception {
-		PersistenceResource prm = persistenceResource();
+		PersistenceResource prm = getPersistenceResource();
 		prm.getContents().clear();
 		prm.save(null);
 		
@@ -39,7 +39,7 @@ public class PersistenceXmlTests extends ContextModelTestCase
 	}
 	
 	public void testModifyAddPersistence() {
-		PersistenceResource prm = persistenceResource();
+		PersistenceResource prm = getPersistenceResource();
 		prm.getContents().remove(prm.getPersistence());
 		assertNull(prm.getPersistence());
 		
@@ -61,7 +61,7 @@ public class PersistenceXmlTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateRemovePersistence() throws Exception {
-		PersistenceResource prm = persistenceResource();
+		PersistenceResource prm = getPersistenceResource();
 		
 		assertNotNull(persistenceXml().getPersistence());
 		

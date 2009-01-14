@@ -51,8 +51,8 @@ public class PersistenceUnitTests extends ContextModelTestCase
 	}
 		
 	public void testUpdateName() {
-		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
-		PersistenceUnit persistenceUnit = persistenceUnit();
+		XmlPersistenceUnit xmlPersistenceUnit = getXmlPersistenceUnit();
+		PersistenceUnit persistenceUnit = getPersistenceUnit();
 		
 		// test that names are initially equal
 		assertEquals(xmlPersistenceUnit.getName(), persistenceUnit.getName());
@@ -79,8 +79,8 @@ public class PersistenceUnitTests extends ContextModelTestCase
 	}
 	
 	public void testModifyName() {
-		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
-		PersistenceUnit persistenceUnit = persistenceUnit();
+		XmlPersistenceUnit xmlPersistenceUnit = getXmlPersistenceUnit();
+		PersistenceUnit persistenceUnit = getPersistenceUnit();
 		
 		// test that names are initially equal
 		assertEquals(xmlPersistenceUnit.getName(), persistenceUnit.getName());
@@ -107,8 +107,8 @@ public class PersistenceUnitTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateTransactionType() {
-		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
-		PersistenceUnit persistenceUnit = persistenceUnit();
+		XmlPersistenceUnit xmlPersistenceUnit = getXmlPersistenceUnit();
+		PersistenceUnit persistenceUnit = getPersistenceUnit();
 		
 		// 1 - initial value is default
 		assertNull(xmlPersistenceUnit.getTransactionType());
@@ -130,8 +130,8 @@ public class PersistenceUnitTests extends ContextModelTestCase
 	}
 	
 	public void testModifyTransactionType() {
-		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
-		PersistenceUnit persistenceUnit = persistenceUnit();
+		XmlPersistenceUnit xmlPersistenceUnit = getXmlPersistenceUnit();
+		PersistenceUnit persistenceUnit = getPersistenceUnit();
 		
 		// 1 - initial value is default
 		assertNull(xmlPersistenceUnit.getTransactionType());
@@ -154,8 +154,8 @@ public class PersistenceUnitTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateDescription() {
-		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
-		PersistenceUnit persistenceUnit = persistenceUnit();
+		XmlPersistenceUnit xmlPersistenceUnit = getXmlPersistenceUnit();
+		PersistenceUnit persistenceUnit = getPersistenceUnit();
 		
 		// test that descriptions are initially equal
 		assertEquals(xmlPersistenceUnit.getDescription(), persistenceUnit.getDescription());
@@ -182,8 +182,8 @@ public class PersistenceUnitTests extends ContextModelTestCase
 	}
 	
 	public void testModifyDescription() {
-		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
-		PersistenceUnit persistenceUnit = persistenceUnit();
+		XmlPersistenceUnit xmlPersistenceUnit = getXmlPersistenceUnit();
+		PersistenceUnit persistenceUnit = getPersistenceUnit();
 		
 		// test that descriptions are initially equal
 		assertEquals(xmlPersistenceUnit.getDescription(), persistenceUnit.getDescription());
@@ -210,8 +210,8 @@ public class PersistenceUnitTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateProvider() {
-		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
-		PersistenceUnit persistenceUnit = persistenceUnit();
+		XmlPersistenceUnit xmlPersistenceUnit = getXmlPersistenceUnit();
+		PersistenceUnit persistenceUnit = getPersistenceUnit();
 		
 		// test that providers are initially equal
 		assertEquals(xmlPersistenceUnit.getProvider(), persistenceUnit.getProvider());
@@ -238,8 +238,8 @@ public class PersistenceUnitTests extends ContextModelTestCase
 	}
 	
 	public void testModifyProvider() {
-		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
-		PersistenceUnit persistenceUnit = persistenceUnit();
+		XmlPersistenceUnit xmlPersistenceUnit = getXmlPersistenceUnit();
+		PersistenceUnit persistenceUnit = getPersistenceUnit();
 		
 		// test that providers are initially equal
 		assertEquals(xmlPersistenceUnit.getProvider(), persistenceUnit.getProvider());
@@ -266,8 +266,8 @@ public class PersistenceUnitTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateJtaDataSource() {
-		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
-		PersistenceUnit persistenceUnit = persistenceUnit();
+		XmlPersistenceUnit xmlPersistenceUnit = getXmlPersistenceUnit();
+		PersistenceUnit persistenceUnit = getPersistenceUnit();
 		
 		// test that jtaDataSources are initially equal
 		assertEquals(xmlPersistenceUnit.getJtaDataSource(), persistenceUnit.getJtaDataSource());
@@ -294,8 +294,8 @@ public class PersistenceUnitTests extends ContextModelTestCase
 	}
 	
 	public void testModifyJtaDataSource() {
-		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
-		PersistenceUnit persistenceUnit = persistenceUnit();
+		XmlPersistenceUnit xmlPersistenceUnit = getXmlPersistenceUnit();
+		PersistenceUnit persistenceUnit = getPersistenceUnit();
 		
 		// test that jtaDataSources are initially equal
 		assertEquals(xmlPersistenceUnit.getJtaDataSource(), persistenceUnit.getJtaDataSource());
@@ -322,8 +322,8 @@ public class PersistenceUnitTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateNonJtaDataSource() {
-		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
-		PersistenceUnit persistenceUnit = persistenceUnit();
+		XmlPersistenceUnit xmlPersistenceUnit = getXmlPersistenceUnit();
+		PersistenceUnit persistenceUnit = getPersistenceUnit();
 		
 		// test that nonJtaDataSources are initially equal
 		assertEquals(xmlPersistenceUnit.getNonJtaDataSource(), persistenceUnit.getNonJtaDataSource());
@@ -350,8 +350,8 @@ public class PersistenceUnitTests extends ContextModelTestCase
 	}
 	
 	public void testModifyNonJtaDataSource() {
-		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
-		PersistenceUnit persistenceUnit = persistenceUnit();
+		XmlPersistenceUnit xmlPersistenceUnit = getXmlPersistenceUnit();
+		PersistenceUnit persistenceUnit = getPersistenceUnit();
 		
 		// test that nonJtaDataSources are initially equal
 		assertEquals(xmlPersistenceUnit.getNonJtaDataSource(), persistenceUnit.getNonJtaDataSource());
@@ -386,10 +386,10 @@ public class PersistenceUnitTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateImpliedMappingFileRef1() throws Exception {
-		PersistenceUnit persistenceUnit = persistenceUnit();
+		PersistenceUnit persistenceUnit = getPersistenceUnit();
 		
 		// test that there is one initially
-		OrmResource ormResource = ormResource();
+		OrmResource ormResource = getOrmResource();
 		assertTrue(ormResource.exists());
 		assertNotNull(persistenceUnit.getImpliedMappingFileRef());
 		
@@ -401,11 +401,11 @@ public class PersistenceUnitTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateImpliedMappingFileRef2() {
-		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
-		PersistenceUnit persistenceUnit = persistenceUnit();
+		XmlPersistenceUnit xmlPersistenceUnit = getXmlPersistenceUnit();
+		PersistenceUnit persistenceUnit = getPersistenceUnit();
 		
 		// test that there is one initially
-		OrmResource ormResource = ormResource();
+		OrmResource ormResource = getOrmResource();
 		assertTrue(ormResource.exists());
 		assertNotNull(persistenceUnit.getImpliedMappingFileRef());
 		
@@ -421,8 +421,8 @@ public class PersistenceUnitTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateSpecifiedMappingFileRefs1() {
-		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
-		PersistenceUnit persistenceUnit = persistenceUnit();
+		XmlPersistenceUnit xmlPersistenceUnit = getXmlPersistenceUnit();
+		PersistenceUnit persistenceUnit = getPersistenceUnit();
 		
 		// test there are none initially
 		assertEquals(0, xmlPersistenceUnit.getMappingFiles().size());
@@ -444,8 +444,8 @@ public class PersistenceUnitTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateSpecifiedMappingFileRefs2() {
-		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
-		PersistenceUnit persistenceUnit = persistenceUnit();
+		XmlPersistenceUnit xmlPersistenceUnit = getXmlPersistenceUnit();
+		PersistenceUnit persistenceUnit = getPersistenceUnit();
 		
 		// add two mapping file refs and test that there are two existing in xml and context
 		XmlMappingFileRef xmlMappingFileRef = PersistenceFactory.eINSTANCE.createXmlMappingFileRef();
@@ -472,8 +472,8 @@ public class PersistenceUnitTests extends ContextModelTestCase
 	}
 	
 	public void testModifySpecifiedMappingFileRefs1() {
-		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
-		PersistenceUnit persistenceUnit = persistenceUnit();
+		XmlPersistenceUnit xmlPersistenceUnit = getXmlPersistenceUnit();
+		PersistenceUnit persistenceUnit = getPersistenceUnit();
 		
 		// test there are none initially
 		assertEquals(0, xmlPersistenceUnit.getMappingFiles().size());
@@ -501,8 +501,8 @@ public class PersistenceUnitTests extends ContextModelTestCase
 	}
 	
 	public void testModifySpecifiedMappingFileRefs2() {
-		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
-		PersistenceUnit persistenceUnit = persistenceUnit();
+		XmlPersistenceUnit xmlPersistenceUnit = getXmlPersistenceUnit();
+		PersistenceUnit persistenceUnit = getPersistenceUnit();
 		
 		// add two mapping file refs and test that there are two existing in xml and context
 		XmlMappingFileRef xmlMappingFileRef = PersistenceFactory.eINSTANCE.createXmlMappingFileRef();
@@ -527,8 +527,8 @@ public class PersistenceUnitTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateClassRefs1() {
-		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
-		PersistenceUnit persistenceUnit = persistenceUnit();
+		XmlPersistenceUnit xmlPersistenceUnit = getXmlPersistenceUnit();
+		PersistenceUnit persistenceUnit = getPersistenceUnit();
 		
 		// test there are none initially
 		assertEquals(0, xmlPersistenceUnit.getClasses().size());
@@ -550,8 +550,8 @@ public class PersistenceUnitTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateClassRefs2() {
-		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
-		PersistenceUnit persistenceUnit = persistenceUnit();
+		XmlPersistenceUnit xmlPersistenceUnit = getXmlPersistenceUnit();
+		PersistenceUnit persistenceUnit = getPersistenceUnit();
 		
 		// add two class refs and test that there are two existing in xml and context
 		XmlJavaClassRef xmlClassRef = PersistenceFactory.eINSTANCE.createXmlJavaClassRef();
@@ -578,8 +578,8 @@ public class PersistenceUnitTests extends ContextModelTestCase
 	}
 	
 	public void testModifyClassRefs1() {
-		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
-		PersistenceUnit persistenceUnit = persistenceUnit();
+		XmlPersistenceUnit xmlPersistenceUnit = getXmlPersistenceUnit();
+		PersistenceUnit persistenceUnit = getPersistenceUnit();
 		
 		// test there are none initially
 		assertEquals(0, xmlPersistenceUnit.getClasses().size());
@@ -589,7 +589,7 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		persistenceUnit.addSpecifiedClassRef().setClassName("Foo");
 		
 		try {
-			persistenceResource().save(null);
+			getPersistenceResource().save(null);
 		}
 		catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -615,8 +615,8 @@ public class PersistenceUnitTests extends ContextModelTestCase
 	}
 	
 	public void testModifyClassRefs2() {
-		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
-		PersistenceUnit persistenceUnit = persistenceUnit();
+		XmlPersistenceUnit xmlPersistenceUnit = getXmlPersistenceUnit();
+		PersistenceUnit persistenceUnit = getPersistenceUnit();
 		
 		// add two class refs and test that there are two existing in xml and context
 		XmlJavaClassRef xmlClassRef = PersistenceFactory.eINSTANCE.createXmlJavaClassRef();
@@ -642,42 +642,42 @@ public class PersistenceUnitTests extends ContextModelTestCase
 
 	public void testImpliedClassRefs() throws Exception {
 		createTestEntityWithPersistentInnerClass();
-		ListIterator<ClassRef> classRefs = persistenceUnit().impliedClassRefs();
+		ListIterator<ClassRef> classRefs = getPersistenceUnit().impliedClassRefs();
 		assertEquals(FULLY_QUALIFIED_TYPE_NAME, classRefs.next().getClassName());
 		assertEquals(FULLY_QUALIFIED_INNER_CLASS_NAME, classRefs.next().getClassName());
 		
-		jpaProject().setDiscoversAnnotatedClasses(true);
-		classRefs = persistenceUnit().impliedClassRefs();
+		getJpaProject().setDiscoversAnnotatedClasses(true);
+		classRefs = getPersistenceUnit().impliedClassRefs();
 		assertEquals(FULLY_QUALIFIED_TYPE_NAME, classRefs.next().getClassName());
 		assertEquals(FULLY_QUALIFIED_INNER_CLASS_NAME, classRefs.next().getClassName());
 		
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		classRefs = persistenceUnit().impliedClassRefs();
+		classRefs = getPersistenceUnit().impliedClassRefs();
 		assertEquals(FULLY_QUALIFIED_INNER_CLASS_NAME, classRefs.next().getClassName());
 		assertFalse(classRefs.hasNext());
 		
 		
 		removeXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		classRefs = persistenceUnit().impliedClassRefs();
+		classRefs = getPersistenceUnit().impliedClassRefs();
 		assertEquals(FULLY_QUALIFIED_INNER_CLASS_NAME, classRefs.next().getClassName());
 		assertEquals(FULLY_QUALIFIED_TYPE_NAME, classRefs.next().getClassName());
 		
-		entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		classRefs = persistenceUnit().impliedClassRefs();
+		getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		classRefs = getPersistenceUnit().impliedClassRefs();
 		assertEquals(FULLY_QUALIFIED_INNER_CLASS_NAME, classRefs.next().getClassName());
 		assertFalse(classRefs.hasNext());
 		
 		addXmlClassRef(FULLY_QUALIFIED_INNER_CLASS_NAME);
-		classRefs = persistenceUnit().impliedClassRefs();
+		classRefs = getPersistenceUnit().impliedClassRefs();
 		assertFalse(classRefs.hasNext());
 		
 		removeXmlClassRef(FULLY_QUALIFIED_INNER_CLASS_NAME);
-		classRefs = persistenceUnit().impliedClassRefs();
+		classRefs = getPersistenceUnit().impliedClassRefs();
 		assertEquals(FULLY_QUALIFIED_INNER_CLASS_NAME, classRefs.next().getClassName());
 		assertFalse(classRefs.hasNext());
 
-		entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_INNER_CLASS_NAME);
-		classRefs = persistenceUnit().impliedClassRefs();
+		getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_INNER_CLASS_NAME);
+		classRefs = getPersistenceUnit().impliedClassRefs();
 		assertFalse(classRefs.hasNext());
 	}
 	
@@ -687,7 +687,7 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		@SuppressWarnings("unused")
 		ICompilationUnit otherTestType = this.createTestOtherTypeEntity();
 		
-		ListIterator<ClassRef> classRefs = persistenceUnit().impliedClassRefs();
+		ListIterator<ClassRef> classRefs = getPersistenceUnit().impliedClassRefs();
 		ClassRef testTypeClassRef = classRefs.next();
 		ClassRef otherTestTypeClassRef = classRefs.next();
 		
@@ -699,7 +699,7 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		
 		testType.findPrimaryType().rename("TestType2", false, null);
 		
-		classRefs = persistenceUnit().impliedClassRefs();
+		classRefs = getPersistenceUnit().impliedClassRefs();
 		otherTestTypeClassRef = classRefs.next();
 		testTypeClassRef = classRefs.next();
 		
@@ -711,8 +711,8 @@ public class PersistenceUnitTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateExcludeUnlistedClasses() throws Exception {
-		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
-		PersistenceUnit persistenceUnit = persistenceUnit();
+		XmlPersistenceUnit xmlPersistenceUnit = getXmlPersistenceUnit();
+		PersistenceUnit persistenceUnit = getPersistenceUnit();
 		
 		// 1 - initial value is default
 		assertNull(persistenceUnit.getSpecifiedExcludeUnlistedClasses());
@@ -741,8 +741,8 @@ public class PersistenceUnitTests extends ContextModelTestCase
 	}
 	
 	public void testModifyExcludeUnlistedClasses() {
-		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
-		PersistenceUnit persistenceUnit = persistenceUnit();
+		XmlPersistenceUnit xmlPersistenceUnit = getXmlPersistenceUnit();
+		PersistenceUnit persistenceUnit = getPersistenceUnit();
 		
 		// 1 - initial value is default
 		assertNull(persistenceUnit.getSpecifiedExcludeUnlistedClasses());
@@ -771,8 +771,8 @@ public class PersistenceUnitTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateProperties1() {
-		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
-		PersistenceUnit persistenceUnit = persistenceUnit();
+		XmlPersistenceUnit xmlPersistenceUnit = getXmlPersistenceUnit();
+		PersistenceUnit persistenceUnit = getPersistenceUnit();
 		
 		// test there are none initially
 		assertNull(xmlPersistenceUnit.getProperties());
@@ -801,8 +801,8 @@ public class PersistenceUnitTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateProperties2() {
-		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
-		PersistenceUnit persistenceUnit = persistenceUnit();
+		XmlPersistenceUnit xmlPersistenceUnit = getXmlPersistenceUnit();
+		PersistenceUnit persistenceUnit = getPersistenceUnit();
 		
 		// add two properties and test that there are two existing in xml and context
 		XmlProperties xmlProperties = PersistenceFactory.eINSTANCE.createXmlProperties();
@@ -833,8 +833,8 @@ public class PersistenceUnitTests extends ContextModelTestCase
 	}
 	
 	public void testModifyProperties1() {
-		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
-		PersistenceUnit persistenceUnit = persistenceUnit();
+		XmlPersistenceUnit xmlPersistenceUnit = getXmlPersistenceUnit();
+		PersistenceUnit persistenceUnit = getPersistenceUnit();
 		
 		// test there are none initially
 		assertNull(xmlPersistenceUnit.getProperties());
@@ -864,8 +864,8 @@ public class PersistenceUnitTests extends ContextModelTestCase
 	}
 	
 	public void testModifyProperties2() {
-		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
-		PersistenceUnit persistenceUnit = persistenceUnit();
+		XmlPersistenceUnit xmlPersistenceUnit = getXmlPersistenceUnit();
+		PersistenceUnit persistenceUnit = getPersistenceUnit();
 		
 		// add two properties and test that there are two existing in xml and context
 		XmlProperties xmlProperties = PersistenceFactory.eINSTANCE.createXmlProperties();
@@ -894,8 +894,8 @@ public class PersistenceUnitTests extends ContextModelTestCase
 	}
 	
 	public void testModifyProperties3() {
-		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
-		PersistenceUnit persistenceUnit = persistenceUnit();
+		XmlPersistenceUnit xmlPersistenceUnit = getXmlPersistenceUnit();
+		PersistenceUnit persistenceUnit = getPersistenceUnit();
 		
 		// add two properties and test that there are two existing in xml and context
 		persistenceUnit.putProperty("foo", "bar", false);
@@ -916,8 +916,8 @@ public class PersistenceUnitTests extends ContextModelTestCase
 	}
 	
 	public void testModifyProperties4() {
-		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
-		PersistenceUnit persistenceUnit = persistenceUnit();
+		XmlPersistenceUnit xmlPersistenceUnit = getXmlPersistenceUnit();
+		PersistenceUnit persistenceUnit = getPersistenceUnit();
 		
 		// add two properties and test that there are two existing in xml and context
 		persistenceUnit.putProperty("foo", "bar", false);
@@ -952,8 +952,8 @@ public class PersistenceUnitTests extends ContextModelTestCase
 	}
 	
 	public void testModifyProperties5() {
-		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
-		PersistenceUnit persistenceUnit = persistenceUnit();
+		XmlPersistenceUnit xmlPersistenceUnit = getXmlPersistenceUnit();
+		PersistenceUnit persistenceUnit = getPersistenceUnit();
 		
 		// testing duplicate keys, add four properties and test that there are four existing in xml and context
 		persistenceUnit.putProperty("FOO", "BAR", false);
@@ -977,7 +977,7 @@ public class PersistenceUnitTests extends ContextModelTestCase
 	}
 	
 	public void testAccessProperty() {
-		PersistenceUnit persistenceUnit = persistenceUnit();
+		PersistenceUnit persistenceUnit = getPersistenceUnit();
 		
 		// add two properties and try to access it.
 		persistenceUnit.putProperty("foo", "bar", false);
@@ -992,11 +992,11 @@ public class PersistenceUnitTests extends ContextModelTestCase
 	}
 	
 	private Property persistenceUnitFirstProperty() {
-		return persistenceUnit().properties().next();
+		return getPersistenceUnit().properties().next();
 	}
 
 	public void testUpdatePropertyName() {
-		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
+		XmlPersistenceUnit xmlPersistenceUnit = getXmlPersistenceUnit();
 		
 		// add property for testing
 		XmlProperties xmlProperties = PersistenceFactory.eINSTANCE.createXmlProperties();
@@ -1024,7 +1024,7 @@ public class PersistenceUnitTests extends ContextModelTestCase
 	}
 	
 	public void testUpdatePropertyValue() {
-		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
+		XmlPersistenceUnit xmlPersistenceUnit = getXmlPersistenceUnit();
 		
 		// add property for testing
 		XmlProperties xmlProperties = PersistenceFactory.eINSTANCE.createXmlProperties();
@@ -1059,20 +1059,20 @@ public class PersistenceUnitTests extends ContextModelTestCase
 	
 	public void testGetDefaultAccess() throws Exception {
 		createOrmXmlFile();		
-		PersistenceUnit persistenceUnit = persistenceUnit();
+		PersistenceUnit persistenceUnit = getPersistenceUnit();
 		
-		entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(AccessType.PROPERTY);		
+		getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(AccessType.PROPERTY);		
 		assertEquals(AccessType.PROPERTY, persistenceUnit.getDefaultAccess());
 		
-		entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(AccessType.FIELD);	
+		getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(AccessType.FIELD);	
 		assertEquals(AccessType.FIELD, persistenceUnit.getDefaultAccess());
 	}
 
 	protected void createOrmXmlFile() throws Exception {
 		XmlMappingFileRef mappingFileRef = PersistenceFactory.eINSTANCE.createXmlMappingFileRef();
 		mappingFileRef.setFileName(JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH);
-		xmlPersistenceUnit().getMappingFiles().add(mappingFileRef);
-		persistenceResource().save(null);
+		getXmlPersistenceUnit().getMappingFiles().add(mappingFileRef);
+		getPersistenceResource().save(null);
 	}
 
 	private ICompilationUnit createTestEntity() throws Exception {
@@ -1122,34 +1122,34 @@ public class PersistenceUnitTests extends ContextModelTestCase
 	}
 
 	public void testPersistentType() throws Exception {
-		PersistenceUnit persistenceUnit = persistenceUnit();
+		PersistenceUnit persistenceUnit = getPersistenceUnit();
 		createTestEntity();
 		
 		//persistentType not listed in persistence.xml and discoverAnnotatedClasses is false
 		//still find the persistentType because of changes for bug 190317
-		assertFalse(jpaProject().discoversAnnotatedClasses());
+		assertFalse(getJpaProject().discoversAnnotatedClasses());
 		assertNotNull(persistenceUnit.getPersistentType(FULLY_QUALIFIED_TYPE_NAME));
 		
 		//test persistentType not listed in persistence.xml, discover annotated classes set to true
-		jpaProject().setDiscoversAnnotatedClasses(true);	
+		getJpaProject().setDiscoversAnnotatedClasses(true);	
 		assertNotNull(persistenceUnit.getPersistentType(FULLY_QUALIFIED_TYPE_NAME));
 		
 		//test persistentType list as class in persistence.xml
-		jpaProject().setDiscoversAnnotatedClasses(false);
+		getJpaProject().setDiscoversAnnotatedClasses(false);
 		XmlJavaClassRef classRef = PersistenceFactory.eINSTANCE.createXmlJavaClassRef();
 		classRef.setJavaClass(FULLY_QUALIFIED_TYPE_NAME);
-		xmlPersistenceUnit().getClasses().add(classRef);
+		getXmlPersistenceUnit().getClasses().add(classRef);
 		assertNotNull(persistenceUnit.getPersistentType(FULLY_QUALIFIED_TYPE_NAME));
 
 		
 		//test persistentType from orm.xml file that is specified in the persistence.xml
 		createOrmXmlFile();
-		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		assertNotNull(persistenceUnit.getPersistentType("model.Foo"));
 		assertEquals(ormPersistentType, persistenceUnit.getPersistentType("model.Foo"));
 
 		//test persistentType from orm.xml file that is implied(not specified) in the persistence.xml
-		xmlPersistenceUnit().getMappingFiles().remove(0);
+		getXmlPersistenceUnit().getMappingFiles().remove(0);
 		assertNotNull(persistenceUnit.getPersistentType("model.Foo"));
 	}
 	

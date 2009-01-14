@@ -38,8 +38,8 @@ public class EclipseLinkOrmPersistentAttributeTests extends ContextModelTestCase
 		super.setUp();
 		XmlMappingFileRef mappingFileRef = PersistenceFactory.eINSTANCE.createXmlMappingFileRef();
 		mappingFileRef.setFileName(JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH);
-		xmlPersistenceUnit().getMappingFiles().add(mappingFileRef);
-		persistenceResource().save(null);
+		getXmlPersistenceUnit().getMappingFiles().add(mappingFileRef);
+		getPersistenceResource().save(null);
 	}
 	
 	private ICompilationUnit createTestTypeNullAttributeMapping() throws Exception {
@@ -92,7 +92,7 @@ public class EclipseLinkOrmPersistentAttributeTests extends ContextModelTestCase
 	
 	public void testMakeSpecified() throws Exception {
 		createTestType();
-		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
 		assertEquals(2, ormPersistentType.virtualAttributesSize());
 		
@@ -124,7 +124,7 @@ public class EclipseLinkOrmPersistentAttributeTests extends ContextModelTestCase
 	
 	public void testMakeSpecifiedMappingKey() throws Exception {
 		createTestTypeNullAttributeMapping();
-		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
 		assertEquals(3, ormPersistentType.virtualAttributesSize());
 		
@@ -162,7 +162,7 @@ public class EclipseLinkOrmPersistentAttributeTests extends ContextModelTestCase
 	
 	public void testMakeVirtual() throws Exception {
 		createTestType();
-		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
 		assertEquals(2, ormPersistentType.virtualAttributesSize());
 		
@@ -193,7 +193,7 @@ public class EclipseLinkOrmPersistentAttributeTests extends ContextModelTestCase
 	
 	public void testMakeVirtualNoUnderlyingJavaAttribute() throws Exception {
 		createTestType();
-		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
 		assertEquals(2, ormPersistentType.virtualAttributesSize());
 		
@@ -217,7 +217,7 @@ public class EclipseLinkOrmPersistentAttributeTests extends ContextModelTestCase
 	
 	public void testVirtualMappingTypeWhenMetadataComplete()  throws Exception {
 		createTestEntityIdMapping();
-		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
 		assertEquals("id", ormPersistentAttribute.getName());
@@ -235,7 +235,7 @@ public class EclipseLinkOrmPersistentAttributeTests extends ContextModelTestCase
 	
 	public void testVirtualMappingTypeWhenMetadataComplete2()  throws Exception {
 		createTestEntityOneToOneMapping();
-		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
 		assertEquals("address", ormPersistentAttribute.getName());

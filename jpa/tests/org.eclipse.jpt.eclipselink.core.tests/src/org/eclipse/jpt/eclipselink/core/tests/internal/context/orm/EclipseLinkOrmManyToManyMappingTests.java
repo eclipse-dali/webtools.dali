@@ -88,13 +88,13 @@ public class EclipseLinkOrmManyToManyMappingTests
 	}	
 	public void testUpdateJoinFetch() throws Exception {
 		OrmPersistentType ormPersistentType = 
-			entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+			getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmPersistentAttribute ormPersistentAttribute =
 			ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToMany");
 		EclipseLinkRelationshipMapping contextManyToMany = 
 			(EclipseLinkRelationshipMapping) ormPersistentAttribute.getMapping();
 		XmlEntity resourceEntity = 
-			(XmlEntity) ormResource().getEntityMappings().getEntities().get(0);
+			(XmlEntity) getOrmResource().getEntityMappings().getEntities().get(0);
 		XmlManyToMany resourceManyToMany = 
 			(XmlManyToMany) resourceEntity.getAttributes().getManyToManys().get(0);
 		
@@ -127,13 +127,13 @@ public class EclipseLinkOrmManyToManyMappingTests
 	
 	public void testModifyJoinFetch() throws Exception {
 		OrmPersistentType ormPersistentType = 
-			entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+			getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmPersistentAttribute ormPersistentAttribute =
 			ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToMany");
 		EclipseLinkRelationshipMapping contextManyToMany = 
 			(EclipseLinkRelationshipMapping) ormPersistentAttribute.getMapping();
 		XmlEntity resourceEntity = 
-			(XmlEntity)ormResource().getEntityMappings().getEntities().get(0);
+			(XmlEntity)getOrmResource().getEntityMappings().getEntities().get(0);
 		XmlManyToMany resourceManyToMany = 
 			(XmlManyToMany) resourceEntity.getAttributes().getManyToManys().get(0);
 		
@@ -167,10 +167,10 @@ public class EclipseLinkOrmManyToManyMappingTests
 	public void testDefaultJoinTable() throws Exception {
 		createTestEmployee();
 		createTestDepartment();
-		entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Department");
-		entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Employee");
+		getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Department");
+		getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Employee");
 		
-		OrmPersistentType departmentPersistentType = entityMappings().ormPersistentTypes().next();
+		OrmPersistentType departmentPersistentType = getEntityMappings().ormPersistentTypes().next();
 		OrmManyToManyMapping manyToMany = (OrmManyToManyMapping) departmentPersistentType.getAttributeNamed("employees").getMapping();
 		
 		assertEquals(true, manyToMany.getPersistentAttribute().isVirtual());

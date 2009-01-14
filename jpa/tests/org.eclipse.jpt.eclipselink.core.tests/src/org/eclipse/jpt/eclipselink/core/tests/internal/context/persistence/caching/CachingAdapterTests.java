@@ -74,7 +74,7 @@ public class CachingAdapterTests extends PersistenceUnitTestCase
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.caching = this.persistenceUnit().getCaching();
+		this.caching = this.getPersistenceUnit().getCaching();
 		PropertyChangeListener propertyChangeListener = this.buildPropertyChangeListener();
 		
 		this.caching.addPropertyChangeListener(Caching.CACHE_TYPE_DEFAULT_PROPERTY, propertyChangeListener);
@@ -177,7 +177,7 @@ public class CachingAdapterTests extends PersistenceUnitTestCase
 		// new
 		ListAspectAdapter<PersistenceUnit, Property> propertiesAdapter = 
 			(ListAspectAdapter<PersistenceUnit, Property>) this.subject.getPropertiesAdapter();
-		GenericProperty ctdProperty = (GenericProperty) this.persistenceUnit().getProperty(CACHE_TYPE_DEFAULT_KEY);
+		GenericProperty ctdProperty = (GenericProperty) this.getPersistenceUnit().getProperty(CACHE_TYPE_DEFAULT_KEY);
 		ListValueModel<Property> propertyListAdapter = this.subject.getPropertyListAdapter();
 		
 		assertTrue(propertiesAdapter.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
@@ -346,7 +346,7 @@ public class CachingAdapterTests extends PersistenceUnitTestCase
 
 	// ****** convenience methods *******
 	@Override
-	protected PersistenceUnitProperties model() {
+	protected PersistenceUnitProperties getModel() {
 		return this.caching;
 	}
 
@@ -373,8 +373,8 @@ public class CachingAdapterTests extends PersistenceUnitTestCase
 		this.clearEvent();
 		--this.propertiesTotal;
 		--this.modelPropertiesSize;
-		this.persistenceUnit().removeProperty(key);
-		assertFalse(this.persistenceUnit().containsProperty(key));
+		this.getPersistenceUnit().removeProperty(key);
+		assertFalse(this.getPersistenceUnit().containsProperty(key));
 		assertEquals(this.modelPropertiesSize, this.modelPropertiesSizeOriginal - 1);
 		this.verifyPutCachingProperty(propertyName, ENTITY_TEST, null);
 		assertEquals(this.propertiesTotal, propertyListAdapter.size());

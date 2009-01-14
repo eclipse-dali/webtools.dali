@@ -89,32 +89,32 @@ public class JavaTableTests extends ContextModelTestCase
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		assertNull(javaEntity().getTable().getSpecifiedName());
+		assertNull(getJavaEntity().getTable().getSpecifiedName());
 	}
 
 	public void testGetSpecifiedName() throws Exception {
 		createTestEntityWithTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		assertEquals(TABLE_NAME, javaEntity().getTable().getSpecifiedName());
+		assertEquals(TABLE_NAME, getJavaEntity().getTable().getSpecifiedName());
 	}
 	
 	public void testGetDefaultNameSpecifiedNameNull() throws Exception {
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		assertEquals(TYPE_NAME, javaEntity().getTable().getDefaultName());
+		assertEquals(TYPE_NAME, getJavaEntity().getTable().getDefaultName());
 	}
 
 	public void testGetDefaultName() throws Exception {
 		createTestEntityWithTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		assertEquals(TYPE_NAME, javaEntity().getTable().getDefaultName());
+		assertEquals(TYPE_NAME, getJavaEntity().getTable().getDefaultName());
 		
 		//test that setting the java entity name will change the table default name
-		javaEntity().setSpecifiedName("foo");
-		assertEquals("foo", javaEntity().getTable().getDefaultName());
+		getJavaEntity().setSpecifiedName("foo");
+		assertEquals("foo", getJavaEntity().getTable().getDefaultName());
 	}
 	
 	public void testGetDefaultNameSingleTableInheritance() throws Exception {
@@ -124,75 +124,75 @@ public class JavaTableTests extends ContextModelTestCase
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		assertNotSame(javaEntity(), javaEntity().getRootEntity());
-		assertEquals(TYPE_NAME, javaEntity().getTable().getDefaultName());
-		assertEquals(TYPE_NAME, javaEntity().getRootEntity().getTable().getDefaultName());
+		assertNotSame(getJavaEntity(), getJavaEntity().getRootEntity());
+		assertEquals(TYPE_NAME, getJavaEntity().getTable().getDefaultName());
+		assertEquals(TYPE_NAME, getJavaEntity().getRootEntity().getTable().getDefaultName());
 		
 		//test that setting the root java entity name will change the table default name of the child
-		javaEntity().getRootEntity().setSpecifiedName("foo");
-		assertEquals("foo", javaEntity().getTable().getDefaultName());
+		getJavaEntity().getRootEntity().setSpecifiedName("foo");
+		assertEquals("foo", getJavaEntity().getTable().getDefaultName());
 	}
 
 	public void testUpdateDefaultSchemaFromPersistenceUnitDefaults() throws Exception {
 		XmlMappingFileRef mappingFileRef = PersistenceFactory.eINSTANCE.createXmlMappingFileRef();
 		mappingFileRef.setFileName(JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH);
-		xmlPersistenceUnit().getMappingFiles().add(mappingFileRef);
+		getXmlPersistenceUnit().getMappingFiles().add(mappingFileRef);
 
 		createTestEntity();
 		
-		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		JavaEntity javaEntity = ormEntity.getJavaEntity();
 		
 		assertNull(javaEntity.getTable().getDefaultSchema());
 		
-		entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedSchema("FOO");
+		getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedSchema("FOO");
 		assertEquals("FOO", javaEntity.getTable().getDefaultSchema());
 		
-		entityMappings().setSpecifiedSchema("BAR");
+		getEntityMappings().setSpecifiedSchema("BAR");
 		assertEquals("BAR", javaEntity.getTable().getDefaultSchema());
 		
 		ormEntity.getTable().setSpecifiedSchema("XML_SCHEMA");
 		assertEquals("BAR", javaEntity.getTable().getDefaultSchema());
 
-		entityMappings().removeOrmPersistentType(0);
+		getEntityMappings().removeOrmPersistentType(0);
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		//default schema taken from persistence-unit-defaults not entity-mappings since the entity is not in an orm.xml file
-		assertEquals("FOO", javaEntity().getTable().getDefaultSchema());
+		assertEquals("FOO", getJavaEntity().getTable().getDefaultSchema());
 
-		IFile file = ormResource().getFile();
+		IFile file = getOrmResource().getFile();
 		//remove the mapping file reference from the persistence.xml.  default schema 
 		//should still come from persistence-unit-defaults because of implied mapped-file-ref
-		xmlPersistenceUnit().getMappingFiles().remove(mappingFileRef);
-		assertEquals("FOO", javaEntity().getTable().getDefaultSchema());
+		getXmlPersistenceUnit().getMappingFiles().remove(mappingFileRef);
+		assertEquals("FOO", getJavaEntity().getTable().getDefaultSchema());
 	
 		file.delete(true, null);
-		assertNull(javaEntity().getTable().getDefaultSchema());
+		assertNull(getJavaEntity().getTable().getDefaultSchema());
 	}
 	
 	public void testGetNameSpecifiedNameNull() throws Exception {
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		assertEquals(TYPE_NAME, javaEntity().getTable().getName());
+		assertEquals(TYPE_NAME, getJavaEntity().getTable().getName());
 	}
 	
 	public void testGetName() throws Exception {
 		createTestEntityWithTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		assertEquals(TABLE_NAME, javaEntity().getTable().getName());
+		assertEquals(TABLE_NAME, getJavaEntity().getTable().getName());
 	}
 
 	public void testSetSpecifiedName() throws Exception {
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		javaEntity().getTable().setSpecifiedName("foo");
+		getJavaEntity().getTable().setSpecifiedName("foo");
 		
-		assertEquals("foo", javaEntity().getTable().getSpecifiedName());
+		assertEquals("foo", getJavaEntity().getTable().getSpecifiedName());
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		TableAnnotation table = (TableAnnotation) typeResource.getSupportingAnnotation(JPA.TABLE);
 		
 		assertEquals("foo", table.getName());
@@ -202,11 +202,11 @@ public class JavaTableTests extends ContextModelTestCase
 		createTestEntityWithTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		javaEntity().getTable().setSpecifiedName(null);
+		getJavaEntity().getTable().setSpecifiedName(null);
 		
-		assertNull(javaEntity().getTable().getSpecifiedName());
+		assertNull(getJavaEntity().getTable().getSpecifiedName());
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		TableAnnotation table = (TableAnnotation) typeResource.getSupportingAnnotation(JPA.TABLE);
 	
 		assertNull(table);
@@ -216,84 +216,84 @@ public class JavaTableTests extends ContextModelTestCase
 		createTestEntityWithTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		TableAnnotation table = (TableAnnotation) typeResource.getSupportingAnnotation(JPA.TABLE);
 		table.setName("foo");
 		
-		assertEquals("foo", javaEntity().getTable().getSpecifiedName());
+		assertEquals("foo", getJavaEntity().getTable().getSpecifiedName());
 		
 		typeResource.removeSupportingAnnotation(JPA.TABLE);
-		assertNull(javaEntity().getTable().getSpecifiedName());
+		assertNull(getJavaEntity().getTable().getSpecifiedName());
 	}
 	
 	public void testGetCatalog() throws Exception {
 		createTestEntityWithTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		TableAnnotation table = (TableAnnotation) typeResource.getSupportingAnnotation(JPA.TABLE);
 		
 		table.setCatalog("myCatalog");
 		
-		assertEquals("myCatalog", javaEntity().getTable().getSpecifiedCatalog());
-		assertEquals("myCatalog", javaEntity().getTable().getCatalog());
+		assertEquals("myCatalog", getJavaEntity().getTable().getSpecifiedCatalog());
+		assertEquals("myCatalog", getJavaEntity().getTable().getCatalog());
 	}
 	
 	public void testGetDefaultCatalog() throws Exception {
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		assertNull(javaEntity().getTable().getDefaultCatalog());
+		assertNull(getJavaEntity().getTable().getDefaultCatalog());
 		
-		javaEntity().getTable().setSpecifiedCatalog("myCatalog");
+		getJavaEntity().getTable().setSpecifiedCatalog("myCatalog");
 		
-		assertNull(javaEntity().getTable().getDefaultCatalog());
+		assertNull(getJavaEntity().getTable().getDefaultCatalog());
 	}
 	
 	public void testUpdateDefaultCatalogFromPersistenceUnitDefaults() throws Exception {
 		XmlMappingFileRef mappingFileRef = PersistenceFactory.eINSTANCE.createXmlMappingFileRef();
 		mappingFileRef.setFileName(JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH);
-		xmlPersistenceUnit().getMappingFiles().add(mappingFileRef);
+		getXmlPersistenceUnit().getMappingFiles().add(mappingFileRef);
 
 		createTestEntity();
 		
-		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		JavaEntity javaEntity = ormEntity.getJavaEntity();
 		
 		assertNull(javaEntity.getTable().getDefaultCatalog());
 		
-		entityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedCatalog("FOO");
+		getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedCatalog("FOO");
 		assertEquals("FOO", javaEntity.getTable().getDefaultCatalog());
 		
-		entityMappings().setSpecifiedCatalog("BAR");
+		getEntityMappings().setSpecifiedCatalog("BAR");
 		assertEquals("BAR", javaEntity.getTable().getDefaultCatalog());
 		
 		ormEntity.getTable().setSpecifiedCatalog("XML_CATALOG");
 		assertEquals("BAR", javaEntity.getTable().getDefaultCatalog());
 
-		entityMappings().removeOrmPersistentType(0);
+		getEntityMappings().removeOrmPersistentType(0);
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		//default catalog taken from persistence-unite-defaults not entity-mappings since the entity is not in an orm.xml file
-		assertEquals("FOO", javaEntity().getTable().getDefaultCatalog());
+		assertEquals("FOO", getJavaEntity().getTable().getDefaultCatalog());
 
-		IFile file = ormResource().getFile();
+		IFile file = getOrmResource().getFile();
 		//remove the mapping file reference from the persistence.xml.  default schema 
 		//should still come from persistence-unit-defaults because of implied mapped-file-ref
-		xmlPersistenceUnit().getMappingFiles().remove(mappingFileRef);
-		assertEquals("FOO", javaEntity().getTable().getDefaultCatalog());
+		getXmlPersistenceUnit().getMappingFiles().remove(mappingFileRef);
+		assertEquals("FOO", getJavaEntity().getTable().getDefaultCatalog());
 	
 		file.delete(true, null);
-		assertNull(javaEntity().getTable().getDefaultCatalog());
+		assertNull(getJavaEntity().getTable().getDefaultCatalog());
 	}
 
 	public void testSetSpecifiedCatalog() throws Exception {
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		Table table = javaEntity().getTable();
+		Table table = getJavaEntity().getTable();
 		table.setSpecifiedCatalog("myCatalog");
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		TableAnnotation tableResource = (TableAnnotation) typeResource.getSupportingAnnotation(JPA.TABLE);
 		
 		assertEquals("myCatalog", tableResource.getCatalog());
@@ -306,33 +306,33 @@ public class JavaTableTests extends ContextModelTestCase
 		createTestEntityWithTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		TableAnnotation table = (TableAnnotation) typeResource.getSupportingAnnotation(JPA.TABLE);
 		
 		table.setSchema("mySchema");
 		
-		assertEquals("mySchema", javaEntity().getTable().getSpecifiedSchema());
-		assertEquals("mySchema", javaEntity().getTable().getSchema());
+		assertEquals("mySchema", getJavaEntity().getTable().getSpecifiedSchema());
+		assertEquals("mySchema", getJavaEntity().getTable().getSchema());
 	}
 	
 	public void testGetDefaultSchema() throws Exception {
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		assertNull(javaEntity().getTable().getDefaultSchema());
+		assertNull(getJavaEntity().getTable().getDefaultSchema());
 		
-		javaEntity().getTable().setSpecifiedSchema("mySchema");
+		getJavaEntity().getTable().setSpecifiedSchema("mySchema");
 		
-		assertNull(javaEntity().getTable().getDefaultSchema());
+		assertNull(getJavaEntity().getTable().getDefaultSchema());
 	}
 	
 	public void testSetSpecifiedSchema() throws Exception {
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		Table table = javaEntity().getTable();
+		Table table = getJavaEntity().getTable();
 		table.setSpecifiedSchema("mySchema");
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		TableAnnotation tableResource = (TableAnnotation) typeResource.getSupportingAnnotation(JPA.TABLE);
 		
 		assertEquals("mySchema", tableResource.getSchema());
@@ -345,15 +345,15 @@ public class JavaTableTests extends ContextModelTestCase
 		createTestEntityWithTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		ListIterator<JavaUniqueConstraint> uniqueConstraints = javaEntity().getTable().uniqueConstraints();
+		ListIterator<JavaUniqueConstraint> uniqueConstraints = getJavaEntity().getTable().uniqueConstraints();
 		assertFalse(uniqueConstraints.hasNext());
 
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		TableAnnotation tableAnnotation = (TableAnnotation) typeResource.getSupportingAnnotation(JPA.TABLE);
 		tableAnnotation.addUniqueConstraint(0).addColumnName(0, "foo");
 		tableAnnotation.addUniqueConstraint(0).addColumnName(0, "bar");
 		
-		uniqueConstraints = javaEntity().getTable().uniqueConstraints();
+		uniqueConstraints = getJavaEntity().getTable().uniqueConstraints();
 		assertTrue(uniqueConstraints.hasNext());
 		assertEquals("bar", uniqueConstraints.next().columnNames().next());
 		assertEquals("foo", uniqueConstraints.next().columnNames().next());
@@ -364,26 +364,26 @@ public class JavaTableTests extends ContextModelTestCase
 		createTestEntityWithTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		assertEquals(0,  javaEntity().getTable().uniqueConstraintsSize());
+		assertEquals(0,  getJavaEntity().getTable().uniqueConstraintsSize());
 
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		TableAnnotation tableAnnotation = (TableAnnotation) typeResource.getSupportingAnnotation(JPA.TABLE);
 		tableAnnotation.addUniqueConstraint(0).addColumnName(0, "foo");
 		tableAnnotation.addUniqueConstraint(1).addColumnName(0, "bar");
 		
-		assertEquals(2,  javaEntity().getTable().uniqueConstraintsSize());
+		assertEquals(2,  getJavaEntity().getTable().uniqueConstraintsSize());
 	}
 
 	public void testAddUniqueConstraint() throws Exception {
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		Table table = javaEntity().getTable();
+		Table table = getJavaEntity().getTable();
 		table.addUniqueConstraint(0).addColumnName(0, "FOO");
 		table.addUniqueConstraint(0).addColumnName(0, "BAR");
 		table.addUniqueConstraint(0).addColumnName(0, "BAZ");
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		TableAnnotation tableAnnotation = (TableAnnotation) typeResource.getSupportingAnnotation(JPA.TABLE);
 		ListIterator<UniqueConstraintAnnotation> uniqueConstraints = tableAnnotation.uniqueConstraints();
 		
@@ -397,12 +397,12 @@ public class JavaTableTests extends ContextModelTestCase
 		createTestEntityWithTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		Table table = javaEntity().getTable();
+		Table table = getJavaEntity().getTable();
 		table.addUniqueConstraint(0).addColumnName(0, "FOO");
 		table.addUniqueConstraint(1).addColumnName(0, "BAR");
 		table.addUniqueConstraint(0).addColumnName(0, "BAZ");
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		TableAnnotation tableAnnotation = (TableAnnotation) typeResource.getSupportingAnnotation(JPA.TABLE);
 		ListIterator<UniqueConstraintAnnotation> uniqueConstraints = tableAnnotation.uniqueConstraints();
 		
@@ -416,12 +416,12 @@ public class JavaTableTests extends ContextModelTestCase
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		Table table = javaEntity().getTable();
+		Table table = getJavaEntity().getTable();
 		table.addUniqueConstraint(0).addColumnName(0, "FOO");
 		table.addUniqueConstraint(1).addColumnName(0, "BAR");
 		table.addUniqueConstraint(2).addColumnName(0, "BAZ");
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		TableAnnotation tableAnnotation = (TableAnnotation) typeResource.getSupportingAnnotation(JPA.TABLE);
 		
 		assertEquals(3, tableAnnotation.uniqueConstraintsSize());
@@ -460,12 +460,12 @@ public class JavaTableTests extends ContextModelTestCase
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		Table table = javaEntity().getTable();
+		Table table = getJavaEntity().getTable();
 		table.addUniqueConstraint(0).addColumnName(0, "FOO");
 		table.addUniqueConstraint(1).addColumnName(0, "BAR");
 		table.addUniqueConstraint(2).addColumnName(0, "BAZ");
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		TableAnnotation tableAnnotation = (TableAnnotation) typeResource.getSupportingAnnotation(JPA.TABLE);
 		
 		assertEquals(3, tableAnnotation.uniqueConstraintsSize());
@@ -499,8 +499,8 @@ public class JavaTableTests extends ContextModelTestCase
 		createTestEntityWithTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		Table table = javaEntity().getTable();
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		Table table = getJavaEntity().getTable();
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		TableAnnotation tableAnnotation = (TableAnnotation) typeResource.getSupportingAnnotation(JPA.TABLE);
 	
 		tableAnnotation.addUniqueConstraint(0).addColumnName("FOO");

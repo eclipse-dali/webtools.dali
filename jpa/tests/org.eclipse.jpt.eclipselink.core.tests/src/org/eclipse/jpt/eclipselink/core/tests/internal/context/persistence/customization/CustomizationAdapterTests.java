@@ -266,7 +266,7 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 		// new
 		ListAspectAdapter<PersistenceUnit, Property> propertiesAdapter = 
 			(ListAspectAdapter<PersistenceUnit, Property>) this.subject.getPropertiesAdapter();
-		GenericProperty ctdProperty = (GenericProperty) this.persistenceUnit().getProperty(THROW_EXCEPTIONS_KEY);
+		GenericProperty ctdProperty = (GenericProperty) this.getPersistenceUnit().getProperty(THROW_EXCEPTIONS_KEY);
 		ListValueModel<Property> propertyListAdapter = this.subject.getPropertyListAdapter();
 		
 		assertTrue(propertiesAdapter.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
@@ -531,8 +531,8 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 	 * Verifies setting custom profiler and literals.
 	 */
 	protected void verifySetProfiler(String elKey, Object testValue1, Object testValue2) throws Exception {
-		Property property = this.persistenceUnit().getProperty(elKey);
-		String propertyName = this.model().propertyIdFor(property);
+		Property property = this.getPersistenceUnit().getProperty(elKey);
+		String propertyName = this.getModel().propertyIdFor(property);
 		// test set custom profiler.
 		this.clearEvent();
 		this.setProperty(propertyName, testValue2);
@@ -541,19 +541,19 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 		// test set (Profiler) null
 		this.clearEvent();
 		this.customization.setProfiler((Profiler) null);
-		assertFalse(this.persistenceUnit().containsProperty(elKey));
+		assertFalse(this.getPersistenceUnit().containsProperty(elKey));
 		this.verifyPutProperty(propertyName, null);
 		
 		// test set enum literal
 		this.clearEvent();
 		this.setProperty(propertyName, testValue1.toString());
-		assertTrue(this.persistenceUnit().containsProperty(elKey));
+		assertTrue(this.getPersistenceUnit().containsProperty(elKey));
 		this.verifyPutProperty(propertyName, this.getEclipseLinkStringValueOf(testValue1));
 
 		// test set (String) null
 		this.clearEvent();
 		this.customization.setProfiler((String) null);
-		assertFalse(this.persistenceUnit().containsProperty(elKey));
+		assertFalse(this.getPersistenceUnit().containsProperty(elKey));
 		this.verifyPutProperty(propertyName, null);
 	}
 
@@ -580,7 +580,7 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 		this.clearEvent();
 		--this.propertiesTotal;
 		--this.modelPropertiesSize;
-		this.persistenceUnit().removeProperty(key, (String) testValue1);
+		this.getPersistenceUnit().removeProperty(key, (String) testValue1);
 		assertFalse(this.customization.sessionCustomizerExists(key));
 		assertEquals(this.modelPropertiesSize, this.modelPropertiesSizeOriginal - 1);
 		assertEquals(this.propertiesTotal, propertyListAdapter.size());
@@ -630,8 +630,8 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 		this.clearEvent();
 		--this.propertiesTotal;
 		--this.modelPropertiesSize;
-		this.persistenceUnit().removeProperty(key);
-		assertFalse(this.persistenceUnit().containsProperty(key));
+		this.getPersistenceUnit().removeProperty(key);
+		assertFalse(this.getPersistenceUnit().containsProperty(key));
 		assertEquals(this.modelPropertiesSize, this.modelPropertiesSizeOriginal - 1);
 		this.verifyPutCustomizationProperty(propertyName, ENTITY_TEST, null);
 		assertEquals(this.propertiesTotal, propertyListAdapter.size());
@@ -754,7 +754,7 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 	}
 
 	@Override
-	protected PersistenceUnitProperties model() {
+	protected PersistenceUnitProperties getModel() {
 		return this.customization;
 	}
 }

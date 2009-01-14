@@ -38,8 +38,8 @@ public class OrmDiscriminatorColumnTests extends ContextModelTestCase
 		super.setUp();
 		XmlMappingFileRef mappingFileRef = PersistenceFactory.eINSTANCE.createXmlMappingFileRef();
 		mappingFileRef.setFileName(JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH);
-		xmlPersistenceUnit().getMappingFiles().add(mappingFileRef);
-		persistenceResource().save(null);
+		getXmlPersistenceUnit().getMappingFiles().add(mappingFileRef);
+		getPersistenceResource().save(null);
 	}
 	
 	private ICompilationUnit createTestEntity() throws Exception {
@@ -78,11 +78,11 @@ public class OrmDiscriminatorColumnTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateSpecifiedName() throws Exception {
-		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
+		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmDiscriminatorColumn ormColumn = ormEntity.getDiscriminatorColumn();
 		
-		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
+		XmlEntity entityResource = getOrmResource().getEntityMappings().getEntities().get(0);
 
 		assertNull(ormColumn.getSpecifiedName());
 		assertNull(entityResource.getDiscriminatorColumn());
@@ -108,11 +108,11 @@ public class OrmDiscriminatorColumnTests extends ContextModelTestCase
 	}
 	
 	public void testModifySpecifiedName() throws Exception {
-		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
+		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmDiscriminatorColumn ormColumn = ormEntity.getDiscriminatorColumn();
 		
-		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
+		XmlEntity entityResource = getOrmResource().getEntityMappings().getEntities().get(0);
 
 		assertNull(ormColumn.getSpecifiedName());
 		assertNull(entityResource.getDiscriminatorColumn());
@@ -185,11 +185,11 @@ public class OrmDiscriminatorColumnTests extends ContextModelTestCase
 //	}
 	
 	public void testUpdateSpecifiedLength() throws Exception {
-		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
+		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmDiscriminatorColumn ormColumn = ormEntity.getDiscriminatorColumn();
 		
-		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
+		XmlEntity entityResource = getOrmResource().getEntityMappings().getEntities().get(0);
 
 		assertNull(ormColumn.getSpecifiedLength());
 		assertNull(entityResource.getDiscriminatorColumn());
@@ -215,11 +215,11 @@ public class OrmDiscriminatorColumnTests extends ContextModelTestCase
 	}
 	
 	public void testModifySpecifiedLength() throws Exception {
-		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
+		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmDiscriminatorColumn ormColumn = ormEntity.getDiscriminatorColumn();
 		
-		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
+		XmlEntity entityResource = getOrmResource().getEntityMappings().getEntities().get(0);
 
 		assertNull(ormColumn.getSpecifiedLength());
 		assertNull(entityResource.getDiscriminatorColumn());
@@ -236,11 +236,11 @@ public class OrmDiscriminatorColumnTests extends ContextModelTestCase
 	}
 
 	public void testUpdateSpecifiedColumnDefinition() throws Exception {
-		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
+		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmDiscriminatorColumn ormColumn = ormEntity.getDiscriminatorColumn();
 		
-		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
+		XmlEntity entityResource = getOrmResource().getEntityMappings().getEntities().get(0);
 
 		assertNull(ormColumn.getColumnDefinition());
 		assertNull(entityResource.getDiscriminatorColumn());
@@ -266,11 +266,11 @@ public class OrmDiscriminatorColumnTests extends ContextModelTestCase
 	}
 	
 	public void testModifySpecifiedColumnDefinition() throws Exception {
-		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
+		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmDiscriminatorColumn ormColumn = ormEntity.getDiscriminatorColumn();
 		
-		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
+		XmlEntity entityResource = getOrmResource().getEntityMappings().getEntities().get(0);
 
 		assertNull(ormColumn.getColumnDefinition());
 		assertNull(entityResource.getDiscriminatorColumn());
@@ -287,11 +287,11 @@ public class OrmDiscriminatorColumnTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateSpecifiedDiscriminatorType() throws Exception {
-		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
+		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmDiscriminatorColumn ormColumn = ormEntity.getDiscriminatorColumn();
 		
-		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
+		XmlEntity entityResource = getOrmResource().getEntityMappings().getEntities().get(0);
 
 		assertNull(ormColumn.getSpecifiedDiscriminatorType());
 		assertNull(entityResource.getDiscriminatorColumn());
@@ -317,11 +317,11 @@ public class OrmDiscriminatorColumnTests extends ContextModelTestCase
 	}
 	
 	public void testModifySpecifiedDiscriminatorType() throws Exception {
-		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
+		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmDiscriminatorColumn ormColumn = ormEntity.getDiscriminatorColumn();
 		
-		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
+		XmlEntity entityResource = getOrmResource().getEntityMappings().getEntities().get(0);
 
 		assertNull(ormColumn.getSpecifiedDiscriminatorType());
 		assertNull(entityResource.getDiscriminatorColumn());

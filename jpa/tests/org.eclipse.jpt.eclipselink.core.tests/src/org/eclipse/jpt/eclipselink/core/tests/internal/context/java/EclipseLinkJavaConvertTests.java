@@ -112,11 +112,11 @@ public class EclipseLinkJavaConvertTests extends EclipseLinkJavaContextModelTest
 		createTestEntityWithBasicMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		attributeResource.addSupportingAnnotation(ConvertAnnotation.ANNOTATION_NAME);
 		
-		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		BasicMapping basicMapping = (BasicMapping) persistentAttribute.getSpecifiedMapping();
 		Convert eclipseLinkConvert = (Convert) basicMapping.getConverter();
 		
@@ -129,7 +129,7 @@ public class EclipseLinkJavaConvertTests extends EclipseLinkJavaContextModelTest
 		createTestEntityWithConvert();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		BasicMapping basicMapping = (BasicMapping) persistentAttribute.getMapping();
 		Convert eclipseLinkConvert = (Convert) basicMapping.getConverter();
 
@@ -140,7 +140,7 @@ public class EclipseLinkJavaConvertTests extends EclipseLinkJavaContextModelTest
 		createTestEntityWithBasicMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		BasicMapping basicMapping = (BasicMapping) persistentAttribute.getSpecifiedMapping();
 		basicMapping.setSpecifiedConverter(Convert.ECLIPSE_LINK_CONVERTER);
 		Convert eclipseLinkConvert = (Convert) basicMapping.getConverter();
@@ -148,7 +148,7 @@ public class EclipseLinkJavaConvertTests extends EclipseLinkJavaContextModelTest
 		
 		eclipseLinkConvert.setSpecifiedConverterName("foo");
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		ConvertAnnotation convertAnnotation = (ConvertAnnotation) attributeResource.getSupportingAnnotation(ConvertAnnotation.ANNOTATION_NAME);
 		
@@ -164,13 +164,13 @@ public class EclipseLinkJavaConvertTests extends EclipseLinkJavaContextModelTest
 		createTestEntityWithBasicMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		BasicMapping basicMapping = (BasicMapping) persistentAttribute.getSpecifiedMapping();
 
 		assertEquals(Converter.NO_CONVERTER, basicMapping.getConverter().getType());
 		
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		ConvertAnnotation convert = (ConvertAnnotation) attributeResource.addSupportingAnnotation(ConvertAnnotation.ANNOTATION_NAME);
 		convert.setValue("foo");
@@ -190,7 +190,7 @@ public class EclipseLinkJavaConvertTests extends EclipseLinkJavaContextModelTest
 		createTestEntityWithConvertAndTypeConverter();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		BasicMapping basicMapping = (BasicMapping) persistentAttribute.getMapping();
 		Convert eclipseLinkConvert = (Convert) basicMapping.getConverter();
 		
@@ -203,7 +203,7 @@ public class EclipseLinkJavaConvertTests extends EclipseLinkJavaContextModelTest
 		createTypeConverterAnnotation();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		BasicMapping basicMapping = (BasicMapping) persistentAttribute.getMapping();
 		Convert eclipseLinkConvert = (Convert) basicMapping.getConverter();
 		
@@ -212,7 +212,7 @@ public class EclipseLinkJavaConvertTests extends EclipseLinkJavaContextModelTest
 		eclipseLinkConvert.setConverter(EclipseLinkConverter.TYPE_CONVERTER);	
 		assertEquals(EclipseLinkConverter.TYPE_CONVERTER, eclipseLinkConvert.getConverter().getType());
 	
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		assertNotNull(attributeResource.getSupportingAnnotation(TypeConverterAnnotation.ANNOTATION_NAME));
 		

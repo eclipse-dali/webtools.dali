@@ -94,8 +94,8 @@ public class SchemaGenerationAdapterTests extends PersistenceUnitTestCase
 
 	public void testHasListeners() throws Exception {
 		ListAspectAdapter<PersistenceUnit, Property> propertiesAdapter = (ListAspectAdapter<PersistenceUnit, Property>) this.subject.getPropertiesAdapter();
-		GenericProperty outputModeProperty = (GenericProperty) this.persistenceUnit().getProperty(OUTPUT_MODE_KEY);
-		GenericProperty ddlGenTypeProperty = (GenericProperty) this.persistenceUnit().getProperty(DDL_GENERATION_TYPE_KEY);
+		GenericProperty outputModeProperty = (GenericProperty) this.getPersistenceUnit().getProperty(OUTPUT_MODE_KEY);
+		GenericProperty ddlGenTypeProperty = (GenericProperty) this.getPersistenceUnit().getProperty(DDL_GENERATION_TYPE_KEY);
 		ListValueModel<Property> propertyListAdapter = this.subject.getPropertyListAdapter();
 
 		assertTrue(propertiesAdapter.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
@@ -260,7 +260,7 @@ public class SchemaGenerationAdapterTests extends PersistenceUnitTestCase
 	}
 
 	@Override
-	protected PersistenceUnitProperties model() {
+	protected PersistenceUnitProperties getModel() {
 		return this.schemaGeneration;
 	}
 }

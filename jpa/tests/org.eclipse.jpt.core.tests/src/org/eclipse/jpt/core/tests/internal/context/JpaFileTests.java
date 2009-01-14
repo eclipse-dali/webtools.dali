@@ -40,8 +40,8 @@ public class JpaFileTests extends ContextModelTestCase
 		super.setUp();
 		XmlMappingFileRef mappingFileRef = PersistenceFactory.eINSTANCE.createXmlMappingFileRef();
 		mappingFileRef.setFileName(JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH);
-		xmlPersistenceUnit().getMappingFiles().add(mappingFileRef);
-		persistenceResource().save(null);
+		getXmlPersistenceUnit().getMappingFiles().add(mappingFileRef);
+		getPersistenceResource().save(null);
 	}
 	
 	private ICompilationUnit createTestEntity() throws Exception {
@@ -58,12 +58,12 @@ public class JpaFileTests extends ContextModelTestCase
 	}
 	
 	public void testGetRootStructureNode() throws Exception {
-		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 
-		IFile file = ormResource().getFile();
+		IFile file = getOrmResource().getFile();
 		JpaFile ormXmlJpaFile = JptCorePlugin.getJpaFile(file);
 		
-		assertEquals(entityMappings(), ormXmlJpaFile.rootStructureNodes().next());
+		assertEquals(getEntityMappings(), ormXmlJpaFile.rootStructureNodes().next());
 		
 		
 		ICompilationUnit cu = createTestEntity();
@@ -77,50 +77,50 @@ public class JpaFileTests extends ContextModelTestCase
 		//persistence.xml <class> tag and mapping file <entity> tag exist for a particulary java class
 		assertEquals(ormPersistentType.getJavaPersistentType(), javaJpaFile.rootStructureNodes().next());
 
-		entityMappings().removeOrmPersistentType(ormPersistentType);
+		getEntityMappings().removeOrmPersistentType(ormPersistentType);
 
-		assertEquals(javaEntity().getPersistentType(), javaJpaFile.rootStructureNodes().next());
+		assertEquals(getJavaEntity().getPersistentType(), javaJpaFile.rootStructureNodes().next());
 
-		ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		assertEquals(ormPersistentType.getJavaPersistentType(), javaJpaFile.rootStructureNodes().next());
 	}
 	
 	public void testEntityMappingsRootStructureNodeRemoved() throws Exception {
-		IFile file = ormResource().getFile();
+		IFile file = getOrmResource().getFile();
 		JpaFile ormXmlJpaFile = JptCorePlugin.getJpaFile(file);
-		assertEquals(entityMappings(), ormXmlJpaFile.rootStructureNodes().next());
+		assertEquals(getEntityMappings(), ormXmlJpaFile.rootStructureNodes().next());
 		
-		((OrmXml) entityMappings().getParent()).removeEntityMappings();
+		((OrmXml) getEntityMappings().getParent()).removeEntityMappings();
 		
 		assertFalse(ormXmlJpaFile.rootStructureNodes().hasNext());
 	}
 
 	public void testImpliedEntityMappingsRootStructureNodeRemoved() throws Exception {
-		IFile file = ormResource().getFile();
+		IFile file = getOrmResource().getFile();
 		JpaFile ormXmlJpaFile = JptCorePlugin.getJpaFile(file);
 		
-		assertNull(persistenceUnit().getImpliedMappingFileRef());
+		assertNull(getPersistenceUnit().getImpliedMappingFileRef());
 
-		xmlPersistenceUnit().getMappingFiles().remove(0);
-		assertNotNull(persistenceUnit().getImpliedMappingFileRef());
-		assertEquals(persistenceUnit().getImpliedMappingFileRef().getMappingFile().getRoot(), ormXmlJpaFile.rootStructureNodes().next());
+		getXmlPersistenceUnit().getMappingFiles().remove(0);
+		assertNotNull(getPersistenceUnit().getImpliedMappingFileRef());
+		assertEquals(getPersistenceUnit().getImpliedMappingFileRef().getMappingFile().getRoot(), ormXmlJpaFile.rootStructureNodes().next());
 				
-		((OrmXml) persistenceUnit().getImpliedMappingFileRef().getMappingFile()).removeEntityMappings();		
+		((OrmXml) getPersistenceUnit().getImpliedMappingFileRef().getMappingFile()).removeEntityMappings();		
 		assertFalse(ormXmlJpaFile.rootStructureNodes().hasNext());
 	}
 	
 	public void testEntityMappingsRootStructureNodeRemovedFromResourceModel() throws Exception {
-		IFile file = ormResource().getFile();
+		IFile file = getOrmResource().getFile();
 		JpaFile ormXmlJpaFile = JptCorePlugin.getJpaFile(file);
-		assertEquals(entityMappings(), ormXmlJpaFile.rootStructureNodes().next());
+		assertEquals(getEntityMappings(), ormXmlJpaFile.rootStructureNodes().next());
 		
-		ormResource().getContents().remove(ormResource().getEntityMappings());
+		getOrmResource().getContents().remove(getOrmResource().getEntityMappings());
 		
 		assertFalse(ormXmlJpaFile.rootStructureNodes().hasNext());
 	}
 
 	public void testUpdatePersistenceRootStructureNodePersistenceRemoved() throws Exception {
-		IFile file = persistenceResource().getFile();
+		IFile file = getPersistenceResource().getFile();
 		JpaFile persistenceXmlJpaFile = JptCorePlugin.getJpaFile(file);
 		assertEquals(getRootContextNode().getPersistenceXml().getPersistence(), persistenceXmlJpaFile.rootStructureNodes().next());
 		
@@ -129,7 +129,7 @@ public class JpaFileTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateOrmJavaRootStructureNodePersistenceRemoved() throws Exception {		
-		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
 		ICompilationUnit cu = createTestEntity();
 		JpaFile javaJpaFile = JptCorePlugin.getJpaFile((IFile) cu.getResource());
@@ -146,25 +146,25 @@ public class JpaFileTests extends ContextModelTestCase
 		
 		JpaFile javaJpaFile = JptCorePlugin.getJpaFile((IFile) cu.getResource());
 		
-		assertEquals(javaPersistentType(), javaJpaFile.rootStructureNodes().next());
+		assertEquals(getJavaPersistentType(), javaJpaFile.rootStructureNodes().next());
 		
 		getRootContextNode().getPersistenceXml().removePersistence();
 		assertFalse(javaJpaFile.rootStructureNodes().hasNext());
 	}
 
 	public void testPersistenceRootStructureNodeRemovedFromResourceModel() throws Exception {
-		IFile file = persistenceResource().getFile();
+		IFile file = getPersistenceResource().getFile();
 		JpaFile persistenceXmlJpaFile = JptCorePlugin.getJpaFile(file);
 		getRootContextNode().getPersistenceXml().getPersistence();
 		assertEquals(getRootContextNode().getPersistenceXml().getPersistence(), persistenceXmlJpaFile.rootStructureNodes().next());
 		
-		persistenceResource().getContents().remove(persistenceResource().getPersistence());
+		getPersistenceResource().getContents().remove(getPersistenceResource().getPersistence());
 		
 		assertFalse(persistenceXmlJpaFile.rootStructureNodes().hasNext());
 	}
 	
 	public void testUpdateOrmJavaRootStructureNodePersistenceXmlRemoved() throws Exception {		
-		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
 		ICompilationUnit cu = createTestEntity();
 		JpaFile javaJpaFile = JptCorePlugin.getJpaFile((IFile) cu.getResource());
@@ -181,14 +181,14 @@ public class JpaFileTests extends ContextModelTestCase
 		
 		JpaFile javaJpaFile = JptCorePlugin.getJpaFile((IFile) cu.getResource());
 		
-		assertEquals(javaPersistentType(), javaJpaFile.rootStructureNodes().next());
+		assertEquals(getJavaPersistentType(), javaJpaFile.rootStructureNodes().next());
 		
 		getRootContextNode().removePersistenceXml();
 		assertFalse(javaJpaFile.rootStructureNodes().hasNext());
 	}
 	
 	public void testOrmJavaPersistentTypeRootStructureNodeRemoved() throws Exception {
-		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
 		ICompilationUnit cu = createTestEntity();
 		JpaFile javaJpaFile = JptCorePlugin.getJpaFile((IFile) cu.getResource());
@@ -197,7 +197,7 @@ public class JpaFileTests extends ContextModelTestCase
 		assertTrue(javaJpaFile.rootStructureNodes().next().getParent() instanceof OrmEntity);
 		
 		
-		entityMappings().removeOrmPersistentType(0);
+		getEntityMappings().removeOrmPersistentType(0);
 		
 		assertEquals(1, javaJpaFile.rootStructureNodesSize());
 		assertTrue(javaJpaFile.rootStructureNodes().next().getParent() instanceof ClassRef);
@@ -205,7 +205,7 @@ public class JpaFileTests extends ContextModelTestCase
 	}
 	
 	public void testOrmJavaPersistentTypeRootStructureNodeRemovedFromResourceModel() throws Exception {
-		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
 		ICompilationUnit cu = createTestEntity();
 		JpaFile javaJpaFile = JptCorePlugin.getJpaFile((IFile) cu.getResource());
@@ -214,7 +214,7 @@ public class JpaFileTests extends ContextModelTestCase
 		assertEquals(javaPersistentType, javaJpaFile.rootStructureNodes().next());
 		assertTrue(javaJpaFile.rootStructureNodes().next().getParent() instanceof OrmEntity);
 		
-		ormResource().getEntityMappings().getEntities().remove(0);
+		getOrmResource().getEntityMappings().getEntities().remove(0);
 		
 		assertEquals(1, javaJpaFile.rootStructureNodesSize());
 		assertTrue(javaJpaFile.rootStructureNodes().next().getParent() instanceof ClassRef);
@@ -226,13 +226,13 @@ public class JpaFileTests extends ContextModelTestCase
 		JpaFile javaJpaFile = JptCorePlugin.getJpaFile((IFile) cu.getResource());
 		
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		JavaPersistentType javaPersistentType = javaPersistentType();
+		JavaPersistentType javaPersistentType = getJavaPersistentType();
 		assertEquals(javaPersistentType, javaJpaFile.rootStructureNodes().next());
-		assertEquals(entityMappings().getPersistenceUnit().specifiedClassRefs().next(), javaJpaFile.rootStructureNodes().next().getParent());
+		assertEquals(getEntityMappings().getPersistenceUnit().specifiedClassRefs().next(), javaJpaFile.rootStructureNodes().next().getParent());
 		
-		entityMappings().getPersistenceUnit().removeSpecifiedClassRef(0);
+		getEntityMappings().getPersistenceUnit().removeSpecifiedClassRef(0);
 		assertNotSame(javaPersistentType, javaJpaFile.rootStructureNodes().next());
-		assertEquals(entityMappings().getPersistenceUnit().impliedClassRefs().next(), javaJpaFile.rootStructureNodes().next().getParent());
+		assertEquals(getEntityMappings().getPersistenceUnit().impliedClassRefs().next(), javaJpaFile.rootStructureNodes().next().getParent());
 	}
 	
 	public void testJavaPersistentTypeRootStructureNodeRemovedFromResourceModel() throws Exception {
@@ -240,24 +240,24 @@ public class JpaFileTests extends ContextModelTestCase
 		JpaFile javaJpaFile = JptCorePlugin.getJpaFile((IFile) cu.getResource());
 		
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		JavaPersistentType javaPersistentType = javaPersistentType();
+		JavaPersistentType javaPersistentType = getJavaPersistentType();
 		Iterator<JpaStructureNode> rootStructureNodes = javaJpaFile.rootStructureNodes();
 		JpaStructureNode rootStructureNode = rootStructureNodes.next();
 		assertEquals(javaPersistentType, rootStructureNode);
-		assertEquals(entityMappings().getPersistenceUnit().specifiedClassRefs().next(), rootStructureNode.getParent());
+		assertEquals(getEntityMappings().getPersistenceUnit().specifiedClassRefs().next(), rootStructureNode.getParent());
 		assertFalse(rootStructureNodes.hasNext());
 		
 		removeXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		assertNotSame(javaPersistentType, javaJpaFile.rootStructureNodes().next());
-		assertEquals(entityMappings().getPersistenceUnit().impliedClassRefs().next(), javaJpaFile.rootStructureNodes().next().getParent());
+		assertEquals(getEntityMappings().getPersistenceUnit().impliedClassRefs().next(), javaJpaFile.rootStructureNodes().next().getParent());
 	}
 
 	public void testImpliedJavaPersistentTypeRootStructureNodeRemoved() throws Exception {
-		jpaProject().setDiscoversAnnotatedClasses(true);
+		getJpaProject().setDiscoversAnnotatedClasses(true);
 		ICompilationUnit cu = createTestEntity();
 		JpaFile javaJpaFile = JptCorePlugin.getJpaFile((IFile) cu.getResource());
 		
-		JavaPersistentType javaPersistentType = persistenceUnit().impliedClassRefs().next().getJavaPersistentType();
+		JavaPersistentType javaPersistentType = getPersistenceUnit().impliedClassRefs().next().getJavaPersistentType();
 		assertEquals(javaPersistentType, javaJpaFile.rootStructureNodes().next());
 		
 		javaPersistentType.setMappingKey(MappingKeys.NULL_TYPE_MAPPING_KEY);
@@ -266,7 +266,7 @@ public class JpaFileTests extends ContextModelTestCase
 	}
 	
 	public void testJavaRootStructureNodesEntityMappingsRemoved() throws Exception {
-		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
 		ICompilationUnit cu = createTestEntity();
 		JpaFile javaJpaFile = JptCorePlugin.getJpaFile((IFile) cu.getResource());
@@ -274,14 +274,14 @@ public class JpaFileTests extends ContextModelTestCase
 		JavaPersistentType javaPersistentType = ormPersistentType.getJavaPersistentType();
 		assertEquals(javaPersistentType, javaJpaFile.rootStructureNodes().next());
 		
-		ormResource().getContents().remove(ormResource().getEntityMappings());
+		getOrmResource().getContents().remove(getOrmResource().getEntityMappings());
 		assertNotSame(javaPersistentType, javaJpaFile.rootStructureNodes().next());
 		assertEquals(1, javaJpaFile.rootStructureNodesSize());
-		assertEquals(persistenceUnit().impliedClassRefs().next(), javaJpaFile.rootStructureNodes().next().getParent());
+		assertEquals(getPersistenceUnit().impliedClassRefs().next(), javaJpaFile.rootStructureNodes().next().getParent());
 	}
 	
 	public void testJavaRootStructureNodesPersistenceUnitRemovedFromResourceModel() throws Exception {
-		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
 		ICompilationUnit cu = createTestEntity();
 		JpaFile javaJpaFile = JptCorePlugin.getJpaFile((IFile) cu.getResource());
@@ -289,14 +289,14 @@ public class JpaFileTests extends ContextModelTestCase
 		JavaPersistentType javaPersistentType = ormPersistentType.getJavaPersistentType();
 		assertEquals(javaPersistentType, javaJpaFile.rootStructureNodes().next());
 		
-		persistenceResource().getPersistence().getPersistenceUnits().remove(0);
+		getPersistenceResource().getPersistence().getPersistenceUnits().remove(0);
 
 		assertFalse(javaJpaFile.rootStructureNodes().hasNext());
 		assertEquals(0, javaJpaFile.rootStructureNodesSize());
 	}
 	
 	public void testJavaRootStructureNodesPersistenceUnitRemoved() throws Exception {
-		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
 		ICompilationUnit cu = createTestEntity();
 		JpaFile javaJpaFile = JptCorePlugin.getJpaFile((IFile) cu.getResource());
@@ -304,14 +304,14 @@ public class JpaFileTests extends ContextModelTestCase
 		JavaPersistentType javaPersistentType = ormPersistentType.getJavaPersistentType();
 		assertEquals(javaPersistentType, javaJpaFile.rootStructureNodes().next());
 		
-		jpaProject().getRootContextNode().getPersistenceXml().getPersistence().removePersistenceUnit(0);
+		getJpaProject().getRootContextNode().getPersistenceXml().getPersistence().removePersistenceUnit(0);
 
 		assertFalse(javaJpaFile.rootStructureNodes().hasNext());
 		assertEquals(0, javaJpaFile.rootStructureNodesSize());
 	}
 
 	public void testJavaRootStructureNodesOrmPersistentTypeRemoved() throws Exception {
-		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
 		ICompilationUnit cu = createTestEntity();
 		JpaFile javaJpaFile = JptCorePlugin.getJpaFile((IFile) cu.getResource());
@@ -319,14 +319,14 @@ public class JpaFileTests extends ContextModelTestCase
 		JavaPersistentType javaPersistentType = ormPersistentType.getJavaPersistentType();
 		assertEquals(javaPersistentType, javaJpaFile.rootStructureNodes().next());
 		
-		entityMappings().removeOrmPersistentType(0);
+		getEntityMappings().removeOrmPersistentType(0);
 		assertNotSame(javaPersistentType, javaJpaFile.rootStructureNodes().next());
 		assertEquals(1, javaJpaFile.rootStructureNodesSize());
-		assertEquals(entityMappings().getPersistenceUnit().impliedClassRefs().next(), javaJpaFile.rootStructureNodes().next().getParent());
+		assertEquals(getEntityMappings().getPersistenceUnit().impliedClassRefs().next(), javaJpaFile.rootStructureNodes().next().getParent());
 	}
 	
 	public void testJavaRootStructureNodesOrmTypeMappingMorphed() throws Exception {
-		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
 		ICompilationUnit cu = createTestEntity();
 		JpaFile javaJpaFile = JptCorePlugin.getJpaFile((IFile) cu.getResource());
@@ -336,30 +336,30 @@ public class JpaFileTests extends ContextModelTestCase
 	
 		ormPersistentType.setMappingKey(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
 		assertEquals(1, javaJpaFile.rootStructureNodesSize());
-		javaPersistentType = entityMappings().ormPersistentTypes().next().getJavaPersistentType();
+		javaPersistentType = getEntityMappings().ormPersistentTypes().next().getJavaPersistentType();
 		assertEquals(javaPersistentType, javaJpaFile.rootStructureNodes().next());
 		
-		entityMappings().removeOrmPersistentType(0);
+		getEntityMappings().removeOrmPersistentType(0);
 		assertNotSame(javaPersistentType, javaJpaFile.rootStructureNodes().next());
 		assertEquals(1, javaJpaFile.rootStructureNodesSize());
-		assertEquals(entityMappings().getPersistenceUnit().impliedClassRefs().next(), javaJpaFile.rootStructureNodes().next().getParent());
+		assertEquals(getEntityMappings().getPersistenceUnit().impliedClassRefs().next(), javaJpaFile.rootStructureNodes().next().getParent());
 	}
 	
 	public void testUpdateOrmJavaRootStructureNodeMappingFileRefChanged() throws Exception {		
-		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
 		ICompilationUnit cu = createTestEntity();
 		JpaFile javaJpaFile = JptCorePlugin.getJpaFile((IFile) cu.getResource());
 		
 		assertEquals(ormPersistentType.getJavaPersistentType(), javaJpaFile.rootStructureNodes().next());
 		
-		MappingFileRef mappingFileRef = persistenceUnit().mappingFileRefs().next();
+		MappingFileRef mappingFileRef = getPersistenceUnit().mappingFileRefs().next();
 		mappingFileRef.setFileName("foo");
 		
-		ormPersistentType = ((EntityMappings) persistenceUnit().getImpliedMappingFileRef().getMappingFile().getMappingFileRoot()).ormPersistentTypes().next();
+		ormPersistentType = ((EntityMappings) getPersistenceUnit().getImpliedMappingFileRef().getMappingFile().getMappingFileRoot()).ormPersistentTypes().next();
 		assertEquals(ormPersistentType.getJavaPersistentType(), javaJpaFile.rootStructureNodes().next());
 		
-		IFile file = persistenceResource().getFile();
+		IFile file = getPersistenceResource().getFile();
 		JpaFile ormXmlJpaFile = JptCorePlugin.getJpaFile(file);		
 		
 		assertEquals(1, ormXmlJpaFile.rootStructureNodesSize());
@@ -371,16 +371,16 @@ public class JpaFileTests extends ContextModelTestCase
 		
 		JpaFile javaJpaFile = JptCorePlugin.getJpaFile((IFile) cu.getResource());
 		
-		assertEquals(javaPersistentType(), javaJpaFile.rootStructureNodes().next());
+		assertEquals(getJavaPersistentType(), javaJpaFile.rootStructureNodes().next());
 		
-		MappingFileRef mappingFileRef = persistenceUnit().mappingFileRefs().next();
+		MappingFileRef mappingFileRef = getPersistenceUnit().mappingFileRefs().next();
 		mappingFileRef.setFileName("foo");
-		assertEquals(javaPersistentType(), javaJpaFile.rootStructureNodes().next());
+		assertEquals(getJavaPersistentType(), javaJpaFile.rootStructureNodes().next());
 	}
 
 	
 	public void testUpdateJavaRootStrucutreNodeDeleteOrmResource() throws Exception {
-		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
 		ICompilationUnit cu = createTestEntity();
 		JpaFile javaJpaFile = JptCorePlugin.getJpaFile((IFile) cu.getResource());
@@ -389,11 +389,11 @@ public class JpaFileTests extends ContextModelTestCase
 		assertEquals(javaPersistentType, javaJpaFile.rootStructureNodes().next());
 
 		
-		deleteResource(ormResource());
+		deleteResource(getOrmResource());
 		
 		assertNotSame(javaPersistentType, javaJpaFile.rootStructureNodes().next());
 		assertEquals(1, javaJpaFile.rootStructureNodesSize());
-		assertEquals(persistenceUnit().impliedClassRefs().next(), javaJpaFile.rootStructureNodes().next().getParent());
+		assertEquals(getPersistenceUnit().impliedClassRefs().next(), javaJpaFile.rootStructureNodes().next().getParent());
 	}
 	
 	//TODO test rootStructureNodes with a static inner class

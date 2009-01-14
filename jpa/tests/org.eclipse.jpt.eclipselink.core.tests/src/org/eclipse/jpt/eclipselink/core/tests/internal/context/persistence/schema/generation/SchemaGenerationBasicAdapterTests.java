@@ -83,8 +83,8 @@ public class SchemaGenerationBasicAdapterTests extends PersistenceUnitTestCase
 		ListAspectAdapter<PersistenceUnit, Property> propertiesAdapter = 
 			(ListAspectAdapter<PersistenceUnit, Property>) this.buildPropertiesAdapter(this.subjectHolder);
 		assertFalse(propertiesAdapter.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
-		GenericProperty outputModeProperty = (GenericProperty) this.persistenceUnit().getProperty(outputModeKey);
-		GenericProperty ddlGenTypeProperty = (GenericProperty) this.persistenceUnit().getProperty(ddlGenTypeKey);
+		GenericProperty outputModeProperty = (GenericProperty) this.getPersistenceUnit().getProperty(outputModeKey);
+		GenericProperty ddlGenTypeProperty = (GenericProperty) this.getPersistenceUnit().getProperty(ddlGenTypeKey);
 		assertTrue(outputModeProperty.hasAnyPropertyChangeListeners(Property.VALUE_PROPERTY));
 		
 		ListValueModel<Property> propertyListAdapter = 
@@ -126,7 +126,7 @@ public class SchemaGenerationBasicAdapterTests extends PersistenceUnitTestCase
 		
 		// Basic
 		assertEquals(this.propertiesTotal, propertyListAdapter.size());
-		assertTrue(schemaGeneration.itemIsProperty(this.persistenceUnit().getProperty(outputModeKey)));
+		assertTrue(schemaGeneration.itemIsProperty(this.getPersistenceUnit().getProperty(outputModeKey)));
 		assertEquals(OUTPUT_MODE_TEST_VALUE, this.schemaGeneration.getOutputMode());
 		
 		// Replace
@@ -137,8 +137,8 @@ public class SchemaGenerationBasicAdapterTests extends PersistenceUnitTestCase
 		this.clearEvent();
 		--this.propertiesTotal;
 		--this.modelPropertiesSize;
-		this.persistenceUnit().removeProperty(outputModeKey);
-		assertFalse(this.persistenceUnit().containsProperty(outputModeKey));
+		this.getPersistenceUnit().removeProperty(outputModeKey);
+		assertFalse(this.getPersistenceUnit().containsProperty(outputModeKey));
 		assertEquals(this.propertiesTotal, propertyListAdapter.size());
 		assertEquals(this.modelPropertiesSize, this.modelPropertiesSizeOriginal - 1);
 		assertNotNull(this.propertyChangedEvent);
@@ -162,7 +162,7 @@ public class SchemaGenerationBasicAdapterTests extends PersistenceUnitTestCase
 
 	// ****** convenience methods *******
 	@Override
-	protected PersistenceUnitProperties model() {
+	protected PersistenceUnitProperties getModel() {
 		return this.schemaGeneration;
 	}
 

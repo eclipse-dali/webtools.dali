@@ -32,16 +32,16 @@ public class OrmQueryHintTests extends ContextModelTestCase
 		super.setUp();
 		XmlMappingFileRef mappingFileRef = PersistenceFactory.eINSTANCE.createXmlMappingFileRef();
 		mappingFileRef.setFileName(JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH);
-		xmlPersistenceUnit().getMappingFiles().add(mappingFileRef);
-		persistenceResource().save(null);
+		getXmlPersistenceUnit().getMappingFiles().add(mappingFileRef);
+		getPersistenceResource().save(null);
 	}
 
 	public void testUpdateName() throws Exception {
-		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmQueryHint ormQueryHint = ormEntity.addNamedQuery(0).addHint(0);
 		
-		XmlQueryHint queryHintResource = ormResource().getEntityMappings().getEntities().get(0).getNamedQueries().get(0).getHints().get(0);
+		XmlQueryHint queryHintResource = getOrmResource().getEntityMappings().getEntities().get(0).getNamedQueries().get(0).getHints().get(0);
 		
 		assertNull(ormQueryHint.getName());
 		assertNull(queryHintResource.getName());
@@ -58,11 +58,11 @@ public class OrmQueryHintTests extends ContextModelTestCase
 	}
 	
 	public void testModifyName() throws Exception {
-		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmQueryHint ormQueryHint = ormEntity.addNamedQuery(0).addHint(0);
 		
-		XmlQueryHint queryHintResource = ormResource().getEntityMappings().getEntities().get(0).getNamedQueries().get(0).getHints().get(0);
+		XmlQueryHint queryHintResource = getOrmResource().getEntityMappings().getEntities().get(0).getNamedQueries().get(0).getHints().get(0);
 		
 		assertNull(ormQueryHint.getName());
 		assertNull(queryHintResource.getName());
@@ -79,11 +79,11 @@ public class OrmQueryHintTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateValue() throws Exception {
-		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmQueryHint ormQueryHint = ormEntity.addNamedQuery(0).addHint(0);
 		
-		XmlQueryHint queryHintResource = ormResource().getEntityMappings().getEntities().get(0).getNamedQueries().get(0).getHints().get(0);
+		XmlQueryHint queryHintResource = getOrmResource().getEntityMappings().getEntities().get(0).getNamedQueries().get(0).getHints().get(0);
 		
 		assertNull(ormQueryHint.getValue());
 		assertNull(queryHintResource.getValue());
@@ -100,11 +100,11 @@ public class OrmQueryHintTests extends ContextModelTestCase
 	}
 	
 	public void testModifyValue() throws Exception {
-		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmQueryHint ormQueryHint = ormEntity.addNamedQuery(0).addHint(0);
 		
-		XmlQueryHint queryHintResource = ormResource().getEntityMappings().getEntities().get(0).getNamedQueries().get(0).getHints().get(0);
+		XmlQueryHint queryHintResource = getOrmResource().getEntityMappings().getEntities().get(0).getNamedQueries().get(0).getHints().get(0);
 		
 		assertNull(ormQueryHint.getValue());
 		assertNull(queryHintResource.getValue());

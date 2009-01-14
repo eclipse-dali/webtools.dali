@@ -88,7 +88,7 @@ public class JpaPlatformTests extends ContextModelTestCase
 
 	
 	protected JpaPlatform jpaPlatform() {
-		return this.jpaProject().getJpaPlatform();
+		return this.getJpaProject().getJpaPlatform();
 	}
 
 	public void testJpaFactory() {
@@ -99,10 +99,10 @@ public class JpaPlatformTests extends ContextModelTestCase
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		JavaTypeMapping javaTypeMapping = jpaProject().getJpaPlatform().buildJavaTypeMappingFromMappingKey(JavaTestTypeMapping.TEST_TYPE_MAPPING_KEY, javaPersistentType());
+		JavaTypeMapping javaTypeMapping = getJpaProject().getJpaPlatform().buildJavaTypeMappingFromMappingKey(JavaTestTypeMapping.TEST_TYPE_MAPPING_KEY, getJavaPersistentType());
 		assertTrue(javaTypeMapping instanceof JavaTestTypeMapping);
 		
-		javaTypeMapping = jpaPlatform().buildJavaTypeMappingFromMappingKey(MappingKeys.ENTITY_TYPE_MAPPING_KEY, javaPersistentType());
+		javaTypeMapping = jpaPlatform().buildJavaTypeMappingFromMappingKey(MappingKeys.ENTITY_TYPE_MAPPING_KEY, getJavaPersistentType());
 		assertTrue(javaTypeMapping instanceof TestJavaEntity);	
 	}
 	
@@ -110,10 +110,10 @@ public class JpaPlatformTests extends ContextModelTestCase
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		JavaAttributeMapping javaAttributeMapping = jpaProject().getJpaPlatform().buildJavaAttributeMappingFromMappingKey(JavaTestAttributeMapping.TEST_ATTRIBUTE_MAPPING_KEY, javaPersistentType().getAttributeNamed("name"));	
+		JavaAttributeMapping javaAttributeMapping = getJpaProject().getJpaPlatform().buildJavaAttributeMappingFromMappingKey(JavaTestAttributeMapping.TEST_ATTRIBUTE_MAPPING_KEY, getJavaPersistentType().getAttributeNamed("name"));	
 		assertTrue(javaAttributeMapping instanceof JavaTestAttributeMapping);
 		
-		javaAttributeMapping = jpaPlatform().buildJavaAttributeMappingFromMappingKey(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, javaPersistentType().getAttributeNamed("name"));
+		javaAttributeMapping = jpaPlatform().buildJavaAttributeMappingFromMappingKey(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, getJavaPersistentType().getAttributeNamed("name"));
 		assertTrue(javaAttributeMapping instanceof TestJavaBasicMapping);
 	}
 	

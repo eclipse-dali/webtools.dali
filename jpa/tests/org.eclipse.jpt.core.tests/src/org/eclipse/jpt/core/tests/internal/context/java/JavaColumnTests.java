@@ -107,7 +107,7 @@ public class JavaColumnTests extends ContextModelTestCase
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		BasicMapping basicMapping = (BasicMapping) javaPersistentType().attributes().next().getMapping();
+		BasicMapping basicMapping = (BasicMapping) getJavaPersistentType().attributes().next().getMapping();
 		
 		assertNull(basicMapping.getColumn().getSpecifiedName());
 	}
@@ -116,7 +116,7 @@ public class JavaColumnTests extends ContextModelTestCase
 		createTestEntityWithDefaultBasicColumn();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		BasicMapping basicMapping = (BasicMapping) javaPersistentType().attributes().next().getMapping();
+		BasicMapping basicMapping = (BasicMapping) getJavaPersistentType().attributes().next().getMapping();
 
 		assertEquals(COLUMN_NAME, basicMapping.getColumn().getSpecifiedName());
 	}
@@ -124,7 +124,7 @@ public class JavaColumnTests extends ContextModelTestCase
 	public void testGetDefaultNameSpecifiedNameNull() throws Exception {
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		BasicMapping basicMapping = (BasicMapping) javaPersistentType().attributes().next().getMapping();
+		BasicMapping basicMapping = (BasicMapping) getJavaPersistentType().attributes().next().getMapping();
 		
 		assertEquals(basicMapping.getPersistentAttribute().getName(), basicMapping.getColumn().getDefaultName());
 		assertEquals("id", basicMapping.getColumn().getDefaultName());
@@ -134,7 +134,7 @@ public class JavaColumnTests extends ContextModelTestCase
 		createTestEntityWithDefaultBasicColumn();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		BasicMapping basicMapping = (BasicMapping) javaPersistentType().attributes().next().getMapping();
+		BasicMapping basicMapping = (BasicMapping) getJavaPersistentType().attributes().next().getMapping();
 		assertEquals("id", basicMapping.getColumn().getDefaultName());
 		
 		basicMapping.getColumn().setSpecifiedName("foo");
@@ -144,7 +144,7 @@ public class JavaColumnTests extends ContextModelTestCase
 	public void testGetNameSpecifiedNameNull() throws Exception {
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		BasicMapping basicMapping = (BasicMapping) javaPersistentType().attributes().next().getMapping();
+		BasicMapping basicMapping = (BasicMapping) getJavaPersistentType().attributes().next().getMapping();
 		
 		assertEquals("id", basicMapping.getColumn().getName());
 	}
@@ -152,7 +152,7 @@ public class JavaColumnTests extends ContextModelTestCase
 	public void testGetName() throws Exception {
 		createTestEntityWithDefaultBasicColumn();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		BasicMapping basicMapping = (BasicMapping) javaPersistentType().attributes().next().getMapping();
+		BasicMapping basicMapping = (BasicMapping) getJavaPersistentType().attributes().next().getMapping();
 	
 		assertEquals(COLUMN_NAME, basicMapping.getColumn().getName());
 	}
@@ -160,13 +160,13 @@ public class JavaColumnTests extends ContextModelTestCase
 	public void testSetSpecifiedName() throws Exception {
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		BasicMapping basicMapping = (BasicMapping) javaPersistentType().attributes().next().getMapping();
+		BasicMapping basicMapping = (BasicMapping) getJavaPersistentType().attributes().next().getMapping();
 
 		basicMapping.getColumn().setSpecifiedName("foo");
 		
 		assertEquals("foo", basicMapping.getColumn().getSpecifiedName());
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		ColumnAnnotation column = (ColumnAnnotation) attributeResource.getSupportingAnnotation(JPA.COLUMN);
 		
@@ -177,13 +177,13 @@ public class JavaColumnTests extends ContextModelTestCase
 		createTestEntityWithDefaultBasicColumn();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		BasicMapping basicMapping = (BasicMapping) javaPersistentType().attributes().next().getMapping();
+		BasicMapping basicMapping = (BasicMapping) getJavaPersistentType().attributes().next().getMapping();
 
 		basicMapping.getColumn().setSpecifiedName(null);
 		
 		assertNull(basicMapping.getColumn().getSpecifiedName());
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		assertNull(attributeResource.getSupportingAnnotation(JPA.COLUMN));
 	}
@@ -191,11 +191,11 @@ public class JavaColumnTests extends ContextModelTestCase
 	public void testGetNameUpdatesFromResourceChange() throws Exception {
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		BasicMapping basicMapping = (BasicMapping) javaPersistentType().attributes().next().getMapping();
+		BasicMapping basicMapping = (BasicMapping) getJavaPersistentType().attributes().next().getMapping();
 
 		assertNull(basicMapping.getColumn().getSpecifiedName());
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		ColumnAnnotation column = (ColumnAnnotation) attributeResource.addSupportingAnnotation(JPA.COLUMN);
 
@@ -223,7 +223,7 @@ public class JavaColumnTests extends ContextModelTestCase
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		BasicMapping basicMapping = (BasicMapping) javaPersistentType().attributes().next().getMapping();
+		BasicMapping basicMapping = (BasicMapping) getJavaPersistentType().attributes().next().getMapping();
 		
 		assertNull(basicMapping.getColumn().getSpecifiedTable());
 	}
@@ -232,7 +232,7 @@ public class JavaColumnTests extends ContextModelTestCase
 		createTestEntityWithBasicColumnTableSet();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		BasicMapping basicMapping = (BasicMapping) javaPersistentType().attributes().next().getMapping();
+		BasicMapping basicMapping = (BasicMapping) getJavaPersistentType().attributes().next().getMapping();
 
 		assertEquals(TABLE_NAME, basicMapping.getColumn().getSpecifiedTable());
 	}
@@ -240,7 +240,7 @@ public class JavaColumnTests extends ContextModelTestCase
 	public void testGetDefaultTableSpecifiedTableNull() throws Exception {
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		BasicMapping basicMapping = (BasicMapping) javaPersistentType().attributes().next().getMapping();
+		BasicMapping basicMapping = (BasicMapping) getJavaPersistentType().attributes().next().getMapping();
 		
 		assertEquals(((Entity) basicMapping.getTypeMapping()).getName(), basicMapping.getColumn().getDefaultTable());
 		assertEquals(TYPE_NAME, basicMapping.getColumn().getDefaultTable());
@@ -250,7 +250,7 @@ public class JavaColumnTests extends ContextModelTestCase
 		createTestEntityWithDefaultBasicColumn();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		BasicMapping basicMapping = (BasicMapping) javaPersistentType().attributes().next().getMapping();
+		BasicMapping basicMapping = (BasicMapping) getJavaPersistentType().attributes().next().getMapping();
 		assertEquals(TYPE_NAME, basicMapping.getColumn().getDefaultTable());
 		
 		basicMapping.getColumn().setSpecifiedTable("foo");
@@ -260,7 +260,7 @@ public class JavaColumnTests extends ContextModelTestCase
 	public void testGetTable() throws Exception {
 		createTestEntityWithBasicColumnTableSet();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		BasicMapping basicMapping = (BasicMapping) javaPersistentType().attributes().next().getMapping();
+		BasicMapping basicMapping = (BasicMapping) getJavaPersistentType().attributes().next().getMapping();
 	
 		assertEquals(TABLE_NAME, basicMapping.getColumn().getTable());
 	}
@@ -268,13 +268,13 @@ public class JavaColumnTests extends ContextModelTestCase
 	public void testSetSpecifiedTable() throws Exception {
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		BasicMapping basicMapping = (BasicMapping) javaPersistentType().attributes().next().getMapping();
+		BasicMapping basicMapping = (BasicMapping) getJavaPersistentType().attributes().next().getMapping();
 
 		basicMapping.getColumn().setSpecifiedTable("foo");
 		
 		assertEquals("foo", basicMapping.getColumn().getSpecifiedTable());
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		ColumnAnnotation column = (ColumnAnnotation) attributeResource.getSupportingAnnotation(JPA.COLUMN);
 		
@@ -285,13 +285,13 @@ public class JavaColumnTests extends ContextModelTestCase
 		createTestEntityWithBasicColumnTableSet();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		BasicMapping basicMapping = (BasicMapping) javaPersistentType().attributes().next().getMapping();
+		BasicMapping basicMapping = (BasicMapping) getJavaPersistentType().attributes().next().getMapping();
 
 		basicMapping.getColumn().setSpecifiedTable(null);
 		
 		assertNull(basicMapping.getColumn().getSpecifiedTable());
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		assertNull(attributeResource.getSupportingAnnotation(JPA.COLUMN));
 	}
@@ -299,11 +299,11 @@ public class JavaColumnTests extends ContextModelTestCase
 	public void testGetTableUpdatesFromResourceChange() throws Exception {
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		BasicMapping basicMapping = (BasicMapping) javaPersistentType().attributes().next().getMapping();
+		BasicMapping basicMapping = (BasicMapping) getJavaPersistentType().attributes().next().getMapping();
 
 		assertNull(basicMapping.getColumn().getSpecifiedTable());
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		ColumnAnnotation column = (ColumnAnnotation) attributeResource.addSupportingAnnotation(JPA.COLUMN);
 
@@ -318,7 +318,7 @@ public class JavaColumnTests extends ContextModelTestCase
 	public void testGetColumnDefinition() throws Exception {
 		createTestEntityWithBasicColumnColumnDefinitionSet();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		BasicMapping basicMapping = (BasicMapping) javaPersistentType().attributes().next().getMapping();
+		BasicMapping basicMapping = (BasicMapping) getJavaPersistentType().attributes().next().getMapping();
 		
 		assertEquals(COLUMN_DEFINITION, basicMapping.getColumn().getColumnDefinition());
 	}
@@ -326,11 +326,11 @@ public class JavaColumnTests extends ContextModelTestCase
 	public void testSetColumnDefinition() throws Exception {
 		createTestEntityWithBasicColumnTableSet();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		BasicMapping basicMapping = (BasicMapping) javaPersistentType().attributes().next().getMapping();
+		BasicMapping basicMapping = (BasicMapping) getJavaPersistentType().attributes().next().getMapping();
 		
 		basicMapping.getColumn().setColumnDefinition("foo");
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		ColumnAnnotation column = (ColumnAnnotation) attributeResource.getSupportingAnnotation(JPA.COLUMN);
 		
@@ -343,11 +343,11 @@ public class JavaColumnTests extends ContextModelTestCase
 	public void testGetColumnDefinitionUpdatesFromResourceChange() throws Exception {
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		BasicMapping basicMapping = (BasicMapping) javaPersistentType().attributes().next().getMapping();
+		BasicMapping basicMapping = (BasicMapping) getJavaPersistentType().attributes().next().getMapping();
 
 		assertNull(basicMapping.getColumn().getColumnDefinition());
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		ColumnAnnotation column = (ColumnAnnotation) attributeResource.addSupportingAnnotation(JPA.COLUMN);
 
@@ -362,7 +362,7 @@ public class JavaColumnTests extends ContextModelTestCase
 	public void testGetLength() throws Exception {
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		BasicMapping basicMapping = (BasicMapping) javaPersistentType().attributes().next().getMapping();
+		BasicMapping basicMapping = (BasicMapping) getJavaPersistentType().attributes().next().getMapping();
 
 		assertEquals(Column.DEFAULT_LENGTH, basicMapping.getColumn().getLength());
 		basicMapping.getColumn().setSpecifiedLength(Integer.valueOf(55));
@@ -373,7 +373,7 @@ public class JavaColumnTests extends ContextModelTestCase
 		createTestEntityWithBasicColumnColumnDefinitionSet();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		BasicMapping basicMapping = (BasicMapping) javaPersistentType().attributes().next().getMapping();
+		BasicMapping basicMapping = (BasicMapping) getJavaPersistentType().attributes().next().getMapping();
 
 		assertEquals(Column.DEFAULT_LENGTH, basicMapping.getColumn().getDefaultLength());
 		basicMapping.getColumn().setSpecifiedLength(Integer.valueOf(55));
@@ -385,11 +385,11 @@ public class JavaColumnTests extends ContextModelTestCase
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		BasicMapping basicMapping = (BasicMapping) javaPersistentType().attributes().next().getMapping();
+		BasicMapping basicMapping = (BasicMapping) getJavaPersistentType().attributes().next().getMapping();
 		
 		assertNull(basicMapping.getColumn().getSpecifiedLength());
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		ColumnAnnotation column = (ColumnAnnotation) attributeResource.addSupportingAnnotation(JPA.COLUMN);
 		column.setLength(Integer.valueOf(66));
@@ -407,13 +407,13 @@ public class JavaColumnTests extends ContextModelTestCase
 		createTestEntityWithBasicColumnColumnDefinitionSet();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		BasicMapping basicMapping = (BasicMapping) javaPersistentType().attributes().next().getMapping();
+		BasicMapping basicMapping = (BasicMapping) getJavaPersistentType().attributes().next().getMapping();
 		
 		assertNull(basicMapping.getColumn().getSpecifiedLength());
 		
 		basicMapping.getColumn().setSpecifiedLength(Integer.valueOf(100));
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		ColumnAnnotation column = (ColumnAnnotation) attributeResource.getSupportingAnnotation(JPA.COLUMN);
 		
@@ -427,7 +427,7 @@ public class JavaColumnTests extends ContextModelTestCase
 	public void testGetPrecision() throws Exception {
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		BasicMapping basicMapping = (BasicMapping) javaPersistentType().attributes().next().getMapping();
+		BasicMapping basicMapping = (BasicMapping) getJavaPersistentType().attributes().next().getMapping();
 
 		assertEquals(Column.DEFAULT_PRECISION, basicMapping.getColumn().getPrecision());
 		basicMapping.getColumn().setSpecifiedPrecision(Integer.valueOf(55));
@@ -438,7 +438,7 @@ public class JavaColumnTests extends ContextModelTestCase
 		createTestEntityWithBasicColumnColumnDefinitionSet();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		BasicMapping basicMapping = (BasicMapping) javaPersistentType().attributes().next().getMapping();
+		BasicMapping basicMapping = (BasicMapping) getJavaPersistentType().attributes().next().getMapping();
 
 		assertEquals(Column.DEFAULT_PRECISION, basicMapping.getColumn().getDefaultPrecision());
 		basicMapping.getColumn().setSpecifiedPrecision(Integer.valueOf(55));
@@ -450,11 +450,11 @@ public class JavaColumnTests extends ContextModelTestCase
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		BasicMapping basicMapping = (BasicMapping) javaPersistentType().attributes().next().getMapping();
+		BasicMapping basicMapping = (BasicMapping) getJavaPersistentType().attributes().next().getMapping();
 		
 		assertNull(basicMapping.getColumn().getSpecifiedPrecision());
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		ColumnAnnotation column = (ColumnAnnotation) attributeResource.addSupportingAnnotation(JPA.COLUMN);
 		column.setPrecision(Integer.valueOf(66));
@@ -472,13 +472,13 @@ public class JavaColumnTests extends ContextModelTestCase
 		createTestEntityWithBasicColumnColumnDefinitionSet();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		BasicMapping basicMapping = (BasicMapping) javaPersistentType().attributes().next().getMapping();
+		BasicMapping basicMapping = (BasicMapping) getJavaPersistentType().attributes().next().getMapping();
 		
 		assertNull(basicMapping.getColumn().getSpecifiedPrecision());
 		
 		basicMapping.getColumn().setSpecifiedPrecision(Integer.valueOf(100));
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		ColumnAnnotation column = (ColumnAnnotation) attributeResource.getSupportingAnnotation(JPA.COLUMN);
 		
@@ -492,7 +492,7 @@ public class JavaColumnTests extends ContextModelTestCase
 	public void testGetScale() throws Exception {
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		BasicMapping basicMapping = (BasicMapping) javaPersistentType().attributes().next().getMapping();
+		BasicMapping basicMapping = (BasicMapping) getJavaPersistentType().attributes().next().getMapping();
 
 		assertEquals(Column.DEFAULT_SCALE, basicMapping.getColumn().getScale());
 		basicMapping.getColumn().setSpecifiedScale(Integer.valueOf(55));
@@ -503,7 +503,7 @@ public class JavaColumnTests extends ContextModelTestCase
 		createTestEntityWithBasicColumnColumnDefinitionSet();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		BasicMapping basicMapping = (BasicMapping) javaPersistentType().attributes().next().getMapping();
+		BasicMapping basicMapping = (BasicMapping) getJavaPersistentType().attributes().next().getMapping();
 
 		assertEquals(Column.DEFAULT_SCALE, basicMapping.getColumn().getDefaultScale());
 		basicMapping.getColumn().setSpecifiedScale(Integer.valueOf(55));
@@ -515,11 +515,11 @@ public class JavaColumnTests extends ContextModelTestCase
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		BasicMapping basicMapping = (BasicMapping) javaPersistentType().attributes().next().getMapping();
+		BasicMapping basicMapping = (BasicMapping) getJavaPersistentType().attributes().next().getMapping();
 		
 		assertNull(basicMapping.getColumn().getSpecifiedScale());
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		ColumnAnnotation column = (ColumnAnnotation) attributeResource.addSupportingAnnotation(JPA.COLUMN);
 		column.setScale(Integer.valueOf(66));
@@ -537,13 +537,13 @@ public class JavaColumnTests extends ContextModelTestCase
 		createTestEntityWithBasicColumnColumnDefinitionSet();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		BasicMapping basicMapping = (BasicMapping) javaPersistentType().attributes().next().getMapping();
+		BasicMapping basicMapping = (BasicMapping) getJavaPersistentType().attributes().next().getMapping();
 		
 		assertNull(basicMapping.getColumn().getSpecifiedScale());
 		
 		basicMapping.getColumn().setSpecifiedScale(Integer.valueOf(100));
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		ColumnAnnotation column = (ColumnAnnotation) attributeResource.getSupportingAnnotation(JPA.COLUMN);
 		
@@ -557,7 +557,7 @@ public class JavaColumnTests extends ContextModelTestCase
 	public void testGetUnique() throws Exception {
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		BasicMapping basicMapping = (BasicMapping) javaPersistentType().attributes().next().getMapping();
+		BasicMapping basicMapping = (BasicMapping) getJavaPersistentType().attributes().next().getMapping();
 
 		assertEquals(BaseColumn.DEFAULT_UNIQUE, basicMapping.getColumn().isUnique());
 		basicMapping.getColumn().setSpecifiedUnique(Boolean.TRUE);
@@ -568,7 +568,7 @@ public class JavaColumnTests extends ContextModelTestCase
 		createTestEntityWithBasicColumnColumnDefinitionSet();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		BasicMapping basicMapping = (BasicMapping) javaPersistentType().attributes().next().getMapping();
+		BasicMapping basicMapping = (BasicMapping) getJavaPersistentType().attributes().next().getMapping();
 
 		assertEquals(BaseColumn.DEFAULT_UNIQUE, basicMapping.getColumn().isDefaultUnique());
 		basicMapping.getColumn().setSpecifiedUnique(Boolean.TRUE);
@@ -580,11 +580,11 @@ public class JavaColumnTests extends ContextModelTestCase
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		BasicMapping basicMapping = (BasicMapping) javaPersistentType().attributes().next().getMapping();
+		BasicMapping basicMapping = (BasicMapping) getJavaPersistentType().attributes().next().getMapping();
 		
 		assertNull(basicMapping.getColumn().getSpecifiedUnique());
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		ColumnAnnotation column = (ColumnAnnotation) attributeResource.addSupportingAnnotation(JPA.COLUMN);
 		column.setUnique(Boolean.TRUE);
@@ -602,13 +602,13 @@ public class JavaColumnTests extends ContextModelTestCase
 		createTestEntityWithBasicColumnColumnDefinitionSet();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		BasicMapping basicMapping = (BasicMapping) javaPersistentType().attributes().next().getMapping();
+		BasicMapping basicMapping = (BasicMapping) getJavaPersistentType().attributes().next().getMapping();
 		
 		assertNull(basicMapping.getColumn().getSpecifiedUnique());
 		
 		basicMapping.getColumn().setSpecifiedUnique(Boolean.FALSE);
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		ColumnAnnotation column = (ColumnAnnotation) attributeResource.getSupportingAnnotation(JPA.COLUMN);
 		
@@ -622,7 +622,7 @@ public class JavaColumnTests extends ContextModelTestCase
 	public void testGetInsertable() throws Exception {
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		BasicMapping basicMapping = (BasicMapping) javaPersistentType().attributes().next().getMapping();
+		BasicMapping basicMapping = (BasicMapping) getJavaPersistentType().attributes().next().getMapping();
 
 		assertEquals(BaseColumn.DEFAULT_INSERTABLE, basicMapping.getColumn().isInsertable());
 		basicMapping.getColumn().setSpecifiedInsertable(Boolean.TRUE);
@@ -633,7 +633,7 @@ public class JavaColumnTests extends ContextModelTestCase
 		createTestEntityWithBasicColumnColumnDefinitionSet();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		BasicMapping basicMapping = (BasicMapping) javaPersistentType().attributes().next().getMapping();
+		BasicMapping basicMapping = (BasicMapping) getJavaPersistentType().attributes().next().getMapping();
 
 		assertEquals(BaseColumn.DEFAULT_INSERTABLE, basicMapping.getColumn().isDefaultInsertable());
 		basicMapping.getColumn().setSpecifiedInsertable(Boolean.TRUE);
@@ -645,11 +645,11 @@ public class JavaColumnTests extends ContextModelTestCase
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		BasicMapping basicMapping = (BasicMapping) javaPersistentType().attributes().next().getMapping();
+		BasicMapping basicMapping = (BasicMapping) getJavaPersistentType().attributes().next().getMapping();
 		
 		assertNull(basicMapping.getColumn().getSpecifiedInsertable());
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		ColumnAnnotation column = (ColumnAnnotation) attributeResource.addSupportingAnnotation(JPA.COLUMN);
 		column.setInsertable(Boolean.TRUE);
@@ -667,13 +667,13 @@ public class JavaColumnTests extends ContextModelTestCase
 		createTestEntityWithBasicColumnColumnDefinitionSet();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		BasicMapping basicMapping = (BasicMapping) javaPersistentType().attributes().next().getMapping();
+		BasicMapping basicMapping = (BasicMapping) getJavaPersistentType().attributes().next().getMapping();
 		
 		assertNull(basicMapping.getColumn().getSpecifiedInsertable());
 		
 		basicMapping.getColumn().setSpecifiedInsertable(Boolean.FALSE);
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		ColumnAnnotation column = (ColumnAnnotation) attributeResource.getSupportingAnnotation(JPA.COLUMN);
 		
@@ -687,7 +687,7 @@ public class JavaColumnTests extends ContextModelTestCase
 	public void testGetNullable() throws Exception {
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		BasicMapping basicMapping = (BasicMapping) javaPersistentType().attributes().next().getMapping();
+		BasicMapping basicMapping = (BasicMapping) getJavaPersistentType().attributes().next().getMapping();
 
 		assertEquals(BaseColumn.DEFAULT_NULLABLE, basicMapping.getColumn().isNullable());
 		basicMapping.getColumn().setSpecifiedNullable(Boolean.TRUE);
@@ -698,7 +698,7 @@ public class JavaColumnTests extends ContextModelTestCase
 		createTestEntityWithBasicColumnColumnDefinitionSet();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		BasicMapping basicMapping = (BasicMapping) javaPersistentType().attributes().next().getMapping();
+		BasicMapping basicMapping = (BasicMapping) getJavaPersistentType().attributes().next().getMapping();
 
 		assertEquals(BaseColumn.DEFAULT_NULLABLE, basicMapping.getColumn().isDefaultNullable());
 		basicMapping.getColumn().setSpecifiedNullable(Boolean.TRUE);
@@ -710,11 +710,11 @@ public class JavaColumnTests extends ContextModelTestCase
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		BasicMapping basicMapping = (BasicMapping) javaPersistentType().attributes().next().getMapping();
+		BasicMapping basicMapping = (BasicMapping) getJavaPersistentType().attributes().next().getMapping();
 		
 		assertNull(basicMapping.getColumn().getSpecifiedNullable());
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		ColumnAnnotation column = (ColumnAnnotation) attributeResource.addSupportingAnnotation(JPA.COLUMN);
 		column.setNullable(Boolean.TRUE);
@@ -732,13 +732,13 @@ public class JavaColumnTests extends ContextModelTestCase
 		createTestEntityWithBasicColumnColumnDefinitionSet();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		BasicMapping basicMapping = (BasicMapping) javaPersistentType().attributes().next().getMapping();
+		BasicMapping basicMapping = (BasicMapping) getJavaPersistentType().attributes().next().getMapping();
 		
 		assertNull(basicMapping.getColumn().getSpecifiedNullable());
 		
 		basicMapping.getColumn().setSpecifiedNullable(Boolean.FALSE);
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		ColumnAnnotation column = (ColumnAnnotation) attributeResource.getSupportingAnnotation(JPA.COLUMN);
 		
@@ -752,7 +752,7 @@ public class JavaColumnTests extends ContextModelTestCase
 	public void testGetUpdatable() throws Exception {
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		BasicMapping basicMapping = (BasicMapping) javaPersistentType().attributes().next().getMapping();
+		BasicMapping basicMapping = (BasicMapping) getJavaPersistentType().attributes().next().getMapping();
 
 		assertEquals(BaseColumn.DEFAULT_UPDATABLE, basicMapping.getColumn().isUpdatable());
 		basicMapping.getColumn().setSpecifiedUpdatable(Boolean.TRUE);
@@ -763,7 +763,7 @@ public class JavaColumnTests extends ContextModelTestCase
 		createTestEntityWithBasicColumnColumnDefinitionSet();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		BasicMapping basicMapping = (BasicMapping) javaPersistentType().attributes().next().getMapping();
+		BasicMapping basicMapping = (BasicMapping) getJavaPersistentType().attributes().next().getMapping();
 
 		assertEquals(BaseColumn.DEFAULT_UPDATABLE, basicMapping.getColumn().isDefaultUpdatable());
 		basicMapping.getColumn().setSpecifiedUpdatable(Boolean.TRUE);
@@ -775,11 +775,11 @@ public class JavaColumnTests extends ContextModelTestCase
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		BasicMapping basicMapping = (BasicMapping) javaPersistentType().attributes().next().getMapping();
+		BasicMapping basicMapping = (BasicMapping) getJavaPersistentType().attributes().next().getMapping();
 		
 		assertNull(basicMapping.getColumn().getSpecifiedUpdatable());
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		ColumnAnnotation column = (ColumnAnnotation) attributeResource.addSupportingAnnotation(JPA.COLUMN);
 		column.setUpdatable(Boolean.TRUE);
@@ -797,13 +797,13 @@ public class JavaColumnTests extends ContextModelTestCase
 		createTestEntityWithBasicColumnColumnDefinitionSet();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		BasicMapping basicMapping = (BasicMapping) javaPersistentType().attributes().next().getMapping();
+		BasicMapping basicMapping = (BasicMapping) getJavaPersistentType().attributes().next().getMapping();
 		
 		assertNull(basicMapping.getColumn().getSpecifiedUpdatable());
 		
 		basicMapping.getColumn().setSpecifiedUpdatable(Boolean.FALSE);
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		ColumnAnnotation column = (ColumnAnnotation) attributeResource.getSupportingAnnotation(JPA.COLUMN);
 		

@@ -53,10 +53,10 @@ public class EclipseLinkPersistenceUnitTests
 	
 	
 	public void testUpdateEclipseLinkImpliedMappingFileRef1() throws Exception {
-		EclipseLinkPersistenceUnit persistenceUnit = persistenceUnit();
+		EclipseLinkPersistenceUnit persistenceUnit = getPersistenceUnit();
 		
 		// test that there is one initially
-		EclipseLinkOrmResource eclipseLinkOrmResource = ormResource();
+		EclipseLinkOrmResource eclipseLinkOrmResource = getOrmResource();
 		assertTrue(eclipseLinkOrmResource.exists());
 		assertNotNull(persistenceUnit.getImpliedMappingFileRef());
 		assertNotNull(persistenceUnit.getImpliedEclipseLinkMappingFileRef());
@@ -70,11 +70,11 @@ public class EclipseLinkPersistenceUnitTests
 	}
 	
 	public void testUpdateEclipseLinkImpliedMappingFileRef2() {
-		XmlPersistenceUnit xmlPersistenceUnit = xmlPersistenceUnit();
-		EclipseLinkPersistenceUnit persistenceUnit = persistenceUnit();
+		XmlPersistenceUnit xmlPersistenceUnit = getXmlPersistenceUnit();
+		EclipseLinkPersistenceUnit persistenceUnit = getPersistenceUnit();
 		
 		// test that there is one initially
-		EclipseLinkOrmResource eclipseLinkOrmResource = ormResource();
+		EclipseLinkOrmResource eclipseLinkOrmResource = getOrmResource();
 		assertTrue(eclipseLinkOrmResource.exists());
 		assertNotNull(persistenceUnit.getImpliedMappingFileRef());
 		assertNotNull(persistenceUnit.getImpliedEclipseLinkMappingFileRef());
@@ -92,10 +92,10 @@ public class EclipseLinkPersistenceUnitTests
 	}
 	
 	public void testUpdateEclipseLinkImpliedMappingFileRef3() {
-		EclipseLinkPersistenceUnit persistenceUnit = persistenceUnit();
+		EclipseLinkPersistenceUnit persistenceUnit = getPersistenceUnit();
 		
 		// test that there is one initially
-		EclipseLinkOrmResource eclipseLinkOrmResource = ormResource();
+		EclipseLinkOrmResource eclipseLinkOrmResource = getOrmResource();
 		assertTrue(eclipseLinkOrmResource.exists());
 		assertNotNull(persistenceUnit.getImpliedMappingFileRef());
 		assertNotNull(persistenceUnit.getImpliedEclipseLinkMappingFileRef());

@@ -37,13 +37,13 @@ public abstract class EclipseLinkContextModelTestCase extends ContextModelTestCa
 	
 	
 	@Override
-	protected EclipseLinkPersistenceUnit persistenceUnit() {
-		return (EclipseLinkPersistenceUnit) super.persistenceUnit();
+	protected EclipseLinkPersistenceUnit getPersistenceUnit() {
+		return (EclipseLinkPersistenceUnit) super.getPersistenceUnit();
 	}
 	
 	@Override
-	protected EclipseLinkJavaEntity javaEntity() {
-		return (EclipseLinkJavaEntity) javaPersistentType().getMapping();
+	protected EclipseLinkJavaEntity getJavaEntity() {
+		return (EclipseLinkJavaEntity) getJavaPersistentType().getMapping();
 	}
 	
 	protected ICompilationUnit createAnnotationAndMembers(String packageName, String annotationName, String annotationBody) throws Exception {

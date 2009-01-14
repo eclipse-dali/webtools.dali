@@ -111,7 +111,7 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		createEmbeddableType();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		EmbeddedMapping embeddedMapping = (EmbeddedMapping) persistentAttribute.getMapping();
 		assertFalse(embeddedMapping.isDefault());
 		
@@ -119,7 +119,7 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		assertTrue(persistentAttribute.getMapping() instanceof BasicMapping);
 		assertFalse(persistentAttribute.getMapping().isDefault());
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		assertNull(attributeResource.getMappingAnnotation(EmbeddedAnnotation.ANNOTATION_NAME));
 		assertNotNull(attributeResource.getMappingAnnotation(BasicAnnotation.ANNOTATION_NAME));
@@ -132,9 +132,9 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		addXmlClassRef(FULLY_QUALIFIED_EMBEDDABLE_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		EmbeddedMapping embeddedMapping = (EmbeddedMapping) persistentAttribute.getMapping();
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		attributeResource.addSupportingAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
 		assertFalse(embeddedMapping.isDefault());
@@ -151,7 +151,7 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		createTestEntityWithEmbeddedMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		EmbeddedMapping embeddedMapping = (EmbeddedMapping) persistentAttribute.getMapping();
 		assertFalse(embeddedMapping.isDefault());
 		
@@ -171,7 +171,7 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		addXmlClassRef(PACKAGE_NAME + ".Entity1");
 		addXmlClassRef(PACKAGE_NAME + ".Embeddable1");
 		
-		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		assertNull(persistentAttribute.getSpecifiedMapping());
 		assertNotNull(persistentAttribute.getMapping());
 		assertEquals(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, persistentAttribute.getDefaultMappingKey());
@@ -217,9 +217,9 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		createEmbeddableType();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		EmbeddedMapping embeddedMapping = (EmbeddedMapping) persistentAttribute.getMapping();
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		attributeResource.addSupportingAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
 		assertFalse(embeddedMapping.isDefault());
@@ -237,9 +237,9 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		createEmbeddableType();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		EmbeddedMapping embeddedMapping = (EmbeddedMapping) persistentAttribute.getMapping();
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		attributeResource.addSupportingAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
 		assertFalse(embeddedMapping.isDefault());
@@ -257,9 +257,9 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		createEmbeddableType();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		EmbeddedMapping embeddedMapping = (EmbeddedMapping) persistentAttribute.getMapping();
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		attributeResource.addSupportingAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
 		assertFalse(embeddedMapping.isDefault());
@@ -277,9 +277,9 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		createEmbeddableType();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		EmbeddedMapping embeddedMapping = (EmbeddedMapping) persistentAttribute.getMapping();
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		attributeResource.addSupportingAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
 		assertFalse(embeddedMapping.isDefault());
@@ -297,9 +297,9 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		createEmbeddableType();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		EmbeddedMapping embeddedMapping = (EmbeddedMapping) persistentAttribute.getMapping();
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		attributeResource.addSupportingAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
 		assertFalse(embeddedMapping.isDefault());
@@ -317,9 +317,9 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		createEmbeddableType();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		EmbeddedMapping embeddedMapping = (EmbeddedMapping) persistentAttribute.getMapping();
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		attributeResource.addSupportingAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
 		assertFalse(embeddedMapping.isDefault());
@@ -337,9 +337,9 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		createEmbeddableType();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		EmbeddedMapping embeddedMapping = (EmbeddedMapping) persistentAttribute.getMapping();
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		attributeResource.addSupportingAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
 		assertFalse(embeddedMapping.isDefault());
@@ -357,9 +357,9 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		createEmbeddableType();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		EmbeddedMapping embeddedMapping = (EmbeddedMapping) persistentAttribute.getMapping();
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		attributeResource.addSupportingAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
 		assertFalse(embeddedMapping.isDefault());
@@ -378,13 +378,13 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		addXmlClassRef(FULLY_QUALIFIED_EMBEDDABLE_TYPE_NAME);
 		
-		EmbeddedMapping embeddedMapping = (EmbeddedMapping) javaPersistentType().getAttributeNamed("myEmbedded").getMapping();
+		EmbeddedMapping embeddedMapping = (EmbeddedMapping) getJavaPersistentType().getAttributeNamed("myEmbedded").getMapping();
 		
 		ListIterator<JavaAttributeOverride> specifiedAttributeOverrides = embeddedMapping.specifiedAttributeOverrides();
 		
 		assertFalse(specifiedAttributeOverrides.hasNext());
 
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		
 		//add an annotation to the resource model and verify the context model is updated
@@ -441,9 +441,9 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		addXmlClassRef(FULLY_QUALIFIED_EMBEDDABLE_TYPE_NAME);
 		
-		EmbeddedMapping embeddedMapping = (EmbeddedMapping) javaPersistentType().getAttributeNamed("myEmbedded").getMapping();
+		EmbeddedMapping embeddedMapping = (EmbeddedMapping) getJavaPersistentType().getAttributeNamed("myEmbedded").getMapping();
 
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		assertEquals("myEmbedded", attributeResource.getName());
 		assertNull(attributeResource.getSupportingAnnotation(AttributeOverrideAnnotation.ANNOTATION_NAME));
@@ -456,7 +456,7 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		assertEquals(TYPE_NAME, defaultAttributeOverride.getColumn().getTable());
 		
 		
-		ListIterator<ClassRef> classRefs = persistenceUnit().specifiedClassRefs();
+		ListIterator<ClassRef> classRefs = getPersistenceUnit().specifiedClassRefs();
 		classRefs.next();
 		Embeddable embeddable = (Embeddable) classRefs.next().getJavaPersistentType().getMapping();
 		
@@ -492,10 +492,10 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		addXmlClassRef(FULLY_QUALIFIED_EMBEDDABLE_TYPE_NAME);
 		
-		EmbeddedMapping embeddedMapping = (EmbeddedMapping) javaPersistentType().getAttributeNamed("myEmbedded").getMapping();
+		EmbeddedMapping embeddedMapping = (EmbeddedMapping) getJavaPersistentType().getAttributeNamed("myEmbedded").getMapping();
 		assertEquals(0, embeddedMapping.specifiedAttributeOverridesSize());
 
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 
 		//add an annotation to the resource model and verify the context model is updated
@@ -513,10 +513,10 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		addXmlClassRef(FULLY_QUALIFIED_EMBEDDABLE_TYPE_NAME);
 		
-		EmbeddedMapping embeddedMapping = (EmbeddedMapping) javaPersistentType().getAttributeNamed("myEmbedded").getMapping();
+		EmbeddedMapping embeddedMapping = (EmbeddedMapping) getJavaPersistentType().getAttributeNamed("myEmbedded").getMapping();
 		assertEquals(2, embeddedMapping.attributeOverridesSize());
 
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 
 		//add an annotation to the resource model and verify the context model is updated
@@ -538,10 +538,10 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		addXmlClassRef(FULLY_QUALIFIED_EMBEDDABLE_TYPE_NAME);
 		
-		EmbeddedMapping embeddedMapping = (EmbeddedMapping) javaPersistentType().getAttributeNamed("myEmbedded").getMapping();
+		EmbeddedMapping embeddedMapping = (EmbeddedMapping) getJavaPersistentType().getAttributeNamed("myEmbedded").getMapping();
 		assertEquals(2, embeddedMapping.virtualAttributeOverridesSize());
 
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 
 		//add an annotation to the resource model and verify the context model is updated
@@ -565,11 +565,11 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		addXmlClassRef(FULLY_QUALIFIED_EMBEDDABLE_TYPE_NAME);
 				
-		EmbeddedMapping embeddedMapping = (EmbeddedMapping) javaPersistentType().getAttributeNamed("myEmbedded").getMapping();
+		EmbeddedMapping embeddedMapping = (EmbeddedMapping) getJavaPersistentType().getAttributeNamed("myEmbedded").getMapping();
 		embeddedMapping.virtualAttributeOverrides().next().setVirtual(false);
 		embeddedMapping.virtualAttributeOverrides().next().setVirtual(false);
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		Iterator<NestableAnnotation> attributeOverrides = attributeResource.supportingAnnotations(AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME);
 		
@@ -601,13 +601,13 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		addXmlClassRef(FULLY_QUALIFIED_EMBEDDABLE_TYPE_NAME);
 		
-		EmbeddedMapping embeddedMapping = (EmbeddedMapping) javaPersistentType().getAttributeNamed("myEmbedded").getMapping();
+		EmbeddedMapping embeddedMapping = (EmbeddedMapping) getJavaPersistentType().getAttributeNamed("myEmbedded").getMapping();
 		ListIterator<AttributeOverride> virtualAttributeOverrides = embeddedMapping.virtualAttributeOverrides();
 		virtualAttributeOverrides.next();	
 		virtualAttributeOverrides.next().setVirtual(false);
 		embeddedMapping.virtualAttributeOverrides().next().setVirtual(false);
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		Iterator<NestableAnnotation> attributeOverrides = attributeResource.supportingAnnotations(AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME);
 		
@@ -622,11 +622,11 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		addXmlClassRef(FULLY_QUALIFIED_EMBEDDABLE_TYPE_NAME);
 		
-		EmbeddedMapping embeddedMapping = (EmbeddedMapping) javaPersistentType().getAttributeNamed("myEmbedded").getMapping();
+		EmbeddedMapping embeddedMapping = (EmbeddedMapping) getJavaPersistentType().getAttributeNamed("myEmbedded").getMapping();
 		embeddedMapping.virtualAttributeOverrides().next().setVirtual(false);
 		embeddedMapping.virtualAttributeOverrides().next().setVirtual(false);
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		
 		attributeResource.moveSupportingAnnotation(1, 0, AttributeOverridesAnnotation.ANNOTATION_NAME);

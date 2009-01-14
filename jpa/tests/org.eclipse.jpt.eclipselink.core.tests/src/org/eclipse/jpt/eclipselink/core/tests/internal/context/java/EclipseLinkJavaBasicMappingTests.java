@@ -137,11 +137,11 @@ public class EclipseLinkJavaBasicMappingTests extends EclipseLinkJavaContextMode
 		createTestEntityWithBasicMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		attributeResource.addSupportingAnnotation(ConvertAnnotation.ANNOTATION_NAME);
 		
-		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		BasicMapping basicMapping = (BasicMapping) persistentAttribute.getSpecifiedMapping();
 
 		assertEquals(Convert.ECLIPSE_LINK_CONVERTER, basicMapping.getConverter().getType());
@@ -151,7 +151,7 @@ public class EclipseLinkJavaBasicMappingTests extends EclipseLinkJavaContextMode
 		createTestEntityWithConvert();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		BasicMapping basicMapping = (BasicMapping) persistentAttribute.getMapping();
 
 		assertEquals(Convert.ECLIPSE_LINK_CONVERTER, basicMapping.getConverter().getType());
@@ -162,14 +162,14 @@ public class EclipseLinkJavaBasicMappingTests extends EclipseLinkJavaContextMode
 		createTestEntityWithBasicMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		BasicMapping basicMapping = (BasicMapping) persistentAttribute.getSpecifiedMapping();
 		assertEquals(Converter.NO_CONVERTER, basicMapping.getConverter().getType());
 		
 		basicMapping.setSpecifiedConverter(Converter.TEMPORAL_CONVERTER);
 		((TemporalConverter) basicMapping.getSpecifiedConverter()).setTemporalType(TemporalType.TIME);
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		TemporalAnnotation temporal = (TemporalAnnotation) attributeResource.getSupportingAnnotation(TemporalAnnotation.ANNOTATION_NAME);
 		
@@ -183,13 +183,13 @@ public class EclipseLinkJavaBasicMappingTests extends EclipseLinkJavaContextMode
 		createTestEntityWithBasicMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		BasicMapping basicMapping = (BasicMapping) persistentAttribute.getSpecifiedMapping();
 
 		assertEquals(Converter.NO_CONVERTER, basicMapping.getConverter().getType());
 		
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		ConvertAnnotation convert = (ConvertAnnotation) attributeResource.addSupportingAnnotation(ConvertAnnotation.ANNOTATION_NAME);
 		convert.setValue("foo");
@@ -208,12 +208,12 @@ public class EclipseLinkJavaBasicMappingTests extends EclipseLinkJavaContextMode
 		createTestEntityWithMutableBasic();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		EclipseLinkBasicMapping basicMapping = (EclipseLinkBasicMapping) persistentAttribute.getSpecifiedMapping();
 		Mutable mutable = basicMapping.getMutable();
 		assertEquals(Boolean.TRUE, mutable.getSpecifiedMutable());
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		MutableAnnotation mutableAnnotation = (MutableAnnotation) attributeResource.getSupportingAnnotation(MutableAnnotation.ANNOTATION_NAME);
 		mutableAnnotation.setValue(Boolean.TRUE);
@@ -237,12 +237,12 @@ public class EclipseLinkJavaBasicMappingTests extends EclipseLinkJavaContextMode
 		createTestEntityWithMutableBasic();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		EclipseLinkBasicMapping basicMapping = (EclipseLinkBasicMapping) persistentAttribute.getSpecifiedMapping();
 		Mutable mutable = basicMapping.getMutable();
 		assertEquals(Boolean.TRUE, mutable.getSpecifiedMutable());
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		MutableAnnotation mutableAnnotation = (MutableAnnotation) attributeResource.getSupportingAnnotation(MutableAnnotation.ANNOTATION_NAME);
 		assertEquals(null, mutableAnnotation.getValue());
@@ -266,12 +266,12 @@ public class EclipseLinkJavaBasicMappingTests extends EclipseLinkJavaContextMode
 		createTestEntityWithMutableBasic();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		EclipseLinkBasicMapping basicMapping = (EclipseLinkBasicMapping) persistentAttribute.getSpecifiedMapping();
 		Mutable mutable = basicMapping.getMutable();
 		assertTrue(mutable.isDefaultMutable());
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		attributeResource.removeSupportingAnnotation(MutableAnnotation.ANNOTATION_NAME);
 		assertTrue(mutable.isDefaultMutable());
@@ -280,7 +280,7 @@ public class EclipseLinkJavaBasicMappingTests extends EclipseLinkJavaContextMode
 		assertTrue(mutable.isDefaultMutable());
 		
 		//set mutable default to false in the persistence unit properties, verify default in java still true since this is not a Date/Calendar
-		((EclipseLinkPersistenceUnit) persistenceUnit()).getOptions().setTemporalMutable(Boolean.FALSE);
+		((EclipseLinkPersistenceUnit) getPersistenceUnit()).getOptions().setTemporalMutable(Boolean.FALSE);
 		assertTrue(mutable.isDefaultMutable());
 	}
 	
@@ -288,12 +288,12 @@ public class EclipseLinkJavaBasicMappingTests extends EclipseLinkJavaContextMode
 		createTestEntityWithMutableBasicDate();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		EclipseLinkBasicMapping basicMapping = (EclipseLinkBasicMapping) persistentAttribute.getSpecifiedMapping();
 		Mutable mutable = basicMapping.getMutable();
 		assertFalse(mutable.isDefaultMutable());
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		attributeResource.removeSupportingAnnotation(MutableAnnotation.ANNOTATION_NAME);
 		assertFalse(mutable.isDefaultMutable());
@@ -302,13 +302,13 @@ public class EclipseLinkJavaBasicMappingTests extends EclipseLinkJavaContextMode
 		assertFalse(mutable.isDefaultMutable());
 		
 		//set mutable default to false in the persistence unit properties, verify default in java still true since this is not a Date/Calendar
-		((EclipseLinkPersistenceUnit) persistenceUnit()).getOptions().setTemporalMutable(Boolean.TRUE);
+		((EclipseLinkPersistenceUnit) getPersistenceUnit()).getOptions().setTemporalMutable(Boolean.TRUE);
 		assertTrue(mutable.isDefaultMutable());
 		
-		((EclipseLinkPersistenceUnit) persistenceUnit()).getOptions().setTemporalMutable(Boolean.FALSE);
+		((EclipseLinkPersistenceUnit) getPersistenceUnit()).getOptions().setTemporalMutable(Boolean.FALSE);
 		assertFalse(mutable.isDefaultMutable());
 		
-		((EclipseLinkPersistenceUnit) persistenceUnit()).getOptions().setTemporalMutable(null);
+		((EclipseLinkPersistenceUnit) getPersistenceUnit()).getOptions().setTemporalMutable(null);
 		assertFalse(mutable.isDefaultMutable());
 	}
 	
@@ -316,12 +316,12 @@ public class EclipseLinkJavaBasicMappingTests extends EclipseLinkJavaContextMode
 		createTestEntityWithMutableBasic();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		EclipseLinkBasicMapping basicMapping = (EclipseLinkBasicMapping) persistentAttribute.getSpecifiedMapping();
 		Mutable mutable = basicMapping.getMutable();
 		assertTrue(mutable.isMutable());
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		attributeResource.removeSupportingAnnotation(MutableAnnotation.ANNOTATION_NAME);
 		assertTrue(mutable.isMutable());

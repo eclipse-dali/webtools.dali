@@ -40,8 +40,8 @@ public class OrmGeneratedValueTests extends ContextModelTestCase
 		super.setUp();
 		XmlMappingFileRef mappingFileRef = PersistenceFactory.eINSTANCE.createXmlMappingFileRef();
 		mappingFileRef.setFileName(JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH);
-		xmlPersistenceUnit().getMappingFiles().add(mappingFileRef);
-		persistenceResource().save(null);
+		getXmlPersistenceUnit().getMappingFiles().add(mappingFileRef);
+		getPersistenceResource().save(null);
 	}
 	
 	private ICompilationUnit createTestEntity() throws Exception {
@@ -80,11 +80,11 @@ public class OrmGeneratedValueTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateSpecifiedName() throws Exception {
-		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idMapping");
 		OrmIdMapping ormIdMapping = (OrmIdMapping) ormPersistentAttribute.getMapping();
 		OrmGeneratedValue ormGeneratedValue = ormIdMapping.addGeneratedValue();
-		XmlId idResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
+		XmlId idResource = getOrmResource().getEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
 		XmlGeneratedValue generatedValueResource = idResource.getGeneratedValue();
 		
 		//set generator in the resource model, verify context model updated
@@ -99,11 +99,11 @@ public class OrmGeneratedValueTests extends ContextModelTestCase
 	}
 	
 	public void testModifySpecifiedName() throws Exception {
-		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idMapping");
 		OrmIdMapping ormIdMapping = (OrmIdMapping) ormPersistentAttribute.getMapping();
 		OrmGeneratedValue ormGeneratedValue = ormIdMapping.addGeneratedValue();
-		XmlId idResource = ormResource().getEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
+		XmlId idResource = getOrmResource().getEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
 		XmlGeneratedValue generatedValueResource = idResource.getGeneratedValue();
 		
 		//set name in the context model, verify resource model modified
@@ -119,7 +119,7 @@ public class OrmGeneratedValueTests extends ContextModelTestCase
 
 	public void testDefaultsFromJava() throws Exception {
 		createTestEntity();
-		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
 		OrmPersistentAttribute ormIdAttribute = ormPersistentType.virtualAttributes().next();
 		IdMapping ormIdMapping = (IdMapping) ormIdAttribute.getMapping();

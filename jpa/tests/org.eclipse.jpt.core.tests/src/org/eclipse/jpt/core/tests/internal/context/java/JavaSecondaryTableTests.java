@@ -78,7 +78,7 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		createTestEntityWithSecondaryTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		SecondaryTable secondaryTable = javaEntity().secondaryTables().next();
+		SecondaryTable secondaryTable = getJavaEntity().secondaryTables().next();
 		assertEquals(TABLE_NAME, secondaryTable.getSpecifiedName());
 	}
 	
@@ -86,7 +86,7 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		createTestEntityWithSecondaryTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		SecondaryTable secondaryTable = javaEntity().secondaryTables().next();
+		SecondaryTable secondaryTable = getJavaEntity().secondaryTables().next();
 		assertNull(secondaryTable.getDefaultName());
 	}
 	
@@ -94,7 +94,7 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		createTestEntityWithSecondaryTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		SecondaryTable secondaryTable = javaEntity().secondaryTables().next();
+		SecondaryTable secondaryTable = getJavaEntity().secondaryTables().next();
 		assertEquals(TABLE_NAME, secondaryTable.getName());
 	}
 
@@ -102,12 +102,12 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		createTestEntityWithSecondaryTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		SecondaryTable secondaryTable = javaEntity().secondaryTables().next();
+		SecondaryTable secondaryTable = getJavaEntity().secondaryTables().next();
 		secondaryTable.setSpecifiedName("foo");
 		
-		assertEquals("foo", javaEntity().secondaryTables().next().getSpecifiedName());
+		assertEquals("foo", getJavaEntity().secondaryTables().next().getSpecifiedName());
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		SecondaryTableAnnotation table = (SecondaryTableAnnotation) typeResource.getSupportingAnnotation(JPA.SECONDARY_TABLE);
 		
 		assertEquals("foo", table.getName());
@@ -117,12 +117,12 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		createTestEntityWithSecondaryTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		SecondaryTable secondaryTable = javaEntity().secondaryTables().next();
+		SecondaryTable secondaryTable = getJavaEntity().secondaryTables().next();
 		secondaryTable.setSpecifiedName(null);
 		
-		assertEquals(0, javaEntity().secondaryTablesSize());
+		assertEquals(0, getJavaEntity().secondaryTablesSize());
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		assertNull(typeResource.getSupportingAnnotation(JPA.SECONDARY_TABLE));
 	}
 	
@@ -130,23 +130,23 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		createTestEntityWithSecondaryTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		SecondaryTableAnnotation table = (SecondaryTableAnnotation) typeResource.getSupportingAnnotation(JPA.SECONDARY_TABLE);
 		table.setName("foo");
 		
-		assertEquals("foo", javaEntity().secondaryTables().next().getSpecifiedName());
+		assertEquals("foo", getJavaEntity().secondaryTables().next().getSpecifiedName());
 	}
 	
 	public void testUpdateFromSpecifiedCatalogChangeInResourceModel() throws Exception {
 		createTestEntityWithSecondaryTables();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		ListIterator<NestableAnnotation> secondaryTableResources = typeResource.supportingAnnotations(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
 		((SecondaryTableAnnotation) secondaryTableResources.next()).setCatalog("foo");
 		((SecondaryTableAnnotation) secondaryTableResources.next()).setCatalog("bar");
 		
-		ListIterator<SecondaryTable> secondaryTsbles = javaEntity().secondaryTables();
+		ListIterator<SecondaryTable> secondaryTsbles = getJavaEntity().secondaryTables();
 		assertEquals("foo", secondaryTsbles.next().getSpecifiedCatalog());
 		assertEquals("bar", secondaryTsbles.next().getSpecifiedCatalog());
 	}
@@ -155,12 +155,12 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		createTestEntityWithSecondaryTables();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		ListIterator<NestableAnnotation> secondaryTableResources = typeResource.supportingAnnotations(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
 		((SecondaryTableAnnotation) secondaryTableResources.next()).setSchema("foo");
 		((SecondaryTableAnnotation) secondaryTableResources.next()).setSchema("bar");
 		
-		ListIterator<SecondaryTable> secondaryTsbles = javaEntity().secondaryTables();
+		ListIterator<SecondaryTable> secondaryTsbles = getJavaEntity().secondaryTables();
 		assertEquals("foo", secondaryTsbles.next().getSpecifiedSchema());
 		assertEquals("bar", secondaryTsbles.next().getSpecifiedSchema());
 	}
@@ -169,34 +169,34 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		createTestEntityWithSecondaryTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		SecondaryTableAnnotation table = (SecondaryTableAnnotation) typeResource.getSupportingAnnotation(JPA.SECONDARY_TABLE);
 		
 		table.setCatalog("myCatalog");
 		
-		assertEquals("myCatalog", javaEntity().secondaryTables().next().getSpecifiedCatalog());
-		assertEquals("myCatalog", javaEntity().secondaryTables().next().getCatalog());
+		assertEquals("myCatalog", getJavaEntity().secondaryTables().next().getSpecifiedCatalog());
+		assertEquals("myCatalog", getJavaEntity().secondaryTables().next().getCatalog());
 	}
 	
 	public void testGetDefaultCatalog() throws Exception {
 		createTestEntityWithSecondaryTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		assertNull(javaEntity().secondaryTables().next().getDefaultCatalog());
+		assertNull(getJavaEntity().secondaryTables().next().getDefaultCatalog());
 		
-		javaEntity().secondaryTables().next().setSpecifiedCatalog("myCatalog");
+		getJavaEntity().secondaryTables().next().setSpecifiedCatalog("myCatalog");
 		
-		assertNull(javaEntity().secondaryTables().next().getDefaultCatalog());
+		assertNull(getJavaEntity().secondaryTables().next().getDefaultCatalog());
 	}
 	
 	public void testSetSpecifiedCatalog() throws Exception {
 		createTestEntityWithSecondaryTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		SecondaryTable table = javaEntity().secondaryTables().next();
+		SecondaryTable table = getJavaEntity().secondaryTables().next();
 		table.setSpecifiedCatalog("myCatalog");
 		table.setSpecifiedName(null);
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		SecondaryTableAnnotation tableResource = (SecondaryTableAnnotation) typeResource.getSupportingAnnotation(JPA.SECONDARY_TABLE);
 		
 		assertEquals("myCatalog", tableResource.getCatalog());
@@ -209,34 +209,34 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		createTestEntityWithSecondaryTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		SecondaryTableAnnotation tableResource = (SecondaryTableAnnotation) typeResource.getSupportingAnnotation(JPA.SECONDARY_TABLE);
 		
 		tableResource.setSchema("mySchema");
 		
-		assertEquals("mySchema", javaEntity().secondaryTables().next().getSpecifiedSchema());
-		assertEquals("mySchema", javaEntity().secondaryTables().next().getSchema());
+		assertEquals("mySchema", getJavaEntity().secondaryTables().next().getSpecifiedSchema());
+		assertEquals("mySchema", getJavaEntity().secondaryTables().next().getSchema());
 	}
 	
 	public void testGetDefaultSchema() throws Exception {
 		createTestEntityWithSecondaryTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		assertNull(javaEntity().secondaryTables().next().getDefaultSchema());
+		assertNull(getJavaEntity().secondaryTables().next().getDefaultSchema());
 		
-		javaEntity().secondaryTables().next().setSpecifiedSchema("mySchema");
+		getJavaEntity().secondaryTables().next().setSpecifiedSchema("mySchema");
 		
-		assertNull(javaEntity().secondaryTables().next().getDefaultSchema());
+		assertNull(getJavaEntity().secondaryTables().next().getDefaultSchema());
 	}
 	
 	public void testSetSpecifiedSchema() throws Exception {
 		createTestEntityWithSecondaryTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		SecondaryTable table = javaEntity().secondaryTables().next();
+		SecondaryTable table = getJavaEntity().secondaryTables().next();
 		table.setSpecifiedSchema("mySchema");
 		table.setSpecifiedName(null);
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		SecondaryTableAnnotation tableResource = (SecondaryTableAnnotation) typeResource.getSupportingAnnotation(JPA.SECONDARY_TABLE);
 		
 		assertEquals("mySchema", tableResource.getSchema());
@@ -249,12 +249,12 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		createTestEntityWithSecondaryTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		SecondaryTable secondaryTable = javaEntity().specifiedSecondaryTables().next();
+		SecondaryTable secondaryTable = getJavaEntity().specifiedSecondaryTables().next();
 		ListIterator<JavaPrimaryKeyJoinColumn> specifiedPkJoinColumns = secondaryTable.specifiedPrimaryKeyJoinColumns();
 		
 		assertFalse(specifiedPkJoinColumns.hasNext());
 
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		SecondaryTableAnnotation tableResource = (SecondaryTableAnnotation) typeResource.getSupportingAnnotation(JPA.SECONDARY_TABLE);
 
 		//add an annotation to the resource model and verify the context model is updated
@@ -293,7 +293,7 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		createTestEntityWithSecondaryTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		SecondaryTable secondaryTable = javaEntity().specifiedSecondaryTables().next();
+		SecondaryTable secondaryTable = getJavaEntity().specifiedSecondaryTables().next();
 		assertEquals(0, secondaryTable.specifiedPrimaryKeyJoinColumnsSize());
 	
 		secondaryTable.addSpecifiedPrimaryKeyJoinColumn(0).setSpecifiedName("FOO");
@@ -307,7 +307,7 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		createTestEntityWithSecondaryTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		SecondaryTable secondaryTable = javaEntity().specifiedSecondaryTables().next();
+		SecondaryTable secondaryTable = getJavaEntity().specifiedSecondaryTables().next();
 		//just the default pkJoinColumn, so 1
 		assertEquals(1, secondaryTable.primaryKeyJoinColumnsSize());
 	
@@ -323,7 +323,7 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		createTestEntityWithSecondaryTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		SecondaryTable secondaryTable = javaEntity().specifiedSecondaryTables().next();
+		SecondaryTable secondaryTable = getJavaEntity().specifiedSecondaryTables().next();
 		assertNotNull(secondaryTable.getDefaultPrimaryKeyJoinColumn());
 	
 		secondaryTable.addSpecifiedPrimaryKeyJoinColumn(0).setSpecifiedName("FOO");
@@ -337,14 +337,14 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		createTestEntityWithSecondaryTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		SecondaryTable secondaryTable = javaEntity().specifiedSecondaryTables().next();
+		SecondaryTable secondaryTable = getJavaEntity().specifiedSecondaryTables().next();
 		PrimaryKeyJoinColumn defaultPkJoinColumn = secondaryTable.getDefaultPrimaryKeyJoinColumn(); 
 		assertNotNull(defaultPkJoinColumn);	
 		assertEquals("id", defaultPkJoinColumn.getDefaultName());
 		assertEquals("id", defaultPkJoinColumn.getDefaultReferencedColumnName());
 		
 		
-		IdMapping idMapping = (IdMapping) javaEntity().getPersistentType().getAttributeNamed("id").getMapping();
+		IdMapping idMapping = (IdMapping) getJavaEntity().getPersistentType().getAttributeNamed("id").getMapping();
 		idMapping.getColumn().setSpecifiedName("FOO");		
 		assertEquals("FOO", defaultPkJoinColumn.getDefaultName());
 		assertEquals("FOO", defaultPkJoinColumn.getDefaultReferencedColumnName());
@@ -358,7 +358,7 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		createTestEntityWithSecondaryTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		SecondaryTable secondaryTable = javaEntity().specifiedSecondaryTables().next();
+		SecondaryTable secondaryTable = getJavaEntity().specifiedSecondaryTables().next();
 		secondaryTable.addSpecifiedPrimaryKeyJoinColumn(0).setSpecifiedName("FOO");
 		secondaryTable.addSpecifiedPrimaryKeyJoinColumn(0).setSpecifiedName("BAR");
 		secondaryTable.addSpecifiedPrimaryKeyJoinColumn(0).setSpecifiedName("BAZ");
@@ -368,7 +368,7 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		assertEquals("BAR", specifiedPkJoinColumns.next().getName());
 		assertEquals("FOO", specifiedPkJoinColumns.next().getName());
 	
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		SecondaryTableAnnotation tableResource = (SecondaryTableAnnotation) typeResource.getSupportingAnnotation(JPA.SECONDARY_TABLE);
 		Iterator<PrimaryKeyJoinColumnAnnotation> pkJoinColumns = tableResource.pkJoinColumns();
 		
@@ -382,7 +382,7 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		createTestEntityWithSecondaryTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		SecondaryTable secondaryTable = javaEntity().specifiedSecondaryTables().next();
+		SecondaryTable secondaryTable = getJavaEntity().specifiedSecondaryTables().next();
 
 		secondaryTable.addSpecifiedPrimaryKeyJoinColumn(0).setSpecifiedName("FOO");
 		secondaryTable.addSpecifiedPrimaryKeyJoinColumn(1).setSpecifiedName("BAR");
@@ -393,7 +393,7 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		assertEquals("BAR", specifiedPkJoinColumns.next().getName());
 		assertEquals("BAZ", specifiedPkJoinColumns.next().getName());
 
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		SecondaryTableAnnotation tableResource = (SecondaryTableAnnotation) typeResource.getSupportingAnnotation(JPA.SECONDARY_TABLE);
 		Iterator<PrimaryKeyJoinColumnAnnotation> pkJoinColumns = tableResource.pkJoinColumns();
 		
@@ -406,13 +406,13 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		createTestEntityWithSecondaryTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		SecondaryTable secondaryTable = javaEntity().specifiedSecondaryTables().next();
+		SecondaryTable secondaryTable = getJavaEntity().specifiedSecondaryTables().next();
 
 		secondaryTable.addSpecifiedPrimaryKeyJoinColumn(0).setSpecifiedName("FOO");
 		secondaryTable.addSpecifiedPrimaryKeyJoinColumn(1).setSpecifiedName("BAR");
 		secondaryTable.addSpecifiedPrimaryKeyJoinColumn(2).setSpecifiedName("BAZ");
 		
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		SecondaryTableAnnotation tableResource = (SecondaryTableAnnotation) typeResource.getSupportingAnnotation(JPA.SECONDARY_TABLE);
 		
 		assertEquals(3, tableResource.pkJoinColumnsSize());
@@ -453,7 +453,7 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		createTestEntityWithSecondaryTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		SecondaryTable secondaryTable = javaEntity().specifiedSecondaryTables().next();
+		SecondaryTable secondaryTable = getJavaEntity().specifiedSecondaryTables().next();
 		secondaryTable.addSpecifiedPrimaryKeyJoinColumn(0).setSpecifiedName("FOO");
 		secondaryTable.addSpecifiedPrimaryKeyJoinColumn(1).setSpecifiedName("BAR");
 		secondaryTable.addSpecifiedPrimaryKeyJoinColumn(2).setSpecifiedName("BAZ");
@@ -463,7 +463,7 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		assertEquals("BAR", specifiedPkJoinColumns.next().getName());
 		assertEquals("BAZ", specifiedPkJoinColumns.next().getName());
 
-		JavaResourcePersistentType typeResource = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		SecondaryTableAnnotation tableResource = (SecondaryTableAnnotation) typeResource.getSupportingAnnotation(JPA.SECONDARY_TABLE);
 		Iterator<PrimaryKeyJoinColumnAnnotation> pkJoinColumns = tableResource.pkJoinColumns();
 		
@@ -484,13 +484,13 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		createTestEntityWithSecondaryTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		SecondaryTable secondaryTable = javaEntity().specifiedSecondaryTables().next();
+		SecondaryTable secondaryTable = getJavaEntity().specifiedSecondaryTables().next();
 		PrimaryKeyJoinColumn defaultPkJoinColumn = secondaryTable.getDefaultPrimaryKeyJoinColumn();
 		assertEquals("id", defaultPkJoinColumn.getDefaultName());
 
 		
 		//remove @Id annotation
-		PersistentAttribute idAttribute = javaPersistentType().getAttributeNamed("id");
+		PersistentAttribute idAttribute = getJavaPersistentType().getAttributeNamed("id");
 		idAttribute.setSpecifiedMappingKey(MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY);
 
 		assertNull(defaultPkJoinColumn.getDefaultName());
@@ -499,12 +499,12 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		createTestEntityWithSecondaryTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		SecondaryTable secondaryTable = javaEntity().specifiedSecondaryTables().next();
+		SecondaryTable secondaryTable = getJavaEntity().specifiedSecondaryTables().next();
 		PrimaryKeyJoinColumn defaultPkJoinColumn = secondaryTable.getDefaultPrimaryKeyJoinColumn();
 		assertEquals("id", defaultPkJoinColumn.getDefaultReferencedColumnName());
 		
 		//remove @Id annotation
-		PersistentAttribute idAttribute = javaPersistentType().getAttributeNamed("id");
+		PersistentAttribute idAttribute = getJavaPersistentType().getAttributeNamed("id");
 		idAttribute.setSpecifiedMappingKey(MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY);
 
 		assertNull(defaultPkJoinColumn.getDefaultReferencedColumnName());
@@ -513,7 +513,7 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 	public void testPrimaryKeyJoinColumnIsVirtual() throws Exception {
 		createTestEntityWithSecondaryTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		SecondaryTable secondaryTable = javaEntity().specifiedSecondaryTables().next();
+		SecondaryTable secondaryTable = getJavaEntity().specifiedSecondaryTables().next();
 		
 		assertTrue(secondaryTable.getDefaultPrimaryKeyJoinColumn().isVirtual());
 		
@@ -529,12 +529,12 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		createTestEntityWithSecondaryTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		SecondaryTable secondaryTable = javaEntity().specifiedSecondaryTables().next();
+		SecondaryTable secondaryTable = getJavaEntity().specifiedSecondaryTables().next();
 
 		ListIterator<JavaUniqueConstraint> uniqueConstraints = secondaryTable.uniqueConstraints();
 		assertFalse(uniqueConstraints.hasNext());
 
-		JavaResourcePersistentType resourcePersistentType = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType resourcePersistentType = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		SecondaryTableAnnotation secondaryTableAnnotation = (SecondaryTableAnnotation) resourcePersistentType.getSupportingAnnotation(JPA.SECONDARY_TABLE);
 		secondaryTableAnnotation.addUniqueConstraint(0).addColumnName(0, "foo");
 		secondaryTableAnnotation.addUniqueConstraint(0).addColumnName(0, "bar");
@@ -550,11 +550,11 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		createTestEntityWithSecondaryTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		SecondaryTable secondaryTable = javaEntity().specifiedSecondaryTables().next();
+		SecondaryTable secondaryTable = getJavaEntity().specifiedSecondaryTables().next();
 
 		assertEquals(0,  secondaryTable.uniqueConstraintsSize());
 
-		JavaResourcePersistentType resourcePersistentType = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType resourcePersistentType = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		SecondaryTableAnnotation secondaryTableAnnotation = (SecondaryTableAnnotation) resourcePersistentType.getSupportingAnnotation(JPA.SECONDARY_TABLE);
 		secondaryTableAnnotation.addUniqueConstraint(0).addColumnName(0, "foo");
 		secondaryTableAnnotation.addUniqueConstraint(1).addColumnName(0, "bar");
@@ -566,12 +566,12 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		createTestEntityWithSecondaryTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		SecondaryTable secondaryTable = javaEntity().specifiedSecondaryTables().next();
+		SecondaryTable secondaryTable = getJavaEntity().specifiedSecondaryTables().next();
 		secondaryTable.addUniqueConstraint(0).addColumnName(0, "FOO");
 		secondaryTable.addUniqueConstraint(0).addColumnName(0, "BAR");
 		secondaryTable.addUniqueConstraint(0).addColumnName(0, "BAZ");
 		
-		JavaResourcePersistentType resourcePersistentType = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType resourcePersistentType = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		SecondaryTableAnnotation secondaryTableAnnotation = (SecondaryTableAnnotation) resourcePersistentType.getSupportingAnnotation(JPA.SECONDARY_TABLE);
 		ListIterator<UniqueConstraintAnnotation> uniqueConstraints = secondaryTableAnnotation.uniqueConstraints();
 		
@@ -585,12 +585,12 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		createTestEntityWithSecondaryTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		SecondaryTable secondaryTable = javaEntity().specifiedSecondaryTables().next();
+		SecondaryTable secondaryTable = getJavaEntity().specifiedSecondaryTables().next();
 		secondaryTable.addUniqueConstraint(0).addColumnName(0, "FOO");
 		secondaryTable.addUniqueConstraint(1).addColumnName(0, "BAR");
 		secondaryTable.addUniqueConstraint(0).addColumnName(0, "BAZ");
 		
-		JavaResourcePersistentType resourcePersistentType = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType resourcePersistentType = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		SecondaryTableAnnotation secondaryTableAnnotation = (SecondaryTableAnnotation) resourcePersistentType.getSupportingAnnotation(JPA.SECONDARY_TABLE);
 		ListIterator<UniqueConstraintAnnotation> uniqueConstraints = secondaryTableAnnotation.uniqueConstraints();
 		
@@ -604,12 +604,12 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		createTestEntityWithSecondaryTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		SecondaryTable secondaryTable = javaEntity().specifiedSecondaryTables().next();
+		SecondaryTable secondaryTable = getJavaEntity().specifiedSecondaryTables().next();
 		secondaryTable.addUniqueConstraint(0).addColumnName(0, "FOO");
 		secondaryTable.addUniqueConstraint(1).addColumnName(0, "BAR");
 		secondaryTable.addUniqueConstraint(2).addColumnName(0, "BAZ");
 		
-		JavaResourcePersistentType resourcePersistentType = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType resourcePersistentType = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		SecondaryTableAnnotation secondaryTableAnnotation = (SecondaryTableAnnotation) resourcePersistentType.getSupportingAnnotation(JPA.SECONDARY_TABLE);
 		
 		assertEquals(3, secondaryTableAnnotation.uniqueConstraintsSize());
@@ -648,12 +648,12 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		createTestEntityWithSecondaryTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		SecondaryTable secondaryTable = javaEntity().specifiedSecondaryTables().next();
+		SecondaryTable secondaryTable = getJavaEntity().specifiedSecondaryTables().next();
 		secondaryTable.addUniqueConstraint(0).addColumnName(0, "FOO");
 		secondaryTable.addUniqueConstraint(1).addColumnName(0, "BAR");
 		secondaryTable.addUniqueConstraint(2).addColumnName(0, "BAZ");
 		
-		JavaResourcePersistentType resourcePersistentType = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType resourcePersistentType = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		SecondaryTableAnnotation secondaryTableAnnotation = (SecondaryTableAnnotation) resourcePersistentType.getSupportingAnnotation(JPA.SECONDARY_TABLE);
 		
 		assertEquals(3, secondaryTableAnnotation.uniqueConstraintsSize());
@@ -687,8 +687,8 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		createTestEntityWithSecondaryTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		SecondaryTable secondaryTable = javaEntity().specifiedSecondaryTables().next();
-		JavaResourcePersistentType resourcePersistentType = jpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		SecondaryTable secondaryTable = getJavaEntity().specifiedSecondaryTables().next();
+		JavaResourcePersistentType resourcePersistentType = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		SecondaryTableAnnotation secondaryTableAnnotation = (SecondaryTableAnnotation) resourcePersistentType.getSupportingAnnotation(JPA.SECONDARY_TABLE);
 	
 		secondaryTableAnnotation.addUniqueConstraint(0).addColumnName("FOO");

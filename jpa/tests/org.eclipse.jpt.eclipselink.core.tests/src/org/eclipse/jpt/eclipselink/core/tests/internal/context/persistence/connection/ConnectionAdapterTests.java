@@ -157,9 +157,9 @@ public class ConnectionAdapterTests extends PersistenceUnitTestCase
 		this.persistenceUnitPut("misc.property.4", "value.4");
 		
 		// Initializes PU property TransactionType
-		this.persistenceUnit().setSpecifiedTransactionType(TRANSACTION_TYPE_TEST_VALUE);
-		this.persistenceUnit().setJtaDataSource(JTA_DATA_SOURCE_TEST_VALUE);
-		this.persistenceUnit().setNonJtaDataSource(NON_JTA_DATA_SOURCE_TEST_VALUE);
+		this.getPersistenceUnit().setSpecifiedTransactionType(TRANSACTION_TYPE_TEST_VALUE);
+		this.getPersistenceUnit().setJtaDataSource(JTA_DATA_SOURCE_TEST_VALUE);
+		this.getPersistenceUnit().setNonJtaDataSource(NON_JTA_DATA_SOURCE_TEST_VALUE);
 		return;
 	}
 	
@@ -168,7 +168,7 @@ public class ConnectionAdapterTests extends PersistenceUnitTestCase
 		// new
 		ListAspectAdapter<PersistenceUnit, Property> propertiesAdapter = 
 			(ListAspectAdapter<PersistenceUnit, Property>) this.subject.getPropertiesAdapter();
-		GenericProperty ctdProperty = (GenericProperty) this.persistenceUnit().getProperty(NATIVE_SQL_KEY);
+		GenericProperty ctdProperty = (GenericProperty) this.getPersistenceUnit().getProperty(NATIVE_SQL_KEY);
 		ListValueModel<Property> propertyListAdapter = this.subject.getPropertyListAdapter();
 		
 		assertTrue(propertiesAdapter.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
@@ -556,13 +556,13 @@ public class ConnectionAdapterTests extends PersistenceUnitTestCase
 	@Override
 	protected Object getPersistenceUnitProperty(String propertyName) throws NoSuchFieldException {
 		if (propertyName.equals(Connection.TRANSACTION_TYPE_PROPERTY)) {
-			return this.persistenceUnit().getSpecifiedTransactionType();
+			return this.getPersistenceUnit().getSpecifiedTransactionType();
 		}
 		else if (propertyName.equals(Connection.JTA_DATA_SOURCE_PROPERTY)) {
-			return this.persistenceUnit().getJtaDataSource();
+			return this.getPersistenceUnit().getJtaDataSource();
 		}
 		else if (propertyName.equals(Connection.NON_JTA_DATA_SOURCE_PROPERTY)) {
-			return this.persistenceUnit().getNonJtaDataSource();
+			return this.getPersistenceUnit().getNonJtaDataSource();
 		}
 		this.throwMissingDefinition("getPersistenceUnitProperty", propertyName);
 		return null;
@@ -571,17 +571,17 @@ public class ConnectionAdapterTests extends PersistenceUnitTestCase
 	@Override
 	protected void setPersistenceUnitProperty(String propertyName, Object newValue) throws NoSuchFieldException {
 		if (propertyName.equals(Connection.TRANSACTION_TYPE_PROPERTY))
-			this.persistenceUnit().setSpecifiedTransactionType((PersistenceUnitTransactionType) newValue);
+			this.getPersistenceUnit().setSpecifiedTransactionType((PersistenceUnitTransactionType) newValue);
 		else if (propertyName.equals(Connection.JTA_DATA_SOURCE_PROPERTY))
-			this.persistenceUnit().setJtaDataSource((String) newValue);
+			this.getPersistenceUnit().setJtaDataSource((String) newValue);
 		else if (propertyName.equals(Connection.NON_JTA_DATA_SOURCE_PROPERTY))
-			this.persistenceUnit().setNonJtaDataSource((String) newValue);
+			this.getPersistenceUnit().setNonJtaDataSource((String) newValue);
 		else
 			this.throwMissingDefinition("setPersistenceUnitProperty", propertyName);
 	}
 	
 	@Override
-	protected PersistenceUnitProperties model() {
+	protected PersistenceUnitProperties getModel() {
 		return this.connection;
 	}
 }

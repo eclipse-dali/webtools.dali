@@ -111,7 +111,7 @@ public class OptionsAdapterTests extends PersistenceUnitTestCase
 		// new
 		ListAspectAdapter<PersistenceUnit, Property> propertiesAdapter = 
 			(ListAspectAdapter<PersistenceUnit, Property>) this.subject.getPropertiesAdapter();
-		GenericProperty ctdProperty = (GenericProperty) this.persistenceUnit().getProperty(INCLUDE_DESCRIPTOR_QUERIES_KEY);
+		GenericProperty ctdProperty = (GenericProperty) this.getPersistenceUnit().getProperty(INCLUDE_DESCRIPTOR_QUERIES_KEY);
 		ListValueModel<Property> propertyListAdapter = this.subject.getPropertyListAdapter();
 		
 		assertTrue(propertiesAdapter.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
@@ -218,8 +218,8 @@ public class OptionsAdapterTests extends PersistenceUnitTestCase
 	 * Verifies setting custom targetDatabase and literals.
 	 */
 	protected void verifySetTargetDatabase(String elKey, Object testValue1, Object testValue2) throws Exception {
-		Property property = this.persistenceUnit().getProperty(elKey);
-		String propertyName = this.model().propertyIdFor(property);
+		Property property = this.getPersistenceUnit().getProperty(elKey);
+		String propertyName = this.getModel().propertyIdFor(property);
 		// test set custom targetDatabase.
 		this.clearEvent();
 		this.setProperty(propertyName, testValue2);
@@ -228,19 +228,19 @@ public class OptionsAdapterTests extends PersistenceUnitTestCase
 		// test set (TargetDatabase) null
 		this.clearEvent();
 		this.options.setTargetDatabase((TargetDatabase) null);
-		assertFalse(this.persistenceUnit().containsProperty(elKey));
+		assertFalse(this.getPersistenceUnit().containsProperty(elKey));
 		this.verifyPutProperty(propertyName, null);
 		
 		// test set enum literal
 		this.clearEvent();
 		this.setProperty(propertyName, testValue1.toString());
-		assertTrue(this.persistenceUnit().containsProperty(elKey));
+		assertTrue(this.getPersistenceUnit().containsProperty(elKey));
 		this.verifyPutProperty(propertyName, this.getEclipseLinkStringValueOf(testValue1));
 
 		// test set (String) null
 		this.clearEvent();
 		this.options.setTargetDatabase((String) null);
-		assertFalse(this.persistenceUnit().containsProperty(elKey));
+		assertFalse(this.getPersistenceUnit().containsProperty(elKey));
 		this.verifyPutProperty(propertyName, null);
 	}
 	
@@ -272,8 +272,8 @@ public class OptionsAdapterTests extends PersistenceUnitTestCase
 	 * Verifies setting custom targetServer and literals.
 	 */
 	protected void verifySetTargetServer(String elKey, Object testValue1, Object testValue2) throws Exception {
-		Property property = this.persistenceUnit().getProperty(elKey);
-		String propertyName = this.model().propertyIdFor(property);
+		Property property = this.getPersistenceUnit().getProperty(elKey);
+		String propertyName = this.getModel().propertyIdFor(property);
 		// test set custom targetServer.
 		this.clearEvent();
 		this.setProperty(propertyName, testValue2);
@@ -282,19 +282,19 @@ public class OptionsAdapterTests extends PersistenceUnitTestCase
 		// test set (TargetServer) null
 		this.clearEvent();
 		this.options.setTargetServer((TargetServer) null);
-		assertFalse(this.persistenceUnit().containsProperty(elKey));
+		assertFalse(this.getPersistenceUnit().containsProperty(elKey));
 		this.verifyPutProperty(propertyName, null);
 		
 		// test set enum literal
 		this.clearEvent();
 		this.setProperty(propertyName, testValue1.toString());
-		assertTrue(this.persistenceUnit().containsProperty(elKey));
+		assertTrue(this.getPersistenceUnit().containsProperty(elKey));
 		this.verifyPutProperty(propertyName, this.getEclipseLinkStringValueOf(testValue1));
 
 		// test set (String) null
 		this.clearEvent();
 		this.options.setTargetServer((String) null);
-		assertFalse(this.persistenceUnit().containsProperty(elKey));
+		assertFalse(this.getPersistenceUnit().containsProperty(elKey));
 		this.verifyPutProperty(propertyName, null);
 	}
 
@@ -410,7 +410,7 @@ public class OptionsAdapterTests extends PersistenceUnitTestCase
 	}
 	
 	@Override
-	protected PersistenceUnitProperties model() {
+	protected PersistenceUnitProperties getModel() {
 		return this.options;
 	}
 }
