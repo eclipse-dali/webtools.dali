@@ -24,7 +24,6 @@ public class JptJavaResourceTests {
 		suite.addTestSuite(JavaResourcePersistentAttributeTests.class);
 		suite.addTestSuite(JPTToolsTests.class);
 		
-		suite.addTestSuite(AccessAnnotationTests.class);
 		suite.addTestSuite(AssociationOverrideTests.class);
 		suite.addTestSuite(AssociationOverridesTests.class);
 		suite.addTestSuite(AttributeOverrideTests.class);

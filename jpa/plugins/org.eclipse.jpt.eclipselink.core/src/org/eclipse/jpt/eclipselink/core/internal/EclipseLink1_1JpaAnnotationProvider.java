@@ -12,7 +12,7 @@ package org.eclipse.jpt.eclipselink.core.internal;
 import java.util.List;
 import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.internal.platform.AbstractJpaAnnotationProvider;
-import org.eclipse.jpt.core.internal.platform.Generic2_0JpaAnnotationProvider;
+import org.eclipse.jpt.core.internal.resource.java.AccessImpl.AccessAnnotationDefinition;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
 
 /**
@@ -41,7 +41,7 @@ public class EclipseLink1_1JpaAnnotationProvider
 	
 	@Override
 	protected void addDelegateAnnotationProvidersTo(List<JpaAnnotationProvider> providers) {
-		providers.add(Generic2_0JpaAnnotationProvider.instance());
+		//delegate to EclipseLink which delegates to Generic
 		providers.add(EclipseLinkJpaAnnotationProvider.instance());
 	}
 
@@ -52,7 +52,7 @@ public class EclipseLink1_1JpaAnnotationProvider
 	
 	@Override
 	protected void addTypeSupportingAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
-		//none
+		definitions.add(AccessAnnotationDefinition.instance());
 	}
 
 	@Override
@@ -62,6 +62,6 @@ public class EclipseLink1_1JpaAnnotationProvider
 	
 	@Override
 	protected void addAttributeSupportingAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
-		//none
+		definitions.add(AccessAnnotationDefinition.instance());
 	}
 }
