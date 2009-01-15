@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -82,6 +82,12 @@ public class GenericJavaPersistentType
 		return (PersistentType.Owner) super.getParent();
 	}
 	
+	//convenience since getParent is overloaded, confusing if this means containment parent
+	//or inheritance parentPersistentType
+	protected PersistentType.Owner getOwner() {
+		return getParent();
+	}
+
 	public String getName() {
 		return this.name;
 	}
@@ -145,12 +151,12 @@ public class GenericJavaPersistentType
 		this.access = newAccess;
 	}
 
-	public AccessType getOverrideAccess() {
-		return this.getParent().getOverridePersistentTypeAccess();
+	public AccessType getOwnerOverrideAccess() {
+		return this.getOwner().getOverridePersistentTypeAccess();
 	}
 
-	public AccessType getDefaultAccess() {
-		return this.getParent().getDefaultPersistentTypeAccess();
+	public AccessType getOwnerDefaultAccess() {
+		return this.getOwner().getDefaultPersistentTypeAccess();
 	}
 
 	protected Iterator<JavaPersistentAttribute> attributesNamed(final String attributeName) {
@@ -371,7 +377,7 @@ public class GenericJavaPersistentType
 	 * 		Default to FIELD if all else fails.
 	 */
 	protected AccessType buildAccess() {
-		AccessType accessType = this.getParent().getOverridePersistentTypeAccess();
+		AccessType accessType = this.getOwnerOverrideAccess();
 		if (accessType != null) {
 			return accessType;
 		}
@@ -388,7 +394,7 @@ public class GenericJavaPersistentType
 			}
 		}
 
-		accessType = this.getParent().getDefaultPersistentTypeAccess();
+		accessType = this.getOwnerDefaultAccess();
 		if (accessType != null) {
 			return accessType;
 		}

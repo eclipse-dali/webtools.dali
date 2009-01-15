@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -32,7 +32,6 @@ import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.orm.OrmMappedSuperclass;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.core.context.orm.OrmStructureNode;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping;
@@ -179,12 +178,12 @@ public class GenericOrmPersistentType
 		return getMapping().getAccess();
 	}
 	
-	public AccessType getOverrideAccess() {
-		return this.getParent().getOverridePersistentTypeAccess();
+	public AccessType getOwnerOverrideAccess() {
+		return this.getEntityMappings().getOverridePersistentTypeAccess();
 	}
 
-	public AccessType getDefaultAccess() {
-		return this.getParent().getDefaultPersistentTypeAccess();
+	public AccessType getOwnerDefaultAccess() {
+		return this.getEntityMappings().getDefaultPersistentTypeAccess();
 	}
 
 	public void changeMapping(OrmPersistentAttribute ormPersistentAttribute, OrmAttributeMapping oldMapping, OrmAttributeMapping newMapping) {
