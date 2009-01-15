@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -24,11 +24,11 @@ import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.persistence.ClassRef;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.core.internal.resource.orm.OrmResourceModelProvider;
-import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResourceModelProvider;
-import org.eclipse.jpt.core.resource.orm.OrmResource;
+import org.eclipse.jpt.core.internal.resource.orm.OrmXmlResourceProvider;
+import org.eclipse.jpt.core.internal.resource.persistence.PersistenceXmlResourceProvider;
+import org.eclipse.jpt.core.resource.orm.OrmXmlResource;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
-import org.eclipse.jpt.core.resource.persistence.PersistenceResource;
+import org.eclipse.jpt.core.resource.persistence.PersistenceXmlResource;
 import org.eclipse.jpt.core.resource.persistence.XmlJavaClassRef;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
@@ -42,9 +42,9 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 {
 	protected static final String BASE_PROJECT_NAME = "ContextModelTestProject";
 	
-	protected PersistenceResourceModelProvider persistenceResourceModelProvider;
+	protected PersistenceXmlResourceProvider persistenceResourceModelProvider;
 	
-	protected OrmResourceModelProvider ormResourceModelProvider;
+	protected OrmXmlResourceProvider ormResourceModelProvider;
 	
 	
 	protected ContextModelTestCase(String name) {
@@ -55,9 +55,9 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 	protected void setUp() throws Exception {
 		super.setUp();
 		this.persistenceResourceModelProvider = 
-			PersistenceResourceModelProvider.getDefaultModelProvider(getJavaProject().getProject());
+			PersistenceXmlResourceProvider.getDefaultXmlResourceProvider(getJavaProject().getProject());
 		this.ormResourceModelProvider = 
-			OrmResourceModelProvider.getDefaultModelProvider(getJavaProject().getProject());
+			OrmXmlResourceProvider.getDefaultXmlResourceProvider(getJavaProject().getProject());
 		waitForWorkspaceJobs();
 	}
 	
@@ -103,16 +103,16 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 		}
 	}
 	
-	protected PersistenceResource getPersistenceResource() {
-		return this.persistenceResourceModelProvider.getResource();
+	protected PersistenceXmlResource getPersistenceXmlResource() {
+		return this.persistenceResourceModelProvider.getXmlResource();
 	}
 	
-	protected OrmResource getOrmResource() {
-		return this.ormResourceModelProvider.getResource();
+	protected OrmXmlResource getOrmXmlResource() {
+		return this.ormResourceModelProvider.getXmlResource();
 	}
 	
 	protected XmlPersistence getXmlPersistence() {
-		return getPersistenceResource().getPersistence();
+		return getPersistenceXmlResource().getPersistence();
 	}
 	
 	protected EntityMappings getEntityMappings() {

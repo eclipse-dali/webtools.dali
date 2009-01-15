@@ -1,12 +1,11 @@
 /*******************************************************************************
- *  Copyright (c) 2008  Oracle. 
- *  All rights reserved.  This program and the accompanying materials are 
- *  made available under the terms of the Eclipse Public License v1.0 which 
- *  accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.operations;
 
@@ -27,11 +26,11 @@ import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
-import org.eclipse.jpt.core.internal.resource.orm.OrmResourceModelProvider;
-import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResourceModelProvider;
+import org.eclipse.jpt.core.internal.resource.orm.OrmXmlResourceProvider;
+import org.eclipse.jpt.core.internal.resource.persistence.PersistenceXmlResourceProvider;
 import org.eclipse.jpt.core.resource.orm.AccessType;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
-import org.eclipse.jpt.core.resource.orm.OrmResource;
+import org.eclipse.jpt.core.resource.orm.OrmXmlResource;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitDefaults;
 import org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitMetadata;
@@ -123,12 +122,12 @@ public class OrmFileCreationOperation extends AbstractDataModelOperation
 	protected void createMappingFile(IFolder folder) {
 		String filePath = getDataModel().getStringProperty(FILE_PATH);
 		IFile file = folder.getFile(new Path(filePath));
-		final OrmResourceModelProvider modelProvider =
-			OrmResourceModelProvider.getModelProvider(file);
+		final OrmXmlResourceProvider modelProvider =
+			OrmXmlResourceProvider.getXmlResourceProvider(file);
 		
 		modelProvider.modify(new Runnable() {
 				public void run() {
-					OrmResource ormResource = modelProvider.getResource();
+					OrmXmlResource ormResource = modelProvider.getXmlResource();
 					
 					XmlEntityMappings entityMappings = OrmFactory.eINSTANCE.createXmlEntityMappings();
 					entityMappings.setVersion("1.0"); //$NON-NLS-1$
@@ -151,8 +150,8 @@ public class OrmFileCreationOperation extends AbstractDataModelOperation
 			return;
 		}
 		
-		PersistenceResourceModelProvider modelProvider =
-			PersistenceResourceModelProvider.getDefaultModelProvider(getProject());
+		PersistenceXmlResourceProvider modelProvider =
+			PersistenceXmlResourceProvider.getDefaultXmlResourceProvider(getProject());
 		final PersistenceUnit pUnit = getPersistenceUnit();
 		modelProvider.modify(new Runnable() {
 				public void run() {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,43 +11,40 @@ package org.eclipse.jpt.core.internal;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.content.IContentType;
-import org.eclipse.jpt.core.JpaFactory;
-import org.eclipse.jpt.core.JpaFile;
-import org.eclipse.jpt.core.JpaFileProvider;
 import org.eclipse.jpt.core.JpaProject;
+import org.eclipse.jpt.core.JpaResourceModel;
+import org.eclipse.jpt.core.JpaResourceModelProvider;
 import org.eclipse.jpt.core.JptCorePlugin;
 
 /**
- * orm.xml
+ * persistence.xml
  */
-public class OrmJpaFileProvider
-	implements JpaFileProvider
+public class PersistenceResourceModelProvider
+	implements JpaResourceModelProvider
 {
-	public static final String RESOURCE_TYPE = "ORM"; //$NON-NLS-1$
-
 	// singleton
-	private static final OrmJpaFileProvider INSTANCE = new OrmJpaFileProvider();
+	private static final JpaResourceModelProvider INSTANCE = new PersistenceResourceModelProvider();
 
 	/**
 	 * Return the singleton.
 	 */
-	public static OrmJpaFileProvider instance() {
+	public static JpaResourceModelProvider instance() {
 		return INSTANCE;
 	}
 
 	/**
 	 * Ensure single instance.
 	 */
-	private OrmJpaFileProvider() {
+	private PersistenceResourceModelProvider() {
 		super();
 	}
 
 	public IContentType getContentType() {
-		return JptCorePlugin.ORM_XML_CONTENT_TYPE;
+		return JptCorePlugin.PERSISTENCE_XML_CONTENT_TYPE;
 	}
 
-	public JpaFile buildJpaFile(JpaProject jpaProject, IFile file, JpaFactory factory) {
-		return factory.buildOrmJpaFile(jpaProject, file, RESOURCE_TYPE);
+	public JpaResourceModel buildResourceModel(JpaProject jpaProject, IFile file) {
+		return org.eclipse.jpt.core.internal.resource.persistence.PersistenceXmlResourceProvider.getXmlResourceProvider(file).getXmlResource();
 	}
 
 }

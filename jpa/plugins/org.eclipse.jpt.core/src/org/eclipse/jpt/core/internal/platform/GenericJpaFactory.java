@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,10 +11,12 @@ package org.eclipse.jpt.core.internal.platform;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaDataSource;
 import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaProject;
+import org.eclipse.jpt.core.JpaResourceModel;
 import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
@@ -110,10 +112,9 @@ import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.core.context.persistence.Property;
+import org.eclipse.jpt.core.internal.GenericJpaFile;
 import org.eclipse.jpt.core.internal.GenericJpaDataSource;
 import org.eclipse.jpt.core.internal.GenericJpaProject;
-import org.eclipse.jpt.core.internal.JavaJpaFile;
-import org.eclipse.jpt.core.internal.XmlJpaFile;
 import org.eclipse.jpt.core.internal.context.GenericRootContextNode;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaAssociationOverride;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaAttributeOverride;
@@ -204,12 +205,9 @@ import org.eclipse.jpt.core.internal.context.persistence.GenericPersistence;
 import org.eclipse.jpt.core.internal.context.persistence.GenericPersistenceUnit;
 import org.eclipse.jpt.core.internal.context.persistence.GenericPersistenceXml;
 import org.eclipse.jpt.core.internal.context.persistence.GenericProperty;
-import org.eclipse.jpt.core.internal.resource.orm.OrmResourceModelProvider;
-import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResourceModelProvider;
-import org.eclipse.jpt.core.resource.common.JpaXmlResource;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.core.resource.orm.OrmResource;
+import org.eclipse.jpt.core.resource.orm.OrmXmlResource;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
 import org.eclipse.jpt.core.resource.orm.XmlBasic;
@@ -234,7 +232,7 @@ import org.eclipse.jpt.core.resource.orm.XmlTableGenerator;
 import org.eclipse.jpt.core.resource.orm.XmlTransient;
 import org.eclipse.jpt.core.resource.orm.XmlUniqueConstraint;
 import org.eclipse.jpt.core.resource.orm.XmlVersion;
-import org.eclipse.jpt.core.resource.persistence.PersistenceResource;
+import org.eclipse.jpt.core.resource.persistence.PersistenceXmlResource;
 import org.eclipse.jpt.core.resource.persistence.XmlJavaClassRef;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistence;
@@ -263,24 +261,8 @@ public class GenericJpaFactory
 		return new GenericJpaDataSource(jpaProject, connectionProfileName);
 	}
 	
-	public JpaFile buildJavaJpaFile(JpaProject jpaProject, IFile file, String resourceType) {
-		return new JavaJpaFile(jpaProject, file, resourceType);
-	}
-	
-	public JpaFile buildOrmJpaFile(JpaProject jpaProject, IFile file, String resourceType) {
-		return new XmlJpaFile(jpaProject, file, resourceType, this.buildOrmResource(file));
-	}
-
-	protected JpaXmlResource buildOrmResource(IFile file) {
-		return OrmResourceModelProvider.getModelProvider(file).getResource();
-	}
-
-	public JpaFile buildPersistenceJpaFile(JpaProject jpaProject, IFile file, String resourceType) {
-		return new XmlJpaFile(jpaProject, file, resourceType, this.buildPersistenceResource(file));
-	}
-	
-	protected JpaXmlResource buildPersistenceResource(IFile file) {
-		return PersistenceResourceModelProvider.getModelProvider(file).getResource();
+	public JpaFile buildJpaFile(JpaProject jpaProject, IFile file, IContentType contentType, JpaResourceModel resourceModel) {
+		return new GenericJpaFile(jpaProject, file, contentType, resourceModel);
 	}
 
 
@@ -290,15 +272,15 @@ public class GenericJpaFactory
 		return new GenericRootContextNode(parent);
 	}
 	
-	public MappingFile buildMappingFile(MappingFileRef parent, OrmResource resource) {
-		return this.buildOrmXml(parent, resource);
+	public MappingFile buildMappingFile(MappingFileRef parent, OrmXmlResource ormXmlresource) {
+		return this.buildOrmXml(parent, ormXmlresource);
 	}
 	
 
 	// ********** Persistence Context Model **********
 	
-	public PersistenceXml buildPersistenceXml(JpaRootContextNode parent, PersistenceResource persistenceResource) {
-		return new GenericPersistenceXml(parent, persistenceResource);
+	public PersistenceXml buildPersistenceXml(JpaRootContextNode parent, PersistenceXmlResource persistenceXmlResource) {
+		return new GenericPersistenceXml(parent, persistenceXmlResource);
 	}
 	
 	public Persistence buildPersistence(PersistenceXml parent, XmlPersistence xmlPersistence) {
@@ -328,8 +310,8 @@ public class GenericJpaFactory
 
 	// ********** ORM Context Model **********
 	
-	public OrmXml buildOrmXml(MappingFileRef parent, OrmResource ormResource) {
-		return new GenericOrmXml(parent, ormResource);
+	public OrmXml buildOrmXml(MappingFileRef parent, OrmXmlResource ormXmlResource) {
+		return new GenericOrmXml(parent, ormXmlResource);
 	}
 	
 	public EntityMappings buildEntityMappings(OrmXml parent, XmlEntityMappings xmlEntityMappings) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.structure;
 
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.ui.jface.ItemLabelProviderFactory;
 import org.eclipse.jpt.ui.jface.TreeItemContentProviderFactory;
 
@@ -25,9 +26,9 @@ import org.eclipse.jpt.ui.jface.TreeItemContentProviderFactory;
 public interface JpaStructureProvider {
 
 	/**
-	 * Return the type of resource supported by the structure provider.
+	 * Return the type of content supported by the structure provider.
 	 */
-	String getResourceType();
+	IContentType getContentType();
 
 	/**
 	 * Build an factory to create {@link TreeItemContentProvider}s

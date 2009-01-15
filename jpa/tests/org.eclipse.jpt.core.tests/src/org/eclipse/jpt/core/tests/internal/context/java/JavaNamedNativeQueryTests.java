@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -152,24 +152,24 @@ public class JavaNamedNativeQueryTests extends ContextModelTestCase
 	
 		
 		QueryHint queryHint = namedNativeQuery.addHint(0);
-		getOrmResource().save(null);
+		getOrmXmlResource().save(null);
 		queryHint.setName("FOO");
-		getOrmResource().save(null);
+		getOrmXmlResource().save(null);
 
 		assertEquals("FOO", javaNamedNativeQuery.hintAt(0).getName());
 		
 		QueryHint queryHint2 = namedNativeQuery.addHint(0);
-		getOrmResource().save(null);
+		getOrmXmlResource().save(null);
 		queryHint2.setName("BAR");
-		getOrmResource().save(null);
+		getOrmXmlResource().save(null);
 		
 		assertEquals("BAR", javaNamedNativeQuery.hintAt(0).getName());
 		assertEquals("FOO", javaNamedNativeQuery.hintAt(1).getName());
 		
 		QueryHint queryHint3 = namedNativeQuery.addHint(1);
-		getOrmResource().save(null);
+		getOrmXmlResource().save(null);
 		queryHint3.setName("BAZ");
-		getOrmResource().save(null);
+		getOrmXmlResource().save(null);
 		
 		assertEquals("BAR", javaNamedNativeQuery.hintAt(0).getName());
 		assertEquals("BAZ", javaNamedNativeQuery.hintAt(1).getName());

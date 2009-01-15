@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -27,8 +27,8 @@ import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.JpaProject.Config;
 import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProperties;
-import org.eclipse.jpt.core.internal.resource.orm.OrmResourceModelProvider;
-import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResourceModelProvider;
+import org.eclipse.jpt.core.internal.resource.orm.OrmXmlResourceProvider;
+import org.eclipse.jpt.core.internal.resource.persistence.PersistenceXmlResourceProvider;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
@@ -224,8 +224,8 @@ public class GenericJpaModel
 	}
 
 	private void createPersistenceXml(IProject project) {
-		PersistenceResourceModelProvider modelProvider =
-			PersistenceResourceModelProvider.getDefaultModelProvider(project);
+		PersistenceXmlResourceProvider modelProvider =
+			PersistenceXmlResourceProvider.getDefaultXmlResourceProvider(project);
 		try {
 			modelProvider.createResource();
 		}
@@ -235,8 +235,8 @@ public class GenericJpaModel
 	}
 
 	private void createOrmXml(IProject project) {
-		OrmResourceModelProvider modelProvider =
-			OrmResourceModelProvider.getDefaultModelProvider(project);
+		OrmXmlResourceProvider modelProvider =
+			OrmXmlResourceProvider.getDefaultXmlResourceProvider(project);
 		try {
 			modelProvider.createResource();
 		}

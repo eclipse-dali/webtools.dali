@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,6 +11,7 @@ package org.eclipse.jpt.core;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
@@ -108,7 +109,7 @@ import org.eclipse.jpt.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.core.context.persistence.Property;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.core.resource.orm.OrmResource;
+import org.eclipse.jpt.core.resource.orm.OrmXmlResource;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
 import org.eclipse.jpt.core.resource.orm.XmlBasic;
@@ -133,7 +134,7 @@ import org.eclipse.jpt.core.resource.orm.XmlTableGenerator;
 import org.eclipse.jpt.core.resource.orm.XmlTransient;
 import org.eclipse.jpt.core.resource.orm.XmlUniqueConstraint;
 import org.eclipse.jpt.core.resource.orm.XmlVersion;
-import org.eclipse.jpt.core.resource.persistence.PersistenceResource;
+import org.eclipse.jpt.core.resource.persistence.PersistenceXmlResource;
 import org.eclipse.jpt.core.resource.persistence.XmlJavaClassRef;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistence;
@@ -178,21 +179,12 @@ public interface JpaFactory
 	JpaProject buildJpaProject(JpaProject.Config config) throws CoreException;
 	
 	JpaDataSource buildJpaDataSource(JpaProject jpaProject, String connectionProfileName);
-	
+
 	/**
-	 * Construct a Java JPA file for the specified JPA project and file.
+	 * Construct a JPA file for the specified JPA project, file, content type,
+	 * and resource model.
 	 */
-	JpaFile buildJavaJpaFile(JpaProject jpaProject, IFile file, String resourceType);
-	
-	/**
-	 * Construct a Persistence JPA file for the specified JPA project and file.
-	 */
-	JpaFile buildPersistenceJpaFile(JpaProject jpaProject, IFile file, String resourceType);
-	
-	/**
-	 * Construct an ORM JPA file for the specified JPA project and file.
-	 */
-	JpaFile buildOrmJpaFile(JpaProject jpaProject, IFile file, String resourceType);
+	JpaFile buildJpaFile(JpaProject jpaProject, IFile file, IContentType contentType, JpaResourceModel resourceModel);
 	
 	
 	// ********** Context Nodes **********
@@ -205,12 +197,12 @@ public interface JpaFactory
 	 */
 	JpaRootContextNode buildRootContextNode(JpaProject jpaProject);
 
-	MappingFile buildMappingFile(MappingFileRef parent, OrmResource resource);
+	MappingFile buildMappingFile(MappingFileRef parent, OrmXmlResource resource);
 	
 	
 	// ********** Persistence Context Model **********
 	
-	PersistenceXml buildPersistenceXml(JpaRootContextNode parent, PersistenceResource persistenceResource);
+	PersistenceXml buildPersistenceXml(JpaRootContextNode parent, PersistenceXmlResource persistenceResource);
 	
 	Persistence buildPersistence(PersistenceXml parent, XmlPersistence resourcePersistence);
 	
@@ -230,7 +222,7 @@ public interface JpaFactory
 	
 	// ********** ORM Context Model **********
 	
-	OrmXml buildOrmXml(MappingFileRef parent, OrmResource ormResource);
+	OrmXml buildOrmXml(MappingFileRef parent, OrmXmlResource ormResource);
 	
 	EntityMappings buildEntityMappings(OrmXml parent, XmlEntityMappings entityMappings);
 	

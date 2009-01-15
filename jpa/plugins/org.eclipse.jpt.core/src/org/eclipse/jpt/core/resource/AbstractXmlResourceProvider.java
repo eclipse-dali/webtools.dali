@@ -1,12 +1,11 @@
 /*******************************************************************************
- *  Copyright (c) 2008  Oracle. 
- *  All rights reserved.  This program and the accompanying materials are 
- *  made available under the terms of the Eclipse Public License v1.0 which 
- *  accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
  *******************************************************************************/
 package org.eclipse.jpt.core.resource;
 
@@ -60,8 +59,8 @@ import org.eclipse.wst.common.internal.emfworkbench.validateedit.ResourceStateVa
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public abstract class AbstractResourceModelProvider<R extends JpaXmlResource> 
-	implements JpaResourceModelProvider, ResourceStateInputProvider, ResourceStateValidator
+public abstract class AbstractXmlResourceProvider<R extends JpaXmlResource> 
+	implements JpaXmlResourceProvider, ResourceStateInputProvider, ResourceStateValidator
 {
 	protected IProject project;
 	
@@ -71,7 +70,7 @@ public abstract class AbstractResourceModelProvider<R extends JpaXmlResource>
 	
 	protected final ResourceAdapter resourceAdapter = new ResourceAdapter();
 	
-	protected final ListenerList<JpaResourceModelProviderListener> listenerList = new ListenerList<JpaResourceModelProviderListener>(JpaResourceModelProviderListener.class);
+	protected final ListenerList<JpaXmlResourceProviderListener> listenerList = new ListenerList<JpaXmlResourceProviderListener>(JpaXmlResourceProviderListener.class);
 	
 	protected ResourceStateValidator stateValidator;
 	
@@ -84,7 +83,7 @@ public abstract class AbstractResourceModelProvider<R extends JpaXmlResource>
 	 * {@link #buildFileUri(IPath)} will attempt to build an absolutely pathed 
 	 * URI for the given path.
 	 */
-	public AbstractResourceModelProvider(IProject project, IPath resourcePath) {
+	public AbstractXmlResourceProvider(IProject project, IPath resourcePath) {
 		super();
 		this.project = project;
 		this.fileUri = buildFileUri(resourcePath);
@@ -110,7 +109,7 @@ public abstract class AbstractResourceModelProvider<R extends JpaXmlResource>
 	 * this will return a stub resource.  You must call #createResource() to 
 	 * create the file on the file system.
 	 */
-	public R getResource() {
+	public R getXmlResource() {
 		if (this.resource == null) {
 			try {
 				this.resource = ensureCorrectType(WorkbenchResourceHelper.getOrCreateResource(this.fileUri, getResourceSet()));
@@ -130,13 +129,13 @@ public abstract class AbstractResourceModelProvider<R extends JpaXmlResource>
 	 * model provider.
 	 * Return it if so, throw a ClassCastException otherwise.
 	 */
-	protected abstract R ensureCorrectType(Resource resource) throws ClassCastException;
+	protected abstract R ensureCorrectType(Resource r) throws ClassCastException;
 	
 	public R createResource() throws CoreException {
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 		IWorkspaceRunnable runnable = new IWorkspaceRunnable() {
 			public void run(IProgressMonitor monitor) throws CoreException {
-				JpaXmlResource aResource = getResource();
+				JpaXmlResource aResource = getXmlResource();
 				if (! aResource.exists() && aResource.getContents().isEmpty()) {
 					populateRoot(aResource);
 					try {
@@ -179,14 +178,14 @@ public abstract class AbstractResourceModelProvider<R extends JpaXmlResource>
 		return resource.getContents();
 	}
 
-	public void addListener(JpaResourceModelProviderListener listener) {
+	public void addListener(JpaXmlResourceProviderListener listener) {
 		if (this.listenerList.isEmpty()) {
 			engageResource();
 		}
 		this.listenerList.add(listener);
 	}
 	
-	public void removeListener(JpaResourceModelProviderListener listener) {
+	public void removeListener(JpaXmlResourceProviderListener listener) {
 		listenerList.remove(listener);
 		if (this.listenerList.isEmpty()) {
 			disengageResource();
@@ -215,15 +214,15 @@ public abstract class AbstractResourceModelProvider<R extends JpaXmlResource>
 	
 	protected void resourceIsLoadedChanged(Resource aResource, boolean oldValue, boolean newValue) {
 		if ( ! this.listenerList.isEmpty()) {
-			int eventType= newValue ? JpaResourceModelProviderEvent.RESOURCE_LOADED : JpaResourceModelProviderEvent.RESOURCE_UNLOADED;
-			JpaResourceModelProviderEvent evt = new JpaResourceModelProviderEvent(this, eventType);
+			int eventType= newValue ? JpaXmlResourceProviderEvent.RESOURCE_LOADED : JpaXmlResourceProviderEvent.RESOURCE_UNLOADED;
+			JpaXmlResourceProviderEvent evt = new JpaXmlResourceProviderEvent(this, eventType);
 			notifyListeners(evt);
 		}
 	}
 	
-	protected void notifyListeners(JpaResourceModelProviderEvent event) {
+	protected void notifyListeners(JpaXmlResourceProviderEvent event) {
 		NotifyRunner notifier = new NotifyRunner(event); 
-		for (JpaResourceModelProviderListener listener : this.listenerList.getListeners()) {
+		for (JpaXmlResourceProviderListener listener : this.listenerList.getListeners()) {
 			notifier.setListener(listener);
 			SafeRunner.run(notifier);
 		}
@@ -312,7 +311,7 @@ public abstract class AbstractResourceModelProvider<R extends JpaXmlResource>
 	}
 	
 	public List getResources() {
-		return Collections.singletonList(getResource());
+		return Collections.singletonList(getXmlResource());
 	}
 	
 	public void cacheNonResourceValidateState(List roNonResourceFiles) {
@@ -334,18 +333,18 @@ public abstract class AbstractResourceModelProvider<R extends JpaXmlResource>
 	
 	public class NotifyRunner implements ISafeRunnable 
 	{
-		private final JpaResourceModelProviderEvent event;
+		private final JpaXmlResourceProviderEvent event;
 		
-		private JpaResourceModelProviderListener listener;
+		private JpaXmlResourceProviderListener listener;
 		
 		
-		public NotifyRunner(JpaResourceModelProviderEvent event) {
+		public NotifyRunner(JpaXmlResourceProviderEvent event) {
 			Assert.isNotNull(event);
 			this.event = event;
 		}
 		
 		
-		public void setListener(JpaResourceModelProviderListener listener) {
+		public void setListener(JpaXmlResourceProviderListener listener) {
 			this.listener = listener;
 		}
 		

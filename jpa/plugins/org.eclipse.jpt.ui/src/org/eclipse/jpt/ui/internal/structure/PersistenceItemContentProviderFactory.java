@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,12 +13,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
+import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.persistence.ClassRef;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.core.internal.XmlJpaFile;
 import org.eclipse.jpt.ui.internal.jface.AbstractTreeItemContentProvider;
 import org.eclipse.jpt.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
 import org.eclipse.jpt.ui.jface.DelegatingContentAndLabelProvider;
@@ -36,8 +36,8 @@ public class PersistenceItemContentProviderFactory
 	public TreeItemContentProvider buildItemContentProvider(
 			Object item, DelegatingContentAndLabelProvider contentAndLabelProvider) {
 		DelegatingTreeContentAndLabelProvider treeContentProvider = (DelegatingTreeContentAndLabelProvider) contentAndLabelProvider;
-		if (item instanceof XmlJpaFile) {
-			return new ResourceModelItemContentProvider((XmlJpaFile) item, treeContentProvider);
+		if (item instanceof JpaFile) {
+			return new ResourceModelItemContentProvider((JpaFile) item, treeContentProvider);
 		}
 		else if (item instanceof Persistence) {
 			return new PersistenceItemContentProvider((Persistence) item, treeContentProvider);

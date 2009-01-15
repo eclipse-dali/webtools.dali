@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.context;
 
 import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
-import org.eclipse.jpt.core.resource.orm.OrmResource;
+import org.eclipse.jpt.core.resource.orm.OrmXmlResource;
 
 /**
  * Provisional API: This interface is part of an interim API that is still
@@ -30,6 +30,6 @@ public interface MappingFileProvider {
 	/**
 	 * Build a mapping with the specified parent and resource.
 	 */
-	MappingFile buildMappingFile(MappingFileRef parent, OrmResource resource, JpaFactory factory);
+	MappingFile buildMappingFile(MappingFileRef parent, OrmXmlResource resource, JpaFactory factory);
 
 }

@@ -18,8 +18,8 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.JavaConventions;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
-import org.eclipse.jpt.core.internal.resource.orm.OrmResourceModelProvider;
-import org.eclipse.jpt.core.resource.orm.OrmResource;
+import org.eclipse.jpt.core.internal.resource.orm.OrmXmlResourceProvider;
+import org.eclipse.jpt.core.resource.orm.OrmXmlResource;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.wizards.entity.EntityWizardMsg;
 import org.eclipse.jpt.ui.internal.wizards.entity.data.operation.NewEntityClassOperation;
@@ -178,8 +178,8 @@ public class EntityDataModelProvider extends NewJavaClassDataModelProvider imple
 			String projectName = model.getStringProperty(PROJECT_NAME);
 			IProject project = ProjectUtilities.getProject(projectName);
 			if (project != null) {
-				OrmResourceModelProvider modelProvider = OrmResourceModelProvider.getModelProvider(project, xmlName);
-				OrmResource ormResource = modelProvider.getResource();
+				OrmXmlResourceProvider modelProvider = OrmXmlResourceProvider.getXmlResourceProvider(project, xmlName);
+				OrmXmlResource ormResource = modelProvider.getXmlResource();
 				if (!ormResource.exists()) {
 					return new Status(
 						IStatus.ERROR, JptUiPlugin.PLUGIN_ID,

@@ -45,15 +45,15 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jem.util.logger.proxy.Logger;
 import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.core.internal.resource.orm.OrmResourceModelProvider;
-import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResourceModelProvider;
+import org.eclipse.jpt.core.internal.resource.orm.OrmXmlResourceProvider;
+import org.eclipse.jpt.core.internal.resource.persistence.PersistenceXmlResourceProvider;
 import org.eclipse.jpt.core.resource.orm.AccessType;
 import org.eclipse.jpt.core.resource.orm.Attributes;
 import org.eclipse.jpt.core.resource.orm.Inheritance;
 import org.eclipse.jpt.core.resource.orm.InheritanceType;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.OrmPackage;
-import org.eclipse.jpt.core.resource.orm.OrmResource;
+import org.eclipse.jpt.core.resource.orm.OrmXmlResource;
 import org.eclipse.jpt.core.resource.orm.XmlEntity;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.core.resource.orm.XmlIdClass;
@@ -61,7 +61,7 @@ import org.eclipse.jpt.core.resource.orm.XmlIdImpl;
 import org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass;
 import org.eclipse.jpt.core.resource.orm.XmlTable;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
-import org.eclipse.jpt.core.resource.persistence.PersistenceResource;
+import org.eclipse.jpt.core.resource.persistence.PersistenceXmlResource;
 import org.eclipse.jpt.core.resource.persistence.XmlJavaClassRef;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistence;
@@ -399,16 +399,16 @@ public class NewEntityClassOperation extends AbstractDataModelOperation {
 		Job job = new Job(EntityWizardMsg.ADD_ENTITY_TO_XML) {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
-				final OrmResourceModelProvider modelProvider;
+				final OrmXmlResourceProvider modelProvider;
 				if (model.isMappingXMLDefault()) {
-					modelProvider = OrmResourceModelProvider.getDefaultModelProvider(project);
+					modelProvider = OrmXmlResourceProvider.getDefaultXmlResourceProvider(project);
 				}
 				else {
-					modelProvider = OrmResourceModelProvider.getModelProvider(project, model.getMappingXMLName());
+					modelProvider = OrmXmlResourceProvider.getXmlResourceProvider(project, model.getMappingXMLName());
 				}
 				modelProvider.modify(new Runnable() {
 					public void run() {
-						OrmResource resource = modelProvider.getResource();
+						OrmXmlResource resource = modelProvider.getXmlResource();
 						
 						XmlEntityMappings entityMappings = resource.getEntityMappings();
 						if (entityMappings == null) {
@@ -483,16 +483,16 @@ public class NewEntityClassOperation extends AbstractDataModelOperation {
 		Job job = new Job(EntityWizardMsg.ADD_MAPPED_SUPERCLASS_TO_XML) {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
-				final OrmResourceModelProvider modelProvider;
+				final OrmXmlResourceProvider modelProvider;
 				if (model.isMappingXMLDefault()) {
-					modelProvider = OrmResourceModelProvider.getDefaultModelProvider(project);
+					modelProvider = OrmXmlResourceProvider.getDefaultXmlResourceProvider(project);
 				}
 				else {
-					modelProvider = OrmResourceModelProvider.getModelProvider(project, model.getMappingXMLName());
+					modelProvider = OrmXmlResourceProvider.getXmlResourceProvider(project, model.getMappingXMLName());
 				}
 				modelProvider.modify(new Runnable() {
 					public void run() {
-						OrmResource resource = modelProvider.getResource();
+						OrmXmlResource resource = modelProvider.getXmlResource();
 						XmlEntityMappings entityMappings = resource.getEntityMappings();
 						if (entityMappings == null) {
 							entityMappings = OrmFactory.eINSTANCE.createXmlEntityMappings();
@@ -549,12 +549,12 @@ public class NewEntityClassOperation extends AbstractDataModelOperation {
 		Job job = new Job(EntityWizardMsg.APPLY_CHANGES_TO_PERSISTENCE_XML) {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
-				final PersistenceResourceModelProvider pmp = 
-					PersistenceResourceModelProvider.getDefaultModelProvider(project);
+				final PersistenceXmlResourceProvider pmp = 
+					PersistenceXmlResourceProvider.getDefaultXmlResourceProvider(project);
 				pmp.modify(new Runnable() {
 						public void run() {
 							String fileName = getLastSegment(model.getMappingXMLName());
-							PersistenceResource persistenceResource = pmp.getResource();
+							PersistenceXmlResource persistenceResource = pmp.getXmlResource();
 							XmlPersistence xmlPersistence = persistenceResource.getPersistence();
 							EList<XmlPersistenceUnit> persistenceUnits = xmlPersistence.getPersistenceUnits();
 							XmlPersistenceUnit persistenceUnit = persistenceUnits.get(0);// Multiply persistence unit support

@@ -1,16 +1,16 @@
 /*******************************************************************************
- *  Copyright (c) 2008  Oracle. 
- *  All rights reserved.  This program and the accompanying materials are 
- *  made available under the terms of the Eclipse Public License v1.0 which 
- *  accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
  *******************************************************************************/
 package org.eclipse.jpt.core.resource;
 
-import java.util.EventListener;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IPath;
 
 /**
  * Provisional API: This interface is part of an interim API that is still
@@ -19,8 +19,7 @@ import java.util.EventListener;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface JpaResourceModelProviderListener
-	extends EventListener
+public interface JpaXmlResourceProviderFactory
 {
-	public void modelChanged(JpaResourceModelProviderEvent event);
+	JpaXmlResourceProvider create(IProject project, IPath filePath);
 }

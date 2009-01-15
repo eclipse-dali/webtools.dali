@@ -1,12 +1,11 @@
 /*******************************************************************************
- *  Copyright (c) 2007 Oracle. 
- *  All rights reserved.  This program and the accompanying materials 
- *  are made available under the terms of the Eclipse Public License v1.0 
- *  which accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.context.persistence;
 
@@ -24,12 +23,12 @@ import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.PersistenceStructureNodes;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
-import org.eclipse.jpt.core.internal.resource.JpaResourceModelProviderManager;
+import org.eclipse.jpt.core.internal.resource.JpaXmlResourceProviderManager;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.core.resource.JpaResourceModelProvider;
+import org.eclipse.jpt.core.resource.JpaXmlResourceProvider;
 import org.eclipse.jpt.core.resource.common.JpaXmlResource;
-import org.eclipse.jpt.core.resource.orm.OrmResource;
+import org.eclipse.jpt.core.resource.orm.OrmXmlResource;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.StringTools;
@@ -110,8 +109,8 @@ public class GenericMappingFileRef extends AbstractXmlContextNode
 	protected void initializeMappingFile() {
 		IFile platformFile = getPlatformFile();
 		if ((platformFile != null) && platformFile.exists()) {
-			JpaResourceModelProvider modelProvider = JpaResourceModelProviderManager.instance().getModelProvider(platformFile);
-			JpaXmlResource resource = (modelProvider == null) ? null : modelProvider.getResource();
+			JpaXmlResourceProvider modelProvider = JpaXmlResourceProviderManager.instance().getXmlResourceProvider(platformFile);
+			JpaXmlResource resource = (modelProvider == null) ? null : modelProvider.getXmlResource();
 			if (resource != null && resource.exists()) {
 				this.mappingFile = buildMappingFile(resource);
 			}
@@ -136,8 +135,8 @@ public class GenericMappingFileRef extends AbstractXmlContextNode
 	protected void updateMappingFile() {
 		IFile platformFile = getPlatformFile();	
 		if ((platformFile != null) && platformFile.exists()) {
-			JpaResourceModelProvider modelProvider = JpaResourceModelProviderManager.instance().getModelProvider(platformFile);
-			JpaXmlResource resource = (modelProvider == null) ? null : modelProvider.getResource();
+			JpaXmlResourceProvider modelProvider = JpaXmlResourceProviderManager.instance().getXmlResourceProvider(platformFile);
+			JpaXmlResource resource = (modelProvider == null) ? null : modelProvider.getXmlResource();
 			if (resource != null && resource.exists()) {
 				// this check is done to determine whether the resource type has 
 				// changed.  if so, the mapping file must be rebuilt.
@@ -170,7 +169,7 @@ public class GenericMappingFileRef extends AbstractXmlContextNode
 	}
 	
 	protected MappingFile buildMappingFile(JpaXmlResource resource) {
-		return this.getJpaPlatform().buildMappingFile(this, (OrmResource) resource);
+		return this.getJpaPlatform().buildMappingFile(this, (OrmXmlResource) resource);
 	}
 	
 	

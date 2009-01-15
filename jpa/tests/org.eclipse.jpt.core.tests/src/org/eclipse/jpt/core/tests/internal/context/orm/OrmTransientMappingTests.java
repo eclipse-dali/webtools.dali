@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -44,7 +44,7 @@ public class OrmTransientMappingTests extends ContextModelTestCase
 		XmlMappingFileRef mappingFileRef = PersistenceFactory.eINSTANCE.createXmlMappingFileRef();
 		mappingFileRef.setFileName(JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH);
 		getXmlPersistenceUnit().getMappingFiles().add(mappingFileRef);
-		getPersistenceResource().save(null);
+		getPersistenceXmlResource().save(null);
 	}
 
 	private ICompilationUnit createTestEntityTransientMapping() throws Exception {
@@ -68,7 +68,7 @@ public class OrmTransientMappingTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, "transientMapping");
 		OrmTransientMapping xmlTransientnMapping = (OrmTransientMapping) ormPersistentAttribute.getMapping();
-		XmlTransient transientResource = getOrmResource().getEntityMappings().getEntities().get(0).getAttributes().getTransients().get(0);
+		XmlTransient transientResource = getOrmXmlResource().getEntityMappings().getEntities().get(0).getAttributes().getTransients().get(0);
 		
 		assertEquals("transientMapping", xmlTransientnMapping.getName());
 		assertEquals("transientMapping", transientResource.getName());
@@ -88,7 +88,7 @@ public class OrmTransientMappingTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, "transientMapping");
 		OrmTransientMapping xmlTransientnMapping = (OrmTransientMapping) ormPersistentAttribute.getMapping();
-		XmlTransient transientResource = getOrmResource().getEntityMappings().getEntities().get(0).getAttributes().getTransients().get(0);
+		XmlTransient transientResource = getOrmXmlResource().getEntityMappings().getEntities().get(0).getAttributes().getTransients().get(0);
 		
 		assertEquals("transientMapping", xmlTransientnMapping.getName());
 		assertEquals("transientMapping", transientResource.getName());

@@ -142,11 +142,11 @@
 		
 		<modelProvider
 			fileContentType="org.eclipse.jpt.core.content.persistence"
-			factoryClass="org.eclipse.jpt.core.internal.resource.persistence.PersistenceResourceModelProviderFactory"/>
+			factoryClass="org.eclipse.jpt.core.internal.resource.persistence.PersistenceXmlResourceProviderFactory"/>
 		
 		<modelProvider
 			fileContentType="org.eclipse.jpt.core.content.orm"
-			factoryClass="org.eclipse.jpt.core.internal.resource.orm.OrmResourceModelProviderFactory"/>
+			factoryClass="org.eclipse.jpt.core.internal.resource.orm.OrmXmlResourceProviderFactory"/>
 		
 	</extension>
 		
@@ -157,7 +157,7 @@
 		point="org.eclipse.wst.common.modulecore.resourceFactories">
 		
 		<resourceFactory
-			class="org.eclipse.jpt.core.resource.persistence.PersistenceResourceFactory"
+			class="org.eclipse.jpt.core.resource.persistence.PersistenceXmlResourceFactory"
 			isDefault="true">
 			<contentTypeBinding
 				contentTypeId="org.eclipse.jpt.core.content.persistence">
@@ -165,7 +165,7 @@
 		</resourceFactory>
 		
 		<resourceFactory
-			class="org.eclipse.jpt.core.resource.orm.OrmResourceFactory"
+			class="org.eclipse.jpt.core.resource.orm.OrmXmlResourceFactory"
 			isDefault="true">
 			<contentTypeBinding
 				contentTypeId="org.eclipse.jpt.core.content.orm">

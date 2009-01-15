@@ -1,19 +1,18 @@
 /*******************************************************************************
- *  Copyright (c) 2008  Oracle. 
- *  All rights reserved.  This program and the accompanying materials are 
- *  made available under the terms of the Eclipse Public License v1.0 which 
- *  accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.resource;
 
 import junit.framework.TestCase;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.jpt.core.internal.resource.orm.OrmResourceModelProvider;
-import org.eclipse.jpt.core.resource.orm.OrmResource;
+import org.eclipse.jpt.core.internal.resource.orm.OrmXmlResourceProvider;
+import org.eclipse.jpt.core.resource.orm.OrmXmlResource;
 import org.eclipse.jpt.core.tests.internal.projects.TestJpaProject;
 
 public class OrmModelTests extends TestCase
@@ -34,8 +33,8 @@ public class OrmModelTests extends TestCase
 	}
 	
 	protected void createFile() throws CoreException {
-		OrmResourceModelProvider modelProvider = 
-			OrmResourceModelProvider.getDefaultModelProvider(jpaProject.getProject());
+		OrmXmlResourceProvider modelProvider = 
+			OrmXmlResourceProvider.getDefaultXmlResourceProvider(jpaProject.getProject());
 		modelProvider.createResource();
 	}
 	
@@ -47,35 +46,35 @@ public class OrmModelTests extends TestCase
 	}
 	
 	public void testModelLoad() {
-		OrmResourceModelProvider modelProvider = 
-			OrmResourceModelProvider.getDefaultModelProvider(jpaProject.getProject());
+		OrmXmlResourceProvider modelProvider = 
+			OrmXmlResourceProvider.getDefaultXmlResourceProvider(jpaProject.getProject());
 		assertNotNull(modelProvider);
-		OrmResource resource = modelProvider.getResource();
+		OrmXmlResource resource = modelProvider.getXmlResource();
 		assertNotNull(resource);
 	}
 	
 	public void testModelLoad2() {
-		OrmResourceModelProvider modelProvider = 
-			OrmResourceModelProvider.getDefaultModelProvider(jpaProject.getProject());
+		OrmXmlResourceProvider modelProvider = 
+			OrmXmlResourceProvider.getDefaultXmlResourceProvider(jpaProject.getProject());
 		assertNotNull(modelProvider);
-		OrmResource resource = modelProvider.getResource();
+		OrmXmlResource resource = modelProvider.getXmlResource();
 		assertNotNull(resource);
 	}
 	
 	public void testModelLoadForDifferentlyNamedOrmXml() {
-		OrmResourceModelProvider modelProvider = 
-			OrmResourceModelProvider.getModelProvider(jpaProject.getProject(), "META-INF/orm2.xml");
+		OrmXmlResourceProvider modelProvider = 
+			OrmXmlResourceProvider.getXmlResourceProvider(jpaProject.getProject(), "META-INF/orm2.xml");
 		assertNotNull(modelProvider);
-		OrmResource resource = modelProvider.getResource();
+		OrmXmlResource resource = modelProvider.getXmlResource();
 		assertNotNull(resource);
 	}
 	
 	public void testCreateFile() throws CoreException {
 		createFile();
-		OrmResourceModelProvider modelProvider = 
-			OrmResourceModelProvider.getDefaultModelProvider(jpaProject.getProject());
+		OrmXmlResourceProvider modelProvider = 
+			OrmXmlResourceProvider.getDefaultXmlResourceProvider(jpaProject.getProject());
 		assertNotNull(modelProvider);
-		OrmResource resource = modelProvider.getResource();
+		OrmXmlResource resource = modelProvider.getXmlResource();
 		assertNotNull(resource);
 		assertTrue(resource.exists());
 	}

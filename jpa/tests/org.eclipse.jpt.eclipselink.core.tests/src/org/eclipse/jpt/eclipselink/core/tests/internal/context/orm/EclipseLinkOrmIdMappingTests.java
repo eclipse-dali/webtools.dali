@@ -1,12 +1,11 @@
 /*******************************************************************************
- *  Copyright (c) 2008  Oracle. 
- *  All rights reserved.  This program and the accompanying materials are 
- *  made available under the terms of the Eclipse Public License v1.0 which 
- *  accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.tests.internal.context.orm;
 
@@ -98,7 +97,7 @@ public class EclipseLinkOrmIdMappingTests
 		EclipseLinkOrmIdMapping contextId = 
 			(EclipseLinkOrmIdMapping) ormPersistentAttribute.getMapping();
 		XmlEntity resourceEntity = 
-			(XmlEntity)getOrmResource().getEntityMappings().getEntities().get(0);
+			(XmlEntity)getOrmXmlResource().getEntityMappings().getEntities().get(0);
 		XmlId resourceId = 
 			(XmlId) resourceEntity.getAttributes().getIds().get(0);
 		EclipseLinkIdMapping javaIdMapping = (EclipseLinkIdMapping) ormPersistentType.getJavaPersistentType().getAttributeNamed("id").getMapping();
@@ -181,7 +180,7 @@ public class EclipseLinkOrmIdMappingTests
 		EclipseLinkOrmIdMapping contextId = 
 			(EclipseLinkOrmIdMapping) ormPersistentAttribute.getMapping();
 		XmlEntity resourceEntity = 
-			(XmlEntity)getOrmResource().getEntityMappings().getEntities().get(0);
+			(XmlEntity)getOrmXmlResource().getEntityMappings().getEntities().get(0);
 		XmlId resourceId = 
 			(XmlId) resourceEntity.getAttributes().getIds().get(0);
 		EclipseLinkIdMapping javaIdMapping = (EclipseLinkIdMapping) ormPersistentType.getJavaPersistentType().getAttributeNamed("myDate").getMapping();
@@ -279,7 +278,7 @@ public class EclipseLinkOrmIdMappingTests
 		EclipseLinkOrmIdMapping contextId = 
 			(EclipseLinkOrmIdMapping) ormPersistentAttribute.getMapping();
 		XmlEntity resourceEntity = 
-			(XmlEntity)getOrmResource().getEntityMappings().getEntities().get(0);
+			(XmlEntity)getOrmXmlResource().getEntityMappings().getEntities().get(0);
 		XmlId resourceId = 
 			(XmlId) resourceEntity.getAttributes().getIds().get(0);
 		
@@ -324,7 +323,7 @@ public class EclipseLinkOrmIdMappingTests
 		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "id");
 		OrmIdMapping ormIdMapping = (OrmIdMapping) ormPersistentAttribute.getMapping();
-		XmlId basicResource = (XmlId) getOrmResource().getEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
+		XmlId basicResource = (XmlId) getOrmXmlResource().getEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
 		JavaIdMapping javaIdMapping = (JavaIdMapping) ormPersistentType.getJavaPersistentType().getAttributeNamed("id").getMapping();
 		
 		assertEquals(null, ormIdMapping.getSpecifiedConverter());
@@ -374,7 +373,7 @@ public class EclipseLinkOrmIdMappingTests
 		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "basicMapping");
 		OrmIdMapping ormIdMapping = (OrmIdMapping) ormPersistentAttribute.getMapping();
-		XmlId basicResource = (XmlId) getOrmResource().getEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
+		XmlId basicResource = (XmlId) getOrmXmlResource().getEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
 	
 		assertEquals(null, ormIdMapping.getSpecifiedConverter());
 		assertEquals(null, basicResource.getConvert());

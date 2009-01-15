@@ -1,11 +1,11 @@
 /*******************************************************************************
- *  Copyright (c) 2006, 2008 Oracle. All rights reserved. This
- *  program and the accompanying materials are made available under the terms of
- *  the Eclipse Public License v1.0 which accompanies this distribution, and is
- *  available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: Oracle. - initial API and implementation
- *  
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.synch;
 
@@ -23,9 +23,9 @@ import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.core.internal.JptCoreMessages;
-import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResourceModelProvider;
+import org.eclipse.jpt.core.internal.resource.persistence.PersistenceXmlResourceProvider;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
-import org.eclipse.jpt.core.resource.persistence.PersistenceResource;
+import org.eclipse.jpt.core.resource.persistence.PersistenceXmlResource;
 import org.eclipse.jpt.core.resource.persistence.XmlJavaClassRef;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
@@ -56,9 +56,9 @@ public class SynchronizeClassesJob extends WorkspaceJob
 		
 		final JpaProject jpaProject = JptCorePlugin.getJpaProject(this.persistenceXmlFile.getProject());
 		
-		PersistenceResourceModelProvider modelProvider =
-			PersistenceResourceModelProvider.getDefaultModelProvider(jpaProject.getProject());
-		final PersistenceResource resource = modelProvider.getResource();
+		PersistenceXmlResourceProvider modelProvider =
+			PersistenceXmlResourceProvider.getDefaultXmlResourceProvider(jpaProject.getProject());
+		final PersistenceXmlResource resource = modelProvider.getXmlResource();
 		
 		monitor.worked(25);
 		

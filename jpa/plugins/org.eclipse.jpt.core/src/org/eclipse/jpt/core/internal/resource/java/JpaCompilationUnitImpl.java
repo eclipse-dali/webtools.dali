@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -27,6 +27,7 @@ import org.eclipse.jpt.core.resource.java.JpaCompilationUnit;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.utility.CommandExecutor;
+import org.eclipse.jpt.utility.internal.ListenerList;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
 /**
@@ -40,11 +41,11 @@ public class JpaCompilationUnitImpl
 
 	private final JpaAnnotationProvider annotationProvider;
 
-	private final CommandExecutor modifySharedDocumentCommandExecutor;
-
 	private final AnnotationEditFormatter annotationEditFormatter;
 
-	private final JpaResourceModelListener resourceModelListener;
+	private final CommandExecutor modifySharedDocumentCommandExecutor;
+
+	private final ListenerList<JpaResourceModelListener> resourceModelListenerList;
 
 	/**
 	 * The primary type of the AST compilation unit. We are not going to handle
@@ -61,15 +62,14 @@ public class JpaCompilationUnitImpl
 	public JpaCompilationUnitImpl(
 			ICompilationUnit compilationUnit,
 			JpaAnnotationProvider annotationProvider, 
-			CommandExecutor modifySharedDocumentCommandExecutor,
 			AnnotationEditFormatter annotationEditFormatter,
-			JpaResourceModelListener resourceModelListener) {
+			CommandExecutor modifySharedDocumentCommandExecutor) {
 		super(null);  // the JPA compilation unit is the root of its sub-tree
 		this.compilationUnit = compilationUnit;
 		this.annotationProvider = annotationProvider;
-		this.modifySharedDocumentCommandExecutor = modifySharedDocumentCommandExecutor;
 		this.annotationEditFormatter = annotationEditFormatter;
-		this.resourceModelListener = resourceModelListener;
+		this.modifySharedDocumentCommandExecutor = modifySharedDocumentCommandExecutor;
+		this.resourceModelListenerList = new ListenerList<JpaResourceModelListener>(JpaResourceModelListener.class);
 		this.persistentType = this.buildPersistentType();
 	}
 
@@ -162,7 +162,9 @@ public class JpaCompilationUnitImpl
 	}
 
 	public void resourceModelChanged() {
-		this.resourceModelListener.resourceModelChanged();
+		for (JpaResourceModelListener listener : this.resourceModelListenerList.getListeners()) {
+			listener.resourceModelChanged();
+		}
 	}
 
 	public void resolveTypes() {
@@ -179,6 +181,17 @@ public class JpaCompilationUnitImpl
 		return this.annotationEditFormatter;
 	}
 	
+
+	// ********** JpaResourceModel implementation **********
+
+	public void addResourceModelListener(JpaResourceModelListener listener) {
+		this.resourceModelListenerList.add(listener);
+	}
+
+	public void removeResourceModelListener(JpaResourceModelListener listener) {
+		this.resourceModelListenerList.remove(listener);
+	}
+
 
 	// ********** Java changes **********
 

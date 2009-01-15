@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,9 +18,10 @@ import org.eclipse.jpt.core.EntityGeneratorDatabaseAnnotationNameBuilder;
 import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.JpaFile;
-import org.eclipse.jpt.core.JpaFileProvider;
 import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaProject;
+import org.eclipse.jpt.core.JpaResourceModel;
+import org.eclipse.jpt.core.JpaResourceModelProvider;
 import org.eclipse.jpt.core.context.MappingFile;
 import org.eclipse.jpt.core.context.MappingFileProvider;
 import org.eclipse.jpt.core.context.java.DefaultJavaAttributeMappingProvider;
@@ -39,9 +40,9 @@ import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmTypeMappingProvider;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
-import org.eclipse.jpt.core.internal.JavaJpaFileProvider;
-import org.eclipse.jpt.core.internal.OrmJpaFileProvider;
-import org.eclipse.jpt.core.internal.PersistenceJpaFileProvider;
+import org.eclipse.jpt.core.internal.JavaResourceModelProvider;
+import org.eclipse.jpt.core.internal.OrmResourceModelProvider;
+import org.eclipse.jpt.core.internal.PersistenceResourceModelProvider;
 import org.eclipse.jpt.core.internal.context.GenericMappingFileProvider;
 import org.eclipse.jpt.core.internal.context.java.JavaBasicMappingProvider;
 import org.eclipse.jpt.core.internal.context.java.JavaEmbeddableProvider;
@@ -73,8 +74,10 @@ import org.eclipse.jpt.core.internal.context.orm.OrmOneToOneMappingProvider;
 import org.eclipse.jpt.core.internal.context.orm.OrmTransientMappingProvider;
 import org.eclipse.jpt.core.internal.context.orm.OrmVersionMappingProvider;
 import org.eclipse.jpt.core.internal.utility.PlatformTools;
-import org.eclipse.jpt.core.resource.orm.OrmResource;
+import org.eclipse.jpt.core.internal.utility.jdt.DefaultAnnotationEditFormatter;
+import org.eclipse.jpt.core.resource.orm.OrmXmlResource;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
+import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.db.ConnectionProfileFactory;
 import org.eclipse.jpt.db.DatabaseFinder;
 import org.eclipse.jpt.db.JptDbPlugin;
@@ -92,7 +95,7 @@ public class GenericJpaPlatform
 
 	protected final JpaFactory jpaFactory;
 
-	private JpaFileProvider[] jpaFileProviders;
+	private JpaResourceModelProvider[] resourceModelProviders;
 
 	private JavaTypeMappingProvider[] javaTypeMappingProviders;
 
@@ -142,54 +145,61 @@ public class GenericJpaPlatform
 	}
 
 
-	// ********** JPA files **********
+	// ********** JPA file/resource models **********
 
 	public JpaFile buildJpaFile(JpaProject jpaProject, IFile file) {
 		IContentType contentType = PlatformTools.getContentType(file);
-		return (contentType == null) ? null : this.buildJpaFileForContentType(jpaProject, file, contentType);
+		return (contentType == null) ? null : this.buildJpaFile(jpaProject, file, contentType);
 	}
 
-	protected JpaFile buildJpaFileForContentType(JpaProject jpaProject, IFile file, IContentType contentType) {
-		JpaFileProvider provider = this.getJpaFileProviderForContentType(contentType);
-		return (provider == null) ? null : provider.buildJpaFile(jpaProject, file, this.jpaFactory);
+	protected JpaFile buildJpaFile(JpaProject jpaProject, IFile file, IContentType contentType) {
+		JpaResourceModel resourceModel = this.buildResourceModel(jpaProject, file, contentType);
+		return (resourceModel == null) ? null : this.jpaFactory.buildJpaFile(jpaProject, file, contentType, resourceModel);
+	}
+
+	protected JpaResourceModel buildResourceModel(JpaProject jpaProject, IFile file, IContentType contentType) {
+		JpaResourceModelProvider provider = this.getResourceModelProvider(contentType);
+		return (provider == null) ? null : provider.buildResourceModel(jpaProject, file);
 	}
 
 	/**
 	 * Return null if we don't have a provider for the specified content type
 	 * (since we don't have control over the possible content types).
-	 * Also, use #equals(Object) for the same reason.
+	 * NB: We use "is kind of" to match content types; so the search may be
+	 * order-sensitive.
+	 * @see IContentType#isKindOf(IContentType)
 	 */
-	protected JpaFileProvider getJpaFileProviderForContentType(IContentType contentType) {
-		for (JpaFileProvider provider : this.getJpaFileProviders()) {
-			if (provider.getContentType().equals(contentType)) {
+	protected JpaResourceModelProvider getResourceModelProvider(IContentType contentType) {
+		for (JpaResourceModelProvider provider : this.getResourceModelProviders()) {
+			if (provider.getContentType().isKindOf(contentType)) {
 				return provider;
 			}
 		}
 		return null;
 	}
 
-	protected synchronized JpaFileProvider[] getJpaFileProviders() {
-		if (this.jpaFileProviders == null) {
-			this.jpaFileProviders = this.buildJpaFileProviders();
+	protected synchronized JpaResourceModelProvider[] getResourceModelProviders() {
+		if (this.resourceModelProviders == null) {
+			this.resourceModelProviders = this.buildResourceModelProviders();
 		}
-		return this.jpaFileProviders;
+		return this.resourceModelProviders;
 	}
 
-	protected JpaFileProvider[] buildJpaFileProviders() {
-		ArrayList<JpaFileProvider> providers = new ArrayList<JpaFileProvider>();
-		this.addJpaFileProvidersTo(providers);
-		return providers.toArray(new JpaFileProvider[providers.size()]);
+	protected JpaResourceModelProvider[] buildResourceModelProviders() {
+		ArrayList<JpaResourceModelProvider> providers = new ArrayList<JpaResourceModelProvider>();
+		this.addResourceModelProvidersTo(providers);
+		return providers.toArray(new JpaResourceModelProvider[providers.size()]);
 	}
 
 	/**
-	 * Override this to specify more or different JPA file providers.
+	 * Override this to specify more or different JPA resource model providers.
 	 * The default includes support for Java, persistence.xml, and orm.xml
 	 * files
 	 */
-	protected void addJpaFileProvidersTo(List<JpaFileProvider> providers) {
-		providers.add(JavaJpaFileProvider.instance());
-		providers.add(PersistenceJpaFileProvider.instance());
-		providers.add(OrmJpaFileProvider.instance());
+	protected void addResourceModelProvidersTo(List<JpaResourceModelProvider> providers) {
+		providers.add(JavaResourceModelProvider.instance());
+		providers.add(PersistenceResourceModelProvider.instance());
+		providers.add(OrmResourceModelProvider.instance());
 	}
 
 
@@ -197,6 +207,10 @@ public class GenericJpaPlatform
 
 	public JpaAnnotationProvider getAnnotationProvider() {
 		return GenericJpaAnnotationProvider.instance();
+	}
+
+	public AnnotationEditFormatter getAnnotationEditFormatter() {
+		return DefaultAnnotationEditFormatter.instance();
 	}
 
 
@@ -376,7 +390,7 @@ public class GenericJpaPlatform
 
 	// ********** Mapping File **********
 
-	public MappingFile buildMappingFile(MappingFileRef parent, OrmResource resource) {
+	public MappingFile buildMappingFile(MappingFileRef parent, OrmXmlResource resource) {
 		return this.getMappingFileProviderForResourceType(resource.getType()).buildMappingFile(parent, resource, this.jpaFactory);
 	}
 

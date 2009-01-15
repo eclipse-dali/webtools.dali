@@ -1,13 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2007 Oracle. 
- *  All rights reserved.  This program and the accompanying materials 
- *  are made available under the terms of the Eclipse Public License v1.0 
- *  which accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.context.orm;
 
 import java.util.Iterator;
@@ -50,7 +49,7 @@ public class OrmPersistentTypeTests extends ContextModelTestCase
 		XmlMappingFileRef mappingFileRef = PersistenceFactory.eINSTANCE.createXmlMappingFileRef();
 		mappingFileRef.setFileName(JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH);
 		getXmlPersistenceUnit().getMappingFiles().add(mappingFileRef);
-		getPersistenceResource().save(null);
+		getPersistenceXmlResource().save(null);
 	}	
 	
 //	public void testUpdateXmlTypeMapping() throws Exception {
@@ -96,9 +95,9 @@ public class OrmPersistentTypeTests extends ContextModelTestCase
 	
 	public void testMorphXmlTypeMapping() throws Exception {
 		assertFalse(getEntityMappings().ormPersistentTypes().hasNext());
-		assertTrue(getOrmResource().getEntityMappings().getMappedSuperclasses().isEmpty());
-		assertTrue(getOrmResource().getEntityMappings().getEntities().isEmpty());
-		assertTrue(getOrmResource().getEntityMappings().getEmbeddables().isEmpty());
+		assertTrue(getOrmXmlResource().getEntityMappings().getMappedSuperclasses().isEmpty());
+		assertTrue(getOrmXmlResource().getEntityMappings().getEntities().isEmpty());
+		assertTrue(getOrmXmlResource().getEntityMappings().getEmbeddables().isEmpty());
 		
 		OrmPersistentType embeddablePersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentType entityPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo2");
@@ -109,9 +108,9 @@ public class OrmPersistentTypeTests extends ContextModelTestCase
 		assertEquals(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, ormPersistentType.getMapping().getKey());
 	
 		ormPersistentType.setMappingKey(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
-		assertEquals(0, getOrmResource().getEntityMappings().getMappedSuperclasses().size());
-		assertEquals(1, getOrmResource().getEntityMappings().getEntities().size());
-		assertEquals(2, getOrmResource().getEntityMappings().getEmbeddables().size());
+		assertEquals(0, getOrmXmlResource().getEntityMappings().getMappedSuperclasses().size());
+		assertEquals(1, getOrmXmlResource().getEntityMappings().getEntities().size());
+		assertEquals(2, getOrmXmlResource().getEntityMappings().getEmbeddables().size());
 		
 		Iterator<OrmPersistentType> ormPersistentTypes = getEntityMappings().ormPersistentTypes();
 		//the same OrmPersistentTypes should still be in the context model
@@ -119,8 +118,8 @@ public class OrmPersistentTypeTests extends ContextModelTestCase
 		assertEquals(ormPersistentTypes.next(), embeddablePersistentType);
 		assertEquals(ormPersistentTypes.next(), mappedSuperclassPersistentType);
 		
-		assertEquals("model.Foo", getOrmResource().getEntityMappings().getEmbeddables().get(0).getClassName());
-		assertEquals("model.Foo3", getOrmResource().getEntityMappings().getEmbeddables().get(1).getClassName());
+		assertEquals("model.Foo", getOrmXmlResource().getEntityMappings().getEmbeddables().get(0).getClassName());
+		assertEquals("model.Foo3", getOrmXmlResource().getEntityMappings().getEmbeddables().get(1).getClassName());
 	}
 	
 	public void testAddSpecifiedPersistentAttribute() throws Exception {
@@ -128,7 +127,7 @@ public class OrmPersistentTypeTests extends ContextModelTestCase
 		
 		entityPersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicAttribute");
 	
-		XmlEntity entity = getOrmResource().getEntityMappings().getEntities().get(0);
+		XmlEntity entity = getOrmXmlResource().getEntityMappings().getEntities().get(0);
 		XmlBasic basic = entity.getAttributes().getBasics().get(0);
 		assertEquals("basicAttribute", basic.getName());
 		
@@ -171,7 +170,7 @@ public class OrmPersistentTypeTests extends ContextModelTestCase
 		entityPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idAttribute");
 		entityPersistentType.addSpecifiedPersistentAttribute(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, "transientAttribute");
 	
-		XmlEntity entity = getOrmResource().getEntityMappings().getEntities().get(0);
+		XmlEntity entity = getOrmXmlResource().getEntityMappings().getEntities().get(0);
 		assertEquals("basicAttribute",  entity.getAttributes().getBasics().get(0).getName());
 		assertEquals("embeddedAttribute",  entity.getAttributes().getEmbeddeds().get(0).getName());
 		assertEquals("versionAttribute",  entity.getAttributes().getVersions().get(0).getName());
@@ -202,7 +201,7 @@ public class OrmPersistentTypeTests extends ContextModelTestCase
 	
 	public void testRemoveId() throws Exception {
 		OrmPersistentType entityPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo2");
-		XmlEntity entity = getOrmResource().getEntityMappings().getEntities().get(0);
+		XmlEntity entity = getOrmXmlResource().getEntityMappings().getEntities().get(0);
 		
 		entityPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idAttribute");
 		assertEquals("idAttribute",  entity.getAttributes().getIds().get(0).getName());
@@ -213,7 +212,7 @@ public class OrmPersistentTypeTests extends ContextModelTestCase
 	
 	public void testRemoveBasic() throws Exception {
 		OrmPersistentType entityPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo2");
-		XmlEntity entity = getOrmResource().getEntityMappings().getEntities().get(0);
+		XmlEntity entity = getOrmXmlResource().getEntityMappings().getEntities().get(0);
 		
 		entityPersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basicAttribute");
 		assertEquals("basicAttribute",  entity.getAttributes().getBasics().get(0).getName());
@@ -224,7 +223,7 @@ public class OrmPersistentTypeTests extends ContextModelTestCase
 	
 	public void testRemoveVersion() throws Exception {
 		OrmPersistentType entityPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo2");
-		XmlEntity entity = getOrmResource().getEntityMappings().getEntities().get(0);
+		XmlEntity entity = getOrmXmlResource().getEntityMappings().getEntities().get(0);
 		
 		entityPersistentType.addSpecifiedPersistentAttribute(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY, "versionAttribute");
 		assertEquals("versionAttribute",  entity.getAttributes().getVersions().get(0).getName());
@@ -235,7 +234,7 @@ public class OrmPersistentTypeTests extends ContextModelTestCase
 	
 	public void testRemoveEmbedded() throws Exception {
 		OrmPersistentType entityPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo2");
-		XmlEntity entity = getOrmResource().getEntityMappings().getEntities().get(0);
+		XmlEntity entity = getOrmXmlResource().getEntityMappings().getEntities().get(0);
 		
 		entityPersistentType.addSpecifiedPersistentAttribute(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, "embeddedAttribute");
 		assertEquals("embeddedAttribute",  entity.getAttributes().getEmbeddeds().get(0).getName());
@@ -246,7 +245,7 @@ public class OrmPersistentTypeTests extends ContextModelTestCase
 	
 	public void testRemoveTransient() throws Exception {
 		OrmPersistentType entityPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo2");
-		XmlEntity entity = getOrmResource().getEntityMappings().getEntities().get(0);
+		XmlEntity entity = getOrmXmlResource().getEntityMappings().getEntities().get(0);
 		
 		entityPersistentType.addSpecifiedPersistentAttribute(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, "transientAttribute");
 		assertEquals("transientAttribute",  entity.getAttributes().getTransients().get(0).getName());
@@ -257,7 +256,7 @@ public class OrmPersistentTypeTests extends ContextModelTestCase
 
 	public void testUpdateSpecifiedPersistentAttributes() throws Exception {
 		OrmPersistentType entityPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo2");
-		XmlEntity entity = getOrmResource().getEntityMappings().getEntities().get(0);
+		XmlEntity entity = getOrmXmlResource().getEntityMappings().getEntities().get(0);
 
 		entity.setAttributes(OrmFactory.eINSTANCE.createAttributes());
 		XmlBasicImpl basic = OrmFactory.eINSTANCE.createXmlBasicImpl();

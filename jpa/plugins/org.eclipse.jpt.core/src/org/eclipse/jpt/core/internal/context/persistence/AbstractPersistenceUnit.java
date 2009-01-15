@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -36,10 +36,10 @@ import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnitTransactionType;
 import org.eclipse.jpt.core.context.persistence.Property;
 import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
-import org.eclipse.jpt.core.internal.resource.orm.OrmResourceModelProvider;
+import org.eclipse.jpt.core.internal.resource.orm.OrmXmlResourceProvider;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.core.resource.orm.OrmResource;
+import org.eclipse.jpt.core.resource.orm.OrmXmlResource;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlJavaClassRef;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
@@ -961,9 +961,9 @@ public class AbstractPersistenceUnit extends AbstractXmlContextNode
 	}
 	
 	protected boolean impliedMappingFileExists() {
-		OrmResourceModelProvider modelProvider = 
-			OrmResourceModelProvider.getDefaultModelProvider(getJpaProject().getProject());
-		OrmResource resource = modelProvider.getResource();
+		OrmXmlResourceProvider modelProvider = 
+			OrmXmlResourceProvider.getDefaultXmlResourceProvider(getJpaProject().getProject());
+		OrmXmlResource resource = modelProvider.getXmlResource();
 		return resource != null && resource.exists();
 	}
 	

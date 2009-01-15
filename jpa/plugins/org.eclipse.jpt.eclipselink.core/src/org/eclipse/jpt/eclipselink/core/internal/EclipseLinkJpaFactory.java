@@ -100,7 +100,7 @@ import org.eclipse.jpt.eclipselink.core.internal.context.orm.VirtualXmlBasicMap;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.VirtualXmlTransformation;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.VirtualXmlVariableOneToOne;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
-import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmResource;
+import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmXmlResource;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicCollection;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicMap;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbedded;
@@ -118,11 +118,11 @@ public class EclipseLinkJpaFactory
 	
 	// ********** Context Nodes **********
 	
-	public MappingFile buildEclipseLinkMappingFile(MappingFileRef parent, EclipseLinkOrmResource resource) {
+	public MappingFile buildEclipseLinkMappingFile(MappingFileRef parent, EclipseLinkOrmXmlResource resource) {
 		return this.buildEclipseLinkOrmXml(parent, resource);
 	}
 	
-	protected EclipseLinkOrmXml buildEclipseLinkOrmXml(MappingFileRef parent, EclipseLinkOrmResource resource) {
+	protected EclipseLinkOrmXml buildEclipseLinkOrmXml(MappingFileRef parent, EclipseLinkOrmXmlResource resource) {
 		return new EclipseLinkOrmXml(parent, resource);
 	}
 	

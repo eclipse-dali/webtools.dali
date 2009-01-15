@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -160,7 +160,7 @@ public class JavaTableTests extends ContextModelTestCase
 		//default schema taken from persistence-unit-defaults not entity-mappings since the entity is not in an orm.xml file
 		assertEquals("FOO", getJavaEntity().getTable().getDefaultSchema());
 
-		IFile file = getOrmResource().getFile();
+		IFile file = getOrmXmlResource().getFile();
 		//remove the mapping file reference from the persistence.xml.  default schema 
 		//should still come from persistence-unit-defaults because of implied mapped-file-ref
 		getXmlPersistenceUnit().getMappingFiles().remove(mappingFileRef);
@@ -277,7 +277,7 @@ public class JavaTableTests extends ContextModelTestCase
 		//default catalog taken from persistence-unite-defaults not entity-mappings since the entity is not in an orm.xml file
 		assertEquals("FOO", getJavaEntity().getTable().getDefaultCatalog());
 
-		IFile file = getOrmResource().getFile();
+		IFile file = getOrmXmlResource().getFile();
 		//remove the mapping file reference from the persistence.xml.  default schema 
 		//should still come from persistence-unit-defaults because of implied mapped-file-ref
 		getXmlPersistenceUnit().getMappingFiles().remove(mappingFileRef);

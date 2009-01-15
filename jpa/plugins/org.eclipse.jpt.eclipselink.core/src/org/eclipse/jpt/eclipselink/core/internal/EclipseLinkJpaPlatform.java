@@ -12,7 +12,7 @@ package org.eclipse.jpt.eclipselink.core.internal;
 import java.util.List;
 import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.JpaFactory;
-import org.eclipse.jpt.core.JpaFileProvider;
+import org.eclipse.jpt.core.JpaResourceModelProvider;
 import org.eclipse.jpt.core.context.MappingFileProvider;
 import org.eclipse.jpt.core.context.java.DefaultJavaAttributeMappingProvider;
 import org.eclipse.jpt.core.context.java.JavaAttributeMappingProvider;
@@ -70,9 +70,9 @@ public class EclipseLinkJpaPlatform
 
 	// ********* JPA files *********	
 	@Override
-	protected void addJpaFileProvidersTo(List<JpaFileProvider> providers) {
-		super.addJpaFileProvidersTo(providers);
-		providers.add(EclipseLinkOrmJpaFileProvider.instance());
+	protected void addResourceModelProvidersTo(List<JpaResourceModelProvider> providers) {
+		super.addResourceModelProvidersTo(providers);
+		providers.add(EclipseLinkOrmResourceModelProvider.instance());
 	}
 
 	// ********* java annotations *********	

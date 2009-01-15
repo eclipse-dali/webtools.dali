@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,7 +16,6 @@ import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaElementDelta;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.core.JpaAnnotationProvider;
-import org.eclipse.jpt.core.JpaResourceModelListener;
 import org.eclipse.jpt.core.internal.platform.GenericJpaAnnotationProvider;
 import org.eclipse.jpt.core.internal.resource.java.JpaCompilationUnitImpl;
 import org.eclipse.jpt.core.internal.utility.jdt.NullAnnotationEditFormatter;
@@ -150,22 +149,13 @@ public class JavaResourceModelTestCase extends AnnotationTestCase
 		return new JpaCompilationUnitImpl(
 			cu,
 			this.buildAnnotationProvider(),
-			CommandExecutor.Default.instance(),
 			NullAnnotationEditFormatter.instance(),
-			this.buildResourceModelListener()
+			CommandExecutor.Default.instance()
 		);
 	}
 
 	protected JpaAnnotationProvider buildAnnotationProvider() {
 		return GenericJpaAnnotationProvider.instance();
-	}
-
-	protected JpaResourceModelListener buildResourceModelListener() {
-		return new JpaResourceModelListener() {
-			public void resourceModelChanged() {
-				// ignore
-			}
-		};
 	}
 
 }

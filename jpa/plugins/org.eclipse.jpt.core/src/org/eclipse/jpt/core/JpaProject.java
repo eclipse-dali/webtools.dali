@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -29,7 +29,12 @@ import org.eclipse.jpt.utility.CommandExecutor;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 /**
- * JPA project
+ * A JPA project is associated with an Eclipse project (and its corresponding
+ * Java project). It holds the "resource" model that corresponds to the various
+ * JPA-related resources (the persistence.xml file, its mapping files [orm.xml],
+ * and the Java source files). It also holds the "context" model that represents
+ * the JPA metadata, as derived from spec-defined defaults, Java source code
+ * annotations, and XML descriptors.
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -44,8 +49,8 @@ public interface JpaProject
 	// ********** general **********
 
 	/**
-	 * Return the JPA project's name, which is the same as the Eclipse
-	 * project's name.
+	 * Return the JPA project's name, which is the same as the associated
+	 * Eclipse project's name.
 	 */
 	String getName();
 
@@ -80,8 +85,8 @@ public interface JpaProject
 	// ********** JPA files **********
 
 	/** 
-	 * ID string used when jpaFiles collection is changed.
-	 * @see org.eclipse.jpt.utility.model.Model#addCollectionChangeListener(String, org.eclipse.jpt.utility.model.listener.CollectionChangeListener)
+	 * ID string used when the JPA project's collection of JPA files changes.
+	 * @see #addCollectionChangeListener(String, org.eclipse.jpt.utility.model.listener.CollectionChangeListener)
 	 */
 	String JPA_FILES_COLLECTION = "jpaFiles"; //$NON-NLS-1$
 
@@ -97,8 +102,7 @@ public interface JpaProject
 
 	/**
 	 * Return the JPA file corresponding to the specified file.
-	 * Return null if unable to associate the given file
-	 * with a JPA file.
+	 * Return null if there is no JPA file associated with the specified file.
 	 */
 	JpaFile getJpaFile(IFile file);
 
@@ -111,8 +115,8 @@ public interface JpaProject
 	Iterator<String> annotatedClassNames();
 
 	/**
-	 * Return the Java resource persistent type for the specified fully
-	 * qualified type name; return null, if none exists.
+	 * Return the Java resource persistent type for the specified type.
+	 * Return null if absent.
 	 */
 	JavaResourcePersistentType getJavaResourcePersistentType(String typeName);
 
@@ -142,27 +146,28 @@ public interface JpaProject
 	/**
 	 * Set the implementation of the Updater
 	 * interface that will be used to "update" the JPA project.
-	 * Before setting the updater, Clients should save the current updater so
+	 * Before setting the updater, clients should save the current updater so
 	 * it can be restored later.
 	 */
 	void setUpdater(Updater updater);
 
 	/**
-	 * Something in the JPA project has changed, "update" those parts of the
+	 * The JPA project's state has changed, "update" those parts of the
 	 * JPA project that are dependent on other parts of the JPA project.
 	 * This is called when
-	 *     - anything in the JPA project changes
+	 *     - (almost) any state in the JPA project changes
 	 *     - the JPA project's database connection is changed, opened, or closed
 	 */
 	void update();
 
 	/**
 	 * This is the callback used by the updater to perform the actual
-	 * "update".
+	 * "update", which most likely will happen asynchronously.
 	 */
 	IStatus update(IProgressMonitor monitor);
 
 
+	// TODO abstract out to utility
 	/**
 	 * Define a strategy that can be used to "update" a JPA project whenever
 	 * something changes.
@@ -217,7 +222,7 @@ public interface JpaProject
 	// ********** validation **********
 
 	/**
-	 * Return project's validation messages.
+	 * Return JPA project's validation messages.
 	 */
 	Iterator<IMessage> validationMessages();
 
@@ -230,41 +235,44 @@ public interface JpaProject
 	JpaDataSource getDataSource();
 
 	/**
-	 * Return the project's connection.
-	 * The connection profile is null if the connection profile name is invalid.
+	 * Return the JPA project's connection.
+	 * The connection profile is null if the JPA project's connection profile
+	 * name does not match the name of a DTP connection profile.
 	 */
 	ConnectionProfile getConnectionProfile();
 
 	/**
-	 * Return the project's default database schema container
-	 * (either the project's default catalog or the project's database).
+	 * Return the JPA project's default database schema container;
+	 * which is either the JPA project's default catalog or the JPA project's
+	 * database, depending on how the DTP model is implemented.
 	 */
 	SchemaContainer getDefaultDbSchemaContainer();
 
 	/**
-	 * Return the project's default catalog:
-	 *   - the user override catalog
-	 *   - the database's default catalog
+	 * Return the JPA project's default catalog; which is either the user
+	 * override catalog or the database's default catalog.
 	 */
 	String getDefaultCatalog();
 
 	/**
-	 * Return the project's default database catalog.
+	 * Return the JPA project's default database catalog.
 	 * @see #getDefaultCatalog()
 	 */
 	Catalog getDefaultDbCatalog();
 
 	/**
-	 * Return the project's default schema:
+	 * Return the JPA project's default schema; which can be one of the
+	 * following:
 	 *   - the user override schema
 	 *   - the default catalog's default schema
-	 *   - the database's default schema
+	 *   - the database's default schema (if catalogs are not supported)
 	 */
 	String getDefaultSchema();
 
 	/**
-	 * Return the project's default database schema.
+	 * Return the JPA project's default database schema.
 	 * @see #getDefaultSchema()
+	 * @see #getDefaultDbSchemaContainer()
 	 */
 	Schema getDefaultDbSchema();
 
@@ -272,14 +280,15 @@ public interface JpaProject
 	// ********** user override default catalog **********
 
 	/** 
-	 * ID string used when userOverrideDefaultCatalog property is changed.
-	 * @see org.eclipse.jpt.utility.model.Model#addPropertyChangeListener(String, org.eclipse.jpt.utility.model.listener.PropertyChangeListener)
+	 * ID string used when the JPA project's user override default catalog changes.
+	 * @see #addPropertyChangeListener(String, org.eclipse.jpt.utility.model.listener.PropertyChangeListener)
 	 */
 	String USER_OVERRIDE_DEFAULT_CATALOG_PROPERTY = "userOverrideDefaultCatalog"; //$NON-NLS-1$
 
 	/**
-	 * Return the name of the catalog to be used as a default for the project
-	 * instead of the one that is associated by default with the connection profile.
+	 * Return the name of the catalog to be used as a default for the JPA
+	 * project instead of the one that is associated by default with the
+	 * connection profile.
 	 * @return The catalog name. May be null (implies that the connection profile
 	 *   default catalog should be used).
 	 */
@@ -298,8 +307,9 @@ public interface JpaProject
 	// ********** user override default schema **********
 
 	/** 
+	 * ID string used when the JPA project's user override default schema changes.
 	 * ID string used when userOverrideDefaultSchema property is changed.
-	 * @see org.eclipse.jpt.utility.model.Model#addPropertyChangeListener(String, org.eclipse.jpt.utility.model.listener.PropertyChangeListener)
+	 * @see #addPropertyChangeListener(String, org.eclipse.jpt.utility.model.listener.PropertyChangeListener)
 	 */
 	String USER_OVERRIDE_DEFAULT_SCHEMA_PROPERTY = "userOverrideDefaultSchema"; //$NON-NLS-1$
 

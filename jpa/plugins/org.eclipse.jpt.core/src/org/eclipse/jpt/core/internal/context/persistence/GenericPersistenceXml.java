@@ -1,12 +1,11 @@
 /*******************************************************************************
- *  Copyright (c) 2007 Oracle. 
- *  All rights reserved.  This program and the accompanying materials 
- *  are made available under the terms of the Eclipse Public License v1.0 
- *  which accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.context.persistence;
 
@@ -22,7 +21,7 @@ import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
-import org.eclipse.jpt.core.resource.persistence.PersistenceResource;
+import org.eclipse.jpt.core.resource.persistence.PersistenceXmlResource;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -34,12 +33,12 @@ public class GenericPersistenceXml
 	extends AbstractXmlContextNode
 	implements PersistenceXml
 {
-	protected PersistenceResource persistenceResource;
+	protected PersistenceXmlResource persistenceXmlResource;
 	
 	protected Persistence persistence;
 	
 	
-	public GenericPersistenceXml(JpaRootContextNode parent, PersistenceResource persistenceResource) {
+	public GenericPersistenceXml(JpaRootContextNode parent, PersistenceXmlResource persistenceResource) {
 		super(parent);
 		this.initialize(persistenceResource);
 	}
@@ -49,7 +48,7 @@ public class GenericPersistenceXml
 	
 	@Override
 	public IResource getResource() {
-		return this.persistenceResource.getFile();
+		return this.persistenceXmlResource.getFile();
 	}
 	
 	
@@ -74,7 +73,7 @@ public class GenericPersistenceXml
 		
 		XmlPersistence xmlPersistence = PersistenceFactory.eINSTANCE.createXmlPersistence();
 		this.persistence = buildPersistence(xmlPersistence);
-		this.persistenceResource.getContents().add(xmlPersistence);
+		this.persistenceXmlResource.getContents().add(xmlPersistence);
 		firePropertyChanged(PERSISTENCE_PROPERTY, null, this.persistence);
 		return this.persistence;
 	}
@@ -83,12 +82,12 @@ public class GenericPersistenceXml
 		if (this.persistence == null) {
 			throw new IllegalStateException();
 		}
-		getJpaFile(this.persistenceResource.getFile()).removeRootStructureNode(this.persistenceResource);
+		getJpaFile(this.persistenceXmlResource.getFile()).removeRootStructureNode(this.persistenceXmlResource);
 		this.persistence.dispose();
 		Persistence oldPersistence = this.persistence;
 		this.persistence = null;
-		XmlPersistence xmlPersistence = this.persistenceResource.getPersistence();
-		this.persistenceResource.getContents().remove(xmlPersistence);
+		XmlPersistence xmlPersistence = this.persistenceXmlResource.getPersistence();
+		this.persistenceXmlResource.getContents().remove(xmlPersistence);
 		firePropertyChanged(PERSISTENCE_PROPERTY, oldPersistence, null);
 	}
 	
@@ -101,26 +100,26 @@ public class GenericPersistenceXml
 	
 	// **************** updating ***********************************************
 	
-	protected void initialize(PersistenceResource pr) {
-		this.persistenceResource = pr;
+	protected void initialize(PersistenceXmlResource pr) {
+		this.persistenceXmlResource = pr;
 		if (pr.getPersistence() != null) {
 			this.persistence = buildPersistence(pr.getPersistence());
 		}
 	}
 
-	public void update(PersistenceResource persistenceResource) {
+	public void update(PersistenceXmlResource persistenceResource) {
 		XmlPersistence oldXmlPersistence = 
 			(this.persistence == null) ? null : this.persistence.getXmlPersistence();
 		XmlPersistence newXmlPersistence = persistenceResource.getPersistence();
 		
-		this.persistenceResource = persistenceResource;
+		this.persistenceXmlResource = persistenceResource;
 		
 		// if the old and new xml persistences are different instances,
 		// we scrap the old and rebuild.  this can happen when the resource
 		// model drastically changes, such as a cvs checkout or an edit reversion
 		if (oldXmlPersistence != newXmlPersistence) {
 			if (this.persistence != null) {
-				this.getJpaFile(this.persistenceResource.getFile()).removeRootStructureNode(this.persistenceResource);
+				this.getJpaFile(this.persistenceXmlResource.getFile()).removeRootStructureNode(this.persistenceXmlResource);
 				this.persistence.dispose();
 				this.setPersistence(null);
 			}
@@ -128,7 +127,7 @@ public class GenericPersistenceXml
 		
 		if (newXmlPersistence != null) {
 			if (this.persistence != null) {
-				this.getJpaFile(this.persistenceResource.getFile()).addRootStructureNode(this.persistenceResource, this.persistence);
+				this.getJpaFile(this.persistenceXmlResource.getFile()).addRootStructureNode(this.persistenceXmlResource, this.persistence);
 				this.persistence.update(newXmlPersistence);
 			}
 			else {
@@ -137,7 +136,7 @@ public class GenericPersistenceXml
 		}
 		else {
 			if (this.persistence != null) {
-				this.getJpaFile(this.persistenceResource.getFile()).removeRootStructureNode(this.persistenceResource);
+				this.getJpaFile(this.persistenceXmlResource.getFile()).removeRootStructureNode(this.persistenceXmlResource);
 				this.persistence.dispose();
 			}
 			setPersistence(null);

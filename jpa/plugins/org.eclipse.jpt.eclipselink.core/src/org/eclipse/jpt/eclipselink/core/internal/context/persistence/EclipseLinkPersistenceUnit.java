@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -37,8 +37,8 @@ import org.eclipse.jpt.eclipselink.core.internal.context.persistence.options.Ecl
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.options.Options;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.schema.generation.EclipseLinkSchemaGeneration;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.schema.generation.SchemaGeneration;
-import org.eclipse.jpt.eclipselink.core.internal.resource.orm.EclipseLinkOrmResourceModelProvider;
-import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmResource;
+import org.eclipse.jpt.eclipselink.core.internal.resource.orm.EclipseLinkOrmXmlResourceProvider;
+import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmXmlResource;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
@@ -327,9 +327,9 @@ public class EclipseLinkPersistenceUnit extends AbstractPersistenceUnit
 	}
 	
 	protected boolean impliedEclipseLinkMappingFileExists() {
-		EclipseLinkOrmResourceModelProvider modelProvider = 
-			EclipseLinkOrmResourceModelProvider.getDefaultModelProvider(getJpaProject().getProject());
-		EclipseLinkOrmResource resource = modelProvider.getResource();
+		EclipseLinkOrmXmlResourceProvider modelProvider = 
+			EclipseLinkOrmXmlResourceProvider.getDefaultXmlResourceProvider(getJpaProject().getProject());
+		EclipseLinkOrmXmlResource resource = modelProvider.getXmlResource();
 		return resource != null && resource.exists();
 	}
 	

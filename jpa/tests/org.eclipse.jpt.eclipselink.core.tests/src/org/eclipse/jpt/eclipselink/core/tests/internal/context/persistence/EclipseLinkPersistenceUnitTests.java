@@ -1,12 +1,11 @@
 /*******************************************************************************
- *  Copyright (c) 2008  Oracle. 
- *  All rights reserved.  This program and the accompanying materials are 
- *  made available under the terms of the Eclipse Public License v1.0 which 
- *  accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence;
 
@@ -20,7 +19,7 @@ import org.eclipse.jpt.core.tests.internal.projects.TestJpaProject;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaPlatform;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.internal.operations.EclipseLinkOrmFileCreationDataModelProvider;
-import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmResource;
+import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmXmlResource;
 import org.eclipse.jpt.eclipselink.core.tests.internal.context.orm.EclipseLinkOrmContextModelTestCase;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
@@ -56,7 +55,7 @@ public class EclipseLinkPersistenceUnitTests
 		EclipseLinkPersistenceUnit persistenceUnit = getPersistenceUnit();
 		
 		// test that there is one initially
-		EclipseLinkOrmResource eclipseLinkOrmResource = getOrmResource();
+		EclipseLinkOrmXmlResource eclipseLinkOrmResource = getOrmXmlResource();
 		assertTrue(eclipseLinkOrmResource.exists());
 		assertNotNull(persistenceUnit.getImpliedMappingFileRef());
 		assertNotNull(persistenceUnit.getImpliedEclipseLinkMappingFileRef());
@@ -74,7 +73,7 @@ public class EclipseLinkPersistenceUnitTests
 		EclipseLinkPersistenceUnit persistenceUnit = getPersistenceUnit();
 		
 		// test that there is one initially
-		EclipseLinkOrmResource eclipseLinkOrmResource = getOrmResource();
+		EclipseLinkOrmXmlResource eclipseLinkOrmResource = getOrmXmlResource();
 		assertTrue(eclipseLinkOrmResource.exists());
 		assertNotNull(persistenceUnit.getImpliedMappingFileRef());
 		assertNotNull(persistenceUnit.getImpliedEclipseLinkMappingFileRef());
@@ -95,7 +94,7 @@ public class EclipseLinkPersistenceUnitTests
 		EclipseLinkPersistenceUnit persistenceUnit = getPersistenceUnit();
 		
 		// test that there is one initially
-		EclipseLinkOrmResource eclipseLinkOrmResource = getOrmResource();
+		EclipseLinkOrmXmlResource eclipseLinkOrmResource = getOrmXmlResource();
 		assertTrue(eclipseLinkOrmResource.exists());
 		assertNotNull(persistenceUnit.getImpliedMappingFileRef());
 		assertNotNull(persistenceUnit.getImpliedEclipseLinkMappingFileRef());

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.context.persistence;
 
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.XmlContextNode;
-import org.eclipse.jpt.core.resource.persistence.PersistenceResource;
+import org.eclipse.jpt.core.resource.persistence.PersistenceXmlResource;
 
 /**
  * 
@@ -57,5 +57,5 @@ public interface PersistenceXml extends XmlContextNode, JpaStructureNode
 	 * Update the PersistenceXml context model object to match the PersistenceResource 
 	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
 	 */
-	void update(PersistenceResource persistenceResource);
+	void update(PersistenceXmlResource persistenceResource);
 }

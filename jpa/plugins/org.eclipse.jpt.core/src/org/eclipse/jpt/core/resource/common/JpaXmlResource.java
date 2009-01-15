@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,7 +19,9 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jem.util.emf.workbench.WorkbenchResourceHelperBase;
 import org.eclipse.jem.util.plugin.JEMUtilPlugin;
+import org.eclipse.jpt.core.JpaResourceModel;
 import org.eclipse.jpt.core.JpaResourceModelListener;
+import org.eclipse.jpt.utility.internal.ListenerList;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.wst.common.internal.emf.resource.Renderer;
 import org.eclipse.wst.common.internal.emf.resource.TranslatorResourceImpl;
@@ -33,14 +35,16 @@ import org.eclipse.wst.common.internal.emf.resource.TranslatorResourceImpl;
  */
 public abstract class JpaXmlResource
 	extends TranslatorResourceImpl
+	implements JpaResourceModel
 {
-	private JpaResourceModelListener resourceModelListener;
+	protected final ListenerList<JpaResourceModelListener> resourceModelListenerList;
 
 
 	// ********** constructor **********
 
 	protected JpaXmlResource(URI uri, Renderer renderer) {
 		super(uri, renderer);
+		this.resourceModelListenerList = new ListenerList<JpaResourceModelListener>(JpaResourceModelListener.class);
 	}
 
 
@@ -136,15 +140,19 @@ public abstract class JpaXmlResource
 	}
 
 
-	// ********** resource model changes **********
+	// ********** JpaResourceModel implementation **********
 
-	public void setResourceModelListener(JpaResourceModelListener resourceModelListener) {
-		this.resourceModelListener = resourceModelListener;
+	public void addResourceModelListener(JpaResourceModelListener listener) {
+		this.resourceModelListenerList.add(listener);
 	}
 
-	public void resourceModelChanged() {
-		if (this.resourceModelListener != null) {
-			this.resourceModelListener.resourceModelChanged();
+	public void removeResourceModelListener(JpaResourceModelListener listener) {
+		this.resourceModelListenerList.remove(listener);
+	}
+
+	protected void resourceModelChanged() {
+		for (JpaResourceModelListener listener : this.resourceModelListenerList.getListeners()) {
+			listener.resourceModelChanged();
 		}
 	}
 

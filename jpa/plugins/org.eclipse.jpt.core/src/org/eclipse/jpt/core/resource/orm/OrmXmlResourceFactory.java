@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -24,24 +24,24 @@ import org.eclipse.wst.common.internal.emf.resource.TranslatorResourceFactory;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public class OrmResourceFactory
+public class OrmXmlResourceFactory
 	extends TranslatorResourceFactory
 {
-	public OrmResourceFactory() {
+	public OrmXmlResourceFactory() {
 		this(RendererFactory.getDefaultRendererFactory());
 	}
 	
-	public OrmResourceFactory(RendererFactory aRendererFactory) {
+	public OrmXmlResourceFactory(RendererFactory aRendererFactory) {
 		super(aRendererFactory);
 	}
 	
-	public OrmResourceFactory(RendererFactory aRendererFactory, boolean listeningForUpdates) {
+	public OrmXmlResourceFactory(RendererFactory aRendererFactory, boolean listeningForUpdates) {
 		super(aRendererFactory, listeningForUpdates);
 	}
 	
 	@Override
 	protected TranslatorResource createResource(URI uri, Renderer renderer) {
-		return new OrmResource(uri, renderer);
+		return new OrmXmlResource(uri, renderer);
 	}
 
 }

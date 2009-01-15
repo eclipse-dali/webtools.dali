@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,12 +22,12 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public class OrmResource
+public class OrmXmlResource
 	extends JpaXmlResource 
 {
 	public static final String TYPE = "generic"; //$NON-NLS-1$
 
-	public OrmResource(URI uri, Renderer renderer) {
+	public OrmXmlResource(URI uri, Renderer renderer) {
 		super(uri, renderer);
 	}
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -23,8 +23,8 @@ import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.JptCoreMessages;
 import org.eclipse.jpt.core.internal.utility.PlatformTools;
-import org.eclipse.jpt.core.resource.JpaResourceModelProvider;
-import org.eclipse.jpt.core.resource.JpaResourceModelProviderFactory;
+import org.eclipse.jpt.core.resource.JpaXmlResourceProvider;
+import org.eclipse.jpt.core.resource.JpaXmlResourceProviderFactory;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
@@ -33,7 +33,7 @@ import org.eclipse.osgi.util.NLS;
 /**
  * Cache the resource model provider factories as they are requested.
  */
-public class JpaResourceModelProviderManager {
+public class JpaXmlResourceProviderManager {
 
 	/**
 	 * key: file content type
@@ -48,19 +48,19 @@ public class JpaResourceModelProviderManager {
 
 
 	// singleton
-	private static final JpaResourceModelProviderManager INSTANCE = new JpaResourceModelProviderManager();
+	private static final JpaXmlResourceProviderManager INSTANCE = new JpaXmlResourceProviderManager();
 
 	/**
 	 * Return the singleton.
 	 */
-	public static JpaResourceModelProviderManager instance() {
+	public static JpaXmlResourceProviderManager instance() {
 		return INSTANCE;
 	}
 
 
 	// ********** construction **********
 
-	private JpaResourceModelProviderManager() {
+	private JpaXmlResourceProviderManager() {
 		super();
 		this.factoryProviders = this.buildFactoryProviders();
 	}
@@ -140,13 +140,13 @@ public class JpaResourceModelProviderManager {
 	 * @param file the file the resource model represents
 	 * @return the resource model provider for the file
 	 */
-	public JpaResourceModelProvider getModelProvider(IFile file) {
+	public JpaXmlResourceProvider getXmlResourceProvider(IFile file) {
 		IProject project = file.getProject();
 		IPath path = file.getFullPath();
 
 		IContentType contentType = PlatformTools.getContentType(file);
 		while (contentType != null) {
-			JpaResourceModelProvider modelProvider = this.getModelProvider(project, path, contentType);
+			JpaXmlResourceProvider modelProvider = this.getXmlResourceProvider(project, path, contentType);
 			if (modelProvider != null) {
 				return modelProvider;
 			}
@@ -165,12 +165,12 @@ public class JpaResourceModelProviderManager {
 	 * @param contentType the content type for which to create a model provider
 	 * @return the model provider for the file
 	 */
-	public JpaResourceModelProvider getModelProvider(IProject project, IPath filePath, IContentType fileContentType) {
-		JpaResourceModelProviderFactory factory = this.getFactory(fileContentType);
+	public JpaXmlResourceProvider getXmlResourceProvider(IProject project, IPath filePath, IContentType fileContentType) {
+		JpaXmlResourceProviderFactory factory = this.getFactory(fileContentType);
 		return (factory == null) ? null : factory.create(project, filePath);
 	}
 
-	private JpaResourceModelProviderFactory getFactory(IContentType fileContentType) {
+	private JpaXmlResourceProviderFactory getFactory(IContentType fileContentType) {
 		FactoryProvider fp = this.factoryProviders.get(fileContentType.getId());
 		return (fp == null) ? null : fp.getFactory();
 	}
@@ -211,7 +211,7 @@ public class JpaResourceModelProviderManager {
 
 	private static class FactoryProvider {
 		private final IConfigurationElement configurationElement;
-		private JpaResourceModelProviderFactory factory;
+		private JpaXmlResourceProviderFactory factory;
 		private boolean factoryBuilt;  // factory can be null, so use flag
 
 		FactoryProvider(IConfigurationElement configurationElement) {
@@ -224,7 +224,7 @@ public class JpaResourceModelProviderManager {
 			return this.configurationElement;
 		}
 
-		synchronized JpaResourceModelProviderFactory getFactory() {
+		synchronized JpaXmlResourceProviderFactory getFactory() {
 			if ( ! this.factoryBuilt) {
 				this.factoryBuilt = true;
 				this.factory = this.buildFactory();
@@ -232,9 +232,9 @@ public class JpaResourceModelProviderManager {
 			return this.factory;
 		}
 
-		private JpaResourceModelProviderFactory buildFactory() {
+		private JpaXmlResourceProviderFactory buildFactory() {
 			try {
-				return (JpaResourceModelProviderFactory) this.configurationElement.createExecutableExtension(AT_FACTORY_CLASS);
+				return (JpaXmlResourceProviderFactory) this.configurationElement.createExecutableExtension(AT_FACTORY_CLASS);
 			} catch (CoreException ex) {
 				this.logFailedInstantiation(ex);
 				return null;  // returning null seems to be expected

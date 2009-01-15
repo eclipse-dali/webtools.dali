@@ -1,12 +1,11 @@
 /*******************************************************************************
- *  Copyright (c) 2008  Oracle. 
- *  All rights reserved.  This program and the accompanying materials are 
- *  made available under the terms of the Eclipse Public License v1.0 which 
- *  accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.tests.internal.context.orm;
 
@@ -15,8 +14,8 @@ import org.eclipse.jpt.core.tests.internal.projects.TestJpaProject;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkEntityMappings;
 import org.eclipse.jpt.eclipselink.core.internal.operations.EclipseLinkOrmFileCreationDataModelProvider;
 import org.eclipse.jpt.eclipselink.core.internal.operations.EclipseLinkOrmFileCreationOperation;
-import org.eclipse.jpt.eclipselink.core.internal.resource.orm.EclipseLinkOrmResourceModelProvider;
-import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmResource;
+import org.eclipse.jpt.eclipselink.core.internal.resource.orm.EclipseLinkOrmXmlResourceProvider;
+import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmXmlResource;
 import org.eclipse.jpt.eclipselink.core.tests.internal.context.EclipseLinkContextModelTestCase;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
@@ -24,7 +23,7 @@ import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 public abstract class EclipseLinkOrmContextModelTestCase
 	extends EclipseLinkContextModelTestCase
 {
-	protected EclipseLinkOrmResourceModelProvider eclipseLinkOrmResourceModelProvider;
+	protected EclipseLinkOrmXmlResourceProvider eclipseLinkOrmResourceModelProvider;
 	
 	
 	protected EclipseLinkOrmContextModelTestCase(String name) {
@@ -36,7 +35,7 @@ public abstract class EclipseLinkOrmContextModelTestCase
 	protected void setUp() throws Exception {
 		super.setUp();
 		this.eclipseLinkOrmResourceModelProvider = 
-			EclipseLinkOrmResourceModelProvider.getDefaultModelProvider(getJavaProject().getProject());
+			EclipseLinkOrmXmlResourceProvider.getDefaultXmlResourceProvider(getJavaProject().getProject());
 	}
 	
 	@Override
@@ -65,8 +64,8 @@ public abstract class EclipseLinkOrmContextModelTestCase
 	}
 	
 	@Override
-	protected EclipseLinkOrmResource getOrmResource() {
-		return this.eclipseLinkOrmResourceModelProvider.getResource();
+	protected EclipseLinkOrmXmlResource getOrmXmlResource() {
+		return this.eclipseLinkOrmResourceModelProvider.getXmlResource();
 	}
 	
 	@Override

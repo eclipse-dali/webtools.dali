@@ -1,18 +1,17 @@
 /*******************************************************************************
- *  Copyright (c) 2007 Oracle. 
- *  All rights reserved.  This program and the accompanying materials 
- *  are made available under the terms of the Eclipse Public License v1.0 
- *  which accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.context.persistence;
 
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
-import org.eclipse.jpt.core.resource.persistence.PersistenceResource;
+import org.eclipse.jpt.core.resource.persistence.PersistenceXmlResource;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 
 public class PersistenceXmlTests extends ContextModelTestCase
@@ -26,7 +25,7 @@ public class PersistenceXmlTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateAddPersistence() throws Exception {
-		PersistenceResource prm = getPersistenceResource();
+		PersistenceXmlResource prm = getPersistenceXmlResource();
 		prm.getContents().clear();
 		prm.save(null);
 		
@@ -39,7 +38,7 @@ public class PersistenceXmlTests extends ContextModelTestCase
 	}
 	
 	public void testModifyAddPersistence() {
-		PersistenceResource prm = getPersistenceResource();
+		PersistenceXmlResource prm = getPersistenceXmlResource();
 		prm.getContents().remove(prm.getPersistence());
 		assertNull(prm.getPersistence());
 		
@@ -61,7 +60,7 @@ public class PersistenceXmlTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateRemovePersistence() throws Exception {
-		PersistenceResource prm = getPersistenceResource();
+		PersistenceXmlResource prm = getPersistenceXmlResource();
 		
 		assertNotNull(persistenceXml().getPersistence());
 		

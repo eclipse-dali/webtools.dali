@@ -19,7 +19,7 @@ import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaFactory;
-import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmResource;
+import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmXmlResource;
 
 public class EclipseLinkOrmEmbeddedMappingProvider
 	implements ExtendedOrmAttributeMappingProvider
@@ -42,7 +42,7 @@ public class EclipseLinkOrmEmbeddedMappingProvider
 	}
 
 	public String getOrmType() {
-		return EclipseLinkOrmResource.TYPE;
+		return EclipseLinkOrmXmlResource.TYPE;
 	}
 
 	public String getKey() {

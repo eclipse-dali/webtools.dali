@@ -218,6 +218,10 @@ public interface JPA {
 		String UNIQUE_CONSTRAINT__COLUMN_NAMES = "columnNames";
 	String VERSION = PACKAGE_ + "Version";
 
+	// JPA 2.0 annotations
+	String ACCESS = PACKAGE_ + "Access";
+		String ACCESS__VALUE = "value";
+
 	// JPA enums
 	String GENERATION_TYPE = PACKAGE_ + "GenerationType";
 		String GENERATION_TYPE_ = GENERATION_TYPE + '.';
@@ -272,11 +276,7 @@ public interface JPA {
 		String TEMPORAL_TYPE__TIME = TEMPORAL_TYPE_ + "TIME";
 		String TEMPORAL_TYPE__TIMESTAMP = TEMPORAL_TYPE_ + "TIMESTAMP";
 
-	//JPA 2.0 interfaces
-		
-	String ACCESS = PACKAGE_ + "Access";
-		String ACCESS__VALUE = "value";
-		
+	// JPA 2.0 enums
 	String ACCESS_TYPE = PACKAGE_ + "AccessType";
 		String ACCESS_TYPE_ = ACCESS_TYPE + '.';
 		String ACCESS_TYPE__FIELD = ACCESS_TYPE_ + "FIELD";

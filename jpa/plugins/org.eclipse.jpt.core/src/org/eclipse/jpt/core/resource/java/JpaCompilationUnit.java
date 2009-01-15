@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,6 +13,7 @@ import java.util.Iterator;
 
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.JpaAnnotationProvider;
+import org.eclipse.jpt.core.JpaResourceModel;
 import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.utility.CommandExecutor;
 
@@ -26,18 +27,23 @@ import org.eclipse.jpt.utility.CommandExecutor;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface JpaCompilationUnit
-	extends JavaResourceNode
+	extends JavaResourceNode, JpaResourceModel
 {
-
+	/**
+	 * Return the corresponding Eclipse Java compilation unit.
+	 */
 	ICompilationUnit getCompilationUnit();
 
+	/**
+	 * Return all the types that are "persistable", as defined by the JPA spec.
+	 */
 	Iterator<JavaResourcePersistentType> persistableTypes();
 
 	JpaAnnotationProvider getAnnotationProvider();
 
-	CommandExecutor getModifySharedDocumentCommandExecutor();
-	
 	AnnotationEditFormatter getAnnotationEditFormatter();
+
+	CommandExecutor getModifySharedDocumentCommandExecutor();
 
 	/**
 	 * Called (via a hook in change notification) whenever anything in the JPA
@@ -45,7 +51,7 @@ public interface JpaCompilationUnit
 	 * various listeners (namely the JPA project).
 	 */
 	void resourceModelChanged();
-	
+
 	/**
 	 * Resolve type information that could be dependent on other files being
 	 * added/removed.
@@ -54,8 +60,8 @@ public interface JpaCompilationUnit
 
 	/**
 	 * Something in Java has changed (typically either the compilation unit's
-	 * source code or the Java classpath); update the compilation unit's state
-	 * to be in synch with the source code etc.
+	 * source code or the Java classpath); update the JPA compilation unit's
+	 * state to be in synch with the source code etc.
 	 */
 	void update();
 

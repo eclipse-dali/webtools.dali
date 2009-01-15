@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -57,7 +57,7 @@ public class OrmEmbeddedIdMappingTests extends ContextModelTestCase
 		XmlMappingFileRef mappingFileRef = PersistenceFactory.eINSTANCE.createXmlMappingFileRef();
 		mappingFileRef.setFileName(JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH);
 		getXmlPersistenceUnit().getMappingFiles().add(mappingFileRef);
-		getPersistenceResource().save(null);
+		getPersistenceXmlResource().save(null);
 	}
 	
 	private ICompilationUnit createTestEntityEmbeddedIdMapping() throws Exception {
@@ -320,7 +320,7 @@ public class OrmEmbeddedIdMappingTests extends ContextModelTestCase
 		
 		EmbeddedIdMapping embeddedIdMapping = (EmbeddedIdMapping) ormPersistentAttribute.getMapping();
 		assertFalse(embeddedIdMapping.isDefault());
-		XmlEmbeddedId embeddedIdResource = getOrmResource().getEntityMappings().getEntities().get(0).getAttributes().getEmbeddedIds().get(0);
+		XmlEmbeddedId embeddedIdResource = getOrmXmlResource().getEntityMappings().getEntities().get(0).getAttributes().getEmbeddedIds().get(0);
 		embeddedIdResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createXmlAttributeOverrideImpl());
 		AttributeOverride attributeOverride = embeddedIdMapping.specifiedAttributeOverrides().next();
 		attributeOverride.setName("override");
@@ -341,7 +341,7 @@ public class OrmEmbeddedIdMappingTests extends ContextModelTestCase
 		
 		EmbeddedIdMapping embeddedIdMapping = (EmbeddedIdMapping) ormPersistentAttribute.getMapping();
 		assertFalse(embeddedIdMapping.isDefault());
-		XmlEmbeddedId embeddedIdResource = getOrmResource().getEntityMappings().getEntities().get(0).getAttributes().getEmbeddedIds().get(0);
+		XmlEmbeddedId embeddedIdResource = getOrmXmlResource().getEntityMappings().getEntities().get(0).getAttributes().getEmbeddedIds().get(0);
 		embeddedIdResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createXmlAttributeOverrideImpl());
 		AttributeOverride attributeOverride = embeddedIdMapping.specifiedAttributeOverrides().next();
 		attributeOverride.setName("override");
@@ -362,7 +362,7 @@ public class OrmEmbeddedIdMappingTests extends ContextModelTestCase
 		
 		EmbeddedIdMapping embeddedIdMapping = (EmbeddedIdMapping) ormPersistentAttribute.getMapping();
 		assertFalse(embeddedIdMapping.isDefault());
-		XmlEmbeddedId embeddedIdResource = getOrmResource().getEntityMappings().getEntities().get(0).getAttributes().getEmbeddedIds().get(0);
+		XmlEmbeddedId embeddedIdResource = getOrmXmlResource().getEntityMappings().getEntities().get(0).getAttributes().getEmbeddedIds().get(0);
 		embeddedIdResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createXmlAttributeOverrideImpl());
 		AttributeOverride attributeOverride = embeddedIdMapping.specifiedAttributeOverrides().next();
 		attributeOverride.setName("override");
@@ -383,7 +383,7 @@ public class OrmEmbeddedIdMappingTests extends ContextModelTestCase
 		
 		EmbeddedIdMapping embeddedIdMapping = (EmbeddedIdMapping) ormPersistentAttribute.getMapping();
 		assertFalse(embeddedIdMapping.isDefault());
-		XmlEmbeddedId embeddedIdResource = getOrmResource().getEntityMappings().getEntities().get(0).getAttributes().getEmbeddedIds().get(0);
+		XmlEmbeddedId embeddedIdResource = getOrmXmlResource().getEntityMappings().getEntities().get(0).getAttributes().getEmbeddedIds().get(0);
 		embeddedIdResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createXmlAttributeOverrideImpl());
 		AttributeOverride attributeOverride = embeddedIdMapping.specifiedAttributeOverrides().next();
 		attributeOverride.setName("override");
@@ -404,7 +404,7 @@ public class OrmEmbeddedIdMappingTests extends ContextModelTestCase
 		
 		EmbeddedIdMapping embeddedIdMapping = (EmbeddedIdMapping) ormPersistentAttribute.getMapping();
 		assertFalse(embeddedIdMapping.isDefault());
-		XmlEmbeddedId embeddedIdResource = getOrmResource().getEntityMappings().getEntities().get(0).getAttributes().getEmbeddedIds().get(0);
+		XmlEmbeddedId embeddedIdResource = getOrmXmlResource().getEntityMappings().getEntities().get(0).getAttributes().getEmbeddedIds().get(0);
 		embeddedIdResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createXmlAttributeOverrideImpl());
 		AttributeOverride attributeOverride = embeddedIdMapping.specifiedAttributeOverrides().next();
 		attributeOverride.setName("override");
@@ -428,7 +428,7 @@ public class OrmEmbeddedIdMappingTests extends ContextModelTestCase
 		
 		EmbeddedIdMapping embeddedIdMapping = (EmbeddedIdMapping) ormPersistentAttribute.getMapping();
 		assertFalse(embeddedIdMapping.isDefault());
-		XmlEmbeddedId embeddedIdResource = getOrmResource().getEntityMappings().getEntities().get(0).getAttributes().getEmbeddedIds().get(0);
+		XmlEmbeddedId embeddedIdResource = getOrmXmlResource().getEntityMappings().getEntities().get(0).getAttributes().getEmbeddedIds().get(0);
 		embeddedIdResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createXmlAttributeOverrideImpl());
 		AttributeOverride attributeOverride = embeddedIdMapping.specifiedAttributeOverrides().next();
 		attributeOverride.setName("override");
@@ -449,7 +449,7 @@ public class OrmEmbeddedIdMappingTests extends ContextModelTestCase
 		
 		EmbeddedIdMapping embeddedIdMapping = (EmbeddedIdMapping) ormPersistentAttribute.getMapping();
 		assertFalse(embeddedIdMapping.isDefault());
-		XmlEmbeddedId embeddedIdResource = getOrmResource().getEntityMappings().getEntities().get(0).getAttributes().getEmbeddedIds().get(0);
+		XmlEmbeddedId embeddedIdResource = getOrmXmlResource().getEntityMappings().getEntities().get(0).getAttributes().getEmbeddedIds().get(0);
 		embeddedIdResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createXmlAttributeOverrideImpl());
 		AttributeOverride attributeOverride = embeddedIdMapping.specifiedAttributeOverrides().next();
 		attributeOverride.setName("override");
@@ -470,7 +470,7 @@ public class OrmEmbeddedIdMappingTests extends ContextModelTestCase
 		
 		EmbeddedIdMapping embeddedIdMapping = (EmbeddedIdMapping) ormPersistentAttribute.getMapping();
 		assertFalse(embeddedIdMapping.isDefault());
-		XmlEmbeddedId embeddedIdResource = getOrmResource().getEntityMappings().getEntities().get(0).getAttributes().getEmbeddedIds().get(0);
+		XmlEmbeddedId embeddedIdResource = getOrmXmlResource().getEntityMappings().getEntities().get(0).getAttributes().getEmbeddedIds().get(0);
 		embeddedIdResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createXmlAttributeOverrideImpl());
 		AttributeOverride attributeOverride = embeddedIdMapping.specifiedAttributeOverrides().next();
 		attributeOverride.setName("override");
@@ -489,7 +489,7 @@ public class OrmEmbeddedIdMappingTests extends ContextModelTestCase
 		
 		EmbeddedIdMapping embeddedIdMapping = (EmbeddedIdMapping) ormPersistentAttribute.getMapping();
 		assertFalse(embeddedIdMapping.isDefault());
-		XmlEmbeddedId embeddedIdResource = getOrmResource().getEntityMappings().getEntities().get(0).getAttributes().getEmbeddedIds().get(0);
+		XmlEmbeddedId embeddedIdResource = getOrmXmlResource().getEntityMappings().getEntities().get(0).getAttributes().getEmbeddedIds().get(0);
 		embeddedIdResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createXmlAttributeOverrideImpl());
 		AttributeOverride attributeOverride = embeddedIdMapping.specifiedAttributeOverrides().next();
 		attributeOverride.setName("override");
@@ -507,7 +507,7 @@ public class OrmEmbeddedIdMappingTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY, "embeddedMapping");
 		OrmEmbeddedIdMapping ormEmbeddedMapping = (OrmEmbeddedIdMapping) ormPersistentAttribute.getMapping();
-		XmlEmbeddedId embeddedResource = getOrmResource().getEntityMappings().getEntities().get(0).getAttributes().getEmbeddedIds().get(0);
+		XmlEmbeddedId embeddedResource = getOrmXmlResource().getEntityMappings().getEntities().get(0).getAttributes().getEmbeddedIds().get(0);
 		
 		assertEquals("embeddedMapping", ormEmbeddedMapping.getName());
 		assertEquals("embeddedMapping", embeddedResource.getName());
@@ -527,7 +527,7 @@ public class OrmEmbeddedIdMappingTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY, "embeddedMapping");
 		OrmEmbeddedIdMapping ormEmbeddedMapping = (OrmEmbeddedIdMapping) ormPersistentAttribute.getMapping();
-		XmlEmbeddedId embeddedResource = getOrmResource().getEntityMappings().getEntities().get(0).getAttributes().getEmbeddedIds().get(0);
+		XmlEmbeddedId embeddedResource = getOrmXmlResource().getEntityMappings().getEntities().get(0).getAttributes().getEmbeddedIds().get(0);
 		
 		assertEquals("embeddedMapping", ormEmbeddedMapping.getName());
 		assertEquals("embeddedMapping", embeddedResource.getName());
@@ -547,7 +547,7 @@ public class OrmEmbeddedIdMappingTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY, "embeddedMapping");
 		OrmEmbeddedIdMapping ormEmbeddedIdMapping = (OrmEmbeddedIdMapping) ormPersistentAttribute.getMapping();
-		XmlEmbeddedId embeddedIdResource = getOrmResource().getEntityMappings().getEntities().get(0).getAttributes().getEmbeddedIds().get(0);
+		XmlEmbeddedId embeddedIdResource = getOrmXmlResource().getEntityMappings().getEntities().get(0).getAttributes().getEmbeddedIds().get(0);
 
 		embeddedIdResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createXmlAttributeOverrideImpl());
 		embeddedIdResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createXmlAttributeOverrideImpl());
@@ -585,7 +585,7 @@ public class OrmEmbeddedIdMappingTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY, "embeddedMapping");
 		OrmEmbeddedIdMapping ormEmbeddedIdMapping = (OrmEmbeddedIdMapping) ormPersistentAttribute.getMapping();
-		XmlEmbeddedId embeddedIdResource = getOrmResource().getEntityMappings().getEntities().get(0).getAttributes().getEmbeddedIds().get(0);
+		XmlEmbeddedId embeddedIdResource = getOrmXmlResource().getEntityMappings().getEntities().get(0).getAttributes().getEmbeddedIds().get(0);
 		
 		embeddedIdResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createXmlAttributeOverrideImpl());
 		embeddedIdResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createXmlAttributeOverrideImpl());

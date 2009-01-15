@@ -1,12 +1,11 @@
 /*******************************************************************************
- *  Copyright (c) 2008  Oracle. 
- *  All rights reserved.  This program and the accompanying materials are 
- *  made available under the terms of the Eclipse Public License v1.0 which 
- *  accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.persistence;
 
@@ -18,54 +17,54 @@ import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.JpaConstants;
-import org.eclipse.jpt.core.internal.resource.JpaResourceModelProviderManager;
-import org.eclipse.jpt.core.resource.AbstractResourceModelProvider;
+import org.eclipse.jpt.core.internal.resource.JpaXmlResourceProviderManager;
+import org.eclipse.jpt.core.resource.AbstractXmlResourceProvider;
 import org.eclipse.jpt.core.resource.common.JpaXmlResource;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
-import org.eclipse.jpt.core.resource.persistence.PersistenceResource;
+import org.eclipse.jpt.core.resource.persistence.PersistenceXmlResource;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 
-public class PersistenceResourceModelProvider
-	extends AbstractResourceModelProvider<PersistenceResource>
+public class PersistenceXmlResourceProvider
+	extends AbstractXmlResourceProvider<PersistenceXmlResource>
 {
 	/**
 	 * (Convenience method) Returns a persistence resource model provider for 
 	 * the given file.
 	 */
-	public static PersistenceResourceModelProvider getModelProvider(IFile file) {
-		return getModelProvider_(file.getProject(), file.getFullPath().toString());
+	public static PersistenceXmlResourceProvider getXmlResourceProvider(IFile file) {
+		return getXmlResourceProvider_(file.getProject(), file.getFullPath().toString());
 	}
 	
 	/**
 	 * (Convenience method) Returns an persistence resource model provider for
 	 * the given project in the specified deploy location
 	 */
-	public static PersistenceResourceModelProvider getModelProvider(IProject project, String deployLocation) {
-		return getModelProvider_(project, JptCorePlugin.getDeploymentURI(project, deployLocation));
+	public static PersistenceXmlResourceProvider getXmlResourceProvider(IProject project, String deployLocation) {
+		return getXmlResourceProvider_(project, JptCorePlugin.getDeploymentURI(project, deployLocation));
 	}
 	
 	/**
 	 * (Convenience method) Returns a persistence resource model provider for 
 	 * the given project in the default deploy location
 	 */
-	public static PersistenceResourceModelProvider getDefaultModelProvider(IProject project) {
-		return getModelProvider(project, JptCorePlugin.DEFAULT_PERSISTENCE_XML_FILE_PATH);
+	public static PersistenceXmlResourceProvider getDefaultXmlResourceProvider(IProject project) {
+		return getXmlResourceProvider(project, JptCorePlugin.DEFAULT_PERSISTENCE_XML_FILE_PATH);
 	}
 	
-	private static PersistenceResourceModelProvider getModelProvider_(IProject project, String location) {
-		return (PersistenceResourceModelProvider) JpaResourceModelProviderManager.instance().getModelProvider(
+	private static PersistenceXmlResourceProvider getXmlResourceProvider_(IProject project, String location) {
+		return (PersistenceXmlResourceProvider) JpaXmlResourceProviderManager.instance().getXmlResourceProvider(
 			project, 
 			new Path(location),
 			JptCorePlugin.PERSISTENCE_XML_CONTENT_TYPE);
 	}
 	
 	
-	public PersistenceResourceModelProvider(IProject project) {
+	public PersistenceXmlResourceProvider(IProject project) {
 		this(project, new Path(JptCorePlugin.DEFAULT_PERSISTENCE_XML_FILE_PATH));
 	}
 		
-	public PersistenceResourceModelProvider(IProject project, IPath filePath) {
+	public PersistenceXmlResourceProvider(IProject project, IPath filePath) {
 		super(project, filePath);
 	}
 	
@@ -86,7 +85,7 @@ public class PersistenceResourceModelProvider
 	}
 	
 	@Override
-	protected PersistenceResource ensureCorrectType(Resource resource) throws ClassCastException {
-		return (PersistenceResource) resource;
+	protected PersistenceXmlResource ensureCorrectType(Resource resource) throws ClassCastException {
+		return (PersistenceXmlResource) resource;
 	}
 }

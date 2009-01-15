@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -67,6 +67,10 @@ public class JpaStructureView
 	
 	@Override
 	protected PageRec doCreatePage(IWorkbenchPart part) {
+		// use the platform adapter service so the structure view can be
+		// associated with any IEditorPart that has an associated adapter
+		// factory that can give us the JPA file associated with the editor part
+		// @see org.eclipse.jpt.ui.internal.EditorPartAdapterFactory
 		JpaFile jpaFile = (JpaFile) part.getAdapter(JpaFile.class);
 		if (jpaFile == null) {
 			return null;

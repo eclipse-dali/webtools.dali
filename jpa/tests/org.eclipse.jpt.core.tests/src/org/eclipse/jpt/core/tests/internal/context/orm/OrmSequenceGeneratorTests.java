@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -33,7 +33,7 @@ public class OrmSequenceGeneratorTests extends ContextModelTestCase
 		XmlMappingFileRef mappingFileRef = PersistenceFactory.eINSTANCE.createXmlMappingFileRef();
 		mappingFileRef.setFileName(JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH);
 		getXmlPersistenceUnit().getMappingFiles().add(mappingFileRef);
-		getPersistenceResource().save(null);
+		getPersistenceXmlResource().save(null);
 	}
 
 	private ICompilationUnit createTestEntity() throws Exception {
@@ -73,7 +73,7 @@ public class OrmSequenceGeneratorTests extends ContextModelTestCase
 	
 	public void testUpdateSpecifiedName() throws Exception {
 		SequenceGenerator sequenceGenerator = getEntityMappings().addSequenceGenerator(0);		
-		XmlSequenceGenerator sequenceGeneratorResource = getOrmResource().getEntityMappings().getSequenceGenerators().get(0);
+		XmlSequenceGenerator sequenceGeneratorResource = getOrmXmlResource().getEntityMappings().getSequenceGenerators().get(0);
 		
 		//set name in the resource model, verify context model updated
 		sequenceGeneratorResource.setName("FOO");
@@ -88,7 +88,7 @@ public class OrmSequenceGeneratorTests extends ContextModelTestCase
 	
 	public void testModifySpecifiedName() throws Exception {
 		SequenceGenerator sequenceGenerator = getEntityMappings().addSequenceGenerator(0);		
-		XmlSequenceGenerator sequenceGeneratorResource = getOrmResource().getEntityMappings().getSequenceGenerators().get(0);
+		XmlSequenceGenerator sequenceGeneratorResource = getOrmXmlResource().getEntityMappings().getSequenceGenerators().get(0);
 		
 		//set name in the context model, verify resource model modified
 		sequenceGenerator.setName("FOO");
@@ -103,7 +103,7 @@ public class OrmSequenceGeneratorTests extends ContextModelTestCase
 	
 	public void testUpdateSpecifiedSequenceName() throws Exception {
 		SequenceGenerator sequenceGenerator = getEntityMappings().addSequenceGenerator(0);		
-		XmlSequenceGenerator sequenceGeneratorResource = getOrmResource().getEntityMappings().getSequenceGenerators().get(0);
+		XmlSequenceGenerator sequenceGeneratorResource = getOrmXmlResource().getEntityMappings().getSequenceGenerators().get(0);
 		
 		//set name in the resource model, verify context model updated
 		sequenceGeneratorResource.setSequenceName("FOO");
@@ -118,7 +118,7 @@ public class OrmSequenceGeneratorTests extends ContextModelTestCase
 	
 	public void testModifySpecifiedSequenceName() throws Exception {
 		SequenceGenerator sequenceGenerator = getEntityMappings().addSequenceGenerator(0);		
-		XmlSequenceGenerator sequenceGeneratorResource = getOrmResource().getEntityMappings().getSequenceGenerators().get(0);
+		XmlSequenceGenerator sequenceGeneratorResource = getOrmXmlResource().getEntityMappings().getSequenceGenerators().get(0);
 		
 		//set name in the context model, verify resource model modified
 		sequenceGenerator.setSpecifiedSequenceName("FOO");
@@ -133,7 +133,7 @@ public class OrmSequenceGeneratorTests extends ContextModelTestCase
 
 	public void testUpdateSpecifiedInitialValue() throws Exception {
 		SequenceGenerator sequenceGenerator = getEntityMappings().addSequenceGenerator(0);		
-		XmlSequenceGenerator sequenceGeneratorResource = getOrmResource().getEntityMappings().getSequenceGenerators().get(0);
+		XmlSequenceGenerator sequenceGeneratorResource = getOrmXmlResource().getEntityMappings().getSequenceGenerators().get(0);
 		
 		//set initial value in the resource model, verify context model updated
 		sequenceGeneratorResource.setInitialValue(Integer.valueOf(10));
@@ -153,7 +153,7 @@ public class OrmSequenceGeneratorTests extends ContextModelTestCase
 	
 	public void testModifySpecifiedInitialValue() throws Exception {
 		SequenceGenerator sequenceGenerator = getEntityMappings().addSequenceGenerator(0);		
-		XmlSequenceGenerator sequenceGeneratorResource = getOrmResource().getEntityMappings().getSequenceGenerators().get(0);
+		XmlSequenceGenerator sequenceGeneratorResource = getOrmXmlResource().getEntityMappings().getSequenceGenerators().get(0);
 		
 		//set initial value in the context model, verify resource model modified
 		sequenceGenerator.setSpecifiedInitialValue(Integer.valueOf(10));
@@ -172,7 +172,7 @@ public class OrmSequenceGeneratorTests extends ContextModelTestCase
 	
 	public void testUpdateSpecifiedAllocationSize() throws Exception {
 		SequenceGenerator sequenceGenerator = getEntityMappings().addSequenceGenerator(0);		
-		XmlSequenceGenerator sequenceGeneratorResource = getOrmResource().getEntityMappings().getSequenceGenerators().get(0);
+		XmlSequenceGenerator sequenceGeneratorResource = getOrmXmlResource().getEntityMappings().getSequenceGenerators().get(0);
 		
 		//set allocation size in the resource model, verify context model updated
 		sequenceGeneratorResource.setAllocationSize(Integer.valueOf(10));
@@ -192,7 +192,7 @@ public class OrmSequenceGeneratorTests extends ContextModelTestCase
 	
 	public void testModifySpecifiedAllocationSize() throws Exception {
 		SequenceGenerator sequenceGenerator = getEntityMappings().addSequenceGenerator(0);		
-		XmlSequenceGenerator sequenceGeneratorResource = getOrmResource().getEntityMappings().getSequenceGenerators().get(0);
+		XmlSequenceGenerator sequenceGeneratorResource = getOrmXmlResource().getEntityMappings().getSequenceGenerators().get(0);
 		
 		//set allocation size in the context model, verify resource model modified
 		sequenceGenerator.setSpecifiedAllocationSize(Integer.valueOf(10));

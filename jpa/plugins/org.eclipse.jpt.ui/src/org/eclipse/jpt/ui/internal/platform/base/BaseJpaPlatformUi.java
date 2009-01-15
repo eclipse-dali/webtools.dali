@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.core.JpaFile;
@@ -38,7 +39,6 @@ import org.eclipse.jpt.ui.details.TypeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.details.DefaultBasicMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.details.DefaultEmbeddedMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.details.JavaBasicMappingUiProvider;
-import org.eclipse.jpt.ui.internal.java.details.JavaPersistentAttributeDetailsProvider;
 import org.eclipse.jpt.ui.internal.java.details.JavaEmbeddableUiProvider;
 import org.eclipse.jpt.ui.internal.java.details.JavaEmbeddedIdMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.details.JavaEmbeddedMappingUiProvider;
@@ -49,6 +49,7 @@ import org.eclipse.jpt.ui.internal.java.details.JavaManyToOneMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.details.JavaMappedSuperclassUiProvider;
 import org.eclipse.jpt.ui.internal.java.details.JavaOneToManyMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.details.JavaOneToOneMappingUiProvider;
+import org.eclipse.jpt.ui.internal.java.details.JavaPersistentAttributeDetailsProvider;
 import org.eclipse.jpt.ui.internal.java.details.JavaPersistentTypeDetailsProvider;
 import org.eclipse.jpt.ui.internal.java.details.JavaTransientMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.details.JavaVersionMappingUiProvider;
@@ -56,7 +57,6 @@ import org.eclipse.jpt.ui.internal.java.details.NullAttributeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.details.NullTypeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.orm.details.EntityMappingsDetailsProvider;
 import org.eclipse.jpt.ui.internal.orm.details.OrmBasicMappingUiProvider;
-import org.eclipse.jpt.ui.internal.orm.details.OrmPersistentAttributeDetailsProvider;
 import org.eclipse.jpt.ui.internal.orm.details.OrmEmbeddableUiProvider;
 import org.eclipse.jpt.ui.internal.orm.details.OrmEmbeddedIdMappingUiProvider;
 import org.eclipse.jpt.ui.internal.orm.details.OrmEmbeddedMappingUiProvider;
@@ -67,6 +67,7 @@ import org.eclipse.jpt.ui.internal.orm.details.OrmManyToOneMappingUiProvider;
 import org.eclipse.jpt.ui.internal.orm.details.OrmMappedSuperclassUiProvider;
 import org.eclipse.jpt.ui.internal.orm.details.OrmOneToManyMappingUiProvider;
 import org.eclipse.jpt.ui.internal.orm.details.OrmOneToOneMappingUiProvider;
+import org.eclipse.jpt.ui.internal.orm.details.OrmPersistentAttributeDetailsProvider;
 import org.eclipse.jpt.ui.internal.orm.details.OrmPersistentTypeDetailsProvider;
 import org.eclipse.jpt.ui.internal.orm.details.OrmTransientMappingUiProvider;
 import org.eclipse.jpt.ui.internal.orm.details.OrmVersionMappingUiProvider;
@@ -348,16 +349,16 @@ public abstract class BaseJpaPlatformUi
 	// ********** structure providers **********
 
 	public JpaStructureProvider getStructureProvider(JpaFile jpaFile) {
-		return this.getStructureProviderForResourceType(jpaFile.getResourceType());
+		return this.getStructureProvider(jpaFile.getContentType());
 	}
 
-	protected JpaStructureProvider getStructureProviderForResourceType(String resourceType) {
+	protected JpaStructureProvider getStructureProvider(IContentType contentType) {
 		for (JpaStructureProvider provider : this.getJpaStructureProviders()) {
-			if (provider.getResourceType() == resourceType) {
+			if (contentType.isKindOf(provider.getContentType())) {
 				return provider;
 			}
 		}
-		throw new IllegalArgumentException("Unknown resource type: " + resourceType); //$NON-NLS-1$
+		throw new IllegalArgumentException("Unknown content type: " + contentType); //$NON-NLS-1$
 	}
 
 	protected synchronized JpaStructureProvider[] getJpaStructureProviders() {

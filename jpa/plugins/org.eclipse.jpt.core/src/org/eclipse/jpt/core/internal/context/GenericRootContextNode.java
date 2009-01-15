@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -25,12 +25,12 @@ import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
-import org.eclipse.jpt.core.internal.resource.persistence.PersistenceResourceModelProvider;
+import org.eclipse.jpt.core.internal.resource.persistence.PersistenceXmlResourceProvider;
 import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.core.resource.persistence.PersistenceResource;
+import org.eclipse.jpt.core.resource.persistence.PersistenceXmlResource;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.HashBag;
 import org.eclipse.wst.common.internal.emfworkbench.WorkbenchResourceHelper;
@@ -54,9 +54,9 @@ public class GenericRootContextNode
 		}
 		this.jpaProject = jpaProject;
 		
-		PersistenceResourceModelProvider modelProvider =
-			PersistenceResourceModelProvider.getDefaultModelProvider(jpaProject.getProject());
-		PersistenceResource resource = modelProvider.getResource();
+		PersistenceXmlResourceProvider modelProvider =
+			PersistenceXmlResourceProvider.getDefaultXmlResourceProvider(jpaProject.getProject());
+		PersistenceXmlResource resource = modelProvider.getXmlResource();
 		if (resource.exists()) {
 			this.persistenceXml = this.buildPersistenceXml(resource);
 		}
@@ -116,9 +116,9 @@ public class GenericRootContextNode
 		if (this.persistenceXml != null) {
 			throw new IllegalStateException();
 		}
-		PersistenceResourceModelProvider modelProvider =
-			PersistenceResourceModelProvider.getDefaultModelProvider(this.getProject());
-		PersistenceResource resource = modelProvider.getResource();
+		PersistenceXmlResourceProvider modelProvider =
+			PersistenceXmlResourceProvider.getDefaultXmlResourceProvider(this.getProject());
+		PersistenceXmlResource resource = modelProvider.getXmlResource();
 		modelProvider.modify(new Runnable() {
 				public void run() {
 					// any modification will save file
@@ -134,9 +134,9 @@ public class GenericRootContextNode
 			throw new IllegalStateException();
 		}
 		this.persistenceXml.dispose();
-		PersistenceResourceModelProvider modelProvider =
-			PersistenceResourceModelProvider.getDefaultModelProvider(jpaProject.getProject());
-		PersistenceResource resource = modelProvider.getResource();
+		PersistenceXmlResourceProvider modelProvider =
+			PersistenceXmlResourceProvider.getDefaultXmlResourceProvider(jpaProject.getProject());
+		PersistenceXmlResource resource = modelProvider.getXmlResource();
 		try {
 			WorkbenchResourceHelper.deleteResource(resource);
 		}
@@ -153,9 +153,9 @@ public class GenericRootContextNode
 	// **************** updating ***********************************************
 	
 	public void update(IProgressMonitor monitor) {
-		PersistenceResourceModelProvider modelProvider =
-			PersistenceResourceModelProvider.getDefaultModelProvider(jpaProject.getProject());
-		PersistenceResource resource = modelProvider.getResource();
+		PersistenceXmlResourceProvider modelProvider =
+			PersistenceXmlResourceProvider.getDefaultXmlResourceProvider(jpaProject.getProject());
+		PersistenceXmlResource resource = modelProvider.getXmlResource();
 		
 		if (resource.exists()) {
 			if (this.persistenceXml == null) {
@@ -168,7 +168,7 @@ public class GenericRootContextNode
 		}
 	}
 
-	protected PersistenceXml buildPersistenceXml(PersistenceResource persistenceResource) {
+	protected PersistenceXml buildPersistenceXml(PersistenceXmlResource persistenceResource) {
 		return this.getJpaFactory().buildPersistenceXml(this, persistenceResource);
 	}
 	

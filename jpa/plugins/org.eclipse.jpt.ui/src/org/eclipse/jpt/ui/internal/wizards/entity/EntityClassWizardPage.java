@@ -28,8 +28,8 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.core.internal.resource.JpaResourceModelProviderManager;
-import org.eclipse.jpt.core.internal.resource.orm.OrmResourceModelProvider;
+import org.eclipse.jpt.core.internal.resource.JpaXmlResourceProviderManager;
+import org.eclipse.jpt.core.internal.resource.orm.OrmXmlResourceProvider;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.wizards.entity.data.model.IEntityDataModelProperties;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -304,7 +304,7 @@ public class EntityClassWizardPage extends NewJavaClassWizardPage{
 					return false;
 				} else if (element instanceof IFile) {
 					IFile file = (IFile) element;
-					if (JpaResourceModelProviderManager.instance().getModelProvider(file) instanceof OrmResourceModelProvider) {
+					if (JpaXmlResourceProviderManager.instance().getXmlResourceProvider(file) instanceof OrmXmlResourceProvider) {
 						return true;
 					}
 				}

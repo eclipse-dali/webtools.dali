@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,8 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.core;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.content.IContentType;
+
 /**
- * Listeners are notified whenever anything in the JPA resource model changes.
+ * Map a content type to a JPA resource model.
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -18,18 +21,19 @@ package org.eclipse.jpt.core;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface JpaResourceModel {
+public interface JpaResourceModelProvider {
 
 	/**
-	 * Changes to the resource model result in events.
-	 * In particular, the JPA project performs an "update" whenever a resource
-	 * model changes.
+	 * Return the file content type the provider is for.
 	 */
-	void addResourceModelListener(JpaResourceModelListener listener);
+	IContentType getContentType();
 
 	/**
-	 * @see #addResourceModelListener(ResourceModelListener)
+	 * Build a JPA resource model for the specified JPA project and file.
+	 * Use the specified factory for creation so extenders can simply override
+	 * the appropriate creation method instead of building a provider for the
+	 * same content.
 	 */
-	void removeResourceModelListener(JpaResourceModelListener listener);
+	JpaResourceModel buildResourceModel(JpaProject jpaProject, IFile file);
 
 }

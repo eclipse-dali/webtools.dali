@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -23,7 +23,7 @@ import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnitTransactionType;
 import org.eclipse.jpt.core.context.persistence.Property;
 import org.eclipse.jpt.core.resource.java.JPA;
-import org.eclipse.jpt.core.resource.orm.OrmResource;
+import org.eclipse.jpt.core.resource.orm.OrmXmlResource;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlJavaClassRef;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
@@ -389,7 +389,7 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		PersistenceUnit persistenceUnit = getPersistenceUnit();
 		
 		// test that there is one initially
-		OrmResource ormResource = getOrmResource();
+		OrmXmlResource ormResource = getOrmXmlResource();
 		assertTrue(ormResource.exists());
 		assertNotNull(persistenceUnit.getImpliedMappingFileRef());
 		
@@ -405,7 +405,7 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		PersistenceUnit persistenceUnit = getPersistenceUnit();
 		
 		// test that there is one initially
-		OrmResource ormResource = getOrmResource();
+		OrmXmlResource ormResource = getOrmXmlResource();
 		assertTrue(ormResource.exists());
 		assertNotNull(persistenceUnit.getImpliedMappingFileRef());
 		
@@ -589,7 +589,7 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		persistenceUnit.addSpecifiedClassRef().setClassName("Foo");
 		
 		try {
-			getPersistenceResource().save(null);
+			getPersistenceXmlResource().save(null);
 		}
 		catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -1072,7 +1072,7 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		XmlMappingFileRef mappingFileRef = PersistenceFactory.eINSTANCE.createXmlMappingFileRef();
 		mappingFileRef.setFileName(JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH);
 		getXmlPersistenceUnit().getMappingFiles().add(mappingFileRef);
-		getPersistenceResource().save(null);
+		getPersistenceXmlResource().save(null);
 	}
 
 	private ICompilationUnit createTestEntity() throws Exception {

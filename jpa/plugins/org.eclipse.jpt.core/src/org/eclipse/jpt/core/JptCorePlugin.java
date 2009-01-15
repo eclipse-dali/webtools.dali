@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -23,6 +23,7 @@ import org.eclipse.core.runtime.preferences.DefaultScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.core.internal.JpaModelManager;
 import org.eclipse.jpt.core.internal.platform.GenericJpaPlatform;
 import org.eclipse.jpt.core.internal.platform.JpaPlatformRegistry;
@@ -97,11 +98,13 @@ public class JptCorePlugin extends Plugin {
 	public static final String VALIDATOR_ID = PLUGIN_ID + ".jpaValidator";  //$NON-NLS-1$
 
 	/**
-	 * Value of the content-type for orm.xml mappings files. Use this value to retrieve 
-	 * the ORM xml content type from the content type manager and to add new 
+	 * The content type for Java source code files.
+	 */
+	public static final IContentType JAVA_SOURCE_CONTENT_TYPE = Platform.getContentTypeManager().getContentType(JavaCore.JAVA_SOURCE_CONTENT_TYPE);
+
+	/**
+	 * The content type for orm.xml mappings files. Use this to add new 
 	 * orm.xml-like extensions to this content type.
-	 * 
-	 * @see org.eclipse.core.runtime.content.IContentTypeManager#getContentType(String)
 	 */
 	public static final IContentType ORM_XML_CONTENT_TYPE = Platform.getContentTypeManager().getContentType(PLUGIN_ID + ".content.orm"); //$NON-NLS-1$
 

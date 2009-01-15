@@ -1,12 +1,11 @@
 /*******************************************************************************
- *  Copyright (c) 2008  Oracle. 
- *  All rights reserved.  This program and the accompanying materials are 
- *  made available under the terms of the Eclipse Public License v1.0 which 
- *  accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.operations;
 
@@ -18,9 +17,9 @@ import org.eclipse.jpt.core.resource.orm.AccessType;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitDefaults;
 import org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitMetadata;
-import org.eclipse.jpt.eclipselink.core.internal.resource.orm.EclipseLinkOrmResourceModelProvider;
+import org.eclipse.jpt.eclipselink.core.internal.resource.orm.EclipseLinkOrmXmlResourceProvider;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
-import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmResource;
+import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmXmlResource;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntityMappings;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 
@@ -35,12 +34,12 @@ public class EclipseLinkOrmFileCreationOperation extends OrmFileCreationOperatio
 	protected void createMappingFile(IFolder folder) {
 		String filePath = getDataModel().getStringProperty(FILE_PATH);
 		IFile file = folder.getFile(new Path(filePath));
-		final EclipseLinkOrmResourceModelProvider modelProvider =
-			EclipseLinkOrmResourceModelProvider.getModelProvider(file);
+		final EclipseLinkOrmXmlResourceProvider modelProvider =
+			EclipseLinkOrmXmlResourceProvider.getXmlResourceProvider(file);
 		
 		modelProvider.modify(new Runnable() {
 				public void run() {
-					EclipseLinkOrmResource ormResource = modelProvider.getResource();
+					EclipseLinkOrmXmlResource ormResource = modelProvider.getXmlResource();
 					
 					XmlEntityMappings entityMappings = EclipseLinkOrmFactory.eINSTANCE.createXmlEntityMappings();
 					entityMappings.setVersion("1.0"); //$NON-NLS-1$

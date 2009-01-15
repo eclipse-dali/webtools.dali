@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -25,39 +25,35 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.OperationCanceledException;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.IAnnotatable;
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jdt.core.IClassFile;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaElementDelta;
 import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.IMember;
-import org.eclipse.jdt.core.IMethod;
-import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
-import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.core.JpaDataSource;
 import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.JpaResourceModelListener;
+import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.core.resource.java.JpaCompilationUnit;
 import org.eclipse.jpt.db.Catalog;
 import org.eclipse.jpt.db.ConnectionProfile;
 import org.eclipse.jpt.db.Database;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.SchemaContainer;
-import org.eclipse.jpt.utility.Command;
 import org.eclipse.jpt.utility.CommandExecutor;
 import org.eclipse.jpt.utility.internal.BitTools;
 import org.eclipse.jpt.utility.internal.StringTools;
@@ -66,8 +62,6 @@ import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
-import org.eclipse.jst.j2ee.internal.J2EEConstants;
-import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 /**
@@ -90,9 +84,9 @@ public class GenericJpaProject
 
 	/**
 	 * The JPA files associated with the JPA project:
-	 *     java
 	 *     persistence.xml
 	 *     orm.xml
+	 *     java
 	 */
 	protected final Vector<JpaFile> jpaFiles;
 
@@ -386,6 +380,15 @@ public class GenericJpaProject
 		return this.jpaFiles.size();
 	}
 
+	protected Iterator<JpaFile> jpaFiles(final IContentType contentType) {
+		return new FilteringIterator<JpaFile, JpaFile>(this.jpaFiles()) {
+			@Override
+			protected boolean accept(JpaFile jpaFile) {
+				return jpaFile.getContentType().isKindOf(contentType);
+			}
+		};
+	}
+
 	@Override
 	public JpaFile getJpaFile(IFile file) {
 		synchronized (this.jpaFiles) {
@@ -425,7 +428,7 @@ public class GenericJpaProject
 		if (jpaFile == null) {
 			return null;
 		}
-		jpaFile.addResourceModelListener(this.resourceModelListener);
+		jpaFile.getResourceModel().addResourceModelListener(this.resourceModelListener);
 		this.jpaFiles.add(jpaFile);
 		return jpaFile;
 	}
@@ -449,7 +452,7 @@ public class GenericJpaProject
 	 * Remove the JPA file and dispose of it
 	 */
 	protected void removeJpaFile(JpaFile jpaFile) {
-		jpaFile.removeResourceModelListener(this.resourceModelListener);
+		jpaFile.getResourceModel().removeResourceModelListener(this.resourceModelListener);
 		if ( ! this.removeItemFromCollection(jpaFile, this.jpaFiles, JPA_FILES_COLLECTION)) {
 			throw new IllegalArgumentException(jpaFile.toString());
 		}
@@ -464,6 +467,19 @@ public class GenericJpaProject
 
 
 	// ********** more queries **********
+
+	protected Iterator<JpaFile> javaJpaFiles() {
+		return this.jpaFiles(JptCorePlugin.JAVA_SOURCE_CONTENT_TYPE);
+	}
+
+	protected Iterator<JpaCompilationUnit> jpaCompilationUnits() {
+		return new TransformationIterator<JpaFile, JpaCompilationUnit>(this.javaJpaFiles()) {
+			@Override
+			protected JpaCompilationUnit transform(JpaFile jpaFile) {
+				return (JpaCompilationUnit) jpaFile.getResourceModel();
+			}
+		};
+	}
 
 	public Iterator<String> annotatedClassNames() {
 		return new TransformationIterator<JavaResourcePersistentType, String>(this.persistedJavaResourcePersistentTypes()) {
@@ -488,10 +504,10 @@ public class GenericJpaProject
 	}
 
 	protected Iterator<Iterator<JavaResourcePersistentType>> persistableJavaResourcePersistentTypeIterators() {
-		return new TransformationIterator<JpaFile, Iterator<JavaResourcePersistentType>>(this.jpaFiles()) {
+		return new TransformationIterator<JpaCompilationUnit, Iterator<JavaResourcePersistentType>>(this.jpaCompilationUnits()) {
 			@Override
-			protected Iterator<JavaResourcePersistentType> transform(JpaFile jpaFile) {
-				return jpaFile.persistableTypes();
+			protected Iterator<JavaResourcePersistentType> transform(JpaCompilationUnit compilationUnit) {
+				return compilationUnit.persistableTypes();
 			}
 		};
 	}
@@ -571,8 +587,8 @@ public class GenericJpaProject
 	}
 
 	protected void updateFromJava() {
-		for (Iterator<JpaFile> stream = this.jpaFiles(); stream.hasNext(); ) {
-			stream.next().updateFromJava();
+		for (Iterator<JpaCompilationUnit> stream = this.jpaCompilationUnits(); stream.hasNext(); ) {
+			stream.next().update();
 		}
 	}
 
@@ -660,9 +676,11 @@ public class GenericJpaProject
 	protected void javaCompilationUnitChanged(IJavaElementDelta delta) {
 		if (this.javaCompilationUnitDeltaIsRelevant(delta)) {
 			ICompilationUnit compilationUnit = (ICompilationUnit) delta.getElement();
-			for (Iterator<JpaFile> stream = this.jpaFiles(); stream.hasNext(); ) {
-				if (stream.next().updateFromJava(compilationUnit)) {
-					break;  // stop with first update (?)
+			for (Iterator<JpaCompilationUnit> stream = this.jpaCompilationUnits(); stream.hasNext(); ) {
+				JpaCompilationUnit jcu = stream.next();
+				if (jcu.getCompilationUnit().equals(compilationUnit)) {
+					jcu.update();
+					break;  // there *shouldn't* be any more...
 				}
 			}
 		}
@@ -759,8 +777,8 @@ public class GenericJpaProject
 		ResourceDeltaVisitor resourceDeltaVisitor = this.buildResourceDeltaVisitor();
 		delta.accept(resourceDeltaVisitor);
 		if (resourceDeltaVisitor.jpaFilesChanged()) {
-			for (Iterator<JpaFile> stream = this.jpaFiles(); stream.hasNext(); ) {
-				stream.next().jpaFilesChanged();
+			for (Iterator<JpaCompilationUnit> stream = this.jpaCompilationUnits(); stream.hasNext(); ) {
+				stream.next().resolveTypes();
 			}
 		}
 	}
