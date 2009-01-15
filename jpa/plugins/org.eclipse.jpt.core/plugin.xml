@@ -54,19 +54,19 @@
 		point="org.eclipse.core.runtime.adapters">
 		
 		<factory
-			class="org.eclipse.jpt.core.internal.JpaProjectAdapterFactory"
+			class="org.eclipse.jpt.core.internal.ProjectAdapterFactory"
 			adaptableType="org.eclipse.core.resources.IProject">
 			<adapter type="org.eclipse.jpt.core.JpaProject"/>
 		</factory>
 		
 		<factory
-			class="org.eclipse.jpt.core.internal.JpaProjectAdapterFactory"
+			class="org.eclipse.jpt.core.internal.ProjectAdapterFactory"
 			adaptableType="org.eclipse.jdt.core.IJavaProject">
 			<adapter type="org.eclipse.jpt.core.JpaProject"/>
 		</factory>
 		
 		<factory
-			class="org.eclipse.jpt.core.internal.ResourcePartAdapterFactory"
+			class="org.eclipse.jpt.core.internal.ResourceAdapterFactory"
 			adaptableType="org.eclipse.core.resources.IResource">
 			<adapter type="org.eclipse.jpt.core.IResourcePart"/>
 		</factory>

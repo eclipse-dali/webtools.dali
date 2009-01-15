@@ -32,7 +32,7 @@
 		
 		<factory
 			adaptableType="org.eclipse.ui.IWorkbenchPart"
-			class="org.eclipse.jpt.ui.internal.selection.SelectionParticipantFactory">
+			class="org.eclipse.jpt.ui.internal.selection.WorkbenchPartAdapterFactory">
 			<adapter type="org.eclipse.jpt.ui.internal.selection.JpaSelectionParticipant"/>
 		</factory>
 		

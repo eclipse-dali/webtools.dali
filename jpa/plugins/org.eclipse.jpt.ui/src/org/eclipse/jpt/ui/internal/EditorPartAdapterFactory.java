@@ -18,7 +18,7 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
 
 /**
- * Factory to build adapters for an IEditorPart:
+ * Factory to build adapters for a editor part:
  *   - JPA file (if the editor part is a file editor etc.)
  * 
  * See org.eclipse.jpt.ui plugin.xml.
@@ -39,7 +39,7 @@ public class EditorPartAdapterFactory
 		return null;
 	}
 
-	private JpaFile getAdapter(IEditorPart editorPart, Class<?> adapterType) {
+	private Object getAdapter(IEditorPart editorPart, Class<?> adapterType) {
 		if (adapterType == JpaFile.class) {
 			return this.getJpaFile(editorPart);
 		}
