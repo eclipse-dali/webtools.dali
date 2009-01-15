@@ -178,37 +178,31 @@ public class JpaDetailsView extends AbstractJpaView
 	 * @param newPage The new page to display
 	 */
 	@SuppressWarnings("unchecked")
-	private void setCurrentPage(JpaDetailsPage<? extends JpaStructureNode> newPage) {
-		//no need to show the page again if it is still the same, just set the new subject
-		if (this.currentPage != null && this.currentPage == newPage) {
-			log("JpaDetailsView.setCurrentPage() : page is same as currentPage, populating with new selection");
-			this.currentPage.setSubject(this.currentSelection.getSelectedNode());
-			return;
-		}
+	private void setCurrentPage(JpaDetailsPage<? extends JpaStructureNode> page) {
+
 		// Unpopulate old page
 		if (this.currentPage != null) {
 			try {
-				log("JpaDetailsView.setCurrentPage() : unpopulating current page");
+				log("JpaDetailsView.setCurrentPage() : disposing of current page");
+
 				this.currentPage.setSubject(null);
 			}
 			catch (Exception e) {
-				//catch and log the exception so that we can still continue on to show the new page?
-				//seems unlikely we will get an exception setting the subject to null, not positive if this is necessary
 				JptUiPlugin.log(e);
 			}
 		}
 
-		this.currentPage = (JpaDetailsPage<JpaStructureNode>) newPage;
+		JpaDetailsPage<JpaStructureNode> newPage = (JpaDetailsPage<JpaStructureNode>) page;
 
 		// Populate new page
-		if (this.currentPage != null) {
+		if (page != null) {
 			try {
 				log("JpaDetailsView.setCurrentPage() : populating new page");
-				this.currentPage.setSubject(this.currentSelection.getSelectedNode());
+				newPage.setSubject(this.currentSelection.getSelectedNode());
 			}
 			catch (Exception e) {
 				// Show error page
-				this.currentPage = null;
+				page = null;
 				JptUiPlugin.log(e);
 			}
 		}
@@ -216,12 +210,18 @@ public class JpaDetailsView extends AbstractJpaView
 			log("JpaDetailsView.setCurrentPage() : No page to populate");
 		}
 
+		//no need to show the page again if it is still the same
+		if (newPage != null && this.currentPage == newPage) {
+			return;
+		}
+		this.currentPage = newPage;
+
 		// Show new page
-		if (this.currentPage == null) {
+		if (page == null) {
 			showDefaultPage();
 		}
 		else {
-			showPage(this.currentPage.getControl());
+			showPage(page.getControl());
 		}
 	}
 }
