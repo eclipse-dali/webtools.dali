@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.internal;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.core.JpaProject;
