@@ -10,9 +10,8 @@
 package org.eclipse.jpt.eclipselink.core.internal;
 
 import java.util.List;
-import org.eclipse.jpt.core.JpaAnnotationProvider;
-import org.eclipse.jpt.core.internal.platform.AbstractJpaAnnotationProvider;
-import org.eclipse.jpt.core.internal.platform.GenericJpaAnnotationProvider;
+import org.eclipse.jpt.core.JpaAnnotationDefinitionProvider;
+import org.eclipse.jpt.core.internal.platform.AbstractJpaAnnotationDefintionProvider;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.BasicCollectionImpl.BasicCollectionAnnotationDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.BasicMapImpl.BasicMapAnnotationDefinition;
@@ -38,29 +37,24 @@ import org.eclipse.jpt.eclipselink.core.internal.resource.java.WriteTransformerI
  * Provides annotations for 1.0 EclipseLink platform which includes JPA annotations and
  * EclipseLink 1.0 annotations
  */
-public class EclipseLinkJpaAnnotationProvider
-	extends AbstractJpaAnnotationProvider
+public class EclipseLinkJpaAnnotationDefinitionProvider
+	extends AbstractJpaAnnotationDefintionProvider
 {
 	// singleton
-	private static final JpaAnnotationProvider INSTANCE = new EclipseLinkJpaAnnotationProvider();
+	private static final JpaAnnotationDefinitionProvider INSTANCE = new EclipseLinkJpaAnnotationDefinitionProvider();
 
 	/**
 	 * Return the singleton.
 	 */
-	public static JpaAnnotationProvider instance() {
+	public static JpaAnnotationDefinitionProvider instance() {
 		return INSTANCE;
 	}
 
 	/**
 	 * Ensure single instance.
 	 */
-	private EclipseLinkJpaAnnotationProvider() {
+	private EclipseLinkJpaAnnotationDefinitionProvider() {
 		super();
-	}
-	
-	@Override
-	protected void addDelegateAnnotationProvidersTo(List<JpaAnnotationProvider> providers) {
-		providers.add(GenericJpaAnnotationProvider.instance());
 	}
 	
 	@Override

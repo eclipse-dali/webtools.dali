@@ -10,7 +10,10 @@
 package org.eclipse.jpt.eclipselink.core.tests.internal.resource.java;
 
 import org.eclipse.jpt.core.JpaAnnotationProvider;
-import org.eclipse.jpt.eclipselink.core.internal.EclipseLink1_1JpaAnnotationProvider;
+import org.eclipse.jpt.core.internal.platform.GenericJpaAnnotationDefinitionProvider;
+import org.eclipse.jpt.core.internal.platform.JpaAnnotationProviderImpl;
+import org.eclipse.jpt.eclipselink.core.internal.EclipseLink1_1JpaAnnotationDefinitionProvider;
+import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaAnnotationDefinitionProvider;
 
 public class EclipseLink1_1JavaResourceModelTestCase extends EclipseLinkJavaResourceModelTestCase
 {	
@@ -21,6 +24,9 @@ public class EclipseLink1_1JavaResourceModelTestCase extends EclipseLinkJavaReso
 
 	@Override
 	protected JpaAnnotationProvider buildAnnotationProvider() {
-		return EclipseLink1_1JpaAnnotationProvider.instance();
+		return new JpaAnnotationProviderImpl(
+			GenericJpaAnnotationDefinitionProvider.instance(),
+			EclipseLinkJpaAnnotationDefinitionProvider.instance(),
+			EclipseLink1_1JpaAnnotationDefinitionProvider.instance());
 	}
 }

@@ -10,8 +10,8 @@
 package org.eclipse.jpt.eclipselink.core.internal;
 
 import java.util.List;
-import org.eclipse.jpt.core.JpaAnnotationProvider;
-import org.eclipse.jpt.core.internal.platform.AbstractJpaAnnotationProvider;
+import org.eclipse.jpt.core.JpaAnnotationDefinitionProvider;
+import org.eclipse.jpt.core.internal.platform.AbstractJpaAnnotationDefintionProvider;
 import org.eclipse.jpt.core.internal.resource.java.AccessImpl.AccessAnnotationDefinition;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
 
@@ -19,30 +19,24 @@ import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
  * Provides annotations for 1.1 EclipseLink which includes JPA annotations, JPA 2.0 annotation,
  * EclipseLink 1.0 annotation and EclipseLink 1.1 annotations 
  */
-public class EclipseLink1_1JpaAnnotationProvider
-	extends AbstractJpaAnnotationProvider
+public class EclipseLink1_1JpaAnnotationDefinitionProvider
+	extends AbstractJpaAnnotationDefintionProvider
 {
 	// singleton
-	private static final JpaAnnotationProvider INSTANCE = new EclipseLink1_1JpaAnnotationProvider();
+	private static final JpaAnnotationDefinitionProvider INSTANCE = new EclipseLink1_1JpaAnnotationDefinitionProvider();
 
 	/**
 	 * Return the singleton.
 	 */
-	public static JpaAnnotationProvider instance() {
+	public static JpaAnnotationDefinitionProvider instance() {
 		return INSTANCE;
 	}
 
 	/**
 	 * Ensure single instance.
 	 */
-	private EclipseLink1_1JpaAnnotationProvider() {
+	private EclipseLink1_1JpaAnnotationDefinitionProvider() {
 		super();
-	}
-	
-	@Override
-	protected void addDelegateAnnotationProvidersTo(List<JpaAnnotationProvider> providers) {
-		//delegate to EclipseLink which delegates to Generic
-		providers.add(EclipseLinkJpaAnnotationProvider.instance());
 	}
 
 	@Override

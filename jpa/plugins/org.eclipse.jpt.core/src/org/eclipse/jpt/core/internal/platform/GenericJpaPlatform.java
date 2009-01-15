@@ -95,6 +95,8 @@ public class GenericJpaPlatform
 
 	protected final JpaFactory jpaFactory;
 
+	private JpaAnnotationProvider annotationProvider;
+
 	private JpaResourceModelProvider[] resourceModelProviders;
 
 	private JavaTypeMappingProvider[] javaTypeMappingProviders;
@@ -205,9 +207,17 @@ public class GenericJpaPlatform
 
 	// ********** Java annotations **********
 
-	public JpaAnnotationProvider getAnnotationProvider() {
-		return GenericJpaAnnotationProvider.instance();
+	public synchronized JpaAnnotationProvider getAnnotationProvider() {
+		if (this.annotationProvider == null) {
+			this.annotationProvider = this.buildAnnotationProvider();
+		}
+		return this.annotationProvider;
 	}
+
+	protected JpaAnnotationProvider buildAnnotationProvider() {
+		return new JpaAnnotationProviderImpl(GenericJpaAnnotationDefinitionProvider.instance());
+	}
+
 
 	public AnnotationEditFormatter getAnnotationEditFormatter() {
 		return DefaultAnnotationEditFormatter.instance();

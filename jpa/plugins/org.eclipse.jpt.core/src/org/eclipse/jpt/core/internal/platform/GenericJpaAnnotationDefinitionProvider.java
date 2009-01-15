@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.internal.platform;
 
 import java.util.List;
-import org.eclipse.jpt.core.JpaAnnotationProvider;
+import org.eclipse.jpt.core.JpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.core.internal.resource.java.AssociationOverrideImpl.AssociationOverrideAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.AssociationOverridesImpl.AssociationOverridesAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.AttributeOverrideImpl.AttributeOverrideAnnotationDefinition;
@@ -58,30 +58,25 @@ import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
 /**
  * 
  */
-public class GenericJpaAnnotationProvider extends AbstractJpaAnnotationProvider
+public class GenericJpaAnnotationDefinitionProvider extends AbstractJpaAnnotationDefintionProvider
 {	
 	// singleton
-	private static final JpaAnnotationProvider INSTANCE = new GenericJpaAnnotationProvider();
+	private static final JpaAnnotationDefinitionProvider INSTANCE = new GenericJpaAnnotationDefinitionProvider();
 
 	/**
 	 * Return the singleton.
 	 */
-	public static JpaAnnotationProvider instance() {
+	public static JpaAnnotationDefinitionProvider instance() {
 		return INSTANCE;
 	}
 
 	/**
 	 * Ensure single instance.
 	 */
-	private GenericJpaAnnotationProvider() {
+	private GenericJpaAnnotationDefinitionProvider() {
 		super();
 	}
-	
-	@Override
-	protected void addDelegateAnnotationProvidersTo(List<JpaAnnotationProvider> providers) {
-		//none
-	}
-	
+
 	@Override
 	protected void addTypeMappingAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
 		definitions.add(EmbeddableAnnotationDefinition.instance());
