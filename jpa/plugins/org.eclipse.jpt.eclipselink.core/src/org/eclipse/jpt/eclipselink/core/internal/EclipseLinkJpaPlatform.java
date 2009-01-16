@@ -21,7 +21,7 @@ import org.eclipse.jpt.core.context.orm.ExtendedOrmTypeMappingProvider;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMappingProvider;
 import org.eclipse.jpt.core.internal.platform.GenericJpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.core.internal.platform.GenericJpaPlatform;
-import org.eclipse.jpt.core.internal.platform.JpaAnnotationProviderImpl;
+import org.eclipse.jpt.core.internal.platform.GenericJpaAnnotationProvider;
 import org.eclipse.jpt.eclipselink.core.internal.context.EclipseLinkMappingFileProvider;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaOneToManyMappingProvider;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaOneToOneMappingProvider;
@@ -80,7 +80,7 @@ public class EclipseLinkJpaPlatform
 	// ********* java annotations *********	
 	@Override
 	public JpaAnnotationProvider buildAnnotationProvider() {
-		return new JpaAnnotationProviderImpl(
+		return new GenericJpaAnnotationProvider(
 			GenericJpaAnnotationDefinitionProvider.instance(),
 			EclipseLinkJpaAnnotationDefinitionProvider.instance());
 	}

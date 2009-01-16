@@ -26,12 +26,12 @@ import org.eclipse.jpt.utility.internal.iterators.TransformationListIterator;
 /**
  * 
  */
-public class JpaAnnotationProviderImpl
+public class GenericJpaAnnotationProvider
 	implements JpaAnnotationProvider
 {
 	private JpaAnnotationDefinitionProvider[] annotationDefinitionProviders;
 	
-	public JpaAnnotationProviderImpl(JpaAnnotationDefinitionProvider... annotationDefinitionProviders) {
+	public GenericJpaAnnotationProvider(JpaAnnotationDefinitionProvider... annotationDefinitionProviders) {
 		super();
 		this.annotationDefinitionProviders = annotationDefinitionProviders;
 	}

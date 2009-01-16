@@ -215,7 +215,7 @@ public class GenericJpaPlatform
 	}
 
 	protected JpaAnnotationProvider buildAnnotationProvider() {
-		return new JpaAnnotationProviderImpl(GenericJpaAnnotationDefinitionProvider.instance());
+		return new GenericJpaAnnotationProvider(GenericJpaAnnotationDefinitionProvider.instance());
 	}
 
 

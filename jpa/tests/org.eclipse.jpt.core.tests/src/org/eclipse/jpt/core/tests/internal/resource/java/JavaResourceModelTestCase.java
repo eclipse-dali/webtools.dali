@@ -17,7 +17,7 @@ import org.eclipse.jdt.core.IJavaElementDelta;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.internal.platform.GenericJpaAnnotationDefinitionProvider;
-import org.eclipse.jpt.core.internal.platform.JpaAnnotationProviderImpl;
+import org.eclipse.jpt.core.internal.platform.GenericJpaAnnotationProvider;
 import org.eclipse.jpt.core.internal.resource.java.JavaResourceCompilationUnitImpl;
 import org.eclipse.jpt.core.internal.utility.jdt.NullAnnotationEditFormatter;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
@@ -156,7 +156,7 @@ public class JavaResourceModelTestCase extends AnnotationTestCase
 	}
 
 	protected JpaAnnotationProvider buildAnnotationProvider() {
-		return new JpaAnnotationProviderImpl(GenericJpaAnnotationDefinitionProvider.instance());
+		return new GenericJpaAnnotationProvider(GenericJpaAnnotationDefinitionProvider.instance());
 	}
 
 }
