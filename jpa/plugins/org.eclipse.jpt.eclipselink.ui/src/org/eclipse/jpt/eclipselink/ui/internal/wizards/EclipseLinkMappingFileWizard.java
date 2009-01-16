@@ -18,6 +18,9 @@ import org.eclipse.ui.INewWizard;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModelProvider;
 
+/**
+ * This is referenced in the plugin.xml as an org.eclipse.ui.newWizards extension
+ */
 public class EclipseLinkMappingFileWizard extends MappingFileWizard 
 	implements INewWizard 
 {
@@ -31,6 +34,7 @@ public class EclipseLinkMappingFileWizard extends MappingFileWizard
 	}
 	
 	
+	@Override
 	protected MappingFileWizardPage buildMappingFileWizardPage() {
 		return new EclipseLinkMappingFileWizardPage(getDataModel(), "Page_1");
 	}
