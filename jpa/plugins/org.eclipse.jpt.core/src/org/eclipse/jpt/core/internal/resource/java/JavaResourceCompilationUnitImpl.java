@@ -23,7 +23,7 @@ import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.JpaResourceModelListener;
 import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.core.resource.java.JpaCompilationUnit;
+import org.eclipse.jpt.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.utility.CommandExecutor;
@@ -33,9 +33,9 @@ import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 /**
  * 
  */
-public class JpaCompilationUnitImpl
+public class JavaResourceCompilationUnitImpl
 	extends AbstractJavaResourceNode
-	implements JpaCompilationUnit
+	implements JavaResourceCompilationUnit
 {
 	private final ICompilationUnit compilationUnit;
 
@@ -59,7 +59,7 @@ public class JpaCompilationUnitImpl
 
 	// ********** construction **********
 
-	public JpaCompilationUnitImpl(
+	public JavaResourceCompilationUnitImpl(
 			ICompilationUnit compilationUnit,
 			JpaAnnotationProvider annotationProvider, 
 			AnnotationEditFormatter annotationEditFormatter,
@@ -114,7 +114,7 @@ public class JpaCompilationUnitImpl
 	// ********** AbstractJavaResourceNode overrides **********
 
 	@Override
-	public JpaCompilationUnit getJpaCompilationUnit() {
+	public JavaResourceCompilationUnit getJavaResourceCompilationUnit() {
 		return this;
 	}
 
@@ -181,6 +181,10 @@ public class JpaCompilationUnitImpl
 		return this.annotationEditFormatter;
 	}
 	
+	public CompilationUnit buildASTRoot() {
+		return JDTTools.buildASTRoot(this.compilationUnit);
+	}
+
 
 	// ********** JpaResourceModel implementation **********
 
@@ -201,10 +205,6 @@ public class JpaCompilationUnitImpl
 
 
 	// ********** internal **********
-
-	protected CompilationUnit buildASTRoot() {
-		return JDTTools.buildASTRoot(this.compilationUnit);
-	}
 
 	protected JavaResourcePersistentType buildPersistentType(CompilationUnit astRoot, TypeDeclaration typeDeclaration) {
 		return JavaResourcePersistentTypeImpl.newInstance(this, typeDeclaration, astRoot);

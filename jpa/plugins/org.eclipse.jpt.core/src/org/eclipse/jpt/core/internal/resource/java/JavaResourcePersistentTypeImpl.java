@@ -30,7 +30,7 @@ import org.eclipse.jpt.core.resource.java.AccessType;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.core.resource.java.JpaCompilationUnit;
+import org.eclipse.jpt.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.core.utility.jdt.Type;
 import org.eclipse.jpt.utility.MethodSignature;
 import org.eclipse.jpt.utility.internal.Counter;
@@ -68,15 +68,15 @@ public class JavaResourcePersistentTypeImpl
 	 * build top-level persistent type
 	 */
 	public static JavaResourcePersistentType newInstance(
-			JpaCompilationUnit jpaCompilationUnit,
+			JavaResourceCompilationUnit javaResourceCompilationUnit,
 			TypeDeclaration typeDeclaration,
 			CompilationUnit astRoot) {
 		Type type = new JDTType(
 				typeDeclaration,
-				jpaCompilationUnit.getCompilationUnit(),
-				jpaCompilationUnit.getModifySharedDocumentCommandExecutor(),
-				jpaCompilationUnit.getAnnotationEditFormatter());
-		JavaResourcePersistentType jrpt = new JavaResourcePersistentTypeImpl(jpaCompilationUnit, type);
+				javaResourceCompilationUnit.getCompilationUnit(),
+				javaResourceCompilationUnit.getModifySharedDocumentCommandExecutor(),
+				javaResourceCompilationUnit.getAnnotationEditFormatter());
+		JavaResourcePersistentType jrpt = new JavaResourcePersistentTypeImpl(javaResourceCompilationUnit, type);
 		jrpt.initialize(astRoot);
 		return jrpt;	
 	}
@@ -85,7 +85,7 @@ public class JavaResourcePersistentTypeImpl
 	 * build nested persistent type
 	 */
 	protected static JavaResourcePersistentType newInstance(
-			JpaCompilationUnit jpaCompilationUnit,
+			JavaResourceCompilationUnit javaResourceCompilationUnit,
 			Type declaringType,
 			TypeDeclaration typeDeclaration,
 			int occurrence,
@@ -94,16 +94,16 @@ public class JavaResourcePersistentTypeImpl
 				declaringType,
 				typeDeclaration,
 				occurrence,
-				jpaCompilationUnit.getCompilationUnit(),
-				jpaCompilationUnit.getModifySharedDocumentCommandExecutor(),
-				jpaCompilationUnit.getAnnotationEditFormatter());
-		JavaResourcePersistentType jrpt = new JavaResourcePersistentTypeImpl(jpaCompilationUnit, type);
+				javaResourceCompilationUnit.getCompilationUnit(),
+				javaResourceCompilationUnit.getModifySharedDocumentCommandExecutor(),
+				javaResourceCompilationUnit.getAnnotationEditFormatter());
+		JavaResourcePersistentType jrpt = new JavaResourcePersistentTypeImpl(javaResourceCompilationUnit, type);
 		jrpt.initialize(astRoot);
 		return jrpt;	
 	}
 
-	public JavaResourcePersistentTypeImpl(JpaCompilationUnit jpaCompilationUnit, Type type) {
-		super(jpaCompilationUnit, type);
+	public JavaResourcePersistentTypeImpl(JavaResourceCompilationUnit javaResourceCompilationUnit, Type type) {
+		super(javaResourceCompilationUnit, type);
 		this.types = new Vector<JavaResourcePersistentType>(); 
 		this.fields = new Vector<JavaResourcePersistentAttribute>();
 		this.methods = new Vector<JavaResourcePersistentAttribute>();
@@ -462,7 +462,7 @@ public class JavaResourcePersistentTypeImpl
 	}
 
 	protected JavaResourcePersistentType buildType(TypeDeclaration nestedTypeDeclaration, int occurrence, CompilationUnit astRoot) {
-		return newInstance(this.getJpaCompilationUnit(), this.getMember(), nestedTypeDeclaration, occurrence, astRoot);
+		return newInstance(this.getJavaResourceCompilationUnit(), this.getMember(), nestedTypeDeclaration, occurrence, astRoot);
 	}
 
 	protected void updateFields(CompilationUnit astRoot) {
@@ -493,7 +493,7 @@ public class JavaResourcePersistentTypeImpl
 	}
 
 	protected JavaResourcePersistentAttribute buildField(String fieldName, int occurrence, CompilationUnit astRoot) {
-		return JavaResourcePersistentAttributeImpl.newInstance(this, this.getMember(), fieldName, occurrence, this.getJpaCompilationUnit(), astRoot);
+		return JavaResourcePersistentAttributeImpl.newInstance(this, this.getMember(), fieldName, occurrence, this.getJavaResourceCompilationUnit(), astRoot);
 	}
 
 	protected void updateMethods(CompilationUnit astRoot) {
@@ -522,7 +522,7 @@ public class JavaResourcePersistentTypeImpl
 	}
 
 	protected JavaResourcePersistentAttribute buildMethod(MethodSignature signature, int occurrence, CompilationUnit astRoot) {
-		return JavaResourcePersistentAttributeImpl.newInstance(this, this.getMember(), signature, occurrence, this.getJpaCompilationUnit(), astRoot);
+		return JavaResourcePersistentAttributeImpl.newInstance(this, this.getMember(), signature, occurrence, this.getJavaResourceCompilationUnit(), astRoot);
 	}
 
 	/**

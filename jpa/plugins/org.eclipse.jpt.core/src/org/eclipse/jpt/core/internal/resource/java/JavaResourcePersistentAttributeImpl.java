@@ -22,7 +22,7 @@ import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.core.resource.java.JpaCompilationUnit;
+import org.eclipse.jpt.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.core.utility.jdt.Attribute;
 import org.eclipse.jpt.core.utility.jdt.MethodAttribute;
 import org.eclipse.jpt.core.utility.jdt.Type;
@@ -67,15 +67,15 @@ public class JavaResourcePersistentAttributeImpl
 			Type declaringType,
 			String name,
 			int occurrence,
-			JpaCompilationUnit jpaCompilationUnit,
+			JavaResourceCompilationUnit javaResourceCompilationUnit,
 			CompilationUnit astRoot) {
 		Attribute attribute = new JDTFieldAttribute(
 				declaringType,
 				name,
 				occurrence,
-				jpaCompilationUnit.getCompilationUnit(),
-				jpaCompilationUnit.getModifySharedDocumentCommandExecutor(),
-				jpaCompilationUnit.getAnnotationEditFormatter());
+				javaResourceCompilationUnit.getCompilationUnit(),
+				javaResourceCompilationUnit.getModifySharedDocumentCommandExecutor(),
+				javaResourceCompilationUnit.getAnnotationEditFormatter());
 		JavaResourcePersistentAttribute field = new JavaResourcePersistentAttributeImpl(parent, attribute);
 		field.initialize(astRoot);
 		return field;
@@ -89,15 +89,15 @@ public class JavaResourcePersistentAttributeImpl
 			Type declaringType,
 			MethodSignature signature,
 			int occurrence,
-			JpaCompilationUnit jpaCompilationUnit,
+			JavaResourceCompilationUnit javaResourceCompilationUnit,
 			CompilationUnit astRoot) {
 		Attribute attribute = JDTMethodAttribute.newInstance(
 				declaringType,
 				signature,
 				occurrence,
-				jpaCompilationUnit.getCompilationUnit(),
-				jpaCompilationUnit.getModifySharedDocumentCommandExecutor(),
-				jpaCompilationUnit.getAnnotationEditFormatter());
+				javaResourceCompilationUnit.getCompilationUnit(),
+				javaResourceCompilationUnit.getModifySharedDocumentCommandExecutor(),
+				javaResourceCompilationUnit.getAnnotationEditFormatter());
 		JavaResourcePersistentAttribute field = new JavaResourcePersistentAttributeImpl(parent, attribute);
 		field.initialize(astRoot);
 		return field;

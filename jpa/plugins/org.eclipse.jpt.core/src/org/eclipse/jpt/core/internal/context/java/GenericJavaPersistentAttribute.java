@@ -225,7 +225,7 @@ public class GenericJavaPersistentAttribute
 	}
 
 	protected CompilationUnit buildASTRoot() {
-		return JDTTools.buildASTRoot(this.resourcePersistentAttribute.getJpaCompilationUnit().getCompilationUnit());
+		return this.resourcePersistentAttribute.getJavaResourceCompilationUnit().buildASTRoot();
 	}
 
 	public void update() {

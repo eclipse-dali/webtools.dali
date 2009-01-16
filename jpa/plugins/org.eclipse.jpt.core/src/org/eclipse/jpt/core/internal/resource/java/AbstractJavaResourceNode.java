@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.internal.resource.java;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
-import org.eclipse.jpt.core.resource.java.JpaCompilationUnit;
+import org.eclipse.jpt.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.CallbackChangeSupport;
 import org.eclipse.jpt.utility.internal.model.ChangeSupport;
@@ -63,19 +63,19 @@ public abstract class AbstractJavaResourceNode
 
 	// ********** JavaResourceNode implementation **********
 	
-	public JpaCompilationUnit getJpaCompilationUnit() {
-		return this.parent.getJpaCompilationUnit();
+	public JavaResourceCompilationUnit getJavaResourceCompilationUnit() {
+		return this.parent.getJavaResourceCompilationUnit();
 	}
 
 	public IFile getFile() {
-		return this.getJpaCompilationUnit().getFile();
+		return this.getJavaResourceCompilationUnit().getFile();
 	}
 	
 
 	// ********** CallbackChangeSupport.Source implementation **********
 	
 	public void aspectChanged(String aspectName) {
-		this.getJpaCompilationUnit().resourceModelChanged();
+		this.getJavaResourceCompilationUnit().resourceModelChanged();
 	}
 
 
@@ -86,7 +86,7 @@ public abstract class AbstractJavaResourceNode
 	}
 
 	protected JpaAnnotationProvider getAnnotationProvider() {
-		return this.getJpaCompilationUnit().getAnnotationProvider();
+		return this.getJavaResourceCompilationUnit().getAnnotationProvider();
 	}
 	
 }

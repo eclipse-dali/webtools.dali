@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.resource.java;
 import java.util.Iterator;
 
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.JpaResourceModel;
 import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
@@ -26,23 +27,37 @@ import org.eclipse.jpt.utility.CommandExecutor;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface JpaCompilationUnit
+public interface JavaResourceCompilationUnit
 	extends JavaResourceNode, JpaResourceModel
 {
 	/**
-	 * Return the corresponding Eclipse Java compilation unit.
+	 * Return the corresponding JDT compilation unit.
 	 */
 	ICompilationUnit getCompilationUnit();
 
 	/**
-	 * Return all the types that are "persistable", as defined by the JPA spec.
+	 * Return all the Java resource types that are "persistable", as defined
+	 * by the JPA spec.
 	 */
 	Iterator<JavaResourcePersistentType> persistableTypes();
 
+	/**
+	 * Return the annotation provider that supplies the annotations the resource
+	 * model uses to modify the Java source.
+	 */
 	JpaAnnotationProvider getAnnotationProvider();
 
+	/**
+	 * Return the JPA project's annotation formatter. This is used to make any
+	 * manipulated annotations reasonably readable after being written to the
+	 * Java source file.
+	 */
 	AnnotationEditFormatter getAnnotationEditFormatter();
 
+	/**
+	 * This allows the resource model to modify the Java source code on the
+	 * UI thread when it is executing on another thread.
+	 */
 	CommandExecutor getModifySharedDocumentCommandExecutor();
 
 	/**
@@ -64,5 +79,10 @@ public interface JpaCompilationUnit
 	 * state to be in synch with the source code etc.
 	 */
 	void update();
+
+	/**
+	 * Build an AST for compilation unit with its bindings resolved.
+	 */
+	CompilationUnit buildASTRoot();
 
 }

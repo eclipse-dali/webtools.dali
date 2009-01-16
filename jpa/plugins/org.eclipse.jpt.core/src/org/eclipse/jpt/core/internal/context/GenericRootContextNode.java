@@ -26,7 +26,6 @@ import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceXmlResourceProvider;
-import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
@@ -225,8 +224,8 @@ public class GenericRootContextNode
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.PERSISTENT_TYPE_UNSPECIFIED_CONTEXT,
 						new String[] {persistenceUnit.getName()},
-						jrpt.getJpaCompilationUnit().getFile(),
-						jrpt.getMappingAnnotation().getTextRange(JDTTools.buildASTRoot(jrpt.getJpaCompilationUnit().getCompilationUnit()))
+						jrpt.getJavaResourceCompilationUnit().getFile(),
+						jrpt.getMappingAnnotation().getTextRange(jrpt.getJavaResourceCompilationUnit().buildASTRoot())
 					)
 				);
 		}

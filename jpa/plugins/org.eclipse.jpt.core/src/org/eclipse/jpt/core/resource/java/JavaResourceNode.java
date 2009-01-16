@@ -27,7 +27,7 @@ public interface JavaResourceNode extends Model {
 
 	void initialize(CompilationUnit astRoot);
 
-	JpaCompilationUnit getJpaCompilationUnit();
+	JavaResourceCompilationUnit getJavaResourceCompilationUnit();
 
 	IFile getFile();
 

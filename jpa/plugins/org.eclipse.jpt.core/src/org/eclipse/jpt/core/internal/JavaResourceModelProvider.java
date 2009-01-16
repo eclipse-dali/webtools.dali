@@ -16,7 +16,7 @@ import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JpaResourceModel;
 import org.eclipse.jpt.core.JpaResourceModelProvider;
 import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.core.internal.resource.java.JpaCompilationUnitImpl;
+import org.eclipse.jpt.core.internal.resource.java.JavaResourceCompilationUnitImpl;
 
 /**
  * Java source code
@@ -46,7 +46,7 @@ public class JavaResourceModelProvider
 	}
 
 	public JpaResourceModel buildResourceModel(JpaProject jpaProject, IFile file) {
-		return new JpaCompilationUnitImpl(
+		return new JavaResourceCompilationUnitImpl(
 					JavaCore.createCompilationUnitFrom(file),
 					jpaProject.getJpaPlatform().getAnnotationProvider(),
 					jpaProject.getJpaPlatform().getAnnotationEditFormatter(),

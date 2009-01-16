@@ -66,7 +66,7 @@ public class GenericJavaPersistentType
 	
 	@Override
 	public IResource getResource() {
-		return this.resourcePersistentType.getJpaCompilationUnit().getFile();
+		return this.resourcePersistentType.getJavaResourceCompilationUnit().getFile();
 	}
 
 	//****************** JpaStructureNode implementation *******************
@@ -265,7 +265,7 @@ public class GenericJavaPersistentType
 	}
 
 	protected CompilationUnit buildASTRoot() {
-		return JDTTools.buildASTRoot(this.resourcePersistentType.getJpaCompilationUnit().getCompilationUnit());
+		return this.resourcePersistentType.getJavaResourceCompilationUnit().buildASTRoot();
 	}
 	
 	public boolean contains(int offset, CompilationUnit astRoot) {

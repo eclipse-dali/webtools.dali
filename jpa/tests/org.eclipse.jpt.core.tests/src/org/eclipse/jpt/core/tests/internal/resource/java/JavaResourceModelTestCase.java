@@ -18,10 +18,10 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.internal.platform.GenericJpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.core.internal.platform.JpaAnnotationProviderImpl;
-import org.eclipse.jpt.core.internal.resource.java.JpaCompilationUnitImpl;
+import org.eclipse.jpt.core.internal.resource.java.JavaResourceCompilationUnitImpl;
 import org.eclipse.jpt.core.internal.utility.jdt.NullAnnotationEditFormatter;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.core.resource.java.JpaCompilationUnit;
+import org.eclipse.jpt.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.core.tests.internal.utility.jdt.AnnotationTestCase;
 import org.eclipse.jpt.utility.CommandExecutor;
 import org.eclipse.jpt.utility.internal.BitTools;
@@ -34,7 +34,7 @@ public class JavaResourceModelTestCase extends AnnotationTestCase
 	public static final String JAVAX_PERSISTENCE_PACKAGE_NAME = "javax.persistence"; //$NON-NLS-1$
 
 	private JavaElementChangeListener javaElementChangeListener;
-	protected JpaCompilationUnit jpaCompilationUnit;
+	protected JavaResourceCompilationUnit javaResourceCompilationUnit;
 	
 
 	public JavaResourceModelTestCase(String name) {
@@ -72,7 +72,7 @@ public class JavaResourceModelTestCase extends AnnotationTestCase
 	}
 
 	void javaElementChanged(ElementChangedEvent event) {
-		if (this.jpaCompilationUnit == null) {
+		if (this.javaResourceCompilationUnit == null) {
 			return;
 		}
 		this.synchWithJavaDelta(event.getDelta());
@@ -106,7 +106,7 @@ public class JavaResourceModelTestCase extends AnnotationTestCase
 
 	protected void javaCompilationUnitChanged(IJavaElementDelta delta) {
 		if (this.deltaIsRelevant(delta)) {
-			this.jpaCompilationUnit.update();
+			this.javaResourceCompilationUnit.update();
 		}
 	}
 
@@ -134,20 +134,20 @@ public class JavaResourceModelTestCase extends AnnotationTestCase
 	}
 
 	protected JavaResourcePersistentType buildJavaTypeResource(ICompilationUnit cu) {
-		this.jpaCompilationUnit = this.buildJpaCompilationUnit(cu);
-		this.jpaCompilationUnit.resolveTypes();
+		this.javaResourceCompilationUnit = this.buildJavaResourceCompilationUnit(cu);
+		this.javaResourceCompilationUnit.resolveTypes();
 		return this.hackJavaResourcePersistentType();
 	}
 
 	protected JavaResourcePersistentType hackJavaResourcePersistentType() {
-		return (JavaResourcePersistentType) ClassTools.fieldValue(this.jpaCompilationUnit, "persistentType");
+		return (JavaResourcePersistentType) ClassTools.fieldValue(this.javaResourceCompilationUnit, "persistentType");
 	}
 
-	protected JpaCompilationUnit buildJpaCompilationUnit(ICompilationUnit cu) {
-		if (this.jpaCompilationUnit != null) {
+	protected JavaResourceCompilationUnit buildJavaResourceCompilationUnit(ICompilationUnit cu) {
+		if (this.javaResourceCompilationUnit != null) {
 			throw new IllegalStateException();
 		}
-		return new JpaCompilationUnitImpl(
+		return new JavaResourceCompilationUnitImpl(
 			cu,
 			this.buildAnnotationProvider(),
 			NullAnnotationEditFormatter.instance(),
