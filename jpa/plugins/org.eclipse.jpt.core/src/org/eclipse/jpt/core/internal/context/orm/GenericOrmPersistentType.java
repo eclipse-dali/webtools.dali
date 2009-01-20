@@ -173,7 +173,11 @@ public class GenericOrmPersistentType
 		this.parentPersistentType = newParentPersistentType;
 		firePropertyChanged(PersistentType.PARENT_PERSISTENT_TYPE_PROPERTY, oldParentPersistentType, newParentPersistentType);
 	}
-
+	
+	public AccessType getDefaultAccess() {
+		return getMapping().getDefaultAccess();
+	}
+	
 	public AccessType getAccess() {
 		return getMapping().getAccess();
 	}

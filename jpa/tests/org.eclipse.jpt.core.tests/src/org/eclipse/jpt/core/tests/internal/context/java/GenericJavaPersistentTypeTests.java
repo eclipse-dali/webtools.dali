@@ -32,7 +32,9 @@ import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
-public class JavaPersistentTypeTests extends ContextModelTestCase
+
+@SuppressWarnings("nls")
+public class GenericJavaPersistentTypeTests extends ContextModelTestCase
 {
 	@Override
 	protected void setUp() throws Exception {
@@ -207,7 +209,7 @@ public class JavaPersistentTypeTests extends ContextModelTestCase
 		});
 	}
 		
-	public JavaPersistentTypeTests(String name) {
+	public GenericJavaPersistentTypeTests(String name) {
 		super(name);
 	}
 	

@@ -33,6 +33,8 @@ public interface PersistentType
 	String getShortName();
 	
 	AccessType getAccess();
+	
+	AccessType getDefaultAccess();
 		
 	/**
 	 * Return the access type that overrides the client persistent type's
