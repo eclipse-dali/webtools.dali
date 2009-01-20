@@ -1966,12 +1966,6 @@ public class GenericOrmEntity
 		}
 	}
 	
-	@Override
-	public void toString(StringBuilder sb) {
-		super.toString(sb);
-		sb.append(getName());
-	}
-	
 	
 	class PrimaryKeyJoinColumnOwner implements OrmBaseJoinColumn.Owner
 	{
