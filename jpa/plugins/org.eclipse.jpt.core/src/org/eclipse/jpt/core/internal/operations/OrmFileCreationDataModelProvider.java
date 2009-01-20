@@ -30,6 +30,7 @@ import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.core.internal.JptCoreMessages;
 import org.eclipse.jpt.core.resource.orm.AccessType;
+import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
@@ -438,17 +439,28 @@ public class OrmFileCreationDataModelProvider extends AbstractDataModelProvider
 	}
 	
 	protected Iterator<IProject> jpaIProjects() {
-		return new FilteringIterator<IProject, IProject>(CollectionTools.iterator(ProjectUtilities.getAllProjects())) {
-			@Override
-			protected boolean accept(IProject project) {
-				try {
-					return FacetedProjectFramework.hasProjectFacet(project, JptCorePlugin.FACET_ID);
-				}
-				catch (CoreException ce) {
-					return false;
-				}
+		return new FilteringIterator<IProject, IProject>(this.allIProjects(), this.buildJpaIProjectsFilter());
+	}
+
+	protected Iterator<IProject> allIProjects() {
+		return CollectionTools.iterator(ProjectUtilities.getAllProjects());
+	}
+
+	protected Filter<IProject> buildJpaIProjectsFilter() {
+		return new JpaIProjectsFilter();
+	}
+
+	protected class JpaIProjectsFilter implements Filter<IProject> {
+		public boolean accept(IProject project) {
+			try {
+				return this.accept_(project);
+			} catch (CoreException ex) {
+				return false;
 			}
-		};
+		}
+		protected boolean accept_(IProject project) throws CoreException {
+			return FacetedProjectFramework.hasProjectFacet(project, JptCorePlugin.FACET_ID);
+		}
 	}
 	
 	protected Iterator<PersistenceUnit> persistenceUnits() {

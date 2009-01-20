@@ -10,20 +10,16 @@
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.operations;
 
-import java.util.Iterator;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProvider;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaPlatform;
 import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
-import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
+import org.eclipse.jpt.utility.Filter;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModelOperation;
-import org.eclipse.wst.common.project.facet.core.FacetedProjectFramework;
 
 public class EclipseLinkOrmFileCreationDataModelProvider extends OrmFileCreationDataModelProvider
 {
@@ -49,21 +45,19 @@ public class EclipseLinkOrmFileCreationDataModelProvider extends OrmFileCreation
 	}
 	
 	@Override
-	protected Iterator<IProject> jpaIProjects() {
-		return new FilteringIterator<IProject, IProject>(CollectionTools.iterator(ProjectUtilities.getAllProjects())) {
-			@Override
-			protected boolean accept(IProject project) {
-				try {
-					if (FacetedProjectFramework.hasProjectFacet(project, JptCorePlugin.FACET_ID)) {
-						JpaProject jpaProject = JptCorePlugin.getJpaProject(project);
-						return jpaProject != null && jpaProject.getJpaPlatform().getId().equals(EclipseLinkJpaPlatform.ID);
-					}
-					return false;
-				}
-				catch (CoreException ce) {
-					return false;
-				}
-			}
-		};
+	protected Filter<IProject> buildJpaIProjectsFilter() {
+		return new EclipseLinkJpaIProjectsFilter();
 	}
+
+	protected class EclipseLinkJpaIProjectsFilter extends JpaIProjectsFilter {
+		@Override
+		protected boolean accept_(IProject project) throws CoreException {
+			if (super.accept_(project)) {
+				JpaProject jpaProject = JptCorePlugin.getJpaProject(project);
+				return (jpaProject != null) && jpaProject.getJpaPlatform().getId().equals(EclipseLinkJpaPlatform.ID);
+			}
+			return false;
+		}
+	}
+	
 }
