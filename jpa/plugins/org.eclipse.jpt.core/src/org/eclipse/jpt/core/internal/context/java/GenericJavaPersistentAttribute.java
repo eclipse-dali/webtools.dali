@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,8 +21,10 @@ import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaStructureNodes;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
-import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
+import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.Annotation;
+import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.Filter;
@@ -56,19 +58,26 @@ public class GenericJavaPersistentAttribute
 
 	protected void initialize(JavaResourcePersistentAttribute jrpa) {
 		this.resourcePersistentAttribute = jrpa;
-		this.name = this.name(jrpa);
-		initializeDefaultMapping(jrpa);
-		initializeSpecifiedMapping(jrpa);
+		this.name = this.name();
+		initializeDefaultMapping();
+		initializeSpecifiedMapping();
 	}
 	
-	protected void initializeDefaultMapping(JavaResourcePersistentAttribute jrpa) {
-		this.defaultMapping = getJpaPlatform().buildDefaultJavaAttributeMapping(this);
-		this.defaultMapping.initialize(jrpa);
+	protected void initializeDefaultMapping() {
+		this.defaultMapping = buildDefaultMapping();
 	}
-
-	protected void initializeSpecifiedMapping(JavaResourcePersistentAttribute jrpa) {
-		String javaMappingAnnotationName = this.javaMappingAnnotationName(jrpa);
-		this.specifiedMapping = createJavaAttributeMappingFromAnnotation(javaMappingAnnotationName, jrpa);
+	
+	protected JavaAttributeMapping buildDefaultMapping() {
+		JavaAttributeMapping defaultMapping = getJpaPlatform().buildDefaultJavaAttributeMapping(this);
+		if (defaultMapping.getAnnotationName() != null) {
+			JavaResourceNode resourceMapping = this.resourcePersistentAttribute.getNullMappingAnnotation(defaultMapping.getAnnotationName());
+			defaultMapping.initialize(resourceMapping);
+		}
+		return defaultMapping;
+	}
+	
+	protected void initializeSpecifiedMapping() {
+		this.specifiedMapping = buildJavaAttributeMappingFromAnnotation(this.getJavaMappingAnnotationName());
 	}
 	
 	public JavaResourcePersistentAttribute getResourcePersistentAttribute() {
@@ -170,8 +179,8 @@ public class GenericJavaPersistentAttribute
 		if (newKey == getSpecifiedMappingKey()) {
 			return;
 		}
-		JavaAttributeMapping oldMapping = getMapping();
-		JavaAttributeMapping newMapping = createJavaAttributeMappingFromMappingKey(newKey);
+		JavaAttributeMapping oldMapping = getSpecifiedMapping();
+		JavaAttributeMapping newMapping = buildJavaAttributeMappingFromMappingKey(newKey);
 
 		this.specifiedMapping = newMapping;	
 		if (newMapping != null) {
@@ -229,65 +238,69 @@ public class GenericJavaPersistentAttribute
 	}
 
 	public void update() {
-		this.setName(this.name(this.resourcePersistentAttribute));
-		this.updateDefaultMapping(this.resourcePersistentAttribute);
-		this.updateSpecifiedMapping(this.resourcePersistentAttribute);
+		this.setName(this.name());
+		this.updateDefaultMapping();
+		this.updateSpecifiedMapping();
 	}
 	
-	protected String name(JavaResourcePersistentAttribute jrpa) {
-		return jrpa.getName();	
+	protected String name() {
+		return this.resourcePersistentAttribute.getName();	
 	}
 	
 	public String specifiedMappingAnnotationName() {
 		return (this.specifiedMapping == null) ? null : this.specifiedMapping.getAnnotationName();
 	}
 	
-	protected void updateSpecifiedMapping(JavaResourcePersistentAttribute jrpa) {
-		String javaMappingAnnotationName = this.javaMappingAnnotationName(jrpa);
+	protected void updateSpecifiedMapping() {
+		String javaMappingAnnotationName = this.getJavaMappingAnnotationName();
 		if (specifiedMappingAnnotationName() != javaMappingAnnotationName) {
-			setSpecifiedMapping(createJavaAttributeMappingFromAnnotation(javaMappingAnnotationName, jrpa));
+			setSpecifiedMapping(buildJavaAttributeMappingFromAnnotation(javaMappingAnnotationName));
 		}
 		else {
 			if (getSpecifiedMapping() != null) {
-				getSpecifiedMapping().update(jrpa);
+				getSpecifiedMapping().update(this.resourcePersistentAttribute.getMappingAnnotation(javaMappingAnnotationName));
 			}
 		}
 	}
 	
-	protected void updateDefaultMapping(JavaResourcePersistentAttribute jrpa) {
+	protected void updateDefaultMapping() {
 		String defaultMappingKey = getJpaPlatform().getDefaultJavaAttributeMappingKey(this);
 		if (getDefaultMapping().getKey() != defaultMappingKey) {
 			JavaAttributeMapping oldDefaultMapping = this.defaultMapping;
-			this.defaultMapping = getJpaPlatform().buildDefaultJavaAttributeMapping(this);
-			this.defaultMapping.initialize(jrpa);
+			this.defaultMapping = buildDefaultMapping();
 			firePropertyChanged(PersistentAttribute.DEFAULT_MAPPING_PROPERTY, oldDefaultMapping, this.defaultMapping);
 		}
 		else {
-			getDefaultMapping().update(jrpa);
+			if (this.defaultMapping.getAnnotationName() != null) {
+				getDefaultMapping().update(this.resourcePersistentAttribute.getNullMappingAnnotation(this.defaultMapping.getAnnotationName()));
+			}
 		}
 	}
 	
-	protected String javaMappingAnnotationName(JavaResourcePersistentAttribute jrpa) {
-		Annotation mappingAnnotation = (Annotation) jrpa.getMappingAnnotation();
+	protected String getJavaMappingAnnotationName() {
+		Annotation mappingAnnotation = (Annotation) this.resourcePersistentAttribute.getMappingAnnotation();
 		if (mappingAnnotation != null) {
 			return mappingAnnotation.getAnnotationName();
 		}
 		return null;
 	}
 	
-	protected JavaAttributeMapping createJavaAttributeMappingFromMappingKey(String key) {
+	protected JavaAttributeMapping buildJavaAttributeMappingFromMappingKey(String key) {
 		if (key == MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY) {
 			return null;
 		}
-		return getJpaPlatform().buildJavaAttributeMappingFromMappingKey(key, this);
+		JavaAttributeMapping mapping = getJpaPlatform().buildJavaAttributeMappingFromMappingKey(key, this);
+		//no mapping.initialize(JavaResourcePersistentAttribute) call here
+		//we do not yet have a mapping annotation so we can't call initialize
+		return mapping;
 	}
 
-	protected JavaAttributeMapping createJavaAttributeMappingFromAnnotation(String annotationName, JavaResourcePersistentAttribute jrpa) {
+	protected JavaAttributeMapping buildJavaAttributeMappingFromAnnotation(String annotationName) {
 		if (annotationName == null) {
 			return null;
 		}
 		JavaAttributeMapping mapping = getJpaPlatform().buildJavaAttributeMappingFromAnnotation(annotationName, this);
-		mapping.initialize(jrpa);
+		mapping.initialize(this.resourcePersistentAttribute.getMappingAnnotation(annotationName));
 		return mapping;
 	}
 
@@ -314,6 +327,8 @@ public class GenericJavaPersistentAttribute
 	public void validate(List<IMessage> messages, CompilationUnit astRoot) {
 		super.validate(messages, astRoot);
 		
+		this.validateModifiers(messages, astRoot);
+		
 		if (this.specifiedMapping != null) {
 			this.specifiedMapping.validate(messages, astRoot);
 		}
@@ -322,6 +337,32 @@ public class GenericJavaPersistentAttribute
 		}
 	}
 	
+	
+	protected void validateModifiers(List<IMessage> messages, CompilationUnit astRoot) {
+		if (getMappingKey() == MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY) {
+			return;
+		}
+		
+		if (this.resourcePersistentAttribute.isForField()) {
+			if (this.resourcePersistentAttribute.isFinal()) {
+				messages.add(this.buildAttributeMessage(JpaValidationMessages.PERSISTENT_ATTRIBUTE_FINAL_FIELD, astRoot));
+			}
+			
+			if (this.resourcePersistentAttribute.isPublic()) {
+				messages.add(this.buildAttributeMessage(JpaValidationMessages.PERSISTENT_ATTRIBUTE_PUBLIC_FIELD, astRoot));
+			}
+		}
+	}
+
+	protected IMessage buildAttributeMessage(String msgID, CompilationUnit astRoot) {
+		return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				msgID,
+				new String[] {getName()},
+				this,
+				getValidationTextRange(astRoot)
+			);
+	}
 
 	// ********** misc **********
 

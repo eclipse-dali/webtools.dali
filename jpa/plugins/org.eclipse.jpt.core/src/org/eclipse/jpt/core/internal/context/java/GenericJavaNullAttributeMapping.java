@@ -39,11 +39,6 @@ public class GenericJavaNullAttributeMapping extends AbstractJavaAttributeMappin
 	}
 	
 	@Override
-	protected JavaResourceNode getResourceMapping() {
-		return null;
-	}
-	
-	@Override
 	public void validate(List<IMessage> messages, CompilationUnit astRoot) {
 		super.validate(messages, astRoot);
 	}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -31,7 +31,6 @@ import org.eclipse.jpt.core.resource.java.AttributeOverrideAnnotation;
 import org.eclipse.jpt.core.resource.java.AttributeOverridesAnnotation;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -97,7 +96,7 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends JavaResourceNode
 			for (PersistentAttribute persistentAttribute : CollectionTools.iterable(allOverridableAttributes())) {
 				if (persistentAttribute.getName().equals(attributeOverrideName)) {
 					//store the virtualAttributeOverride so we can fire change notification later
-					virtualAttributeOverride = buildVirtualAttributeOverride(getResourcePersistentAttribute(), persistentAttribute.getName());
+					virtualAttributeOverride = buildVirtualAttributeOverride(persistentAttribute.getName());
 					this.virtualAttributeOverrides.add(virtualAttributeOverride);
 					break;
 				}
@@ -227,15 +226,15 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends JavaResourceNode
 	
 	
 	@Override
-	public void initialize(JavaResourcePersistentAttribute resourcePersistentAttribute) {
-		super.initialize(resourcePersistentAttribute);
-		this.initializeAttributeOverrides(resourcePersistentAttribute);
-		this.initializeDefaultAttributeOverrides(resourcePersistentAttribute);
+	protected void initialize() {
+		super.initialize();
+		this.initializeAttributeOverrides();
+		this.initializeDefaultAttributeOverrides();
 		this.embeddable = MappingTools.getEmbeddableFor(getPersistentAttribute());
 	}
 	
-	protected void initializeAttributeOverrides(JavaResourcePersistentAttribute resourcePersistentAttribute) {
-		ListIterator<NestableAnnotation> annotations = resourcePersistentAttribute.supportingAnnotations(AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME);
+	protected void initializeAttributeOverrides() {
+		ListIterator<NestableAnnotation> annotations = this.resourcePersistentAttribute.supportingAnnotations(AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME);
 		
 		while(annotations.hasNext()) {
 			JavaAttributeOverride attributeOverride = getJpaFactory().buildJavaAttributeOverride(this, this);
@@ -244,25 +243,27 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends JavaResourceNode
 		}
 	}
 	
-	protected void initializeDefaultAttributeOverrides(JavaResourcePersistentAttribute resourcePersistentAttribute) {
+	protected void initializeDefaultAttributeOverrides() {
 		for (Iterator<String> i = allOverridableAttributeNames(); i.hasNext(); ) {
 			String attributeName = i.next();
 			JavaAttributeOverride attributeOverride = getAttributeOverrideNamed(attributeName);
 			if (attributeOverride == null) {
-				this.virtualAttributeOverrides.add(buildVirtualAttributeOverride(resourcePersistentAttribute, attributeName));
+				this.virtualAttributeOverrides.add(buildVirtualAttributeOverride(attributeName));
 			}
 		}
-	}	@Override
-	public void update(JavaResourcePersistentAttribute resourcePersistentAttribute) {
-		super.update(resourcePersistentAttribute);
+	}
+	
+	@Override
+	protected void update() {
+		super.update();
 		this.embeddable = MappingTools.getEmbeddableFor(getPersistentAttribute());
-		this.updateSpecifiedAttributeOverrides(resourcePersistentAttribute);
-		this.updateVirtualAttributeOverrides(resourcePersistentAttribute);
+		this.updateSpecifiedAttributeOverrides();
+		this.updateVirtualAttributeOverrides();
 		
 	}
-	protected void updateSpecifiedAttributeOverrides(JavaResourcePersistentAttribute resourcePersistentAttribute) {
+	protected void updateSpecifiedAttributeOverrides() {
 		ListIterator<JavaAttributeOverride> attributeOverrides = specifiedAttributeOverrides();
-		ListIterator<NestableAnnotation> resourceAttributeOverrides = resourcePersistentAttribute.supportingAnnotations(AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME);
+		ListIterator<NestableAnnotation> resourceAttributeOverrides = this.resourcePersistentAttribute.supportingAnnotations(AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME);
 		
 		while (attributeOverrides.hasNext()) {
 			JavaAttributeOverride attributeOverride = attributeOverrides.next();
@@ -285,24 +286,24 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends JavaResourceNode
 		return attributeOverride;
 	}
 	
-	protected JavaAttributeOverride buildVirtualAttributeOverride(JavaResourcePersistentAttribute resourcePersistentAttribute, String attributeName) {
-		return buildAttributeOverride(buildVirtualAttributeOverrideResource(resourcePersistentAttribute, attributeName));
+	protected JavaAttributeOverride buildVirtualAttributeOverride(String attributeName) {
+		return buildAttributeOverride(buildVirtualAttributeOverrideResource(attributeName));
 	}
 
-	protected VirtualAttributeOverride buildVirtualAttributeOverrideResource(JavaResourcePersistentAttribute resourcePersistentAttribute, String attributeName) {
+	protected VirtualAttributeOverride buildVirtualAttributeOverrideResource(String attributeName) {
 		ColumnMapping columnMapping = (ColumnMapping) this.getEmbeddable().getPersistentType().getAttributeNamed(attributeName).getMapping();
-		return new VirtualAttributeOverride(resourcePersistentAttribute, attributeName, columnMapping.getColumn());
+		return new VirtualAttributeOverride(this.resourcePersistentAttribute, attributeName, columnMapping.getColumn());
 	}
 
-	protected void updateVirtualAttributeOverrides(JavaResourcePersistentAttribute resourcePersistentAttribute) {
+	protected void updateVirtualAttributeOverrides() {
 		for (Iterator<String> i = allOverridableAttributeNames(); i.hasNext(); ) {
 			String attributeName = i.next();
 			JavaAttributeOverride attributeOverride = getAttributeOverrideNamed(attributeName);
 			if (attributeOverride == null) {
-				addVirtualAttributeOverride(buildVirtualAttributeOverride(resourcePersistentAttribute, attributeName));
+				addVirtualAttributeOverride(buildVirtualAttributeOverride(attributeName));
 			}
 			else if (attributeOverride.isVirtual()) {
-				attributeOverride.getColumn().update(new NullColumn(resourcePersistentAttribute));
+				attributeOverride.getColumn().update(new NullColumn(this.resourcePersistentAttribute));
 			}
 		}
 		

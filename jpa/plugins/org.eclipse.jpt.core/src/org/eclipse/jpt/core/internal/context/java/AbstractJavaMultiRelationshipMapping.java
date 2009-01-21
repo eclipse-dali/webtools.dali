@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,7 +22,6 @@ import org.eclipse.jpt.core.context.java.JavaJoinTable;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.MapKeyAnnotation;
 import org.eclipse.jpt.core.resource.java.OrderByAnnotation;
 import org.eclipse.jpt.core.resource.java.RelationshipMappingAnnotation;
@@ -206,9 +205,9 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 		String oldMapKey = this.mapKey;
 		this.mapKey = newMapKey;
 		if (oldMapKey != newMapKey) {
-			if (this.getMapKeyResource(getResourcePersistentAttribute()) != null) {
+			if (this.getMapKeyResource() != null) {
 				if (newMapKey != null) {
-					this.getMapKeyResource(getResourcePersistentAttribute()).setName(newMapKey);
+					this.getMapKeyResource().setName(newMapKey);
 				}
 				else {
 					getResourcePersistentAttribute().removeSupportingAnnotation(MapKeyAnnotation.ANNOTATION_NAME);				
@@ -216,7 +215,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 			}
 			else if (newMapKey != null) {
 				getResourcePersistentAttribute().addSupportingAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
-				getMapKeyResource(getResourcePersistentAttribute()).setName(newMapKey);
+				getMapKeyResource().setName(newMapKey);
 			}
 		}
 		firePropertyChanged(MultiRelationshipMapping.MAP_KEY_PROPERTY, oldMapKey, newMapKey);
@@ -245,24 +244,24 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 //	}
 
 	@Override
-	protected String buildDefaultTargetEntity(JavaResourcePersistentAttribute jrpa) {
-		if (!jrpa.typeIsContainer()) {
+	protected String buildDefaultTargetEntity() {
+		if (!this.resourcePersistentAttribute.typeIsContainer()) {
 			return null;
 		}
-		return jrpa.getQualifiedReferenceEntityElementTypeName();
+		return this.resourcePersistentAttribute.getQualifiedReferenceEntityElementTypeName();
 	}
 	
 	protected abstract boolean mappedByTouches(int pos, CompilationUnit astRoot);
 
 	protected boolean mapKeyNameTouches(int pos, CompilationUnit astRoot) {
-		if (getMapKeyResource(getResourcePersistentAttribute()) != null) {
-			return getMapKeyResource(getResourcePersistentAttribute()).nameTouches(pos, astRoot);
+		if (getMapKeyResource() != null) {
+			return getMapKeyResource().nameTouches(pos, astRoot);
 		}
 		return false;
 	}
 	
-	protected MapKeyAnnotation getMapKeyResource(JavaResourcePersistentAttribute jrpa) {
-		return (MapKeyAnnotation) jrpa.getSupportingAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
+	protected MapKeyAnnotation getMapKeyResource() {
+		return (MapKeyAnnotation) this.resourcePersistentAttribute.getSupportingAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
 	}
 
 	public Iterator<String> candidateMapKeyNames() {
@@ -297,23 +296,19 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 	}
 	
 	@Override
-	public void initialize(JavaResourcePersistentAttribute jrpa) {
-		super.initialize(jrpa);
-		MapKeyAnnotation mapKeyAnnotation = this.getMapKeyResource(jrpa);
+	protected void initialize() {
+		super.initialize();
+		MapKeyAnnotation mapKeyAnnotation = this.getMapKeyResource();
 		if (mapKeyAnnotation != null) {
 			this.mapKey = mapKeyAnnotation.getName();
 		}
-		this.initializeOrderBy(this.getResourceOrderBy());
-		this.joinTable.initialize(jrpa);
+		this.initializeOrderBy();
+		this.joinTable.initialize(this.resourcePersistentAttribute);
+		this.mappedBy = this.getResourceMappedBy();
 	}
 	
-	@Override
-	protected void initialize(T relationshipMapping) {
-		super.initialize(relationshipMapping);
-		this.mappedBy = this.mappedBy(relationshipMapping);
-	}
-	
-	protected void initializeOrderBy(OrderByAnnotation orderByAnnotation) {
+	protected void initializeOrderBy() {
+		OrderByAnnotation orderByAnnotation = this.getResourceOrderBy();
 		if (orderByAnnotation != null) {
 			this.orderBy = orderByAnnotation.getValue();
 			if (orderByAnnotation.getValue() == null) {
@@ -329,21 +324,16 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 	}
 	
 	@Override
-	public void update(JavaResourcePersistentAttribute jrpa) {
-		super.update(jrpa);
-		this.updateMapKey(jrpa);
-		this.updateOrderBy(this.getResourceOrderBy());
-		this.joinTable.update(jrpa);
+	protected void update() {
+		super.update();
+		this.updateMapKey();
+		this.updateOrderBy();
+		this.joinTable.update(this.resourcePersistentAttribute);
+		this.setMappedBy_(this.getResourceMappedBy());
 	}	
 	
-	@Override
-	protected void update(T relationshipMapping) {
-		super.update(relationshipMapping);
-		this.setMappedBy_(this.mappedBy(relationshipMapping));
-	}
-	
-	protected void updateMapKey(JavaResourcePersistentAttribute jrpa) {
-		MapKeyAnnotation mapKeyAnnotation = this.getMapKeyResource(jrpa);
+	protected void updateMapKey() {
+		MapKeyAnnotation mapKeyAnnotation = this.getMapKeyResource();
 		if (mapKeyAnnotation != null) {
 			setMapKey_(mapKeyAnnotation.getName());
 		}
@@ -352,7 +342,8 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 		}
 	}
 	
-	protected void updateOrderBy(OrderByAnnotation orderByAnnotation) {
+	protected void updateOrderBy() {
+		OrderByAnnotation orderByAnnotation = this.getResourceOrderBy();
 		if (orderByAnnotation != null) {
 			setOrderBy_(orderByAnnotation.getValue());
 			if (orderByAnnotation.getValue() == null) {
@@ -374,7 +365,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 		}
 	}
 
-	protected abstract String mappedBy(T relationshipMapping);
+	protected abstract String getResourceMappedBy();
 
 
 	// ********** validation **********

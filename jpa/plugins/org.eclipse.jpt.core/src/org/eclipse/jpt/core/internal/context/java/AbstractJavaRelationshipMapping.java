@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,7 +20,6 @@ import org.eclipse.jpt.core.context.java.JavaRelationshipMapping;
 import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.RelationshipMappingAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.Filter;
@@ -70,7 +69,7 @@ public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMapp
 	public void setSpecifiedTargetEntity(String targetEntity) {
 		String old = this.specifiedTargetEntity;
 		this.specifiedTargetEntity = targetEntity;
-		this.getResourceMapping().setTargetEntity(targetEntity);
+		this.resourceMapping.setTargetEntity(targetEntity);
 		this.firePropertyChanged(SPECIFIED_TARGET_ENTITY_PROPERTY, old, targetEntity);
 	}
 	
@@ -121,7 +120,7 @@ public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMapp
 	public void setSpecifiedFetch(FetchType fetch) {
 		FetchType old = this.specifiedFetch;
 		this.specifiedFetch = fetch;
-		this.getResourceMapping().setFetch(FetchType.toJavaResourceModel(fetch));
+		this.resourceMapping.setFetch(FetchType.toJavaResourceModel(fetch));
 		this.firePropertyChanged(SPECIFIED_FETCH_PROPERTY, old, fetch);
 	}
 	
@@ -135,48 +134,39 @@ public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMapp
 	// ********** resource => context **********
 
 	@Override
-	public void initialize(JavaResourcePersistentAttribute jrpa) {
-		this.defaultTargetEntity = this.buildDefaultTargetEntity(jrpa);
-		super.initialize(jrpa);
+	protected void initialize() {
+		super.initialize();
+		this.defaultTargetEntity = this.buildDefaultTargetEntity();
+		this.specifiedFetch = this.getResourceFetch();
+		this.cascade.initialize(this.resourceMapping);
+		this.specifiedTargetEntity = this.getResourceTargetEntity();
+		this.resolvedTargetEntity = this.buildResolvedTargetEntity();
 	}
 	
 	@Override
-	public void update(JavaResourcePersistentAttribute jrpa) {
-		this.setDefaultTargetEntity(this.buildDefaultTargetEntity(jrpa));
-		super.update(jrpa);
+	protected void update() {
+		super.update();
+		this.setDefaultTargetEntity(this.buildDefaultTargetEntity());
+		this.setSpecifiedFetch_(this.getResourceFetch());
+		this.cascade.update(this.resourceMapping);
+		this.setSpecifiedTargetEntity_(this.getResourceTargetEntity());
+		this.setResolvedTargetEntity(this.buildResolvedTargetEntity());
 	}
 	
-	@Override
-	protected void initialize(T relationshipMappingAnnotation) {
-		this.specifiedFetch = this.buildFetch(relationshipMappingAnnotation);
-		this.cascade.initialize(relationshipMappingAnnotation);
-		this.specifiedTargetEntity = this.buildSpecifiedTargetEntity(relationshipMappingAnnotation);
-		this.resolvedTargetEntity = this.buildResolvedTargetEntity(relationshipMappingAnnotation);
-	}
-
-	@Override
-	protected void update(T relationshipMappingAnnotation) {
-		super.update(relationshipMappingAnnotation);
-		this.setSpecifiedFetch_(this.buildFetch(relationshipMappingAnnotation));
-		this.cascade.update(relationshipMappingAnnotation);
-		this.setSpecifiedTargetEntity_(this.buildSpecifiedTargetEntity(relationshipMappingAnnotation));
-		this.setResolvedTargetEntity(this.buildResolvedTargetEntity(relationshipMappingAnnotation));
+	protected FetchType getResourceFetch() {
+		return FetchType.fromJavaResourceModel(this.resourceMapping.getFetch());
 	}
 	
-	protected FetchType buildFetch(T relationshipMappingAnnotation) {
-		return FetchType.fromJavaResourceModel(relationshipMappingAnnotation.getFetch());
+	protected String getResourceTargetEntity() {
+		return this.resourceMapping.getTargetEntity();
 	}
 	
-	protected String buildSpecifiedTargetEntity(T relationshipMappingAnnotation) {
-		return relationshipMappingAnnotation.getTargetEntity();
-	}
+	protected abstract String buildDefaultTargetEntity();
 	
-	protected abstract String buildDefaultTargetEntity(JavaResourcePersistentAttribute jrpa);
-	
-	protected Entity buildResolvedTargetEntity(T relationshipMappingAnnotation) {
+	protected Entity buildResolvedTargetEntity() {
 		String targetEntityName = (this.specifiedTargetEntity == null) ?
 						this.defaultTargetEntity :
-						relationshipMappingAnnotation.getFullyQualifiedTargetEntity();
+						this.resourceMapping.getFullyQualifiedTargetEntity();
 		return (targetEntityName == null) ? null : this.getPersistenceUnit().getEntity(targetEntityName);
 	}
 
@@ -248,6 +238,6 @@ public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMapp
 	}
 
 	protected TextRange getTargetEntityTextRange(CompilationUnit astRoot) {
-		return this.getTextRange(this.getResourceMapping().getTargetEntityTextRange(astRoot), astRoot);
+		return this.getTextRange(this.resourceMapping.getTargetEntityTextRange(astRoot), astRoot);
 	}
 }

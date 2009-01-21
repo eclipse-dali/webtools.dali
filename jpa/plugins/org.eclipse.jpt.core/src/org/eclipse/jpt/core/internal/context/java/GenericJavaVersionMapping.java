@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,7 +22,6 @@ import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.ColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.JPA;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.TemporalAnnotation;
 import org.eclipse.jpt.core.resource.java.VersionAnnotation;
 import org.eclipse.jpt.utility.Filter;
@@ -49,10 +48,10 @@ public class GenericJavaVersionMapping extends AbstractJavaAttributeMapping<Vers
 	}
 	
 	@Override
-	public void initialize(JavaResourcePersistentAttribute jrpa) {
-		super.initialize(jrpa);
+	protected void initialize( ) {
+		super.initialize();
 		this.column.initialize(this.getResourceColumn());
-		this.specifiedConverter = this.buildSpecifiedConverter(this.specifiedConverterType(jrpa));
+		this.specifiedConverter = this.buildSpecifiedConverter(this.getResourceConverterType());
 	}
 		
 	public ColumnAnnotation getResourceColumn() {
@@ -135,14 +134,14 @@ public class GenericJavaVersionMapping extends AbstractJavaAttributeMapping<Vers
 
 	
 	@Override
-	public void update(JavaResourcePersistentAttribute jrpa) {
-		super.update(jrpa);
+	protected void update() {
+		super.update();
 		this.column.update(this.getResourceColumn());
-		if (specifiedConverterType(jrpa) == getSpecifedConverterType()) {
-			getSpecifiedConverter().update(jrpa);
+		if (getResourceConverterType() == getSpecifedConverterType()) {
+			getSpecifiedConverter().update(this.resourcePersistentAttribute);
 		}
 		else {
-			JavaConverter javaConverter = buildSpecifiedConverter(specifiedConverterType(jrpa));
+			JavaConverter javaConverter = buildSpecifiedConverter(getResourceConverterType());
 			setSpecifiedConverter(javaConverter);
 		}
 	}
@@ -154,8 +153,8 @@ public class GenericJavaVersionMapping extends AbstractJavaAttributeMapping<Vers
 		return null;
 	}
 	
-	protected String specifiedConverterType(JavaResourcePersistentAttribute jrpa) {
-		if (jrpa.getSupportingAnnotation(TemporalAnnotation.ANNOTATION_NAME) != null) {
+	protected String getResourceConverterType() {
+		if (this.resourcePersistentAttribute.getSupportingAnnotation(TemporalAnnotation.ANNOTATION_NAME) != null) {
 			return Converter.TEMPORAL_CONVERTER;
 		}
 		return null;

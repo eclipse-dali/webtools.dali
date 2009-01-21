@@ -55,12 +55,12 @@ public class GenericJavaManyToOneMapping
 	
 	@Override
 	protected void setOptionalOnResourceModel(Boolean newOptional) {
-		this.getResourceMapping().setOptional(newOptional);
+		this.resourceMapping.setOptional(newOptional);
 	}
 	
 	@Override
-	protected Boolean buildSpecifiedOptional(ManyToOneAnnotation relationshipMapping) {
-		return relationshipMapping.getOptional();
+	protected Boolean getResourceOptional() {
+		return this.resourceMapping.getOptional();
 	}
 	
 	//ManyToOne mapping is always the owning side

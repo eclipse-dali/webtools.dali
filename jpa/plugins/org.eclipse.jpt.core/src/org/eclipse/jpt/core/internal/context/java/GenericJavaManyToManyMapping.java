@@ -50,18 +50,18 @@ public class GenericJavaManyToManyMapping extends AbstractJavaMultiRelationshipM
 
 	@Override
 	protected boolean mappedByTouches(int pos, CompilationUnit astRoot) {
-		return this.getResourceMapping().mappedByTouches(pos, astRoot);
+		return this.resourceMapping.mappedByTouches(pos, astRoot);
 	}
 	
 	
 	@Override
 	protected void setMappedByOnResourceModel(String mappedBy) {
-		getResourceMapping().setMappedBy(mappedBy);
+		this.resourceMapping.setMappedBy(mappedBy);
 	}
 	
 	@Override
-	protected String mappedBy(ManyToManyAnnotation relationshipMapping) {
-		return relationshipMapping.getMappedBy();
+	protected String getResourceMappedBy() {
+		return this.resourceMapping.getMappedBy();
 	}
 	
 	// ********** INonOwningMapping implementation **********
@@ -73,7 +73,7 @@ public class GenericJavaManyToManyMapping extends AbstractJavaMultiRelationshipM
 	
 	@Override
 	public TextRange getMappedByTextRange(CompilationUnit astRoot) {
-		return this.getResourceMapping().getMappedByTextRange(astRoot);
+		return this.resourceMapping.getMappedByTextRange(astRoot);
 	}
 	
 	@Override

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,7 +13,6 @@ import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaOneToOneMapping;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToOneMapping;
 import org.eclipse.jpt.eclipselink.core.context.JoinFetch;
 import org.eclipse.jpt.eclipselink.core.context.PrivateOwned;
@@ -42,17 +41,17 @@ public class EclipseLinkJavaOneToOneMappingImpl extends GenericJavaOneToOneMappi
 	}
 	
 	@Override
-	public void initialize(JavaResourcePersistentAttribute jrpa) {
-		super.initialize(jrpa);
-		this.joinFetch.initialize(jrpa);
-		this.privateOwned.initialize(jrpa);
+	protected void initialize() {
+		super.initialize();
+		this.joinFetch.initialize(this.resourcePersistentAttribute);
+		this.privateOwned.initialize(this.resourcePersistentAttribute);
 	}
 	
 	@Override
-	public void update(JavaResourcePersistentAttribute jrpa) {
-		super.update(jrpa);
-		this.joinFetch.update(jrpa);
-		this.privateOwned.update(jrpa);
+	protected void update() {
+		super.update();
+		this.joinFetch.update(this.resourcePersistentAttribute);
+		this.privateOwned.update(this.resourcePersistentAttribute);
 	}
 	
 	@Override

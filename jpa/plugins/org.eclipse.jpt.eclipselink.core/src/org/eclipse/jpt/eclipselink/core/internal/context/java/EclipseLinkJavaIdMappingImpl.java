@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,7 +14,6 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaConverter;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaIdMapping;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.eclipselink.core.context.Convert;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkIdMapping;
 import org.eclipse.jpt.eclipselink.core.context.Mutable;
@@ -43,12 +42,12 @@ public class EclipseLinkJavaIdMappingImpl extends GenericJavaIdMapping implement
 	}
 	
 	@Override
-	protected String specifiedConverterType(JavaResourcePersistentAttribute jrpa) {
+	protected String getResourceConverterType() {
 		//check @Convert first, this is the order that EclipseLink searches
-		if (jrpa.getSupportingAnnotation(ConvertAnnotation.ANNOTATION_NAME) != null) {
+		if (this.resourcePersistentAttribute.getSupportingAnnotation(ConvertAnnotation.ANNOTATION_NAME) != null) {
 			return Convert.ECLIPSE_LINK_CONVERTER;
 		}
-		return super.specifiedConverterType(jrpa);
+		return super.getResourceConverterType();
 	}
 	
 	
@@ -62,15 +61,15 @@ public class EclipseLinkJavaIdMappingImpl extends GenericJavaIdMapping implement
 	//************ initialization/update ****************
 
 	@Override
-	public void initialize(JavaResourcePersistentAttribute jrpa) {
-		super.initialize(jrpa);
-		this.mutable.initialize(jrpa);
+	protected void initialize() {
+		super.initialize();
+		this.mutable.initialize(this.resourcePersistentAttribute);
 	}
 	
 	@Override
-	public void update(JavaResourcePersistentAttribute jrpa) {
-		super.update(jrpa);
-		this.mutable.update(jrpa);
+	protected void update() {
+		super.update();
+		this.mutable.update(this.resourcePersistentAttribute);
 	}
 	
 	

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -26,7 +26,6 @@ import org.eclipse.jpt.core.context.java.JavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.JPA;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.core.resource.java.OneToOneAnnotation;
 import org.eclipse.jpt.core.resource.java.PrimaryKeyJoinColumnAnnotation;
@@ -65,7 +64,7 @@ public class GenericJavaOneToOneMapping
 	public void setMappedBy(String mappedBy) {
 		String old = this.mappedBy;
 		this.mappedBy = mappedBy;
-		this.getResourceMapping().setMappedBy(mappedBy);
+		this.resourceMapping.setMappedBy(mappedBy);
 		this.firePropertyChanged(NonOwningMapping.MAPPED_BY_PROPERTY, old, mappedBy);
 	}
 
@@ -166,7 +165,7 @@ public class GenericJavaOneToOneMapping
 
 	@Override
 	protected void setOptionalOnResourceModel(Boolean newOptional) {
-		this.getResourceMapping().setOptional(newOptional);
+		this.resourceMapping.setOptional(newOptional);
 	}
 	
 	@Override
@@ -182,36 +181,31 @@ public class GenericJavaOneToOneMapping
 	}
 
 	protected boolean mappedByTouches(int pos, CompilationUnit astRoot) {
-		return this.getResourceMapping().mappedByTouches(pos, astRoot);
+		return this.resourceMapping.mappedByTouches(pos, astRoot);
 	}
 
 	@Override
 	public boolean isOverridableAssociationMapping() {
 		return true;
 	}
-		
-	@Override
-	protected void initialize(OneToOneAnnotation resourceOneToOne) {
-		super.initialize(resourceOneToOne);
-		this.mappedBy = resourceOneToOne.getMappedBy();
-	}
 
 	@Override
-	protected Boolean buildSpecifiedOptional(OneToOneAnnotation oneToOneResource) {
-		return oneToOneResource.getOptional();
+	protected Boolean getResourceOptional() {
+		return this.resourceMapping.getOptional();
 	}
 
 
 	// ********** resource => context **********
 
 	@Override
-	public void initialize(JavaResourcePersistentAttribute javaResourcePersistentAttribute) {
-		super.initialize(javaResourcePersistentAttribute);
-		this.initializePrimaryKeyJoinColumns(javaResourcePersistentAttribute);
+	protected void initialize() {
+		super.initialize();
+		this.initializePrimaryKeyJoinColumns();
+		this.mappedBy = getResourceMappedBy();
 	}
 	
-	protected void initializePrimaryKeyJoinColumns(JavaResourcePersistentAttribute javaResourcePersistentAttribute) {
-		for (ListIterator<NestableAnnotation> stream = javaResourcePersistentAttribute.supportingAnnotations(PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME, PrimaryKeyJoinColumnsAnnotation.ANNOTATION_NAME); stream.hasNext(); ) {
+	protected void initializePrimaryKeyJoinColumns() {
+		for (ListIterator<NestableAnnotation> stream = this.resourcePersistentAttribute.supportingAnnotations(PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME, PrimaryKeyJoinColumnsAnnotation.ANNOTATION_NAME); stream.hasNext(); ) {
 			this.primaryKeyJoinColumns.add(buildPrimaryKeyJoinColumn((PrimaryKeyJoinColumnAnnotation) stream.next()));
 		}
 	}
@@ -221,22 +215,17 @@ public class GenericJavaOneToOneMapping
 		pkJoinColumn.initialize(primaryKeyJoinColumnResource);
 		return pkJoinColumn;
 	}
-	
-	@Override
-	protected void update(OneToOneAnnotation resourceOneToOne) {
-		super.update(resourceOneToOne);
-		this.setMappedBy_(resourceOneToOne.getMappedBy());
-	}
 
 	@Override
-	public void update(JavaResourcePersistentAttribute javaResourcePersistentAttribute) {
-		super.update(javaResourcePersistentAttribute);
-		this.updatePrimaryKeyJoinColumns(javaResourcePersistentAttribute);
+	protected void update() {
+		super.update();
+		this.updatePrimaryKeyJoinColumns();
+		this.setMappedBy_(getResourceMappedBy());
 	}
 	
-	protected void updatePrimaryKeyJoinColumns(JavaResourcePersistentAttribute javaResourcePersistentAttribute) {
+	protected void updatePrimaryKeyJoinColumns() {
 		ListIterator<JavaPrimaryKeyJoinColumn> contextPkJoinColumns = primaryKeyJoinColumns();
-		ListIterator<NestableAnnotation> resourcePkJoinColumns = javaResourcePersistentAttribute.supportingAnnotations(PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME, PrimaryKeyJoinColumnsAnnotation.ANNOTATION_NAME);
+		ListIterator<NestableAnnotation> resourcePkJoinColumns = this.resourcePersistentAttribute.supportingAnnotations(PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME, PrimaryKeyJoinColumnsAnnotation.ANNOTATION_NAME);
 		
 		while (contextPkJoinColumns.hasNext()) {
 			JavaPrimaryKeyJoinColumn pkJoinColumn = contextPkJoinColumns.next();
@@ -253,7 +242,9 @@ public class GenericJavaOneToOneMapping
 		}
 	}
 
-
+	protected String getResourceMappedBy() {
+		return this.resourceMapping.getMappedBy();
+	}
 	// ********** Validation **********
 
 	@Override
@@ -321,7 +312,7 @@ public class GenericJavaOneToOneMapping
 	}
 
 	protected TextRange getMappedByTextRange(CompilationUnit astRoot) {
-		return this.getResourceMapping().getMappedByTextRange(astRoot);
+		return this.resourceMapping.getMappedByTextRange(astRoot);
 	}
 
 }

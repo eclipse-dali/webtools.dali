@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -30,23 +30,22 @@ public abstract class AbstractJavaAttributeMapping<T extends JavaResourceNode>
 	extends AbstractJavaJpaContextNode
 	implements JavaAttributeMapping
 {
-	protected JavaResourcePersistentAttribute resourcePersistentAttribute;
+	protected final JavaResourcePersistentAttribute resourcePersistentAttribute;
 	
-
+	protected T resourceMapping;
+	
 	protected AbstractJavaAttributeMapping(JavaPersistentAttribute parent) {
 		super(parent);
+		this.resourcePersistentAttribute = parent.getResourcePersistentAttribute();
 	}
 	
-	@SuppressWarnings("unchecked")
-	protected T getResourceMapping() {
-		if (this.isDefault()) {
-			return (T) this.resourcePersistentAttribute.getNullMappingAnnotation(getAnnotationName());
-		}
-		return (T) this.resourcePersistentAttribute.getMappingAnnotation(getAnnotationName());
+	@Override
+	public JavaPersistentAttribute getParent() {
+		return (JavaPersistentAttribute) super.getParent();
 	}
 	
-	public GenericJavaPersistentAttribute getPersistentAttribute() {
-		return (GenericJavaPersistentAttribute) this.getParent();
+	public JavaPersistentAttribute getPersistentAttribute() {
+		return this.getParent();
 	}
 
 	protected JavaResourcePersistentAttribute getResourcePersistentAttribute() {
@@ -97,21 +96,21 @@ public abstract class AbstractJavaAttributeMapping<T extends JavaResourceNode>
 		return false;
 	}
 
-	public void initialize(JavaResourcePersistentAttribute javaResourcePersistentAttribute) {
-		this.resourcePersistentAttribute = javaResourcePersistentAttribute;
-		initialize(getResourceMapping());
+	public void initialize(JavaResourceNode resourceMapping) {
+		this.resourceMapping = (T) resourceMapping;
+		this.initialize();
 	}
 
-	protected void initialize(@SuppressWarnings("unused") T resourceMapping) {
+	protected void initialize() {	
 		// do nothing by default
 	}
 
-	public void update(JavaResourcePersistentAttribute javaResourcePersistentAttribute) {
-		this.resourcePersistentAttribute = javaResourcePersistentAttribute;
-		this.update(getResourceMapping());
+	public void update(JavaResourceNode resourceMapping) {
+		this.resourceMapping = (T) resourceMapping;
+		this.update();
 	}
 	
-	protected void update(@SuppressWarnings("unused") T resourceMapping) {
+	protected void update() {
 		// do nothing by default
 	}
 
@@ -121,35 +120,7 @@ public abstract class AbstractJavaAttributeMapping<T extends JavaResourceNode>
 	@Override
 	public void validate(List<IMessage> messages, CompilationUnit astRoot) {
 		super.validate(messages, astRoot);
-		this.validateModifiers(messages, astRoot);
 		this.validateMappingType(messages, astRoot);
-	}
-	
-	protected void validateModifiers(List<IMessage> messages, CompilationUnit astRoot) {
-		if (this.getPersistentAttribute().getMappingKey() == MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY) {
-			return;
-		}
-		
-		if (this.resourcePersistentAttribute.isForField()) {
-			if (this.resourcePersistentAttribute.isFinal()) {
-				messages.add(this.buildAttributeMessage(JpaValidationMessages.PERSISTENT_ATTRIBUTE_FINAL_FIELD, astRoot));
-			}
-			
-			if (this.resourcePersistentAttribute.isPublic()) {
-				messages.add(this.buildAttributeMessage(JpaValidationMessages.PERSISTENT_ATTRIBUTE_PUBLIC_FIELD, astRoot));
-			}
-		}
-	}
-
-	protected IMessage buildAttributeMessage(String msgID, CompilationUnit astRoot) {
-		JavaPersistentAttribute attribute = this.getPersistentAttribute();
-		return DefaultJpaValidationMessages.buildMessage(
-				IMessage.HIGH_SEVERITY,
-				msgID,
-				new String[] {attribute.getName()},
-				attribute,
-				attribute.getValidationTextRange(astRoot)
-			);
 	}
 	
 	protected void validateMappingType(List<IMessage> messages, CompilationUnit astRoot) {
@@ -158,7 +129,7 @@ public abstract class AbstractJavaAttributeMapping<T extends JavaResourceNode>
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
 					JpaValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_MAPPING,
-					new String[] {this.getPersistentAttribute().getName()},
+					new String[] {this.getAttributeName()},
 					this,
 					this.getValidationTextRange(astRoot)
 				)
@@ -168,12 +139,11 @@ public abstract class AbstractJavaAttributeMapping<T extends JavaResourceNode>
 	
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
 		TextRange textRange = this.getResourceMappingTextRange(astRoot);
-		return (textRange != null) ? textRange : this.getPersistentAttribute().getValidationTextRange(astRoot);
+		return (textRange != null) ? textRange : this.getParent().getValidationTextRange(astRoot);
 	}
 	
 	protected TextRange getResourceMappingTextRange(CompilationUnit astRoot) {
-		T resourceMapping = this.getResourceMapping();
-		return (resourceMapping == null) ? null : resourceMapping.getTextRange(astRoot);
+		return (this.resourceMapping == null) ? null : this.resourceMapping.getTextRange(astRoot);
 	}
 	
 	@Override

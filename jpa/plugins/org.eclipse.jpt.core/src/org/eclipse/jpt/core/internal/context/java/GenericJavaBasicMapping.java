@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -28,7 +28,6 @@ import org.eclipse.jpt.core.resource.java.BasicAnnotation;
 import org.eclipse.jpt.core.resource.java.ColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.EnumeratedAnnotation;
 import org.eclipse.jpt.core.resource.java.JPA;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.LobAnnotation;
 import org.eclipse.jpt.core.resource.java.TemporalAnnotation;
 import org.eclipse.jpt.utility.Filter;
@@ -60,18 +59,14 @@ public class GenericJavaBasicMapping extends AbstractJavaAttributeMapping<BasicA
 	}
 
 	@Override
-	public void initialize(JavaResourcePersistentAttribute jrpa) {
-		super.initialize(jrpa);
+	protected void initialize() {
+		super.initialize();
 		this.column.initialize(this.getResourceColumn());
-		this.specifiedConverter = this.buildSpecifiedConverter(this.specifiedConverterType(jrpa));
+		this.specifiedConverter = this.buildSpecifiedConverter(this.getResourceConverterType());
+		this.specifiedFetch = this.getResourceFetch();
+		this.specifiedOptional = this.getResourceOptional();
 	}
 	
-	@Override
-	protected void initialize(BasicAnnotation basicResource) {
-		this.specifiedFetch = this.specifiedFetchType(basicResource);
-		this.specifiedOptional = this.specifiedOptional(basicResource);
-	}
-
 	public ColumnAnnotation getResourceColumn() {
 		return (ColumnAnnotation) getResourcePersistentAttribute().getNonNullSupportingAnnotation(ColumnAnnotation.ANNOTATION_NAME);
 	}
@@ -123,7 +118,7 @@ public class GenericJavaBasicMapping extends AbstractJavaAttributeMapping<BasicA
 	public void setSpecifiedFetch(FetchType newSpecifiedFetch) {
 		FetchType oldFetch = this.specifiedFetch;
 		this.specifiedFetch = newSpecifiedFetch;
-		this.getResourceMapping().setFetch(FetchType.toJavaResourceModel(newSpecifiedFetch));
+		this.resourceMapping.setFetch(FetchType.toJavaResourceModel(newSpecifiedFetch));
 		firePropertyChanged(Fetchable.SPECIFIED_FETCH_PROPERTY, oldFetch, newSpecifiedFetch);
 	}
 	
@@ -154,7 +149,7 @@ public class GenericJavaBasicMapping extends AbstractJavaAttributeMapping<BasicA
 	public void setSpecifiedOptional(Boolean newSpecifiedOptional) {
 		Boolean oldOptional = this.specifiedOptional;
 		this.specifiedOptional = newSpecifiedOptional;
-		this.getResourceMapping().setOptional(newSpecifiedOptional);
+		this.resourceMapping.setOptional(newSpecifiedOptional);
 		firePropertyChanged(Nullable.SPECIFIED_OPTIONAL_PROPERTY, oldOptional, newSpecifiedOptional);
 	}
 
@@ -207,30 +202,26 @@ public class GenericJavaBasicMapping extends AbstractJavaAttributeMapping<BasicA
 	}
 
 	@Override
-	public void update(JavaResourcePersistentAttribute jrpa) {
-		super.update(jrpa);
+	protected void update() {
+		super.update();
 		this.column.update(this.getResourceColumn());
-		if (specifiedConverterType(jrpa) == getSpecifedConverterType()) {
-			getSpecifiedConverter().update(jrpa);
+		if (getResourceConverterType() == getSpecifedConverterType()) {
+			getSpecifiedConverter().update(this.resourcePersistentAttribute);
 		}
 		else {
-			JavaConverter javaConverter = buildSpecifiedConverter(specifiedConverterType(jrpa));
+			JavaConverter javaConverter = buildSpecifiedConverter(getResourceConverterType());
 			setSpecifiedConverter(javaConverter);
 		}
+		this.setSpecifiedFetch_(this.getResourceFetch());
+		this.setSpecifiedOptional_(this.getResourceOptional());
 	}
 	
-	@Override
-	protected void update(BasicAnnotation basicResource) {
-		this.setSpecifiedFetch_(this.specifiedFetchType(basicResource));
-		this.setSpecifiedOptional_(this.specifiedOptional(basicResource));
+	protected FetchType getResourceFetch() {
+		return FetchType.fromJavaResourceModel(this.resourceMapping.getFetch());
 	}
 	
-	protected FetchType specifiedFetchType(BasicAnnotation basic) {
-		return FetchType.fromJavaResourceModel(basic.getFetch());
-	}
-	
-	protected Boolean specifiedOptional(BasicAnnotation basic) {
-		return basic.getOptional();
+	protected Boolean getResourceOptional() {
+		return this.resourceMapping.getOptional();
 	}
 	
 	protected JavaConverter buildSpecifiedConverter(String converterType) {
@@ -246,14 +237,14 @@ public class GenericJavaBasicMapping extends AbstractJavaAttributeMapping<BasicA
 		return null;
 	}
 	
-	protected String specifiedConverterType(JavaResourcePersistentAttribute jrpa) {
-		if (jrpa.getSupportingAnnotation(EnumeratedAnnotation.ANNOTATION_NAME) != null) {
+	protected String getResourceConverterType() {
+		if (this.resourcePersistentAttribute.getSupportingAnnotation(EnumeratedAnnotation.ANNOTATION_NAME) != null) {
 			return Converter.ENUMERATED_CONVERTER;
 		}
-		else if (jrpa.getSupportingAnnotation(TemporalAnnotation.ANNOTATION_NAME) != null) {
+		else if (this.resourcePersistentAttribute.getSupportingAnnotation(TemporalAnnotation.ANNOTATION_NAME) != null) {
 			return Converter.TEMPORAL_CONVERTER;
 		}
-		else if (jrpa.getSupportingAnnotation(LobAnnotation.ANNOTATION_NAME) != null) {
+		else if (this.resourcePersistentAttribute.getSupportingAnnotation(LobAnnotation.ANNOTATION_NAME) != null) {
 			return Converter.LOB_CONVERTER;
 		}
 		

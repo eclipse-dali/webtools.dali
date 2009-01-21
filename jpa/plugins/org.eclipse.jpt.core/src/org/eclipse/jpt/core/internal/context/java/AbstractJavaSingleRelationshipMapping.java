@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -27,7 +27,6 @@ import org.eclipse.jpt.core.context.java.JavaSingleRelationshipMapping;
 import org.eclipse.jpt.core.internal.resource.java.NullJoinColumn;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.JoinColumnsAnnotation;
 import org.eclipse.jpt.core.resource.java.NestableAnnotation;
@@ -196,29 +195,24 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 	// ********** resource => context **********
 
 	@Override
-	public void initialize(JavaResourcePersistentAttribute javaResourcePersistentAttribute) {
-		super.initialize(javaResourcePersistentAttribute);
-		this.initializeSpecifiedJoinColumns(javaResourcePersistentAttribute);
-		this.initializeDefaultJoinColumn(javaResourcePersistentAttribute);
+	protected void initialize() {
+		super.initialize();
+		this.initializeSpecifiedJoinColumns();
+		this.initializeDefaultJoinColumn();
+		this.specifiedOptional = this.getResourceOptional();
 	}
 	
-	@Override
-	protected void initialize(T relationshipMapping) {
-		super.initialize(relationshipMapping);
-		this.specifiedOptional = this.buildSpecifiedOptional(relationshipMapping);
-	}
-	
-	protected void initializeSpecifiedJoinColumns(JavaResourcePersistentAttribute javaResourcePersistentAttribute) {
-		ListIterator<NestableAnnotation> annotations = javaResourcePersistentAttribute.supportingAnnotations(JoinColumnAnnotation.ANNOTATION_NAME, JoinColumnsAnnotation.ANNOTATION_NAME);
+	protected void initializeSpecifiedJoinColumns() {
+		ListIterator<NestableAnnotation> annotations = this.resourcePersistentAttribute.supportingAnnotations(JoinColumnAnnotation.ANNOTATION_NAME, JoinColumnsAnnotation.ANNOTATION_NAME);
 		
 		while(annotations.hasNext()) {
 			this.specifiedJoinColumns.add(buildJoinColumn((JoinColumnAnnotation) annotations.next()));
 		}
 	}
 	
-	protected void initializeDefaultJoinColumn(JavaResourcePersistentAttribute javaResourcePersistentAttribute) {
+	protected void initializeDefaultJoinColumn() {
 		if (this.shouldBuildDefaultJoinColumn()) {
-			this.defaultJoinColumn = this.buildJoinColumn(new NullJoinColumn(javaResourcePersistentAttribute));
+			this.defaultJoinColumn = this.buildJoinColumn(new NullJoinColumn(this.resourcePersistentAttribute));
 		}
 	}	
 	
@@ -227,24 +221,19 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 	}
 	
 	@Override
-	public void update(JavaResourcePersistentAttribute javaResourcePersistentAttribute) {
-		super.update(javaResourcePersistentAttribute);
-		this.updateSpecifiedJoinColumns(javaResourcePersistentAttribute);
-		this.updateDefaultJoinColumn(javaResourcePersistentAttribute);
+	protected void update() {
+		super.update();
+		this.updateSpecifiedJoinColumns();
+		this.updateDefaultJoinColumn();
+		this.setSpecifiedOptional_(this.getResourceOptional());
 	}
 	
-	@Override
-	protected void update(T relationshipMapping) {
-		super.update(relationshipMapping);
-		this.setSpecifiedOptional_(this.buildSpecifiedOptional(relationshipMapping));
-	}
-	
-	protected abstract Boolean buildSpecifiedOptional(T relationshipMapping);
+	protected abstract Boolean getResourceOptional();
 	
 	
-	protected void updateSpecifiedJoinColumns(JavaResourcePersistentAttribute javaResourcePersistentAttribute) {
+	protected void updateSpecifiedJoinColumns() {
 		ListIterator<JavaJoinColumn> joinColumns = specifiedJoinColumns();
-		ListIterator<NestableAnnotation> resourceJoinColumns = javaResourcePersistentAttribute.supportingAnnotations(JoinColumnAnnotation.ANNOTATION_NAME, JoinColumnsAnnotation.ANNOTATION_NAME);
+		ListIterator<NestableAnnotation> resourceJoinColumns = this.resourcePersistentAttribute.supportingAnnotations(JoinColumnAnnotation.ANNOTATION_NAME, JoinColumnsAnnotation.ANNOTATION_NAME);
 		
 		while (joinColumns.hasNext()) {
 			JavaJoinColumn joinColumn = joinColumns.next();
@@ -261,9 +250,9 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 		}
 	}
 	
-	protected void updateDefaultJoinColumn(JavaResourcePersistentAttribute javaResourcePersistentAttribute) {
+	protected void updateDefaultJoinColumn() {
 		if (this.shouldBuildDefaultJoinColumn()) {
-			JoinColumnAnnotation jcAnnotation = new NullJoinColumn(javaResourcePersistentAttribute);
+			JoinColumnAnnotation jcAnnotation = new NullJoinColumn(this.resourcePersistentAttribute);
 			if (this.defaultJoinColumn == null) {
 				this.setDefaultJoinColumn(this.buildJoinColumn(jcAnnotation));
 			} else {
@@ -288,11 +277,11 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 	 * eliminate any "container" types
 	 */
 	@Override
-	protected String buildDefaultTargetEntity(JavaResourcePersistentAttribute jrpa) {
-		if (jrpa.typeIsContainer()) {
+	protected String buildDefaultTargetEntity() {
+		if (this.resourcePersistentAttribute.typeIsContainer()) {
 			return null;
 		}
-		return jrpa.getQualifiedReferenceEntityTypeName();
+		return this.resourcePersistentAttribute.getQualifiedReferenceEntityTypeName();
 	}
 
 
@@ -404,7 +393,7 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 		}
 
 		public String getAttributeName() {
-			return AbstractJavaSingleRelationshipMapping.this.getPersistentAttribute().getName();
+			return AbstractJavaSingleRelationshipMapping.this.getAttributeName();
 		}
 
 		public RelationshipMapping getRelationshipMapping() {

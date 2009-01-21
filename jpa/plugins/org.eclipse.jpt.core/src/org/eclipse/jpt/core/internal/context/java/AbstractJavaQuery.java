@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -128,7 +128,7 @@ public abstract class AbstractJavaQuery extends AbstractJavaJpaContextNode
 		this.resourceQuery = queryAnnotation;
 		this.name = queryAnnotation.getName();
 		this.query = queryAnnotation.getQuery();
-		this.initializeQueryHints(queryAnnotation);
+		this.initializeQueryHints();
 		getPersistenceUnit().addQuery(this);
 	}
 
@@ -136,21 +136,21 @@ public abstract class AbstractJavaQuery extends AbstractJavaJpaContextNode
 		this.resourceQuery = queryAnnotation;
 		this.setName_(queryAnnotation.getName());
 		this.setQuery_(queryAnnotation.getQuery());
-		this.updateQueryHints(queryAnnotation);
+		this.updateQueryHints();
 		getPersistenceUnit().addQuery(this);
 	}
 
-	protected void initializeQueryHints(QueryAnnotation queryAnnotation) {
-		ListIterator<QueryHintAnnotation> annotations = queryAnnotation.hints();
+	protected void initializeQueryHints() {
+		ListIterator<QueryHintAnnotation> resourceHints = this.resourceQuery.hints();
 		
-		while(annotations.hasNext()) {
-			this.hints.add(createQueryHint(annotations.next()));
+		while(resourceHints.hasNext()) {
+			this.hints.add(createQueryHint(resourceHints.next()));
 		}
 	}
 	
-	protected void updateQueryHints(QueryAnnotation queryAnnotation) {
+	protected void updateQueryHints() {
 		ListIterator<JavaQueryHint> contextHints = hints();
-		ListIterator<QueryHintAnnotation> resourceHints = queryAnnotation.hints();
+		ListIterator<QueryHintAnnotation> resourceHints = this.resourceQuery.hints();
 		
 		while (contextHints.hasNext()) {
 			JavaQueryHint hint = contextHints.next();

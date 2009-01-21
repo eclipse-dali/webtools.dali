@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.context.java;
 
 import java.util.Iterator;
 import org.eclipse.jpt.core.context.AttributeMapping;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
+import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 
 /**
  * 
@@ -26,13 +26,16 @@ public interface JavaAttributeMapping extends AttributeMapping, JavaJpaContextNo
 {
 	JavaPersistentAttribute getPersistentAttribute();
 	
-	void initialize(JavaResourcePersistentAttribute jrpa);
+	void initialize(JavaResourceNode mappingAnnotation);
 
 	/**
 	 * Update the JavaAttributeMapping context model object to match the JavaResourcePersistentAttribute 
 	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
 	 */
-	void update(JavaResourcePersistentAttribute jrpa);
+	//TODO want to remove parameter from the update method, but we have to have
+	//it because of GenericJavaPersistentAttribute.setSpecifiedMappingKey(), it is unable
+	//to call initialize and pass the resource object in before the update is called.
+	void update(JavaResourceNode mappingAnnotation);
 	
 	String getAnnotationName();
 	

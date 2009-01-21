@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -30,7 +30,6 @@ import org.eclipse.jpt.core.resource.java.ColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.GeneratedValueAnnotation;
 import org.eclipse.jpt.core.resource.java.IdAnnotation;
 import org.eclipse.jpt.core.resource.java.JPA;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.SequenceGeneratorAnnotation;
 import org.eclipse.jpt.core.resource.java.TableGeneratorAnnotation;
 import org.eclipse.jpt.core.resource.java.TemporalAnnotation;
@@ -70,31 +69,31 @@ public class GenericJavaIdMapping
 	}
 
 	@Override
-	public void initialize(JavaResourcePersistentAttribute jrpa) {
-		super.initialize(jrpa);
+	protected void initialize() {
+		super.initialize();
 		this.column.initialize(this.getResourceColumn());
-		this.initializeTableGenerator(jrpa);
-		this.initializeSequenceGenerator(jrpa);
-		this.initializeGeneratedValue(jrpa);
-		this.specifiedConverter = this.buildSpecifiedConverter(this.specifiedConverterType(jrpa));
+		this.initializeTableGenerator();
+		this.initializeSequenceGenerator();
+		this.initializeGeneratedValue();
+		this.specifiedConverter = this.buildSpecifiedConverter(this.getResourceConverterType());
 	}
 	
-	protected void initializeTableGenerator(JavaResourcePersistentAttribute jrpa) {
-		TableGeneratorAnnotation resourceTableGenerator = getResourceTableGenerator(jrpa);
+	protected void initializeTableGenerator() {
+		TableGeneratorAnnotation resourceTableGenerator = getResourceTableGenerator();
 		if (resourceTableGenerator != null) {
 			this.tableGenerator = buildTableGenerator(resourceTableGenerator);
 		}
 	}
 	
-	protected void initializeSequenceGenerator(JavaResourcePersistentAttribute jrpa) {
-		SequenceGeneratorAnnotation resourceSequenceGenerator = getResourceSequenceGenerator(jrpa);
+	protected void initializeSequenceGenerator() {
+		SequenceGeneratorAnnotation resourceSequenceGenerator = getResourceSequenceGenerator();
 		if (resourceSequenceGenerator != null) {
 			this.sequenceGenerator = buildSequenceGenerator(resourceSequenceGenerator);
 		}
 	}
 	
-	protected void initializeGeneratedValue(JavaResourcePersistentAttribute jrpa) {
-		GeneratedValueAnnotation resourceGeneratedValue = getResourceGeneratedValue(jrpa);
+	protected void initializeGeneratedValue() {
+		GeneratedValueAnnotation resourceGeneratedValue = getResourceGeneratedValue();
 		if (resourceGeneratedValue != null) {
 			this.generatedValue = buildGeneratedValue(resourceGeneratedValue);
 		}
@@ -281,23 +280,23 @@ public class GenericJavaIdMapping
 	}
 	
 	@Override
-	public void update(JavaResourcePersistentAttribute jrpa) {
-		super.update(jrpa);
+	protected void update() {
+		super.update();
 		this.column.update(this.getResourceColumn());
-		this.updateTableGenerator(jrpa);
-		this.updateSequenceGenerator(jrpa);
-		this.updateGeneratedValue(jrpa);
-		if (specifiedConverterType(jrpa) == getSpecifedConverterType()) {
-			getSpecifiedConverter().update(jrpa);
+		this.updateTableGenerator();
+		this.updateSequenceGenerator();
+		this.updateGeneratedValue();
+		if (getResourceConverterType() == getSpecifedConverterType()) {
+			getSpecifiedConverter().update(this.resourcePersistentAttribute);
 		}
 		else {
-			JavaConverter javaConverter = buildSpecifiedConverter(specifiedConverterType(jrpa));
+			JavaConverter javaConverter = buildSpecifiedConverter(getResourceConverterType());
 			setSpecifiedConverter(javaConverter);
 		}
 	}
 	
-	protected void updateTableGenerator(JavaResourcePersistentAttribute jrpa) {
-		TableGeneratorAnnotation resourceTableGenerator = getResourceTableGenerator(jrpa);
+	protected void updateTableGenerator() {
+		TableGeneratorAnnotation resourceTableGenerator = getResourceTableGenerator();
 		if (resourceTableGenerator == null) {
 			if (getTableGenerator() != null) {
 				setTableGenerator(null);
@@ -319,8 +318,8 @@ public class GenericJavaIdMapping
 		return generator;
 	}
 	
-	protected void updateSequenceGenerator(JavaResourcePersistentAttribute jrpa) {
-		SequenceGeneratorAnnotation sequenceGeneratorResource = getResourceSequenceGenerator(jrpa);
+	protected void updateSequenceGenerator() {
+		SequenceGeneratorAnnotation sequenceGeneratorResource = getResourceSequenceGenerator();
 		if (sequenceGeneratorResource == null) {
 			if (getSequenceGenerator() != null) {
 				setSequenceGenerator(null);
@@ -342,8 +341,8 @@ public class GenericJavaIdMapping
 		return generator;
 	}
 	
-	protected void updateGeneratedValue(JavaResourcePersistentAttribute jrpa) {
-		GeneratedValueAnnotation resourceGeneratedValue = getResourceGeneratedValue(jrpa);
+	protected void updateGeneratedValue() {
+		GeneratedValueAnnotation resourceGeneratedValue = getResourceGeneratedValue();
 		if (resourceGeneratedValue == null) {
 			if (getGeneratedValue() != null) {
 				setGeneratedValue(null);
@@ -365,16 +364,16 @@ public class GenericJavaIdMapping
 		return gv;
 	}
 
-	protected TableGeneratorAnnotation getResourceTableGenerator(JavaResourcePersistentAttribute jrpa) {
-		return (TableGeneratorAnnotation) jrpa.getSupportingAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME);
+	protected TableGeneratorAnnotation getResourceTableGenerator() {
+		return (TableGeneratorAnnotation) this.resourcePersistentAttribute.getSupportingAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME);
 	}
 	
-	protected SequenceGeneratorAnnotation getResourceSequenceGenerator(JavaResourcePersistentAttribute jrpa) {
-		return (SequenceGeneratorAnnotation) jrpa.getSupportingAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME);
+	protected SequenceGeneratorAnnotation getResourceSequenceGenerator() {
+		return (SequenceGeneratorAnnotation) this.resourcePersistentAttribute.getSupportingAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME);
 	}
 	
-	protected GeneratedValueAnnotation getResourceGeneratedValue(JavaResourcePersistentAttribute jrpa) {
-		return (GeneratedValueAnnotation) jrpa.getSupportingAnnotation(GeneratedValueAnnotation.ANNOTATION_NAME);
+	protected GeneratedValueAnnotation getResourceGeneratedValue() {
+		return (GeneratedValueAnnotation) this.resourcePersistentAttribute.getSupportingAnnotation(GeneratedValueAnnotation.ANNOTATION_NAME);
 	}
 	
 	protected JavaConverter buildSpecifiedConverter(String converterType) {
@@ -384,8 +383,8 @@ public class GenericJavaIdMapping
 		return null;
 	}
 	
-	protected String specifiedConverterType(JavaResourcePersistentAttribute jrpa) {
-		if (jrpa.getSupportingAnnotation(TemporalAnnotation.ANNOTATION_NAME) != null) {
+	protected String getResourceConverterType() {
+		if (this.resourcePersistentAttribute.getSupportingAnnotation(TemporalAnnotation.ANNOTATION_NAME) != null) {
 			return Converter.TEMPORAL_CONVERTER;
 		}
 		

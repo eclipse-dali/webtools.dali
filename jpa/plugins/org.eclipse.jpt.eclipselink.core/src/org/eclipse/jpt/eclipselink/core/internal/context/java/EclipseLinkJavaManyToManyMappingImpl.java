@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,7 +13,6 @@ import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaManyToManyMapping;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkRelationshipMapping;
 import org.eclipse.jpt.eclipselink.core.context.JoinFetch;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -34,15 +33,15 @@ public class EclipseLinkJavaManyToManyMappingImpl extends GenericJavaManyToManyM
 	}
 	
 	@Override
-	public void initialize(JavaResourcePersistentAttribute jrpa) {
-		super.initialize(jrpa);
-		this.joinFetch.initialize(jrpa);
+	protected void initialize() {
+		super.initialize();
+		this.joinFetch.initialize(this.resourcePersistentAttribute);
 	}
 	
 	@Override
-	public void update(JavaResourcePersistentAttribute jrpa) {
-		super.update(jrpa);
-		this.joinFetch.update(jrpa);
+	protected void update() {
+		super.update();
+		this.joinFetch.update(this.resourcePersistentAttribute);
 	}
 	
 	@Override
