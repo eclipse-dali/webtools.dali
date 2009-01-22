@@ -332,7 +332,7 @@ public interface JpaFactory
 	
 	JavaTypeMapping buildJavaNullTypeMapping(JavaPersistentType parent);
 	
-	JavaPersistentAttribute buildJavaPersistentAttribute(JavaPersistentType parent, JavaResourcePersistentAttribute jrpa);
+	JavaPersistentAttribute buildJavaPersistentAttribute(PersistentType parent, JavaResourcePersistentAttribute jrpa);
 	
 	JavaBasicMapping buildJavaBasicMapping(JavaPersistentAttribute parent);
 	

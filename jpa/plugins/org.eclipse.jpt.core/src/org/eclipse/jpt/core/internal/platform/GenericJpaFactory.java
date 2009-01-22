@@ -508,7 +508,7 @@ public class GenericJpaFactory
 		return new GenericJavaPersistentType(owner, jrpt);
 	}
 	
-	public JavaPersistentAttribute buildJavaPersistentAttribute(JavaPersistentType parent, JavaResourcePersistentAttribute jrpa) {
+	public JavaPersistentAttribute buildJavaPersistentAttribute(PersistentType parent, JavaResourcePersistentAttribute jrpa) {
 		return new GenericJavaPersistentAttribute(parent, jrpa);
 	}
 	

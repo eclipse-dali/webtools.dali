@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -30,7 +30,6 @@ import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
-import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.core.resource.orm.XmlGeneratedValue;
 import org.eclipse.jpt.core.resource.orm.XmlId;
@@ -275,14 +274,14 @@ public class GenericOrmIdMapping
 	}
 	
 	@Override
-	public void initialize(XmlAttributeMapping attributeMapping) {
-		super.initialize(attributeMapping);
+	protected void initialize() {
+		super.initialize();
 		this.column.initialize(this.resourceAttributeMapping.getColumn());
 		this.initializeSequenceGenerator();
 		this.initializeTableGenerator();
 		this.initializeGeneratedValue();
 		this.defaultConverter = new GenericOrmNullConverter(this);
-		this.specifiedConverter = this.buildSpecifiedConverter(this.specifiedConverterType());
+		this.specifiedConverter = this.buildSpecifiedConverter(this.getResourceConverterType());
 	}
 	
 	protected void initializeSequenceGenerator() {
@@ -314,18 +313,19 @@ public class GenericOrmIdMapping
 	protected OrmGeneratedValue buildGeneratedValue(XmlGeneratedValue resourceGeneratedValue) {
 		return getJpaFactory().buildOrmGeneratedValue(this, resourceGeneratedValue);
 	}
+	
 	@Override
 	public void update() {
 		super.update();
-		this.column.update(this.resourceAttributeMapping.getColumn());
+		this.column.update(getResourceColumn());
 		this.updateSequenceGenerator();
 		this.updateTableGenerator();
 		this.updateGeneratedValue();
-		if (specifiedConverterType() == getSpecifedConverterType()) {
+		if (getResourceConverterType() == getSpecifedConverterType()) {
 			getSpecifiedConverter().update();
 		}
 		else {
-			setSpecifiedConverter(buildSpecifiedConverter(specifiedConverterType()));
+			setSpecifiedConverter(buildSpecifiedConverter(getResourceConverterType()));
 		}
 	}
 	
@@ -384,7 +384,7 @@ public class GenericOrmIdMapping
 		return null;
 	}
 	
-	protected String specifiedConverterType() {
+	protected String getResourceConverterType() {
 		if (this.resourceAttributeMapping.getTemporal() != null) {
 			return Converter.TEMPORAL_CONVERTER;
 		}

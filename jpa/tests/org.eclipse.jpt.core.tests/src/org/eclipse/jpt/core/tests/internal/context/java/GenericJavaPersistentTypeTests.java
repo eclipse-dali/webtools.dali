@@ -359,6 +359,7 @@ public class GenericJavaPersistentTypeTests extends ContextModelTestCase
 		OrmPersistentType entityPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		createTestEntity();
 		JavaPersistentType javaPersistentType = entityPersistentType.getJavaPersistentType(); 
+		assertEquals(AccessType.FIELD, javaPersistentType.getAccess());
 
 		getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(AccessType.FIELD);
 		assertEquals(AccessType.FIELD, javaPersistentType.getAccess());
@@ -368,23 +369,23 @@ public class GenericJavaPersistentTypeTests extends ContextModelTestCase
 	}
 	
 	public void testAccessXmlEntityPropertyAccessAndFieldAnnotations() throws Exception {
-		//xml access set to property, field annotations, JavaPersistentType access is property
-		OrmPersistentType entityPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		//xml access set to property, field annotations, JavaPersistentType access is field
+		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		createTestEntityAnnotatedField();
-		JavaPersistentType javaPersistentType = entityPersistentType.getJavaPersistentType(); 
+		JavaPersistentType javaPersistentType = ormPersistentType.getJavaPersistentType(); 
 
-		entityPersistentType.getMapping().setSpecifiedAccess(AccessType.PROPERTY);
-		assertEquals(AccessType.PROPERTY, javaPersistentType.getAccess());
+		ormPersistentType.getMapping().setSpecifiedAccess(AccessType.PROPERTY);
+		assertEquals(AccessType.FIELD, javaPersistentType.getAccess());
 	}
 	
 	public void testAccessXmlEntityFieldAccessAndPropertyAnnotations() throws Exception {
-		//xml access set to field, property annotations, JavaPersistentType access is field
-		OrmPersistentType entityPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		//xml access set to field, property annotations, JavaPersistentType access is property
+		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		createTestEntityAnnotatedMethod();
-		JavaPersistentType javaPersistentType = entityPersistentType.getJavaPersistentType(); 
+		JavaPersistentType javaPersistentType = ormPersistentType.getJavaPersistentType(); 
 
-		entityPersistentType.getMapping().setSpecifiedAccess(AccessType.FIELD);
-		assertEquals(AccessType.FIELD, javaPersistentType.getAccess());
+		ormPersistentType.getMapping().setSpecifiedAccess(AccessType.FIELD);
+		assertEquals(AccessType.PROPERTY, javaPersistentType.getAccess());
 	}
 	
 	public void testAccessXmlPersistenceUnitDefaultsAccessFieldAnnotations() throws Exception {
@@ -411,27 +412,25 @@ public class GenericJavaPersistentTypeTests extends ContextModelTestCase
 	}
 
 	public void testAccessXmlMetadataCompleteFieldAnnotations() throws Exception {
-		//xml access set to property, so even though there are field annotations, JavaPersistentType
-		//access should be property
+		//xml access set to property, java has field annotations so the access should be field
 		OrmPersistentType entityPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		createTestEntityAnnotatedField();
 		JavaPersistentType javaPersistentType = entityPersistentType.getJavaPersistentType(); 
 
 		getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(AccessType.PROPERTY);
 		getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
-		assertEquals(AccessType.PROPERTY, javaPersistentType.getAccess());
+		assertEquals(AccessType.FIELD, javaPersistentType.getAccess());
 		
 	}
 	
 	public void testAccessNoXmlAccessXmlMetdataCompletePropertyAnnotations() throws Exception {
-		//xml access not set, metadata complete set.  JavaPersistentType access
-		//is field??
+		//xml access not set, metadata complete set.  JavaPersistentType access is property because properties are annotated
 		OrmPersistentType entityPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		createTestEntityAnnotatedMethod();
 		JavaPersistentType javaPersistentType = entityPersistentType.getJavaPersistentType(); 
 
 		getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
-		assertEquals(AccessType.FIELD, javaPersistentType.getAccess());
+		assertEquals(AccessType.PROPERTY, javaPersistentType.getAccess());
 	}
 	
 	public void testParentPersistentType() throws Exception {

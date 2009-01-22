@@ -76,6 +76,10 @@ public abstract class AbstractJavaPersistentType
 	
 	//****************** PersistentType implementation *******************
 	
+	public JavaResourcePersistentType getResourcePersistentType() {
+		return this.resourcePersistentType;
+	}
+	
 	@Override
 	public PersistentType.Owner getParent() {
 		return (PersistentType.Owner) super.getParent();
@@ -368,20 +372,19 @@ public abstract class AbstractJavaPersistentType
 	
 	/**
 	 * Check the access "specified" by the java resource model.
-	 * 		Check xml mapping specified access first
-	 * 		If still null check java annotations if the xml is not metadata-complete = true
+	 * 		Check java annotations first.
+	 * 		If still null check xml mapping specified access
 	 *		If still null then set to parentPersistentType access.
 	 * 		If still null check entity-mappings specified access setting if this persistent-type is listed in an orm.xml file
 	 * 		If still null check the persistence-unit default Access
 	 * 		Default to FIELD if all else fails.
 	 */
 	protected AccessType buildDefaultAccess() {
-		AccessType accessType = this.getOwnerOverrideAccess();
+		AccessType accessType = AccessType.fromJavaResourceModel(this.resourcePersistentType.getAccess());
 		if (accessType != null) {
 			return accessType;
 		}
-
-		accessType = AccessType.fromJavaResourceModel(this.resourcePersistentType.getAccess());
+		accessType = this.getOwnerOverrideAccess();
 		if (accessType != null) {
 			return accessType;
 		}

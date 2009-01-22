@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -27,7 +27,6 @@ import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaBaseEmbeddedMapping;
 import org.eclipse.jpt.core.resource.orm.BaseXmlEmbedded;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
-import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -241,9 +240,9 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends BaseXmlEmbedded> 
 	}
 	
 	@Override
-	public void initialize(XmlAttributeMapping xmlAttributeMapping) {
-		super.initialize(xmlAttributeMapping);
-		this.embeddable = embeddableFor(findJavaPersistentAttribute());
+	public void initialize() {
+		super.initialize();
+		this.embeddable = embeddableFor(this.javaPersistentAttribute);
 		this.initializeSpecifiedAttributeOverrides();
 		this.initializeVirtualAttributeOverrides();
 	}
@@ -294,7 +293,7 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends BaseXmlEmbedded> 
 	@Override
 	public void update() {
 		super.update();
-		this.embeddable = embeddableFor(findJavaPersistentAttribute());
+		this.embeddable = embeddableFor(this.javaPersistentAttribute);
 		this.updateSpecifiedAttributeOverrides();
 		this.updateVirtualAttributeOverrides();
 	}

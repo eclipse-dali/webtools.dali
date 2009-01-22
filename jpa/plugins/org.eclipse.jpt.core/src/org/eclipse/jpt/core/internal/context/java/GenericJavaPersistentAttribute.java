@@ -16,11 +16,11 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.PersistentAttribute;
+import org.eclipse.jpt.core.context.PersistentType;
+import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaStructureNodes;
-import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.Annotation;
@@ -47,7 +47,7 @@ public class GenericJavaPersistentAttribute
 	protected JavaResourcePersistentAttribute resourcePersistentAttribute;
 
 
-	public GenericJavaPersistentAttribute(JavaPersistentType parent, JavaResourcePersistentAttribute jrpa) {
+	public GenericJavaPersistentAttribute(PersistentType parent, JavaResourcePersistentAttribute jrpa) {
 		super(parent);
 		this.initialize(jrpa);
 	}
@@ -58,7 +58,7 @@ public class GenericJavaPersistentAttribute
 
 	protected void initialize(JavaResourcePersistentAttribute jrpa) {
 		this.resourcePersistentAttribute = jrpa;
-		this.name = this.name();
+		this.name = this.getResourceName();
 		initializeDefaultMapping();
 		initializeSpecifiedMapping();
 	}
@@ -69,10 +69,8 @@ public class GenericJavaPersistentAttribute
 	
 	protected JavaAttributeMapping buildDefaultMapping() {
 		JavaAttributeMapping defaultMapping = getJpaPlatform().buildDefaultJavaAttributeMapping(this);
-		if (defaultMapping.getAnnotationName() != null) {
-			JavaResourceNode resourceMapping = this.resourcePersistentAttribute.getNullMappingAnnotation(defaultMapping.getAnnotationName());
-			defaultMapping.initialize(resourceMapping);
-		}
+		JavaResourceNode resourceMapping = this.resourcePersistentAttribute.getNullMappingAnnotation(defaultMapping.getAnnotationName());
+		defaultMapping.initialize(resourceMapping);
 		return defaultMapping;
 	}
 	
@@ -84,11 +82,16 @@ public class GenericJavaPersistentAttribute
 		return this.resourcePersistentAttribute;
 	}
 	
-	public JavaPersistentType getPersistentType() {
-		return (JavaPersistentType) this.getParent();
+	@Override
+	public PersistentType getParent() {
+		return (PersistentType) super.getParent();
+	}
+	
+	public PersistentType getPersistentType() {
+		return this.getParent();
 	}
 
-	public JavaTypeMapping getTypeMapping() {
+	public TypeMapping getTypeMapping() {
 		return this.getPersistentType().getMapping();
 	}
 
@@ -238,22 +241,22 @@ public class GenericJavaPersistentAttribute
 	}
 
 	public void update() {
-		this.setName(this.name());
+		this.setName(this.getResourceName());
 		this.updateDefaultMapping();
 		this.updateSpecifiedMapping();
 	}
 	
-	protected String name() {
+	protected String getResourceName() {
 		return this.resourcePersistentAttribute.getName();	
 	}
 	
-	public String specifiedMappingAnnotationName() {
+	protected String getSpecifiedMappingAnnotationName() {
 		return (this.specifiedMapping == null) ? null : this.specifiedMapping.getAnnotationName();
 	}
 	
 	protected void updateSpecifiedMapping() {
 		String javaMappingAnnotationName = this.getJavaMappingAnnotationName();
-		if (specifiedMappingAnnotationName() != javaMappingAnnotationName) {
+		if (getSpecifiedMappingAnnotationName() != javaMappingAnnotationName) {
 			setSpecifiedMapping(buildJavaAttributeMappingFromAnnotation(javaMappingAnnotationName));
 		}
 		else {
@@ -271,9 +274,7 @@ public class GenericJavaPersistentAttribute
 			firePropertyChanged(PersistentAttribute.DEFAULT_MAPPING_PROPERTY, oldDefaultMapping, this.defaultMapping);
 		}
 		else {
-			if (this.defaultMapping.getAnnotationName() != null) {
-				getDefaultMapping().update(this.resourcePersistentAttribute.getNullMappingAnnotation(this.defaultMapping.getAnnotationName()));
-			}
+			getDefaultMapping().update(this.resourcePersistentAttribute.getNullMappingAnnotation(this.defaultMapping.getAnnotationName()));
 		}
 	}
 	

@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2008  Oracle. 
+ *  Copyright (c) 2008, 2009  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -15,7 +15,6 @@ import org.eclipse.jpt.core.context.orm.OrmConverter;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmVersionMapping;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping;
-import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.eclipselink.core.context.Convert;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkVersionMapping;
 import org.eclipse.jpt.eclipselink.core.context.Mutable;
@@ -53,12 +52,12 @@ public class EclipseLinkOrmVersionMapping extends GenericOrmVersionMapping
 	}
 	
 	@Override
-	protected String specifiedConverterType() {
+	protected String getResourceConverterType() {
 		//check @Convert first, this is the order that EclipseLink searches
 		if (((XmlVersion) this.resourceAttributeMapping).getConvert() != null) {
 			return Convert.ECLIPSE_LINK_CONVERTER;
 		}
-		return super.specifiedConverterType();
+		return super.getResourceConverterType();
 	}
 	
 	// **************** resource-context interaction ***************************
@@ -72,8 +71,8 @@ public class EclipseLinkOrmVersionMapping extends GenericOrmVersionMapping
 	}
 	
 	@Override
-	public void initialize(XmlAttributeMapping attributeMapping) {
-		super.initialize(attributeMapping);	
+	protected void initialize() {
+		super.initialize();
 		this.mutable.initialize((XmlMutable) this.resourceAttributeMapping);
 	}
 	

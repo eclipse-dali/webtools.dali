@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,7 +22,6 @@ import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
-import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.core.resource.orm.XmlVersion;
 import org.eclipse.jpt.db.Table;
@@ -130,22 +129,22 @@ public class GenericOrmVersionMapping extends AbstractOrmAttributeMapping<XmlVer
 	}
 	
 	@Override
-	public void initialize(XmlAttributeMapping attributeMapping) {
-		super.initialize(attributeMapping);
-		this.column.initialize(this.resourceAttributeMapping.getColumn());
+	protected void initialize() {
+		super.initialize();
+		this.column.initialize(this.getResourceColumn());
 		this.defaultConverter = new GenericOrmNullConverter(this);
-		this.specifiedConverter = this.buildSpecifiedConverter(this.specifiedConverterType());
+		this.specifiedConverter = this.buildSpecifiedConverter(this.getResourceConverterType());
 	}
 	
 	@Override
 	public void update() {
 		super.update();
-		this.column.update(this.resourceAttributeMapping.getColumn());
-		if (specifiedConverterType() == getSpecifedConverterType()) {
+		this.column.update(this.getResourceColumn());
+		if (getResourceConverterType() == getSpecifedConverterType()) {
 			getSpecifiedConverter().update();
 		}
 		else {
-			setSpecifiedConverter(buildSpecifiedConverter(specifiedConverterType()));
+			setSpecifiedConverter(buildSpecifiedConverter(getResourceConverterType()));
 		}
 	}
 	
@@ -156,7 +155,7 @@ public class GenericOrmVersionMapping extends AbstractOrmAttributeMapping<XmlVer
 		return null;
 	}
 	
-	protected String specifiedConverterType() {
+	protected String getResourceConverterType() {
 		if (this.resourceAttributeMapping.getTemporal() != null) {
 			return Converter.TEMPORAL_CONVERTER;
 		}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,10 +22,8 @@ import org.eclipse.jpt.core.context.orm.OrmMultiRelationshipMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.orm.MapKey;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
-import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlMultiRelationshipMapping;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -251,11 +249,11 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends XmlMultiRela
 	}
 	
 	@Override
-	public void initialize(XmlAttributeMapping attributeMapping) {
-		super.initialize(attributeMapping);
-		this.mappedBy = this.resourceAttributeMapping.getMappedBy();
-		this.mapKey = this.mapKey();
-		this.orderBy = this.orderBy();
+	protected void initialize() {
+		super.initialize();
+		this.mappedBy = this.getResourceMappedBy();
+		this.mapKey = this.getResourceMapKeyName();
+		this.orderBy = this.getResourceOrderBy();
 		if (this.orderBy == null) { 
 			this.isNoOrdering = true;
 		}
@@ -268,9 +266,9 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends XmlMultiRela
 	@Override
 	public void update() {
 		super.update();
-		this.setMappedBy_(this.resourceAttributeMapping.getMappedBy());
-		this.setMapKey_(this.mapKey());
-		this.setOrderBy_(this.orderBy());
+		this.setMappedBy_(this.getResourceMappedBy());
+		this.setMapKey_(this.getResourceMapKeyName());
+		this.setOrderBy_(this.getResourceOrderBy());
 		if (getOrderBy() == null) { 
 			setNoOrdering_(true);
 			setPkOrdering_(false);
@@ -284,20 +282,24 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends XmlMultiRela
 		this.joinTable.update();
 	}
 	
-	protected String mapKey() {
+	protected String getResourceMappedBy() {
+		return this.resourceAttributeMapping.getMappedBy();
+	}
+	
+	protected String getResourceMapKeyName() {
 		return this.resourceAttributeMapping.getMapKey() == null ? null : this.resourceAttributeMapping.getMapKey().getName();
 	}
 	
-	protected String orderBy() {
+	protected String getResourceOrderBy() {
 		return this.resourceAttributeMapping.getOrderBy();
 	}
 	
 	@Override
-	protected String defaultTargetEntity(JavaResourcePersistentAttribute jrpa) {
-		if (!jrpa.typeIsContainer()) {
+	protected String getResourceDefaultTargetEntity() {
+		if (!this.getJavaResourcePersistentAttribute().typeIsContainer()) {
 			return null;
 		}
-		return jrpa.getQualifiedReferenceEntityElementTypeName();
+		return this.getJavaResourcePersistentAttribute().getQualifiedReferenceEntityElementTypeName();
 	}
 
 	//****************** validation ******************8

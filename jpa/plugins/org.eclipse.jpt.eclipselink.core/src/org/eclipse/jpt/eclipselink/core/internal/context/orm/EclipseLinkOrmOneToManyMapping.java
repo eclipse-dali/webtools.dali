@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2008  Oracle. 
+ *  Copyright (c) 2008, 2009  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -16,7 +16,6 @@ import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmOneToManyMapping;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping;
-import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToManyMapping;
 import org.eclipse.jpt.eclipselink.core.context.JoinFetch;
 import org.eclipse.jpt.eclipselink.core.context.PrivateOwned;
@@ -67,8 +66,8 @@ public class EclipseLinkOrmOneToManyMapping extends GenericOrmOneToManyMapping
 	}
 	
 	@Override
-	public void initialize(XmlAttributeMapping attributeMapping) {
-		super.initialize(attributeMapping);	
+	protected void initialize() {
+		super.initialize();
 		this.privateOwned.initialize((XmlPrivateOwned) this.resourceAttributeMapping);
 		this.joinFetch.initialize((XmlJoinFetch) this.resourceAttributeMapping);
 	}

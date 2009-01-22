@@ -26,7 +26,6 @@ import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
-import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlOneToOne;
 import org.eclipse.jpt.core.resource.orm.XmlPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -184,9 +183,9 @@ public class GenericOrmOneToOneMapping
 	// ********** resource => context **********
 
 	@Override
-	public void initialize(XmlAttributeMapping attributeMapping) {
-		super.initialize(attributeMapping);
-		this.mappedBy = this.resourceAttributeMapping.getMappedBy();
+	protected void initialize() {
+		super.initialize();
+		this.mappedBy = this.getResourceMappedBy();
 		this.initializePrimaryKeyJoinColumns();
 	}
 	
@@ -206,10 +205,13 @@ public class GenericOrmOneToOneMapping
 	@Override
 	public void update() {
 		super.update();
-		this.setMappedBy_(this.resourceAttributeMapping.getMappedBy());
+		this.setMappedBy_(this.getResourceMappedBy());
 		this.updatePrimaryKeyJoinColumns();
 	}
 	
+	protected String getResourceMappedBy() {
+		return this.resourceAttributeMapping.getMappedBy();
+	}
 	
 	protected void updatePrimaryKeyJoinColumns() {
 		ListIterator<OrmPrimaryKeyJoinColumn> contextPkJoinColumns = primaryKeyJoinColumns();

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,8 +21,6 @@ import org.eclipse.jpt.core.context.orm.OrmRelationshipMapping;
 import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
-import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlRelationshipMapping;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
@@ -131,26 +129,30 @@ public abstract class AbstractOrmRelationshipMapping<T extends XmlRelationshipMa
 	// ********** resource => context **********
 
 	@Override
-	public void initialize(XmlAttributeMapping relationshipMapping) {
-		super.initialize(relationshipMapping);
-		this.specifiedTargetEntity = this.resourceAttributeMapping.getTargetEntity();
+	protected void initialize() {
+		super.initialize();
+		this.specifiedTargetEntity = this.getResourceTargetEntity();
 		this.defaultTargetEntity = this.buildDefaultTargetEntity();
 		this.resolvedTargetEntity = this.buildResolvedTargetEntity();
-		this.specifiedFetch = this.buildSpecifiedFetch();
+		this.specifiedFetch = this.getResourceFetch();
 		this.cascade.initialize(this.resourceAttributeMapping);
 	}
 	
 	@Override
 	public void update() {
 		super.update();
-		this.setSpecifiedTargetEntity_(this.resourceAttributeMapping.getTargetEntity());
+		this.setSpecifiedTargetEntity_(this.getResourceTargetEntity());
 		this.setDefaultTargetEntity(this.buildDefaultTargetEntity());
 		this.setResolvedTargetEntity(this.buildResolvedTargetEntity());
-		this.setSpecifiedFetch_(this.buildSpecifiedFetch());
+		this.setSpecifiedFetch_(this.getResourceFetch());
 		this.cascade.update();
 	}
 	
-	protected FetchType buildSpecifiedFetch() {
+	protected String getResourceTargetEntity() {
+		return this.resourceAttributeMapping.getTargetEntity();
+	}
+	
+	protected FetchType getResourceFetch() {
 		return FetchType.fromOrmResourceModel(this.resourceAttributeMapping.getFetch());
 	}
 	
@@ -161,24 +163,24 @@ public abstract class AbstractOrmRelationshipMapping<T extends XmlRelationshipMa
 				return javaMapping.getTargetEntity();
 			}
 		}
-		if (findJavaPersistentAttribute() != null) {
-			return defaultTargetEntity(findJavaPersistentAttribute().getResourcePersistentAttribute());
+		if (this.javaPersistentAttribute != null) {
+			return getResourceDefaultTargetEntity();
 		}
 		return null;
 	}
 	
 	protected RelationshipMapping getJavaRelationshipMapping() {
-		if (findJavaPersistentAttribute() == null) {
+		if (this.javaPersistentAttribute == null) {
 			return null;
 		}
-		AttributeMapping javaAttributeMapping = findJavaPersistentAttribute().getMapping();
+		AttributeMapping javaAttributeMapping = this.javaPersistentAttribute.getMapping();
 		if (javaAttributeMapping instanceof RelationshipMapping) {
 			return ((RelationshipMapping) javaAttributeMapping);
 		}
 		return null;
 	}
 	
-	protected abstract String defaultTargetEntity(JavaResourcePersistentAttribute persistentAttributeResource);
+	protected abstract String getResourceDefaultTargetEntity();
 
 	protected Entity buildResolvedTargetEntity() {
 		String targetEntityName = this.getTargetEntity();

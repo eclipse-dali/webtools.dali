@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -58,6 +58,10 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 	
 	public JavaPersistentAttribute getJavaPersistentAttribute() {
 		return this.javaPersistentAttribute;
+	}
+	
+	protected JavaResourcePersistentAttribute getJavaResourcePersistentAttribute() {
+		return this.javaPersistentAttribute.getResourcePersistentAttribute();
 	}
 	
 	protected void setJavaPersistentAttribute(JavaPersistentAttribute javaPersistentAttribute) {
@@ -195,7 +199,11 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 
 	public void initialize(XmlAttributeMapping resourceAttributeMapping) {
 		this.resourceAttributeMapping = (T) resourceAttributeMapping;
-		this.name = resourceAttributeMapping.getName();
+		this.initialize();
+	}
+	
+	protected void initialize() {
+		this.name = this.resourceAttributeMapping.getName();
 		this.javaPersistentAttribute = findJavaPersistentAttribute();
 	}
 	
@@ -205,6 +213,10 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 	}
 	
 	protected JavaPersistentAttribute findJavaPersistentAttribute() {
+		if (getPersistentAttribute().isVirtual()) {
+			//TODO don't want to be casting here like this, need another way, a parent object or something
+			return ((VirtualXmlAttributeMapping<?>) this.resourceAttributeMapping).getJavaAttributeMapping().getPersistentAttribute();
+		}
 		JavaPersistentType javaPersistentType = getPersistentAttribute().getPersistentType().getJavaPersistentType();
 		if (javaPersistentType != null && getName() != null) {
 			return javaPersistentType.getAttributeNamed(getName());
@@ -257,7 +269,7 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 			return;
 		}
 
-		if (this.findJavaPersistentAttribute() == null) {
+		if (this.javaPersistentAttribute == null) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,

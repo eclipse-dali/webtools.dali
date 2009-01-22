@@ -77,10 +77,6 @@ public abstract class AbstractOrmTypeMapping<T extends AbstractXmlTypeMapping>
 			if (accessType != null) {
 				return accessType;
 			}
-			// The ORM.XML is metadata complete, which means we ignore annotations;
-			// so we *have* to return an access type from XML.
-			// Return FIELD, since that's the default we use in java when we have no other option.
-			return AccessType.FIELD;
 		}
 
 		// no override access type

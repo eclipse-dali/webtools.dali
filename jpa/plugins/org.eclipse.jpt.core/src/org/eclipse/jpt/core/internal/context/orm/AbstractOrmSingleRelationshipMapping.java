@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -25,9 +25,7 @@ import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmSingleRelationshipMapping;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
-import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlSingleRelationshipMapping;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -191,9 +189,9 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 	// ********** resource => context **********
 
 	@Override
-	public void initialize(XmlAttributeMapping attributeMapping) {
-		super.initialize(attributeMapping);
-		this.specifiedOptional = this.resourceAttributeMapping.getOptional();
+	protected void initialize() {
+		super.initialize();
+		this.specifiedOptional = this.getResourceOptional();
 		//TODO defaultOptional
 		this.initializeSpecifiedJoinColumns();
 		this.initializeDefaultJoinColumn();
@@ -224,9 +222,13 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 	@Override
 	public void update() {
 		super.update();
-		this.setSpecifiedOptional_(this.resourceAttributeMapping.getOptional());
+		this.setSpecifiedOptional_(this.getResourceOptional());
 		this.updateSpecifiedJoinColumns();
 		this.updateDefaultJoinColumn();
+	}
+	
+	protected Boolean getResourceOptional() {
+		return this.resourceAttributeMapping.getOptional();
 	}
 	
 	protected void updateSpecifiedJoinColumns() {
@@ -267,11 +269,11 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 	 * eliminate any "container" types
 	 */
 	@Override
-	protected String defaultTargetEntity(JavaResourcePersistentAttribute persistentAttributeResource) {
-		if (persistentAttributeResource.typeIsContainer()) {
+	protected String getResourceDefaultTargetEntity() {
+		if (this.getJavaResourcePersistentAttribute().typeIsContainer()) {
 			return null;
 		}
-		return persistentAttributeResource.getQualifiedReferenceEntityTypeName();
+		return this.getJavaResourcePersistentAttribute().getQualifiedReferenceEntityTypeName();
 	}
 
 
