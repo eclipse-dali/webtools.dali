@@ -148,11 +148,21 @@ final class DTPConnectionProfileWrapper
 		return this.getProperty(IJDBCDriverDefinitionConstants.URL_PROP_ID);
 	}
 
+	/**
+	 * Returns the user name.
+	 * Allows user name composed by more than one word.
+	 * If the user name contains a keyword, it returns the first word only.
+	 */
 	public String getUserName() {
 		String userName = this.getProperty(IJDBCDriverDefinitionConstants.USERNAME_PROP_ID);
-		// 208946 handle username like "sys as sysdba" on Oracle
-		int index = userName.indexOf(' ');
-		return (index == -1) ? userName : userName.substring(0, index);
+		userName = userName.trim(); 
+		String[] names =  userName.split("\\s+");	//$NON-NLS-1$
+		if(names.length == 3) { // 208946 handle username like "sys as sysdba" on Oracle
+		    if(this.nameIsKeyword(names[1])) {
+		    	return names[0];
+		    }
+		}
+		return userName;
 	}
 
 	public String getUserPassword() {
@@ -353,6 +363,10 @@ final class DTPConnectionProfileWrapper
 
 	private String getProperty(String propertyName) {
 		return this.dtpConnectionProfile.getBaseProperties().getProperty(propertyName);
+	}
+
+	private boolean nameIsKeyword(String name) {
+		return name.equalsIgnoreCase("as");  //$NON-NLS-1$
 	}
 
 
