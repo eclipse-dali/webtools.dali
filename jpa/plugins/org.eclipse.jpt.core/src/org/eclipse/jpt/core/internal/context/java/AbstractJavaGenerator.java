@@ -134,7 +134,7 @@ public abstract class AbstractJavaGenerator
 
 	// ********** resource => context **********
 
-	public void initialize(GeneratorAnnotation generatorAnnotation) {
+	protected void initialize(GeneratorAnnotation generatorAnnotation) {
 		this.resourceGenerator = generatorAnnotation;
 		this.name = generatorAnnotation.getName();
 		this.specifiedInitialValue =  generatorAnnotation.getInitialValue();
