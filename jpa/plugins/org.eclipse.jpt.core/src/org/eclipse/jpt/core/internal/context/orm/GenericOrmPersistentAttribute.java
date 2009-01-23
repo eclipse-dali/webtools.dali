@@ -217,6 +217,7 @@ public class GenericOrmPersistentAttribute extends AbstractXmlContextNode
 			);
 		}
 	}
+	
 	protected void validateModifiers(List<IMessage> messages) {
 		if (this.getMappingKey() == MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY) {
 			return;
