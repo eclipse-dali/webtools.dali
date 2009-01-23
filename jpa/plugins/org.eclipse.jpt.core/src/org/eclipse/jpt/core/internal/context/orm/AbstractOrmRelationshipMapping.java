@@ -163,17 +163,17 @@ public abstract class AbstractOrmRelationshipMapping<T extends XmlRelationshipMa
 				return javaMapping.getTargetEntity();
 			}
 		}
-		if (this.javaPersistentAttribute != null) {
+		if (this.getJavaPersistentAttribute() != null) {
 			return getResourceDefaultTargetEntity();
 		}
 		return null;
 	}
 	
 	protected RelationshipMapping getJavaRelationshipMapping() {
-		if (this.javaPersistentAttribute == null) {
+		if (this.getJavaPersistentAttribute() == null) {
 			return null;
 		}
-		AttributeMapping javaAttributeMapping = this.javaPersistentAttribute.getMapping();
+		AttributeMapping javaAttributeMapping = this.getJavaPersistentAttribute().getMapping();
 		if (javaAttributeMapping instanceof RelationshipMapping) {
 			return ((RelationshipMapping) javaAttributeMapping);
 		}

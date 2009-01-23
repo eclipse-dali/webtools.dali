@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,12 +12,16 @@ package org.eclipse.jpt.core.internal.context.orm;
 import java.util.List;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmStructureNode;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
+import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -26,11 +30,30 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 public class GenericOrmPersistentAttribute extends AbstractXmlContextNode
 	implements OrmStructureNode, OrmPersistentAttribute
 {
+	protected final Owner owner;
+
 	protected OrmAttributeMapping attributeMapping;
 	
-	public GenericOrmPersistentAttribute(OrmPersistentType parent, String mappingKey) {
+	protected JavaPersistentAttribute javaPersistentAttribute;	
+	
+	public GenericOrmPersistentAttribute(OrmPersistentType parent, Owner owner, String mappingKey) {
 		super(parent);
+		this.owner = owner;
 		this.attributeMapping = buildAttributeMapping(mappingKey);
+	}
+	
+	public JavaPersistentAttribute getJavaPersistentAttribute() {
+		return this.javaPersistentAttribute;
+	}
+	
+	protected JavaResourcePersistentAttribute getJavaResourcePersistentAttribute() {
+		return this.javaPersistentAttribute.getResourcePersistentAttribute();
+	}
+	
+	protected void setJavaPersistentAttribute(JavaPersistentAttribute javaPersistentAttribute) {
+		JavaPersistentAttribute old = this.javaPersistentAttribute;
+		this.javaPersistentAttribute = javaPersistentAttribute;
+		this.firePropertyChanged(JAVA_PERSISTENT_ATTRIBUTE_PROPERTY, old, javaPersistentAttribute);
 	}
 
 	protected OrmAttributeMapping buildAttributeMapping(String key) {
@@ -138,10 +161,17 @@ public class GenericOrmPersistentAttribute extends AbstractXmlContextNode
 	
 	public void initialize(XmlAttributeMapping xmlAttributeMapping) {
 		this.attributeMapping.initialize(xmlAttributeMapping);
+		this.javaPersistentAttribute = findJavaPersistentAttribute();
 	}
 	
 	public void update() {
 		this.attributeMapping.update();
+		this.setJavaPersistentAttribute(findJavaPersistentAttribute());
+		this.owner.updateJavaPersistentAttribute();
+	}
+	
+	protected JavaPersistentAttribute findJavaPersistentAttribute() {
+		return this.owner.findJavaPersistentAttribute(this);
 	}
 	
 	public JpaStructureNode getStructureNode(@SuppressWarnings("unused") int offset) {
@@ -169,9 +199,56 @@ public class GenericOrmPersistentAttribute extends AbstractXmlContextNode
 	@Override
 	public void validate(List<IMessage> messages) {
 		super.validate(messages);
+		this.validateAttribute(messages);
+		this.validateModifiers(messages);
 		this.attributeMapping.validate(messages);
 	}
 	
+	protected void validateAttribute(List<IMessage> messages) {
+		if (this.javaPersistentAttribute == null) {
+			messages.add(
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.PERSISTENT_ATTRIBUTE_UNRESOLVED_NAME,
+					new String[] {this.getName(), this.getPersistentType().getMapping().getClass_()},
+					this.attributeMapping, 
+					this.attributeMapping.getNameTextRange()
+				)
+			);
+		}
+	}
+	protected void validateModifiers(List<IMessage> messages) {
+		if (this.getMappingKey() == MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY) {
+			return;
+		}
+		if (this.javaPersistentAttribute == null) {
+			return;
+		}
+		JavaResourcePersistentAttribute jrpa = this.getJavaResourcePersistentAttribute();
+
+		if (jrpa.isForField()) {
+			if (jrpa.isFinal()) {
+				messages.add(this.buildAttributeMessage(JpaValidationMessages.PERSISTENT_ATTRIBUTE_FINAL_FIELD));
+			}
+			if (jrpa.isPublic()) {
+				messages.add(this.buildAttributeMessage(JpaValidationMessages.PERSISTENT_ATTRIBUTE_PUBLIC_FIELD));
+			}
+		} else {
+			//TODO validation : need to have a validation message for final methods as well.
+			//From the JPA spec : No methods or persistent instance variables of the entity class may be final.
+		}
+	}
+
+	protected IMessage buildAttributeMessage(String msgID) {
+		return DefaultJpaValidationMessages.buildMessage(
+			IMessage.HIGH_SEVERITY,
+			msgID,
+			new String[] {this.getName()},
+			this, 
+			getValidationTextRange()
+		);
+	}
+
 	public TextRange getValidationTextRange() {
 		if (isVirtual()) {
 			return getPersistentType().getMapping().getAttributesTextRange();

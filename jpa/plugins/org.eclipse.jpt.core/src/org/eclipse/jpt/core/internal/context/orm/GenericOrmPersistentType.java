@@ -206,7 +206,7 @@ public class GenericOrmPersistentType
 		if (ormPersistentAttribute.isVirtual()) {
 			throw new IllegalStateException("Attribute is already virtual"); //$NON-NLS-1$
 		}
-		JavaPersistentAttribute javaPersistentAttribute = ormPersistentAttribute.getMapping().getJavaPersistentAttribute();
+		JavaPersistentAttribute javaPersistentAttribute = ormPersistentAttribute.getJavaPersistentAttribute();
 		OrmPersistentAttribute virtualPersistentAttribute = null;
 		if (javaPersistentAttribute != null) {
 			virtualPersistentAttribute = addVirtualPersistentAttribute(javaPersistentAttribute.getResourcePersistentAttribute());
@@ -229,7 +229,7 @@ public class GenericOrmPersistentType
 			throw new IllegalStateException("Use makePersistentAttributeSpecified(OrmPersistentAttribute, String) instead and specify a mapping type"); //$NON-NLS-1$
 		}
 			
-		OrmPersistentAttribute newPersistentAttribute = buildOrmPersistentAttribute(mappingKey);
+		OrmPersistentAttribute newPersistentAttribute = buildSpecifiedOrmPersistentAttribute(mappingKey);
 		if (getMapping().getResourceTypeMapping().getAttributes() == null) {
 			getMapping().getResourceTypeMapping().setAttributes(createAttributesResource());
 		}
@@ -352,7 +352,7 @@ public class GenericOrmPersistentType
 	}
 	
 	public OrmPersistentAttribute addSpecifiedPersistentAttribute(String mappingKey, String attributeName) {
-		OrmPersistentAttribute persistentAttribute = buildOrmPersistentAttribute(mappingKey);
+		OrmPersistentAttribute persistentAttribute = buildSpecifiedOrmPersistentAttribute(mappingKey);
 		int index = insertionIndex(persistentAttribute);
 		if (getMapping().getResourceTypeMapping().getAttributes() == null) {
 			getMapping().getResourceTypeMapping().setAttributes(createAttributesResource());
@@ -383,11 +383,6 @@ public class GenericOrmPersistentType
 				return 1;
 			}
 		};
-	}
-
-	
-	protected void addSpecifiedPersistentAttribute_(OrmPersistentAttribute ormPersistentAttribute) {
-		addItemToList(ormPersistentAttribute, this.specifiedPersistentAttributes, PersistentType.SPECIFIED_ATTRIBUTES_LIST);
 	}
 
 	protected void removeSpecifiedPersistentAttribute_(OrmPersistentAttribute ormPersistentAttribute) {
@@ -459,8 +454,98 @@ public class GenericOrmPersistentType
 		this.initializeVirtualPersistentAttributes();
 	}
 	
-	protected OrmPersistentAttribute buildOrmPersistentAttribute(String mappingKey) {
-		return getJpaFactory().buildOrmPersistentAttribute(this, mappingKey);
+	protected OrmPersistentAttribute buildSpecifiedOrmPersistentAttribute(String mappingKey) {
+		return getJpaFactory().buildOrmPersistentAttribute(this, buildSpecifiedPersistentAttributeOwner(), mappingKey);
+	}
+		
+	protected OrmPersistentAttribute.Owner buildSpecifiedPersistentAttributeOwner() {
+		return new SpecifiedPersistentAttributeOwner();
+	}
+	
+	//TODO for eclipselink we will need to check the ormPersistentAttribute access, also need to make an AbstractOrmPersistentType
+	protected AccessType getAccess(OrmPersistentAttribute ormPersistentAttribute) {
+		return getAccess();
+	}
+	
+	private class SpecifiedPersistentAttributeOwner implements OrmPersistentAttribute.Owner {
+		
+		private JavaPersistentAttribute cachedJavaPersistentAttribute;
+		
+		public JavaPersistentAttribute findJavaPersistentAttribute(OrmPersistentAttribute ormPersistentAttribute) {
+			JavaPersistentType javaPersistentType = getJavaPersistentType();
+			if (javaPersistentType == null) {
+				return null;
+			}
+			if (ormPersistentAttribute.getName() == null) {
+				return null;
+			}
+			AccessType ormAccess = GenericOrmPersistentType.this.getAccess(ormPersistentAttribute); 
+			if (ormAccess == null || ormAccess == javaPersistentType.getAccess()) {//if ormAccess is null, we have to just default to java access
+				this.cachedJavaPersistentAttribute = null;  //we only want to cache the persistent attribute if we build it
+				return findExistingJavaPersistentAttribute(javaPersistentType, ormPersistentAttribute);
+			}
+			//if access is different, we won't be able to find the corresponding java attribute, it won't exist so we build it ourselves
+			return buildJavaPersistentAttribute(javaPersistentType, ormPersistentAttribute);
+		}
+		
+		protected JavaPersistentAttribute findExistingJavaPersistentAttribute(JavaPersistentType javaPersistentType, OrmPersistentAttribute ormPersistentAttribute) {
+			return javaPersistentType.getAttributeNamed(ormPersistentAttribute.getName());
+		}
+		
+		protected JavaPersistentAttribute buildJavaPersistentAttribute(JavaPersistentType javaPersistentType, OrmPersistentAttribute ormPersistentAttribute) {
+			AccessType ormAccess = GenericOrmPersistentType.this.getAccess(ormPersistentAttribute); 
+		
+			//check the already cached javaPersistentAttribute to verify that it still matches name and access type
+			if (this.cachedJavaPersistentAttribute != null && ormPersistentAttribute.getName().equals(this.cachedJavaPersistentAttribute.getName())) {
+				if (this.cachedJavaPersistentAttribute.getResourcePersistentAttribute().isForField()) {
+					if (ormAccess == AccessType.FIELD) {
+						return this.cachedJavaPersistentAttribute;
+					}
+				}
+				else if (ormAccess == AccessType.PROPERTY) {
+					return this.cachedJavaPersistentAttribute;
+				}
+			}
+			this.cachedJavaPersistentAttribute = null;
+			Iterator<JavaResourcePersistentAttribute> javaResourceAttributes = javaPersistentType.getResourcePersistentType().persistableFields();
+			if (ormAccess == AccessType.PROPERTY) {
+				javaResourceAttributes = javaPersistentType.getResourcePersistentType().persistableProperties();
+			}
+			for (JavaResourcePersistentAttribute jrpa : CollectionTools.iterable(javaResourceAttributes)) {
+				if (ormPersistentAttribute.getName().equals(jrpa.getName())) {
+					this.cachedJavaPersistentAttribute = getJpaFactory().buildJavaPersistentAttribute(GenericOrmPersistentType.this, jrpa);
+					break;
+				}
+			}
+			return this.cachedJavaPersistentAttribute;
+		}
+	
+		public void updateJavaPersistentAttribute() {
+			if (this.cachedJavaPersistentAttribute != null) {
+				this.cachedJavaPersistentAttribute.update();
+			}
+			//else {
+				//don't update, we don't own the java persistent attribute, 
+				//it will be updated through the java context model
+			//}
+		}
+	}
+	
+	protected OrmPersistentAttribute buildVirtualOrmPersistentAttribute(JavaAttributeMapping javaAttributeMapping) {
+		return getJpaFactory().buildOrmPersistentAttribute(this, buildVirtualPersistentAttributeOwner(javaAttributeMapping.getPersistentAttribute()), javaAttributeMapping.getKey());
+	}
+	
+	protected OrmPersistentAttribute.Owner buildVirtualPersistentAttributeOwner(final JavaPersistentAttribute javaPersistentAttribute) {
+		return new OrmPersistentAttribute.Owner() {
+			public JavaPersistentAttribute findJavaPersistentAttribute(OrmPersistentAttribute ormPersistentAttribute) {
+				return javaPersistentAttribute;
+			}
+			
+			public void updateJavaPersistentAttribute() {
+				//update the attribute, since we own it and it will not get updated otherwise
+				javaPersistentAttribute.update();
+			}			
+		};
 	}
 	
 	protected void initializeSpecifiedPersistentAttributes(Attributes attributes) {
@@ -584,15 +669,8 @@ public class GenericOrmPersistentType
 	
 	//not firing change notification so this can be reused in initialize and update
 	protected OrmPersistentAttribute addSpecifiedPersistentAttribute(XmlAttributeMapping resourceMapping) {
-		OrmPersistentAttribute ormPersistentAttribute = buildOrmPersistentAttribute(resourceMapping.getMappingKey());
+		OrmPersistentAttribute ormPersistentAttribute = buildSpecifiedOrmPersistentAttribute(resourceMapping.getMappingKey());
 		this.specifiedPersistentAttributes.add(ormPersistentAttribute);
-
-		JavaPersistentType javaPersistentType = getJavaPersistentType();
-		JavaPersistentAttribute javaPersistentAttribute = null;
-		if (javaPersistentType != null && getName() != null) {
-			javaPersistentAttribute = javaPersistentType.getAttributeNamed(getName());
-		}
-
 		ormPersistentAttribute.initialize(resourceMapping);
 		return ormPersistentAttribute;
 
@@ -612,7 +690,7 @@ public class GenericOrmPersistentType
 				}
 				boolean contextAttributeFound = false;
 				for (OrmPersistentAttribute contextAttribute : contextAttributesToRemove) {
-					JavaPersistentAttribute javaPersistentAttribute = contextAttribute.getMapping().getJavaPersistentAttribute();
+					JavaPersistentAttribute javaPersistentAttribute = contextAttribute.getJavaPersistentAttribute();
 					if (javaPersistentAttribute.getResourcePersistentAttribute() == javaResourceAttribute) {
 						if (contextAttribute.getMappingKey() == javaAttributeMapping.getKey()) { 
 							//the mapping key would change if metaDataComplete flag changes, rebuild the orm attribute
@@ -639,13 +717,11 @@ public class GenericOrmPersistentType
 		//this causes less churn in the update process
 		for (OrmPersistentAttribute contextAttribute : contextAttributesToUpdate) {
 			contextAttribute.update();
-			//we have to update the JavaPersistentAttribute since this is the parent in the case of virtual mappings
-			contextAttribute.getMapping().getJavaPersistentAttribute().update();
 		}
 	}
 
-	protected OrmPersistentAttribute addVirtualPersistentAttribute(JavaResourcePersistentAttribute javaResourceAttribute) {
-		JavaPersistentAttribute javaAttribute = getJpaFactory().buildJavaPersistentAttribute(this, javaResourceAttribute);
+	protected OrmPersistentAttribute addVirtualPersistentAttribute(JavaResourcePersistentAttribute resourceAttribute) {
+		JavaPersistentAttribute javaAttribute = getJpaFactory().buildJavaPersistentAttribute(this, resourceAttribute);
 		
 		JavaAttributeMapping javaAttributeMapping = javaAttribute.getMapping();
 		if (getMapping().isMetadataComplete()) {
@@ -656,7 +732,7 @@ public class GenericOrmPersistentType
 
 	//not firing change notification so this can be reused in initialize and update
 	protected OrmPersistentAttribute addVirtualPersistentAttribute(JavaAttributeMapping javaAttributeMapping) {
-		OrmPersistentAttribute virtualPersistentAttribute = buildOrmPersistentAttribute(javaAttributeMapping.getKey());
+		OrmPersistentAttribute virtualPersistentAttribute = buildVirtualOrmPersistentAttribute(javaAttributeMapping);
 		XmlAttributeMapping resourceMapping = getJpaPlatform().buildVirtualOrmResourceMappingFromMappingKey(javaAttributeMapping.getKey(), getMapping(), javaAttributeMapping);
 		this.virtualPersistentAttributes.add(virtualPersistentAttribute);
 		virtualPersistentAttribute.initialize(resourceMapping);

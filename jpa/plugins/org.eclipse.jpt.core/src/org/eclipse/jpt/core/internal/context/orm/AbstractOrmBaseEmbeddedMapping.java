@@ -43,7 +43,7 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends BaseXmlEmbedded> 
 	
 	protected final List<OrmAttributeOverride> virtualAttributeOverrides;
 
-	private Embeddable embeddable;
+	private Embeddable embeddable;//TODO hmm, why no property change notification for setting this??
 	
 	protected AbstractOrmBaseEmbeddedMapping(OrmPersistentAttribute parent) {
 		super(parent);
@@ -233,8 +233,8 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends BaseXmlEmbedded> 
 	}
 
 	public AbstractJavaBaseEmbeddedMapping<?> getJavaEmbeddedMapping() {
-		if (this.javaPersistentAttribute != null && this.javaPersistentAttribute.getMappingKey() == getKey()) {
-			return (AbstractJavaBaseEmbeddedMapping<?>) this.javaPersistentAttribute.getMapping();
+		if (this.getJavaPersistentAttribute() != null && this.getJavaPersistentAttribute().getMappingKey() == getKey()) {
+			return (AbstractJavaBaseEmbeddedMapping<?>) this.getJavaPersistentAttribute().getMapping();
 		}
 		return null;
 	}
@@ -242,7 +242,7 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends BaseXmlEmbedded> 
 	@Override
 	public void initialize() {
 		super.initialize();
-		this.embeddable = embeddableFor(this.javaPersistentAttribute);
+		this.embeddable = embeddableFor(this.getJavaPersistentAttribute());
 		this.initializeSpecifiedAttributeOverrides();
 		this.initializeVirtualAttributeOverrides();
 	}
@@ -293,7 +293,7 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends BaseXmlEmbedded> 
 	@Override
 	public void update() {
 		super.update();
-		this.embeddable = embeddableFor(this.javaPersistentAttribute);
+		this.embeddable = embeddableFor(this.getJavaPersistentAttribute());
 		this.updateSpecifiedAttributeOverrides();
 		this.updateVirtualAttributeOverrides();
 	}

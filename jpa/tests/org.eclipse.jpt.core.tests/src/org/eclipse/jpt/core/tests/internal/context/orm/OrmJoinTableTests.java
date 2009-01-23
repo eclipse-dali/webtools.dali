@@ -179,7 +179,7 @@ public class OrmJoinTableTests extends ContextModelTestCase
 //		assertEquals("id_project_id", inverseOrmJoinColumn.getDefaultName());
 //		assertEquals("id_project_id", inverseOrmJoinColumn.getDefaultReferencedColumnName());
 	
-		JavaPersistentAttribute javaPersistentAttribute = ormManyToManyMapping.getJavaPersistentAttribute();
+		JavaPersistentAttribute javaPersistentAttribute = ormPersistentAttribute.getJavaPersistentAttribute();
 		JavaManyToManyMapping javaManyToManyMapping = (JavaManyToManyMapping) javaPersistentAttribute.getMapping();
 		JavaJoinTable javaJoinTable = javaManyToManyMapping.getJoinTable();
 		javaJoinTable.setSpecifiedName("FOO");

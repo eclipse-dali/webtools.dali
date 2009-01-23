@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.context.orm;
 
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.XmlContextNode;
+import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 
 /**
@@ -35,7 +36,13 @@ public interface OrmPersistentAttribute
 	OrmTypeMapping getTypeMapping();
 	
 	OrmPersistentType getPersistentType();
+
 	
+	// ********** java persistent attribute **********
+
+	JavaPersistentAttribute getJavaPersistentAttribute();
+		String JAVA_PERSISTENT_ATTRIBUTE_PROPERTY = "javaPersistentAttribute"; //$NON-NLS-1$
+
 
 	// ********** virtual <-> specified **********
 
@@ -89,5 +96,26 @@ public interface OrmPersistentAttribute
 	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
 	 */
 	void update();
+	
+	
+	/**
+	 * interface allowing persistent attributes to be used in multiple places
+	 * (e.g. virtual and specified orm persistent attributes)
+	 */
+	interface Owner
+	{
+		/**
+	 	 * Return the java persistent attribute that corresponds (same name and access type)
+		 * to the given ormPersistentAttribute or null if none exists.
+	 	 */
+		JavaPersistentAttribute findJavaPersistentAttribute(OrmPersistentAttribute ormPersistentAttribute);
+		
+		/**
+	 	 * Update the java persistent attribute if necessary, if it is owned by this object,
+		 * it needs to be updated.
+	 	 */
+		void updateJavaPersistentAttribute();
+	}
+
 
 }

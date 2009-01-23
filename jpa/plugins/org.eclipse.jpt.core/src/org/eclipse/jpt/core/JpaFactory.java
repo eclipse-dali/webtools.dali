@@ -238,7 +238,7 @@ public interface JpaFactory
 	
 	OrmEmbeddable buildOrmEmbeddable(OrmPersistentType parent);
 	
-	OrmPersistentAttribute buildOrmPersistentAttribute(OrmPersistentType parent, String mappingKey);
+	OrmPersistentAttribute buildOrmPersistentAttribute(OrmPersistentType parent, OrmPersistentAttribute.Owner owner, String mappingKey);
 	
 	OrmTable buildOrmTable(OrmEntity parent);
 	

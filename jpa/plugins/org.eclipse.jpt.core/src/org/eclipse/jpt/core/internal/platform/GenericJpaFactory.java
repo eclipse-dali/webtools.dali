@@ -342,8 +342,8 @@ public class GenericJpaFactory
 		return new GenericOrmEmbeddable(parent);
 	}
 	
-	public OrmPersistentAttribute buildOrmPersistentAttribute(OrmPersistentType parent, String mappingKey) {
-		return new GenericOrmPersistentAttribute(parent, mappingKey);
+	public OrmPersistentAttribute buildOrmPersistentAttribute(OrmPersistentType parent, OrmPersistentAttribute.Owner owner, String mappingKey) {
+		return new GenericOrmPersistentAttribute(parent, owner, mappingKey);
 	}
 	
 	public OrmTable buildOrmTable(OrmEntity parent) {

@@ -13,7 +13,6 @@ import java.util.List;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.NonOwningMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmBaseEmbeddedMapping;
 import org.eclipse.jpt.core.context.orm.OrmBasicMapping;
@@ -49,25 +48,16 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 	
 	protected T resourceAttributeMapping;
 
-	protected JavaPersistentAttribute javaPersistentAttribute;
-	
-
 	protected AbstractOrmAttributeMapping(OrmPersistentAttribute parent) {
 		super(parent);
 	}	
 	
-	public JavaPersistentAttribute getJavaPersistentAttribute() {
-		return this.javaPersistentAttribute;
+	protected JavaPersistentAttribute getJavaPersistentAttribute() {
+		return this.getPersistentAttribute().getJavaPersistentAttribute();
 	}
 	
 	protected JavaResourcePersistentAttribute getJavaResourcePersistentAttribute() {
-		return this.javaPersistentAttribute.getResourcePersistentAttribute();
-	}
-	
-	protected void setJavaPersistentAttribute(JavaPersistentAttribute javaPersistentAttribute) {
-		JavaPersistentAttribute old = this.javaPersistentAttribute;
-		this.javaPersistentAttribute = javaPersistentAttribute;
-		this.firePropertyChanged(JAVA_PERSISTENT_ATTRIBUTE_PROPERTY, old, javaPersistentAttribute);
+		return this.getJavaPersistentAttribute().getResourcePersistentAttribute();
 	}
 
 	public String getName() {
@@ -204,26 +194,11 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 	
 	protected void initialize() {
 		this.name = this.resourceAttributeMapping.getName();
-		this.javaPersistentAttribute = findJavaPersistentAttribute();
 	}
 	
 	public void update() {
 		this.setName_(this.resourceAttributeMapping.getName());
-		this.setJavaPersistentAttribute(findJavaPersistentAttribute());
 	}
-	
-	protected JavaPersistentAttribute findJavaPersistentAttribute() {
-		if (getPersistentAttribute().isVirtual()) {
-			//TODO don't want to be casting here like this, need another way, a parent object or something
-			return ((VirtualXmlAttributeMapping<?>) this.resourceAttributeMapping).getJavaAttributeMapping().getPersistentAttribute();
-		}
-		JavaPersistentType javaPersistentType = getPersistentAttribute().getPersistentType().getJavaPersistentType();
-		if (javaPersistentType != null && getName() != null) {
-			return javaPersistentType.getAttributeNamed(getName());
-		}
-		return null;
-	}
-	
 	
 	protected boolean ownerIsEntity() {
 		return getTypeMapping().getKey() == MappingKeys.ENTITY_TYPE_MAPPING_KEY;
@@ -252,7 +227,6 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 	public void validate(List<IMessage> messages) {
 		super.validate(messages);
 		this.validateAttribute(messages);
-		this.validateModifiers(messages);
 		this.validateMapping(messages);
 	}
 	
@@ -268,53 +242,8 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 			);
 			return;
 		}
-
-		if (this.javaPersistentAttribute == null) {
-			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.PERSISTENT_ATTRIBUTE_UNRESOLVED_NAME,
-					new String[] {this.name, this.getPersistentAttribute().getPersistentType().getMapping().getClass_()},
-					this, 
-					this.getNameTextRange()
-				)
-			);
-		}
 	}
 	
-	protected void validateModifiers(List<IMessage> messages) {
-		if (this.getKey() == MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY) {
-			return;
-		}
-		if (this.javaPersistentAttribute == null) {
-			return;
-		}
-		JavaResourcePersistentAttribute jrpa = this.javaPersistentAttribute.getResourcePersistentAttribute();
-
-		if (jrpa.isForField()) {
-			if (jrpa.isFinal()) {
-				messages.add(this.buildAttributeMessage(JpaValidationMessages.PERSISTENT_ATTRIBUTE_FINAL_FIELD));
-			}
-			if (jrpa.isPublic()) {
-				messages.add(this.buildAttributeMessage(JpaValidationMessages.PERSISTENT_ATTRIBUTE_PUBLIC_FIELD));
-			}
-		} else {
-			//TODO validation : need to have a validation message for final methods as well.
-			//From the JPA spec : No methods or persistent instance variables of the entity class may be final.
-		}
-	}
-
-	protected IMessage buildAttributeMessage(String msgID) {
-		OrmPersistentAttribute pa = this.getPersistentAttribute();
-		return DefaultJpaValidationMessages.buildMessage(
-			IMessage.HIGH_SEVERITY,
-			msgID,
-			new String[] {this.name},
-			pa, 
-			pa.getValidationTextRange()
-		);
-	}
-
 	//TODO validation message - i think more info is needed in this message.  include type mapping type?
 	protected void validateMapping(List<IMessage> messages) {
 		if ( ! this.getTypeMapping().attributeMappingKeyAllowed(this.getKey())) {

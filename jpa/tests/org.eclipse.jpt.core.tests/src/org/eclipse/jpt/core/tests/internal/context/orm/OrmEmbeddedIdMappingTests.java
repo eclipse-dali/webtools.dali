@@ -657,7 +657,8 @@ public class OrmEmbeddedIdMappingTests extends ContextModelTestCase
 		OrmPersistentType persistentType2 = getEntityMappings().addOrmPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
 		
 		//embedded mapping is virtual, specified attribute overrides should exist
-		OrmEmbeddedIdMapping embeddedIdMapping = (OrmEmbeddedIdMapping) persistentType.getAttributeNamed("address").getMapping();
+		OrmPersistentAttribute ormPersistentAttribute = persistentType.getAttributeNamed("address");
+		OrmEmbeddedIdMapping embeddedIdMapping = (OrmEmbeddedIdMapping) ormPersistentAttribute.getMapping();
 		assertEquals(4, embeddedIdMapping.attributeOverridesSize());
 		assertEquals(0, embeddedIdMapping.virtualAttributeOverridesSize());
 		assertEquals(4, embeddedIdMapping.specifiedAttributeOverridesSize());
@@ -671,7 +672,7 @@ public class OrmEmbeddedIdMappingTests extends ContextModelTestCase
 		attributeOverride = specifiedAttributeOverrides.next();
 		assertEquals("zip", attributeOverride.getName());
 		
-		JavaEmbeddedIdMapping javaEmbeddedIdMapping = (JavaEmbeddedIdMapping) embeddedIdMapping.getJavaPersistentAttribute().getMapping();
+		JavaEmbeddedIdMapping javaEmbeddedIdMapping = (JavaEmbeddedIdMapping) ormPersistentAttribute.getJavaPersistentAttribute().getMapping();
 		javaEmbeddedIdMapping.virtualAttributeOverrides().next().setVirtual(false);
 		javaEmbeddedIdMapping.specifiedAttributeOverrides().next().getColumn().setSpecifiedName("FOO_COLUMN");
 		javaEmbeddedIdMapping.specifiedAttributeOverrides().next().getColumn().setSpecifiedTable("FOO_TABLE");
