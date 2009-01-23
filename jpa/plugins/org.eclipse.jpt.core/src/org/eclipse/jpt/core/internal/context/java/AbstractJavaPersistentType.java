@@ -57,7 +57,7 @@ public abstract class AbstractJavaPersistentType
 
 	protected AccessType defaultAccess;
 
-	public AbstractJavaPersistentType(PersistentType.Owner parent, JavaResourcePersistentType jrpt) {
+	protected AbstractJavaPersistentType(PersistentType.Owner parent, JavaResourcePersistentType jrpt) {
 		super(parent);
 		this.attributes = new ArrayList<JavaPersistentAttribute>();
 		this.initialize(jrpt);
