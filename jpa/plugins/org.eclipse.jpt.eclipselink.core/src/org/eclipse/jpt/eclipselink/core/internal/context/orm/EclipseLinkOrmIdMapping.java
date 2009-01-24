@@ -14,7 +14,7 @@ import java.util.List;
 import org.eclipse.jpt.core.context.orm.OrmConverter;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmIdMapping;
-import org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping;
+import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.eclipselink.core.context.Convert;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkIdMapping;
 import org.eclipse.jpt.eclipselink.core.context.Mutable;
@@ -63,7 +63,7 @@ public class EclipseLinkOrmIdMapping extends GenericOrmIdMapping
 	// **************** resource-context interaction ***************************
 	
 	@Override
-	public XmlId addToResourceModel(AbstractXmlTypeMapping typeMapping) {
+	public XmlId addToResourceModel(XmlTypeMapping typeMapping) {
 		XmlId id = EclipseLinkOrmFactory.eINSTANCE.createXmlIdImpl();
 		getPersistentAttribute().initialize(id);
 		typeMapping.getAttributes().getIds().add(id);

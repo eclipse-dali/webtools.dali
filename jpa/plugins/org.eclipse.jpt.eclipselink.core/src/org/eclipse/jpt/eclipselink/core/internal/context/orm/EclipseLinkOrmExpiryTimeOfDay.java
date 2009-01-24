@@ -105,33 +105,33 @@ public class EclipseLinkOrmExpiryTimeOfDay extends AbstractXmlContextNode
 	
 	public void initialize(XmlTimeOfDay resource) {
 		this.resourceTimeOfDay = resource;
-		this.hour = hour();
-		this.minute = minute();
-		this.second = second();
-		this.millisecond = millisecond();
+		this.hour = getResourceHour();
+		this.minute = getResourceMinute();
+		this.second = getResourceSecond();
+		this.millisecond = getResourceMillisecond();
 	}
 	
 	public void update(XmlTimeOfDay resource) {
 		this.resourceTimeOfDay = resource;
-		this.setHour_(hour());
-		this.setMinute_(minute());
-		this.setSecond_(second());
-		this.setMillisecond_(millisecond());
+		this.setHour_(getResourceHour());
+		this.setMinute_(getResourceMinute());
+		this.setSecond_(getResourceSecond());
+		this.setMillisecond_(getResourceMillisecond());
 	}
 	
-	protected Integer hour() {
+	protected Integer getResourceHour() {
 		return this.resourceTimeOfDay.getHour();
 	}
 	
-	protected Integer minute() {
+	protected Integer getResourceMinute() {
 		return this.resourceTimeOfDay.getMinute();
 	}
 	
-	protected Integer second() {
+	protected Integer getResourceSecond() {
 		return this.resourceTimeOfDay.getSecond();
 	}
 	
-	protected Integer millisecond() {
+	protected Integer getResourceMillisecond() {
 		return this.resourceTimeOfDay.getMillisecond();
 	}
 }

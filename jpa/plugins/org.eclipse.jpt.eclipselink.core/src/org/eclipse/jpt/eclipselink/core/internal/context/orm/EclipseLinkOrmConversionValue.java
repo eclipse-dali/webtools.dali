@@ -76,21 +76,21 @@ public class EclipseLinkOrmConversionValue extends AbstractXmlContextNode implem
 
 	public void initialize(XmlConversionValue resourceConversionValue) {
 		this.resourceConversionValue = resourceConversionValue;
-		this.dataValue = this.dataValue();
-		this.objectValue = this.objectValue();
+		this.dataValue = this.getResourceDataValue();
+		this.objectValue = this.getResourceObjectValue();
 	}
 	
 	public void update(XmlConversionValue resourceConversionValue) {
 		this.resourceConversionValue = resourceConversionValue;
-		this.setDataValue_(this.dataValue());
-		this.setObjectValue_(this.objectValue());
+		this.setDataValue_(this.getResourceDataValue());
+		this.setObjectValue_(this.getResourceObjectValue());
 	}
 
-	protected String dataValue() {
+	protected String getResourceDataValue() {
 		return this.resourceConversionValue.getDataValue();
 	}
 
-	protected String objectValue() {
+	protected String getResourceObjectValue() {
 		return this.resourceConversionValue.getObjectValue();
 	}
 

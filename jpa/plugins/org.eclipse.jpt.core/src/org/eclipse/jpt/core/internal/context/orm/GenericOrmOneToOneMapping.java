@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -24,10 +24,10 @@ import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlOneToOne;
 import org.eclipse.jpt.core.resource.orm.XmlPrimaryKeyJoinColumn;
+import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
@@ -161,14 +161,14 @@ public class GenericOrmOneToOneMapping
 		return true;
 	}
 	
-	public XmlOneToOne addToResourceModel(AbstractXmlTypeMapping typeMapping) {
+	public XmlOneToOne addToResourceModel(XmlTypeMapping typeMapping) {
 		XmlOneToOne oneToOne = OrmFactory.eINSTANCE.createXmlOneToOneImpl();
 		getPersistentAttribute().initialize(oneToOne);
 		typeMapping.getAttributes().getOneToOnes().add(oneToOne);
 		return oneToOne;
 	}
 	
-	public void removeFromResourceModel(AbstractXmlTypeMapping typeMapping) {
+	public void removeFromResourceModel(XmlTypeMapping typeMapping) {
 		typeMapping.getAttributes().getOneToOnes().remove(this.resourceAttributeMapping);
 	}	
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,8 +16,8 @@ import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
+import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**
@@ -70,11 +70,11 @@ public interface OrmTypeMapping
 
 	void removeFromResourceModel(XmlEntityMappings entityMappings);
 		
-	AbstractXmlTypeMapping addToResourceModel(XmlEntityMappings entityMappings);
+	XmlTypeMapping addToResourceModel(XmlEntityMappings entityMappings);
 
 	void initializeFrom(OrmTypeMapping oldMapping);
 
-	AbstractXmlTypeMapping getResourceTypeMapping();
+	XmlTypeMapping getResourceTypeMapping();
 	
 	JavaPersistentType getJavaPersistentType();
 
@@ -87,7 +87,15 @@ public interface OrmTypeMapping
 	boolean containsOffset(int textOffset);
 	
 
-	// ********** copvariant overrides **********
+	void initialize(XmlTypeMapping typeMapping);
+
+	/**
+	 * Update the OrmTypeMapping context model object to match the 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
+	void update();
+
+	// ********** covariant overrides **********
 
 	OrmPersistentType getPersistentType();
 	

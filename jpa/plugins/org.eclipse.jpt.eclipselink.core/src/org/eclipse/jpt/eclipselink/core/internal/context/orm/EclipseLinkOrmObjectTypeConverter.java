@@ -25,7 +25,7 @@ import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationListIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public class EclipseLinkOrmObjectTypeConverter extends EclipseLinkOrmConverter
+public class EclipseLinkOrmObjectTypeConverter extends EclipseLinkOrmConverter<XmlObjectTypeConverter>
 	implements ObjectTypeConverter
 {	
 	private String dataType;
@@ -42,16 +42,9 @@ public class EclipseLinkOrmObjectTypeConverter extends EclipseLinkOrmConverter
 		this.conversionValues = new ArrayList<EclipseLinkOrmConversionValue>();
 	}
 	
-	
 	public String getType() {
 		return EclipseLinkConverter.OBJECT_TYPE_CONVERTER;
-	}
-	
-	@Override
-	protected XmlObjectTypeConverter getXmlResource() {
-		return (XmlObjectTypeConverter) super.getXmlResource();
-	}
-	
+	}	
 	
 	// **************** data type **********************************************
 	
@@ -176,11 +169,12 @@ public class EclipseLinkOrmObjectTypeConverter extends EclipseLinkOrmConverter
 	
 	// **************** resource interaction ***********************************
 	
+	@Override
 	protected void initialize(XmlObjectTypeConverter xmlResource) {
 		super.initialize(xmlResource);
-		this.dataType = this.calculateDataType();
-		this.objectType = this.calculateObjectType();
-		this.defaultObjectValue = this.calculateDefaultObjectValue();
+		this.dataType = this.getResourceDataType();
+		this.objectType = this.getResourceObjectType();
+		this.defaultObjectValue = this.getResourceDefaultObjectValue();
 		this.initializeConversionValues();
 	}
 	
@@ -190,11 +184,12 @@ public class EclipseLinkOrmObjectTypeConverter extends EclipseLinkOrmConverter
 		}
 	}
 	
+	@Override
 	public void update() {
 		super.update();
-		setDataType_(calculateDataType());
-		setObjectType_(calculateObjectType());
-		setDefaultObjectValue_(calculateDefaultObjectValue());
+		setDataType_(getResourceDataType());
+		setObjectType_(getResourceObjectType());
+		setDefaultObjectValue_(getResourceDefaultObjectValue());
 		updateConversionValues();
 	}
 	
@@ -224,16 +219,16 @@ public class EclipseLinkOrmObjectTypeConverter extends EclipseLinkOrmConverter
 		return conversionValue;
 	}
 	
-	protected String calculateDataType() {
-		return getXmlResource().getDataType();
+	protected String getResourceDataType() {
+		return this.resourceConverter.getDataType();
 	}
 
-	protected String calculateObjectType() {
-		return getXmlResource().getObjectType();
+	protected String getResourceObjectType() {
+		return this.resourceConverter.getObjectType();
 	}
 
-	protected String calculateDefaultObjectValue() {
-		return getXmlResource().getDefaultObjectValue();
+	protected String getResourceDefaultObjectValue() {
+		return this.resourceConverter.getDefaultObjectValue();
 	}
 	
 	

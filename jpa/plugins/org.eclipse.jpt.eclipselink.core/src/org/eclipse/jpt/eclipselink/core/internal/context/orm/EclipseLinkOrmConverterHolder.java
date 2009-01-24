@@ -278,8 +278,7 @@ public class EclipseLinkOrmConverterHolder extends AbstractXmlContextNode implem
 		}
 	}
 
-	public void update(XmlConvertersHolder resourceConvertersHolder) {
-		this.resourceConvertersHolder = resourceConvertersHolder;
+	public void update() {
 		this.updateCustomConverters();
 		this.updateObjectTypeConverters();
 		this.updateStructConverters();

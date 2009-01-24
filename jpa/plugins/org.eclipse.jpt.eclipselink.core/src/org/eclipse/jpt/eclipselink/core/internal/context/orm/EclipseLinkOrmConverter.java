@@ -19,30 +19,29 @@ import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLink
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlNamedConverter;
 import org.eclipse.jpt.utility.internal.StringTools;
 
-public abstract class EclipseLinkOrmConverter
+public abstract class EclipseLinkOrmConverter<T extends XmlNamedConverter>
 	extends AbstractXmlContextNode implements EclipseLinkConverter
 {
-	private XmlNamedConverter xmlResource;
+	protected T resourceConverter;
 	
-	private String name;
+	protected String name;
 	
 	
-	public EclipseLinkOrmConverter(XmlContextNode parent, XmlNamedConverter xmlResource) {
+	protected EclipseLinkOrmConverter(XmlContextNode parent, T xmlResource) {
 		super(parent);
 		initialize(xmlResource);
 	}
-	
-	
-	protected XmlNamedConverter getXmlResource() {
-		return this.xmlResource;
-	}
-	
+		
 	@Override
 	public EclipseLinkPersistenceUnit getPersistenceUnit() {
 		return (EclipseLinkPersistenceUnit) super.getPersistenceUnit();
 	}
 	
 	
+	protected T getXmlResource() {
+		return this.resourceConverter;
+	}
+
 	// **************** name ***************************************************
 	
 	public String getName() {
@@ -52,7 +51,7 @@ public abstract class EclipseLinkOrmConverter
 	public void setName(String newName) {
 		String oldName = this.name;
 		this.name = newName;
-		getXmlResource().setName(newName);
+		this.resourceConverter.setName(newName);
 		firePropertyChanged(NAME_PROPERTY, oldName, newName);
 	}
 
@@ -65,19 +64,19 @@ public abstract class EclipseLinkOrmConverter
 	
 	// **************** resource interaction ***********************************
 	
-	protected void initialize(XmlNamedConverter resource) {
-		this.xmlResource = resource;
-		this.name = calculateName();
+	protected void initialize(T resource) {
+		this.resourceConverter = resource;
+		this.name = getResourceName();
 		getPersistenceUnit().addConverter(this);
 	}
 	
 	public void update() {
-		this.setName_(calculateName());
+		this.setName_(getResourceName());
 		getPersistenceUnit().addConverter(this);
 	}
 	
-	protected String calculateName() {
-		return getXmlResource().getName();
+	protected String getResourceName() {
+		return this.resourceConverter.getName();
 	}
 	
 	
@@ -100,6 +99,6 @@ public abstract class EclipseLinkOrmConverter
 	}
 	
 	public TextRange getValidationTextRange() {
-		return getXmlResource().getValidationTextRange();
+		return this.resourceConverter.getValidationTextRange();
 	}
 }

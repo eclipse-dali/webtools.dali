@@ -188,13 +188,13 @@ public class EclipseLinkOrmConvert extends AbstractXmlContextNode implements Con
 	
 	protected void initialize(XmlConvertibleMapping resourceMapping) {
 		this.resourceMapping = resourceMapping;
-		this.specifiedConverterName = this.specifiedConverterName();
+		this.specifiedConverterName = this.getResourceConvert();
 		this.converter = this.buildConverter();
 	}
 	
 	public void update() {
-		this.setSpecifiedConverterName_(this.specifiedConverterName());
-		if (converterType() == getConverterType()) {
+		this.setSpecifiedConverterName_(this.getResourceConvert());
+		if (getResourceConverterType() == getConverterType()) {
 			this.converter.update();
 		}
 		else {
@@ -202,11 +202,11 @@ public class EclipseLinkOrmConvert extends AbstractXmlContextNode implements Con
 		}
 	}
 	
-	protected String specifiedConverterName() {
+	protected String getResourceConvert() {
 		return this.resourceMapping == null ? null : this.resourceMapping.getConvert();
 	}
 
-	protected String converterType() {
+	protected String getResourceConverterType() {
 		if (this.resourceMapping.getConverter() != null) {
 			return EclipseLinkConverter.CUSTOM_CONVERTER;
 		}

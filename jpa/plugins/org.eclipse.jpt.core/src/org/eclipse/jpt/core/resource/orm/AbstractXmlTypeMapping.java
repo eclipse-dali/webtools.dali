@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,7 +16,6 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.core.internal.resource.orm.translators.OrmXmlMapper;
 import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
-import org.eclipse.jpt.core.resource.common.JpaEObject;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**
@@ -30,23 +29,12 @@ import org.eclipse.jpt.core.utility.TextRange;
  * will almost certainly be broken (repeatedly) as the API evolves.
  * <!-- end-user-doc -->
  *
- * <p>
- * The following features are supported:
- * <ul>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping#getClassName <em>Class Name</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping#getAccess <em>Access</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping#getMetadataComplete <em>Metadata Complete</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping#getDescription <em>Description</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping#getAttributes <em>Attributes</em>}</li>
- * </ul>
- * </p>
  *
  * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAbstractXmlTypeMapping()
  * @model kind="class" abstract="true"
- * @extends JpaEObject
  * @generated
  */
-public abstract class AbstractXmlTypeMapping extends AbstractJpaEObject implements JpaEObject
+public abstract class AbstractXmlTypeMapping extends AbstractJpaEObject implements XmlTypeMapping
 {
 	/**
 	 * The default value of the '{@link #getClassName() <em>Class Name</em>}' attribute.
@@ -165,7 +153,7 @@ public abstract class AbstractXmlTypeMapping extends AbstractJpaEObject implemen
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Class Name</em>' attribute.
 	 * @see #setClassName(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAbstractXmlTypeMapping_ClassName()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlTypeMapping_ClassName()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String" required="true"
 	 * @generated
 	 */
@@ -203,7 +191,7 @@ public abstract class AbstractXmlTypeMapping extends AbstractJpaEObject implemen
 	 * @return the value of the '<em>Access</em>' attribute.
 	 * @see org.eclipse.jpt.core.resource.orm.AccessType
 	 * @see #setAccess(AccessType)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAbstractXmlTypeMapping_Access()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlTypeMapping_Access()
 	 * @model default="PROPERTY"
 	 * @generated
 	 */
@@ -239,7 +227,7 @@ public abstract class AbstractXmlTypeMapping extends AbstractJpaEObject implemen
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Metadata Complete</em>' attribute.
 	 * @see #setMetadataComplete(Boolean)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAbstractXmlTypeMapping_MetadataComplete()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlTypeMapping_MetadataComplete()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.BooleanObject"
 	 * @generated
 	 */
@@ -274,7 +262,7 @@ public abstract class AbstractXmlTypeMapping extends AbstractJpaEObject implemen
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Description</em>' attribute.
 	 * @see #setDescription(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAbstractXmlTypeMapping_Description()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlTypeMapping_Description()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -309,7 +297,7 @@ public abstract class AbstractXmlTypeMapping extends AbstractJpaEObject implemen
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Attributes</em>' containment reference.
 	 * @see #setAttributes(Attributes)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAbstractXmlTypeMapping_Attributes()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlTypeMapping_Attributes()
 	 * @model containment="true"
 	 * @generated
 	 */

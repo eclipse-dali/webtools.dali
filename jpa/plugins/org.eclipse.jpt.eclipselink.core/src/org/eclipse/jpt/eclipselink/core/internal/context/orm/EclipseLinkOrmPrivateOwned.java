@@ -51,13 +51,16 @@ public class EclipseLinkOrmPrivateOwned extends AbstractXmlContextNode
 	
 	protected void initialize(XmlPrivateOwned xmlPrivateOwned) {
 		this.resource = xmlPrivateOwned;
-		this.privateOwned = this.resource.isPrivateOwned();
+		this.privateOwned = this.getResourcePrivateOwned();
 	}
 	
 	protected void update() {
-		setPrivateOwned_(this.resource.isPrivateOwned());
+		setPrivateOwned_(this.getResourcePrivateOwned());
 	}
 	
+	protected boolean getResourcePrivateOwned() {
+		return this.resource.isPrivateOwned();
+	}
 	
 	// **************** validation **************************************
 	

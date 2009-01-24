@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -64,19 +64,19 @@ public class EclipseLinkOrmEmbeddableImpl extends GenericOrmEmbeddable
 	}
 	
 	@Override
-	public void initialize(XmlEmbeddable embeddable) {
-		super.initialize(embeddable);
-		this.customizer.initialize((XmlCustomizerHolder) embeddable, getJavaCustomizer());
-		this.changeTracking.initialize((XmlChangeTrackingHolder) embeddable, getJavaChangeTracking());
-		this.converterHolder.initialize((XmlConvertersHolder) embeddable); 
+	public void initialize() {
+		super.initialize();
+		this.customizer.initialize((XmlCustomizerHolder) this.resourceTypeMapping, getJavaCustomizer());
+		this.changeTracking.initialize((XmlChangeTrackingHolder) this.resourceTypeMapping, getJavaChangeTracking());
+		this.converterHolder.initialize((XmlConvertersHolder) this.resourceTypeMapping); 
 	}
 	
 	@Override
-	public void update(XmlEmbeddable embeddable) {
-		super.update(embeddable);
-		this.customizer.update((XmlCustomizerHolder) embeddable, getJavaCustomizer());
-		this.changeTracking.update((XmlChangeTrackingHolder) embeddable, getJavaChangeTracking());
-		this.converterHolder.update((XmlConvertersHolder) embeddable); 
+	public void update() {
+		super.update();
+		this.customizer.update(getJavaCustomizer());
+		this.changeTracking.update(getJavaChangeTracking());
+		this.converterHolder.update(); 
 	}
 	
 	@Override

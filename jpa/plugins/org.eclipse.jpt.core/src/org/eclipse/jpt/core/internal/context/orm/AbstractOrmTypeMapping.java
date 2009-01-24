@@ -24,7 +24,7 @@ import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping;
+import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.Table;
@@ -33,7 +33,7 @@ import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 
-public abstract class AbstractOrmTypeMapping<T extends AbstractXmlTypeMapping>
+public abstract class AbstractOrmTypeMapping<T extends XmlTypeMapping>
 	extends AbstractXmlContextNode 
 	implements OrmTypeMapping
 {
@@ -247,7 +247,7 @@ public abstract class AbstractOrmTypeMapping<T extends AbstractXmlTypeMapping>
 		return this.resourceTypeMapping;
 	}
 
-	protected AccessType defaultAccess() {
+	protected AccessType buildDefaultAccess() {
 		if (! isMetadataComplete()) {
 			if (getJavaPersistentType() != null) {
 				if (getJavaPersistentType().hasAnyAttributeMappingAnnotations()) {
@@ -272,9 +272,9 @@ public abstract class AbstractOrmTypeMapping<T extends AbstractXmlTypeMapping>
 	}
 	
 	protected void initializeJavaPersistentType() {
-		JavaResourcePersistentType persistentTypeResource = getJavaResourcePersistentType();
-		if (persistentTypeResource != null) {
-			this.javaPersistentType = buildJavaPersistentType(persistentTypeResource);
+		JavaResourcePersistentType jrpt = getJavaResourcePersistentType();
+		if (jrpt != null) {
+			this.javaPersistentType = buildJavaPersistentType(jrpt);
 		}	
 	}
 
@@ -305,34 +305,46 @@ public abstract class AbstractOrmTypeMapping<T extends AbstractXmlTypeMapping>
 		}		
 	}
 	
-	protected JavaPersistentType buildJavaPersistentType(JavaResourcePersistentType resourcePersistentType) {
-		return getJpaFactory().buildJavaPersistentType(this, resourcePersistentType);
+	protected JavaPersistentType buildJavaPersistentType(JavaResourcePersistentType jrpt) {
+		return getJpaFactory().buildJavaPersistentType(this, jrpt);
 	}
-
-	public void initialize(T mapping) {
-		this.resourceTypeMapping = mapping;
-		this.class_ = mapping.getClassName();
+	
+	@SuppressWarnings("unchecked")
+	public void initialize(XmlTypeMapping resourceTypeMapping) {
+		this.resourceTypeMapping = (T) resourceTypeMapping;
+		this.initialize();
+	}
+	
+	protected void initialize() {
+		this.class_ = this.getResourceClassName();
 		this.initializeJavaPersistentType();
-		this.specifiedMetadataComplete = this.metadataComplete(mapping);
+		this.specifiedMetadataComplete = this.getResourceMetadataComplete();
 		this.defaultMetadataComplete = this.getPersistentType().isDefaultMetadataComplete();
-		this.specifiedAccess = AccessType.fromXmlResourceModel(mapping.getAccess());
-		this.defaultAccess = this.defaultAccess();
+		this.specifiedAccess = this.getResourceAccess();
+		this.defaultAccess = this.buildDefaultAccess();
 	}
 	
-	public void update(T mapping) {
-		this.resourceTypeMapping = mapping;
-		this.setClass(mapping.getClassName());
+	public void update() {
+		this.setClass(this.getResourceClassName());
 		this.updateJavaPersistentType();
-		this.setSpecifiedMetadataComplete(this.metadataComplete(mapping));
+		this.setSpecifiedMetadataComplete(this.getResourceMetadataComplete());
 		this.setDefaultMetadataComplete(this.getPersistentType().isDefaultMetadataComplete());
-		this.setSpecifiedAccess(AccessType.fromXmlResourceModel(mapping.getAccess()));
-		this.setDefaultAccess(this.defaultAccess());
+		this.setSpecifiedAccess(this.getResourceAccess());
+		this.setDefaultAccess(this.buildDefaultAccess());
 	}
 	
-	protected Boolean metadataComplete(AbstractXmlTypeMapping mapping) {
-		return mapping.getMetadataComplete();
+	protected String getResourceClassName() {
+		return this.resourceTypeMapping.getClassName();
+	}
+	
+	protected Boolean getResourceMetadataComplete() {
+		return this.resourceTypeMapping.getMetadataComplete();
 	}
 
+	protected AccessType getResourceAccess() {
+		return AccessType.fromXmlResourceModel(this.resourceTypeMapping.getAccess());
+	}
+	
 	public String getOrmType() {
 		return this.getPersistentType().getOrmType();
 	}

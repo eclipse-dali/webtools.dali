@@ -20,9 +20,9 @@ import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmVersionMapping;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
+import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlVersion;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -105,14 +105,14 @@ public class GenericOrmVersionMapping extends AbstractOrmAttributeMapping<XmlVer
 		firePropertyChanged(SPECIFIED_CONVERTER_PROPERTY, oldConverter, newConverter);
 	}	
 
-	public XmlVersion addToResourceModel(AbstractXmlTypeMapping typeMapping) {
+	public XmlVersion addToResourceModel(XmlTypeMapping typeMapping) {
 		XmlVersion version = OrmFactory.eINSTANCE.createXmlVersionImpl();
 		getPersistentAttribute().initialize(version);
 		typeMapping.getAttributes().getVersions().add(version);
 		return version;
 	}
 	
-	public void removeFromResourceModel(AbstractXmlTypeMapping typeMapping) {
+	public void removeFromResourceModel(XmlTypeMapping typeMapping) {
 		typeMapping.getAttributes().getVersions().remove(this.resourceAttributeMapping);
 	}
 

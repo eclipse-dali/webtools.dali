@@ -11,8 +11,8 @@ package org.eclipse.jpt.core.context.orm;
 
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.XmlContextNode;
-import org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
+import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**
@@ -46,9 +46,9 @@ public interface OrmAttributeMapping extends AttributeMapping, XmlContextNode
 	 */
 	int getXmlSequence();
 
-	void removeFromResourceModel(AbstractXmlTypeMapping typeMapping);
+	void removeFromResourceModel(XmlTypeMapping typeMapping);
 	
-	XmlAttributeMapping addToResourceModel(AbstractXmlTypeMapping typeMapping);
+	XmlAttributeMapping addToResourceModel(XmlTypeMapping typeMapping);
 
 
 	void initializeOn(OrmAttributeMapping newMapping);

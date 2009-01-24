@@ -13,7 +13,7 @@ package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 import java.util.List;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmManyToManyMapping;
-import org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping;
+import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkRelationshipMapping;
 import org.eclipse.jpt.eclipselink.core.context.JoinFetch;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
@@ -42,7 +42,7 @@ public class EclipseLinkOrmManyToManyMapping
 	// **************** resource-context interaction ***************************
 	
 	@Override
-	public XmlManyToMany addToResourceModel(AbstractXmlTypeMapping typeMapping) {
+	public XmlManyToMany addToResourceModel(XmlTypeMapping typeMapping) {
 		XmlManyToMany manyToMany = EclipseLinkOrmFactory.eINSTANCE.createXmlManyToManyImpl();
 		getPersistentAttribute().initialize(manyToMany);
 		typeMapping.getAttributes().getManyToManys().add(manyToMany);

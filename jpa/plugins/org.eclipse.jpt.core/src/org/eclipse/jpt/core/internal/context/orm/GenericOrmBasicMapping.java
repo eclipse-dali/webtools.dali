@@ -24,10 +24,10 @@ import org.eclipse.jpt.core.context.orm.OrmConverter;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlBasic;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
+import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
@@ -241,14 +241,14 @@ public class GenericOrmBasicMapping extends AbstractOrmAttributeMapping<XmlBasic
 		return null;
 	}
 	
-	public XmlBasic addToResourceModel(AbstractXmlTypeMapping typeMapping) {
+	public XmlBasic addToResourceModel(XmlTypeMapping typeMapping) {
 		XmlBasic basic = OrmFactory.eINSTANCE.createXmlBasicImpl();
 		getPersistentAttribute().initialize(basic);
 		typeMapping.getAttributes().getBasics().add(basic);
 		return basic;
 	}
 	
-	public void removeFromResourceModel(AbstractXmlTypeMapping typeMapping) {
+	public void removeFromResourceModel(XmlTypeMapping typeMapping) {
 		typeMapping.getAttributes().getBasics().remove(this.resourceAttributeMapping);
 	}
 	

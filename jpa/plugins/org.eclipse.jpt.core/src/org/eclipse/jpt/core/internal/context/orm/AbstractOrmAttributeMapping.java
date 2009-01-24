@@ -187,6 +187,7 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 		return this.resourceAttributeMapping;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void initialize(XmlAttributeMapping resourceAttributeMapping) {
 		this.resourceAttributeMapping = (T) resourceAttributeMapping;
 		this.initialize();

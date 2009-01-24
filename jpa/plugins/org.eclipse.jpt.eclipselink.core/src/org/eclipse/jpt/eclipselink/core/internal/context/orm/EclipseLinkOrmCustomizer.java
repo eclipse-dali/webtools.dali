@@ -89,17 +89,21 @@ public class EclipseLinkOrmCustomizer extends AbstractXmlContextNode
 	
 	protected void initialize(XmlCustomizerHolder resource, Customizer javaCustomizer) {
 		this.resource = resource;
-		this.defaultCustomizerClass = (javaCustomizer == null) ? null : javaCustomizer.getCustomizerClass();
-		this.specifiedCustomizerClass = specifiedCustomizerClass(getResourceCustomizer());
+		this.defaultCustomizerClass = getJavaCustomizerClass(javaCustomizer);
+		this.specifiedCustomizerClass = getResourceCustomizerClass();
 	}
 	
-	protected void update(XmlCustomizerHolder resource, Customizer javaCustomizer) {
-		this.resource = resource;
-		setDefaultCustomizerClass((javaCustomizer == null) ? null : javaCustomizer.getCustomizerClass());
-		setSpecifiedCustomizerClass_(specifiedCustomizerClass(getResourceCustomizer()));
+	protected void update(Customizer javaCustomizer) {
+		setDefaultCustomizerClass(getJavaCustomizerClass(javaCustomizer));
+		setSpecifiedCustomizerClass_(getResourceCustomizerClass());
 	}
 	
-	protected String specifiedCustomizerClass(XmlCustomizer resource) {
+	protected String getJavaCustomizerClass(Customizer javaCustomizer) {
+		return (javaCustomizer == null) ? null : javaCustomizer.getCustomizerClass();
+	}
+	
+	protected String getResourceCustomizerClass() {
+		XmlCustomizer resource = getResourceCustomizer();
 		return (resource == null) ? null : resource.getCustomizerClassName();
 	}
 	

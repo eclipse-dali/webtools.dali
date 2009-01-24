@@ -14,7 +14,7 @@ import java.util.List;
 import org.eclipse.jpt.core.context.orm.OrmConverter;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmVersionMapping;
-import org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping;
+import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.eclipselink.core.context.Convert;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkVersionMapping;
 import org.eclipse.jpt.eclipselink.core.context.Mutable;
@@ -63,7 +63,7 @@ public class EclipseLinkOrmVersionMapping extends GenericOrmVersionMapping
 	// **************** resource-context interaction ***************************
 	
 	@Override
-	public XmlVersion addToResourceModel(AbstractXmlTypeMapping typeMapping) {
+	public XmlVersion addToResourceModel(XmlTypeMapping typeMapping) {
 		XmlVersion version = EclipseLinkOrmFactory.eINSTANCE.createXmlVersionImpl();
 		getPersistentAttribute().initialize(version);
 		typeMapping.getAttributes().getVersions().add(version);

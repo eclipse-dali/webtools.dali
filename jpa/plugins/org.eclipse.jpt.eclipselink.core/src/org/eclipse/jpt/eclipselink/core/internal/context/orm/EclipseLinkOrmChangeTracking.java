@@ -81,20 +81,20 @@ public class EclipseLinkOrmChangeTracking extends AbstractXmlContextNode
 	protected void initialize(XmlChangeTrackingHolder xmlChangeTrackingHolder, ChangeTracking javaChangeTracking) {
 		this.resource = xmlChangeTrackingHolder;
 		this.defaultType = calculateDefaultType(javaChangeTracking);
-		this.specifiedType = calculateSpecifiedType(xmlChangeTrackingHolder);
+		this.specifiedType = getResourceChangeTracking();
 	}
 	
-	protected void update(XmlChangeTrackingHolder xmlChangeTrackingHolder, ChangeTracking javaChangeTracking) {
+	protected void update(ChangeTracking javaChangeTracking) {
 		setDefaultType_(calculateDefaultType(javaChangeTracking));
-		setSpecifiedType_(calculateSpecifiedType(xmlChangeTrackingHolder));
+		setSpecifiedType_(getResourceChangeTracking());
 	}
 	
 	protected ChangeTrackingType calculateDefaultType(ChangeTracking javaChangeTracking) {
 		return (javaChangeTracking != null) ? javaChangeTracking.getType() : ChangeTracking.DEFAULT_TYPE;
 	}
 	
-	protected ChangeTrackingType calculateSpecifiedType(XmlChangeTrackingHolder xmlChangeTrackingHolder) {
-		XmlChangeTracking xmlChangeTracking = xmlChangeTrackingHolder.getChangeTracking();
+	protected ChangeTrackingType getResourceChangeTracking() {
+		XmlChangeTracking xmlChangeTracking = this.resource.getChangeTracking();
 		return (xmlChangeTracking != null) ? ChangeTrackingType.fromOrmResourceModel(xmlChangeTracking.getType()) : null;
 	}
 	

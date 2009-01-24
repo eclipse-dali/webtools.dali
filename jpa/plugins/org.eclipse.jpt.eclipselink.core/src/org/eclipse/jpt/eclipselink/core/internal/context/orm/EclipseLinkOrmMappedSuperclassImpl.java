@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -83,23 +83,23 @@ public class EclipseLinkOrmMappedSuperclassImpl extends GenericOrmMappedSupercla
 	}
 	
 	@Override
-	public void initialize(XmlMappedSuperclass mappedSuperclass) {
-		super.initialize(mappedSuperclass);
-		this.readOnly.initialize((XmlReadOnly) mappedSuperclass, getJavaReadOnly());
-		this.customizer.initialize((XmlCustomizerHolder) mappedSuperclass, getJavaCustomizer());
-		this.changeTracking.initialize((XmlChangeTrackingHolder) mappedSuperclass, getJavaChangeTracking());
-		this.caching.initialize((XmlCacheHolder) mappedSuperclass, getJavaCaching());
-		this.converterHolder.initialize((XmlConvertersHolder) mappedSuperclass); 
+	public void initialize() {
+		super.initialize();
+		this.readOnly.initialize((XmlReadOnly) this.resourceTypeMapping, getJavaReadOnly());
+		this.customizer.initialize((XmlCustomizerHolder) this.resourceTypeMapping, getJavaCustomizer());
+		this.changeTracking.initialize((XmlChangeTrackingHolder) this.resourceTypeMapping, getJavaChangeTracking());
+		this.caching.initialize((XmlCacheHolder) this.resourceTypeMapping, getJavaCaching());
+		this.converterHolder.initialize((XmlConvertersHolder) this.resourceTypeMapping); 
 	}
 	
 	@Override
-	public void update(XmlMappedSuperclass mappedSuperclass) {
-		super.update(mappedSuperclass);
-		this.readOnly.update((XmlReadOnly) mappedSuperclass, getJavaReadOnly());
-		this.customizer.update((XmlCustomizerHolder) mappedSuperclass, getJavaCustomizer());
-		this.changeTracking.update((XmlChangeTrackingHolder) mappedSuperclass, getJavaChangeTracking());
-		this.caching.update((XmlCacheHolder) mappedSuperclass, getJavaCaching());
-		this.converterHolder.update((XmlConvertersHolder) mappedSuperclass); 
+	public void update() {
+		super.update();
+		this.readOnly.update(getJavaReadOnly());
+		this.customizer.update(getJavaCustomizer());
+		this.changeTracking.update(getJavaChangeTracking());
+		this.caching.update(getJavaCaching());
+		this.converterHolder.update(); 
 	}
 	
 	@Override

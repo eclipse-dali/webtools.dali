@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -1321,9 +1321,9 @@ public class GenericOrmEntity
 	
 	
 	@Override
-	public void initialize(XmlEntity entity) {
-		super.initialize(entity);
-		this.specifiedName = entity.getName();
+	public void initialize() {
+		super.initialize();
+		this.specifiedName = this.resourceTypeMapping.getName();
 		this.defaultName = this.buildDefaultName();
 		this.initializeInheritance(this.getResourceInheritance());
 		this.discriminatorColumn.initialize(this.resourceTypeMapping);
@@ -1483,8 +1483,8 @@ public class GenericOrmEntity
 	}
 
 	@Override
-	public void update(XmlEntity entity) {
-		super.update(entity);
+	public void update() {
+		super.update();
 		this.setSpecifiedName(this.resourceTypeMapping.getName());
 		this.setDefaultName(this.buildDefaultName());
 		this.updateInheritance(this.getResourceInheritance());

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
@@ -17,7 +18,6 @@ import java.util.ListIterator;
 
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.Generator;
 import org.eclipse.jpt.core.context.MappingFileRoot;
@@ -39,16 +39,13 @@ import org.eclipse.jpt.core.context.orm.PersistenceUnitMetadata;
 import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
-import org.eclipse.jpt.core.resource.orm.XmlEmbeddable;
-import org.eclipse.jpt.core.resource.orm.XmlEntity;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
-import org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass;
 import org.eclipse.jpt.core.resource.orm.XmlNamedNativeQuery;
 import org.eclipse.jpt.core.resource.orm.XmlNamedQuery;
 import org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator;
 import org.eclipse.jpt.core.resource.orm.XmlTableGenerator;
+import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Catalog;
 import org.eclipse.jpt.db.Schema;
@@ -339,7 +336,7 @@ public class GenericEntityMappings
 			// adds short name if package name is specified
 			className = className.substring(getPackage().length() + 1);
 		}
-		AbstractXmlTypeMapping typeMapping = persistentType.getMapping().addToResourceModel(this.xmlEntityMappings);
+		XmlTypeMapping typeMapping = persistentType.getMapping().addToResourceModel(this.xmlEntityMappings);
 		typeMapping.setClassName(className);
 		fireItemAdded(PERSISTENT_TYPES_LIST, index, persistentType);
 		return persistentType;
@@ -347,10 +344,6 @@ public class GenericEntityMappings
 	
 	protected OrmPersistentType buildPersistentType(String mappingKey) {
 		return getJpaFactory().buildOrmPersistentType(this, mappingKey);
-	}
-	
-	protected void addPersistentType(OrmPersistentType ormPersistentType) { 
-		addItemToList(ormPersistentType, this.persistentTypes, PERSISTENT_TYPES_LIST);
 	}
 
 	protected int insertionIndex(OrmPersistentType ormPersistentType) {
@@ -374,20 +367,24 @@ public class GenericEntityMappings
 	}
 
 	public void removePersistentType(int index) {
-		OrmPersistentType ormPersistentType = this.persistentTypes.get(index);
-		ormPersistentType.dispose();
+		OrmPersistentType persistentType = this.persistentTypes.get(index);
+		persistentType.dispose();
 		this.persistentTypes.remove(index);
-		ormPersistentType.getMapping().removeFromResourceModel(this.xmlEntityMappings);
-		fireItemRemoved(PERSISTENT_TYPES_LIST, index, ormPersistentType);		
+		persistentType.getMapping().removeFromResourceModel(this.xmlEntityMappings);
+		fireItemRemoved(PERSISTENT_TYPES_LIST, index, persistentType);		
 	}
 	
-	public void removePersistentType(OrmPersistentType ormPersistentType) {
-		removePersistentType(this.persistentTypes.indexOf(ormPersistentType));	
+	public void removePersistentType(OrmPersistentType persistentType) {
+		removePersistentType(this.persistentTypes.indexOf(persistentType));	
 	}
 	
-	protected void removeOrmPersistentType_(OrmPersistentType ormPersistentType) {
-		ormPersistentType.dispose();
-		removeItemFromList(ormPersistentType, this.persistentTypes, PERSISTENT_TYPES_LIST);
+	protected void removePersistentType_(OrmPersistentType persistentType) {
+		persistentType.dispose();
+		removeItemFromList(persistentType, this.persistentTypes, PERSISTENT_TYPES_LIST);
+	}
+	
+	protected void movePersistentType_(int index, OrmPersistentType persistentType) {
+		moveItemInList(index, this.persistentTypes.indexOf(persistentType), this.persistentTypes, PERSISTENT_TYPES_LIST);
 	}
 
 
@@ -628,33 +625,9 @@ public class GenericEntityMappings
 	}
 	
 	protected void initializePersistentTypes() {
-		this.initializeMappedSuperclasses();
-		this.initializeEntities();
-		this.initializeEmbeddables();
-	}
-	
-	protected void initializeMappedSuperclasses() {
-		for (XmlMappedSuperclass mappedSuperclass : this.xmlEntityMappings.getMappedSuperclasses()) {
-			OrmPersistentType ormPersistentType = buildPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY);
-			ormPersistentType.initialize(mappedSuperclass);
-			this.persistentTypes.add(ormPersistentType);
+		for (XmlTypeMapping typeMapping : this.xmlEntityMappings.getTypeMappings()) {
+			addPersistentType(typeMapping);
 		}	
-	}
-	
-	protected void initializeEntities() {
-		for (XmlEntity entity : this.xmlEntityMappings.getEntities()) {
-			OrmPersistentType ormPersistentType = buildPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY);
-			ormPersistentType.initialize(entity);
-			this.persistentTypes.add(ormPersistentType);
-		}				
-	}
-	
-	protected void initializeEmbeddables() {
-		for (XmlEmbeddable embeddable : this.xmlEntityMappings.getEmbeddables()) {
-			OrmPersistentType ormPersistentType = buildPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
-			ormPersistentType.initialize(embeddable);
-			this.persistentTypes.add(ormPersistentType);
-		}
 	}
 	
 	protected void initializeTableGenerators() {
@@ -708,58 +681,45 @@ public class GenericEntityMappings
 	protected AccessType buildSpecifiedAccess() {
 		return AccessType.fromXmlResourceModel(this.xmlEntityMappings.getAccess());
 	}
-	
+
 	protected void updatePersistentTypes() {
-		ListIterator<OrmPersistentType> ormPersistentTypes = this.persistentTypes();
-		this.updateMappedSuperclasses(ormPersistentTypes);
-		this.updateEntities(ormPersistentTypes);
-		this.updateEmbeddables(ormPersistentTypes);
+		Collection<OrmPersistentType> contextTypesToRemove = CollectionTools.collection(persistentTypes());
+		Collection<OrmPersistentType> contextTypesToUpdate = new ArrayList<OrmPersistentType>();
+		int resourceIndex = 0;
 		
-		while (ormPersistentTypes.hasNext()) {
-			this.removeOrmPersistentType_(ormPersistentTypes.next());
-		}		
+		for (XmlTypeMapping resourceMapping : this.xmlEntityMappings.getTypeMappings()) {
+			boolean contextAttributeFound = false;
+			for (OrmPersistentType contextType : contextTypesToRemove) {
+				if (contextType.getMapping().getResourceTypeMapping() == resourceMapping) {
+					movePersistentType_(resourceIndex, contextType);
+					contextTypesToRemove.remove(contextType);
+					contextTypesToUpdate.add(contextType);
+					contextAttributeFound = true;
+					break;
+				}
+			}
+			if (!contextAttributeFound) {
+				OrmPersistentType ormPersistentType = addPersistentType(resourceMapping);
+				fireItemAdded(PERSISTENT_TYPES_LIST, persistentTypesSize(), ormPersistentType);
+			}
+			resourceIndex++;
+		}
+		for (OrmPersistentType contextType : contextTypesToRemove) {
+			removePersistentType_(contextType);
+		}
+		//first handle adding/removing of the persistent types, then update the others last, 
+		//this causes less churn in the update process
+		for (OrmPersistentType contextType : contextTypesToUpdate) {
+			contextType.update();
+		}	
 	}
 	
-	protected void updateMappedSuperclasses(ListIterator<OrmPersistentType> ormPersistentTypes) {
-		ListIterator<XmlMappedSuperclass> mappedSuperclasses = new CloneListIterator<XmlMappedSuperclass>(this.xmlEntityMappings.getMappedSuperclasses());//prevent ConcurrentModificiationException
-		for (XmlMappedSuperclass mappedSuperclass :  CollectionTools.iterable(mappedSuperclasses)) {
-			if (ormPersistentTypes.hasNext()) {
-				ormPersistentTypes.next().update(mappedSuperclass);
-			}
-			else {
-				OrmPersistentType ormPersistentType = buildPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY);
-				ormPersistentType.initialize(mappedSuperclass);
-				addPersistentType(ormPersistentType);
-			}
-		}
-	}
-	
-	protected void updateEntities(ListIterator<OrmPersistentType> ormPersistentTypes) {
-		ListIterator<XmlEntity> entities = new CloneListIterator<XmlEntity>(this.xmlEntityMappings.getEntities());//prevent ConcurrentModificiationException
-		for (XmlEntity entity : CollectionTools.iterable(entities)) {
-			if (ormPersistentTypes.hasNext()) {
-				ormPersistentTypes.next().update(entity);
-			}
-			else {
-				OrmPersistentType ormPersistentType = buildPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY);
-				ormPersistentType.initialize(entity);
-				addPersistentType(ormPersistentType);
-			}
-		}
-	}
-	
-	protected void updateEmbeddables(ListIterator<OrmPersistentType> ormPersistentTypes) {
-		ListIterator<XmlEmbeddable> embeddables = new CloneListIterator<XmlEmbeddable>(this.xmlEntityMappings.getEmbeddables());//prevent ConcurrentModificiationException
-		for (XmlEmbeddable embeddable : CollectionTools.iterable(embeddables)) {
-			if (ormPersistentTypes.hasNext()) {
-				ormPersistentTypes.next().update(embeddable);
-			}
-			else {
-				OrmPersistentType ormPersistentType = buildPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
-				ormPersistentType.initialize(embeddable);
-				addPersistentType(ormPersistentType);
-			}
-		}
+	//not firing change notification so this can be reused in initialize and update
+	protected OrmPersistentType addPersistentType(XmlTypeMapping resourceMapping) {
+		OrmPersistentType ormPersistentType = buildPersistentType(resourceMapping.getMappingKey());
+		this.persistentTypes.add(ormPersistentType);
+		ormPersistentType.initialize(resourceMapping);
+		return ormPersistentType;
 	}
 	
 	protected void updateTableGenerators() {

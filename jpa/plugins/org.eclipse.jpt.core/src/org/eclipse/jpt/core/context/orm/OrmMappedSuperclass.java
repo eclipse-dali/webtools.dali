@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,6 @@ package org.eclipse.jpt.core.context.orm;
 import java.util.Iterator;
 import org.eclipse.jpt.core.context.MappedSuperclass;
 import org.eclipse.jpt.core.context.java.JavaMappedSuperclass;
-import org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass;
 
 /**
  * 
@@ -31,15 +30,7 @@ public interface OrmMappedSuperclass
 	 * Return null if there is no java persistent type or it is not a mapped superclass.
 	 */
 	JavaMappedSuperclass getJavaMappedSuperclass();
-	
-	void initialize(XmlMappedSuperclass mappedSuperclass);
-
-	/**
-	 * Update the OrmMappedSuperclass context model object to match the XmlMappedSuperclass 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
-	 */
-	void update(XmlMappedSuperclass mappedSuperclass);
-	
+		
 	Iterator<OrmPersistentAttribute> overridableAttributes();
 
 	Iterator<OrmPersistentAttribute> overridableAssociations();

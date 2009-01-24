@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -175,27 +175,18 @@ public class GenericOrmMappedSuperclass extends AbstractOrmTypeMapping<XmlMapped
 	
 	
 	@Override
-	public void initialize(XmlMappedSuperclass mappedSuperclass) {
-		super.initialize(mappedSuperclass);
-		this.initializeIdClass(this.getResourceIdClass());
-	}
-	
-	protected void initializeIdClass(XmlIdClass idClassResource) {
-		this.idClass = this.idClass(idClassResource);	
+	public void initialize() {
+		super.initialize();
+		this.idClass = this.getResourceIdClassName(this.getResourceIdClass());
 	}
 	
 	@Override
-	public void update(XmlMappedSuperclass mappedSuperclass) {
-		super.update(mappedSuperclass);
-		this.updateIdClass(this.getResourceIdClass());
-	}
-	
-	protected void updateIdClass(XmlIdClass idClassResource) {
-		this.setIdClass_(this.idClass(idClassResource));
+	public void update() {
+		super.update();
+		this.setIdClass_(this.getResourceIdClassName(this.getResourceIdClass()));
 	}
 
-	protected String idClass(XmlIdClass idClassResource) {
+	protected String getResourceIdClassName(XmlIdClass idClassResource) {
 		return idClassResource == null ? null : idClassResource.getClassName();
 	}
-
 }

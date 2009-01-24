@@ -14,7 +14,7 @@ import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.eclipselink.core.context.TypeConverter;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlTypeConverter;
 
-public class EclipseLinkOrmTypeConverter extends EclipseLinkOrmConverter 
+public class EclipseLinkOrmTypeConverter extends EclipseLinkOrmConverter<XmlTypeConverter> 
 	implements TypeConverter
 {	
 	private String dataType;
@@ -25,18 +25,11 @@ public class EclipseLinkOrmTypeConverter extends EclipseLinkOrmConverter
 	public EclipseLinkOrmTypeConverter(XmlContextNode parent, XmlTypeConverter xmlResource) {
 		super(parent, xmlResource);
 	}
-	
-	
+		
 	public String getType() {
 		return EclipseLinkConverter.TYPE_CONVERTER;
 	}
-	
-	@Override
-	protected XmlTypeConverter getXmlResource() {
-		return (XmlTypeConverter) super.getXmlResource();
-	}
-	
-	
+		
 	// **************** data type **********************************************
 	
 	public String getDataType() {
@@ -79,23 +72,25 @@ public class EclipseLinkOrmTypeConverter extends EclipseLinkOrmConverter
 	
 	// **************** resource interaction ***********************************
 	
+	@Override
 	protected void initialize(XmlTypeConverter xmlResource) {
 		super.initialize(xmlResource);
-		this.dataType = calculateDataType();
-		this.objectType = calculateObjectType();
+		this.dataType = getResourceDataType();
+		this.objectType = getResourceObjectType();
 	}
 	
+	@Override
 	public void update() {
 		super.update();
-		setDataType_(calculateDataType());
-		setObjectType_(calculateObjectType());
+		setDataType_(getResourceDataType());
+		setObjectType_(getResourceObjectType());
 	}
 	
-	protected String calculateDataType() {
-		return getXmlResource().getDataType();
+	protected String getResourceDataType() {
+		return this.resourceConverter.getDataType();
 	}
 	
-	protected String calculateObjectType() {
-		return getXmlResource().getObjectType();
+	protected String getResourceObjectType() {
+		return this.resourceConverter.getObjectType();
 	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.resource.orm;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.ListIterator;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
@@ -20,6 +23,8 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.common.JpaEObject;
+import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 /**
  * <!-- begin-user-doc -->
@@ -1075,5 +1080,22 @@ public class XmlEntityMappings extends AbstractJpaEObject implements JpaEObject
 	@Override
 	public JpaEObject getRoot() {
 		return this;
+	}
+	
+	public List<XmlTypeMapping> getTypeMappings() {
+		List<XmlTypeMapping> typeMappings = new ArrayList<XmlTypeMapping>();
+		ListIterator<XmlMappedSuperclass> mappedSuperclasses = new CloneListIterator<XmlMappedSuperclass>(this.getMappedSuperclasses());//prevent ConcurrentModificiationException
+		for (XmlMappedSuperclass mapping : CollectionTools.iterable(mappedSuperclasses)) {
+			typeMappings.add(mapping);
+		}
+		ListIterator<XmlEntity> entities = new CloneListIterator<XmlEntity>(this.getEntities());//prevent ConcurrentModificiationException
+		for (XmlEntity mapping : CollectionTools.iterable(entities)) {
+			typeMappings.add(mapping);
+		}
+		ListIterator<XmlEmbeddable> embeddables = new CloneListIterator<XmlEmbeddable>(this.getEmbeddables());//prevent ConcurrentModificiationException
+		for (XmlEmbeddable mapping : CollectionTools.iterable(embeddables)) {
+			typeMappings.add(mapping);
+		}
+		return typeMappings;
 	}
 }

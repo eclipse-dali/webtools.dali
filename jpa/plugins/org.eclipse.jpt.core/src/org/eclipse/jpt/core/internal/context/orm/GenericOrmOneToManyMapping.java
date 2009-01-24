@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the terms of
  * the Eclipse Public License v1.0, which accompanies this distribution and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
@@ -15,9 +15,9 @@ import org.eclipse.jpt.core.context.NonOwningMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmOneToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
-import org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlOneToMany;
+import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 
 
 public class GenericOrmOneToManyMapping extends AbstractOrmMultiRelationshipMapping<XmlOneToMany>
@@ -52,14 +52,14 @@ public class GenericOrmOneToManyMapping extends AbstractOrmMultiRelationshipMapp
 		return (mappedByKey == MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 	}
 	
-	public XmlOneToMany addToResourceModel(AbstractXmlTypeMapping typeMapping) {
+	public XmlOneToMany addToResourceModel(XmlTypeMapping typeMapping) {
 		XmlOneToMany oneToMany = OrmFactory.eINSTANCE.createXmlOneToManyImpl();
 		getPersistentAttribute().initialize(oneToMany);
 		typeMapping.getAttributes().getOneToManys().add(oneToMany);
 		return oneToMany;
 	}
 	
-	public void removeFromResourceModel(AbstractXmlTypeMapping typeMapping) {
+	public void removeFromResourceModel(XmlTypeMapping typeMapping) {
 		typeMapping.getAttributes().getOneToManys().remove(this.resourceAttributeMapping);
 	}
 }

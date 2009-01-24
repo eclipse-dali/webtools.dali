@@ -77,13 +77,14 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlPersistenceUnitDefaults/cascadePersist"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlPersistenceUnitDefaults/entityListeners"/>
     </genClasses>
-    <genClasses image="false" ecoreClass="orm.ecore#//AbstractXmlTypeMapping">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//AbstractXmlTypeMapping/className"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//AbstractXmlTypeMapping/access"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//AbstractXmlTypeMapping/metadataComplete"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//AbstractXmlTypeMapping/description"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//AbstractXmlTypeMapping/attributes"/>
+    <genClasses image="false" ecoreClass="orm.ecore#//XmlTypeMapping">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlTypeMapping/className"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlTypeMapping/access"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlTypeMapping/metadataComplete"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlTypeMapping/description"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlTypeMapping/attributes"/>
     </genClasses>
+    <genClasses image="false" ecoreClass="orm.ecore#//AbstractXmlTypeMapping"/>
     <genClasses ecoreClass="orm.ecore#//XmlMappedSuperclass">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlMappedSuperclass/idClass"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlMappedSuperclass/excludeDefaultListeners"/>

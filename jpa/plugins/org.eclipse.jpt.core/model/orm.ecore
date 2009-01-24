@@ -46,7 +46,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="entityListeners" eType="#//EntityListeners"
         containment="true" resolveProxies="false"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="AbstractXmlTypeMapping" abstract="true">
+  <eClassifiers xsi:type="ecore:EClass" name="XmlTypeMapping" abstract="true" interface="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="className" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="access" eType="#//AccessType"
@@ -56,6 +56,8 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="attributes" eType="#//Attributes"
         containment="true" resolveProxies="false"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="AbstractXmlTypeMapping" abstract="true"
+      eSuperTypes="#//XmlTypeMapping"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlMappedSuperclass" eSuperTypes="#//AbstractXmlTypeMapping">
     <eStructuralFeatures xsi:type="ecore:EReference" name="idClass" eType="#//XmlIdClass"
         containment="true" resolveProxies="false"/>

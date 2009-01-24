@@ -12,7 +12,7 @@ package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 import java.util.List;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmOneToOneMapping;
-import org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping;
+import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToOneMapping;
 import org.eclipse.jpt.eclipselink.core.context.JoinFetch;
 import org.eclipse.jpt.eclipselink.core.context.PrivateOwned;
@@ -49,7 +49,7 @@ public class EclipseLinkOrmOneToOneMapping extends GenericOrmOneToOneMapping
 	// **************** resource-context interaction ***************************
 	
 	@Override
-	public XmlOneToOne addToResourceModel(AbstractXmlTypeMapping typeMapping) {
+	public XmlOneToOne addToResourceModel(XmlTypeMapping typeMapping) {
 		XmlOneToOne oneToOne = EclipseLinkOrmFactory.eINSTANCE.createXmlOneToOneImpl();
 		getPersistentAttribute().initialize(oneToOne);
 		typeMapping.getAttributes().getOneToOnes().add(oneToOne);

@@ -16,7 +16,7 @@ import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConverter;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public class EclipseLinkOrmCustomConverter extends EclipseLinkOrmConverter
+public class EclipseLinkOrmCustomConverter extends EclipseLinkOrmConverter<XmlConverter>
 	implements CustomConverter
 {	
 	private String converterClass;
@@ -30,12 +30,7 @@ public class EclipseLinkOrmCustomConverter extends EclipseLinkOrmConverter
 	public String getType() {
 		return EclipseLinkConverter.CUSTOM_CONVERTER;
 	}
-	
-	@Override
-	protected XmlConverter getXmlResource() {
-		return (XmlConverter) super.getXmlResource();
-	}
-	
+
 	
 	// **************** converter class ****************************************
 	
@@ -46,7 +41,7 @@ public class EclipseLinkOrmCustomConverter extends EclipseLinkOrmConverter
 	public void setConverterClass(String newConverterClass) {
 		String oldConverterClass = this.converterClass;
 		this.converterClass = newConverterClass;
-		getXmlResource().setClassName(newConverterClass);
+		this.resourceConverter.setClassName(newConverterClass);
 		firePropertyChanged(CONVERTER_CLASS_PROPERTY, oldConverterClass, newConverterClass);
 	}
 	
@@ -59,18 +54,20 @@ public class EclipseLinkOrmCustomConverter extends EclipseLinkOrmConverter
 	
 	// **************** resource interaction ***********************************
 	
+	@Override
 	protected void initialize(XmlConverter xmlResource) {
 		super.initialize(xmlResource);
-		this.converterClass = calculateConverterClass();
+		this.converterClass = getResourceClassName();
 	}
 	
+	@Override
 	public void update() {
 		super.update();
-		setConverterClass_(calculateConverterClass());
+		setConverterClass_(getResourceClassName());
 	}
 	
-	protected String calculateConverterClass() {
-		return getXmlResource().getClassName();
+	protected String getResourceClassName() {
+		return this.resourceConverter.getClassName();
 	}
 	
 	

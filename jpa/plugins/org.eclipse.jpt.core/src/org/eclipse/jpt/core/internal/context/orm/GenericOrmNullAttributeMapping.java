@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,9 +11,9 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
-import org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlNullAttributeMapping;
+import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 
 
 public class GenericOrmNullAttributeMapping extends AbstractOrmAttributeMapping<XmlNullAttributeMapping>
@@ -35,11 +35,11 @@ public class GenericOrmNullAttributeMapping extends AbstractOrmAttributeMapping<
 		return null;
 	}
 	
-	public XmlAttributeMapping addToResourceModel(AbstractXmlTypeMapping typeMapping) {
+	public XmlAttributeMapping addToResourceModel(XmlTypeMapping typeMapping) {
 		throw new UnsupportedOperationException();
 	}
 
-	public void removeFromResourceModel(AbstractXmlTypeMapping typeMapping) {
+	public void removeFromResourceModel(XmlTypeMapping typeMapping) {
 		throw new UnsupportedOperationException();
 	}
 }

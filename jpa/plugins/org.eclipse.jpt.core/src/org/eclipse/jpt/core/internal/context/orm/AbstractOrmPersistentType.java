@@ -27,20 +27,14 @@ import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
-import org.eclipse.jpt.core.context.orm.OrmEmbeddable;
-import org.eclipse.jpt.core.context.orm.OrmEntity;
-import org.eclipse.jpt.core.context.orm.OrmMappedSuperclass;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
-import org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping;
 import org.eclipse.jpt.core.resource.orm.Attributes;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
-import org.eclipse.jpt.core.resource.orm.XmlEmbeddable;
-import org.eclipse.jpt.core.resource.orm.XmlEntity;
-import org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass;
+import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ChainIterator;
@@ -60,14 +54,16 @@ public abstract class AbstractOrmPersistentType
 
 	protected final List<OrmPersistentAttribute> virtualPersistentAttributes;
 
-	protected OrmTypeMapping ormTypeMapping;
+	protected OrmTypeMapping typeMapping;
+	
+	protected XmlTypeMapping resourceTypeMapping;
 	
 	protected PersistentType parentPersistentType;
 	
 	
 	protected AbstractOrmPersistentType(EntityMappings parent, String mappingKey) {
 		super(parent);
-		this.ormTypeMapping = buildOrmTypeMapping(mappingKey);
+		this.typeMapping = buildTypeMapping(mappingKey);
 		this.specifiedPersistentAttributes = new ArrayList<OrmPersistentAttribute>();
 		this.virtualPersistentAttributes = new ArrayList<OrmPersistentAttribute>();
 	}
@@ -111,12 +107,12 @@ public abstract class AbstractOrmPersistentType
 		return (this.getDefaultPackage() + '.' +  mappingClassName).equals(typeName);
 	}
 	
-	protected OrmTypeMapping buildOrmTypeMapping(String key) {
+	protected OrmTypeMapping buildTypeMapping(String key) {
 		return this.getJpaPlatform().buildOrmTypeMappingFromMappingKey(key, this);
 	}
 
 	public OrmTypeMapping getMapping() {
-		return this.ormTypeMapping;
+		return this.typeMapping;
 	}
 
 
@@ -127,9 +123,9 @@ public abstract class AbstractOrmPersistentType
 			return;
 		}
 		OrmTypeMapping oldMapping = getMapping();
-		this.ormTypeMapping = buildOrmTypeMapping(newMappingKey);
-		this.getEntityMappings().changeMapping(this, oldMapping, this.ormTypeMapping);
-		firePropertyChanged(MAPPING_PROPERTY, oldMapping, this.ormTypeMapping);
+		this.typeMapping = buildTypeMapping(newMappingKey);
+		this.getEntityMappings().changeMapping(this, oldMapping, this.typeMapping);
+		firePropertyChanged(MAPPING_PROPERTY, oldMapping, this.typeMapping);
 	}
 	
 	protected void setMappingKey_(String newMappingKey) {
@@ -137,8 +133,8 @@ public abstract class AbstractOrmPersistentType
 			return;
 		}
 		OrmTypeMapping oldMapping = getMapping();
-		this.ormTypeMapping = buildOrmTypeMapping(newMappingKey);
-		firePropertyChanged(MAPPING_PROPERTY, oldMapping, this.ormTypeMapping);
+		this.typeMapping = buildTypeMapping(newMappingKey);
+		firePropertyChanged(MAPPING_PROPERTY, oldMapping, this.typeMapping);
 	}
 
 	public Iterator<PersistentType> inheritanceHierarchy() {
@@ -193,7 +189,7 @@ public abstract class AbstractOrmPersistentType
 	public void changeMapping(OrmPersistentAttribute ormPersistentAttribute, OrmAttributeMapping oldMapping, OrmAttributeMapping newMapping) {
 		int sourceIndex = this.specifiedPersistentAttributes.indexOf(ormPersistentAttribute);
 		this.specifiedPersistentAttributes.remove(sourceIndex);
-		oldMapping.removeFromResourceModel(this.ormTypeMapping.getResourceTypeMapping());
+		oldMapping.removeFromResourceModel(this.typeMapping.getResourceTypeMapping());
 		int targetIndex = insertionIndex(ormPersistentAttribute);
 		this.specifiedPersistentAttributes.add(targetIndex, ormPersistentAttribute);
 		newMapping.addToResourceModel(getMapping().getResourceTypeMapping());
@@ -393,9 +389,9 @@ public abstract class AbstractOrmPersistentType
 	public void removeSpecifiedPersistentAttribute(OrmPersistentAttribute ormPersistentAttribute) {
 		int index = this.specifiedPersistentAttributes.indexOf(ormPersistentAttribute);
 		this.specifiedPersistentAttributes.remove(ormPersistentAttribute);
-		ormPersistentAttribute.getMapping().removeFromResourceModel(this.ormTypeMapping.getResourceTypeMapping());
-		if (this.ormTypeMapping.getResourceTypeMapping().getAttributes().isAllFeaturesUnset()) {
-			this.ormTypeMapping.getResourceTypeMapping().setAttributes(null);
+		ormPersistentAttribute.getMapping().removeFromResourceModel(this.typeMapping.getResourceTypeMapping());
+		if (this.typeMapping.getResourceTypeMapping().getAttributes().isAllFeaturesUnset()) {
+			this.typeMapping.getResourceTypeMapping().setAttributes(null);
 		}
 		fireItemRemoved(PersistentType.SPECIFIED_ATTRIBUTES_LIST, index, ormPersistentAttribute);		
 	}
@@ -424,30 +420,15 @@ public abstract class AbstractOrmPersistentType
 		return getMapping().getJavaPersistentType();
 	}
 	
-	
-	//TODO is there a way to avoid a method for every mapping type?
-	//I am trying to take adavantage of generics here, but it sure is
-	//leading to a lot of duplicated code. - KFM
-	public void initialize(XmlEntity entity) {
-		((OrmEntity) getMapping()).initialize(entity);
+	public void initialize(XmlTypeMapping resourceTypeMapping) {
+		this.resourceTypeMapping = resourceTypeMapping;
+		getMapping().initialize(resourceTypeMapping);
 		this.initializeParentPersistentType();	
-		this.initializePersistentAttributes(entity);
+		this.initializePersistentAttributes();
 	}
 	
-	public void initialize(XmlMappedSuperclass mappedSuperclass) {
-		((OrmMappedSuperclass) getMapping()).initialize(mappedSuperclass);
-		this.initializeParentPersistentType();
-		this.initializePersistentAttributes(mappedSuperclass);
-	}
-		
-	public void initialize(XmlEmbeddable embeddable) {
-		((OrmEmbeddable) getMapping()).initialize(embeddable);
-		this.initializeParentPersistentType();		
-		this.initializePersistentAttributes(embeddable);
-	}
-	
-	protected void initializePersistentAttributes(AbstractXmlTypeMapping typeMapping) {
-		this.initializeSpecifiedPersistentAttributes(typeMapping.getAttributes());
+	protected void initializePersistentAttributes() {
+		this.initializeSpecifiedPersistentAttributes();
 		this.initializeVirtualPersistentAttributes();
 	}
 	
@@ -545,7 +526,8 @@ public abstract class AbstractOrmPersistentType
 		};
 	}
 	
-	protected void initializeSpecifiedPersistentAttributes(Attributes attributes) {
+	protected void initializeSpecifiedPersistentAttributes() {
+		Attributes attributes = this.resourceTypeMapping.getAttributes();
 		if (attributes == null) {
 			return;
 		}
@@ -582,32 +564,10 @@ public abstract class AbstractOrmPersistentType
 		}
 	}
 
-	public void update(XmlEntity entity) {
-		//TODO remove this just like I did in GenericOrmPersistentAttribute
-		if (getMappingKey() != MappingKeys.ENTITY_TYPE_MAPPING_KEY) {
-			setMappingKey_(MappingKeys.ENTITY_TYPE_MAPPING_KEY);
-		}
-		((OrmEntity) getMapping()).update(entity);
+	public void update() {
+		this.getMapping().update();
 		this.updateParentPersistentType();
-		this.updatePersistentAttributes(entity);
-	}
-	
-	public void update(XmlMappedSuperclass mappedSuperclass) {
-		if (getMappingKey() != MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY) {
-			setMappingKey_(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY);
-		}
-		((OrmMappedSuperclass) getMapping()).update(mappedSuperclass);
-		this.updateParentPersistentType();
-		this.updatePersistentAttributes(mappedSuperclass);
-	}
-	
-	public void update(XmlEmbeddable embeddable) {
-		if (getMappingKey() != MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY) {
-			setMappingKey_(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
-		}
-		((OrmEmbeddable) getMapping()).update(embeddable);
-		this.updateParentPersistentType();
-		this.updatePersistentAttributes(embeddable);
+		this.updatePersistentAttributes();
 	}
 	
 	protected void updateParentPersistentType() {
@@ -625,12 +585,13 @@ public abstract class AbstractOrmPersistentType
 		}
 	}
 	
-	protected void updatePersistentAttributes(AbstractXmlTypeMapping typeMapping) {
-		this.updateSpecifiedPersistentAttributes(typeMapping.getAttributes());
+	protected void updatePersistentAttributes() {
+		this.updateSpecifiedPersistentAttributes();
 		this.updateVirtualPersistentAttributes();
 	}
 
-	protected void updateSpecifiedPersistentAttributes(Attributes attributes) {
+	protected void updateSpecifiedPersistentAttributes() {
+		Attributes attributes = this.resourceTypeMapping.getAttributes();
 		Collection<OrmPersistentAttribute> contextAttributesToRemove = CollectionTools.collection(specifiedAttributes());
 		Collection<OrmPersistentAttribute> contextAttributesToUpdate = new ArrayList<OrmPersistentAttribute>();
 		int resourceIndex = 0;
@@ -670,8 +631,8 @@ public abstract class AbstractOrmPersistentType
 		this.specifiedPersistentAttributes.add(ormPersistentAttribute);
 		ormPersistentAttribute.initialize(resourceMapping);
 		return ormPersistentAttribute;
-
 	}
+	
 	protected void updateVirtualPersistentAttributes() {
 		Collection<OrmPersistentAttribute> contextAttributesToRemove = CollectionTools.collection(virtualAttributes());
 		Collection<OrmPersistentAttribute> contextAttributesToUpdate = new ArrayList<OrmPersistentAttribute>();
@@ -760,11 +721,11 @@ public abstract class AbstractOrmPersistentType
 	}
 	
 	public boolean contains(int textOffset) {
-		return this.ormTypeMapping.containsOffset(textOffset);
+		return this.typeMapping.containsOffset(textOffset);
 	}
 	
 	public TextRange getSelectionTextRange() {
-		return this.ormTypeMapping.getSelectionTextRange();
+		return this.typeMapping.getSelectionTextRange();
 	}
 	
 	//******************** validation **********************
@@ -778,7 +739,7 @@ public abstract class AbstractOrmPersistentType
 	
 	protected void validateMapping(List<IMessage> messages) {
 		try {
-			this.ormTypeMapping.validate(messages);
+			this.typeMapping.validate(messages);
 		} catch(Throwable t) {
 			JptCorePlugin.log(t);
 		}
@@ -799,7 +760,7 @@ public abstract class AbstractOrmPersistentType
 	}
 	
 	public TextRange getValidationTextRange() {
-		return this.ormTypeMapping.getValidationTextRange();
+		return this.typeMapping.getValidationTextRange();
 	}
 	
 	public void dispose() {

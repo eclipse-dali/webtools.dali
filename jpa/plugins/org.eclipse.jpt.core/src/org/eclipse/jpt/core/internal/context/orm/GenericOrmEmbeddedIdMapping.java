@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,9 +13,9 @@ import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddedIdMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
-import org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlEmbeddedId;
+import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 
 
 public class GenericOrmEmbeddedIdMapping extends AbstractOrmBaseEmbeddedMapping<XmlEmbeddedId> implements OrmEmbeddedIdMapping
@@ -44,14 +44,14 @@ public class GenericOrmEmbeddedIdMapping extends AbstractOrmBaseEmbeddedMapping<
 		return true;
 	}
 
-	public XmlEmbeddedId addToResourceModel(AbstractXmlTypeMapping typeMapping) {
+	public XmlEmbeddedId addToResourceModel(XmlTypeMapping typeMapping) {
 		XmlEmbeddedId embeddedId = OrmFactory.eINSTANCE.createXmlEmbeddedIdImpl();
 		getPersistentAttribute().initialize(embeddedId);
 		typeMapping.getAttributes().getEmbeddedIds().add(embeddedId);
 		return embeddedId;
 	}
 	
-	public void removeFromResourceModel(AbstractXmlTypeMapping typeMapping) {
+	public void removeFromResourceModel(XmlTypeMapping typeMapping) {
 		typeMapping.getAttributes().getEmbeddedIds().remove(this.resourceAttributeMapping);
 	}
 }

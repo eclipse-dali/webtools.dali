@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,7 +13,6 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.java.JavaEntity;
-import org.eclipse.jpt.core.resource.orm.XmlEntity;
 
 /**
  * Provisional API: This interface is part of an interim API that is still
@@ -62,16 +61,7 @@ public interface OrmEntity
 	 * Return the Java Entity this ORM Entity corresponds to.  Return null if there is no
 	 * java entity.
 	 */
-	JavaEntity getJavaEntity();
-
-	void initialize(XmlEntity entity);
-
-	/**
-	 * Update the OrmEntity context model object to match the XmlEntity 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
-	 */
-	void update(XmlEntity entity);
-	
+	JavaEntity getJavaEntity();	
 	
 	//************ covariant overrides *************
 	

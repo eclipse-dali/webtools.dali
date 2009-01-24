@@ -76,7 +76,7 @@ public class EclipseLinkEmbeddableTranslator extends EmbeddableTranslator
 	
 	@Override
 	protected Translator createAttributesTranslator() {
-		return new EclipseLinkAttributesTranslator(ATTRIBUTES, ORM_PKG.getAbstractXmlTypeMapping_Attributes());
+		return new EclipseLinkAttributesTranslator(ATTRIBUTES, ORM_PKG.getXmlTypeMapping_Attributes());
 	}
 	
 	protected Translator createPropertyTranslator() {

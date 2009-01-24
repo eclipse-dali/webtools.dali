@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -82,23 +82,23 @@ public class EclipseLinkOrmEntityImpl extends GenericOrmEntity
 	}
 	
 	@Override
-	public void initialize(XmlEntity entity) {
-		super.initialize(entity);		
-		this.readOnly.initialize((XmlReadOnly) entity, getJavaReadOnly());
-		this.customizer.initialize((XmlCustomizerHolder) entity, getJavaCustomizer());
-		this.changeTracking.initialize((XmlChangeTrackingHolder) entity, getJavaChangeTracking());
-		this.caching.initialize((XmlCacheHolder) entity, getJavaCaching());
-		this.converterHolder.initialize((XmlConvertersHolder) entity); 
+	public void initialize() {
+		super.initialize();		
+		this.readOnly.initialize((XmlReadOnly) this.resourceTypeMapping, getJavaReadOnly());
+		this.customizer.initialize((XmlCustomizerHolder) this.resourceTypeMapping, getJavaCustomizer());
+		this.changeTracking.initialize((XmlChangeTrackingHolder) this.resourceTypeMapping, getJavaChangeTracking());
+		this.caching.initialize((XmlCacheHolder) this.resourceTypeMapping, getJavaCaching());
+		this.converterHolder.initialize((XmlConvertersHolder) this.resourceTypeMapping); 
 	}
 	
 	@Override
-	public void update(XmlEntity entity) {
-		super.update(entity);
-		this.readOnly.update((XmlReadOnly) entity, getJavaReadOnly());
-		this.customizer.update((XmlCustomizerHolder) entity, getJavaCustomizer());
-		this.changeTracking.update((XmlChangeTrackingHolder) entity, getJavaChangeTracking());
-		this.caching.update((XmlCacheHolder) entity, getJavaCaching());
-		this.converterHolder.update((XmlConvertersHolder) entity); 
+	public void update() {
+		super.update();
+		this.readOnly.update(getJavaReadOnly());
+		this.customizer.update(getJavaCustomizer());
+		this.changeTracking.update(getJavaChangeTracking());
+		this.caching.update(getJavaCaching());
+		this.converterHolder.update(); 
 	}
 	
 	@Override

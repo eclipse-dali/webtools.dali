@@ -12,7 +12,7 @@ package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmEmbeddedIdMapping;
-import org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping;
+import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbeddedId;
 
@@ -26,7 +26,7 @@ public class EclipseLinkOrmEmbeddedIdMapping extends GenericOrmEmbeddedIdMapping
 	// **************** resource-context interaction ***************************
 	
 	@Override
-	public XmlEmbeddedId addToResourceModel(AbstractXmlTypeMapping typeMapping) {
+	public XmlEmbeddedId addToResourceModel(XmlTypeMapping typeMapping) {
 		XmlEmbeddedId embeddedId = EclipseLinkOrmFactory.eINSTANCE.createXmlEmbeddedIdImpl();
 		getPersistentAttribute().initialize(embeddedId);
 		typeMapping.getAttributes().getEmbeddedIds().add(embeddedId);

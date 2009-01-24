@@ -15,7 +15,7 @@ import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmOneToManyMapping;
-import org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping;
+import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToManyMapping;
 import org.eclipse.jpt.eclipselink.core.context.JoinFetch;
 import org.eclipse.jpt.eclipselink.core.context.PrivateOwned;
@@ -58,7 +58,7 @@ public class EclipseLinkOrmOneToManyMapping extends GenericOrmOneToManyMapping
 	// **************** resource-context interaction ***************************
 	
 	@Override
-	public XmlOneToMany addToResourceModel(AbstractXmlTypeMapping typeMapping) {
+	public XmlOneToMany addToResourceModel(XmlTypeMapping typeMapping) {
 		XmlOneToMany oneToMany = EclipseLinkOrmFactory.eINSTANCE.createXmlOneToManyImpl();
 		getPersistentAttribute().initialize(oneToMany);
 		typeMapping.getAttributes().getOneToManys().add(oneToMany);

@@ -77,13 +77,17 @@ public class EclipseLinkOrmMutable extends AbstractXmlContextNode
 	
 	protected void initialize(XmlMutable resource) {
 		this.resource = resource;
-		this.defaultMutable = calculateDefaultMutable();
-		this.specifiedMutable = resource.getMutable();
+		this.defaultMutable = this.calculateDefaultMutable();
+		this.specifiedMutable = this.getResourceMutable();
 	}
 	
 	protected void update() {
-		setDefaultMutable(calculateDefaultMutable());
-		setSpecifiedMutable_(this.resource.getMutable());
+		setDefaultMutable(this.calculateDefaultMutable());
+		setSpecifiedMutable_(this.getResourceMutable());
+	}
+	
+	protected Boolean getResourceMutable() {
+		return this.resource.getMutable();
 	}
 	
 	protected boolean calculateDefaultMutable() {

@@ -28,13 +28,13 @@ import org.eclipse.jpt.core.context.orm.OrmSequenceGenerator;
 import org.eclipse.jpt.core.context.orm.OrmTableGenerator;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.core.resource.orm.XmlGeneratedValue;
 import org.eclipse.jpt.core.resource.orm.XmlId;
 import org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator;
 import org.eclipse.jpt.core.resource.orm.XmlTableGenerator;
+import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
@@ -250,14 +250,14 @@ public class GenericOrmIdMapping
 		return true;
 	}
 	
-	public XmlId addToResourceModel(AbstractXmlTypeMapping typeMapping) {
+	public XmlId addToResourceModel(XmlTypeMapping typeMapping) {
 		XmlId id = OrmFactory.eINSTANCE.createXmlIdImpl();
 		getPersistentAttribute().initialize(id);
 		typeMapping.getAttributes().getIds().add(id);
 		return id;
 	}
 	
-	public void removeFromResourceModel(AbstractXmlTypeMapping typeMapping) {
+	public void removeFromResourceModel(XmlTypeMapping typeMapping) {
 		typeMapping.getAttributes().getIds().remove(this.resourceAttributeMapping);
 	}
 

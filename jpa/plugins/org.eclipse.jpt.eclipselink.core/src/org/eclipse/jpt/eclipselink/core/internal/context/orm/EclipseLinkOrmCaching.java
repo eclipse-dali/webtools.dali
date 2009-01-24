@@ -492,21 +492,21 @@ public class EclipseLinkOrmCaching extends AbstractXmlContextNode
 		this.resource = resource;
 		XmlCache resourceCache = getResourceCache();
 		this.defaultSize = this.defaultSize(javaCaching);
-		this.specifiedSize = specifiedSize(resourceCache);
+		this.specifiedSize = getResourceSize(resourceCache);
 		this.defaultShared = this.defaultShared(javaCaching);
-		this.specifiedShared = this.specifiedShared(resourceCache);
+		this.specifiedShared = this.getResourceShared(resourceCache);
 		this.defaultAlwaysRefresh = this.defaultAlwaysRefresh(javaCaching);
-		this.specifiedAlwaysRefresh = this.specifiedAlwaysRefresh(resourceCache);
+		this.specifiedAlwaysRefresh = this.getResourceAlwaysRefresh(resourceCache);
 		this.defaultRefreshOnlyIfNewer = this.defaultRefreshOnlyIfNewer(javaCaching);
-		this.specifiedRefreshOnlyIfNewer = this.specifiedRefreshOnlyIfNewer(resourceCache);
+		this.specifiedRefreshOnlyIfNewer = this.getResourceRefreshOnlyIfNewer(resourceCache);
 		this.defaultDisableHits = this.defaultDisableHits(javaCaching);
-		this.specifiedDisableHits = this.specifiedDisableHits(resourceCache);
+		this.specifiedDisableHits = this.getResourceDisableHits(resourceCache);
 		this.defaultType = this.defaultType(javaCaching);
-		this.specifiedType = this.specifiedType(resourceCache);
+		this.specifiedType = this.getResourceType(resourceCache);
 		this.defaultCoordinationType = this.defaultCoordinationType(javaCaching);
-		this.specifiedCoordinationType = this.specifiedCoordinationType(resourceCache);
+		this.specifiedCoordinationType = this.getResourceCoordinationType(resourceCache);
 		this.defaultExistenceType = this.defaultExistenceType(javaCaching);
-		this.specifiedExistenceType = this.specifiedExistenceType(resource);
+		this.specifiedExistenceType = this.getResourceExistenceChecking();
 		this.initializeExpiry(resourceCache);
 	}
 
@@ -525,25 +525,24 @@ public class EclipseLinkOrmCaching extends AbstractXmlContextNode
 		}
 	}
 
-	protected void update(XmlCacheHolder resource, JavaCaching javaCaching) {
-		this.resource = resource;
+	protected void update(JavaCaching javaCaching) {
 		XmlCache resourceCache = getResourceCache();
 		setDefaultSize(this.defaultSize(javaCaching));
-		setSpecifiedSize_(this.specifiedSize(resourceCache));
+		setSpecifiedSize_(this.getResourceSize(resourceCache));
 		setDefaultShared(this.defaultShared(javaCaching));
-		setSpecifiedShared_(this.specifiedShared(resourceCache));
+		setSpecifiedShared_(this.getResourceShared(resourceCache));
 		setDefaultAlwaysRefresh(this.defaultAlwaysRefresh(javaCaching));
-		setSpecifiedAlwaysRefresh_(this.specifiedAlwaysRefresh(resourceCache));
+		setSpecifiedAlwaysRefresh_(this.getResourceAlwaysRefresh(resourceCache));
 		setDefaultRefreshOnlyIfNewer(this.defaultRefreshOnlyIfNewer(javaCaching));
-		setSpecifiedRefreshOnlyIfNewer_(this.specifiedRefreshOnlyIfNewer(resourceCache));
+		setSpecifiedRefreshOnlyIfNewer_(this.getResourceRefreshOnlyIfNewer(resourceCache));
 		setDefaultDisableHits(this.defaultDisableHits(javaCaching));
-		setSpecifiedDisableHits_(this.specifiedDisableHits(resourceCache));
+		setSpecifiedDisableHits_(this.getResourceDisableHits(resourceCache));
 		setDefaultType(this.defaultType(javaCaching));
-		setSpecifiedType_(this.specifiedType(resourceCache));
+		setSpecifiedType_(this.getResourceType(resourceCache));
 		setDefaultCoordinationType(this.defaultCoordinationType(javaCaching));
-		setSpecifiedCoordinationType_(this.specifiedCoordinationType(resourceCache));
+		setSpecifiedCoordinationType_(this.getResourceCoordinationType(resourceCache));
 		setDefaultExistenceType(this.defaultExistenceType(javaCaching));
-		setSpecifiedExistenceType_(this.specifiedExistenceType(resource));
+		setSpecifiedExistenceType_(this.getResourceExistenceChecking());
 		this.updateExpiry(resourceCache);
 	}
 	
@@ -575,7 +574,7 @@ public class EclipseLinkOrmCaching extends AbstractXmlContextNode
 		return (javaCaching == null) ? DEFAULT_SIZE : javaCaching.getSize();
 	}
 	
-	protected Integer specifiedSize(XmlCache resource) {
+	protected Integer getResourceSize(XmlCache resource) {
 		return (resource == null) ? null : resource.getSize();
 	}
 	
@@ -586,7 +585,7 @@ public class EclipseLinkOrmCaching extends AbstractXmlContextNode
 		return getResourceCache() == null ? javaCaching.isShared() : DEFAULT_SHARED;
 	}
 	
-	protected Boolean specifiedShared(XmlCache resource) {
+	protected Boolean getResourceShared(XmlCache resource) {
 		return (resource == null) ? null : resource.getShared();
 	}
 	
@@ -597,7 +596,7 @@ public class EclipseLinkOrmCaching extends AbstractXmlContextNode
 		return getResourceCache() == null ? javaCaching.isAlwaysRefresh() : DEFAULT_ALWAYS_REFRESH;
 	}
 	
-	protected Boolean specifiedAlwaysRefresh(XmlCache resource) {
+	protected Boolean getResourceAlwaysRefresh(XmlCache resource) {
 		return (resource == null) ? null : resource.getAlwaysRefresh();
 	}
 	
@@ -608,7 +607,7 @@ public class EclipseLinkOrmCaching extends AbstractXmlContextNode
 		return getResourceCache() == null ? javaCaching.isRefreshOnlyIfNewer() : DEFAULT_REFRESH_ONLY_IF_NEWER;
 	}
 	
-	protected Boolean specifiedRefreshOnlyIfNewer(XmlCache resource) {
+	protected Boolean getResourceRefreshOnlyIfNewer(XmlCache resource) {
 		return (resource == null) ? null : resource.getRefreshOnlyIfNewer();
 	}
 	
@@ -619,7 +618,7 @@ public class EclipseLinkOrmCaching extends AbstractXmlContextNode
 		return getResourceCache() == null ? javaCaching.isDisableHits() : DEFAULT_DISABLE_HITS;
 	}
 	
-	protected Boolean specifiedDisableHits(XmlCache resource) {
+	protected Boolean getResourceDisableHits(XmlCache resource) {
 		return (resource == null) ? null : resource.getDisableHits();
 	}
 	
@@ -630,7 +629,7 @@ public class EclipseLinkOrmCaching extends AbstractXmlContextNode
 		return getResourceCache() == null ? javaCaching.getType() : DEFAULT_TYPE;
 	}
 	
-	protected CacheType specifiedType(XmlCache resource) {
+	protected CacheType getResourceType(XmlCache resource) {
 		return (resource == null) ? null : CacheType.fromOrmResourceModel(resource.getType());
 	}
 	
@@ -641,7 +640,7 @@ public class EclipseLinkOrmCaching extends AbstractXmlContextNode
 		return getResourceCache() == null ? javaCaching.getCoordinationType() : DEFAULT_COORDINATION_TYPE;
 	}
 	
-	protected CacheCoordinationType specifiedCoordinationType(XmlCache resource) {
+	protected CacheCoordinationType getResourceCoordinationType(XmlCache resource) {
 		return (resource == null) ? null : CacheCoordinationType.fromOrmResourceModel(resource.getCoordinationType());
 	}
 	
@@ -649,11 +648,11 @@ public class EclipseLinkOrmCaching extends AbstractXmlContextNode
 		return (javaCaching == null) ? DEFAULT_EXISTENCE_TYPE : javaCaching.getExistenceType();
 	}
 	
-	protected ExistenceType specifiedExistenceType(XmlCacheHolder resource) {
-		return (resource == null) ? null : ExistenceType.fromOrmResourceModel(resource.getExistenceChecking());
+	protected ExistenceType getResourceExistenceChecking() {
+		return (this.resource == null) ? null : ExistenceType.fromOrmResourceModel(this.resource.getExistenceChecking());
 	}
 	
-	protected Integer expiry(XmlCache resource) {
+	protected Integer getResourceExpiry(XmlCache resource) {
 		return (resource == null) ? null : resource.getExpiry();
 	}
 	

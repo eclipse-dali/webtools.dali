@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -332,14 +332,14 @@ public class OrmPackage extends EPackageImpl
 	public static final int XML_PERSISTENCE_UNIT_DEFAULTS_FEATURE_COUNT = 5;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping <em>Abstract Xml Type Mapping</em>}' class.
+	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.XmlTypeMapping <em>Xml Type Mapping</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAbstractXmlTypeMapping()
+	 * @see org.eclipse.jpt.core.resource.orm.XmlTypeMapping
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlTypeMapping()
 	 * @generated
 	 */
-	public static final int ABSTRACT_XML_TYPE_MAPPING = 3;
+	public static final int XML_TYPE_MAPPING = 3;
 
 	/**
 	 * The feature id for the '<em><b>Class Name</b></em>' attribute.
@@ -348,7 +348,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ABSTRACT_XML_TYPE_MAPPING__CLASS_NAME = 0;
+	public static final int XML_TYPE_MAPPING__CLASS_NAME = 0;
 
 	/**
 	 * The feature id for the '<em><b>Access</b></em>' attribute.
@@ -357,7 +357,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ABSTRACT_XML_TYPE_MAPPING__ACCESS = 1;
+	public static final int XML_TYPE_MAPPING__ACCESS = 1;
 
 	/**
 	 * The feature id for the '<em><b>Metadata Complete</b></em>' attribute.
@@ -366,7 +366,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ABSTRACT_XML_TYPE_MAPPING__METADATA_COMPLETE = 2;
+	public static final int XML_TYPE_MAPPING__METADATA_COMPLETE = 2;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -375,7 +375,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ABSTRACT_XML_TYPE_MAPPING__DESCRIPTION = 3;
+	public static final int XML_TYPE_MAPPING__DESCRIPTION = 3;
 
 	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' containment reference.
@@ -384,7 +384,71 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ABSTRACT_XML_TYPE_MAPPING__ATTRIBUTES = 4;
+	public static final int XML_TYPE_MAPPING__ATTRIBUTES = 4;
+
+	/**
+	 * The number of structural features of the '<em>Xml Type Mapping</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_TYPE_MAPPING_FEATURE_COUNT = 5;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping <em>Abstract Xml Type Mapping</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAbstractXmlTypeMapping()
+	 * @generated
+	 */
+	public static final int ABSTRACT_XML_TYPE_MAPPING = 4;
+
+	/**
+	 * The feature id for the '<em><b>Class Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int ABSTRACT_XML_TYPE_MAPPING__CLASS_NAME = XML_TYPE_MAPPING__CLASS_NAME;
+
+	/**
+	 * The feature id for the '<em><b>Access</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int ABSTRACT_XML_TYPE_MAPPING__ACCESS = XML_TYPE_MAPPING__ACCESS;
+
+	/**
+	 * The feature id for the '<em><b>Metadata Complete</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int ABSTRACT_XML_TYPE_MAPPING__METADATA_COMPLETE = XML_TYPE_MAPPING__METADATA_COMPLETE;
+
+	/**
+	 * The feature id for the '<em><b>Description</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int ABSTRACT_XML_TYPE_MAPPING__DESCRIPTION = XML_TYPE_MAPPING__DESCRIPTION;
+
+	/**
+	 * The feature id for the '<em><b>Attributes</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int ABSTRACT_XML_TYPE_MAPPING__ATTRIBUTES = XML_TYPE_MAPPING__ATTRIBUTES;
 
 	/**
 	 * The number of structural features of the '<em>Abstract Xml Type Mapping</em>' class.
@@ -393,7 +457,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT = 5;
+	public static final int ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT = XML_TYPE_MAPPING_FEATURE_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass <em>Xml Mapped Superclass</em>}' class.
@@ -403,7 +467,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlMappedSuperclass()
 	 * @generated
 	 */
-	public static final int XML_MAPPED_SUPERCLASS = 4;
+	public static final int XML_MAPPED_SUPERCLASS = 5;
 
 	/**
 	 * The feature id for the '<em><b>Class Name</b></em>' attribute.
@@ -566,7 +630,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEntity()
 	 * @generated
 	 */
-	public static final int XML_ENTITY = 5;
+	public static final int XML_ENTITY = 6;
 
 	/**
 	 * The feature id for the '<em><b>Class Name</b></em>' attribute.
@@ -855,7 +919,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEmbeddable()
 	 * @generated
 	 */
-	public static final int XML_EMBEDDABLE = 6;
+	public static final int XML_EMBEDDABLE = 7;
 
 	/**
 	 * The feature id for the '<em><b>Class Name</b></em>' attribute.
@@ -919,7 +983,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAttributes()
 	 * @generated
 	 */
-	public static final int ATTRIBUTES = 7;
+	public static final int ATTRIBUTES = 8;
 
 	/**
 	 * The feature id for the '<em><b>Ids</b></em>' containment reference list.
@@ -1028,7 +1092,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAttributeMapping()
 	 * @generated
 	 */
-	public static final int XML_ATTRIBUTE_MAPPING = 8;
+	public static final int XML_ATTRIBUTE_MAPPING = 9;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1056,7 +1120,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAbstractXmlAttributeMapping()
 	 * @generated
 	 */
-	public static final int ABSTRACT_XML_ATTRIBUTE_MAPPING = 9;
+	public static final int ABSTRACT_XML_ATTRIBUTE_MAPPING = 10;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1084,7 +1148,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlNullAttributeMapping()
 	 * @generated
 	 */
-	public static final int XML_NULL_ATTRIBUTE_MAPPING = 10;
+	public static final int XML_NULL_ATTRIBUTE_MAPPING = 11;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1112,7 +1176,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getColumnMapping()
 	 * @generated
 	 */
-	public static final int COLUMN_MAPPING = 11;
+	public static final int COLUMN_MAPPING = 12;
 
 	/**
 	 * The feature id for the '<em><b>Column</b></em>' containment reference.
@@ -1140,7 +1204,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlRelationshipMapping()
 	 * @generated
 	 */
-	public static final int XML_RELATIONSHIP_MAPPING = 12;
+	public static final int XML_RELATIONSHIP_MAPPING = 13;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1204,7 +1268,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlMultiRelationshipMapping()
 	 * @generated
 	 */
-	public static final int XML_MULTI_RELATIONSHIP_MAPPING = 13;
+	public static final int XML_MULTI_RELATIONSHIP_MAPPING = 14;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1295,7 +1359,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlSingleRelationshipMapping()
 	 * @generated
 	 */
-	public static final int XML_SINGLE_RELATIONSHIP_MAPPING = 14;
+	public static final int XML_SINGLE_RELATIONSHIP_MAPPING = 15;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1377,7 +1441,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlId()
 	 * @generated
 	 */
-	public static final int XML_ID = 15;
+	public static final int XML_ID = 16;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1468,7 +1532,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlIdImpl()
 	 * @generated
 	 */
-	public static final int XML_ID_IMPL = 16;
+	public static final int XML_ID_IMPL = 17;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1559,7 +1623,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getBaseXmlEmbedded()
 	 * @generated
 	 */
-	public static final int BASE_XML_EMBEDDED = 17;
+	public static final int BASE_XML_EMBEDDED = 18;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1596,7 +1660,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEmbeddedId()
 	 * @generated
 	 */
-	public static final int XML_EMBEDDED_ID = 18;
+	public static final int XML_EMBEDDED_ID = 19;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1633,7 +1697,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEmbeddedIdImpl()
 	 * @generated
 	 */
-	public static final int XML_EMBEDDED_ID_IMPL = 19;
+	public static final int XML_EMBEDDED_ID_IMPL = 20;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1670,7 +1734,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlBasic()
 	 * @generated
 	 */
-	public static final int XML_BASIC = 23;
+	public static final int XML_BASIC = 24;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.XmlBasicImpl <em>Xml Basic Impl</em>}' class.
@@ -1680,7 +1744,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlBasicImpl()
 	 * @generated
 	 */
-	public static final int XML_BASIC_IMPL = 24;
+	public static final int XML_BASIC_IMPL = 25;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.XmlVersion <em>Xml Version</em>}' class.
@@ -1690,7 +1754,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlVersion()
 	 * @generated
 	 */
-	public static final int XML_VERSION = 25;
+	public static final int XML_VERSION = 26;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.XmlVersionImpl <em>Xml Version Impl</em>}' class.
@@ -1700,7 +1764,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlVersionImpl()
 	 * @generated
 	 */
-	public static final int XML_VERSION_IMPL = 26;
+	public static final int XML_VERSION_IMPL = 27;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.XmlManyToOne <em>Xml Many To One</em>}' class.
@@ -1710,7 +1774,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlManyToOne()
 	 * @generated
 	 */
-	public static final int XML_MANY_TO_ONE = 27;
+	public static final int XML_MANY_TO_ONE = 28;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.XmlManyToOneImpl <em>Xml Many To One Impl</em>}' class.
@@ -1720,7 +1784,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlManyToOneImpl()
 	 * @generated
 	 */
-	public static final int XML_MANY_TO_ONE_IMPL = 28;
+	public static final int XML_MANY_TO_ONE_IMPL = 29;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.XmlOneToMany <em>Xml One To Many</em>}' class.
@@ -1730,7 +1794,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlOneToMany()
 	 * @generated
 	 */
-	public static final int XML_ONE_TO_MANY = 29;
+	public static final int XML_ONE_TO_MANY = 30;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.XmlOneToManyImpl <em>Xml One To Many Impl</em>}' class.
@@ -1740,7 +1804,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlOneToManyImpl()
 	 * @generated
 	 */
-	public static final int XML_ONE_TO_MANY_IMPL = 30;
+	public static final int XML_ONE_TO_MANY_IMPL = 31;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.XmlOneToOne <em>Xml One To One</em>}' class.
@@ -1750,7 +1814,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlOneToOne()
 	 * @generated
 	 */
-	public static final int XML_ONE_TO_ONE = 31;
+	public static final int XML_ONE_TO_ONE = 32;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.XmlOneToOneImpl <em>Xml One To One Impl</em>}' class.
@@ -1760,7 +1824,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlOneToOneImpl()
 	 * @generated
 	 */
-	public static final int XML_ONE_TO_ONE_IMPL = 32;
+	public static final int XML_ONE_TO_ONE_IMPL = 33;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.XmlManyToMany <em>Xml Many To Many</em>}' class.
@@ -1770,7 +1834,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlManyToMany()
 	 * @generated
 	 */
-	public static final int XML_MANY_TO_MANY = 33;
+	public static final int XML_MANY_TO_MANY = 34;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.XmlManyToManyImpl <em>Xml Many To Many Impl</em>}' class.
@@ -1780,7 +1844,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlManyToManyImpl()
 	 * @generated
 	 */
-	public static final int XML_MANY_TO_MANY_IMPL = 34;
+	public static final int XML_MANY_TO_MANY_IMPL = 35;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.XmlEmbedded <em>Xml Embedded</em>}' class.
@@ -1790,7 +1854,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEmbedded()
 	 * @generated
 	 */
-	public static final int XML_EMBEDDED = 20;
+	public static final int XML_EMBEDDED = 21;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1827,7 +1891,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEmbeddedImpl()
 	 * @generated
 	 */
-	public static final int XML_EMBEDDED_IMPL = 21;
+	public static final int XML_EMBEDDED_IMPL = 22;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1864,7 +1928,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlConvertibleMapping()
 	 * @generated
 	 */
-	public static final int XML_CONVERTIBLE_MAPPING = 22;
+	public static final int XML_CONVERTIBLE_MAPPING = 23;
 
 	/**
 	 * The feature id for the '<em><b>Lob</b></em>' attribute.
@@ -2828,7 +2892,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlTransient()
 	 * @generated
 	 */
-	public static final int XML_TRANSIENT = 35;
+	public static final int XML_TRANSIENT = 36;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -2856,7 +2920,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlTransientImpl()
 	 * @generated
 	 */
-	public static final int XML_TRANSIENT_IMPL = 36;
+	public static final int XML_TRANSIENT_IMPL = 37;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -2884,7 +2948,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAssociationOverride()
 	 * @generated
 	 */
-	public static final int XML_ASSOCIATION_OVERRIDE = 37;
+	public static final int XML_ASSOCIATION_OVERRIDE = 38;
 
 	/**
 	 * The feature id for the '<em><b>Join Columns</b></em>' containment reference list.
@@ -2921,7 +2985,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAssociationOverrideImpl()
 	 * @generated
 	 */
-	public static final int XML_ASSOCIATION_OVERRIDE_IMPL = 38;
+	public static final int XML_ASSOCIATION_OVERRIDE_IMPL = 39;
 
 	/**
 	 * The feature id for the '<em><b>Join Columns</b></em>' containment reference list.
@@ -2958,7 +3022,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAttributeOverride()
 	 * @generated
 	 */
-	public static final int XML_ATTRIBUTE_OVERRIDE = 39;
+	public static final int XML_ATTRIBUTE_OVERRIDE = 40;
 
 	/**
 	 * The feature id for the '<em><b>Column</b></em>' containment reference.
@@ -2995,7 +3059,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAttributeOverrideImpl()
 	 * @generated
 	 */
-	public static final int XML_ATTRIBUTE_OVERRIDE_IMPL = 40;
+	public static final int XML_ATTRIBUTE_OVERRIDE_IMPL = 41;
 
 	/**
 	 * The feature id for the '<em><b>Column</b></em>' containment reference.
@@ -3032,7 +3096,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getCascadeType()
 	 * @generated
 	 */
-	public static final int CASCADE_TYPE = 41;
+	public static final int CASCADE_TYPE = 42;
 
 	/**
 	 * The feature id for the '<em><b>Cascade All</b></em>' attribute.
@@ -3096,7 +3160,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getCascadeTypeImpl()
 	 * @generated
 	 */
-	public static final int CASCADE_TYPE_IMPL = 42;
+	public static final int CASCADE_TYPE_IMPL = 43;
 
 	/**
 	 * The feature id for the '<em><b>Cascade All</b></em>' attribute.
@@ -3160,7 +3224,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlNamedColumn()
 	 * @generated
 	 */
-	public static final int XML_NAMED_COLUMN = 43;
+	public static final int XML_NAMED_COLUMN = 44;
 
 	/**
 	 * The feature id for the '<em><b>Column Definition</b></em>' attribute.
@@ -3197,7 +3261,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAbstractXmlNamedColumn()
 	 * @generated
 	 */
-	public static final int ABSTRACT_XML_NAMED_COLUMN = 44;
+	public static final int ABSTRACT_XML_NAMED_COLUMN = 45;
 
 	/**
 	 * The feature id for the '<em><b>Column Definition</b></em>' attribute.
@@ -3234,7 +3298,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAbstractColumn()
 	 * @generated
 	 */
-	public static final int XML_ABSTRACT_COLUMN = 45;
+	public static final int XML_ABSTRACT_COLUMN = 46;
 
 	/**
 	 * The feature id for the '<em><b>Column Definition</b></em>' attribute.
@@ -3316,7 +3380,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAbstractXmlAbstractColumn()
 	 * @generated
 	 */
-	public static final int ABSTRACT_XML_ABSTRACT_COLUMN = 46;
+	public static final int ABSTRACT_XML_ABSTRACT_COLUMN = 47;
 
 	/**
 	 * The feature id for the '<em><b>Column Definition</b></em>' attribute.
@@ -3398,7 +3462,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlColumn()
 	 * @generated
 	 */
-	public static final int XML_COLUMN = 47;
+	public static final int XML_COLUMN = 48;
 
 	/**
 	 * The feature id for the '<em><b>Column Definition</b></em>' attribute.
@@ -3507,7 +3571,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlColumnImpl()
 	 * @generated
 	 */
-	public static final int XML_COLUMN_IMPL = 48;
+	public static final int XML_COLUMN_IMPL = 49;
 
 	/**
 	 * The feature id for the '<em><b>Column Definition</b></em>' attribute.
@@ -3616,7 +3680,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getColumnResult()
 	 * @generated
 	 */
-	public static final int COLUMN_RESULT = 49;
+	public static final int COLUMN_RESULT = 50;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -3644,7 +3708,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlDiscriminatorColumn()
 	 * @generated
 	 */
-	public static final int XML_DISCRIMINATOR_COLUMN = 50;
+	public static final int XML_DISCRIMINATOR_COLUMN = 51;
 
 	/**
 	 * The feature id for the '<em><b>Column Definition</b></em>' attribute.
@@ -3699,7 +3763,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEntityListeners()
 	 * @generated
 	 */
-	public static final int ENTITY_LISTENERS = 51;
+	public static final int ENTITY_LISTENERS = 52;
 
 	/**
 	 * The feature id for the '<em><b>Entity Listeners</b></em>' containment reference list.
@@ -3727,7 +3791,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEntityListener()
 	 * @generated
 	 */
-	public static final int ENTITY_LISTENER = 52;
+	public static final int ENTITY_LISTENER = 53;
 
 	/**
 	 * The feature id for the '<em><b>Class Name</b></em>' attribute.
@@ -3818,7 +3882,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEntityResult()
 	 * @generated
 	 */
-	public static final int ENTITY_RESULT = 53;
+	public static final int ENTITY_RESULT = 54;
 
 	/**
 	 * The feature id for the '<em><b>Discriminator Column</b></em>' attribute.
@@ -3864,7 +3928,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getFieldResult()
 	 * @generated
 	 */
-	public static final int FIELD_RESULT = 55;
+	public static final int FIELD_RESULT = 56;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.Inheritance <em>Inheritance</em>}' class.
@@ -3874,7 +3938,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getInheritance()
 	 * @generated
 	 */
-	public static final int INHERITANCE = 59;
+	public static final int INHERITANCE = 60;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.Lob <em>Lob</em>}' class.
@@ -3884,7 +3948,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getLob()
 	 * @generated
 	 */
-	public static final int LOB = 64;
+	public static final int LOB = 65;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.MapKey <em>Map Key</em>}' class.
@@ -3894,7 +3958,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getMapKey()
 	 * @generated
 	 */
-	public static final int MAP_KEY = 65;
+	public static final int MAP_KEY = 66;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.EventMethod <em>Event Method</em>}' class.
@@ -3904,7 +3968,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEventMethod()
 	 * @generated
 	 */
-	public static final int EVENT_METHOD = 54;
+	public static final int EVENT_METHOD = 55;
 
 	/**
 	 * The feature id for the '<em><b>Method Name</b></em>' attribute.
@@ -3959,7 +4023,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlGeneratedValue()
 	 * @generated
 	 */
-	public static final int XML_GENERATED_VALUE = 56;
+	public static final int XML_GENERATED_VALUE = 57;
 
 	/**
 	 * The feature id for the '<em><b>Generator</b></em>' attribute.
@@ -3996,7 +4060,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlGeneratedValueImpl()
 	 * @generated
 	 */
-	public static final int XML_GENERATED_VALUE_IMPL = 57;
+	public static final int XML_GENERATED_VALUE_IMPL = 58;
 
 	/**
 	 * The feature id for the '<em><b>Generator</b></em>' attribute.
@@ -4033,7 +4097,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlIdClass()
 	 * @generated
 	 */
-	public static final int XML_ID_CLASS = 58;
+	public static final int XML_ID_CLASS = 59;
 
 	/**
 	 * The feature id for the '<em><b>Class Name</b></em>' attribute.
@@ -4079,7 +4143,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlJoinColumn()
 	 * @generated
 	 */
-	public static final int XML_JOIN_COLUMN = 60;
+	public static final int XML_JOIN_COLUMN = 61;
 
 	/**
 	 * The feature id for the '<em><b>Column Definition</b></em>' attribute.
@@ -4170,7 +4234,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlJoinColumnImpl()
 	 * @generated
 	 */
-	public static final int XML_JOIN_COLUMN_IMPL = 61;
+	public static final int XML_JOIN_COLUMN_IMPL = 62;
 
 	/**
 	 * The feature id for the '<em><b>Column Definition</b></em>' attribute.
@@ -4261,7 +4325,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlBaseTable()
 	 * @generated
 	 */
-	public static final int XML_BASE_TABLE = 81;
+	public static final int XML_BASE_TABLE = 82;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -4316,7 +4380,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlJoinTable()
 	 * @generated
 	 */
-	public static final int XML_JOIN_TABLE = 62;
+	public static final int XML_JOIN_TABLE = 63;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -4389,7 +4453,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAbstractXmlBaseTable()
 	 * @generated
 	 */
-	public static final int ABSTRACT_XML_BASE_TABLE = 80;
+	public static final int ABSTRACT_XML_BASE_TABLE = 81;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -4444,7 +4508,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlJoinTableImpl()
 	 * @generated
 	 */
-	public static final int XML_JOIN_TABLE_IMPL = 63;
+	public static final int XML_JOIN_TABLE_IMPL = 64;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -4544,7 +4608,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getMapKeyImpl()
 	 * @generated
 	 */
-	public static final int MAP_KEY_IMPL = 66;
+	public static final int MAP_KEY_IMPL = 67;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -4572,7 +4636,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlQuery()
 	 * @generated
 	 */
-	public static final int XML_QUERY = 67;
+	public static final int XML_QUERY = 68;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -4618,7 +4682,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlNamedNativeQuery()
 	 * @generated
 	 */
-	public static final int XML_NAMED_NATIVE_QUERY = 68;
+	public static final int XML_NAMED_NATIVE_QUERY = 69;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -4682,7 +4746,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlNamedQuery()
 	 * @generated
 	 */
-	public static final int XML_NAMED_QUERY = 69;
+	public static final int XML_NAMED_QUERY = 70;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -4728,7 +4792,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getPostLoad()
 	 * @generated
 	 */
-	public static final int POST_LOAD = 70;
+	public static final int POST_LOAD = 71;
 
 	/**
 	 * The feature id for the '<em><b>Method Name</b></em>' attribute.
@@ -4756,7 +4820,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getPostPersist()
 	 * @generated
 	 */
-	public static final int POST_PERSIST = 71;
+	public static final int POST_PERSIST = 72;
 
 	/**
 	 * The feature id for the '<em><b>Method Name</b></em>' attribute.
@@ -4784,7 +4848,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getPostRemove()
 	 * @generated
 	 */
-	public static final int POST_REMOVE = 72;
+	public static final int POST_REMOVE = 73;
 
 	/**
 	 * The feature id for the '<em><b>Method Name</b></em>' attribute.
@@ -4812,7 +4876,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getPostUpdate()
 	 * @generated
 	 */
-	public static final int POST_UPDATE = 73;
+	public static final int POST_UPDATE = 74;
 
 	/**
 	 * The feature id for the '<em><b>Method Name</b></em>' attribute.
@@ -4840,7 +4904,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getPrePersist()
 	 * @generated
 	 */
-	public static final int PRE_PERSIST = 74;
+	public static final int PRE_PERSIST = 75;
 
 	/**
 	 * The feature id for the '<em><b>Method Name</b></em>' attribute.
@@ -4868,7 +4932,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getPreRemove()
 	 * @generated
 	 */
-	public static final int PRE_REMOVE = 75;
+	public static final int PRE_REMOVE = 76;
 
 	/**
 	 * The feature id for the '<em><b>Method Name</b></em>' attribute.
@@ -4896,7 +4960,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getPreUpdate()
 	 * @generated
 	 */
-	public static final int PRE_UPDATE = 76;
+	public static final int PRE_UPDATE = 77;
 
 	/**
 	 * The feature id for the '<em><b>Method Name</b></em>' attribute.
@@ -4924,7 +4988,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlPrimaryKeyJoinColumn()
 	 * @generated
 	 */
-	public static final int XML_PRIMARY_KEY_JOIN_COLUMN = 77;
+	public static final int XML_PRIMARY_KEY_JOIN_COLUMN = 78;
 
 	/**
 	 * The feature id for the '<em><b>Column Definition</b></em>' attribute.
@@ -4970,7 +5034,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlPrimaryKeyJoinColumnImpl()
 	 * @generated
 	 */
-	public static final int XML_PRIMARY_KEY_JOIN_COLUMN_IMPL = 78;
+	public static final int XML_PRIMARY_KEY_JOIN_COLUMN_IMPL = 79;
 
 	/**
 	 * The feature id for the '<em><b>Column Definition</b></em>' attribute.
@@ -5016,7 +5080,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlQueryHint()
 	 * @generated
 	 */
-	public static final int XML_QUERY_HINT = 79;
+	public static final int XML_QUERY_HINT = 80;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -5053,7 +5117,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlTable()
 	 * @generated
 	 */
-	public static final int XML_TABLE = 82;
+	public static final int XML_TABLE = 83;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -5108,7 +5172,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlSecondaryTable()
 	 * @generated
 	 */
-	public static final int XML_SECONDARY_TABLE = 83;
+	public static final int XML_SECONDARY_TABLE = 84;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -5172,7 +5236,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlSecondaryTableImpl()
 	 * @generated
 	 */
-	public static final int XML_SECONDARY_TABLE_IMPL = 84;
+	public static final int XML_SECONDARY_TABLE_IMPL = 85;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -5236,7 +5300,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlGenerator()
 	 * @generated
 	 */
-	public static final int XML_GENERATOR = 85;
+	public static final int XML_GENERATOR = 86;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -5282,7 +5346,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlSequenceGenerator()
 	 * @generated
 	 */
-	public static final int XML_SEQUENCE_GENERATOR = 86;
+	public static final int XML_SEQUENCE_GENERATOR = 87;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -5337,7 +5401,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlSequenceGeneratorImpl()
 	 * @generated
 	 */
-	public static final int XML_SEQUENCE_GENERATOR_IMPL = 87;
+	public static final int XML_SEQUENCE_GENERATOR_IMPL = 88;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -5392,7 +5456,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getSqlResultSetMapping()
 	 * @generated
 	 */
-	public static final int SQL_RESULT_SET_MAPPING = 88;
+	public static final int SQL_RESULT_SET_MAPPING = 89;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -5438,7 +5502,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlTableGenerator()
 	 * @generated
 	 */
-	public static final int XML_TABLE_GENERATOR = 89;
+	public static final int XML_TABLE_GENERATOR = 90;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -5547,7 +5611,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlTableGeneratorImpl()
 	 * @generated
 	 */
-	public static final int XML_TABLE_GENERATOR_IMPL = 90;
+	public static final int XML_TABLE_GENERATOR_IMPL = 91;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -5656,7 +5720,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlUniqueConstraint()
 	 * @generated
 	 */
-	public static final int XML_UNIQUE_CONSTRAINT = 91;
+	public static final int XML_UNIQUE_CONSTRAINT = 92;
 
 	/**
 	 * The feature id for the '<em><b>Column Names</b></em>' attribute list.
@@ -5684,7 +5748,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlUniqueConstraintImpl()
 	 * @generated
 	 */
-	public static final int XML_UNIQUE_CONSTRAINT_IMPL = 92;
+	public static final int XML_UNIQUE_CONSTRAINT_IMPL = 93;
 
 	/**
 	 * The feature id for the '<em><b>Column Names</b></em>' attribute list.
@@ -5712,7 +5776,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAccessType()
 	 * @generated
 	 */
-	public static final int ACCESS_TYPE = 93;
+	public static final int ACCESS_TYPE = 94;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.DiscriminatorType <em>Discriminator Type</em>}' enum.
@@ -5722,7 +5786,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getDiscriminatorType()
 	 * @generated
 	 */
-	public static final int DISCRIMINATOR_TYPE = 94;
+	public static final int DISCRIMINATOR_TYPE = 95;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.EnumType <em>Enum Type</em>}' enum.
@@ -5732,7 +5796,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEnumType()
 	 * @generated
 	 */
-	public static final int ENUM_TYPE = 95;
+	public static final int ENUM_TYPE = 96;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.FetchType <em>Fetch Type</em>}' enum.
@@ -5742,7 +5806,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getFetchType()
 	 * @generated
 	 */
-	public static final int FETCH_TYPE = 96;
+	public static final int FETCH_TYPE = 97;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.GenerationType <em>Generation Type</em>}' enum.
@@ -5752,7 +5816,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getGenerationType()
 	 * @generated
 	 */
-	public static final int GENERATION_TYPE = 97;
+	public static final int GENERATION_TYPE = 98;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.InheritanceType <em>Inheritance Type</em>}' enum.
@@ -5762,7 +5826,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getInheritanceType()
 	 * @generated
 	 */
-	public static final int INHERITANCE_TYPE = 98;
+	public static final int INHERITANCE_TYPE = 99;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.TemporalType <em>Temporal Type</em>}' enum.
@@ -5772,7 +5836,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getTemporalType()
 	 * @generated
 	 */
-	public static final int TEMPORAL_TYPE = 99;
+	public static final int TEMPORAL_TYPE = 100;
 
 	/**
 	 * The meta object id for the '<em>Discriminator Value</em>' data type.
@@ -5782,7 +5846,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getDiscriminatorValue()
 	 * @generated
 	 */
-	public static final int DISCRIMINATOR_VALUE = 100;
+	public static final int DISCRIMINATOR_VALUE = 101;
 
 	/**
 	 * The meta object id for the '<em>Enumerated</em>' data type.
@@ -5792,7 +5856,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEnumerated()
 	 * @generated
 	 */
-	public static final int ENUMERATED = 101;
+	public static final int ENUMERATED = 102;
 
 	/**
 	 * The meta object id for the '<em>Order By</em>' data type.
@@ -5802,7 +5866,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getOrderBy()
 	 * @generated
 	 */
-	public static final int ORDER_BY = 102;
+	public static final int ORDER_BY = 103;
 
 	/**
 	 * The meta object id for the '<em>Version Type</em>' data type.
@@ -5812,7 +5876,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getVersionType()
 	 * @generated
 	 */
-	public static final int VERSION_TYPE = 103;
+	public static final int VERSION_TYPE = 104;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -5834,6 +5898,13 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 */
 	private EClass xmlPersistenceUnitDefaultsEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass xmlTypeMappingEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -6995,6 +7066,95 @@ public class OrmPackage extends EPackageImpl
 
 
 	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.core.resource.orm.XmlTypeMapping <em>Xml Type Mapping</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Xml Type Mapping</em>'.
+	 * @see org.eclipse.jpt.core.resource.orm.XmlTypeMapping
+	 * @generated
+	 */
+	public EClass getXmlTypeMapping()
+	{
+		return xmlTypeMappingEClass;
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.resource.orm.XmlTypeMapping#getClassName <em>Class Name</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Class Name</em>'.
+	 * @see org.eclipse.jpt.core.resource.orm.XmlTypeMapping#getClassName()
+	 * @see #getXmlTypeMapping()
+	 * @generated
+	 */
+	public EAttribute getXmlTypeMapping_ClassName()
+	{
+		return (EAttribute)xmlTypeMappingEClass.getEStructuralFeatures().get(0);
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.resource.orm.XmlTypeMapping#getAccess <em>Access</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Access</em>'.
+	 * @see org.eclipse.jpt.core.resource.orm.XmlTypeMapping#getAccess()
+	 * @see #getXmlTypeMapping()
+	 * @generated
+	 */
+	public EAttribute getXmlTypeMapping_Access()
+	{
+		return (EAttribute)xmlTypeMappingEClass.getEStructuralFeatures().get(1);
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.resource.orm.XmlTypeMapping#getMetadataComplete <em>Metadata Complete</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Metadata Complete</em>'.
+	 * @see org.eclipse.jpt.core.resource.orm.XmlTypeMapping#getMetadataComplete()
+	 * @see #getXmlTypeMapping()
+	 * @generated
+	 */
+	public EAttribute getXmlTypeMapping_MetadataComplete()
+	{
+		return (EAttribute)xmlTypeMappingEClass.getEStructuralFeatures().get(2);
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.resource.orm.XmlTypeMapping#getDescription <em>Description</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Description</em>'.
+	 * @see org.eclipse.jpt.core.resource.orm.XmlTypeMapping#getDescription()
+	 * @see #getXmlTypeMapping()
+	 * @generated
+	 */
+	public EAttribute getXmlTypeMapping_Description()
+	{
+		return (EAttribute)xmlTypeMappingEClass.getEStructuralFeatures().get(3);
+	}
+
+
+	/**
+	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.resource.orm.XmlTypeMapping#getAttributes <em>Attributes</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Attributes</em>'.
+	 * @see org.eclipse.jpt.core.resource.orm.XmlTypeMapping#getAttributes()
+	 * @see #getXmlTypeMapping()
+	 * @generated
+	 */
+	public EReference getXmlTypeMapping_Attributes()
+	{
+		return (EReference)xmlTypeMappingEClass.getEStructuralFeatures().get(4);
+	}
+
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping <em>Abstract Xml Type Mapping</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -7005,81 +7165,6 @@ public class OrmPackage extends EPackageImpl
 	public EClass getAbstractXmlTypeMapping()
 	{
 		return abstractXmlTypeMappingEClass;
-	}
-
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping#getClassName <em>Class Name</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Class Name</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping#getClassName()
-	 * @see #getAbstractXmlTypeMapping()
-	 * @generated
-	 */
-	public EAttribute getAbstractXmlTypeMapping_ClassName()
-	{
-		return (EAttribute)abstractXmlTypeMappingEClass.getEStructuralFeatures().get(0);
-	}
-
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping#getAccess <em>Access</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Access</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping#getAccess()
-	 * @see #getAbstractXmlTypeMapping()
-	 * @generated
-	 */
-	public EAttribute getAbstractXmlTypeMapping_Access()
-	{
-		return (EAttribute)abstractXmlTypeMappingEClass.getEStructuralFeatures().get(1);
-	}
-
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping#getMetadataComplete <em>Metadata Complete</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Metadata Complete</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping#getMetadataComplete()
-	 * @see #getAbstractXmlTypeMapping()
-	 * @generated
-	 */
-	public EAttribute getAbstractXmlTypeMapping_MetadataComplete()
-	{
-		return (EAttribute)abstractXmlTypeMappingEClass.getEStructuralFeatures().get(2);
-	}
-
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping#getDescription <em>Description</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Description</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping#getDescription()
-	 * @see #getAbstractXmlTypeMapping()
-	 * @generated
-	 */
-	public EAttribute getAbstractXmlTypeMapping_Description()
-	{
-		return (EAttribute)abstractXmlTypeMappingEClass.getEStructuralFeatures().get(3);
-	}
-
-
-	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping#getAttributes <em>Attributes</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Attributes</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping#getAttributes()
-	 * @see #getAbstractXmlTypeMapping()
-	 * @generated
-	 */
-	public EReference getAbstractXmlTypeMapping_Attributes()
-	{
-		return (EReference)abstractXmlTypeMappingEClass.getEStructuralFeatures().get(4);
 	}
 
 
@@ -10616,12 +10701,14 @@ public class OrmPackage extends EPackageImpl
 		createEAttribute(xmlPersistenceUnitDefaultsEClass, XML_PERSISTENCE_UNIT_DEFAULTS__CASCADE_PERSIST);
 		createEReference(xmlPersistenceUnitDefaultsEClass, XML_PERSISTENCE_UNIT_DEFAULTS__ENTITY_LISTENERS);
 
+		xmlTypeMappingEClass = createEClass(XML_TYPE_MAPPING);
+		createEAttribute(xmlTypeMappingEClass, XML_TYPE_MAPPING__CLASS_NAME);
+		createEAttribute(xmlTypeMappingEClass, XML_TYPE_MAPPING__ACCESS);
+		createEAttribute(xmlTypeMappingEClass, XML_TYPE_MAPPING__METADATA_COMPLETE);
+		createEAttribute(xmlTypeMappingEClass, XML_TYPE_MAPPING__DESCRIPTION);
+		createEReference(xmlTypeMappingEClass, XML_TYPE_MAPPING__ATTRIBUTES);
+
 		abstractXmlTypeMappingEClass = createEClass(ABSTRACT_XML_TYPE_MAPPING);
-		createEAttribute(abstractXmlTypeMappingEClass, ABSTRACT_XML_TYPE_MAPPING__CLASS_NAME);
-		createEAttribute(abstractXmlTypeMappingEClass, ABSTRACT_XML_TYPE_MAPPING__ACCESS);
-		createEAttribute(abstractXmlTypeMappingEClass, ABSTRACT_XML_TYPE_MAPPING__METADATA_COMPLETE);
-		createEAttribute(abstractXmlTypeMappingEClass, ABSTRACT_XML_TYPE_MAPPING__DESCRIPTION);
-		createEReference(abstractXmlTypeMappingEClass, ABSTRACT_XML_TYPE_MAPPING__ATTRIBUTES);
 
 		xmlMappedSuperclassEClass = createEClass(XML_MAPPED_SUPERCLASS);
 		createEReference(xmlMappedSuperclassEClass, XML_MAPPED_SUPERCLASS__ID_CLASS);
@@ -10991,6 +11078,7 @@ public class OrmPackage extends EPackageImpl
 		// Set bounds for type parameters
 
 		// Add supertypes to classes
+		abstractXmlTypeMappingEClass.getESuperTypes().add(this.getXmlTypeMapping());
 		xmlMappedSuperclassEClass.getESuperTypes().add(this.getAbstractXmlTypeMapping());
 		xmlEntityEClass.getESuperTypes().add(this.getAbstractXmlTypeMapping());
 		xmlEmbeddableEClass.getESuperTypes().add(this.getAbstractXmlTypeMapping());
@@ -11108,12 +11196,14 @@ public class OrmPackage extends EPackageImpl
 		initEAttribute(getXmlPersistenceUnitDefaults_CascadePersist(), theXMLTypePackage.getBoolean(), "cascadePersist", null, 0, 1, XmlPersistenceUnitDefaults.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getXmlPersistenceUnitDefaults_EntityListeners(), this.getEntityListeners(), null, "entityListeners", null, 0, 1, XmlPersistenceUnitDefaults.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+		initEClass(xmlTypeMappingEClass, XmlTypeMapping.class, "XmlTypeMapping", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getXmlTypeMapping_ClassName(), theXMLTypePackage.getString(), "className", null, 1, 1, XmlTypeMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXmlTypeMapping_Access(), this.getAccessType(), "access", "PROPERTY", 0, 1, XmlTypeMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXmlTypeMapping_MetadataComplete(), theXMLTypePackage.getBooleanObject(), "metadataComplete", null, 0, 1, XmlTypeMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXmlTypeMapping_Description(), theXMLTypePackage.getString(), "description", null, 0, 1, XmlTypeMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlTypeMapping_Attributes(), this.getAttributes(), null, "attributes", null, 0, 1, XmlTypeMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
 		initEClass(abstractXmlTypeMappingEClass, AbstractXmlTypeMapping.class, "AbstractXmlTypeMapping", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getAbstractXmlTypeMapping_ClassName(), theXMLTypePackage.getString(), "className", null, 1, 1, AbstractXmlTypeMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getAbstractXmlTypeMapping_Access(), this.getAccessType(), "access", "PROPERTY", 0, 1, AbstractXmlTypeMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getAbstractXmlTypeMapping_MetadataComplete(), theXMLTypePackage.getBooleanObject(), "metadataComplete", null, 0, 1, AbstractXmlTypeMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getAbstractXmlTypeMapping_Description(), theXMLTypePackage.getString(), "description", null, 0, 1, AbstractXmlTypeMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getAbstractXmlTypeMapping_Attributes(), this.getAttributes(), null, "attributes", null, 0, 1, AbstractXmlTypeMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlMappedSuperclassEClass, XmlMappedSuperclass.class, "XmlMappedSuperclass", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getXmlMappedSuperclass_IdClass(), this.getXmlIdClass(), null, "idClass", null, 0, 1, XmlMappedSuperclass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -11700,6 +11790,56 @@ public class OrmPackage extends EPackageImpl
 		public static final EReference XML_PERSISTENCE_UNIT_DEFAULTS__ENTITY_LISTENERS = eINSTANCE.getXmlPersistenceUnitDefaults_EntityListeners();
 
 		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.orm.XmlTypeMapping <em>Xml Type Mapping</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.core.resource.orm.XmlTypeMapping
+		 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlTypeMapping()
+		 * @generated
+		 */
+		public static final EClass XML_TYPE_MAPPING = eINSTANCE.getXmlTypeMapping();
+
+		/**
+		 * The meta object literal for the '<em><b>Class Name</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_TYPE_MAPPING__CLASS_NAME = eINSTANCE.getXmlTypeMapping_ClassName();
+
+		/**
+		 * The meta object literal for the '<em><b>Access</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_TYPE_MAPPING__ACCESS = eINSTANCE.getXmlTypeMapping_Access();
+
+		/**
+		 * The meta object literal for the '<em><b>Metadata Complete</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_TYPE_MAPPING__METADATA_COMPLETE = eINSTANCE.getXmlTypeMapping_MetadataComplete();
+
+		/**
+		 * The meta object literal for the '<em><b>Description</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_TYPE_MAPPING__DESCRIPTION = eINSTANCE.getXmlTypeMapping_Description();
+
+		/**
+		 * The meta object literal for the '<em><b>Attributes</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EReference XML_TYPE_MAPPING__ATTRIBUTES = eINSTANCE.getXmlTypeMapping_Attributes();
+
+		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.orm.AbstractXmlTypeMapping <em>Abstract Xml Type Mapping</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -11708,46 +11848,6 @@ public class OrmPackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EClass ABSTRACT_XML_TYPE_MAPPING = eINSTANCE.getAbstractXmlTypeMapping();
-
-		/**
-		 * The meta object literal for the '<em><b>Class Name</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute ABSTRACT_XML_TYPE_MAPPING__CLASS_NAME = eINSTANCE.getAbstractXmlTypeMapping_ClassName();
-
-		/**
-		 * The meta object literal for the '<em><b>Access</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute ABSTRACT_XML_TYPE_MAPPING__ACCESS = eINSTANCE.getAbstractXmlTypeMapping_Access();
-
-		/**
-		 * The meta object literal for the '<em><b>Metadata Complete</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute ABSTRACT_XML_TYPE_MAPPING__METADATA_COMPLETE = eINSTANCE.getAbstractXmlTypeMapping_MetadataComplete();
-
-		/**
-		 * The meta object literal for the '<em><b>Description</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EAttribute ABSTRACT_XML_TYPE_MAPPING__DESCRIPTION = eINSTANCE.getAbstractXmlTypeMapping_Description();
-
-		/**
-		 * The meta object literal for the '<em><b>Attributes</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference ABSTRACT_XML_TYPE_MAPPING__ATTRIBUTES = eINSTANCE.getAbstractXmlTypeMapping_Attributes();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass <em>Xml Mapped Superclass</em>}' class.

@@ -16,7 +16,7 @@ import org.eclipse.jpt.eclipselink.core.context.StructConverter;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlStructConverter;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public class EclipseLinkOrmStructConverter extends EclipseLinkOrmConverter
+public class EclipseLinkOrmStructConverter extends EclipseLinkOrmConverter<XmlStructConverter>
 	implements StructConverter
 {	
 	private String converterClass;
@@ -25,15 +25,9 @@ public class EclipseLinkOrmStructConverter extends EclipseLinkOrmConverter
 	public EclipseLinkOrmStructConverter(XmlContextNode parent, XmlStructConverter xmlResource) {
 		super(parent, xmlResource);
 	}
-	
-	
+		
 	public String getType() {
 		return EclipseLinkConverter.STRUCT_CONVERTER;
-	}
-	
-	@Override
-	protected XmlStructConverter getXmlResource() {
-		return (XmlStructConverter) super.getXmlResource();
 	}
 	
 	
@@ -59,18 +53,20 @@ public class EclipseLinkOrmStructConverter extends EclipseLinkOrmConverter
 	
 	// **************** resource interaction ***********************************
 	
+	@Override
 	protected void initialize(XmlStructConverter xmlResource) {
 		super.initialize(xmlResource);
-		this.converterClass = calculateConverterClass();
+		this.converterClass = getResourceConverterClass();
 	}
 	
+	@Override
 	public void update() {
 		super.update();
-		setConverterClass_(calculateConverterClass());
+		setConverterClass_(getResourceConverterClass());
 	}
 	
-	protected String calculateConverterClass() {
-		return getXmlResource().getConverter();
+	protected String getResourceConverterClass() {
+		return this.resourceConverter.getConverter();
 	}
 	
 	

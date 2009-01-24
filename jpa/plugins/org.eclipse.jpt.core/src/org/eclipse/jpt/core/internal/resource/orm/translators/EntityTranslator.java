@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2006, 2008 Oracle. All rights reserved. This
+ *  Copyright (c) 2006, 2009 Oracle. All rights reserved. This
  *  program and the accompanying materials are made available under the terms of
  *  the Eclipse Public License v1.0 which accompanies this distribution, and is
  *  available at http://www.eclipse.org/legal/epl-v10.html
@@ -70,19 +70,19 @@ public class EntityTranslator extends Translator
 	}
 	
 	protected Translator createClassTranslator() {
-		return new Translator(CLASS, ORM_PKG.getAbstractXmlTypeMapping_ClassName(), DOM_ATTRIBUTE);
+		return new Translator(CLASS, ORM_PKG.getXmlTypeMapping_ClassName(), DOM_ATTRIBUTE);
 	}
 	
 	protected Translator createAccessTranslator() {
-		return new Translator(ACCESS, ORM_PKG.getAbstractXmlTypeMapping_Access(), DOM_ATTRIBUTE);
+		return new Translator(ACCESS, ORM_PKG.getXmlTypeMapping_Access(), DOM_ATTRIBUTE);
 	}
 	
 	protected Translator createMetadataCompleteTranslator() {
-		return new Translator(METADATA_COMPLETE, ORM_PKG.getAbstractXmlTypeMapping_MetadataComplete(), DOM_ATTRIBUTE);
+		return new Translator(METADATA_COMPLETE, ORM_PKG.getXmlTypeMapping_MetadataComplete(), DOM_ATTRIBUTE);
 	}
 	
 	protected Translator createDescriptionTranslator() {
-		return new Translator(DESCRIPTION, ORM_PKG.getAbstractXmlTypeMapping_Description());
+		return new Translator(DESCRIPTION, ORM_PKG.getXmlTypeMapping_Description());
 	}
 	
 	protected Translator createTableTranslator() {
@@ -182,6 +182,6 @@ public class EntityTranslator extends Translator
 	}
 	
 	protected Translator createAttributesTranslator() {
-		return new AttributesTranslator(ATTRIBUTES, ORM_PKG.getAbstractXmlTypeMapping_Attributes());
+		return new AttributesTranslator(ATTRIBUTES, ORM_PKG.getXmlTypeMapping_Attributes());
 	}
 }

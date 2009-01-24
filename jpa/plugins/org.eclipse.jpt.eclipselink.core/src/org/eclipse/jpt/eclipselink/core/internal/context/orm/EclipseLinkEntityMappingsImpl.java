@@ -54,9 +54,15 @@ public class EclipseLinkEntityMappingsImpl
 	}
 	
 	@Override
+	protected void initialize(org.eclipse.jpt.core.resource.orm.XmlEntityMappings entityMappings) {
+		super.initialize(entityMappings);
+		this.converterHolder.initialize((XmlEntityMappings) this.xmlEntityMappings);
+	}
+	
+	@Override
 	public void update() {
 		super.update();
-		this.converterHolder.update((XmlEntityMappings) this.xmlEntityMappings);
+		this.converterHolder.update();
 	}
 	
 	// **************** validation *********************************************

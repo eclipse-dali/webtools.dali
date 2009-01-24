@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,6 +18,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.jpt.core.MappingKeys;
 
 /**
  * <!-- begin-user-doc -->
@@ -371,6 +372,10 @@ public class XmlEntity extends AbstractXmlTypeMapping
 	protected XmlEntity()
 	{
 		super();
+	}
+	
+	public String getMappingKey() {
+		return MappingKeys.ENTITY_TYPE_MAPPING_KEY;
 	}
 
 	public XmlEntityMappings entityMappings() {
