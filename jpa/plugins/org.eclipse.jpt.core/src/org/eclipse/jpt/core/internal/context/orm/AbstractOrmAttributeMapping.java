@@ -194,11 +194,15 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 	}
 	
 	protected void initialize() {
-		this.name = this.resourceAttributeMapping.getName();
+		this.name = this.getResourceMappingName();
 	}
 	
 	public void update() {
-		this.setName_(this.resourceAttributeMapping.getName());
+		this.setName_(this.getResourceMappingName());
+	}
+	
+	protected String getResourceMappingName() {
+		return this.resourceAttributeMapping.getName();
 	}
 	
 	protected boolean ownerIsEntity() {

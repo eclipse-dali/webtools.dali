@@ -243,7 +243,7 @@ public abstract class AbstractOrmBaseColumn<T extends XmlAbstractColumn> extends
 	}
 
 	@Override
-	protected String tableName() {
+	protected String getOwningTableName() {
 		return this.getTable();
 	}
 
@@ -261,47 +261,47 @@ public abstract class AbstractOrmBaseColumn<T extends XmlAbstractColumn> extends
 	@Override
 	protected void initialize(T column) {
 		super.initialize(column);
-		this.specifiedTable = this.specifiedTable(column);
-		this.defaultTable = this.defaultTable();
+		this.specifiedTable = this.getResourceTable(column);
+		this.defaultTable = this.getOwnerDefaultTableName();
 		//TODO default from java for all of these settings
-		this.specifiedNullable = this.specifiedNullable(column);
-		this.specifiedUpdatable = this.specifiedUpdatable(column);
-		this.specifiedUnique = this.specifiedUnique(column);
-		this.specifiedInsertable = this.specifiedInsertable(column);
+		this.specifiedNullable = this.getResourceNullable(column);
+		this.specifiedUpdatable = this.getResourceUpdatable(column);
+		this.specifiedUnique = this.getResourceUnique(column);
+		this.specifiedInsertable = this.getResourceInsertable(column);
 	}
 	
 	@Override
 	protected void update(T column) {
 		super.update(column);
-		setSpecifiedTable_(this.specifiedTable(column));
-		setDefaultTable(this.defaultTable());
-		setSpecifiedNullable_(this.specifiedNullable(column));
-		setSpecifiedUpdatable_(this.specifiedUpdatable(column));
-		setSpecifiedUnique_(this.specifiedUnique(column));
-		setSpecifiedInsertable_(this.specifiedInsertable(column));
+		setSpecifiedTable_(this.getResourceTable(column));
+		setDefaultTable(this.getOwnerDefaultTableName());
+		setSpecifiedNullable_(this.getResourceNullable(column));
+		setSpecifiedUpdatable_(this.getResourceUpdatable(column));
+		setSpecifiedUnique_(this.getResourceUnique(column));
+		setSpecifiedInsertable_(this.getResourceInsertable(column));
 	}
 
-	protected String specifiedTable(T column) {
+	protected String getResourceTable(T column) {
 		return column == null ? null : column.getTable();
 	}
 
-	protected Boolean specifiedNullable(T column) {
+	protected Boolean getResourceNullable(T column) {
 		return column == null ? null : column.getNullable();
 	}
 	
-	protected Boolean specifiedUpdatable(T column) {
+	protected Boolean getResourceUpdatable(T column) {
 		return column == null ? null : column.getUpdatable();
 	}
 	
-	protected Boolean specifiedUnique(T column) {
+	protected Boolean getResourceUnique(T column) {
 		return column == null ? null : column.getUnique();
 	}
 	
-	protected Boolean specifiedInsertable(T column) {
+	protected Boolean getResourceInsertable(T column) {
 		return column == null ? null : column.getInsertable();
 	}
 	
-	protected String defaultTable() {
+	protected String getOwnerDefaultTableName() {
 		return getOwner().getDefaultTableName();
 	}
 

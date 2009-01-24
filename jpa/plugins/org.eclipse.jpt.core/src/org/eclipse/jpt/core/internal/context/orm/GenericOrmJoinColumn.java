@@ -146,7 +146,7 @@ public class GenericOrmJoinColumn extends AbstractOrmBaseColumn<XmlJoinColumn> i
 	}
 
 	@Override
-	protected String buildDefaultName() {
+	protected String getOwnerDefaultColumnName() {
 		return MappingTools.buildJoinColumnDefaultName(this);
 	}
 	
@@ -155,7 +155,7 @@ public class GenericOrmJoinColumn extends AbstractOrmBaseColumn<XmlJoinColumn> i
 	}
 	
 	@Override
-	protected String defaultTable() {
+	protected String getOwnerDefaultTableName() {
 		RelationshipMapping relationshipMapping = getOwner().getRelationshipMapping();
 		if (relationshipMapping == null) {
 			return null;
@@ -163,7 +163,7 @@ public class GenericOrmJoinColumn extends AbstractOrmBaseColumn<XmlJoinColumn> i
 		if (!relationshipMapping.isRelationshipOwner()) {
 			return null;
 		}
-		return super.defaultTable();
+		return super.getOwnerDefaultTableName();
 	}
 	
 	

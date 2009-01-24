@@ -100,7 +100,7 @@ public class GenericOrmPrimaryKeyJoinColumn extends AbstractOrmNamedColumn<XmlPr
 	}
 
 	@Override
-	protected String tableName() {
+	protected String getOwningTableName() {
 		return this.getOwner().getTypeMapping().getPrimaryTableName();
 	}
 
@@ -145,6 +145,6 @@ public class GenericOrmPrimaryKeyJoinColumn extends AbstractOrmNamedColumn<XmlPr
 	
 	//TODO not correct when we start supporting primaryKeyJoinColumns in 1-1 mappings
 	protected String defaultReferencedColumnName() {
-		return buildDefaultName();
+		return getOwnerDefaultColumnName();
 	}
 }

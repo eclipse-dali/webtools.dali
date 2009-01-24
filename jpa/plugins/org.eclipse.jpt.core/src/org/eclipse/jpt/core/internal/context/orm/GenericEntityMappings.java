@@ -609,7 +609,7 @@ public class GenericEntityMappings
 		this.package_ = this.xmlEntityMappings.getPackage();
 
 		this.defaultAccess = this.getPersistenceUnit().getDefaultAccess();
-		this.specifiedAccess = this.buildSpecifiedAccess();
+		this.specifiedAccess = this.getResourceAccess();
 
 		this.defaultCatalog = this.getPersistenceUnit().getDefaultCatalog();
 		this.specifiedCatalog = this.xmlEntityMappings.getCatalog();
@@ -662,7 +662,7 @@ public class GenericEntityMappings
 		this.setPackage(this.xmlEntityMappings.getPackage());
 
 		this.setDefaultAccess(this.getPersistenceUnit().getDefaultAccess());
-		this.setSpecifiedAccess(this.buildSpecifiedAccess());
+		this.setSpecifiedAccess(this.getResourceAccess());
 
 		this.setDefaultCatalog(this.getPersistenceUnit().getDefaultCatalog());
 		this.setSpecifiedCatalog(this.xmlEntityMappings.getCatalog());
@@ -678,7 +678,7 @@ public class GenericEntityMappings
 		this.updateNamedNativeQueries();
 	}
 	
-	protected AccessType buildSpecifiedAccess() {
+	protected AccessType getResourceAccess() {
 		return AccessType.fromXmlResourceModel(this.xmlEntityMappings.getAccess());
 	}
 

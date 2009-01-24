@@ -304,13 +304,13 @@ public abstract class AbstractOrmTable
 
 	protected void initialize(XmlBaseTable xmlTable) {
 		this.defaultName = this.buildDefaultName();
-		this.specifiedName = this.buildSpecifiedName(xmlTable);
+		this.specifiedName = this.getResourceTableName(xmlTable);
 
 		this.defaultSchema = this.buildDefaultSchema();
-		this.specifiedSchema = this.buildSpecifiedSchema(xmlTable);
+		this.specifiedSchema = this.getResourceTableSchema(xmlTable);
 
 		this.defaultCatalog = this.buildDefaultCatalog();
-		this.specifiedCatalog = this.buildSpecifiedCatalog(xmlTable);
+		this.specifiedCatalog = this.getResourceTableCatalog(xmlTable);
 
 		this.initializeUniqueContraints(xmlTable);
 	}
@@ -326,26 +326,26 @@ public abstract class AbstractOrmTable
 
 	protected void update(XmlBaseTable xmlTable) {
 		this.setDefaultName(this.buildDefaultName());
-		this.setSpecifiedName_(this.buildSpecifiedName(xmlTable));
+		this.setSpecifiedName_(this.getResourceTableName(xmlTable));
 
 		this.setDefaultSchema(this.buildDefaultSchema());
-		this.setSpecifiedSchema_(this.buildSpecifiedSchema(xmlTable));
+		this.setSpecifiedSchema_(this.getResourceTableSchema(xmlTable));
 
 		this.setDefaultCatalog(this.buildDefaultCatalog());
-		this.setSpecifiedCatalog_(this.buildSpecifiedCatalog(xmlTable));
+		this.setSpecifiedCatalog_(this.getResourceTableCatalog(xmlTable));
 
 		this.updateUniqueConstraints(xmlTable);
 	}
 
-	protected String buildSpecifiedName(XmlBaseTable xmlTable) {
+	protected String getResourceTableName(XmlBaseTable xmlTable) {
 		return (xmlTable == null) ? null : xmlTable.getName();
 	}
 
-	protected String buildSpecifiedSchema(XmlBaseTable xmlTable) {
+	protected String getResourceTableSchema(XmlBaseTable xmlTable) {
 		return (xmlTable == null) ? null : xmlTable.getSchema();
 	}
 
-	protected String buildSpecifiedCatalog(XmlBaseTable xmlTable) {
+	protected String getResourceTableCatalog(XmlBaseTable xmlTable) {
 		return (xmlTable == null) ? null : xmlTable.getCatalog();
 	}
 
