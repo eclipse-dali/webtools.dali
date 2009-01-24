@@ -39,7 +39,7 @@ public class OrmNamedQueryTests extends ContextModelTestCase
 	}
 
 	public void testUpdateName() throws Exception {
-		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmNamedQuery ormNamedQuery = ormEntity.addNamedQuery(0);
 		
@@ -60,7 +60,7 @@ public class OrmNamedQueryTests extends ContextModelTestCase
 	}
 	
 	public void testModifyName() throws Exception {
-		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmNamedQuery ormNamedQuery = ormEntity.addNamedQuery(0);
 		
@@ -81,7 +81,7 @@ public class OrmNamedQueryTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateQuery() throws Exception {
-		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmNamedQuery ormNamedQuery = ormEntity.addNamedQuery(0);
 		
@@ -102,7 +102,7 @@ public class OrmNamedQueryTests extends ContextModelTestCase
 	}
 	
 	public void testModifyQuery() throws Exception {
-		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmNamedQuery ormNamedQuery = ormEntity.addNamedQuery(0);
 		
@@ -123,7 +123,7 @@ public class OrmNamedQueryTests extends ContextModelTestCase
 	}
 	
 	public void testAddHint() throws Exception {
-		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmNamedQuery ormNamedQuery = ormEntity.addNamedQuery(0);
 		
@@ -159,7 +159,7 @@ public class OrmNamedQueryTests extends ContextModelTestCase
 	}
 	
 	public void testRemoveHint() throws Exception {
-		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmNamedQuery ormNamedQuery = ormEntity.addNamedQuery(0);
 		
@@ -185,7 +185,7 @@ public class OrmNamedQueryTests extends ContextModelTestCase
 	}
 	
 	public void testMoveHint() throws Exception {
-		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmNamedQuery ormNamedQuery = ormEntity.addNamedQuery(0);
 		
@@ -221,7 +221,7 @@ public class OrmNamedQueryTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateHints() throws Exception {
-		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmNamedQuery ormNamedQuery = ormEntity.addNamedQuery(0);
 		

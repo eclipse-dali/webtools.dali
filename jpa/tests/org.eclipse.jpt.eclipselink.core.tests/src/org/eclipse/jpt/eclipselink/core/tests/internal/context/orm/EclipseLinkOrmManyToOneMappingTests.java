@@ -28,7 +28,7 @@ public class EclipseLinkOrmManyToOneMappingTests
 	
 	public void testUpdateJoinFetch() throws Exception {
 		OrmPersistentType ormPersistentType = 
-			getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+			getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmPersistentAttribute ormPersistentAttribute =
 			ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY, "manyToOne");
 		EclipseLinkRelationshipMapping contextManyToOne = 
@@ -67,7 +67,7 @@ public class EclipseLinkOrmManyToOneMappingTests
 	
 	public void testModifyJoinFetch() throws Exception {
 		OrmPersistentType ormPersistentType = 
-			getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+			getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmPersistentAttribute ormPersistentAttribute =
 			ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY, "manyToOne");
 		EclipseLinkRelationshipMapping contextManyToOne = 

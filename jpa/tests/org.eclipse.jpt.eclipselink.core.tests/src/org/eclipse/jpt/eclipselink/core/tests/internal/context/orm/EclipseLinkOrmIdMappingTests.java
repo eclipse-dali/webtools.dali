@@ -91,7 +91,7 @@ public class EclipseLinkOrmIdMappingTests
 	public void testUpdateMutable() throws Exception {
 		createTestEntityWithIdMapping();
 		OrmPersistentType ormPersistentType = 
-			getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+			getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmPersistentAttribute ormPersistentAttribute =
 			ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "id");
 		EclipseLinkOrmIdMapping contextId = 
@@ -174,7 +174,7 @@ public class EclipseLinkOrmIdMappingTests
 	public void testUpdateMutableDate() throws Exception {
 		createTestEntityWithMutableIdDate();
 		OrmPersistentType ormPersistentType = 
-			getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+			getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmPersistentAttribute ormPersistentAttribute =
 			ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "myDate");
 		EclipseLinkOrmIdMapping contextId = 
@@ -272,7 +272,7 @@ public class EclipseLinkOrmIdMappingTests
 
 	public void testModifyMutable() throws Exception {
 		OrmPersistentType ormPersistentType = 
-			getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+			getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmPersistentAttribute ormPersistentAttribute =
 			ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "basic");
 		EclipseLinkOrmIdMapping contextId = 
@@ -320,7 +320,7 @@ public class EclipseLinkOrmIdMappingTests
 	public void testUpdateConvert() throws Exception {
 		createTestEntityWithIdMapping();
 		
-		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "id");
 		OrmIdMapping ormIdMapping = (OrmIdMapping) ormPersistentAttribute.getMapping();
 		XmlId basicResource = (XmlId) getOrmXmlResource().getEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
@@ -370,7 +370,7 @@ public class EclipseLinkOrmIdMappingTests
 	}
 	
 	public void testModifyConvert() throws Exception {
-		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "basicMapping");
 		OrmIdMapping ormIdMapping = (OrmIdMapping) ormPersistentAttribute.getMapping();
 		XmlId basicResource = (XmlId) getOrmXmlResource().getEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);

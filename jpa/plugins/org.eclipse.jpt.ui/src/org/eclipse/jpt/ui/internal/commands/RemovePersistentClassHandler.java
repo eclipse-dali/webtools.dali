@@ -29,7 +29,7 @@ public class RemovePersistentClassHandler extends AbstractHandler
 		// only applies for multiply selected OrmPersistentType objects in a tree
 		for (Iterator<OrmPersistentType> stream = selection.iterator(); stream.hasNext(); ) {
 			OrmPersistentType persistentType = stream.next();
-			((EntityMappings) persistentType.getMappingFileRoot()).removeOrmPersistentType(persistentType);
+			((EntityMappings) persistentType.getMappingFileRoot()).removePersistentType(persistentType);
 		}
 		
 		return null;

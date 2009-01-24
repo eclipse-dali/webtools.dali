@@ -336,7 +336,7 @@ public class GenericJavaPersistentTypeTests extends ContextModelTestCase
 	}
 
 	public void testAccessXmlNoAccessNoAnnotations() throws Exception {
-		OrmPersistentType entityPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentType entityPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		createTestEntity();
 
 		JavaPersistentType javaPersistentType = entityPersistentType.getJavaPersistentType(); 
@@ -344,7 +344,7 @@ public class GenericJavaPersistentTypeTests extends ContextModelTestCase
 	}
 	
 	public void testAccessXmlEntityAccessNoAnnotations() throws Exception {
-		OrmPersistentType entityPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentType entityPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		createTestEntity();
 		JavaPersistentType javaPersistentType = entityPersistentType.getJavaPersistentType(); 
 
@@ -356,7 +356,7 @@ public class GenericJavaPersistentTypeTests extends ContextModelTestCase
 	}
 	
 	public void testAccessXmlPersistenceUnitDefaultsAccessNoAnnotations()  throws Exception {
-		OrmPersistentType entityPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentType entityPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		createTestEntity();
 		JavaPersistentType javaPersistentType = entityPersistentType.getJavaPersistentType(); 
 		assertEquals(AccessType.FIELD, javaPersistentType.getAccess());
@@ -370,7 +370,7 @@ public class GenericJavaPersistentTypeTests extends ContextModelTestCase
 	
 	public void testAccessXmlEntityPropertyAccessAndFieldAnnotations() throws Exception {
 		//xml access set to property, field annotations, JavaPersistentType access is field
-		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		createTestEntityAnnotatedField();
 		JavaPersistentType javaPersistentType = ormPersistentType.getJavaPersistentType(); 
 
@@ -380,7 +380,7 @@ public class GenericJavaPersistentTypeTests extends ContextModelTestCase
 	
 	public void testAccessXmlEntityFieldAccessAndPropertyAnnotations() throws Exception {
 		//xml access set to field, property annotations, JavaPersistentType access is property
-		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		createTestEntityAnnotatedMethod();
 		JavaPersistentType javaPersistentType = ormPersistentType.getJavaPersistentType(); 
 
@@ -389,7 +389,7 @@ public class GenericJavaPersistentTypeTests extends ContextModelTestCase
 	}
 	
 	public void testAccessXmlPersistenceUnitDefaultsAccessFieldAnnotations() throws Exception {
-		OrmPersistentType entityPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentType entityPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		createTestEntityAnnotatedField();
 		JavaPersistentType javaPersistentType = entityPersistentType.getJavaPersistentType(); 
 
@@ -399,8 +399,8 @@ public class GenericJavaPersistentTypeTests extends ContextModelTestCase
 
 	//inheritance wins over entity-mappings specified access
 	public void testAccessXmlEntityMappingsAccessWithInheritance() throws Exception {
-		OrmPersistentType entityPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentType childEntityPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".AnnotationTestTypeChild");
+		OrmPersistentType entityPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentType childEntityPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".AnnotationTestTypeChild");
 		
 		createTestEntityAnnotatedMethod();
 		createTestSubType();
@@ -413,7 +413,7 @@ public class GenericJavaPersistentTypeTests extends ContextModelTestCase
 
 	public void testAccessXmlMetadataCompleteFieldAnnotations() throws Exception {
 		//xml access set to property, java has field annotations so the access should be field
-		OrmPersistentType entityPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentType entityPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		createTestEntityAnnotatedField();
 		JavaPersistentType javaPersistentType = entityPersistentType.getJavaPersistentType(); 
 
@@ -425,7 +425,7 @@ public class GenericJavaPersistentTypeTests extends ContextModelTestCase
 	
 	public void testAccessNoXmlAccessXmlMetdataCompletePropertyAnnotations() throws Exception {
 		//xml access not set, metadata complete set.  JavaPersistentType access is property because properties are annotated
-		OrmPersistentType entityPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentType entityPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		createTestEntityAnnotatedMethod();
 		JavaPersistentType javaPersistentType = entityPersistentType.getJavaPersistentType(); 
 

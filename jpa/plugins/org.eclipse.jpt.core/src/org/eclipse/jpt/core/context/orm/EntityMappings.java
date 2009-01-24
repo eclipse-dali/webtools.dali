@@ -81,12 +81,12 @@ public interface EntityMappings
 
 	PersistenceUnitMetadata getPersistenceUnitMetadata();
 	
-	ListIterator<OrmPersistentType> ormPersistentTypes();
-	int ormPersistentTypesSize();
-	OrmPersistentType addOrmPersistentType(String mappingKey, String className);
-	void removeOrmPersistentType(int index);
-	void removeOrmPersistentType(OrmPersistentType ormPersistentType);
-	//void moveOrmPersistentType(int targetIndex, int sourceIndex);
+	ListIterator<OrmPersistentType> persistentTypes();
+	int persistentTypesSize();
+	OrmPersistentType addPersistentType(String mappingKey, String className);
+	void removePersistentType(int index);
+	void removePersistentType(OrmPersistentType persistentType);
+	//void movePersistentType(int targetIndex, int sourceIndex);
 	boolean containsPersistentType(String className);
 		String PERSISTENT_TYPES_LIST = "persistentTypes"; //$NON-NLS-1$
 	

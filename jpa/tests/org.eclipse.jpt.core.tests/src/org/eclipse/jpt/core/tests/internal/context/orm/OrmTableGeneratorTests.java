@@ -584,7 +584,7 @@ public class OrmTableGeneratorTests extends ContextModelTestCase
 	
 	public void testUniqueConstraintsFromJava() throws Exception {
 		createTestEntity();
-		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 
 		OrmIdMapping ormIdMapping = (OrmIdMapping) ormPersistentType.attributes().next().getMapping();
 

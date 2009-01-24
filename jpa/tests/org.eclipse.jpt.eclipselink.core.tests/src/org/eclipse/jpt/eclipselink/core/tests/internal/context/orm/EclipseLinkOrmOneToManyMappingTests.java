@@ -85,7 +85,7 @@ public class EclipseLinkOrmOneToManyMappingTests
 	
 	public void testUpdatePrivateOwned() throws Exception {
 		OrmPersistentType ormPersistentType = 
-			getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+			getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmPersistentAttribute ormPersistentAttribute =
 			ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY, "oneToMany");
 		EclipseLinkOneToManyMapping contextOneToMany = 
@@ -117,7 +117,7 @@ public class EclipseLinkOrmOneToManyMappingTests
 	
 	public void testModifyPrivateOwned() throws Exception {
 		OrmPersistentType ormPersistentType = 
-			getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+			getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmPersistentAttribute ormPersistentAttribute =
 			ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY, "oneToMany");
 		EclipseLinkOneToManyMapping contextOneToMany = 
@@ -149,7 +149,7 @@ public class EclipseLinkOrmOneToManyMappingTests
 	
 	public void testUpdateJoinFetch() throws Exception {
 		OrmPersistentType ormPersistentType = 
-			getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+			getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmPersistentAttribute ormPersistentAttribute =
 			ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY, "oneToMany");
 		EclipseLinkOneToManyMapping contextOneToMany = 
@@ -188,7 +188,7 @@ public class EclipseLinkOrmOneToManyMappingTests
 	
 	public void testModifyJoinFetch() throws Exception {
 		OrmPersistentType ormPersistentType = 
-			getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+			getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmPersistentAttribute ormPersistentAttribute =
 			ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY, "oneToMany");
 		EclipseLinkOneToManyMapping contextOneToMany = 
@@ -228,10 +228,10 @@ public class EclipseLinkOrmOneToManyMappingTests
 	public void testDefaultJoinTable() throws Exception {
 		createTestEmployee();
 		createTestDepartment();
-		getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Department");
-		getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Employee");
+		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Department");
+		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Employee");
 		
-		OrmPersistentType departmentPersistentType = getEntityMappings().ormPersistentTypes().next();
+		OrmPersistentType departmentPersistentType = getEntityMappings().persistentTypes().next();
 		OrmOneToManyMapping oneToMany = (OrmOneToManyMapping) departmentPersistentType.getAttributeNamed("employees").getMapping();
 		
 		assertEquals(true, oneToMany.getPersistentAttribute().isVirtual());

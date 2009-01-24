@@ -87,7 +87,7 @@ public class EclipseLinkOrmManyToManyMappingTests
 	}	
 	public void testUpdateJoinFetch() throws Exception {
 		OrmPersistentType ormPersistentType = 
-			getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+			getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmPersistentAttribute ormPersistentAttribute =
 			ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToMany");
 		EclipseLinkRelationshipMapping contextManyToMany = 
@@ -126,7 +126,7 @@ public class EclipseLinkOrmManyToManyMappingTests
 	
 	public void testModifyJoinFetch() throws Exception {
 		OrmPersistentType ormPersistentType = 
-			getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+			getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmPersistentAttribute ormPersistentAttribute =
 			ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY, "manyToMany");
 		EclipseLinkRelationshipMapping contextManyToMany = 
@@ -166,10 +166,10 @@ public class EclipseLinkOrmManyToManyMappingTests
 	public void testDefaultJoinTable() throws Exception {
 		createTestEmployee();
 		createTestDepartment();
-		getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Department");
-		getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Employee");
+		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Department");
+		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Employee");
 		
-		OrmPersistentType departmentPersistentType = getEntityMappings().ormPersistentTypes().next();
+		OrmPersistentType departmentPersistentType = getEntityMappings().persistentTypes().next();
 		OrmManyToManyMapping manyToMany = (OrmManyToManyMapping) departmentPersistentType.getAttributeNamed("employees").getMapping();
 		
 		assertEquals(true, manyToMany.getPersistentAttribute().isVirtual());

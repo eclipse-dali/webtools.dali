@@ -68,7 +68,7 @@ public class OrmItemContentProviderFactory extends GeneralJpaMappingItemContentP
 					EntityMappings.PERSISTENT_TYPES_LIST, getModel()) {
 				@Override
 				protected ListIterator<OrmPersistentType> listIterator_() {
-					return subject.ormPersistentTypes();
+					return subject.persistentTypes();
 				}
 			};
 		}

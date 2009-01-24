@@ -30,7 +30,7 @@ public class EclipseLinkEntityMappingsImpl
 	}
 	
 	@Override
-	protected OrmPersistentType buildOrmPersistentType(String mappingKey) {
+	protected OrmPersistentType buildPersistentType(String mappingKey) {
 		return getJpaFactory().buildEclipseLinkOrmPersistentType(this, mappingKey);
 	}
 	

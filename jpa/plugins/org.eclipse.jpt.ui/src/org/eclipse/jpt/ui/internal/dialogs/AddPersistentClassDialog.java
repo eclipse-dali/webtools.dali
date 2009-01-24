@@ -301,7 +301,7 @@ public class AddPersistentClassDialog extends StatusDialog
 	
 	@Override
 	protected void okPressed() {
-		this.addedType = this.entityMappings.addOrmPersistentType(getMappingKey(), getClassName());
+		this.addedType = this.entityMappings.addPersistentType(getMappingKey(), getClassName());
 		super.okPressed();
 	}
 	

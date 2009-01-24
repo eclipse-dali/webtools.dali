@@ -47,11 +47,11 @@ public class OrmXmlItemContentProvider
 				EntityMappings.PERSISTENT_TYPES_LIST) {
 			@Override
 			protected ListIterator<OrmPersistentType> listIterator_() {
-				return subject.ormPersistentTypes();
+				return subject.persistentTypes();
 			}
 			@Override
 			protected int size_() {
-				return subject.ormPersistentTypesSize();
+				return subject.persistentTypesSize();
 			}
 		};
 	}

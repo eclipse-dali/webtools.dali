@@ -172,7 +172,7 @@ public class GenericEntityMappings
 	}
 	
 	public OrmPersistentType getPersistentType(String fullyQualifiedTypeName) {
-		for (OrmPersistentType ormPersistentType : CollectionTools.iterable(ormPersistentTypes())) {
+		for (OrmPersistentType ormPersistentType : CollectionTools.iterable(persistentTypes())) {
 			if (ormPersistentType.isFor(fullyQualifiedTypeName)) {
 				return ormPersistentType;
 			}
@@ -323,16 +323,16 @@ public class GenericEntityMappings
 
 	// ********** ORM persistent types **********
 
-	public ListIterator<OrmPersistentType> ormPersistentTypes() {
+	public ListIterator<OrmPersistentType> persistentTypes() {
 		return new CloneListIterator<OrmPersistentType>(this.persistentTypes);
 	}
 	
-	public int ormPersistentTypesSize() {
+	public int persistentTypesSize() {
 		return this.persistentTypes.size();
 	}
 	
-	public OrmPersistentType addOrmPersistentType(String mappingKey, String className) {
-		OrmPersistentType persistentType = buildOrmPersistentType(mappingKey);
+	public OrmPersistentType addPersistentType(String mappingKey, String className) {
+		OrmPersistentType persistentType = buildPersistentType(mappingKey);
 		int index = insertionIndex(persistentType);
 		this.persistentTypes.add(index, persistentType);
 		if (className.startsWith(getPackage() + '.')) {
@@ -345,11 +345,11 @@ public class GenericEntityMappings
 		return persistentType;
 	}
 	
-	protected OrmPersistentType buildOrmPersistentType(String mappingKey) {
+	protected OrmPersistentType buildPersistentType(String mappingKey) {
 		return getJpaFactory().buildOrmPersistentType(this, mappingKey);
 	}
 	
-	protected void addOrmPersistentType(OrmPersistentType ormPersistentType) { 
+	protected void addPersistentType(OrmPersistentType ormPersistentType) { 
 		addItemToList(ormPersistentType, this.persistentTypes, PERSISTENT_TYPES_LIST);
 	}
 
@@ -373,7 +373,7 @@ public class GenericEntityMappings
 		};
 	}
 
-	public void removeOrmPersistentType(int index) {
+	public void removePersistentType(int index) {
 		OrmPersistentType ormPersistentType = this.persistentTypes.get(index);
 		ormPersistentType.dispose();
 		this.persistentTypes.remove(index);
@@ -381,8 +381,8 @@ public class GenericEntityMappings
 		fireItemRemoved(PERSISTENT_TYPES_LIST, index, ormPersistentType);		
 	}
 	
-	public void removeOrmPersistentType(OrmPersistentType ormPersistentType) {
-		removeOrmPersistentType(this.persistentTypes.indexOf(ormPersistentType));	
+	public void removePersistentType(OrmPersistentType ormPersistentType) {
+		removePersistentType(this.persistentTypes.indexOf(ormPersistentType));	
 	}
 	
 	protected void removeOrmPersistentType_(OrmPersistentType ormPersistentType) {
@@ -587,7 +587,7 @@ public class GenericEntityMappings
 	//this needs to be handled both for className and persistentType.getName().
 	//moving on for now since I am just trying to get the ui compiled!  just a warning that this isn't good api
 	public boolean containsPersistentType(String className) {
-		for (OrmPersistentType persistentType : CollectionTools.iterable(ormPersistentTypes())) {
+		for (OrmPersistentType persistentType : CollectionTools.iterable(persistentTypes())) {
 			if (persistentType.getName().equals(className)) {
 				return true;
 			}
@@ -635,7 +635,7 @@ public class GenericEntityMappings
 	
 	protected void initializeMappedSuperclasses() {
 		for (XmlMappedSuperclass mappedSuperclass : this.xmlEntityMappings.getMappedSuperclasses()) {
-			OrmPersistentType ormPersistentType = buildOrmPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY);
+			OrmPersistentType ormPersistentType = buildPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY);
 			ormPersistentType.initialize(mappedSuperclass);
 			this.persistentTypes.add(ormPersistentType);
 		}	
@@ -643,7 +643,7 @@ public class GenericEntityMappings
 	
 	protected void initializeEntities() {
 		for (XmlEntity entity : this.xmlEntityMappings.getEntities()) {
-			OrmPersistentType ormPersistentType = buildOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY);
+			OrmPersistentType ormPersistentType = buildPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY);
 			ormPersistentType.initialize(entity);
 			this.persistentTypes.add(ormPersistentType);
 		}				
@@ -651,7 +651,7 @@ public class GenericEntityMappings
 	
 	protected void initializeEmbeddables() {
 		for (XmlEmbeddable embeddable : this.xmlEntityMappings.getEmbeddables()) {
-			OrmPersistentType ormPersistentType = buildOrmPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
+			OrmPersistentType ormPersistentType = buildPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
 			ormPersistentType.initialize(embeddable);
 			this.persistentTypes.add(ormPersistentType);
 		}
@@ -710,7 +710,7 @@ public class GenericEntityMappings
 	}
 	
 	protected void updatePersistentTypes() {
-		ListIterator<OrmPersistentType> ormPersistentTypes = this.ormPersistentTypes();
+		ListIterator<OrmPersistentType> ormPersistentTypes = this.persistentTypes();
 		this.updateMappedSuperclasses(ormPersistentTypes);
 		this.updateEntities(ormPersistentTypes);
 		this.updateEmbeddables(ormPersistentTypes);
@@ -727,9 +727,9 @@ public class GenericEntityMappings
 				ormPersistentTypes.next().update(mappedSuperclass);
 			}
 			else {
-				OrmPersistentType ormPersistentType = buildOrmPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY);
+				OrmPersistentType ormPersistentType = buildPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY);
 				ormPersistentType.initialize(mappedSuperclass);
-				addOrmPersistentType(ormPersistentType);
+				addPersistentType(ormPersistentType);
 			}
 		}
 	}
@@ -741,9 +741,9 @@ public class GenericEntityMappings
 				ormPersistentTypes.next().update(entity);
 			}
 			else {
-				OrmPersistentType ormPersistentType = buildOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY);
+				OrmPersistentType ormPersistentType = buildPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY);
 				ormPersistentType.initialize(entity);
-				addOrmPersistentType(ormPersistentType);
+				addPersistentType(ormPersistentType);
 			}
 		}
 	}
@@ -755,9 +755,9 @@ public class GenericEntityMappings
 				ormPersistentTypes.next().update(embeddable);
 			}
 			else {
-				OrmPersistentType ormPersistentType = buildOrmPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
+				OrmPersistentType ormPersistentType = buildPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
 				ormPersistentType.initialize(embeddable);
-				addOrmPersistentType(ormPersistentType);
+				addPersistentType(ormPersistentType);
 			}
 		}
 	}
@@ -856,7 +856,7 @@ public class GenericEntityMappings
 	// ********** text **********
 
 	public JpaStructureNode getStructureNode(int textOffset) {
-		for (OrmPersistentType persistentType: CollectionTools.iterable(ormPersistentTypes())) {
+		for (OrmPersistentType persistentType: CollectionTools.iterable(persistentTypes())) {
 			if (persistentType.contains(textOffset)) {
 				return persistentType.getStructureNode(textOffset);
 			}
@@ -884,7 +884,7 @@ public class GenericEntityMappings
 		super.validate(messages);
 		this.validateGenerators(messages);
 		this.validateQueries(messages);
-		for (Iterator<OrmPersistentType> stream = this.ormPersistentTypes(); stream.hasNext(); ) {
+		for (Iterator<OrmPersistentType> stream = this.persistentTypes(); stream.hasNext(); ) {
 			this.validatePersistentType(stream.next(), messages);
 		}
 	}
@@ -959,7 +959,7 @@ public class GenericEntityMappings
 	// ********** dispose **********
 
 	public void dispose() {
-		for (OrmPersistentType  ormPersistentType : CollectionTools.iterable(ormPersistentTypes())) {
+		for (OrmPersistentType  ormPersistentType : CollectionTools.iterable(persistentTypes())) {
 			ormPersistentType.dispose();
 		}
 	}

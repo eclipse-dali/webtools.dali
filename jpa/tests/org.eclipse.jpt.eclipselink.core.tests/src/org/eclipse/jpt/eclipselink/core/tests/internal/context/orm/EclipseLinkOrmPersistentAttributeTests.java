@@ -92,7 +92,7 @@ public class EclipseLinkOrmPersistentAttributeTests extends ContextModelTestCase
 	
 	public void testMakeSpecified() throws Exception {
 		createTestType();
-		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
 		assertEquals(2, ormPersistentType.virtualAttributesSize());
 		
@@ -124,7 +124,7 @@ public class EclipseLinkOrmPersistentAttributeTests extends ContextModelTestCase
 	
 	public void testMakeSpecifiedMappingKey() throws Exception {
 		createTestTypeNullAttributeMapping();
-		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
 		assertEquals(3, ormPersistentType.virtualAttributesSize());
 		
@@ -162,7 +162,7 @@ public class EclipseLinkOrmPersistentAttributeTests extends ContextModelTestCase
 	
 	public void testMakeVirtual() throws Exception {
 		createTestType();
-		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
 		assertEquals(2, ormPersistentType.virtualAttributesSize());
 		
@@ -193,7 +193,7 @@ public class EclipseLinkOrmPersistentAttributeTests extends ContextModelTestCase
 	
 	public void testMakeVirtualNoUnderlyingJavaAttribute() throws Exception {
 		createTestType();
-		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
 		assertEquals(2, ormPersistentType.virtualAttributesSize());
 		
@@ -217,7 +217,7 @@ public class EclipseLinkOrmPersistentAttributeTests extends ContextModelTestCase
 	
 	public void testVirtualMappingTypeWhenMetadataComplete()  throws Exception {
 		createTestEntityIdMapping();
-		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
 		assertEquals("id", ormPersistentAttribute.getName());
@@ -235,7 +235,7 @@ public class EclipseLinkOrmPersistentAttributeTests extends ContextModelTestCase
 	
 	public void testVirtualMappingTypeWhenMetadataComplete2()  throws Exception {
 		createTestEntityOneToOneMapping();
-		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
 		assertEquals("address", ormPersistentAttribute.getName());

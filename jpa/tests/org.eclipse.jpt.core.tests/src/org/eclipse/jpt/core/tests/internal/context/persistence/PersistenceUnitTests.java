@@ -662,7 +662,7 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		assertEquals(FULLY_QUALIFIED_INNER_CLASS_NAME, classRefs.next().getClassName());
 		assertEquals(FULLY_QUALIFIED_TYPE_NAME, classRefs.next().getClassName());
 		
-		getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		classRefs = getPersistenceUnit().impliedClassRefs();
 		assertEquals(FULLY_QUALIFIED_INNER_CLASS_NAME, classRefs.next().getClassName());
 		assertFalse(classRefs.hasNext());
@@ -676,7 +676,7 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		assertEquals(FULLY_QUALIFIED_INNER_CLASS_NAME, classRefs.next().getClassName());
 		assertFalse(classRefs.hasNext());
 
-		getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_INNER_CLASS_NAME);
+		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_INNER_CLASS_NAME);
 		classRefs = getPersistenceUnit().impliedClassRefs();
 		assertFalse(classRefs.hasNext());
 	}
@@ -1144,7 +1144,7 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		
 		//test persistentType from orm.xml file that is specified in the persistence.xml
 		createOrmXmlFile();
-		OrmPersistentType ormPersistentType = getEntityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		assertNotNull(persistenceUnit.getPersistentType("model.Foo"));
 		assertEquals(ormPersistentType, persistenceUnit.getPersistentType("model.Foo"));
 
