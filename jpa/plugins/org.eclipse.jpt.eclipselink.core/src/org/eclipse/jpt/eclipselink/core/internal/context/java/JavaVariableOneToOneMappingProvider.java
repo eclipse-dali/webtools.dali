@@ -12,7 +12,6 @@ package org.eclipse.jpt.eclipselink.core.internal.context.java;
 import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.context.java.DefaultJavaAttributeMappingProvider;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
-import org.eclipse.jpt.core.context.java.JavaAttributeMappingProvider;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.eclipselink.core.EclipseLinkMappingKeys;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaFactory;

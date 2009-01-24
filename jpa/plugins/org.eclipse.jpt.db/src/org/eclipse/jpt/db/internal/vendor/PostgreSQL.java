@@ -13,7 +13,6 @@ import java.util.ArrayList;
 
 import org.eclipse.datatools.modelbase.sql.schema.Catalog;
 import org.eclipse.datatools.modelbase.sql.schema.Database;
-import org.eclipse.jpt.utility.internal.CollectionTools;
 
 class PostgreSQL
 	extends AbstractVendor

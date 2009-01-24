@@ -9,16 +9,10 @@
 package org.eclipse.jpt.eclipselink.ui.internal.mappings.details;
 
 import java.util.Collection;
-import org.eclipse.jpt.core.context.Fetchable;
 import org.eclipse.jpt.core.internal.JptCoreMessages;
 import org.eclipse.jpt.eclipselink.core.context.JoinFetch;
 import org.eclipse.jpt.eclipselink.core.context.JoinFetchType;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
-import org.eclipse.jpt.ui.internal.mappings.details.BasicMappingComposite;
-import org.eclipse.jpt.ui.internal.mappings.details.ManyToManyMappingComposite;
-import org.eclipse.jpt.ui.internal.mappings.details.ManyToOneMappingComposite;
-import org.eclipse.jpt.ui.internal.mappings.details.OneToManyMappingComposite;
-import org.eclipse.jpt.ui.internal.mappings.details.OneToOneMappingComposite;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
