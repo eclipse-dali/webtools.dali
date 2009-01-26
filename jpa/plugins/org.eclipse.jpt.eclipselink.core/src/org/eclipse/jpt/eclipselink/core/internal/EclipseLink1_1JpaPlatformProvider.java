@@ -1,0 +1,104 @@
+/*******************************************************************************
+ * Copyright (c) 2009 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ *******************************************************************************/
+package org.eclipse.jpt.eclipselink.core.internal;
+
+import java.util.List;
+import org.eclipse.jpt.core.JpaPlatformProvider;
+import org.eclipse.jpt.core.JpaResourceModelProvider;
+import org.eclipse.jpt.core.context.MappingFileProvider;
+import org.eclipse.jpt.core.context.java.DefaultJavaAttributeMappingProvider;
+import org.eclipse.jpt.core.context.java.JavaAttributeMappingProvider;
+import org.eclipse.jpt.core.context.java.JavaTypeMappingProvider;
+import org.eclipse.jpt.core.context.orm.ExtendedOrmAttributeMappingProvider;
+import org.eclipse.jpt.core.context.orm.ExtendedOrmTypeMappingProvider;
+import org.eclipse.jpt.core.context.orm.OrmAttributeMappingProvider;
+import org.eclipse.jpt.core.context.orm.OrmTypeMappingProvider;
+import org.eclipse.jpt.core.internal.platform.AbstractJpaPlatformProvider;
+
+/**
+ * EclipseLink platform
+ */
+public class EclipseLink1_1JpaPlatformProvider
+	extends AbstractJpaPlatformProvider
+{
+	public static final String ID = "org.eclipse.eclipselink1_1.platform"; //$NON-NLS-1$
+
+	// singleton
+	private static final JpaPlatformProvider INSTANCE = new EclipseLink1_1JpaPlatformProvider();
+
+	/**
+	 * Return the singleton.
+	 */
+	public static JpaPlatformProvider instance() {
+		return INSTANCE;
+	}
+
+	/**
+	 * Ensure single instance.
+	 */
+	private EclipseLink1_1JpaPlatformProvider() {
+		super();
+	}
+
+	
+	// ********* JPA files *********	
+	
+	@Override
+	protected void addResourceModelProvidersTo(@SuppressWarnings("unused") List<JpaResourceModelProvider> providers) {
+		//none specific to EclipseLink1.1
+	}
+
+	
+	// ********* java *********	
+
+	@Override
+	protected void addJavaTypeMappingProvidersTo(@SuppressWarnings("unused") List<JavaTypeMappingProvider> providers) {
+		//none specific to EclipseLink1.1
+	}
+
+	@Override
+	protected void addJavaAttributeMappingProvidersTo(@SuppressWarnings("unused") List<JavaAttributeMappingProvider> providers) {
+		//none specific to EclipseLink1.1
+	}
+
+	@Override
+	protected void addDefaultJavaAttributeMappingProvidersTo(@SuppressWarnings("unused") List<DefaultJavaAttributeMappingProvider> providers) {
+		//none specific to EclipseLink1.1
+	}
+	
+	
+	// ********* ORM *********
+	
+	@Override
+	protected void addOrmTypeMappingProvidersTo(@SuppressWarnings("unused") List<OrmTypeMappingProvider> providers) {
+		//none specific to EclipseLink		
+	}
+	
+	@Override
+	protected void addMappingFileProvidersTo(@SuppressWarnings("unused") List<MappingFileProvider> providers) {
+		//none specific to EclipseLink1.1
+	}
+
+	@Override
+	protected void addExtendedOrmTypeMappingProvidersTo(@SuppressWarnings("unused") List<ExtendedOrmTypeMappingProvider> providers) {
+		//none specific to EclipseLink1.1
+	}
+
+	@Override
+	protected void addOrmAttributeMappingProvidersTo(@SuppressWarnings("unused") List<OrmAttributeMappingProvider> providers) {
+		//none specific to EclipseLink1.1
+	}
+
+	@Override
+	protected void addExtendedOrmAttributeMappingProvidersTo(@SuppressWarnings("unused") List<ExtendedOrmAttributeMappingProvider> providers) {
+		//none specific to EclipseLink1.1
+	}
+
+}

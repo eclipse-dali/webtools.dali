@@ -9,6 +9,11 @@
             jpaPlatformId="org.eclipse.eclipselink.platform"
             factoryClass="org.eclipse.jpt.eclipselink.ui.internal.platform.EclipseLinkJpaPlatformUiFactory">
       </jpaPlatform>
+      <jpaPlatform
+             id="eclipselink1_1.ui"
+             jpaPlatformId="eclipselink1_1"
+             factoryClass="org.eclipse.jpt.eclipselink.ui.internal.platform.EclipseLink1_1JpaPlatformUiFactory">
+      </jpaPlatform>
    </extension>
    
    
