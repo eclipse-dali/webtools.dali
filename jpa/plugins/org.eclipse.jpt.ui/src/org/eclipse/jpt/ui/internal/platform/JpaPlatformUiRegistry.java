@@ -18,6 +18,7 @@ import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jpt.ui.JpaPlatformUi;
+import org.eclipse.jpt.ui.JpaPlatformUiFactory;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
@@ -36,18 +37,21 @@ public class JpaPlatformUiRegistry
 	}
 
 	private static final String EXTENSION_ID = 
-		"jpaPlatform"; //$NON-NLS-1$
+		"jpaPlatforms"; //$NON-NLS-1$
 	
 	private static final String EL_PLATFORM =
 		"jpaPlatform"; //$NON-NLS-1$	
 
 	private static final String AT_ID =
 		"id"; //$NON-NLS-1$	
+	
+	private static final String AT_JPA_PLATFORM_ID =
+		"jpaPlatformId"; //$NON-NLS-1$	
 
-	private static final String AT_CLASS =
-		"class"; //$NON-NLS-1$	
+	private static final String AT_FACTORY_CLASS =
+		"factoryClass"; //$NON-NLS-1$	
 		
-	// key: String jpaPlatform id  value: IConfigurationElement class descriptor
+	// key: String id  value: IConfigurationElement class descriptor
 	private Map<String, IConfigurationElement> jpaPlatforms;
 	
 	
@@ -72,41 +76,52 @@ public class JpaPlatformUiRegistry
 			return;
 		}
 		
-		String platformId = configElement.getAttribute(AT_ID);
-		String platformClass = configElement.getAttribute(AT_CLASS);
+		String platformUiId = configElement.getAttribute(AT_ID);
+		String platformId = configElement.getAttribute(AT_JPA_PLATFORM_ID);
+		String platformFactoryClass = configElement.getAttribute(AT_FACTORY_CLASS);
 		
-		if ((platformId == null) || (platformClass == null)) {
-			if (platformId == null) {
+		if ((platformUiId == null) || (platformFactoryClass == null)) {
+			if (platformUiId == null) {
 				reportMissingAttribute(configElement, AT_ID);
 			}
-			if (platformClass == null) {
-				reportMissingAttribute(configElement, AT_CLASS);
+			if (platformId == null) {
+				reportMissingAttribute(configElement, AT_JPA_PLATFORM_ID);
+			}
+			if (platformFactoryClass == null) {
+				reportMissingAttribute(configElement, AT_FACTORY_CLASS);
 			}
 			return;
 		}
 		
-		if (this.jpaPlatforms.containsKey(platformId)) {
+		if (this.jpaPlatforms.containsKey(platformUiId)) {
 			IConfigurationElement otherConfigElement = this.jpaPlatforms.get(platformId);
-			reportDuplicatePlatform(configElement, otherConfigElement);
+			reportDuplicatePlatformUi(configElement, otherConfigElement);
 		}
 		
-		this.jpaPlatforms.put(platformId, configElement);
+		this.jpaPlatforms.put(platformUiId, configElement);
 	}
 	
 	public JpaPlatformUi getJpaPlatformUi(String platformId) {
-		IConfigurationElement registeredConfigElement = this.jpaPlatforms.get(platformId);
+		IConfigurationElement registeredConfigElement = null;
+		for (IConfigurationElement configurationElement : this.jpaPlatforms.values()) {
+			if (configurationElement.getAttribute(AT_JPA_PLATFORM_ID).equals(platformId)) {
+				registeredConfigElement = configurationElement;
+				break;
+			}
+		}
 		
 		if (registeredConfigElement == null) {
 			return null;
 		}
-		
+		JpaPlatformUiFactory jpaPlatformUiFactory;
 		try {
-			return (JpaPlatformUi) registeredConfigElement.createExecutableExtension(AT_CLASS);
+			jpaPlatformUiFactory = (JpaPlatformUiFactory) registeredConfigElement.createExecutableExtension(AT_FACTORY_CLASS);
 		}
 		catch (CoreException ce) {
 			reportFailedInstantiation(registeredConfigElement);
-			return null;
+			throw new IllegalArgumentException(platformId);
 		}
+		return jpaPlatformUiFactory.buildJpaPlatformUi();
 	}
 	
 	private Iterator<IConfigurationElement> allConfigElements() {
@@ -139,7 +154,7 @@ public class JpaPlatformUiRegistry
 	}
 	
 	// TODO externalize strings
-	private void reportDuplicatePlatform(
+	private void reportDuplicatePlatformUi(
 			IConfigurationElement oneConfigElement, IConfigurationElement otherConfigElement) {
 		String message =
 			"The plugins \""
@@ -155,7 +170,7 @@ public class JpaPlatformUiRegistry
 	private void reportFailedInstantiation(IConfigurationElement configElement) {
 		String message =
 			"Could not instantiate the class \""
-			+ configElement.getAttribute(AT_CLASS)
+			+ configElement.getAttribute(AT_FACTORY_CLASS)
 			+ "\" for the extension element \""
 			+ configElement.getName()
 			+ "\" in the plugin \""

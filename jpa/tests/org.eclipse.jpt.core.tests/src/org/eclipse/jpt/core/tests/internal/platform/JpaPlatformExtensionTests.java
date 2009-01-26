@@ -18,7 +18,7 @@ import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProperties;
 import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProvider;
 import org.eclipse.jpt.core.internal.platform.JpaPlatformRegistry;
 import org.eclipse.jpt.core.tests.extension.resource.ExtensionTestPlugin;
-import org.eclipse.jpt.core.tests.extension.resource.TestJpaPlatform;
+import org.eclipse.jpt.core.tests.extension.resource.TestJpaPlatformProvider;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject;
 import org.eclipse.jpt.core.tests.internal.projects.TestJpaProject;
@@ -29,7 +29,7 @@ import org.eclipse.wst.common.project.facet.core.IActionConfigFactory;
 @SuppressWarnings("nls")
 public class JpaPlatformExtensionTests extends ContextModelTestCase
 {
-	public static final String TEST_PLATFORM_ID = TestJpaPlatform.ID;
+	public static final String TEST_PLATFORM_ID = TestJpaPlatformProvider.ID;
 	public static final String TEST_PLATFORM_LABEL = "Test Jpa Platform";
 	
 	protected TestJpaProject testProject;

@@ -13,7 +13,7 @@ import org.eclipse.jpt.core.context.persistence.Property;
 import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProperties;
 import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProvider;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
-import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaPlatform;
+import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaPlatformProvider;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnitProperties;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.PersistenceUnitProperties;
@@ -62,7 +62,7 @@ public abstract class PersistenceUnitTestCase extends ContextModelTestCase
 	@Override
 	protected IDataModel buildJpaConfigDataModel() {
 		IDataModel dataModel = DataModelFactory.createDataModel(new JpaFacetDataModelProvider());		
-		dataModel.setProperty(JpaFacetDataModelProperties.PLATFORM_ID, EclipseLinkJpaPlatform.ID);
+		dataModel.setProperty(JpaFacetDataModelProperties.PLATFORM_ID, EclipseLinkJpaPlatformProvider.ID);
 		dataModel.setProperty(JpaFacetDataModelProperties.CREATE_ORM_XML, Boolean.FALSE);
 		return dataModel;
 	}

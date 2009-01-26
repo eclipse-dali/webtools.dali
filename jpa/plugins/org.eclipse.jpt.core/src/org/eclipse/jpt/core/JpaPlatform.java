@@ -30,12 +30,15 @@ import org.eclipse.jpt.db.DatabaseFinder;
  * This interface is to be implemented by a JPA vendor to provide extensions to 
  * the core JPA model.  The core JPA model will provide functionality for JPA
  * spec annotations in java, persistence.xml and mapping (orm.xml) files.
- * The org.eclipse.jpt.core.genericPlatform extension supplies 
+ * The org.eclipse.jpt.core.generic extension supplies 
  * resource models for those file types.  As another vendor option you 
  * will have to supply those resource models as well or different ones 
- * as necessary.
+ * as necessary. In the extension point you actually provide a JpaPlatformFactory
+ * class used to build the JpaPlatform.
  * 
- * See the org.eclipse.jpt.core.jpaPlatform extension point
+ * See the org.eclipse.jpt.core.jpaPlatforms extension point
+ * @see JpaPlatformFactory
+ * @see JpaPlatformProvider
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -49,17 +52,6 @@ public interface JpaPlatform
 	 * Get the ID for this platform
 	 */
 	String getId();
-
-	/**
-	 * Set the ID for this platform.  This is an extension
-	 * so you can't use a non-default constructor.
-	 * 
-	 * *************
-	 * * IMPORTANT *  For INTERNAL use only!!
-	 * *************
-	 */
-	void setId(String theId);
-
 
 	// ********** factory **********
 

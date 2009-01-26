@@ -97,6 +97,12 @@ public class EclipseLinkJavaOneToManyMappingTests extends EclipseLinkJavaContext
 			public Iterator<String> imports() {
 				return new ArrayIterator<String>(JPA.ENTITY);
 			}
+			
+			@Override
+			public void appendExtendsImplementsTo(StringBuilder sb) {
+				sb.append("implements java.io.Serializable");
+			}
+
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@Entity").append(CR);

@@ -13,7 +13,7 @@ import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.core.runtime.preferences.DefaultScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.core.internal.platform.GenericJpaPlatform;
+import org.eclipse.jpt.core.internal.platform.GenericJpaPlatformProvider;
 import org.eclipse.jpt.core.internal.platform.JpaPlatformRegistry;
 import org.eclipse.jpt.utility.internal.StringTools;
 
@@ -29,7 +29,7 @@ public class JpaPreferenceInitializer extends AbstractPreferenceInitializer
 		// default JPA platform
 		String defaultPlatformId = JpaPlatformRegistry.instance().getDefaultJpaPlatformId();
 		if (StringTools.stringIsEmpty(defaultPlatformId)) {
-			defaultPlatformId = GenericJpaPlatform.ID;
+			defaultPlatformId = GenericJpaPlatformProvider.ID;
 		}
 		node.put(JpaPreferenceConstants.PREF_DEFAULT_JPA_PLATFORM, defaultPlatformId);
 	}

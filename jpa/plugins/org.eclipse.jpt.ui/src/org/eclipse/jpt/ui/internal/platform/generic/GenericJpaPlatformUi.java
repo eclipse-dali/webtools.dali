@@ -17,11 +17,11 @@ import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.platform.base.BaseJpaPlatformUi;
 import org.eclipse.jpt.ui.navigator.JpaNavigatorProvider;
 
-public class GenericPlatformUi
+public class GenericJpaPlatformUi
 	extends BaseJpaPlatformUi
 {
 
-	public GenericPlatformUi() {
+	public GenericJpaPlatformUi() {
 		super();
 	}
 

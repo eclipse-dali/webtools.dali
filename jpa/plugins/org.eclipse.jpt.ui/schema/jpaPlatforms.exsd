@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="org.eclipse.jpt.core" xmlns="http://www.w3.org/2001/XMLSchema">
+<schema targetNamespace="org.eclipse.jpt.ui" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="org.eclipse.jpt.core" id="resourceModelProvider" name="JPA Resource Model Provider"/>
+         <meta.schema plugin="org.eclipse.jpt.ui" id="jpaPlatforms" name="JPA Platform UIs"/>
       </appinfo>
       <documentation>
          [Enter description of this extension point.]
@@ -18,7 +18,7 @@
       </annotation>
       <complexType>
          <sequence>
-            <element ref="modelProvider" minOccurs="1" maxOccurs="unbounded"/>
+            <element ref="jpaPlatform" minOccurs="1" maxOccurs="unbounded"/>
          </sequence>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -46,33 +46,47 @@
          </attribute>
       </complexType>
    </element>
-   
-   <element name="modelProvider">
+
+   <element name="jpaPlatform">
+      <annotation>
+         <documentation>
+            Extend this extension point and you must also extend the org.eclipse.jpt.core.jpaPlatforms extension point.  The jpaPlatformId must match the id of a core.jpaPlatform extension.  One jpaPlatform will be chosen per JpaProject.  The possible jpaPlatforms will be displayed to the user as a project property.
+         </documentation>
+      </annotation>
       <complexType>
-         <attribute name="fileContentType" type="string" use="required">
-            <documentation>
-            
-            </documentation>
-         </attribute>
-         <attribute name="factoryClass" type="string" use="required">
+         <attribute name="id" type="string" use="required">
             <annotation>
                <documentation>
                   
                </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="jpaPlatformId" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The jpaPlatformId must match the corresponding org.eclipse.jpt.core.jpaPlatform extension id.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="factoryClass" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The class that implements &lt;samp&gt;org.eclipse.jpt.ui.JpaPlatformUiFactory&lt;/samp&gt;.
+               </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn=":org.eclipse.jpt.core.resource.JpaResourceModelProviderFactory"/>
+                  <meta.attribute kind="java" basedOn=":org.eclipse.jpt.ui.JpaPlatformUiFactory"/>
                </appinfo>
             </annotation>
          </attribute>
       </complexType>
    </element>
-   
+
    <annotation>
       <appinfo>
          <meta.section type="since"/>
       </appinfo>
       <documentation>
-         JPT 2.0
+         2.2
       </documentation>
    </annotation>
 
@@ -90,7 +104,11 @@
          <meta.section type="apiinfo"/>
       </appinfo>
       <documentation>
-         [Enter API information here.]
+         Provisional API: This interface is part of an interim API that is still
+under development and expected to change significantly before reaching
+stability. It is available at this early stage to solicit feedback from
+pioneering adopters on the understanding that any code that uses this API
+will almost certainly be broken (repeatedly) as the API evolves.
       </documentation>
    </annotation>
 
@@ -103,5 +121,19 @@
       </documentation>
    </annotation>
 
+   <annotation>
+      <appinfo>
+         <meta.section type="copyright"/>
+      </appinfo>
+      <documentation>
+         Copyright (c) 2006, 2009 Oracle. All rights reserved.
+This program and the accompanying materials are made available under the
+terms of the Eclipse Public License v1.0, which accompanies this distribution
+and is available at http://www.eclipse.org/legal/epl-v10.html.
+ 
+Contributors:
+Oracle - initial API and implementation
+      </documentation>
+   </annotation>
 
 </schema>

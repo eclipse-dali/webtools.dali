@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="org.eclipse.jpt.ui" xmlns="http://www.w3.org/2001/XMLSchema">
+<schema targetNamespace="org.eclipse.jpt.core" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="org.eclipse.jpt.ui" id="jpaPlatform" name="JPA Platform UI"/>
+         <meta.schema plugin="org.eclipse.jpt.core" id="resourceModelProviders" name="JPA Resource Model Providers"/>
       </appinfo>
       <documentation>
          [Enter description of this extension point.]
@@ -11,9 +11,14 @@
    </annotation>
 
    <element name="extension">
+      <annotation>
+         <appinfo>
+            <meta.element />
+         </appinfo>
+      </annotation>
       <complexType>
          <sequence>
-            <element ref="jpaPlatform" minOccurs="1" maxOccurs="unbounded"/>
+            <element ref="modelProvider" minOccurs="1" maxOccurs="unbounded"/>
          </sequence>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -42,29 +47,22 @@
       </complexType>
    </element>
 
-   <element name="jpaPlatform">
-      <annotation>
-         <documentation>
-            Extend this extension point and you must also extend the org.eclipse.jpt.core.jpaPlatform 
-            extension point.  The ids must match.  One jpaPlatform will be chosen per JpaProject.  The 
-            possible jpaPlatforms will be displayed to the user as a project property.
-         </documentation>
-      </annotation>
+   <element name="modelProvider">
       <complexType>
-         <attribute name="id" type="string" use="required">
+         <attribute name="fileContentType" type="string" use="required">
             <annotation>
                <documentation>
-                  The id must match the corresponding org.eclipse.jpt.core.jpaPlatform extension id.
+                  
                </documentation>
             </annotation>
          </attribute>
-         <attribute name="class" type="string" use="required">
+         <attribute name="factoryClass" type="string" use="required">
             <annotation>
                <documentation>
-                  The class that implements &lt;samp&gt;org.eclipse.jpt.ui.JpaPlatformUi&lt;/samp&gt;.
+                  
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn=":org.eclipse.jpt.ui.JpaPlatformUi"/>
+                  <meta.attribute kind="java" basedOn=":org.eclipse.jpt.core.resource.JpaResourceModelProviderFactory"/>
                </appinfo>
             </annotation>
          </attribute>
@@ -76,7 +74,7 @@
          <meta.section type="since"/>
       </appinfo>
       <documentation>
-         [Enter the first release in which this extension point appears.]
+         JPT 2.0
       </documentation>
    </annotation>
 
@@ -91,10 +89,14 @@
 
    <annotation>
       <appinfo>
-         <meta.section type="apiInfo"/>
+         <meta.section type="apiinfo"/>
       </appinfo>
       <documentation>
-         [Enter API information here.]
+         Provisional API: This interface is part of an interim API that is still
+under development and expected to change significantly before reaching
+stability. It is available at this early stage to solicit feedback from
+pioneering adopters on the understanding that any code that uses this API
+will almost certainly be broken (repeatedly) as the API evolves.
       </documentation>
    </annotation>
 
@@ -107,5 +109,19 @@
       </documentation>
    </annotation>
 
+   <annotation>
+      <appinfo>
+         <meta.section type="copyright"/>
+      </appinfo>
+      <documentation>
+         Copyright (c) 2006, 2009 Oracle. All rights reserved.
+This program and the accompanying materials are made available under the
+terms of the Eclipse Public License v1.0, which accompanies this distribution
+and is available at http://www.eclipse.org/legal/epl-v10.html.
+ 
+Contributors:
+Oracle - initial API and implementation
+      </documentation>
+   </annotation>
 
 </schema>

@@ -16,7 +16,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProvider;
-import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaPlatform;
+import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaPlatformProvider;
 import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModelOperation;
@@ -54,7 +54,7 @@ public class EclipseLinkOrmFileCreationDataModelProvider extends OrmFileCreation
 		protected boolean accept_(IProject project) throws CoreException {
 			if (super.accept_(project)) {
 				JpaProject jpaProject = JptCorePlugin.getJpaProject(project);
-				return (jpaProject != null) && jpaProject.getJpaPlatform().getId().equals(EclipseLinkJpaPlatform.ID);
+				return (jpaProject != null) && jpaProject.getJpaPlatform().getId().equals(EclipseLinkJpaPlatformProvider.ID);
 			}
 			return false;
 		}

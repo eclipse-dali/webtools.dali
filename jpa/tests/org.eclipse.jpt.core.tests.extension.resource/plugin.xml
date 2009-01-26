@@ -3,23 +3,24 @@
 <plugin>
 
 	<extension
-		point="org.eclipse.jpt.core.jpaPlatform">
+		point="org.eclipse.jpt.core.jpaPlatforms">
 		
 		<jpaPlatform
 			id="core.testJpaPlatform"
 			label="Test Jpa Platform"
-			class="org.eclipse.jpt.core.tests.extension.resource.TestJpaPlatform"
+			factoryClass="org.eclipse.jpt.core.tests.extension.resource.TestJpaPlatformFactory"
 			default="true">
 		</jpaPlatform>
 		
 	</extension>
 	
 	<extension
-		point="org.eclipse.jpt.ui.jpaPlatform">
+		point="org.eclipse.jpt.ui.jpaPlatforms">
 		
 		<jpaPlatform
 			id="core.testJpaPlatform"
-			class="org.eclipse.jpt.core.tests.extension.resource.TestJpaPlatformUi">
+			jpaPlatformId="core.testJpaPlatform.ui"
+			factoryClass="org.eclipse.jpt.core.tests.extension.resource.TestJpaPlatformUiFactory">
 		</jpaPlatform>
 		
 	</extension>

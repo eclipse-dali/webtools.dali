@@ -3,10 +3,11 @@
 <plugin>
 
    <extension
-         point="org.eclipse.jpt.ui.jpaPlatform">
+         point="org.eclipse.jpt.ui.jpaPlatforms">
       <jpaPlatform
-            class="org.eclipse.jpt.eclipselink.ui.internal.platform.EclipseLinkJpaPlatformUi"
-            id="org.eclipse.eclipselink.platform">
+            id="org.eclipse.eclipselink.platform.ui"
+            jpaPlatformId="org.eclipse.eclipselink.platform"
+            factoryClass="org.eclipse.jpt.eclipselink.ui.internal.platform.EclipseLinkJpaPlatformUiFactory">
       </jpaPlatform>
    </extension>
    

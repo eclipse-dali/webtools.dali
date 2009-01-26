@@ -10,18 +10,17 @@
 package org.eclipse.jpt.eclipselink.core.internal;
 
 import java.util.List;
-import org.eclipse.jpt.core.JpaAnnotationProvider;
-import org.eclipse.jpt.core.JpaFactory;
+import org.eclipse.jpt.core.JpaPlatformProvider;
 import org.eclipse.jpt.core.JpaResourceModelProvider;
 import org.eclipse.jpt.core.context.MappingFileProvider;
 import org.eclipse.jpt.core.context.java.DefaultJavaAttributeMappingProvider;
 import org.eclipse.jpt.core.context.java.JavaAttributeMappingProvider;
+import org.eclipse.jpt.core.context.java.JavaTypeMappingProvider;
 import org.eclipse.jpt.core.context.orm.ExtendedOrmAttributeMappingProvider;
 import org.eclipse.jpt.core.context.orm.ExtendedOrmTypeMappingProvider;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMappingProvider;
-import org.eclipse.jpt.core.internal.platform.GenericJpaAnnotationDefinitionProvider;
-import org.eclipse.jpt.core.internal.platform.GenericJpaPlatform;
-import org.eclipse.jpt.core.internal.platform.GenericJpaAnnotationProvider;
+import org.eclipse.jpt.core.context.orm.OrmTypeMappingProvider;
+import org.eclipse.jpt.core.internal.platform.AbstractJpaPlatformProvider;
 import org.eclipse.jpt.eclipselink.core.internal.context.EclipseLinkMappingFileProvider;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaOneToManyMappingProvider;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaOneToOneMappingProvider;
@@ -49,45 +48,47 @@ import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmVariableOneToOne
 /**
  * EclipseLink platform
  */
-public class EclipseLinkJpaPlatform
-	extends GenericJpaPlatform
+public class EclipseLinkJpaPlatformProvider
+	extends AbstractJpaPlatformProvider
 {
+	
 	public static final String ID = "org.eclipse.eclipselink.platform"; //$NON-NLS-1$
 
+	// singleton
+	private static final JpaPlatformProvider INSTANCE = new EclipseLinkJpaPlatformProvider();
 
-	public EclipseLinkJpaPlatform() {
+	/**
+	 * Return the singleton.
+	 */
+	public static JpaPlatformProvider instance() {
+		return INSTANCE;
+	}
+
+	/**
+	 * Ensure single instance.
+	 */
+	private EclipseLinkJpaPlatformProvider() {
 		super();
 	}
 
-	@Override
-	public String getId() {
-		return EclipseLinkJpaPlatform.ID;
-	}
-
-	// ********* factory *********
-	@Override
-	protected JpaFactory buildJpaFactory() {
-		return new EclipseLinkJpaFactory();
-	}
-
+	
 	// ********* JPA files *********	
+	
 	@Override
 	protected void addResourceModelProvidersTo(List<JpaResourceModelProvider> providers) {
-		super.addResourceModelProvidersTo(providers);
 		providers.add(EclipseLinkOrmResourceModelProvider.instance());
 	}
 
-	// ********* java annotations *********	
+	
+	// ********* java *********	
+
 	@Override
-	public JpaAnnotationProvider buildAnnotationProvider() {
-		return new GenericJpaAnnotationProvider(
-			GenericJpaAnnotationDefinitionProvider.instance(),
-			EclipseLinkJpaAnnotationDefinitionProvider.instance());
+	protected void addJavaTypeMappingProvidersTo(@SuppressWarnings("unused") List<JavaTypeMappingProvider> providers) {
+		//none specific to EclipseLink
 	}
 
 	@Override
 	protected void addJavaAttributeMappingProvidersTo(List<JavaAttributeMappingProvider> providers) {
-		super.addJavaAttributeMappingProvidersTo(providers);
 		providers.add(JavaBasicCollectionMappingProvider.instance());
 		providers.add(JavaBasicMapMappingProvider.instance());
 		providers.add(JavaTransformationMappingProvider.instance());
@@ -96,23 +97,27 @@ public class EclipseLinkJpaPlatform
 
 	@Override
 	protected void addDefaultJavaAttributeMappingProvidersTo(List<DefaultJavaAttributeMappingProvider> providers) {
-		// add these before calling super, so we can check for Basic last in case the reference object is Serializable
+		// these need to be checked first, so we can check for Basic last in case the reference object is Serializable
 		providers.add(EclipseLinkJavaOneToOneMappingProvider.instance());
 		providers.add(EclipseLinkJavaOneToManyMappingProvider.instance());
 		providers.add(JavaVariableOneToOneMappingProvider.instance());
-		super.addDefaultJavaAttributeMappingProvidersTo(providers);
 	}
-
-	// ********* ORM *********	
+	
+	
+	// ********* ORM *********
+	
+	@Override
+	protected void addOrmTypeMappingProvidersTo(@SuppressWarnings("unused") List<OrmTypeMappingProvider> providers) {
+		//none specific to EclipseLink		
+	}
+	
 	@Override
 	protected void addMappingFileProvidersTo(List<MappingFileProvider> providers) {
-		super.addMappingFileProvidersTo(providers);
 		providers.add(EclipseLinkMappingFileProvider.instance());
 	}
 
 	@Override
 	protected void addExtendedOrmTypeMappingProvidersTo(List<ExtendedOrmTypeMappingProvider> providers) {
-		super.addExtendedOrmTypeMappingProvidersTo(providers);
 		providers.add(EclipseLinkOrmEmbeddableProvider.instance());
 		providers.add(EclipseLinkOrmEntityProvider.instance());
 		providers.add(EclipseLinkOrmMappedSuperclassProvider.instance());
@@ -120,7 +125,6 @@ public class EclipseLinkJpaPlatform
 
 	@Override
 	protected void addOrmAttributeMappingProvidersTo(List<OrmAttributeMappingProvider> providers) {
-		super.addOrmAttributeMappingProvidersTo(providers);
 		providers.add(OrmBasicCollectionMappingProvider.instance());
 		providers.add(OrmBasicMapMappingProvider.instance());
 		providers.add(OrmTransformationMappingProvider.instance());
@@ -129,7 +133,6 @@ public class EclipseLinkJpaPlatform
 
 	@Override
 	protected void addExtendedOrmAttributeMappingProvidersTo(List<ExtendedOrmAttributeMappingProvider> providers) {
-		super.addExtendedOrmAttributeMappingProvidersTo(providers);
 		providers.add(EclipseLinkOrmBasicMappingProvider.instance());
 		providers.add(EclipseLinkOrmIdMappingProvider.instance());
 		providers.add(EclipseLinkOrmEmbeddedIdMappingProvider.instance());

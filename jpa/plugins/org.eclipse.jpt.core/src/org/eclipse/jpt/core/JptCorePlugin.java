@@ -25,7 +25,7 @@ import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.core.internal.JpaModelManager;
-import org.eclipse.jpt.core.internal.platform.GenericJpaPlatform;
+import org.eclipse.jpt.core.internal.platform.GenericJpaPlatformProvider;
 import org.eclipse.jpt.core.internal.platform.JpaPlatformRegistry;
 import org.eclipse.jpt.core.internal.prefs.JpaPreferenceConstants;
 import org.eclipse.jst.j2ee.internal.J2EEConstants;
@@ -278,12 +278,12 @@ public class JptCorePlugin extends Plugin {
 	public static String getDefaultJpaPlatformId() {
 		String platformId = 
 			Platform.getPreferencesService().get(
-				JpaPreferenceConstants.PREF_DEFAULT_JPA_PLATFORM, GenericJpaPlatform.ID,
+				JpaPreferenceConstants.PREF_DEFAULT_JPA_PLATFORM, GenericJpaPlatformProvider.ID,
 				new Preferences[] {getWorkspacePreferences(), getDefaultPreferences()});
 		if (! JpaPlatformRegistry.instance().containsPlatform(platformId)) {
 			platformId = 
 				Platform.getPreferencesService().get(
-					JpaPreferenceConstants.PREF_DEFAULT_JPA_PLATFORM, GenericJpaPlatform.ID,
+					JpaPreferenceConstants.PREF_DEFAULT_JPA_PLATFORM, GenericJpaPlatformProvider.ID,
 					new Preferences[] {getDefaultPreferences()});
 		}
 		return platformId;
@@ -309,7 +309,7 @@ public class JptCorePlugin extends Plugin {
 	 * Return the JPA platform ID associated with the specified Eclipse project.
 	 */
 	public static String getJpaPlatformId(IProject project) {
-		return getProjectPreferences(project).get(JPA_PLATFORM, GenericJpaPlatform.ID);
+		return getProjectPreferences(project).get(JPA_PLATFORM, GenericJpaPlatformProvider.ID);
 	}
 
 	/**

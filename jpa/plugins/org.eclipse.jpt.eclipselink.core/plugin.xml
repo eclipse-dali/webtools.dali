@@ -21,11 +21,11 @@
 	
 	
 	<extension
-		point="org.eclipse.jpt.core.jpaPlatform">
+		point="org.eclipse.jpt.core.jpaPlatforms">
 		
 		<jpaPlatform
 			id="org.eclipse.eclipselink.platform"
-            class="org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaPlatform"
+            factoryClass="org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaPlatformFactory"
 			label="%ECLIPSELINK_PLATFORM">
 		</jpaPlatform>
 		

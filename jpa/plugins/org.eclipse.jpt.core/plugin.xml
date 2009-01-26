@@ -6,9 +6,9 @@
 	<!-- ***** extension points ***** -->
 
 	<extension-point
-		id="jpaPlatform"
+		id="jpaPlatforms"
 		name="%JPA_PLATFORM"
-		schema="schema/jpaPlatform.exsd"
+		schema="schema/jpaPlatforms.exsd"
 	/>
 	
 	
@@ -126,12 +126,12 @@
 	<!-- ***** JPT extensions (eat our own dogfood) ***** -->
 
 	<extension
-		point="org.eclipse.jpt.core.jpaPlatform">
+		point="org.eclipse.jpt.core.jpaPlatforms">
 		
 		<jpaPlatform
 			id="generic"
 			label="%GENERIC_PLATFORM_LABEL"
-			class="org.eclipse.jpt.core.internal.platform.GenericJpaPlatform"
+			factoryClass="org.eclipse.jpt.core.internal.platform.GenericJpaPlatformFactory"
 			default="false"/>
 		
 	</extension>
@@ -289,7 +289,5 @@
 		</catalogContribution>
 		
 	</extension>
-	
-
 
 </plugin>

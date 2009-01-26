@@ -24,6 +24,7 @@ import org.eclipse.jpt.core.tests.internal.utility.jdt.JptCoreUtilityJdtTests;
  * In our development environments we should run JptAllCoreTests (NOT this suite)
  * until jpa.jar is checked into CVS.
  */
+@SuppressWarnings("nls")
 public class JptCoreTests {
 	private static final String JPA_JAR_PROPERTY = TestJpaProject.JPA_JAR_NAME_SYSTEM_PROPERTY;
 

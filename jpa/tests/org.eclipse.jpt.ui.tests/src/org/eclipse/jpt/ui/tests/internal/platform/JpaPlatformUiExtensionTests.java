@@ -4,7 +4,7 @@ import junit.framework.TestCase;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.internal.platform.JpaPlatformRegistry;
 import org.eclipse.jpt.core.tests.extension.resource.ExtensionTestPlugin;
-import org.eclipse.jpt.core.tests.extension.resource.TestJpaPlatform;
+import org.eclipse.jpt.core.tests.extension.resource.TestJpaPlatformProvider;
 import org.eclipse.jpt.core.tests.extension.resource.TestJpaPlatformUi;
 import org.eclipse.jpt.core.tests.internal.projects.TestJpaProject;
 
@@ -18,8 +18,8 @@ public class JpaPlatformUiExtensionTests extends TestCase
 	public static final String TEST_PLUGIN_CLASS = ExtensionTestPlugin.class.getName();
 	public static final String TEST_PLUGIN_ID = ExtensionTestPlugin.PLUGIN_ID;
 
-	public static final String TEST_PLATFORM_ID = TestJpaPlatform.ID;
-	public static final String TEST_PLATFORM_CLASS = TestJpaPlatform.class.getName();
+	public static final String TEST_PLATFORM_ID = TestJpaPlatformProvider.ID;
+	public static final String TEST_PLATFORM_CLASS = TestJpaPlatformProvider.class.getName();
 	public static final String TEST_PLATFORM_LABEL = "Test Jpa Platform";
 
 	public static final String TEST_UI_PLATFORM_ID = TEST_PLATFORM_ID;

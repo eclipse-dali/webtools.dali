@@ -27,7 +27,7 @@ import org.eclipse.jpt.core.tests.extension.resource.JavaTestTypeMappingProvider
 import org.eclipse.jpt.core.tests.extension.resource.TestJavaBasicMapping;
 import org.eclipse.jpt.core.tests.extension.resource.TestJavaEntity;
 import org.eclipse.jpt.core.tests.extension.resource.TestJpaFactory;
-import org.eclipse.jpt.core.tests.extension.resource.TestJpaPlatform;
+import org.eclipse.jpt.core.tests.extension.resource.TestJpaPlatformProvider;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject;
 import org.eclipse.jpt.core.tests.internal.projects.TestJpaProject;
@@ -45,7 +45,7 @@ public class JpaPlatformTests extends ContextModelTestCase
 	public static final String TEST_PLUGIN_CLASS = ExtensionTestPlugin.class.getName();
 	public static final String TEST_PLUGIN_ID = "org.eclipse.jpt.core.tests.extension.resource";
 
-	public static final String TEST_PLATFORM_CLASS_NAME = TestJpaPlatform.class.getName();
+	public static final String TEST_PLATFORM_CLASS_NAME = TestJpaPlatformProvider.class.getName();
 	public static final String TEST_PLATFORM_LABEL = "Test Jpa Platform";
 	public static final String TEST_JPA_FACTORY = TestJpaFactory.class.getName();
 	public static final String TEST_TYPE_MAPPING_PROVIDER_CLASS = JavaTestTypeMappingProvider.class.getName();
@@ -69,7 +69,7 @@ public class JpaPlatformTests extends ContextModelTestCase
 	protected IDataModel buildConfig() throws Exception {
 		IActionConfigFactory configFactory = new JpaFacetDataModelProvider();
 		IDataModel config = (IDataModel) configFactory.create();
-		config.setProperty(JpaFacetDataModelProperties.PLATFORM_ID, TestJpaPlatform.ID);
+		config.setProperty(JpaFacetDataModelProperties.PLATFORM_ID, TestJpaPlatformProvider.ID);
 		return config;
 	}
 

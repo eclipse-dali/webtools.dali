@@ -18,6 +18,7 @@ import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jpt.core.JpaPlatform;
+import org.eclipse.jpt.core.JpaPlatformFactory;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.JptCoreMessages;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -45,11 +46,11 @@ public class JpaPlatformRegistry {
 		return INSTANCE;
 	}
 
-	private static final String EXTENSION_ID = "jpaPlatform"; //$NON-NLS-1$
+	private static final String EXTENSION_ID = "jpaPlatforms"; //$NON-NLS-1$
 	private static final String EL_PLATFORM = "jpaPlatform"; //$NON-NLS-1$	
 	private static final String AT_ID = "id"; //$NON-NLS-1$	
 	private static final String AT_LABEL = "label"; //$NON-NLS-1$	
-	private static final String AT_CLASS = "class"; //$NON-NLS-1$
+	private static final String AT_FACTORY_CLASS = "factoryClass"; //$NON-NLS-1$
 	private static final String AT_DEFAULT = "default"; //$NON-NLS-1$
 
 
@@ -125,8 +126,8 @@ public class JpaPlatformRegistry {
 			logMissingAttribute(configElement, AT_LABEL);
 			valid = false;
 		}
-		if (configElement.getAttribute(AT_CLASS) == null) {
-			logMissingAttribute(configElement, AT_CLASS);
+		if (configElement.getAttribute(AT_FACTORY_CLASS) == null) {
+			logMissingAttribute(configElement, AT_FACTORY_CLASS);
 			valid = false;
 		}
 		return valid;
@@ -164,8 +165,8 @@ public class JpaPlatformRegistry {
 	 * Returns the first platform ID if there are multiple such registered platforms.
 	 */
 	public String getDefaultJpaPlatformId() {
-		for (String platformId : jpaPlatformConfigurationElements.keySet()) {
-			if ("true".equals(jpaPlatformConfigurationElements.get(platformId).getAttribute(AT_DEFAULT))) {
+		for (String platformId : this.jpaPlatformConfigurationElements.keySet()) {
+			if ("true".equals(this.jpaPlatformConfigurationElements.get(platformId).getAttribute(AT_DEFAULT))) {
 				return platformId;
 			}
 		}
@@ -186,15 +187,14 @@ public class JpaPlatformRegistry {
 			JptCorePlugin.log(NLS.bind(JptCoreMessages.PLATFORM_ID_DOES_NOT_EXIST, id, project.getName()));
 			return null;
 		}
-		JpaPlatform platform;
+		JpaPlatformFactory platformFactory;
 		try {
-			platform = (JpaPlatform) configElement.createExecutableExtension(AT_CLASS);
+			platformFactory = (JpaPlatformFactory) configElement.createExecutableExtension(AT_FACTORY_CLASS);
 		} catch (CoreException ex) {
 			this.logFailedInstantiation(configElement, ex);
 			throw new IllegalArgumentException(id);
 		}
-		platform.setId(id);
-		return platform;
+		return platformFactory.buildJpaPlatform(id);
 	}
 
 
@@ -228,8 +228,8 @@ public class JpaPlatformRegistry {
 	// TODO externalize strings
 	private void logFailedInstantiation(IConfigurationElement configElement, CoreException ex) {
 		String message =
-			"Could not instantiate the class \""
-			+ configElement.getAttribute(AT_CLASS)
+			"Could not instantiate the factory class \""
+			+ configElement.getAttribute(AT_FACTORY_CLASS)
 			+ "\" for the extension element \""
 			+ configElement.getName()
 			+ "\" in the plugin \""
