@@ -28,7 +28,7 @@ import org.eclipse.jpt.core.internal.platform.AbstractJpaPlatformProvider;
 public class EclipseLink1_1JpaPlatformProvider
 	extends AbstractJpaPlatformProvider
 {
-	public static final String ID = "org.eclipse.eclipselink1_1.platform"; //$NON-NLS-1$
+	public static final String ID = "eclipselink1_1"; //$NON-NLS-1$
 
 	// singleton
 	private static final JpaPlatformProvider INSTANCE = new EclipseLink1_1JpaPlatformProvider();
