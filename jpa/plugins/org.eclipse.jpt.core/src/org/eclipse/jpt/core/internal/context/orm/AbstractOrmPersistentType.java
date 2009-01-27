@@ -351,7 +351,7 @@ public abstract class AbstractOrmPersistentType
 			getMapping().getResourceTypeMapping().setAttributes(createAttributesResource());
 		}
 		this.specifiedPersistentAttributes.add(index, persistentAttribute);
-		persistentAttribute.getMapping().addToResourceModel(getMapping().getResourceTypeMapping());
+		persistentAttribute.getSpecifiedMapping().addToResourceModel(getMapping().getResourceTypeMapping());
 		
 		persistentAttribute.getSpecifiedMapping().setName(attributeName);
 		fireItemAdded(PersistentType.SPECIFIED_ATTRIBUTES_LIST, index, persistentAttribute);
