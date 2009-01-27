@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the terms of
  * the Eclipse Public License v1.0, which accompanies this distribution and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
@@ -23,14 +23,12 @@ public class GenericPersistenceUnitMetadata extends AbstractXmlContextNode
 {
 	protected boolean xmlMappingMetadataComplete;
 
-	protected final OrmPersistenceUnitDefaults persistenceUnitDefaults;
+	protected /*final */ OrmPersistenceUnitDefaults persistenceUnitDefaults;
 
-	protected XmlEntityMappings entityMappings;
+	protected XmlEntityMappings xmlEntityMappings;
 
-	public GenericPersistenceUnitMetadata(EntityMappings parent, XmlEntityMappings xmlEntityMappings) {
+	public GenericPersistenceUnitMetadata(EntityMappings parent) {
 		super(parent);
-		this.persistenceUnitDefaults = getJpaFactory().buildPersistenceUnitDefaults(this, xmlEntityMappings);
-		this.initialize(xmlEntityMappings);
 	}
 
 	public boolean isXmlMappingMetadataComplete() {
@@ -41,15 +39,15 @@ public class GenericPersistenceUnitMetadata extends AbstractXmlContextNode
 		boolean oldXmlMappingMetadataComplete = this.xmlMappingMetadataComplete;
 		this.xmlMappingMetadataComplete = newXmlMappingMetadataComplete;
 		if (oldXmlMappingMetadataComplete != newXmlMappingMetadataComplete) {
-			if (this.persistenceUnitMetadata() != null) {
-				this.persistenceUnitMetadata().setXmlMappingMetadataComplete(newXmlMappingMetadataComplete);						
-				if (this.persistenceUnitMetadata().isAllFeaturesUnset()) {
-					this.entityMappings.setPersistenceUnitMetadata(null);
+			if (this.getResourcePersistenceUnitMetadata() != null) {
+				this.getResourcePersistenceUnitMetadata().setXmlMappingMetadataComplete(newXmlMappingMetadataComplete);						
+				if (this.getResourcePersistenceUnitMetadata().isAllFeaturesUnset()) {
+					this.xmlEntityMappings.setPersistenceUnitMetadata(null);
 				}
 			}
 			else if (newXmlMappingMetadataComplete) {
-				this.entityMappings.setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createXmlPersistenceUnitMetadata());
-				this.persistenceUnitMetadata().setXmlMappingMetadataComplete(newXmlMappingMetadataComplete);		
+				this.xmlEntityMappings.setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createXmlPersistenceUnitMetadata());
+				this.getResourcePersistenceUnitMetadata().setXmlMappingMetadataComplete(newXmlMappingMetadataComplete);		
 			}
 		}
 		firePropertyChanged(PersistenceUnitMetadata.XML_MAPPING_METADATA_COMPLETE_PROPERTY, oldXmlMappingMetadataComplete, newXmlMappingMetadataComplete);
@@ -65,31 +63,34 @@ public class GenericPersistenceUnitMetadata extends AbstractXmlContextNode
 		return this.persistenceUnitDefaults;
 	}
 	
-	protected void initialize(XmlEntityMappings entityMappings) {
-		this.entityMappings = entityMappings;
-		if (this.persistenceUnitMetadata() != null) {
-			this.xmlMappingMetadataComplete = this.persistenceUnitMetadata().isXmlMappingMetadataComplete();
-		}
+	public void initialize(XmlEntityMappings xmlEntityMappings) {
+		this.xmlEntityMappings = xmlEntityMappings;
+		this.initialize();
+	}
+	
+	protected void initialize() {
+		this.xmlMappingMetadataComplete = this.getResourceXmlMappingMetadataComplete();
+		this.persistenceUnitDefaults = getJpaFactory().buildPersistenceUnitDefaults(this, this.xmlEntityMappings);
 	}
 	
 	public void update() {
-		if (this.persistenceUnitMetadata() != null) {
-			setXmlMappingMetadataComplete_(this.persistenceUnitMetadata().isXmlMappingMetadataComplete());
-		}
-		else {
-			setXmlMappingMetadataComplete_(false);
-		}
+		this.setXmlMappingMetadataComplete_(this.getResourceXmlMappingMetadataComplete());
 		this.persistenceUnitDefaults.update();
 	}
 	
-	protected XmlPersistenceUnitMetadata persistenceUnitMetadata() {
-		return this.entityMappings.getPersistenceUnitMetadata();
+	protected boolean getResourceXmlMappingMetadataComplete() {
+		XmlPersistenceUnitMetadata resourcePersistenceUnitMetadata = getResourcePersistenceUnitMetadata();
+		return resourcePersistenceUnitMetadata != null ? resourcePersistenceUnitMetadata.isXmlMappingMetadataComplete() : false;
+	}
+	
+	protected XmlPersistenceUnitMetadata getResourcePersistenceUnitMetadata() {
+		return this.xmlEntityMappings.getPersistenceUnitMetadata();
 	}
 	
 	public TextRange getValidationTextRange() {
-		if (persistenceUnitMetadata() != null) {
-			return persistenceUnitMetadata().getValidationTextRange();
+		if (getResourcePersistenceUnitMetadata() != null) {
+			return getResourcePersistenceUnitMetadata().getValidationTextRange();
 		}
-		return this.entityMappings.getValidationTextRange();
+		return this.xmlEntityMappings.getValidationTextRange();
 	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -57,7 +57,7 @@ public class EclipseLinkOrmConverterHolder extends AbstractXmlContextNode implem
 
 	public CustomConverter addCustomConverter(int index) {
 		XmlConverter resourceConverter = EclipseLinkOrmFactory.eINSTANCE.createXmlConverterImpl();
-		EclipseLinkOrmCustomConverter contextConverter = new EclipseLinkOrmCustomConverter(this, resourceConverter);
+		EclipseLinkOrmCustomConverter contextConverter = this.buildCustomConverter(resourceConverter);
 		this.customConverters.add(index, contextConverter);
 		this.resourceConvertersHolder.getConverters().add(index, resourceConverter);
 		this.fireItemAdded(CUSTOM_CONVERTERS_LIST, index, contextConverter);
@@ -106,7 +106,7 @@ public class EclipseLinkOrmConverterHolder extends AbstractXmlContextNode implem
 
 	public ObjectTypeConverter addObjectTypeConverter(int index) {
 		XmlObjectTypeConverter resourceObjectTypeConverter = EclipseLinkOrmFactory.eINSTANCE.createXmlObjectTypeConverterImpl();
-		EclipseLinkOrmObjectTypeConverter contextObjectTypeConverter = new EclipseLinkOrmObjectTypeConverter(this, resourceObjectTypeConverter);
+		EclipseLinkOrmObjectTypeConverter contextObjectTypeConverter = this.buildObjectTypeConverter(resourceObjectTypeConverter);
 		this.objectTypeConverters.add(index, contextObjectTypeConverter);
 		this.resourceConvertersHolder.getObjectTypeConverters().add(index, resourceObjectTypeConverter);
 		this.fireItemAdded(OBJECT_TYPE_CONVERTERS_LIST, index, contextObjectTypeConverter);
@@ -155,7 +155,7 @@ public class EclipseLinkOrmConverterHolder extends AbstractXmlContextNode implem
 
 	public StructConverter addStructConverter(int index) {
 		XmlStructConverter resourceStructConverter = EclipseLinkOrmFactory.eINSTANCE.createXmlStructConverterImpl();
-		EclipseLinkOrmStructConverter contextStructConverter = new EclipseLinkOrmStructConverter(this, resourceStructConverter);
+		EclipseLinkOrmStructConverter contextStructConverter = this.buildStructConverter(resourceStructConverter);
 		this.structConverters.add(index, contextStructConverter);
 		this.resourceConvertersHolder.getStructConverters().add(index, resourceStructConverter);
 		this.fireItemAdded(STRUCT_CONVERTERS_LIST, index, contextStructConverter);
@@ -205,7 +205,7 @@ public class EclipseLinkOrmConverterHolder extends AbstractXmlContextNode implem
 
 	public TypeConverter addTypeConverter(int index) {
 		XmlTypeConverter resourceTypeConverter = EclipseLinkOrmFactory.eINSTANCE.createXmlTypeConverterImpl();
-		EclipseLinkOrmTypeConverter contextTypeConverter = new EclipseLinkOrmTypeConverter(this, resourceTypeConverter);
+		EclipseLinkOrmTypeConverter contextTypeConverter = this.buildTypeConverter(resourceTypeConverter);
 		this.typeConverters.add(index, contextTypeConverter);
 		this.resourceConvertersHolder.getTypeConverters().add(index, resourceTypeConverter);
 		this.fireItemAdded(TYPE_CONVERTERS_LIST, index, contextTypeConverter);
@@ -256,26 +256,50 @@ public class EclipseLinkOrmConverterHolder extends AbstractXmlContextNode implem
 	
 	protected void initializeCustomConverters() {
 		for (XmlConverter resourceConverter : this.resourceConvertersHolder.getConverters()) {
-			this.customConverters.add(new EclipseLinkOrmCustomConverter(this, resourceConverter));
+			this.customConverters.add(this.buildCustomConverter(resourceConverter));
 		}
 	}
 	
 	protected void initializeObjectTypeConverters() {
 		for (XmlObjectTypeConverter resourceConverter : this.resourceConvertersHolder.getObjectTypeConverters()) {
-			this.objectTypeConverters.add(new EclipseLinkOrmObjectTypeConverter(this, resourceConverter));
+			this.objectTypeConverters.add(this.buildObjectTypeConverter(resourceConverter));
 		}
 	}
 	
 	protected void initializeStructConverters() {
 		for (XmlStructConverter resourceConverter : this.resourceConvertersHolder.getStructConverters()) {
-			this.structConverters.add(new EclipseLinkOrmStructConverter(this, resourceConverter));
+			this.structConverters.add(this.buildStructConverter(resourceConverter));
 		}
 	}
 	
 	protected void initializeTypeConverters() {
 		for (XmlTypeConverter resourceConverter : this.resourceConvertersHolder.getTypeConverters()) {
-			this.typeConverters.add(new EclipseLinkOrmTypeConverter(this, resourceConverter));
+			this.typeConverters.add(this.buildTypeConverter(resourceConverter));
 		}
+	}
+	
+	protected EclipseLinkOrmCustomConverter buildCustomConverter(XmlConverter resourceConverter) {
+		EclipseLinkOrmCustomConverter contextConverter = new EclipseLinkOrmCustomConverter(this);
+		contextConverter.initialize(resourceConverter);
+		return contextConverter;
+	}
+
+	protected EclipseLinkOrmTypeConverter buildTypeConverter(XmlTypeConverter resourceConverter) {
+		EclipseLinkOrmTypeConverter contextConverter = new EclipseLinkOrmTypeConverter(this);
+		contextConverter.initialize(resourceConverter);
+		return contextConverter;
+	}
+
+	protected EclipseLinkOrmObjectTypeConverter buildObjectTypeConverter(XmlObjectTypeConverter resourceConverter) {
+		EclipseLinkOrmObjectTypeConverter contextConverter = new EclipseLinkOrmObjectTypeConverter(this);
+		contextConverter.initialize(resourceConverter);
+		return contextConverter;
+	}
+
+	protected EclipseLinkOrmStructConverter buildStructConverter(XmlStructConverter resourceConverter) {
+		EclipseLinkOrmStructConverter contextConverter = new EclipseLinkOrmStructConverter(this);
+		contextConverter.initialize(resourceConverter);
+		return contextConverter;
 	}
 
 	public void update() {
@@ -303,7 +327,7 @@ public class EclipseLinkOrmConverterHolder extends AbstractXmlContextNode implem
 				}
 			}
 			if (!contextConverterFound) {
-				addCustomConverter(new EclipseLinkOrmCustomConverter(this, resourceConverter));
+				addCustomConverter(this.buildCustomConverter(resourceConverter));
 			}
 			resourceIndex++;
 		}
@@ -335,7 +359,7 @@ public class EclipseLinkOrmConverterHolder extends AbstractXmlContextNode implem
 				}
 			}
 			if (!contextObjectTypeConverterFound) {
-				addObjectTypeConverter(new EclipseLinkOrmObjectTypeConverter(this, resourceObjectTypeConverter));
+				addObjectTypeConverter(this.buildObjectTypeConverter(resourceObjectTypeConverter));
 			}
 			resourceIndex++;
 		}
@@ -367,7 +391,7 @@ public class EclipseLinkOrmConverterHolder extends AbstractXmlContextNode implem
 				}
 			}
 			if (!contextTypeConverterFound) {
-				addTypeConverter(new EclipseLinkOrmTypeConverter(this, resourceTypeConverter));
+				addTypeConverter(this.buildTypeConverter(resourceTypeConverter));
 			}
 			resourceIndex++;
 		}
@@ -399,7 +423,7 @@ public class EclipseLinkOrmConverterHolder extends AbstractXmlContextNode implem
 				}
 			}
 			if (!contextStructConverterFound) {
-				addStructConverter(new EclipseLinkOrmStructConverter(this, resourceStructConverter));
+				addStructConverter(this.buildStructConverter(resourceStructConverter));
 			}
 			resourceIndex++;
 		}

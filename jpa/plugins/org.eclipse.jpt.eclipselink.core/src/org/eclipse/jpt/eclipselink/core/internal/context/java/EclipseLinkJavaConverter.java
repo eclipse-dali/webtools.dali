@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2008  Oracle. 
+ *  Copyright (c) 2008, 2009  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -28,9 +28,8 @@ public abstract class EclipseLinkJavaConverter extends AbstractJavaJpaContextNod
 	private String name;
 	
 	
-	protected EclipseLinkJavaConverter(JavaJpaContextNode parent, JavaResourcePersistentMember jrpm) {
+	protected EclipseLinkJavaConverter(JavaJpaContextNode parent) {
 		super(parent);
-		this.initialize(jrpm);
 	}
 	
 	

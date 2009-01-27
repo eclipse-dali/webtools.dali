@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -38,8 +38,8 @@ public class EclipseLinkJavaObjectTypeConverter extends EclipseLinkJavaConverter
 	private final List<EclipseLinkJavaConversionValue> conversionValues;
 	
 	
-	public EclipseLinkJavaObjectTypeConverter(JavaJpaContextNode parent, JavaResourcePersistentMember jrpm) {
-		super(parent, jrpm);
+	public EclipseLinkJavaObjectTypeConverter(JavaJpaContextNode parent) {
+		super(parent);
 		this.conversionValues = new ArrayList<EclipseLinkJavaConversionValue>();
 	}
 	
@@ -48,10 +48,12 @@ public class EclipseLinkJavaObjectTypeConverter extends EclipseLinkJavaConverter
 		return EclipseLinkConverter.OBJECT_TYPE_CONVERTER;
 	}
 
+	@Override
 	public String getAnnotationName() {
 		return ObjectTypeConverterAnnotation.ANNOTATION_NAME;
 	}
 	
+	@Override
 	protected ObjectTypeConverterAnnotation getAnnotation() {
 		return (ObjectTypeConverterAnnotation) super.getAnnotation();
 	}
@@ -180,6 +182,7 @@ public class EclipseLinkJavaObjectTypeConverter extends EclipseLinkJavaConverter
 	
 	// **************** resource interaction ***********************************
 	
+	@Override
 	protected void initialize(JavaResourcePersistentMember jrpm) {
 		super.initialize(jrpm);
 		ObjectTypeConverterAnnotation resourceConverter = getAnnotation();
@@ -206,6 +209,7 @@ public class EclipseLinkJavaObjectTypeConverter extends EclipseLinkJavaConverter
 		return conversionValue;
 	}
 	
+	@Override
 	public void update(JavaResourcePersistentMember jrpm) {
 		super.update(jrpm);
 		ObjectTypeConverterAnnotation resourceConverter = getAnnotation();

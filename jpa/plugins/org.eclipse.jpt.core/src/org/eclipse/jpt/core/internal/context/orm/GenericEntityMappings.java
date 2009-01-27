@@ -74,7 +74,7 @@ public class GenericEntityMappings
 	protected String specifiedSchema;
 	protected String defaultSchema;
 
-	protected final PersistenceUnitMetadata persistenceUnitMetadata;
+	protected /*final*/ PersistenceUnitMetadata persistenceUnitMetadata;
 
 	protected final List<OrmPersistentType> persistentTypes;
 
@@ -87,15 +87,13 @@ public class GenericEntityMappings
 	protected final List<OrmNamedNativeQuery> namedNativeQueries;
 
 
-	public GenericEntityMappings(OrmXml parent, XmlEntityMappings xmlEntityMappings) {
+	public GenericEntityMappings(OrmXml parent) {
 		super(parent);
-		this.persistenceUnitMetadata = getJpaFactory().buildPersistenceUnitMetadata(this, xmlEntityMappings);
 		this.persistentTypes = new ArrayList<OrmPersistentType>();
 		this.sequenceGenerators = new ArrayList<OrmSequenceGenerator>();
 		this.tableGenerators = new ArrayList<OrmTableGenerator>();
 		this.namedQueries = new ArrayList<OrmNamedQuery>();
 		this.namedNativeQueries = new ArrayList<OrmNamedNativeQuery>();
-		this.initialize(xmlEntityMappings);
 	}
 	
 	
@@ -603,8 +601,13 @@ public class GenericEntityMappings
 
 	// ********** initialization **********
 
-	protected void initialize(XmlEntityMappings entityMappings) {
+	public void initialize(XmlEntityMappings entityMappings) {
 		this.xmlEntityMappings = entityMappings;
+		this.initialize();
+	}
+	
+	protected void initialize() {
+		this.persistenceUnitMetadata = getJpaFactory().buildPersistenceUnitMetadata(this, this.xmlEntityMappings);
 		this.description = this.xmlEntityMappings.getDescription();
 		this.package_ = this.xmlEntityMappings.getPackage();
 

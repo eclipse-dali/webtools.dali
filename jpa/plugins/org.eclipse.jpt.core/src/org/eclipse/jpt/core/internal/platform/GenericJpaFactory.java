@@ -112,8 +112,8 @@ import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.core.context.persistence.Property;
-import org.eclipse.jpt.core.internal.GenericJpaFile;
 import org.eclipse.jpt.core.internal.GenericJpaDataSource;
+import org.eclipse.jpt.core.internal.GenericJpaFile;
 import org.eclipse.jpt.core.internal.GenericJpaProject;
 import org.eclipse.jpt.core.internal.context.GenericRootContextNode;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaAssociationOverride;
@@ -311,19 +311,27 @@ public class GenericJpaFactory
 	// ********** ORM Context Model **********
 	
 	public OrmXml buildOrmXml(MappingFileRef parent, OrmXmlResource ormXmlResource) {
-		return new GenericOrmXml(parent, ormXmlResource);
+		OrmXml ormXml = new GenericOrmXml(parent);
+		ormXml.initialize(ormXmlResource);
+		return ormXml;
 	}
 	
 	public EntityMappings buildEntityMappings(OrmXml parent, XmlEntityMappings xmlEntityMappings) {
-		return new GenericEntityMappings(parent, xmlEntityMappings);
+		EntityMappings entityMappings = new GenericEntityMappings(parent);
+		entityMappings.initialize(xmlEntityMappings);
+		return entityMappings;
 	}
 	
 	public PersistenceUnitMetadata buildPersistenceUnitMetadata(EntityMappings parent, XmlEntityMappings xmlEntityMappings) {
-		return new GenericPersistenceUnitMetadata(parent, xmlEntityMappings);
+		PersistenceUnitMetadata persistenceUnitMetadata = new GenericPersistenceUnitMetadata(parent);
+		persistenceUnitMetadata.initialize(xmlEntityMappings);
+		return persistenceUnitMetadata;
 	}
 	
 	public OrmPersistenceUnitDefaults buildPersistenceUnitDefaults(PersistenceUnitMetadata parent, XmlEntityMappings xmlEntityMappings) {
-		return new GenericPersistenceUnitDefaults(parent, xmlEntityMappings);
+		OrmPersistenceUnitDefaults persistenceUnitDefaults = new GenericPersistenceUnitDefaults(parent);
+		persistenceUnitDefaults.initialize(xmlEntityMappings);
+		return persistenceUnitDefaults;
 	}
 
 	public OrmPersistentType buildOrmPersistentType(EntityMappings parent, String mappingKey) {

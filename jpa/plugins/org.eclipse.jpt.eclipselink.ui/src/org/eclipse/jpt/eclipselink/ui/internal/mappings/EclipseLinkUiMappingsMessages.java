@@ -78,7 +78,7 @@ public class EclipseLinkUiMappingsMessages extends NLS {
 	public static String ConverterComposite_nameTextLabel;
 	public static String ConverterComposite_classLabel;
 
-	public static String ConvertersComposite_converter;
+	public static String ConvertersComposite_customConverter;
 	public static String ConvertersComposite_objectTypeConverter;
 	public static String ConvertersComposite_structConverter;
 	public static String ConvertersComposite_typeConverter;

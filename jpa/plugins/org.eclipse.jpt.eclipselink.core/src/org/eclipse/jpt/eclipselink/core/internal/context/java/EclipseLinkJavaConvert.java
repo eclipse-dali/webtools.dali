@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -131,23 +131,24 @@ public class EclipseLinkJavaConvert extends AbstractJavaJpaContextNode implement
 	
 	protected void initialize(JavaResourcePersistentAttribute jrpa) {
 		this.resourcePersistentAttribute = jrpa;
-		this.specifiedConverterName = this.specifiedConverterName(getResourceConvert());
-		this.converter = this.buildConverter(this.converterType(jrpa));
+		this.specifiedConverterName = this.getResourceConverterName();
+		this.converter = this.buildConverter(this.getResourceConverterType());
 	}
 	
 	public void update(JavaResourcePersistentAttribute jrpa) {
 		this.resourcePersistentAttribute = jrpa;
-		this.setSpecifiedConverterName_(this.specifiedConverterName(getResourceConvert()));
-		if (converterType(jrpa) == getConverterType()) {
-			getConverter().update(jrpa);
+		this.setSpecifiedConverterName_(this.getResourceConverterName());
+		if (getResourceConverterType() == getConverterType()) {
+			getConverter().update(this.resourcePersistentAttribute);
 		}
 		else {
-			EclipseLinkJavaConverter javaConverter = buildConverter(converterType(jrpa));
+			EclipseLinkJavaConverter javaConverter = buildConverter(getResourceConverterType());
 			setConverter(javaConverter);
 		}
 	}
 	
-	protected String specifiedConverterName(ConvertAnnotation resourceConvert) {
+	protected String getResourceConverterName() {
+		ConvertAnnotation resourceConvert = getResourceConvert();
 		return resourceConvert == null ? null : resourceConvert.getValue();
 	}
 
@@ -157,31 +158,55 @@ public class EclipseLinkJavaConvert extends AbstractJavaJpaContextNode implement
 			return null;
 		}
 		if (converterType == EclipseLinkConverter.CUSTOM_CONVERTER) {
-			return new EclipseLinkJavaCustomConverter(this, this.resourcePersistentAttribute);
+			return buildCustomConverter();
 		}
 		else if (converterType == EclipseLinkConverter.TYPE_CONVERTER) {
-			return new EclipseLinkJavaTypeConverter(this, this.resourcePersistentAttribute);
+			return buildTypeConverter();
 		}
 		else if (converterType == EclipseLinkConverter.OBJECT_TYPE_CONVERTER) {
-			return new EclipseLinkJavaObjectTypeConverter(this, this.resourcePersistentAttribute);
+			return buildObjectTypeConverter();
 		}
 		else if (converterType == EclipseLinkConverter.STRUCT_CONVERTER) {
-			return new EclipseLinkJavaStructConverter(this, this.resourcePersistentAttribute);
+			return buildStructConverter();
 		}
 		return null;
 	}
 	
-	protected String converterType(JavaResourcePersistentAttribute jrpa) {
-		if (jrpa.getSupportingAnnotation(ConverterAnnotation.ANNOTATION_NAME) != null) {
+	protected EclipseLinkJavaCustomConverter buildCustomConverter() {
+		EclipseLinkJavaCustomConverter contextConverter = new EclipseLinkJavaCustomConverter(this);
+		contextConverter.initialize(this.resourcePersistentAttribute);
+		return contextConverter;
+	}
+
+	protected EclipseLinkJavaTypeConverter buildTypeConverter() {
+		EclipseLinkJavaTypeConverter contextConverter = new EclipseLinkJavaTypeConverter(this);
+		contextConverter.initialize(this.resourcePersistentAttribute);
+		return contextConverter;
+	}
+
+	protected EclipseLinkJavaObjectTypeConverter buildObjectTypeConverter() {
+		EclipseLinkJavaObjectTypeConverter contextConverter = new EclipseLinkJavaObjectTypeConverter(this);
+		contextConverter.initialize(this.resourcePersistentAttribute);
+		return contextConverter;
+	}
+
+	protected EclipseLinkJavaStructConverter buildStructConverter() {
+		EclipseLinkJavaStructConverter contextConverter = new EclipseLinkJavaStructConverter(this);
+		contextConverter.initialize(this.resourcePersistentAttribute);
+		return contextConverter;
+	}
+
+	protected String getResourceConverterType() {
+		if (this.resourcePersistentAttribute.getSupportingAnnotation(ConverterAnnotation.ANNOTATION_NAME) != null) {
 			return EclipseLinkConverter.CUSTOM_CONVERTER;
 		}
-		else if (jrpa.getSupportingAnnotation(TypeConverterAnnotation.ANNOTATION_NAME) != null) {
+		else if (this.resourcePersistentAttribute.getSupportingAnnotation(TypeConverterAnnotation.ANNOTATION_NAME) != null) {
 			return EclipseLinkConverter.TYPE_CONVERTER;
 		}
-		else if (jrpa.getSupportingAnnotation(ObjectTypeConverterAnnotation.ANNOTATION_NAME) != null) {
+		else if (this.resourcePersistentAttribute.getSupportingAnnotation(ObjectTypeConverterAnnotation.ANNOTATION_NAME) != null) {
 			return EclipseLinkConverter.OBJECT_TYPE_CONVERTER;
 		}
-		else if (jrpa.getSupportingAnnotation(StructConverterAnnotation.ANNOTATION_NAME) != null) {
+		else if (this.resourcePersistentAttribute.getSupportingAnnotation(StructConverterAnnotation.ANNOTATION_NAME) != null) {
 			return EclipseLinkConverter.STRUCT_CONVERTER;
 		}
 		

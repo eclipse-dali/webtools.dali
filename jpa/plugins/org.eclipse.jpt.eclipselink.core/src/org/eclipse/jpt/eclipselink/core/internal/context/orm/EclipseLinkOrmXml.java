@@ -15,12 +15,11 @@ import org.eclipse.jpt.core.internal.context.orm.GenericOrmXml;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaFactory;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
-import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmXmlResource;
 
 public class EclipseLinkOrmXml extends GenericOrmXml
 {
-	public EclipseLinkOrmXml(MappingFileRef parent, EclipseLinkOrmXmlResource ormResource) {
-		super(parent, ormResource);
+	public EclipseLinkOrmXml(MappingFileRef parent) {
+		super(parent);
 	}
 	
 	@Override

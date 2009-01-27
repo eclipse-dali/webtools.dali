@@ -26,7 +26,7 @@ import org.eclipse.jpt.eclipselink.core.context.TypeConverter;
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
  * @version 2.1
- * @since 2.1
+ * @since 2.2
  */
 public interface JavaConverterHolder extends JavaJpaContextNode
 {
@@ -42,10 +42,10 @@ public interface JavaConverterHolder extends JavaJpaContextNode
 	 */
 	void update(JavaResourcePersistentType jrpt);
 	
-	CustomConverter getConverter();
-	CustomConverter addConverter();
-	void removeConverter();
-	String CONVERTER_PROPERTY = "converterProperty"; //$NON-NLS-1$
+	CustomConverter getCustomConverter();
+	CustomConverter addCustomConverter();
+	void removeCustomConverter();
+	String CUSTOM_CONVERTER_PROPERTY = "customConverterProperty"; //$NON-NLS-1$
 	
 	ObjectTypeConverter getObjectTypeConverter();
 	ObjectTypeConverter addObjectTypeConverter();

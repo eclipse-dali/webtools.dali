@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -161,27 +161,27 @@ public class EclipseLinkOrmConvert extends AbstractXmlContextNode implements Con
 		}
 	}
 	
-	protected EclipseLinkOrmConverter buildConverter(String converterType, JpaEObject resourceConverter) {
+	protected EclipseLinkOrmConverter<?> buildConverter(String converterType, JpaEObject resourceConverter) {
 		if (converterType == EclipseLinkConverter.NO_CONVERTER) {
 			return null;
 		}
 		if (converterType == EclipseLinkConverter.CUSTOM_CONVERTER) {
-			return new EclipseLinkOrmCustomConverter(this, (XmlConverter) resourceConverter);
+			return buildCustomConverter((XmlConverter) resourceConverter);
 		}
 		else if (converterType == EclipseLinkConverter.TYPE_CONVERTER) {
-			return new EclipseLinkOrmTypeConverter(this, (XmlTypeConverter) resourceConverter);
+			return buildTypeConverter((XmlTypeConverter) resourceConverter);
 		}
 		else if (converterType == EclipseLinkConverter.OBJECT_TYPE_CONVERTER) {
-			return new EclipseLinkOrmObjectTypeConverter(this, (XmlObjectTypeConverter) resourceConverter);
+			return buildObjectTypeConverter((XmlObjectTypeConverter) resourceConverter);
 		}
 		else if (converterType == EclipseLinkConverter.STRUCT_CONVERTER) {
-			return new EclipseLinkOrmStructConverter(this, (XmlStructConverter) resourceConverter);
+			return buildStructConverter((XmlStructConverter) resourceConverter);
 		}
 		return null;
 	}
 
-	protected void setConverter(EclipseLinkOrmConverter newConverter) {
-		EclipseLinkOrmConverter oldConverter = this.converter;
+	protected void setConverter(EclipseLinkOrmConverter<?> newConverter) {
+		EclipseLinkOrmConverter<?> oldConverter = this.converter;
 		this.converter = newConverter;
 		firePropertyChanged(CONVERTER_PROPERTY, oldConverter, newConverter);
 	}
@@ -222,23 +222,46 @@ public class EclipseLinkOrmConvert extends AbstractXmlContextNode implements Con
 		
 		return null;
 	}
-	protected EclipseLinkOrmConverter buildConverter() {
+	protected EclipseLinkOrmConverter<?> buildConverter() {
 		if (this.resourceMapping.getConverter() != null) {
-			return new EclipseLinkOrmCustomConverter(this, this.resourceMapping.getConverter());
+			return buildCustomConverter(this.resourceMapping.getConverter());
 		}
 		else if (this.resourceMapping.getTypeConverter() != null) {
-			return new EclipseLinkOrmTypeConverter(this, this.resourceMapping.getTypeConverter());
+			return buildTypeConverter(this.resourceMapping.getTypeConverter());
 		}
 		else if (this.resourceMapping.getObjectTypeConverter() != null) {
-			return new EclipseLinkOrmObjectTypeConverter(this, this.resourceMapping.getObjectTypeConverter());
+			return buildObjectTypeConverter(this.resourceMapping.getObjectTypeConverter());
 		}
 		else if (this.resourceMapping.getStructConverter() != null) {
-			return new EclipseLinkOrmStructConverter(this, this.resourceMapping.getStructConverter());
+			return buildStructConverter(this.resourceMapping.getStructConverter());
 		}
 		
 		return null;
 	}
 
+	protected EclipseLinkOrmCustomConverter buildCustomConverter(XmlConverter resourceConverter) {
+		EclipseLinkOrmCustomConverter contextConverter = new EclipseLinkOrmCustomConverter(this);
+		contextConverter.initialize(resourceConverter);
+		return contextConverter;
+	}
+
+	protected EclipseLinkOrmTypeConverter buildTypeConverter(XmlTypeConverter resourceConverter) {
+		EclipseLinkOrmTypeConverter contextConverter = new EclipseLinkOrmTypeConverter(this);
+		contextConverter.initialize(resourceConverter);
+		return contextConverter;
+	}
+
+	protected EclipseLinkOrmObjectTypeConverter buildObjectTypeConverter(XmlObjectTypeConverter resourceConverter) {
+		EclipseLinkOrmObjectTypeConverter contextConverter = new EclipseLinkOrmObjectTypeConverter(this);
+		contextConverter.initialize(resourceConverter);
+		return contextConverter;
+	}
+
+	protected EclipseLinkOrmStructConverter buildStructConverter(XmlStructConverter resourceConverter) {
+		EclipseLinkOrmStructConverter contextConverter = new EclipseLinkOrmStructConverter(this);
+		contextConverter.initialize(resourceConverter);
+		return contextConverter;
+	}
 
 	@Override
 	public void validate(List<IMessage> messages) {

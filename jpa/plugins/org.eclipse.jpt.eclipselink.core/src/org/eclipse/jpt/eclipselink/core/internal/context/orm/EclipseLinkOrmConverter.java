@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2008  Oracle. 
+ *  Copyright (c) 2008, 2009  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -27,9 +27,8 @@ public abstract class EclipseLinkOrmConverter<T extends XmlNamedConverter>
 	protected String name;
 	
 	
-	protected EclipseLinkOrmConverter(XmlContextNode parent, T xmlResource) {
+	protected EclipseLinkOrmConverter(XmlContextNode parent) {
 		super(parent);
-		initialize(xmlResource);
 	}
 		
 	@Override

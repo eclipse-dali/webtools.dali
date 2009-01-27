@@ -90,18 +90,18 @@ public class ConvertersComposite extends Pane<JavaConverterHolder>
 	}
 	
 	private void initializeConverterPane(Composite container) {
-		// Converter check box
-		Button converterCheckBox = addCheckBox(
+		// Custom Converter check box
+		Button customConverterCheckBox = addCheckBox(
 			addSubPane(container, 5),
-			EclipseLinkUiMappingsMessages.ConvertersComposite_converter,
-			buildConverterBooleanHolder(),
+			EclipseLinkUiMappingsMessages.ConvertersComposite_customConverter,
+			buildCustomConverterBooleanHolder(),
 			null
 		);
 
 		// Custom Converter pane
 		CustomConverterComposite customConverterComposite = new CustomConverterComposite(
 			buildCustomConverterHolder(),
-			addSubPane(container, 0, converterCheckBox.getBorderWidth() + 16),
+			addSubPane(container, 0, customConverterCheckBox.getBorderWidth() + 16),
 			getWidgetFactory()
 		);
 		registerSubPane(customConverterComposite);
@@ -156,30 +156,30 @@ public class ConvertersComposite extends Pane<JavaConverterHolder>
 		registerSubPane(structConverterComposite);
 	}
 	
-	private WritablePropertyValueModel<Boolean> buildConverterBooleanHolder() {
-		return new PropertyAspectAdapter<JavaConverterHolder, Boolean>(getSubjectHolder(), JavaConverterHolder.CONVERTER_PROPERTY) {
+	private WritablePropertyValueModel<Boolean> buildCustomConverterBooleanHolder() {
+		return new PropertyAspectAdapter<JavaConverterHolder, Boolean>(getSubjectHolder(), JavaConverterHolder.CUSTOM_CONVERTER_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
-				return Boolean.valueOf(this.subject.getConverter() != null);
+				return Boolean.valueOf(this.subject.getCustomConverter() != null);
 			}
 
 			@Override
 			protected void setValue_(Boolean value) {
-				if (value.booleanValue() && (this.subject.getConverter() == null)) {
-					this.subject.addConverter();
+				if (value.booleanValue() && (this.subject.getCustomConverter() == null)) {
+					this.subject.addCustomConverter();
 				}
-				else if (!value.booleanValue() && (this.subject.getConverter() != null)) {
-					this.subject.removeConverter();
+				else if (!value.booleanValue() && (this.subject.getCustomConverter() != null)) {
+					this.subject.removeCustomConverter();
 				}
 			}
 		};
 	}
 	
 	private PropertyValueModel<CustomConverter> buildCustomConverterHolder() {
-		return new PropertyAspectAdapter<JavaConverterHolder, CustomConverter>(getSubjectHolder(), JavaConverterHolder.CONVERTER_PROPERTY) {
+		return new PropertyAspectAdapter<JavaConverterHolder, CustomConverter>(getSubjectHolder(), JavaConverterHolder.CUSTOM_CONVERTER_PROPERTY) {
 			@Override
 			protected CustomConverter buildValue_() {
-				return this.subject.getConverter();
+				return this.subject.getCustomConverter();
 			}
 		};
 	}

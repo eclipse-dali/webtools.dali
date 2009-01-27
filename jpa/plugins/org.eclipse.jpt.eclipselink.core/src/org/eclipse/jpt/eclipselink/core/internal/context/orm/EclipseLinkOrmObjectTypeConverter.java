@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -37,8 +37,8 @@ public class EclipseLinkOrmObjectTypeConverter extends EclipseLinkOrmConverter<X
 	private String defaultObjectValue;
 	
 	
-	public EclipseLinkOrmObjectTypeConverter(XmlContextNode parent, XmlObjectTypeConverter xmlResource) {
-		super(parent, xmlResource);
+	public EclipseLinkOrmObjectTypeConverter(XmlContextNode parent) {
+		super(parent);
 		this.conversionValues = new ArrayList<EclipseLinkOrmConversionValue>();
 	}
 	

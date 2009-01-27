@@ -35,17 +35,8 @@ public class GenericOrmXml
 	protected EntityMappings entityMappings;
 	
 	
-	public GenericOrmXml(MappingFileRef parent, OrmXmlResource ormResource) {
+	public GenericOrmXml(MappingFileRef parent) {
 		super(parent);
-		this.initialize(ormResource);
-	}
-	
-	protected void initialize(OrmXmlResource resource) {
-		this.ormResource = resource;
-		XmlEntityMappings xmlEntityMappings = resource.getEntityMappings();
-		if (xmlEntityMappings != null) {
-			this.entityMappings = this.buildEntityMappings(xmlEntityMappings);
-		}
 	}
 
 	
@@ -139,6 +130,18 @@ public class GenericOrmXml
 	
 	// ********** updating **********
 	
+	public void initialize(JpaXmlResource resource) {
+		this.ormResource = (OrmXmlResource) resource;
+		this.initialize();
+	}
+	
+	protected void initialize() {
+		XmlEntityMappings xmlEntityMappings = this.ormResource.getEntityMappings();
+		if (xmlEntityMappings != null) {
+			this.entityMappings = this.buildEntityMappings(xmlEntityMappings);
+		}
+	}
+	
 	public void update(JpaXmlResource resource) {
 		OrmXmlResource newOrmResource;
 		try {
@@ -171,12 +174,6 @@ public class GenericOrmXml
 			} else {
 				this.setEntityMappings(this.buildEntityMappings(newXmlEntityMappings));
 			}
-		} else {
-			if (this.entityMappings != null) {
-				this.getJpaFile(this.ormResource.getFile()).removeRootStructureNode(this.ormResource);
-				this.entityMappings.dispose();
-			}
-			this.setEntityMappings(null);
 		}
 	}
 	

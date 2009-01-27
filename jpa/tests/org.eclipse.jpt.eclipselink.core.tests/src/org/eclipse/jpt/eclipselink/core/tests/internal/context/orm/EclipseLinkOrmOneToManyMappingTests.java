@@ -244,7 +244,7 @@ public class EclipseLinkOrmOneToManyMappingTests
 
 		//set metadata-complete and verify JoinTable info is not taken from the java
 		departmentPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
-		
+		departmentPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "id");	
 		oneToMany = (OrmOneToManyMapping) departmentPersistentType.getAttributeNamed("employees").getMapping();
 		
 		assertEquals(true, oneToMany.getPersistentAttribute().isVirtual());

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the terms of
  * the Eclipse Public License v1.0, which accompanies this distribution and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
@@ -44,22 +44,8 @@ public class GenericPersistenceUnitDefaults
 
 	// ********** constructor/initialization **********
 
-	public GenericPersistenceUnitDefaults(PersistenceUnitMetadata parent, XmlEntityMappings xmlEntityMappings) {
+	public GenericPersistenceUnitDefaults(PersistenceUnitMetadata parent) {
 		super(parent);
-		this.initialize(xmlEntityMappings);
-	}
-
-	protected void initialize(XmlEntityMappings xmlEntityMappings) {
-		this.entityMappings = xmlEntityMappings;
-		XmlPersistenceUnitDefaults resourceDefaults = this.getResourceDefaults();
-		if (resourceDefaults != null) {
-			this.access = AccessType.fromXmlResourceModel(resourceDefaults.getAccess());
-			this.specifiedCatalog = resourceDefaults.getCatalog();
-			this.specifiedSchema = resourceDefaults.getSchema();
-			this.cascadePersist = resourceDefaults.isCascadePersist();
-		}
-		this.defaultCatalog = this.getJpaProject().getDefaultCatalog();
-		this.defaultSchema = this.getJpaProject().getDefaultSchema();
 	}
 	
 	public boolean resourceExists() {
@@ -256,7 +242,25 @@ public class GenericPersistenceUnitDefaults
 			}
 		}
 	}
+
+
+	public void initialize(XmlEntityMappings xmlEntityMappings) {
+		this.entityMappings = xmlEntityMappings;
+		this.initialize();
+	}
 	
+	protected void initialize() {
+		XmlPersistenceUnitDefaults resourceDefaults = this.getResourceDefaults();
+		if (resourceDefaults != null) {
+			this.access = AccessType.fromXmlResourceModel(resourceDefaults.getAccess());
+			this.specifiedCatalog = resourceDefaults.getCatalog();
+			this.specifiedSchema = resourceDefaults.getSchema();
+			this.cascadePersist = resourceDefaults.isCascadePersist();
+		}
+		this.defaultCatalog = this.getJpaProject().getDefaultCatalog();
+		this.defaultSchema = this.getJpaProject().getDefaultSchema();
+	}
+
 	public void update() {
 		XmlPersistenceUnitDefaults resourceDefaults = this.getResourceDefaults();
 		if (resourceDefaults == null) {

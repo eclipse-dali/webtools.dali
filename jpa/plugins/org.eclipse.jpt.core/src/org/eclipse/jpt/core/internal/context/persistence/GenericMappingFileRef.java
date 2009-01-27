@@ -57,7 +57,7 @@ public class GenericMappingFileRef extends AbstractXmlContextNode
 
 	
 	public boolean isVirtual() {
-		return xmlMappingFileRef == null;
+		return this.xmlMappingFileRef == null;
 	}
 	
 	
@@ -99,10 +99,10 @@ public class GenericMappingFileRef extends AbstractXmlContextNode
 	
 	protected void initializeFileName() {
 		if (isVirtual()) {
-			fileName = JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH;
+			this.fileName = JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH;
 		}
 		else {
-			fileName = xmlMappingFileRef.getFileName();
+			this.fileName = this.xmlMappingFileRef.getFileName();
 		}
 	}
 	
@@ -118,7 +118,7 @@ public class GenericMappingFileRef extends AbstractXmlContextNode
 	}
 
 	public void update(XmlMappingFileRef mappingFileRef) {
-		xmlMappingFileRef = mappingFileRef;
+		this.xmlMappingFileRef = mappingFileRef;
 		updateFileName();
 		updateMappingFile();
 	}
@@ -128,7 +128,7 @@ public class GenericMappingFileRef extends AbstractXmlContextNode
 			setFileName_(JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH);
 		}
 		else {
-			setFileName_(xmlMappingFileRef.getFileName());
+			setFileName_(this.xmlMappingFileRef.getFileName());
 		}
 	}
 	
@@ -144,7 +144,7 @@ public class GenericMappingFileRef extends AbstractXmlContextNode
 					this.mappingFile.dispose();
 				}
 				if (this.mappingFile == null) {
-					setMappingFile(buildMappingFile(resource));
+					this.setMappingFile(buildMappingFile(resource));
 				}
 				else {
 					this.mappingFile.update(resource);
@@ -155,16 +155,16 @@ public class GenericMappingFileRef extends AbstractXmlContextNode
 		
 		if (this.mappingFile != null) {
 			this.mappingFile.dispose();
-			setMappingFile(null);
+			this.setMappingFile(null);
 		}
 	}
 	
 	protected IFile getPlatformFile() {
-		if (fileName == null) {
+		if (this.fileName == null) {
 			return null;
 		}
 		IProject project = getJpaProject().getProject();
-		IVirtualFile vFile = ComponentCore.createFile(project, new Path(JptCorePlugin.getDeploymentURI(project, fileName)));
+		IVirtualFile vFile = ComponentCore.createFile(project, new Path(JptCorePlugin.getDeploymentURI(project, this.fileName)));
 		return vFile.getUnderlyingFile();
 	}
 	

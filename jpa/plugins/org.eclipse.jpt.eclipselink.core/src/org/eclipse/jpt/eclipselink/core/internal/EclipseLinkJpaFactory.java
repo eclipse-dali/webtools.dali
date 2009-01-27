@@ -43,6 +43,7 @@ import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.platform.GenericJpaFactory;
 import org.eclipse.jpt.core.resource.orm.XmlBasic;
+import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.core.resource.orm.XmlId;
 import org.eclipse.jpt.core.resource.orm.XmlManyToMany;
 import org.eclipse.jpt.core.resource.orm.XmlManyToOne;
@@ -123,7 +124,9 @@ public class EclipseLinkJpaFactory
 	}
 	
 	protected EclipseLinkOrmXml buildEclipseLinkOrmXml(MappingFileRef parent, EclipseLinkOrmXmlResource resource) {
-		return new EclipseLinkOrmXml(parent, resource);
+		EclipseLinkOrmXml eclipseLinkOrmXml = new EclipseLinkOrmXml(parent);
+		eclipseLinkOrmXml.initialize(resource);
+		return eclipseLinkOrmXml;
 	}
 	
 	
@@ -192,8 +195,10 @@ public class EclipseLinkJpaFactory
 	
 	// ********** EclipseLink-specific ORM Context Model **********
 	
-	public EntityMappings buildEclipseLinkEntityMappings(EclipseLinkOrmXml parent, org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntityMappings xmlEntityMappings) {
-		return new EclipseLinkEntityMappingsImpl(parent, xmlEntityMappings);
+	public EntityMappings buildEclipseLinkEntityMappings(EclipseLinkOrmXml parent, XmlEntityMappings xmlEntityMappings) {
+		EntityMappings entityMappings = new EclipseLinkEntityMappingsImpl(parent);
+		entityMappings.initialize(xmlEntityMappings);
+		return entityMappings;
 	}
 
 	public OrmPersistentType buildEclipseLinkOrmPersistentType(EclipseLinkEntityMappings parent, String mappingKey) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.context.orm;
 
 import java.util.ListIterator;
-
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.MappingFileRoot;
 import org.eclipse.jpt.core.context.PersistentType;
@@ -141,7 +140,13 @@ public interface EntityMappings
 	void changeMapping(OrmPersistentType ormPersistentType, OrmTypeMapping oldMapping, OrmTypeMapping newMapping);
 	
 	// **************** updating ***********************************************
-		
+	
+	/**
+	 * Initialize the EntityMappings context model object to match the XmlEntityMappings 
+	 * resource model object.
+	 */
+	void initialize(XmlEntityMappings xmlEntityMappings);
+	
 	/**
 	 * Update the EntityMappings context model object to match the XmlEntityMappings 
 	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}

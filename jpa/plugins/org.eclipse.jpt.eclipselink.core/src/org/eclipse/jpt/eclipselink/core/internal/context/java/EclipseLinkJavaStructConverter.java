@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,8 +21,8 @@ public class EclipseLinkJavaStructConverter extends EclipseLinkJavaConverter
 	private String converterClass;
 	
 	
-	public EclipseLinkJavaStructConverter(JavaJpaContextNode parent, JavaResourcePersistentMember jrpm) {
-		super(parent, jrpm);
+	public EclipseLinkJavaStructConverter(JavaJpaContextNode parent) {
+		super(parent);
 	}
 	
 	
@@ -30,10 +30,12 @@ public class EclipseLinkJavaStructConverter extends EclipseLinkJavaConverter
 		return EclipseLinkConverter.STRUCT_CONVERTER;
 	}
 	
+	@Override
 	public String getAnnotationName() {
 		return StructConverterAnnotation.ANNOTATION_NAME;
 	}
 	
+	@Override
 	protected StructConverterAnnotation getAnnotation() {
 		return (StructConverterAnnotation) super.getAnnotation();
 	}
@@ -61,11 +63,13 @@ public class EclipseLinkJavaStructConverter extends EclipseLinkJavaConverter
 	
 	// **************** resource interaction ***********************************
 	
+	@Override
 	protected void initialize(JavaResourcePersistentMember jrpm) {
 		super.initialize(jrpm);
 		this.converterClass = this.converterClass(getAnnotation());
 	}
 	
+	@Override
 	public void update(JavaResourcePersistentMember jrpm) {
 		super.update(jrpm);
 		this.setConverterClass_(this.converterClass(getAnnotation()));
