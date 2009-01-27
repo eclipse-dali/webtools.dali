@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,21 +11,19 @@ package org.eclipse.jpt.ui.internal.wizards;
 
 import java.util.EventListener;
 import java.util.Iterator;
-import java.util.SortedSet;
 
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.db.ConnectionAdapter;
 import org.eclipse.jpt.db.ConnectionListener;
 import org.eclipse.jpt.db.ConnectionProfile;
-import org.eclipse.jpt.db.JptDbPlugin;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.SchemaContainer;
-import org.eclipse.jpt.db.ui.internal.DTPUiTools;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
-import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.ui.internal.properties.JpaProjectPropertiesPage;
 import org.eclipse.jpt.utility.internal.ListenerList;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.swt.SWT;
@@ -42,6 +40,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.dialogs.PreferencesUtil;
 
 /**
  * Most of the behavior is in DatabaseGroup....
@@ -51,7 +50,7 @@ import org.eclipse.ui.PlatformUI;
  * by the user. If the user re-selects the JPA project's connection profile,
  * we will pre-select the project's default schema if possible.
  */
-public class DatabaseConnectionWizardPage extends WizardPage {
+public class DatabaseSchemaWizardPage extends WizardPage {
 
 	final JpaProject jpaProject;
 
@@ -60,14 +59,14 @@ public class DatabaseConnectionWizardPage extends WizardPage {
 	private DatabaseGroup databaseGroup;
 
 
-	public DatabaseConnectionWizardPage(JpaProject jpaProject) {
-		super("Database Settings"); //$NON-NLS-1$
+	public DatabaseSchemaWizardPage(JpaProject jpaProject) {
+		super("Database Schema"); //$NON-NLS-1$
 		if (jpaProject == null) {
 			throw new NullPointerException();
 		}
 		this.jpaProject = jpaProject;
-		this.setTitle(JptUiMessages.DatabaseConnectionWizardPage_databaseConnection);
-		this.setMessage(JptUiMessages.DatabaseConnectionWizardPage_connectToDatabase);
+		this.setTitle(JptUiMessages.DatabaseSchemaWizardPage_title);
+		this.setMessage(JptUiMessages.DatabaseSchemaWizardPage_desc);
 	}
 
 	public void createControl(Composite parent) {
@@ -84,10 +83,10 @@ public class DatabaseConnectionWizardPage extends WizardPage {
 		return composite;
 	}
 
-	public ConnectionProfile getSelectedConnectionProfile() {
-		return this.databaseGroup.getSelectedConnectionProfile();
+	public ConnectionProfile getJpaProjectConnectionProfile() {
+		return this.jpaProject.getConnectionProfile();
 	}
-
+	
 	public Schema getSelectedSchema() {
 		return this.databaseGroup.getSelectedSchema();
 	}
@@ -109,12 +108,6 @@ public class DatabaseConnectionWizardPage extends WizardPage {
 		this.listenerList.remove(listener);
 	}
 
-	void fireConnectionProfileChanged(ConnectionProfile connectionProfile) {
-		for (Listener listener : this.listenerList.getListeners()) {
-			listener.selectedConnectionProfileChanged(connectionProfile);
-		}
-	}
-
 	void fireSchemaChanged(Schema schema) {
 		this.setPageComplete(schema != null);
 		for (Listener listener : this.listenerList.getListeners()) {
@@ -130,7 +123,6 @@ public class DatabaseConnectionWizardPage extends WizardPage {
 	 * and schema.
 	 */
 	public interface Listener extends EventListener {
-		void selectedConnectionProfileChanged(ConnectionProfile connectionProfile);
 		void selectedSchemaChanged(Schema schema);
 	}
 
@@ -138,23 +130,21 @@ public class DatabaseConnectionWizardPage extends WizardPage {
 	// ********** database group **********
 
 	/**
-	 * connection combo-box
 	 * schema combo-box
-	 * add connection link
+	 * add project connection link
 	 * reconnect link
 	 */
 	class DatabaseGroup {
 
 		// these are kept in synch with the selection
-		private ConnectionProfile selectedConnectionProfile;
 		private Schema selectedSchema;
-
-		private final Combo connectionComboBox;
 
 		private final Combo schemaComboBox;
 
 		private final Link reconnectLink;
 
+		private Link addJpaProjectConnectionLink;
+		
 		private final ConnectionListener connectionListener;
 
 
@@ -166,39 +156,39 @@ public class DatabaseConnectionWizardPage extends WizardPage {
 			Group group = new Group(composite, SWT.NONE);
 			group.setLayout(new GridLayout(2, false));  // false = do not make columns equal width
 			group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			group.setText(JptUiMessages.DatabaseConnectionWizardPage_database);
+			group.setText(JptUiMessages.DatabaseSchemaWizardPage_schemaSettings);
 			// TODO PlatformUI.getWorkbench().getHelpSystem().setHelp(this.group, JpaHelpContextIds.XXX);
 
-			// connection combo-box
-			this.buildLabel(group, 1, JptUiMessages.DatabaseConnectionWizardPage_connection);
-			this.connectionComboBox = this.buildComboBox(group, this.buildConnectionComboBoxSelectionListener());
-
 			// schema combo-box
-			this.buildLabel(group, 1, JptUiMessages.DatabaseConnectionWizardPage_schema);
+			this.buildLabel(group, 1, JptUiMessages.DatabaseSchemaWizardPage_schema);
 			this.schemaComboBox = this.buildComboBox(group, this.buildSchemaComboBoxSelectionListener());
-			this.buildLabel(group, 2, JptUiMessages.DatabaseConnectionWizardPage_schemaInfo);
+			
+			String message = (this.projectHasAConnection()) ?
+				JptUiMessages.DatabaseSchemaWizardPage_schemaInfo :
+				JptUiMessages.DatabaseSchemaWizardPage_connectionInfo;
+			
+			this.buildLabel(group, 2, message);
 
-			// add connection link
-			this.buildLink(group, JptUiMessages.DatabaseConnectionWizardPage_addConnectionLink, this.buildAddConnectionLinkSelectionListener());
+			// add project's connection link
+			if( ! this.projectHasAConnection()) {
+				this.addJpaProjectConnectionLink = this.buildLink(group, 
+							JptUiMessages.DatabaseSchemaWizardPage_addConnectionToProject, 
+							this.buildAddJpaProjectConnectionLinkListener());
+			}
 
 			// reconnect link
-			this.reconnectLink = this.buildLink(group, JptUiMessages.DatabaseConnectionWizardPage_connectLink, this.buildReconnectLinkSelectionListener());
+			this.reconnectLink = this.buildLink(group, JptUiMessages.DatabaseSchemaWizardPage_connectLink, this.buildReconnectLinkSelectionListener());
+			this.reconnectLink.setEnabled(true);
 
-			this.connectionListener = this.buildConnectionListener();
-
-			// initialize state, based on JPA project
-			this.selectedConnectionProfile = this.getJpaProjectConnectionProfile();
 			this.selectedSchema = this.getDefaultSchema();
 
 			if (this.selectedSchema != null) {
-				DatabaseConnectionWizardPage.this.fireSchemaChanged(this.selectedSchema);
-			}
-			if (this.selectedConnectionProfile != null) {
-				this.selectedConnectionProfile.addConnectionListener(this.connectionListener);
-				DatabaseConnectionWizardPage.this.fireConnectionProfileChanged(this.selectedConnectionProfile);
+				DatabaseSchemaWizardPage.this.fireSchemaChanged(this.selectedSchema);
 			}
 
-			this.updateConnectionComboBox();
+			this.connectionListener = this.buildConnectionListener();
+			this.addJpaProjectConnectionProfileListener(this.connectionListener);
+
 			this.updateSchemaComboBox();
 			this.updateReconnectLink();
 		}
@@ -206,29 +196,40 @@ public class DatabaseConnectionWizardPage extends WizardPage {
 
 		// ********** intra-wizard methods **********
 
-		ConnectionProfile getSelectedConnectionProfile() {
-			return this.selectedConnectionProfile;
-		}
-
 		Schema getSelectedSchema() {
 			return this.selectedSchema;
 		}
 
 		void dispose() {
-			if (this.selectedConnectionProfile != null) {
-				this.selectedConnectionProfile.removeConnectionListener(this.connectionListener);
+			if(this.projectHasAConnection()) {
+				this.getJpaProjectConnectionProfile().removeConnectionListener(this.connectionListener);
 			}
 		}
 
 
 		// ********** internal methods **********
 
+		private void addJpaProjectConnectionListener() {
+			this.addJpaProjectConnectionProfileListener(this.connectionListener);
+		}
+		
+		
+		private void addJpaProjectConnectionProfileListener(ConnectionListener listener) {
+			if(this.projectHasAConnection()) {
+				this.getJpaProjectConnectionProfile().addConnectionListener(listener);
+			}
+		}
+
+		private boolean projectHasAConnection() {
+			return this.getJpaProjectConnectionProfile() != null;
+		}
+		
 		/**
 		 * this can return null;
 		 * called at start-up and when the selected connection profile changes
 		 */
 		private ConnectionProfile getJpaProjectConnectionProfile() {
-			return DatabaseConnectionWizardPage.this.jpaProject.getConnectionProfile();
+			return DatabaseSchemaWizardPage.this.jpaProject.getConnectionProfile();
 		}
 
 		/**
@@ -236,28 +237,7 @@ public class DatabaseConnectionWizardPage extends WizardPage {
 		 * called at start-up and when the selected connection profile changes
 		 */
 		private Schema getDefaultSchema() {
-			return (this.selectedConnectionProfile == this.getJpaProjectConnectionProfile()) ?
-							DatabaseConnectionWizardPage.this.jpaProject.getDefaultDbSchema()
-						:
-							null;
-		}
-
-		/**
-		 * the connection combo-box is updated at start-up and when the user
-		 * adds a connection profile
-		 */
-		private void updateConnectionComboBox() {
-			this.connectionComboBox.removeAll();
-			for (String cpName : this.buildSortedConnectionProfileNames()) {
-				this.connectionComboBox.add(cpName);
-			}
-			if (this.selectedConnectionProfile != null) {
-				this.connectionComboBox.select(this.connectionComboBox.indexOf(this.selectedConnectionProfile.getName()));
-			}
-		}
-
-		private SortedSet<String> buildSortedConnectionProfileNames() {
-			return CollectionTools.sortedSet(JptDbPlugin.instance().getConnectionProfileFactory().connectionProfileNames());
+			return DatabaseSchemaWizardPage.this.jpaProject.getDefaultDbSchema();
 		}
 
 		/**
@@ -267,8 +247,19 @@ public class DatabaseConnectionWizardPage extends WizardPage {
 			this.reconnectLink.setEnabled(this.reconnectLinkCanBeEnabled());
 		}
 
+		private void updateAddJpaProjectConnectionLink() {
+			this.addJpaProjectConnectionLink.setEnabled(this.addJpaProjectConnectionLinkCanBeEnabled());
+		}
+
 		private boolean reconnectLinkCanBeEnabled() {
-			return (this.selectedConnectionProfile != null) && this.selectedConnectionProfile.isInactive();
+			if(this.projectHasAConnection()) {
+				return this.getJpaProjectConnectionProfile().isInactive();
+			}
+			return false;
+		}
+
+		private boolean addJpaProjectConnectionLinkCanBeEnabled() {
+			return ! this.projectHasAConnection();
 		}
 
 		/**
@@ -287,91 +278,28 @@ public class DatabaseConnectionWizardPage extends WizardPage {
 		}
 
 		private Iterator<String> getSchemata() {
-			SchemaContainer sc = DatabaseConnectionWizardPage.this.jpaProject.getDefaultDbSchemaContainer();
+			SchemaContainer sc = DatabaseSchemaWizardPage.this.jpaProject.getDefaultDbSchemaContainer();
 			return (sc == null) ? EmptyIterator.<String>instance() : sc.sortedSchemaIdentifiers();
 		}
 
-		/**
-		 * If the specified name matches the name of the JPA project's
-		 * connection profile, return it; otherwise, build a new connection
-		 * profile.
-		 */
-		private ConnectionProfile checkJpaProjectConnectionProfile(String cpName) {
-			ConnectionProfile cp = this.getJpaProjectConnectionProfile();
-			if ((cp != null) && cp.getName().equals(cpName)) {
-				return cp;
-			}
-			return this.buildConnectionProfile(cpName);
-		}
-
-		private ConnectionProfile buildConnectionProfile(String name) {
-			return JptDbPlugin.instance().getConnectionProfileFactory().buildConnectionProfile(name);
-		}
-
-
 		// ********** listener callbacks **********
-
-		void selectedConnectionChanged() {
-			String text = this.connectionComboBox.getText();
-			if (text.length() == 0) {
-				if (this.selectedConnectionProfile == null) {
-					return;  // no change
-				}
-				this.selectedConnectionProfile.removeConnectionListener(this.connectionListener);
-				this.selectedConnectionProfile = null;
-			} else {
-				if (this.selectedConnectionProfile == null) {
-					this.selectedConnectionProfile = this.checkJpaProjectConnectionProfile(text);
-				} else {
-					if (text.equals(this.selectedConnectionProfile.getName())) {
-						return;  // no change
-					}
-					this.selectedConnectionProfile.removeConnectionListener(this.connectionListener);
-					this.selectedConnectionProfile = this.checkJpaProjectConnectionProfile(text);
-				}
-				this.selectedConnectionProfile.addConnectionListener(this.connectionListener);
-			}
-			this.connectionChanged();
-			DatabaseConnectionWizardPage.this.fireConnectionProfileChanged(this.selectedConnectionProfile);
-		}
 
 		void selectedSchemaChanged() {
 			Schema old = this.selectedSchema;
-			this.selectedSchema = this.selectedConnectionProfile.getDatabase().getSchemaForIdentifier(this.schemaComboBox.getText());
+			this.selectedSchema = this.getJpaProjectConnectionProfile().getDatabase().getSchemaForIdentifier(this.schemaComboBox.getText());
 			if (this.selectedSchema != old) {
-				DatabaseConnectionWizardPage.this.fireSchemaChanged(this.selectedSchema);
+				DatabaseSchemaWizardPage.this.fireSchemaChanged(this.selectedSchema);
 			}
-		}
-
-		/**
-		 * Open the DTP New Connection Profile wizard.
-		 * If the user creates a new connection profile, start using it and
-		 * connect it
-		 */
-		void addConnection() {
-			String addedProfileName = DTPUiTools.createNewConnectionProfile();
-			if (addedProfileName == null) {
-				return;  // user pressed "Cancel"
-			}
-			if (this.selectedConnectionProfile != null) {
-				this.selectedConnectionProfile.removeConnectionListener(this.connectionListener);
-			}
-			this.selectedConnectionProfile = this.buildConnectionProfile(addedProfileName);
-			this.selectedConnectionProfile.addConnectionListener(this.connectionListener);
-			this.updateConnectionComboBox();
-			this.selectedConnectionProfile.connect();
-			// everything else should be synchronized when we get the resulting open event
-			DatabaseConnectionWizardPage.this.fireConnectionProfileChanged(this.selectedConnectionProfile);
 		}
 
 		void reconnect() {
-			this.selectedConnectionProfile.connect();
+			this.getJpaProjectConnectionProfile().connect();
 			// everything should be synchronized when we get the resulting open event
 		}
 
 		/**
 		 * called when
-		 *     - the user selects a new connection
+		 *     - a connection is set to the Jpa project
 		 *     - the connection was opened
 		 *     - the connection was closed (never happens?)
 		 * we need to update the schema stuff and the reconnect link
@@ -380,7 +308,7 @@ public class DatabaseConnectionWizardPage extends WizardPage {
 			Schema old = this.selectedSchema;
 			this.selectedSchema = this.getDefaultSchema();
 			if (this.selectedSchema != old) {
-				DatabaseConnectionWizardPage.this.fireSchemaChanged(this.selectedSchema);
+				DatabaseSchemaWizardPage.this.fireSchemaChanged(this.selectedSchema);
 			}
 			this.updateSchemaComboBox();
 			this.updateReconnectLink();
@@ -388,22 +316,6 @@ public class DatabaseConnectionWizardPage extends WizardPage {
 
 
 		// ********** listeners **********
-
-		private SelectionListener buildConnectionComboBoxSelectionListener() {
-			return new SelectionListener() {
-				public void widgetDefaultSelected(SelectionEvent event) {
-					// nothing special for "default" (double-click?)
-					this.widgetSelected(event);
-				}
-				public void widgetSelected(SelectionEvent event) {
-					DatabaseGroup.this.selectedConnectionChanged();
-				}
-				@Override
-				public String toString() {
-					return "DatabaseConnectionWizardPage connection combo-box selection listener"; //$NON-NLS-1$
-				}
-			};
-		}
 
 		private SelectionListener buildSchemaComboBoxSelectionListener() {
 			return new SelectionListener() {
@@ -416,20 +328,7 @@ public class DatabaseConnectionWizardPage extends WizardPage {
 				}
 				@Override
 				public String toString() {
-					return "DatabaseConnectionWizardPage schema combo-box selection listener"; //$NON-NLS-1$
-				}
-			};
-		}
-
-		private SelectionListener buildAddConnectionLinkSelectionListener() {
-			return new SelectionAdapter() {
-				@Override
-				public void widgetSelected(SelectionEvent event) {
-					DatabaseGroup.this.addConnection();
-				}
-				@Override
-				public String toString() {
-					return "DatabaseConnectionWizardPage add connection link selection listener"; //$NON-NLS-1$
+					return "DatabaseSchemaWizardPage schema combo-box selection listener"; //$NON-NLS-1$
 				}
 			};
 		}
@@ -442,7 +341,7 @@ public class DatabaseConnectionWizardPage extends WizardPage {
 				}
 				@Override
 				public String toString() {
-					return "DatabaseConnectionWizardPage reconnect link selection listener"; //$NON-NLS-1$
+					return "DatabaseSchemaWizardPage reconnect link selection listener"; //$NON-NLS-1$
 				}
 			};
 		}
@@ -468,11 +367,37 @@ public class DatabaseConnectionWizardPage extends WizardPage {
 				}
 				@Override
 				public String toString() {
-					return "DatabaseConnectionWizardPage connection listener"; //$NON-NLS-1$
+					return "DatabaseSchemaWizardPage connection listener"; //$NON-NLS-1$
 				}
 			};
 		}
 
+		private SelectionListener buildAddJpaProjectConnectionLinkListener() {
+			return new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					DatabaseGroup.this.promptToConfigJpaProjectConnection();
+					
+					DatabaseGroup.this.addJpaProjectConnectionListener();
+					DatabaseGroup.this.updateAddJpaProjectConnectionLink();
+					DatabaseGroup.this.connectionChanged();
+				}
+				@Override
+				public String toString() {
+					return "DatabaseSchemaWizardPage AddProjectConnection link selection listener"; //$NON-NLS-1$
+				}
+			};
+		}
+
+		private void promptToConfigJpaProjectConnection() {
+			PreferenceDialog dialog =
+				PreferencesUtil.createPropertyDialogOn(
+					getShell(), DatabaseSchemaWizardPage.this.jpaProject.getProject(),
+					JpaProjectPropertiesPage.PROP_ID,
+					null,
+					null);
+			dialog.open();
+		}
 
 		// ********** UI components **********
 

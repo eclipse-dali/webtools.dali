@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2007, 2008 Oracle. All rights reserved.
+* Copyright (c) 2007, 2009 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,9 +11,9 @@ package org.eclipse.jpt.eclipselink.ui.internal.ddlgen.wizards;
 
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.db.ConnectionProfile;
-import org.eclipse.jpt.ui.internal.wizards.DatabaseConnectionWizardPage;
+import org.eclipse.jpt.ui.internal.JptUiMessages;
+import org.eclipse.jpt.ui.internal.wizards.DatabaseSchemaWizardPage;
 
 /**
  *  GenerateDDLWizard
@@ -22,34 +22,26 @@ public class GenerateDDLWizard extends Wizard {
 
 	private JpaProject jpaProject;
 
-	private DatabaseConnectionWizardPage dbSettingsPage;
+	private DatabaseSchemaWizardPage dbSettingsPage;
 
 	public GenerateDDLWizard(JpaProject jpaProject) {
 		super();
 		this.jpaProject = jpaProject;
-		this.setWindowTitle("DDL Generation");  // TODO
+		this.setWindowTitle(JptUiMessages.GenerateDDLWizard_title); 
 	}
 	
 	@Override
 	public void addPages() {
 		super.addPages();
 		if (this.getJpaProjectConnectionProfile() == null) {
-			this.dbSettingsPage = new DatabaseConnectionWizardPage(this.jpaProject);
+			this.dbSettingsPage = new DatabaseSchemaWizardPage(this.jpaProject);
 			this.addPage(this.dbSettingsPage);
 		}
 	}
 	
 	@Override
 	public boolean performFinish() {
-        if (this.getJpaProjectConnectionProfile() != null) {
-        	return true;
-        }
-		ConnectionProfile cp = this.dbSettingsPage.getSelectedConnectionProfile();
-		if (cp == null) {
-			return false;
-		}
-		this.setProjectConnectionProfileName(cp.getName());
-		return true;
+		return (this.getJpaProjectConnectionProfile() != null);
 	}
     
     @Override
@@ -59,11 +51,6 @@ public class GenerateDDLWizard extends Wizard {
     
 	private ConnectionProfile getJpaProjectConnectionProfile() {
 		return this.jpaProject.getConnectionProfile();
-	}
-
-	private void setProjectConnectionProfileName(String connectionProfileName) {
-		this.jpaProject.getDataSource().setConnectionProfileName(connectionProfileName);
-		JptCorePlugin.setConnectionProfileName(this.jpaProject.getProject(), connectionProfileName);
 	}
 
 }

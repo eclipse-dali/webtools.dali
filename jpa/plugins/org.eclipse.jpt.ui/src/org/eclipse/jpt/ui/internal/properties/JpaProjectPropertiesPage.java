@@ -51,6 +51,8 @@ public class JpaProjectPropertiesPage
 	extends DataModelPropertyPage
 	implements JpaFacetDataModelProperties
 {
+	public static final String PROP_ID= "org.eclipse.jpt.ui.jpaProjectPropertiesPage"; //$NON-NLS-1$
+
 	private PlatformGroup platformGroup;
 
 	private ConnectionGroup connectionGroup;
