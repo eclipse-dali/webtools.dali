@@ -40,6 +40,13 @@
       <import feature="org.eclipse.datatools.connectivity.feature" version="1.6.0" match="compatible"/>
    </requires>
 
+
+	<!-- Temporary icu dependency to try and get the current build to pass for testing purposes (3.1 M5) -->
+   <plugin
+         id="com.ibm.icu"
+         version="3.8.1.qualifier"
+         unpack="false"/>
+
    <plugin
          id="org.eclipse.jpt.utility"
          download-size="0"
