@@ -62,7 +62,7 @@
                   
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn=":org.eclipse.jpt.core.resource.JpaResourceModelProviderFactory"/>
+                  <meta.attribute kind="java" basedOn=":org.eclipse.jpt.core.resource.JpaXmlResourceProviderFactory"/>
                </appinfo>
             </annotation>
          </attribute>
