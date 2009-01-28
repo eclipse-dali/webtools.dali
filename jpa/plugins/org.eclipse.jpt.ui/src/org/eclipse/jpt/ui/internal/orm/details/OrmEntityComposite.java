@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.orm.details;
 
+import org.eclipse.jpt.core.context.AccessHolder;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
@@ -16,6 +17,7 @@ import org.eclipse.jpt.ui.internal.mappings.details.AbstractEntityComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.EntityNameComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.IdClassComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.TableComposite;
+import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
@@ -62,9 +64,20 @@ public class OrmEntityComposite extends AbstractEntityComposite<OrmEntity>
 		new OrmJavaClassChooser(this, getSubjectHolder(), addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin), false);
 		new TableComposite(this, buildTableHolder(), container);
 		new EntityNameComposite(this, addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin));
-		new AccessTypeComposite(this, getSubjectHolder(), addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin));
+		new AccessTypeComposite(this, buildAccessHolder(), addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin));
 		new IdClassComposite(this, addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin), false);
 		new MetadataCompleteComposite(this, getSubjectHolder(), addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin));
+	}
+	
+	protected PropertyValueModel<AccessHolder> buildAccessHolder() {
+		return new PropertyAspectAdapter<OrmEntity, AccessHolder>(
+			getSubjectHolder())
+		{
+			@Override
+			protected AccessHolder buildValue_() {
+				return this.subject.getPersistentType();
+			}
+		};
 	}
 	
 	@Override

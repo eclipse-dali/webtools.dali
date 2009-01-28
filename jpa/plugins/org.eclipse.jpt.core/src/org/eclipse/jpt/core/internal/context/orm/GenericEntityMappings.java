@@ -155,6 +155,7 @@ public class GenericEntityMappings
 	}
 	
 	public void changeMapping(OrmPersistentType ormPersistentType, OrmTypeMapping oldMapping, OrmTypeMapping newMapping) {
+		AccessType specifiedAccess = ormPersistentType.getSpecifiedAccess();
 		ormPersistentType.dispose();
 		int sourceIndex = this.persistentTypes.indexOf(ormPersistentType);
 		this.persistentTypes.remove(sourceIndex);
@@ -162,8 +163,10 @@ public class GenericEntityMappings
 		int targetIndex = insertionIndex(ormPersistentType);
 		this.persistentTypes.add(targetIndex, ormPersistentType);
 		newMapping.addToResourceModel(this.xmlEntityMappings);
+		
 		newMapping.initializeFrom(oldMapping);
-		//TODO are the source and target correct in this case, or is target off by one???
+		//not sure where else to put this, need to set the access on the resource model
+		ormPersistentType.setSpecifiedAccess(specifiedAccess);
 		fireItemMoved(PERSISTENT_TYPES_LIST, targetIndex, sourceIndex);
 	}
 	

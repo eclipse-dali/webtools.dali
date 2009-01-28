@@ -25,16 +25,12 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface PersistentType
-	extends JpaContextNode, JpaStructureNode
+	extends JpaContextNode, JpaStructureNode, AccessHolder
 {
 	String getName();
 		String NAME_PROPERTY = "name"; //$NON-NLS-1$
 		
 	String getShortName();
-	
-	AccessType getAccess();
-	
-	AccessType getDefaultAccess();
 		
 	/**
 	 * Return the access type that overrides the client persistent type's

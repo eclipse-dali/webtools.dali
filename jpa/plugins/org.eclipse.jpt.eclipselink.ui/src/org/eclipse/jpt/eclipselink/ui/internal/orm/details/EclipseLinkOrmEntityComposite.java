@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.orm.details;
 
+import org.eclipse.jpt.core.context.AccessHolder;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.eclipselink.core.context.Caching;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.ConverterHolder;
@@ -59,9 +60,20 @@ public class EclipseLinkOrmEntityComposite extends AbstractEntityComposite<OrmEn
 		new OrmJavaClassChooser(this, getSubjectHolder(), addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin), false);
 		new TableComposite(this, buildTableHolder(), container);
 		new EntityNameComposite(this, addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin));
-		new AccessTypeComposite(this, getSubjectHolder(), addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin));
+		new AccessTypeComposite(this, buildAccessHolder(), addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin));
 		new IdClassComposite(this, addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin), false);
 		new MetadataCompleteComposite(this, getSubjectHolder(), addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin));
+	}
+	
+	protected PropertyValueModel<AccessHolder> buildAccessHolder() {
+		return new PropertyAspectAdapter<OrmEntity, AccessHolder>(
+			getSubjectHolder())
+		{
+			@Override
+			protected AccessHolder buildValue_() {
+				return this.subject.getPersistentType();
+			}
+		};
 	}
 	
 	protected void initializeCachingPane(Composite container) {

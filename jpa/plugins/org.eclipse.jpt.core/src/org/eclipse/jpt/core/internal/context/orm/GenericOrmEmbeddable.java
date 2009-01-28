@@ -12,6 +12,7 @@ import java.util.Iterator;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.java.JavaEmbeddable;
+import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddable;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
@@ -27,8 +28,9 @@ public class GenericOrmEmbeddable extends AbstractOrmTypeMapping<XmlEmbeddable> 
 	}
 	
 	public JavaEmbeddable getJavaEmbeddable() {
-		if (this.javaPersistentType != null && this.javaPersistentType.getMappingKey() == MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY) {
-			return (JavaEmbeddable) this.javaPersistentType.getMapping();
+		JavaPersistentType javaPersistentType = this.getJavaPersistentType();
+		if (javaPersistentType != null && javaPersistentType.getMappingKey() == MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY) {
+			return (JavaEmbeddable) javaPersistentType.getMapping();
 		}
 		return null;
 	}

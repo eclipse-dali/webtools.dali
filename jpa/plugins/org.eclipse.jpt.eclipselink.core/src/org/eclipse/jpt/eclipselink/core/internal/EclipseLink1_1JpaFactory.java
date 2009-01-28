@@ -9,6 +9,10 @@
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal;
 
+import org.eclipse.jpt.core.context.PersistentType.Owner;
+import org.eclipse.jpt.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLink1_1JavaPersistentTypeImpl;
 
 public class EclipseLink1_1JpaFactory
 	extends EclipseLinkJpaFactory
@@ -16,29 +20,10 @@ public class EclipseLink1_1JpaFactory
 	protected EclipseLink1_1JpaFactory() {
 		super();
 	}
-//	
-//	@Override
-//	public JavaPersistentType buildJavaPersistentType(Owner owner, JavaResourcePersistentType jrpt) {
-//		return new EclipseLink1_1JavaPersistentType(owner, jrpt);
-//	}
-//	
-//	@Override
-//	public EclipseLinkJavaEntity buildJavaEntity(JavaPersistentType parent) {
-//		return new EclipseLink1_1JavaEntityImpl(parent);
-//	}
-//	
-//	@Override
-//	public EclipseLinkJavaMappedSuperclass buildJavaMappedSuperclass(JavaPersistentType parent) {
-//		return new EclipseLink1_1JavaMappedSuperclassImpl(parent);
-//	}
-//	
-//	@Override
-//	public JavaEmbeddable buildJavaEmbeddable(JavaPersistentType parent) {
-//		return new EclipseLink1_1JavaEmbeddableImpl(parent);
-//	}
-//	
-//	@Override
-//	public JavaTypeMapping buildJavaNullTypeMapping(JavaPersistentType parent) {
-//		return new EclipseLink1_1JavaNullTypeMapping(parent);
-//	}
+
+	@Override
+	public JavaPersistentType buildJavaPersistentType(Owner owner, JavaResourcePersistentType jrpt) {
+		return new EclipseLink1_1JavaPersistentTypeImpl(owner, jrpt);
+	}
+
 }

@@ -9,12 +9,14 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.orm.details;
 
+import org.eclipse.jpt.core.context.AccessHolder;
 import org.eclipse.jpt.core.context.orm.OrmMappedSuperclass;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.IdClassComposite;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
+import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
@@ -32,8 +34,19 @@ public class OrmMappedSuperclassComposite extends FormPane<OrmMappedSuperclass>
 	@Override
 	protected void initializeLayout(Composite container) {
 		new OrmJavaClassChooser(this, getSubjectHolder(), container);
-		new AccessTypeComposite(this, getSubjectHolder(), container);
+		new AccessTypeComposite(this, buildAccessHolder(), container);
 		new IdClassComposite(this, container);
 		new MetadataCompleteComposite(this, getSubjectHolder(), container);
+	}
+	
+	protected PropertyValueModel<AccessHolder> buildAccessHolder() {
+		return new PropertyAspectAdapter<OrmMappedSuperclass, AccessHolder>(
+			getSubjectHolder())
+		{
+			@Override
+			protected AccessHolder buildValue_() {
+				return this.subject.getPersistentType();
+			}
+		};
 	}
 }

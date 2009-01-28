@@ -9,10 +9,17 @@
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.platform;
 
+import org.eclipse.jpt.eclipselink.ui.internal.EclipseLink1_1JpaUiFactory;
+
 public class EclipseLink1_1JpaPlatformUi
 	extends EclipseLinkJpaPlatformUi  //TODO just extend for now, but we need to change this to match the JpaPlatform
 {
 	public EclipseLink1_1JpaPlatformUi() {
 		super();
+	}
+	
+	@Override
+	protected EclipseLink1_1JpaUiFactory buildJpaUiFactory() {
+		return new EclipseLink1_1JpaUiFactory();
 	}
 }

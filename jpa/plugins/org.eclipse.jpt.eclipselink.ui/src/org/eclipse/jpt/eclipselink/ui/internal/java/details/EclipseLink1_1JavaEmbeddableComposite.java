@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -7,18 +7,17 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.eclipselink.ui.internal.orm.details;
+package org.eclipse.jpt.eclipselink.ui.internal.java.details;
 
 import org.eclipse.jpt.core.context.AccessHolder;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.ConverterHolder;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmEmbeddable;
+import org.eclipse.jpt.core.context.java.JavaEmbeddable;
+import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaEmbeddable;
+import org.eclipse.jpt.eclipselink.core.context.java.JavaConverterHolder;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkEmbeddableAdvancedComposite;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
-import org.eclipse.jpt.ui.internal.orm.details.MetadataCompleteComposite;
-import org.eclipse.jpt.ui.internal.orm.details.OrmJavaClassChooser;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -34,7 +33,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.1
  * @since 2.1
  */
-public class EclipseLinkOrmEmbeddableComposite extends FormPane<EclipseLinkOrmEmbeddable>
+public class EclipseLink1_1JavaEmbeddableComposite extends FormPane<JavaEmbeddable>
                                  implements JpaComposite
 {
 	/**
@@ -44,7 +43,7 @@ public class EclipseLinkOrmEmbeddableComposite extends FormPane<EclipseLinkOrmEm
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public EclipseLinkOrmEmbeddableComposite(PropertyValueModel<? extends EclipseLinkOrmEmbeddable> subjectHolder,
+	public EclipseLink1_1JavaEmbeddableComposite(PropertyValueModel<? extends JavaEmbeddable> subjectHolder,
 	                           Composite parent,
 	                           WidgetFactory widgetFactory) {
 
@@ -59,18 +58,16 @@ public class EclipseLinkOrmEmbeddableComposite extends FormPane<EclipseLinkOrmEm
 	}
 	
 	protected void initializeGeneralPane(Composite container) {
-		new OrmJavaClassChooser(this, getSubjectHolder(), container);
-		new AccessTypeComposite(this, buildAccessHolder(), container);
-		new MetadataCompleteComposite(this, getSubjectHolder(), container);
+		new AccessTypeComposite(this, buildAccessHolder(), container);	
 	}
 	
 	protected PropertyValueModel<AccessHolder> buildAccessHolder() {
-		return new PropertyAspectAdapter<EclipseLinkOrmEmbeddable, AccessHolder>(
+		return new PropertyAspectAdapter<JavaEmbeddable, AccessHolder>(
 			getSubjectHolder())
 		{
 			@Override
 			protected AccessHolder buildValue_() {
-				return this.subject.getPersistentType();
+				return (AccessHolder) this.subject.getPersistentType();
 			}
 		};
 	}
@@ -79,18 +76,18 @@ public class EclipseLinkOrmEmbeddableComposite extends FormPane<EclipseLinkOrmEm
 
 		container = addCollapsableSection(
 			addSubPane(container, 5),
-			EclipseLinkUiMappingsMessages.ConvertersComposite_Label
+			EclipseLinkUiMappingsMessages.EclipseLinkTypeMappingComposite_converters
 		);
 
-		new ConvertersComposite(this, buildConverterHolder(), container);
+		new ConvertersComposite(this, buildConverterHolderValueModel(), container);
 	}
-	
-	private PropertyValueModel<ConverterHolder> buildConverterHolder() {
-		return new PropertyAspectAdapter<EclipseLinkOrmEmbeddable, ConverterHolder>(getSubjectHolder()) {
+
+	protected PropertyValueModel<JavaConverterHolder> buildConverterHolderValueModel() {
+		return new PropertyAspectAdapter<JavaEmbeddable, JavaConverterHolder>(getSubjectHolder()) {
 			@Override
-			protected ConverterHolder buildValue_() {
-				return this.subject.getConverterHolder();
-			}
+			protected JavaConverterHolder buildValue_() {
+				return ((EclipseLinkJavaEmbeddable) this.subject).getConverterHolder();
+			}	
 		};
 	}
 	

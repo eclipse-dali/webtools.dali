@@ -25,6 +25,7 @@ import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 
+@SuppressWarnings("nls")
 public class OrmMappedSuperclassTests extends ContextModelTestCase
 {
 	public OrmMappedSuperclassTests(String name) {
@@ -80,37 +81,35 @@ public class OrmMappedSuperclassTests extends ContextModelTestCase
 	
 	public void testUpdateSpecifiedAccess() throws Exception {
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, "model.Foo");
-		OrmMappedSuperclass ormMappedSuperclass = (OrmMappedSuperclass) ormPersistentType.getMapping();
 		XmlMappedSuperclass mappedSuperclassResource = getOrmXmlResource().getEntityMappings().getMappedSuperclasses().get(0);
-		assertNull(ormMappedSuperclass.getSpecifiedAccess());
+		assertNull(ormPersistentType.getSpecifiedAccess());
 		assertNull(mappedSuperclassResource.getAccess());
 		
 		//set access in the resource model, verify context model updated
 		mappedSuperclassResource.setAccess(org.eclipse.jpt.core.resource.orm.AccessType.FIELD);
-		assertEquals(AccessType.FIELD, ormMappedSuperclass.getSpecifiedAccess());
+		assertEquals(AccessType.FIELD, ormPersistentType.getSpecifiedAccess());
 		assertEquals(org.eclipse.jpt.core.resource.orm.AccessType.FIELD, mappedSuperclassResource.getAccess());
 	
 		//set access to null in the resource model
 		mappedSuperclassResource.setAccess(null);
-		assertNull(ormMappedSuperclass.getSpecifiedAccess());
+		assertNull(ormPersistentType.getSpecifiedAccess());
 		assertNull(mappedSuperclassResource.getAccess());
 	}
 	
 	public void testModifySpecifiedAccess() throws Exception {
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, "model.Foo");
-		OrmMappedSuperclass ormMappedSuperclass = (OrmMappedSuperclass) ormPersistentType.getMapping();
 		XmlMappedSuperclass mappedSuperclassResource = getOrmXmlResource().getEntityMappings().getMappedSuperclasses().get(0);
-		assertNull(ormMappedSuperclass.getSpecifiedAccess());
+		assertNull(ormPersistentType.getSpecifiedAccess());
 		assertNull(mappedSuperclassResource.getAccess());
 		
 		//set access in the context model, verify resource model modified
-		ormMappedSuperclass.setSpecifiedAccess(AccessType.PROPERTY);
-		assertEquals(AccessType.PROPERTY, ormMappedSuperclass.getSpecifiedAccess());
+		ormPersistentType.setSpecifiedAccess(AccessType.PROPERTY);
+		assertEquals(AccessType.PROPERTY, ormPersistentType.getSpecifiedAccess());
 		assertEquals(org.eclipse.jpt.core.resource.orm.AccessType.PROPERTY, mappedSuperclassResource.getAccess());
 		
 		//set access to null in the context model
-		ormMappedSuperclass.setSpecifiedAccess(null);
-		assertNull(ormMappedSuperclass.getSpecifiedAccess());
+		ormPersistentType.setSpecifiedAccess(null);
+		assertNull(ormPersistentType.getSpecifiedAccess());
 		assertNull(mappedSuperclassResource.getAccess());
 	}
 	//TODO test default access from
@@ -127,14 +126,14 @@ public class OrmMappedSuperclassTests extends ContextModelTestCase
 		assertNull(mappedSuperclassResource.getMetadataComplete());
 		
 		//set metadata-complete in the resource model, verify context model updated
-		mappedSuperclassResource.setMetadataComplete(true);
-		assertTrue(ormMappedSuperclass.getSpecifiedMetadataComplete());
-		assertTrue(mappedSuperclassResource.getMetadataComplete());
+		mappedSuperclassResource.setMetadataComplete(Boolean.TRUE);
+		assertEquals(Boolean.TRUE, ormMappedSuperclass.getSpecifiedMetadataComplete());
+		assertEquals(Boolean.TRUE, mappedSuperclassResource.getMetadataComplete());
 	
 		//set access to false in the resource model
-		mappedSuperclassResource.setMetadataComplete(false);
-		assertFalse(ormMappedSuperclass.getSpecifiedMetadataComplete());
-		assertFalse(mappedSuperclassResource.getMetadataComplete());
+		mappedSuperclassResource.setMetadataComplete(Boolean.FALSE);
+		assertEquals(Boolean.FALSE, ormMappedSuperclass.getSpecifiedMetadataComplete());
+		assertEquals(Boolean.FALSE, mappedSuperclassResource.getMetadataComplete());
 		
 		mappedSuperclassResource.setMetadataComplete(null);
 		assertNull(ormMappedSuperclass.getSpecifiedMetadataComplete());
@@ -149,13 +148,13 @@ public class OrmMappedSuperclassTests extends ContextModelTestCase
 		
 		//set access in the context model, verify resource model modified
 		ormMappedSuperclass.setSpecifiedMetadataComplete(Boolean.TRUE);
-		assertTrue(ormMappedSuperclass.getSpecifiedMetadataComplete());
-		assertTrue(mappedSuperclassResource.getMetadataComplete());
+		assertEquals(Boolean.TRUE, ormMappedSuperclass.getSpecifiedMetadataComplete());
+		assertEquals(Boolean.TRUE, mappedSuperclassResource.getMetadataComplete());
 		
 		//set access to null in the context model
 		ormMappedSuperclass.setSpecifiedMetadataComplete(Boolean.FALSE);
-		assertFalse(ormMappedSuperclass.getSpecifiedMetadataComplete());
-		assertFalse(mappedSuperclassResource.getMetadataComplete());
+		assertEquals(Boolean.FALSE, ormMappedSuperclass.getSpecifiedMetadataComplete());
+		assertEquals(Boolean.FALSE, mappedSuperclassResource.getMetadataComplete());
 		
 		ormMappedSuperclass.setSpecifiedMetadataComplete(null);
 		assertNull(ormMappedSuperclass.getSpecifiedMetadataComplete());
@@ -208,7 +207,7 @@ public class OrmMappedSuperclassTests extends ContextModelTestCase
 	public void testMakeMappedSuperclassEntity() throws Exception {
 		OrmPersistentType mappedSuperclassPersistentType = getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, "model.Foo");
 		OrmMappedSuperclass mappedSuperclass = (OrmMappedSuperclass) mappedSuperclassPersistentType.getMapping();
-		mappedSuperclass.setSpecifiedAccess(AccessType.PROPERTY);
+		mappedSuperclassPersistentType.setSpecifiedAccess(AccessType.PROPERTY);
 		mappedSuperclass.setSpecifiedMetadataComplete(Boolean.TRUE);
 	
 		mappedSuperclassPersistentType.setMappingKey(MappingKeys.ENTITY_TYPE_MAPPING_KEY);
@@ -223,7 +222,7 @@ public class OrmMappedSuperclassTests extends ContextModelTestCase
 		OrmEntity ormEntity = (OrmEntity) mappedSuperclassPersistentType.getMapping();
 		assertEquals("model.Foo", ormEntity.getClass_());
 		assertEquals(Boolean.TRUE, ormEntity.getSpecifiedMetadataComplete());
-		assertEquals(AccessType.PROPERTY, ormEntity.getSpecifiedAccess());
+		assertEquals(AccessType.PROPERTY, mappedSuperclassPersistentType.getSpecifiedAccess());
 	}
 		
 	//test with 2 MappedSuperclasses, make the first one an Entity so it has to move to the end of the list
@@ -231,7 +230,7 @@ public class OrmMappedSuperclassTests extends ContextModelTestCase
 		OrmPersistentType mappedSuperclassPersistentType = getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, "model.Foo");
 		getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, "model.Foo2");
 		OrmMappedSuperclass mappedSuperclass = (OrmMappedSuperclass) mappedSuperclassPersistentType.getMapping();
-		mappedSuperclass.setSpecifiedAccess(AccessType.PROPERTY);
+		mappedSuperclassPersistentType.setSpecifiedAccess(AccessType.PROPERTY);
 		mappedSuperclass.setSpecifiedMetadataComplete(Boolean.TRUE);
 	
 		mappedSuperclassPersistentType.setMappingKey(MappingKeys.ENTITY_TYPE_MAPPING_KEY);
@@ -246,7 +245,7 @@ public class OrmMappedSuperclassTests extends ContextModelTestCase
 		OrmEntity ormEntity = (OrmEntity) mappedSuperclassPersistentType.getMapping();
 		assertEquals("model.Foo", ormEntity.getClass_());
 		assertEquals(Boolean.TRUE, ormEntity.getSpecifiedMetadataComplete());
-		assertEquals(AccessType.PROPERTY, ormEntity.getSpecifiedAccess());
+		assertEquals(AccessType.PROPERTY, mappedSuperclassPersistentType.getSpecifiedAccess());
 		
 		ListIterator<OrmPersistentType> persistentTypes = getEntityMappings().persistentTypes();
 		assertEquals(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, persistentTypes.next().getMappingKey());
@@ -256,7 +255,7 @@ public class OrmMappedSuperclassTests extends ContextModelTestCase
 	public void testMakeMappedSuperclassEmbeddable() throws Exception {
 		OrmPersistentType mappedSuperclassPersistentType = getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, "model.Foo");
 		OrmMappedSuperclass mappedSuperclass = (OrmMappedSuperclass) mappedSuperclassPersistentType.getMapping();
-		mappedSuperclass.setSpecifiedAccess(AccessType.PROPERTY);
+		mappedSuperclassPersistentType.setSpecifiedAccess(AccessType.PROPERTY);
 		mappedSuperclass.setSpecifiedMetadataComplete(Boolean.TRUE);
 	
 		mappedSuperclassPersistentType.setMappingKey(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
@@ -269,14 +268,14 @@ public class OrmMappedSuperclassTests extends ContextModelTestCase
 		OrmEmbeddable ormEmbeddable = (OrmEmbeddable) mappedSuperclassPersistentType.getMapping();
 		assertEquals("model.Foo", ormEmbeddable.getClass_());
 		assertEquals(Boolean.TRUE, ormEmbeddable.getSpecifiedMetadataComplete());
-		assertEquals(AccessType.PROPERTY, ormEmbeddable.getSpecifiedAccess());
+		assertEquals(AccessType.PROPERTY, mappedSuperclassPersistentType.getSpecifiedAccess());
 	}
 	//test with 2 MappedSuperclasses, make the first one an Embeddable so it has to move to the end of the list
 	public void testMakeMappedSuperclassEmbeddable2() throws Exception {
 		OrmPersistentType mappedSuperclassPersistentType = getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, "model.Foo");
 		getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, "model.Foo2");
 		OrmMappedSuperclass mappedSuperclass = (OrmMappedSuperclass) mappedSuperclassPersistentType.getMapping();
-		mappedSuperclass.setSpecifiedAccess(AccessType.PROPERTY);
+		mappedSuperclassPersistentType.setSpecifiedAccess(AccessType.PROPERTY);
 		mappedSuperclass.setSpecifiedMetadataComplete(Boolean.TRUE);
 	
 		mappedSuperclassPersistentType.setMappingKey(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
@@ -289,7 +288,7 @@ public class OrmMappedSuperclassTests extends ContextModelTestCase
 		OrmEmbeddable ormEmbeddable = (OrmEmbeddable) mappedSuperclassPersistentType.getMapping();
 		assertEquals("model.Foo", ormEmbeddable.getClass_());
 		assertEquals(Boolean.TRUE, ormEmbeddable.getSpecifiedMetadataComplete());
-		assertEquals(AccessType.PROPERTY, ormEmbeddable.getSpecifiedAccess());
+		assertEquals(AccessType.PROPERTY, mappedSuperclassPersistentType.getSpecifiedAccess());
 		
 		ListIterator<OrmPersistentType> persistentTypes = getEntityMappings().persistentTypes();
 		assertEquals(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, persistentTypes.next().getMappingKey());

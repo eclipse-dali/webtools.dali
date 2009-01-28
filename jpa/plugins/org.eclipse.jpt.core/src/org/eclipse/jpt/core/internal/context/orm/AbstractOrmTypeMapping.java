@@ -13,9 +13,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.jpt.core.JpaStructureNode;
-import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.PersistentAttribute;
-import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
@@ -23,7 +21,6 @@ import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Schema;
@@ -39,64 +36,31 @@ public abstract class AbstractOrmTypeMapping<T extends XmlTypeMapping>
 {
 	protected String class_;
 	
-	public AccessType defaultAccess;
-	
-	protected AccessType specifiedAccess;
-	
 	public boolean defaultMetadataComplete;
 	
 	protected Boolean specifiedMetadataComplete;
-	
-	protected JavaPersistentType javaPersistentType;
 	
 	protected T resourceTypeMapping;
 	
 	
 	protected AbstractOrmTypeMapping(OrmPersistentType parent) {
 		super(parent);
-	}
-	
-	
-	// **************** PersistentType.Owner implementation *****************************
-	
-	public AccessType getOverridePersistentTypeAccess() {
-		if (this.specifiedAccess != null) {
-			return this.specifiedAccess;
-		}
-
-		PersistentType ppt = this.getPersistentType().getParentPersistentType();
-		if (ppt instanceof OrmPersistentType) {
-			AccessType accessType = ((OrmPersistentType) ppt).getMapping().getSpecifiedAccess();
-			if (accessType != null) {
-				return accessType;
-			}
-		}
-
-		if (this.isMetadataComplete()) {
-			AccessType accessType = this.getPersistentType().getOwnerDefaultAccess();
-			if (accessType != null) {
-				return accessType;
-			}
-		}
-
-		// no override access type
-		return null;
-	}
-	
-	public AccessType getDefaultPersistentTypeAccess() {
-		PersistentType ppt = this.getPersistentType().getParentPersistentType();
-		if (ppt instanceof OrmPersistentType) {
-			AccessType accessType = ((OrmPersistentType) ppt).getMapping().getDefaultAccess();
-			if (accessType != null) {
-				return accessType;
-			}
-		}
-
-		return this.getPersistentType().getOwnerDefaultAccess();
-	}
-	
+	}	
 	
 	// **************** Type Mapping implementation *****************************
+
+	@Override
+	public OrmPersistentType getParent() {
+		return (OrmPersistentType) super.getParent();
+	}
+
+	public OrmPersistentType getPersistentType() {
+		return this.getParent();
+	}
+	
+	protected JavaPersistentType getJavaPersistentType() {
+		return this.getPersistentType().getJavaPersistentType();
+	}
 	
 	public boolean isMapped() {
 		return true;
@@ -118,30 +82,6 @@ public abstract class AbstractOrmTypeMapping<T extends XmlTypeMapping>
 		getPersistentType().classChanged(oldClass, newClass);
 	}
 	
-	public AccessType getDefaultAccess() {
-		return this.defaultAccess;
-	}
-
-	protected void setDefaultAccess(AccessType newDefaultAccess) {
-		AccessType oldDefaultAccess = this.defaultAccess;
-		this.defaultAccess = newDefaultAccess;
-		firePropertyChanged(DEFAULT_ACCESS_PROPERTY, oldDefaultAccess, newDefaultAccess);
-	}
-
-	public AccessType getSpecifiedAccess() {
-		return this.specifiedAccess;
-	}
-
-	public void setSpecifiedAccess(AccessType newSpecifiedAccess) {
-		AccessType oldSpecifiedAccess = this.specifiedAccess;
-		this.specifiedAccess = newSpecifiedAccess;
-		this.resourceTypeMapping.setAccess(AccessType.toXmlResourceModel(newSpecifiedAccess));
-		firePropertyChanged(SPECIFIED_ACCESS_PROPERTY, oldSpecifiedAccess, newSpecifiedAccess);
-	}
-
-	public AccessType getAccess() {
-		return (this.getSpecifiedAccess() == null) ? this.getDefaultAccess() : this.getSpecifiedAccess();
-	}
 
 	public boolean isMetadataComplete() {
 		if (isDefaultMetadataComplete()) {
@@ -173,15 +113,6 @@ public abstract class AbstractOrmTypeMapping<T extends XmlTypeMapping>
 		firePropertyChanged(SPECIFIED_METADATA_COMPLETE_PROPERTY, oldMetadataComplete, newSpecifiedMetadataComplete);
 	}
 
-	@Override
-	public OrmPersistentType getParent() {
-		return (OrmPersistentType) super.getParent();
-	}
-
-	public OrmPersistentType getPersistentType() {
-		return this.getParent();
-	}
-
 	/**
 	 * ITypeMapping is changed and various ITypeMappings may have
 	 * common settings.  In this method initialize the new ITypeMapping (this)
@@ -189,9 +120,7 @@ public abstract class AbstractOrmTypeMapping<T extends XmlTypeMapping>
 	 */
 	public void initializeFrom(OrmTypeMapping oldMapping) {
 		this.setClass(oldMapping.getClass_());
-		this.setSpecifiedAccess(oldMapping.getSpecifiedAccess());
 		this.setSpecifiedMetadataComplete(oldMapping.getSpecifiedMetadataComplete());
-		this.setDefaultAccess(oldMapping.getDefaultAccess());
 		this.setDefaultMetadataComplete(oldMapping.isDefaultMetadataComplete());
 	}
 	
@@ -246,68 +175,6 @@ public abstract class AbstractOrmTypeMapping<T extends XmlTypeMapping>
 	public T getResourceTypeMapping() {
 		return this.resourceTypeMapping;
 	}
-
-	protected AccessType buildDefaultAccess() {
-		if (! isMetadataComplete()) {
-			if (getJavaPersistentType() != null) {
-				if (getJavaPersistentType().hasAnyAttributeMappingAnnotations()) {
-					return getJavaPersistentType().getAccess();
-				}
-				if (getPersistentType().getParentPersistentType() != null) {
-					return getPersistentType().getParentPersistentType().getAccess();
-				}
-			}
-		}
-		return getMappingFileRoot().getAccess();
-	}
-	
-	public JavaPersistentType getJavaPersistentType() {
-		return this.javaPersistentType;
-	}
-	
-	protected void setJavaPersistentType(JavaPersistentType newJavaPersistentType) {
-		JavaPersistentType oldJavaPersistentType = this.javaPersistentType;
-		this.javaPersistentType = newJavaPersistentType;
-		firePropertyChanged(JAVA_PERSISTENT_TYPE_PROPERTY, oldJavaPersistentType, newJavaPersistentType);
-	}
-	
-	protected void initializeJavaPersistentType() {
-		JavaResourcePersistentType jrpt = getJavaResourcePersistentType();
-		if (jrpt != null) {
-			this.javaPersistentType = buildJavaPersistentType(jrpt);
-		}	
-	}
-
-	protected JavaResourcePersistentType getJavaResourcePersistentType() {
-		// try to resolve by only the locally specified name
-		JavaResourcePersistentType jrpt = this.getJpaProject().getJavaResourcePersistentType(this.class_);
-		if (jrpt != null) {
-			return jrpt;
-		}
-
-		// try to resolve by prepending the global package name
-		String packageName = this.getPersistentType().getDefaultPackage();
-		return this.getJpaProject().getJavaResourcePersistentType(packageName + '.' + this.class_);
-	}
-	
-	protected void updateJavaPersistentType() {
-		JavaResourcePersistentType jrpt = getJavaResourcePersistentType();
-		if (jrpt == null) {
-			setJavaPersistentType(null);
-		}
-		else { 
-			if (getJavaPersistentType() != null) {
-				getJavaPersistentType().update(jrpt);
-			}
-			else {
-				setJavaPersistentType(buildJavaPersistentType(jrpt));
-			}
-		}		
-	}
-	
-	protected JavaPersistentType buildJavaPersistentType(JavaResourcePersistentType jrpt) {
-		return getJpaFactory().buildJavaPersistentType(this, jrpt);
-	}
 	
 	@SuppressWarnings("unchecked")
 	public void initialize(XmlTypeMapping resourceTypeMapping) {
@@ -317,20 +184,14 @@ public abstract class AbstractOrmTypeMapping<T extends XmlTypeMapping>
 	
 	protected void initialize() {
 		this.class_ = this.getResourceClassName();
-		this.initializeJavaPersistentType();
 		this.specifiedMetadataComplete = this.getResourceMetadataComplete();
 		this.defaultMetadataComplete = this.getPersistentType().isDefaultMetadataComplete();
-		this.specifiedAccess = this.getResourceAccess();
-		this.defaultAccess = this.buildDefaultAccess();
 	}
 	
 	public void update() {
 		this.setClass(this.getResourceClassName());
-		this.updateJavaPersistentType();
 		this.setSpecifiedMetadataComplete(this.getResourceMetadataComplete());
 		this.setDefaultMetadataComplete(this.getPersistentType().isDefaultMetadataComplete());
-		this.setSpecifiedAccess(this.getResourceAccess());
-		this.setDefaultAccess(this.buildDefaultAccess());
 	}
 	
 	protected String getResourceClassName() {
@@ -339,10 +200,6 @@ public abstract class AbstractOrmTypeMapping<T extends XmlTypeMapping>
 	
 	protected Boolean getResourceMetadataComplete() {
 		return this.resourceTypeMapping.getMetadataComplete();
-	}
-
-	protected AccessType getResourceAccess() {
-		return AccessType.fromXmlResourceModel(this.resourceTypeMapping.getAccess());
 	}
 	
 	public String getOrmType() {
@@ -394,18 +251,6 @@ public abstract class AbstractOrmTypeMapping<T extends XmlTypeMapping>
 				)
 			);
 			return;
-		}
-
-		if (this.javaPersistentType == null) {
-			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.PERSISTENT_TYPE_UNRESOLVED_CLASS,
-					new String[] {this.class_},
-					this, 
-					this.getClassTextRange()
-				)
-			);
 		}
 	}
 

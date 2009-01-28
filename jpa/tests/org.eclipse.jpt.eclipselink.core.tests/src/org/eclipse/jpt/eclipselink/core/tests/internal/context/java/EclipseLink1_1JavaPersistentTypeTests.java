@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -7,13 +7,12 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.tests.internal.context.java;
+package org.eclipse.jpt.eclipselink.core.tests.internal.context.java;
 
 import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IField;
-import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.PersistentAttribute;
@@ -26,24 +25,12 @@ import org.eclipse.jpt.core.resource.java.EmbeddableAnnotation;
 import org.eclipse.jpt.core.resource.java.EntityAnnotation;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
-import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
-import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
-
 @SuppressWarnings("nls")
-public class GenericJavaPersistentTypeTests extends ContextModelTestCase
+public class EclipseLink1_1JavaPersistentTypeTests extends EclipseLink1_1JavaContextModelTestCase
 {
-	@Override
-	protected void setUp() throws Exception {
-		super.setUp();
-		XmlMappingFileRef mappingFileRef = PersistenceFactory.eINSTANCE.createXmlMappingFileRef();
-		mappingFileRef.setFileName(JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH);
-		getXmlPersistenceUnit().getMappingFiles().add(mappingFileRef);
-		getPersistenceXmlResource().save(null);
-	}
 		
 	private ICompilationUnit createTestEntity() throws Exception {
 		return this.createTestType(new DefaultAnnotationWriter() {
@@ -93,6 +80,7 @@ public class GenericJavaPersistentTypeTests extends ContextModelTestCase
 			}
 		});
 	}
+	
 	private ICompilationUnit createTestEntityAnnotatedFieldAndMethod() throws Exception {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
@@ -111,6 +99,55 @@ public class GenericJavaPersistentTypeTests extends ContextModelTestCase
 			
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
+				sb.append("@Id");
+			}
+		});
+	}
+	
+	private void createAccessTypeEnum() throws Exception {
+		this.createEnumAndMembers(JPA_ANNOTATIONS_PACKAGE_NAME, "AccessType", "FIELD, PROPERTY;");	
+	}
+	
+	private void createAccessAnnotation() throws Exception {
+		this.createAnnotationAndMembers(JPA_ANNOTATIONS_PACKAGE_NAME, "Access", "AccessType value();");
+		createAccessTypeEnum();
+	}
+	
+	private ICompilationUnit createTestEntityAnnotatedFieldPropertySpecified() throws Exception {
+		createAccessAnnotation();
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID, JPA.ACCESS, JPA.ACCESS_TYPE);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity");
+				sb.append("@Access(AccessType.PROPERTY)");
+			}
+	
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
+				sb.append("@Id");
+			}
+		});
+	}
+	
+	private ICompilationUnit createTestEntityAnnotatedPropertyFieldSpecified() throws Exception {
+		createAccessAnnotation();
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID, JPA.ACCESS, JPA.ACCESS_TYPE);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity");
+				sb.append("@Access(AccessType.FIELD)");
+			}
+	
+			@Override
+			public void appendGetIdMethodAnnotationTo(StringBuilder sb) {
 				sb.append("@Id");
 			}
 		});
@@ -209,7 +246,7 @@ public class GenericJavaPersistentTypeTests extends ContextModelTestCase
 		});
 	}
 		
-	public GenericJavaPersistentTypeTests(String name) {
+	public EclipseLink1_1JavaPersistentTypeTests(String name) {
 		super(name);
 	}
 	
@@ -245,6 +282,20 @@ public class GenericJavaPersistentTypeTests extends ContextModelTestCase
 		createTestEntityAnnotatedFieldAndMethod();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
+		assertEquals(AccessType.FIELD, getJavaPersistentType().getAccess());
+	}
+	
+	public void testAccessFieldAnnotatedPropertySpecified() throws Exception {
+		createTestEntityAnnotatedFieldPropertySpecified();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		assertEquals(AccessType.PROPERTY, getJavaPersistentType().getAccess());
+	}
+	
+	public void testAccessPropertyAnnotatedFieldSpecified() throws Exception {
+		createTestEntityAnnotatedPropertyFieldSpecified();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
 		assertEquals(AccessType.FIELD, getJavaPersistentType().getAccess());
 	}
 
@@ -359,7 +410,6 @@ public class GenericJavaPersistentTypeTests extends ContextModelTestCase
 		OrmPersistentType entityPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		createTestEntity();
 		JavaPersistentType javaPersistentType = entityPersistentType.getJavaPersistentType(); 
-		assertEquals(AccessType.FIELD, javaPersistentType.getAccess());
 
 		getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(AccessType.FIELD);
 		assertEquals(AccessType.FIELD, javaPersistentType.getAccess());
@@ -370,21 +420,21 @@ public class GenericJavaPersistentTypeTests extends ContextModelTestCase
 	
 	public void testAccessXmlEntityPropertyAccessAndFieldAnnotations() throws Exception {
 		//xml access set to property, field annotations, JavaPersistentType access is field
-		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentType entityPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		createTestEntityAnnotatedField();
-		JavaPersistentType javaPersistentType = ormPersistentType.getJavaPersistentType(); 
+		JavaPersistentType javaPersistentType = entityPersistentType.getJavaPersistentType(); 
 
-		ormPersistentType.setSpecifiedAccess(AccessType.PROPERTY);
+		entityPersistentType.setSpecifiedAccess(AccessType.PROPERTY);
 		assertEquals(AccessType.FIELD, javaPersistentType.getAccess());
 	}
 	
 	public void testAccessXmlEntityFieldAccessAndPropertyAnnotations() throws Exception {
 		//xml access set to field, property annotations, JavaPersistentType access is property
-		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentType entityPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		createTestEntityAnnotatedMethod();
-		JavaPersistentType javaPersistentType = ormPersistentType.getJavaPersistentType(); 
+		JavaPersistentType javaPersistentType = entityPersistentType.getJavaPersistentType(); 
 
-		ormPersistentType.setSpecifiedAccess(AccessType.FIELD);
+		entityPersistentType.setSpecifiedAccess(AccessType.FIELD);
 		assertEquals(AccessType.PROPERTY, javaPersistentType.getAccess());
 	}
 	
@@ -455,7 +505,7 @@ public class GenericJavaPersistentTypeTests extends ContextModelTestCase
 		createTestEntityAnnotatedMethod();
 		createTestSubTypeWithFieldAnnotation();
 		
-		//parent is not added to the persistenceUnit, but it should still be found
+		//parent is not added to the getPersistenceUnit, but it should still be found
 		//as the parentPersistentType because of impliedClassRefs and changes for bug 190317
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		

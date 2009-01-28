@@ -90,13 +90,19 @@ public abstract class AbstractJavaPersistentType
 	protected PersistentType.Owner getOwner() {
 		return getParent();
 	}
+	
+	public AccessType getAccess() {
+		return getSpecifiedAccess() != null ? getSpecifiedAccess() : getDefaultAccess();
+	}
 
 	public AccessType getDefaultAccess() {
 		return this.defaultAccess;
 	}
 	
 	protected void setDefaultAccess(AccessType newDefaultAccess) {
+		AccessType oldAccess = this.defaultAccess;
 		this.defaultAccess = newDefaultAccess;
+		firePropertyChanged(DEFAULT_ACCESS_PROPERTY, oldAccess, newDefaultAccess);
 	}
 	
 	public String getName() {
@@ -337,12 +343,16 @@ public abstract class AbstractJavaPersistentType
 	protected void initialize(JavaResourcePersistentType jrpt) {
 		this.resourcePersistentType = jrpt;
 		this.parentPersistentType = this.buildParentPersistentType();
-		this.defaultAccess = this.buildDefaultAccess();
 		this.name = this.buildName();
+		this.initializeAccess();
 		this.initializeMapping();
-		this.initializePersistentAttributes();
+		this.initializePersistentAttributes();		
 	}
-		
+	
+	protected void initializeAccess() {
+		this.defaultAccess = this.buildDefaultAccess();
+	}
+	
 	protected void initializeMapping() {
 		this.mapping = this.getJpaPlatform().buildJavaTypeMappingFromAnnotation(this.javaMappingAnnotationName(), this);
 		this.mapping.initialize(this.resourcePersistentType);
@@ -364,10 +374,15 @@ public abstract class AbstractJavaPersistentType
 		this.resourcePersistentType = jrpt;
 		this.getJpaFile(this.resourcePersistentType.getFile()).addRootStructureNode(this.resourcePersistentType.getQualifiedName(), this);
 		this.setParentPersistentType(this.buildParentPersistentType());
-		this.setDefaultAccess(this.buildDefaultAccess());
 		this.setName(this.buildName());	
+		this.updateAccess();
 		this.updateMapping();
-		this.updatePersistentAttributes();
+		this.updatePersistentAttributes();		
+	}
+	
+	protected void updateAccess() {
+		this.setDefaultAccess(this.buildDefaultAccess());
+		
 	}
 	
 	/**

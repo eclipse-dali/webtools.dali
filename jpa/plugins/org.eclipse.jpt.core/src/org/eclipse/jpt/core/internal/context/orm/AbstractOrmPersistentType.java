@@ -31,7 +31,10 @@ import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
+import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.orm.Attributes;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
@@ -53,6 +56,10 @@ public abstract class AbstractOrmPersistentType
 	protected final List<OrmPersistentAttribute> specifiedPersistentAttributes;
 
 	protected final List<OrmPersistentAttribute> virtualPersistentAttributes;
+	
+	protected AccessType defaultAccess;
+	
+	protected AccessType specifiedAccess;
 
 	protected OrmTypeMapping typeMapping;
 	
@@ -60,6 +67,8 @@ public abstract class AbstractOrmPersistentType
 	
 	protected PersistentType parentPersistentType;
 	
+	protected JavaPersistentType javaPersistentType;
+
 	
 	protected AbstractOrmPersistentType(EntityMappings parent, String mappingKey) {
 		super(parent);
@@ -115,6 +124,43 @@ public abstract class AbstractOrmPersistentType
 		return this.typeMapping;
 	}
 
+	// **************** PersistentType.Owner implementation *****************************
+	
+	public AccessType getOverridePersistentTypeAccess() {
+		if (this.getSpecifiedAccess() != null) {
+			return this.getSpecifiedAccess();
+		}
+
+		PersistentType ppt = this.getParentPersistentType();
+		if (ppt instanceof OrmPersistentType) {
+			AccessType accessType = ((OrmPersistentType) ppt).getSpecifiedAccess();
+			if (accessType != null) {
+				return accessType;
+			}
+		}
+
+		if (this.getMapping().isMetadataComplete()) {
+			AccessType accessType = this.getOwnerDefaultAccess();
+			if (accessType != null) {
+				return accessType;
+			}
+		}
+
+		// no override access type
+		return null;
+	}
+	
+	public AccessType getDefaultPersistentTypeAccess() {
+		PersistentType ppt = this.getParentPersistentType();
+		if (ppt instanceof OrmPersistentType) {
+			AccessType accessType = ((OrmPersistentType) ppt).getDefaultAccess();
+			if (accessType != null) {
+				return accessType;
+			}
+		}
+
+		return this.getOwnerDefaultAccess();
+	}
 
 	// ********** PersistentType implementation **********
 	
@@ -171,13 +217,30 @@ public abstract class AbstractOrmPersistentType
 	}
 	
 	public AccessType getDefaultAccess() {
-		return getMapping().getDefaultAccess();
+		return this.defaultAccess;
 	}
-	
+
+	protected void setDefaultAccess(AccessType newDefaultAccess) {
+		AccessType oldDefaultAccess = this.defaultAccess;
+		this.defaultAccess = newDefaultAccess;
+		firePropertyChanged(DEFAULT_ACCESS_PROPERTY, oldDefaultAccess, newDefaultAccess);
+	}
+
+	public AccessType getSpecifiedAccess() {
+		return this.specifiedAccess;
+	}
+
+	public void setSpecifiedAccess(AccessType newSpecifiedAccess) {
+		AccessType oldSpecifiedAccess = this.specifiedAccess;
+		this.specifiedAccess = newSpecifiedAccess;
+		this.resourceTypeMapping.setAccess(AccessType.toXmlResourceModel(newSpecifiedAccess));
+		firePropertyChanged(SPECIFIED_ACCESS_PROPERTY, oldSpecifiedAccess, newSpecifiedAccess);
+	}
+
 	public AccessType getAccess() {
-		return getMapping().getAccess();
+		return (this.getSpecifiedAccess() == null) ? this.getDefaultAccess() : this.getSpecifiedAccess();
 	}
-	
+		
 	public AccessType getOwnerOverrideAccess() {
 		return this.getEntityMappings().getOverridePersistentTypeAccess();
 	}
@@ -417,16 +480,68 @@ public abstract class AbstractOrmPersistentType
 	}
 	
 	public JavaPersistentType getJavaPersistentType() {
-		return getMapping().getJavaPersistentType();
+		return this.javaPersistentType;
+	}
+	
+	protected void setJavaPersistentType(JavaPersistentType newJavaPersistentType) {
+		JavaPersistentType oldJavaPersistentType = this.javaPersistentType;
+		this.javaPersistentType = newJavaPersistentType;
+		firePropertyChanged(JAVA_PERSISTENT_TYPE_PROPERTY, oldJavaPersistentType, newJavaPersistentType);
 	}
 	
 	public void initialize(XmlTypeMapping resourceTypeMapping) {
 		this.resourceTypeMapping = resourceTypeMapping;
+		this.specifiedAccess = this.getResourceAccess();
+		this.defaultAccess = this.buildDefaultAccess();
 		getMapping().initialize(resourceTypeMapping);
+		this.initializeJavaPersistentType();
 		this.initializeParentPersistentType();	
 		this.initializePersistentAttributes();
 	}
+
+	protected AccessType getResourceAccess() {
+		return AccessType.fromXmlResourceModel(this.resourceTypeMapping.getAccess());
+	}
+
+	protected AccessType buildDefaultAccess() {
+		if (! getMapping().isMetadataComplete()) {
+			if (getJavaPersistentType() != null) {
+				//TODO for EclipseLink we need to check the specifiedAccess of the JavaPersistentType
+				//this will not do that in the case that it has a specified access but no attribute mapping annotations
+				if (getJavaPersistentType().hasAnyAttributeMappingAnnotations()) {
+					return getJavaPersistentType().getAccess();
+				}
+				if (getParentPersistentType() != null) {
+					return getParentPersistentType().getAccess();
+				}
+			}
+		}
+		return getMappingFileRoot().getAccess();
+	}
 	
+	protected void initializeJavaPersistentType() {
+		JavaResourcePersistentType jrpt = getJavaResourcePersistentType();
+		if (jrpt != null) {
+			this.javaPersistentType = buildJavaPersistentType(jrpt);
+		}	
+	}
+
+	protected JavaResourcePersistentType getJavaResourcePersistentType() {
+		// try to resolve by only the locally specified name
+		JavaResourcePersistentType jrpt = this.getJpaProject().getJavaResourcePersistentType(getMapping().getClass_());
+		if (jrpt != null) {
+			return jrpt;
+		}
+
+		// try to resolve by prepending the global package name
+		String packageName = this.getDefaultPackage();
+		return this.getJpaProject().getJavaResourcePersistentType(packageName + '.' + getMapping().getClass_());
+	}
+	
+	protected JavaPersistentType buildJavaPersistentType(JavaResourcePersistentType jrpt) {
+		return getJpaFactory().buildJavaPersistentType(this, jrpt);
+	}
+
 	protected void initializePersistentAttributes() {
 		this.initializeSpecifiedPersistentAttributes();
 		this.initializeVirtualPersistentAttributes();
@@ -565,9 +680,27 @@ public abstract class AbstractOrmPersistentType
 	}
 
 	public void update() {
+		this.setSpecifiedAccess(this.getResourceAccess());
+		this.setDefaultAccess(this.buildDefaultAccess());
 		this.getMapping().update();
+		this.updateJavaPersistentType();
 		this.updateParentPersistentType();
 		this.updatePersistentAttributes();
+	}
+	
+	protected void updateJavaPersistentType() {
+		JavaResourcePersistentType jrpt = getJavaResourcePersistentType();
+		if (jrpt == null) {
+			setJavaPersistentType(null);
+		}
+		else { 
+			if (getJavaPersistentType() != null) {
+				getJavaPersistentType().update(jrpt);
+			}
+			else {
+				setJavaPersistentType(buildJavaPersistentType(jrpt));
+			}
+		}		
 	}
 	
 	protected void updateParentPersistentType() {
@@ -733,10 +866,25 @@ public abstract class AbstractOrmPersistentType
 	@Override
 	public void validate(List<IMessage> messages) {
 		super.validate(messages);
+		this.validateClass(messages);
 		this.validateMapping(messages);
 		this.validateAttributes(messages);
 	}
 	
+	protected void validateClass(List<IMessage> messages) {
+		if (this.javaPersistentType == null) {
+			messages.add(
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.PERSISTENT_TYPE_UNRESOLVED_CLASS,
+					new String[] {getMapping().getClass_()},
+					this, 
+					this.getMapping().getClassTextRange()
+				)
+			);
+		}
+	}
+
 	protected void validateMapping(List<IMessage> messages) {
 		try {
 			this.typeMapping.validate(messages);

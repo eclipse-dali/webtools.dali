@@ -9,11 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.orm.details;
 
+import org.eclipse.jpt.core.context.AccessHolder;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddable;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
+import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
@@ -29,7 +31,19 @@ public class OrmEmbeddableComposite extends FormPane<OrmEmbeddable> implements J
 	@Override
 	protected void initializeLayout(Composite container) {
 		new OrmJavaClassChooser(this, getSubjectHolder(), container);
-		new AccessTypeComposite(this, getSubjectHolder(), container);
+		new AccessTypeComposite(this, buildAccessHolder(), container);
 		new MetadataCompleteComposite(this, getSubjectHolder(), container);
 	}
+	
+	protected PropertyValueModel<AccessHolder> buildAccessHolder() {
+		return new PropertyAspectAdapter<OrmEmbeddable, AccessHolder>(
+			getSubjectHolder())
+		{
+			@Override
+			protected AccessHolder buildValue_() {
+				return this.subject.getPersistentType();
+			}
+		};
+	}
+
 }

@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.orm.details;
 
+import org.eclipse.jpt.core.context.AccessHolder;
 import org.eclipse.jpt.eclipselink.core.context.Caching;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.ConverterHolder;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmMappedSuperclass;
@@ -45,9 +46,20 @@ public class EclipseLinkOrmMappedSuperclassComposite extends FormPane<EclipseLin
 	
 	protected void initializeGeneralPane(Composite container) {
 		new OrmJavaClassChooser(this, getSubjectHolder(), container);
-		new AccessTypeComposite(this, getSubjectHolder(), container);
+		new AccessTypeComposite(this, buildAccessHolder(), container);
 		new IdClassComposite(this, container);
 		new MetadataCompleteComposite(this, getSubjectHolder(), container);
+	}
+	
+	protected PropertyValueModel<AccessHolder> buildAccessHolder() {
+		return new PropertyAspectAdapter<EclipseLinkOrmMappedSuperclass, AccessHolder>(
+			getSubjectHolder())
+		{
+			@Override
+			protected AccessHolder buildValue_() {
+				return this.subject.getPersistentType();
+			}
+		};
 	}
 	
 	protected void initializeCachingPane(Composite container) {

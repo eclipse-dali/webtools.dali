@@ -24,7 +24,11 @@ public class GenericJavaPersistentType
 	
 	//****************** PersistentType implementation *******************
 	
-	public AccessType getAccess() {
-		return getDefaultAccess();
+	public AccessType getSpecifiedAccess() {
+		return null;
+	}
+	
+	public void setSpecifiedAccess(@SuppressWarnings("unused") AccessType newSpecifiedAccess) {
+		throw new UnsupportedOperationException("specifiedAccess is not supported for GenericJavaPersistentType"); //$NON-NLS-1$
 	}
 }

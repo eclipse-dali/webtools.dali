@@ -39,7 +39,6 @@ import org.eclipse.jpt.core.context.java.JavaIdMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaSecondaryTable;
-import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.persistence.ClassRef;
 import org.eclipse.jpt.core.internal.context.java.JavaNullTypeMapping;
@@ -465,7 +464,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		//now class is specified in orm.xml, so entityMappings access setting wins over persistence-unit-defaults
 		assertEquals(AccessType.FIELD, ormPersistentType.getJavaPersistentType().getAccess());
 		
-		((OrmEntity) ormPersistentType.getMapping()).setSpecifiedAccess(AccessType.PROPERTY);
+		ormPersistentType.setSpecifiedAccess(AccessType.PROPERTY);
 		
 		//accessType should be PROPERTY now, java gets the access from xml entity if it is specified
 		assertEquals(AccessType.PROPERTY, ormPersistentType.getJavaPersistentType().getAccess());

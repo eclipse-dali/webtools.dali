@@ -36,6 +36,7 @@ import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverride;
 import org.eclipse.jpt.core.context.java.JavaEntity;
+import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.core.context.java.JavaTable;
@@ -227,8 +228,9 @@ public class GenericOrmEntity
 	}
 	
 	public JavaEntity getJavaEntity() {
-		if (this.javaPersistentType != null && this.javaPersistentType.getMappingKey() == MappingKeys.ENTITY_TYPE_MAPPING_KEY) {
-			return (JavaEntity) this.javaPersistentType.getMapping();
+		JavaPersistentType javaPersistentType = this.getJavaPersistentType();
+		if (javaPersistentType != null && javaPersistentType.getMappingKey() == MappingKeys.ENTITY_TYPE_MAPPING_KEY) {
+			return (JavaEntity) javaPersistentType.getMapping();
 		}
 		return null;
 	}
@@ -1524,6 +1526,13 @@ public class GenericOrmEntity
 	
 	protected String defaultDiscriminatorValue() {
 		//TODO default discriminator value
+		return null;
+	}
+	
+	protected JavaResourcePersistentType getJavaResourcePersistentType() {
+		if (getPersistentType().getJavaPersistentType() != null) {
+			return getPersistentType().getJavaPersistentType().getResourcePersistentType();
+		}
 		return null;
 	}
 	

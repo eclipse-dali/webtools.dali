@@ -23,7 +23,7 @@ import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface OrmPersistentType
-	extends PersistentType, OrmStructureNode, XmlContextNode
+	extends PersistentType, PersistentType.Owner, OrmStructureNode, XmlContextNode
 {
 	/**
 	 * covariant override
@@ -141,6 +141,7 @@ public interface OrmPersistentType
 	 * @return
 	 */
 	JavaPersistentType getJavaPersistentType();
+		String JAVA_PERSISTENT_TYPE_PROPERTY = "javaPersistentType"; //$NON-NLS-1$
 
 	/**
 	 * Return the persistent type's default package.

@@ -10,8 +10,8 @@
 package org.eclipse.jpt.ui.internal.details;
 
 import java.util.Collection;
+import org.eclipse.jpt.core.context.AccessHolder;
 import org.eclipse.jpt.core.context.AccessType;
-import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
@@ -35,7 +35,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.2
  * @since 1.0
  */
-public class AccessTypeComposite extends FormPane<OrmTypeMapping> {
+public class AccessTypeComposite extends FormPane<AccessHolder> {
 
 	/**
 	 * Creates a new <code>AccessTypeComposite</code>.
@@ -45,14 +45,14 @@ public class AccessTypeComposite extends FormPane<OrmTypeMapping> {
 	 * @param parent The parent container
 	 */
 	public AccessTypeComposite(FormPane<?> parentPane,
-	                           PropertyValueModel<? extends OrmTypeMapping> subjectHolder,
+	                           PropertyValueModel<? extends AccessHolder> subjectHolder,
 	                           Composite parent) {
 
 		super(parentPane, subjectHolder, parent);
 	}
 	
 	public AccessTypeComposite(FormPane<?> parentPane,
-        PropertyValueModel<? extends OrmTypeMapping> subjectHolder,
+        PropertyValueModel<? extends AccessHolder> subjectHolder,
         Composite parent,
         boolean automaticallyAlignWidgets) {
 
@@ -62,7 +62,7 @@ public class AccessTypeComposite extends FormPane<OrmTypeMapping> {
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		EnumFormComboViewer<OrmTypeMapping, AccessType> comboViewer =
+		EnumFormComboViewer<AccessHolder, AccessType> comboViewer =
 			addAccessTypeComboViewer(container);
 
 		addLabeledComposite(
@@ -72,15 +72,15 @@ public class AccessTypeComposite extends FormPane<OrmTypeMapping> {
 		);
 	}
 	
-	private EnumFormComboViewer<OrmTypeMapping, AccessType> addAccessTypeComboViewer(Composite container) {
+	private EnumFormComboViewer<AccessHolder, AccessType> addAccessTypeComboViewer(Composite container) {
 
-		return new EnumFormComboViewer<OrmTypeMapping, AccessType>(this, container) {
+		return new EnumFormComboViewer<AccessHolder, AccessType>(this, container) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(OrmTypeMapping.DEFAULT_ACCESS_PROPERTY);
-				propertyNames.add(OrmTypeMapping.SPECIFIED_ACCESS_PROPERTY);
+				propertyNames.add(AccessHolder.DEFAULT_ACCESS_PROPERTY);
+				propertyNames.add(AccessHolder.SPECIFIED_ACCESS_PROPERTY);
 			}
 
 			@Override

@@ -10,12 +10,8 @@
 package org.eclipse.jpt.core.context.orm;
 
 import java.util.Iterator;
-
-import org.eclipse.jpt.core.context.AccessType;
-import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.XmlContextNode;
-import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -30,21 +26,12 @@ import org.eclipse.jpt.core.utility.TextRange;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface OrmTypeMapping
-	extends TypeMapping, XmlContextNode, PersistentType.Owner
+	extends TypeMapping, XmlContextNode
 {
-	String JAVA_PERSISTENT_TYPE_PROPERTY = "javaPersistentType"; //$NON-NLS-1$
-
+	
 	String getClass_();
 	void setClass(String newClass);
 	String CLASS_PROPERTY = "class"; //$NON-NLS-1$
-
-	AccessType getAccess();
-	AccessType getDefaultAccess();
-	String DEFAULT_ACCESS_PROPERTY = "defaultAccess"; //$NON-NLS-1$
-
-	AccessType getSpecifiedAccess();
-	void setSpecifiedAccess(AccessType newSpecifiedAccess);
-	String SPECIFIED_ACCESS_PROPERTY = "specifiedAccess"; //$NON-NLS-1$
 
 	
 	boolean isMetadataComplete();
@@ -75,12 +62,12 @@ public interface OrmTypeMapping
 	void initializeFrom(OrmTypeMapping oldMapping);
 
 	XmlTypeMapping getResourceTypeMapping();
-	
-	JavaPersistentType getJavaPersistentType();
 
 	String getOrmType();
 
 	TextRange getSelectionTextRange();
+
+	TextRange getClassTextRange();
 
 	TextRange getAttributesTextRange();
 	

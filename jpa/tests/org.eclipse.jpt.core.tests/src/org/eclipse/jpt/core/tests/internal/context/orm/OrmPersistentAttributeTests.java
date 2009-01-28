@@ -31,6 +31,7 @@ import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
+@SuppressWarnings("nls")
 public class OrmPersistentAttributeTests extends ContextModelTestCase
 {
 	public OrmPersistentAttributeTests(String name) {
@@ -282,7 +283,7 @@ public class OrmPersistentAttributeTests extends ContextModelTestCase
 		//verify the property java resource persistent attribute is used in orm.
 		ormPersistentAttribute.makeVirtual();
 		ormPersistentAttribute = ormPersistentType.getAttributeNamed("id");		
-		ormPersistentType.getMapping().setSpecifiedAccess(AccessType.PROPERTY);
+		ormPersistentType.setSpecifiedAccess(AccessType.PROPERTY);
 		assertNotSame(ormPersistentAttribute, ormPersistentType.getAttributeNamed("id"));
 		ormPersistentAttribute = ormPersistentType.getAttributeNamed("id");
 		assertNotSame(javaPersistentAttribute, ormPersistentAttribute.getJavaPersistentAttribute());
@@ -292,7 +293,7 @@ public class OrmPersistentAttributeTests extends ContextModelTestCase
 		assertEquals(javaPersistentType.getResourcePersistentType().persistableProperties().next(), javaResourcePersistentAttribute);
 		
 		
-		ormPersistentType.getMapping().setSpecifiedAccess(null);//default access will be field
+		ormPersistentType.setSpecifiedAccess(null);//default access will be field
 		ormPersistentAttribute = ormPersistentType.getAttributeNamed("id");		
 		ormPersistentAttribute.makeSpecified();
 		ormPersistentAttribute = ormPersistentType.getAttributeNamed("id");		
