@@ -17,8 +17,8 @@ import org.eclipse.jpt.utility.internal.model.value.ListCollectionValueModelAdap
 import org.eclipse.jpt.utility.internal.model.value.NullCollectionValueModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyListValueModelAdapter;
 import org.eclipse.jpt.utility.model.Model;
-import org.eclipse.jpt.utility.model.event.ListChangeEvent;
-import org.eclipse.jpt.utility.model.listener.ListChangeListener;
+import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -51,7 +51,7 @@ public abstract class AbstractTreeItemContentProvider<E>
 	
 	private CollectionValueModel<E> childrenModel;
 	
-	private ListChangeListener childrenListener;
+	private CollectionChangeListener childrenListener;
 	
 	
 	protected AbstractTreeItemContentProvider(
@@ -65,38 +65,28 @@ public abstract class AbstractTreeItemContentProvider<E>
 	 * Construct a listener to refresh the tree (through the tree content provider)
 	 * if the children change
 	 */
-	protected ListChangeListener buildChildrenListener() {
-		return new ListChangeListener() {
-			public void itemsAdded(ListChangeEvent event) {
+	protected CollectionChangeListener buildChildrenListener() {
+		return new CollectionChangeListener() {
+			
+			public void itemsAdded(CollectionChangeEvent event) {
 				getTreeContentProvider().updateContent(getModel());
 			}
 			
-			public void itemsMoved(ListChangeEvent event) {
-				getTreeContentProvider().updateContent(getModel());
-			}
-			
-			public void itemsRemoved(ListChangeEvent event) {
+			public void itemsRemoved(CollectionChangeEvent event) {
 				getTreeContentProvider().updateContent(getModel());
 				for (Iterator<?> stream = event.items(); stream.hasNext(); ) {
 					getTreeContentProvider().dispose(stream.next());
 				}
 			}
 			
-			public void itemsReplaced(ListChangeEvent event) {
-				getTreeContentProvider().updateContent(getModel());
-				for (Iterator<?> stream = event.replacedItems(); stream.hasNext(); ) {
-					getTreeContentProvider().dispose(stream.next());
-				}
-			}
-			
-			public void listChanged(ListChangeEvent event) {
+			public void collectionChanged(CollectionChangeEvent event) {
 				getTreeContentProvider().updateContent(getModel());
 				// in the case of a list changed event, we don't have 
 				// access to the removed objects, so we can't dispose them.
 				// keep a watch on this to see if this becomes a problem.
 			}
 			
-			public void listCleared(ListChangeEvent event) {
+			public void collectionCleared(CollectionChangeEvent event) {
 				getTreeContentProvider().updateContent(getModel());
 				// in the case of a list cleared event, we don't have 
 				// access to the removed objects, so we can't dispose them.
@@ -192,7 +182,7 @@ public abstract class AbstractTreeItemContentProvider<E>
 	 * subclass logic 
 	 */
 	protected void engageChildren() {
-		this.childrenModel.addListChangeListener(ListValueModel.LIST_VALUES, this.childrenListener);
+		this.childrenModel.addCollectionChangeListener(CollectionValueModel.VALUES, this.childrenListener);
 	}
 	
 	/** 
@@ -201,7 +191,7 @@ public abstract class AbstractTreeItemContentProvider<E>
 	 */
 	protected void disengageChildren() {
 		if (this.childrenModel != null) {
-			this.childrenModel.removeListChangeListener(ListValueModel.LIST_VALUES, this.childrenListener);
+			this.childrenModel.removeCollectionChangeListener(CollectionValueModel.VALUES, this.childrenListener);
 		}
 	}
 }
