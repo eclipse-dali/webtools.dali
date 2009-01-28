@@ -41,13 +41,6 @@
    </requires>
 
    <plugin
-         id="com.ibm.icu"
-         download-size="0"
-         install-size="0"
-         version="3.8.1.qualifier"
-         unpack="false"/>
-
-   <plugin
          id="org.eclipse.jpt.utility"
          download-size="0"
          install-size="0"
