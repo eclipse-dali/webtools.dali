@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -127,16 +127,16 @@ public class CachingValueModelTests extends PersistenceUnitTestCase
 	 */
 	@Override
 	protected void populatePu() {
-		this.persistenceUnitPut(
+		this.persistenceUnitSetProperty(
 			Caching.ECLIPSELINK_CACHE_TYPE + ENTITY_NAME_TEST_VALUE, 
 			CACHE_TYPE_TEST_VALUE);
-		this.persistenceUnitPut(
+		this.persistenceUnitSetProperty(
 			Caching.ECLIPSELINK_SHARED_CACHE + ENTITY_NAME_TEST_VALUE, 
 			SHARED_CACHE_TEST_VALUE);
-		this.persistenceUnitPut(
+		this.persistenceUnitSetProperty(
 			Caching.ECLIPSELINK_CACHE_TYPE_DEFAULT, 
 			CACHE_TYPE_DEFAULT_TEST_VALUE);
-		this.persistenceUnitPut(
+		this.persistenceUnitSetProperty(
 			Caching.ECLIPSELINK_CACHE_SHARED_DEFAULT, 
 			SHARED_CACHE_DEFAULT_TEST_VALUE);
 		return;

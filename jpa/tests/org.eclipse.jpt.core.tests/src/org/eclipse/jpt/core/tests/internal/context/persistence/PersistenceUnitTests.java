@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.tests.internal.context.persistence;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.ListIterator;
+
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
@@ -21,7 +22,6 @@ import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.persistence.ClassRef;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnitTransactionType;
-import org.eclipse.jpt.core.context.persistence.Property;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.orm.OrmXmlResource;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
@@ -32,7 +32,6 @@ import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnitTransactionTy
 import org.eclipse.jpt.core.resource.persistence.XmlProperties;
 import org.eclipse.jpt.core.resource.persistence.XmlProperty;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
-import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
@@ -414,7 +413,7 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		xmlMappingFileRef.setFileName("META-INF/orm.xml");
 		xmlPersistenceUnit.getMappingFiles().add(xmlMappingFileRef);
 		
-		assertEquals(1, CollectionTools.size(persistenceUnit.specifiedMappingFileRefs()));
+		assertEquals(1, persistenceUnit.specifiedMappingFileRefsSize());
 		
 		assertTrue(ormResource.exists());
 		assertNull(persistenceUnit.getImpliedMappingFileRef());
@@ -433,14 +432,14 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		xmlMappingFileRef.setFileName("orm.xml");
 		xmlPersistenceUnit.getMappingFiles().add(xmlMappingFileRef);
 		
-		assertEquals(1, CollectionTools.size(persistenceUnit.specifiedMappingFileRefs()));
+		assertEquals(1, persistenceUnit.specifiedMappingFileRefsSize());
 		
 		// add another ...
 		xmlMappingFileRef = PersistenceFactory.eINSTANCE.createXmlMappingFileRef();
 		xmlMappingFileRef.setFileName("orm2.xml");
 		xmlPersistenceUnit.getMappingFiles().add(xmlMappingFileRef);
 		
-		assertEquals(2, CollectionTools.size(persistenceUnit.specifiedMappingFileRefs()));
+		assertEquals(2, persistenceUnit.specifiedMappingFileRefsSize());
 	}
 	
 	public void testUpdateSpecifiedMappingFileRefs2() {
@@ -456,19 +455,19 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		xmlPersistenceUnit.getMappingFiles().add(xmlMappingFileRef);
 		
 		assertEquals(xmlPersistenceUnit.getMappingFiles().size(), 2);
-		assertEquals(2, CollectionTools.size(persistenceUnit.specifiedMappingFileRefs()));
+		assertEquals(2, persistenceUnit.specifiedMappingFileRefsSize());
 		
 		// remove mapping file ref from xml, test that it's removed from context
 		xmlMappingFileRef = xmlPersistenceUnit.getMappingFiles().get(0);
 		xmlPersistenceUnit.getMappingFiles().remove(xmlMappingFileRef);
 		
-		assertEquals(1, CollectionTools.size(persistenceUnit.specifiedMappingFileRefs()));
+		assertEquals(1, persistenceUnit.specifiedMappingFileRefsSize());
 		
 		// remove another one ...
 		xmlMappingFileRef = xmlPersistenceUnit.getMappingFiles().get(0);
 		xmlPersistenceUnit.getMappingFiles().remove(xmlMappingFileRef);
 		
-		assertEquals(0, CollectionTools.size(persistenceUnit.specifiedMappingFileRefs()));
+		assertEquals(0, persistenceUnit.specifiedMappingFileRefsSize());
 	}
 	
 	public void testModifySpecifiedMappingFileRefs1() {
@@ -477,7 +476,7 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		
 		// test there are none initially
 		assertEquals(0, xmlPersistenceUnit.getMappingFiles().size());
-		assertEquals(0, CollectionTools.size(persistenceUnit.specifiedMappingFileRefs()));
+		assertEquals(0, persistenceUnit.specifiedMappingFileRefsSize());
 		
 		// add mapping file ref, test that it's added to resource
 		persistenceUnit.addSpecifiedMappingFileRef().setFileName("foo");
@@ -513,7 +512,7 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		xmlPersistenceUnit.getMappingFiles().add(xmlMappingFileRef);
 		
 		assertEquals(2, xmlPersistenceUnit.getMappingFiles().size());
-		assertEquals(2, CollectionTools.size(persistenceUnit.specifiedMappingFileRefs()));
+		assertEquals(2, persistenceUnit.specifiedMappingFileRefsSize());
 		
 		// remove mapping file ref from context, test that it's removed from xml
 		persistenceUnit.removeSpecifiedMappingFileRef(0);
@@ -562,19 +561,19 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		xmlPersistenceUnit.getClasses().add(xmlClassRef);
 		
 		assertEquals(2, xmlPersistenceUnit.getClasses().size());
-		assertEquals(2, CollectionTools.size(persistenceUnit.specifiedClassRefs()));
+		assertEquals(2, persistenceUnit.specifiedClassRefsSize());
 		
 		// remove class ref from xml, test that it's removed from context
 		xmlClassRef = xmlPersistenceUnit.getClasses().get(0);
 		xmlPersistenceUnit.getClasses().remove(xmlClassRef);
 		
-		assertEquals(1, CollectionTools.size(persistenceUnit.specifiedClassRefs()));
+		assertEquals(1, persistenceUnit.specifiedClassRefsSize());
 		
 		// remove another one ...
 		xmlClassRef = xmlPersistenceUnit.getClasses().get(0);
 		xmlPersistenceUnit.getClasses().remove(xmlClassRef);
 		
-		assertEquals(0, CollectionTools.size(persistenceUnit.specifiedClassRefs()));
+		assertEquals(0, persistenceUnit.specifiedClassRefsSize());
 	}
 	
 	public void testModifyClassRefs1() {
@@ -627,7 +626,7 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		xmlPersistenceUnit.getClasses().add(xmlClassRef);
 		
 		assertEquals(2, xmlPersistenceUnit.getClasses().size());
-		assertEquals(2, CollectionTools.size(persistenceUnit.specifiedClassRefs()));
+		assertEquals(2, persistenceUnit.specifiedClassRefsSize());
 		
 		// remove class ref from context, test that it's removed from xml
 		persistenceUnit.removeSpecifiedClassRef(0);
@@ -642,7 +641,7 @@ public class PersistenceUnitTests extends ContextModelTestCase
 
 	public void testImpliedClassRefs() throws Exception {
 		createTestEntityWithPersistentInnerClass();
-		ListIterator<ClassRef> classRefs = getPersistenceUnit().impliedClassRefs();
+		Iterator<ClassRef> classRefs = getPersistenceUnit().impliedClassRefs();
 		assertEquals(FULLY_QUALIFIED_TYPE_NAME, classRefs.next().getClassName());
 		assertEquals(FULLY_QUALIFIED_INNER_CLASS_NAME, classRefs.next().getClassName());
 		
@@ -687,7 +686,7 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		@SuppressWarnings("unused")
 		ICompilationUnit otherTestType = this.createTestOtherTypeEntity();
 		
-		ListIterator<ClassRef> classRefs = getPersistenceUnit().impliedClassRefs();
+		Iterator<ClassRef> classRefs = getPersistenceUnit().impliedClassRefs();
 		ClassRef testTypeClassRef = classRefs.next();
 		ClassRef otherTestTypeClassRef = classRefs.next();
 		
@@ -716,27 +715,27 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		
 		// 1 - initial value is default
 		assertNull(persistenceUnit.getSpecifiedExcludeUnlistedClasses());
-		assertFalse(persistenceUnit.isExcludeUnlistedClasses());
+		assertFalse(persistenceUnit.excludesUnlistedClasses());
 		assertNull(xmlPersistenceUnit.getExcludeUnlistedClasses());
 		
 		// 2 - set value, context changed
 		xmlPersistenceUnit.setExcludeUnlistedClasses(Boolean.TRUE);
 		
 		assertEquals(Boolean.TRUE, persistenceUnit.getSpecifiedExcludeUnlistedClasses());
-		assertTrue(persistenceUnit.isExcludeUnlistedClasses());
+		assertTrue(persistenceUnit.excludesUnlistedClasses());
 		assertEquals(Boolean.TRUE, xmlPersistenceUnit.getExcludeUnlistedClasses());
 		
 		xmlPersistenceUnit.setExcludeUnlistedClasses(Boolean.FALSE);
 		
 		assertEquals(Boolean.FALSE, persistenceUnit.getSpecifiedExcludeUnlistedClasses());
-		assertFalse(persistenceUnit.isExcludeUnlistedClasses());
+		assertFalse(persistenceUnit.excludesUnlistedClasses());
 		assertEquals(Boolean.FALSE, xmlPersistenceUnit.getExcludeUnlistedClasses());
 		
 		// 3 - unset value, context changed
 		xmlPersistenceUnit.setExcludeUnlistedClasses(null);
 		
 		assertNull(persistenceUnit.getSpecifiedExcludeUnlistedClasses());
-		assertFalse(persistenceUnit.isExcludeUnlistedClasses());
+		assertFalse(persistenceUnit.excludesUnlistedClasses());
 		assertNull(xmlPersistenceUnit.getExcludeUnlistedClasses());
 	}
 	
@@ -746,27 +745,27 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		
 		// 1 - initial value is default
 		assertNull(persistenceUnit.getSpecifiedExcludeUnlistedClasses());
-		assertFalse(persistenceUnit.isExcludeUnlistedClasses());
+		assertFalse(persistenceUnit.excludesUnlistedClasses());
 		assertNull(xmlPersistenceUnit.getExcludeUnlistedClasses());
 		
 		// 2 - set value, resource changed
 		persistenceUnit.setSpecifiedExcludeUnlistedClasses(Boolean.TRUE);
 		
 		assertEquals(Boolean.TRUE, persistenceUnit.getSpecifiedExcludeUnlistedClasses());
-		assertTrue(persistenceUnit.isExcludeUnlistedClasses());
+		assertTrue(persistenceUnit.excludesUnlistedClasses());
 		assertEquals(Boolean.TRUE, xmlPersistenceUnit.getExcludeUnlistedClasses());
 		
 		persistenceUnit.setSpecifiedExcludeUnlistedClasses(Boolean.FALSE);
 		
 		assertEquals(Boolean.FALSE, persistenceUnit.getSpecifiedExcludeUnlistedClasses());
-		assertFalse(persistenceUnit.isExcludeUnlistedClasses());
+		assertFalse(persistenceUnit.excludesUnlistedClasses());
 		assertEquals(Boolean.FALSE, xmlPersistenceUnit.getExcludeUnlistedClasses());
 		
 		// 3 - set context to default, resource unset
 		persistenceUnit.setSpecifiedExcludeUnlistedClasses(null);
 		
 		assertNull(persistenceUnit.getSpecifiedExcludeUnlistedClasses());
-		assertFalse(persistenceUnit.isExcludeUnlistedClasses());
+		assertFalse(persistenceUnit.excludesUnlistedClasses());
 		assertNull(xmlPersistenceUnit.getExcludeUnlistedClasses());
 	}
 	
@@ -776,12 +775,12 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		
 		// test there are none initially
 		assertNull(xmlPersistenceUnit.getProperties());
-		assertEquals(0, CollectionTools.size(persistenceUnit.properties()));
+		assertEquals(0, persistenceUnit.propertiesSize());
 		
 		// add "properties", test that there's no real change to context
 		XmlProperties xmlProperties = PersistenceFactory.eINSTANCE.createXmlProperties();
 		xmlPersistenceUnit.setProperties(xmlProperties);
-		assertEquals(0, CollectionTools.size(persistenceUnit.properties()));
+		assertEquals(0, persistenceUnit.propertiesSize());
 		
 		// add property, test that it's added to context
 		XmlProperty xmlProperty = PersistenceFactory.eINSTANCE.createXmlProperty();
@@ -789,7 +788,7 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		xmlProperty.setValue("bar");
 		xmlProperties.getProperties().add(xmlProperty);
 		
-		assertEquals(1, CollectionTools.size(persistenceUnit.properties()));
+		assertEquals(1, persistenceUnit.propertiesSize());
 		
 		// add another ...
 		xmlProperty = PersistenceFactory.eINSTANCE.createXmlProperty();
@@ -797,7 +796,7 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		xmlProperty.setValue("BAR");
 		xmlProperties.getProperties().add(xmlProperty);
 		
-		assertEquals(2, CollectionTools.size(persistenceUnit.properties()));
+		assertEquals(2, persistenceUnit.propertiesSize());
 	}
 	
 	public void testUpdateProperties2() {
@@ -817,19 +816,19 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		xmlProperties.getProperties().add(xmlProperty);
 		
 		assertEquals(2, xmlPersistenceUnit.getProperties().getProperties().size());
-		assertEquals(2, CollectionTools.size(persistenceUnit.properties()));
+		assertEquals(2, persistenceUnit.propertiesSize());
 		
 		// remove property from xml, test that it's removed from context
 		xmlProperty = xmlProperties.getProperties().get(0);
 		xmlProperties.getProperties().remove(xmlProperty);
 		
-		assertEquals(1, CollectionTools.size(persistenceUnit.properties()));
+		assertEquals(1, persistenceUnit.propertiesSize());
 		
 		// remove another one ...
 		xmlProperty = xmlProperties.getProperties().get(0);
 		xmlProperties.getProperties().remove(xmlProperty);
 		
-		assertEquals(0, CollectionTools.size(persistenceUnit.properties()));
+		assertEquals(0, persistenceUnit.propertiesSize());
 	}
 	
 	public void testModifyProperties1() {
@@ -880,7 +879,7 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		xmlProperties.getProperties().add(xmlProperty);
 		
 		assertEquals(2, xmlPersistenceUnit.getProperties().getProperties().size());
-		assertEquals(2, CollectionTools.size(persistenceUnit.properties()));
+		assertEquals(2, persistenceUnit.propertiesSize());
 		
 		// remove property from context, test that it's removed from resource
 		persistenceUnit.removeProperty("foo");
@@ -898,11 +897,11 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		PersistenceUnit persistenceUnit = getPersistenceUnit();
 		
 		// add two properties and test that there are two existing in xml and context
-		persistenceUnit.putProperty("foo", "bar", false);
-		persistenceUnit.putProperty("FOO", "BAR", false);
+		persistenceUnit.setProperty("foo", "bar", false);
+		persistenceUnit.setProperty("FOO", "BAR", false);
 		
 		assertEquals(2, xmlPersistenceUnit.getProperties().getProperties().size());
-		assertEquals(2, CollectionTools.size(persistenceUnit.properties()));
+		assertEquals(2, persistenceUnit.propertiesSize());
 		
 		// remove property from context, test that it's removed from resource
 		persistenceUnit.removeProperty("foo", "bar");
@@ -920,22 +919,18 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		PersistenceUnit persistenceUnit = getPersistenceUnit();
 		
 		// add two properties and test that there are two existing in xml and context
-		persistenceUnit.putProperty("foo", "bar", false);
-		persistenceUnit.putProperty("FOO", "BAR", false);
+		persistenceUnit.setProperty("foo", "bar", false);
+		persistenceUnit.setProperty("FOO", "BAR", false);
 		
 		assertEquals(2, xmlPersistenceUnit.getProperties().getProperties().size());
 		assertEquals(2, persistenceUnit.propertiesSize());
 		
 		// modify a property, test its value
-		persistenceUnit.putProperty("foo", "", false);
+		persistenceUnit.setProperty("foo", "", false);
 		assertEquals("", persistenceUnit.getProperty("foo").getValue());
 
-		persistenceUnit.putProperty("foo", "BAR", false);
+		persistenceUnit.setProperty("foo", "BAR", false);
 		assertEquals("BAR", persistenceUnit.getProperty("foo").getValue());
-		
-		// remove property that doesn't from context, test that the resource is unchanged
-		persistenceUnit.removeProperty("notExist");
-		assertEquals(2, xmlPersistenceUnit.getProperties().getProperties().size());
 		
 		// remove property from context, test that it's removed from resource
 		persistenceUnit.removeProperty("FOO");
@@ -943,10 +938,10 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		assertEquals(1, xmlPersistenceUnit.getProperties().getProperties().size());
 
 		// remove by setting value to null, test that properties object is nulled
-		persistenceUnit.putProperty("notExist", null, false);
+		persistenceUnit.setProperty("notExist", null, false);
 		assertNull(persistenceUnit.getProperty("notExist"));
 
-		persistenceUnit.putProperty("foo", null, false);
+		persistenceUnit.setProperty("foo", null, false);
 		assertNull(persistenceUnit.getProperty("foo"));
 		assertNull(xmlPersistenceUnit.getProperties());
 	}
@@ -956,42 +951,36 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		PersistenceUnit persistenceUnit = getPersistenceUnit();
 		
 		// testing duplicate keys, add four properties and test that there are four existing in xml and context
-		persistenceUnit.putProperty("FOO", "BAR", false);
-		persistenceUnit.putProperty("foo", "bar 3", true);
-		persistenceUnit.putProperty("foo", "bar 2", true);
-		persistenceUnit.putProperty("foo", "bar 1", true);
+		persistenceUnit.setProperty("FOO", "BAR", false);
+		persistenceUnit.setProperty("foo", "bar 3", true);
+		persistenceUnit.setProperty("foo", "bar 2", true);
+		persistenceUnit.setProperty("foo", "bar 1", true);
 		
 		assertEquals(4, xmlPersistenceUnit.getProperties().getProperties().size());
-		assertEquals(4, CollectionTools.size(persistenceUnit.properties()));
+		assertEquals(4, persistenceUnit.propertiesSize());
 		
-		// modify a property, test its value
-		persistenceUnit.replacePropertyValue("foo", "bar 2", "bar two");
-		
-		Property property = persistenceUnit.getProperty("foo", "bar two");
-		assertEquals("bar two", property.getValue());
-
 		// remove a property, test that there are four existing in xml and context
 		persistenceUnit.removeProperty("foo", "bar 1");
 		assertEquals(3, xmlPersistenceUnit.getProperties().getProperties().size());
-		assertEquals(3, CollectionTools.size(persistenceUnit.properties()));
+		assertEquals(3, persistenceUnit.propertiesSize());
 	}
 	
 	public void testAccessProperty() {
 		PersistenceUnit persistenceUnit = getPersistenceUnit();
 		
 		// add two properties and try to access it.
-		persistenceUnit.putProperty("foo", "bar", false);
-		persistenceUnit.putProperty("FOO", "BAR", false);
+		persistenceUnit.setProperty("foo", "bar", false);
+		persistenceUnit.setProperty("FOO", "BAR", false);
 		
-		Property property = persistenceUnit.getProperty("foo");
+		PersistenceUnit.Property property = persistenceUnit.getProperty("foo");
 		assertNotNull(property);
 		assertEquals("bar", property.getValue());
-		assertTrue(persistenceUnit.containsProperty("FOO"));
+		assertNotNull(persistenceUnit.getProperty("FOO"));
 		assertEquals("BAR", persistenceUnit.getProperty("FOO").getValue());
 		assertNull(persistenceUnit.getProperty("notExist"));
 	}
 	
-	private Property persistenceUnitFirstProperty() {
+	private PersistenceUnit.Property persistenceUnitFirstProperty() {
 		return getPersistenceUnit().properties().next();
 	}
 
@@ -1122,6 +1111,7 @@ public class PersistenceUnitTests extends ContextModelTestCase
 	}
 
 	public void testPersistentType() throws Exception {
+		getJpaProject().setDiscoversAnnotatedClasses(false);	
 		PersistenceUnit persistenceUnit = getPersistenceUnit();
 		createTestEntity();
 		

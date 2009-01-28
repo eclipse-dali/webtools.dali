@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2008 Oracle. All rights reserved.
+* Copyright (c) 2008, 2009 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,18 +10,12 @@
 package org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.logging;
 
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.core.context.persistence.Property;
-import org.eclipse.jpt.core.internal.context.persistence.GenericProperty;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.PersistenceUnitProperties;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.PersistenceUnitPropertyListListener;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.logging.EclipseLinkLogging;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.logging.Logger;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.logging.Logging;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.logging.LoggingLevel;
 import org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.PersistenceUnitTestCase;
-import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
-import org.eclipse.jpt.utility.model.value.ListValueModel;
 
 /**
  * Tests the update of model objects by the Logging adapter when the
@@ -89,44 +83,20 @@ public class LoggingAdapterTests extends PersistenceUnitTestCase
 		this.propertiesTotal = this.modelPropertiesSizeOriginal + 4; // 4 misc properties
 		this.modelPropertiesSize = this.modelPropertiesSizeOriginal;
 		
-		this.persistenceUnitPut("misc.property.1", "value.1");
-		this.persistenceUnitPut(TIMESTAMP_KEY, TIMESTAMP_TEST_VALUE.toString());
-		this.persistenceUnitPut("misc.property.2", "value.2");
-		this.persistenceUnitPut(LEVEL_KEY, LEVEL_TEST_VALUE);
-		this.persistenceUnitPut("misc.property.3", "value.3");
-		this.persistenceUnitPut(THREAD_KEY, THREAD_TEST_VALUE.toString());
-		this.persistenceUnitPut(SESSION_KEY, SESSION_TEST_VALUE.toString());
-		this.persistenceUnitPut(EXCEPTIONS_KEY, EXCEPTIONS_TEST_VALUE.toString());
-		this.persistenceUnitPut("misc.property.4", "value.4");
-		this.persistenceUnitPut(LOG_FILE_LOCATION_KEY, LOG_FILE_LOCATION_TEST_VALUE);
-		this.persistenceUnitPut(LOGGER_KEY, LOGGER_TEST_VALUE);
+		this.persistenceUnitSetProperty("misc.property.1", "value.1");
+		this.persistenceUnitSetProperty(TIMESTAMP_KEY, TIMESTAMP_TEST_VALUE.toString());
+		this.persistenceUnitSetProperty("misc.property.2", "value.2");
+		this.persistenceUnitSetProperty(LEVEL_KEY, LEVEL_TEST_VALUE);
+		this.persistenceUnitSetProperty("misc.property.3", "value.3");
+		this.persistenceUnitSetProperty(THREAD_KEY, THREAD_TEST_VALUE.toString());
+		this.persistenceUnitSetProperty(SESSION_KEY, SESSION_TEST_VALUE.toString());
+		this.persistenceUnitSetProperty(EXCEPTIONS_KEY, EXCEPTIONS_TEST_VALUE.toString());
+		this.persistenceUnitSetProperty("misc.property.4", "value.4");
+		this.persistenceUnitSetProperty(LOG_FILE_LOCATION_KEY, LOG_FILE_LOCATION_TEST_VALUE);
+		this.persistenceUnitSetProperty(LOGGER_KEY, LOGGER_TEST_VALUE);
 		return;
 	}
 	
-	// ********** Listeners **********
-
-	// ********** Listeners tests **********
-	public void testHasListeners() throws Exception {
-		// new
-		ListAspectAdapter<PersistenceUnit, Property> propertiesAdapter = 
-			(ListAspectAdapter<PersistenceUnit, Property>) this.subject.getPropertiesAdapter();
-		GenericProperty ctdProperty = (GenericProperty) this.getPersistenceUnit().getProperty(TIMESTAMP_KEY);
-		ListValueModel<Property> propertyListAdapter = this.subject.getPropertyListAdapter();
-		
-		assertTrue(propertiesAdapter.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
-		assertTrue(ctdProperty.hasAnyPropertyChangeListeners(Property.VALUE_PROPERTY));
-		this.verifyHasListeners(this.logging, Logging.TIMESTAMP_PROPERTY);
-//TODO ADD OTHER PROPERTIES
-		this.verifyHasListeners(propertyListAdapter);
-		
-		EclipseLinkLogging elLogging = (EclipseLinkLogging) this.logging;
-		PersistenceUnitPropertyListListener propertyListListener = elLogging.propertyListListener();
-		propertyListAdapter.removeListChangeListener(ListValueModel.LIST_VALUES, propertyListListener);
-		assertTrue(propertiesAdapter.hasAnyListChangeListeners(ListValueModel.LIST_VALUES)); // other properties are still listening
-		this.verifyHasListeners(this.logging, Logging.TIMESTAMP_PROPERTY);
-	}
-
-
 	// ********** Level tests **********
 	public void testSetLevel() throws Exception {
 		this.verifyModelInitialized(
@@ -263,7 +233,7 @@ public class LoggingAdapterTests extends PersistenceUnitTestCase
 	 * Verifies setting custom logger and literals.
 	 */
 	protected void verifySetLogger(String elKey, Object testValue1, Object testValue2) throws Exception {
-		Property property = this.getPersistenceUnit().getProperty(elKey);
+		PersistenceUnit.Property property = this.getPersistenceUnit().getProperty(elKey);
 		String propertyName = this.getModel().propertyIdFor(property);
 		// test set custom logger.
 		this.clearEvent();
@@ -273,19 +243,19 @@ public class LoggingAdapterTests extends PersistenceUnitTestCase
 		// test set (Logger) null
 		this.clearEvent();
 		this.logging.setLogger((Logger) null);
-		assertFalse(this.getPersistenceUnit().containsProperty(elKey));
+		assertNull(this.getPersistenceUnit().getProperty(elKey));
 		this.verifyPutProperty(propertyName, null);
 		
 		// test set enum literal
 		this.clearEvent();
 		this.setProperty(propertyName, testValue1.toString());
-		assertTrue(this.getPersistenceUnit().containsProperty(elKey));
+		assertNotNull(this.getPersistenceUnit().getProperty(elKey));
 		this.verifyPutProperty(propertyName, this.getEclipseLinkStringValueOf(testValue1));
 
 		// test set (String) null
 		this.clearEvent();
 		this.logging.setLogger((String) null);
-		assertFalse(this.getPersistenceUnit().containsProperty(elKey));
+		assertNull(this.getPersistenceUnit().getProperty(elKey));
 		this.verifyPutProperty(propertyName, null);
 	}
 

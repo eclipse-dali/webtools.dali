@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,6 +11,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.persistencexml.details;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.context.MappingFile;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
@@ -20,10 +21,10 @@ import org.eclipse.jpt.ui.internal.platform.generic.GenericNavigatorItemContentP
 import org.eclipse.jpt.ui.jface.DelegatingContentAndLabelProvider;
 import org.eclipse.jpt.ui.jface.TreeItemContentProvider;
 import org.eclipse.jpt.ui.jface.TreeItemContentProviderFactory;
-import org.eclipse.jpt.utility.internal.model.value.CompositeListValueModel;
+import org.eclipse.jpt.utility.internal.model.value.CompositeCollectionValueModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.utility.internal.model.value.PropertyListValueModelAdapter;
-import org.eclipse.jpt.utility.model.value.ListValueModel;
+import org.eclipse.jpt.utility.internal.model.value.PropertyCollectionValueModelAdapter;
+import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 
 /**
  * EclipseLinkNavigatorItemContentProviderFactory
@@ -61,17 +62,17 @@ public class EclipseLinkNavigatorItemContentProviderFactory
 		}
 		
 		@Override
-		protected ListValueModel<JpaContextNode> buildChildrenModel() {
-			List<ListValueModel<? extends JpaContextNode>> list = new ArrayList<ListValueModel<? extends JpaContextNode>>();
-			list.add(buildSpecifiedOrmXmlLvm());
-			list.add(buildImpliedMappingFileLvm());
-			list.add(buildImpliedEclipseLinkMappingFileLvm());
-			list.add(buildPersistentTypeLvm());
-			return new CompositeListValueModel<ListValueModel<? extends JpaContextNode>, JpaContextNode>(list);
+		protected CollectionValueModel<JpaContextNode> buildChildrenModel() {
+			List<CollectionValueModel<? extends JpaContextNode>> list = new ArrayList<CollectionValueModel<? extends JpaContextNode>>();
+			list.add(buildSpecifiedOrmXmlCvm());
+			list.add(buildImpliedMappingFileCvm());
+			list.add(buildImpliedEclipseLinkMappingFileCvm());
+			list.add(buildPersistentTypeCvm());
+			return new CompositeCollectionValueModel<CollectionValueModel<? extends JpaContextNode>, JpaContextNode>(list);
 		}
 		
-		private ListValueModel<MappingFile> buildImpliedEclipseLinkMappingFileLvm() {
-			return new PropertyListValueModelAdapter<MappingFile>(
+		private CollectionValueModel<MappingFile> buildImpliedEclipseLinkMappingFileCvm() {
+			return new PropertyCollectionValueModelAdapter<MappingFile>(
 				new PropertyAspectAdapter<MappingFileRef, MappingFile>(
 						new PropertyAspectAdapter<EclipseLinkPersistenceUnit, MappingFileRef>(
 								EclipseLinkPersistenceUnit.IMPLIED_ECLIPSELINK_MAPPING_FILE_REF_PROPERTY,

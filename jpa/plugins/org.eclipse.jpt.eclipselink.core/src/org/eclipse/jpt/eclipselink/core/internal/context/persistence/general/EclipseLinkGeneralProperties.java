@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2008 Oracle. All rights reserved.
+* Copyright (c) 2008, 2009 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,6 @@ package org.eclipse.jpt.eclipselink.core.internal.context.persistence.general;
 import java.util.Map;
 
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.core.context.persistence.Property;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnitProperties;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
@@ -27,7 +26,7 @@ public class EclipseLinkGeneralProperties extends EclipseLinkPersistenceUnitProp
 	private Boolean excludeEclipselinkOrm;
 
 	// ********** constructors **********
-	public EclipseLinkGeneralProperties(PersistenceUnit parent, ListValueModel<Property> propertyListAdapter) {
+	public EclipseLinkGeneralProperties(PersistenceUnit parent, ListValueModel<PersistenceUnit.Property> propertyListAdapter) {
 		super(parent, propertyListAdapter);
 	}
 
@@ -81,7 +80,7 @@ public class EclipseLinkGeneralProperties extends EclipseLinkPersistenceUnitProp
 	}
 
 	private void excludeEclipselinkOrmChanged(PropertyChangeEvent event) {
-		String stringValue = (event.getNewValue() == null) ? null : ((Property) event.getNewValue()).getValue();
+		String stringValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
 		Boolean newValue = getBooleanValueOf(stringValue);
 		
 		Boolean old = this.excludeEclipselinkOrm;

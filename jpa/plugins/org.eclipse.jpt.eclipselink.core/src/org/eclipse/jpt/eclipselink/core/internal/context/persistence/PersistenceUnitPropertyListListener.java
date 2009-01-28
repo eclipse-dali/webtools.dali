@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,8 @@
 package org.eclipse.jpt.eclipselink.core.internal.context.persistence;
 
 import java.util.Iterator;
-import org.eclipse.jpt.core.context.persistence.Property;
+
+import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.utility.model.Model;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
@@ -30,7 +31,7 @@ public class PersistenceUnitPropertyListListener implements ListChangeListener
 	}
 
 	// ********** Behavior **********
-	protected boolean add(Property newItem, Model source) {
+	protected boolean add(PersistenceUnit.Property newItem, Model source) {
 		if (this.model().itemIsProperty(newItem)) {
 			String propertyName = this.model().propertyIdFor(newItem);
 			this.model().propertyChanged(
@@ -40,7 +41,7 @@ public class PersistenceUnitPropertyListListener implements ListChangeListener
 		return false;
 	}
 
-	protected boolean remove(Property item, Model source) {
+	protected boolean remove(PersistenceUnit.Property item, Model source) {
 		if (this.model().itemIsProperty(item)) {
 			String propertyName = this.model().propertyIdFor(item);
 			this.model().propertyChanged(
@@ -51,7 +52,7 @@ public class PersistenceUnitPropertyListListener implements ListChangeListener
 	}
 
 	// replace
-	protected Property set(Property newItem, Model source) {
+	protected PersistenceUnit.Property set(PersistenceUnit.Property newItem, Model source) {
 		if (this.model().itemIsProperty(newItem)) {
 			String propertyName = this.model().propertyIdFor(newItem);
 			this.model().propertyChanged(
@@ -63,20 +64,20 @@ public class PersistenceUnitPropertyListListener implements ListChangeListener
 
 	// ********** ListChangeListener implementation **********
 	public void itemsAdded(ListChangeEvent e) {
-		for (Iterator<Property> stream = this.items(e); stream.hasNext();) {
+		for (Iterator<PersistenceUnit.Property> stream = this.items(e); stream.hasNext();) {
 			this.add(stream.next(), e.getSource());
 		}
 	}
 
 	public void itemsRemoved(ListChangeEvent e) {
-		for (Iterator<Property> stream = this.items(e); stream.hasNext();) {
+		for (Iterator<PersistenceUnit.Property> stream = this.items(e); stream.hasNext();) {
 			this.remove(stream.next(), e.getSource());
 		}
 	}
 
 	public void itemsReplaced(ListChangeEvent e) {
 		// ItemAspectListValueModelAdapter(270) does not provide old value
-		for (Iterator<Property> newStream = this.items(e); newStream.hasNext();) {
+		for (Iterator<PersistenceUnit.Property> newStream = this.items(e); newStream.hasNext();) {
 			this.set(newStream.next(), e.getSource());
 		}
 	}
@@ -105,7 +106,7 @@ public class PersistenceUnitPropertyListListener implements ListChangeListener
 	}
 
 	@SuppressWarnings("unchecked")
-	private Iterator<Property> items(ListChangeEvent event) {
-		return (Iterator<Property>) event.items();
+	private Iterator<PersistenceUnit.Property> items(ListChangeEvent event) {
+		return (Iterator<PersistenceUnit.Property>) event.items();
 	}
 }

@@ -1,18 +1,19 @@
 /*******************************************************************************
- *  Copyright (c) 2008  Oracle. 
- *  All rights reserved.  This program and the accompanying materials are 
- *  made available under the terms of the Eclipse Public License v1.0 which 
- *  accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.structure;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.persistence.ClassRef;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
@@ -22,11 +23,13 @@ import org.eclipse.jpt.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
 import org.eclipse.jpt.ui.internal.structure.PersistenceItemContentProviderFactory;
 import org.eclipse.jpt.ui.jface.DelegatingContentAndLabelProvider;
 import org.eclipse.jpt.ui.jface.TreeItemContentProvider;
-import org.eclipse.jpt.utility.internal.model.value.CompositeListValueModel;
+import org.eclipse.jpt.utility.internal.model.value.CollectionAspectAdapter;
+import org.eclipse.jpt.utility.internal.model.value.CompositeCollectionValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
+import org.eclipse.jpt.utility.internal.model.value.ListCollectionValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.utility.internal.model.value.PropertyListValueModelAdapter;
-import org.eclipse.jpt.utility.model.value.ListValueModel;
+import org.eclipse.jpt.utility.internal.model.value.PropertyCollectionValueModelAdapter;
+import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 
 public class EclipseLinkPersistenceItemContentProviderFactory
 	extends PersistenceItemContentProviderFactory
@@ -56,8 +59,9 @@ public class EclipseLinkPersistenceItemContentProviderFactory
 		}
 		
 		@Override
-		protected ListValueModel<JpaStructureNode> buildChildrenModel() {
-			ListValueModel<MappingFileRef> specifiedMappingFileLvm = 
+		protected CollectionValueModel<JpaStructureNode> buildChildrenModel() {
+			CollectionValueModel<MappingFileRef> specifiedMappingFileCvm = 
+				new ListCollectionValueModelAdapter<MappingFileRef>(
 				new ListAspectAdapter<PersistenceUnit, MappingFileRef>(
 						PersistenceUnit.SPECIFIED_MAPPING_FILE_REFS_LIST,
 						getModel()) {
@@ -69,10 +73,10 @@ public class EclipseLinkPersistenceItemContentProviderFactory
 					protected int size_() {
 						return subject.specifiedMappingFileRefsSize();
 					}
-				};
+				});
 			
-			ListValueModel<MappingFileRef> impliedMappingFileLvm = 
-				new PropertyListValueModelAdapter<MappingFileRef>(
+			CollectionValueModel<MappingFileRef> impliedMappingFileCvm = 
+				new PropertyCollectionValueModelAdapter<MappingFileRef>(
 					new PropertyAspectAdapter<PersistenceUnit, MappingFileRef>(
 							PersistenceUnit.IMPLIED_MAPPING_FILE_REF_PROPERTY,
 							getModel()) {
@@ -82,8 +86,8 @@ public class EclipseLinkPersistenceItemContentProviderFactory
 						}
 					}
 				);
-			ListValueModel<MappingFileRef> impliedEclipseLinkMappingFileLvm = 
-				new PropertyListValueModelAdapter<MappingFileRef>(
+			CollectionValueModel<MappingFileRef> impliedEclipseLinkMappingFileCvm = 
+				new PropertyCollectionValueModelAdapter<MappingFileRef>(
 					new PropertyAspectAdapter<EclipseLinkPersistenceUnit, MappingFileRef>(
 							EclipseLinkPersistenceUnit.IMPLIED_ECLIPSELINK_MAPPING_FILE_REF_PROPERTY,
 							getModel()) {
@@ -93,7 +97,8 @@ public class EclipseLinkPersistenceItemContentProviderFactory
 						}
 					}
 				);
-			ListValueModel<ClassRef> specifiedClassLvm = 
+			CollectionValueModel<ClassRef> specifiedClassCvm = 
+				new ListCollectionValueModelAdapter<ClassRef>(
 				new ListAspectAdapter<PersistenceUnit, ClassRef>(
 						PersistenceUnit.SPECIFIED_CLASS_REFS_LIST,
 						getModel()) {
@@ -105,13 +110,13 @@ public class EclipseLinkPersistenceItemContentProviderFactory
 					protected int size_() {
 						return subject.specifiedClassRefsSize();
 					}
-				};
-			ListValueModel<ClassRef> impliedClassLvm = 
-				new ListAspectAdapter<PersistenceUnit, ClassRef>(
-						PersistenceUnit.IMPLIED_CLASS_REFS_LIST,
+				});
+			CollectionValueModel<ClassRef> impliedClassCvm = 
+				new CollectionAspectAdapter<PersistenceUnit, ClassRef>(
+						PersistenceUnit.IMPLIED_CLASS_REFS_COLLECTION,
 						getModel()) {
 					@Override
-					protected ListIterator<ClassRef> listIterator_() {
+					protected Iterator<ClassRef> iterator_() {
 						return subject.impliedClassRefs();
 					}
 					@Override
@@ -119,14 +124,14 @@ public class EclipseLinkPersistenceItemContentProviderFactory
 						return subject.impliedClassRefsSize();
 					}
 				};
-			List<ListValueModel<? extends JpaStructureNode>> list = new ArrayList<ListValueModel<? extends JpaStructureNode>>(4);
-			list.add(specifiedMappingFileLvm);
-			list.add(impliedMappingFileLvm);
-			list.add(impliedEclipseLinkMappingFileLvm);
-			list.add(specifiedClassLvm);
-			list.add(impliedClassLvm);
+			List<CollectionValueModel<? extends JpaStructureNode>> list = new ArrayList<CollectionValueModel<? extends JpaStructureNode>>(4);
+			list.add(specifiedMappingFileCvm);
+			list.add(impliedMappingFileCvm);
+			list.add(impliedEclipseLinkMappingFileCvm);
+			list.add(specifiedClassCvm);
+			list.add(impliedClassCvm);
 			
-			return new CompositeListValueModel<ListValueModel<? extends JpaStructureNode>, JpaStructureNode>(list);
+			return new CompositeCollectionValueModel<CollectionValueModel<? extends JpaStructureNode>, JpaStructureNode>(list);
 		}
 	}
 }

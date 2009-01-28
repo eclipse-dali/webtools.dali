@@ -30,11 +30,16 @@ import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.IAnnotatable;
 import org.eclipse.jdt.core.IAnnotation;
+import org.eclipse.jdt.core.IClassFile;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaElementDelta;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IMethod;
+import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.core.JpaDataSource;
@@ -44,6 +49,7 @@ import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JpaResourceModelListener;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
+import org.eclipse.jpt.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.JavaResourceCompilationUnit;
@@ -604,19 +610,23 @@ public class GenericJpaProject
 	}
 
 	protected void dump(IJavaElementDelta delta) {
-		try {
-			this.dump_(delta);
-		} catch (JavaModelException ex) {
-			throw new RuntimeException(ex);
-		}
+//		try {
+//			this.dump_(delta);
+//		} catch (JavaModelException ex) {
+//			throw new RuntimeException(ex);
+//		}
 	}
 
 //	protected void remove() {
 //		removeDump_();
 //	}
-	protected void dump_(IJavaElementDelta delta) throws JavaModelException {
+//	@SuppressWarnings("nls")
+//	protected void dump_(IJavaElementDelta delta) throws JavaModelException {
 //		System.out.println(delta);
 //		IPackageFragmentRoot pfr = (IPackageFragmentRoot) delta.getElement();
+//			IFile file = (IFile) pfr.getResource();
+//			System.out.println("file: " + file.getFullPath());
+//			System.out.println("content type: " + PlatformTools.getContentType(file));
 //		System.out.println("kind: " + this.getKindString(pfr));
 //		System.out.println("archive: " + pfr.isArchive());
 //		System.out.println("external: " + pfr.isExternal());
@@ -638,8 +648,9 @@ public class GenericJpaProject
 //			}
 //		}
 //		System.out.flush();
-	}
-
+//	}
+//
+	@SuppressWarnings("nls")
 	protected String getKindString(IPackageFragmentRoot pfr) throws JavaModelException {
 		switch (pfr.getKind()) {
 			case IPackageFragmentRoot.K_BINARY:
@@ -651,6 +662,7 @@ public class GenericJpaProject
 		}
 	}
 
+	@SuppressWarnings("nls")
 	protected void dumpAnnotations(IAnnotatable annotatable) throws JavaModelException {
 		for (IAnnotation annotation : annotatable.getAnnotations()) {
 			System.out.println("\t\t\t\t\tannotation: " + annotation);

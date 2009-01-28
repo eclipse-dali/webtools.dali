@@ -15,7 +15,6 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.core.context.persistence.Property;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnitProperties;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
@@ -45,7 +44,7 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 	private Map<String, CustomizerProperties> entitiesCustomizerProperties;
 	
 	// ********** constructors **********
-	public EclipseLinkCustomization(PersistenceUnit parent, ListValueModel<Property> propertyListAdapter) {
+	public EclipseLinkCustomization(PersistenceUnit parent, ListValueModel<PersistenceUnit.Property> propertyListAdapter) {
 		super(parent, propertyListAdapter);
 	}
 
@@ -77,31 +76,31 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 			this.getBooleanValue(ECLIPSELINK_VALIDATION_ONLY);
 		this.initializeSessionCustomizersFromPersistenceUnit();
 
-		Set<Property> properties = 
+		Set<PersistenceUnit.Property> properties = 
 			this.getPropertiesSetWithPrefix(ECLIPSELINK_DESCRIPTOR_CUSTOMIZER);
 		this.initializeEntitiesCustomizerClass(properties);
 		
-		this.profiler = this.getProfilerProtertyValue();
+		this.profiler = this.getProfilerPropertyValue();
 		this.exceptionHandler = 
 			this.getStringValue(ECLIPSELINK_EXCEPTION_HANDLER);
 	}
 
 	private void initializeSessionCustomizersFromPersistenceUnit() {
-		Set<Property> properties = 
+		Set<PersistenceUnit.Property> properties = 
 			this.getPropertiesSetWithPrefix(ECLIPSELINK_SESSION_CUSTOMIZER);
 		
 		this.sessionCustomizers = new ArrayList<String>(properties.size());
 		this.initializeSessionCustomizersWith(properties);
 	}
 
-	private void initializeSessionCustomizersWith(Set<Property> properties) {
-		for (Property property : properties) {
+	private void initializeSessionCustomizersWith(Set<PersistenceUnit.Property> properties) {
+		for (PersistenceUnit.Property property : properties) {
 			this.sessionCustomizers.add(property.getValue());
 		}
 	}
 
-	private void initializeEntitiesCustomizerClass(Set<Property> properties) {
-		for (Property property : properties) {
+	private void initializeEntitiesCustomizerClass(Set<PersistenceUnit.Property> properties) {
+		for (PersistenceUnit.Property property : properties) {
 			String entityName = this.getEntityName(property);
 			this.setCustomizerClass_(property, entityName);
 		}
@@ -110,18 +109,14 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 	/**
 	 * Gets the Profiler property from the persistence unit.
 	 */
-	private String getProfilerProtertyValue() {
+	private String getProfilerPropertyValue() {
 
-		Profiler standardProfiler = this.getEnumValue(ECLIPSELINK_PROFILER, Profiler.values());
-		if( ! this.getPersistenceUnit().containsProperty(ECLIPSELINK_PROFILER)) {
+		String value = this.getStringValue(ECLIPSELINK_PROFILER);
+		if (value == null) {
 			return null;	// no property found
 		}
-		else if(standardProfiler == null) {
-			return this.getStringValue(ECLIPSELINK_PROFILER); // custom profiler
-		}
-		else {
-			return getEclipseLinkStringValueOf(standardProfiler); // a Profiler
-		}
+		Profiler standardProfiler = this.getEnumValue(ECLIPSELINK_PROFILER, Profiler.values());
+		return (standardProfiler == null) ? value : getEclipseLinkStringValueOf(standardProfiler);
 	}
 
 	// ********** behavior **********
@@ -174,7 +169,7 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 	 * Method used for identifying the given property.
 	 */
 	@Override
-	public boolean itemIsProperty(Property item) {
+	public boolean itemIsProperty(PersistenceUnit.Property item) {
 		boolean isProperty = super.itemIsProperty(item);
 		
 		if ( ! isProperty && item.getName() != null) {
@@ -190,7 +185,7 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 	 * property.
 	 */
 	@Override
-	public String propertyIdFor(Property property) {
+	public String propertyIdFor(PersistenceUnit.Property property) {
 		try {
 			return super.propertyIdFor(property);
 		}
@@ -199,7 +194,7 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 				return DESCRIPTOR_CUSTOMIZER_PROPERTY;
 			}
 		}
-		throw new IllegalArgumentException("Illegal property: " + property.toString());
+		throw new IllegalArgumentException("Illegal property: " + property); //$NON-NLS-1$
 	}
 
 	public void propertyChanged(PropertyChangeEvent event) {
@@ -241,7 +236,7 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 			this.exceptionHandlerChanged(event);
 		}
 		else {
-			throw new IllegalArgumentException("Illegal event received - property not applicable: " + aspectName);
+			throw new IllegalArgumentException("Illegal event received - property not applicable: " + aspectName); //$NON-NLS-1$
 		}
 		return;
 	}
@@ -260,7 +255,7 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 	}
 
 	private void throwExceptionsChanged(PropertyChangeEvent event) {
-		String stringValue = (event.getNewValue() == null) ? null : ((Property) event.getNewValue()).getValue();
+		String stringValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
 		Boolean newValue = getBooleanValueOf(stringValue);
 		
 		Boolean old = this.throwExceptions;
@@ -285,7 +280,7 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 	}
 
 	private void weavingLazyChanged(PropertyChangeEvent event) {
-		String stringValue = (event.getNewValue() == null) ? null : ((Property) event.getNewValue()).getValue();
+		String stringValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
 		Boolean newValue = getBooleanValueOf(stringValue);
 		
 		Boolean old = this.weavingLazy;
@@ -310,7 +305,7 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 	}
 
 	private void weavingChangeTrackingChanged(PropertyChangeEvent event) {
-		String stringValue = (event.getNewValue() == null) ? null : ((Property) event.getNewValue()).getValue();
+		String stringValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
 		Boolean newValue = getBooleanValueOf(stringValue);
 		
 		Boolean old = this.weavingChangeTracking;
@@ -335,7 +330,7 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 	}
 
 	private void weavingFetchGroupsChanged(PropertyChangeEvent event) {
-		String stringValue = (event.getNewValue() == null) ? null : ((Property) event.getNewValue()).getValue();
+		String stringValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
 		Boolean newValue = getBooleanValueOf(stringValue);
 		
 		Boolean old = this.weavingFetchGroups;
@@ -360,7 +355,7 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 	}
 
 	private void weavingInternalChanged(PropertyChangeEvent event) {
-		String stringValue = (event.getNewValue() == null) ? null : ((Property) event.getNewValue()).getValue();
+		String stringValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
 		Boolean newValue = getBooleanValueOf(stringValue);
 		
 		Boolean old = this.weavingInternal;
@@ -385,7 +380,7 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 	}
 
 	private void weavingEagerChanged(PropertyChangeEvent event) {
-		String stringValue = (event.getNewValue() == null) ? null : ((Property) event.getNewValue()).getValue();
+		String stringValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
 		Boolean newValue = getBooleanValueOf(stringValue);
 		
 		Boolean old = this.weavingEager;
@@ -410,7 +405,7 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 	}
 
 	private void validationOnlyChanged(PropertyChangeEvent event) {
-		String stringValue = (event.getNewValue() == null) ? null : ((Property) event.getNewValue()).getValue();
+		String stringValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
 		Boolean newValue = getBooleanValueOf(stringValue);
 		
 		Boolean old = this.validationOnly;
@@ -492,7 +487,7 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 	}
 
 	private void weavingChanged(PropertyChangeEvent event) {
-		String stringValue = (event.getNewValue() == null) ? null : ((Property) event.getNewValue()).getValue();
+		String stringValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
 		Weaving newValue = getEnumValueOf(stringValue, Weaving.values());
 		Weaving old = this.weaving;
 		this.weaving = newValue;
@@ -516,7 +511,7 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 	}
 
 	private void exceptionHandlerChanged(PropertyChangeEvent event) {
-		String newValue = (event.getNewValue() == null) ? null : ((Property) event.getNewValue()).getValue();
+		String newValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
 		String old = this.exceptionHandler;
 		this.exceptionHandler = newValue;
 		this.firePropertyChanged(event.getAspectName(), old, newValue);
@@ -541,10 +536,10 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 
 	private void descriptorCustomizerChanged(PropertyChangeEvent event) {
 		String entityName;
-		Property newProperty = (Property) event.getNewValue();
+		PersistenceUnit.Property newProperty = (PersistenceUnit.Property) event.getNewValue();
 		// property == null when removed
 		entityName = (newProperty == null) ? 
-			this.getEntityName((Property) event.getOldValue()) : this.getEntityName(newProperty);
+			this.getEntityName((PersistenceUnit.Property) event.getOldValue()) : this.getEntityName(newProperty);
 		CustomizerProperties old = this.setCustomizerClass_(newProperty, entityName);
 		this.firePropertyChanged(event.getAspectName(), old, this.customizerPropertiesOf(entityName));
 	}
@@ -560,7 +555,7 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 	 * Convenience method to update the CustomizerClass in entitiesCustomizerProperties map.
 	 * Returns the old value of CustomizerProperties
 	 */
-	private CustomizerProperties setCustomizerClass_(Property newProperty, String entityName) {
+	private CustomizerProperties setCustomizerClass_(PersistenceUnit.Property newProperty, String entityName) {
 		String newValue = (newProperty == null) ? null : newProperty.getValue();
 		return this.setCustomizerClass_(newValue, entityName);
 	}
@@ -622,7 +617,7 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 
 	public String addEntity(String entity) {
 		if (entityExists(entity)) {
-			throw new IllegalStateException("Entity " + entity + " already exist.");
+			throw new IllegalStateException("Entity already exists: " + entity); //$NON-NLS-1$
 		}
 		return this.addOrReplacePropertiesForEntity(entity, new CustomizerProperties(entity));
 	}
@@ -711,12 +706,12 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 			this.setProfiler_((String) null);
 			return;
 		}
-		Profiler profiler = Profiler.getProfilerFor(newProfiler);
-		if(profiler == null) {	// custom profiler class
+		Profiler p = Profiler.getProfilerFor(newProfiler);
+		if(p == null) {	// custom profiler class
 			this.setProfiler_(newProfiler);
 		}
 		else {
-			this.setProfiler(profiler);
+			this.setProfiler(p);
 		}
 	}
 	
@@ -728,7 +723,7 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 	}
 
 	private void profilerChanged(PropertyChangeEvent event) {
-		String newValue = (event.getNewValue() == null) ? null : ((Property) event.getNewValue()).getValue();
+		String newValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
 		String old = this.profiler;
 		this.profiler = newValue;
 		this.firePropertyChanged(event.getAspectName(), old, newValue);

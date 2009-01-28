@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.resource.orm;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.ListIterator;
+
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
@@ -24,7 +24,6 @@ import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.common.JpaEObject;
 import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 /**
  * <!-- begin-user-doc -->
@@ -1077,25 +1076,15 @@ public class XmlEntityMappings extends AbstractJpaEObject implements JpaEObject
 		return result.toString();
 	}
 	
-	@Override
-	public JpaEObject getRoot() {
-		return this;
-	}
-	
 	public List<XmlTypeMapping> getTypeMappings() {
-		List<XmlTypeMapping> typeMappings = new ArrayList<XmlTypeMapping>();
-		ListIterator<XmlMappedSuperclass> mappedSuperclasses = new CloneListIterator<XmlMappedSuperclass>(this.getMappedSuperclasses());//prevent ConcurrentModificiationException
-		for (XmlMappedSuperclass mapping : CollectionTools.iterable(mappedSuperclasses)) {
-			typeMappings.add(mapping);
-		}
-		ListIterator<XmlEntity> entities = new CloneListIterator<XmlEntity>(this.getEntities());//prevent ConcurrentModificiationException
-		for (XmlEntity mapping : CollectionTools.iterable(entities)) {
-			typeMappings.add(mapping);
-		}
-		ListIterator<XmlEmbeddable> embeddables = new CloneListIterator<XmlEmbeddable>(this.getEmbeddables());//prevent ConcurrentModificiationException
-		for (XmlEmbeddable mapping : CollectionTools.iterable(embeddables)) {
-			typeMappings.add(mapping);
-		}
+		// convert lists to arrays to avoid ConcurrentModificationException while adding to result list
+		ArrayList<XmlTypeMapping> typeMappings = new ArrayList<XmlTypeMapping>();
+		CollectionTools.addAll(typeMappings, this.getMappedSuperclasses().toArray(EMPTY_XML_TYPE_MAPPING_ARRAY));
+		CollectionTools.addAll(typeMappings, this.getEntities().toArray(EMPTY_XML_TYPE_MAPPING_ARRAY));
+		CollectionTools.addAll(typeMappings, this.getEmbeddables().toArray(EMPTY_XML_TYPE_MAPPING_ARRAY));
 		return typeMappings;
 	}
+	
+	private static final XmlTypeMapping[] EMPTY_XML_TYPE_MAPPING_ARRAY = new XmlTypeMapping[0];
+
 }

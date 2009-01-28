@@ -1,15 +1,15 @@
 /*******************************************************************************
- *  Copyright (c) 2007 Oracle. 
- *  All rights reserved.  This program and the accompanying materials 
- *  are made available under the terms of the Eclipse Public License v1.0 
- *  which accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.persistence;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.jpt.core.JpaStructureNode;
@@ -26,149 +26,182 @@ import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.persistence.XmlJavaClassRef;
 import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 /**
- * This is the context model object which corresponds to the 
- * persistence resource model object XmlJavaClassRef.
- * XmlJavaClassRef corresponds to the class tag in the persistence.xml
+ * @see ClassRef
  */
-public class GenericClassRef extends AbstractXmlContextNode 
+public class GenericClassRef
+	extends AbstractXmlContextNode
 	implements ClassRef
 {
-	//this is null for the implied classRef case
+	// this is null for an "implied" class ref
 	protected XmlJavaClassRef xmlJavaClassRef;
-	
+
 	protected String className;
-	
+
 	protected JavaPersistentType javaPersistentType;
-	
-	
+
+
+	// ********** construction/initialization **********
+
 	public GenericClassRef(PersistenceUnit parent, XmlJavaClassRef classRef) {
-		super(parent);
-		initialize(classRef);
+		this(parent, classRef, classRef.getJavaClass());
 	}
-	
+
+	/**
+	 * used for "implied" class ref
+	 */
 	public GenericClassRef(PersistenceUnit parent, String className) {
-		super(parent);
-		initialize(className);
+		this(parent, null, className);
 	}
-	
+
+	protected GenericClassRef(PersistenceUnit parent, XmlJavaClassRef classRef, String className) {
+		super(parent);
+		this.initialize(classRef, className);
+	}
+
+	protected void initialize(XmlJavaClassRef classRef, String typeName) {
+		this.xmlJavaClassRef = classRef;
+		this.className = typeName;
+		this.initializeJavaPersistentType();
+	}
+
+	protected void initializeJavaPersistentType() {
+		JavaResourcePersistentType jrpt = this.getJpaProject().getJavaResourcePersistentType(this.className);
+		if (jrpt != null) {
+			this.javaPersistentType = this.buildJavaPersistentType(jrpt);
+		}
+	}
+
+
+	// ********** JpaStructureNode implementation **********
+
 	public String getId() {
 		return PersistenceStructureNodes.CLASS_REF_ID;
 	}
-	
-	public boolean isFor(String fullyQualifiedTypeName) {
-		if (getClassName() == null) {
-			return false;
+
+	public JpaStructureNode getStructureNode(int textOffset) {
+		return this;
+	}
+
+	public TextRange getSelectionTextRange() {
+		return this.isVirtual() ? null : this.xmlJavaClassRef.getSelectionTextRange();
+	}
+
+	public void dispose() {
+		if (this.javaPersistentType != null) {
+			this.javaPersistentType.dispose();
 		}
-		return getClassName().equals(fullyQualifiedTypeName);
 	}
-	
-	public boolean isVirtual() {
-		return this.xmlJavaClassRef == null;
-	}
-	
-	
-	// **************** PersistentTypeContext impl *****************************
-	
+
+
+	// ********** PersistentType.Owner implementation **********
+
 	public AccessType getOverridePersistentTypeAccess() {
 		// no access type at this level overrides any local access type specification
 		return null;
 	}
-	
+
 	public AccessType getDefaultPersistentTypeAccess() {
-		return getPersistenceUnit().getDefaultAccess();
+		return this.getPersistenceUnit().getDefaultAccess();
 	}
-	
-	
-	// **************** class name *********************************************
-	
+
+
+	// ********** queries **********
+
+	public boolean isFor(String typeName) {
+		return (this.className != null) && this.className.equals(typeName);
+	}
+
+	public boolean isVirtual() {
+		return this.xmlJavaClassRef == null;
+	}
+
+	public boolean containsOffset(int textOffset) {
+		return this.isNotVirtual() && this.xmlJavaClassRef.containsOffset(textOffset);
+	}
+
+	protected boolean isNotVirtual() {
+		return ! this.isVirtual();
+	}
+
+
+	// ********** class name **********
+
 	public String getClassName() {
 		return this.className;
 	}
-	
-	public void setClassName(String newClassName) {
-		String oldClassName = this.className;
-		this.className = newClassName;
-		this.xmlJavaClassRef.setJavaClass(newClassName);
-		firePropertyChanged(CLASS_NAME_PROPERTY, oldClassName, newClassName);
+
+	public void setClassName(String className) {
+		String old = this.className;
+		this.className = className;
+		this.xmlJavaClassRef.setJavaClass(className);
+		this.firePropertyChanged(CLASS_NAME_PROPERTY, old, className);
 	}
-	
+
 	protected void setClassName_(String newClassName) {
-		String oldClassName = this.className;
+		String old = this.className;
 		this.className = newClassName;
-		firePropertyChanged(CLASS_NAME_PROPERTY, oldClassName, newClassName);
+		this.firePropertyChanged(CLASS_NAME_PROPERTY, old, newClassName);
 	}
-	
-	
-	// **************** java persistent type ***********************************
-	
+
+
+	// ********** java persistent type **********
+
 	public JavaPersistentType getJavaPersistentType() {
 		return this.javaPersistentType;
 	}
-	
-	protected void setJavaPersistentType(JavaPersistentType newJavaPersistentType) {
-		JavaPersistentType oldJavaPersistentType = this.javaPersistentType;
-		this.javaPersistentType = newJavaPersistentType;
-		firePropertyChanged(ClassRef.JAVA_PERSISTENT_TYPE_PROPERTY, oldJavaPersistentType, newJavaPersistentType);
-	}
-	
-	
-	// **************** updating ***********************************************
-	
-	protected void initialize(XmlJavaClassRef classRef) {
-		this.xmlJavaClassRef = classRef;
-		this.className = classRef.getJavaClass();
-		initializeJavaPersistentType();
-	}
-	
-	protected void initialize(String className) {
-		this.className = className;
-		initializeJavaPersistentType();
-	}
-	
-	protected void initializeJavaPersistentType() {
-		JavaResourcePersistentType jrpt = getJpaProject().getJavaResourcePersistentType(getClassName());
-		if (jrpt != null) {
-			this.javaPersistentType = buildJavaPersistentType(jrpt);
-		}				
+
+	protected void setJavaPersistentType(JavaPersistentType javaPersistentType) {
+		JavaPersistentType old = this.javaPersistentType;
+		this.javaPersistentType = javaPersistentType;
+		this.firePropertyChanged(JAVA_PERSISTENT_TYPE_PROPERTY, old, javaPersistentType);
 	}
 
+
+	// ********** updating **********
+
 	public void update(XmlJavaClassRef classRef) {
+		this.update(classRef, classRef.getJavaClass());
+	}
+
+	public void update(String typeName) {
+		this.update(null, typeName);
+	}
+
+	protected void update(XmlJavaClassRef classRef, String typeName) {
 		this.xmlJavaClassRef = classRef;
-		setClassName_(classRef.getJavaClass());
-		updateJavaPersistentType();
+		this.setClassName_(typeName);
+		this.updateJavaPersistentType();
 	}
-	
-	public void update(String className) {
-		this.xmlJavaClassRef = null;
-		setClassName_(className);
-		updateJavaPersistentType();
-	}
-	
+
 	protected void updateJavaPersistentType() {
-		JavaResourcePersistentType jrpt = getJpaProject().getJavaResourcePersistentType(getClassName());
+		JavaResourcePersistentType jrpt = this.getJpaProject().getJavaResourcePersistentType(this.className);
 		if (jrpt == null) {
-			if (getJavaPersistentType() != null) {
-				getJavaPersistentType().dispose();
+			if (this.javaPersistentType != null) {
+				this.javaPersistentType.dispose();
+				this.setJavaPersistentType(null);
 			}
-			setJavaPersistentType(null);
+		} else { 
+			if (this.javaPersistentType == null) {
+				this.setJavaPersistentType(this.buildJavaPersistentType(jrpt));
+			} else {
+				this.javaPersistentType.update(jrpt);
+			}
 		}
-		else { 
-			if (getJavaPersistentType() != null) {
-				getJavaPersistentType().update(jrpt);
-			}
-			else {
-				setJavaPersistentType(buildJavaPersistentType(jrpt));
-			}
-		}		
 	}
-	
+
 	protected JavaPersistentType buildJavaPersistentType(JavaResourcePersistentType jrpt) {
-		return getJpaFactory().buildJavaPersistentType(this, jrpt);
+		return this.getJpaFactory().buildJavaPersistentType(this, jrpt);
+	}
+
+
+	// ********** XmlContextNode implementation **********
+
+	public TextRange getValidationTextRange() {
+		return this.isVirtual() ? null : this.xmlJavaClassRef.getValidationTextRange();
 	}
 
 
@@ -177,6 +210,7 @@ public class GenericClassRef extends AbstractXmlContextNode
 	@Override
 	public void validate(List<IMessage> messages) {
 		super.validate(messages);
+
 		if (StringTools.stringIsEmpty(this.className)) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
@@ -188,6 +222,7 @@ public class GenericClassRef extends AbstractXmlContextNode
 			);
 			return;
 		}
+
 		if (this.javaPersistentType == null) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
@@ -200,8 +235,11 @@ public class GenericClassRef extends AbstractXmlContextNode
 			);
 			return;
 		}
-		MappingFileRef mappingFileRef = this.getMappingFileContaining(this.className);
-		if (mappingFileRef != null) {
+
+		// 190062 validate Java class only if this is the only reference to it
+		boolean validateJavaPersistentType = true;
+		for (Iterator<MappingFileRef> stream = this.getPersistenceUnit().mappingFileRefsContaining(this.className); stream.hasNext(); ) {
+			MappingFileRef mappingFileRef = stream.next();
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.LOW_SEVERITY,
@@ -211,11 +249,11 @@ public class GenericClassRef extends AbstractXmlContextNode
 					this.getValidationTextRange()
 				)
 			);
-			return;
 		}
-		// 190062 only add Java validation messages if this class is not listed
-		// in a mapping file
-		this.validateJavaPersistentType(messages);
+
+		if (validateJavaPersistentType) {
+			this.validateJavaPersistentType(messages);
+		}
 	}
 
 	protected void validateJavaPersistentType(List<IMessage> messages) {
@@ -225,54 +263,13 @@ public class GenericClassRef extends AbstractXmlContextNode
 			JptCorePlugin.log(t);
 		}
 	}
-	
-	//possibly move this and make it API on PersistenceUnit
-	/**
-	 * Return the mapping file that contains a persistent type for the given 
-	 * type name.  Return null if no mapping file contains the persistent type.
-	 */
-	protected MappingFileRef getMappingFileContaining(String fullyQualifiedTypeName) {
-		for (MappingFileRef mappingFileRef : CollectionTools.iterable(getPersistenceUnit().mappingFileRefs())) {
-			if (mappingFileRef.getPersistentType(fullyQualifiedTypeName) != null) {
-				return mappingFileRef;
-			}
-		}
-		return null;
-	}
 
-	public JpaStructureNode getStructureNode(int textOffset) {
-		return this;
-	}
-	
-	public boolean containsOffset(int textOffset) {
-		if (isVirtual()) {
-			return false;
-		}
-		return this.xmlJavaClassRef.containsOffset(textOffset);
-	}
-	
-	public TextRange getSelectionTextRange() {
-		if (isVirtual()) {
-			return null;
-		}
-		return this.xmlJavaClassRef.getSelectionTextRange();
-	}
-	
-	public TextRange getValidationTextRange() {
-		if (isVirtual()) {
-			return null;
-		}
-		return this.xmlJavaClassRef.getValidationTextRange();
-	}
-	
+
+	// ********** misc **********
+
 	@Override
 	public void toString(StringBuilder sb) {
-		sb.append(getClassName());
+		sb.append(this.className);
 	}
-	
-	public void dispose() {
-		if (getJavaPersistentType() != null) {
-			getJavaPersistentType().dispose();
-		}
-	}
+
 }

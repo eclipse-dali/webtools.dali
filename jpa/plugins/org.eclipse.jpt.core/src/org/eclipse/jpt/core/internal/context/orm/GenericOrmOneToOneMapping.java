@@ -10,8 +10,10 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.Entity;
@@ -30,6 +32,7 @@ import org.eclipse.jpt.core.resource.orm.XmlPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
@@ -214,21 +217,21 @@ public class GenericOrmOneToOneMapping
 	}
 	
 	protected void updatePrimaryKeyJoinColumns() {
-		ListIterator<OrmPrimaryKeyJoinColumn> contextPkJoinColumns = primaryKeyJoinColumns();
-		ListIterator<XmlPrimaryKeyJoinColumn> resourcePkJoinColumns = new CloneListIterator<XmlPrimaryKeyJoinColumn>(this.resourceAttributeMapping.getPrimaryKeyJoinColumns());//prevent ConcurrentModificiationException
+		// make a copy of the XML PK join columns (to prevent ConcurrentModificationException)
+		Iterator<XmlPrimaryKeyJoinColumn> xmlPkJoinColumns = new CloneIterator<XmlPrimaryKeyJoinColumn>(this.resourceAttributeMapping.getPrimaryKeyJoinColumns());
 		
-		while (contextPkJoinColumns.hasNext()) {
-			OrmPrimaryKeyJoinColumn pkJoinColumn = contextPkJoinColumns.next();
-			if (resourcePkJoinColumns.hasNext()) {
-				pkJoinColumn.update(resourcePkJoinColumns.next());
+		for (Iterator<OrmPrimaryKeyJoinColumn> contextPkJoinColumns = primaryKeyJoinColumns(); contextPkJoinColumns.hasNext(); ) {
+			OrmPrimaryKeyJoinColumn contextPkJoinColumn = contextPkJoinColumns.next();
+			if (xmlPkJoinColumns.hasNext()) {
+				contextPkJoinColumn.update(xmlPkJoinColumns.next());
 			}
 			else {
-				removePrimaryKeyJoinColumn_(pkJoinColumn);
+				removePrimaryKeyJoinColumn_(contextPkJoinColumn);
 			}
 		}
 		
-		while (resourcePkJoinColumns.hasNext()) {
-			addPrimaryKeyJoinColumn(buildPrimaryKeyJoinColumn(resourcePkJoinColumns.next()));
+		while (xmlPkJoinColumns.hasNext()) {
+			addPrimaryKeyJoinColumn(buildPrimaryKeyJoinColumn(xmlPkJoinColumns.next()));
 		}
 	}
 

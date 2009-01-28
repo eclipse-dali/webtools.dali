@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -1075,17 +1075,17 @@ public class JavaEntityTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		assertNull(getJavaEntity().getSequenceGenerator());
-		assertEquals(0, CollectionTools.size(getJavaEntity().getPersistenceUnit().allGenerators()));
+		assertEquals(0, getJavaEntity().getPersistenceUnit().generatorsSize());
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		typeResource.addSupportingAnnotation(JPA.SEQUENCE_GENERATOR);
 		
 		assertNotNull(getJavaEntity().getSequenceGenerator());
 		assertEquals(1, typeResource.supportingAnnotationsSize());
-		assertEquals(1, CollectionTools.size(getJavaEntity().getPersistenceUnit().allGenerators()));
+		assertEquals(1, getJavaEntity().getPersistenceUnit().generatorsSize());
 		
 		getJavaEntity().getSequenceGenerator().setName("foo");
-		assertEquals(1, CollectionTools.size(getJavaEntity().getPersistenceUnit().allGenerators()));
+		assertEquals(1, getJavaEntity().getPersistenceUnit().generatorsSize());
 	}
 	
 	public void testAddSequenceGenerator() throws Exception {
@@ -1136,17 +1136,17 @@ public class JavaEntityTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		assertNull(getJavaEntity().getTableGenerator());
-		assertEquals(0, CollectionTools.size(getJavaEntity().getPersistenceUnit().allGenerators()));
+		assertEquals(0, getJavaEntity().getPersistenceUnit().generatorsSize());
 	
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		typeResource.addSupportingAnnotation(JPA.TABLE_GENERATOR);
 		
 		assertNotNull(getJavaEntity().getTableGenerator());		
 		assertEquals(1, typeResource.supportingAnnotationsSize());
-		assertEquals(1, CollectionTools.size(getJavaEntity().getPersistenceUnit().allGenerators()));
+		assertEquals(1, getJavaEntity().getPersistenceUnit().generatorsSize());
 		
 		getJavaEntity().getTableGenerator().setName("foo");
-		assertEquals(1, CollectionTools.size(getJavaEntity().getPersistenceUnit().allGenerators()));
+		assertEquals(1, getJavaEntity().getPersistenceUnit().generatorsSize());
 	}
 	
 	public void testAddTableGenerator() throws Exception {
@@ -2551,7 +2551,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		Entity entity = getJavaEntity();		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		
-		assertEquals(0, CollectionTools.size(entity.getPersistenceUnit().allQueries()));
+		assertEquals(0, entity.getPersistenceUnit().queriesSize());
 		
 		((NamedQueryAnnotation) typeResource.addSupportingAnnotation(0, NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME)).setName("FOO");
 		((NamedQueryAnnotation) typeResource.addSupportingAnnotation(1, NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME)).setName("BAR");
@@ -2561,7 +2561,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertEquals("BAR", namedQueries.next().getName());
 		assertEquals("BAZ", namedQueries.next().getName());
 		assertFalse(namedQueries.hasNext());
-		assertEquals(3, CollectionTools.size(entity.getPersistenceUnit().allQueries()));
+		assertEquals(3, entity.getPersistenceUnit().queriesSize());
 		
 		typeResource.moveSupportingAnnotation(2, 0, NamedQueriesAnnotation.ANNOTATION_NAME);
 		namedQueries = entity.namedQueries();
@@ -2582,18 +2582,18 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertEquals("BAZ", namedQueries.next().getName());
 		assertEquals("FOO", namedQueries.next().getName());
 		assertFalse(namedQueries.hasNext());
-		assertEquals(2, CollectionTools.size(entity.getPersistenceUnit().allQueries()));
+		assertEquals(2, entity.getPersistenceUnit().queriesSize());
 		
 		typeResource.removeSupportingAnnotation(1,  NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME);
 		namedQueries = entity.namedQueries();
 		assertEquals("BAZ", namedQueries.next().getName());
 		assertFalse(namedQueries.hasNext());
-		assertEquals(1, CollectionTools.size(entity.getPersistenceUnit().allQueries()));
+		assertEquals(1, entity.getPersistenceUnit().queriesSize());
 		
 		typeResource.removeSupportingAnnotation(0,  NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME);
 		namedQueries = entity.namedQueries();
 		assertFalse(namedQueries.hasNext());
-		assertEquals(0, CollectionTools.size(entity.getPersistenceUnit().allQueries()));
+		assertEquals(0, entity.getPersistenceUnit().queriesSize());
 	}
 	
 	public void testNamedQueriesSize() throws Exception {
@@ -2729,7 +2729,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		Entity entity = getJavaEntity();		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		
-		assertEquals(0, CollectionTools.size(entity.getPersistenceUnit().allQueries()));
+		assertEquals(0, entity.getPersistenceUnit().queriesSize());
 		
 		((NamedNativeQueryAnnotation) typeResource.addSupportingAnnotation(0, NamedNativeQueryAnnotation.ANNOTATION_NAME, NamedNativeQueriesAnnotation.ANNOTATION_NAME)).setName("FOO");
 		((NamedNativeQueryAnnotation) typeResource.addSupportingAnnotation(1, NamedNativeQueryAnnotation.ANNOTATION_NAME, NamedNativeQueriesAnnotation.ANNOTATION_NAME)).setName("BAR");
@@ -2739,7 +2739,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertEquals("BAR", namedQueries.next().getName());
 		assertEquals("BAZ", namedQueries.next().getName());
 		assertFalse(namedQueries.hasNext());
-		assertEquals(3, CollectionTools.size(entity.getPersistenceUnit().allQueries()));
+		assertEquals(3, entity.getPersistenceUnit().queriesSize());
 		
 		typeResource.moveSupportingAnnotation(2, 0, NamedNativeQueriesAnnotation.ANNOTATION_NAME);
 		namedQueries = entity.namedNativeQueries();
@@ -2760,18 +2760,18 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertEquals("BAZ", namedQueries.next().getName());
 		assertEquals("FOO", namedQueries.next().getName());
 		assertFalse(namedQueries.hasNext());
-		assertEquals(2, CollectionTools.size(entity.getPersistenceUnit().allQueries()));
+		assertEquals(2, entity.getPersistenceUnit().queriesSize());
 		
 		typeResource.removeSupportingAnnotation(1,  NamedNativeQueryAnnotation.ANNOTATION_NAME, NamedNativeQueriesAnnotation.ANNOTATION_NAME);
 		namedQueries = entity.namedNativeQueries();
 		assertEquals("BAZ", namedQueries.next().getName());
 		assertFalse(namedQueries.hasNext());
-		assertEquals(1, CollectionTools.size(entity.getPersistenceUnit().allQueries()));
+		assertEquals(1, entity.getPersistenceUnit().queriesSize());
 		
 		typeResource.removeSupportingAnnotation(0,  NamedNativeQueryAnnotation.ANNOTATION_NAME, NamedNativeQueriesAnnotation.ANNOTATION_NAME);
 		namedQueries = entity.namedNativeQueries();
 		assertFalse(namedQueries.hasNext());
-		assertEquals(0, CollectionTools.size(entity.getPersistenceUnit().allQueries()));
+		assertEquals(0, entity.getPersistenceUnit().queriesSize());
 	}	
 	
 	public void testNamedNativeQueriesSize() throws Exception {

@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2008 Oracle. All rights reserved.
+* Copyright (c) 2008, 2009 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,6 @@ package org.eclipse.jpt.eclipselink.core.internal.context.persistence.connection
 import java.util.Map;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnitTransactionType;
-import org.eclipse.jpt.core.context.persistence.Property;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnitProperties;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
@@ -47,7 +46,7 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 	
 
 	// ********** constructors **********
-	public EclipseLinkConnection(PersistenceUnit parent, ListValueModel<Property> propertyListAdapter) {
+	public EclipseLinkConnection(PersistenceUnit parent, ListValueModel<PersistenceUnit.Property> propertyListAdapter) {
 		super(parent, propertyListAdapter);
 	}
 
@@ -99,7 +98,7 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 	 * Initialize and add listeners to the persistence unit.
 	 */
 	@Override
-	protected void initialize(PersistenceUnit parent, ListValueModel<Property> propertyListAdapter) {
+	protected void initialize(PersistenceUnit parent, ListValueModel<PersistenceUnit.Property> propertyListAdapter) {
 		super.initialize(parent, propertyListAdapter);
 
 		this.getPersistenceUnit().addPropertyChangeListener(
@@ -323,7 +322,7 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 	}
 
 	private void nativeSqlChanged(PropertyChangeEvent event) {
-		String stringValue = (event.getNewValue() == null) ? null : ((Property) event.getNewValue()).getValue();
+		String stringValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
 		Boolean newValue = getBooleanValueOf(stringValue);
 		
 		Boolean old = this.nativeSql;
@@ -349,7 +348,7 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 	}
 
 	private void batchWritingChanged(PropertyChangeEvent event) {
-		String stringValue = (event.getNewValue() == null) ? null : ((Property) event.getNewValue()).getValue();
+		String stringValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
 		BatchWriting newValue = getEnumValueOf(stringValue, BatchWriting.values());
 		BatchWriting old = this.batchWriting;
 		this.batchWriting = newValue;
@@ -373,7 +372,7 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 	}
 
 	private void cacheStatementsChanged(PropertyChangeEvent event) {
-		String stringValue = (event.getNewValue() == null) ? null : ((Property) event.getNewValue()).getValue();
+		String stringValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
 		Boolean newValue = getBooleanValueOf(stringValue);
 		
 		Boolean old = this.cacheStatements;
@@ -398,7 +397,7 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 	}
 
 	private void cacheStatementsSizeChanged(PropertyChangeEvent event) {
-		String stringValue = (event.getNewValue() == null) ? null : ((Property) event.getNewValue()).getValue();
+		String stringValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
 		Integer newValue = getIntegerValueOf(stringValue);
 		
 		Integer old = this.cacheStatementsSize;
@@ -423,7 +422,7 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 	}
 
 	private void driverChanged(PropertyChangeEvent event) {
-		String newValue = (event.getNewValue() == null) ? null : ((Property) event.getNewValue()).getValue();
+		String newValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
 		String old = this.driver;
 		this.driver = newValue;
 		this.firePropertyChanged(event.getAspectName(), old, newValue);
@@ -446,7 +445,7 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 	}
 
 	private void urlChanged(PropertyChangeEvent event) {
-		String newValue = (event.getNewValue() == null) ? null : ((Property) event.getNewValue()).getValue();
+		String newValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
 		String old = this.url;
 		this.url = newValue;
 		this.firePropertyChanged(event.getAspectName(), old, newValue);
@@ -469,7 +468,7 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 	}
 
 	private void userChanged(PropertyChangeEvent event) {
-		String newValue = (event.getNewValue() == null) ? null : ((Property) event.getNewValue()).getValue();
+		String newValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
 		String old = this.user;
 		this.user = newValue;
 		this.firePropertyChanged(event.getAspectName(), old, newValue);
@@ -492,7 +491,7 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 	}
 
 	private void passwordChanged(PropertyChangeEvent event) {
-		String newValue = (event.getNewValue() == null) ? null : ((Property) event.getNewValue()).getValue();
+		String newValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
 		String old = this.password;
 		this.password = newValue;
 		this.firePropertyChanged(event.getAspectName(), old, newValue);
@@ -515,7 +514,7 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 	}
 
 	private void bindParametersChanged(PropertyChangeEvent event) {
-		String stringValue = (event.getNewValue() == null) ? null : ((Property) event.getNewValue()).getValue();
+		String stringValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
 		Boolean newValue = getBooleanValueOf(stringValue);
 		
 		Boolean old = this.bindParameters;
@@ -540,7 +539,7 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 	}
 
 	private void readConnectionsSharedChanged(PropertyChangeEvent event) {
-		String stringValue = (event.getNewValue() == null) ? null : ((Property) event.getNewValue()).getValue();
+		String stringValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
 		Boolean newValue = getBooleanValueOf(stringValue);
 		
 		Boolean old = this.readConnectionsShared;
@@ -565,7 +564,7 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 	}
 
 	private void readConnectionsMinChanged(PropertyChangeEvent event) {
-		String stringValue = (event.getNewValue() == null) ? null : ((Property) event.getNewValue()).getValue();
+		String stringValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
 		Integer newValue = getIntegerValueOf(stringValue);
 		
 		Integer old = this.readConnectionsMin;
@@ -590,7 +589,7 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 	}
 
 	private void readConnectionsMaxChanged(PropertyChangeEvent event) {
-		String stringValue = (event.getNewValue() == null) ? null : ((Property) event.getNewValue()).getValue();
+		String stringValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
 		Integer newValue = getIntegerValueOf(stringValue);
 		
 		Integer old = this.readConnectionsMax;
@@ -615,7 +614,7 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 	}
 
 	private void writeConnectionsMinChanged(PropertyChangeEvent event) {
-		String stringValue = (event.getNewValue() == null) ? null : ((Property) event.getNewValue()).getValue();
+		String stringValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
 		Integer newValue = getIntegerValueOf(stringValue);
 		
 		Integer old = this.writeConnectionsMin;
@@ -640,7 +639,7 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 	}
 
 	private void writeConnectionsMaxChanged(PropertyChangeEvent event) {
-		String stringValue = (event.getNewValue() == null) ? null : ((Property) event.getNewValue()).getValue();
+		String stringValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
 		Integer newValue = getIntegerValueOf(stringValue);
 		
 		Integer old = this.writeConnectionsMax;

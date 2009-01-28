@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2008 Oracle. All rights reserved.
+* Copyright (c) 2008, 2009 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,19 +9,12 @@
 *******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.connection;
 
-import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnitTransactionType;
-import org.eclipse.jpt.core.context.persistence.Property;
-import org.eclipse.jpt.core.internal.context.persistence.GenericProperty;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.PersistenceUnitProperties;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.PersistenceUnitPropertyListListener;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.connection.BatchWriting;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.connection.Connection;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.connection.EclipseLinkConnection;
 import org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.PersistenceUnitTestCase;
-import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
-import org.eclipse.jpt.utility.model.value.ListValueModel;
 
 /**
  *  ConnectionAdapterTests
@@ -137,24 +130,24 @@ public class ConnectionAdapterTests extends PersistenceUnitTestCase
 		this.modelPropertiesSize = this.modelPropertiesSizeOriginal;
 		
 		// Initializes EclipseLink properties
-		this.persistenceUnitPut("misc.property.1", "value.1");
-		this.persistenceUnitPut(NATIVE_SQL_KEY, NATIVE_SQL_TEST_VALUE.toString());
-		this.persistenceUnitPut(BATCH_WRITING_KEY, BATCH_WRITING_TEST_VALUE);
-		this.persistenceUnitPut(CACHE_STATEMENTS_KEY, CACHE_STATEMENTS_TEST_VALUE.toString());
-		this.persistenceUnitPut(CACHE_STATEMENTS_SIZE_KEY, CACHE_STATEMENTS_SIZE_TEST_VALUE.toString());
-		this.persistenceUnitPut(DRIVER_KEY, DRIVER_TEST_VALUE.toString());
-		this.persistenceUnitPut(URL_KEY, URL_TEST_VALUE.toString());
-		this.persistenceUnitPut(USER_KEY, USER_TEST_VALUE.toString());
-		this.persistenceUnitPut(PASSWORD_KEY, PASSWORD_TEST_VALUE.toString());
-		this.persistenceUnitPut(BIND_PARAMETERS_KEY, BIND_PARAMETERS_TEST_VALUE.toString());
-		this.persistenceUnitPut("misc.property.2", "value.2");
-		this.persistenceUnitPut("misc.property.3", "value.3");
-		this.persistenceUnitPut(READ_CONNECTIONS_SHARED_KEY, READ_CONNECTIONS_SHARED_TEST_VALUE.toString());
-		this.persistenceUnitPut(READ_CONNECTIONS_MIN_KEY, READ_CONNECTIONS_MIN_TEST_VALUE.toString());
-		this.persistenceUnitPut(READ_CONNECTIONS_MAX_KEY, READ_CONNECTIONS_MAX_TEST_VALUE.toString());
-		this.persistenceUnitPut(WRITE_CONNECTIONS_MIN_KEY, WRITE_CONNECTIONS_MIN_TEST_VALUE.toString());
-		this.persistenceUnitPut(WRITE_CONNECTIONS_MAX_KEY, WRITE_CONNECTIONS_MAX_TEST_VALUE.toString());
-		this.persistenceUnitPut("misc.property.4", "value.4");
+		this.persistenceUnitSetProperty("misc.property.1", "value.1");
+		this.persistenceUnitSetProperty(NATIVE_SQL_KEY, NATIVE_SQL_TEST_VALUE.toString());
+		this.persistenceUnitSetProperty(BATCH_WRITING_KEY, BATCH_WRITING_TEST_VALUE);
+		this.persistenceUnitSetProperty(CACHE_STATEMENTS_KEY, CACHE_STATEMENTS_TEST_VALUE.toString());
+		this.persistenceUnitSetProperty(CACHE_STATEMENTS_SIZE_KEY, CACHE_STATEMENTS_SIZE_TEST_VALUE.toString());
+		this.persistenceUnitSetProperty(DRIVER_KEY, DRIVER_TEST_VALUE.toString());
+		this.persistenceUnitSetProperty(URL_KEY, URL_TEST_VALUE.toString());
+		this.persistenceUnitSetProperty(USER_KEY, USER_TEST_VALUE.toString());
+		this.persistenceUnitSetProperty(PASSWORD_KEY, PASSWORD_TEST_VALUE.toString());
+		this.persistenceUnitSetProperty(BIND_PARAMETERS_KEY, BIND_PARAMETERS_TEST_VALUE.toString());
+		this.persistenceUnitSetProperty("misc.property.2", "value.2");
+		this.persistenceUnitSetProperty("misc.property.3", "value.3");
+		this.persistenceUnitSetProperty(READ_CONNECTIONS_SHARED_KEY, READ_CONNECTIONS_SHARED_TEST_VALUE.toString());
+		this.persistenceUnitSetProperty(READ_CONNECTIONS_MIN_KEY, READ_CONNECTIONS_MIN_TEST_VALUE.toString());
+		this.persistenceUnitSetProperty(READ_CONNECTIONS_MAX_KEY, READ_CONNECTIONS_MAX_TEST_VALUE.toString());
+		this.persistenceUnitSetProperty(WRITE_CONNECTIONS_MIN_KEY, WRITE_CONNECTIONS_MIN_TEST_VALUE.toString());
+		this.persistenceUnitSetProperty(WRITE_CONNECTIONS_MAX_KEY, WRITE_CONNECTIONS_MAX_TEST_VALUE.toString());
+		this.persistenceUnitSetProperty("misc.property.4", "value.4");
 		
 		// Initializes PU property TransactionType
 		this.getPersistenceUnit().setSpecifiedTransactionType(TRANSACTION_TYPE_TEST_VALUE);
@@ -163,40 +156,6 @@ public class ConnectionAdapterTests extends PersistenceUnitTestCase
 		return;
 	}
 	
-	// ********** Listeners tests **********
-	public void testHasListeners() throws Exception {
-		// new
-		ListAspectAdapter<PersistenceUnit, Property> propertiesAdapter = 
-			(ListAspectAdapter<PersistenceUnit, Property>) this.subject.getPropertiesAdapter();
-		GenericProperty ctdProperty = (GenericProperty) this.getPersistenceUnit().getProperty(NATIVE_SQL_KEY);
-		ListValueModel<Property> propertyListAdapter = this.subject.getPropertyListAdapter();
-		
-		assertTrue(propertiesAdapter.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
-		assertTrue(ctdProperty.hasAnyPropertyChangeListeners(Property.VALUE_PROPERTY));
-		this.verifyHasListeners(this.connection, Connection.NATIVE_SQL_PROPERTY);
-		this.verifyHasListeners(this.connection, Connection.BIND_PARAMETERS_PROPERTY);
-		this.verifyHasListeners(this.connection, Connection.CACHE_STATEMENTS_PROPERTY);
-		this.verifyHasListeners(this.connection, Connection.READ_CONNECTIONS_SHARED_PROPERTY);
-		this.verifyHasListeners(this.connection, Connection.BATCH_WRITING_PROPERTY);
-		this.verifyHasListeners(this.connection, Connection.TRANSACTION_TYPE_PROPERTY);
-		this.verifyHasListeners(this.connection, Connection.JTA_DATA_SOURCE_PROPERTY);
-		this.verifyHasListeners(this.connection, Connection.NON_JTA_DATA_SOURCE_PROPERTY);
-		this.verifyHasListeners(propertyListAdapter);
-		
-		EclipseLinkConnection elConnection = (EclipseLinkConnection) this.connection;
-		PersistenceUnitPropertyListListener propertyListListener = elConnection.propertyListListener();
-		propertyListAdapter.removeListChangeListener(ListValueModel.LIST_VALUES, propertyListListener);
-		assertTrue(propertiesAdapter.hasAnyListChangeListeners(ListValueModel.LIST_VALUES)); // other properties are still listening
-		this.verifyHasListeners(this.connection, Connection.NATIVE_SQL_PROPERTY);
-		this.verifyHasListeners(this.connection, Connection.BIND_PARAMETERS_PROPERTY);
-		this.verifyHasListeners(this.connection, Connection.CACHE_STATEMENTS_PROPERTY);
-		this.verifyHasListeners(this.connection, Connection.READ_CONNECTIONS_SHARED_PROPERTY);
-		this.verifyHasListeners(this.connection, Connection.BATCH_WRITING_PROPERTY);
-		this.verifyHasListeners(this.connection, Connection.TRANSACTION_TYPE_PROPERTY);
-		this.verifyHasListeners(this.connection, Connection.JTA_DATA_SOURCE_PROPERTY);
-		this.verifyHasListeners(this.connection, Connection.NON_JTA_DATA_SOURCE_PROPERTY);
-	}
-
 	// ********** TransactionType tests **********
 	public void testSetTransactionType() throws Exception {
 		this.verifySetPersistenceUnitProperty(Connection.TRANSACTION_TYPE_PROPERTY,

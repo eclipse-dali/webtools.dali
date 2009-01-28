@@ -480,7 +480,7 @@ public class GenericOrmIdMapping
 			if (localGenerator.isVirtual()) {
 				continue;
 			}
-			for (Iterator<Generator> globalGenerators = this.getPersistenceUnit().allGenerators(); globalGenerators.hasNext(); ) {
+			for (Iterator<Generator> globalGenerators = this.getPersistenceUnit().generators(); globalGenerators.hasNext(); ) {
 				if (localGenerator.duplicates(globalGenerators.next())) {
 					messages.add(
 						DefaultJpaValidationMessages.buildMessage(
@@ -488,7 +488,8 @@ public class GenericOrmIdMapping
 							JpaValidationMessages.GENERATOR_DUPLICATE_NAME,
 							new String[] {localGenerator.getName()},
 							localGenerator,
-							localGenerator.getNameTextRange())
+							localGenerator.getNameTextRange()
+						)
 					);
 				}
 			}

@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2008 Oracle. All rights reserved.
+* Copyright (c) 2008, 2009 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,17 +9,10 @@
 *******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.general;
 
-import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.core.context.persistence.Property;
-import org.eclipse.jpt.core.internal.context.persistence.GenericProperty;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.PersistenceUnitProperties;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.PersistenceUnitPropertyListListener;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.general.EclipseLinkGeneralProperties;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.general.GeneralProperties;
 import org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.PersistenceUnitTestCase;
-import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
-import org.eclipse.jpt.utility.model.value.ListValueModel;
 
 /**
  *  GeneralAdapterTests
@@ -58,34 +51,14 @@ public class GeneralPropertiesAdapterTests extends PersistenceUnitTestCase
 		this.propertiesTotal = this.modelPropertiesSizeOriginal + 2; // misc properties
 		this.modelPropertiesSize = this.modelPropertiesSizeOriginal;
 		
-		this.persistenceUnitPut("misc.property.1", "value.1");
-		this.persistenceUnitPut(EXCLUDE_ECLIPSELINK_ORM_KEY, EXCLUDE_ECLIPSELINK_ORM_TEST_VALUE.toString());
-		this.persistenceUnitPut("misc.property.2", "value.2");
+		this.persistenceUnitSetProperty("misc.property.1", "value.1");
+		this.persistenceUnitSetProperty(EXCLUDE_ECLIPSELINK_ORM_KEY, EXCLUDE_ECLIPSELINK_ORM_TEST_VALUE.toString());
+		this.persistenceUnitSetProperty("misc.property.2", "value.2");
 
 		return;
 	}
 
 	
-	// ********** Listeners tests **********
-	public void testHasListeners() throws Exception {
-		// new
-		ListAspectAdapter<PersistenceUnit, Property> propertiesAdapter = 
-			(ListAspectAdapter<PersistenceUnit, Property>) this.subject.getPropertiesAdapter();
-		GenericProperty ctdProperty = (GenericProperty) this.getPersistenceUnit().getProperty(EXCLUDE_ECLIPSELINK_ORM_KEY);
-		ListValueModel<Property> propertyListAdapter = this.subject.getPropertyListAdapter();
-		
-		assertTrue(propertiesAdapter.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
-		assertTrue(ctdProperty.hasAnyPropertyChangeListeners(Property.VALUE_PROPERTY));
-		this.verifyHasListeners(this.generalProperties, GeneralProperties.EXCLUDE_ECLIPSELINK_ORM_PROPERTY);
-		this.verifyHasListeners(propertyListAdapter);
-		
-		EclipseLinkGeneralProperties elGeneralProperties = (EclipseLinkGeneralProperties) this.generalProperties;
-		PersistenceUnitPropertyListListener propertyListListener = elGeneralProperties.propertyListListener();
-		propertyListAdapter.removeListChangeListener(ListValueModel.LIST_VALUES, propertyListListener);
-		assertTrue(propertiesAdapter.hasAnyListChangeListeners(ListValueModel.LIST_VALUES)); // other properties are still listening
-		this.verifyHasListeners(this.generalProperties, GeneralProperties.EXCLUDE_ECLIPSELINK_ORM_PROPERTY);
-	}
-
 	// ********** ExcludeEclipselinkOrm tests **********
 	public void testSetExcludeEclipselinkOrm() throws Exception {
 		this.verifyModelInitialized(

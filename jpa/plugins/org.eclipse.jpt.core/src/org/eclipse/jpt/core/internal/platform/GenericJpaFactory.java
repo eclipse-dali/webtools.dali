@@ -111,7 +111,6 @@ import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
-import org.eclipse.jpt.core.context.persistence.Property;
 import org.eclipse.jpt.core.internal.GenericJpaDataSource;
 import org.eclipse.jpt.core.internal.GenericJpaFile;
 import org.eclipse.jpt.core.internal.GenericJpaProject;
@@ -303,7 +302,7 @@ public class GenericJpaFactory
 		return new GenericClassRef(parent, className);
 	}
 	
-	public Property buildProperty(PersistenceUnit parent, XmlProperty xmlProperty) {
+	public PersistenceUnit.Property buildProperty(PersistenceUnit parent, XmlProperty xmlProperty) {
 		return new GenericProperty(parent, xmlProperty);
 	}
 	

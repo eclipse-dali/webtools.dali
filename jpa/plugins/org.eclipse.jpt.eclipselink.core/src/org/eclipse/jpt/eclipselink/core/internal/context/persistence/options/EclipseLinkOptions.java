@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2008 Oracle. All rights reserved.
+* Copyright (c) 2008, 2009 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,6 @@ package org.eclipse.jpt.eclipselink.core.internal.context.persistence.options;
 
 import java.util.Map;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.core.context.persistence.Property;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnitProperties;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
@@ -33,7 +32,7 @@ public class EclipseLinkOptions extends EclipseLinkPersistenceUnitProperties
 
 
 	// ********** constructors **********
-	public EclipseLinkOptions(PersistenceUnit parent, ListValueModel<Property> propertyListAdapter) {
+	public EclipseLinkOptions(PersistenceUnit parent, ListValueModel<PersistenceUnit.Property> propertyListAdapter) {
 		super(parent, propertyListAdapter);
 	}
 
@@ -60,30 +59,22 @@ public class EclipseLinkOptions extends EclipseLinkPersistenceUnitProperties
 	
 	protected String getTargetDatabaseFromPersistenceXml() {
 
+		String value = this.getStringValue(ECLIPSELINK_TARGET_DATABASE);
+		if (value == null) {
+			return null;
+		}
 		TargetDatabase standardTargetDatabase = this.getEnumValue(ECLIPSELINK_TARGET_DATABASE, TargetDatabase.values());
-		if( ! this.getPersistenceUnit().containsProperty(ECLIPSELINK_TARGET_DATABASE)) {
-			return(null);
-		}
-		else if(standardTargetDatabase == null) {
-			return(this.getStringValue(ECLIPSELINK_TARGET_DATABASE)); // custom targetDatabase
-		}
-		else {
-			return(getEclipseLinkStringValueOf(standardTargetDatabase));
-		}
+		return (standardTargetDatabase == null) ? value : getEclipseLinkStringValueOf(standardTargetDatabase);
 	}
 	
 	protected String getTargetServerFromPersistenceXml() {
 
+		String value = this.getStringValue(ECLIPSELINK_TARGET_SERVER);
+		if (value == null) {
+			return null;
+		}
 		TargetServer standardTargetServer = this.getEnumValue(ECLIPSELINK_TARGET_SERVER, TargetServer.values());
-		if( ! this.getPersistenceUnit().containsProperty(ECLIPSELINK_TARGET_SERVER)) {
-			return(null);
-		}
-		else if(standardTargetServer == null) {
-			return(this.getStringValue(ECLIPSELINK_TARGET_SERVER)); // custom targetServer
-		}
-		else {
-			return(getEclipseLinkStringValueOf(standardTargetServer));
-		}
+		return (standardTargetServer == null) ? value : getEclipseLinkStringValueOf(standardTargetServer);
 	}
 
 	// ********** behavior **********
@@ -141,7 +132,7 @@ public class EclipseLinkOptions extends EclipseLinkPersistenceUnitProperties
 			this.temporalMutableChanged(event);
 		}
 		else {
-			throw new IllegalArgumentException("Illegal event received - property not applicable: " + aspectName);
+			throw new IllegalArgumentException("Illegal event received - property not applicable: " + aspectName); //$NON-NLS-1$
 		}
 		return;
 	}
@@ -159,7 +150,7 @@ public class EclipseLinkOptions extends EclipseLinkPersistenceUnitProperties
 	}
 
 	private void sessionNameChanged(PropertyChangeEvent event) {
-		String newValue = (event.getNewValue() == null) ? null : ((Property) event.getNewValue()).getValue();
+		String newValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
 		String old = this.sessionName;
 		this.sessionName = newValue;
 		this.firePropertyChanged(event.getAspectName(), old, newValue);
@@ -182,7 +173,7 @@ public class EclipseLinkOptions extends EclipseLinkPersistenceUnitProperties
 		}
 
 		private void sessionsXmlChanged(PropertyChangeEvent event) {
-			String newValue = (event.getNewValue() == null) ? null : ((Property) event.getNewValue()).getValue();
+			String newValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
 			String old = this.sessionsXml;
 			this.sessionsXml = newValue;
 			this.firePropertyChanged(event.getAspectName(), old, newValue);
@@ -205,7 +196,7 @@ public class EclipseLinkOptions extends EclipseLinkPersistenceUnitProperties
 	}
 
 	private void includeDescriptorQueriesChanged(PropertyChangeEvent event) {
-		String stringValue = (event.getNewValue() == null) ? null : ((Property) event.getNewValue()).getValue();
+		String stringValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
 		Boolean newValue = getBooleanValueOf(stringValue);
 		
 		Boolean old = this.includeDescriptorQueries;
@@ -269,7 +260,7 @@ public class EclipseLinkOptions extends EclipseLinkPersistenceUnitProperties
 	}
 
 	private void targetDatabaseChanged(PropertyChangeEvent event) {
-		String newValue = (event.getNewValue() == null) ? null : ((Property) event.getNewValue()).getValue();
+		String newValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
 		String old = this.targetDatabase;
 		this.targetDatabase = newValue;
 		this.firePropertyChanged(event.getAspectName(), old, newValue);
@@ -331,7 +322,7 @@ public class EclipseLinkOptions extends EclipseLinkPersistenceUnitProperties
 	}
 
 	private void targetServerChanged(PropertyChangeEvent event) {
-		String newValue = (event.getNewValue() == null) ? null : ((Property) event.getNewValue()).getValue();
+		String newValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
 		String old = this.targetServer;
 		this.targetServer = newValue;
 		this.firePropertyChanged(event.getAspectName(), old, newValue);
@@ -354,7 +345,7 @@ public class EclipseLinkOptions extends EclipseLinkPersistenceUnitProperties
 	}
 
 	private void eventListenerChanged(PropertyChangeEvent event) {
-		String newValue = (event.getNewValue() == null) ? null : ((Property) event.getNewValue()).getValue();
+		String newValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
 		String old = this.eventListener;
 		this.eventListener = newValue;
 		this.firePropertyChanged(event.getAspectName(), old, newValue);
@@ -378,7 +369,7 @@ public class EclipseLinkOptions extends EclipseLinkPersistenceUnitProperties
 	}
 
 	private void temporalMutableChanged(PropertyChangeEvent event) {
-		String stringValue = (event.getNewValue() == null) ? null : ((Property) event.getNewValue()).getValue();
+		String stringValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
 		Boolean newValue = getBooleanValueOf(stringValue);
 		
 		Boolean old = this.temporalMutable;

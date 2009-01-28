@@ -21,6 +21,7 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConversionValue;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlObjectTypeConverter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationListIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -194,22 +195,21 @@ public class EclipseLinkOrmObjectTypeConverter extends EclipseLinkOrmConverter<X
 	}
 	
 	protected void updateConversionValues( ) {
-		ListIterator<EclipseLinkOrmConversionValue> contextConversionValues = conversionValues();
-		ListIterator<XmlConversionValue> resourceConversionValues = 
-			new CloneListIterator<XmlConversionValue>(getXmlResource().getConversionValues());//prevent ConcurrentModificiationException
+		// make a copy of the XML conversion values (to prevent ConcurrentModificationException)
+		Iterator<XmlConversionValue> xmlConversionValues = new CloneIterator<XmlConversionValue>(this.getXmlResource().getConversionValues());
 		
-		while (contextConversionValues.hasNext()) {
-			EclipseLinkOrmConversionValue conversionValues = contextConversionValues.next();
-			if (resourceConversionValues.hasNext()) {
-				conversionValues.update(resourceConversionValues.next());
+		for (Iterator<EclipseLinkOrmConversionValue> contextConversionValues = this.conversionValues(); contextConversionValues.hasNext(); ) {
+			EclipseLinkOrmConversionValue contextConversionValue = contextConversionValues.next();
+			if (xmlConversionValues.hasNext()) {
+				contextConversionValue.update(xmlConversionValues.next());
 			}
 			else {
-				removeConversionValue_(conversionValues);
+				removeConversionValue_(contextConversionValue);
 			}
 		}
 		
-		while (resourceConversionValues.hasNext()) {
-			addConversionValue(buildConversionValue(resourceConversionValues.next()));
+		while (xmlConversionValues.hasNext()) {
+			addConversionValue(buildConversionValue(xmlConversionValues.next()));
 		}
 	}
 	

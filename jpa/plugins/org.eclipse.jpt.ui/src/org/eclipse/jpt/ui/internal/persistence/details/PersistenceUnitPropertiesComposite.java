@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,7 +18,6 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.core.context.persistence.Property;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaPageComposite;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
@@ -68,7 +67,7 @@ import org.eclipse.swt.widgets.TableItem;
 public class PersistenceUnitPropertiesComposite extends Pane<PersistenceUnit>
                                                 implements JpaPageComposite
 {
-	private WritablePropertyValueModel<Property> propertyHolder;
+	private WritablePropertyValueModel<PersistenceUnit.Property> propertyHolder;
 	private TablePane tablePane;
 
 	/**
@@ -85,10 +84,10 @@ public class PersistenceUnitPropertiesComposite extends Pane<PersistenceUnit>
 		super(subjectHolder, container, widgetFactory);
 	}
 
-	private ListValueModel<Property> buildPropertiesListHolder() {
-		return new ListAspectAdapter<PersistenceUnit, Property>(getSubjectHolder(), PersistenceUnit.PROPERTIES_LIST) {
+	private ListValueModel<PersistenceUnit.Property> buildPropertiesListHolder() {
+		return new ListAspectAdapter<PersistenceUnit, PersistenceUnit.Property>(getSubjectHolder(), PersistenceUnit.PROPERTIES_LIST) {
 			@Override
-			protected ListIterator<Property> listIterator_() {
+			protected ListIterator<PersistenceUnit.Property> listIterator_() {
 				return subject.properties();
 			}
 
@@ -107,7 +106,7 @@ public class PersistenceUnitPropertiesComposite extends Pane<PersistenceUnit>
 		return new AddRemoveTablePane.AbstractAdapter() {
 			public void addNewItem(ObjectListSelectionModel listSelectionModel) {
 
-				Property property = getSubject().addProperty();
+				PersistenceUnit.Property property = getSubject().addProperty();
 				propertyHolder.setValue(property);
 
 				int index = getSubject().propertiesSize() - 1;
@@ -122,7 +121,7 @@ public class PersistenceUnitPropertiesComposite extends Pane<PersistenceUnit>
 
 			public void removeSelectedItems(ObjectListSelectionModel listSelectionModel) {
 				for (Object item : listSelectionModel.selectedValues()) {
-					getSubject().removeProperty((Property) item);
+					getSubject().removeProperty((PersistenceUnit.Property) item);
 				}
 			}
 		};
@@ -155,7 +154,7 @@ public class PersistenceUnitPropertiesComposite extends Pane<PersistenceUnit>
 	@Override
 	protected void initialize() {
 		super.initialize();
-		propertyHolder = new SimplePropertyValueModel<Property>();
+		propertyHolder = new SimplePropertyValueModel<PersistenceUnit.Property>();
 	}
 
 	/**
@@ -173,15 +172,15 @@ public class PersistenceUnitPropertiesComposite extends Pane<PersistenceUnit>
 		container.setLayoutData(new GridData(GridData.FILL_BOTH));
 	}
 
-	private static class PropertyColumnAdapter implements ColumnAdapter<Property> {
+	private static class PropertyColumnAdapter implements ColumnAdapter<PersistenceUnit.Property> {
 
 		public static final int COLUMN_COUNT = 3;
 		public static final int NAME_COLUMN = 1;
 		public static final int SELECTION_COLUMN = 0;
 		public static final int VALUE_COLUMN = 2;
 
-		private WritablePropertyValueModel<String> buildNameHolder(Property subject) {
-			return new PropertyAspectAdapter<Property, String>(Property.NAME_PROPERTY, subject) {
+		private WritablePropertyValueModel<String> buildNameHolder(PersistenceUnit.Property subject) {
+			return new PropertyAspectAdapter<PersistenceUnit.Property, String>(PersistenceUnit.Property.NAME_PROPERTY, subject) {
 				@Override
 				protected String buildValue_() {
 					return subject.getName();
@@ -194,8 +193,8 @@ public class PersistenceUnitPropertiesComposite extends Pane<PersistenceUnit>
 			};
 		}
 
-		private WritablePropertyValueModel<String> buildValueHolder(Property subject) {
-			return new PropertyAspectAdapter<Property, String>(Property.VALUE_PROPERTY, subject) {
+		private WritablePropertyValueModel<String> buildValueHolder(PersistenceUnit.Property subject) {
+			return new PropertyAspectAdapter<PersistenceUnit.Property, String>(PersistenceUnit.Property.VALUE_PROPERTY, subject) {
 				@Override
 				protected String buildValue_() {
 					return subject.getValue();
@@ -208,7 +207,7 @@ public class PersistenceUnitPropertiesComposite extends Pane<PersistenceUnit>
 			};
 		}
 
-		public WritablePropertyValueModel<?>[] cellModels(Property subject) {
+		public WritablePropertyValueModel<?>[] cellModels(PersistenceUnit.Property subject) {
 			WritablePropertyValueModel<?>[] holders = new WritablePropertyValueModel<?>[COLUMN_COUNT];
 			holders[SELECTION_COLUMN] = new SimplePropertyValueModel<Object>();
 			holders[NAME_COLUMN]      = buildNameHolder(subject);
@@ -247,7 +246,7 @@ public class PersistenceUnitPropertiesComposite extends Pane<PersistenceUnit>
 
 		public String getColumnText(Object element, int columnIndex) {
 
-			Property property = (Property) element;
+			PersistenceUnit.Property property = (PersistenceUnit.Property) element;
 			String value = null;
 
 			switch (columnIndex) {
@@ -308,13 +307,13 @@ public class PersistenceUnitPropertiesComposite extends Pane<PersistenceUnit>
 				}
 
 				public Object getValue(Object element, String property) {
-					Property propertyModel = (Property) element;
+					PersistenceUnit.Property propertyModel = (PersistenceUnit.Property) element;
 					String value = null;
 
-					if (property == Property.NAME_PROPERTY) {
+					if (property == PersistenceUnit.Property.NAME_PROPERTY) {
 						value = propertyModel.getName();
 					}
-					else if (property == Property.VALUE_PROPERTY) {
+					else if (property == PersistenceUnit.Property.VALUE_PROPERTY) {
 						value = propertyModel.getValue();
 					}
 
@@ -326,20 +325,20 @@ public class PersistenceUnitPropertiesComposite extends Pane<PersistenceUnit>
 				}
 
 				public void modify(Object element, String property, Object value) {
-					Property propertyModel;
+					PersistenceUnit.Property propertyModel;
 
 					if (element instanceof TableItem) {
 						TableItem tableItem = (TableItem) element;
-						propertyModel = (Property) tableItem.getData();
+						propertyModel = (PersistenceUnit.Property) tableItem.getData();
 					}
 					else {
-						propertyModel = (Property) element;
+						propertyModel = (PersistenceUnit.Property) element;
 					}
 
-					if (property == Property.NAME_PROPERTY) {
+					if (property == PersistenceUnit.Property.NAME_PROPERTY) {
 						propertyModel.setName(value.toString());
 					}
-					else if (property == Property.VALUE_PROPERTY) {
+					else if (property == PersistenceUnit.Property.VALUE_PROPERTY) {
 						propertyModel.setValue(value.toString());
 					}
 				}
@@ -354,8 +353,8 @@ public class PersistenceUnitPropertiesComposite extends Pane<PersistenceUnit>
 		private String[] buildColumnProperties() {
 			return new String[] {
 				SELECTION_COLUMN,
-				Property.NAME_PROPERTY,
-				Property.VALUE_PROPERTY
+				PersistenceUnit.Property.NAME_PROPERTY,
+				PersistenceUnit.Property.VALUE_PROPERTY
 			};
 		}
 

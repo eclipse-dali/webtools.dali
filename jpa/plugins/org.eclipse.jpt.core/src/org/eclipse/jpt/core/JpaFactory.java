@@ -106,7 +106,6 @@ import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
-import org.eclipse.jpt.core.context.persistence.Property;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.orm.OrmXmlResource;
@@ -217,7 +216,7 @@ public interface JpaFactory
 	
 	ClassRef buildClassRef(PersistenceUnit parent, String className);
 	
-	Property buildProperty(PersistenceUnit parent, XmlProperty property);
+	PersistenceUnit.Property buildProperty(PersistenceUnit parent, XmlProperty property);
 	
 	
 	// ********** ORM Context Model **********

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -34,14 +34,14 @@ import org.eclipse.jpt.ui.jface.TreeItemContentProviderFactory;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
-import org.eclipse.jpt.utility.internal.model.value.NullListValueModel;
+import org.eclipse.jpt.utility.internal.model.value.NullCollectionValueModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.StaticListValueModel;
+import org.eclipse.jpt.utility.internal.model.value.StaticCollectionValueModel;
 import org.eclipse.jpt.utility.internal.model.value.StaticPropertyValueModel;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
-import org.eclipse.jpt.utility.model.value.ListValueModel;
+import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.SWT;
@@ -337,8 +337,8 @@ public class DelegatingLabelProviderUiTest extends ApplicationWindow
 		}
 		
 		@Override
-		protected ListValueModel<Vehicle> buildChildrenModel() {
-			return new StaticListValueModel<Vehicle>(CollectionTools.list(getModel().vehicles()));
+		protected CollectionValueModel<Vehicle> buildChildrenModel() {
+			return new StaticCollectionValueModel<Vehicle>(CollectionTools.list(getModel().vehicles()));
 		}
 	}
 	
@@ -360,8 +360,8 @@ public class DelegatingLabelProviderUiTest extends ApplicationWindow
 		}
 		
 		@Override
-		protected ListValueModel buildChildrenModel() {
-			return new NullListValueModel();
+		protected CollectionValueModel buildChildrenModel() {
+			return new NullCollectionValueModel();
 		}
 	}
 	

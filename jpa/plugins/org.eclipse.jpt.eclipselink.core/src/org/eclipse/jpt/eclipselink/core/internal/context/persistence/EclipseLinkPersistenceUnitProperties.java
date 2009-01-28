@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,7 +14,6 @@ import java.util.Map;
 import java.util.Set;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.core.context.persistence.Property;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
@@ -40,14 +39,14 @@ public abstract class EclipseLinkPersistenceUnitProperties extends AbstractModel
 	// ********** constructors / initialization **********
 	protected EclipseLinkPersistenceUnitProperties(
 			PersistenceUnit parent, 
-			ListValueModel<Property> propertyListAdapter) {
+			ListValueModel<PersistenceUnit.Property> propertyListAdapter) {
 		super();
 		this.initialize(parent, propertyListAdapter);
 	}
 
 	protected void initialize(
 			PersistenceUnit parent, 
-			ListValueModel<Property> propertyListAdapter) {
+			ListValueModel<PersistenceUnit.Property> propertyListAdapter) {
 		this.persistenceUnit = parent;
 		
 		this.propertyListListener = new PersistenceUnitPropertyListListener(this);
@@ -90,14 +89,14 @@ public abstract class EclipseLinkPersistenceUnitProperties extends AbstractModel
 	 * 
 	 * key = EclipseLink property key; value = property id
 	 */
-	protected abstract void addPropertyNames(Map<String, String> propertyNames);
+	protected abstract void addPropertyNames(Map<String, String> pNames);
 
 	/**
 	 * Method used for identifying the given property.
 	 */
-	public boolean itemIsProperty(Property item) {
+	public boolean itemIsProperty(PersistenceUnit.Property item) {
 		if (item == null) {
-			throw new IllegalArgumentException("Property is null");
+			throw new NullPointerException();
 		}
 		return this.propertyNames().keySet().contains(item.getName());
 	}
@@ -106,10 +105,10 @@ public abstract class EclipseLinkPersistenceUnitProperties extends AbstractModel
 	 * Returns the property name used for change notification of the given
 	 * property.
 	 */
-	public String propertyIdFor(Property property) {
+	public String propertyIdFor(PersistenceUnit.Property property) {
 		String propertyId = this.propertyNames().get(property.getName());
 		if (propertyId == null) {
-			throw new IllegalArgumentException("Illegal property: " + property.toString());
+			throw new NullPointerException("Illegal property: " + property); //$NON-NLS-1$
 		}
 		return propertyId;
 	}
@@ -120,24 +119,21 @@ public abstract class EclipseLinkPersistenceUnitProperties extends AbstractModel
 				return eclipseLinkKey;
 			}
 		}
-		throw new IllegalArgumentException("Illegal property: " + propertyId);
+		throw new IllegalArgumentException("Illegal property ID: " + propertyId); //$NON-NLS-1$
 	}
 
 	// ****** get/set String convenience methods *******
 	/**
 	 * Returns the String value of the given Property from the PersistenceXml.
 	 */
+	// TOREVIEW - handle incorrect String in persistence.xml
 	protected String getStringValue(String elKey) {
-		return this.getStringValue(elKey, null);
+		PersistenceUnit.Property p = this.getPersistenceUnit().getProperty(elKey);
+		return (p == null) ? null : p.getValue();
 	}
 
 	protected String getStringValue(String key, String keySuffix) {
-		String elKey = (keySuffix == null) ? key : key + keySuffix;
-		if (this.getPersistenceUnit().containsProperty(elKey)) {
-			// TOREVIEW - handle incorrect String in persistence.xml
-			return this.getPersistenceUnit().getProperty(elKey).getValue();
-		}
-		return null;
+		return this.getStringValue((keySuffix == null) ? key : key + keySuffix);
 	}
 
 	/**
@@ -179,7 +175,7 @@ public abstract class EclipseLinkPersistenceUnitProperties extends AbstractModel
 			this.getPersistenceUnit().removeProperty(elKey);
 		}
 		else {
-			this.getPersistenceUnit().putProperty(elKey, newValue, allowDuplicate);
+			this.getPersistenceUnit().setProperty(elKey, newValue, allowDuplicate);
 		}
 	}
 
@@ -187,19 +183,15 @@ public abstract class EclipseLinkPersistenceUnitProperties extends AbstractModel
 	/**
 	 * Returns the Integer value of the given Property from the PersistenceXml.
 	 */
+	// TOREVIEW - handle incorrect eclipseLinkValue String in
+	// persistence.xml
 	protected Integer getIntegerValue(String elKey) {
-		return this.getIntegerValue(elKey, null);
+		PersistenceUnit.Property p = this.getPersistenceUnit().getProperty(elKey);
+		return (p == null) ? null : getIntegerValueOf(p.getValue());
 	}
 
 	protected Integer getIntegerValue(String key, String keySuffix) {
-		String elKey = (keySuffix == null) ? key : key + keySuffix;
-		if (this.getPersistenceUnit().containsProperty(elKey)) {
-			String eclipseLinkValue = this.getPersistenceUnit().getProperty(elKey).getValue();
-			// TOREVIEW - handle incorrect eclipseLinkValue String in
-			// persistence.xml
-			return getIntegerValueOf(eclipseLinkValue);
-		}
-		return null;
+		return this.getIntegerValue((keySuffix == null) ? key : key + keySuffix);
 	}
 
 	/**
@@ -241,7 +233,7 @@ public abstract class EclipseLinkPersistenceUnitProperties extends AbstractModel
 			this.getPersistenceUnit().removeProperty(elKey);
 		}
 		else {
-			this.getPersistenceUnit().putProperty(elKey, newValue.toString(), allowDuplicate);
+			this.getPersistenceUnit().setProperty(elKey, newValue.toString(), allowDuplicate);
 		}
 	}
 
@@ -249,22 +241,15 @@ public abstract class EclipseLinkPersistenceUnitProperties extends AbstractModel
 	/**
 	 * Returns the Boolean value of the given Property from the PersistenceXml.
 	 */
+	// TOREVIEW - handle incorrect eclipseLinkValue String in
+	// persistence.xml
 	protected Boolean getBooleanValue(String elKey) {
-		return this.getBooleanValue(elKey, null);
+		PersistenceUnit.Property p = this.getPersistenceUnit().getProperty(elKey);
+		return (p == null) ? null : getBooleanValueOf(p.getValue());
 	}
 
-	/**
-	 * Returns the Boolean value of the given Property from the PersistenceXml.
-	 */
 	protected Boolean getBooleanValue(String key, String keySuffix) {
-		String elKey = (keySuffix == null) ? key : key + keySuffix;
-		if (this.getPersistenceUnit().containsProperty(elKey)) {
-			String eclipseLinkValue = this.getPersistenceUnit().getProperty(elKey).getValue();
-			// TOREVIEW - handle incorrect eclipseLinkValue String in
-			// persistence.xml
-			return getBooleanValueOf(eclipseLinkValue);
-		}
-		return null;
+		return this.getBooleanValue((keySuffix == null) ? key : key + keySuffix);
 	}
 
 	/**
@@ -306,7 +291,7 @@ public abstract class EclipseLinkPersistenceUnitProperties extends AbstractModel
 			this.getPersistenceUnit().removeProperty(elKey);
 		}
 		else {
-			this.getPersistenceUnit().putProperty(elKey, newValue.toString(), allowDuplicate);
+			this.getPersistenceUnit().setProperty(elKey, newValue.toString(), allowDuplicate);
 		}
 	}
 
@@ -314,18 +299,14 @@ public abstract class EclipseLinkPersistenceUnitProperties extends AbstractModel
 	/**
 	 * Returns the Enum value of the given Property from the PersistenceXml.
 	 */
+	// TOREVIEW - handle incorrect eclipseLinkValue String in persistence.xml
 	protected <T extends Enum<T>> T getEnumValue(String elKey, T[] enumValues) {
-		return getEnumValue(elKey, null, enumValues);
+		PersistenceUnit.Property p = this.getPersistenceUnit().getProperty(elKey);
+		return (p == null) ? null : getEnumValueOf(p.getValue(), enumValues);
 	}
 
 	protected <T extends Enum<T>> T getEnumValue(String key, String keySuffix, T[] enumValues) {
-		String elKey = (keySuffix == null) ? key : key + keySuffix;
-		if (this.getPersistenceUnit().containsProperty(elKey)) {
-			String elStringValue = this.getPersistenceUnit().getProperty(elKey).getValue();
-			// TOREVIEW - handle incorrect eclipseLinkValue String in persistence.xml
-			return getEnumValueOf(elStringValue, enumValues);
-		}
-		return null;
+		return this.getEnumValue((keySuffix == null) ? key : key + keySuffix, enumValues);
 	}
 
 	/**
@@ -348,7 +329,7 @@ public abstract class EclipseLinkPersistenceUnitProperties extends AbstractModel
 			this.getPersistenceUnit().removeProperty(elKey);
 		}
 		else {
-			this.getPersistenceUnit().putProperty(elKey, getEclipseLinkStringValueOf(newValue), allowDuplicate);
+			this.getPersistenceUnit().setProperty(elKey, getEclipseLinkStringValueOf(newValue), allowDuplicate);
 		}
 	}
 
@@ -377,7 +358,7 @@ public abstract class EclipseLinkPersistenceUnitProperties extends AbstractModel
 	}
 
 	private void putEclipseLinkProperty(String key, Object value, boolean allowDuplicates) {
-		this.getPersistenceUnit().putProperty(key, value.toString(), allowDuplicates);
+		this.getPersistenceUnit().setProperty(key, value.toString(), allowDuplicates);
 	}
 
 	/**
@@ -404,15 +385,15 @@ public abstract class EclipseLinkPersistenceUnitProperties extends AbstractModel
 		this.getPersistenceUnit().removeProperty(elKey, value);
 	}
 
-	protected Set<Property> getPropertiesSetWithPrefix(String keyPrefix) {
-		return CollectionTools.set(this.getPersistenceUnit().propertiesWithPrefix(keyPrefix));
+	protected Set<PersistenceUnit.Property> getPropertiesSetWithPrefix(String keyPrefix) {
+		return CollectionTools.set(this.getPersistenceUnit().propertiesWithNamePrefix(keyPrefix));
 	}
 
 	/**
 	 * Extracts the entityName of the specified property name. If the property name
 	 * has no suffix, return an empty string.
 	 */
-	protected String getEntityName(Property property) {
+	protected String getEntityName(PersistenceUnit.Property property) {
 		return getEntityName(property.getName());
 	}
 
@@ -423,7 +404,7 @@ public abstract class EclipseLinkPersistenceUnitProperties extends AbstractModel
 	protected String getEntityName(String propertyName) {
 		int index = propertyName.lastIndexOf('.');
 		if (index == -1) {
-			return "";
+			return ""; //$NON-NLS-1$
 		}
 		return propertyName.substring(index + 1);
 	}

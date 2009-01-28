@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.schema.generation;
 
+import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.schema.generation.DdlGenerationType;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.schema.generation.OutputMode;
@@ -68,10 +69,10 @@ public class SchemaGenerationValueModelTests extends PersistenceUnitTestCase
 	 */
 	@Override
 	protected void populatePu() {
-		this.persistenceUnitPut(
+		this.persistenceUnitSetProperty(
 			SchemaGeneration.ECLIPSELINK_DDL_GENERATION_TYPE,
 			DDL_GENERATION_TYPE_TEST_VALUE);
-		this.persistenceUnitPut(
+		this.persistenceUnitSetProperty(
 			SchemaGeneration.ECLIPSELINK_DDL_GENERATION_OUTPUT_MODE,
 			OUTPUT_MODE_TEST_VALUE);
 		return;
@@ -147,7 +148,7 @@ public class SchemaGenerationValueModelTests extends PersistenceUnitTestCase
 		this.verifyHasListeners(this.ddlGenerationTypeHolder, PropertyValueModel.VALUE);
 		DdlGenerationType newDdlGenerationType = DdlGenerationType.create_tables;
 		// Modify the persistenceUnit directly
-		this.subject.putProperty(
+		this.subject.setProperty(
 			SchemaGeneration.ECLIPSELINK_DDL_GENERATION_TYPE,
 			this.getEclipseLinkStringValueOf(newDdlGenerationType),
 			false);
@@ -168,15 +169,14 @@ public class SchemaGenerationValueModelTests extends PersistenceUnitTestCase
 		/** ****** DdlGenerationType ******* */
 		this.ddlGenerationTypeEvent = null;
 		// Setting the persistenceUnit directly
-		this.subject.putProperty(SchemaGeneration.ECLIPSELINK_DDL_GENERATION_TYPE, null, false);
+		this.subject.setProperty(SchemaGeneration.ECLIPSELINK_DDL_GENERATION_TYPE, null, false);
 		this.ddlGenerationTypeHolder.setValue(null);
 		// testing Holder
 		this.verifyDdlGenerationTypeAAValue(null);
 		assertNotNull(this.ddlGenerationTypeEvent);
 		// testing PU properties
-		boolean containsDdlGenerationTypeProperty = 
-			this.getPersistenceUnit().containsProperty(SchemaGeneration.ECLIPSELINK_DDL_GENERATION_TYPE);
-		assertFalse(containsDdlGenerationTypeProperty);
+		PersistenceUnit.Property property = this.getPersistenceUnit().getProperty(SchemaGeneration.ECLIPSELINK_DDL_GENERATION_TYPE);
+		assertNull(property);
 		
 		/** ****** OutputMode ******* */
 		this.outputModeEvent = null;
@@ -186,9 +186,8 @@ public class SchemaGenerationValueModelTests extends PersistenceUnitTestCase
 		this.verifyOutputModeAAValue(null);
 		assertNotNull(this.outputModeEvent);
 		// testing PU properties
-		boolean containsOutputModeProperty = 
-			this.getPersistenceUnit().containsProperty(SchemaGeneration.ECLIPSELINK_DDL_GENERATION_OUTPUT_MODE);
-		assertFalse(containsOutputModeProperty);
+		property = this.getPersistenceUnit().getProperty(SchemaGeneration.ECLIPSELINK_DDL_GENERATION_OUTPUT_MODE);
+		assertNull(property);
 	}
 
 	/** ****** convenience methods ******* */

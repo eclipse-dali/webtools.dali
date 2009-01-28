@@ -76,6 +76,7 @@ import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeListIterator;
@@ -1537,21 +1538,21 @@ public class GenericOrmEntity
 	}
 	
 	protected void updateSpecifiedSecondaryTables() {
-		ListIterator<OrmSecondaryTable> secondaryTables = specifiedSecondaryTables();
-		ListIterator<XmlSecondaryTable> resourceSecondaryTables = new CloneListIterator<XmlSecondaryTable>(this.resourceTypeMapping.getSecondaryTables());//prevent ConcurrentModificiationException
+		// make a copy of the XML tables (to prevent ConcurrentModificationException)
+		Iterator<XmlSecondaryTable> xmlTables = new CloneIterator<XmlSecondaryTable>(this.resourceTypeMapping.getSecondaryTables());
 		
-		while (secondaryTables.hasNext()) {
-			OrmSecondaryTable secondaryTable = secondaryTables.next();
-			if (resourceSecondaryTables.hasNext()) {
-				secondaryTable.update(resourceSecondaryTables.next());
+		for (Iterator<OrmSecondaryTable> contextTables = this.specifiedSecondaryTables(); contextTables.hasNext(); ) {
+			OrmSecondaryTable contextTable = contextTables.next();
+			if (xmlTables.hasNext()) {
+				contextTable.update(xmlTables.next());
 			}
 			else {
-				removeSpecifiedSecondaryTable_(secondaryTable);
+				removeSpecifiedSecondaryTable_(contextTable);
 			}
 		}
 		
-		while (resourceSecondaryTables.hasNext()) {
-			addSpecifiedSecondaryTable(buildSecondaryTable(resourceSecondaryTables.next()));
+		while (xmlTables.hasNext()) {
+			addSpecifiedSecondaryTable(buildSecondaryTable(xmlTables.next()));
 		}
 	}
 	
@@ -1637,21 +1638,21 @@ public class GenericOrmEntity
 	}
 	
 	protected void updateSpecifiedPrimaryKeyJoinColumns() {
-		ListIterator<OrmPrimaryKeyJoinColumn> contextPkJoinColumns = specifiedPrimaryKeyJoinColumns();
-		ListIterator<XmlPrimaryKeyJoinColumn> resourcePkJoinColumns = new CloneListIterator<XmlPrimaryKeyJoinColumn>(this.resourceTypeMapping.getPrimaryKeyJoinColumns());//prevent ConcurrentModificiationException
+		// make a copy of the XML join columns (to prevent ConcurrentModificationException)
+		Iterator<XmlPrimaryKeyJoinColumn> xmlPkJoinColumns = new CloneIterator<XmlPrimaryKeyJoinColumn>(this.resourceTypeMapping.getPrimaryKeyJoinColumns());
 		
-		while (contextPkJoinColumns.hasNext()) {
+		for (Iterator<OrmPrimaryKeyJoinColumn> contextPkJoinColumns = this.specifiedPrimaryKeyJoinColumns(); contextPkJoinColumns.hasNext(); ) {
 			OrmPrimaryKeyJoinColumn contextPkJoinColumn = contextPkJoinColumns.next();
-			if (resourcePkJoinColumns.hasNext()) {
-				contextPkJoinColumn.update(resourcePkJoinColumns.next());
+			if (xmlPkJoinColumns.hasNext()) {
+				contextPkJoinColumn.update(xmlPkJoinColumns.next());
 			}
 			else {
 				removeSpecifiedPrimaryKeyJoinColumn_(contextPkJoinColumn);
 			}
 		}
 		
-		while (resourcePkJoinColumns.hasNext()) {
-			addSpecifiedPrimaryKeyJoinColumn(buildPrimaryKeyJoinColumn(resourcePkJoinColumns.next()));
+		while (xmlPkJoinColumns.hasNext()) {
+			addSpecifiedPrimaryKeyJoinColumn(buildPrimaryKeyJoinColumn(xmlPkJoinColumns.next()));
 		}
 	}
 	
@@ -1700,21 +1701,21 @@ public class GenericOrmEntity
 	}
 
 	protected void updateSpecifiedAttributeOverrides() {
-		ListIterator<OrmAttributeOverride> attributeOverrides = specifiedAttributeOverrides();
-		ListIterator<XmlAttributeOverride> resourceAttributeOverrides = new CloneListIterator<XmlAttributeOverride>(this.resourceTypeMapping.getAttributeOverrides());//prevent ConcurrentModificiationException
+		// make a copy of the XML overrides (to prevent ConcurrentModificationException)
+		Iterator<XmlAttributeOverride> xmlOverrides = new CloneIterator<XmlAttributeOverride>(this.resourceTypeMapping.getAttributeOverrides());
 		
-		while (attributeOverrides.hasNext()) {
-			OrmAttributeOverride attributeOverride = attributeOverrides.next();
-			if (resourceAttributeOverrides.hasNext()) {
-				attributeOverride.update(resourceAttributeOverrides.next());
+		for (Iterator<OrmAttributeOverride> contextOverrides = this.specifiedAttributeOverrides(); contextOverrides.hasNext(); ) {
+			OrmAttributeOverride contextOverride = contextOverrides.next();
+			if (xmlOverrides.hasNext()) {
+				contextOverride.update(xmlOverrides.next());
 			}
 			else {
-				removeSpecifiedAttributeOverride_(attributeOverride);
+				removeSpecifiedAttributeOverride_(contextOverride);
 			}
 		}
 		
-		while (resourceAttributeOverrides.hasNext()) {
-			addSpecifiedAttributeOverride(buildAttributeOverride(resourceAttributeOverrides.next()));
+		while (xmlOverrides.hasNext()) {
+			addSpecifiedAttributeOverride(buildAttributeOverride(xmlOverrides.next()));
 		}
 	}
 	
@@ -1758,21 +1759,21 @@ public class GenericOrmEntity
 	}
 
 	protected void updateSpecifiedAssociationOverrides() {
-		ListIterator<OrmAssociationOverride> associationOverrides = specifiedAssociationOverrides();
-		ListIterator<XmlAssociationOverride> resourceAssociationOverrides = new CloneListIterator<XmlAssociationOverride>(this.resourceTypeMapping.getAssociationOverrides());//prevent ConcurrentModificiationException
+		// make a copy of the XML overrides (to prevent ConcurrentModificationException)
+		Iterator<XmlAssociationOverride> xmlOverrides = new CloneIterator<XmlAssociationOverride>(this.resourceTypeMapping.getAssociationOverrides());
 		
-		while (associationOverrides.hasNext()) {
-			OrmAssociationOverride associationOverride = associationOverrides.next();
-			if (resourceAssociationOverrides.hasNext()) {
-				associationOverride.update(resourceAssociationOverrides.next());
+		for (Iterator<OrmAssociationOverride> contextOverrides = this.specifiedAssociationOverrides(); contextOverrides.hasNext(); ) {
+			OrmAssociationOverride contextOverride = contextOverrides.next();
+			if (xmlOverrides.hasNext()) {
+				contextOverride.update(xmlOverrides.next());
 			}
 			else {
-				removeSpecifiedAssociationOverride_(associationOverride);
+				removeSpecifiedAssociationOverride_(contextOverride);
 			}
 		}
 		
-		while (resourceAssociationOverrides.hasNext()) {
-			addSpecifiedAssociationOverride(buildAssociationOverride(resourceAssociationOverrides.next()));
+		while (xmlOverrides.hasNext()) {
+			addSpecifiedAssociationOverride(buildAssociationOverride(xmlOverrides.next()));
 		}
 	}
 	
@@ -1785,21 +1786,21 @@ public class GenericOrmEntity
 	}
 	
 	protected void updateNamedQueries() {
-		ListIterator<OrmNamedQuery> queries = namedQueries();
-		ListIterator<XmlNamedQuery> resourceNamedQueries = new CloneListIterator<XmlNamedQuery>(this.resourceTypeMapping.getNamedQueries());//prevent ConcurrentModificiationException
+		// make a copy of the XML queries (to prevent ConcurrentModificationException)
+		Iterator<XmlNamedQuery> xmlQueries = new CloneIterator<XmlNamedQuery>(this.resourceTypeMapping.getNamedQueries());
 		
-		while (queries.hasNext()) {
-			OrmNamedQuery namedQuery = queries.next();
-			if (resourceNamedQueries.hasNext()) {
-				namedQuery.update(resourceNamedQueries.next());
+		for (Iterator<OrmNamedQuery> contextQueries = this.namedQueries(); contextQueries.hasNext(); ) {
+			OrmNamedQuery contextQuery = contextQueries.next();
+			if (xmlQueries.hasNext()) {
+				contextQuery.update(xmlQueries.next());
 			}
 			else {
-				removeNamedQuery_(namedQuery);
+				removeNamedQuery_(contextQuery);
 			}
 		}
 		
-		while (resourceNamedQueries.hasNext()) {
-			addNamedQuery(buildNamedQuery(resourceNamedQueries.next()));
+		while (xmlQueries.hasNext()) {
+			addNamedQuery(buildNamedQuery(xmlQueries.next()));
 		}
 	}
 
@@ -1808,21 +1809,21 @@ public class GenericOrmEntity
 	}
 
 	protected void updateNamedNativeQueries() {
-		ListIterator<OrmNamedNativeQuery> queries = namedNativeQueries();
-		ListIterator<XmlNamedNativeQuery> resourceNamedNativeQueries = new CloneListIterator<XmlNamedNativeQuery>(this.resourceTypeMapping.getNamedNativeQueries());//prevent ConcurrentModificiationException
+		// make a copy of the XML queries (to prevent ConcurrentModificationException)
+		Iterator<XmlNamedNativeQuery> xmlQueries = new CloneIterator<XmlNamedNativeQuery>(this.resourceTypeMapping.getNamedNativeQueries());
 		
-		while (queries.hasNext()) {
-			OrmNamedNativeQuery namedQuery = queries.next();
-			if (resourceNamedNativeQueries.hasNext()) {
-				namedQuery.update(resourceNamedNativeQueries.next());
+		for (Iterator<OrmNamedNativeQuery> contextQueries = this.namedNativeQueries(); contextQueries.hasNext(); ) {
+			OrmNamedNativeQuery contextQuery = contextQueries.next();
+			if (xmlQueries.hasNext()) {
+				contextQuery.update(xmlQueries.next());
 			}
 			else {
-				removeNamedNativeQuery_(namedQuery);
+				removeNamedNativeQuery_(contextQuery);
 			}
 		}
 		
-		while (resourceNamedNativeQueries.hasNext()) {
-			addNamedNativeQuery(buildNamedNativeQuery(resourceNamedNativeQueries.next()));
+		while (xmlQueries.hasNext()) {
+			addNamedNativeQuery(buildNamedNativeQuery(xmlQueries.next()));
 		}
 	}
 
@@ -1933,7 +1934,7 @@ public class GenericOrmEntity
 	protected void validateGenerators(List<IMessage> messages) {
 		for (Iterator<OrmGenerator> localGenerators = this.generators(); localGenerators.hasNext(); ) {
 			OrmGenerator localGenerator = localGenerators.next();
-			for (Iterator<Generator> globalGenerators = this.getPersistenceUnit().allGenerators(); globalGenerators.hasNext(); ) {
+			for (Iterator<Generator> globalGenerators = this.getPersistenceUnit().generators(); globalGenerators.hasNext(); ) {
 				if (localGenerator.duplicates(globalGenerators.next())) {
 					messages.add(
 						DefaultJpaValidationMessages.buildMessage(
@@ -1941,7 +1942,8 @@ public class GenericOrmEntity
 							JpaValidationMessages.GENERATOR_DUPLICATE_NAME,
 							new String[] {localGenerator.getName()},
 							localGenerator,
-							localGenerator.getNameTextRange())
+							localGenerator.getNameTextRange()
+						)
 					);
 				}
 			}
@@ -1951,7 +1953,7 @@ public class GenericOrmEntity
 	protected void validateQueries(List<IMessage> messages) {
 		for (Iterator<OrmQuery> localQueries = this.queries(); localQueries.hasNext(); ) {
 			OrmQuery localQuery = localQueries.next();
-			for (Iterator<Query> globalQueries = this.getPersistenceUnit().allQueries(); globalQueries.hasNext(); ) {
+			for (Iterator<Query> globalQueries = this.getPersistenceUnit().queries(); globalQueries.hasNext(); ) {
 				if (localQuery.duplicates(globalQueries.next())) {
 					messages.add(
 						DefaultJpaValidationMessages.buildMessage(

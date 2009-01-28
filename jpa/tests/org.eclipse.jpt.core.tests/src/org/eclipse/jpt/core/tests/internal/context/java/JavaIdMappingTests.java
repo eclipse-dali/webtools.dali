@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -485,17 +485,17 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		IdMapping idMapping = (IdMapping) persistentAttribute.getSpecifiedMapping();
 		assertNull(idMapping.getSequenceGenerator());
-		assertEquals(0, CollectionTools.size(idMapping.getPersistenceUnit().allGenerators()));
+		assertEquals(0, idMapping.getPersistenceUnit().generatorsSize());
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		attributeResource.addSupportingAnnotation(JPA.SEQUENCE_GENERATOR);
 		assertNotNull(idMapping.getSequenceGenerator());
 		assertEquals(1, attributeResource.supportingAnnotationsSize());
-		assertEquals(1, CollectionTools.size(idMapping.getPersistenceUnit().allGenerators()));
+		assertEquals(1, idMapping.getPersistenceUnit().generatorsSize());
 		
 		idMapping.getSequenceGenerator().setName("foo");
-		assertEquals(1, CollectionTools.size(idMapping.getPersistenceUnit().allGenerators()));
+		assertEquals(1, idMapping.getPersistenceUnit().generatorsSize());
 	}
 	
 	public void testAddSequenceGenerator() throws Exception {
@@ -557,17 +557,17 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		IdMapping idMapping = (IdMapping) persistentAttribute.getSpecifiedMapping();
 		assertNull(idMapping.getTableGenerator());
-		assertEquals(0, CollectionTools.size(idMapping.getPersistenceUnit().allGenerators()));
+		assertEquals(0, idMapping.getPersistenceUnit().generatorsSize());
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		attributeResource.addSupportingAnnotation(JPA.TABLE_GENERATOR);
 		assertNotNull(idMapping.getTableGenerator());		
 		assertEquals(1, attributeResource.supportingAnnotationsSize());
-		assertEquals(1, CollectionTools.size(idMapping.getPersistenceUnit().allGenerators()));
+		assertEquals(1, idMapping.getPersistenceUnit().generatorsSize());
 		
 		idMapping.getTableGenerator().setName("foo");
-		assertEquals(1, CollectionTools.size(idMapping.getPersistenceUnit().allGenerators()));
+		assertEquals(1, idMapping.getPersistenceUnit().generatorsSize());
 	}
 	
 	public void testAddTableGenerator() throws Exception {

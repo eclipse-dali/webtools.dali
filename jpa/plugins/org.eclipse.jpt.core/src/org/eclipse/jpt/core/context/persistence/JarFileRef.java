@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -7,13 +7,12 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.resource.common;
-
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.jpt.core.utility.TextRange;
+package org.eclipse.jpt.core.context.persistence;
 
 /**
- * 
+ * This is the context model corresponding to the 
+ * persistence resource model XmlJarRef,
+ * which corresponds to the 'jar-file' tag in the persistence.xml.
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -21,29 +20,6 @@ import org.eclipse.jpt.core.utility.TextRange;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface JpaEObject
-	extends EObject
-{
-	/**
-	 * Return true if this object's text representation contains the text offset
-	 */
-	boolean containsOffset(int textOffset);
-
-	/**
-	 * Return the text range to be used for validation.  This is the source
-	 * range that will be highlighted for a validation error.
-	 */
-	TextRange getValidationTextRange();
-
-	/**
-	 * Return the text range to be used for selection.  This is the source
-	 * range that will be highlighted when selecting in the structure view.
-	 */
-	TextRange getSelectionTextRange();
-
-	/**
-	 * Return whether all the 
-	 */
-	boolean isAllFeaturesUnset();
+public interface JarFileRef {
 
 }

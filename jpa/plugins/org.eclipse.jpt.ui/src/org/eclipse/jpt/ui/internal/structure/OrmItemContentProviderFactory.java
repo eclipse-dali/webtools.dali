@@ -21,7 +21,8 @@ import org.eclipse.jpt.ui.internal.platform.generic.OrmPersistentTypeItemContent
 import org.eclipse.jpt.ui.jface.DelegatingContentAndLabelProvider;
 import org.eclipse.jpt.ui.jface.TreeItemContentProvider;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
-import org.eclipse.jpt.utility.model.value.ListValueModel;
+import org.eclipse.jpt.utility.internal.model.value.ListCollectionValueModelAdapter;
+import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 
 public class OrmItemContentProviderFactory extends GeneralJpaMappingItemContentProviderFactory
 {
@@ -63,14 +64,15 @@ public class OrmItemContentProviderFactory extends GeneralJpaMappingItemContentP
 		}
 		
 		@Override
-		protected ListValueModel<OrmPersistentType> buildChildrenModel() {
-			return new ListAspectAdapter<EntityMappings, OrmPersistentType>(
+		protected CollectionValueModel<OrmPersistentType> buildChildrenModel() {
+			return new ListCollectionValueModelAdapter<OrmPersistentType>(
+			new ListAspectAdapter<EntityMappings, OrmPersistentType>(
 					EntityMappings.PERSISTENT_TYPES_LIST, getModel()) {
 				@Override
 				protected ListIterator<OrmPersistentType> listIterator_() {
 					return subject.persistentTypes();
 				}
-			};
+			});
 		}
 	}
 }

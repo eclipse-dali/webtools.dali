@@ -469,7 +469,7 @@ public class GenericJavaIdMapping
 	protected void validateGenerators(List<IMessage> messages, CompilationUnit astRoot) {
 		for (Iterator<JavaGenerator> localGenerators = this.generators(); localGenerators.hasNext(); ) {
 			JavaGenerator localGenerator = localGenerators.next();
-			for (Iterator<Generator> globalGenerators = this.getPersistenceUnit().allGenerators(); globalGenerators.hasNext(); ) {
+			for (Iterator<Generator> globalGenerators = this.getPersistenceUnit().generators(); globalGenerators.hasNext(); ) {
 				if (localGenerator.duplicates(globalGenerators.next())) {
 					messages.add(
 						DefaultJpaValidationMessages.buildMessage(
@@ -477,7 +477,8 @@ public class GenericJavaIdMapping
 							JpaValidationMessages.GENERATOR_DUPLICATE_NAME,
 							new String[] {localGenerator.getName()},
 							localGenerator,
-							localGenerator.getNameTextRange(astRoot))
+							localGenerator.getNameTextRange(astRoot)
+						)
 					);
 				}
 			}

@@ -372,10 +372,8 @@ public abstract class AbstractOrmTypeMapping<T extends XmlTypeMapping>
 	}
 
 	public boolean containsOffset(int textOffset) {
-		if (this.resourceTypeMapping == null) {
-			return false;
-		}
-		return this.resourceTypeMapping.containsOffset(textOffset);
+		return (this.resourceTypeMapping != null)
+				&& this.resourceTypeMapping.containsOffset(textOffset);
 	}
 	
 	//************************* validation ************************

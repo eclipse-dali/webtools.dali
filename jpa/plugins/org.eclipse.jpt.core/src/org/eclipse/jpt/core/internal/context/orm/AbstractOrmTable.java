@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+
 import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.UniqueConstraint;
 import org.eclipse.jpt.core.context.XmlContextNode;
@@ -27,9 +28,9 @@ import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.SchemaContainer;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.NameTools;
+import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
-import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 
 /**
  * 
@@ -350,23 +351,26 @@ public abstract class AbstractOrmTable
 	}
 
 	protected void updateUniqueConstraints(XmlBaseTable xmlTable) {
-		ListIterator<OrmUniqueConstraint> contextConstraints = uniqueConstraints();
-		ListIterator<XmlUniqueConstraint> resourceConstraints = EmptyListIterator.instance();
-		if (xmlTable != null) {
-			resourceConstraints = new CloneListIterator<XmlUniqueConstraint>(xmlTable.getUniqueConstraints());//prevent ConcurrentModificiationException
-		}
-		while (contextConstraints.hasNext()) {
+		Iterator<XmlUniqueConstraint> xmlConstraints = this.xmlUniqueConstraints(xmlTable);
+
+		for (Iterator<OrmUniqueConstraint> contextConstraints = this.uniqueConstraints(); contextConstraints.hasNext(); ) {
 			OrmUniqueConstraint contextConstraint = contextConstraints.next();
-			if (resourceConstraints.hasNext()) {
-				contextConstraint.update(resourceConstraints.next());
+			if (xmlConstraints.hasNext()) {
+				contextConstraint.update(xmlConstraints.next());
 			} else {
 				this.removeUniqueConstraint_(contextConstraint);
 			}
 		}
 		
-		while (resourceConstraints.hasNext()) {
-			this.addUniqueConstraint(this.buildUniqueConstraint(resourceConstraints.next()));
+		while (xmlConstraints.hasNext()) {
+			this.addUniqueConstraint(this.buildUniqueConstraint(xmlConstraints.next()));
 		}
+	}
+
+	protected Iterator<XmlUniqueConstraint> xmlUniqueConstraints(XmlBaseTable xmlTable) {
+		// make a copy of the XML constraints (to prevent ConcurrentModificationException)
+		return (xmlTable == null) ? EmptyIterator.<XmlUniqueConstraint>instance()
+				: new CloneIterator<XmlUniqueConstraint>(xmlTable.getUniqueConstraints());
 	}
 
 	public void initializeFrom(Table oldTable) {

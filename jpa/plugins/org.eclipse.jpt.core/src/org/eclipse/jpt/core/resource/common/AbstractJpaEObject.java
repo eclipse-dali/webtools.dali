@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.resource.common;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Set;
-import org.eclipse.core.resources.IResource;
+
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.Notifier;
@@ -25,6 +25,7 @@ import org.eclipse.wst.common.internal.emf.resource.EMF2DOMAdapter;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMElement;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 /**
  * <!-- begin-user-doc -->
@@ -66,21 +67,6 @@ public abstract class AbstractJpaEObject
 
 	// ********** JpaEObject implementation **********
 
-	public JpaXmlResource getResource() {
-		return (JpaXmlResource) this.eResource();
-	}
-
-	public IResource getPlatformResource() {
-		return this.getResource().getFile();
-	}
-
-	/*
-	 * Must be overridden by actual root object to return itself.
-	 */
-	public JpaEObject getRoot() {
-		return ((JpaEObject) this.eContainer()).getRoot();
-	}
-
 	public boolean isAllFeaturesUnset() {
 		for (EStructuralFeature feature : this.eClass().getEAllStructuralFeatures()) {
 			if (this.eIsSet(feature)) {
@@ -117,8 +103,12 @@ public abstract class AbstractJpaEObject
 
 	protected void featureChanged(int featureId) {
 		if (this.featureIsSignificant(featureId)) { 
-			this.getResource().resourceModelChanged();
+			this.getXmlResource().resourceModelChanged();
 		}
+	}
+
+	protected JpaXmlResource getXmlResource() {
+		return (JpaXmlResource) this.eResource();
 	}
 
 	protected boolean featureIsSignificant(int featureId) {
@@ -197,10 +187,12 @@ public abstract class AbstractJpaEObject
 	 * Returns the first element node with the given name, if one exists
 	 */
 	protected IDOMNode getElementNode(String elementName) {
-		for (int i = 0; i < this.node.getChildNodes().getLength(); i ++) {
-			IDOMNode node = (IDOMNode) this.node.getChildNodes().item(i);
-			if (node.getNodeType() == IDOMNode.ELEMENT_NODE && elementName.equals(node.getNodeName())) {
-				return node;
+		NodeList children = this.node.getChildNodes();
+		for (int i = 0; i < children.getLength(); i ++) {
+			IDOMNode child = (IDOMNode) children.item(i);
+			if ((child.getNodeType() == Node.ELEMENT_NODE)
+					&& elementName.equals(child.getNodeName())) {
+				return child;
 			}
 		}
 		return null;
@@ -240,9 +232,9 @@ public abstract class AbstractJpaEObject
 		protected void didAdd(int index, E newObject) {
 			super.didAdd(index, newObject);
 			if (newObject instanceof EMF2DOMAdapter) {
-				Object node = ((EMF2DOMAdapter) newObject).getNode();
-				if (node instanceof IDOMNode) {
-					AbstractJpaEObject.this.node = (IDOMNode) node;
+				Object n = ((EMF2DOMAdapter) newObject).getNode();
+				if (n instanceof IDOMNode) {
+					AbstractJpaEObject.this.node = (IDOMNode) n;
 				}
 			}
 		}

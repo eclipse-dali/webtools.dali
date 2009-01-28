@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -1877,7 +1877,7 @@ public class GenericJavaEntity
 	protected void validateGenerators(List<IMessage> messages, CompilationUnit astRoot) {
 		for (Iterator<JavaGenerator> localGenerators = this.generators(); localGenerators.hasNext(); ) {
 			JavaGenerator localGenerator = localGenerators.next();
-			for (Iterator<Generator> globalGenerators = this.getPersistenceUnit().allGenerators(); globalGenerators.hasNext(); ) {
+			for (Iterator<Generator> globalGenerators = this.getPersistenceUnit().generators(); globalGenerators.hasNext(); ) {
 				if (localGenerator.duplicates(globalGenerators.next())) {
 					messages.add(
 						DefaultJpaValidationMessages.buildMessage(
@@ -1885,7 +1885,8 @@ public class GenericJavaEntity
 							JpaValidationMessages.GENERATOR_DUPLICATE_NAME,
 							new String[] {localGenerator.getName()},
 							localGenerator,
-							localGenerator.getNameTextRange(astRoot))
+							localGenerator.getNameTextRange(astRoot)
+						)
 					);
 				}
 			}
@@ -1895,7 +1896,7 @@ public class GenericJavaEntity
 	protected void validateQueries(List<IMessage> messages, CompilationUnit astRoot) {
 		for (Iterator<JavaQuery> localQueries = this.queries(); localQueries.hasNext(); ) {
 			JavaQuery localQuery = localQueries.next();
-			for (Iterator<Query> globalQueries = this.getPersistenceUnit().allQueries(); globalQueries.hasNext(); ) {
+			for (Iterator<Query> globalQueries = this.getPersistenceUnit().queries(); globalQueries.hasNext(); ) {
 				if (localQuery.duplicates(globalQueries.next())) {
 					messages.add(
 						DefaultJpaValidationMessages.buildMessage(
@@ -1903,7 +1904,8 @@ public class GenericJavaEntity
 							JpaValidationMessages.QUERY_DUPLICATE_NAME,
 							new String[] {localQuery.getName()},
 							localQuery,
-							localQuery.getNameTextRange(astRoot))
+							localQuery.getNameTextRange(astRoot)
+						)
 					);
 				}
 			}

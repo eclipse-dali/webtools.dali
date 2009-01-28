@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -56,6 +56,7 @@ public class TestJpaProject extends TestJavaProject {
 		this.installFacet("jpt.jpa", "1.0", jpaConfig);
 		this.addJar(jpaJarName());
 		this.jpaProject = JptCorePlugin.getJpaProject(this.getProject());
+		this.jpaProject.setDiscoversAnnotatedClasses(true);
 		this.jpaProject.setUpdater(new SynchronousJpaProjectUpdater(this.jpaProject));
 	}
 

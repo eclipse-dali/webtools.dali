@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2008 Oracle. All rights reserved.
+* Copyright (c) 2008, 2009 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,18 +10,12 @@
 package org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.options;
 
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.core.context.persistence.Property;
-import org.eclipse.jpt.core.internal.context.persistence.GenericProperty;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.PersistenceUnitProperties;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.PersistenceUnitPropertyListListener;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.options.EclipseLinkOptions;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.options.Options;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.options.TargetDatabase;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.options.TargetServer;
 import org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.PersistenceUnitTestCase;
-import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
-import org.eclipse.jpt.utility.model.value.ListValueModel;
 
 /**
  * Tests the update of model objects by the Option adapter when the
@@ -90,52 +84,21 @@ public class OptionsAdapterTests extends PersistenceUnitTestCase
 		this.propertiesTotal = this.modelPropertiesSizeOriginal + 4; // 4 misc properties
 		this.modelPropertiesSize = this.modelPropertiesSizeOriginal;
 		
-		this.persistenceUnitPut(SESSION_NAME_KEY, SESSION_NAME_TEST_VALUE);
-		this.persistenceUnitPut(SESSIONS_XML_KEY, SESSIONS_XML_TEST_VALUE);
-		this.persistenceUnitPut("misc.property.1", "value.1");
-		this.persistenceUnitPut(INCLUDE_DESCRIPTOR_QUERIES_KEY, INCLUDE_DESCRIPTOR_QUERIES_TEST_VALUE.toString());
-		this.persistenceUnitPut("misc.property.2", "value.2");
-		this.persistenceUnitPut("misc.property.3", "value.3");
-		this.persistenceUnitPut(TARGET_DATABASE_KEY, TARGET_DATABASE_TEST_VALUE);
-		this.persistenceUnitPut(TARGET_SERVER_KEY, TARGET_SERVER_TEST_VALUE);
-		this.persistenceUnitPut(SESSION_EVENT_LISTENER_KEY, SESSION_EVENT_LISTENER_TEST_VALUE);
-		this.persistenceUnitPut("misc.property.4", "value.4");
-		this.persistenceUnitPut(TEMPORAL_MUTABLE_KEY, TEMPORAL_MUTABLE_TEST_VALUE.toString());
+		this.persistenceUnitSetProperty(SESSION_NAME_KEY, SESSION_NAME_TEST_VALUE);
+		this.persistenceUnitSetProperty(SESSIONS_XML_KEY, SESSIONS_XML_TEST_VALUE);
+		this.persistenceUnitSetProperty("misc.property.1", "value.1");
+		this.persistenceUnitSetProperty(INCLUDE_DESCRIPTOR_QUERIES_KEY, INCLUDE_DESCRIPTOR_QUERIES_TEST_VALUE.toString());
+		this.persistenceUnitSetProperty("misc.property.2", "value.2");
+		this.persistenceUnitSetProperty("misc.property.3", "value.3");
+		this.persistenceUnitSetProperty(TARGET_DATABASE_KEY, TARGET_DATABASE_TEST_VALUE);
+		this.persistenceUnitSetProperty(TARGET_SERVER_KEY, TARGET_SERVER_TEST_VALUE);
+		this.persistenceUnitSetProperty(SESSION_EVENT_LISTENER_KEY, SESSION_EVENT_LISTENER_TEST_VALUE);
+		this.persistenceUnitSetProperty("misc.property.4", "value.4");
+		this.persistenceUnitSetProperty(TEMPORAL_MUTABLE_KEY, TEMPORAL_MUTABLE_TEST_VALUE.toString());
 		return;
 	}
 	
 	// ********** Listeners **********
-
-	// ********** Listeners tests **********
-	public void testHasListeners() throws Exception {
-		// new
-		ListAspectAdapter<PersistenceUnit, Property> propertiesAdapter = 
-			(ListAspectAdapter<PersistenceUnit, Property>) this.subject.getPropertiesAdapter();
-		GenericProperty ctdProperty = (GenericProperty) this.getPersistenceUnit().getProperty(INCLUDE_DESCRIPTOR_QUERIES_KEY);
-		ListValueModel<Property> propertyListAdapter = this.subject.getPropertyListAdapter();
-		
-		assertTrue(propertiesAdapter.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
-		assertTrue(ctdProperty.hasAnyPropertyChangeListeners(Property.VALUE_PROPERTY));
-		this.verifyHasListeners(this.options, Options.SESSION_NAME_PROPERTY);
-		this.verifyHasListeners(this.options, Options.SESSIONS_XML_PROPERTY);
-		this.verifyHasListeners(this.options, Options.SESSION_INCLUDE_DESCRIPTOR_QUERIES_PROPERTY);
-		this.verifyHasListeners(this.options, Options.TARGET_DATABASE_PROPERTY);
-		this.verifyHasListeners(this.options, Options.SESSION_EVENT_LISTENER_PROPERTY);
-		this.verifyHasListeners(this.options, Options.TEMPORAL_MUTABLE_PROPERTY);
-		this.verifyHasListeners(propertyListAdapter);
-		
-		EclipseLinkOptions elOptions = (EclipseLinkOptions) this.options;
-		PersistenceUnitPropertyListListener propertyListListener = elOptions.propertyListListener();
-		propertyListAdapter.removeListChangeListener(ListValueModel.LIST_VALUES, propertyListListener);
-		assertTrue(propertiesAdapter.hasAnyListChangeListeners(ListValueModel.LIST_VALUES)); // other properties are still listening
-		this.verifyHasListeners(this.options, Options.SESSION_NAME_PROPERTY);
-		this.verifyHasListeners(this.options, Options.SESSIONS_XML_PROPERTY);
-		this.verifyHasListeners(this.options, Options.SESSION_INCLUDE_DESCRIPTOR_QUERIES_PROPERTY);
-		this.verifyHasListeners(this.options, Options.TARGET_DATABASE_PROPERTY);
-		this.verifyHasListeners(this.options, Options.SESSION_EVENT_LISTENER_PROPERTY);
-		this.verifyHasListeners(this.options, Options.TEMPORAL_MUTABLE_PROPERTY);
-	}
-
 
 	// ********** SessionName tests **********
 	public void testSetSessionName() throws Exception {
@@ -218,7 +181,7 @@ public class OptionsAdapterTests extends PersistenceUnitTestCase
 	 * Verifies setting custom targetDatabase and literals.
 	 */
 	protected void verifySetTargetDatabase(String elKey, Object testValue1, Object testValue2) throws Exception {
-		Property property = this.getPersistenceUnit().getProperty(elKey);
+		PersistenceUnit.Property property = this.getPersistenceUnit().getProperty(elKey);
 		String propertyName = this.getModel().propertyIdFor(property);
 		// test set custom targetDatabase.
 		this.clearEvent();
@@ -228,19 +191,19 @@ public class OptionsAdapterTests extends PersistenceUnitTestCase
 		// test set (TargetDatabase) null
 		this.clearEvent();
 		this.options.setTargetDatabase((TargetDatabase) null);
-		assertFalse(this.getPersistenceUnit().containsProperty(elKey));
+		assertNull(this.getPersistenceUnit().getProperty(elKey));
 		this.verifyPutProperty(propertyName, null);
 		
 		// test set enum literal
 		this.clearEvent();
 		this.setProperty(propertyName, testValue1.toString());
-		assertTrue(this.getPersistenceUnit().containsProperty(elKey));
+		assertNotNull(this.getPersistenceUnit().getProperty(elKey));
 		this.verifyPutProperty(propertyName, this.getEclipseLinkStringValueOf(testValue1));
 
 		// test set (String) null
 		this.clearEvent();
 		this.options.setTargetDatabase((String) null);
-		assertFalse(this.getPersistenceUnit().containsProperty(elKey));
+		assertNull(this.getPersistenceUnit().getProperty(elKey));
 		this.verifyPutProperty(propertyName, null);
 	}
 	
@@ -272,7 +235,7 @@ public class OptionsAdapterTests extends PersistenceUnitTestCase
 	 * Verifies setting custom targetServer and literals.
 	 */
 	protected void verifySetTargetServer(String elKey, Object testValue1, Object testValue2) throws Exception {
-		Property property = this.getPersistenceUnit().getProperty(elKey);
+		PersistenceUnit.Property property = this.getPersistenceUnit().getProperty(elKey);
 		String propertyName = this.getModel().propertyIdFor(property);
 		// test set custom targetServer.
 		this.clearEvent();
@@ -282,19 +245,19 @@ public class OptionsAdapterTests extends PersistenceUnitTestCase
 		// test set (TargetServer) null
 		this.clearEvent();
 		this.options.setTargetServer((TargetServer) null);
-		assertFalse(this.getPersistenceUnit().containsProperty(elKey));
+		assertNull(this.getPersistenceUnit().getProperty(elKey));
 		this.verifyPutProperty(propertyName, null);
 		
 		// test set enum literal
 		this.clearEvent();
 		this.setProperty(propertyName, testValue1.toString());
-		assertTrue(this.getPersistenceUnit().containsProperty(elKey));
+		assertNotNull(this.getPersistenceUnit().getProperty(elKey));
 		this.verifyPutProperty(propertyName, this.getEclipseLinkStringValueOf(testValue1));
 
 		// test set (String) null
 		this.clearEvent();
 		this.options.setTargetServer((String) null);
-		assertFalse(this.getPersistenceUnit().containsProperty(elKey));
+		assertNull(this.getPersistenceUnit().getProperty(elKey));
 		this.verifyPutProperty(propertyName, null);
 	}
 

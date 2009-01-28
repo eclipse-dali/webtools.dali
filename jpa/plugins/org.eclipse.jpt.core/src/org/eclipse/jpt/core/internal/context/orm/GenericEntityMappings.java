@@ -51,6 +51,7 @@ import org.eclipse.jpt.db.Catalog;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.SchemaContainer;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -690,10 +691,11 @@ public class GenericEntityMappings
 		Collection<OrmPersistentType> contextTypesToUpdate = new ArrayList<OrmPersistentType>();
 		int resourceIndex = 0;
 		
-		for (XmlTypeMapping resourceMapping : this.xmlEntityMappings.getTypeMappings()) {
+		List<XmlTypeMapping> xmlTypeMappings = this.xmlEntityMappings.getTypeMappings();
+		for (XmlTypeMapping xmlTypeMapping : xmlTypeMappings.toArray(new XmlTypeMapping[xmlTypeMappings.size()])) {
 			boolean contextAttributeFound = false;
 			for (OrmPersistentType contextType : contextTypesToRemove) {
-				if (contextType.getMapping().getResourceTypeMapping() == resourceMapping) {
+				if (contextType.getMapping().getResourceTypeMapping() == xmlTypeMapping) {
 					movePersistentType_(resourceIndex, contextType);
 					contextTypesToRemove.remove(contextType);
 					contextTypesToUpdate.add(contextType);
@@ -702,7 +704,7 @@ public class GenericEntityMappings
 				}
 			}
 			if (!contextAttributeFound) {
-				OrmPersistentType ormPersistentType = addPersistentType(resourceMapping);
+				OrmPersistentType ormPersistentType = addPersistentType(xmlTypeMapping);
 				fireItemAdded(PERSISTENT_TYPES_LIST, persistentTypesSize(), ormPersistentType);
 			}
 			resourceIndex++;
@@ -726,20 +728,21 @@ public class GenericEntityMappings
 	}
 	
 	protected void updateTableGenerators() {
-		ListIterator<OrmTableGenerator> contextTableGenerators = tableGenerators();
-		ListIterator<XmlTableGenerator> resourceTableGenerators = new CloneListIterator<XmlTableGenerator>(this.xmlEntityMappings.getTableGenerators());//prevent ConcurrentModificiationException
-		while (contextTableGenerators.hasNext()) {
-			OrmTableGenerator contextTableGenerator = contextTableGenerators.next();
-			if (resourceTableGenerators.hasNext()) {
-				contextTableGenerator.update(resourceTableGenerators.next());
+		// make a copy of the XML generators (to prevent ConcurrentModificationException)
+		Iterator<XmlTableGenerator> xmlGenerators = new CloneIterator<XmlTableGenerator>(this.xmlEntityMappings.getTableGenerators());
+
+		for (Iterator<OrmTableGenerator> contextGenerators = this.tableGenerators(); contextGenerators.hasNext(); ) {
+			OrmTableGenerator contextGenerator = contextGenerators.next();
+			if (xmlGenerators.hasNext()) {
+				contextGenerator.update(xmlGenerators.next());
 			}
 			else {
-				removeTableGenerator_(contextTableGenerator);
+				removeTableGenerator_(contextGenerator);
 			}
 		}
 		
-		while (resourceTableGenerators.hasNext()) {
-			addTableGenerator(buildTableGenerator(resourceTableGenerators.next()));
+		while (xmlGenerators.hasNext()) {
+			addTableGenerator(buildTableGenerator(xmlGenerators.next()));
 		}
 	}
 
@@ -748,20 +751,21 @@ public class GenericEntityMappings
 	}
 
 	protected void updateSequenceGenerators() {
-		ListIterator<OrmSequenceGenerator> contextSequenceGenerators = sequenceGenerators();
-		ListIterator<XmlSequenceGenerator> resourceSequenceGenerators = new CloneListIterator<XmlSequenceGenerator>(this.xmlEntityMappings.getSequenceGenerators());//prevent ConcurrentModificiationException
-		while (contextSequenceGenerators.hasNext()) {
+		// make a copy of the XML sequence generators (to prevent ConcurrentModificationException)
+		Iterator<XmlSequenceGenerator> xmlSequenceGenerators = new CloneIterator<XmlSequenceGenerator>(this.xmlEntityMappings.getSequenceGenerators());//prevent ConcurrentModificiationException
+
+		for (Iterator<OrmSequenceGenerator> contextSequenceGenerators = this.sequenceGenerators(); contextSequenceGenerators.hasNext(); ) {
 			OrmSequenceGenerator contextSequenceGenerator = contextSequenceGenerators.next();
-			if (resourceSequenceGenerators.hasNext()) {
-				contextSequenceGenerator.update(resourceSequenceGenerators.next());
+			if (xmlSequenceGenerators.hasNext()) {
+				contextSequenceGenerator.update(xmlSequenceGenerators.next());
 			}
 			else {
 				removeSequenceGenerator_(contextSequenceGenerator);
 			}
 		}
 		
-		while (resourceSequenceGenerators.hasNext()) {
-			addSequenceGenerator(buildSequenceGenerator(resourceSequenceGenerators.next()));
+		while (xmlSequenceGenerators.hasNext()) {
+			addSequenceGenerator(buildSequenceGenerator(xmlSequenceGenerators.next()));
 		}
 	}
 
@@ -770,21 +774,21 @@ public class GenericEntityMappings
 	}
 	
 	protected void updateNamedQueries() {
-		ListIterator<OrmNamedQuery> contextNamedQueries = namedQueries();
-		ListIterator<XmlNamedQuery> resourceNamedQueries = new CloneListIterator<XmlNamedQuery>(this.xmlEntityMappings.getNamedQueries());//prevent ConcurrentModificiationException
+		// make a copy of the XML queries (to prevent ConcurrentModificationException)
+		Iterator<XmlNamedQuery> xmlQueries = new CloneIterator<XmlNamedQuery>(this.xmlEntityMappings.getNamedQueries());
 		
-		while (contextNamedQueries.hasNext()) {
-			OrmNamedQuery contextNamedQuery = contextNamedQueries.next();
-			if (resourceNamedQueries.hasNext()) {
-				contextNamedQuery.update(resourceNamedQueries.next());
+		for (Iterator<OrmNamedQuery> contextQueries = this.namedQueries(); contextQueries.hasNext(); ) {
+			OrmNamedQuery contextQuery = contextQueries.next();
+			if (xmlQueries.hasNext()) {
+				contextQuery.update(xmlQueries.next());
 			}
 			else {
-				removeNamedQuery_(contextNamedQuery);
+				removeNamedQuery_(contextQuery);
 			}
 		}
 		
-		while (resourceNamedQueries.hasNext()) {
-			addNamedQuery(buildNamedQuery(resourceNamedQueries.next()));
+		while (xmlQueries.hasNext()) {
+			addNamedQuery(buildNamedQuery(xmlQueries.next()));
 		}
 	}
 
@@ -793,21 +797,21 @@ public class GenericEntityMappings
 	}
 
 	protected void updateNamedNativeQueries() {
-		ListIterator<OrmNamedNativeQuery> contextQueries = namedNativeQueries();
-		ListIterator<XmlNamedNativeQuery> resourceQueries = new CloneListIterator<XmlNamedNativeQuery>(this.xmlEntityMappings.getNamedNativeQueries());//prevent ConcurrentModificiationException
+		// make a copy of the XML queries (to prevent ConcurrentModificationException)
+		Iterator<XmlNamedNativeQuery> xmlQueries = new CloneIterator<XmlNamedNativeQuery>(this.xmlEntityMappings.getNamedNativeQueries());
 		
-		while (contextQueries.hasNext()) {
-			OrmNamedNativeQuery namedQuery = contextQueries.next();
-			if (resourceQueries.hasNext()) {
-				namedQuery.update(resourceQueries.next());
+		for (Iterator<OrmNamedNativeQuery> contextQueries = this.namedNativeQueries(); contextQueries.hasNext(); ) {
+			OrmNamedNativeQuery contextQuery = contextQueries.next();
+			if (xmlQueries.hasNext()) {
+				contextQuery.update(xmlQueries.next());
 			}
 			else {
-				removeNamedNativeQuery_(namedQuery);
+				removeNamedNativeQuery_(contextQuery);
 			}
 		}
 		
-		while (resourceQueries.hasNext()) {
-			addNamedNativeQuery(buildNamedNativeQuery(resourceQueries.next()));
+		while (xmlQueries.hasNext()) {
+			addNamedNativeQuery(buildNamedNativeQuery(xmlQueries.next()));
 		}
 	}
 
@@ -855,7 +859,7 @@ public class GenericEntityMappings
 	protected void validateGenerators(List<IMessage> messages) {
 		for (Iterator<OrmGenerator> localGenerators = this.generators(); localGenerators.hasNext(); ) {
 			OrmGenerator localGenerator = localGenerators.next();
-			for (Iterator<Generator> globalGenerators = this.getPersistenceUnit().allGenerators(); globalGenerators.hasNext(); ) {
+			for (Iterator<Generator> globalGenerators = this.getPersistenceUnit().generators(); globalGenerators.hasNext(); ) {
 				if (localGenerator.duplicates(globalGenerators.next())) {
 					messages.add(
 						DefaultJpaValidationMessages.buildMessage(
@@ -863,7 +867,8 @@ public class GenericEntityMappings
 							JpaValidationMessages.GENERATOR_DUPLICATE_NAME,
 							new String[] {localGenerator.getName()},
 							localGenerator,
-							localGenerator.getNameTextRange())
+							localGenerator.getNameTextRange()
+						)
 					);
 				}
 			}
@@ -884,7 +889,7 @@ public class GenericEntityMappings
 	protected void validateQueries(List<IMessage> messages) {
 		for (Iterator<OrmQuery> localQueries = this.queries(); localQueries.hasNext(); ) {
 			OrmQuery localQuery = localQueries.next();
-			for (Iterator<Query> globalQueries = this.getPersistenceUnit().allQueries(); globalQueries.hasNext(); ) {
+			for (Iterator<Query> globalQueries = this.getPersistenceUnit().queries(); globalQueries.hasNext(); ) {
 				if (localQuery.duplicates(globalQueries.next())) {
 					messages.add(
 						DefaultJpaValidationMessages.buildMessage(
@@ -892,7 +897,8 @@ public class GenericEntityMappings
 							JpaValidationMessages.QUERY_DUPLICATE_NAME,
 							new String[] {localQuery.getName()},
 							localQuery,
-							localQuery.getNameTextRange())
+							localQuery.getNameTextRange()
+						)
 					);
 				}
 			}

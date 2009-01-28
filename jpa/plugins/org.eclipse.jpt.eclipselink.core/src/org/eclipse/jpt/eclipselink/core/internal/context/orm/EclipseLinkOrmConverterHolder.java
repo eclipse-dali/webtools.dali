@@ -312,10 +312,11 @@ public class EclipseLinkOrmConverterHolder extends AbstractXmlContextNode implem
 	protected void updateCustomConverters() {
 		Collection<EclipseLinkOrmCustomConverter> contextConvertersToRemove = CollectionTools.collection(customConverters());
 		Collection<EclipseLinkOrmCustomConverter> contextConvertersToUpdate = new ArrayList<EclipseLinkOrmCustomConverter>();
-		ListIterator<XmlConverter> resourceConverters = new CloneListIterator<XmlConverter>(this.resourceConvertersHolder.getConverters());//prevent ConcurrentModificiationException
 		int resourceIndex = 0;
 		
-		for (XmlConverter resourceConverter : CollectionTools.iterable(resourceConverters)) {
+		// make a copy of the XML conversion values (to prevent ConcurrentModificationException)
+		List<XmlConverter> xmlConverters = this.resourceConvertersHolder.getConverters();
+		for (XmlConverter resourceConverter : xmlConverters.toArray(new XmlConverter[xmlConverters.size()])) {
 			boolean contextConverterFound = false;
 			for (EclipseLinkOrmCustomConverter contextConverter : contextConvertersToRemove) {
 				if (contextConverter.getXmlResource() == resourceConverter) {
@@ -342,82 +343,84 @@ public class EclipseLinkOrmConverterHolder extends AbstractXmlContextNode implem
 	}
 	
 	protected void updateObjectTypeConverters() {
-		Collection<EclipseLinkOrmObjectTypeConverter> contextObjectTypeConvertersToRemove = CollectionTools.collection(objectTypeConverters());
-		Collection<EclipseLinkOrmObjectTypeConverter> contextObjectTypeConvertersToUpdate = new ArrayList<EclipseLinkOrmObjectTypeConverter>();
-		ListIterator<XmlObjectTypeConverter> resourceObjectTypeConverters = new CloneListIterator<XmlObjectTypeConverter>(this.resourceConvertersHolder.getObjectTypeConverters());//prevent ConcurrentModificiationException
+		Collection<EclipseLinkOrmObjectTypeConverter> contextConvertersToRemove = CollectionTools.collection(objectTypeConverters());
+		Collection<EclipseLinkOrmObjectTypeConverter> contextConvertersToUpdate = new ArrayList<EclipseLinkOrmObjectTypeConverter>();
 		int resourceIndex = 0;
-		
-		for (XmlObjectTypeConverter resourceObjectTypeConverter : CollectionTools.iterable(resourceObjectTypeConverters)) {
-			boolean contextObjectTypeConverterFound = false;
-			for (EclipseLinkOrmObjectTypeConverter contextObjectTypeConverter : contextObjectTypeConvertersToRemove) {
-				if (contextObjectTypeConverter.getXmlResource() == resourceObjectTypeConverter) {
+
+		// make a copy of the XML converters (to prevent ConcurrentModificationException)
+		List<XmlObjectTypeConverter> xmlConverters = this.resourceConvertersHolder.getObjectTypeConverters();
+		for (XmlObjectTypeConverter xmlConverter : xmlConverters.toArray(new XmlObjectTypeConverter[xmlConverters.size()])) {
+			boolean contextConverterFound = false;
+			for (EclipseLinkOrmObjectTypeConverter contextObjectTypeConverter : contextConvertersToRemove) {
+				if (contextObjectTypeConverter.getXmlResource() == xmlConverter) {
 					moveObjectTypeConverter_(resourceIndex, contextObjectTypeConverter);
-					contextObjectTypeConvertersToRemove.remove(contextObjectTypeConverter);
-					contextObjectTypeConvertersToUpdate.add(contextObjectTypeConverter);
-					contextObjectTypeConverterFound = true;
+					contextConvertersToRemove.remove(contextObjectTypeConverter);
+					contextConvertersToUpdate.add(contextObjectTypeConverter);
+					contextConverterFound = true;
 					break;
 				}
 			}
-			if (!contextObjectTypeConverterFound) {
-				addObjectTypeConverter(this.buildObjectTypeConverter(resourceObjectTypeConverter));
+			if (!contextConverterFound) {
+				addObjectTypeConverter(this.buildObjectTypeConverter(xmlConverter));
 			}
 			resourceIndex++;
 		}
-		for (EclipseLinkOrmObjectTypeConverter contextObjectTypeConverter : contextObjectTypeConvertersToRemove) {
+		for (EclipseLinkOrmObjectTypeConverter contextObjectTypeConverter : contextConvertersToRemove) {
 			removeObjectTypeConverter_(contextObjectTypeConverter);
 		}
 		//first handle adding/removing of the converters, then update the others last, 
 		//this causes less churn in the update process
-		for (EclipseLinkOrmObjectTypeConverter contextObjectTypeConverter : contextObjectTypeConvertersToUpdate) {
+		for (EclipseLinkOrmObjectTypeConverter contextObjectTypeConverter : contextConvertersToUpdate) {
 			contextObjectTypeConverter.update();
 		}	
 	}
 	
 	protected void updateTypeConverters() {
-		Collection<EclipseLinkOrmTypeConverter> contextTypeConvertersToRemove = CollectionTools.collection(typeConverters());
-		Collection<EclipseLinkOrmTypeConverter> contextTypeConvertersToUpdate = new ArrayList<EclipseLinkOrmTypeConverter>();
-		ListIterator<XmlTypeConverter> resourceTypeConverters = new CloneListIterator<XmlTypeConverter>(this.resourceConvertersHolder.getTypeConverters());//prevent ConcurrentModificiationException
+		Collection<EclipseLinkOrmTypeConverter> contextConvertersToRemove = CollectionTools.collection(typeConverters());
+		Collection<EclipseLinkOrmTypeConverter> contextConvertersToUpdate = new ArrayList<EclipseLinkOrmTypeConverter>();
 		int resourceIndex = 0;
 		
-		for (XmlTypeConverter resourceTypeConverter : CollectionTools.iterable(resourceTypeConverters)) {
+		List<XmlTypeConverter> xmlConverters = this.resourceConvertersHolder.getTypeConverters();
+		for (XmlTypeConverter xmlConverter : xmlConverters.toArray(new XmlTypeConverter[xmlConverters.size()])) {
 			boolean contextTypeConverterFound = false;
-			for (EclipseLinkOrmTypeConverter contextTypeConverter : contextTypeConvertersToRemove) {
-				if (contextTypeConverter.getXmlResource() == resourceTypeConverter) {
+			for (EclipseLinkOrmTypeConverter contextTypeConverter : contextConvertersToRemove) {
+				if (contextTypeConverter.getXmlResource() == xmlConverter) {
 					moveTypeConverter_(resourceIndex, contextTypeConverter);
-					contextTypeConvertersToRemove.remove(contextTypeConverter);
-					contextTypeConvertersToUpdate.add(contextTypeConverter);
+					contextConvertersToRemove.remove(contextTypeConverter);
+					contextConvertersToUpdate.add(contextTypeConverter);
 					contextTypeConverterFound = true;
 					break;
 				}
 			}
 			if (!contextTypeConverterFound) {
-				addTypeConverter(this.buildTypeConverter(resourceTypeConverter));
+				addTypeConverter(this.buildTypeConverter(xmlConverter));
 			}
 			resourceIndex++;
 		}
-		for (EclipseLinkOrmTypeConverter contextTypeConverter : contextTypeConvertersToRemove) {
+		for (EclipseLinkOrmTypeConverter contextTypeConverter : contextConvertersToRemove) {
 			removeTypeConverter_(contextTypeConverter);
 		}
 		//first handle adding/removing of the converters, then update the others last, 
 		//this causes less churn in the update process
-		for (EclipseLinkOrmTypeConverter contextTypeConverter : contextTypeConvertersToUpdate) {
+		for (EclipseLinkOrmTypeConverter contextTypeConverter : contextConvertersToUpdate) {
 			contextTypeConverter.update();
 		}	
 	}
 	
 	protected void updateStructConverters() {
-		Collection<EclipseLinkOrmStructConverter> contextStructConvertersToRemove = CollectionTools.collection(structConverters());
-		Collection<EclipseLinkOrmStructConverter> contextStructConvertersToUpdate = new ArrayList<EclipseLinkOrmStructConverter>();
-		ListIterator<XmlStructConverter> resourceStructConverters = new CloneListIterator<XmlStructConverter>(this.resourceConvertersHolder.getStructConverters());//prevent ConcurrentModificiationException
+		Collection<EclipseLinkOrmStructConverter> contextConvertersToRemove = CollectionTools.collection(structConverters());
+		Collection<EclipseLinkOrmStructConverter> contextConvertersToUpdate = new ArrayList<EclipseLinkOrmStructConverter>();
 		int resourceIndex = 0;
 		
-		for (XmlStructConverter resourceStructConverter : CollectionTools.iterable(resourceStructConverters)) {
+		// make a copy of the XML converters (to prevent ConcurrentModificationException)
+		List<XmlStructConverter> xmlConverters = this.resourceConvertersHolder.getStructConverters();
+		for (XmlStructConverter resourceStructConverter : xmlConverters.toArray(new XmlStructConverter[xmlConverters.size()])) {
 			boolean contextStructConverterFound = false;
-			for (EclipseLinkOrmStructConverter contextStructConverter : contextStructConvertersToRemove) {
+			for (EclipseLinkOrmStructConverter contextStructConverter : contextConvertersToRemove) {
 				if (contextStructConverter.getXmlResource() == resourceStructConverter) {
 					moveStructConverter_(resourceIndex, contextStructConverter);
-					contextStructConvertersToRemove.remove(contextStructConverter);
-					contextStructConvertersToUpdate.add(contextStructConverter);
+					contextConvertersToRemove.remove(contextStructConverter);
+					contextConvertersToUpdate.add(contextStructConverter);
 					contextStructConverterFound = true;
 					break;
 				}
@@ -427,12 +430,12 @@ public class EclipseLinkOrmConverterHolder extends AbstractXmlContextNode implem
 			}
 			resourceIndex++;
 		}
-		for (EclipseLinkOrmStructConverter contextStructConverter : contextStructConvertersToRemove) {
+		for (EclipseLinkOrmStructConverter contextStructConverter : contextConvertersToRemove) {
 			removeStructConverter_(contextStructConverter);
 		}
 		//first handle adding/removing of the converters, then update the others last, 
 		//this causes less churn in the update process
-		for (EclipseLinkOrmStructConverter contextStructConverter : contextStructConvertersToUpdate) {
+		for (EclipseLinkOrmStructConverter contextStructConverter : contextConvertersToUpdate) {
 			contextStructConverter.update();
 		}	
 	}

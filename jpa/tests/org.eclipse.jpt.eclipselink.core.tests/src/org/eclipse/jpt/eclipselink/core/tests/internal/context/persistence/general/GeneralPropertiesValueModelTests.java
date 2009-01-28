@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -68,7 +68,7 @@ public class GeneralPropertiesValueModelTests extends PersistenceUnitTestCase
 	 */
 	@Override
 	protected void populatePu() {
-		this.persistenceUnitPut(
+		this.persistenceUnitSetProperty(
 			GeneralProperties.ECLIPSELINK_EXCLUDE_ECLIPSELINK_ORM, 
 			EXCLUDE_ECLIPSELINK_ORM_TEST_VALUE);
 		return;

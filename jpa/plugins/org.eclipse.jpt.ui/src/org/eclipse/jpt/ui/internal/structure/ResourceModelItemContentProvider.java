@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,10 +16,8 @@ import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.ui.internal.jface.AbstractTreeItemContentProvider;
 import org.eclipse.jpt.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
 import org.eclipse.jpt.utility.internal.model.value.CollectionAspectAdapter;
-import org.eclipse.jpt.utility.internal.model.value.CollectionListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;
-import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 
 public class ResourceModelItemContentProvider extends AbstractTreeItemContentProvider<JpaStructureNode>
@@ -41,11 +39,7 @@ public class ResourceModelItemContentProvider extends AbstractTreeItemContentPro
 	}
 	
 	@Override
-	protected ListValueModel<JpaStructureNode> buildChildrenModel() {
-		return new CollectionListValueModelAdapter<JpaStructureNode>(buildChildrenCollectionModel());
-	}
-
-	protected CollectionValueModel<JpaStructureNode> buildChildrenCollectionModel() {
+	protected CollectionValueModel<JpaStructureNode> buildChildrenModel() {
 		return new CollectionAspectAdapter<JpaFile, JpaStructureNode>(
 			buildJpaFileValueModel(), JpaFile.ROOT_STRUCTURE_NODES_COLLECTION) {
 			@Override

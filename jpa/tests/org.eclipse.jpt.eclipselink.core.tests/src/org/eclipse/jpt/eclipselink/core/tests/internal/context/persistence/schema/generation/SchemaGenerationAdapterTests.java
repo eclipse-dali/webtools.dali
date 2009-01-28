@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,19 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.schema.generation;
 
-import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.core.context.persistence.Property;
-import org.eclipse.jpt.core.internal.context.persistence.GenericProperty;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.PersistenceUnitProperties;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.PersistenceUnitPropertyListListener;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.schema.generation.DdlGenerationType;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.schema.generation.EclipseLinkSchemaGeneration;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.schema.generation.OutputMode;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.schema.generation.SchemaGeneration;
 import org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.PersistenceUnitTestCase;
-import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
-import org.eclipse.jpt.utility.model.value.ListValueModel;
 
 /**
  * Tests the update of OutputMode model object by the SchemaGeneration adapter
@@ -80,36 +73,16 @@ public class SchemaGenerationAdapterTests extends PersistenceUnitTestCase
 		this.modelPropertiesSizeOriginal = 5;
 		this.modelPropertiesSize = this.modelPropertiesSizeOriginal;
 		
-		this.persistenceUnitPut("property.0", "value.0");
-		this.persistenceUnitPut(OUTPUT_MODE_KEY, this.getEclipseLinkStringValueOf(OUTPUT_MODE_TEST_VALUE));
-		this.persistenceUnitPut("property.2", "value.2");
-		this.persistenceUnitPut("property.3", "value.3");
-		this.persistenceUnitPut("property.4", "value.4");
-		this.persistenceUnitPut(DDL_GENERATION_TYPE_KEY, this.getEclipseLinkStringValueOf(DDL_GENERATION_TYPE_TEST_VALUE));
-		this.persistenceUnitPut(CREATE_FILE_NAME_KEY, CREATE_FILE_NAME_TEST_VALUE);
-		this.persistenceUnitPut(DROP_FILE_NAME_KEY, DROP_FILE_NAME_TEST_VALUE);
-		this.persistenceUnitPut(APPLICATION_LOCATION_KEY, APPLICATION_LOCATION_TEST_VALUE);
+		this.persistenceUnitSetProperty("property.0", "value.0");
+		this.persistenceUnitSetProperty(OUTPUT_MODE_KEY, this.getEclipseLinkStringValueOf(OUTPUT_MODE_TEST_VALUE));
+		this.persistenceUnitSetProperty("property.2", "value.2");
+		this.persistenceUnitSetProperty("property.3", "value.3");
+		this.persistenceUnitSetProperty("property.4", "value.4");
+		this.persistenceUnitSetProperty(DDL_GENERATION_TYPE_KEY, this.getEclipseLinkStringValueOf(DDL_GENERATION_TYPE_TEST_VALUE));
+		this.persistenceUnitSetProperty(CREATE_FILE_NAME_KEY, CREATE_FILE_NAME_TEST_VALUE);
+		this.persistenceUnitSetProperty(DROP_FILE_NAME_KEY, DROP_FILE_NAME_TEST_VALUE);
+		this.persistenceUnitSetProperty(APPLICATION_LOCATION_KEY, APPLICATION_LOCATION_TEST_VALUE);
 		return;
-	}
-
-	public void testHasListeners() throws Exception {
-		ListAspectAdapter<PersistenceUnit, Property> propertiesAdapter = (ListAspectAdapter<PersistenceUnit, Property>) this.subject.getPropertiesAdapter();
-		GenericProperty outputModeProperty = (GenericProperty) this.getPersistenceUnit().getProperty(OUTPUT_MODE_KEY);
-		GenericProperty ddlGenTypeProperty = (GenericProperty) this.getPersistenceUnit().getProperty(DDL_GENERATION_TYPE_KEY);
-		ListValueModel<Property> propertyListAdapter = this.subject.getPropertyListAdapter();
-
-		assertTrue(propertiesAdapter.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
-		assertTrue(outputModeProperty.hasAnyPropertyChangeListeners(Property.VALUE_PROPERTY));
-		assertTrue(ddlGenTypeProperty.hasAnyPropertyChangeListeners(Property.VALUE_PROPERTY));
-		this.verifyHasListeners(this.schemaGeneration, SchemaGeneration.OUTPUT_MODE_PROPERTY);
-		this.verifyHasListeners(this.schemaGeneration, SchemaGeneration.DDL_GENERATION_TYPE_PROPERTY);
-		this.verifyHasListeners(propertyListAdapter);
-
-		EclipseLinkSchemaGeneration schemaGen = (EclipseLinkSchemaGeneration) this.schemaGeneration;
-		PersistenceUnitPropertyListListener propertyListListener = schemaGen.propertyListListener();
-		propertyListAdapter.removeListChangeListener(ListValueModel.LIST_VALUES, propertyListListener);
-		this.verifyHasListeners(this.schemaGeneration, SchemaGeneration.OUTPUT_MODE_PROPERTY);
-		this.verifyHasListeners(this.schemaGeneration, SchemaGeneration.DDL_GENERATION_TYPE_PROPERTY);
 	}
 
 	// ********** CreateFileName **********

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,7 +16,10 @@ import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.resource.persistence.XmlJavaClassRef;
 
 /**
- * 
+ * This is the context model corresponding to the persistence resource model
+ * XmlJavaClassRef, which corresponds to the 'class' tag in the persistence.xml.
+ * This is also used this for "implied" class refs; i.e. class refs that are not
+ * explicitly listed in the persistence.xml.
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -28,13 +31,14 @@ public interface ClassRef
 	extends XmlContextNode, JpaStructureNode, PersistentType.Owner
 {
 	/**
-	 * Return true if the IClassRef matches the fullyQualfiedTypeName
+	 * Return whether the class ref is a reference to the specified type.
 	 */
-	boolean isFor(String fullyQualifiedTypeName);
+	boolean isFor(String typeName);
 	
 	/**
-	 * Return whether this mapping file ref is represented by an entry in the
-	 * persistence.xml (false) or if it is instead virtual
+	 * Return true if the mapping file ref is "virtual";
+	 * return false if the mapping file ref is represented by an entry in the
+	 * persistence.xml file.
 	 */
 	boolean isVirtual();
 	

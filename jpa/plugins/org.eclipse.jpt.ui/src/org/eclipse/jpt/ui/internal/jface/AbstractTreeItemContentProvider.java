@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,10 +10,11 @@
 package org.eclipse.jpt.ui.internal.jface;
 
 import java.util.Iterator;
+
 import org.eclipse.jpt.ui.jface.TreeItemContentProvider;
 import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.model.value.CollectionListValueModelAdapter;
-import org.eclipse.jpt.utility.internal.model.value.NullListValueModel;
+import org.eclipse.jpt.utility.internal.model.value.ListCollectionValueModelAdapter;
+import org.eclipse.jpt.utility.internal.model.value.NullCollectionValueModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyListValueModelAdapter;
 import org.eclipse.jpt.utility.model.Model;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
@@ -48,7 +49,7 @@ public abstract class AbstractTreeItemContentProvider<E>
 	
 	private Model model;
 	
-	private ListValueModel<E> childrenModel;
+	private CollectionValueModel<E> childrenModel;
 	
 	private ListChangeListener childrenListener;
 	
@@ -108,19 +109,19 @@ public abstract class AbstractTreeItemContentProvider<E>
 	 * Return the children model
 	 * (lazy and just-in-time initialized)
 	 */
-	protected ListValueModel<E> getChildrenModel() {
+	protected Iterator<E> childrenModel() {
 		if (this.childrenModel == null) {
 			this.childrenModel = buildChildrenModel();
 			engageChildren();
 		}
-		return this.childrenModel;
+		return this.childrenModel.iterator();
 	}
 	
 	/**
 	 * Construct a children model
 	 */
-	protected ListValueModel<E> buildChildrenModel() {
-		return new NullListValueModel<E>();
+	protected CollectionValueModel<E> buildChildrenModel() {
+		return new NullCollectionValueModel<E>();
 	}
 	
 	/**
@@ -129,8 +130,8 @@ public abstract class AbstractTreeItemContentProvider<E>
 	 * This wraps the children collection model and uses it internally as a list
 	 * model.
 	 */
-	protected ListValueModel<E> buildChildrenModel(CollectionValueModel<E> childrenModel) {
-		return new CollectionListValueModelAdapter<E>(childrenModel);
+	protected CollectionValueModel<E> buildChildrenModel(ListValueModel<E> childrenModel) {
+		return new ListCollectionValueModelAdapter<E>(childrenModel);
 	}
 	
 	/**
@@ -166,14 +167,14 @@ public abstract class AbstractTreeItemContentProvider<E>
 	}
 	
 	public Object[] getChildren() {
-		return CollectionTools.array(getChildrenModel().listIterator());
+		return CollectionTools.array(this.childrenModel());
 	}
 	
 	/**
 	 * Override with potentially more efficient logic
 	 */
 	public boolean hasChildren() {
-		return getChildrenModel().listIterator().hasNext();
+		return this.childrenModel().hasNext();
 	}
 	
 	/**

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,6 @@ package org.eclipse.jpt.eclipselink.core.internal.context.persistence.schema.gen
 
 import java.util.Map;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.core.context.persistence.Property;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnitProperties;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
@@ -33,7 +32,7 @@ public class EclipseLinkSchemaGeneration
 
 	// ********** constructors/initialization **********
 	
-	public EclipseLinkSchemaGeneration(PersistenceUnit parent, ListValueModel<Property> propertyListAdapter) {
+	public EclipseLinkSchemaGeneration(PersistenceUnit parent, ListValueModel<PersistenceUnit.Property> propertyListAdapter) {
 		super(parent, propertyListAdapter);
 	}
 
@@ -115,7 +114,7 @@ public class EclipseLinkSchemaGeneration
 	}
 
 	private void ddlGenerationTypeChanged(PropertyChangeEvent event) {
-		String stringValue = (event.getNewValue() == null) ? null : ((Property) event.getNewValue()).getValue();
+		String stringValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
 		DdlGenerationType newValue = getEnumValueOf(stringValue, DdlGenerationType.values());
 		DdlGenerationType old = this.ddlGenerationType;
 		this.ddlGenerationType = newValue;
@@ -139,7 +138,7 @@ public class EclipseLinkSchemaGeneration
 	}
 
 	private void outputModeChanged(PropertyChangeEvent event) {
-		String stringValue = (event.getNewValue() == null) ? null : ((Property) event.getNewValue()).getValue();
+		String stringValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
 		OutputMode newValue = getEnumValueOf(stringValue, OutputMode.values());
 		OutputMode old = this.outputMode;
 		this.outputMode = newValue;
@@ -163,7 +162,7 @@ public class EclipseLinkSchemaGeneration
 	}
 
 	private void createFileNameChanged(PropertyChangeEvent event) {
-		String newValue = (event.getNewValue() == null) ? null : ((Property) event.getNewValue()).getValue();
+		String newValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
 		String old = this.createFileName;
 		this.createFileName = newValue;
 		this.firePropertyChanged(event.getAspectName(), old, newValue);
@@ -186,7 +185,7 @@ public class EclipseLinkSchemaGeneration
 	}
 
 	private void dropFileNameChanged(PropertyChangeEvent event) {
-		String newValue = (event.getNewValue() == null) ? null : ((Property) event.getNewValue()).getValue();
+		String newValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
 		String old = this.dropFileName;
 		this.dropFileName = newValue;
 		this.firePropertyChanged(event.getAspectName(), old, newValue);
@@ -209,7 +208,7 @@ public class EclipseLinkSchemaGeneration
 	}
 
 	private void applicationLocationChanged(PropertyChangeEvent event) {
-		String newValue = (event.getNewValue() == null) ? null : ((Property) event.getNewValue()).getValue();
+		String newValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
 		String old = this.applicationLocation;
 		this.applicationLocation = newValue;
 		this.firePropertyChanged(event.getAspectName(), old, newValue);

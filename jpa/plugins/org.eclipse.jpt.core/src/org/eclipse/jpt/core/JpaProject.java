@@ -341,15 +341,28 @@ public interface JpaProject
 
 	/**
 	 * Return whether the JPA project will "discover" annotated classes
-	 * automatically, as opposed to requiring the classes being
-	 * listed in persistence.xml.
+	 * automatically, as opposed to requiring the classes to be listed in the
+	 * persistence.xml or one of its mapping files.
+	 * This is a user-specified preference that is probably
+	 * only helpful when deploying to a JavaSE environment. The JPA spec
+	 * says annotated classes are to be discovered automatically in a JavaEE
+	 * environment; while the managed persistence classes must be explicitly
+	 * listed in a JavaSE environment: "A list of all named managed persistence
+	 * classes must be specified in Java SE environments to insure portability".
+	 * This flag allows Dali to behave consistently with the user's JPA
+	 * implementation, which may allow "discovery" in a JavaSE environment
+	 * (e.g. EclipseLink). This setting can also be used when the user wants
+	 * to explicitly list classes, even when the classes are "discovered"
+	 * by the JPA implementation. If this flag is set to false, error messages
+	 * will be generated for all of the annotated classes that are not
+	 * explicitly listed.
 	 */
 	boolean discoversAnnotatedClasses();
 
 	/**
 	 * Set whether the JPA project will "discover" annotated classes
-	 * automatically, as opposed to requiring the classes being
-	 * listed in persistence.xml.
+	 * automatically, as opposed to requiring the classes to be listed in the
+	 * persistence.xml.
 	 */
 	void setDiscoversAnnotatedClasses(boolean discoversAnnotatedClasses);
 

@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+
 import org.eclipse.jpt.core.context.BaseEmbeddedMapping;
 import org.eclipse.jpt.core.context.BaseOverride;
 import org.eclipse.jpt.core.context.ColumnMapping;
@@ -30,6 +31,7 @@ import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeListIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
@@ -299,21 +301,21 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends BaseXmlEmbedded> 
 	}
 	
 	protected void updateSpecifiedAttributeOverrides() {
-		ListIterator<OrmAttributeOverride> attributeOverrides = specifiedAttributeOverrides();
-		ListIterator<XmlAttributeOverride> resourceAttributeOverrides = new CloneListIterator<XmlAttributeOverride>(this.resourceAttributeMapping.getAttributeOverrides());//prevent ConcurrentModificiationException
+		// make a copy of the XML overrides (to prevent ConcurrentModificationException)
+		Iterator<XmlAttributeOverride> xmlOverrides = new CloneIterator<XmlAttributeOverride>(this.resourceAttributeMapping.getAttributeOverrides());
 		
-		while (attributeOverrides.hasNext()) {
-			OrmAttributeOverride attributeOverride = attributeOverrides.next();
-			if (resourceAttributeOverrides.hasNext()) {
-				attributeOverride.update(resourceAttributeOverrides.next());
+		for (Iterator<OrmAttributeOverride> contextOverrides = this.specifiedAttributeOverrides(); contextOverrides.hasNext(); ) {
+			OrmAttributeOverride contextOverride = contextOverrides.next();
+			if (xmlOverrides.hasNext()) {
+				contextOverride.update(xmlOverrides.next());
 			}
 			else {
-				removeSpecifiedAttributeOverride_(attributeOverride);
+				removeSpecifiedAttributeOverride_(contextOverride);
 			}
 		}
 		
-		while (resourceAttributeOverrides.hasNext()) {
-			addSpecifiedAttributeOverride(buildAttributeOverride(resourceAttributeOverrides.next()));
+		while (xmlOverrides.hasNext()) {
+			addSpecifiedAttributeOverride(buildAttributeOverride(xmlOverrides.next()));
 		}
 	}
 

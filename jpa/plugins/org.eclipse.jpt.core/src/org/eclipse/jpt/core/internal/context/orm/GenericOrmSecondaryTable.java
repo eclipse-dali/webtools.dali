@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+
 import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
@@ -30,6 +31,7 @@ import org.eclipse.jpt.core.resource.orm.XmlSecondaryTable;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
@@ -230,21 +232,21 @@ public class GenericOrmSecondaryTable
 	}
 		
 	protected void updateSpecifiedPrimaryKeyJoinColumns() {
-		ListIterator<OrmPrimaryKeyJoinColumn> contextPKJoinColumns = specifiedPrimaryKeyJoinColumns();
-		ListIterator<XmlPrimaryKeyJoinColumn> resourcePKJoinColumns = new CloneListIterator<XmlPrimaryKeyJoinColumn>(this.secondaryTable.getPrimaryKeyJoinColumns());//prevent ConcurrentModificiationException
+		// make a copy of the XML PK join columns (to prevent ConcurrentModificationException)
+		Iterator<XmlPrimaryKeyJoinColumn> xmlPkJoinColumns = new CloneIterator<XmlPrimaryKeyJoinColumn>(this.secondaryTable.getPrimaryKeyJoinColumns());
 		
-		while (contextPKJoinColumns.hasNext()) {
-			OrmPrimaryKeyJoinColumn primaryKeyJoinColumn = contextPKJoinColumns.next();
-			if (resourcePKJoinColumns.hasNext()) {
-				primaryKeyJoinColumn.update(resourcePKJoinColumns.next());
+		for (Iterator<OrmPrimaryKeyJoinColumn> contextPkJoinColumns = this.specifiedPrimaryKeyJoinColumns(); contextPkJoinColumns.hasNext(); ) {
+			OrmPrimaryKeyJoinColumn contextPkJoinColumn = contextPkJoinColumns.next();
+			if (xmlPkJoinColumns.hasNext()) {
+				contextPkJoinColumn.update(xmlPkJoinColumns.next());
 			}
 			else {
-				removeSpecifiedPrimaryKeyJoinColumn_(primaryKeyJoinColumn);
+				removeSpecifiedPrimaryKeyJoinColumn_(contextPkJoinColumn);
 			}
 		}
 		
-		while (resourcePKJoinColumns.hasNext()) {
-			addSpecifiedPrimaryKeyJoinColumn(buildPrimaryKeyJoinColumn(resourcePKJoinColumns.next()));
+		while (xmlPkJoinColumns.hasNext()) {
+			addSpecifiedPrimaryKeyJoinColumn(buildPrimaryKeyJoinColumn(xmlPkJoinColumns.next()));
 		}
 	}
 	

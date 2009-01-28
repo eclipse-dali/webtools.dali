@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -335,13 +335,14 @@ public class DelegatingTreeContentProviderUiTest extends ApplicationWindow
 		}
 
 		@Override
-		protected ListValueModel<TreeNode> buildChildrenModel() {
-			return new ListAspectAdapter<TreeNode, TreeNode>(TreeNode.CHILDREN_LIST, treeNode()) {
+		protected CollectionValueModel<TreeNode> buildChildrenModel() {
+			return new ListCollectionValueModelAdapter<TreeNode>(
+			new ListAspectAdapter<TreeNode, TreeNode>(TreeNode.CHILDREN_LIST, treeNode()) {
 				@Override
 				protected ListIterator<TreeNode> listIterator_() {
 					return treeNode().children();
 				}
-			};
+			});
 		}
 	}
 
@@ -362,9 +363,8 @@ public class DelegatingTreeContentProviderUiTest extends ApplicationWindow
 		}
 
 		@Override
-		protected ListValueModel<TreeNode> buildChildrenModel() {
-			return buildChildrenModel(
-					new CompositeCollectionValueModel<TreeNode, TreeNode>(super.buildChildrenModel()) {
+		protected CollectionValueModel<TreeNode> buildChildrenModel() {
+				return new CompositeCollectionValueModel<TreeNode, TreeNode>(super.buildChildrenModel()) {
 						@Override
 						protected CollectionValueModel<TreeNode> transform(TreeNode value) {
 							if (value instanceof Nest) {
@@ -378,12 +378,9 @@ public class DelegatingTreeContentProviderUiTest extends ApplicationWindow
 										}
 									);
 							}
-							else {
-								return new StaticCollectionValueModel<TreeNode>(CollectionTools.collection(value));
-							}
+							return new StaticCollectionValueModel<TreeNode>(CollectionTools.collection(value));
 						}
-					}
-				);
+					};
 		}
 	}
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2007, 2008 Oracle. All rights reserved.
+* Copyright (c) 2007, 2009 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,6 @@ package org.eclipse.jpt.eclipselink.core.internal.context.persistence;
 
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.core.context.persistence.Property;
 import org.eclipse.jpt.utility.model.Model;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 
@@ -23,12 +22,12 @@ public interface PersistenceUnitProperties extends Model, PropertyChangeListener
 	/**
 	 * Method used for identifying the given property.
 	 */
-	boolean itemIsProperty(Property item);
+	boolean itemIsProperty(PersistenceUnit.Property item);
 
 	/**
 	 * Returns the property name used for change notification of the given property.
 	 */
-	String propertyIdFor(Property property);
+	String propertyIdFor(PersistenceUnit.Property property);
 	
 	/**
 	 * Return the PersistenceUnit of this Properties.

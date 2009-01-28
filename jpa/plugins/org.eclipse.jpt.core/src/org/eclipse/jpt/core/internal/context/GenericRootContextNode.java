@@ -18,16 +18,14 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
-import org.eclipse.jpt.core.context.MappingFile;
 import org.eclipse.jpt.core.context.MappingFileRoot;
-import org.eclipse.jpt.core.context.persistence.ClassRef;
-import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.core.internal.resource.persistence.PersistenceXmlResourceProvider;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.persistence.PersistenceXmlResource;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -194,38 +192,31 @@ public class GenericRootContextNode
 	protected void validateOrphanClasses(List<IMessage> messages) {
 		Persistence persistence = this.persistenceXml.getPersistence();
 		if (persistence == null) {
-			// handled with other validation
-			return;
+			return;  // handled with other validation
 		}
 		if (persistence.persistenceUnitsSize() != 1) {
-			// the context model currently only supports 1 persistence unit
-			return;
+			return;  // the context model currently only supports 1 persistence unit
 		}
+
 		PersistenceUnit persistenceUnit = persistence.persistenceUnits().next();
-		HashBag<String> orphans = CollectionTools.bag(this.jpaProject.annotatedClassNames());
-		for (String javaTypeName : CollectionTools.iterable(this.jpaProject.annotatedClassNames())) {
-			for (ClassRef classRef : CollectionTools.iterable(persistenceUnit.specifiedClassRefs())) {
-				if (classRef.isFor(javaTypeName)) {
-					orphans.remove(javaTypeName);
-				}
-			}
-			for (MappingFileRef mappingFileRef : CollectionTools.iterable(persistenceUnit.mappingFileRefs())) {
-				MappingFile mappingFile = mappingFileRef.getMappingFile();
-				if (mappingFile != null && mappingFile.getPersistentType(javaTypeName) != null) {
-					orphans.remove(javaTypeName);
-				}
+		HashBag<String> annotatedClassNames = CollectionTools.bag(this.jpaProject.annotatedClassNames());
+		HashBag<String> orphans = annotatedClassNames.clone();
+		for (String annotatedClassName : annotatedClassNames) {
+			if (persistenceUnit.specifiesPersistentType(annotatedClassName)) {
+				orphans.remove(annotatedClassName);
 			}
 		}
 		
 		for (String orphan : orphans) {
 			JavaResourcePersistentType jrpt = this.jpaProject.getJavaResourcePersistentType(orphan);
+			JavaResourceCompilationUnit jrcu = jrpt.getJavaResourceCompilationUnit();
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.PERSISTENT_TYPE_UNSPECIFIED_CONTEXT,
 						new String[] {persistenceUnit.getName()},
-						jrpt.getJavaResourceCompilationUnit().getFile(),
-						jrpt.getMappingAnnotation().getTextRange(jrpt.getJavaResourceCompilationUnit().buildASTRoot())
+						jrcu.getFile(),
+						jrpt.getMappingAnnotation().getTextRange(jrcu.buildASTRoot())
 					)
 				);
 		}

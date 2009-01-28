@@ -129,7 +129,6 @@ public abstract class AbstractJavaQuery extends AbstractJavaJpaContextNode
 		this.name = queryAnnotation.getName();
 		this.query = queryAnnotation.getQuery();
 		this.initializeQueryHints();
-		getPersistenceUnit().addQuery(this);
 	}
 
 	protected void update(QueryAnnotation queryAnnotation) {

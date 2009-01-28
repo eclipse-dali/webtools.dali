@@ -13,11 +13,13 @@ import java.util.List;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.MappingFile;
 import org.eclipse.jpt.core.context.MappingFilePersistenceUnitDefaults;
+import org.eclipse.jpt.core.context.MappingFileRoot;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.PersistenceStructureNodes;
@@ -36,188 +38,75 @@ import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.resources.IVirtualFile;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public class GenericMappingFileRef extends AbstractXmlContextNode 
+public class GenericMappingFileRef
+	extends AbstractXmlContextNode
 	implements MappingFileRef
 {
-	//this is null for the implied mappingFileRef case
+	// this is null for an "implied" mapping file ref
 	protected XmlMappingFileRef xmlMappingFileRef;
-	
+
 	protected String fileName;
-	
+
 	protected MappingFile mappingFile;
-	
-	public GenericMappingFileRef(PersistenceUnit parent, XmlMappingFileRef mappingFileRef) {
+
+
+	// ********** construction/initialization **********
+
+	public GenericMappingFileRef(PersistenceUnit parent, XmlMappingFileRef xmlMappingFileRef) {
 		super(parent);
-		this.initialize(mappingFileRef);
-	}
-	
-	public String getId() {
-		return PersistenceStructureNodes.MAPPING_FILE_REF_ID;
+		this.initialize(xmlMappingFileRef);
 	}
 
-	
-	public boolean isVirtual() {
-		return this.xmlMappingFileRef == null;
+	protected void initialize(XmlMappingFileRef fileRef) {
+		this.xmlMappingFileRef = fileRef;
+		this.fileName = this.buildFileName();
+		this.initializeMappingFile();
 	}
-	
-	
-	// **************** file name **********************************************
-	
-	public String getFileName() {
-		return this.fileName;
-	}
-	
-	public void setFileName(String newFileName) {
-		this.xmlMappingFileRef.setFileName(newFileName);
-		setFileName_(newFileName);
-	}
-	
-	protected void setFileName_(String newFileName) {
-		String oldFileName = this.fileName;
-		this.fileName = newFileName;
-		firePropertyChanged(FILE_NAME_PROPERTY, oldFileName, newFileName);
-	}
-	
-	public MappingFile getMappingFile() {
-		return this.mappingFile;
-	}
-	
-	protected void setMappingFile(MappingFile newMappingFile) {
-		MappingFile oldMappingFile = this.mappingFile;
-		this.mappingFile = newMappingFile;
-		firePropertyChanged(MAPPING_FILE_PROPERTY, oldMappingFile, newMappingFile);
-	}
-	
-	
-	// **************** updating ***********************************************
-	
-	protected void initialize(XmlMappingFileRef mappingFileRef) {
-		this.xmlMappingFileRef = mappingFileRef;
-		initializeFileName();
-		initializeMappingFile();
-	}
-	
-	protected void initializeFileName() {
-		if (isVirtual()) {
-			this.fileName = JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH;
-		}
-		else {
-			this.fileName = this.xmlMappingFileRef.getFileName();
-		}
-	}
-	
+
 	protected void initializeMappingFile() {
-		IFile platformFile = getPlatformFile();
-		if ((platformFile != null) && platformFile.exists()) {
-			JpaXmlResourceProvider modelProvider = JpaXmlResourceProviderManager.instance().getXmlResourceProvider(platformFile);
-			JpaXmlResource resource = (modelProvider == null) ? null : modelProvider.getXmlResource();
-			if (resource != null && resource.exists()) {
-				this.mappingFile = buildMappingFile(resource);
-			}
+		JpaXmlResource xmlResource = this.getXmlResource();
+		if (exists(xmlResource)) {
+			this.mappingFile = this.buildMappingFile(xmlResource);
 		}
 	}
 
-	public void update(XmlMappingFileRef mappingFileRef) {
-		this.xmlMappingFileRef = mappingFileRef;
-		updateFileName();
-		updateMappingFile();
+	protected JpaXmlResource getXmlResource() {
+		JpaXmlResourceProvider xmlResourceProvider = this.getXmlResourceProvider();
+		return (xmlResourceProvider == null) ? null : xmlResourceProvider.getXmlResource();
 	}
-	
-	protected void updateFileName() {
-		if (isVirtual()) {
-			setFileName_(JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH);
-		}
-		else {
-			setFileName_(this.xmlMappingFileRef.getFileName());
-		}
+
+	protected JpaXmlResourceProvider getXmlResourceProvider() {
+		IFile platformFile = this.getPlatformFile();
+		return exists(platformFile) ? getXmlResourceProvider(platformFile) : null;
 	}
-	
-	protected void updateMappingFile() {
-		IFile platformFile = getPlatformFile();	
-		if ((platformFile != null) && platformFile.exists()) {
-			JpaXmlResourceProvider modelProvider = JpaXmlResourceProviderManager.instance().getXmlResourceProvider(platformFile);
-			JpaXmlResource resource = (modelProvider == null) ? null : modelProvider.getXmlResource();
-			if (resource != null && resource.exists()) {
-				// this check is done to determine whether the resource type has 
-				// changed.  if so, the mapping file must be rebuilt.
-				if (this.mappingFile != null && ! resource.equals(this.mappingFile.getXmlResource())) {
-					this.mappingFile.dispose();
-				}
-				if (this.mappingFile == null) {
-					this.setMappingFile(buildMappingFile(resource));
-				}
-				else {
-					this.mappingFile.update(resource);
-				}
-				return;
-			}
-		}
-		
-		if (this.mappingFile != null) {
-			this.mappingFile.dispose();
-			this.setMappingFile(null);
-		}
-	}
-	
+
 	protected IFile getPlatformFile() {
 		if (this.fileName == null) {
 			return null;
 		}
-		IProject project = getJpaProject().getProject();
-		IVirtualFile vFile = ComponentCore.createFile(project, new Path(JptCorePlugin.getDeploymentURI(project, this.fileName)));
+		IProject project = this.getJpaProject().getProject();
+		IPath deploymentPath = new Path(JptCorePlugin.getDeploymentURI(project, this.fileName));
+		IVirtualFile vFile = ComponentCore.createFile(project, deploymentPath);
 		return vFile.getUnderlyingFile();
 	}
-	
-	protected MappingFile buildMappingFile(JpaXmlResource resource) {
-		return this.getJpaPlatform().buildMappingFile(this, (OrmXmlResource) resource);
+
+	protected static JpaXmlResourceProvider getXmlResourceProvider(IFile file) {
+		return JpaXmlResourceProviderManager.instance().getXmlResourceProvider(file);
 	}
-	
-	
-	// *************************************************************************
-	
-	public MappingFilePersistenceUnitDefaults getPersistenceUnitDefaults() {
-		if ((this.mappingFile != null) && (this.mappingFile.getRoot() != null)) {
-			return this.mappingFile.getRoot().getPersistenceUnitDefaults();
-		}
-		return null;
+
+
+	// ********** JpaStructureNode implementation **********
+
+	public String getId() {
+		return PersistenceStructureNodes.MAPPING_FILE_REF_ID;
 	}
-	
-	public PersistentType getPersistentType(String fullyQualifiedTypeName) {
-		if (this.mappingFile != null) {
-			return this.mappingFile.getPersistentType(fullyQualifiedTypeName);
-		}
-		return null;
-	}
-	
+
 	public JpaStructureNode getStructureNode(int textOffset) {
 		return this;
 	}
-	
-	public boolean containsOffset(int textOffset) {
-		if (this.xmlMappingFileRef == null) {
-			return false;
-		}
-		return this.xmlMappingFileRef.containsOffset(textOffset);
-	}
-	
-	public TextRange getSelectionTextRange() {
-		if (isVirtual()) {
-			return null;
-		}
-		return this.xmlMappingFileRef.getSelectionTextRange();
-	}
-	
-	public TextRange getValidationTextRange() {
-		if (isVirtual()) {
-			return getPersistenceUnit().getValidationTextRange();
-		}
-		return this.xmlMappingFileRef.getValidationTextRange();
-	}
 
-	@Override
-	public void toString(StringBuilder sb) {
-		super.toString(sb);
-		sb.append(this.fileName);
+	public TextRange getSelectionTextRange() {
+		return this.isVirtual() ? null : this.xmlMappingFileRef.getSelectionTextRange();
 	}
 
 	public void dispose() {
@@ -227,7 +116,118 @@ public class GenericMappingFileRef extends AbstractXmlContextNode
 	}
 
 
-	//**************** Validation *************************
+	// ********** queries **********
+
+	public boolean isVirtual() {
+		return this.xmlMappingFileRef == null;
+	}
+
+	public MappingFilePersistenceUnitDefaults getPersistenceUnitDefaults() {
+		MappingFileRoot root = this.getMappingFileRoot_();
+		return (root == null) ? null : root.getPersistenceUnitDefaults();
+	}
+
+	/**
+	 * #getMappingFileRoot() is already defined by JpaContextNode for the
+	 * descendants of a "mapping file root" - we want something slightly
+	 * different here...
+	 */
+	protected MappingFileRoot getMappingFileRoot_() {
+		return (this.mappingFile == null) ? null : this.mappingFile.getRoot();
+	}
+
+	public boolean persistenceUnitDefaultsExists() {
+		MappingFilePersistenceUnitDefaults defaults = this.getPersistenceUnitDefaults();
+		return (defaults != null) && defaults.resourceExists();
+	}
+
+	public PersistentType getPersistentType(String typeName) {
+		return (this.mappingFile == null) ? null : this.mappingFile.getPersistentType(typeName);
+	}
+
+	public boolean containsOffset(int textOffset) {
+		return (this.xmlMappingFileRef != null) && this.xmlMappingFileRef.containsOffset(textOffset);
+	}
+
+
+	// ********** file name **********
+
+	public String getFileName() {
+		return this.fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.xmlMappingFileRef.setFileName(fileName);
+		this.setFileName_(fileName);
+	}
+
+	protected void setFileName_(String newFileName) {
+		String old = this.fileName;
+		this.fileName = newFileName;
+		this.firePropertyChanged(FILE_NAME_PROPERTY, old, newFileName);
+	}
+
+
+	// ********** mapping file **********
+
+	public MappingFile getMappingFile() {
+		return this.mappingFile;
+	}
+
+	protected void setMappingFile(MappingFile mappingFile) {
+		MappingFile old = this.mappingFile;
+		this.mappingFile = mappingFile;
+		this.firePropertyChanged(MAPPING_FILE_PROPERTY, old, mappingFile);
+	}
+
+
+	// ********** updating **********
+
+	public void update(XmlMappingFileRef mappingFileRef) {
+		this.xmlMappingFileRef = mappingFileRef;
+		this.setFileName_(this.buildFileName());
+		this.updateMappingFile();
+	}
+
+	protected String buildFileName() {
+		return this.isVirtual() ? JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH
+						: this.xmlMappingFileRef.getFileName();
+	}
+
+	protected void updateMappingFile() {
+		JpaXmlResource xmlResource = this.getXmlResource();
+		if (exists(xmlResource)) {
+			if (this.mappingFile == null) {
+				this.setMappingFile(this.buildMappingFile(xmlResource));
+			} else {
+				// if the resource type has changed, rebuild the mapping file
+				if (this.mappingFile.getXmlResource() != xmlResource) {
+					this.mappingFile.dispose();
+				}
+				this.mappingFile.update(xmlResource);
+			}
+		} else {
+			if (this.mappingFile != null) {
+				this.mappingFile.dispose();
+				this.setMappingFile(null);
+			}
+		}
+	}
+
+	protected MappingFile buildMappingFile(JpaXmlResource resource) {
+		return this.getJpaPlatform().buildMappingFile(this, (OrmXmlResource) resource);
+	}
+
+
+	// ********** XmlContextNode implementation **********
+
+	public TextRange getValidationTextRange() {
+		return this.isVirtual() ? this.getPersistenceUnit().getValidationTextRange() :
+		this.xmlMappingFileRef.getValidationTextRange();
+	}
+
+
+	// ********** validation **********
 
 	@Override
 	public void validate(List<IMessage> messages) {
@@ -239,30 +239,27 @@ public class GenericMappingFileRef extends AbstractXmlContextNode
 					IMessage.HIGH_SEVERITY,
 					JpaValidationMessages.PERSISTENCE_UNIT_UNSPECIFIED_MAPPING_FILE,
 					this,
-					this.getValidationTextRange()));
+					this.getValidationTextRange()
+				)
+			);
 			return;
 		}
-		
+
 		if (this.mappingFile == null) {
-			IFile platformFile = getPlatformFile();
-			if (platformFile != null && platformFile.exists()) {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.PERSISTENCE_UNIT_UNSUPPORTED_MAPPING_FILE_CONTENT,
-						new String[] {this.fileName},
-						this,
-						this.getValidationTextRange()));
-			}
-			else {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.PERSISTENCE_UNIT_NONEXISTENT_MAPPING_FILE,
-						new String[] {this.fileName},
-						this,
-						this.getValidationTextRange()));
-			}
+			IFile platformFile = this.getPlatformFile();
+			String msgID = exists(platformFile) ?
+					JpaValidationMessages.PERSISTENCE_UNIT_UNSUPPORTED_MAPPING_FILE_CONTENT
+				:
+					JpaValidationMessages.PERSISTENCE_UNIT_NONEXISTENT_MAPPING_FILE;
+			messages.add(
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					msgID,
+					new String[] {this.fileName},
+					this,
+					this.getValidationTextRange()
+				)
+			);
 			return;
 		}
 
@@ -273,10 +270,35 @@ public class GenericMappingFileRef extends AbstractXmlContextNode
 					JpaValidationMessages.PERSISTENCE_UNIT_INVALID_MAPPING_FILE,
 					new String[] {this.fileName},
 					this,
-					this.getValidationTextRange()));
+					this.getValidationTextRange()
+				)
+			);
 		}
 
 		this.mappingFile.validate(messages);
+	}
+
+
+	// ********** misc **********
+
+	@Override
+	public void toString(StringBuilder sb) {
+		super.toString(sb);
+		sb.append(this.fileName);
+	}
+
+	/**
+	 * convenience method - null check
+	 */
+	protected static boolean exists(IFile file) {
+		return (file != null) && file.exists();
+	}
+
+	/**
+	 * convenience method - null check
+	 */
+	protected static boolean exists(JpaXmlResource xmlResource) {
+		return (xmlResource != null) && xmlResource.exists();
 	}
 
 }

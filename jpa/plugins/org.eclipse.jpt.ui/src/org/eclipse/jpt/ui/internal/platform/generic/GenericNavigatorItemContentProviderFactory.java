@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+
 import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
 import org.eclipse.jpt.core.context.MappingFile;
@@ -31,16 +32,16 @@ import org.eclipse.jpt.ui.jface.DelegatingContentAndLabelProvider;
 import org.eclipse.jpt.ui.jface.TreeItemContentProvider;
 import org.eclipse.jpt.ui.jface.TreeItemContentProviderFactory;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
-import org.eclipse.jpt.utility.internal.model.value.CollectionListValueModelAdapter;
-import org.eclipse.jpt.utility.internal.model.value.CompositeListValueModel;
+import org.eclipse.jpt.utility.internal.model.value.CollectionAspectAdapter;
+import org.eclipse.jpt.utility.internal.model.value.CompositeCollectionValueModel;
 import org.eclipse.jpt.utility.internal.model.value.FilteringCollectionValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListCollectionValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.utility.internal.model.value.PropertyListValueModelAdapter;
+import org.eclipse.jpt.utility.internal.model.value.PropertyCollectionValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.TransformationListValueModelAdapter;
-import org.eclipse.jpt.utility.model.value.ListValueModel;
+import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 
 public class GenericNavigatorItemContentProviderFactory
 	implements TreeItemContentProviderFactory
@@ -91,17 +92,16 @@ public class GenericNavigatorItemContentProviderFactory
 		}
 	
 		@Override
-		protected ListValueModel<JpaContextNode> buildChildrenModel() {
-			List<ListValueModel<? extends JpaContextNode>> list = new ArrayList<ListValueModel<? extends JpaContextNode>>();
-			list.add(buildSpecifiedOrmXmlLvm());
-			list.add(buildImpliedMappingFileLvm());
-			list.add(buildPersistentTypeLvm());
-			return new CompositeListValueModel<ListValueModel<? extends JpaContextNode>, JpaContextNode>(list);
+		protected CollectionValueModel<JpaContextNode> buildChildrenModel() {
+			List<CollectionValueModel<? extends JpaContextNode>> list = new ArrayList<CollectionValueModel<? extends JpaContextNode>>();
+			list.add(buildSpecifiedOrmXmlCvm());
+			list.add(buildImpliedMappingFileCvm());
+			list.add(buildPersistentTypeCvm());
+			return new CompositeCollectionValueModel<CollectionValueModel<? extends JpaContextNode>, JpaContextNode>(list);
 		}
 		
-		protected ListValueModel<JpaContextNode> buildSpecifiedOrmXmlLvm() {
-			return new CollectionListValueModelAdapter<JpaContextNode>(
-				new FilteringCollectionValueModel<MappingFile>(
+		protected CollectionValueModel<JpaContextNode> buildSpecifiedOrmXmlCvm() {
+			return new FilteringCollectionValueModel<JpaContextNode>(
 					new ListCollectionValueModelAdapter<MappingFile>(
 						new TransformationListValueModelAdapter<MappingFileRef, MappingFile>(
 							new ItemPropertyListValueModelAdapter<MappingFileRef>(
@@ -123,19 +123,19 @@ public class GenericNavigatorItemContentProviderFactory
 							}
 						})) {
 					@Override
-					protected Iterator<MappingFile> filter(Iterator<? extends MappingFile> items) {
-						return new FilteringIterator<MappingFile, MappingFile>(items) {
+					protected Iterator<JpaContextNode> filter(Iterator<? extends JpaContextNode> items) {
+						return new FilteringIterator<JpaContextNode, JpaContextNode>(items) {
 							@Override
-							protected boolean accept(MappingFile o) {
+							protected boolean accept(JpaContextNode o) {
 								return o != null;
 							}
 						};
 					}
-				});
+				};
 		}
 		
-		protected ListValueModel<MappingFile> buildImpliedMappingFileLvm() {
-			return new PropertyListValueModelAdapter<MappingFile>(
+		protected CollectionValueModel<MappingFile> buildImpliedMappingFileCvm() {
+			return new PropertyCollectionValueModelAdapter<MappingFile>(
 				new PropertyAspectAdapter<MappingFileRef, MappingFile>(
 						new PropertyAspectAdapter<PersistenceUnit, MappingFileRef>(
 								PersistenceUnit.IMPLIED_MAPPING_FILE_REF_PROPERTY,
@@ -154,38 +154,38 @@ public class GenericNavigatorItemContentProviderFactory
 			);
 		}
 		
-		protected ListValueModel<JpaContextNode> buildPersistentTypeLvm() {
-			return new CollectionListValueModelAdapter<JpaContextNode>(
-				new FilteringCollectionValueModel<PersistentType>(
+		protected CollectionValueModel<JpaContextNode> buildPersistentTypeCvm() {
+			return new FilteringCollectionValueModel<JpaContextNode>(
 					new ListCollectionValueModelAdapter<PersistentType>(
 						new TransformationListValueModelAdapter<ClassRef, PersistentType>(
-							new ItemPropertyListValueModelAdapter<ClassRef>(buildClassRefLvm(), ClassRef.JAVA_PERSISTENT_TYPE_PROPERTY)) {
+							new ItemPropertyListValueModelAdapter<ClassRef>(buildClassRefCvm(), ClassRef.JAVA_PERSISTENT_TYPE_PROPERTY)) {
 							@Override
 							protected PersistentType transformItem(ClassRef item) {
 								return item.getJavaPersistentType();
 							}
 						})) {
 					@Override
-					protected Iterator<PersistentType> filter(Iterator<? extends PersistentType> items) {
-						return new FilteringIterator<PersistentType, PersistentType>(items) {
+					protected Iterator<JpaContextNode> filter(Iterator<? extends JpaContextNode> items) {
+						return new FilteringIterator<JpaContextNode, JpaContextNode>(items) {
 							@Override
-							protected boolean accept(PersistentType o) {
+							protected boolean accept(JpaContextNode o) {
 								return o != null;
 							}
 						};
 					}
-				});
+				};
 		}
 		
-		protected ListValueModel<ClassRef> buildClassRefLvm() {
-			ArrayList<ListValueModel<ClassRef>> holders = new ArrayList<ListValueModel<ClassRef>>(2);
-			holders.add(buildSpecifiedClassRefLvm());
-			holders.add(buildImpliedClassRefLvm());
-			return new CompositeListValueModel<ListValueModel<ClassRef>, ClassRef>(holders);
+		protected CollectionValueModel<ClassRef> buildClassRefCvm() {
+			ArrayList<CollectionValueModel<ClassRef>> holders = new ArrayList<CollectionValueModel<ClassRef>>(2);
+			holders.add(buildSpecifiedClassRefCvm());
+			holders.add(buildImpliedClassRefCvm());
+			return new CompositeCollectionValueModel<CollectionValueModel<ClassRef>, ClassRef>(holders);
 		}
 		
-		protected ListValueModel<ClassRef> buildSpecifiedClassRefLvm() {
-			return new ListAspectAdapter<PersistenceUnit, ClassRef>(
+		protected CollectionValueModel<ClassRef> buildSpecifiedClassRefCvm() {
+			return new ListCollectionValueModelAdapter<ClassRef>(
+			new ListAspectAdapter<PersistenceUnit, ClassRef>(
 				PersistenceUnit.SPECIFIED_CLASS_REFS_LIST, getModel()) {
 					@Override
 					protected ListIterator<ClassRef> listIterator_() {
@@ -195,14 +195,14 @@ public class GenericNavigatorItemContentProviderFactory
 					protected int size_() {
 						return subject.specifiedClassRefsSize();
 					}
-			};
+			});
 		}
 		
-		protected ListValueModel<ClassRef> buildImpliedClassRefLvm() {
-			return new ListAspectAdapter<PersistenceUnit, ClassRef>(
-				PersistenceUnit.IMPLIED_CLASS_REFS_LIST, getModel()) {
+		protected CollectionValueModel<ClassRef> buildImpliedClassRefCvm() {
+			return new CollectionAspectAdapter<PersistenceUnit, ClassRef>(
+				PersistenceUnit.IMPLIED_CLASS_REFS_COLLECTION, getModel()) {
 					@Override
-					protected ListIterator<ClassRef> listIterator_() {
+					protected Iterator<ClassRef> iterator_() {
 						return subject.impliedClassRefs();
 					}
 					@Override

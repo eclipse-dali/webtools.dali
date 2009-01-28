@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,8 +10,10 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+
 import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.BaseOverride;
@@ -27,6 +29,7 @@ import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Table;
+import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 public class GenericOrmAssociationOverride extends AbstractXmlContextNode
@@ -161,21 +164,21 @@ public class GenericOrmAssociationOverride extends AbstractXmlContextNode
 	}	
 	
 	protected void updateSpecifiedJoinColumns() {
-		ListIterator<OrmJoinColumn> contextJoinColumns = specifiedJoinColumns();
-		ListIterator<XmlJoinColumn> resourceJoinColumns = new CloneListIterator<XmlJoinColumn>(this.resourceAssociationOverride.getJoinColumns());//prevent ConcurrentModificiationException
+		// make a copy of the XML join columns (to prevent ConcurrentModificationException)
+		Iterator<XmlJoinColumn> xmlJoinColumns = new CloneIterator<XmlJoinColumn>(this.resourceAssociationOverride.getJoinColumns());
 		
-		while (contextJoinColumns.hasNext()) {
+		for (Iterator<OrmJoinColumn> contextJoinColumns = this.specifiedJoinColumns(); contextJoinColumns.hasNext(); ) {
 			OrmJoinColumn contextJoinColumn = contextJoinColumns.next();
-			if (resourceJoinColumns.hasNext()) {
-				contextJoinColumn.update(resourceJoinColumns.next());
+			if (xmlJoinColumns.hasNext()) {
+				contextJoinColumn.update(xmlJoinColumns.next());
 			}
 			else {
 				removeSpecifiedJoinColumn(contextJoinColumn);
 			}
 		}
 		
-		while (resourceJoinColumns.hasNext()) {
-			addSpecifiedJoinColumn(buildJoinColumn(resourceJoinColumns.next()));
+		while (xmlJoinColumns.hasNext()) {
+			addSpecifiedJoinColumn(buildJoinColumn(xmlJoinColumns.next()));
 		}
 	}
 	

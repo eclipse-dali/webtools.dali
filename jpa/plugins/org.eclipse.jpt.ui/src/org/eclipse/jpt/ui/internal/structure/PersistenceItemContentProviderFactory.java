@@ -10,6 +10,7 @@
 package org.eclipse.jpt.ui.internal.structure;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -24,11 +25,13 @@ import org.eclipse.jpt.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
 import org.eclipse.jpt.ui.jface.DelegatingContentAndLabelProvider;
 import org.eclipse.jpt.ui.jface.TreeItemContentProvider;
 import org.eclipse.jpt.ui.jface.TreeItemContentProviderFactory;
-import org.eclipse.jpt.utility.internal.model.value.CompositeListValueModel;
+import org.eclipse.jpt.utility.internal.model.value.CollectionAspectAdapter;
+import org.eclipse.jpt.utility.internal.model.value.CompositeCollectionValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
+import org.eclipse.jpt.utility.internal.model.value.ListCollectionValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyListValueModelAdapter;
-import org.eclipse.jpt.utility.model.value.ListValueModel;
+import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 
 public class PersistenceItemContentProviderFactory
 	implements TreeItemContentProviderFactory
@@ -75,9 +78,9 @@ public class PersistenceItemContentProviderFactory
 		}
 		
 		@Override
-		protected ListValueModel<PersistenceUnit> buildChildrenModel() {
-			return new ListAspectAdapter<Persistence, PersistenceUnit>(
-					Persistence.PERSISTENCE_UNITS_LIST, getModel()) {
+		protected CollectionValueModel<PersistenceUnit> buildChildrenModel() {
+			return new ListCollectionValueModelAdapter<PersistenceUnit>(
+			new ListAspectAdapter<Persistence, PersistenceUnit>(Persistence.PERSISTENCE_UNITS_LIST, getModel()) {
 				@Override
 				protected ListIterator<PersistenceUnit> listIterator_() {
 					return subject.persistenceUnits();
@@ -86,7 +89,7 @@ public class PersistenceItemContentProviderFactory
 				protected int size_() {
 					return subject.persistenceUnitsSize();
 				}
-			};
+			});
 		}
 	}
 	
@@ -109,8 +112,9 @@ public class PersistenceItemContentProviderFactory
 		}
 		
 		@Override
-		protected ListValueModel<JpaStructureNode> buildChildrenModel() {
-			ListValueModel<MappingFileRef> specifiedMappingFileLvm = 
+		protected CollectionValueModel<JpaStructureNode> buildChildrenModel() {
+			CollectionValueModel<MappingFileRef> specifiedMappingFileLvm = 
+				new ListCollectionValueModelAdapter<MappingFileRef>(
 				new ListAspectAdapter<PersistenceUnit, MappingFileRef>(
 						PersistenceUnit.SPECIFIED_MAPPING_FILE_REFS_LIST,
 						getModel()) {
@@ -122,9 +126,10 @@ public class PersistenceItemContentProviderFactory
 					protected int size_() {
 						return subject.specifiedMappingFileRefsSize();
 					}
-				};
+				});
 			
-			ListValueModel<MappingFileRef> impliedMappingFileLvm = 
+			CollectionValueModel<MappingFileRef> impliedMappingFileCvm = 
+				new ListCollectionValueModelAdapter<MappingFileRef>(
 				new PropertyListValueModelAdapter<MappingFileRef>(
 					new PropertyAspectAdapter<PersistenceUnit, MappingFileRef>(
 							PersistenceUnit.IMPLIED_MAPPING_FILE_REF_PROPERTY,
@@ -134,8 +139,9 @@ public class PersistenceItemContentProviderFactory
 							return subject.getImpliedMappingFileRef();
 						}
 					}
-				);
-			ListValueModel<ClassRef> specifiedClassLvm = 
+				));
+			CollectionValueModel<ClassRef> specifiedClassCvm = 
+				new ListCollectionValueModelAdapter<ClassRef>(
 				new ListAspectAdapter<PersistenceUnit, ClassRef>(
 						PersistenceUnit.SPECIFIED_CLASS_REFS_LIST,
 						getModel()) {
@@ -147,13 +153,13 @@ public class PersistenceItemContentProviderFactory
 					protected int size_() {
 						return subject.specifiedClassRefsSize();
 					}
-				};
-			ListValueModel<ClassRef> impliedClassLvm = 
-				new ListAspectAdapter<PersistenceUnit, ClassRef>(
-						PersistenceUnit.IMPLIED_CLASS_REFS_LIST,
+				});
+			CollectionValueModel<ClassRef> impliedClassCvm = 
+				new CollectionAspectAdapter<PersistenceUnit, ClassRef>(
+						PersistenceUnit.IMPLIED_CLASS_REFS_COLLECTION,
 						getModel()) {
 					@Override
-					protected ListIterator<ClassRef> listIterator_() {
+					protected Iterator<ClassRef> iterator_() {
 						return subject.impliedClassRefs();
 					}
 					@Override
@@ -161,13 +167,13 @@ public class PersistenceItemContentProviderFactory
 						return subject.impliedClassRefsSize();
 					}
 				};
-			List<ListValueModel<? extends JpaStructureNode>> list = new ArrayList<ListValueModel<? extends JpaStructureNode>>(4);
+			List<CollectionValueModel<? extends JpaStructureNode>> list = new ArrayList<CollectionValueModel<? extends JpaStructureNode>>(4);
 			list.add(specifiedMappingFileLvm);
-			list.add(impliedMappingFileLvm);
-			list.add(specifiedClassLvm);
-			list.add(impliedClassLvm);
+			list.add(impliedMappingFileCvm);
+			list.add(specifiedClassCvm);
+			list.add(impliedClassCvm);
 			
-			return new CompositeListValueModel<ListValueModel<? extends JpaStructureNode>, JpaStructureNode>(list);
+			return new CompositeCollectionValueModel<CollectionValueModel<? extends JpaStructureNode>, JpaStructureNode>(list);
 		}
 	}
 	

@@ -239,8 +239,6 @@ public abstract class PersistenceUnitMappingFilesComposite extends Pane<Persiste
 					return;
 				}
 
-				int index = getSubject().specifiedMappingFileRefsSize();
-
 				for (Object result : dialog.getResult()) {
 					IFile file = (IFile) result;
 					IPath filePath = removeSourcePath(file);
@@ -248,7 +246,7 @@ public abstract class PersistenceUnitMappingFilesComposite extends Pane<Persiste
 					if(mappingFileRefExists(fileName)) {
 						continue;
 					}
-					MappingFileRef mappingFileRef = getSubject().addSpecifiedMappingFileRef(index++);
+					MappingFileRef mappingFileRef = getSubject().addSpecifiedMappingFileRef();
 					mappingFileRef.setFileName(fileName);
 
 					listSelectionModel.addSelectedValue(mappingFileRef);

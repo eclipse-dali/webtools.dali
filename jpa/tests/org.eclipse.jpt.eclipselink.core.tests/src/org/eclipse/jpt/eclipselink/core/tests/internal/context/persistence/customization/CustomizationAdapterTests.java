@@ -10,22 +10,18 @@
 package org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.customization;
 
 import java.util.ListIterator;
+
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.core.context.persistence.Property;
-import org.eclipse.jpt.core.internal.context.persistence.GenericProperty;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.PersistenceUnitProperties;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.PersistenceUnitPropertyListListener;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.customization.Customization;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.customization.CustomizerProperties;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.customization.EclipseLinkCustomization;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.customization.Profiler;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.customization.Weaving;
 import org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.PersistenceUnitTestCase;
-import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
 import org.eclipse.jpt.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
-import org.eclipse.jpt.utility.model.value.ListValueModel;
 
 /**
  * Tests the update of model objects by the Customization adapter when the
@@ -129,22 +125,22 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 		this.propertiesTotal = this.modelPropertiesSizeOriginal + 4; // 4 misc properties
 		this.modelPropertiesSize = this.modelPropertiesSizeOriginal;
 		
-		this.persistenceUnitPut("misc.property.1", "value.1");
-		this.persistenceUnitPut(THROW_EXCEPTIONS_KEY, THROW_EXCEPTIONS_TEST_VALUE.toString());
-		this.persistenceUnitPut(WEAVING_LAZY_KEY, WEAVING_LAZY_TEST_VALUE.toString());
-		this.persistenceUnitPut(WEAVING_CHANGE_TRACKING_KEY, WEAVING_CHANGE_TRACKING_TEST_VALUE.toString());
-		this.persistenceUnitPut(WEAVING_FETCH_GROUPS_KEY, WEAVING_FETCH_GROUPS_TEST_VALUE.toString());
-		this.persistenceUnitPut(WEAVING_INTERNAL_KEY, WEAVING_INTERNAL_TEST_VALUE.toString());
-		this.persistenceUnitPut(WEAVING_EAGER_KEY, WEAVING_EAGER_TEST_VALUE.toString());
-		this.persistenceUnitPut(VALIDATION_ONLY_KEY, VALIDATION_ONLY_TEST_VALUE.toString());
-		this.persistenceUnitPut("misc.property.2", "value.2");
-		this.persistenceUnitPut(SESSION_CUSTOMIZER_KEY, SESSION_CUSTOMIZER_TEST_VALUE.toString());
-		this.persistenceUnitPut(WEAVING_KEY, WEAVING_TEST_VALUE);
-		this.persistenceUnitPut("misc.property.3", "value.3");
-		this.persistenceUnitPut("misc.property.4", "value.4");
-		this.persistenceUnitPut(CUSTOMIZER_KEY, CUSTOMIZER_TEST_VALUE);
-		this.persistenceUnitPut(PROFILER_KEY, PROFILER_TEST_VALUE);
-		this.persistenceUnitPut(EXCEPTION_HANDLER_KEY, EXCEPTION_HANDLER_TEST_VALUE);
+		this.persistenceUnitSetProperty("misc.property.1", "value.1");
+		this.persistenceUnitSetProperty(THROW_EXCEPTIONS_KEY, THROW_EXCEPTIONS_TEST_VALUE.toString());
+		this.persistenceUnitSetProperty(WEAVING_LAZY_KEY, WEAVING_LAZY_TEST_VALUE.toString());
+		this.persistenceUnitSetProperty(WEAVING_CHANGE_TRACKING_KEY, WEAVING_CHANGE_TRACKING_TEST_VALUE.toString());
+		this.persistenceUnitSetProperty(WEAVING_FETCH_GROUPS_KEY, WEAVING_FETCH_GROUPS_TEST_VALUE.toString());
+		this.persistenceUnitSetProperty(WEAVING_INTERNAL_KEY, WEAVING_INTERNAL_TEST_VALUE.toString());
+		this.persistenceUnitSetProperty(WEAVING_EAGER_KEY, WEAVING_EAGER_TEST_VALUE.toString());
+		this.persistenceUnitSetProperty(VALIDATION_ONLY_KEY, VALIDATION_ONLY_TEST_VALUE.toString());
+		this.persistenceUnitSetProperty("misc.property.2", "value.2");
+		this.persistenceUnitSetProperty(SESSION_CUSTOMIZER_KEY, SESSION_CUSTOMIZER_TEST_VALUE.toString());
+		this.persistenceUnitSetProperty(WEAVING_KEY, WEAVING_TEST_VALUE);
+		this.persistenceUnitSetProperty("misc.property.3", "value.3");
+		this.persistenceUnitSetProperty("misc.property.4", "value.4");
+		this.persistenceUnitSetProperty(CUSTOMIZER_KEY, CUSTOMIZER_TEST_VALUE);
+		this.persistenceUnitSetProperty(PROFILER_KEY, PROFILER_TEST_VALUE);
+		this.persistenceUnitSetProperty(EXCEPTION_HANDLER_KEY, EXCEPTION_HANDLER_TEST_VALUE);
 		return;
 	}
 
@@ -260,38 +256,6 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 		// verify event for the expected property
 		assertEquals("Wrong Event.", this.sessionCustomizersEvent.getAspectName(), Customization.SESSION_CUSTOMIZER_LIST_PROPERTY);
 	}
-
-	// ********** Listeners tests **********
-	public void testHasListeners() throws Exception {
-		// new
-		ListAspectAdapter<PersistenceUnit, Property> propertiesAdapter = 
-			(ListAspectAdapter<PersistenceUnit, Property>) this.subject.getPropertiesAdapter();
-		GenericProperty ctdProperty = (GenericProperty) this.getPersistenceUnit().getProperty(THROW_EXCEPTIONS_KEY);
-		ListValueModel<Property> propertyListAdapter = this.subject.getPropertyListAdapter();
-		
-		assertTrue(propertiesAdapter.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
-		assertTrue(ctdProperty.hasAnyPropertyChangeListeners(Property.VALUE_PROPERTY));
-		this.verifyHasListeners(this.customization, Customization.THROW_EXCEPTIONS_PROPERTY);
-		this.verifyHasListeners(this.customization, Customization.WEAVING_LAZY_PROPERTY);
-		this.verifyHasListeners(this.customization, Customization.WEAVING_CHANGE_TRACKING_PROPERTY);
-		this.verifyHasListeners(this.customization, Customization.WEAVING_FETCH_GROUPS_PROPERTY);
-		this.verifyHasListeners(this.customization, Customization.VALIDATION_ONLY_PROPERTY);
-		this.verifyHasListeners(this.customization, Customization.EXCEPTION_HANDLER_PROPERTY);
-		this.verifyHasListeners(propertyListAdapter);
-		
-		EclipseLinkCustomization elCustomization = (EclipseLinkCustomization) this.customization;
-		PersistenceUnitPropertyListListener propertyListListener = elCustomization.propertyListListener();
-		propertyListAdapter.removeListChangeListener(ListValueModel.LIST_VALUES, propertyListListener);
-		assertTrue(propertiesAdapter.hasAnyListChangeListeners(ListValueModel.LIST_VALUES)); // other properties are still listening
-		this.verifyHasListeners(this.customization, Customization.THROW_EXCEPTIONS_PROPERTY);
-		this.verifyHasListeners(this.customization, Customization.WEAVING_LAZY_PROPERTY);
-		this.verifyHasListeners(this.customization, Customization.WEAVING_CHANGE_TRACKING_PROPERTY);
-		this.verifyHasListeners(this.customization, Customization.WEAVING_FETCH_GROUPS_PROPERTY);
-		this.verifyHasListeners(this.customization, Customization.VALIDATION_ONLY_PROPERTY);
-		this.verifyHasListeners(this.customization, Customization.EXCEPTION_HANDLER_PROPERTY);
-	}
-
-
 
 	// ********** ThrowExceptions tests **********
 	public void testSetThrowExceptions() throws Exception {
@@ -531,7 +495,7 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 	 * Verifies setting custom profiler and literals.
 	 */
 	protected void verifySetProfiler(String elKey, Object testValue1, Object testValue2) throws Exception {
-		Property property = this.getPersistenceUnit().getProperty(elKey);
+		PersistenceUnit.Property property = this.getPersistenceUnit().getProperty(elKey);
 		String propertyName = this.getModel().propertyIdFor(property);
 		// test set custom profiler.
 		this.clearEvent();
@@ -541,19 +505,19 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 		// test set (Profiler) null
 		this.clearEvent();
 		this.customization.setProfiler((Profiler) null);
-		assertFalse(this.getPersistenceUnit().containsProperty(elKey));
+		assertNull(this.getPersistenceUnit().getProperty(elKey));
 		this.verifyPutProperty(propertyName, null);
 		
 		// test set enum literal
 		this.clearEvent();
 		this.setProperty(propertyName, testValue1.toString());
-		assertTrue(this.getPersistenceUnit().containsProperty(elKey));
+		assertNotNull(this.getPersistenceUnit().getProperty(elKey));
 		this.verifyPutProperty(propertyName, this.getEclipseLinkStringValueOf(testValue1));
 
 		// test set (String) null
 		this.clearEvent();
 		this.customization.setProfiler((String) null);
-		assertFalse(this.getPersistenceUnit().containsProperty(elKey));
+		assertNull(this.getPersistenceUnit().getProperty(elKey));
 		this.verifyPutProperty(propertyName, null);
 	}
 
@@ -563,19 +527,13 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 
 	// ********** verify SessionCustomizer property **********
 	protected void verifySetSessionCustomizationProperty(String propertyName, String key, Object testValue1, Object testValue2) throws Exception {
-		ListValueModel<Property> propertyListAdapter = this.subject.getPropertyListAdapter();
-		// Basic
-		this.verifyInitialState(propertyName, key, propertyListAdapter);
-		
 		// Replace
-		this.persistenceUnitPut(key, testValue2, true); 
+		this.persistenceUnitSetProperty(key, testValue2, true); 
 		this.propertiesTotal++;
-		assertEquals(this.propertiesTotal, propertyListAdapter.size());
 		this.verifyPutSessionCustomizerProperty(propertyName, testValue1);
 	}
 	
 	protected void verifyAddRemoveSessionCustomizationProperty(String propertyName, String key, Object testValue1, Object testValue2) throws Exception {
-		ListValueModel<Property> propertyListAdapter = this.subject.getPropertyListAdapter();
 		// Remove
 		this.clearEvent();
 		--this.propertiesTotal;
@@ -583,14 +541,12 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 		this.getPersistenceUnit().removeProperty(key, (String) testValue1);
 		assertFalse(this.customization.sessionCustomizerExists(key));
 		assertEquals(this.modelPropertiesSize, this.modelPropertiesSizeOriginal - 1);
-		assertEquals(this.propertiesTotal, propertyListAdapter.size());
 		
 		// Add original Property
 		++this.propertiesTotal;
 		++this.modelPropertiesSize;
-		this.persistenceUnitPut(key, testValue1, true); 
+		this.persistenceUnitSetProperty(key, testValue1, true); 
 		this.verifyPutSessionCustomizerProperty(propertyName, testValue1);
-		assertEquals(this.propertiesTotal, propertyListAdapter.size());
 	}
 
 	protected void verifyPutSessionCustomizerProperty(String propertyName, Object expectedValue) throws Exception {
@@ -608,43 +564,34 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 	
 	// ********** verify entity property **********
 	protected void verifySetCustomizationProperty(String propertyName, String key, Object testValue1, Object testValue2) throws Exception {
-		ListValueModel<Property> propertyListAdapter = this.subject.getPropertyListAdapter();
-		// Basic
-		this.verifyInitialState(propertyName, key, propertyListAdapter);
-		
 		// Replace
-		this.persistenceUnitPut(key, testValue2);
-		assertEquals(this.propertiesTotal, propertyListAdapter.size());
+		this.persistenceUnitSetProperty(key, testValue2);
 		this.verifyPutCustomizationProperty(propertyName, ENTITY_TEST, testValue2);
 		
 		// Replace by setting model object
 		this.clearEvent();
 		this.setCustomizationProperty(propertyName, ENTITY_TEST, testValue1);
-		assertEquals(this.propertiesTotal, propertyListAdapter.size());
 		this.verifyPutCustomizationProperty(propertyName, ENTITY_TEST, testValue1);
 	}
 
 	protected void verifyAddRemoveCustomizationProperty(String propertyName, String key, Object testValue1, Object testValue2) throws Exception {
-		ListValueModel<Property> propertyListAdapter = this.subject.getPropertyListAdapter();
 		// Remove
 		this.clearEvent();
 		--this.propertiesTotal;
 		--this.modelPropertiesSize;
 		this.getPersistenceUnit().removeProperty(key);
-		assertFalse(this.getPersistenceUnit().containsProperty(key));
+		assertNull(this.getPersistenceUnit().getProperty(key));
 		assertEquals(this.modelPropertiesSize, this.modelPropertiesSizeOriginal - 1);
 		this.verifyPutCustomizationProperty(propertyName, ENTITY_TEST, null);
-		assertEquals(this.propertiesTotal, propertyListAdapter.size());
 		
 		// Add original Property
 		++this.propertiesTotal;
 		++this.modelPropertiesSize;
-		this.persistenceUnitPut(key, testValue1);
+		this.persistenceUnitSetProperty(key, testValue1);
 		this.verifyPutCustomizationProperty(propertyName, ENTITY_TEST, testValue1);
-		assertEquals(this.propertiesTotal, propertyListAdapter.size());
 		
 		// Replace
-		this.persistenceUnitPut(key, testValue2);
+		this.persistenceUnitSetProperty(key, testValue2);
 		this.verifyPutCustomizationProperty(propertyName, ENTITY_TEST, testValue2);
 	}
 

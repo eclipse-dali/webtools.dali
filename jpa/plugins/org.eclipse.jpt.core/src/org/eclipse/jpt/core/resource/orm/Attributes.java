@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.resource.orm;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.ListIterator;
+
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
@@ -22,7 +22,6 @@ import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.common.JpaEObject;
 import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 /**
  * <!-- begin-user-doc -->
@@ -611,48 +610,21 @@ public class Attributes extends AbstractJpaEObject implements JpaEObject
 	}
 
 	public List<XmlAttributeMapping> getAttributeMappings() {
-		List<XmlAttributeMapping> attributeMappings = new ArrayList<XmlAttributeMapping>();
-		ListIterator<XmlId> ids = new CloneListIterator<XmlId>(this.getIds());//prevent ConcurrentModificiationException
-		for (XmlId mapping : CollectionTools.iterable(ids)) {
-			attributeMappings.add(mapping);
-		}
-		ListIterator<XmlEmbeddedId> embeddedIds = new CloneListIterator<XmlEmbeddedId>(this.getEmbeddedIds());//prevent ConcurrentModificiationException
-		for (XmlEmbeddedId mapping : CollectionTools.iterable(embeddedIds)) {
-			attributeMappings.add(mapping);
-		}
-		ListIterator<XmlBasic> basics = new CloneListIterator<XmlBasic>(this.getBasics());//prevent ConcurrentModificiationException
-		for (XmlBasic mapping : CollectionTools.iterable(basics)) {
-			attributeMappings.add(mapping);
-		}
-		ListIterator<XmlVersion> versions = new CloneListIterator<XmlVersion>(this.getVersions());//prevent ConcurrentModificiationException
-		for (XmlVersion mapping : CollectionTools.iterable(versions)) {
-			attributeMappings.add(mapping);
-		}
-		ListIterator<XmlManyToOne> manyToOnes = new CloneListIterator<XmlManyToOne>(this.getManyToOnes());//prevent ConcurrentModificiationException
-		for (XmlManyToOne mapping : CollectionTools.iterable(manyToOnes)) {
-			attributeMappings.add(mapping);
-		}
-		ListIterator<XmlOneToMany> oneToManys = new CloneListIterator<XmlOneToMany>(this.getOneToManys());//prevent ConcurrentModificiationException
-		for (XmlOneToMany mapping : CollectionTools.iterable(oneToManys)) {
-			attributeMappings.add(mapping);
-		}
-		ListIterator<XmlOneToOne> oneToOnes = new CloneListIterator<XmlOneToOne>(this.getOneToOnes());//prevent ConcurrentModificiationException
-		for (XmlOneToOne mapping : CollectionTools.iterable(oneToOnes)) {
-			attributeMappings.add(mapping);
-		}
-		ListIterator<XmlManyToMany> manyToManys = new CloneListIterator<XmlManyToMany>(this.getManyToManys());//prevent ConcurrentModificiationException
-		for (XmlManyToMany mapping : CollectionTools.iterable(manyToManys)) {
-			attributeMappings.add(mapping);
-		}
-		ListIterator<XmlEmbedded> embeddeds = new CloneListIterator<XmlEmbedded>(this.getEmbeddeds());//prevent ConcurrentModificiationException
-		for (XmlEmbedded mapping : CollectionTools.iterable(embeddeds)) {
-			attributeMappings.add(mapping);
-		}
-		ListIterator<XmlTransient> transients = new CloneListIterator<XmlTransient>(this.getTransients());//prevent ConcurrentModificiationException
-		for (XmlTransient mapping : CollectionTools.iterable(transients)) {
-			attributeMappings.add(mapping);
-		}
+		// convert lists to arrays to avoid ConcurrentModificationException while adding to result list
+		ArrayList<XmlAttributeMapping> attributeMappings = new ArrayList<XmlAttributeMapping>();
+		CollectionTools.addAll(attributeMappings, this.getIds().toArray(EMPTY_XML_ATTRIBUTE_MAPPING_ARRAY));
+		CollectionTools.addAll(attributeMappings, this.getEmbeddedIds().toArray(EMPTY_XML_ATTRIBUTE_MAPPING_ARRAY));
+		CollectionTools.addAll(attributeMappings, this.getBasics().toArray(EMPTY_XML_ATTRIBUTE_MAPPING_ARRAY));
+		CollectionTools.addAll(attributeMappings, this.getVersions().toArray(EMPTY_XML_ATTRIBUTE_MAPPING_ARRAY));
+		CollectionTools.addAll(attributeMappings, this.getManyToOnes().toArray(EMPTY_XML_ATTRIBUTE_MAPPING_ARRAY));
+		CollectionTools.addAll(attributeMappings, this.getOneToManys().toArray(EMPTY_XML_ATTRIBUTE_MAPPING_ARRAY));
+		CollectionTools.addAll(attributeMappings, this.getOneToOnes().toArray(EMPTY_XML_ATTRIBUTE_MAPPING_ARRAY));
+		CollectionTools.addAll(attributeMappings, this.getManyToManys().toArray(EMPTY_XML_ATTRIBUTE_MAPPING_ARRAY));
+		CollectionTools.addAll(attributeMappings, this.getEmbeddeds().toArray(EMPTY_XML_ATTRIBUTE_MAPPING_ARRAY));
+		CollectionTools.addAll(attributeMappings, this.getTransients().toArray(EMPTY_XML_ATTRIBUTE_MAPPING_ARRAY));
 		return attributeMappings;
 	}
+
+	private static final XmlAttributeMapping[] EMPTY_XML_ATTRIBUTE_MAPPING_ARRAY = new XmlAttributeMapping[0];
 
 } // Attributes

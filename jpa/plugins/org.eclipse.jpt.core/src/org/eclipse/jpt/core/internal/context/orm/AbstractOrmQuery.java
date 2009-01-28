@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,8 +10,10 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+
 import org.eclipse.jpt.core.context.Query;
 import org.eclipse.jpt.core.context.QueryHint;
 import org.eclipse.jpt.core.context.XmlContextNode;
@@ -24,6 +26,7 @@ import org.eclipse.jpt.core.resource.orm.XmlQuery;
 import org.eclipse.jpt.core.resource.orm.XmlQueryHint;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 
@@ -121,7 +124,6 @@ public abstract class AbstractOrmQuery<E extends XmlQuery> extends AbstractXmlCo
 		this.name = xmlQuery.getName();
 		this.query = xmlQuery.getQuery();
 		this.initializeHints();
-		getPersistenceUnit().addQuery(this);
 	}
 	
 	protected void initializeHints() {
@@ -143,21 +145,21 @@ public abstract class AbstractOrmQuery<E extends XmlQuery> extends AbstractXmlCo
 	}
 	
 	protected void updateHints() {
-		ListIterator<OrmQueryHint> contextHints = hints();
-		ListIterator<XmlQueryHint> resourceHints = new CloneListIterator<XmlQueryHint>(this.resourceQuery.getHints());//prevent ConcurrentModificiationException
-		
-		while (contextHints.hasNext()) {
+		// make a copy of the XML hints (to prevent ConcurrentModificationException)
+		Iterator<XmlQueryHint> xmlHints = new CloneIterator<XmlQueryHint>(this.resourceQuery.getHints());
+
+		for (Iterator<OrmQueryHint> contextHints = this.hints(); contextHints.hasNext(); ) {
 			OrmQueryHint contextHint = contextHints.next();
-			if (resourceHints.hasNext()) {
-				contextHint.update(resourceHints.next());
+			if (xmlHints.hasNext()) {
+				contextHint.update(xmlHints.next());
 			}
 			else {
 				removeHint_(contextHint);
 			}
 		}
 		
-		while (resourceHints.hasNext()) {
-			addHint(buildQueryHint(resourceHints.next()));
+		while (xmlHints.hasNext()) {
+			addHint(buildQueryHint(xmlHints.next()));
 		}
 	}
 	

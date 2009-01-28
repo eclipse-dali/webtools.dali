@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,22 +9,15 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.caching;
 
-import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.core.context.persistence.Property;
-import org.eclipse.jpt.core.internal.context.persistence.GenericProperty;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.PersistenceUnitProperties;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.PersistenceUnitPropertyListListener;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.caching.CacheProperties;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.caching.CacheType;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.caching.Caching;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.caching.EclipseLinkCaching;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.caching.FlushClearCache;
 import org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.PersistenceUnitTestCase;
-import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
 import org.eclipse.jpt.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
-import org.eclipse.jpt.utility.model.value.ListValueModel;
 
 /**
  * Tests the update of model objects by the Caching adapter when the
@@ -99,17 +92,17 @@ public class CachingAdapterTests extends PersistenceUnitTestCase
 		this.propertiesTotal = this.modelPropertiesSizeOriginal + 4; // 4 misc properties
 		this.modelPropertiesSize = this.modelPropertiesSizeOriginal;
 		
-		this.persistenceUnitPut("misc.property.1", "value.1");
-		this.persistenceUnitPut(CACHE_TYPE_DEFAULT_KEY, CACHE_TYPE_DEFAULT_TEST_VALUE);
-		this.persistenceUnitPut("misc.property.2", "value.2");
-		this.persistenceUnitPut(CACHE_SIZE_DEFAULT_KEY, CACHE_SIZE_DEFAULT_TEST_VALUE);
-		this.persistenceUnitPut(SHARED_CACHE_DEFAULT_KEY, SHARED_CACHE_DEFAULT_TEST_VALUE);
-		this.persistenceUnitPut("misc.property.3", "value.3");
-		this.persistenceUnitPut("misc.property.4", "value.4");
-		this.persistenceUnitPut(CACHE_SIZE_KEY, CACHE_SIZE_TEST_VALUE);
-		this.persistenceUnitPut(CACHE_TYPE_KEY, CACHE_TYPE_TEST_VALUE);
-		this.persistenceUnitPut(SHARED_CACHE_KEY, SHARED_CACHE_TEST_VALUE);
-		this.persistenceUnitPut(FLUSH_CLEAR_CACHE_KEY, FLUSH_CLEAR_CACHE_TEST_VALUE);
+		this.persistenceUnitSetProperty("misc.property.1", "value.1");
+		this.persistenceUnitSetProperty(CACHE_TYPE_DEFAULT_KEY, CACHE_TYPE_DEFAULT_TEST_VALUE);
+		this.persistenceUnitSetProperty("misc.property.2", "value.2");
+		this.persistenceUnitSetProperty(CACHE_SIZE_DEFAULT_KEY, CACHE_SIZE_DEFAULT_TEST_VALUE);
+		this.persistenceUnitSetProperty(SHARED_CACHE_DEFAULT_KEY, SHARED_CACHE_DEFAULT_TEST_VALUE);
+		this.persistenceUnitSetProperty("misc.property.3", "value.3");
+		this.persistenceUnitSetProperty("misc.property.4", "value.4");
+		this.persistenceUnitSetProperty(CACHE_SIZE_KEY, CACHE_SIZE_TEST_VALUE);
+		this.persistenceUnitSetProperty(CACHE_TYPE_KEY, CACHE_TYPE_TEST_VALUE);
+		this.persistenceUnitSetProperty(SHARED_CACHE_KEY, SHARED_CACHE_TEST_VALUE);
+		this.persistenceUnitSetProperty(FLUSH_CLEAR_CACHE_KEY, FLUSH_CLEAR_CACHE_TEST_VALUE);
 		return;
 	}
 
@@ -170,26 +163,6 @@ public class CachingAdapterTests extends PersistenceUnitTestCase
 		assertNotNull("No Event Fired.", this.entitiesEvent);
 		// verify event for the expected property
 		assertEquals("Wrong Event.", this.entitiesEvent.getAspectName(), Caching.ENTITIES_LIST_PROPERTY);
-	}
-
-	// ********** Listeners tests **********
-	public void testHasListeners() throws Exception {
-		// new
-		ListAspectAdapter<PersistenceUnit, Property> propertiesAdapter = 
-			(ListAspectAdapter<PersistenceUnit, Property>) this.subject.getPropertiesAdapter();
-		GenericProperty ctdProperty = (GenericProperty) this.getPersistenceUnit().getProperty(CACHE_TYPE_DEFAULT_KEY);
-		ListValueModel<Property> propertyListAdapter = this.subject.getPropertyListAdapter();
-		
-		assertTrue(propertiesAdapter.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
-		assertTrue(ctdProperty.hasAnyPropertyChangeListeners(Property.VALUE_PROPERTY));
-		this.verifyHasListeners(this.caching, Caching.CACHE_TYPE_DEFAULT_PROPERTY);
-		this.verifyHasListeners(propertyListAdapter);
-		
-		EclipseLinkCaching elCaching = (EclipseLinkCaching) this.caching;
-		PersistenceUnitPropertyListListener propertyListListener = elCaching.propertyListListener();
-		propertyListAdapter.removeListChangeListener(ListValueModel.LIST_VALUES, propertyListListener);
-		assertTrue(propertiesAdapter.hasAnyListChangeListeners(ListValueModel.LIST_VALUES)); // other properties are still listening
-		this.verifyHasListeners(this.caching, Caching.CACHE_TYPE_DEFAULT_PROPERTY);
 	}
 
 	// ********** CacheTypeDefault **********
@@ -351,43 +324,34 @@ public class CachingAdapterTests extends PersistenceUnitTestCase
 	}
 
 	protected void verifySetCachingProperty(String propertyName, String key, Object testValue1, Object testValue2) throws Exception {
-		ListValueModel<Property> propertyListAdapter = this.subject.getPropertyListAdapter();
-		// Basic
-		this.verifyInitialState(propertyName, key, propertyListAdapter);
-		
 		// Replace
-		this.persistenceUnitPut(key, testValue2);
-		assertEquals(this.propertiesTotal, propertyListAdapter.size());
+		this.persistenceUnitSetProperty(key, testValue2);
 		this.verifyPutCachingProperty(propertyName, ENTITY_TEST, testValue2);
 		
 		// Replace by setting model object
 		this.clearEvent();
 		this.setCachingProperty(propertyName, ENTITY_TEST, testValue1);
-		assertEquals(this.propertiesTotal, propertyListAdapter.size());
 		this.verifyPutCachingProperty(propertyName, ENTITY_TEST, testValue1);
 	}
 
 	protected void verifyAddRemoveCachingProperty(String propertyName, String key, Object testValue1, Object testValue2) throws Exception {
-		ListValueModel<Property> propertyListAdapter = this.subject.getPropertyListAdapter();
 		// Remove
 		this.clearEvent();
 		--this.propertiesTotal;
 		--this.modelPropertiesSize;
 		this.getPersistenceUnit().removeProperty(key);
-		assertFalse(this.getPersistenceUnit().containsProperty(key));
+		assertNull(this.getPersistenceUnit().getProperty(key));
 		assertEquals(this.modelPropertiesSize, this.modelPropertiesSizeOriginal - 1);
 		this.verifyPutCachingProperty(propertyName, ENTITY_TEST, null);
-		assertEquals(this.propertiesTotal, propertyListAdapter.size());
 		
 		// Add original Property
 		++this.propertiesTotal;
 		++this.modelPropertiesSize;
-		this.persistenceUnitPut(key, testValue1);
+		this.persistenceUnitSetProperty(key, testValue1);
 		this.verifyPutCachingProperty(propertyName, ENTITY_TEST, testValue1);
-		assertEquals(this.propertiesTotal, propertyListAdapter.size());
 		
 		// Replace
-		this.persistenceUnitPut(key, testValue2);
+		this.persistenceUnitSetProperty(key, testValue2);
 		this.verifyPutCachingProperty(propertyName, ENTITY_TEST, testValue2);
 	}
 
