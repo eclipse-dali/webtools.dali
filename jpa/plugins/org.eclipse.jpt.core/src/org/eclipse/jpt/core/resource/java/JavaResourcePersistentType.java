@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -99,6 +99,11 @@ public interface JavaResourcePersistentType
 	 */
 	Iterator<JavaResourcePersistentAttribute> persistableFields();
 
+	/**
+	 * A convenience method that returns the persistableFields that also
+	 * have the Access annotation with a value of FIELD
+	 */
+	Iterator<JavaResourcePersistentAttribute> persistableFieldsWithSpecifiedFieldAccess();
 
 	// ********** methods **********
 
@@ -114,6 +119,11 @@ public interface JavaResourcePersistentType
 	 */
 	Iterator<JavaResourcePersistentAttribute> persistableProperties();
 
+	/**
+	 * A convenience method that returns the persistableProperties that also
+	 * have the Access annotation with a value of PROPERTY
+	 */
+	Iterator<JavaResourcePersistentAttribute> persistablePropertiesWithSpecifiedPropertyAccess();
 
 	// ********** attributes **********
 

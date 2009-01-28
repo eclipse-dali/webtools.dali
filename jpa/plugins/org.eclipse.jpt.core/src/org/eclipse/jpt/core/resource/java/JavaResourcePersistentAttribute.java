@@ -92,5 +92,12 @@ public interface JavaResourcePersistentAttribute
 	 * (of course only persistence-related annotations).
 	 */
 	boolean hasAnyAnnotations();
+	
+	/**
+	 * Return the access type as specified by the javax.persistence.Access annotation.
+	 * if the Access annotation is not present, return null.
+	 * @return
+	 */
+	AccessType getSpecifiedAccess();
 
 }

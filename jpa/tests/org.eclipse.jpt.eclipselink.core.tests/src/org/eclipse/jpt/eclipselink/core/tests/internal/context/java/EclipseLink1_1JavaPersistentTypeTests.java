@@ -25,6 +25,7 @@ import org.eclipse.jpt.core.resource.java.EmbeddableAnnotation;
 import org.eclipse.jpt.core.resource.java.EntityAnnotation;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.core.resource.java.TransientAnnotation;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
@@ -118,7 +119,7 @@ public class EclipseLink1_1JavaPersistentTypeTests extends EclipseLink1_1JavaCon
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID, JPA.ACCESS, JPA.ACCESS_TYPE);
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.BASIC, JPA.ID, JPA.ACCESS, JPA.ACCESS_TYPE);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -127,7 +128,13 @@ public class EclipseLink1_1JavaPersistentTypeTests extends EclipseLink1_1JavaCon
 			}
 	
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuilder sb) {
+			public void appendNameFieldAnnotationTo(StringBuilder sb) {
+				sb.append("@Basic");
+				sb.append("@Access(AccessType.FIELD)");
+			}
+			
+			@Override
+			public void appendGetIdMethodAnnotationTo(StringBuilder sb) {
 				sb.append("@Id");
 			}
 		});
@@ -149,6 +156,7 @@ public class EclipseLink1_1JavaPersistentTypeTests extends EclipseLink1_1JavaCon
 			@Override
 			public void appendGetIdMethodAnnotationTo(StringBuilder sb) {
 				sb.append("@Id");
+				sb.append("@Access(AccessType.PROPERTY)");
 			}
 		});
 	}
@@ -290,6 +298,19 @@ public class EclipseLink1_1JavaPersistentTypeTests extends EclipseLink1_1JavaCon
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		assertEquals(AccessType.PROPERTY, getJavaPersistentType().getAccess());
+		
+		ListIterator<JavaPersistentAttribute> attributes = getJavaPersistentType().attributes();
+		JavaPersistentAttribute javaPersistentAttribute = attributes.next();
+		assertEquals("id", javaPersistentAttribute.getName());
+		assertTrue(javaPersistentAttribute.getResourcePersistentAttribute().isForProperty());
+		assertEquals(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, javaPersistentAttribute.getMappingKey());
+
+		javaPersistentAttribute = attributes.next();
+		assertEquals("name", javaPersistentAttribute.getName());
+		assertTrue(javaPersistentAttribute.getResourcePersistentAttribute().isForField());
+		assertEquals(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, javaPersistentAttribute.getSpecifiedMapping().getKey());
+		
+		assertFalse(attributes.hasNext());
 	}
 	
 	public void testAccessPropertyAnnotatedFieldSpecified() throws Exception {
@@ -297,6 +318,40 @@ public class EclipseLink1_1JavaPersistentTypeTests extends EclipseLink1_1JavaCon
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		assertEquals(AccessType.FIELD, getJavaPersistentType().getAccess());
+		
+		ListIterator<JavaPersistentAttribute> attributes = getJavaPersistentType().attributes();
+		JavaPersistentAttribute javaPersistentAttribute = attributes.next();
+		assertEquals("id", javaPersistentAttribute.getName());
+		assertTrue(javaPersistentAttribute.getResourcePersistentAttribute().isForField());
+		assertEquals(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, javaPersistentAttribute.getMappingKey());
+
+		javaPersistentAttribute = attributes.next();
+		assertEquals("name", javaPersistentAttribute.getName());
+		assertTrue(javaPersistentAttribute.getResourcePersistentAttribute().isForField());
+		assertEquals(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, javaPersistentAttribute.getMappingKey());
+
+		javaPersistentAttribute = attributes.next();
+		assertEquals("id", javaPersistentAttribute.getName());
+		assertTrue(javaPersistentAttribute.getResourcePersistentAttribute().isForProperty());
+		assertEquals(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, javaPersistentAttribute.getMappingKey());
+		
+		assertFalse(attributes.hasNext());
+		
+		
+		getJavaPersistentType().attributes().next().getResourcePersistentAttribute().setMappingAnnotation(TransientAnnotation.ANNOTATION_NAME);
+		attributes = getJavaPersistentType().attributes();
+		javaPersistentAttribute = attributes.next();
+
+		javaPersistentAttribute = attributes.next();
+		assertEquals("name", javaPersistentAttribute.getName());
+		assertTrue(javaPersistentAttribute.getResourcePersistentAttribute().isForField());
+		assertEquals(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, javaPersistentAttribute.getMappingKey());
+
+		javaPersistentAttribute = attributes.next();
+		assertEquals("id", javaPersistentAttribute.getName());
+		assertTrue(javaPersistentAttribute.getResourcePersistentAttribute().isForProperty());
+		assertEquals(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, javaPersistentAttribute.getMappingKey());
+		assertFalse(attributes.hasNext());
 	}
 
 	public void testAccessInheritance() throws Exception {

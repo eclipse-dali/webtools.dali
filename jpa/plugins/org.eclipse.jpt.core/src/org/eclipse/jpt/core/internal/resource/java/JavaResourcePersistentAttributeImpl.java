@@ -19,6 +19,8 @@ import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jpt.core.internal.utility.jdt.JDTFieldAttribute;
 import org.eclipse.jpt.core.internal.utility.jdt.JDTMethodAttribute;
 import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
+import org.eclipse.jpt.core.resource.java.AccessAnnotation;
+import org.eclipse.jpt.core.resource.java.AccessType;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
@@ -294,7 +296,12 @@ public class JavaResourcePersistentAttributeImpl
 		this.firePropertyChanged(TYPE_IS_VALUE_HOLDER_PROPERTY, old, typeIsValueHolder);
 	}
 	
+	public AccessType getSpecifiedAccess() {
+		AccessAnnotation accessAnnotation = (AccessAnnotation) getSupportingAnnotation(AccessAnnotation.ANNOTATION_NAME);
+		return accessAnnotation == null ? null : accessAnnotation.getValue();
+	}
 	
+
 	@Override
 	public void update(CompilationUnit astRoot) {
 		super.update(astRoot);

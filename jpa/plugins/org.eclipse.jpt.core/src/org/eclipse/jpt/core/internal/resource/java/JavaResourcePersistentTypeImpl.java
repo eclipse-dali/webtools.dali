@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -36,6 +36,7 @@ import org.eclipse.jpt.utility.MethodSignature;
 import org.eclipse.jpt.utility.internal.Counter;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
+import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.TreeIterator;
 
 /**
@@ -342,6 +343,15 @@ public class JavaResourcePersistentTypeImpl
 		return persistableMembers(this.fields());
 	}
 	
+	public Iterator<JavaResourcePersistentAttribute> persistableFieldsWithSpecifiedFieldAccess() {
+		return new FilteringIterator<JavaResourcePersistentAttribute, JavaResourcePersistentAttribute>(persistableFields()) {
+			@Override
+			protected boolean accept(JavaResourcePersistentAttribute resourceAttribute) {
+				return resourceAttribute.getSpecifiedAccess() == AccessType.FIELD;
+			}
+		};
+	}
+	
 	protected void addField(JavaResourcePersistentAttribute field) {
 		this.addItemToCollection(field, this.fields, FIELDS_COLLECTION);
 	}
@@ -369,6 +379,15 @@ public class JavaResourcePersistentTypeImpl
 	public Iterator<JavaResourcePersistentAttribute> persistableProperties() {
 		return persistableMembers(this.methods());
 	}
+	
+	public Iterator<JavaResourcePersistentAttribute> persistablePropertiesWithSpecifiedPropertyAccess() {
+		return new FilteringIterator<JavaResourcePersistentAttribute, JavaResourcePersistentAttribute>(persistableProperties()) {
+			@Override
+			protected boolean accept(JavaResourcePersistentAttribute resourceAttribute) {
+				return resourceAttribute.getSpecifiedAccess() == AccessType.PROPERTY;
+			}
+		};
+	}
 
 	protected JavaResourcePersistentAttribute getMethod(MethodSignature signature, int occurrence) {
 		for (JavaResourcePersistentAttribute method : this.methods) {
@@ -386,8 +405,6 @@ public class JavaResourcePersistentTypeImpl
 	protected void removeMethods(Collection<JavaResourcePersistentAttribute> remove) {
 		this.removeItemsFromCollection(remove, this.methods, METHODS_COLLECTION);
 	}
-
-
 
 	// ********** attributes **********
 
