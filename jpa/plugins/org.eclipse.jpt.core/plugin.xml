@@ -15,7 +15,7 @@
 	<extension-point 
 		id="resourceModelProviders" 
 		name="%JPA_RESOURCE_MODEL_PROVIDERS" 
-		schema="schema/resourceModelProvider.exsd"/>
+		schema="schema/resourceModelProviders.exsd"/>
 	
 	
 	<!-- ***** Eclipse core extensions ***** -->
@@ -289,5 +289,8 @@
 		</catalogContribution>
 		
 	</extension>
+ <extension
+       point="org.eclipse.jpt.core.resourceModelProviders">
+ </extension>
 
 </plugin>
