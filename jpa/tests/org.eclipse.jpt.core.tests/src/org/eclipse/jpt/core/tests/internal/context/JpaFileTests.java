@@ -18,7 +18,6 @@ import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
-import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmXml;
 import org.eclipse.jpt.core.context.persistence.ClassRef;
@@ -194,7 +193,7 @@ public class JpaFileTests extends ContextModelTestCase
 		JpaFile javaJpaFile = JptCorePlugin.getJpaFile((IFile) cu.getResource());
 		JavaPersistentType javaPersistentType = ormPersistentType.getJavaPersistentType();
 		assertEquals(javaPersistentType, javaJpaFile.rootStructureNodes().next());
-		assertTrue(javaJpaFile.rootStructureNodes().next().getParent() instanceof OrmEntity);
+		assertTrue(javaJpaFile.rootStructureNodes().next().getParent() instanceof OrmPersistentType);
 		
 		
 		getEntityMappings().removePersistentType(0);
@@ -212,7 +211,7 @@ public class JpaFileTests extends ContextModelTestCase
 		
 		JavaPersistentType javaPersistentType = ormPersistentType.getJavaPersistentType();
 		assertEquals(javaPersistentType, javaJpaFile.rootStructureNodes().next());
-		assertTrue(javaJpaFile.rootStructureNodes().next().getParent() instanceof OrmEntity);
+		assertTrue(javaJpaFile.rootStructureNodes().next().getParent() instanceof OrmPersistentType);
 		
 		getOrmXmlResource().getEntityMappings().getEntities().remove(0);
 		
