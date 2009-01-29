@@ -3,9 +3,9 @@
 <plugin>
 	
 	<extension-point 
-		id="jpaPlatforms" 
-		name="%JPA_PLATFORM" 
-		schema="schema/jpaPlatforms.exsd"/>
+		id="jpaPlatformUis" 
+		name="%JPA_PLATFORM_UI" 
+		schema="schema/jpaPlatformUis.exsd"/>
 	
 	
 	<extension
@@ -73,11 +73,11 @@
 	
 	
 	<extension
-		point="org.eclipse.jpt.ui.jpaPlatforms">
+		point="org.eclipse.jpt.ui.jpaPlatformUis">
 		
-		<jpaPlatform
+		<jpaPlatformUi
 			id="generic.ui"
-			jpaPlatformId="generic"
+			jpaPlatform="generic"
 			factoryClass="org.eclipse.jpt.ui.internal.platform.generic.GenericJpaPlatformUiFactory"/>
 		
 	</extension>

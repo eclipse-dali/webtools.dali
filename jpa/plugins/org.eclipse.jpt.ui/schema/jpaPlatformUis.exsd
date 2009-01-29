@@ -18,7 +18,7 @@
       </annotation>
       <complexType>
          <sequence>
-            <element ref="jpaPlatform" minOccurs="1" maxOccurs="unbounded"/>
+            <element ref="jpaPlatformUi" minOccurs="1" maxOccurs="unbounded"/>
          </sequence>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -47,7 +47,7 @@
       </complexType>
    </element>
 
-   <element name="jpaPlatform">
+   <element name="jpaPlatformUi">
       <annotation>
          <documentation>
             Extend this extension point and you must also extend the org.eclipse.jpt.core.jpaPlatforms extension point.  The jpaPlatformId must match the id of a core.jpaPlatform extension.  One jpaPlatform will be chosen per JpaProject.  The possible jpaPlatforms will be displayed to the user as a project property.
@@ -61,7 +61,7 @@
                </documentation>
             </annotation>
          </attribute>
-         <attribute name="jpaPlatformId" type="string" use="required">
+         <attribute name="jpaPlatform" type="string" use="required">
             <annotation>
                <documentation>
                   The jpaPlatformId must match the corresponding org.eclipse.jpt.core.jpaPlatform extension id.

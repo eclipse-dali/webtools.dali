@@ -37,74 +37,74 @@ public class JpaPlatformUiRegistry
 	}
 
 	private static final String EXTENSION_ID = 
-		"jpaPlatforms"; //$NON-NLS-1$
+		"jpaPlatformUis"; //$NON-NLS-1$
 	
-	private static final String EL_PLATFORM =
-		"jpaPlatform"; //$NON-NLS-1$	
+	private static final String EL_PLATFORM_UI =
+		"jpaPlatformUi"; //$NON-NLS-1$	
 
 	private static final String AT_ID =
 		"id"; //$NON-NLS-1$	
 	
-	private static final String AT_JPA_PLATFORM_ID =
-		"jpaPlatformId"; //$NON-NLS-1$	
+	private static final String AT_JPA_PLATFORM =
+		"jpaPlatform"; //$NON-NLS-1$	
 
 	private static final String AT_FACTORY_CLASS =
 		"factoryClass"; //$NON-NLS-1$	
 		
 	// key: String id  value: IConfigurationElement class descriptor
-	private Map<String, IConfigurationElement> jpaPlatforms;
+	private Map<String, IConfigurationElement> jpaPlatformUis;
 	
 	
 	/* (non Java doc)
 	 * restrict access
 	 */
 	private JpaPlatformUiRegistry() {
-		buildJpaPlatforms();
+		buildJpaPlatformUis();
 	}
 	
 	
-	private void buildJpaPlatforms() {
-		this.jpaPlatforms = new HashMap<String, IConfigurationElement>();
+	private void buildJpaPlatformUis() {
+		this.jpaPlatformUis = new HashMap<String, IConfigurationElement>();
 		
 		for (Iterator<IConfigurationElement> stream = allConfigElements(); stream.hasNext(); ) {
-			buildJpaPlatform(stream.next());
+			buildJpaPlatformUi(stream.next());
 		}
 	}
 	
-	private void buildJpaPlatform(IConfigurationElement configElement) {
-		if (! configElement.getName().equals(EL_PLATFORM)) {
+	private void buildJpaPlatformUi(IConfigurationElement configElement) {
+		if (! configElement.getName().equals(EL_PLATFORM_UI)) {
 			return;
 		}
 		
 		String platformUiId = configElement.getAttribute(AT_ID);
-		String platformId = configElement.getAttribute(AT_JPA_PLATFORM_ID);
-		String platformFactoryClass = configElement.getAttribute(AT_FACTORY_CLASS);
+		String platform = configElement.getAttribute(AT_JPA_PLATFORM);
+		String platformUiFactoryClass = configElement.getAttribute(AT_FACTORY_CLASS);
 		
-		if ((platformUiId == null) || (platformFactoryClass == null)) {
+		if ((platformUiId == null) || (platformUiFactoryClass == null)) {
 			if (platformUiId == null) {
 				reportMissingAttribute(configElement, AT_ID);
 			}
-			if (platformId == null) {
-				reportMissingAttribute(configElement, AT_JPA_PLATFORM_ID);
+			if (platform == null) {
+				reportMissingAttribute(configElement, AT_JPA_PLATFORM);
 			}
-			if (platformFactoryClass == null) {
+			if (platformUiFactoryClass == null) {
 				reportMissingAttribute(configElement, AT_FACTORY_CLASS);
 			}
 			return;
 		}
 		
-		if (this.jpaPlatforms.containsKey(platformUiId)) {
-			IConfigurationElement otherConfigElement = this.jpaPlatforms.get(platformId);
+		if (this.jpaPlatformUis.containsKey(platformUiId)) {
+			IConfigurationElement otherConfigElement = this.jpaPlatformUis.get(platform);
 			reportDuplicatePlatformUi(configElement, otherConfigElement);
 		}
 		
-		this.jpaPlatforms.put(platformUiId, configElement);
+		this.jpaPlatformUis.put(platformUiId, configElement);
 	}
 	
 	public JpaPlatformUi getJpaPlatformUi(String platformId) {
 		IConfigurationElement registeredConfigElement = null;
-		for (IConfigurationElement configurationElement : this.jpaPlatforms.values()) {
-			if (configurationElement.getAttribute(AT_JPA_PLATFORM_ID).equals(platformId)) {
+		for (IConfigurationElement configurationElement : this.jpaPlatformUis.values()) {
+			if (configurationElement.getAttribute(AT_JPA_PLATFORM).equals(platformId)) {
 				registeredConfigElement = configurationElement;
 				break;
 			}
@@ -162,7 +162,7 @@ public class JpaPlatformUiRegistry
 			+ "\" and \""
 			+ otherConfigElement.getContributor().getName()
 			+ "\" have registered a duplicate attribute \"id\" "
-			+ "for the extension element \"jpaPlatform\".";
+			+ "for the extension element \"jpaPlatformUi\".";
 		JptUiPlugin.log(message);
 	}
 		

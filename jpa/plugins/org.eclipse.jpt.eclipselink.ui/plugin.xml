@@ -2,19 +2,20 @@
 <?eclipse version="3.2"?>
 <plugin>
 
-   <extension
-         point="org.eclipse.jpt.ui.jpaPlatforms">
-      <jpaPlatform
-            id="org.eclipse.eclipselink.platform.ui"
-            jpaPlatformId="org.eclipse.eclipselink.platform"
-            factoryClass="org.eclipse.jpt.eclipselink.ui.internal.platform.EclipseLinkJpaPlatformUiFactory">
-      </jpaPlatform>
-      <jpaPlatform
-             id="eclipselink1_1.ui"
-             jpaPlatformId="eclipselink1_1"
-             factoryClass="org.eclipse.jpt.eclipselink.ui.internal.platform.EclipseLink1_1JpaPlatformUiFactory">
-      </jpaPlatform>
-   </extension>
+	<extension
+		point="org.eclipse.jpt.ui.jpaPlatformUis">
+		 
+		<jpaPlatformUi
+			id="org.eclipse.eclipselink.platform.ui"
+			jpaPlatform="org.eclipse.eclipselink.platform"
+			factoryClass="org.eclipse.jpt.eclipselink.ui.internal.platform.EclipseLinkJpaPlatformUiFactory"/>
+			
+		<jpaPlatformUi
+			id="eclipselink1_1.ui"
+			jpaPlatform="eclipselink1_1"
+			factoryClass="org.eclipse.jpt.eclipselink.ui.internal.platform.EclipseLink1_1JpaPlatformUiFactory"/>
+		
+	</extension>
    
    
    <extension
