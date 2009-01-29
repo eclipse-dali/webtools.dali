@@ -37,14 +37,6 @@
 	</extension>
 	
 	
-	<extension
-		point="org.eclipse.jpt.core.resourceModelProviders">
-		
-		<modelProvider
-			fileContentType="org.eclipse.jpt.eclipselink.core.content.orm"
-			factoryClass="org.eclipse.jpt.eclipselink.core.internal.resource.orm.EclipseLinkOrmXmlResourceProviderFactory"/>
-		
-	</extension>
 	
 	
 	<!--

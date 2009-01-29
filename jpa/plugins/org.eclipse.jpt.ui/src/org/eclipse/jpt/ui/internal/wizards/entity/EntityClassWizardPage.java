@@ -20,6 +20,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jface.viewers.DecoratingLabelProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
@@ -28,8 +29,7 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.core.internal.resource.JpaXmlResourceProviderManager;
-import org.eclipse.jpt.core.internal.resource.orm.OrmXmlResourceProvider;
+import org.eclipse.jpt.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.wizards.entity.data.model.IEntityDataModelProperties;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -304,7 +304,8 @@ public class EntityClassWizardPage extends NewJavaClassWizardPage{
 					return false;
 				} else if (element instanceof IFile) {
 					IFile file = (IFile) element;
-					if (JpaXmlResourceProviderManager.instance().getXmlResourceProvider(file) instanceof OrmXmlResourceProvider) {
+					IContentType contentType = PlatformTools.getContentType(file);
+					if (JptCorePlugin.ORM_XML_CONTENT_TYPE.equals(contentType)) {
 						return true;
 					}
 				}

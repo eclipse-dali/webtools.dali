@@ -17,7 +17,6 @@ import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.JpaConstants;
-import org.eclipse.jpt.core.internal.resource.JpaXmlResourceProviderManager;
 import org.eclipse.jpt.core.resource.AbstractXmlResourceProvider;
 import org.eclipse.jpt.core.resource.common.JpaXmlResource;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
@@ -52,10 +51,7 @@ public class OrmXmlResourceProvider
 	}
 	
 	private static OrmXmlResourceProvider getXmlResourceProvider_(IProject project, String location) {
-		return (OrmXmlResourceProvider) JpaXmlResourceProviderManager.instance().getXmlResourceProvider(
-			project, 
-			new Path(location),
-			JptCorePlugin.ORM_XML_CONTENT_TYPE);
+		return new OrmXmlResourceProvider(project, new Path(location));
 	}
 	
 	

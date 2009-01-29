@@ -17,7 +17,7 @@ import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.JpaConstants;
-import org.eclipse.jpt.core.internal.resource.JpaXmlResourceProviderManager;
+import org.eclipse.jpt.core.internal.resource.orm.OrmXmlResourceProvider;
 import org.eclipse.jpt.core.resource.AbstractXmlResourceProvider;
 import org.eclipse.jpt.core.resource.common.JpaXmlResource;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
@@ -53,10 +53,7 @@ public class PersistenceXmlResourceProvider
 	}
 	
 	private static PersistenceXmlResourceProvider getXmlResourceProvider_(IProject project, String location) {
-		return (PersistenceXmlResourceProvider) JpaXmlResourceProviderManager.instance().getXmlResourceProvider(
-			project, 
-			new Path(location),
-			JptCorePlugin.PERSISTENCE_XML_CONTENT_TYPE);
+		return new PersistenceXmlResourceProvider(project, new Path(location));
 	}
 	
 	

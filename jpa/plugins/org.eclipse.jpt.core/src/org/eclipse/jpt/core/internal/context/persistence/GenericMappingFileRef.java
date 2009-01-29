@@ -15,6 +15,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.MappingFile;
@@ -25,10 +26,8 @@ import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.PersistenceStructureNodes;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
-import org.eclipse.jpt.core.internal.resource.JpaXmlResourceProviderManager;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.core.resource.JpaXmlResourceProvider;
 import org.eclipse.jpt.core.resource.common.JpaXmlResource;
 import org.eclipse.jpt.core.resource.orm.OrmXmlResource;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
@@ -71,13 +70,14 @@ public class GenericMappingFileRef
 	}
 
 	protected JpaXmlResource getXmlResource() {
-		JpaXmlResourceProvider xmlResourceProvider = this.getXmlResourceProvider();
-		return (xmlResourceProvider == null) ? null : xmlResourceProvider.getXmlResource();
-	}
-
-	protected JpaXmlResourceProvider getXmlResourceProvider() {
 		IFile platformFile = this.getPlatformFile();
-		return exists(platformFile) ? getXmlResourceProvider(platformFile) : null;
+		if (exists(platformFile)) {
+			JpaFile jpaFile = getJpaProject().getJpaFile(platformFile);
+			//TODO can't just cast here!!!
+			//need to check jpaFile.getContentType() is supported xml content type, probably need to ask the jpaPlatform that question
+			return jpaFile == null ? null : (JpaXmlResource) jpaFile.getResourceModel();
+		}
+		return null;
 	}
 
 	protected IFile getPlatformFile() {
@@ -89,11 +89,6 @@ public class GenericMappingFileRef
 		IVirtualFile vFile = ComponentCore.createFile(project, deploymentPath);
 		return vFile.getUnderlyingFile();
 	}
-
-	protected static JpaXmlResourceProvider getXmlResourceProvider(IFile file) {
-		return JpaXmlResourceProviderManager.instance().getXmlResourceProvider(file);
-	}
-
 
 	// ********** JpaStructureNode implementation **********
 
@@ -215,6 +210,7 @@ public class GenericMappingFileRef
 	}
 
 	protected MappingFile buildMappingFile(JpaXmlResource resource) {
+		//TODO ClassCastException here
 		return this.getJpaPlatform().buildMappingFile(this, (OrmXmlResource) resource);
 	}
 
