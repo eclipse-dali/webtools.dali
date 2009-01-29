@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Set;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.JptCoreMessages;
 import org.eclipse.jpt.core.internal.platform.JpaPlatformRegistry;
@@ -30,6 +29,8 @@ import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
+import org.eclipse.jst.common.project.facet.core.libprov.IPropertyChangeListener;
+import org.eclipse.jst.common.project.facet.core.libprov.LibraryInstallDelegate;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.common.componentcore.datamodel.FacetInstallDataModelProvider;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
@@ -37,6 +38,7 @@ import org.eclipse.wst.common.frameworks.datamodel.DataModelPropertyDescriptor;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.frameworks.internal.plugin.WTPCommonMessages;
 import org.eclipse.wst.common.frameworks.internal.plugin.WTPCommonPlugin;
+import org.eclipse.wst.common.project.facet.core.IFacetedProjectWorkingCopy;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 import org.eclipse.wst.common.project.facet.core.runtime.IRuntime;
@@ -64,22 +66,24 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 	private static final IStatus RUNTIME_DOES_NOT_SUPPORT_EJB_30_STATUS = 
 			buildWarningStatus(JptCoreMessages.VALIDATE_RUNTIME_DOES_NOT_SUPPORT_EJB_30);
 	
-	private static final IStatus LIBRARY_NOT_SPECIFIED_STATUS = 
-			buildWarningStatus(JptCoreMessages.VALIDATE_LIBRARY_NOT_SPECIFIED);
-
+	
+	private LibraryInstallDelegate defaultLibraryProvider;
+	
+	
 	/**
 	 * required default constructor
 	 */
 	public JpaFacetDataModelProvider() {
 		super();
 	}
-
-
-
+	
+	
 	@Override
 	public Set<String> getPropertyNames() {
 		@SuppressWarnings("unchecked") Set<String> propertyNames = super.getPropertyNames();
+		propertyNames.add(RUNTIME);
 		propertyNames.add(PLATFORM_ID);
+		propertyNames.add(LIBRARY_PROVIDER_DELEGATE);
 		propertyNames.add(CONNECTION);
 		propertyNames.add(CONNECTION_ACTIVE);
 		propertyNames.add(USER_WANTS_TO_ADD_DB_DRIVER_JARS_TO_CLASSPATH);
@@ -87,10 +91,6 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 		propertyNames.add(DB_DRIVER_JARS);
 		propertyNames.add(USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA);
 		propertyNames.add(USER_OVERRIDE_DEFAULT_SCHEMA);
-		propertyNames.add(RUNTIME);
-		propertyNames.add(USE_SERVER_JPA_IMPLEMENTATION);
-		propertyNames.add(USE_USER_JPA_LIBRARY);
-		propertyNames.add(JPA_LIBRARY);
 		propertyNames.add(DISCOVER_ANNOTATED_CLASSES);
 		propertyNames.add(LIST_ANNOTATED_CLASSES);
 		propertyNames.add(CREATE_ORM_XML);
@@ -108,19 +108,22 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 		if (propertyName.equals(DB_DRIVER_NAME)) {
 			return getBooleanProperty(USER_WANTS_TO_ADD_DB_DRIVER_JARS_TO_CLASSPATH);
 		}
-		if (propertyName.equals(JPA_LIBRARY)) {
-			return getBooleanProperty(USE_USER_JPA_LIBRARY);
-		}
 		return super.isPropertyEnabled(propertyName);
 	}
 	
 	@Override
 	public Object getDefaultProperty(String propertyName) {
+		if (propertyName.equals(RUNTIME)) {
+			return null;
+		}
 		if (propertyName.equals(FACET_ID)) {
 			return JptCorePlugin.FACET_ID;
 		}
 		if (propertyName.equals(PLATFORM_ID)) {
 			return JptCorePlugin.getDefaultJpaPlatformId();
+		}
+		if (propertyName.equals(LIBRARY_PROVIDER_DELEGATE)) {
+			return getDefaultLibraryProvider();
 		}
 		if (propertyName.equals(CONNECTION)) {
 			return null;
@@ -143,18 +146,6 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 		if (propertyName.equals(USER_OVERRIDE_DEFAULT_SCHEMA)) {
 			return getDefaultSchemaName();
 		}
-		if (propertyName.equals(RUNTIME)) {
-			return null;
-		}
-		if (propertyName.equals(USE_SERVER_JPA_IMPLEMENTATION)) {
-			return Boolean.valueOf(this.runtimeSupportsEjb30(this.runtime()));
-		}
-		if (propertyName.equals(USE_USER_JPA_LIBRARY)) {
-			return Boolean.valueOf( ! getBooleanProperty(USE_SERVER_JPA_IMPLEMENTATION));
-		}
-		if (propertyName.equals(JPA_LIBRARY)) {
-			return JptCorePlugin.getDefaultJpaLibrary();
-		}
 		if (propertyName.equals(DISCOVER_ANNOTATED_CLASSES)) {
 			return Boolean.valueOf(this.runtimeSupportsEjb30(this.runtime()));
 		}
@@ -164,20 +155,73 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 		if (propertyName.equals(CREATE_ORM_XML)) {
 			return Boolean.TRUE;
 		}
+		
 		return super.getDefaultProperty(propertyName);
 	}
 	
+	private String getDefaultDriverName() {
+		ConnectionProfile cp = this.getConnectionProfile();
+		if (cp == null) {
+			return null;
+		}
+		return cp.getDriverName();
+	}
+
+	private String getDefaultDriverJars() {
+		ConnectionProfile cp = this.getConnectionProfile();
+		if (cp == null) {
+			return null;
+		}
+		return cp.getDriverJarList();
+	}
 	
+	private String getDefaultSchemaName() {
+		ConnectionProfile cp = this.getConnectionProfile();
+		if (cp == null) {
+			return null;
+		}
+		Database db = cp.getDatabase();
+		if (db == null) {
+			return null;
+		}
+		Schema schema = db.getDefaultSchema();
+		return (schema == null) ? null : schema.getIdentifier();
+	}
+	
+	private LibraryInstallDelegate getDefaultLibraryProvider() {
+		// delegate itself changes, not the instance of delegate
+		if (defaultLibraryProvider == null) {
+			IFacetedProjectWorkingCopy fpjwc = (IFacetedProjectWorkingCopy) getProperty(FACETED_PROJECT_WORKING_COPY);
+			IProjectFacetVersion fv = (IProjectFacetVersion) getProperty(FACET_VERSION);
+			if (fpjwc != null && fv != null ) {
+				defaultLibraryProvider = new LibraryInstallDelegate(fpjwc, fv);
+				defaultLibraryProvider.addListener( 
+					new IPropertyChangeListener() {
+						public void propertyChanged(final String property, final Object oldValue, final Object newValue ) {
+							JpaFacetDataModelProvider.this.model.notifyPropertyChange(LIBRARY_PROVIDER_DELEGATE, IDataModel.VALUE_CHG);
+						}
+					});
+			}
+		}
+		return defaultLibraryProvider;
+	}
 	
 	@Override
 	public boolean propertySet(String propertyName, Object propertyValue) {
 		boolean ok = super.propertySet(propertyName, propertyValue);
+		
+		if (propertyName.equals(FACETED_PROJECT_WORKING_COPY)) {
+			//no-op
+		}
+		if( propertyName.equals(FACET_VERSION)){
+			this.model.notifyPropertyChange(LIBRARY_PROVIDER_DELEGATE, IDataModel.DEFAULT_CHG);
+		}
 		if (propertyName.equals(RUNTIME)) {
-			this.model.notifyPropertyChange(USE_SERVER_JPA_IMPLEMENTATION, IDataModel.DEFAULT_CHG);
-			this.model.notifyPropertyChange(USE_USER_JPA_LIBRARY, IDataModel.DEFAULT_CHG);
-			// need to fire that the default change for using user library may have
-			// actually changed enablement for library
-			this.model.notifyPropertyChange(JPA_LIBRARY, IDataModel.ENABLE_CHG);
+			LibraryInstallDelegate libProvDelegate = (LibraryInstallDelegate) this.getProperty(LIBRARY_PROVIDER_DELEGATE);
+			if (libProvDelegate != null) {
+				// may be null while model is being built up
+				libProvDelegate.refresh();
+			}
 			this.model.notifyPropertyChange(DISCOVER_ANNOTATED_CLASSES, IDataModel.DEFAULT_CHG);
 			this.model.notifyPropertyChange(LIST_ANNOTATED_CLASSES, IDataModel.DEFAULT_CHG);
 		}
@@ -212,13 +256,13 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 				this.model.setProperty(USER_OVERRIDE_DEFAULT_SCHEMA, null);
 			}
 		}
-		if (propertyName.equals(USE_SERVER_JPA_IMPLEMENTATION)) {
-			this.model.setBooleanProperty(USE_USER_JPA_LIBRARY, ! ((Boolean) propertyValue).booleanValue());
-		}
-		if (propertyName.equals(USE_USER_JPA_LIBRARY)) {
-			this.model.setBooleanProperty(USE_SERVER_JPA_IMPLEMENTATION, ! ((Boolean) propertyValue).booleanValue());
-			this.model.notifyPropertyChange(JPA_LIBRARY, IDataModel.ENABLE_CHG);
-		}
+//		if (propertyName.equals(USE_SERVER_JPA_IMPLEMENTATION)) {
+//			this.model.setBooleanProperty(USE_USER_JPA_LIBRARY, ! ((Boolean) propertyValue).booleanValue());
+//		}
+//		if (propertyName.equals(USE_USER_JPA_LIBRARY)) {
+//			this.model.setBooleanProperty(USE_SERVER_JPA_IMPLEMENTATION, ! ((Boolean) propertyValue).booleanValue());
+//			this.model.notifyPropertyChange(JPA_LIBRARY, IDataModel.ENABLE_CHG);
+//		}
 		if (propertyName.equals(DISCOVER_ANNOTATED_CLASSES)) {
 			this.model.setBooleanProperty(LIST_ANNOTATED_CLASSES, ! ((Boolean) propertyValue).booleanValue());
 		}
@@ -274,17 +318,6 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 				},
 				EMPTY_DMPD_ARRAY);
 		}
-		if (propertyName.equals(JPA_LIBRARY)) {
-			String[] libraries = CollectionTools.sort(JavaCore.getUserLibraryNames());
-			DataModelPropertyDescriptor[] descriptors = new DataModelPropertyDescriptor[libraries.length + 1];
-			descriptors[0] = new DataModelPropertyDescriptor("", RUNTIME_NONE); //$NON-NLS-1$
-
-			int i = 1;
-			for (String library : libraries) {
-				descriptors[i++] = new DataModelPropertyDescriptor(library, library);
-			}
-			return descriptors;
-		}
 
 		return super.getValidPropertyDescriptors(propertyName);
 	}
@@ -317,6 +350,10 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 		if (name.equals(PLATFORM_ID)) {
 			return this.validatePlatformId(this.getStringProperty(name));
 		}
+		if (name.equals(LIBRARY_PROVIDER_DELEGATE)) {
+			LibraryInstallDelegate delegate = (LibraryInstallDelegate) getProperty(LIBRARY_PROVIDER_DELEGATE);
+		    return delegate.validate();
+		}
 		if (name.equals(CONNECTION)) {
 			return this.validateConnectionName(this.getStringProperty(name));
 		}
@@ -328,12 +365,10 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 				|| name.equals(USER_OVERRIDE_DEFAULT_SCHEMA)) {
 			return this.validateUserOverrideDefaultSchema();
 		}
-		if (name.equals(USE_SERVER_JPA_IMPLEMENTATION)) {
-			return this.validateJpaLibrary(this.getBooleanProperty(name));
-		}
 		if (name.equals(DISCOVER_ANNOTATED_CLASSES)) {
 			return this.validatePersistentClassManagement(this.getBooleanProperty(name));
 		}
+		
 		return super.validate(name);
 	}
 
@@ -371,23 +406,7 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 		ConnectionProfile cp = this.buildConnectionProfile(connectionName);
 		return (cp != null) && cp.isActive();
 	}
-
-	private String getDefaultDriverName() {
-		ConnectionProfile cp = this.getConnectionProfile();
-		if (cp == null) {
-			return null;
-		}
-		return cp.getDriverName();
-	}
-
-	private String getDefaultDriverJars() {
-		ConnectionProfile cp = this.getConnectionProfile();
-		if (cp == null) {
-			return null;
-		}
-		return cp.getDriverJarList();
-	}
-
+	
 	private Iterator<String> connectionNames() {
 		String setValue = getStringProperty(CONNECTION);
 		
@@ -400,19 +419,6 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 		return connectionNames.iterator();
 	}
 	
-	private String getDefaultSchemaName() {
-		ConnectionProfile cp = this.getConnectionProfile();
-		if (cp == null) {
-			return null;
-		}
-		Database db = cp.getDatabase();
-		if (db == null) {
-			return null;
-		}
-		Schema schema = db.getDefaultSchema();
-		return (schema == null) ? null : schema.getIdentifier();
-	}
-
 	private List<String> buildSortedSchemaNames() {
 		ConnectionProfile cp = this.getConnectionProfile();
 		if (cp == null) {
@@ -471,23 +477,6 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 		if (getBooleanProperty(USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA)) {
 			if (StringTools.stringIsEmpty(getStringProperty(USER_OVERRIDE_DEFAULT_SCHEMA))) {
 				return USER_OVERRIDE_DEFAULT_SCHEMA_NOT_SPECIFIED_STATUS;
-			}
-		}
-		return OK_STATUS;
-	}
-
-	private IStatus validateJpaLibrary(boolean useServerJpaImplementation) {
-		if (useServerJpaImplementation) {
-			IRuntime runtime = this.runtime();
-			if (runtime == null) {
-				return RUNTIME_NOT_SPECIFIED_STATUS;
-			}
-			if ( ! this.runtimeSupportsEjb30(runtime)) {
-				return RUNTIME_DOES_NOT_SUPPORT_EJB_30_STATUS;
-			}
-		} else {
-			if (StringTools.stringIsEmpty(this.getStringProperty(JPA_LIBRARY))) {
-				return LIBRARY_NOT_SPECIFIED_STATUS;
 			}
 		}
 		return OK_STATUS;

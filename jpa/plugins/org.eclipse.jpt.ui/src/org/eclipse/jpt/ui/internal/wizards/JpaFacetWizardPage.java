@@ -10,9 +10,7 @@
 package org.eclipse.jpt.ui.internal.wizards;
 
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.dialogs.Dialog;
-import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProperties;
 import org.eclipse.jpt.db.ConnectionProfile;
 import org.eclipse.jpt.db.JptDbPlugin;
@@ -21,7 +19,8 @@ import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.JptUiIcons;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
-import org.eclipse.jpt.ui.internal.prefs.JpaPreferencePage;
+import org.eclipse.jst.common.project.facet.core.libprov.LibraryInstallDelegate;
+import org.eclipse.jst.common.project.facet.ui.libprov.LibraryProviderFrameworkUi;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -35,8 +34,8 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.dialogs.PreferencesUtil;
-import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
+import org.eclipse.wst.common.frameworks.datamodel.DataModelEvent;
+import org.eclipse.wst.common.frameworks.datamodel.IDataModelListener;
 import org.eclipse.wst.common.project.facet.core.IFacetedProjectWorkingCopy;
 import org.eclipse.wst.common.project.facet.core.events.IFacetedProjectEvent;
 import org.eclipse.wst.common.project.facet.core.events.IFacetedProjectListener;
@@ -46,13 +45,13 @@ import org.eclipse.wst.web.ui.internal.wizards.DataModelFacetInstallPage;
 public class JpaFacetWizardPage extends DataModelFacetInstallPage
 	implements JpaFacetDataModelProperties
 {
+	
 	public JpaFacetWizardPage() {
 		super("jpt.jpa.facet.install.page"); //$NON-NLS-1$
 		setTitle(JptUiMessages.JpaFacetWizardPage_title);
 		setDescription(JptUiMessages.JpaFacetWizardPage_description);
 		setImageDescriptor(JptUiPlugin.getImageDescriptor(JptUiIcons.JPA_WIZ_BANNER));
 	}
-
 
 	@Override
 	protected Composite createTopLevelComposite(Composite parent) {
@@ -61,8 +60,8 @@ public class JpaFacetWizardPage extends DataModelFacetInstallPage
 		composite.setLayout(layout);
 
 		new PlatformGroup(composite);
-		new ConnectionGroup(composite);
 		new ClasspathConfigGroup(composite);
+		new ConnectionGroup(composite);
 		new PersistentClassManagementGroup(composite);
 		new OrmXmlGroup(composite);
 
@@ -121,9 +120,8 @@ public class JpaFacetWizardPage extends DataModelFacetInstallPage
 			DB_DRIVER_JARS,
 			USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA,
 			USER_OVERRIDE_DEFAULT_SCHEMA,
-			USE_SERVER_JPA_IMPLEMENTATION,
-			JPA_LIBRARY,
-			DISCOVER_ANNOTATED_CLASSES
+			DISCOVER_ANNOTATED_CLASSES,
+			LIBRARY_PROVIDER_DELEGATE
 		};
 	}
 
@@ -133,7 +131,13 @@ public class JpaFacetWizardPage extends DataModelFacetInstallPage
 			return false;
 		}
 		else {
-			return (model.validate().getSeverity() != IStatus.ERROR);
+			IStatus status =model.validate(); 
+			if( status.getSeverity() == IStatus.ERROR){
+				setErrorMessage( status.getMessage() );
+				return false;
+			};
+			setErrorMessage(null);
+			return true;
 		}
 	}
 
@@ -162,8 +166,34 @@ public class JpaFacetWizardPage extends DataModelFacetInstallPage
 			synchHelper.synchCombo(platformCombo, PLATFORM_ID, null);
 		}
 	}
-
-
+	
+	
+	private final class ClasspathConfigGroup
+	{
+		public ClasspathConfigGroup(Composite composite) {
+			
+			final LibraryInstallDelegate librariesInstallDelegate
+				= (LibraryInstallDelegate) getDataModel().getProperty(LIBRARY_PROVIDER_DELEGATE);
+			
+			getDataModel().addListener(
+				new IDataModelListener() {
+					public void propertyChanged(DataModelEvent event) {
+						if (event.getPropertyName().equals(JpaFacetDataModelProperties.PLATFORM_ID)) {
+							librariesInstallDelegate.refresh();
+						}
+					}
+				});			
+			
+			final Composite librariesComposite 
+				= (Composite) LibraryProviderFrameworkUi.createInstallLibraryPanel(
+					composite, librariesInstallDelegate, 
+					JptUiMessages.JpaFacetWizardPage_jpaImplementationLabel );
+			librariesComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+			PlatformUI.getWorkbench().getHelpSystem().setHelp(librariesComposite, JpaHelpContextIds.NEW_JPA_PROJECT_CONTENT_PAGE_CLASSPATH);			
+		}
+	}
+	
+	
 	private final class ConnectionGroup
 	{
 		private final Combo connectionCombo;
@@ -288,91 +318,8 @@ public class JpaFacetWizardPage extends DataModelFacetInstallPage
 			return JptDbPlugin.instance().getConnectionProfileFactory().buildConnectionProfile(model.getStringProperty(CONNECTION));
 		}
 	}
-
-
-	private final class ClasspathConfigGroup
-	{
-		private final Button useServerLibButton;
-
-		private final Button specifyLibButton;
-
-		private final Combo jpaLibCombo;
-
-		private final Link jpaPrefsLink;
-
-		private final Link userLibsLink;
-		
-		
-		public ClasspathConfigGroup(Composite composite) {
-			Group group = new Group(composite, SWT.NONE);
-			group.setText(JptUiMessages.JpaFacetWizardPage_jpaImplementationLabel);
-			group.setLayout(new GridLayout(2, false));
-			group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			PlatformUI.getWorkbench().getHelpSystem().setHelp(group, JpaHelpContextIds.NEW_JPA_PROJECT_CONTENT_PAGE_CLASSPATH);
-			
-			useServerLibButton = createButton(group, 2, JptUiMessages.JpaFacetWizardPage_userServerLibLabel, SWT.RADIO);
-			synchHelper.synchRadio(useServerLibButton, USE_SERVER_JPA_IMPLEMENTATION, null);
-			
-			specifyLibButton = createButton(group, 1, JptUiMessages.JpaFacetWizardPage_specifyLibLabel, SWT.RADIO);
-			synchHelper.synchRadio(specifyLibButton, USE_USER_JPA_LIBRARY, null);
-			
-			jpaLibCombo = createCombo(group, 1, true);
-			synchHelper.synchCombo(jpaLibCombo, JPA_LIBRARY, null);
-			
-			jpaPrefsLink = new Link(group, SWT.NONE);
-			GridData data = new GridData(GridData.END, GridData.CENTER, false, false);
-			data.horizontalSpan = 2;
-			jpaPrefsLink.setLayoutData(data);
-			jpaPrefsLink.setText(JptUiMessages.JpaFacetWizardPage_jpaPrefsLink);
-			jpaPrefsLink.addSelectionListener(
-				new SelectionAdapter() {
-					@Override
-					public void widgetSelected(SelectionEvent e) {
-						promptToConfigJpaPrefs();
-					}
-				}
-			);
-			
-			userLibsLink = new Link(group, SWT.NONE);
-			data = new GridData(GridData.END, GridData.CENTER, false, false);
-			data.horizontalSpan = 2;
-			userLibsLink.setLayoutData(data);
-			userLibsLink.setText(JptUiMessages.JpaFacetWizardPage_userLibsLink);
-			userLibsLink.addSelectionListener(
-				new SelectionAdapter() {
-					@Override
-					public void widgetSelected(SelectionEvent e) {
-						promptToConfigUserLibraries();
-					}
-				}
-			);
-		}
-		
-		private void promptToConfigJpaPrefs() {
-			PreferenceDialog dlg =
-				PreferencesUtil.createPreferenceDialogOn(
-					getShell(),
-					JpaPreferencePage.ID,
-					new String[] {JpaPreferencePage.ID},
-					null);
-			dlg.open();
-			model.notifyPropertyChange(JPA_LIBRARY, IDataModel.VALID_VALUES_CHG);
-			model.notifyPropertyChange(JPA_LIBRARY, IDataModel.DEFAULT_CHG);
-		}
-		
-		private void promptToConfigUserLibraries() {
-			PreferenceDialog dlg =
-				PreferencesUtil.createPreferenceDialogOn(
-					getShell(),
-					JavaUI.ID_USER_LIBRARY_PREFERENCE_PAGE,
-					new String[] {JavaUI.ID_USER_LIBRARY_PREFERENCE_PAGE},
-					null);
-			dlg.open();
-			model.notifyPropertyChange(JPA_LIBRARY, IDataModel.VALID_VALUES_CHG);
-		}
-	}
-
-
+	
+	
 	private final class PersistentClassManagementGroup
 	{
 		private final Button discoverClassesButton;

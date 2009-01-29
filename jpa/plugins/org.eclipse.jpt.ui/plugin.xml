@@ -52,12 +52,14 @@
 	<extension
 		point="org.eclipse.jdt.ui.javaCompletionProposalComputer"
 		id="JpaCompletionProposalComputer">
+		
 		<javaCompletionProposalComputer 
 			class="org.eclipse.jpt.ui.internal.JpaJavaCompletionProposalComputer"
 			categoryId="org.eclipse.jpt.ui.jpaProposalCategory">
 			<partition type="__dftl_partition_content_type"/>
 			<partition type="__java_string"/>
 		</javaCompletionProposalComputer>
+		
 	</extension>
 	
 	
@@ -79,23 +81,27 @@
 			factoryClass="org.eclipse.jpt.ui.internal.platform.generic.GenericJpaPlatformUiFactory"/>
 		
 	</extension>
- <extension
-       point="org.eclipse.ui.actionSets">
-    <actionSet
-          description="%JptCreationActionSet.description"
-          id="org.eclipse.jpt.ui.JptCreationActionSet"
-          label="%JptCreationActionSet.label">
-       <action
-             class="org.eclipse.jpt.ui.internal.wizards.NewEntityDropDownAction"
-             disabledIcon="icons/full/etool16/new_entity_wiz.gif"
-             icon="icons/full/etool16/new_entity_wiz.gif"
-             id="org.eclipse.jpt.ui.NewEntityAction"
-             label="%NewEntityAction.label"
-             pulldown="true"
-             toolbarPath="Normal/JptWizards">
-       </action>
-    </actionSet>
- </extension>
+	
+	
+	<extension
+		point="org.eclipse.ui.actionSets">
+		
+		<actionSet
+			description="%JptCreationActionSet.description"
+			id="org.eclipse.jpt.ui.JptCreationActionSet"
+			label="%JptCreationActionSet.label">
+			<action
+				class="org.eclipse.jpt.ui.internal.wizards.NewEntityDropDownAction"
+				disabledIcon="icons/full/etool16/new_entity_wiz.gif"
+				icon="icons/full/etool16/new_entity_wiz.gif"
+				id="org.eclipse.jpt.ui.NewEntityAction"
+				label="%NewEntityAction.label"
+				pulldown="true"
+				toolbarPath="Normal/JptWizards">
+			</action>
+		</actionSet>
+		
+	</extension>
 	
 	
 	<extension
@@ -760,16 +766,17 @@
 			name="%jpaProjectPropertiesPage"
 			class="org.eclipse.jpt.ui.internal.properties.JpaProjectPropertiesPage">
 			<enabledWhen>
-				<adapt 
-					type="org.eclipse.core.resources.IProject">
-					<test 
-						property="org.eclipse.wst.common.project.facet.core.projectFacet"
-						value="jpt.jpa"/>
-				</adapt>
+				<adapt type="org.eclipse.core.resources.IProject">
+			        <test 
+			            forcePluginActivation="true"
+			            property="org.eclipse.wst.common.project.facet.core.projectFacet"
+			            value="jpt.jpa"/>
+		        </adapt>
 			</enabledWhen>
 		</page>
 	</extension>
-		
+	
+	  		
 	<extension
 		point="org.eclipse.ui.views">
 		

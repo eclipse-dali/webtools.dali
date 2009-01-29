@@ -33,6 +33,7 @@ public class JptCoreMessages {
 	public static String VALIDATE_CONNECTION_INVALID;
 	public static String VALIDATE_CONNECTION_NOT_CONNECTED;
 	public static String VALIDATE_DEFAULT_SCHEMA_NOT_SPECIFIED;
+	public static String VALIDATE_CONNECTION_DOESNT_CONTAIN_SCHEMA;
 	public static String VALIDATE_RUNTIME_NOT_SPECIFIED;
 	public static String VALIDATE_RUNTIME_DOES_NOT_SUPPORT_EJB_30;
 	public static String VALIDATE_LIBRARY_NOT_SPECIFIED;

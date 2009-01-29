@@ -14,16 +14,13 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.jdt.core.IClasspathAttribute;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
-import org.eclipse.jst.j2ee.classpathdep.ClasspathDependencyUtil;
-import org.eclipse.jst.j2ee.classpathdep.IClasspathDependencyConstants;
-import org.eclipse.jst.j2ee.project.EarUtilities;
+import org.eclipse.jst.common.project.facet.core.libprov.LibraryInstallDelegate;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.project.facet.core.IDelegate;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
@@ -58,7 +55,6 @@ public class JpaFacetInstallDelegate
 
 		IJavaProject javaProject = JavaCore.create(project);
 		IDataModel dataModel = (IDataModel) config;
-		this.configureClasspath(javaProject, dataModel, monitor);
 		
 		// project settings
 		JptCorePlugin.setJpaPlatformId(project, dataModel.getStringProperty(PLATFORM_ID));
@@ -74,29 +70,10 @@ public class JpaFacetInstallDelegate
 		// defaults settings
 		JptCorePlugin.setDefaultJpaPlatformId(dataModel.getStringProperty(PLATFORM_ID));
 		
+		//Delegate to LibraryInstallDelegate to configure the project classpath
+		((LibraryInstallDelegate) dataModel.getProperty(JpaFacetDataModelProperties.LIBRARY_PROVIDER_DELEGATE)).execute(new NullProgressMonitor());
+		
 		monitor.worked(1);
-	}
-
-	private void configureClasspath(IJavaProject javaProject, IDataModel dataModel, IProgressMonitor monitor) throws CoreException {
-		boolean useServerLibrary = dataModel.getBooleanProperty(USE_SERVER_JPA_IMPLEMENTATION);
-		if (useServerLibrary) {
-			return;
-		}
-
-		String jpaLibrary = dataModel.getStringProperty(JPA_LIBRARY);
-		if (StringTools.stringIsEmpty(jpaLibrary)) {
-			return;
-		}
-
-		// build the JPA library to be added to the classpath
-		IClasspathAttribute[] attributes = this.buildClasspathAttributes(javaProject.getProject());
-		IClasspathEntry jpaLibraryEntry = 
-			JavaCore.newContainerEntry(
-				new Path(JavaCore.USER_LIBRARY_CONTAINER_ID + "/" + jpaLibrary), //$NON-NLS-1$
-				null, attributes, true
-			);
-
-		this.addClasspathEntryToProject(jpaLibraryEntry, javaProject, monitor);
 	}
 
 	private void addDbDriverLibraryToClasspath(IJavaProject javaProject, IDataModel dataModel, IProgressMonitor monitor) throws CoreException {
@@ -132,25 +109,6 @@ public class JpaFacetInstallDelegate
 		System.arraycopy(classpath, 0, newClasspath, 0, len);
 		newClasspath[len] = classpathEntry;
 		javaProject.setRawClasspath(newClasspath, monitor);
-	}
-
-	private static final IClasspathAttribute[] EMPTY_CLASSPATH_ATTRIBUTES = new IClasspathAttribute[0];
-
-	private IClasspathAttribute[] buildClasspathAttributes(IProject project) {
-		boolean webApp = JptCorePlugin.projectHasWebFacet(project);
-		if ( ! webApp && this.projectIsStandalone(project)) {
-			return EMPTY_CLASSPATH_ATTRIBUTES;
-		}
-		return new IClasspathAttribute[] {
-				JavaCore.newClasspathAttribute(
-					IClasspathDependencyConstants.CLASSPATH_COMPONENT_DEPENDENCY,
-					ClasspathDependencyUtil.getDefaultRuntimePath(webApp).toString()
-				)
-		};
-	}
-
-	private boolean projectIsStandalone(IProject project) {
-		return EarUtilities.isStandaloneProject(project);
 	}
 
 	private IProgressMonitor nonNullMonitor(IProgressMonitor monitor) {

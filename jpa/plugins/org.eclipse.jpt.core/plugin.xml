@@ -47,6 +47,14 @@
 			class="org.eclipse.jpt.core.internal.JpaPlatformTester">
 		</propertyTester>
 		
+		<propertyTester
+			id="org.eclipse.jpt.core.propertyTester.enablementExpressionContext"
+			type="org.eclipse.jst.common.project.facet.core.libprov.EnablementExpressionContext"
+			namespace="org.eclipse.jpt.core"
+			properties="jpaPlatform"
+			class="org.eclipse.jpt.core.internal.JpaPlatformTester">
+		</propertyTester>
+			
 	</extension>
 	
 	
@@ -149,7 +157,44 @@
 			factoryClass="org.eclipse.jpt.core.internal.resource.orm.OrmXmlResourceProviderFactory"/>
 		
 	</extension>
+	
+	
+	<!--
+	******************************************
+	* Library Provider Framework Integration *
+	******************************************
+	-->
+	
+	<extension 
+		point="org.eclipse.jst.common.project.facet.core.libraryProviders">
 		
+		<provider id="jpa-no-op-library-provider" extends="no-op-library-provider">
+			<param name="message" value="%NO_OP_LIBRARY_PROVIDER_WARNING"/>
+			<param name="warning" value="%NO_OP_LIBRARY_PROVIDER_MESSAGE"/>
+			<enablement>
+				<with variable="requestingProjectFacet">
+					<test property="org.eclipse.wst.common.project.facet.core.projectFacet" value="jpt.jpa" forcePluginActivation="true"/>
+				</with>
+			</enablement>
+		</provider>
+		
+		<provider id="jpa-generic-user-library-provider" extends="wtp-user-library-provider">
+			<param name="validator" value="org.eclipse.jst.common.project.facet.core.libprov.user.KeyClassesValidator"/>
+			<param name="validator.param.0" value="javax.persistence.Entity"/>
+			<enablement>
+				<and>
+					<with variable="requestingProjectFacet">
+						<test property="org.eclipse.wst.common.project.facet.core.projectFacet" value="jpt.jpa" forcePluginActivation="true"/>
+					</with>
+					<with variable="context">
+						<test property="org.eclipse.jpt.core.jpaPlatform" value="generic"/>
+					</with>
+				</and>
+			</enablement>
+		</provider>
+		
+	</extension>
+	
 	
 	<!-- ***** WTP extensions ***** -->
 
@@ -289,8 +334,5 @@
 		</catalogContribution>
 		
 	</extension>
- <extension
-       point="org.eclipse.jpt.core.resourceModelProviders">
- </extension>
-
+	
 </plugin>

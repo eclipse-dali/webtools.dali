@@ -47,6 +47,34 @@
 	</extension>
 	
 	
+	<!--
+	******************************************
+	* Library Provider Framework Integration *
+	******************************************
+	-->
+	
+	<extension 
+		point="org.eclipse.jst.common.project.facet.core.libraryProviders">
+		
+		<provider id="jpa-eclipselink-user-library-provider" extends="wtp-user-library-provider">
+			<param name="validator" value="org.eclipse.jst.common.project.facet.core.libprov.user.KeyClassesValidator"/>
+			<param name="validator.param.0" value="javax.persistence.Entity"/>
+			<param name="validator.param.1" value="org.eclipse.persistence.annotations.Cache"/>
+			<enablement>
+				<and>
+					<with variable="requestingProjectFacet">
+						<test property="org.eclipse.wst.common.project.facet.core.projectFacet" value="jpt.jpa" forcePluginActivation="true"/>
+					</with>
+					<with variable="context">
+						<test property="org.eclipse.jpt.core.jpaPlatform" value="org.eclipse.eclipselink.platform"/>
+					</with>
+				</and>
+			</enablement>
+		</provider>
+	
+	</extension>
+	
+	
 	<!-- ***** WTP extensions ***** -->
 
 	<extension
