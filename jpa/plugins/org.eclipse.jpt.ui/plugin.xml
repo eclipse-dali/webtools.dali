@@ -452,14 +452,18 @@
 			labelProvider="org.eclipse.jpt.ui.internal.navigator.JpaNavigatorLabelProvider">
 			
 			<triggerPoints>
-				<and>
-					<adapt type="org.eclipse.core.resources.IProject"> 
-						<test 
-							forcePluginActivation="true"
-							property="org.eclipse.wst.common.project.facet.core.projectFacet"
-							value="jpt.jpa" />
-					</adapt>
-				</and>
+				<or>
+					<instanceof
+						value="org.eclipse.jpt.core.context.JpaContextNode"/>
+					<and>
+						<adapt type="org.eclipse.core.resources.IProject"> 
+							<test 
+								forcePluginActivation="true"
+								property="org.eclipse.wst.common.project.facet.core.projectFacet"
+								value="jpt.jpa" />
+						</adapt>
+					</and>
+				</or>
 			</triggerPoints>
 			
 			<possibleChildren>
