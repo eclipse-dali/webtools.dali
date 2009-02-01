@@ -13,6 +13,7 @@ import java.util.List;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.eclipselink.core.context.StructConverter;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlNamedConverter;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlStructConverter;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
@@ -23,7 +24,8 @@ public class EclipseLinkOrmStructConverter extends EclipseLinkOrmConverter
 	
 	
 	public EclipseLinkOrmStructConverter(XmlContextNode parent, XmlStructConverter xmlResource) {
-		super(parent, xmlResource);
+		super(parent);
+		initialize(xmlResource);
 	}
 	
 	
@@ -59,11 +61,13 @@ public class EclipseLinkOrmStructConverter extends EclipseLinkOrmConverter
 	
 	// **************** resource interaction ***********************************
 	
-	protected void initialize(XmlStructConverter xmlResource) {
+	@Override
+	protected void initialize(XmlNamedConverter xmlResource) {
 		super.initialize(xmlResource);
 		this.converterClass = calculateConverterClass();
 	}
 	
+	@Override
 	public void update() {
 		super.update();
 		setConverterClass_(calculateConverterClass());

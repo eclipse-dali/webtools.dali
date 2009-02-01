@@ -36,6 +36,7 @@ public class EclipseLinkJavaObjectTypeConverterTests extends EclipseLinkJavaCont
 	
 	private void createObjectTypeConverterAnnotation() throws Exception {
 		this.createAnnotationAndMembers(EclipseLinkJPA.PACKAGE, "ObjectTypeConverter", "String name(); Class dataType() default void.class;  Class objectType() default void.class;");		
+		createConversionValueAnnotation();
 	}
 	
 	private void createConversionValueAnnotation() throws Exception {
@@ -46,7 +47,6 @@ public class EclipseLinkJavaObjectTypeConverterTests extends EclipseLinkJavaCont
 	private ICompilationUnit createTestEntityWithConvertAndObjectTypeConverter() throws Exception {
 		createConvertAnnotation();
 		createObjectTypeConverterAnnotation();
-		createConversionValueAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -61,6 +61,27 @@ public class EclipseLinkJavaObjectTypeConverterTests extends EclipseLinkJavaCont
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@Convert(\"foo\")").append(CR);
 				sb.append("    @ObjectTypeConverter(name=\"foo\", defaultObjectValue=\"bar\")");
+			}
+		});
+	}
+	
+	private ICompilationUnit createTestEntityWithConvertAndObjectTypeConverterConversionValue() throws Exception {
+		createConvertAnnotation();
+		createObjectTypeConverterAnnotation();
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, EclipseLinkJPA.CONVERT, EclipseLinkJPA.OBJECT_TYPE_CONVERTER, EclipseLinkJPA.CONVERSION_VALUE);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity");
+			}
+			
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
+				sb.append("@Convert(\"foo\")").append(CR);
+				sb.append("    @ObjectTypeConverter(name=\"foo\", defaultObjectValue=\"bar\", conversionValues = @ConversionValue(dataValue=\"f\", objectValue=\"female\"))");
 			}
 		});
 	}
@@ -605,4 +626,17 @@ public class EclipseLinkJavaObjectTypeConverterTests extends EclipseLinkJavaCont
 		assertEquals("FOO", ((ObjectTypeConverter) eclipseLinkConvert.getConverter()).getDefaultObjectValue());	
 	}
 
+	public void testInitializeConversionValues() throws Exception {
+		createTestEntityWithConvertAndObjectTypeConverterConversionValue();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+				
+		PersistentAttribute persistentAttribute = javaPersistentType().attributes().next();
+		BasicMapping basicMapping = (BasicMapping) persistentAttribute.getMapping();
+		Convert eclipseLinkConvert = (Convert) basicMapping.getConverter();
+		ObjectTypeConverter converter = (ObjectTypeConverter) eclipseLinkConvert.getConverter();
+
+		assertEquals(1, converter.conversionValuesSize());
+		assertEquals("f", converter.conversionValues().next().getDataValue());
+		assertEquals("female", converter.conversionValues().next().getObjectValue());
+	}
 }

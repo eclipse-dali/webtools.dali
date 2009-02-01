@@ -39,8 +39,9 @@ public class EclipseLinkJavaObjectTypeConverter extends EclipseLinkJavaConverter
 	
 	
 	public EclipseLinkJavaObjectTypeConverter(JavaJpaContextNode parent, JavaResourcePersistentMember jrpm) {
-		super(parent, jrpm);
+		super(parent);
 		this.conversionValues = new ArrayList<EclipseLinkJavaConversionValue>();
+		this.initialize(jrpm);
 	}
 	
 	
@@ -48,10 +49,12 @@ public class EclipseLinkJavaObjectTypeConverter extends EclipseLinkJavaConverter
 		return EclipseLinkConverter.OBJECT_TYPE_CONVERTER;
 	}
 
+	@Override
 	public String getAnnotationName() {
 		return ObjectTypeConverterAnnotation.ANNOTATION_NAME;
 	}
 	
+	@Override
 	protected ObjectTypeConverterAnnotation getAnnotation() {
 		return (ObjectTypeConverterAnnotation) super.getAnnotation();
 	}
@@ -180,6 +183,7 @@ public class EclipseLinkJavaObjectTypeConverter extends EclipseLinkJavaConverter
 	
 	// **************** resource interaction ***********************************
 	
+	@Override
 	protected void initialize(JavaResourcePersistentMember jrpm) {
 		super.initialize(jrpm);
 		ObjectTypeConverterAnnotation resourceConverter = getAnnotation();
@@ -206,6 +210,7 @@ public class EclipseLinkJavaObjectTypeConverter extends EclipseLinkJavaConverter
 		return conversionValue;
 	}
 	
+	@Override
 	public void update(JavaResourcePersistentMember jrpm) {
 		super.update(jrpm);
 		ObjectTypeConverterAnnotation resourceConverter = getAnnotation();

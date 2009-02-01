@@ -27,9 +27,8 @@ public abstract class EclipseLinkOrmConverter
 	private String name;
 	
 	
-	public EclipseLinkOrmConverter(XmlContextNode parent, XmlNamedConverter xmlResource) {
+	public EclipseLinkOrmConverter(XmlContextNode parent) {
 		super(parent);
-		initialize(xmlResource);
 	}
 	
 	

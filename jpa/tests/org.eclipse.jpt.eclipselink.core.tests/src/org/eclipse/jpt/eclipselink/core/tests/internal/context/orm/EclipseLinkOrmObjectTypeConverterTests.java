@@ -70,6 +70,27 @@ public class EclipseLinkOrmObjectTypeConverterTests
 			}
 		});
 	}
+	
+	private ICompilationUnit createTestEntityWithConvertAndObjectTypeConverterConversionValue() throws Exception {
+		createConvertAnnotation();
+		createObjectTypeConverterAnnotation();
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, EclipseLinkJPA.CONVERT, EclipseLinkJPA.OBJECT_TYPE_CONVERTER, EclipseLinkJPA.CONVERSION_VALUE);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity");
+			}
+			
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
+				sb.append("@Convert(\"foo\")").append(CR);
+				sb.append("    @ObjectTypeConverter(name=\"foo\", defaultObjectValue=\"bar\", conversionValues = @ConversionValue(dataValue=\"f\", objectValue=\"female\"))");
+			}
+		});
+	}
 
 	
 	public EclipseLinkOrmObjectTypeConverterTests(String name) {
@@ -551,5 +572,19 @@ public class EclipseLinkOrmObjectTypeConverterTests
 		ormConverter.removeConversionValue(0);
 		assertEquals(0, ormConverter.conversionValuesSize());
 		assertEquals(0, converterResource.getConversionValues().size());
+	}
+	
+
+	public void testInitializeConversionValues() throws Exception {
+		createTestEntityWithConvertAndObjectTypeConverterConversionValue();
+		OrmPersistentType ormPersistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.getAttributeNamed("id");
+		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping(); 
+		Convert eclipseLinkConvert = (Convert) ormBasicMapping.getConverter();
+		ObjectTypeConverter converter = (ObjectTypeConverter) eclipseLinkConvert.getConverter();
+
+		assertEquals(1, converter.conversionValuesSize());
+		assertEquals("f", converter.conversionValues().next().getDataValue());
+		assertEquals("female", converter.conversionValues().next().getObjectValue());
 	}
 }

@@ -22,7 +22,8 @@ public class EclipseLinkJavaStructConverter extends EclipseLinkJavaConverter
 	
 	
 	public EclipseLinkJavaStructConverter(JavaJpaContextNode parent, JavaResourcePersistentMember jrpm) {
-		super(parent, jrpm);
+		super(parent);
+		this.initialize(jrpm);
 	}
 	
 	
@@ -30,10 +31,12 @@ public class EclipseLinkJavaStructConverter extends EclipseLinkJavaConverter
 		return EclipseLinkConverter.STRUCT_CONVERTER;
 	}
 	
+	@Override
 	public String getAnnotationName() {
 		return StructConverterAnnotation.ANNOTATION_NAME;
 	}
 	
+	@Override
 	protected StructConverterAnnotation getAnnotation() {
 		return (StructConverterAnnotation) super.getAnnotation();
 	}
@@ -61,11 +64,13 @@ public class EclipseLinkJavaStructConverter extends EclipseLinkJavaConverter
 	
 	// **************** resource interaction ***********************************
 	
+	@Override
 	protected void initialize(JavaResourcePersistentMember jrpm) {
 		super.initialize(jrpm);
 		this.converterClass = this.converterClass(getAnnotation());
 	}
 	
+	@Override
 	public void update(JavaResourcePersistentMember jrpm) {
 		super.update(jrpm);
 		this.setConverterClass_(this.converterClass(getAnnotation()));

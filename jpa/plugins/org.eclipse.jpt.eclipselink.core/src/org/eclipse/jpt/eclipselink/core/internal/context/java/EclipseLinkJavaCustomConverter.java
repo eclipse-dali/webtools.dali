@@ -27,7 +27,8 @@ public class EclipseLinkJavaCustomConverter extends EclipseLinkJavaConverter
 	private String converterClass;
 	
 	public EclipseLinkJavaCustomConverter(JavaJpaContextNode parent, JavaResourcePersistentMember jrpm) {
-		super(parent, jrpm);
+		super(parent);
+		this.initialize(jrpm);
 	}
 	
 	
@@ -35,6 +36,7 @@ public class EclipseLinkJavaCustomConverter extends EclipseLinkJavaConverter
 		return EclipseLinkConverter.CUSTOM_CONVERTER;
 	}
 	
+	@Override
 	public String getAnnotationName() {
 		return ConverterAnnotation.ANNOTATION_NAME;
 	}
@@ -67,11 +69,13 @@ public class EclipseLinkJavaCustomConverter extends EclipseLinkJavaConverter
 	
 	// **************** resource interaction ***********************************
 	
+	@Override
 	protected void initialize(JavaResourcePersistentMember jrpm) {
 		super.initialize(jrpm);
 		this.converterClass = this.converterClass(getAnnotation());
 	}
 	
+	@Override
 	public void update(JavaResourcePersistentMember jrpm) {
 		super.update(jrpm);
 		this.setConverterClass_(this.converterClass(getAnnotation()));

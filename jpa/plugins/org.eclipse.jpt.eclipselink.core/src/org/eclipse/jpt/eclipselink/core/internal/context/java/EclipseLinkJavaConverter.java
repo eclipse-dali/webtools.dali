@@ -28,9 +28,8 @@ public abstract class EclipseLinkJavaConverter extends AbstractJavaJpaContextNod
 	private String name;
 	
 	
-	protected EclipseLinkJavaConverter(JavaJpaContextNode parent, JavaResourcePersistentMember jrpm) {
+	protected EclipseLinkJavaConverter(JavaJpaContextNode parent) {
 		super(parent);
-		this.initialize(jrpm);
 	}
 	
 	

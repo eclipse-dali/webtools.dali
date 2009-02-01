@@ -19,6 +19,7 @@ import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.eclipselink.core.context.ObjectTypeConverter;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConversionValue;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlNamedConverter;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlObjectTypeConverter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
@@ -38,8 +39,9 @@ public class EclipseLinkOrmObjectTypeConverter extends EclipseLinkOrmConverter
 	
 	
 	public EclipseLinkOrmObjectTypeConverter(XmlContextNode parent, XmlObjectTypeConverter xmlResource) {
-		super(parent, xmlResource);
+		super(parent);
 		this.conversionValues = new ArrayList<EclipseLinkOrmConversionValue>();
+		initialize(xmlResource);
 	}
 	
 	
@@ -176,7 +178,8 @@ public class EclipseLinkOrmObjectTypeConverter extends EclipseLinkOrmConverter
 	
 	// **************** resource interaction ***********************************
 	
-	protected void initialize(XmlObjectTypeConverter xmlResource) {
+	@Override
+	protected void initialize(XmlNamedConverter xmlResource) {
 		super.initialize(xmlResource);
 		this.dataType = this.calculateDataType();
 		this.objectType = this.calculateObjectType();
@@ -190,6 +193,7 @@ public class EclipseLinkOrmObjectTypeConverter extends EclipseLinkOrmConverter
 		}
 	}
 	
+	@Override
 	public void update() {
 		super.update();
 		setDataType_(calculateDataType());

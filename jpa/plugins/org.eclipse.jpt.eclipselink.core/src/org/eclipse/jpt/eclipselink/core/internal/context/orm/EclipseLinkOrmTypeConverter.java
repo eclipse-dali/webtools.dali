@@ -12,6 +12,7 @@ package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.eclipselink.core.context.TypeConverter;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlNamedConverter;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlTypeConverter;
 
 public class EclipseLinkOrmTypeConverter extends EclipseLinkOrmConverter 
@@ -23,7 +24,8 @@ public class EclipseLinkOrmTypeConverter extends EclipseLinkOrmConverter
 	
 	
 	public EclipseLinkOrmTypeConverter(XmlContextNode parent, XmlTypeConverter xmlResource) {
-		super(parent, xmlResource);
+		super(parent);
+		initialize(xmlResource);
 	}
 	
 	
@@ -79,12 +81,14 @@ public class EclipseLinkOrmTypeConverter extends EclipseLinkOrmConverter
 	
 	// **************** resource interaction ***********************************
 	
-	protected void initialize(XmlTypeConverter xmlResource) {
+	@Override
+	protected void initialize(XmlNamedConverter xmlResource) {
 		super.initialize(xmlResource);
 		this.dataType = calculateDataType();
 		this.objectType = calculateObjectType();
 	}
 	
+	@Override
 	public void update() {
 		super.update();
 		setDataType_(calculateDataType());

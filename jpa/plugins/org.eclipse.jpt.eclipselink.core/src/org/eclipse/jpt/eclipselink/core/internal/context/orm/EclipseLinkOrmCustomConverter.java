@@ -14,6 +14,7 @@ import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.eclipselink.core.context.CustomConverter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConverter;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlNamedConverter;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class EclipseLinkOrmCustomConverter extends EclipseLinkOrmConverter
@@ -23,7 +24,8 @@ public class EclipseLinkOrmCustomConverter extends EclipseLinkOrmConverter
 	
 	
 	public EclipseLinkOrmCustomConverter(XmlContextNode parent, XmlConverter xmlResource) {
-		super(parent, xmlResource);
+		super(parent);
+		initialize(xmlResource);
 	}
 	
 	
@@ -59,11 +61,13 @@ public class EclipseLinkOrmCustomConverter extends EclipseLinkOrmConverter
 	
 	// **************** resource interaction ***********************************
 	
-	protected void initialize(XmlConverter xmlResource) {
+	@Override
+	protected void initialize(XmlNamedConverter xmlResource) {
 		super.initialize(xmlResource);
 		this.converterClass = calculateConverterClass();
 	}
 	
+	@Override
 	public void update() {
 		super.update();
 		setConverterClass_(calculateConverterClass());
