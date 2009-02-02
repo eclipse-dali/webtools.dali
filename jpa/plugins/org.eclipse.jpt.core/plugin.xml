@@ -12,6 +12,10 @@
 	/>
 	
 	
+	<extension-point 
+		id="resourceModelProviders" 
+		name="%JPA_RESOURCE_MODEL_PROVIDERS" 
+		schema="schema/resourceModelProviders.exsd"/>
 	
 	
 	<!-- ***** Eclipse core extensions ***** -->
@@ -141,6 +145,18 @@
 	</extension>
 	
 	
+	<extension
+		point="org.eclipse.jpt.core.resourceModelProviders">
+		
+		<modelProvider
+			fileContentType="org.eclipse.jpt.core.content.persistence"
+			factoryClass="org.eclipse.jpt.core.internal.resource.persistence.PersistenceXmlResourceProviderFactory"/>
+		
+		<modelProvider
+			fileContentType="org.eclipse.jpt.core.content.orm"
+			factoryClass="org.eclipse.jpt.core.internal.resource.orm.OrmXmlResourceProviderFactory"/>
+		
+	</extension>
 	
 	
 	<!--

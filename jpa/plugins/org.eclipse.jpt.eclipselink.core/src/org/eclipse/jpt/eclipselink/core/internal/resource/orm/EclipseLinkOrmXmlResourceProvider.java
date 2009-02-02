@@ -16,6 +16,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.core.internal.resource.JpaXmlResourceProviderManager;
 import org.eclipse.jpt.core.resource.AbstractXmlResourceProvider;
 import org.eclipse.jpt.core.resource.common.JpaXmlResource;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
@@ -53,7 +54,10 @@ public class EclipseLinkOrmXmlResourceProvider
 	}
 	
 	private static EclipseLinkOrmXmlResourceProvider getXmlResourceProvider_(IProject project, String location) {
-		return new EclipseLinkOrmXmlResourceProvider(project, new Path(location));
+		return (EclipseLinkOrmXmlResourceProvider) JpaXmlResourceProviderManager.instance().getXmlResourceProvider(
+			project, 
+			new Path(location),
+			JptEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_CONTENT_TYPE);
 	}
 	
 	
