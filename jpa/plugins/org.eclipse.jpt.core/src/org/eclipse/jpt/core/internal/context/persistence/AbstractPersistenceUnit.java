@@ -102,9 +102,8 @@ public abstract class AbstractPersistenceUnit
 
 	// ********** construction/initialization **********
 
-	protected AbstractPersistenceUnit(Persistence parent, XmlPersistenceUnit xmlPersistenceUnit) {
+	protected AbstractPersistenceUnit(Persistence parent) {
 		super(parent);
-		this.initialize(xmlPersistenceUnit);
 	}
 
 	/**
@@ -123,7 +122,7 @@ public abstract class AbstractPersistenceUnit
 	 * NB: Be careful changing the order of the statements in this method
 	 * (bug 258701 is one reason).
 	 */
-	protected void initialize(XmlPersistenceUnit xpu) {
+	public void initialize(XmlPersistenceUnit xpu) {
 		this.xmlPersistenceUnit = xpu;
 		this.name = xpu.getName();
 		this.specifiedExcludeUnlistedClasses = xpu.getExcludeUnlistedClasses();

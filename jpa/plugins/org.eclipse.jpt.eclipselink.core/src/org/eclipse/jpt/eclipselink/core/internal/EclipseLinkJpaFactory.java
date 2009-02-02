@@ -133,8 +133,10 @@ public class EclipseLinkJpaFactory
 	// ********** Persistence Context Model **********
 	
 	@Override
-	public PersistenceUnit buildPersistenceUnit(Persistence parent, XmlPersistenceUnit persistenceUnit) {
-		return new EclipseLinkPersistenceUnit(parent, persistenceUnit);
+	public PersistenceUnit buildPersistenceUnit(Persistence parent, XmlPersistenceUnit xmlPersistenceUnit) {
+		PersistenceUnit persistenceUnit =  new EclipseLinkPersistenceUnit(parent);
+		persistenceUnit.initialize(xmlPersistenceUnit);
+		return persistenceUnit;
 	}
 	
 	

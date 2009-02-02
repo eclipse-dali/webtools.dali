@@ -286,8 +286,10 @@ public class GenericJpaFactory
 		return new GenericPersistence(parent, xmlPersistence);
 	}
 	
-	public PersistenceUnit buildPersistenceUnit(Persistence parent, XmlPersistenceUnit persistenceUnit) {
-		return new GenericPersistenceUnit(parent, persistenceUnit);
+	public PersistenceUnit buildPersistenceUnit(Persistence parent, XmlPersistenceUnit xmlPersistenceUnit) {
+		PersistenceUnit persistenceUnit = new GenericPersistenceUnit(parent);
+		persistenceUnit.initialize(xmlPersistenceUnit);
+		return persistenceUnit;
 	}
 	
 	public MappingFileRef buildMappingFileRef(PersistenceUnit parent, XmlMappingFileRef xmlMappingFileRef) {

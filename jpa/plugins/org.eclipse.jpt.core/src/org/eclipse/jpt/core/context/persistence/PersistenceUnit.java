@@ -614,7 +614,13 @@ public interface PersistenceUnit
 
 
 	// ********** updating **********
-
+	
+	/**
+	 * Initialize the PersistenceUnit context model object to match the XmlPersistenceUnit 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
+	 void initialize(XmlPersistenceUnit persistenceUnit);
+	 
 	/**
 	 * Update the PersistenceUnit context model object to match the XmlPersistenceUnit 
 	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}

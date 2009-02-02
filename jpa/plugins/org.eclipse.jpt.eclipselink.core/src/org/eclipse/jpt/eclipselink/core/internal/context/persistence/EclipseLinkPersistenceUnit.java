@@ -67,8 +67,8 @@ public class EclipseLinkPersistenceUnit
 	protected final List<EclipseLinkConverter> converters = new ArrayList<EclipseLinkConverter>();
 
 
-	public EclipseLinkPersistenceUnit(Persistence parent, XmlPersistenceUnit xmlPersistenceUnit) {
-		super(parent, xmlPersistenceUnit);
+	public EclipseLinkPersistenceUnit(Persistence parent) {
+		super(parent);
 	}
 
 	@Override
