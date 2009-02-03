@@ -38,6 +38,7 @@ import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.JpaModelManager;
 import org.eclipse.jpt.core.internal.JptCoreMessages;
+import org.eclipse.jpt.core.internal.facet.JpaLibraryProviderConstants;
 import org.eclipse.jpt.core.internal.platform.JpaPlatformRegistry;
 import org.eclipse.jpt.db.ConnectionAdapter;
 import org.eclipse.jpt.db.ConnectionListener;
@@ -62,6 +63,7 @@ import org.eclipse.jpt.utility.internal.model.value.CachingTransformationPropert
 import org.eclipse.jpt.utility.internal.model.value.CollectionListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.CompositeCollectionValueModel;
 import org.eclipse.jpt.utility.internal.model.value.CompositeListValueModel;
+import org.eclipse.jpt.utility.internal.model.value.ExtendedListValueModelWrapper;
 import org.eclipse.jpt.utility.internal.model.value.ListPropertyValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyCollectionValueModelAdapter;
@@ -79,7 +81,8 @@ import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
-import org.eclipse.jst.common.project.facet.ui.libprov.FacetLibraryPropertyPage;
+import org.eclipse.jst.common.project.facet.core.libprov.LibraryInstallDelegate;
+import org.eclipse.jst.common.project.facet.ui.libprov.LibraryFacetPropertyPage;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -100,7 +103,7 @@ import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 
 public class JpaProjectPropertiesPage
-	extends FacetLibraryPropertyPage 
+	extends LibraryFacetPropertyPage 
 {
 	public static final String PROP_ID= "org.eclipse.jpt.ui.jpaProjectPropertiesPage"; //$NON-NLS-1$
 
@@ -172,6 +175,16 @@ public class JpaProjectPropertiesPage
 			new BufferedWritablePropertyValueModel(
 				new PlatformIdModel(this.jpaProjectHolder), this.trigger);
 		model.addPropertyChangeListener(PropertyValueModel.VALUE, this.validationListener);
+		model.addPropertyChangeListener(
+			PropertyValueModel.VALUE, 
+			new PropertyChangeListener() {
+				public void propertyChanged(PropertyChangeEvent event) {
+					JpaProjectPropertiesPage.this.getLibraryInstallDelegate().
+						setEnablementContextVariable(
+							JpaLibraryProviderConstants.EXPR_VAR_JPA_PLATFORM,
+							event.getNewValue());
+				}
+			});
 		return model;
 	}
 	
@@ -184,9 +197,11 @@ public class JpaProjectPropertiesPage
 	}
 	
 	protected ListValueModel<String> initializeConnectionChoicesModel() {
-		return new SortedListValueModelAdapter(
-			new CollectionListValueModelAdapter(
-				new ConnectionChoicesModel(this.projectHolder)));
+		return new ExtendedListValueModelWrapper(
+				(String) null,
+				new SortedListValueModelAdapter(	
+					new CollectionListValueModelAdapter(
+						new ConnectionChoicesModel(this.projectHolder))));
 	}
 	
 	protected PropertyValueModel<ConnectionProfile> initializeConnectionProfileModel() {
@@ -270,6 +285,10 @@ public class JpaProjectPropertiesPage
 		return this.jpaProjectHolder.getValue();
 	}
 	
+	protected String getJpaPlatformId() {
+		return this.platformIdModel.getValue();
+	}
+	
 	protected String getConnectionName() {
 		return this.connectionModel.getValue();
 	}
@@ -297,6 +316,15 @@ public class JpaProjectPropertiesPage
 		final IProjectFacet jsfFacet = ProjectFacetsManager.getProjectFacet( "jpt.jpa" );
 		final IFacetedProject fproj = getFacetedProject();
 		return fproj.getInstalledVersion( jsfFacet );
+	}
+	
+	@Override
+	protected LibraryInstallDelegate createLibraryInstallDelegate(
+			IFacetedProject project, IProjectFacetVersion fv) {
+		Map<String, Object> enablementVariables = new HashMap<String, Object>();
+		enablementVariables.put(
+			JpaLibraryProviderConstants.EXPR_VAR_JPA_PLATFORM, "");	
+		return new LibraryInstallDelegate(project, fv, enablementVariables);
 	}
 	
 	@Override
@@ -786,7 +814,7 @@ public class JpaProjectPropertiesPage
 		
 		@Override
 		public void setValue_(String newConnection) {
-			JptCorePlugin.setConnectionProfileName(this.subject.getProject(), newConnection);
+			this.subject.getDataSource().setConnectionProfileName(newConnection);
 		}
 		
 		
@@ -811,7 +839,7 @@ public class JpaProjectPropertiesPage
 		
 		@Override
 		protected String buildValue_() {
-			return JptCorePlugin.getConnectionProfileName(this.subject.getProject());
+			return this.subject.getDataSource().getConnectionProfileName();
 		}
 	}
 	
@@ -1193,7 +1221,14 @@ public class JpaProjectPropertiesPage
 			ComboModelAdapter.adapt(
 				JpaProjectPropertiesPage.this.connectionChoicesModel,
 				JpaProjectPropertiesPage.this.connectionModel,
-				connectionCombo);
+				connectionCombo,
+				new StringConverter<String>() {
+					public String convertToString(String o) {
+						return (o == null) ? 
+							JptUiMessages.JpaFacetWizardPage_none :
+							o;
+					}
+				});
 			
 			Link connectionLink = new Link(group, SWT.NONE);
 			GridData data = new GridData(GridData.END, GridData.CENTER, false, false);

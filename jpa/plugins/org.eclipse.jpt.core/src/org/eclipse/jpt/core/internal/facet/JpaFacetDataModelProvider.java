@@ -10,8 +10,10 @@
 package org.eclipse.jpt.core.internal.facet;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -194,7 +196,11 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 			IFacetedProjectWorkingCopy fpjwc = (IFacetedProjectWorkingCopy) getProperty(FACETED_PROJECT_WORKING_COPY);
 			IProjectFacetVersion fv = (IProjectFacetVersion) getProperty(FACET_VERSION);
 			if (fpjwc != null && fv != null ) {
-				defaultLibraryProvider = new LibraryInstallDelegate(fpjwc, fv);
+				Map<String, Object> enablementVariables = new HashMap<String, Object>();
+				enablementVariables.put(
+					JpaLibraryProviderConstants.EXPR_VAR_JPA_PLATFORM, 
+					getPlatformId());	
+				defaultLibraryProvider = new LibraryInstallDelegate(fpjwc, fv, enablementVariables);
 				defaultLibraryProvider.addListener( 
 					new IPropertyChangeListener() {
 						public void propertyChanged(final String property, final Object oldValue, final Object newValue ) {
@@ -224,6 +230,11 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 			}
 			this.model.notifyPropertyChange(DISCOVER_ANNOTATED_CLASSES, IDataModel.DEFAULT_CHG);
 			this.model.notifyPropertyChange(LIST_ANNOTATED_CLASSES, IDataModel.DEFAULT_CHG);
+		}
+		if (propertyName.equals(PLATFORM_ID)) {
+			getLibraryProvider().setEnablementContextVariable(
+				JpaLibraryProviderConstants.EXPR_VAR_JPA_PLATFORM,
+				(String) propertyValue);
 		}
 		if (propertyName.equals(CONNECTION)) {
 			this.model.notifyPropertyChange(CONNECTION, IDataModel.VALID_VALUES_CHG);
@@ -379,6 +390,14 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 	private boolean runtimeSupportsEjb30(IRuntime runtime) {
 		IProjectFacetVersion ejb30 = ProjectFacetsManager.getProjectFacet(EJB_FACET_ID).getVersion("3.0"); //$NON-NLS-1$
 		return (runtime == null) ? false : runtime.supports(ejb30);
+	}
+	
+	private String getPlatformId() {
+		return this.getStringProperty(PLATFORM_ID);
+	}
+	
+	private LibraryInstallDelegate getLibraryProvider() {
+		return (LibraryInstallDelegate) getProperty(LIBRARY_PROVIDER_DELEGATE);
 	}
 
 	private String getConnectionName() {

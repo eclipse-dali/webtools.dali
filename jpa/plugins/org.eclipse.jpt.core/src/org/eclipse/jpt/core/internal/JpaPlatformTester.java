@@ -13,14 +13,6 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProperties;
-import org.eclipse.jst.common.project.facet.core.libprov.EnablementExpressionContext;
-import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
-import org.eclipse.wst.common.project.facet.core.IFacetedProjectBase;
-import org.eclipse.wst.common.project.facet.core.IProjectFacet;
-import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
-import org.eclipse.wst.common.project.facet.core.IFacetedProject.Action;
-import org.eclipse.wst.common.project.facet.core.internal.FacetedProjectWorkingCopy;
 
 public class JpaPlatformTester extends PropertyTester {
 	
@@ -37,24 +29,7 @@ public class JpaPlatformTester extends PropertyTester {
 		else if (receiver instanceof IJavaElement) {
 			platformId = platformId(((IJavaElement) receiver).getResource().getProject());
 		} 
-		else if (receiver instanceof EnablementExpressionContext) {
-			EnablementExpressionContext context = (EnablementExpressionContext) receiver;
-			IFacetedProjectBase fp = context.getFacetedProject();
-			if (fp instanceof FacetedProjectWorkingCopy){
-				FacetedProjectWorkingCopy fpwc = (FacetedProjectWorkingCopy) fp;
-				IProjectFacet jpaFacet = ProjectFacetsManager.getProjectFacet(JptCorePlugin.FACET_ID);
-				Action action =  fpwc.getProjectFacetAction(jpaFacet);
-				if (action != null ) {
-					// in project creation wizard
-					IDataModel model = (IDataModel) action.getConfig();
-	            	platformId = (String) model.getProperty(JpaFacetDataModelProperties.PLATFORM_ID);
-				}
-			} 
-			else {
-				// in facet property page
-				platformId = platformId(fp.getProject());
-			}
-		}
+		
 		
 		return platformId == null ? false : platformId.equals(expectedValue);
 	}

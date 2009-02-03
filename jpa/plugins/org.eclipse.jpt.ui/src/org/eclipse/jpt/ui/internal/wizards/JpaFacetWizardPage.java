@@ -12,6 +12,7 @@ package org.eclipse.jpt.ui.internal.wizards;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProperties;
+import org.eclipse.jpt.core.internal.facet.JpaLibraryProviderConstants;
 import org.eclipse.jpt.db.ConnectionProfile;
 import org.eclipse.jpt.db.JptDbPlugin;
 import org.eclipse.jpt.db.ui.internal.DTPUiTools;
@@ -174,15 +175,6 @@ public class JpaFacetWizardPage extends DataModelFacetInstallPage
 			
 			final LibraryInstallDelegate librariesInstallDelegate
 				= (LibraryInstallDelegate) getDataModel().getProperty(LIBRARY_PROVIDER_DELEGATE);
-			
-			getDataModel().addListener(
-				new IDataModelListener() {
-					public void propertyChanged(DataModelEvent event) {
-						if (event.getPropertyName().equals(JpaFacetDataModelProperties.PLATFORM_ID)) {
-							librariesInstallDelegate.refresh();
-						}
-					}
-				});			
 			
 			final Composite librariesComposite 
 				= (Composite) LibraryProviderFrameworkUi.createInstallLibraryPanel(

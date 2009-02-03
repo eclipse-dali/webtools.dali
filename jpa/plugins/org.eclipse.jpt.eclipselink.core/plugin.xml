@@ -65,8 +65,8 @@
 					<with variable="requestingProjectFacet">
 						<test property="org.eclipse.wst.common.project.facet.core.projectFacet" value="jpt.jpa" forcePluginActivation="true"/>
 					</with>
-					<with variable="context">
-						<test property="org.eclipse.jpt.core.jpaPlatform" value="org.eclipse.eclipselink.platform"/>
+					<with variable="jpaPlatform">
+						<equals value="org.eclipse.eclipselink.platform"/>
 					</with>
 				</and>
 			</enablement>
