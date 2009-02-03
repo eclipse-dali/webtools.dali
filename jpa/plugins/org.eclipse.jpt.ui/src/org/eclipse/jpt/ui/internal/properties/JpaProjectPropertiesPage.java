@@ -1311,8 +1311,10 @@ public class JpaProjectPropertiesPage
 		}
 		
 		private void updateConnectLink() {
-			ConnectionProfile cp = getConnectionProfile();
-			this.connectLink.setEnabled((cp != null) && cp.isDisconnected());
+			if (! getControl().isDisposed()) {
+				ConnectionProfile cp = getConnectionProfile();
+				this.connectLink.setEnabled((cp != null) && cp.isDisconnected());
+			}
 		}
 	}
 	
