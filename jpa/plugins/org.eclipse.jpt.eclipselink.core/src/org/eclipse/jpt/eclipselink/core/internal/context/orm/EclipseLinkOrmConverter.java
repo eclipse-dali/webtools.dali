@@ -66,7 +66,6 @@ public abstract class EclipseLinkOrmConverter<T extends XmlNamedConverter>
 	protected void initialize(T resource) {
 		this.resourceConverter = resource;
 		this.name = getResourceName();
-		getPersistenceUnit().addConverter(this);
 	}
 	
 	public void update() {

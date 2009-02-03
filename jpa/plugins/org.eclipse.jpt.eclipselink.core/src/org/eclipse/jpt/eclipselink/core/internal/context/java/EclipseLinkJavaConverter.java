@@ -70,7 +70,6 @@ public abstract class EclipseLinkJavaConverter extends AbstractJavaJpaContextNod
 	protected void initialize(JavaResourcePersistentMember jrpm) {
 		this.resourcePersistentMember = jrpm;
 		this.name = this.name(getAnnotation());
-		getPersistenceUnit().addConverter(this);
 	}
 	
 	protected void update(JavaResourcePersistentMember jrpm) {
