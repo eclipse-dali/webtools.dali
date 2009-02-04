@@ -223,18 +223,24 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 			this.model.notifyPropertyChange(LIBRARY_PROVIDER_DELEGATE, IDataModel.DEFAULT_CHG);
 		}
 		if (propertyName.equals(RUNTIME)) {
-			LibraryInstallDelegate libProvDelegate = (LibraryInstallDelegate) this.getProperty(LIBRARY_PROVIDER_DELEGATE);
-			if (libProvDelegate != null) {
+			LibraryInstallDelegate lid = getLibraryInstallDelegate();
+			if (lid != null) {
 				// may be null while model is being built up
-				libProvDelegate.refresh();
+				// ... or in tests
+				lid.refresh();
 			}
 			this.model.notifyPropertyChange(DISCOVER_ANNOTATED_CLASSES, IDataModel.DEFAULT_CHG);
 			this.model.notifyPropertyChange(LIST_ANNOTATED_CLASSES, IDataModel.DEFAULT_CHG);
 		}
 		if (propertyName.equals(PLATFORM_ID)) {
-			getLibraryProvider().setEnablementContextVariable(
-				JpaLibraryProviderConstants.EXPR_VAR_JPA_PLATFORM,
-				(String) propertyValue);
+			LibraryInstallDelegate lid = getLibraryInstallDelegate();
+			if (lid != null) {
+				// may be null while model is being built up
+				// ... or in tests
+				lid.setEnablementContextVariable(
+					JpaLibraryProviderConstants.EXPR_VAR_JPA_PLATFORM,
+					(String) propertyValue);
+			}
 		}
 		if (propertyName.equals(CONNECTION)) {
 			this.model.notifyPropertyChange(CONNECTION, IDataModel.VALID_VALUES_CHG);
@@ -396,7 +402,7 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 		return this.getStringProperty(PLATFORM_ID);
 	}
 	
-	private LibraryInstallDelegate getLibraryProvider() {
+	private LibraryInstallDelegate getLibraryInstallDelegate() {
 		return (LibraryInstallDelegate) getProperty(LIBRARY_PROVIDER_DELEGATE);
 	}
 
