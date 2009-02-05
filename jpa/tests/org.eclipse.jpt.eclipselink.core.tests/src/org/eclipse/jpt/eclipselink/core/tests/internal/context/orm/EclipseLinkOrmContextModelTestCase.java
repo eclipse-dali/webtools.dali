@@ -10,12 +10,13 @@
 package org.eclipse.jpt.eclipselink.core.tests.internal.context.orm;
 
 import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProperties;
+import org.eclipse.jpt.core.resource.common.JpaXmlResource;
 import org.eclipse.jpt.core.tests.internal.projects.TestJpaProject;
+import org.eclipse.jpt.eclipselink.core.EclipseLinkJpaProject;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkEntityMappings;
 import org.eclipse.jpt.eclipselink.core.internal.operations.EclipseLinkOrmFileCreationDataModelProvider;
 import org.eclipse.jpt.eclipselink.core.internal.operations.EclipseLinkOrmFileCreationOperation;
-import org.eclipse.jpt.eclipselink.core.internal.resource.orm.EclipseLinkOrmXmlResourceProvider;
-import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmXmlResource;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.eclipselink.core.tests.internal.context.EclipseLinkContextModelTestCase;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
@@ -23,19 +24,22 @@ import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 public abstract class EclipseLinkOrmContextModelTestCase
 	extends EclipseLinkContextModelTestCase
 {
-	protected EclipseLinkOrmXmlResourceProvider eclipseLinkOrmResourceModelProvider;
+	protected JpaXmlResource eclipseLinkOrmXmlResource;
 	
 	
 	protected EclipseLinkOrmContextModelTestCase(String name) {
 		super(name);
 	}
 	
+	@Override
+	protected EclipseLinkJpaProject getJpaProject() {
+		return (EclipseLinkJpaProject) super.getJpaProject();
+	}
 	
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.eclipseLinkOrmResourceModelProvider = 
-			EclipseLinkOrmXmlResourceProvider.getDefaultXmlResourceProvider(getJavaProject().getProject());
+		this.eclipseLinkOrmXmlResource = getJpaProject().getDefaultEclipseLinkOrmXmlResource();
 	}
 	
 	@Override
@@ -59,13 +63,18 @@ public abstract class EclipseLinkOrmContextModelTestCase
 	
 	@Override
 	protected void tearDown() throws Exception {
-		this.eclipseLinkOrmResourceModelProvider = null;
+		this.eclipseLinkOrmXmlResource = null;
 		super.tearDown();
 	}
 	
 	@Override
-	protected EclipseLinkOrmXmlResource getOrmXmlResource() {
-		return this.eclipseLinkOrmResourceModelProvider.getXmlResource();
+	protected JpaXmlResource getOrmXmlResource() {
+		return this.eclipseLinkOrmXmlResource;
+	}
+	
+	@Override
+	protected XmlEntityMappings getXmlEntityMappings() {
+		return (XmlEntityMappings) super.getXmlEntityMappings();
 	}
 	
 	@Override

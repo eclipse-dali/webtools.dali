@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.context.orm;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
@@ -202,8 +203,8 @@ public abstract class AbstractOrmTypeMapping<T extends XmlTypeMapping>
 		return this.resourceTypeMapping.getMetadataComplete();
 	}
 	
-	public String getOrmType() {
-		return this.getPersistentType().getOrmType();
+	public IContentType getContentType() {
+		return this.getPersistentType().getContentType();
 	}
 
 	

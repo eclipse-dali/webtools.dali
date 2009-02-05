@@ -106,7 +106,7 @@ public class OrmManyToOneMappingTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY, "manyToOneMapping");
 		OrmManyToOneMapping ormManyToOneMapping = (OrmManyToOneMapping) ormPersistentAttribute.getMapping();
-		XmlManyToOne manyToOne = getOrmXmlResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToOnes().get(0);
+		XmlManyToOne manyToOne = getXmlEntityMappings().getEntities().get(0).getAttributes().getManyToOnes().get(0);
 		
 		assertEquals("manyToOneMapping", ormManyToOneMapping.getName());
 		assertEquals("manyToOneMapping", manyToOne.getName());
@@ -126,7 +126,7 @@ public class OrmManyToOneMappingTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY, "manyToOneMapping");
 		OrmManyToOneMapping ormManyToOneMapping = (OrmManyToOneMapping) ormPersistentAttribute.getMapping();
-		XmlManyToOne manyToOne = getOrmXmlResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToOnes().get(0);
+		XmlManyToOne manyToOne = getXmlEntityMappings().getEntities().get(0).getAttributes().getManyToOnes().get(0);
 		
 		assertEquals("manyToOneMapping", ormManyToOneMapping.getName());
 		assertEquals("manyToOneMapping", manyToOne.getName());
@@ -146,7 +146,7 @@ public class OrmManyToOneMappingTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY, "manyToOneMapping");
 		OrmManyToOneMapping ormManyToOneMapping = (OrmManyToOneMapping) ormPersistentAttribute.getMapping();
-		XmlManyToOne manyToOne = getOrmXmlResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToOnes().get(0);
+		XmlManyToOne manyToOne = getXmlEntityMappings().getEntities().get(0).getAttributes().getManyToOnes().get(0);
 		
 		assertNull(ormManyToOneMapping.getSpecifiedTargetEntity());
 		assertNull(manyToOne.getTargetEntity());
@@ -166,7 +166,7 @@ public class OrmManyToOneMappingTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY, "manyToOneMapping");
 		OrmManyToOneMapping ormManyToOneMapping = (OrmManyToOneMapping) ormPersistentAttribute.getMapping();
-		XmlManyToOne manyToOne = getOrmXmlResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToOnes().get(0);
+		XmlManyToOne manyToOne = getXmlEntityMappings().getEntities().get(0).getAttributes().getManyToOnes().get(0);
 		
 		assertNull(ormManyToOneMapping.getSpecifiedTargetEntity());
 		assertNull(manyToOne.getTargetEntity());
@@ -186,7 +186,7 @@ public class OrmManyToOneMappingTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY, "manyToOneMapping");
 		OrmManyToOneMapping ormManyToOneMapping = (OrmManyToOneMapping) ormPersistentAttribute.getMapping();
-		XmlManyToOne manyToOneResource = getOrmXmlResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToOnes().get(0);
+		XmlManyToOne manyToOneResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getManyToOnes().get(0);
 		
 		assertNull(ormManyToOneMapping.getSpecifiedFetch());
 		assertNull(manyToOneResource.getFetch());
@@ -210,7 +210,7 @@ public class OrmManyToOneMappingTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY, "manyToOneMapping");
 		OrmManyToOneMapping ormManyToOneMapping = (OrmManyToOneMapping) ormPersistentAttribute.getMapping();
-		XmlManyToOne manyToOneResource = getOrmXmlResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToOnes().get(0);
+		XmlManyToOne manyToOneResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getManyToOnes().get(0);
 		
 		assertNull(ormManyToOneMapping.getSpecifiedFetch());
 		assertNull(manyToOneResource.getFetch());
@@ -234,7 +234,7 @@ public class OrmManyToOneMappingTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY, "manyToOneMapping");
 		OrmManyToOneMapping ormManyToOneMapping = (OrmManyToOneMapping) ormPersistentAttribute.getMapping();
-		XmlManyToOne manyToOneResource = getOrmXmlResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToOnes().get(0);
+		XmlManyToOne manyToOneResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getManyToOnes().get(0);
 		
 		assertNull(ormManyToOneMapping.getSpecifiedOptional());
 		assertNull(manyToOneResource.getOptional());
@@ -258,7 +258,7 @@ public class OrmManyToOneMappingTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY, "manyToOneMapping");
 		OrmManyToOneMapping ormManyToOneMapping = (OrmManyToOneMapping) ormPersistentAttribute.getMapping();
-		XmlManyToOne manyToOneResource = getOrmXmlResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToOnes().get(0);
+		XmlManyToOne manyToOneResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getManyToOnes().get(0);
 		
 		assertNull(ormManyToOneMapping.getSpecifiedOptional());
 		assertNull(manyToOneResource.getOptional());
@@ -282,7 +282,7 @@ public class OrmManyToOneMappingTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY, "manyToOneMapping");
 		OrmManyToOneMapping ormManyToOneMapping = (OrmManyToOneMapping) ormPersistentAttribute.getMapping();
-		XmlManyToOne manyToOneResource = getOrmXmlResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToOnes().get(0);
+		XmlManyToOne manyToOneResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getManyToOnes().get(0);
 		
 		OrmJoinColumn joinColumn = ormManyToOneMapping.addSpecifiedJoinColumn(0);
 		joinColumn.setSpecifiedName("FOO");
@@ -317,7 +317,7 @@ public class OrmManyToOneMappingTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY, "manyToOneMapping");
 		OrmManyToOneMapping ormManyToOneMapping = (OrmManyToOneMapping) ormPersistentAttribute.getMapping();
-		XmlManyToOne manyToOneResource = getOrmXmlResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToOnes().get(0);
+		XmlManyToOne manyToOneResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getManyToOnes().get(0);
 
 		ormManyToOneMapping.addSpecifiedJoinColumn(0).setSpecifiedName("FOO");
 		ormManyToOneMapping.addSpecifiedJoinColumn(1).setSpecifiedName("BAR");
@@ -342,7 +342,7 @@ public class OrmManyToOneMappingTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY, "manyToOneMapping");
 		OrmManyToOneMapping ormManyToOneMapping = (OrmManyToOneMapping) ormPersistentAttribute.getMapping();
-		XmlManyToOne manyToOneResource = getOrmXmlResource().getEntityMappings().getEntities().get(0).getAttributes().getManyToOnes().get(0);
+		XmlManyToOne manyToOneResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getManyToOnes().get(0);
 
 		ormManyToOneMapping.addSpecifiedJoinColumn(0).setSpecifiedName("FOO");
 		ormManyToOneMapping.addSpecifiedJoinColumn(1).setSpecifiedName("BAR");

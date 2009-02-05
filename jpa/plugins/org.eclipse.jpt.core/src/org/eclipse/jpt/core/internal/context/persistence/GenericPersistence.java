@@ -40,7 +40,8 @@ public class GenericPersistence extends AbstractXmlContextNode
 
 	public GenericPersistence(PersistenceXml parent, XmlPersistence xmlPersistence) {
 		super(parent);
-		this.initialize(xmlPersistence);
+		this.xmlPersistence = xmlPersistence;
+		this.initializePersistenceUnits();
 	}
 	
 	public String getId() {
@@ -117,15 +118,10 @@ public class GenericPersistence extends AbstractXmlContextNode
 	
 	// **************** updating ***********************************************
 	
-	protected void initialize(XmlPersistence persistence) {
-		this.xmlPersistence = persistence;
-		initializePersistenceUnits(persistence);
-	}
-	
-	protected void initializePersistenceUnits(XmlPersistence persistence) {
+	protected void initializePersistenceUnits() {
 		// only adding one here, until we support multiple persistence units
 		if (this.xmlPersistence.getPersistenceUnits().size() > 0) {
-			this.persistenceUnit = createPersistenceUnit(persistence.getPersistenceUnits().get(0));
+			this.persistenceUnit = createPersistenceUnit(this.xmlPersistence.getPersistenceUnits().get(0));
 		}
 	}
 	

@@ -13,20 +13,15 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.content.IContentType;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.JpaConstants;
-import org.eclipse.jpt.core.internal.resource.JpaXmlResourceProviderManager;
 import org.eclipse.jpt.core.resource.AbstractXmlResourceProvider;
-import org.eclipse.jpt.core.resource.common.JpaXmlResource;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
-import org.eclipse.jpt.core.resource.persistence.PersistenceXmlResource;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 
 public class PersistenceXmlResourceProvider
-	extends AbstractXmlResourceProvider<PersistenceXmlResource>
+	extends AbstractXmlResourceProvider
 {
 	/**
 	 * (Convenience method) Returns a persistence resource model provider for 
@@ -53,10 +48,7 @@ public class PersistenceXmlResourceProvider
 	}
 	
 	private static PersistenceXmlResourceProvider getXmlResourceProvider_(IProject project, String location) {
-		return (PersistenceXmlResourceProvider) JpaXmlResourceProviderManager.instance().getXmlResourceProvider(
-			project, 
-			new Path(location),
-			JptCorePlugin.PERSISTENCE_XML_CONTENT_TYPE);
+		return new PersistenceXmlResourceProvider(project, new Path(location));
 	}
 	
 	
@@ -65,27 +57,16 @@ public class PersistenceXmlResourceProvider
 	}
 		
 	public PersistenceXmlResourceProvider(IProject project, IPath filePath) {
-		super(project, filePath);
-	}
-	
-	
-	@Override
-	protected IContentType getContentType() {
-		return JptCorePlugin.PERSISTENCE_XML_CONTENT_TYPE;
+		super(project, filePath, JptCorePlugin.PERSISTENCE_XML_CONTENT_TYPE);
 	}
 	
 	@Override
-	protected void populateRoot(JpaXmlResource resource) {
+	protected void populateRoot() {
 		XmlPersistence persistence = PersistenceFactory.eINSTANCE.createXmlPersistence();
 		persistence.setVersion(JpaConstants.VERSION_1_0_TEXT);
 		XmlPersistenceUnit persistenceUnit = PersistenceFactory.eINSTANCE.createXmlPersistenceUnit();
 		persistenceUnit.setName(getProject().getName());
 		persistence.getPersistenceUnits().add(persistenceUnit);
-		getResourceContents(resource).add(persistence);
-	}
-	
-	@Override
-	protected PersistenceXmlResource ensureCorrectType(Resource resource) throws ClassCastException {
-		return (PersistenceXmlResource) resource;
+		getResourceContents().add(persistence);
 	}
 }

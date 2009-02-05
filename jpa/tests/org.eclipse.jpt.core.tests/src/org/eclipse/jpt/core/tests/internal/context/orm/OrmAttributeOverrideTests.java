@@ -21,6 +21,7 @@ import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 
+@SuppressWarnings("nls")
 public class OrmAttributeOverrideTests extends ContextModelTestCase
 {
 	public OrmAttributeOverrideTests(String name) {
@@ -40,7 +41,7 @@ public class OrmAttributeOverrideTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		
-		XmlEntity entityResource = getOrmXmlResource().getEntityMappings().getEntities().get(0);
+		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		entityResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createXmlAttributeOverrideImpl());
 		XmlAttributeOverride attributeOverrideResource = entityResource.getAttributeOverrides().get(0);
 		OrmAttributeOverride ormAttributeOverride = ormEntity.specifiedAttributeOverrides().next();
@@ -73,7 +74,7 @@ public class OrmAttributeOverrideTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		
-		XmlEntity entityResource = getOrmXmlResource().getEntityMappings().getEntities().get(0);
+		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		entityResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createXmlAttributeOverrideImpl());
 		XmlAttributeOverride attributeOverrideResource = entityResource.getAttributeOverrides().get(0);
 		OrmAttributeOverride ormAttributeOverride = ormEntity.specifiedAttributeOverrides().next();

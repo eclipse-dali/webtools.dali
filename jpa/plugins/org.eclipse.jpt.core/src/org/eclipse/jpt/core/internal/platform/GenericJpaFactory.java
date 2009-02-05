@@ -17,6 +17,7 @@ import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JpaResourceModel;
+import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
@@ -204,9 +205,10 @@ import org.eclipse.jpt.core.internal.context.persistence.GenericPersistence;
 import org.eclipse.jpt.core.internal.context.persistence.GenericPersistenceUnit;
 import org.eclipse.jpt.core.internal.context.persistence.GenericPersistenceXml;
 import org.eclipse.jpt.core.internal.context.persistence.GenericProperty;
+import org.eclipse.jpt.core.internal.context.persistence.ImpliedMappingFileRef;
+import org.eclipse.jpt.core.resource.common.JpaXmlResource;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.core.resource.orm.OrmXmlResource;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
 import org.eclipse.jpt.core.resource.orm.XmlBasic;
@@ -231,7 +233,6 @@ import org.eclipse.jpt.core.resource.orm.XmlTableGenerator;
 import org.eclipse.jpt.core.resource.orm.XmlTransient;
 import org.eclipse.jpt.core.resource.orm.XmlUniqueConstraint;
 import org.eclipse.jpt.core.resource.orm.XmlVersion;
-import org.eclipse.jpt.core.resource.persistence.PersistenceXmlResource;
 import org.eclipse.jpt.core.resource.persistence.XmlJavaClassRef;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistence;
@@ -271,15 +272,15 @@ public class GenericJpaFactory
 		return new GenericRootContextNode(parent);
 	}
 	
-	public MappingFile buildMappingFile(MappingFileRef parent, OrmXmlResource ormXmlresource) {
-		return this.buildOrmXml(parent, ormXmlresource);
+	public MappingFile buildMappingFile(MappingFileRef parent, JpaXmlResource resource) {
+		return this.buildOrmXml(parent, resource);
 	}
 	
 
 	// ********** Persistence Context Model **********
 	
-	public PersistenceXml buildPersistenceXml(JpaRootContextNode parent, PersistenceXmlResource persistenceXmlResource) {
-		return new GenericPersistenceXml(parent, persistenceXmlResource);
+	public PersistenceXml buildPersistenceXml(JpaRootContextNode parent, JpaXmlResource resource) {
+		return new GenericPersistenceXml(parent, resource);
 	}
 	
 	public Persistence buildPersistence(PersistenceXml parent, XmlPersistence xmlPersistence) {
@@ -287,13 +288,15 @@ public class GenericJpaFactory
 	}
 	
 	public PersistenceUnit buildPersistenceUnit(Persistence parent, XmlPersistenceUnit xmlPersistenceUnit) {
-		PersistenceUnit persistenceUnit = new GenericPersistenceUnit(parent);
-		persistenceUnit.initialize(xmlPersistenceUnit);
-		return persistenceUnit;
+		return new GenericPersistenceUnit(parent, xmlPersistenceUnit);
 	}
 	
 	public MappingFileRef buildMappingFileRef(PersistenceUnit parent, XmlMappingFileRef xmlMappingFileRef) {
 		return new GenericMappingFileRef(parent, xmlMappingFileRef);
+	}
+	
+	public MappingFileRef buildImpliedMappingFileRef(PersistenceUnit parent) {
+		return new ImpliedMappingFileRef(parent,JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH );
 	}
 	
 	public ClassRef buildClassRef(PersistenceUnit parent, XmlJavaClassRef classRef) {
@@ -311,10 +314,8 @@ public class GenericJpaFactory
 
 	// ********** ORM Context Model **********
 	
-	public OrmXml buildOrmXml(MappingFileRef parent, OrmXmlResource ormXmlResource) {
-		OrmXml ormXml = new GenericOrmXml(parent);
-		ormXml.initialize(ormXmlResource);
-		return ormXml;
+	public OrmXml buildOrmXml(MappingFileRef parent, JpaXmlResource xmlResource) {
+		return new GenericOrmXml(parent, xmlResource);
 	}
 	
 	public EntityMappings buildEntityMappings(OrmXml parent, XmlEntityMappings xmlEntityMappings) {

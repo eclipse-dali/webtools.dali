@@ -82,7 +82,7 @@ public class OrmDiscriminatorColumnTests extends ContextModelTestCase
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmDiscriminatorColumn ormColumn = ormEntity.getDiscriminatorColumn();
 		
-		XmlEntity entityResource = getOrmXmlResource().getEntityMappings().getEntities().get(0);
+		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 
 		assertNull(ormColumn.getSpecifiedName());
 		assertNull(entityResource.getDiscriminatorColumn());
@@ -112,7 +112,7 @@ public class OrmDiscriminatorColumnTests extends ContextModelTestCase
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmDiscriminatorColumn ormColumn = ormEntity.getDiscriminatorColumn();
 		
-		XmlEntity entityResource = getOrmXmlResource().getEntityMappings().getEntities().get(0);
+		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 
 		assertNull(ormColumn.getSpecifiedName());
 		assertNull(entityResource.getDiscriminatorColumn());
@@ -189,7 +189,7 @@ public class OrmDiscriminatorColumnTests extends ContextModelTestCase
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmDiscriminatorColumn ormColumn = ormEntity.getDiscriminatorColumn();
 		
-		XmlEntity entityResource = getOrmXmlResource().getEntityMappings().getEntities().get(0);
+		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 
 		assertNull(ormColumn.getSpecifiedLength());
 		assertNull(entityResource.getDiscriminatorColumn());
@@ -219,7 +219,7 @@ public class OrmDiscriminatorColumnTests extends ContextModelTestCase
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmDiscriminatorColumn ormColumn = ormEntity.getDiscriminatorColumn();
 		
-		XmlEntity entityResource = getOrmXmlResource().getEntityMappings().getEntities().get(0);
+		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 
 		assertNull(ormColumn.getSpecifiedLength());
 		assertNull(entityResource.getDiscriminatorColumn());
@@ -240,7 +240,7 @@ public class OrmDiscriminatorColumnTests extends ContextModelTestCase
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmDiscriminatorColumn ormColumn = ormEntity.getDiscriminatorColumn();
 		
-		XmlEntity entityResource = getOrmXmlResource().getEntityMappings().getEntities().get(0);
+		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 
 		assertNull(ormColumn.getColumnDefinition());
 		assertNull(entityResource.getDiscriminatorColumn());
@@ -270,7 +270,7 @@ public class OrmDiscriminatorColumnTests extends ContextModelTestCase
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmDiscriminatorColumn ormColumn = ormEntity.getDiscriminatorColumn();
 		
-		XmlEntity entityResource = getOrmXmlResource().getEntityMappings().getEntities().get(0);
+		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 
 		assertNull(ormColumn.getColumnDefinition());
 		assertNull(entityResource.getDiscriminatorColumn());
@@ -291,7 +291,7 @@ public class OrmDiscriminatorColumnTests extends ContextModelTestCase
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmDiscriminatorColumn ormColumn = ormEntity.getDiscriminatorColumn();
 		
-		XmlEntity entityResource = getOrmXmlResource().getEntityMappings().getEntities().get(0);
+		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 
 		assertNull(ormColumn.getSpecifiedDiscriminatorType());
 		assertNull(entityResource.getDiscriminatorColumn());
@@ -321,7 +321,7 @@ public class OrmDiscriminatorColumnTests extends ContextModelTestCase
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmDiscriminatorColumn ormColumn = ormEntity.getDiscriminatorColumn();
 		
-		XmlEntity entityResource = getOrmXmlResource().getEntityMappings().getEntities().get(0);
+		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 
 		assertNull(ormColumn.getSpecifiedDiscriminatorType());
 		assertNull(entityResource.getDiscriminatorColumn());

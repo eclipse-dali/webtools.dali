@@ -19,6 +19,7 @@ import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 
+@SuppressWarnings("nls")
 public class OrmQueryHintTests extends ContextModelTestCase
 {
 	public OrmQueryHintTests(String name) {
@@ -40,7 +41,7 @@ public class OrmQueryHintTests extends ContextModelTestCase
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmQueryHint ormQueryHint = ormEntity.addNamedQuery(0).addHint(0);
 		
-		XmlQueryHint queryHintResource = getOrmXmlResource().getEntityMappings().getEntities().get(0).getNamedQueries().get(0).getHints().get(0);
+		XmlQueryHint queryHintResource = getXmlEntityMappings().getEntities().get(0).getNamedQueries().get(0).getHints().get(0);
 		
 		assertNull(ormQueryHint.getName());
 		assertNull(queryHintResource.getName());
@@ -61,7 +62,7 @@ public class OrmQueryHintTests extends ContextModelTestCase
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmQueryHint ormQueryHint = ormEntity.addNamedQuery(0).addHint(0);
 		
-		XmlQueryHint queryHintResource = getOrmXmlResource().getEntityMappings().getEntities().get(0).getNamedQueries().get(0).getHints().get(0);
+		XmlQueryHint queryHintResource = getXmlEntityMappings().getEntities().get(0).getNamedQueries().get(0).getHints().get(0);
 		
 		assertNull(ormQueryHint.getName());
 		assertNull(queryHintResource.getName());
@@ -82,7 +83,7 @@ public class OrmQueryHintTests extends ContextModelTestCase
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmQueryHint ormQueryHint = ormEntity.addNamedQuery(0).addHint(0);
 		
-		XmlQueryHint queryHintResource = getOrmXmlResource().getEntityMappings().getEntities().get(0).getNamedQueries().get(0).getHints().get(0);
+		XmlQueryHint queryHintResource = getXmlEntityMappings().getEntities().get(0).getNamedQueries().get(0).getHints().get(0);
 		
 		assertNull(ormQueryHint.getValue());
 		assertNull(queryHintResource.getValue());
@@ -103,7 +104,7 @@ public class OrmQueryHintTests extends ContextModelTestCase
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmQueryHint ormQueryHint = ormEntity.addNamedQuery(0).addHint(0);
 		
-		XmlQueryHint queryHintResource = getOrmXmlResource().getEntityMappings().getEntities().get(0).getNamedQueries().get(0).getHints().get(0);
+		XmlQueryHint queryHintResource = getXmlEntityMappings().getEntities().get(0).getNamedQueries().get(0).getHints().get(0);
 		
 		assertNull(ormQueryHint.getValue());
 		assertNull(queryHintResource.getValue());

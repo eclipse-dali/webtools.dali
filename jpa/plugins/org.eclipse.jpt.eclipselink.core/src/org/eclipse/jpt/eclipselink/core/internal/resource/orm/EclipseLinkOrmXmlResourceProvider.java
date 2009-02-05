@@ -13,20 +13,15 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.content.IContentType;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.core.internal.resource.JpaXmlResourceProviderManager;
 import org.eclipse.jpt.core.resource.AbstractXmlResourceProvider;
-import org.eclipse.jpt.core.resource.common.JpaXmlResource;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkConstants;
 import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
-import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmXmlResource;
 
 public class EclipseLinkOrmXmlResourceProvider
-	extends AbstractXmlResourceProvider<EclipseLinkOrmXmlResource>
+	extends AbstractXmlResourceProvider
 {
 	/**
 	 * (Convenience method) Returns an EclipseLink ORM resource model provider for 
@@ -54,10 +49,7 @@ public class EclipseLinkOrmXmlResourceProvider
 	}
 	
 	private static EclipseLinkOrmXmlResourceProvider getXmlResourceProvider_(IProject project, String location) {
-		return (EclipseLinkOrmXmlResourceProvider) JpaXmlResourceProviderManager.instance().getXmlResourceProvider(
-			project, 
-			new Path(location),
-			JptEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_CONTENT_TYPE);
+		return new EclipseLinkOrmXmlResourceProvider(project, new Path(location));
 	}
 	
 	
@@ -66,23 +58,13 @@ public class EclipseLinkOrmXmlResourceProvider
 	}
 	
 	public EclipseLinkOrmXmlResourceProvider(IProject project, IPath filePath) {
-		super(project, filePath);
+		super(project, filePath, JptEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_CONTENT_TYPE);
 	}
 	
 	@Override
-	protected IContentType getContentType() {
-		return JptEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_CONTENT_TYPE;
-	}
-	
-	@Override
-	protected void populateRoot(JpaXmlResource xmlResource) {
+	protected void populateRoot() {
 		XmlEntityMappings entityMappings = EclipseLinkOrmFactory.eINSTANCE.createXmlEntityMappings();
 		entityMappings.setVersion(EclipseLinkConstants.VERSION_1_0_TEXT);
-		getResourceContents(xmlResource).add(entityMappings);
-	}
-	
-	@Override
-	protected EclipseLinkOrmXmlResource ensureCorrectType(Resource r) throws ClassCastException {
-		return (EclipseLinkOrmXmlResource) r;
+		getResourceContents().add(entityMappings);
 	}
 }

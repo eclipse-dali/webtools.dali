@@ -113,7 +113,7 @@ public class JpaFileTests extends ContextModelTestCase
 		JpaFile ormXmlJpaFile = JptCorePlugin.getJpaFile(file);
 		assertEquals(getEntityMappings(), ormXmlJpaFile.rootStructureNodes().next());
 		
-		getOrmXmlResource().getContents().remove(getOrmXmlResource().getEntityMappings());
+		getOrmXmlResource().getContents().remove(getOrmXmlResource().getRootObject());
 		
 		assertFalse(ormXmlJpaFile.rootStructureNodes().hasNext());
 	}
@@ -157,7 +157,7 @@ public class JpaFileTests extends ContextModelTestCase
 		getRootContextNode().getPersistenceXml().getPersistence();
 		assertEquals(getRootContextNode().getPersistenceXml().getPersistence(), persistenceXmlJpaFile.rootStructureNodes().next());
 		
-		getPersistenceXmlResource().getContents().remove(getPersistenceXmlResource().getPersistence());
+		getPersistenceXmlResource().getContents().remove(getXmlPersistence());
 		
 		assertFalse(persistenceXmlJpaFile.rootStructureNodes().hasNext());
 	}
@@ -170,7 +170,7 @@ public class JpaFileTests extends ContextModelTestCase
 		
 		assertEquals(ormPersistentType.getJavaPersistentType(), javaJpaFile.rootStructureNodes().next());
 		
-		getRootContextNode().removePersistenceXml();
+		getPersistenceXmlResource().getContents().remove(getXmlPersistence());
 		assertFalse(javaJpaFile.rootStructureNodes().hasNext());
 	}
 	
@@ -182,7 +182,7 @@ public class JpaFileTests extends ContextModelTestCase
 		
 		assertEquals(getJavaPersistentType(), javaJpaFile.rootStructureNodes().next());
 		
-		getRootContextNode().removePersistenceXml();
+		getPersistenceXmlResource().getContents().remove(getXmlPersistence());
 		assertFalse(javaJpaFile.rootStructureNodes().hasNext());
 	}
 	
@@ -213,7 +213,7 @@ public class JpaFileTests extends ContextModelTestCase
 		assertEquals(javaPersistentType, javaJpaFile.rootStructureNodes().next());
 		assertTrue(javaJpaFile.rootStructureNodes().next().getParent() instanceof OrmPersistentType);
 		
-		getOrmXmlResource().getEntityMappings().getEntities().remove(0);
+		getXmlEntityMappings().getEntities().remove(0);
 		
 		assertEquals(1, javaJpaFile.rootStructureNodesSize());
 		assertTrue(javaJpaFile.rootStructureNodes().next().getParent() instanceof ClassRef);
@@ -273,7 +273,7 @@ public class JpaFileTests extends ContextModelTestCase
 		JavaPersistentType javaPersistentType = ormPersistentType.getJavaPersistentType();
 		assertEquals(javaPersistentType, javaJpaFile.rootStructureNodes().next());
 		
-		getOrmXmlResource().getContents().remove(getOrmXmlResource().getEntityMappings());
+		getOrmXmlResource().getContents().remove(getXmlEntityMappings());
 		assertNotSame(javaPersistentType, javaJpaFile.rootStructureNodes().next());
 		assertEquals(1, javaJpaFile.rootStructureNodesSize());
 		assertEquals(getPersistenceUnit().impliedClassRefs().next(), javaJpaFile.rootStructureNodes().next().getParent());
@@ -288,7 +288,7 @@ public class JpaFileTests extends ContextModelTestCase
 		JavaPersistentType javaPersistentType = ormPersistentType.getJavaPersistentType();
 		assertEquals(javaPersistentType, javaJpaFile.rootStructureNodes().next());
 		
-		getPersistenceXmlResource().getPersistence().getPersistenceUnits().remove(0);
+		getXmlPersistence().getPersistenceUnits().remove(0);
 
 		assertFalse(javaJpaFile.rootStructureNodes().hasNext());
 		assertEquals(0, javaJpaFile.rootStructureNodesSize());
@@ -394,6 +394,5 @@ public class JpaFileTests extends ContextModelTestCase
 		assertEquals(1, javaJpaFile.rootStructureNodesSize());
 		assertEquals(getPersistenceUnit().impliedClassRefs().next(), javaJpaFile.rootStructureNodes().next().getParent());
 	}
-	
 	//TODO test rootStructureNodes with a static inner class
 }

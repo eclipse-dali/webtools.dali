@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2007 Oracle. 
+ *  Copyright (c) 2007, 2009 Oracle. 
  *  All rights reserved.  This program and the accompanying materials 
  *  are made available under the terms of the Eclipse Public License v1.0 
  *  which accompanies this distribution, and is available at 
@@ -25,6 +25,7 @@ public class JptEclipseLinkCoreContextModelTests extends TestCase
 	
 	public static Test suite(boolean all) {
 		TestSuite suite = new TestSuite(JptEclipseLinkCoreContextModelTests.class.getName());
+		suite.addTestSuite(JpaProjectTests.class);
 		suite.addTest(JptEclipseLinkCorePersistenceContextModelTests.suite(all));
 		suite.addTest(JptEclipseLinkCoreJavaContextModelTests.suite(all));
 		suite.addTest(JptEclipseLinkCoreOrmContextModelTests.suite(all));

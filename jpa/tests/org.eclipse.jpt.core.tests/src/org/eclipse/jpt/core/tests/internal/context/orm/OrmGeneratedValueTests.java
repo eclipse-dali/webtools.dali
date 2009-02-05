@@ -29,7 +29,8 @@ import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
-public class OrmGeneratedValueTests extends ContextModelTestCase
+
+@SuppressWarnings("nls")public class OrmGeneratedValueTests extends ContextModelTestCase
 {
 	public OrmGeneratedValueTests(String name) {
 		super(name);
@@ -84,7 +85,7 @@ public class OrmGeneratedValueTests extends ContextModelTestCase
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idMapping");
 		OrmIdMapping ormIdMapping = (OrmIdMapping) ormPersistentAttribute.getMapping();
 		OrmGeneratedValue ormGeneratedValue = ormIdMapping.addGeneratedValue();
-		XmlId idResource = getOrmXmlResource().getEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
+		XmlId idResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
 		XmlGeneratedValue generatedValueResource = idResource.getGeneratedValue();
 		
 		//set generator in the resource model, verify context model updated
@@ -103,7 +104,7 @@ public class OrmGeneratedValueTests extends ContextModelTestCase
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "idMapping");
 		OrmIdMapping ormIdMapping = (OrmIdMapping) ormPersistentAttribute.getMapping();
 		OrmGeneratedValue ormGeneratedValue = ormIdMapping.addGeneratedValue();
-		XmlId idResource = getOrmXmlResource().getEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
+		XmlId idResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
 		XmlGeneratedValue generatedValueResource = idResource.getGeneratedValue();
 		
 		//set name in the context model, verify resource model modified

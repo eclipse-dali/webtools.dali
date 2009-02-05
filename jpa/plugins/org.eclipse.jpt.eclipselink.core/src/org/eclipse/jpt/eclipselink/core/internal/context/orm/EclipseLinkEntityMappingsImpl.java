@@ -11,13 +11,13 @@ package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
 import java.util.List;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.core.internal.context.orm.GenericEntityMappings;
+import org.eclipse.jpt.core.internal.context.orm.AbstractEntityMappings;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaFactory;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntityMappings;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class EclipseLinkEntityMappingsImpl
-	extends GenericEntityMappings
+	extends AbstractEntityMappings
 	implements EclipseLinkEntityMappings
 {
 

@@ -9,9 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context;
 
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
-import org.eclipse.jpt.core.resource.orm.OrmXmlResource;
+import org.eclipse.jpt.core.resource.common.JpaXmlResource;
 
 /**
  * Provisional API: This interface is part of an interim API that is still
@@ -23,13 +24,13 @@ import org.eclipse.jpt.core.resource.orm.OrmXmlResource;
 public interface MappingFileProvider {
 
 	/**
-	 * Return the associated mapping file resource type.
+	 * Return the associated mapping file content type.
 	 */
-	String getResourceType();
+	IContentType getContentType();
 
 	/**
 	 * Build a mapping with the specified parent and resource.
 	 */
-	MappingFile buildMappingFile(MappingFileRef parent, OrmXmlResource resource, JpaFactory factory);
+	MappingFile buildMappingFile(MappingFileRef parent, JpaXmlResource resource, JpaFactory factory);
 
 }

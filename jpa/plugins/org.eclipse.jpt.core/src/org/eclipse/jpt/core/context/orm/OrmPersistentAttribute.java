@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.orm;
 
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
@@ -84,7 +85,7 @@ public interface OrmPersistentAttribute
 
 	void nameChanged(String oldName, String newName);
 
-	String getOrmType();
+	IContentType getContentType();
 
 	
 	// ********** initialization/updating **********

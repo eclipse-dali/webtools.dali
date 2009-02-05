@@ -79,7 +79,7 @@ public class OrmVersionMappingTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY, "versionMapping");
 		OrmVersionMapping ormVersionMapping = (OrmVersionMapping) ormPersistentAttribute.getMapping();
-		XmlVersion versionResource = getOrmXmlResource().getEntityMappings().getEntities().get(0).getAttributes().getVersions().get(0);
+		XmlVersion versionResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getVersions().get(0);
 		
 		assertEquals("versionMapping", ormVersionMapping.getName());
 		assertEquals("versionMapping", versionResource.getName());
@@ -99,7 +99,7 @@ public class OrmVersionMappingTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY, "versionMapping");
 		OrmVersionMapping ormVersionMapping = (OrmVersionMapping) ormPersistentAttribute.getMapping();
-		XmlVersion versionResource = getOrmXmlResource().getEntityMappings().getEntities().get(0).getAttributes().getVersions().get(0);
+		XmlVersion versionResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getVersions().get(0);
 		
 		assertEquals("versionMapping", ormVersionMapping.getName());
 		assertEquals("versionMapping", versionResource.getName());
@@ -119,7 +119,7 @@ public class OrmVersionMappingTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY, "versionMapping");
 		OrmVersionMapping ormVersionMapping = (OrmVersionMapping) ormPersistentAttribute.getMapping();
-		XmlVersion versionResource = getOrmXmlResource().getEntityMappings().getEntities().get(0).getAttributes().getVersions().get(0);
+		XmlVersion versionResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getVersions().get(0);
 		
 		assertNull(ormVersionMapping.getSpecifiedConverter());
 		assertNull(versionResource.getTemporal());
@@ -147,7 +147,7 @@ public class OrmVersionMappingTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY, "versionMapping");
 		OrmVersionMapping ormVersionMapping = (OrmVersionMapping) ormPersistentAttribute.getMapping();
-		XmlVersion versionResource = getOrmXmlResource().getEntityMappings().getEntities().get(0).getAttributes().getVersions().get(0);
+		XmlVersion versionResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getVersions().get(0);
 		
 		assertNull(ormVersionMapping.getSpecifiedConverter());
 		assertNull(versionResource.getTemporal());

@@ -1,5 +1,5 @@
 /***********************************************************************
- * Copyright (c) 2008 by SAP AG, Walldorf. 
+ * Copyright (c) 2008, 2009 by SAP AG, Walldorf. 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -18,8 +18,8 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.JavaConventions;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
-import org.eclipse.jpt.core.internal.resource.orm.OrmXmlResourceProvider;
-import org.eclipse.jpt.core.resource.orm.OrmXmlResource;
+import org.eclipse.jpt.core.JpaFile;
+import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.wizards.entity.EntityWizardMsg;
 import org.eclipse.jpt.ui.internal.wizards.entity.data.operation.NewEntityClassOperation;
@@ -178,9 +178,9 @@ public class EntityDataModelProvider extends NewJavaClassDataModelProvider imple
 			String projectName = model.getStringProperty(PROJECT_NAME);
 			IProject project = ProjectUtilities.getProject(projectName);
 			if (project != null) {
-				OrmXmlResourceProvider modelProvider = OrmXmlResourceProvider.getXmlResourceProvider(project, xmlName);
-				OrmXmlResource ormResource = modelProvider.getXmlResource();
-				if (!ormResource.exists()) {
+				//TODO need to check content type as well since user can type in a file name, should have a different error message for invalid content type
+				JpaFile jpaFile = JptCorePlugin.getJpaFile(project, xmlName);
+				if (jpaFile == null) {
 					return new Status(
 						IStatus.ERROR, JptUiPlugin.PLUGIN_ID,
 							EntityWizardMsg.INVALID_XML_NAME);

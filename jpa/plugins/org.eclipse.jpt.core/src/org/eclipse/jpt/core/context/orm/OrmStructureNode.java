@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.orm;
 
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JptCorePlugin;
 
 /**
@@ -23,11 +24,11 @@ import org.eclipse.jpt.core.JptCorePlugin;
 public interface OrmStructureNode 
 {
 	/**
-	 * Return the type of the node's ORM.
+	 * Return the content type of the node's ORM.
 	 * This is used to find the appropriate provider when building ORM type
 	 * mappings (they can be ORM-specific) for the persistent type.
 	 */
-	String getOrmType();
+	IContentType getContentType();
 	
 	String ENTITY_MAPPINGS_ID = JptCorePlugin.PLUGIN_ID + ".orm.entityMappings"; //$NON-NLS-1$
 	

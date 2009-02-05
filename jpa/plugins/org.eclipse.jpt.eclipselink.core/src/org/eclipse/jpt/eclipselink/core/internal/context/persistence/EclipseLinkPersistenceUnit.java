@@ -19,7 +19,9 @@ import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.context.persistence.AbstractPersistenceUnit;
+import org.eclipse.jpt.core.internal.context.persistence.ImpliedMappingFileRef;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
+import org.eclipse.jpt.eclipselink.core.EclipseLinkJpaProject;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.caching.Caching;
@@ -36,8 +38,6 @@ import org.eclipse.jpt.eclipselink.core.internal.context.persistence.options.Ecl
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.options.Options;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.schema.generation.EclipseLinkSchemaGeneration;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.schema.generation.SchemaGeneration;
-import org.eclipse.jpt.eclipselink.core.internal.resource.orm.EclipseLinkOrmXmlResourceProvider;
-import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmXmlResource;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
@@ -67,8 +67,8 @@ public class EclipseLinkPersistenceUnit
 	protected final List<EclipseLinkConverter> converters = new ArrayList<EclipseLinkConverter>();
 
 
-	public EclipseLinkPersistenceUnit(Persistence parent) {
-		super(parent);
+	public EclipseLinkPersistenceUnit(Persistence parent, XmlPersistenceUnit xmlPersistenceUnit) {
+		super(parent, xmlPersistenceUnit);
 	}
 
 	@Override
@@ -113,16 +113,16 @@ public class EclipseLinkPersistenceUnit
 
 	@Override
 	public ListIterator<MappingFileRef> mappingFileRefs() {
-		if (impliedEclipseLinkMappingFileRef == null) {
+		if (this.impliedEclipseLinkMappingFileRef == null) {
 			return super.mappingFileRefs();
 		}
 		return new ReadOnlyCompositeListIterator<MappingFileRef>(
-			super.mappingFileRefs(), impliedEclipseLinkMappingFileRef);
+			super.mappingFileRefs(), this.impliedEclipseLinkMappingFileRef);
 	}
 
 	@Override
 	public int mappingFileRefsSize() {
-		if (impliedEclipseLinkMappingFileRef == null) {
+		if (this.impliedEclipseLinkMappingFileRef == null) {
 			return super.mappingFileRefsSize();
 		}
 		return 1 + super.mappingFileRefsSize();
@@ -138,26 +138,26 @@ public class EclipseLinkPersistenceUnit
 
 
 	public MappingFileRef getImpliedEclipseLinkMappingFileRef() {
-		return impliedEclipseLinkMappingFileRef;
+		return this.impliedEclipseLinkMappingFileRef;
 	}
 
 	protected MappingFileRef setImpliedEclipseLinkMappingFileRef() {
-		if (impliedEclipseLinkMappingFileRef != null) {
+		if (this.impliedEclipseLinkMappingFileRef != null) {
 			throw new IllegalStateException("The implied eclipselink mapping file ref is already set."); //$NON-NLS-1$
 		}
-		MappingFileRef mappingFileRef = new EclipseLinkImpliedMappingFileRef(this);
-		impliedEclipseLinkMappingFileRef = mappingFileRef;
+		MappingFileRef mappingFileRef = buildEclipseLinkImpliedMappingFileRef();
+		this.impliedEclipseLinkMappingFileRef = mappingFileRef;
 		firePropertyChanged(IMPLIED_ECLIPSELINK_MAPPING_FILE_REF_PROPERTY, null, mappingFileRef);
 		return mappingFileRef;
 	}
 
 	protected void unsetImpliedEclipseLinkMappingFileRef() {
-		if (impliedEclipseLinkMappingFileRef == null) {
+		if (this.impliedEclipseLinkMappingFileRef == null) {
 			throw new IllegalStateException("The implied eclipselink mapping file ref is already unset."); //$NON-NLS-1$
 		}
-		MappingFileRef mappingFileRef = impliedEclipseLinkMappingFileRef;
-		impliedEclipseLinkMappingFileRef.dispose();
-		impliedEclipseLinkMappingFileRef = null;
+		MappingFileRef mappingFileRef = this.impliedEclipseLinkMappingFileRef;
+		this.impliedEclipseLinkMappingFileRef.dispose();
+		this.impliedEclipseLinkMappingFileRef = null;
 		firePropertyChanged(IMPLIED_ECLIPSELINK_MAPPING_FILE_REF_PROPERTY, mappingFileRef, null);
 	}
 
@@ -270,8 +270,12 @@ public class EclipseLinkPersistenceUnit
 				&& ! impliedEclipseLinkMappingFileIsSpecified()
 				&& impliedEclipseLinkMappingFileExists()) {
 
-			impliedEclipseLinkMappingFileRef = new EclipseLinkImpliedMappingFileRef(this);
+			this.impliedEclipseLinkMappingFileRef = buildEclipseLinkImpliedMappingFileRef();
 		}
+	}
+
+	private ImpliedMappingFileRef buildEclipseLinkImpliedMappingFileRef() {
+		return new ImpliedMappingFileRef(this, JptEclipseLinkCorePlugin.DEFAULT_ECLIPSELINK_ORM_XML_FILE_PATH);
 	}
 
 	@Override
@@ -286,12 +290,12 @@ public class EclipseLinkPersistenceUnit
 				&& ! impliedEclipseLinkMappingFileIsSpecified()
 				&& impliedEclipseLinkMappingFileExists()) {
 
-			if (impliedEclipseLinkMappingFileRef == null) {
+			if (this.impliedEclipseLinkMappingFileRef == null) {
 				setImpliedEclipseLinkMappingFileRef();
 			}
 			getImpliedEclipseLinkMappingFileRef().update(null);
 		}
-		else if (impliedEclipseLinkMappingFileRef != null) {
+		else if (this.impliedEclipseLinkMappingFileRef != null) {
 			unsetImpliedEclipseLinkMappingFileRef();
 		}
 	}
@@ -310,11 +314,13 @@ public class EclipseLinkPersistenceUnit
 		return false;
 	}
 
+	@Override
+	public EclipseLinkJpaProject getJpaProject() {
+		return (EclipseLinkJpaProject) super.getJpaProject();
+	}
+	
 	protected boolean impliedEclipseLinkMappingFileExists() {
-		EclipseLinkOrmXmlResourceProvider modelProvider = 
-			EclipseLinkOrmXmlResourceProvider.getDefaultXmlResourceProvider(getJpaProject().getProject());
-		EclipseLinkOrmXmlResource resource = modelProvider.getXmlResource();
-		return resource != null && resource.exists();
+		return getJpaProject().getDefaultEclipseLinkOrmXmlResource() != null;
 	}
 
 	// This is called after the persistence unit has been updated to ensure

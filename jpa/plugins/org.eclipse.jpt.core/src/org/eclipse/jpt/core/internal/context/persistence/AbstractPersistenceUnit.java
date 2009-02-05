@@ -33,10 +33,8 @@ import org.eclipse.jpt.core.context.persistence.PersistenceStructureNodes;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnitTransactionType;
 import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
-import org.eclipse.jpt.core.internal.resource.orm.OrmXmlResourceProvider;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.core.resource.orm.OrmXmlResource;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlJavaClassRef;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
@@ -102,37 +100,22 @@ public abstract class AbstractPersistenceUnit
 
 	// ********** construction/initialization **********
 
-	protected AbstractPersistenceUnit(Persistence parent) {
-		super(parent);
-	}
-
 	/**
-	 * These lists are just copies of what is distributed across the context
-	 * model; so, if they have (virtually) changed, the resulting update has
-	 * already been triggered. We don't need to trigger another one here.
-	 */
-	@Override
-	protected void addNonUpdateAspectNamesTo(Set<String> nonUpdateAspectNames) {
-		super.addNonUpdateAspectNamesTo(nonUpdateAspectNames);
-		nonUpdateAspectNames.add(GENERATORS_LIST);
-		nonUpdateAspectNames.add(QUERIES_LIST);
-	}
-
-	/**
-	 * NB: Be careful changing the order of the statements in this method
+	 * NB: Be careful changing the order of initialization
 	 * (bug 258701 is one reason).
 	 */
-	public void initialize(XmlPersistenceUnit xpu) {
-		this.xmlPersistenceUnit = xpu;
-		this.name = xpu.getName();
-		this.specifiedExcludeUnlistedClasses = xpu.getExcludeUnlistedClasses();
+	protected AbstractPersistenceUnit(Persistence parent, XmlPersistenceUnit xmlPersistenceUnit) {
+		super(parent);
+		this.xmlPersistenceUnit = xmlPersistenceUnit;
+		this.name = this.xmlPersistenceUnit.getName();
+		this.specifiedExcludeUnlistedClasses = this.xmlPersistenceUnit.getExcludeUnlistedClasses();
 		this.specifiedTransactionType = this.buildSpecifiedTransactionType();
 		this.defaultTransactionType = this.buildDefaultTransactionType();
-		this.description = xpu.getDescription();
-		this.provider = xpu.getProvider();
-		this.jtaDataSource = xpu.getJtaDataSource();
-		this.nonJtaDataSource = xpu.getNonJtaDataSource();
-		this.specifiedExcludeUnlistedClasses = xpu.getExcludeUnlistedClasses();
+		this.description = this.xmlPersistenceUnit.getDescription();
+		this.provider = this.xmlPersistenceUnit.getProvider();
+		this.jtaDataSource = this.xmlPersistenceUnit.getJtaDataSource();
+		this.nonJtaDataSource = this.xmlPersistenceUnit.getNonJtaDataSource();
+		this.specifiedExcludeUnlistedClasses = this.xmlPersistenceUnit.getExcludeUnlistedClasses();
 
 		this.initializeJarFiles();
 
@@ -147,6 +130,18 @@ public abstract class AbstractPersistenceUnit
 		//specified classRefs and mappingFileRefs
 		this.initializeImpliedClassRefs();
 		this.initializePersistenceUnitDefaults();
+	}
+
+	/**
+	 * These lists are just copies of what is distributed across the context
+	 * model; so, if they have (virtually) changed, the resulting update has
+	 * already been triggered. We don't need to trigger another one here.
+	 */
+	@Override
+	protected void addNonUpdateAspectNamesTo(Set<String> nonUpdateAspectNames) {
+		super.addNonUpdateAspectNamesTo(nonUpdateAspectNames);
+		nonUpdateAspectNames.add(GENERATORS_LIST);
+		nonUpdateAspectNames.add(QUERIES_LIST);
 	}
 
 	protected void initializeJarFiles() {
@@ -224,7 +219,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	public TextRange getSelectionTextRange() {
-		return xmlPersistenceUnit.getSelectionTextRange();
+		return this.xmlPersistenceUnit.getSelectionTextRange();
 	}
 
 	public void dispose() {
@@ -424,7 +419,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected MappingFileRef buildImpliedMappingFileRef() {
-		return this.buildMappingFileRef(null);
+		return getJpaFactory().buildImpliedMappingFileRef(this);
 	}
 
 	protected void unsetImpliedMappingFileRef() {
@@ -997,9 +992,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected boolean impliedMappingFileExists() {
-		OrmXmlResourceProvider xmlResourceProvider = OrmXmlResourceProvider.getDefaultXmlResourceProvider(this.getJpaProject().getProject());
-		OrmXmlResource xmlResource = xmlResourceProvider.getXmlResource();
-		return (xmlResource != null) && xmlResource.exists();
+		return getJpaProject().getDefaultOrmXmlResource() != null;
 	}
 
 	protected void updateJarFiles() {

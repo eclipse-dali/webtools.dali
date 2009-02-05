@@ -11,8 +11,6 @@ package org.eclipse.jpt.core.tests.internal.context.persistence;
 
 import java.io.IOException;
 import java.util.Iterator;
-import java.util.ListIterator;
-
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
@@ -22,8 +20,8 @@ import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.persistence.ClassRef;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnitTransactionType;
+import org.eclipse.jpt.core.resource.common.JpaXmlResource;
 import org.eclipse.jpt.core.resource.java.JPA;
-import org.eclipse.jpt.core.resource.orm.OrmXmlResource;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlJavaClassRef;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
@@ -388,14 +386,14 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		PersistenceUnit persistenceUnit = getPersistenceUnit();
 		
 		// test that there is one initially
-		OrmXmlResource ormResource = getOrmXmlResource();
-		assertTrue(ormResource.exists());
+		JpaXmlResource ormResource = getOrmXmlResource();
+		assertTrue(ormResource.fileExists());
 		assertNotNull(persistenceUnit.getImpliedMappingFileRef());
 		
 		// remove orm.xml
 		deleteResource(ormResource);
 		
-		assertFalse(ormResource.exists());
+		assertFalse(ormResource.fileExists());
 		assertNull(persistenceUnit.getImpliedMappingFileRef());
 	}
 	
@@ -404,8 +402,8 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		PersistenceUnit persistenceUnit = getPersistenceUnit();
 		
 		// test that there is one initially
-		OrmXmlResource ormResource = getOrmXmlResource();
-		assertTrue(ormResource.exists());
+		JpaXmlResource ormResource = getOrmXmlResource();
+		assertTrue(ormResource.fileExists());
 		assertNotNull(persistenceUnit.getImpliedMappingFileRef());
 		
 		// add specified orm.xml
@@ -415,7 +413,7 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		
 		assertEquals(1, persistenceUnit.specifiedMappingFileRefsSize());
 		
-		assertTrue(ormResource.exists());
+		assertTrue(ormResource.fileExists());
 		assertNull(persistenceUnit.getImpliedMappingFileRef());
 	}
 	

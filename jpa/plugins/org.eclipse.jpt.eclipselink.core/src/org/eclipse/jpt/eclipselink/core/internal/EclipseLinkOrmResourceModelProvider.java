@@ -12,8 +12,8 @@ package org.eclipse.jpt.eclipselink.core.internal;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.core.JpaResourceModel;
 import org.eclipse.jpt.core.JpaResourceModelProvider;
+import org.eclipse.jpt.core.resource.common.JpaXmlResource;
 import org.eclipse.jpt.eclipselink.core.internal.resource.orm.EclipseLinkOrmXmlResourceProvider;
 
 /**
@@ -43,7 +43,7 @@ public class EclipseLinkOrmResourceModelProvider
 		return JptEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_CONTENT_TYPE;
 	}
 
-	public JpaResourceModel buildResourceModel(JpaProject jpaProject, IFile file) {
+	public JpaXmlResource buildResourceModel(JpaProject jpaProject, IFile file) {
 		return EclipseLinkOrmXmlResourceProvider.getXmlResourceProvider(file).getXmlResource();
 	}
 

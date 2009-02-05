@@ -9,11 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context;
 
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaFactory;
+import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.MappingFile;
 import org.eclipse.jpt.core.context.MappingFileProvider;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
-import org.eclipse.jpt.core.resource.orm.OrmXmlResource;
+import org.eclipse.jpt.core.resource.common.JpaXmlResource;
 
 public class GenericMappingFileProvider
 	implements MappingFileProvider
@@ -35,11 +37,11 @@ public class GenericMappingFileProvider
 		super();
 	}
 
-	public String getResourceType() {
-		return OrmXmlResource.TYPE;
+	public IContentType getContentType() {
+		return JptCorePlugin.ORM_XML_CONTENT_TYPE;
 	}
 
-	public MappingFile buildMappingFile(MappingFileRef parent, OrmXmlResource resource, JpaFactory factory) {
+	public MappingFile buildMappingFile(MappingFileRef parent, JpaXmlResource resource, JpaFactory factory) {
 		return factory.buildMappingFile(parent, resource);
 	}
 

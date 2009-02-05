@@ -44,7 +44,7 @@ import org.eclipse.jpt.core.internal.context.java.JavaNullAttributeMappingProvid
 import org.eclipse.jpt.core.internal.context.orm.OrmNullAttributeMappingProvider;
 import org.eclipse.jpt.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.core.internal.utility.jdt.DefaultAnnotationEditFormatter;
-import org.eclipse.jpt.core.resource.orm.OrmXmlResource;
+import org.eclipse.jpt.core.resource.common.JpaXmlResource;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.db.ConnectionProfileFactory;
@@ -123,7 +123,7 @@ public class GenericJpaPlatform
 	 */
 	protected JpaResourceModelProvider getResourceModelProvider(IContentType contentType) {
 		for (JpaResourceModelProvider provider : CollectionTools.iterable(resourceModelProviders())) {
-			if (provider.getContentType().isKindOf(contentType)) {
+			if (contentType.isKindOf(provider.getContentType())) {
 				return provider;
 			}
 		}
@@ -272,17 +272,17 @@ public class GenericJpaPlatform
 
 	// ********** Mapping File **********
 
-	public MappingFile buildMappingFile(MappingFileRef parent, OrmXmlResource resource) {
-		return this.getMappingFileProviderForResourceType(resource.getType()).buildMappingFile(parent, resource, this.jpaFactory);
+	public MappingFile buildMappingFile(MappingFileRef parent, JpaXmlResource resource) {
+		return this.getMappingFileProviderForResourceType(resource.getContentType()).buildMappingFile(parent, resource, this.jpaFactory);
 	}
 
-	protected MappingFileProvider getMappingFileProviderForResourceType(String resourceType) {
+	protected MappingFileProvider getMappingFileProviderForResourceType(IContentType contentType) {
 		for (MappingFileProvider provider : CollectionTools.iterable(this.mappingFileProviders())) {
-			if (provider.getResourceType() == resourceType) {
+			if (provider.getContentType().equals(contentType)) {
 				return provider;
 			}
 		}
-		throw new IllegalArgumentException("Illegal mapping file resource type: " + resourceType); //$NON-NLS-1$
+		throw new IllegalArgumentException("Illegal mapping file content type: " + contentType); //$NON-NLS-1$
 	}
 	
 	protected ListIterator<MappingFileProvider> mappingFileProviders() {
@@ -300,12 +300,12 @@ public class GenericJpaPlatform
 	// ********** extended ORM type mappings **********
 
 	public OrmTypeMapping buildOrmTypeMappingFromMappingKey(String key, OrmPersistentType type) {
-		return this.getOrmTypeMappingProviderForMappingKey(type.getOrmType(), key).buildMapping(type, this.jpaFactory);
+		return this.getOrmTypeMappingProviderForMappingKey(type.getContentType(), key).buildMapping(type, this.jpaFactory);
 	}
 
-	protected OrmTypeMappingProvider getOrmTypeMappingProviderForMappingKey(String ormType, String key) {
+	protected OrmTypeMappingProvider getOrmTypeMappingProviderForMappingKey(IContentType contentType, String key) {
 		for (ExtendedOrmTypeMappingProvider provider : CollectionTools.iterable(this.extendedOrmTypeMappingProviders())) {
-			if ((provider.getOrmType() == ormType) && (provider.getKey() == key)) {
+			if ((provider.getContentType().equals(contentType)) && (provider.getKey() == key)) {
 				return provider;
 			}
 		}
@@ -350,16 +350,16 @@ public class GenericJpaPlatform
 	// ********** extended ORM attribute mappings **********
 
 	public OrmAttributeMapping buildOrmAttributeMappingFromMappingKey(String key, OrmPersistentAttribute attribute) {
-		return this.getOrmAttributeMappingProviderForMappingKey(attribute.getOrmType(), key).buildMapping(attribute, this.jpaFactory);
+		return this.getOrmAttributeMappingProviderForMappingKey(attribute.getContentType(), key).buildMapping(attribute, this.jpaFactory);
 	}
 
 	public XmlAttributeMapping buildVirtualOrmResourceMappingFromMappingKey(String key, OrmTypeMapping ormTypeMapping, JavaAttributeMapping javaAttributeMapping) {
-		return this.getOrmAttributeMappingProviderForMappingKey(ormTypeMapping.getOrmType(), key).buildVirtualResourceMapping(ormTypeMapping, javaAttributeMapping, this.jpaFactory);
+		return this.getOrmAttributeMappingProviderForMappingKey(ormTypeMapping.getContentType(), key).buildVirtualResourceMapping(ormTypeMapping, javaAttributeMapping, this.jpaFactory);
 	}
 
-	protected OrmAttributeMappingProvider getOrmAttributeMappingProviderForMappingKey(String ormType, String key) {
+	protected OrmAttributeMappingProvider getOrmAttributeMappingProviderForMappingKey(IContentType contentType, String key) {
 		for (ExtendedOrmAttributeMappingProvider provider : CollectionTools.iterable(this.extendedOrmAttributeMappingProviders())) {
-			if ((provider.getOrmType() == ormType) && (provider.getKey() == key)) {
+			if ((provider.getContentType().equals(contentType)) && (provider.getKey() == key)) {
 				return provider;
 			}
 		}

@@ -15,26 +15,20 @@ import java.util.ListIterator;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jface.viewers.ViewerFilter;
-import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.JptUiIcons;
+import org.eclipse.jpt.ui.internal.XmlMappingFileViewerFilter;
 import org.eclipse.jpt.ui.internal.persistence.JptUiPersistenceMessages;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveListPane;
@@ -141,7 +135,7 @@ public abstract class PersistenceUnitMappingFilesComposite extends Pane<Persiste
 		dialog.setValidator(buildValidator());
 		dialog.setTitle(JptUiPersistenceMessages.PersistenceUnitMappingFilesComposite_mappingFileDialog_title);
 		dialog.setMessage(JptUiPersistenceMessages.PersistenceUnitMappingFilesComposite_mappingFileDialog_message);
-		dialog.addFilter(new XmlFileViewerFilter(getSubject().getJpaProject().getJavaProject()));
+		dialog.addFilter(new XmlMappingFileViewerFilter(getSubject().getJpaProject()));
 		dialog.setInput(project);
 		dialog.setComparator(new ResourceComparator(ResourceComparator.NAME));
 
@@ -361,74 +355,6 @@ public abstract class PersistenceUnitMappingFilesComposite extends Pane<Persiste
 
 			this.rootTagName = name;
 			throw new SAXException();
-		}
-	}
-
-	protected boolean isMappingFile(IContentType contentType) {
-		return contentType.isKindOf(JptCorePlugin.ORM_XML_CONTENT_TYPE);
-	}
-	
-	/**
-	 * This filter will deny showing any file that are not XML files or folders
-	 * that don't contain any XML files in its sub-hierarchy. The XML files are
-	 * partially parsed to only accept JPA mapping descriptors.
-	 */
-	private class XmlFileViewerFilter extends ViewerFilter {
-
-		private final IJavaProject javaProject;
-
-		XmlFileViewerFilter(IJavaProject javaProject) {
-			super();
-			this.javaProject = javaProject;
-		}
-
-		/**
-		 * Determines whether the given file (an XML file) is a JPA mapping
-		 * descriptor file. 
-		 */
-		private boolean isMappingFile(IFile file) {
-			IContentType contentType = PlatformTools.getContentType(file);
-			return (contentType != null) && PersistenceUnitMappingFilesComposite.this.isMappingFile(contentType);
-		}
-
-		private boolean isXmlFile(IFile file) {
-			return "xml".equalsIgnoreCase(file.getFileExtension());
-		}
-
-		@Override
-		public boolean select(Viewer viewer,
-		                      Object parentElement,
-		                      Object element) {
-
-			if (element instanceof IFile) {
-				IFile file = (IFile) element;
-				return isXmlFile(file) && isMappingFile(file);
-			}
-			else if (element instanceof IFolder) {
-				IFolder folder = (IFolder) element;
-
-				try {
-					for (IClasspathEntry entry : this.javaProject.getRawClasspath()) {
-						if (entry.getEntryKind() == IClasspathEntry.CPE_SOURCE) {
-							if (entry.getPath().isPrefixOf(folder.getFullPath().makeRelative())) {
-								for (IResource resource : folder.members()) {
-									if (select(viewer, folder, resource)) {
-										return true;
-									}
-								}
-							}
-						}
-					}
-				}
-				catch (JavaModelException e) {
-					JptUiPlugin.log(e.getStatus());
-				}
-				catch (CoreException e) {
-					JptUiPlugin.log(e.getStatus());
-				}
-			}
-
-			return false;
 		}
 	}
 }

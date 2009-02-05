@@ -9,9 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.resource.common;
 
+import java.io.IOException;
+import java.util.Collections;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.EList;
@@ -21,9 +24,11 @@ import org.eclipse.jem.util.emf.workbench.WorkbenchResourceHelperBase;
 import org.eclipse.jem.util.plugin.JEMUtilPlugin;
 import org.eclipse.jpt.core.JpaResourceModel;
 import org.eclipse.jpt.core.JpaResourceModelListener;
+import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.utility.internal.ListenerList;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.wst.common.internal.emf.resource.Renderer;
+import org.eclipse.wst.common.internal.emf.resource.Translator;
 import org.eclipse.wst.common.internal.emf.resource.TranslatorResourceImpl;
 
 /**
@@ -33,20 +38,28 @@ import org.eclipse.wst.common.internal.emf.resource.TranslatorResourceImpl;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public abstract class JpaXmlResource
+public class JpaXmlResource
 	extends TranslatorResourceImpl
 	implements JpaResourceModel
 {
 	protected final ListenerList<JpaResourceModelListener> resourceModelListenerList;
 
-
+	protected final IContentType contentType;
+	
+	protected final Translator rootTranslator;
+	
 	// ********** constructor **********
 
-	protected JpaXmlResource(URI uri, Renderer renderer) {
+	public JpaXmlResource(URI uri, Renderer renderer, IContentType contentType, Translator rootTranslator) {
 		super(uri, renderer);
 		this.resourceModelListenerList = new ListenerList<JpaResourceModelListener>(JpaResourceModelListener.class);
+		this.contentType = contentType;
+		this.rootTranslator = rootTranslator;
 	}
 
+	public IContentType getContentType() {
+		return this.contentType;
+	}
 
 	// ********** BasicNotifierImpl override **********
 
@@ -61,8 +74,15 @@ public abstract class JpaXmlResource
 			this.resourceModelChanged();
 		}
 	}
+	
+	
+	// ********** TranslatorResource implementation **********
 
+	public Translator getRootTranslator() {
+		return this.rootTranslator;
+	}
 
+	
 	// ********** TranslatorResourceImpl implementation **********
 
 	/**
@@ -103,7 +123,7 @@ public abstract class JpaXmlResource
 
 	// ********** convenience methods **********
 
-	public boolean exists() {
+	public boolean fileExists() {
 		return this.getFile().exists();
 	}
 
@@ -131,6 +151,19 @@ public abstract class JpaXmlResource
 		}
 		String fileName = URI.decode(uri.path()).substring(JEMUtilPlugin.PLATFORM_RESOURCE.length() + 1);
 		return ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(fileName));
+	}
+	
+	public void modify(Runnable runnable) {
+		try {
+			runnable.run();
+			try {
+				save(Collections.EMPTY_MAP);
+			} catch (IOException ioe) {
+				JptCorePlugin.log(ioe);
+			}
+		} catch (Exception e) {
+			JptCorePlugin.log(e);
+		}
 	}
 
 	@Override

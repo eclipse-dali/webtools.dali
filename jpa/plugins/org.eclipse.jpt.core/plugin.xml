@@ -12,10 +12,6 @@
 	/>
 	
 	
-	<extension-point 
-		id="resourceModelProviders" 
-		name="%JPA_RESOURCE_MODEL_PROVIDERS" 
-		schema="schema/resourceModelProviders.exsd"/>
 	
 	
 	<!-- ***** Eclipse core extensions ***** -->
@@ -81,15 +77,19 @@
 		<content-type
 			id="org.eclipse.jpt.core.content.baseJpaContent"
 			name="%BASE_JPA_CONTENT"
-			base-type="org.eclipse.core.runtime.xml">
-			<describer
-				class="org.eclipse.jpt.core.internal.resource.IndeterminateContentDescriber"/>
+			base-type="org.eclipse.core.runtime.xml"
+			describer="org.eclipse.jpt.core.internal.resource.IndeterminateContentDescriber">
 		</content-type>
+	  	<content-type
+	        base-type="org.eclipse.jpt.core.content.baseJpaContent"
+	        id="org.eclipse.jpt.core.content.mappingFile"
+	        name="%MAPPING_FILE_CONTENT">
+	  	</content-type>
 		
 		<content-type
-			id="org.eclipse.jpt.core.content.orm"
-			name="%ORM_XML_CONTENT"
-			base-type="org.eclipse.jpt.core.content.baseJpaContent">
+	        base-type="org.eclipse.jpt.core.content.mappingFile"
+	        id="org.eclipse.jpt.core.content.orm"
+	        name="%ORM_XML_CONTENT">
 			<describer
 				class="org.eclipse.core.runtime.content.XMLRootElementContentDescriber2">
 				<parameter 
@@ -137,18 +137,6 @@
 	</extension>
 	
 	
-	<extension
-		point="org.eclipse.jpt.core.resourceModelProviders">
-		
-		<modelProvider
-			fileContentType="org.eclipse.jpt.core.content.persistence"
-			factoryClass="org.eclipse.jpt.core.internal.resource.persistence.PersistenceXmlResourceProviderFactory"/>
-		
-		<modelProvider
-			fileContentType="org.eclipse.jpt.core.content.orm"
-			factoryClass="org.eclipse.jpt.core.internal.resource.orm.OrmXmlResourceProviderFactory"/>
-		
-	</extension>
 	
 	
 	<!--

@@ -38,7 +38,7 @@ public class PersistenceUnitMetadataTests extends ContextModelTestCase
 	
 	public void testIsAllFeaturesUnset() throws Exception {
 		org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitMetadata persistenceUnitMetadata = OrmFactory.eINSTANCE.createXmlPersistenceUnitMetadata();
-		getOrmXmlResource().getEntityMappings().setPersistenceUnitMetadata(persistenceUnitMetadata);
+		getXmlEntityMappings().setPersistenceUnitMetadata(persistenceUnitMetadata);
 		assertTrue(persistenceUnitMetadata.isAllFeaturesUnset());
 		
 		persistenceUnitMetadata.setXmlMappingMetadataComplete(true);
@@ -54,51 +54,51 @@ public class PersistenceUnitMetadataTests extends ContextModelTestCase
 	public void testUpdateXmlMappingMetadataComplete() throws Exception {
 		PersistenceUnitMetadata persistenceUnitMetadata = getEntityMappings().getPersistenceUnitMetadata();
 		assertFalse(persistenceUnitMetadata.isXmlMappingMetadataComplete());
-		assertNull(getOrmXmlResource().getEntityMappings().getPersistenceUnitMetadata());
+		assertNull(getXmlEntityMappings().getPersistenceUnitMetadata());
 		
 		//set xmlMappingMetadataComplete in the resource model, verify context model updated
-		getOrmXmlResource().getEntityMappings().setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createXmlPersistenceUnitMetadata());
-		getOrmXmlResource().getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);		
+		getXmlEntityMappings().setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createXmlPersistenceUnitMetadata());
+		getXmlEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);		
 		assertTrue(persistenceUnitMetadata.isXmlMappingMetadataComplete());
-		assertTrue(getOrmXmlResource().getEntityMappings().getPersistenceUnitMetadata().isXmlMappingMetadataComplete());
+		assertTrue(getXmlEntityMappings().getPersistenceUnitMetadata().isXmlMappingMetadataComplete());
 
 		//set xmlMappingMetadataComplete to null in the resource model
-		getOrmXmlResource().getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(false);
+		getXmlEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(false);
 		assertFalse(persistenceUnitMetadata.isXmlMappingMetadataComplete());
-		assertFalse(getOrmXmlResource().getEntityMappings().getPersistenceUnitMetadata().isXmlMappingMetadataComplete());
+		assertFalse(getXmlEntityMappings().getPersistenceUnitMetadata().isXmlMappingMetadataComplete());
 	}
 	
 	public void testModifyXmlMappingMetadataComplete() throws Exception {		
 		PersistenceUnitMetadata persistenceUnitMetadata = getEntityMappings().getPersistenceUnitMetadata();
 		assertFalse(persistenceUnitMetadata.isXmlMappingMetadataComplete());
-		assertNull(getOrmXmlResource().getEntityMappings().getPersistenceUnitMetadata());
+		assertNull(getXmlEntityMappings().getPersistenceUnitMetadata());
 		
 		//set xmlMappingMetadataComplete in the context model, verify resource model modified
 		persistenceUnitMetadata.setXmlMappingMetadataComplete(true);
 		assertTrue(persistenceUnitMetadata.isXmlMappingMetadataComplete());
-		assertTrue(getOrmXmlResource().getEntityMappings().getPersistenceUnitMetadata().isXmlMappingMetadataComplete());
+		assertTrue(getXmlEntityMappings().getPersistenceUnitMetadata().isXmlMappingMetadataComplete());
 		
 		//set xmlMappingMetadataComplete to null in the context model
 		persistenceUnitMetadata.setXmlMappingMetadataComplete(false);
 		assertFalse(persistenceUnitMetadata.isXmlMappingMetadataComplete());
-		assertNull(getOrmXmlResource().getEntityMappings().getPersistenceUnitMetadata());
+		assertNull(getXmlEntityMappings().getPersistenceUnitMetadata());
 	}
 	
 	public void testModifyXmlMappingMetadataComplete2() throws Exception {
 		PersistenceUnitMetadata persistenceUnitMetadata = getEntityMappings().getPersistenceUnitMetadata();
 		assertFalse(persistenceUnitMetadata.isXmlMappingMetadataComplete());
-		assertNull(getOrmXmlResource().getEntityMappings().getPersistenceUnitMetadata());
+		assertNull(getXmlEntityMappings().getPersistenceUnitMetadata());
 		
 		//set xmlMappingMetadataComplete in the context model, verify resource model modified
 		persistenceUnitMetadata.setXmlMappingMetadataComplete(true);
 		assertTrue(persistenceUnitMetadata.isXmlMappingMetadataComplete());
-		assertTrue(getOrmXmlResource().getEntityMappings().getPersistenceUnitMetadata().isXmlMappingMetadataComplete());
+		assertTrue(getXmlEntityMappings().getPersistenceUnitMetadata().isXmlMappingMetadataComplete());
 		
 		//set xmlMappingMetadataComplete to null in the context model
 		//set another element on the persistence-unit-metadata element so it doesn't get removed
-		getOrmXmlResource().getEntityMappings().getPersistenceUnitMetadata().setPersistenceUnitDefaults(OrmFactory.eINSTANCE.createXmlPersistenceUnitDefaults());
+		getXmlEntityMappings().getPersistenceUnitMetadata().setPersistenceUnitDefaults(OrmFactory.eINSTANCE.createXmlPersistenceUnitDefaults());
 		persistenceUnitMetadata.setXmlMappingMetadataComplete(false);
 		assertFalse(persistenceUnitMetadata.isXmlMappingMetadataComplete());
-		assertFalse(getOrmXmlResource().getEntityMappings().getPersistenceUnitMetadata().isXmlMappingMetadataComplete());
+		assertFalse(getXmlEntityMappings().getPersistenceUnitMetadata().isXmlMappingMetadataComplete());
 	}
 }

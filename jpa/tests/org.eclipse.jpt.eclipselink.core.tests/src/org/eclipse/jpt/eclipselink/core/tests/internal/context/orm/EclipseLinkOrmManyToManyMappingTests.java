@@ -93,7 +93,7 @@ public class EclipseLinkOrmManyToManyMappingTests
 		EclipseLinkRelationshipMapping contextManyToMany = 
 			(EclipseLinkRelationshipMapping) ormPersistentAttribute.getMapping();
 		XmlEntity resourceEntity = 
-			(XmlEntity) getOrmXmlResource().getEntityMappings().getEntities().get(0);
+			(XmlEntity) getXmlEntityMappings().getEntities().get(0);
 		XmlManyToMany resourceManyToMany = 
 			(XmlManyToMany) resourceEntity.getAttributes().getManyToManys().get(0);
 		
@@ -132,7 +132,7 @@ public class EclipseLinkOrmManyToManyMappingTests
 		EclipseLinkRelationshipMapping contextManyToMany = 
 			(EclipseLinkRelationshipMapping) ormPersistentAttribute.getMapping();
 		XmlEntity resourceEntity = 
-			(XmlEntity)getOrmXmlResource().getEntityMappings().getEntities().get(0);
+			(XmlEntity)getXmlEntityMappings().getEntities().get(0);
 		XmlManyToMany resourceManyToMany = 
 			(XmlManyToMany) resourceEntity.getAttributes().getManyToManys().get(0);
 		

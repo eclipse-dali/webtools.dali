@@ -9,13 +9,14 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.orm.ExtendedOrmTypeMappingProvider;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaFactory;
-import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmXmlResource;
+import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
 
 /**
  * EclipseLink ORM Mapped Superclass provider
@@ -41,8 +42,8 @@ public class EclipseLinkOrmMappedSuperclassProvider
 		super();
 	}
 
-	public String getOrmType() {
-		return EclipseLinkOrmXmlResource.TYPE;
+	public IContentType getContentType() {
+		return JptEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_CONTENT_TYPE;
 	}
 
 	public OrmTypeMapping buildMapping(OrmPersistentType parent, JpaFactory factory) {

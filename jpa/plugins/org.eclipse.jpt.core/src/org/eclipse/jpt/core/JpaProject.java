@@ -20,6 +20,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
+import org.eclipse.jpt.core.resource.common.JpaXmlResource;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.db.Catalog;
 import org.eclipse.jpt.db.ConnectionProfile;
@@ -106,7 +107,33 @@ public interface JpaProject
 	 */
 	JpaFile getJpaFile(IFile file);
 
+	
+	// ********** xml resources **********
 
+	/**
+	 * Return the resource model object that corresponds to the file
+	 * 'META-INF/persistence.xml' if that file has the persistence ContentType
+	 * 
+	 * @see JptCorePlugin.DEFAULT_PERSISTENCE_XML_FILE_PATH
+	 */
+	JpaXmlResource getPersistenceXmlResource();
+	
+	/**
+	 * Return the resource model object that corresponds to the file
+	 * at the given filePath if that file has the mapping file ContentType
+	 * (org.eclipse.jpt.core.content.mappingFile)
+	 */
+	JpaXmlResource getMappingFileResource(String filePath);
+
+	/**
+	 * Return the resource model object that corresponds to the file
+	 * 'META-INF/orm.xml' if that file has the mapping file ContentType
+	 * 
+	 * @see JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH
+	 */
+	JpaXmlResource getDefaultOrmXmlResource();
+	
+	
 	// ********** Java resources **********
 
 	/**

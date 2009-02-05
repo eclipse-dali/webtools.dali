@@ -32,6 +32,7 @@ import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
+@SuppressWarnings("nls")
 public class OrmTransientMappingTests extends ContextModelTestCase
 {
 	public OrmTransientMappingTests(String name) {
@@ -68,7 +69,7 @@ public class OrmTransientMappingTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, "transientMapping");
 		OrmTransientMapping xmlTransientnMapping = (OrmTransientMapping) ormPersistentAttribute.getMapping();
-		XmlTransient transientResource = getOrmXmlResource().getEntityMappings().getEntities().get(0).getAttributes().getTransients().get(0);
+		XmlTransient transientResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getTransients().get(0);
 		
 		assertEquals("transientMapping", xmlTransientnMapping.getName());
 		assertEquals("transientMapping", transientResource.getName());
@@ -88,7 +89,7 @@ public class OrmTransientMappingTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, "transientMapping");
 		OrmTransientMapping xmlTransientnMapping = (OrmTransientMapping) ormPersistentAttribute.getMapping();
-		XmlTransient transientResource = getOrmXmlResource().getEntityMappings().getEntities().get(0).getAttributes().getTransients().get(0);
+		XmlTransient transientResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getTransients().get(0);
 		
 		assertEquals("transientMapping", xmlTransientnMapping.getName());
 		assertEquals("transientMapping", transientResource.getName());

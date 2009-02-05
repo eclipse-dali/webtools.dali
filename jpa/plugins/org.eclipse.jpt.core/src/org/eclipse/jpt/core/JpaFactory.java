@@ -106,9 +106,9 @@ import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
+import org.eclipse.jpt.core.resource.common.JpaXmlResource;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.core.resource.orm.OrmXmlResource;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
 import org.eclipse.jpt.core.resource.orm.XmlBasic;
@@ -133,7 +133,6 @@ import org.eclipse.jpt.core.resource.orm.XmlTableGenerator;
 import org.eclipse.jpt.core.resource.orm.XmlTransient;
 import org.eclipse.jpt.core.resource.orm.XmlUniqueConstraint;
 import org.eclipse.jpt.core.resource.orm.XmlVersion;
-import org.eclipse.jpt.core.resource.persistence.PersistenceXmlResource;
 import org.eclipse.jpt.core.resource.persistence.XmlJavaClassRef;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistence;
@@ -196,21 +195,23 @@ public interface JpaFactory
 	 */
 	JpaRootContextNode buildRootContextNode(JpaProject jpaProject);
 
-	MappingFile buildMappingFile(MappingFileRef parent, OrmXmlResource resource);
+	MappingFile buildMappingFile(MappingFileRef parent, JpaXmlResource resource);
 	
 	
 	// ********** Persistence Context Model **********
 	
-	PersistenceXml buildPersistenceXml(JpaRootContextNode parent, PersistenceXmlResource persistenceResource);
+	PersistenceXml buildPersistenceXml(JpaRootContextNode parent, JpaXmlResource resource);
 	
 	Persistence buildPersistence(PersistenceXml parent, XmlPersistence resourcePersistence);
 	
 	PersistenceUnit buildPersistenceUnit(Persistence parent, XmlPersistenceUnit resourcePersistenceUnit);
 	
 	/**
-	 * xmlMappingFileRef is allowed to be null, this would be used for the implied mapping file ref
+	 * xmlMappingFileRef is not allowed to be null, use buildImpliedMappingFileRef instead
 	 */
 	MappingFileRef buildMappingFileRef(PersistenceUnit parent, XmlMappingFileRef xmlMappingFileRef);
+	
+	MappingFileRef buildImpliedMappingFileRef(PersistenceUnit parent);
 	
 	ClassRef buildClassRef(PersistenceUnit parent, XmlJavaClassRef xmlClassRef);
 	
@@ -221,7 +222,7 @@ public interface JpaFactory
 	
 	// ********** ORM Context Model **********
 	
-	OrmXml buildOrmXml(MappingFileRef parent, OrmXmlResource ormResource);
+	OrmXml buildOrmXml(MappingFileRef parent, JpaXmlResource resource);
 	
 	EntityMappings buildEntityMappings(OrmXml parent, XmlEntityMappings entityMappings);
 	

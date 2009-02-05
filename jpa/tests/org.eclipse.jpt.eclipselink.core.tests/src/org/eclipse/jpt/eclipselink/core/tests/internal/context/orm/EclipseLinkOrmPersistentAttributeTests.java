@@ -27,6 +27,7 @@ import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
+@SuppressWarnings("nls")
 public class EclipseLinkOrmPersistentAttributeTests extends ContextModelTestCase
 {
 	public EclipseLinkOrmPersistentAttributeTests(String name) {

@@ -10,8 +10,8 @@
 package org.eclipse.jpt.core.tests.internal.context.persistence;
 
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
+import org.eclipse.jpt.core.resource.common.JpaXmlResource;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
-import org.eclipse.jpt.core.resource.persistence.PersistenceXmlResource;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 
 public class PersistenceXmlTests extends ContextModelTestCase
@@ -20,29 +20,33 @@ public class PersistenceXmlTests extends ContextModelTestCase
 		super(name);
 	}
 	
-	protected PersistenceXml persistenceXml() {
+	protected PersistenceXml getPersistenceXml() {
 		return getRootContextNode().getPersistenceXml();
 	}
 	
 	public void testUpdateAddPersistence() throws Exception {
-		PersistenceXmlResource prm = getPersistenceXmlResource();
+		assertEquals(2, getJpaProject().jpaFilesSize());
+		JpaXmlResource prm = getPersistenceXmlResource();
 		prm.getContents().clear();
 		prm.save(null);
 		
-		assertNull(persistenceXml().getPersistence());
+		//the ContentType of the persistence.xml file is no longer persistence, so the jpa file is removed
+		assertNull(getPersistenceXml());
+		assertEquals(1, getJpaProject().jpaFilesSize()); //should only be the orm.xml file
 		
 		prm.getContents().add(PersistenceFactory.eINSTANCE.createXmlPersistence());
+		prm.save(null);
 		
-		assertNotNull(persistenceXml().getPersistence());
-		
+		assertNotNull(getPersistenceXml().getPersistence());
+		assertEquals(2, getJpaProject().jpaFilesSize());	
 	}
 	
 	public void testModifyAddPersistence() {
-		PersistenceXmlResource prm = getPersistenceXmlResource();
-		prm.getContents().remove(prm.getPersistence());
-		assertNull(prm.getPersistence());
+		JpaXmlResource prm = getPersistenceXmlResource();
+		prm.getContents().remove(getXmlPersistence());
+		assertNull(getXmlPersistence());
 		
-		PersistenceXml persistenceXml = persistenceXml();
+		PersistenceXml persistenceXml = getPersistenceXml();
 		
 		persistenceXml.addPersistence();
 		
@@ -60,17 +64,17 @@ public class PersistenceXmlTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateRemovePersistence() throws Exception {
-		PersistenceXmlResource prm = getPersistenceXmlResource();
+		JpaXmlResource prm = getPersistenceXmlResource();
 		
-		assertNotNull(persistenceXml().getPersistence());
+		assertNotNull(getPersistenceXml().getPersistence());
 		
 		prm.getContents().clear();
 		
-		assertNull(persistenceXml().getPersistence());
+		assertNull(getPersistenceXml().getPersistence());
 	}
 	
 	public void testModifyRemovePersistence() {
-		PersistenceXml persistenceXml = persistenceXml();
+		PersistenceXml persistenceXml = getPersistenceXml();
 		
 		assertNotNull(persistenceXml.getPersistence());
 		

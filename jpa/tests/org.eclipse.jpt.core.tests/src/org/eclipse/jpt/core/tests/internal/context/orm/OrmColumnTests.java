@@ -88,7 +88,7 @@ public class OrmColumnTests extends ContextModelTestCase
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
 		OrmColumn ormColumn = ormBasicMapping.getColumn();
 		
-		XmlEntity entityResource = getOrmXmlResource().getEntityMappings().getEntities().get(0);
+		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		XmlBasic basic = entityResource.getAttributes().getBasics().get(0);
 
 		assertNull(ormColumn.getSpecifiedName());
@@ -121,7 +121,7 @@ public class OrmColumnTests extends ContextModelTestCase
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
 		OrmColumn ormColumn = ormBasicMapping.getColumn();
 		
-		XmlEntity entityResource = getOrmXmlResource().getEntityMappings().getEntities().get(0);
+		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		XmlBasic basic = entityResource.getAttributes().getBasics().get(0);
 
 		assertNull(ormColumn.getSpecifiedName());
@@ -144,7 +144,7 @@ public class OrmColumnTests extends ContextModelTestCase
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
 		OrmColumn ormColumn = ormBasicMapping.getColumn();
 		
-		XmlEntity entityResource = getOrmXmlResource().getEntityMappings().getEntities().get(0);
+		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		XmlBasic basic = entityResource.getAttributes().getBasics().get(0);
 
 		assertNull(ormColumn.getColumnDefinition());
@@ -176,7 +176,7 @@ public class OrmColumnTests extends ContextModelTestCase
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
 		OrmColumn ormColumn = ormBasicMapping.getColumn();
 		
-		XmlEntity entityResource = getOrmXmlResource().getEntityMappings().getEntities().get(0);
+		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		XmlBasic basic = entityResource.getAttributes().getBasics().get(0);
 
 		assertNull(ormColumn.getColumnDefinition());
@@ -199,7 +199,7 @@ public class OrmColumnTests extends ContextModelTestCase
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
 		OrmColumn ormColumn = ormBasicMapping.getColumn();
 		
-		XmlEntity entityResource = getOrmXmlResource().getEntityMappings().getEntities().get(0);
+		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		XmlBasic basic = entityResource.getAttributes().getBasics().get(0);
 
 		assertNull(ormColumn.getSpecifiedTable());
@@ -231,7 +231,7 @@ public class OrmColumnTests extends ContextModelTestCase
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
 		OrmColumn ormColumn = ormBasicMapping.getColumn();
 		
-		XmlEntity entityResource = getOrmXmlResource().getEntityMappings().getEntities().get(0);
+		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		XmlBasic basic = entityResource.getAttributes().getBasics().get(0);
 
 		assertNull(ormColumn.getSpecifiedTable());
@@ -254,7 +254,7 @@ public class OrmColumnTests extends ContextModelTestCase
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
 		OrmColumn ormColumn = ormBasicMapping.getColumn();
 		
-		XmlEntity entityResource = getOrmXmlResource().getEntityMappings().getEntities().get(0);
+		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		XmlBasic basic = entityResource.getAttributes().getBasics().get(0);
 
 		assertNull(ormColumn.getSpecifiedNullable());
@@ -286,7 +286,7 @@ public class OrmColumnTests extends ContextModelTestCase
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
 		OrmColumn ormColumn = ormBasicMapping.getColumn();
 		
-		XmlEntity entityResource = getOrmXmlResource().getEntityMappings().getEntities().get(0);
+		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		XmlBasic basic = entityResource.getAttributes().getBasics().get(0);
 
 		assertNull(ormColumn.getSpecifiedNullable());
@@ -309,7 +309,7 @@ public class OrmColumnTests extends ContextModelTestCase
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
 		OrmColumn ormColumn = ormBasicMapping.getColumn();
 		
-		XmlEntity entityResource = getOrmXmlResource().getEntityMappings().getEntities().get(0);
+		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		XmlBasic basic = entityResource.getAttributes().getBasics().get(0);
 
 		assertNull(ormColumn.getSpecifiedUpdatable());
@@ -341,7 +341,7 @@ public class OrmColumnTests extends ContextModelTestCase
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
 		OrmColumn ormColumn = ormBasicMapping.getColumn();
 		
-		XmlEntity entityResource = getOrmXmlResource().getEntityMappings().getEntities().get(0);
+		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		XmlBasic basic = entityResource.getAttributes().getBasics().get(0);
 
 		assertNull(ormColumn.getSpecifiedUpdatable());
@@ -364,7 +364,7 @@ public class OrmColumnTests extends ContextModelTestCase
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
 		OrmColumn ormColumn = ormBasicMapping.getColumn();
 		
-		XmlEntity entityResource = getOrmXmlResource().getEntityMappings().getEntities().get(0);
+		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		XmlBasic basic = entityResource.getAttributes().getBasics().get(0);
 
 		assertNull(ormColumn.getSpecifiedInsertable());
@@ -396,7 +396,7 @@ public class OrmColumnTests extends ContextModelTestCase
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
 		OrmColumn ormColumn = ormBasicMapping.getColumn();
 		
-		XmlEntity entityResource = getOrmXmlResource().getEntityMappings().getEntities().get(0);
+		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		XmlBasic basic = entityResource.getAttributes().getBasics().get(0);
 
 		assertNull(ormColumn.getSpecifiedInsertable());
@@ -419,7 +419,7 @@ public class OrmColumnTests extends ContextModelTestCase
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
 		OrmColumn ormColumn = ormBasicMapping.getColumn();
 		
-		XmlEntity entityResource = getOrmXmlResource().getEntityMappings().getEntities().get(0);
+		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		XmlBasic basic = entityResource.getAttributes().getBasics().get(0);
 
 		assertNull(ormColumn.getSpecifiedUnique());
@@ -451,7 +451,7 @@ public class OrmColumnTests extends ContextModelTestCase
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
 		OrmColumn ormColumn = ormBasicMapping.getColumn();
 		
-		XmlEntity entityResource = getOrmXmlResource().getEntityMappings().getEntities().get(0);
+		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		XmlBasic basic = entityResource.getAttributes().getBasics().get(0);
 
 		assertNull(ormColumn.getSpecifiedUnique());
@@ -474,7 +474,7 @@ public class OrmColumnTests extends ContextModelTestCase
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
 		OrmColumn ormColumn = ormBasicMapping.getColumn();
 		
-		XmlEntity entityResource = getOrmXmlResource().getEntityMappings().getEntities().get(0);
+		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		XmlBasic basic = entityResource.getAttributes().getBasics().get(0);
 
 		assertNull(ormColumn.getSpecifiedLength());
@@ -506,7 +506,7 @@ public class OrmColumnTests extends ContextModelTestCase
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
 		OrmColumn ormColumn = ormBasicMapping.getColumn();
 		
-		XmlEntity entityResource = getOrmXmlResource().getEntityMappings().getEntities().get(0);
+		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		XmlBasic basic = entityResource.getAttributes().getBasics().get(0);
 
 		assertNull(ormColumn.getSpecifiedLength());
@@ -529,7 +529,7 @@ public class OrmColumnTests extends ContextModelTestCase
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
 		OrmColumn ormColumn = ormBasicMapping.getColumn();
 		
-		XmlEntity entityResource = getOrmXmlResource().getEntityMappings().getEntities().get(0);
+		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		XmlBasic basic = entityResource.getAttributes().getBasics().get(0);
 
 		assertNull(ormColumn.getSpecifiedLength());
@@ -561,7 +561,7 @@ public class OrmColumnTests extends ContextModelTestCase
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
 		OrmColumn ormColumn = ormBasicMapping.getColumn();
 		
-		XmlEntity entityResource = getOrmXmlResource().getEntityMappings().getEntities().get(0);
+		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		XmlBasic basic = entityResource.getAttributes().getBasics().get(0);
 
 		assertNull(ormColumn.getSpecifiedLength());
@@ -584,7 +584,7 @@ public class OrmColumnTests extends ContextModelTestCase
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
 		OrmColumn ormColumn = ormBasicMapping.getColumn();
 		
-		XmlEntity entityResource = getOrmXmlResource().getEntityMappings().getEntities().get(0);
+		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		XmlBasic basic = entityResource.getAttributes().getBasics().get(0);
 
 		assertNull(ormColumn.getSpecifiedLength());
@@ -616,7 +616,7 @@ public class OrmColumnTests extends ContextModelTestCase
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
 		OrmColumn ormColumn = ormBasicMapping.getColumn();
 		
-		XmlEntity entityResource = getOrmXmlResource().getEntityMappings().getEntities().get(0);
+		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		XmlBasic basic = entityResource.getAttributes().getBasics().get(0);
 
 		assertNull(ormColumn.getSpecifiedLength());

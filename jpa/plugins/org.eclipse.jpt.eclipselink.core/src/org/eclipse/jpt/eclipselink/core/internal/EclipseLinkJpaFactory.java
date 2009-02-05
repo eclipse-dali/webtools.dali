@@ -9,6 +9,8 @@
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal;
 
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.context.MappingFile;
 import org.eclipse.jpt.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.core.context.java.JavaEmbeddable;
@@ -42,6 +44,7 @@ import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.platform.GenericJpaFactory;
+import org.eclipse.jpt.core.resource.common.JpaXmlResource;
 import org.eclipse.jpt.core.resource.orm.XmlBasic;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.core.resource.orm.XmlId;
@@ -51,6 +54,7 @@ import org.eclipse.jpt.core.resource.orm.XmlOneToMany;
 import org.eclipse.jpt.core.resource.orm.XmlOneToOne;
 import org.eclipse.jpt.core.resource.orm.XmlVersion;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
+import org.eclipse.jpt.eclipselink.core.EclipseLinkJpaProject;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaEntity;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaMappedSuperclass;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaBasicMappingImpl;
@@ -101,7 +105,6 @@ import org.eclipse.jpt.eclipselink.core.internal.context.orm.VirtualXmlBasicMap;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.VirtualXmlTransformation;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.VirtualXmlVariableOneToOne;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
-import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmXmlResource;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicCollection;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicMap;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbedded;
@@ -116,17 +119,22 @@ public class EclipseLinkJpaFactory
 		super();
 	}
 		
+	// ********** Core Model **********
+	
+	@Override
+	public EclipseLinkJpaProject buildJpaProject(JpaProject.Config config) throws CoreException {
+		return new EclipseLinkJpaProjectImpl(config);
+	}
+	
 	
 	// ********** Context Nodes **********
 	
-	public MappingFile buildEclipseLinkMappingFile(MappingFileRef parent, EclipseLinkOrmXmlResource resource) {
+	public MappingFile buildEclipseLinkMappingFile(MappingFileRef parent, JpaXmlResource resource) {
 		return this.buildEclipseLinkOrmXml(parent, resource);
 	}
 	
-	protected EclipseLinkOrmXml buildEclipseLinkOrmXml(MappingFileRef parent, EclipseLinkOrmXmlResource resource) {
-		EclipseLinkOrmXml eclipseLinkOrmXml = new EclipseLinkOrmXml(parent);
-		eclipseLinkOrmXml.initialize(resource);
-		return eclipseLinkOrmXml;
+	protected EclipseLinkOrmXml buildEclipseLinkOrmXml(MappingFileRef parent, JpaXmlResource resource) {
+		return new EclipseLinkOrmXml(parent, resource);
 	}
 	
 	
@@ -134,9 +142,7 @@ public class EclipseLinkJpaFactory
 	
 	@Override
 	public PersistenceUnit buildPersistenceUnit(Persistence parent, XmlPersistenceUnit xmlPersistenceUnit) {
-		PersistenceUnit persistenceUnit =  new EclipseLinkPersistenceUnit(parent);
-		persistenceUnit.initialize(xmlPersistenceUnit);
-		return persistenceUnit;
+		return new EclipseLinkPersistenceUnit(parent, xmlPersistenceUnit);
 	}
 	
 	

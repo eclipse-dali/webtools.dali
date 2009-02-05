@@ -25,10 +25,8 @@ import org.eclipse.core.runtime.ISafeRunnable;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.SafeRunner;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.content.IContentDescription;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
@@ -59,14 +57,16 @@ import org.eclipse.wst.common.internal.emfworkbench.validateedit.ResourceStateVa
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public abstract class AbstractXmlResourceProvider<R extends JpaXmlResource> 
+public abstract class AbstractXmlResourceProvider
 	implements JpaXmlResourceProvider, ResourceStateInputProvider, ResourceStateValidator
 {
 	protected IProject project;
 	
 	protected URI fileUri;
 	
-	protected R resource;
+	protected JpaXmlResource resource;
+	
+	protected IContentType contentType;
 	
 	protected final ResourceAdapter resourceAdapter = new ResourceAdapter();
 	
@@ -83,12 +83,12 @@ public abstract class AbstractXmlResourceProvider<R extends JpaXmlResource>
 	 * {@link #buildFileUri(IPath)} will attempt to build an absolutely pathed 
 	 * URI for the given path.
 	 */
-	public AbstractXmlResourceProvider(IProject project, IPath resourcePath) {
+	public AbstractXmlResourceProvider(IProject project, IPath resourcePath, IContentType contentType) {
 		super();
 		this.project = project;
 		this.fileUri = buildFileUri(resourcePath);
+		this.contentType = contentType;
 	}
-	
 	
 	protected URI buildFileUri(IPath resourcePath) {
 		URI resourceUri = null;
@@ -109,42 +109,68 @@ public abstract class AbstractXmlResourceProvider<R extends JpaXmlResource>
 	 * this will return a stub resource.  You must call #createResource() to 
 	 * create the file on the file system.
 	 */
-	public R getXmlResource() {
+	public JpaXmlResource getXmlResource() {
 		if (this.resource == null) {
-			try {
-				this.resource = ensureCorrectType(WorkbenchResourceHelper.getOrCreateResource(this.fileUri, getResourceSet()));
+			JpaXmlResource newResource = (JpaXmlResource) WorkbenchResourceHelper.getOrCreateResource(this.fileUri, getResourceSet());
+			//EMF caches resources based on URI.  If the resource has changed content types (say the schema was changed
+			//from orm to eclipselink-orm), then the resource will be of the wrong type and we need to create a new one.
+			if (newResource.getContentType().equals(this.contentType)) {
+				this.resource = newResource;
 			}
-			catch (ClassCastException cce) {
-				Resource.Factory resourceFactory = 
-					WTPResourceFactoryRegistry.INSTANCE.getFactory(fileUri, this.getContentType().getDefaultDescription());
-				this.resource = 
-					(R)((FlexibleProjectResourceSet) getResourceSet()).createResource(fileUri, resourceFactory);
+			else {
+				this.createResourceAndLoad();
 			}
 		}
 		return this.resource;
 	}
 	
-	/**
-	 * Ensure that the given resource is of the expected type for this resource
-	 * model provider.
-	 * Return it if so, throw a ClassCastException otherwise.
-	 */
-	protected abstract R ensureCorrectType(Resource r) throws ClassCastException;
+	protected JpaXmlResource createResourceAndLoad() {
+		this.resource = createResource();
+		this.loadResource();
+		return this.resource;
+	}
 	
-	public R createResource() throws CoreException {
+	protected JpaXmlResource createResource() {
+		Resource.Factory resourceFactory = 
+			WTPResourceFactoryRegistry.INSTANCE.getFactory(this.fileUri, this.contentType.getDefaultDescription());
+		return (JpaXmlResource) ((FlexibleProjectResourceSet) getResourceSet()).createResource(this.fileUri, resourceFactory);		
+	}
+	
+	protected void loadResource() {
+		try {
+			this.resource.load(((FlexibleProjectResourceSet) getResourceSet()).getLoadOptions());
+		}
+		catch (IOException e) {
+			JptCorePlugin.log(e);
+		}
+	}
+	
+	protected void createResourceAndUnderlyingFile() {
+		this.resource = createResource();
+		if (this.resource.fileExists()) { //always possible that the file already exists when the jpa facet is added
+			loadResource();
+		}
+		else {
+			populateRoot();
+			try {
+				this.resource.saveIfNecessary(); //this writes out the file
+			}
+			catch (Exception e) {
+				JptCorePlugin.log(e);
+			}
+		}
+	}
+	
+	
+	/**
+	 * This will actually create the underlying file and the JpaXmlResource that corresponds to it.
+	 * It also populates the root of the file.
+	 */
+	public JpaXmlResource createFileAndResource() throws CoreException {
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 		IWorkspaceRunnable runnable = new IWorkspaceRunnable() {
-			public void run(IProgressMonitor monitor) throws CoreException {
-				JpaXmlResource aResource = getXmlResource();
-				if (! aResource.exists() && aResource.getContents().isEmpty()) {
-					populateRoot(aResource);
-					try {
-						aResource.saveIfNecessary();
-					}
-					catch (Exception e) {
-						JptCorePlugin.log(e);
-					}
-				}
+			public void run(IProgressMonitor monitor) {
+				createResourceAndUnderlyingFile();
 			}
 		};
 		workspace.run(runnable, workspace.getRoot(), IWorkspace.AVOID_UPDATE, new NullProgressMonitor());
@@ -152,30 +178,26 @@ public abstract class AbstractXmlResourceProvider<R extends JpaXmlResource>
 	}
 	
 	protected URI getModuleURI(URI uri) {
-		URI moduleuri = ModuleURIUtil.fullyQualifyURI(project);
+		URI moduleuri = ModuleURIUtil.fullyQualifyURI(this.project);
 		IPath requestPath = new Path(moduleuri.path()).append(new Path(uri.path()));
 		URI resourceURI = URI.createURI(PlatformURLModuleConnection.MODULE_PROTOCOL + requestPath.toString());
 		return resourceURI;
 	}
 	
 	/**
-	 * Used to optionally define an associated content type for XML file creation
-	 */
-	protected abstract IContentType getContentType();
-	
-	/**
 	 * Used to optionally fill in the root information of a resource if it does not 
 	 * exist as a file
 	 */
-	protected void populateRoot(JpaXmlResource resource) {}
+	protected void populateRoot() {
+		//TODO potentially call resource.populateRoot() instead of the resourceProvider doing this
+	}
 	
 
 	/**
 	 * minimize the scope of the suppressed warnings
 	 */
-	@SuppressWarnings("unchecked")
-	protected EList<EObject> getResourceContents(JpaXmlResource resource) {
-		return resource.getContents();
+	protected EList<EObject> getResourceContents() {
+		return this.resource.getContents();
 	}
 
 	public void addListener(JpaXmlResourceProviderListener listener) {
@@ -186,7 +208,7 @@ public abstract class AbstractXmlResourceProvider<R extends JpaXmlResource>
 	}
 	
 	public void removeListener(JpaXmlResourceProviderListener listener) {
-		listenerList.remove(listener);
+		this.listenerList.remove(listener);
 		if (this.listenerList.isEmpty()) {
 			disengageResource();
 		}
@@ -238,34 +260,16 @@ public abstract class AbstractXmlResourceProvider<R extends JpaXmlResource>
 			}
 			return work.validateEdit(files, context);
 		} 
-		else {
-			return Status.OK_STATUS;
-		}
-	}
-	
-	public void modify(Runnable runnable) {
-		try {
-			runnable.run();
-			try {
-				if (resource != null) {
-					resource.save(Collections.EMPTY_MAP);
-				}
-			} catch (IOException ioe) {
-				JptCorePlugin.log(ioe);
-			}
-		} catch (Exception e) {
-			JptCorePlugin.log(e);
-		}
-	}
-	
+		return Status.OK_STATUS;
+	}	
 	
 	// **************** ResourceStateValidator impl ****************************
 	
 	public ResourceStateValidator getStateValidator() {
-		if (stateValidator == null) {
-			stateValidator = createStateValidator();
+		if (this.stateValidator == null) {
+			this.stateValidator = createStateValidator();
 		}
-		return stateValidator;
+		return this.stateValidator;
 	}
 	
 	private ResourceStateValidator createStateValidator() {
@@ -299,21 +303,25 @@ public abstract class AbstractXmlResourceProvider<R extends JpaXmlResource>
 	// **************** ResourceStateInputProvider impl ************************
 	
 	public boolean isDirty() {	
-		return resource.isModified();
+		return this.resource.isModified();
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List getNonResourceFiles() {
 		return Collections.emptyList();
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List getNonResourceInconsistentFiles() {
 		return Collections.emptyList();
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List getResources() {
 		return Collections.singletonList(getXmlResource());
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void cacheNonResourceValidateState(List roNonResourceFiles) {
 		// do nothing
 	}

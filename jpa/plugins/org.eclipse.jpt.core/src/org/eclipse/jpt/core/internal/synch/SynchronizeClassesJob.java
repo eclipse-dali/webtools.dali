@@ -12,7 +12,6 @@ package org.eclipse.jpt.core.internal.synch;
 import java.util.Iterator;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.WorkspaceJob;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -23,9 +22,8 @@ import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.core.internal.JptCoreMessages;
-import org.eclipse.jpt.core.internal.resource.persistence.PersistenceXmlResourceProvider;
+import org.eclipse.jpt.core.resource.common.JpaXmlResource;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
-import org.eclipse.jpt.core.resource.persistence.PersistenceXmlResource;
 import org.eclipse.jpt.core.resource.persistence.XmlJavaClassRef;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
@@ -47,7 +45,7 @@ public class SynchronizeClassesJob extends WorkspaceJob
 	}
 	
 	@Override
-	public IStatus runInWorkspace(final IProgressMonitor monitor) throws CoreException {
+	public IStatus runInWorkspace(final IProgressMonitor monitor) {
 		monitor.beginTask(JptCoreMessages.SYNCHRONIZING_CLASSES_TASK, 200);
 		
 		if (monitor.isCanceled()) {
@@ -55,16 +53,17 @@ public class SynchronizeClassesJob extends WorkspaceJob
 		}
 		
 		final JpaProject jpaProject = JptCorePlugin.getJpaProject(this.persistenceXmlFile.getProject());
-		
-		PersistenceXmlResourceProvider modelProvider =
-			PersistenceXmlResourceProvider.getDefaultXmlResourceProvider(jpaProject.getProject());
-		final PersistenceXmlResource resource = modelProvider.getXmlResource();
+		final JpaXmlResource resource = jpaProject.getPersistenceXmlResource();
+		if (resource == null) {
+			//the resource would only be null if the persistence.xml file had an invalid content type
+			return Status.OK_STATUS;
+		}
 		
 		monitor.worked(25);
 		
-		modelProvider.modify(new Runnable() {
+		resource.modify(new Runnable() {
 				public void run() {
-					XmlPersistence persistence = resource.getPersistence();
+					XmlPersistence persistence = (XmlPersistence) resource.getRootObject();
 					
 					if (persistence == null) {
 						persistence = PersistenceFactory.eINSTANCE.createXmlPersistence();

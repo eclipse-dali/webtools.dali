@@ -40,11 +40,6 @@ public interface MappingFile
 	
 	
 	// **************** updating **********************************************
-	/**
-	 * Initialize the MappingFile context model object to match the JpaXmlResource 
-	 * resource model object.
-	 */
-	void initialize(JpaXmlResource mappingFileResource);
 	
 	/**
 	 * Update the MappingFile context model object to match the JpaXmlResource 

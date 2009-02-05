@@ -1,5 +1,5 @@
 /***********************************************************************
- * Copyright (c) 2008 by SAP AG, Walldorf. 
+ * Copyright (c) 2008, 2009 by SAP AG, Walldorf. 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,27 +14,24 @@ package org.eclipse.jpt.ui.internal.wizards.entity;
 import java.io.File;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jface.viewers.DecoratingLabelProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.TreeSelection;
-import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.window.Window;
+import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.core.internal.resource.JpaXmlResourceProviderManager;
-import org.eclipse.jpt.core.internal.resource.orm.OrmXmlResourceProvider;
+import org.eclipse.jpt.core.resource.common.JpaXmlResource;
 import org.eclipse.jpt.ui.JptUiPlugin;
+import org.eclipse.jpt.ui.internal.XmlMappingFileViewerFilter;
 import org.eclipse.jpt.ui.internal.wizards.entity.data.model.IEntityDataModelProperties;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jst.j2ee.internal.common.operations.INewJavaClassDataModelProperties;
-import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
 import org.eclipse.jst.j2ee.internal.wizard.NewJavaClassWizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -49,7 +46,6 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
 import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
@@ -63,7 +59,7 @@ public class EntityClassWizardPage extends NewJavaClassWizardPage{
 	private static final String JPA_FACET = "jpt.jpa";//$NON-NLS-1$
 	private static final String META_INF = "META-INF";//$NON-NLS-1$
 	private static final String EMPTY = "";//$NON-NLS-1$
-	private static final char SLASH = '/'; //$NON-NLS-1$
+	private static final char SLASH = '/';
 	private static final String SINGLE_TABLE = "SINGLE_TABLE";//$NON-NLS-1$
 	private static final String TABLE_PER_CLASS = "TABLE_PER_CLASS";//$NON-NLS-1$
 	private static final String JOINED = "JOINED";//$NON-NLS-1$
@@ -268,22 +264,26 @@ public class EntityClassWizardPage extends NewJavaClassWizardPage{
 		if (project == null) {
 			return;
 		}
-		ViewerFilter filter = getDialogViewerFilter();
+		JpaProject jpaProject = JptCorePlugin.getJpaProject(project);
+		ViewerFilter filter = getDialogViewerFilter(jpaProject);
 		ITreeContentProvider contentProvider = new WorkbenchContentProvider();
-		ILabelProvider labelProvider = new DecoratingLabelProvider(new WorkbenchLabelProvider(), PlatformUI.getWorkbench().getDecoratorManager().getLabelDecorator());
+		ILabelProvider labelProvider = new WorkbenchLabelProvider();
 		SelectMappingXMLDialog dialog = new SelectMappingXMLDialog(getShell(), labelProvider, contentProvider);
 		dialog.setTitle(EntityWizardMsg.MAPPING_XML_TITLE);
 		dialog.setMessage(EntityWizardMsg.CHOOSE_MAPPING_XML_MESSAGE);
 		dialog.addFilter(filter);
-				
-		IFile rootFolder = project.getFile(J2EEProjectUtilities.getSourceContainers(project)[0].getResource().getName() + SLASH + ormXmlName.getText().trim());//TODO 
-		dialog.setInput(J2EEProjectUtilities.getManifestFile(project).getParent().getParent());
+			
+		String ormFileName = this.ormXmlName.getText();
+		JpaXmlResource resource = jpaProject.getMappingFileResource(ormFileName);
+		IFile initialSelection = (resource != null) ? resource.getFile() : null;
+		dialog.setInput(project);
 
-		if (project != null)
-			dialog.setInitialSelection(rootFolder);
+		if (initialSelection != null) {
+			dialog.setInitialSelection(initialSelection);
+		}
 		if (dialog.open() == Window.OK) {
-			ormXmlName.setText(dialog.getChosenName());
-			model.validateProperty(IEntityDataModelProperties.XML_NAME);
+			this.ormXmlName.setText(dialog.getChosenName());
+			this.model.validateProperty(IEntityDataModelProperties.XML_NAME);
 		}		
 	}
 	
@@ -291,26 +291,8 @@ public class EntityClassWizardPage extends NewJavaClassWizardPage{
 	 * This method create filter for the browse/add alternative mapping XML 
 	 * @return new instance of viewer filter for the SelectMappingXMLDialog
 	 */
-	protected ViewerFilter getDialogViewerFilter() {
-		return new ViewerFilter() {
-			@Override
-			public boolean select(Viewer viewer, Object parent, Object element) {
-				if (element instanceof IFolder) {
-					IProject project = (IProject) getDataModel().getProperty(INewJavaClassDataModelProperties.PROJECT);
-					IFolder folder = (IFolder)element;
-					if (folder.contains(J2EEProjectUtilities.getManifestFile(project))) {
-						return true;
-					}
-					return false;
-				} else if (element instanceof IFile) {
-					IFile file = (IFile) element;
-					if (JpaXmlResourceProviderManager.instance().getXmlResourceProvider(file) instanceof OrmXmlResourceProvider) {
-						return true;
-					}
-				}
-				return false;
-			}
-		};
+	protected ViewerFilter getDialogViewerFilter(JpaProject jpaProject) {
+		return new XmlMappingFileViewerFilter(jpaProject);
 	}
 	
 	private void enableMappingXMLChooseGroup(boolean enabled) {

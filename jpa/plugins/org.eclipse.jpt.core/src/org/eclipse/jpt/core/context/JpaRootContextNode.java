@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -36,19 +36,6 @@ public interface JpaRootContextNode extends JpaContextNode
 	 * This may be null. 
 	 */
 	PersistenceXml getPersistenceXml();
-	
-	/**
-	 * Add a persistence.xml file to this content and return the content associated
-	 * with it.
-	 * Throws {@link IllegalStateException} if a persistence.xml already exists.
-	 */
-	PersistenceXml addPersistenceXml();
-	
-	/**
-	 * Remove the persistence.xml file from this content.
-	 * Throws {@link IllegalStateException} if a persistence.xml does not exist.
-	 */
-	void removePersistenceXml();
 	
 	
 	// **************** updating ***********************************************

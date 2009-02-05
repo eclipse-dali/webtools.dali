@@ -21,7 +21,7 @@ import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmStructureNode;
-import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmXmlResource;
+import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkJpaUiFactory;
 import org.eclipse.jpt.eclipselink.ui.internal.ddlgen.EclipseLinkDDLGeneratorUi;
 import org.eclipse.jpt.eclipselink.ui.internal.java.details.DefaultOneToManyMappingUiProvider;
@@ -101,7 +101,7 @@ public class EclipseLinkJpaPlatformUi
 		// TODO - overhaul this class hierarchy!
 		//it's getting better, but still an instanceof here - KFB
 		if (structureNode instanceof OrmStructureNode) {
-			if (((OrmStructureNode) structureNode).getOrmType() == EclipseLinkOrmXmlResource.TYPE) {
+			if (((OrmStructureNode) structureNode).getContentType().equals(JptEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_CONTENT_TYPE)) {
 				return getEclipseLinkDetailsProviders();
 			}
 		}
@@ -191,7 +191,7 @@ public class EclipseLinkJpaPlatformUi
 	@Override
 	public Iterator<AttributeMappingUiProvider<? extends AttributeMapping>> attributeMappingUiProviders(PersistentAttribute attribute) {
 		if ((attribute instanceof OrmPersistentAttribute)
-				&& ((OrmPersistentAttribute) attribute).getOrmType() == EclipseLinkOrmXmlResource.TYPE) {
+				&& ((OrmPersistentAttribute) attribute).getContentType().equals(JptEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_CONTENT_TYPE)) {
 			return eclipseLinkOrmAttributeMappingUiProviders();
 		}
 		return super.attributeMappingUiProviders(attribute);

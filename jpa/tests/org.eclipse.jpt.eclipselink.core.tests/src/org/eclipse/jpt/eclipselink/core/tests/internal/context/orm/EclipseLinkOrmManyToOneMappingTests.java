@@ -18,6 +18,7 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntity;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlJoinFetchType;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlManyToOne;
 
+@SuppressWarnings("nls")
 public class EclipseLinkOrmManyToOneMappingTests
 	extends EclipseLinkOrmContextModelTestCase
 {
@@ -34,7 +35,7 @@ public class EclipseLinkOrmManyToOneMappingTests
 		EclipseLinkRelationshipMapping contextManyToOne = 
 			(EclipseLinkRelationshipMapping) ormPersistentAttribute.getMapping();
 		XmlEntity resourceEntity = 
-			(XmlEntity) getOrmXmlResource().getEntityMappings().getEntities().get(0);
+			(XmlEntity) getXmlEntityMappings().getEntities().get(0);
 		XmlManyToOne resourceManyToOne = 
 			(XmlManyToOne) resourceEntity.getAttributes().getManyToOnes().get(0);
 		
@@ -73,7 +74,7 @@ public class EclipseLinkOrmManyToOneMappingTests
 		EclipseLinkRelationshipMapping contextManyToOne = 
 			(EclipseLinkRelationshipMapping) ormPersistentAttribute.getMapping();
 		XmlEntity resourceEntity = 
-			(XmlEntity)getOrmXmlResource().getEntityMappings().getEntities().get(0);
+			(XmlEntity)getXmlEntityMappings().getEntities().get(0);
 		XmlManyToOne resourceManyToOne = 
 			(XmlManyToOne) resourceEntity.getAttributes().getManyToOnes().get(0);
 		

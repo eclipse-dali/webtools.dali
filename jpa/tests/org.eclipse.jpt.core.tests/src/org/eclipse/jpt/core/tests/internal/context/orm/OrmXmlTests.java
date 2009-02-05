@@ -11,13 +11,13 @@ package org.eclipse.jpt.core.tests.internal.context.orm;
 
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.orm.OrmXml;
-import org.eclipse.jpt.core.context.persistence.PersistenceXml;
+import org.eclipse.jpt.core.resource.common.JpaXmlResource;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
-import org.eclipse.jpt.core.resource.orm.OrmXmlResource;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 
+@SuppressWarnings("nls")
 public class OrmXmlTests extends ContextModelTestCase
 {
 	public OrmXmlTests(String name) {
@@ -34,34 +34,33 @@ public class OrmXmlTests extends ContextModelTestCase
 		getPersistenceXmlResource().save(null);
 	}
 	
-	protected PersistenceXml persistenceXml() {
-		return getRootContextNode().getPersistenceXml();
-	}
-	
-	protected OrmXml ormXml() {
+	protected OrmXml getOrmXml() {
 		return (OrmXml) getPersistenceUnit().mappingFileRefs().next().getMappingFile();
 	}
 	
 	public void testUpdateAddEntityMappings() throws Exception {
-		OrmXmlResource ormResource = getOrmXmlResource();
+		assertEquals(2, getJpaProject().jpaFilesSize());
+		JpaXmlResource ormResource = getOrmXmlResource();
 		ormResource.getContents().clear();
 		ormResource.save(null);
 		
-		// removing root node now results in reducing content type to simple xml
-		assertNull(ormXml());
+		//the ContentType of the orm.xml file is no longer orm, so the jpa file is removed
+		assertNull(getOrmXml());
+		assertEquals(1, getJpaProject().jpaFilesSize()); //should only be the persistence.xml file
 		
 		ormResource.getContents().add(OrmFactory.eINSTANCE.createXmlEntityMappings());
 		ormResource.save(null);
 		
-		assertNotNull(ormXml().getRoot());
+		assertNotNull(getOrmXml().getEntityMappings());
+		assertEquals(2, getJpaProject().jpaFilesSize());
 	}
 	
 	public void testModifyAddEntityMappings() {
-		OrmXmlResource ormResource = getOrmXmlResource();
-		ormResource.getContents().remove(ormResource.getEntityMappings());
-		assertNull(ormResource.getEntityMappings());
+		JpaXmlResource ormResource = getOrmXmlResource();
+		ormResource.getContents().remove(getXmlEntityMappings());
+		assertNull(getXmlEntityMappings());
 		
-		OrmXml ormXml = ormXml();
+		OrmXml ormXml = getOrmXml();
 		assertNull(ormXml.getRoot());
 		
 		ormXml.addEntityMappings();
@@ -80,17 +79,17 @@ public class OrmXmlTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateRemoveEntityMappings() throws Exception {
-		OrmXmlResource ormResource = getOrmXmlResource();
+		JpaXmlResource ormResource = getOrmXmlResource();
 		
-		assertNotNull(ormXml().getRoot());
+		assertNotNull(getOrmXml().getRoot());
 		
 		ormResource.getContents().clear();
 		
-		assertNull(ormXml().getRoot());
+		assertNull(getOrmXml().getRoot());
 	}
 	
 	public void testModifyRemoveEntityMappings() {
-		OrmXml ormXml = ormXml();
+		OrmXml ormXml = getOrmXml();
 		
 		assertNotNull(ormXml.getRoot());
 		

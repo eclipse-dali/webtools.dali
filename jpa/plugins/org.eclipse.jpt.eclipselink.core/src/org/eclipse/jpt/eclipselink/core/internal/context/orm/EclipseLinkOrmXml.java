@@ -11,15 +11,20 @@ package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmXml;
+import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXml;
+import org.eclipse.jpt.core.resource.common.JpaXmlResource;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaFactory;
+import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 
-public class EclipseLinkOrmXml extends GenericOrmXml
+public class EclipseLinkOrmXml extends AbstractOrmXml
 {
-	public EclipseLinkOrmXml(MappingFileRef parent) {
-		super(parent);
+	public EclipseLinkOrmXml(MappingFileRef parent, JpaXmlResource resource) {
+		super(parent, resource);
+		if (!resource.getContentType().isKindOf(JptEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_CONTENT_TYPE)) {
+			throw new IllegalArgumentException(resource + " does not have eclipselink orm xml content type"); //$NON-NLS-1$ 
+		}
 	}
 	
 	@Override
@@ -35,7 +40,18 @@ public class EclipseLinkOrmXml extends GenericOrmXml
 	
 	@Override
 	protected EntityMappings buildEntityMappings(XmlEntityMappings xmlEntityMappings) {
-		return getJpaFactory().buildEclipseLinkEntityMappings(this, (org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntityMappings) xmlEntityMappings);
+		return getJpaFactory().buildEclipseLinkEntityMappings(this, xmlEntityMappings);
+	}
+	
+	
+	// ********** updating **********
+	
+	@Override
+	public void update(JpaXmlResource resource) {
+		if (!resource.getContentType().isKindOf(JptEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_CONTENT_TYPE)) {
+			throw new IllegalArgumentException(resource + " does not have eclipselink orm xml content type"); //$NON-NLS-1$ 
+		}
+		super.update(resource);
 	}
 
 }

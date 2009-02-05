@@ -10,13 +10,14 @@
 package org.eclipse.jpt.core.internal.context.persistence;
 
 import org.eclipse.jpt.core.context.persistence.Persistence;
+import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 
 public class GenericPersistenceUnit
 	extends AbstractPersistenceUnit
 {
 	
-	public GenericPersistenceUnit(Persistence parent) {
-		super(parent);
+	public GenericPersistenceUnit(Persistence parent, XmlPersistenceUnit xmlPersistenceUnit) {
+		super(parent, xmlPersistenceUnit);
 	}
 
 }

@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.context.persistence;
 
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.XmlContextNode;
-import org.eclipse.jpt.core.resource.persistence.PersistenceXmlResource;
+import org.eclipse.jpt.core.resource.common.JpaXmlResource;
 
 /**
  * 
@@ -50,12 +50,16 @@ public interface PersistenceXml extends XmlContextNode, JpaStructureNode
 	 */
 	void removePersistence();
 	
+	/**
+	 * Return the resource model object
+	 */
+	JpaXmlResource getXmlResource();
 	
 	// **************** updating **********************************************
 	
 	/**
-	 * Update the PersistenceXml context model object to match the PersistenceResource 
+	 * Update the PersistenceXml context model object to match the JpaXmlResource 
 	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
 	 */
-	void update(PersistenceXmlResource persistenceResource);
+	void update(JpaXmlResource resource);
 }

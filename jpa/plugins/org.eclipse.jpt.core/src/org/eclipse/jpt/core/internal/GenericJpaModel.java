@@ -224,23 +224,23 @@ public class GenericJpaModel
 	}
 
 	private void createPersistenceXml(IProject project) {
-		PersistenceXmlResourceProvider modelProvider =
+		PersistenceXmlResourceProvider resourceProvider =
 			PersistenceXmlResourceProvider.getDefaultXmlResourceProvider(project);
 		try {
-			modelProvider.createResource();
+			resourceProvider.createFileAndResource();
 		}
-		catch (Exception e) {
+		catch (CoreException e) {
 			JptCorePlugin.log(e);
 		}
 	}
 
 	private void createOrmXml(IProject project) {
-		OrmXmlResourceProvider modelProvider =
+		OrmXmlResourceProvider resourceProvider =
 			OrmXmlResourceProvider.getDefaultXmlResourceProvider(project);
 		try {
-			modelProvider.createResource();
+			resourceProvider.createFileAndResource();
 		}
-		catch (Exception e) {
+		catch (CoreException e) {
 			JptCorePlugin.log(e);
 		}
 	}

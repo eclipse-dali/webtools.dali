@@ -13,10 +13,10 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.core.JpaResourceModel;
 import org.eclipse.jpt.core.JpaResourceModelProvider;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.resource.java.JavaResourceCompilationUnitImpl;
+import org.eclipse.jpt.core.resource.java.JavaResourceCompilationUnit;
 
 /**
  * Java source code
@@ -45,7 +45,7 @@ public class JavaResourceModelProvider
 		return JptCorePlugin.JAVA_SOURCE_CONTENT_TYPE;
 	}
 
-	public JpaResourceModel buildResourceModel(JpaProject jpaProject, IFile file) {
+	public JavaResourceCompilationUnit buildResourceModel(JpaProject jpaProject, IFile file) {
 		return new JavaResourceCompilationUnitImpl(
 					JavaCore.createCompilationUnitFrom(file),
 					jpaProject.getJpaPlatform().getAnnotationProvider(),

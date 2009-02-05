@@ -9,13 +9,14 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.context;
 
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.context.MappingFile;
 import org.eclipse.jpt.core.context.MappingFileProvider;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
-import org.eclipse.jpt.core.resource.orm.OrmXmlResource;
+import org.eclipse.jpt.core.resource.common.JpaXmlResource;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaFactory;
-import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmXmlResource;
+import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
 
 public class EclipseLinkMappingFileProvider
 	implements MappingFileProvider
@@ -37,12 +38,12 @@ public class EclipseLinkMappingFileProvider
 		super();
 	}
 
-	public String getResourceType() {
-		return EclipseLinkOrmXmlResource.TYPE;
+	public IContentType getContentType() {
+		return JptEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_CONTENT_TYPE;
 	}
 
-	public MappingFile buildMappingFile(MappingFileRef parent, OrmXmlResource resource, JpaFactory factory) {
-		return ((EclipseLinkJpaFactory) factory).buildEclipseLinkMappingFile(parent, (EclipseLinkOrmXmlResource) resource);
+	public MappingFile buildMappingFile(MappingFileRef parent, JpaXmlResource resource, JpaFactory factory) {
+		return ((EclipseLinkJpaFactory) factory).buildEclipseLinkMappingFile(parent, resource);
 	}
 
 }

@@ -8,7 +8,7 @@
 		<content-type
 			id="org.eclipse.jpt.eclipselink.core.content.orm"
 			name="%ECLIPSELINK_ORM_XML_CONTENT"
-			base-type="org.eclipse.jpt.core.content.baseJpaContent">
+			base-type="org.eclipse.jpt.core.content.mappingFile">
 			<describer
 				class="org.eclipse.core.runtime.content.XMLRootElementContentDescriber2">
 				<parameter 
@@ -37,14 +37,6 @@
 	</extension>
 	
 	
-	<extension
-		point="org.eclipse.jpt.core.resourceModelProviders">
-		
-		<modelProvider
-			fileContentType="org.eclipse.jpt.eclipselink.core.content.orm"
-			factoryClass="org.eclipse.jpt.eclipselink.core.internal.resource.orm.EclipseLinkOrmXmlResourceProviderFactory"/>
-		
-	</extension>
 	
 	
 	<!--

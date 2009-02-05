@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2008  Oracle. 
+ *  Copyright (c) 2008, 2009 Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -19,7 +19,6 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jface.dialogs.Dialog;
-import org.eclipse.jface.viewers.DecoratingLabelProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
@@ -204,9 +203,7 @@ public class MappingFileWizardPage extends DataModelWizardPage
 		ISelectionStatusValidator validator = getSourceFolderDialogSelectionValidator();
 		ViewerFilter filter = getSourceFolderDialogViewerFilter();
 		ITreeContentProvider contentProvider = new WorkbenchContentProvider();
-		ILabelProvider labelProvider = new DecoratingLabelProvider(
-				new WorkbenchLabelProvider(), 
-				PlatformUI.getWorkbench().getDecoratorManager().getLabelDecorator());
+		ILabelProvider labelProvider = new WorkbenchLabelProvider();
 		ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(getShell(), labelProvider, contentProvider);
 		dialog.setValidator(validator);
 		dialog.setTitle(JptUiMessages.MappingFileWizardPage_accessLabel_sourceFolderDialogTitle);

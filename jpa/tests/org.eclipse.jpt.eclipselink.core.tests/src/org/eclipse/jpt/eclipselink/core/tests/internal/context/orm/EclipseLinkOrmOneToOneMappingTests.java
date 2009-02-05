@@ -18,6 +18,7 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntity;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlJoinFetchType;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlOneToOne;
 
+@SuppressWarnings("nls")
 public class EclipseLinkOrmOneToOneMappingTests
 	extends EclipseLinkOrmContextModelTestCase
 {
@@ -34,7 +35,7 @@ public class EclipseLinkOrmOneToOneMappingTests
 		EclipseLinkOneToOneMapping contextOneToOne = 
 			(EclipseLinkOneToOneMapping) ormPersistentAttribute.getMapping();
 		XmlEntity resourceEntity = 
-			(XmlEntity)getOrmXmlResource().getEntityMappings().getEntities().get(0);
+			(XmlEntity)getXmlEntityMappings().getEntities().get(0);
 		XmlOneToOne resourceOneToOne = 
 			(XmlOneToOne) resourceEntity.getAttributes().getOneToOnes().get(0);
 		
@@ -66,7 +67,7 @@ public class EclipseLinkOrmOneToOneMappingTests
 		EclipseLinkOneToOneMapping contextOneToOne = 
 			(EclipseLinkOneToOneMapping) ormPersistentAttribute.getMapping();
 		XmlEntity resourceEntity = 
-			(XmlEntity)getOrmXmlResource().getEntityMappings().getEntities().get(0);
+			(XmlEntity)getXmlEntityMappings().getEntities().get(0);
 		XmlOneToOne resourceOneToOne = 
 			(XmlOneToOne) resourceEntity.getAttributes().getOneToOnes().get(0);
 		
@@ -95,7 +96,7 @@ public class EclipseLinkOrmOneToOneMappingTests
 		EclipseLinkOneToOneMapping contextOneToOne = 
 			(EclipseLinkOneToOneMapping) ormPersistentAttribute.getMapping();
 		XmlEntity resourceEntity = 
-			(XmlEntity) getOrmXmlResource().getEntityMappings().getEntities().get(0);
+			(XmlEntity) getXmlEntityMappings().getEntities().get(0);
 		XmlOneToOne resourceOneToOne = 
 			(XmlOneToOne) resourceEntity.getAttributes().getOneToOnes().get(0);
 		
@@ -134,7 +135,7 @@ public class EclipseLinkOrmOneToOneMappingTests
 		EclipseLinkOneToOneMapping contextOneToOne = 
 			(EclipseLinkOneToOneMapping) ormPersistentAttribute.getMapping();
 		XmlEntity resourceEntity = 
-			(XmlEntity)getOrmXmlResource().getEntityMappings().getEntities().get(0);
+			(XmlEntity)getXmlEntityMappings().getEntities().get(0);
 		XmlOneToOne resourceOneToOne = 
 			(XmlOneToOne) resourceEntity.getAttributes().getOneToOnes().get(0);
 		

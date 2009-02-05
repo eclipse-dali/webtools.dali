@@ -9,9 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.persistence.general;
 
-import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.general.GeneralProperties;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
@@ -54,12 +52,6 @@ public class EclipseLinkPersistenceUnitMappingFilesComposite extends Persistence
 	                                            Composite parent) {
 
 		super(parentPane, parent);
-	}
-	
-	@Override
-	protected boolean isMappingFile(IContentType contentType) {
-		return super.isMappingFile(contentType) ||
-					contentType.isKindOf(JptEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_CONTENT_TYPE);
 	}
 
 	@Override

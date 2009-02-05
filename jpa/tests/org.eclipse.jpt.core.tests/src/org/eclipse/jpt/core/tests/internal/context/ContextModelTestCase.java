@@ -24,11 +24,9 @@ import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.persistence.ClassRef;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.core.internal.resource.orm.OrmXmlResourceProvider;
-import org.eclipse.jpt.core.internal.resource.persistence.PersistenceXmlResourceProvider;
-import org.eclipse.jpt.core.resource.orm.OrmXmlResource;
+import org.eclipse.jpt.core.resource.common.JpaXmlResource;
+import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
-import org.eclipse.jpt.core.resource.persistence.PersistenceXmlResource;
 import org.eclipse.jpt.core.resource.persistence.XmlJavaClassRef;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
@@ -38,13 +36,14 @@ import org.eclipse.jpt.core.tests.internal.utility.jdt.AnnotationTestCase;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.internal.emfworkbench.WorkbenchResourceHelper;
 
+@SuppressWarnings("nls")
 public abstract class ContextModelTestCase extends AnnotationTestCase
 {
 	protected static final String BASE_PROJECT_NAME = "ContextModelTestProject";
 	
-	protected PersistenceXmlResourceProvider persistenceResourceModelProvider;
+	protected JpaXmlResource persistenceXmlResource;
 	
-	protected OrmXmlResourceProvider ormResourceModelProvider;
+	protected JpaXmlResource ormXmlResource;
 	
 	
 	protected ContextModelTestCase(String name) {
@@ -54,17 +53,15 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.persistenceResourceModelProvider = 
-			PersistenceXmlResourceProvider.getDefaultXmlResourceProvider(getJavaProject().getProject());
-		this.ormResourceModelProvider = 
-			OrmXmlResourceProvider.getDefaultXmlResourceProvider(getJavaProject().getProject());
+		this.persistenceXmlResource = getJpaProject().getPersistenceXmlResource();
+		this.ormXmlResource = getJpaProject().getDefaultOrmXmlResource();
 		waitForWorkspaceJobs();
 	}
 	
 	@Override
 	protected void tearDown() throws Exception {
-		this.persistenceResourceModelProvider = null;
-		this.ormResourceModelProvider = null;
+		this.persistenceXmlResource = null;
+		this.ormXmlResource = null;
 		super.tearDown();
 	}
 	
@@ -103,16 +100,20 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 		}
 	}
 	
-	protected PersistenceXmlResource getPersistenceXmlResource() {
-		return this.persistenceResourceModelProvider.getXmlResource();
+	protected JpaXmlResource getPersistenceXmlResource() {
+		return this.persistenceXmlResource;
 	}
 	
-	protected OrmXmlResource getOrmXmlResource() {
-		return this.ormResourceModelProvider.getXmlResource();
+	protected JpaXmlResource getOrmXmlResource() {
+		return this.ormXmlResource;
+	}
+	
+	protected XmlEntityMappings getXmlEntityMappings() {
+		return (XmlEntityMappings) getOrmXmlResource().getRootObject();
 	}
 	
 	protected XmlPersistence getXmlPersistence() {
-		return getPersistenceXmlResource().getPersistence();
+		return (XmlPersistence) getPersistenceXmlResource().getRootObject();
 	}
 	
 	protected EntityMappings getEntityMappings() {

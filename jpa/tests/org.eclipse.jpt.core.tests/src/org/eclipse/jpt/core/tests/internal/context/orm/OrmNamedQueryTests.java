@@ -22,6 +22,7 @@ import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 
+@SuppressWarnings("nls")
 public class OrmNamedQueryTests extends ContextModelTestCase
 {
 	public OrmNamedQueryTests(String name) {
@@ -43,7 +44,7 @@ public class OrmNamedQueryTests extends ContextModelTestCase
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmNamedQuery ormNamedQuery = ormEntity.addNamedQuery(0);
 		
-		XmlNamedQuery namedQueryResource = getOrmXmlResource().getEntityMappings().getEntities().get(0).getNamedQueries().get(0);
+		XmlNamedQuery namedQueryResource = getXmlEntityMappings().getEntities().get(0).getNamedQueries().get(0);
 		
 		assertNull(ormNamedQuery.getName());
 		assertNull(namedQueryResource.getName());
@@ -64,7 +65,7 @@ public class OrmNamedQueryTests extends ContextModelTestCase
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmNamedQuery ormNamedQuery = ormEntity.addNamedQuery(0);
 		
-		XmlNamedQuery namedQueryResource = getOrmXmlResource().getEntityMappings().getEntities().get(0).getNamedQueries().get(0);
+		XmlNamedQuery namedQueryResource = getXmlEntityMappings().getEntities().get(0).getNamedQueries().get(0);
 		
 		assertNull(ormNamedQuery.getName());
 		assertNull(namedQueryResource.getName());
@@ -85,7 +86,7 @@ public class OrmNamedQueryTests extends ContextModelTestCase
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmNamedQuery ormNamedQuery = ormEntity.addNamedQuery(0);
 		
-		XmlNamedQuery namedQueryResource = getOrmXmlResource().getEntityMappings().getEntities().get(0).getNamedQueries().get(0);
+		XmlNamedQuery namedQueryResource = getXmlEntityMappings().getEntities().get(0).getNamedQueries().get(0);
 		
 		assertNull(ormNamedQuery.getQuery());
 		assertNull(namedQueryResource.getQuery());
@@ -106,7 +107,7 @@ public class OrmNamedQueryTests extends ContextModelTestCase
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmNamedQuery ormNamedQuery = ormEntity.addNamedQuery(0);
 		
-		XmlNamedQuery namedQueryResource = getOrmXmlResource().getEntityMappings().getEntities().get(0).getNamedQueries().get(0);
+		XmlNamedQuery namedQueryResource = getXmlEntityMappings().getEntities().get(0).getNamedQueries().get(0);
 		
 		assertNull(ormNamedQuery.getQuery());
 		assertNull(namedQueryResource.getQuery());
@@ -127,7 +128,7 @@ public class OrmNamedQueryTests extends ContextModelTestCase
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmNamedQuery ormNamedQuery = ormEntity.addNamedQuery(0);
 		
-		XmlNamedQuery namedQueryResource = getOrmXmlResource().getEntityMappings().getEntities().get(0).getNamedQueries().get(0);
+		XmlNamedQuery namedQueryResource = getXmlEntityMappings().getEntities().get(0).getNamedQueries().get(0);
 
 		OrmQueryHint queryHint = ormNamedQuery.addHint(0);
 		queryHint.setName("FOO");
@@ -163,7 +164,7 @@ public class OrmNamedQueryTests extends ContextModelTestCase
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmNamedQuery ormNamedQuery = ormEntity.addNamedQuery(0);
 		
-		XmlNamedQuery namedQueryResource = getOrmXmlResource().getEntityMappings().getEntities().get(0).getNamedQueries().get(0);
+		XmlNamedQuery namedQueryResource = getXmlEntityMappings().getEntities().get(0).getNamedQueries().get(0);
 
 		ormNamedQuery.addHint(0).setName("FOO");
 		ormNamedQuery.addHint(1).setName("BAR");
@@ -189,7 +190,7 @@ public class OrmNamedQueryTests extends ContextModelTestCase
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmNamedQuery ormNamedQuery = ormEntity.addNamedQuery(0);
 		
-		XmlNamedQuery namedQueryResource = getOrmXmlResource().getEntityMappings().getEntities().get(0).getNamedQueries().get(0);
+		XmlNamedQuery namedQueryResource = getXmlEntityMappings().getEntities().get(0).getNamedQueries().get(0);
 
 		ormNamedQuery.addHint(0).setName("FOO");
 		ormNamedQuery.addHint(1).setName("BAR");
@@ -225,7 +226,7 @@ public class OrmNamedQueryTests extends ContextModelTestCase
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmNamedQuery ormNamedQuery = ormEntity.addNamedQuery(0);
 		
-		XmlNamedQuery namedQueryResource = getOrmXmlResource().getEntityMappings().getEntities().get(0).getNamedQueries().get(0);
+		XmlNamedQuery namedQueryResource = getXmlEntityMappings().getEntities().get(0).getNamedQueries().get(0);
 
 		namedQueryResource.getHints().add(OrmFactory.eINSTANCE.createXmlQueryHint());
 		namedQueryResource.getHints().add(OrmFactory.eINSTANCE.createXmlQueryHint());

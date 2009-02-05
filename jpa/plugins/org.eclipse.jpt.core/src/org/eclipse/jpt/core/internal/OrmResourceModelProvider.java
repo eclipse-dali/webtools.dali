@@ -12,10 +12,10 @@ package org.eclipse.jpt.core.internal;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.core.JpaResourceModel;
 import org.eclipse.jpt.core.JpaResourceModelProvider;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.resource.orm.OrmXmlResourceProvider;
+import org.eclipse.jpt.core.resource.common.JpaXmlResource;
 
 /**
  * orm.xml
@@ -44,7 +44,7 @@ public class OrmResourceModelProvider
 		return JptCorePlugin.ORM_XML_CONTENT_TYPE;
 	}
 
-	public JpaResourceModel buildResourceModel(JpaProject jpaProject, IFile file) {
+	public JpaXmlResource buildResourceModel(JpaProject jpaProject, IFile file) {
 		return OrmXmlResourceProvider.getXmlResourceProvider(file).getXmlResource();
 	}
 

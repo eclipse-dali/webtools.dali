@@ -20,7 +20,7 @@ import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
-import org.eclipse.jpt.core.resource.orm.OrmXmlResource;
+import org.eclipse.jpt.core.resource.common.JpaXmlResource;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.db.ConnectionProfileFactory;
@@ -143,7 +143,7 @@ public interface JpaPlatform
 
 	// ********** Mapping File **********
 
-	MappingFile buildMappingFile(MappingFileRef parent, OrmXmlResource resource);
+	MappingFile buildMappingFile(MappingFileRef parent, JpaXmlResource resource);
 
 
 	// ********** ORM type mappings **********

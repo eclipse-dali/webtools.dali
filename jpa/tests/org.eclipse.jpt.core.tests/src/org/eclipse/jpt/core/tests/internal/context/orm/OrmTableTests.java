@@ -30,6 +30,7 @@ import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
+@SuppressWarnings("nls")
 public class OrmTableTests extends ContextModelTestCase
 {
 	public OrmTableTests(String name) {
@@ -84,7 +85,7 @@ public class OrmTableTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmTable ormTable = ormEntity.getTable();
-		XmlEntity entityResource = getOrmXmlResource().getEntityMappings().getEntities().get(0);
+		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		assertNull(ormTable.getSpecifiedName());
 		assertNull(entityResource.getTable());
 		
@@ -111,7 +112,7 @@ public class OrmTableTests extends ContextModelTestCase
 	public void testModifySpecifiedName() throws Exception {
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
 		OrmTable ormTable = ((OrmEntity) ormPersistentType.getMapping()).getTable();
-		XmlEntity entityResource = getOrmXmlResource().getEntityMappings().getEntities().get(0);
+		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		assertNull(ormTable.getSpecifiedName());
 		assertNull(entityResource.getTable());
 		
@@ -205,7 +206,7 @@ public class OrmTableTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmTable ormTable = ormEntity.getTable();
-		XmlEntity entityResource = getOrmXmlResource().getEntityMappings().getEntities().get(0);
+		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		assertNull(ormTable.getSpecifiedSchema());
 		assertNull(entityResource.getTable());
 		
@@ -320,7 +321,7 @@ public class OrmTableTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmTable ormTable = ormEntity.getTable();
-		XmlEntity entityResource = getOrmXmlResource().getEntityMappings().getEntities().get(0);
+		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		assertNull(ormTable.getSpecifiedSchema());
 		assertNull(entityResource.getTable());
 		
@@ -339,7 +340,7 @@ public class OrmTableTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmTable ormTable = ormEntity.getTable();
-		XmlEntity entityResource = getOrmXmlResource().getEntityMappings().getEntities().get(0);
+		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		assertNull(ormTable.getSpecifiedCatalog());
 		assertNull(entityResource.getTable());
 		
@@ -367,7 +368,7 @@ public class OrmTableTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		OrmTable ormTable = ormEntity.getTable();
-		XmlEntity entityResource = getOrmXmlResource().getEntityMappings().getEntities().get(0);
+		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		assertNull(ormTable.getSpecifiedCatalog());
 		assertNull(entityResource.getTable());
 		
@@ -500,7 +501,7 @@ public class OrmTableTests extends ContextModelTestCase
 		ListIterator<OrmUniqueConstraint> uniqueConstraints = ormEntity.getTable().uniqueConstraints();
 		assertFalse(uniqueConstraints.hasNext());
 
-		XmlEntity entityResource = getOrmXmlResource().getEntityMappings().getEntities().get(0);
+		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		XmlTable tableResource = OrmFactory.eINSTANCE.createXmlTable();
 		entityResource.setTable(tableResource);
 		
@@ -527,7 +528,7 @@ public class OrmTableTests extends ContextModelTestCase
 		
 		assertEquals(0,  ormEntity.getTable().uniqueConstraintsSize());
 
-		XmlEntity entityResource = getOrmXmlResource().getEntityMappings().getEntities().get(0);
+		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		XmlTable tableResource = OrmFactory.eINSTANCE.createXmlTable();
 		entityResource.setTable(tableResource);
 		
@@ -553,7 +554,7 @@ public class OrmTableTests extends ContextModelTestCase
 		table.addUniqueConstraint(0).addColumnName(0, "BAR");
 		table.addUniqueConstraint(0).addColumnName(0, "BAZ");
 		
-		XmlEntity entityResource = getOrmXmlResource().getEntityMappings().getEntities().get(0);
+		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		XmlTable tableResource = entityResource.getTable();
 		
 		ListIterator<XmlUniqueConstraint> uniqueConstraints = tableResource.getUniqueConstraints().listIterator();
@@ -575,7 +576,7 @@ public class OrmTableTests extends ContextModelTestCase
 		table.addUniqueConstraint(1).addColumnName(0, "BAR");
 		table.addUniqueConstraint(0).addColumnName(0, "BAZ");
 		
-		XmlEntity entityResource = getOrmXmlResource().getEntityMappings().getEntities().get(0);
+		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		XmlTable tableResource = entityResource.getTable();
 		
 		ListIterator<XmlUniqueConstraint> uniqueConstraints = tableResource.getUniqueConstraints().listIterator();
@@ -597,7 +598,7 @@ public class OrmTableTests extends ContextModelTestCase
 		table.addUniqueConstraint(1).addColumnName(0, "BAR");
 		table.addUniqueConstraint(2).addColumnName(0, "BAZ");
 		
-		XmlEntity entityResource = getOrmXmlResource().getEntityMappings().getEntities().get(0);
+		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		XmlTable tableResource = entityResource.getTable();
 		
 		assertEquals(3, tableResource.getUniqueConstraints().size());
@@ -643,7 +644,7 @@ public class OrmTableTests extends ContextModelTestCase
 		table.addUniqueConstraint(1).addColumnName(0, "BAR");
 		table.addUniqueConstraint(2).addColumnName(0, "BAZ");
 		
-		XmlEntity entityResource = getOrmXmlResource().getEntityMappings().getEntities().get(0);
+		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		XmlTable tableResource = entityResource.getTable();
 		
 		assertEquals(3, tableResource.getUniqueConstraints().size());
@@ -681,7 +682,7 @@ public class OrmTableTests extends ContextModelTestCase
 		
 		OrmTable table = ormEntity.getTable();
 		
-		XmlEntity entityResource = getOrmXmlResource().getEntityMappings().getEntities().get(0);
+		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		XmlTable tableResource = OrmFactory.eINSTANCE.createXmlTable();
 		entityResource.setTable(tableResource);
 	

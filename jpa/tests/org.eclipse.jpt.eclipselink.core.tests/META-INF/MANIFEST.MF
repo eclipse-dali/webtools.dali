@@ -36,5 +36,4 @@ Export-Package: org.eclipse.jpt.eclipselink.core.tests.internal;x-internal:=true
  org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.options;x-internal:=true,
  org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.schema.generation;x-internal:=true,
  org.eclipse.jpt.eclipselink.core.tests.internal.resource;x-internal:=true,
- org.eclipse.jpt.eclipselink.core.tests.internal.resource.java;x-internal:=true,
- org.eclipse.jpt.eclipselink.core.tests.internal.resource.orm;x-internal:=true
+ org.eclipse.jpt.eclipselink.core.tests.internal.resource.java;x-internal:=true

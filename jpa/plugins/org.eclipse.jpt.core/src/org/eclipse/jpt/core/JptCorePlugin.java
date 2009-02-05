@@ -13,7 +13,9 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.QualifiedName;
@@ -29,7 +31,9 @@ import org.eclipse.jpt.core.internal.platform.GenericJpaPlatformProvider;
 import org.eclipse.jpt.core.internal.platform.JpaPlatformRegistry;
 import org.eclipse.jpt.core.internal.prefs.JpaPreferenceConstants;
 import org.eclipse.jst.j2ee.internal.J2EEConstants;
+import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
+import org.eclipse.wst.common.componentcore.resources.IVirtualFile;
 import org.eclipse.wst.common.project.facet.core.FacetedProjectFramework;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.prefs.BackingStoreException;
@@ -102,6 +106,8 @@ public class JptCorePlugin extends Plugin {
 	 */
 	public static final IContentType JAVA_SOURCE_CONTENT_TYPE = Platform.getContentTypeManager().getContentType(JavaCore.JAVA_SOURCE_CONTENT_TYPE);
 
+	public static final IContentType MAPPING_FILE_CONTENT_TYPE = Platform.getContentTypeManager().getContentType(PLUGIN_ID + ".content.mappingFile"); //$NON-NLS-1$
+	
 	/**
 	 * The content type for orm.xml mappings files. Use this to add new 
 	 * orm.xml-like extensions to this content type.
@@ -236,6 +242,18 @@ public class JptCorePlugin extends Plugin {
 				WEB_PROJECT_DEPLOY_PREFIX + '/' + defaultURI
 			:
 				defaultURI;
+	}
+	
+	public static IFile getPlatformFile(IProject project, String defaultURI) {
+		IPath deploymentPath = new Path(getDeploymentURI(project, defaultURI));
+		IVirtualFile vFile = ComponentCore.createFile(project, deploymentPath);
+		return vFile.getUnderlyingFile();
+
+	}
+	
+	public static JpaFile getJpaFile(IProject project, String defaultURI) {
+		IFile xmlFile = getPlatformFile(project, defaultURI);
+		return xmlFile.exists() ? getJpaFile(xmlFile) : null;
 	}
 	
 	/**

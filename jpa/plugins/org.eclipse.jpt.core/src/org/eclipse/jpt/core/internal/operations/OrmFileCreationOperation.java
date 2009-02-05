@@ -27,10 +27,10 @@ import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.core.internal.resource.orm.OrmXmlResourceProvider;
-import org.eclipse.jpt.core.internal.resource.persistence.PersistenceXmlResourceProvider;
+import org.eclipse.jpt.core.resource.AbstractXmlResourceProvider;
+import org.eclipse.jpt.core.resource.common.JpaXmlResource;
 import org.eclipse.jpt.core.resource.orm.AccessType;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
-import org.eclipse.jpt.core.resource.orm.OrmXmlResource;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitDefaults;
 import org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitMetadata;
@@ -50,9 +50,9 @@ public class OrmFileCreationOperation extends AbstractDataModelOperation
 		// Create source folder if it does not exist
 		IFolder folder = createSourceFolder();
 		// Create orm file
-		createMappingFile(folder);
+		IFile file = createMappingFile(folder);
 		// Add orm file to persistence unit if specified
-		addMappingFileToPersistenceXml();
+		addMappingFileToPersistenceXml(file);
 		return OK_STATUS;
 	}
 	
@@ -118,53 +118,57 @@ public class OrmFileCreationOperation extends AbstractDataModelOperation
 		return folder;
 	}
 	
-	@SuppressWarnings("unchecked")
-	protected void createMappingFile(IFolder folder) {
+	protected IFile createMappingFile(IFolder folder) {
 		String filePath = getDataModel().getStringProperty(FILE_PATH);
 		IFile file = folder.getFile(new Path(filePath));
-		final OrmXmlResourceProvider modelProvider =
-			OrmXmlResourceProvider.getXmlResourceProvider(file);
-		
-		modelProvider.modify(new Runnable() {
+		final AbstractXmlResourceProvider resourceProvider = getXmlResourceProvider(file);
+		final JpaXmlResource xmlResource;
+		try {
+			xmlResource = resourceProvider.createFileAndResource();
+		}
+		catch (CoreException e) {
+			JptCorePlugin.log(e);
+			return null;
+		}
+		xmlResource.modify(new Runnable() {
 				public void run() {
-					OrmXmlResource ormResource = modelProvider.getXmlResource();
-					
-					XmlEntityMappings entityMappings = OrmFactory.eINSTANCE.createXmlEntityMappings();
-					entityMappings.setVersion("1.0"); //$NON-NLS-1$
-					ormResource.getContents().add(entityMappings);
-					
 					AccessType defaultAccess = (AccessType) getDataModel().getProperty(DEFAULT_ACCESS); 
 					if (defaultAccess != null) {
 						XmlPersistenceUnitMetadata puMetadata = OrmFactory.eINSTANCE.createXmlPersistenceUnitMetadata();
-						entityMappings.setPersistenceUnitMetadata(puMetadata);
+						((XmlEntityMappings) xmlResource.getRootObject()).setPersistenceUnitMetadata(puMetadata);
 						XmlPersistenceUnitDefaults puDefaults = OrmFactory.eINSTANCE.createXmlPersistenceUnitDefaults();
 						puMetadata.setPersistenceUnitDefaults(puDefaults);
 						puDefaults.setAccess(defaultAccess);
 					}
 				}
 			});
+		return file;
 	}
 	
-	protected void addMappingFileToPersistenceXml() throws ExecutionException {
+	protected AbstractXmlResourceProvider getXmlResourceProvider(IFile file) {
+		return OrmXmlResourceProvider.getXmlResourceProvider(file);
+	}
+	
+	protected void addMappingFileToPersistenceXml(IFile file) throws ExecutionException {
 		if (! getDataModel().getBooleanProperty(ADD_TO_PERSISTENCE_UNIT)) {
 			return;
 		}
-		
-		PersistenceXmlResourceProvider modelProvider =
-			PersistenceXmlResourceProvider.getDefaultXmlResourceProvider(getProject());
+		JpaProject jpaProject = JptCorePlugin.getJpaProject(file.getProject());
+		JpaXmlResource resource = jpaProject.getPersistenceXmlResource();
+	
 		final PersistenceUnit pUnit = getPersistenceUnit();
-		modelProvider.modify(new Runnable() {
-				public void run() {
-					String filePath = getDataModel().getStringProperty(FILE_PATH);
-					for (Iterator<MappingFileRef> stream = pUnit.specifiedMappingFileRefs(); stream.hasNext(); ) {
-						if (filePath.equals(stream.next().getFileName())) {
-							return;
-						}
-					}
-					MappingFileRef mfRef = pUnit.addSpecifiedMappingFileRef();
-					mfRef.setFileName(new Path(filePath).toPortableString());
 		
+		resource.modify(new Runnable() {
+			public void run() {
+				String filePath = getDataModel().getStringProperty(FILE_PATH);
+				for (Iterator<MappingFileRef> stream = pUnit.specifiedMappingFileRefs(); stream.hasNext(); ) {
+					if (filePath.equals(stream.next().getFileName())) {
+						return;
+					}
 				}
-			});
+				MappingFileRef mfRef = pUnit.addSpecifiedMappingFileRef();
+				mfRef.setFileName(new Path(filePath).toPortableString());
+			}
+		});
 	}
 }

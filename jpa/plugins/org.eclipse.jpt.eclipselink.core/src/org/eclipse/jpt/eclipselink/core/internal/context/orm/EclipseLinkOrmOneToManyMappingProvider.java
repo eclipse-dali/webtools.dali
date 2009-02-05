@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
@@ -19,7 +20,7 @@ import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaFactory;
-import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmXmlResource;
+import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
 
 public class EclipseLinkOrmOneToManyMappingProvider
 	implements ExtendedOrmAttributeMappingProvider
@@ -41,8 +42,8 @@ public class EclipseLinkOrmOneToManyMappingProvider
 		super();
 	}
 
-	public String getOrmType() {
-		return EclipseLinkOrmXmlResource.TYPE;
+	public IContentType getContentType() {
+		return JptEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_CONTENT_TYPE;
 	}
 
 	public String getKey() {

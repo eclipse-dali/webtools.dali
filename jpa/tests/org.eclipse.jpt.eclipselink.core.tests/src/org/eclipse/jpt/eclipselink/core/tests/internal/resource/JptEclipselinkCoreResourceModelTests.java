@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2007 Oracle. 
+ *  Copyright (c) 2007, 2009 Oracle. 
  *  All rights reserved.  This program and the accompanying materials 
  *  are made available under the terms of the Eclipse Public License v1.0 
  *  which accompanies this distribution, and is available at 
@@ -14,7 +14,6 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import org.eclipse.jpt.eclipselink.core.tests.internal.resource.java.JptEclipseLinkCoreJavaResourceModelTests;
-import org.eclipse.jpt.eclipselink.core.tests.internal.resource.orm.EclipseLinkOrmResourceModelTests;
 
 public class JptEclipselinkCoreResourceModelTests extends TestCase
 {
@@ -25,7 +24,6 @@ public class JptEclipselinkCoreResourceModelTests extends TestCase
 	public static Test suite(boolean all) {
 		TestSuite suite = new TestSuite(JptEclipselinkCoreResourceModelTests.class.getName());
 		suite.addTest(JptEclipseLinkCoreJavaResourceModelTests.suite(all));
-		suite.addTestSuite(EclipseLinkOrmResourceModelTests.class);
 		return suite;
 	}
 

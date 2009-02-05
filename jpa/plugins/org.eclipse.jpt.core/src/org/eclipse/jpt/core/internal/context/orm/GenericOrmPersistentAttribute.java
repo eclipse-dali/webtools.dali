@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.List;
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
@@ -178,8 +179,8 @@ public class GenericOrmPersistentAttribute extends AbstractXmlContextNode
 		return this;
 	}
 
-	public String getOrmType() {
-		return this.getPersistentType().getOrmType();
+	public IContentType getContentType() {
+		return this.getPersistentType().getContentType();
 	}
 
 	public boolean contains(int textOffset) {

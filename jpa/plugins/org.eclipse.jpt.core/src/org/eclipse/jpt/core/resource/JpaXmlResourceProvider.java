@@ -24,6 +24,4 @@ public interface JpaXmlResourceProvider
 	JpaXmlResource getXmlResource();
 	
 	IStatus validateEdit(Object context);
-	
-	void modify(Runnable runnable);
 }

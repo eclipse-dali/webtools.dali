@@ -13,6 +13,7 @@ import java.util.List;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jpt.core.JpaStructureNode;
+import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
@@ -20,8 +21,8 @@ import org.eclipse.jpt.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.core.resource.common.JpaXmlResource;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
-import org.eclipse.jpt.core.resource.persistence.PersistenceXmlResource;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -33,16 +34,25 @@ public class GenericPersistenceXml
 	extends AbstractXmlContextNode
 	implements PersistenceXml
 {
-	protected PersistenceXmlResource persistenceXmlResource;
+	protected JpaXmlResource persistenceXmlResource;
 	
 	protected Persistence persistence;
 	
 	
-	public GenericPersistenceXml(JpaRootContextNode parent, PersistenceXmlResource persistenceResource) {
+	public GenericPersistenceXml(JpaRootContextNode parent, JpaXmlResource resource) {
 		super(parent);
-		this.initialize(persistenceResource);
+		if (!resource.getContentType().isKindOf(JptCorePlugin.PERSISTENCE_XML_CONTENT_TYPE)) {
+			throw new IllegalArgumentException("Resource " + resource + " must have persistence xml content type"); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		this.persistenceXmlResource = resource;
+		if (resource.getRootObject() != null) {
+			this.persistence = buildPersistence((XmlPersistence) resource.getRootObject());
+		}
 	}
 	
+	public JpaXmlResource getXmlResource() {
+		return this.persistenceXmlResource;
+	}
 	
 	// **************** JpaNode impl *******************************************
 	
@@ -86,7 +96,7 @@ public class GenericPersistenceXml
 		this.persistence.dispose();
 		Persistence oldPersistence = this.persistence;
 		this.persistence = null;
-		XmlPersistence xmlPersistence = this.persistenceXmlResource.getPersistence();
+		XmlPersistence xmlPersistence = (XmlPersistence) this.persistenceXmlResource.getRootObject();
 		this.persistenceXmlResource.getContents().remove(xmlPersistence);
 		firePropertyChanged(PERSISTENCE_PROPERTY, oldPersistence, null);
 	}
@@ -99,18 +109,14 @@ public class GenericPersistenceXml
 	
 	
 	// **************** updating ***********************************************
-	
-	protected void initialize(PersistenceXmlResource pr) {
-		this.persistenceXmlResource = pr;
-		if (pr.getPersistence() != null) {
-			this.persistence = buildPersistence(pr.getPersistence());
-		}
-	}
 
-	public void update(PersistenceXmlResource persistenceResource) {
+	//TODO I haven't yet figured out if we do not need the resource object passed in now.
+	//I don't think we will even build GenericPersistenceXml if the resource object is null
+	//I'm pretty sure this won't change now, but need to investigate - KFB
+	public void update(JpaXmlResource persistenceResource) {
 		XmlPersistence oldXmlPersistence = 
 			(this.persistence == null) ? null : this.persistence.getXmlPersistence();
-		XmlPersistence newXmlPersistence = persistenceResource.getPersistence();
+		XmlPersistence newXmlPersistence = (XmlPersistence) persistenceResource.getRootObject();
 		
 		this.persistenceXmlResource = persistenceResource;
 		

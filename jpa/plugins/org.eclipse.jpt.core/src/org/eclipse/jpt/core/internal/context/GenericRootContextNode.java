@@ -10,10 +10,9 @@
 package org.eclipse.jpt.core.internal.context;
 
 import java.util.List;
-
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
@@ -22,15 +21,13 @@ import org.eclipse.jpt.core.context.MappingFileRoot;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
-import org.eclipse.jpt.core.internal.resource.persistence.PersistenceXmlResourceProvider;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.core.resource.common.JpaXmlResource;
 import org.eclipse.jpt.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.core.resource.persistence.PersistenceXmlResource;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.HashBag;
-import org.eclipse.wst.common.internal.emfworkbench.WorkbenchResourceHelper;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class GenericRootContextNode
@@ -50,15 +47,12 @@ public class GenericRootContextNode
 			throw new NullPointerException();
 		}
 		this.jpaProject = jpaProject;
-		
-		PersistenceXmlResourceProvider modelProvider =
-			PersistenceXmlResourceProvider.getDefaultXmlResourceProvider(jpaProject.getProject());
-		PersistenceXmlResource resource = modelProvider.getXmlResource();
-		if (resource.exists()) {
-			this.persistenceXml = this.buildPersistenceXml(resource);
+		JpaXmlResource resource = getPersistenceXmlResource();
+		if (resource != null) {
+			this.persistenceXml = buildPersistenceXml(resource);
 		}
 	}
-	
+
 	@Override
 	protected boolean requiresParent() {
 		return false;
@@ -109,52 +103,13 @@ public class GenericRootContextNode
 		this.firePropertyChanged(PERSISTENCE_XML_PROPERTY, old, persistenceXml);
 	}
 	
-	public PersistenceXml addPersistenceXml() {
-		if (this.persistenceXml != null) {
-			throw new IllegalStateException();
-		}
-		PersistenceXmlResourceProvider modelProvider =
-			PersistenceXmlResourceProvider.getDefaultXmlResourceProvider(this.getProject());
-		PersistenceXmlResource resource = modelProvider.getXmlResource();
-		modelProvider.modify(new Runnable() {
-				public void run() {
-					// any modification will save file
-				}
-			});
-		PersistenceXml px = this.buildPersistenceXml(resource);
-		this.setPersistenceXml(px);
-		return px;
-	}
-	
-	public void removePersistenceXml() {
-		if (this.persistenceXml == null) {
-			throw new IllegalStateException();
-		}
-		this.persistenceXml.dispose();
-		PersistenceXmlResourceProvider modelProvider =
-			PersistenceXmlResourceProvider.getDefaultXmlResourceProvider(jpaProject.getProject());
-		PersistenceXmlResource resource = modelProvider.getXmlResource();
-		try {
-			WorkbenchResourceHelper.deleteResource(resource);
-		}
-		catch (CoreException ce) {
-			JptCorePlugin.log(ce);
-		}
-		
-		if (! resource.exists()) {
-			setPersistenceXml(null);
-		}
-	}
-	
 	
 	// **************** updating ***********************************************
 	
 	public void update(IProgressMonitor monitor) {
-		PersistenceXmlResourceProvider modelProvider =
-			PersistenceXmlResourceProvider.getDefaultXmlResourceProvider(jpaProject.getProject());
-		PersistenceXmlResource resource = modelProvider.getXmlResource();
+		JpaXmlResource resource = getPersistenceXmlResource();
 		
-		if (resource.exists()) {
+		if (resource != null) {
 			if (this.persistenceXml == null) {
 				this.setPersistenceXml(this.buildPersistenceXml(resource));
 			} else {
@@ -164,9 +119,17 @@ public class GenericRootContextNode
 			this.setPersistenceXml(null);
 		}
 	}
-
-	protected PersistenceXml buildPersistenceXml(PersistenceXmlResource persistenceResource) {
-		return this.getJpaFactory().buildPersistenceXml(this, persistenceResource);
+	
+	protected JpaXmlResource getPersistenceXmlResource() {
+		return this.jpaProject.getPersistenceXmlResource();
+	}
+	
+	protected IFile getPlatformFile() {
+		return JptCorePlugin.getPlatformFile(this.jpaProject.getProject(), JptCorePlugin.DEFAULT_PERSISTENCE_XML_FILE_PATH);
+	}
+	
+	protected PersistenceXml buildPersistenceXml(JpaXmlResource resource) {
+		return this.getJpaFactory().buildPersistenceXml(this, resource);
 	}
 	
 	
@@ -174,10 +137,16 @@ public class GenericRootContextNode
 	
 	public void validate(List<IMessage> messages) {
 		if (this.persistenceXml == null) {
+			IFile platformFile = this.getPlatformFile();
+			String msgID = platformFile.exists() ?
+					JpaValidationMessages.PERSISTENCE_XML_INVALID_CONTENT
+				:
+					JpaValidationMessages.PROJECT_NO_PERSISTENCE_XML;
+
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY, 
-					JpaValidationMessages.PROJECT_NO_PERSISTENCE_XML,
+					msgID,
 					this
 				)
 			);

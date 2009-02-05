@@ -16,6 +16,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
@@ -89,8 +90,8 @@ public abstract class AbstractOrmPersistentType
 		return this.getParent();
 	}
 
-	public String getOrmType() {
-		return this.getEntityMappings().getOrmType();
+	public IContentType getContentType() {
+		return this.getEntityMappings().getContentType();
 	}
 
 	public String getDefaultPackage() {

@@ -11,11 +11,11 @@ package org.eclipse.jpt.core.tests.internal.context.persistence;
 
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
-import org.eclipse.jpt.core.resource.persistence.PersistenceXmlResource;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 
+@SuppressWarnings("nls")
 public class PersistenceTests extends ContextModelTestCase
 {
 	public PersistenceTests(String name) {
@@ -27,8 +27,7 @@ public class PersistenceTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateAddPersistenceUnit() throws Exception {
-		PersistenceXmlResource prm = getPersistenceXmlResource();
-		XmlPersistence xmlPersistence = prm.getPersistence();
+		XmlPersistence xmlPersistence = getXmlPersistence();
 		Persistence persistence = getRootContextNode().getPersistenceXml().getPersistence();
 		
 		// clear xml persistence units, test that it's clear in context
@@ -77,8 +76,7 @@ public class PersistenceTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateRemovePersistenceUnit() throws Exception {
-		PersistenceXmlResource prm = getPersistenceXmlResource();
-		XmlPersistence xmlPersistence = prm.getPersistence();
+		XmlPersistence xmlPersistence = getXmlPersistence();
 		Persistence persistence = getRootContextNode().getPersistenceXml().getPersistence();
 		
 		// add a persistence unit and test that there are two existing xml and 
