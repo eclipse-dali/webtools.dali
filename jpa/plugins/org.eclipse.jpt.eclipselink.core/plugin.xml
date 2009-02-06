@@ -28,6 +28,7 @@
             factoryClass="org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaPlatformFactory"
 			label="%ECLIPSELINK_PLATFORM">
 		</jpaPlatform>
+	    
 	    <jpaPlatform
 	        id="eclipselink1_1"
 	        factoryClass="org.eclipse.jpt.eclipselink.core.internal.EclipseLink1_1JpaPlatformFactory"
@@ -63,6 +64,25 @@
 				</and>
 			</enablement>
 		</provider>
+		
+		<!-- eclipselink 1.1 library provider is for now a simple copy of eclipselink library provider -->
+		<provider id="jpa-eclipselink1_1-user-library-provider" extends="wtp-user-library-provider">
+			<param name="validator" value="org.eclipse.jst.common.project.facet.core.libprov.user.KeyClassesValidator"/>
+			<param name="validator.param.0" value="javax.persistence.Entity"/>
+			<param name="validator.param.1" value="org.eclipse.persistence.annotations.Cache"/>
+			<enablement>
+				<and>
+					<with variable="requestingProjectFacet">
+						<test property="org.eclipse.wst.common.project.facet.core.projectFacet" value="jpt.jpa" forcePluginActivation="true"/>
+					</with>
+					<with variable="jpaPlatform">
+						<equals value="eclipselink1_1"/>
+					</with>
+				</and>
+			</enablement>
+		</provider>
+		
+		
 	
 	</extension>
 	
