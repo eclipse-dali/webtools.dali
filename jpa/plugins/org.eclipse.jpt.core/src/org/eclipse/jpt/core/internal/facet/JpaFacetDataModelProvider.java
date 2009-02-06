@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.facet;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -294,15 +295,21 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 	@Override
 	public DataModelPropertyDescriptor[] getValidPropertyDescriptors(String propertyName) {
 		if (propertyName.equals(PLATFORM_ID)) {
-			return CollectionTools.array(
-				new TransformationIterator<String, DataModelPropertyDescriptor>(
+			return CollectionTools.sort(
+				CollectionTools.array(
+					new TransformationIterator<String, DataModelPropertyDescriptor>(
 						JpaPlatformRegistry.instance().jpaPlatformIds()) {
-					@Override
-					protected DataModelPropertyDescriptor transform(String platformId) {
-						return platformIdPropertyDescriptor(platformId);
-					}
-				},
-				EMPTY_DMPD_ARRAY);
+							@Override
+							protected DataModelPropertyDescriptor transform(String platformId) {
+								return platformIdPropertyDescriptor(platformId);
+							}
+						},
+						EMPTY_DMPD_ARRAY),
+				new Comparator<DataModelPropertyDescriptor>() {
+					public int compare(DataModelPropertyDescriptor o1, DataModelPropertyDescriptor o2) {
+						return (o1.getPropertyDescription().compareTo(o2.getPropertyDescription()));
+					};
+				});
 		}
 		if (propertyName.equals(CONNECTION)) {
 			return CollectionTools.array(
