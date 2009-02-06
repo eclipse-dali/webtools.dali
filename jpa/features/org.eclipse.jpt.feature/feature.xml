@@ -24,22 +24,6 @@
       <discovery label="Dali Java Persistence API Tools (JPA) Updates" url="http://download.eclipse.org/webtools/updates/"/>
    </url>
 
-   <requires>
-      <import feature="org.eclipse.platform" version="3.4.0" match="compatible"/>
-      <import feature="org.eclipse.gef" version="3.4.0" match="compatible"/>
-      <import feature="org.eclipse.jdt" version="3.4.0" match="compatible"/>
-      <import feature="org.eclipse.xsd" version="2.4.0" match="compatible"/>
-      <import feature="org.eclipse.emf.codegen" version="2.4.0" match="compatible"/>
-      <import feature="org.eclipse.emf.ecore" version="2.4.0" match="compatible"/>
-      <import feature="org.eclipse.jst.web_core.feature" version="3.0.0" match="compatible"/>
-      <import feature="org.eclipse.jst.enterprise_core.feature" version="3.0.0" match="compatible"/>
-      <import feature="org.eclipse.jst.enterprise_ui.feature" version="3.0.0" match="compatible"/>
-      <import feature="org.eclipse.datatools.modelbase.feature" version="1.6.0" match="compatible"/>
-      <import feature="org.eclipse.datatools.enablement.feature" version="1.6.0" match="compatible"/>
-      <import feature="org.eclipse.datatools.sqldevtools.feature" version="1.6.0" match="compatible"/>
-      <import feature="org.eclipse.datatools.connectivity.feature" version="1.6.0" match="compatible"/>
-   </requires>
-
    <plugin
          id="org.eclipse.jpt.utility"
          download-size="0"
