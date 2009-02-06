@@ -19,8 +19,6 @@ import org.eclipse.jpt.core.context.MappingFileProvider;
 import org.eclipse.jpt.core.context.java.DefaultJavaAttributeMappingProvider;
 import org.eclipse.jpt.core.context.java.JavaAttributeMappingProvider;
 import org.eclipse.jpt.core.context.java.JavaTypeMappingProvider;
-import org.eclipse.jpt.core.context.orm.ExtendedOrmAttributeMappingProvider;
-import org.eclipse.jpt.core.context.orm.ExtendedOrmTypeMappingProvider;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMappingProvider;
 import org.eclipse.jpt.core.context.orm.OrmTypeMappingProvider;
 import org.eclipse.jpt.core.internal.context.java.JavaNullAttributeMappingProvider;
@@ -42,11 +40,7 @@ public abstract class AbstractJpaPlatformProvider implements JpaPlatformProvider
 
 	private DefaultJavaAttributeMappingProvider[] defaultJavaAttributeMappingProviders;
 
-	private ExtendedOrmTypeMappingProvider[] extendedOrmTypeMappingProviders;
-
 	private OrmTypeMappingProvider[] ormTypeMappingProviders;
-
-	private ExtendedOrmAttributeMappingProvider[] extendedOrmAttributeMappingProviders;
 
 	private OrmAttributeMappingProvider[] ormAttributeMappingProviders;
 
@@ -192,31 +186,7 @@ public abstract class AbstractJpaPlatformProvider implements JpaPlatformProvider
 	protected abstract void addMappingFileProvidersTo(List<MappingFileProvider> providers);
 
 
-	// ********** extended ORM type mappings **********
-	
-	public ListIterator<ExtendedOrmTypeMappingProvider> extendedOrmTypeMappingProviders() {
-		return new ArrayListIterator<ExtendedOrmTypeMappingProvider>(getExtendedOrmTypeMappingProviders());
-	}
-	
-	protected synchronized ExtendedOrmTypeMappingProvider[] getExtendedOrmTypeMappingProviders() {
-		if (this.extendedOrmTypeMappingProviders == null) {
-			this.extendedOrmTypeMappingProviders = this.buildExtendedOrmTypeMappingProviders();
-		}
-		return this.extendedOrmTypeMappingProviders;
-	}
-
-	protected ExtendedOrmTypeMappingProvider[] buildExtendedOrmTypeMappingProviders() {
-		ArrayList<ExtendedOrmTypeMappingProvider> providers = new ArrayList<ExtendedOrmTypeMappingProvider>();
-		this.addExtendedOrmTypeMappingProvidersTo(providers);
-		return providers.toArray(new ExtendedOrmTypeMappingProvider[providers.size()]);
-	}
-
-	/**
-	 * Implement this to specify extended type mapping providers.
-	 */
-	protected abstract void addExtendedOrmTypeMappingProvidersTo(List<ExtendedOrmTypeMappingProvider> providers);
-
-	// ********** "default" ORM type mappings **********
+	// ********** ORM type mappings **********
 	
 	public ListIterator<OrmTypeMappingProvider> ormTypeMappingProviders() {
 		return new ArrayListIterator<OrmTypeMappingProvider>(getOrmTypeMappingProviders());
@@ -241,32 +211,7 @@ public abstract class AbstractJpaPlatformProvider implements JpaPlatformProvider
 	protected abstract void addOrmTypeMappingProvidersTo(List<OrmTypeMappingProvider> providers);
 
 
-	// ********** extended ORM attribute mappings **********
-	
-	public ListIterator<ExtendedOrmAttributeMappingProvider> extendedOrmAttributeMappingProviders() {
-		return new ArrayListIterator<ExtendedOrmAttributeMappingProvider>(getExtendedOrmAttributeMappingProviders());
-	}
-
-	protected synchronized ExtendedOrmAttributeMappingProvider[] getExtendedOrmAttributeMappingProviders() {
-		if (this.extendedOrmAttributeMappingProviders == null) {
-			this.extendedOrmAttributeMappingProviders = this.buildExtendedOrmAttributeMappingProviders();
-		}
-		return this.extendedOrmAttributeMappingProviders;
-	}
-
-	protected ExtendedOrmAttributeMappingProvider[] buildExtendedOrmAttributeMappingProviders() {
-		ArrayList<ExtendedOrmAttributeMappingProvider> providers = new ArrayList<ExtendedOrmAttributeMappingProvider>();
-		this.addExtendedOrmAttributeMappingProvidersTo(providers);
-		return providers.toArray(new ExtendedOrmAttributeMappingProvider[providers.size()]);
-	}
-
-	/**
-	 * Implement this to specify extended attribute mapping providers.
-	 */
-	protected abstract void addExtendedOrmAttributeMappingProvidersTo(List<ExtendedOrmAttributeMappingProvider> providers);
-
-
-	// ********** "default" ORM attribute mappings **********
+	// ********** ORM attribute mappings **********
 
 	public ListIterator<OrmAttributeMappingProvider> ormAttributeMappingProviders() {
 		return new ArrayListIterator<OrmAttributeMappingProvider>(getOrmAttributeMappingProviders());

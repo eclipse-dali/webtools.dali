@@ -16,11 +16,10 @@ import org.eclipse.jpt.core.context.MappingFileProvider;
 import org.eclipse.jpt.core.context.java.DefaultJavaAttributeMappingProvider;
 import org.eclipse.jpt.core.context.java.JavaAttributeMappingProvider;
 import org.eclipse.jpt.core.context.java.JavaTypeMappingProvider;
-import org.eclipse.jpt.core.context.orm.ExtendedOrmAttributeMappingProvider;
-import org.eclipse.jpt.core.context.orm.ExtendedOrmTypeMappingProvider;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMappingProvider;
 import org.eclipse.jpt.core.context.orm.OrmTypeMappingProvider;
 import org.eclipse.jpt.core.internal.platform.AbstractJpaPlatformProvider;
+import org.eclipse.jpt.eclipselink.core.internal.context.EclipseLink1_1MappingFileProvider;
 
 /**
  * EclipseLink platform
@@ -51,8 +50,8 @@ public class EclipseLink1_1JpaPlatformProvider
 	// ********* JPA files *********	
 	
 	@Override
-	protected void addResourceModelProvidersTo(@SuppressWarnings("unused") List<JpaResourceModelProvider> providers) {
-		//none specific to EclipseLink1.1
+	protected void addResourceModelProvidersTo(List<JpaResourceModelProvider> providers) {
+		providers.add(EclipseLink1_1OrmResourceModelProvider.instance());
 	}
 
 	
@@ -82,22 +81,12 @@ public class EclipseLink1_1JpaPlatformProvider
 	}
 	
 	@Override
-	protected void addMappingFileProvidersTo(@SuppressWarnings("unused") List<MappingFileProvider> providers) {
-		//none specific to EclipseLink1.1
-	}
-
-	@Override
-	protected void addExtendedOrmTypeMappingProvidersTo(@SuppressWarnings("unused") List<ExtendedOrmTypeMappingProvider> providers) {
-		//none specific to EclipseLink1.1
+	protected void addMappingFileProvidersTo(List<MappingFileProvider> providers) {
+		providers.add(EclipseLink1_1MappingFileProvider.instance());
 	}
 
 	@Override
 	protected void addOrmAttributeMappingProvidersTo(@SuppressWarnings("unused") List<OrmAttributeMappingProvider> providers) {
-		//none specific to EclipseLink1.1
-	}
-
-	@Override
-	protected void addExtendedOrmAttributeMappingProvidersTo(@SuppressWarnings("unused") List<ExtendedOrmAttributeMappingProvider> providers) {
 		//none specific to EclipseLink1.1
 	}
 

@@ -11,6 +11,7 @@ package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
 import java.util.List;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.context.orm.OrmXml;
 import org.eclipse.jpt.core.internal.context.orm.AbstractEntityMappings;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaFactory;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntityMappings;
@@ -23,7 +24,7 @@ public class EclipseLinkEntityMappingsImpl
 
 	protected final EclipseLinkOrmConverterHolder converterHolder;
 	
-	public EclipseLinkEntityMappingsImpl(EclipseLinkOrmXml parent) {
+	public EclipseLinkEntityMappingsImpl(OrmXml parent) {
 		super(parent);
 		this.converterHolder = new EclipseLinkOrmConverterHolder(this);
 	}
@@ -39,12 +40,6 @@ public class EclipseLinkEntityMappingsImpl
 	protected EclipseLinkJpaFactory getJpaFactory() {
 		return (EclipseLinkJpaFactory) super.getJpaFactory();
 	}
-	
-	@Override
-	public EclipseLinkOrmXml getParent() {
-		return (EclipseLinkOrmXml) super.getParent();
-	}	
-	
 	
 	// **************** EclipseLinkEntityMappings impl **********************************
 

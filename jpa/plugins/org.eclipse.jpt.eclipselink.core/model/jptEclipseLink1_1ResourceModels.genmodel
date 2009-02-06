@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/org.eclipse.jpt.eclipselink.core/src"
+    creationCommands="false" creationIcons="false" editDirectory="" editorDirectory=""
+    modelPluginID="org.eclipse.jpt.eclipselink.core" modelName="EclipseLinkCore" editPluginClass=""
+    editorPluginClass="" updateClasspath="false" rootExtendsInterface="org.eclipse.jpt.core.resource.common.JpaEObject"
+    rootExtendsClass="org.eclipse.jpt.core.resource.common.AbstractJpaEObject" suppressInterfaces="true"
+    testsDirectory="" testSuiteClass="" importerID="org.eclipse.emf.importer.ecore"
+    complianceLevel="5.0" copyrightFields="false" usedGenPackages="../../org.eclipse.jpt.core/model/jptResourceModels.genmodel#//orm">
+  <foreignModel>eclipselink1_1_orm.ecore</foreignModel>
+  <genPackages prefix="EclipseLink1_1Orm" basePackage="org.eclipse.jpt.eclipselink1_1.core.resource"
+      disposableProviderFactory="true" ecorePackage="eclipselink1_1_orm.ecore#/">
+    <genClasses ecoreClass="eclipselink1_1_orm.ecore#//XmlEntityMappings"/>
+    <genClasses image="false" ecoreClass="eclipselink1_1_orm.ecore#//XmlAttributeMapping">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink1_1_orm.ecore#//XmlAttributeMapping/access"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="eclipselink1_1_orm.ecore#//XmlId"/>
+    <genClasses ecoreClass="eclipselink1_1_orm.ecore#//XmlIdImpl"/>
+    <genClasses image="false" ecoreClass="eclipselink1_1_orm.ecore#//XmlEmbeddedId"/>
+    <genClasses ecoreClass="eclipselink1_1_orm.ecore#//XmlEmbeddedIdImpl"/>
+    <genClasses image="false" ecoreClass="eclipselink1_1_orm.ecore#//XmlEmbedded"/>
+    <genClasses ecoreClass="eclipselink1_1_orm.ecore#//XmlEmbeddedImpl"/>
+    <genClasses image="false" ecoreClass="eclipselink1_1_orm.ecore#//XmlBasic">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink1_1_orm.ecore#//XmlBasic/generatedValue"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink1_1_orm.ecore#//XmlBasic/tableGenerator"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink1_1_orm.ecore#//XmlBasic/sequenceGenerator"/>
+    </genClasses>
+    <genClasses ecoreClass="eclipselink1_1_orm.ecore#//XmlBasicImpl"/>
+    <genClasses image="false" ecoreClass="eclipselink1_1_orm.ecore#//XmlVersion"/>
+    <genClasses ecoreClass="eclipselink1_1_orm.ecore#//XmlVersionImpl"/>
+    <genClasses image="false" ecoreClass="eclipselink1_1_orm.ecore#//XmlOneToOne"/>
+    <genClasses ecoreClass="eclipselink1_1_orm.ecore#//XmlOneToOneImpl"/>
+    <genClasses image="false" ecoreClass="eclipselink1_1_orm.ecore#//XmlOneToMany"/>
+    <genClasses ecoreClass="eclipselink1_1_orm.ecore#//XmlOneToManyImpl"/>
+    <genClasses image="false" ecoreClass="eclipselink1_1_orm.ecore#//XmlManyToOne"/>
+    <genClasses ecoreClass="eclipselink1_1_orm.ecore#//XmlManyToOneImpl"/>
+    <genClasses image="false" ecoreClass="eclipselink1_1_orm.ecore#//XmlManyToMany"/>
+    <genClasses ecoreClass="eclipselink1_1_orm.ecore#//XmlManyToManyImpl"/>
+    <genClasses image="false" ecoreClass="eclipselink1_1_orm.ecore#//XmlBasicCollection"/>
+    <genClasses ecoreClass="eclipselink1_1_orm.ecore#//XmlBasicCollectionImpl"/>
+    <genClasses image="false" ecoreClass="eclipselink1_1_orm.ecore#//XmlBasicMap"/>
+    <genClasses ecoreClass="eclipselink1_1_orm.ecore#//XmlBasicMapImpl"/>
+    <genClasses image="false" ecoreClass="eclipselink1_1_orm.ecore#//XmlTransformation"/>
+    <genClasses ecoreClass="eclipselink1_1_orm.ecore#//XmlTransformationImpl"/>
+    <genClasses image="false" ecoreClass="eclipselink1_1_orm.ecore#//XmlVariableOneToOne"/>
+    <genClasses ecoreClass="eclipselink1_1_orm.ecore#//XmlVariableOneToOneImpl"/>
+  </genPackages>
+  <genPackages prefix="EclipseLinkOrm" basePackage="org.eclipse.jpt.eclipselink.core.resource"
+      disposableProviderFactory="true" adapterFactory="false" ecorePackage="eclipselink_orm.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="eclipselink_orm.ecore#//XmlDirection">
+      <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//XmlDirection/IN"/>
+      <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//XmlDirection/OUT"/>
+      <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//XmlDirection/IN_OUT"/>
+      <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//XmlDirection/OUT_CURSOR"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="eclipselink_orm.ecore#//XmlChangeTrackingType">
+      <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//XmlChangeTrackingType/ATTRIBUTE"/>
+      <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//XmlChangeTrackingType/OBJECT"/>
+      <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//XmlChangeTrackingType/DEFERRED"/>
+      <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//XmlChangeTrackingType/AUTO"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="eclipselink_orm.ecore#//CacheType">
+      <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//CacheType/FULL"/>
+      <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//CacheType/WEAK"/>
+      <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//CacheType/SOFT"/>
+      <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//CacheType/SOFT_WEAK"/>
+      <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//CacheType/HARD_WEAK"/>
+      <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//CacheType/CACHE"/>
+      <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//CacheType/NONE"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="eclipselink_orm.ecore#//CacheCoordinationType">
+      <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//CacheCoordinationType/SEND_OBJECT_CHANGES"/>
+      <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//CacheCoordinationType/INVALIDATE_CHANGED_OBJECTS"/>
+      <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//CacheCoordinationType/SEND_NEW_OBJECTS_WITH_CHANGES"/>
+      <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//CacheCoordinationType/NONE"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="eclipselink_orm.ecore#//ExistenceType">
+      <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//ExistenceType/CHECK_CACHE"/>
+      <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//ExistenceType/CHECK_DATABASE"/>
+      <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//ExistenceType/ASSUME_EXISTENCE"/>
+      <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//ExistenceType/ASSUME_NON_EXISTENCE"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="eclipselink_orm.ecore#//XmlOptimisticLockingType">
+      <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//XmlOptimisticLockingType/ALL_COLUMNS"/>
+      <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//XmlOptimisticLockingType/CHANGED_COLUMNS"/>
+      <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//XmlOptimisticLockingType/SELECTED_COLUMNS"/>
+      <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//XmlOptimisticLockingType/VERSION_COLUMN"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="eclipselink_orm.ecore#//XmlJoinFetchType">
+      <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//XmlJoinFetchType/INNER"/>
+      <genEnumLiterals ecoreEnumLiteral="eclipselink_orm.ecore#//XmlJoinFetchType/OUTER"/>
+    </genEnums>
+    <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlNamedConverter">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlNamedConverter/name"/>
+    </genClasses>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlConverter">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlConverter/className"/>
+    </genClasses>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlConverterImpl"/>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlTypeConverter">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlTypeConverter/dataType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlTypeConverter/objectType"/>
+    </genClasses>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlTypeConverterImpl"/>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlConversionValue">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlConversionValue/dataValue"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlConversionValue/objectValue"/>
+    </genClasses>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlConversionValueImpl"/>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlObjectTypeConverter">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlObjectTypeConverter/dataType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlObjectTypeConverter/objectType"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlObjectTypeConverter/conversionValues"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlObjectTypeConverter/defaultObjectValue"/>
+    </genClasses>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlObjectTypeConverterImpl"/>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlStructConverter">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlStructConverter/converter"/>
+    </genClasses>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlStructConverterImpl"/>
+    <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlConvertersHolder">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlConvertersHolder/converters"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlConvertersHolder/typeConverters"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlConvertersHolder/objectTypeConverters"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlConvertersHolder/structConverters"/>
+    </genClasses>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlStoredProcedureParameter">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlStoredProcedureParameter/direction"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlStoredProcedureParameter/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlStoredProcedureParameter/queryParameter"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlStoredProcedureParameter/type"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlStoredProcedureParameter/jdbcType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlStoredProcedureParameter/jdbcTypeName"/>
+    </genClasses>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlNamedStoredProcedureQuery">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlNamedStoredProcedureQuery/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlNamedStoredProcedureQuery/resultClass"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlNamedStoredProcedureQuery/resultSetMapping"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlNamedStoredProcedureQuery/procedureName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlNamedStoredProcedureQuery/returnsResultSet"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlNamedStoredProcedureQuery/hints"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlNamedStoredProcedureQuery/parameters"/>
+    </genClasses>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlEntityMappings">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlEntityMappings/namedStoredProcedureQueries"/>
+    </genClasses>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlPersistenceUnitMetadata">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlPersistenceUnitMetadata/excludeDefaultMappings"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlCustomizer">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlCustomizer/customizerClassName"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlCustomizerHolder">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlCustomizerHolder/customizer"/>
+    </genClasses>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlChangeTracking">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlChangeTracking/type"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlChangeTrackingHolder">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlChangeTrackingHolder/changeTracking"/>
+    </genClasses>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlCopyPolicy">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlCopyPolicy/class"/>
+    </genClasses>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlInstantiationPolicy"/>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlCloneCopyPolicy">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlCloneCopyPolicy/method"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlCloneCopyPolicy/workingCopyMethod"/>
+    </genClasses>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlEmbeddable">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlEmbeddable/copyPolicy"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlEmbeddable/instantiationCopyPolicy"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlEmbeddable/cloneCopyPolicy"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlEmbeddable/properties"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlEmbeddable/excludeDefaultMappings"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlReadOnly">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlReadOnly/readOnly"/>
+    </genClasses>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlTimeOfDay">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlTimeOfDay/hour"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlTimeOfDay/minute"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlTimeOfDay/second"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlTimeOfDay/millisecond"/>
+    </genClasses>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlCache">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlCache/expiry"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlCache/size"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlCache/shared"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlCache/type"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlCache/alwaysRefresh"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlCache/refreshOnlyIfNewer"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlCache/disableHits"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlCache/coordinationType"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlCache/expiryTimeOfDay"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlCacheHolder">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlCacheHolder/cache"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlCacheHolder/existenceChecking"/>
+    </genClasses>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlOptimisticLocking">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlOptimisticLocking/type"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlOptimisticLocking/cascade"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlOptimisticLocking/selectedColumns"/>
+    </genClasses>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlEntity">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlEntity/optimisticLocking"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlEntity/copyPolicy"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlEntity/instantiationCopyPolicy"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlEntity/cloneCopyPolicy"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlEntity/namedStoredProcedureQueries"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlEntity/properties"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlEntity/excludeDefaultMappings"/>
+    </genClasses>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlMappedSuperclass">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlMappedSuperclass/optimisticLocking"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlMappedSuperclass/copyPolicy"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlMappedSuperclass/instantiationCopyPolicy"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlMappedSuperclass/cloneCopyPolicy"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlMappedSuperclass/properties"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlMappedSuperclass/excludeDefaultMappings"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlMutable">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlMutable/mutable"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlConverterHolder">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlConverterHolder/converter"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlConverterHolder/typeConverter"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlConverterHolder/objectTypeConverter"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlConverterHolder/structConverter"/>
+    </genClasses>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlConvertibleMapping">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlConvertibleMapping/convert"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlAccessMethods">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlAccessMethods/getMethod"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlAccessMethods/setMethod"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlAccessMethodsHolder">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlAccessMethodsHolder/accessMethods"/>
+    </genClasses>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlProperty">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlProperty/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlProperty/value"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlProperty/valueType"/>
+    </genClasses>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlId">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlId/properties"/>
+    </genClasses>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlIdImpl"/>
+    <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlEmbeddedId">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlEmbeddedId/properties"/>
+    </genClasses>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlEmbeddedIdImpl"/>
+    <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlEmbedded">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlEmbedded/properties"/>
+    </genClasses>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlEmbeddedImpl"/>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlBasic">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlBasic/properties"/>
+    </genClasses>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlBasicImpl"/>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlVersion">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlVersion/properties"/>
+    </genClasses>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlVersionImpl"/>
+    <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlPrivateOwned">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlPrivateOwned/privateOwned"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlJoinFetch">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlJoinFetch/joinFetch"/>
+    </genClasses>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlOneToOne">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlOneToOne/properties"/>
+    </genClasses>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlOneToOneImpl"/>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlOneToMany">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlOneToMany/properties"/>
+    </genClasses>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlOneToManyImpl"/>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlManyToOne">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlManyToOne/properties"/>
+    </genClasses>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlManyToOneImpl"/>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlManyToMany">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlManyToMany/properties"/>
+    </genClasses>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlManyToManyImpl"/>
+    <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlBasicCollection">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlBasicCollection/properties"/>
+    </genClasses>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlBasicCollectionImpl"/>
+    <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlBasicMap">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlBasicMap/properties"/>
+    </genClasses>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlBasicMapImpl"/>
+    <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlTransformation">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlTransformation/properties"/>
+    </genClasses>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlTransformationImpl"/>
+    <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlVariableOneToOne">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlVariableOneToOne/properties"/>
+    </genClasses>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlVariableOneToOneImpl"/>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//Attributes">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//Attributes/basicCollections"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//Attributes/basicMaps"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//Attributes/transformations"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//Attributes/variableOneToOnes"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

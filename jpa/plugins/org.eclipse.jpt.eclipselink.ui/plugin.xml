@@ -38,6 +38,30 @@
 				<parameter name="jptartifact" value="true"/> 
 			</class> 
 		</wizard>
+  <wizard
+        category="org.eclipse.jpt/org.eclipse.jpt.eclipselink"
+        icon="platform:/plugin/org.eclipse.jpt.ui/icons/full/etool16/new_jpa_file_wiz.gif"
+        id="org.eclipse.jpt.eclipselink.ui.wizard.newEclipseLink1_1MappingFile"
+        name="%newEclipseLink1_1MappingFileWizardName">
+     <description>
+        %newEclipseLink1_1JpaMappingFileWizardDesc
+     </description>
+     <class
+           class="org.eclipse.jpt.eclipselink.ui.internal.wizards.EclipseLink1_1MappingFileWizard">
+        <parameter
+              name="javaeeartifact"
+              value="true">
+        </parameter>
+        <parameter
+              name="menuIndex"
+              value="40">
+        </parameter>
+        <parameter
+              name="jptartifact"
+              value="true">
+        </parameter>
+     </class>
+  </wizard>
       
 	</extension>
 
@@ -63,13 +87,54 @@
 							property="org.eclipse.wst.common.project.facet.core.projectFacet"
 							value="jpt.jpa" />
 					</adapt>
-					<test
-						property="org.eclipse.jpt.core.jpaPlatform"
-						value="org.eclipse.eclipselink.platform">
-					</test>
+     <or>
+        <test
+              property="org.eclipse.jpt.core.jpaPlatform"
+              value="org.eclipse.eclipselink.platform">
+        </test>
+        <test
+              property="org.eclipse.jpt.core.jpaPlatform"
+              value="eclipselink1_1">
+        </test>
+     </or>
 				</and>
 			</enablement>
 		</commonWizard>
+  <commonWizard
+        menuGroupId="org.eclipse.jpt.ui"
+        type="new"
+        wizardId="org.eclipse.jpt.eclipselink.ui.wizard.newEclipseLink1_1MappingFile">
+     <enablement>
+        <and>
+           <or>
+              <instanceof
+                    value="org.eclipse.core.resources.IProject">
+              </instanceof>
+              <instanceof
+                    value="org.eclipse.core.resources.IFolder">
+              </instanceof>
+              <instanceof
+                    value="org.eclipse.jdt.core.IPackageFragmentRoot">
+              </instanceof>
+              <instanceof
+                    value="org.eclipse.jdt.core.IPackageFragment">
+              </instanceof>
+           </or>
+           <adapt
+                 type="org.eclipse.core.resources.IResource">
+              <test
+                    forcePluginActivation="true"
+                    property="org.eclipse.wst.common.project.facet.core.projectFacet"
+                    value="jpt.jpa">
+              </test>
+           </adapt>
+           <test
+                 property="org.eclipse.jpt.core.jpaPlatform"
+                 value="eclipselink1_1">
+           </test>
+        </and>
+     </enablement>
+  </commonWizard>
 		
 	</extension>
 	

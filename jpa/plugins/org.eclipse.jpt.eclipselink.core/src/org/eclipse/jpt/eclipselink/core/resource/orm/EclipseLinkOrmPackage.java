@@ -17,6 +17,7 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.eclipse.emf.ecore.xml.type.XMLTypePackage;
 import org.eclipse.jpt.core.resource.orm.OrmPackage;
+import org.eclipse.jpt.eclipselink1_1.core.resource.orm.EclipseLink1_1OrmPackage;
 
 /**
  * <!-- begin-user-doc -->
@@ -5980,11 +5981,16 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		OrmPackage.eINSTANCE.eClass();
 		XMLTypePackage.eINSTANCE.eClass();
 
+		// Obtain or create and register interdependencies
+		EclipseLink1_1OrmPackage theEclipseLink1_1OrmPackage = (EclipseLink1_1OrmPackage)(EPackage.Registry.INSTANCE.getEPackage(EclipseLink1_1OrmPackage.eNS_URI) instanceof EclipseLink1_1OrmPackage ? EPackage.Registry.INSTANCE.getEPackage(EclipseLink1_1OrmPackage.eNS_URI) : EclipseLink1_1OrmPackage.eINSTANCE);
+
 		// Create package meta-data objects
 		theEclipseLinkOrmPackage.createPackageContents();
+		theEclipseLink1_1OrmPackage.createPackageContents();
 
 		// Initialize created meta-data
 		theEclipseLinkOrmPackage.initializePackageContents();
+		theEclipseLink1_1OrmPackage.initializePackageContents();
 
 		// Mark meta-data to indicate it can't be changed
 		theEclipseLinkOrmPackage.freeze();

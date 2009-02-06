@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.platform;
 
+import java.util.Iterator;
 import java.util.ListIterator;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.EntityGeneratorDatabaseAnnotationNameBuilder;
@@ -31,8 +31,6 @@ import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.core.context.java.JavaTypeMappingProvider;
-import org.eclipse.jpt.core.context.orm.ExtendedOrmAttributeMappingProvider;
-import org.eclipse.jpt.core.context.orm.ExtendedOrmTypeMappingProvider;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMappingProvider;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
@@ -53,6 +51,7 @@ import org.eclipse.jpt.db.JptDbPlugin;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayListIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeListIterator;
+import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationListIterator;
 
 /**
@@ -123,7 +122,7 @@ public class GenericJpaPlatform
 	 */
 	protected JpaResourceModelProvider getResourceModelProvider(IContentType contentType) {
 		for (JpaResourceModelProvider provider : CollectionTools.iterable(resourceModelProviders())) {
-			if (contentType.isKindOf(provider.getContentType())) {
+			if (contentType.equals(provider.getContentType())) {
 				return provider;
 			}
 		}
@@ -297,42 +296,31 @@ public class GenericJpaPlatform
 	}
 
 
-	// ********** extended ORM type mappings **********
+	// ********** ORM type mappings **********
 
 	public OrmTypeMapping buildOrmTypeMappingFromMappingKey(String key, OrmPersistentType type) {
 		return this.getOrmTypeMappingProviderForMappingKey(type.getContentType(), key).buildMapping(type, this.jpaFactory);
 	}
 
 	protected OrmTypeMappingProvider getOrmTypeMappingProviderForMappingKey(IContentType contentType, String key) {
-		for (ExtendedOrmTypeMappingProvider provider : CollectionTools.iterable(this.extendedOrmTypeMappingProviders())) {
-			if ((provider.getContentType().equals(contentType)) && (provider.getKey() == key)) {
+		for (OrmTypeMappingProvider provider : CollectionTools.iterable(this.ormTypeMappingProviders(key))) {
+			if (provider.getContentType().isKindOf(contentType)) {
 				return provider;
 			}
 		}
-		// if we don't have an ORM-specific provider, look for a "default" provider
-		return this.getOrmTypeMappingProviderForMappingKey(key);
-	}
-
-	protected ListIterator<ExtendedOrmTypeMappingProvider> extendedOrmTypeMappingProviders() {
-		return new CompositeListIterator<ExtendedOrmTypeMappingProvider> ( 
-			new TransformationListIterator<JpaPlatformProvider, ListIterator<ExtendedOrmTypeMappingProvider>>(this.platformProviders()) {
-				@Override
-				protected ListIterator<ExtendedOrmTypeMappingProvider> transform(JpaPlatformProvider platformProvider) {
-					return platformProvider.extendedOrmTypeMappingProviders();
-				}
-			}
-		);
-	}
-
-	// ********** "default" ORM type mappings **********
-
-	protected OrmTypeMappingProvider getOrmTypeMappingProviderForMappingKey(String key) {
-		for (OrmTypeMappingProvider provider : CollectionTools.iterable(this.ormTypeMappingProviders())) {
-			if (provider.getKey() == key) {
-				return provider;
-			}
+		if (contentType.getBaseType() != null) {
+			return getOrmTypeMappingProviderForMappingKey(contentType.getBaseType(), key);
 		}
 		throw new IllegalArgumentException("Illegal type mapping key: " + key); //$NON-NLS-1$
+	}
+	
+	protected Iterator<OrmTypeMappingProvider> ormTypeMappingProviders(final String key) {
+		return new FilteringIterator<OrmTypeMappingProvider, OrmTypeMappingProvider>(ormTypeMappingProviders()) {
+			@Override
+			protected boolean accept(OrmTypeMappingProvider o) {
+				return o.getKey() == key;
+			}
+		};
 	}
 
 	protected ListIterator<OrmTypeMappingProvider> ormTypeMappingProviders() {
@@ -347,7 +335,7 @@ public class GenericJpaPlatform
 	}
 	
 
-	// ********** extended ORM attribute mappings **********
+	// ********** ORM attribute mappings **********
 
 	public OrmAttributeMapping buildOrmAttributeMappingFromMappingKey(String key, OrmPersistentAttribute attribute) {
 		return this.getOrmAttributeMappingProviderForMappingKey(attribute.getContentType(), key).buildMapping(attribute, this.jpaFactory);
@@ -358,35 +346,24 @@ public class GenericJpaPlatform
 	}
 
 	protected OrmAttributeMappingProvider getOrmAttributeMappingProviderForMappingKey(IContentType contentType, String key) {
-		for (ExtendedOrmAttributeMappingProvider provider : CollectionTools.iterable(this.extendedOrmAttributeMappingProviders())) {
-			if ((provider.getContentType().equals(contentType)) && (provider.getKey() == key)) {
+		for (OrmAttributeMappingProvider provider : CollectionTools.iterable(this.ormAttributeMappingProviders(key))) {
+			if (provider.getContentType().isKindOf(contentType)) {
 				return provider;
 			}
 		}
-		// if we don't have an ORM-specific provider, look for a "default" provider
-		return this.getOrmAttributeMappingProviderForMappingKey(key);
-	}
-
-	protected ListIterator<ExtendedOrmAttributeMappingProvider> extendedOrmAttributeMappingProviders() {
-		return new CompositeListIterator<ExtendedOrmAttributeMappingProvider> ( 
-			new TransformationListIterator<JpaPlatformProvider, ListIterator<ExtendedOrmAttributeMappingProvider>>(this.platformProviders()) {
-				@Override
-				protected ListIterator<ExtendedOrmAttributeMappingProvider> transform(JpaPlatformProvider platformProvider) {
-					return platformProvider.extendedOrmAttributeMappingProviders();
-				}
-			}
-		);
-	}
-
-	// ********** "default" ORM attribute mappings **********
-
-	protected OrmAttributeMappingProvider getOrmAttributeMappingProviderForMappingKey(String key) {
-		for (OrmAttributeMappingProvider provider : CollectionTools.iterable(this.ormAttributeMappingProviders())) {
-			if (provider.getKey() == key) {
-				return provider;
-			}
+		if (contentType.getBaseType() != null) {
+			return getOrmAttributeMappingProviderForMappingKey(contentType.getBaseType(), key);
 		}
 		return OrmNullAttributeMappingProvider.instance();
+	}
+	
+	protected Iterator<OrmAttributeMappingProvider> ormAttributeMappingProviders(final String key) {
+		return new FilteringIterator<OrmAttributeMappingProvider, OrmAttributeMappingProvider>(ormAttributeMappingProviders()) {
+			@Override
+			protected boolean accept(OrmAttributeMappingProvider o) {
+				return o.getKey() == key;
+			}
+		};
 	}
 
 	protected ListIterator<OrmAttributeMappingProvider> ormAttributeMappingProviders() {

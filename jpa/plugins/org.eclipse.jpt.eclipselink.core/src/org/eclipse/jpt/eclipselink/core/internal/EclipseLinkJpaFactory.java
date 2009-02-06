@@ -40,6 +40,7 @@ import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmVersionMapping;
+import org.eclipse.jpt.core.context.orm.OrmXml;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
@@ -203,7 +204,7 @@ public class EclipseLinkJpaFactory
 	
 	// ********** EclipseLink-specific ORM Context Model **********
 	
-	public EntityMappings buildEclipseLinkEntityMappings(EclipseLinkOrmXml parent, XmlEntityMappings xmlEntityMappings) {
+	public EntityMappings buildEclipseLinkEntityMappings(OrmXml parent, XmlEntityMappings xmlEntityMappings) {
 		EntityMappings entityMappings = new EclipseLinkEntityMappingsImpl(parent);
 		entityMappings.initialize(xmlEntityMappings);
 		return entityMappings;

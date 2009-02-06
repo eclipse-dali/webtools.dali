@@ -25,7 +25,8 @@ public class JptEclipseLinkCoreContextModelTests extends TestCase
 	
 	public static Test suite(boolean all) {
 		TestSuite suite = new TestSuite(JptEclipseLinkCoreContextModelTests.class.getName());
-		suite.addTestSuite(JpaProjectTests.class);
+		suite.addTestSuite(EclipseLinkJpaProjectTests.class);
+		suite.addTestSuite(EclipseLink1_1JpaProjectTests.class);
 		suite.addTest(JptEclipseLinkCorePersistenceContextModelTests.suite(all));
 		suite.addTest(JptEclipseLinkCoreJavaContextModelTests.suite(all));
 		suite.addTest(JptEclipseLinkCoreOrmContextModelTests.suite(all));

@@ -16,8 +16,6 @@ import org.eclipse.jpt.core.context.MappingFileProvider;
 import org.eclipse.jpt.core.context.java.DefaultJavaAttributeMappingProvider;
 import org.eclipse.jpt.core.context.java.JavaAttributeMappingProvider;
 import org.eclipse.jpt.core.context.java.JavaTypeMappingProvider;
-import org.eclipse.jpt.core.context.orm.ExtendedOrmAttributeMappingProvider;
-import org.eclipse.jpt.core.context.orm.ExtendedOrmTypeMappingProvider;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMappingProvider;
 import org.eclipse.jpt.core.context.orm.OrmTypeMappingProvider;
 import org.eclipse.jpt.core.internal.JavaResourceModelProvider;
@@ -135,18 +133,7 @@ public class GenericJpaPlatformProvider extends AbstractJpaPlatformProvider
 	}
 
 
-	// ********** extended ORM type mappings **********
-
-	/**
-	 * Override this to specify more or different extended type mapping providers.
-	 */
-	@Override
-	protected void addExtendedOrmTypeMappingProvidersTo(@SuppressWarnings("unused") List<ExtendedOrmTypeMappingProvider> providers) {
-		// none in generic
-	}
-
-
-	// ********** "default" ORM type mappings **********
+	// ********** ORM type mappings **********
 
 	@Override
 	protected void addOrmTypeMappingProvidersTo(List<OrmTypeMappingProvider> providers) {
@@ -156,18 +143,7 @@ public class GenericJpaPlatformProvider extends AbstractJpaPlatformProvider
 	}
 
 
-	// ********** extended ORM attribute mappings **********
-
-	/**
-	 * Override this to specify more or different extended attribute mapping providers.
-	 */
-	@Override
-	protected void addExtendedOrmAttributeMappingProvidersTo(@SuppressWarnings("unused") List<ExtendedOrmAttributeMappingProvider> providers) {
-		// none in generic
-	}
-
-
-	// ********** "default" ORM attribute mappings **********
+	// ********** ORM attribute mappings **********
 
 	@Override
 	protected void addOrmAttributeMappingProvidersTo(List<OrmAttributeMappingProvider> providers) {

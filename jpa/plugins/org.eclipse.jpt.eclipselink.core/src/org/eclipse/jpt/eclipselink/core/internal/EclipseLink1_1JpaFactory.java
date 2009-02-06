@@ -9,10 +9,19 @@
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal;
 
+import org.eclipse.jpt.core.context.MappingFile;
 import org.eclipse.jpt.core.context.PersistentType.Owner;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.core.context.orm.EntityMappings;
+import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.context.persistence.MappingFileRef;
+import org.eclipse.jpt.core.resource.common.JpaXmlResource;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLink1_1JavaPersistentTypeImpl;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLink1_1OrmXml;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkEntityMappings;
 
 public class EclipseLink1_1JpaFactory
 	extends EclipseLinkJpaFactory
@@ -25,5 +34,27 @@ public class EclipseLink1_1JpaFactory
 	public JavaPersistentType buildJavaPersistentType(Owner owner, JavaResourcePersistentType jrpt) {
 		return new EclipseLink1_1JavaPersistentTypeImpl(owner, jrpt);
 	}
+	
+	public MappingFile buildEclipseLink1_1MappingFile(MappingFileRef parent, JpaXmlResource resource) {
+		return this.buildEclipseLink1_1OrmXml(parent, resource);
+	}
+	
+	protected EclipseLink1_1OrmXml buildEclipseLink1_1OrmXml(MappingFileRef parent, JpaXmlResource resource) {
+		return new EclipseLink1_1OrmXml(parent, resource);
+	}
+//	
+//	public EntityMappings buildEclipseLink1_1EntityMappings(EclipseLink1_1OrmXml parent, XmlEntityMappings xmlEntityMappings) {
+//		EclipseLink1_1EntityMappingsImpl entityMappings = new EclipseLink1_1EntityMappingsImpl(parent);
+//		entityMappings.initialize(xmlEntityMappings);
+//		return entityMappings;
+//	}
+//
+//	public OrmPersistentType buildEclipseLink1_1OrmPersistentType(EclipseLinkEntityMappings parent, String mappingKey) {
+//		return new EclipseLink1_1OrmPersistentType(parent, mappingKey);
+//	}
+//
+//	public EclipseLink1_1OrmPersistentAttribute buildEclipseLink1_1OrmPersistentAttribute(OrmPersistentType parent, OrmPersistentAttribute.Owner owner, String mappingKey) {
+//		return new EclipseLink1_1OrmPersistentAttributeImpl(parent, owner, mappingKey);
+//	}
 
 }

@@ -121,7 +121,7 @@ public class JpaProjectTests extends TestCase
 		assertEquals("src/META-INF/orm.xml", resource.getFile().getProjectRelativePath().toString());
 	}
 	
-	public void testGetMappingFileResource2() throws Exception {
+	public void testGetMappingFileResourceDifferentlyName() throws Exception {
 		JpaXmlResource resource = this.getJpaProject().getMappingFileResource("META-INF/orm2.xml");
 		assertNull(resource);
 
@@ -144,38 +144,4 @@ public class JpaProjectTests extends TestCase
 		assertEquals(JptCorePlugin.ORM_XML_CONTENT_TYPE, resource.getContentType());
 		assertEquals("src/META-INF/orm2.xml", resource.getFile().getProjectRelativePath().toString());
 	}
-//	public void testModelLoad() {
-//		OrmXmlResourceProvider modelProvider = 
-//			OrmXmlResourceProvider.getDefaultXmlResourceProvider(jpaProject.getProject());
-//		assertNotNull(modelProvider);
-//		JpaXmlResource resource = modelProvider.getXmlResource();
-//		assertNotNull(resource);
-//	}
-//	
-//	public void testModelLoad2() {
-//		OrmXmlResourceProvider modelProvider = 
-//			OrmXmlResourceProvider.getDefaultXmlResourceProvider(jpaProject.getProject());
-//		assertNotNull(modelProvider);
-//		JpaXmlResource resource = modelProvider.getXmlResource();
-//		assertNotNull(resource);
-//	}
-//	
-//	public void testModelLoadForDifferentlyNamedOrmXml() {
-//		OrmXmlResourceProvider modelProvider = 
-//			OrmXmlResourceProvider.getXmlResourceProvider(jpaProject.getProject(), "META-INF/orm2.xml");
-//		assertNotNull(modelProvider);
-//		JpaXmlResource resource = modelProvider.getXmlResource();
-//		assertNotNull(resource);
-//	}
-//	
-//	public void testCreateFile() throws CoreException {
-//		createFile();
-//		OrmXmlResourceProvider modelProvider = 
-//			OrmXmlResourceProvider.getDefaultXmlResourceProvider(jpaProject.getProject());
-//		assertNotNull(modelProvider);
-//		JpaXmlResource resource = modelProvider.getXmlResource();
-//		assertNotNull(resource);
-//		assertTrue(resource.fileExists());
-//	}
-
 }

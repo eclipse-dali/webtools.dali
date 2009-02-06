@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
@@ -18,6 +19,7 @@ import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.eclipselink.core.EclipseLinkMappingKeys;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaFactory;
+import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaVariableOneToOneMapping;
 
 public class OrmVariableOneToOneMappingProvider
@@ -39,6 +41,10 @@ public class OrmVariableOneToOneMappingProvider
 	 */
 	private OrmVariableOneToOneMappingProvider() {
 		super();
+	}
+	
+	public IContentType getContentType() {
+		return JptEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_CONTENT_TYPE;
 	}
 
 	public String getKey() {

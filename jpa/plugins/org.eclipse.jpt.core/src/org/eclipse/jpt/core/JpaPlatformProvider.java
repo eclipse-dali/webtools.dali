@@ -14,8 +14,6 @@ import org.eclipse.jpt.core.context.MappingFileProvider;
 import org.eclipse.jpt.core.context.java.DefaultJavaAttributeMappingProvider;
 import org.eclipse.jpt.core.context.java.JavaAttributeMappingProvider;
 import org.eclipse.jpt.core.context.java.JavaTypeMappingProvider;
-import org.eclipse.jpt.core.context.orm.ExtendedOrmAttributeMappingProvider;
-import org.eclipse.jpt.core.context.orm.ExtendedOrmTypeMappingProvider;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMappingProvider;
 import org.eclipse.jpt.core.context.orm.OrmTypeMappingProvider;
 
@@ -66,19 +64,9 @@ public interface JpaPlatformProvider
 	ListIterator<DefaultJavaAttributeMappingProvider> defaultJavaAttributeMappingProviders();
 
 	/**
-	 * Return the extended orm type mapping providers that apply to this platform.
-	 */
-	ListIterator<ExtendedOrmTypeMappingProvider> extendedOrmTypeMappingProviders();
-
-	/**
 	 * Return the orm type mapping providers that apply to this platform.
 	 */
 	ListIterator<OrmTypeMappingProvider> ormTypeMappingProviders();
-
-	/**
-	 * Return the extended orm attribute mapping providers that apply to this platform.
-	 */
-	ListIterator<ExtendedOrmAttributeMappingProvider> extendedOrmAttributeMappingProviders();
 
 	/**
 	 * Return the orm attribute mapping providers that apply to this platform.

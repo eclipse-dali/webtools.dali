@@ -16,8 +16,6 @@ import org.eclipse.jpt.core.context.MappingFileProvider;
 import org.eclipse.jpt.core.context.java.DefaultJavaAttributeMappingProvider;
 import org.eclipse.jpt.core.context.java.JavaAttributeMappingProvider;
 import org.eclipse.jpt.core.context.java.JavaTypeMappingProvider;
-import org.eclipse.jpt.core.context.orm.ExtendedOrmAttributeMappingProvider;
-import org.eclipse.jpt.core.context.orm.ExtendedOrmTypeMappingProvider;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMappingProvider;
 import org.eclipse.jpt.core.context.orm.OrmTypeMappingProvider;
 import org.eclipse.jpt.core.internal.platform.AbstractJpaPlatformProvider;
@@ -108,7 +106,9 @@ public class EclipseLinkJpaPlatformProvider
 	
 	@Override
 	protected void addOrmTypeMappingProvidersTo(@SuppressWarnings("unused") List<OrmTypeMappingProvider> providers) {
-		//none specific to EclipseLink		
+		providers.add(EclipseLinkOrmEmbeddableProvider.instance());
+		providers.add(EclipseLinkOrmEntityProvider.instance());
+		providers.add(EclipseLinkOrmMappedSuperclassProvider.instance());
 	}
 	
 	@Override
@@ -117,22 +117,11 @@ public class EclipseLinkJpaPlatformProvider
 	}
 
 	@Override
-	protected void addExtendedOrmTypeMappingProvidersTo(List<ExtendedOrmTypeMappingProvider> providers) {
-		providers.add(EclipseLinkOrmEmbeddableProvider.instance());
-		providers.add(EclipseLinkOrmEntityProvider.instance());
-		providers.add(EclipseLinkOrmMappedSuperclassProvider.instance());
-	}
-
-	@Override
 	protected void addOrmAttributeMappingProvidersTo(List<OrmAttributeMappingProvider> providers) {
 		providers.add(OrmBasicCollectionMappingProvider.instance());
 		providers.add(OrmBasicMapMappingProvider.instance());
 		providers.add(OrmTransformationMappingProvider.instance());
 		providers.add(OrmVariableOneToOneMappingProvider.instance());
-	}
-
-	@Override
-	protected void addExtendedOrmAttributeMappingProvidersTo(List<ExtendedOrmAttributeMappingProvider> providers) {
 		providers.add(EclipseLinkOrmBasicMappingProvider.instance());
 		providers.add(EclipseLinkOrmIdMappingProvider.instance());
 		providers.add(EclipseLinkOrmEmbeddedIdMappingProvider.instance());

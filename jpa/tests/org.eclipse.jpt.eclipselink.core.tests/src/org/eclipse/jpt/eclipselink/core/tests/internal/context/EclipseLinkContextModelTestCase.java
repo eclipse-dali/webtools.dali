@@ -14,6 +14,7 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProperties;
 import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProvider;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
+import org.eclipse.jpt.eclipselink.core.EclipseLinkJpaProject;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaEntity;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaPlatformProvider;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
@@ -35,6 +36,10 @@ public abstract class EclipseLinkContextModelTestCase extends ContextModelTestCa
 		return dataModel;
 	}
 	
+	@Override
+	protected EclipseLinkJpaProject getJpaProject() {
+		return (EclipseLinkJpaProject) super.getJpaProject();
+	}
 	
 	@Override
 	protected EclipseLinkPersistenceUnit getPersistenceUnit() {

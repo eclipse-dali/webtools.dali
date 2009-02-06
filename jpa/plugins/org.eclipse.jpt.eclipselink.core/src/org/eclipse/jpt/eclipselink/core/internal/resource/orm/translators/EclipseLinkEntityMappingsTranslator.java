@@ -8,6 +8,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.resource.orm.translators;
 
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.jpt.core.internal.resource.orm.translators.EntityMappingsTranslator;
 import org.eclipse.wst.common.internal.emf.resource.ConstantAttributeTranslator;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
@@ -17,9 +18,12 @@ public class EclipseLinkEntityMappingsTranslator extends EntityMappingsTranslato
 {
 	public static EclipseLinkEntityMappingsTranslator INSTANCE = new EclipseLinkEntityMappingsTranslator();
 	
+	protected EclipseLinkEntityMappingsTranslator(String domNameAndPath, EClass eClass) {
+		super(domNameAndPath, eClass);
+	}
 	
 	public EclipseLinkEntityMappingsTranslator() {
-		super(ENTITY_MAPPINGS, ECLIPSELINK_ORM_PKG.getXmlEntityMappings());
+		this(ENTITY_MAPPINGS, ECLIPSELINK_ORM_PKG.getXmlEntityMappings());
 	}
 	
 	@Override

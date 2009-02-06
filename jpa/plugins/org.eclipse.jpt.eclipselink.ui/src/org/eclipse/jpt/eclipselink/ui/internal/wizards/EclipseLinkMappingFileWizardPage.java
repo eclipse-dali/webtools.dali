@@ -10,16 +10,15 @@
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.wizards;
 
-import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.ui.internal.wizards.orm.MappingFileWizardPage;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 
 public class EclipseLinkMappingFileWizardPage extends MappingFileWizardPage
 {
-	public EclipseLinkMappingFileWizardPage(IDataModel dataModel, String pageName) {
+	public EclipseLinkMappingFileWizardPage(IDataModel dataModel, String pageName, String title, String desc) {
 		super(dataModel, pageName);
-		setTitle(EclipseLinkUiMessages.MappingFileWizardPage_title);
-		setDescription(EclipseLinkUiMessages.MappingFileWizardPage_desc);
+		setTitle(title);
+		setDescription(desc);
 		setPageComplete(false);
 	}
 }

@@ -69,7 +69,7 @@ public class EclipseLinkOrmIdMapping extends GenericOrmIdMapping
 		typeMapping.getAttributes().getIds().add(id);
 		return id;
 	}
-	
+
 	@Override
 	protected void initialize() {
 		super.initialize();

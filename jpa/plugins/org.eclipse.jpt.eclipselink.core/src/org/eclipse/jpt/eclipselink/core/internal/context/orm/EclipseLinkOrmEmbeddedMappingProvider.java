@@ -14,8 +14,8 @@ import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaEmbeddedMapping;
-import org.eclipse.jpt.core.context.orm.ExtendedOrmAttributeMappingProvider;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
+import org.eclipse.jpt.core.context.orm.OrmAttributeMappingProvider;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
@@ -23,15 +23,15 @@ import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaFactory;
 import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
 
 public class EclipseLinkOrmEmbeddedMappingProvider
-	implements ExtendedOrmAttributeMappingProvider
+	implements OrmAttributeMappingProvider
 {
 	// singleton
-	private static final ExtendedOrmAttributeMappingProvider INSTANCE = new EclipseLinkOrmEmbeddedMappingProvider();
+	private static final OrmAttributeMappingProvider INSTANCE = new EclipseLinkOrmEmbeddedMappingProvider();
 
 	/**
 	 * Return the singleton.
 	 */
-	public static ExtendedOrmAttributeMappingProvider instance() {
+	public static OrmAttributeMappingProvider instance() {
 		return INSTANCE;
 	}
 

@@ -459,8 +459,21 @@ public class OrmFileCreationDataModelProvider extends AbstractDataModelProvider
 			}
 		}
 		protected boolean accept_(IProject project) throws CoreException {
-			return FacetedProjectFramework.hasProjectFacet(project, JptCorePlugin.FACET_ID);
+			return hasJpaFacet(project) && hasSupportedPlatformId(project);
 		}
+	}
+	
+	protected boolean hasJpaFacet(IProject project) throws CoreException {
+		return FacetedProjectFramework.hasProjectFacet(project, JptCorePlugin.FACET_ID);
+	}
+	
+	protected boolean hasSupportedPlatformId(IProject project) {
+		JpaProject jpaProject = JptCorePlugin.getJpaProject(project);
+		return (jpaProject != null) && isSupportedPlatformId(jpaProject.getJpaPlatform().getId());
+	}
+	
+	protected boolean isSupportedPlatformId(String id) {
+		return true;
 	}
 	
 	protected Iterator<PersistenceUnit> persistenceUnits() {

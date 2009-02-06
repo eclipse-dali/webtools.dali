@@ -43,6 +43,11 @@ public class TransformationTranslator extends BasicTranslator
 	protected Translator[] createChildren() {
 		return new Translator[] {
 			createNameTranslator(),
+			createFetchTranslator(),
+			createOptionalTranslator(),
+//			createMutableTranslator(),
+//			createReadTransformerTranslator(),
+//			createWriteTransformerTranslator(),
 			createPropertyTranslator(),
 			createAccessMethodsTranslator()
 		};

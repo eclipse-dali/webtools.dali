@@ -12,9 +12,9 @@ package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.MappingKeys;
-import org.eclipse.jpt.core.context.orm.ExtendedOrmTypeMappingProvider;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
+import org.eclipse.jpt.core.context.orm.OrmTypeMappingProvider;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaFactory;
 import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
 
@@ -23,15 +23,15 @@ import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
  * Allow for EclipseLink extensions to Mapped Superclass
  */
 public class EclipseLinkOrmMappedSuperclassProvider
-	implements ExtendedOrmTypeMappingProvider
+	implements OrmTypeMappingProvider
 {
 	// singleton
-	private static final ExtendedOrmTypeMappingProvider INSTANCE = new EclipseLinkOrmMappedSuperclassProvider();
+	private static final OrmTypeMappingProvider INSTANCE = new EclipseLinkOrmMappedSuperclassProvider();
 
 	/**
 	 * Return the singleton.
 	 */
-	public static ExtendedOrmTypeMappingProvider instance() {
+	public static OrmTypeMappingProvider instance() {
 		return INSTANCE;
 	}
 

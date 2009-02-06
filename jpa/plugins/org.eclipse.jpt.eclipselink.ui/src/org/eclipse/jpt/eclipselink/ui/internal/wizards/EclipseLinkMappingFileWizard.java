@@ -36,7 +36,7 @@ public class EclipseLinkMappingFileWizard extends MappingFileWizard
 	
 	@Override
 	protected MappingFileWizardPage buildMappingFileWizardPage() {
-		return new EclipseLinkMappingFileWizardPage(getDataModel(), "Page_1");
+		return new EclipseLinkMappingFileWizardPage(getDataModel(), "Page_1", EclipseLinkUiMessages.MappingFileWizardPage_title, EclipseLinkUiMessages.MappingFileWizardPage_desc);
 	}
 	
 	@Override

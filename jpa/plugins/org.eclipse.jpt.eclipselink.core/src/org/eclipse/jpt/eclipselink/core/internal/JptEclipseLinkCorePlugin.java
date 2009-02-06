@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -27,7 +27,7 @@ public class JptEclipseLinkCorePlugin extends Plugin
 	public static final String PLUGIN_ID = "org.eclipse.jpt.eclipselink.core"; //$NON-NLS-1$
 	
 	/**
-	 * Value of the content-type for eclipselink-orm.xml mappings files. Use this 
+	 * Value of the content-type for eclipselink-orm.xml version 1.0 mappings files. Use this 
 	 * value to retrieve the ORM xml content type from the content type manager 
 	 * and to add new eclipselink-orm.xml-like extensions to this content type.
 	 * 
@@ -35,6 +35,15 @@ public class JptEclipseLinkCorePlugin extends Plugin
 	 */
 	public static final IContentType ECLIPSELINK_ORM_XML_CONTENT_TYPE = Platform.getContentTypeManager().getContentType(PLUGIN_ID + ".content.orm"); //$NON-NLS-1$
 	
+	/**
+	 * Value of the content-type for eclipselink-orm.xml version 1.1 mappings files. Use this 
+	 * value to retrieve the ORM xml content type from the content type manager 
+	 * and to add new eclipselink-orm.xml-like extensions to this content type.
+	 * 
+	 * @see org.eclipse.core.runtime.content.IContentTypeManager#getContentType(String)
+	 */
+	public static final IContentType ECLIPSELINK1_1_ORM_XML_CONTENT_TYPE = Platform.getContentTypeManager().getContentType("org.eclipse.jpt.eclipselink1_1.core.content.orm"); //$NON-NLS-1$
+
 	public static final String DEFAULT_ECLIPSELINK_ORM_XML_FILE_PATH = "META-INF/eclipselink-orm.xml"; //$NON-NLS-1$
 	
 	

@@ -27,10 +27,11 @@ import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.java.TransientAnnotation;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
+import org.eclipse.jpt.eclipselink.core.tests.internal.context.EclipseLink1_1ContextModelTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
-public class EclipseLink1_1JavaPersistentTypeTests extends EclipseLink1_1JavaContextModelTestCase
+public class EclipseLink1_1JavaPersistentTypeTests extends EclipseLink1_1ContextModelTestCase
 {
 		
 	private ICompilationUnit createTestEntity() throws Exception {
