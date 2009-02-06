@@ -12,6 +12,7 @@ package org.eclipse.jpt.ui.internal.properties;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -773,8 +774,15 @@ public class JpaProjectPropertiesPage
 		
 		
 		private ListValueModel<String> buildPlatformChoicesListValueModel() {
-			return new SimpleListValueModel(
-				CollectionTools.list(JpaPlatformRegistry.instance().jpaPlatformIds()));
+			return new SortedListValueModelAdapter<String>(
+				new SimpleListValueModel<String>(
+					CollectionTools.list(JpaPlatformRegistry.instance().jpaPlatformIds())),
+				new Comparator<String>() {
+					public int compare(String o1, String o2) {
+						return JpaPlatformRegistry.instance().getJpaPlatformLabel(o1).
+							compareTo(JpaPlatformRegistry.instance().getJpaPlatformLabel(o2));
+					}
+				});
 		}
 		
 		private StringConverter<String> buildPlatformLabelConverter() {
