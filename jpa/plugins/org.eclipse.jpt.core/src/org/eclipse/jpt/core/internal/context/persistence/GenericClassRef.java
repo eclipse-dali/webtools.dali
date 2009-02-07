@@ -46,12 +46,17 @@ public class GenericClassRef
 
 	// ********** construction/initialization **********
 
+	/**
+	 * Construct an "specified" class ref; i.e. a class ref with
+	 * an explicit entry in the persistence.xml.
+	 */
 	public GenericClassRef(PersistenceUnit parent, XmlJavaClassRef classRef) {
 		this(parent, classRef, classRef.getJavaClass());
 	}
 
 	/**
-	 * used for "implied" class ref
+	 * Construct an "implied" class ref; i.e. a class ref without
+	 * an explicit entry in the persistence.xml.
 	 */
 	public GenericClassRef(PersistenceUnit parent, String className) {
 		this(parent, null, className);
