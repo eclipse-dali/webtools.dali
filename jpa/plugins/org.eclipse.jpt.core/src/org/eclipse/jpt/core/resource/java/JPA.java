@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.resource.java;
 
-
 /**
  * JPA Java-related stuff (annotations etc.)
  * 
@@ -19,7 +18,6 @@ package org.eclipse.jpt.core.resource.java;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-// TODO move to utility?
 @SuppressWarnings("nls")
 public interface JPA {
 
