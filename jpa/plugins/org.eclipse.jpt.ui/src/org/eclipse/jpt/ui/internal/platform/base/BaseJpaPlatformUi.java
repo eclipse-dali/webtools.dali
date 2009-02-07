@@ -377,7 +377,10 @@ public abstract class BaseJpaPlatformUi
 	/**
 	 * Override this to specify more or different JPA structure providers.
 	 * The default includes support for Java, persistence.xml, and orm.xml
-	 * files
+	 * files.
+	 * The order is significant; structure providers for more-specific content
+	 * types should precede those for more-genernal content types (i.e. a
+	 * "child" type should precede its "base" type, so it is detected first).
 	 */
 	protected void addJpaStructureProvidersTo(List<JpaStructureProvider> providers) {
 		providers.add(JavaResourceModelStructureProvider.instance());

@@ -31,20 +31,25 @@ import org.eclipse.jpt.utility.internal.ListenerList;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
 /**
- * 
+ * Java compilation unit (source file)
  */
 public class JavaResourceCompilationUnitImpl
 	extends AbstractJavaResourceNode
 	implements JavaResourceCompilationUnit
 {
+	/** JDT compilation unit */
 	private final ICompilationUnit compilationUnit;
 
+	/** pluggable annotation provider */
 	private final JpaAnnotationProvider annotationProvider;
 
+	/** improved annotation formatting */
 	private final AnnotationEditFormatter annotationEditFormatter;
 
+	/** pluggable executor that allows the document to be modified on another thread */
 	private final CommandExecutor modifySharedDocumentCommandExecutor;
 
+	/** listeners notified whenever the resource model changes */
 	private final ListenerList<JpaResourceModelListener> resourceModelListenerList;
 
 	/**

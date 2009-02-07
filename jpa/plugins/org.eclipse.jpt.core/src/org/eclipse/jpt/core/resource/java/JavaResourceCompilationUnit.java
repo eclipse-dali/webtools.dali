@@ -61,9 +61,9 @@ public interface JavaResourceCompilationUnit
 	CommandExecutor getModifySharedDocumentCommandExecutor();
 
 	/**
-	 * Called (via a hook in change notification) whenever anything in the JPA
-	 * compilation unit changes. Forwarded to the JPA file and on to
-	 * various listeners (namely the JPA project).
+	 * Called (via a hook in change notification) whenever anything in the
+	 * Java resource compilation unit changes. Forwarded to resource model
+	 * listeners (namely the JPA project).
 	 */
 	void resourceModelChanged();
 
@@ -81,7 +81,7 @@ public interface JavaResourceCompilationUnit
 	void update();
 
 	/**
-	 * Build an AST for compilation unit with its bindings resolved.
+	 * Build an AST for the compilation unit with its bindings resolved.
 	 */
 	CompilationUnit buildASTRoot();
 
