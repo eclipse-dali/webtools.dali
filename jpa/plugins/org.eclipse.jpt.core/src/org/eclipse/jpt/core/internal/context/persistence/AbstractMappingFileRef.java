@@ -24,7 +24,7 @@ import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.core.resource.common.JpaXmlResource;
+import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
@@ -43,26 +43,14 @@ public abstract class AbstractMappingFileRef
 	protected AbstractMappingFileRef(PersistenceUnit parent, String resourceFileName) {
 		super(parent);
 		this.fileName = resourceFileName;
-		this.initializeMappingFile();
+		this.mappingFile = this.buildMappingFile();
 	}
 
-	protected void initializeMappingFile() {
+	protected MappingFile buildMappingFile() {
 		JpaXmlResource xmlResource = this.getXmlResource();
-		if (xmlResource != null) {
-			this.mappingFile = this.buildMappingFile(xmlResource);
-		}
+		return (xmlResource == null) ? null : this.buildMappingFile(xmlResource);
 	}
-	/**
-	 * The XmlMappingFileRef resource is the Persistence xml resource.
-	 * This returns the resource of the mapping file itself.
-	 */
-	protected JpaXmlResource getXmlResource() {
-		return getJpaProject().getMappingFileResource(this.fileName);
-	}
-	
-	protected IFile getPlatformFile() {
-		return JptCorePlugin.getPlatformFile(this.getJpaProject().getProject(), this.fileName);
-	}
+
 
 	// ********** JpaStructureNode implementation **********
 
@@ -143,8 +131,7 @@ public abstract class AbstractMappingFileRef
 				if (this.mappingFile.getXmlResource() != xmlResource) {
 					this.mappingFile.dispose();
 					this.setMappingFile(this.buildMappingFile(xmlResource));
-				}
-				else {
+				} else {
 					this.mappingFile.update(xmlResource);
 				}
 			}
@@ -156,6 +143,14 @@ public abstract class AbstractMappingFileRef
 		}
 	}
 
+	/**
+	 * The XmlMappingFileRef resource is the Persistence xml resource.
+	 * This returns the resource of the mapping file itself.
+	 */
+	protected JpaXmlResource getXmlResource() {
+		return this.getJpaProject().getMappingFileResource(this.fileName);
+	}
+	
 	protected MappingFile buildMappingFile(JpaXmlResource resource) {
 		return this.getJpaPlatform().buildMappingFile(this, resource);
 	}
@@ -180,15 +175,10 @@ public abstract class AbstractMappingFileRef
 		}
 
 		if (this.mappingFile == null) {
-			IFile platformFile = this.getPlatformFile();
-			String msgID = platformFile.exists() ?
-					JpaValidationMessages.PERSISTENCE_UNIT_UNSUPPORTED_MAPPING_FILE_CONTENT
-				:
-					JpaValidationMessages.PERSISTENCE_UNIT_NONEXISTENT_MAPPING_FILE;
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
-					msgID,
+					this.buildMissingMappingFileMessageID(),
 					new String[] {this.fileName},
 					this,
 					this.getValidationTextRange()
@@ -210,6 +200,17 @@ public abstract class AbstractMappingFileRef
 		}
 
 		this.mappingFile.validate(messages);
+	}
+
+	protected String buildMissingMappingFileMessageID() {
+		return this.getPlatformFile().exists() ?
+					JpaValidationMessages.PERSISTENCE_UNIT_UNSUPPORTED_MAPPING_FILE_CONTENT
+				:
+					JpaValidationMessages.PERSISTENCE_UNIT_NONEXISTENT_MAPPING_FILE;
+	}
+
+	protected IFile getPlatformFile() {
+		return this.getJpaProject().convertToPlatformFile(this.fileName);
 	}
 
 

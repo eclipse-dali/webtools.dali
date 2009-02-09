@@ -25,6 +25,7 @@ import org.eclipse.jpt.core.context.MappingFile;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.UniqueConstraint;
 import org.eclipse.jpt.core.context.XmlContextNode;
+import org.eclipse.jpt.core.context.jar.JarFile;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverride;
@@ -108,6 +109,7 @@ import org.eclipse.jpt.core.context.orm.OrmVersionMapping;
 import org.eclipse.jpt.core.context.orm.OrmXml;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitMetadata;
 import org.eclipse.jpt.core.context.persistence.ClassRef;
+import org.eclipse.jpt.core.context.persistence.JarFileRef;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
@@ -116,6 +118,7 @@ import org.eclipse.jpt.core.internal.GenericJpaDataSource;
 import org.eclipse.jpt.core.internal.GenericJpaFile;
 import org.eclipse.jpt.core.internal.GenericJpaProject;
 import org.eclipse.jpt.core.internal.context.GenericRootContextNode;
+import org.eclipse.jpt.core.internal.context.jar.GenericJarFile;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaAssociationOverride;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaAttributeOverride;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaBasicMapping;
@@ -200,13 +203,14 @@ import org.eclipse.jpt.core.internal.context.orm.VirtualXmlOneToOne;
 import org.eclipse.jpt.core.internal.context.orm.VirtualXmlTransient;
 import org.eclipse.jpt.core.internal.context.orm.VirtualXmlVersion;
 import org.eclipse.jpt.core.internal.context.persistence.GenericClassRef;
+import org.eclipse.jpt.core.internal.context.persistence.GenericJarFileRef;
 import org.eclipse.jpt.core.internal.context.persistence.GenericMappingFileRef;
 import org.eclipse.jpt.core.internal.context.persistence.GenericPersistence;
 import org.eclipse.jpt.core.internal.context.persistence.GenericPersistenceUnit;
 import org.eclipse.jpt.core.internal.context.persistence.GenericPersistenceXml;
-import org.eclipse.jpt.core.internal.context.persistence.GenericProperty;
+import org.eclipse.jpt.core.internal.context.persistence.GenericPersistenceUnitProperty;
 import org.eclipse.jpt.core.internal.context.persistence.ImpliedMappingFileRef;
-import org.eclipse.jpt.core.resource.common.JpaXmlResource;
+import org.eclipse.jpt.core.resource.jar.JarResourcePackageFragmentRoot;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
@@ -233,11 +237,13 @@ import org.eclipse.jpt.core.resource.orm.XmlTableGenerator;
 import org.eclipse.jpt.core.resource.orm.XmlTransient;
 import org.eclipse.jpt.core.resource.orm.XmlUniqueConstraint;
 import org.eclipse.jpt.core.resource.orm.XmlVersion;
+import org.eclipse.jpt.core.resource.persistence.XmlJarFileRef;
 import org.eclipse.jpt.core.resource.persistence.XmlJavaClassRef;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.core.resource.persistence.XmlProperty;
+import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 
 /**
  * Central class that allows extenders to easily replace implementations of
@@ -272,8 +278,8 @@ public class GenericJpaFactory
 		return new GenericRootContextNode(parent);
 	}
 	
-	public MappingFile buildMappingFile(MappingFileRef parent, JpaXmlResource resource) {
-		return this.buildOrmXml(parent, resource);
+	public MappingFile buildMappingFile(MappingFileRef parent, JpaXmlResource xmlResource) {
+		return this.buildOrmXml(parent, xmlResource);
 	}
 	
 
@@ -289,6 +295,10 @@ public class GenericJpaFactory
 	
 	public PersistenceUnit buildPersistenceUnit(Persistence parent, XmlPersistenceUnit xmlPersistenceUnit) {
 		return new GenericPersistenceUnit(parent, xmlPersistenceUnit);
+	}
+	
+	public JarFileRef buildJarFileRef(PersistenceUnit parent, XmlJarFileRef xmlJarFileRef) {
+		return new GenericJarFileRef(parent, xmlJarFileRef);
 	}
 	
 	public MappingFileRef buildMappingFileRef(PersistenceUnit parent, XmlMappingFileRef xmlMappingFileRef) {
@@ -308,7 +318,7 @@ public class GenericJpaFactory
 	}
 	
 	public PersistenceUnit.Property buildProperty(PersistenceUnit parent, XmlProperty xmlProperty) {
-		return new GenericProperty(parent, xmlProperty);
+		return new GenericPersistenceUnitProperty(parent, xmlProperty);
 	}
 	
 
@@ -656,6 +666,13 @@ public class GenericJpaFactory
 	
 	public JavaLobConverter buildJavaLobConverter(JavaAttributeMapping parent, JavaResourcePersistentAttribute jrpa) {
 		return new GenericJavaLobConverter(parent, jrpa);
+	}
+	
+
+	// ********** JAR Context Model **********
+
+	public JarFile buildJarFile(JarFileRef parent, JarResourcePackageFragmentRoot jarResourcePackageFragmentRoot) {
+		return new GenericJarFile(parent, jarResourcePackageFragmentRoot);
 	}
 	
 }

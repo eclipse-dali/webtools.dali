@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -7,12 +7,14 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.context.persistence;
+package org.eclipse.jpt.core.resource.jar;
 
-import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.jpt.core.resource.jar.JarResourcePackageFragmentRoot;
+import org.eclipse.jpt.utility.model.Model;
 
 /**
- * 
+ * Common interface for all resource objects related to JARs.
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -20,15 +22,14 @@ import org.eclipse.jpt.core.JptCorePlugin;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface PersistenceStructureNodes 
+public interface JarResourceNode
+	extends Model
 {
-	String PREFIX = JptCorePlugin.PLUGIN_ID_ + "persistence"; //$NON-NLS-1$
-	String PREFIX_ = PREFIX + '.';
 
-	String PERSISTENCE_ID = PREFIX_ + "persistence"; //$NON-NLS-1$
-	String PERSISTENCE_UNIT_ID = PREFIX_ + "persistenceUnit"; //$NON-NLS-1$
-	String CLASS_REF_ID = PREFIX_ + "classRef"; //$NON-NLS-1$
-	String MAPPING_FILE_REF_ID = PREFIX_ + "mappingFileRef"; //$NON-NLS-1$
-	String JAR_FILE_REF_ID = PREFIX_ + "jarFileRef"; //$NON-NLS-1$
-	
+	JarResourcePackageFragmentRoot getJarResourcePackageFragmentRoot();
+
+	IFile getFile();
+
+	void update();
+
 }

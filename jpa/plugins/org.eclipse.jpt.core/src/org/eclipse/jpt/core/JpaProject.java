@@ -20,8 +20,9 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
-import org.eclipse.jpt.core.resource.common.JpaXmlResource;
+import org.eclipse.jpt.core.resource.jar.JarResourcePackageFragmentRoot;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.db.Catalog;
 import org.eclipse.jpt.db.ConnectionProfile;
 import org.eclipse.jpt.db.Schema;
@@ -148,6 +149,15 @@ public interface JpaProject
 	JavaResourcePersistentType getJavaResourcePersistentType(String typeName);
 
 
+	// ********** JAR resources **********
+
+	/**
+	 * Return the JAR resource package fragement root for the specified JAR.
+	 * Return null if absent.
+	 */
+	JarResourcePackageFragmentRoot getJarResourcePackageFragmentRoot(String jarFileName);
+
+
 	// ********** model synchronization **********
 
 	/**
@@ -244,6 +254,11 @@ public interface JpaProject
 		}
 
 	}
+
+
+	// ********** utility **********
+
+	IFile convertToPlatformFile(String fileName);
 
 
 	// ********** validation **********

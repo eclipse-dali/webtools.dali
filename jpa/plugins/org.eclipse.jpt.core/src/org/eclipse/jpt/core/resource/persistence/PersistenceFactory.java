@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -91,6 +91,7 @@ public class PersistenceFactory extends EFactoryImpl
 			case PersistencePackage.XML_JAVA_CLASS_REF: return (EObject)createXmlJavaClassRef();
 			case PersistencePackage.XML_PROPERTIES: return (EObject)createXmlProperties();
 			case PersistencePackage.XML_PROPERTY: return (EObject)createXmlProperty();
+			case PersistencePackage.XML_JAR_FILE_REF: return (EObject)createXmlJarFileRef();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -202,6 +203,17 @@ public class PersistenceFactory extends EFactoryImpl
 	{
 		XmlProperty xmlProperty = new XmlProperty();
 		return xmlProperty;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlJarFileRef createXmlJarFileRef()
+	{
+		XmlJarFileRef xmlJarFileRef = new XmlJarFileRef();
+		return xmlJarFileRef;
 	}
 
 	/**

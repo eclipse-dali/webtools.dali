@@ -12,8 +12,6 @@
 	/>
 	
 	
-	
-	
 	<!-- ***** Eclipse core extensions ***** -->
 	
 	<extension 
@@ -71,7 +69,7 @@
 	
 	
 	<extension
-		point="org.eclipse.core.runtime.contentTypes">
+		point="org.eclipse.core.contenttype.contentTypes">
 		
 		<!-- "abstract" content type to be extended by all JPA XML file content types -->
 		<content-type
@@ -80,12 +78,15 @@
 			base-type="org.eclipse.core.runtime.xml"
 			describer="org.eclipse.jpt.core.internal.resource.IndeterminateContentDescriber">
 		</content-type>
+		
+		<!-- "abstract" mapping file content type -->
 	  	<content-type
 	        base-type="org.eclipse.jpt.core.content.baseJpaContent"
 	        id="org.eclipse.jpt.core.content.mappingFile"
 	        name="%MAPPING_FILE_CONTENT">
 	  	</content-type>
 		
+		<!-- orm.xml content type -->
 		<content-type
 	        base-type="org.eclipse.jpt.core.content.mappingFile"
 	        id="org.eclipse.jpt.core.content.orm"
@@ -98,6 +99,7 @@
 			</describer>
 		</content-type>
   		
+		<!-- persistence.xml content type -->
   		<content-type
 			id="org.eclipse.jpt.core.content.persistence"
 			name="%PERSISTENCE_XML_CONTENT"
@@ -110,7 +112,17 @@
 					value="{http://java.sun.com/xml/ns/persistence}persistence"/>
 			</describer>
 		</content-type>
- 	
+ 
+		<!-- JAR content type -->
+		<content-type
+			id="org.eclipse.jpt.core.content.jar"
+			name="%JAR_CONTENT"
+			file-extensions="jar, zip">
+			<describer
+				class="org.eclipse.core.runtime.content.BinarySignatureDescriber">
+				<parameter name="signature" value="50 4B 03 04"/>
+			</describer>
+		</content-type>
 	</extension>
 	
 	
@@ -135,8 +147,6 @@
 			default="false"/>
 		
 	</extension>
-	
-	
 	
 	
 	<!--
@@ -269,7 +279,7 @@
 		
 		<!-- 
 			There is no version change delegate, because as of now, there is 
-		    only a single version of JPA 
+			only a single version of JPA 
 		-->
 		
 	</extension>
@@ -301,7 +311,7 @@
 	
 	<extension
 		point="org.eclipse.wst.validation.validatorV2"
-    	id="jpaValidator"
+		id="jpaValidator"
 		name="%JPA_VALIDATOR">
 		
 		<validator

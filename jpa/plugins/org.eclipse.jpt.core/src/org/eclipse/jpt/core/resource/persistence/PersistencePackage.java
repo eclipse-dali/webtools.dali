@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -169,7 +169,7 @@ public class PersistencePackage extends EPackageImpl
 	public static final int XML_PERSISTENCE_UNIT__MAPPING_FILES = 4;
 
 	/**
-	 * The feature id for the '<em><b>Jar Files</b></em>' attribute list.
+	 * The feature id for the '<em><b>Jar Files</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -353,6 +353,34 @@ public class PersistencePackage extends EPackageImpl
 	public static final int XML_PROPERTY_FEATURE_COUNT = 2;
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.persistence.XmlJarFileRef <em>Xml Jar File Ref</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.core.resource.persistence.XmlJarFileRef
+	 * @see org.eclipse.jpt.core.resource.persistence.PersistencePackage#getXmlJarFileRef()
+	 * @generated
+	 */
+	public static final int XML_JAR_FILE_REF = 6;
+
+	/**
+	 * The feature id for the '<em><b>File Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_JAR_FILE_REF__FILE_NAME = 0;
+
+	/**
+	 * The number of structural features of the '<em>Xml Jar File Ref</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_JAR_FILE_REF_FEATURE_COUNT = 1;
+
+	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnitTransactionType <em>Xml Persistence Unit Transaction Type</em>}' enum.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -360,7 +388,7 @@ public class PersistencePackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.persistence.PersistencePackage#getXmlPersistenceUnitTransactionType()
 	 * @generated
 	 */
-	public static final int XML_PERSISTENCE_UNIT_TRANSACTION_TYPE = 6;
+	public static final int XML_PERSISTENCE_UNIT_TRANSACTION_TYPE = 7;
 
 	/**
 	 * The meta object id for the '<em>Xml Persistence Unit Transaction Type Object</em>' data type.
@@ -370,7 +398,7 @@ public class PersistencePackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.persistence.PersistencePackage#getXmlPersistenceUnitTransactionTypeObject()
 	 * @generated
 	 */
-	public static final int XML_PERSISTENCE_UNIT_TRANSACTION_TYPE_OBJECT = 7;
+	public static final int XML_PERSISTENCE_UNIT_TRANSACTION_TYPE_OBJECT = 8;
 
 	/**
 	 * The meta object id for the '<em>Xml Version</em>' data type.
@@ -380,7 +408,7 @@ public class PersistencePackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.persistence.PersistencePackage#getXmlVersion()
 	 * @generated
 	 */
-	public static final int XML_VERSION = 8;
+	public static final int XML_VERSION = 9;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -423,6 +451,13 @@ public class PersistencePackage extends EPackageImpl
 	 * @generated
 	 */
 	private EClass xmlPropertyEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass xmlJarFileRefEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -659,17 +694,17 @@ public class PersistencePackage extends EPackageImpl
 
 
 	/**
-	 * Returns the meta object for the attribute list '{@link org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit#getJarFiles <em>Jar Files</em>}'.
+	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit#getJarFiles <em>Jar Files</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute list '<em>Jar Files</em>'.
+	 * @return the meta object for the containment reference list '<em>Jar Files</em>'.
 	 * @see org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit#getJarFiles()
 	 * @see #getXmlPersistenceUnit()
 	 * @generated
 	 */
-	public EAttribute getXmlPersistenceUnit_JarFiles()
+	public EReference getXmlPersistenceUnit_JarFiles()
 	{
-		return (EAttribute)xmlPersistenceUnitEClass.getEStructuralFeatures().get(5);
+		return (EReference)xmlPersistenceUnitEClass.getEStructuralFeatures().get(5);
 	}
 
 
@@ -880,6 +915,35 @@ public class PersistencePackage extends EPackageImpl
 
 
 	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.core.resource.persistence.XmlJarFileRef <em>Xml Jar File Ref</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Xml Jar File Ref</em>'.
+	 * @see org.eclipse.jpt.core.resource.persistence.XmlJarFileRef
+	 * @generated
+	 */
+	public EClass getXmlJarFileRef()
+	{
+		return xmlJarFileRefEClass;
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.resource.persistence.XmlJarFileRef#getFileName <em>File Name</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>File Name</em>'.
+	 * @see org.eclipse.jpt.core.resource.persistence.XmlJarFileRef#getFileName()
+	 * @see #getXmlJarFileRef()
+	 * @generated
+	 */
+	public EAttribute getXmlJarFileRef_FileName()
+	{
+		return (EAttribute)xmlJarFileRefEClass.getEStructuralFeatures().get(0);
+	}
+
+
+	/**
 	 * Returns the meta object for enum '{@link org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnitTransactionType <em>Xml Persistence Unit Transaction Type</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -965,7 +1029,7 @@ public class PersistencePackage extends EPackageImpl
 		createEAttribute(xmlPersistenceUnitEClass, XML_PERSISTENCE_UNIT__JTA_DATA_SOURCE);
 		createEAttribute(xmlPersistenceUnitEClass, XML_PERSISTENCE_UNIT__NON_JTA_DATA_SOURCE);
 		createEReference(xmlPersistenceUnitEClass, XML_PERSISTENCE_UNIT__MAPPING_FILES);
-		createEAttribute(xmlPersistenceUnitEClass, XML_PERSISTENCE_UNIT__JAR_FILES);
+		createEReference(xmlPersistenceUnitEClass, XML_PERSISTENCE_UNIT__JAR_FILES);
 		createEReference(xmlPersistenceUnitEClass, XML_PERSISTENCE_UNIT__CLASSES);
 		createEAttribute(xmlPersistenceUnitEClass, XML_PERSISTENCE_UNIT__EXCLUDE_UNLISTED_CLASSES);
 		createEReference(xmlPersistenceUnitEClass, XML_PERSISTENCE_UNIT__PROPERTIES);
@@ -984,6 +1048,9 @@ public class PersistencePackage extends EPackageImpl
 		xmlPropertyEClass = createEClass(XML_PROPERTY);
 		createEAttribute(xmlPropertyEClass, XML_PROPERTY__NAME);
 		createEAttribute(xmlPropertyEClass, XML_PROPERTY__VALUE);
+
+		xmlJarFileRefEClass = createEClass(XML_JAR_FILE_REF);
+		createEAttribute(xmlJarFileRefEClass, XML_JAR_FILE_REF__FILE_NAME);
 
 		// Create enums
 		xmlPersistenceUnitTransactionTypeEEnum = createEEnum(XML_PERSISTENCE_UNIT_TRANSACTION_TYPE);
@@ -1038,7 +1105,7 @@ public class PersistencePackage extends EPackageImpl
 		initEAttribute(getXmlPersistenceUnit_JtaDataSource(), theXMLTypePackage.getString(), "jtaDataSource", null, 0, 1, XmlPersistenceUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getXmlPersistenceUnit_NonJtaDataSource(), theXMLTypePackage.getString(), "nonJtaDataSource", null, 0, 1, XmlPersistenceUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getXmlPersistenceUnit_MappingFiles(), this.getXmlMappingFileRef(), null, "mappingFiles", null, 0, -1, XmlPersistenceUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getXmlPersistenceUnit_JarFiles(), theXMLTypePackage.getString(), "jarFiles", null, 0, -1, XmlPersistenceUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlPersistenceUnit_JarFiles(), this.getXmlJarFileRef(), null, "jarFiles", null, 0, -1, XmlPersistenceUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getXmlPersistenceUnit_Classes(), this.getXmlJavaClassRef(), null, "classes", null, 0, -1, XmlPersistenceUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getXmlPersistenceUnit_ExcludeUnlistedClasses(), theXMLTypePackage.getBooleanObject(), "excludeUnlistedClasses", null, 0, 1, XmlPersistenceUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getXmlPersistenceUnit_Properties(), this.getXmlProperties(), null, "properties", null, 0, 1, XmlPersistenceUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1057,6 +1124,9 @@ public class PersistencePackage extends EPackageImpl
 		initEClass(xmlPropertyEClass, XmlProperty.class, "XmlProperty", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlProperty_Name(), theXMLTypePackage.getString(), "name", null, 1, 1, XmlProperty.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getXmlProperty_Value(), theXMLTypePackage.getString(), "value", null, 1, 1, XmlProperty.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(xmlJarFileRefEClass, XmlJarFileRef.class, "XmlJarFileRef", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getXmlJarFileRef_FileName(), theEcorePackage.getEString(), "fileName", null, 0, 1, XmlJarFileRef.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 
 		// Initialize enums and add enum literals
 		initEEnum(xmlPersistenceUnitTransactionTypeEEnum, XmlPersistenceUnitTransactionType.class, "XmlPersistenceUnitTransactionType");
@@ -1162,12 +1232,12 @@ public class PersistencePackage extends EPackageImpl
 		public static final EReference XML_PERSISTENCE_UNIT__MAPPING_FILES = eINSTANCE.getXmlPersistenceUnit_MappingFiles();
 
 		/**
-		 * The meta object literal for the '<em><b>Jar Files</b></em>' attribute list feature.
+		 * The meta object literal for the '<em><b>Jar Files</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		public static final EAttribute XML_PERSISTENCE_UNIT__JAR_FILES = eINSTANCE.getXmlPersistenceUnit_JarFiles();
+		public static final EReference XML_PERSISTENCE_UNIT__JAR_FILES = eINSTANCE.getXmlPersistenceUnit_JarFiles();
 
 		/**
 		 * The meta object literal for the '<em><b>Classes</b></em>' containment reference list feature.
@@ -1288,6 +1358,24 @@ public class PersistencePackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EAttribute XML_PROPERTY__VALUE = eINSTANCE.getXmlProperty_Value();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.persistence.XmlJarFileRef <em>Xml Jar File Ref</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.core.resource.persistence.XmlJarFileRef
+		 * @see org.eclipse.jpt.core.resource.persistence.PersistencePackage#getXmlJarFileRef()
+		 * @generated
+		 */
+		public static final EClass XML_JAR_FILE_REF = eINSTANCE.getXmlJarFileRef();
+
+		/**
+		 * The meta object literal for the '<em><b>File Name</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_JAR_FILE_REF__FILE_NAME = eINSTANCE.getXmlJarFileRef_FileName();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnitTransactionType <em>Xml Persistence Unit Transaction Type</em>}' enum.

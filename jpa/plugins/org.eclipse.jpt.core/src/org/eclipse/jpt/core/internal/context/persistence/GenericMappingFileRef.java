@@ -18,6 +18,7 @@ public class GenericMappingFileRef
 {
 	protected XmlMappingFileRef xmlMappingFileRef;
 
+
 	// ********** construction/initialization **********
 
 	public GenericMappingFileRef(PersistenceUnit parent, XmlMappingFileRef xmlMappingFileRef) {
@@ -25,7 +26,7 @@ public class GenericMappingFileRef
 		this.xmlMappingFileRef = xmlMappingFileRef;
 	}
 
-	public boolean isVirtual() {
+	public boolean isImplied() {
 		return false;
 	}
 
@@ -63,4 +64,5 @@ public class GenericMappingFileRef
 		this.setFileName_(this.getResourceFileName());
 		super.update();
 	}
+
 }

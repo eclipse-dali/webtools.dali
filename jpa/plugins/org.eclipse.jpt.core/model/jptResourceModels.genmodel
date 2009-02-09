@@ -379,7 +379,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute persistence.ecore#//XmlPersistenceUnit/jtaDataSource"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute persistence.ecore#//XmlPersistenceUnit/nonJtaDataSource"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference persistence.ecore#//XmlPersistenceUnit/mappingFiles"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute persistence.ecore#//XmlPersistenceUnit/jarFiles"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference persistence.ecore#//XmlPersistenceUnit/jarFiles"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference persistence.ecore#//XmlPersistenceUnit/classes"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute persistence.ecore#//XmlPersistenceUnit/excludeUnlistedClasses"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference persistence.ecore#//XmlPersistenceUnit/properties"/>
@@ -398,6 +398,9 @@
     <genClasses ecoreClass="persistence.ecore#//XmlProperty">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute persistence.ecore#//XmlProperty/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute persistence.ecore#//XmlProperty/value"/>
+    </genClasses>
+    <genClasses ecoreClass="persistence.ecore#//XmlJarFileRef">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute persistence.ecore#//XmlJarFileRef/fileName"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

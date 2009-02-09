@@ -247,37 +247,41 @@ public interface PersistenceUnit
 
 	/**
 	 * String constant associated with changes to the persistence unit's
-	 * jar file refs.
+	 * JAR file refs.
 	 */
-	String JAR_FILES_LIST = "jarFiles"; //$NON-NLS-1$
+	String JAR_FILE_REFS_LIST = "jarFileRefs"; //$NON-NLS-1$
 
 	/**
+	 * Return the persistence unit's list of JAR file refs.
 	 */
-	ListIterator<String> jarFiles();
+	ListIterator<JarFileRef> jarFileRefs();
 
 	/**
+	 * Return the size of the persistence unit's list of JAR file refs.
 	 */
-	int jarFilesSize();
+	int jarFileRefsSize();
 
 	/**
+	 * Add a new JAR file ref to the persistence unit;
+	 * return the newly-created JAR file ref.
 	 */
-	void addJarFile(String jarFile);
+	JarFileRef addJarFileRef();
 
 	/**
+	 * Add a new JAR file ref to the persistence unit at the specified index;
+	 * return the newly-created JAR file ref.
 	 */
-	void addJarFile(int index, String jarFile);
+	JarFileRef addJarFileRef(int index);
 
 	/**
+	 * Remove the specified JAR file ref from the persistence unit.
 	 */
-	void removeJarFile(String jarFile);
+	void removeJarFileRef(JarFileRef jarFileRef);
 
 	/**
+	 * Remove the JAR file ref at the specified index from the persistence unit.
 	 */
-	void removeJarFile(int index);
-
-	/**
-	 */
-	void moveJarFile(int targetIndex, int sourceIndex);
+	void removeJarFileRef(int index);
 
 
 	// ********** class refs **********

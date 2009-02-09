@@ -30,62 +30,75 @@ import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 public interface MappingFileRef
 	extends XmlContextNode, JpaStructureNode
 {
+
+	// ********** file name **********
+
 	/**
-	 * Return whether this mapping file ref is represented by an entry in the
-	 * persistence.xml (false) or if it is instead virtual
-	 */
-	boolean isVirtual();
-	
-	
-	// **************** file name **********************************************
-	
-	/**
-	 * String constant associated with changes to the file name
+	 * String constant associated with changes to the file name.
 	 */
 	String FILE_NAME_PROPERTY = "fileName"; //$NON-NLS-1$
-	
+
 	/**
 	 * Return the file name of the mapping file ref.
 	 */
 	String getFileName();
-	
+
 	/**
 	 * Set the file name of the mapping file ref.
 	 */
 	void setFileName(String fileName);
-	
-	
-	// **************** orm xml ************************************************
-	
+
+
+	// ********** mapping file (orm.xml) **********
+
+	/**
+	 * String constant associated with changes to the mapping file.
+	 */
 	String MAPPING_FILE_PROPERTY = "mappingFile"; //$NON-NLS-1$
-	
-	MappingFile getMappingFile();	
-	
-	
-	// **************** udpating ***********************************************
-	
+
+	/**
+	 * Return the mapping file ref's mapping file corresponding to the file name.
+	 */
+	MappingFile getMappingFile();
+
+
+	// ********** updating **********
+
 	/**
 	 * Update the MappingFileRef context model object to match the XmlMappingFileRef 
 	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
 	 */
 	void update(XmlMappingFileRef mappingFileRef);
-	
-	
-	// *************************************************************************
-	
-	MappingFilePersistenceUnitDefaults getPersistenceUnitDefaults();
-	
-	boolean persistenceUnitDefaultsExists();
-	
+
+
+	// ********** queries **********
+
 	/**
-	 * Return the PersistentType listed in this mapping file
-	 * with the given name.  Return null if none exists.
+	 * Return whether the mapping file ref is "implied" by, or explicitly
+	 * specified in, the persistence.xml.
+	 */
+	boolean isImplied();
+
+	/**
+	 * Return the mapping file's persistence unit defaults.
+	 */
+	MappingFilePersistenceUnitDefaults getPersistenceUnitDefaults();
+
+	/**
+	 * Return whether the mapping file's persistence unit defaults exist.
+	 */
+	boolean persistenceUnitDefaultsExists();
+
+	/**
+	 * Return the persistent type, as listed in the mapping file,
+	 * with the specified name. Return null if it does not exists.
 	 */
 	PersistentType getPersistentType(String typeName);
-	
+
 	/**
-	 * Return whether the text representation of this persistence unit contains
-	 * the given text offset
+	 * Return whether the text representation of the mapping file contains
+	 * the specified text offset.
 	 */
 	boolean containsOffset(int textOffset);
+
 }

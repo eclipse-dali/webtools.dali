@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.platform;
 
 import java.util.List;
+
 import org.eclipse.jpt.core.JpaPlatformProvider;
 import org.eclipse.jpt.core.JpaResourceModelProvider;
 import org.eclipse.jpt.core.context.MappingFileProvider;
@@ -18,6 +19,7 @@ import org.eclipse.jpt.core.context.java.JavaAttributeMappingProvider;
 import org.eclipse.jpt.core.context.java.JavaTypeMappingProvider;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMappingProvider;
 import org.eclipse.jpt.core.context.orm.OrmTypeMappingProvider;
+import org.eclipse.jpt.core.internal.JarResourceModelProvider;
 import org.eclipse.jpt.core.internal.JavaResourceModelProvider;
 import org.eclipse.jpt.core.internal.OrmResourceModelProvider;
 import org.eclipse.jpt.core.internal.PersistenceResourceModelProvider;
@@ -83,6 +85,7 @@ public class GenericJpaPlatformProvider extends AbstractJpaPlatformProvider
 		providers.add(JavaResourceModelProvider.instance());
 		providers.add(PersistenceResourceModelProvider.instance());
 		providers.add(OrmResourceModelProvider.instance());
+		providers.add(JarResourceModelProvider.instance());
 	}
 
 

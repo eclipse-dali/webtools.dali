@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,17 +10,21 @@
 package org.eclipse.jpt.core.resource.persistence;
 
 import java.util.Collection;
+
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.util.EDataTypeEList;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
-import org.eclipse.jpt.core.resource.common.JpaEObject;
+import org.eclipse.jpt.core.internal.resource.xml.translators.BooleanTranslator;
+import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
+import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
+import org.eclipse.jpt.core.resource.xml.JpaEObject;
+import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
  * <!-- begin-user-doc -->
@@ -148,14 +152,14 @@ public class XmlPersistenceUnit extends AbstractJpaEObject implements JpaEObject
 	protected EList<XmlMappingFileRef> mappingFiles;
 
 	/**
-	 * The cached value of the '{@link #getJarFiles() <em>Jar Files</em>}' attribute list.
+	 * The cached value of the '{@link #getJarFiles() <em>Jar Files</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getJarFiles()
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<String> jarFiles;
+	protected EList<XmlJarFileRef> jarFiles;
 
 	/**
 	 * The cached value of the '{@link #getClasses() <em>Classes</em>}' containment reference list.
@@ -492,24 +496,24 @@ public class XmlPersistenceUnit extends AbstractJpaEObject implements JpaEObject
 	}
 
 	/**
-	 * Returns the value of the '<em><b>Jar Files</b></em>' attribute list.
-	 * The list contents are of type {@link java.lang.String}.
+	 * Returns the value of the '<em><b>Jar Files</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.core.resource.persistence.XmlJarFileRef}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Jar Files</em>' attribute list isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Jar Files</em>' attribute list.
+	 * @return the value of the '<em>Jar Files</em>' containment reference list.
 	 * @see org.eclipse.jpt.core.resource.persistence.PersistencePackage#getXmlPersistenceUnit_JarFiles()
-	 * @model unique="false" dataType="org.eclipse.emf.ecore.xml.type.String"
+	 * @model containment="true"
 	 * @generated
 	 */
-	public EList<String> getJarFiles()
+	public EList<XmlJarFileRef> getJarFiles()
 	{
 		if (jarFiles == null)
 		{
-			jarFiles = new EDataTypeEList<String>(String.class, this, PersistencePackage.XML_PERSISTENCE_UNIT__JAR_FILES);
+			jarFiles = new EObjectContainmentEList<XmlJarFileRef>(XmlJarFileRef.class, this, PersistencePackage.XML_PERSISTENCE_UNIT__JAR_FILES);
 		}
 		return jarFiles;
 	}
@@ -644,6 +648,8 @@ public class XmlPersistenceUnit extends AbstractJpaEObject implements JpaEObject
 		{
 			case PersistencePackage.XML_PERSISTENCE_UNIT__MAPPING_FILES:
 				return ((InternalEList<?>)getMappingFiles()).basicRemove(otherEnd, msgs);
+			case PersistencePackage.XML_PERSISTENCE_UNIT__JAR_FILES:
+				return ((InternalEList<?>)getJarFiles()).basicRemove(otherEnd, msgs);
 			case PersistencePackage.XML_PERSISTENCE_UNIT__CLASSES:
 				return ((InternalEList<?>)getClasses()).basicRemove(otherEnd, msgs);
 			case PersistencePackage.XML_PERSISTENCE_UNIT__PROPERTIES:
@@ -717,7 +723,7 @@ public class XmlPersistenceUnit extends AbstractJpaEObject implements JpaEObject
 				return;
 			case PersistencePackage.XML_PERSISTENCE_UNIT__JAR_FILES:
 				getJarFiles().clear();
-				getJarFiles().addAll((Collection<? extends String>)newValue);
+				getJarFiles().addAll((Collection<? extends XmlJarFileRef>)newValue);
 				return;
 			case PersistencePackage.XML_PERSISTENCE_UNIT__CLASSES:
 				getClasses().clear();
@@ -841,8 +847,6 @@ public class XmlPersistenceUnit extends AbstractJpaEObject implements JpaEObject
 		result.append(jtaDataSource);
 		result.append(", nonJtaDataSource: ");
 		result.append(nonJtaDataSource);
-		result.append(", jarFiles: ");
-		result.append(jarFiles);
 		result.append(", excludeUnlistedClasses: ");
 		result.append(excludeUnlistedClasses);
 		result.append(", name: ");
@@ -853,4 +857,79 @@ public class XmlPersistenceUnit extends AbstractJpaEObject implements JpaEObject
 		return result.toString();
 	}
 
-} // XmlPersistenceUnit
+
+	// ********** translators **********
+
+	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
+		return new SimpleTranslator(elementName, structuralFeature, buildTranslatorChildren());
+	}
+
+	private static Translator[] buildTranslatorChildren() {
+		PersistencePackage pkg = PersistencePackage.eINSTANCE;
+		return new Translator[] {
+				buildNameTranslator(),
+				buildTransactionTypeTranslator(),
+				buildDescriptionTranslator(),
+				buildProviderTranslator(),
+				buildJtaDataSourceTranslator(),
+				buildNonJtaDataSourceTranslator(),
+				XmlMappingFileRef.buildTranslator(JPA.MAPPING_FILE, pkg.getXmlPersistenceUnit_MappingFiles()),
+				XmlJarFileRef.buildTranslator(JPA.JAR_FILE, pkg.getXmlPersistenceUnit_JarFiles()),
+				XmlJavaClassRef.buildTranslator(JPA.CLASS, pkg.getXmlPersistenceUnit_Classes()),
+				buildExcludeUnlistedClassesTranslator(),
+				XmlProperties.buildTranslator(JPA.PROPERTIES, pkg.getXmlPersistenceUnit_Properties())
+			};
+	}
+
+	private static Translator buildNameTranslator() {
+		return new Translator(
+				JPA.PERSISTENCE_UNIT__NAME,
+				PersistencePackage.eINSTANCE.getXmlPersistenceUnit_Name(),
+				Translator.DOM_ATTRIBUTE
+			);
+	}
+
+	private static Translator buildTransactionTypeTranslator() {
+		return new Translator(
+				JPA.PERSISTENCE_UNIT__TRANSACTION_TYPE,
+				PersistencePackage.eINSTANCE.getXmlPersistenceUnit_TransactionType(),
+				Translator.DOM_ATTRIBUTE | Translator.UNSET_IF_NULL
+			);
+	}
+
+	private static Translator buildDescriptionTranslator() {
+		return new Translator(
+				JPA.DESCRIPTION,
+				PersistencePackage.eINSTANCE.getXmlPersistenceUnit_Description()
+			);
+	}
+
+	private static Translator buildProviderTranslator() {
+		return new Translator(
+				JPA.PROVIDER,
+				PersistencePackage.eINSTANCE.getXmlPersistenceUnit_Provider()
+			);
+	}
+
+	private static Translator buildJtaDataSourceTranslator() {
+		return new Translator(
+				JPA.JTA_DATA_SOURCE,
+				PersistencePackage.eINSTANCE.getXmlPersistenceUnit_JtaDataSource()
+			);
+	}
+
+	private static Translator buildNonJtaDataSourceTranslator() {
+		return new Translator(
+				JPA.NON_JTA_DATA_SOURCE,
+				PersistencePackage.eINSTANCE.getXmlPersistenceUnit_NonJtaDataSource()
+			);
+	}
+
+	private static Translator buildExcludeUnlistedClassesTranslator() {
+		return new BooleanTranslator(
+				JPA.EXCLUDE_UNLISTED_CLASSES,
+				PersistencePackage.eINSTANCE.getXmlPersistenceUnit_ExcludeUnlistedClasses()
+			);
+	}
+
+}

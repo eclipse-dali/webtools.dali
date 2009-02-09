@@ -16,7 +16,6 @@ import org.eclipse.jpt.core.utility.TextRange;
 public class ImpliedMappingFileRef
 	extends AbstractMappingFileRef
 {
-
 	
 	// ********** construction/initialization **********
 
@@ -24,12 +23,12 @@ public class ImpliedMappingFileRef
 		super(parent, resourceFileName);
 	}
 		
-	public boolean isVirtual() {
+	public boolean isImplied() {
 		return true;
 	}
 
 	public void setFileName(String fileName) {
-		throw new UnsupportedOperationException("Can not set a fileName on a implied mapping file ref"); //$NON-NLS-1$
+		throw new UnsupportedOperationException("Cannot set an implied mapping file ref's 'fileName'"); //$NON-NLS-1$
 	}
 
 	public TextRange getSelectionTextRange() {
@@ -50,4 +49,5 @@ public class ImpliedMappingFileRef
 		}
 		super.update();
 	}
+
 }

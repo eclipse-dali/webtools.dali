@@ -20,8 +20,8 @@
         eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="mappingFiles" unique="false"
         upperBound="-1" eType="#//XmlMappingFileRef" containment="true" resolveProxies="false"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="jarFiles" unique="false"
-        upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="jarFiles" unique="false"
+        upperBound="-1" eType="#//XmlJarFileRef" containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="classes" unique="false"
         upperBound="-1" eType="#//XmlJavaClassRef" containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="excludeUnlistedClasses"
@@ -60,4 +60,8 @@
   <eClassifiers xsi:type="ecore:EDataType" name="XmlPersistenceUnitTransactionTypeObject"
       instanceClassName="org.eclipse.emf.common.util.Enumerator"/>
   <eClassifiers xsi:type="ecore:EDataType" name="XmlVersion" instanceClassName="java.lang.String"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlJarFileRef">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="fileName" ordered="false"
+        unique="false" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+  </eClassifiers>
 </ecore:EPackage>

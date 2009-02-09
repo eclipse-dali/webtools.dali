@@ -62,6 +62,7 @@ public class JptCorePlugin extends Plugin {
 	 * (value <code>"org.eclipse.jpt.core"</code>).
 	 */
 	public static final String PLUGIN_ID = "org.eclipse.jpt.core";  //$NON-NLS-1$
+	public static final String PLUGIN_ID_ = PLUGIN_ID + '.';
 
 	/**
 	 * The identifier for the JPA facet
@@ -73,13 +74,13 @@ public class JptCorePlugin extends Plugin {
 	 * The key for storing a JPA project's platform in the Eclipse
 	 * project's preferences.
 	 */
-	public static final String JPA_PLATFORM = PLUGIN_ID + ".platform";  //$NON-NLS-1$
+	public static final String JPA_PLATFORM = PLUGIN_ID_ + "platform";  //$NON-NLS-1$
 	
 	/**
 	 * The key for storing a JPA project's "discover" flag in the Eclipse
 	 * project's preferences.
 	 */
-	public static final String DISCOVER_ANNOTATED_CLASSES = PLUGIN_ID + ".discoverAnnotatedClasses";  //$NON-NLS-1$
+	public static final String DISCOVER_ANNOTATED_CLASSES = PLUGIN_ID_ + "discoverAnnotatedClasses";  //$NON-NLS-1$
 
 	/**
 	 * The key for storing a JPA project's data source connection profile name
@@ -99,26 +100,34 @@ public class JptCorePlugin extends Plugin {
 	 * The identifier for the JPA validation marker
 	 * (value <code>"org.eclipse.jpt.core.jpaProblemMarker"</code>).
 	 */
-	public static final String VALIDATOR_ID = PLUGIN_ID + ".jpaValidator";  //$NON-NLS-1$
+	public static final String VALIDATOR_ID = PLUGIN_ID_ + "jpaValidator";  //$NON-NLS-1$
 
 	/**
 	 * The content type for Java source code files.
 	 */
 	public static final IContentType JAVA_SOURCE_CONTENT_TYPE = Platform.getContentTypeManager().getContentType(JavaCore.JAVA_SOURCE_CONTENT_TYPE);
 
-	public static final IContentType MAPPING_FILE_CONTENT_TYPE = Platform.getContentTypeManager().getContentType(PLUGIN_ID + ".content.mappingFile"); //$NON-NLS-1$
-	
+	public static final String CONTENT_PREFIX = PLUGIN_ID_ + "content"; //$NON-NLS-1$
+	public static final String CONTENT_PREFIX_ = CONTENT_PREFIX + '.';
+
+	public static final IContentType MAPPING_FILE_CONTENT_TYPE = Platform.getContentTypeManager().getContentType(CONTENT_PREFIX_ + "mappingFile"); //$NON-NLS-1$
+
 	/**
 	 * The content type for orm.xml mappings files. Use this to add new 
 	 * orm.xml-like extensions to this content type.
 	 */
-	public static final IContentType ORM_XML_CONTENT_TYPE = Platform.getContentTypeManager().getContentType(PLUGIN_ID + ".content.orm"); //$NON-NLS-1$
+	public static final IContentType ORM_XML_CONTENT_TYPE = Platform.getContentTypeManager().getContentType(CONTENT_PREFIX_ + "orm"); //$NON-NLS-1$
 
 	/**
 	 * Ditto for persistence.xml.
 	 * @see #ORM_XML_CONTENT_TYPE
 	 */
-	public static final IContentType PERSISTENCE_XML_CONTENT_TYPE = Platform.getContentTypeManager().getContentType(PLUGIN_ID + ".content.persistence"); //$NON-NLS-1$
+	public static final IContentType PERSISTENCE_XML_CONTENT_TYPE = Platform.getContentTypeManager().getContentType(CONTENT_PREFIX_ + "persistence"); //$NON-NLS-1$
+
+	/**
+	 * The content type for Java archives (JARs).
+	 */
+	public static final IContentType JAR_CONTENT_TYPE = Platform.getContentTypeManager().getContentType(CONTENT_PREFIX_ + "jar"); //$NON-NLS-1$
 
 	/**
 	 * Web projects have some special exceptions.

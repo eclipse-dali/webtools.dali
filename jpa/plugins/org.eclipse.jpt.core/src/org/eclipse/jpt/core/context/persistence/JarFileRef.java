@@ -9,6 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.persistence;
 
+import org.eclipse.jpt.core.JpaStructureNode;
+import org.eclipse.jpt.core.context.PersistentType;
+import org.eclipse.jpt.core.context.XmlContextNode;
+import org.eclipse.jpt.core.context.jar.JarFile;
+import org.eclipse.jpt.core.resource.persistence.XmlJarFileRef;
+
 /**
  * This is the context model corresponding to the 
  * persistence resource model XmlJarRef,
@@ -20,6 +26,46 @@ package org.eclipse.jpt.core.context.persistence;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface JarFileRef {
+public interface JarFileRef
+	extends XmlContextNode, JpaStructureNode
+{
+
+	// ********** JAR file **********
+
+	/**
+	 * String constant associated with changes to the JAR file.
+	 */
+	String JAR_FILE_PROPERTY = "jarFile"; //$NON-NLS-1$
+
+	/**
+	 * Return the JAR file ref's JAR file corresponding to the file name.
+	 */
+	JarFile getJarFile();
+
+
+	// ********** updating **********
+
+	/**
+	 * Update the context JAR file ref to match the specified XML JAR file ref.
+	 * @see org.eclipse.jpt.core.JpaProject#update()
+	 */
+	void update(XmlJarFileRef xmlJarFileRef);
+
+
+	// ********** queries **********
+
+	String getJarFileName();
+
+	/**
+	 * Return the persistent type, as listed in the JAR file,
+	 * with the specified name. Return null if it does not exists.
+	 */
+	PersistentType getPersistentType(String typeName);
+
+	/**
+	 * Return whether the text representation of the JAR file ref contains
+	 * the specified text offset.
+	 */
+	boolean containsOffset(int textOffset);
 
 }

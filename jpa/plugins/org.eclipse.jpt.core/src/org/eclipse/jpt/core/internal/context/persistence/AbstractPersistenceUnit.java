@@ -27,6 +27,7 @@ import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.Query;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.persistence.ClassRef;
+import org.eclipse.jpt.core.context.persistence.JarFileRef;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceStructureNodes;
@@ -36,6 +37,7 @@ import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
+import org.eclipse.jpt.core.resource.persistence.XmlJarFileRef;
 import org.eclipse.jpt.core.resource.persistence.XmlJavaClassRef;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
@@ -77,7 +79,7 @@ public abstract class AbstractPersistenceUnit
 	protected final Vector<MappingFileRef> specifiedMappingFileRefs = new Vector<MappingFileRef>();
 	protected MappingFileRef impliedMappingFileRef;
 
-	protected final Vector<String> jarFiles = new Vector<String>();
+	protected final Vector<JarFileRef> jarFileRefs = new Vector<JarFileRef>();
 
 	protected final Vector<ClassRef> specifiedClassRefs = new Vector<ClassRef>();
 	protected final Vector<ClassRef> impliedClassRefs = new Vector<ClassRef>();
@@ -101,23 +103,23 @@ public abstract class AbstractPersistenceUnit
 	// ********** construction/initialization **********
 
 	/**
-	 * NB: Be careful changing the order of initialization
+	 * NB: Be careful changing the order of the statements in this method
 	 * (bug 258701 is one reason).
 	 */
 	protected AbstractPersistenceUnit(Persistence parent, XmlPersistenceUnit xmlPersistenceUnit) {
 		super(parent);
 		this.xmlPersistenceUnit = xmlPersistenceUnit;
-		this.name = this.xmlPersistenceUnit.getName();
-		this.specifiedExcludeUnlistedClasses = this.xmlPersistenceUnit.getExcludeUnlistedClasses();
+		this.name = xmlPersistenceUnit.getName();
+		this.specifiedExcludeUnlistedClasses = xmlPersistenceUnit.getExcludeUnlistedClasses();
 		this.specifiedTransactionType = this.buildSpecifiedTransactionType();
 		this.defaultTransactionType = this.buildDefaultTransactionType();
-		this.description = this.xmlPersistenceUnit.getDescription();
-		this.provider = this.xmlPersistenceUnit.getProvider();
-		this.jtaDataSource = this.xmlPersistenceUnit.getJtaDataSource();
-		this.nonJtaDataSource = this.xmlPersistenceUnit.getNonJtaDataSource();
-		this.specifiedExcludeUnlistedClasses = this.xmlPersistenceUnit.getExcludeUnlistedClasses();
+		this.description = xmlPersistenceUnit.getDescription();
+		this.provider = xmlPersistenceUnit.getProvider();
+		this.jtaDataSource = xmlPersistenceUnit.getJtaDataSource();
+		this.nonJtaDataSource = xmlPersistenceUnit.getNonJtaDataSource();
+		this.specifiedExcludeUnlistedClasses = xmlPersistenceUnit.getExcludeUnlistedClasses();
 
-		this.initializeJarFiles();
+		this.initializeJarFileRefs();
 
 		this.initializeProperties();
 
@@ -144,9 +146,9 @@ public abstract class AbstractPersistenceUnit
 		nonUpdateAspectNames.add(QUERIES_LIST);
 	}
 
-	protected void initializeJarFiles() {
-		for (String jarFile : this.xmlPersistenceUnit.getJarFiles()) {
-			this.jarFiles.add(jarFile);
+	protected void initializeJarFileRefs() {
+		for (XmlJarFileRef xmlJarFileRef : this.xmlPersistenceUnit.getJarFiles()) {
+			this.jarFileRefs.add(this.buildJarFileRef(xmlJarFileRef));
 		}
 	}
 
@@ -168,7 +170,7 @@ public abstract class AbstractPersistenceUnit
 
 	protected void initializeMappingFileRefs() {
 		for (XmlMappingFileRef xmlMappingFileRef : this.xmlPersistenceUnit.getMappingFiles()) {
-			this.specifiedMappingFileRefs.add(this.buildMappingFileRef(xmlMappingFileRef));
+			this.specifiedMappingFileRefs.add(this.buildSpecifiedMappingFileRef(xmlMappingFileRef));
 		}
 		if ( ! this.impliedMappingFileIsSpecified() && this.impliedMappingFileExists()) {
 			this.impliedMappingFileRef = this.buildImpliedMappingFileRef();
@@ -371,7 +373,7 @@ public abstract class AbstractPersistenceUnit
 
 	public MappingFileRef addSpecifiedMappingFileRef(int index) {
 		XmlMappingFileRef xmlMappingFileRef = this.buildXmlMappingFileRef();
-		MappingFileRef mappingFileRef = this.buildMappingFileRef(xmlMappingFileRef);
+		MappingFileRef mappingFileRef = this.buildSpecifiedMappingFileRef(xmlMappingFileRef);
 		this.specifiedMappingFileRefs.add(index, mappingFileRef);
 		this.xmlPersistenceUnit.getMappingFiles().add(index, xmlMappingFileRef);
 		this.fireItemAdded(SPECIFIED_MAPPING_FILE_REFS_LIST, index, mappingFileRef);
@@ -419,7 +421,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected MappingFileRef buildImpliedMappingFileRef() {
-		return getJpaFactory().buildImpliedMappingFileRef(this);
+		return this.getJpaFactory().buildImpliedMappingFileRef(this);
 	}
 
 	protected void unsetImpliedMappingFileRef() {
@@ -433,60 +435,51 @@ public abstract class AbstractPersistenceUnit
 	}
 
 
-	// **************** jar files ***********************************
+	// ********** JAR file refs **********
 
-	public ListIterator<String> jarFiles() {
-		return new CloneListIterator<String>(this.jarFiles);
+	public ListIterator<JarFileRef> jarFileRefs() {
+		return new CloneListIterator<JarFileRef>(this.jarFileRefs);
 	}
 
-	public int jarFilesSize() {
-		return this.jarFiles.size();
+	public int jarFileRefsSize() {
+		return this.jarFileRefs.size();
 	}
 
-	public void addJarFile(String jarFile) {
-		this.addJarFile(this.jarFiles.size(), jarFile);
+	public JarFileRef addJarFileRef() {
+		return this.addJarFileRef(this.jarFileRefs.size());
 	}
 
-	public void addJarFile(int index, String jarFile) {
-		this.jarFiles.add(index, jarFile);
-		this.xmlPersistenceUnit.getJarFiles().add(index, jarFile);
-		this.fireItemAdded(JAR_FILES_LIST, index, jarFile);
+	public JarFileRef addJarFileRef(int index) {
+		XmlJarFileRef xmlJarFileRef = this.buildXmlJarFileRef();
+		JarFileRef jarFileRef = this.buildJarFileRef(xmlJarFileRef);
+		this.jarFileRefs.add(index, jarFileRef);
+		this.xmlPersistenceUnit.getJarFiles().add(index, xmlJarFileRef);
+		this.fireItemAdded(JAR_FILE_REFS_LIST, index, jarFileRef);
+		return jarFileRef;
 	}
 
-	public void removeJarFile(String jarFile) {
-		this.removeJarFile(this.jarFiles.indexOf(jarFile));
+	protected XmlJarFileRef buildXmlJarFileRef() {
+		return PersistenceFactory.eINSTANCE.createXmlJarFileRef();
 	}
 
-	public void removeJarFile(int index) {
-		String jarFile = this.jarFiles.remove(index);
+	public void removeJarFileRef(JarFileRef jarFileRef) {
+		this.removeJarFileRef(this.jarFileRefs.indexOf(jarFileRef));
+	}
+
+	public void removeJarFileRef(int index) {
+		JarFileRef jarFileRef = this.jarFileRefs.remove(index);
+		jarFileRef.dispose();
 		this.xmlPersistenceUnit.getJarFiles().remove(index);
-		this.fireItemRemoved(JAR_FILES_LIST, index, jarFile);
+		this.fireItemRemoved(JAR_FILE_REFS_LIST, index, jarFileRef);
 	}
 
-	protected void addJarFile_(String jarFile) {
-		this.addJarFile_(this.jarFiles.size(), jarFile);
+	protected void addJarFileRef_(JarFileRef jarFileRef) {
+		this.addItemToList(jarFileRef, this.jarFileRefs, JAR_FILE_REFS_LIST);
 	}
 
-	protected void addJarFile_(int index, String jarFile) {
-		this.addItemToList(index, jarFile, this.jarFiles, JAR_FILES_LIST);
-	}
-
-	protected void removeJarFile_(String jarFile) {
-		this.removeItemFromList(jarFile, this.jarFiles, JAR_FILES_LIST);
-	}
-
-	protected void removeJarFile_(int index) {
-		this.removeItemFromList(index, this.jarFiles, JAR_FILES_LIST);
-	}
-
-	protected void setJarFile_(int index, String jarFile) {
-		this.setItemInList(index, jarFile, this.jarFiles, JAR_FILES_LIST);
-	}
-
-	public void moveJarFile(int targetIndex, int sourceIndex) {
-		CollectionTools.move(this.jarFiles, targetIndex, sourceIndex);
-		this.xmlPersistenceUnit.getJarFiles().move(targetIndex, sourceIndex);
-		this.fireItemMoved(JAR_FILES_LIST, targetIndex, sourceIndex);
+	protected void removeJarFileRef_(JarFileRef jarFileRef) {
+		jarFileRef.dispose();
+		this.removeItemFromList(jarFileRef, this.jarFileRefs, JAR_FILE_REFS_LIST);
 	}
 
 
@@ -873,7 +866,7 @@ public abstract class AbstractPersistenceUnit
 		this.setProvider(xpu.getProvider());
 		this.setJtaDataSource(xpu.getJtaDataSource());
 		this.setNonJtaDataSource(xpu.getNonJtaDataSource());
-		this.updateJarFiles();
+		this.updateJarFileRefs();
 
 		// update 'specifiedClassRefs' before 'mappingFileRefs' because of 
 		// JpaFile rootStructureNode, we want the mapping file to "win",
@@ -906,6 +899,33 @@ public abstract class AbstractPersistenceUnit
 	 */
 	protected PersistenceUnitTransactionType buildDefaultTransactionType() {
 		return null;
+	}
+
+	/**
+	 * Since this is a *list*, we simply loop through the elements and match
+	 * the context to the resource element by index, not by name like we do
+	 * with 'impliedClassRefs'.
+	 */
+	protected void updateJarFileRefs() {
+		// make a copy of the XML file refs (to prevent ConcurrentModificationException)
+		Iterator<XmlJarFileRef> xmlFileRefs = new CloneIterator<XmlJarFileRef>(this.xmlPersistenceUnit.getJarFiles());
+
+		for (Iterator<JarFileRef> contextFileRefs = this.jarFileRefs(); contextFileRefs.hasNext(); ) {
+			JarFileRef contextFileRef = contextFileRefs.next();
+			if (xmlFileRefs.hasNext()) {
+				contextFileRef.update(xmlFileRefs.next());
+			} else {
+				this.removeJarFileRef_(contextFileRef);
+			}
+		}
+
+		while (xmlFileRefs.hasNext()) {
+			this.addJarFileRef_(this.buildJarFileRef(xmlFileRefs.next()));
+		}
+	}
+
+	protected JarFileRef buildJarFileRef(XmlJarFileRef xmlJarFileRef) {
+		return this.getJpaFactory().buildJarFileRef(this, xmlJarFileRef);
 	}
 
 	/**
@@ -955,7 +975,7 @@ public abstract class AbstractPersistenceUnit
 		}
 
 		while (xmlFileRefs.hasNext()) {
-			this.addSpecifiedMappingFileRef_(this.buildMappingFileRef(xmlFileRefs.next()));
+			this.addSpecifiedMappingFileRef_(this.buildSpecifiedMappingFileRef(xmlFileRefs.next()));
 		}
 
 		// ...then update the implied mapping file ref
@@ -977,7 +997,7 @@ public abstract class AbstractPersistenceUnit
 		}
 	}
 
-	protected MappingFileRef buildMappingFileRef(XmlMappingFileRef xmlMappingFileRef) {
+	protected MappingFileRef buildSpecifiedMappingFileRef(XmlMappingFileRef xmlMappingFileRef) {
 		return this.getJpaFactory().buildMappingFileRef(this, xmlMappingFileRef);
 	}
 
@@ -993,24 +1013,6 @@ public abstract class AbstractPersistenceUnit
 
 	protected boolean impliedMappingFileExists() {
 		return getJpaProject().getDefaultOrmXmlResource() != null;
-	}
-
-	protected void updateJarFiles() {
-		int index = 0;
-		for (String xmlJarFile : this.xmlPersistenceUnit.getJarFiles()) {
-			if (this.jarFiles.size() > index) {
-				if ( ! this.jarFiles.get(index).equals(xmlJarFile)) {
-					this.setJarFile_(index, xmlJarFile);
-				}
-			} else {
-				this.setJarFile_(index, xmlJarFile);
-			}
-			index++;
-		}
-
-		while (index < this.jarFiles.size()) {
-			this.removeJarFile_(index);
-		}
 	}
 
 	protected void updateImpliedClassRefs() {
@@ -1235,6 +1237,12 @@ public abstract class AbstractPersistenceUnit
 	// ********** misc **********
 
 	public JpaStructureNode getStructureNode(int textOffset) {
+		for (Iterator<JarFileRef> stream = this.jarFileRefs(); stream.hasNext(); ) {
+			JarFileRef jarFileRef = stream.next();
+			if (jarFileRef.containsOffset(textOffset)) {
+				return jarFileRef;
+			}
+		}
 		for (Iterator<MappingFileRef> stream = this.mappingFileRefs(); stream.hasNext(); ) {
 			MappingFileRef mappingFileRef = stream.next();
 			if (mappingFileRef.containsOffset(textOffset)) {
@@ -1265,6 +1273,12 @@ public abstract class AbstractPersistenceUnit
 			ClassRef classRef = stream.next();
 			if (classRef.isFor(typeName)) {
 				return classRef.getJavaPersistentType();
+			}
+		}
+		for (Iterator<JarFileRef> stream = this.jarFileRefs(); stream.hasNext(); ) {
+			PersistentType persistentType = stream.next().getPersistentType(typeName);
+			if (persistentType != null) {
+				return persistentType;
 			}
 		}
 		return null;

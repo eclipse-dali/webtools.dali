@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -27,15 +28,11 @@ import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jdt.core.ElementChangedEvent;
-import org.eclipse.jdt.core.IAnnotatable;
-import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaElementDelta;
 import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.core.JpaDataSource;
 import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaPlatform;
@@ -46,9 +43,10 @@ import org.eclipse.jpt.core.context.JpaRootContextNode;
 import org.eclipse.jpt.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.core.resource.common.JpaXmlResource;
+import org.eclipse.jpt.core.resource.jar.JarResourcePackageFragmentRoot;
 import org.eclipse.jpt.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.db.Catalog;
 import org.eclipse.jpt.db.ConnectionProfile;
 import org.eclipse.jpt.db.Database;
@@ -466,10 +464,17 @@ public abstract class AbstractJpaProject
 	}
 
 
+	// ********** utility **********
+
+	public IFile convertToPlatformFile(String fileName) {
+		return JptCorePlugin.getPlatformFile(this.project, fileName);
+	}
+
+
 	// ********** more queries **********
 
 	public JpaXmlResource getPersistenceXmlResource() {
-		IFile persistenceXmlFile = JptCorePlugin.getPlatformFile(getProject(), JptCorePlugin.DEFAULT_PERSISTENCE_XML_FILE_PATH);
+		IFile persistenceXmlFile = this.convertToPlatformFile(JptCorePlugin.DEFAULT_PERSISTENCE_XML_FILE_PATH);
 		if (persistenceXmlFile.exists()) {
 			JpaFile jpaFile = this.getJpaFile(persistenceXmlFile);
 			if (jpaFile != null) {
@@ -486,21 +491,17 @@ public abstract class AbstractJpaProject
 	}
 	
 	public JpaXmlResource getMappingFileResource(String fileName) {
-		IFile mappingFile = JptCorePlugin.getPlatformFile(getProject(), fileName);
-		return (mappingFile.exists()) ? getMappingFileResource(mappingFile, JptCorePlugin.MAPPING_FILE_CONTENT_TYPE) :  null;
+		return this.getMappingFileResource(fileName, JptCorePlugin.MAPPING_FILE_CONTENT_TYPE);
 	}
 	
 	protected JpaXmlResource getMappingFileResource(String fileName, IContentType contentType) {
-		IFile mappingFile = JptCorePlugin.getPlatformFile(getProject(), fileName);
-		return (mappingFile.exists()) ? getMappingFileResource(mappingFile, contentType) :  null;
+		IFile mappingFile = this.convertToPlatformFile(fileName);
+		return mappingFile.exists() ? this.getMappingFileResource(mappingFile, contentType) :  null;
 	}
 	
 	protected JpaXmlResource getMappingFileResource(IFile file, IContentType contentType) {
-		JpaFile jpaFile = getJpaFile(file);
-		if (jpaFile != null) {
-			return getMappingFileResource(jpaFile, contentType);
-		}
-		return null;
+		JpaFile jpaFile = this.getJpaFile(file);
+		return (jpaFile == null) ? null : this.getMappingFileResource(jpaFile, contentType);
 	}
 	
 	protected JpaXmlResource getMappingFileResource(JpaFile jpaFile, IContentType contentType) {
@@ -561,7 +562,34 @@ public abstract class AbstractJpaProject
 				return pt;
 			}
 		}
-//		this.javaProject().findType(typeName);
+		return null;
+	}
+
+	protected Iterator<JpaFile> jarJpaFiles() {
+		return this.jpaFiles(JptCorePlugin.JAR_CONTENT_TYPE);
+	}
+
+	protected Iterator<JarResourcePackageFragmentRoot> jarResourcePackageFragmentRoots() {
+		return new TransformationIterator<JpaFile, JarResourcePackageFragmentRoot>(this.jarJpaFiles()) {
+			@Override
+			protected JarResourcePackageFragmentRoot transform(JpaFile jpaFile) {
+				return (JarResourcePackageFragmentRoot) jpaFile.getResourceModel();
+			}
+		};
+	}
+
+	public JarResourcePackageFragmentRoot getJarResourcePackageFragmentRoot(String jarFileName) {
+//		return this.getJarResourcePackageFragmentRoot(this.convertToPlatformFile(jarFileName));
+		return this.getJarResourcePackageFragmentRoot(this.getProject().getFile(jarFileName));
+	}
+
+	protected JarResourcePackageFragmentRoot getJarResourcePackageFragmentRoot(IFile jarFile) {
+		for (Iterator<JarResourcePackageFragmentRoot> stream = this.jarResourcePackageFragmentRoots(); stream.hasNext(); ) {
+			JarResourcePackageFragmentRoot pfr = stream.next();
+			if (pfr.getFile().equals(jarFile)) {
+				return pfr;
+			}
+		}
 		return null;
 	}
 
@@ -640,69 +668,9 @@ public abstract class AbstractJpaProject
 		this.synchWithJavaDeltaChildren(delta);
 
 		if (this.classpathEntryHasBeenAdded(delta)) {
-			this.dump(delta);
+			// TODO
 		} else if (this.classpathEntryHasBeenRemoved(delta)) {  // should be mutually-exclusive w/added (?)
 			
-		}
-	}
-
-	protected void dump(IJavaElementDelta delta) {
-//		try {
-//			this.dump_(delta);
-//		} catch (JavaModelException ex) {
-//			throw new RuntimeException(ex);
-//		}
-	}
-
-//	protected void remove() {
-//		removeDump_();
-//	}
-//	@SuppressWarnings("nls")
-//	protected void dump_(IJavaElementDelta delta) throws JavaModelException {
-//		System.out.println(delta);
-//		IPackageFragmentRoot pfr = (IPackageFragmentRoot) delta.getElement();
-//			IFile file = (IFile) pfr.getResource();
-//			System.out.println("file: " + file.getFullPath());
-//			System.out.println("content type: " + PlatformTools.getContentType(file));
-//		System.out.println("kind: " + this.getKindString(pfr));
-//		System.out.println("archive: " + pfr.isArchive());
-//		System.out.println("external: " + pfr.isExternal());
-//		for (IJavaElement pf : pfr.getChildren()) {
-//			System.out.println("\tpackage fragment: " + pf);
-//			for (IJavaElement classFile : ((IPackageFragment) pf).getChildren()) {
-//				System.out.println("\t\tclass file: " + classFile);
-//				IType type = ((IClassFile) classFile).getType();
-//				System.out.println("\t\t\ttype: " + type);
-//				this.dumpAnnotations(type);
-//				for (IField field : type.getFields()) {
-//					System.out.println("\t\t\t\tfield: " + field);
-//					this.dumpAnnotations(field);
-//				}
-//				for (IMethod method : type.getMethods()) {
-//					System.out.println("\t\t\t\tmethod: " + method);
-//					this.dumpAnnotations(method);
-//				}
-//			}
-//		}
-//		System.out.flush();
-//	}
-//
-	@SuppressWarnings("nls")
-	protected String getKindString(IPackageFragmentRoot pfr) throws JavaModelException {
-		switch (pfr.getKind()) {
-			case IPackageFragmentRoot.K_BINARY:
-				return "BINARY";
-			case IPackageFragmentRoot.K_SOURCE:
-				return "SOURCE";
-			default:
-				return "[UNKNOWN]";
-		}
-	}
-
-	@SuppressWarnings("nls")
-	protected void dumpAnnotations(IAnnotatable annotatable) throws JavaModelException {
-		for (IAnnotation annotation : annotatable.getAnnotations()) {
-			System.out.println("\t\t\t\t\tannotation: " + annotation);
 		}
 	}
 

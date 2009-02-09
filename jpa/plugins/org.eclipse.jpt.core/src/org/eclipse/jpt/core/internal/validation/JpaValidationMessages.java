@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -32,6 +32,8 @@ public interface JpaValidationMessages {
 	public static final String PERSISTENCE_UNIT_INVALID_CLASS = "PERSISTENCE_UNIT_INVALID_CLASS";
 	public static final String PERSISTENCE_UNIT_DUPLICATE_CLASS = "PERSISTENCE_UNIT_DUPLICATE_CLASS";
 	public static final String PERSISTENCE_UNIT_REDUNDANT_CLASS = "PERSISTENCE_UNIT_REDUNDANT_CLASS";
+	public static final String PERSISTENCE_UNIT_UNSPECIFIED_JAR_FILE = "PERSISTENCE_UNIT_UNSPECIFIED_JAR_FILE";
+	public static final String PERSISTENCE_UNIT_NONEXISTENT_JAR_FILE = "PERSISTENCE_UNIT_NONEXISTENT_JAR_FILE";
 	public static final String GENERATOR_DUPLICATE_NAME = "GENERATOR_DUPLICATE_NAME";
 	public static final String QUERY_DUPLICATE_NAME = "QUERY_DUPLICATE_NAME";
 	public static final String MAPPING_FILE_EXTRANEOUS_PERSISTENCE_UNIT_DEFAULTS = "MAPPING_FILE_EXTRANEOUS_PERSISTENCE_UNIT_DEFAULTS";
