@@ -64,7 +64,9 @@ public abstract class AbstractOrmPersistentType
 
 	protected OrmTypeMapping typeMapping;
 	
-	protected XmlTypeMapping resourceTypeMapping;
+	//TODO this should be final, see changeMapping(OrmPersistentAttribute, OrmAttributeMapping, OrmAttributeMapping)
+	//as far as the update process is concerned, resourceTypeMapping is final.  unfortunately mapping morphing does not work that way yet
+	protected XmlTypeMapping resourceTypeMapping; 
 	
 	protected PersistentType parentPersistentType;
 	
