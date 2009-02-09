@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -69,7 +69,7 @@ public abstract class AbstractOrmNamedColumn<T extends XmlNamedColumn>  extends 
 		if (oldSpecifiedName != newSpecifiedName) {
 			if (this.getResourceColumn() != null) {
 				this.getResourceColumn().setName(newSpecifiedName);						
-				if (this.getResourceColumn().isAllFeaturesUnset()) {
+				if (this.getResourceColumn().isUnset()) {
 					removeResourceColumn();
 				}
 			}
@@ -107,7 +107,7 @@ public abstract class AbstractOrmNamedColumn<T extends XmlNamedColumn>  extends 
 		if (oldColumnDefinition != newColumnDefinition) {
 			if (this.getResourceColumn() != null) {
 				this.getResourceColumn().setColumnDefinition(newColumnDefinition);						
-				if (this.getResourceColumn().isAllFeaturesUnset()) {
+				if (this.getResourceColumn().isUnset()) {
 					removeResourceColumn();
 				}
 			}

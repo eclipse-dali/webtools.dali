@@ -10,7 +10,7 @@
 package org.eclipse.jpt.eclipselink1_1.core.resource.orm;
 
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.jpt.core.resource.common.JpaXmlResource;
+import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
 import org.eclipse.jpt.eclipselink1_1.core.internal.resource.orm.translators.EclipseLinkEntityMappingsTranslator;
 import org.eclipse.wst.common.internal.emf.resource.Renderer;

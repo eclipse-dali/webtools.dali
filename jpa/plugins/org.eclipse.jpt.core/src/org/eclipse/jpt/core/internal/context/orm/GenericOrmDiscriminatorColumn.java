@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the terms of
  * the Eclipse Public License v1.0, which accompanies this distribution and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
@@ -52,7 +52,7 @@ public class GenericOrmDiscriminatorColumn extends AbstractOrmNamedColumn<XmlDis
 		if (oldDiscriminatorType != newSpecifiedDiscriminatorType) {
 			if (this.getResourceColumn() != null) {
 				this.getResourceColumn().setDiscriminatorType(DiscriminatorType.toOrmResourceModel(newSpecifiedDiscriminatorType));
-				if (this.getResourceColumn().isAllFeaturesUnset()) {
+				if (this.getResourceColumn().isUnset()) {
 					removeResourceColumn();
 				}
 			}
@@ -88,7 +88,7 @@ public class GenericOrmDiscriminatorColumn extends AbstractOrmNamedColumn<XmlDis
 		if (oldSpecifiedLength != newSpecifiedLength) {
 			if (this.getResourceColumn() != null) {
 				this.getResourceColumn().setLength(newSpecifiedLength);
-				if (this.getResourceColumn().isAllFeaturesUnset()) {
+				if (this.getResourceColumn().isUnset()) {
 					removeResourceColumn();
 				}
 			}

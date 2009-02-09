@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -70,7 +70,7 @@ public abstract class AbstractOrmBaseColumn<T extends XmlAbstractColumn> extends
 		if (oldSpecifiedTable != newSpecifiedTable) {
 			if (this.getResourceColumn() != null) {
 				this.getResourceColumn().setTable(newSpecifiedTable);						
-				if (this.getResourceColumn().isAllFeaturesUnset()) {
+				if (this.getResourceColumn().isUnset()) {
 					removeResourceColumn();
 				}
 			}
@@ -116,7 +116,7 @@ public abstract class AbstractOrmBaseColumn<T extends XmlAbstractColumn> extends
 		if (oldSpecifiedUnique != newSpecifiedUnique) {
 			if (this.getResourceColumn() != null) {
 				this.getResourceColumn().setUnique(newSpecifiedUnique);						
-				if (this.getResourceColumn().isAllFeaturesUnset()) {
+				if (this.getResourceColumn().isUnset()) {
 					removeResourceColumn();
 				}
 			}
@@ -152,7 +152,7 @@ public abstract class AbstractOrmBaseColumn<T extends XmlAbstractColumn> extends
 		if (oldSpecifiedNullable != newSpecifiedNullable) {
 			if (this.getResourceColumn() != null) {
 				this.getResourceColumn().setNullable(newSpecifiedNullable);						
-				if (this.getResourceColumn().isAllFeaturesUnset()) {
+				if (this.getResourceColumn().isUnset()) {
 					removeResourceColumn();
 				}
 			}
@@ -188,7 +188,7 @@ public abstract class AbstractOrmBaseColumn<T extends XmlAbstractColumn> extends
 		if (oldSpecifiedInsertable != newSpecifiedInsertable) {
 			if (this.getResourceColumn() != null) {
 				this.getResourceColumn().setInsertable(newSpecifiedInsertable);						
-				if (this.getResourceColumn().isAllFeaturesUnset()) {
+				if (this.getResourceColumn().isUnset()) {
 					removeResourceColumn();
 				}
 			}
@@ -224,7 +224,7 @@ public abstract class AbstractOrmBaseColumn<T extends XmlAbstractColumn> extends
 		if (oldSpecifiedUpdatable != newSpecifiedUpdatable) {
 			if (this.getResourceColumn() != null) {
 				this.getResourceColumn().setUpdatable(newSpecifiedUpdatable);						
-				if (this.getResourceColumn().isAllFeaturesUnset()) {
+				if (this.getResourceColumn().isUnset()) {
 					removeResourceColumn();
 				}
 			}

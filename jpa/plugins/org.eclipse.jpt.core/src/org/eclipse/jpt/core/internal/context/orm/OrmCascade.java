@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -55,7 +55,7 @@ public class OrmCascade extends AbstractXmlContextNode implements Cascade
 		if (oldAll != newAll) {
 			if (this.getCascadeResource() != null) {
 				this.getCascadeResource().setCascadeAll(newAll);						
-				if (this.getCascadeResource().isAllFeaturesUnset()) {
+				if (this.getCascadeResource().isUnset()) {
 					removeCascadeResource();
 				}
 			}
@@ -83,7 +83,7 @@ public class OrmCascade extends AbstractXmlContextNode implements Cascade
 		if (oldPersist != newPersist) {
 			if (this.getCascadeResource() != null) {
 				this.getCascadeResource().setCascadePersist(newPersist);						
-				if (this.getCascadeResource().isAllFeaturesUnset()) {
+				if (this.getCascadeResource().isUnset()) {
 					removeCascadeResource();
 				}
 			}
@@ -112,7 +112,7 @@ public class OrmCascade extends AbstractXmlContextNode implements Cascade
 		if (oldMerge != newMerge) {
 			if (this.getCascadeResource() != null) {
 				this.getCascadeResource().setCascadeMerge(newMerge);						
-				if (this.getCascadeResource().isAllFeaturesUnset()) {
+				if (this.getCascadeResource().isUnset()) {
 					removeCascadeResource();
 				}
 			}
@@ -140,7 +140,7 @@ public class OrmCascade extends AbstractXmlContextNode implements Cascade
 		if (oldRemove != newRemove) {
 			if (this.getCascadeResource() != null) {
 				this.getCascadeResource().setCascadeRemove(newRemove);						
-				if (this.getCascadeResource().isAllFeaturesUnset()) {
+				if (this.getCascadeResource().isUnset()) {
 					removeCascadeResource();
 				}
 			}
@@ -168,7 +168,7 @@ public class OrmCascade extends AbstractXmlContextNode implements Cascade
 		if (oldRefresh != newRefresh) {
 			if (this.getCascadeResource() != null) {
 				this.getCascadeResource().setCascadeRefresh(newRefresh);						
-				if (this.getCascadeResource().isAllFeaturesUnset()) {
+				if (this.getCascadeResource().isUnset()) {
 					removeCascadeResource();
 				}
 			}

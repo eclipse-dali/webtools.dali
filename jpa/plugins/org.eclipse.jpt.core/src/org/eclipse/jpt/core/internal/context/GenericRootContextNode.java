@@ -23,9 +23,9 @@ import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.core.resource.common.JpaXmlResource;
 import org.eclipse.jpt.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.HashBag;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -124,10 +124,6 @@ public class GenericRootContextNode
 		return this.jpaProject.getPersistenceXmlResource();
 	}
 	
-	protected IFile getPlatformFile() {
-		return JptCorePlugin.getPlatformFile(this.jpaProject.getProject(), JptCorePlugin.DEFAULT_PERSISTENCE_XML_FILE_PATH);
-	}
-	
 	protected PersistenceXml buildPersistenceXml(JpaXmlResource resource) {
 		return this.getJpaFactory().buildPersistenceXml(this, resource);
 	}
@@ -137,16 +133,10 @@ public class GenericRootContextNode
 	
 	public void validate(List<IMessage> messages) {
 		if (this.persistenceXml == null) {
-			IFile platformFile = this.getPlatformFile();
-			String msgID = platformFile.exists() ?
-					JpaValidationMessages.PERSISTENCE_XML_INVALID_CONTENT
-				:
-					JpaValidationMessages.PROJECT_NO_PERSISTENCE_XML;
-
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY, 
-					msgID,
+					this.buildMissingFileMessageID(),
 					this
 				)
 			);
@@ -158,6 +148,17 @@ public class GenericRootContextNode
 		this.persistenceXml.validate(messages);
 	}
 
+	protected String buildMissingFileMessageID() {
+		return this.getPlatformFile().exists() ?
+					JpaValidationMessages.PERSISTENCE_XML_INVALID_CONTENT
+				:
+					JpaValidationMessages.PROJECT_NO_PERSISTENCE_XML;
+	}
+
+	protected IFile getPlatformFile() {
+		return this.jpaProject.convertToPlatformFile(JptCorePlugin.DEFAULT_PERSISTENCE_XML_FILE_PATH);
+	}
+	
 	protected void validateOrphanClasses(List<IMessage> messages) {
 		Persistence persistence = this.persistenceXml.getPersistence();
 		if (persistence == null) {

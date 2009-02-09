@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.resource.common;
+package org.eclipse.jpt.core.resource.xml;
 
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -67,7 +67,7 @@ public abstract class AbstractJpaEObject
 
 	// ********** JpaEObject implementation **********
 
-	public boolean isAllFeaturesUnset() {
+	public boolean isUnset() {
 		for (EStructuralFeature feature : this.eClass().getEAllStructuralFeatures()) {
 			if (this.eIsSet(feature)) {
 				return false;

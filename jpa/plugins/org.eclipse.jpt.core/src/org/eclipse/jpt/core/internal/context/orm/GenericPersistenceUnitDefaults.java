@@ -234,10 +234,10 @@ public class GenericPersistenceUnitDefaults
 	 * clear the resource defaults and the resource metadata if appropriate
 	 */
 	protected void checkResourceDefaults(XmlPersistenceUnitDefaults resourceDefaults) {
-		if (resourceDefaults.isAllFeaturesUnset()) {
+		if (resourceDefaults.isUnset()) {
 			XmlPersistenceUnitMetadata metadata = this.entityMappings.getPersistenceUnitMetadata();
 			metadata.setPersistenceUnitDefaults(null);
-			if (metadata.isAllFeaturesUnset()) {
+			if (metadata.isUnset()) {
 				this.entityMappings.setPersistenceUnitMetadata(null);
 			}
 		}

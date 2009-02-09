@@ -39,16 +39,16 @@ public class PersistenceUnitMetadataTests extends ContextModelTestCase
 	public void testIsAllFeaturesUnset() throws Exception {
 		org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitMetadata persistenceUnitMetadata = OrmFactory.eINSTANCE.createXmlPersistenceUnitMetadata();
 		getXmlEntityMappings().setPersistenceUnitMetadata(persistenceUnitMetadata);
-		assertTrue(persistenceUnitMetadata.isAllFeaturesUnset());
+		assertTrue(persistenceUnitMetadata.isUnset());
 		
 		persistenceUnitMetadata.setXmlMappingMetadataComplete(true);
-		assertFalse(persistenceUnitMetadata.isAllFeaturesUnset());
+		assertFalse(persistenceUnitMetadata.isUnset());
 		
 		persistenceUnitMetadata.setXmlMappingMetadataComplete(false);
-		assertTrue(persistenceUnitMetadata.isAllFeaturesUnset());
+		assertTrue(persistenceUnitMetadata.isUnset());
 		
 		persistenceUnitMetadata.setPersistenceUnitDefaults(OrmFactory.eINSTANCE.createXmlPersistenceUnitDefaults());
-		assertFalse(persistenceUnitMetadata.isAllFeaturesUnset());		
+		assertFalse(persistenceUnitMetadata.isUnset());		
 	}
 	
 	public void testUpdateXmlMappingMetadataComplete() throws Exception {

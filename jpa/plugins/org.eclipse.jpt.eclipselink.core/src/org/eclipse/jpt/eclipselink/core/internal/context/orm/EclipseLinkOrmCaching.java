@@ -1,13 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2008, 2009  Oracle. 
- *  All rights reserved.  This program and the accompanying materials are 
- *  made available under the terms of the Eclipse Public License v1.0 which 
- *  accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
@@ -84,7 +83,7 @@ public class EclipseLinkOrmCaching extends AbstractXmlContextNode
 		if (oldSpecifiedSize != newSpecifiedSize) {
 			if (this.getResourceCache() != null) {
 				this.getResourceCache().setSize(newSpecifiedSize);						
-				if (this.getResourceCache().isAllFeaturesUnset()) {
+				if (this.getResourceCache().isUnset()) {
 					removeResourceCache();
 				}
 			}
@@ -127,7 +126,7 @@ public class EclipseLinkOrmCaching extends AbstractXmlContextNode
 		if (oldSpecifiedShared != newSpecifiedShared) {
 			if (this.getResourceCache() != null) {
 				this.getResourceCache().setShared(newSpecifiedShared);						
-				if (this.getResourceCache().isAllFeaturesUnset()) {
+				if (this.getResourceCache().isUnset()) {
 					removeResourceCache();
 				}
 			}
@@ -182,7 +181,7 @@ public class EclipseLinkOrmCaching extends AbstractXmlContextNode
 		if (oldSpecifiedAlwaysRefresh != newSpecifiedAlwaysRefresh) {
 			if (this.getResourceCache() != null) {
 				this.getResourceCache().setAlwaysRefresh(newSpecifiedAlwaysRefresh);						
-				if (this.getResourceCache().isAllFeaturesUnset()) {
+				if (this.getResourceCache().isUnset()) {
 					removeResourceCache();
 				}
 			}
@@ -225,7 +224,7 @@ public class EclipseLinkOrmCaching extends AbstractXmlContextNode
 		if (oldSpecifiedRefreshOnlyIfNewer != newSpecifiedRefreshOnlyIfNewer) {
 			if (this.getResourceCache() != null) {
 				this.getResourceCache().setRefreshOnlyIfNewer(newSpecifiedRefreshOnlyIfNewer);						
-				if (this.getResourceCache().isAllFeaturesUnset()) {
+				if (this.getResourceCache().isUnset()) {
 					removeResourceCache();
 				}
 			}
@@ -268,7 +267,7 @@ public class EclipseLinkOrmCaching extends AbstractXmlContextNode
 		if (oldSpecifiedDisableHits != newSpecifiedDisableHits) {
 			if (this.getResourceCache() != null) {
 				this.getResourceCache().setDisableHits(newSpecifiedDisableHits);						
-				if (this.getResourceCache().isAllFeaturesUnset()) {
+				if (this.getResourceCache().isUnset()) {
 					removeResourceCache();
 				}
 			}
@@ -310,7 +309,7 @@ public class EclipseLinkOrmCaching extends AbstractXmlContextNode
 		if (oldSpecifiedType != newSpecifiedType) {
 			if (this.getResourceCache() != null) {
 				this.getResourceCache().setType(CacheType.toOrmResourceModel(newSpecifiedType));						
-				if (this.getResourceCache().isAllFeaturesUnset()) {
+				if (this.getResourceCache().isUnset()) {
 					removeResourceCache();
 				}
 			}
@@ -353,7 +352,7 @@ public class EclipseLinkOrmCaching extends AbstractXmlContextNode
 		if (oldSpecifiedCoordinationType != newSpecifiedCoordinationType) {
 			if (this.getResourceCache() != null) {
 				this.getResourceCache().setCoordinationType(CacheCoordinationType.toOrmResourceModel(newSpecifiedCoordinationType));						
-				if (this.getResourceCache().isAllFeaturesUnset()) {
+				if (this.getResourceCache().isUnset()) {
 					removeResourceCache();
 				}
 			}
@@ -412,7 +411,7 @@ public class EclipseLinkOrmCaching extends AbstractXmlContextNode
 		if (oldExpiry != newExpiry) {
 			if (this.getResourceCache() != null) {
 				this.getResourceCache().setExpiry(newExpiry);						
-				if (this.getResourceCache().isAllFeaturesUnset()) {
+				if (this.getResourceCache().isUnset()) {
 					removeResourceCache();
 				}
 			}
@@ -461,7 +460,7 @@ public class EclipseLinkOrmCaching extends AbstractXmlContextNode
 		ExpiryTimeOfDay oldExpiryTimeOfDay = this.expiryTimeOfDay;
 		this.expiryTimeOfDay = null;
 		getResourceCache().setExpiryTimeOfDay(null);
-		if (this.getResourceCache().isAllFeaturesUnset()) {
+		if (this.getResourceCache().isUnset()) {
 			removeResourceCache();
 		}
 		firePropertyChanged(EXPIRY_TIME_OF_DAY_PROPERTY, oldExpiryTimeOfDay, null);

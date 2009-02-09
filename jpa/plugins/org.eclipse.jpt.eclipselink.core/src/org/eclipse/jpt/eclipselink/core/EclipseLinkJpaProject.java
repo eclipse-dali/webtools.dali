@@ -10,7 +10,7 @@
 package org.eclipse.jpt.eclipselink.core;
 
 import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.core.resource.common.JpaXmlResource;
+import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 
 /**
  * A JPA project is associated with an Eclipse project (and its corresponding

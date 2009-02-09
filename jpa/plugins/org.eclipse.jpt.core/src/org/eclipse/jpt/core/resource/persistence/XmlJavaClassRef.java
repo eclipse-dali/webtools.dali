@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,9 +11,12 @@ package org.eclipse.jpt.core.resource.persistence;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
-import org.eclipse.jpt.core.resource.common.JpaEObject;
+import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
+import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
+import org.eclipse.jpt.core.resource.xml.JpaEObject;
+import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
  * <!-- begin-user-doc -->
@@ -200,4 +203,29 @@ public class XmlJavaClassRef extends AbstractJpaEObject implements JpaEObject
 		return result.toString();
 	}
 
-} // XmlJavaClassRef
+
+	// ********** translators **********
+
+	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
+		return new SimpleTranslator(
+				elementName,
+				structuralFeature,
+				Translator.END_TAG_NO_INDENT,
+				buildTranslatorChildren()
+			);
+	}
+
+	private static Translator[] buildTranslatorChildren() {
+		return new Translator[] {
+				buildFileNameTranslator(),
+			};
+	}
+
+	private static Translator buildFileNameTranslator() {
+		return new Translator(
+				Translator.TEXT_ATTRIBUTE_VALUE,
+				PersistencePackage.eINSTANCE.getXmlJavaClassRef_JavaClass()
+			);
+	}
+
+}

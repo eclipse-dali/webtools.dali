@@ -41,7 +41,7 @@ public class GenericPersistenceUnitMetadata extends AbstractXmlContextNode
 		if (oldXmlMappingMetadataComplete != newXmlMappingMetadataComplete) {
 			if (this.getResourcePersistenceUnitMetadata() != null) {
 				this.getResourcePersistenceUnitMetadata().setXmlMappingMetadataComplete(newXmlMappingMetadataComplete);						
-				if (this.getResourcePersistenceUnitMetadata().isAllFeaturesUnset()) {
+				if (this.getResourcePersistenceUnitMetadata().isUnset()) {
 					this.xmlEntityMappings.setPersistenceUnitMetadata(null);
 				}
 			}

@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.resource.common;
+package org.eclipse.jpt.core.resource.xml;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -42,19 +42,20 @@ public class JpaXmlResource
 	extends TranslatorResourceImpl
 	implements JpaResourceModel
 {
-	protected final ListenerList<JpaResourceModelListener> resourceModelListenerList;
-
 	protected final IContentType contentType;
 	
 	protected final Translator rootTranslator;
 	
+	protected final ListenerList<JpaResourceModelListener> resourceModelListenerList;
+
+
 	// ********** constructor **********
 
 	public JpaXmlResource(URI uri, Renderer renderer, IContentType contentType, Translator rootTranslator) {
 		super(uri, renderer);
-		this.resourceModelListenerList = new ListenerList<JpaResourceModelListener>(JpaResourceModelListener.class);
 		this.contentType = contentType;
 		this.rootTranslator = rootTranslator;
+		this.resourceModelListenerList = new ListenerList<JpaResourceModelListener>(JpaResourceModelListener.class);
 	}
 
 	public IContentType getContentType() {

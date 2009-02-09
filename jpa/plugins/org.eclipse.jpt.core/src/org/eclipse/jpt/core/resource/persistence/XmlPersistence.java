@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.resource.persistence;
 
 import java.util.Collection;
+
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
@@ -19,8 +20,12 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-import org.eclipse.jpt.core.resource.common.AbstractJpaEObject;
-import org.eclipse.jpt.core.resource.common.JpaEObject;
+import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleRootTranslator;
+import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
+import org.eclipse.jpt.core.resource.xml.JpaEObject;
+import org.eclipse.jpt.core.resource.xml.XML;
+import org.eclipse.wst.common.internal.emf.resource.ConstantAttributeTranslator;
+import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
  * <!-- begin-user-doc -->
@@ -280,5 +285,51 @@ public class XmlPersistence extends AbstractJpaEObject implements JpaEObject
 		result.append(')');
 		return result.toString();
 	}
-	
+
+
+	// ********** translators **********
+
+	public static Translator getRootTranslator() {
+		return ROOT_TRANSLATOR;
+	}
+	private static final Translator ROOT_TRANSLATOR = buildRootTranslator();
+
+	private static Translator buildRootTranslator() {
+		return new SimpleRootTranslator(
+				JPA.PERSISTENCE,
+				PersistencePackage.eINSTANCE.getXmlPersistence(),
+				buildTranslatorChildren()
+			);
+	}
+
+	private static Translator[] buildTranslatorChildren() {
+		return new Translator[] {
+				buildVersionTranslator(),
+				buildNamespaceTranslator(),
+				buildSchemaNamespaceTranslator(),
+				buildSchemaLocationTranslator(),
+				XmlPersistenceUnit.buildTranslator(JPA.PERSISTENCE_UNIT, PersistencePackage.eINSTANCE.getXmlPersistence_PersistenceUnits())
+			};
+	}
+
+	private static Translator buildNamespaceTranslator() {
+		return new ConstantAttributeTranslator(XML.NAMESPACE, JPA.NAMESPACE_URL);
+	}
+
+	private static Translator buildSchemaNamespaceTranslator() {
+		return new ConstantAttributeTranslator(XML.NAMESPACE_XSI, XML.XSI_NAMESPACE_URL);
+	}
+
+	private static Translator buildSchemaLocationTranslator() {
+		return new ConstantAttributeTranslator(XML.XSI_SCHEMA_LOCATION, JPA.NAMESPACE_URL + ' ' + JPA.SCHEMA_LOCATION_1_0);
+	}
+
+	private static Translator buildVersionTranslator() {
+		return new Translator(
+				JPA.PERSISTENCE__VERSION,
+				PersistencePackage.eINSTANCE.getXmlPersistence_Version(),
+				Translator.DOM_ATTRIBUTE
+			);
+	}
+
 }

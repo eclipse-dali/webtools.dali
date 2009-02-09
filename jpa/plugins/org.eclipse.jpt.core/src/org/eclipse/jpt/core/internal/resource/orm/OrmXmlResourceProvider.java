@@ -14,11 +14,10 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.core.internal.JpaConstants;
 import org.eclipse.jpt.core.resource.AbstractXmlResourceProvider;
-import org.eclipse.jpt.core.resource.common.JpaXmlResource;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
+import org.eclipse.jpt.core.resource.xml.XML;
 
 public class OrmXmlResourceProvider
 	extends AbstractXmlResourceProvider
@@ -63,7 +62,7 @@ public class OrmXmlResourceProvider
 	@Override
 	protected void populateRoot() {
 		XmlEntityMappings entityMappings = OrmFactory.eINSTANCE.createXmlEntityMappings();
-		entityMappings.setVersion(JpaConstants.VERSION_1_0_TEXT);
+		entityMappings.setVersion(XML.VERSION_1_0_TEXT);
 		getResourceContents().add(entityMappings);
 	}
 }

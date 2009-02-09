@@ -454,7 +454,7 @@ public abstract class AbstractOrmPersistentType
 		int index = this.specifiedPersistentAttributes.indexOf(ormPersistentAttribute);
 		this.specifiedPersistentAttributes.remove(ormPersistentAttribute);
 		ormPersistentAttribute.getMapping().removeFromResourceModel(this.typeMapping.getResourceTypeMapping());
-		if (this.typeMapping.getResourceTypeMapping().getAttributes().isAllFeaturesUnset()) {
+		if (this.typeMapping.getResourceTypeMapping().getAttributes().isUnset()) {
 			this.typeMapping.getResourceTypeMapping().setAttributes(null);
 		}
 		fireItemRemoved(PersistentType.SPECIFIED_ATTRIBUTES_LIST, index, ormPersistentAttribute);		

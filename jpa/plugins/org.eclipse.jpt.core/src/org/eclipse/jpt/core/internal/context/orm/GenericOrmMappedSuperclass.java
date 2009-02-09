@@ -66,7 +66,7 @@ public class GenericOrmMappedSuperclass extends AbstractOrmTypeMapping<XmlMapped
 		if (oldIdClass != newIdClass) {
 			if (this.getResourceIdClass() != null) {
 				this.getResourceIdClass().setClassName(newIdClass);						
-				if (this.getResourceIdClass().isAllFeaturesUnset()) {
+				if (this.getResourceIdClass().isUnset()) {
 					removeResourceIdClass();
 				}
 			}

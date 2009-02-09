@@ -99,7 +99,7 @@ public abstract class AbstractOrmTable
 				resourceTable = this.addResourceTable();
 			}
 			resourceTable.setName(name);
-			if (resourceTable.isAllFeaturesUnset()) {
+			if (resourceTable.isUnset()) {
 				this.removeResourceTable();
 			}
 			this.firePropertyChanged(SPECIFIED_NAME_PROPERTY, old, name);
@@ -142,7 +142,7 @@ public abstract class AbstractOrmTable
 				resourceTable = this.addResourceTable();
 			}
 			resourceTable.setSchema(schema);
-			if (resourceTable.isAllFeaturesUnset()) {
+			if (resourceTable.isUnset()) {
 				this.removeResourceTable();
 			}
 			this.firePropertyChanged(SPECIFIED_SCHEMA_PROPERTY, old, schema);
@@ -185,7 +185,7 @@ public abstract class AbstractOrmTable
 				resourceTable = this.addResourceTable();
 			}
 			resourceTable.setCatalog(catalog);
-			if (resourceTable.isAllFeaturesUnset()) {
+			if (resourceTable.isUnset()) {
 				this.removeResourceTable();
 			}
 			this.firePropertyChanged(SPECIFIED_CATALOG_PROPERTY, old, catalog);

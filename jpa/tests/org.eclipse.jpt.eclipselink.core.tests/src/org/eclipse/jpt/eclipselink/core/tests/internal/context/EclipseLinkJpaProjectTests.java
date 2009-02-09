@@ -11,7 +11,7 @@ package org.eclipse.jpt.eclipselink.core.tests.internal.context;
 
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.resource.orm.OrmXmlResourceProvider;
-import org.eclipse.jpt.core.resource.common.JpaXmlResource;
+import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
 import org.eclipse.jpt.eclipselink.core.internal.resource.orm.EclipseLinkOrmXmlResourceProvider;
 

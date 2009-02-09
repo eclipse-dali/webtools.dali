@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.context;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
-import org.eclipse.jpt.core.resource.common.JpaXmlResource;
+import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 
 /**
  * Provisional API: This interface is part of an interim API that is still

@@ -518,7 +518,7 @@ public class GenericOrmEntity
 		if (oldInheritanceType != newInheritanceType) {
 			if (this.getResourceInheritance() != null) {
 				this.getResourceInheritance().setStrategy(InheritanceType.toOrmResourceModel(newInheritanceType));						
-				if (this.getResourceInheritance().isAllFeaturesUnset()) {
+				if (this.getResourceInheritance().isUnset()) {
 					removeResourceInheritance();
 				}
 			}
@@ -1066,7 +1066,7 @@ public class GenericOrmEntity
 		if (oldIdClass != newIdClass) {
 			if (this.getResourceIdClass() != null) {
 				this.getResourceIdClass().setClassName(newIdClass);						
-				if (this.getResourceIdClass().isAllFeaturesUnset()) {
+				if (this.getResourceIdClass().isUnset()) {
 					removeResourceIdClass();
 				}
 			}

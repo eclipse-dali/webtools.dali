@@ -46,39 +46,39 @@ public class PersistenceUnitDefaultsTests extends ContextModelTestCase
 		
 		XmlPersistenceUnitMetadata persistenceUnitMetadata = OrmFactory.eINSTANCE.createXmlPersistenceUnitMetadata();
 		getXmlEntityMappings().setPersistenceUnitMetadata(persistenceUnitMetadata);
-		assertTrue(persistenceUnitMetadata.isAllFeaturesUnset());
+		assertTrue(persistenceUnitMetadata.isUnset());
 		
 		org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitDefaults persistenceUnitDefaultsResource = OrmFactory.eINSTANCE.createXmlPersistenceUnitDefaults();
 		persistenceUnitMetadata.setPersistenceUnitDefaults(persistenceUnitDefaultsResource);
-		assertTrue(persistenceUnitDefaultsResource.isAllFeaturesUnset());
+		assertTrue(persistenceUnitDefaultsResource.isUnset());
 		
 		persistenceUnitDefaultsResource.setCascadePersist(true);
-		assertFalse(persistenceUnitDefaultsResource.isAllFeaturesUnset());
+		assertFalse(persistenceUnitDefaultsResource.isUnset());
 		
 		persistenceUnitDefaultsResource.setCascadePersist(false);
-		assertTrue(persistenceUnitDefaultsResource.isAllFeaturesUnset());
+		assertTrue(persistenceUnitDefaultsResource.isUnset());
 		
 		persistenceUnitDefaultsResource.setSchema("asdf");
-		assertFalse(persistenceUnitDefaultsResource.isAllFeaturesUnset());
+		assertFalse(persistenceUnitDefaultsResource.isUnset());
 		
 		persistenceUnitDefaultsResource.setSchema(null);
-		assertTrue(persistenceUnitDefaultsResource.isAllFeaturesUnset());
+		assertTrue(persistenceUnitDefaultsResource.isUnset());
 		
 		persistenceUnitDefaultsResource.setCatalog("asdf");
-		assertFalse(persistenceUnitDefaultsResource.isAllFeaturesUnset());
+		assertFalse(persistenceUnitDefaultsResource.isUnset());
 		
 		persistenceUnitDefaultsResource.setCatalog(null);
-		assertTrue(persistenceUnitDefaultsResource.isAllFeaturesUnset());
+		assertTrue(persistenceUnitDefaultsResource.isUnset());
 		
 		
 		persistenceUnitDefaultsResource.setAccess(org.eclipse.jpt.core.resource.orm.AccessType.PROPERTY);
-		assertFalse(persistenceUnitDefaultsResource.isAllFeaturesUnset());
+		assertFalse(persistenceUnitDefaultsResource.isUnset());
 		
 		persistenceUnitDefaultsResource.setAccess(org.eclipse.jpt.core.resource.orm.AccessType.FIELD);
-		assertFalse(persistenceUnitDefaultsResource.isAllFeaturesUnset());
+		assertFalse(persistenceUnitDefaultsResource.isUnset());
 		
 		persistenceUnitDefaultsResource.setAccess(null);
-		assertTrue(persistenceUnitDefaultsResource.isAllFeaturesUnset());
+		assertTrue(persistenceUnitDefaultsResource.isUnset());
 	}
 
 	public void testUpdateSchema() throws Exception {

@@ -1,13 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
- * This program and the accompanying materials are made available under the terms of
- * the Eclipse Public License v1.0, which accompanies this distribution and is available at
- * http://www.eclipse.org/legal/epl-v10.html.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
  * 
  * Contributors:
  *     Oracle - initial API and implementation
- ******************************************************************************/
-package org.eclipse.jpt.core.internal.resource.common.translators;
+ *******************************************************************************/
+package org.eclipse.jpt.core.internal.resource.xml.translators;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -28,14 +28,15 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * 	</persistence-unit-defaults>  ==>  cascadePersist == false
  * 
  */
-public class EmptyTagBooleanTranslator extends Translator
+public class EmptyTagBooleanTranslator
+	extends Translator
 {
-	public EmptyTagBooleanTranslator(String domNameAndPath, EStructuralFeature feature) {
-		super(domNameAndPath, feature, EMPTY_TAG | BOOLEAN_FEATURE);
+	public EmptyTagBooleanTranslator(String domPathAndNames, EStructuralFeature structuralFeature) {
+		super(domPathAndNames, structuralFeature, EMPTY_TAG | BOOLEAN_FEATURE);
 	}
 
-	public EmptyTagBooleanTranslator(String domNameAndPath, EStructuralFeature aFeature, int style) {
-		super(domNameAndPath, aFeature, style | EMPTY_TAG | BOOLEAN_FEATURE);
+	public EmptyTagBooleanTranslator(String domPathAndNames, EStructuralFeature structuralFeature, int style) {
+		super(domPathAndNames, structuralFeature, style | EMPTY_TAG | BOOLEAN_FEATURE);
 	}
 	
 	@Override

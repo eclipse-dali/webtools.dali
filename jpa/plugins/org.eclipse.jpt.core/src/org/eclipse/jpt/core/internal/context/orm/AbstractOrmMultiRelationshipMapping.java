@@ -176,7 +176,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends XmlMultiRela
 		if (oldMapKey != newMapKey) {
 			if (this.getResourceMapKey() != null) {
 				this.getResourceMapKey().setName(newMapKey);						
-				if (this.getResourceMapKey().isAllFeaturesUnset()) {
+				if (this.getResourceMapKey().isUnset()) {
 					removeResourceMapKey();
 				}
 			}
