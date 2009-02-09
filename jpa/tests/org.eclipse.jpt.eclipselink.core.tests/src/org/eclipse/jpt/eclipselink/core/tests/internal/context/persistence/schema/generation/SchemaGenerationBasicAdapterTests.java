@@ -11,7 +11,7 @@ package org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.sche
 
 import java.util.ListIterator;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.core.internal.context.persistence.GenericProperty;
+import org.eclipse.jpt.core.internal.context.persistence.GenericPersistenceUnitProperty;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.PersistenceUnitPropertyListListener;
@@ -82,8 +82,8 @@ public class SchemaGenerationBasicAdapterTests extends PersistenceUnitTestCase
 		ListAspectAdapter<PersistenceUnit, PersistenceUnit.Property> propertiesAdapter = 
 			(ListAspectAdapter<PersistenceUnit, PersistenceUnit.Property>) this.buildPropertiesAdapter(this.subjectHolder);
 		assertFalse(propertiesAdapter.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
-		GenericProperty outputModeProperty = (GenericProperty) this.getPersistenceUnit().getProperty(outputModeKey);
-		GenericProperty ddlGenTypeProperty = (GenericProperty) this.getPersistenceUnit().getProperty(ddlGenTypeKey);
+		GenericPersistenceUnitProperty outputModeProperty = (GenericPersistenceUnitProperty) this.getPersistenceUnit().getProperty(outputModeKey);
+		GenericPersistenceUnitProperty ddlGenTypeProperty = (GenericPersistenceUnitProperty) this.getPersistenceUnit().getProperty(ddlGenTypeKey);
 		assertTrue(outputModeProperty.hasAnyPropertyChangeListeners(PersistenceUnit.Property.VALUE_PROPERTY));
 		
 		ListValueModel<PersistenceUnit.Property> propertyListAdapter = 

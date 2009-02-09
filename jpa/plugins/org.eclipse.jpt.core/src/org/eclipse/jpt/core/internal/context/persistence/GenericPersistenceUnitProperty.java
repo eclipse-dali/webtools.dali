@@ -18,7 +18,7 @@ import org.eclipse.jpt.core.utility.TextRange;
  * Straightforward implementation of the persistence unit property.
  * Notifies the persistence unit of any changes to the property.
  */
-public class GenericProperty
+public class GenericPersistenceUnitProperty
 	extends AbstractXmlContextNode
 	implements PersistenceUnit.Property
 {
@@ -27,7 +27,7 @@ public class GenericProperty
 	protected String value;
 
 
-	public GenericProperty(PersistenceUnit parent, XmlProperty xmlProperty) {
+	public GenericPersistenceUnitProperty(PersistenceUnit parent, XmlProperty xmlProperty) {
 		super(parent);
 		this.initialize(xmlProperty);
 	}
