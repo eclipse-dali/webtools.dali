@@ -12,7 +12,6 @@ package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 import java.util.List;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmMappedSuperclass;
-import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass;
 import org.eclipse.jpt.eclipselink.core.context.Caching;
 import org.eclipse.jpt.eclipselink.core.context.ChangeTracking;
@@ -20,7 +19,6 @@ import org.eclipse.jpt.eclipselink.core.context.Customizer;
 import org.eclipse.jpt.eclipselink.core.context.ReadOnly;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaMappedSuperclass;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaCaching;
-import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlCacheHolder;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlChangeTrackingHolder;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConvertersHolder;
@@ -42,14 +40,14 @@ public class EclipseLinkOrmMappedSuperclassImpl extends GenericOrmMappedSupercla
 	protected final EclipseLinkOrmConverterHolder converterHolder;
 	
 	
-	public EclipseLinkOrmMappedSuperclassImpl(OrmPersistentType parent) {
-		super(parent);
-		this.readOnly = new EclipseLinkOrmReadOnly(this);
-		this.customizer = new EclipseLinkOrmCustomizer(this);
-		this.changeTracking = new EclipseLinkOrmChangeTracking(this);
-		this.caching = new EclipseLinkOrmCaching(this);
-		this.converterHolder = new EclipseLinkOrmConverterHolder(this);
-}
+	public EclipseLinkOrmMappedSuperclassImpl(OrmPersistentType parent, XmlMappedSuperclass resourceMapping) {
+		super(parent, resourceMapping);
+		this.readOnly = new EclipseLinkOrmReadOnly(this, (XmlReadOnly) this.resourceTypeMapping, getJavaReadOnly());
+		this.customizer = new EclipseLinkOrmCustomizer(this, (XmlCustomizerHolder) this.resourceTypeMapping, getJavaCustomizer());
+		this.changeTracking = new EclipseLinkOrmChangeTracking(this, (XmlChangeTrackingHolder) this.resourceTypeMapping, getJavaChangeTracking());
+		this.caching = new EclipseLinkOrmCaching(this, (XmlCacheHolder) this.resourceTypeMapping, getJavaCaching());
+		this.converterHolder = new EclipseLinkOrmConverterHolder(this, (XmlConvertersHolder) this.resourceTypeMapping);
+	}
 	
 	public Caching getCaching() {
 		return this.caching;
@@ -73,24 +71,6 @@ public class EclipseLinkOrmMappedSuperclassImpl extends GenericOrmMappedSupercla
 	
 	
 	// **************** resource-context interaction ***************************
-	
-	@Override
-	public XmlMappedSuperclass addToResourceModel(XmlEntityMappings entityMappings) {
-		XmlMappedSuperclass mappedSuperclass = EclipseLinkOrmFactory.eINSTANCE.createXmlMappedSuperclass();
-		getPersistentType().initialize(mappedSuperclass);
-		entityMappings.getMappedSuperclasses().add(mappedSuperclass);
-		return mappedSuperclass;
-	}
-	
-	@Override
-	public void initialize() {
-		super.initialize();
-		this.readOnly.initialize((XmlReadOnly) this.resourceTypeMapping, getJavaReadOnly());
-		this.customizer.initialize((XmlCustomizerHolder) this.resourceTypeMapping, getJavaCustomizer());
-		this.changeTracking.initialize((XmlChangeTrackingHolder) this.resourceTypeMapping, getJavaChangeTracking());
-		this.caching.initialize((XmlCacheHolder) this.resourceTypeMapping, getJavaCaching());
-		this.converterHolder.initialize((XmlConvertersHolder) this.resourceTypeMapping); 
-	}
 	
 	@Override
 	public void update() {

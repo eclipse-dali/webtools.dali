@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.context.MappingFile;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
@@ -21,6 +22,7 @@ import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
+import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.db.ConnectionProfileFactory;
@@ -148,22 +150,26 @@ public interface JpaPlatform
 
 	// ********** ORM type mappings **********
 
+	XmlTypeMapping buildOrmResourceTypeMapping(String key, IContentType contentType);
+
 	/**
 	 * Build an ORM type mapping for the specified mapping key and persistent type.
 	 * Use identity when comparing keys; so clients must use the same key
 	 * constants as the providers.
 	 */
-	OrmTypeMapping buildOrmTypeMappingFromMappingKey(String key, OrmPersistentType type);
+	OrmTypeMapping buildOrmTypeMappingFromMappingKey(OrmPersistentType type, XmlTypeMapping resourceMapping);
 
 
 	// ********** ORM attribute mappings **********
+
+	XmlAttributeMapping buildOrmResourceAttributeMapping(String key, IContentType contentType);
 
 	/**
 	 * Build an ORM attribute mapping for the specified key and persistent attribute.
 	 * Use identity when comparing keys; so clients must use the same key
 	 * constants as the providers.
 	 */
-	OrmAttributeMapping buildOrmAttributeMappingFromMappingKey(String key, OrmPersistentAttribute attribute);
+	OrmAttributeMapping buildOrmAttributeMappingFromMappingKey(OrmPersistentAttribute parent, XmlAttributeMapping resourceMapping);
 
 	/**
 	 * Build a virtual resource attribute mapping to be used when the mapping is not specified in the orm.xml

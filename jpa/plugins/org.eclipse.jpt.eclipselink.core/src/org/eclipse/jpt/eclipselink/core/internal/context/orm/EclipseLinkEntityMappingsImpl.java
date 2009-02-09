@@ -13,6 +13,7 @@ import java.util.List;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmXml;
 import org.eclipse.jpt.core.internal.context.orm.AbstractEntityMappings;
+import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaFactory;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntityMappings;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -24,14 +25,14 @@ public class EclipseLinkEntityMappingsImpl
 
 	protected final EclipseLinkOrmConverterHolder converterHolder;
 	
-	public EclipseLinkEntityMappingsImpl(OrmXml parent) {
-		super(parent);
-		this.converterHolder = new EclipseLinkOrmConverterHolder(this);
+	public EclipseLinkEntityMappingsImpl(OrmXml parent, XmlEntityMappings resource) {
+		super(parent, resource);
+		this.converterHolder = new EclipseLinkOrmConverterHolder(this, (XmlEntityMappings) this.xmlEntityMappings);
 	}
 	
 	@Override
-	protected OrmPersistentType buildPersistentType(String mappingKey) {
-		return getJpaFactory().buildEclipseLinkOrmPersistentType(this, mappingKey);
+	protected OrmPersistentType buildPersistentType(XmlTypeMapping resourceMapping) {
+		return getJpaFactory().buildEclipseLinkOrmPersistentType(this, resourceMapping);
 	}
 	
 	// **************** JpaNode impl *******************************************
@@ -47,11 +48,6 @@ public class EclipseLinkEntityMappingsImpl
 		return this.converterHolder;
 	}
 	
-	@Override
-	protected void initialize() {
-		super.initialize();
-		this.converterHolder.initialize((XmlEntityMappings) this.xmlEntityMappings);
-	}
 	
 	@Override
 	public void update() {

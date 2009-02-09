@@ -55,10 +55,10 @@ public interface OrmTypeMapping
 	 * @return
 	 */
 	int getXmlSequence();
+	
+	void addToResourceModel(XmlEntityMappings entityMappings);
 
 	void removeFromResourceModel(XmlEntityMappings entityMappings);
-		
-	XmlTypeMapping addToResourceModel(XmlEntityMappings entityMappings);
 
 	void initializeFrom(OrmTypeMapping oldMapping);
 
@@ -73,9 +73,6 @@ public interface OrmTypeMapping
 	TextRange getAttributesTextRange();
 	
 	boolean containsOffset(int textOffset);
-	
-
-	void initialize(XmlTypeMapping typeMapping);
 
 	/**
 	 * Update the OrmTypeMapping context model object to match the 

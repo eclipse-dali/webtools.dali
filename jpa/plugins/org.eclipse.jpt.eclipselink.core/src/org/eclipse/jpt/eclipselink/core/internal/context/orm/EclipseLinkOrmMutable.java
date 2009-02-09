@@ -21,15 +21,18 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.XmlMutable;
 public class EclipseLinkOrmMutable extends AbstractXmlContextNode 
 	implements Mutable
 {
-	protected XmlMutable resource;
+	protected final XmlMutable resource;
 	
 	protected boolean defaultMutable;
 	
 	protected Boolean specifiedMutable;
 	
 	
-	public EclipseLinkOrmMutable(OrmAttributeMapping parent) {
+	public EclipseLinkOrmMutable(OrmAttributeMapping parent, XmlMutable resource) {
 		super(parent);
+		this.resource = resource;
+		this.defaultMutable = this.calculateDefaultMutable();
+		this.specifiedMutable = this.getResourceMutable();
 	}
 		
 	@Override
@@ -74,13 +77,7 @@ public class EclipseLinkOrmMutable extends AbstractXmlContextNode
 	
 	
 	// **************** initialize/update **************************************
-	
-	protected void initialize(XmlMutable resource) {
-		this.resource = resource;
-		this.defaultMutable = this.calculateDefaultMutable();
-		this.specifiedMutable = this.getResourceMutable();
-	}
-	
+		
 	protected void update() {
 		setDefaultMutable(this.calculateDefaultMutable());
 		setSpecifiedMutable_(this.getResourceMutable());

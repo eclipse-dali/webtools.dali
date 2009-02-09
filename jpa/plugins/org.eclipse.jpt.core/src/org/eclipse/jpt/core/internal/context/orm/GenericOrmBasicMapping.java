@@ -24,10 +24,10 @@ import org.eclipse.jpt.core.context.orm.OrmConverter;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.core.resource.orm.Attributes;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlBasic;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
-import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
@@ -45,9 +45,14 @@ public class GenericOrmBasicMapping extends AbstractOrmAttributeMapping<XmlBasic
 	
 	protected OrmConverter specifiedConverter;
 	
-	public GenericOrmBasicMapping(OrmPersistentAttribute parent) {
-		super(parent);
+	public GenericOrmBasicMapping(OrmPersistentAttribute parent, XmlBasic resourceMapping) {
+		super(parent, resourceMapping);
 		this.column = getJpaFactory().buildOrmColumn(this, this);
+		this.column.initialize(this.getResourceColumn());//TODO pass in to factory
+		this.specifiedFetch = this.getResourceFetch();
+		this.specifiedOptional = this.getResourceOptional();
+		this.defaultConverter = new GenericOrmNullConverter(this);
+		this.specifiedConverter = this.buildSpecifiedConverter(this.getResourceConverterType());
 	}
 
 	public FetchType getFetch() {
@@ -171,7 +176,7 @@ public class GenericOrmBasicMapping extends AbstractOrmAttributeMapping<XmlBasic
 	}
 
 	public String getDefaultColumnName() {		
-		return getAttributeName();
+		return getName();
 	}
 
 	public String getDefaultTableName() {
@@ -180,16 +185,6 @@ public class GenericOrmBasicMapping extends AbstractOrmAttributeMapping<XmlBasic
 
 	public Table getDbTable(String tableName) {
 		return getTypeMapping().getDbTable(tableName);
-	}
-	
-	@Override
-	protected void initialize() {
-		super.initialize();
-		this.specifiedFetch = this.getResourceFetch();
-		this.specifiedOptional = this.getResourceOptional();
-		this.column.initialize(this.getResourceColumn());
-		this.defaultConverter = new GenericOrmNullConverter(this);
-		this.specifiedConverter = this.buildSpecifiedConverter(this.getResourceConverterType());
 	}
 	
 	@Override
@@ -241,15 +236,12 @@ public class GenericOrmBasicMapping extends AbstractOrmAttributeMapping<XmlBasic
 		return null;
 	}
 	
-	public XmlBasic addToResourceModel(XmlTypeMapping typeMapping) {
-		XmlBasic basic = OrmFactory.eINSTANCE.createXmlBasicImpl();
-		getPersistentAttribute().initialize(basic);
-		typeMapping.getAttributes().getBasics().add(basic);
-		return basic;
+	public void addToResourceModel(Attributes resourceAttributes) {
+		resourceAttributes.getBasics().add(this.resourceAttributeMapping);
 	}
 	
-	public void removeFromResourceModel(XmlTypeMapping typeMapping) {
-		typeMapping.getAttributes().getBasics().remove(this.resourceAttributeMapping);
+	public void removeFromResourceModel(Attributes resourceAttributes) {
+		resourceAttributes.getBasics().remove(this.resourceAttributeMapping);
 	}
 	
 	//***************** XmlColumn.Owner implementation ****************

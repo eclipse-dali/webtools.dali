@@ -13,16 +13,15 @@ import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmTransientMapping;
-import org.eclipse.jpt.core.resource.orm.OrmFactory;
+import org.eclipse.jpt.core.resource.orm.Attributes;
 import org.eclipse.jpt.core.resource.orm.XmlTransient;
-import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 
 
 public class GenericOrmTransientMapping extends AbstractOrmAttributeMapping<XmlTransient> implements OrmTransientMapping
 {
 	
-	public GenericOrmTransientMapping(OrmPersistentAttribute parent) {
-		super(parent);
+	public GenericOrmTransientMapping(OrmPersistentAttribute parent, XmlTransient resourceMapping) {
+		super(parent, resourceMapping);
 	}
 
 	public void initializeOn(OrmAttributeMapping newMapping) {
@@ -37,14 +36,11 @@ public class GenericOrmTransientMapping extends AbstractOrmAttributeMapping<XmlT
 		return MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY;
 	}
 
-	public XmlTransient addToResourceModel(XmlTypeMapping typeMapping) {
-		XmlTransient transientResource = OrmFactory.eINSTANCE.createXmlTransientImpl();
-		getPersistentAttribute().initialize(transientResource);
-		typeMapping.getAttributes().getTransients().add(transientResource);
-		return transientResource;
+	public void addToResourceModel(Attributes resourceAttributes) {
+		resourceAttributes.getTransients().add(this.resourceAttributeMapping);
 	}
 	
-	public void removeFromResourceModel(XmlTypeMapping typeMapping) {
-		typeMapping.getAttributes().getTransients().remove(this.resourceAttributeMapping);
+	public void removeFromResourceModel(Attributes resourceAttributes) {
+		resourceAttributes.getTransients().remove(this.resourceAttributeMapping);
 	}
 }

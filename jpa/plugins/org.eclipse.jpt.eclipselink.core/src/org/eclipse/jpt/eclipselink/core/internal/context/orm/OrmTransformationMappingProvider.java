@@ -21,6 +21,8 @@ import org.eclipse.jpt.eclipselink.core.EclipseLinkMappingKeys;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaFactory;
 import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaTransformationMapping;
+import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlTransformation;
 
 public class OrmTransformationMappingProvider
 	implements OrmAttributeMappingProvider
@@ -50,9 +52,13 @@ public class OrmTransformationMappingProvider
 	public String getKey() {
 		return EclipseLinkMappingKeys.TRANSFORMATION_ATTRIBUTE_MAPPING_KEY;
 	}
+	
+	public XmlAttributeMapping buildResourceMapping() {
+		return EclipseLinkOrmFactory.eINSTANCE.createXmlTransformationImpl();
+	}
 
-	public OrmAttributeMapping buildMapping(OrmPersistentAttribute parent, JpaFactory factory) {
-		return ((EclipseLinkJpaFactory) factory).buildOrmTransformationMapping(parent);
+	public OrmAttributeMapping buildMapping(OrmPersistentAttribute parent, XmlAttributeMapping resourceMapping, JpaFactory factory) {
+		return ((EclipseLinkJpaFactory) factory).buildOrmTransformationMapping(parent, (XmlTransformation) resourceMapping);
 	}
 	
 	public XmlAttributeMapping buildVirtualResourceMapping(OrmTypeMapping ormTypeMapping, JavaAttributeMapping javaAttributeMapping, JpaFactory factory) {

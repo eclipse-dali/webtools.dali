@@ -15,11 +15,13 @@ import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaBasicMapping;
-import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMappingProvider;
+import org.eclipse.jpt.core.context.orm.OrmBasicMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
+import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
+import org.eclipse.jpt.core.resource.orm.XmlBasic;
 
 public class OrmBasicMappingProvider
 	implements OrmAttributeMappingProvider
@@ -48,9 +50,13 @@ public class OrmBasicMappingProvider
 	public String getKey() {
 		return MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY;
 	}
-
-	public OrmAttributeMapping buildMapping(OrmPersistentAttribute parent, JpaFactory factory) {
-		return factory.buildOrmBasicMapping(parent);
+	
+	public XmlAttributeMapping buildResourceMapping() {
+		return OrmFactory.eINSTANCE.createXmlBasicImpl();
+	}
+	
+	public OrmBasicMapping buildMapping(OrmPersistentAttribute parent, XmlAttributeMapping resourceMapping, JpaFactory factory) {
+		return factory.buildOrmBasicMapping(parent, (XmlBasic) resourceMapping);
 	}
 	
 	public XmlAttributeMapping buildVirtualResourceMapping(OrmTypeMapping ormTypeMapping, JavaAttributeMapping javaAttributeMapping, JpaFactory factory) {

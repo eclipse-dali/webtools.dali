@@ -142,12 +142,6 @@ public interface EntityMappings
 	// **************** updating ***********************************************
 	
 	/**
-	 * Initialize the EntityMappings context model object to match the XmlEntityMappings 
-	 * resource model object.
-	 */
-	void initialize(XmlEntityMappings xmlEntityMappings);
-	
-	/**
 	 * Update the EntityMappings context model object to match the XmlEntityMappings 
 	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
 	 */

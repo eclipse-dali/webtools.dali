@@ -19,6 +19,7 @@ import org.eclipse.jpt.core.context.orm.OrmAttributeMappingProvider;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
+import org.eclipse.jpt.core.resource.orm.XmlNullAttributeMapping;
 
 public class OrmNullAttributeMappingProvider
 	implements OrmAttributeMappingProvider
@@ -47,9 +48,13 @@ public class OrmNullAttributeMappingProvider
 	public String getKey() {
 		return MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY;
 	}
+	
+	public XmlAttributeMapping buildResourceMapping() {
+		throw new UnsupportedOperationException();
+	}
 
-	public OrmAttributeMapping buildMapping(OrmPersistentAttribute parent, JpaFactory factory) {
-		return factory.buildOrmNullAttributeMapping(parent);
+	public OrmAttributeMapping buildMapping(OrmPersistentAttribute parent, XmlAttributeMapping resourceMapping, JpaFactory factory) {
+		return factory.buildOrmNullAttributeMapping(parent, (XmlNullAttributeMapping) resourceMapping);
 	}
 	
 	public XmlAttributeMapping buildVirtualResourceMapping(OrmTypeMapping ormTypeMapping, JavaAttributeMapping javaAttributeMapping, JpaFactory factory) {

@@ -41,11 +41,15 @@ public abstract class AbstractOrmTypeMapping<T extends XmlTypeMapping>
 	
 	protected Boolean specifiedMetadataComplete;
 	
-	protected T resourceTypeMapping;
+	protected final T resourceTypeMapping;
 	
 	
-	protected AbstractOrmTypeMapping(OrmPersistentType parent) {
+	protected AbstractOrmTypeMapping(OrmPersistentType parent, T resourceMapping) {
 		super(parent);
+		this.resourceTypeMapping = resourceMapping;
+		this.class_ = this.getResourceClassName();
+		this.specifiedMetadataComplete = this.getResourceMetadataComplete();
+		this.defaultMetadataComplete = this.getPersistentType().isDefaultMetadataComplete();
 	}	
 	
 	// **************** Type Mapping implementation *****************************
@@ -175,18 +179,6 @@ public abstract class AbstractOrmTypeMapping<T extends XmlTypeMapping>
 
 	public T getResourceTypeMapping() {
 		return this.resourceTypeMapping;
-	}
-	
-	@SuppressWarnings("unchecked")
-	public void initialize(XmlTypeMapping resourceTypeMapping) {
-		this.resourceTypeMapping = (T) resourceTypeMapping;
-		this.initialize();
-	}
-	
-	protected void initialize() {
-		this.class_ = this.getResourceClassName();
-		this.specifiedMetadataComplete = this.getResourceMetadataComplete();
-		this.defaultMetadataComplete = this.getPersistentType().isDefaultMetadataComplete();
 	}
 	
 	public void update() {

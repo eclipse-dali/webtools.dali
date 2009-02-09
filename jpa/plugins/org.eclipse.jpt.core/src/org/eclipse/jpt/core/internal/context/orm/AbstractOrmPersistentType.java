@@ -71,11 +71,17 @@ public abstract class AbstractOrmPersistentType
 	protected JavaPersistentType javaPersistentType;
 
 	
-	protected AbstractOrmPersistentType(EntityMappings parent, String mappingKey) {
+	protected AbstractOrmPersistentType(EntityMappings parent, XmlTypeMapping resourceMapping) {
 		super(parent);
-		this.typeMapping = buildTypeMapping(mappingKey);
+		this.resourceTypeMapping = resourceMapping;
+		this.typeMapping = buildTypeMapping();
 		this.specifiedPersistentAttributes = new ArrayList<OrmPersistentAttribute>();
 		this.virtualPersistentAttributes = new ArrayList<OrmPersistentAttribute>();
+		this.specifiedAccess = this.getResourceAccess();
+		this.defaultAccess = this.buildDefaultAccess();
+		this.initializeJavaPersistentType();
+		this.initializeParentPersistentType();	
+		this.initializePersistentAttributes();
 	}
 
 
@@ -117,8 +123,8 @@ public abstract class AbstractOrmPersistentType
 		return (this.getDefaultPackage() + '.' +  mappingClassName).equals(typeName);
 	}
 	
-	protected OrmTypeMapping buildTypeMapping(String key) {
-		return this.getJpaPlatform().buildOrmTypeMappingFromMappingKey(key, this);
+	protected OrmTypeMapping buildTypeMapping() {
+		return this.getJpaPlatform().buildOrmTypeMappingFromMappingKey(this, this.resourceTypeMapping);
 	}
 
 	public OrmTypeMapping getMapping() {
@@ -170,17 +176,9 @@ public abstract class AbstractOrmPersistentType
 			return;
 		}
 		OrmTypeMapping oldMapping = getMapping();
-		this.typeMapping = buildTypeMapping(newMappingKey);
+		this.resourceTypeMapping = getJpaPlatform().buildOrmResourceTypeMapping(newMappingKey, getContentType());
+		this.typeMapping = buildTypeMapping();
 		this.getEntityMappings().changeMapping(this, oldMapping, this.typeMapping);
-		firePropertyChanged(MAPPING_PROPERTY, oldMapping, this.typeMapping);
-	}
-	
-	protected void setMappingKey_(String newMappingKey) {
-		if (this.getMappingKey() == newMappingKey) {
-			return;
-		}
-		OrmTypeMapping oldMapping = getMapping();
-		this.typeMapping = buildTypeMapping(newMappingKey);
 		firePropertyChanged(MAPPING_PROPERTY, oldMapping, this.typeMapping);
 	}
 
@@ -253,10 +251,10 @@ public abstract class AbstractOrmPersistentType
 	public void changeMapping(OrmPersistentAttribute ormPersistentAttribute, OrmAttributeMapping oldMapping, OrmAttributeMapping newMapping) {
 		int sourceIndex = this.specifiedPersistentAttributes.indexOf(ormPersistentAttribute);
 		this.specifiedPersistentAttributes.remove(sourceIndex);
-		oldMapping.removeFromResourceModel(this.typeMapping.getResourceTypeMapping());
+		oldMapping.removeFromResourceModel(getResourceAttributes());
 		int targetIndex = insertionIndex(ormPersistentAttribute);
 		this.specifiedPersistentAttributes.add(targetIndex, ormPersistentAttribute);
-		newMapping.addToResourceModel(getMapping().getResourceTypeMapping());
+		newMapping.addToResourceModel(getResourceAttributes());
 		oldMapping.initializeOn(newMapping);
 		fireItemMoved(SPECIFIED_ATTRIBUTES_LIST, targetIndex, sourceIndex);
 	}
@@ -287,14 +285,19 @@ public abstract class AbstractOrmPersistentType
 		if (mappingKey == MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY) {
 			throw new IllegalStateException("Use makePersistentAttributeSpecified(OrmPersistentAttribute, String) instead and specify a mapping type"); //$NON-NLS-1$
 		}
-			
-		OrmPersistentAttribute newPersistentAttribute = buildSpecifiedOrmPersistentAttribute(mappingKey);
-		if (getMapping().getResourceTypeMapping().getAttributes() == null) {
-			getMapping().getResourceTypeMapping().setAttributes(createAttributesResource());
+		
+		Attributes resourceAttributes = getResourceAttributes();
+		if (resourceAttributes == null) {
+			resourceAttributes = createResourceAttributes();
+			getMapping().getResourceTypeMapping().setAttributes(resourceAttributes);
 		}
+		
+		XmlAttributeMapping resourceMapping = getJpaPlatform().buildOrmResourceAttributeMapping(mappingKey, getContentType());
+		
+		OrmPersistentAttribute newPersistentAttribute = buildSpecifiedOrmPersistentAttribute(resourceMapping);
 		int insertionIndex = insertionIndex(newPersistentAttribute);
 		this.specifiedPersistentAttributes.add(insertionIndex, newPersistentAttribute);
-		newPersistentAttribute.getMapping().addToResourceModel(getMapping().getResourceTypeMapping());
+		newPersistentAttribute.getMapping().addToResourceModel(resourceAttributes);
 		
 		int removalIndex = this.virtualPersistentAttributes.indexOf(ormPersistentAttribute);
 		this.virtualPersistentAttributes.remove(ormPersistentAttribute);
@@ -304,7 +307,11 @@ public abstract class AbstractOrmPersistentType
 		fireItemRemoved(VIRTUAL_ATTRIBUTES_LIST, removalIndex, ormPersistentAttribute);
 	}
 
-	protected abstract Attributes createAttributesResource();
+	protected Attributes getResourceAttributes() {
+		return this.resourceTypeMapping.getAttributes();
+	}
+	
+	protected abstract Attributes createResourceAttributes();
 	
 	public Iterator<String> allAttributeNames() {
 		return this.attributeNames(this.allAttributes());
@@ -409,13 +416,17 @@ public abstract class AbstractOrmPersistentType
 	}
 	
 	public OrmPersistentAttribute addSpecifiedPersistentAttribute(String mappingKey, String attributeName) {
-		OrmPersistentAttribute persistentAttribute = buildSpecifiedOrmPersistentAttribute(mappingKey);
-		int index = insertionIndex(persistentAttribute);
-		if (getMapping().getResourceTypeMapping().getAttributes() == null) {
-			getMapping().getResourceTypeMapping().setAttributes(createAttributesResource());
+		Attributes resourceAttributes = getResourceAttributes();
+		if (resourceAttributes == null) {
+			resourceAttributes = createResourceAttributes();
+			getMapping().getResourceTypeMapping().setAttributes(resourceAttributes);
 		}
+		
+		XmlAttributeMapping resourceMapping = getJpaPlatform().buildOrmResourceAttributeMapping(mappingKey, getContentType());
+		OrmPersistentAttribute persistentAttribute = buildSpecifiedOrmPersistentAttribute(resourceMapping);
+		int index = insertionIndex(persistentAttribute);
 		this.specifiedPersistentAttributes.add(index, persistentAttribute);
-		persistentAttribute.getSpecifiedMapping().addToResourceModel(getMapping().getResourceTypeMapping());
+		persistentAttribute.getMapping().addToResourceModel(resourceAttributes);
 		
 		persistentAttribute.getSpecifiedMapping().setName(attributeName);
 		fireItemAdded(PersistentType.SPECIFIED_ATTRIBUTES_LIST, index, persistentAttribute);
@@ -453,8 +464,8 @@ public abstract class AbstractOrmPersistentType
 	public void removeSpecifiedPersistentAttribute(OrmPersistentAttribute ormPersistentAttribute) {
 		int index = this.specifiedPersistentAttributes.indexOf(ormPersistentAttribute);
 		this.specifiedPersistentAttributes.remove(ormPersistentAttribute);
-		ormPersistentAttribute.getMapping().removeFromResourceModel(this.typeMapping.getResourceTypeMapping());
-		if (this.typeMapping.getResourceTypeMapping().getAttributes().isUnset()) {
+		ormPersistentAttribute.getMapping().removeFromResourceModel(getResourceAttributes());
+		if (getResourceAttributes().isUnset()) {
 			this.typeMapping.getResourceTypeMapping().setAttributes(null);
 		}
 		fireItemRemoved(PersistentType.SPECIFIED_ATTRIBUTES_LIST, index, ormPersistentAttribute);		
@@ -488,16 +499,6 @@ public abstract class AbstractOrmPersistentType
 		JavaPersistentType oldJavaPersistentType = this.javaPersistentType;
 		this.javaPersistentType = newJavaPersistentType;
 		firePropertyChanged(JAVA_PERSISTENT_TYPE_PROPERTY, oldJavaPersistentType, newJavaPersistentType);
-	}
-	
-	public void initialize(XmlTypeMapping resourceTypeMapping) {
-		this.resourceTypeMapping = resourceTypeMapping;
-		this.specifiedAccess = this.getResourceAccess();
-		this.defaultAccess = this.buildDefaultAccess();
-		getMapping().initialize(resourceTypeMapping);
-		this.initializeJavaPersistentType();
-		this.initializeParentPersistentType();	
-		this.initializePersistentAttributes();
 	}
 
 	protected AccessType getResourceAccess() {
@@ -548,8 +549,8 @@ public abstract class AbstractOrmPersistentType
 		this.initializeVirtualPersistentAttributes();
 	}
 	
-	protected OrmPersistentAttribute buildSpecifiedOrmPersistentAttribute(String mappingKey) {
-		return getJpaFactory().buildOrmPersistentAttribute(this, buildSpecifiedPersistentAttributeOwner(), mappingKey);
+	protected OrmPersistentAttribute buildSpecifiedOrmPersistentAttribute(XmlAttributeMapping resourceMapping) {
+		return getJpaFactory().buildOrmPersistentAttribute(this, buildSpecifiedPersistentAttributeOwner(), resourceMapping);
 	}
 		
 	protected OrmPersistentAttribute.Owner buildSpecifiedPersistentAttributeOwner() {
@@ -625,8 +626,8 @@ public abstract class AbstractOrmPersistentType
 		}
 	}
 	
-	protected OrmPersistentAttribute buildVirtualOrmPersistentAttribute(JavaAttributeMapping javaAttributeMapping) {
-		return getJpaFactory().buildOrmPersistentAttribute(this, buildVirtualPersistentAttributeOwner(javaAttributeMapping.getPersistentAttribute()), javaAttributeMapping.getKey());
+	protected OrmPersistentAttribute buildVirtualOrmPersistentAttribute(JavaAttributeMapping javaAttributeMapping, XmlAttributeMapping resourceMapping) {
+		return getJpaFactory().buildOrmPersistentAttribute(this, buildVirtualPersistentAttributeOwner(javaAttributeMapping.getPersistentAttribute()), resourceMapping);
 	}
 	
 	protected OrmPersistentAttribute.Owner buildVirtualPersistentAttributeOwner(final JavaPersistentAttribute javaPersistentAttribute) {
@@ -643,7 +644,7 @@ public abstract class AbstractOrmPersistentType
 	}
 	
 	protected void initializeSpecifiedPersistentAttributes() {
-		Attributes attributes = this.resourceTypeMapping.getAttributes();
+		Attributes attributes = this.getResourceAttributes();
 		if (attributes == null) {
 			return;
 		}
@@ -725,7 +726,7 @@ public abstract class AbstractOrmPersistentType
 	}
 
 	protected void updateSpecifiedPersistentAttributes() {
-		Attributes attributes = this.resourceTypeMapping.getAttributes();
+		Attributes attributes = this.getResourceAttributes();
 		Collection<OrmPersistentAttribute> contextAttributesToRemove = CollectionTools.collection(specifiedAttributes());
 		Collection<OrmPersistentAttribute> contextAttributesToUpdate = new ArrayList<OrmPersistentAttribute>();
 		int resourceIndex = 0;
@@ -761,9 +762,8 @@ public abstract class AbstractOrmPersistentType
 	
 	//not firing change notification so this can be reused in initialize and update
 	protected OrmPersistentAttribute addSpecifiedPersistentAttribute(XmlAttributeMapping resourceMapping) {
-		OrmPersistentAttribute ormPersistentAttribute = buildSpecifiedOrmPersistentAttribute(resourceMapping.getMappingKey());
+		OrmPersistentAttribute ormPersistentAttribute = buildSpecifiedOrmPersistentAttribute(resourceMapping);
 		this.specifiedPersistentAttributes.add(ormPersistentAttribute);
-		ormPersistentAttribute.initialize(resourceMapping);
 		return ormPersistentAttribute;
 	}
 	
@@ -824,10 +824,9 @@ public abstract class AbstractOrmPersistentType
 
 	//not firing change notification so this can be reused in initialize and update
 	protected OrmPersistentAttribute addVirtualPersistentAttribute(JavaAttributeMapping javaAttributeMapping) {
-		OrmPersistentAttribute virtualPersistentAttribute = buildVirtualOrmPersistentAttribute(javaAttributeMapping);
 		XmlAttributeMapping resourceMapping = getJpaPlatform().buildVirtualOrmResourceMappingFromMappingKey(javaAttributeMapping.getKey(), getMapping(), javaAttributeMapping);
+		OrmPersistentAttribute virtualPersistentAttribute = buildVirtualOrmPersistentAttribute(javaAttributeMapping, resourceMapping);
 		this.virtualPersistentAttributes.add(virtualPersistentAttribute);
-		virtualPersistentAttribute.initialize(resourceMapping);
 		return virtualPersistentAttribute;
 	}
 	

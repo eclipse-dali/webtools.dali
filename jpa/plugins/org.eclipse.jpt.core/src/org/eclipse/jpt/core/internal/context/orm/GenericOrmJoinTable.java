@@ -55,13 +55,15 @@ public class GenericOrmJoinTable
 	protected final List<OrmJoinColumn> specifiedInverseJoinColumns;
 	protected OrmJoinColumn defaultInverseJoinColumn;
 	
-	protected XmlRelationshipMapping relationshipMappingResource;
+	protected final XmlRelationshipMapping resourceMapping;
 	
 
-	public GenericOrmJoinTable(OrmRelationshipMapping parent) {
+	public GenericOrmJoinTable(OrmRelationshipMapping parent, XmlRelationshipMapping resourceMapping) {
 		super(parent);
+		this.resourceMapping = resourceMapping;
 		this.specifiedJoinColumns = new ArrayList<OrmJoinColumn>();
 		this.specifiedInverseJoinColumns = new ArrayList<OrmJoinColumn>();
+		this.initialize(this.getResourceTable());
 	}
 	
 	@Override
@@ -114,19 +116,19 @@ public class GenericOrmJoinTable
 	
 	@Override
 	protected XmlJoinTable getResourceTable() {
-		return this.relationshipMappingResource.getJoinTable();
+		return this.resourceMapping.getJoinTable();
 	}
 
 	@Override
 	protected XmlJoinTable addResourceTable() {
 		XmlJoinTable resourceTable = OrmFactory.eINSTANCE.createXmlJoinTableImpl();
-		this.relationshipMappingResource.setJoinTable(resourceTable);
+		this.resourceMapping.setJoinTable(resourceTable);
 		return resourceTable;
 	}
 
 	@Override
 	protected void removeResourceTable() {
-		this.relationshipMappingResource.setJoinTable(null);
+		this.resourceMapping.setJoinTable(null);
 	}
 	
 	
@@ -323,11 +325,6 @@ public class GenericOrmJoinTable
 	public boolean isSpecified() {
 		return this.getResourceTable() != null && getResourceTable().isSpecified();
 	}	
-	
-	public void initialize(XmlRelationshipMapping relationshipMapping) {
-		this.relationshipMappingResource = relationshipMapping;
-		this.initialize(this.getResourceTable());
-	}
 	
 	public void update() {
 		this.update(this.getResourceTable());

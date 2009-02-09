@@ -43,6 +43,7 @@ import org.eclipse.jpt.core.internal.context.orm.OrmNullAttributeMappingProvider
 import org.eclipse.jpt.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.core.internal.utility.jdt.DefaultAnnotationEditFormatter;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
+import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.db.ConnectionProfileFactory;
@@ -298,8 +299,12 @@ public class GenericJpaPlatform
 
 	// ********** ORM type mappings **********
 
-	public OrmTypeMapping buildOrmTypeMappingFromMappingKey(String key, OrmPersistentType type) {
-		return this.getOrmTypeMappingProviderForMappingKey(type.getContentType(), key).buildMapping(type, this.jpaFactory);
+	public XmlTypeMapping buildOrmResourceTypeMapping(String key, IContentType contentType) {
+		return this.getOrmTypeMappingProviderForMappingKey(contentType, key).buildResourceMapping();
+	}
+	
+	public OrmTypeMapping buildOrmTypeMappingFromMappingKey(OrmPersistentType type, XmlTypeMapping resourceMapping) {
+		return this.getOrmTypeMappingProviderForMappingKey(type.getContentType(), resourceMapping.getMappingKey()).buildMapping(type, resourceMapping, this.jpaFactory);
 	}
 
 	protected OrmTypeMappingProvider getOrmTypeMappingProviderForMappingKey(IContentType contentType, String key) {
@@ -336,9 +341,13 @@ public class GenericJpaPlatform
 	
 
 	// ********** ORM attribute mappings **********
-
-	public OrmAttributeMapping buildOrmAttributeMappingFromMappingKey(String key, OrmPersistentAttribute attribute) {
-		return this.getOrmAttributeMappingProviderForMappingKey(attribute.getContentType(), key).buildMapping(attribute, this.jpaFactory);
+	
+	public XmlAttributeMapping buildOrmResourceAttributeMapping(String key, IContentType contentType) {
+		return this.getOrmAttributeMappingProviderForMappingKey(contentType, key).buildResourceMapping();
+	}
+	
+	public OrmAttributeMapping buildOrmAttributeMappingFromMappingKey(OrmPersistentAttribute attribute, XmlAttributeMapping resourceMapping) {
+		return this.getOrmAttributeMappingProviderForMappingKey(attribute.getContentType(), resourceMapping.getMappingKey()).buildMapping(attribute, resourceMapping, this.jpaFactory);
 	}
 
 	public XmlAttributeMapping buildVirtualOrmResourceMappingFromMappingKey(String key, OrmTypeMapping ormTypeMapping, JavaAttributeMapping javaAttributeMapping) {

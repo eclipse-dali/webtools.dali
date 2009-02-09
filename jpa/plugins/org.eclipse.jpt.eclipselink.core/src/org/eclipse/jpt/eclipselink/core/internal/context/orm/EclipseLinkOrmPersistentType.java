@@ -11,17 +11,18 @@ package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmPersistentType;
 import org.eclipse.jpt.core.resource.orm.Attributes;
+import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 
 public class EclipseLinkOrmPersistentType extends AbstractOrmPersistentType
 {
 	
-	public EclipseLinkOrmPersistentType(EclipseLinkEntityMappings parent, String mappingKey) {
-		super(parent, mappingKey);
+	public EclipseLinkOrmPersistentType(EclipseLinkEntityMappings parent, XmlTypeMapping resourceMapping) {
+		super(parent, resourceMapping);
 	}
 	
 	@Override
-	protected Attributes createAttributesResource() {
+	protected Attributes createResourceAttributes() {
 		return EclipseLinkOrmFactory.eINSTANCE.createAttributes();
 	}
 }

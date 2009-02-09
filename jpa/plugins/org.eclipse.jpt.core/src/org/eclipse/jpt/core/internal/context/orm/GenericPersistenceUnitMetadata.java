@@ -23,12 +23,15 @@ public class GenericPersistenceUnitMetadata extends AbstractXmlContextNode
 {
 	protected boolean xmlMappingMetadataComplete;
 
-	protected /*final */ OrmPersistenceUnitDefaults persistenceUnitDefaults;
+	protected final OrmPersistenceUnitDefaults persistenceUnitDefaults;
 
-	protected XmlEntityMappings xmlEntityMappings;
+	protected final XmlEntityMappings xmlEntityMappings;
 
-	public GenericPersistenceUnitMetadata(EntityMappings parent) {
+	public GenericPersistenceUnitMetadata(EntityMappings parent, XmlEntityMappings resource) {
 		super(parent);
+		this.xmlEntityMappings = resource;
+		this.xmlMappingMetadataComplete = this.getResourceXmlMappingMetadataComplete();
+		this.persistenceUnitDefaults = getJpaFactory().buildPersistenceUnitDefaults(this, this.xmlEntityMappings);
 	}
 
 	public boolean isXmlMappingMetadataComplete() {
@@ -61,16 +64,6 @@ public class GenericPersistenceUnitMetadata extends AbstractXmlContextNode
 
 	public OrmPersistenceUnitDefaults getPersistenceUnitDefaults() {
 		return this.persistenceUnitDefaults;
-	}
-	
-	public void initialize(XmlEntityMappings xmlEntityMappings) {
-		this.xmlEntityMappings = xmlEntityMappings;
-		this.initialize();
-	}
-	
-	protected void initialize() {
-		this.xmlMappingMetadataComplete = this.getResourceXmlMappingMetadataComplete();
-		this.persistenceUnitDefaults = getJpaFactory().buildPersistenceUnitDefaults(this, this.xmlEntityMappings);
 	}
 	
 	public void update() {

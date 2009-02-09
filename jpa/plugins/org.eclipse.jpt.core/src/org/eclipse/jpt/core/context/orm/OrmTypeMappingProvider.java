@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.context.orm;
 
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaFactory;
+import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 
 /**
  * Part of mechanism to extend the types of ORM type mappings.
@@ -26,7 +27,9 @@ public interface OrmTypeMappingProvider {
 	IContentType getContentType();
 
 	String getKey();
-
-	OrmTypeMapping buildMapping(OrmPersistentType parent, JpaFactory factory);
+	
+	XmlTypeMapping buildResourceMapping();
+	
+	OrmTypeMapping buildMapping(OrmPersistentType parent, XmlTypeMapping resourceMapping, JpaFactory factory);
 
 }

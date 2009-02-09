@@ -26,7 +26,7 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.XmlTimeOfDay;
 public class EclipseLinkOrmCaching extends AbstractXmlContextNode
 	implements OrmCaching
 {
-	protected XmlCacheHolder resource;
+	protected final XmlCacheHolder resource;
 	
 	protected int defaultSize;
 	protected Integer specifiedSize;
@@ -55,8 +55,27 @@ public class EclipseLinkOrmCaching extends AbstractXmlContextNode
 	protected Integer expiry;
 	protected EclipseLinkOrmExpiryTimeOfDay expiryTimeOfDay;
 	
-	public EclipseLinkOrmCaching(OrmTypeMapping parent) {
+	public EclipseLinkOrmCaching(OrmTypeMapping parent, XmlCacheHolder resource, JavaCaching javaCaching) {
 		super(parent);
+		this.resource = resource;
+		XmlCache resourceCache = getResourceCache();
+		this.defaultSize = this.defaultSize(javaCaching);
+		this.specifiedSize = getResourceSize(resourceCache);
+		this.defaultShared = this.defaultShared(javaCaching);
+		this.specifiedShared = this.getResourceShared(resourceCache);
+		this.defaultAlwaysRefresh = this.defaultAlwaysRefresh(javaCaching);
+		this.specifiedAlwaysRefresh = this.getResourceAlwaysRefresh(resourceCache);
+		this.defaultRefreshOnlyIfNewer = this.defaultRefreshOnlyIfNewer(javaCaching);
+		this.specifiedRefreshOnlyIfNewer = this.getResourceRefreshOnlyIfNewer(resourceCache);
+		this.defaultDisableHits = this.defaultDisableHits(javaCaching);
+		this.specifiedDisableHits = this.getResourceDisableHits(resourceCache);
+		this.defaultType = this.defaultType(javaCaching);
+		this.specifiedType = this.getResourceType(resourceCache);
+		this.defaultCoordinationType = this.defaultCoordinationType(javaCaching);
+		this.specifiedCoordinationType = this.getResourceCoordinationType(resourceCache);
+		this.defaultExistenceType = this.defaultExistenceType(javaCaching);
+		this.specifiedExistenceType = this.getResourceExistenceChecking();
+		this.initializeExpiry(resourceCache);
 	}
 
 	public int getSize() {
@@ -486,28 +505,6 @@ public class EclipseLinkOrmCaching extends AbstractXmlContextNode
 	
 	
 	// **************** initialize/update **************************************
-	
-	protected void initialize(XmlCacheHolder resource, JavaCaching javaCaching) {
-		this.resource = resource;
-		XmlCache resourceCache = getResourceCache();
-		this.defaultSize = this.defaultSize(javaCaching);
-		this.specifiedSize = getResourceSize(resourceCache);
-		this.defaultShared = this.defaultShared(javaCaching);
-		this.specifiedShared = this.getResourceShared(resourceCache);
-		this.defaultAlwaysRefresh = this.defaultAlwaysRefresh(javaCaching);
-		this.specifiedAlwaysRefresh = this.getResourceAlwaysRefresh(resourceCache);
-		this.defaultRefreshOnlyIfNewer = this.defaultRefreshOnlyIfNewer(javaCaching);
-		this.specifiedRefreshOnlyIfNewer = this.getResourceRefreshOnlyIfNewer(resourceCache);
-		this.defaultDisableHits = this.defaultDisableHits(javaCaching);
-		this.specifiedDisableHits = this.getResourceDisableHits(resourceCache);
-		this.defaultType = this.defaultType(javaCaching);
-		this.specifiedType = this.getResourceType(resourceCache);
-		this.defaultCoordinationType = this.defaultCoordinationType(javaCaching);
-		this.specifiedCoordinationType = this.getResourceCoordinationType(resourceCache);
-		this.defaultExistenceType = this.defaultExistenceType(javaCaching);
-		this.specifiedExistenceType = this.getResourceExistenceChecking();
-		this.initializeExpiry(resourceCache);
-	}
 
 	protected void initializeExpiry(XmlCache resourceCache) {
 		if (resourceCache == null) {

@@ -28,13 +28,13 @@ import org.eclipse.jpt.core.context.orm.OrmSequenceGenerator;
 import org.eclipse.jpt.core.context.orm.OrmTableGenerator;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.core.resource.orm.Attributes;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.core.resource.orm.XmlGeneratedValue;
 import org.eclipse.jpt.core.resource.orm.XmlId;
 import org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator;
 import org.eclipse.jpt.core.resource.orm.XmlTableGenerator;
-import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
@@ -56,9 +56,15 @@ public class GenericOrmIdMapping
 	protected OrmSequenceGenerator sequenceGenerator;
 
 	
-	public GenericOrmIdMapping(OrmPersistentAttribute parent) {
-		super(parent);
+	public GenericOrmIdMapping(OrmPersistentAttribute parent, XmlId resourceMapping) {
+		super(parent, resourceMapping);
 		this.column = getJpaFactory().buildOrmColumn(this, this);
+		this.column.initialize(this.resourceAttributeMapping.getColumn());//TODO pass in to constructor
+		this.initializeSequenceGenerator();
+		this.initializeTableGenerator();
+		this.initializeGeneratedValue();
+		this.defaultConverter = new GenericOrmNullConverter(this);
+		this.specifiedConverter = this.buildSpecifiedConverter(this.getResourceConverterType());
 	}
 
 
@@ -250,15 +256,12 @@ public class GenericOrmIdMapping
 		return true;
 	}
 	
-	public XmlId addToResourceModel(XmlTypeMapping typeMapping) {
-		XmlId id = OrmFactory.eINSTANCE.createXmlIdImpl();
-		getPersistentAttribute().initialize(id);
-		typeMapping.getAttributes().getIds().add(id);
-		return id;
+	public void addToResourceModel(Attributes resourceAttributes) {
+		resourceAttributes.getIds().add(this.resourceAttributeMapping);
 	}
 	
-	public void removeFromResourceModel(XmlTypeMapping typeMapping) {
-		typeMapping.getAttributes().getIds().remove(this.resourceAttributeMapping);
+	public void removeFromResourceModel(Attributes resourceAttributes) {
+		resourceAttributes.getIds().remove(this.resourceAttributeMapping);
 	}
 
 	public Table getDbTable(String tableName) {
@@ -266,22 +269,11 @@ public class GenericOrmIdMapping
 	}
 
 	public String getDefaultColumnName() {		
-		return getAttributeName();
+		return getName();
 	}
 
 	public String getDefaultTableName() {
 		return getTypeMapping().getPrimaryTableName();
-	}
-	
-	@Override
-	protected void initialize() {
-		super.initialize();
-		this.column.initialize(this.resourceAttributeMapping.getColumn());
-		this.initializeSequenceGenerator();
-		this.initializeTableGenerator();
-		this.initializeGeneratedValue();
-		this.defaultConverter = new GenericOrmNullConverter(this);
-		this.specifiedConverter = this.buildSpecifiedConverter(this.getResourceConverterType());
 	}
 	
 	protected void initializeSequenceGenerator() {

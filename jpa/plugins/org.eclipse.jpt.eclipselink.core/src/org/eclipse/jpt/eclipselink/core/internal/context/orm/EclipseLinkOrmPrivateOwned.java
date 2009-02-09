@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2008  Oracle. 
+ *  Copyright (c) 2008, 2009  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -19,13 +19,15 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.XmlPrivateOwned;
 public class EclipseLinkOrmPrivateOwned extends AbstractXmlContextNode
 	implements PrivateOwned
 {
-	protected XmlPrivateOwned resource;
+	protected final XmlPrivateOwned resource;
 	
 	protected boolean privateOwned;
 	
 	
-	public EclipseLinkOrmPrivateOwned(OrmAttributeMapping parent) {
+	public EclipseLinkOrmPrivateOwned(OrmAttributeMapping parent, XmlPrivateOwned resource) {
 		super(parent);
+		this.resource = resource;
+		this.privateOwned = this.getResourcePrivateOwned();
 	}
 	
 	
@@ -48,11 +50,6 @@ public class EclipseLinkOrmPrivateOwned extends AbstractXmlContextNode
 	
 	
 	// **************** initialize/update **************************************
-	
-	protected void initialize(XmlPrivateOwned xmlPrivateOwned) {
-		this.resource = xmlPrivateOwned;
-		this.privateOwned = this.getResourcePrivateOwned();
-	}
 	
 	protected void update() {
 		setPrivateOwned_(this.getResourcePrivateOwned());

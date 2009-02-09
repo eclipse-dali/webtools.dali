@@ -21,6 +21,8 @@ import org.eclipse.jpt.eclipselink.core.EclipseLinkMappingKeys;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaFactory;
 import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaVariableOneToOneMapping;
+import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlVariableOneToOne;
 
 public class OrmVariableOneToOneMappingProvider
 	implements OrmAttributeMappingProvider
@@ -50,9 +52,13 @@ public class OrmVariableOneToOneMappingProvider
 	public String getKey() {
 		return EclipseLinkMappingKeys.VARIABLE_ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY;
 	}
+	
+	public XmlAttributeMapping buildResourceMapping() {
+		return EclipseLinkOrmFactory.eINSTANCE.createXmlVariableOneToOneImpl();
+	}
 
-	public OrmAttributeMapping buildMapping(OrmPersistentAttribute parent, JpaFactory factory) {
-		return ((EclipseLinkJpaFactory) factory).buildOrmVariableOneToOneMapping(parent);
+	public OrmAttributeMapping buildMapping(OrmPersistentAttribute parent, XmlAttributeMapping resourceMapping, JpaFactory factory) {
+		return ((EclipseLinkJpaFactory) factory).buildOrmVariableOneToOneMapping(parent, (XmlVariableOneToOne) resourceMapping);
 	}
 	
 	public XmlAttributeMapping buildVirtualResourceMapping(OrmTypeMapping ormTypeMapping, JavaAttributeMapping javaAttributeMapping, JpaFactory factory) {

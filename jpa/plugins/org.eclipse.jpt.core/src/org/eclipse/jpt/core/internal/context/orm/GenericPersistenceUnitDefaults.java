@@ -29,7 +29,7 @@ public class GenericPersistenceUnitDefaults
 	extends AbstractXmlContextNode
 	implements OrmPersistenceUnitDefaults
 {
-	protected XmlEntityMappings entityMappings;
+	protected final XmlEntityMappings xmlEntityMappings;
 	
 	protected AccessType access;
 
@@ -44,8 +44,18 @@ public class GenericPersistenceUnitDefaults
 
 	// ********** constructor/initialization **********
 
-	public GenericPersistenceUnitDefaults(PersistenceUnitMetadata parent) {
+	public GenericPersistenceUnitDefaults(PersistenceUnitMetadata parent, XmlEntityMappings xmlEntityMappings) {
 		super(parent);
+		this.xmlEntityMappings = xmlEntityMappings;
+		XmlPersistenceUnitDefaults resourceDefaults = this.getResourceDefaults();
+		if (resourceDefaults != null) {
+			this.access = AccessType.fromXmlResourceModel(resourceDefaults.getAccess());
+			this.specifiedCatalog = resourceDefaults.getCatalog();
+			this.specifiedSchema = resourceDefaults.getSchema();
+			this.cascadePersist = resourceDefaults.isCascadePersist();
+		}
+		this.defaultCatalog = this.getJpaProject().getDefaultCatalog();
+		this.defaultSchema = this.getJpaProject().getDefaultSchema();
 	}
 	
 	public boolean resourceExists() {
@@ -220,10 +230,10 @@ public class GenericPersistenceUnitDefaults
 	 * build the resource defaults and the resource metadata if necessary
 	 */
 	protected XmlPersistenceUnitDefaults buildResourceDefaults() {
-		XmlPersistenceUnitMetadata resourceMetadata = this.entityMappings.getPersistenceUnitMetadata();
+		XmlPersistenceUnitMetadata resourceMetadata = this.xmlEntityMappings.getPersistenceUnitMetadata();
 		if (resourceMetadata == null) {
 			resourceMetadata = OrmFactory.eINSTANCE.createXmlPersistenceUnitMetadata();
-			this.entityMappings.setPersistenceUnitMetadata(resourceMetadata);
+			this.xmlEntityMappings.setPersistenceUnitMetadata(resourceMetadata);
 		}
 		XmlPersistenceUnitDefaults resourceDefaults = OrmFactory.eINSTANCE.createXmlPersistenceUnitDefaults();
 		resourceMetadata.setPersistenceUnitDefaults(resourceDefaults);
@@ -235,30 +245,12 @@ public class GenericPersistenceUnitDefaults
 	 */
 	protected void checkResourceDefaults(XmlPersistenceUnitDefaults resourceDefaults) {
 		if (resourceDefaults.isUnset()) {
-			XmlPersistenceUnitMetadata metadata = this.entityMappings.getPersistenceUnitMetadata();
+			XmlPersistenceUnitMetadata metadata = this.xmlEntityMappings.getPersistenceUnitMetadata();
 			metadata.setPersistenceUnitDefaults(null);
 			if (metadata.isUnset()) {
-				this.entityMappings.setPersistenceUnitMetadata(null);
+				this.xmlEntityMappings.setPersistenceUnitMetadata(null);
 			}
 		}
-	}
-
-
-	public void initialize(XmlEntityMappings xmlEntityMappings) {
-		this.entityMappings = xmlEntityMappings;
-		this.initialize();
-	}
-	
-	protected void initialize() {
-		XmlPersistenceUnitDefaults resourceDefaults = this.getResourceDefaults();
-		if (resourceDefaults != null) {
-			this.access = AccessType.fromXmlResourceModel(resourceDefaults.getAccess());
-			this.specifiedCatalog = resourceDefaults.getCatalog();
-			this.specifiedSchema = resourceDefaults.getSchema();
-			this.cascadePersist = resourceDefaults.isCascadePersist();
-		}
-		this.defaultCatalog = this.getJpaProject().getDefaultCatalog();
-		this.defaultSchema = this.getJpaProject().getDefaultSchema();
 	}
 
 	public void update() {
@@ -280,11 +272,11 @@ public class GenericPersistenceUnitDefaults
 
 	public TextRange getValidationTextRange() {
 		XmlPersistenceUnitDefaults resourceDefaults = this.getResourceDefaults();
-		return (resourceDefaults != null) ? resourceDefaults.getValidationTextRange() : this.entityMappings.getValidationTextRange();
+		return (resourceDefaults != null) ? resourceDefaults.getValidationTextRange() : this.xmlEntityMappings.getValidationTextRange();
 	}
 
 	protected XmlPersistenceUnitDefaults getResourceDefaults() {
-		XmlPersistenceUnitMetadata metadata = this.entityMappings.getPersistenceUnitMetadata();
+		XmlPersistenceUnitMetadata metadata = this.xmlEntityMappings.getPersistenceUnitMetadata();
 		return (metadata == null) ? null : metadata.getPersistenceUnitDefaults();
 	}
 

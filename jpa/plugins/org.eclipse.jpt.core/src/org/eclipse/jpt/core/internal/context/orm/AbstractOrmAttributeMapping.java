@@ -46,10 +46,12 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 {
 	protected String name;
 	
-	protected T resourceAttributeMapping;
+	protected final T resourceAttributeMapping;
 
-	protected AbstractOrmAttributeMapping(OrmPersistentAttribute parent) {
+	protected AbstractOrmAttributeMapping(OrmPersistentAttribute parent, T resourceAttributeMapping) {
 		super(parent);
+		this.resourceAttributeMapping = resourceAttributeMapping;
+		this.name = this.getResourceMappingName();
 	}	
 	
 	protected JavaPersistentAttribute getJavaPersistentAttribute() {
@@ -81,10 +83,6 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 	
 	public OrmPersistentAttribute getPersistentAttribute() {
 		return (OrmPersistentAttribute) getParent();
-	}
-
-	public String getAttributeName() {
-		return this.getPersistentAttribute().getName();
 	}
 
 	public boolean isDefault() {
@@ -186,16 +184,6 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 	public T getResourceAttributeMapping() {
 		return this.resourceAttributeMapping;
 	}
-
-	@SuppressWarnings("unchecked")
-	public void initialize(XmlAttributeMapping resourceAttributeMapping) {
-		this.resourceAttributeMapping = (T) resourceAttributeMapping;
-		this.initialize();
-	}
-	
-	protected void initialize() {
-		this.name = this.getResourceMappingName();
-	}
 	
 	public void update() {
 		this.setName_(this.getResourceMappingName());
@@ -266,7 +254,7 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 	
 	@Override
 	public void toString(StringBuilder sb) {
-		sb.append(this.getAttributeName());
+		sb.append(this.getName());
 	}
 
 }

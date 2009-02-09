@@ -36,9 +36,10 @@ public abstract class VirtualXmlAttributeMapping<T extends JavaAttributeMapping>
 	}
 	
 	public String getMappingKey() {
-		//TODO unsure about this, but don't believe we should be asking a virtual mapping for it's mapping key
-		//or maybe we should be asking the javaAttributeMapping for its default or specified mapping key?
-		throw new UnsupportedOperationException();
+		if (this.isOrmMetadataComplete()) {
+			return this.javaAttributeMapping.getPersistentAttribute().getDefaultMappingKey();
+		}
+		return this.javaAttributeMapping.getKey();
 	}
 	
 	public String getName() {

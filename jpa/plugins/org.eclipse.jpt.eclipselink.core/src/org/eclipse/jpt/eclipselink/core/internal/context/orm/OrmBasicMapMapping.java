@@ -12,18 +12,16 @@ package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmAttributeMapping;
-import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.eclipselink.core.EclipseLinkMappingKeys;
 import org.eclipse.jpt.eclipselink.core.context.BasicMapMapping;
 import org.eclipse.jpt.eclipselink.core.resource.orm.Attributes;
-import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicMap;
 
 public class OrmBasicMapMapping extends AbstractOrmAttributeMapping<XmlBasicMap> implements BasicMapMapping
 {
 	
-	public OrmBasicMapMapping(OrmPersistentAttribute parent) {
-		super(parent);
+	public OrmBasicMapMapping(OrmPersistentAttribute parent, XmlBasicMap resourceMapping) {
+		super(parent, resourceMapping);
 	}
 	
 	public void initializeOn(OrmAttributeMapping newMapping) {
@@ -34,15 +32,12 @@ public class OrmBasicMapMapping extends AbstractOrmAttributeMapping<XmlBasicMap>
 		return EclipseLinkMappingKeys.BASIC_MAP_ATTRIBUTE_MAPPING_KEY;
 	}
 	
-	public XmlBasicMap addToResourceModel(XmlTypeMapping typeMapping) {
-		XmlBasicMap basicMap = EclipseLinkOrmFactory.eINSTANCE.createXmlBasicMapImpl();
-		getPersistentAttribute().initialize(basicMap);
-		((Attributes) typeMapping.getAttributes()).getBasicMaps().add(basicMap);
-		return basicMap;
+	public void addToResourceModel(org.eclipse.jpt.core.resource.orm.Attributes resourceAttributes) {
+		((Attributes) resourceAttributes).getBasicMaps().add(this.resourceAttributeMapping);
 	}
 	
-	public void removeFromResourceModel(XmlTypeMapping typeMapping) {
-		((Attributes) typeMapping.getAttributes()).getBasicMaps().remove(this.resourceAttributeMapping);
+	public void removeFromResourceModel(org.eclipse.jpt.core.resource.orm.Attributes resourceAttributes) {
+		((Attributes) resourceAttributes).getBasicMaps().remove(this.resourceAttributeMapping);
 	}
 
 	

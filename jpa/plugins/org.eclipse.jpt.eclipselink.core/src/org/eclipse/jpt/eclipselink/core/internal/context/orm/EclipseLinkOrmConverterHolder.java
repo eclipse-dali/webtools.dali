@@ -31,19 +31,24 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class EclipseLinkOrmConverterHolder extends AbstractXmlContextNode implements ConverterHolder
 {	
-	private XmlConvertersHolder resourceConvertersHolder;
+	private final XmlConvertersHolder resourceConvertersHolder;
 	
 	protected final List<EclipseLinkOrmCustomConverter> customConverters;
 	protected final List<EclipseLinkOrmObjectTypeConverter> objectTypeConverters;
 	protected final List<EclipseLinkOrmStructConverter> structConverters;
 	protected final List<EclipseLinkOrmTypeConverter> typeConverters;
 	
-	public EclipseLinkOrmConverterHolder(XmlContextNode parent) {
+	public EclipseLinkOrmConverterHolder(XmlContextNode parent, XmlConvertersHolder resourceConvertersHolder) {
 		super(parent);
+		this.resourceConvertersHolder = resourceConvertersHolder;
 		this.customConverters = new ArrayList<EclipseLinkOrmCustomConverter>();
 		this.objectTypeConverters = new ArrayList<EclipseLinkOrmObjectTypeConverter>();
 		this.structConverters = new ArrayList<EclipseLinkOrmStructConverter>();
 		this.typeConverters = new ArrayList<EclipseLinkOrmTypeConverter>();
+		this.initializeCustomConverters();
+		this.initializeObjectTypeConverters();
+		this.initializeStructConverters();
+		this.initializeTypeConverters();		
 	}
 
 	public ListIterator<EclipseLinkOrmCustomConverter> customConverters() {
@@ -242,17 +247,7 @@ public class EclipseLinkOrmConverterHolder extends AbstractXmlContextNode implem
 	protected void moveTypeConverter_(int index, EclipseLinkOrmTypeConverter converter) {
 		moveItemInList(index, this.typeConverters.indexOf(converter), this.typeConverters, TYPE_CONVERTERS_LIST);
 	}
-	
-
-	
-	public void initialize(XmlConvertersHolder resourceConvertersHolder) {
-		this.resourceConvertersHolder = resourceConvertersHolder;
-		this.initializeCustomConverters();
-		this.initializeObjectTypeConverters();
-		this.initializeStructConverters();
-		this.initializeTypeConverters();		
-	}
-	
+		
 	protected void initializeCustomConverters() {
 		for (XmlConverter resourceConverter : this.resourceConvertersHolder.getConverters()) {
 			this.customConverters.add(this.buildCustomConverter(resourceConverter));

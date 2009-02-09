@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved. This
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved. This
  * program and the accompanying materials are made available under the terms of
  * the Eclipse Public License v1.0 which accompanies this distribution, and is
  * available at http://www.eclipse.org/legal/epl-v10.html
@@ -15,7 +15,6 @@ import org.eclipse.jpt.core.context.java.JavaEmbeddable;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddable;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlEmbeddable;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
@@ -23,8 +22,8 @@ import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
 public class GenericOrmEmbeddable extends AbstractOrmTypeMapping<XmlEmbeddable> implements OrmEmbeddable
 {
-	public GenericOrmEmbeddable(OrmPersistentType parent) {
-		super(parent);
+	public GenericOrmEmbeddable(OrmPersistentType parent, XmlEmbeddable resourceMapping) {
+		super(parent, resourceMapping);
 	}
 	
 	public JavaEmbeddable getJavaEmbeddable() {
@@ -75,18 +74,11 @@ public class GenericOrmEmbeddable extends AbstractOrmTypeMapping<XmlEmbeddable> 
 		return attributeMappingKey == MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY || attributeMappingKey == MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY;
 	}
 
-	protected Boolean metadataComplete(XmlEmbeddable embeddable) {
-		return embeddable.getMetadataComplete();
+	public void addToResourceModel(XmlEntityMappings entityMappings) {
+		entityMappings.getEmbeddables().add(this.resourceTypeMapping);
 	}
 	
 	public void removeFromResourceModel(XmlEntityMappings entityMappings) {
 		entityMappings.getEmbeddables().remove(this.resourceTypeMapping);
-	}
-
-	public XmlEmbeddable addToResourceModel(XmlEntityMappings entityMappings) {
-		XmlEmbeddable embeddable = OrmFactory.eINSTANCE.createXmlEmbeddable();
-		getPersistentType().initialize(embeddable);
-		entityMappings.getEmbeddables().add(embeddable);
-		return embeddable;
 	}
 }

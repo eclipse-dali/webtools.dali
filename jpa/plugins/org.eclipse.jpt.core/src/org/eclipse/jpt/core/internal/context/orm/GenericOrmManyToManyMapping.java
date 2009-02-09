@@ -15,16 +15,15 @@ import org.eclipse.jpt.core.context.NonOwningMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmManyToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
-import org.eclipse.jpt.core.resource.orm.OrmFactory;
+import org.eclipse.jpt.core.resource.orm.Attributes;
 import org.eclipse.jpt.core.resource.orm.XmlManyToMany;
-import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 
 public class GenericOrmManyToManyMapping extends AbstractOrmMultiRelationshipMapping<XmlManyToMany>
 	implements OrmManyToManyMapping
 {
 
-	public GenericOrmManyToManyMapping(OrmPersistentAttribute parent) {
-		super(parent);
+	public GenericOrmManyToManyMapping(OrmPersistentAttribute parent, XmlManyToMany resourceMapping) {
+		super(parent, resourceMapping);
 	}
 
 	public String getKey() {
@@ -51,14 +50,11 @@ public class GenericOrmManyToManyMapping extends AbstractOrmMultiRelationshipMap
 		return (mappedByKey == MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
 	}
 	
-	public XmlManyToMany addToResourceModel(XmlTypeMapping typeMapping) {
-		XmlManyToMany manyToMany = OrmFactory.eINSTANCE.createXmlManyToManyImpl();
-		getPersistentAttribute().initialize(manyToMany);
-		typeMapping.getAttributes().getManyToManys().add(manyToMany);
-		return manyToMany;
+	public void addToResourceModel(Attributes resourceAttributes) {
+		resourceAttributes.getManyToManys().add(this.resourceAttributeMapping);
 	}
 	
-	public void removeFromResourceModel(XmlTypeMapping typeMapping) {
-		typeMapping.getAttributes().getManyToManys().remove(this.resourceAttributeMapping);
+	public void removeFromResourceModel(Attributes resourceAttributes) {
+		resourceAttributes.getManyToManys().remove(this.resourceAttributeMapping);
 	}
 }

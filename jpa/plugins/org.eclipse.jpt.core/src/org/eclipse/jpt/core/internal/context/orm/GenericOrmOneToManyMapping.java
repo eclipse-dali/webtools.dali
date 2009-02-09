@@ -15,17 +15,16 @@ import org.eclipse.jpt.core.context.NonOwningMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmOneToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
-import org.eclipse.jpt.core.resource.orm.OrmFactory;
+import org.eclipse.jpt.core.resource.orm.Attributes;
 import org.eclipse.jpt.core.resource.orm.XmlOneToMany;
-import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 
 
 public class GenericOrmOneToManyMapping extends AbstractOrmMultiRelationshipMapping<XmlOneToMany>
 	implements OrmOneToManyMapping
 {
 
-	public GenericOrmOneToManyMapping(OrmPersistentAttribute parent) {
-		super(parent);
+	public GenericOrmOneToManyMapping(OrmPersistentAttribute parent, XmlOneToMany resourceMapping) {
+		super(parent, resourceMapping);
 	}
 
 	public String getKey() {
@@ -52,14 +51,11 @@ public class GenericOrmOneToManyMapping extends AbstractOrmMultiRelationshipMapp
 		return (mappedByKey == MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 	}
 	
-	public XmlOneToMany addToResourceModel(XmlTypeMapping typeMapping) {
-		XmlOneToMany oneToMany = OrmFactory.eINSTANCE.createXmlOneToManyImpl();
-		getPersistentAttribute().initialize(oneToMany);
-		typeMapping.getAttributes().getOneToManys().add(oneToMany);
-		return oneToMany;
+	public void addToResourceModel(Attributes resourceAttributes) {
+		resourceAttributes.getOneToManys().add(this.resourceAttributeMapping);
 	}
 	
-	public void removeFromResourceModel(XmlTypeMapping typeMapping) {
-		typeMapping.getAttributes().getOneToManys().remove(this.resourceAttributeMapping);
+	public void removeFromResourceModel(Attributes resourceAttributes) {
+		resourceAttributes.getOneToManys().remove(this.resourceAttributeMapping);
 	}
 }

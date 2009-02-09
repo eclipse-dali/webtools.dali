@@ -48,9 +48,18 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends XmlMultiRela
 
 	protected String mapKey;
 
-	protected AbstractOrmMultiRelationshipMapping(OrmPersistentAttribute parent) {
-		super(parent);
-		this.joinTable = getJpaFactory().buildOrmJoinTable(this);
+	protected AbstractOrmMultiRelationshipMapping(OrmPersistentAttribute parent, T resourceMapping) {
+		super(parent, resourceMapping);
+		this.joinTable = getJpaFactory().buildOrmJoinTable(this, this.resourceAttributeMapping);
+		this.mappedBy = this.getResourceMappedBy();
+		this.mapKey = this.getResourceMapKeyName();
+		this.orderBy = this.getResourceOrderBy();
+		if (this.orderBy == null) { 
+			this.isNoOrdering = true;
+		}
+		else {
+			this.isCustomOrdering = true;
+		}
 	}
 
 	@Override
@@ -247,22 +256,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends XmlMultiRela
 		TextRange mappedByTextRange = this.resourceAttributeMapping.getMappedByTextRange();
 		return mappedByTextRange != null ? mappedByTextRange : getValidationTextRange();
 	}
-	
-	@Override
-	protected void initialize() {
-		super.initialize();
-		this.mappedBy = this.getResourceMappedBy();
-		this.mapKey = this.getResourceMapKeyName();
-		this.orderBy = this.getResourceOrderBy();
-		if (this.orderBy == null) { 
-			this.isNoOrdering = true;
-		}
-		else {
-			this.isCustomOrdering = true;
-		}
-		this.joinTable.initialize(this.resourceAttributeMapping);
-	}
-	
+		
 	@Override
 	public void update() {
 		super.update();

@@ -12,18 +12,16 @@ package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmAttributeMapping;
-import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.eclipselink.core.EclipseLinkMappingKeys;
 import org.eclipse.jpt.eclipselink.core.context.TransformationMapping;
 import org.eclipse.jpt.eclipselink.core.resource.orm.Attributes;
-import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlTransformation;
 
 public class OrmTransformationMapping extends AbstractOrmAttributeMapping<XmlTransformation> implements TransformationMapping
 {
 	
-	public OrmTransformationMapping(OrmPersistentAttribute parent) {
-		super(parent);
+	public OrmTransformationMapping(OrmPersistentAttribute parent, XmlTransformation resourceMapping) {
+		super(parent, resourceMapping);
 	}
 	
 	public void initializeOn(OrmAttributeMapping newMapping) {
@@ -34,15 +32,12 @@ public class OrmTransformationMapping extends AbstractOrmAttributeMapping<XmlTra
 		return EclipseLinkMappingKeys.TRANSFORMATION_ATTRIBUTE_MAPPING_KEY;
 	}
 	
-	public XmlTransformation addToResourceModel(XmlTypeMapping typeMapping) {
-		XmlTransformation transformation = EclipseLinkOrmFactory.eINSTANCE.createXmlTransformationImpl();
-		getPersistentAttribute().initialize(transformation);
-		((Attributes) typeMapping.getAttributes()).getTransformations().add(transformation);
-		return transformation;
+	public void addToResourceModel(org.eclipse.jpt.core.resource.orm.Attributes resourceAttributes) {
+		((Attributes) resourceAttributes).getTransformations().add(this.resourceAttributeMapping);
 	}
 	
-	public void removeFromResourceModel(XmlTypeMapping typeMapping) {
-		((Attributes) typeMapping.getAttributes()).getTransformations().remove(this.resourceAttributeMapping);
+	public void removeFromResourceModel(org.eclipse.jpt.core.resource.orm.Attributes resourceAttributes) {
+		((Attributes) resourceAttributes).getTransformations().remove(this.resourceAttributeMapping);
 	}
 
 	

@@ -14,11 +14,9 @@ import java.util.List;
 import org.eclipse.jpt.core.context.orm.OrmConverter;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmBasicMapping;
-import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.eclipselink.core.context.Convert;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkBasicMapping;
 import org.eclipse.jpt.eclipselink.core.context.Mutable;
-import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasic;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlMutable;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -29,9 +27,9 @@ public class EclipseLinkOrmBasicMapping extends GenericOrmBasicMapping
 	protected EclipseLinkOrmMutable mutable;
 	
 	
-	public EclipseLinkOrmBasicMapping(OrmPersistentAttribute parent) {
-		super(parent);
-		this.mutable = new EclipseLinkOrmMutable(this);
+	public EclipseLinkOrmBasicMapping(OrmPersistentAttribute parent, XmlBasic resourceMapping) {
+		super(parent, resourceMapping);
+		this.mutable = new EclipseLinkOrmMutable(this, (XmlMutable) this.resourceAttributeMapping);
 	}
 	
 	
@@ -62,20 +60,6 @@ public class EclipseLinkOrmBasicMapping extends GenericOrmBasicMapping
 	
 	
 	// **************** resource-context interaction ***************************
-	
-	@Override
-	public XmlBasic addToResourceModel(XmlTypeMapping typeMapping) {
-		XmlBasic basic = EclipseLinkOrmFactory.eINSTANCE.createXmlBasicImpl();
-		getPersistentAttribute().initialize(basic);
-		typeMapping.getAttributes().getBasics().add(basic);
-		return basic;
-	}
-	
-	@Override
-	protected void initialize() {
-		super.initialize();
-		this.mutable.initialize((XmlMutable) this.resourceAttributeMapping);
-	}
 	
 	@Override
 	public void update() {

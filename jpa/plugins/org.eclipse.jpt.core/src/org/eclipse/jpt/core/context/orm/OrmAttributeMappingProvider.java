@@ -29,7 +29,9 @@ public interface OrmAttributeMappingProvider
 	
 	String getKey();
 	
-	OrmAttributeMapping buildMapping(OrmPersistentAttribute parent, JpaFactory factory);
+	XmlAttributeMapping buildResourceMapping();
+
+	OrmAttributeMapping buildMapping(OrmPersistentAttribute parent, XmlAttributeMapping resourceMapping, JpaFactory factory);
 	
 	XmlAttributeMapping buildVirtualResourceMapping(OrmTypeMapping ormTypeMapping, JavaAttributeMapping javaAttributeMapping, JpaFactory factory);
 

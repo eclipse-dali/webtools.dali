@@ -11,16 +11,15 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
-import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
+import org.eclipse.jpt.core.resource.orm.Attributes;
 import org.eclipse.jpt.core.resource.orm.XmlNullAttributeMapping;
-import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 
 
 public class GenericOrmNullAttributeMapping extends AbstractOrmAttributeMapping<XmlNullAttributeMapping>
 {
 
-	public GenericOrmNullAttributeMapping(OrmPersistentAttribute parent) {
-		super(parent);
+	public GenericOrmNullAttributeMapping(OrmPersistentAttribute parent, XmlNullAttributeMapping resourceMapping) {
+		super(parent, resourceMapping);
 	}
 
 	public int getXmlSequence() {
@@ -35,11 +34,11 @@ public class GenericOrmNullAttributeMapping extends AbstractOrmAttributeMapping<
 		return null;
 	}
 	
-	public XmlAttributeMapping addToResourceModel(XmlTypeMapping typeMapping) {
+	public void addToResourceModel(Attributes resourceAttributes) {
 		throw new UnsupportedOperationException();
 	}
 
-	public void removeFromResourceModel(XmlTypeMapping typeMapping) {
+	public void removeFromResourceModel(Attributes resourceAttributes) {
 		throw new UnsupportedOperationException();
 	}
 }

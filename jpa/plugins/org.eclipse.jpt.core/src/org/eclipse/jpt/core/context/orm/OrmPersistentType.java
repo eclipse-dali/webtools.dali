@@ -13,7 +13,6 @@ import java.util.ListIterator;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 
 /**
  * Provisional API: This interface is part of an interim API that is still
@@ -114,10 +113,8 @@ public interface OrmPersistentType
 	void changeMapping(OrmPersistentAttribute ormPersistentAttribute, OrmAttributeMapping oldMapping, OrmAttributeMapping newMapping);
 	
 	
-	//******************* initialization/updating *******************
+	//******************* updating *******************
 
-	void initialize(XmlTypeMapping xmlTypeMapping);
-	
 	/**
 	 * Update the OrmPersistentType context model object to match the 
 	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}

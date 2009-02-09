@@ -13,7 +13,6 @@ import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 
 /**
  * ORM persistent attribute
@@ -88,9 +87,7 @@ public interface OrmPersistentAttribute
 	IContentType getContentType();
 
 	
-	// ********** initialization/updating **********
-
-	void initialize(XmlAttributeMapping attributeMapping);
+	// ********** updating **********
 	
 	/**
 	 * Update the OrmPersistentAttribute context model object to match the 

@@ -52,9 +52,13 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 	protected Boolean specifiedOptional;
 
 
-	protected AbstractOrmSingleRelationshipMapping(OrmPersistentAttribute parent) {
-		super(parent);
+	protected AbstractOrmSingleRelationshipMapping(OrmPersistentAttribute parent, T resourceMapping) {
+		super(parent, resourceMapping);
+		this.specifiedOptional = this.getResourceOptional();
+		//TODO defaultOptional
 		this.specifiedJoinColumns = new ArrayList<OrmJoinColumn>();
+		this.initializeSpecifiedJoinColumns();
+		this.initializeDefaultJoinColumn();
 	}
 	
 
@@ -189,15 +193,6 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 
 
 	// ********** resource => context **********
-
-	@Override
-	protected void initialize() {
-		super.initialize();
-		this.specifiedOptional = this.getResourceOptional();
-		//TODO defaultOptional
-		this.initializeSpecifiedJoinColumns();
-		this.initializeDefaultJoinColumn();
-	}
 	
 	protected void initializeSpecifiedJoinColumns() {
 		if (this.resourceAttributeMapping != null) {

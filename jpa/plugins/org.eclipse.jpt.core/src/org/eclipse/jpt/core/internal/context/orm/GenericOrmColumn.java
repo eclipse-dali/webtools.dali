@@ -164,28 +164,28 @@ public class GenericOrmColumn extends AbstractOrmBaseColumn<XmlColumn> implement
 	@Override
 	public void initialize(XmlColumn column) {
 		super.initialize(column);
-		this.specifiedLength = this.specifiedLength(column);
-		this.specifiedPrecision = this.specifiedPrecision(column);
-		this.specifiedScale = this.specifiedScale(column);
+		this.specifiedLength = this.getResourceLength(column);
+		this.specifiedPrecision = this.getResourcePrecision(column);
+		this.specifiedScale = this.getResourceScale(column);
 	}
 	
 	@Override
 	public void update(XmlColumn column) {
 		super.update(column);
-		this.setSpecifiedLength_(this.specifiedLength(column));
-		this.setSpecifiedPrecision_(this.specifiedPrecision(column));
-		this.setSpecifiedScale_(this.specifiedScale(column));
+		this.setSpecifiedLength_(this.getResourceLength(column));
+		this.setSpecifiedPrecision_(this.getResourcePrecision(column));
+		this.setSpecifiedScale_(this.getResourceScale(column));
 	}
 
-	protected Integer specifiedLength(XmlColumn column) {
+	protected Integer getResourceLength(XmlColumn column) {
 		return column == null ? null : column.getLength();
 	}
 
-	protected Integer specifiedPrecision(XmlColumn column) {
+	protected Integer getResourcePrecision(XmlColumn column) {
 		return column == null ? null : column.getPrecision();
 	}
 	
-	protected Integer specifiedScale(XmlColumn column) {
+	protected Integer getResourceScale(XmlColumn column) {
 		return column == null ? null : column.getScale();
 	}
 }

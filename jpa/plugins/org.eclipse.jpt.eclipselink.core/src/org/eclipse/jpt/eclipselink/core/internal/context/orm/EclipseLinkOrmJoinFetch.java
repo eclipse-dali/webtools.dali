@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2008  Oracle. 
+ *  Copyright (c) 2008, 2009  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -25,8 +25,10 @@ public class EclipseLinkOrmJoinFetch extends AbstractXmlContextNode
 	protected JoinFetchType joinFetchValue;
 	
 	
-	public EclipseLinkOrmJoinFetch(OrmAttributeMapping parent) {
+	public EclipseLinkOrmJoinFetch(OrmAttributeMapping parent, XmlJoinFetch resource) {
 		super(parent);
+		this.resource = resource;
+		this.joinFetchValue = getResourceJoinFetch();
 	}
 	
 	
@@ -49,11 +51,6 @@ public class EclipseLinkOrmJoinFetch extends AbstractXmlContextNode
 	
 	
 	// **************** initialize/update **************************************
-	
-	protected void initialize(XmlJoinFetch xmlJoinFetch) {
-		this.resource = xmlJoinFetch;
-		this.joinFetchValue = getResourceJoinFetch();
-	}
 	
 	protected void update() {
 		setValue_(getResourceJoinFetch());

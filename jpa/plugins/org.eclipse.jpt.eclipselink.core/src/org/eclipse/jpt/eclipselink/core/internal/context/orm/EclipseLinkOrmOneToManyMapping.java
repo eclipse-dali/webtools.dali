@@ -15,11 +15,9 @@ import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmOneToManyMapping;
-import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToManyMapping;
 import org.eclipse.jpt.eclipselink.core.context.JoinFetch;
 import org.eclipse.jpt.eclipselink.core.context.PrivateOwned;
-import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlJoinFetch;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlOneToMany;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlPrivateOwned;
@@ -33,10 +31,10 @@ public class EclipseLinkOrmOneToManyMapping extends GenericOrmOneToManyMapping
 	protected EclipseLinkOrmJoinFetch joinFetch;
 	
 	
-	public EclipseLinkOrmOneToManyMapping(OrmPersistentAttribute parent) {
-		super(parent);
-		this.privateOwned = new EclipseLinkOrmPrivateOwned(this);
-		this.joinFetch = new EclipseLinkOrmJoinFetch(this);
+	public EclipseLinkOrmOneToManyMapping(OrmPersistentAttribute parent, XmlOneToMany resourceMapping) {
+		super(parent, resourceMapping);
+		this.privateOwned = new EclipseLinkOrmPrivateOwned(this, (XmlPrivateOwned) this.resourceAttributeMapping);
+		this.joinFetch = new EclipseLinkOrmJoinFetch(this, (XmlJoinFetch) this.resourceAttributeMapping);
 	}
 	
 	// ********** NonOwningMapping implementation **********
@@ -56,21 +54,6 @@ public class EclipseLinkOrmOneToManyMapping extends GenericOrmOneToManyMapping
 	
 	
 	// **************** resource-context interaction ***************************
-	
-	@Override
-	public XmlOneToMany addToResourceModel(XmlTypeMapping typeMapping) {
-		XmlOneToMany oneToMany = EclipseLinkOrmFactory.eINSTANCE.createXmlOneToManyImpl();
-		getPersistentAttribute().initialize(oneToMany);
-		typeMapping.getAttributes().getOneToManys().add(oneToMany);
-		return oneToMany;
-	}
-	
-	@Override
-	protected void initialize() {
-		super.initialize();
-		this.privateOwned.initialize((XmlPrivateOwned) this.resourceAttributeMapping);
-		this.joinFetch.initialize((XmlJoinFetch) this.resourceAttributeMapping);
-	}
 	
 	@Override
 	public void update() {

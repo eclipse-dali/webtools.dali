@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.Iterator;
-
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.java.JavaMappedSuperclass;
@@ -32,8 +31,9 @@ public class GenericOrmMappedSuperclass extends AbstractOrmTypeMapping<XmlMapped
 {
 	protected String idClass;
 	
-	public GenericOrmMappedSuperclass(OrmPersistentType parent) {
-		super(parent);
+	public GenericOrmMappedSuperclass(OrmPersistentType parent, XmlMappedSuperclass resourceMapping) {
+		super(parent, resourceMapping);
+		this.idClass = this.getResourceIdClassName(this.getResourceIdClass());
 	}
 	
 	public JavaMappedSuperclass getJavaMappedSuperclass() {
@@ -158,28 +158,13 @@ public class GenericOrmMappedSuperclass extends AbstractOrmTypeMapping<XmlMapped
 	public int getXmlSequence() {
 		return 0;
 	}
-
-	protected Boolean metadataComplete(XmlMappedSuperclass mappedSuperclass) {
-		return mappedSuperclass.getMetadataComplete();
+	
+	public void addToResourceModel(XmlEntityMappings entityMappings) {
+		entityMappings.getMappedSuperclasses().add(this.resourceTypeMapping);
 	}
 	
 	public void removeFromResourceModel(XmlEntityMappings entityMappings) {
 		entityMappings.getMappedSuperclasses().remove(this.resourceTypeMapping);
-	}
-	
-	public XmlMappedSuperclass addToResourceModel(XmlEntityMappings entityMappings) {
-		XmlMappedSuperclass mappedSuperclass = OrmFactory.eINSTANCE.createXmlMappedSuperclass();
-		getPersistentType().initialize(mappedSuperclass);
-		entityMappings.getMappedSuperclasses().add(mappedSuperclass);
-		return mappedSuperclass;
-	}
-
-	
-	
-	@Override
-	public void initialize() {
-		super.initialize();
-		this.idClass = this.getResourceIdClassName(this.getResourceIdClass());
 	}
 	
 	@Override

@@ -26,10 +26,10 @@ import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.core.resource.orm.Attributes;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlOneToOne;
 import org.eclipse.jpt.core.resource.orm.XmlPrimaryKeyJoinColumn;
-import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
@@ -49,9 +49,11 @@ public class GenericOrmOneToOneMapping
 	protected final List<OrmPrimaryKeyJoinColumn> primaryKeyJoinColumns;
 
 
-	public GenericOrmOneToOneMapping(OrmPersistentAttribute parent) {
-		super(parent);
+	public GenericOrmOneToOneMapping(OrmPersistentAttribute parent, XmlOneToOne resourceMapping) {
+		super(parent, resourceMapping);
+		this.mappedBy = this.getResourceMappedBy();
 		this.primaryKeyJoinColumns = new ArrayList<OrmPrimaryKeyJoinColumn>();
+		this.initializePrimaryKeyJoinColumns();
 	}
 
 
@@ -164,15 +166,12 @@ public class GenericOrmOneToOneMapping
 		return true;
 	}
 	
-	public XmlOneToOne addToResourceModel(XmlTypeMapping typeMapping) {
-		XmlOneToOne oneToOne = OrmFactory.eINSTANCE.createXmlOneToOneImpl();
-		getPersistentAttribute().initialize(oneToOne);
-		typeMapping.getAttributes().getOneToOnes().add(oneToOne);
-		return oneToOne;
+	public void addToResourceModel(Attributes resourceAttributes) {
+		resourceAttributes.getOneToOnes().add(this.resourceAttributeMapping);
 	}
 	
-	public void removeFromResourceModel(XmlTypeMapping typeMapping) {
-		typeMapping.getAttributes().getOneToOnes().remove(this.resourceAttributeMapping);
+	public void removeFromResourceModel(Attributes resourceAttributes) {
+		resourceAttributes.getOneToOnes().remove(this.resourceAttributeMapping);
 	}	
 
 
@@ -184,13 +183,6 @@ public class GenericOrmOneToOneMapping
 
 
 	// ********** resource => context **********
-
-	@Override
-	protected void initialize() {
-		super.initialize();
-		this.mappedBy = this.getResourceMappedBy();
-		this.initializePrimaryKeyJoinColumns();
-	}
 	
 	protected void initializePrimaryKeyJoinColumns() {
 		if (this.resourceAttributeMapping != null) {

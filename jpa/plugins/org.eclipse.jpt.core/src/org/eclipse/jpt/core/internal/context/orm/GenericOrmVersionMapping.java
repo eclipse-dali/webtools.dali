@@ -20,9 +20,9 @@ import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmVersionMapping;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.core.resource.orm.Attributes;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
-import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlVersion;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -36,9 +36,12 @@ public class GenericOrmVersionMapping extends AbstractOrmAttributeMapping<XmlVer
 	protected OrmConverter defaultConverter;
 	protected OrmConverter specifiedConverter;
 	
-	public GenericOrmVersionMapping(OrmPersistentAttribute parent) {
-		super(parent);
+	public GenericOrmVersionMapping(OrmPersistentAttribute parent, XmlVersion resourceMapping) {
+		super(parent, resourceMapping);
 		this.column = getJpaFactory().buildOrmColumn(this, this);
+		this.column.initialize(this.getResourceColumn());//TODO pass in to constructor
+		this.defaultConverter = new GenericOrmNullConverter(this);
+		this.specifiedConverter = this.buildSpecifiedConverter(this.getResourceConverterType());
 	}
 
 	public int getXmlSequence() {
@@ -105,19 +108,16 @@ public class GenericOrmVersionMapping extends AbstractOrmAttributeMapping<XmlVer
 		firePropertyChanged(SPECIFIED_CONVERTER_PROPERTY, oldConverter, newConverter);
 	}	
 
-	public XmlVersion addToResourceModel(XmlTypeMapping typeMapping) {
-		XmlVersion version = OrmFactory.eINSTANCE.createXmlVersionImpl();
-		getPersistentAttribute().initialize(version);
-		typeMapping.getAttributes().getVersions().add(version);
-		return version;
+	public void addToResourceModel(Attributes resourceAttributes) {
+		resourceAttributes.getVersions().add(this.resourceAttributeMapping);
 	}
 	
-	public void removeFromResourceModel(XmlTypeMapping typeMapping) {
-		typeMapping.getAttributes().getVersions().remove(this.resourceAttributeMapping);
+	public void removeFromResourceModel(Attributes resourceAttributes) {
+		resourceAttributes.getVersions().remove(this.resourceAttributeMapping);
 	}
 
 	public String getDefaultColumnName() {		
-		return getAttributeName();
+		return getName();
 	}
 
 	public String getDefaultTableName() {
@@ -126,14 +126,6 @@ public class GenericOrmVersionMapping extends AbstractOrmAttributeMapping<XmlVer
 
 	public Table getDbTable(String tableName) {
 		return getTypeMapping().getDbTable(tableName);
-	}
-	
-	@Override
-	protected void initialize() {
-		super.initialize();
-		this.column.initialize(this.getResourceColumn());
-		this.defaultConverter = new GenericOrmNullConverter(this);
-		this.specifiedConverter = this.buildSpecifiedConverter(this.getResourceConverterType());
 	}
 	
 	@Override

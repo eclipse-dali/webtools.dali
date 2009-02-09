@@ -41,9 +41,13 @@ public abstract class AbstractOrmRelationshipMapping<T extends XmlRelationshipMa
 	protected FetchType specifiedFetch;
 	
 	
-	protected AbstractOrmRelationshipMapping(OrmPersistentAttribute parent) {
-		super(parent);
-		this.cascade = new OrmCascade(this);
+	protected AbstractOrmRelationshipMapping(OrmPersistentAttribute parent, T resourceMapping) {
+		super(parent, resourceMapping);
+		this.cascade = new OrmCascade(this, this.resourceAttributeMapping);
+		this.specifiedTargetEntity = this.getResourceTargetEntity();
+		this.defaultTargetEntity = this.buildDefaultTargetEntity();
+		this.resolvedTargetEntity = this.buildResolvedTargetEntity();
+		this.specifiedFetch = this.getResourceFetch();
 	}
 
 	@Override
@@ -127,16 +131,6 @@ public abstract class AbstractOrmRelationshipMapping<T extends XmlRelationshipMa
 
 
 	// ********** resource => context **********
-
-	@Override
-	protected void initialize() {
-		super.initialize();
-		this.specifiedTargetEntity = this.getResourceTargetEntity();
-		this.defaultTargetEntity = this.buildDefaultTargetEntity();
-		this.resolvedTargetEntity = this.buildResolvedTargetEntity();
-		this.specifiedFetch = this.getResourceFetch();
-		this.cascade.initialize(this.resourceAttributeMapping);
-	}
 	
 	@Override
 	public void update() {
@@ -244,7 +238,7 @@ public abstract class AbstractOrmRelationshipMapping<T extends XmlRelationshipMa
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.VIRTUAL_ATTRIBUTE_TARGET_ENTITY_NOT_DEFINED,
-						new String[] {this.getAttributeName()}, 
+						new String[] {this.getName()}, 
 						this, 
 						this.getValidationTextRange()
 					)
@@ -255,7 +249,7 @@ public abstract class AbstractOrmRelationshipMapping<T extends XmlRelationshipMa
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.TARGET_ENTITY_NOT_DEFINED,
-						new String[] {this.getAttributeName()}, 
+						new String[] {this.getName()}, 
 						this, 
 						this.getValidationTextRange()
 					)
@@ -268,7 +262,7 @@ public abstract class AbstractOrmRelationshipMapping<T extends XmlRelationshipMa
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.VIRTUAL_ATTRIBUTE_TARGET_ENTITY_IS_NOT_AN_ENTITY,
-						new String[] {this.getAttributeName(), getTargetEntity()}, 
+						new String[] {this.getName(), getTargetEntity()}, 
 						this, 
 						this.getValidationTextRange()
 					)
@@ -279,7 +273,7 @@ public abstract class AbstractOrmRelationshipMapping<T extends XmlRelationshipMa
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.TARGET_ENTITY_IS_NOT_AN_ENTITY,
-						new String[] {getTargetEntity(), this.getAttributeName()}, 
+						new String[] {getTargetEntity(), this.getName()}, 
 						this, 
 						this.getTargetEntityTextRange()
 					)

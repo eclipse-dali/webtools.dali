@@ -16,6 +16,9 @@ import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmTypeMappingProvider;
+import org.eclipse.jpt.core.resource.orm.OrmFactory;
+import org.eclipse.jpt.core.resource.orm.XmlEntity;
+import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 
 /**
  * default ORM Entity provider
@@ -39,9 +42,13 @@ public class OrmEntityProvider
 	private OrmEntityProvider() {
 		super();
 	}
+	
+	public XmlTypeMapping buildResourceMapping() {
+		return OrmFactory.eINSTANCE.createXmlEntity();
+	}
 
-	public OrmEntity buildMapping(OrmPersistentType parent, JpaFactory factory) {
-		return factory.buildOrmEntity(parent);
+	public OrmEntity buildMapping(OrmPersistentType parent, XmlTypeMapping resourceMapping, JpaFactory factory) {
+		return factory.buildOrmEntity(parent, (XmlEntity) resourceMapping);
 	}
 	
 	public IContentType getContentType() {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -45,8 +45,11 @@ public class GenericOrmAttributeOverride extends AbstractXmlContextNode
 		super(parent);
 		this.owner = owner;
 		this.column = getJpaFactory().buildOrmColumn(this, this);
-		this.initialize(resourceAttributeOverride);
+		this.resourceAttributeOverride = resourceAttributeOverride;
+		this.name = resourceAttributeOverride.getName();
+		this.column.initialize(resourceAttributeOverride.getColumn());
 	}
+	
 	@Override
 	public XmlContextNode getParent() {
 		return (XmlContextNode) super.getParent();
@@ -139,12 +142,6 @@ public class GenericOrmAttributeOverride extends AbstractXmlContextNode
 	
 	
 	//***************** updating ****************
-	
-	protected void initialize(XmlAttributeOverride xmlAttributeOverride) {
-		this.resourceAttributeOverride = xmlAttributeOverride;
-		this.name = xmlAttributeOverride.getName();
-		this.column.initialize(xmlAttributeOverride.getColumn());
-	}
 	
 	public void update(XmlAttributeOverride xmlAttributeOverride) {
 		this.resourceAttributeOverride = xmlAttributeOverride;

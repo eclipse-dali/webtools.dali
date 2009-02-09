@@ -21,6 +21,8 @@ import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaFactory;
 import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
+import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasic;
 
 public class EclipseLinkOrmBasicMappingProvider
 	implements OrmAttributeMappingProvider
@@ -49,9 +51,13 @@ public class EclipseLinkOrmBasicMappingProvider
 	public String getKey() {
 		return MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY;
 	}
-
-	public OrmAttributeMapping buildMapping(OrmPersistentAttribute parent, JpaFactory factory) {
-		return ((EclipseLinkJpaFactory) factory).buildEclipseLinkOrmBasicMapping(parent);
+	
+	public XmlAttributeMapping buildResourceMapping() {
+		return EclipseLinkOrmFactory.eINSTANCE.createXmlBasicImpl();
+	}
+	
+	public OrmAttributeMapping buildMapping(OrmPersistentAttribute parent, XmlAttributeMapping resourceMapping, JpaFactory factory) {
+		return ((EclipseLinkJpaFactory) factory).buildEclipseLinkOrmBasicMapping(parent, (XmlBasic) resourceMapping);
 	}
 
 	public XmlAttributeMapping buildVirtualResourceMapping(OrmTypeMapping ormTypeMapping, JavaAttributeMapping javaAttributeMapping, JpaFactory factory) {

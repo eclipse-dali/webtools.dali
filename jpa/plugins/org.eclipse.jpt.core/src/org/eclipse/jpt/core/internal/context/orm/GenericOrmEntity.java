@@ -134,8 +134,8 @@ public class GenericOrmEntity
 
 	protected final List<OrmNamedNativeQuery> namedNativeQueries;
 
-	public GenericOrmEntity(OrmPersistentType parent) {
-		super(parent);
+	public GenericOrmEntity(OrmPersistentType parent, XmlEntity resourceMapping) {
+		super(parent, resourceMapping);
 		this.table = getJpaFactory().buildOrmTable(this);
 		this.specifiedSecondaryTables = new ArrayList<OrmSecondaryTable>();
 		this.virtualSecondaryTables = new ArrayList<OrmSecondaryTable>();
@@ -148,6 +148,25 @@ public class GenericOrmEntity
 		this.virtualAssociationOverrides = new ArrayList<OrmAssociationOverride>();
 		this.namedQueries = new ArrayList<OrmNamedQuery>();
 		this.namedNativeQueries = new ArrayList<OrmNamedNativeQuery>();
+		this.specifiedName = this.resourceTypeMapping.getName();
+		this.defaultName = this.buildDefaultName();
+		this.initializeInheritance(this.getResourceInheritance());
+		this.discriminatorColumn.initialize(this.resourceTypeMapping); //TODO pass in to constructor
+		this.specifiedDiscriminatorValue = this.resourceTypeMapping.getDiscriminatorValue();
+		this.defaultDiscriminatorValue = this.defaultDiscriminatorValue();
+		this.discriminatorValueAllowed = this.discriminatorValueIsAllowed();
+		this.table.initialize(this.resourceTypeMapping);//TODO pass in to constructor
+		this.initializeSpecifiedSecondaryTables();
+		this.initializeVirtualSecondaryTables();
+		this.initializeSequenceGenerator();
+		this.initializeTableGenerator();
+		this.initializeSpecifiedPrimaryKeyJoinColumns();
+		this.initializeDefaultPrimaryKeyJoinColumns();
+		this.initializeSpecifiedAttributeOverrides();
+		this.initializeSpecifiedAssociationOverrides();
+		this.initializeNamedQueries();
+		this.initializeNamedNativeQueries();
+		this.initializeIdClass(this.getResourceIdClass());
 	}
 	
 	protected OrmDiscriminatorColumn buildDiscriminatorColumn() {
@@ -1323,34 +1342,9 @@ public class GenericOrmEntity
 //	}
 	
 	
-	@Override
-	public void initialize() {
-		super.initialize();
-		this.specifiedName = this.resourceTypeMapping.getName();
-		this.defaultName = this.buildDefaultName();
-		this.initializeInheritance(this.getResourceInheritance());
-		this.discriminatorColumn.initialize(this.resourceTypeMapping);
-		this.specifiedDiscriminatorValue = this.resourceTypeMapping.getDiscriminatorValue();
-		this.defaultDiscriminatorValue = this.defaultDiscriminatorValue();
-		this.discriminatorValueAllowed = this.discriminatorValueIsAllowed();
-		this.table.initialize(this.resourceTypeMapping);
-		this.initializeSpecifiedSecondaryTables();
-		this.initializeVirtualSecondaryTables();
-		this.initializeSequenceGenerator();
-		this.initializeTableGenerator();
-		this.initializeSpecifiedPrimaryKeyJoinColumns();
-		this.initializeDefaultPrimaryKeyJoinColumns();
-		this.initializeSpecifiedAttributeOverrides();
-		this.initializeVirtualAttributeOverrides();
-		this.initializeSpecifiedAssociationOverrides();
-		this.initializeNamedQueries();
-		this.initializeNamedNativeQueries();
-		this.initializeIdClass(this.getResourceIdClass());
-	}
-	
 	protected void initializeInheritance(Inheritance inheritanceResource) {
 		this.specifiedInheritanceStrategy = this.specifiedInheritanceStrategy(inheritanceResource);
-		this.defaultInheritanceStrategy = this.defaultInheritanceStrategy();
+		//no need to initialize defaultInheritanceStrategy, need to get all the persistentTypes in the model first
 	}
 
 	protected void initializeSpecifiedSecondaryTables() {
@@ -1429,19 +1423,6 @@ public class GenericOrmEntity
 			this.specifiedAttributeOverrides.add(buildAttributeOverride(attributeOverride));
 		}
 	}
-	
-	protected void initializeVirtualAttributeOverrides() {
-		for (PersistentAttribute persistentAttribute : CollectionTools.iterable(allOverridableAttributes())) {
-			OrmAttributeOverride attributeOverride = getAttributeOverrideNamed(persistentAttribute.getName());
-			if (attributeOverride == null) {
-				JavaAttributeOverride javaAttributeOverride = null;
-				if (getJavaEntity() != null) {
-					javaAttributeOverride = getJavaEntity().getAttributeOverrideNamed(persistentAttribute.getName());
-				}
-				this.virtualAttributeOverrides.add(buildVirtualAttributeOverride(persistentAttribute, javaAttributeOverride));
-			}
-		}
-	}
 
 	protected OrmAttributeOverride buildVirtualAttributeOverride(PersistentAttribute persistentAttribute, JavaAttributeOverride javaAttributeOverride) {
 		return buildAttributeOverride(buildVirtualXmlAttributeOverride(persistentAttribute, javaAttributeOverride));
@@ -1478,10 +1459,10 @@ public class GenericOrmEntity
 	}
 	
 	protected void initializeIdClass(XmlIdClass idClassResource) {
-		this.idClass = this.idClass(idClassResource);	
+		this.idClass = this.getResourceIdClass(idClassResource);	
 	}
 
-	protected String idClass(XmlIdClass idClassResource) {
+	protected String getResourceIdClass(XmlIdClass idClassResource) {
 		return idClassResource == null ? null : idClassResource.getClassName();
 	}
 
@@ -1841,7 +1822,7 @@ public class GenericOrmEntity
 	}
 	
 	protected void updateIdClass(XmlIdClass idClassResource) {
-		this.setIdClass_(this.idClass(idClassResource));
+		this.setIdClass_(this.getResourceIdClass(idClassResource));
 	}
 	
 	
@@ -1877,15 +1858,12 @@ public class GenericOrmEntity
 		return pkColumnName;
 	}
 	
-	public void removeFromResourceModel(XmlEntityMappings entityMappings) {
-		entityMappings.getEntities().remove(this.resourceTypeMapping);
+	public void addToResourceModel(XmlEntityMappings entityMappings) {
+		entityMappings.getEntities().add(this.resourceTypeMapping);
 	}
 	
-	public XmlEntity addToResourceModel(XmlEntityMappings entityMappings) {
-		XmlEntity entity = OrmFactory.eINSTANCE.createXmlEntity();
-		getPersistentType().initialize(entity);
-		entityMappings.getEntities().add(entity);
-		return entity;
+	public void removeFromResourceModel(XmlEntityMappings entityMappings) {
+		entityMappings.getEntities().remove(this.resourceTypeMapping);
 	}
 	
 	

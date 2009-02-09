@@ -20,14 +20,17 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.XmlCustomizerHolder;
 public class EclipseLinkOrmCustomizer extends AbstractXmlContextNode
 	implements Customizer
 {
-	protected XmlCustomizerHolder resource;
+	protected final XmlCustomizerHolder resource;
 	
 	protected String specifiedCustomizerClass;
 	
 	protected String defaultCustomizerClass;
 	
-	public EclipseLinkOrmCustomizer(OrmTypeMapping parent) {
+	public EclipseLinkOrmCustomizer(OrmTypeMapping parent, XmlCustomizerHolder resource, Customizer javaCustomizer) {
 		super(parent);
+		this.resource = resource;
+		this.defaultCustomizerClass = getJavaCustomizerClass(javaCustomizer);
+		this.specifiedCustomizerClass = getResourceCustomizerClass();
 	}
 	
 	public String getCustomizerClass() {
@@ -84,13 +87,8 @@ public class EclipseLinkOrmCustomizer extends AbstractXmlContextNode
 		this.resource.setCustomizer(null);
 	}
 	
-	// **************** initialize/update **************************************
 	
-	protected void initialize(XmlCustomizerHolder resource, Customizer javaCustomizer) {
-		this.resource = resource;
-		this.defaultCustomizerClass = getJavaCustomizerClass(javaCustomizer);
-		this.specifiedCustomizerClass = getResourceCustomizerClass();
-	}
+	// **************** updating **************************************
 	
 	protected void update(Customizer javaCustomizer) {
 		setDefaultCustomizerClass(getJavaCustomizerClass(javaCustomizer));

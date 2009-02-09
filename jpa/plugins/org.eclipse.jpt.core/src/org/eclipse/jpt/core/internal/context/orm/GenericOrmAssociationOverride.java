@@ -52,7 +52,9 @@ public class GenericOrmAssociationOverride extends AbstractXmlContextNode
 		this.owner = owner;
 		this.specifiedJoinColumns = new ArrayList<OrmJoinColumn>();
 		this.defaultJoinColumns = new ArrayList<OrmJoinColumn>();
-		this.initialize(resourceAssociationOverride);
+		this.resourceAssociationOverride = resourceAssociationOverride;
+		this.name = resourceAssociationOverride.getName();
+		initializeSpecifiedJoinColumns();
 	}
 	
 	public OrmAssociationOverride setVirtual(boolean virtual) {
@@ -143,12 +145,6 @@ public class GenericOrmAssociationOverride extends AbstractXmlContextNode
 
 	public boolean isVirtual() {
 		return getOwner().isVirtual(this);
-	}
-	
-	protected void initialize(XmlAssociationOverride resourceAssociationOverride) {
-		this.resourceAssociationOverride = resourceAssociationOverride;
-		this.name = resourceAssociationOverride.getName();
-		initializeSpecifiedJoinColumns();
 	}
 	
 	protected void initializeSpecifiedJoinColumns() {

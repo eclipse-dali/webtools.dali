@@ -37,10 +37,11 @@ public class GenericOrmPersistentAttribute extends AbstractXmlContextNode
 	
 	protected JavaPersistentAttribute javaPersistentAttribute;	
 	
-	public GenericOrmPersistentAttribute(OrmPersistentType parent, Owner owner, String mappingKey) {
+	public GenericOrmPersistentAttribute(OrmPersistentType parent, Owner owner, XmlAttributeMapping resourceMapping) {
 		super(parent);
 		this.owner = owner;
-		this.attributeMapping = buildAttributeMapping(mappingKey);
+		this.attributeMapping = buildAttributeMapping(resourceMapping);
+		this.javaPersistentAttribute = findJavaPersistentAttribute();
 	}
 	
 	public JavaPersistentAttribute getJavaPersistentAttribute() {
@@ -57,8 +58,8 @@ public class GenericOrmPersistentAttribute extends AbstractXmlContextNode
 		this.firePropertyChanged(JAVA_PERSISTENT_ATTRIBUTE_PROPERTY, old, javaPersistentAttribute);
 	}
 
-	protected OrmAttributeMapping buildAttributeMapping(String key) {
-		return getJpaPlatform().buildOrmAttributeMappingFromMappingKey(key, this);
+	protected OrmAttributeMapping buildAttributeMapping(XmlAttributeMapping resourceMapping) {
+		return getJpaPlatform().buildOrmAttributeMappingFromMappingKey(this, resourceMapping);
 	}
 	
 	public String getId() {
@@ -94,17 +95,10 @@ public class GenericOrmPersistentAttribute extends AbstractXmlContextNode
 			return;
 		}
 		OrmAttributeMapping oldMapping = this.attributeMapping;
-		this.attributeMapping = buildAttributeMapping(newMappingKey);
+		XmlAttributeMapping newResourceAttributeMapping = getJpaPlatform().buildOrmResourceAttributeMapping(newMappingKey, getContentType());
+		this.attributeMapping = buildAttributeMapping(newResourceAttributeMapping);
+		
 		getPersistentType().changeMapping(this, oldMapping, this.attributeMapping);
-		firePropertyChanged(SPECIFIED_MAPPING_PROPERTY, oldMapping, this.attributeMapping);
-	}
-	
-	protected void setSpecifiedMappingKey_(String newMappingKey) {
-		if (this.getMappingKey() == newMappingKey) {
-			return;
-		}
-		OrmAttributeMapping oldMapping = this.attributeMapping;
-		this.attributeMapping = buildAttributeMapping(newMappingKey);
 		firePropertyChanged(SPECIFIED_MAPPING_PROPERTY, oldMapping, this.attributeMapping);
 	}
 
@@ -158,11 +152,6 @@ public class GenericOrmPersistentAttribute extends AbstractXmlContextNode
 
 	public boolean isIdAttribute() {
 		return this.attributeMapping.isIdMapping();
-	}
-	
-	public void initialize(XmlAttributeMapping xmlAttributeMapping) {
-		this.attributeMapping.initialize(xmlAttributeMapping);
-		this.javaPersistentAttribute = findJavaPersistentAttribute();
 	}
 	
 	public void update() {

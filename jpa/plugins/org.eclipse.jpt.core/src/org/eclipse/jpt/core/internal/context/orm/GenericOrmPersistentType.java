@@ -12,16 +12,17 @@ package org.eclipse.jpt.core.internal.context.orm;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.resource.orm.Attributes;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
+import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 
 public class GenericOrmPersistentType
 	extends AbstractOrmPersistentType
 {
-	public GenericOrmPersistentType(EntityMappings parent, String mappingKey) {
-		super(parent, mappingKey);
+	public GenericOrmPersistentType(EntityMappings parent, XmlTypeMapping resourceMapping) {
+		super(parent, resourceMapping);
 	}
 	
 	@Override
-	protected Attributes createAttributesResource() {
+	protected Attributes createResourceAttributes() {
 		return OrmFactory.eINSTANCE.createAttributes();
 	}
 

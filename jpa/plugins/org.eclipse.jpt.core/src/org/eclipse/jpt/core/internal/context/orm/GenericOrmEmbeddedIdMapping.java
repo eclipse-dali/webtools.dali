@@ -13,16 +13,15 @@ import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddedIdMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
-import org.eclipse.jpt.core.resource.orm.OrmFactory;
+import org.eclipse.jpt.core.resource.orm.Attributes;
 import org.eclipse.jpt.core.resource.orm.XmlEmbeddedId;
-import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 
 
 public class GenericOrmEmbeddedIdMapping extends AbstractOrmBaseEmbeddedMapping<XmlEmbeddedId> implements OrmEmbeddedIdMapping
 {
 
-	public GenericOrmEmbeddedIdMapping(OrmPersistentAttribute parent) {
-		super(parent);
+	public GenericOrmEmbeddedIdMapping(OrmPersistentAttribute parent, XmlEmbeddedId resourceMapping) {
+		super(parent, resourceMapping);
 	}
 
 	public void initializeOn(OrmAttributeMapping newMapping) {
@@ -44,14 +43,11 @@ public class GenericOrmEmbeddedIdMapping extends AbstractOrmBaseEmbeddedMapping<
 		return true;
 	}
 
-	public XmlEmbeddedId addToResourceModel(XmlTypeMapping typeMapping) {
-		XmlEmbeddedId embeddedId = OrmFactory.eINSTANCE.createXmlEmbeddedIdImpl();
-		getPersistentAttribute().initialize(embeddedId);
-		typeMapping.getAttributes().getEmbeddedIds().add(embeddedId);
-		return embeddedId;
+	public void addToResourceModel(Attributes resourceAttributes) {
+		resourceAttributes.getEmbeddedIds().add(this.resourceAttributeMapping);
 	}
 	
-	public void removeFromResourceModel(XmlTypeMapping typeMapping) {
-		typeMapping.getAttributes().getEmbeddedIds().remove(this.resourceAttributeMapping);
+	public void removeFromResourceModel(Attributes resourceAttributes) {
+		resourceAttributes.getEmbeddedIds().remove(this.resourceAttributeMapping);
 	}
 }

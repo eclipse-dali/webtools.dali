@@ -16,6 +16,9 @@ import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddable;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmTypeMappingProvider;
+import org.eclipse.jpt.core.resource.orm.OrmFactory;
+import org.eclipse.jpt.core.resource.orm.XmlEmbeddable;
+import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 
 /**
  * default ORM Embeddable provider
@@ -39,9 +42,13 @@ public class OrmEmbeddableProvider
 	private OrmEmbeddableProvider() {
 		super();
 	}
-
-	public OrmEmbeddable buildMapping(OrmPersistentType parent, JpaFactory factory) {
-		return factory.buildOrmEmbeddable(parent);
+	
+	public XmlTypeMapping buildResourceMapping() {
+		return OrmFactory.eINSTANCE.createXmlEmbeddable();
+	}
+	
+	public OrmEmbeddable buildMapping(OrmPersistentType parent, XmlTypeMapping resourceMapping, JpaFactory factory) {
+		return factory.buildOrmEmbeddable(parent, (XmlEmbeddable) resourceMapping);
 	}
 	
 	public IContentType getContentType() {

@@ -19,15 +19,18 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.XmlReadOnly;
 public class EclipseLinkOrmReadOnly extends AbstractXmlContextNode
 	implements ReadOnly
 {
-	protected XmlReadOnly resource;
+	protected final XmlReadOnly resource;
 	
 	protected boolean defaultReadOnly;
 	
 	protected Boolean specifiedReadOnly;
 	
 	
-	public EclipseLinkOrmReadOnly(OrmTypeMapping parent) {
+	public EclipseLinkOrmReadOnly(OrmTypeMapping parent, XmlReadOnly resource, ReadOnly javaReadOnly) {
 		super(parent);
+		this.resource = resource;
+		this.defaultReadOnly = this.getJavaReadOnly(javaReadOnly);
+		this.specifiedReadOnly = this.getResourceReadOnly();
 	}
 	
 	
@@ -58,12 +61,6 @@ public class EclipseLinkOrmReadOnly extends AbstractXmlContextNode
 	
 	
 	// **************** initialize/update **************************************
-	
-	protected void initialize(XmlReadOnly resource, ReadOnly javaReadOnly) {
-		this.resource = resource;
-		this.defaultReadOnly = this.getJavaReadOnly(javaReadOnly);
-		this.specifiedReadOnly = this.getResourceReadOnly();
-	}
 	
 	protected void update(ReadOnly javaReadOnly) {
 		setDefaultReadOnly(this.getJavaReadOnly(javaReadOnly));

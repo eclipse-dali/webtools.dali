@@ -61,7 +61,7 @@ public abstract class AbstractEntityMappings
 	extends AbstractXmlContextNode
 	implements EntityMappings
 {
-	protected XmlEntityMappings xmlEntityMappings;
+	protected final XmlEntityMappings xmlEntityMappings;
 	
 	protected String description;
 
@@ -89,13 +89,33 @@ public abstract class AbstractEntityMappings
 	protected final List<OrmNamedNativeQuery> namedNativeQueries;
 
 
-	protected AbstractEntityMappings(OrmXml parent) {
+	protected AbstractEntityMappings(OrmXml parent, XmlEntityMappings xmlEntityMappings) {
 		super(parent);
+		this.xmlEntityMappings = xmlEntityMappings;
 		this.persistentTypes = new ArrayList<OrmPersistentType>();
 		this.sequenceGenerators = new ArrayList<OrmSequenceGenerator>();
 		this.tableGenerators = new ArrayList<OrmTableGenerator>();
 		this.namedQueries = new ArrayList<OrmNamedQuery>();
 		this.namedNativeQueries = new ArrayList<OrmNamedNativeQuery>();
+		
+		this.persistenceUnitMetadata = getJpaFactory().buildPersistenceUnitMetadata(this, this.xmlEntityMappings);
+		this.description = this.xmlEntityMappings.getDescription();
+		this.package_ = this.xmlEntityMappings.getPackage();
+
+		this.defaultAccess = this.getPersistenceUnit().getDefaultAccess();
+		this.specifiedAccess = this.getResourceAccess();
+
+		this.defaultCatalog = this.getPersistenceUnit().getDefaultCatalog();
+		this.specifiedCatalog = this.xmlEntityMappings.getCatalog();
+
+		this.defaultSchema = this.getPersistenceUnit().getDefaultSchema();
+		this.specifiedSchema = this.xmlEntityMappings.getSchema();
+
+		this.initializePersistentTypes();
+		this.initializeTableGenerators();
+		this.initializeSequenceGenerators();
+		this.initializeNamedQueries();
+		this.initializeNamedNativeQueries();
 	}
 	
 	
@@ -332,20 +352,21 @@ public abstract class AbstractEntityMappings
 	}
 	
 	public OrmPersistentType addPersistentType(String mappingKey, String className) {
-		OrmPersistentType persistentType = buildPersistentType(mappingKey);
+		XmlTypeMapping typeMapping = getJpaPlatform().buildOrmResourceTypeMapping(mappingKey, getContentType());
+		OrmPersistentType persistentType = buildPersistentType(typeMapping);
 		int index = insertionIndex(persistentType);
 		this.persistentTypes.add(index, persistentType);
 		if (className.startsWith(getPackage() + '.')) {
 			// adds short name if package name is specified
 			className = className.substring(getPackage().length() + 1);
 		}
-		XmlTypeMapping typeMapping = persistentType.getMapping().addToResourceModel(this.xmlEntityMappings);
+		persistentType.getMapping().addToResourceModel(this.xmlEntityMappings);
 		typeMapping.setClassName(className);
 		fireItemAdded(PERSISTENT_TYPES_LIST, index, persistentType);
 		return persistentType;
 	}
 	
-	protected abstract OrmPersistentType buildPersistentType(String mappingKey);
+	protected abstract OrmPersistentType buildPersistentType(XmlTypeMapping typeMapping);
 
 	protected int insertionIndex(OrmPersistentType ormPersistentType) {
 		return CollectionTools.insertionIndexOf(this.persistentTypes, ormPersistentType, buildMappingComparator());
@@ -603,32 +624,6 @@ public abstract class AbstractEntityMappings
 	
 
 	// ********** initialization **********
-
-	public void initialize(XmlEntityMappings entityMappings) {
-		this.xmlEntityMappings = entityMappings;
-		this.initialize();
-	}
-	
-	protected void initialize() {
-		this.persistenceUnitMetadata = getJpaFactory().buildPersistenceUnitMetadata(this, this.xmlEntityMappings);
-		this.description = this.xmlEntityMappings.getDescription();
-		this.package_ = this.xmlEntityMappings.getPackage();
-
-		this.defaultAccess = this.getPersistenceUnit().getDefaultAccess();
-		this.specifiedAccess = this.getResourceAccess();
-
-		this.defaultCatalog = this.getPersistenceUnit().getDefaultCatalog();
-		this.specifiedCatalog = this.xmlEntityMappings.getCatalog();
-
-		this.defaultSchema = this.getPersistenceUnit().getDefaultSchema();
-		this.specifiedSchema = this.xmlEntityMappings.getSchema();
-
-		this.initializePersistentTypes();
-		this.initializeTableGenerators();
-		this.initializeSequenceGenerators();
-		this.initializeNamedQueries();
-		this.initializeNamedNativeQueries();
-	}
 	
 	protected void initializePersistentTypes() {
 		for (XmlTypeMapping typeMapping : this.xmlEntityMappings.getTypeMappings()) {
@@ -723,9 +718,8 @@ public abstract class AbstractEntityMappings
 	
 	//not firing change notification so this can be reused in initialize and update
 	protected OrmPersistentType addPersistentType(XmlTypeMapping resourceMapping) {
-		OrmPersistentType ormPersistentType = buildPersistentType(resourceMapping.getMappingKey());
+		OrmPersistentType ormPersistentType = buildPersistentType(resourceMapping);
 		this.persistentTypes.add(ormPersistentType);
-		ormPersistentType.initialize(resourceMapping);
 		return ormPersistentType;
 	}
 	

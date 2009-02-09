@@ -12,11 +12,9 @@ package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 import java.util.List;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmOneToOneMapping;
-import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToOneMapping;
 import org.eclipse.jpt.eclipselink.core.context.JoinFetch;
 import org.eclipse.jpt.eclipselink.core.context.PrivateOwned;
-import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlJoinFetch;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlOneToOne;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlPrivateOwned;
@@ -30,10 +28,10 @@ public class EclipseLinkOrmOneToOneMapping extends GenericOrmOneToOneMapping
 	protected EclipseLinkOrmJoinFetch joinFetch;
 	
 	
-	public EclipseLinkOrmOneToOneMapping(OrmPersistentAttribute parent) {
-		super(parent);
-		this.privateOwned = new EclipseLinkOrmPrivateOwned(this);
-		this.joinFetch = new EclipseLinkOrmJoinFetch(this);
+	public EclipseLinkOrmOneToOneMapping(OrmPersistentAttribute parent, XmlOneToOne resourceMapping) {
+		super(parent, resourceMapping);
+		this.privateOwned = new EclipseLinkOrmPrivateOwned(this, (XmlPrivateOwned) this.resourceAttributeMapping);
+		this.joinFetch = new EclipseLinkOrmJoinFetch(this, (XmlJoinFetch) this.resourceAttributeMapping);
 	}
 	
 	
@@ -47,21 +45,6 @@ public class EclipseLinkOrmOneToOneMapping extends GenericOrmOneToOneMapping
 	
 	
 	// **************** resource-context interaction ***************************
-	
-	@Override
-	public XmlOneToOne addToResourceModel(XmlTypeMapping typeMapping) {
-		XmlOneToOne oneToOne = EclipseLinkOrmFactory.eINSTANCE.createXmlOneToOneImpl();
-		getPersistentAttribute().initialize(oneToOne);
-		typeMapping.getAttributes().getOneToOnes().add(oneToOne);
-		return oneToOne;
-	}
-	
-	@Override
-	protected void initialize() {
-		super.initialize();
-		this.privateOwned.initialize((XmlPrivateOwned) this.resourceAttributeMapping);
-		this.joinFetch.initialize((XmlJoinFetch) this.resourceAttributeMapping);
-	}
 	
 	@Override
 	public void update() {
