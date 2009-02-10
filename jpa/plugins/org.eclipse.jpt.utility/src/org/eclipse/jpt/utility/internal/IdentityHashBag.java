@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,6 @@ package org.eclipse.jpt.utility.internal;
 import java.io.Serializable;
 import java.util.AbstractCollection;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -144,10 +143,10 @@ public class IdentityHashBag<E>
 	 */
 	public IdentityHashBag(int initialCapacity, float loadFactor) {
 		if (initialCapacity < 0) {
-			throw new IllegalArgumentException("Illegal Initial Capacity: " + initialCapacity);
+			throw new IllegalArgumentException("Illegal Initial Capacity: " + initialCapacity); //$NON-NLS-1$
 		}
 		if (loadFactor <= 0 || Float.isNaN(loadFactor)) {
-			throw new IllegalArgumentException("Illegal Load factor: " + loadFactor);
+			throw new IllegalArgumentException("Illegal Load factor: " + loadFactor); //$NON-NLS-1$
 		}
 		if (initialCapacity == 0) {
 			initialCapacity = 1;
@@ -504,7 +503,7 @@ public class IdentityHashBag<E>
 
 		public int setCount(int count) {
 			if (count <= 0) {
-				throw new IllegalArgumentException("count must be greater than zero: " + count);
+				throw new IllegalArgumentException("count must be greater than zero: " + count); //$NON-NLS-1$
 			}
 			int old = this.count;
 			this.count = count;
@@ -530,7 +529,7 @@ public class IdentityHashBag<E>
 
 		@Override
 		public String toString() {
-			return this.object + "=>" + this.count;
+			return this.object + "=>" + this.count; //$NON-NLS-1$
 		}
 	}
 

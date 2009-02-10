@@ -18,6 +18,7 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.GraphIterator;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
+@SuppressWarnings("nls")
 public class GraphIteratorTests extends TestCase {
 	/** this will be populated with all the nodes created for the test */
 	Collection<GraphNode> nodes = new ArrayList<GraphNode>();

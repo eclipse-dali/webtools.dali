@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -49,7 +49,7 @@ public interface BidiTransformer<T1, T2> extends Transformer<T1, T2> {
 		}
 		@Override
 		public String toString() {
-			return "BidiTransformer.Null";
+			return "BidiTransformer.Null"; //$NON-NLS-1$
 		}
 	}
 
@@ -74,7 +74,7 @@ public interface BidiTransformer<T1, T2> extends Transformer<T1, T2> {
 		}
 		@Override
 		public String toString() {
-			return "BidiTransformer.Disabled";
+			return "BidiTransformer.Disabled"; //$NON-NLS-1$
 		}
 	}
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -120,7 +120,7 @@ public final class XMLStringEncoder {
 	 * specified string buffer (e.g. '/' => "&#x2f;").
 	 */
 	private void appendCharacterReferenceTo(char c, StringBuilder sb) {
-		sb.append("&#x");
+		sb.append("&#x"); //$NON-NLS-1$
 		sb.append(Integer.toString(c, 16));
 		sb.append(';');
 	}
@@ -161,7 +161,7 @@ public final class XMLStringEncoder {
 		}
 		String charValue = temp.toString();
 		if (charValue.length() == 0) {
-			throw new IllegalStateException("missing numeric string");
+			throw new IllegalStateException("missing numeric string"); //$NON-NLS-1$
 		}
 		sb.append((char) Integer.parseInt(charValue, 16));
 	}
@@ -169,13 +169,13 @@ public final class XMLStringEncoder {
 	private void checkChar(int c, int expected) {
 		this.checkEndOfStream(c);
 		if (c != expected) {
-			throw new IllegalStateException("expected '" + (char) expected + "', but encountered '" + (char) c + "'");
+			throw new IllegalStateException("expected '" + (char) expected + "', but encountered '" + (char) c + "'"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 	}
 
 	private void checkEndOfStream(int c) {
 		if (c == -1) {
-			throw new IllegalStateException("unexpected end of string");
+			throw new IllegalStateException("unexpected end of string"); //$NON-NLS-1$
 		}
 	}
 

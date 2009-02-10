@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -144,7 +144,7 @@ public final class JDBCTools {
 		JDBCType jdbcType = JDBCType.type(jdbcTypeCode);
 		Object prev = mappings.put(jdbcType.name(), buildJDBCToJavaTypeMapping(jdbcType, javaClass));
 		if (prev != null) {
-			throw new IllegalArgumentException("duplicate JDBC type: " + jdbcType.name());
+			throw new IllegalArgumentException("duplicate JDBC type: " + jdbcType.name()); //$NON-NLS-1$
 		}
 	}
 
@@ -224,7 +224,7 @@ public final class JDBCTools {
 		// check for duplicates
 		Object prev = mappings.put(javaClass.getName(), buildJavaToJDBCTypeMapping(javaClass, jdbcTypeCode));
 		if (prev != null) {
-			throw new IllegalArgumentException("duplicate Java class: " + ((JavaToJDBCTypeMapping) prev).getJavaType().declaration());
+			throw new IllegalArgumentException("duplicate Java class: " + ((JavaToJDBCTypeMapping) prev).getJavaType().declaration()); //$NON-NLS-1$
 		}
 	}
 
@@ -288,7 +288,7 @@ public final class JDBCTools {
 
 		public void appendTo(StringBuilder sb) {
 			this.jdbcType.appendTo(sb);
-			sb.append(" => ");
+			sb.append(" => "); //$NON-NLS-1$
 			this.javaType.appendDeclarationTo(sb);
 		}
 
@@ -340,7 +340,7 @@ public final class JDBCTools {
 
 		public void appendTo(StringBuilder sb) {
 			this.javaType.appendDeclarationTo(sb);
-			sb.append(" => ");
+			sb.append(" => "); //$NON-NLS-1$
 			this.jdbcType.appendTo(sb);
 		}
 

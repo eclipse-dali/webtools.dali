@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -39,10 +39,10 @@ import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
  */
 public final class FileTools {
 
-	public static final String USER_HOME_DIRECTORY_NAME = System.getProperty("user.home");
-	public static final String USER_TEMPORARY_DIRECTORY_NAME = System.getProperty("java.io.tmpdir");
-	public static String DEFAULT_TEMPORARY_DIRECTORY_NAME = "tmpdir";
-	public static final String CURRENT_WORKING_DIRECTORY_NAME = System.getProperty("user.dir");
+	public static final String USER_HOME_DIRECTORY_NAME = System.getProperty("user.home"); //$NON-NLS-1$
+	public static final String USER_TEMPORARY_DIRECTORY_NAME = System.getProperty("java.io.tmpdir"); //$NON-NLS-1$
+	public static String DEFAULT_TEMPORARY_DIRECTORY_NAME = "tmpdir"; //$NON-NLS-1$
+	public static final String CURRENT_WORKING_DIRECTORY_NAME = System.getProperty("user.dir"); //$NON-NLS-1$
 
     /** A list of some invalid file name characters.
 				: is the filename separator in MacOS and the drive indicator in DOS
@@ -68,6 +68,7 @@ public final class FileTools {
 	public static final XMLStringEncoder FILE_NAME_ENCODER = new XMLStringEncoder(INVALID_FILENAME_CHARACTERS);
 
 	/** Windows files that are redirected to devices etc. */
+	@SuppressWarnings("nls")
 	private static final String[] WINDOWS_RESERVED_FILE_NAMES = {
 		"con",
 		"aux",
@@ -100,7 +101,7 @@ public final class FileTools {
 	public static void deleteDirectory(File directory) {
 		deleteDirectoryContents(directory);
 		if ( ! directory.delete()) {
-			throw new RuntimeException("unable to delete directory: " + directory.getAbsolutePath());
+			throw new RuntimeException("unable to delete directory: " + directory.getAbsolutePath()); //$NON-NLS-1$
 		}
 	}
 	
@@ -126,7 +127,7 @@ public final class FileTools {
 				deleteDirectory(file);	// recurse through subdirectories
 			} else {
 				if ( ! file.delete()) {
-					throw new RuntimeException("unable to delete file: " + file.getAbsolutePath());
+					throw new RuntimeException("unable to delete file: " + file.getAbsolutePath()); //$NON-NLS-1$
 				}
 			}
 		}
@@ -324,7 +325,7 @@ public final class FileTools {
 	public static String extension(String fileName) {
 		int index = fileName.lastIndexOf('.');
 		if (index == -1) {
-			return "";
+			return ""; //$NON-NLS-1$
 		}
 		return fileName.substring(index);
 	}
@@ -402,8 +403,8 @@ public final class FileTools {
 	 * the System property "java.io.tmpdir".
 	 */
 	public static File newTemporaryDirectory(String prefix) {
-		if ( ! prefix.endsWith(".")) {
-			prefix = prefix + ".";
+		if ( ! prefix.endsWith(".")) { //$NON-NLS-1$
+			prefix = prefix + '.';
 		}
 		File dir;
 		int i = 0;
@@ -438,7 +439,7 @@ public final class FileTools {
 	 * its name.... (see Sun's Java bug 4466485)
 	 */
 	public static File resourceFile(String resourceName) throws URISyntaxException {
-		if ( ! resourceName.startsWith("/")) {
+		if ( ! resourceName.startsWith("/")) { //$NON-NLS-1$
 			throw new IllegalArgumentException(resourceName);
 		}
 		return resourceFile(resourceName, FileTools.class);
@@ -679,7 +680,7 @@ public final class FileTools {
 
 		// break down the path into its components
 		String fs = File.separator;
-		String[] paths = absoluteFileName.split("\\" + fs);
+		String[] paths = absoluteFileName.split('\\' + fs);
 
 		if (paths.length <= 1) {
 			// e.g. "C:\"
@@ -766,7 +767,7 @@ public final class FileTools {
 
 		if (leftIndex <= rightIndex) {
 			sb.insert(insertIndex, fs);
-			sb.insert(insertIndex + 1, "...");
+			sb.insert(insertIndex + 1, "..."); //$NON-NLS-1$
 		}
 
 		return sb.toString();
@@ -800,7 +801,7 @@ public final class FileTools {
 	// ********** miscellaneous **********
 
 	private static boolean executingOnWindows() {
-		return executingOn("Windows");
+		return executingOn("Windows"); //$NON-NLS-1$
 	}
 
 //	private static boolean executingOnLinux() {
@@ -808,7 +809,7 @@ public final class FileTools {
 //	}
 //
 	private static boolean executingOn(String osName) {
-		return System.getProperty("os.name").indexOf(osName) != -1;
+		return System.getProperty("os.name").indexOf(osName) != -1; //$NON-NLS-1$
 	}
 
 	/**
@@ -853,7 +854,7 @@ public final class FileTools {
 
 		// the two are the same directory
 		if (cFile.equals(cDir)) {
-			return new File(".");
+			return new File("."); //$NON-NLS-1$
 		}
 
 		File[] filePathFiles = pathFiles(cFile);
@@ -938,11 +939,11 @@ public final class FileTools {
 	 */
 	private static File relativeParentFile(int len) {
 		if (len <= 0) {
-			throw new IllegalArgumentException("length must be greater than zero: " + len);
+			throw new IllegalArgumentException("length must be greater than zero: " + len); //$NON-NLS-1$
 		}
-		File result = new File("..");
+		File result = new File(".."); //$NON-NLS-1$
 		for (int i = len - 1; i-- > 0; ) {
-			result = new File(result, "..");
+			result = new File(result, ".."); //$NON-NLS-1$
 		}
 		return result;
 	}

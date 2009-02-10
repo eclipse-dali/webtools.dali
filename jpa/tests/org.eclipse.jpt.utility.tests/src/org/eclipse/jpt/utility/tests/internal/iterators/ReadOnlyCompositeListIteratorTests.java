@@ -16,6 +16,7 @@ import java.util.ListIterator;
 import java.util.NoSuchElementException;
 import org.eclipse.jpt.utility.internal.iterators.ReadOnlyCompositeListIterator;
 
+@SuppressWarnings("nls")
 public class ReadOnlyCompositeListIteratorTests extends CompositeIteratorTests {
 
 	public ReadOnlyCompositeListIteratorTests(String name) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -67,7 +67,7 @@ public class SimpleStringMatcher<T>
 	 * any string and ignore case.
 	 */
 	public SimpleStringMatcher() {
-		this("*");
+		this("*"); //$NON-NLS-1$
 	}
 
 	/**
@@ -218,7 +218,7 @@ public class SimpleStringMatcher<T>
 	 * string. By default, there is no prefix.
 	 */
 	protected String prefix() {
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 
 	/**
@@ -228,7 +228,7 @@ public class SimpleStringMatcher<T>
 	 * suffix is a wildcard character.
 	 */
 	protected String suffix() {
-		return "*";
+		return "*"; //$NON-NLS-1$
 	}
 
 	/**
@@ -241,7 +241,7 @@ public class SimpleStringMatcher<T>
 			char c = charArray[i];
 			// convert user-friendly meta-chars into regex meta-chars
 			if (c == '*') {
-				sb.append(".*");
+				sb.append(".*"); //$NON-NLS-1$
 				continue;
 			}
 			if (c == '?') {

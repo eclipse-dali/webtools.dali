@@ -9,7 +9,6 @@
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.text.Collator;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import org.eclipse.jpt.core.context.TemporalConverter;
@@ -97,9 +96,7 @@ public class TemporalTypeComposite extends FormPane<TemporalConverter> {
 	}
 	
 	private List<TemporalType> buildSortedTemporalTypeList() {
-		List<TemporalType> types = CollectionTools.list(TemporalType.values());
-		Collections.sort(types, buildTemporalTypeComparator());
-		return types;
+		return CollectionTools.sort(CollectionTools.list(TemporalType.values()), this.buildTemporalTypeComparator());
 	}
 
 	private Comparator<TemporalType> buildTemporalTypeComparator() {
@@ -115,15 +112,12 @@ public class TemporalTypeComposite extends FormPane<TemporalConverter> {
 	private StringConverter<TemporalType> buildTemporalTypeConverter() {
 		return new StringConverter<TemporalType>() {
 			public String convertToString(TemporalType value) {
-				if (value == null) {
-					return null;
-				}
-				return displayString(value);
+				return (value == null) ? null : displayString(value);
 			}
 		};
 	}
 
-	private String displayString(TemporalType temporalType) {
+	String displayString(TemporalType temporalType) {
 		return SWTUtil.buildDisplayString(
 			JptUiMappingsMessages.class,
 			TemporalTypeComposite.this,

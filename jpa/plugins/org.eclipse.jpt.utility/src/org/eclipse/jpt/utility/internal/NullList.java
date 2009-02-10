@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -78,7 +78,7 @@ public final class NullList<E> implements List<E> {
 	}
 
 	public E get(int index) {
-		throw new IndexOutOfBoundsException("Index: " + index + ", Size: 0");
+		throw new IndexOutOfBoundsException("Index: " + index + ", Size: 0"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public int indexOf(Object o) {
@@ -110,7 +110,7 @@ public final class NullList<E> implements List<E> {
 	}
 
 	public E remove(int index) {
-		throw new IndexOutOfBoundsException("Index: " + index + ", Size: 0");
+		throw new IndexOutOfBoundsException("Index: " + index + ", Size: 0"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public boolean removeAll(Collection<?> c) {
@@ -122,7 +122,7 @@ public final class NullList<E> implements List<E> {
 	}
 
 	public E set(int index, E element) {
-		throw new IndexOutOfBoundsException("Index: " + index + ", Size: 0");
+		throw new IndexOutOfBoundsException("Index: " + index + ", Size: 0"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	public int size() {

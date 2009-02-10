@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,9 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal.iterators;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import org.eclipse.jpt.utility.internal.CollectionTools;
+
 import org.eclipse.jpt.utility.internal.StringTools;
 
 /**
@@ -39,10 +40,10 @@ public class ArrayIterator<E>
 	 */
 	public ArrayIterator(E[] array, int start, int length) {
 		if ((start < 0) || (start > array.length)) {
-			throw new IllegalArgumentException("start: " + start);
+			throw new IllegalArgumentException("start: " + start); //$NON-NLS-1$
 		}
 		if ((length < 0) || (length > array.length - start)) {
-			throw new IllegalArgumentException("length: " + length);
+			throw new IllegalArgumentException("length: " + length); //$NON-NLS-1$
 		}
 		this.array = array;
 		this.nextIndex = start;
@@ -66,7 +67,7 @@ public class ArrayIterator<E>
 	
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, CollectionTools.list(this.array));
+		return StringTools.buildToStringFor(this, Arrays.toString(this.array));
 	}
 	
 }
