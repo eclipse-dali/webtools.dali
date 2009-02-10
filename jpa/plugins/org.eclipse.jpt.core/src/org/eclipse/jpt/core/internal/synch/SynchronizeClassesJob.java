@@ -103,7 +103,7 @@ public class SynchronizeClassesJob extends WorkspaceJob
 		return Status.OK_STATUS;
 	}
 	
-	private boolean mappingFileContains(JpaProject jpaProject, String fullyQualifiedTypeName) {
+	boolean mappingFileContains(JpaProject jpaProject, String fullyQualifiedTypeName) {
 		PersistenceXml persistenceXml = jpaProject.getRootContextNode().getPersistenceXml();
 		if (persistenceXml == null) {
 			return false;
