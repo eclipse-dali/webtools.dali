@@ -242,9 +242,7 @@ public interface JpaFactory
 	
 	
 	// ********** ORM Context Model **********
-	
-	OrmXml buildOrmXml(MappingFileRef parent, JpaXmlResource resource);
-	
+		
 	EntityMappings buildEntityMappings(OrmXml parent, XmlEntityMappings entityMappings);
 	
 	PersistenceUnitMetadata buildPersistenceUnitMetadata(EntityMappings parent, XmlEntityMappings entityMappings);

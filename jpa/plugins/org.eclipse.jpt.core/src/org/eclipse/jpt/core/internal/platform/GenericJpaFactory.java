@@ -287,8 +287,12 @@ public class GenericJpaFactory
 	public MappingFile buildMappingFile(MappingFileRef parent, JpaXmlResource xmlResource) {
 		return this.buildOrmXml(parent, xmlResource);
 	}
-	
+		
+	protected OrmXml buildOrmXml(MappingFileRef parent, JpaXmlResource xmlResource) {
+		return new GenericOrmXml(parent, xmlResource);
+	}
 
+	
 	// ********** Persistence Context Model **********
 	
 	public PersistenceXml buildPersistenceXml(JpaRootContextNode parent, JpaXmlResource resource) {
@@ -329,10 +333,6 @@ public class GenericJpaFactory
 	
 
 	// ********** ORM Context Model **********
-	
-	public OrmXml buildOrmXml(MappingFileRef parent, JpaXmlResource xmlResource) {
-		return new GenericOrmXml(parent, xmlResource);
-	}
 	
 	public EntityMappings buildEntityMappings(OrmXml parent, XmlEntityMappings xmlEntityMappings) {
 		return new GenericEntityMappings(parent, xmlEntityMappings);
