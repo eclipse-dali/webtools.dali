@@ -242,7 +242,7 @@ public class ConvertComposite extends FormPane<Convert>
 	}
 
 	protected ListValueModel<String> buildReservedConverterNameListHolder() {
-		return new StaticListValueModel<String>(CollectionTools.list(Convert.RESERVED_CONVERTER_NAMES));
+		return new StaticListValueModel<String>(Convert.RESERVED_CONVERTER_NAMES);
 	}
 	
 	protected ListValueModel<String> buildConverterNameListHolder() {

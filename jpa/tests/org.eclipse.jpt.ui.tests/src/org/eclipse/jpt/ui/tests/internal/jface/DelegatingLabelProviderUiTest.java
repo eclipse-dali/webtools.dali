@@ -338,7 +338,7 @@ public class DelegatingLabelProviderUiTest extends ApplicationWindow
 		
 		@Override
 		protected CollectionValueModel<Vehicle> buildChildrenModel() {
-			return new StaticCollectionValueModel<Vehicle>(CollectionTools.list(getModel().vehicles()));
+			return new StaticCollectionValueModel<Vehicle>(this.getModel().vehicles());
 		}
 	}
 	
