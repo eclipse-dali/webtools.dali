@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,6 +11,8 @@ package org.eclipse.jpt.utility.internal.model.value;
 
 import java.util.Collection;
 import java.util.Iterator;
+
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.ReadOnlyIterator;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
@@ -30,6 +32,13 @@ public class StaticCollectionValueModel<E>
 
 	private static final long serialVersionUID = 1L;
 
+
+	/**
+	 * Construct a static CollectionValueModel for the specified array.
+	 */
+	public StaticCollectionValueModel(E[] array) {
+		this(CollectionTools.list(array));
+	}
 
 	/**
 	 * Construct a static CollectionValueModel for the specified collection.
