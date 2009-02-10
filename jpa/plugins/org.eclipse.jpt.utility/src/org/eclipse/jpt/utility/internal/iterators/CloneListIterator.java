@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -34,12 +34,14 @@ public class CloneListIterator<E>
 {
 	private final ListIterator<Object> nestedListIterator;
 	private int cursor;
-	private String state;
+	private State state;
 	private final Mutator<E> mutator;
 
-	private static final String UNKNOWN = "unknown";
-	private static final String PREVIOUS = "previous";
-	private static final String NEXT = "next";
+	private enum State {
+		UNKNOWN,
+		PREVIOUS,
+		NEXT
+	}
 
 
 	// ********** constructors **********
@@ -64,7 +66,7 @@ public class CloneListIterator<E>
 		this.nestedListIterator = CollectionTools.list(list.toArray()).listIterator();
 		this.mutator = mutator;
 		this.cursor = 0;
-		this.state = UNKNOWN;
+		this.state = State.UNKNOWN;
 	}
 
 
@@ -78,14 +80,14 @@ public class CloneListIterator<E>
 		// allow the nested iterator to throw an exception before we modify the index
 		E next = this.nestedNext();
 		this.cursor++;
-		this.state = NEXT;
+		this.state = State.NEXT;
 		return next;
 	}
 
 	public void remove() {
 		// allow the nested iterator to throw an exception before we modify the original list
 		this.nestedListIterator.remove();
-		if (this.state == PREVIOUS) {
+		if (this.state == State.PREVIOUS) {
 			this.remove(this.cursor);
 		} else {
 			this.cursor--;
@@ -109,7 +111,7 @@ public class CloneListIterator<E>
 		// allow the nested iterator to throw an exception before we modify the index
 		E previous = this.nestedPrevious();
 		this.cursor--;
-		this.state = PREVIOUS;
+		this.state = State.PREVIOUS;
 		return previous;
 	}
 
@@ -123,7 +125,7 @@ public class CloneListIterator<E>
 	public void set(E o) {
 		// allow the nested iterator to throw an exception before we modify the original list
 		this.nestedListIterator.set(o);
-		if (this.state == PREVIOUS) {
+		if (this.state == State.PREVIOUS) {
 			this.set(this.cursor, o);
 		} else {
 			this.set(this.cursor - 1, o);
@@ -244,7 +246,7 @@ public class CloneListIterator<E>
 			}
 			@Override
 			public String toString() {
-				return "CloneListIterator.Mutator.ReadOnly";
+				return "CloneListIterator.Mutator.ReadOnly"; //$NON-NLS-1$
 			}
 		}
 
