@@ -11,18 +11,12 @@ package org.eclipse.jpt.eclipselink.core.internal;
 
 import org.eclipse.jpt.core.context.MappingFile;
 import org.eclipse.jpt.core.context.PersistentType.Owner;
-import org.eclipse.jpt.core.context.java.JavaEmbeddable;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.core.context.orm.OrmEmbeddable;
-import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLink1_1JavaPersistentTypeImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLink1_1OrmXml;
-import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.java.EclipseLinkJavaEmbeddable_1_1;
-import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.EclipseLinkOrmEmbeddable_1_1;
-import org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbeddable;
 
 public class EclipseLink1_1JpaFactory
 	extends EclipseLinkJpaFactory
@@ -48,25 +42,11 @@ public class EclipseLink1_1JpaFactory
 	}
 	
 	
-	// **************** EclipseLink-specific ORM Context Model *****************
-	
-	
-	@Override
-	public OrmEmbeddable buildEclipseLinkOrmEmbeddable(OrmPersistentType type, XmlEmbeddable resourceMapping) {
-		return new EclipseLinkOrmEmbeddable_1_1(type, resourceMapping);
-	}
-	
-	
 	// **************** Java Context Model *************************************
 	
 	@Override
 	public JavaPersistentType buildJavaPersistentType(Owner owner, JavaResourcePersistentType jrpt) {
 		return new EclipseLink1_1JavaPersistentTypeImpl(owner, jrpt);
-	}
-	
-	@Override
-	public JavaEmbeddable buildJavaEmbeddable(JavaPersistentType parent) {
-		return new EclipseLinkJavaEmbeddable_1_1(parent);
 	}
 	
 //	

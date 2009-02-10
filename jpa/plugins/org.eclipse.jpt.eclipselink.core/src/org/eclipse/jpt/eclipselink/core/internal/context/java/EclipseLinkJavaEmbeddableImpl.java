@@ -66,7 +66,13 @@ public class EclipseLinkJavaEmbeddableImpl extends GenericJavaEmbeddable impleme
 	
 	
 	//********** Validation ********************************************
-
+	
+	@Override
+	public boolean attributeMappingKeyAllowed(String attributeMappingKey) {
+		// EclipseLink allows all mapping types within an embeddable
+		return true;
+	}
+	
 	@Override
 	public void validate(List<IMessage> messages, CompilationUnit astRoot) {
 		super.validate(messages, astRoot);
