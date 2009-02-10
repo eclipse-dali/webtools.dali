@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,8 +18,8 @@ import org.eclipse.jpt.utility.internal.StringTools;
  * A <code>ReadOnlyCompositeListIterator</code> wraps a list
  * of <code>ListIterator</code>s and makes them appear to be a single
  * read-only <code>ListIterator</code>. A read-only composite list
- * iterator is more flexible than a normal composite when it comes to the element types of
- * the nested iterators.
+ * iterator is more flexible than a normal composite list iterator when it
+ * comes to the element types of the nested iterators.
  */
 public class ReadOnlyCompositeListIterator<E>
 	implements ListIterator<E>
