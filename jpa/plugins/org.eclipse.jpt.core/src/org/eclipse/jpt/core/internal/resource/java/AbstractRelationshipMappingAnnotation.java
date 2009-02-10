@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
-import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.EnumArrayDeclarationAnnotationElementAdapter;
@@ -30,8 +29,12 @@ import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.ExpressionConverter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 
-
-public abstract class AbstractRelationshipMappingAnnotation extends AbstractResourceAnnotation<Attribute> implements RelationshipMappingAnnotation
+/**
+ * 
+ */
+public abstract class AbstractRelationshipMappingAnnotation
+	extends AbstractResourceAnnotation<Attribute>
+	implements RelationshipMappingAnnotation
 {
 	// hold this so we can get the 'targetEntity' text range
 	private final DeclarationAnnotationElementAdapter<String> targetEntityDeclarationAdapter;
@@ -158,92 +161,88 @@ public abstract class AbstractRelationshipMappingAnnotation extends AbstractReso
 		return this.cascadeAll;
 	}
 	
-	public void setCascadeAll(boolean newCascadeAll) {
-		if (this.cascadeAll == newCascadeAll) {
+	public void setCascadeAll(boolean cascadeAll) {
+		if (this.cascadeAll == cascadeAll) {
 			return;
 		}
-		boolean oldCascadeAll = this.cascadeAll;
-		this.cascadeAll = newCascadeAll;
-		setCascade(newCascadeAll, CascadeType.ALL);
-		firePropertyChanged(CASCADE_ALL_PROPERTY, oldCascadeAll, newCascadeAll);
+		boolean old = this.cascadeAll;
+		this.cascadeAll = cascadeAll;
+		this.setCascade(CascadeType.ALL, cascadeAll);
+		this.firePropertyChanged(CASCADE_ALL_PROPERTY, old, cascadeAll);
 	}
 	
 	public boolean isCascadePersist() {
 		return this.cascadePersist;
 	}
 	
-	public void setCascadePersist(boolean newCascadePersist) {
-		if (this.cascadePersist == newCascadePersist) {
+	public void setCascadePersist(boolean cascadePersist) {
+		if (this.cascadePersist == cascadePersist) {
 			return;
 		}
-		boolean oldCascadePersist = this.cascadePersist;
-		this.cascadePersist = newCascadePersist;
-		setCascade(newCascadePersist, CascadeType.PERSIST);
-		firePropertyChanged(CASCADE_PERSIST_PROPERTY, oldCascadePersist, newCascadePersist);
+		boolean old = this.cascadePersist;
+		this.cascadePersist = cascadePersist;
+		this.setCascade(CascadeType.PERSIST, cascadePersist);
+		this.firePropertyChanged(CASCADE_PERSIST_PROPERTY, old, cascadePersist);
 	}
 	
 	public boolean isCascadeMerge() {
 		return this.cascadeMerge;
 	}
 	
-	public void setCascadeMerge(boolean newCascadeMerge) {
-		if (this.cascadeMerge == newCascadeMerge) {
+	public void setCascadeMerge(boolean cascadeMerge) {
+		if (this.cascadeMerge == cascadeMerge) {
 			return;
 		}
-		boolean oldCascadeMerge = this.cascadeMerge;
-		this.cascadeMerge = newCascadeMerge;
-		setCascade(newCascadeMerge, CascadeType.MERGE);
-		firePropertyChanged(CASCADE_MERGE_PROPERTY, oldCascadeMerge, newCascadeMerge);
+		boolean old = this.cascadeMerge;
+		this.cascadeMerge = cascadeMerge;
+		this.setCascade(CascadeType.MERGE, cascadeMerge);
+		this.firePropertyChanged(CASCADE_MERGE_PROPERTY, old, cascadeMerge);
 	}
 	
 	public boolean isCascadeRemove() {
 		return this.cascadeRemove;
 	}
 	
-	public void setCascadeRemove(boolean newCascadeRemove) {
-		if (this.cascadeRemove == newCascadeRemove) {
+	public void setCascadeRemove(boolean cascadeRemove) {
+		if (this.cascadeRemove == cascadeRemove) {
 			return;
 		}
-		boolean oldCascadeRemove = this.cascadeRemove;
-		this.cascadeRemove = newCascadeRemove;
-		setCascade(newCascadeRemove, CascadeType.REMOVE);
-		firePropertyChanged(CASCADE_REMOVE_PROPERTY, oldCascadeRemove, newCascadeRemove);
+		boolean old = this.cascadeRemove;
+		this.cascadeRemove = cascadeRemove;
+		this.setCascade(CascadeType.REMOVE, cascadeRemove);
+		this.firePropertyChanged(CASCADE_REMOVE_PROPERTY, old, cascadeRemove);
 	}
 	
 	public boolean isCascadeRefresh() {
 		return this.cascadeRefresh;
 	}
 	
-	public void setCascadeRefresh(boolean newCascadeRefresh) {
-		if (this.cascadeRefresh == newCascadeRefresh) {
+	public void setCascadeRefresh(boolean cascadeRefresh) {
+		if (this.cascadeRefresh == cascadeRefresh) {
 			return;
 		}
-		boolean oldCascadeRefresh = this.cascadeRefresh;
-		this.cascadeRefresh = newCascadeRefresh;
-		setCascade(newCascadeRefresh, CascadeType.REFRESH);
-		firePropertyChanged(CASCADE_REFRESH_PROPERTY, oldCascadeRefresh, newCascadeRefresh);
+		boolean old = this.cascadeRefresh;
+		this.cascadeRefresh = cascadeRefresh;
+		this.setCascade(CascadeType.REFRESH, cascadeRefresh);
+		this.firePropertyChanged(CASCADE_REFRESH_PROPERTY, old, cascadeRefresh);
 	}
 	
 	private void setCascadeTypes(CascadeType[] cascadeTypes) {
-		String[] newJavaValue = CascadeType.toJavaAnnotationValue(cascadeTypes);
-		this.cascadeAdapter.setValue(newJavaValue);
+		this.cascadeAdapter.setValue(CascadeType.toJavaAnnotationValue(cascadeTypes));
 	}
 	
-	private void setCascade(boolean isSet, CascadeType cascadeType) {
-		String[] javaValue = this.cascadeAdapter.getValue();
-		CascadeType[] cascadeTypes = CascadeType.fromJavaAnnotationValue(javaValue);	
-		List<CascadeType> cascadeCollection = CollectionTools.list(cascadeTypes);
+	private void setCascade(CascadeType cascadeType, boolean set) {
+		String[] javaValues = this.cascadeAdapter.getValue();
+		CascadeType[] cascadeTypes = CascadeType.fromJavaAnnotationValue(javaValues);	
 
-		if (cascadeCollection.contains(cascadeType)) {
-			if (!isSet) {
-				cascadeCollection.remove(cascadeType);
-				setCascadeTypes(cascadeCollection.toArray(new CascadeType[cascadeCollection.size()]));
+		boolean present = CollectionTools.contains(cascadeTypes, cascadeType);
+		if (set) {
+			if ( ! present) {
+				this.setCascadeTypes(CollectionTools.add(cascadeTypes, cascadeType));
 			}
-		}
-		else {
-			if (isSet) {
-				cascadeCollection.add(cascadeType);
-				setCascadeTypes(cascadeCollection.toArray(new CascadeType[cascadeCollection.size()]));
+		} else {
+			if (present) {
+				this.setCascadeTypes(CollectionTools.remove(cascadeTypes, cascadeType));
 			}
 		}
 	}
