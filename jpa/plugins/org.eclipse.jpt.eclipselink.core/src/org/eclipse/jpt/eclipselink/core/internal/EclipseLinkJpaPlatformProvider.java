@@ -105,7 +105,7 @@ public class EclipseLinkJpaPlatformProvider
 	// ********* ORM *********
 	
 	@Override
-	protected void addOrmTypeMappingProvidersTo(@SuppressWarnings("unused") List<OrmTypeMappingProvider> providers) {
+	protected void addOrmTypeMappingProvidersTo(List<OrmTypeMappingProvider> providers) {
 		providers.add(EclipseLinkOrmEmbeddableProvider.instance());
 		providers.add(EclipseLinkOrmEntityProvider.instance());
 		providers.add(EclipseLinkOrmMappedSuperclassProvider.instance());
