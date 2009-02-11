@@ -303,12 +303,12 @@ public class EclipseLink1_1JavaPersistentTypeTests extends EclipseLink1_1Context
 		ListIterator<JavaPersistentAttribute> attributes = getJavaPersistentType().attributes();
 		JavaPersistentAttribute javaPersistentAttribute = attributes.next();
 		assertEquals("id", javaPersistentAttribute.getName());
-		assertTrue(javaPersistentAttribute.getResourcePersistentAttribute().isForProperty());
+		assertEquals(AccessType.PROPERTY, javaPersistentAttribute.getAccess());
 		assertEquals(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, javaPersistentAttribute.getMappingKey());
 
 		javaPersistentAttribute = attributes.next();
 		assertEquals("name", javaPersistentAttribute.getName());
-		assertTrue(javaPersistentAttribute.getResourcePersistentAttribute().isForField());
+		assertEquals(AccessType.FIELD, javaPersistentAttribute.getAccess());
 		assertEquals(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, javaPersistentAttribute.getSpecifiedMapping().getKey());
 		
 		assertFalse(attributes.hasNext());
@@ -323,17 +323,17 @@ public class EclipseLink1_1JavaPersistentTypeTests extends EclipseLink1_1Context
 		ListIterator<JavaPersistentAttribute> attributes = getJavaPersistentType().attributes();
 		JavaPersistentAttribute javaPersistentAttribute = attributes.next();
 		assertEquals("id", javaPersistentAttribute.getName());
-		assertTrue(javaPersistentAttribute.getResourcePersistentAttribute().isForField());
+		assertEquals(AccessType.FIELD, javaPersistentAttribute.getAccess());
 		assertEquals(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, javaPersistentAttribute.getMappingKey());
 
 		javaPersistentAttribute = attributes.next();
 		assertEquals("name", javaPersistentAttribute.getName());
-		assertTrue(javaPersistentAttribute.getResourcePersistentAttribute().isForField());
+		assertEquals(AccessType.FIELD, javaPersistentAttribute.getAccess());
 		assertEquals(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, javaPersistentAttribute.getMappingKey());
 
 		javaPersistentAttribute = attributes.next();
 		assertEquals("id", javaPersistentAttribute.getName());
-		assertTrue(javaPersistentAttribute.getResourcePersistentAttribute().isForProperty());
+		assertEquals(AccessType.PROPERTY, javaPersistentAttribute.getAccess());
 		assertEquals(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, javaPersistentAttribute.getMappingKey());
 		
 		assertFalse(attributes.hasNext());
@@ -345,12 +345,12 @@ public class EclipseLink1_1JavaPersistentTypeTests extends EclipseLink1_1Context
 
 		javaPersistentAttribute = attributes.next();
 		assertEquals("name", javaPersistentAttribute.getName());
-		assertTrue(javaPersistentAttribute.getResourcePersistentAttribute().isForField());
+		assertEquals(AccessType.FIELD, javaPersistentAttribute.getAccess());
 		assertEquals(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, javaPersistentAttribute.getMappingKey());
 
 		javaPersistentAttribute = attributes.next();
 		assertEquals("id", javaPersistentAttribute.getName());
-		assertTrue(javaPersistentAttribute.getResourcePersistentAttribute().isForProperty());
+		assertEquals(AccessType.PROPERTY, javaPersistentAttribute.getAccess());
 		assertEquals(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, javaPersistentAttribute.getMappingKey());
 		assertFalse(attributes.hasNext());
 	}

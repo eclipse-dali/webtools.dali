@@ -265,6 +265,7 @@ public class OrmPersistentAttributeTests extends ContextModelTestCase
 		//virtual orm attribute, access type matches java : FIELD, name matches java
 		assertTrue(ormPersistentAttribute.isVirtual());
 		assertNotSame(javaPersistentAttribute, ormPersistentAttribute.getJavaPersistentAttribute());
+		assertEquals(AccessType.FIELD, javaPersistentAttribute.getAccess());
 		JavaResourcePersistentAttribute javaResourcePersistentAttribute = ormPersistentAttribute.getJavaPersistentAttribute().getResourcePersistentAttribute();
 		assertTrue(javaResourcePersistentAttribute.isForField());
 		assertEquals("id", javaResourcePersistentAttribute.getName());
@@ -287,6 +288,8 @@ public class OrmPersistentAttributeTests extends ContextModelTestCase
 		assertNotSame(ormPersistentAttribute, ormPersistentType.getAttributeNamed("id"));
 		ormPersistentAttribute = ormPersistentType.getAttributeNamed("id");
 		assertNotSame(javaPersistentAttribute, ormPersistentAttribute.getJavaPersistentAttribute());
+		assertEquals(AccessType.FIELD, javaPersistentAttribute.getAccess());
+		assertEquals(AccessType.PROPERTY, ormPersistentAttribute.getJavaPersistentAttribute().getAccess());
 		javaResourcePersistentAttribute = ormPersistentAttribute.getJavaPersistentAttribute().getResourcePersistentAttribute();
 		assertTrue(javaResourcePersistentAttribute.isForProperty());
 		assertEquals("id", javaResourcePersistentAttribute.getName());

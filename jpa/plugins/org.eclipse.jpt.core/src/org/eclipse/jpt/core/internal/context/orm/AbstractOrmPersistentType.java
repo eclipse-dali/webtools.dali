@@ -520,7 +520,8 @@ public abstract class AbstractOrmPersistentType
 				}
 			}
 		}
-		return getMappingFileRoot().getAccess();
+		AccessType access = getMappingFileRoot().getAccess();
+		return access != null ? access : AccessType.FIELD; //default to FIELD if no specified access found
 	}
 	
 	protected void initializeJavaPersistentType() {
@@ -577,11 +578,11 @@ public abstract class AbstractOrmPersistentType
 				return null;
 			}
 			AccessType ormAccess = AbstractOrmPersistentType.this.getAccess(ormPersistentAttribute); 
-			if (ormAccess == null || ormAccess == javaPersistentType.getAccess()) {//if ormAccess is null, we have to just default to java access
+			if (ormAccess == javaPersistentType.getAccess()) {
 				this.cachedJavaPersistentAttribute = null;  //we only want to cache the persistent attribute if we build it
 				return findExistingJavaPersistentAttribute(javaPersistentType, ormPersistentAttribute);
 			}
-			//if access is different, we won't be able to find the corresponding java attribute, it won't exist so we build it ourselves
+			//if access is different, we won't be able to find the corresponding java persistent attribute, it won't exist so we build it ourselves
 			return buildJavaPersistentAttribute(javaPersistentType, ormPersistentAttribute);
 		}
 		
@@ -591,15 +592,10 @@ public abstract class AbstractOrmPersistentType
 		
 		protected JavaPersistentAttribute buildJavaPersistentAttribute(JavaPersistentType javaPersistentType, OrmPersistentAttribute ormPersistentAttribute) {
 			AccessType ormAccess = AbstractOrmPersistentType.this.getAccess(ormPersistentAttribute); 
-		
+			String ormName = ormPersistentAttribute.getName();
 			//check the already cached javaPersistentAttribute to verify that it still matches name and access type
-			if (this.cachedJavaPersistentAttribute != null && ormPersistentAttribute.getName().equals(this.cachedJavaPersistentAttribute.getName())) {
-				if (this.cachedJavaPersistentAttribute.getResourcePersistentAttribute().isForField()) {
-					if (ormAccess == AccessType.FIELD) {
-						return this.cachedJavaPersistentAttribute;
-					}
-				}
-				else if (ormAccess == AccessType.PROPERTY) {
+			if (this.cachedJavaPersistentAttribute != null && this.cachedJavaPersistentAttribute.getName().equals(ormName)) {
+				if (this.cachedJavaPersistentAttribute.getAccess() == ormAccess) {
 					return this.cachedJavaPersistentAttribute;
 				}
 			}
@@ -609,7 +605,7 @@ public abstract class AbstractOrmPersistentType
 				javaResourceAttributes = javaPersistentType.getResourcePersistentType().persistableProperties();
 			}
 			for (JavaResourcePersistentAttribute jrpa : CollectionTools.iterable(javaResourceAttributes)) {
-				if (ormPersistentAttribute.getName().equals(jrpa.getName())) {
+				if (ormName.equals(jrpa.getName())) {
 					this.cachedJavaPersistentAttribute = getJpaFactory().buildJavaPersistentAttribute(AbstractOrmPersistentType.this, jrpa);
 					break;
 				}

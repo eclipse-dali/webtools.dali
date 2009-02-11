@@ -22,7 +22,7 @@ import org.eclipse.jpt.core.JpaStructureNode;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface PersistentAttribute
-	extends JpaContextNode, JpaStructureNode
+	extends JpaContextNode, JpaStructureNode, AccessHolder
 {
 	String getName();
 		String NAME_PROPERTY = "name"; //$NON-NLS-1$

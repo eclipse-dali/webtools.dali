@@ -344,7 +344,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		assertNull(ormPersistentType.getSpecifiedAccess());
-		assertNull(ormPersistentType.getDefaultAccess());
+		assertEquals(AccessType.FIELD, ormPersistentType.getDefaultAccess());
 		assertNull(entityResource.getAccess());
 		
 		getXmlEntityMappings().setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createXmlPersistenceUnitMetadata());
@@ -361,7 +361,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		
 		getXmlEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(null);
 		assertNull(ormPersistentType.getSpecifiedAccess());
-		assertNull(ormPersistentType.getDefaultAccess());
+		assertEquals(AccessType.FIELD, ormPersistentType.getDefaultAccess());
 		assertNull(entityResource.getAccess());
 	}
 	
@@ -369,8 +369,8 @@ public class OrmEntityTests extends ContextModelTestCase
 		createTestEntityDefaultFieldAccess();
 
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		//java has no annotations, so defaultAccess in xml is null
-		assertNull(ormPersistentType.getDefaultAccess());
+		//java has no annotations, defaultAccess in xml is FIELD anyway
+		assertEquals(AccessType.FIELD, ormPersistentType.getDefaultAccess());
 		
 		getEntityMappings().setSpecifiedAccess(AccessType.FIELD);
 		getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(AccessType.PROPERTY);		
@@ -382,7 +382,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		assertEquals(AccessType.PROPERTY, ormPersistentType.getDefaultAccess());
 		
 		getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(null);
-		assertNull(ormPersistentType.getDefaultAccess());
+		assertEquals(AccessType.FIELD, ormPersistentType.getDefaultAccess());
 		
 		ormPersistentType.getJavaPersistentType().getAttributeNamed("id").setSpecifiedMappingKey(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
 		//java has annotations on fields now, that should win in all cases
@@ -404,16 +404,16 @@ public class OrmEntityTests extends ContextModelTestCase
 		assertEquals(AccessType.FIELD, ormPersistentType.getDefaultAccess());
 		
 		ormEntity.setSpecifiedMetadataComplete(Boolean.TRUE);
-		assertNull(ormPersistentType.getDefaultAccess());
+		assertEquals(AccessType.FIELD, ormPersistentType.getDefaultAccess());
 		
 		ormEntity.setSpecifiedMetadataComplete(Boolean.FALSE);
 		assertEquals(AccessType.FIELD, ormPersistentType.getDefaultAccess());
 
 		getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
-		assertNull(ormPersistentType.getDefaultAccess());
+		assertEquals(AccessType.FIELD, ormPersistentType.getDefaultAccess());
 		
 		ormEntity.setSpecifiedMetadataComplete(null);
-		assertNull(ormPersistentType.getDefaultAccess());
+		assertEquals(AccessType.FIELD, ormPersistentType.getDefaultAccess());
 		
 		getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(false);
 		assertEquals(AccessType.FIELD, ormPersistentType.getDefaultAccess());
@@ -427,16 +427,16 @@ public class OrmEntityTests extends ContextModelTestCase
 		assertEquals(AccessType.PROPERTY, ormPersistentType.getDefaultAccess());
 		
 		ormEntity.setSpecifiedMetadataComplete(Boolean.TRUE);
-		assertNull(ormPersistentType.getDefaultAccess());
+		assertEquals(AccessType.FIELD, ormPersistentType.getDefaultAccess());
 		
 		ormEntity.setSpecifiedMetadataComplete(Boolean.FALSE);
 		assertEquals(AccessType.PROPERTY, ormPersistentType.getDefaultAccess());
 
 		getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
-		assertNull(ormPersistentType.getDefaultAccess());
+		assertEquals(AccessType.FIELD, ormPersistentType.getDefaultAccess());
 		
 		ormEntity.setSpecifiedMetadataComplete(null);
-		assertNull(ormPersistentType.getDefaultAccess());
+		assertEquals(AccessType.FIELD, ormPersistentType.getDefaultAccess());
 		
 		getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(false);
 		assertEquals(AccessType.PROPERTY, ormPersistentType.getDefaultAccess());
@@ -444,7 +444,7 @@ public class OrmEntityTests extends ContextModelTestCase
 	
 	public void testUpdateDefaultAccessNoUnderlyingJava() throws Exception {
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-		assertNull(ormPersistentType.getDefaultAccess());
+		assertEquals(AccessType.FIELD, ormPersistentType.getDefaultAccess());
 	}
 		
 	public void testUpdateSpecifiedMetadataComplete() throws Exception {

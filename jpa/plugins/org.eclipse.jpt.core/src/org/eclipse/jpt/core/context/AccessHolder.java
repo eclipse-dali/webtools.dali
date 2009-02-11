@@ -26,11 +26,12 @@ public interface AccessHolder extends JpaContextNode
 {
 	/**
 	 * Return the access type, whether specified or defaulted.
+	 * This should never return null since at least the default will be set
 	 */
 	AccessType getAccess();
 	
 	/**
-	 * Return the default access type;
+	 * Return the default access type, never null
 	 */
 	AccessType getDefaultAccess();
 

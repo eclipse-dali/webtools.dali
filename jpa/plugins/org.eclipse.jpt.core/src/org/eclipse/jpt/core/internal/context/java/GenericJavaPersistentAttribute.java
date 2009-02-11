@@ -15,6 +15,7 @@ import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.TypeMapping;
@@ -114,6 +115,29 @@ public class GenericJavaPersistentAttribute
 	public boolean isVirtual() {
 		return false;
 	}
+	
+	//****************** AccessHolder implementation *******************
+	
+	public AccessType getAccess() {
+		 return getSpecifiedAccess() != null ? getSpecifiedAccess() : getDefaultAccess();
+	}	
+	
+	/**
+	 * GenericJavaPersistentAttribute does not support specified access (no access element in 1.0), so we return null
+	 */
+	public AccessType getSpecifiedAccess() {
+		return null;
+	}
+	
+	public void setSpecifiedAccess(@SuppressWarnings("unused") AccessType newSpecifiedAccess) {
+		throw new UnsupportedOperationException("specifiedAccess is not supported for GenericJavaPersistentAttribute"); //$NON-NLS-1$
+	}
+	
+	public AccessType getDefaultAccess() {
+		return this.resourcePersistentAttribute.isForField() ? AccessType.FIELD : AccessType.PROPERTY;
+	}
+	
+	//****************** PersistentAttribute implementation *******************
 	
 	public String getName() {
 		return this.name;
