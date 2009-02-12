@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.tests.internal.context.java;
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.core.context.java.JavaEmbeddedMapping;
@@ -25,7 +26,8 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
-public class JavaPersistentAttributeTests extends ContextModelTestCase
+@SuppressWarnings("nls")
+public class GenericJavaPersistentAttributeTests extends ContextModelTestCase
 {
 
 	private ICompilationUnit createTestEntityAnnotatedField() throws Exception {
@@ -65,7 +67,7 @@ public class JavaPersistentAttributeTests extends ContextModelTestCase
 	}
 
 		
-	public JavaPersistentAttributeTests(String name) {
+	public GenericJavaPersistentAttributeTests(String name) {
 		super(name);
 	}
 		
@@ -211,5 +213,25 @@ public class JavaPersistentAttributeTests extends ContextModelTestCase
 		attributeResource.setMappingAnnotation(BasicAnnotation.ANNOTATION_NAME);
 				
 		assertEquals(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, persistentAttribute.getSpecifiedMapping().getKey());
+	}
+	
+	public void testGetAccessField() throws Exception {
+		createTestEntityAnnotatedField();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		assertEquals(AccessType.FIELD, persistentAttribute.getAccess());
+		assertEquals(AccessType.FIELD, persistentAttribute.getDefaultAccess());
+		assertEquals(null, persistentAttribute.getSpecifiedAccess());
+	}
+	
+	public void testGetAccessProperty() throws Exception {
+		createTestEntityAnnotatedMethod();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		assertEquals(AccessType.PROPERTY, persistentAttribute.getAccess());
+		assertEquals(AccessType.PROPERTY, persistentAttribute.getDefaultAccess());
+		assertEquals(null, persistentAttribute.getSpecifiedAccess());
 	}
 }

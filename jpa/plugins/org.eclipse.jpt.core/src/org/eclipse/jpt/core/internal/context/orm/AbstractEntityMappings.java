@@ -244,7 +244,7 @@ public abstract class AbstractEntityMappings
 	public void setSpecifiedAccess(AccessType access) {
 		AccessType old = this.specifiedAccess;
 		this.specifiedAccess = access;
-		this.xmlEntityMappings.setAccess(AccessType.toXmlResourceModel(access));
+		this.xmlEntityMappings.setAccess(AccessType.toOrmResourceModel(access));
 		this.firePropertyChanged(SPECIFIED_ACCESS_PROPERTY, old, access);
 	}
 
@@ -680,7 +680,7 @@ public abstract class AbstractEntityMappings
 	}
 	
 	protected AccessType getResourceAccess() {
-		return AccessType.fromXmlResourceModel(this.xmlEntityMappings.getAccess());
+		return AccessType.fromOrmResourceModel(this.xmlEntityMappings.getAccess());
 	}
 
 	protected void updatePersistentTypes() {

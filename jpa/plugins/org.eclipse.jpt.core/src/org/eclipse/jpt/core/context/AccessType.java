@@ -52,7 +52,7 @@ public enum AccessType {
 		}
 	}
 	
-	public static AccessType fromXmlResourceModel(org.eclipse.jpt.core.resource.orm.AccessType ormAccessType) {
+	public static AccessType fromOrmResourceModel(org.eclipse.jpt.core.resource.orm.AccessType ormAccessType) {
 		if (ormAccessType == null) {
 			return null;
 		}
@@ -66,7 +66,7 @@ public enum AccessType {
 		}
 	}
 	
-	public static org.eclipse.jpt.core.resource.orm.AccessType toXmlResourceModel(AccessType accessType) {
+	public static org.eclipse.jpt.core.resource.orm.AccessType toOrmResourceModel(AccessType accessType) {
 		if (accessType == null) {
 			return null;
 		}

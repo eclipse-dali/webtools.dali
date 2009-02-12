@@ -132,4 +132,9 @@ public interface JavaResourcePersistentType
 	 */
 	Iterator<JavaResourcePersistentAttribute> persistableAttributes();
 	
+	/**
+	 * Return the persitable properties and/or fields given the non-null specified access type
+	 */
+	Iterator<JavaResourcePersistentAttribute> persistableAttributes(AccessType specifiedAccess);
+	
 }

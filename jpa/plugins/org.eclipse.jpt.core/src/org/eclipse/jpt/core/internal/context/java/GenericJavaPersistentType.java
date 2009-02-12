@@ -23,7 +23,9 @@ public class GenericJavaPersistentType
 	
 	
 	//****************** PersistentType implementation *******************
-	
+	/**
+	 * GenericJavaPersistentType does not support specified access (no Access annotation in 1.0), so we return null
+	 */
 	public AccessType getSpecifiedAccess() {
 		return null;
 	}

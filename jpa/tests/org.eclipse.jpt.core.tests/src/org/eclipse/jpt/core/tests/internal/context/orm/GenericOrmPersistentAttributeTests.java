@@ -32,9 +32,9 @@ import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
-public class OrmPersistentAttributeTests extends ContextModelTestCase
+public class GenericOrmPersistentAttributeTests extends ContextModelTestCase
 {
-	public OrmPersistentAttributeTests(String name) {
+	public GenericOrmPersistentAttributeTests(String name) {
 		super(name);
 	}
 	

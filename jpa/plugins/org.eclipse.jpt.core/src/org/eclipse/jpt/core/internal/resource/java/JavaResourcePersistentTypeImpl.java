@@ -412,7 +412,23 @@ public class JavaResourcePersistentTypeImpl
 	public Iterator<JavaResourcePersistentAttribute> persistableAttributes() {
 		return new CompositeIterator<JavaResourcePersistentAttribute>(this.persistableFields(), this.persistableProperties());
 	}
-
+	
+	@SuppressWarnings("unchecked")
+	public Iterator<JavaResourcePersistentAttribute> persistableAttributes(AccessType specifiedAccess) {
+		if (specifiedAccess == null) {
+			throw new IllegalArgumentException("specified access is null"); //$NON-NLS-1$
+		}
+		if (specifiedAccess == AccessType.FIELD) {
+			return new CompositeIterator<JavaResourcePersistentAttribute>(
+				persistableFields(),
+				persistablePropertiesWithSpecifiedPropertyAccess());
+		
+		}
+		return new CompositeIterator<JavaResourcePersistentAttribute>(
+			persistableProperties(),
+			persistableFieldsWithSpecifiedFieldAccess());
+	}
+	
 
 	// ********** update from Java **********
 

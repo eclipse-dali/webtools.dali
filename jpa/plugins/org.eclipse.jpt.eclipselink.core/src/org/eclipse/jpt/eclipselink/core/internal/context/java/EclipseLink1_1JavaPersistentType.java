@@ -16,13 +16,12 @@ import org.eclipse.jpt.core.internal.context.java.AbstractJavaPersistentType;
 import org.eclipse.jpt.core.resource.java.AccessAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 
-public class EclipseLink1_1JavaPersistentTypeImpl extends AbstractJavaPersistentType
+public class EclipseLink1_1JavaPersistentType extends AbstractJavaPersistentType
 {
 	protected AccessType specifiedAccess;
 	
-	public EclipseLink1_1JavaPersistentTypeImpl(PersistentType.Owner parent, JavaResourcePersistentType jrpt) {
+	public EclipseLink1_1JavaPersistentType(PersistentType.Owner parent, JavaResourcePersistentType jrpt) {
 		super(parent, jrpt);
 	}
 	
@@ -51,22 +50,12 @@ public class EclipseLink1_1JavaPersistentTypeImpl extends AbstractJavaPersistent
 		firePropertyChanged(SPECIFIED_ACCESS_PROPERTY, oldAccess, newSpecifiedAccess);
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	protected Iterator<JavaResourcePersistentAttribute> persistentAttributes() {
 		AccessType specifiedAccess = getSpecifiedAccess();
-		if (specifiedAccess == AccessType.FIELD) {
-			return new CompositeIterator<JavaResourcePersistentAttribute>(
-				this.resourcePersistentType.persistableFields(),
-				this.resourcePersistentType.persistablePropertiesWithSpecifiedPropertyAccess());
-		
-		}
-		else if (specifiedAccess == AccessType.PROPERTY) {
-			return new CompositeIterator<JavaResourcePersistentAttribute>(
-				this.resourcePersistentType.persistableProperties(),
-				this.resourcePersistentType.persistableFieldsWithSpecifiedFieldAccess());
-		}
-		return super.persistentAttributes();
+		return specifiedAccess == null
+			? super.persistentAttributes()
+			: this.resourcePersistentType.persistableAttributes(AccessType.toJavaResourceModel(specifiedAccess));
 	}
 	
 	@Override

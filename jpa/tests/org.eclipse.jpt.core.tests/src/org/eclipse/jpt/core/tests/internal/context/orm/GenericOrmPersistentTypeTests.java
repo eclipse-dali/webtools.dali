@@ -37,9 +37,9 @@ import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 
 @SuppressWarnings("nls")
-public class OrmPersistentTypeTests extends ContextModelTestCase
+public class GenericOrmPersistentTypeTests extends ContextModelTestCase
 {
-	public OrmPersistentTypeTests(String name) {
+	public GenericOrmPersistentTypeTests(String name) {
 		super(name);
 	}
 	

@@ -14,14 +14,18 @@ import java.util.ListIterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.BasicMapping;
 import org.eclipse.jpt.core.context.IdMapping;
+import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmIdMapping;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmNullAttributeMapping;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmOneToOneMapping;
 import org.eclipse.jpt.core.resource.java.JPA;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
@@ -249,4 +253,62 @@ public class EclipseLinkOrmPersistentAttributeTests extends ContextModelTestCase
 		assertEquals("address", ormPersistentAttribute.getName());
 		assertEquals(MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY, ormPersistentAttribute.getMappingKey());
 	}
+	
+	public void testGetJavaPersistentAttribute() throws Exception {
+		createTestEntityIdMapping();
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		JavaPersistentType javaPersistentType = ormPersistentType.getJavaPersistentType();
+		
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.getAttributeNamed("id");
+		JavaPersistentAttribute javaPersistentAttribute = javaPersistentType.getAttributeNamed("id");
+			
+		//virtual orm attribute, access type matches java : FIELD, name matches java
+		assertTrue(ormPersistentAttribute.isVirtual());
+		assertNotSame(javaPersistentAttribute, ormPersistentAttribute.getJavaPersistentAttribute());
+		JavaResourcePersistentAttribute javaResourcePersistentAttribute = ormPersistentAttribute.getJavaPersistentAttribute().getResourcePersistentAttribute();
+		assertTrue(javaResourcePersistentAttribute.isForField());
+		assertEquals("id", javaResourcePersistentAttribute.getName());
+		assertEquals(javaPersistentType.getResourcePersistentType().persistableFields().next(), javaResourcePersistentAttribute);
+		
+		
+		//specified orm attribute, access type matches java : FIELD, name matches java
+		//javaPersistentAttribute should be == to java context model object
+		ormPersistentAttribute.makeSpecified();
+		ormPersistentAttribute = ormPersistentType.getAttributeNamed("id");
+		assertFalse(ormPersistentAttribute.isVirtual());
+		assertEquals(javaPersistentAttribute, ormPersistentAttribute.getJavaPersistentAttribute());
+	
+		
+		//virtual orm attribute, java access type FIELD, orm access type PROPERTY, name matches java
+		//verify the property java resource persistent attribute is used in orm.
+		ormPersistentAttribute.makeVirtual();
+		ormPersistentAttribute = ormPersistentType.getAttributeNamed("id");		
+		ormPersistentType.setSpecifiedAccess(AccessType.PROPERTY);
+		assertNotSame(ormPersistentAttribute, ormPersistentType.getAttributeNamed("id"));
+		ormPersistentAttribute = ormPersistentType.getAttributeNamed("id");
+		assertNotSame(javaPersistentAttribute, ormPersistentAttribute.getJavaPersistentAttribute());
+		javaResourcePersistentAttribute = ormPersistentAttribute.getJavaPersistentAttribute().getResourcePersistentAttribute();
+		assertTrue(javaResourcePersistentAttribute.isForProperty());
+		assertEquals("id", javaResourcePersistentAttribute.getName());
+		assertEquals(javaPersistentType.getResourcePersistentType().persistableProperties().next(), javaResourcePersistentAttribute);
+		
+		
+		ormPersistentType.setSpecifiedAccess(null);//default access will be field
+		ormPersistentAttribute = ormPersistentType.getAttributeNamed("id");		
+		ormPersistentAttribute.makeSpecified();
+		ormPersistentAttribute = ormPersistentType.getAttributeNamed("id");		
+		ormPersistentAttribute.getMapping().setName("id2");
+		assertEquals(null, ormPersistentAttribute.getJavaPersistentAttribute());
+		
+		ormPersistentAttribute.getMapping().setName(null);
+		assertEquals(null, ormPersistentAttribute.getJavaPersistentAttribute());
+
+		ormPersistentAttribute.getMapping().setName("id");
+		assertEquals(javaPersistentAttribute, ormPersistentAttribute.getJavaPersistentAttribute());
+
+		
+		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
+		assertEquals(javaPersistentAttribute, ormPersistentAttribute.getJavaPersistentAttribute());
+	}
+
 }

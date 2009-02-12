@@ -64,10 +64,6 @@ public abstract class AbstractOrmPersistentType
 
 	protected OrmTypeMapping typeMapping;
 	
-	//TODO this should be final, see changeMapping(OrmPersistentAttribute, OrmAttributeMapping, OrmAttributeMapping)
-	//as far as the update process is concerned, resourceTypeMapping is final.  unfortunately mapping morphing does not work that way yet
-	protected XmlTypeMapping resourceTypeMapping; 
-	
 	protected PersistentType parentPersistentType;
 	
 	protected JavaPersistentType javaPersistentType;
@@ -75,8 +71,7 @@ public abstract class AbstractOrmPersistentType
 	
 	protected AbstractOrmPersistentType(EntityMappings parent, XmlTypeMapping resourceMapping) {
 		super(parent);
-		this.resourceTypeMapping = resourceMapping;
-		this.typeMapping = buildTypeMapping();
+		this.typeMapping = buildTypeMapping(resourceMapping);
 		this.specifiedPersistentAttributes = new ArrayList<OrmPersistentAttribute>();
 		this.virtualPersistentAttributes = new ArrayList<OrmPersistentAttribute>();
 		this.specifiedAccess = this.getResourceAccess();
@@ -125,8 +120,8 @@ public abstract class AbstractOrmPersistentType
 		return (this.getDefaultPackage() + '.' +  mappingClassName).equals(typeName);
 	}
 	
-	protected OrmTypeMapping buildTypeMapping() {
-		return this.getJpaPlatform().buildOrmTypeMappingFromMappingKey(this, this.resourceTypeMapping);
+	protected OrmTypeMapping buildTypeMapping(XmlTypeMapping resourceMapping) {
+		return this.getJpaPlatform().buildOrmTypeMappingFromMappingKey(this, resourceMapping);
 	}
 
 	public OrmTypeMapping getMapping() {
@@ -178,8 +173,8 @@ public abstract class AbstractOrmPersistentType
 			return;
 		}
 		OrmTypeMapping oldMapping = getMapping();
-		this.resourceTypeMapping = getJpaPlatform().buildOrmResourceTypeMapping(newMappingKey, getContentType());
-		this.typeMapping = buildTypeMapping();
+		XmlTypeMapping resourceTypeMapping = getJpaPlatform().buildOrmResourceTypeMapping(newMappingKey, getContentType());
+		this.typeMapping = buildTypeMapping(resourceTypeMapping);
 		this.getEntityMappings().changeMapping(this, oldMapping, this.typeMapping);
 		firePropertyChanged(MAPPING_PROPERTY, oldMapping, this.typeMapping);
 	}
@@ -234,7 +229,7 @@ public abstract class AbstractOrmPersistentType
 	public void setSpecifiedAccess(AccessType newSpecifiedAccess) {
 		AccessType oldSpecifiedAccess = this.specifiedAccess;
 		this.specifiedAccess = newSpecifiedAccess;
-		this.resourceTypeMapping.setAccess(AccessType.toXmlResourceModel(newSpecifiedAccess));
+		this.getResourceTypeMapping().setAccess(AccessType.toOrmResourceModel(newSpecifiedAccess));
 		firePropertyChanged(SPECIFIED_ACCESS_PROPERTY, oldSpecifiedAccess, newSpecifiedAccess);
 	}
 
@@ -304,13 +299,20 @@ public abstract class AbstractOrmPersistentType
 		int removalIndex = this.virtualPersistentAttributes.indexOf(ormPersistentAttribute);
 		this.virtualPersistentAttributes.remove(ormPersistentAttribute);
 		newPersistentAttribute.getSpecifiedMapping().setName(ormPersistentAttribute.getName());
+		if (ormPersistentAttribute.getJavaPersistentAttribute().getSpecifiedAccess() != null) {
+			newPersistentAttribute.setSpecifiedAccess(ormPersistentAttribute.getJavaPersistentAttribute().getSpecifiedAccess());
+		}
 		
 		fireItemAdded(PersistentType.SPECIFIED_ATTRIBUTES_LIST, insertionIndex, newPersistentAttribute);
 		fireItemRemoved(VIRTUAL_ATTRIBUTES_LIST, removalIndex, ormPersistentAttribute);
 	}
 
+	protected XmlTypeMapping getResourceTypeMapping() {
+		return this.typeMapping.getResourceTypeMapping();
+	}
+	
 	protected Attributes getResourceAttributes() {
-		return this.resourceTypeMapping.getAttributes();
+		return this.getResourceTypeMapping().getAttributes();
 	}
 	
 	protected abstract Attributes createResourceAttributes();
@@ -360,20 +362,17 @@ public abstract class AbstractOrmPersistentType
 			}
 		};
 	}
-
-	protected OrmPersistentAttribute specifiedAttributeNamed(String attributeName) {
-		Iterator<OrmPersistentAttribute> stream = specifiedAttributesNamed(attributeName);
-		return (stream.hasNext()) ? stream.next() : null;
-		
-	}
 	
-	protected Iterator<OrmPersistentAttribute> specifiedAttributesNamed(final String attributeName) {
-		return new FilteringIterator<OrmPersistentAttribute, OrmPersistentAttribute>(specifiedAttributes()) {
-			@Override
-			protected boolean accept(OrmPersistentAttribute ormPersistentAttribute) {
-				return attributeName.equals(ormPersistentAttribute.getName());
+	protected OrmPersistentAttribute getSpecifiedAttributeFor(final JavaResourcePersistentAttribute jrpa) {
+		for (OrmPersistentAttribute persistentAttribute : CollectionTools.iterable(specifiedAttributes())) {
+			if (persistentAttribute.getJavaPersistentAttribute() == null) {
+				continue;
 			}
-		};
+			if ( jrpa.equals(persistentAttribute.getJavaPersistentAttribute().getResourcePersistentAttribute())) {
+				return persistentAttribute;
+			}
+		}
+		return null;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -504,15 +503,13 @@ public abstract class AbstractOrmPersistentType
 	}
 
 	protected AccessType getResourceAccess() {
-		return AccessType.fromXmlResourceModel(this.resourceTypeMapping.getAccess());
+		return AccessType.fromOrmResourceModel(this.getResourceTypeMapping().getAccess());
 	}
 
 	protected AccessType buildDefaultAccess() {
 		if (! getMapping().isMetadataComplete()) {
 			if (getJavaPersistentType() != null) {
-				//TODO for EclipseLink we need to check the specifiedAccess of the JavaPersistentType
-				//this will not do that in the case that it has a specified access but no attribute mapping annotations
-				if (getJavaPersistentType().hasAnyAttributeMappingAnnotations()) {
+				if (javaPersistentTypeHasSpecifiedAccess()) {
 					return getJavaPersistentType().getAccess();
 				}
 				if (getParentPersistentType() != null) {
@@ -522,6 +519,11 @@ public abstract class AbstractOrmPersistentType
 		}
 		AccessType access = getMappingFileRoot().getAccess();
 		return access != null ? access : AccessType.FIELD; //default to FIELD if no specified access found
+	}
+	
+	protected boolean javaPersistentTypeHasSpecifiedAccess() {
+		return getJavaPersistentType().getSpecifiedAccess() != null || 
+				getJavaPersistentType().hasAnyAttributeMappingAnnotations();
 	}
 	
 	protected void initializeJavaPersistentType() {
@@ -553,15 +555,14 @@ public abstract class AbstractOrmPersistentType
 	}
 	
 	protected OrmPersistentAttribute buildSpecifiedOrmPersistentAttribute(XmlAttributeMapping resourceMapping) {
-		return getJpaFactory().buildOrmPersistentAttribute(this, buildSpecifiedPersistentAttributeOwner(), resourceMapping);
+		return buildOrmPersistentAttribute(buildSpecifiedPersistentAttributeOwner(), resourceMapping);
 	}
 		
 	protected OrmPersistentAttribute.Owner buildSpecifiedPersistentAttributeOwner() {
 		return new SpecifiedPersistentAttributeOwner();
 	}
 	
-	//TODO for eclipselink we will need to check the ormPersistentAttribute access, also need to make an AbstractOrmPersistentType
-	protected AccessType getAccess(OrmPersistentAttribute ormPersistentAttribute) {
+	protected AccessType getAccess(@SuppressWarnings("unused") OrmPersistentAttribute ormPersistentAttribute) {
 		return getAccess();
 	}
 	
@@ -578,9 +579,10 @@ public abstract class AbstractOrmPersistentType
 				return null;
 			}
 			AccessType ormAccess = AbstractOrmPersistentType.this.getAccess(ormPersistentAttribute); 
-			if (ormAccess == javaPersistentType.getAccess()) {
+			JavaPersistentAttribute javaPersistentAtribute = findExistingJavaPersistentAttribute(javaPersistentType, ormPersistentAttribute);
+			if (javaPersistentAtribute == null || ormAccess == javaPersistentAtribute.getAccess()) {
 				this.cachedJavaPersistentAttribute = null;  //we only want to cache the persistent attribute if we build it
-				return findExistingJavaPersistentAttribute(javaPersistentType, ormPersistentAttribute);
+				return javaPersistentAtribute;
 			}
 			//if access is different, we won't be able to find the corresponding java persistent attribute, it won't exist so we build it ourselves
 			return buildJavaPersistentAttribute(javaPersistentType, ormPersistentAttribute);
@@ -625,12 +627,16 @@ public abstract class AbstractOrmPersistentType
 	}
 	
 	protected OrmPersistentAttribute buildVirtualOrmPersistentAttribute(JavaAttributeMapping javaAttributeMapping, XmlAttributeMapping resourceMapping) {
-		return getJpaFactory().buildOrmPersistentAttribute(this, buildVirtualPersistentAttributeOwner(javaAttributeMapping.getPersistentAttribute()), resourceMapping);
+		return buildOrmPersistentAttribute(buildVirtualPersistentAttributeOwner(javaAttributeMapping.getPersistentAttribute()), resourceMapping);
+	}
+
+	protected OrmPersistentAttribute buildOrmPersistentAttribute(OrmPersistentAttribute.Owner owner, XmlAttributeMapping resourceMapping) {
+		return getJpaFactory().buildOrmPersistentAttribute(this, owner, resourceMapping);
 	}
 	
 	protected OrmPersistentAttribute.Owner buildVirtualPersistentAttributeOwner(final JavaPersistentAttribute javaPersistentAttribute) {
 		return new OrmPersistentAttribute.Owner() {
-			public JavaPersistentAttribute findJavaPersistentAttribute(OrmPersistentAttribute ormPersistentAttribute) {
+			public JavaPersistentAttribute findJavaPersistentAttribute(@SuppressWarnings("unused") OrmPersistentAttribute ormPersistentAttribute) {
 				return javaPersistentAttribute;
 			}
 			
@@ -656,7 +662,7 @@ public abstract class AbstractOrmPersistentType
 		
 		while (javaResourceAttributes.hasNext()) {
 			JavaResourcePersistentAttribute javaResourceAttribute = javaResourceAttributes.next();
-			if (specifiedAttributeNamed(javaResourceAttribute.getName()) == null) {
+			if (getSpecifiedAttributeFor(javaResourceAttribute) == null) {
 				addVirtualPersistentAttribute(javaResourceAttribute);
 			}
 		}
@@ -665,11 +671,15 @@ public abstract class AbstractOrmPersistentType
 	protected Iterator<JavaResourcePersistentAttribute> javaPersistentAttributes() {
 		JavaPersistentType javaPersistentType = getJavaPersistentType();
 		if (javaPersistentType != null) {
-			return (this.getAccess() == AccessType.PROPERTY) ?
-				javaPersistentType.getResourcePersistentType().persistableProperties() :
-				javaPersistentType.getResourcePersistentType().persistableFields();
+			return javaPersistentAttributes(javaPersistentType.getResourcePersistentType());
 		}
 		return EmptyListIterator.instance();
+	}
+
+	protected Iterator<JavaResourcePersistentAttribute> javaPersistentAttributes(JavaResourcePersistentType resourcePersistentType) {
+		return (this.getAccess() == AccessType.PROPERTY) ?
+				resourcePersistentType.persistableProperties() :
+				resourcePersistentType.persistableFields();
 	}
 
 	protected void initializeParentPersistentType() {
@@ -772,7 +782,8 @@ public abstract class AbstractOrmPersistentType
 		
 		Iterator<JavaResourcePersistentAttribute> javaResourceAttributes = this.javaPersistentAttributes();
 		for (JavaResourcePersistentAttribute javaResourceAttribute : CollectionTools.iterable(javaResourceAttributes)) {
-			if (specifiedAttributeNamed(javaResourceAttribute.getName()) == null) {
+			OrmPersistentAttribute specifiedAttribute = getSpecifiedAttributeFor(javaResourceAttribute);
+			if (specifiedAttribute == null) {
 				JavaPersistentAttribute javaAttribute = getJpaFactory().buildJavaPersistentAttribute(this, javaResourceAttribute);
 				JavaAttributeMapping javaAttributeMapping = javaAttribute.getMapping();
 				if (getMapping().isMetadataComplete()) {

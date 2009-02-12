@@ -49,7 +49,7 @@ public class GenericPersistenceUnitDefaults
 		this.xmlEntityMappings = xmlEntityMappings;
 		XmlPersistenceUnitDefaults resourceDefaults = this.getResourceDefaults();
 		if (resourceDefaults != null) {
-			this.access = AccessType.fromXmlResourceModel(resourceDefaults.getAccess());
+			this.access = AccessType.fromOrmResourceModel(resourceDefaults.getAccess());
 			this.specifiedCatalog = resourceDefaults.getCatalog();
 			this.specifiedSchema = resourceDefaults.getSchema();
 			this.cascadePersist = resourceDefaults.isCascadePersist();
@@ -89,7 +89,7 @@ public class GenericPersistenceUnitDefaults
 			if (resourceDefaults == null) {
 				resourceDefaults = this.buildResourceDefaults();
 			}
-			resourceDefaults.setAccess(AccessType.toXmlResourceModel(access));
+			resourceDefaults.setAccess(AccessType.toOrmResourceModel(access));
 			this.checkResourceDefaults(resourceDefaults);
 			this.firePropertyChanged(ACCESS_PROPERTY, old, access);
 		}
@@ -274,7 +274,7 @@ public class GenericPersistenceUnitDefaults
 			this.setSpecifiedSchema_(null);
 			this.setCascadePersist_(false);
 		} else {
-			this.setAccess_(AccessType.fromXmlResourceModel(resourceDefaults.getAccess()));
+			this.setAccess_(AccessType.fromOrmResourceModel(resourceDefaults.getAccess()));
 			this.setSpecifiedCatalog_(resourceDefaults.getCatalog());
 			this.setSpecifiedSchema_(resourceDefaults.getSchema());
 			this.setCascadePersist_(resourceDefaults.isCascadePersist());

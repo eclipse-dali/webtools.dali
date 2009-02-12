@@ -473,7 +473,7 @@ public class NewEntityClassOperation extends AbstractDataModelOperation {
 		if (!model.isFieldAccess()) {
 			accessTypeString = PROPERTY;
 		}
-		return AccessType.fromXmlResourceModel(OrmFactory.eINSTANCE.createAccessTypeFromString(null, accessTypeString));// TODO
+		return AccessType.fromOrmResourceModel(OrmFactory.eINSTANCE.createAccessTypeFromString(null, accessTypeString));// TODO
 	}
 
 	protected InheritanceType getModelInheritanceType(CreateEntityTemplateModel model) {
