@@ -41,6 +41,7 @@ import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmVersionMapping;
 import org.eclipse.jpt.core.context.orm.OrmXml;
+import org.eclipse.jpt.core.context.orm.PersistenceUnitMetadata;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
@@ -79,6 +80,7 @@ import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmOneTo
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmPersistentType;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmVersionMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmXml;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkPersistenceUnitMetadata;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkVirtualXmlBasic;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkVirtualXmlEmbedded;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkVirtualXmlEmbeddedId;
@@ -208,6 +210,10 @@ public class EclipseLinkJpaFactory
 	
 	public EntityMappings buildEclipseLinkEntityMappings(OrmXml parent, XmlEntityMappings xmlEntityMappings) {
 		return new EclipseLinkEntityMappingsImpl(parent, xmlEntityMappings);
+	}
+	
+	public PersistenceUnitMetadata buildEclipseLinkPersistenceUnitMetadata(EntityMappings parent, XmlEntityMappings xmlEntityMappings) {
+		return new EclipseLinkPersistenceUnitMetadata(parent, xmlEntityMappings);
 	}
 
 	public OrmPersistentType buildEclipseLinkOrmPersistentType(EclipseLinkEntityMappings parent , XmlTypeMapping resourceMapping) {

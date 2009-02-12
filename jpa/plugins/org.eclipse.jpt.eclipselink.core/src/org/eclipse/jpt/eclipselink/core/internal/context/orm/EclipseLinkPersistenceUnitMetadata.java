@@ -7,21 +7,22 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.internal.context.orm;
+package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
 import org.eclipse.jpt.core.context.orm.EntityMappings;
-import org.eclipse.jpt.core.resource.orm.OrmFactory;
+import org.eclipse.jpt.core.internal.context.orm.AbstractPersistenceUnitMetadata;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitMetadata;
+import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 
-public class GenericPersistenceUnitMetadata extends AbstractPersistenceUnitMetadata
+public class EclipseLinkPersistenceUnitMetadata extends AbstractPersistenceUnitMetadata
 {
 
-	public GenericPersistenceUnitMetadata(EntityMappings parent, XmlEntityMappings resource) {
+	public EclipseLinkPersistenceUnitMetadata(EntityMappings parent, XmlEntityMappings resource) {
 		super(parent, resource);
 	}
 
 	public XmlPersistenceUnitMetadata createResourcePersistenceUnitMetadata() {
-		return OrmFactory.eINSTANCE.createXmlPersistenceUnitMetadata();
+		return EclipseLinkOrmFactory.eINSTANCE.createXmlPersistenceUnitMetadata();
 	}
 }

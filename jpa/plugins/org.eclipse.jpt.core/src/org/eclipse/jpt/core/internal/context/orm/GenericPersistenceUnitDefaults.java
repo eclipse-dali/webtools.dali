@@ -61,7 +61,20 @@ public class GenericPersistenceUnitDefaults
 	public boolean resourceExists() {
 		return getResourceDefaults() != null;
 	}
-
+	
+	@Override
+	public PersistenceUnitMetadata getParent() {
+		return (PersistenceUnitMetadata) super.getParent();
+	}
+	
+	protected XmlPersistenceUnitMetadata getResourcePersistenceUnitMetadata() {
+		return getParent().getResourcePersistenceUnitMetadata();
+	}
+	
+	protected XmlPersistenceUnitMetadata createResourcePersistenceUnitMetadata() {
+		return getParent().createResourcePersistenceUnitMetadata();
+	}
+	
 	// ********** access **********
 
 	public AccessType getAccess() {
@@ -230,9 +243,9 @@ public class GenericPersistenceUnitDefaults
 	 * build the resource defaults and the resource metadata if necessary
 	 */
 	protected XmlPersistenceUnitDefaults buildResourceDefaults() {
-		XmlPersistenceUnitMetadata resourceMetadata = this.xmlEntityMappings.getPersistenceUnitMetadata();
+		XmlPersistenceUnitMetadata resourceMetadata = getResourcePersistenceUnitMetadata();
 		if (resourceMetadata == null) {
-			resourceMetadata = OrmFactory.eINSTANCE.createXmlPersistenceUnitMetadata();
+			resourceMetadata = createResourcePersistenceUnitMetadata();
 			this.xmlEntityMappings.setPersistenceUnitMetadata(resourceMetadata);
 		}
 		XmlPersistenceUnitDefaults resourceDefaults = OrmFactory.eINSTANCE.createXmlPersistenceUnitDefaults();
@@ -276,7 +289,7 @@ public class GenericPersistenceUnitDefaults
 	}
 
 	protected XmlPersistenceUnitDefaults getResourceDefaults() {
-		XmlPersistenceUnitMetadata metadata = this.xmlEntityMappings.getPersistenceUnitMetadata();
+		XmlPersistenceUnitMetadata metadata = getResourcePersistenceUnitMetadata();
 		return (metadata == null) ? null : metadata.getPersistenceUnitDefaults();
 	}
 

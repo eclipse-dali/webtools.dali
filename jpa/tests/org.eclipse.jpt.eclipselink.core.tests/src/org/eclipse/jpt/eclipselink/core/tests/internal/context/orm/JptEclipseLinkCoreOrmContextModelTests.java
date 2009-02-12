@@ -23,6 +23,8 @@ public class JptEclipseLinkCoreOrmContextModelTests extends TestCase
 	public static Test suite(boolean all) {
 		TestSuite suite = new TestSuite(JptEclipseLinkCoreOrmContextModelTests.class.getName());
 		suite.addTestSuite(EclipseLinkEntityMappingsTests.class);
+		suite.addTestSuite(EclipseLinkPersistenceUnitMetadataTests.class);
+		suite.addTestSuite(EclipseLinkPersistenceUnitDefaultsTests.class);
 		suite.addTestSuite(EclipseLinkOrmEmbeddableTests.class);
 		suite.addTestSuite(EclipseLinkOrmEntityTests.class);
 		suite.addTestSuite(EclipseLinkOrmMappedSuperclassTests.class);

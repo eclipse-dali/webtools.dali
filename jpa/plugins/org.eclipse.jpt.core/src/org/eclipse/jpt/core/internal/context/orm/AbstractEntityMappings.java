@@ -98,7 +98,7 @@ public abstract class AbstractEntityMappings
 		this.namedQueries = new ArrayList<OrmNamedQuery>();
 		this.namedNativeQueries = new ArrayList<OrmNamedNativeQuery>();
 		
-		this.persistenceUnitMetadata = getJpaFactory().buildPersistenceUnitMetadata(this, this.xmlEntityMappings);
+		this.persistenceUnitMetadata = buildPersistenceUnitMetadata();
 		this.description = this.xmlEntityMappings.getDescription();
 		this.package_ = this.xmlEntityMappings.getPackage();
 
@@ -118,7 +118,7 @@ public abstract class AbstractEntityMappings
 		this.initializeNamedNativeQueries();
 	}
 	
-	
+	protected abstract PersistenceUnitMetadata buildPersistenceUnitMetadata();
 	// **************** JpaNode impl *******************************************
 	
 	@Override
