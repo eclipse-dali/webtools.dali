@@ -13,14 +13,13 @@ import org.eclipse.jpt.core.context.IdMapping;
 import org.eclipse.jpt.eclipselink.core.context.Convert;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkIdMappingComposite;
 import org.eclipse.jpt.ui.WidgetFactory;
-import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
-//Temporary to remove the Converters section from orm basic mapping.
+//Removing the Converters section from EclipseLink 1.0 orm basic mapping.
 //This is supported in EclipseLink in version 1.1, but not 1.0
-public class EclipseLinkOrmIdMappingComposite extends EclipseLinkIdMappingComposite implements JpaComposite
+public class EclipseLinkOrmIdMappingComposite extends EclipseLinkIdMappingComposite
 {
 	/**
 	 * Creates a new <code>EclipseLinkOrmIdMappingComposite</code>.

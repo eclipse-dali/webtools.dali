@@ -82,7 +82,7 @@ public class EclipseLinkIdMappingComposite extends FormPane<IdMapping>
 		super(subjectHolder, parent, widgetFactory);
 	}
 
-	private PropertyValueModel<? extends Column> buildColumnHolder() {
+	protected PropertyValueModel<? extends Column> buildColumnHolder() {
 		return new TransformationPropertyValueModel<IdMapping, Column>(getSubjectHolder())  {
 			@Override
 			protected Column transform_(IdMapping value) {
