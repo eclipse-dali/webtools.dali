@@ -99,9 +99,6 @@ public abstract class BaseJpaPlatformUi
 	private AttributeMappingUiProvider<? extends AttributeMapping>[] ormAttributeMappingUiProviders;
 	private DefaultAttributeMappingUiProvider<? extends AttributeMapping>[] defaultOrmAttributeMappingUiProviders;
 
-	/**
-	 * zero-argument constructor
-	 */
 	protected BaseJpaPlatformUi(
 		JpaUiFactory jpaUiFactory,
 		JpaNavigatorProvider navigatorProvider,
