@@ -9,8 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.orm.details;
 
+import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
-import org.eclipse.jpt.core.context.orm.OrmStructureNode;
+import org.eclipse.jpt.core.context.orm.OrmStructureNodes;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaDetailsPage;
 import org.eclipse.jpt.ui.details.JpaDetailsProvider;
@@ -42,7 +44,11 @@ public class EntityMappingsDetailsProvider
 	}
 	
 	public String getId() {
-		return OrmStructureNode.ENTITY_MAPPINGS_ID;
+		return OrmStructureNodes.ENTITY_MAPPINGS_ID;
+	}
+	
+	public IContentType getContentType() {
+		return JptCorePlugin.ORM_XML_CONTENT_TYPE;
 	}
 	
 	public JpaDetailsPage<EntityMappings> buildDetailsPage(

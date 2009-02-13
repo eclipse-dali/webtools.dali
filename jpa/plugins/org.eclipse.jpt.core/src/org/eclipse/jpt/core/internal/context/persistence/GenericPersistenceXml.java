@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.context.persistence;
 import java.util.List;
 
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
@@ -67,6 +68,10 @@ public class GenericPersistenceXml
 	public String getId() {
 		// isn't actually displayed, so needs no details page
 		return null;
+	}
+	
+	public IContentType getContentType() {
+		return JptCorePlugin.PERSISTENCE_XML_CONTENT_TYPE;
 	}
 	
 	

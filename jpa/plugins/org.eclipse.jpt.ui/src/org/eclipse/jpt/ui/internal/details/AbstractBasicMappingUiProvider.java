@@ -25,7 +25,7 @@ public abstract class AbstractBasicMappingUiProvider<T extends BasicMapping>
 	
 	
 	public Image getImage() {
-		return JpaMappingImageHelper.imageForAttributeMapping(getMappingKey());
+		return JpaMappingImageHelper.imageForAttributeMapping(getKey());
 	}
 	
 	public String getLabel() {
@@ -36,7 +36,7 @@ public abstract class AbstractBasicMappingUiProvider<T extends BasicMapping>
 		return JptUiMappingsMessages.BasicMappingUiProvider_linkLabel;
 	}
 	
-	public String getMappingKey() {
+	public String getKey() {
 		return MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY;
 	}
 }

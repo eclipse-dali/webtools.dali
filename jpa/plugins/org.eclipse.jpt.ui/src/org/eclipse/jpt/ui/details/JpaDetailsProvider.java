@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.details;
 
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.swt.widgets.Composite;
@@ -19,7 +20,7 @@ import org.eclipse.swt.widgets.Composite;
  *
  * @see JpaDetailsPage
  *
- * @version 2.0
+ * @version 2.2
  * @since 2.0
  *
  * Provisional API: This interface is part of an interim API that is still
@@ -47,4 +48,9 @@ public interface JpaDetailsProvider
 	 * Return the id of the corresponding JpaStructureNode.
 	 */
 	String getId();
+	
+	/**
+	 * Return the content type of the reosurce
+	 */
+	IContentType getContentType();
 }

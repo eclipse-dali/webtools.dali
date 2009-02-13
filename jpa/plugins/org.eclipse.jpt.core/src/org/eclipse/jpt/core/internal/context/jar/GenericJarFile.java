@@ -11,8 +11,10 @@ package org.eclipse.jpt.core.internal.context.jar;
 
 import java.util.List;
 
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaNode;
 import org.eclipse.jpt.core.JpaStructureNode;
+import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.jar.JarFile;
 import org.eclipse.jpt.core.internal.context.AbstractJpaContextNode;
@@ -40,7 +42,11 @@ public class GenericJarFile
 	public String getId() {
 		return null;
 	}
-
+	
+	public IContentType getContentType() {
+		return JptCorePlugin.JAR_CONTENT_TYPE;
+	}
+	
 	public TextRange getSelectionTextRange() {
 		return null;
 	}

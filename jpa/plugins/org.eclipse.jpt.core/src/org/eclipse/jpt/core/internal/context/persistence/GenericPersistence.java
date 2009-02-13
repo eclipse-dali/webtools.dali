@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2007 Oracle. 
+ *  Copyright (c) 2007, 2009 Oracle. 
  *  All rights reserved.  This program and the accompanying materials 
  *  are made available under the terms of the Eclipse Public License v1.0 
  *  which accompanies this distribution, and is available at 
@@ -12,7 +12,9 @@ package org.eclipse.jpt.core.internal.context.persistence;
 
 import java.util.List;
 import java.util.ListIterator;
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaStructureNode;
+import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceStructureNodes;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
@@ -46,6 +48,10 @@ public class GenericPersistence extends AbstractXmlContextNode
 	
 	public String getId() {
 		return PersistenceStructureNodes.PERSISTENCE_ID;
+	}
+	
+	public IContentType getContentType() {
+		return getParent().getContentType();
 	}
 	
 	public XmlPersistence getXmlPersistence() {

@@ -25,7 +25,7 @@ public abstract class AbstractIdMappingUiProvider<T extends IdMapping>
 	
 	
 	public Image getImage() {
-		return JpaMappingImageHelper.imageForAttributeMapping(getMappingKey());
+		return JpaMappingImageHelper.imageForAttributeMapping(getKey());
 	}
 	
 	public String getLabel() {
@@ -36,7 +36,7 @@ public abstract class AbstractIdMappingUiProvider<T extends IdMapping>
 		return JptUiMappingsMessages.IdMappingUiProvider_linkLabel;
 	}
 	
-	public String getMappingKey() {
+	public String getKey() {
 		return MappingKeys.ID_ATTRIBUTE_MAPPING_KEY;
 	}
 }

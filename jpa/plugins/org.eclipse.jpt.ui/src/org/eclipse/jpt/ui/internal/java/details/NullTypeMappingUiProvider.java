@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.java.details;
 
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.ui.JpaUiFactory;
@@ -44,8 +45,11 @@ public class NullTypeMappingUiProvider
 		super();
 	}
 	
+	public IContentType getContentType() {
+		throw new UnsupportedOperationException();
+	}
 	
-	public String getMappingKey() {
+	public String getKey() {
 		return null;
 	}
 	

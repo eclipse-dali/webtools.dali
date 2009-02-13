@@ -9,8 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.mappings.details;
 
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.eclipselink.core.EclipseLinkMappingKeys;
 import org.eclipse.jpt.eclipselink.core.context.TransformationMapping;
+import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.ui.JpaUiFactory;
 import org.eclipse.jpt.ui.JptUiPlugin;
@@ -44,6 +46,9 @@ public class EclipseLinkTransformationMappingUiProvider
 		super();
 	}
 	
+	public IContentType getContentType() {
+		return JptEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_CONTENT_TYPE;
+	}
 	
 	public Image getImage() {
 		return JptUiPlugin.getImage(JptUiIcons.JPA_CONTENT);
@@ -57,7 +62,7 @@ public class EclipseLinkTransformationMappingUiProvider
 		return EclipseLinkUiMappingsMessages.TransformationMappingUiProvider_linkLabel;
 	}
 	
-	public String getMappingKey() {
+	public String getKey() {
 		return EclipseLinkMappingKeys.TRANSFORMATION_ATTRIBUTE_MAPPING_KEY;
 	}
 	

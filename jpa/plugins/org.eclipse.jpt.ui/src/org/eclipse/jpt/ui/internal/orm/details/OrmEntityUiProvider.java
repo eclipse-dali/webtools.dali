@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.orm.details;
 
+import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.ui.JpaUiFactory;
 import org.eclipse.jpt.ui.WidgetFactory;
@@ -40,6 +42,9 @@ public class OrmEntityUiProvider
 		super();
 	}
 	
+	public IContentType getContentType() {
+		return JptCorePlugin.ORM_XML_CONTENT_TYPE;
+	}
 	
 	public JpaComposite buildPersistentTypeMappingComposite(
 			JpaUiFactory factory,

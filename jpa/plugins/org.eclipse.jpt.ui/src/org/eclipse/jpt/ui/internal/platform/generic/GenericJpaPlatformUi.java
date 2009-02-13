@@ -11,6 +11,7 @@ package org.eclipse.jpt.ui.internal.platform.generic;
 
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.core.JpaProject;
+import org.eclipse.jpt.ui.JpaPlatformUiProvider;
 import org.eclipse.jpt.ui.JpaUiFactory;
 import org.eclipse.jpt.ui.internal.GenericJpaUiFactory;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
@@ -21,7 +22,7 @@ public class GenericJpaPlatformUi
 	extends BaseJpaPlatformUi
 {
 
-	public GenericJpaPlatformUi() {
+	public GenericJpaPlatformUi(JpaPlatformUiProvider... platformUiProviders) {
 		super();
 	}
 

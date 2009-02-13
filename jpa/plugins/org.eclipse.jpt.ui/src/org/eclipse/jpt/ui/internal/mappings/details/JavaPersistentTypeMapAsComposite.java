@@ -11,6 +11,7 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.util.Collection;
 import java.util.Iterator;
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.ui.details.DefaultMappingUiProvider;
@@ -63,11 +64,15 @@ public class JavaPersistentTypeMapAsComposite extends PersistentTypeMapAsComposi
 				return null;
 			}
 			
-			public String getMappingKey() {
+			public IContentType getContentType() {
+				throw new UnsupportedOperationException();
+			}
+			
+			public String getKey() {
 				return null;
 			}
 			
-			public String getDefaultMappingKey() {
+			public String getDefaultKey() {
 				return null;
 			}
 		};

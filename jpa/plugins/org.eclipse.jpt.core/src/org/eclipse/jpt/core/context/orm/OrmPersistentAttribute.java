@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.orm;
 
-import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
@@ -83,9 +82,6 @@ public interface OrmPersistentAttribute
 	boolean contains(int textOffset);
 
 	void nameChanged(String oldName, String newName);
-
-	IContentType getContentType();
-
 	
 	// ********** updating **********
 	

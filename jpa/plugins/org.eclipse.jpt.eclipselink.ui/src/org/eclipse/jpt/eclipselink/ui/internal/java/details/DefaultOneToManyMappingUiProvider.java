@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.java.details;
 
+import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
@@ -44,14 +46,17 @@ public class DefaultOneToManyMappingUiProvider
 	private DefaultOneToManyMappingUiProvider() {
 		super();
 	}
-	
+		
+	public IContentType getContentType() {
+		return JptCorePlugin.JAVA_SOURCE_CONTENT_TYPE;
+	}
 	
 	@Override
-	public String getMappingKey() {
+	public String getKey() {
 		return null;
 	}
 	
-	public String getDefaultMappingKey() {
+	public String getDefaultKey() {
 		return MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY;
 	}
 	
@@ -67,7 +72,7 @@ public class DefaultOneToManyMappingUiProvider
 
 	@Override
 	public Image getImage() {
-		return JpaMappingImageHelper.imageForAttributeMapping(getDefaultMappingKey());
+		return JpaMappingImageHelper.imageForAttributeMapping(getDefaultKey());
 	}
 	
 	public JpaComposite buildAttributeMappingComposite(

@@ -22,7 +22,7 @@ import org.eclipse.jpt.core.context.java.JavaPersistentType;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface OrmPersistentType
-	extends PersistentType, PersistentType.Owner, OrmStructureNode, XmlContextNode
+	extends PersistentType, PersistentType.Owner, XmlContextNode
 {
 	/**
 	 * covariant override

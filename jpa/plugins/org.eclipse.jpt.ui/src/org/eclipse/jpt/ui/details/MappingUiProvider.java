@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.details;
 
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.swt.graphics.Image;
 
 /**
@@ -55,5 +56,10 @@ public interface MappingUiProvider<T> {
 	 *
 	 * @return The key representing the mapping
 	 */
-	String getMappingKey();
+	String getKey();
+	
+	/**
+	 * Return the content type of the mapping
+	 */
+	IContentType getContentType();
 }

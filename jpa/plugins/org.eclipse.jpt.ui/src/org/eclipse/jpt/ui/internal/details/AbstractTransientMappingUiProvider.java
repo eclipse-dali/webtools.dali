@@ -24,7 +24,7 @@ public abstract class AbstractTransientMappingUiProvider<T extends TransientMapp
 	
 	
 	public Image getImage() {
-		return JpaMappingImageHelper.imageForAttributeMapping(getMappingKey());
+		return JpaMappingImageHelper.imageForAttributeMapping(getKey());
 	}
 	
 	public String getLabel() {
@@ -35,7 +35,7 @@ public abstract class AbstractTransientMappingUiProvider<T extends TransientMapp
 		return JptUiMappingsMessages.TransientMappingUiProvider_linkLabel;
 	}
 	
-	public String getMappingKey() {
+	public String getKey() {
 		return MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY;
 	}		
 }

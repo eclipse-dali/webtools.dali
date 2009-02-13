@@ -90,7 +90,7 @@ public class JavaPersistentAttributeDetailsPage extends PersistentAttributeDetai
 		for (Iterator<DefaultAttributeMappingUiProvider<? extends AttributeMapping>> i = defaultAttributeMappingUiProviders(); i.hasNext(); ) {
 			DefaultAttributeMappingUiProvider<? extends AttributeMapping> provider = i.next();
 
-			if (provider.getDefaultMappingKey() == key) {
+			if (provider.getDefaultKey() == key) {
 				return provider;
 			}
 		}

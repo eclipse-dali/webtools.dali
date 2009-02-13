@@ -23,7 +23,7 @@ public abstract class AbstractEmbeddedIdMappingUiProvider<T extends EmbeddedIdMa
 {
 	protected AbstractEmbeddedIdMappingUiProvider() {}
 	
-	public String getMappingKey() {
+	public String getKey() {
 		return MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY;
 	}
 
@@ -36,6 +36,6 @@ public abstract class AbstractEmbeddedIdMappingUiProvider<T extends EmbeddedIdMa
 	}
 
 	public Image getImage() {
-		return JpaMappingImageHelper.imageForAttributeMapping(getMappingKey());
+		return JpaMappingImageHelper.imageForAttributeMapping(getKey());
 	}
 }

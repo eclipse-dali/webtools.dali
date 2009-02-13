@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.context.orm;
 
 import java.util.ListIterator;
+import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.MappingFileRoot;
 import org.eclipse.jpt.core.context.PersistentType;
@@ -27,7 +28,7 @@ import org.eclipse.jpt.db.SchemaContainer;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface EntityMappings 
-	extends OrmStructureNode, MappingFileRoot, PersistentType.Owner, QueryContainer
+	extends MappingFileRoot, JpaStructureNode, PersistentType.Owner, QueryContainer
 {
 	XmlEntityMappings getXmlEntityMappings();
 	

@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.java.details;
 
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.ui.JpaUiFactory;
@@ -44,9 +45,12 @@ public class NullAttributeMappingUiProvider
 		super();
 	}
 	
-	
+	public IContentType getContentType() {
+		throw new UnsupportedOperationException();
+	}
+
 	public Image getImage() {
-		return JpaMappingImageHelper.imageForAttributeMapping(getMappingKey());
+		return JpaMappingImageHelper.imageForAttributeMapping(getKey());
 	}
 	
 	public String getLabel() {
@@ -57,11 +61,11 @@ public class NullAttributeMappingUiProvider
 		return null;
 	}
 	
-	public String getMappingKey() {
+	public String getKey() {
 		return null;
 	}
 	
-	public String getDefaultMappingKey() {
+	public String getDefaultKey() {
 		return MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY;
 	}
 	

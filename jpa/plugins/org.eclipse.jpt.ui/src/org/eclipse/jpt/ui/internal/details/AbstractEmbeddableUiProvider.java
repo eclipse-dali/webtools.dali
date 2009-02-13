@@ -23,7 +23,7 @@ public abstract class AbstractEmbeddableUiProvider<T extends Embeddable>
 	protected AbstractEmbeddableUiProvider() {}
 	
 	
-	public String getMappingKey() {
+	public String getKey() {
 		return MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY;
 	}
 	
@@ -36,6 +36,6 @@ public abstract class AbstractEmbeddableUiProvider<T extends Embeddable>
 	}
 	
 	public Image getImage() {
-		return JpaMappingImageHelper.imageForTypeMapping(getMappingKey());
+		return JpaMappingImageHelper.imageForTypeMapping(getKey());
 	}
 }

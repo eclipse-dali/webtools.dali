@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.java.details;
 
+import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.eclipselink.core.EclipseLinkMappingKeys;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaVariableOneToOneMapping;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
@@ -45,11 +47,15 @@ public class DefaultVariableOneToOneMappingUiProvider
 		super();
 	}
 	
-	public String getMappingKey() {
+	public IContentType getContentType() {
+		return JptCorePlugin.JAVA_SOURCE_CONTENT_TYPE;
+	}
+	
+	public String getKey() {
 		return null;
 	}
 	
-	public String getDefaultMappingKey() {
+	public String getDefaultKey() {
 		return EclipseLinkMappingKeys.VARIABLE_ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY;
 	}	
 	

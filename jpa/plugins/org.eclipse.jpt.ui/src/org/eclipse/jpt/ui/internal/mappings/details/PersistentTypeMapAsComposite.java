@@ -79,7 +79,7 @@ public abstract class PersistentTypeMapAsComposite<T extends PersistentType> ext
 			}
 
 			public void morphMapping(MappingUiProvider<?> provider) {
-				getSubject().setMappingKey(provider.getMappingKey());
+				getSubject().setMappingKey(provider.getKey());
 			}
 
 			public String getName() {

@@ -103,7 +103,7 @@ public abstract class MapAsComposite<T extends Model> extends Pane<T> {
 
 	protected DefaultMappingUiProvider<?> getDefaultProvider(String mappingKey) {
 		for (DefaultMappingUiProvider<?> provider : CollectionTools.iterable(this.mappingChangeHandler.defaultProviders())) {
-			if (provider.getDefaultMappingKey() == mappingKey) {
+			if (provider.getDefaultKey() == mappingKey) {
 				return provider;
 			}
 		}
@@ -112,7 +112,7 @@ public abstract class MapAsComposite<T extends Model> extends Pane<T> {
 	
 	protected MappingUiProvider<?> getProvider(String mappingKey) {
 		for (MappingUiProvider<?> provider : CollectionTools.iterable(this.mappingChangeHandler.providers())) {
-			if (provider.getMappingKey() == mappingKey) {
+			if (provider.getKey() == mappingKey) {
 				return provider;
 			}
 		}
@@ -295,7 +295,7 @@ public abstract class MapAsComposite<T extends Model> extends Pane<T> {
 		for (Iterator<? extends MappingUiProvider<?>> iter = mappingChangeHandler.providers(); iter.hasNext(); ) {
 			MappingUiProvider<?> provider = iter.next();
 
-			if (getMappingKey() == provider.getMappingKey()) {
+			if (getMappingKey() == provider.getKey()) {
 				return provider;
 			}
 		}

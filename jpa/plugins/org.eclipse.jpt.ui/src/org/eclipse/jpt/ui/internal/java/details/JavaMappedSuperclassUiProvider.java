@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.java.details;
 
+import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.java.JavaMappedSuperclass;
 import org.eclipse.jpt.ui.JpaUiFactory;
 import org.eclipse.jpt.ui.WidgetFactory;
@@ -39,6 +41,9 @@ public class JavaMappedSuperclassUiProvider extends AbstractMappedSuperclassUiPr
 		super();
 	}
 	
+	public IContentType getContentType() {
+		return JptCorePlugin.JAVA_SOURCE_CONTENT_TYPE;
+	}
 	
 	public JpaComposite buildPersistentTypeMappingComposite(
 		JpaUiFactory factory,

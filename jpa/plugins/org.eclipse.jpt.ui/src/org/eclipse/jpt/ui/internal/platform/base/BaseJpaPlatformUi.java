@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -29,6 +28,7 @@ import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.ui.JpaPlatformUi;
+import org.eclipse.jpt.ui.JpaPlatformUiProvider;
 import org.eclipse.jpt.ui.JpaUiFactory;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
@@ -49,13 +49,10 @@ import org.eclipse.jpt.ui.internal.java.details.JavaManyToOneMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.details.JavaMappedSuperclassUiProvider;
 import org.eclipse.jpt.ui.internal.java.details.JavaOneToManyMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.details.JavaOneToOneMappingUiProvider;
-import org.eclipse.jpt.ui.internal.java.details.JavaPersistentAttributeDetailsProvider;
-import org.eclipse.jpt.ui.internal.java.details.JavaPersistentTypeDetailsProvider;
 import org.eclipse.jpt.ui.internal.java.details.JavaTransientMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.details.JavaVersionMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.details.NullAttributeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.details.NullTypeMappingUiProvider;
-import org.eclipse.jpt.ui.internal.orm.details.EntityMappingsDetailsProvider;
 import org.eclipse.jpt.ui.internal.orm.details.OrmBasicMappingUiProvider;
 import org.eclipse.jpt.ui.internal.orm.details.OrmEmbeddableUiProvider;
 import org.eclipse.jpt.ui.internal.orm.details.OrmEmbeddedIdMappingUiProvider;
@@ -67,16 +64,18 @@ import org.eclipse.jpt.ui.internal.orm.details.OrmManyToOneMappingUiProvider;
 import org.eclipse.jpt.ui.internal.orm.details.OrmMappedSuperclassUiProvider;
 import org.eclipse.jpt.ui.internal.orm.details.OrmOneToManyMappingUiProvider;
 import org.eclipse.jpt.ui.internal.orm.details.OrmOneToOneMappingUiProvider;
-import org.eclipse.jpt.ui.internal.orm.details.OrmPersistentAttributeDetailsProvider;
-import org.eclipse.jpt.ui.internal.orm.details.OrmPersistentTypeDetailsProvider;
 import org.eclipse.jpt.ui.internal.orm.details.OrmTransientMappingUiProvider;
 import org.eclipse.jpt.ui.internal.orm.details.OrmVersionMappingUiProvider;
 import org.eclipse.jpt.ui.internal.structure.JavaResourceModelStructureProvider;
 import org.eclipse.jpt.ui.internal.structure.OrmResourceModelStructureProvider;
 import org.eclipse.jpt.ui.internal.structure.PersistenceResourceModelStructureProvider;
 import org.eclipse.jpt.ui.structure.JpaStructureProvider;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayListIterator;
+import org.eclipse.jpt.utility.internal.iterators.CompositeListIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
+import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
+import org.eclipse.jpt.utility.internal.iterators.TransformationListIterator;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -86,7 +85,7 @@ public abstract class BaseJpaPlatformUi
 {
 	private final JpaUiFactory jpaUiFactory;
 
-	private JpaDetailsProvider[] detailsProviders;
+	private final JpaPlatformUiProvider[] platformUiProviders;
 
 	private TypeMappingUiProvider<? extends TypeMapping>[] javaTypeMappingUiProviders;
 	private AttributeMappingUiProvider<? extends AttributeMapping>[] javaAttributeMappingUiProviders;
@@ -101,9 +100,10 @@ public abstract class BaseJpaPlatformUi
 	/**
 	 * zero-argument constructor
 	 */
-	protected BaseJpaPlatformUi() {
+	protected BaseJpaPlatformUi(JpaPlatformUiProvider... platformUiProviders) {
 		super();
 		this.jpaUiFactory = this.buildJpaUiFactory();
+		this.platformUiProviders = platformUiProviders;
 	}
 
 
@@ -115,7 +115,14 @@ public abstract class BaseJpaPlatformUi
 
 	protected abstract JpaUiFactory buildJpaUiFactory();
 
+	
+	// ********** platform ui providers **********
+	
+	protected synchronized ListIterator<JpaPlatformUiProvider> platformUiProviders() {
+		return new ArrayListIterator<JpaPlatformUiProvider>(this.platformUiProviders);
+	}
 
+	
 	// ********** details providers **********
 
 	public JpaDetailsPage<? extends JpaStructureNode> buildJpaDetailsPage(Composite parent, JpaStructureNode structureNode, WidgetFactory widgetFactory) {
@@ -124,39 +131,39 @@ public abstract class BaseJpaPlatformUi
 	}
 	
 	protected JpaDetailsProvider getDetailsProvider(JpaStructureNode structureNode) {
-		for (JpaDetailsProvider provider : this.getDetailsProviders(structureNode)) {
-			if (provider.getId() == structureNode.getId()) {
+		return getDetailsProvider(structureNode.getContentType(), structureNode.getId());
+	}
+	
+	protected JpaDetailsProvider getDetailsProvider(IContentType contentType, String id) {
+		for (JpaDetailsProvider provider : CollectionTools.iterable(this.detailsProviders(id))) {
+			if (provider.getContentType().isKindOf(contentType)) {
 				return provider;
 			}
 		}
-		return null;
-	}
-
-	//TODO EclipseLinkJpaPlatformUi is using the JpaStructureNode to check if the orm type is  EclipseLinkOrmResource.TYPE, 
-	//we need another way to handle this
-	protected synchronized JpaDetailsProvider[] getDetailsProviders(JpaStructureNode structureNode) {
-		if (this.detailsProviders == null) {
-			this.detailsProviders = this.buildDetailsProviders();
+		if (contentType.getBaseType() != null) {
+			return getDetailsProvider(contentType.getBaseType(), id);
 		}
-		return this.detailsProviders;
+		return null;//return null, some structure nodes do not have a details page
+	}
+	
+	protected Iterator<JpaDetailsProvider> detailsProviders(final String id) {
+		return new FilteringIterator<JpaDetailsProvider, JpaDetailsProvider>(detailsProviders()) {
+			@Override
+			protected boolean accept(JpaDetailsProvider o) {
+				return o.getId() == id;
+			}
+		};
 	}
 
-	protected JpaDetailsProvider[] buildDetailsProviders() {
-		ArrayList<JpaDetailsProvider> providers = new ArrayList<JpaDetailsProvider>();
-		this.addDetailsProvidersTo(providers);
-		return providers.toArray(new JpaDetailsProvider[providers.size()]);
-	}
-
-	/**
-	 * Override this to specify more or different details providers.
-	 * The default includes the JPA spec-defined java and orm.xml
-	 */
-	protected void addDetailsProvidersTo(List<JpaDetailsProvider> providers) {
-		providers.add(JavaPersistentTypeDetailsProvider.instance());
-		providers.add(JavaPersistentAttributeDetailsProvider.instance());
-		providers.add(EntityMappingsDetailsProvider.instance());
-		providers.add(OrmPersistentTypeDetailsProvider.instance());
-		providers.add(OrmPersistentAttributeDetailsProvider.instance());
+	protected ListIterator<JpaDetailsProvider> detailsProviders() {
+		return new CompositeListIterator<JpaDetailsProvider> ( 
+			new TransformationListIterator<JpaPlatformUiProvider, ListIterator<JpaDetailsProvider>>(this.platformUiProviders()) {
+				@Override
+				protected ListIterator<JpaDetailsProvider> transform(JpaPlatformUiProvider platformProvider) {
+					return platformProvider.detailsProviders();
+				}
+			}
+		);
 	}
 
 

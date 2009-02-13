@@ -129,7 +129,7 @@ public abstract class MapAsContribution extends CompoundContributionItem
 					CommandContributionItem.STYLE_CHECK);
 		parameter.label = mappingUiProvider.getLabel();
 		Map<String, String> parameters = new HashMap<String, String>();
-		parameters.put(commandParameterId(), mappingUiProvider.getMappingKey());
+		parameters.put(commandParameterId(), mappingUiProvider.getKey());
 		parameter.parameters = parameters;
 		parameter.icon = new ImageImageDescriptor(mappingUiProvider.getImage());
 		parameter.visibleEnabled = true;
@@ -158,6 +158,6 @@ public abstract class MapAsContribution extends CompoundContributionItem
 	 * (for example "org.eclipse.jpt.core.ui.persistentTypeMapAs.entity")
 	 */
 	protected String createCommandContributionItemId(MappingUiProvider<?> mappingUiProvider) {
-		return commandId() + "." + mappingUiProvider.getMappingKey();
+		return commandId() + "." + mappingUiProvider.getKey();
 	}
 }

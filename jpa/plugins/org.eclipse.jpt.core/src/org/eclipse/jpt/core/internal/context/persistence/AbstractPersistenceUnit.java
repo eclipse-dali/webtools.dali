@@ -17,6 +17,7 @@ import java.util.ListIterator;
 import java.util.Set;
 import java.util.Vector;
 
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.AccessType;
@@ -218,6 +219,10 @@ public abstract class AbstractPersistenceUnit
 
 	public String getId() {
 		return PersistenceStructureNodes.PERSISTENCE_UNIT_ID;
+	}
+	
+	public IContentType getContentType() {
+		return getParent().getContentType();
 	}
 
 	public TextRange getSelectionTextRange() {

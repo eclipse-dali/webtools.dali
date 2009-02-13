@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.java.details;
 
+import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.java.JavaVersionMapping;
 import org.eclipse.jpt.ui.JpaUiFactory;
 import org.eclipse.jpt.ui.WidgetFactory;
@@ -38,6 +40,10 @@ public class JavaVersionMappingUiProvider
 	 */
 	private JavaVersionMappingUiProvider() {
 		super();
+	}
+	
+	public IContentType getContentType() {
+		return JptCorePlugin.JAVA_SOURCE_CONTENT_TYPE;
 	}
 	
 	

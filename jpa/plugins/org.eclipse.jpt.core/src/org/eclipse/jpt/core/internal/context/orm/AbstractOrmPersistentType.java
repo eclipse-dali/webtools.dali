@@ -30,6 +30,7 @@ import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.context.orm.OrmStructureNodes;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
@@ -106,7 +107,7 @@ public abstract class AbstractOrmPersistentType
 	}
 	
 	public String getId() {
-		return PERSISTENT_TYPE_ID;
+		return OrmStructureNodes.PERSISTENT_TYPE_ID;
 	}
 
 	public boolean isFor(String typeName) {

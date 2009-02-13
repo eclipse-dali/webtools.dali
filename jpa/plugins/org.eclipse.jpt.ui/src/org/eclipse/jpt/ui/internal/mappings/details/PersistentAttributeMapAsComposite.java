@@ -110,7 +110,7 @@ public abstract class PersistentAttributeMapAsComposite<T extends PersistentAttr
 			}
 
 			public void morphMapping(MappingUiProvider<?> provider) {
-				getSubject().setSpecifiedMappingKey(provider.getMappingKey());
+				getSubject().setSpecifiedMappingKey(provider.getKey());
 			}
 
 			public String getName() {

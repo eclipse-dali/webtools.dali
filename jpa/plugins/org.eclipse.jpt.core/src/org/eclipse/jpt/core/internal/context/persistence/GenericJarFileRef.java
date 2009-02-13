@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.context.persistence;
 
 import java.util.List;
 
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.jar.JarFile;
@@ -50,14 +51,23 @@ public class GenericJarFileRef
 		JarResourcePackageFragmentRoot jrpfr = this.getJpaProject().getJarResourcePackageFragmentRoot(this.getJarFileName());
 		return (jrpfr == null) ? null : this.buildJarFile(jrpfr);
 	}
+	
+	@Override
+	public PersistenceUnit getParent() {
+		return (PersistenceUnit) super.getParent();
+	}
 
-
+	
 	// ********** JpaStructureNode implementation **********
 
 	public String getId() {
 		return PersistenceStructureNodes.JAR_FILE_REF_ID;
 	}
-
+	
+	public IContentType getContentType() {
+		return getParent().getContentType();
+	}
+	
 	public JpaStructureNode getStructureNode(int textOffset) {
 		return this;
 	}

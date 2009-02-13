@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.orm.details;
 
+import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmEntity;
 import org.eclipse.jpt.ui.JpaUiFactory;
 import org.eclipse.jpt.ui.WidgetFactory;
@@ -33,6 +35,9 @@ public class EclipseLinkOrmEntityUiProvider
 		return INSTANCE;
 	}
 	
+	public IContentType getContentType() {
+		return JptEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_CONTENT_TYPE;
+	}
 	
 	/**
 	 * Ensure single instance.

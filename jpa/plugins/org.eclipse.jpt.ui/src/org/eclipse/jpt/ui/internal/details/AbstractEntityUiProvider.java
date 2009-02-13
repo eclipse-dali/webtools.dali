@@ -23,7 +23,7 @@ public abstract class AbstractEntityUiProvider<T extends Entity>
 	protected AbstractEntityUiProvider() {}
 	
 	
-	public String getMappingKey() {
+	public String getKey() {
 		return MappingKeys.ENTITY_TYPE_MAPPING_KEY;
 	}
 	
@@ -36,6 +36,6 @@ public abstract class AbstractEntityUiProvider<T extends Entity>
 	}
 	
 	public Image getImage() {
-		return JpaMappingImageHelper.imageForTypeMapping(getMappingKey());
+		return JpaMappingImageHelper.imageForTypeMapping(getKey());
 	}
 }

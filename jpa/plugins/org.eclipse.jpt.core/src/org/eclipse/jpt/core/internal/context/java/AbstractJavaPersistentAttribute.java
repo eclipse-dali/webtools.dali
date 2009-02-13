@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.context.java;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.MappingKeys;
@@ -55,6 +56,10 @@ public abstract class AbstractJavaPersistentAttribute
 	
 	public String getId() {
 		return JavaStructureNodes.PERSISTENT_ATTRIBUTE_ID;
+	}
+	
+	public IContentType getContentType() {
+		return getPersistentType().getContentType();
 	}
 
 	protected void initialize(JavaResourcePersistentAttribute jrpa) {

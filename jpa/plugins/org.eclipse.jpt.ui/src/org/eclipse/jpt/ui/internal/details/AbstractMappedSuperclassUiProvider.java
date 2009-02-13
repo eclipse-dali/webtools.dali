@@ -23,7 +23,7 @@ public abstract class AbstractMappedSuperclassUiProvider<T extends MappedSupercl
 	protected AbstractMappedSuperclassUiProvider() {}
 	
 	
-	public String getMappingKey() {
+	public String getKey() {
 		return MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY;
 	}
 	
@@ -36,6 +36,6 @@ public abstract class AbstractMappedSuperclassUiProvider<T extends MappedSupercl
 	}
 	
 	public Image getImage() {
-		return JpaMappingImageHelper.imageForTypeMapping(getMappingKey());
+		return JpaMappingImageHelper.imageForTypeMapping(getKey());
 	}
 }

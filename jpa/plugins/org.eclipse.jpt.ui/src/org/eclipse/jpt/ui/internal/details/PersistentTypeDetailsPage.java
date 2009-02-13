@@ -79,7 +79,10 @@ public abstract class PersistentTypeDetailsPage<T extends PersistentType> extend
 	@SuppressWarnings("unchecked")
 	protected JpaComposite buildMappingComposite(PageBook pageBook,
 	                                                            String key)  {
-
+//		return getJpaPlatformUi().buildPersistentTypeMappingComposite(
+//			buildMappingHolder(key),
+//			pageBook,
+//			getWidgetFactory());
 		TypeMappingUiProvider<TypeMapping> uiProvider =
 			(TypeMappingUiProvider<TypeMapping>) typeMappingUiProvider(key);
 
@@ -260,7 +263,7 @@ public abstract class PersistentTypeDetailsPage<T extends PersistentType> extend
 	private TypeMappingUiProvider<? extends TypeMapping> typeMappingUiProvider(String key) {
 		for (Iterator<TypeMappingUiProvider<? extends TypeMapping>> iter = this.typeMappingUiProviders(); iter.hasNext();) {
 			TypeMappingUiProvider<? extends TypeMapping> provider = iter.next();
-			if (provider.getMappingKey() == key) {
+			if (provider.getKey() == key) {
 				return provider;
 			}
 		}

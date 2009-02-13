@@ -23,7 +23,7 @@ public abstract class AbstractEmbeddedMappingUiProvider<T extends EmbeddedMappin
 	protected AbstractEmbeddedMappingUiProvider() {}
 	
 	
-	public String getMappingKey() {
+	public String getKey() {
 		return MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY;
 	}
 
@@ -36,6 +36,6 @@ public abstract class AbstractEmbeddedMappingUiProvider<T extends EmbeddedMappin
 	}
 
 	public Image getImage() {
-		return JpaMappingImageHelper.imageForAttributeMapping(getMappingKey());
+		return JpaMappingImageHelper.imageForAttributeMapping(getKey());
 	}
 }

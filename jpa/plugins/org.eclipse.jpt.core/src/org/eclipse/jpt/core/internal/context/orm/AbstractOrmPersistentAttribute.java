@@ -18,7 +18,7 @@ import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.core.context.orm.OrmStructureNode;
+import org.eclipse.jpt.core.context.orm.OrmStructureNodes;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
@@ -30,7 +30,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 
 public abstract class AbstractOrmPersistentAttribute extends AbstractXmlContextNode
-	implements OrmStructureNode, OrmPersistentAttribute
+	implements OrmPersistentAttribute
 {
 	protected final Owner owner;
 
@@ -68,7 +68,7 @@ public abstract class AbstractOrmPersistentAttribute extends AbstractXmlContextN
 	}
 	
 	public String getId() {
-		return PERSISTENT_ATTRIBUTE_ID;
+		return OrmStructureNodes.PERSISTENT_ATTRIBUTE_ID;
 	}
 	
 	public AccessType getAccess() {

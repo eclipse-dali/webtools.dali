@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.orm.details;
 
+import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmOneToManyMapping;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipselinkOneToManyMappingComposite;
 import org.eclipse.jpt.ui.JpaUiFactory;
@@ -41,6 +43,9 @@ public class EclipseLinkOrmOneToManyMappingUiProvider
 		super();
 	}
 	
+	public IContentType getContentType() {
+		return JptEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_CONTENT_TYPE;
+	}
 	
 	public JpaComposite buildAttributeMappingComposite(
 			JpaUiFactory factory,

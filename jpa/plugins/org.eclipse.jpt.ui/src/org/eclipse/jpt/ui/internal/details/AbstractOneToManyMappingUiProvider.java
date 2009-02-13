@@ -24,7 +24,7 @@ public abstract class AbstractOneToManyMappingUiProvider<T extends OneToManyMapp
 	
 	
 	public Image getImage() {
-		return JpaMappingImageHelper.imageForAttributeMapping(getMappingKey());
+		return JpaMappingImageHelper.imageForAttributeMapping(getKey());
 	}
 	
 	public String getLabel() {
@@ -35,7 +35,7 @@ public abstract class AbstractOneToManyMappingUiProvider<T extends OneToManyMapp
 		return JptUiMappingsMessages.OneToManyMappingUiProvider_linkLabel;
 	}
 	
-	public String getMappingKey() {
+	public String getKey() {
 		return MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY;
 	}
 }

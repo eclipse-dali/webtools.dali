@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core;
 
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.utility.TextRange;
 
 
@@ -44,9 +45,15 @@ public interface JpaStructureNode extends JpaNode
 	 * Return a unique identifier for all of this class of structure nodes
 	 */
 	String getId();
+	
+	/**
+	 * Return the content type of the structure node's resource.
+	 * This is used to find the appropriate ui provider for building composites 
+	 */
+	IContentType getContentType();
 
 	/**
-	 * Dispose of this structureNode and dispose of chil structureNodes.
+	 * Dispose of this structureNode and dispose of child structureNodes.
 	 * Typically this would be used to update the JpaFile rootStructureNodes.
 	 */
 	void dispose();

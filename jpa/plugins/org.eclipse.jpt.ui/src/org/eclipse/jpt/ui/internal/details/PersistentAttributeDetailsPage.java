@@ -70,7 +70,7 @@ public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribu
 	protected AttributeMappingUiProvider<? extends AttributeMapping> getAttributeMappingUiProvider(String key) {
 		for (Iterator<AttributeMappingUiProvider<? extends AttributeMapping>> i = attributeMappingUiProviders(); i.hasNext(); ) {
 			AttributeMappingUiProvider<? extends AttributeMapping> provider = i.next();
-			if (provider.getMappingKey() == key) {
+			if (provider.getKey() == key) {
 				return provider;
 			}
 		}

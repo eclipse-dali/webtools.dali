@@ -9,8 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.orm.details;
 
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaStructureNode;
-import org.eclipse.jpt.core.context.orm.OrmStructureNode;
+import org.eclipse.jpt.core.context.orm.OrmStructureNodes;
+import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaDetailsPage;
 import org.eclipse.jpt.ui.details.JpaDetailsProvider;
@@ -45,9 +47,13 @@ public class EclipseLinkEntityMappingsDetailsProvider
 	}
 	
 	public String getId() {
-		return OrmStructureNode.ENTITY_MAPPINGS_ID;
+		return OrmStructureNodes.ENTITY_MAPPINGS_ID;
 	}
-
+	
+	public IContentType getContentType() {
+		return JptEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_CONTENT_TYPE;
+	}
+	
 	public JpaDetailsPage<? extends JpaStructureNode> buildDetailsPage(
 		Composite parent,
 		WidgetFactory widgetFactory) {

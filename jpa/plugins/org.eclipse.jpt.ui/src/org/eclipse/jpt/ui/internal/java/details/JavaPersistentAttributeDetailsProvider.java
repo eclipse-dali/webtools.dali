@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.java.details;
 
+import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaStructureNodes;
 import org.eclipse.jpt.ui.WidgetFactory;
@@ -43,6 +45,10 @@ public class JavaPersistentAttributeDetailsProvider
 	
 	public String getId() {
 		return JavaStructureNodes.PERSISTENT_ATTRIBUTE_ID;
+	}
+	
+	public IContentType getContentType() {
+		return JptCorePlugin.JAVA_SOURCE_CONTENT_TYPE;
 	}
 
 	public JpaDetailsPage<JavaPersistentAttribute> buildDetailsPage(

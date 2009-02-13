@@ -33,6 +33,7 @@ import org.eclipse.jpt.core.context.orm.OrmPersistenceUnitDefaults;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmQuery;
 import org.eclipse.jpt.core.context.orm.OrmSequenceGenerator;
+import org.eclipse.jpt.core.context.orm.OrmStructureNodes;
 import org.eclipse.jpt.core.context.orm.OrmTableGenerator;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmXml;
@@ -142,7 +143,7 @@ public abstract class AbstractEntityMappings
 	// **************** JpaStructureNode impl **********************************
 	
 	public String getId() {
-		return ENTITY_MAPPINGS_ID;
+		return OrmStructureNodes.ENTITY_MAPPINGS_ID;
 	}
 	
 	
