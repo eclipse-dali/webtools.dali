@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -28,24 +28,18 @@ import org.osgi.framework.BundleContext;
  */
 public class JptEclipseLinkUiPlugin extends AbstractUIPlugin
 {
-	private static JptEclipseLinkUiPlugin INSTANCE;
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.eclipse.jpt.eclipselink.ui";
+	public static final String PLUGIN_ID = "org.eclipse.jpt.eclipselink.ui"; //$NON-NLS-1$
 
-	// The shared instance
-	private static JptEclipseLinkUiPlugin plugin;
-
-	// ********** constructors **********
-	public JptEclipseLinkUiPlugin() {
-		super();
-		INSTANCE = this;
-	}
+	
+	// ********** singleton **********
+	private static JptEclipseLinkUiPlugin INSTANCE;
 
 	/**
 	 * Returns the singleton Plugin
 	 */
-	public static JptEclipseLinkUiPlugin getPlugin() {
+	public static JptEclipseLinkUiPlugin instance() {
 		return INSTANCE;
 	}
 
@@ -84,34 +78,21 @@ public class JptEclipseLinkUiPlugin extends AbstractUIPlugin
 	}
 
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
-	 */
+	
+	// ********** constructors **********
+	public JptEclipseLinkUiPlugin() {
+		super();
+		INSTANCE = this;
+	}
+
 	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
-		plugin = this;
+		INSTANCE = this;
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
-	 */
 	@Override
 	public void stop(BundleContext context) throws Exception {
-		plugin = null;
+		INSTANCE = null;
 		super.stop(context);
-	}
-
-	/**
-	 * Returns the shared instance
-	 * 
-	 * @return the shared instance
-	 */
-	public static JptEclipseLinkUiPlugin getDefault() {
-		return plugin;
 	}
 }

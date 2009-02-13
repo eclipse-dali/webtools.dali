@@ -92,7 +92,7 @@ public class JpaStructureView
 	}
 	
 	private JpaPlatformUi getPlatformUi(JpaFile jpaFile) {
-		return JptUiPlugin.getPlugin().getJpaPlatformUi(jpaFile.getJpaProject().getJpaPlatform());
+		return JptUiPlugin.instance().getJpaPlatformUi(jpaFile.getJpaProject().getJpaPlatform());
 	}
 	
 	@Override

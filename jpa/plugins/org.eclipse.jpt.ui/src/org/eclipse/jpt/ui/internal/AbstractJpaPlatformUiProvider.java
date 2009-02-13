@@ -15,6 +15,7 @@ import java.util.ListIterator;
 
 import org.eclipse.jpt.ui.JpaPlatformUiProvider;
 import org.eclipse.jpt.ui.details.JpaDetailsProvider;
+import org.eclipse.jpt.ui.structure.JpaStructureProvider;
 import org.eclipse.jpt.utility.internal.iterators.ArrayListIterator;
 
 /**
@@ -25,6 +26,7 @@ public abstract class AbstractJpaPlatformUiProvider implements JpaPlatformUiProv
 {
 	private JpaDetailsProvider[] detailsProviders;
 
+	private JpaStructureProvider[] mappingFileStructureProviders;
 
 	/**
 	 * zero-argument constructor
@@ -54,7 +56,36 @@ public abstract class AbstractJpaPlatformUiProvider implements JpaPlatformUiProv
 	}
 
 	/**
-	 * Implement this to specify JPA resource model providers.
+	 * Implement this to specify JPA details providers.
 	 */
 	protected abstract void addDetailsProvidersTo(List<JpaDetailsProvider> providers);
+	
+	
+	
+	// ********** structure providers **********
+
+	public ListIterator<JpaStructureProvider> mappingFileStructureProviders() {
+		return new ArrayListIterator<JpaStructureProvider>(getMappingFileStructureProviders());
+	}
+	
+	protected synchronized JpaStructureProvider[] getMappingFileStructureProviders() {
+		if (this.mappingFileStructureProviders == null) {
+			this.mappingFileStructureProviders = this.buildMappingFileStructureProviders();
+		}
+		return this.mappingFileStructureProviders;
+	}
+
+	protected JpaStructureProvider[] buildMappingFileStructureProviders() {
+		ArrayList<JpaStructureProvider> providers = new ArrayList<JpaStructureProvider>();
+		this.addMappingFileStructureProvidersTo(providers);
+		return providers.toArray(new JpaStructureProvider[providers.size()]);
+	}
+
+	/**
+	 * Implement this to specify JPA mapping file structure providers.
+	 */
+	protected abstract void addMappingFileStructureProvidersTo(List<JpaStructureProvider> providers);
+	
+	
+
 }

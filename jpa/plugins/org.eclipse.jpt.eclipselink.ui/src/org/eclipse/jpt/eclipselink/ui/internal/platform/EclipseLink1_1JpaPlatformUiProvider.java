@@ -10,9 +10,11 @@
 package org.eclipse.jpt.eclipselink.ui.internal.platform;
 
 import java.util.List;
+import org.eclipse.jpt.eclipselink.ui.internal.structure.EclipseLink1_1OrmResourceModelStructureProvider;
 import org.eclipse.jpt.ui.JpaPlatformUiProvider;
 import org.eclipse.jpt.ui.details.JpaDetailsProvider;
 import org.eclipse.jpt.ui.internal.AbstractJpaPlatformUiProvider;
+import org.eclipse.jpt.ui.structure.JpaStructureProvider;
 
 public class EclipseLink1_1JpaPlatformUiProvider extends AbstractJpaPlatformUiProvider
 {
@@ -40,5 +42,12 @@ public class EclipseLink1_1JpaPlatformUiProvider extends AbstractJpaPlatformUiPr
 	@Override
 	protected void addDetailsProvidersTo(List<JpaDetailsProvider> providers) {
 		//none specific to EclipseLink 1.1
+	}
+	
+	// ********** structure providers **********
+	
+	@Override
+	protected void addMappingFileStructureProvidersTo(List<JpaStructureProvider> providers) {
+		providers.add(EclipseLink1_1OrmResourceModelStructureProvider.instance());
 	}
 }

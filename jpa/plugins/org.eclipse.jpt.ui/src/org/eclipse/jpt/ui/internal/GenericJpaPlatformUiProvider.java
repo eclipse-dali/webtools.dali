@@ -10,7 +10,6 @@
 package org.eclipse.jpt.ui.internal;
 
 import java.util.List;
-
 import org.eclipse.jpt.ui.JpaPlatformUiProvider;
 import org.eclipse.jpt.ui.details.JpaDetailsProvider;
 import org.eclipse.jpt.ui.internal.java.details.JavaPersistentAttributeDetailsProvider;
@@ -18,6 +17,8 @@ import org.eclipse.jpt.ui.internal.java.details.JavaPersistentTypeDetailsProvide
 import org.eclipse.jpt.ui.internal.orm.details.EntityMappingsDetailsProvider;
 import org.eclipse.jpt.ui.internal.orm.details.OrmPersistentAttributeDetailsProvider;
 import org.eclipse.jpt.ui.internal.orm.details.OrmPersistentTypeDetailsProvider;
+import org.eclipse.jpt.ui.internal.structure.OrmResourceModelStructureProvider;
+import org.eclipse.jpt.ui.structure.JpaStructureProvider;
 
 /**
  * All the state in the JPA platform should be "static" (i.e. unchanging once
@@ -54,4 +55,13 @@ public class GenericJpaPlatformUiProvider extends AbstractJpaPlatformUiProvider
 		providers.add(OrmPersistentTypeDetailsProvider.instance());
 		providers.add(OrmPersistentAttributeDetailsProvider.instance());
 	}
+	
+	
+	// ********** structure providers **********
+	
+	@Override
+	protected void addMappingFileStructureProvidersTo(List<JpaStructureProvider> providers) {
+		providers.add(OrmResourceModelStructureProvider.instance());
+	}
+
 }

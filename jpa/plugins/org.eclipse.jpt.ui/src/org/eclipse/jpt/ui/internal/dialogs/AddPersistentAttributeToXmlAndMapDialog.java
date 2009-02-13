@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -94,7 +94,7 @@ public class AddPersistentAttributeToXmlAndMapDialog extends StatusDialog
 				validate();
 			}
 		});
-		JpaPlatformUi jpaPlatformUi = JptUiPlugin.getPlugin().getJpaPlatformUi(this.unmappedPersistentAttribute.getJpaProject().getJpaPlatform());
+		JpaPlatformUi jpaPlatformUi = JptUiPlugin.instance().getJpaPlatformUi(this.unmappedPersistentAttribute.getJpaProject().getJpaPlatform());
 		mappingCombo.setInput(jpaPlatformUi);
 		mappingCombo.getCombo().select(0);  // select Basic to begin
 

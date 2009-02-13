@@ -19,7 +19,6 @@ import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
-import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkJpaUiFactory;
 import org.eclipse.jpt.eclipselink.ui.internal.ddlgen.EclipseLinkDDLGeneratorUi;
 import org.eclipse.jpt.eclipselink.ui.internal.java.details.DefaultOneToManyMappingUiProvider;
 import org.eclipse.jpt.eclipselink.ui.internal.java.details.DefaultOneToOneMappingUiProvider;
@@ -38,9 +37,8 @@ import org.eclipse.jpt.eclipselink.ui.internal.orm.details.EclipseLinkOrmMappedS
 import org.eclipse.jpt.eclipselink.ui.internal.orm.details.EclipseLinkOrmOneToManyMappingUiProvider;
 import org.eclipse.jpt.eclipselink.ui.internal.orm.details.EclipseLinkOrmOneToOneMappingUiProvider;
 import org.eclipse.jpt.eclipselink.ui.internal.orm.details.EclipseLinkOrmVersionMappingUiProvider;
-import org.eclipse.jpt.eclipselink.ui.internal.structure.EclipseLinkOrmResourceModelStructureProvider;
-import org.eclipse.jpt.eclipselink.ui.internal.structure.EclipseLinkPersistenceResourceModelStructureProvider;
 import org.eclipse.jpt.ui.JpaPlatformUiProvider;
+import org.eclipse.jpt.ui.JpaUiFactory;
 import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
 import org.eclipse.jpt.ui.details.DefaultAttributeMappingUiProvider;
 import org.eclipse.jpt.ui.details.TypeMappingUiProvider;
@@ -70,16 +68,14 @@ public class EclipseLinkJpaPlatformUi
 	private TypeMappingUiProvider<? extends TypeMapping>[] eclipseLinkOrmTypeMappingUiProviders;
 	private AttributeMappingUiProvider<? extends AttributeMapping>[] eclipseLinkOrmAttributeMappingUiProviders;
 
-	public EclipseLinkJpaPlatformUi(JpaPlatformUiProvider... platformUiProviders) {
-		super(platformUiProviders);
-	}
-
-
-	// ********** factory **********
-
-	@Override
-	protected EclipseLinkJpaUiFactory buildJpaUiFactory() {
-		return new EclipseLinkJpaUiFactory();
+	public EclipseLinkJpaPlatformUi(
+		JpaUiFactory jpaUiFactory,
+		JpaNavigatorProvider navigatorProvider,
+		JpaStructureProvider persistenceStructureProvider, 
+		JpaStructureProvider javaStructureProvider,
+		JpaPlatformUiProvider... platformUiProviders) 
+	{
+		super(jpaUiFactory, navigatorProvider, persistenceStructureProvider, javaStructureProvider, platformUiProviders);
 	}
 
 
@@ -113,23 +109,6 @@ public class EclipseLinkJpaPlatformUi
 		providers.add(DefaultOneToOneMappingUiProvider.instance());
 		providers.add(DefaultOneToManyMappingUiProvider.instance());
 		providers.add(DefaultVariableOneToOneMappingUiProvider.instance());
-	}
-
-
-	// ********** structure providers **********
-
-	@Override
-	protected void addJpaStructureProvidersTo(List<JpaStructureProvider> providers) {
-		super.addJpaStructureProvidersTo(providers);
-		providers.add(EclipseLinkOrmResourceModelStructureProvider.instance());
-		providers.add(EclipseLinkPersistenceResourceModelStructureProvider.instance());
-	}
-
-
-	// ********** navigator provider **********
-	
-	public JpaNavigatorProvider buildNavigatorProvider() {
-		return new EclipseLinkNavigatorProvider();
 	}
 
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -112,10 +112,10 @@ public interface JpaPlatformUi
 	// ********** navigator provider **********
 
 	/**
-	 * Return a *new* {@link JpaNavigatorProvider}, which determines
-	 * Project Explorer content and look
+	 * Return the {@link JpaNavigatorProvider} for this platform, 
+	 * which determines Project Explorer content and look
 	 */
-	JpaNavigatorProvider buildNavigatorProvider();
+	JpaNavigatorProvider getNavigatorProvider();
 
 
 	// ********** entity generation **********

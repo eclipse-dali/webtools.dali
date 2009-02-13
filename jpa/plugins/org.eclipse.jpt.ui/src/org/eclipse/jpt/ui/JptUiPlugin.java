@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,6 +14,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.ui.internal.platform.JpaPlatformUiRegistry;
+import org.eclipse.jpt.ui.navigator.JpaNavigatorProvider;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
@@ -38,9 +39,9 @@ public class JptUiPlugin extends AbstractUIPlugin
 	public final static String PLUGIN_ID = "org.eclipse.jpt.ui";  //$NON-NLS-1$
 
 	/**
-	 * Returns the singleton Plugin
+	 * Returns the singleton JPT UI plug-in.
 	 */
-	public static JptUiPlugin getPlugin() {
+	public static JptUiPlugin instance() {
 		return INSTANCE;
 	}
 
@@ -94,6 +95,11 @@ public class JptUiPlugin extends AbstractUIPlugin
 	 */
 	public JpaPlatformUi getJpaPlatformUi(JpaPlatform jpaPlatform) {
 		return JpaPlatformUiRegistry.instance().getJpaPlatformUi(jpaPlatform.getId());
+	}
+	
+	public JpaNavigatorProvider getJpaNavigatorProvider(JpaPlatform jpaPlatform) {
+		JpaPlatformUi platform = getJpaPlatformUi(jpaPlatform);
+		return platform == null ? null : platform.getNavigatorProvider();
 	}
 
 }

@@ -13,9 +13,11 @@ import java.util.List;
 import org.eclipse.jpt.eclipselink.ui.internal.orm.details.EclipseLinkEntityMappingsDetailsProvider;
 import org.eclipse.jpt.eclipselink.ui.internal.orm.details.EclipseLinkOrmPersistentAttributeDetailsProvider;
 import org.eclipse.jpt.eclipselink.ui.internal.orm.details.EclipseLinkOrmPersistentTypeDetailsProvider;
+import org.eclipse.jpt.eclipselink.ui.internal.structure.EclipseLinkOrmResourceModelStructureProvider;
 import org.eclipse.jpt.ui.JpaPlatformUiProvider;
 import org.eclipse.jpt.ui.details.JpaDetailsProvider;
 import org.eclipse.jpt.ui.internal.AbstractJpaPlatformUiProvider;
+import org.eclipse.jpt.ui.structure.JpaStructureProvider;
 
 public class EclipseLinkJpaPlatformUiProvider extends AbstractJpaPlatformUiProvider
 {
@@ -45,5 +47,13 @@ public class EclipseLinkJpaPlatformUiProvider extends AbstractJpaPlatformUiProvi
 		providers.add(EclipseLinkEntityMappingsDetailsProvider.instance());
 		providers.add(EclipseLinkOrmPersistentTypeDetailsProvider.instance());
 		providers.add(EclipseLinkOrmPersistentAttributeDetailsProvider.instance());
+	}
+	
+	
+	// ********** structure providers **********
+	
+	@Override
+	protected void addMappingFileStructureProvidersTo(List<JpaStructureProvider> providers) {
+		providers.add(EclipseLinkOrmResourceModelStructureProvider.instance());
 	}
 }

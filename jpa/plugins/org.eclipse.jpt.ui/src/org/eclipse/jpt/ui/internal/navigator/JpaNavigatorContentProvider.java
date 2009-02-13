@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2007 Oracle. 
+ *  Copyright (c) 2007, 2009 Oracle. 
  *  All rights reserved.  This program and the accompanying materials 
  *  are made available under the terms of the Eclipse Public License v1.0 
  *  which accompanies this distribution, and is available at 
@@ -108,7 +108,7 @@ public class JpaNavigatorContentProvider
 			if (project != null) {
 				JpaProject jpaProject = JptCorePlugin.getJpaProject(project);
 				if (jpaProject != null) {
-					JpaPlatformUi platformUi = JptUiPlugin.getPlugin().getJpaPlatformUi(jpaProject.getJpaPlatform());
+					JpaPlatformUi platformUi = JptUiPlugin.instance().getJpaPlatformUi(jpaProject.getJpaPlatform());
 					
 					return platformUi != null;
 				}	
@@ -129,7 +129,7 @@ public class JpaNavigatorContentProvider
 			if (project != null) {
 				JpaProject jpaProject = JptCorePlugin.getJpaProject(project);
 				if (jpaProject != null) {
-					JpaPlatformUi platformUi = JptUiPlugin.getPlugin().getJpaPlatformUi(jpaProject.getJpaPlatform());
+					JpaPlatformUi platformUi = JptUiPlugin.instance().getJpaPlatformUi(jpaProject.getJpaPlatform());
 					
 					if (platformUi != null) {
 						return new Object[] {jpaProject.getRootContextNode()};

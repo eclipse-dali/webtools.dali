@@ -66,9 +66,7 @@ import org.eclipse.jpt.ui.internal.orm.details.OrmOneToManyMappingUiProvider;
 import org.eclipse.jpt.ui.internal.orm.details.OrmOneToOneMappingUiProvider;
 import org.eclipse.jpt.ui.internal.orm.details.OrmTransientMappingUiProvider;
 import org.eclipse.jpt.ui.internal.orm.details.OrmVersionMappingUiProvider;
-import org.eclipse.jpt.ui.internal.structure.JavaResourceModelStructureProvider;
-import org.eclipse.jpt.ui.internal.structure.OrmResourceModelStructureProvider;
-import org.eclipse.jpt.ui.internal.structure.PersistenceResourceModelStructureProvider;
+import org.eclipse.jpt.ui.navigator.JpaNavigatorProvider;
 import org.eclipse.jpt.ui.structure.JpaStructureProvider;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayListIterator;
@@ -84,8 +82,14 @@ public abstract class BaseJpaPlatformUi
 	implements JpaPlatformUi
 {
 	private final JpaUiFactory jpaUiFactory;
-
+	
+	private final JpaNavigatorProvider navigatorProvider;
+	
 	private final JpaPlatformUiProvider[] platformUiProviders;
+
+	private JpaStructureProvider persistenceStructureProvider;
+	
+	private JpaStructureProvider javaStructureProvider;
 
 	private TypeMappingUiProvider<? extends TypeMapping>[] javaTypeMappingUiProviders;
 	private AttributeMappingUiProvider<? extends AttributeMapping>[] javaAttributeMappingUiProviders;
@@ -95,14 +99,20 @@ public abstract class BaseJpaPlatformUi
 	private AttributeMappingUiProvider<? extends AttributeMapping>[] ormAttributeMappingUiProviders;
 	private DefaultAttributeMappingUiProvider<? extends AttributeMapping>[] defaultOrmAttributeMappingUiProviders;
 
-	private JpaStructureProvider[] jpaStructureProviders;
-
 	/**
 	 * zero-argument constructor
 	 */
-	protected BaseJpaPlatformUi(JpaPlatformUiProvider... platformUiProviders) {
+	protected BaseJpaPlatformUi(
+		JpaUiFactory jpaUiFactory,
+		JpaNavigatorProvider navigatorProvider,
+		JpaStructureProvider persistenceStructureProvider, 
+		JpaStructureProvider javaStructureProvider,
+		JpaPlatformUiProvider... platformUiProviders) {
 		super();
-		this.jpaUiFactory = this.buildJpaUiFactory();
+		this.jpaUiFactory = jpaUiFactory;
+		this.navigatorProvider = navigatorProvider;
+		this.persistenceStructureProvider = persistenceStructureProvider;
+		this.javaStructureProvider = javaStructureProvider;
 		this.platformUiProviders = platformUiProviders;
 	}
 
@@ -113,8 +123,9 @@ public abstract class BaseJpaPlatformUi
 		return this.jpaUiFactory;
 	}
 
-	protected abstract JpaUiFactory buildJpaUiFactory();
-
+	public JpaNavigatorProvider getNavigatorProvider() {
+		return this.navigatorProvider;
+	}
 	
 	// ********** platform ui providers **********
 	
@@ -358,44 +369,36 @@ public abstract class BaseJpaPlatformUi
 	public JpaStructureProvider getStructureProvider(JpaFile jpaFile) {
 		return this.getStructureProvider(jpaFile.getContentType());
 	}
-
+	
 	protected JpaStructureProvider getStructureProvider(IContentType contentType) {
-		for (JpaStructureProvider provider : this.getJpaStructureProviders()) {
-			if (contentType.isKindOf(provider.getContentType())) {
+		for (JpaStructureProvider provider : CollectionTools.iterable(this.structureProviders())) {
+			if (provider.getContentType().isKindOf(contentType)) {
 				return provider;
 			}
 		}
-		throw new IllegalArgumentException("Unknown content type: " + contentType); //$NON-NLS-1$
-	}
-
-	protected synchronized JpaStructureProvider[] getJpaStructureProviders() {
-		if (this.jpaStructureProviders == null) {
-			this.jpaStructureProviders = this.buildJpaStructureProviders();
+		if (contentType.getBaseType() != null) {
+			return getStructureProvider(contentType.getBaseType());
 		}
-		return this.jpaStructureProviders;
+		throw new IllegalArgumentException("No structure provider for the contentType: " + contentType); //$NON-NLS-1$
 	}
 
-	protected JpaStructureProvider[] buildJpaStructureProviders() {
-		ArrayList<JpaStructureProvider> providers = new ArrayList<JpaStructureProvider>();
-		this.addJpaStructureProvidersTo(providers);
-		return providers.toArray(new JpaStructureProvider[providers.size()]);
+	protected ListIterator<JpaStructureProvider> structureProviders() {
+		return 
+			new CompositeListIterator<JpaStructureProvider> (this.persistenceStructureProvider,
+				new CompositeListIterator<JpaStructureProvider> (this.javaStructureProvider,
+					new CompositeListIterator<JpaStructureProvider> ( 
+						new TransformationListIterator<JpaPlatformUiProvider, ListIterator<JpaStructureProvider>>(this.platformUiProviders()) {
+							@Override
+							protected ListIterator<JpaStructureProvider> transform(JpaPlatformUiProvider platformUiProvider) {
+								return platformUiProvider.mappingFileStructureProviders();
+							}
+						}
+					)
+				)
+			);
 	}
 
-	/**
-	 * Override this to specify more or different JPA structure providers.
-	 * The default includes support for Java, persistence.xml, and orm.xml
-	 * files.
-	 * The order is significant; structure providers for more-specific content
-	 * types should precede those for more-genernal content types (i.e. a
-	 * "child" type should precede its "base" type, so it is detected first).
-	 */
-	protected void addJpaStructureProvidersTo(List<JpaStructureProvider> providers) {
-		providers.add(JavaResourceModelStructureProvider.instance());
-		providers.add(OrmResourceModelStructureProvider.instance());
-		providers.add(PersistenceResourceModelStructureProvider.instance());
-	}
-
-
+	
 	// ********** entity generation **********
 
 	public void generateEntities(JpaProject project, IStructuredSelection selection) {

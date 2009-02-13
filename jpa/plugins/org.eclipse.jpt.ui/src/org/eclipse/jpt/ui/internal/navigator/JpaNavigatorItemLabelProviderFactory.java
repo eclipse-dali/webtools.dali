@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,6 +14,7 @@ import java.util.Map;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.context.JpaContextNode;
+import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.jface.DelegatingContentAndLabelProvider;
 import org.eclipse.jpt.ui.jface.ItemLabelProvider;
 import org.eclipse.jpt.ui.jface.ItemLabelProviderFactory;
@@ -63,7 +64,7 @@ public class JpaNavigatorItemLabelProviderFactory
 		if (delegates.containsKey(platformId)) {
 			return delegates.get(platformId);
 		}
-		JpaNavigatorProvider navigatorProvider = JpaNavigatorProviderLookup.provider(platform.getId());
+		JpaNavigatorProvider navigatorProvider = JptUiPlugin.instance().getJpaNavigatorProvider(platform);
 		ItemLabelProviderFactory delegate = null;
 		if (navigatorProvider != null) {
 			delegate = navigatorProvider.getItemLabelProviderFactory();

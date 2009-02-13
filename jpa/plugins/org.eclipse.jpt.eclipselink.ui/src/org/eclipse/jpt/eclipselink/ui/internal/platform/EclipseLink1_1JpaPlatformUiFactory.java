@@ -9,9 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.platform;
 
+import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkJpaUiFactory;
+import org.eclipse.jpt.eclipselink.ui.internal.structure.EclipseLinkPersistenceResourceModelStructureProvider;
 import org.eclipse.jpt.ui.JpaPlatformUi;
 import org.eclipse.jpt.ui.JpaPlatformUiFactory;
 import org.eclipse.jpt.ui.internal.GenericJpaPlatformUiProvider;
+import org.eclipse.jpt.ui.internal.structure.JavaResourceModelStructureProvider;
 
 public class EclipseLink1_1JpaPlatformUiFactory implements JpaPlatformUiFactory
 {
@@ -24,7 +27,11 @@ public class EclipseLink1_1JpaPlatformUiFactory implements JpaPlatformUiFactory
 	}
 
 	public JpaPlatformUi buildJpaPlatformUi() {
-		return new EclipseLink1_1JpaPlatformUi(
+		return new EclipseLinkJpaPlatformUi(
+			new EclipseLinkJpaUiFactory(),
+			new EclipseLinkNavigatorProvider(),
+			JavaResourceModelStructureProvider.instance(), 
+			EclipseLinkPersistenceResourceModelStructureProvider.instance(),
 			GenericJpaPlatformUiProvider.instance(),
 			EclipseLinkJpaPlatformUiProvider.instance(),
 			EclipseLink1_1JpaPlatformUiProvider.instance()

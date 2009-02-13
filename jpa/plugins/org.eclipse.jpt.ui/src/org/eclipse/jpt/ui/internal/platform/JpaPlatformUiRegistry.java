@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2006, 2008 Oracle. All rights reserved. This
+ *  Copyright (c) 2006, 2009 Oracle. All rights reserved. This
  *  program and the accompanying materials are made available under the terms of
  *  the Eclipse Public License v1.0 which accompanies this distribution, and is
  *  available at http://www.eclipse.org/legal/epl-v10.html
@@ -52,19 +52,23 @@ public class JpaPlatformUiRegistry
 		"factoryClass"; //$NON-NLS-1$	
 		
 	// key: String id  value: IConfigurationElement class descriptor
-	private Map<String, IConfigurationElement> jpaPlatformUis;
+	private Map<String, IConfigurationElement> jpaPlatformUiConfigElements;
 	
+	//cache the jpaPlatformUis when they are built
+	//key: jpa platform id  value: JpaPlaformUi
+	private Map<String, JpaPlatformUi> jpaPlatformUis;
 	
 	/* (non Java doc)
 	 * restrict access
 	 */
 	private JpaPlatformUiRegistry() {
-		buildJpaPlatformUis();
+		buildJpaPlatformUiConfigElements();
+		this.jpaPlatformUis = new HashMap<String, JpaPlatformUi>();
 	}
 	
 	
-	private void buildJpaPlatformUis() {
-		this.jpaPlatformUis = new HashMap<String, IConfigurationElement>();
+	private void buildJpaPlatformUiConfigElements() {
+		this.jpaPlatformUiConfigElements = new HashMap<String, IConfigurationElement>();
 		
 		for (Iterator<IConfigurationElement> stream = allConfigElements(); stream.hasNext(); ) {
 			buildJpaPlatformUi(stream.next());
@@ -93,17 +97,20 @@ public class JpaPlatformUiRegistry
 			return;
 		}
 		
-		if (this.jpaPlatformUis.containsKey(platformUiId)) {
-			IConfigurationElement otherConfigElement = this.jpaPlatformUis.get(platform);
+		if (this.jpaPlatformUiConfigElements.containsKey(platformUiId)) {
+			IConfigurationElement otherConfigElement = this.jpaPlatformUiConfigElements.get(platform);
 			reportDuplicatePlatformUi(configElement, otherConfigElement);
 		}
 		
-		this.jpaPlatformUis.put(platformUiId, configElement);
+		this.jpaPlatformUiConfigElements.put(platformUiId, configElement);
 	}
 	
 	public JpaPlatformUi getJpaPlatformUi(String platformId) {
+		if (this.jpaPlatformUis.containsKey(platformId)) {
+			return this.jpaPlatformUis.get(platformId);
+		}
 		IConfigurationElement registeredConfigElement = null;
-		for (IConfigurationElement configurationElement : this.jpaPlatformUis.values()) {
+		for (IConfigurationElement configurationElement : this.jpaPlatformUiConfigElements.values()) {
 			if (configurationElement.getAttribute(AT_JPA_PLATFORM).equals(platformId)) {
 				registeredConfigElement = configurationElement;
 				break;
@@ -121,7 +128,9 @@ public class JpaPlatformUiRegistry
 			reportFailedInstantiation(registeredConfigElement);
 			throw new IllegalArgumentException(platformId);
 		}
-		return jpaPlatformUiFactory.buildJpaPlatformUi();
+		JpaPlatformUi platformUi = jpaPlatformUiFactory.buildJpaPlatformUi();
+		this.jpaPlatformUis.put(platformId, platformUi);
+		return platformUi;
 	}
 	
 	private Iterator<IConfigurationElement> allConfigElements() {

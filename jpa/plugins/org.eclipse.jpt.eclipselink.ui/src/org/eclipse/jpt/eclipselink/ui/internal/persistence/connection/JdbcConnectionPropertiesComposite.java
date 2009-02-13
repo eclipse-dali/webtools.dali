@@ -257,7 +257,7 @@ public class JdbcConnectionPropertiesComposite extends Pane<Connection>
 		@Override
 		protected IDialogSettings getDialogSettings() {
 
-			IDialogSettings dialogSettings = JptUiPlugin.getPlugin().getDialogSettings();
+			IDialogSettings dialogSettings = JptUiPlugin.instance().getDialogSettings();
 			IDialogSettings settings = dialogSettings.getSection(DIALOG_SETTINGS);
 
 			if (settings == null) {

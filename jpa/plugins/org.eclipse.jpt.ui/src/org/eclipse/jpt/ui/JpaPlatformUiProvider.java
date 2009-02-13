@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,6 +12,7 @@ package org.eclipse.jpt.ui;
 import java.util.ListIterator;
 
 import org.eclipse.jpt.ui.details.JpaDetailsProvider;
+import org.eclipse.jpt.ui.structure.JpaStructureProvider;
 
 /**
  * This interface is to be implemented by a JPA vendor to provide extensions to
@@ -37,5 +38,13 @@ public interface JpaPlatformUiProvider
 	 * Return the details providers that apply to this platform.
 	 */
 	ListIterator<JpaDetailsProvider> detailsProviders();
+	
+	/**
+	 * Return the mapping file structure providers that apply to this platform.
+	 * these should have a contentType "isKindOf" mappingFile contentType
+	 * 
+	 * @see org.eclipse.jpt.core.JptCorePlugin#MAPPING_FILE_CONTENT_TYPE
+	 */
+	ListIterator<JpaStructureProvider> mappingFileStructureProviders();
 
 }

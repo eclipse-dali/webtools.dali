@@ -47,15 +47,15 @@ public class JptEclipseLinkCorePlugin extends Plugin
 	public static final String DEFAULT_ECLIPSELINK_ORM_XML_FILE_PATH = "META-INF/eclipselink-orm.xml"; //$NON-NLS-1$
 	
 	
-	// The shared instance
-	private static JptEclipseLinkCorePlugin plugin;
-	
+	// ********** singleton **********
+	private static JptEclipseLinkCorePlugin INSTANCE;
 	
 	/**
-	 * The constructor
+	 * Return the singleton JPT EclipseLink plug-in.
 	 */
-	public JptEclipseLinkCorePlugin() {}
-	
+	public static JptEclipseLinkCorePlugin instance() {
+		return INSTANCE;
+	}	
 	
 	/**
 	 * Return the default mapping file deployment URI for the specified project.
@@ -70,7 +70,7 @@ public class JptEclipseLinkCorePlugin extends Plugin
 	 * Log the specified status.
 	 */
 	public static void log(IStatus status) {
-        plugin.getLog().log(status);
+		INSTANCE.getLog().log(status);
     }
 	
 	/**
@@ -86,28 +86,22 @@ public class JptEclipseLinkCorePlugin extends Plugin
 	public static void log(Throwable throwable) {
 		log(new Status(IStatus.ERROR, PLUGIN_ID, IStatus.OK, throwable.getLocalizedMessage(), throwable));
 	}
+
 	
+	// ********** plug-in implementation **********	
 	
-	// ********** plug-in implementation **********
-	
+	public JptEclipseLinkCorePlugin() {}
+		
 	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
-		plugin = this;
+		INSTANCE = this;
 	}
 
 	@Override
 	public void stop(BundleContext context) throws Exception {
-		plugin = null;
+		INSTANCE = null;
 		super.stop(context);
 	}
 
-	/**
-	 * Returns the shared instance
-	 * 
-	 * @return the shared instance
-	 */
-	public static JptEclipseLinkCorePlugin getDefault() {
-		return plugin;
-	}
 }

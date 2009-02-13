@@ -5,9 +5,9 @@ import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.internal.platform.JpaPlatformRegistry;
 import org.eclipse.jpt.core.tests.extension.resource.ExtensionTestPlugin;
 import org.eclipse.jpt.core.tests.extension.resource.TestJpaPlatformProvider;
-import org.eclipse.jpt.core.tests.extension.resource.TestJpaPlatformUi;
 import org.eclipse.jpt.core.tests.internal.projects.TestJpaProject;
 
+@SuppressWarnings("nls")
 public class JpaPlatformUiExtensionTests extends TestCase
 {
 	protected TestJpaProject testProject;
@@ -23,7 +23,6 @@ public class JpaPlatformUiExtensionTests extends TestCase
 	public static final String TEST_PLATFORM_LABEL = "Test Jpa Platform";
 
 	public static final String TEST_UI_PLATFORM_ID = TEST_PLATFORM_ID;
-	public static final String TEST_UI_PLATFORM_CLASS = TestJpaPlatformUi.class.getName();
 
 	public JpaPlatformUiExtensionTests(String name) {
 		super(name);

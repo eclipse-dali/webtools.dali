@@ -306,7 +306,7 @@ public class NewEntityClassOperation extends AbstractDataModelOperation {
     	Preferences preferences = J2EEPlugin.getDefault().getPluginPreferences();
 		boolean dynamicTranslation = preferences.getBoolean(J2EEPlugin.DYNAMIC_TRANSLATION_OF_JET_TEMPLATES_PREF_KEY);
 		if (dynamicTranslation) {
-	        URL templateURL = FileLocator.find(JptUiPlugin.getPlugin().getBundle(), new Path(templateFile), null);
+	        URL templateURL = FileLocator.find(JptUiPlugin.instance().getBundle(), new Path(templateFile), null);
 	        cleanUpOldEmitterProject();
 	        WTPJETEmitter emitter = new WTPJETEmitter(templateURL.toString(), this.getClass().getClassLoader());
 	        emitter.setIntelligentLinkingEnabled(true);
