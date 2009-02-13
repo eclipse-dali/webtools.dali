@@ -98,6 +98,6 @@ public class OrmPersistentTypeDetailsPage extends PersistentTypeDetailsPage<OrmP
 
 	@Override
 	public Iterator<TypeMappingUiProvider<? extends TypeMapping>> typeMappingUiProviders() {
-		return jpaPlatformUi().ormTypeMappingUiProviders();
+		return getJpaPlatformUi().ormTypeMappingUiProviders();
 	}
 }

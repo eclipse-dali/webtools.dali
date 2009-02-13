@@ -35,12 +35,12 @@ public class EclipseLinkOrmPersistentTypeDetailsPage
 	
 	
 	@Override
-	protected EclipseLinkJpaPlatformUi jpaPlatformUi() {
-		return (EclipseLinkJpaPlatformUi) super.jpaPlatformUi();
+	protected EclipseLinkJpaPlatformUi getJpaPlatformUi() {
+		return (EclipseLinkJpaPlatformUi) super.getJpaPlatformUi();
 	}
 	
 	@Override
 	public Iterator<TypeMappingUiProvider<? extends TypeMapping>> typeMappingUiProviders() {
-		return jpaPlatformUi().eclipseLinkOrmTypeMappingUiProviders();
+		return getJpaPlatformUi().eclipseLinkOrmTypeMappingUiProviders();
 	}
 }

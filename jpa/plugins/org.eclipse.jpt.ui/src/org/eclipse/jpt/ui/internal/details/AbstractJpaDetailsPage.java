@@ -44,13 +44,13 @@ public abstract class AbstractJpaDetailsPage<T extends JpaStructureNode>
 		super(new SimplePropertyValueModel<T>(), parent, widgetFactory);
 	}
 
-	protected JpaPlatformUi jpaPlatformUi() {
+	protected JpaPlatformUi getJpaPlatformUi() {
 		String platformId = getSubject().getJpaProject().getJpaPlatform().getId();
 		return JpaPlatformUiRegistry.instance().getJpaPlatformUi(platformId);
 	}
 
-	protected JpaUiFactory jpaUiFactory() {
-		return jpaPlatformUi().getJpaUiFactory();
+	protected JpaUiFactory getJpaUiFactory() {
+		return getJpaPlatformUi().getJpaUiFactory();
 	}
 
 	/**

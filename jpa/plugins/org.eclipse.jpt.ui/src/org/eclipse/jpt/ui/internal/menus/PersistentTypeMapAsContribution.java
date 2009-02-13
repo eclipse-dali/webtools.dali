@@ -11,12 +11,10 @@ package org.eclipse.jpt.ui.internal.menus;
 
 import java.util.Iterator;
 import org.eclipse.jpt.core.JpaStructureNode;
-import org.eclipse.jpt.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.ui.JpaPlatformUi;
 import org.eclipse.jpt.ui.details.MappingUiProvider;
 import org.eclipse.jpt.ui.internal.commands.PersistentTypeMapAsHandler;
-import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
 /**
  * This menu contribution is responsible to populate the Map As menu with the
@@ -52,14 +50,6 @@ public class PersistentTypeMapAsContribution extends MapAsContribution
 	@Override
 	protected Iterator<? extends MappingUiProvider<?>> 
 			mappingUiProviders(JpaPlatformUi jpaPlatformUi, JpaStructureNode node) {
-		if (node instanceof JavaPersistentType) {
-			return jpaPlatformUi.javaTypeMappingUiProviders();
-		}
-		else if (node instanceof OrmPersistentType) {
-			return jpaPlatformUi.ormTypeMappingUiProviders();
-		}
-		else {
-			return EmptyIterator.instance();
-		}
+		return jpaPlatformUi.typeMappingUiProviders((PersistentType) node);
 	}
 }

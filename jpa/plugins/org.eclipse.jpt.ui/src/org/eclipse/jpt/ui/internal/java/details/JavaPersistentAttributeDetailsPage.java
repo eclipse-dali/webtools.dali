@@ -64,7 +64,7 @@ public class JavaPersistentAttributeDetailsPage extends PersistentAttributeDetai
 
 	@Override
 	protected Iterator<AttributeMappingUiProvider<? extends AttributeMapping>> attributeMappingUiProviders() {
-		return jpaPlatformUi().javaAttributeMappingUiProviders();
+		return getJpaPlatformUi().javaAttributeMappingUiProviders();
 	}
 
 	/**
@@ -100,7 +100,7 @@ public class JavaPersistentAttributeDetailsPage extends PersistentAttributeDetai
 
 	@Override
 	protected Iterator<DefaultAttributeMappingUiProvider<? extends AttributeMapping>> defaultAttributeMappingUiProviders() {
-		return jpaPlatformUi().defaultJavaAttributeMappingUiProviders();
+		return getJpaPlatformUi().defaultJavaAttributeMappingUiProviders();
 	}
 
 	@Override

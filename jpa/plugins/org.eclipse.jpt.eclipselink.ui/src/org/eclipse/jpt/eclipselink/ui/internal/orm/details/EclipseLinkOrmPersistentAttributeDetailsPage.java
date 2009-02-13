@@ -36,13 +36,13 @@ public class EclipseLinkOrmPersistentAttributeDetailsPage
 	
 	
 	@Override
-	protected EclipseLinkJpaPlatformUi jpaPlatformUi() {
-		return (EclipseLinkJpaPlatformUi) super.jpaPlatformUi();
+	protected EclipseLinkJpaPlatformUi getJpaPlatformUi() {
+		return (EclipseLinkJpaPlatformUi) super.getJpaPlatformUi();
 	}
 	
 	@Override
 	public Iterator<AttributeMappingUiProvider<? extends AttributeMapping>> attributeMappingUiProviders() {
-		return jpaPlatformUi().eclipseLinkOrmAttributeMappingUiProviders();
+		return getJpaPlatformUi().eclipseLinkOrmAttributeMappingUiProviders();
 	}
 	
 	@Override

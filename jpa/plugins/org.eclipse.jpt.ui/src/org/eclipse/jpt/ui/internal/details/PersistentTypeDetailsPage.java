@@ -84,7 +84,7 @@ public abstract class PersistentTypeDetailsPage<T extends PersistentType> extend
 			(TypeMappingUiProvider<TypeMapping>) typeMappingUiProvider(key);
 
 		return uiProvider.buildPersistentTypeMappingComposite(
-			jpaUiFactory(),
+			getJpaUiFactory(),
 			buildMappingHolder(key),
 			pageBook,
 			getWidgetFactory()

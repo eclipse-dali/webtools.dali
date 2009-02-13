@@ -57,17 +57,11 @@ public class JavaPersistentTypeDetailsPage extends PersistentTypeDetailsPage<Jav
 		super(parent, widgetFactory);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected Iterator<TypeMappingUiProvider<? extends TypeMapping>> typeMappingUiProviders() {
-		return jpaPlatformUi().javaTypeMappingUiProviders();
+		return getJpaPlatformUi().javaTypeMappingUiProviders();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected void initializeLayout(Composite container) {
 

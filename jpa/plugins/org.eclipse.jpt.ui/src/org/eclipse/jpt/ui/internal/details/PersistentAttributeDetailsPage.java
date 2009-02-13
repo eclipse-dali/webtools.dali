@@ -104,7 +104,7 @@ public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribu
 			(AttributeMappingUiProvider<AttributeMapping>) getMappingUIProvider(mappingKey);
 
 		return uiProvider.buildAttributeMappingComposite(
-			jpaUiFactory(),
+			getJpaUiFactory(),
 			buildMappingHolder(mappingKey),
 			pageBook,
 			getWidgetFactory()

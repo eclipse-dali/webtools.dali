@@ -73,7 +73,7 @@ public class OrmPersistentAttributeDetailsPage extends PersistentAttributeDetail
 
 	@Override
 	public Iterator<AttributeMappingUiProvider<? extends AttributeMapping>> attributeMappingUiProviders() {
-		return jpaPlatformUi().ormAttributeMappingUiProviders();
+		return getJpaPlatformUi().ormAttributeMappingUiProviders();
 	}
 
 	@Override
@@ -99,7 +99,7 @@ public class OrmPersistentAttributeDetailsPage extends PersistentAttributeDetail
 
 	@Override
 	protected Iterator<DefaultAttributeMappingUiProvider<? extends AttributeMapping>> defaultAttributeMappingUiProviders() {
-		return jpaPlatformUi().defaultOrmAttributeMappingUiProviders();
+		return getJpaPlatformUi().defaultOrmAttributeMappingUiProviders();
 	}
 
 	private PropertyValueModel<OrmAttributeMapping> getMappingHolder() {
