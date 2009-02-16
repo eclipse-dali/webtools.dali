@@ -21,16 +21,18 @@ import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.resource.JFaceColors;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jpt.core.JpaNode;
+import org.eclipse.jpt.ui.JpaPlatformUi;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.details.DefaultMappingUiProvider;
 import org.eclipse.jpt.ui.details.MappingUiProvider;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.platform.JpaPlatformUiRegistry;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.ui.internal.widgets.PostExecution;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
-import org.eclipse.jpt.utility.model.Model;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyleRange;
@@ -64,7 +66,7 @@ import org.eclipse.ui.dialogs.FilteredItemsSelectionDialog;
  * @since 2.0
  */
 @SuppressWarnings("nls")
-public abstract class MapAsComposite<T extends Model> extends Pane<T> {
+public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 
 	protected boolean dragEvent;
 	protected boolean enabled;
@@ -92,6 +94,17 @@ public abstract class MapAsComposite<T extends Model> extends Pane<T> {
 	                      Composite parent) {
 
 		super(parentPane, parent);
+	}
+	
+	/**
+	 * Returns the JPT platform responsble to manage the user interface part of
+	 * the JPT plug-in.
+	 *
+	 * @return The UI platform of the JPT plug-in
+	 */
+	protected JpaPlatformUi getJpaPlatformUi() {
+		String platformId = getSubject().getJpaProject().getJpaPlatform().getId();
+		return JpaPlatformUiRegistry.instance().getJpaPlatformUi(platformId);
 	}
 
 	/**

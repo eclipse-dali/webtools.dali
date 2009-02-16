@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,12 +13,10 @@ import java.util.Collection;
 import java.util.Iterator;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.TypeMapping;
-import org.eclipse.jpt.ui.JpaPlatformUi;
 import org.eclipse.jpt.ui.details.DefaultMappingUiProvider;
 import org.eclipse.jpt.ui.details.MappingUiProvider;
 import org.eclipse.jpt.ui.details.TypeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
-import org.eclipse.jpt.ui.internal.platform.JpaPlatformUiRegistry;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.swt.widgets.Composite;
@@ -30,7 +28,7 @@ import org.eclipse.swt.widgets.Composite;
  * @see JavaPersistentTypeMapAsComposite
  * @see OrmPersistentTypeMapAsComposite
  *
- * @version 2.0
+ * @version 2.2
  * @since 2.0
  */
 public abstract class PersistentTypeMapAsComposite<T extends PersistentType> extends MapAsComposite<T>
@@ -48,10 +46,8 @@ public abstract class PersistentTypeMapAsComposite<T extends PersistentType> ext
 	}
 
 	@Override
-	protected void addPropertyNames(Collection<String> propertyNames) {
-		super.addPropertyNames(propertyNames);
-		propertyNames.add(PersistentType.MAPPING_PROPERTY);
-		propertyNames.add(PersistentType.NAME_PROPERTY);
+	protected String getMappingKey() {
+		return getSubject().getMappingKey();
 	}
 
 	@Override
@@ -59,7 +55,7 @@ public abstract class PersistentTypeMapAsComposite<T extends PersistentType> ext
 		return new MappingChangeHandler() {
 
 			public String getLabelText() {
-				String mappingKey = getSubject().getMappingKey();
+				String mappingKey = getMappingKey();
 
 				if (mappingKey != null) {
 					return JptUiMappingsMessages.MapAsComposite_mappedTypeText;
@@ -69,7 +65,7 @@ public abstract class PersistentTypeMapAsComposite<T extends PersistentType> ext
 			}
 
 			public String getMappingText() {
-				String mappingKey = getSubject().getMappingKey();
+				String mappingKey = getMappingKey();
 
 				if (mappingKey == null) {
 					return JptUiMappingsMessages.MapAsComposite_changeMappingType;
@@ -97,19 +93,17 @@ public abstract class PersistentTypeMapAsComposite<T extends PersistentType> ext
 	}
 
 	/**
-	 * Returns the JPT platform responsble to manage the user interface part of
-	 * the JPT plug-in.
+	 * Retrieves the list of providers that are registered with the JPT plugin.
 	 *
-	 * @return The UI platform of the JPT plug-in
+	 * @return The supported types of mapping
 	 */
-	protected JpaPlatformUi getJpaPlatformUi() {
-		String platformId = getSubject().getJpaProject().getJpaPlatform().getId();
-		return JpaPlatformUiRegistry.instance().getJpaPlatformUi(platformId);
-	}
-
+	protected abstract Iterator<TypeMappingUiProvider<? extends TypeMapping>> typeMappingUiProviders();
+	
 	@Override
-	protected String getMappingKey() {
-		return getSubject().getMappingKey();
+	protected void addPropertyNames(Collection<String> propertyNames) {
+		super.addPropertyNames(propertyNames);
+		propertyNames.add(PersistentType.MAPPING_PROPERTY);
+		propertyNames.add(PersistentType.NAME_PROPERTY);
 	}
 
 	@Override
@@ -123,10 +117,4 @@ public abstract class PersistentTypeMapAsComposite<T extends PersistentType> ext
 		}
 	}
 
-	/**
-	 * Retrieves the list of providers that are registered with the JPT plugin.
-	 *
-	 * @return The supported types of mapping
-	 */
-	protected abstract Iterator<TypeMappingUiProvider<? extends TypeMapping>> typeMappingUiProviders();
 }
