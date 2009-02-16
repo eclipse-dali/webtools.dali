@@ -10,8 +10,10 @@
 package org.eclipse.jpt.ui;
 
 import java.util.ListIterator;
-
+import org.eclipse.jpt.core.context.TypeMapping;
+import org.eclipse.jpt.ui.details.DefaultTypeMappingUiProvider;
 import org.eclipse.jpt.ui.details.JpaDetailsProvider;
+import org.eclipse.jpt.ui.details.TypeMappingUiProvider;
 import org.eclipse.jpt.ui.structure.JpaStructureProvider;
 
 /**
@@ -46,5 +48,15 @@ public interface JpaPlatformUiProvider
 	 * @see org.eclipse.jpt.core.JptCorePlugin#MAPPING_FILE_CONTENT_TYPE
 	 */
 	ListIterator<JpaStructureProvider> mappingFileStructureProviders();
+	
+	/**
+	 * Return the type mapping ui providers that apply to this platform.
+	 */
+	ListIterator<TypeMappingUiProvider<? extends TypeMapping>> typeMappingUiProviders();
+	
+	/**
+	 * Return the type mapping ui providers that apply to this platform.
+	 */
+	ListIterator<DefaultTypeMappingUiProvider<? extends TypeMapping>> defaultTypeMappingUiProviders();
 
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,6 +20,7 @@ import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.details.TypeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.Tracing;
+import org.eclipse.jpt.ui.internal.mappings.details.PersistentTypeMapAsComposite;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.model.value.FilteringPropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
@@ -35,11 +36,11 @@ import org.eclipse.ui.part.PageBook;
  *
  * @see PersistentType
  *
- * @version 2.0
+ * @version 2.2
  * @since 1.0
  */
 @SuppressWarnings("nls")
-public abstract class PersistentTypeDetailsPage<T extends PersistentType> extends AbstractJpaDetailsPage<T>
+public class PersistentTypeDetailsPage extends AbstractJpaDetailsPage<PersistentType>
 {
 	private JpaComposite currentMappingComposite;
 	private String currentMappingKey;
@@ -58,55 +59,23 @@ public abstract class PersistentTypeDetailsPage<T extends PersistentType> extend
 		super(parent, widgetFactory);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
-	protected void addPropertyNames(Collection<String> propertyNames) {
-		super.addPropertyNames(propertyNames);
-		propertyNames.add(PersistentType.MAPPING_PROPERTY);
+	protected void initialize() {
+		super.initialize();
+		this.mappingComposites = new HashMap<String, JpaComposite>();
 	}
+	
+	@Override
+	protected void initializeLayout(Composite container) {
 
-	private PropertyAspectAdapter<PersistentType, TypeMapping> buildGenericMappingHolder() {
-		return new PropertyAspectAdapter<PersistentType, TypeMapping>(getSubjectHolder(), PersistentType.MAPPING_PROPERTY) {
-			@Override
-			protected TypeMapping buildValue_() {
-				return subject.getMapping();
-			}
-		};
-	}
-
-	@SuppressWarnings("unchecked")
-	protected JpaComposite buildMappingComposite(PageBook pageBook,
-	                                                            String key)  {
-//		return getJpaPlatformUi().buildPersistentTypeMappingComposite(
-//			buildMappingHolder(key),
-//			pageBook,
-//			getWidgetFactory());
-		TypeMappingUiProvider<TypeMapping> uiProvider =
-			(TypeMappingUiProvider<TypeMapping>) typeMappingUiProvider(key);
-
-		return uiProvider.buildPersistentTypeMappingComposite(
-			getJpaUiFactory(),
-			buildMappingHolder(key),
-			pageBook,
-			getWidgetFactory()
+		// Map As composite
+		new PersistentTypeMapAsComposite(
+			this,
+			addSubPane(container, 0, 0, 5, 0)
 		);
-	}
 
-	private Filter<TypeMapping> buildMappingFilter(final String key) {
-		return new Filter<TypeMapping>() {
-			public boolean accept(TypeMapping value) {
-				return (value == null) || key.equals(value.getKey());
-			}
-		};
-	}
-
-	private PropertyValueModel<TypeMapping> buildMappingHolder(String key) {
-		return new FilteringPropertyValueModel<TypeMapping>(
-			buildGenericMappingHolder(),
-			buildMappingFilter(key)
-		);
+		// Type properties page
+		buildTypeMappingPageBook(container);
 	}
 
 	protected PageBook buildTypeMappingPageBook(Composite parent) {
@@ -125,53 +94,48 @@ public abstract class PersistentTypeDetailsPage<T extends PersistentType> extend
 		return this.typeMappingPageBook;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected void doDispose() {
-		log(Tracing.UI_DETAILS_VIEW, "PersistentTypeDetailsPage.doDispose()");
-
-		if (this.currentMappingComposite != null) {
-			this.currentMappingComposite.dispose();
-			this.currentMappingComposite = null;
+	private TypeMappingUiProvider<? extends TypeMapping> typeMappingUiProvider(String key) {
+		for (Iterator<TypeMappingUiProvider<? extends TypeMapping>> iter = this.typeMappingUiProviders(); iter.hasNext();) {
+			TypeMappingUiProvider<? extends TypeMapping> provider = iter.next();
+			if (provider.getKey() == key) {
+				return provider;
+			}
 		}
-
-		this.mappingComposites.clear();
-		super.doDispose();
+		throw new IllegalArgumentException("Unsupported type mapping UI provider key: " + key);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
+	protected Iterator<TypeMappingUiProvider<? extends TypeMapping>> typeMappingUiProviders() {
+		return getJpaPlatformUi().typeMappingUiProviders(getSubject().getContentType());
+	}
+
+	private PropertyValueModel<TypeMapping> buildMappingHolder(String key) {
+		return new FilteringPropertyValueModel<TypeMapping>(
+			buildGenericMappingHolder(),
+			buildMappingFilter(key)
+		);
+	}
+
+	private PropertyAspectAdapter<PersistentType, TypeMapping> buildGenericMappingHolder() {
+		return new PropertyAspectAdapter<PersistentType, TypeMapping>(getSubjectHolder(), PersistentType.MAPPING_PROPERTY) {
+			@Override
+			protected TypeMapping buildValue_() {
+				return this.subject.getMapping();
+			}
+		};
+	}
+
+	private Filter<TypeMapping> buildMappingFilter(final String key) {
+		return new Filter<TypeMapping>() {
+			public boolean accept(TypeMapping value) {
+				return (value == null) || key.equals(value.getKey());
+			}
+		};
+	}
+
 	@Override
 	protected void doPopulate() {
 		super.doPopulate();
 		updateMappingPage();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected void initialize() {
-		super.initialize();
-		this.mappingComposites = new HashMap<String, JpaComposite>();
-	}
-
-	private JpaComposite mappingCompositeFor(String key) {
-		JpaComposite mappingComposite = this.mappingComposites.get(key);
-		if (mappingComposite != null) {
-			return mappingComposite;
-		}
-
-		mappingComposite = buildMappingComposite(this.typeMappingPageBook, key);
-
-		if (mappingComposite != null) {
-			this.mappingComposites.put(key, mappingComposite);
-		}
-
-		return mappingComposite;
 	}
 
 	private void populateMappingPage(String mappingKey) {
@@ -200,7 +164,7 @@ public abstract class PersistentTypeDetailsPage<T extends PersistentType> extend
 
 		// Change the current mapping pane with the new one
 		if (this.currentMappingKey != null) {
-			this.currentMappingComposite = mappingCompositeFor(mappingKey);
+			this.currentMappingComposite = getMappingCompositeFor(mappingKey);
 
 			// Show the new mapping pane
 			try {
@@ -247,10 +211,46 @@ public abstract class PersistentTypeDetailsPage<T extends PersistentType> extend
 		}
 		this.repaintDetailsView(this.typeMappingPageBook);
 	}
+	
+	private JpaComposite getMappingCompositeFor(String key) {
+		JpaComposite mappingComposite = this.mappingComposites.get(key);
+		if (mappingComposite != null) {
+			return mappingComposite;
+		}
 
-	/*
-	 * (non-Javadoc)
-	 */
+		mappingComposite = buildMappingComposite(this.typeMappingPageBook, key);
+
+		if (mappingComposite != null) {
+			this.mappingComposites.put(key, mappingComposite);
+		}
+
+		return mappingComposite;
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected JpaComposite buildMappingComposite(PageBook pageBook,
+	                                                            String key)  {
+//		return getJpaPlatformUi().buildPersistentTypeMappingComposite(
+//			buildMappingHolder(key),
+//			pageBook,
+//			getWidgetFactory());
+		TypeMappingUiProvider<TypeMapping> uiProvider =
+			(TypeMappingUiProvider<TypeMapping>) typeMappingUiProvider(key);
+
+		return uiProvider.buildPersistentTypeMappingComposite(
+			getJpaUiFactory(),
+			buildMappingHolder(key),
+			pageBook,
+			getWidgetFactory()
+		);
+	}	
+
+	@Override
+	protected void addPropertyNames(Collection<String> propertyNames) {
+		super.addPropertyNames(propertyNames);
+		propertyNames.add(PersistentType.MAPPING_PROPERTY);
+	}
+
 	@Override
 	protected void propertyChanged(String propertyName) {
 		super.propertyChanged(propertyName);
@@ -260,20 +260,22 @@ public abstract class PersistentTypeDetailsPage<T extends PersistentType> extend
 		}
 	}
 
-	private TypeMappingUiProvider<? extends TypeMapping> typeMappingUiProvider(String key) {
-		for (Iterator<TypeMappingUiProvider<? extends TypeMapping>> iter = this.typeMappingUiProviders(); iter.hasNext();) {
-			TypeMappingUiProvider<? extends TypeMapping> provider = iter.next();
-			if (provider.getKey() == key) {
-				return provider;
-			}
-		}
-		throw new IllegalArgumentException("Unsupported type mapping UI provider key: " + key);
-	}
-
-	protected abstract Iterator<TypeMappingUiProvider<? extends TypeMapping>> typeMappingUiProviders();
-
 	private void updateMappingPage() {
 		TypeMapping mapping = (this.getSubject() != null) ? this.getSubject().getMapping() : null;
 		populateMappingPage(mapping == null ? null : mapping.getKey());
 	}
+
+	@Override
+	protected void doDispose() {
+		log(Tracing.UI_DETAILS_VIEW, "PersistentTypeDetailsPage.doDispose()");
+
+		if (this.currentMappingComposite != null) {
+			this.currentMappingComposite.dispose();
+			this.currentMappingComposite = null;
+		}
+
+		this.mappingComposites.clear();
+		super.doDispose();
+	}
+
 }

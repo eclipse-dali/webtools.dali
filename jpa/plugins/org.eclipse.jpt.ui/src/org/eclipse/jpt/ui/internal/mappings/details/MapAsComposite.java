@@ -109,7 +109,7 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 
 	/**
 	 * Creates the default provider responsible for clearing the mapping type.
-	 *
+	 * Return null if there is not a default provider
 	 * @return A provider that acts as a default mapping provider
 	 */
 	protected abstract DefaultMappingUiProvider<?> getDefaultProvider();

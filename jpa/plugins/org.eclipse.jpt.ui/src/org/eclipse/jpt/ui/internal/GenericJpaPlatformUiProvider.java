@@ -11,10 +11,19 @@ package org.eclipse.jpt.ui.internal;
 
 import java.util.List;
 import org.eclipse.jpt.ui.JpaPlatformUiProvider;
+import org.eclipse.jpt.ui.details.DefaultTypeMappingUiProvider;
 import org.eclipse.jpt.ui.details.JpaDetailsProvider;
+import org.eclipse.jpt.ui.details.TypeMappingUiProvider;
+import org.eclipse.jpt.ui.internal.java.details.JavaDefaultTypeMappingUiProvider;
+import org.eclipse.jpt.ui.internal.java.details.JavaEmbeddableUiProvider;
+import org.eclipse.jpt.ui.internal.java.details.JavaEntityUiProvider;
+import org.eclipse.jpt.ui.internal.java.details.JavaMappedSuperclassUiProvider;
 import org.eclipse.jpt.ui.internal.java.details.JavaPersistentAttributeDetailsProvider;
 import org.eclipse.jpt.ui.internal.java.details.JavaPersistentTypeDetailsProvider;
 import org.eclipse.jpt.ui.internal.orm.details.EntityMappingsDetailsProvider;
+import org.eclipse.jpt.ui.internal.orm.details.OrmEmbeddableUiProvider;
+import org.eclipse.jpt.ui.internal.orm.details.OrmEntityUiProvider;
+import org.eclipse.jpt.ui.internal.orm.details.OrmMappedSuperclassUiProvider;
 import org.eclipse.jpt.ui.internal.orm.details.OrmPersistentAttributeDetailsProvider;
 import org.eclipse.jpt.ui.internal.orm.details.OrmPersistentTypeDetailsProvider;
 import org.eclipse.jpt.ui.internal.structure.OrmResourceModelStructureProvider;
@@ -64,4 +73,21 @@ public class GenericJpaPlatformUiProvider extends AbstractJpaPlatformUiProvider
 		providers.add(OrmResourceModelStructureProvider.instance());
 	}
 
+	
+	// ********** type mapping ui providers **********
+
+	@Override
+	protected void addTypeMappingUiProvidersTo(List<TypeMappingUiProvider<?>> providers) {
+		providers.add(JavaEntityUiProvider.instance());
+		providers.add(JavaMappedSuperclassUiProvider.instance());
+		providers.add(JavaEmbeddableUiProvider.instance());
+		providers.add(OrmEntityUiProvider.instance());
+		providers.add(OrmMappedSuperclassUiProvider.instance());
+		providers.add(OrmEmbeddableUiProvider.instance());
+	}
+	
+	@Override
+	protected void addDefaultTypeMappingUiProvidersTo(List<DefaultTypeMappingUiProvider<?>> providers) {
+		providers.add(JavaDefaultTypeMappingUiProvider.instance());
+	}
 }

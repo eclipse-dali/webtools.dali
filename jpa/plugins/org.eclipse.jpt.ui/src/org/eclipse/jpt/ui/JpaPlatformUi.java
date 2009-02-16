@@ -10,17 +10,17 @@
 package org.eclipse.jpt.ui;
 
 import java.util.Iterator;
-
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.PersistentAttribute;
-import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
 import org.eclipse.jpt.ui.details.DefaultAttributeMappingUiProvider;
+import org.eclipse.jpt.ui.details.DefaultTypeMappingUiProvider;
 import org.eclipse.jpt.ui.details.JpaDetailsPage;
 import org.eclipse.jpt.ui.details.TypeMappingUiProvider;
 import org.eclipse.jpt.ui.navigator.JpaNavigatorProvider;
@@ -61,19 +61,21 @@ public interface JpaPlatformUi
 		WidgetFactory widgetFactory);
 	
 	/**
-	 * Return an iterator of mapping ui providers appropriate for the given persistent type
+	 * Return an iterator of type mapping ui providers appropriate for the given content type
 	 */
-	Iterator<TypeMappingUiProvider<? extends TypeMapping>> typeMappingUiProviders(PersistentType type);
+	Iterator<TypeMappingUiProvider<? extends TypeMapping>> typeMappingUiProviders(IContentType contentType);
+	
+	/**
+	 * Return a default type mapping ui provider for the given content type or null
+	 */
+	DefaultTypeMappingUiProvider<? extends TypeMapping> getDefaultTypeMappingProvider(IContentType contentType);
+	
 	
 	/**
 	 * Return an iterator of mapping ui providers appropriate for the given persistent attribute
 	 */
 	Iterator<AttributeMappingUiProvider<? extends AttributeMapping>> attributeMappingUiProviders(PersistentAttribute attribute);
 
-
-	// ********** Java type mapping UI providers **********
-
-	Iterator<TypeMappingUiProvider<? extends TypeMapping>> javaTypeMappingUiProviders();
 
 
 	// ********** Java attribute mapping UI providers **********
@@ -84,11 +86,6 @@ public interface JpaPlatformUi
 	// ********** default Java attribute mapping UI providers **********
 
 	Iterator<DefaultAttributeMappingUiProvider<? extends AttributeMapping>> defaultJavaAttributeMappingUiProviders();
-
-
-	// ********** ORM type mapping UI providers **********
-
-	Iterator<TypeMappingUiProvider<? extends TypeMapping>> ormTypeMappingUiProviders();
 
 
 	// ********** ORM attribute mapping UI providers **********

@@ -11,11 +11,12 @@ package org.eclipse.jpt.ui.internal.java.details;
 
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.java.JavaStructureNodes;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaDetailsPage;
 import org.eclipse.jpt.ui.details.JpaDetailsProvider;
+import org.eclipse.jpt.ui.internal.details.PersistentTypeDetailsPage;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -51,11 +52,11 @@ public class JavaPersistentTypeDetailsProvider
 		return JptCorePlugin.JAVA_SOURCE_CONTENT_TYPE;
 	}
 	
-	public JpaDetailsPage<JavaPersistentType> buildDetailsPage(
+	public JpaDetailsPage<PersistentType> buildDetailsPage(
 		Composite parent,
 		WidgetFactory widgetFactory) {
 
-		return new JavaPersistentTypeDetailsPage(parent, widgetFactory);
+		return new PersistentTypeDetailsPage(parent, widgetFactory);
 	}
 
 }

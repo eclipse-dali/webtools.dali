@@ -21,47 +21,38 @@ import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.PersistentAttribute;
-import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
-import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.ui.JpaPlatformUi;
 import org.eclipse.jpt.ui.JpaPlatformUiProvider;
 import org.eclipse.jpt.ui.JpaUiFactory;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
 import org.eclipse.jpt.ui.details.DefaultAttributeMappingUiProvider;
+import org.eclipse.jpt.ui.details.DefaultTypeMappingUiProvider;
 import org.eclipse.jpt.ui.details.JpaDetailsPage;
 import org.eclipse.jpt.ui.details.JpaDetailsProvider;
 import org.eclipse.jpt.ui.details.TypeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.details.DefaultBasicMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.details.DefaultEmbeddedMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.details.JavaBasicMappingUiProvider;
-import org.eclipse.jpt.ui.internal.java.details.JavaEmbeddableUiProvider;
 import org.eclipse.jpt.ui.internal.java.details.JavaEmbeddedIdMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.details.JavaEmbeddedMappingUiProvider;
-import org.eclipse.jpt.ui.internal.java.details.JavaEntityUiProvider;
 import org.eclipse.jpt.ui.internal.java.details.JavaIdMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.details.JavaManyToManyMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.details.JavaManyToOneMappingUiProvider;
-import org.eclipse.jpt.ui.internal.java.details.JavaMappedSuperclassUiProvider;
 import org.eclipse.jpt.ui.internal.java.details.JavaOneToManyMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.details.JavaOneToOneMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.details.JavaTransientMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.details.JavaVersionMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.details.NullAttributeMappingUiProvider;
-import org.eclipse.jpt.ui.internal.java.details.NullTypeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.orm.details.OrmBasicMappingUiProvider;
-import org.eclipse.jpt.ui.internal.orm.details.OrmEmbeddableUiProvider;
 import org.eclipse.jpt.ui.internal.orm.details.OrmEmbeddedIdMappingUiProvider;
 import org.eclipse.jpt.ui.internal.orm.details.OrmEmbeddedMappingUiProvider;
-import org.eclipse.jpt.ui.internal.orm.details.OrmEntityUiProvider;
 import org.eclipse.jpt.ui.internal.orm.details.OrmIdMappingUiProvider;
 import org.eclipse.jpt.ui.internal.orm.details.OrmManyToManyMappingUiProvider;
 import org.eclipse.jpt.ui.internal.orm.details.OrmManyToOneMappingUiProvider;
-import org.eclipse.jpt.ui.internal.orm.details.OrmMappedSuperclassUiProvider;
 import org.eclipse.jpt.ui.internal.orm.details.OrmOneToManyMappingUiProvider;
 import org.eclipse.jpt.ui.internal.orm.details.OrmOneToOneMappingUiProvider;
 import org.eclipse.jpt.ui.internal.orm.details.OrmTransientMappingUiProvider;
@@ -91,11 +82,9 @@ public abstract class BaseJpaPlatformUi
 	
 	private JpaStructureProvider javaStructureProvider;
 
-	private TypeMappingUiProvider<? extends TypeMapping>[] javaTypeMappingUiProviders;
 	private AttributeMappingUiProvider<? extends AttributeMapping>[] javaAttributeMappingUiProviders;
 	private DefaultAttributeMappingUiProvider<? extends AttributeMapping>[] defaultJavaAttributeMappingUiProviders;
 
-	private TypeMappingUiProvider<? extends TypeMapping>[] ormTypeMappingUiProviders;
 	private AttributeMappingUiProvider<? extends AttributeMapping>[] ormAttributeMappingUiProviders;
 	private DefaultAttributeMappingUiProvider<? extends AttributeMapping>[] defaultOrmAttributeMappingUiProviders;
 
@@ -177,33 +166,46 @@ public abstract class BaseJpaPlatformUi
 
 	// ********** Java type mapping UI providers **********
 
-	public ListIterator<TypeMappingUiProvider<? extends TypeMapping>> javaTypeMappingUiProviders() {
-		if (this.javaTypeMappingUiProviders == null) {
-			this.javaTypeMappingUiProviders = this.buildJavaTypeMappingUiProviders();
+	public Iterator<TypeMappingUiProvider<? extends TypeMapping>> typeMappingUiProviders(final IContentType contentType) {
+		return new FilteringIterator<TypeMappingUiProvider<? extends TypeMapping>, TypeMappingUiProvider<? extends TypeMapping>>(typeMappingUiProviders()) {
+			@Override
+			protected boolean accept(TypeMappingUiProvider<? extends TypeMapping> provider) {
+				return provider.getContentType().equals(contentType);
+			}
+		};
+	}
+
+	protected ListIterator<TypeMappingUiProvider<? extends TypeMapping>> typeMappingUiProviders() {
+		return new CompositeListIterator<TypeMappingUiProvider<? extends TypeMapping>> ( 
+			new TransformationListIterator<JpaPlatformUiProvider, ListIterator<TypeMappingUiProvider<? extends TypeMapping>>>(this.platformUiProviders()) {
+				@Override
+				protected ListIterator<TypeMappingUiProvider<? extends TypeMapping>> transform(JpaPlatformUiProvider platformProvider) {
+					return platformProvider.typeMappingUiProviders();
+				}
+			}
+		);
+	}
+	
+	public DefaultTypeMappingUiProvider<? extends TypeMapping> getDefaultTypeMappingProvider(IContentType contentType) {
+		for (DefaultTypeMappingUiProvider<? extends TypeMapping> provider : CollectionTools.iterable(defaultTypeMappingUiProviders())) {
+			if (provider.getContentType().equals(contentType)) {
+				return provider;
+			}
 		}
-		return new ArrayListIterator<TypeMappingUiProvider<? extends TypeMapping>>(this.javaTypeMappingUiProviders);
-	}
+		return null;
 
-	protected TypeMappingUiProvider<? extends TypeMapping>[] buildJavaTypeMappingUiProviders() {
-		ArrayList<TypeMappingUiProvider<? extends TypeMapping>> providers = new ArrayList<TypeMappingUiProvider<? extends TypeMapping>>();
-		this.addJavaTypeMappingUiProvidersTo(providers);
-		@SuppressWarnings("unchecked")
-		TypeMappingUiProvider<? extends TypeMapping>[] providerArray = providers.toArray(new TypeMappingUiProvider[providers.size()]);
-		return providerArray;
 	}
-
-	/**
-	 * Override this to specify more or different type mapping ui providers
-	 * The default includes the JPA spec-defined entity, mapped superclass, embeddable,
-	 * and null (when the others don't apply)
-	 */
-	protected void addJavaTypeMappingUiProvidersTo(List<TypeMappingUiProvider<? extends TypeMapping>> providers) {
-		providers.add(NullTypeMappingUiProvider.instance());
-		providers.add(JavaEntityUiProvider.instance());
-		providers.add(JavaMappedSuperclassUiProvider.instance());
-		providers.add(JavaEmbeddableUiProvider.instance());
+	
+	protected ListIterator<DefaultTypeMappingUiProvider<? extends TypeMapping>> defaultTypeMappingUiProviders() {
+		return new CompositeListIterator<DefaultTypeMappingUiProvider<? extends TypeMapping>> ( 
+			new TransformationListIterator<JpaPlatformUiProvider, ListIterator<DefaultTypeMappingUiProvider<? extends TypeMapping>>>(this.platformUiProviders()) {
+				@Override
+				protected ListIterator<DefaultTypeMappingUiProvider<? extends TypeMapping>> transform(JpaPlatformUiProvider platformProvider) {
+					return platformProvider.defaultTypeMappingUiProviders();
+				}
+			}
+		);
 	}
-
 
 	// ********** Java attribute mapping UI providers **********
 
@@ -267,36 +269,6 @@ public abstract class BaseJpaPlatformUi
 		providers.add(DefaultBasicMappingUiProvider.instance());
 		providers.add(DefaultEmbeddedMappingUiProvider.instance());
 	}
-
-
-	// ********** ORM type mapping UI providers **********
-
-	public ListIterator<TypeMappingUiProvider<? extends TypeMapping>> ormTypeMappingUiProviders() {
-		if (this.ormTypeMappingUiProviders == null) {
-			this.ormTypeMappingUiProviders = this.buildOrmTypeMappingUiProviders();
-		}
-		return new ArrayListIterator<TypeMappingUiProvider<? extends TypeMapping>>(this.ormTypeMappingUiProviders);
-	}
-
-	protected TypeMappingUiProvider<? extends TypeMapping>[] buildOrmTypeMappingUiProviders() {
-		ArrayList<TypeMappingUiProvider<? extends TypeMapping>> providers = new ArrayList<TypeMappingUiProvider<? extends TypeMapping>>();
-		this.addOrmTypeMappingUiProvidersTo(providers);
-		@SuppressWarnings("unchecked")
-		TypeMappingUiProvider<? extends TypeMapping>[] providerArray = providers.toArray(new TypeMappingUiProvider[providers.size()]);
-		return providerArray;
-	}
-
-	/**
-	 * Override this to specify more or different ORM type mapping ui providers.
-	 * The default includes the JPA spec-defined entity, mapped superclass,
-	 * embeddable, and null (when the others don't apply).
-	 */
-	protected void addOrmTypeMappingUiProvidersTo(List<TypeMappingUiProvider<? extends TypeMapping>> providers) {
-		providers.add(OrmEntityUiProvider.instance());
-		providers.add(OrmMappedSuperclassUiProvider.instance());
-		providers.add(OrmEmbeddableUiProvider.instance());
-	}
-
 
 	// ********** ORM attribute mapping UI providers **********
 
@@ -408,16 +380,6 @@ public abstract class BaseJpaPlatformUi
 	protected void displayMessage(String title, String message) {
 	    Shell currentShell = Display.getCurrent().getActiveShell();
 	    MessageDialog.openInformation(currentShell, title, message);
-	}
-
-	public Iterator<TypeMappingUiProvider<? extends TypeMapping>> typeMappingUiProviders(PersistentType type) {
-		if (type instanceof JavaPersistentType) {
-			return javaTypeMappingUiProviders();
-		}
-		if (type instanceof OrmPersistentType) {
-			return ormTypeMappingUiProviders();
-		}
-		return EmptyIterator.instance();
 	}
 	
 	public Iterator<AttributeMappingUiProvider<? extends AttributeMapping>> attributeMappingUiProviders(PersistentAttribute attribute) {

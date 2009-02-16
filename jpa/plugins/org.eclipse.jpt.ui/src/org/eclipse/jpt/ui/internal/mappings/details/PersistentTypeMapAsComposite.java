@@ -11,6 +11,7 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.util.Collection;
 import java.util.Iterator;
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.ui.details.DefaultMappingUiProvider;
@@ -31,7 +32,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.2
  * @since 2.0
  */
-public abstract class PersistentTypeMapAsComposite<T extends PersistentType> extends MapAsComposite<T>
+public class PersistentTypeMapAsComposite extends MapAsComposite<PersistentType>
 {
 	/**
 	 * Creates a new <code>PersistentTypeMapAsComposite</code>.
@@ -39,7 +40,7 @@ public abstract class PersistentTypeMapAsComposite<T extends PersistentType> ext
 	 * @param parentPane The parent pane of this one
 	 * @param parent The parent container
 	 */
-	public PersistentTypeMapAsComposite(Pane<? extends T> parentPane,
+	public PersistentTypeMapAsComposite(Pane<? extends PersistentType> parentPane,
 	                                    Composite parent) {
 
 		super(parentPane, parent);
@@ -83,7 +84,7 @@ public abstract class PersistentTypeMapAsComposite<T extends PersistentType> ext
 			}
 
 			public Iterator<? extends MappingUiProvider<?>> providers() {
-				return typeMappingUiProviders();
+				return typeMappingUiProviders(getSubject().getContentType());
 			}
 			
 			public Iterator<? extends DefaultMappingUiProvider<?>> defaultProviders() {
@@ -97,7 +98,14 @@ public abstract class PersistentTypeMapAsComposite<T extends PersistentType> ext
 	 *
 	 * @return The supported types of mapping
 	 */
-	protected abstract Iterator<TypeMappingUiProvider<? extends TypeMapping>> typeMappingUiProviders();
+	protected Iterator<TypeMappingUiProvider<? extends TypeMapping>> typeMappingUiProviders(IContentType contentType) {
+		return getJpaPlatformUi().typeMappingUiProviders(contentType);
+	}
+	
+	@Override
+	protected DefaultMappingUiProvider<?> getDefaultProvider() {
+		return getJpaPlatformUi().getDefaultTypeMappingProvider(getSubject().getContentType());
+	}
 	
 	@Override
 	protected void addPropertyNames(Collection<String> propertyNames) {

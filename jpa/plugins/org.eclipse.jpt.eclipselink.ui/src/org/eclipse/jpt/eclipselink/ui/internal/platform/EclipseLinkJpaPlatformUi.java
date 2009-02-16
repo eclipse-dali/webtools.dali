@@ -17,7 +17,6 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.PersistentAttribute;
-import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
 import org.eclipse.jpt.eclipselink.ui.internal.ddlgen.EclipseLinkDDLGeneratorUi;
 import org.eclipse.jpt.eclipselink.ui.internal.java.details.DefaultOneToManyMappingUiProvider;
@@ -28,12 +27,9 @@ import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkBasic
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkTransformationMappingUiProvider;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkVariableOneToOneMappingUiProvider;
 import org.eclipse.jpt.eclipselink.ui.internal.orm.details.EclipseLinkOrmBasicMappingUiProvider;
-import org.eclipse.jpt.eclipselink.ui.internal.orm.details.EclipseLinkOrmEmbeddableUiProvider;
-import org.eclipse.jpt.eclipselink.ui.internal.orm.details.EclipseLinkOrmEntityUiProvider;
 import org.eclipse.jpt.eclipselink.ui.internal.orm.details.EclipseLinkOrmIdMappingUiProvider;
 import org.eclipse.jpt.eclipselink.ui.internal.orm.details.EclipseLinkOrmManyToManyMappingUiProvider;
 import org.eclipse.jpt.eclipselink.ui.internal.orm.details.EclipseLinkOrmManyToOneMappingUiProvider;
-import org.eclipse.jpt.eclipselink.ui.internal.orm.details.EclipseLinkOrmMappedSuperclassUiProvider;
 import org.eclipse.jpt.eclipselink.ui.internal.orm.details.EclipseLinkOrmOneToManyMappingUiProvider;
 import org.eclipse.jpt.eclipselink.ui.internal.orm.details.EclipseLinkOrmOneToOneMappingUiProvider;
 import org.eclipse.jpt.eclipselink.ui.internal.orm.details.EclipseLinkOrmVersionMappingUiProvider;
@@ -41,7 +37,6 @@ import org.eclipse.jpt.ui.JpaPlatformUiProvider;
 import org.eclipse.jpt.ui.JpaUiFactory;
 import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
 import org.eclipse.jpt.ui.details.DefaultAttributeMappingUiProvider;
-import org.eclipse.jpt.ui.details.TypeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.details.JavaBasicMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.details.JavaEmbeddedIdMappingUiProvider;
 import org.eclipse.jpt.ui.internal.java.details.JavaEmbeddedMappingUiProvider;
@@ -65,7 +60,6 @@ import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 public class EclipseLinkJpaPlatformUi
 	extends BaseJpaPlatformUi
 {
-	private TypeMappingUiProvider<? extends TypeMapping>[] eclipseLinkOrmTypeMappingUiProviders;
 	private AttributeMappingUiProvider<? extends AttributeMapping>[] eclipseLinkOrmAttributeMappingUiProviders;
 
 	public EclipseLinkJpaPlatformUi(
@@ -163,27 +157,6 @@ public class EclipseLinkJpaPlatformUi
 	
 	public Iterator<DefaultAttributeMappingUiProvider<? extends AttributeMapping>> defaultEclipseLinkOrmAttributeMappingUiProviders() {
 		return EmptyIterator.instance();
-	}
-	
-	public Iterator<TypeMappingUiProvider<? extends TypeMapping>> eclipseLinkOrmTypeMappingUiProviders() {
-		if (this.eclipseLinkOrmTypeMappingUiProviders == null) {
-			this.eclipseLinkOrmTypeMappingUiProviders = this.buildEclipseLinkOrmTypeMappingUiProviders();
-		}
-		return new ArrayListIterator<TypeMappingUiProvider<? extends TypeMapping>>(this.eclipseLinkOrmTypeMappingUiProviders);
-	}
-	
-	protected TypeMappingUiProvider<? extends TypeMapping>[] buildEclipseLinkOrmTypeMappingUiProviders() {
-		ArrayList<TypeMappingUiProvider<? extends TypeMapping>> providers = new ArrayList<TypeMappingUiProvider<? extends TypeMapping>>();
-		this.addEclipseLinkOrmTypeMappingUiProvidersTo(providers);
-		@SuppressWarnings("unchecked")
-		TypeMappingUiProvider<? extends TypeMapping>[] providerArray = providers.toArray(new TypeMappingUiProvider[providers.size()]);
-		return providerArray;
-	}
-	
-	protected void addEclipseLinkOrmTypeMappingUiProvidersTo(List<TypeMappingUiProvider<? extends TypeMapping>> providers) {
-		providers.add(EclipseLinkOrmEntityUiProvider.instance());
-		providers.add(EclipseLinkOrmMappedSuperclassUiProvider.instance());
-		providers.add(EclipseLinkOrmEmbeddableUiProvider.instance());
 	}
 
 }

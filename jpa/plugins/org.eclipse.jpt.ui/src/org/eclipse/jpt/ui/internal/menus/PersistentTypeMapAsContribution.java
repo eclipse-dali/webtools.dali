@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,8 +11,8 @@ package org.eclipse.jpt.ui.internal.menus;
 
 import java.util.Iterator;
 import org.eclipse.jpt.core.JpaStructureNode;
-import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.ui.JpaPlatformUi;
+import org.eclipse.jpt.ui.details.DefaultMappingUiProvider;
 import org.eclipse.jpt.ui.details.MappingUiProvider;
 import org.eclipse.jpt.ui.internal.commands.PersistentTypeMapAsHandler;
 
@@ -25,7 +25,7 @@ import org.eclipse.jpt.ui.internal.commands.PersistentTypeMapAsHandler;
  * @see JpaPlatformUi
  * @see PersistentType
  *
- * @version 2.0
+ * @version 2.2
  * @since 2.0
  */
 public class PersistentTypeMapAsContribution extends MapAsContribution
@@ -50,6 +50,12 @@ public class PersistentTypeMapAsContribution extends MapAsContribution
 	@Override
 	protected Iterator<? extends MappingUiProvider<?>> 
 			mappingUiProviders(JpaPlatformUi jpaPlatformUi, JpaStructureNode node) {
-		return jpaPlatformUi.typeMappingUiProviders((PersistentType) node);
+		return jpaPlatformUi.typeMappingUiProviders(node.getContentType());
 	}
+	
+	@Override
+	protected DefaultMappingUiProvider<?> getDefaultProvider(JpaPlatformUi platformUi, JpaStructureNode node) {
+		return platformUi.getDefaultTypeMappingProvider(node.getContentType());
+	}
+	
 }

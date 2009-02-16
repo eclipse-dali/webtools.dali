@@ -14,7 +14,9 @@ import java.util.List;
 import java.util.ListIterator;
 
 import org.eclipse.jpt.ui.JpaPlatformUiProvider;
+import org.eclipse.jpt.ui.details.DefaultTypeMappingUiProvider;
 import org.eclipse.jpt.ui.details.JpaDetailsProvider;
+import org.eclipse.jpt.ui.details.TypeMappingUiProvider;
 import org.eclipse.jpt.ui.structure.JpaStructureProvider;
 import org.eclipse.jpt.utility.internal.iterators.ArrayListIterator;
 
@@ -27,7 +29,11 @@ public abstract class AbstractJpaPlatformUiProvider implements JpaPlatformUiProv
 	private JpaDetailsProvider[] detailsProviders;
 
 	private JpaStructureProvider[] mappingFileStructureProviders;
-
+	
+	private TypeMappingUiProvider<?>[] typeMappingUiProviders;
+	
+	private DefaultTypeMappingUiProvider<?>[] defaultTypeMappingUiProviders;
+	
 	/**
 	 * zero-argument constructor
 	 */
@@ -87,5 +93,53 @@ public abstract class AbstractJpaPlatformUiProvider implements JpaPlatformUiProv
 	protected abstract void addMappingFileStructureProvidersTo(List<JpaStructureProvider> providers);
 	
 	
+	// ********** type mapping ui providers **********
 
+	public ListIterator<TypeMappingUiProvider<?>> typeMappingUiProviders() {
+		return new ArrayListIterator<TypeMappingUiProvider<?>>(getTypeMappingUiProviders());
+	}
+	
+	protected synchronized TypeMappingUiProvider<?>[] getTypeMappingUiProviders() {
+		if (this.typeMappingUiProviders == null) {
+			this.typeMappingUiProviders = this.buildTypeMappingUiProviders();
+		}
+		return this.typeMappingUiProviders;
+	}
+
+	protected TypeMappingUiProvider<?>[] buildTypeMappingUiProviders() {
+		ArrayList<TypeMappingUiProvider<?>> providers = new ArrayList<TypeMappingUiProvider<?>>();
+		this.addTypeMappingUiProvidersTo(providers);
+		return providers.toArray(new TypeMappingUiProvider[providers.size()]);
+	}
+
+	/**
+	 * Implement this to specify JPA type mapping ui providers.
+	 */
+	protected abstract void addTypeMappingUiProvidersTo(List<TypeMappingUiProvider<?>> providers);
+	
+	
+	
+	
+	public ListIterator<DefaultTypeMappingUiProvider<?>> defaultTypeMappingUiProviders() {
+		return new ArrayListIterator<DefaultTypeMappingUiProvider<?>>(getDefaultTypeMappingUiProviders());
+	}
+	
+	protected synchronized DefaultTypeMappingUiProvider<?>[] getDefaultTypeMappingUiProviders() {
+		if (this.defaultTypeMappingUiProviders == null) {
+			this.defaultTypeMappingUiProviders = this.buildDefaultTypeMappingUiProviders();
+		}
+		return this.defaultTypeMappingUiProviders;
+	}
+
+	protected DefaultTypeMappingUiProvider<?>[] buildDefaultTypeMappingUiProviders() {
+		ArrayList<DefaultTypeMappingUiProvider<?>> providers = new ArrayList<DefaultTypeMappingUiProvider<?>>();
+		this.addDefaultTypeMappingUiProvidersTo(providers);
+		return providers.toArray(new DefaultTypeMappingUiProvider[providers.size()]);
+	}
+
+	/**
+	 * Implement this to specify JPA default type mapping ui providers.
+	 */
+	protected abstract void addDefaultTypeMappingUiProvidersTo(List<DefaultTypeMappingUiProvider<?>> providers);
+	
 }

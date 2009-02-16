@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,6 +13,7 @@ import java.util.Iterator;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.ui.JpaPlatformUi;
+import org.eclipse.jpt.ui.details.DefaultMappingUiProvider;
 import org.eclipse.jpt.ui.details.MappingUiProvider;
 import org.eclipse.jpt.ui.internal.commands.PersistentAttributeMapAsHandler;
 
@@ -48,12 +49,14 @@ public class PersistentAttributeMapAsContribution extends MapAsContribution
 		return PersistentAttributeMapAsHandler.COMMAND_PARAMETER_ID;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected Iterator<? extends MappingUiProvider<?>> 
 			mappingUiProviders(JpaPlatformUi jpaPlatformUi, JpaStructureNode node) {
 		return jpaPlatformUi.attributeMappingUiProviders((PersistentAttribute) node);
+	}
+	
+	@Override
+	protected DefaultMappingUiProvider<?> getDefaultProvider(JpaPlatformUi platformUi, JpaStructureNode node) {
+		return null; //TODO
 	}
 }

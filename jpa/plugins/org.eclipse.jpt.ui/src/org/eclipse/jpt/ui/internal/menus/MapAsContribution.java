@@ -18,9 +18,11 @@ import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.ui.JpaPlatformUi;
 import org.eclipse.jpt.ui.JptUiPlugin;
+import org.eclipse.jpt.ui.details.DefaultMappingUiProvider;
 import org.eclipse.jpt.ui.details.MappingUiProvider;
 import org.eclipse.jpt.ui.internal.jface.ImageImageDescriptor;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.ui.ISources;
 import org.eclipse.ui.actions.CompoundContributionItem;
@@ -94,26 +96,39 @@ public abstract class MapAsContribution extends CompoundContributionItem
 	 * of providers to return
 	 * @return The list of registered {@link MappingUiProvider}s
 	 */
-	protected Iterator<? extends MappingUiProvider<?>> 
-			mappingUiProviders(JpaStructureNode node) {
+	protected Iterator<? extends MappingUiProvider<?>> mappingUiProviders(JpaStructureNode node) {
 		JpaPlatform jpaPlatform = node.getJpaProject().getJpaPlatform();
 		JpaPlatformUi jpaPlatformUi = JptUiPlugin.instance().getJpaPlatformUi(jpaPlatform);
+		
+		DefaultMappingUiProvider<?> defaultProvider = getDefaultProvider(jpaPlatformUi, node);
+		if (defaultProvider != null) {
+			return new CompositeIterator<MappingUiProvider<?>>(defaultProvider, mappingUiProviders(jpaPlatformUi, node));
+		}
 		return mappingUiProviders(jpaPlatformUi, node);
 	}
+		
+	/**
+	* Retrieves the registered {@link MappingUiProvider}s from the given 
+	* {@link JpaPlatformUi} and {@link JpaStructureNode} (to determine type of 
+	* mapping providers to retrieve).
+	*
+	* @param jpaPlatformUi The active {@link JpaPlatformUi} from where the
+	* provider can be retrieved
+	* @param node A test node to determine type of providers to return
+	* @return The list of registered {@link MappingUiProvider}s
+	*/
+	protected abstract Iterator<? extends MappingUiProvider<?>> 
+		mappingUiProviders(JpaPlatformUi platformUi, JpaStructureNode node);
 	
 	/**
-	 * Retrieves the registered {@link MappingUiProvider}s from the given 
-	 * {@link JpaPlatformUi} and {@link JpaStructureNode} (to determine type of 
-	 * mapping providers to retrieve).
-	 *
-	 * @param jpaPlatformUi The active {@link JpaPlatformUi} from where the
-	 * provider can be retrieved
-	 * @param node A test node to determine type of providers to return
-	 * @return The list of registered {@link MappingUiProvider}s
-	 */
-	protected abstract Iterator<? extends MappingUiProvider<?>> 
-			mappingUiProviders(JpaPlatformUi platformUi, JpaStructureNode node);
-	
+	* Creates the default provider responsible for clearing the mapping type.
+	* If not default provider, then return null
+	*
+	* @return A provider that acts as a default mapping provider
+	*/
+	//TODO change to IContentType instead of JpaStructureNode
+	protected abstract DefaultMappingUiProvider<?> getDefaultProvider(JpaPlatformUi platformUi, JpaStructureNode node);
+			
 	protected IContributionItem contributionItem(MappingUiProvider<?> mappingUiProvider) {
 		CommandContributionItem item = 
 			new CommandContributionItem(parameter(mappingUiProvider));
