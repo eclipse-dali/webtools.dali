@@ -9,47 +9,21 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.mappings.details;
 
-import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.eclipselink.core.EclipseLinkMappingKeys;
 import org.eclipse.jpt.eclipselink.core.context.VariableOneToOneMapping;
-import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
-import org.eclipse.jpt.ui.JpaUiFactory;
 import org.eclipse.jpt.ui.JptUiPlugin;
-import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
-import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.JptUiIcons;
-import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.Composite;
 
-public class EclipseLinkVariableOneToOneMappingUiProvider
-	implements AttributeMappingUiProvider<VariableOneToOneMapping>
-{
-	// singleton
-	private static final EclipseLinkVariableOneToOneMappingUiProvider INSTANCE = 
-		new EclipseLinkVariableOneToOneMappingUiProvider();
-	
-	/**
-	 * Return the singleton.
-	 */
-	public static AttributeMappingUiProvider<VariableOneToOneMapping> instance() {
-		return INSTANCE;
-	}
-	
-	
-	/**
-	 * Ensure single instance.
-	 */
-	private EclipseLinkVariableOneToOneMappingUiProvider() {
+public abstract class EclipseLinkVariableOneToOneMappingUiProvider<T extends VariableOneToOneMapping>
+	implements AttributeMappingUiProvider<T>
+{	
+	protected EclipseLinkVariableOneToOneMappingUiProvider() {
 		super();
 	}
-	
-	public IContentType getContentType() {
-		return JptEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_CONTENT_TYPE;
-	}
-	
+		
 	public Image getImage() {
 		return JptUiPlugin.getImage(JptUiIcons.JPA_CONTENT);
 	}
@@ -64,13 +38,5 @@ public class EclipseLinkVariableOneToOneMappingUiProvider
 	
 	public String getKey() {
 		return EclipseLinkMappingKeys.VARIABLE_ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY;
-	}
-	
-	public JpaComposite buildAttributeMappingComposite(
-			JpaUiFactory factory,
-			PropertyValueModel<VariableOneToOneMapping> subjectHolder,
-			Composite parent,
-			WidgetFactory widgetFactory) {
-		return new VariableOneToOneMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 }

@@ -10,8 +10,11 @@
 package org.eclipse.jpt.eclipselink.ui.internal.platform;
 
 import java.util.List;
+import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.eclipselink.ui.internal.structure.EclipseLink1_1OrmResourceModelStructureProvider;
 import org.eclipse.jpt.ui.JpaPlatformUiProvider;
+import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
+import org.eclipse.jpt.ui.details.DefaultAttributeMappingUiProvider;
 import org.eclipse.jpt.ui.details.DefaultTypeMappingUiProvider;
 import org.eclipse.jpt.ui.details.JpaDetailsProvider;
 import org.eclipse.jpt.ui.details.TypeMappingUiProvider;
@@ -66,4 +69,16 @@ public class EclipseLink1_1JpaPlatformUiProvider extends AbstractJpaPlatformUiPr
 		//none specific to EclipseLink 1.1
 	}
 	
+	
+	// ********** attribute mapping ui providers **********
+	
+	@Override
+	protected void addAttributeMappingUiProvidersTo(List<AttributeMappingUiProvider<? extends AttributeMapping>> providers) {
+		//none specific to EclipseLink 1.1
+	}
+	
+	@Override
+	protected void addDefaultAttributeMappingUiProvidersTo(List<DefaultAttributeMappingUiProvider<? extends AttributeMapping>> providers) {
+		//none specific to EclipseLink 1.1
+	}
 }

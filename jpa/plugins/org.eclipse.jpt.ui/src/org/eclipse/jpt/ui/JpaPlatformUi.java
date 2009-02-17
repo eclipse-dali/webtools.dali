@@ -16,7 +16,6 @@ import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.AttributeMapping;
-import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
 import org.eclipse.jpt.ui.details.DefaultAttributeMappingUiProvider;
@@ -68,36 +67,35 @@ public interface JpaPlatformUi
 	/**
 	 * Return a default type mapping ui provider for the given content type or null
 	 */
-	DefaultTypeMappingUiProvider<? extends TypeMapping> getDefaultTypeMappingProvider(IContentType contentType);
-	
-	
+	DefaultTypeMappingUiProvider<? extends TypeMapping> getDefaultTypeMappingUiProvider(IContentType contentType);
+
+	/**
+	 * Return an type mapping ui provider for the given content type
+	 */
+	TypeMappingUiProvider<? extends TypeMapping> getTypeMappingUiProvider(String key, IContentType contentType);
+
 	/**
 	 * Return an iterator of mapping ui providers appropriate for the given persistent attribute
 	 */
-	Iterator<AttributeMappingUiProvider<? extends AttributeMapping>> attributeMappingUiProviders(PersistentAttribute attribute);
+	Iterator<AttributeMappingUiProvider<? extends AttributeMapping>> attributeMappingUiProviders(IContentType contentType);
 
-
-
-	// ********** Java attribute mapping UI providers **********
-
-	Iterator<AttributeMappingUiProvider<? extends AttributeMapping>> javaAttributeMappingUiProviders();
 
 
 	// ********** default Java attribute mapping UI providers **********
 
-	Iterator<DefaultAttributeMappingUiProvider<? extends AttributeMapping>> defaultJavaAttributeMappingUiProviders();
+	Iterator<DefaultAttributeMappingUiProvider<? extends AttributeMapping>> defaultAttributeMappingUiProviders(IContentType contentType);
 
+	/**
+	 * Return a default attribute mapping ui provider for the given content type or null
+	 */
+	DefaultAttributeMappingUiProvider<? extends AttributeMapping> getDefaultAttributeMappingUiProvider(String key, IContentType contentType);
 
-	// ********** ORM attribute mapping UI providers **********
-
-	Iterator<AttributeMappingUiProvider<? extends AttributeMapping>> ormAttributeMappingUiProviders();
-
-
-	// ********** default ORM attribute mapping UI providers **********
-
-	Iterator<DefaultAttributeMappingUiProvider<? extends AttributeMapping>> defaultOrmAttributeMappingUiProviders();
-
-
+	/**
+	 * Return an attribute mapping ui provider for the given content type
+	 */
+	AttributeMappingUiProvider<? extends AttributeMapping> getAttributeMappingUiProvider(String key, IContentType contentType);
+	
+	
 	// ********** structure providers **********
 
 	/**

@@ -10,7 +10,10 @@
 package org.eclipse.jpt.ui;
 
 import java.util.ListIterator;
+import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
+import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
+import org.eclipse.jpt.ui.details.DefaultAttributeMappingUiProvider;
 import org.eclipse.jpt.ui.details.DefaultTypeMappingUiProvider;
 import org.eclipse.jpt.ui.details.JpaDetailsProvider;
 import org.eclipse.jpt.ui.details.TypeMappingUiProvider;
@@ -59,4 +62,9 @@ public interface JpaPlatformUiProvider
 	 */
 	ListIterator<DefaultTypeMappingUiProvider<? extends TypeMapping>> defaultTypeMappingUiProviders();
 
+	
+	ListIterator<AttributeMappingUiProvider<? extends AttributeMapping>> attributeMappingUiProviders();
+
+	ListIterator<DefaultAttributeMappingUiProvider<? extends AttributeMapping>> defaultAttributeMappingUiProviders();
+	
 }

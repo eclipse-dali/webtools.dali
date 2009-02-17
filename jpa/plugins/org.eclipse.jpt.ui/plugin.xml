@@ -158,10 +158,15 @@
 			name="%mapAs"
 			categoryId="org.eclipse.jpt.ui.jpaStructureViewCommands">
 			<commandParameter
-				id="persistentAttributeMappingKey"
-				name="%mapAsParameterName"
+				id="specifiedPersistentAttributeMappingKey"
+				name="%mapAsSpecifiedMappingParameterName"
 				optional="false">
 			</commandParameter>
+   <commandParameter
+         id="defaultPersistentAttributeMappingKey"
+         name="%mapAsDefaultMappingParameterName"
+         optional="false">
+   </commandParameter>
 		</command>
 		
 	</extension>

@@ -10,21 +10,26 @@
 package org.eclipse.jpt.ui.internal.menus;
 
 import java.util.Iterator;
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.ui.JpaPlatformUi;
+import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
+import org.eclipse.jpt.ui.details.DefaultAttributeMappingUiProvider;
 import org.eclipse.jpt.ui.details.DefaultMappingUiProvider;
 import org.eclipse.jpt.ui.details.MappingUiProvider;
 import org.eclipse.jpt.ui.internal.commands.PersistentAttributeMapAsHandler;
+import org.eclipse.ui.menus.CommandContributionItemParameter;
 
 /**
  * This menu contribution is responsible to populate the Map As menu with the
  * registered attribute mapping types defined in the <code>JptPlatformUi</code>
  * for <code>PersistentAttribute</code> objects.
  *
+ * @see PersistentAttributeMapAsHandler
  * @see PersistentAttribute
  *
- * @version 2.0
+ * @version 2.2
  * @since 2.0
  */
 public class PersistentAttributeMapAsContribution extends MapAsContribution
@@ -36,27 +41,39 @@ public class PersistentAttributeMapAsContribution extends MapAsContribution
 		super();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
-	protected String commandId() {
+	protected String getCommandId() {
 		return PersistentAttributeMapAsHandler.COMMAND_ID;
 	}
 	
 	@Override
-	protected String commandParameterId() {
-		return PersistentAttributeMapAsHandler.COMMAND_PARAMETER_ID;
-	}
-
-	@Override
-	protected Iterator<? extends MappingUiProvider<?>> 
-			mappingUiProviders(JpaPlatformUi jpaPlatformUi, JpaStructureNode node) {
-		return jpaPlatformUi.attributeMappingUiProviders((PersistentAttribute) node);
+	protected String getCommandParameterId() {
+		return PersistentAttributeMapAsHandler.SPECIFIED_MAPPING_COMMAND_PARAMETER_ID;
 	}
 	
 	@Override
-	protected DefaultMappingUiProvider<?> getDefaultProvider(JpaPlatformUi platformUi, JpaStructureNode node) {
-		return null; //TODO
+	protected CommandContributionItemParameter createParameter(MappingUiProvider<?> mappingUiProvider) {
+		CommandContributionItemParameter parameter = super.createParameter(mappingUiProvider);
+		String defaultKey = null;
+		if (mappingUiProvider instanceof DefaultMappingUiProvider<?>) {
+			defaultKey = ((DefaultMappingUiProvider<?>) mappingUiProvider).getDefaultKey();
+		}
+		parameter.parameters.put(PersistentAttributeMapAsHandler.DEFAULT_MAPPING_COMMAND_PARAMETER_ID, defaultKey);
+		return parameter;
+	}
+	
+	@Override
+	protected Iterator<? extends AttributeMappingUiProvider<?>> 
+			mappingUiProviders(JpaPlatformUi jpaPlatformUi, IContentType contentType) {
+		return jpaPlatformUi.attributeMappingUiProviders(contentType);
+	}
+	
+	@Override
+	protected DefaultAttributeMappingUiProvider<?> getDefaultProvider(JpaPlatformUi jpaPlatformUi, JpaStructureNode node) {
+		return getDefaultProvider(jpaPlatformUi, ((PersistentAttribute) node).getDefaultMappingKey(), node.getContentType());
+	}
+	
+	protected DefaultAttributeMappingUiProvider<?> getDefaultProvider(JpaPlatformUi jpaPlatformUi, String defaultKey, IContentType contentType) {
+		return jpaPlatformUi.getDefaultAttributeMappingUiProvider(defaultKey, contentType);
 	}
 }

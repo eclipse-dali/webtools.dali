@@ -32,7 +32,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.2
  * @since 2.0
  */
-public abstract class PersistentAttributeMapAsComposite<T extends PersistentAttribute> extends MapAsComposite<T> {
+public class PersistentAttributeMapAsComposite extends MapAsComposite<PersistentAttribute> {
 
 	/**
 	 * Creates a new <code>PersistentAttributeMapAsComposite</code>.
@@ -40,7 +40,7 @@ public abstract class PersistentAttributeMapAsComposite<T extends PersistentAttr
 	 * @param parentPane The parent pane of this one
 	 * @param parent The parent container
 	 */
-	public PersistentAttributeMapAsComposite(Pane<? extends T> parentPane,
+	public PersistentAttributeMapAsComposite(Pane<? extends PersistentAttribute> parentPane,
                                             Composite parent) {
 
 		super(parentPane, parent);
@@ -93,11 +93,6 @@ public abstract class PersistentAttributeMapAsComposite<T extends PersistentAttr
 			public Iterator<? extends MappingUiProvider<?>> providers() {
 				return attributeMappingUiProviders();
 			}
-			
-			public Iterator<? extends DefaultMappingUiProvider<?>> defaultProviders() {
-				return defaultAttributeMappingUiProviders();
-			}
-			
 		};
 	}
 	
@@ -106,26 +101,29 @@ public abstract class PersistentAttributeMapAsComposite<T extends PersistentAttr
 	 *
 	 * @return The supported types of mapping
 	 */
-	protected abstract Iterator<AttributeMappingUiProvider<? extends AttributeMapping>> attributeMappingUiProviders();
+	protected Iterator<AttributeMappingUiProvider<? extends AttributeMapping>> attributeMappingUiProviders() {
+		return getJpaPlatformUi().attributeMappingUiProviders(getSubject().getContentType());
+	}
 
 	@Override
 	protected DefaultMappingUiProvider<?> getDefaultProvider() {
-		String mappingKey = getSubject().getDefaultMappingKey();
+		return getDefaultProvider(getSubject().getDefaultMappingKey());
 
-		if (mappingKey == null) {
-			return null;
-		}
-
-		return getDefaultProvider(mappingKey);
 	}
-
+	
+	@Override
+	protected DefaultMappingUiProvider<?> getDefaultProvider(String mappingKey) {
+		return getJpaPlatformUi().getDefaultAttributeMappingUiProvider(mappingKey, getSubject().getContentType());
+	}
+	
 	/**
 	 * Returns the list of providers that are registered with the JPT plugin.
 	 *
 	 * @return The supported default types of mapping
 	 */
-	protected abstract Iterator<DefaultAttributeMappingUiProvider<? extends AttributeMapping>>
-		defaultAttributeMappingUiProviders();
+	protected Iterator<DefaultAttributeMappingUiProvider<? extends AttributeMapping>> defaultAttributeMappingUiProviders() {
+		return getJpaPlatformUi().defaultAttributeMappingUiProviders(getSubject().getContentType());
+	}
 
 
 	@Override

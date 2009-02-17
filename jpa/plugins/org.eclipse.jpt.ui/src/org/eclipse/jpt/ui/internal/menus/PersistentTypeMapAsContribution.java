@@ -10,10 +10,11 @@
 package org.eclipse.jpt.ui.internal.menus;
 
 import java.util.Iterator;
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.ui.JpaPlatformUi;
-import org.eclipse.jpt.ui.details.DefaultMappingUiProvider;
-import org.eclipse.jpt.ui.details.MappingUiProvider;
+import org.eclipse.jpt.ui.details.DefaultTypeMappingUiProvider;
+import org.eclipse.jpt.ui.details.TypeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.commands.PersistentTypeMapAsHandler;
 
 /**
@@ -38,24 +39,24 @@ public class PersistentTypeMapAsContribution extends MapAsContribution
 	}
 	
 	@Override
-	protected String commandId() {
+	protected String getCommandId() {
 		return PersistentTypeMapAsHandler.COMMAND_ID;
 	}
 	
 	@Override
-	protected String commandParameterId() {
+	protected String getCommandParameterId() {
 		return PersistentTypeMapAsHandler.COMMAND_PARAMETER_ID;
 	}
 
 	@Override
-	protected Iterator<? extends MappingUiProvider<?>> 
-			mappingUiProviders(JpaPlatformUi jpaPlatformUi, JpaStructureNode node) {
-		return jpaPlatformUi.typeMappingUiProviders(node.getContentType());
+	protected Iterator<? extends TypeMappingUiProvider<?>> 
+			mappingUiProviders(JpaPlatformUi jpaPlatformUi, IContentType contentType) {
+		return jpaPlatformUi.typeMappingUiProviders(contentType);
 	}
 	
 	@Override
-	protected DefaultMappingUiProvider<?> getDefaultProvider(JpaPlatformUi platformUi, JpaStructureNode node) {
-		return platformUi.getDefaultTypeMappingProvider(node.getContentType());
+	protected DefaultTypeMappingUiProvider<?> getDefaultProvider(JpaPlatformUi platformUi, JpaStructureNode node) {
+		return platformUi.getDefaultTypeMappingUiProvider(node.getContentType());
 	}
 	
 }

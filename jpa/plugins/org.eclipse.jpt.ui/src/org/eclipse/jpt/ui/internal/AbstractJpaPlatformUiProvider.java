@@ -13,7 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
+import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.ui.JpaPlatformUiProvider;
+import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
+import org.eclipse.jpt.ui.details.DefaultAttributeMappingUiProvider;
 import org.eclipse.jpt.ui.details.DefaultTypeMappingUiProvider;
 import org.eclipse.jpt.ui.details.JpaDetailsProvider;
 import org.eclipse.jpt.ui.details.TypeMappingUiProvider;
@@ -33,6 +36,10 @@ public abstract class AbstractJpaPlatformUiProvider implements JpaPlatformUiProv
 	private TypeMappingUiProvider<?>[] typeMappingUiProviders;
 	
 	private DefaultTypeMappingUiProvider<?>[] defaultTypeMappingUiProviders;
+
+	private AttributeMappingUiProvider<? extends AttributeMapping>[] attributeMappingUiProviders;
+	
+	private DefaultAttributeMappingUiProvider<? extends AttributeMapping>[] defaultAttributeMappingUiProviders;
 	
 	/**
 	 * zero-argument constructor
@@ -142,4 +149,48 @@ public abstract class AbstractJpaPlatformUiProvider implements JpaPlatformUiProv
 	 */
 	protected abstract void addDefaultTypeMappingUiProvidersTo(List<DefaultTypeMappingUiProvider<?>> providers);
 	
+	
+	
+	// ********** attribute mapping ui providers **********
+	
+	
+	public ListIterator<AttributeMappingUiProvider<? extends AttributeMapping>> attributeMappingUiProviders() {
+		if (this.attributeMappingUiProviders == null) {
+			this.attributeMappingUiProviders = this.buildAttributeMappingUiProviders();
+		}
+		return new ArrayListIterator<AttributeMappingUiProvider<? extends AttributeMapping>>(this.attributeMappingUiProviders);
+	}
+
+	protected AttributeMappingUiProvider<? extends AttributeMapping>[] buildAttributeMappingUiProviders() {
+		ArrayList<AttributeMappingUiProvider<? extends AttributeMapping>> providers = new ArrayList<AttributeMappingUiProvider<? extends AttributeMapping>>();
+		this.addAttributeMappingUiProvidersTo(providers);
+		@SuppressWarnings("unchecked")
+		AttributeMappingUiProvider<? extends AttributeMapping>[] providerArray = providers.toArray(new AttributeMappingUiProvider[providers.size()]);
+		return providerArray;
+	}
+
+
+	protected abstract void addAttributeMappingUiProvidersTo(List<AttributeMappingUiProvider<? extends AttributeMapping>> providers);
+
+
+	// ********** default Java attribute mapping UI providers **********
+
+	public ListIterator<DefaultAttributeMappingUiProvider<? extends AttributeMapping>> defaultAttributeMappingUiProviders() {
+		if (this.defaultAttributeMappingUiProviders == null) {
+			this.defaultAttributeMappingUiProviders = this.buildDefaultAttributeMappingUiProviders();
+		}
+		return new ArrayListIterator<DefaultAttributeMappingUiProvider<? extends AttributeMapping>>(this.defaultAttributeMappingUiProviders);
+	}
+
+	protected DefaultAttributeMappingUiProvider<? extends AttributeMapping>[] buildDefaultAttributeMappingUiProviders() {
+		ArrayList<DefaultAttributeMappingUiProvider<? extends AttributeMapping>> providers = new ArrayList<DefaultAttributeMappingUiProvider<? extends AttributeMapping>>();
+		this.addDefaultAttributeMappingUiProvidersTo(providers);
+		@SuppressWarnings("unchecked")
+		DefaultAttributeMappingUiProvider<? extends AttributeMapping>[] providerArray = providers.toArray(new DefaultAttributeMappingUiProvider[providers.size()]);
+		return providerArray;
+	}
+
+
+	protected abstract void addDefaultAttributeMappingUiProvidersTo(List<DefaultAttributeMappingUiProvider<? extends AttributeMapping>> providers);
+
 }

@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.dialogs;
 
+import java.text.Collator;
+import java.util.Comparator;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.StatusDialog;
@@ -23,6 +25,7 @@ import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.ui.JpaPlatformUi;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
+import org.eclipse.jpt.ui.details.MappingUiProvider;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.swt.SWT;
@@ -77,7 +80,10 @@ public class AddPersistentAttributeToXmlAndMapDialog extends StatusDialog
 				public void dispose() {}
 
 				public Object[] getElements(Object inputElement) {
-					return CollectionTools.array(((JpaPlatformUi) inputElement).attributeMappingUiProviders(unmappedPersistentAttribute));
+					return CollectionTools.array(
+						CollectionTools.sort(
+							((JpaPlatformUi) inputElement).attributeMappingUiProviders(unmappedPersistentAttribute.getContentType()),
+							getProvidersComparator()));
 				}
 				
 				public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {}
@@ -107,6 +113,16 @@ public class AddPersistentAttributeToXmlAndMapDialog extends StatusDialog
 		validate();
 
 		return dialogArea;
+	}
+	
+	protected Comparator<MappingUiProvider<?>> getProvidersComparator() {
+		return new Comparator<MappingUiProvider<?>>() {
+			public int compare(MappingUiProvider<?> item1, MappingUiProvider<?> item2) {
+				String displayString1 = item1.getLabel();
+				String displayString2 = item2.getLabel();
+				return Collator.getInstance().compare(displayString1, displayString2);
+			}
+		};
 	}
 
 	private Label createLabel(Composite container, int span, String text) {

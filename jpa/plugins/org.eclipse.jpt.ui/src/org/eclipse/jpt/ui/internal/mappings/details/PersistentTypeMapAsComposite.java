@@ -19,7 +19,6 @@ import org.eclipse.jpt.ui.details.MappingUiProvider;
 import org.eclipse.jpt.ui.details.TypeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
-import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -86,10 +85,6 @@ public class PersistentTypeMapAsComposite extends MapAsComposite<PersistentType>
 			public Iterator<? extends MappingUiProvider<?>> providers() {
 				return typeMappingUiProviders(getSubject().getContentType());
 			}
-			
-			public Iterator<? extends DefaultMappingUiProvider<?>> defaultProviders() {
-				return EmptyIterator.instance();
-			}
 		};
 	}
 
@@ -104,7 +99,12 @@ public class PersistentTypeMapAsComposite extends MapAsComposite<PersistentType>
 	
 	@Override
 	protected DefaultMappingUiProvider<?> getDefaultProvider() {
-		return getJpaPlatformUi().getDefaultTypeMappingProvider(getSubject().getContentType());
+		return getJpaPlatformUi().getDefaultTypeMappingUiProvider(getSubject().getContentType());
+	}
+	
+	@Override
+	protected DefaultMappingUiProvider<?> getDefaultProvider(String mappingKey) {
+		return getDefaultProvider();
 	}
 	
 	@Override

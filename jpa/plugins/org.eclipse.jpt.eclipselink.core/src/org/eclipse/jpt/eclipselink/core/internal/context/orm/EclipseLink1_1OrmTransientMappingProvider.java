@@ -20,6 +20,7 @@ import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlTransient;
+import org.eclipse.jpt.eclipselink.core.internal.EclipseLink1_1JpaFactory;
 import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
 import org.eclipse.jpt.eclipselink1_1.core.resource.orm.EclipseLink1_1OrmFactory;
 
@@ -60,7 +61,7 @@ public class EclipseLink1_1OrmTransientMappingProvider
 	}
 	
 	public XmlAttributeMapping buildVirtualResourceMapping(OrmTypeMapping ormTypeMapping, JavaAttributeMapping javaAttributeMapping, JpaFactory factory) {
-		return factory.buildVirtualXmlTransient(ormTypeMapping, (JavaTransientMapping) javaAttributeMapping);
+		return ((EclipseLink1_1JpaFactory) factory).buildEclipseLink1_1VirtualXmlTransient(ormTypeMapping, (JavaTransientMapping) javaAttributeMapping);
 	}
 
 }

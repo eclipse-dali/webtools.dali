@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,14 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.commands;
 
-import java.util.Iterator;
 import java.util.Map;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.core.context.PersistentAttribute;
-import org.eclipse.jpt.ui.internal.menus.PersistentAttributeMapAsContribution;
 import org.eclipse.ui.ISources;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.commands.IElementUpdater;
@@ -51,8 +49,9 @@ public class PersistentAttributeMapAsHandler extends AbstractHandler
 	 * The unique identifier of the Map As command parameter used for <code>PersistentAttribute</code>
 	 * defined in the <code>JptUiPlugin</code> plugin.xml.
 	 */
-	public static final String COMMAND_PARAMETER_ID = "persistentAttributeMappingKey";
+	public static final String SPECIFIED_MAPPING_COMMAND_PARAMETER_ID = "specifiedPersistentAttributeMappingKey";
 	
+	public static final String DEFAULT_MAPPING_COMMAND_PARAMETER_ID = "defaultPersistentAttributeMappingKey";
 	
 	/**
 	 * Creates a new <code>PersistentAttributeMapAsHandler</code>.
@@ -68,7 +67,7 @@ public class PersistentAttributeMapAsHandler extends AbstractHandler
 			HandlerUtil.getCurrentSelectionChecked(event);
 
 		// Retrieve the value of the unique parameter passed to the command
-		String mappingKey = event.getParameter(COMMAND_PARAMETER_ID);
+		String mappingKey = event.getParameter(SPECIFIED_MAPPING_COMMAND_PARAMETER_ID);
 
 		// Change the mapping key for all the selected items
 		for (Object item : selection.toArray()) {
@@ -79,8 +78,7 @@ public class PersistentAttributeMapAsHandler extends AbstractHandler
 		return null;
 	}
 	
-	@SuppressWarnings("unchecked")
-	public void updateElement(UIElement element, Map parameters) {
+	public void updateElement(UIElement element, @SuppressWarnings("unchecked") Map parameters) {
 		// Retrieve the selection for the UIElement
 		
 		// Due to Bug 226746, we have to use API workaround to retrieve current 
@@ -92,33 +90,54 @@ public class PersistentAttributeMapAsHandler extends AbstractHandler
 		IStructuredSelection selection 
 			= (IStructuredSelection) part.getSite().getSelectionProvider().getSelection();
 		
-		String commonMappingKey = commonMappingKey(selection);
-		
-		String handlerMappingKey = (String) parameters.get(COMMAND_PARAMETER_ID);
-		if (handlerMappingKey != null) {
-			element.setChecked(handlerMappingKey.equals(commonMappingKey));
-		}
+		element.setChecked(selectedElementsMappingKeysMatch(selection, parameters));
 	}
 	
-	@SuppressWarnings("unchecked")
-	protected String commonMappingKey(IStructuredSelection selection) {
-		String commonKey = null;
-		for (Iterator stream = selection.iterator(); stream.hasNext(); ) {
-			Object obj = stream.next();
-			
+	//Check all the selected persistent attribute and verify that they have the same mapping type.
+	//They must all be either default mappings or specified mappings as well.
+	protected boolean selectedElementsMappingKeysMatch(IStructuredSelection selection, @SuppressWarnings("unchecked") Map parameters) {
+		String handlerSpecifiedMappingKey = (String) parameters.get(SPECIFIED_MAPPING_COMMAND_PARAMETER_ID);
+		String handlerDefaultMappingKey = (String) parameters.get(DEFAULT_MAPPING_COMMAND_PARAMETER_ID);
+		
+		String commonDefaultKey = null;
+		String commonSpecifiedKey = null;
+		for (Object obj : selection.toArray()) {
 			if (! (obj instanceof PersistentAttribute)) {
-				return null;
+				//oddly enough, you have to check instanceof here, seems like a bug in the framework
+				return false;
 			}
 			
 			PersistentAttribute persistentAttribute = (PersistentAttribute) obj;
-			
-			if (commonKey == null) {
-				commonKey = persistentAttribute.getMappingKey();
+			if (persistentAttribute.getSpecifiedMapping() == null) {
+				if (commonSpecifiedKey != null) {
+					return false;
+				}
+				if (commonDefaultKey == null) {
+					commonDefaultKey = persistentAttribute.getMappingKey();					
+				}
+				else if (!commonDefaultKey.equals(persistentAttribute.getMappingKey())) {
+					return false;
+				}
 			}
-			else if (! commonKey.equals(persistentAttribute.getMappingKey())) {
-				return null;
+			else {
+				if (commonDefaultKey != null) {
+					return false;
+				}
+				if (commonSpecifiedKey == null) {
+					commonSpecifiedKey = persistentAttribute.getMappingKey();
+				}
+				else if (!commonSpecifiedKey.equals(persistentAttribute.getMappingKey())) {
+					return false;
+				}
 			}
 		}
-		return commonKey;
+		if (handlerSpecifiedMappingKey != null) {
+			return handlerSpecifiedMappingKey.equals(commonSpecifiedKey);
+		}
+		else if (handlerDefaultMappingKey != null) {
+			return handlerDefaultMappingKey.equals(commonDefaultKey);
+		}
+		return false;
 	}
+	
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,8 +11,8 @@ package org.eclipse.jpt.ui.internal.details;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.ui.JptUiPlugin;
@@ -27,6 +27,7 @@ import org.eclipse.jpt.utility.internal.model.value.FilteringPropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.part.PageBook;
@@ -37,10 +38,9 @@ import org.eclipse.ui.part.PageBook;
  *
  * @see PersistentAttribute
  *
- * @version 2.0
+ * @version 2.2
  * @since 1.0
  */
-@SuppressWarnings("nls")
 public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribute> extends AbstractJpaDetailsPage<T>
 {
 	private JpaComposite currentMappingComposite;
@@ -61,27 +61,84 @@ public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribu
 	}
 
 	@Override
+	protected void initialize() {
+		super.initialize();
+		this.mappingComposites = new HashMap<String, JpaComposite>();
+	}
+
+	@Override
 	protected void addPropertyNames(Collection<String> propertyNames) {
 		super.addPropertyNames(propertyNames);
 		propertyNames.add(PersistentAttribute.DEFAULT_MAPPING_PROPERTY);
 		propertyNames.add(PersistentAttribute.SPECIFIED_MAPPING_PROPERTY);
 	}
 
-	protected AttributeMappingUiProvider<? extends AttributeMapping> getAttributeMappingUiProvider(String key) {
-		for (Iterator<AttributeMappingUiProvider<? extends AttributeMapping>> i = attributeMappingUiProviders(); i.hasNext(); ) {
-			AttributeMappingUiProvider<? extends AttributeMapping> provider = i.next();
-			if (provider.getKey() == key) {
-				return provider;
-			}
+	@Override
+	protected void propertyChanged(String propertyName) {
+		super.propertyChanged(propertyName);
+
+		if (propertyName == PersistentAttribute.DEFAULT_MAPPING_PROPERTY ||
+		    propertyName == PersistentAttribute.SPECIFIED_MAPPING_PROPERTY) {
+
+			updateMappingPage();
 		}
-		throw new IllegalArgumentException("Unsupported attribute mapping UI provider key: ");
 	}
 
-	protected abstract Iterator<AttributeMappingUiProvider<? extends AttributeMapping>>
-		attributeMappingUiProviders();
+	protected Label buildMappingLabel(Composite parent) {
+		return addLabel(parent, JptUiMessages.PersistentAttributePage_mapAs);
+	}
 
-	protected abstract AttributeMappingUiProvider<? extends AttributeMapping>[]
-		attributeMappingUiProvidersFor(PersistentAttribute persistentAttribute);
+	protected PageBook buildMappingPageBook(Composite parent) {
+		this.mappingPageBook = new PageBook(parent, SWT.NONE);
+		this.mappingPageBook.showPage(this.addLabel(this.mappingPageBook, "")); //$NON-NLS-1$
+
+		GridData gridData = new GridData();
+		gridData.horizontalAlignment       = SWT.FILL;
+		gridData.verticalAlignment         = SWT.TOP;
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.grabExcessVerticalSpace   = true;
+
+		this.mappingPageBook.setLayoutData(gridData);
+
+		return this.mappingPageBook;
+	}
+
+	private JpaComposite getMappingComposite(String key) {
+		JpaComposite composite = this.mappingComposites.get(key);
+		if (composite != null) {
+			return composite;
+		}
+
+		composite = buildMappingComposite(this.mappingPageBook, key, getSubject().getContentType());
+
+		if (composite != null) {
+			this.mappingComposites.put(key, composite);
+		}
+
+		return composite;
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected JpaComposite buildMappingComposite(PageBook pageBook,
+	                                                               String mappingKey, IContentType contentType) {
+
+		AttributeMappingUiProvider<AttributeMapping> uiProvider =
+			(AttributeMappingUiProvider<AttributeMapping>) getMappingUIProvider(mappingKey, contentType);
+
+		return uiProvider.buildAttributeMappingComposite(
+			getJpaUiFactory(),
+			buildMappingHolder(mappingKey),
+			pageBook,
+			getWidgetFactory()
+		);
+	}
+	
+	private PropertyValueModel<AttributeMapping> buildMappingHolder(final String key) {
+		return new FilteringPropertyValueModel<AttributeMapping>(
+			buildGenericMappingHolder(),
+			buildMappingFilter(key)
+		);
+	}
 
 	private PropertyAspectAdapter<PersistentAttribute, AttributeMapping> buildGenericMappingHolder() {
 		return new PropertyAspectAdapter<PersistentAttribute, AttributeMapping>(
@@ -91,62 +148,32 @@ public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribu
 		{
 			@Override
 			protected AttributeMapping buildValue_() {
-				return subject.getMapping();
+				return this.subject.getMapping();
 			}
 		};
-	}
-
-	@SuppressWarnings("unchecked")
-	protected JpaComposite buildMappingComposite(PageBook pageBook,
-	                                                               String mappingKey) {
-
-		AttributeMappingUiProvider<AttributeMapping> uiProvider =
-			(AttributeMappingUiProvider<AttributeMapping>) getMappingUIProvider(mappingKey);
-
-		return uiProvider.buildAttributeMappingComposite(
-			getJpaUiFactory(),
-			buildMappingHolder(mappingKey),
-			pageBook,
-			getWidgetFactory()
-		);
 	}
 
 	private Filter<AttributeMapping> buildMappingFilter(String mappingKey) {
 		return new MappingFilter(mappingKey);
 	}
 
-	private PropertyValueModel<AttributeMapping> buildMappingHolder(final String key) {
-		return new FilteringPropertyValueModel<AttributeMapping>(
-			buildGenericMappingHolder(),
-			buildMappingFilter(key)
-		);
-	}
+	private AttributeMappingUiProvider<? extends AttributeMapping> getMappingUIProvider(String key, IContentType contentType) {
 
-	protected Label buildMappingLabel(Composite parent) {
-		return addLabel(parent, JptUiMessages.PersistentAttributePage_mapAs);
-	}
+		if (this.getSubject().getMapping() == null ||
+		    this.getSubject().getMapping().isDefault()) {
 
-	protected PageBook buildMappingPageBook(Composite parent) {
-		this.mappingPageBook = new PageBook(parent, SWT.NONE);
-		this.mappingPageBook.showPage(this.addLabel(this.mappingPageBook, ""));
-		return this.mappingPageBook;
-	}
-
-	protected abstract DefaultAttributeMappingUiProvider<? extends AttributeMapping> getDefaultAttributeMappingUiProvider(String key);
-
-	protected abstract Iterator<DefaultAttributeMappingUiProvider<? extends AttributeMapping>> defaultAttributeMappingUiProviders();
-
-	@Override
-	protected void doDispose() {
-		log(Tracing.UI_DETAILS_VIEW, "PersistentAttributeDetailsPage.doDispose()");
-
-		if (this.currentMappingComposite != null) {
-			this.currentMappingComposite.dispose();
-			this.currentMappingComposite = null;
+			return getDefaultAttributeMappingUiProvider(key, contentType);
 		}
 
-		this.mappingComposites.clear();
-		super.doDispose();
+		return getAttributeMappingUiProvider(key, contentType);
+	}
+
+	protected AttributeMappingUiProvider<? extends AttributeMapping> getAttributeMappingUiProvider(String key, IContentType contentType) {
+		return getJpaPlatformUi().getAttributeMappingUiProvider(key, contentType);
+	}
+
+	protected DefaultAttributeMappingUiProvider<? extends AttributeMapping> getDefaultAttributeMappingUiProvider(String key, IContentType contentType) {
+		return getJpaPlatformUi().getDefaultAttributeMappingUiProvider(key, contentType);
 	}
 
 	@Override
@@ -155,50 +182,9 @@ public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribu
 		updateMappingPage();
 	}
 
-	@Override
-	protected void initialize() {
-		super.initialize();
-		this.mappingComposites = new HashMap<String, JpaComposite>();
-	}
-
-	@Override
-	protected void log(String flag, String message) {
-		super.log(flag, message);
-
-		if (Tracing.UI_DETAILS_VIEW.equals(flag) &&
-		    Tracing.booleanDebugOption(Tracing.UI_DETAILS_VIEW))
-		{
-			Tracing.log(message);
-		}
-	}
-
-	private JpaComposite getMappingComposite(String key) {
-		JpaComposite composite = this.mappingComposites.get(key);
-		if (composite != null) {
-			return composite;
-		}
-
-		composite = buildMappingComposite(this.mappingPageBook, key);
-
-		if (composite != null) {
-			this.mappingComposites.put(key, composite);
-		}
-
-		return composite;
-	}
-
-	protected void mappingPageChanged(JpaComposite mappingComposite) {
-	}
-
-	private AttributeMappingUiProvider<? extends AttributeMapping> getMappingUIProvider(String key) {
-
-		if (this.getSubject().getMapping() == null ||
-		    this.getSubject().getMapping().isDefault()) {
-
-			return getDefaultAttributeMappingUiProvider(key);
-		}
-
-		return getAttributeMappingUiProvider(key);
+	private void updateMappingPage() {
+		AttributeMapping mapping = (this.getSubject() != null) ? this.getSubject().getMapping() : null;
+		populateMappingPage(mapping == null ? null : mapping.getKey());
 	}
 
 	private void populateMappingPage(String mappingKey) {
@@ -212,7 +198,7 @@ public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribu
 		else if (this.currentMappingComposite != null) {
 			this.log(
 				Tracing.UI_DETAILS_VIEW,
-				"PersistentAttributeDetailsPage.populateMappingPage() disposing of current page: " + this.currentMappingKey
+				"PersistentAttributeDetailsPage.populateMappingPage() disposing of current page: " + this.currentMappingKey //$NON-NLS-1$
 			);
 
 			try {
@@ -233,7 +219,7 @@ public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribu
 			try {
 				this.log(
 					Tracing.UI_DETAILS_VIEW,
-					"PersistentAttributeDetailsPage.populateMappingPage() populating new page: " + this.currentMappingKey
+					"PersistentAttributeDetailsPage.populateMappingPage() populating new page: " + this.currentMappingKey //$NON-NLS-1$
 				);
 
 				this.currentMappingComposite.populate();
@@ -245,7 +231,7 @@ public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribu
 
 				this.log(
 					Tracing.UI_DETAILS_VIEW,
-					"PersistentAttributeDetailsPage.populateMappingPage() error encountered"
+					"PersistentAttributeDetailsPage.populateMappingPage() error encountered" //$NON-NLS-1$
 				);
 
 				// An error was encountered either during the population, dispose it
@@ -261,32 +247,21 @@ public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribu
 
 				// Show an error message
 				// TODO: Replace the blank label with the error page
-				this.mappingPageBook.showPage(this.addLabel(this.mappingPageBook, ""));
+				this.mappingPageBook.showPage(this.addLabel(this.mappingPageBook, "")); //$NON-NLS-1$
 			}
 		}
 		else {
 			this.log(
 				Tracing.UI_DETAILS_VIEW,
-				"PersistentAttributeDetailsPage.populateMappingPage() no page to show"
+				"PersistentAttributeDetailsPage.populateMappingPage() no page to show" //$NON-NLS-1$
 			);
 
-			this.mappingPageBook.showPage(this.addLabel(this.mappingPageBook, ""));
+			this.mappingPageBook.showPage(this.addLabel(this.mappingPageBook, "")); //$NON-NLS-1$
 		}
 		this.repaintDetailsView(this.mappingPageBook);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected void propertyChanged(String propertyName) {
-		super.propertyChanged(propertyName);
-
-		if (propertyName == PersistentAttribute.DEFAULT_MAPPING_PROPERTY ||
-		    propertyName == PersistentAttribute.SPECIFIED_MAPPING_PROPERTY) {
-
-			updateMappingPage();
-		}
+	protected void mappingPageChanged(JpaComposite mappingComposite) {
 	}
 
 	@Override
@@ -294,9 +269,28 @@ public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribu
 		return false;
 	}
 
-	private void updateMappingPage() {
-		AttributeMapping mapping = (this.getSubject() != null) ? this.getSubject().getMapping() : null;
-		populateMappingPage(mapping == null ? null : mapping.getKey());
+	@Override
+	protected void doDispose() {
+		log(Tracing.UI_DETAILS_VIEW, "PersistentAttributeDetailsPage.doDispose()"); //$NON-NLS-1$
+
+		if (this.currentMappingComposite != null) {
+			this.currentMappingComposite.dispose();
+			this.currentMappingComposite = null;
+		}
+
+		this.mappingComposites.clear();
+		super.doDispose();
+	}
+
+	@Override
+	protected void log(String flag, String message) {
+		super.log(flag, message);
+
+		if (Tracing.UI_DETAILS_VIEW.equals(flag) &&
+		    Tracing.booleanDebugOption(Tracing.UI_DETAILS_VIEW))
+		{
+			Tracing.log(message);
+		}
 	}
 
 	private class MappingFilter implements Filter<AttributeMapping> {

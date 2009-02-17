@@ -23,6 +23,7 @@ import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
 import org.eclipse.jpt.core.context.java.JavaOneToOneMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.core.context.java.JavaTransientMapping;
 import org.eclipse.jpt.core.context.java.JavaVersionMapping;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
@@ -66,6 +67,7 @@ import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLink1_1Virtu
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLink1_1VirtualXmlOneToMany;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLink1_1VirtualXmlOneToOne;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLink1_1VirtualXmlTransformation;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLink1_1VirtualXmlTransient;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLink1_1VirtualXmlVariableOneToOne;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLink1_1VirtualXmlVersion;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkEntityMappings;
@@ -88,6 +90,7 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.XmlVariableOneToOne;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlVersion;
 import org.eclipse.jpt.eclipselink1_1.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.eclipselink1_1.core.resource.orm.XmlEntityMappings;
+import org.eclipse.jpt.eclipselink1_1.core.resource.orm.XmlTransient;
 
 public class EclipseLink1_1JpaFactory
 	extends EclipseLinkJpaFactory
@@ -172,6 +175,10 @@ public class EclipseLink1_1JpaFactory
 	
 	public XmlTransformation buildEclipseLink1_1VirtualXmlTransformation(OrmTypeMapping ormTypeMapping, JavaTransformationMapping javaTransformationMapping) {
 		return new EclipseLink1_1VirtualXmlTransformation(ormTypeMapping, javaTransformationMapping);
+	}
+	
+	public XmlTransient buildEclipseLink1_1VirtualXmlTransient(OrmTypeMapping ormTypeMapping, JavaTransientMapping javaTransientMapping) {
+		return new EclipseLink1_1VirtualXmlTransient(ormTypeMapping, javaTransientMapping);
 	}
 	
 	public XmlVariableOneToOne buildEclipseLink1_1VirtualXmlVariableOneToOne(OrmTypeMapping ormTypeMapping, JavaVariableOneToOneMapping javaVariableOneToOneMapping) {

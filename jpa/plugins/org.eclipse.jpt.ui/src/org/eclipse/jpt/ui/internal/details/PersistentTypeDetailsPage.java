@@ -11,7 +11,6 @@ package org.eclipse.jpt.ui.internal.details;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.TypeMapping;
@@ -94,18 +93,8 @@ public class PersistentTypeDetailsPage extends AbstractJpaDetailsPage<Persistent
 		return this.typeMappingPageBook;
 	}
 
-	private TypeMappingUiProvider<? extends TypeMapping> typeMappingUiProvider(String key) {
-		for (Iterator<TypeMappingUiProvider<? extends TypeMapping>> iter = this.typeMappingUiProviders(); iter.hasNext();) {
-			TypeMappingUiProvider<? extends TypeMapping> provider = iter.next();
-			if (provider.getKey() == key) {
-				return provider;
-			}
-		}
-		throw new IllegalArgumentException("Unsupported type mapping UI provider key: " + key);
-	}
-
-	protected Iterator<TypeMappingUiProvider<? extends TypeMapping>> typeMappingUiProviders() {
-		return getJpaPlatformUi().typeMappingUiProviders(getSubject().getContentType());
+	private TypeMappingUiProvider<? extends TypeMapping> getTypeMappingUiProvider(String key) {
+		return getJpaPlatformUi().getTypeMappingUiProvider(key, getSubject().getContentType());
 	}
 
 	private PropertyValueModel<TypeMapping> buildMappingHolder(String key) {
@@ -230,12 +219,8 @@ public class PersistentTypeDetailsPage extends AbstractJpaDetailsPage<Persistent
 	@SuppressWarnings("unchecked")
 	protected JpaComposite buildMappingComposite(PageBook pageBook,
 	                                                            String key)  {
-//		return getJpaPlatformUi().buildPersistentTypeMappingComposite(
-//			buildMappingHolder(key),
-//			pageBook,
-//			getWidgetFactory());
 		TypeMappingUiProvider<TypeMapping> uiProvider =
-			(TypeMappingUiProvider<TypeMapping>) typeMappingUiProvider(key);
+			(TypeMappingUiProvider<TypeMapping>) getTypeMappingUiProvider(key);
 
 		return uiProvider.buildPersistentTypeMappingComposite(
 			getJpaUiFactory(),

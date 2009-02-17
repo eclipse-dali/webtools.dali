@@ -9,9 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.menus;
 
+import java.text.Collator;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.core.JpaPlatform;
@@ -70,7 +73,7 @@ public abstract class MapAsContribution extends CompoundContributionItem
 		// Retrieve the selection from the handler service
 		// which should be an IStructuredSelection of JpaStructureNodes
 		IHandlerService handlerService = 
-			(IHandlerService) serviceLocator.getService(IHandlerService.class);
+			(IHandlerService) this.serviceLocator.getService(IHandlerService.class);
 		IStructuredSelection currentSelection = 
 			(IStructuredSelection) handlerService.getCurrentState().getVariable(ISources.ACTIVE_CURRENT_SELECTION_NAME);
 		
@@ -78,16 +81,28 @@ public abstract class MapAsContribution extends CompoundContributionItem
 		// and retrieve the mapping UI providers just from the first item
 		JpaStructureNode node = (JpaStructureNode) currentSelection.getFirstElement();
 		
-		return CollectionTools.array(
-			new TransformationIterator<MappingUiProvider<?>, IContributionItem>(mappingUiProviders(node)) {
-				@Override
-				protected IContributionItem transform(MappingUiProvider<?> next) {
-					return contributionItem(next);
-				}
-			},
-			new IContributionItem[0]);
+		return 
+			CollectionTools.array(
+				new TransformationIterator<MappingUiProvider<?>, IContributionItem>(mappingUiProviders(node)) {
+					@Override
+					protected IContributionItem transform(MappingUiProvider<?> next) {
+						return createContributionItem(next);
+					}
+				},
+				new IContributionItem[0]);
 	}
 	
+
+	protected Comparator<MappingUiProvider<?>> getProvidersComparator() {
+		return new Comparator<MappingUiProvider<?>>() {
+			public int compare(MappingUiProvider<?> item1, MappingUiProvider<?> item2) {
+				String displayString1 = item1.getLabel();
+				String displayString2 = item2.getLabel();
+				return Collator.getInstance().compare(displayString1, displayString2);
+			}
+		};
+	}
+
 	/**
 	 * Retrieves the registered {@link MappingUiProvider}s from the given node, 
 	 * using its {@link JpaPlatformUi}.
@@ -100,13 +115,18 @@ public abstract class MapAsContribution extends CompoundContributionItem
 		JpaPlatform jpaPlatform = node.getJpaProject().getJpaPlatform();
 		JpaPlatformUi jpaPlatformUi = JptUiPlugin.instance().getJpaPlatformUi(jpaPlatform);
 		
+		Iterator<? extends MappingUiProvider<?>> sortedMappingUiProviders = 
+			CollectionTools.sort(
+				mappingUiProviders(jpaPlatformUi, node.getContentType()), 
+				getProvidersComparator());
+		
 		DefaultMappingUiProvider<?> defaultProvider = getDefaultProvider(jpaPlatformUi, node);
 		if (defaultProvider != null) {
-			return new CompositeIterator<MappingUiProvider<?>>(defaultProvider, mappingUiProviders(jpaPlatformUi, node));
+			return new CompositeIterator<MappingUiProvider<?>>(defaultProvider, sortedMappingUiProviders);
 		}
-		return mappingUiProviders(jpaPlatformUi, node);
+		return sortedMappingUiProviders;
 	}
-		
+
 	/**
 	* Retrieves the registered {@link MappingUiProvider}s from the given 
 	* {@link JpaPlatformUi} and {@link JpaStructureNode} (to determine type of 
@@ -118,7 +138,7 @@ public abstract class MapAsContribution extends CompoundContributionItem
 	* @return The list of registered {@link MappingUiProvider}s
 	*/
 	protected abstract Iterator<? extends MappingUiProvider<?>> 
-		mappingUiProviders(JpaPlatformUi platformUi, JpaStructureNode node);
+		mappingUiProviders(JpaPlatformUi platformUi, IContentType contentType);
 	
 	/**
 	* Creates the default provider responsible for clearing the mapping type.
@@ -126,25 +146,22 @@ public abstract class MapAsContribution extends CompoundContributionItem
 	*
 	* @return A provider that acts as a default mapping provider
 	*/
-	//TODO change to IContentType instead of JpaStructureNode
 	protected abstract DefaultMappingUiProvider<?> getDefaultProvider(JpaPlatformUi platformUi, JpaStructureNode node);
 			
-	protected IContributionItem contributionItem(MappingUiProvider<?> mappingUiProvider) {
-		CommandContributionItem item = 
-			new CommandContributionItem(parameter(mappingUiProvider));
-		return item;
+	protected IContributionItem createContributionItem(MappingUiProvider<?> mappingUiProvider) {
+		return new CommandContributionItem(createParameter(mappingUiProvider));
 	}
 	
-	protected CommandContributionItemParameter parameter(MappingUiProvider<?> mappingUiProvider) {
+	protected CommandContributionItemParameter createParameter(MappingUiProvider<?> mappingUiProvider) {
 		CommandContributionItemParameter parameter =
 			new CommandContributionItemParameter(
 					serviceLocator, 
 					createCommandContributionItemId(mappingUiProvider),
-					commandId(),
+					getCommandId(),
 					CommandContributionItem.STYLE_CHECK);
 		parameter.label = mappingUiProvider.getLabel();
 		Map<String, String> parameters = new HashMap<String, String>();
-		parameters.put(commandParameterId(), mappingUiProvider.getKey());
+		parameters.put(getCommandParameterId(), mappingUiProvider.getKey());
 		parameter.parameters = parameters;
 		parameter.icon = new ImageImageDescriptor(mappingUiProvider.getImage());
 		parameter.visibleEnabled = true;
@@ -157,7 +174,7 @@ public abstract class MapAsContribution extends CompoundContributionItem
 	 *
 	 * @return The unique identifier of the "map as" command
 	 */
-	protected abstract String commandId();
+	protected abstract String getCommandId();
 	
 	/**
 	 * Retrieves the unique identifier of the mapping key command parameter that 
@@ -165,7 +182,7 @@ public abstract class MapAsContribution extends CompoundContributionItem
 	 *
 	 * @return The unique identifier of the "map as" command parameter
 	 */
-	protected abstract String commandParameterId();
+	protected abstract String getCommandParameterId();
 	
 	/**
 	 * Returns an id for a {@link CommandContributionItem} in the form of 
@@ -173,6 +190,6 @@ public abstract class MapAsContribution extends CompoundContributionItem
 	 * (for example "org.eclipse.jpt.core.ui.persistentTypeMapAs.entity")
 	 */
 	protected String createCommandContributionItemId(MappingUiProvider<?> mappingUiProvider) {
-		return commandId() + "." + mappingUiProvider.getKey();
+		return getCommandId() + "." + mappingUiProvider.getKey();
 	}
 }

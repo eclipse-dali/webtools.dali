@@ -114,14 +114,7 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 	 */
 	protected abstract DefaultMappingUiProvider<?> getDefaultProvider();
 
-	protected DefaultMappingUiProvider<?> getDefaultProvider(String mappingKey) {
-		for (DefaultMappingUiProvider<?> provider : CollectionTools.iterable(this.mappingChangeHandler.defaultProviders())) {
-			if (provider.getDefaultKey() == mappingKey) {
-				return provider;
-			}
-		}
-		return null;		
-	}
+	protected abstract DefaultMappingUiProvider<?> getDefaultProvider(String mappingKey);
 	
 	protected MappingUiProvider<?> getProvider(String mappingKey) {
 		for (MappingUiProvider<?> provider : CollectionTools.iterable(this.mappingChangeHandler.providers())) {
@@ -467,13 +460,6 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 		 * @return The supported types of mapping
 		 */
 		Iterator<? extends MappingUiProvider<?>> providers();
-		
-		/**
-		 * Returns the list of default providers that are registered with the JPT plugin.
-		 *
-		 * @return The supported types of mapping
-		 */
-		Iterator<? extends DefaultMappingUiProvider<?>> defaultProviders();
 	}
 
 	/**
