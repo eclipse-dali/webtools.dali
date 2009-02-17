@@ -15,36 +15,27 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.jpt.eclipselink1_1.core.resource.orm.EclipseLink1_1OrmFactory;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
-public class EclipseLinkTransformationTranslator extends org.eclipse.jpt.eclipselink.core.internal.resource.orm.translators.TransformationTranslator
+public class EclipseLinkTransientTranslator extends org.eclipse.jpt.eclipselink.core.internal.resource.orm.translators.EclipseLinkBasicTranslator
 	implements EclipseLink1_1OrmXmlMapper
 {
-
-	public EclipseLinkTransformationTranslator(String domNameAndPath, EStructuralFeature aFeature) {
+	public EclipseLinkTransientTranslator(String domNameAndPath, EStructuralFeature aFeature) {
 		super(domNameAndPath, aFeature);
 	}
-	
+		
 	@Override
 	public EObject createEMFObject(String nodeName, String readAheadName) {
-		return EclipseLink1_1OrmFactory.eINSTANCE.createXmlTransformationImpl();
+		return EclipseLink1_1OrmFactory.eINSTANCE.createXmlTransientImpl();
 	}
 	
 	@Override
 	protected Translator[] createChildren() {
 		return new Translator[] {
-			createNameTranslator(),
-//			createFetchTranslator(),
-//			createOptionalTranslator(),
-			createAccessTranslator(),
-//			createMutableTranslator(),
-//			createReadTransformerTranslator(),
-//			createWriteTransformerTranslator(),
-			createPropertyTranslator(),
-			createAccessMethodsTranslator()
+			createNameTranslator()
 		};
 	}
 	
-	protected Translator createAccessTranslator() {
-		return new Translator(ACCESS, ECLIPSELINK1_1_ORM_PKG.getXmlAttributeMapping_Access(), DOM_ATTRIBUTE);
+	@Override
+	protected Translator createNameTranslator() {
+		return new Translator(NAME, ORM_PKG.getXmlAttributeMapping_Name(), DOM_ATTRIBUTE);
 	}
-
 }

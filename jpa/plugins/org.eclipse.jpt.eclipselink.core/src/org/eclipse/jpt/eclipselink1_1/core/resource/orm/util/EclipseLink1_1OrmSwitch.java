@@ -546,6 +546,29 @@ public class EclipseLink1_1OrmSwitch<T>
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case EclipseLink1_1OrmPackage.XML_TRANSIENT:
+			{
+				XmlTransient xmlTransient = (XmlTransient)theEObject;
+				T result = caseXmlTransient(xmlTransient);
+				if (result == null) result = caseXmlTransient_1(xmlTransient);
+				if (result == null) result = caseXmlAttributeMapping(xmlTransient);
+				if (result == null) result = caseXmlAttributeMapping_1(xmlTransient);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case EclipseLink1_1OrmPackage.XML_TRANSIENT_IMPL:
+			{
+				XmlTransientImpl xmlTransientImpl = (XmlTransientImpl)theEObject;
+				T result = caseXmlTransientImpl(xmlTransientImpl);
+				if (result == null) result = caseXmlTransientImpl_1(xmlTransientImpl);
+				if (result == null) result = caseXmlTransient(xmlTransientImpl);
+				if (result == null) result = caseAbstractXmlAttributeMapping(xmlTransientImpl);
+				if (result == null) result = caseXmlTransient_1(xmlTransientImpl);
+				if (result == null) result = caseXmlAttributeMapping(xmlTransientImpl);
+				if (result == null) result = caseXmlAttributeMapping_1(xmlTransientImpl);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			default: return defaultCase(theEObject);
 		}
 	}
@@ -994,6 +1017,38 @@ public class EclipseLink1_1OrmSwitch<T>
 	 * @generated
 	 */
 	public T caseXmlVariableOneToOneImpl(XmlVariableOneToOneImpl object)
+	{
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Xml Transient</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Xml Transient</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseXmlTransient(XmlTransient object)
+	{
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Xml Transient Impl</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Xml Transient Impl</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseXmlTransientImpl(XmlTransientImpl object)
 	{
 		return null;
 	}
@@ -1970,6 +2025,38 @@ public class EclipseLink1_1OrmSwitch<T>
 	 * @generated
 	 */
 	public T caseXmlVariableOneToOneImpl_1(org.eclipse.jpt.eclipselink.core.resource.orm.XmlVariableOneToOneImpl object)
+	{
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Xml Transient</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Xml Transient</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseXmlTransient_1(org.eclipse.jpt.core.resource.orm.XmlTransient object)
+	{
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Xml Transient Impl</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Xml Transient Impl</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseXmlTransientImpl_1(org.eclipse.jpt.core.resource.orm.XmlTransientImpl object)
 	{
 		return null;
 	}

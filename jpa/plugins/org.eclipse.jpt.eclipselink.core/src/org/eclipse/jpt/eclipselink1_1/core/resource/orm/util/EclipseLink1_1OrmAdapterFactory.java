@@ -237,6 +237,16 @@ public class EclipseLink1_1OrmAdapterFactory extends AdapterFactoryImpl
 				return createXmlVariableOneToOneImplAdapter();
 			}
 			@Override
+			public Adapter caseXmlTransient(XmlTransient object)
+			{
+				return createXmlTransientAdapter();
+			}
+			@Override
+			public Adapter caseXmlTransientImpl(XmlTransientImpl object)
+			{
+				return createXmlTransientImplAdapter();
+			}
+			@Override
 			public Adapter caseXmlEntityMappings_1(org.eclipse.jpt.core.resource.orm.XmlEntityMappings object)
 			{
 				return createXmlEntityMappings_1Adapter();
@@ -540,6 +550,16 @@ public class EclipseLink1_1OrmAdapterFactory extends AdapterFactoryImpl
 			public Adapter caseXmlVariableOneToOneImpl_1(org.eclipse.jpt.eclipselink.core.resource.orm.XmlVariableOneToOneImpl object)
 			{
 				return createXmlVariableOneToOneImpl_1Adapter();
+			}
+			@Override
+			public Adapter caseXmlTransient_1(org.eclipse.jpt.core.resource.orm.XmlTransient object)
+			{
+				return createXmlTransient_1Adapter();
+			}
+			@Override
+			public Adapter caseXmlTransientImpl_1(org.eclipse.jpt.core.resource.orm.XmlTransientImpl object)
+			{
+				return createXmlTransientImpl_1Adapter();
 			}
 			@Override
 			public Adapter defaultCase(EObject object)
@@ -979,6 +999,36 @@ public class EclipseLink1_1OrmAdapterFactory extends AdapterFactoryImpl
 	 * @generated
 	 */
 	public Adapter createXmlVariableOneToOneImplAdapter()
+	{
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.eclipselink1_1.core.resource.orm.XmlTransient <em>Xml Transient</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.jpt.eclipselink1_1.core.resource.orm.XmlTransient
+	 * @generated
+	 */
+	public Adapter createXmlTransientAdapter()
+	{
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.eclipselink1_1.core.resource.orm.XmlTransientImpl <em>Xml Transient Impl</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.jpt.eclipselink1_1.core.resource.orm.XmlTransientImpl
+	 * @generated
+	 */
+	public Adapter createXmlTransientImplAdapter()
 	{
 		return null;
 	}
@@ -1894,6 +1944,36 @@ public class EclipseLink1_1OrmAdapterFactory extends AdapterFactoryImpl
 	 * @generated
 	 */
 	public Adapter createXmlVariableOneToOneImpl_1Adapter()
+	{
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.resource.orm.XmlTransient <em>Xml Transient</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.jpt.core.resource.orm.XmlTransient
+	 * @generated
+	 */
+	public Adapter createXmlTransient_1Adapter()
+	{
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.resource.orm.XmlTransientImpl <em>Xml Transient Impl</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.jpt.core.resource.orm.XmlTransientImpl
+	 * @generated
+	 */
+	public Adapter createXmlTransientImpl_1Adapter()
 	{
 		return null;
 	}

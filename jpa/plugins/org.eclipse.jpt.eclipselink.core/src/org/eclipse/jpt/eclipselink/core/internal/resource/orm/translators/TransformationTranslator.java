@@ -11,11 +11,10 @@ package org.eclipse.jpt.eclipselink.core.internal.resource.orm.translators;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.jpt.core.internal.resource.orm.translators.BasicTranslator;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
-public class TransformationTranslator extends BasicTranslator
+public class TransformationTranslator extends Translator
 	implements EclipseLinkOrmXmlMapper
 {
 	private Translator[] children;	
@@ -37,18 +36,21 @@ public class TransformationTranslator extends BasicTranslator
 		return this.children;
 	}
 	
-	@Override
 	protected Translator[] createChildren() {
 		return new Translator[] {
 			createNameTranslator(),
-			createFetchTranslator(),
-			createOptionalTranslator(),
+//			createFetchTranslator(),
+//			createOptionalTranslator(),
 //			createMutableTranslator(),
 //			createReadTransformerTranslator(),
 //			createWriteTransformerTranslator(),
 			createPropertyTranslator(),
 			createAccessMethodsTranslator()
 		};
+	}
+	
+	protected Translator createNameTranslator() {
+		return new Translator(NAME, ORM_PKG.getXmlAttributeMapping_Name(), DOM_ATTRIBUTE);
 	}
 	
 	protected Translator createPropertyTranslator() {

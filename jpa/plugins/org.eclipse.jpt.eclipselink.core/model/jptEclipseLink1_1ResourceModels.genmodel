@@ -4,8 +4,8 @@
     xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/org.eclipse.jpt.eclipselink.core/src"
     creationCommands="false" creationIcons="false" editDirectory="" editorDirectory=""
     modelPluginID="org.eclipse.jpt.eclipselink.core" modelName="EclipseLinkCore" editPluginClass=""
-    editorPluginClass="" updateClasspath="false" rootExtendsInterface="org.eclipse.jpt.core.resource.common.JpaEObject"
-    rootExtendsClass="org.eclipse.jpt.core.resource.common.AbstractJpaEObject" suppressInterfaces="true"
+    editorPluginClass="" updateClasspath="false" rootExtendsInterface="org.eclipse.jpt.core.resource.xml.JpaEObject"
+    rootExtendsClass="org.eclipse.jpt.core.resource.xml.AbstractJpaEObject" suppressInterfaces="true"
     testsDirectory="" testSuiteClass="" importerID="org.eclipse.emf.importer.ecore"
     complianceLevel="5.0" copyrightFields="false" usedGenPackages="../../org.eclipse.jpt.core/model/jptResourceModels.genmodel#//orm">
   <foreignModel>eclipselink1_1_orm.ecore</foreignModel>
@@ -45,6 +45,8 @@
     <genClasses ecoreClass="eclipselink1_1_orm.ecore#//XmlTransformationImpl"/>
     <genClasses image="false" ecoreClass="eclipselink1_1_orm.ecore#//XmlVariableOneToOne"/>
     <genClasses ecoreClass="eclipselink1_1_orm.ecore#//XmlVariableOneToOneImpl"/>
+    <genClasses image="false" ecoreClass="eclipselink1_1_orm.ecore#//XmlTransient"/>
+    <genClasses ecoreClass="eclipselink1_1_orm.ecore#//XmlTransientImpl"/>
   </genPackages>
   <genPackages prefix="EclipseLinkOrm" basePackage="org.eclipse.jpt.eclipselink.core.resource"
       disposableProviderFactory="true" adapterFactory="false" ecorePackage="eclipselink_orm.ecore#/">

@@ -92,4 +92,9 @@ public class EclipseLinkAttributesTranslator extends org.eclipse.jpt.eclipselink
 	protected Translator createTransformationTranslator() {
 		return new EclipseLinkTransformationTranslator(TRANSFORMATION, ECLIPSELINK_ORM_PKG.getAttributes_Transformations());
 	}
+	
+	@Override
+	protected Translator createTransientTranslator() {
+		return new EclipseLinkTransientTranslator(TRANSIENT, ORM_PKG.getAttributes_Transients());
+	}
 }

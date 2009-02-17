@@ -55,4 +55,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="XmlVariableOneToOne" abstract="true"
       interface="true" eSuperTypes="eclipselink_orm.ecore#//XmlVariableOneToOne #//XmlAttributeMapping"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlVariableOneToOneImpl" eSuperTypes="eclipselink_orm.ecore#//XmlVariableOneToOneImpl #//XmlVariableOneToOne"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlTransient" abstract="true" interface="true"
+      eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlTransient #//XmlAttributeMapping"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlTransientImpl" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlTransientImpl #//XmlTransient"/>
 </ecore:EPackage>
