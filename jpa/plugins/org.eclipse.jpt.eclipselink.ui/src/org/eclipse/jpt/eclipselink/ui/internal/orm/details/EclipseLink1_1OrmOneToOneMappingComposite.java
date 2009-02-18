@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -7,24 +7,22 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.eclipselink.ui.internal.mappings.details;
+package org.eclipse.jpt.eclipselink.ui.internal.orm.details;
 
-import org.eclipse.jpt.core.context.Cascade;
+import org.eclipse.jpt.core.context.AccessHolder;
 import org.eclipse.jpt.core.context.OneToOneMapping;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToOneMapping;
-import org.eclipse.jpt.eclipselink.core.context.JoinFetch;
-import org.eclipse.jpt.eclipselink.core.context.PrivateOwned;
+import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkOneToOneMappingComposite;
+import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.JoinFetchComposite;
+import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.PrivateOwnedComposite;
 import org.eclipse.jpt.ui.WidgetFactory;
-import org.eclipse.jpt.ui.details.JpaComposite;
+import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.CascadeComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.FetchTypeComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.JoinColumnComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.MappedByComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.OptionalComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.TargetEntityComposite;
-import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
@@ -73,20 +71,19 @@ import org.eclipse.swt.widgets.Composite;
  * @see OptionalComposite
  * @see TargetEntityComposite
  *
- * @version 2.1
- * @since 2.1
+ * @version 2.2
+ * @since 2.2
  */
-public class EclipselinkOneToOneMappingComposite extends FormPane<OneToOneMapping>
-                                      implements JpaComposite
+public class EclipseLink1_1OrmOneToOneMappingComposite extends EclipseLinkOneToOneMappingComposite
 {
 	/**
-	 * Creates a new <code>OneToOneMappingComposite</code>.
+	 * Creates a new <code>Eclipselink1_1OneToOneMappingComposite</code>.
 	 *
 	 * @param subjectHolder The holder of the subject <code>IOneToOneMapping</code>
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public EclipselinkOneToOneMappingComposite(PropertyValueModel<? extends OneToOneMapping> subjectHolder,
+	public EclipseLink1_1OrmOneToOneMappingComposite(PropertyValueModel<? extends OneToOneMapping> subjectHolder,
 	                                Composite parent,
 	                                WidgetFactory widgetFactory) {
 
@@ -95,59 +92,25 @@ public class EclipselinkOneToOneMappingComposite extends FormPane<OneToOneMappin
 
 	@Override
 	protected void initializeLayout(Composite container) {
-
 		int groupBoxMargin = getGroupBoxMargin();
 		Composite subPane = addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
 
-		// Target Entity widgets
 		new TargetEntityComposite(this, subPane);
-
-		// Fetch Type widgets
+		new AccessTypeComposite(this, buildAccessHolderHolder(), subPane);
 		new FetchTypeComposite(this, subPane);
-		
-		// Join Fetch Type widgets
 		new JoinFetchComposite(this, buildJoinFetchableHolder(), subPane);
-
-		// Mapped By widgets
 		new MappedByComposite(this, subPane);
-
-		// Optional check box
 		new OptionalComposite(this, addSubPane(subPane, 4));
-		
-		// Private owned check box
 		new PrivateOwnedComposite(this, buildPrivateOwnableHolder(), subPane);
-
-		// Cascade widgets
 		new CascadeComposite(this, buildCascadeHolder(), container);
-
-		// Join Column widgets
 		new JoinColumnComposite(this, container);
 	}
 	
-	private PropertyValueModel<JoinFetch> buildJoinFetchableHolder() {
-		return new PropertyAspectAdapter<OneToOneMapping, JoinFetch>(getSubjectHolder()) {
+	protected PropertyValueModel<AccessHolder> buildAccessHolderHolder() {
+		return new PropertyAspectAdapter<OneToOneMapping, AccessHolder>(getSubjectHolder()) {
 			@Override
-			protected JoinFetch buildValue_() {
-				return ((EclipseLinkOneToOneMapping) this.subject).getJoinFetch();
-			}
-		};
-	}
-	
-	private PropertyValueModel<PrivateOwned> buildPrivateOwnableHolder() {
-		return new PropertyAspectAdapter<OneToOneMapping, PrivateOwned>(getSubjectHolder()) {
-			@Override
-			protected PrivateOwned buildValue_() {
-				return ((EclipseLinkOneToOneMapping) this.subject).getPrivateOwned();
-			}
-		};
-	}
-
-	private PropertyValueModel<Cascade> buildCascadeHolder() {
-		return new TransformationPropertyValueModel<OneToOneMapping, Cascade>(getSubjectHolder()) {
-		
-			@Override
-			protected Cascade transform_(OneToOneMapping value) {
-				return value.getCascade();
+			protected AccessHolder buildValue_() {
+				return this.subject.getPersistentAttribute();
 			}
 		};
 	}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,18 +10,17 @@
 package org.eclipse.jpt.eclipselink.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.context.Cascade;
-import org.eclipse.jpt.core.context.JoinTable;
-import org.eclipse.jpt.core.context.ManyToManyMapping;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkRelationshipMapping;
+import org.eclipse.jpt.core.context.OneToOneMapping;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToOneMapping;
 import org.eclipse.jpt.eclipselink.core.context.JoinFetch;
+import org.eclipse.jpt.eclipselink.core.context.PrivateOwned;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
-import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.details.CascadeComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.FetchTypeComposite;
-import org.eclipse.jpt.ui.internal.mappings.details.JoinTableComposite;
+import org.eclipse.jpt.ui.internal.mappings.details.JoinColumnComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.MappedByComposite;
-import org.eclipse.jpt.ui.internal.mappings.details.OrderingComposite;
+import org.eclipse.jpt.ui.internal.mappings.details.OptionalComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.TargetEntityComposite;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
@@ -45,109 +44,94 @@ import org.eclipse.swt.widgets.Composite;
  * | ------------------------------------------------------------------------- |
  * | ------------------------------------------------------------------------- |
  * | |                                                                       | |
+ * | | MappedByComposite                                                     | |
+ * | |                                                                       | |
+ * | ------------------------------------------------------------------------- |
+ * | ------------------------------------------------------------------------- |
+ * | |                                                                       | |
+ * | | OptionalComposite                                                     | |
+ * | |                                                                       | |
+ * | ------------------------------------------------------------------------- |
+ * | ------------------------------------------------------------------------- |
+ * | |                                                                       | |
  * | | CascadeComposite                                                      | |
  * | |                                                                       | |
  * | ------------------------------------------------------------------------- |
  * | ------------------------------------------------------------------------- |
  * | |                                                                       | |
- * | | OrderingComposite                                                     | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * |                                                                           |
- * | - Join Table ------------------------------------------------------------ |
- * | |                                                                       | |
- * | | JoinTableComposite                                                    | |
+ * | | JoinColumnComposite                                                   | |
  * | |                                                                       | |
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see ManyToManyMapping
+ * @see OneToOneMapping
  * @see BaseJpaUiFactory - The factory creating this pane
  * @see CascadeComposite
  * @see FetchTypeComposite
- * @see JoinTableComposite
- * @see OrderingComposite
+ * @see JoinColumnComposite
+ * @see MappedByComposite
+ * @see OptionalComposite
  * @see TargetEntityComposite
  *
  * @version 2.1
  * @since 2.1
  */
-public class EclipseLinkManyToManyMappingComposite extends FormPane<ManyToManyMapping>
-                                        implements JpaComposite
+public class EclipseLinkOneToOneMappingComposite extends FormPane<OneToOneMapping>
+                                      implements JpaComposite
 {
 	/**
-	 * Creates a new <code>ManyToManyMappingComposite</code>.
+	 * Creates a new <code>EclipselinkOneToOneMappingComposite</code>.
 	 *
-	 * @param subjectHolder The holder of the subject <code>IManyToManyMapping</code>
+	 * @param subjectHolder The holder of the subject <code>IOneToOneMapping</code>
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public EclipseLinkManyToManyMappingComposite(PropertyValueModel<? extends ManyToManyMapping> subjectHolder,
-	                                  Composite parent,
-	                                  WidgetFactory widgetFactory) {
+	public EclipseLinkOneToOneMappingComposite(PropertyValueModel<? extends OneToOneMapping> subjectHolder,
+	                                Composite parent,
+	                                WidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
 	}
 
 	@Override
 	protected void initializeLayout(Composite container) {
-		initializeGeneralPane(container);
-		initializeJoinTablePane(container);
-	}
-
-	protected void initializeGeneralPane(Composite container) {
 		int groupBoxMargin = getGroupBoxMargin();
+		Composite subPane = addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
 
-		new TargetEntityComposite(this, addPane(container, groupBoxMargin));
-		new FetchTypeComposite(this, addPane(container, groupBoxMargin));
-		new JoinFetchComposite(this, buildJoinFetchableHolder(), addPane(container, groupBoxMargin));
-		new MappedByComposite(this, addPane(container, groupBoxMargin));
-		new CascadeComposite(this, buildCascadeHolder(), addSubPane(container, 5));
-		new OrderingComposite(this, container);
+		new TargetEntityComposite(this, subPane);
+		new FetchTypeComposite(this, subPane);
+		new JoinFetchComposite(this, buildJoinFetchableHolder(), subPane);
+		new MappedByComposite(this, subPane);
+		new OptionalComposite(this, addSubPane(subPane, 4));
+		new PrivateOwnedComposite(this, buildPrivateOwnableHolder(), subPane);
+		new CascadeComposite(this, buildCascadeHolder(), container);
+		new JoinColumnComposite(this, container);
 	}
-
-	protected void initializeJoinTablePane(Composite container) {
-
-		container = addCollapsableSection(
-			container,
-			JptUiMappingsMessages.MultiRelationshipMappingComposite_joinTable
-		);
-
-		new JoinTableComposite(
-			this,
-			buildJoinTableHolder(),
-			container
-		);
-	}	
-
-	protected Composite addPane(Composite container, int groupBoxMargin) {
-		return addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
-	}
-
-
-	protected PropertyValueModel<Cascade> buildCascadeHolder() {
-		return new TransformationPropertyValueModel<ManyToManyMapping, Cascade>(getSubjectHolder()) {
+	
+	protected PropertyValueModel<JoinFetch> buildJoinFetchableHolder() {
+		return new PropertyAspectAdapter<OneToOneMapping, JoinFetch>(getSubjectHolder()) {
 			@Override
-			protected Cascade transform_(ManyToManyMapping value) {
-				return value.getCascade();
-			}
-		};
-	}
-
-	protected PropertyValueModel<JoinTable> buildJoinTableHolder() {
-		return new TransformationPropertyValueModel<ManyToManyMapping, JoinTable>(getSubjectHolder()) {
-			@Override
-			protected JoinTable transform_(ManyToManyMapping value) {
-				return value.getJoinTable();
+			protected JoinFetch buildValue_() {
+				return ((EclipseLinkOneToOneMapping) this.subject).getJoinFetch();
 			}
 		};
 	}
 	
-	protected PropertyValueModel<JoinFetch> buildJoinFetchableHolder() {
-		return new PropertyAspectAdapter<ManyToManyMapping, JoinFetch>(getSubjectHolder()) {
+	protected PropertyValueModel<PrivateOwned> buildPrivateOwnableHolder() {
+		return new PropertyAspectAdapter<OneToOneMapping, PrivateOwned>(getSubjectHolder()) {
 			@Override
-			protected JoinFetch buildValue_() {
-				return ((EclipseLinkRelationshipMapping) this.subject).getJoinFetch();
+			protected PrivateOwned buildValue_() {
+				return ((EclipseLinkOneToOneMapping) this.subject).getPrivateOwned();
+			}
+		};
+	}
+
+	protected PropertyValueModel<Cascade> buildCascadeHolder() {
+		return new TransformationPropertyValueModel<OneToOneMapping, Cascade>(getSubjectHolder()) {
+		
+			@Override
+			protected Cascade transform_(OneToOneMapping value) {
+				return value.getCascade();
 			}
 		};
 	}

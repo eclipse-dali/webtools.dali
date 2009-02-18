@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -78,17 +78,17 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.1
  * @since 2.1
  */
-public class EclipselinkOneToManyMappingComposite extends FormPane<OneToManyMapping>
+public class EclipseLinkOneToManyMappingComposite extends FormPane<OneToManyMapping>
                                       implements JpaComposite
 {
 	/**
-	 * Creates a new <code>OneToManyMappingComposite</code>.
+	 * Creates a new <code>EclipselinkOneToManyMappingComposite</code>.
 	 *
 	 * @param subjectHolder The holder of the subject <code>IOneToManyMapping</code>
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public EclipselinkOneToManyMappingComposite(PropertyValueModel<? extends OneToManyMapping> subjectHolder,
+	public EclipseLinkOneToManyMappingComposite(PropertyValueModel<? extends OneToManyMapping> subjectHolder,
 	                                 Composite parent,
 	                                 WidgetFactory widgetFactory) {
 
@@ -97,42 +97,24 @@ public class EclipselinkOneToManyMappingComposite extends FormPane<OneToManyMapp
 
 	@Override
 	protected void initializeLayout(Composite container) {
-
-		// General sub pane
 		initializeGeneralPane(container);
-
-		// Join Table sub pane
 		initializeJoinTablePane(container);
 	}
 
-	private void initializeGeneralPane(Composite container) {
-
+	protected void initializeGeneralPane(Composite container) {
 		int groupBoxMargin = getGroupBoxMargin();
 		Composite subPane = addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
 
-		// Target Entity widgets
 		new TargetEntityComposite(this, subPane);
-
-		// Fetch Type widgets
 		new FetchTypeComposite(this, subPane);
-		
-		// Join Fetch Type widgets
 		new JoinFetchComposite(this, buildJoinFetchableHolder(), subPane);
-		
-		// Mapped By widgets
 		new MappedByComposite(this, subPane);
-		
-		// Private owned widgets
 		new PrivateOwnedComposite(this, buildPrivateOwnableHolder(), subPane);
-
-		// Cascade widgets
 		new CascadeComposite(this, buildCascadeHolder(), addSubPane(container, 4));
-
-		// Ordering widgets
 		new OrderingComposite(this, container);
 	}
 
-	private void initializeJoinTablePane(Composite container) {
+	protected void initializeJoinTablePane(Composite container) {
 
 		container = addCollapsableSection(
 			container,
@@ -146,7 +128,7 @@ public class EclipselinkOneToManyMappingComposite extends FormPane<OneToManyMapp
 		);
 	}
 	
-	private PropertyValueModel<PrivateOwned> buildPrivateOwnableHolder() {
+	protected PropertyValueModel<PrivateOwned> buildPrivateOwnableHolder() {
 		return new PropertyAspectAdapter<OneToManyMapping, PrivateOwned>(getSubjectHolder()) {
 			@Override
 			protected PrivateOwned buildValue_() {
@@ -155,7 +137,7 @@ public class EclipselinkOneToManyMappingComposite extends FormPane<OneToManyMapp
 		};
 	}
 	
-	private PropertyValueModel<JoinFetch> buildJoinFetchableHolder() {
+	protected PropertyValueModel<JoinFetch> buildJoinFetchableHolder() {
 		return new PropertyAspectAdapter<OneToManyMapping, JoinFetch>(getSubjectHolder()) {
 			@Override
 			protected JoinFetch buildValue_() {
@@ -164,7 +146,7 @@ public class EclipselinkOneToManyMappingComposite extends FormPane<OneToManyMapp
 		};
 	}
 
-	private PropertyValueModel<Cascade> buildCascadeHolder() {
+	protected PropertyValueModel<Cascade> buildCascadeHolder() {
 		return new TransformationPropertyValueModel<OneToManyMapping, Cascade>(getSubjectHolder()) {
 			@Override
 			protected Cascade transform_(OneToManyMapping value) {
@@ -173,7 +155,7 @@ public class EclipselinkOneToManyMappingComposite extends FormPane<OneToManyMapp
 		};
 	}
 
-	private PropertyValueModel<JoinTable> buildJoinTableHolder() {
+	protected PropertyValueModel<JoinTable> buildJoinTableHolder() {
 		return new TransformationPropertyValueModel<OneToManyMapping, JoinTable>(getSubjectHolder()) {
 			@Override
 			protected JoinTable transform_(OneToManyMapping value) {

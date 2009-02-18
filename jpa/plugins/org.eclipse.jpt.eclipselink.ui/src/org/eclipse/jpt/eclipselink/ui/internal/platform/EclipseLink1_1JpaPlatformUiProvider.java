@@ -11,6 +11,23 @@ package org.eclipse.jpt.eclipselink.ui.internal.platform;
 
 import java.util.List;
 import org.eclipse.jpt.core.context.AttributeMapping;
+import org.eclipse.jpt.eclipselink.ui.internal.orm.details.EclipseLink1_1OrmBasicCollectionMappingUiProvider;
+import org.eclipse.jpt.eclipselink.ui.internal.orm.details.EclipseLink1_1OrmBasicMapMappingUiProvider;
+import org.eclipse.jpt.eclipselink.ui.internal.orm.details.EclipseLink1_1OrmBasicMappingUiProvider;
+import org.eclipse.jpt.eclipselink.ui.internal.orm.details.EclipseLink1_1OrmEmbeddableUiProvider;
+import org.eclipse.jpt.eclipselink.ui.internal.orm.details.EclipseLink1_1OrmEmbeddedIdMappingUiProvider;
+import org.eclipse.jpt.eclipselink.ui.internal.orm.details.EclipseLink1_1OrmEmbeddedMappingUiProvider;
+import org.eclipse.jpt.eclipselink.ui.internal.orm.details.EclipseLink1_1OrmEntityUiProvider;
+import org.eclipse.jpt.eclipselink.ui.internal.orm.details.EclipseLink1_1OrmIdMappingUiProvider;
+import org.eclipse.jpt.eclipselink.ui.internal.orm.details.EclipseLink1_1OrmManyToManyMappingUiProvider;
+import org.eclipse.jpt.eclipselink.ui.internal.orm.details.EclipseLink1_1OrmManyToOneMappingUiProvider;
+import org.eclipse.jpt.eclipselink.ui.internal.orm.details.EclipseLink1_1OrmMappedSuperclassUiProvider;
+import org.eclipse.jpt.eclipselink.ui.internal.orm.details.EclipseLink1_1OrmOneToManyMappingUiProvider;
+import org.eclipse.jpt.eclipselink.ui.internal.orm.details.EclipseLink1_1OrmOneToOneMappingUiProvider;
+import org.eclipse.jpt.eclipselink.ui.internal.orm.details.EclipseLink1_1OrmTransformationMappingUiProvider;
+import org.eclipse.jpt.eclipselink.ui.internal.orm.details.EclipseLink1_1OrmTransientMappingUiProvider;
+import org.eclipse.jpt.eclipselink.ui.internal.orm.details.EclipseLink1_1OrmVariableOneToOneMappingUiProvider;
+import org.eclipse.jpt.eclipselink.ui.internal.orm.details.EclipseLink1_1OrmVersionMappingUiProvider;
 import org.eclipse.jpt.eclipselink.ui.internal.structure.EclipseLink1_1OrmResourceModelStructureProvider;
 import org.eclipse.jpt.ui.JpaPlatformUiProvider;
 import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
@@ -61,7 +78,9 @@ public class EclipseLink1_1JpaPlatformUiProvider extends AbstractJpaPlatformUiPr
 
 	@Override
 	protected void addTypeMappingUiProvidersTo(List<TypeMappingUiProvider<?>> providers) {
-		//none specific to EclipseLink 1.1
+		providers.add(EclipseLink1_1OrmEntityUiProvider.instance());
+		providers.add(EclipseLink1_1OrmMappedSuperclassUiProvider.instance());
+		providers.add(EclipseLink1_1OrmEmbeddableUiProvider.instance());
 	}
 	
 	@Override
@@ -74,7 +93,20 @@ public class EclipseLink1_1JpaPlatformUiProvider extends AbstractJpaPlatformUiPr
 	
 	@Override
 	protected void addAttributeMappingUiProvidersTo(List<AttributeMappingUiProvider<? extends AttributeMapping>> providers) {
-		//none specific to EclipseLink 1.1
+		providers.add(EclipseLink1_1OrmIdMappingUiProvider.instance());
+		providers.add(EclipseLink1_1OrmEmbeddedIdMappingUiProvider.instance());
+		providers.add(EclipseLink1_1OrmBasicMappingUiProvider.instance());
+		providers.add(EclipseLink1_1OrmBasicCollectionMappingUiProvider.instance());
+		providers.add(EclipseLink1_1OrmBasicMapMappingUiProvider.instance());
+		providers.add(EclipseLink1_1OrmVersionMappingUiProvider.instance());
+		providers.add(EclipseLink1_1OrmManyToOneMappingUiProvider.instance());
+		providers.add(EclipseLink1_1OrmOneToManyMappingUiProvider.instance());
+		providers.add(EclipseLink1_1OrmEmbeddedMappingUiProvider.instance());
+		providers.add(EclipseLink1_1OrmOneToOneMappingUiProvider.instance());
+		providers.add(EclipseLink1_1OrmVariableOneToOneMappingUiProvider.instance());
+		providers.add(EclipseLink1_1OrmManyToManyMappingUiProvider.instance());
+		providers.add(EclipseLink1_1OrmTransformationMappingUiProvider.instance());
+		providers.add(EclipseLink1_1OrmTransientMappingUiProvider.instance());
 	}
 	
 	@Override

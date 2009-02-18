@@ -135,7 +135,7 @@ public abstract class BaseJpaPlatformUi
 		return new FilteringIterator<TypeMappingUiProvider<? extends TypeMapping>, TypeMappingUiProvider<? extends TypeMapping>>(typeMappingUiProviders()) {
 			@Override
 			protected boolean accept(TypeMappingUiProvider<? extends TypeMapping> provider) {
-				return contentType.isKindOf(provider.getContentType());
+				return contentType.equals(provider.getContentType());
 			}
 		};
 	}
@@ -189,7 +189,7 @@ public abstract class BaseJpaPlatformUi
 		return new FilteringIterator<AttributeMappingUiProvider<? extends AttributeMapping>, AttributeMappingUiProvider<? extends AttributeMapping>>(attributeMappingUiProviders()) {
 			@Override
 			protected boolean accept(AttributeMappingUiProvider<? extends AttributeMapping> provider) {
-				return contentType.isKindOf(provider.getContentType());
+				return contentType.equals(provider.getContentType());
 			}
 		};
 	}

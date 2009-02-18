@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -7,25 +7,20 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.eclipselink.ui.internal.mappings.details;
+package org.eclipse.jpt.eclipselink.ui.internal.orm.details;
 
-import org.eclipse.jpt.core.context.Cascade;
-import org.eclipse.jpt.core.context.JoinTable;
+import org.eclipse.jpt.core.context.AccessHolder;
 import org.eclipse.jpt.core.context.ManyToManyMapping;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkRelationshipMapping;
-import org.eclipse.jpt.eclipselink.core.context.JoinFetch;
+import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkManyToManyMappingComposite;
+import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.JoinFetchComposite;
 import org.eclipse.jpt.ui.WidgetFactory;
-import org.eclipse.jpt.ui.details.JpaComposite;
-import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.CascadeComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.FetchTypeComposite;
-import org.eclipse.jpt.ui.internal.mappings.details.JoinTableComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.MappedByComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.OrderingComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.TargetEntityComposite;
-import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
@@ -69,11 +64,10 @@ import org.eclipse.swt.widgets.Composite;
  * @see OrderingComposite
  * @see TargetEntityComposite
  *
- * @version 2.1
- * @since 2.1
+ * @version 2.2
+ * @since 2.2
  */
-public class EclipseLinkManyToManyMappingComposite extends FormPane<ManyToManyMapping>
-                                        implements JpaComposite
+public class EclipseLink1_1OrmManyToManyMappingComposite extends EclipseLinkManyToManyMappingComposite
 {
 	/**
 	 * Creates a new <code>ManyToManyMappingComposite</code>.
@@ -82,7 +76,7 @@ public class EclipseLinkManyToManyMappingComposite extends FormPane<ManyToManyMa
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public EclipseLinkManyToManyMappingComposite(PropertyValueModel<? extends ManyToManyMapping> subjectHolder,
+	public EclipseLink1_1OrmManyToManyMappingComposite(PropertyValueModel<? extends ManyToManyMapping> subjectHolder,
 	                                  Composite parent,
 	                                  WidgetFactory widgetFactory) {
 
@@ -90,64 +84,23 @@ public class EclipseLinkManyToManyMappingComposite extends FormPane<ManyToManyMa
 	}
 
 	@Override
-	protected void initializeLayout(Composite container) {
-		initializeGeneralPane(container);
-		initializeJoinTablePane(container);
-	}
-
 	protected void initializeGeneralPane(Composite container) {
 		int groupBoxMargin = getGroupBoxMargin();
 
 		new TargetEntityComposite(this, addPane(container, groupBoxMargin));
+		new AccessTypeComposite(this, buildAccessHolderHolder(), addPane(container, groupBoxMargin));
 		new FetchTypeComposite(this, addPane(container, groupBoxMargin));
 		new JoinFetchComposite(this, buildJoinFetchableHolder(), addPane(container, groupBoxMargin));
 		new MappedByComposite(this, addPane(container, groupBoxMargin));
 		new CascadeComposite(this, buildCascadeHolder(), addSubPane(container, 5));
 		new OrderingComposite(this, container);
 	}
-
-	protected void initializeJoinTablePane(Composite container) {
-
-		container = addCollapsableSection(
-			container,
-			JptUiMappingsMessages.MultiRelationshipMappingComposite_joinTable
-		);
-
-		new JoinTableComposite(
-			this,
-			buildJoinTableHolder(),
-			container
-		);
-	}	
-
-	protected Composite addPane(Composite container, int groupBoxMargin) {
-		return addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
-	}
-
-
-	protected PropertyValueModel<Cascade> buildCascadeHolder() {
-		return new TransformationPropertyValueModel<ManyToManyMapping, Cascade>(getSubjectHolder()) {
-			@Override
-			protected Cascade transform_(ManyToManyMapping value) {
-				return value.getCascade();
-			}
-		};
-	}
-
-	protected PropertyValueModel<JoinTable> buildJoinTableHolder() {
-		return new TransformationPropertyValueModel<ManyToManyMapping, JoinTable>(getSubjectHolder()) {
-			@Override
-			protected JoinTable transform_(ManyToManyMapping value) {
-				return value.getJoinTable();
-			}
-		};
-	}
 	
-	protected PropertyValueModel<JoinFetch> buildJoinFetchableHolder() {
-		return new PropertyAspectAdapter<ManyToManyMapping, JoinFetch>(getSubjectHolder()) {
+	protected PropertyValueModel<AccessHolder> buildAccessHolderHolder() {
+		return new PropertyAspectAdapter<ManyToManyMapping, AccessHolder>(getSubjectHolder()) {
 			@Override
-			protected JoinFetch buildValue_() {
-				return ((EclipseLinkRelationshipMapping) this.subject).getJoinFetch();
+			protected AccessHolder buildValue_() {
+				return this.subject.getPersistentAttribute();
 			}
 		};
 	}

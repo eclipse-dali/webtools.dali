@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -37,8 +37,8 @@ import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkIdMap
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkManyToManyMappingComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkManyToOneMappingComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkVersionMappingComposite;
-import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipselinkOneToManyMappingComposite;
-import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipselinkOneToOneMappingComposite;
+import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkOneToManyMappingComposite;
+import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkOneToOneMappingComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.persistence.caching.PersistenceXmlCachingTab;
 import org.eclipse.jpt.eclipselink.ui.internal.persistence.connection.PersistenceXmlConnectionTab;
 import org.eclipse.jpt.eclipselink.ui.internal.persistence.customization.PersistenceXmlCustomizationTab;
@@ -240,7 +240,7 @@ public class EclipseLinkJpaUiFactory extends BaseJpaUiFactory
 			PropertyValueModel<JavaOneToManyMapping> subjectHolder, 
 			Composite parent, 
 			WidgetFactory widgetFactory) {
-		return new EclipselinkOneToManyMappingComposite(subjectHolder, parent, widgetFactory);
+		return new EclipseLinkOneToManyMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 	
 	@Override
@@ -248,7 +248,7 @@ public class EclipseLinkJpaUiFactory extends BaseJpaUiFactory
 			PropertyValueModel<JavaOneToOneMapping> subjectHolder, 
 			Composite parent, 
 			WidgetFactory widgetFactory) {
-		return new EclipselinkOneToOneMappingComposite(subjectHolder, parent, widgetFactory);
+		return new EclipseLinkOneToOneMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 	
 	@Override
