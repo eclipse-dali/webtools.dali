@@ -12,6 +12,7 @@ package org.eclipse.jpt.ui.internal.wizards;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
+
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaModelException;
@@ -20,7 +21,6 @@ import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jpt.core.EntityGeneratorDatabaseAnnotationNameBuilder;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.db.Column;
-import org.eclipse.jpt.db.ConnectionProfile;
 import org.eclipse.jpt.db.ForeignKey;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.Table;
@@ -31,8 +31,7 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 
 /**
  * two pages:
- *   - a Database Connection page that allows the user to select a connection
- *     and a schema
+ *   - a Database Schema page that allows the user to select a schema
  *   - a Generate Entities page that allows the user to select which tables in
  *     the selected schema are to be used and to configure Entity names
  */
@@ -42,8 +41,8 @@ public class GenerateEntitiesWizard extends Wizard {
 
 	private final IStructuredSelection selection;
 
-	private DatabaseConnectionWizardPage dbSettingsPage;
-
+	private DatabaseSchemaWizardPage dbSchemaPage;
+	
 	private GenerateEntitiesWizardPage generateEntitiesPage;
 
 	private final PackageGenerator.Config packageGeneratorConfig;
@@ -65,9 +64,10 @@ public class GenerateEntitiesWizard extends Wizard {
 	@Override
 	public void addPages() {
 		super.addPages();
-		this.dbSettingsPage = new DatabaseConnectionWizardPage(this.jpaProject);
-		this.dbSettingsPage.addListener(new DatabasePageListener());
-		this.addPage(this.dbSettingsPage);
+		this.dbSchemaPage = new DatabaseSchemaWizardPage(this.jpaProject);
+		this.dbSchemaPage.addListener(new SchemaPageListener());
+		this.addPage(this.dbSchemaPage);
+		
 		this.generateEntitiesPage = new GenerateEntitiesWizardPage();
 		this.addPage(this.generateEntitiesPage);
 		this.generateEntitiesPage.init(this.selection);
@@ -134,10 +134,10 @@ public class GenerateEntitiesWizard extends Wizard {
 	// ********** intra-wizard methods **********
 
 	Collection<Table> getPossibleTables() {
-		return this.buildTables(this.dbSettingsPage.getSelectedSchema());
+		return this.buildTables(this.dbSchemaPage.getSelectedSchema());
 	}
 
-	JpaProject getJpaProject(){
+	JpaProject getJpaProject() {
 		return this.jpaProject;
 	}
 
@@ -198,19 +198,15 @@ public class GenerateEntitiesWizard extends Wizard {
 	}
 
 
-	// ********** database page listener **********
+	// ********** schema page listener **********
 
 	/**
 	 * listen for when the Database Connection page changes its selected schema
 	 * so we can keep the Generate Entities page in synch
 	 */
-	class DatabasePageListener implements DatabaseConnectionWizardPage.Listener {
-		public void selectedConnectionProfileChanged(ConnectionProfile connectionProfile) {
-			// ignore
-		}
+	class SchemaPageListener implements DatabaseSchemaWizardPage.Listener {
 		public void selectedSchemaChanged(Schema schema) {
 			GenerateEntitiesWizard.this.selectedSchemaChanged(schema);
 		}
 	}
-
 }
