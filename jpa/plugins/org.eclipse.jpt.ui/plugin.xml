@@ -699,13 +699,9 @@
 		</objectContribution>
 		
 		<objectContribution
-			id="org.eclipse.jpt.ui.project.JPATools"
+			id="org.eclipse.jpt.ui.project.configure"
 			objectClass="org.eclipse.core.resources.IProject"
 			adaptable="true">
-			<menu
-				id="org.eclipse.jpt.ui.project.JPATools"
-				label="%jpaMenuName"/>
-			
 			<visibility>
 				<and>
 					<objectState 
@@ -720,11 +716,11 @@
 			</visibility>
 			
 			<action
-				id="org.eclipse.jpt.ui.generateDDL"
-				label="%migrateJavaProject"
+				id="org.eclipse.jpt.ui.convertToJpaProject"
+				label="%convertToJPAProject"
 				class="org.eclipse.jpt.ui.internal.actions.MigrateJavaProjectAction"
 				enablesFor="1"
-				menubarPath="org.eclipse.jpt.ui.project.JPATools/content"/>
+				menubarPath="org.eclipse.ui.projectConfigure/additions"/>
 				
 		</objectContribution>
 		
