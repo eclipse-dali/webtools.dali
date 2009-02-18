@@ -32,6 +32,7 @@ import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
  * 
@@ -343,16 +344,16 @@ public abstract class AbstractJavaPersistentAttribute
 	// ********** validation **********
 
 	@Override
-	public void validate(List<IMessage> messages, CompilationUnit astRoot) {
-		super.validate(messages, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		super.validate(messages, reporter, astRoot);
 		
 		this.validateModifiers(messages, astRoot);
 		
 		if (this.specifiedMapping != null) {
-			this.specifiedMapping.validate(messages, astRoot);
+			this.specifiedMapping.validate(messages, reporter, astRoot);
 		}
 		else if (this.defaultMapping != null) {
-			this.defaultMapping.validate(messages, astRoot);
+			this.defaultMapping.validate(messages, reporter, astRoot);
 		}
 	}
 	

@@ -20,7 +20,9 @@ import org.eclipse.jpt.core.context.jar.JarFile;
 import org.eclipse.jpt.core.internal.context.AbstractJpaContextNode;
 import org.eclipse.jpt.core.resource.jar.JarResourcePackageFragmentRoot;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jst.j2ee.model.internal.validation.ValidationCancelledException;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericJarFile
 	extends AbstractJpaContextNode
@@ -76,8 +78,10 @@ public class GenericJarFile
 
 	// ********** validation **********
 
-	public void validate(List<IMessage> messages) {
-		// nothing yet
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		if (reporter.isCancelled()) {
+			throw new ValidationCancelledException();
+		}
 	}
 
 }

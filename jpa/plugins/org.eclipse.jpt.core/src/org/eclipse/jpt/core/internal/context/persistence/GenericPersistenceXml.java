@@ -27,6 +27,7 @@ import org.eclipse.jpt.core.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
  * 
@@ -187,8 +188,8 @@ public class GenericPersistenceXml
 	// **************** validation *********************************************
 	
 	@Override
-	public void validate(List<IMessage> messages) {
-		super.validate(messages);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 
 		if (this.persistence == null) {
 			messages.add(
@@ -201,7 +202,7 @@ public class GenericPersistenceXml
 			return;
 		}
 
-		this.persistence.validate(messages);
+		this.persistence.validate(messages, reporter);
 	}
 
 	public void dispose() {

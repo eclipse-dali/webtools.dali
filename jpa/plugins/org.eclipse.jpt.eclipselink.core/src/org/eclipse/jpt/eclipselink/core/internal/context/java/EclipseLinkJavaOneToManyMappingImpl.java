@@ -20,6 +20,7 @@ import org.eclipse.jpt.eclipselink.core.context.JoinFetch;
 import org.eclipse.jpt.eclipselink.core.context.PrivateOwned;
 import org.eclipse.jpt.eclipselink.core.resource.java.PrivateOwnedAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class EclipseLinkJavaOneToManyMappingImpl extends GenericJavaOneToManyMapping implements EclipseLinkOneToManyMapping
 {
@@ -79,9 +80,9 @@ public class EclipseLinkJavaOneToManyMappingImpl extends GenericJavaOneToManyMap
 	}
 		
 	@Override
-	public void validate(List<IMessage> messages, CompilationUnit astRoot) {
-		super.validate(messages, astRoot);
-		this.joinFetch.validate(messages, astRoot);
-		this.privateOwned.validate(messages, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		super.validate(messages, reporter, astRoot);
+		this.joinFetch.validate(messages, reporter, astRoot);
+		this.privateOwned.validate(messages, reporter, astRoot);
 	}
 }

@@ -15,6 +15,7 @@ import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.eclipselink.core.context.StructConverter;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlStructConverter;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class EclipseLinkOrmStructConverter extends EclipseLinkOrmConverter<XmlStructConverter>
 	implements StructConverter
@@ -73,8 +74,8 @@ public class EclipseLinkOrmStructConverter extends EclipseLinkOrmConverter<XmlSt
 	// **************** validation *********************************************
 	
 	@Override
-	public void validate(List<IMessage> messages) {
-		super.validate(messages);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 		validateConverterClass(messages);
 	}
 	

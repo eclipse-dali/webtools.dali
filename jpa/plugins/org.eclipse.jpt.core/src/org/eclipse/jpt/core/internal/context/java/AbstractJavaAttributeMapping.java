@@ -22,6 +22,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
  * 
@@ -118,8 +119,8 @@ public abstract class AbstractJavaAttributeMapping<T extends JavaResourceNode>
 	//************ Validation *************************
 	
 	@Override
-	public void validate(List<IMessage> messages, CompilationUnit astRoot) {
-		super.validate(messages, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		super.validate(messages, reporter, astRoot);
 		this.validateMappingType(messages, astRoot);
 	}
 	

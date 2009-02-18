@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -85,7 +85,7 @@ public class JpaValidator extends AbstractValidator implements IValidator {
 	private void validate(IReporter reporter, IProject project) {
 		reporter.removeAllMessages(this);
 		
-		for (Iterator<IMessage> stream = this.validationMessages(project); stream.hasNext(); ) {
+		for (Iterator<IMessage> stream = this.validationMessages(reporter, project); stream.hasNext(); ) {
 			reporter.addMessage(this, adjustMessage(stream.next()));
 		}
 	}
@@ -94,10 +94,10 @@ public class JpaValidator extends AbstractValidator implements IValidator {
 		return ((IProjectValidationContext) context).getProject();
 	}
 	
-	private Iterator<IMessage> validationMessages(IProject project) {
+	private Iterator<IMessage> validationMessages(IReporter reporter, IProject project) {
 		JpaProject jpaProject = JptCorePlugin.getJpaProject(project);
 		if (jpaProject != null) {
-			return jpaProject.validationMessages();
+			return jpaProject.validationMessages(reporter);
 		}
 		return new SingleElementIterator<IMessage>(
 			DefaultJpaValidationMessages.buildMessage(

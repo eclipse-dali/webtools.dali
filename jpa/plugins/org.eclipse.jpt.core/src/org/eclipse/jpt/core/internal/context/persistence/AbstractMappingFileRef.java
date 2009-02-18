@@ -27,6 +27,7 @@ import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public abstract class AbstractMappingFileRef
 	extends AbstractXmlContextNode
@@ -168,8 +169,8 @@ public abstract class AbstractMappingFileRef
 	// ********** validation **********
 
 	@Override
-	public void validate(List<IMessage> messages) {
-		super.validate(messages);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 
 		if (StringTools.stringIsEmpty(this.fileName)) {
 			messages.add(
@@ -208,7 +209,7 @@ public abstract class AbstractMappingFileRef
 			);
 		}
 
-		this.mappingFile.validate(messages);
+		this.mappingFile.validate(messages, reporter);
 	}
 
 	protected String buildMissingMappingFileMessageID() {

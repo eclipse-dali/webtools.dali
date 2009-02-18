@@ -57,6 +57,7 @@ import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public abstract class AbstractEntityMappings
 	extends AbstractXmlContextNode
@@ -844,12 +845,12 @@ public abstract class AbstractEntityMappings
 	// ********** validation **********
 	
 	@Override
-	public void validate(List<IMessage> messages) {
-		super.validate(messages);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 		this.validateGenerators(messages);
 		this.validateQueries(messages);
 		for (Iterator<OrmPersistentType> stream = this.persistentTypes(); stream.hasNext(); ) {
-			this.validatePersistentType(stream.next(), messages);
+			this.validatePersistentType(stream.next(), messages, reporter);
 		}
 	}
 	
@@ -913,9 +914,9 @@ public abstract class AbstractEntityMappings
 				);
 	}
 
-	protected void validatePersistentType(OrmPersistentType persistentType, List<IMessage> messages) {
+	protected void validatePersistentType(OrmPersistentType persistentType, List<IMessage> messages, IReporter reporter) {
 		try {
-			persistentType.validate(messages);
+			persistentType.validate(messages, reporter);
 		} catch (Throwable exception) {
 			JptCorePlugin.log(exception);			
 		}

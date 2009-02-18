@@ -415,7 +415,7 @@ public class GenericJpaModel
 				return null;
 			}
 			JpaProject result = jpaPlatform.getJpaFactory().buildJpaProject(this.config);
-			result.setUpdater(new AsynchronousJpaProjectUpdater(result));
+			//result.setUpdater(new AsynchronousJpaProjectUpdater(result));
 			return result;
 		}
 

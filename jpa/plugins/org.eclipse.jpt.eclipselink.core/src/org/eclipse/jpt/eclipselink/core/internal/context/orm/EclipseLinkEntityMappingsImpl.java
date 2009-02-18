@@ -18,6 +18,7 @@ import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaFactory;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntityMappings;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class EclipseLinkEntityMappingsImpl
 	extends AbstractEntityMappings
@@ -64,8 +65,8 @@ public class EclipseLinkEntityMappingsImpl
 	// **************** validation *********************************************
 	
 	@Override
-	public void validate(List<IMessage> messages) {
-		super.validate(messages);
-		this.converterHolder.validate(messages);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		this.converterHolder.validate(messages, reporter);
 	}
 }

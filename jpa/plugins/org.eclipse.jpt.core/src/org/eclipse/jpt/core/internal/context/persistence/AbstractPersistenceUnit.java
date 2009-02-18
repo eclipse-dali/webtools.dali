@@ -55,6 +55,7 @@ import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
  * @see PersistenceUnit
@@ -1137,17 +1138,17 @@ public abstract class AbstractPersistenceUnit
 	// ********** validation **********
 
 	@Override
-	public void validate(List<IMessage> messages) {
-		super.validate(messages);
-		this.validateMappingFiles(messages);
-		this.validateClassRefs(messages);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		this.validateMappingFiles(messages, reporter);
+		this.validateClassRefs(messages, reporter);
 	}
 
-	protected void validateMappingFiles(List<IMessage> messages) {
+	protected void validateMappingFiles(List<IMessage> messages, IReporter reporter) {
 		this.checkForMultiplePersistenceUnitDefaults(messages);
 		this.checkForDuplicateMappingFiles(messages);
 		for (Iterator<MappingFileRef> stream = this.mappingFileRefs(); stream.hasNext();) {
-			stream.next().validate(messages);
+			stream.next().validate(messages, reporter);
 		}
 	}
 
@@ -1202,10 +1203,10 @@ public abstract class AbstractPersistenceUnit
 		};
 	}
 
-	protected void validateClassRefs(List<IMessage> messages) {
+	protected void validateClassRefs(List<IMessage> messages, IReporter reporter) {
 		this.checkForDuplicateClasses(messages);
 		for (Iterator<ClassRef> stream = this.classRefs(); stream.hasNext(); ) {
-			stream.next().validate(messages);
+			stream.next().validate(messages, reporter);
 		}
 	}
 

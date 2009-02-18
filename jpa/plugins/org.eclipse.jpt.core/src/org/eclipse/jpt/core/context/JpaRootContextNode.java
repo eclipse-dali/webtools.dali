@@ -13,6 +13,7 @@ import java.util.List;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
  * 
@@ -51,6 +52,6 @@ public interface JpaRootContextNode extends JpaContextNode
 	/**
 	 * Add validation messages to the specified list.
 	 */
-	public void validate(List<IMessage> messages);
+	public void validate(List<IMessage> messages, IReporter reporter);
 
 }

@@ -24,6 +24,7 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.XmlObjectTypeConverter;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlStructConverter;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlTypeConverter;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class EclipseLinkOrmConvert extends AbstractXmlContextNode implements Convert, OrmConverter
 {
@@ -264,10 +265,10 @@ public class EclipseLinkOrmConvert extends AbstractXmlContextNode implements Con
 	}
 
 	@Override
-	public void validate(List<IMessage> messages) {
-		super.validate(messages);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 		if (getConverter() != null) {
-			getConverter().validate(messages);
+			getConverter().validate(messages, reporter);
 		}
 	}
 }

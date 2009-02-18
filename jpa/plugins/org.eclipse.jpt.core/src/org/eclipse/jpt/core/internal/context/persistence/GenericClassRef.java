@@ -29,6 +29,7 @@ import org.eclipse.jpt.core.resource.persistence.XmlJavaClassRef;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
  * @see ClassRef
@@ -223,8 +224,8 @@ public class GenericClassRef
 	// ********** validation **********
 
 	@Override
-	public void validate(List<IMessage> messages) {
-		super.validate(messages);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 
 		if (StringTools.stringIsEmpty(this.className)) {
 			messages.add(
@@ -267,13 +268,13 @@ public class GenericClassRef
 		}
 
 		if (validateJavaPersistentType) {
-			this.validateJavaPersistentType(messages);
+			this.validateJavaPersistentType(messages, reporter);
 		}
 	}
 
-	protected void validateJavaPersistentType(List<IMessage> messages) {
+	protected void validateJavaPersistentType(List<IMessage> messages, IReporter reporter) {
 		try {
-			this.javaPersistentType.validate(messages);
+			this.javaPersistentType.validate(messages, reporter);
 		} catch (Throwable t) {
 			JptCorePlugin.log(t);
 		}

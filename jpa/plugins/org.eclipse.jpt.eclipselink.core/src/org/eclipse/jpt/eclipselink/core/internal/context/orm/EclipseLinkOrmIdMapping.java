@@ -20,6 +20,7 @@ import org.eclipse.jpt.eclipselink.core.context.Mutable;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlId;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlMutable;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class EclipseLinkOrmIdMapping extends GenericOrmIdMapping
 	implements EclipseLinkIdMapping
@@ -70,8 +71,8 @@ public class EclipseLinkOrmIdMapping extends GenericOrmIdMapping
 	// **************** validation **************************************
 	
 	@Override
-	public void validate(List<IMessage> messages) {
-		super.validate(messages);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 		// TODO - mutable validation
 	}
 }

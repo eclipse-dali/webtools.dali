@@ -29,6 +29,7 @@ import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 
 public abstract class AbstractOrmTypeMapping<T extends XmlTypeMapping>
@@ -228,8 +229,8 @@ public abstract class AbstractOrmTypeMapping<T extends XmlTypeMapping>
 	
 	//************************* validation ************************
 	@Override
-	public void validate(List<IMessage> messages) {
-		super.validate(messages);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 		this.validateClass(messages);
 	}
 

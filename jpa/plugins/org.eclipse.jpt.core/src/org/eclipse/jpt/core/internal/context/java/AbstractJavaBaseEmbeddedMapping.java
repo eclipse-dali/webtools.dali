@@ -41,6 +41,7 @@ import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 
 public abstract class AbstractJavaBaseEmbeddedMapping<T extends JavaResourceNode> extends AbstractJavaAttributeMapping<T>
@@ -358,11 +359,11 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends JavaResourceNode
 	//******** Validation ******************
 	
 	@Override
-	public void validate(List<IMessage> messages, CompilationUnit astRoot) {
-		super.validate(messages, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		super.validate(messages, reporter, astRoot);
 		
 		for (Iterator<JavaAttributeOverride> stream = attributeOverrides(); stream.hasNext();) {
-			stream.next().validate(messages, astRoot);
+			stream.next().validate(messages, reporter, astRoot);
 		}
 	}
 }

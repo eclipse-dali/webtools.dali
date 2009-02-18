@@ -18,6 +18,7 @@ import org.eclipse.jpt.eclipselink.core.context.EclipseLinkRelationshipMapping;
 import org.eclipse.jpt.eclipselink.core.context.JoinFetch;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlJoinFetch;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class EclipseLinkOrmManyToOneMapping extends GenericOrmManyToOneMapping
 	implements EclipseLinkRelationshipMapping
@@ -48,8 +49,8 @@ public class EclipseLinkOrmManyToOneMapping extends GenericOrmManyToOneMapping
 	// **************** validation **************************************
 	
 	@Override
-	public void validate(List<IMessage> messages) {
-		super.validate(messages);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 		// TODO - private owned, join fetch validation
 	}
 }

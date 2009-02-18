@@ -39,6 +39,7 @@ import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
  * 
@@ -313,8 +314,8 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 	// ********** validation **********
 
 	@Override
-	public void validate(List<IMessage> messages, CompilationUnit astRoot) {
-		super.validate(messages, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		super.validate(messages, reporter, astRoot);
 		
 		if (this.connectionProfileIsActive()) {
 			this.validateJoinColumns(messages, astRoot);

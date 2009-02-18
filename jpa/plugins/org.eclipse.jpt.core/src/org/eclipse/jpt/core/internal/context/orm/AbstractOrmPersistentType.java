@@ -50,6 +50,7 @@ import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public abstract class AbstractOrmPersistentType
 	extends AbstractXmlContextNode
@@ -874,11 +875,11 @@ public abstract class AbstractOrmPersistentType
 	//******************** validation **********************
 	
 	@Override
-	public void validate(List<IMessage> messages) {
-		super.validate(messages);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 		this.validateClass(messages);
-		this.validateMapping(messages);
-		this.validateAttributes(messages);
+		this.validateMapping(messages, reporter);
+		this.validateAttributes(messages, reporter);
 	}
 	
 	protected void validateClass(List<IMessage> messages) {
@@ -895,23 +896,23 @@ public abstract class AbstractOrmPersistentType
 		}
 	}
 
-	protected void validateMapping(List<IMessage> messages) {
+	protected void validateMapping(List<IMessage> messages, IReporter reporter) {
 		try {
-			this.typeMapping.validate(messages);
+			this.typeMapping.validate(messages, reporter);
 		} catch(Throwable t) {
 			JptCorePlugin.log(t);
 		}
 	}
 	
-	protected void validateAttributes(List<IMessage> messages) {
+	protected void validateAttributes(List<IMessage> messages, IReporter reporter) {
 		for (Iterator<OrmPersistentAttribute> stream = this.attributes(); stream.hasNext(); ) {
-			this.validateAttribute(stream.next(), messages);
+			this.validateAttribute(stream.next(), messages, reporter);
 		}
 	}
 	
-	protected void validateAttribute(OrmPersistentAttribute attribute, List<IMessage> messages) {
+	protected void validateAttribute(OrmPersistentAttribute attribute, List<IMessage> messages, IReporter reporter) {
 		try {
-			attribute.validate(messages);
+			attribute.validate(messages, reporter);
 		} catch(Throwable t) {
 			JptCorePlugin.log(t);
 		}

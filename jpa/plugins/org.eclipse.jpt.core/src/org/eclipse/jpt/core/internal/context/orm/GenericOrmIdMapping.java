@@ -37,6 +37,7 @@ import org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator;
 import org.eclipse.jpt.core.resource.orm.XmlTableGenerator;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
  * 
@@ -401,14 +402,14 @@ public class GenericOrmIdMapping
 	// ****************** validation ****************
 
 	@Override
-	public void validate(List<IMessage> messages) {
-		super.validate(messages);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 		
 		if (this.connectionProfileIsActive() && this.ownerIsEntity()) {
 			this.validateColumn(messages);
 		}
 		if (this.generatedValue != null) {
-			this.generatedValue.validate(messages);
+			this.generatedValue.validate(messages, reporter);
 		}
 		this.validateGenerators(messages);
 	}

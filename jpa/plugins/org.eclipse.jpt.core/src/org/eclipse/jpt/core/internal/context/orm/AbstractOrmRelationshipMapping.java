@@ -25,6 +25,7 @@ import org.eclipse.jpt.core.resource.orm.XmlRelationshipMapping;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 
 public abstract class AbstractOrmRelationshipMapping<T extends XmlRelationshipMapping>
@@ -226,8 +227,8 @@ public abstract class AbstractOrmRelationshipMapping<T extends XmlRelationshipMa
 	}
 	
 	@Override
-	public void validate(List<IMessage> messages) {
-		super.validate(messages);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 		validateTargetEntity(messages);
 	}
 	

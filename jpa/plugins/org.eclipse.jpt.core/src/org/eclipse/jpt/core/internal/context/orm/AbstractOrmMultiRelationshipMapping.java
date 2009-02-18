@@ -27,6 +27,7 @@ import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlMultiRelationshipMapping;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 
 public abstract class AbstractOrmMultiRelationshipMapping<T extends XmlMultiRelationshipMapping>
@@ -299,10 +300,10 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends XmlMultiRela
 	//****************** validation ******************8
 	
 	@Override
-	public void validate(List<IMessage> messages) {
-		super.validate(messages);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 		if (this.ownerIsEntity() && (this.joinTableIsSpecified() || this.isRelationshipOwner())) {
-			this.joinTable.validate(messages);
+			this.joinTable.validate(messages, reporter);
 		}
 		if (this.mappedBy != null) {
 			this.validateMappedBy(messages);

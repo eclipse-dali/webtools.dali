@@ -28,7 +28,9 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.HashBag;
+import org.eclipse.jst.j2ee.model.internal.validation.ValidationCancelledException;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericRootContextNode
 	extends AbstractJpaContextNode
@@ -131,7 +133,11 @@ public class GenericRootContextNode
 	
 	// **************** Validation *********************************************
 	
-	public void validate(List<IMessage> messages) {
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		if (reporter.isCancelled()) {
+			throw new ValidationCancelledException();
+		}
+
 		if (this.persistenceXml == null) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
@@ -145,7 +151,7 @@ public class GenericRootContextNode
 		if ( ! this.jpaProject.discoversAnnotatedClasses()) {
 			this.validateOrphanClasses(messages);
 		}
-		this.persistenceXml.validate(messages);
+		this.persistenceXml.validate(messages, reporter);
 	}
 
 	protected String buildMissingFileMessageID() {

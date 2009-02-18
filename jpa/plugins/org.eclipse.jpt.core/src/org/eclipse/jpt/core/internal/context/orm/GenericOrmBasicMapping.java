@@ -30,6 +30,7 @@ import org.eclipse.jpt.core.resource.orm.XmlBasic;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 
 public class GenericOrmBasicMapping extends AbstractOrmAttributeMapping<XmlBasic>
@@ -261,8 +262,8 @@ public class GenericOrmBasicMapping extends AbstractOrmAttributeMapping<XmlBasic
 	// ****************** validation ****************
 	
 	@Override
-	public void validate(List<IMessage> messages) {
-		super.validate(messages);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 		if (this.connectionProfileIsActive() && this.ownerIsEntity()) {
 			this.validateColumn(messages);
 		}

@@ -60,7 +60,9 @@ import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
+import org.eclipse.jst.j2ee.model.internal.validation.ValidationCancelledException;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
  * 
@@ -719,15 +721,18 @@ public abstract class AbstractJpaProject
 
 	// ********** validation **********
 	
-	public Iterator<IMessage> validationMessages() {
+	public Iterator<IMessage> validationMessages(IReporter reporter) {
 		List<IMessage> messages = new ArrayList<IMessage>();
-		this.validate(messages);
+		this.validate(messages, reporter);
 		return messages.iterator();
 	}
 	
-	protected void validate(List<IMessage> messages) {
+	protected void validate(List<IMessage> messages, IReporter reporter) {
+		if (reporter.isCancelled()) {
+			throw new ValidationCancelledException();
+		}
 		this.validateConnection(messages);
-		this.rootContextNode.validate(messages);
+		this.rootContextNode.validate(messages, reporter);
 	}
 
 	protected void validateConnection(List<IMessage> messages) {

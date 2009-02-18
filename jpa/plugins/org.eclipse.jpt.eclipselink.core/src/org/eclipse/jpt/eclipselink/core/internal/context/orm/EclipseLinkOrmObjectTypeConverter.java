@@ -25,6 +25,7 @@ import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationListIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class EclipseLinkOrmObjectTypeConverter extends EclipseLinkOrmConverter<XmlObjectTypeConverter>
 	implements ObjectTypeConverter
@@ -235,10 +236,10 @@ public class EclipseLinkOrmObjectTypeConverter extends EclipseLinkOrmConverter<X
 	// **************** validation *********************************************
 	
 	@Override
-	public void validate(List<IMessage> messages) {
-		super.validate(messages);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 		for (Iterator<EclipseLinkOrmConversionValue> stream = conversionValues(); stream.hasNext();) {
-			stream.next().validate(messages);
+			stream.next().validate(messages, reporter);
 		}
 	}
 }

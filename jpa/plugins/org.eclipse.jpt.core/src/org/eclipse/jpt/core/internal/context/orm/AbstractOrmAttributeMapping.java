@@ -39,6 +39,7 @@ import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 	extends AbstractXmlContextNode
@@ -217,8 +218,8 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 	// ********** validation **********
 
 	@Override
-	public void validate(List<IMessage> messages) {
-		super.validate(messages);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 		this.validateAttribute(messages);
 		this.validateMapping(messages);
 	}

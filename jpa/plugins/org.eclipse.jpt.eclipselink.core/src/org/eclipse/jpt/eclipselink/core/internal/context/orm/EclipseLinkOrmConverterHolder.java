@@ -28,6 +28,7 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.XmlStructConverter;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlTypeConverter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class EclipseLinkOrmConverterHolder extends AbstractXmlContextNode implements ConverterHolder
 {	
@@ -437,8 +438,8 @@ public class EclipseLinkOrmConverterHolder extends AbstractXmlContextNode implem
 	//************ validation ***************
 	
 	@Override
-	public void validate(List<IMessage> messages) {
-		super.validate(messages);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 	}
 
 

@@ -26,6 +26,7 @@ import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public abstract class AbstractOrmXml
 	extends AbstractXmlContextNode
@@ -196,10 +197,10 @@ public abstract class AbstractOrmXml
 	// ********** validation **********
 	
 	@Override
-	public void validate(List<IMessage> messages) {
-		super.validate(messages);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 		if (this.entityMappings != null) {
-			this.entityMappings.validate(messages);
+			this.entityMappings.validate(messages, reporter);
 		}
 	}
 	

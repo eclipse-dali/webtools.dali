@@ -25,6 +25,7 @@ import org.eclipse.jpt.eclipselink.core.resource.java.ObjectTypeConverterAnnotat
 import org.eclipse.jpt.eclipselink.core.resource.java.StructConverterAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.TypeConverterAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class EclipseLinkJavaConverterHolder extends AbstractJavaJpaContextNode implements JavaConverterHolder
 {
@@ -349,19 +350,19 @@ public class EclipseLinkJavaConverterHolder extends AbstractJavaJpaContextNode i
 	}
 	
 	@Override
-	public void validate(List<IMessage> messages, CompilationUnit astRoot) {
-		super.validate(messages, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		super.validate(messages, reporter, astRoot);
 		if (this.customConverter != null) {
-			this.customConverter.validate(messages, astRoot);
+			this.customConverter.validate(messages, reporter, astRoot);
 		}
 		if (this.objectTypeConverter != null) {
-			this.objectTypeConverter.validate(messages, astRoot);
+			this.objectTypeConverter.validate(messages, reporter, astRoot);
 		}
 		if (this.typeConverter != null) {
-			this.typeConverter.validate(messages, astRoot);
+			this.typeConverter.validate(messages, reporter, astRoot);
 		}
 		if (this.structConverter != null) {
-			this.structConverter.validate(messages, astRoot);
+			this.structConverter.validate(messages, reporter, astRoot);
 		}
 	}
 	

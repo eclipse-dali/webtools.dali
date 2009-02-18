@@ -40,6 +40,7 @@ import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
  * 
@@ -472,14 +473,14 @@ public class GenericOrmJoinTable
 	// ************************** validation ***********************
 
 	@Override
-	public void validate(List<IMessage> messages) {
-		super.validate(messages);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 		if (this.connectionProfileIsActive()) {
-			this.validateAgainstDatabase(messages);
+			this.validateAgainstDatabase(messages, reporter);
 		}
 	}
 
-	protected void validateAgainstDatabase(List<IMessage> messages) {
+	protected void validateAgainstDatabase(List<IMessage> messages, IReporter reporter) {
 		OrmRelationshipMapping mapping = this.getRelationshipMapping();
 
 		if ( ! this.hasResolvedCatalog()) {
@@ -559,13 +560,13 @@ public class GenericOrmJoinTable
 			return;
 		}
 
-		this.validateJoinColumns(this.joinColumns(), messages);
-		this.validateJoinColumns(this.inverseJoinColumns(), messages);
+		this.validateJoinColumns(this.joinColumns(), messages, reporter);
+		this.validateJoinColumns(this.inverseJoinColumns(), messages, reporter);
 	}
 
-	protected void validateJoinColumns(Iterator<OrmJoinColumn> joinColumns, List<IMessage> messages) {
+	protected void validateJoinColumns(Iterator<OrmJoinColumn> joinColumns, List<IMessage> messages, IReporter reporter) {
 		while (joinColumns.hasNext()) {
-			joinColumns.next().validate(messages);
+			joinColumns.next().validate(messages, reporter);
 		}
 	}
 

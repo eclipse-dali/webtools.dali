@@ -24,6 +24,7 @@ import org.eclipse.jpt.eclipselink.core.resource.java.ObjectTypeConverterAnnotat
 import org.eclipse.jpt.eclipselink.core.resource.java.StructConverterAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.TypeConverterAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class EclipseLinkJavaConvert extends AbstractJavaJpaContextNode implements Convert, JavaConverter
 {
@@ -214,10 +215,10 @@ public class EclipseLinkJavaConvert extends AbstractJavaJpaContextNode implement
 	}
 
 	@Override
-	public void validate(List<IMessage> messages, CompilationUnit astRoot) {
-		super.validate(messages, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		super.validate(messages, reporter, astRoot);
 		if (getConverter() != null) {
-			getConverter().validate(messages, astRoot);
+			getConverter().validate(messages, reporter, astRoot);
 		}
 	}
 

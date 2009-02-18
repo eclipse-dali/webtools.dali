@@ -40,7 +40,9 @@ import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
+import org.eclipse.jst.j2ee.model.internal.validation.ValidationCancelledException;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public abstract class AbstractJavaPersistentType
 	extends AbstractJavaJpaContextNode
@@ -530,35 +532,38 @@ public abstract class AbstractJavaPersistentType
 
 	// ********** validation **********
 
-	public void validate(List<IMessage> messages) {
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		if (reporter.isCancelled()) {
+			throw new ValidationCancelledException();
+		}
 		// build the AST root here to pass down
-		this.validate(messages, this.buildASTRoot());	
+		this.validate(messages, reporter, this.buildASTRoot());	
 	}
 	
 	@Override
-	public void validate(List<IMessage> messages, CompilationUnit astRoot) {
-		super.validate(messages, astRoot);
-		this.validateMapping(messages, astRoot);
-		this.validateAttributes(messages, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		super.validate(messages, reporter, astRoot);
+		this.validateMapping(messages, reporter, astRoot);
+		this.validateAttributes(messages, reporter, astRoot);
 	}
 	
-	protected void validateMapping(List<IMessage> messages, CompilationUnit astRoot) {
+	protected void validateMapping(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		try {
-			this.mapping.validate(messages, astRoot);
+			this.mapping.validate(messages, reporter, astRoot);
 		} catch(Throwable t) {
 			JptCorePlugin.log(t);
 		}
 	}
 	
-	protected void validateAttributes(List<IMessage> messages, CompilationUnit astRoot) {
+	protected void validateAttributes(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		for (Iterator<JavaPersistentAttribute> stream = this.attributes(); stream.hasNext(); ) {
-			this.validateAttribute(stream.next(), messages, astRoot);
+			this.validateAttribute(stream.next(), reporter, messages, astRoot);
 		}
 	}
 	
-	protected void validateAttribute(JavaPersistentAttribute attribute, List<IMessage> messages, CompilationUnit astRoot) {
+	protected void validateAttribute(JavaPersistentAttribute attribute, IReporter reporter, List<IMessage> messages, CompilationUnit astRoot) {
 		try {
-			attribute.validate(messages, astRoot);
+			attribute.validate(messages, reporter, astRoot);
 		} catch(Throwable t) {
 			JptCorePlugin.log(t);
 		}

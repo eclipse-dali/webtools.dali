@@ -19,6 +19,7 @@ import org.eclipse.jpt.eclipselink.core.context.EclipseLinkBasicMapping;
 import org.eclipse.jpt.eclipselink.core.context.Mutable;
 import org.eclipse.jpt.eclipselink.core.resource.java.ConvertAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class EclipseLinkJavaBasicMappingImpl extends GenericJavaBasicMapping implements EclipseLinkBasicMapping
 {
@@ -76,8 +77,8 @@ public class EclipseLinkJavaBasicMappingImpl extends GenericJavaBasicMapping imp
 	//************ validation ****************
 	
 	@Override
-	public void validate(List<IMessage> messages, CompilationUnit astRoot) {
-		super.validate(messages, astRoot);
-		this.mutable.validate(messages, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		super.validate(messages, reporter, astRoot);
+		this.mutable.validate(messages, reporter, astRoot);
 	}
 }

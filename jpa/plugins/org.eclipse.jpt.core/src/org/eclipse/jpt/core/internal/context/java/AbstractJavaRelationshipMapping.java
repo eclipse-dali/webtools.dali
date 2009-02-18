@@ -27,6 +27,7 @@ import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
  * 
@@ -52,7 +53,7 @@ public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMapp
 	
 	@Override
 	public JavaPersistentAttribute getParent() {
-		return (JavaPersistentAttribute) super.getParent();
+		return super.getParent();
 	}
 
 
@@ -203,8 +204,8 @@ public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMapp
 	}
 	
 	@Override
-	public void validate(List<IMessage> messages, CompilationUnit astRoot) {
-		super.validate(messages, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		super.validate(messages, reporter, astRoot);
 		validateTargetEntity(messages, astRoot);
 	}
 	

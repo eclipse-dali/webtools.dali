@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
  * 
@@ -126,7 +127,7 @@ public interface PersistentType
 	/**
 	 * Add to the list of current validation messages
 	 */
-	void validate(List<IMessage> messages);
+	void validate(List<IMessage> messages, IReporter reporter);
 
 
 	// ********** owner interface **********

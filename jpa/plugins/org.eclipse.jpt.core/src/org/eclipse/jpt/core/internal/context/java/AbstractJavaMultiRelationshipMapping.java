@@ -30,6 +30,7 @@ import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 
 public abstract class AbstractJavaMultiRelationshipMapping<T extends RelationshipMappingAnnotation>
@@ -373,11 +374,11 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 	public abstract TextRange getMappedByTextRange(CompilationUnit astRoot);
 	
 	@Override
-	public void validate(List<IMessage> messages, CompilationUnit astRoot) {
-		super.validate(messages, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		super.validate(messages, reporter, astRoot);
 		
 		if (this.ownerIsEntity() && (this.joinTableIsSpecified() || this.isRelationshipOwner())) {
-			this.joinTable.validate(messages, astRoot);
+			this.joinTable.validate(messages, reporter, astRoot);
 		}
 		if (this.getMappedBy() != null) {
 			this.validateMappedBy(messages, astRoot);

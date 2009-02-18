@@ -85,6 +85,7 @@ import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericOrmEntity
 	extends AbstractOrmTypeMapping<XmlEntity>
@@ -1870,24 +1871,24 @@ public class GenericOrmEntity
 	// **************** validation *********************************************
 	
 	@Override
-	public void validate(List<IMessage> messages) {
-		super.validate(messages);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 
-		this.table.validate(messages);	
+		this.table.validate(messages, reporter);	
 		this.validateId(messages);
 		this.validateGenerators(messages);
 		this.validateQueries(messages);
 
 		for (Iterator<OrmSecondaryTable> stream = this.secondaryTables(); stream.hasNext(); ) {
-			stream.next().validate(messages);
+			stream.next().validate(messages, reporter);
 		}
 
 		for (Iterator<OrmAttributeOverride> stream = this.attributeOverrides(); stream.hasNext(); ) {
-			stream.next().validate(messages);
+			stream.next().validate(messages, reporter);
 		}
 
 		for (Iterator<OrmAssociationOverride> stream = this.associationOverrides(); stream.hasNext(); ) {
-			stream.next().validate(messages);
+			stream.next().validate(messages, reporter);
 		}
 	}
 	

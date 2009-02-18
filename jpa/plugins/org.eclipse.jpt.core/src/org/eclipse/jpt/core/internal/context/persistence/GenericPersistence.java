@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaStructureNode;
-import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceStructureNodes;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
@@ -30,6 +29,7 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericPersistence extends AbstractXmlContextNode
 	implements Persistence
@@ -196,10 +196,10 @@ public class GenericPersistence extends AbstractXmlContextNode
 	// ********** validation **********
 
 	@Override
-	public void validate(List<IMessage> messages) {
-		super.validate(messages);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 		this.checkForMultiplePersistenceUnits(messages);
-		this.validatePersistenceUnit(messages);
+		this.validatePersistenceUnit(messages, reporter);
 	}
 
 	/**
@@ -219,7 +219,7 @@ public class GenericPersistence extends AbstractXmlContextNode
 		}
 	}
 	
-	protected void validatePersistenceUnit(List<IMessage> messages) {
+	protected void validatePersistenceUnit(List<IMessage> messages, IReporter reporter) {
 		if (this.persistenceUnit == null) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
@@ -231,6 +231,6 @@ public class GenericPersistence extends AbstractXmlContextNode
 			);
 			return;
 		}
-		this.persistenceUnit.validate(messages);
+		this.persistenceUnit.validate(messages, reporter);
 	}
 }

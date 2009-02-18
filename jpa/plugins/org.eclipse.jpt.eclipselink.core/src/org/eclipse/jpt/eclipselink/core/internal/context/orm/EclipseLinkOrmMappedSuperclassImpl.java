@@ -25,6 +25,7 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConvertersHolder;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlCustomizerHolder;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlReadOnly;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class EclipseLinkOrmMappedSuperclassImpl extends GenericOrmMappedSuperclass
 	implements EclipseLinkOrmMappedSuperclass
@@ -111,11 +112,11 @@ public class EclipseLinkOrmMappedSuperclassImpl extends GenericOrmMappedSupercla
 	// **************** validation **************************************
 	
 	@Override
-	public void validate(List<IMessage> messages) {
-		super.validate(messages);
-		this.readOnly.validate(messages);
-		this.customizer.validate(messages);
-		this.changeTracking.validate(messages);
-		this.caching.validate(messages);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		this.readOnly.validate(messages, reporter);
+		this.customizer.validate(messages, reporter);
+		this.changeTracking.validate(messages, reporter);
+		this.caching.validate(messages, reporter);
 	}
 }

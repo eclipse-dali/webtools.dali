@@ -26,6 +26,7 @@ import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 
 public class GenericOrmAttributeOverride extends AbstractXmlContextNode
@@ -152,8 +153,8 @@ public class GenericOrmAttributeOverride extends AbstractXmlContextNode
 	//****************** validation ********************
 	
 	@Override
-	public void validate(List<IMessage> messages) {
-		super.validate(messages);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 		if (this.connectionProfileIsActive()) {
 			this.validateColumn(messages);
 		}

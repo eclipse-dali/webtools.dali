@@ -16,6 +16,7 @@ import org.eclipse.jpt.core.internal.context.java.GenericJavaManyToManyMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkRelationshipMapping;
 import org.eclipse.jpt.eclipselink.core.context.JoinFetch;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class EclipseLinkJavaManyToManyMappingImpl extends GenericJavaManyToManyMapping implements EclipseLinkRelationshipMapping
 {
@@ -45,8 +46,8 @@ public class EclipseLinkJavaManyToManyMappingImpl extends GenericJavaManyToManyM
 	}
 	
 	@Override
-	public void validate(List<IMessage> messages, CompilationUnit astRoot) {
-		super.validate(messages, astRoot);
-		this.joinFetch.validate(messages, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		super.validate(messages, reporter, astRoot);
+		this.joinFetch.validate(messages, reporter, astRoot);
 	}
 }

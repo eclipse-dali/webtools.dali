@@ -39,6 +39,7 @@ import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 
 public class GenericJavaIdMapping
@@ -424,18 +425,18 @@ public class GenericJavaIdMapping
 	//*********** Validation ************
 	
 	@Override
-	public void validate(List<IMessage> messages, CompilationUnit astRoot) {
-		super.validate(messages, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		super.validate(messages, reporter, astRoot);
 		
 		if (this.ownerIsEntity() && this.connectionProfileIsActive()) {
 			this.validateColumn(messages, astRoot);
 		}
 		if (this.generatedValue != null) {
-			this.generatedValue.validate(messages, astRoot);
+			this.generatedValue.validate(messages, reporter, astRoot);
 		}
 		this.validateGenerators(messages, astRoot);
 		if (this.specifiedConverter != null) {
-			this.specifiedConverter.validate(messages, astRoot);
+			this.specifiedConverter.validate(messages, reporter, astRoot);
 		}
 	}
 		

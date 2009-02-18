@@ -29,6 +29,7 @@ import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.SchemaContainer;
 import org.eclipse.jpt.utility.CommandExecutor;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
  * A JPA project is associated with an Eclipse project (and its corresponding
@@ -266,7 +267,7 @@ public interface JpaProject
 	/**
 	 * Return JPA project's validation messages.
 	 */
-	Iterator<IMessage> validationMessages();
+	Iterator<IMessage> validationMessages(IReporter reporter);
 
 
 	// ********** database **********

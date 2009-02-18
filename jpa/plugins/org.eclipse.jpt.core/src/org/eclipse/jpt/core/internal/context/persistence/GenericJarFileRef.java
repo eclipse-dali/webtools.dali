@@ -26,6 +26,7 @@ import org.eclipse.jpt.core.resource.persistence.XmlJarFileRef;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
  * 
@@ -149,8 +150,8 @@ public class GenericJarFileRef
 	// ********** validation **********
 
 	@Override
-	public void validate(List<IMessage> messages) {
-		super.validate(messages);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 
 		if (StringTools.stringIsEmpty(this.xmlJarFileRef.getFileName())) {
 			messages.add(
@@ -177,7 +178,7 @@ public class GenericJarFileRef
 			return;
 		}
 
-		this.jarFile.validate(messages);
+		this.jarFile.validate(messages, reporter);
 	}
 
 

@@ -27,6 +27,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 
 public abstract class AbstractOrmPersistentAttribute extends AbstractXmlContextNode
@@ -200,11 +201,11 @@ public abstract class AbstractOrmPersistentAttribute extends AbstractXmlContextN
 	}
 	
 	@Override
-	public void validate(List<IMessage> messages) {
-		super.validate(messages);
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
 		this.validateAttribute(messages);
 		this.validateModifiers(messages);
-		this.attributeMapping.validate(messages);
+		this.attributeMapping.validate(messages, reporter);
 	}
 	
 	protected void validateAttribute(List<IMessage> messages) {

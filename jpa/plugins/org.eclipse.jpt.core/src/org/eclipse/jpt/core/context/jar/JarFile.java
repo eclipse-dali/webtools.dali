@@ -16,6 +16,7 @@ import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.resource.jar.JarResourcePackageFragmentRoot;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
  * Provisional API: This interface is part of an interim API that is still
@@ -35,6 +36,6 @@ public interface JarFile
 	/**
 	 * Add to the list of current validation messages
 	 */
-	void validate(List<IMessage> messages);
+	void validate(List<IMessage> messages, IReporter reporter);
 
 }

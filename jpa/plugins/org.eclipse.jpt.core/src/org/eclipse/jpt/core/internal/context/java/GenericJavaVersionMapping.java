@@ -27,6 +27,7 @@ import org.eclipse.jpt.core.resource.java.VersionAnnotation;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 
 public class GenericJavaVersionMapping extends AbstractJavaAttributeMapping<VersionAnnotation> implements JavaVersionMapping
@@ -176,13 +177,13 @@ public class GenericJavaVersionMapping extends AbstractJavaAttributeMapping<Vers
 	//***********  Validation  ******************************
 	
 	@Override
-	public void validate(List<IMessage> messages, CompilationUnit astRoot) {
-		super.validate(messages, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		super.validate(messages, reporter, astRoot);
 		if (this.ownerIsEntity() && this.connectionProfileIsActive()) {
 			this.validateColumn(messages, astRoot);
 		}
 		if (this.specifiedConverter != null) {
-			this.specifiedConverter.validate(messages, astRoot);
+			this.specifiedConverter.validate(messages, reporter, astRoot);
 		}
 	}
 	

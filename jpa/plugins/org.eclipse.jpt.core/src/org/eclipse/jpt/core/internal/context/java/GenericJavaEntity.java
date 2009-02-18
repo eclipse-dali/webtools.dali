@@ -91,6 +91,7 @@ import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 
 public class GenericJavaEntity
@@ -1825,24 +1826,24 @@ public class GenericJavaEntity
 	//********** Validation ********************************************
 	
 	@Override
-	public void validate(List<IMessage> messages, CompilationUnit astRoot) {
-		super.validate(messages, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		super.validate(messages, reporter, astRoot);
 		
-		this.table.validate(messages, astRoot);
+		this.table.validate(messages, reporter, astRoot);
 		this.validateId(messages, astRoot);
 		this.validateGenerators(messages, astRoot);
 		this.validateQueries(messages, astRoot);
 		
 		for (Iterator<JavaSecondaryTable> stream = this.specifiedSecondaryTables(); stream.hasNext();) {
-			stream.next().validate(messages, astRoot);
+			stream.next().validate(messages, reporter, astRoot);
 		}
 
 		for (Iterator<JavaAttributeOverride> stream = this.attributeOverrides(); stream.hasNext();) {
-			stream.next().validate(messages, astRoot);
+			stream.next().validate(messages, reporter, astRoot);
 		}
 		
 		for (Iterator<JavaAssociationOverride> stream = this.associationOverrides(); stream.hasNext();) {
-			stream.next().validate(messages, astRoot);
+			stream.next().validate(messages, reporter, astRoot);
 		}
 		
 	}

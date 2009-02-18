@@ -20,6 +20,7 @@ import org.eclipse.jpt.eclipselink.core.internal.DefaultEclipseLinkJpaValidation
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.eclipselink.core.resource.java.ConverterAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class EclipseLinkJavaCustomConverter extends EclipseLinkJavaConverter 
 	implements CustomConverter
@@ -92,8 +93,8 @@ public class EclipseLinkJavaCustomConverter extends EclipseLinkJavaConverter
 	//************ validation ***************
 	
 	@Override
-	public void validate(List<IMessage> messages, CompilationUnit astRoot) {
-		super.validate(messages, astRoot);
+	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		super.validate(messages, reporter, astRoot);
 		validateConverterClass(messages, astRoot);
 	}
 	
