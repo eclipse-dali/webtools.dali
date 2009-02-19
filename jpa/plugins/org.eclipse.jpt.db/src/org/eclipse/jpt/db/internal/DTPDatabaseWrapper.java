@@ -1053,7 +1053,7 @@ final class DTPDatabaseWrapper
 
 		@Override
 		boolean supportsCatalogs() {
-			return false;
+			return true;
 		}
 
 		/**
