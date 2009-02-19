@@ -13,7 +13,7 @@ import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaConverter;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.core.internal.context.java.GenericJavaBasicMapping;
+import org.eclipse.jpt.core.internal.context.java.AbstractJavaBasicMapping;
 import org.eclipse.jpt.eclipselink.core.context.Convert;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkBasicMapping;
 import org.eclipse.jpt.eclipselink.core.context.Mutable;
@@ -21,7 +21,7 @@ import org.eclipse.jpt.eclipselink.core.resource.java.ConvertAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class EclipseLinkJavaBasicMappingImpl extends GenericJavaBasicMapping implements EclipseLinkBasicMapping
+public class EclipseLinkJavaBasicMappingImpl extends AbstractJavaBasicMapping implements EclipseLinkBasicMapping
 {
 	
 	protected final EclipseLinkJavaMutable mutable;
