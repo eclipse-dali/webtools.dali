@@ -62,30 +62,26 @@ public class JPTTools {
 			} else {
 				return false;
 			}
-		} else {
-			if (methodName.startsWith("get")) { //$NON-NLS-1$
-				beginIndex = 3;
-				if (returnTypeName.equals("boolean")) { //$NON-NLS-1$
-					booleanGetter = true;
-				}
-			} else {
-				return false;
+		} else if (methodName.startsWith("get")) { //$NON-NLS-1$
+			beginIndex = 3;
+			if (returnTypeName.equals("boolean")) { //$NON-NLS-1$
+				booleanGetter = true;
 			}
+		} else {
+			return false;
 		}
 
 		String capitalizedAttributeName = methodName.substring(beginIndex);
 		// if the type has both methods:
 		//     boolean isProperty()
 		//     boolean getProperty()
-		// then #isProperty() takes precedence and we ignore #getProperty()
+		// then #isProperty() takes precedence and we ignore #getProperty();
+		// but only having #getProperty() is OK too
 		// (see the JavaBeans spec 1.01)
 		if (booleanGetter) {
 			IMethodBinding isMethod = methodBindingNoParameters(methodBinding.getDeclaringClass(), "is" + capitalizedAttributeName); //$NON-NLS-1$
-			if (isMethod == null) {
-				return false;
-			}
-			if (isMethod.getReturnType().getName().equals("boolean")) { //$NON-NLS-1$
-				return false;
+			if ((isMethod != null) && isMethod.getReturnType().getName().equals("boolean")) { //$NON-NLS-1$
+				return false;  // since the type also defines #isProperty(), ignore #getProperty()
 			}
 		}
 		IMethodBinding setMethod = methodBindingOneParameter(methodBinding.getDeclaringClass(), "set" + capitalizedAttributeName, returnTypeName); //$NON-NLS-1$
