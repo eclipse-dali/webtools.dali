@@ -11,7 +11,7 @@ package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
 import java.util.List;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmMappedSuperclass;
+import org.eclipse.jpt.core.internal.context.orm.AbstractOrmMappedSuperclass;
 import org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass;
 import org.eclipse.jpt.eclipselink.core.context.Caching;
 import org.eclipse.jpt.eclipselink.core.context.ChangeTracking;
@@ -27,7 +27,7 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.XmlReadOnly;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class EclipseLinkOrmMappedSuperclassImpl extends GenericOrmMappedSuperclass
+public class EclipseLinkOrmMappedSuperclassImpl extends AbstractOrmMappedSuperclass
 	implements EclipseLinkOrmMappedSuperclass
 {
 	protected final EclipseLinkOrmReadOnly readOnly;

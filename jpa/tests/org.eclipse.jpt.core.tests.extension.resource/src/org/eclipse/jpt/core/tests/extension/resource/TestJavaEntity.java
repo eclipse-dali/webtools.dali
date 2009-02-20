@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,9 +10,9 @@
 package org.eclipse.jpt.core.tests.extension.resource;
 
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.core.internal.context.java.GenericJavaEntity;
+import org.eclipse.jpt.core.internal.context.java.AbstractJavaEntity;
 
-public class TestJavaEntity extends GenericJavaEntity
+public class TestJavaEntity extends AbstractJavaEntity
 {
 	protected TestJavaEntity(JavaPersistentType parent) {
 		super(parent);

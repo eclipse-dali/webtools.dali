@@ -9,19 +9,34 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
+import java.util.Iterator;
 import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.context.java.JavaEmbeddable;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.core.resource.java.EmbeddableAnnotation;
+import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
 
-public class GenericJavaEmbeddable extends AbstractJavaEmbeddable
+public abstract class AbstractJavaEmbeddable extends AbstractJavaTypeMapping implements JavaEmbeddable
 {
-	public GenericJavaEmbeddable(JavaPersistentType parent) {
+	protected AbstractJavaEmbeddable(JavaPersistentType parent) {
 		super(parent);
 	}
-	
-	@Override
-	public boolean attributeMappingKeyAllowed(String attributeMappingKey) {
-		//generic only allows basic and transient within an Embeddable
-		return attributeMappingKey == MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY || attributeMappingKey == MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY;
+
+	public String getKey() {
+		return MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY;
 	}
+
+	public String getAnnotationName() {
+		return EmbeddableAnnotation.ANNOTATION_NAME;
+	}
+
+	public Iterator<String> correspondingAnnotationNames() {
+		return EmptyIterator.instance();
+	}
+	
+	public boolean isMapped() {
+		return true;
+	}
+
 }

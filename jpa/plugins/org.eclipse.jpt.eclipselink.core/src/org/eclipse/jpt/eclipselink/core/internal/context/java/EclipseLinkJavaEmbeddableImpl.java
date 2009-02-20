@@ -12,7 +12,7 @@ package org.eclipse.jpt.eclipselink.core.internal.context.java;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.core.internal.context.java.GenericJavaEmbeddable;
+import org.eclipse.jpt.core.internal.context.java.AbstractJavaEmbeddable;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.eclipselink.core.context.ChangeTracking;
 import org.eclipse.jpt.eclipselink.core.context.Customizer;
@@ -21,7 +21,7 @@ import org.eclipse.jpt.eclipselink.core.context.java.JavaConverterHolder;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class EclipseLinkJavaEmbeddableImpl extends GenericJavaEmbeddable implements EclipseLinkJavaEmbeddable
+public class EclipseLinkJavaEmbeddableImpl extends AbstractJavaEmbeddable implements EclipseLinkJavaEmbeddable
 {
 	
 	protected final JavaConverterHolder converterHolder;
@@ -67,12 +67,6 @@ public class EclipseLinkJavaEmbeddableImpl extends GenericJavaEmbeddable impleme
 	
 	
 	//********** Validation ********************************************
-	
-	@Override
-	public boolean attributeMappingKeyAllowed(String attributeMappingKey) {
-		// EclipseLink allows all mapping types within an embeddable
-		return true;
-	}
 	
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {

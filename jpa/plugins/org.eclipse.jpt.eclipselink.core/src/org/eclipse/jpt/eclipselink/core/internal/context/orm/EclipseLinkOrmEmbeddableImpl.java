@@ -11,7 +11,7 @@ package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
 import java.util.List;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmEmbeddable;
+import org.eclipse.jpt.core.internal.context.orm.AbstractOrmEmbeddable;
 import org.eclipse.jpt.eclipselink.core.context.ChangeTracking;
 import org.eclipse.jpt.eclipselink.core.context.Customizer;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaEmbeddable;
@@ -22,7 +22,7 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbeddable;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class EclipseLinkOrmEmbeddableImpl extends GenericOrmEmbeddable
+public class EclipseLinkOrmEmbeddableImpl extends AbstractOrmEmbeddable
 	implements EclipseLinkOrmEmbeddable
 {
 	protected final EclipseLinkOrmCustomizer customizer;
@@ -80,12 +80,6 @@ public class EclipseLinkOrmEmbeddableImpl extends GenericOrmEmbeddable
 	
 	
 	// **************** validation **************************************
-	
-	@Override
-	public boolean attributeMappingKeyAllowed(String attributeMappingKey) {
-		// EclipseLink allows all mapping types within an embeddable
-		return true;
-	}
 	
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
