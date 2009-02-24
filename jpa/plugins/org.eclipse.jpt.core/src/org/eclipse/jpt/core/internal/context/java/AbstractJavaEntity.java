@@ -43,7 +43,6 @@ import org.eclipse.jpt.core.context.java.JavaBaseJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaDiscriminatorColumn;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.java.JavaGenerator;
-import org.eclipse.jpt.core.context.java.JavaNamedColumn;
 import org.eclipse.jpt.core.context.java.JavaNamedNativeQuery;
 import org.eclipse.jpt.core.context.java.JavaNamedQuery;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
@@ -94,7 +93,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 
-public class AbstractJavaEntity
+public abstract class AbstractJavaEntity
 	extends AbstractJavaTypeMapping
 	implements JavaEntity
 {
@@ -142,7 +141,7 @@ public class AbstractJavaEntity
 	protected String idClass;
 
 	
-	public AbstractJavaEntity(JavaPersistentType parent) {
+	protected AbstractJavaEntity(JavaPersistentType parent) {
 		super(parent);
 		this.table = getJpaFactory().buildJavaTable(this);
 		this.discriminatorColumn = buildJavaDiscriminatorColumn();
@@ -164,8 +163,8 @@ public class AbstractJavaEntity
 		return getJpaFactory().buildJavaDiscriminatorColumn(this, buildDiscriminatorColumnOwner());
 	}
 	
-	protected JavaNamedColumn.Owner buildDiscriminatorColumnOwner() {
-		return new JavaNamedColumn.Owner(){
+	protected JavaDiscriminatorColumn.Owner buildDiscriminatorColumnOwner() {
+		return new JavaDiscriminatorColumn.Owner(){
 			public org.eclipse.jpt.db.Table getDbTable(String tableName) {
 				return AbstractJavaEntity.this.getDbTable(tableName);
 			}
@@ -179,7 +178,33 @@ public class AbstractJavaEntity
 			}
 			
 			public String getDefaultColumnName() {
-				return DiscriminatorColumn.DEFAULT_NAME;
+				return isDescendant() ?
+						getRootEntity().getDiscriminatorColumn().getName()
+					:
+						isTablePerClass() ? 
+							null
+						:
+							DiscriminatorColumn.DEFAULT_NAME;
+			}
+			
+			public int getDefaultLength() {
+				return isDescendant() ?
+					getRootEntity().getDiscriminatorColumn().getLength()
+				:
+					isTablePerClass() ? 
+						0//TODO think i want to return null here
+					:
+						DiscriminatorColumn.DEFAULT_LENGTH;
+			}
+			
+			public DiscriminatorType getDefaultDiscriminatorType() {
+				return isDescendant() ?
+					getRootEntity().getDiscriminatorColumn().getDiscriminatorType()
+				:
+					isTablePerClass() ? 
+						null
+					:
+						DiscriminatorColumn.DEFAULT_DISCRIMINATOR_TYPE;
 			}
 		};
 	}
@@ -193,8 +218,8 @@ public class AbstractJavaEntity
 		this.defaultInheritanceStrategy = this.buildDefaultInheritanceStrategy();
 		this.specifiedInheritanceStrategy = this.getResourceInheritanceStrategy(getResourceInheritance());
 		this.specifiedDiscriminatorValue = this.getResourceDiscriminatorValue().getValue();
-		this.defaultDiscriminatorValue = this.getResourceDefaultDiscriminatorValue();
-		this.discriminatorValueAllowed = this.discriminatorValueIsAllowed();
+		this.discriminatorValueAllowed = this.buildDiscriminatorValueIsAllowed();
+		this.defaultDiscriminatorValue = this.buildDefaultDiscriminatorValue();
 		this.discriminatorColumn.initialize(resourcePersistentType);
 		this.table.initialize(resourcePersistentType);
 		this.initializeSecondaryTables();
@@ -1260,7 +1285,38 @@ public class AbstractJavaEntity
 	protected boolean isRoot() {
 		return this == this.getRootEntity();
 	}
-
+	
+	/**
+	 * Return whether the entity is abstract and is a part of a 
+	 * "table per class" inheritance hierarchy.
+	 */
+	protected boolean isAbstractTablePerClass() {
+		return isAbstract() && isTablePerClass();
+	}
+	
+	/**
+	 * Return whether the entity is a part of a "table per class" 
+	 * inheritance hierarchy.
+	 */
+	protected boolean isTablePerClass() {
+		return (this.getInheritanceStrategy() == InheritanceType.TABLE_PER_CLASS);
+	}
+	
+	/**
+	 * Return whether the entity is a part of a "table per class" 
+	 * inheritance hierarchy.
+	 */
+	protected boolean isTablePerClassDescendant() {
+		return isTablePerClass() && isDescendant();
+	}
+	
+	/**
+	 * Return whether the type is abstract.
+	 */
+	protected boolean isAbstract() {
+		return this.javaResourcePersistentType.isAbstract();
+	}
+	
 	public String getPrimaryKeyColumnName() {
 		return getPrimaryKeyColumnName(getPersistentType().allAttributes());
 	}
@@ -1405,8 +1461,8 @@ public class AbstractJavaEntity
 		
 		this.updateInheritance(getResourceInheritance());
 		this.updateDiscriminatorColumn();
+		this.setDiscriminatorValueAllowed(buildDiscriminatorValueIsAllowed());
 		this.updateDiscriminatorValue(getResourceDiscriminatorValue());
-		this.setDiscriminatorValueAllowed(discriminatorValueIsAllowed());
 		this.updateTable();
 		this.updateSecondaryTables();
 		this.updateTableGenerator();
@@ -1453,7 +1509,7 @@ public class AbstractJavaEntity
 	
 	protected void updateDiscriminatorValue(DiscriminatorValueAnnotation discriminatorValueResource) {
 		this.setSpecifiedDiscriminatorValue_(discriminatorValueResource.getValue());
-		this.setDefaultDiscriminatorValue(this.getResourceDefaultDiscriminatorValue());
+		this.setDefaultDiscriminatorValue(this.buildDefaultDiscriminatorValue());
 	}
 	
 	/**
@@ -1466,8 +1522,8 @@ public class AbstractJavaEntity
 	 * 
 	 * TODO extension point for provider-specific function?
 	 */
-	protected String getResourceDefaultDiscriminatorValue() {
-		if (this.javaResourcePersistentType.isAbstract()) {
+	protected String buildDefaultDiscriminatorValue() {
+		if (!isDiscriminatorValueAllowed()) {
 			return null;
 		}
 		if (this.getDiscriminatorType() != DiscriminatorType.STRING) {
@@ -1480,8 +1536,8 @@ public class AbstractJavaEntity
 		return this.getDiscriminatorColumn().getDiscriminatorType();
 	}
 	
-	protected boolean discriminatorValueIsAllowed() {
-		return !this.javaResourcePersistentType.isAbstract();
+	protected boolean buildDiscriminatorValueIsAllowed() {
+		return !isAbstract();
 	}
 	
 	protected void updateSecondaryTables() {
@@ -1833,6 +1889,7 @@ public class AbstractJavaEntity
 		
 		this.table.validate(messages, reporter, astRoot);
 		this.validateId(messages, astRoot);
+		this.validateInheritance(messages, reporter, astRoot);
 		this.validateGenerators(messages, astRoot);
 		this.validateQueries(messages, astRoot);
 		
@@ -1861,6 +1918,12 @@ public class AbstractJavaEntity
 					this.getValidationTextRange(astRoot)
 				)
 			);
+		}
+	}
+	
+	protected void validateInheritance(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		if (this.isRoot() && !this.isTablePerClass()) {
+			getDiscriminatorColumn().validate(messages, reporter, astRoot);
 		}
 	}
 	

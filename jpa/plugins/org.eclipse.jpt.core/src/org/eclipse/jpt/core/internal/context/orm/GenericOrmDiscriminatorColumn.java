@@ -13,7 +13,6 @@ import org.eclipse.jpt.core.context.DiscriminatorColumn;
 import org.eclipse.jpt.core.context.DiscriminatorType;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.orm.OrmDiscriminatorColumn;
-import org.eclipse.jpt.core.context.orm.OrmNamedColumn;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlDiscriminatorColumn;
 import org.eclipse.jpt.core.resource.orm.XmlEntity;
@@ -27,11 +26,18 @@ public class GenericOrmDiscriminatorColumn extends AbstractOrmNamedColumn<XmlDis
 	protected DiscriminatorType defaultDiscriminatorType;
 
 	protected Integer specifiedLength;
+	
+	protected int defaultLength;
 
 	protected XmlEntity entity;
 	
-	public GenericOrmDiscriminatorColumn(XmlContextNode parent, OrmNamedColumn.Owner owner) {
+	public GenericOrmDiscriminatorColumn(XmlContextNode parent, OrmDiscriminatorColumn.Owner owner) {
 		super(parent, owner);
+	}
+	
+	@Override
+	public OrmDiscriminatorColumn.Owner getOwner() {
+		return (OrmDiscriminatorColumn.Owner) super.getOwner();
 	}
 
 	public DiscriminatorType getDiscriminatorType() {
@@ -39,7 +45,13 @@ public class GenericOrmDiscriminatorColumn extends AbstractOrmNamedColumn<XmlDis
 	}
 
 	public DiscriminatorType getDefaultDiscriminatorType() {
-		return DiscriminatorColumn.DEFAULT_DISCRIMINATOR_TYPE;
+		return this.defaultDiscriminatorType;
+	}
+	
+	protected void setDefaultDiscriminatorType(DiscriminatorType discriminatorType) {
+		DiscriminatorType old = this.defaultDiscriminatorType;
+		this.defaultDiscriminatorType = discriminatorType;
+		firePropertyChanged(DEFAULT_DISCRIMINATOR_TYPE_PROPERTY, old, discriminatorType);
 	}
 		
 	public DiscriminatorType getSpecifiedDiscriminatorType() {
@@ -75,7 +87,13 @@ public class GenericOrmDiscriminatorColumn extends AbstractOrmNamedColumn<XmlDis
 	}
 
 	public int getDefaultLength() {
-		return DiscriminatorColumn.DEFAULT_LENGTH;
+		return this.defaultLength;
+	}
+	
+	protected void setDefaultLength(int defaultLength) {
+		int old = this.defaultLength;
+		this.defaultLength = defaultLength;
+		firePropertyChanged(DEFAULT_LENGTH_PROPERTY, old, defaultLength);
 	}
 
 	public Integer getSpecifiedLength() {
@@ -142,25 +160,34 @@ public class GenericOrmDiscriminatorColumn extends AbstractOrmNamedColumn<XmlDis
 	@Override
 	protected void initialize(XmlDiscriminatorColumn column) {
 		super.initialize(column);
-		this.specifiedLength = this.specifiedLength(column);
-		this.specifiedDiscriminatorType = this.specifiedDiscriminatorType(column);
-		//TODO defaultLength, discriminator type java column
+		this.defaultDiscriminatorType = this.buildDefaultDiscriminatorType();
+		this.defaultLength = this.buildDefaultLength();
+		this.specifiedLength = this.getResourceLength(column);
+		this.specifiedDiscriminatorType = this.getResourceDiscriminatorType(column);
 	}
 	
 	@Override
 	protected void update(XmlDiscriminatorColumn column) {
 		super.update(column);
-		this.setSpecifiedLength_(this.specifiedLength(column));
-		this.setSpecifiedDiscriminatorType_(this.specifiedDiscriminatorType(column));
-		//TODO defaultLength, scale, precision from java column
+		this.setDefaultDiscriminatorType(this.buildDefaultDiscriminatorType());
+		this.setDefaultLength(this.buildDefaultLength());
+		this.setSpecifiedLength_(this.getResourceLength(column));
+		this.setSpecifiedDiscriminatorType_(this.getResourceDiscriminatorType(column));
 	}
 	
-	protected Integer specifiedLength(XmlDiscriminatorColumn column) {
+	protected Integer getResourceLength(XmlDiscriminatorColumn column) {
 		return column == null ? null : column.getLength();
 	}
 	
-	protected DiscriminatorType specifiedDiscriminatorType(XmlDiscriminatorColumn column) {
+	protected DiscriminatorType getResourceDiscriminatorType(XmlDiscriminatorColumn column) {
 		return column == null ? null : DiscriminatorType.fromOrmResourceModel(column.getDiscriminatorType());
 	}
-
+	
+	protected int buildDefaultLength() {
+		return this.getOwner().getDefaultLength();
+	}
+	
+	protected DiscriminatorType buildDefaultDiscriminatorType() {
+		return this.getOwner().getDefaultDiscriminatorType();
+	}
 }

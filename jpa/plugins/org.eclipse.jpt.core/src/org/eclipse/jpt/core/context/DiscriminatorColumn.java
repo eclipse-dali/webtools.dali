@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -43,4 +43,20 @@ public interface DiscriminatorColumn extends NamedColumn
 	void setSpecifiedLength(Integer value);
 		String SPECIFIED_LENGTH_PROPERTY = "specifiedLength"; //$NON-NLS-1$
 
+		
+	/**
+	 * interface allowing columns to be used in multiple places
+	 */
+	interface Owner extends NamedColumn.Owner {
+		
+		/**
+		 * Return the default discriminator column length
+		 */
+		int getDefaultLength();
+		
+		/**
+		 * Return the default discriminator column type
+		 */
+		DiscriminatorType getDefaultDiscriminatorType();
+	}
 }

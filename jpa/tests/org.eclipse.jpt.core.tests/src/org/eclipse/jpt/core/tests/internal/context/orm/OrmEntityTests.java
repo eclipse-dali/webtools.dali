@@ -1194,6 +1194,16 @@ public class OrmEntityTests extends ContextModelTestCase
 		assertNull(ormEntity.getSpecifiedDiscriminatorValue());
 		assertNull(entityResource.getDiscriminatorValue());
 	}
+//TODO	
+//	public void testGetDefaultDiscriminatorValue() throws Exception {
+//		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
+//		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
+//		
+//		assertEquals(ormEntity.getName(), ormEntity.getDefaultDiscriminatorValue());
+//
+//		getJavaEntity().getDiscriminatorColumn().setSpecifiedDiscriminatorType(DiscriminatorType.INTEGER);
+//		assertNull(ormEntity.getDefaultDiscriminatorValue());
+//	}
 	
 	public void testAddSpecifiedPrimaryKeyJoinColumn() throws Exception {
 		OrmPersistentType persistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);

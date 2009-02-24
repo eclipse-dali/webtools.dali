@@ -21,6 +21,7 @@ import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.BaseOverride;
 import org.eclipse.jpt.core.context.ColumnMapping;
 import org.eclipse.jpt.core.context.DiscriminatorColumn;
+import org.eclipse.jpt.core.context.DiscriminatorType;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.Generator;
 import org.eclipse.jpt.core.context.InheritanceType;
@@ -46,7 +47,6 @@ import org.eclipse.jpt.core.context.orm.OrmBaseJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmDiscriminatorColumn;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.orm.OrmGenerator;
-import org.eclipse.jpt.core.context.orm.OrmNamedColumn;
 import org.eclipse.jpt.core.context.orm.OrmNamedNativeQuery;
 import org.eclipse.jpt.core.context.orm.OrmNamedQuery;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
@@ -154,8 +154,8 @@ public abstract class AbstractOrmEntity
 		this.initializeInheritance(this.getResourceInheritance());
 		this.discriminatorColumn.initialize(this.resourceTypeMapping); //TODO pass in to constructor
 		this.specifiedDiscriminatorValue = this.resourceTypeMapping.getDiscriminatorValue();
+		this.discriminatorValueAllowed = this.buildDiscriminatorValueIsAllowed();
 		this.defaultDiscriminatorValue = this.defaultDiscriminatorValue();
-		this.discriminatorValueAllowed = this.discriminatorValueIsAllowed();
 		this.table.initialize(this.resourceTypeMapping);//TODO pass in to constructor
 		this.initializeSpecifiedSecondaryTables();
 		this.initializeVirtualSecondaryTables();
@@ -174,8 +174,8 @@ public abstract class AbstractOrmEntity
 		return getJpaFactory().buildOrmDiscriminatorColumn(this, buildDiscriminatorColumnOwner());
 	}
 	
-	protected OrmNamedColumn.Owner buildDiscriminatorColumnOwner() {
-		return new OrmNamedColumn.Owner(){
+	protected OrmDiscriminatorColumn.Owner buildDiscriminatorColumnOwner() {
+		return new OrmDiscriminatorColumn.Owner(){
 			public org.eclipse.jpt.db.Table getDbTable(String tableName) {
 				return AbstractOrmEntity.this.getDbTable(tableName);
 			}
@@ -185,15 +185,59 @@ public abstract class AbstractOrmEntity
 			}
 			
 			public String getDefaultColumnName() {
-				//TODO default column name from java here or in XmlDiscriminatorColumn?
-				return DiscriminatorColumn.DEFAULT_NAME;
+				if (getResourceTypeMapping().getDiscriminatorColumn() == null) {
+					if (!isMetadataComplete()) {
+						if (getJavaEntity() != null && getJavaEntity().getDiscriminatorColumn().getSpecifiedName() != null) {
+							return getJavaEntity().getDiscriminatorColumn().getSpecifiedName();
+						}
+					}
+				}
+				return isDescendant() ?
+						getRootEntity().getDiscriminatorColumn().getName()
+					:
+						isTablePerClass() ? 
+							null
+						:
+							DiscriminatorColumn.DEFAULT_NAME;
+			}
+			
+			public int getDefaultLength() {
+				if (getResourceTypeMapping().getDiscriminatorColumn() == null) {
+					if (!isMetadataComplete()) {
+						if (getJavaEntity() != null && getJavaEntity().getDiscriminatorColumn().getSpecifiedLength() != null) {
+							return getJavaEntity().getDiscriminatorColumn().getSpecifiedLength().intValue();
+						}
+					}
+				}
+				return isDescendant() ?
+					getRootEntity().getDiscriminatorColumn().getLength()
+				:
+					isTablePerClass() ? 
+						0//TODO think i want to return null here
+					:
+						DiscriminatorColumn.DEFAULT_LENGTH;
+			}
+			
+			public DiscriminatorType getDefaultDiscriminatorType() {
+				if (getResourceTypeMapping().getDiscriminatorColumn() == null) {
+					if (!isMetadataComplete()) {
+						if (getJavaEntity() != null && getJavaEntity().getDiscriminatorColumn().getSpecifiedDiscriminatorType() != null) {
+							return getJavaEntity().getDiscriminatorColumn().getSpecifiedDiscriminatorType();
+						}
+					}
+				}
+				return isDescendant() ?
+					getRootEntity().getDiscriminatorColumn().getDiscriminatorType()
+				:
+					isTablePerClass() ? 
+						null
+					:
+						DiscriminatorColumn.DEFAULT_DISCRIMINATOR_TYPE;
 			}
 			
 			public TextRange getValidationTextRange() {
-				// TODO Auto-generated method stub
-				return null;
+				return AbstractOrmEntity.this.getValidationTextRange();
 			}
-			
 		};
 	}
 
@@ -1127,7 +1171,7 @@ public abstract class AbstractOrmEntity
 	}
 
 	public Entity getRootEntity() {
-		Entity rootEntity = null;
+		Entity rootEntity = this;
 		for (Iterator<PersistentType> stream = getPersistentType().inheritanceHierarchy(); stream.hasNext();) {
 			PersistentType persistentType = stream.next();
 			if (persistentType.getMapping() instanceof Entity) {
@@ -1205,6 +1249,29 @@ public abstract class AbstractOrmEntity
 	 */
 	protected boolean isRoot() {
 		return this == this.getRootEntity();
+	}
+	/**
+	 * Return whether the entity is abstract and is a part of a 
+	 * "table per class" inheritance hierarchy.
+	 */
+	public boolean isAbstractTablePerClass() {
+		return isAbstract() && isTablePerClass();
+	}
+	
+	/**
+	 * Return whether the entity is a part of a "table per class" 
+	 * inheritance hierarchy.
+	 */
+	protected boolean isTablePerClass() {
+		return (this.getInheritanceStrategy() == InheritanceType.TABLE_PER_CLASS);
+	}
+	
+	/**
+	 * Return whether the type is abstract, false if no java type exists.
+	 */
+	protected boolean isAbstract() {
+		JavaResourcePersistentType javaResourcePersistentType = getJavaResourcePersistentType();
+		return javaResourcePersistentType == null ? false : javaResourcePersistentType.isAbstract();
 	}
 
 //	public String primaryKeyColumnName() {
@@ -1475,8 +1542,8 @@ public abstract class AbstractOrmEntity
 		this.updateInheritance(this.getResourceInheritance());
 		this.discriminatorColumn.update(this.resourceTypeMapping);
 		this.setSpecifiedDiscriminatorValue(this.resourceTypeMapping.getDiscriminatorValue());
+		this.setDiscriminatorValueAllowed(this.buildDiscriminatorValueIsAllowed());
 		this.setDefaultDiscriminatorValue(defaultDiscriminatorValue());
-		this.setDiscriminatorValueAllowed(this.discriminatorValueIsAllowed());
 		this.table.update(this.resourceTypeMapping);
 		this.updateSpecifiedSecondaryTables();
 		this.updateVirtualSecondaryTables();
@@ -1518,9 +1585,8 @@ public abstract class AbstractOrmEntity
 		return null;
 	}
 	
-	protected boolean discriminatorValueIsAllowed() {
-		JavaResourcePersistentType javaResourcePersistentType = getJavaResourcePersistentType();
-		return javaResourcePersistentType == null ? false : !javaResourcePersistentType.isAbstract();
+	protected boolean buildDiscriminatorValueIsAllowed() {
+		return !isAbstract();
 	}
 
 	protected void updateInheritance(Inheritance inheritanceResource) {

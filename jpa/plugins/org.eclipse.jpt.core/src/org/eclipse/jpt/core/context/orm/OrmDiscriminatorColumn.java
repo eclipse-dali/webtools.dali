@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -30,4 +30,12 @@ public interface OrmDiscriminatorColumn extends DiscriminatorColumn, OrmNamedCol
 	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
 	 */
 	void update(XmlEntity entity);
+	
+	/**
+	 * interface allowing columns to be used in multiple places
+	 */
+	interface Owner extends OrmNamedColumn.Owner, DiscriminatorColumn.Owner
+	{
+
+	}
 }

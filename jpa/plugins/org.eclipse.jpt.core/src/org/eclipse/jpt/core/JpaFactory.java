@@ -41,7 +41,6 @@ import org.eclipse.jpt.core.context.java.JavaLobConverter;
 import org.eclipse.jpt.core.context.java.JavaManyToManyMapping;
 import org.eclipse.jpt.core.context.java.JavaManyToOneMapping;
 import org.eclipse.jpt.core.context.java.JavaMappedSuperclass;
-import org.eclipse.jpt.core.context.java.JavaNamedColumn;
 import org.eclipse.jpt.core.context.java.JavaNamedNativeQuery;
 import org.eclipse.jpt.core.context.java.JavaNamedQuery;
 import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
@@ -273,7 +272,7 @@ public interface JpaFactory
 	
 	OrmAssociationOverride buildOrmAssociationOverride(XmlContextNode parent, AssociationOverride.Owner owner, XmlAssociationOverride associationOverride);
 	
-	OrmDiscriminatorColumn buildOrmDiscriminatorColumn(OrmEntity parent, OrmNamedColumn.Owner owner);
+	OrmDiscriminatorColumn buildOrmDiscriminatorColumn(OrmEntity parent, OrmDiscriminatorColumn.Owner owner);
 	
 	OrmColumn buildOrmColumn(XmlContextNode parent, OrmColumn.Owner owner);
 	
@@ -381,7 +380,7 @@ public interface JpaFactory
 	
 	JavaColumn buildJavaColumn(JavaJpaContextNode parent, JavaColumn.Owner owner);
 	
-	JavaDiscriminatorColumn buildJavaDiscriminatorColumn(JavaEntity parent, JavaNamedColumn.Owner owner);
+	JavaDiscriminatorColumn buildJavaDiscriminatorColumn(JavaEntity parent, JavaDiscriminatorColumn.Owner owner);
 	
 	JavaJoinColumn buildJavaJoinColumn(JavaJpaContextNode parent, JavaJoinColumn.Owner owner);
 	

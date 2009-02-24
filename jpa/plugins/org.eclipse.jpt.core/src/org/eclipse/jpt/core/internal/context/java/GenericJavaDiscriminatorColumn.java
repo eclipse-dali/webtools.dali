@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the terms of
  * the Eclipse Public License v1.0, which accompanies this distribution and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
@@ -9,15 +9,19 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
+import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.DiscriminatorColumn;
 import org.eclipse.jpt.core.context.DiscriminatorType;
 import org.eclipse.jpt.core.context.java.JavaDiscriminatorColumn;
 import org.eclipse.jpt.core.context.java.JavaEntity;
-import org.eclipse.jpt.core.context.java.JavaNamedColumn;
+import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.DiscriminatorColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericJavaDiscriminatorColumn extends AbstractJavaNamedColumn<DiscriminatorColumnAnnotation>
 	implements JavaDiscriminatorColumn
@@ -25,11 +29,15 @@ public class GenericJavaDiscriminatorColumn extends AbstractJavaNamedColumn<Disc
 
 	protected DiscriminatorType specifiedDiscriminatorType;
 
+	protected DiscriminatorType defaultDiscriminatorType;
+	
 	protected Integer specifiedLength;
+	
+	protected int defaultLength;
 	
 	protected JavaResourcePersistentMember persistenceResource;
 	
-	public GenericJavaDiscriminatorColumn(JavaEntity parent, JavaNamedColumn.Owner owner) {
+	public GenericJavaDiscriminatorColumn(JavaEntity parent, JavaDiscriminatorColumn.Owner owner) {
 		super(parent, owner);
 	}
 
@@ -41,8 +49,15 @@ public class GenericJavaDiscriminatorColumn extends AbstractJavaNamedColumn<Disc
 	@Override
 	public void initialize(DiscriminatorColumnAnnotation column) {
 		super.initialize(column);
-		this.specifiedDiscriminatorType = this.discriminatorType(column);
-		this.specifiedLength = this.length(column);
+		this.defaultDiscriminatorType = this.buildDefaultDiscriminatorType();
+		this.defaultLength = this.buildDefaultLength();
+		this.specifiedDiscriminatorType = this.getResourceDiscriminatorType(column);
+		this.specifiedLength = this.getResourceLength(column);
+	}
+	
+	@Override
+	public JavaDiscriminatorColumn.Owner getOwner() {
+		return (JavaDiscriminatorColumn.Owner) super.getOwner();
 	}
 	
 	protected JavaEntity getJavaEntity() {
@@ -59,7 +74,13 @@ public class GenericJavaDiscriminatorColumn extends AbstractJavaNamedColumn<Disc
 	}
 
 	public DiscriminatorType getDefaultDiscriminatorType() {
-		return DiscriminatorColumn.DEFAULT_DISCRIMINATOR_TYPE;
+		return this.defaultDiscriminatorType;
+	}
+	
+	protected void setDefaultDiscriminatorType(DiscriminatorType discriminatorType) {
+		DiscriminatorType old = this.defaultDiscriminatorType;
+		this.defaultDiscriminatorType = discriminatorType;
+		firePropertyChanged(DEFAULT_DISCRIMINATOR_TYPE_PROPERTY, old, discriminatorType);
 	}
 		
 	public DiscriminatorType getSpecifiedDiscriminatorType() {
@@ -90,9 +111,15 @@ public class GenericJavaDiscriminatorColumn extends AbstractJavaNamedColumn<Disc
 	}
 
 	public int getDefaultLength() {
-		return DiscriminatorColumn.DEFAULT_LENGTH;
+		return this.defaultLength;
 	}
-
+	
+	protected void setDefaultLength(int defaultLength) {
+		int old = this.defaultLength;
+		this.defaultLength = defaultLength;
+		firePropertyChanged(DEFAULT_LENGTH_PROPERTY, old, defaultLength);
+	}
+	
 	public Integer getSpecifiedLength() {
 		return this.specifiedLength;
 	}
@@ -137,15 +164,48 @@ public class GenericJavaDiscriminatorColumn extends AbstractJavaNamedColumn<Disc
 	@Override
 	public void update(DiscriminatorColumnAnnotation discriminatorColumn) {
 		super.update(discriminatorColumn);
-		this.setSpecifiedDiscriminatorType_(this.discriminatorType(discriminatorColumn));
-		this.setSpecifiedLength_(this.length(discriminatorColumn));
+		this.setDefaultDiscriminatorType(this.buildDefaultDiscriminatorType());
+		this.setDefaultLength(this.buildDefaultLength());
+		this.setSpecifiedDiscriminatorType_(this.getResourceDiscriminatorType(discriminatorColumn));
+		this.setSpecifiedLength_(this.getResourceLength(discriminatorColumn));
 	}
 	
-	protected DiscriminatorType discriminatorType(DiscriminatorColumnAnnotation discriminatorColumn) {
+	protected DiscriminatorType getResourceDiscriminatorType(DiscriminatorColumnAnnotation discriminatorColumn) {
 		return DiscriminatorType.fromJavaResourceModel(discriminatorColumn.getDiscriminatorType());
 	}
 	
-	protected Integer length(DiscriminatorColumnAnnotation discriminatorColumn) {
+	protected Integer getResourceLength(DiscriminatorColumnAnnotation discriminatorColumn) {
 		return discriminatorColumn.getLength();
+	}
+	
+	@Override
+	public JavaEntity getParent() {
+		return (JavaEntity) super.getParent();
+	}
+	
+	protected int buildDefaultLength() {
+		return this.getOwner().getDefaultLength();
+	}
+	
+	protected DiscriminatorType buildDefaultDiscriminatorType() {
+		return this.getOwner().getDefaultDiscriminatorType();
+	}
+	
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		super.validate(messages, reporter, astRoot);
+		if (this.connectionProfileIsActive()) {
+			if ( ! this.isResolved()) {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.DISCRIMINATOR_COLUMN_UNRESOLVED_NAME,
+						new String[] {this.getName()}, 
+						this,
+						this.getNameTextRange(astRoot)
+					)
+				);
+			}
+		}
 	}
 }
