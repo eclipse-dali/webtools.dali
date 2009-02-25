@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.context.java;
 
 import org.eclipse.jpt.core.context.DiscriminatorColumn;
+import org.eclipse.jpt.core.resource.java.DiscriminatorColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 
 /**
@@ -32,12 +33,16 @@ public interface JavaDiscriminatorColumn extends JavaNamedColumn, DiscriminatorC
 	void update(JavaResourcePersistentMember jrpm);
 	
 	/**
+	 * Return the discriminator column annotation, null if the no annotation
+	 */
+	DiscriminatorColumnAnnotation getResourceDiscriminatorColumn();
+	
+	/**
 	 * interface allowing columns to be used in multiple places
 	 */
 	interface Owner extends JavaNamedColumn.Owner, DiscriminatorColumn.Owner
 	{
 
 	}
-
 
 }

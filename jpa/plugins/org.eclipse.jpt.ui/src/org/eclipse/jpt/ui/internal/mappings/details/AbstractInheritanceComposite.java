@@ -90,6 +90,8 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends For
 	 * model.
 	 */
 	protected static String DEFAULT_KEY = "?!#!?#?#?default?#?!#?!#?";
+	
+	protected static String NONE_KEY = "?!#!?#?#?none?#?!#?!#?";
 
 	/**
 	 * Creates a new <code>InheritanceComposite</code>.
@@ -114,6 +116,9 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends For
 			@Override
 			protected String buildValue_() {
 				String name = this.subject.getDefaultDiscriminatorValue();
+				if (name == null && ! getSubject().isDiscriminatorValueAllowed()) {
+					return NONE_KEY;
+				}
 
 				if (name == null) {
 					name = DEFAULT_KEY;
@@ -242,15 +247,16 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends For
 
 				if (value == null) {
 					value = getSubject().getDefaultDiscriminatorValue();
-
-					if (value != null) {
-						value = DEFAULT_KEY + value;
+					if (value != null || getSubject().isDiscriminatorValueAllowed()) {
+						value = (value != null) ? 
+								DEFAULT_KEY + value
+							: 
+								DEFAULT_KEY;
 					}
 					else {
-						value = DEFAULT_KEY;
+						value = NONE_KEY;						
 					}
 				}
-
 				if (value.startsWith(DEFAULT_KEY)) {
 					String defaultName = value.substring(DEFAULT_KEY.length());
 
@@ -261,10 +267,12 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends For
 						);
 					}
 					else {
-						value = JptUiMappingsMessages.DefaultWithoutValue;
+						value = JptUiMappingsMessages.ProviderDefault;
 					}
 				}
-
+				if (value.startsWith(NONE_KEY)) {
+					value = JptUiMappingsMessages.NoneSelected;
+				}
 				return value;
 			}
 		};
@@ -282,7 +290,7 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends For
 
 				// Convert the default value or an empty string to null
 				if ((value != null) &&
-				   ((value.length() == 0) || value.startsWith(DEFAULT_KEY))) {
+				   ((value.length() == 0) || value.startsWith(DEFAULT_KEY) || value.startsWith(NONE_KEY))) {
 
 					value = null;
 				}

@@ -119,6 +119,8 @@ public abstract class AbstractOrmEntity
 
 	protected final OrmDiscriminatorColumn discriminatorColumn;
 
+	protected boolean discriminatorColumnAllowed;
+
 	protected OrmSequenceGenerator sequenceGenerator;
 
 	protected OrmTableGenerator tableGenerator;
@@ -152,10 +154,11 @@ public abstract class AbstractOrmEntity
 		this.specifiedName = this.resourceTypeMapping.getName();
 		this.defaultName = this.buildDefaultName();
 		this.initializeInheritance(this.getResourceInheritance());
+		this.discriminatorColumnAllowed = this.buildDiscriminatorColumnIsAllowed();
 		this.discriminatorColumn.initialize(this.resourceTypeMapping); //TODO pass in to constructor
-		this.specifiedDiscriminatorValue = this.resourceTypeMapping.getDiscriminatorValue();
 		this.discriminatorValueAllowed = this.buildDiscriminatorValueIsAllowed();
-		this.defaultDiscriminatorValue = this.defaultDiscriminatorValue();
+		this.specifiedDiscriminatorValue = this.resourceTypeMapping.getDiscriminatorValue();
+		this.defaultDiscriminatorValue = this.buildDefaultDiscriminatorValue();
 		this.table.initialize(this.resourceTypeMapping);//TODO pass in to constructor
 		this.initializeSpecifiedSecondaryTables();
 		this.initializeVirtualSecondaryTables();
@@ -726,6 +729,16 @@ public abstract class AbstractOrmEntity
 		boolean oldDiscriminatorValueAllowed = this.discriminatorValueAllowed;
 		this.discriminatorValueAllowed = newDiscriminatorValueAllowed;
 		firePropertyChanged(Entity.DISCRIMINATOR_VALUE_ALLOWED_PROPERTY, oldDiscriminatorValueAllowed, newDiscriminatorValueAllowed);
+	}
+	
+	public boolean isDiscriminatorColumnAllowed() {
+		return this.discriminatorColumnAllowed;
+	}
+	
+	protected void setDiscriminatorColumnAllowed(boolean newDiscriminatorColumnAllowed) {
+		boolean oldDiscriminatorColumnAllowed = this.discriminatorColumnAllowed;
+		this.discriminatorColumnAllowed = newDiscriminatorColumnAllowed;
+		firePropertyChanged(Entity.DISCRIMINATOR_COLUMN_ALLOWED_PROPERTY, oldDiscriminatorColumnAllowed, newDiscriminatorColumnAllowed);
 	}
 
 	public ListIterator<OrmPrimaryKeyJoinColumn> defaultPrimaryKeyJoinColumns() {
@@ -1540,10 +1553,11 @@ public abstract class AbstractOrmEntity
 		this.setSpecifiedName(this.resourceTypeMapping.getName());
 		this.setDefaultName(this.buildDefaultName());
 		this.updateInheritance(this.getResourceInheritance());
+		this.setDiscriminatorColumnAllowed(this.buildDiscriminatorColumnIsAllowed());
 		this.discriminatorColumn.update(this.resourceTypeMapping);
-		this.setSpecifiedDiscriminatorValue(this.resourceTypeMapping.getDiscriminatorValue());
 		this.setDiscriminatorValueAllowed(this.buildDiscriminatorValueIsAllowed());
-		this.setDefaultDiscriminatorValue(defaultDiscriminatorValue());
+		this.setSpecifiedDiscriminatorValue(this.resourceTypeMapping.getDiscriminatorValue());
+		this.setDefaultDiscriminatorValue(buildDefaultDiscriminatorValue());
 		this.table.update(this.resourceTypeMapping);
 		this.updateSpecifiedSecondaryTables();
 		this.updateVirtualSecondaryTables();
@@ -1573,9 +1587,31 @@ public abstract class AbstractOrmEntity
 		return null;
 	}
 	
-	protected String defaultDiscriminatorValue() {
-		//TODO default discriminator value
-		return null;
+	/**
+	 * From the Spec:
+	 * If the DiscriminatorValue annotation is not specified, a
+	 * provider-specific function to generate a value representing
+	 * the entity type is used for the value of the discriminator
+	 * column. If the DiscriminatorType is STRING, the discriminator
+	 * value default is the entity name.
+	 * 
+	 * TODO extension point for provider-specific function?
+	 */
+	protected String buildDefaultDiscriminatorValue() {
+		if (!isMetadataComplete() && getJavaEntity() != null) {
+			return getJavaEntity().getDiscriminatorValue();
+		}
+		if (!isDiscriminatorValueAllowed()) {
+			return null;
+		}
+		if (this.getDiscriminatorType() != DiscriminatorType.STRING) {
+			return null;
+		}
+		return this.getName();
+	}
+
+	protected DiscriminatorType getDiscriminatorType() {
+		return this.getDiscriminatorColumn().getDiscriminatorType();
 	}
 	
 	protected JavaResourcePersistentType getJavaResourcePersistentType() {
@@ -1586,7 +1622,11 @@ public abstract class AbstractOrmEntity
 	}
 	
 	protected boolean buildDiscriminatorValueIsAllowed() {
-		return !isAbstract();
+		return !isTablePerClass() && !isAbstract();
+	}
+	
+	protected boolean buildDiscriminatorColumnIsAllowed() {
+		return !isTablePerClass() && isRoot();
 	}
 
 	protected void updateInheritance(Inheritance inheritanceResource) {
@@ -1942,6 +1982,7 @@ public abstract class AbstractOrmEntity
 
 		this.table.validate(messages, reporter);	
 		this.validateId(messages);
+		this.validateInheritance(messages, reporter);
 		this.validateGenerators(messages);
 		this.validateQueries(messages);
 
@@ -1970,6 +2011,77 @@ public abstract class AbstractOrmEntity
 				)
 			);
 		}
+	}
+	
+	protected void validateInheritance(List<IMessage> messages, IReporter reporter) {
+		validateDiscriminatorColumn(messages, reporter);
+		validateDiscriminatorValue(messages, reporter);
+	}
+	
+	protected void validateDiscriminatorColumn(List<IMessage> messages, IReporter reporter) {
+		if (isDiscriminatorColumnAllowed()) {
+			getDiscriminatorColumn().validate(messages, reporter);
+		}
+		else if (getDiscriminatorColumn().getResourceColumn() != null) {
+			if (!isRoot()) {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.ENTITY_NON_ROOT_DISCRIMINATOR_COLUMN_DEFINED,
+						new String[] {this.getName()},
+						this,
+						this.getDiscriminatorColumnTextRange()
+					)
+				);				
+			}
+			else if (isTablePerClass()) {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.ENTITY_TABLE_PER_CLASS_DISCRIMINATOR_COLUMN_DEFINED,
+						new String[] {this.getName()},
+						this,
+						this.getDiscriminatorColumnTextRange()
+					)
+				);				
+				
+			}
+		}
+	}
+	
+	protected void validateDiscriminatorValue(List<IMessage> messages, IReporter reporter) {
+		if (!isDiscriminatorValueAllowed() && getSpecifiedDiscriminatorValue() != null) {
+			if (isAbstract()) {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.NORMAL_SEVERITY,
+						JpaValidationMessages.ENTITY_ABSTRACT_DISCRIMINATOR_VALUE_DEFINED,
+						new String[] {this.getName()},
+						this,
+						this.getDiscriminatorValueTextRange()
+					)
+				);
+			}
+			else if (isTablePerClass()) {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.NORMAL_SEVERITY,
+						JpaValidationMessages.ENTITY_TABLE_PER_CLASS_DISCRIMINATOR_VALUE_DEFINED,
+						new String[] {this.getName()},
+						this,
+						this.getDiscriminatorValueTextRange()
+					)
+				);				
+			}
+		}
+	}
+
+	protected TextRange getDiscriminatorValueTextRange() {
+		return this.resourceTypeMapping.getDiscriminatorValueTextRange();
+	}
+	
+	protected TextRange getDiscriminatorColumnTextRange() {
+		return this.resourceTypeMapping.getDiscriminatorColumn().getValidationTextRange();
 	}
 	
 	private boolean entityHasNoId() {

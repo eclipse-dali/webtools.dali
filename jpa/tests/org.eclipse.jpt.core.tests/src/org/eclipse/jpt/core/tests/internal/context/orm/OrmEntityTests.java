@@ -15,6 +15,8 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AccessType;
+import org.eclipse.jpt.core.context.DiscriminatorType;
+import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.InheritanceType;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.java.JavaPrimaryKeyJoinColumn;
@@ -178,6 +180,21 @@ public class OrmEntityTests extends ContextModelTestCase
 			}
 		};
 		this.javaProject.createCompilationUnit(PACKAGE_NAME, FILE_NAME, sourceWriter);
+	}
+
+	private ICompilationUnit createAbstractTestEntity() throws Exception {
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.INHERITANCE, JPA.INHERITANCE_TYPE);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity").append(CR);
+				sb.append("@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)").append(CR);
+				sb.append("abstract");
+			}
+		});
 	}
 
 	public void testUpdateSpecifiedName() throws Exception {
@@ -1194,16 +1211,25 @@ public class OrmEntityTests extends ContextModelTestCase
 		assertNull(ormEntity.getSpecifiedDiscriminatorValue());
 		assertNull(entityResource.getDiscriminatorValue());
 	}
-//TODO	
-//	public void testGetDefaultDiscriminatorValue() throws Exception {
-//		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
-//		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
-//		
-//		assertEquals(ormEntity.getName(), ormEntity.getDefaultDiscriminatorValue());
-//
-//		getJavaEntity().getDiscriminatorColumn().setSpecifiedDiscriminatorType(DiscriminatorType.INTEGER);
-//		assertNull(ormEntity.getDefaultDiscriminatorValue());
-//	}
+	
+	public void testGetDefaultDiscriminatorValue() throws Exception {
+		createTestEntityFieldAccess();
+		OrmPersistentType persistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmEntity ormEntity = (OrmEntity) persistentType.getMapping();
+		JavaEntity javaEntity = (JavaEntity) persistentType.getJavaPersistentType().getMapping();
+		assertEquals(ormEntity.getName(), ormEntity.getDefaultDiscriminatorValue());
+
+		javaEntity.getDiscriminatorColumn().setSpecifiedDiscriminatorType(DiscriminatorType.INTEGER);
+		assertNull(ormEntity.getDefaultDiscriminatorValue());
+		
+		javaEntity.getDiscriminatorColumn().setSpecifiedDiscriminatorType(null);
+		javaEntity.setSpecifiedDiscriminatorValue("FOO");
+		
+		assertEquals("FOO", ormEntity.getDefaultDiscriminatorValue());
+
+		ormEntity.setSpecifiedMetadataComplete(Boolean.TRUE);
+		assertEquals(ormEntity.getName(), ormEntity.getDefaultDiscriminatorValue());
+	}
 	
 	public void testAddSpecifiedPrimaryKeyJoinColumn() throws Exception {
 		OrmPersistentType persistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
@@ -2226,5 +2252,61 @@ public class OrmEntityTests extends ContextModelTestCase
 		OrmPersistentType persistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmEntity entity = (OrmEntity) persistentType.getMapping();
 		assertFalse(entity.isDiscriminatorValueAllowed());
+	}
+	
+	
+	public void testDiscriminatorColumnIsAllowed() throws Exception {
+		createAbstractTestEntity();
+		createTestSubType();
+		OrmPersistentType concretePersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".AnnotationTestTypeChild");
+		OrmPersistentType abstractPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		
+		Entity concreteEntity = (Entity) concretePersistentType.getMapping();
+		assertEquals("AnnotationTestTypeChild", concreteEntity.getName());
+		
+		Entity abstractEntity = (Entity) abstractPersistentType.getMapping();
+		assertEquals(TYPE_NAME, abstractEntity.getName());
+
+		
+		//table-per-class, no discriminator column allowed
+		assertFalse(concreteEntity.isDiscriminatorColumnAllowed());
+		assertFalse(abstractEntity.isDiscriminatorColumnAllowed());
+
+		
+		//single-table, discriminator column allowed on root entity
+		((JavaEntity) abstractPersistentType.getJavaPersistentType().getMapping()).setSpecifiedInheritanceStrategy(null);
+		assertFalse(concreteEntity.isDiscriminatorColumnAllowed());
+		assertTrue(abstractEntity.isDiscriminatorColumnAllowed());
+	}
+	
+	public void testAbstractEntityGetDefaultDiscriminatorColumnNameTablePerClassInheritance() throws Exception {
+		createAbstractTestEntity();
+		createTestSubType();
+		
+		OrmPersistentType concretePersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".AnnotationTestTypeChild");
+		OrmPersistentType abstractPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		
+		Entity concreteEntity = (Entity) concretePersistentType.getMapping();
+		assertEquals("AnnotationTestTypeChild", concreteEntity.getName());
+		
+		Entity abstractEntity = (Entity) abstractPersistentType.getMapping();
+		assertEquals(TYPE_NAME, abstractEntity.getName());
+
+		
+		assertEquals(null, abstractEntity.getSpecifiedInheritanceStrategy());
+		assertEquals(null, concreteEntity.getSpecifiedInheritanceStrategy());
+		assertEquals(InheritanceType.TABLE_PER_CLASS, abstractEntity.getDefaultInheritanceStrategy());
+		assertEquals(InheritanceType.TABLE_PER_CLASS, concreteEntity.getDefaultInheritanceStrategy());
+		
+		
+		assertFalse(abstractEntity.isDiscriminatorValueAllowed());
+		assertFalse(concreteEntity.isDiscriminatorColumnAllowed());
+		assertEquals(null, abstractEntity.getDiscriminatorColumn().getDefaultName());
+		assertEquals(null, concreteEntity.getDiscriminatorColumn().getDefaultName());
+		
+		assertFalse(abstractEntity.isDiscriminatorValueAllowed());
+		assertEquals(null, abstractEntity.getDefaultDiscriminatorValue());
+		assertFalse(concreteEntity.isDiscriminatorValueAllowed());
+		assertEquals(null, concreteEntity.getDefaultDiscriminatorValue());
 	}
 }

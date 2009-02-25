@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -176,12 +176,20 @@ public interface Entity
 		String SPECIFIED_DISCRIMINATOR_VALUE_PROPERTY = "specifiedDiscriminatorValue"; //$NON-NLS-1$
 
 	/**
-	 * Return whether a DiscriminatorValue is allowed for this Entity
+	 * Return whether a DiscriminatorValue is allowed for this Entity.
 	 * It is allowed if the IType is concrete (not abstract)
+	 * and not part of a table-per-class inheritance hierarchy
 	 */
 	boolean isDiscriminatorValueAllowed();
  		String DISCRIMINATOR_VALUE_ALLOWED_PROPERTY = "discriminatorValueAllowed"; //$NON-NLS-1$
 
+	/**
+	 * Return whether a DiscriminatorColumn is allowed for this Entity.
+	 * It is allowed if the entity is the root of the inheritance hierarchy
+	 * and the strategy is not table-per-class
+	 */
+	boolean isDiscriminatorColumnAllowed();
+ 		String DISCRIMINATOR_COLUMN_ALLOWED_PROPERTY = "discriminatorColumnAllowed"; //$NON-NLS-1$
 
 	// **************** primary key join columns **************************************
 

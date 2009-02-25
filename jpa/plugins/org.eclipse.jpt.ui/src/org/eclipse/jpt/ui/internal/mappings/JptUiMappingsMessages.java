@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -67,6 +67,7 @@ public class JptUiMappingsMessages {
 	public static String DatabaseObjectCombo_defaultWithOneParm;
 	public static String DefaultWithoutValue;
 	public static String DefaultWithValue;
+	public static String ProviderDefault;
 	public static String DiscriminatorColumnComposite_defaultEmpty;
 	public static String DiscriminatorColumnComposite_discriminatorType;
 	public static String DiscriminatorColumnComposite_name;

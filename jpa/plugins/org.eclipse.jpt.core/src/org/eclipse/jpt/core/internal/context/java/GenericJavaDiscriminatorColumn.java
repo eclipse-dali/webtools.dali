@@ -69,6 +69,10 @@ public class GenericJavaDiscriminatorColumn extends AbstractJavaNamedColumn<Disc
 		return (DiscriminatorColumnAnnotation) this.persistenceResource.getNonNullSupportingAnnotation(DiscriminatorColumnAnnotation.ANNOTATION_NAME);
 	}
 	
+	public DiscriminatorColumnAnnotation getResourceDiscriminatorColumn() {
+		return (DiscriminatorColumnAnnotation) this.persistenceResource.getSupportingAnnotation(DiscriminatorColumnAnnotation.ANNOTATION_NAME);
+	}
+	
 	public DiscriminatorType getDiscriminatorType() {
 		return (this.getSpecifiedDiscriminatorType() == null) ? this.getDefaultDiscriminatorType() : this.getSpecifiedDiscriminatorType();
 	}

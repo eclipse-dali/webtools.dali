@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.context.orm;
 
 import org.eclipse.jpt.core.context.DiscriminatorColumn;
+import org.eclipse.jpt.core.resource.orm.XmlDiscriminatorColumn;
 import org.eclipse.jpt.core.resource.orm.XmlEntity;
 
 /**
@@ -30,6 +31,8 @@ public interface OrmDiscriminatorColumn extends DiscriminatorColumn, OrmNamedCol
 	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
 	 */
 	void update(XmlEntity entity);
+	
+	XmlDiscriminatorColumn getResourceColumn();
 	
 	/**
 	 * interface allowing columns to be used in multiple places

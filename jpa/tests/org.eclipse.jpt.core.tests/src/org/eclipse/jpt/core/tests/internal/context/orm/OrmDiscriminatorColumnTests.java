@@ -471,45 +471,6 @@ public class OrmDiscriminatorColumnTests extends ContextModelTestCase
 		assertEquals("BAR", childEntity.getDiscriminatorColumn().getDefaultName());
 		assertEquals(6, childEntity.getDiscriminatorColumn().getDefaultLength());
 		assertEquals(DiscriminatorType.INTEGER, childEntity.getDiscriminatorColumn().getDefaultDiscriminatorType());
-		
-//
-//		
-//		//test defaults with single-table inheritance, specified discriminator column set on root
-//		abstractEntity.getDiscriminatorColumn().setSpecifiedName("DTYPE2");
-//		abstractEntity.getDiscriminatorColumn().setSpecifiedLength(Integer.valueOf(5));
-//		abstractEntity.getDiscriminatorColumn().setSpecifiedDiscriminatorType(DiscriminatorType.CHAR);
-//		
-//		assertEquals(InheritanceType.SINGLE_TABLE, abstractEntity.getDefaultInheritanceStrategy());
-//		assertEquals(DiscriminatorColumn.DEFAULT_NAME, abstractEntity.getDiscriminatorColumn().getDefaultName());
-//		assertEquals(DiscriminatorColumn.DEFAULT_LENGTH, abstractEntity.getDiscriminatorColumn().getDefaultLength());
-//		assertEquals(DiscriminatorColumn.DEFAULT_DISCRIMINATOR_TYPE, abstractEntity.getDiscriminatorColumn().getDefaultDiscriminatorType());
-//		assertEquals("DTYPE2", abstractEntity.getDiscriminatorColumn().getSpecifiedName());
-//		assertEquals(Integer.valueOf(5), abstractEntity.getDiscriminatorColumn().getSpecifiedLength());
-//		assertEquals(DiscriminatorType.CHAR, abstractEntity.getDiscriminatorColumn().getSpecifiedDiscriminatorType());
-//		
-//		assertEquals(InheritanceType.SINGLE_TABLE, childEntity.getDefaultInheritanceStrategy());
-//		assertEquals("DTYPE2", childEntity.getDiscriminatorColumn().getDefaultName());
-//		assertEquals(5, childEntity.getDiscriminatorColumn().getDefaultLength());
-//		assertEquals(DiscriminatorType.CHAR, childEntity.getDiscriminatorColumn().getDefaultDiscriminatorType());
-//		assertEquals(null, childEntity.getDiscriminatorColumn().getSpecifiedName());
-//		assertEquals(null, childEntity.getDiscriminatorColumn().getSpecifiedLength());
-//		assertEquals(null, childEntity.getDiscriminatorColumn().getSpecifiedDiscriminatorType());
-//		
-//		
-//		//test defaults with table-per-class inheritance, discriminator column does not apply
-//		abstractEntity.getDiscriminatorColumn().setSpecifiedName(null);
-//		abstractEntity.getDiscriminatorColumn().setSpecifiedLength(null);
-//		abstractEntity.getDiscriminatorColumn().setSpecifiedDiscriminatorType(null);
-//		abstractEntity.setSpecifiedInheritanceStrategy(InheritanceType.TABLE_PER_CLASS);
-//		
-//		assertEquals(InheritanceType.TABLE_PER_CLASS, abstractEntity.getInheritanceStrategy());
-//		assertEquals(null, abstractEntity.getDiscriminatorColumn().getDefaultName());
-//		assertEquals(0, abstractEntity.getDiscriminatorColumn().getDefaultLength());
-//		assertEquals(null, abstractEntity.getDiscriminatorColumn().getDefaultDiscriminatorType());
-//		
-//		assertEquals(InheritanceType.TABLE_PER_CLASS, childEntity.getDefaultInheritanceStrategy());
-//		assertEquals(null, childEntity.getDiscriminatorColumn().getDefaultName());
-//		assertEquals(0, childEntity.getDiscriminatorColumn().getDefaultLength());
-//		assertEquals(null, childEntity.getDiscriminatorColumn().getDefaultDiscriminatorType());
+
 	}
 }

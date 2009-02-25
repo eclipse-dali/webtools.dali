@@ -262,7 +262,22 @@ public class JavaEntityTests extends ContextModelTestCase
 			}
 		});
 	}
-	
+
+	private ICompilationUnit createAbstractTestEntity() throws Exception {
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.INHERITANCE, JPA.INHERITANCE_TYPE);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity").append(CR);
+				sb.append("@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)").append(CR);
+				sb.append("abstract");
+			}
+		});
+	}
+
 	public void testMorphToMappedSuperclass() throws Exception {
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
@@ -2875,5 +2890,60 @@ public class JavaEntityTests extends ContextModelTestCase
 		createTestAbstractEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		assertFalse(getJavaEntity().isDiscriminatorValueAllowed());
+	}
+	
+	public void testDiscriminatorColumnIsAllowed() throws Exception {
+		createAbstractTestEntity();
+		createTestSubType();
+		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		ListIterator<ClassRef> specifiedClassRefs = getPersistenceUnit().specifiedClassRefs();
+		Entity concreteEntity = (Entity) specifiedClassRefs.next().getJavaPersistentType().getMapping();
+		assertEquals("AnnotationTestTypeChild", concreteEntity.getName());
+		
+		Entity abstractEntity = (Entity) specifiedClassRefs.next().getJavaPersistentType().getMapping();
+		assertEquals(TYPE_NAME, abstractEntity.getName());
+
+		//table-per-class, no discriminator column allowed
+		assertFalse(concreteEntity.isDiscriminatorColumnAllowed());
+		assertFalse(abstractEntity.isDiscriminatorColumnAllowed());
+
+		
+		//single-table, discriminator column allowed on root entity
+		abstractEntity.setSpecifiedInheritanceStrategy(null);
+		assertFalse(concreteEntity.isDiscriminatorColumnAllowed());
+		assertTrue(abstractEntity.isDiscriminatorColumnAllowed());
+	}
+	
+	public void testAbstractEntityGetDefaultDiscriminatorColumnNameTablePerClassInheritance() throws Exception {
+		createAbstractTestEntity();
+		createTestSubType();
+		
+		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		ListIterator<ClassRef> specifiedClassRefs = getPersistenceUnit().specifiedClassRefs();
+		Entity concreteEntity = (Entity) specifiedClassRefs.next().getJavaPersistentType().getMapping();
+		assertEquals("AnnotationTestTypeChild", concreteEntity.getName());
+		
+		Entity abstractEntity = (Entity) specifiedClassRefs.next().getJavaPersistentType().getMapping();
+		assertEquals(TYPE_NAME, abstractEntity.getName());
+		
+		
+		assertEquals(InheritanceType.TABLE_PER_CLASS, abstractEntity.getSpecifiedInheritanceStrategy());
+		assertEquals(null, concreteEntity.getSpecifiedInheritanceStrategy());
+		assertEquals(InheritanceType.TABLE_PER_CLASS, concreteEntity.getDefaultInheritanceStrategy());
+		
+		
+		assertFalse(abstractEntity.isDiscriminatorValueAllowed());
+		assertFalse(concreteEntity.isDiscriminatorColumnAllowed());
+		assertEquals(null, abstractEntity.getDiscriminatorColumn().getDefaultName());
+		assertEquals(null, concreteEntity.getDiscriminatorColumn().getDefaultName());
+		
+		assertFalse(abstractEntity.isDiscriminatorValueAllowed());
+		assertEquals(null, abstractEntity.getDefaultDiscriminatorValue());
+		assertFalse(concreteEntity.isDiscriminatorValueAllowed());
+		assertEquals(null, concreteEntity.getDefaultDiscriminatorValue());
 	}
 }
