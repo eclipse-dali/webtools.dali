@@ -50,10 +50,5 @@ public interface Column extends BaseColumn
 	Integer getSpecifiedScale();
 	void setSpecifiedScale(Integer newSpecifiedScale);
 		String SPECIFIED_SCALE_PROPERTY = "specifiedScale"; //$NON-NLS-1$
-
-	/**
-	 * Return whether the column is found on the datasource
-	 */
-	boolean isResolved();
 	
 }
