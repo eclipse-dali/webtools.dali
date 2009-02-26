@@ -1580,7 +1580,7 @@ public final class ClassTools {
 		return sb.toString();
 	}
 
-	private static int maxPrimitiveClassNameLength() {
+	private synchronized static int maxPrimitiveClassNameLength() {
 		if (MAX_PRIMITIVE_CLASS_NAME_LENGTH == -1) {
 			MAX_PRIMITIVE_CLASS_NAME_LENGTH = calculateMaxPrimitiveClassNameLength();
 		}
@@ -1599,7 +1599,7 @@ public final class ClassTools {
 		return max;
 	}
 
-	private static int maxPrimitiveWrapperClassNameLength() {
+	private synchronized static int maxPrimitiveWrapperClassNameLength() {
 		if (MAX_PRIMITIVE_WRAPPER_CLASS_NAME_LENGTH == -1) {
 			MAX_PRIMITIVE_WRAPPER_CLASS_NAME_LENGTH = calculateMaxPrimitiveWrapperClassNameLength();
 		}
@@ -1618,7 +1618,7 @@ public final class ClassTools {
 		return max;
 	}
 
-	private static Primitive[] primitives() {
+	private synchronized static Primitive[] primitives() {
 		if (PRIMITIVES == null) {
 			PRIMITIVES = buildPrimitives();
 		}
@@ -1640,14 +1640,6 @@ public final class ClassTools {
 		result[7] = new Primitive(BOOLEAN_CODE, java.lang.Boolean.class);
 		result[8] = new Primitive(VOID_CODE, java.lang.Void.class);
 		return result;
-	}
-
-	/**
-	 * Suppress default constructor, ensuring non-instantiability.
-	 */
-	private ClassTools() {
-		super();
-		throw new UnsupportedOperationException();
 	}
 
 
@@ -1673,6 +1665,17 @@ public final class ClassTools {
 			this.elementTypeName = elementTypeName;
 			this.arrayDepth = arrayDepth;
 		}
+	}
+
+
+	// ********** suppressed constructor **********
+
+	/**
+	 * Suppress default constructor, ensuring non-instantiability.
+	 */
+	private ClassTools() {
+		super();
+		throw new UnsupportedOperationException();
 	}
 
 }
