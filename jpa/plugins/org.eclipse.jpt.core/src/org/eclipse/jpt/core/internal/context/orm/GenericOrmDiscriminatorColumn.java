@@ -146,6 +146,10 @@ public class GenericOrmDiscriminatorColumn extends AbstractOrmNamedColumn<XmlDis
 		this.entity.setDiscriminatorColumn(null);
 	}
 	
+	public boolean isResourceSpecified() {
+		return getResourceColumn() != null;
+	}
+	
 	public void initialize(XmlEntity entity) {
 		this.entity = entity;
 		this.initialize(this.getResourceColumn());

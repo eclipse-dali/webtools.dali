@@ -191,7 +191,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 	}
 
 	public boolean joinTableIsSpecified() {
-		return this.joinTable.isSpecified();
+		return this.joinTable.isResourceSpecified();
 	}
 
 	public boolean isRelationshipOwner() {
@@ -377,7 +377,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
 		
-		if (this.ownerIsEntity() && (this.joinTableIsSpecified() || this.isRelationshipOwner())) {
+		if (this.shouldValidateDbInfo() && (this.joinTableIsSpecified() || this.isRelationshipOwner())) {
 			this.joinTable.validate(messages, reporter, astRoot);
 		}
 		if (this.getMappedBy() != null) {

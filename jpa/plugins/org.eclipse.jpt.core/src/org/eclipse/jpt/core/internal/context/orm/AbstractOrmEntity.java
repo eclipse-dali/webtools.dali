@@ -560,6 +560,10 @@ public abstract class AbstractOrmEntity
 	public boolean tableNameIsInvalid(String tableName) {
 		return ! CollectionTools.contains(this.associatedTableNamesIncludingInherited(), tableName);
 	}
+	
+	public boolean shouldValidateDbInfo() {
+		return !isAbstractTablePerClass();
+	}
 
 	public InheritanceType getInheritanceStrategy() {
 		return (this.getSpecifiedInheritanceStrategy() == null) ? this.getDefaultInheritanceStrategy() : this.getSpecifiedInheritanceStrategy();
@@ -1199,46 +1203,58 @@ public abstract class AbstractOrmEntity
 		if (javaEntity != null) {
 			JavaTable javaTable = javaEntity.getTable();
 			if ( ! this.isMetadataComplete()
-					&& ! this.table.hasSpecifiedResourceTable()
+					&& ! this.table.isResourceSpecified()
 					&& javaTable.getSpecifiedName() != null) {
 				return javaTable.getSpecifiedName();
 			}
 		}
-
 		return this.isSingleTableDescendant() ?
 						this.getRootEntity().getTable().getName()
 					:
-						this.getName();
+						this.isAbstractTablePerClass() ?
+								null
+							:
+								this.getName();
 	}
 
 	public String getDefaultSchema() {
 		JavaEntity javaEntity = this.getJavaEntity();
 		if (javaEntity != null) {
-			if (this.isMetadataComplete() || this.table.hasSpecifiedResourceTable()) {
-				return javaEntity.getTable().getDefaultSchema();
+			JavaTable javaTable = javaEntity.getTable();
+			if ( ! this.isMetadataComplete()
+					&& ! this.table.isResourceSpecified()
+					&& javaTable.getSpecifiedSchema() != null) {
+				return javaTable.getSpecifiedSchema();
 			}
-			return javaEntity.getTable().getSchema();
 		}
 
 		return this.isSingleTableDescendant() ?
 						this.getRootEntity().getTable().getSchema()
 					:
-						this.getContextDefaultSchema();
+						this.isAbstractTablePerClass() ?
+								null
+							:
+								this.getContextDefaultSchema();
 	}
 
 	public String getDefaultCatalog() {
 		JavaEntity javaEntity = this.getJavaEntity();
 		if (javaEntity != null) {
-			if (this.isMetadataComplete() || this.table.hasSpecifiedResourceTable()) {
-				return javaEntity.getTable().getDefaultCatalog();
+			JavaTable javaTable = javaEntity.getTable();
+			if ( ! this.isMetadataComplete()
+					&& ! this.table.isResourceSpecified()
+					&& javaTable.getSpecifiedCatalog() != null) {
+				return javaTable.getSpecifiedCatalog();
 			}
-			return javaEntity.getTable().getCatalog();
 		}
 
 		return this.isSingleTableDescendant() ?
 						this.getRootEntity().getTable().getCatalog()
 					:
-						this.getContextDefaultCatalog();
+						this.isAbstractTablePerClass() ?
+							null
+						:
+							this.getContextDefaultCatalog();
 	}
 
 	/**
@@ -1267,7 +1283,7 @@ public abstract class AbstractOrmEntity
 	 * Return whether the entity is abstract and is a part of a 
 	 * "table per class" inheritance hierarchy.
 	 */
-	public boolean isAbstractTablePerClass() {
+	protected boolean isAbstractTablePerClass() {
 		return isAbstract() && isTablePerClass();
 	}
 	
@@ -1980,7 +1996,7 @@ public abstract class AbstractOrmEntity
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
 
-		this.table.validate(messages, reporter);	
+		this.validateTable(messages, reporter);	
 		this.validateId(messages);
 		this.validateInheritance(messages, reporter);
 		this.validateGenerators(messages);
@@ -1997,6 +2013,37 @@ public abstract class AbstractOrmEntity
 		for (Iterator<OrmAssociationOverride> stream = this.associationOverrides(); stream.hasNext(); ) {
 			stream.next().validate(messages, reporter);
 		}
+	}
+	protected void validateTable(List<IMessage> messages, IReporter reporter) {
+		if (isAbstractTablePerClass()) {
+			if (this.table.isResourceSpecified()) {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.ENTITY_ABSTRACT_TABLE_PER_CLASS_DEFINES_TABLE,
+						new String[] {this.getName()},
+						this,
+						this.getTable().getValidationTextRange()
+					)
+				);
+			}			
+			return;
+		}
+		if (isSingleTableDescendant()) {
+			if (this.table.isResourceSpecified()) {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.ENTITY_SINGLE_TABLE_DESCENDANT_DEFINES_TABLE,
+						new String[] {this.getName()},
+						this,
+						this.getTable().getValidationTextRange()
+					)
+				);
+			}
+			return;
+		}
+		this.table.validate(messages, reporter);
 	}
 	
 	protected void validateId(List<IMessage> messages) {
@@ -2022,7 +2069,7 @@ public abstract class AbstractOrmEntity
 		if (isDiscriminatorColumnAllowed()) {
 			getDiscriminatorColumn().validate(messages, reporter);
 		}
-		else if (getDiscriminatorColumn().getResourceColumn() != null) {
+		else if (getDiscriminatorColumn().isResourceSpecified()) {
 			if (!isRoot()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(

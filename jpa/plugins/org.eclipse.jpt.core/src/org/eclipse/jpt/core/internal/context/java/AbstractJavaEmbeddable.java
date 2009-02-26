@@ -38,5 +38,13 @@ public abstract class AbstractJavaEmbeddable extends AbstractJavaTypeMapping imp
 	public boolean isMapped() {
 		return true;
 	}
+	
+	public boolean tableNameIsInvalid(String tableName) {
+		return false;
+	}
+	
+	public boolean shouldValidateDbInfo() {
+		return false;
+	}
 
 }

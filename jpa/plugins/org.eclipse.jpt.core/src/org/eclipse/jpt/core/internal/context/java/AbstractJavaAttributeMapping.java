@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
@@ -61,12 +60,8 @@ public abstract class AbstractJavaAttributeMapping<T extends JavaResourceNode>
 		return this.getPersistentAttribute().mappingIsDefault(this);
 	}
 
-	protected boolean embeddableOwned() {
-		return this.getTypeMapping().getKey() == MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY;
-	}
-	
-	protected boolean ownerIsEntity() {
-		return this.getTypeMapping().getKey() == MappingKeys.ENTITY_TYPE_MAPPING_KEY;
+	protected boolean shouldValidateDbInfo() {
+		return this.getTypeMapping().shouldValidateDbInfo() && connectionProfileIsActive();
 	}
 	
 	public TypeMapping getTypeMapping() {

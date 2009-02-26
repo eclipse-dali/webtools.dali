@@ -59,7 +59,7 @@ public class GenericJavaVersionMapping extends AbstractJavaAttributeMapping<Vers
 		return (ColumnAnnotation) getResourcePersistentAttribute().getNonNullSupportingAnnotation(ColumnAnnotation.ANNOTATION_NAME);
 	}
 
-	//************** IJavaAttributeMapping implementation ***************
+	//************** JavaAttributeMapping implementation ***************
 
 	public String getKey() {
 		return MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY;
@@ -179,7 +179,7 @@ public class GenericJavaVersionMapping extends AbstractJavaAttributeMapping<Vers
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
-		if (this.ownerIsEntity() && this.connectionProfileIsActive()) {
+		if (this.shouldValidateDbInfo()) {
 			this.validateColumn(messages, astRoot);
 		}
 		if (this.specifiedConverter != null) {

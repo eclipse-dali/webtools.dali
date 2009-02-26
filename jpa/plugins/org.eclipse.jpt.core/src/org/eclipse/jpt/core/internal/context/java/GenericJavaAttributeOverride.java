@@ -58,7 +58,11 @@ public class GenericJavaAttributeOverride extends AbstractJavaOverride
 	public ColumnAnnotation getResourceColumn() {
 		return this.getResourceOverride().getNonNullColumn();
 	}
-
+	
+	public ColumnAnnotation getResourceColumnOrNull() {
+		return this.getResourceOverride().getColumn();
+	}
+	
 	public String getDefaultColumnName() {
 		ColumnMapping columnMapping = getColumnMapping();
 		if (columnMapping == null) {

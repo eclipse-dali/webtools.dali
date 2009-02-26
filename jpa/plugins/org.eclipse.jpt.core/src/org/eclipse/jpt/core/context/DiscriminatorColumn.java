@@ -45,6 +45,11 @@ public interface DiscriminatorColumn extends NamedColumn
 
 		
 	/**
+	 * Return whether the column is specified in the resource.
+	 */
+	boolean isResourceSpecified();
+		
+	/**
 	 * interface allowing columns to be used in multiple places
 	 */
 	interface Owner extends NamedColumn.Owner {

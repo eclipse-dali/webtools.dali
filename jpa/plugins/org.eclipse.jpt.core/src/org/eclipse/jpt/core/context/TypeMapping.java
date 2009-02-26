@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -75,7 +75,13 @@ public interface TypeMapping extends JpaContextNode {
 	 * associated with the type mapping.
 	 */
 	boolean tableNameIsInvalid(String tableName);
-
+	
+	/**
+	 * Return whether database info (columns/tables) should be validated in this context.
+	 * For example, mapped superclasses cannot validate column information
+	 */
+	boolean shouldValidateDbInfo();
+	
 	/**
 	 * Return an Iterator of attributes. The attributes must be BasicMappings or
 	 * IdMappings found in this type mapping

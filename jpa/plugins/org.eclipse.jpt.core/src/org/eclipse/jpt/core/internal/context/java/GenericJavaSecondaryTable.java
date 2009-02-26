@@ -73,7 +73,11 @@ public class GenericJavaSecondaryTable
 	protected SecondaryTableAnnotation getResourceTable() {
 		return this.resourceSecondaryTable;
 	}
-
+	
+	public boolean isResourceSpecified() {
+		return true;
+	}
+	
 	// a secondary table doesn't have a default name
 	@Override
 	protected String buildDefaultName() {

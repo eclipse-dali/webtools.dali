@@ -302,7 +302,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends XmlMultiRela
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
-		if (this.ownerIsEntity() && (this.joinTableIsSpecified() || this.isRelationshipOwner())) {
+		if (this.shouldValidateDbInfo() && (this.joinTableIsSpecified() || this.isRelationshipOwner())) {
 			this.joinTable.validate(messages, reporter);
 		}
 		if (this.mappedBy != null) {

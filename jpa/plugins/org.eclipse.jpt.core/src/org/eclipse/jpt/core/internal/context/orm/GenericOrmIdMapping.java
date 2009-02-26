@@ -405,7 +405,7 @@ public class GenericOrmIdMapping
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
 		
-		if (this.connectionProfileIsActive() && this.ownerIsEntity()) {
+		if (this.shouldValidateDbInfo()) {
 			this.validateColumn(messages);
 		}
 		if (this.generatedValue != null) {

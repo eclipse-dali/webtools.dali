@@ -44,6 +44,14 @@ public class JavaNullTypeMapping extends AbstractJavaTypeMapping
 		return EmptyIterator.instance();
 	}
 
+	public boolean tableNameIsInvalid(String tableName) {
+		return false;
+	}
+	
+	public boolean shouldValidateDbInfo() {
+		return false;
+	}
+	
 	/**
 	 * We added this message here because the most likely solution is to add
 	 * an annotation to the .java file.

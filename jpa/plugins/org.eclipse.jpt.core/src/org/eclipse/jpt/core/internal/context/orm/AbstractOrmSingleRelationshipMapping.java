@@ -300,7 +300,7 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
-		if (this.connectionProfileIsActive()) {
+		if (this.shouldValidateDbInfo()) {
 			this.validateJoinColumns(messages);
 		}
 	}
@@ -310,7 +310,7 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 	//solution would be to not have the default joinColumns on the non-owning side.
 	//This would fix another bug that we show default joinColumns in this situation.
 	protected void validateJoinColumns(List<IMessage> messages) {
-		if (this.ownerIsEntity() && this.isRelationshipOwner()) {
+		if (this.isRelationshipOwner()) {
 			for (Iterator<OrmJoinColumn> stream = this.joinColumns(); stream.hasNext(); ) {
 				this.validateJoinColumn(stream.next(), messages);
 			}

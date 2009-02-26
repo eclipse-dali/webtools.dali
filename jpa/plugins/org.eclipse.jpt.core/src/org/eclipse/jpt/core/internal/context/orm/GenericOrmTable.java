@@ -42,10 +42,6 @@ public class GenericOrmTable
 		return this.resourceEntity.getTable();
 	}
 
-	public boolean hasSpecifiedResourceTable() {
-		return this.getResourceTable() != null;
-	}
-
 	@Override
 	protected XmlTable addResourceTable() {
 		XmlTable resourceTable = OrmFactory.eINSTANCE.createXmlTable();

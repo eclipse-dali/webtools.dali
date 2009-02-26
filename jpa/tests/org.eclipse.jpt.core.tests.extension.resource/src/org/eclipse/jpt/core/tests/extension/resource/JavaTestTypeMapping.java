@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.tests.extension.resource;
 import java.util.Iterator;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaTypeMapping;
+import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
 public class JavaTestTypeMapping extends AbstractJavaTypeMapping
 {
@@ -32,12 +33,18 @@ public class JavaTestTypeMapping extends AbstractJavaTypeMapping
 	}
 
 	public Iterator<String> correspondingAnnotationNames() {
-		// TODO Auto-generated method stub
-		return null;
+		return EmptyIterator.instance();
 	}
 
 	public boolean isMapped() {
 		return true;
 	}
 
+	public boolean tableNameIsInvalid(String tableName) {
+		return false;
+	}
+	
+	public boolean shouldValidateDbInfo() {
+		return false;
+	}
 }

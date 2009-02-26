@@ -80,6 +80,10 @@ public abstract class AbstractOrmTable
 	protected abstract String buildDefaultCatalog();
 	
 
+	public boolean isResourceSpecified() {
+		return this.getResourceTable() != null;
+	}
+
 	// ********** name **********
 
 	public String getName() {

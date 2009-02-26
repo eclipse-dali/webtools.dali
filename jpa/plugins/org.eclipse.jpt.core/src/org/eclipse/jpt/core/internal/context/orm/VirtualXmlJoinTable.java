@@ -116,6 +116,6 @@ public class VirtualXmlJoinTable extends AbstractJpaEObject implements XmlJoinTa
 	}
 
 	public boolean isSpecified() {
-		return this.javaJoinTable.isSpecified();
+		return this.javaJoinTable.isResourceSpecified();
 	}
 }

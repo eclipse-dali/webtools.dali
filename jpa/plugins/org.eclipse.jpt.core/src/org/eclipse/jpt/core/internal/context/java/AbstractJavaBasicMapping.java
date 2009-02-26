@@ -276,7 +276,7 @@ public abstract class AbstractJavaBasicMapping extends AbstractJavaAttributeMapp
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
-		if (this.ownerIsEntity() && this.connectionProfileIsActive()) {
+		if (this.shouldValidateDbInfo()) {
 			this.validateColumn(messages, astRoot);
 		}
 		if (this.specifiedConverter != null) {

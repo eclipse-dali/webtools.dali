@@ -14,7 +14,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AssociationOverride;
@@ -1253,26 +1252,37 @@ public abstract class AbstractJavaEntity
 	 * Table name defaults to the entity name.
 	 * If the entity is part of a single table inheritance hierarchy, table
 	 * name defaults to the root entity's table name.
+	 * If the entity is abstract and part of a table per class
+	 * inheritance hierarchy, the table name defaults to null, no table applies
 	 */
 	public String getDefaultTableName() {
 		return this.isSingleTableDescendant() ?
 						this.getRootEntity().getTable().getName()
 					:
-						this.getName();
+						this.isAbstractTablePerClass() ?
+								null
+							:
+								this.getName();
 	}
 
 	public String getDefaultSchema() {
 		return this.isSingleTableDescendant() ?
 						this.getRootEntity().getTable().getSchema()
 					:
-						this.getContextDefaultSchema();
+						this.isAbstractTablePerClass() ?
+							null
+						:
+							this.getContextDefaultSchema();
 	}
 
 	public String getDefaultCatalog() {
 		return this.isSingleTableDescendant() ?
 						this.getRootEntity().getTable().getCatalog()
 					:
-						this.getContextDefaultCatalog();
+						this.isAbstractTablePerClass() ?
+							null
+						:
+							this.getContextDefaultCatalog();
 	}
 
 	/**
@@ -1360,11 +1370,14 @@ public abstract class AbstractJavaEntity
 		return pkColumnName;
 	}
 
-	@Override
 	public boolean tableNameIsInvalid(String tableName) {
 		return ! CollectionTools.contains(this.associatedTableNamesIncludingInherited(), tableName);
 	}
-
+	
+	public boolean shouldValidateDbInfo() {
+		return !isAbstractTablePerClass();
+	}
+	
 	@Override
 	public Iterator<Table> associatedTables() {
 		return new CompositeIterator<Table>(this.getTable(), this.secondaryTables());
@@ -1905,7 +1918,7 @@ public abstract class AbstractJavaEntity
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
 		
-		this.table.validate(messages, reporter, astRoot);
+		this.validateTable(messages, reporter, astRoot);
 		this.validateId(messages, astRoot);
 		this.validateInheritance(messages, reporter, astRoot);
 		this.validateGenerators(messages, astRoot);
@@ -1923,6 +1936,38 @@ public abstract class AbstractJavaEntity
 			stream.next().validate(messages, reporter, astRoot);
 		}
 		
+	}
+	
+	protected void validateTable(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		if (isAbstractTablePerClass()) {
+			if (this.table.isResourceSpecified()) {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.ENTITY_ABSTRACT_TABLE_PER_CLASS_DEFINES_TABLE,
+						new String[] {this.getName()},
+						this,
+						this.getTable().getValidationTextRange(astRoot)
+					)
+				);
+			}			
+			return;
+		}
+		if (isSingleTableDescendant()) {
+			if (this.table.isResourceSpecified()) {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.ENTITY_SINGLE_TABLE_DESCENDANT_DEFINES_TABLE,
+						new String[] {this.getName()},
+						this,
+						this.getTable().getValidationTextRange(astRoot)
+					)
+				);
+			}
+			return;
+		}
+		this.table.validate(messages, reporter, astRoot);
 	}
 	
 	protected void validateId(List<IMessage> messages, CompilationUnit astRoot) {
@@ -1948,7 +1993,7 @@ public abstract class AbstractJavaEntity
 		if (isDiscriminatorColumnAllowed()) {
 			getDiscriminatorColumn().validate(messages, reporter, astRoot);
 		}
-		else if (getDiscriminatorColumn().getResourceDiscriminatorColumn() != null) {
+		else if (getDiscriminatorColumn().isResourceSpecified()) {
 			if (!isRoot()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(

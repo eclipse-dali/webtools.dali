@@ -137,6 +137,14 @@ public abstract class AbstractJavaMappedSuperclass extends AbstractJavaTypeMappi
 		};
 	}
 
+	public boolean tableNameIsInvalid(String tableName) {
+		return false;
+	}
+	
+	public boolean shouldValidateDbInfo() {
+		return false;
+	}
+
 	@Override
 	public void initialize(JavaResourcePersistentType persistentTypeResource) {
 		super.initialize(persistentTypeResource);

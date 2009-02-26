@@ -80,6 +80,21 @@ public class OrmTableTests extends ContextModelTestCase
 		};
 		this.javaProject.createCompilationUnit(PACKAGE_NAME, "AnnotationTestTypeChild.java", sourceWriter);
 	}
+
+	private ICompilationUnit createAbstractTestEntity() throws Exception {
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.INHERITANCE, JPA.INHERITANCE_TYPE);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity").append(CR);
+				sb.append("@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)").append(CR);
+				sb.append("abstract");
+			}
+		});
+	}
 	
 	public void testUpdateSpecifiedName() throws Exception {
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.foo");
@@ -764,5 +779,49 @@ public class OrmTableTests extends ContextModelTestCase
 //		entityResource.setTable(OrmFactory.eINSTANCE.createXmlTableImpl());
 //		assertEquals(0,  ormEntity.getTable().uniqueConstraintsSize());
 //	}
+	
+	public void testAbstractEntityGetDefaultNameTablePerClassInheritance() throws Exception {
+		createAbstractTestEntity();
+		createTestSubType();
+		OrmPersistentType abstractPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		OrmEntity abstractEntity = (OrmEntity) abstractPersistentType.getMapping();
+		OrmPersistentType concretePersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".AnnotationTestTypeChild");
+		OrmEntity concreteEntity = (OrmEntity) concretePersistentType.getMapping();		
+		
+		assertEquals(null, abstractEntity.getSpecifiedInheritanceStrategy());
+		assertEquals(InheritanceType.TABLE_PER_CLASS, abstractEntity.getDefaultInheritanceStrategy());
+		assertEquals(null, concreteEntity.getSpecifiedInheritanceStrategy());
+		assertEquals(InheritanceType.TABLE_PER_CLASS, concreteEntity.getDefaultInheritanceStrategy());
+		
+		
+		assertEquals(null, abstractEntity.getTable().getDefaultName());
+		assertEquals(null, abstractEntity.getTable().getDefaultCatalog());
+		assertEquals(null, abstractEntity.getTable().getDefaultSchema());
+			
+		assertEquals("AnnotationTestTypeChild", concreteEntity.getTable().getDefaultName());
+		assertEquals(null, concreteEntity.getTable().getDefaultCatalog());
+		assertEquals(null, concreteEntity.getTable().getDefaultSchema());
+		
+		//meta-data complete true, inheritance strategy no single-table
+		getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
+		assertEquals(TYPE_NAME, abstractEntity.getTable().getDefaultName());
+		assertEquals(null, abstractEntity.getTable().getDefaultCatalog());
+		assertEquals(null, abstractEntity.getTable().getDefaultSchema());	
+		
+		assertEquals("AnnotationTestType", concreteEntity.getTable().getDefaultName());
+		assertEquals(null, concreteEntity.getTable().getDefaultCatalog());
+		assertEquals(null, concreteEntity.getTable().getDefaultSchema());
+		
+		
+		//set inheritance strategy to table-per-class in orm.xml
+		abstractEntity.setSpecifiedInheritanceStrategy(InheritanceType.TABLE_PER_CLASS);
+		assertEquals(null, abstractEntity.getTable().getDefaultName());
+		assertEquals(null, abstractEntity.getTable().getDefaultCatalog());
+		assertEquals(null, abstractEntity.getTable().getDefaultSchema());
+			
+		assertEquals("AnnotationTestTypeChild", concreteEntity.getTable().getDefaultName());
+		assertEquals(null, concreteEntity.getTable().getDefaultCatalog());
+		assertEquals(null, concreteEntity.getTable().getDefaultSchema());
+	}
 
 }

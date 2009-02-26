@@ -15,12 +15,15 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.context.Entity;
+import org.eclipse.jpt.core.context.InheritanceType;
 import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.UniqueConstraint;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.java.JavaUniqueConstraint;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.context.persistence.ClassRef;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.java.TableAnnotation;
@@ -30,6 +33,7 @@ import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
+@SuppressWarnings("nls")
 public class JavaTableTests extends ContextModelTestCase
 {
 	private static final String TABLE_NAME = "MY_TABLE";
@@ -79,6 +83,20 @@ public class JavaTableTests extends ContextModelTestCase
 		});
 	}
 
+	private ICompilationUnit createAbstractTestEntity() throws Exception {
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.INHERITANCE, JPA.INHERITANCE_TYPE);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity").append(CR);
+				sb.append("@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)").append(CR);
+				sb.append("abstract");
+			}
+		});
+	}
 
 		
 	public JavaTableTests(String name) {
@@ -543,4 +561,35 @@ public class JavaTableTests extends ContextModelTestCase
 		uniqueConstraints = table.uniqueConstraints();
 		assertFalse(uniqueConstraints.hasNext());
 	}
+	
+	public void testAbstractEntityGetDefaultNameTablePerClassInheritance() throws Exception {
+		createAbstractTestEntity();
+		createTestSubType();
+		
+		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		ListIterator<ClassRef> specifiedClassRefs = getPersistenceUnit().specifiedClassRefs();
+		Entity concreteEntity = (Entity) specifiedClassRefs.next().getJavaPersistentType().getMapping();
+		assertEquals("AnnotationTestTypeChild", concreteEntity.getName());
+		
+		Entity abstractEntity = (Entity) specifiedClassRefs.next().getJavaPersistentType().getMapping();
+		assertEquals(TYPE_NAME, abstractEntity.getName());
+		
+		
+		assertEquals(InheritanceType.TABLE_PER_CLASS, abstractEntity.getSpecifiedInheritanceStrategy());
+		assertEquals(null, concreteEntity.getSpecifiedInheritanceStrategy());
+		assertEquals(InheritanceType.TABLE_PER_CLASS, concreteEntity.getDefaultInheritanceStrategy());
+		
+		
+		assertEquals(null, abstractEntity.getTable().getDefaultName());
+		assertEquals(null, abstractEntity.getTable().getDefaultCatalog());
+		assertEquals(null, abstractEntity.getTable().getDefaultSchema());
+		
+		
+		assertEquals("AnnotationTestTypeChild", concreteEntity.getTable().getDefaultName());
+		assertEquals(null, concreteEntity.getTable().getDefaultCatalog());
+		assertEquals(null, concreteEntity.getTable().getDefaultSchema());
+	}
+
 }

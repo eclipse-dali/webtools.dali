@@ -317,7 +317,7 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
 		
-		if (this.connectionProfileIsActive()) {
+		if (this.shouldValidateDbInfo()) {
 			this.validateJoinColumns(messages, astRoot);
 		}
 	}
@@ -327,7 +327,7 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 	// solution would be to not have the default join columns on the non-owning side.
 	// This would fix another bug that we show default join columns in this situation.
 	protected void validateJoinColumns(List<IMessage> messages, CompilationUnit astRoot) {
-		if (this.ownerIsEntity() && this.isRelationshipOwner()) {
+		if (this.isRelationshipOwner()) {
 			for (Iterator<JavaJoinColumn> stream = this.joinColumns(); stream.hasNext(); ) {
 				this.validateJoinColumn(stream.next(), messages, astRoot);
 			}

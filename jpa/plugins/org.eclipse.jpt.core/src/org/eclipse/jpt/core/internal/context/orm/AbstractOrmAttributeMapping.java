@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.List;
-import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.NonOwningMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
@@ -193,9 +192,9 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 	protected String getResourceMappingName() {
 		return this.resourceAttributeMapping.getName();
 	}
-	
-	protected boolean ownerIsEntity() {
-		return getTypeMapping().getKey() == MappingKeys.ENTITY_TYPE_MAPPING_KEY;
+
+	protected boolean shouldValidateDbInfo() {
+		return this.getTypeMapping().shouldValidateDbInfo() && connectionProfileIsActive();
 	}
 
 	public boolean contains(int textOffset) {

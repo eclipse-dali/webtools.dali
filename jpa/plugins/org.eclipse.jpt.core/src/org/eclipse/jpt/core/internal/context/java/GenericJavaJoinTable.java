@@ -104,11 +104,7 @@ public class GenericJavaJoinTable
 		return (JoinTableAnnotation) this.resourceAttribute.getNonNullSupportingAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
 	}
 	
-	/**
-	 * Return the join table java resource, null if the annotation does not exist.
-	 * Use getResourceTable() if you want a non null implementation
-	 */
-	protected JoinTableAnnotation getResourceJoinTable() {
+	protected JoinTableAnnotation getResourceTableOrNull() {
 		return (JoinTableAnnotation) this.resourceAttribute.getSupportingAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
 	}
 	
@@ -116,6 +112,9 @@ public class GenericJavaJoinTable
 		this.resourceAttribute.addSupportingAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
 	}
 	
+	public boolean isResourceSpecified() {
+		return getResourceTableOrNull() != null;
+	}
 	
 	//******************* IJoinTable implementation *****************
 
@@ -169,7 +168,7 @@ public class GenericJavaJoinTable
 			//cause change notifications to be sent to the UI in the wrong order
 			this.defaultJoinColumn = null;
 		}
-		if (getResourceJoinTable() == null) {
+		if (getResourceTableOrNull() == null) {
 			//Add the JoinTable before creating the specifiedJoinColumn.
 			//Otherwise we will remove it and create another during an update
 			//from the java resource model
@@ -274,7 +273,7 @@ public class GenericJavaJoinTable
 			//cause change notifications to be sent to the UI in the wrong order
 			this.defaultInverseJoinColumn = null;
 		}
-		if (getResourceJoinTable() == null) {
+		if (getResourceTableOrNull() == null) {
 			//Add the JoinTable before creating the specifiedJoinColumn.
 			//Otherwise we will remove it and create another during an update
 			//from the java resource model
@@ -332,10 +331,6 @@ public class GenericJavaJoinTable
 
 	public RelationshipMapping getRelationshipMapping() {
 		return this.getParent();
-	}
-
-	public boolean isSpecified() {
-		return getResourceJoinTable() != null;
 	}
 
 	@Override

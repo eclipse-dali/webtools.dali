@@ -26,6 +26,14 @@ public abstract class AbstractOrmEmbeddable extends AbstractOrmTypeMapping<XmlEm
 		super(parent, resourceMapping);
 	}
 	
+	public String getKey() {
+		return MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY;
+	}
+
+	public int getXmlSequence() {
+		return 2;
+	}
+	
 	public JavaEmbeddable getJavaEmbeddable() {
 		JavaPersistentType javaPersistentType = this.getJavaPersistentType();
 		if (javaPersistentType != null && javaPersistentType.getMappingKey() == MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY) {
@@ -44,12 +52,12 @@ public abstract class AbstractOrmEmbeddable extends AbstractOrmTypeMapping<XmlEm
 		}
 		return getJavaEmbeddable();
 	}
-	
-	public String getKey() {
-		return MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY;
-	}
 
 	public boolean tableNameIsInvalid(String tableName) {
+		return false;
+	}
+	
+	public boolean shouldValidateDbInfo() {
 		return false;
 	}
 
@@ -63,10 +71,6 @@ public abstract class AbstractOrmEmbeddable extends AbstractOrmTypeMapping<XmlEm
 
 	public Iterator<Table> associatedTablesIncludingInherited() {
 		return EmptyIterator.instance();
-	}
-
-	public int getXmlSequence() {
-		return 2;
 	}
 
 	public void addToResourceModel(XmlEntityMappings entityMappings) {

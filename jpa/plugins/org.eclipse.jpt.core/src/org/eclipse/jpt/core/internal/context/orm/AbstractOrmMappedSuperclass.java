@@ -103,7 +103,11 @@ public abstract class AbstractOrmMappedSuperclass extends AbstractOrmTypeMapping
 	public boolean tableNameIsInvalid(String tableName) {
 		return false;
 	}
-
+	
+	public boolean shouldValidateDbInfo() {
+		return false;
+	}
+	
 	public Iterator<String> associatedTableNamesIncludingInherited() {
 		return EmptyIterator.instance();
 	}
