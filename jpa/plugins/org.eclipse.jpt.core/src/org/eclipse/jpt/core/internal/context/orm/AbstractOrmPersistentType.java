@@ -73,9 +73,9 @@ public abstract class AbstractOrmPersistentType
 	
 	protected AbstractOrmPersistentType(EntityMappings parent, XmlTypeMapping resourceMapping) {
 		super(parent);
-		this.typeMapping = buildTypeMapping(resourceMapping);
 		this.specifiedPersistentAttributes = new ArrayList<OrmPersistentAttribute>();
 		this.virtualPersistentAttributes = new ArrayList<OrmPersistentAttribute>();
+		this.typeMapping = buildTypeMapping(resourceMapping);
 		this.specifiedAccess = this.getResourceAccess();
 		this.defaultAccess = this.buildDefaultAccess();
 		this.initializeJavaPersistentType();
