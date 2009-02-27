@@ -3170,7 +3170,44 @@ public final class StringTools {
 	public static boolean stringIsNotEmpty(char[] string) {
 		return ! stringIsEmpty(string);
 	}
-
+	
+	/**
+	 * Return whether the specified strings are equal.
+	 * Check for nulls.
+	 */
+	public static boolean stringsAreEqual(String s1, String s2) {
+		if ((s1 == null) && (s2 == null)) {
+			return true;  // both are null
+		}
+		if ((s1 == null) || (s2 == null)) {
+			return false;  // one is null but the other is not
+		}
+		return s1.equals(s2);
+	}
+	
+	/**
+	 * Return whether the specified strings are equal.
+	 * Check for nulls.
+	 */
+	public static boolean stringsAreEqual(char[] s1, char[] s2) {
+		if ((s1 == null) && (s2 == null)) {
+			return true;  // both are null
+		}
+		if ((s1 == null) || (s2 == null)) {
+			return false;  // one is null but the other is not
+		}
+		int len = s1.length;
+		if (len != s2.length) {
+			return false;
+		}
+		for (int i = len; i-- > 0; ) {
+			if (s1[i] != s2[i]) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
 	/**
 	 * Return whether the specified strings are equal, ignoring case.
 	 * Check for nulls.

@@ -872,7 +872,23 @@ public class StringToolsTests extends TestCase {
 	private void verifyStringIsEmptyCharArray(String string) {
 		assertTrue(StringTools.stringIsEmpty(string.toCharArray()));
 	}
-
+	
+	public void testStringsAreEqualStringString() {
+		assertTrue(StringTools.stringsAreEqual((String) null, (String) null));
+		assertFalse(StringTools.stringsAreEqual(null, "asdf"));
+		assertFalse(StringTools.stringsAreEqual("asdf", null));
+		assertTrue(StringTools.stringsAreEqual("asdf", "asdf"));
+		assertFalse(StringTools.stringsAreEqual("asdf", "ASDF"));
+	}
+	
+	public void testStringsAreEqualCharArrayCharArray() {
+		assertTrue(StringTools.stringsAreEqual((char[]) null, (char[]) null));
+		assertFalse(StringTools.stringsAreEqual((char[]) null, "asdf".toCharArray()));
+		assertFalse(StringTools.stringsAreEqual("asdf".toCharArray(), (char[]) null));
+		assertTrue(StringTools.stringsAreEqual("asdf".toCharArray(), "asdf".toCharArray()));
+		assertFalse(StringTools.stringsAreEqual("asdf".toCharArray(), "ASDF".toCharArray()));
+	}
+	
 	public void testStringsAreEqualIgnoreCaseStringString() {
 		assertTrue(StringTools.stringsAreEqualIgnoreCase((String) null, (String) null));
 		assertFalse(StringTools.stringsAreEqualIgnoreCase(null, "asdf"));
