@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.AttributeOverride;
@@ -49,6 +48,7 @@ import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.orm.OrmGenerator;
 import org.eclipse.jpt.core.context.orm.OrmNamedNativeQuery;
 import org.eclipse.jpt.core.context.orm.OrmNamedQuery;
+import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmQuery;
@@ -81,6 +81,7 @@ import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeListIterator;
+import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
@@ -1357,33 +1358,61 @@ public abstract class AbstractOrmEntity
 			}
 		};
 	}
+	/**
+	 * Return an iterator of Entities, each which inherits from the one before,
+	 * and terminates at the root entity (or at the point of cyclicity).
+	 */
+	protected Iterator<TypeMapping> ancestors() {
+		return new TransformationIterator<PersistentType, TypeMapping>(getPersistentType().ancestors()) {
+			@Override
+			protected TypeMapping transform(PersistentType type) {
+				return type.getMapping();
+			}
+		};
+	}
+	
+	@Override
+	public Iterator<OrmPersistentAttribute> overridableAttributes() {
+		if (!isTablePerClass()) {
+			return EmptyIterator.instance();
+		}
+		return new FilteringIterator<OrmPersistentAttribute, OrmPersistentAttribute>(this.getPersistentType().attributes()) {
+			@Override
+			protected boolean accept(OrmPersistentAttribute o) {
+				return o.isOverridableAttribute();
+			}
+		};
+	}
+
+	@Override
+	public Iterator<OrmPersistentAttribute> overridableAssociations() {
+		if (!isTablePerClass()) {
+			return EmptyIterator.instance();
+		}
+		return new FilteringIterator<OrmPersistentAttribute, OrmPersistentAttribute>(this.getPersistentType().attributes()) {
+			@Override
+			protected boolean accept(OrmPersistentAttribute o) {
+				return o.isOverridableAssociation();
+			}
+		};
+	}
 	
 	@Override
 	public Iterator<PersistentAttribute> allOverridableAttributes() {
-		return new CompositeIterator<PersistentAttribute>(new TransformationIterator<TypeMapping, Iterator<PersistentAttribute>>(this.inheritanceHierarchy()) {
+		return new CompositeIterator<PersistentAttribute>(new TransformationIterator<TypeMapping, Iterator<PersistentAttribute>>(this.ancestors()) {
 			@Override
 			protected Iterator<PersistentAttribute> transform(TypeMapping mapping) {
 				return mapping.overridableAttributes();
 			}
 		});
 	}
-
+	
 	@Override
-	public Iterator<String> allOverridableAttributeNames() {
-		return new CompositeIterator<String>(new TransformationIterator<TypeMapping, Iterator<String>>(this.inheritanceHierarchy()) {
+	public Iterator<PersistentAttribute> allOverridableAssociations() {
+		return new CompositeIterator<PersistentAttribute>(new TransformationIterator<TypeMapping, Iterator<PersistentAttribute>>(this.ancestors()) {
 			@Override
-			protected Iterator<String> transform(TypeMapping mapping) {
-				return mapping.overridableAttributeNames();
-			}
-		});
-	}
-
-	@Override
-	public Iterator<String> allOverridableAssociationNames() {
-		return new CompositeIterator<String>(new TransformationIterator<TypeMapping, Iterator<String>>(this.inheritanceHierarchy()) {
-			@Override
-			protected Iterator<String> transform(TypeMapping mapping) {
-				return mapping.overridableAssociationNames();
+			protected Iterator<PersistentAttribute> transform(TypeMapping mapping) {
+				return mapping.overridableAssociations();
 			}
 		});
 	}

@@ -20,7 +20,6 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.java.MappedSuperclassAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
-import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 
 public abstract class AbstractJavaMappedSuperclass extends AbstractJavaTypeMapping
 	implements JavaMappedSuperclass
@@ -97,11 +96,6 @@ public abstract class AbstractJavaMappedSuperclass extends AbstractJavaTypeMappi
 	protected void removeResourceIdClass() {
 		this.javaResourcePersistentType.removeSupportingAnnotation(IdClassAnnotation.ANNOTATION_NAME);
 	}
-	
-	@Override
-	public Iterator<String> overridableAttributeNames() {
-		return this.namesOf(this.overridableAttributes());
-	}
 
 	@Override
 	public Iterator<JavaPersistentAttribute> overridableAttributes() {
@@ -114,25 +108,11 @@ public abstract class AbstractJavaMappedSuperclass extends AbstractJavaTypeMappi
 	}
 
 	@Override
-	public Iterator<String> overridableAssociationNames() {
-		return this.namesOf(this.overridableAssociations());
-	}
-
-	@Override
 	public Iterator<JavaPersistentAttribute> overridableAssociations() {
 		return new FilteringIterator<JavaPersistentAttribute, JavaPersistentAttribute>(this.getPersistentType().attributes()) {
 			@Override
 			protected boolean accept(JavaPersistentAttribute o) {
 				return o.isOverridableAssociation();
-			}
-		};
-	}
-
-	protected Iterator<String> namesOf(Iterator<JavaPersistentAttribute> attributes) {
-		return new TransformationIterator<JavaPersistentAttribute, String>(attributes) {
-			@Override
-			protected String transform(JavaPersistentAttribute attribute) {
-				return attribute.getName();
 			}
 		};
 	}

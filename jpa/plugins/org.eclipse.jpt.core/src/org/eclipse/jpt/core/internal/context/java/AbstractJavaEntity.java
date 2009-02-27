@@ -44,6 +44,7 @@ import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.java.JavaGenerator;
 import org.eclipse.jpt.core.context.java.JavaNamedNativeQuery;
 import org.eclipse.jpt.core.context.java.JavaNamedQuery;
+import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaQuery;
@@ -84,6 +85,7 @@ import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeListIterator;
+import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
@@ -1436,21 +1438,49 @@ public abstract class AbstractJavaEntity
 			}
 		};
 	}
-
-	@Override
-	public Iterator<String> allOverridableAttributeNames() {
-		return new CompositeIterator<String>(new TransformationIterator<TypeMapping, Iterator<String>>(this.inheritanceHierarchy()) {
+	
+	/**
+	 * Return an iterator of Entities, each which inherits from the one before,
+	 * and terminates at the root entity (or at the point of cyclicity).
+	 */
+	protected Iterator<TypeMapping> ancestors() {
+		return new TransformationIterator<PersistentType, TypeMapping>(getPersistentType().ancestors()) {
 			@Override
-			protected Iterator<String> transform(TypeMapping mapping) {
-				return mapping.overridableAttributeNames();
+			protected TypeMapping transform(PersistentType type) {
+				return type.getMapping();
 			}
-		});
+		};
 	}
 
+	@Override
+	public Iterator<JavaPersistentAttribute> overridableAttributes() {
+		if (!isTablePerClass()) {
+			return EmptyIterator.instance();
+		}
+		return new FilteringIterator<JavaPersistentAttribute, JavaPersistentAttribute>(this.getPersistentType().attributes()) {
+			@Override
+			protected boolean accept(JavaPersistentAttribute o) {
+				return o.isOverridableAttribute();
+			}
+		};
+	}
+
+	@Override
+	public Iterator<JavaPersistentAttribute> overridableAssociations() {
+		if (!isTablePerClass()) {
+			return EmptyIterator.instance();
+		}
+		return new FilteringIterator<JavaPersistentAttribute, JavaPersistentAttribute>(this.getPersistentType().attributes()) {
+			@Override
+			protected boolean accept(JavaPersistentAttribute o) {
+				return o.isOverridableAssociation();
+			}
+		};
+	}
 
 	@Override
 	public Iterator<PersistentAttribute> allOverridableAttributes() {
-		return new CompositeIterator<PersistentAttribute>(new TransformationIterator<TypeMapping, Iterator<PersistentAttribute>>(this.inheritanceHierarchy()) {
+		return new CompositeIterator<PersistentAttribute>(new TransformationIterator<TypeMapping, Iterator<PersistentAttribute>>(this.ancestors()) {
 			@Override
 			protected Iterator<PersistentAttribute> transform(TypeMapping mapping) {
 				return mapping.overridableAttributes();
@@ -1460,20 +1490,10 @@ public abstract class AbstractJavaEntity
 
 	@Override
 	public Iterator<PersistentAttribute> allOverridableAssociations() {
-		return new CompositeIterator<PersistentAttribute>(new TransformationIterator<TypeMapping, Iterator<PersistentAttribute>>(this.inheritanceHierarchy()) {
+		return new CompositeIterator<PersistentAttribute>(new TransformationIterator<TypeMapping, Iterator<PersistentAttribute>>(this.ancestors()) {
 			@Override
 			protected Iterator<PersistentAttribute> transform(TypeMapping mapping) {
 				return mapping.overridableAssociations();
-			}
-		});
-	}
-	
-	@Override
-	public Iterator<String> allOverridableAssociationNames() {
-		return new CompositeIterator<String>(new TransformationIterator<TypeMapping, Iterator<String>>(this.inheritanceHierarchy()) {
-			@Override
-			protected Iterator<String> transform(TypeMapping mapping) {
-				return mapping.overridableAssociationNames();
 			}
 		});
 	}

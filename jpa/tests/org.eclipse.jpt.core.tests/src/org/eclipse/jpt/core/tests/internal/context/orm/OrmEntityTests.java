@@ -15,9 +15,12 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AccessType;
+import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.DiscriminatorType;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.InheritanceType;
+import org.eclipse.jpt.core.context.PersistentAttribute;
+import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.java.JavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaSecondaryTable;
@@ -30,6 +33,7 @@ import org.eclipse.jpt.core.context.orm.OrmIdMapping;
 import org.eclipse.jpt.core.context.orm.OrmMappedSuperclass;
 import org.eclipse.jpt.core.context.orm.OrmNamedNativeQuery;
 import org.eclipse.jpt.core.context.orm.OrmNamedQuery;
+import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmSecondaryTable;
@@ -193,6 +197,36 @@ public class OrmEntityTests extends ContextModelTestCase
 				sb.append("@Entity").append(CR);
 				sb.append("@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)").append(CR);
 				sb.append("abstract");
+			}
+		});
+	}
+	
+	private ICompilationUnit createTestAbstractEntityTablePerClass() throws Exception {
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.INHERITANCE, JPA.INHERITANCE_TYPE, JPA.ONE_TO_ONE);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity").append(CR);
+				sb.append("@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)");
+				sb.append("abstract");
+			}
+			
+			@Override
+			public void appendGetIdMethodAnnotationTo(StringBuilder sb) {
+				sb.append("private String foo;").append(CR);
+				sb.append(CR);
+				sb.append("    @OneToOne");
+				sb.append(CR);
+				sb.append("    private int address;").append(CR);
+				sb.append(CR);
+				sb.append("    @OneToOne");
+				sb.append(CR);
+				sb.append("    private int address2;").append(CR);
+				sb.append(CR);
+				sb.append("    ");
 			}
 		});
 	}
@@ -1471,64 +1505,6 @@ public class OrmEntityTests extends ContextModelTestCase
 		
 	}
 	
-//	public void testAddSpecifiedAttributeOverride() throws Exception {
-//		OrmPersistentType persistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-//		OrmEntity ormEntity = (OrmEntity) persistentType.getMapping();
-//		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
-//
-//		OrmAttributeOverride attributeOverride = ormEntity.addSpecifiedAttributeOverride(0);
-//		attributeOverride.setName("FOO");
-//				
-//		assertEquals("FOO", entityResource.getAttributeOverrides().get(0).getName());
-//		
-//		OrmAttributeOverride attributeOverride2 = ormEntity.addSpecifiedAttributeOverride(0);
-//		attributeOverride2.setName("BAR");
-//		
-//		assertEquals("BAR", entityResource.getAttributeOverrides().get(0).getName());
-//		assertEquals("FOO", entityResource.getAttributeOverrides().get(1).getName());
-//		
-//		OrmAttributeOverride attributeOverride3 = ormEntity.addSpecifiedAttributeOverride(1);
-//		attributeOverride3.setName("BAZ");
-//		
-//		assertEquals("BAR", entityResource.getAttributeOverrides().get(0).getName());
-//		assertEquals("BAZ", entityResource.getAttributeOverrides().get(1).getName());
-//		assertEquals("FOO", entityResource.getAttributeOverrides().get(2).getName());
-//		
-//		ListIterator<OrmAttributeOverride> attributeOverrides = ormEntity.specifiedAttributeOverrides();
-//		assertEquals(attributeOverride2, attributeOverrides.next());
-//		assertEquals(attributeOverride3, attributeOverrides.next());
-//		assertEquals(attributeOverride, attributeOverrides.next());
-//		
-//		attributeOverrides = ormEntity.specifiedAttributeOverrides();
-//		assertEquals("BAR", attributeOverrides.next().getName());
-//		assertEquals("BAZ", attributeOverrides.next().getName());
-//		assertEquals("FOO", attributeOverrides.next().getName());
-//	}
-//	
-//	public void testRemoveSpecifiedAttributeOverride() throws Exception {
-//		OrmPersistentType persistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-//		OrmEntity ormEntity = (OrmEntity) persistentType.getMapping();
-//
-//		ormEntity.addSpecifiedAttributeOverride(0).setName("FOO");
-//		ormEntity.addSpecifiedAttributeOverride(1).setName("BAR");
-//		ormEntity.addSpecifiedAttributeOverride(2).setName("BAZ");
-//		
-//		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
-//		assertEquals(3, entityResource.getAttributeOverrides().size());
-//		
-//		ormEntity.removeSpecifiedAttributeOverride(0);
-//		assertEquals(2, entityResource.getAttributeOverrides().size());
-//		assertEquals("BAR", entityResource.getAttributeOverrides().get(0).getName());
-//		assertEquals("BAZ", entityResource.getAttributeOverrides().get(1).getName());
-//
-//		ormEntity.removeSpecifiedAttributeOverride(0);
-//		assertEquals(1, entityResource.getAttributeOverrides().size());
-//		assertEquals("BAZ", entityResource.getAttributeOverrides().get(0).getName());
-//		
-//		ormEntity.removeSpecifiedAttributeOverride(0);
-//		assertEquals(0, entityResource.getAttributeOverrides().size());
-//	}
-	
 	public void testMoveSpecifiedAttributeOverride() throws Exception {
 		OrmPersistentType persistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmEntity ormEntity = (OrmEntity) persistentType.getMapping();
@@ -1730,63 +1706,111 @@ public class OrmEntityTests extends ContextModelTestCase
 		assertEquals("BAR", attributeOverride.getColumn().getDefaultTable());
 	}
 	
-//	public void testAddSpecifiedAssociationOverride() throws Exception {
-//		OrmPersistentType persistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-//		OrmEntity ormEntity = (OrmEntity) persistentType.getMapping();
-//		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
-//
-//		OrmAssociationOverride associationOverride = ormEntity.addSpecifiedAssociationOverride(0);
-//		associationOverride.setName("FOO");
-//				
-//		assertEquals("FOO", entityResource.getAssociationOverrides().get(0).getName());
-//		
-//		OrmAssociationOverride associationOverride2 = ormEntity.addSpecifiedAssociationOverride(0);
-//		associationOverride2.setName("BAR");
-//		
-//		assertEquals("BAR", entityResource.getAssociationOverrides().get(0).getName());
-//		assertEquals("FOO", entityResource.getAssociationOverrides().get(1).getName());
-//		
-//		OrmAssociationOverride associationOverride3 = ormEntity.addSpecifiedAssociationOverride(1);
-//		associationOverride3.setName("BAZ");
-//		
-//		assertEquals("BAR", entityResource.getAssociationOverrides().get(0).getName());
-//		assertEquals("BAZ", entityResource.getAssociationOverrides().get(1).getName());
-//		assertEquals("FOO", entityResource.getAssociationOverrides().get(2).getName());
-//		
-//		ListIterator<OrmAssociationOverride> associationOverrides = ormEntity.specifiedAssociationOverrides();
-//		assertEquals(associationOverride2, associationOverrides.next());
-//		assertEquals(associationOverride3, associationOverrides.next());
-//		assertEquals(associationOverride, associationOverrides.next());
-//		
-//		associationOverrides = ormEntity.specifiedAssociationOverrides();
-//		assertEquals("BAR", associationOverrides.next().getName());
-//		assertEquals("BAZ", associationOverrides.next().getName());
-//		assertEquals("FOO", associationOverrides.next().getName());
-//	}
-//	
-//	public void testRemoveSpecifiedAssociationOverride() throws Exception {
-//		OrmPersistentType persistentType = entityMappings().addOrmPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-//		OrmEntity ormEntity = (OrmEntity) persistentType.getMapping();
-//
-//		ormEntity.addSpecifiedAssociationOverride(0).setName("FOO");
-//		ormEntity.addSpecifiedAssociationOverride(1).setName("BAR");
-//		ormEntity.addSpecifiedAssociationOverride(2).setName("BAZ");
-//		
-//		XmlEntity entityResource = ormResource().getEntityMappings().getEntities().get(0);
-//		assertEquals(3, entityResource.getAssociationOverrides().size());
-//		
-//		ormEntity.removeSpecifiedAssociationOverride(0);
-//		assertEquals(2, entityResource.getAssociationOverrides().size());
-//		assertEquals("BAR", entityResource.getAssociationOverrides().get(0).getName());
-//		assertEquals("BAZ", entityResource.getAssociationOverrides().get(1).getName());
-//
-//		ormEntity.removeSpecifiedAssociationOverride(0);
-//		assertEquals(1, entityResource.getAssociationOverrides().size());
-//		assertEquals("BAZ", entityResource.getAssociationOverrides().get(0).getName());
-//		
-//		ormEntity.removeSpecifiedAssociationOverride(0);
-//		assertEquals(0, entityResource.getAssociationOverrides().size());
-//	}
+	public void testOverridableAttributes() throws Exception {
+		createTestEntityDefaultFieldAccess();
+		
+		OrmPersistentType persistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		Entity entity = (Entity) persistentType.getMapping();
+		Iterator<OrmPersistentAttribute> overridableAttributes = persistentType.getMapping().overridableAttributes();
+		assertFalse(overridableAttributes.hasNext());
+		
+		
+		entity.setSpecifiedInheritanceStrategy(InheritanceType.TABLE_PER_CLASS);
+		
+		overridableAttributes = entity.overridableAttributes();		
+		assertEquals("id", overridableAttributes.next().getName());
+		assertEquals("name", overridableAttributes.next().getName());
+		assertFalse(overridableAttributes.hasNext());
+	}
+
+	public void testOverridableAttributeNames() throws Exception {
+		createTestEntityDefaultFieldAccess();
+		
+		OrmPersistentType persistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		Entity entity = (Entity) persistentType.getMapping();
+		Iterator<String> overridableAttributeNames = persistentType.getMapping().overridableAttributeNames();
+		
+		
+		entity.setSpecifiedInheritanceStrategy(InheritanceType.TABLE_PER_CLASS);
+		
+		overridableAttributeNames = entity.overridableAttributeNames();
+		assertEquals("id", overridableAttributeNames.next());
+		assertEquals("name", overridableAttributeNames.next());
+		assertFalse(overridableAttributeNames.hasNext());
+	}
+
+	public void testAllOverridableAttributes() throws Exception {
+		createTestMappedSuperclass();
+		createTestSubType();
+		OrmPersistentType persistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_CHILD_TYPE_NAME);
+		getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);		
+		OrmEntity entity = (OrmEntity) persistentType.getMapping();
+	
+		Iterator<PersistentAttribute> overridableAttributes = entity.allOverridableAttributes();
+		assertEquals("id", overridableAttributes.next().getName());
+		assertEquals("name", overridableAttributes.next().getName());
+		assertEquals("foo", overridableAttributes.next().getName());
+		assertFalse(overridableAttributes.hasNext());
+	}
+
+	public void testAllOverridableAttributesTablePerClass() throws Exception {
+		createTestAbstractEntityTablePerClass();
+		createTestSubType();
+		OrmPersistentType persistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_CHILD_TYPE_NAME);
+		OrmPersistentType abstractPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);		
+		OrmEntity entity = (OrmEntity) persistentType.getMapping();
+		OrmEntity abstractEntity = (OrmEntity) abstractPersistentType.getMapping();
+	
+		Iterator<PersistentAttribute> overridableAttributes = entity.allOverridableAttributes();
+		assertEquals("id", overridableAttributes.next().getName());
+		assertEquals("name", overridableAttributes.next().getName());
+		assertEquals("foo", overridableAttributes.next().getName());
+		assertFalse(overridableAttributes.hasNext());
+		
+		
+		overridableAttributes = abstractEntity.allOverridableAttributes();
+		assertFalse(overridableAttributes.hasNext());
+	}
+	
+	public void testDefaultAttributeOverridesEntityHierachy() throws Exception {
+		createTestAbstractEntityTablePerClass();
+		createTestSubType();
+		
+		PersistentType abstractPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		PersistentType concretePersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_CHILD_TYPE_NAME);
+		Entity concreteEntity =(Entity) concretePersistentType.getMapping();
+		
+		assertEquals(3, concreteEntity.virtualAttributeOverridesSize());
+		AttributeOverride virtualAttributeOverride = concreteEntity.virtualAttributeOverrides().next();
+		assertEquals("id", virtualAttributeOverride.getName());
+		assertEquals("id", virtualAttributeOverride.getColumn().getName());
+		assertEquals(CHILD_TYPE_NAME, virtualAttributeOverride.getColumn().getTable());
+		
+		
+		OrmBasicMapping idMapping = (OrmBasicMapping) abstractPersistentType.getAttributeNamed("id").getMapping();
+		idMapping.getPersistentAttribute().makeSpecified();
+		idMapping = (OrmBasicMapping) abstractPersistentType.getAttributeNamed("id").getMapping();
+		idMapping.getColumn().setSpecifiedName("FOO");
+		idMapping.getColumn().setSpecifiedTable("BAR");
+		
+
+		assertEquals(3, concreteEntity.virtualAttributeOverridesSize());
+		virtualAttributeOverride = concreteEntity.virtualAttributeOverrides().next();
+		assertEquals("id", virtualAttributeOverride.getName());
+		assertEquals("FOO", virtualAttributeOverride.getColumn().getName());
+		assertEquals("BAR", virtualAttributeOverride.getColumn().getTable());
+
+		idMapping.getColumn().setSpecifiedName(null);
+		idMapping.getColumn().setSpecifiedTable(null);
+
+		virtualAttributeOverride = concreteEntity.virtualAttributeOverrides().next();
+		assertEquals("id", virtualAttributeOverride.getName());
+		assertEquals("id", virtualAttributeOverride.getColumn().getName());
+		assertEquals(CHILD_TYPE_NAME, virtualAttributeOverride.getColumn().getTable());
+		
+		virtualAttributeOverride = virtualAttributeOverride.setVirtual(false);
+		assertEquals(2, concreteEntity.virtualAttributeOverridesSize());
+	}
 	
 	public void testMoveSpecifiedAssociationOverride() throws Exception {
 		OrmPersistentType persistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);

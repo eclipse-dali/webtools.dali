@@ -21,6 +21,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
+import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 
 
 public abstract class AbstractJavaTypeMapping extends AbstractJavaJpaContextNode
@@ -89,11 +90,11 @@ public abstract class AbstractJavaTypeMapping extends AbstractJavaJpaContextNode
 	}
 	
 	public Iterator<String> overridableAttributeNames() {
-		return EmptyIterator.instance();
+		return this.namesOf(this.overridableAttributes());
 	}
 
 	public Iterator<String> allOverridableAttributeNames() {
-		return EmptyIterator.instance();
+		return this.namesOf(this.allOverridableAttributes());
 	}
 
 	public Iterator<JavaPersistentAttribute> overridableAssociations() {
@@ -101,7 +102,7 @@ public abstract class AbstractJavaTypeMapping extends AbstractJavaJpaContextNode
 	}
 	
 	public Iterator<String> overridableAssociationNames() {
-		return EmptyIterator.instance();
+		return this.namesOf(this.overridableAssociations());
 	}
 
 	public Iterator<PersistentAttribute> allOverridableAssociations() {
@@ -109,9 +110,18 @@ public abstract class AbstractJavaTypeMapping extends AbstractJavaJpaContextNode
 	}
 	
 	public Iterator<String> allOverridableAssociationNames() {
-		return EmptyIterator.instance();
+		return this.namesOf(this.allOverridableAssociations());
 	}
 	
+	protected Iterator<String> namesOf(Iterator<? extends PersistentAttribute> attributes) {
+		return new TransformationIterator<PersistentAttribute, String>(attributes) {
+			@Override
+			protected String transform(PersistentAttribute attribute) {
+				return attribute.getName();
+			}
+		};
+	}
+
 	//******************** updatating *********************
 	public void initialize(JavaResourcePersistentType jrpt) {
 		this.javaResourcePersistentType = jrpt;

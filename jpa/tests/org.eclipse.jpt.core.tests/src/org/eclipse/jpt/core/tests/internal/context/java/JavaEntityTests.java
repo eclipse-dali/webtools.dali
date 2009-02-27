@@ -161,6 +161,36 @@ public class JavaEntityTests extends ContextModelTestCase
 			}
 		});
 	}
+	
+	private ICompilationUnit createTestAbstractEntityTablePerClass() throws Exception {
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.INHERITANCE, JPA.INHERITANCE_TYPE, JPA.ONE_TO_ONE);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity").append(CR);
+				sb.append("@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)");
+				sb.append("abstract");
+			}
+			
+			@Override
+			public void appendGetIdMethodAnnotationTo(StringBuilder sb) {
+				sb.append("private String foo;").append(CR);
+				sb.append(CR);
+				sb.append("    @OneToOne");
+				sb.append(CR);
+				sb.append("    private int address;").append(CR);
+				sb.append(CR);
+				sb.append("    @OneToOne");
+				sb.append(CR);
+				sb.append("    private int address2;").append(CR);
+				sb.append(CR);
+				sb.append("    ");
+			}
+		});
+	}
 
 	private ICompilationUnit createTestEntityWithName() throws Exception {
 		return this.createTestType(new DefaultAnnotationWriter() {
@@ -1537,6 +1567,14 @@ public class JavaEntityTests extends ContextModelTestCase
 	
 		Iterator<PersistentAttribute> overridableAttributes = getJavaEntity().overridableAttributes();
 		assertFalse(overridableAttributes.hasNext());
+		
+		
+		getJavaEntity().setSpecifiedInheritanceStrategy(InheritanceType.TABLE_PER_CLASS);
+		
+		overridableAttributes = getJavaEntity().overridableAttributes();		
+		assertEquals("id", overridableAttributes.next().getName());
+		assertEquals("name", overridableAttributes.next().getName());
+		assertFalse(overridableAttributes.hasNext());
 	}
 
 	public void testOverridableAttributeNames() throws Exception {
@@ -1544,6 +1582,14 @@ public class JavaEntityTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
 		Iterator<String> overridableAttributeNames = getJavaEntity().overridableAttributeNames();
+		assertFalse(overridableAttributeNames.hasNext());
+		
+		
+		getJavaEntity().setSpecifiedInheritanceStrategy(InheritanceType.TABLE_PER_CLASS);
+		
+		overridableAttributeNames = getJavaEntity().overridableAttributeNames();
+		assertEquals("id", overridableAttributeNames.next());
+		assertEquals("name", overridableAttributeNames.next());
 		assertFalse(overridableAttributeNames.hasNext());
 	}
 
@@ -1560,6 +1606,45 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertFalse(overridableAttributes.hasNext());
 	}
 	
+	public void testAllOverridableAttributesTablePerClass() throws Exception {
+		createTestAbstractEntityTablePerClass();
+		createTestSubType();
+		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+	
+		Iterator<PersistentAttribute> overridableAttributes = getJavaEntity().allOverridableAttributes();
+		assertEquals("id", overridableAttributes.next().getName());
+		assertEquals("name", overridableAttributes.next().getName());
+		assertEquals("foo", overridableAttributes.next().getName());
+		assertFalse(overridableAttributes.hasNext());
+		
+		
+		ListIterator<ClassRef> classRefs = getPersistenceUnit().specifiedClassRefs();
+		classRefs.next();
+		JavaEntity abstractEntity = (JavaEntity) classRefs.next().getJavaPersistentType().getMapping();
+		overridableAttributes = abstractEntity.allOverridableAttributes();
+		assertFalse(overridableAttributes.hasNext());
+	}
+	
+	public void testAllOverridableAssociationsTablePerClass() throws Exception {
+		createTestAbstractEntityTablePerClass();
+		createTestSubType();
+		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+	
+		Iterator<PersistentAttribute> overridableAssociations = getJavaEntity().allOverridableAssociations();
+		assertEquals("address", overridableAssociations.next().getName());
+		assertEquals("address2", overridableAssociations.next().getName());
+		assertFalse(overridableAssociations.hasNext());
+		
+		
+		ListIterator<ClassRef> classRefs = getPersistenceUnit().specifiedClassRefs();
+		classRefs.next();
+		JavaEntity abstractEntity = (JavaEntity) classRefs.next().getJavaPersistentType().getMapping();
+		overridableAssociations = abstractEntity.allOverridableAssociations();
+		assertFalse(overridableAssociations.hasNext());
+	}
+
 	public void testAllOverridableAttributesMappedSuperclassInOrmXml() throws Exception {
 		createTestMappedSuperclass();
 		createTestSubType();
@@ -1670,6 +1755,60 @@ public class JavaEntityTests extends ContextModelTestCase
 		MappedSuperclass mappedSuperclass = (MappedSuperclass) getJavaPersistentType().getMapping();
 		
 		BasicMapping idMapping = (BasicMapping) mappedSuperclass.getPersistentType().getAttributeNamed("id").getMapping();
+		idMapping.getColumn().setSpecifiedName("FOO");
+		idMapping.getColumn().setSpecifiedTable("BAR");
+		
+		assertEquals(SUB_TYPE_NAME, typeResource.getName());
+		assertNull(typeResource.getSupportingAnnotation(AttributeOverrideAnnotation.ANNOTATION_NAME));
+		assertNull(typeResource.getSupportingAnnotation(AttributeOverridesAnnotation.ANNOTATION_NAME));
+
+		assertEquals(3, javaEntity.virtualAttributeOverridesSize());
+		virtualAttributeOverride = javaEntity.virtualAttributeOverrides().next();
+		assertEquals("id", virtualAttributeOverride.getName());
+		assertEquals("FOO", virtualAttributeOverride.getColumn().getName());
+		assertEquals("BAR", virtualAttributeOverride.getColumn().getTable());
+
+		idMapping.getColumn().setSpecifiedName(null);
+		idMapping.getColumn().setSpecifiedTable(null);
+		assertEquals(SUB_TYPE_NAME, typeResource.getName());
+		assertNull(typeResource.getSupportingAnnotation(AttributeOverrideAnnotation.ANNOTATION_NAME));
+		assertNull(typeResource.getSupportingAnnotation(AttributeOverridesAnnotation.ANNOTATION_NAME));
+
+		virtualAttributeOverride = javaEntity.virtualAttributeOverrides().next();
+		assertEquals("id", virtualAttributeOverride.getName());
+		assertEquals("id", virtualAttributeOverride.getColumn().getName());
+		assertEquals(SUB_TYPE_NAME, virtualAttributeOverride.getColumn().getTable());
+		
+		virtualAttributeOverride = virtualAttributeOverride.setVirtual(false);
+		assertEquals(2, javaEntity.virtualAttributeOverridesSize());
+	}
+	
+	public void testDefaultAttributeOverridesEntityHierachy() throws Exception {
+		createTestAbstractEntityTablePerClass();
+		createTestSubType();
+			
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		addXmlClassRef(FULLY_QUALIFIED_SUB_TYPE_NAME);
+		
+		ListIterator<ClassRef> classRefs = getPersistenceUnit().specifiedClassRefs();
+		classRefs.next();
+		JavaEntity javaEntity = (JavaEntity) classRefs.next().getJavaPersistentType().getMapping();
+
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_SUB_TYPE_NAME);
+		assertEquals(SUB_TYPE_NAME, typeResource.getName());
+		assertNull(typeResource.getSupportingAnnotation(AttributeOverrideAnnotation.ANNOTATION_NAME));
+		assertNull(typeResource.getSupportingAnnotation(AttributeOverridesAnnotation.ANNOTATION_NAME));
+		
+		assertEquals(3, javaEntity.virtualAttributeOverridesSize());
+		AttributeOverride virtualAttributeOverride = javaEntity.virtualAttributeOverrides().next();
+		assertEquals("id", virtualAttributeOverride.getName());
+		assertEquals("id", virtualAttributeOverride.getColumn().getName());
+		assertEquals(SUB_TYPE_NAME, virtualAttributeOverride.getColumn().getTable());
+		
+
+		JavaEntity superclass = (JavaEntity) getJavaPersistentType().getMapping();
+		
+		BasicMapping idMapping = (BasicMapping) superclass.getPersistentType().getAttributeNamed("id").getMapping();
 		idMapping.getColumn().setSpecifiedName("FOO");
 		idMapping.getColumn().setSpecifiedTable("BAR");
 		

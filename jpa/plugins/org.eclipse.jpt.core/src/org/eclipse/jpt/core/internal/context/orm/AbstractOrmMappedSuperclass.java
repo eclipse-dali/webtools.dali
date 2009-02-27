@@ -23,7 +23,6 @@ import org.eclipse.jpt.core.resource.orm.XmlIdClass;
 import org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
-import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 
 
 public abstract class AbstractOrmMappedSuperclass extends AbstractOrmTypeMapping<XmlMappedSuperclass>
@@ -121,11 +120,6 @@ public abstract class AbstractOrmMappedSuperclass extends AbstractOrmTypeMapping
 	}
 
 	@Override
-	public Iterator<String> overridableAttributeNames() {
-		return this.namesOf(this.overridableAttributes());
-	}
-
-	@Override
 	public Iterator<OrmPersistentAttribute> overridableAttributes() {
 		return new FilteringIterator<OrmPersistentAttribute, OrmPersistentAttribute>(this.getPersistentType().attributes()) {
 			@Override
@@ -136,25 +130,11 @@ public abstract class AbstractOrmMappedSuperclass extends AbstractOrmTypeMapping
 	}
 
 	@Override
-	public Iterator<String> overridableAssociationNames() {
-		return this.namesOf(this.overridableAssociations());
-	}
-
-	@Override
 	public Iterator<OrmPersistentAttribute> overridableAssociations() {
 		return new FilteringIterator<OrmPersistentAttribute, OrmPersistentAttribute>(this.getPersistentType().attributes()) {
 			@Override
 			protected boolean accept(OrmPersistentAttribute o) {
 				return o.isOverridableAssociation();
-			}
-		};
-	}
-
-	private Iterator<String> namesOf(Iterator<OrmPersistentAttribute> attributes) {
-		return new TransformationIterator<OrmPersistentAttribute, String>(attributes) {
-			@Override
-			protected String transform(OrmPersistentAttribute attribute) {
-				return attribute.getName();
 			}
 		};
 	}
