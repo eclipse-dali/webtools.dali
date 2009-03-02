@@ -70,7 +70,7 @@ public class EclipseLink1_1JavaMappedSuperclassComposite extends FormPane<JavaMa
 		{
 			@Override
 			protected AccessHolder buildValue_() {
-				return (AccessHolder) this.subject.getPersistentType();
+				return this.subject.getPersistentType();
 			}
 		};
 	}
