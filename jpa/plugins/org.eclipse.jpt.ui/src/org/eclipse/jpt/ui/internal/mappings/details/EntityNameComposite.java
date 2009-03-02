@@ -112,10 +112,10 @@ public class EntityNameComposite extends Pane<Entity>
 
 		if (defaultValue != null) {
 			return NLS.bind(
-				JptUiMappingsMessages.EntityGeneralSection_nameDefaultWithOneParam,
+				JptUiMappingsMessages.DefaultWithOneParam,
 				defaultValue
 			);
 		}
-		return JptUiMappingsMessages.EntityGeneralSection_nameDefaultEmpty;
+		return JptUiMappingsMessages.DefaultEmpty;
 	}
 }

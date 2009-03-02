@@ -71,8 +71,6 @@ public class JptUiMappingsMessages {
 	public static String EntityComposite_tableDefault;
 	public static String EntityComposite_tableNoDefaultSpecified;
 	public static String EntityGeneralSection_name;
-	public static String EntityGeneralSection_nameDefaultEmpty;
-	public static String EntityGeneralSection_nameDefaultWithOneParam;
 	public static String EntityNameComposite_name;
 	public static String EnumTypeComposite_ordinal;
 	public static String EnumTypeComposite_string;
