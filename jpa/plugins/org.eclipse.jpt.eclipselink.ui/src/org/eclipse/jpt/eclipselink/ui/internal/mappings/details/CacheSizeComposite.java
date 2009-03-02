@@ -114,7 +114,7 @@ public class CacheSizeComposite extends FormPane<Caching> {
 
 		Label label = addLabel(
 			container,
-			JptUiMappingsMessages.DefaultWithoutValue
+			JptUiMappingsMessages.DefaultEmpty
 		);
 
 		new LabeledControlUpdater(
@@ -136,7 +136,7 @@ public class CacheSizeComposite extends FormPane<Caching> {
 								Caching.DEFAULT_SIZE;
 
 				return NLS.bind(
-					JptUiMappingsMessages.DefaultWithValue,
+					JptUiMappingsMessages.DefaultWithOneParam,
 					defaultValue
 				);
 			}

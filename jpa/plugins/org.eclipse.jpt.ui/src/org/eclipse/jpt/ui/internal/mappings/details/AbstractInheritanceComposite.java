@@ -262,7 +262,7 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends For
 
 					if (defaultName.length() > 0) {
 						value = NLS.bind(
-							JptUiMappingsMessages.DefaultWithValue,
+							JptUiMappingsMessages.DefaultWithOneParam,
 							defaultName
 						);
 					}
@@ -472,7 +472,7 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends For
 
 			Label label = addLabel(
 				container,
-				JptUiMappingsMessages.DefaultWithoutValue
+				JptUiMappingsMessages.DefaultEmpty
 			);
 
 			new LabeledControlUpdater(
@@ -494,7 +494,7 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends For
 					                                             DiscriminatorColumn.DEFAULT_LENGTH;
 
 					return NLS.bind(
-						JptUiMappingsMessages.DefaultWithValue,
+						JptUiMappingsMessages.DefaultWithOneParam,
 						Integer.valueOf(defaultValue)
 					);
 				}

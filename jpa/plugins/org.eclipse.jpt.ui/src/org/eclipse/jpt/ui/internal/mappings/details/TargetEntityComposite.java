@@ -117,7 +117,7 @@ public class TargetEntityComposite extends FormPane<RelationshipMapping>
 	protected void initializeLayout(Composite container) {
 		Composite comboPane = addSubPane(container);
 		this.combo = addEditableCombo(comboPane);
-		this.combo.add(JptUiMappingsMessages.TargetEntityChooser_defaultEmpty);
+		this.combo.add(JptUiMappingsMessages.DefaultEmpty);
 		this.combo.addModifyListener(buildTargetEntityModifyListener());
 
 		Image image = FieldDecorationRegistry.getDefault().getFieldDecoration(FieldDecorationRegistry.DEC_CONTENT_PROPOSAL).getImage();
@@ -297,12 +297,12 @@ public class TargetEntityComposite extends FormPane<RelationshipMapping>
 
 		if (defaultValue != null) {
 			combo.add(NLS.bind(
-				JptUiMappingsMessages.TargetEntityChooser_defaultWithOneParam,
+				JptUiMappingsMessages.DefaultWithOneParam,
 				defaultValue
 			));
 		}
 		else {
-			combo.add(JptUiMappingsMessages.TargetEntityChooser_defaultEmpty);
+			combo.add(JptUiMappingsMessages.DefaultEmpty);
 		}
 	}
 
@@ -338,11 +338,11 @@ public class TargetEntityComposite extends FormPane<RelationshipMapping>
 		}
 		else {
 			String defaultValue = (subject != null) ? subject.getDefaultTargetEntity() : null;
-			String displayString = JptUiMappingsMessages.TargetEntityChooser_defaultEmpty;
+			String displayString = JptUiMappingsMessages.DefaultEmpty;
 
 			if (defaultValue != null) {
 				displayString = NLS.bind(
-					JptUiMappingsMessages.ColumnComposite_defaultWithOneParam,
+					JptUiMappingsMessages.DefaultWithOneParam,
 					defaultValue
 				);
 			}

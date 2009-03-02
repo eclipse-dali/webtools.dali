@@ -227,12 +227,12 @@ public class ConvertComposite extends FormPane<Convert>
 
 					if (defaultName.length() > 0) {
 						value = NLS.bind(
-							JptUiMappingsMessages.DefaultWithValue,
+							JptUiMappingsMessages.DefaultWithOneParam,
 							defaultName
 						);
 					}
 					else {
-						value = JptUiMappingsMessages.DefaultWithoutValue;
+						value = JptUiMappingsMessages.DefaultEmpty;
 					}
 				}
 

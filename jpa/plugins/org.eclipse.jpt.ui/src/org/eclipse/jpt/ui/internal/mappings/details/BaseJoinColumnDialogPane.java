@@ -200,12 +200,12 @@ public class BaseJoinColumnDialogPane<T extends BaseJoinColumnStateObject> exten
 
 					if (defaultName.length() > 0) {
 						value = NLS.bind(
-							JptUiMappingsMessages.DefaultWithValue,
+							JptUiMappingsMessages.DefaultWithOneParam,
 							defaultName
 						);
 					}
 					else {
-						value = JptUiMappingsMessages.DefaultWithoutValue;
+						value = JptUiMappingsMessages.DefaultEmpty;
 					}
 				}
 

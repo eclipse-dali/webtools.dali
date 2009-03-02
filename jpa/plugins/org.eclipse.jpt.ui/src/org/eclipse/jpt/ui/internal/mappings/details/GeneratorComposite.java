@@ -111,7 +111,7 @@ public abstract class GeneratorComposite<T extends Generator> extends Pane<Gener
 
 		Label label = addLabel(
 			container,
-			JptUiMappingsMessages.DefaultWithoutValue
+			JptUiMappingsMessages.DefaultEmpty
 		);
 
 		new LabeledControlUpdater(
@@ -130,7 +130,7 @@ public abstract class GeneratorComposite<T extends Generator> extends Pane<Gener
 			protected String transform(Integer value) {
 
 				if (value != null) {
-					return NLS.bind(JptUiMappingsMessages.DefaultWithValue, value);
+					return NLS.bind(JptUiMappingsMessages.DefaultWithOneParam, value);
 				}
 
 				return "";
@@ -163,7 +163,7 @@ public abstract class GeneratorComposite<T extends Generator> extends Pane<Gener
 
 		Label label = addLabel(
 			container,
-			JptUiMappingsMessages.DefaultWithoutValue
+			JptUiMappingsMessages.DefaultEmpty
 		);
 
 		new LabeledControlUpdater(
@@ -182,7 +182,7 @@ public abstract class GeneratorComposite<T extends Generator> extends Pane<Gener
 			protected String transform(Integer value) {
 
 				if (value != null) {
-					return NLS.bind(JptUiMappingsMessages.DefaultWithValue, value);
+					return NLS.bind(JptUiMappingsMessages.DefaultWithOneParam, value);
 				}
 
 				return "";

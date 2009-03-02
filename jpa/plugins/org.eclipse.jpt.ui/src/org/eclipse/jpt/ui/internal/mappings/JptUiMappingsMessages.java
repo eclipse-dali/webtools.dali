@@ -47,8 +47,6 @@ public class JptUiMappingsMessages {
 	public static String CatalogChooser_label;
 	public static String ColumnComposite_columnDefinition;
 	public static String ColumnComposite_columnSection;
-	public static String ColumnComposite_defaultEmpty;
-	public static String ColumnComposite_defaultWithOneParam;
 	public static String ColumnComposite_details;
 	public static String ColumnComposite_insertable;
 	public static String ColumnComposite_insertableWithDefault;
@@ -63,12 +61,9 @@ public class JptUiMappingsMessages {
 	public static String ColumnComposite_uniqueWithDefault;
 	public static String ColumnComposite_updatable;
 	public static String ColumnComposite_updatableWithDefault;
-	public static String DatabaseObjectCombo_defaultEmpty;
-	public static String DatabaseObjectCombo_defaultWithOneParm;
-	public static String DefaultWithoutValue;
-	public static String DefaultWithValue;
+	public static String DefaultEmpty;
+	public static String DefaultWithOneParam;
 	public static String ProviderDefault;
-	public static String DiscriminatorColumnComposite_defaultEmpty;
 	public static String DiscriminatorColumnComposite_discriminatorType;
 	public static String DiscriminatorColumnComposite_name;
 	public static String EntityComposite_inheritance;
@@ -116,8 +111,6 @@ public class JptUiMappingsMessages {
 	public static String AbstractInheritanceComposite_table_per_class;
 	public static String InverseJoinColumnDialog_editInverseJoinColumnTitle;
 	public static String JoinColumnComposite_add;
-	public static String JoinColumnComposite_defaultEmpty;
-	public static String JoinColumnComposite_defaultWithOneParam;
 	public static String JoinColumnComposite_edit;
 	public static String JoinColumnComposite_joinColumn;
 	public static String JoinColumnComposite_mappingBetweenTwoParams;
@@ -136,8 +129,6 @@ public class JptUiMappingsMessages {
 	public static String JoinColumnDialog_name;
 	public static String JoinColumnDialog_referencedColumnName;
 	public static String JoinColumnDialogPane_columnDefinition;
-	public static String JoinColumnDialogPane_defaultEmpty;
-	public static String JoinColumnDialogPane_defaultWithOneParam;
 	public static String JoinColumnDialogPane_insertable;
 	public static String JoinColumnDialogPane_insertableWithDefault;
 	public static String JoinColumnDialogPane_nullable;
@@ -148,8 +139,6 @@ public class JptUiMappingsMessages {
 	public static String JoinColumnDialogPane_updatable;
 	public static String JoinColumnDialogPane_updatableWithDefault;
 	public static String JoinTableComposite_add;
-	public static String JoinTableComposite_defaultEmpty;
-	public static String JoinTableComposite_defaultWithOneParam;
 	public static String JoinTableComposite_edit;
 	public static String JoinTableComposite_inverseJoinColumn;
 	public static String JoinTableComposite_joinColumn;
@@ -245,8 +234,6 @@ public class JptUiMappingsMessages {
 	public static String PrimaryKeyJoinColumnInSecondaryTableDialog_addTitle;
 	public static String PrimaryKeyJoinColumnInSecondaryTableDialog_editDescriptionTitle;
 	public static String PrimaryKeyJoinColumnInSecondaryTableDialog_editTitle;
-	public static String PrimaryKeyJoinColumnsComposite_defaultEmpty;
-	public static String PrimaryKeyJoinColumnsComposite_defaultWithOneParam;
 	public static String PrimaryKeyJoinColumnsComposite_edit;
 	public static String PrimaryKeyJoinColumnsComposite_mappingBetweenTwoParams;
 	public static String PrimaryKeyJoinColumnsComposite_mappingBetweenTwoParamsBothDefault;
@@ -289,8 +276,6 @@ public class JptUiMappingsMessages {
 	public static String SequenceGeneratorComposite_sequence;
 	public static String SequenceGeneratorComposite_sequenceGenerator;
 	public static String TableChooser_label;
-	public static String TableComposite_defaultEmpty;
-	public static String TableComposite_defaultWithOneParam;
 	public static String TableComposite_tableSection;
 	public static String TableGeneratorComposite_catalog;
 	public static String TableGeneratorComposite_default;
@@ -302,8 +287,6 @@ public class JptUiMappingsMessages {
 	public static String TableGeneratorComposite_tableGenerator;
 	public static String TableGeneratorComposite_valueColumn;
 	public static String TargetEntityChooser_browse;
-	public static String TargetEntityChooser_defaultEmpty;
-	public static String TargetEntityChooser_defaultWithOneParam;
 	public static String TargetEntityChooser_label;
 	public static String TargetEntityChooser_selectTypeTitle;
 	public static String TemporalTypeComposite_date;

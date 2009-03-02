@@ -342,7 +342,7 @@ public class GeneratedValueComposite extends FormPane<IdMapping>
 			JpaHelpContextIds.MAPPING_GENERATED_VALUE_STRATEGY
 		);
 
-		generatorNameCombo.add(JptUiMappingsMessages.TableComposite_defaultEmpty);
+		generatorNameCombo.add(JptUiMappingsMessages.DefaultEmpty);
 	}
 
 	private void populateGeneratorChoices() {

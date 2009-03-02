@@ -229,7 +229,7 @@ public class ColumnComposite extends FormPane<Column> {
 
 		Label label = addLabel(
 			container,
-			JptUiMappingsMessages.DefaultWithoutValue
+			JptUiMappingsMessages.DefaultEmpty
 		);
 
 		new LabeledControlUpdater(
@@ -251,7 +251,7 @@ public class ColumnComposite extends FormPane<Column> {
 				                                             Column.DEFAULT_LENGTH;
 
 				return NLS.bind(
-					JptUiMappingsMessages.DefaultWithValue,
+					JptUiMappingsMessages.DefaultWithOneParam,
 					Integer.valueOf(defaultValue)
 				);
 			}
@@ -283,7 +283,7 @@ public class ColumnComposite extends FormPane<Column> {
 
 		Label label = addLabel(
 			container,
-			JptUiMappingsMessages.DefaultWithoutValue
+			JptUiMappingsMessages.DefaultEmpty
 		);
 
 		new LabeledControlUpdater(
@@ -305,7 +305,7 @@ public class ColumnComposite extends FormPane<Column> {
 				                                             Column.DEFAULT_PRECISION;
 
 				return NLS.bind(
-					JptUiMappingsMessages.DefaultWithValue,
+					JptUiMappingsMessages.DefaultWithOneParam,
 					Integer.valueOf(defaultValue)
 				);
 			}
@@ -337,7 +337,7 @@ public class ColumnComposite extends FormPane<Column> {
 
 		Label label = addLabel(
 			container,
-			JptUiMappingsMessages.DefaultWithoutValue
+			JptUiMappingsMessages.DefaultEmpty
 		);
 
 		new LabeledControlUpdater(
@@ -359,7 +359,7 @@ public class ColumnComposite extends FormPane<Column> {
 				                                             Column.DEFAULT_SCALE;
 
 				return NLS.bind(
-					JptUiMappingsMessages.DefaultWithValue,
+					JptUiMappingsMessages.DefaultWithOneParam,
 					Integer.valueOf(defaultValue)
 				);
 			}

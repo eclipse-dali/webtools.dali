@@ -216,12 +216,12 @@ public abstract class DatabaseObjectCombo<T extends JpaNode>
 	}
 
 	protected String buildNullDefaultValueEntry() {
-		return JptUiMappingsMessages.DatabaseObjectCombo_defaultEmpty;
+		return JptUiMappingsMessages.DefaultEmpty;
 	}
 
 	protected String buildNonNullDefaultValueEntry(String defaultValue) {
 		return NLS.bind(
-						JptUiMappingsMessages.DatabaseObjectCombo_defaultWithOneParm,
+						JptUiMappingsMessages.DefaultWithOneParam,
 						defaultValue
 					);
 	}
