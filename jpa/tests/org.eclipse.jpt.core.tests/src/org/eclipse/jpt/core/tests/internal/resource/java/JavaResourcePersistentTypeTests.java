@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -98,8 +98,8 @@ public class JavaResourcePersistentTypeTests extends JavaResourceModelTestCase {
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
-				sb.append("@Entity(name=\"FirstEntity\")").append(CR);
-				sb.append("@Entity(name=\"SecondEntity\")");
+				sb.append("@Entity(name = \"FirstEntity\")").append(CR);
+				sb.append("@Entity(name = \"SecondEntity\")");
 			}
 		});
 	}
@@ -293,7 +293,7 @@ public class JavaResourcePersistentTypeTests extends JavaResourceModelTestCase {
 			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@Entity");
 				sb.append(CR);
-				sb.append("@Table(name=\"FOO\", schema=\"BAR\")");
+				sb.append("@Table(name = \"FOO\", schema = \"BAR\")");
 			}
 		});
 	}
@@ -329,9 +329,9 @@ public class JavaResourcePersistentTypeTests extends JavaResourceModelTestCase {
 			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@Entity");
 				sb.append(CR);
-				sb.append("@Table(name=\"FOO\")");
+				sb.append("@Table(name = \"FOO\")");
 				sb.append(CR);
-				sb.append("@Table(name=\"BAR\")");
+				sb.append("@Table(name = \"BAR\")");
 			}
 		});
 	}
@@ -346,7 +346,7 @@ public class JavaResourcePersistentTypeTests extends JavaResourceModelTestCase {
 			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@Entity");
 				sb.append(CR);
-				sb.append("@SecondaryTable(name=\"FOO\")");
+				sb.append("@SecondaryTable(name = \"FOO\")");
 			}
 		});
 	}
@@ -375,7 +375,7 @@ public class JavaResourcePersistentTypeTests extends JavaResourceModelTestCase {
 			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@Entity");
 				sb.append(CR);
-				sb.append("@SecondaryTables(@SecondaryTable(name=\"FOO\"))");
+				sb.append("@SecondaryTables(@SecondaryTable(name = \"FOO\"))");
 			}
 		});
 	}
@@ -390,7 +390,7 @@ public class JavaResourcePersistentTypeTests extends JavaResourceModelTestCase {
 			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@Entity");
 				sb.append(CR);
-				sb.append("@SecondaryTables({@SecondaryTable(name=\"FOO\"), @SecondaryTable(name=\"BAR\")})");
+				sb.append("@SecondaryTables({@SecondaryTable(name = \"FOO\"), @SecondaryTable(name = \"BAR\")})");
 			}
 		});
 	}
@@ -405,9 +405,9 @@ public class JavaResourcePersistentTypeTests extends JavaResourceModelTestCase {
 			public void appendTypeAnnotationTo(StringBuilder sb) {
 				sb.append("@Entity");
 				sb.append(CR);
-				sb.append("@SecondaryTable(name=\"FOO\")");
+				sb.append("@SecondaryTable(name = \"FOO\")");
 				sb.append(CR);
-				sb.append("@SecondaryTables({@SecondaryTable(name=\"BAR\"), @SecondaryTable(name=\"BAZ\")})");
+				sb.append("@SecondaryTables({@SecondaryTable(name = \"BAR\"), @SecondaryTable(name = \"BAZ\")})");
 			}
 		});
 	}
@@ -475,7 +475,7 @@ public class JavaResourcePersistentTypeTests extends JavaResourceModelTestCase {
 
 		TableAnnotation tableAnnotation = (TableAnnotation) jrpt.getSupportingAnnotation(JPA.TABLE);
 		tableAnnotation.setSchema(null);
-		assertSourceContains("@Table(name=\"FOO\")", cu);
+		assertSourceContains("@Table(name = \"FOO\")", cu);
 
 		tableAnnotation.setName(null);
 		assertSourceDoesNotContain("@Table", cu);
@@ -616,7 +616,7 @@ public class JavaResourcePersistentTypeTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		SecondaryTableAnnotation secondaryTableResource = (SecondaryTableAnnotation) typeResource.addSupportingAnnotation(0, JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
 		secondaryTableResource.setName("FOO");
-		assertSourceContains("@SecondaryTable(name=\"FOO\")", cu);
+		assertSourceContains("@SecondaryTable(name = \"FOO\")", cu);
 	}
 	
 	//  @Entity     				-->>    @Entity
@@ -627,7 +627,7 @@ public class JavaResourcePersistentTypeTests extends JavaResourceModelTestCase {
 		
 		SecondaryTableAnnotation secondaryTableResource = (SecondaryTableAnnotation) typeResource.addSupportingAnnotation(1, JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
 		secondaryTableResource.setName("BAR");
-		assertSourceContains("@SecondaryTables({@SecondaryTable(name=\"FOO\"),@SecondaryTable(name=\"BAR\")})", cu);
+		assertSourceContains("@SecondaryTables({@SecondaryTable(name = \"FOO\"),@SecondaryTable(name = \"BAR\")})", cu);
 		
 		assertNull(typeResource.getSupportingAnnotation(JPA.SECONDARY_TABLE));
 		assertNotNull(typeResource.getSupportingAnnotation(JPA.SECONDARY_TABLES));
@@ -646,7 +646,7 @@ public class JavaResourcePersistentTypeTests extends JavaResourceModelTestCase {
 		
 		SecondaryTableAnnotation secondaryTableResource = (SecondaryTableAnnotation) typeResource.addSupportingAnnotation(1, JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
 		secondaryTableResource.setName("BAR");
-		assertSourceContains("@SecondaryTables({@SecondaryTable(name=\"FOO\"),@SecondaryTable(name=\"BAR\")})", cu);
+		assertSourceContains("@SecondaryTables({@SecondaryTable(name = \"FOO\"),@SecondaryTable(name = \"BAR\")})", cu);
 		
 		assertNull(typeResource.getSupportingAnnotation(JPA.SECONDARY_TABLE));
 		assertNotNull(typeResource.getSupportingAnnotation(JPA.SECONDARY_TABLES));
@@ -659,7 +659,7 @@ public class JavaResourcePersistentTypeTests extends JavaResourceModelTestCase {
 		
 		SecondaryTableAnnotation secondaryTableResource = (SecondaryTableAnnotation) typeResource.addSupportingAnnotation(0, JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
 		secondaryTableResource.setName("BAR");
-		assertSourceContains("@SecondaryTables({@SecondaryTable(name=\"BAR\"),@SecondaryTable(name=\"FOO\")})", cu);
+		assertSourceContains("@SecondaryTables({@SecondaryTable(name = \"BAR\"),@SecondaryTable(name = \"FOO\")})", cu);
 		
 		assertNull(typeResource.getSupportingAnnotation(JPA.SECONDARY_TABLE));
 		assertNotNull(typeResource.getSupportingAnnotation(JPA.SECONDARY_TABLES));
@@ -672,7 +672,7 @@ public class JavaResourcePersistentTypeTests extends JavaResourceModelTestCase {
 		
 		SecondaryTableAnnotation secondaryTableResource = (SecondaryTableAnnotation) typeResource.addSupportingAnnotation(0, JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
 		secondaryTableResource.setName("BAR");
-		assertSourceContains("@SecondaryTables({@SecondaryTable(name=\"BAR\"),@SecondaryTable(name=\"FOO\")})", cu);
+		assertSourceContains("@SecondaryTables({@SecondaryTable(name = \"BAR\"),@SecondaryTable(name = \"FOO\")})", cu);
 		
 		assertNull(typeResource.getSupportingAnnotation(JPA.SECONDARY_TABLE));
 		assertNotNull(typeResource.getSupportingAnnotation(JPA.SECONDARY_TABLES));
@@ -680,7 +680,7 @@ public class JavaResourcePersistentTypeTests extends JavaResourceModelTestCase {
 
 		secondaryTableResource = (SecondaryTableAnnotation) typeResource.addSupportingAnnotation(0, JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
 		secondaryTableResource.setName("BAZ");
-		assertSourceContains("@SecondaryTables({@SecondaryTable(name=\"BAZ\"),@SecondaryTable(name=\"BAR\"), @SecondaryTable(name=\"FOO\")})", cu);
+		assertSourceContains("@SecondaryTables({@SecondaryTable(name = \"BAZ\"),@SecondaryTable(name = \"BAR\"), @SecondaryTable(name = \"FOO\")})", cu);
 
 		assertEquals(3, CollectionTools.size(typeResource.supportingAnnotations(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES)));
 	}
@@ -702,7 +702,7 @@ public class JavaResourcePersistentTypeTests extends JavaResourceModelTestCase {
 		assertEquals(2, CollectionTools.size(typeResource.supportingAnnotations(JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES)));
 
 		SecondaryTableAnnotation secondaryTableResource = (SecondaryTableAnnotation) typeResource.addSupportingAnnotation(2, JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
-		assertSourceContains("@SecondaryTables({@SecondaryTable(name=\"BAR\"), @SecondaryTable(name=\"BAZ\"), @SecondaryTable})", cu);
+		assertSourceContains("@SecondaryTables({@SecondaryTable(name = \"BAR\"), @SecondaryTable(name = \"BAZ\"), @SecondaryTable})", cu);
 		secondaryTableResource.setName("BOO");
 		
 		assertNotNull(typeResource.getSupportingAnnotation(JPA.SECONDARY_TABLE));
@@ -717,7 +717,7 @@ public class JavaResourcePersistentTypeTests extends JavaResourceModelTestCase {
 		secondaryTableResource = (SecondaryTableAnnotation) secondaryTableAnnotations.next();	
 		assertEquals("BOO", secondaryTableResource.getName());
 		
-		assertSourceContains("@SecondaryTables({@SecondaryTable(name=\"BAR\"), @SecondaryTable(name=\"BAZ\"), @SecondaryTable(name=\"BOO\")})", cu);
+		assertSourceContains("@SecondaryTables({@SecondaryTable(name = \"BAR\"), @SecondaryTable(name = \"BAZ\"), @SecondaryTable(name = \"BOO\")})", cu);
 	}
 
 	//@Entity
@@ -750,8 +750,8 @@ public class JavaResourcePersistentTypeTests extends JavaResourceModelTestCase {
 	
 		typeResource.removeSupportingAnnotation(0, JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
 		
-		assertSourceDoesNotContain("@SecondaryTable(name=\"FOO\"", cu);
-		assertSourceContains("@SecondaryTable(name=\"BAR\"", cu);
+		assertSourceDoesNotContain("@SecondaryTable(name = \"FOO\"", cu);
+		assertSourceContains("@SecondaryTable(name = \"BAR\"", cu);
 		assertSourceDoesNotContain("@SecondaryTables", cu);
 	}
 	
@@ -761,10 +761,10 @@ public class JavaResourcePersistentTypeTests extends JavaResourceModelTestCase {
 	
 		SecondaryTableAnnotation newAnnotation = (SecondaryTableAnnotation)typeResource.addSupportingAnnotation(2, JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
 		newAnnotation.setName("BAZ");
-		assertSourceContains("@SecondaryTables({@SecondaryTable(name=\"FOO\"), @SecondaryTable(name=\"BAR\"), @SecondaryTable(name=\"BAZ", cu);
+		assertSourceContains("@SecondaryTables({@SecondaryTable(name = \"FOO\"), @SecondaryTable(name = \"BAR\"), @SecondaryTable(name = \"BAZ", cu);
 		
 		typeResource.removeSupportingAnnotation(1, JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
-		assertSourceContains("@SecondaryTables({@SecondaryTable(name=\"FOO\"), @SecondaryTable(name=\"BAZ\")})", cu);
+		assertSourceContains("@SecondaryTables({@SecondaryTable(name = \"FOO\"), @SecondaryTable(name = \"BAZ\")})", cu);
 	}
 	
 	public void testMoveJavaTypeAnnotation() throws Exception {
@@ -773,10 +773,10 @@ public class JavaResourcePersistentTypeTests extends JavaResourceModelTestCase {
 	
 		SecondaryTableAnnotation newAnnotation = (SecondaryTableAnnotation)typeResource.addSupportingAnnotation(2, JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
 		newAnnotation.setName("BAZ");
-		assertSourceContains("@SecondaryTables({@SecondaryTable(name=\"FOO\"), @SecondaryTable(name=\"BAR\"), @SecondaryTable(name=\"BAZ\")})", cu);
+		assertSourceContains("@SecondaryTables({@SecondaryTable(name = \"FOO\"), @SecondaryTable(name = \"BAR\"), @SecondaryTable(name = \"BAZ\")})", cu);
 		
 		typeResource.moveSupportingAnnotation(0, 2, JPA.SECONDARY_TABLES);
-		assertSourceContains("@SecondaryTables({@SecondaryTable(name=\"BAZ\"), @SecondaryTable(name=\"FOO\"), @SecondaryTable(name=\"BAR\")})", cu);
+		assertSourceContains("@SecondaryTables({@SecondaryTable(name = \"BAZ\"), @SecondaryTable(name = \"FOO\"), @SecondaryTable(name = \"BAR\")})", cu);
 	}
 	
 	public void testMoveJavaTypeAnnotation2() throws Exception {
@@ -785,10 +785,10 @@ public class JavaResourcePersistentTypeTests extends JavaResourceModelTestCase {
 	
 		SecondaryTableAnnotation newAnnotation = (SecondaryTableAnnotation)typeResource.addSupportingAnnotation(2, JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
 		newAnnotation.setName("BAZ");
-		assertSourceContains("@SecondaryTables({@SecondaryTable(name=\"FOO\"), @SecondaryTable(name=\"BAR\"), @SecondaryTable(name=\"BAZ\")})", cu);
+		assertSourceContains("@SecondaryTables({@SecondaryTable(name = \"FOO\"), @SecondaryTable(name = \"BAR\"), @SecondaryTable(name = \"BAZ\")})", cu);
 		
 		typeResource.moveSupportingAnnotation(2, 0, JPA.SECONDARY_TABLES);
-		assertSourceContains("@SecondaryTables({@SecondaryTable(name=\"BAR\"), @SecondaryTable(name=\"BAZ\"), @SecondaryTable(name=\"FOO\")})", cu);
+		assertSourceContains("@SecondaryTables({@SecondaryTable(name = \"BAR\"), @SecondaryTable(name = \"BAZ\"), @SecondaryTable(name = \"FOO\")})", cu);
 	}
 	
 	public void testNestedTypes() throws Exception {

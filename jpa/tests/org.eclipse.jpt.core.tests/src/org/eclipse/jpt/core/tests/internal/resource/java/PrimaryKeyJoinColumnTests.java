@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,6 +17,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.java.PrimaryKeyJoinColumnAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
+@SuppressWarnings("nls")
 public class PrimaryKeyJoinColumnTests extends JavaResourceModelTestCase {
 	
 	private static final String COLUMN_NAME = "MY_COLUMN";
@@ -48,7 +49,7 @@ public class PrimaryKeyJoinColumnTests extends JavaResourceModelTestCase {
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append("@PrimaryKeyJoinColumn(name=\"" + COLUMN_NAME + "\")");
+				sb.append("@PrimaryKeyJoinColumn(name = \"" + COLUMN_NAME + "\")");
 			}
 		});
 	}
@@ -61,7 +62,7 @@ public class PrimaryKeyJoinColumnTests extends JavaResourceModelTestCase {
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append("@PrimaryKeyJoinColumn(referencedColumnName=\"" + COLUMN_REFERENCED_COLUMN_NAME + "\")");
+				sb.append("@PrimaryKeyJoinColumn(referencedColumnName = \"" + COLUMN_REFERENCED_COLUMN_NAME + "\")");
 			}
 		});
 	}
@@ -74,7 +75,7 @@ public class PrimaryKeyJoinColumnTests extends JavaResourceModelTestCase {
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append("@PrimaryKeyJoinColumn(columnDefinition=\"" + COLUMN_COLUMN_DEFINITION + "\")");
+				sb.append("@PrimaryKeyJoinColumn(columnDefinition = \"" + COLUMN_COLUMN_DEFINITION + "\")");
 			}
 		});
 	}
@@ -110,7 +111,7 @@ public class PrimaryKeyJoinColumnTests extends JavaResourceModelTestCase {
 		column.setName("Foo");
 		assertEquals("Foo", column.getName());
 		
-		assertSourceContains("@PrimaryKeyJoinColumn(name=\"Foo\")", cu);
+		assertSourceContains("@PrimaryKeyJoinColumn(name = \"Foo\")", cu);
 	}
 	
 	public void testSetNameNull() throws Exception {
@@ -149,7 +150,7 @@ public class PrimaryKeyJoinColumnTests extends JavaResourceModelTestCase {
 		column.setReferencedColumnName("Foo");
 		assertEquals("Foo", column.getReferencedColumnName());
 		
-		assertSourceContains("@PrimaryKeyJoinColumn(referencedColumnName=\"Foo\")", cu);
+		assertSourceContains("@PrimaryKeyJoinColumn(referencedColumnName = \"Foo\")", cu);
 
 		
 		column.setReferencedColumnName(null);
@@ -176,7 +177,7 @@ public class PrimaryKeyJoinColumnTests extends JavaResourceModelTestCase {
 		column.setColumnDefinition("Foo");
 		assertEquals("Foo", column.getColumnDefinition());
 		
-		assertSourceContains("@PrimaryKeyJoinColumn(columnDefinition=\"Foo\")", cu);
+		assertSourceContains("@PrimaryKeyJoinColumn(columnDefinition = \"Foo\")", cu);
 
 		
 		column.setColumnDefinition(null);

@@ -17,6 +17,7 @@ import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
+@SuppressWarnings("nls")
 public class InheritanceTests extends JavaResourceModelTestCase {
 
 	public InheritanceTests(String name) {
@@ -44,7 +45,7 @@ public class InheritanceTests extends JavaResourceModelTestCase {
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
-				sb.append("@Inheritance(strategy=InheritanceType.JOINED)");
+				sb.append("@Inheritance(strategy = InheritanceType.JOINED)");
 			}
 		});
 	}
@@ -72,7 +73,7 @@ public class InheritanceTests extends JavaResourceModelTestCase {
 		InheritanceAnnotation inheritance = (InheritanceAnnotation) typeResource.getSupportingAnnotation(JPA.INHERITANCE);
 		inheritance.setStrategy(InheritanceType.TABLE_PER_CLASS);
 		
-		assertSourceContains("@Inheritance(strategy=TABLE_PER_CLASS)", cu);
+		assertSourceContains("@Inheritance(strategy = TABLE_PER_CLASS)", cu);
 		
 		inheritance.setStrategy(null);
 		

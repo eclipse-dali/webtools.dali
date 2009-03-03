@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,6 +18,7 @@ import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.JoinTableAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
+@SuppressWarnings("nls")
 public class JoinTableTests extends JavaResourceModelTestCase {
 	
 	private static final String TABLE_NAME = "MY_TABLE";
@@ -49,7 +50,7 @@ public class JoinTableTests extends JavaResourceModelTestCase {
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append("@JoinTable(name=\"" + TABLE_NAME + "\")");
+				sb.append("@JoinTable(name = \"" + TABLE_NAME + "\")");
 			}
 		});
 	}
@@ -63,7 +64,7 @@ public class JoinTableTests extends JavaResourceModelTestCase {
 			
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append("@JoinTable(schema=\"" + SCHEMA_NAME + "\")");
+				sb.append("@JoinTable(schema = \"" + SCHEMA_NAME + "\")");
 			}
 		});
 	}
@@ -76,7 +77,7 @@ public class JoinTableTests extends JavaResourceModelTestCase {
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append("@JoinTable(catalog=\"" + CATALOG_NAME + "\")");
+				sb.append("@JoinTable(catalog = \"" + CATALOG_NAME + "\")");
 			}
 		});
 	}
@@ -89,7 +90,7 @@ public class JoinTableTests extends JavaResourceModelTestCase {
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append("@JoinTable(uniqueConstraints={@UniqueConstraint(columnNames={\"BAR\"}), @UniqueConstraint(columnNames={\"FOO\"}), @UniqueConstraint(columnNames={\"BAZ\"})})");
+				sb.append("@JoinTable(uniqueConstraints = {@UniqueConstraint(columnNames = {\"BAR\"}), @UniqueConstraint(columnNames = {\"FOO\"}), @UniqueConstraint(columnNames = {\"BAZ\"})})");
 			}
 		});
 	}
@@ -102,7 +103,7 @@ public class JoinTableTests extends JavaResourceModelTestCase {
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append("@JoinTable(joinColumns={@JoinColumn(name=\"BAR\"), @JoinColumn})");
+				sb.append("@JoinTable(joinColumns = {@JoinColumn(name = \"BAR\"), @JoinColumn})");
 			}
 		});
 	}
@@ -115,7 +116,7 @@ public class JoinTableTests extends JavaResourceModelTestCase {
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append("@JoinTable(inverseJoinColumns={@JoinColumn(name=\"BAR\"), @JoinColumn})");
+				sb.append("@JoinTable(inverseJoinColumns = {@JoinColumn(name = \"BAR\"), @JoinColumn})");
 			}
 		});
 	}
@@ -154,7 +155,7 @@ public class JoinTableTests extends JavaResourceModelTestCase {
 		table.setName("Foo");
 		assertEquals("Foo", table.getName());
 		
-		assertSourceContains("@JoinTable(name=\"Foo\")", cu);
+		assertSourceContains("@JoinTable(name = \"Foo\")", cu);
 	}
 	
 	public void testSetNameNull() throws Exception {
@@ -193,7 +194,7 @@ public class JoinTableTests extends JavaResourceModelTestCase {
 		table.setCatalog("Foo");
 		assertEquals("Foo", table.getCatalog());
 		
-		assertSourceContains("@JoinTable(catalog=\"Foo\")", cu);
+		assertSourceContains("@JoinTable(catalog = \"Foo\")", cu);
 	}
 	
 	public void testSetCatalogNull() throws Exception {
@@ -232,7 +233,7 @@ public class JoinTableTests extends JavaResourceModelTestCase {
 		table.setSchema("Foo");
 		assertEquals("Foo", table.getSchema());
 		
-		assertSourceContains("@JoinTable(schema=\"Foo\")", cu);
+		assertSourceContains("@JoinTable(schema = \"Foo\")", cu);
 	}
 	
 	public void testSetSchemaNull() throws Exception {
@@ -298,7 +299,7 @@ public class JoinTableTests extends JavaResourceModelTestCase {
 		assertEquals("FOO", table.uniqueConstraintAt(1).columnNames().next());
 		assertEquals(0, table.uniqueConstraintAt(2).columnNamesSize());
 
-		assertSourceContains("@JoinTable(uniqueConstraints={@UniqueConstraint(columnNames=\"BAR\"),@UniqueConstraint(columnNames=\"FOO\"), @UniqueConstraint})", cu);
+		assertSourceContains("@JoinTable(uniqueConstraints = {@UniqueConstraint(columnNames = \"BAR\"),@UniqueConstraint(columnNames = \"FOO\"), @UniqueConstraint})", cu);
 	}
 	
 	public void testRemoveUniqueConstraint() throws Exception {
@@ -316,12 +317,12 @@ public class JoinTableTests extends JavaResourceModelTestCase {
 		assertEquals("BAR", table.uniqueConstraintAt(0).columnNames().next());
 		assertEquals("BAZ", table.uniqueConstraintAt(1).columnNames().next());
 		assertEquals(2, table.uniqueConstraintsSize());		
-		assertSourceContains("@JoinTable(uniqueConstraints={@UniqueConstraint(columnNames={\"BAR\"}), @UniqueConstraint(columnNames={\"BAZ\"})})", cu);
+		assertSourceContains("@JoinTable(uniqueConstraints = {@UniqueConstraint(columnNames = {\"BAR\"}), @UniqueConstraint(columnNames = {\"BAZ\"})})", cu);
 		
 		table.removeUniqueConstraint(0);
 		assertEquals("BAZ", table.uniqueConstraintAt(0).columnNames().next());
 		assertEquals(1, table.uniqueConstraintsSize());		
-		assertSourceContains("@JoinTable(uniqueConstraints=@UniqueConstraint(columnNames={\"BAZ\"}))", cu);
+		assertSourceContains("@JoinTable(uniqueConstraints = @UniqueConstraint(columnNames = {\"BAZ\"}))", cu);
 		
 		table.removeUniqueConstraint(0);
 		assertEquals(0, table.uniqueConstraintsSize());		
@@ -334,10 +335,10 @@ public class JoinTableTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		JoinTableAnnotation table = (JoinTableAnnotation) attributeResource.getSupportingAnnotation(JPA.JOIN_TABLE);
-		assertSourceContains("@JoinTable(uniqueConstraints={@UniqueConstraint(columnNames={\"BAR\"}), @UniqueConstraint(columnNames={\"FOO\"}), @UniqueConstraint(columnNames={\"BAZ\"})})", cu);
+		assertSourceContains("@JoinTable(uniqueConstraints = {@UniqueConstraint(columnNames = {\"BAR\"}), @UniqueConstraint(columnNames = {\"FOO\"}), @UniqueConstraint(columnNames = {\"BAZ\"})})", cu);
 		
 		table.moveUniqueConstraint(2, 0);
-		assertSourceContains("@JoinTable(uniqueConstraints={@UniqueConstraint(columnNames={\"FOO\"}), @UniqueConstraint(columnNames={\"BAZ\"}), @UniqueConstraint(columnNames={\"BAR\"})})", cu);
+		assertSourceContains("@JoinTable(uniqueConstraints = {@UniqueConstraint(columnNames = {\"FOO\"}), @UniqueConstraint(columnNames = {\"BAZ\"}), @UniqueConstraint(columnNames = {\"BAR\"})})", cu);
 	}
 	
 	public void testMoveUniqueConstraint2() throws Exception {
@@ -346,10 +347,10 @@ public class JoinTableTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		JoinTableAnnotation table = (JoinTableAnnotation) attributeResource.getSupportingAnnotation(JPA.JOIN_TABLE);
-		assertSourceContains("@JoinTable(uniqueConstraints={@UniqueConstraint(columnNames={\"BAR\"}), @UniqueConstraint(columnNames={\"FOO\"}), @UniqueConstraint(columnNames={\"BAZ\"})})", cu);
+		assertSourceContains("@JoinTable(uniqueConstraints = {@UniqueConstraint(columnNames = {\"BAR\"}), @UniqueConstraint(columnNames = {\"FOO\"}), @UniqueConstraint(columnNames = {\"BAZ\"})})", cu);
 		
 		table.moveUniqueConstraint(0, 2);
-		assertSourceContains("@JoinTable(uniqueConstraints={@UniqueConstraint(columnNames={\"BAZ\"}), @UniqueConstraint(columnNames={\"BAR\"}), @UniqueConstraint(columnNames={\"FOO\"})})", cu);
+		assertSourceContains("@JoinTable(uniqueConstraints = {@UniqueConstraint(columnNames = {\"BAZ\"}), @UniqueConstraint(columnNames = {\"BAR\"}), @UniqueConstraint(columnNames = {\"FOO\"})})", cu);
 	}
 	
 	public void testJoinColumns() throws Exception {
@@ -400,7 +401,7 @@ public class JoinTableTests extends JavaResourceModelTestCase {
 		assertEquals("BAR", table.joinColumnAt(0).getName());
 		assertEquals("FOO", table.joinColumnAt(1).getName());
 		assertNull(table.joinColumnAt(2).getName());
-		assertSourceContains("@JoinTable(joinColumns={@JoinColumn(name=\"BAR\"),@JoinColumn(name=\"FOO\"), @JoinColumn})", cu);
+		assertSourceContains("@JoinTable(joinColumns = {@JoinColumn(name = \"BAR\"),@JoinColumn(name = \"FOO\"), @JoinColumn})", cu);
 	}
 	
 	public void testRemoveJoinColumn() throws Exception {
@@ -420,12 +421,12 @@ public class JoinTableTests extends JavaResourceModelTestCase {
 		assertEquals("FOO", table.joinColumnAt(0).getName());
 		assertNull(table.joinColumnAt(1).getName());
 		assertEquals(2, table.joinColumnsSize());
-		assertSourceContains("@JoinTable(joinColumns={@JoinColumn(name=\"FOO\"), @JoinColumn})", cu);
+		assertSourceContains("@JoinTable(joinColumns = {@JoinColumn(name = \"FOO\"), @JoinColumn})", cu);
 
 		table.removeJoinColumn(0);
 		assertNull(table.joinColumnAt(0).getName());
 		assertEquals(1, table.joinColumnsSize());
-		assertSourceContains("@JoinTable(joinColumns=@JoinColumn)", cu);
+		assertSourceContains("@JoinTable(joinColumns = @JoinColumn)", cu);
 
 		
 		table.removeJoinColumn(0);
@@ -449,14 +450,14 @@ public class JoinTableTests extends JavaResourceModelTestCase {
 		joinColumn.setTable("TABLE");
 		table.addJoinColumn(0).setName("FOO");
 		
-		assertSourceContains("@JoinTable(joinColumns={@JoinColumn(name=\"FOO\"), @JoinColumn(name=\"BAR\", referencedColumnName = \"REF_NAME\", unique = false, nullable = false, insertable = false, updatable = false, columnDefinition = \"COLUMN_DEF\", table = \"TABLE\"), @JoinColumn})", cu);
+		assertSourceContains("@JoinTable(joinColumns = {@JoinColumn(name = \"FOO\"), @JoinColumn(name = \"BAR\", referencedColumnName = \"REF_NAME\", unique = false, nullable = false, insertable = false, updatable = false, columnDefinition = \"COLUMN_DEF\", table = \"TABLE\"), @JoinColumn})", cu);
 
 		table.moveJoinColumn(2, 0);
 		assertEquals("BAR", table.joinColumnAt(0).getName());
 		assertNull(table.joinColumnAt(1).getName());
 		assertEquals("FOO", table.joinColumnAt(2).getName());
 		assertEquals(3, table.joinColumnsSize());
-		assertSourceContains("@JoinTable(joinColumns={@JoinColumn(name=\"BAR\", referencedColumnName = \"REF_NAME\", unique = false, nullable = false, insertable = false, updatable = false, columnDefinition = \"COLUMN_DEF\", table = \"TABLE\"), @JoinColumn, @JoinColumn(name=\"FOO\")})", cu);
+		assertSourceContains("@JoinTable(joinColumns = {@JoinColumn(name = \"BAR\", referencedColumnName = \"REF_NAME\", unique = false, nullable = false, insertable = false, updatable = false, columnDefinition = \"COLUMN_DEF\", table = \"TABLE\"), @JoinColumn, @JoinColumn(name = \"FOO\")})", cu);
 	}
 	
 	public void testMoveJoinColumn2() throws Exception {
@@ -477,7 +478,7 @@ public class JoinTableTests extends JavaResourceModelTestCase {
 		
 		table.addJoinColumn(0).setName("FOO");
 		
-		assertSourceContains("@JoinTable(joinColumns={@JoinColumn(name=\"FOO\"), @JoinColumn(name=\"BAR\", referencedColumnName = \"REF_NAME\", unique = false, nullable = false, insertable = false, updatable = false, columnDefinition = \"COLUMN_DEF\", table = \"TABLE\"), @JoinColumn})", cu);
+		assertSourceContains("@JoinTable(joinColumns = {@JoinColumn(name = \"FOO\"), @JoinColumn(name = \"BAR\", referencedColumnName = \"REF_NAME\", unique = false, nullable = false, insertable = false, updatable = false, columnDefinition = \"COLUMN_DEF\", table = \"TABLE\"), @JoinColumn})", cu);
 
 
 		table.moveJoinColumn(0, 2);
@@ -485,7 +486,7 @@ public class JoinTableTests extends JavaResourceModelTestCase {
 		assertEquals("FOO", table.joinColumnAt(1).getName());
 		assertEquals("BAR", table.joinColumnAt(2).getName());
 		assertEquals(3, table.joinColumnsSize());
-		assertSourceContains("@JoinTable(joinColumns={@JoinColumn, @JoinColumn(name=\"FOO\"), @JoinColumn(name=\"BAR\", referencedColumnName = \"REF_NAME\", unique = false, nullable = false, insertable = false, updatable = false, columnDefinition = \"COLUMN_DEF\", table = \"TABLE\")})", cu);
+		assertSourceContains("@JoinTable(joinColumns = {@JoinColumn, @JoinColumn(name = \"FOO\"), @JoinColumn(name = \"BAR\", referencedColumnName = \"REF_NAME\", unique = false, nullable = false, insertable = false, updatable = false, columnDefinition = \"COLUMN_DEF\", table = \"TABLE\")})", cu);
 	}
 	
 	public void testSetJoinColumnName() throws Exception {
@@ -504,7 +505,7 @@ public class JoinTableTests extends JavaResourceModelTestCase {
 		joinColumn.setName("foo");
 		assertEquals("foo", joinColumn.getName());
 		
-		assertSourceContains("@JoinTable(joinColumns={@JoinColumn(name=\"foo\"), @JoinColumn})", cu);
+		assertSourceContains("@JoinTable(joinColumns = {@JoinColumn(name = \"foo\"), @JoinColumn})", cu);
 	}
 
 	public void testInverseJoinColumns() throws Exception {
@@ -555,7 +556,7 @@ public class JoinTableTests extends JavaResourceModelTestCase {
 		assertEquals("BAR", table.inverseJoinColumnAt(0).getName());
 		assertEquals("FOO", table.inverseJoinColumnAt(1).getName());
 		assertNull(table.inverseJoinColumnAt(2).getName());
-		assertSourceContains("@JoinTable(inverseJoinColumns={@JoinColumn(name=\"BAR\"),@JoinColumn(name=\"FOO\"), @JoinColumn})", cu);
+		assertSourceContains("@JoinTable(inverseJoinColumns = {@JoinColumn(name = \"BAR\"),@JoinColumn(name = \"FOO\"), @JoinColumn})", cu);
 	}
 	
 	public void testRemoveInverseJoinColumn() throws Exception {
@@ -573,14 +574,14 @@ public class JoinTableTests extends JavaResourceModelTestCase {
 		assertFalse(inverseJoinColumns.hasNext());
 		
 		table.removeInverseJoinColumn(1);
-		assertSourceContains("@JoinTable(inverseJoinColumns={@JoinColumn(name=\"BAR\"), @JoinColumn(name=\"FOO\")})", cu);
+		assertSourceContains("@JoinTable(inverseJoinColumns = {@JoinColumn(name = \"BAR\"), @JoinColumn(name = \"FOO\")})", cu);
 		inverseJoinColumns = table.inverseJoinColumns();
 		assertEquals("BAR", inverseJoinColumns.next().getName());
 		assertEquals("FOO", inverseJoinColumns.next().getName());
 		assertFalse(inverseJoinColumns.hasNext());
 
 		table.removeInverseJoinColumn(0);
-		assertSourceContains("@JoinTable(inverseJoinColumns=@JoinColumn(name=\"FOO\"))", cu);
+		assertSourceContains("@JoinTable(inverseJoinColumns = @JoinColumn(name = \"FOO\"))", cu);
 		inverseJoinColumns = table.inverseJoinColumns();
 		assertEquals("FOO", inverseJoinColumns.next().getName());
 		assertFalse(inverseJoinColumns.hasNext());
@@ -608,7 +609,7 @@ public class JoinTableTests extends JavaResourceModelTestCase {
 		assertNull(inverseJoinColumns.next().getName());
 		assertEquals("FOO", inverseJoinColumns.next().getName());
 		
-		assertSourceContains("@JoinTable(inverseJoinColumns={@JoinColumn(name=\"BAR\"), @JoinColumn, @JoinColumn(name=\"FOO\")})", cu);
+		assertSourceContains("@JoinTable(inverseJoinColumns = {@JoinColumn(name = \"BAR\"), @JoinColumn, @JoinColumn(name = \"FOO\")})", cu);
 	}
 	
 	public void testMoveInverseJoinColumn2() throws Exception {
@@ -630,7 +631,7 @@ public class JoinTableTests extends JavaResourceModelTestCase {
 		assertEquals("BAR", inverseJoinColumns.next().getName());
 		assertEquals("FOO", inverseJoinColumns.next().getName());
 
-		assertSourceContains("@JoinTable(inverseJoinColumns={@JoinColumn, @JoinColumn(name=\"BAR\"), @JoinColumn(name=\"FOO\")})", cu);
+		assertSourceContains("@JoinTable(inverseJoinColumns = {@JoinColumn, @JoinColumn(name = \"BAR\"), @JoinColumn(name = \"FOO\")})", cu);
 	}
 	
 	public void testSetInverseJoinColumnName() throws Exception {
@@ -649,7 +650,7 @@ public class JoinTableTests extends JavaResourceModelTestCase {
 		joinColumn.setName("foo");
 		assertEquals("foo", joinColumn.getName());
 		
-		assertSourceContains("@JoinTable(inverseJoinColumns={@JoinColumn(name=\"foo\"), @JoinColumn})", cu);
+		assertSourceContains("@JoinTable(inverseJoinColumns = {@JoinColumn(name = \"foo\"), @JoinColumn})", cu);
 	}
 
 }

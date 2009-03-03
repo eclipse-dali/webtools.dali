@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,6 +17,7 @@ import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
+@SuppressWarnings("nls")
 public class DiscriminatorColumnTests extends JavaResourceModelTestCase {
 	
 	private static final String COLUMN_NAME = "MY_COLUMN";
@@ -47,7 +48,7 @@ public class DiscriminatorColumnTests extends JavaResourceModelTestCase {
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
-				sb.append("@DiscriminatorColumn(name=\"" + COLUMN_NAME + "\")");
+				sb.append("@DiscriminatorColumn(name = \"" + COLUMN_NAME + "\")");
 			}
 		});
 	}
@@ -60,7 +61,7 @@ public class DiscriminatorColumnTests extends JavaResourceModelTestCase {
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
-				sb.append("@DiscriminatorColumn(columnDefinition=\"" + COLUMN_COLUMN_DEFINITION + "\")");
+				sb.append("@DiscriminatorColumn(columnDefinition = \"" + COLUMN_COLUMN_DEFINITION + "\")");
 			}
 		});
 	}
@@ -73,7 +74,7 @@ public class DiscriminatorColumnTests extends JavaResourceModelTestCase {
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
-				sb.append("@DiscriminatorColumn(discriminatorType=DiscriminatorType.CHAR)");
+				sb.append("@DiscriminatorColumn(discriminatorType = DiscriminatorType.CHAR)");
 			}
 		});
 	}
@@ -86,7 +87,7 @@ public class DiscriminatorColumnTests extends JavaResourceModelTestCase {
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
-				sb.append("@DiscriminatorColumn(" + intElement + "=5)");
+				sb.append("@DiscriminatorColumn(" + intElement + " = 5)");
 			}
 		});
 	}
@@ -120,7 +121,7 @@ public class DiscriminatorColumnTests extends JavaResourceModelTestCase {
 		column.setName("Foo");
 		assertEquals("Foo", column.getName());
 		
-		assertSourceContains("@DiscriminatorColumn(name=\"Foo\")", cu);
+		assertSourceContains("@DiscriminatorColumn(name = \"Foo\")", cu);
 	}
 	
 	public void testSetNameNull() throws Exception {
@@ -154,7 +155,7 @@ public class DiscriminatorColumnTests extends JavaResourceModelTestCase {
 		column.setColumnDefinition("Foo");
 		assertEquals("Foo", column.getColumnDefinition());
 		
-		assertSourceContains("@DiscriminatorColumn(columnDefinition=\"Foo\")", cu);
+		assertSourceContains("@DiscriminatorColumn(columnDefinition = \"Foo\")", cu);
 
 		
 		column.setColumnDefinition(null);
@@ -180,7 +181,7 @@ public class DiscriminatorColumnTests extends JavaResourceModelTestCase {
 		column.setLength(Integer.valueOf(5));
 		assertEquals(Integer.valueOf(5), column.getLength());
 		
-		assertSourceContains("@DiscriminatorColumn(length=5)", cu);
+		assertSourceContains("@DiscriminatorColumn(length = 5)", cu);
 		
 		column.setLength(null);
 		assertSourceDoesNotContain("@DiscriminatorColumn", cu);
@@ -203,7 +204,7 @@ public class DiscriminatorColumnTests extends JavaResourceModelTestCase {
 		column.setDiscriminatorType(DiscriminatorType.INTEGER);
 		assertEquals(DiscriminatorType.INTEGER, column.getDiscriminatorType());
 		
-		assertSourceContains("@DiscriminatorColumn(discriminatorType=INTEGER)", cu);
+		assertSourceContains("@DiscriminatorColumn(discriminatorType = INTEGER)", cu);
 		
 		column.setDiscriminatorType(null);
 		assertSourceDoesNotContain("@DiscriminatorColumn", cu);

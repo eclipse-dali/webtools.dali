@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -324,7 +324,7 @@ public class CombinationIndexedDeclarationAnnotationAdapterTests extends Annotat
 		assertNull(annotation);
 
 		aa.newMarkerAnnotation();
-		this.assertSourceContains("@JoinColumns(columns={@JoinColumn,@JoinColumn})", cu);
+		this.assertSourceContains("@JoinColumns(columns = { @JoinColumn, @JoinColumn })", cu);
 	}
 
 	public void testNewMarkerAnnotation3() throws Exception {
@@ -397,7 +397,7 @@ public class CombinationIndexedDeclarationAnnotationAdapterTests extends Annotat
 		assertNull(annotation);
 
 		aa.newMarkerAnnotation();
-		this.assertSourceContains("@JoinColumns(columns={@JoinColumn(77),@JoinColumn})", cu);
+		this.assertSourceContains("@JoinColumns(columns = { @JoinColumn(77), @JoinColumn })", cu);
 	}
 
 	public void testNewMarkerAnnotation8() throws Exception {
@@ -425,29 +425,32 @@ public class CombinationIndexedDeclarationAnnotationAdapterTests extends Annotat
 		assertNull(annotation);
 
 		aa.newMarkerAnnotation();
-		this.assertSourceContains("@JoinColumns(columns={@JoinColumn(text=\"blah\", num=42),@JoinColumn})", cu);
+		this.assertSourceContains("@JoinColumns(columns = { @JoinColumn(text = \"blah\", num = 42), @JoinColumn })", cu);
 	}
 
 	public void testNewMarkerAnnotation23() throws Exception {
 		this.createAnnotationAndMembers("JoinColumn", "String name(); String text(); int num();");
 		this.createAnnotationAndMembers("JoinColumns", "JoinColumn[] columns();");
-		ICompilationUnit cu = this.createTestType("@annot.JoinColumn(text=\"blah\",num=42)");
-		String expected = "@JoinColumns(columns={@JoinColumn(text=\"blah\", num=42),null,@JoinColumn})";
-		this.assertSourceDoesNotContain(expected, cu);
+		ICompilationUnit cu = this.createTestType("@annot.JoinColumn(text=\"b\",num=4)");
+		String expected1 = "@JoinColumns(columns = { @JoinColumn(text = \"b\", num = 4), null,";
+		String expected2 = "@JoinColumn })";
+		this.assertSourceDoesNotContain(expected1, cu);
+		this.assertSourceDoesNotContain(expected2, cu);
 		DeclarationAnnotationAdapter daa = new CombinationIndexedDeclarationAnnotationAdapter(
 				"annot.JoinColumn", "annot.JoinColumns", "columns", 2);
 		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
 		aa.newMarkerAnnotation();
-		this.assertSourceContains(expected, cu);
+		this.assertSourceContains(expected1, cu);
+		this.assertSourceContains(expected2, cu);
 	}
 
 	public void testNewMarkerAnnotation24() throws Exception {
 		this.createAnnotationAndMembers("JoinColumn", "String name(); String text(); int num();");
 		this.createAnnotationAndMembers("JoinColumns", "JoinColumn[] value();");
 		ICompilationUnit cu = this.createTestType("@annot.JoinColumn(text=\"blah\",num=42)");
-		String expected1 = "@JoinColumns({";
-		String expected2 = "@JoinColumn(text=\"blah\", num=42),null,";
-		String expected3 = "@JoinColumn" + CR + "    })";
+		String expected1 = "@JoinColumns( {";
+		String expected2 = "@JoinColumn(text = \"blah\", num = 42), null,";
+		String expected3 = "@JoinColumn " + CR + "    })";
 		this.assertSourceDoesNotContain(expected1, cu);
 		this.assertSourceDoesNotContain(expected2, cu);
 		this.assertSourceDoesNotContain(expected3, cu);
@@ -496,7 +499,7 @@ public class CombinationIndexedDeclarationAnnotationAdapterTests extends Annotat
 		this.createAnnotationAndMembers("JoinColumn", "String name();");
 		this.createAnnotationAndMembers("JoinColumns", "JoinColumn[] columns();");
 		ICompilationUnit cu = this.createTestType("@annot.JoinColumn(name=\"ADDRESS_ID0\")");
-		String expected = "@JoinColumns(columns={null,@JoinColumn(name=\"ADDRESS_ID0\")})";
+		String expected = "@JoinColumns(columns = { null, @JoinColumn(name = \"ADDRESS_ID0\") })";
 		this.assertSourceDoesNotContain(expected, cu);
 		IndexedDeclarationAnnotationAdapter cidaa = new CombinationIndexedDeclarationAnnotationAdapter(
 				"annot.JoinColumn", "annot.JoinColumns", "columns", 0);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -465,7 +465,7 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 		AnnotationElementAdapter<String> aea = new MemberAnnotationElementAdapter<String>(this.idField(cu), daea);
 
 		aea.setValue("xxx");
-		this.assertSourceContains("@Foo(bar=\"xxx\")", cu);
+		this.assertSourceContains("@Foo(bar = \"xxx\")", cu);
 	}
 
 	public void testSetValue5() throws Exception {
@@ -498,7 +498,7 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 		AnnotationElementAdapter<Boolean> aea = new MemberAnnotationElementAdapter<Boolean>(this.idField(cu), daea);
 
 		aea.setValue(Boolean.TRUE);
-		this.assertSourceContains("@Foo(@Bar(jimmy=@Baz(fred=true)))", cu);
+		this.assertSourceContains("@Foo(@Bar(jimmy = @Baz(fred = true)))", cu);
 	}
 
 	public void testSetValue7() throws Exception {
@@ -525,7 +525,7 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 		AnnotationElementAdapter<String> aea = new MemberAnnotationElementAdapter<String>(this.idField(cu), daea);
 
 		aea.setValue("xxx");
-		this.assertSourceContains("@Foo(bar=\"xxx\")", cu);
+		this.assertSourceContains("@Foo(bar = \"xxx\")", cu);
 	}
 
 	public void testSetValue9() throws Exception {
@@ -539,7 +539,7 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 
 		aea.setValue("xxx");
 		this.assertSourceDoesNotContain(annotation, cu);
-		this.assertSourceContains("@Foo(value=\"zzz\", bar=\"xxx\")", cu);
+		this.assertSourceContains("@Foo(value = \"zzz\", bar = \"xxx\")", cu);
 	}
 
 	public void testSetValue10() throws Exception {
@@ -617,7 +617,7 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 		DeclarationAnnotationElementAdapter<String> daea = new ConversionDeclarationAnnotationElementAdapter<String>(daa, "bar", SimpleTypeStringExpressionConverter.instance());
 		AnnotationElementAdapter<String> aea = new MemberAnnotationElementAdapter<String>(this.idField(cu), daea);
 		aea.setValue("java.lang.Object");
-		this.assertSourceContains("@Foo(bar=java.lang.Object.class)", cu);
+		this.assertSourceContains("@Foo(bar = java.lang.Object.class)", cu);
 	}
 
 	public void testSimpleTypeLiteral3() throws Exception {
@@ -654,7 +654,7 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 		DeclarationAnnotationElementAdapter<String> daea = new ConversionDeclarationAnnotationElementAdapter<String>(daa, "bar", PrimitiveTypeStringExpressionConverter.instance());
 		AnnotationElementAdapter<String> aea = new MemberAnnotationElementAdapter<String>(this.idField(cu), daea);
 		aea.setValue("int");
-		this.assertSourceContains("@Foo(bar=int.class)", cu);
+		this.assertSourceContains("@Foo(bar = int.class)", cu);
 	}
 
 	public void testPrimitiveTypeLiteral3() throws Exception {
@@ -691,7 +691,7 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 		DeclarationAnnotationElementAdapter<String> daea = new ConversionDeclarationAnnotationElementAdapter<String>(daa, "bar", TypeStringExpressionConverter.instance());
 		AnnotationElementAdapter<String> aea = new MemberAnnotationElementAdapter<String>(this.idField(cu), daea);
 		aea.setValue("java.lang.Object");
-		this.assertSourceContains("@Foo(bar=java.lang.Object.class)", cu);
+		this.assertSourceContains("@Foo(bar = java.lang.Object.class)", cu);
 	}
 
 	public void testTypeLiteral3() throws Exception {
@@ -719,7 +719,7 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 		DeclarationAnnotationElementAdapter<String> daea = new ConversionDeclarationAnnotationElementAdapter<String>(daa, "bar", TypeStringExpressionConverter.instance());
 		AnnotationElementAdapter<String> aea = new MemberAnnotationElementAdapter<String>(this.idField(cu), daea);
 		aea.setValue("int");
-		this.assertSourceContains("@Foo(bar=int.class)", cu);
+		this.assertSourceContains("@Foo(bar = int.class)", cu);
 	}
 
 	public void testTypeLiteral6() throws Exception {
@@ -774,9 +774,9 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 	public void testSetValueEnum1() throws Exception {
 		this.createEnum("TestEnum", "XXX, YYY, ZZZ");
 		this.createAnnotationAndMembers("Foo", "enums.TestEnum bar();");
-		String annotation = "@annot.Foo(bar=XXX)";
-		ICompilationUnit cu = this.createTestType("static enums.TestEnum.XXX", annotation);
-		this.assertSourceContains(annotation, cu);
+		String expected = "@annot.Foo(bar=XXX)";
+		ICompilationUnit cu = this.createTestType("static enums.TestEnum.XXX", expected);
+		this.assertSourceContains(expected, cu);
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
 		DeclarationAnnotationElementAdapter<String> daea = new EnumDeclarationAnnotationElementAdapter(daa, "bar");
 		AnnotationElementAdapter<String> aea = new MemberAnnotationElementAdapter<String>(this.idField(cu), daea);
@@ -787,24 +787,24 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 	public void testSetValueEnum2() throws Exception {
 		this.createEnum("TestEnum", "XXX, YYY, ZZZ");
 		this.createAnnotationAndMembers("Foo", "enums.TestEnum bar();");
-		String annotation = "@Foo(bar=XXX)";
+		String expected = "@Foo(bar = XXX)";
 		ICompilationUnit cu = this.createTestType();
-		this.assertSourceDoesNotContain(annotation, cu);
+		this.assertSourceDoesNotContain(expected, cu);
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
 		DeclarationAnnotationElementAdapter<String> daea = new EnumDeclarationAnnotationElementAdapter(daa, "bar");
 		AnnotationElementAdapter<String> aea = new MemberAnnotationElementAdapter<String>(this.idField(cu), daea);
 		aea.setValue("enums.TestEnum.XXX");
 		this.assertSourceContains("import static enums.TestEnum.XXX;", cu);
-		this.assertSourceContains(annotation, cu);
+		this.assertSourceContains(expected, cu);
 	}
 
 	public void testSetValueEnumImportCollision1() throws Exception {
 		this.createEnum("enums1", "TestEnum", "XXX, YYY, ZZZ");
 		this.createEnum("enums2", "TestEnum", "XXX, YYY, ZZZ");
 		this.createAnnotationAndMembers("Foo", "enums1.TestEnum bar1();  enums2.TestEnum bar2();");
-		String annotation = "@Foo(bar1=XXX, bar2 = TestEnum.XXX)";
+		String expected = "@Foo(bar1 = XXX, bar2 = TestEnum.XXX)";
 		ICompilationUnit cu = this.createTestType();
-		this.assertSourceDoesNotContain(annotation, cu);
+		this.assertSourceDoesNotContain(expected, cu);
 
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
 
@@ -819,16 +819,16 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 		this.assertSourceContains("import static enums1.TestEnum.XXX;", cu);
 		this.assertSourceDoesNotContain("import static enums2.TestEnum.XXX;", cu);
 		this.assertSourceContains("import enums2.TestEnum;", cu);
-		this.assertSourceContains(annotation, cu);
+		this.assertSourceContains(expected, cu);
 	}
 
 	public void testSetValueEnumImportCollision2() throws Exception {
 		this.createEnum("enums1", "TestEnum", "XXX, YYY, ZZZ");
 		this.createEnum("enums2", "TestEnum", "XXX, YYY, ZZZ");
 		this.createAnnotationAndMembers("Foo", "enums1.TestEnum bar1();  enums2.TestEnum bar2();");
-		String annotation = "@annot.Foo(bar1=XXX, bar2 = TestEnum.XXX)";
+		String expected = "@annot.Foo(bar1=XXX, bar2 = TestEnum.XXX)";
 		ICompilationUnit cu = this.createTestType("static enums1.TestEnum.*", "@annot.Foo(bar1=XXX)");
-		this.assertSourceDoesNotContain(annotation, cu);
+		this.assertSourceDoesNotContain(expected, cu);
 
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
 
@@ -843,16 +843,16 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 		this.assertSourceContains("import static enums1.TestEnum.*;", cu);
 		this.assertSourceDoesNotContain("import static enums2.TestEnum.XXX;", cu);
 		this.assertSourceContains("import enums2.TestEnum;", cu);
-		this.assertSourceContains(annotation, cu);
+		this.assertSourceContains(expected, cu);
 	}
 
 	public void testSetValueEnumImportCollision3() throws Exception {
 		this.createEnum("TestEnum1", "XXX, YYY, ZZZ");
 		this.createEnum("TestEnum2", "XXX, YYY, ZZZ");
 		this.createAnnotationAndMembers("Foo", "enums.TestEnum1 bar1();  enums.TestEnum2 bar2();");
-		String annotation = "@Foo(bar1=XXX, bar2 = TestEnum2.XXX)";
+		String expected = "@Foo(bar1 = XXX, bar2 = TestEnum2.XXX)";
 		ICompilationUnit cu = this.createTestType();
-		this.assertSourceDoesNotContain(annotation, cu);
+		this.assertSourceDoesNotContain(expected, cu);
 
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
 
@@ -866,16 +866,16 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 
 		this.assertSourceContains("import static enums.TestEnum1.XXX;", cu);
 		this.assertSourceContains("import enums.TestEnum2;", cu);
-		this.assertSourceContains(annotation, cu);
+		this.assertSourceContains(expected, cu);
 	}
 
 	public void testSetValueEnumImportCollision4() throws Exception {
 		this.createEnum("TestEnum1", "XXX, YYY, ZZZ");
 		this.createEnum("TestEnum2", "XXX, YYY, ZZZ");
 		this.createAnnotationAndMembers("Foo", "enums.TestEnum1 bar1();  enums.TestEnum2 bar2();");
-		String annotation = "@annot.Foo(bar1=XXX, bar2 = TestEnum2.XXX)";
+		String expected = "@annot.Foo(bar1=XXX, bar2 = TestEnum2.XXX)";
 		ICompilationUnit cu = this.createTestType("static enums.TestEnum1.*", "@annot.Foo(bar1=XXX)");
-		this.assertSourceDoesNotContain(annotation, cu);
+		this.assertSourceDoesNotContain(expected, cu);
 
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
 
@@ -889,7 +889,7 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 
 		this.assertSourceContains("import static enums.TestEnum1.*;", cu);
 		this.assertSourceContains("import enums.TestEnum2;", cu);
-		this.assertSourceContains(annotation, cu);
+		this.assertSourceContains(expected, cu);
 	}
 
 	/**
@@ -900,9 +900,9 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 		this.createEnum("TestEnum1", "XXX, YYY, ZZZ");
 		this.createEnum("TestEnum2", "XXX, YYY, ZZZ");
 		this.createAnnotationAndMembers("Foo", "enums.TestEnum1 bar1();  enums.TestEnum2 bar2();");
-		String annotation = "@Foo(bar1=XXX, bar2 = TestEnum2.XXX)";
+		String expected = "@Foo(bar1 = XXX, bar2 = TestEnum2.XXX)";
 		ICompilationUnit cu = this.createTestType("enums.*", "");
-		this.assertSourceDoesNotContain(annotation, cu);
+		this.assertSourceDoesNotContain(expected, cu);
 
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
 
@@ -917,7 +917,7 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 		this.assertSourceContains("import enums.*;", cu);
 		this.assertSourceContains("import static enums.TestEnum1.XXX;", cu);
 		this.assertSourceDoesNotContain("import enums.TestEnum2;", cu);
-		this.assertSourceContains(annotation, cu);
+		this.assertSourceContains(expected, cu);
 	}
 
 	public void testSetValueEnumImportCollision6() throws Exception {
@@ -925,9 +925,9 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 		this.createEnum("enums2", "TestEnum", "XXX, YYY, ZZZ");
 		this.createEnum("enums3", "TestEnum", "XXX, YYY, ZZZ");
 		this.createAnnotationAndMembers("Foo", "enums1.TestEnum bar1();  enums2.TestEnum bar2();  enums3.TestEnum bar3();");
-		String annotation = "@Foo(bar1=XXX, bar2 = TestEnum.XXX, bar3 = enums3.TestEnum.XXX)";
+		String expected = "@Foo(bar1 = XXX, bar2 = TestEnum.XXX, bar3 = enums3.TestEnum.XXX)";
 		ICompilationUnit cu = this.createTestType();
-		this.assertSourceDoesNotContain(annotation, cu);
+		this.assertSourceDoesNotContain(expected, cu);
 
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
 
@@ -948,7 +948,7 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 		this.assertSourceContains("import enums2.TestEnum;", cu);
 		this.assertSourceDoesNotContain("import static enums3", cu);
 		this.assertSourceDoesNotContain("import enums3", cu);
-		this.assertSourceContains(annotation, cu);
+		this.assertSourceContains(expected, cu);
 	}
 
 	public void testValueStringArray() throws Exception {
@@ -998,44 +998,44 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 
 	public void testSetValueStringArray() throws Exception {
 		this.createAnnotationAndMembers("Foo", "String[] bar();");
-		String annotation = "@Foo(bar={\"string0\",\"string1\"})";
+		String expected = "@Foo(bar = { \"string0\", \"string1\" })";
 		ICompilationUnit cu = this.createTestType();
-		this.assertSourceDoesNotContain(annotation, cu);
+		this.assertSourceDoesNotContain(expected, cu);
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
 		DeclarationAnnotationElementAdapter<String[]> daea = new ConversionDeclarationAnnotationElementAdapter<String[]>(daa, "bar", AnnotationStringArrayExpressionConverter.forStrings());
 		AnnotationElementAdapter<String[]> aea = new MemberAnnotationElementAdapter<String[]>(this.idField(cu), daea);
 		aea.setValue(new String[] {"string0", "string1"});
-		this.assertSourceContains(annotation, cu);
+		this.assertSourceContains(expected, cu);
 	}
 
 	public void testSetValueStringArrayEmptyRemove() throws Exception {
 		this.createAnnotationAndMembers("Foo", "String[] bar();");
-		String annotation = "@Foo";
+		String expected = "@Foo";
 		ICompilationUnit cu = this.createTestType();
-		this.assertSourceDoesNotContain(annotation, cu);
+		this.assertSourceDoesNotContain(expected, cu);
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
 		DeclarationAnnotationElementAdapter<String[]> daea = new ConversionDeclarationAnnotationElementAdapter<String[]>(daa, "bar", AnnotationStringArrayExpressionConverter.forStrings());
 		AnnotationElementAdapter<String[]> aea = new MemberAnnotationElementAdapter<String[]>(this.idField(cu), daea);
 		aea.setValue(new String[0]);
-		this.assertSourceDoesNotContain(annotation, cu);
+		this.assertSourceDoesNotContain(expected, cu);
 	}
 
 	public void testSetValueStringArrayEmpty() throws Exception {
 		this.createAnnotationAndMembers("Foo", "String[] bar();");
-		String annotation = "@Foo(bar={})";
+		String expected = "@Foo(bar = {})";
 		ICompilationUnit cu = this.createTestType();
-		this.assertSourceDoesNotContain(annotation, cu);
+		this.assertSourceDoesNotContain(expected, cu);
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
 		ExpressionConverter<String[]> expressionConverter = new AnnotationStringArrayExpressionConverter(StringExpressionConverter.instance(), false);
 		DeclarationAnnotationElementAdapter<String[]> daea = new ConversionDeclarationAnnotationElementAdapter<String[]>(daa, "bar", expressionConverter);
 		AnnotationElementAdapter<String[]> aea = new MemberAnnotationElementAdapter<String[]>(this.idField(cu), daea);
 		aea.setValue(new String[0]);
-		this.assertSourceContains(annotation, cu);
+		this.assertSourceContains(expected, cu);
 	}
 
 	public void testSetValueStringArraySingleElement() throws Exception {
 		this.createAnnotationAndMembers("Foo", "String[] bar();");
-		String annotation = "@Foo(bar=\"string0\")";
+		String annotation = "@Foo(bar = \"string0\")";
 		ICompilationUnit cu = this.createTestType();
 		this.assertSourceDoesNotContain(annotation, cu);
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
@@ -1108,65 +1108,65 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 	public void testSetValueEnumArray() throws Exception {
 		this.createEnum("TestEnum", "XXX, YYY, ZZZ");
 		this.createAnnotationAndMembers("Foo", "enums.TestEnum[] bar();");
-		String annotation = "@Foo(bar={XXX,YYY})";
+		String expected = "@Foo(bar = { XXX, YYY })";
 		ICompilationUnit cu = this.createTestType();
-		this.assertSourceDoesNotContain(annotation, cu);
+		this.assertSourceDoesNotContain(expected, cu);
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
 		DeclarationAnnotationElementAdapter<String[]> daea = new EnumArrayDeclarationAnnotationElementAdapter(daa, "bar");
 		AnnotationElementAdapter<String[]> aea = new MemberAnnotationElementAdapter<String[]>(this.idField(cu), daea);
 		aea.setValue(new String[] {"enums.TestEnum.XXX", "enums.TestEnum.YYY"});
 		this.assertSourceContains("import static enums.TestEnum.XXX;", cu);
 		this.assertSourceContains("import static enums.TestEnum.YYY;", cu);
-		this.assertSourceContains(annotation, cu);
+		this.assertSourceContains(expected, cu);
 	}
 
 	public void testSetValueEnumArrayEmptyRemove() throws Exception {
 		this.createEnum("TestEnum", "XXX, YYY, ZZZ");
 		this.createAnnotationAndMembers("Foo", "enums.TestEnum[] bar();");
-		String annotation = "@Foo";
+		String expected = "@Foo";
 		ICompilationUnit cu = this.createTestType();
-		this.assertSourceDoesNotContain(annotation, cu);
+		this.assertSourceDoesNotContain(expected, cu);
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
 		DeclarationAnnotationElementAdapter<String[]> daea = new EnumArrayDeclarationAnnotationElementAdapter(daa, "bar");
 		AnnotationElementAdapter<String[]> aea = new MemberAnnotationElementAdapter<String[]>(this.idField(cu), daea);
 		aea.setValue(new String[0]);
-		this.assertSourceDoesNotContain(annotation, cu);
+		this.assertSourceDoesNotContain(expected, cu);
 	}
 
 	public void testSetValueEnumArrayEmpty() throws Exception {
 		this.createEnum("TestEnum", "XXX, YYY, ZZZ");
 		this.createAnnotationAndMembers("Foo", "enums.TestEnum[] bar();");
-		String annotation = "@Foo(bar={})";
+		String expected = "@Foo(bar = {})";
 		ICompilationUnit cu = this.createTestType();
-		this.assertSourceDoesNotContain(annotation, cu);
+		this.assertSourceDoesNotContain(expected, cu);
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
 		DeclarationAnnotationElementAdapter<String[]> daea = new EnumArrayDeclarationAnnotationElementAdapter(daa, "bar", true, false);
 		AnnotationElementAdapter<String[]> aea = new MemberAnnotationElementAdapter<String[]>(this.idField(cu), daea);
 		aea.setValue(new String[0]);
-		this.assertSourceContains(annotation, cu);
+		this.assertSourceContains(expected, cu);
 	}
 
 	public void testSetValueEnumArraySingleElement() throws Exception {
 		this.createEnum("TestEnum", "XXX, YYY, ZZZ");
 		this.createAnnotationAndMembers("Foo", "enums.TestEnum[] bar();");
-		String annotation = "@Foo(bar=XXX)";
+		String expected = "@Foo(bar = XXX)";
 		ICompilationUnit cu = this.createTestType();
-		this.assertSourceDoesNotContain(annotation, cu);
+		this.assertSourceDoesNotContain(expected, cu);
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
 		DeclarationAnnotationElementAdapter<String[]> daea = new EnumArrayDeclarationAnnotationElementAdapter(daa, "bar");
 		AnnotationElementAdapter<String[]> aea = new MemberAnnotationElementAdapter<String[]>(this.idField(cu), daea);
 		aea.setValue(new String[] {"enums.TestEnum.XXX"});
 		this.assertSourceContains("import static enums.TestEnum.XXX;", cu);
-		this.assertSourceContains(annotation, cu);
+		this.assertSourceContains(expected, cu);
 	}
 
 	public void testSetValueEnumArrayImportCollision1() throws Exception {
 		this.createEnum("enums1", "TestEnum", "XXX, YYY, ZZZ");
 		this.createEnum("enums2", "TestEnum", "XXX, YYY, ZZZ");
 		this.createAnnotationAndMembers("Foo", "enums1.TestEnum[] bar1();  enums2.TestEnum[] bar2();");
-		String annotation = "@Foo(bar1={XXX,YYY}, bar2 = { TestEnum.XXX, TestEnum.YYY })";
+		String expected = "@Foo(bar1 = { XXX, YYY }, bar2 = { TestEnum.XXX, TestEnum.YYY })";
 		ICompilationUnit cu = this.createTestType();
-		this.assertSourceDoesNotContain(annotation, cu);
+		this.assertSourceDoesNotContain(expected, cu);
 
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
 
@@ -1183,16 +1183,16 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 		this.assertSourceDoesNotContain("import static enums2.TestEnum.XXX;", cu);
 		this.assertSourceDoesNotContain("import static enums2.TestEnum.YYY;", cu);
 		this.assertSourceContains("import enums2.TestEnum;", cu);
-		this.assertSourceContains(annotation, cu);
+		this.assertSourceContains(expected, cu);
 	}
 
 	public void testSetValueEnumArrayImportCollision2() throws Exception {
 		this.createEnum("enums1", "TestEnum", "XXX, YYY, ZZZ");
 		this.createEnum("enums2", "TestEnum", "XXX, YYY, ZZZ");
 		this.createAnnotationAndMembers("Foo", "enums1.TestEnum[] bar1();  enums2.TestEnum[] bar2();");
-		String annotation = "@annot.Foo(bar1={XXX,YYY}, bar2 = { TestEnum.XXX, TestEnum.YYY })";
+		String expected = "@annot.Foo(bar1={XXX,YYY}, bar2 = { TestEnum.XXX, TestEnum.YYY })";
 		ICompilationUnit cu = this.createTestType("static enums1.TestEnum.*", "@annot.Foo(bar1={XXX,YYY})");
-		this.assertSourceDoesNotContain(annotation, cu);
+		this.assertSourceDoesNotContain(expected, cu);
 
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
 
@@ -1208,16 +1208,16 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 		this.assertSourceDoesNotContain("import static enums2.TestEnum.XXX;", cu);
 		this.assertSourceDoesNotContain("import static enums2.TestEnum.YYY;", cu);
 		this.assertSourceContains("import enums2.TestEnum;", cu);
-		this.assertSourceContains(annotation, cu);
+		this.assertSourceContains(expected, cu);
 	}
 
 	public void testSetValueEnumArrayImportCollision3() throws Exception {
 		this.createEnum("TestEnum1", "XXX, YYY, ZZZ");
 		this.createEnum("TestEnum2", "XXX, YYY, ZZZ");
 		this.createAnnotationAndMembers("Foo", "enums.TestEnum1[] bar1();  enums.TestEnum2[] bar2();");
-		String annotation = "@Foo(bar1={XXX,YYY}, bar2 = { TestEnum2.XXX, TestEnum2.YYY })";
+		String expected = "@Foo(bar1 = { XXX, YYY }, bar2 = { TestEnum2.XXX, TestEnum2.YYY })";
 		ICompilationUnit cu = this.createTestType();
-		this.assertSourceDoesNotContain(annotation, cu);
+		this.assertSourceDoesNotContain(expected, cu);
 
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
 
@@ -1234,16 +1234,16 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 		this.assertSourceDoesNotContain("import static enums.TestEnum2.XXX;", cu);
 		this.assertSourceDoesNotContain("import static enums.TestEnum2.YYY;", cu);
 		this.assertSourceContains("import enums.TestEnum2;", cu);
-		this.assertSourceContains(annotation, cu);
+		this.assertSourceContains(expected, cu);
 	}
 
 	public void testSetValueEnumArrayImportCollision4() throws Exception {
 		this.createEnum("TestEnum1", "XXX, YYY, ZZZ");
 		this.createEnum("TestEnum2", "XXX, YYY, ZZZ");
 		this.createAnnotationAndMembers("Foo", "enums.TestEnum1[] bar1();  enums.TestEnum2[] bar2();");
-		String annotation = "@annot.Foo(bar1={XXX,YYY}, bar2 = { TestEnum2.XXX, TestEnum2.YYY })";
+		String expected = "@annot.Foo(bar1={XXX,YYY}, bar2 = { TestEnum2.XXX, TestEnum2.YYY })";
 		ICompilationUnit cu = this.createTestType("static enums.TestEnum1.*", "@annot.Foo(bar1={XXX,YYY})");
-		this.assertSourceDoesNotContain(annotation, cu);
+		this.assertSourceDoesNotContain(expected, cu);
 
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
 
@@ -1259,7 +1259,7 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 		this.assertSourceDoesNotContain("import static enums.TestEnum2.XXX;", cu);
 		this.assertSourceDoesNotContain("import static enums.TestEnum2.YYY;", cu);
 		this.assertSourceContains("import enums.TestEnum2;", cu);
-		this.assertSourceContains(annotation, cu);
+		this.assertSourceContains(expected, cu);
 	}
 
 	public void testSetValueEnumArrayImportCollision6() throws Exception {
@@ -1267,9 +1267,9 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 		this.createEnum("enums2", "TestEnum", "XXX, YYY, ZZZ");
 		this.createEnum("enums3", "TestEnum", "XXX, YYY, ZZZ");
 		this.createAnnotationAndMembers("Foo", "enums1.TestEnum[] bar1();  enums2.TestEnum[] bar2();  enums3.TestEnum[] bar3();");
-		String annotation = "@Foo(bar1={XXX,YYY}, bar2 = { TestEnum.XXX, TestEnum.YYY }, bar3 = { enums3.TestEnum.XXX, enums3.TestEnum.YYY })";
+		String expected = "@Foo(bar1 = { XXX, YYY }, bar2 = { TestEnum.XXX, TestEnum.YYY }, bar3 = { enums3.TestEnum.XXX, enums3.TestEnum.YYY })";
 		ICompilationUnit cu = this.createTestType();
-		this.assertSourceDoesNotContain(annotation, cu);
+		this.assertSourceDoesNotContain(expected, cu);
 
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
 
@@ -1291,7 +1291,7 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 		this.assertSourceContains("import enums2.TestEnum;", cu);
 		this.assertSourceDoesNotContain("import static enums3", cu);
 		this.assertSourceDoesNotContain("import enums3", cu);
-		this.assertSourceContains(annotation, cu);
+		this.assertSourceContains(expected, cu);
 	}
 
 }

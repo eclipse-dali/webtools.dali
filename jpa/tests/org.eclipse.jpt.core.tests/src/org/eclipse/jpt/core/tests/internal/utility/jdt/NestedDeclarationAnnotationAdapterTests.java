@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,6 +22,7 @@ import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.Member;
 import org.eclipse.jpt.core.utility.jdt.ModifiedDeclaration;
 
+@SuppressWarnings("nls")
 public class NestedDeclarationAnnotationAdapterTests extends AnnotationTestCase {
 
 	public NestedDeclarationAnnotationAdapterTests(String name) {
@@ -253,7 +254,7 @@ public class NestedDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 		assertNull(annotation);
 
 		aa.newMarkerAnnotation();
-		this.assertSourceContains("@Foo(nestedAnnotation=@Bar)", cu);
+		this.assertSourceContains("@Foo(nestedAnnotation = @Bar)", cu);
 	}
 
 	public void testNewMarkerAnnotation2() throws Exception {
@@ -276,7 +277,7 @@ public class NestedDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 		this.createAnnotationAndMembers("Bar", "String value();");
 		this.createAnnotationAndMembers("Foo", "annot.Bar nestedAnnotation();");
 		ICompilationUnit cu = this.createTestType("@annot.Foo");
-		String expected = "@Foo(nestedAnnotation=@Bar)";
+		String expected = "@Foo(nestedAnnotation = @Bar)";
 		this.assertSourceDoesNotContain(expected, cu);
 
 		DeclarationAnnotationAdapter daa = new NestedDeclarationAnnotationAdapter(
@@ -310,7 +311,7 @@ public class NestedDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 		this.createAnnotationAndMembers("Bar", "String value();");
 		this.createAnnotationAndMembers("Foo", "annot.Bar nestedAnnotation(); String value();");
 		ICompilationUnit cu = this.createTestType("@annot.Foo(\"something\")");
-		String expected = "@Foo(value=\"something\", nestedAnnotation=@Bar)";
+		String expected = "@Foo(value = \"something\", nestedAnnotation = @Bar)";
 		this.assertSourceDoesNotContain(expected, cu);
 
 		DeclarationAnnotationAdapter daa = new NestedDeclarationAnnotationAdapter(
@@ -384,7 +385,7 @@ public class NestedDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 				NestedDeclarationAnnotationAdapterTests.this.editNewSingleMemberAnnotation1(declaration);
 			}
 		});
-		this.assertSourceContains("@Foo(nestedAnnotation=@Bar(\"test string literal\"))", cu);
+		this.assertSourceContains("@Foo(nestedAnnotation = @Bar(\"test string literal\"))", cu);
 	}
 
 	void editNewSingleMemberAnnotation1(ModifiedDeclaration declaration) {
@@ -433,7 +434,7 @@ public class NestedDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 		this.createAnnotationAndMembers("Bar", "String value();");
 		this.createAnnotationAndMembers("Foo", "annot.Bar nestedAnnotation();");
 		ICompilationUnit cu = this.createTestType("@annot.Foo");
-		String expected = "@Foo(nestedAnnotation=@Bar(\"test string literal\"))";
+		String expected = "@Foo(nestedAnnotation = @Bar(\"test string literal\"))";
 		this.assertSourceDoesNotContain(expected, cu);
 		this.idField(cu).edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
@@ -483,7 +484,7 @@ public class NestedDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 		this.createAnnotationAndMembers("Bar", "String value();");
 		this.createAnnotationAndMembers("Foo", "annot.Bar nestedAnnotation(); String value();");
 		ICompilationUnit cu = this.createTestType("@annot.Foo(\"something\")");
-		String expected = "@Foo(value=\"something\", nestedAnnotation=@Bar(\"test string literal\"))";
+		String expected = "@Foo(value = \"something\", nestedAnnotation = @Bar(\"test string literal\"))";
 		this.assertSourceDoesNotContain(expected, cu);
 		this.idField(cu).edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
@@ -589,7 +590,7 @@ public class NestedDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 				NestedDeclarationAnnotationAdapterTests.this.editNewNormalAnnotation1(declaration);
 			}
 		});
-		this.assertSourceContains("@Foo(nestedAnnotation=@Bar(yyy=\"test string literal\"))", cu);
+		this.assertSourceContains("@Foo(nestedAnnotation = @Bar(yyy = \"test string literal\"))", cu);
 	}
 
 	void editNewNormalAnnotation1(ModifiedDeclaration declaration) {
@@ -611,7 +612,7 @@ public class NestedDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 				NestedDeclarationAnnotationAdapterTests.this.editNewNormalAnnotation2(declaration);
 			}
 		});
-		this.assertSourceContains("@Foo(@Bar(yyy=\"test string literal\"))", cu);
+		this.assertSourceContains("@Foo(@Bar(yyy = \"test string literal\"))", cu);
 	}
 
 	void editNewNormalAnnotation2(ModifiedDeclaration declaration) {
@@ -627,7 +628,7 @@ public class NestedDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 		this.createAnnotationAndMembers("Bar", "String yyy();");
 		this.createAnnotationAndMembers("Foo", "annot.Bar nestedAnnotation();");
 		ICompilationUnit cu = this.createTestType("@annot.Foo");
-		String expected = "@Foo(nestedAnnotation=@Bar(yyy=\"test string literal\"))";
+		String expected = "@Foo(nestedAnnotation = @Bar(yyy = \"test string literal\"))";
 		this.assertSourceDoesNotContain(expected, cu);
 		this.idField(cu).edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
@@ -650,7 +651,7 @@ public class NestedDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 		this.createAnnotationAndMembers("Bar", "String yyy();");
 		this.createAnnotationAndMembers("Foo", "annot.Bar value();");
 		ICompilationUnit cu = this.createTestType("@annot.Foo");
-		String expected = "@Foo(@Bar(yyy=\"test string literal\"))";
+		String expected = "@Foo(@Bar(yyy = \"test string literal\"))";
 		this.assertSourceDoesNotContain(expected, cu);
 		this.idField(cu).edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
@@ -673,7 +674,7 @@ public class NestedDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 		this.createAnnotationAndMembers("Bar", "String yyy();");
 		this.createAnnotationAndMembers("Foo", "annot.Bar nestedAnnotation(); String value();");
 		ICompilationUnit cu = this.createTestType("@annot.Foo(\"something\")");
-		String expected = "@Foo(value=\"something\", nestedAnnotation=@Bar(yyy=\"test string literal\"))";
+		String expected = "@Foo(value = \"something\", nestedAnnotation = @Bar(yyy = \"test string literal\"))";
 		this.assertSourceDoesNotContain(expected, cu);
 		this.idField(cu).edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
@@ -696,7 +697,7 @@ public class NestedDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 		this.createAnnotationAndMembers("Bar", "String yyy();");
 		this.createAnnotationAndMembers("Foo", "Object value();");
 		ICompilationUnit cu = this.createTestType("@annot.Foo(\"something\")");
-		String expected = "@annot.Foo(@Bar(yyy=\"test string literal\"))";
+		String expected = "@annot.Foo(@Bar(yyy = \"test string literal\"))";
 		this.assertSourceDoesNotContain(expected, cu);
 		this.idField(cu).edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {

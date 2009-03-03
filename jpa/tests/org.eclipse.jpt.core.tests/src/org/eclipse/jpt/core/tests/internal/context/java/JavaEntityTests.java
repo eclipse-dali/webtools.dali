@@ -624,7 +624,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertSourceDoesNotContain("@Table", cu);
 		
 		table.setSpecifiedName(TABLE_NAME);
-		assertSourceContains("@Table(name=\"" + TABLE_NAME + "\")", cu);
+		assertSourceContains("@Table(name = \"" + TABLE_NAME + "\")", cu);
 		
 		assertEquals(TABLE_NAME, getJavaEntity().getPrimaryTableName());
 		assertEquals(TABLE_NAME, table.getName());

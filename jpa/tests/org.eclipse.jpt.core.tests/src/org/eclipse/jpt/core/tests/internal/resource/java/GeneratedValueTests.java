@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,6 +18,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
+@SuppressWarnings("nls")
 public class GeneratedValueTests extends JavaResourceModelTestCase {
 
 	private static final String GENERATOR = "MY_GENERATOR";
@@ -46,7 +47,7 @@ public class GeneratedValueTests extends JavaResourceModelTestCase {
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append("@GeneratedValue(generator=\"" + GENERATOR + "\")");
+				sb.append("@GeneratedValue(generator = \"" + GENERATOR + "\")");
 			}
 		});
 	}
@@ -59,7 +60,7 @@ public class GeneratedValueTests extends JavaResourceModelTestCase {
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append("@GeneratedValue(strategy=GenerationType.SEQUENCE)");
+				sb.append("@GeneratedValue(strategy = GenerationType.SEQUENCE)");
 			}
 		});
 	}
@@ -93,7 +94,7 @@ public class GeneratedValueTests extends JavaResourceModelTestCase {
 		generatedValue.setGenerator("foo");
 		assertEquals("foo", generatedValue.getGenerator());
 		
-		assertSourceContains("@GeneratedValue(generator=\"foo\")", cu);
+		assertSourceContains("@GeneratedValue(generator = \"foo\")", cu);
 		
 		generatedValue.setGenerator(null);
 		assertNull(generatedValue.getGenerator());
@@ -122,7 +123,7 @@ public class GeneratedValueTests extends JavaResourceModelTestCase {
 		generatedValue.setStrategy(GenerationType.TABLE);
 		assertEquals(GenerationType.TABLE, generatedValue.getStrategy());
 		
-		assertSourceContains("@GeneratedValue(strategy=TABLE)", cu);
+		assertSourceContains("@GeneratedValue(strategy = TABLE)", cu);
 		
 		generatedValue.setStrategy(null);
 		assertNull(generatedValue.getStrategy());

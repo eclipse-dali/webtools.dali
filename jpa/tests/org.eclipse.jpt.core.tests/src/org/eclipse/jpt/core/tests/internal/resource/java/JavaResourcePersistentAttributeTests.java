@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.tests.internal.resource.java;
 
 import java.util.Iterator;
 import java.util.List;
-
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.internal.resource.java.IdImpl;
@@ -120,7 +119,7 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 				sb.append("@Id");
 				sb.append(CR);
 				sb.append("    ");
-				sb.append("@Column(name=\"baz\")");
+				sb.append("@Column(name = \"baz\")");
 				sb.append("    private String foo, bar;").append(CR);
 				sb.append(CR);
 			}
@@ -181,7 +180,7 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 			
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append("@Column(name=\"FOO\", table=\"MY_TABLE\")");
+				sb.append("@Column(name = \"FOO\", table = \"MY_TABLE\")");
 			}
 		});
 	}
@@ -221,9 +220,9 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 			
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append("@Column(name=\"FOO\")");
+				sb.append("@Column(name = \"FOO\")");
 				sb.append(CR);
-				sb.append("@Column(name=\"BAR\")");
+				sb.append("@Column(name = \"BAR\")");
 			}
 		});
 	}
@@ -238,7 +237,7 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@Embedded");
 				sb.append(CR);
-				sb.append("@AttributeOverride(name=\"FOO\")");
+				sb.append("@AttributeOverride(name = \"FOO\")");
 			}
 		});
 	}
@@ -252,7 +251,7 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@Embedded");
 				sb.append(CR);
-				sb.append("@AttributeOverrides(@AttributeOverride(name=\"FOO\"))");
+				sb.append("@AttributeOverrides(@AttributeOverride(name = \"FOO\"))");
 			}
 		});
 	}
@@ -281,7 +280,7 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@Embedded");
 				sb.append(CR);
-				sb.append("@AttributeOverrides({@AttributeOverride(name=\"FOO\"), @AttributeOverride(name=\"BAR\")})");
+				sb.append("@AttributeOverrides({@AttributeOverride(name = \"FOO\"), @AttributeOverride(name = \"BAR\")})");
 			}
 		});
 	}
@@ -296,9 +295,9 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("@Embedded");
 				sb.append(CR);
-				sb.append("@AttributeOverride(name=\"FOO\")");
+				sb.append("@AttributeOverride(name = \"FOO\")");
 				sb.append(CR);
-				sb.append("@AttributeOverrides({@AttributeOverride(name=\"BAR\"), @AttributeOverride(name=\"BAZ\")})");
+				sb.append("@AttributeOverrides({@AttributeOverride(name = \"BAR\"), @AttributeOverride(name = \"BAZ\")})");
 			}
 		});
 	}
@@ -388,7 +387,7 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 
 		ColumnAnnotation columnResource = (ColumnAnnotation) attributeResource.getSupportingAnnotation(JPA.COLUMN);
 		columnResource.setTable(null);
-		assertSourceContains("@Column(name=\"FOO\")", cu);
+		assertSourceContains("@Column(name = \"FOO\")", cu);
 
 		columnResource.setName(null);
 		assertSourceDoesNotContain("@Column", cu);
@@ -565,7 +564,7 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		AttributeOverrideAnnotation attributeOverride = (AttributeOverrideAnnotation) attributeResource.addSupportingAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
 		attributeOverride.setName("FOO");
-		assertSourceContains("@AttributeOverride(name=\"FOO\")", cu);
+		assertSourceContains("@AttributeOverride(name = \"FOO\")", cu);
 	}
 	
 	//  @Embedded     				-->>    @Embedded
@@ -577,7 +576,7 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 		
 		AttributeOverrideAnnotation attributeOverride = (AttributeOverrideAnnotation) attributeResource.addSupportingAnnotation(1, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
 		attributeOverride.setName("BAR");
-		assertSourceContains("@AttributeOverrides({@AttributeOverride(name=\"FOO\"),@AttributeOverride(name=\"BAR\")})", cu);
+		assertSourceContains("@AttributeOverrides({@AttributeOverride(name = \"FOO\"),@AttributeOverride(name = \"BAR\")})", cu);
 		
 		assertNull(attributeResource.getSupportingAnnotation(JPA.ATTRIBUTE_OVERRIDE));
 		assertNotNull(attributeResource.getSupportingAnnotation(JPA.ATTRIBUTE_OVERRIDES));
@@ -597,7 +596,7 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 	
 		AttributeOverrideAnnotation attributeOverride = (AttributeOverrideAnnotation) attributeResource.addSupportingAnnotation(1, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
 		attributeOverride.setName("BAR");
-		assertSourceContains("@AttributeOverrides({@AttributeOverride(name=\"FOO\"),@AttributeOverride(name=\"BAR\")})", cu);
+		assertSourceContains("@AttributeOverrides({@AttributeOverride(name = \"FOO\"),@AttributeOverride(name = \"BAR\")})", cu);
 		
 		assertNull(attributeResource.getSupportingAnnotation(JPA.ATTRIBUTE_OVERRIDE));
 		assertNotNull(attributeResource.getSupportingAnnotation(JPA.ATTRIBUTE_OVERRIDES));
@@ -611,7 +610,7 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 		
 		AttributeOverrideAnnotation attributeOverride = (AttributeOverrideAnnotation) attributeResource.addSupportingAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
 		attributeOverride.setName("BAR");
-		assertSourceContains("@AttributeOverrides({@AttributeOverride(name=\"BAR\"),@AttributeOverride(name=\"FOO\")})", cu);
+		assertSourceContains("@AttributeOverrides({@AttributeOverride(name = \"BAR\"),@AttributeOverride(name = \"FOO\")})", cu);
 		
 		assertNull(attributeResource.getSupportingAnnotation(JPA.ATTRIBUTE_OVERRIDE));
 		assertNotNull(attributeResource.getSupportingAnnotation(JPA.ATTRIBUTE_OVERRIDES));
@@ -636,7 +635,7 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 		assertEquals(2, CollectionTools.size(attributeResource.supportingAnnotations(JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES)));
 
 		AttributeOverrideAnnotation attributeOverride = (AttributeOverrideAnnotation) attributeResource.addSupportingAnnotation(2, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
-		assertSourceContains("@AttributeOverrides({@AttributeOverride(name=\"BAR\"), @AttributeOverride(name=\"BAZ\"),", cu);
+		assertSourceContains("@AttributeOverrides({@AttributeOverride(name = \"BAR\"), @AttributeOverride(name = \"BAZ\"),", cu);
 		assertSourceContains("@AttributeOverride})", cu);
 		attributeOverride.setName("BOO");
 		
@@ -652,8 +651,8 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 		attributeOverride = (AttributeOverrideAnnotation) attributeOverrideAnnotations.next();	
 		assertEquals("BOO", attributeOverride.getName());
 		
-		assertSourceContains("@AttributeOverrides({@AttributeOverride(name=\"BAR\"), @AttributeOverride(name=\"BAZ\"),", cu);
-		assertSourceContains("@AttributeOverride(name=\"BOO\")})", cu);
+		assertSourceContains("@AttributeOverrides({@AttributeOverride(name = \"BAR\"), @AttributeOverride(name = \"BAZ\"),", cu);
+		assertSourceContains("@AttributeOverride(name = \"BOO\")})", cu);
 	}
 
 	//@Entity
@@ -689,8 +688,8 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 	
 		attributeResource.removeSupportingAnnotation(0, JPA.ATTRIBUTE_OVERRIDE , JPA.ATTRIBUTE_OVERRIDES);
 		
-		assertSourceDoesNotContain("@AttributeOverride(name=\"FOO\"", cu);
-		assertSourceContains("@AttributeOverride(name=\"BAR\"", cu);
+		assertSourceDoesNotContain("@AttributeOverride(name = \"FOO\"", cu);
+		assertSourceContains("@AttributeOverride(name = \"BAR\"", cu);
 		assertSourceDoesNotContain("@AttributeOverrides", cu);
 	}
 	
@@ -701,11 +700,11 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 
 		AttributeOverrideAnnotation newAnnotation = (AttributeOverrideAnnotation)attributeResource.addSupportingAnnotation(2, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
 		newAnnotation.setName("BAZ");
-		assertSourceContains("@AttributeOverrides({@AttributeOverride(name=\"FOO\"), @AttributeOverride(name=\"BAR\"),", cu);
-		assertSourceContains("@AttributeOverride(name=\"BAZ\")})", cu);
+		assertSourceContains("@AttributeOverrides({@AttributeOverride(name = \"FOO\"), @AttributeOverride(name = \"BAR\"),", cu);
+		assertSourceContains("@AttributeOverride(name = \"BAZ\")})", cu);
 		
 		attributeResource.removeSupportingAnnotation(1, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
-		assertSourceContains("@AttributeOverrides({@AttributeOverride(name=\"FOO\"), @AttributeOverride(name=\"BAZ\")})", cu);
+		assertSourceContains("@AttributeOverrides({@AttributeOverride(name = \"FOO\"), @AttributeOverride(name = \"BAZ\")})", cu);
 	}
 	
 	public void testMoveJavaTypeAnnotation() throws Exception {
@@ -715,13 +714,13 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 	
 		AttributeOverrideAnnotation newAnnotation = (AttributeOverrideAnnotation)attributeResource.addSupportingAnnotation(2, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
 		newAnnotation.setName("BAZ");
-		assertSourceContains("@AttributeOverrides({@AttributeOverride(name=\"FOO\"), @AttributeOverride(name=\"BAR\"),", cu);
-		assertSourceContains("@AttributeOverride(name=\"BAZ\")})", cu);
+		assertSourceContains("@AttributeOverrides({@AttributeOverride(name = \"FOO\"), @AttributeOverride(name = \"BAR\"),", cu);
+		assertSourceContains("@AttributeOverride(name = \"BAZ\")})", cu);
 		
 		
 		attributeResource.moveSupportingAnnotation(0, 2, JPA.ATTRIBUTE_OVERRIDES);
-		assertSourceContains("@AttributeOverrides({@AttributeOverride(name=\"BAZ\"), @AttributeOverride(name=\"FOO\"),", cu);
-		assertSourceContains("@AttributeOverride(name=\"BAR\")})", cu);
+		assertSourceContains("@AttributeOverrides({@AttributeOverride(name = \"BAZ\"), @AttributeOverride(name = \"FOO\"),", cu);
+		assertSourceContains("@AttributeOverride(name = \"BAR\")})", cu);
 	}
 	
 	public void testMoveJavaTypeAnnotation2() throws Exception {
@@ -731,12 +730,12 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 	
 		AttributeOverrideAnnotation newAnnotation = (AttributeOverrideAnnotation) attributeResource.addSupportingAnnotation(2, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
 		newAnnotation.setName("BAZ");
-		assertSourceContains("@AttributeOverrides({@AttributeOverride(name=\"FOO\"), @AttributeOverride(name=\"BAR\"),", cu);
-		assertSourceContains("@AttributeOverride(name=\"BAZ\")})", cu);
+		assertSourceContains("@AttributeOverrides({@AttributeOverride(name = \"FOO\"), @AttributeOverride(name = \"BAR\"),", cu);
+		assertSourceContains("@AttributeOverride(name = \"BAZ\")})", cu);
 		
 		attributeResource.moveSupportingAnnotation(1, 0, JPA.ATTRIBUTE_OVERRIDES);
-		assertSourceContains("@AttributeOverrides({@AttributeOverride(name=\"BAR\"), @AttributeOverride(name=\"FOO\"),", cu);
-		assertSourceContains("@AttributeOverride(name=\"BAZ\")})", cu);
+		assertSourceContains("@AttributeOverrides({@AttributeOverride(name = \"BAR\"), @AttributeOverride(name = \"FOO\"),", cu);
+		assertSourceContains("@AttributeOverride(name = \"BAZ\")})", cu);
 	}	
 
 	//more detailed tests in JPTToolsTests

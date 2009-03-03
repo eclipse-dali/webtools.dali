@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,6 +18,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.java.MappedSuperclassAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
+@SuppressWarnings("nls")
 public class EntityTests extends JavaResourceModelTestCase {
 
 	private static final String ENTITY_NAME = "Foo";
@@ -47,7 +48,7 @@ public class EntityTests extends JavaResourceModelTestCase {
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
-				sb.append("@Entity(name=\"" + ENTITY_NAME + "\")");
+				sb.append("@Entity(name = \"" + ENTITY_NAME + "\")");
 			}
 		});
 	}
@@ -93,7 +94,7 @@ public class EntityTests extends JavaResourceModelTestCase {
 		entity.setName("Foo");
 		assertEquals("Foo", entity.getName());
 		
-		assertSourceContains("@Entity(name=\"Foo\")", cu);
+		assertSourceContains("@Entity(name = \"Foo\")", cu);
 	}
 	
 	public void testSetNameNull() throws Exception {
@@ -107,7 +108,7 @@ public class EntityTests extends JavaResourceModelTestCase {
 		assertNull(entity.getName());
 		
 		assertSourceContains("@Entity", cu);
-		assertSourceDoesNotContain("@Entity(name=\"Foo\")", cu);
+		assertSourceDoesNotContain("@Entity(name = \"Foo\")", cu);
 	}
 	
 	public void testMappedSuperclassAndEntity() throws Exception {

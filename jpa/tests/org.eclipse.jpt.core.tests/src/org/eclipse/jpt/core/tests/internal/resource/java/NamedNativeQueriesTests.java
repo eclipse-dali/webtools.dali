@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -66,7 +66,7 @@ public class NamedNativeQueriesTests extends JavaResourceModelTestCase {
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
-				sb.append("@NamedNativeQueries(@NamedNativeQuery(" + elementName + "=\"" + value + "\"))");
+				sb.append("@NamedNativeQueries(@NamedNativeQuery(" + elementName + " = \"" + value + "\"))");
 			}
 		});
 	}
@@ -79,7 +79,7 @@ public class NamedNativeQueriesTests extends JavaResourceModelTestCase {
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
-				sb.append("@NamedNativeQueries(@NamedNativeQuery(resultClass=" + QUERY_RESULT_CLASS + ".class))");
+				sb.append("@NamedNativeQueries(@NamedNativeQuery(resultClass = " + QUERY_RESULT_CLASS + ".class))");
 			}
 		});
 	}
@@ -92,7 +92,7 @@ public class NamedNativeQueriesTests extends JavaResourceModelTestCase {
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
-				sb.append("@NamedNativeQueries(@NamedNativeQuery(hints={@QueryHint(name=\"BAR\", value=\"FOO\"), @QueryHint}))");
+				sb.append("@NamedNativeQueries(@NamedNativeQuery(hints = {@QueryHint(name = \"BAR\", value = \"FOO\"), @QueryHint}))");
 			}
 		});
 	}
@@ -105,7 +105,7 @@ public class NamedNativeQueriesTests extends JavaResourceModelTestCase {
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
-				sb.append("@NamedNativeQuery(name=\"foo\", query=\"bar\", hints=@QueryHint(name=\"BAR\", value=\"FOO\"), resultClass=Foo.class, resultSetMapping=\"mapping\")");
+				sb.append("@NamedNativeQuery(name = \"foo\", query = \"bar\", hints = @QueryHint(name = \"BAR\", value = \"FOO\"), resultClass = Foo.class, resultSetMapping = \"mapping\")");
 			}
 		});
 	}
@@ -139,7 +139,7 @@ public class NamedNativeQueriesTests extends JavaResourceModelTestCase {
 		namedQuery.setName("foo");
 		assertEquals("foo", namedQuery.getName());
 		
-		assertSourceContains("@NamedNativeQuery(name=\"foo\")", cu);
+		assertSourceContains("@NamedNativeQuery(name = \"foo\")", cu);
 		
 		namedQuery.setName(null);
 		assertNull(namedQuery.getName());
@@ -167,7 +167,7 @@ public class NamedNativeQueriesTests extends JavaResourceModelTestCase {
 		namedQuery.setQuery("foo");
 		assertEquals("foo", namedQuery.getQuery());
 		
-		assertSourceContains("@NamedNativeQuery(query=\"foo\")", cu);
+		assertSourceContains("@NamedNativeQuery(query = \"foo\")", cu);
 		
 		namedQuery.setQuery(null);
 		assertNull(namedQuery.getQuery());
@@ -195,7 +195,7 @@ public class NamedNativeQueriesTests extends JavaResourceModelTestCase {
 		namedQuery.setResultClass("foo");
 		assertEquals("foo", namedQuery.getResultClass());
 		
-		assertSourceContains("@NamedNativeQuery(resultClass=foo.class)", cu);
+		assertSourceContains("@NamedNativeQuery(resultClass = foo.class)", cu);
 		
 		namedQuery.setResultClass(null);
 		assertNull(namedQuery.getResultClass());
@@ -215,7 +215,7 @@ public class NamedNativeQueriesTests extends JavaResourceModelTestCase {
 		namedQuery.setResultClass(TYPE_NAME);		
 		
 		assertEquals(FULLY_QUALIFIED_TYPE_NAME, namedQuery.getFullyQualifiedResultClass());				
-		assertSourceContains("@NamedNativeQuery(resultClass=" + TYPE_NAME + ".class)", cu);
+		assertSourceContains("@NamedNativeQuery(resultClass = " + TYPE_NAME + ".class)", cu);
 	}
 	
 	public void testGetResultSetMapping() throws Exception {
@@ -238,7 +238,7 @@ public class NamedNativeQueriesTests extends JavaResourceModelTestCase {
 		namedQuery.setResultSetMapping("foo");
 		assertEquals("foo", namedQuery.getResultSetMapping());
 		
-		assertSourceContains("@NamedNativeQuery(resultSetMapping=\"foo\")", cu);
+		assertSourceContains("@NamedNativeQuery(resultSetMapping = \"foo\")", cu);
 		
 		namedQuery.setResultSetMapping(null);
 		assertNull(namedQuery.getResultSetMapping());
@@ -293,7 +293,7 @@ public class NamedNativeQueriesTests extends JavaResourceModelTestCase {
 		assertEquals("BAR", namedQuery.hintAt(0).getName());
 		assertEquals("FOO", namedQuery.hintAt(1).getName());
 		assertNull(namedQuery.hintAt(2).getName());
-		assertSourceContains("@NamedNativeQuery(hints={@QueryHint(name=\"BAR\"),@QueryHint(name=\"FOO\"), @QueryHint})", cu);
+		assertSourceContains("@NamedNativeQuery(hints = {@QueryHint(name = \"BAR\"),@QueryHint(name = \"FOO\"), @QueryHint})", cu);
 	}
 	
 	public void testRemoveHint() throws Exception {
@@ -313,12 +313,12 @@ public class NamedNativeQueriesTests extends JavaResourceModelTestCase {
 		assertEquals("BAZ", namedQuery.hintAt(0).getName());
 		assertEquals("BAR", namedQuery.hintAt(1).getName());
 		assertEquals(2, namedQuery.hintsSize());
-		assertSourceContains("@NamedNativeQueries(@NamedNativeQuery(hints={@QueryHint(name=\"BAZ\"), @QueryHint(name=\"BAR\", value=\"FOO\")}))", cu);
+		assertSourceContains("@NamedNativeQueries(@NamedNativeQuery(hints = {@QueryHint(name = \"BAZ\"), @QueryHint(name = \"BAR\", value = \"FOO\")}))", cu);
 		
 		namedQuery.removeHint(0);
 		assertEquals("BAR", namedQuery.hintAt(0).getName());
 		assertEquals(1, namedQuery.hintsSize());
-		assertSourceContains("@NamedNativeQueries(@NamedNativeQuery(hints=@QueryHint(name=\"BAR\", value=\"FOO\")))", cu);
+		assertSourceContains("@NamedNativeQueries(@NamedNativeQuery(hints = @QueryHint(name = \"BAR\", value = \"FOO\")))", cu);
 		
 	
 		namedQuery.removeHint(0);
@@ -346,7 +346,7 @@ public class NamedNativeQueriesTests extends JavaResourceModelTestCase {
 		assertNull(namedQuery.hintAt(1).getName());
 		assertEquals("BAZ", namedQuery.hintAt(2).getName());
 		assertEquals(3, namedQuery.hintsSize());
-		assertSourceContains("@NamedNativeQueries(@NamedNativeQuery(hints={@QueryHint(name=\"BAR\", value=\"FOO\"), @QueryHint, @QueryHint(name=\"BAZ\")}))", cu);
+		assertSourceContains("@NamedNativeQueries(@NamedNativeQuery(hints = {@QueryHint(name = \"BAR\", value = \"FOO\"), @QueryHint, @QueryHint(name = \"BAZ\")}))", cu);
 	}
 	
 	public void testMoveHint2() throws Exception {
@@ -369,7 +369,7 @@ public class NamedNativeQueriesTests extends JavaResourceModelTestCase {
 		assertEquals("BAZ", namedQuery.hintAt(1).getName());
 		assertEquals("BAR", namedQuery.hintAt(2).getName());
 		assertEquals(3, namedQuery.hintsSize());
-		assertSourceContains("@NamedNativeQueries(@NamedNativeQuery(hints={@QueryHint, @QueryHint(name=\"BAZ\"), @QueryHint(name=\"BAR\", value=\"FOO\")}))", cu);
+		assertSourceContains("@NamedNativeQueries(@NamedNativeQuery(hints = {@QueryHint, @QueryHint(name = \"BAZ\"), @QueryHint(name = \"BAR\", value = \"FOO\")}))", cu);
 	}
 	
 	public void testAddNamedNativeQueryCopyExisting() throws Exception {
@@ -378,7 +378,7 @@ public class NamedNativeQueriesTests extends JavaResourceModelTestCase {
 		
 		NamedNativeQueryAnnotation namedQuery = (NamedNativeQueryAnnotation) typeResource.addSupportingAnnotation(1, JPA.NAMED_NATIVE_QUERY, JPA.NAMED_NATIVE_QUERIES);
 		namedQuery.setName("BAR");
-		assertSourceContains("@NamedNativeQueries({@NamedNativeQuery(name=\"foo\", query = \"bar\", hints = @QueryHint(name=\"BAR\", value = \"FOO\"), resultClass = Foo.class, resultSetMapping = \"mapping\"),@NamedNativeQuery(name=\"BAR\")})", cu);
+		assertSourceContains("@NamedNativeQueries({@NamedNativeQuery(name = \"foo\", query = \"bar\", hints = @QueryHint(name = \"BAR\", value = \"FOO\"), resultClass = Foo.class, resultSetMapping = \"mapping\"),@NamedNativeQuery(name = \"BAR\")})", cu);
 		
 		assertNull(typeResource.getSupportingAnnotation(JPA.NAMED_NATIVE_QUERY));
 		assertNotNull(typeResource.getSupportingAnnotation(JPA.NAMED_NATIVE_QUERIES));
@@ -391,11 +391,11 @@ public class NamedNativeQueriesTests extends JavaResourceModelTestCase {
 		
 		NamedNativeQueryAnnotation namedQuery = (NamedNativeQueryAnnotation) typeResource.addSupportingAnnotation(1, JPA.NAMED_NATIVE_QUERY, JPA.NAMED_NATIVE_QUERIES);
 		namedQuery.setName("BAR");
-		assertSourceContains("@NamedNativeQueries({@NamedNativeQuery(name=\"foo\", query = \"bar\", hints = @QueryHint(name=\"BAR\", value = \"FOO\"), resultClass = Foo.class, resultSetMapping = \"mapping\"),@NamedNativeQuery(name=\"BAR\")})", cu);
+		assertSourceContains("@NamedNativeQueries({@NamedNativeQuery(name = \"foo\", query = \"bar\", hints = @QueryHint(name = \"BAR\", value = \"FOO\"), resultClass = Foo.class, resultSetMapping = \"mapping\"),@NamedNativeQuery(name = \"BAR\")})", cu);
 		
 		namedQuery = (NamedNativeQueryAnnotation) typeResource.addSupportingAnnotation(0, JPA.NAMED_NATIVE_QUERY, JPA.NAMED_NATIVE_QUERIES);
 		namedQuery.setName("BAZ");
-		assertSourceContains("@NamedNativeQueries({@NamedNativeQuery(name=\"BAZ\"),@NamedNativeQuery(name=\"foo\", query = \"bar\", hints = @QueryHint(name=\"BAR\", value = \"FOO\"), resultClass = Foo.class, resultSetMapping = \"mapping\"), @NamedNativeQuery(name=\"BAR\")})", cu);
+		assertSourceContains("@NamedNativeQueries({@NamedNativeQuery(name = \"BAZ\"),@NamedNativeQuery(name = \"foo\", query = \"bar\", hints = @QueryHint(name = \"BAR\", value = \"FOO\"), resultClass = Foo.class, resultSetMapping = \"mapping\"), @NamedNativeQuery(name = \"BAR\")})", cu);
 
 		Iterator<NestableAnnotation> namedQueries = typeResource.supportingAnnotations(JPA.NAMED_NATIVE_QUERY, JPA.NAMED_NATIVE_QUERIES);
 		assertEquals("BAZ", ((NamedNativeQueryAnnotation) namedQueries.next()).getName());
@@ -413,9 +413,9 @@ public class NamedNativeQueriesTests extends JavaResourceModelTestCase {
 		
 		NamedNativeQueryAnnotation namedQuery = (NamedNativeQueryAnnotation) typeResource.addSupportingAnnotation(1, JPA.NAMED_NATIVE_QUERY, JPA.NAMED_NATIVE_QUERIES);
 		namedQuery.setName("BAR");
-		assertSourceContains("@NamedNativeQueries({@NamedNativeQuery(name=\"foo\", query = \"bar\", hints = @QueryHint(name=\"BAR\", value = \"FOO\"), resultClass = Foo.class, resultSetMapping = \"mapping\"),@NamedNativeQuery(name=\"BAR\")})", cu);
+		assertSourceContains("@NamedNativeQueries({@NamedNativeQuery(name = \"foo\", query = \"bar\", hints = @QueryHint(name = \"BAR\", value = \"FOO\"), resultClass = Foo.class, resultSetMapping = \"mapping\"),@NamedNativeQuery(name = \"BAR\")})", cu);
 		
 		typeResource.removeSupportingAnnotation(1, JPA.NAMED_NATIVE_QUERY, JPA.NAMED_NATIVE_QUERIES);
-		assertSourceContains("@NamedNativeQuery(name=\"foo\", query = \"bar\", hints = @QueryHint(name=\"BAR\", value = \"FOO\"), resultClass = Foo.class, resultSetMapping = \"mapping\")", cu);
+		assertSourceContains("@NamedNativeQuery(name = \"foo\", query = \"bar\", hints = @QueryHint(name = \"BAR\", value = \"FOO\"), resultClass = Foo.class, resultSetMapping = \"mapping\")", cu);
 	}
 }

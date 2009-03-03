@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -67,7 +67,7 @@ public class WriteTransformerAnnotationTests extends EclipseLinkJavaResourceMode
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append("@WriteTransformer(transformerClass=Foo.class)");
+				sb.append("@WriteTransformer(transformerClass = Foo.class)");
 			}
 		});
 	}
@@ -81,7 +81,7 @@ public class WriteTransformerAnnotationTests extends EclipseLinkJavaResourceMode
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append("@WriteTransformer(method=\"transformerMethod\")");
+				sb.append("@WriteTransformer(method = \"transformerMethod\")");
 			}
 		});
 	}
@@ -95,7 +95,7 @@ public class WriteTransformerAnnotationTests extends EclipseLinkJavaResourceMode
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append("@WriteTransformer(column=@Column(name=\"FOO\"))");
+				sb.append("@WriteTransformer(column = @Column(name = \"FOO\"))");
 			}
 		});
 	}
@@ -135,7 +135,7 @@ public class WriteTransformerAnnotationTests extends EclipseLinkJavaResourceMode
 		writeTransformer.setTransformerClass("Bar");
 		assertEquals("Bar", writeTransformer.getTransformerClass());
 		
-		assertSourceContains("@WriteTransformer(transformerClass=Bar.class)", cu);
+		assertSourceContains("@WriteTransformer(transformerClass = Bar.class)", cu);
 	}
 	
 	public void testSetTransformerClassNull() throws Exception {
@@ -173,7 +173,7 @@ public class WriteTransformerAnnotationTests extends EclipseLinkJavaResourceMode
 		writeTransformer.setMethod("foo");
 		assertEquals("foo", writeTransformer.getMethod());
 		
-		assertSourceContains("@WriteTransformer(method=\"foo\")", cu);
+		assertSourceContains("@WriteTransformer(method = \"foo\")", cu);
 	}
 	
 	public void testSetMethodNull() throws Exception {
@@ -213,10 +213,10 @@ public class WriteTransformerAnnotationTests extends EclipseLinkJavaResourceMode
 		writeTransformer.addColumn();
 		
 		assertNotNull(writeTransformer.getColumn());		
-		assertSourceContains("@WriteTransformer(method=\"transformerMethod\", column = @Column)", cu);
+		assertSourceContains("@WriteTransformer(method = \"transformerMethod\", column = @Column)", cu);
 		
 		writeTransformer.getColumn().setName("BAR");
-		assertSourceContains("@WriteTransformer(method=\"transformerMethod\", column = @Column(name=\"BAR\"))", cu);
+		assertSourceContains("@WriteTransformer(method = \"transformerMethod\", column = @Column(name = \"BAR\"))", cu);
 		
 	}
 	

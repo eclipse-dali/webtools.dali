@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,6 +17,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.java.TableGeneratorAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
+@SuppressWarnings("nls")
 public class TableGeneratorTests extends JavaResourceModelTestCase {
 
 	private static final String GENERATOR_NAME = "MY_GENERATOR";
@@ -94,17 +95,17 @@ public class TableGeneratorTests extends JavaResourceModelTestCase {
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append("@TableGenerator(" + elementName + "=\"" + value + "\")");
+				sb.append("@TableGenerator(" + elementName + " = \"" + value + "\")");
 			}
 		});
 	}
 	
 	private ICompilationUnit createTestTableGeneratorWithAllocationSize() throws Exception {
-		return createTestTableGeneratorWithIntElement("allocationSize", GENERATOR_ALLOCATION_SIZE);
+		return createTestTableGeneratorWithIntElement("allocationSize", GENERATOR_ALLOCATION_SIZE.intValue());
 	}
 	
 	private ICompilationUnit createTestTableGeneratorWithInitialValue() throws Exception {
-		return createTestTableGeneratorWithIntElement("initialValue", GENERATOR_INITIAL_VALUE);
+		return createTestTableGeneratorWithIntElement("initialValue", GENERATOR_INITIAL_VALUE.intValue());
 	}
 	
 	private ICompilationUnit createTestTableGeneratorWithIntElement(final String elementName, final int value) throws Exception {
@@ -115,7 +116,7 @@ public class TableGeneratorTests extends JavaResourceModelTestCase {
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append("@TableGenerator(" + elementName + "=" + value + ")");
+				sb.append("@TableGenerator(" + elementName + " = " + value + ")");
 			}
 		});
 	}
@@ -128,7 +129,7 @@ public class TableGeneratorTests extends JavaResourceModelTestCase {
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append("@TableGenerator(uniqueConstraints={@UniqueConstraint(columnNames={\"BAR\"}), @UniqueConstraint(columnNames={\"FOO\"}), @UniqueConstraint(columnNames={\"BAZ\"})})");
+				sb.append("@TableGenerator(uniqueConstraints = {@UniqueConstraint(columnNames = {\"BAR\"}), @UniqueConstraint(columnNames = {\"FOO\"}), @UniqueConstraint(columnNames = {\"BAZ\"})})");
 			}
 		});
 	}
@@ -170,7 +171,7 @@ public class TableGeneratorTests extends JavaResourceModelTestCase {
 		tableGenerator.setName("foo");
 		assertEquals("foo", tableGenerator.getName());
 		
-		assertSourceContains("@TableGenerator(name=\"foo\")", cu);
+		assertSourceContains("@TableGenerator(name = \"foo\")", cu);
 		
 		tableGenerator.setName(null);
 		assertNull(tableGenerator.getName());
@@ -198,7 +199,7 @@ public class TableGeneratorTests extends JavaResourceModelTestCase {
 		tableGenerator.setTable("foo");
 		assertEquals("foo", tableGenerator.getTable());
 		
-		assertSourceContains("@TableGenerator(table=\"foo\")", cu);
+		assertSourceContains("@TableGenerator(table = \"foo\")", cu);
 		
 		tableGenerator.setTable(null);
 		assertNull(tableGenerator.getTable());
@@ -226,7 +227,7 @@ public class TableGeneratorTests extends JavaResourceModelTestCase {
 		tableGenerator.setCatalog("foo");
 		assertEquals("foo", tableGenerator.getCatalog());
 		
-		assertSourceContains("@TableGenerator(catalog=\"foo\")", cu);
+		assertSourceContains("@TableGenerator(catalog = \"foo\")", cu);
 		
 		tableGenerator.setCatalog(null);
 		assertNull(tableGenerator.getCatalog());
@@ -254,7 +255,7 @@ public class TableGeneratorTests extends JavaResourceModelTestCase {
 		tableGenerator.setSchema("foo");
 		assertEquals("foo", tableGenerator.getSchema());
 		
-		assertSourceContains("@TableGenerator(schema=\"foo\")", cu);
+		assertSourceContains("@TableGenerator(schema = \"foo\")", cu);
 		
 		tableGenerator.setSchema(null);
 		assertNull(tableGenerator.getSchema());
@@ -282,7 +283,7 @@ public class TableGeneratorTests extends JavaResourceModelTestCase {
 		tableGenerator.setPkColumnName("foo");
 		assertEquals("foo", tableGenerator.getPkColumnName());
 		
-		assertSourceContains("@TableGenerator(pkColumnName=\"foo\")", cu);
+		assertSourceContains("@TableGenerator(pkColumnName = \"foo\")", cu);
 		
 		tableGenerator.setPkColumnName(null);
 		assertNull(tableGenerator.getPkColumnName());
@@ -310,7 +311,7 @@ public class TableGeneratorTests extends JavaResourceModelTestCase {
 		tableGenerator.setValueColumnName("foo");
 		assertEquals("foo", tableGenerator.getValueColumnName());
 		
-		assertSourceContains("@TableGenerator(valueColumnName=\"foo\")", cu);
+		assertSourceContains("@TableGenerator(valueColumnName = \"foo\")", cu);
 		
 		tableGenerator.setValueColumnName(null);
 		assertNull(tableGenerator.getValueColumnName());
@@ -338,7 +339,7 @@ public class TableGeneratorTests extends JavaResourceModelTestCase {
 		tableGenerator.setPkColumnValue("foo");
 		assertEquals("foo", tableGenerator.getPkColumnValue());
 		
-		assertSourceContains("@TableGenerator(pkColumnValue=\"foo\")", cu);
+		assertSourceContains("@TableGenerator(pkColumnValue = \"foo\")", cu);
 		
 		tableGenerator.setPkColumnValue(null);
 		assertNull(tableGenerator.getPkColumnValue());
@@ -366,14 +367,14 @@ public class TableGeneratorTests extends JavaResourceModelTestCase {
 		tableGenerator.setAllocationSize(Integer.valueOf(500));
 		assertEquals(Integer.valueOf(500), tableGenerator.getAllocationSize());
 		
-		assertSourceContains("@TableGenerator(allocationSize=500)", cu);
+		assertSourceContains("@TableGenerator(allocationSize = 500)", cu);
 		
 		tableGenerator.setAllocationSize(null);
 		
 		assertSourceDoesNotContain("@TableGenerator", cu);
 
 		tableGenerator.setAllocationSize(Integer.valueOf(0));
-		assertSourceContains("@TableGenerator(allocationSize=0)", cu);
+		assertSourceContains("@TableGenerator(allocationSize = 0)", cu);
 	}
 	
 	public void testGetInitialValue() throws Exception {
@@ -396,14 +397,14 @@ public class TableGeneratorTests extends JavaResourceModelTestCase {
 		tableGenerator.setInitialValue(Integer.valueOf(500));
 		assertEquals(Integer.valueOf(500), tableGenerator.getInitialValue());
 		
-		assertSourceContains("@TableGenerator(initialValue=500)", cu);
+		assertSourceContains("@TableGenerator(initialValue = 500)", cu);
 		
 		tableGenerator.setInitialValue(null);
 		
 		assertSourceDoesNotContain("@TableGenerator", cu);
 
 		tableGenerator.setInitialValue(Integer.valueOf(0));
-		assertSourceContains("@TableGenerator(initialValue=0)", cu);
+		assertSourceContains("@TableGenerator(initialValue = 0)", cu);
 	}
 	
 	public void testUniqueConstraints() throws Exception {
@@ -455,7 +456,7 @@ public class TableGeneratorTests extends JavaResourceModelTestCase {
 		assertEquals(0, tableGenerator.uniqueConstraintAt(2).columnNamesSize());
 
 		assertEquals(3, tableGenerator.uniqueConstraintsSize());
-		assertSourceContains("@TableGenerator(uniqueConstraints={@UniqueConstraint(columnNames=\"BAR\"),@UniqueConstraint(columnNames=\"FOO\"), @UniqueConstraint})", cu);
+		assertSourceContains("@TableGenerator(uniqueConstraints = {@UniqueConstraint(columnNames = \"BAR\"),@UniqueConstraint(columnNames = \"FOO\"), @UniqueConstraint})", cu);
 	}
 	
 	public void testRemoveUniqueConstraint() throws Exception {
@@ -466,10 +467,10 @@ public class TableGeneratorTests extends JavaResourceModelTestCase {
 		TableGeneratorAnnotation tableGenerator = (TableGeneratorAnnotation) attributeResource.getSupportingAnnotation(JPA.TABLE_GENERATOR);
 		
 		tableGenerator.removeUniqueConstraint(1);
-		assertSourceContains("@TableGenerator(uniqueConstraints={@UniqueConstraint(columnNames={\"BAR\"}), @UniqueConstraint(columnNames={\"BAZ\"})})", cu);
+		assertSourceContains("@TableGenerator(uniqueConstraints = {@UniqueConstraint(columnNames = {\"BAR\"}), @UniqueConstraint(columnNames = {\"BAZ\"})})", cu);
 		
 		tableGenerator.removeUniqueConstraint(0);
-		assertSourceContains("@TableGenerator(uniqueConstraints=@UniqueConstraint(columnNames={\"BAZ\"}))", cu);
+		assertSourceContains("@TableGenerator(uniqueConstraints = @UniqueConstraint(columnNames = {\"BAZ\"}))", cu);
 		
 		tableGenerator.removeUniqueConstraint(0);
 		assertSourceDoesNotContain("@TableGenerator", cu);
@@ -483,7 +484,7 @@ public class TableGeneratorTests extends JavaResourceModelTestCase {
 		TableGeneratorAnnotation tableGenerator = (TableGeneratorAnnotation) attributeResource.getSupportingAnnotation(JPA.TABLE_GENERATOR);
 		
 		tableGenerator.moveUniqueConstraint(2, 0);
-		assertSourceContains("@TableGenerator(uniqueConstraints={@UniqueConstraint(columnNames={\"FOO\"}), @UniqueConstraint(columnNames={\"BAZ\"}), @UniqueConstraint(columnNames={\"BAR\"})})", cu);
+		assertSourceContains("@TableGenerator(uniqueConstraints = {@UniqueConstraint(columnNames = {\"FOO\"}), @UniqueConstraint(columnNames = {\"BAZ\"}), @UniqueConstraint(columnNames = {\"BAR\"})})", cu);
 	}
 	
 	public void testMoveUniqueConstraint2() throws Exception {
@@ -494,7 +495,7 @@ public class TableGeneratorTests extends JavaResourceModelTestCase {
 		TableGeneratorAnnotation tableGenerator = (TableGeneratorAnnotation) attributeResource.getSupportingAnnotation(JPA.TABLE_GENERATOR);
 		
 		tableGenerator.moveUniqueConstraint(0, 2);
-		assertSourceContains("@TableGenerator(uniqueConstraints={@UniqueConstraint(columnNames={\"BAZ\"}), @UniqueConstraint(columnNames={\"BAR\"}), @UniqueConstraint(columnNames={\"FOO\"})})", cu);
+		assertSourceContains("@TableGenerator(uniqueConstraints = {@UniqueConstraint(columnNames = {\"BAZ\"}), @UniqueConstraint(columnNames = {\"BAR\"}), @UniqueConstraint(columnNames = {\"FOO\"})})", cu);
 	}
 	
 }

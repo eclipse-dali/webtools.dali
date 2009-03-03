@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,6 +17,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
+@SuppressWarnings("nls")
 public class ColumnTests extends JavaResourceModelTestCase {
 	
 	private static final String COLUMN_NAME = "MY_COLUMN";
@@ -48,7 +49,7 @@ public class ColumnTests extends JavaResourceModelTestCase {
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append("@Column(name=\"" + COLUMN_NAME + "\")");
+				sb.append("@Column(name = \"" + COLUMN_NAME + "\")");
 			}
 		});
 	}
@@ -61,7 +62,7 @@ public class ColumnTests extends JavaResourceModelTestCase {
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append("@Column(table=\"" + COLUMN_TABLE + "\")");
+				sb.append("@Column(table = \"" + COLUMN_TABLE + "\")");
 			}
 		});
 	}
@@ -74,7 +75,7 @@ public class ColumnTests extends JavaResourceModelTestCase {
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append("@Column(columnDefinition=\"" + COLUMN_COLUMN_DEFINITION + "\")");
+				sb.append("@Column(columnDefinition = \"" + COLUMN_COLUMN_DEFINITION + "\")");
 			}
 		});
 	}
@@ -87,7 +88,7 @@ public class ColumnTests extends JavaResourceModelTestCase {
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append("@Column(" + booleanElement + "=true)");
+				sb.append("@Column(" + booleanElement + " = true)");
 			}
 		});
 	}
@@ -100,7 +101,7 @@ public class ColumnTests extends JavaResourceModelTestCase {
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append("@Column(" + intElement + "=5)");
+				sb.append("@Column(" + intElement + " = 5)");
 			}
 		});
 	}
@@ -141,7 +142,7 @@ public class ColumnTests extends JavaResourceModelTestCase {
 		column.setName("Foo");
 		assertEquals("Foo", column.getName());
 		
-		assertSourceContains("@Column(name=\"Foo\")", cu);
+		assertSourceContains("@Column(name = \"Foo\")", cu);
 	}
 	
 	public void testSetNameNull() throws Exception {
@@ -178,7 +179,7 @@ public class ColumnTests extends JavaResourceModelTestCase {
 		column.setTable("Foo");
 		assertEquals("Foo", column.getTable());
 		
-		assertSourceContains("@Column(table=\"Foo\")", cu);
+		assertSourceContains("@Column(table = \"Foo\")", cu);
 
 		
 		column.setTable(null);
@@ -205,7 +206,7 @@ public class ColumnTests extends JavaResourceModelTestCase {
 		column.setColumnDefinition("Foo");
 		assertEquals("Foo", column.getColumnDefinition());
 		
-		assertSourceContains("@Column(columnDefinition=\"Foo\")", cu);
+		assertSourceContains("@Column(columnDefinition = \"Foo\")", cu);
 
 		
 		column.setColumnDefinition(null);
@@ -233,7 +234,7 @@ public class ColumnTests extends JavaResourceModelTestCase {
 		column.setUnique(Boolean.FALSE);
 		assertEquals(Boolean.FALSE, column.getUnique());
 		
-		assertSourceContains("@Column(unique=false)", cu);
+		assertSourceContains("@Column(unique = false)", cu);
 		
 		column.setUnique(null);
 		assertSourceDoesNotContain("@Column", cu);
@@ -260,7 +261,7 @@ public class ColumnTests extends JavaResourceModelTestCase {
 		column.setNullable(Boolean.FALSE);
 		assertEquals(Boolean.FALSE, column.getNullable());
 		
-		assertSourceContains("@Column(nullable=false)", cu);
+		assertSourceContains("@Column(nullable = false)", cu);
 		
 		column.setNullable(null);
 		assertSourceDoesNotContain("@Column", cu);
@@ -287,7 +288,7 @@ public class ColumnTests extends JavaResourceModelTestCase {
 		column.setInsertable(Boolean.FALSE);
 		assertEquals(Boolean.FALSE, column.getInsertable());
 		
-		assertSourceContains("@Column(insertable=false)", cu);
+		assertSourceContains("@Column(insertable = false)", cu);
 		
 		column.setInsertable(null);
 		assertSourceDoesNotContain("@Column", cu);
@@ -314,7 +315,7 @@ public class ColumnTests extends JavaResourceModelTestCase {
 		column.setUpdatable(Boolean.FALSE);
 		assertEquals(Boolean.FALSE, column.getUpdatable());
 		
-		assertSourceContains("@Column(updatable=false)", cu);
+		assertSourceContains("@Column(updatable = false)", cu);
 		
 		column.setUpdatable(null);
 		assertSourceDoesNotContain("@Column", cu);
@@ -341,7 +342,7 @@ public class ColumnTests extends JavaResourceModelTestCase {
 		column.setLength(Integer.valueOf(5));
 		assertEquals(Integer.valueOf(5), column.getLength());
 		
-		assertSourceContains("@Column(length=5)", cu);
+		assertSourceContains("@Column(length = 5)", cu);
 		
 		column.setLength(null);
 		assertSourceDoesNotContain("@Column", cu);
@@ -368,7 +369,7 @@ public class ColumnTests extends JavaResourceModelTestCase {
 		column.setPrecision(Integer.valueOf(5));
 		assertEquals(Integer.valueOf(5), column.getPrecision());
 		
-		assertSourceContains("@Column(precision=5)", cu);
+		assertSourceContains("@Column(precision = 5)", cu);
 		
 		column.setPrecision(null);
 		assertSourceDoesNotContain("@Column", cu);
@@ -395,7 +396,7 @@ public class ColumnTests extends JavaResourceModelTestCase {
 		column.setScale(Integer.valueOf(5));
 		assertEquals(Integer.valueOf(5), column.getScale());
 		
-		assertSourceContains("@Column(scale=5)", cu);
+		assertSourceContains("@Column(scale = 5)", cu);
 		
 		column.setScale(null);
 		assertSourceDoesNotContain("@Column", cu);

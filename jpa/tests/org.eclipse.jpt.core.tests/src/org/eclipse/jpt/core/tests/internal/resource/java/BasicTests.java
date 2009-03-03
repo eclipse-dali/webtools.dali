@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,6 +18,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
+@SuppressWarnings("nls")
 public class BasicTests extends JavaResourceModelTestCase {
 	
 	public BasicTests(String name) {
@@ -45,7 +46,7 @@ public class BasicTests extends JavaResourceModelTestCase {
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append("@Basic(optional=true)");
+				sb.append("@Basic(optional = true)");
 			}
 		});
 	}
@@ -58,7 +59,7 @@ public class BasicTests extends JavaResourceModelTestCase {
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append("@Basic(fetch=FetchType.EAGER)");
+				sb.append("@Basic(fetch = FetchType.EAGER)");
 			}
 		});
 	}
@@ -78,7 +79,7 @@ public class BasicTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		BasicAnnotation basic = (BasicAnnotation) attributeResource.getMappingAnnotation(JPA.BASIC);
-		assertTrue(basic.getOptional());
+		assertEquals(Boolean.TRUE, basic.getOptional());
 	}
 
 	public void testSetOptional() throws Exception {
@@ -87,12 +88,12 @@ public class BasicTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		BasicAnnotation basic = (BasicAnnotation) attributeResource.getMappingAnnotation(JPA.BASIC);
-		assertTrue(basic.getOptional());
+		assertEquals(Boolean.TRUE, basic.getOptional());
 		
-		basic.setOptional(false);
-		assertFalse(basic.getOptional());
+		basic.setOptional(Boolean.FALSE);
+		assertEquals(Boolean.FALSE, basic.getOptional());
 		
-		assertSourceContains("@Basic(optional=false)", cu);
+		assertSourceContains("@Basic(optional = false)", cu);
 	}
 	
 	public void testSetOptionalNull() throws Exception {
@@ -101,7 +102,7 @@ public class BasicTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		BasicAnnotation basic = (BasicAnnotation) attributeResource.getMappingAnnotation(JPA.BASIC);
-		assertTrue(basic.getOptional());
+		assertEquals(Boolean.TRUE, basic.getOptional());
 		
 		basic.setOptional(null);
 		assertNull(basic.getOptional());
@@ -130,7 +131,7 @@ public class BasicTests extends JavaResourceModelTestCase {
 		basic.setFetch(FetchType.LAZY);
 		assertEquals(FetchType.LAZY, basic.getFetch());
 		
-		assertSourceContains("@Basic(fetch=LAZY)", cu);
+		assertSourceContains("@Basic(fetch = LAZY)", cu);
 	}
 	
 	public void testSetFetchNull() throws Exception {

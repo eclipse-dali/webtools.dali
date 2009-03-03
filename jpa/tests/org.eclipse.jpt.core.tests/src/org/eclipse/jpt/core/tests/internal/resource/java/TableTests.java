@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,6 +17,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.java.TableAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
+@SuppressWarnings("nls")
 public class TableTests extends JavaResourceModelTestCase {
 	
 	private static final String TABLE_NAME = "MY_TABLE";
@@ -48,7 +49,7 @@ public class TableTests extends JavaResourceModelTestCase {
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
-				sb.append("@Table(name=\"" + TABLE_NAME + "\")");
+				sb.append("@Table(name = \"" + TABLE_NAME + "\")");
 			}
 		});
 	}
@@ -61,7 +62,7 @@ public class TableTests extends JavaResourceModelTestCase {
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
-				sb.append("@Table(schema=\"" + SCHEMA_NAME + "\")");
+				sb.append("@Table(schema = \"" + SCHEMA_NAME + "\")");
 			}
 		});
 	}
@@ -74,7 +75,7 @@ public class TableTests extends JavaResourceModelTestCase {
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
-				sb.append("@Table(catalog=\"" + CATALOG_NAME + "\")");
+				sb.append("@Table(catalog = \"" + CATALOG_NAME + "\")");
 			}
 		});
 	}
@@ -87,7 +88,7 @@ public class TableTests extends JavaResourceModelTestCase {
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
-				sb.append("@Table(uniqueConstraints={@UniqueConstraint(columnNames={\"BAR\"}), @UniqueConstraint(columnNames={\"FOO\"}), @UniqueConstraint(columnNames={\"BAZ\"})})");
+				sb.append("@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {\"BAR\"}), @UniqueConstraint(columnNames = {\"FOO\"}), @UniqueConstraint(columnNames = {\"BAZ\"})})");
 			}
 		});
 	}
@@ -123,7 +124,7 @@ public class TableTests extends JavaResourceModelTestCase {
 		table.setName("Foo");
 		assertEquals("Foo", table.getName());
 		
-		assertSourceContains("@Table(name=\"Foo\")", cu);
+		assertSourceContains("@Table(name = \"Foo\")", cu);
 	}
 	
 	public void testSetNameNull() throws Exception {
@@ -159,7 +160,7 @@ public class TableTests extends JavaResourceModelTestCase {
 		table.setCatalog("Foo");
 		assertEquals("Foo", table.getCatalog());
 		
-		assertSourceContains("@Table(catalog=\"Foo\")", cu);
+		assertSourceContains("@Table(catalog = \"Foo\")", cu);
 	}
 	
 	public void testSetCatalogNull() throws Exception {
@@ -195,7 +196,7 @@ public class TableTests extends JavaResourceModelTestCase {
 		table.setSchema("Foo");
 		assertEquals("Foo", table.getSchema());
 		
-		assertSourceContains("@Table(schema=\"Foo\")", cu);
+		assertSourceContains("@Table(schema = \"Foo\")", cu);
 	}
 	
 	public void testSetSchemaNull() throws Exception {
@@ -251,7 +252,7 @@ public class TableTests extends JavaResourceModelTestCase {
 		assertEquals("FOO", table.uniqueConstraintAt(1).columnNames().next());
 		assertEquals(0, table.uniqueConstraintAt(2).columnNamesSize());
 		
-		assertSourceContains("@Table(uniqueConstraints={@UniqueConstraint(columnNames=\"BAR\"),@UniqueConstraint(columnNames=\"FOO\"), @UniqueConstraint})", cu);
+		assertSourceContains("@Table(uniqueConstraints = {@UniqueConstraint(columnNames = \"BAR\"),@UniqueConstraint(columnNames = \"FOO\"), @UniqueConstraint})", cu);
 	}
 	
 	public void testAddUniqueConstraint2() throws Exception {
@@ -264,7 +265,7 @@ public class TableTests extends JavaResourceModelTestCase {
 		table.addUniqueConstraint(1).addColumnName("BAR");
 		table.uniqueConstraintAt(1).addColumnName("BAZ");
 		
-		assertSourceContains("@Table(uniqueConstraints={@UniqueConstraint,@UniqueConstraint(columnNames={ \"BAR\", \"BAZ\" }), @UniqueConstraint(columnNames=\"FOO\")})", cu);
+		assertSourceContains("@Table(uniqueConstraints = {@UniqueConstraint,@UniqueConstraint(columnNames = { \"BAR\", \"BAZ\" }), @UniqueConstraint(columnNames = \"FOO\")})", cu);
 		
 		assertEquals("FOO", table.uniqueConstraintAt(2).columnNames().next());
 		ListIterator<String> columnNames = table.uniqueConstraintAt(1).columnNames();
@@ -277,10 +278,10 @@ public class TableTests extends JavaResourceModelTestCase {
 		TableAnnotation table = (TableAnnotation) typeResource.getSupportingAnnotation(JPA.TABLE);
 		
 		table.removeUniqueConstraint(1);
-		assertSourceContains("@Table(uniqueConstraints={@UniqueConstraint(columnNames={\"BAR\"}), @UniqueConstraint(columnNames={\"BAZ\"})})", cu);
+		assertSourceContains("@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {\"BAR\"}), @UniqueConstraint(columnNames = {\"BAZ\"})})", cu);
 		
 		table.removeUniqueConstraint(0);
-		assertSourceContains("@Table(uniqueConstraints=@UniqueConstraint(columnNames={\"BAZ\"}))", cu);
+		assertSourceContains("@Table(uniqueConstraints = @UniqueConstraint(columnNames = {\"BAZ\"}))", cu);
 		
 		table.removeUniqueConstraint(0);
 		assertSourceDoesNotContain("@Table", cu);
@@ -293,13 +294,13 @@ public class TableTests extends JavaResourceModelTestCase {
 		table.addUniqueConstraint(0).addColumnName("FOO");
 		table.addUniqueConstraint(1).addColumnName("BAR");
 		table.addUniqueConstraint(2).addColumnName("BAZ");
-		assertSourceContains("@Table(uniqueConstraints={@UniqueConstraint(columnNames=\"FOO\"),@UniqueConstraint(columnNames=\"BAR\"), @UniqueConstraint(columnNames=\"BAZ\")})", cu);
+		assertSourceContains("@Table(uniqueConstraints = {@UniqueConstraint(columnNames = \"FOO\"),@UniqueConstraint(columnNames = \"BAR\"), @UniqueConstraint(columnNames = \"BAZ\")})", cu);
 		
 		table.removeUniqueConstraint(0);
-		assertSourceContains("@Table(uniqueConstraints={@UniqueConstraint(columnNames=\"BAR\"),@UniqueConstraint(columnNames=\"BAZ\")})", cu);
+		assertSourceContains("@Table(uniqueConstraints = {@UniqueConstraint(columnNames = \"BAR\"),@UniqueConstraint(columnNames = \"BAZ\")})", cu);
 		
 		table.removeUniqueConstraint(0);
-		assertSourceContains("@Table(uniqueConstraints=@UniqueConstraint(columnNames=\"BAZ\"))", cu);
+		assertSourceContains("@Table(uniqueConstraints = @UniqueConstraint(columnNames = \"BAZ\"))", cu);
 		
 		table.removeUniqueConstraint(0);
 		assertSourceDoesNotContain("@Table", cu);
@@ -312,13 +313,13 @@ public class TableTests extends JavaResourceModelTestCase {
 		table.addUniqueConstraint(0).addColumnName("FOO");
 		table.addUniqueConstraint(1).addColumnName("BAR");
 		table.addUniqueConstraint(2).addColumnName("BAZ");
-		assertSourceContains("@Table(uniqueConstraints={@UniqueConstraint(columnNames=\"FOO\"),@UniqueConstraint(columnNames=\"BAR\"), @UniqueConstraint(columnNames=\"BAZ\")})", cu);
+		assertSourceContains("@Table(uniqueConstraints = {@UniqueConstraint(columnNames = \"FOO\"),@UniqueConstraint(columnNames = \"BAR\"), @UniqueConstraint(columnNames = \"BAZ\")})", cu);
 		
 		table.removeUniqueConstraint(2);
-		assertSourceContains("@Table(uniqueConstraints={@UniqueConstraint(columnNames=\"FOO\"),@UniqueConstraint(columnNames=\"BAR\")})", cu);
+		assertSourceContains("@Table(uniqueConstraints = {@UniqueConstraint(columnNames = \"FOO\"),@UniqueConstraint(columnNames = \"BAR\")})", cu);
 		
 		table.removeUniqueConstraint(1);
-		assertSourceContains("@Table(uniqueConstraints=@UniqueConstraint(columnNames=\"FOO\"))", cu);
+		assertSourceContains("@Table(uniqueConstraints = @UniqueConstraint(columnNames = \"FOO\"))", cu);
 		
 		table.removeUniqueConstraint(0);
 		assertSourceDoesNotContain("@Table", cu);
@@ -330,7 +331,7 @@ public class TableTests extends JavaResourceModelTestCase {
 		TableAnnotation table = (TableAnnotation) typeResource.getSupportingAnnotation(JPA.TABLE);
 		
 		table.moveUniqueConstraint(2, 0);
-		assertSourceContains("@Table(uniqueConstraints={@UniqueConstraint(columnNames={\"FOO\"}), @UniqueConstraint(columnNames={\"BAZ\"}), @UniqueConstraint(columnNames={\"BAR\"})})", cu);
+		assertSourceContains("@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {\"FOO\"}), @UniqueConstraint(columnNames = {\"BAZ\"}), @UniqueConstraint(columnNames = {\"BAR\"})})", cu);
 	}
 	
 	public void testMoveUniqueConstraint2() throws Exception {
@@ -339,7 +340,7 @@ public class TableTests extends JavaResourceModelTestCase {
 		TableAnnotation table = (TableAnnotation) typeResource.getSupportingAnnotation(JPA.TABLE);
 		
 		table.moveUniqueConstraint(0, 2);
-		assertSourceContains("@Table(uniqueConstraints={@UniqueConstraint(columnNames={\"BAZ\"}), @UniqueConstraint(columnNames={\"BAR\"}), @UniqueConstraint(columnNames={\"FOO\"})})", cu);
+		assertSourceContains("@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {\"BAZ\"}), @UniqueConstraint(columnNames = {\"BAR\"}), @UniqueConstraint(columnNames = {\"FOO\"})})", cu);
 	}
 	
 }

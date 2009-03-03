@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,6 +18,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.java.OneToManyAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
+@SuppressWarnings("nls")
 public class OneToManyTests extends JavaResourceModelTestCase {
 	
 	public OneToManyTests(String name) {
@@ -45,7 +46,7 @@ public class OneToManyTests extends JavaResourceModelTestCase {
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append("@OneToMany(fetch=FetchType.EAGER)");
+				sb.append("@OneToMany(fetch = FetchType.EAGER)");
 			}
 		});
 	}
@@ -58,7 +59,7 @@ public class OneToManyTests extends JavaResourceModelTestCase {
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append("@OneToMany(targetEntity=AnnotationTestType.class)");
+				sb.append("@OneToMany(targetEntity = AnnotationTestType.class)");
 			}
 		});
 	}
@@ -71,7 +72,7 @@ public class OneToManyTests extends JavaResourceModelTestCase {
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append("@OneToMany(mappedBy=\"foo\")");
+				sb.append("@OneToMany(mappedBy = \"foo\")");
 			}
 		});
 	}
@@ -84,7 +85,7 @@ public class OneToManyTests extends JavaResourceModelTestCase {
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append("@OneToMany(cascade=CascadeType.ALL)");
+				sb.append("@OneToMany(cascade = CascadeType.ALL)");
 			}
 		});
 	}
@@ -97,7 +98,7 @@ public class OneToManyTests extends JavaResourceModelTestCase {
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append("@OneToMany(cascade={CascadeType.MERGE, CascadeType.REMOVE})");
+				sb.append("@OneToMany(cascade = {CascadeType.MERGE, CascadeType.REMOVE})");
 			}
 		});
 	}
@@ -110,7 +111,7 @@ public class OneToManyTests extends JavaResourceModelTestCase {
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append("@OneToMany(cascade={CascadeType.MERGE, CascadeType.MERGE})");
+				sb.append("@OneToMany(cascade = {CascadeType.MERGE, CascadeType.MERGE})");
 			}
 		});
 	}
@@ -144,7 +145,7 @@ public class OneToManyTests extends JavaResourceModelTestCase {
 		oneToMany.setFetch(FetchType.LAZY);
 		assertEquals(FetchType.LAZY, oneToMany.getFetch());
 		
-		assertSourceContains("@OneToMany(fetch=LAZY)", cu);
+		assertSourceContains("@OneToMany(fetch = LAZY)", cu);
 	}
 	
 	public void testSetFetchNull() throws Exception {
@@ -182,7 +183,7 @@ public class OneToManyTests extends JavaResourceModelTestCase {
 		
 		oneToMany.setTargetEntity("Foo");
 		
-		assertSourceContains("@OneToMany(targetEntity=Foo.class)", cu);
+		assertSourceContains("@OneToMany(targetEntity = Foo.class)", cu);
 	}
 	
 	public void testSetTargetEntityNull() throws Exception {
@@ -210,7 +211,7 @@ public class OneToManyTests extends JavaResourceModelTestCase {
 		
 		oneToMany.setTargetEntity("Foo");
 		
-		assertSourceContains("@OneToMany(targetEntity=Foo.class)", cu);
+		assertSourceContains("@OneToMany(targetEntity = Foo.class)", cu);
 		
 		assertEquals("Foo", oneToMany.getTargetEntity());
 		
@@ -246,7 +247,7 @@ public class OneToManyTests extends JavaResourceModelTestCase {
 		oneToMany.setMappedBy("bar");
 		assertEquals("bar", oneToMany.getMappedBy());
 		
-		assertSourceContains("@OneToMany(mappedBy=\"bar\")", cu);
+		assertSourceContains("@OneToMany(mappedBy = \"bar\")", cu);
 	}
 	
 	public void testSetMappedByNull() throws Exception {
@@ -273,7 +274,7 @@ public class OneToManyTests extends JavaResourceModelTestCase {
 		assertFalse(oneToMany.isCascadeAll());
 	
 		oneToMany.setCascadeAll(true);
-		assertSourceContains("@OneToMany(cascade=ALL)", cu);
+		assertSourceContains("@OneToMany(cascade = ALL)", cu);
 		
 		assertTrue(oneToMany.isCascadeAll());
 	}
@@ -287,7 +288,7 @@ public class OneToManyTests extends JavaResourceModelTestCase {
 		assertFalse(oneToMany.isCascadeMerge());
 	
 		oneToMany.setCascadeMerge(true);
-		assertSourceContains("@OneToMany(cascade=MERGE)", cu);
+		assertSourceContains("@OneToMany(cascade = MERGE)", cu);
 		
 		assertTrue(oneToMany.isCascadeMerge());
 	}
@@ -301,7 +302,7 @@ public class OneToManyTests extends JavaResourceModelTestCase {
 		assertFalse(oneToMany.isCascadePersist());
 	
 		oneToMany.setCascadePersist(true);
-		assertSourceContains("@OneToMany(cascade=PERSIST)", cu);
+		assertSourceContains("@OneToMany(cascade = PERSIST)", cu);
 		
 		assertTrue(oneToMany.isCascadePersist());
 	}
@@ -315,7 +316,7 @@ public class OneToManyTests extends JavaResourceModelTestCase {
 		assertFalse(oneToMany.isCascadeRemove());
 	
 		oneToMany.setCascadeRemove(true);
-		assertSourceContains("@OneToMany(cascade=REMOVE)", cu);
+		assertSourceContains("@OneToMany(cascade = REMOVE)", cu);
 		
 		assertTrue(oneToMany.isCascadeRemove());
 	}
@@ -329,7 +330,7 @@ public class OneToManyTests extends JavaResourceModelTestCase {
 		assertFalse(oneToMany.isCascadeRefresh());
 	
 		oneToMany.setCascadeRefresh(true);
-		assertSourceContains("@OneToMany(cascade=REFRESH)", cu);
+		assertSourceContains("@OneToMany(cascade = REFRESH)", cu);
 		
 		assertTrue(oneToMany.isCascadeRefresh());
 	}
@@ -345,7 +346,7 @@ public class OneToManyTests extends JavaResourceModelTestCase {
 		oneToMany.setCascadeAll(true);
 		assertTrue(oneToMany.isCascadeAll());
 		//a second CascadeType.All should not have been added
-		assertSourceContains("@OneToMany(cascade=CascadeType.ALL)", cu);
+		assertSourceContains("@OneToMany(cascade = CascadeType.ALL)", cu);
 		
 		oneToMany.setCascadeAll(false);
 		assertFalse(oneToMany.isCascadeAll());
@@ -387,7 +388,7 @@ public class OneToManyTests extends JavaResourceModelTestCase {
 		assertTrue(oneToMany.isCascadeRemove());
 		
 		oneToMany.setCascadeMerge(false);
-		assertSourceContains("@OneToMany(cascade=REMOVE)", cu);
+		assertSourceContains("@OneToMany(cascade = REMOVE)", cu);
 		
 		oneToMany.setCascadeRemove(false);		
 		assertSourceDoesNotContain("cascade", cu);

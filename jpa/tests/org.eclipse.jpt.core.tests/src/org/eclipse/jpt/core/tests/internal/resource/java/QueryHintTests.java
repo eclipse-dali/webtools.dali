@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,6 +17,7 @@ import org.eclipse.jpt.core.resource.java.NamedQueryAnnotation;
 import org.eclipse.jpt.core.resource.java.QueryHintAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
+@SuppressWarnings("nls")
 public class QueryHintTests extends JavaResourceModelTestCase {
 
 	private static final String QUERY_HINT_NAME = "myHint";
@@ -34,7 +35,7 @@ public class QueryHintTests extends JavaResourceModelTestCase {
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
-				sb.append("@NamedQuery(hints={@QueryHint(name=\"" + QUERY_HINT_NAME + "\", value=\"" + QUERY_HINT_VALUE + "\"), @QueryHint})");
+				sb.append("@NamedQuery(hints = {@QueryHint(name = \"" + QUERY_HINT_NAME + "\", value = \"" + QUERY_HINT_VALUE + "\"), @QueryHint})");
 			}
 		});
 	}
@@ -59,6 +60,6 @@ public class QueryHintTests extends JavaResourceModelTestCase {
 		queryHint.setName("foo");
 		assertEquals("foo", queryHint.getName());
 		
-		assertSourceContains("@QueryHint(name=\"foo\", value=\"" + QUERY_HINT_VALUE + "\")", cu);
+		assertSourceContains("@QueryHint(name = \"foo\", value = \"" + QUERY_HINT_VALUE + "\")", cu);
 	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -93,7 +93,7 @@ public class ObjectTypeConverterAnnotationTests extends EclipseLinkJavaResourceM
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append("@ObjectTypeConverter(name=\"bar\")");
+				sb.append("@ObjectTypeConverter(name = \"bar\")");
 			}
 		});
 	}
@@ -107,7 +107,7 @@ public class ObjectTypeConverterAnnotationTests extends EclipseLinkJavaResourceM
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append("@ObjectTypeConverter(defaultObjectValue=\"f\")");
+				sb.append("@ObjectTypeConverter(defaultObjectValue = \"f\")");
 			}
 		});
 	}
@@ -121,7 +121,7 @@ public class ObjectTypeConverterAnnotationTests extends EclipseLinkJavaResourceM
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append("@ObjectTypeConverter(conversionValues = {@ConversionValue(dataValue=\"F\", objectValue = \"Female\"), @ConversionValue(dataValue=\"M\", objectValue = \"Male\")})");
+				sb.append("@ObjectTypeConverter(conversionValues = {@ConversionValue(dataValue = \"F\", objectValue = \"Female\"), @ConversionValue(dataValue = \"M\", objectValue = \"Male\")})");
 			}
 		});
 	}
@@ -244,7 +244,7 @@ public class ObjectTypeConverterAnnotationTests extends EclipseLinkJavaResourceM
 		converter.setName("foo");
 		assertEquals("foo", converter.getName());
 		
-		assertSourceContains("@ObjectTypeConverter(name=\"foo\")", cu);
+		assertSourceContains("@ObjectTypeConverter(name = \"foo\")", cu);
 	}
 	
 	public void testSetNameNull() throws Exception {
@@ -283,7 +283,7 @@ public class ObjectTypeConverterAnnotationTests extends EclipseLinkJavaResourceM
 		converter.setDefaultObjectValue("foo");
 		assertEquals("foo", converter.getDefaultObjectValue());
 		
-		assertSourceContains("@ObjectTypeConverter(defaultObjectValue=\"foo\")", cu);
+		assertSourceContains("@ObjectTypeConverter(defaultObjectValue = \"foo\")", cu);
 	}
 	
 	public void testSetDefaultObjectValueNull() throws Exception {
@@ -367,7 +367,7 @@ public class ObjectTypeConverterAnnotationTests extends EclipseLinkJavaResourceM
 		assertNull(converter.conversionValueAt(2).getDataValue());
 		assertNull(converter.conversionValueAt(2).getObjectValue());
 
-		assertSourceContains("@ObjectTypeConverter(name=\"bar\", conversionValues = {@ConversionValue(dataValue=\"BAR\"),@ConversionValue(objectValue=\"FOO\"), @ConversionValue})", cu);
+		assertSourceContains("@ObjectTypeConverter(name = \"bar\", conversionValues = {@ConversionValue(dataValue = \"BAR\"),@ConversionValue(objectValue = \"FOO\"), @ConversionValue})", cu);
 	}
 	
 	public void testRemoveConversionValue() throws Exception {
@@ -383,20 +383,20 @@ public class ObjectTypeConverterAnnotationTests extends EclipseLinkJavaResourceM
 		assertEquals("Female", conversionValues.next().getObjectValue());
 		assertEquals("Male", conversionValues.next().getObjectValue());
 		assertFalse(conversionValues.hasNext());
-		assertSourceContains("@ObjectTypeConverter(conversionValues = {@ConversionValue(objectValue=\"FOO\"), @ConversionValue(dataValue=\"F\", objectValue = \"Female\"), @ConversionValue(dataValue=\"M\", objectValue = \"Male\")})", cu);
+		assertSourceContains("@ObjectTypeConverter(conversionValues = {@ConversionValue(objectValue = \"FOO\"), @ConversionValue(dataValue = \"F\", objectValue = \"Female\"), @ConversionValue(dataValue = \"M\", objectValue = \"Male\")})", cu);
 		
 		converter.removeConversionValue(1);
 		conversionValues = converter.conversionValues();
 		assertEquals("FOO", conversionValues.next().getObjectValue());
 		assertEquals("Male", conversionValues.next().getObjectValue());
 		assertFalse(conversionValues.hasNext());
-		assertSourceContains("@ObjectTypeConverter(conversionValues = {@ConversionValue(objectValue=\"FOO\"), @ConversionValue(dataValue=\"M\", objectValue = \"Male\")})", cu);
+		assertSourceContains("@ObjectTypeConverter(conversionValues = {@ConversionValue(objectValue = \"FOO\"), @ConversionValue(dataValue = \"M\", objectValue = \"Male\")})", cu);
 
 		converter.removeConversionValue(0);
 		conversionValues = converter.conversionValues();
 		assertEquals("Male", conversionValues.next().getObjectValue());
 		assertFalse(conversionValues.hasNext());
-		assertSourceContains("@ObjectTypeConverter(conversionValues = @ConversionValue(dataValue=\"M\", objectValue = \"Male\"))", cu);
+		assertSourceContains("@ObjectTypeConverter(conversionValues = @ConversionValue(dataValue = \"M\", objectValue = \"Male\"))", cu);
 
 		
 		converter.removeConversionValue(0);
@@ -412,7 +412,7 @@ public class ObjectTypeConverterAnnotationTests extends EclipseLinkJavaResourceM
 		ObjectTypeConverterAnnotation converter = (ObjectTypeConverterAnnotation) attributeResource.getSupportingAnnotation(EclipseLinkJPA.OBJECT_TYPE_CONVERTER);
 		converter.addConversionValue(0).setObjectValue("FOO");
 		
-		assertSourceContains("@ObjectTypeConverter(conversionValues = {@ConversionValue(objectValue=\"FOO\"), @ConversionValue(dataValue=\"F\", objectValue = \"Female\"), @ConversionValue(dataValue=\"M\", objectValue = \"Male\")})", cu);
+		assertSourceContains("@ObjectTypeConverter(conversionValues = {@ConversionValue(objectValue = \"FOO\"), @ConversionValue(dataValue = \"F\", objectValue = \"Female\"), @ConversionValue(dataValue = \"M\", objectValue = \"Male\")})", cu);
 
 		converter.moveConversionValue(2, 0);
 		assertEquals("Female", converter.conversionValueAt(0).getObjectValue());
@@ -422,7 +422,7 @@ public class ObjectTypeConverterAnnotationTests extends EclipseLinkJavaResourceM
 		assertEquals("FOO", converter.conversionValueAt(2).getObjectValue());
 		assertEquals(null, converter.conversionValueAt(2).getDataValue());
 		assertEquals(3, converter.conversionValuesSize());
-		assertSourceContains("@ObjectTypeConverter(conversionValues = {@ConversionValue(dataValue=\"F\", objectValue = \"Female\"), @ConversionValue(dataValue=\"M\", objectValue = \"Male\"), @ConversionValue(objectValue=\"FOO\")})", cu);
+		assertSourceContains("@ObjectTypeConverter(conversionValues = {@ConversionValue(dataValue = \"F\", objectValue = \"Female\"), @ConversionValue(dataValue = \"M\", objectValue = \"Male\"), @ConversionValue(objectValue = \"FOO\")})", cu);
 	}
 	
 	public void testMoveConversionValue2() throws Exception {
@@ -433,7 +433,7 @@ public class ObjectTypeConverterAnnotationTests extends EclipseLinkJavaResourceM
 		ObjectTypeConverterAnnotation converter = (ObjectTypeConverterAnnotation) attributeResource.getSupportingAnnotation(EclipseLinkJPA.OBJECT_TYPE_CONVERTER);
 		converter.addConversionValue(0).setObjectValue("FOO");
 		
-		assertSourceContains("@ObjectTypeConverter(conversionValues = {@ConversionValue(objectValue=\"FOO\"), @ConversionValue(dataValue=\"F\", objectValue = \"Female\"), @ConversionValue(dataValue=\"M\", objectValue = \"Male\")})", cu);
+		assertSourceContains("@ObjectTypeConverter(conversionValues = {@ConversionValue(objectValue = \"FOO\"), @ConversionValue(dataValue = \"F\", objectValue = \"Female\"), @ConversionValue(dataValue = \"M\", objectValue = \"Male\")})", cu);
 
 		converter.moveConversionValue(0, 2);
 		assertEquals("Male", converter.conversionValueAt(0).getObjectValue());
@@ -443,6 +443,6 @@ public class ObjectTypeConverterAnnotationTests extends EclipseLinkJavaResourceM
 		assertEquals("Female", converter.conversionValueAt(2).getObjectValue());
 		assertEquals("F", converter.conversionValueAt(2).getDataValue());
 		assertEquals(3, converter.conversionValuesSize());
-		assertSourceContains("@ObjectTypeConverter(conversionValues = {@ConversionValue(dataValue=\"M\", objectValue = \"Male\"), @ConversionValue(objectValue=\"FOO\"), @ConversionValue(dataValue=\"F\", objectValue = \"Female\")})", cu);
+		assertSourceContains("@ObjectTypeConverter(conversionValues = {@ConversionValue(dataValue = \"M\", objectValue = \"Male\"), @ConversionValue(objectValue = \"FOO\"), @ConversionValue(dataValue = \"F\", objectValue = \"Female\")})", cu);
 	}
 }

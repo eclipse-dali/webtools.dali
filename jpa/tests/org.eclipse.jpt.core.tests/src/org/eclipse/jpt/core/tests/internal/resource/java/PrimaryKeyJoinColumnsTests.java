@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -52,7 +52,7 @@ public class PrimaryKeyJoinColumnsTests extends JavaResourceModelTestCase {
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append("@PrimaryKeyJoinColumns(@PrimaryKeyJoinColumn(name=\"" + COLUMN_NAME + "\"))");
+				sb.append("@PrimaryKeyJoinColumns(@PrimaryKeyJoinColumn(name = \"" + COLUMN_NAME + "\"))");
 			}
 		});
 	}
@@ -65,7 +65,7 @@ public class PrimaryKeyJoinColumnsTests extends JavaResourceModelTestCase {
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append("@PrimaryKeyJoinColumns(@PrimaryKeyJoinColumn(referencedColumnName=\"" + COLUMN_REFERENCED_COLUMN_NAME + "\"))");
+				sb.append("@PrimaryKeyJoinColumns(@PrimaryKeyJoinColumn(referencedColumnName = \"" + COLUMN_REFERENCED_COLUMN_NAME + "\"))");
 			}
 		});
 	}
@@ -78,7 +78,7 @@ public class PrimaryKeyJoinColumnsTests extends JavaResourceModelTestCase {
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append("@PrimaryKeyJoinColumns(@PrimaryKeyJoinColumn(columnDefinition=\"" + COLUMN_COLUMN_DEFINITION + "\"))");
+				sb.append("@PrimaryKeyJoinColumns(@PrimaryKeyJoinColumn(columnDefinition = \"" + COLUMN_COLUMN_DEFINITION + "\"))");
 			}
 		});
 	}
@@ -91,7 +91,7 @@ public class PrimaryKeyJoinColumnsTests extends JavaResourceModelTestCase {
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append("@PrimaryKeyJoinColumn(name=\"BAR\", columnDefinition = \"COLUMN_DEF\", referencedColumnName = \"REF_NAME\")");
+				sb.append("@PrimaryKeyJoinColumn(name = \"BAR\", columnDefinition = \"COLUMN_DEF\", referencedColumnName = \"REF_NAME\")");
 			}
 		});
 	}
@@ -128,7 +128,7 @@ public class PrimaryKeyJoinColumnsTests extends JavaResourceModelTestCase {
 		column.setName("Foo");
 		assertEquals("Foo", column.getName());
 		
-		assertSourceContains("@PrimaryKeyJoinColumns(@PrimaryKeyJoinColumn(name=\"Foo\"))", cu);
+		assertSourceContains("@PrimaryKeyJoinColumns(@PrimaryKeyJoinColumn(name = \"Foo\"))", cu);
 	}
 	
 	public void testSetNameNull() throws Exception {
@@ -165,7 +165,7 @@ public class PrimaryKeyJoinColumnsTests extends JavaResourceModelTestCase {
 		column.setReferencedColumnName("Foo");
 		assertEquals("Foo", column.getReferencedColumnName());
 		
-		assertSourceContains("@PrimaryKeyJoinColumns(@PrimaryKeyJoinColumn(referencedColumnName=\"Foo\"))", cu);
+		assertSourceContains("@PrimaryKeyJoinColumns(@PrimaryKeyJoinColumn(referencedColumnName = \"Foo\"))", cu);
 
 		
 		column.setReferencedColumnName(null);
@@ -192,7 +192,7 @@ public class PrimaryKeyJoinColumnsTests extends JavaResourceModelTestCase {
 		column.setColumnDefinition("Foo");
 		assertEquals("Foo", column.getColumnDefinition());
 		
-		assertSourceContains("@PrimaryKeyJoinColumns(@PrimaryKeyJoinColumn(columnDefinition=\"Foo\"))", cu);
+		assertSourceContains("@PrimaryKeyJoinColumns(@PrimaryKeyJoinColumn(columnDefinition = \"Foo\"))", cu);
 
 		
 		column.setColumnDefinition(null);
@@ -207,7 +207,7 @@ public class PrimaryKeyJoinColumnsTests extends JavaResourceModelTestCase {
 		
 		PrimaryKeyJoinColumnAnnotation joinColumn = (PrimaryKeyJoinColumnAnnotation) attributeResource.addSupportingAnnotation(1, JPA.PRIMARY_KEY_JOIN_COLUMN, JPA.PRIMARY_KEY_JOIN_COLUMNS);
 		joinColumn.setName("FOO");
-		assertSourceContains("@PrimaryKeyJoinColumns({@PrimaryKeyJoinColumn(name=\"BAR\", columnDefinition = \"COLUMN_DEF\", referencedColumnName = \"REF_NAME\"),@PrimaryKeyJoinColumn(name=\"FOO\")})", cu);
+		assertSourceContains("@PrimaryKeyJoinColumns({@PrimaryKeyJoinColumn(name = \"BAR\", columnDefinition = \"COLUMN_DEF\", referencedColumnName = \"REF_NAME\"),@PrimaryKeyJoinColumn(name = \"FOO\")})", cu);
 		
 		assertNull(attributeResource.getSupportingAnnotation(JPA.PRIMARY_KEY_JOIN_COLUMN));
 		assertNotNull(attributeResource.getSupportingAnnotation(JPA.PRIMARY_KEY_JOIN_COLUMNS));
@@ -220,11 +220,11 @@ public class PrimaryKeyJoinColumnsTests extends JavaResourceModelTestCase {
 		
 		PrimaryKeyJoinColumnAnnotation joinColumn = (PrimaryKeyJoinColumnAnnotation) attributeResource.addSupportingAnnotation(1, JPA.PRIMARY_KEY_JOIN_COLUMN, JPA.PRIMARY_KEY_JOIN_COLUMNS);
 		joinColumn.setName("FOO");
-		assertSourceContains("@PrimaryKeyJoinColumns({@PrimaryKeyJoinColumn(name=\"BAR\", columnDefinition = \"COLUMN_DEF\", referencedColumnName = \"REF_NAME\"),@PrimaryKeyJoinColumn(name=\"FOO\")})", cu);
+		assertSourceContains("@PrimaryKeyJoinColumns({@PrimaryKeyJoinColumn(name = \"BAR\", columnDefinition = \"COLUMN_DEF\", referencedColumnName = \"REF_NAME\"),@PrimaryKeyJoinColumn(name = \"FOO\")})", cu);
 		
 		joinColumn = (PrimaryKeyJoinColumnAnnotation) attributeResource.addSupportingAnnotation(0, JPA.PRIMARY_KEY_JOIN_COLUMN, JPA.PRIMARY_KEY_JOIN_COLUMNS);
 		joinColumn.setName("BAZ");
-		assertSourceContains("@PrimaryKeyJoinColumns({@PrimaryKeyJoinColumn(name=\"BAZ\"),@PrimaryKeyJoinColumn(name=\"BAR\", columnDefinition = \"COLUMN_DEF\", referencedColumnName = \"REF_NAME\"), @PrimaryKeyJoinColumn(name=\"FOO\")})", cu);
+		assertSourceContains("@PrimaryKeyJoinColumns({@PrimaryKeyJoinColumn(name = \"BAZ\"),@PrimaryKeyJoinColumn(name = \"BAR\", columnDefinition = \"COLUMN_DEF\", referencedColumnName = \"REF_NAME\"), @PrimaryKeyJoinColumn(name = \"FOO\")})", cu);
 
 		Iterator<NestableAnnotation> pkJoinColumns = attributeResource.supportingAnnotations(JPA.PRIMARY_KEY_JOIN_COLUMN, JPA.PRIMARY_KEY_JOIN_COLUMNS);
 		assertEquals("BAZ", ((PrimaryKeyJoinColumnAnnotation) pkJoinColumns.next()).getName());
@@ -243,10 +243,10 @@ public class PrimaryKeyJoinColumnsTests extends JavaResourceModelTestCase {
 		
 		PrimaryKeyJoinColumnAnnotation joinColumn = (PrimaryKeyJoinColumnAnnotation) attributeResource.addSupportingAnnotation(1, JPA.PRIMARY_KEY_JOIN_COLUMN, JPA.PRIMARY_KEY_JOIN_COLUMNS);
 		joinColumn.setName("FOO");
-		assertSourceContains("@PrimaryKeyJoinColumns({@PrimaryKeyJoinColumn(name=\"BAR\", columnDefinition = \"COLUMN_DEF\", referencedColumnName = \"REF_NAME\"),@PrimaryKeyJoinColumn(name=\"FOO\")})", cu);
+		assertSourceContains("@PrimaryKeyJoinColumns({@PrimaryKeyJoinColumn(name = \"BAR\", columnDefinition = \"COLUMN_DEF\", referencedColumnName = \"REF_NAME\"),@PrimaryKeyJoinColumn(name = \"FOO\")})", cu);
 		
 		attributeResource.removeSupportingAnnotation(1, JPA.PRIMARY_KEY_JOIN_COLUMN, JPA.PRIMARY_KEY_JOIN_COLUMNS);
-		assertSourceContains("@PrimaryKeyJoinColumn(name=\"BAR\", columnDefinition = \"COLUMN_DEF\", referencedColumnName = \"REF_NAME\")", cu);
+		assertSourceContains("@PrimaryKeyJoinColumn(name = \"BAR\", columnDefinition = \"COLUMN_DEF\", referencedColumnName = \"REF_NAME\")", cu);
 	}
 
 }

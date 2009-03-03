@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -63,7 +63,7 @@ public class ConversionValueAnnotationTests extends EclipseLinkJavaResourceModel
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append("@ObjectTypeConverter(conversionValues = {@ConversionValue(dataValue=\"F\", objectValue = \"Female\"), @ConversionValue(dataValue=\"M\", objectValue = \"Male\")})");
+				sb.append("@ObjectTypeConverter(conversionValues = {@ConversionValue(dataValue = \"F\", objectValue = \"Female\"), @ConversionValue(dataValue = \"M\", objectValue = \"Male\")})");
 			}
 		});
 	}
@@ -89,7 +89,7 @@ public class ConversionValueAnnotationTests extends EclipseLinkJavaResourceModel
 		converter.conversionValueAt(0).setDataValue("FOO");
 		assertEquals("FOO", converter.conversionValueAt(0).getDataValue());
 		
-		assertSourceContains("@ObjectTypeConverter(conversionValues = {@ConversionValue(dataValue=\"FOO\", objectValue = \"Female\"), @ConversionValue(dataValue=\"M\", objectValue = \"Male\")})", cu);
+		assertSourceContains("@ObjectTypeConverter(conversionValues = {@ConversionValue(dataValue = \"FOO\", objectValue = \"Female\"), @ConversionValue(dataValue = \"M\", objectValue = \"Male\")})", cu);
 	}
 	
 	public void testSetDataValueNull() throws Exception {
@@ -101,10 +101,10 @@ public class ConversionValueAnnotationTests extends EclipseLinkJavaResourceModel
 		assertEquals(0, converter.conversionValuesSize());
 		
 		converter.addConversionValue(0).setDataValue("FOO");
-		assertSourceContains("@ObjectTypeConverter(conversionValues=@ConversionValue(dataValue=\"FOO\"))", cu);
+		assertSourceContains("@ObjectTypeConverter(conversionValues = @ConversionValue(dataValue = \"FOO\"))", cu);
 		
 		converter.conversionValueAt(0).setDataValue(null);
-		assertSourceContains("@ObjectTypeConverter(conversionValues=@ConversionValue)", cu);
+		assertSourceContains("@ObjectTypeConverter(conversionValues = @ConversionValue)", cu);
 		assertEquals(1, converter.conversionValuesSize());
 	}
 	
@@ -128,7 +128,7 @@ public class ConversionValueAnnotationTests extends EclipseLinkJavaResourceModel
 		converter.conversionValueAt(0).setObjectValue("FOO");
 		assertEquals("FOO", converter.conversionValueAt(0).getObjectValue());
 		
-		assertSourceContains("@ObjectTypeConverter(conversionValues = {@ConversionValue(dataValue=\"F\", objectValue = \"FOO\"), @ConversionValue(dataValue=\"M\", objectValue = \"Male\")})", cu);
+		assertSourceContains("@ObjectTypeConverter(conversionValues = {@ConversionValue(dataValue = \"F\", objectValue = \"FOO\"), @ConversionValue(dataValue = \"M\", objectValue = \"Male\")})", cu);
 	}
 	
 	public void testSetObjectValueNull() throws Exception {
@@ -140,10 +140,10 @@ public class ConversionValueAnnotationTests extends EclipseLinkJavaResourceModel
 		assertEquals(0, converter.conversionValuesSize());
 		
 		converter.addConversionValue(0).setObjectValue("FOO");
-		assertSourceContains("@ObjectTypeConverter(conversionValues=@ConversionValue(objectValue=\"FOO\"))", cu);
+		assertSourceContains("@ObjectTypeConverter(conversionValues = @ConversionValue(objectValue = \"FOO\"))", cu);
 		
 		converter.conversionValueAt(0).setObjectValue(null);
-		assertSourceContains("@ObjectTypeConverter(conversionValues=@ConversionValue)", cu);
+		assertSourceContains("@ObjectTypeConverter(conversionValues = @ConversionValue)", cu);
 		assertEquals(1, converter.conversionValuesSize());
 	}
 }

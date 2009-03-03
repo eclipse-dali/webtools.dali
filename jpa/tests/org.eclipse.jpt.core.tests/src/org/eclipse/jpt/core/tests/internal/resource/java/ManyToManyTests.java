@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,6 +18,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.java.ManyToManyAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
+@SuppressWarnings("nls")
 public class ManyToManyTests extends JavaResourceModelTestCase {
 	
 	public ManyToManyTests(String name) {
@@ -45,7 +46,7 @@ public class ManyToManyTests extends JavaResourceModelTestCase {
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append("@ManyToMany(fetch=FetchType.EAGER)");
+				sb.append("@ManyToMany(fetch = FetchType.EAGER)");
 			}
 		});
 	}
@@ -58,7 +59,7 @@ public class ManyToManyTests extends JavaResourceModelTestCase {
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append("@ManyToMany(targetEntity=AnnotationTestType.class)");
+				sb.append("@ManyToMany(targetEntity = AnnotationTestType.class)");
 			}
 		});
 	}
@@ -71,7 +72,7 @@ public class ManyToManyTests extends JavaResourceModelTestCase {
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append("@ManyToMany(mappedBy=\"foo\")");
+				sb.append("@ManyToMany(mappedBy = \"foo\")");
 			}
 		});
 	}
@@ -84,7 +85,7 @@ public class ManyToManyTests extends JavaResourceModelTestCase {
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append("@ManyToMany(cascade=CascadeType.ALL)");
+				sb.append("@ManyToMany(cascade = CascadeType.ALL)");
 			}
 		});
 	}
@@ -97,7 +98,7 @@ public class ManyToManyTests extends JavaResourceModelTestCase {
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append("@ManyToMany(cascade={CascadeType.MERGE, CascadeType.REMOVE})");
+				sb.append("@ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REMOVE})");
 			}
 		});
 	}
@@ -110,7 +111,7 @@ public class ManyToManyTests extends JavaResourceModelTestCase {
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append("@ManyToMany(cascade={CascadeType.MERGE, CascadeType.MERGE})");
+				sb.append("@ManyToMany(cascade = {CascadeType.MERGE, CascadeType.MERGE})");
 			}
 		});
 	}
@@ -144,7 +145,7 @@ public class ManyToManyTests extends JavaResourceModelTestCase {
 		manyToMany.setFetch(FetchType.LAZY);
 		assertEquals(FetchType.LAZY, manyToMany.getFetch());
 		
-		assertSourceContains("@ManyToMany(fetch=LAZY)", cu);
+		assertSourceContains("@ManyToMany(fetch = LAZY)", cu);
 	}
 	
 	public void testSetFetchNull() throws Exception {
@@ -181,7 +182,7 @@ public class ManyToManyTests extends JavaResourceModelTestCase {
 		
 		manyToMany.setTargetEntity("Foo");
 		
-		assertSourceContains("@ManyToMany(targetEntity=Foo.class)", cu);
+		assertSourceContains("@ManyToMany(targetEntity = Foo.class)", cu);
 	}
 	
 	public void testSetTargetEntityNull() throws Exception {
@@ -209,7 +210,7 @@ public class ManyToManyTests extends JavaResourceModelTestCase {
 		
 		manyToMany.setTargetEntity("Foo");
 		
-		assertSourceContains("@ManyToMany(targetEntity=Foo.class)", cu);
+		assertSourceContains("@ManyToMany(targetEntity = Foo.class)", cu);
 		
 		assertEquals("Foo", manyToMany.getTargetEntity());
 		
@@ -244,7 +245,7 @@ public class ManyToManyTests extends JavaResourceModelTestCase {
 		manyToMany.setMappedBy("bar");
 		assertEquals("bar", manyToMany.getMappedBy());
 		
-		assertSourceContains("@ManyToMany(mappedBy=\"bar\")", cu);
+		assertSourceContains("@ManyToMany(mappedBy = \"bar\")", cu);
 	}
 	
 	public void testSetMappedByNull() throws Exception {
@@ -271,7 +272,7 @@ public class ManyToManyTests extends JavaResourceModelTestCase {
 		assertFalse(manyToMany.isCascadeAll());
 	
 		manyToMany.setCascadeAll(true);
-		assertSourceContains("@ManyToMany(cascade=ALL)", cu);
+		assertSourceContains("@ManyToMany(cascade = ALL)", cu);
 		
 		assertTrue(manyToMany.isCascadeAll());
 	}
@@ -285,7 +286,7 @@ public class ManyToManyTests extends JavaResourceModelTestCase {
 		assertFalse(manyToMany.isCascadeMerge());
 	
 		manyToMany.setCascadeMerge(true);
-		assertSourceContains("@ManyToMany(cascade=MERGE)", cu);
+		assertSourceContains("@ManyToMany(cascade = MERGE)", cu);
 		
 		assertTrue(manyToMany.isCascadeMerge());
 	}
@@ -299,7 +300,7 @@ public class ManyToManyTests extends JavaResourceModelTestCase {
 		assertFalse(manyToMany.isCascadePersist());
 	
 		manyToMany.setCascadePersist(true);
-		assertSourceContains("@ManyToMany(cascade=PERSIST)", cu);
+		assertSourceContains("@ManyToMany(cascade = PERSIST)", cu);
 		
 		assertTrue(manyToMany.isCascadePersist());
 	}
@@ -313,7 +314,7 @@ public class ManyToManyTests extends JavaResourceModelTestCase {
 		assertFalse(manyToMany.isCascadeRemove());
 	
 		manyToMany.setCascadeRemove(true);
-		assertSourceContains("@ManyToMany(cascade=REMOVE)", cu);
+		assertSourceContains("@ManyToMany(cascade = REMOVE)", cu);
 		
 		assertTrue(manyToMany.isCascadeRemove());
 	}
@@ -327,7 +328,7 @@ public class ManyToManyTests extends JavaResourceModelTestCase {
 		assertFalse(manyToMany.isCascadeRefresh());
 	
 		manyToMany.setCascadeRefresh(true);
-		assertSourceContains("@ManyToMany(cascade=REFRESH)", cu);
+		assertSourceContains("@ManyToMany(cascade = REFRESH)", cu);
 		
 		assertTrue(manyToMany.isCascadeRefresh());
 	}
@@ -343,7 +344,7 @@ public class ManyToManyTests extends JavaResourceModelTestCase {
 		manyToMany.setCascadeAll(true);
 		assertTrue(manyToMany.isCascadeAll());
 		//a second CascadeType.All should not have been added
-		assertSourceContains("@ManyToMany(cascade=CascadeType.ALL)", cu);
+		assertSourceContains("@ManyToMany(cascade = CascadeType.ALL)", cu);
 		
 		manyToMany.setCascadeAll(false);
 		assertFalse(manyToMany.isCascadeAll());
@@ -385,7 +386,7 @@ public class ManyToManyTests extends JavaResourceModelTestCase {
 		assertTrue(manyToMany.isCascadeRemove());
 		
 		manyToMany.setCascadeMerge(false);
-		assertSourceContains("@ManyToMany(cascade=REMOVE)", cu);
+		assertSourceContains("@ManyToMany(cascade = REMOVE)", cu);
 		
 		manyToMany.setCascadeRemove(false);		
 		assertSourceDoesNotContain("cascade", cu);

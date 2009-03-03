@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,6 +18,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
+@SuppressWarnings("nls")
 public class AttributeOverrideTests extends JavaResourceModelTestCase {
 	
 	private static final String COLUMN_NAME = "MY_COLUMN";
@@ -35,7 +36,7 @@ public class AttributeOverrideTests extends JavaResourceModelTestCase {
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append("@AttributeOverride(name=\"" + ATTRIBUTE_OVERRIDE_NAME + "\")");
+				sb.append("@AttributeOverride(name = \"" + ATTRIBUTE_OVERRIDE_NAME + "\")");
 			}
 		});
 	}
@@ -48,7 +49,7 @@ public class AttributeOverrideTests extends JavaResourceModelTestCase {
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append("@AttributeOverride(name=\"" + ATTRIBUTE_OVERRIDE_NAME + "\", column = @Column(name=\"" + COLUMN_NAME + "\"))");
+				sb.append("@AttributeOverride(name = \"" + ATTRIBUTE_OVERRIDE_NAME + "\", column = @Column(name = \"" + COLUMN_NAME + "\"))");
 			}
 		});
 	}
@@ -84,7 +85,7 @@ public class AttributeOverrideTests extends JavaResourceModelTestCase {
 
 		attributeOverride.setName("Foo");
 		assertEquals("Foo", attributeOverride.getName());
-		assertSourceContains("@AttributeOverride(name=\"Foo\")", cu);
+		assertSourceContains("@AttributeOverride(name = \"Foo\")", cu);
 	}
 	
 	public void testSetNameNull() throws Exception {
@@ -121,11 +122,11 @@ public class AttributeOverrideTests extends JavaResourceModelTestCase {
 		
 		column.setName("Foo");
 		
-		assertSourceContains("@AttributeOverride(name=\"" + ATTRIBUTE_OVERRIDE_NAME + "\", column = @Column(name=\"Foo\"))", cu);
+		assertSourceContains("@AttributeOverride(name = \"" + ATTRIBUTE_OVERRIDE_NAME + "\", column = @Column(name = \"Foo\"))", cu);
 		
 		column.setName(null);
 		assertNull(attributeOverride.getColumn());
-		assertSourceContains("@AttributeOverride(name=\"" + ATTRIBUTE_OVERRIDE_NAME + "\")", cu);
+		assertSourceContains("@AttributeOverride(name = \"" + ATTRIBUTE_OVERRIDE_NAME + "\")", cu);
 	}
 	
 	public void testAddColumn() throws Exception {

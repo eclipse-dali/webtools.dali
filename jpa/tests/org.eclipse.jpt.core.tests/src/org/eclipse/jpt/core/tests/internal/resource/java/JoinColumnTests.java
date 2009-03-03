@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,6 +17,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
+@SuppressWarnings("nls")
 public class JoinColumnTests extends JavaResourceModelTestCase {
 	
 	private static final String COLUMN_NAME = "MY_COLUMN";
@@ -49,7 +50,7 @@ public class JoinColumnTests extends JavaResourceModelTestCase {
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append("@JoinColumn(name=\"" + COLUMN_NAME + "\")");
+				sb.append("@JoinColumn(name = \"" + COLUMN_NAME + "\")");
 			}
 		});
 	}
@@ -62,7 +63,7 @@ public class JoinColumnTests extends JavaResourceModelTestCase {
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append("@JoinColumn(table=\"" + COLUMN_TABLE + "\")");
+				sb.append("@JoinColumn(table = \"" + COLUMN_TABLE + "\")");
 			}
 		});
 	}
@@ -75,7 +76,7 @@ public class JoinColumnTests extends JavaResourceModelTestCase {
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append("@JoinColumn(referencedColumnName=\"" + COLUMN_REFERENCED_COLUMN_NAME + "\")");
+				sb.append("@JoinColumn(referencedColumnName = \"" + COLUMN_REFERENCED_COLUMN_NAME + "\")");
 			}
 		});
 	}
@@ -88,7 +89,7 @@ public class JoinColumnTests extends JavaResourceModelTestCase {
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append("@JoinColumn(columnDefinition=\"" + COLUMN_COLUMN_DEFINITION + "\")");
+				sb.append("@JoinColumn(columnDefinition = \"" + COLUMN_COLUMN_DEFINITION + "\")");
 			}
 		});
 	}
@@ -101,7 +102,7 @@ public class JoinColumnTests extends JavaResourceModelTestCase {
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append("@JoinColumn(" + booleanElement + "=true)");
+				sb.append("@JoinColumn(" + booleanElement + " = true)");
 			}
 		});
 	}
@@ -143,7 +144,7 @@ public class JoinColumnTests extends JavaResourceModelTestCase {
 		column.setName("Foo");
 		assertEquals("Foo", column.getName());
 		
-		assertSourceContains("@JoinColumn(name=\"Foo\")", cu);
+		assertSourceContains("@JoinColumn(name = \"Foo\")", cu);
 	}
 	
 	public void testSetNameNull() throws Exception {
@@ -180,7 +181,7 @@ public class JoinColumnTests extends JavaResourceModelTestCase {
 		column.setTable("Foo");
 		assertEquals("Foo", column.getTable());
 		
-		assertSourceContains("@JoinColumn(table=\"Foo\")", cu);
+		assertSourceContains("@JoinColumn(table = \"Foo\")", cu);
 
 		
 		column.setTable(null);
@@ -207,7 +208,7 @@ public class JoinColumnTests extends JavaResourceModelTestCase {
 		column.setReferencedColumnName("Foo");
 		assertEquals("Foo", column.getReferencedColumnName());
 		
-		assertSourceContains("@JoinColumn(referencedColumnName=\"Foo\")", cu);
+		assertSourceContains("@JoinColumn(referencedColumnName = \"Foo\")", cu);
 
 		
 		column.setReferencedColumnName(null);
@@ -234,7 +235,7 @@ public class JoinColumnTests extends JavaResourceModelTestCase {
 		column.setColumnDefinition("Foo");
 		assertEquals("Foo", column.getColumnDefinition());
 		
-		assertSourceContains("@JoinColumn(columnDefinition=\"Foo\")", cu);
+		assertSourceContains("@JoinColumn(columnDefinition = \"Foo\")", cu);
 
 		
 		column.setColumnDefinition(null);
@@ -247,7 +248,7 @@ public class JoinColumnTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		JoinColumnAnnotation column = (JoinColumnAnnotation) attributeResource.getSupportingAnnotation(JPA.JOIN_COLUMN);
 
-		assertTrue(column.getUnique());
+		assertEquals(Boolean.TRUE, column.getUnique());
 	}
 	
 	public void testSetUnique() throws Exception {
@@ -259,10 +260,10 @@ public class JoinColumnTests extends JavaResourceModelTestCase {
 		assertNotNull(column);
 		assertNull(column.getUnique());
 
-		column.setUnique(false);
-		assertFalse(column.getUnique());
+		column.setUnique(Boolean.FALSE);
+		assertEquals(Boolean.FALSE, column.getUnique());
 		
-		assertSourceContains("@JoinColumn(unique=false)", cu);
+		assertSourceContains("@JoinColumn(unique = false)", cu);
 		
 		column.setUnique(null);
 		assertSourceDoesNotContain("@JoinColumn", cu);
@@ -274,7 +275,7 @@ public class JoinColumnTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		JoinColumnAnnotation column = (JoinColumnAnnotation) attributeResource.getSupportingAnnotation(JPA.JOIN_COLUMN);
 
-		assertTrue(column.getNullable());
+		assertEquals(Boolean.TRUE, column.getNullable());
 	}
 	
 	public void testSetNullable() throws Exception {
@@ -286,10 +287,10 @@ public class JoinColumnTests extends JavaResourceModelTestCase {
 		assertNotNull(column);
 		assertNull(column.getNullable());
 
-		column.setNullable(false);
-		assertFalse(column.getNullable());
+		column.setNullable(Boolean.FALSE);
+		assertEquals(Boolean.FALSE, column.getNullable());
 		
-		assertSourceContains("@JoinColumn(nullable=false)", cu);
+		assertSourceContains("@JoinColumn(nullable = false)", cu);
 		
 		column.setNullable(null);
 		assertSourceDoesNotContain("@JoinColumn", cu);
@@ -301,7 +302,7 @@ public class JoinColumnTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		JoinColumnAnnotation column = (JoinColumnAnnotation) attributeResource.getSupportingAnnotation(JPA.JOIN_COLUMN);
 
-		assertTrue(column.getInsertable());
+		assertEquals(Boolean.TRUE, column.getInsertable());
 	}
 	
 	public void testSetInsertable() throws Exception {
@@ -313,10 +314,10 @@ public class JoinColumnTests extends JavaResourceModelTestCase {
 		assertNotNull(column);
 		assertNull(column.getInsertable());
 
-		column.setInsertable(false);
-		assertFalse(column.getInsertable());
+		column.setInsertable(Boolean.FALSE);
+		assertEquals(Boolean.FALSE, column.getInsertable());
 		
-		assertSourceContains("@JoinColumn(insertable=false)", cu);
+		assertSourceContains("@JoinColumn(insertable = false)", cu);
 		
 		column.setInsertable(null);
 		assertSourceDoesNotContain("@JoinColumn", cu);
@@ -328,7 +329,7 @@ public class JoinColumnTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		JoinColumnAnnotation column = (JoinColumnAnnotation) attributeResource.getSupportingAnnotation(JPA.JOIN_COLUMN);
 
-		assertTrue(column.getUpdatable());
+		assertEquals(Boolean.TRUE, column.getUpdatable());
 	}
 	
 	public void testSetUpdatable() throws Exception {
@@ -340,10 +341,10 @@ public class JoinColumnTests extends JavaResourceModelTestCase {
 		assertNotNull(column);
 		assertNull(column.getUpdatable());
 
-		column.setUpdatable(false);
-		assertFalse(column.getUpdatable());
+		column.setUpdatable(Boolean.FALSE);
+		assertEquals(Boolean.FALSE, column.getUpdatable());
 		
-		assertSourceContains("@JoinColumn(updatable=false)", cu);
+		assertSourceContains("@JoinColumn(updatable = false)", cu);
 		
 		column.setUpdatable(null);
 		assertSourceDoesNotContain("@JoinColumn", cu);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -47,7 +47,7 @@ public class TypeConverterAnnotationTests extends EclipseLinkJavaResourceModelTe
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append("@TypeConverter(dataType=Foo.class)");
+				sb.append("@TypeConverter(dataType = Foo.class)");
 			}
 		});
 	}
@@ -61,7 +61,7 @@ public class TypeConverterAnnotationTests extends EclipseLinkJavaResourceModelTe
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append("@TypeConverter(objectType=Foo.class)");
+				sb.append("@TypeConverter(objectType = Foo.class)");
 			}
 		});
 	}
@@ -75,7 +75,7 @@ public class TypeConverterAnnotationTests extends EclipseLinkJavaResourceModelTe
 			}
 			@Override
 			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append("@TypeConverter(name=\"bar\")");
+				sb.append("@TypeConverter(name = \"bar\")");
 			}
 		});
 	}
@@ -114,11 +114,11 @@ public class TypeConverterAnnotationTests extends EclipseLinkJavaResourceModelTe
 		converter.setDataType("Bar");
 		assertEquals("Bar", converter.getDataType());
 		
-		assertSourceContains("@TypeConverter(dataType=Bar.class)", cu);
+		assertSourceContains("@TypeConverter(dataType = Bar.class)", cu);
 		
 		converter.setDataType("int");
 		assertEquals("int", converter.getDataType());
-		assertSourceContains("@TypeConverter(dataType=int.class)", cu);
+		assertSourceContains("@TypeConverter(dataType = int.class)", cu);
 	}
 	
 	public void testSetDataTypeNull() throws Exception {
@@ -156,11 +156,11 @@ public class TypeConverterAnnotationTests extends EclipseLinkJavaResourceModelTe
 		converter.setObjectType("Bar");
 		assertEquals("Bar", converter.getObjectType());
 		
-		assertSourceContains("@TypeConverter(objectType=Bar.class)", cu);
+		assertSourceContains("@TypeConverter(objectType = Bar.class)", cu);
 		
 		converter.setObjectType("int");
 		assertEquals("int", converter.getObjectType());
-		assertSourceContains("@TypeConverter(objectType=int.class)", cu);
+		assertSourceContains("@TypeConverter(objectType = int.class)", cu);
 	}
 	
 	public void testSetObjectTypeNull() throws Exception {
@@ -198,7 +198,7 @@ public class TypeConverterAnnotationTests extends EclipseLinkJavaResourceModelTe
 		converter.setName("foo");
 		assertEquals("foo", converter.getName());
 		
-		assertSourceContains("@TypeConverter(name=\"foo\")", cu);
+		assertSourceContains("@TypeConverter(name = \"foo\")", cu);
 	}
 	
 	public void testSetNameNull() throws Exception {
