@@ -13,13 +13,13 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.Path;
+import org.eclipse.jdt.core.IClasspathContainer;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.db.JptDbPlugin;
 import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jst.common.project.facet.core.libprov.LibraryInstallDelegate;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.project.facet.core.IDelegate;
@@ -44,7 +44,7 @@ public class JpaFacetInstallDelegate
 		}
 	}
 
-	private void execute_(IProject project, IProjectFacetVersion fv, 
+	private void execute_(IProject project, @SuppressWarnings("unused") IProjectFacetVersion fv, 
 				Object config, IProgressMonitor monitor) throws CoreException {
 		
 		monitor.beginTask("", 1); //$NON-NLS-1$
@@ -80,19 +80,11 @@ public class JpaFacetInstallDelegate
 		if( ! dataModel.getBooleanProperty(USER_WANTS_TO_ADD_DB_DRIVER_JARS_TO_CLASSPATH)) {
 			return;
 		}
-		String driverJars = dataModel.getStringProperty(DB_DRIVER_JARS);
-		if (StringTools.stringIsEmpty(driverJars)) {
-			return;
-		}
-		
-		String[] driverJarArray = driverJars.split(","); //$NON-NLS-1$
-		for(String driverJar : driverJarArray) {
-			IClasspathEntry driverJarEntry = 
-				JavaCore.newLibraryEntry(
-					new Path(driverJar), null, null, true	
-				);
-			this.addClasspathEntryToProject(driverJarEntry, javaProject, monitor);
-		}
+		String driverName = dataModel.getStringProperty(DB_DRIVER_NAME);
+
+		IClasspathContainer container = JptDbPlugin.instance().buildDriverClasspathContainerFor(driverName);
+		IClasspathEntry entry = JavaCore.newContainerEntry(container.getPath());
+		this.addClasspathEntryToProject(entry, javaProject, monitor);
 	}
 	
 	private void addClasspathEntryToProject(IClasspathEntry classpathEntry, IJavaProject javaProject, IProgressMonitor monitor) throws CoreException {

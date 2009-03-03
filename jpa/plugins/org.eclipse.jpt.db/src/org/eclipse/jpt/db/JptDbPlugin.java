@@ -10,6 +10,8 @@
 package org.eclipse.jpt.db;
 
 import org.eclipse.core.runtime.Plugin;
+import org.eclipse.datatools.enablement.jdt.classpath.internal.DriverClasspathContainer;
+import org.eclipse.jdt.core.IClasspathContainer;
 import org.eclipse.jpt.db.internal.DTPConnectionProfileFactory;
 import org.osgi.framework.BundleContext;
 
@@ -66,6 +68,13 @@ public class JptDbPlugin extends Plugin {
 
 	public ConnectionProfileFactory getConnectionProfileFactory() {
 		return this.connectionProfileFactory;
+	}
+
+	/**
+	 * Creates a jar list container for the given DTP driver.
+	 */
+	public IClasspathContainer buildDriverClasspathContainerFor(String driverName) {
+		return new DriverClasspathContainer(driverName);
 	}
 
 }

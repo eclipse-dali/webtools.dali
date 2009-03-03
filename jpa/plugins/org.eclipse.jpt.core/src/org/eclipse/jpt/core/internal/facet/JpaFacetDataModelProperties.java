@@ -50,11 +50,6 @@ public interface JpaFacetDataModelProperties extends IDataModelProperties
 	 * Not required, type String, identifies the database driver library added to the classpath
 	 */
 	public static final String DB_DRIVER_NAME = "JpaFacetDataModelProperties.DB_DRIVER_NAME";
-
-	/**
-	 * Not required, type String, identifies the database driver jars added to the classpath
-	 */
-	public static final String DB_DRIVER_JARS = "JpaFacetDataModelProperties.DB_DRIVER_JARS";
 	
 	/**
 	 * Required, type Boolean, identifies if the user wishes to override default schema name

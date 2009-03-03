@@ -91,7 +91,6 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 		propertyNames.add(CONNECTION_ACTIVE);
 		propertyNames.add(USER_WANTS_TO_ADD_DB_DRIVER_JARS_TO_CLASSPATH);
 		propertyNames.add(DB_DRIVER_NAME);
-		propertyNames.add(DB_DRIVER_JARS);
 		propertyNames.add(USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA);
 		propertyNames.add(USER_OVERRIDE_DEFAULT_SCHEMA);
 		propertyNames.add(DISCOVER_ANNOTATED_CLASSES);
@@ -140,9 +139,6 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 		if (propertyName.equals(DB_DRIVER_NAME)) {
 			return getDefaultDriverName();
 		}
-		if (propertyName.equals(DB_DRIVER_JARS)) {
-			return getDefaultDriverJars();
-		}
 		if (propertyName.equals(USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA)) {
 			return Boolean.FALSE;
 		}
@@ -168,14 +164,6 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 			return null;
 		}
 		return cp.getDriverName();
-	}
-
-	private String getDefaultDriverJars() {
-		ConnectionProfile cp = this.getConnectionProfile();
-		if (cp == null) {
-			return null;
-		}
-		return cp.getDriverJarList();
 	}
 	
 	private String getDefaultSchemaName() {
@@ -248,8 +236,6 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 			this.model.setBooleanProperty(CONNECTION_ACTIVE, connectionIsActive());
 			this.model.notifyPropertyChange(DB_DRIVER_NAME, IDataModel.DEFAULT_CHG);
 			this.model.notifyPropertyChange(DB_DRIVER_NAME, IDataModel.VALID_VALUES_CHG);
-			this.model.notifyPropertyChange(DB_DRIVER_JARS, IDataModel.DEFAULT_CHG);
-			this.model.notifyPropertyChange(DB_DRIVER_JARS, IDataModel.VALID_VALUES_CHG);
 			this.model.notifyPropertyChange(USER_OVERRIDE_DEFAULT_SCHEMA, IDataModel.DEFAULT_CHG);
 			this.model.notifyPropertyChange(USER_OVERRIDE_DEFAULT_SCHEMA, IDataModel.VALID_VALUES_CHG);
 		}
@@ -258,14 +244,11 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 			this.model.notifyPropertyChange(USER_OVERRIDE_DEFAULT_SCHEMA, IDataModel.VALID_VALUES_CHG);
 			this.model.notifyPropertyChange(USER_WANTS_TO_ADD_DB_DRIVER_JARS_TO_CLASSPATH, IDataModel.ENABLE_CHG);
 			this.model.notifyPropertyChange(DB_DRIVER_NAME, IDataModel.ENABLE_CHG);
-			this.model.notifyPropertyChange(DB_DRIVER_JARS, IDataModel.ENABLE_CHG);
 		}
 		if (propertyName.equals(USER_WANTS_TO_ADD_DB_DRIVER_JARS_TO_CLASSPATH)) {
 			this.model.notifyPropertyChange(DB_DRIVER_NAME, IDataModel.ENABLE_CHG);
-			this.model.notifyPropertyChange(DB_DRIVER_JARS, IDataModel.ENABLE_CHG);
 			if (! ((Boolean) propertyValue).booleanValue()) {
 				this.model.setProperty(DB_DRIVER_NAME, null);
-				this.model.setProperty(DB_DRIVER_JARS, null);
 			}
 		}
 		if (propertyName.equals(USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA)) {

@@ -12,7 +12,6 @@ package org.eclipse.jpt.ui.internal.wizards;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProperties;
-import org.eclipse.jpt.core.internal.facet.JpaLibraryProviderConstants;
 import org.eclipse.jpt.db.ConnectionProfile;
 import org.eclipse.jpt.db.JptDbPlugin;
 import org.eclipse.jpt.db.ui.internal.DTPUiTools;
@@ -35,8 +34,6 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.wst.common.frameworks.datamodel.DataModelEvent;
-import org.eclipse.wst.common.frameworks.datamodel.IDataModelListener;
 import org.eclipse.wst.common.project.facet.core.IFacetedProjectWorkingCopy;
 import org.eclipse.wst.common.project.facet.core.events.IFacetedProjectEvent;
 import org.eclipse.wst.common.project.facet.core.events.IFacetedProjectListener;
@@ -118,7 +115,6 @@ public class JpaFacetWizardPage extends DataModelFacetInstallPage
 			CONNECTION,
 			USER_WANTS_TO_ADD_DB_DRIVER_JARS_TO_CLASSPATH,
 			DB_DRIVER_NAME,
-			DB_DRIVER_JARS,
 			USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA,
 			USER_OVERRIDE_DEFAULT_SCHEMA,
 			DISCOVER_ANNOTATED_CLASSES,
