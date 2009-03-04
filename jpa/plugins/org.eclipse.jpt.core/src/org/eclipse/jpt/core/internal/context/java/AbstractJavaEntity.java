@@ -105,6 +105,10 @@ public abstract class AbstractJavaEntity
 
 	protected final JavaTable table;
 
+	protected boolean specifiedTableIsAllowed;
+	
+	protected boolean tableIsUndefined;
+
 	protected final List<JavaSecondaryTable> specifiedSecondaryTables;
 
 	protected final List<JavaPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumns;
@@ -117,13 +121,15 @@ public abstract class AbstractJavaEntity
 
 	protected String defaultDiscriminatorValue;
 
-	protected boolean discriminatorValueAllowed;
+	protected boolean discriminatorValueIsUndefined;
 	
 	protected String specifiedDiscriminatorValue;
 	
 	protected final JavaDiscriminatorColumn discriminatorColumn;
 
-	protected boolean discriminatorColumnAllowed;
+	protected boolean specifiedDiscriminatorColumnIsAllowed;
+	
+	protected boolean discriminatorColumnIsUndefined;
 
 	protected JavaSequenceGenerator sequenceGenerator;
 
@@ -220,11 +226,14 @@ public abstract class AbstractJavaEntity
 		this.defaultName = this.getResourceDefaultName();
 		this.defaultInheritanceStrategy = this.buildDefaultInheritanceStrategy();
 		this.specifiedInheritanceStrategy = this.getResourceInheritanceStrategy(getResourceInheritance());
-		this.discriminatorValueAllowed = this.buildDiscriminatorValueIsAllowed();
+		this.discriminatorValueIsUndefined = this.buildDiscriminatorValueIsUndefined();
 		this.specifiedDiscriminatorValue = this.getResourceDiscriminatorValue().getValue();
 		this.defaultDiscriminatorValue = this.buildDefaultDiscriminatorValue();
-		this.discriminatorColumnAllowed = this.buildDiscriminatorColumnIsAllowed();
+		this.specifiedDiscriminatorColumnIsAllowed = this.buildSpecifiedDiscriminatorColumnIsAllowed();
+		this.discriminatorColumnIsUndefined = this.buildDiscriminatorColumnIsUndefined();
 		this.discriminatorColumn.initialize(resourcePersistentType);
+		this.specifiedTableIsAllowed = this.buildSpecifiedTableIsAllowed();
+		this.tableIsUndefined = this.buildTableIsUndefined();
 		this.table.initialize(resourcePersistentType);
 		this.initializeSecondaryTables();
 		this.initializeTableGenerator();
@@ -611,24 +620,54 @@ public abstract class AbstractJavaEntity
 		return (this.getSpecifiedDiscriminatorValue() == null) ? getDefaultDiscriminatorValue() : this.getSpecifiedDiscriminatorValue();
 	}
 
-	public boolean isDiscriminatorValueAllowed() {
-		return this.discriminatorValueAllowed;
+	public boolean discriminatorValueIsUndefined() {
+		return this.discriminatorValueIsUndefined;
 	}
 	
-	protected void setDiscriminatorValueAllowed(boolean newDiscriminatorValueAllowed) {
-		boolean oldDiscriminatorValueAllowed = this.discriminatorValueAllowed;
-		this.discriminatorValueAllowed = newDiscriminatorValueAllowed;
-		firePropertyChanged(Entity.DISCRIMINATOR_VALUE_ALLOWED_PROPERTY, oldDiscriminatorValueAllowed, newDiscriminatorValueAllowed);
+	protected void setDiscriminatorValueIsUndefined(boolean discriminatorValueIsUndefined) {
+		boolean old = this.discriminatorValueIsUndefined;
+		this.discriminatorValueIsUndefined = discriminatorValueIsUndefined;
+		firePropertyChanged(Entity.DISCRIMINATOR_VALUE_IS_UNDEFINED_PROPERTY, old, discriminatorValueIsUndefined);
 	}
 	
-	public boolean isDiscriminatorColumnAllowed() {
-		return this.discriminatorColumnAllowed;
+	public boolean specifiedDiscriminatorColumnIsAllowed() {
+		return this.specifiedDiscriminatorColumnIsAllowed;
 	}
 	
-	protected void setDiscriminatorColumnAllowed(boolean newDiscriminatorColumnAllowed) {
-		boolean oldDiscriminatorColumnAllowed = this.discriminatorColumnAllowed;
-		this.discriminatorColumnAllowed = newDiscriminatorColumnAllowed;
-		firePropertyChanged(Entity.DISCRIMINATOR_COLUMN_ALLOWED_PROPERTY, oldDiscriminatorColumnAllowed, newDiscriminatorColumnAllowed);
+	protected void setSpecifiedDiscriminatorColumnIsAllowed(boolean specifiedDiscriminatorColumnIsAllowed) {
+		boolean old = this.specifiedDiscriminatorColumnIsAllowed;
+		this.specifiedDiscriminatorColumnIsAllowed = specifiedDiscriminatorColumnIsAllowed;
+		firePropertyChanged(Entity.SPECIFIED_DISCRIMINATOR_COLUMN_IS_ALLOWED_PROPERTY, old, specifiedDiscriminatorColumnIsAllowed);
+	}
+	
+	public boolean discriminatorColumnIsUndefined() {
+		return this.discriminatorColumnIsUndefined;
+	}
+	
+	protected void setDiscriminatorColumnIsUndefined(boolean discriminatorColumnIsUndefined) {
+		boolean old = this.discriminatorColumnIsUndefined;
+		this.discriminatorColumnIsUndefined = discriminatorColumnIsUndefined;
+		firePropertyChanged(Entity.DISCRIMINATOR_COLUMN_IS_UNDEFINED_PROPERTY, old, discriminatorColumnIsUndefined);
+	}
+
+	public boolean specifiedTableIsAllowed() {
+		return this.specifiedTableIsAllowed;
+	}
+	
+	protected void setSpecifiedTableIsAllowed(boolean specifiedTableIsAllowed) {
+		boolean old = this.specifiedTableIsAllowed;
+		this.specifiedTableIsAllowed = specifiedTableIsAllowed;
+		firePropertyChanged(Entity.SPECIFIED_TABLE_IS_ALLOWED_PROPERTY, old, specifiedTableIsAllowed);
+	}
+	
+	public boolean tableIsUndefined() {
+		return this.tableIsUndefined;
+	}
+	
+	protected void setTableIsUndefined(boolean tableIsUndefined) {
+		boolean old = this.tableIsUndefined;
+		this.tableIsUndefined = tableIsUndefined;
+		firePropertyChanged(Entity.TABLE_IS_UNDEFINED_PROPERTY, old, tableIsUndefined);
 	}
 	
 	public JavaTableGenerator addTableGenerator() {
@@ -1505,11 +1544,14 @@ public abstract class AbstractJavaEntity
 		this.setSpecifiedName_(this.getResourceName());
 		this.setDefaultName(this.getResourceDefaultName());
 		
-		this.updateInheritance(getResourceInheritance());
-		this.setDiscriminatorColumnAllowed(buildDiscriminatorColumnIsAllowed());
+		this.updateInheritance(this.getResourceInheritance());
+		this.setSpecifiedDiscriminatorColumnIsAllowed(this.buildSpecifiedDiscriminatorColumnIsAllowed());
+		this.setDiscriminatorColumnIsUndefined(this.buildDiscriminatorColumnIsUndefined());
 		this.updateDiscriminatorColumn();
-		this.setDiscriminatorValueAllowed(buildDiscriminatorValueIsAllowed());
-		this.updateDiscriminatorValue(getResourceDiscriminatorValue());
+		this.setDiscriminatorValueIsUndefined(this.buildDiscriminatorValueIsUndefined());
+		this.updateDiscriminatorValue(this.getResourceDiscriminatorValue());
+		this.setSpecifiedTableIsAllowed(this.buildSpecifiedTableIsAllowed());
+		this.setTableIsUndefined(this.buildTableIsUndefined());
 		this.updateTable();
 		this.updateSecondaryTables();
 		this.updateTableGenerator();
@@ -1570,7 +1612,7 @@ public abstract class AbstractJavaEntity
 	 * TODO extension point for provider-specific function?
 	 */
 	protected String buildDefaultDiscriminatorValue() {
-		if (!isDiscriminatorValueAllowed()) {
+		if (discriminatorValueIsUndefined()) {
 			return null;
 		}
 		if (this.getDiscriminatorType() != DiscriminatorType.STRING) {
@@ -1583,12 +1625,24 @@ public abstract class AbstractJavaEntity
 		return this.getDiscriminatorColumn().getDiscriminatorType();
 	}
 	
-	protected boolean buildDiscriminatorValueIsAllowed() {
-		return !isTablePerClass() && !isAbstract();
+	protected boolean buildDiscriminatorValueIsUndefined() {
+		return isTablePerClass() || isAbstract();
 	}
 	
-	protected boolean buildDiscriminatorColumnIsAllowed() {
+	protected boolean buildSpecifiedDiscriminatorColumnIsAllowed() {
 		return !isTablePerClass() && isRoot();
+	}
+	
+	protected boolean buildDiscriminatorColumnIsUndefined() {
+		return isTablePerClass();
+	}
+	
+	protected boolean buildSpecifiedTableIsAllowed() {
+		return !isAbstractTablePerClass() && !isSingleTableDescendant();
+	}
+	
+	protected boolean buildTableIsUndefined() {
+		return isAbstractTablePerClass();
 	}
 	
 	protected void updateSecondaryTables() {
@@ -2010,7 +2064,7 @@ public abstract class AbstractJavaEntity
 	}
 	
 	protected void validateDiscriminatorColumn(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		if (isDiscriminatorColumnAllowed()) {
+		if (specifiedDiscriminatorColumnIsAllowed()) {
 			getDiscriminatorColumn().validate(messages, reporter, astRoot);
 		}
 		else if (getDiscriminatorColumn().isResourceSpecified()) {
@@ -2041,7 +2095,7 @@ public abstract class AbstractJavaEntity
 	}
 	
 	protected void validateDiscriminatorValue(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		if (!isDiscriminatorValueAllowed() && getSpecifiedDiscriminatorValue() != null) {
+		if (discriminatorValueIsUndefined() && getSpecifiedDiscriminatorValue() != null) {
 			if (isAbstract()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(

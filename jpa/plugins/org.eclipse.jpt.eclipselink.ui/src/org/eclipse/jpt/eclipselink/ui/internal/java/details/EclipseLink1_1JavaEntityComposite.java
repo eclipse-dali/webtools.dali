@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -71,7 +71,7 @@ public class EclipseLink1_1JavaEntityComposite extends AbstractEntityComposite<J
 	protected void initializeGeneralPane(Composite container) {
 		int groupBoxMargin = getGroupBoxMargin();
 
-		new TableComposite(this, buildTableHolder(), container);
+		new TableComposite(this, container);
 		new EntityNameComposite(this, addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin));	
 		new AccessTypeComposite(this, buildAccessHolder(), addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin));	
 		new IdClassComposite(this, addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin), false);
@@ -83,7 +83,7 @@ public class EclipseLink1_1JavaEntityComposite extends AbstractEntityComposite<J
 		{
 			@Override
 			protected AccessHolder buildValue_() {
-				return (AccessHolder) this.subject.getPersistentType();
+				return this.subject.getPersistentType();
 			}
 		};
 	}

@@ -10,12 +10,10 @@
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.context.Entity;
-import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
-import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
@@ -109,15 +107,6 @@ public abstract class AbstractEntityComposite<T extends Entity> extends FormPane
 	
 	protected abstract void addInheritanceComposite(Composite container);
 
-	protected PropertyValueModel<Table> buildTableHolder() {
-		return new TransformationPropertyValueModel<Entity, Table>(getSubjectHolder()) {
-			@Override
-			protected Table transform_(Entity value) {
-				return value.getTable();
-			}
-		};
-	}
-
 	@Override
 	protected void initializeLayout(Composite container) {
 
@@ -132,7 +121,7 @@ public abstract class AbstractEntityComposite<T extends Entity> extends FormPane
 	protected void initializeGeneralPane(Composite container) {
 		int groupBoxMargin = getGroupBoxMargin();
 
-		new TableComposite(this, buildTableHolder(), container);
+		new TableComposite(this, container);
 		new EntityNameComposite(this, addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin));
 		new IdClassComposite(this, addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin), false);
 	}

@@ -62,7 +62,7 @@ public class OrmEntityComposite extends AbstractEntityComposite<OrmEntity>
 		int groupBoxMargin = getGroupBoxMargin();
 		
 		new OrmJavaClassChooser(this, getSubjectHolder(), addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin), false);
-		new TableComposite(this, buildTableHolder(), container);
+		new TableComposite(this, container);
 		new EntityNameComposite(this, addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin));
 		new AccessTypeComposite(this, buildAccessHolder(), addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin));
 		new IdClassComposite(this, addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin), false);

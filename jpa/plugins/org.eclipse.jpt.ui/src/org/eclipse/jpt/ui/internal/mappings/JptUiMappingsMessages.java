@@ -66,6 +66,9 @@ public class JptUiMappingsMessages {
 	public static String ProviderDefault;
 	public static String DiscriminatorColumnComposite_discriminatorType;
 	public static String DiscriminatorColumnComposite_name;
+	public static String DiscriminatorColumnComposite_char;
+	public static String DiscriminatorColumnComposite_integer;
+	public static String DiscriminatorColumnComposite_string;
 	public static String EntityComposite_inheritance;
 	public static String EntityComposite_queries;
 	public static String EntityComposite_tableDefault;
@@ -97,15 +100,12 @@ public class JptUiMappingsMessages {
 	public static String IdMappingComposite_sequenceGeneratorSection;
 	public static String IdMappingComposite_tableGeneratorCheckBox;
 	public static String IdMappingComposite_tableGeneratorSection;
-	public static String AbstractInheritanceComposite_char;
 	public static String InheritanceComposite_detailsGroupBox;
 	public static String InheritanceComposite_discriminatorColumnGroupBox;
 	public static String InheritanceComposite_discriminatorValue;
-	public static String AbstractInheritanceComposite_integer;
 	public static String AbstractInheritanceComposite_joined;
 	public static String AbstractInheritanceComposite_single_table;
 	public static String InheritanceComposite_strategy;
-	public static String AbstractInheritanceComposite_string;
 	public static String AbstractInheritanceComposite_table_per_class;
 	public static String InverseJoinColumnDialog_editInverseJoinColumnTitle;
 	public static String JoinColumnComposite_add;

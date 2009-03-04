@@ -176,20 +176,45 @@ public interface Entity
 		String SPECIFIED_DISCRIMINATOR_VALUE_PROPERTY = "specifiedDiscriminatorValue"; //$NON-NLS-1$
 
 	/**
-	 * Return whether a DiscriminatorValue is allowed for this Entity.
-	 * It is allowed if the IType is concrete (not abstract)
-	 * and not part of a table-per-class inheritance hierarchy
+	 * Return whether a DiscriminatorValue is undefined for this Entity.
+	 * It is undefined if the entity is abstract or if it
+	 * is part of a table-per-class inheritance hierarchy
 	 */
-	boolean isDiscriminatorValueAllowed();
- 		String DISCRIMINATOR_VALUE_ALLOWED_PROPERTY = "discriminatorValueAllowed"; //$NON-NLS-1$
+	boolean discriminatorValueIsUndefined();
+ 		String DISCRIMINATOR_VALUE_IS_UNDEFINED_PROPERTY = "discriminatorValueIsUndefined"; //$NON-NLS-1$
 
 	/**
 	 * Return whether a DiscriminatorColumn is allowed for this Entity.
 	 * It is allowed if the entity is the root of the inheritance hierarchy
 	 * and the strategy is not table-per-class
 	 */
-	boolean isDiscriminatorColumnAllowed();
- 		String DISCRIMINATOR_COLUMN_ALLOWED_PROPERTY = "discriminatorColumnAllowed"; //$NON-NLS-1$
+	boolean specifiedDiscriminatorColumnIsAllowed();
+ 		String SPECIFIED_DISCRIMINATOR_COLUMN_IS_ALLOWED_PROPERTY = "specifiedDiscriminatorColumnIsAllowed"; //$NON-NLS-1$
+ 	
+	/**
+	 * Return whether a DiscriminatorColumn is undefined for this Entity.
+	 * It is undefined if the inheritance strategy is table-per-class
+	 */
+ 	boolean discriminatorColumnIsUndefined();
+		String DISCRIMINATOR_COLUMN_IS_UNDEFINED_PROPERTY = "discriminatorColumnIsUndefined"; //$NON-NLS-1$
+	
+	/**
+	 * Return whether a Table is allowed for this Entity.
+	 * If the inheritance strategy is single-table, Table is allowed only  
+	 * on the root entity.
+	 * If the inheritance strategy is table-per-class it is allowed only
+	 * on concrete entities.
+	 */
+ 	boolean specifiedTableIsAllowed();
+ 		String SPECIFIED_TABLE_IS_ALLOWED_PROPERTY = "specifiedTableIsAllowed"; //$NON-NLS-1$
+ 		
+	/**
+	 * Return whether a Table is undefined for this Entity.
+	 * If the inheritance strategy is table-per-class and the entity is
+	 * abstract, then a Table object is undefined
+	 */
+ 	boolean tableIsUndefined();
+ 		String TABLE_IS_UNDEFINED_PROPERTY = "tableIsUndefined"; //$NON-NLS-1$
 
 	// **************** primary key join columns **************************************
 

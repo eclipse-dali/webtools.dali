@@ -2264,20 +2264,19 @@ public class OrmEntityTests extends ContextModelTestCase
 	}
 
 	
-	public void testDiscriminatorValueIsAllowedConcreteClass() throws Exception {
+	public void testDiscriminatorValueIsUndefinedConcreteClass() throws Exception {
 		createTestType();
 		OrmPersistentType persistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmEntity entity = (OrmEntity) persistentType.getMapping();
-		assertTrue(entity.isDiscriminatorValueAllowed());
+		assertFalse(entity.discriminatorValueIsUndefined());
 	}
 
 	public void testDiscriminatorValueIsAllowedAbstractClass() throws Exception {
 		createTestAbstractType();
 		OrmPersistentType persistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmEntity entity = (OrmEntity) persistentType.getMapping();
-		assertFalse(entity.isDiscriminatorValueAllowed());
+		assertTrue(entity.discriminatorValueIsUndefined());
 	}
-	
 	
 	public void testDiscriminatorColumnIsAllowed() throws Exception {
 		createAbstractTestEntity();
@@ -2293,14 +2292,14 @@ public class OrmEntityTests extends ContextModelTestCase
 
 		
 		//table-per-class, no discriminator column allowed
-		assertFalse(concreteEntity.isDiscriminatorColumnAllowed());
-		assertFalse(abstractEntity.isDiscriminatorColumnAllowed());
+		assertFalse(concreteEntity.specifiedDiscriminatorColumnIsAllowed());
+		assertFalse(abstractEntity.specifiedDiscriminatorColumnIsAllowed());
 
 		
 		//single-table, discriminator column allowed on root entity
 		((JavaEntity) abstractPersistentType.getJavaPersistentType().getMapping()).setSpecifiedInheritanceStrategy(null);
-		assertFalse(concreteEntity.isDiscriminatorColumnAllowed());
-		assertTrue(abstractEntity.isDiscriminatorColumnAllowed());
+		assertFalse(concreteEntity.specifiedDiscriminatorColumnIsAllowed());
+		assertTrue(abstractEntity.specifiedDiscriminatorColumnIsAllowed());
 	}
 	
 	public void testAbstractEntityGetDefaultDiscriminatorColumnNameTablePerClassInheritance() throws Exception {
@@ -2323,14 +2322,14 @@ public class OrmEntityTests extends ContextModelTestCase
 		assertEquals(InheritanceType.TABLE_PER_CLASS, concreteEntity.getDefaultInheritanceStrategy());
 		
 		
-		assertFalse(abstractEntity.isDiscriminatorValueAllowed());
-		assertFalse(concreteEntity.isDiscriminatorColumnAllowed());
+		assertTrue(abstractEntity.discriminatorValueIsUndefined());
+		assertFalse(concreteEntity.specifiedDiscriminatorColumnIsAllowed());
 		assertEquals(null, abstractEntity.getDiscriminatorColumn().getDefaultName());
 		assertEquals(null, concreteEntity.getDiscriminatorColumn().getDefaultName());
 		
-		assertFalse(abstractEntity.isDiscriminatorValueAllowed());
+		assertTrue(abstractEntity.discriminatorValueIsUndefined());
 		assertEquals(null, abstractEntity.getDefaultDiscriminatorValue());
-		assertFalse(concreteEntity.isDiscriminatorValueAllowed());
+		assertTrue(concreteEntity.discriminatorValueIsUndefined());
 		assertEquals(null, concreteEntity.getDefaultDiscriminatorValue());
 	}
 }

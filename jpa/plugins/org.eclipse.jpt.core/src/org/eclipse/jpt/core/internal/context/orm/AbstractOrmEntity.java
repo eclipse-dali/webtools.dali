@@ -100,6 +100,10 @@ public abstract class AbstractOrmEntity
 
 	protected final OrmTable table;
 
+	protected boolean specifiedTableIsAllowed;
+	
+	protected boolean tableIsUndefined;
+
 	protected final List<OrmSecondaryTable> specifiedSecondaryTables;
 	
 	protected final List<OrmSecondaryTable> virtualSecondaryTables;
@@ -116,11 +120,13 @@ public abstract class AbstractOrmEntity
 
 	protected String specifiedDiscriminatorValue;
 
-	protected boolean discriminatorValueAllowed;
+	protected boolean discriminatorValueIsUndefined;
 
 	protected final OrmDiscriminatorColumn discriminatorColumn;
 
-	protected boolean discriminatorColumnAllowed;
+	protected boolean specifiedDiscriminatorColumnIsAllowed;
+	
+	protected boolean discriminatorColumnIsUndefined;
 
 	protected OrmSequenceGenerator sequenceGenerator;
 
@@ -155,11 +161,14 @@ public abstract class AbstractOrmEntity
 		this.specifiedName = this.resourceTypeMapping.getName();
 		this.defaultName = this.buildDefaultName();
 		this.initializeInheritance(this.getResourceInheritance());
-		this.discriminatorColumnAllowed = this.buildDiscriminatorColumnIsAllowed();
+		this.specifiedDiscriminatorColumnIsAllowed = this.buildSpecifiedDiscriminatorColumnIsAllowed();
+		this.discriminatorColumnIsUndefined = this.buildDiscriminatorColumnIsUndefined();
 		this.discriminatorColumn.initialize(this.resourceTypeMapping); //TODO pass in to constructor
-		this.discriminatorValueAllowed = this.buildDiscriminatorValueIsAllowed();
+		this.discriminatorValueIsUndefined = this.buildDiscriminatorValueIsUndefined();
 		this.specifiedDiscriminatorValue = this.resourceTypeMapping.getDiscriminatorValue();
 		this.defaultDiscriminatorValue = this.buildDefaultDiscriminatorValue();
+		this.specifiedTableIsAllowed = this.buildSpecifiedTableIsAllowed();
+		this.tableIsUndefined = this.buildTableIsUndefined();
 		this.table.initialize(this.resourceTypeMapping);//TODO pass in to constructor
 		this.initializeSpecifiedSecondaryTables();
 		this.initializeVirtualSecondaryTables();
@@ -726,24 +735,55 @@ public abstract class AbstractOrmEntity
 		return (this.getSpecifiedDiscriminatorValue() == null) ? getDefaultDiscriminatorValue() : this.getSpecifiedDiscriminatorValue();
 	}
 	
-	public boolean isDiscriminatorValueAllowed() {
-		return this.discriminatorValueAllowed;
+	public boolean discriminatorValueIsUndefined() {
+		return this.discriminatorValueIsUndefined;
 	}
 	
-	protected void setDiscriminatorValueAllowed(boolean newDiscriminatorValueAllowed) {
-		boolean oldDiscriminatorValueAllowed = this.discriminatorValueAllowed;
-		this.discriminatorValueAllowed = newDiscriminatorValueAllowed;
-		firePropertyChanged(Entity.DISCRIMINATOR_VALUE_ALLOWED_PROPERTY, oldDiscriminatorValueAllowed, newDiscriminatorValueAllowed);
+	protected void setDiscriminatorValueIsUndefined(boolean discriminatorValueIsUndefined) {
+		boolean old = this.discriminatorValueIsUndefined;
+		this.discriminatorValueIsUndefined = discriminatorValueIsUndefined;
+		firePropertyChanged(Entity.DISCRIMINATOR_VALUE_IS_UNDEFINED_PROPERTY, old, discriminatorValueIsUndefined);
 	}
 	
-	public boolean isDiscriminatorColumnAllowed() {
-		return this.discriminatorColumnAllowed;
+	public boolean specifiedDiscriminatorColumnIsAllowed() {
+		return this.specifiedDiscriminatorColumnIsAllowed;
 	}
 	
-	protected void setDiscriminatorColumnAllowed(boolean newDiscriminatorColumnAllowed) {
-		boolean oldDiscriminatorColumnAllowed = this.discriminatorColumnAllowed;
-		this.discriminatorColumnAllowed = newDiscriminatorColumnAllowed;
-		firePropertyChanged(Entity.DISCRIMINATOR_COLUMN_ALLOWED_PROPERTY, oldDiscriminatorColumnAllowed, newDiscriminatorColumnAllowed);
+	protected void setSpecifiedDiscriminatorColumnIsAllowed(boolean specifiedDiscriminatorColumnIsAllowed) {
+		boolean old = this.specifiedDiscriminatorColumnIsAllowed;
+		this.specifiedDiscriminatorColumnIsAllowed = specifiedDiscriminatorColumnIsAllowed;
+		firePropertyChanged(Entity.SPECIFIED_DISCRIMINATOR_COLUMN_IS_ALLOWED_PROPERTY, old, specifiedDiscriminatorColumnIsAllowed);
+	}
+	
+	public boolean discriminatorColumnIsUndefined() {
+		return this.discriminatorColumnIsUndefined;
+	}
+	
+	protected void setDiscriminatorColumnIsUndefined(boolean discriminatorColumnIsUndefined) {
+		boolean old = this.discriminatorColumnIsUndefined;
+		this.discriminatorColumnIsUndefined = discriminatorColumnIsUndefined;
+		firePropertyChanged(Entity.DISCRIMINATOR_COLUMN_IS_UNDEFINED_PROPERTY, old, discriminatorColumnIsUndefined);
+	}
+
+	
+	public boolean specifiedTableIsAllowed() {
+		return this.specifiedTableIsAllowed;
+	}
+	
+	protected void setSpecifiedTableIsAllowed(boolean specifiedTableIsAllowed) {
+		boolean old = this.specifiedTableIsAllowed;
+		this.specifiedTableIsAllowed = specifiedTableIsAllowed;
+		firePropertyChanged(Entity.SPECIFIED_TABLE_IS_ALLOWED_PROPERTY, old, specifiedTableIsAllowed);
+	}
+	
+	public boolean tableIsUndefined() {
+		return this.tableIsUndefined;
+	}
+	
+	protected void setTableIsUndefined(boolean tableIsUndefined) {
+		boolean old = this.tableIsUndefined;
+		this.tableIsUndefined = tableIsUndefined;
+		firePropertyChanged(Entity.TABLE_IS_UNDEFINED_PROPERTY, old, tableIsUndefined);
 	}
 
 	public ListIterator<OrmPrimaryKeyJoinColumn> defaultPrimaryKeyJoinColumns() {
@@ -1598,11 +1638,14 @@ public abstract class AbstractOrmEntity
 		this.setSpecifiedName(this.resourceTypeMapping.getName());
 		this.setDefaultName(this.buildDefaultName());
 		this.updateInheritance(this.getResourceInheritance());
-		this.setDiscriminatorColumnAllowed(this.buildDiscriminatorColumnIsAllowed());
+		this.setSpecifiedDiscriminatorColumnIsAllowed(this.buildSpecifiedDiscriminatorColumnIsAllowed());
+		this.setDiscriminatorColumnIsUndefined(this.buildDiscriminatorColumnIsUndefined());
 		this.discriminatorColumn.update(this.resourceTypeMapping);
-		this.setDiscriminatorValueAllowed(this.buildDiscriminatorValueIsAllowed());
+		this.setDiscriminatorValueIsUndefined(this.buildDiscriminatorValueIsUndefined());
 		this.setSpecifiedDiscriminatorValue(this.resourceTypeMapping.getDiscriminatorValue());
-		this.setDefaultDiscriminatorValue(buildDefaultDiscriminatorValue());
+		this.setDefaultDiscriminatorValue(this.buildDefaultDiscriminatorValue());
+		this.setSpecifiedTableIsAllowed(this.buildSpecifiedTableIsAllowed());
+		this.setTableIsUndefined(this.buildTableIsUndefined());
 		this.table.update(this.resourceTypeMapping);
 		this.updateSpecifiedSecondaryTables();
 		this.updateVirtualSecondaryTables();
@@ -1646,7 +1689,7 @@ public abstract class AbstractOrmEntity
 		if (!isMetadataComplete() && getJavaEntity() != null) {
 			return getJavaEntity().getDiscriminatorValue();
 		}
-		if (!isDiscriminatorValueAllowed()) {
+		if (discriminatorValueIsUndefined()) {
 			return null;
 		}
 		if (this.getDiscriminatorType() != DiscriminatorType.STRING) {
@@ -1666,13 +1709,26 @@ public abstract class AbstractOrmEntity
 		return null;
 	}
 	
-	protected boolean buildDiscriminatorValueIsAllowed() {
-		return !isTablePerClass() && !isAbstract();
+	protected boolean buildDiscriminatorValueIsUndefined() {
+		return isTablePerClass() || isAbstract();
 	}
 	
-	protected boolean buildDiscriminatorColumnIsAllowed() {
+	protected boolean buildSpecifiedDiscriminatorColumnIsAllowed() {
 		return !isTablePerClass() && isRoot();
 	}
+	
+	protected boolean buildDiscriminatorColumnIsUndefined() {
+		return isTablePerClass();
+	}
+	
+	protected boolean buildSpecifiedTableIsAllowed() {
+		return !isAbstractTablePerClass() && !isSingleTableDescendant();
+	}
+	
+	protected boolean buildTableIsUndefined() {
+		return isAbstractTablePerClass();
+	}
+	
 
 	protected void updateInheritance(Inheritance inheritanceResource) {
 		this.setSpecifiedInheritanceStrategy_(this.getResourceInheritanceStrategy(inheritanceResource));
@@ -2095,7 +2151,7 @@ public abstract class AbstractOrmEntity
 	}
 	
 	protected void validateDiscriminatorColumn(List<IMessage> messages, IReporter reporter) {
-		if (isDiscriminatorColumnAllowed()) {
+		if (specifiedDiscriminatorColumnIsAllowed()) {
 			getDiscriminatorColumn().validate(messages, reporter);
 		}
 		else if (getDiscriminatorColumn().isResourceSpecified()) {
@@ -2126,7 +2182,7 @@ public abstract class AbstractOrmEntity
 	}
 	
 	protected void validateDiscriminatorValue(List<IMessage> messages, IReporter reporter) {
-		if (!isDiscriminatorValueAllowed() && getSpecifiedDiscriminatorValue() != null) {
+		if (discriminatorValueIsUndefined() && getSpecifiedDiscriminatorValue() != null) {
 			if (isAbstract()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
