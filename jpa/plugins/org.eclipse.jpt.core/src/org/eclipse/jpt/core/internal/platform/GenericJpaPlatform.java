@@ -147,7 +147,7 @@ public class GenericJpaPlatform
 
 	// ********** Java annotations **********
 
-	public synchronized JpaAnnotationProvider getAnnotationProvider() {
+	public JpaAnnotationProvider getAnnotationProvider() {
 		return this.annotationProvider;
 	}
 
