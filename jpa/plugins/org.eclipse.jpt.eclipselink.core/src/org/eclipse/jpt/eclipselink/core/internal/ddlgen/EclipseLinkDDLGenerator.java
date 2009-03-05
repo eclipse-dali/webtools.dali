@@ -599,7 +599,7 @@ public class EclipseLinkDDLGenerator
 						return new Path(filePath);
 					}
 					catch (IOException e) {
-						throw new RuntimeException("Could not find bundle entry: " + url, e);
+						throw new RuntimeException("Error locating bundle: " + bundle, e);
 					}
 				}
 			}
