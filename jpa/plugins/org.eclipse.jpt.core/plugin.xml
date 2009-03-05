@@ -208,7 +208,23 @@
 		
 	</extension>
 	
-	
+	<extension point="org.eclipse.jst.common.project.facet.core.libraryProviders">
+		<provider id="jpa-osgi-bundles-library-provider" extends="wtp-osgi-bundles-library-provider">
+			<label>EclipseLink</label>
+				<param name="bundle.0" value="javax.persistence:1.99.0"/>
+				<param name="bundle.1" value="org.eclipse.persistence.core:1.0.1"/>
+				<param name="bundle.2" value="org.eclipse.persistence.jpa:1.0.1"/>
+				<param name="bundle.3" value="org.eclipse.persistence.asm:1.0.1"/>
+				<param name="bundle.4" value="org.eclipse.persistence.antlr:1.0.1"/>
+			<enablement>
+				<with variable="requestingProjectFacet">
+					<test property="org.eclipse.wst.common.project.facet.core.projectFacet" value="jpt.jpa" forcePluginActivation="true"/>
+				</with>
+			</enablement>
+		</provider>
+
+	</extension>
+
 	<!-- ***** WTP extensions ***** -->
 
 	<extension

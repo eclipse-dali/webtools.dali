@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2008 Oracle. All rights reserved.
+* Copyright (c) 2008, 2009 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,10 @@ package org.eclipse.jpt.eclipselink.core.internal.ddlgen;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
 
@@ -34,6 +37,7 @@ import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.ILaunchesListener2;
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.jdt.launching.IVMInstall;
@@ -51,8 +55,10 @@ import org.eclipse.jpt.eclipselink.core.internal.context.persistence.schema.gene
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.schema.generation.OutputMode;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.schema.generation.SchemaGeneration;
 import org.eclipse.osgi.service.datalocation.Location;
+import org.eclipse.osgi.util.ManifestElement;
 import org.eclipse.wst.validation.ValidationFramework;
 import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleException;
 
 /**
  *  EclipseLinkDLLGenerator launches the EclipseLink DDL generator in a separate VM.
@@ -61,7 +67,7 @@ import org.osgi.framework.Bundle;
  *  It will than launch the configuration created with the login information from 
  *  the current Dali project, and passes it to EclipseLink.
  *  
- *  Pre-req when in Development Mode:
+ *  Pre-req in PDE environment:
  *  	org.eclipse.jpt.eclipselink.core.ddlgen.jar in ECLIPSE_HOME/plugins
  */
 public class EclipseLinkDDLGenerator
@@ -71,6 +77,7 @@ public class EclipseLinkDDLGenerator
 	static public String DDL_GEN_PACKAGE_NAME = "org.eclipse.jpt.eclipselink.core.ddlgen";   //$NON-NLS-1$
 	static public String ECLIPSELINK_DDL_GEN_CLASS = DDL_GEN_PACKAGE_NAME + ".Main";	  //$NON-NLS-1$
 	static public String ECLIPSELINK_DDL_GEN_JAR = DDL_GEN_PACKAGE_NAME + "_";	//$NON-NLS-1$
+	static public String BUNDLE_CLASSPATH = "Bundle-ClassPath";	  //$NON-NLS-1$
 	static public String PROPERTIES_FILE_NAME = "login.properties";	  //$NON-NLS-1$
 	static public String PLUGINS_DIR = "plugins";	  //$NON-NLS-1$
 	private IVMInstall jre;
@@ -98,32 +105,13 @@ public class EclipseLinkDDLGenerator
 		this.projectLocation = projectLocation;
 		this.initialize();
 	}
-	
-	// ********** Queries **********
-	
-	protected JpaPlatform getPlatform() {
-		return this.jpaProject.getJpaPlatform();
-	}
-	
-	protected ILaunch getLaunch() {
-		return this.launch;
-	}
-	
-	protected ILaunchManager getLaunchManager() {
-		return DebugPlugin.getDefault().getLaunchManager();
-	}
-	
-	private IVMInstall getProjectJRE() throws CoreException {
-		
-		return JavaRuntime.getVMInstall(this.jpaProject.getJavaProject());
-	}
 
 	// ********** behavior **********
 	
 	protected void initialize() {
 		try {
 			this.jre = this.getProjectJRE();
-			if(this.jre == null) {
+			if (this.jre == null) {
 				String message = "Could not identify the VM.";
 				throw new RuntimeException(message);
 			}
@@ -150,14 +138,14 @@ public class EclipseLinkDDLGenerator
 		}
 	}
 	
-	private void initializeLaunchConfiguration(String projectLocation, String propertiesFile) throws CoreException {
+	private void initializeLaunchConfiguration(String projectLocation, String propertiesFile) {
 
 		this.specifyJRE(this.jre.getName(), this.jre.getVMInstallType().getId());
 		
 		this.specifyProject(this.jpaProject.getProject().getName()); 
 		this.specifyMainType(ECLIPSELINK_DDL_GEN_CLASS);	
 		
-		this.specifyProgramArguments(this.puName, propertiesFile); 
+		this.specifyProgramArguments(this.puName, propertiesFile);  // -pu & -p
 		this.specifyWorkingDir(projectLocation); 
 
 		this.specifyClasspathProperties(this.jpaProject, this.buildJdbcJarPath(), this.buildBootstrapJarPath());
@@ -177,7 +165,7 @@ public class EclipseLinkDDLGenerator
 	
 	protected void postGenerate() {
 		try {
-			if(! this.isDebug) {
+			if ( ! this.isDebug) {
 				this.removeLaunchConfiguration(LAUNCH_CONFIG_NAME);
 			}
 		}
@@ -198,6 +186,34 @@ public class EclipseLinkDDLGenerator
 		job.setRule(project);
 		job.schedule();
 	}
+
+	/**
+	 * Performs validation after tables have been generated
+	 */
+	private class ValidateJob extends Job 
+	{	
+		private IProject project;
+		
+		
+		public ValidateJob(IProject project) {
+			super(JptCoreMessages.VALIDATE_JOB);
+			this.project = project;
+		}
+		
+		
+		@Override
+		protected IStatus run(IProgressMonitor monitor) {
+			IStatus status = Status.OK_STATUS;
+			try {
+				ValidationFramework.getDefault().validate(
+					new IProject[] {this.project}, true, false, monitor);
+			}
+			catch (CoreException ce) {
+				status = Status.CANCEL_STATUS;
+			}
+			return status;
+		}
+	}
 	
 	private IPath buildJdbcJarPath() {
 		return new Path(this.getJpaProjectConnectionDriverJarList());
@@ -214,7 +230,7 @@ public class EclipseLinkDDLGenerator
 
 			List<File> result = new ArrayList<File>();
 			this.findFile(ECLIPSELINK_DDL_GEN_JAR, jarInstallDir, result);
-			if(result.isEmpty()) {
+			if (result.isEmpty()) {
 				throw new RuntimeException("Could not find: " + DDL_GEN_PACKAGE_NAME + ".jar in: " + jarInstallDir);
 			}
 			File ddlGenJarFile = result.get(0);
@@ -239,13 +255,13 @@ public class EclipseLinkDDLGenerator
 	
 	private File getBundleParentDir(String bundleName) throws IOException {
 
-			if(Platform.inDevelopmentMode()) {
-				Location eclipseHomeLoc = Platform.getInstallLocation();
-				String eclipseHome = eclipseHomeLoc.getURL().getPath();
-				return new File(eclipseHome + PLUGINS_DIR);
-			}
-			Bundle bundle = Platform.getBundle(bundleName);
-			return FileLocator.getBundleFile(bundle).getParentFile();
+		if (Platform.inDevelopmentMode()) {
+			Location eclipseHomeLoc = Platform.getInstallLocation();
+			String eclipseHome = eclipseHomeLoc.getURL().getPath();
+			return new File(eclipseHome + PLUGINS_DIR);
+		}
+		Bundle bundle = Platform.getBundle(bundleName);
+		return FileLocator.getBundleFile(bundle).getParentFile();
 	}
 
 	private ILaunchesListener2 buildLaunchListener() {
@@ -276,7 +292,7 @@ public class EclipseLinkDDLGenerator
 		};
 	}
 
-	// ********** launch configuration **********
+	// ********** Setting Launch Configuration **********
 	
 	private void specifyJRE(String jreName, String vmId) {
 
@@ -298,32 +314,29 @@ public class EclipseLinkDDLGenerator
 
 		StringBuffer programArguments = new StringBuffer();
 		programArguments.append(this.buildPuNameArgument(puName));
-		programArguments.append(this.buildPropertiesPathArgument(propertiesPath));
+		programArguments.append(this.buildPropertiesFileArgument(propertiesPath));
 		programArguments.append(this.buildDebugArgument());
 		
 		this.launchConfig.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, programArguments.toString());
 	}
 
-	private void specifyClasspathProperties(JpaProject project, IPath jdbcJar, IPath bootstrapJar) throws CoreException {
-		// DDL_GEN jar
-		IRuntimeClasspathEntry bootstrapEntry = JavaRuntime.newArchiveRuntimeClasspathEntry(bootstrapJar);
-		bootstrapEntry.setClasspathProperty(IRuntimeClasspathEntry.USER_CLASSES);
-		// Default Project classpath
-		IRuntimeClasspathEntry defaultEntry = JavaRuntime.newDefaultProjectClasspathEntry(project.getJavaProject());
-		defaultEntry.setClasspathProperty(IRuntimeClasspathEntry.USER_CLASSES);
-		// JDBC jar
-		IRuntimeClasspathEntry jdbcEntry = JavaRuntime.newArchiveRuntimeClasspathEntry(jdbcJar);
-		jdbcEntry.setClasspathProperty(IRuntimeClasspathEntry.USER_CLASSES);
-		// System Library  
-		IPath systemLibsPath = new Path(JavaRuntime.JRE_CONTAINER);
-		IRuntimeClasspathEntry systemLibsEntry = JavaRuntime.newRuntimeContainerClasspathEntry(systemLibsPath, IRuntimeClasspathEntry.STANDARD_CLASSES);
-
+	private void specifyClasspathProperties(JpaProject project, IPath jdbcJar, IPath bootstrapJar)  {
 		List<String> classpath = new ArrayList<String>();
-		classpath.add(bootstrapEntry.getMemento());
-		classpath.add(defaultEntry.getMemento());
-		classpath.add(jdbcEntry.getMemento());
-		classpath.add(systemLibsEntry.getMemento());
-		
+		try {
+			// DDL_GEN jar
+			classpath.add(this.getArchiveClasspathEntry(bootstrapJar).getMemento());
+			// Default Project classpath
+			classpath.add(this.getDefaultProjectClasspathEntry(project.getJavaProject()).getMemento());
+			// Osgi Bundles
+			classpath.addAll(this.getPersistenceOsgiBundlesMemento());
+			// JDBC jar
+			classpath.add(this.getArchiveClasspathEntry(jdbcJar).getMemento());
+			// System Library  
+			classpath.add(this.getSystemLibraryClasspathEntry().getMemento());
+		}
+		catch (CoreException e) {
+			throw new RuntimeException("An error occurs generating a memento", e);
+		}
 		this.launchConfig.setAttribute(IJavaLaunchConfigurationConstants.ATTR_CLASSPATH, classpath);
 		this.launchConfig.setAttribute(IJavaLaunchConfigurationConstants.ATTR_DEFAULT_CLASSPATH, false);
 	}
@@ -333,6 +346,40 @@ public class EclipseLinkDDLGenerator
 		File workingDir = new Path(projectLocation).toFile();
 		this.launchConfig.setAttribute(IJavaLaunchConfigurationConstants.ATTR_WORKING_DIRECTORY, workingDir.getAbsolutePath());
 	}
+
+	// ********** ClasspathEntry **********
+	
+	private IRuntimeClasspathEntry getSystemLibraryClasspathEntry() throws CoreException {
+
+		IPath systemLibsPath = new Path(JavaRuntime.JRE_CONTAINER);
+		return JavaRuntime.newRuntimeContainerClasspathEntry(systemLibsPath, IRuntimeClasspathEntry.STANDARD_CLASSES);
+	}
+	
+	private IRuntimeClasspathEntry getDefaultProjectClasspathEntry(IJavaProject project) {
+
+		IRuntimeClasspathEntry projectEntry = JavaRuntime.newDefaultProjectClasspathEntry(project);
+		projectEntry.setClasspathProperty(IRuntimeClasspathEntry.USER_CLASSES);
+		
+		return projectEntry;
+	}
+	
+	private IRuntimeClasspathEntry getArchiveClasspathEntry(IPath archivePath) {
+
+		IRuntimeClasspathEntry archiveEntry = JavaRuntime.newArchiveRuntimeClasspathEntry(archivePath);
+		archiveEntry.setClasspathProperty(IRuntimeClasspathEntry.USER_CLASSES);
+		
+		return archiveEntry;
+	}
+	
+	private IRuntimeClasspathEntry getBundleClasspathEntry(String bundleId) {
+
+		IPath persistClasspath = this.getBundleClasspath(bundleId);
+		IRuntimeClasspathEntry bundleEntry = this.getArchiveClasspathEntry(persistClasspath);
+		
+		return bundleEntry;
+	}
+
+	// ********** LaunchConfig **********
 	
 	private ILaunch saveAndLaunchConfig() throws CoreException {
 		ILaunchConfiguration configuration = this.launchConfig.doSave();
@@ -470,7 +517,7 @@ public class EclipseLinkDDLGenerator
 		return " -pu \"" + puName + "\"";
 	}
 	
-	private String buildPropertiesPathArgument(String propertiesFile) {
+	private String buildPropertiesFileArgument(String propertiesFile) {
 		return " -p \"" + propertiesFile + "\"";
 	}
 	
@@ -478,32 +525,94 @@ public class EclipseLinkDDLGenerator
 		return (this.isDebug) ? " -debug" : "";
 	}
 	
+	// ********** Queries **********
 	
-	/**
-	 * Performs validation after tables have been generated
-	 */
-	private class ValidateJob extends Job 
-	{	
-		private IProject project;
-		
-		
-		public ValidateJob(IProject project) {
-			super(JptCoreMessages.VALIDATE_JOB);
-			this.project = project;
-		}
-		
-		
-		@Override
-		protected IStatus run(IProgressMonitor monitor) {
-			IStatus status = Status.OK_STATUS;
-			try {
-				ValidationFramework.getDefault().validate(
-					new IProject[] {this.project}, true, false, monitor);
-			}
-			catch (CoreException ce) {
-				status = Status.CANCEL_STATUS;
-			}
-			return status;
-		}
+	protected JpaPlatform getPlatform() {
+		return this.jpaProject.getJpaPlatform();
 	}
+	
+	protected ILaunch getLaunch() {
+		return this.launch;
+	}
+	
+	protected ILaunchManager getLaunchManager() {
+		return DebugPlugin.getDefault().getLaunchManager();
+	}
+	
+	private IVMInstall getProjectJRE() throws CoreException {
+		return JavaRuntime.getVMInstall(this.jpaProject.getJavaProject());
+	}
+
+	// ********** Bundle *********
+
+	private Collection<String> getPersistenceOsgiBundlesMemento() throws CoreException {
+
+		Collection<String> result = new HashSet<String>();
+		result.add(this.getBundleClasspathEntry(JAVAX_PERSISTENCE_BUNDLE).getMemento());
+		result.add(this.getBundleClasspathEntry(ORG_ECLIPSE_PERSISTENCE_CORE_BUNDLE).getMemento());
+		result.add(this.getBundleClasspathEntry(ORG_ECLIPSE_PERSISTENCE_ASM_BUNDLE).getMemento());
+		result.add(this.getBundleClasspathEntry(ORG_ECLIPSE_PERSISTENCE_ANTLR_BUNDLE).getMemento());
+		result.add(this.getBundleClasspathEntry(ORG_ECLIPSE_PERSISTENCE_JPA_BUNDLE).getMemento());
+		return result;
+	}
+	
+	private IPath getBundleClasspath(String pluginID) {
+		Bundle bundle = Platform.getBundle(pluginID);
+		if (bundle == null) {
+			throw new RuntimeException(pluginID + " cannot be retrieved from the Platform");
+		}
+		return this.getClassPath(bundle);
+	}
+
+	private IPath getClassPath(Bundle bundle) {
+		String path = (String) bundle.getHeaders().get(BUNDLE_CLASSPATH);
+		if (path == null) {
+			path = ".";
+		}
+		ManifestElement[] elements = null;
+		try {
+			elements = ManifestElement.parseHeader(BUNDLE_CLASSPATH, path);
+		}
+		catch (BundleException e) {
+			throw new RuntimeException("Error parsing bundle header: " + bundle, e);
+		}
+		if (elements != null) {
+			for (int i = 0; i < elements.length; ++i) {
+				ManifestElement element = elements[i];
+				String value = element.getValue();
+				if (".".equals(value)) {
+					value = "/";		//$NON-NLS-1$
+				}
+				URL url = bundle.getEntry(value);
+				if (url != null) {
+					try {
+						URL resolvedURL = FileLocator.resolve(url);
+						String filestring = FileLocator.toFileURL(resolvedURL).getFile();
+		                if (filestring.startsWith("file:")) {	//$NON-NLS-1$
+		                	filestring = filestring.substring(filestring.indexOf(':') + 1);
+		                }
+		                if (filestring.endsWith("!/")) {		//$NON-NLS-1$
+		                	filestring = filestring.substring(0, filestring.lastIndexOf('!'));
+		                }
+						File file = new File(filestring);
+						String filePath = file.getCanonicalPath();
+						return new Path(filePath);
+					}
+					catch (IOException e) {
+						throw new RuntimeException("Could not find bundle entry: " + url, e);
+					}
+				}
+			}
+		}
+		return null;
+	}
+
+	// ********** constants **********
+
+	String JAVAX_PERSISTENCE_BUNDLE = "javax.persistence";					//$NON-NLS-1$
+	String ORG_ECLIPSE_PERSISTENCE_CORE_BUNDLE = "org.eclipse.persistence.core";	//$NON-NLS-1$
+	String ORG_ECLIPSE_PERSISTENCE_ASM_BUNDLE = "org.eclipse.persistence.asm";	//$NON-NLS-1$
+	String ORG_ECLIPSE_PERSISTENCE_ANTLR_BUNDLE = "org.eclipse.persistence.antlr";	//$NON-NLS-1$
+	String ORG_ECLIPSE_PERSISTENCE_JPA_BUNDLE = "org.eclipse.persistence.jpa";	//$NON-NLS-1$
+
 }
