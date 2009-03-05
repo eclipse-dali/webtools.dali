@@ -22,6 +22,7 @@ import org.eclipse.jpt.core.JpaPlatformProvider;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JpaResourceModel;
 import org.eclipse.jpt.core.JpaResourceModelProvider;
+import org.eclipse.jpt.core.JpaValidation;
 import org.eclipse.jpt.core.context.MappingFile;
 import org.eclipse.jpt.core.context.MappingFileProvider;
 import org.eclipse.jpt.core.context.java.DefaultJavaAttributeMappingProvider;
@@ -70,12 +71,15 @@ public class GenericJpaPlatform
 	private final JpaAnnotationProvider annotationProvider;
 
 	private final JpaPlatformProvider[] platformProviders;
-
-	public GenericJpaPlatform(String id, JpaFactory jpaFactory, JpaAnnotationProvider jpaAnnotationProvider, JpaPlatformProvider... platformProviders) {
+	
+	private final JpaValidation jpaValidation;
+	
+	public GenericJpaPlatform(String id, JpaFactory jpaFactory, JpaAnnotationProvider jpaAnnotationProvider, JpaValidation jpaValidation, JpaPlatformProvider... platformProviders) {
 		super();
 		this.id = id;
 		this.jpaFactory = jpaFactory;
 		this.annotationProvider = jpaAnnotationProvider;
+		this.jpaValidation = jpaValidation;
 		this.platformProviders = platformProviders;
 	}
 
@@ -86,7 +90,7 @@ public class GenericJpaPlatform
 
 	// ********** factory **********
 
-	public synchronized JpaFactory getJpaFactory() {
+	public JpaFactory getJpaFactory() {
 		return this.jpaFactory;
 	}
 	
@@ -399,5 +403,12 @@ public class GenericJpaPlatform
 
 	public DatabaseFinder getDatabaseFinder() {
 		return DatabaseFinder.Default.instance();
+	}
+	
+	
+	// ********** validation **********
+	
+	public JpaValidation getJpaValidation() {
+		return this.jpaValidation;
 	}
 }

@@ -1932,5 +1932,9 @@ public class XmlEntity extends AbstractXmlTypeMapping
 	public TextRange getDiscriminatorValueTextRange() {
 		return getElementTextRange(OrmXmlMapper.DISCRIMINATOR_VALUE);
 	}
+	
+	public TextRange getInheritanceStrategyTextRange() {
+		return getInheritance() != null ? getInheritance().getStrategyTextRange() : getValidationTextRange();
+	}
 
 } // Entity

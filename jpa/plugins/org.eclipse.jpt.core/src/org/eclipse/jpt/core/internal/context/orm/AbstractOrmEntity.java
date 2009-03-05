@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.JpaValidation.Supported;
 import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
@@ -2146,8 +2147,9 @@ public abstract class AbstractOrmEntity
 	}
 	
 	protected void validateInheritance(List<IMessage> messages, IReporter reporter) {
+		validateInheritanceStrategy(messages);
 		validateDiscriminatorColumn(messages, reporter);
-		validateDiscriminatorValue(messages, reporter);
+		validateDiscriminatorValue(messages);
 	}
 	
 	protected void validateDiscriminatorColumn(List<IMessage> messages, IReporter reporter) {
@@ -2181,7 +2183,7 @@ public abstract class AbstractOrmEntity
 		}
 	}
 	
-	protected void validateDiscriminatorValue(List<IMessage> messages, IReporter reporter) {
+	protected void validateDiscriminatorValue(List<IMessage> messages) {
 		if (discriminatorValueIsUndefined() && getSpecifiedDiscriminatorValue() != null) {
 			if (isAbstract()) {
 				messages.add(
@@ -2207,6 +2209,37 @@ public abstract class AbstractOrmEntity
 			}
 		}
 	}
+	
+	protected void validateInheritanceStrategy(List<IMessage> messages) {
+		Supported tablePerConcreteClassInheritanceIsSupported = getJpaValidation().getTablePerConcreteClassInheritanceIsSupported();
+		if (tablePerConcreteClassInheritanceIsSupported == Supported.YES) {
+			return;
+		}
+		if ((getInheritanceStrategy() == InheritanceType.TABLE_PER_CLASS) && isRoot()) {
+			if (tablePerConcreteClassInheritanceIsSupported == Supported.NO) {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.ENTITY_TABLE_PER_CLASS_NOT_SUPPORTED_ON_PLATFORM,
+						new String[] {this.getName()},
+						this,
+						this.getInheritanceStrategyTextRange()
+					)
+				);
+			}
+			else {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.NORMAL_SEVERITY,
+						JpaValidationMessages.ENTITY_TABLE_PER_CLASS_NOT_PORTABLE_ON_PLATFORM,
+						new String[] {this.getName()},
+						this,
+						this.getInheritanceStrategyTextRange()
+					)
+				);
+			}
+		}
+	}
 
 	protected TextRange getDiscriminatorValueTextRange() {
 		return this.resourceTypeMapping.getDiscriminatorValueTextRange();
@@ -2215,7 +2248,11 @@ public abstract class AbstractOrmEntity
 	protected TextRange getDiscriminatorColumnTextRange() {
 		return this.resourceTypeMapping.getDiscriminatorColumn().getValidationTextRange();
 	}
-	
+
+	protected TextRange getInheritanceStrategyTextRange() {
+		return this.resourceTypeMapping.getInheritanceStrategyTextRange();
+	}
+
 	private boolean entityHasNoId() {
 		return ! this.entityHasId();
 	}

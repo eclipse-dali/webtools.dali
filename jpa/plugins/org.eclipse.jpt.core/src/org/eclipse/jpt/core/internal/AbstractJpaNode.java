@@ -22,6 +22,7 @@ import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaNode;
 import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaProject;
+import org.eclipse.jpt.core.JpaValidation;
 import org.eclipse.jpt.db.Catalog;
 import org.eclipse.jpt.db.Database;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
@@ -105,6 +106,10 @@ public abstract class AbstractJpaNode
 
 	protected JpaFactory getJpaFactory() {
 		return this.getJpaPlatform().getJpaFactory();
+	}
+
+	protected JpaValidation getJpaValidation() {
+		return this.getJpaPlatform().getJpaValidation();
 	}
 
 	protected JpaFile getJpaFile(IFile file) {

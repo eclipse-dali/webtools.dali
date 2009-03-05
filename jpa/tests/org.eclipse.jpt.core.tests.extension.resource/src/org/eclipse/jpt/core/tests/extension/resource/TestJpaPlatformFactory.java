@@ -13,6 +13,7 @@ import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaPlatformFactory;
+import org.eclipse.jpt.core.JpaValidation;
 import org.eclipse.jpt.core.internal.platform.GenericJpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.core.internal.platform.GenericJpaAnnotationProvider;
 import org.eclipse.jpt.core.internal.platform.GenericJpaPlatform;
@@ -38,6 +39,7 @@ public class TestJpaPlatformFactory
 			id,
 			buildJpaFactory(), 
 			buildJpaAnnotationProvider(), 
+			buildJpaValidation(),
 			GenericJpaPlatformProvider.instance(),
 			TestJpaPlatformProvider.instance());
 	}
@@ -49,5 +51,13 @@ public class TestJpaPlatformFactory
 	protected JpaAnnotationProvider buildJpaAnnotationProvider() {
 		return new GenericJpaAnnotationProvider(
 			GenericJpaAnnotationDefinitionProvider.instance());
+	}
+	
+	protected JpaValidation buildJpaValidation() {
+		return new JpaValidation() {
+			public Supported getTablePerConcreteClassInheritanceIsSupported() {
+				return Supported.MAYBE;
+			}
+		};
 	}
 }

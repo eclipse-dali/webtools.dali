@@ -12,8 +12,10 @@ package org.eclipse.jpt.core.resource.orm;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.jpt.core.internal.resource.orm.translators.OrmXmlMapper;
 import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.xml.JpaEObject;
+import org.eclipse.jpt.core.utility.TextRange;
 
 /**
  * <!-- begin-user-doc -->
@@ -198,5 +200,8 @@ public class Inheritance extends AbstractJpaEObject implements JpaEObject
 		result.append(')');
 		return result.toString();
 	}
-
+	
+	public TextRange getStrategyTextRange() {
+		return getAttributeTextRange(OrmXmlMapper.STRATEGY);
+	}
 } // Inheritance

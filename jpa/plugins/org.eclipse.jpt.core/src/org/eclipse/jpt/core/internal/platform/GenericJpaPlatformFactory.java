@@ -13,6 +13,7 @@ import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaPlatformFactory;
+import org.eclipse.jpt.core.JpaValidation;
 
 /**
  * All the state in the JPA platform should be "static" (i.e. unchanging once
@@ -34,6 +35,7 @@ public class GenericJpaPlatformFactory
 			id,
 			buildJpaFactory(), 
 			buildJpaAnnotationProvider(), 
+			buildJpaValidation(),
 			GenericJpaPlatformProvider.instance());
 	}
 	
@@ -44,5 +46,13 @@ public class GenericJpaPlatformFactory
 	protected JpaAnnotationProvider buildJpaAnnotationProvider() {
 		return new GenericJpaAnnotationProvider(
 			GenericJpaAnnotationDefinitionProvider.instance());
+	}
+	
+	protected JpaValidation buildJpaValidation() {
+		return new JpaValidation() {
+			public Supported getTablePerConcreteClassInheritanceIsSupported() {
+				return Supported.MAYBE;
+			}
+		};
 	}
 }

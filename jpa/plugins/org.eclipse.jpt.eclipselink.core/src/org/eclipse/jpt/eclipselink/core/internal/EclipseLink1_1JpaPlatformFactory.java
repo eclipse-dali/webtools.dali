@@ -13,6 +13,7 @@ import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaPlatformFactory;
+import org.eclipse.jpt.core.JpaValidation;
 import org.eclipse.jpt.core.internal.platform.GenericJpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.core.internal.platform.GenericJpaAnnotationProvider;
 import org.eclipse.jpt.core.internal.platform.GenericJpaPlatform;
@@ -38,6 +39,7 @@ public class EclipseLink1_1JpaPlatformFactory
 			id,
 			buildJpaFactory(), 
 			buildJpaAnnotationProvider(), 
+			buildJpaValidation(),
 			EclipseLinkJpaPlatformProvider.instance(), 
 			//put eclipselink first because of the default java attribute mapping providers order,
 			//maybe there is a better way to handle that order dependency
@@ -54,5 +56,13 @@ public class EclipseLink1_1JpaPlatformFactory
 			GenericJpaAnnotationDefinitionProvider.instance(),
 			EclipseLinkJpaAnnotationDefinitionProvider.instance(),
 			EclipseLink1_1JpaAnnotationDefinitionProvider.instance());
+	}
+	
+	protected JpaValidation buildJpaValidation() {
+		return new JpaValidation() {
+			public Supported getTablePerConcreteClassInheritanceIsSupported() {
+				return Supported.YES;
+			}
+		};
 	}
 }

@@ -201,4 +201,8 @@ public interface JpaPlatform
 	 */
 	DatabaseFinder getDatabaseFinder();
 
+	
+	// ********** validation **********
+	
+	JpaValidation getJpaValidation();
 }
