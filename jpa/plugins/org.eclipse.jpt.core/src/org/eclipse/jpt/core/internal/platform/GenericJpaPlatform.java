@@ -97,7 +97,7 @@ public class GenericJpaPlatform
 	
 	// ********** platform providers **********
 	
-	protected synchronized ListIterator<JpaPlatformProvider> platformProviders() {
+	protected ListIterator<JpaPlatformProvider> platformProviders() {
 		return new ArrayListIterator<JpaPlatformProvider>(this.platformProviders);
 	}
 
