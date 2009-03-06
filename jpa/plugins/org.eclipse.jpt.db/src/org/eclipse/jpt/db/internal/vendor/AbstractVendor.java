@@ -45,7 +45,11 @@ abstract class AbstractVendor
 	}
 
 	public List<Schema> getSchemas(Database database) {
-		return this.getCatalogStrategy().getSchemas(database);
+		try {
+			return this.getCatalogStrategy().getSchemas(database);
+		} catch (Exception ex) {
+			throw new RuntimeException("vendor: " + this, ex); //$NON-NLS-1$
+		}
 	}
 
 	/**

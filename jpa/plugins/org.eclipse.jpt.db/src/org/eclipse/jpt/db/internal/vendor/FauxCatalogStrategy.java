@@ -60,12 +60,12 @@ class FauxCatalogStrategy
 			throw new IllegalStateException();
 		}
 		if (catalogs.size() != 1) {
-			throw new IllegalStateException();
+			throw new IllegalStateException("not a single catalog: " + catalogs.size()); //$NON-NLS-1$
 		}
 
 		Catalog catalog = catalogs.get(0);
 		if (catalog.getName().length() != 0) {
-			throw new IllegalStateException();
+			throw new IllegalStateException("illegal name: " + catalog.getName()); //$NON-NLS-1$
 		}
 		return catalog;
 	}
