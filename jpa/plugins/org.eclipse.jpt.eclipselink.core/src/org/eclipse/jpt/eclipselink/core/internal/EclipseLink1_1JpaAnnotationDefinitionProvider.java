@@ -12,7 +12,6 @@ package org.eclipse.jpt.eclipselink.core.internal;
 import java.util.List;
 import org.eclipse.jpt.core.JpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.core.internal.platform.AbstractJpaAnnotationDefintionProvider;
-import org.eclipse.jpt.core.internal.resource.java.AccessImpl.AccessAnnotationDefinition;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
 
 /**
@@ -46,7 +45,9 @@ public class EclipseLink1_1JpaAnnotationDefinitionProvider
 	
 	@Override
 	protected void addTypeSupportingAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
-		definitions.add(AccessAnnotationDefinition.instance());
+		//TODO commented out this code for now, we don't want the java Access annotation work to be exposed yet.
+		//EclipseLink has backed out its JPA 2.0 annotation support until it is released or licensing issues are cleared up.
+//		definitions.add(AccessAnnotationDefinition.instance());
 	}
 
 	@Override
@@ -56,6 +57,8 @@ public class EclipseLink1_1JpaAnnotationDefinitionProvider
 	
 	@Override
 	protected void addAttributeSupportingAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
-		definitions.add(AccessAnnotationDefinition.instance());
+		//TODO commented out this code for now, we don't want the java Access annotation work to be exposed yet.
+		//EclipseLink has backed out its JPA 2.0 annotation support until it is released or licensing issues are cleared up.
+//		definitions.add(AccessAnnotationDefinition.instance());
 	}
 }

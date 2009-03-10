@@ -22,8 +22,11 @@ public class JptEclipseLinkCoreJavaContextModelTests extends TestCase
 
 	public static Test suite(boolean all) {
 		TestSuite suite = new TestSuite(JptEclipseLinkCoreJavaContextModelTests.class.getName());
-		suite.addTestSuite(EclipseLink1_1JavaPersistentTypeTests.class);
-		suite.addTestSuite(EclipseLink1_1JavaPersistentAttributeTests.class);
+		//TODO commented out these tests for now, we don't want the java Access annotation work to be exposed yet.
+		//EclipseLink has backed out its JPA 2.0 annotation support until it is released or licensing issues are cleared up.
+//		suite.addTestSuite(EclipseLink1_1JavaPersistentTypeTests.class);
+//		suite.addTestSuite(EclipseLink1_1JavaPersistentAttributeTests.class);
+		
 		suite.addTestSuite(EclipseLinkJavaBasicMappingTests.class);
 		suite.addTestSuite(EclipseLinkJavaCachingTests.class);
 		suite.addTestSuite(EclipseLinkJavaConvertTests.class);

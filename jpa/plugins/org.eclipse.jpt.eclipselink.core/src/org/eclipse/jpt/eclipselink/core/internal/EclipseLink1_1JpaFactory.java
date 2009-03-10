@@ -10,8 +10,6 @@
 package org.eclipse.jpt.eclipselink.core.internal;
 
 import org.eclipse.jpt.core.context.MappingFile;
-import org.eclipse.jpt.core.context.PersistentType;
-import org.eclipse.jpt.core.context.PersistentType.Owner;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.core.context.java.JavaEmbeddedIdMapping;
@@ -21,8 +19,6 @@ import org.eclipse.jpt.core.context.java.JavaManyToManyMapping;
 import org.eclipse.jpt.core.context.java.JavaManyToOneMapping;
 import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
 import org.eclipse.jpt.core.context.java.JavaOneToOneMapping;
-import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaTransientMapping;
 import org.eclipse.jpt.core.context.java.JavaVersionMapping;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
@@ -40,13 +36,9 @@ import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmVersionMapping;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.orm.XmlNullAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
-import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLink1_1JavaPersistentAttribute;
-import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLink1_1JavaPersistentType;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaBasicCollectionMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaBasicMapMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaTransformationMapping;
@@ -116,16 +108,19 @@ public class EclipseLink1_1JpaFactory
 	
 	
 	// **************** Java Context Model *************************************
-
-	@Override
-	public JavaPersistentType buildJavaPersistentType(Owner owner, JavaResourcePersistentType jrpt) {
-		return new EclipseLink1_1JavaPersistentType(owner, jrpt);
-	}
 	
-	@Override
-	public JavaPersistentAttribute buildJavaPersistentAttribute(PersistentType parent, JavaResourcePersistentAttribute jrpa) {
-		return new EclipseLink1_1JavaPersistentAttribute(parent, jrpa);
-	}
+	//TODO commented out this code for now, we don't want the java Access annotation work to be exposed yet.
+	//EclipseLink has backed out its JPA 2.0 annotation support until it is released or licensing issues are cleared up.
+//
+//	@Override
+//	public JavaPersistentType buildJavaPersistentType(Owner owner, JavaResourcePersistentType jrpt) {
+//		return new EclipseLink1_1JavaPersistentType(owner, jrpt);
+//	}
+//	
+//	@Override
+//	public JavaPersistentAttribute buildJavaPersistentAttribute(PersistentType parent, JavaResourcePersistentAttribute jrpa) {
+//		return new EclipseLink1_1JavaPersistentAttribute(parent, jrpa);
+//	}
 	
 	// ********** EclipseLink-specific ORM Virtual Resource Model **********
 	

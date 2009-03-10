@@ -28,7 +28,10 @@ public class EclipseLink1_1JpaPlatformUiFactory implements JpaPlatformUiFactory
 
 	public JpaPlatformUi buildJpaPlatformUi() {
 		return new EclipseLinkJpaPlatformUi(
-			new EclipseLinkJpaUiFactory(),
+			new EclipseLinkJpaUiFactory(), //new EclipseLink1_1JpaUiFactory() is not being used because 
+										   //we don't want the java Access annotation work to be exposed yet
+										   //EclipseLink has backed out its JPA 2.0 annotation support until 
+										   //it is released or licensing issues are cleared up
 			new EclipseLinkNavigatorProvider(),
 			JavaResourceModelStructureProvider.instance(), 
 			EclipseLinkPersistenceResourceModelStructureProvider.instance(),

@@ -20,8 +20,10 @@ public class JptEclipseLinkCoreJavaResourceModelTests {
 	
 	public static Test suite(boolean all) {
 		TestSuite suite = new TestSuite(JptEclipseLinkCoreJavaResourceModelTests.class.getName());
+		//TODO commented out this test for now, we don't want the java Access annotation work to be exposed yet.
+		//EclipseLink has backed out its JPA 2.0 annotation support until it is released or licensing issues are cleared up.
 		
-		suite.addTestSuite(AccessAnnotationTests.class);
+//		suite.addTestSuite(AccessAnnotationTests.class);
 		suite.addTestSuite(CacheTests.class);
 		suite.addTestSuite(ChangeTrackingTests.class);
 		suite.addTestSuite(ConversionValueAnnotationTests.class);
