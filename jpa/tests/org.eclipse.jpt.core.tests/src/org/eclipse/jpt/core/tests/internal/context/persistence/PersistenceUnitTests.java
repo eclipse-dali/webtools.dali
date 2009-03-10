@@ -11,15 +11,19 @@ package org.eclipse.jpt.core.tests.internal.context.persistence;
 
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.ListIterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.context.orm.OrmXml;
 import org.eclipse.jpt.core.context.persistence.ClassRef;
+import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnitTransactionType;
+import org.eclipse.jpt.core.internal.resource.orm.OrmXmlResourceProvider;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlJavaClassRef;
@@ -1041,24 +1045,81 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		xmlProperty.setValue("newValue");
 		
 		assertEquals(xmlProperty.getValue(), persistenceUnitFirstProperty().getValue());
-	}
-	
+	}	
 	
 	public void testGetDefaultAccess() throws Exception {
-		createOrmXmlFile();		
+		addXmlMappingFileRef(JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH);
+		createOrm2XmlFile();
 		PersistenceUnit persistenceUnit = getPersistenceUnit();
+		ListIterator<MappingFileRef> mappingFileRefs = getPersistenceUnit().mappingFileRefs();
+		OrmXml ormMappingFile = (OrmXml) mappingFileRefs.next().getMappingFile();
+		OrmXml orm2MappingFile = (OrmXml) mappingFileRefs.next().getMappingFile();
 		
-		getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(AccessType.PROPERTY);		
+		assertEquals(null, persistenceUnit.getDefaultAccess());
+		
+		ormMappingFile.getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(AccessType.PROPERTY);		
 		assertEquals(AccessType.PROPERTY, persistenceUnit.getDefaultAccess());
 		
-		getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(AccessType.FIELD);	
+		ormMappingFile.getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(AccessType.FIELD);	
+		assertEquals(AccessType.FIELD, persistenceUnit.getDefaultAccess());
+		
+		ormMappingFile.getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(null);	
+		assertFalse(ormMappingFile.getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().resourceExists());
+		assertEquals(null, persistenceUnit.getDefaultAccess());
+				
+		orm2MappingFile.getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(AccessType.FIELD);	
 		assertEquals(AccessType.FIELD, persistenceUnit.getDefaultAccess());
 	}
+	
+	public void testGetDefaultSchema() throws Exception {
+		addXmlMappingFileRef(JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH);
+		createOrm2XmlFile();
+		PersistenceUnit persistenceUnit = getPersistenceUnit();
+		ListIterator<MappingFileRef> mappingFileRefs = getPersistenceUnit().mappingFileRefs();
+		OrmXml ormMappingFile = (OrmXml) mappingFileRefs.next().getMappingFile();
+		OrmXml orm2MappingFile = (OrmXml) mappingFileRefs.next().getMappingFile();
+		
+		assertEquals(null, persistenceUnit.getDefaultSchema());
+		
+		ormMappingFile.getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedSchema("FOO");		
+		assertEquals("FOO", persistenceUnit.getDefaultSchema());
+		
+		ormMappingFile.getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedSchema(null);	
+		assertFalse(ormMappingFile.getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().resourceExists());
+		assertEquals(null, persistenceUnit.getDefaultSchema());
+				
+		orm2MappingFile.getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedSchema("BAR");	
+		assertEquals("BAR", persistenceUnit.getDefaultSchema());
+	}
+	
+	public void testGetDefaultCatalog() throws Exception {
+		addXmlMappingFileRef(JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH);
+		createOrm2XmlFile();
+		PersistenceUnit persistenceUnit = getPersistenceUnit();
+		ListIterator<MappingFileRef> mappingFileRefs = getPersistenceUnit().mappingFileRefs();
+		OrmXml ormMappingFile = (OrmXml) mappingFileRefs.next().getMappingFile();
+		OrmXml orm2MappingFile = (OrmXml) mappingFileRefs.next().getMappingFile();
+		
+		assertEquals(null, persistenceUnit.getDefaultCatalog());
+		
+		ormMappingFile.getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedCatalog("FOO");		
+		assertEquals("FOO", persistenceUnit.getDefaultCatalog());
+		
+		ormMappingFile.getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedCatalog(null);	
+		assertFalse(ormMappingFile.getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().resourceExists());
+		assertEquals(null, persistenceUnit.getDefaultCatalog());
+				
+		orm2MappingFile.getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedCatalog("BAR");	
+		assertEquals("BAR", persistenceUnit.getDefaultCatalog());
+	}
+	
+	protected void createOrm2XmlFile() throws Exception {
+		OrmXmlResourceProvider resourceProvider = 
+			OrmXmlResourceProvider.getXmlResourceProvider(getJavaProject().getProject(), "META-INF/orm2.xml");
+		resourceProvider.createFileAndResource();
 
-	protected void createOrmXmlFile() throws Exception {
-		XmlMappingFileRef mappingFileRef = PersistenceFactory.eINSTANCE.createXmlMappingFileRef();
-		mappingFileRef.setFileName(JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH);
-		getXmlPersistenceUnit().getMappingFiles().add(mappingFileRef);
+		
+		addXmlMappingFileRef("META-INF/orm2.xml");
 		getPersistenceXmlResource().save(null);
 	}
 
@@ -1131,7 +1192,7 @@ public class PersistenceUnitTests extends ContextModelTestCase
 
 		
 		//test persistentType from orm.xml file that is specified in the persistence.xml
-		createOrmXmlFile();
+		addXmlMappingFileRef(JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH);
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		assertNotNull(persistenceUnit.getPersistentType("model.Foo"));
 		assertEquals(ormPersistentType, persistenceUnit.getPersistentType("model.Foo"));

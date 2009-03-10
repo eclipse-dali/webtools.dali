@@ -27,6 +27,7 @@ import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlJavaClassRef;
+import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
@@ -161,6 +162,14 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 			throw new IllegalArgumentException();
 		}
 		xmlPersistenceUnit.getClasses().remove(xmlJavaClassRefToRemove);
+	}
+	
+	protected void addXmlMappingFileRef(String fileName) {
+		XmlPersistenceUnit xmlPersistenceUnit = getXmlPersistenceUnit();
+		
+		XmlMappingFileRef xmlMappingFileRef = PersistenceFactory.eINSTANCE.createXmlMappingFileRef();
+		xmlMappingFileRef.setFileName(fileName);
+		xmlPersistenceUnit.getMappingFiles().add(xmlMappingFileRef);
 	}
 
 	protected JpaRootContextNode getRootContextNode() {

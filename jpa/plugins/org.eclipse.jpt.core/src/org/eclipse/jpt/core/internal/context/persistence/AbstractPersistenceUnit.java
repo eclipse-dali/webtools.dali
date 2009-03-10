@@ -1108,10 +1108,10 @@ public abstract class AbstractPersistenceUnit
 	 * return the first persistence unit defaults we encounter in a mapping file
 	 */
 	protected MappingFilePersistenceUnitDefaults getDefaults() {
-		for (Iterator<MappingFileRef> stream= this.mappingFileRefs(); stream.hasNext(); ) {
-			MappingFilePersistenceUnitDefaults defaults = stream.next().getPersistenceUnitDefaults();
-			if (defaults != null) {
-				return defaults;
+		for (Iterator<MappingFileRef> stream = this.mappingFileRefs(); stream.hasNext(); ) {
+			MappingFileRef mappingFileRef = stream.next();
+			if (mappingFileRef.persistenceUnitDefaultsExists()) {
+				return mappingFileRef.getPersistenceUnitDefaults();
 			}
 		}
 		return null;
