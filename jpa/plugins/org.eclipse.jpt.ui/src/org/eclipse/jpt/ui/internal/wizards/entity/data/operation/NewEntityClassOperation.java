@@ -427,7 +427,7 @@ public class NewEntityClassOperation extends AbstractDataModelOperation {
 		if (model.isMappingXMLDefault()) {
 			return JptCorePlugin.getJpaProject(project).getDefaultOrmXmlResource();
 		}
-		return JptCorePlugin.getJpaProject(project).getMappingFileResource(model.getMappingXMLName());
+		return JptCorePlugin.getJpaProject(project).getMappingFileXmlResource(model.getMappingXMLName());
 	}
 	
 	/**

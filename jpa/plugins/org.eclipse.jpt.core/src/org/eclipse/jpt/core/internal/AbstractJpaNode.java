@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -36,7 +36,7 @@ import org.eclipse.jpt.utility.internal.model.ChangeSupport;
  */
 public abstract class AbstractJpaNode
 	extends AbstractModel
-	implements JpaNode, CallbackChangeSupport.Source
+	implements JpaNode
 {
 	private final JpaNode parent;
 
@@ -71,7 +71,15 @@ public abstract class AbstractJpaNode
 
 	@Override
 	protected ChangeSupport buildChangeSupport() {
-		return new CallbackChangeSupport(this);
+		return new CallbackChangeSupport(this, this.buildChangeSupportListener());
+	}
+
+	protected CallbackChangeSupport.Listener buildChangeSupportListener() {
+		return new CallbackChangeSupport.Listener() {
+			public void aspectChanged(String aspectName) {
+				AbstractJpaNode.this.aspectChanged(aspectName);
+			}
+		};
 	}
 
 	
@@ -139,7 +147,7 @@ public abstract class AbstractJpaNode
 
 	// ********** CallbackChangeSupport.Source implementation **********
 
-	public void aspectChanged(String aspectName) {
+	protected void aspectChanged(String aspectName) {
 		if (this.aspectTriggersUpdate(aspectName)) {
 			// System.out.println(Thread.currentThread() + " \"update\" change: " + this + ": " + aspectName);
 			this.getJpaProject().update();

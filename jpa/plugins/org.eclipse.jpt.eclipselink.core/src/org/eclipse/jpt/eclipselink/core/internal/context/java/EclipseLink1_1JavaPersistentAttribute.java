@@ -11,59 +11,54 @@ package org.eclipse.jpt.eclipselink.core.internal.context.java;
 
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.PersistentType;
-import org.eclipse.jpt.core.internal.context.java.AbstractJavaPersistentAttribute;
 import org.eclipse.jpt.core.resource.java.AccessAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 
 /**
- * 
+ * EclipseLink 1.1 persistent attribute
  */
 public class EclipseLink1_1JavaPersistentAttribute
-	extends AbstractJavaPersistentAttribute
+	extends AbstractEclipseLinkJavaPersistentAttribute
 {
-	
 	protected AccessType specifiedAccess;
-	
-	public EclipseLink1_1JavaPersistentAttribute(PersistentType parent, JavaResourcePersistentAttribute jrpa) {
-		super(parent, jrpa);
+
+
+	public EclipseLink1_1JavaPersistentAttribute(PersistentType parent, JavaResourcePersistentAttribute resourcePersistentAttribute) {
+		super(parent, resourcePersistentAttribute);
+		this.specifiedAccess = this.buildSpecifiedAccess();
 	}
 
-	
-	//****************** AccessHolder implementation *******************
-	
+
+	// ********** AccessHolder implementation **********
+
 	public AccessType getSpecifiedAccess() {
 		return this.specifiedAccess;
 	}
-	
+
 	/**
 	 * Don't support changing to specified access on a java persistent attribute, this
 	 * involves a larger process of moving the annotations to the corresponding field/property
 	 * which may or may not exist or might need to be created.
 	 */
-	public void setSpecifiedAccess(@SuppressWarnings("unused") AccessType newSpecifiedAccess) {
-		throw new UnsupportedOperationException("no support for setting specified access"); //$NON-NLS-1$
+	public void setSpecifiedAccess(AccessType specifiedAccess) {
+		throw new UnsupportedOperationException();
 	}
-	
+
 	protected void setSpecifiedAccess_(AccessType specifiedAccess) {
 		AccessType old = this.specifiedAccess;
 		this.specifiedAccess = specifiedAccess;
-		firePropertyChanged(SPECIFIED_ACCESS_PROPERTY, specifiedAccess, old);
+		this.firePropertyChanged(SPECIFIED_ACCESS_PROPERTY, old, specifiedAccess);
 	}
-	
-	@Override
-	protected void initialize(JavaResourcePersistentAttribute jrpa) {
-		super.initialize(jrpa);
-		this.specifiedAccess = getResourceAccessType();
-	}
-	
-	@Override
-	public void update() {
-		super.update();
-		this.setSpecifiedAccess_(getResourceAccessType());
-	}
-	
-	protected AccessType getResourceAccessType() {
+
+	protected AccessType buildSpecifiedAccess() {
 		AccessAnnotation accessAnnotation = (AccessAnnotation) this.resourcePersistentAttribute.getSupportingAnnotation(AccessAnnotation.ANNOTATION_NAME);
 		return accessAnnotation == null ? null : AccessType.fromJavaResourceModel(accessAnnotation.getValue());
 	}
+
+	@Override
+	public void update() {
+		super.update();
+		this.setSpecifiedAccess_(this.buildSpecifiedAccess());
+	}
+
 }

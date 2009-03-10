@@ -40,9 +40,8 @@ public interface JavaPersistentType extends PersistentType, JavaJpaContextNode
 	
 	/**
 	 * Return whether any attribute in this persistent type contains a mapping annotation
-	 * @return
 	 */
-	boolean hasAnyAttributeMappingAnnotations();
+	boolean hasAnyAttributePersistenceAnnotations();
 
 	
 	JavaResourcePersistentType getResourcePersistentType();

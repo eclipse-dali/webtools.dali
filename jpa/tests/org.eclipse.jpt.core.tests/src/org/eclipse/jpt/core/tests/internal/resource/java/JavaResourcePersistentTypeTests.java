@@ -554,7 +554,7 @@ public class JavaResourcePersistentTypeTests extends JavaResourceModelTestCase {
 		
 		testType(cu).edit(new Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				((EntityImpl) typeResource.getMappingAnnotation()).getDeclarationAnnotationAdapter().removeAnnotation(declaration);
+				EntityImpl.DECLARATION_ANNOTATION_ADAPTER.removeAnnotation(declaration);
 			}
 		});	
 

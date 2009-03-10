@@ -17,6 +17,7 @@ import org.eclipse.jpt.utility.MethodSignature;
 import org.eclipse.jpt.utility.internal.SimpleJavaType;
 import org.eclipse.jpt.utility.internal.SimpleMethodSignature;
 
+@SuppressWarnings("nls")
 public class MethodSignatureTests extends TestCase {
 
 	public MethodSignatureTests(String name) {
@@ -222,14 +223,14 @@ public class MethodSignatureTests extends TestCase {
 	}
 
 	public void method0() { /* used by tests */ }
-	public void method1(int foo) { /* used by tests */ }
-	public void method2(int foo, String bar) { /* used by tests */ }
-	public void method3(int foo, String bar, Object[][] baz) { /* used by tests */ }
+	@SuppressWarnings("unused") public void method1(int foo) { /* used by tests */ }
+	@SuppressWarnings("unused") public void method2(int foo, String bar) { /* used by tests */ }
+	@SuppressWarnings("unused") public void method3(int foo, String bar, Object[][] baz) { /* used by tests */ }
 
-	public void methodA(int foo, String bar) { /* used by tests */ }
-	public void methodA(int foo, String bar, String baz) { /* used by tests */ }
+	@SuppressWarnings("unused") public void methodA(int foo, String bar) { /* used by tests */ }
+	@SuppressWarnings("unused") public void methodA(int foo, String bar, String baz) { /* used by tests */ }
 
-	public void methodB(int foo, Object bar) { /* used by tests */ }
-	public void methodB(int foo, String bar) { /* used by tests */ }
+	@SuppressWarnings("unused") public void methodB(int foo, Object bar) { /* used by tests */ }
+	@SuppressWarnings("unused") public void methodB(int foo, String bar) { /* used by tests */ }
 
 }

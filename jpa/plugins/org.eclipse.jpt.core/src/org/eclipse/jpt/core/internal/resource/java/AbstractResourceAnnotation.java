@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,6 +22,9 @@ import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.Member;
 
+/**
+ * most of the behavior for a Java resource annotation
+ */
 public abstract class AbstractResourceAnnotation<E extends Member>
 	extends AbstractJavaResourceNode
 	implements Annotation
@@ -39,33 +42,32 @@ public abstract class AbstractResourceAnnotation<E extends Member>
 		this.annotationAdapter = annotationAdapter;
 	}
 	
-	public E getMember() {
-		return this.member;
-	}
-	
 	protected AbstractResourceAnnotation(JavaResourceNode parent, E member, DeclarationAnnotationAdapter daa) {
 		this(parent, member, daa, new MemberAnnotationAdapter(member, daa));
 	}
 
+	protected E getMember() {
+		return this.member;
+	}
 	
-	public AnnotationAdapter getAnnotationAdapter() {
+	protected AnnotationAdapter getAnnotationAdapter() {
 		return this.annotationAdapter;
 	}
 	
 	public org.eclipse.jdt.core.dom.Annotation getJdtAnnotation(CompilationUnit astRoot) {
-		return getAnnotationAdapter().getAnnotation(astRoot);
+		return this.annotationAdapter.getAnnotation(astRoot);
 	}
 	
-	public DeclarationAnnotationAdapter getDeclarationAnnotationAdapter() {
+	protected DeclarationAnnotationAdapter getDeclarationAnnotationAdapter() {
 		return this.daa;
 	}
 
 	public void removeAnnotation() {
-		getAnnotationAdapter().removeAnnotation();
+		this.annotationAdapter.removeAnnotation();
 	}
 	
 	public void newAnnotation() {
-		getAnnotationAdapter().newMarkerAnnotation();
+		this.annotationAdapter.newMarkerAnnotation();
 	}
 	
 	public TextRange getTextRange(CompilationUnit astRoot) {
@@ -85,12 +87,12 @@ public abstract class AbstractResourceAnnotation<E extends Member>
 	}
 	
 	protected org.eclipse.jdt.core.dom.Annotation getAnnotation(CompilationUnit astRoot) {
-		return this.daa.getAnnotation(getMember().getModifiedDeclaration(astRoot));
+		return this.daa.getAnnotation(this.member.getModifiedDeclaration(astRoot));
 		
 	}
 
 	protected Expression getAnnotationElementExpression(DeclarationAnnotationElementAdapter<?> adapter, CompilationUnit astRoot) {
-		return adapter.getExpression(getMember().getModifiedDeclaration(astRoot));
+		return adapter.getExpression(this.member.getModifiedDeclaration(astRoot));
 	}
 
 	protected TextRange getAnnotationElementTextRange(DeclarationAnnotationElementAdapter<?> adapter, CompilationUnit astRoot) {

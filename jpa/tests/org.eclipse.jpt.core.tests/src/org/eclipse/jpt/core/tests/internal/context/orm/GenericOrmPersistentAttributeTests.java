@@ -267,7 +267,7 @@ public class GenericOrmPersistentAttributeTests extends ContextModelTestCase
 		assertNotSame(javaPersistentAttribute, ormPersistentAttribute.getJavaPersistentAttribute());
 		assertEquals(AccessType.FIELD, javaPersistentAttribute.getAccess());
 		JavaResourcePersistentAttribute javaResourcePersistentAttribute = ormPersistentAttribute.getJavaPersistentAttribute().getResourcePersistentAttribute();
-		assertTrue(javaResourcePersistentAttribute.isForField());
+		assertTrue(javaResourcePersistentAttribute.isField());
 		assertEquals("id", javaResourcePersistentAttribute.getName());
 		assertEquals(javaPersistentType.getResourcePersistentType().persistableFields().next(), javaResourcePersistentAttribute);
 		
@@ -291,7 +291,7 @@ public class GenericOrmPersistentAttributeTests extends ContextModelTestCase
 		assertEquals(AccessType.FIELD, javaPersistentAttribute.getAccess());
 		assertEquals(AccessType.PROPERTY, ormPersistentAttribute.getJavaPersistentAttribute().getAccess());
 		javaResourcePersistentAttribute = ormPersistentAttribute.getJavaPersistentAttribute().getResourcePersistentAttribute();
-		assertTrue(javaResourcePersistentAttribute.isForProperty());
+		assertTrue(javaResourcePersistentAttribute.isProperty());
 		assertEquals("id", javaResourcePersistentAttribute.getName());
 		assertEquals(javaPersistentType.getResourcePersistentType().persistableProperties().next(), javaResourcePersistentAttribute);
 		

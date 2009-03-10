@@ -32,7 +32,7 @@ public class JavaVariableOneToOneMapping extends AbstractJavaAttributeMapping<Va
 		return VariableOneToOneAnnotation.ANNOTATION_NAME;
 	}
 	
-	public Iterator<String> correspondingAnnotationNames() {
+	public Iterator<String> supportingAnnotationNames() {
 		return EmptyIterator.instance();
 	}
 }

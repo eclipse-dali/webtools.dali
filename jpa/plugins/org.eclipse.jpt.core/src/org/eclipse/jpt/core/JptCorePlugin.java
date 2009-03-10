@@ -97,37 +97,34 @@ public class JptCorePlugin extends Plugin {
 			new QualifiedName(PLUGIN_ID, "userOverrideDefaultSchemaName");  //$NON-NLS-1$
 	
 	/**
-	 * The identifier for the JPA validation marker
-	 * (value <code>"org.eclipse.jpt.core.jpaProblemMarker"</code>).
+	 * The identifier for the JPA validator
+	 * (value <code>"org.eclipse.jpt.core.jpaValidator"</code>).
 	 */
 	public static final String VALIDATOR_ID = PLUGIN_ID_ + "jpaValidator";  //$NON-NLS-1$
 
 	/**
 	 * The content type for Java source code files.
 	 */
-	public static final IContentType JAVA_SOURCE_CONTENT_TYPE = Platform.getContentTypeManager().getContentType(JavaCore.JAVA_SOURCE_CONTENT_TYPE);
+	public static final IContentType JAVA_SOURCE_CONTENT_TYPE = getContentType(JavaCore.JAVA_SOURCE_CONTENT_TYPE);
 
-	public static final String CONTENT_PREFIX = PLUGIN_ID_ + "content"; //$NON-NLS-1$
-	public static final String CONTENT_PREFIX_ = CONTENT_PREFIX + '.';
-
-	public static final IContentType MAPPING_FILE_CONTENT_TYPE = Platform.getContentTypeManager().getContentType(CONTENT_PREFIX_ + "mappingFile"); //$NON-NLS-1$
+	public static final IContentType MAPPING_FILE_CONTENT_TYPE = getJpaContentType("mappingFile"); //$NON-NLS-1$
 
 	/**
 	 * The content type for orm.xml mappings files. Use this to add new 
 	 * orm.xml-like extensions to this content type.
 	 */
-	public static final IContentType ORM_XML_CONTENT_TYPE = Platform.getContentTypeManager().getContentType(CONTENT_PREFIX_ + "orm"); //$NON-NLS-1$
+	public static final IContentType ORM_XML_CONTENT_TYPE = getJpaContentType("orm"); //$NON-NLS-1$
 
 	/**
 	 * Ditto for persistence.xml.
 	 * @see #ORM_XML_CONTENT_TYPE
 	 */
-	public static final IContentType PERSISTENCE_XML_CONTENT_TYPE = Platform.getContentTypeManager().getContentType(CONTENT_PREFIX_ + "persistence"); //$NON-NLS-1$
+	public static final IContentType PERSISTENCE_XML_CONTENT_TYPE = getJpaContentType("persistence"); //$NON-NLS-1$
 
 	/**
 	 * The content type for Java archives (JARs).
 	 */
-	public static final IContentType JAR_CONTENT_TYPE = Platform.getContentTypeManager().getContentType(CONTENT_PREFIX_ + "jar"); //$NON-NLS-1$
+	public static final IContentType JAR_CONTENT_TYPE = getJpaContentType("jar"); //$NON-NLS-1$
 
 	/**
 	 * Web projects have some special exceptions.
@@ -143,6 +140,15 @@ public class JptCorePlugin extends Plugin {
 
 	public static final String DEFAULT_ORM_XML_FILE_PATH = "META-INF/orm.xml"; //$NON-NLS-1$
 
+	private static IContentType getJpaContentType(String jpaContentType) {
+		return getContentType(CONTENT_PREFIX_ + jpaContentType);
+	}
+	public static final String CONTENT_PREFIX = PLUGIN_ID_ + "content"; //$NON-NLS-1$
+	public static final String CONTENT_PREFIX_ = CONTENT_PREFIX + '.';
+
+	private static IContentType getContentType(String contentType) {
+		return Platform.getContentTypeManager().getContentType(contentType);
+	}
 
 	// ********** singleton **********
 

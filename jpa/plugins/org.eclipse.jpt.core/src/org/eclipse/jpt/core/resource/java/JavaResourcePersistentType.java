@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.resource.java;
 import java.util.Iterator;
 
 /**
- * 
+ * Java source code persistent type
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -57,7 +57,7 @@ public interface JavaResourcePersistentType
 	 * Return whether the type has any attributes that have
 	 * JPA annotations on them.
 	 */
-	boolean hasAnyAttributeAnnotations();
+	boolean hasAnyAttributePersistenceAnnotations();
 
 
 	// ********** types **********
@@ -80,8 +80,8 @@ public interface JavaResourcePersistentType
 	Iterator<JavaResourcePersistentType> persistableTypes();
 
 	/**
-	 * Return all the persistable types; the type itself, its children, its
-	 * grandchildren, etc.
+	 * Return all the "persistable" types (the type itself, its children, its
+	 * grandchildren, etc.) as defined by the JPA spec.
 	 */
 	Iterator<JavaResourcePersistentType> allPersistableTypes();
 

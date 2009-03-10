@@ -40,7 +40,7 @@ public class GenericJavaManyToManyMapping extends AbstractJavaMultiRelationshipM
 		return ManyToManyAnnotation.ANNOTATION_NAME;
 	}
 
-	public Iterator<String> correspondingAnnotationNames() {
+	public Iterator<String> supportingAnnotationNames() {
 		return new ArrayIterator<String>(
 			JPA.ORDER_BY,
 			JPA.MAP_KEY,

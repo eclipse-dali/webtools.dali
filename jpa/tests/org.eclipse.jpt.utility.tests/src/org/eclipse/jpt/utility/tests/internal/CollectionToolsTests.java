@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -106,6 +106,16 @@ public class CollectionToolsTests extends TestCase {
 		assertTrue(exCaught);
 	}
 
+	public void testConcatenateObjectArrayArray() {
+		String[] aArray = new String[] { "a", "b", "c", "d" };
+		String[] eArray = new String[] { "e", "f", "g", "h" };
+		String[] iArray = new String[] { "i", "j", "k", "l" };
+
+		String[] expected = new String[] { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l" };
+		String[] actual = CollectionTools.concatenate(aArray, eArray, iArray);
+		assertTrue(Arrays.equals(expected, actual));
+	}
+
 	public void testAddCharArrayChar() {
 		char[] a = CollectionTools.add(this.buildCharArray(), 'd');
 		assertEquals(4, a.length);
@@ -144,6 +154,16 @@ public class CollectionToolsTests extends TestCase {
 		assertTrue(Arrays.equals(new char[] { 'a', 'b', 'c', 'd', 'X' }, a));
 	}
 
+	public void testConcatenateCharArrayArray() {
+		char[] aArray = new char[] { 'a', 'b', 'c', 'd' };
+		char[] eArray = new char[] { 'e', 'f', 'g', 'h' };
+		char[] iArray = new char[] { 'i', 'j', 'k', 'l' };
+
+		char[] expected = new char[] { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l' };
+		char[] actual = CollectionTools.concatenate(aArray, eArray, iArray);
+		assertTrue(Arrays.equals(expected, actual));
+	}
+
 	public void testAddIntArrayInt() {
 		int[] a = CollectionTools.add(this.buildIntArray(), 30);
 		assertEquals(4, a.length);
@@ -180,6 +200,16 @@ public class CollectionToolsTests extends TestCase {
 		assertEquals(5, a.length);
 		assertTrue(CollectionTools.contains(a, 99));
 		assertTrue(Arrays.equals(new int[] { 1, 2, 3, 4, 99 }, a));
+	}
+
+	public void testConcatenateIntArrayArray() {
+		int[] aArray = new int[] { 'a', 'b', 'c', 'd' };
+		int[] eArray = new int[] { 'e', 'f', 'g', 'h' };
+		int[] iArray = new int[] { 'i', 'j', 'k', 'l' };
+
+		int[] expected = new int[] { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l' };
+		int[] actual = CollectionTools.concatenate(aArray, eArray, iArray);
+		assertTrue(Arrays.equals(expected, actual));
 	}
 
 	public void testAddAllCollectionIterable_StringModified() {

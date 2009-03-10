@@ -33,7 +33,7 @@ public class GenericJavaManyToOneMapping
 		super(parent);
 	}
 
-	public Iterator<String> correspondingAnnotationNames() {
+	public Iterator<String> supportingAnnotationNames() {
 		return new ArrayIterator<String>(
 						JPA.JOIN_COLUMN,
 						JPA.JOIN_COLUMNS,

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -1452,7 +1452,7 @@ public final class ClassTools {
 	private static TypeDeclaration typeDeclaration(String typeDeclaration) {
 		typeDeclaration = StringTools.removeAllWhitespace(typeDeclaration);
 		int arrayDepth = arrayDepthForTypeDeclaration_(typeDeclaration);
-		String elementTypeName = typeDeclaration.substring(0, typeDeclaration.length() - (arrayDepth * 2));
+		String elementTypeName = elementTypeNameForTypeDeclaration_(typeDeclaration, arrayDepth);
 		return new TypeDeclaration(elementTypeName, arrayDepth);
 	}
 
@@ -1515,6 +1515,7 @@ public final class ClassTools {
 	/**
 	 * Return the array depth for the specified "type declaration"; e.g.
 	 *     "int[]" -> 1
+	 *     "java.lang.String[][][]" -> 3
 	 */
 	public static int arrayDepthForTypeDeclaration(String typeDeclaration) {
 		return arrayDepthForTypeDeclaration_(StringTools.removeAllWhitespace(typeDeclaration));
@@ -1538,6 +1539,32 @@ public final class ClassTools {
 		return depth;
 	}
 	
+	/**
+	 * Return the element type name for the specified "type declaration"; e.g.
+	 *     "int[]" -> "int"
+	 *     "java.lang.String[][][]" -> "java.lang.String"
+	 */
+	public static String elementTypeNameForTypeDeclaration(String typeDeclaration) {
+		typeDeclaration = StringTools.removeAllWhitespace(typeDeclaration);
+		return elementTypeNameForTypeDeclaration_(typeDeclaration, arrayDepthForTypeDeclaration_(typeDeclaration));
+	}
+
+	/**
+	 * Return the element type name for the specified "type declaration"; e.g.
+	 *     "int[]" -> "int"
+	 *     "java.lang.String[][][]" -> "java.lang.String"
+	 */
+	public static String elementTypeNameForTypeDeclaration(String typeDeclaration, int arrayDepth) {
+		return elementTypeNameForTypeDeclaration_(StringTools.removeAllWhitespace(typeDeclaration), arrayDepth);
+	}
+
+	/*
+	 * Assume no whitespace in the type declaration.
+	 */
+	public static String elementTypeNameForTypeDeclaration_(String typeDeclaration, int arrayDepth) {
+		return typeDeclaration.substring(0, typeDeclaration.length() - (arrayDepth * 2));
+	}
+
 	/**
 	 * Return the class name for the specified "type declaration".
 	 * @see java.lang.Class#getName()
@@ -1579,6 +1606,9 @@ public final class ClassTools {
 
 		return sb.toString();
 	}
+
+
+	// ********** primitive constants **********
 
 	private synchronized static int maxPrimitiveClassNameLength() {
 		if (MAX_PRIMITIVE_CLASS_NAME_LENGTH == -1) {

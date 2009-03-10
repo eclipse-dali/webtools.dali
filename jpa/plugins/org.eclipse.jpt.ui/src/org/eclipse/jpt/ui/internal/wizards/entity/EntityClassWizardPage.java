@@ -274,7 +274,7 @@ public class EntityClassWizardPage extends NewJavaClassWizardPage{
 		dialog.addFilter(filter);
 			
 		String ormFileName = this.ormXmlName.getText();
-		JpaXmlResource resource = jpaProject.getMappingFileResource(ormFileName);
+		JpaXmlResource resource = jpaProject.getMappingFileXmlResource(ormFileName);
 		IFile initialSelection = (resource != null) ? resource.getFile() : null;
 		dialog.setInput(project);
 

@@ -266,7 +266,7 @@ public class EclipseLinkOrmPersistentAttributeTests extends ContextModelTestCase
 		assertTrue(ormPersistentAttribute.isVirtual());
 		assertNotSame(javaPersistentAttribute, ormPersistentAttribute.getJavaPersistentAttribute());
 		JavaResourcePersistentAttribute javaResourcePersistentAttribute = ormPersistentAttribute.getJavaPersistentAttribute().getResourcePersistentAttribute();
-		assertTrue(javaResourcePersistentAttribute.isForField());
+		assertTrue(javaResourcePersistentAttribute.isField());
 		assertEquals("id", javaResourcePersistentAttribute.getName());
 		assertEquals(javaPersistentType.getResourcePersistentType().persistableFields().next(), javaResourcePersistentAttribute);
 		
@@ -288,7 +288,7 @@ public class EclipseLinkOrmPersistentAttributeTests extends ContextModelTestCase
 		ormPersistentAttribute = ormPersistentType.getAttributeNamed("id");
 		assertNotSame(javaPersistentAttribute, ormPersistentAttribute.getJavaPersistentAttribute());
 		javaResourcePersistentAttribute = ormPersistentAttribute.getJavaPersistentAttribute().getResourcePersistentAttribute();
-		assertTrue(javaResourcePersistentAttribute.isForProperty());
+		assertTrue(javaResourcePersistentAttribute.isProperty());
 		assertEquals("id", javaResourcePersistentAttribute.getName());
 		assertEquals(javaPersistentType.getResourcePersistentType().persistableProperties().next(), javaResourcePersistentAttribute);
 		

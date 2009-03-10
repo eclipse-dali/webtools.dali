@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
 import java.util.Vector;
+
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
@@ -55,7 +56,7 @@ import org.eclipse.jpt.utility.internal.model.ChangeSupport;
  */
 public abstract class AbstractNode 
 	extends AbstractModel
-	implements Node, CallbackChangeSupport.Source
+	implements Node
 {
 
 	/** Containment hierarchy. */
@@ -148,7 +149,15 @@ public abstract class AbstractNode
 
 	@Override
 	protected ChangeSupport buildChangeSupport() {
-		return new CallbackChangeSupport(this);
+		return new CallbackChangeSupport(this, this.buildChangeSupportListener());
+	}
+
+	protected CallbackChangeSupport.Listener buildChangeSupportListener() {
+		return new CallbackChangeSupport.Listener() {
+			public void aspectChanged(String aspectName) {
+				AbstractNode.this.aspectChanged(aspectName);
+			}
+		};
 	}
 
 
@@ -196,7 +205,7 @@ public abstract class AbstractNode
 	 */
 	protected void checkParent(Node parentNode) {
 		if (parentNode == null) {
-			throw new IllegalArgumentException("The parent node cannot be null");
+			throw new IllegalArgumentException("The parent node cannot be null"); //$NON-NLS-1$
 		}
 	}
 
@@ -219,7 +228,7 @@ public abstract class AbstractNode
 	 * to the specified list.
 	 * @see #children()
 	 */
-	protected void addChildrenTo(List<Node> list) {
+	protected void addChildrenTo(@SuppressWarnings("unused") List<Node> list) {
 		// this class has no children, subclasses will...
 	// when you override this method, don't forget to include:
 	//	super.addChildrenTo(list);
@@ -380,7 +389,7 @@ public abstract class AbstractNode
 	 * 	- if it is a persistent aspect, mark the object dirty
 	 * 	- if it is a significant aspect, validate the object
 	 */
-	public void aspectChanged(String aspectName) {
+	protected void aspectChanged(String aspectName) {
 		if (this.aspectIsPersistent(aspectName)) {
 			// System.out.println(Thread.currentThread() + " dirty change: " + this + ": " + aspectName);
 			this.markDirty();
@@ -404,7 +413,7 @@ public abstract class AbstractNode
 	 */
 	public Node.Validator getValidator() {
 		if (this.parent == null) {
-			throw new IllegalStateException("This node should not be firing change events during its construction.");
+			throw new IllegalStateException("This node should not be firing change events during its construction."); //$NON-NLS-1$
 		}
 		return this.parent.getValidator();
 	}
@@ -417,9 +426,9 @@ public abstract class AbstractNode
 	 */
 	public void setValidator(Node.Validator validator) {
 		if (this.parent == null) {
-			throw new IllegalStateException("This root node should implement #setValidator(Node.Validator).");
+			throw new IllegalStateException("This root node should implement #setValidator(Node.Validator)."); //$NON-NLS-1$
 		}
-		throw new UnsupportedOperationException("Only root nodes implement #setValidator(Node.Validator).");
+		throw new UnsupportedOperationException("Only root nodes implement #setValidator(Node.Validator)."); //$NON-NLS-1$
 	}
 
 
@@ -759,7 +768,7 @@ public abstract class AbstractNode
 	 * It is a READ-ONLY behavior. ONLY the list of current problems
 	 * passed in to the method should be modified.
 	 */
-	protected void addProblemsTo(List<Problem> currentProblems) {
+	protected void addProblemsTo(@SuppressWarnings("unused") List<Problem> currentProblems) {
 		// The default is to do nothing.
 		// When you override this method, don't forget to include:
 	//	super.addProblemsTo(currentProblems);
@@ -819,7 +828,7 @@ public abstract class AbstractNode
 	 */
 	public final void rebuildBranchProblems() {
 		if ( ! this.checkBranchProblems()) {
-			throw new IllegalStateException("we should not get here unless our \"branch\" problems have changed");
+			throw new IllegalStateException("we should not get here unless our \"branch\" problems have changed"); //$NON-NLS-1$
 		}
 		this.rebuildParentBranchProblems();
 	}

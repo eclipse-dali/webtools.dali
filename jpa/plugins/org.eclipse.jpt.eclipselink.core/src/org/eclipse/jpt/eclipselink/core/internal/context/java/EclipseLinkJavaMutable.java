@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -28,6 +28,10 @@ public class EclipseLinkJavaMutable extends AbstractJavaJpaContextNode implement
 	public EclipseLinkJavaMutable(JavaAttributeMapping parent) {
 		super(parent);
 	}
+
+	protected JavaAttributeMapping getAttributeMapping() {
+		return (JavaAttributeMapping) this.getParent();
+	}
 	
 	@Override
 	public EclipseLinkPersistenceUnit getPersistenceUnit() {
@@ -51,11 +55,12 @@ public class EclipseLinkJavaMutable extends AbstractJavaJpaContextNode implement
 	}
 
 	protected boolean calculateDefaultMutable() {
-		if (this.resourcePersistentAttribute.typeIsDateOrCalendar()) {
-			Boolean persistenceUnitDefaultMutable = getPersistenceUnit().getOptions().getTemporalMutable();
+		AbstractEclipseLinkJavaPersistentAttribute javaAttribute = (AbstractEclipseLinkJavaPersistentAttribute) this.getAttributeMapping().getPersistentAttribute();
+		if (javaAttribute.typeIsDateOrCalendar()) {
+			Boolean persistenceUnitDefaultMutable = this.getPersistenceUnit().getOptions().getTemporalMutable();
 			return persistenceUnitDefaultMutable == null ? false : persistenceUnitDefaultMutable.booleanValue();
 		}
-		return this.resourcePersistentAttribute.typeIsSerializable();
+		return javaAttribute.typeIsSerializable();
 	}
 
 	public boolean isMutable() {

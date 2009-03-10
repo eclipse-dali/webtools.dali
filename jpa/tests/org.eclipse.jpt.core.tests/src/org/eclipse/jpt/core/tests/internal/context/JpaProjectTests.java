@@ -103,43 +103,43 @@ public class JpaProjectTests extends TestCase
 	}
 
 	public void testGetMappingFileResource() throws Exception {
-		JpaXmlResource resource = this.getJpaProject().getMappingFileResource(JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH);
+		JpaXmlResource resource = this.getJpaProject().getMappingFileXmlResource(JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH);
 		assertNotNull(resource);
 		assertEquals(JptCorePlugin.ORM_XML_CONTENT_TYPE, resource.getContentType());
 		assertEquals("src/META-INF/orm.xml", resource.getFile().getProjectRelativePath().toString());
 		
 		//delete the orm.xml file and verify it is not returned from getMappingFileResource()
 		resource.delete(null);
-		resource = this.getJpaProject().getMappingFileResource(JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH);
+		resource = this.getJpaProject().getMappingFileXmlResource(JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH);
 		assertNull(resource);
 		
 		//add the  orm.xml file back
 		createDefaultOrmXmlFile();
-		resource = this.getJpaProject().getMappingFileResource(JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH);
+		resource = this.getJpaProject().getMappingFileXmlResource(JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH);
 		assertNotNull(resource);
 		assertEquals(JptCorePlugin.ORM_XML_CONTENT_TYPE, resource.getContentType());
 		assertEquals("src/META-INF/orm.xml", resource.getFile().getProjectRelativePath().toString());
 	}
 	
 	public void testGetMappingFileResourceDifferentlyName() throws Exception {
-		JpaXmlResource resource = this.getJpaProject().getMappingFileResource("META-INF/orm2.xml");
+		JpaXmlResource resource = this.getJpaProject().getMappingFileXmlResource("META-INF/orm2.xml");
 		assertNull(resource);
 
 		//create the orm2.xml file
 		createOrmXmlFile("META-INF/orm2.xml");
-		resource = this.getJpaProject().getMappingFileResource("META-INF/orm2.xml");
+		resource = this.getJpaProject().getMappingFileXmlResource("META-INF/orm2.xml");
 		assertNotNull(resource);
 		assertEquals(JptCorePlugin.ORM_XML_CONTENT_TYPE, resource.getContentType());
 		assertEquals("src/META-INF/orm2.xml", resource.getFile().getProjectRelativePath().toString());
 		
 		//delete the orm2.xml file and verify it is not returned from getMappingFileResource()
 		resource.delete(null);
-		resource = this.getJpaProject().getMappingFileResource("META-INF/orm2.xml");
+		resource = this.getJpaProject().getMappingFileXmlResource("META-INF/orm2.xml");
 		assertNull(resource);
 		
 		//add the orm2.xml file back
 		createOrmXmlFile("META-INF/orm2.xml");
-		resource = this.getJpaProject().getMappingFileResource("META-INF/orm2.xml");
+		resource = this.getJpaProject().getMappingFileXmlResource("META-INF/orm2.xml");
 		assertNotNull(resource);
 		assertEquals(JptCorePlugin.ORM_XML_CONTENT_TYPE, resource.getContentType());
 		assertEquals("src/META-INF/orm2.xml", resource.getFile().getProjectRelativePath().toString());

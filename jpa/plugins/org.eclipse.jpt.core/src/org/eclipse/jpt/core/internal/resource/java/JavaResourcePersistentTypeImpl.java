@@ -26,11 +26,12 @@ import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
 import org.eclipse.jpt.core.internal.utility.jdt.JDTType;
+import org.eclipse.jpt.core.internal.utility.jdt.JPTTools;
 import org.eclipse.jpt.core.resource.java.AccessType;
 import org.eclipse.jpt.core.resource.java.Annotation;
+import org.eclipse.jpt.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.core.utility.jdt.Type;
 import org.eclipse.jpt.utility.MethodSignature;
 import org.eclipse.jpt.utility.internal.Counter;
@@ -40,7 +41,7 @@ import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.TreeIterator;
 
 /**
- * 
+ * Java source persistent type
  */
 public class JavaResourcePersistentTypeImpl
 	extends AbstractJavaResourcePersistentMember<Type>
@@ -63,7 +64,7 @@ public class JavaResourcePersistentTypeImpl
 	private AccessType access;
 
 
-	// ********** construction **********
+	// ********** construction/initialization **********
 
 	/**
 	 * build top-level persistent type
@@ -103,7 +104,7 @@ public class JavaResourcePersistentTypeImpl
 		return jrpt;	
 	}
 
-	public JavaResourcePersistentTypeImpl(JavaResourceCompilationUnit javaResourceCompilationUnit, Type type) {
+	protected JavaResourcePersistentTypeImpl(JavaResourceCompilationUnit javaResourceCompilationUnit, Type type) {
 		super(javaResourceCompilationUnit, type);
 		this.types = new Vector<JavaResourcePersistentType>(); 
 		this.fields = new Vector<JavaResourcePersistentAttribute>();
@@ -120,6 +121,7 @@ public class JavaResourcePersistentTypeImpl
 		this.initializeTypes(astRoot);
 		this.initializeFields(astRoot);
 		this.initializeMethods(astRoot);
+		// need to wait until everything is built to calculate 'access'
 		this.access = this.buildAccess();
 	}
 
@@ -222,6 +224,7 @@ public class JavaResourcePersistentTypeImpl
 
 	// ******** JavaResourcePersistentType implementation ********
 
+	// ***** name
 	public String getName() {
 		return this.name;
 	}
@@ -232,6 +235,12 @@ public class JavaResourcePersistentTypeImpl
 		this.firePropertyChanged(NAME_PROPERTY, old, name);
 	}
 
+	protected String buildName(CompilationUnit astRoot) {
+		ITypeBinding binding = this.getMember().getBinding(astRoot);
+		return (binding == null) ? null : binding.getName();
+	}
+
+	// ***** qualified name
 	public String getQualifiedName() {
 		return this.qualifiedName;
 	}
@@ -242,6 +251,12 @@ public class JavaResourcePersistentTypeImpl
 		this.firePropertyChanged(QUALIFIED_NAME_PROPERTY, old, qualifiedName);
 	}
 
+	protected String buildQualifiedName(CompilationUnit astRoot) {
+		ITypeBinding binding = this.getMember().getBinding(astRoot);
+		return (binding == null) ? null : binding.getQualifiedName();
+	}
+
+	// ***** superclass qualified name
 	public String getSuperClassQualifiedName() {
 		return this.superClassQualifiedName;
 	}
@@ -252,6 +267,16 @@ public class JavaResourcePersistentTypeImpl
 		this.firePropertyChanged(SUPER_CLASS_QUALIFIED_NAME_PROPERTY, old, superClassQualifiedName);
 	}
 
+	protected String buildSuperClassQualifiedName(CompilationUnit astRoot) {
+		ITypeBinding binding = this.getMember().getBinding(astRoot);
+		if (binding == null) {
+			return null;
+		}
+		ITypeBinding superclass = binding.getSuperclass();
+		return (superclass == null) ? null : superclass.getTypeDeclaration().getQualifiedName();
+	}
+
+	// ***** abstract
 	public boolean isAbstract() {
 		return this.abstract_;
 	}
@@ -262,6 +287,12 @@ public class JavaResourcePersistentTypeImpl
 		this.firePropertyChanged(ABSTRACT_PROPERTY, old, abstract_);
 	}
 
+	protected boolean buildAbstract(CompilationUnit astRoot) {
+		ITypeBinding binding = this.getMember().getBinding(astRoot);
+		return (binding == null) ? false : Modifier.isAbstract(binding.getModifiers());	
+	}
+
+	// ***** access
 	public AccessType getAccess() {
 		return this.access;
 	}
@@ -279,12 +310,16 @@ public class JavaResourcePersistentTypeImpl
 		this.firePropertyChanged(ACCESS_PROPERTY, old, access);
 	}
 
+	protected AccessType buildAccess() {
+		return JPTTools.buildAccess(this);
+	}
+
 	/**
 	 * check only persistable attributes
 	 */
-	public boolean hasAnyAttributeAnnotations() {
+	public boolean hasAnyAttributePersistenceAnnotations() {
 		for (Iterator<JavaResourcePersistentAttribute> stream = this.persistableAttributes(); stream.hasNext(); ) {
-			if (stream.next().hasAnyAnnotations()) {
+			if (stream.next().hasAnyPersistenceAnnotations()) {
 				return true;
 			}
 		}
@@ -308,17 +343,19 @@ public class JavaResourcePersistentTypeImpl
 	}
 
 	public Iterator<JavaResourcePersistentType> persistableTypes() {
-		return persistableMembers(this.types());
+		return this.persistableMembers(this.types());
 	}
 
 	public Iterator<JavaResourcePersistentType> allPersistableTypes() {
-		return persistableMembers(this.allTypes());
+		return this.persistableMembers(this.allTypes());
 	}
 
 	protected JavaResourcePersistentType getType(String typeName, int occurrence) {
-		for (JavaResourcePersistentType type : this.types) {
-			if (type.isFor(typeName, occurrence)) {
-				return type;
+		synchronized (this.types) {
+			for (JavaResourcePersistentType type : this.types) {
+				if (type.isFor(typeName, occurrence)) {
+					return type;
+				}
 			}
 		}
 		return null;
@@ -340,11 +377,11 @@ public class JavaResourcePersistentTypeImpl
 	}
 
 	public Iterator<JavaResourcePersistentAttribute> persistableFields() {
-		return persistableMembers(this.fields());
+		return this.persistableMembers(this.fields());
 	}
 	
 	public Iterator<JavaResourcePersistentAttribute> persistableFieldsWithSpecifiedFieldAccess() {
-		return new FilteringIterator<JavaResourcePersistentAttribute, JavaResourcePersistentAttribute>(persistableFields()) {
+		return new FilteringIterator<JavaResourcePersistentAttribute, JavaResourcePersistentAttribute>(this.persistableFields()) {
 			@Override
 			protected boolean accept(JavaResourcePersistentAttribute resourceAttribute) {
 				return resourceAttribute.getSpecifiedAccess() == AccessType.FIELD;
@@ -357,9 +394,11 @@ public class JavaResourcePersistentTypeImpl
 	}
 
 	protected JavaResourcePersistentAttribute getField(String fieldName, int occurrence) {
-		for (JavaResourcePersistentAttribute field : this.fields) {
-			if (field.isFor(fieldName, occurrence)) {
-				return field;
+		synchronized (this.fields) {
+			for (JavaResourcePersistentAttribute field : this.fields) {
+				if (field.isFor(fieldName, occurrence)) {
+					return field;
+				}
 			}
 		}
 		return null;
@@ -377,11 +416,11 @@ public class JavaResourcePersistentTypeImpl
 	}
 
 	public Iterator<JavaResourcePersistentAttribute> persistableProperties() {
-		return persistableMembers(this.methods());
+		return this.persistableMembers(this.methods());
 	}
 	
 	public Iterator<JavaResourcePersistentAttribute> persistablePropertiesWithSpecifiedPropertyAccess() {
-		return new FilteringIterator<JavaResourcePersistentAttribute, JavaResourcePersistentAttribute>(persistableProperties()) {
+		return new FilteringIterator<JavaResourcePersistentAttribute, JavaResourcePersistentAttribute>(this.persistableProperties()) {
 			@Override
 			protected boolean accept(JavaResourcePersistentAttribute resourceAttribute) {
 				return resourceAttribute.getSpecifiedAccess() == AccessType.PROPERTY;
@@ -390,9 +429,11 @@ public class JavaResourcePersistentTypeImpl
 	}
 
 	protected JavaResourcePersistentAttribute getMethod(MethodSignature signature, int occurrence) {
-		for (JavaResourcePersistentAttribute method : this.methods) {
-			if (method.isFor(signature, occurrence)) {
-				return method;
+		synchronized (this.methods) {
+			for (JavaResourcePersistentAttribute method : this.methods) {
+				if (method.isFor(signature, occurrence)) {
+					return method;
+				}
 			}
 		}
 		return null;
@@ -406,27 +447,40 @@ public class JavaResourcePersistentTypeImpl
 		this.removeItemsFromCollection(remove, this.methods, METHODS_COLLECTION);
 	}
 
+
 	// ********** attributes **********
 
 	@SuppressWarnings("unchecked")
 	public Iterator<JavaResourcePersistentAttribute> persistableAttributes() {
-		return new CompositeIterator<JavaResourcePersistentAttribute>(this.persistableFields(), this.persistableProperties());
+		return new CompositeIterator<JavaResourcePersistentAttribute>(
+				this.persistableFields(),
+				this.persistableProperties()
+			);
 	}
 	
-	@SuppressWarnings("unchecked")
 	public Iterator<JavaResourcePersistentAttribute> persistableAttributes(AccessType specifiedAccess) {
 		if (specifiedAccess == null) {
 			throw new IllegalArgumentException("specified access is null"); //$NON-NLS-1$
 		}
-		if (specifiedAccess == AccessType.FIELD) {
-			return new CompositeIterator<JavaResourcePersistentAttribute>(
-				persistableFields(),
-				persistablePropertiesWithSpecifiedPropertyAccess());
-		
-		}
+		return (specifiedAccess == AccessType.FIELD) ?
+					this.persistableAttributesForFieldAccessType() :
+					this.persistableAttributesForPropertyAccessType();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Iterator<JavaResourcePersistentAttribute> persistableAttributesForFieldAccessType() {
 		return new CompositeIterator<JavaResourcePersistentAttribute>(
-			persistableProperties(),
-			persistableFieldsWithSpecifiedFieldAccess());
+				this.persistableFields(),
+				this.persistablePropertiesWithSpecifiedPropertyAccess()
+			);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Iterator<JavaResourcePersistentAttribute> persistableAttributesForPropertyAccessType() {
+		return new CompositeIterator<JavaResourcePersistentAttribute>(
+				this.persistableProperties(),
+				this.persistableFieldsWithSpecifiedFieldAccess()
+			);
 	}
 	
 
@@ -442,31 +496,8 @@ public class JavaResourcePersistentTypeImpl
 		this.updateTypes(astRoot);
 		this.updateFields(astRoot);
 		this.updateMethods(astRoot);
+		// need to wait until everything is built to calculate 'access'
 		this.setAccess(this.buildAccess());
-	}
-
-	protected String buildName(CompilationUnit astRoot) {
-		return this.getMember().getBinding(astRoot).getName();
-	}
-
-	protected String buildQualifiedName(CompilationUnit astRoot) {
-		return this.getMember().getBinding(astRoot).getQualifiedName();
-	}
-
-	protected String buildSuperClassQualifiedName(CompilationUnit astRoot) {
-		ITypeBinding typeBinding = this.getMember().getBinding(astRoot);
-		if (typeBinding == null) {
-			return null;
-		}
-		ITypeBinding superClassTypeBinding = typeBinding.getSuperclass();
-		if (superClassTypeBinding == null) {
-			return null;
-		}
-		return superClassTypeBinding.getTypeDeclaration().getQualifiedName();
-	}
-
-	protected boolean buildAbstract(CompilationUnit astRoot) {
-		return Modifier.isAbstract(this.getMember().getBinding(astRoot).getModifiers());	
 	}
 
 	protected void updateTypes(CompilationUnit astRoot) {
@@ -556,43 +587,6 @@ public class JavaResourcePersistentTypeImpl
 
 	protected JavaResourcePersistentAttribute buildMethod(MethodSignature signature, int occurrence, CompilationUnit astRoot) {
 		return JavaResourcePersistentAttributeImpl.newInstance(this, this.getMember(), signature, occurrence, this.getJavaResourceCompilationUnit(), astRoot);
-	}
-
-	/**
-	 * Return the AccessType currently implied by the Java source code:
-	 *     - if only Fields are annotated => FIELD
-	 *     - if only Properties are annotated => PROPERTY
-	 *     - if both Fields and Properties are annotated => FIELD
-	 *     - if nothing is annotated
-	 *     		- and fields exist => FIELD
-	 *     		- and properties exist, but no fields exist => PROPERTY
-	 *     		- and neither fields nor properties exist => null at this level (FIELD in the context model)
-	 */
-	protected AccessType buildAccess() {
-		boolean hasPersistableFields = false;
-		for (Iterator<JavaResourcePersistentAttribute> stream = this.persistableFields(); stream.hasNext(); ) {
-			hasPersistableFields = true;
-			if (stream.next().hasAnyAnnotations()) {
-				// any field is annotated => FIELD
-				return AccessType.FIELD;
-			}
-		}
-
-		boolean hasPersistableProperties = false;
-		for (Iterator<JavaResourcePersistentAttribute> stream = this.persistableProperties(); stream.hasNext(); ) {
-			hasPersistableProperties = true;
-			if (stream.next().hasAnyAnnotations()) {
-				// none of the fields are annotated and a getter is annotated => PROPERTY
-				return AccessType.PROPERTY;
-			}
-		}
-
-		if (hasPersistableProperties && ! hasPersistableFields) {
-			return AccessType.PROPERTY;
-		}
-
-		// if no annotations exist, access is null at the resource model level
-		return null;
 	}
 
 

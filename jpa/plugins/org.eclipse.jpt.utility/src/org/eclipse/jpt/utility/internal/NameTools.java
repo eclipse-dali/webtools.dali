@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal;
 
+import java.beans.Introspector;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -342,6 +343,19 @@ public final class NameTools {
 		if ( ! Character.isJavaIdentifierPart(c)) {
 			throw new IllegalArgumentException("invalid Java identifier part char: '" + c + '\'');  //$NON-NLS-1$
 		}
+	}
+
+	/**
+	 * Convert the specified method name to a property name.
+	 */
+	public static String convertGetterMethodNameToPropertyName(String methodName) {
+		int beginIndex = 0;
+		if (methodName.startsWith("get")) { //$NON-NLS-1$
+			beginIndex = 3;
+		} else if (methodName.startsWith("is")) { //$NON-NLS-1$
+			beginIndex = 2;
+		}
+		return Introspector.decapitalize(methodName.substring(beginIndex));
 	}
 
 

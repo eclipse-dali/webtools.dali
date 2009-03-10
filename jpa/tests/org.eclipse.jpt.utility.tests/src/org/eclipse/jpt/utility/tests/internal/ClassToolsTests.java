@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,6 +22,7 @@ import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 
+@SuppressWarnings("nls")
 public class ClassToolsTests extends TestCase {
 
 	private static String testStaticField;
@@ -593,6 +594,20 @@ public class ClassToolsTests extends TestCase {
 		assertEquals(0, ClassTools.arrayDepthForTypeDeclaration("float"));
 		assertEquals(1, ClassTools.arrayDepthForTypeDeclaration("float [ ]"));
 		assertEquals(3, ClassTools.arrayDepthForTypeDeclaration("float[] [] []"));
+	}
+
+	public void testElementTypeNameForTypeDeclarationString() throws Exception {
+		assertEquals("java.lang.Object", ClassTools.elementTypeNameForTypeDeclaration("java.lang.Object"));
+		assertEquals("java.lang.Object", ClassTools.elementTypeNameForTypeDeclaration("java.lang.Object[]"));
+		assertEquals("java.lang.Object", ClassTools.elementTypeNameForTypeDeclaration("java.lang.Object[][][]"));
+
+		assertEquals("int", ClassTools.elementTypeNameForTypeDeclaration("int"));
+		assertEquals("int", ClassTools.elementTypeNameForTypeDeclaration("int[]"));
+		assertEquals("int", ClassTools.elementTypeNameForTypeDeclaration("int[][][]"));
+
+		assertEquals("float", ClassTools.elementTypeNameForTypeDeclaration("float"));
+		assertEquals("float", ClassTools.elementTypeNameForTypeDeclaration("float [ ]"));
+		assertEquals("float", ClassTools.elementTypeNameForTypeDeclaration("float[] [] []"));
 	}
 
 	public void testClassNameForTypeDeclarationStringInt() throws Exception {

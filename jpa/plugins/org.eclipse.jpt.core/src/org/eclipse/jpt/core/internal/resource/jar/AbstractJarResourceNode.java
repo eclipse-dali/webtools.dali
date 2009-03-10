@@ -9,84 +9,46 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.jar;
 
-import org.eclipse.core.resources.IFile;
-import org.eclipse.jpt.core.JpaAnnotationProvider;
+import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.resource.java.AbstractJavaResourceNode;
 import org.eclipse.jpt.core.resource.jar.JarResourceNode;
 import org.eclipse.jpt.core.resource.jar.JarResourcePackageFragmentRoot;
-import org.eclipse.jpt.utility.internal.model.AbstractModel;
-import org.eclipse.jpt.utility.internal.model.CallbackChangeSupport;
-import org.eclipse.jpt.utility.internal.model.ChangeSupport;
+import org.eclipse.jpt.core.utility.TextRange;
 
 /**
  * resource containment hierarchy
  */
 public abstract class AbstractJarResourceNode
-	extends AbstractModel
-	implements JarResourceNode, CallbackChangeSupport.Source
+	extends AbstractJavaResourceNode
+	implements JarResourceNode
 {
-	private final JarResourceNode parent;
-
 
 	// ********** construction **********
 	
 	protected AbstractJarResourceNode(JarResourceNode parent) {
-		super();
-		this.checkParent(parent);
-		this.parent = parent;
-	}
-
-	protected void checkParent(JarResourceNode p) {
-		if (p == null) {
-			if (this.requiresParent()) {
-				throw new IllegalArgumentException("'parent' cannot be null"); //$NON-NLS-1$
-			}
-		} else {
-			if (this.forbidsParent()) {
-				throw new IllegalArgumentException("'parent' must be null"); //$NON-NLS-1$
-			}
-		}
-	}
-
-	protected boolean requiresParent() {
-		return true;
-	}
-
-	protected boolean forbidsParent() {
-		return ! this.requiresParent();  // assume 'parent' is not optional
-	}
-
-	@Override
-	protected ChangeSupport buildChangeSupport() {
-		return new CallbackChangeSupport(this);
+		super(parent);
 	}
 
 
 	// ********** JarResourceNode implementation **********
 	
-	public JarResourcePackageFragmentRoot getJarResourcePackageFragmentRoot() {
-		return this.parent.getJarResourcePackageFragmentRoot();
+	@Override
+	public JarResourcePackageFragmentRoot getRoot() {
+		return (JarResourcePackageFragmentRoot) super.getRoot();
 	}
 
-	public IFile getFile() {
-		return this.getJarResourcePackageFragmentRoot().getFile();
-	}
-	
-
-	// ********** CallbackChangeSupport.Source implementation **********
-	
-	public void aspectChanged(String aspectName) {
-		this.getJarResourcePackageFragmentRoot().resourceModelChanged();
+	public void update() {
+		// nothing by default
 	}
 
-
-	// ********** convenience methods **********
-	
-	protected JarResourceNode getParent() {
-		return this.parent;
+	// TODO remove... ======================
+	public TextRange getTextRange(CompilationUnit astRoot) {
+		throw new UnsupportedOperationException();
 	}
-
-	protected JpaAnnotationProvider getAnnotationProvider() {
-		return this.getJarResourcePackageFragmentRoot().getAnnotationProvider();
+	public void update(CompilationUnit astRoot) {
+		throw new UnsupportedOperationException();
 	}
-	
+	public void initialize(CompilationUnit astRoot) {
+		throw new UnsupportedOperationException();
+	}
 }

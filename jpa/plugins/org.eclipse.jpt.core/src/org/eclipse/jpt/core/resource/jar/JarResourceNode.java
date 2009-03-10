@@ -9,12 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.resource.jar;
 
-import org.eclipse.core.resources.IFile;
-import org.eclipse.jpt.core.resource.jar.JarResourcePackageFragmentRoot;
-import org.eclipse.jpt.utility.model.Model;
+import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 
 /**
- * Common interface for all resource objects related to JARs.
+ * Common interface for JAR Java resource nodes.
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -23,13 +21,25 @@ import org.eclipse.jpt.utility.model.Model;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface JarResourceNode
-	extends Model
+	extends JavaResourceNode
 {
 
-	JarResourcePackageFragmentRoot getJarResourcePackageFragmentRoot();
+	/**
+	 * covariant override
+	 */
+	JarResourcePackageFragmentRoot getRoot();
 
-	IFile getFile();
-
+	/**
+	 * The JAR has changed, synchronize the model with it.
+	 */
 	void update();
+
+
+	/**
+	 * root of containment hierarchy
+	 */
+	interface Root extends JarResourceNode, JavaResourceNode.Root {
+		// pull together 2 interfaces
+	}
 
 }

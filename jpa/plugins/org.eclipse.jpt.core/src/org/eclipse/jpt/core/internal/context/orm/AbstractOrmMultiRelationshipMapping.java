@@ -291,10 +291,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends XmlMultiRela
 	
 	@Override
 	protected String getResourceDefaultTargetEntity() {
-		if (!this.getJavaResourcePersistentAttribute().typeIsContainer()) {
-			return null;
-		}
-		return this.getJavaResourcePersistentAttribute().getQualifiedReferenceEntityElementTypeName();
+		return this.getJavaPersistentAttribute().getMultiReferenceEntityTypeName();
 	}
 
 	//****************** validation ******************8

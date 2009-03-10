@@ -134,7 +134,7 @@ public class GenericJavaOneToOneMapping
 
 	// ********** JavaAttributeMapping implementation **********
 
-	public Iterator<String> correspondingAnnotationNames() {
+	public Iterator<String> supportingAnnotationNames() {
 		return new ArrayIterator<String>(
 			JPA.PRIMARY_KEY_JOIN_COLUMN,
 			JPA.PRIMARY_KEY_JOIN_COLUMNS,

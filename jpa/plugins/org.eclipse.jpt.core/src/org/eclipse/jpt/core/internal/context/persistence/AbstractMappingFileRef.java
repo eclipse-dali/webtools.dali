@@ -158,7 +158,7 @@ public abstract class AbstractMappingFileRef
 	 * This returns the resource of the mapping file itself.
 	 */
 	protected JpaXmlResource getXmlResource() {
-		return this.getJpaProject().getMappingFileResource(this.fileName);
+		return this.getJpaProject().getMappingFileXmlResource(this.fileName);
 	}
 	
 	protected MappingFile buildMappingFile(JpaXmlResource resource) {

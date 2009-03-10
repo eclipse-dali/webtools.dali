@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -28,6 +28,7 @@ import java.util.Vector;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.internal.iterators.GenericIteratorWrapper;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementIterator;
+import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
 
 public final class CollectionTools {
 
@@ -339,6 +340,32 @@ public final class CollectionTools {
 	}
 
 	/**
+	 * Return a new array that contains all the elements in  all the
+	 * specified arrays, concatenated in the specified order.
+	 * This is useful for building constant arrays out other constant arrays.
+	 * java.util.Arrays#concatenate(Object[]... arrays)
+	 */
+	public static <E> E[] concatenate(E[]... arrays) {
+		int len = 0;
+		for (E[] array : arrays) {
+			len += array.length;
+		}
+		E[] result = newArray(arrays[0], len);
+		if (len == 0) {
+			return result;
+		}
+		int current = 0;
+		for (E[] array : arrays) {
+			int arrayLength = array.length;
+			if (arrayLength != 0) {
+				System.arraycopy(array, 0, result, current, arrayLength);
+				current += arrayLength;
+			}
+		}
+		return result;
+	}
+
+	/**
 	 * Return a new array that contains the elements in the
 	 * first specified array with the objects in the second
 	 * specified array added at the specified index.
@@ -477,6 +504,32 @@ public final class CollectionTools {
 	}
 
 	/**
+	 * Return a new array that contains all the elements in  all the
+	 * specified arrays, concatenated in the specified order.
+	 * This is useful for building constant arrays out other constant arrays.
+	 * java.util.Arrays#concatenate(char[]... arrays)
+	 */
+	public static char[] concatenate(char[]... arrays) {
+		int len = 0;
+		for (char[] array : arrays) {
+			len += array.length;
+		}
+		if (len == 0) {
+			return EMPTY_CHAR_ARRAY;
+		}
+		char[] result = new char[len];
+		int current = 0;
+		for (char[] array : arrays) {
+			int arrayLength = array.length;
+			if (arrayLength != 0) {
+				System.arraycopy(array, 0, result, current, arrayLength);
+				current += arrayLength;
+			}
+		}
+		return result;
+	}
+
+	/**
 	 * Return a new array that contains the elements in the
 	 * first specified array with the objects in the second
 	 * specified array added at the specified index.
@@ -535,6 +588,32 @@ public final class CollectionTools {
 		int[] result = new int[array1Length + array2Length];
 		System.arraycopy(array1, 0, result, 0, array1Length);
 		System.arraycopy(array2, 0, result, array1Length, array2Length);
+		return result;
+	}
+
+	/**
+	 * Return a new array that contains all the elements in  all the
+	 * specified arrays, concatenated in the specified order.
+	 * This is useful for building constant arrays out other constant arrays.
+	 * java.util.Arrays#concatenate(int[]... arrays)
+	 */
+	public static int[] concatenate(int[]... arrays) {
+		int len = 0;
+		for (int[] array : arrays) {
+			len += array.length;
+		}
+		if (len == 0) {
+			return EMPTY_INT_ARRAY;
+		}
+		int[] result = new int[len];
+		int current = 0;
+		for (int[] array : arrays) {
+			int arrayLength = array.length;
+			if (arrayLength != 0) {
+				System.arraycopy(array, 0, result, current, arrayLength);
+				current += arrayLength;
+			}
+		}
 		return result;
 	}
 
@@ -3180,6 +3259,15 @@ public final class CollectionTools {
 	}
 
 	/**
+	 * Return a list iterator that returns only the single,
+	 * specified object.
+	 * Object#toIterator() ?!
+	 */
+	public static <E> ListIterator<E> singletonListIterator(E value) {
+		return new SingleElementListIterator<E>(value);
+	}
+
+	/**
 	 * Return the number of elements returned by the specified iterable.
 	 * java.lang.Iterable#size()
 	 */
@@ -3524,6 +3612,7 @@ public final class CollectionTools {
 
 	/**
 	 * Return the list after it has been "sorted".
+	 * NB: The list is sorted in place as a side-effect.
 	 * @see java.util.Collections#sort(java.util.List)
 	 */
 	public static <E extends Comparable<? super E>> List<E> sort(List<E> list) {
@@ -3533,6 +3622,7 @@ public final class CollectionTools {
 
 	/**
 	 * Return the list after it has been "sorted".
+	 * NB: The list is sorted in place as a side-effect.
 	 * @see java.util.Collections#sort(java.util.List, java.util.Comparator)
 	 */
 	public static <E> List<E> sort(List<E> list, Comparator<? super E> comparator) {
@@ -3557,15 +3647,15 @@ public final class CollectionTools {
 	/**
 	 * Return the iterator after it has been "sorted".
 	 */
-	public static <E extends Comparable<? super E>> Iterator<E> sort(Iterator<? extends E> iterator) {
+	public static <E extends Comparable<? super E>> ListIterator<E> sort(Iterator<? extends E> iterator) {
 		return sort(iterator, null);
 	}
 
 	/**
 	 * Return the iterator after it has been "sorted".
 	 */
-	public static <E> Iterator<E> sort(Iterator<? extends E> iterator, Comparator<? super E> comparator) {
-		return sort(list(iterator), comparator).iterator();
+	public static <E> ListIterator<E> sort(Iterator<? extends E> iterator, Comparator<? super E> comparator) {
+		return sort(list(iterator), comparator).listIterator();
 	}
 
 	/**

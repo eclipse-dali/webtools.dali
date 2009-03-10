@@ -280,7 +280,7 @@ public class EclipseLinkJavaBasicMappingTests extends EclipseLinkJavaContextMode
 		assertTrue(mutable.isDefaultMutable());
 		
 		//set mutable default to false in the persistence unit properties, verify default in java still true since this is not a Date/Calendar
-		((EclipseLinkPersistenceUnit) getPersistenceUnit()).getOptions().setTemporalMutable(Boolean.FALSE);
+		getPersistenceUnit().getOptions().setTemporalMutable(Boolean.FALSE);
 		assertTrue(mutable.isDefaultMutable());
 	}
 	
@@ -302,13 +302,13 @@ public class EclipseLinkJavaBasicMappingTests extends EclipseLinkJavaContextMode
 		assertFalse(mutable.isDefaultMutable());
 		
 		//set mutable default to false in the persistence unit properties, verify default in java still true since this is not a Date/Calendar
-		((EclipseLinkPersistenceUnit) getPersistenceUnit()).getOptions().setTemporalMutable(Boolean.TRUE);
+		getPersistenceUnit().getOptions().setTemporalMutable(Boolean.TRUE);
 		assertTrue(mutable.isDefaultMutable());
 		
-		((EclipseLinkPersistenceUnit) getPersistenceUnit()).getOptions().setTemporalMutable(Boolean.FALSE);
+		getPersistenceUnit().getOptions().setTemporalMutable(Boolean.FALSE);
 		assertFalse(mutable.isDefaultMutable());
 		
-		((EclipseLinkPersistenceUnit) getPersistenceUnit()).getOptions().setTemporalMutable(null);
+		getPersistenceUnit().getOptions().setTemporalMutable(null);
 		assertFalse(mutable.isDefaultMutable());
 	}
 	

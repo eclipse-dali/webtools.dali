@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -26,10 +26,14 @@ import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.Member;
 import org.eclipse.jpt.core.utility.jdt.Type;
 
-
-public class EntityImpl extends AbstractResourceAnnotation<Type> implements EntityAnnotation
+/**
+ * @Entity
+ */
+public class EntityImpl
+	extends AbstractResourceAnnotation<Type>
+	implements EntityAnnotation
 {
-	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
+	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
 	private final AnnotationElementAdapter<String> nameAdapter;
 
@@ -48,7 +52,7 @@ public class EntityImpl extends AbstractResourceAnnotation<Type> implements Enti
 	
 	//*********** Annotation implementation ****************
 	public String getAnnotationName() {
-		return EntityAnnotation.ANNOTATION_NAME;
+		return ANNOTATION_NAME;
 	}
 	
 	//*********** Entity implementation ****************
@@ -90,7 +94,8 @@ public class EntityImpl extends AbstractResourceAnnotation<Type> implements Enti
 	}
 
 	
-	public static class EntityAnnotationDefinition implements AnnotationDefinition
+	public static class EntityAnnotationDefinition
+		implements AnnotationDefinition
 	{
 		// singleton
 		private static final EntityAnnotationDefinition INSTANCE = new EntityAnnotationDefinition();
@@ -117,9 +122,10 @@ public class EntityImpl extends AbstractResourceAnnotation<Type> implements Enti
 			return null;
 		}
 
-
 		public String getAnnotationName() {
-			return EntityAnnotation.ANNOTATION_NAME;
+			return ANNOTATION_NAME;
 		}
+
 	}
+
 }

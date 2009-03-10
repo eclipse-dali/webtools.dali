@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,20 +9,86 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.utility.jdt;
 
-import org.eclipse.jdt.core.dom.IMethodBinding;
-import org.eclipse.jdt.core.dom.ITypeBinding;
-import org.eclipse.jdt.core.dom.IVariableBinding;
-import org.eclipse.jdt.core.dom.Modifier;
+import java.lang.reflect.Modifier;
+import java.util.Iterator;
 
+import org.eclipse.jpt.core.resource.java.AccessType;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
+
+/**
+ * Convenience methods for JPA-related queries concerning JDT objects.
+ */
 public class JPTTools {
+
+	// ********** type **********
+
+	/**
+	 * Return whether the specified type can be "persisted", i.e. marked as
+	 * Entity, MappedSuperclass, Embeddable
+	 */
+	// TODO check for no-arg constructor (or should that just be validation?)
+	// TODO move other checks to validation (e.g. 'final', 'static')?
+	public static boolean typeIsPersistable(TypeAdapter typeAdapter) {
+		if (typeAdapter.isInterface()) {
+			return false;
+		}
+		if (typeAdapter.isAnnotation()) {
+			return false;
+		}
+		if (typeAdapter.isEnum()) {
+			return false;
+		}
+		if (typeAdapter.isLocal()) {
+			return false;
+		}
+		if (typeAdapter.isAnonymous()) {
+			return false;
+		}
+		if (typeAdapter.isPrimitive()) {
+			return false;  // should never get here(?)
+		}
+		if (typeAdapter.isArray()) {
+			return false;  // should never get here(?)
+		}
+		int modifiers = typeAdapter.getModifiers();
+		if (Modifier.isFinal(modifiers)) {
+			return false;
+		}
+		if (typeAdapter.isMember()) {
+			if ( ! Modifier.isStatic(modifiers)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * Queries needed to calculate whether a type is "persistable".
+	 * Adapted to ITypeBinding and IType.
+	 */
+	public interface TypeAdapter {
+		int getModifiers();
+		boolean isAnnotation();
+		boolean isAnonymous();
+		boolean isArray();
+		boolean isEnum();
+		boolean isInterface();
+		boolean isLocal();
+		boolean isMember();
+		boolean isPrimitive();
+	}
+
+
+	// ********** field **********
 
 	/**
 	 * Return whether the specified field may be "persisted".
 	 * According to the spec, "All non-transient instance variables that are not 
 	 * annotated with the Transient annotation are persistent."
 	 */
-	public static boolean fieldIsPersistable(IVariableBinding field) {
-		int modifiers = field.getModifiers();
+	public static boolean fieldIsPersistable(FieldAdapter fieldAdapter) {
+		int modifiers = fieldAdapter.getModifiers();
 		if (Modifier.isStatic(modifiers)) {
 			return false;
 		}
@@ -33,36 +99,49 @@ public class JPTTools {
 	}
 
 	/**
+	 * Queries needed to calculate whether a field is "persistable".
+	 * Adapted to IVariableBinding and IField.
+	 */
+	public interface FieldAdapter {
+		int getModifiers();
+	}
+
+
+	// ********** method **********
+
+	/**
 	 * Return whether the specified method is a "getter" method that
 	 * represents a property that may be "persisted".
 	 */
-	public static boolean methodIsPersistablePropertyGetter(IMethodBinding methodBinding) {
-		if (methodHasBadModifiers(methodBinding)) {
+	public static boolean methodIsPersistablePropertyGetter(MethodAdapter methodAdapter) {
+		if (methodHasInvalidModifiers(methodAdapter)) {
+			return false;
+		}
+		if (methodAdapter.isConstructor()) {
 			return false;
 		}
 
-		ITypeBinding returnType = methodBinding.getReturnType();
-		if (returnType == null) {
-			return false;
+		String returnTypeName = methodAdapter.getReturnTypeName();
+		if (returnTypeName == null) {
+			return false;  // DOM method bindings can have a null name
 		}
-		String returnTypeName = returnType.getQualifiedName();
 		if (returnTypeName.equals("void")) { //$NON-NLS-1$
 			return false;
 		}
-		if (methodBinding.getParameterTypes().length != 0) {
+		if (methodHasParameters(methodAdapter)) {
 			return false;
 		}
 
-		String methodName = methodBinding.getName();
+		String name = methodAdapter.getName();
 		int beginIndex = 0;
 		boolean booleanGetter = false;
-		if (methodName.startsWith("is")) { //$NON-NLS-1$
+		if (name.startsWith("is")) { //$NON-NLS-1$
 			if (returnTypeName.equals("boolean")) { //$NON-NLS-1$
 				beginIndex = 2;
 			} else {
 				return false;
 			}
-		} else if (methodName.startsWith("get")) { //$NON-NLS-1$
+		} else if (name.startsWith("get")) { //$NON-NLS-1$
 			beginIndex = 3;
 			if (returnTypeName.equals("boolean")) { //$NON-NLS-1$
 				booleanGetter = true;
@@ -71,65 +150,25 @@ public class JPTTools {
 			return false;
 		}
 
-		String capitalizedAttributeName = methodName.substring(beginIndex);
+		String capitalizedAttributeName = name.substring(beginIndex);
 		// if the type has both methods:
 		//     boolean isProperty()
 		//     boolean getProperty()
 		// then #isProperty() takes precedence and we ignore #getProperty();
 		// but only having #getProperty() is OK too
 		// (see the JavaBeans spec 1.01)
-		if (booleanGetter) {
-			IMethodBinding isMethod = methodBindingNoParameters(methodBinding.getDeclaringClass(), "is" + capitalizedAttributeName); //$NON-NLS-1$
-			if ((isMethod != null) && isMethod.getReturnType().getName().equals("boolean")) { //$NON-NLS-1$
-				return false;  // since the type also defines #isProperty(), ignore #getProperty()
-			}
+		if (booleanGetter && methodHasValidSiblingIsMethod(methodAdapter, capitalizedAttributeName)) {
+			return false;  // since the type also defines #isProperty(), ignore #getProperty()
 		}
-		IMethodBinding setMethod = methodBindingOneParameter(methodBinding.getDeclaringClass(), "set" + capitalizedAttributeName, returnTypeName); //$NON-NLS-1$
-		if (setMethod == null) {
-			return false;
-		}
-		if (methodHasBadModifiers(setMethod)) {
-			return false;
-		}
-		if ( ! setMethod.getReturnType().getName().equals("void")) { //$NON-NLS-1$
-			return false;
-		}
-		return true;
-	}
-	
-	private static IMethodBinding methodBindingNoParameters(ITypeBinding typeBinding, String methodName) {
-		for (IMethodBinding method : typeBinding.getDeclaredMethods()) {
-			if (method.getName().equals(methodName)) {
-				if (method.getParameterTypes().length == 0) {
-					return method;
-				}
-			}
-		}
-		return null;
-	}
-	
-	private static IMethodBinding methodBindingOneParameter(ITypeBinding typeBinding, String methodName, String parameterTypeName) {
-		for (IMethodBinding method : typeBinding.getDeclaredMethods()) {
-			if (method.getName().equals(methodName)) {
-				if (method.getParameterTypes().length == 1) {
-					if (method.getParameterTypes()[0].getQualifiedName().equals(parameterTypeName)) {
-						return method;
-					}
-				}
-			}
-		}
-		return null;
+		return methodHasValidSiblingSetMethod(methodAdapter, capitalizedAttributeName, returnTypeName);
 	}
 
 	/**
-	 * Return whether the specified method's modifiers prevent it
+	 * Return whether the method's modifiers prevent it
 	 * from being a getter or setter for a "persistent" property.
 	 */
-	private static boolean methodHasBadModifiers(IMethodBinding methodBinding) {
-		if (methodBinding.isConstructor()) {
-			return true;
-		}
-		int modifiers = methodBinding.getModifiers();
+	private static boolean methodHasInvalidModifiers(MethodAdapter methodAdapter) {
+		int modifiers = methodAdapter.getModifiers();
 		if (Modifier.isStatic(modifiers)) {
 			return true;
 		}
@@ -141,38 +180,117 @@ public class JPTTools {
 		}
 		return false;
 	}
-	
+
+	private static boolean methodHasParameters(MethodAdapter methodAdapter) {
+		return methodAdapter.getParametersLength() != 0;
+	}
+
 	/**
-	 * Return whether the type may be "persisted", ie marked as Entity, MappedSuperclass, Embeddable
+	 * Return whether the method has a sibling "is" method for the specified
+	 * property and that method is valid for a "persistable" property.
+	 * Pre-condition: the method is a "boolean getter" (e.g. 'public boolean getProperty()');
+	 * this prevents us from returning true when the method itself is an
+	 * "is" method.
 	 */
-	//TODO should persistability be dependent on having a no-arg constructor or should that just be validation?
-	//seems like final, or a member type being static could be dealt with through validation instead of filtering them out.
-	public static boolean typeIsPersistable(ITypeBinding typeBinding) {
-		if (typeBinding.isInterface()) {
+	private static boolean methodHasValidSiblingIsMethod(MethodAdapter methodAdapter, String capitalizedAttributeName) {
+		MethodAdapter isMethodAdapter = methodAdapter.getSibling("is" + capitalizedAttributeName); //$NON-NLS-1$
+		return methodIsValidSibling(isMethodAdapter, "boolean"); //$NON-NLS-1$
+	}
+
+	/**
+	 * Return whether the method has a sibling "set" method
+	 * and that method is valid for a "persistable" property.
+	 */
+	private static boolean methodHasValidSiblingSetMethod(MethodAdapter methodAdapter, String capitalizedAttributeName, String returnTypeName) {
+		MethodAdapter setMethodAdapter = methodAdapter.getSibling("set" + capitalizedAttributeName, returnTypeName); //$NON-NLS-1$
+		return methodIsValidSibling(setMethodAdapter, "void"); //$NON-NLS-1$
+	}
+
+	/**
+	 * Return whether the specified method is a valid sibling with the
+	 * specified return type.
+	 */
+	private static boolean methodIsValidSibling(MethodAdapter methodAdapter, String returnTypeName) {
+		if (methodAdapter == null) {
 			return false;
 		}
-		if (typeBinding.isAnnotation()) {
+		if (methodHasInvalidModifiers(methodAdapter)) {
 			return false;
 		}
-		if (typeBinding.isEnum()) {
+		if (methodAdapter.isConstructor()) {
 			return false;
 		}
-		if (typeBinding.isLocal()) {
-			return false;
+		String rtName = methodAdapter.getReturnTypeName();
+		if (rtName == null) {
+			return false;  // DOM method bindings can have a null name
 		}
-		if (typeBinding.isAnonymous()) {
-			return false;
-		}
-		int modifiers = typeBinding.getModifiers();
-		if (Modifier.isFinal(modifiers)) {
-			return false;
-		}
-		if (typeBinding.isMember()) {
-			if (!Modifier.isStatic(modifiers)) {
-				return false;
+		return rtName.equals(returnTypeName);
+	}
+
+	/**
+	 * Queries needed to calculate whether a method is "persistable".
+	 * Adapted to IMethodBinding and IMethod.
+	 */
+	public interface MethodAdapter {
+		String getName();
+		int getModifiers();
+		String getReturnTypeName();
+		boolean isConstructor();
+		int getParametersLength();
+		MethodAdapter getSibling(String name);
+		MethodAdapter getSibling(String name, String parameterTypeName);
+	}
+
+
+	// ********** Access type **********
+
+	/**
+	 * Return the AccessType currently implied by the Java source code
+	 * or class file:
+	 *     - if only Fields are annotated => FIELD
+	 *     - if only Properties are annotated => PROPERTY
+	 *     - if both Fields and Properties are annotated => FIELD
+	 *     - if nothing is annotated
+	 *     		- and fields exist => FIELD
+	 *     		- and properties exist, but no fields exist => PROPERTY
+	 *     		- and neither fields nor properties exist => null at this level (FIELD in the context model)
+	 */
+	public static AccessType buildAccess(JavaResourcePersistentType jrpType) {
+		boolean hasPersistableFields = false;
+		for (Iterator<JavaResourcePersistentAttribute> stream = jrpType.persistableFields(); stream.hasNext(); ) {
+			hasPersistableFields = true;
+			if (stream.next().hasAnyPersistenceAnnotations()) {
+				// any field is annotated => FIELD
+				return AccessType.FIELD;
 			}
 		}
-		return true;
+
+		boolean hasPersistableProperties = false;
+		for (Iterator<JavaResourcePersistentAttribute> stream = jrpType.persistableProperties(); stream.hasNext(); ) {
+			hasPersistableProperties = true;
+			if (stream.next().hasAnyPersistenceAnnotations()) {
+				// none of the fields are annotated and a getter is annotated => PROPERTY
+				return AccessType.PROPERTY;
+			}
+		}
+
+		if (hasPersistableProperties && ! hasPersistableFields) {
+			return AccessType.PROPERTY;
+		}
+
+		// if no annotations exist, access is null at the resource model level
+		return null;
+	}
+
+
+	// ********** suppressed constructor **********
+
+	/**
+	 * Suppress default constructor, ensuring non-instantiability.
+	 */
+	private JPTTools() {
+		super();
+		throw new UnsupportedOperationException();
 	}
 
 }

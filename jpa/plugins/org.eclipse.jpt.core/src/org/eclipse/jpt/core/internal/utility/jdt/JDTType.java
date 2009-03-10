@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,10 @@
 package org.eclipse.jpt.core.internal.utility.jdt;
 
 import java.util.List;
+
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.dom.ASTNode;
+import org.eclipse.jdt.core.dom.AbstractTypeDeclaration;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.ITypeBinding;
@@ -86,7 +89,8 @@ public class JDTType
 	// ********** Member/Type implementation **********
 
 	public ITypeBinding getBinding(CompilationUnit astRoot) {
-		return this.getBodyDeclaration(astRoot).resolveBinding();
+		TypeDeclaration td = this.getBodyDeclaration(astRoot);
+		return (td == null) ? null : td.resolveBinding();
 	}
 
 	/**
@@ -102,7 +106,7 @@ public class JDTType
 
 	public boolean isPersistable(CompilationUnit astRoot) {
 		ITypeBinding binding = this.getBinding(astRoot);
-		return (binding == null) ? false : JPTTools.typeIsPersistable(binding);
+		return (binding == null) ? false : JPTTools.typeIsPersistable(new JPTToolsAdapter(binding));
 	}
 
 	public TextRange getNameTextRange(CompilationUnit astRoot) {
@@ -131,8 +135,8 @@ public class JDTType
 		return this.getTypeDeclaration(types(astRoot));
 	}
 
-	protected TypeDeclaration getTypeDeclaration(List<TypeDeclaration> typeDeclarations) {
-		return this.getTypeDeclaration(typeDeclarations.toArray(new TypeDeclaration[typeDeclarations.size()]));
+	protected TypeDeclaration getTypeDeclaration(List<AbstractTypeDeclaration> typeDeclarations) {
+		return this.getTypeDeclaration(typeDeclarations.toArray(new AbstractTypeDeclaration[typeDeclarations.size()]));
 	}
 
 	/**
@@ -146,15 +150,15 @@ public class JDTType
 	 * return the type declaration corresponding to the type from the specified
 	 * set of type declarations (match name and occurrence)
 	 */
-	protected TypeDeclaration getTypeDeclaration(TypeDeclaration[] typeDeclarations) {
+	protected TypeDeclaration getTypeDeclaration(AbstractTypeDeclaration[] typeDeclarations) {
 		String name = this.getName_();
 		int occurrence = this.getOccurrence();
 		int count = 0;
-		for (TypeDeclaration typeDeclaration : typeDeclarations) {
+		for (AbstractTypeDeclaration typeDeclaration : typeDeclarations) {
 			if (typeDeclaration.getName().getFullyQualifiedName().equals(name)) {
 				count++;
 				if (count == occurrence) {
-					return typeDeclaration;
+					return (typeDeclaration.getNodeType() == ASTNode.TYPE_DECLARATION) ? (TypeDeclaration) typeDeclaration : null;
 				}
 			}
 		}
@@ -165,10 +169,68 @@ public class JDTType
 		return null;
 	}
 
+	/**
+	 * we only instantiate a single top-level, non-enum, non-annotation
+	 * type per compilation unit (i.e. a class or interface); and, since
+	 * enums and annotations can only be top-level types (i.e. they cannot
+	 * be nested within another type) we will always have TypeDeclarations
+	 * in the CompilationUnit
+	 */
 	// minimize scope of suppressed warnings
 	@SuppressWarnings("unchecked")
-	protected static List<TypeDeclaration> types(CompilationUnit astRoot) {
+	protected static List<AbstractTypeDeclaration> types(CompilationUnit astRoot) {
 		return astRoot.types();
+	}
+
+
+	// ********** JPT tools adapter **********
+
+	protected class JPTToolsAdapter implements JPTTools.TypeAdapter {
+		private final ITypeBinding typeBinding;
+		protected JPTToolsAdapter(ITypeBinding typeBinding) {
+			super();
+			if (typeBinding == null) {
+				throw new NullPointerException();
+			}
+			this.typeBinding = typeBinding;
+		}
+
+		public int getModifiers() {
+			return this.typeBinding.getModifiers();
+		}
+
+		public boolean isAnnotation() {
+			return this.typeBinding.isAnnotation();
+		}
+
+		public boolean isAnonymous() {
+			return this.typeBinding.isAnonymous();
+		}
+
+		public boolean isArray() {
+			return this.typeBinding.isArray();
+		}
+
+		public boolean isEnum() {
+			return this.typeBinding.isEnum();
+		}
+
+		public boolean isInterface() {
+			return this.typeBinding.isInterface();
+		}
+
+		public boolean isLocal() {
+			return this.typeBinding.isLocal();
+		}
+
+		public boolean isMember() {
+			return this.typeBinding.isMember();
+		}
+
+		public boolean isPrimitive() {
+			return this.typeBinding.isPrimitive();
+		}
+	
 	}
 
 }

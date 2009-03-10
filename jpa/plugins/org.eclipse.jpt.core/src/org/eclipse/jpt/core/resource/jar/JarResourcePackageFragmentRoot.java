@@ -9,15 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.resource.jar;
 
-import java.util.Iterator;
+import java.util.ListIterator;
 
 import org.eclipse.jdt.core.IPackageFragmentRoot;
-import org.eclipse.jpt.core.JpaAnnotationProvider;
-import org.eclipse.jpt.core.JpaResourceModel;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 
 /**
- * Dali resource for Eclipse package fragement root JAR.
+ * Dali resource for JDT package fragement root JAR.
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -26,31 +23,21 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface JarResourcePackageFragmentRoot
-	extends JarResourceNode, JpaResourceModel
+	extends JarResourceNode.Root
 {
-
 	/**
 	 * Return the corresponding JDT package fragement root.
 	 */
 	IPackageFragmentRoot getPackageFragmentRoot();
 
 	/**
-	 * Return all the Java resource types that are "persistable", as defined
-	 * by the JPA spec.
+	 * Return the package fragment root's package fragments.
 	 */
-	Iterator<JavaResourcePersistentType> persistableTypes();
+	ListIterator<JarResourcePackageFragment> packageFragments();
 
 	/**
-	 * Return the annotation provider that supplies the annotations the resource
-	 * model uses to modify the Java source.
+	 * Return the size of the package fragment root's package fragments.
 	 */
-	JpaAnnotationProvider getAnnotationProvider();
-
-	/**
-	 * Called (via a hook in change notification) whenever anything in the JPA
-	 * compilation unit changes. Forwarded to the JPA file and on to
-	 * various listeners (namely the JPA project).
-	 */
-	void resourceModelChanged();
+	int packageFragmentsSize();
 
 }

@@ -246,10 +246,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 
 	@Override
 	protected String buildDefaultTargetEntity() {
-		if (!this.resourcePersistentAttribute.typeIsContainer()) {
-			return null;
-		}
-		return this.resourcePersistentAttribute.getQualifiedReferenceEntityElementTypeName();
+		return this.getPersistentAttribute().getMultiReferenceEntityTypeName();
 	}
 	
 	protected abstract boolean mappedByTouches(int pos, CompilationUnit astRoot);

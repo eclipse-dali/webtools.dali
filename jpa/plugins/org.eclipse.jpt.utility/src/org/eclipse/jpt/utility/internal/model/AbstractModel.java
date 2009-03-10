@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,15 +10,11 @@
 package org.eclipse.jpt.utility.internal.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.HashBag;
+
 import org.eclipse.jpt.utility.internal.StringTools;
-import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.model.Model;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
@@ -80,12 +76,26 @@ public abstract class AbstractModel implements Model, Serializable {
 		this.getChangeSupport().removeStateChangeListener(listener);
 	}
 
-	protected final void fireStateChanged() {
-		this.getChangeSupport().fireStateChanged();
+	/**
+	 * Return whether there are any state change listeners.
+	 */
+	public boolean hasAnyStateChangeListeners() {
+		return this.getChangeSupport().hasAnyStateChangeListeners();
+	}
+
+	/**
+	 * Return whether there are no state change listeners.
+	 */
+	public boolean hasNoStateChangeListeners() {
+		return ! this.hasAnyStateChangeListeners();
 	}
 
 	protected final void fireStateChanged(StateChangeEvent event) {
 		this.getChangeSupport().fireStateChanged(event);
+	}
+
+	protected final void fireStateChanged() {
+		this.getChangeSupport().fireStateChanged();
 	}
 
 
@@ -107,6 +117,38 @@ public abstract class AbstractModel implements Model, Serializable {
 		this.getChangeSupport().removePropertyChangeListener(propertyName, listener);
 	}
 
+	/**
+	 * Return whether there are any property change listeners for a specific property.
+	 */
+	public boolean hasAnyPropertyChangeListeners(String propertyName) {
+		return this.getChangeSupport().hasAnyPropertyChangeListeners(propertyName);
+	}
+
+	/**
+	 * Return whether there are any property change listeners for a specific property.
+	 */
+	public boolean hasNoPropertyChangeListeners(String propertyName) {
+		return ! this.hasAnyPropertyChangeListeners(propertyName);
+	}
+
+	/**
+	 * Return whether there are any property change listeners.
+	 */
+	public boolean hasAnyPropertyChangeListeners() {
+		return this.getChangeSupport().hasAnyPropertyChangeListeners();
+	}
+
+	/**
+	 * Return whether there are any property change listeners.
+	 */
+	public boolean hasNoPropertyChangeListeners() {
+		return ! this.hasAnyPropertyChangeListeners();
+	}
+
+	protected final void firePropertyChanged(PropertyChangeEvent event) {
+		this.getChangeSupport().firePropertyChanged(event);
+	}
+
 	protected final void firePropertyChanged(String propertyName, Object oldValue, Object newValue) {
 		this.getChangeSupport().firePropertyChanged(propertyName, oldValue, newValue);
 	}
@@ -119,12 +161,11 @@ public abstract class AbstractModel implements Model, Serializable {
 		this.getChangeSupport().firePropertyChanged(propertyName, oldValue, newValue);
 	}
 
+	/**
+	 * implied 'null' old value
+	 */
 	protected final void firePropertyChanged(String propertyName, Object newValue) {
-		this.getChangeSupport().firePropertyChanged(propertyName, null, newValue);
-	}
-
-	protected final void firePropertyChanged(PropertyChangeEvent event) {
-		this.getChangeSupport().firePropertyChanged(event);
+		this.firePropertyChanged(propertyName, null, newValue);
 	}
 
 
@@ -146,255 +187,140 @@ public abstract class AbstractModel implements Model, Serializable {
 		this.getChangeSupport().removeCollectionChangeListener(collectionName, listener);
 	}
 
-	protected final void fireItemAdded(String collectionName, Object addedItem) {
-		this.getChangeSupport().fireItemAdded(collectionName, addedItem);
+	/**
+	 * Return whether there are any collection change listeners for a specific collection.
+	 */
+	public boolean hasAnyCollectionChangeListeners(String collectionName) {
+		return this.getChangeSupport().hasAnyCollectionChangeListeners(collectionName);
 	}
 
-	protected final void fireItemsAdded(String collectionName, Collection<?> addedItems) {
-		this.getChangeSupport().fireItemsAdded(collectionName, addedItems);
+	/**
+	 * Return whether there are any collection change listeners for a specific collection.
+	 */
+	public boolean hasNoCollectionChangeListeners(String collectionName) {
+		return ! this.hasAnyCollectionChangeListeners(collectionName);
+	}
+
+	/**
+	 * Return whether there are any collection change listeners.
+	 */
+	public boolean hasAnyCollectionChangeListeners() {
+		return this.getChangeSupport().hasAnyCollectionChangeListeners();
+	}
+
+	/**
+	 * Return whether there are any collection change listeners.
+	 */
+	public boolean hasNoCollectionChangeListeners() {
+		return ! this.hasAnyCollectionChangeListeners();
 	}
 
 	protected final void fireItemsAdded(CollectionChangeEvent event) {
 		this.getChangeSupport().fireItemsAdded(event);
 	}
 
-	protected final void fireItemRemoved(String collectionName, Object removedItem) {
-		this.getChangeSupport().fireItemRemoved(collectionName, removedItem);
+	protected final void fireItemsAdded(String collectionName, Collection<?> addedItems) {
+		this.getChangeSupport().fireItemsAdded(collectionName, addedItems);
 	}
 
-	protected final void fireItemsRemoved(String collectionName, Collection<?> removedItems) {
-		this.getChangeSupport().fireItemsRemoved(collectionName, removedItems);
+	protected final void fireItemAdded(String collectionName, Object addedItem) {
+		this.getChangeSupport().fireItemAdded(collectionName, addedItem);
 	}
 
 	protected final void fireItemsRemoved(CollectionChangeEvent event) {
 		this.getChangeSupport().fireItemsRemoved(event);
 	}
 
-	protected final void fireCollectionCleared(String collectionName) {
-		this.getChangeSupport().fireCollectionCleared(collectionName);
+	protected final void fireItemsRemoved(String collectionName, Collection<?> removedItems) {
+		this.getChangeSupport().fireItemsRemoved(collectionName, removedItems);
+	}
+
+	protected final void fireItemRemoved(String collectionName, Object removedItem) {
+		this.getChangeSupport().fireItemRemoved(collectionName, removedItem);
 	}
 
 	protected final void fireCollectionCleared(CollectionChangeEvent event) {
 		this.getChangeSupport().fireCollectionCleared(event);
 	}
 
-	protected final void fireCollectionChanged(String collectionName) {
-		this.getChangeSupport().fireCollectionChanged(collectionName);
+	protected final void fireCollectionCleared(String collectionName) {
+		this.getChangeSupport().fireCollectionCleared(collectionName);
 	}
 
 	protected final void fireCollectionChanged(CollectionChangeEvent event) {
 		this.getChangeSupport().fireCollectionChanged(event);
 	}
 
-	/**
-	 * Convenience method.
-	 * Add the specified item to the specified bound collection
-	 * and fire the appropriate event if necessary.
-	 * Return whether the collection changed.
-	 * @see java.util.Collection#add(Object)
-	 */
+	protected final void fireCollectionChanged(String collectionName) {
+		this.getChangeSupport().fireCollectionChanged(collectionName);
+	}
+
 	protected <E> boolean addItemToCollection(E item, Collection<E> collection, String collectionName) {
-		if (collection.add(item)) {
-			this.fireItemAdded(collectionName, item);
-			return true;
-		}
-		return false;
+		return this.getChangeSupport().addItemToCollection(item, collection, collectionName);
 	}
 
-	/**
-	 * Convenience method.
-	 * Add the specified items to the specified bound collection
-	 * and fire the appropriate event if necessary.
-	 * Return whether collection changed.
-	 * @see java.util.Collection#addAll(java.util.Collection)
-	 */
 	protected <E> boolean addItemsToCollection(E[] items, Collection<E> collection, String collectionName) {
-		return this.addItemsToCollection(new ArrayIterator<E>(items), collection, collectionName);
+		return this.getChangeSupport().addItemsToCollection(items, collection, collectionName);
 	}
 
-	/**
-	 * Convenience method.
-	 * Add the specified items to the specified bound collection
-	 * and fire the appropriate event if necessary.
-	 * Return whether collection changed.
-	 * @see java.util.Collection#addAll(java.util.Collection)
-	 */
+	protected <E> boolean addItemsToCollection(Collection<? extends E> items, Collection<E> collection, String collectionName) {
+		return this.getChangeSupport().addItemsToCollection(items, collection, collectionName);
+	}
+
 	protected <E> boolean addItemsToCollection(Iterable<? extends E> items, Collection<E> collection, String collectionName) {
-		return this.addItemsToCollection(items.iterator(), collection, collectionName);
+		return this.getChangeSupport().addItemsToCollection(items, collection, collectionName);
 	}
 
-	/**
-	 * Convenience method.
-	 * Add the specified items to the specified bound collection
-	 * and fire the appropriate event if necessary.
-	 * Return whether collection changed.
-	 * @see java.util.Collection#addAll(java.util.Collection)
-	 */
 	protected <E> boolean addItemsToCollection(Iterator<? extends E> items, Collection<E> collection, String collectionName) {
-		Collection<E> addedItems = null;
-		while (items.hasNext()) {
-			E item = items.next();
-			if (collection.add(item)) {
-				if (addedItems == null) {
-					addedItems = new ArrayList<E>();
-				}
-				addedItems.add(item);
-			}
-		}
-		if (addedItems != null) {
-			this.fireItemsAdded(collectionName, addedItems);
-			return true;
-		}
-		return false;
+		return this.getChangeSupport().addItemsToCollection(items, collection, collectionName);
 	}
 
-	/**
-	 * Convenience method.
-	 * Remove the specified item from the specified bound collection
-	 * and fire the appropriate event if necessary.
-	 * Return whether the collection changed.
-	 * @see java.util.Collection#remove(Object)
-	 */
 	protected boolean removeItemFromCollection(Object item, Collection<?> collection, String collectionName) {
-		if (collection.remove(item)) {
-			this.fireItemRemoved(collectionName, item);
-			return true;
-		}
-		return false;
+		return this.getChangeSupport().removeItemFromCollection(item, collection, collectionName);
 	}
 
-	/**
-	 * Convenience method.
-	 * Remove the specified items from the specified bound collection
-	 * and fire the appropriate event if necessary.
-	 * Return whether the collection changed.
-	 * @see java.util.Collection#removeAll(java.util.Collection)
-	 */
 	protected boolean removeItemsFromCollection(Object[] items, Collection<?> collection, String collectionName) {
-		return this.removeItemsFromCollection(new ArrayIterator<Object>(items), collection, collectionName);
+		return this.getChangeSupport().removeItemsFromCollection(items, collection, collectionName);
 	}
 
-	/**
-	 * Convenience method.
-	 * Remove the specified items from the specified bound collection
-	 * and fire the appropriate event if necessary.
-	 * Return whether the collection changed.
-	 * @see java.util.Collection#removeAll(java.util.Collection)
-	 */
+	protected boolean removeItemsFromCollection(Collection<?> items, Collection<?> collection, String collectionName) {
+		return this.getChangeSupport().removeItemsFromCollection(items, collection, collectionName);
+	}
+
 	protected boolean removeItemsFromCollection(Iterable<?> items, Collection<?> collection, String collectionName) {
-		return this.removeItemsFromCollection(items.iterator(), collection, collectionName);
+		return this.getChangeSupport().removeItemsFromCollection(items, collection, collectionName);
 	}
 
-	/**
-	 * Convenience method.
-	 * Remove the specified items from the specified bound collection
-	 * and fire the appropriate event if necessary.
-	 * Return whether the collection changed.
-	 * @see java.util.Collection#removeAll(java.util.Collection)
-	 */
 	protected boolean removeItemsFromCollection(Iterator<?> items, Collection<?> collection, String collectionName) {
-		Collection<?> items2 = CollectionTools.collection(items);
-		items2.retainAll(collection);
-		boolean changed = collection.removeAll(items2);
-
-		if ( ! items2.isEmpty()) {
-			this.fireItemsRemoved(collectionName, items2);
-		}
-		return changed;
+		return this.getChangeSupport().removeItemsFromCollection(items, collection, collectionName);
 	}
 
-	/**
-	 * Convenience method.
-	 * Retain the specified items in the specified bound collection
-	 * and fire the appropriate event if necessary.
-	 * Return whether the collection changed.
-	 * @see java.util.Collection#retainAll(java.util.Collection)
-	 */
 	protected boolean retainItemsInCollection(Object[] items, Collection<?> collection, String collectionName) {
-		return this.retainItemsInCollection(new ArrayIterator<Object>(items), collection, collectionName);
+		return this.getChangeSupport().retainItemsInCollection(items, collection, collectionName);
 	}
 
-	/**
-	 * Convenience method.
-	 * Retain the specified items in the specified bound collection
-	 * and fire the appropriate event if necessary.
-	 * Return whether the collection changed.
-	 * @see java.util.Collection#retainAll(java.util.Collection)
-	 */
+	protected boolean retainItemsInCollection(Collection<?> items, Collection<?> collection, String collectionName) {
+		return this.getChangeSupport().retainItemsInCollection(items, collection, collectionName);
+	}
+
 	protected boolean retainItemsInCollection(Iterable<?> items, Collection<?> collection, String collectionName) {
-		return this.retainItemsInCollection(items.iterator(), collection, collectionName);
+		return this.getChangeSupport().retainItemsInCollection(items, collection, collectionName);
 	}
 
-	/**
-	 * Convenience method.
-	 * Retain the specified items in the specified bound collection
-	 * and fire the appropriate event if necessary.
-	 * Return whether the collection changed.
-	 * @see java.util.Collection#retainAll(java.util.Collection)
-	 */
 	protected boolean retainItemsInCollection(Iterator<?> items, Collection<?> collection, String collectionName) {
-		Collection<?> items2 = CollectionTools.collection(items);
-		Collection<?> removedItems = CollectionTools.collection(collection);
-		removedItems.removeAll(items2);
-		boolean changed = collection.retainAll(items2);
-
-		if ( ! removedItems.isEmpty()) {
-			this.fireItemsRemoved(collectionName, removedItems);
-		}
-		return changed;
+		return this.getChangeSupport().retainItemsInCollection(items, collection, collectionName);
 	}
 
-	/**
-	 * Convenience method.
-	 * Clear the entire collection
-	 * and fire the appropriate event if necessary.
-	 * Return whether the list changed.
-	 * @see java.util.Collection#clear()
-	 */
 	protected boolean clearCollection(Collection<?> collection, String collectionName) {
-		if (collection.isEmpty()) {
-			return false;
-		}
-		collection.clear();
-		this.fireCollectionCleared(collectionName);
-		return true;
+		return this.getChangeSupport().clearCollection(collection, collectionName);
 	}
 
-	/**
-	 * Convenience method.
-	 * Synchronize the collection with the specified new collection,
-	 * making a minimum number of removes and adds.
-	 * Return whether the collection changed.
-	 */
 	protected <E> boolean synchronizeCollection(Collection<E> newCollection, Collection<E> collection, String collectionName) {
-		if (newCollection.isEmpty()) {
-			return this.clearCollection(collection, collectionName);
-		}
-
-		if (collection.isEmpty()) {
-			return this.addItemsToCollection(newCollection, collection, collectionName);
-		}
-
-		boolean changed = false;
-		Collection<E> removeItems = new HashBag<E>(collection);
-		removeItems.removeAll(newCollection);
-		changed |= this.removeItemsFromCollection(removeItems, collection, collectionName);
-
-		Collection<E> addItems = new HashBag<E>(newCollection);
-		addItems.removeAll(collection);
-		changed |= this.addItemsToCollection(addItems, collection, collectionName);
-
-		return changed;
+		return this.getChangeSupport().synchronizeCollection(newCollection, collection, collectionName);
 	}
 
-	/**
-	 * Convenience method.
-	 * Synchronize the collection with the specified new collection,
-	 * making a minimum number of removes and adds.
-	 * Return whether the collection changed.
-	 */
-	protected <E> boolean synchronizeCollection(Iterator<E> newItems, Collection<E> collection, String collectionName) {
-		return this.synchronizeCollection(CollectionTools.collection(newItems), collection, collectionName);
+	protected <E> boolean synchronizeCollection(Iterator<E> newCollection, Collection<E> collection, String collectionName) {
+		return this.getChangeSupport().synchronizeCollection(newCollection, collection, collectionName);
 	}
 
 
@@ -416,371 +342,216 @@ public abstract class AbstractModel implements Model, Serializable {
 		this.getChangeSupport().removeListChangeListener(listName, listener);
 	}
 
-	protected final void fireItemAdded(String listName, int index, Object addedItem) {
-		this.getChangeSupport().fireItemAdded(listName, index, addedItem);
+	/**
+	 * Return whether there are any list change listeners for a specific list.
+	 */
+	public boolean hasAnyListChangeListeners(String listName) {
+		return this.getChangeSupport().hasAnyListChangeListeners(listName);
 	}
 
-	protected final void fireItemsAdded(String listName, int index, List<?> addedItems) {
-		this.getChangeSupport().fireItemsAdded(listName, index, addedItems);
+	/**
+	 * Return whether there are any list change listeners for a specific list.
+	 */
+	public boolean hasNoListChangeListeners(String listName) {
+		return ! this.hasAnyListChangeListeners(listName);
+	}
+
+	/**
+	 * Return whether there are any list change listeners.
+	 */
+	public boolean hasAnyListChangeListeners() {
+		return this.getChangeSupport().hasAnyListChangeListeners();
+	}
+
+	/**
+	 * Return whether there are any list change listeners.
+	 */
+	public boolean hasNoListChangeListeners() {
+		return ! this.hasAnyListChangeListeners();
 	}
 
 	protected final void fireItemsAdded(ListChangeEvent event) {
 		this.getChangeSupport().fireItemsAdded(event);
 	}
 
-	protected final void fireItemRemoved(String listName, int index, Object removedItem) {
-		this.getChangeSupport().fireItemRemoved(listName, index, removedItem);
+	protected final void fireItemsAdded(String listName, int index, List<?> addedItems) {
+		this.getChangeSupport().fireItemsAdded(listName, index, addedItems);
 	}
 
-	protected final void fireItemsRemoved(String listName, int index, List<?> removedItems) {
-		this.getChangeSupport().fireItemsRemoved(listName, index, removedItems);
+	protected final void fireItemAdded(String listName, int index, Object addedItem) {
+		this.getChangeSupport().fireItemAdded(listName, index, addedItem);
 	}
 
 	protected final void fireItemsRemoved(ListChangeEvent event) {
 		this.getChangeSupport().fireItemsRemoved(event);
 	}
 
-	protected final void fireItemReplaced(String listName, int index, Object newItem, Object replacedItem) {
-		this.getChangeSupport().fireItemReplaced(listName, index, newItem, replacedItem);
+	protected final void fireItemsRemoved(String listName, int index, List<?> removedItems) {
+		this.getChangeSupport().fireItemsRemoved(listName, index, removedItems);
 	}
 
-	protected final <E> void fireItemsReplaced(String listName, int index, List<? extends E> newItems, List<E> replacedItems) {
-		this.getChangeSupport().fireItemsReplaced(listName, index, newItems, replacedItems);
+	protected final void fireItemRemoved(String listName, int index, Object removedItem) {
+		this.getChangeSupport().fireItemRemoved(listName, index, removedItem);
 	}
 
 	protected final void fireItemsReplaced(ListChangeEvent event) {
 		this.getChangeSupport().fireItemsReplaced(event);
 	}
 
-	protected final void fireItemMoved(String listName, int targetIndex, int sourceIndex) {
-		this.getChangeSupport().fireItemMoved(listName, targetIndex, sourceIndex);
+	protected final <E> void fireItemsReplaced(String listName, int index, List<? extends E> newItems, List<E> replacedItems) {
+		this.getChangeSupport().fireItemsReplaced(listName, index, newItems, replacedItems);
 	}
 
-	protected final <E> void fireItemsMoved(String listName, int targetIndex, int sourceIndex, int length) {
-		this.getChangeSupport().fireItemsMoved(listName, targetIndex, sourceIndex, length);
+	protected final void fireItemReplaced(String listName, int index, Object newItem, Object replacedItem) {
+		this.getChangeSupport().fireItemReplaced(listName, index, newItem, replacedItem);
 	}
 
 	protected final void fireItemsMoved(ListChangeEvent event) {
 		this.getChangeSupport().fireItemsMoved(event);
 	}
 
-	protected final void fireListCleared(String listName) {
-		this.getChangeSupport().fireListCleared(listName);
+	protected final <E> void fireItemsMoved(String listName, int targetIndex, int sourceIndex, int length) {
+		this.getChangeSupport().fireItemsMoved(listName, targetIndex, sourceIndex, length);
+	}
+
+	protected final void fireItemMoved(String listName, int targetIndex, int sourceIndex) {
+		this.getChangeSupport().fireItemMoved(listName, targetIndex, sourceIndex);
 	}
 
 	protected final void fireListCleared(ListChangeEvent event) {
 		this.getChangeSupport().fireListCleared(event);
 	}
 
-	protected final void fireListChanged(String listName) {
-		this.getChangeSupport().fireListChanged(listName);
+	protected final void fireListCleared(String listName) {
+		this.getChangeSupport().fireListCleared(listName);
 	}
 
 	protected final void fireListChanged(ListChangeEvent event) {
 		this.getChangeSupport().fireListChanged(event);
 	}
 
-	/**
-	 * Convenience method.
-	 * Add the specified item to the specified bound list
-	 * and fire the appropriate event if necessary.
-	 * @see java.util.List#add(int, Object)
-	 */
+	protected final void fireListChanged(String listName) {
+		this.getChangeSupport().fireListChanged(listName);
+	}
+
 	protected <E> void addItemToList(int index, E item, List<E> list, String listName) {
-		list.add(index, item);
-		this.fireItemAdded(listName, index, item);
+		this.getChangeSupport().addItemToList(index, item, list, listName);
 	}
 
-	/**
-	 * Convenience method.
-	 * Add the specified item to the end of the specified bound list
-	 * and fire the appropriate event if necessary.
-	 * Return whether list changed.
-	 * @see java.util.List#add(Object)
-	 */
 	protected <E> boolean addItemToList(E item, List<E> list, String listName) {
-		if (list.add(item)) {
-			this.fireItemAdded(listName, list.size() - 1, item);
-			return true;
-		}
-		return false;
+		return this.getChangeSupport().addItemToList(item, list, listName);
 	}
 
-	/**
-	 * Convenience method.
-	 * Add the specified items to the specified bound list
-	 * and fire the appropriate event if necessary.
-	 * @see java.util.List#addAll(int, java.util.Collection)
-	 */
 	protected <E> boolean addItemsToList(int index, E[] items, List<E> list, String listName) {
-		return this.addItemsToList(index, new ArrayIterator<E>(items), list, listName);
+		return this.getChangeSupport().addItemsToList(index, items, list, listName);
 	}
 
-	/**
-	 * Convenience method.
-	 * Add the specified items to the specified bound list
-	 * and fire the appropriate event if necessary.
-	 * @see java.util.List#addAll(int, java.util.Collection)
-	 */
+	protected <E> boolean addItemsToList(int index, Collection<? extends E> items, List<E> list, String listName) {
+		return this.getChangeSupport().addItemsToList(index, items, list, listName);
+	}
+
 	protected <E> boolean addItemsToList(int index, Iterable<? extends E> items, List<E> list, String listName) {
-		return this.addItemsToList(index, items.iterator(), list, listName);
+		return this.getChangeSupport().addItemsToList(index, items, list, listName);
 	}
 
-	/**
-	 * Convenience method.
-	 * Add the specified items to the specified bound list
-	 * and fire the appropriate event if necessary.
-	 * @see java.util.List#addAll(int, java.util.Collection)
-	 */
 	protected <E> boolean addItemsToList(int index, Iterator<? extends E> items, List<E> list, String listName) {
-		List<E> items2 = CollectionTools.list(items);
-		if (list.addAll(index, items2)) {
-			this.fireItemsAdded(listName, index, items2);
-			return true;
-		}
-		return false;
+		return this.getChangeSupport().addItemsToList(index, items, list, listName);
 	}
 
-	/**
-	 * Convenience method.
-	 * Add the specified items to the end of to the specified bound list
-	 * and fire the appropriate event if necessary.
-	 * @see java.util.List#addAll(java.util.Collection)
-	 */
 	protected <E> boolean addItemsToList(E[] items, List<E> list, String listName) {
-		return this.addItemsToList(new ArrayIterator<E>(items), list, listName);
+		return this.getChangeSupport().addItemsToList(items, list, listName);
 	}
 
-	/**
-	 * Convenience method.
-	 * Add the specified items to the end of to the specified bound list
-	 * and fire the appropriate event if necessary.
-	 * @see java.util.List#addAll(java.util.Collection)
-	 */
+	protected <E> boolean addItemsToList(Collection<? extends E> items, List<E> list, String listName) {
+		return this.getChangeSupport().addItemsToList(items, list, listName);
+	}
+
 	protected <E> boolean addItemsToList(Iterable<? extends E> items, List<E> list, String listName) {
-		return this.addItemsToList(items.iterator(), list, listName);
+		return this.getChangeSupport().addItemsToList(items, list, listName);
 	}
 
-	/**
-	 * Convenience method.
-	 * Add the specified items to the end of to the specified bound list
-	 * and fire the appropriate event if necessary.
-	 * @see java.util.List#addAll(java.util.Collection)
-	 */
 	protected <E> boolean addItemsToList(Iterator<? extends E> items, List<E> list, String listName) {
-		List<E> items2 = CollectionTools.list(items);
-		int index = list.size();
-		if (list.addAll(items2)) {
-			this.fireItemsAdded(listName, index, items2);
-			return true;
-		}
-		return false;  // empty list of items added
+		return this.getChangeSupport().addItemsToList(items, list, listName);
 	}
 
-	/**
-	 * Convenience method.
-	 * Remove the specified item from the specified bound list
-	 * and fire the appropriate event if necessary.
-	 * Return the removed item.
-	 * @see java.util.List#remove(int)
-	 */
 	protected <E> E removeItemFromList(int index, List<E> list, String listName) {
-		E item = list.remove(index);
-		this.fireItemRemoved(listName, index, item);
-		return item;
+		return this.getChangeSupport().removeItemFromList(index, list, listName);
 	}
 
-	/**
-	 * Convenience method.
-	 * Remove the specified item from the specified bound list
-	 * and fire the appropriate event if necessary.
-	 * Return the removed item.
-	 * @see java.util.List#remove(Object)
-	 */
 	protected boolean removeItemFromList(Object item, List<?> list, String listName) {
-		int index = list.indexOf(item);
-		if (index == -1) {
-			return false;
-		}
-		list.remove(index);
-		this.fireItemRemoved(listName, index, item);
-		return true;
+		return this.getChangeSupport().removeItemFromList(item, list, listName);
 	}
 
-	/**
-	 * Convenience method.
-	 * Remove the specified items from the specified bound list
-	 * and fire the appropriate event if necessary.
-	 * Return the removed items.
-	 * @see java.util.List#remove(int)
-	 */
 	protected <E> List<E> removeItemsFromList(int index, int length, List<E> list, String listName) {
-		List<E> subList = list.subList(index, index + length);
-		List<E> removedItems = new ArrayList<E>(subList);
-		subList.clear();
-		this.fireItemsRemoved(listName, index, removedItems);
-		return removedItems;
+		return this.getChangeSupport().removeItemsFromList(index, length, list, listName);
 	}
 
-	/**
-	 * Convenience method.
-	 * Remove the specified items from the specified bound list
-	 * and fire the appropriate event if necessary.
-	 * Return the removed items.
-	 * @see java.util.List#removeAll(java.util.Collection)
-	 */
 	protected boolean removeItemsFromList(Object[] items, List<?> list, String listName) {
-		return this.removeItemsFromList(new ArrayIterator<Object>(items), list, listName);
+		return this.getChangeSupport().removeItemsFromList(items, list, listName);
 	}
 
-	/**
-	 * Convenience method.
-	 * Remove the specified items from the specified bound list
-	 * and fire the appropriate event if necessary.
-	 * Return the removed items.
-	 * @see java.util.List#removeAll(java.util.Collection)
-	 */
+	protected boolean removeItemsFromList(Collection<?> items, List<?> list, String listName) {
+		return this.getChangeSupport().removeItemsFromList(items, list, listName);
+	}
+
 	protected boolean removeItemsFromList(Iterable<?> items, List<?> list, String listName) {
-		return this.removeItemsFromList(items.iterator(), list, listName);
+		return this.getChangeSupport().removeItemsFromList(items, list, listName);
 	}
 
-	/**
-	 * Convenience method.
-	 * Remove the specified items from the specified bound list
-	 * and fire the appropriate event if necessary.
-	 * Return the removed items.
-	 * @see java.util.List#removeAll(java.util.Collection)
-	 */
 	protected boolean removeItemsFromList(Iterator<?> items, List<?> list, String listName) {
-		boolean changed = false;
-		while (items.hasNext()) {
-			changed |= this.removeItemFromList(items.next(), list, listName);
-		}
-		return changed;
+		return this.getChangeSupport().removeItemsFromList(items, list, listName);
 	}
 
-	/**
-	 * Convenience method.
-	 * Retain the specified items in the specified bound list
-	 * and fire the appropriate event if necessary.
-	 * Return whether the collection changed.
-	 * @see java.util.List#retainAll(java.util.Collection)
-	 */
 	protected boolean retainItemsInList(Object[] items, List<?> list, String listName) {
-		return this.retainItemsInList(new ArrayIterator<Object>(items), list, listName);
+		return this.getChangeSupport().retainItemsInList(items, list, listName);
 	}
 
-	/**
-	 * Convenience method.
-	 * Retain the specified items in the specified bound list
-	 * and fire the appropriate event if necessary.
-	 * Return whether the collection changed.
-	 * @see java.util.List#retainAll(java.util.Collection)
-	 */
+	protected boolean retainItemsInList(Collection<?> items, List<?> list, String listName) {
+		return this.getChangeSupport().retainItemsInList(items, list, listName);
+	}
+
 	protected boolean retainItemsInList(Iterable<?> items, List<?> list, String listName) {
-		return this.retainItemsInList(items.iterator(), list, listName);
+		return this.getChangeSupport().retainItemsInList(items, list, listName);
 	}
 
-	/**
-	 * Convenience method.
-	 * Retain the specified items in the specified bound list
-	 * and fire the appropriate event if necessary.
-	 * Return whether the collection changed.
-	 * @see java.util.List#retainAll(java.util.Collection)
-	 */
 	protected boolean retainItemsInList(Iterator<?> items, List<?> list, String listName) {
-		Collection<?> items2 = CollectionTools.collection(items);
-		Collection<?> removedItems = CollectionTools.collection(list);
-		removedItems.removeAll(items2);
-		return this.removeItemsFromList(removedItems, list, listName);
+		return this.getChangeSupport().retainItemsInList(items, list, listName);
 	}
 
-	/**
-	 * Convenience method.
-	 * Set the specified item in the specified bound list
-	 * and fire the appropriate event if necessary.
-	 * Return the replaced item.
-	 * @see java.util.List#set(int, Object)
-	 */
 	protected <E> E setItemInList(int index, E item, List<E> list, String listName) {
-		E replacedItem = list.set(index, item);
-		this.fireItemReplaced(listName, index, item, replacedItem);
-		return replacedItem;
+		return this.getChangeSupport().setItemInList(index, item, list, listName);
 	}
 
-	/**
-	 * Convenience method.
-	 * Replace the specified item in the specified bound list
-	 * and fire the appropriate event if necessary.
-	 * Return the replaced item.
-	 * @see java.util.List#set(int, Object)
-	 */
-	protected <E> E replaceItemInList(E oldItem, E newItem, List<E> list, String listName) {
-		return this.setItemInList(list.indexOf(oldItem), newItem, list, listName);
+	protected <E> int replaceItemInList(E oldItem, E newItem, List<E> list, String listName) {
+		return this.getChangeSupport().replaceItemInList(oldItem, newItem, list, listName);
 	}
 
-	/**
-	 * Convenience method.
-	 * Set the specified items in the specified bound list
-	 * and fire the appropriate event if necessary.
-	 * Return the replaced items.
-	 * @see java.util.List#set(int, Object)
-	 */
 	protected <E> List<E> setItemsInList(int index, E[] items, List<E> list, String listName) {
-		return this.setItemsInList(index, Arrays.asList(items), list, listName);
+		return this.getChangeSupport().setItemsInList(index, items, list, listName);
 	}
 
-	/**
-	 * Convenience method.
-	 * Set the specified items in the specified bound list
-	 * and fire the appropriate event if necessary.
-	 * Return the replaced items.
-	 * @see java.util.List#set(int, Object)
-	 */
 	protected <E> List<E> setItemsInList(int index, List<? extends E> items, List<E> list, String listName) {
-		List<E> subList = list.subList(index, index + items.size());
-		List<E> replacedItems = new ArrayList<E>(subList);
-		for (int i = 0; i < items.size(); i++) {
-			subList.set(i, items.get(i));
-		}
-		this.fireItemsReplaced(listName, index, items, replacedItems);
-		return replacedItems;
+		return this.getChangeSupport().setItemsInList(index, items, list, listName);
 	}
 
-	/**
-	 * Convenience method.
-	 * Move items in the specified list from the specified source index to the
-	 * specified target index for the specified length.
-	 */
 	protected <E> void moveItemsInList(int targetIndex, int sourceIndex, int length, List<E> list, String listName) {
-		CollectionTools.move(list, targetIndex, sourceIndex, length);
-		this.fireItemsMoved(listName, targetIndex, sourceIndex, length);
+		this.getChangeSupport().moveItemsInList(targetIndex, sourceIndex, length, list, listName);
 	}
 
-	/**
-	 * Convenience method.
-	 * Move an item in the specified list from the specified source index to the
-	 * specified target index.
-	 */
 	protected <E> void moveItemInList(int targetIndex, int sourceIndex, List<E> list, String listName) {
-		CollectionTools.move(list, targetIndex, sourceIndex);
-		this.fireItemMoved(listName, targetIndex, sourceIndex);
+		this.getChangeSupport().moveItemInList(targetIndex, sourceIndex, list, listName);
 	}
 
-	/**
-	 * Convenience method.
-	 * Clear the entire list
-	 * and fire the appropriate event if necessary.
-	 * Return whether the list changed.
-	 * @see java.util.List#clear()
-	 */
 	protected boolean clearList(List<?> list, String listName) {
-		if (list.isEmpty()) {
-			return false;
-		}
-		list.clear();
-		this.fireListCleared(listName);
-		return true;
+		return this.getChangeSupport().clearList(list, listName);
+	}
+
+	protected <E> boolean synchronizeList(List<E> newList, List<E> list, String listName) {
+		return this.getChangeSupport().synchronizeList(newList, list, listName);
+	}
+
+	protected <E> boolean synchronizeList(Iterator<E> newList, List<E> list, String listName) {
+		return this.getChangeSupport().synchronizeList(newList, list, listName);
 	}
 
 
@@ -802,101 +573,6 @@ public abstract class AbstractModel implements Model, Serializable {
 		this.getChangeSupport().removeTreeChangeListener(treeName, listener);
 	}
 
-	protected final void fireNodeAdded(String treeName, Object[] path) {
-		this.getChangeSupport().fireNodeAdded(treeName, path);
-	}
-
-	protected final void fireNodeAdded(TreeChangeEvent event) {
-		this.getChangeSupport().fireNodeAdded(event);
-	}
-
-	protected final void fireNodeRemoved(String treeName, Object[] path) {
-		this.getChangeSupport().fireNodeRemoved(treeName, path);
-	}
-
-	protected final void fireNodeRemoved(TreeChangeEvent event) {
-		this.getChangeSupport().fireNodeRemoved(event);
-	}
-
-	protected final void fireTreeCleared(String treeName) {
-		this.getChangeSupport().fireTreeCleared(treeName);
-	}
-
-	protected final void fireTreeCleared(TreeChangeEvent event) {
-		this.getChangeSupport().fireTreeCleared(event);
-	}
-
-	protected final void fireTreeChanged(String treeName) {
-		this.getChangeSupport().fireTreeChanged(treeName);
-	}
-
-	protected final void fireTreeChanged(String treeName, Object[] path) {
-		this.getChangeSupport().fireTreeChanged(treeName, path);
-	}
-
-	protected final void fireTreeChanged(TreeChangeEvent event) {
-		this.getChangeSupport().fireTreeChanged(event);
-	}
-
-
-	// ********** queries **********
-
-	/**
-	 * Return whether there are any state change listeners.
-	 */
-	public boolean hasAnyStateChangeListeners() {
-		return this.getChangeSupport().hasAnyStateChangeListeners();
-	}
-
-	/**
-	 * Return whether there are no state change listeners.
-	 */
-	public boolean hasNoStateChangeListeners() {
-		return ! this.hasAnyStateChangeListeners();
-	}
-
-	/**
-	 * Return whether there are any property change listeners for a specific property.
-	 */
-	public boolean hasAnyPropertyChangeListeners(String propertyName) {
-		return this.getChangeSupport().hasAnyPropertyChangeListeners(propertyName);
-	}
-
-	/**
-	 * Return whether there are any property change listeners for a specific property.
-	 */
-	public boolean hasNoPropertyChangeListeners(String propertyName) {
-		return ! this.hasAnyPropertyChangeListeners(propertyName);
-	}
-
-	/**
-	 * Return whether there are any collection change listeners for a specific collection.
-	 */
-	public boolean hasAnyCollectionChangeListeners(String collectionName) {
-		return this.getChangeSupport().hasAnyCollectionChangeListeners(collectionName);
-	}
-
-	/**
-	 * Return whether there are any collection change listeners for a specific collection.
-	 */
-	public boolean hasNoCollectionChangeListeners(String collectionName) {
-		return ! this.hasAnyCollectionChangeListeners(collectionName);
-	}
-
-	/**
-	 * Return whether there are any list change listeners for a specific list.
-	 */
-	public boolean hasAnyListChangeListeners(String listName) {
-		return this.getChangeSupport().hasAnyListChangeListeners(listName);
-	}
-
-	/**
-	 * Return whether there are any list change listeners for a specific list.
-	 */
-	public boolean hasNoListChangeListeners(String listName) {
-		return ! this.hasAnyListChangeListeners(listName);
-	}
-
 	/**
 	 * Return whether there are any tree change listeners for a specific tree.
 	 */
@@ -909,6 +585,60 @@ public abstract class AbstractModel implements Model, Serializable {
 	 */
 	public boolean hasNoTreeChangeListeners(String treeName) {
 		return ! this.hasAnyTreeChangeListeners(treeName);
+	}
+
+	/**
+	 * Return whether there are any tree change listeners.
+	 */
+	public boolean hasAnyTreeChangeListeners() {
+		return this.getChangeSupport().hasAnyTreeChangeListeners();
+	}
+
+	/**
+	 * Return whether there are any tree change listeners.
+	 */
+	public boolean hasNoTreeChangeListeners() {
+		return ! this.hasAnyTreeChangeListeners();
+	}
+
+	protected final void fireNodeAdded(TreeChangeEvent event) {
+		this.getChangeSupport().fireNodeAdded(event);
+	}
+
+	protected final void fireNodeAdded(String treeName, Object[] path) {
+		this.getChangeSupport().fireNodeAdded(treeName, path);
+	}
+
+	protected final void fireNodeRemoved(TreeChangeEvent event) {
+		this.getChangeSupport().fireNodeRemoved(event);
+	}
+
+	protected final void fireNodeRemoved(String treeName, Object[] path) {
+		this.getChangeSupport().fireNodeRemoved(treeName, path);
+	}
+
+	protected final void fireTreeCleared(TreeChangeEvent event) {
+		this.getChangeSupport().fireTreeCleared(event);
+	}
+
+	protected final void fireTreeCleared(String treeName, Object[] path) {
+		this.getChangeSupport().fireTreeCleared(treeName, path);
+	}
+
+	protected final void fireTreeCleared(String treeName) {
+		this.getChangeSupport().fireTreeCleared(treeName);
+	}
+
+	protected final void fireTreeChanged(TreeChangeEvent event) {
+		this.getChangeSupport().fireTreeChanged(event);
+	}
+
+	protected final void fireTreeChanged(String treeName, Object[] path) {
+		this.getChangeSupport().fireTreeChanged(treeName, path);
+	}
+
+	protected final void fireTreeChanged(String treeName) {
+		this.getChangeSupport().fireTreeChanged(treeName);
 	}
 
 

@@ -126,8 +126,8 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends BaseXmlEmbedded> 
 		fireItemMoved(BaseEmbeddedMapping.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, targetIndex, sourceIndex);		
 	}
 
-	public OrmAttributeOverride getAttributeOverrideNamed(String name) {
-		return (OrmAttributeOverride) getOverrideNamed(name, attributeOverrides());
+	public OrmAttributeOverride getAttributeOverrideNamed(String attributeName) {
+		return (OrmAttributeOverride) getOverrideNamed(attributeName, attributeOverrides());
 	}
 
 	protected BaseOverride getOverrideNamed(String name, ListIterator<? extends BaseOverride> overrides) {
@@ -352,9 +352,6 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends BaseXmlEmbedded> 
 	//************ static methods ************
 	
 	public static Embeddable embeddableFor(JavaPersistentAttribute javaPersistentAttribute) {
-		if (javaPersistentAttribute == null) {
-			return null;
-		}
-		return MappingTools.getEmbeddableFor(javaPersistentAttribute);
+		return (javaPersistentAttribute == null) ? null : javaPersistentAttribute.getEmbeddable();
 	}
 }

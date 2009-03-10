@@ -14,7 +14,7 @@ import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 
 /**
- * 
+ * Java attribute mapping
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -22,8 +22,12 @@ import org.eclipse.jpt.core.resource.java.JavaResourceNode;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface JavaAttributeMapping extends AttributeMapping, JavaJpaContextNode
+public interface JavaAttributeMapping
+	extends AttributeMapping, JavaJpaContextNode
 {
+	/**
+	 * Covariant override.
+	 */
 	JavaPersistentAttribute getPersistentAttribute();
 	
 	void initialize(JavaResourceNode mappingAnnotation);
@@ -43,6 +47,6 @@ public interface JavaAttributeMapping extends AttributeMapping, JavaJpaContextNo
 	 * Return all fully qualfied annotation names that are supported with this mapping type.
 	 * This includes all possible annotations, not just the ones that currently exist on the attribute.
 	 */
-	Iterator<String> correspondingAnnotationNames();
+	Iterator<String> supportingAnnotationNames();
 
 }

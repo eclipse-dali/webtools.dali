@@ -31,7 +31,10 @@ public class EclipseLinkJpaProjectImpl
 	}
 	
 	public JpaXmlResource getDefaultEclipseLinkOrmXmlResource() {
-		return getMappingFileResource(JptEclipseLinkCorePlugin.DEFAULT_ECLIPSELINK_ORM_XML_FILE_PATH, JptEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_CONTENT_TYPE);
+		return (JpaXmlResource) this.getResourceModel(
+				JptEclipseLinkCorePlugin.DEFAULT_ECLIPSELINK_ORM_XML_FILE_PATH,
+				JptEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_CONTENT_TYPE
+			);
 	}
 
 }

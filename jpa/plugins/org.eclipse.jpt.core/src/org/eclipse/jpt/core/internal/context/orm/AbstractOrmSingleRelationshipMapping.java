@@ -263,15 +263,9 @@ public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRe
 
 	// ********** AbstractOrmRelationshipMapping implementation **********
 
-	/**
-	 * eliminate any "container" types
-	 */
 	@Override
 	protected String getResourceDefaultTargetEntity() {
-		if (this.getJavaResourcePersistentAttribute().typeIsContainer()) {
-			return null;
-		}
-		return this.getJavaResourcePersistentAttribute().getQualifiedReferenceEntityTypeName();
+		return this.getJavaPersistentAttribute().getSingleReferenceEntityTypeName();
 	}
 
 

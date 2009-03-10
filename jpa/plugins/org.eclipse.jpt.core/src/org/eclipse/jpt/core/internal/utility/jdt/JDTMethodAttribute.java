@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.utility.jdt;
 
-import java.beans.Introspector;
 import java.util.Arrays;
 import java.util.List;
 
@@ -26,6 +25,7 @@ import org.eclipse.jpt.core.utility.jdt.Type;
 import org.eclipse.jpt.utility.CommandExecutor;
 import org.eclipse.jpt.utility.JavaType;
 import org.eclipse.jpt.utility.MethodSignature;
+import org.eclipse.jpt.utility.internal.NameTools;
 import org.eclipse.jpt.utility.internal.SimpleMethodSignature;
 
 /**
@@ -139,7 +139,7 @@ public class JDTMethodAttribute
 
 	@Override
 	public boolean matches(String memberName, int occurrence) {
-		throw new UnsupportedOperationException("Use #matches(org.eclipse.jdt.core.dom.MethodDeclaration, int)."); //$NON-NLS-1$
+		throw new UnsupportedOperationException("Use #matches(MethodSignature, int)."); //$NON-NLS-1$
 	}
 
 	public TextRange getNameTextRange(CompilationUnit astRoot) {
@@ -150,27 +150,17 @@ public class JDTMethodAttribute
 	 * return "foo" for a method named "getFoo" or "isFoo"
 	 */
 	public String getAttributeName() {
-		String name = this.getName_();
-		int beginIndex = 0;
-		if (name.startsWith("get")) { //$NON-NLS-1$
-			beginIndex = 3;
-		} else if (name.startsWith("is")) { //$NON-NLS-1$
-			beginIndex = 2;
-		}
-		return Introspector.decapitalize(name.substring(beginIndex));
+		return NameTools.convertGetterMethodNameToPropertyName(this.getName_());
 	}
 
 	public ITypeBinding getTypeBinding(CompilationUnit astRoot) {
 		IMethodBinding methodBinding = getBodyDeclaration(astRoot).resolveBinding();
-		if (methodBinding != null) {
-			return methodBinding.getReturnType();
-		}
-		return null;
+		return (methodBinding == null) ? null : methodBinding.getReturnType();
 	}
 
 	public boolean isPersistable(CompilationUnit astRoot) {
 		IMethodBinding binding = this.getBinding(astRoot);
-		return (binding == null) ? false : JPTTools.methodIsPersistablePropertyGetter(binding);
+		return (binding == null) ? false : JPTTools.methodIsPersistablePropertyGetter(new JPTToolsAdapter(binding));
 	}
 
 
@@ -178,6 +168,77 @@ public class JDTMethodAttribute
 
 	protected MethodDeclaration[] getDeclaringTypeMethodDeclarations(CompilationUnit astRoot) {
 		return this.getDeclaringTypeDeclaration(astRoot).getMethods();
+	}
+
+
+	// ********** JPTTools adapter **********
+
+	/**
+	 * JPTTools needs an adapter so it can work with either an IMethod
+	 * or an IMethodBinding etc.
+	 */
+	protected static class JPTToolsAdapter implements JPTTools.MethodAdapter {
+		private final IMethodBinding methodBinding;
+
+		protected JPTToolsAdapter(IMethodBinding methodBinding) {
+			super();
+			if (methodBinding == null) {
+				throw new NullPointerException();
+			}
+			this.methodBinding = methodBinding;
+		}
+
+		public String getName() {
+			return this.methodBinding.getName();
+		}
+
+		public int getModifiers() {
+			return this.methodBinding.getModifiers();
+		}
+
+		public String getReturnTypeName() {
+			ITypeBinding returnType = this.methodBinding.getReturnType();
+			return (returnType == null) ? null : returnType.getTypeDeclaration().getQualifiedName();
+		}
+
+		public boolean isConstructor() {
+			return this.methodBinding.isConstructor();
+		}
+
+		public int getParametersLength() {
+			return this.methodBinding.getParameterTypes().length;
+		}
+
+		public JPTTools.MethodAdapter getSibling(String name) {
+			ITypeBinding typeBinding = this.methodBinding.getDeclaringClass();
+			if (typeBinding == null) {
+				return null;
+			}
+			for (IMethodBinding sibling : typeBinding.getDeclaredMethods()) {
+				if ((sibling.getParameterTypes().length == 0)
+						&& sibling.getName().equals(name)) {
+					return new JPTToolsAdapter(sibling);
+				}
+			}
+			return null;
+		}
+
+		public JPTTools.MethodAdapter getSibling(String name, String parameterTypeName) {
+			ITypeBinding typeBinding = this.methodBinding.getDeclaringClass();
+			if (typeBinding == null) {
+				return null;
+			}
+			for (IMethodBinding sibling : typeBinding.getDeclaredMethods()) {
+				ITypeBinding[] parmTypes = sibling.getParameterTypes();
+				if ((parmTypes.length == 1)
+						&& parmTypes[0].getQualifiedName().equals(parameterTypeName)
+						&& sibling.getName().equals(name)) {
+					return new JPTToolsAdapter(sibling);
+				}
+			}
+			return null;
+		}
+
 	}
 
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,7 +13,7 @@ import org.eclipse.jpt.core.JpaStructureNode;
 
 
 /**
- * 
+ * Persistent "attribute" (field or property)
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -49,6 +49,7 @@ public interface PersistentAttribute
 	 * Return the attribute's "specified" mapping, could be null
 	 */
 	AttributeMapping getSpecifiedMapping();
+		String SPECIFIED_MAPPING_PROPERTY = "specifiedMapping"; //$NON-NLS-1$
 	
 	/**
 	 * Clients should call this method to set the attribute's mapping.
@@ -56,7 +57,6 @@ public interface PersistentAttribute
 	 * cleared and the attribute's mapping to be its "default" mapping.
 	 */
 	void setSpecifiedMappingKey(String key);
-		String SPECIFIED_MAPPING_PROPERTY = "specifiedMapping"; //$NON-NLS-1$
 		String DEFAULT_MAPPING_PROPERTY = "defaultMapping"; //$NON-NLS-1$
 	
 	TypeMapping getTypeMapping();

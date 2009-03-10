@@ -14,7 +14,7 @@ import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 
 /**
- * 
+ * Generic Java persistent attribute
  */
 public class GenericJavaPersistentAttribute
 	extends AbstractJavaPersistentAttribute
@@ -25,7 +25,7 @@ public class GenericJavaPersistentAttribute
 	}
 
 	
-	//****************** AccessHolder implementation *******************
+	// ********** AccessHolder implementation **********
 	
 	/**
 	 * GenericJavaPersistentAttribute does not support specified access (no access element in 1.0), so we return null
@@ -34,7 +34,8 @@ public class GenericJavaPersistentAttribute
 		return null;
 	}
 	
-	public void setSpecifiedAccess(@SuppressWarnings("unused") AccessType newSpecifiedAccess) {
-		throw new UnsupportedOperationException("specifiedAccess is not supported for GenericJavaPersistentAttribute"); //$NON-NLS-1$
+	public void setSpecifiedAccess(AccessType specifiedAccess) {
+		throw new UnsupportedOperationException();
 	}
+
 }

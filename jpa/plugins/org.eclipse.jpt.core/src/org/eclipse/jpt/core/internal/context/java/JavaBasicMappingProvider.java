@@ -50,7 +50,7 @@ public class JavaBasicMappingProvider
 	}
 	
 	public boolean defaultApplies(JavaPersistentAttribute persistentAttribute) {
-		return persistentAttribute.getResourcePersistentAttribute().typeIsBasic();
+		return persistentAttribute.typeIsBasic();
 	}
 
 }

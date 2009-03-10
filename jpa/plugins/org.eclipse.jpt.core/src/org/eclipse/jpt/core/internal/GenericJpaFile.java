@@ -91,6 +91,10 @@ public class GenericJpaFile
 		return this.resourceModel;
 	}
 
+	public JpaResourceModel getResourceModel(IContentType ct) {
+		return this.contentType.isKindOf(ct) ? this.resourceModel : null;
+	}
+
 
 	// ********** root structure nodes **********
 

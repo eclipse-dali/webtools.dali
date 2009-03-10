@@ -274,15 +274,9 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 		return new JoinColumnOwner();
 	}
 	
-	/**
-	 * eliminate any "container" types
-	 */
 	@Override
 	protected String buildDefaultTargetEntity() {
-		if (this.resourcePersistentAttribute.typeIsContainer()) {
-			return null;
-		}
-		return this.resourcePersistentAttribute.getQualifiedReferenceEntityTypeName();
+		return this.getPersistentAttribute().getSingleReferenceEntityTypeName();
 	}
 
 

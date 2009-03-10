@@ -114,7 +114,7 @@ public class GenericJavaIdMapping
 		return IdAnnotation.ANNOTATION_NAME;
 	}
 	
-	public Iterator<String> correspondingAnnotationNames() {
+	public Iterator<String> supportingAnnotationNames() {
 		return new ArrayIterator<String>(
 			JPA.COLUMN,
 			JPA.GENERATED_VALUE,

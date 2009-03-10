@@ -38,10 +38,19 @@ public interface JpaFile
 	IContentType getContentType();
 
 	/**
-	 * Return the resource model corresponding to the file; typically a JPA
-	 * compilation unit or a JPA XML resource.
+	 * Return the resource model corresponding to the JPA file; typically a JPA
+	 * compilation unit, a JPA XML resource, or a JPA package fragment root (JAR).
 	 */
 	JpaResourceModel getResourceModel();
+
+	/**
+	 * Convenience method. Return the resource model corresponding to the JPA
+	 * file if the file's content is a "kind-of" the specified content type;
+	 * otherwise, return null. This is useful when a client has looked up the
+	 * JPA file via a file name [and assumed content type].
+	 * @see #getResourceModel()
+	 */
+	JpaResourceModel getResourceModel(IContentType contentType);
 
 
 	// ********** root structure nodes **********

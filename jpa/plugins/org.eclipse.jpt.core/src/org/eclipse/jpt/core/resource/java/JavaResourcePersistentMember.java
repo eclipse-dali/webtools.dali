@@ -14,10 +14,9 @@ import java.util.ListIterator;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.jpt.utility.MethodSignature;
 
 /**
- * 
+ * Java source code persistent member
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -52,7 +51,7 @@ public interface JavaResourcePersistentMember
 
 	/**
 	 * Return the mapping annotation with the specified name.
-	 * Return the first if there are duplicates in the source code
+	 * Return the first if there are duplicates in the source code.
 	 */
 	JavaResourceNode getMappingAnnotation(String annotationName);
 
@@ -170,12 +169,6 @@ public interface JavaResourcePersistentMember
 	boolean isFor(String memberName, int occurrence);
 
 	/**
-	 * Return whether the Java resource persistent member is for the specified
-	 * method.
-	 */
-	boolean isFor(MethodSignature methodSignature, int occurrence);
-
-	/**
 	 * Return the text range for the member's name.
 	 */
 	TextRange getNameTextRange(CompilationUnit astRoot);
@@ -184,8 +177,8 @@ public interface JavaResourcePersistentMember
 	// ********** behavior **********
 
 	/**
-	 * Resolve type information that could be dependent on other files being
-	 * added or removed.
+	 * Resolve type information that could be dependent on changes elsewhere
+	 * in the workspace.
 	 */
 	void resolveTypes(CompilationUnit astRoot);
 

@@ -69,7 +69,7 @@ public class GenericJavaVersionMapping extends AbstractJavaAttributeMapping<Vers
 		return VersionAnnotation.ANNOTATION_NAME;
 	}
 	
-	public Iterator<String> correspondingAnnotationNames() {
+	public Iterator<String> supportingAnnotationNames() {
 		return new ArrayIterator<String>(
 			JPA.COLUMN,
 			JPA.TEMPORAL);

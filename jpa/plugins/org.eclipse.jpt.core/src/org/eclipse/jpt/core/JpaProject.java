@@ -113,25 +113,26 @@ public interface JpaProject
 	// ********** xml resources **********
 
 	/**
-	 * Return the resource model object that corresponds to the file
-	 * 'META-INF/persistence.xml' if that file has the persistence ContentType
+	 * Return the XML resource model corresponding to the file
+	 * 'META-INF/persistence.xml' if that file has the persistence content type
+	 * (org.eclipse.jpt.core.content.persistence).
 	 * 
 	 * @see JptCorePlugin.DEFAULT_PERSISTENCE_XML_FILE_PATH
 	 */
 	JpaXmlResource getPersistenceXmlResource();
 	
 	/**
-	 * Return the resource model object that corresponds to the file
-	 * at the given filePath if that file has the mapping file ContentType
+	 * Return the XML resource model corresponding to the specified file
+	 * if that file has the mapping file content type
 	 * (org.eclipse.jpt.core.content.mappingFile)
 	 */
-	JpaXmlResource getMappingFileResource(String filePath);
+	JpaXmlResource getMappingFileXmlResource(String filePath);
 
 	/**
-	 * Return the resource model object that corresponds to the file
-	 * 'META-INF/orm.xml' if that file has the mapping file ContentType
+	 * Return the XML resource model corresponding to the file
+	 * 'META-INF/orm.xml' if that file has the mapping file content type.
 	 * 
-	 * @see JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH
+	 * @see JptCorePlugin#DEFAULT_ORM_XML_FILE_PATH
 	 */
 	JpaXmlResource getDefaultOrmXmlResource();
 	
@@ -139,7 +140,8 @@ public interface JpaProject
 	// ********** Java resources **********
 
 	/**
-	 * Return the names of the JPA project's annotated classes.
+	 * Return the names of the JPA project's annotated Java classes
+	 * (ignoring classes in JARs referenced in the persistence.xml).
 	 */
 	Iterator<String> annotatedClassNames();
 

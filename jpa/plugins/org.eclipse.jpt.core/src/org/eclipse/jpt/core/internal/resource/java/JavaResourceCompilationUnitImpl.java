@@ -119,7 +119,7 @@ public class JavaResourceCompilationUnitImpl
 	// ********** AbstractJavaResourceNode overrides **********
 
 	@Override
-	public JavaResourceCompilationUnit getJavaResourceCompilationUnit() {
+	public JavaResourceCompilationUnit getRoot() {
 		return this;
 	}
 
@@ -159,7 +159,7 @@ public class JavaResourceCompilationUnitImpl
 	public ICompilationUnit getCompilationUnit() {
 		return this.compilationUnit;
 	}
-	
+
 	public Iterator<JavaResourcePersistentType> persistableTypes() {
 		return (this.persistentType == null) ?
 				EmptyIterator.<JavaResourcePersistentType>instance() :

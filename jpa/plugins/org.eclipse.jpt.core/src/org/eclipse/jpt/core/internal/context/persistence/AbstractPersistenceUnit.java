@@ -21,6 +21,7 @@ import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.AccessType;
+import org.eclipse.jpt.core.context.Embeddable;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.Generator;
 import org.eclipse.jpt.core.context.MappingFilePersistenceUnitDefaults;
@@ -1311,6 +1312,15 @@ public abstract class AbstractPersistenceUnit
 		}
 		TypeMapping typeMapping = persistentType.getMapping();
 		return (typeMapping instanceof Entity) ? (Entity) typeMapping : null;
+	}
+
+	public Embeddable getEmbeddable(String typeName) {
+		PersistentType persistentType = this.getPersistentType(typeName);
+		if (persistentType == null) {
+			return null;
+		}
+		TypeMapping typeMapping = persistentType.getMapping();
+		return (typeMapping instanceof Embeddable) ? (Embeddable) typeMapping : null;
 	}
 
 	public boolean containsOffset(int textOffset) {

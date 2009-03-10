@@ -12,6 +12,7 @@ package org.eclipse.jpt.eclipselink.core.internal;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.context.MappingFile;
+import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.core.context.java.JavaEmbeddable;
 import org.eclipse.jpt.core.context.java.JavaEmbeddedIdMapping;
@@ -46,6 +47,7 @@ import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.platform.GenericJpaFactory;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
@@ -61,6 +63,7 @@ import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaMan
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaMappedSuperclassImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaOneToManyMappingImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaOneToOneMappingImpl;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaPersistentAttribute;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaVersionMappingImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaBasicCollectionMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaBasicMapMapping;
@@ -286,6 +289,11 @@ public class EclipseLinkJpaFactory
 	
 	// ********** Java Context Model **********
 
+	@Override
+	public JavaPersistentAttribute buildJavaPersistentAttribute(PersistentType parent, JavaResourcePersistentAttribute jrpa) {
+		return new EclipseLinkJavaPersistentAttribute(parent, jrpa);
+	}
+	
 	@Override
 	public JavaBasicMapping buildJavaBasicMapping(JavaPersistentAttribute parent) {
 		return new EclipseLinkJavaBasicMappingImpl(parent);

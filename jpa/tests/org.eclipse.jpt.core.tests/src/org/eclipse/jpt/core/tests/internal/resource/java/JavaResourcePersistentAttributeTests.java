@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.resource.java;
 
+import java.lang.reflect.Modifier;
 import java.util.Iterator;
 import java.util.List;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -499,7 +500,7 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 	
 		idField(cu).edit(new Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				((IdImpl) attributeResource.getMappingAnnotation()).getDeclarationAnnotationAdapter().removeAnnotation(declaration);
+				IdImpl.DECLARATION_ANNOTATION_ADAPTER.removeAnnotation(declaration);
 			}
 		});		
 		
@@ -755,7 +756,7 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 		JavaResourcePersistentAttribute attributeResource = attributes.get(0);
 		
 		assertEquals("foo", attributeResource.getName());
-		assertTrue(attributeResource.isForField());
+		assertTrue(attributeResource.isField());
 		assertTrue(attributeResource.isPersistable()); //bug 196200 changed this
 
 		this.javaProject.createCompilationUnit("test", "Foo.java", "public class Foo {}");
@@ -763,7 +764,7 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 		assertTrue(attributeResource.isPersistable());
 	}
 	
-	public void testGetQualifiedTypeName() throws Exception {
+	public void testGetTypeName() throws Exception {
 		ICompilationUnit cu = createTestEntityWithNonResolvingField();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		@SuppressWarnings("unchecked")
@@ -771,11 +772,11 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 		JavaResourcePersistentAttribute attributeResource = attributes.get(0);
 		
 		assertEquals("foo", attributeResource.getName());
-		assertEquals("test.Foo", attributeResource.getQualifiedTypeName()); //bug 196200 changed this
+		assertEquals("test.Foo", attributeResource.getTypeName()); //bug 196200 changed this
 
 		this.javaProject.createCompilationUnit("test", "Foo.java", "public class Foo {}");
 		
-		assertEquals("test.Foo", attributeResource.getQualifiedTypeName());
+		assertEquals("test.Foo", attributeResource.getTypeName());
 	}
 	
 	
@@ -796,7 +797,7 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 		JavaResourcePersistentAttribute attributeResource = attributes.get(0);
 		
 		assertEquals("foo", attributeResource.getName());
-		assertTrue(attributeResource.isForProperty());
+		assertTrue(attributeResource.isProperty());
 		assertTrue(attributeResource.isPersistable());//bug 196200 changed this
 
 		this.javaProject.createCompilationUnit("test", "Foo.java", "public class Foo {}");
@@ -827,7 +828,7 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attribute = typeResource.persistableAttributes().next();
 		
-		assertTrue(attribute.isPublic());
+		assertTrue(Modifier.isPublic(attribute.getModifiers()));
 	}
 	
 	public void testIsPublicFalse() throws Exception {
@@ -835,7 +836,7 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attribute = typeResource.persistableAttributes().next();
 		
-		assertFalse(attribute.isPublic());
+		assertFalse(Modifier.isPublic(attribute.getModifiers()));
 	}
 
 	public void testIsFinal() throws Exception {
@@ -843,7 +844,7 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attribute = typeResource.persistableAttributes().next();
 		
-		assertTrue(attribute.isFinal());		
+		assertTrue(Modifier.isFinal(attribute.getModifiers()));
 	}
 	
 	public void testIsFinalFalse() throws Exception {
@@ -851,7 +852,7 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attribute = typeResource.persistableAttributes().next();
 		
-		assertFalse(attribute.isFinal());		
+		assertFalse(Modifier.isFinal(attribute.getModifiers()));
 	}
 	
 	//TODO add tests for JPTTools static methods

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.resource.java;
 
+import org.eclipse.jdt.core.IAnnotation;
+import org.eclipse.jpt.core.resource.jar.JarResourcePersistentMember;
 import org.eclipse.jpt.core.utility.jdt.Member;
 
 /**
@@ -29,14 +31,28 @@ import org.eclipse.jpt.core.utility.jdt.Member;
 public interface AnnotationDefinition
 {
 	/**
-	 * Return the fully qualified annotation name
+	 * Return the annotation's name.
 	 */
 	String getAnnotationName();
 	
 	/**
-	 * Build and return an Annotation given the Member
+	 * Build and return an annotation for the specified member.
 	 */
 	Annotation buildAnnotation(JavaResourcePersistentMember parent, Member member);
 	
+//	/**
+//	 * Build and return an annotation for the specified JDT annotation.
+//	 */
+//	Annotation buildAnnotation(JarResourcePersistentMember parent, IAnnotation jdtAnnotation);
+//	
+	/**
+	 * Build and return a null annotation for the specified member.
+	 */
 	Annotation buildNullAnnotation(JavaResourcePersistentMember parent, Member member);
+
+//	/**
+//	 * Build and return a null annotation.
+//	 */
+//	Annotation buildNullAnnotation(JarResourcePersistentMember parent);
+//
 }

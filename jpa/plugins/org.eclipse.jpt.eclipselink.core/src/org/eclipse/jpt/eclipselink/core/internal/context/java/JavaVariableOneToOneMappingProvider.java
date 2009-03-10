@@ -50,17 +50,8 @@ public class JavaVariableOneToOneMappingProvider
 		return ((EclipseLinkJpaFactory) factory).buildJavaVariableOneToOneMapping(parent);
 	}
 	
-	
 	public boolean defaultApplies(JavaPersistentAttribute persistentAttribute) {
-		if (persistentAttribute.getResourcePersistentAttribute().typeIsInterface()) {
-			if (persistentAttribute.getResourcePersistentAttribute().typeIsContainer()) {
-				return false;
-			}
-			if (persistentAttribute.getResourcePersistentAttribute().typeIsValueHolder()) {
-				return false;
-			}
-			return true;
-		}
-		return false;
+		return ((AbstractEclipseLinkJavaPersistentAttribute) persistentAttribute).typeIsValidForVariableOneToOne();
 	}
+
 }

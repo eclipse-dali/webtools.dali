@@ -23,7 +23,6 @@ import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -52,10 +51,6 @@ public abstract class AbstractOrmPersistentAttribute extends AbstractXmlContextN
 	
 	public JavaPersistentAttribute getJavaPersistentAttribute() {
 		return this.javaPersistentAttribute;
-	}
-	
-	protected JavaResourcePersistentAttribute getJavaResourcePersistentAttribute() {
-		return this.javaPersistentAttribute.getResourcePersistentAttribute();
 	}
 	
 	protected void setJavaPersistentAttribute(JavaPersistentAttribute javaPersistentAttribute) {
@@ -178,7 +173,7 @@ public abstract class AbstractOrmPersistentAttribute extends AbstractXmlContextN
 		return this.owner.findJavaPersistentAttribute(this);
 	}
 	
-	public JpaStructureNode getStructureNode(@SuppressWarnings("unused") int offset) {
+	public JpaStructureNode getStructureNode(int offset) {
 		return this;
 	}
 
@@ -229,13 +224,12 @@ public abstract class AbstractOrmPersistentAttribute extends AbstractXmlContextN
 		if (this.javaPersistentAttribute == null) {
 			return;
 		}
-		JavaResourcePersistentAttribute jrpa = this.getJavaResourcePersistentAttribute();
 
-		if (jrpa.isForField()) {
-			if (jrpa.isFinal()) {
+		if (this.javaPersistentAttribute.isField()) {
+			if (this.javaPersistentAttribute.isFinal()) {
 				messages.add(this.buildAttributeMessage(JpaValidationMessages.PERSISTENT_ATTRIBUTE_FINAL_FIELD));
 			}
-			if (jrpa.isPublic()) {
+			if (this.javaPersistentAttribute.isPublic()) {
 				messages.add(this.buildAttributeMessage(JpaValidationMessages.PERSISTENT_ATTRIBUTE_PUBLIC_FIELD));
 			}
 		} else {

@@ -35,7 +35,7 @@ public class GenericJavaNullAttributeMapping extends AbstractJavaAttributeMappin
 		return null;
 	}
 	
-	public Iterator<String> correspondingAnnotationNames() {
+	public Iterator<String> supportingAnnotationNames() {
 		return EmptyIterator.instance();
 	}
 	

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the terms of
  * the Eclipse Public License v1.0, which accompanies this distribution and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
@@ -10,15 +10,13 @@
 package org.eclipse.jpt.core.internal.context;
 
 import java.util.Iterator;
-import org.eclipse.jpt.core.MappingKeys;
+
 import org.eclipse.jpt.core.context.ColumnMapping;
 import org.eclipse.jpt.core.context.Embeddable;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.PersistentAttribute;
-import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.RelationshipMapping;
-import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.db.Table;
 
 /**
@@ -153,23 +151,7 @@ public class MappingTools {
 		}
 		return targetEntity.getPrimaryKeyColumnName();
 	}
-	
-	
-	public static Embeddable getEmbeddableFor(JavaPersistentAttribute persistentAttribute) {
-		String qualifiedTypeName = persistentAttribute.getResourcePersistentAttribute().getQualifiedTypeName();
-		if (qualifiedTypeName == null) {
-			return null;
-		}
-		PersistentType persistentType = persistentAttribute.getPersistenceUnit().getPersistentType(qualifiedTypeName);
-		if (persistentType == null) {
-			return null;
-		}
-		if (persistentType.getMappingKey() == MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY) {
-			return (Embeddable) persistentType.getMapping();
-		}
-		return null;
-	}
-	
+
 	public static ColumnMapping getColumnMapping(String attributeName, Embeddable embeddable) {
 		if (attributeName == null || embeddable == null) {
 			return null;

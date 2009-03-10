@@ -36,7 +36,7 @@ public class GenericJavaTransientMapping extends AbstractJavaAttributeMapping<Tr
 		return TransientAnnotation.ANNOTATION_NAME;
 	}
 	
-	public Iterator<String> correspondingAnnotationNames() {
+	public Iterator<String> supportingAnnotationNames() {
 		return EmptyIterator.instance();
 	}
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -47,16 +47,24 @@ public class SingleAspectChangeSupport
 	// ********** internal behavior **********
 
 	private UnsupportedOperationException unsupportedOperationException() {
-		return new UnsupportedOperationException("This Model supports only changes for the listener type \"" + this.listenerClass.getName()
-				+ "\" and the aspect \"" + this.aspectName + "\"");
+		return new UnsupportedOperationException(
+				"This Model supports only changes for the listener type \"" + this.listenerClass.getName() //$NON-NLS-1$
+				+ "\" and the aspect \"" + this.aspectName + '"' //$NON-NLS-1$
+			);
 	}
 
 	private void check(Class<? extends ChangeListener> lClass, String aName) {
 		if (lClass != this.listenerClass) {
-			throw new IllegalArgumentException("This Model supports only changes for the listener type \"" + this.listenerClass.getName() + "\" : \"" + lClass.getName() + "\"");
+			throw new IllegalArgumentException(
+					"This Model supports only changes for the listener type \"" + this.listenerClass.getName() //$NON-NLS-1$
+					+ "\" : \"" + lClass.getName() + '"' //$NON-NLS-1$
+				);
 		}
 		if (aName != this.aspectName) {
-			throw new IllegalArgumentException("This Model supports only changes for the aspect \"" + this.aspectName + "\" : \"" + aName + "\"");
+			throw new IllegalArgumentException(
+					"This Model supports only changes for the aspect \"" + this.aspectName //$NON-NLS-1$
+					+ "\" : \"" + aName + '"' //$NON-NLS-1$
+				);
 		}
 	}
 

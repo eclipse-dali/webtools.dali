@@ -17,7 +17,8 @@ import org.eclipse.jpt.core.resource.java.AccessAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 
-public class EclipseLink1_1JavaPersistentType extends AbstractJavaPersistentType
+public class EclipseLink1_1JavaPersistentType
+	extends AbstractJavaPersistentType
 {
 	protected AccessType specifiedAccess;
 	
@@ -37,25 +38,24 @@ public class EclipseLink1_1JavaPersistentType extends AbstractJavaPersistentType
 		return this.specifiedAccess;
 	}
 	
-	public void setSpecifiedAccess(AccessType newSpecifiedAccess) {
-		AccessType oldAccess = this.specifiedAccess;
-		this.specifiedAccess = newSpecifiedAccess;
-		getAccessAnnotation().setValue(AccessType.toJavaResourceModel(newSpecifiedAccess));
-		firePropertyChanged(SPECIFIED_ACCESS_PROPERTY, oldAccess, newSpecifiedAccess);
+	public void setSpecifiedAccess(AccessType specifiedAccess) {
+		AccessType old = this.specifiedAccess;
+		this.specifiedAccess = specifiedAccess;
+		this.getAccessAnnotation().setValue(AccessType.toJavaResourceModel(specifiedAccess));
+		this.firePropertyChanged(SPECIFIED_ACCESS_PROPERTY, old, specifiedAccess);
 	}
 	
-	protected void setSpecifiedAccess_(AccessType newSpecifiedAccess) {
-		AccessType oldAccess = this.specifiedAccess;
-		this.specifiedAccess = newSpecifiedAccess;
-		firePropertyChanged(SPECIFIED_ACCESS_PROPERTY, oldAccess, newSpecifiedAccess);
+	protected void setSpecifiedAccess_(AccessType specifiedAccess) {
+		AccessType old = this.specifiedAccess;
+		this.specifiedAccess = specifiedAccess;
+		this.firePropertyChanged(SPECIFIED_ACCESS_PROPERTY, old, specifiedAccess);
 	}
 	
 	@Override
 	protected Iterator<JavaResourcePersistentAttribute> persistentAttributes() {
-		AccessType specifiedAccess = getSpecifiedAccess();
-		return specifiedAccess == null
+		return (this.specifiedAccess == null)
 			? super.persistentAttributes()
-			: this.resourcePersistentType.persistableAttributes(AccessType.toJavaResourceModel(specifiedAccess));
+			: this.resourcePersistentType.persistableAttributes(AccessType.toJavaResourceModel(this.specifiedAccess));
 	}
 	
 	@Override
@@ -71,6 +71,7 @@ public class EclipseLink1_1JavaPersistentType extends AbstractJavaPersistentType
 	}
 
 	protected AccessType getResourceAccess() {
-		return AccessType.fromJavaResourceModel(getAccessAnnotation().getValue());
+		return AccessType.fromJavaResourceModel(this.getAccessAnnotation().getValue());
 	}
+
 }

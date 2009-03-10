@@ -365,7 +365,7 @@ public class EclipseLink1_1OrmPersistentAttributeTests extends EclipseLink1_1Orm
 		assertTrue(ormPersistentAttribute.isVirtual());
 		assertNotSame(javaPersistentAttribute, ormPersistentAttribute.getJavaPersistentAttribute());
 		JavaResourcePersistentAttribute javaResourcePersistentAttribute = ormPersistentAttribute.getJavaPersistentAttribute().getResourcePersistentAttribute();
-		assertTrue(javaResourcePersistentAttribute.isForField());
+		assertTrue(javaResourcePersistentAttribute.isField());
 		assertEquals("id", javaResourcePersistentAttribute.getName());
 		assertEquals(javaPersistentType.getResourcePersistentType().persistableFields().next(), javaResourcePersistentAttribute);
 		
@@ -387,7 +387,7 @@ public class EclipseLink1_1OrmPersistentAttributeTests extends EclipseLink1_1Orm
 		ormPersistentAttribute = ormPersistentType.getAttributeNamed("id");
 		assertNotSame(javaPersistentAttribute, ormPersistentAttribute.getJavaPersistentAttribute());
 		javaResourcePersistentAttribute = ormPersistentAttribute.getJavaPersistentAttribute().getResourcePersistentAttribute();
-		assertTrue(javaResourcePersistentAttribute.isForProperty());
+		assertTrue(javaResourcePersistentAttribute.isProperty());
 		assertEquals("id", javaResourcePersistentAttribute.getName());
 		assertEquals(javaPersistentType.getResourcePersistentType().persistableProperties().next(), javaResourcePersistentAttribute);
 		
@@ -432,16 +432,16 @@ public class EclipseLink1_1OrmPersistentAttributeTests extends EclipseLink1_1Orm
 		assertFalse(ormPersistentAttribute.isVirtual());
 		assertEquals(AccessType.PROPERTY, ormPersistentAttribute.getAccess());
 		assertNotSame(javaPersistentAttribute, ormPersistentAttribute.getJavaPersistentAttribute());
-		assertTrue(ormPersistentAttribute.getJavaPersistentAttribute().getResourcePersistentAttribute().isForProperty());
-		assertTrue(javaPersistentAttribute.getResourcePersistentAttribute().isForField());
+		assertTrue(ormPersistentAttribute.getJavaPersistentAttribute().getResourcePersistentAttribute().isProperty());
+		assertTrue(javaPersistentAttribute.getResourcePersistentAttribute().isField());
 		
 		ormPersistentAttribute.setSpecifiedAccess(AccessType.FIELD);
 		ormPersistentAttribute = ormPersistentType.getAttributeNamed("id");
 		assertFalse(ormPersistentAttribute.isVirtual());
 		assertEquals(AccessType.FIELD, ormPersistentAttribute.getAccess());
 		assertEquals(javaPersistentAttribute, ormPersistentAttribute.getJavaPersistentAttribute());
-		assertTrue(ormPersistentAttribute.getJavaPersistentAttribute().getResourcePersistentAttribute().isForField());
-		assertTrue(javaPersistentAttribute.getResourcePersistentAttribute().isForField());
+		assertTrue(ormPersistentAttribute.getJavaPersistentAttribute().getResourcePersistentAttribute().isField());
+		assertTrue(javaPersistentAttribute.getResourcePersistentAttribute().isField());
 	}
 	
 	public void testGetAccess() throws Exception {
@@ -454,18 +454,18 @@ public class EclipseLink1_1OrmPersistentAttributeTests extends EclipseLink1_1Orm
 		
 		assertTrue(ormPersistentAttribute.isVirtual());
 		assertEquals(AccessType.FIELD, ormPersistentAttribute.getAccess());
-		assertTrue(ormPersistentAttribute.getJavaPersistentAttribute().getResourcePersistentAttribute().isForField());
+		assertTrue(ormPersistentAttribute.getJavaPersistentAttribute().getResourcePersistentAttribute().isField());
 		assertEquals(AccessType.FIELD, javaPersistentAttribute.getAccess());
-		assertTrue(javaPersistentAttribute.getResourcePersistentAttribute().isForField());
+		assertTrue(javaPersistentAttribute.getResourcePersistentAttribute().isField());
 		
 		
 		ormPersistentAttribute.makeSpecified();
 		ormPersistentAttribute = ormPersistentType.getAttributeNamed("id");
 		assertFalse(ormPersistentAttribute.isVirtual());
 		assertEquals(AccessType.FIELD, ormPersistentAttribute.getAccess());
-		assertTrue(ormPersistentAttribute.getJavaPersistentAttribute().getResourcePersistentAttribute().isForField());
+		assertTrue(ormPersistentAttribute.getJavaPersistentAttribute().getResourcePersistentAttribute().isField());
 		assertEquals(AccessType.FIELD, javaPersistentAttribute.getAccess());
-		assertTrue(javaPersistentAttribute.getResourcePersistentAttribute().isForField());
+		assertTrue(javaPersistentAttribute.getResourcePersistentAttribute().isField());
 		
 		
 		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
@@ -474,7 +474,7 @@ public class EclipseLink1_1OrmPersistentAttributeTests extends EclipseLink1_1Orm
 		assertEquals(javaPersistentAttribute, ormPersistentAttribute.getJavaPersistentAttribute());
 		assertEquals(AccessType.FIELD, ormPersistentAttribute.getJavaPersistentAttribute().getAccess());
 		assertEquals(AccessType.FIELD, javaPersistentAttribute.getAccess());
-		assertTrue(javaPersistentAttribute.getResourcePersistentAttribute().isForField());
+		assertTrue(javaPersistentAttribute.getResourcePersistentAttribute().isField());
 	}
 	
 	public void testGetAccessPropertyInJava() throws Exception {
@@ -487,18 +487,18 @@ public class EclipseLink1_1OrmPersistentAttributeTests extends EclipseLink1_1Orm
 		
 		assertTrue(ormPersistentAttribute.isVirtual());
 		assertEquals(AccessType.PROPERTY, ormPersistentAttribute.getAccess());
-		assertTrue(ormPersistentAttribute.getJavaPersistentAttribute().getResourcePersistentAttribute().isForProperty());
+		assertTrue(ormPersistentAttribute.getJavaPersistentAttribute().getResourcePersistentAttribute().isProperty());
 		assertEquals(AccessType.PROPERTY, javaPersistentAttribute.getAccess());
-		assertTrue(javaPersistentAttribute.getResourcePersistentAttribute().isForProperty());
+		assertTrue(javaPersistentAttribute.getResourcePersistentAttribute().isProperty());
 		
 		
 		ormPersistentAttribute.makeSpecified();
 		ormPersistentAttribute = ormPersistentType.getAttributeNamed("id");
 		assertFalse(ormPersistentAttribute.isVirtual());
 		assertEquals(AccessType.PROPERTY, ormPersistentAttribute.getAccess());
-		assertTrue(ormPersistentAttribute.getJavaPersistentAttribute().getResourcePersistentAttribute().isForProperty());
+		assertTrue(ormPersistentAttribute.getJavaPersistentAttribute().getResourcePersistentAttribute().isProperty());
 		assertEquals(AccessType.PROPERTY, javaPersistentAttribute.getAccess());
-		assertTrue(javaPersistentAttribute.getResourcePersistentAttribute().isForProperty());
+		assertTrue(javaPersistentAttribute.getResourcePersistentAttribute().isProperty());
 		
 		
 		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
@@ -507,7 +507,7 @@ public class EclipseLink1_1OrmPersistentAttributeTests extends EclipseLink1_1Orm
 		assertNotSame(javaPersistentAttribute, ormPersistentAttribute.getJavaPersistentAttribute());
 		assertEquals(AccessType.FIELD, ormPersistentAttribute.getJavaPersistentAttribute().getAccess());
 		assertEquals(AccessType.PROPERTY, javaPersistentAttribute.getAccess());
-		assertTrue(javaPersistentAttribute.getResourcePersistentAttribute().isForProperty());
+		assertTrue(javaPersistentAttribute.getResourcePersistentAttribute().isProperty());
 	}
 	
 	public void testGetAccessPropertyInJava2() throws Exception {
@@ -520,9 +520,9 @@ public class EclipseLink1_1OrmPersistentAttributeTests extends EclipseLink1_1Orm
 		
 		assertTrue(ormPersistentAttribute.isVirtual());
 		assertEquals(AccessType.PROPERTY, ormPersistentAttribute.getAccess());
-		assertTrue(ormPersistentAttribute.getJavaPersistentAttribute().getResourcePersistentAttribute().isForProperty());
+		assertTrue(ormPersistentAttribute.getJavaPersistentAttribute().getResourcePersistentAttribute().isProperty());
 		assertEquals(AccessType.PROPERTY, javaPersistentAttribute.getAccess());
-		assertTrue(javaPersistentAttribute.getResourcePersistentAttribute().isForProperty());
+		assertTrue(javaPersistentAttribute.getResourcePersistentAttribute().isProperty());
 
 		
 		OrmPersistentAttribute nameOrmPersistentAttribute = ormPersistentType.getAttributeNamed("name");
@@ -530,27 +530,27 @@ public class EclipseLink1_1OrmPersistentAttributeTests extends EclipseLink1_1Orm
 		
 		assertTrue(nameOrmPersistentAttribute.isVirtual());
 		assertEquals(AccessType.FIELD, nameOrmPersistentAttribute.getAccess());
-		assertTrue(nameOrmPersistentAttribute.getJavaPersistentAttribute().getResourcePersistentAttribute().isForField());
+		assertTrue(nameOrmPersistentAttribute.getJavaPersistentAttribute().getResourcePersistentAttribute().isField());
 		assertEquals(AccessType.FIELD, nameJavaPersistentAttribute.getAccess());
-		assertTrue(nameJavaPersistentAttribute.getResourcePersistentAttribute().isForField());
+		assertTrue(nameJavaPersistentAttribute.getResourcePersistentAttribute().isField());
 
 			
 		ormPersistentAttribute.makeSpecified();
 		ormPersistentAttribute = ormPersistentType.getAttributeNamed("id");
 		assertFalse(ormPersistentAttribute.isVirtual());
 		assertEquals(AccessType.PROPERTY, ormPersistentAttribute.getAccess());
-		assertTrue(ormPersistentAttribute.getJavaPersistentAttribute().getResourcePersistentAttribute().isForProperty());
+		assertTrue(ormPersistentAttribute.getJavaPersistentAttribute().getResourcePersistentAttribute().isProperty());
 		assertEquals(AccessType.PROPERTY, javaPersistentAttribute.getAccess());
-		assertTrue(javaPersistentAttribute.getResourcePersistentAttribute().isForProperty());
+		assertTrue(javaPersistentAttribute.getResourcePersistentAttribute().isProperty());
 		
 		nameOrmPersistentAttribute.makeSpecified();
 		nameOrmPersistentAttribute = ormPersistentType.getAttributeNamed("name");
 		assertFalse(nameOrmPersistentAttribute.isVirtual());
 		assertEquals(AccessType.FIELD, nameOrmPersistentAttribute.getAccess());
 		assertEquals(AccessType.FIELD, nameOrmPersistentAttribute.getJavaPersistentAttribute().getAccess());
-		assertTrue(nameOrmPersistentAttribute.getJavaPersistentAttribute().getResourcePersistentAttribute().isForField());
+		assertTrue(nameOrmPersistentAttribute.getJavaPersistentAttribute().getResourcePersistentAttribute().isField());
 		assertEquals(AccessType.FIELD, nameJavaPersistentAttribute.getAccess());
-		assertTrue(nameJavaPersistentAttribute.getResourcePersistentAttribute().isForField());
+		assertTrue(nameJavaPersistentAttribute.getResourcePersistentAttribute().isField());
 		assertEquals(nameJavaPersistentAttribute, nameOrmPersistentAttribute.getJavaPersistentAttribute());
 		
 		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
@@ -559,14 +559,14 @@ public class EclipseLink1_1OrmPersistentAttributeTests extends EclipseLink1_1Orm
 		assertNotSame(javaPersistentAttribute, ormPersistentAttribute.getJavaPersistentAttribute());
 		assertEquals(AccessType.FIELD, ormPersistentAttribute.getJavaPersistentAttribute().getAccess());
 		assertEquals(AccessType.PROPERTY, javaPersistentAttribute.getAccess());
-		assertTrue(javaPersistentAttribute.getResourcePersistentAttribute().isForProperty());
+		assertTrue(javaPersistentAttribute.getResourcePersistentAttribute().isProperty());
 
 		assertFalse(nameOrmPersistentAttribute.isVirtual());
 		assertEquals(AccessType.FIELD, nameOrmPersistentAttribute.getAccess());
 		assertNotSame(javaPersistentAttribute, nameOrmPersistentAttribute.getJavaPersistentAttribute());
 		assertEquals(AccessType.FIELD, nameOrmPersistentAttribute.getJavaPersistentAttribute().getAccess());
 		assertEquals(AccessType.FIELD, nameJavaPersistentAttribute.getAccess());
-		assertTrue(nameJavaPersistentAttribute.getResourcePersistentAttribute().isForField());
+		assertTrue(nameJavaPersistentAttribute.getResourcePersistentAttribute().isField());
 
 	}
 

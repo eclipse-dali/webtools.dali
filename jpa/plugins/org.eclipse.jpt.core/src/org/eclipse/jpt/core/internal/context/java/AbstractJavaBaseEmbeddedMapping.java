@@ -61,7 +61,7 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends JavaResourceNode
 
 	//****************** JavaAttributeMapping implemenation *******************
 
-	public Iterator<String> correspondingAnnotationNames() {
+	public Iterator<String> supportingAnnotationNames() {
 		return new ArrayIterator<String>(
 			JPA.ATTRIBUTE_OVERRIDE,
 			JPA.ATTRIBUTE_OVERRIDES);
@@ -231,7 +231,7 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends JavaResourceNode
 		super.initialize();
 		this.initializeAttributeOverrides();
 		this.initializeDefaultAttributeOverrides();
-		this.embeddable = MappingTools.getEmbeddableFor(getPersistentAttribute());
+		this.embeddable = this.getPersistentAttribute().getEmbeddable();
 	}
 	
 	protected void initializeAttributeOverrides() {
@@ -257,7 +257,7 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends JavaResourceNode
 	@Override
 	protected void update() {
 		super.update();
-		this.embeddable = MappingTools.getEmbeddableFor(getPersistentAttribute());
+		this.embeddable = this.getPersistentAttribute().getEmbeddable();
 		this.updateSpecifiedAttributeOverrides();
 		this.updateVirtualAttributeOverrides();
 		

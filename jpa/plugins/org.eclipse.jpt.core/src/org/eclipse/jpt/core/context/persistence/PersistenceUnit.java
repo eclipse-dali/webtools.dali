@@ -14,6 +14,7 @@ import java.util.ListIterator;
 
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.AccessType;
+import org.eclipse.jpt.core.context.Embeddable;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.Generator;
 import org.eclipse.jpt.core.context.PersistentType;
@@ -646,9 +647,18 @@ public interface PersistenceUnit
 	 * specified name. Return null if there is no persistent type 
 	 * with the specified name or if the persistent type is not mapped as an
 	 * entity.
-	 * @see MappingKeys.ENTITY_TYPE_MAPPING_KEY
+	 * @see org.eclipse.jpt.core.MappingKeys#ENTITY_TYPE_MAPPING_KEY
 	 */
 	Entity getEntity(String typeName);
+
+	/**
+	 * Return the embeddable specified in the persistence unit with the
+	 * specified name. Return null if there is no persistent type 
+	 * with the specified name or if the persistent type is not mapped as an
+	 * embeddable.
+	 * @see org.eclipse.jpt.core.MappingKeys#EMBEDDABLE_TYPE_MAPPING_KEY
+	 */
+	Embeddable getEmbeddable(String typeName);
 
 	/**
 	 * Return whether the text representation of this persistence unit contains

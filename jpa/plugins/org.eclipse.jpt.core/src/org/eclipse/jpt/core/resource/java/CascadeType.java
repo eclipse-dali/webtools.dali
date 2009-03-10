@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -38,7 +38,7 @@ public enum CascadeType {
 	
 	public static CascadeType[] fromJavaAnnotationValue(String[] javaAnnotationValues) {
 		if (javaAnnotationValues == null) {
-			return new CascadeType[0];
+			return EMPTY_CASCADE_TYPE_ARRAY;
 		}
 		CascadeType[] cascadeTypes = new CascadeType[javaAnnotationValues.length];
 		for (int i = 0; i < javaAnnotationValues.length; i++) {
@@ -49,21 +49,22 @@ public enum CascadeType {
 		}
 		return cascadeTypes;
 	}
+	private static final CascadeType[] EMPTY_CASCADE_TYPE_ARRAY = new CascadeType[0];
 
 	private static CascadeType cascadeType(String javaAnnotationValue) {
 		if (javaAnnotationValue.equals(ALL.getJavaAnnotationValue())) {
 			return ALL;
 		}
-		else if (javaAnnotationValue.equals(PERSIST.getJavaAnnotationValue())) {
+		if (javaAnnotationValue.equals(PERSIST.getJavaAnnotationValue())) {
 			return PERSIST;
 		}
-		else if (javaAnnotationValue.equals(MERGE.getJavaAnnotationValue())) {
+		if (javaAnnotationValue.equals(MERGE.getJavaAnnotationValue())) {
 			return MERGE;
 		}
-		else if (javaAnnotationValue.equals(REMOVE.getJavaAnnotationValue())) {
+		if (javaAnnotationValue.equals(REMOVE.getJavaAnnotationValue())) {
 			return REMOVE;
 		}
-		else if (javaAnnotationValue.equals(REFRESH.getJavaAnnotationValue())) {
+		if (javaAnnotationValue.equals(REFRESH.getJavaAnnotationValue())) {
 			return REFRESH;
 		}
 		throw new IllegalArgumentException("Unknown cascade type: " + javaAnnotationValue); //$NON-NLS-1$
@@ -72,8 +73,7 @@ public enum CascadeType {
 	public static String[] toJavaAnnotationValue(CascadeType[] cascadeTypes) {
 		String[] javaAnnotationValues = new String[cascadeTypes.length];
 		for (int i = 0; i < cascadeTypes.length; i++) {
-			CascadeType cascadeType = cascadeTypes[i];
-			javaAnnotationValues[i] = cascadeType.javaAnnotationValue;
+			javaAnnotationValues[i] = cascadeTypes[i].javaAnnotationValue;
 		}
 		return javaAnnotationValues;
 	}

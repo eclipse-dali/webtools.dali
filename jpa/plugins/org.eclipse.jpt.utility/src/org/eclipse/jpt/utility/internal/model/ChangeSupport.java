@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,13 +14,18 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.HashBag;
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.model.Model;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
@@ -110,7 +115,7 @@ public class ChangeSupport
 			throw new NullPointerException();		// better sooner than later
 		}
 		synchronized (this) {
-			GenericListenerList gll = this.genericListenerList(listenerClass);
+			GenericListenerList gll = this.getGenericListenerList(listenerClass);
 			if (gll == null) {
 				this.addGenericListenerList(listenerClass, listener);
 			} else {
@@ -123,7 +128,7 @@ public class ChangeSupport
 	 * Return the "generic" listener list for the specified listener class.
 	 * Return null if the list is not present.
 	 */
-	protected GenericListenerList genericListenerList(Class<? extends ChangeListener> listenerClass) {
+	protected GenericListenerList getGenericListenerList(Class<? extends ChangeListener> listenerClass) {
 		for (GenericListenerList gll : this.genericListeners) {
 			if (gll.listenerClass == listenerClass) {
 				return gll;
@@ -152,7 +157,7 @@ public class ChangeSupport
 			throw new NullPointerException();		// better sooner than later
 		}
 		synchronized (this) {
-			ChangeSupport child = this.child(aspectName);
+			ChangeSupport child = this.getChild(aspectName);
 			if (child == null) {
 				child = this.addChild(aspectName);
 			}
@@ -164,7 +169,7 @@ public class ChangeSupport
 	 * Return the child change support for the specified aspect name.
 	 * Return null if the aspect name is null or the child is not present.
 	 */
-	protected ChangeSupport child(String aspectName) {
+	protected ChangeSupport getChild(String aspectName) {
 		// put in a null check to simplify calling code
 		if (aspectName == null) {
 			return null;
@@ -191,7 +196,7 @@ public class ChangeSupport
 	 * Build and return a child change support to hold aspect-specific listeners.
 	 */
 	protected ChangeSupport buildChildChangeSupport() {
-		return new ChangeSupport(this.source);
+		return new Child(this.source);
 	}
 
 	/**
@@ -200,7 +205,7 @@ public class ChangeSupport
 	 */
 	protected <T extends ChangeListener> void removeListener(Class<T> listenerClass, T listener) {
 		synchronized (this) {
-			GenericListenerList gll = this.genericListenerList(listenerClass);
+			GenericListenerList gll = this.getGenericListenerList(listenerClass);
 			if (gll == null) {
 				throw new IllegalArgumentException("listener not registered"); //$NON-NLS-1$
 			}
@@ -216,7 +221,7 @@ public class ChangeSupport
 	 */
 	protected <T extends ChangeListener> void removeListener(String aspectName, Class<T> listenerClass, T listener) {
 		synchronized (this) {
-			ChangeSupport child = this.child(aspectName);
+			ChangeSupport child = this.getChild(aspectName);
 			if (child == null) {
 				throw new IllegalArgumentException("listener not registered"); //$NON-NLS-1$
 			}
@@ -231,8 +236,8 @@ public class ChangeSupport
 	 * Return the "generic" listeners for the specified listener class.
 	 * Return null if there are no listeners.
 	 */
-	protected ChangeListener[] listeners(Class<? extends ChangeListener> listenerClass) {
-		GenericListenerList gll = this.genericListenerList(listenerClass);
+	protected ChangeListener[] getListeners(Class<? extends ChangeListener> listenerClass) {
+		GenericListenerList gll = this.getGenericListenerList(listenerClass);
 		return (gll == null) ? null : gll.listeners;
 	}
 
@@ -241,7 +246,7 @@ public class ChangeSupport
 	 * listener class.
 	 */
 	protected synchronized <T extends ChangeListener> boolean hasAnyListeners(Class<T> listenerClass) {
-		GenericListenerList gll = this.genericListenerList(listenerClass);
+		GenericListenerList gll = this.getGenericListenerList(listenerClass);
 		return (gll != null) && gll.hasListeners();
 	}
 
@@ -259,9 +264,9 @@ public class ChangeSupport
 	 */
 	protected synchronized boolean hasAnyListeners(Class<? extends ChangeListener> listenerClass, String aspectName) {
 		if (this.hasAnyListeners(listenerClass)) {
-			return true;		// there's a "generic" listener
+			return true;  // we have a "generic" listener
 		}
-		ChangeSupport child = this.child(aspectName);
+		ChangeSupport child = this.getChild(aspectName);
 		return (child != null) &&
 			child.hasAnyListeners(listenerClass);
 	}
@@ -313,8 +318,8 @@ public class ChangeSupport
 		return this.hasAnyListeners(STATE_CHANGE_LISTENER_CLASS);
 	}
 
-	private StateChangeListener[] stateChangeListeners() {
-		return (StateChangeListener[]) this.listeners(STATE_CHANGE_LISTENER_CLASS);
+	private StateChangeListener[] getStateChangeListeners() {
+		return (StateChangeListener[]) this.getListeners(STATE_CHANGE_LISTENER_CLASS);
 	}
 
 	/**
@@ -325,7 +330,7 @@ public class ChangeSupport
 		StateChangeListener[] targets = null;
 
 		synchronized (this) {
-			StateChangeListener[] stateChangeListeners = this.stateChangeListeners();
+			StateChangeListener[] stateChangeListeners = this.getStateChangeListeners();
 			if (stateChangeListeners != null) {
 				targets = stateChangeListeners.clone();
 			}
@@ -335,7 +340,7 @@ public class ChangeSupport
 			for (StateChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = CollectionTools.contains(this.stateChangeListeners(), target);
+					stillListening = CollectionTools.contains(this.getStateChangeListeners(), target);
 				}
 				if (stillListening) {
 					target.stateChanged(event);
@@ -356,7 +361,7 @@ public class ChangeSupport
 		StateChangeListener[] targets = null;
 
 		synchronized (this) {
-			StateChangeListener[] stateChangeListeners = this.stateChangeListeners();
+			StateChangeListener[] stateChangeListeners = this.getStateChangeListeners();
 			if (stateChangeListeners != null) {
 				targets = stateChangeListeners.clone();
 			}
@@ -367,7 +372,7 @@ public class ChangeSupport
 			for (StateChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = CollectionTools.contains(this.stateChangeListeners(), target);
+					stillListening = CollectionTools.contains(this.getStateChangeListeners(), target);
 				}
 				if (stillListening) {
 					if (event == null) {
@@ -386,28 +391,6 @@ public class ChangeSupport
 	// ********** property change support **********
 
 	protected static final Class<PropertyChangeListener> PROPERTY_CHANGE_LISTENER_CLASS = PropertyChangeListener.class;
-
-	/**
-	 * Return whether the values are equal, with the appropriate null checks.
-	 * Convenience method for checking whether an attribute value has changed.
-	 */
-	public boolean valuesAreEqual(Object value1, Object value2) {
-		if ((value1 == null) && (value2 == null)) {
-			return true;	// both are null
-		}
-		if ((value1 == null) || (value2 == null)) {
-			return false;	// one is null but the other is not
-		}
-		return value1.equals(value2);
-	}
-
-	/**
-	 * Return whether the values are different, with the appropriate null checks.
-	 * Convenience method for checking whether an attribute value has changed.
-	 */
-	public boolean valuesAreDifferent(Object value1, Object value2) {
-		return ! this.valuesAreEqual(value1, value2);
-	}
 
 	/**
 	 * Add a property change listener that is registered for all properties.
@@ -454,8 +437,8 @@ public class ChangeSupport
 		return this.hasAnyListeners(PROPERTY_CHANGE_LISTENER_CLASS);
 	}
 
-	private PropertyChangeListener[] propertyChangeListeners() {
-		return (PropertyChangeListener[]) this.listeners(PROPERTY_CHANGE_LISTENER_CLASS);
+	private PropertyChangeListener[] getPropertyChangeListeners() {
+		return (PropertyChangeListener[]) this.getListeners(PROPERTY_CHANGE_LISTENER_CLASS);
 	}
 
 	/**
@@ -475,18 +458,18 @@ public class ChangeSupport
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			PropertyChangeListener[] propertyChangeListeners = this.propertyChangeListeners();
+			PropertyChangeListener[] propertyChangeListeners = this.getPropertyChangeListeners();
 			if (propertyChangeListeners != null) {
 				targets = propertyChangeListeners.clone();
 			}
-			child = this.child(propertyName);
+			child = this.getChild(propertyName);
 		}
 
 		if (targets != null) {
 			for (PropertyChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = CollectionTools.contains(this.propertyChangeListeners(), target);
+					stillListening = CollectionTools.contains(this.getPropertyChangeListeners(), target);
 				}
 				if (stillListening) {
 					target.propertyChanged(event);
@@ -516,11 +499,11 @@ public class ChangeSupport
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			PropertyChangeListener[] propertyChangeListeners = this.propertyChangeListeners();
+			PropertyChangeListener[] propertyChangeListeners = this.getPropertyChangeListeners();
 			if (propertyChangeListeners != null) {
 				targets = propertyChangeListeners.clone();
 			}
-			child = this.child(propertyName);
+			child = this.getChild(propertyName);
 		}
 
 		PropertyChangeEvent event = null;
@@ -529,7 +512,7 @@ public class ChangeSupport
 			for (PropertyChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = CollectionTools.contains(this.propertyChangeListeners(), target);
+					stillListening = CollectionTools.contains(this.getPropertyChangeListeners(), target);
 				}
 				if (stillListening) {
 					if (event == null) {
@@ -568,11 +551,11 @@ public class ChangeSupport
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			PropertyChangeListener[] propertyChangeListeners = this.propertyChangeListeners();
+			PropertyChangeListener[] propertyChangeListeners = this.getPropertyChangeListeners();
 			if (propertyChangeListeners != null) {
 				targets = propertyChangeListeners.clone();
 			}
-			child = this.child(propertyName);
+			child = this.getChild(propertyName);
 		}
 
 		PropertyChangeEvent event = null;
@@ -581,7 +564,7 @@ public class ChangeSupport
 			for (PropertyChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = CollectionTools.contains(this.propertyChangeListeners(), target);
+					stillListening = CollectionTools.contains(this.getPropertyChangeListeners(), target);
 				}
 				if (stillListening) {
 					if (event == null) {
@@ -620,11 +603,11 @@ public class ChangeSupport
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			PropertyChangeListener[] propertyChangeListeners = this.propertyChangeListeners();
+			PropertyChangeListener[] propertyChangeListeners = this.getPropertyChangeListeners();
 			if (propertyChangeListeners != null) {
 				targets = propertyChangeListeners.clone();
 			}
-			child = this.child(propertyName);
+			child = this.getChild(propertyName);
 		}
 
 		PropertyChangeEvent event = null;
@@ -633,7 +616,7 @@ public class ChangeSupport
 			for (PropertyChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = CollectionTools.contains(this.propertyChangeListeners(), target);
+					stillListening = CollectionTools.contains(this.getPropertyChangeListeners(), target);
 				}
 				if (stillListening) {
 					if (event == null) {
@@ -705,8 +688,8 @@ public class ChangeSupport
 		return this.hasAnyListeners(COLLECTION_CHANGE_LISTENER_CLASS);
 	}
 
-	private CollectionChangeListener[] collectionChangeListeners() {
-		return (CollectionChangeListener[]) this.listeners(COLLECTION_CHANGE_LISTENER_CLASS);
+	private CollectionChangeListener[] getCollectionChangeListeners() {
+		return (CollectionChangeListener[]) this.getListeners(COLLECTION_CHANGE_LISTENER_CLASS);
 	}
 
 	/**
@@ -723,18 +706,18 @@ public class ChangeSupport
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			CollectionChangeListener[] collectionChangeListeners = this.collectionChangeListeners();
+			CollectionChangeListener[] collectionChangeListeners = this.getCollectionChangeListeners();
 			if (collectionChangeListeners != null) {
 				targets = collectionChangeListeners.clone();
 			}
-			child = this.child(collectionName);
+			child = this.getChild(collectionName);
 		}
 
 		if (targets != null) {
 			for (CollectionChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = CollectionTools.contains(this.collectionChangeListeners(), target);
+					stillListening = CollectionTools.contains(this.getCollectionChangeListeners(), target);
 				}
 				if (stillListening) {
 					target.itemsAdded(event);
@@ -753,7 +736,7 @@ public class ChangeSupport
 	 */
 	public void fireItemsAdded(String collectionName, Collection<?> addedItems) {
 //		this.fireItemsAdded(new CollectionChangeEvent(this.source, collectionName, addedItems));
-		if (addedItems.size() == 0) {
+		if (addedItems.isEmpty()) {
 			return;
 		}
 
@@ -761,11 +744,11 @@ public class ChangeSupport
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			CollectionChangeListener[] collectionChangeListeners = this.collectionChangeListeners();
+			CollectionChangeListener[] collectionChangeListeners = this.getCollectionChangeListeners();
 			if (collectionChangeListeners != null) {
 				targets = collectionChangeListeners.clone();
 			}
-			child = this.child(collectionName);
+			child = this.getChild(collectionName);
 		}
 
 		CollectionChangeEvent event = null;
@@ -774,7 +757,7 @@ public class ChangeSupport
 			for (CollectionChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = CollectionTools.contains(this.collectionChangeListeners(), target);
+					stillListening = CollectionTools.contains(this.getCollectionChangeListeners(), target);
 				}
 				if (stillListening) {
 					if (event == null) {
@@ -806,11 +789,11 @@ public class ChangeSupport
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			CollectionChangeListener[] collectionChangeListeners = this.collectionChangeListeners();
+			CollectionChangeListener[] collectionChangeListeners = this.getCollectionChangeListeners();
 			if (collectionChangeListeners != null) {
 				targets = collectionChangeListeners.clone();
 			}
-			child = this.child(collectionName);
+			child = this.getChild(collectionName);
 		}
 
 		CollectionChangeEvent event = null;
@@ -819,7 +802,7 @@ public class ChangeSupport
 			for (CollectionChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = CollectionTools.contains(this.collectionChangeListeners(), target);
+					stillListening = CollectionTools.contains(this.getCollectionChangeListeners(), target);
 				}
 				if (stillListening) {
 					if (event == null) {
@@ -855,18 +838,18 @@ public class ChangeSupport
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			CollectionChangeListener[] collectionChangeListeners = this.collectionChangeListeners();
+			CollectionChangeListener[] collectionChangeListeners = this.getCollectionChangeListeners();
 			if (collectionChangeListeners != null) {
 				targets = collectionChangeListeners.clone();
 			}
-			child = this.child(collectionName);
+			child = this.getChild(collectionName);
 		}
 
 		if (targets != null) {
 			for (CollectionChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = CollectionTools.contains(this.collectionChangeListeners(), target);
+					stillListening = CollectionTools.contains(this.getCollectionChangeListeners(), target);
 				}
 				if (stillListening) {
 					target.itemsRemoved(event);
@@ -885,7 +868,7 @@ public class ChangeSupport
 	 */
 	public void fireItemsRemoved(String collectionName, Collection<?> removedItems) {
 //		this.fireItemsRemoved(new CollectionChangeEvent(this.source, collectionName, removedItems));
-		if (removedItems.size() == 0) {
+		if (removedItems.isEmpty()) {
 			return;
 		}
 
@@ -893,11 +876,11 @@ public class ChangeSupport
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			CollectionChangeListener[] collectionChangeListeners = this.collectionChangeListeners();
+			CollectionChangeListener[] collectionChangeListeners = this.getCollectionChangeListeners();
 			if (collectionChangeListeners != null) {
 				targets = collectionChangeListeners.clone();
 			}
-			child = this.child(collectionName);
+			child = this.getChild(collectionName);
 		}
 
 		CollectionChangeEvent event = null;
@@ -906,7 +889,7 @@ public class ChangeSupport
 			for (CollectionChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = CollectionTools.contains(this.collectionChangeListeners(), target);
+					stillListening = CollectionTools.contains(this.getCollectionChangeListeners(), target);
 				}
 				if (stillListening) {
 					if (event == null) {
@@ -938,11 +921,11 @@ public class ChangeSupport
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			CollectionChangeListener[] collectionChangeListeners = this.collectionChangeListeners();
+			CollectionChangeListener[] collectionChangeListeners = this.getCollectionChangeListeners();
 			if (collectionChangeListeners != null) {
 				targets = collectionChangeListeners.clone();
 			}
-			child = this.child(collectionName);
+			child = this.getChild(collectionName);
 		}
 
 		CollectionChangeEvent event = null;
@@ -951,7 +934,7 @@ public class ChangeSupport
 			for (CollectionChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = CollectionTools.contains(this.collectionChangeListeners(), target);
+					stillListening = CollectionTools.contains(this.getCollectionChangeListeners(), target);
 				}
 				if (stillListening) {
 					if (event == null) {
@@ -983,18 +966,18 @@ public class ChangeSupport
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			CollectionChangeListener[] collectionChangeListeners = this.collectionChangeListeners();
+			CollectionChangeListener[] collectionChangeListeners = this.getCollectionChangeListeners();
 			if (collectionChangeListeners != null) {
 				targets = collectionChangeListeners.clone();
 			}
-			child = this.child(collectionName);
+			child = this.getChild(collectionName);
 		}
 
 		if (targets != null) {
 			for (CollectionChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = CollectionTools.contains(this.collectionChangeListeners(), target);
+					stillListening = CollectionTools.contains(this.getCollectionChangeListeners(), target);
 				}
 				if (stillListening) {
 					target.collectionCleared(event);
@@ -1018,11 +1001,11 @@ public class ChangeSupport
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			CollectionChangeListener[] collectionChangeListeners = this.collectionChangeListeners();
+			CollectionChangeListener[] collectionChangeListeners = this.getCollectionChangeListeners();
 			if (collectionChangeListeners != null) {
 				targets = collectionChangeListeners.clone();
 			}
-			child = this.child(collectionName);
+			child = this.getChild(collectionName);
 		}
 
 		CollectionChangeEvent event = null;
@@ -1031,7 +1014,7 @@ public class ChangeSupport
 			for (CollectionChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = CollectionTools.contains(this.collectionChangeListeners(), target);
+					stillListening = CollectionTools.contains(this.getCollectionChangeListeners(), target);
 				}
 				if (stillListening) {
 					if (event == null) {
@@ -1063,18 +1046,18 @@ public class ChangeSupport
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			CollectionChangeListener[] collectionChangeListeners = this.collectionChangeListeners();
+			CollectionChangeListener[] collectionChangeListeners = this.getCollectionChangeListeners();
 			if (collectionChangeListeners != null) {
 				targets = collectionChangeListeners.clone();
 			}
-			child = this.child(collectionName);
+			child = this.getChild(collectionName);
 		}
 
 		if (targets != null) {
 			for (CollectionChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = CollectionTools.contains(this.collectionChangeListeners(), target);
+					stillListening = CollectionTools.contains(this.getCollectionChangeListeners(), target);
 				}
 				if (stillListening) {
 					target.collectionChanged(event);
@@ -1098,11 +1081,11 @@ public class ChangeSupport
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			CollectionChangeListener[] collectionChangeListeners = this.collectionChangeListeners();
+			CollectionChangeListener[] collectionChangeListeners = this.getCollectionChangeListeners();
 			if (collectionChangeListeners != null) {
 				targets = collectionChangeListeners.clone();
 			}
-			child = this.child(collectionName);
+			child = this.getChild(collectionName);
 		}
 
 		CollectionChangeEvent event = null;
@@ -1111,7 +1094,7 @@ public class ChangeSupport
 			for (CollectionChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = CollectionTools.contains(this.collectionChangeListeners(), target);
+					stillListening = CollectionTools.contains(this.getCollectionChangeListeners(), target);
 				}
 				if (stillListening) {
 					if (event == null) {
@@ -1131,6 +1114,303 @@ public class ChangeSupport
 		}
 
 		this.sourceChanged(collectionName);
+	}
+
+	/**
+	 * Add the specified item to the specified bound collection
+	 * and fire the appropriate event if necessary.
+	 * Return whether the collection changed.
+	 * @see java.util.Collection#add(Object)
+	 */
+	public <E> boolean addItemToCollection(E item, Collection<E> collection, String collectionName) {
+		if (collection.add(item)) {
+			this.fireItemAdded(collectionName, item);
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Add the specified items to the specified bound collection
+	 * and fire the appropriate event if necessary.
+	 * Return whether collection changed.
+	 * @see java.util.Collection#addAll(java.util.Collection)
+	 */
+	public <E> boolean addItemsToCollection(E[] items, Collection<E> collection, String collectionName) {
+		return (items.length != 0)
+				&& this.addItemsToCollection_(new ArrayIterator<E>(items), collection, collectionName);
+	}
+
+	/**
+	 * Add the specified items to the specified bound collection
+	 * and fire the appropriate event if necessary.
+	 * Return whether collection changed.
+	 * @see java.util.Collection#addAll(java.util.Collection)
+	 */
+	public <E> boolean addItemsToCollection(Collection<? extends E> items, Collection<E> collection, String collectionName) {
+		return ( ! items.isEmpty())
+				&& this.addItemsToCollection_(items.iterator(), collection, collectionName);
+	}
+
+	/**
+	 * Add the specified items to the specified bound collection
+	 * and fire the appropriate event if necessary.
+	 * Return whether collection changed.
+	 * @see java.util.Collection#addAll(java.util.Collection)
+	 */
+	public <E> boolean addItemsToCollection(Iterable<? extends E> items, Collection<E> collection, String collectionName) {
+		return this.addItemsToCollection(items.iterator(), collection, collectionName);
+	}
+
+	/**
+	 * Add the specified items to the specified bound collection
+	 * and fire the appropriate event if necessary.
+	 * Return whether collection changed.
+	 * @see java.util.Collection#addAll(java.util.Collection)
+	 */
+	public <E> boolean addItemsToCollection(Iterator<? extends E> items, Collection<E> collection, String collectionName) {
+		return items.hasNext()
+				&& this.addItemsToCollection_(items, collection, collectionName);
+	}
+
+	/**
+	 * no empty check
+	 */
+	protected <E> boolean addItemsToCollection_(Iterator<? extends E> items, Collection<E> collection, String collectionName) {
+		Collection<E> addedItems = null;
+		while (items.hasNext()) {
+			E item = items.next();
+			if (collection.add(item)) {
+				if (addedItems == null) {
+					addedItems = new ArrayList<E>();
+				}
+				addedItems.add(item);
+			}
+		}
+		if (addedItems != null) {
+			this.fireItemsAdded(collectionName, addedItems);
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Remove the specified item from the specified bound collection
+	 * and fire the appropriate event if necessary.
+	 * Return whether the collection changed.
+	 * @see java.util.Collection#remove(Object)
+	 */
+	public boolean removeItemFromCollection(Object item, Collection<?> collection, String collectionName) {
+		if (collection.remove(item)) {
+			this.fireItemRemoved(collectionName, item);
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Remove the specified items from the specified bound collection
+	 * and fire the appropriate event if necessary.
+	 * Return whether the collection changed.
+	 * @see java.util.Collection#removeAll(java.util.Collection)
+	 */
+	public boolean removeItemsFromCollection(Object[] items, Collection<?> collection, String collectionName) {
+		return (items.length != 0)
+				&& ( ! collection.isEmpty())
+				&& this.removeItemsFromCollection_(new ArrayIterator<Object>(items), collection, collectionName);
+	}
+
+	/**
+	 * Remove the specified items from the specified bound collection
+	 * and fire the appropriate event if necessary.
+	 * Return whether the collection changed.
+	 * @see java.util.Collection#removeAll(java.util.Collection)
+	 */
+	public boolean removeItemsFromCollection(Collection<?> items, Collection<?> collection, String collectionName) {
+		return ( ! items.isEmpty())
+				&& ( ! collection.isEmpty())
+				&& this.removeItemsFromCollection_(items.iterator(), collection, collectionName);
+	}
+
+	/**
+	 * Remove the specified items from the specified bound collection
+	 * and fire the appropriate event if necessary.
+	 * Return whether the collection changed.
+	 * @see java.util.Collection#removeAll(java.util.Collection)
+	 */
+	public boolean removeItemsFromCollection(Iterable<?> items, Collection<?> collection, String collectionName) {
+		return this.removeItemsFromCollection(items.iterator(), collection, collectionName);
+	}
+
+	/**
+	 * Remove the specified items from the specified bound collection
+	 * and fire the appropriate event if necessary.
+	 * Return whether the collection changed.
+	 * @see java.util.Collection#removeAll(java.util.Collection)
+	 */
+	public boolean removeItemsFromCollection(Iterator<?> items, Collection<?> collection, String collectionName) {
+		return items.hasNext()
+				&& ( ! collection.isEmpty())
+				&& this.removeItemsFromCollection_(items, collection, collectionName);
+	}
+
+	/**
+	 * no empty checks
+	 */
+	protected boolean removeItemsFromCollection_(Iterator<?> items, Collection<?> collection, String collectionName) {
+		HashBag<?> removedItems = CollectionTools.collection(items);
+		removedItems.retainAll(collection);
+		boolean changed = collection.removeAll(removedItems);
+
+		if ( ! removedItems.isEmpty()) {
+			this.fireItemsRemoved(collectionName, removedItems);
+		}
+		return changed;
+	}
+
+	/**
+	 * Retain the specified items in the specified bound collection
+	 * and fire the appropriate event if necessary.
+	 * Return whether the collection changed.
+	 * @see java.util.Collection#retainAll(java.util.Collection)
+	 */
+	public boolean retainItemsInCollection(Object[] items, Collection<?> collection, String collectionName) {
+		if (collection.isEmpty()) {
+			return false;
+		}
+		if (items.length == 0) {
+			return this.clearCollection_(collection, collectionName);
+		}
+		return this.retainItemsInCollection_(new ArrayIterator<Object>(items), collection, collectionName);
+	}
+
+	/**
+	 * Retain the specified items in the specified bound collection
+	 * and fire the appropriate event if necessary.
+	 * Return whether the collection changed.
+	 * @see java.util.Collection#retainAll(java.util.Collection)
+	 */
+	public boolean retainItemsInCollection(Collection<?> items, Collection<?> collection, String collectionName) {
+		if (collection.isEmpty()) {
+			return false;
+		}
+		if (items.isEmpty()) {
+			return this.clearCollection_(collection, collectionName);
+		}
+		return this.retainItemsInCollection_(items.iterator(), collection, collectionName);
+	}
+
+	/**
+	 * Retain the specified items in the specified bound collection
+	 * and fire the appropriate event if necessary.
+	 * Return whether the collection changed.
+	 * @see java.util.Collection#retainAll(java.util.Collection)
+	 */
+	public boolean retainItemsInCollection(Iterable<?> items, Collection<?> collection, String collectionName) {
+		return this.retainItemsInCollection(items.iterator(), collection, collectionName);
+	}
+
+	/**
+	 * Retain the specified items in the specified bound collection
+	 * and fire the appropriate event if necessary.
+	 * Return whether the collection changed.
+	 * @see java.util.Collection#retainAll(java.util.Collection)
+	 */
+	public boolean retainItemsInCollection(Iterator<?> items, Collection<?> collection, String collectionName) {
+		if (collection.isEmpty()) {
+			return false;
+		}
+		if ( ! items.hasNext()) {
+			return this.clearCollection_(collection, collectionName);
+		}
+		return this.retainItemsInCollection_(items, collection, collectionName);
+	}
+
+	/**
+	 * no empty checks
+	 */
+	protected boolean retainItemsInCollection_(Iterator<?> items, Collection<?> collection, String collectionName) {
+		HashBag<?> retainedItems = CollectionTools.collection(items);
+		HashBag<?> removedItems = CollectionTools.collection(collection);
+		removedItems.removeAll(retainedItems);
+		boolean changed = collection.retainAll(retainedItems);
+
+		if ( ! removedItems.isEmpty()) {
+			this.fireItemsRemoved(collectionName, removedItems);
+		}
+		return changed;
+	}
+
+	/**
+	 * Clear the entire collection
+	 * and fire the appropriate event if necessary.
+	 * Return whether the collection changed.
+	 * @see java.util.Collection#clear()
+	 */
+	public boolean clearCollection(Collection<?> collection, String collectionName) {
+		if (collection.isEmpty()) {
+			return false;
+		}
+		return this.clearCollection_(collection, collectionName);
+	}
+
+	/**
+	 * no empty check
+	 */
+	protected boolean clearCollection_(Collection<?> collection, String collectionName) {
+		collection.clear();
+		this.fireCollectionCleared(collectionName);
+		return true;
+	}
+
+	/**
+	 * Synchronize the collection with the specified new collection,
+	 * making a minimum number of removes and adds.
+	 * Return whether the collection changed.
+	 */
+	public <E> boolean synchronizeCollection(Collection<E> newCollection, Collection<E> collection, String collectionName) {
+		if (newCollection.isEmpty()) {
+			return this.clearCollection(collection, collectionName);
+		}
+
+		if (collection.isEmpty()) {
+			return this.addItemsToCollection(newCollection, collection, collectionName);
+		}
+
+		return this.synchronizeCollection_(newCollection, collection, collectionName);
+	}
+
+	/**
+	 * Synchronize the collection with the specified new collection,
+	 * making a minimum number of removes and adds.
+	 * Return whether the collection changed.
+	 */
+	public <E> boolean synchronizeCollection(Iterator<E> newCollection, Collection<E> collection, String collectionName) {
+		if ( ! newCollection.hasNext()) {
+			return this.clearCollection(collection, collectionName);
+		}
+
+		if (collection.isEmpty()) {
+			return this.addItemsToCollection(newCollection, collection, collectionName);
+		}
+
+		return this.synchronizeCollection_(CollectionTools.collection(newCollection), collection, collectionName);
+	}
+
+	/**
+	 * no empty checks
+	 */
+	protected <E> boolean synchronizeCollection_(Collection<E> newCollection, Collection<E> collection, String collectionName) {
+		boolean changed = false;
+		Collection<E> removeItems = new HashBag<E>(collection);
+		removeItems.removeAll(newCollection);
+		changed |= this.removeItemsFromCollection(removeItems, collection, collectionName);
+
+		Collection<E> addItems = new HashBag<E>(newCollection);
+		addItems.removeAll(collection);
+		changed |= this.addItemsToCollection(addItems, collection, collectionName);
+
+		return changed;
 	}
 
 
@@ -1183,8 +1463,8 @@ public class ChangeSupport
 		return this.hasAnyListeners(LIST_CHANGE_LISTENER_CLASS);
 	}
 
-	private ListChangeListener[] listChangeListeners() {
-		return (ListChangeListener[]) this.listeners(LIST_CHANGE_LISTENER_CLASS);
+	private ListChangeListener[] getListChangeListeners() {
+		return (ListChangeListener[]) this.getListeners(LIST_CHANGE_LISTENER_CLASS);
 	}
 
 	/**
@@ -1201,18 +1481,18 @@ public class ChangeSupport
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			ListChangeListener[] listChangeListeners = this.listChangeListeners();
+			ListChangeListener[] listChangeListeners = this.getListChangeListeners();
 			if (listChangeListeners != null) {
 				targets = listChangeListeners.clone();
 			}
-			child = this.child(listName);
+			child = this.getChild(listName);
 		}
 
 		if (targets != null) {
 			for (ListChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = CollectionTools.contains(this.listChangeListeners(), target);
+					stillListening = CollectionTools.contains(this.getListChangeListeners(), target);
 				}
 				if (stillListening) {
 					target.itemsAdded(event);
@@ -1231,7 +1511,7 @@ public class ChangeSupport
 	 */
 	public void fireItemsAdded(String listName, int index, List<?> addedItems) {
 //		this.fireItemsAdded(new ListChangeEvent(this.source, listName, index, addedItems));
-		if (addedItems.size() == 0) {
+		if (addedItems.isEmpty()) {
 			return;
 		}
 
@@ -1239,11 +1519,11 @@ public class ChangeSupport
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			ListChangeListener[] listChangeListeners = this.listChangeListeners();
+			ListChangeListener[] listChangeListeners = this.getListChangeListeners();
 			if (listChangeListeners != null) {
 				targets = listChangeListeners.clone();
 			}
-			child = this.child(listName);
+			child = this.getChild(listName);
 		}
 
 		ListChangeEvent event = null;
@@ -1252,7 +1532,7 @@ public class ChangeSupport
 			for (ListChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = CollectionTools.contains(this.listChangeListeners(), target);
+					stillListening = CollectionTools.contains(this.getListChangeListeners(), target);
 				}
 				if (stillListening) {
 					if (event == null) {
@@ -1284,11 +1564,11 @@ public class ChangeSupport
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			ListChangeListener[] listChangeListeners = this.listChangeListeners();
+			ListChangeListener[] listChangeListeners = this.getListChangeListeners();
 			if (listChangeListeners != null) {
 				targets = listChangeListeners.clone();
 			}
-			child = this.child(listName);
+			child = this.getChild(listName);
 		}
 
 		ListChangeEvent event = null;
@@ -1297,7 +1577,7 @@ public class ChangeSupport
 			for (ListChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = CollectionTools.contains(this.listChangeListeners(), target);
+					stillListening = CollectionTools.contains(this.getListChangeListeners(), target);
 				}
 				if (stillListening) {
 					if (event == null) {
@@ -1333,18 +1613,18 @@ public class ChangeSupport
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			ListChangeListener[] listChangeListeners = this.listChangeListeners();
+			ListChangeListener[] listChangeListeners = this.getListChangeListeners();
 			if (listChangeListeners != null) {
 				targets = listChangeListeners.clone();
 			}
-			child = this.child(listName);
+			child = this.getChild(listName);
 		}
 
 		if (targets != null) {
 			for (ListChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = CollectionTools.contains(this.listChangeListeners(), target);
+					stillListening = CollectionTools.contains(this.getListChangeListeners(), target);
 				}
 				if (stillListening) {
 					target.itemsRemoved(event);
@@ -1363,7 +1643,7 @@ public class ChangeSupport
 	 */
 	public void fireItemsRemoved(String listName, int index, List<?> removedItems) {
 //		this.fireItemsRemoved(new ListChangeEvent(this.source, listName, index, removedItems));
-		if (removedItems.size() == 0) {
+		if (removedItems.isEmpty()) {
 			return;
 		}
 
@@ -1371,11 +1651,11 @@ public class ChangeSupport
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			ListChangeListener[] listChangeListeners = this.listChangeListeners();
+			ListChangeListener[] listChangeListeners = this.getListChangeListeners();
 			if (listChangeListeners != null) {
 				targets = listChangeListeners.clone();
 			}
-			child = this.child(listName);
+			child = this.getChild(listName);
 		}
 
 		ListChangeEvent event = null;
@@ -1384,7 +1664,7 @@ public class ChangeSupport
 			for (ListChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = CollectionTools.contains(this.listChangeListeners(), target);
+					stillListening = CollectionTools.contains(this.getListChangeListeners(), target);
 				}
 				if (stillListening) {
 					if (event == null) {
@@ -1416,11 +1696,11 @@ public class ChangeSupport
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			ListChangeListener[] listChangeListeners = this.listChangeListeners();
+			ListChangeListener[] listChangeListeners = this.getListChangeListeners();
 			if (listChangeListeners != null) {
 				targets = listChangeListeners.clone();
 			}
-			child = this.child(listName);
+			child = this.getChild(listName);
 		}
 
 		ListChangeEvent event = null;
@@ -1429,7 +1709,7 @@ public class ChangeSupport
 			for (ListChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = CollectionTools.contains(this.listChangeListeners(), target);
+					stillListening = CollectionTools.contains(this.getListChangeListeners(), target);
 				}
 				if (stillListening) {
 					if (event == null) {
@@ -1458,6 +1738,7 @@ public class ChangeSupport
 		if (event.itemsSize() == 0) {
 			return;
 		}
+		// TODO check that the items are actually different...
 
 		String listName = event.getListName();
 
@@ -1465,18 +1746,18 @@ public class ChangeSupport
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			ListChangeListener[] listChangeListeners = this.listChangeListeners();
+			ListChangeListener[] listChangeListeners = this.getListChangeListeners();
 			if (listChangeListeners != null) {
 				targets = listChangeListeners.clone();
 			}
-			child = this.child(listName);
+			child = this.getChild(listName);
 		}
 
 		if (targets != null) {
 			for (ListChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = CollectionTools.contains(this.listChangeListeners(), target);
+					stillListening = CollectionTools.contains(this.getListChangeListeners(), target);
 				}
 				if (stillListening) {
 					target.itemsReplaced(event);
@@ -1495,19 +1776,20 @@ public class ChangeSupport
 	 */
 	public void fireItemsReplaced(String listName, int index, List<?> newItems, List<?> replacedItems) {
 //		this.fireItemsReplaced(new ListChangeEvent(this.source, listName, index, newItems, replacedItems));
-		if (newItems.size() == 0) {
+		if (newItems.isEmpty()) {
 			return;
 		}
+		// TODO check that the items are actually different...
 
 		ListChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			ListChangeListener[] listChangeListeners = this.listChangeListeners();
+			ListChangeListener[] listChangeListeners = this.getListChangeListeners();
 			if (listChangeListeners != null) {
 				targets = listChangeListeners.clone();
 			}
-			child = this.child(listName);
+			child = this.getChild(listName);
 		}
 
 		ListChangeEvent event = null;
@@ -1516,7 +1798,7 @@ public class ChangeSupport
 			for (ListChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = CollectionTools.contains(this.listChangeListeners(), target);
+					stillListening = CollectionTools.contains(this.getListChangeListeners(), target);
 				}
 				if (stillListening) {
 					if (event == null) {
@@ -1543,16 +1825,17 @@ public class ChangeSupport
 	 */
 	public void fireItemReplaced(String listName, int index, Object newItem, Object replacedItem) {
 //		this.fireItemsReplaced(listName, index, Collections.singletonList(newItem), Collections.singletonList(replacedItem));
+		// TODO check that the item is actually different...
 
 		ListChangeListener[] targets = null;
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			ListChangeListener[] listChangeListeners = this.listChangeListeners();
+			ListChangeListener[] listChangeListeners = this.getListChangeListeners();
 			if (listChangeListeners != null) {
 				targets = listChangeListeners.clone();
 			}
-			child = this.child(listName);
+			child = this.getChild(listName);
 		}
 
 		ListChangeEvent event = null;
@@ -1561,7 +1844,7 @@ public class ChangeSupport
 			for (ListChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = CollectionTools.contains(this.listChangeListeners(), target);
+					stillListening = CollectionTools.contains(this.getListChangeListeners(), target);
 				}
 				if (stillListening) {
 					if (event == null) {
@@ -1597,18 +1880,18 @@ public class ChangeSupport
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			ListChangeListener[] listChangeListeners = this.listChangeListeners();
+			ListChangeListener[] listChangeListeners = this.getListChangeListeners();
 			if (listChangeListeners != null) {
 				targets = listChangeListeners.clone();
 			}
-			child = this.child(listName);
+			child = this.getChild(listName);
 		}
 
 		if (targets != null) {
 			for (ListChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = CollectionTools.contains(this.listChangeListeners(), target);
+					stillListening = CollectionTools.contains(this.getListChangeListeners(), target);
 				}
 				if (stillListening) {
 					target.itemsMoved(event);
@@ -1635,11 +1918,11 @@ public class ChangeSupport
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			ListChangeListener[] listChangeListeners = this.listChangeListeners();
+			ListChangeListener[] listChangeListeners = this.getListChangeListeners();
 			if (listChangeListeners != null) {
 				targets = listChangeListeners.clone();
 			}
-			child = this.child(listName);
+			child = this.getChild(listName);
 		}
 
 		ListChangeEvent event = null;
@@ -1648,7 +1931,7 @@ public class ChangeSupport
 			for (ListChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = CollectionTools.contains(this.listChangeListeners(), target);
+					stillListening = CollectionTools.contains(this.getListChangeListeners(), target);
 				}
 				if (stillListening) {
 					if (event == null) {
@@ -1687,18 +1970,18 @@ public class ChangeSupport
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			ListChangeListener[] listChangeListeners = this.listChangeListeners();
+			ListChangeListener[] listChangeListeners = this.getListChangeListeners();
 			if (listChangeListeners != null) {
 				targets = listChangeListeners.clone();
 			}
-			child = this.child(listName);
+			child = this.getChild(listName);
 		}
 
 		if (targets != null) {
 			for (ListChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = CollectionTools.contains(this.listChangeListeners(), target);
+					stillListening = CollectionTools.contains(this.getListChangeListeners(), target);
 				}
 				if (stillListening) {
 					target.listCleared(event);
@@ -1722,11 +2005,11 @@ public class ChangeSupport
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			ListChangeListener[] listChangeListeners = this.listChangeListeners();
+			ListChangeListener[] listChangeListeners = this.getListChangeListeners();
 			if (listChangeListeners != null) {
 				targets = listChangeListeners.clone();
 			}
-			child = this.child(listName);
+			child = this.getChild(listName);
 		}
 
 		ListChangeEvent event = null;
@@ -1735,7 +2018,7 @@ public class ChangeSupport
 			for (ListChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = CollectionTools.contains(this.listChangeListeners(), target);
+					stillListening = CollectionTools.contains(this.getListChangeListeners(), target);
 				}
 				if (stillListening) {
 					if (event == null) {
@@ -1767,18 +2050,18 @@ public class ChangeSupport
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			ListChangeListener[] listChangeListeners = this.listChangeListeners();
+			ListChangeListener[] listChangeListeners = this.getListChangeListeners();
 			if (listChangeListeners != null) {
 				targets = listChangeListeners.clone();
 			}
-			child = this.child(listName);
+			child = this.getChild(listName);
 		}
 
 		if (targets != null) {
 			for (ListChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = CollectionTools.contains(this.listChangeListeners(), target);
+					stillListening = CollectionTools.contains(this.getListChangeListeners(), target);
 				}
 				if (stillListening) {
 					target.listChanged(event);
@@ -1802,11 +2085,11 @@ public class ChangeSupport
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			ListChangeListener[] listChangeListeners = this.listChangeListeners();
+			ListChangeListener[] listChangeListeners = this.getListChangeListeners();
 			if (listChangeListeners != null) {
 				targets = listChangeListeners.clone();
 			}
-			child = this.child(listName);
+			child = this.getChild(listName);
 		}
 
 		ListChangeEvent event = null;
@@ -1815,7 +2098,7 @@ public class ChangeSupport
 			for (ListChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = CollectionTools.contains(this.listChangeListeners(), target);
+					stillListening = CollectionTools.contains(this.getListChangeListeners(), target);
 				}
 				if (stillListening) {
 					if (event == null) {
@@ -1835,6 +2118,533 @@ public class ChangeSupport
 		}
 
 		this.sourceChanged(listName);
+	}
+
+	/**
+	 * Add the specified item to the specified bound list at the specified index
+	 * and fire the appropriate event.
+	 * @see java.util.List#add(int, Object)
+	 */
+	public <E> void addItemToList(int index, E item, List<E> list, String listName) {
+		list.add(index, item);
+		this.fireItemAdded(listName, index, item);
+	}
+
+	/**
+	 * Add the specified item to the end of the specified bound list
+	 * and fire the appropriate event.
+	 * Return whether the list changed (i.e. 'true').
+	 * @see java.util.List#add(Object)
+	 */
+	public <E> boolean addItemToList(E item, List<E> list, String listName) {
+		if (list.add(item)) {
+			this.fireItemAdded(listName, list.size() - 1, item);
+			return true;
+		}
+		return false;  // List#add(Object) should always return 'true', so we should never get here...
+	}
+
+	/**
+	 * Add the specified items to the specified bound list at the specified index
+	 * and fire the appropriate event if necessary.
+	 * Return whether the list changed.
+	 * @see java.util.List#addAll(int, java.util.Collection)
+	 */
+	public <E> boolean addItemsToList(int index, E[] items, List<E> list, String listName) {
+		return (items.length != 0)
+				&& this.addItemsToList_(index, Arrays.asList(items), list, listName);
+	}
+
+	/**
+	 * Add the specified items to the specified bound list at the specified index
+	 * and fire the appropriate event if necessary.
+	 * Return whether the list changed.
+	 * @see java.util.List#addAll(int, java.util.Collection)
+	 */
+	public <E> boolean addItemsToList(int index, Collection<? extends E> items, List<E> list, String listName) {
+		return ( ! items.isEmpty())
+				&& this.addItemsToList_(index, this.convertToList(items), list, listName);
+	}
+
+	/**
+	 * no empty check
+	 */
+	protected <E> boolean addItemsToList_(int index, List<? extends E> items, List<E> list, String listName) {
+		if (list.addAll(index, items)) {
+			this.fireItemsAdded(listName, index, items);
+			return true;
+		}
+		return false;  //  'items' should not be empty, so we should never get here...
+	}
+
+	/**
+	 * Add the specified items to the specified bound list
+	 * and fire the appropriate event if necessary.
+	 * Return whether the list changed.
+	 * @see java.util.List#addAll(int, java.util.Collection)
+	 */
+	public <E> boolean addItemsToList(int index, Iterable<? extends E> items, List<E> list, String listName) {
+		return this.addItemsToList(index, items.iterator(), list, listName);
+	}
+
+	/**
+	 * Add the specified items to the specified bound list
+	 * and fire the appropriate event if necessary.
+	 * Return whether the list changed.
+	 * @see java.util.List#addAll(int, java.util.Collection)
+	 */
+	public <E> boolean addItemsToList(int index, Iterator<? extends E> items, List<E> list, String listName) {
+		if ( ! items.hasNext()) {
+			return false;
+		}
+
+		ArrayList<E> addedItems = CollectionTools.list(items);
+		if (list.addAll(index, addedItems)) {
+			this.fireItemsAdded(listName, index, addedItems);
+			return true;
+		}
+		return false;  //  'items' should not be empty, so we should never get here...
+	}
+
+	/**
+	 * Add the specified items to the end of to the specified bound list
+	 * and fire the appropriate event if necessary.
+	 * Return whether the list changed.
+	 * @see java.util.List#addAll(java.util.Collection)
+	 */
+	public <E> boolean addItemsToList(E[] items, List<E> list, String listName) {
+		return (items.length != 0)
+				&& this.addItemsToList_(Arrays.asList(items), list, listName);
+	}
+
+	/**
+	 * Add the specified items to the end of the specified bound list
+	 * and fire the appropriate event if necessary.
+	 * Return whether the list changed.
+	 * @see java.util.List#addAll(int, java.util.Collection)
+	 */
+	public <E> boolean addItemsToList(Collection<? extends E> items, List<E> list, String listName) {
+		return ( ! items.isEmpty())
+				&& this.addItemsToList_(this.convertToList(items), list, listName);
+	}
+
+	protected <E> List<? extends E> convertToList(Collection<? extends E> collection) {
+		return (collection instanceof List) ? (List<? extends E>) collection : new ArrayList<E>(collection);
+	}
+
+	/**
+	 * no empty check
+	 */
+	protected <E> boolean addItemsToList_(List<? extends E> items, List<E> list, String listName) {
+		int index = list.size();
+		if (list.addAll(items)) {
+			this.fireItemsAdded(listName, index, items);
+			return true;
+		}
+		return false;  //  'items' should not be empty, so we should never get here...
+	}
+
+	/**
+	 * Add the specified items to the end of to the specified bound list
+	 * and fire the appropriate event if necessary.
+	 * Return whether the list changed.
+	 * @see java.util.List#addAll(java.util.Collection)
+	 */
+	public <E> boolean addItemsToList(Iterable<? extends E> items, List<E> list, String listName) {
+		return this.addItemsToList(items.iterator(), list, listName);
+	}
+
+	/**
+	 * Add the specified items to the end of to the specified bound list
+	 * and fire the appropriate event if necessary.
+	 * Return whether the list changed.
+	 * @see java.util.List#addAll(java.util.Collection)
+	 */
+	public <E> boolean addItemsToList(Iterator<? extends E> items, List<E> list, String listName) {
+		if ( ! items.hasNext()) {
+			return false;
+		}
+		return this.addItemsToList_(items, list, listName);
+	}
+
+	/**
+	 * no empty check
+	 */
+	protected <E> boolean addItemsToList_(Iterator<? extends E> items, List<E> list, String listName) {
+		ArrayList<E> addedItems = CollectionTools.list(items);
+		int index = list.size();
+		if (list.addAll(addedItems)) {
+			this.fireItemsAdded(listName, index, addedItems);
+			return true;
+		}
+		return false;  //  'items' should not be empty, so we should never get here...
+	}
+
+	/**
+	 * Remove the specified item from the specified bound list
+	 * and fire the appropriate event if necessary.
+	 * Return the removed item.
+	 * @see java.util.List#remove(int)
+	 */
+	public <E> E removeItemFromList(int index, List<E> list, String listName) {
+		E item = list.remove(index);
+		this.fireItemRemoved(listName, index, item);
+		return item;
+	}
+
+	/**
+	 * Remove the specified item from the specified bound list
+	 * and fire the appropriate event if necessary.
+	 * Return whether the list changed.
+	 * @see java.util.List#remove(Object)
+	 */
+	public boolean removeItemFromList(Object item, List<?> list, String listName) {
+		int index = list.indexOf(item);
+		if (index == -1) {
+			return false;
+		}
+		list.remove(index);
+		this.fireItemRemoved(listName, index, item);
+		return true;
+	}
+
+	/**
+	 * Remove the specified items from the specified bound list
+	 * and fire the appropriate event if necessary.
+	 * Return the removed items.
+	 * @see java.util.List#remove(int)
+	 */
+	public <E> List<E> removeItemsFromList(int index, int length, List<E> list, String listName) {
+		if (length == 0) {
+			return Collections.emptyList();
+		}
+		return this.removeItemsFromList_(index, length, list, listName);
+	}
+
+	/**
+	 * no empty check
+	 */
+	protected <E> List<E> removeItemsFromList_(int index, int length, List<E> list, String listName) {
+		List<E> subList = list.subList(index, index + length);
+		List<E> removedItems = new ArrayList<E>(subList);
+		subList.clear();
+		this.fireItemsRemoved(listName, index, removedItems);
+		return removedItems;
+	}
+
+	/**
+	 * Remove the specified items from the specified bound list
+	 * and fire the appropriate event(s) if necessary.
+	 * Return whether the list changed.
+	 * @see java.util.List#removeAll(java.util.Collection)
+	 */
+	public boolean removeItemsFromList(Object[] items, List<?> list, String listName) {
+		return (items.length != 0)
+				&& ( ! list.isEmpty())
+				&& this.removeItemsFromList_(new ArrayIterator<Object>(items), list, listName);
+	}
+
+	/**
+	 * Remove the specified items from the specified bound list
+	 * and fire the appropriate event(s) if necessary.
+	 * Return whether the list changed.
+	 * @see java.util.List#removeAll(java.util.Collection)
+	 */
+	public boolean removeItemsFromList(Collection<?> items, List<?> list, String listName) {
+		return ( ! items.isEmpty())
+				&& ( ! list.isEmpty())
+				&& this.removeItemsFromList_(items.iterator(), list, listName);
+	}
+
+	/**
+	 * Remove the specified items from the specified bound list
+	 * and fire the appropriate event(s) if necessary.
+	 * Return whether the list changed.
+	 * @see java.util.List#removeAll(java.util.Collection)
+	 */
+	public boolean removeItemsFromList(Iterable<?> items, List<?> list, String listName) {
+		return this.removeItemsFromList(items.iterator(), list, listName);
+	}
+
+	/**
+	 * Remove the specified items from the specified bound list
+	 * and fire the appropriate event(s) if necessary.
+	 * Return whether the list changed.
+	 * @see java.util.List#removeAll(java.util.Collection)
+	 */
+	public boolean removeItemsFromList(Iterator<?> items, List<?> list, String listName) {
+		return (items.hasNext())
+				&& ( ! list.isEmpty())
+				&& this.removeItemsFromList_(items, list, listName);
+	}
+
+	/**
+	 * no empty checks
+	 */
+	protected boolean removeItemsFromList_(Iterator<?> items, List<?> list, String listName) {
+		boolean changed = false;
+		while (items.hasNext()) {
+			changed |= this.removeItemFromList(items.next(), list, listName);
+		}
+		return changed;
+	}
+
+	/**
+	 * Retain the specified items in the specified bound list
+	 * and fire the appropriate event(s) if necessary.
+	 * Return whether the list changed.
+	 * @see java.util.List#retainAll(java.util.Collection)
+	 */
+	public boolean retainItemsInList(Object[] items, List<?> list, String listName) {
+		if (list.isEmpty()) {
+			return false;
+		}
+		if (items.length == 0) {
+			return this.clearList_(list, listName);
+		}
+		return this.retainItemsInList_(new ArrayIterator<Object>(items), list, listName);
+	}
+
+	/**
+	 * Retain the specified items in the specified bound list
+	 * and fire the appropriate event(s) if necessary.
+	 * Return whether the list changed.
+	 * @see java.util.List#retainAll(java.util.Collection)
+	 */
+	public boolean retainItemsInList(Collection<?> items, List<?> list, String listName) {
+		if (list.isEmpty()) {
+			return false;
+		}
+		if (items.isEmpty()) {
+			return this.clearList_(list, listName);
+		}
+		return this.retainItemsInList_(items.iterator(), list, listName);
+	}
+
+	/**
+	 * Retain the specified items in the specified bound list
+	 * and fire the appropriate event(s) if necessary.
+	 * Return whether the list changed.
+	 * @see java.util.List#retainAll(java.util.Collection)
+	 */
+	public boolean retainItemsInList(Iterable<?> items, List<?> list, String listName) {
+		return this.retainItemsInList(items.iterator(), list, listName);
+	}
+
+	/**
+	 * Retain the specified items in the specified bound list
+	 * and fire the appropriate event(s) if necessary.
+	 * Return whether the list changed.
+	 * @see java.util.List#retainAll(java.util.Collection)
+	 */
+	public boolean retainItemsInList(Iterator<?> items, List<?> list, String listName) {
+		if (list.isEmpty()) {
+			return false;
+		}
+		if ( ! items.hasNext()) {
+			return this.clearList_(list, listName);
+		}
+		return this.retainItemsInList_(items, list, listName);
+	}
+
+	/**
+	 * no empty checks
+	 */
+	protected boolean retainItemsInList_(Iterator<?> items, List<?> list, String listName) {
+		HashBag<?> retainedItems = CollectionTools.collection(items);
+		HashBag<?> removedItems = CollectionTools.collection(list);
+		removedItems.removeAll(retainedItems);
+		return this.removeItemsFromList(removedItems, list, listName);
+	}
+
+	/**
+	 * Set the specified item in the specified bound list
+	 * and fire the appropriate event if necessary.
+	 * Return the replaced item.
+	 * @see java.util.List#set(int, Object)
+	 */
+	public <E> E setItemInList(int index, E item, List<E> list, String listName) {
+		E replacedItem = list.set(index, item);
+		if (this.valuesAreDifferent(item, replacedItem)) {
+			this.fireItemReplaced(listName, index, item, replacedItem);
+		}
+		return replacedItem;
+	}
+
+	/**
+	 * Replace the specified item in the specified bound list
+	 * and fire the appropriate event if necessary.
+	 * Return the index of the replaced item.
+	 * Return -1 if the item was not found in the list.
+	 * @see java.util.List#set(int, Object)
+	 */
+	public <E> int replaceItemInList(E oldItem, E newItem, List<E> list, String listName) {
+		if (list.isEmpty()) {
+			return -1;
+		}
+
+		int index = list.indexOf(oldItem);
+		if ((index != -1) && this.valuesAreDifferent(oldItem, newItem)) {
+			list.set(index, newItem);
+			this.fireItemReplaced(listName, index, newItem, oldItem);
+		}
+		return index;
+	}
+
+	/**
+	 * Set the specified items in the specified bound list
+	 * and fire the appropriate event if necessary.
+	 * Return the replaced items.
+	 * @see java.util.List#set(int, Object)
+	 */
+	public <E> List<E> setItemsInList(int index, E[] items, List<E> list, String listName) {
+		if (items.length == 0) {
+			return Collections.emptyList();
+		}
+		return this.setItemsInList_(index, Arrays.asList(items), list, listName);
+	}
+
+	/**
+	 * Set the specified items in the specified bound list
+	 * and fire the appropriate event if necessary.
+	 * Return the replaced items.
+	 * @see java.util.List#set(int, Object)
+	 */
+	public <E> List<E> setItemsInList(int index, List<? extends E> items, List<E> list, String listName) {
+		if (items.isEmpty()) {
+			return Collections.emptyList();
+		}
+		return this.setItemsInList_(index, items, list, listName);
+	}
+
+	/**
+	 * no empty check
+	 */
+	protected <E> List<E> setItemsInList_(int index, List<? extends E> items, List<E> list, String listName) {
+		List<E> subList = list.subList(index, index + items.size());
+		List<E> replacedItems = new ArrayList<E>(subList);
+		for (int i = 0; i < items.size(); i++) {
+			E newItem = items.get(i);
+			E oldItem = subList.set(i, newItem);
+			if (this.valuesAreDifferent(oldItem, newItem)) {
+				this.fireItemReplaced(listName, index + i, newItem, oldItem);
+			}
+		}
+		return replacedItems;
+	}
+
+	/**
+	 * Move items in the specified list from the specified source index to the
+	 * specified target index for the specified length.
+	 * Return whether the list changed.
+	 */
+	public <E> boolean moveItemsInList(int targetIndex, int sourceIndex, int length, List<E> list, String listName) {
+		if ((targetIndex == sourceIndex) || (length == 0)) {
+			return false;
+		}
+		// it's unlikely but possible the list is unchanged by the move... (e.g. any moves within ["foo", "foo", "foo"]...)
+		CollectionTools.move(list, targetIndex, sourceIndex, length);
+		this.fireItemsMoved(listName, targetIndex, sourceIndex, length);
+		return true;
+	}
+
+	/**
+	 * Move an item in the specified list from the specified source index to the
+	 * specified target index.
+	 * Return whether the list changed.
+	 */
+	public <E> boolean moveItemInList(int targetIndex, int sourceIndex, List<E> list, String listName) {
+		if (targetIndex == sourceIndex) {
+			return false;
+		}
+		// it's unlikely but possible the list is unchanged by the move... (e.g. any moves within ["foo", "foo", "foo"]...)
+		CollectionTools.move(list, targetIndex, sourceIndex);
+		this.fireItemMoved(listName, targetIndex, sourceIndex);
+		return true;
+	}
+
+	/**
+	 * Clear the entire list
+	 * and fire the appropriate event if necessary.
+	 * Return whether the list changed.
+	 * @see java.util.List#clear()
+	 */
+	public boolean clearList(List<?> list, String listName) {
+		if (list.isEmpty()) {
+			return false;
+		}
+		return this.clearList_(list, listName);
+	}
+
+	/**
+	 * no empty check
+	 */
+	protected boolean clearList_(List<?> list, String listName) {
+		list.clear();
+		this.fireListCleared(listName);
+		return true;
+	}
+
+	/**
+	 * Synchronize the list with the specified new list,
+	 * making a minimum number of sets, removes, and/or adds.
+	 * Return whether the list changed.
+	 */
+	public <E> boolean synchronizeList(List<E> newList, List<E> list, String listName) {
+		if (newList.isEmpty()) {
+			return this.clearList(list, listName);
+		}
+		if (list.isEmpty()) {
+			return this.addItemsToList_(newList, list, listName);
+		}
+		return this.synchronizeList_(newList, list, listName);
+	}
+
+	/**
+	 * Synchronize the list with the specified new list,
+	 * making a minimum number of sets, removes, and/or adds.
+	 * Return whether the list changed.
+	 */
+	public <E> boolean synchronizeList(Iterator<E> newList, List<E> list, String listName) {
+		if ( ! newList.hasNext()) {
+			return this.clearList(list, listName);
+		}
+		if (list.isEmpty()) {
+			return this.addItemsToList_(newList, list, listName);
+		}
+		return this.synchronizeList_(CollectionTools.list(newList), list, listName);
+	}
+
+	/**
+	 * no empty checks
+	 */
+	protected <E> boolean synchronizeList_(List<E> newList, List<E> oldList, String listName) {
+		int newSize = newList.size();
+		int oldSize = oldList.size();
+
+		boolean changed = false;
+		int min = Math.min(newSize, oldSize);
+		for (int i = 0; i < min; i++) {
+			E newItem = newList.get(i);
+			E oldItem = oldList.set(i, newItem);
+			if (this.valuesAreDifferent(oldItem, newItem)) {
+				changed = true;
+				this.fireItemReplaced(listName, i, newItem, oldItem);
+			}
+		}
+
+		if (newSize == oldSize) {
+			return changed;
+		}
+
+		if (newSize < oldSize) {
+			this.removeItemsFromList_(newSize, oldSize - newSize, oldList, listName);
+			return true;
+		}
+
+		// newSize > oldSize
+		this.addItemsToList_(newList.subList(oldSize, newSize), oldList, listName);
+		return true;
 	}
 
 
@@ -1888,8 +2698,8 @@ public class ChangeSupport
 		return this.hasAnyListeners(TREE_CHANGE_LISTENER_CLASS);
 	}
 
-	private TreeChangeListener[] treeChangeListeners() {
-		return (TreeChangeListener[]) this.listeners(TREE_CHANGE_LISTENER_CLASS);
+	private TreeChangeListener[] getTreeChangeListeners() {
+		return (TreeChangeListener[]) this.getListeners(TREE_CHANGE_LISTENER_CLASS);
 	}
 
 	/**
@@ -1902,18 +2712,18 @@ public class ChangeSupport
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			TreeChangeListener[] treeChangeListeners = this.treeChangeListeners();
+			TreeChangeListener[] treeChangeListeners = this.getTreeChangeListeners();
 			if (treeChangeListeners != null) {
 				targets = treeChangeListeners.clone();
 			}
-			child = this.child(treeName);
+			child = this.getChild(treeName);
 		}
 
 		if (targets != null) {
 			for (TreeChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = CollectionTools.contains(this.treeChangeListeners(), target);
+					stillListening = CollectionTools.contains(this.getTreeChangeListeners(), target);
 				}
 				if (stillListening) {
 					target.nodeAdded(event);
@@ -1937,11 +2747,11 @@ public class ChangeSupport
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			TreeChangeListener[] treeChangeListeners = this.treeChangeListeners();
+			TreeChangeListener[] treeChangeListeners = this.getTreeChangeListeners();
 			if (treeChangeListeners != null) {
 				targets = treeChangeListeners.clone();
 			}
-			child = this.child(treeName);
+			child = this.getChild(treeName);
 		}
 
 		TreeChangeEvent event = null;
@@ -1950,7 +2760,7 @@ public class ChangeSupport
 			for (TreeChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = CollectionTools.contains(this.treeChangeListeners(), target);
+					stillListening = CollectionTools.contains(this.getTreeChangeListeners(), target);
 				}
 				if (stillListening) {
 					if (event == null) {
@@ -1982,18 +2792,18 @@ public class ChangeSupport
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			TreeChangeListener[] treeChangeListeners = this.treeChangeListeners();
+			TreeChangeListener[] treeChangeListeners = this.getTreeChangeListeners();
 			if (treeChangeListeners != null) {
 				targets = treeChangeListeners.clone();
 			}
-			child = this.child(treeName);
+			child = this.getChild(treeName);
 		}
 
 		if (targets != null) {
 			for (TreeChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = CollectionTools.contains(this.treeChangeListeners(), target);
+					stillListening = CollectionTools.contains(this.getTreeChangeListeners(), target);
 				}
 				if (stillListening) {
 					target.nodeRemoved(event);
@@ -2017,11 +2827,11 @@ public class ChangeSupport
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			TreeChangeListener[] treeChangeListeners = this.treeChangeListeners();
+			TreeChangeListener[] treeChangeListeners = this.getTreeChangeListeners();
 			if (treeChangeListeners != null) {
 				targets = treeChangeListeners.clone();
 			}
-			child = this.child(treeName);
+			child = this.getChild(treeName);
 		}
 
 		TreeChangeEvent event = null;
@@ -2030,7 +2840,7 @@ public class ChangeSupport
 			for (TreeChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = CollectionTools.contains(this.treeChangeListeners(), target);
+					stillListening = CollectionTools.contains(this.getTreeChangeListeners(), target);
 				}
 				if (stillListening) {
 					if (event == null) {
@@ -2062,18 +2872,18 @@ public class ChangeSupport
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			TreeChangeListener[] treeChangeListeners = this.treeChangeListeners();
+			TreeChangeListener[] treeChangeListeners = this.getTreeChangeListeners();
 			if (treeChangeListeners != null) {
 				targets = treeChangeListeners.clone();
 			}
-			child = this.child(treeName);
+			child = this.getChild(treeName);
 		}
 
 		if (targets != null) {
 			for (TreeChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = CollectionTools.contains(this.treeChangeListeners(), target);
+					stillListening = CollectionTools.contains(this.getTreeChangeListeners(), target);
 				}
 				if (stillListening) {
 					target.treeCleared(event);
@@ -2097,11 +2907,11 @@ public class ChangeSupport
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			TreeChangeListener[] treeChangeListeners = this.treeChangeListeners();
+			TreeChangeListener[] treeChangeListeners = this.getTreeChangeListeners();
 			if (treeChangeListeners != null) {
 				targets = treeChangeListeners.clone();
 			}
-			child = this.child(treeName);
+			child = this.getChild(treeName);
 		}
 
 		TreeChangeEvent event = null;
@@ -2110,7 +2920,7 @@ public class ChangeSupport
 			for (TreeChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = CollectionTools.contains(this.treeChangeListeners(), target);
+					stillListening = CollectionTools.contains(this.getTreeChangeListeners(), target);
 				}
 				if (stillListening) {
 					if (event == null) {
@@ -2149,18 +2959,18 @@ public class ChangeSupport
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			TreeChangeListener[] treeChangeListeners = this.treeChangeListeners();
+			TreeChangeListener[] treeChangeListeners = this.getTreeChangeListeners();
 			if (treeChangeListeners != null) {
 				targets = treeChangeListeners.clone();
 			}
-			child = this.child(treeName);
+			child = this.getChild(treeName);
 		}
 
 		if (targets != null) {
 			for (TreeChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = CollectionTools.contains(this.treeChangeListeners(), target);
+					stillListening = CollectionTools.contains(this.getTreeChangeListeners(), target);
 				}
 				if (stillListening) {
 					target.treeChanged(event);
@@ -2184,11 +2994,11 @@ public class ChangeSupport
 		ChangeSupport child = null;
 
 		synchronized (this) {
-			TreeChangeListener[] treeChangeListeners = this.treeChangeListeners();
+			TreeChangeListener[] treeChangeListeners = this.getTreeChangeListeners();
 			if (treeChangeListeners != null) {
 				targets = treeChangeListeners.clone();
 			}
-			child = this.child(treeName);
+			child = this.getChild(treeName);
 		}
 
 		TreeChangeEvent event = null;
@@ -2197,7 +3007,7 @@ public class ChangeSupport
 			for (TreeChangeListener target : targets) {
 				boolean stillListening;
 				synchronized (this) {
-					stillListening = CollectionTools.contains(this.treeChangeListeners(), target);
+					stillListening = CollectionTools.contains(this.getTreeChangeListeners(), target);
 				}
 				if (stillListening) {
 					if (event == null) {
@@ -2224,6 +3034,31 @@ public class ChangeSupport
 	 */
 	public void fireTreeChanged(String treeName) {
 		this.fireTreeChanged(treeName, EMPTY_TREE_PATH);
+	}
+
+
+	// ********** convenience methods **********
+
+	/**
+	 * Return whether the values are equal, with the appropriate null checks.
+	 * Convenience method for checking whether an attribute value has changed.
+	 */
+	public boolean valuesAreEqual(Object value1, Object value2) {
+		if ((value1 == null) && (value2 == null)) {
+			return true;	// both are null
+		}
+		if ((value1 == null) || (value2 == null)) {
+			return false;	// one is null but the other is not
+		}
+		return value1.equals(value2);
+	}
+
+	/**
+	 * Return whether the values are different, with the appropriate null checks.
+	 * Convenience method for checking whether an attribute value has changed.
+	 */
+	public boolean valuesAreDifferent(Object value1, Object value2) {
+		return ! this.valuesAreEqual(value1, value2);
 	}
 
 
@@ -2338,6 +3173,7 @@ public class ChangeSupport
 
 	}
 
+
 	/**
 	 * Pair an aspect name with the change support holding its associated
 	 * listeners.
@@ -2356,6 +3192,26 @@ public class ChangeSupport
 		@Override
 		public String toString() {
 			return StringTools.buildToStringFor(this, this.aspectName);
+		}
+
+	}
+
+
+	/**
+	 * The aspect-specific change support class does not need to
+	 * build "grandchildren" change support objects.
+	 */
+	protected static class Child extends ChangeSupport {
+		private static final long serialVersionUID = 1L;
+
+		public Child(Model source) {
+			super(source);
+		}
+
+		@Override
+		protected ChangeSupport buildChildChangeSupport() {
+			// there should be no grandchildren
+			throw new UnsupportedOperationException();
 		}
 
 	}

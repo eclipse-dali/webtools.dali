@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -154,7 +154,7 @@ public class NewEventTests extends TestCase {
 			return this.hasAnyListeners(FOO_CHANGE_LISTENER_CLASS);
 		}
 		private FooChangeListener[] fooChangeListeners() {
-			return (FooChangeListener[]) this.listeners(FOO_CHANGE_LISTENER_CLASS);
+			return (FooChangeListener[]) this.getListeners(FOO_CHANGE_LISTENER_CLASS);
 		}
 		public void fireFooChanged() {
 			FooChangeListener[] targets = null;

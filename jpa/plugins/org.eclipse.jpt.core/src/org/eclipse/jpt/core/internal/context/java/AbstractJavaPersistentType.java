@@ -342,8 +342,8 @@ public abstract class AbstractJavaPersistentType
 		firePropertyChanged(PersistentType.PARENT_PERSISTENT_TYPE_PROPERTY, oldParentPersistentType, newParentPersistentType);
 	}
 	
-	public boolean hasAnyAttributeMappingAnnotations() {
-		return this.resourcePersistentType.hasAnyAttributeAnnotations();
+	public boolean hasAnyAttributePersistenceAnnotations() {
+		return this.resourcePersistentType.hasAnyAttributePersistenceAnnotations();
 	}
 	
 	// ******************** Updating **********************

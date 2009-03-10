@@ -82,7 +82,7 @@ public abstract class AbstractJavaBasicMapping extends AbstractJavaAttributeMapp
 		return BasicAnnotation.ANNOTATION_NAME;
 	}
 	
-	public Iterator<String> correspondingAnnotationNames() {
+	public Iterator<String> supportingAnnotationNames() {
 		return new ArrayIterator<String>(
 			JPA.COLUMN,
 			JPA.LOB,

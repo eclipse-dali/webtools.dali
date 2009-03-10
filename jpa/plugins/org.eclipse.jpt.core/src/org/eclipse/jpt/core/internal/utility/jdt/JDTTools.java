@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.utility.jdt;
 
+import java.util.HashSet;
 import java.util.List;
+
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
@@ -30,6 +32,9 @@ import org.eclipse.jpt.utility.MethodSignature;
 import org.eclipse.jpt.utility.internal.SimpleJavaType;
 import org.eclipse.jpt.utility.internal.SimpleMethodSignature;
 
+/**
+ * Convenience methods for dealing with JDT objects.
+ */
 public class JDTTools {
 
 	/**
@@ -39,10 +44,15 @@ public class JDTTools {
 	public static CompilationUnit buildASTRoot(ICompilationUnit compilationUnit) {
 		ASTParser parser = ASTParser.newParser(AST.JLS3);
 		parser.setSource(compilationUnit);
+// TODO
+//		parser.setFocalPosition(0);
 		parser.setResolveBindings(true);
 		parser.setBindingsRecovery(true);  // see bugs 196200, 222735
 		return (CompilationUnit) parser.createAST(null);
 	}
+
+
+	// ********** JDT DOM **********
 
 	public static String resolveEnum(Expression expression) {
 		if (expression == null) {
@@ -60,7 +70,7 @@ public class JDTTools {
 	public static String resolveEnum(Name enumExpression) {
 		IBinding binding = enumExpression.resolveBinding();
 		if (binding == null) {
-			return null;  // TODO figure why this is null sometimes
+			return null;  // TODO figure out why this is null sometimes
 		}
 		if (binding.getKind() != IBinding.VARIABLE) {
 			return null;
@@ -68,27 +78,33 @@ public class JDTTools {
 		IVariableBinding variableBinding = (IVariableBinding) binding;
 		return variableBinding.getType().getQualifiedName() + '.' + variableBinding.getName();
 	}
-	
+
+	/**
+	 * Return the fully-qualified name of the specified node's annotation
+	 * class.
+	 */
 	public static String resolveAnnotation(Annotation node) {
 		IAnnotationBinding annotationBinding = node.resolveAnnotationBinding();
 		if (annotationBinding == null) {
 			return null;
 		}
 		ITypeBinding annotationTypeBinding = annotationBinding.getAnnotationType();
-		if (annotationTypeBinding == null) {
-			return null;
-		}
-		return annotationTypeBinding.getQualifiedName();
+		return (annotationTypeBinding == null) ? null : annotationTypeBinding.getQualifiedName();
 	}
 	
+	/**
+	 * If the specified expression is a type literal, return the type's fully-
+	 * qualified name. Return null otherwise.
+	 */
 	public static String resolveFullyQualifiedName(Expression expression) {
 		ITypeBinding resolvedTypeBinding = resolveTypeBinding(expression);
-		if (resolvedTypeBinding != null) {
-			return resolvedTypeBinding.getQualifiedName();
-		}
-		return null;
+		return (resolvedTypeBinding == null) ? null : resolvedTypeBinding.getQualifiedName();
 	}
 	
+	/**
+	 * If the specified expression is a type literal, return the corresponding
+	 * type binding.
+	 */
 	public static ITypeBinding resolveTypeBinding(Expression expression) {
 		if (expression.getNodeType() == ASTNode.TYPE_LITERAL) {
 			return ((TypeLiteral) expression).getType().resolveBinding();
@@ -119,49 +135,72 @@ public class JDTTools {
 	private static List<SingleVariableDeclaration> parameters(MethodDeclaration methodDeclaration) {
 		return methodDeclaration.parameters();
 	}
-	
+
 	/**
-	 * Given an Expression return the ITypeBinding for the fullyQualifiedTypeName if it 
-	 * exists in the type hierarchy.  The expression should be a TypeLiteral or this will
-	 * just return null.
+	 * Return whether the specified expression is a type literal and the type binding
+	 * corresponding to the specified type name exists in the type
+	 * literal's inheritance hierarchy (superclasses and interfaces).
+	 * Return null otherwise.
 	 */
-	public static ITypeBinding findTypeInHierarchy(Expression expression, String fullyQualifiedTypeName) {
-		ITypeBinding typeBinding = resolveTypeBinding(expression);
-		if (typeBinding != null) {
-			return findTypeInHierarchy(typeBinding, fullyQualifiedTypeName);
-		}
-		return null;
+	public static boolean typeIsSubTypeOf(Expression expression, String searchTypeName) {
+		return findTypeInHierarchy(expression, searchTypeName) != null;
 	}
-	
+
 	/**
-	 * Finds a type binding for a given fully qualified type in the hierarchy of a type.
-	 * Returns <code>null</code> if no type binding is found.
-	 * @param hierarchyType the binding representing the hierarchy
-	 * @param fullyQualifiedTypeName the fully qualified name to search for
-	 * @return the type binding
+	 * If the specified expression is a type literal, return the type binding
+	 * corresponding to the specified type name if it exists in the type
+	 * literal's inheritance hierarchy (superclasses and interfaces).
+	 * Return null otherwise.
 	 */
-	//copied from org.eclipse.jdt.internal.corext.dom.Bindings
-	public static ITypeBinding findTypeInHierarchy(ITypeBinding hierarchyType, String fullyQualifiedTypeName) {
-		if (hierarchyType.isArray() || hierarchyType.isPrimitive()) {
+	public static ITypeBinding findTypeInHierarchy(Expression expression, String searchTypeName) {
+		ITypeBinding typeBinding = resolveTypeBinding(expression);
+		return (typeBinding == null) ? null : findTypeInHierarchy(typeBinding, searchTypeName);
+	}
+
+	/**
+	 * Return whether a type binding with the specified type name exists in
+	 * the specified type binding's inheritance hierarchy (superclasses
+	 * and interfaces).
+	 */
+	public static boolean typeIsSubTypeOf(ITypeBinding typeBinding, String searchTypeName) {
+		return findTypeInHierarchy(typeBinding, searchTypeName) != null;
+	}
+
+	/**
+	 * Return the type binding corresponding to the specified type name if it
+	 * exists in the specified type binding's inheritance hierarchy (superclasses
+	 * and interfaces). Return null otherwise.
+	 */
+	public static ITypeBinding findTypeInHierarchy(ITypeBinding typeBinding, String searchTypeName) {
+		return findTypeInHierarchy(typeBinding, searchTypeName, new HashSet<String>());
+	}
+
+	private static ITypeBinding findTypeInHierarchy(ITypeBinding typeBinding, String searchTypeName, HashSet<String> visited) {
+		String typeName = typeBinding.getQualifiedName();
+		if (visited.contains(typeName)) {
 			return null;
 		}
-		if (fullyQualifiedTypeName.equals(hierarchyType.getQualifiedName())) {
-			return hierarchyType;
+		if (typeName.equals(searchTypeName)) {
+			return typeBinding;
 		}
-		ITypeBinding superClass= hierarchyType.getSuperclass();
-		if (superClass != null) {
-			ITypeBinding res= findTypeInHierarchy(superClass, fullyQualifiedTypeName);
-			if (res != null) {
-				return res;
-			}
-		}
-		ITypeBinding[] superInterfaces= hierarchyType.getInterfaces();
-		for (int i= 0; i < superInterfaces.length; i++) {
-			ITypeBinding res= findTypeInHierarchy(superInterfaces[i], fullyQualifiedTypeName);
-			if (res != null) {
-				return res;
+		visited.add(typeName);
+
+		ITypeBinding[] interfaceBindings = typeBinding.getInterfaces();
+		for (ITypeBinding interfaceBinding : interfaceBindings) {  // recurse up interfaces
+			ITypeBinding result = findTypeInHierarchy(interfaceBinding, searchTypeName, visited);
+			if (result != null) {
+				return result;
 			}			
 		}
+
+		ITypeBinding superBinding = typeBinding.getSuperclass();
+		if (superBinding != null) {  // recurse up superclasses
+			ITypeBinding result = findTypeInHierarchy(superBinding, searchTypeName, visited);
+			if (result != null) {
+				return result;
+			}
+		}
+
 		return null;
 	}
 

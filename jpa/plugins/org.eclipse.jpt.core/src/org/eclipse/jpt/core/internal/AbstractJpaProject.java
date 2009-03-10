@@ -37,6 +37,7 @@ import org.eclipse.jpt.core.JpaDataSource;
 import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaProject;
+import org.eclipse.jpt.core.JpaResourceModel;
 import org.eclipse.jpt.core.JpaResourceModelListener;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
@@ -45,6 +46,7 @@ import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.jar.JarResourcePackageFragmentRoot;
 import org.eclipse.jpt.core.resource.java.JavaResourceCompilationUnit;
+import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.db.Catalog;
@@ -59,6 +61,7 @@ import org.eclipse.jpt.utility.internal.ThreadLocalCommandExecutor;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
+import org.eclipse.jpt.utility.internal.iterators.ReadOnlyCompositeListIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.jst.j2ee.model.internal.validation.ValidationCancelledException;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -473,52 +476,93 @@ public abstract class AbstractJpaProject
 	}
 
 
-	// ********** more queries **********
+	// ********** XML files **********
 
 	public JpaXmlResource getPersistenceXmlResource() {
-		IFile persistenceXmlFile = this.convertToPlatformFile(JptCorePlugin.DEFAULT_PERSISTENCE_XML_FILE_PATH);
-		if (persistenceXmlFile.exists()) {
-			JpaFile jpaFile = this.getJpaFile(persistenceXmlFile);
-			if (jpaFile != null) {
-				if (jpaFile.getContentType().isKindOf(JptCorePlugin.PERSISTENCE_XML_CONTENT_TYPE)) {
-					return (JpaXmlResource) jpaFile.getResourceModel();
-				}
-			}
-		}
-		return null;
+		return (JpaXmlResource) this.getResourceModel(
+				JptCorePlugin.DEFAULT_PERSISTENCE_XML_FILE_PATH,
+				JptCorePlugin.PERSISTENCE_XML_CONTENT_TYPE
+			);
 	}
 
 	public JpaXmlResource getDefaultOrmXmlResource() {
-		return getMappingFileResource(JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH);
-	}
-	
-	public JpaXmlResource getMappingFileResource(String fileName) {
-		return this.getMappingFileResource(fileName, JptCorePlugin.MAPPING_FILE_CONTENT_TYPE);
-	}
-	
-	protected JpaXmlResource getMappingFileResource(String fileName, IContentType contentType) {
-		IFile mappingFile = this.convertToPlatformFile(fileName);
-		return mappingFile.exists() ? this.getMappingFileResource(mappingFile, contentType) :  null;
-	}
-	
-	protected JpaXmlResource getMappingFileResource(IFile file, IContentType contentType) {
-		JpaFile jpaFile = this.getJpaFile(file);
-		return (jpaFile == null) ? null : this.getMappingFileResource(jpaFile, contentType);
-	}
-	
-	protected JpaXmlResource getMappingFileResource(JpaFile jpaFile, IContentType contentType) {
-		if (jpaFile.getContentType().isKindOf(contentType)) {
-			return (JpaXmlResource) jpaFile.getResourceModel();
-		}
-		return null;
+		return this.getMappingFileXmlResource(JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH);
 	}
 
-	protected Iterator<JpaFile> javaJpaFiles() {
-		return this.jpaFiles(JptCorePlugin.JAVA_SOURCE_CONTENT_TYPE);
+	public JpaXmlResource getMappingFileXmlResource(String fileName) {
+		return (JpaXmlResource) this.getResourceModel(fileName, JptCorePlugin.MAPPING_FILE_CONTENT_TYPE);
+	}
+
+	/**
+	 * If the specified file exists, is significant to the JPA project, and its
+	 * content is a "kind of" the specified content type, return the JPA
+	 * resource model corresponding to the file; otherwise, return null.
+	 */
+	protected JpaResourceModel getResourceModel(String fileName, IContentType contentType) {
+		IFile file = this.convertToPlatformFile(fileName);
+		return file.exists() ? this.getResourceModel(file, contentType) :  null;
+	}
+
+	/**
+	 * If the specified file is significant to the JPA project and its content
+	 * is a "kind of" the specified content type, return the JPA resource model
+	 * corresponding to the file; otherwise, return null.
+	 */
+	protected JpaResourceModel getResourceModel(IFile file, IContentType contentType) {
+		JpaFile jpaFile = this.getJpaFile(file);
+		return (jpaFile == null) ? null : jpaFile.getResourceModel(contentType);
+	}
+
+
+	// ********** Java source classes **********
+
+	public Iterator<String> annotatedClassNames() {
+		return new TransformationIterator<JavaResourcePersistentType, String>(this.persistedSourceJavaResourcePersistentTypes()) {
+			@Override
+			protected String transform(JavaResourcePersistentType jrpType) {
+				return jrpType.getQualifiedName();
+			}
+		};
+	}
+
+	/**
+	 * return only those "persisted" Java resource persistent types that are
+	 * part of the JPA project, ignoring those in JARs referenced in persistence.xml
+	 */
+	protected Iterator<JavaResourcePersistentType> persistedSourceJavaResourcePersistentTypes() {
+		return new FilteringIterator<JavaResourcePersistentType, JavaResourcePersistentType>(this.persistableSourceJavaResourcePersistentTypes()) {
+			@Override
+			protected boolean accept(JavaResourcePersistentType jrpType) {
+				return jrpType.isPersisted();  // i.e. the type has a type mapping annotation
+			}
+		};
+	}
+	
+	/**
+	 * return only those "persistable" Java resource persistent types that are
+	 * part of the JPA project, ignoring those in JARs referenced in persistence.xml
+	 * @see org.eclipse.jpt.core.internal.utility.jdt.JPTTools#typeIsPersistable(org.eclipse.jdt.core.dom.ITypeBinding)
+	 */
+	protected Iterator<JavaResourcePersistentType> persistableSourceJavaResourcePersistentTypes() {
+		return new CompositeIterator<JavaResourcePersistentType>(this.persistableSourceJavaResourcePersistentTypeIterators());
+	}
+
+	/**
+	 * return only those "persistable" Java resource persistent types that are
+	 * part of the JPA project, ignoring those in JARs referenced in persistence.xml
+	 * @see org.eclipse.jpt.core.internal.utility.jdt.JPTTools#typeIsPersistable(org.eclipse.jdt.core.dom.ITypeBinding)
+	 */
+	protected Iterator<Iterator<JavaResourcePersistentType>> persistableSourceJavaResourcePersistentTypeIterators() {
+		return new TransformationIterator<JavaResourceCompilationUnit, Iterator<JavaResourcePersistentType>>(this.javaResourceCompilationUnits()) {
+			@Override
+			protected Iterator<JavaResourcePersistentType> transform(JavaResourceCompilationUnit compilationUnit) {
+				return compilationUnit.persistableTypes();  // i.e. only the types that are *allowed* to be mapped
+			}
+		};
 	}
 
 	protected Iterator<JavaResourceCompilationUnit> javaResourceCompilationUnits() {
-		return new TransformationIterator<JpaFile, JavaResourceCompilationUnit>(this.javaJpaFiles()) {
+		return new TransformationIterator<JpaFile, JavaResourceCompilationUnit>(this.javaSourceJpaFiles()) {
 			@Override
 			protected JavaResourceCompilationUnit transform(JpaFile jpaFile) {
 				return (JavaResourceCompilationUnit) jpaFile.getResourceModel();
@@ -526,60 +570,61 @@ public abstract class AbstractJpaProject
 		};
 	}
 
-	public Iterator<String> annotatedClassNames() {
-		return new TransformationIterator<JavaResourcePersistentType, String>(this.persistedJavaResourcePersistentTypes()) {
-			@Override
-			protected String transform(JavaResourcePersistentType jrpt) {
-				return jrpt.getQualifiedName();
-			}
-		};
-	}
-	
-	protected Iterator<JavaResourcePersistentType> persistedJavaResourcePersistentTypes() {
-		return new FilteringIterator<JavaResourcePersistentType, JavaResourcePersistentType>(this.persistableJavaResourcePersistentTypes()) {
-			@Override
-			protected boolean accept(JavaResourcePersistentType jrpt) {
-				return jrpt.isPersisted();
-			}
-		};
-	}
-	
-	protected Iterator<JavaResourcePersistentType> persistableJavaResourcePersistentTypes() {
-		return new CompositeIterator<JavaResourcePersistentType>(this.persistableJavaResourcePersistentTypeIterators());
+	/**
+	 * return JPA files with Java source "content"
+	 */
+	protected Iterator<JpaFile> javaSourceJpaFiles() {
+		return this.jpaFiles(JptCorePlugin.JAVA_SOURCE_CONTENT_TYPE);
 	}
 
-	protected Iterator<Iterator<JavaResourcePersistentType>> persistableJavaResourcePersistentTypeIterators() {
-		return new TransformationIterator<JavaResourceCompilationUnit, Iterator<JavaResourcePersistentType>>(this.javaResourceCompilationUnits()) {
-			@Override
-			protected Iterator<JavaResourcePersistentType> transform(JavaResourceCompilationUnit compilationUnit) {
-				return compilationUnit.persistableTypes();
-			}
-		};
-	}
+
+	// ********** Java resource persistent type look-up **********
 
 	public JavaResourcePersistentType getJavaResourcePersistentType(String typeName) {
 		for (Iterator<JavaResourcePersistentType> stream = this.persistableJavaResourcePersistentTypes(); stream.hasNext(); ) {
-			JavaResourcePersistentType pt =  stream.next();
-			if (pt.getQualifiedName().equals(typeName)) {
-				return pt;
+			JavaResourcePersistentType jrpType =  stream.next();
+			if (jrpType.getQualifiedName().equals(typeName)) {
+				return jrpType;
 			}
 		}
 		return null;
 	}
 
-	protected Iterator<JpaFile> jarJpaFiles() {
-		return this.jpaFiles(JptCorePlugin.JAR_CONTENT_TYPE);
+	/**
+	 * return *all* the "persistable" persistent types, including those in JARs referenced in
+	 * persistence.xml
+	 * @see org.eclipse.jpt.core.internal.utility.jdt.JPTTools#typeIsPersistable(org.eclipse.jdt.core.dom.ITypeBinding)
+	 */
+	protected Iterator<JavaResourcePersistentType> persistableJavaResourcePersistentTypes() {
+		return new CompositeIterator<JavaResourcePersistentType>(this.persistableJavaResourcePersistentTypeIterators());
 	}
 
-	protected Iterator<JarResourcePackageFragmentRoot> jarResourcePackageFragmentRoots() {
-		return new TransformationIterator<JpaFile, JarResourcePackageFragmentRoot>(this.jarJpaFiles()) {
+	/**
+	 * return *all* the "persistable" persistent types, including those in JARs referenced in
+	 * persistence.xml
+	 * @see org.eclipse.jpt.core.internal.utility.jdt.JPTTools#typeIsPersistable(org.eclipse.jdt.core.dom.ITypeBinding)
+	 */
+	protected Iterator<Iterator<JavaResourcePersistentType>> persistableJavaResourcePersistentTypeIterators() {
+		return new TransformationIterator<JavaResourceNode.Root, Iterator<JavaResourcePersistentType>>(this.javaResourceNodeRoots()) {
 			@Override
-			protected JarResourcePackageFragmentRoot transform(JpaFile jpaFile) {
-				return (JarResourcePackageFragmentRoot) jpaFile.getResourceModel();
+			protected Iterator<JavaResourcePersistentType> transform(JavaResourceNode.Root root) {
+				return root.persistableTypes();  // i.e. only the types that are *allowed* to be mapped
 			}
 		};
 	}
 
+	@SuppressWarnings("unchecked")
+	protected Iterator<JavaResourceNode.Root> javaResourceNodeRoots() {
+		return new CompositeIterator<JavaResourceNode.Root>(
+					this.javaResourceCompilationUnits(),
+					this.jarResourcePackageFragmentRoots()
+				);
+	}
+
+
+	// ********** JARs **********
+
+	// TODO
 	public JarResourcePackageFragmentRoot getJarResourcePackageFragmentRoot(String jarFileName) {
 //		return this.getJarResourcePackageFragmentRoot(this.convertToPlatformFile(jarFileName));
 		return this.getJarResourcePackageFragmentRoot(this.getProject().getFile(jarFileName));
@@ -593,6 +638,22 @@ public abstract class AbstractJpaProject
 			}
 		}
 		return null;
+	}
+
+	protected Iterator<JarResourcePackageFragmentRoot> jarResourcePackageFragmentRoots() {
+		return new TransformationIterator<JpaFile, JarResourcePackageFragmentRoot>(this.jarJpaFiles()) {
+			@Override
+			protected JarResourcePackageFragmentRoot transform(JpaFile jpaFile) {
+				return (JarResourcePackageFragmentRoot) jpaFile.getResourceModel();
+			}
+		};
+	}
+
+	/**
+	 * return JPA files with JAR "content"
+	 */
+	protected Iterator<JpaFile> jarJpaFiles() {
+		return this.jpaFiles(JptCorePlugin.JAR_CONTENT_TYPE);
 	}
 
 
@@ -672,7 +733,7 @@ public abstract class AbstractJpaProject
 		if (this.classpathEntryHasBeenAdded(delta)) {
 			// TODO
 		} else if (this.classpathEntryHasBeenRemoved(delta)) {  // should be mutually-exclusive w/added (?)
-			
+			// TODO
 		}
 	}
 
@@ -802,6 +863,8 @@ public abstract class AbstractJpaProject
 				stream.next().resolveTypes();
 			}
 		}
+		// update JARs???
+		// TODO
 	}
 
 	protected ResourceDeltaVisitor buildResourceDeltaVisitor() {
@@ -819,19 +882,7 @@ public abstract class AbstractJpaProject
 			case IResourceDelta.REMOVED :
 				return this.removeJpaFile(file);
 			case IResourceDelta.CHANGED :
-				JpaFile jpaFile = this.getJpaFile(file);
-				if (jpaFile != null) {
-					//if the content type changed, we need to build a new JpaFile
-					//this could happen if the schema of an orm.xml file was changed
-					if (!jpaFile.getContentType().equals(PlatformTools.getContentType(file))) {
-						removeJpaFile(jpaFile);
-						addJpaFile(file);
-						return true;
-					}
-				}
-				else {
-					return addJpaFile(file);
-				}
+				return this.checkForChangedJpaFile(file);
 			case IResourceDelta.ADDED_PHANTOM :
 			case IResourceDelta.REMOVED_PHANTOM :
 			default :
@@ -839,6 +890,25 @@ public abstract class AbstractJpaProject
 		}
 
 		return false;
+	}
+
+	protected boolean checkForChangedJpaFile(IFile file) {
+		JpaFile jpaFile = this.getJpaFile(file);
+		if (jpaFile == null) {
+			// the file might have changed its content to something that we are interested in
+			return this.addJpaFile(file);
+		}
+
+		if (jpaFile.getContentType().equals(PlatformTools.getContentType(file))) {
+			// content has not changed - ignore
+			return false;
+		}
+
+		// the content type changed, we need to build a new JPA file
+		// (e.g. the schema of an orm.xml file changed from JPA to EclipseLink)
+		this.removeJpaFile(jpaFile);
+		this.addJpaFile(file);
+		return true;
 	}
 
 	// ***** inner class
