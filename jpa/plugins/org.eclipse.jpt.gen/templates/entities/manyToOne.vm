@@ -1,7 +1,0 @@
-##included template. Generates the @ManyToOne annotation.
-##Assumes that the context has a "role" object representing the generated AssociationRole
-##
-#set ($members = $customizer.appendAnnotation("", "cascade", $customizer.genCascades($role), false))
-#set ($members = $customizer.appendAnnotation($members, "fetch", $customizer.genFetch($role.referrerTable), false))
-	@ManyToOne($members)
-#parse("join.vm")
