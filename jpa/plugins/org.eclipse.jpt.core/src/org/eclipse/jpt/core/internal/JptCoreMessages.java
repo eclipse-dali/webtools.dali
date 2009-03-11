@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -32,6 +32,8 @@ public class JptCoreMessages {
 	public static String VALIDATE_CONNECTION_NOT_SPECIFIED;
 	public static String VALIDATE_CONNECTION_INVALID;
 	public static String VALIDATE_CONNECTION_NOT_CONNECTED;
+	public static String VALIDATE_DEFAULT_CATALOG_NOT_SPECIFIED;
+	public static String VALIDATE_CONNECTION_DOESNT_CONTAIN_CATALOG;
 	public static String VALIDATE_DEFAULT_SCHEMA_NOT_SPECIFIED;
 	public static String VALIDATE_CONNECTION_DOESNT_CONTAIN_SCHEMA;
 	public static String VALIDATE_RUNTIME_NOT_SPECIFIED;

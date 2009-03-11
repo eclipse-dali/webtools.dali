@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -50,7 +50,19 @@ public interface JpaFacetDataModelProperties extends IDataModelProperties
 	 * Not required, type String, identifies the database driver library added to the classpath
 	 */
 	public static final String DB_DRIVER_NAME = "JpaFacetDataModelProperties.DB_DRIVER_NAME";
+
+	/**
+	 * Required, type Boolean, identifies if the user wishes to override default Catalog name
+	 */
+	public static final String USER_WANTS_TO_OVERRIDE_DEFAULT_CATALOG = 
+		"JpaFacetDataModelProperties.USER_WANTS_TO_OVERRIDE_DEFAULT_CATALOG";
 	
+	/**
+	 * Not required, type String, identifies the user overridden default Catalog name
+	 */
+	public static final String USER_OVERRIDE_DEFAULT_CATALOG = 
+		"JpaFacetDataModelProperties.USER_OVERRIDE_DEFAULT_CATALOG";
+
 	/**
 	 * Required, type Boolean, identifies if the user wishes to override default schema name
 	 */

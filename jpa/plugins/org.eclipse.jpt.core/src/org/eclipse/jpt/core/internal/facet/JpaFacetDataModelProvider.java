@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,11 +16,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.JptCoreMessages;
 import org.eclipse.jpt.core.internal.platform.JpaPlatformRegistry;
+import org.eclipse.jpt.db.Catalog;
 import org.eclipse.jpt.db.ConnectionProfile;
 import org.eclipse.jpt.db.ConnectionProfileFactory;
 import org.eclipse.jpt.db.Database;
@@ -60,6 +62,9 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 	private static final IStatus CONNECTION_NOT_CONNECTED_STATUS = 
 			buildInfoStatus(JptCoreMessages.VALIDATE_CONNECTION_NOT_CONNECTED);
 	
+	private static final IStatus USER_OVERRIDE_DEFAULT_CATALOG_NOT_SPECIFIED_STATUS = 
+		buildErrorStatus(JptCoreMessages.VALIDATE_DEFAULT_CATALOG_NOT_SPECIFIED);
+	
 	private static final IStatus USER_OVERRIDE_DEFAULT_SCHEMA_NOT_SPECIFIED_STATUS = 
 			buildErrorStatus(JptCoreMessages.VALIDATE_DEFAULT_SCHEMA_NOT_SPECIFIED);
 	
@@ -91,6 +96,8 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 		propertyNames.add(CONNECTION_ACTIVE);
 		propertyNames.add(USER_WANTS_TO_ADD_DB_DRIVER_JARS_TO_CLASSPATH);
 		propertyNames.add(DB_DRIVER_NAME);
+		propertyNames.add(USER_WANTS_TO_OVERRIDE_DEFAULT_CATALOG);
+		propertyNames.add(USER_OVERRIDE_DEFAULT_CATALOG);
 		propertyNames.add(USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA);
 		propertyNames.add(USER_OVERRIDE_DEFAULT_SCHEMA);
 		propertyNames.add(DISCOVER_ANNOTATED_CLASSES);
@@ -101,6 +108,9 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 	
 	@Override
 	public boolean isPropertyEnabled(String propertyName) {
+		if (propertyName.equals(USER_OVERRIDE_DEFAULT_CATALOG)) {
+			return getBooleanProperty(USER_WANTS_TO_OVERRIDE_DEFAULT_CATALOG);
+		}
 		if (propertyName.equals(USER_OVERRIDE_DEFAULT_SCHEMA)) {
 			return getBooleanProperty(USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA);
 		}
@@ -139,6 +149,12 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 		if (propertyName.equals(DB_DRIVER_NAME)) {
 			return getDefaultDriverName();
 		}
+		if (propertyName.equals(USER_WANTS_TO_OVERRIDE_DEFAULT_CATALOG)) {
+			return Boolean.FALSE;
+		}
+		if (propertyName.equals(USER_OVERRIDE_DEFAULT_CATALOG)) {
+			return getDefaultCatalogName();
+		}
 		if (propertyName.equals(USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA)) {
 			return Boolean.FALSE;
 		}
@@ -165,7 +181,20 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 		}
 		return cp.getDriverName();
 	}
-	
+
+	private String getDefaultCatalogName() {
+		ConnectionProfile cp = this.getConnectionProfile();
+		if (cp == null) {
+			return null;
+		}
+		Database db = cp.getDatabase();
+		if (db == null) {
+			return null;
+		}
+		Catalog catalog = db.getDefaultCatalog();
+		return (catalog == null) ? null : catalog.getIdentifier();
+	}
+
 	private String getDefaultSchemaName() {
 		ConnectionProfile cp = this.getConnectionProfile();
 		if (cp == null) {
@@ -236,10 +265,14 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 			this.model.setBooleanProperty(CONNECTION_ACTIVE, connectionIsActive());
 			this.model.notifyPropertyChange(DB_DRIVER_NAME, IDataModel.DEFAULT_CHG);
 			this.model.notifyPropertyChange(DB_DRIVER_NAME, IDataModel.VALID_VALUES_CHG);
+			this.model.notifyPropertyChange(USER_OVERRIDE_DEFAULT_CATALOG, IDataModel.DEFAULT_CHG);
+			this.model.notifyPropertyChange(USER_OVERRIDE_DEFAULT_CATALOG, IDataModel.VALID_VALUES_CHG);
 			this.model.notifyPropertyChange(USER_OVERRIDE_DEFAULT_SCHEMA, IDataModel.DEFAULT_CHG);
 			this.model.notifyPropertyChange(USER_OVERRIDE_DEFAULT_SCHEMA, IDataModel.VALID_VALUES_CHG);
 		}
 		if (propertyName.equals(CONNECTION_ACTIVE)) {
+			this.model.notifyPropertyChange(USER_OVERRIDE_DEFAULT_CATALOG, IDataModel.DEFAULT_CHG);
+			this.model.notifyPropertyChange(USER_OVERRIDE_DEFAULT_CATALOG, IDataModel.VALID_VALUES_CHG);
 			this.model.notifyPropertyChange(USER_OVERRIDE_DEFAULT_SCHEMA, IDataModel.DEFAULT_CHG);
 			this.model.notifyPropertyChange(USER_OVERRIDE_DEFAULT_SCHEMA, IDataModel.VALID_VALUES_CHG);
 			this.model.notifyPropertyChange(USER_WANTS_TO_ADD_DB_DRIVER_JARS_TO_CLASSPATH, IDataModel.ENABLE_CHG);
@@ -249,6 +282,12 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 			this.model.notifyPropertyChange(DB_DRIVER_NAME, IDataModel.ENABLE_CHG);
 			if (! ((Boolean) propertyValue).booleanValue()) {
 				this.model.setProperty(DB_DRIVER_NAME, null);
+			}
+		}
+		if (propertyName.equals(USER_WANTS_TO_OVERRIDE_DEFAULT_CATALOG)) {
+			this.model.notifyPropertyChange(USER_OVERRIDE_DEFAULT_CATALOG, IDataModel.ENABLE_CHG);
+			if (! ((Boolean) propertyValue).booleanValue()) {
+				this.model.setProperty(USER_OVERRIDE_DEFAULT_CATALOG, null);
 			}
 		}
 		if (propertyName.equals(USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA)) {
@@ -315,6 +354,16 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 				},
 				EMPTY_DMPD_ARRAY);
 		}
+		if (propertyName.equals(USER_OVERRIDE_DEFAULT_CATALOG)) {
+			return CollectionTools.array(
+				new TransformationIterator<String, DataModelPropertyDescriptor>(catalogNames()) {
+					@Override
+					protected DataModelPropertyDescriptor transform(String next) {
+						return new DataModelPropertyDescriptor(next);
+					}
+				},
+				EMPTY_DMPD_ARRAY);
+		}
 		if (propertyName.equals(USER_OVERRIDE_DEFAULT_SCHEMA)) {
 			return CollectionTools.array(
 				new TransformationIterator<String, DataModelPropertyDescriptor>(schemaNames()) {
@@ -367,6 +416,10 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 		if (name.equals(USER_WANTS_TO_ADD_DB_DRIVER_JARS_TO_CLASSPATH)
 				|| name.equals(DB_DRIVER_NAME)) {
 			return this.validateDbDriverName();
+		}
+		if (name.equals(USER_WANTS_TO_OVERRIDE_DEFAULT_CATALOG)
+			|| name.equals(USER_OVERRIDE_DEFAULT_CATALOG)) {
+			return this.validateUserOverrideDefaultCatalog();
 		}
 		if (name.equals(USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA)
 				|| name.equals(USER_OVERRIDE_DEFAULT_SCHEMA)) {
@@ -434,6 +487,28 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 		return connectionNames.iterator();
 	}
 	
+	private List<String> buildSortedCatalogNames() {
+		ConnectionProfile cp = this.getConnectionProfile();
+		if (cp == null) {
+			return Collections.emptyList();
+		}
+		Database db = cp.getDatabase();
+		if (db == null) {
+			return Collections.emptyList();
+		}
+		return CollectionTools.list(db.sortedCatalogIdentifiers());
+	}
+	
+	private Iterator<String> catalogNames() {
+		String setValue = getStringProperty(USER_OVERRIDE_DEFAULT_CATALOG);
+		List<String> catalogNames = this.buildSortedCatalogNames();
+		
+		if (StringTools.stringIsEmpty(setValue) || catalogNames.contains(setValue)) {
+			return catalogNames.iterator();
+		}
+		return new CompositeIterator<String>(setValue, catalogNames.iterator());
+	}
+	
 	private List<String> buildSortedSchemaNames() {
 		ConnectionProfile cp = this.getConnectionProfile();
 		if (cp == null) {
@@ -443,7 +518,6 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 		if (db == null) {
 			return Collections.emptyList();
 		}
-		// TODO catalogs...
 		return CollectionTools.list(db.sortedSchemaIdentifiers());  // use identifiers? names seem OK since combo-box is read-only?
 	}
 
@@ -484,6 +558,15 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 		}
 		if (! connectionProfile.isActive()) {
 			return CONNECTION_NOT_CONNECTED_STATUS;
+		}
+		return OK_STATUS;
+	}
+	
+	private IStatus validateUserOverrideDefaultCatalog() {
+		if (getBooleanProperty(USER_WANTS_TO_OVERRIDE_DEFAULT_CATALOG)) {
+			if (StringTools.stringIsEmpty(getStringProperty(USER_OVERRIDE_DEFAULT_CATALOG))) {
+				return USER_OVERRIDE_DEFAULT_CATALOG_NOT_SPECIFIED_STATUS;
+			}
 		}
 		return OK_STATUS;
 	}

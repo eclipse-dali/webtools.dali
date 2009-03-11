@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,6 +19,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRunnable;
@@ -41,6 +42,7 @@ import org.eclipse.jpt.core.internal.JpaModelManager;
 import org.eclipse.jpt.core.internal.JptCoreMessages;
 import org.eclipse.jpt.core.internal.facet.JpaLibraryProviderConstants;
 import org.eclipse.jpt.core.internal.platform.JpaPlatformRegistry;
+import org.eclipse.jpt.db.Catalog;
 import org.eclipse.jpt.db.ConnectionAdapter;
 import org.eclipse.jpt.db.ConnectionListener;
 import org.eclipse.jpt.db.ConnectionProfile;
@@ -106,7 +108,7 @@ import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 public class JpaProjectPropertiesPage
 	extends LibraryFacetPropertyPage 
 {
-	public static final String PROP_ID= "org.eclipse.jpt.ui.jpaProjectPropertiesPage"; //$NON-NLS-1$
+	public static final String PROP_ID = "org.eclipse.jpt.ui.jpaProjectPropertiesPage"; //$NON-NLS-1$
 
 	
 	private WritablePropertyValueModel<IProject> projectHolder;
@@ -125,6 +127,14 @@ public class JpaProjectPropertiesPage
 	
 	private PropertyValueModel<ConnectionProfile> connectionProfileModel;
 	
+	private BufferedWritablePropertyValueModel<Boolean> overrideDefaultCatalogModel;
+	
+	private BufferedWritablePropertyValueModel<String> defaultCatalogModel;
+	
+	private WritablePropertyValueModel<String> combinedDefaultCatalogModel;
+	
+	private ListValueModel<String> catalogChoicesModel;
+	
 	private BufferedWritablePropertyValueModel<Boolean> overrideDefaultSchemaModel;
 	
 	private BufferedWritablePropertyValueModel<String> defaultSchemaModel;
@@ -137,25 +147,38 @@ public class JpaProjectPropertiesPage
 	
 	private WritablePropertyValueModel<Boolean> listAnnotatedClassesModel;
 	
-	
+
+	// ************ construction/initialization ************
+
 	public JpaProjectPropertiesPage() {
 		super();
+		initialize();
+	}
+
+	protected void initialize() {
 		this.projectHolder = new SimplePropertyValueModel<IProject>();
 		this.jpaProjectHolder = initializeJpaProjectHolder();
 		this.trigger = new Trigger();
-		this.validationListener = initializeValidationListener();
-		this.platformIdModel = initializePlatformIdModel();
-		this.connectionModel = initializeConnectionModel();
-		this.connectionChoicesModel = initializeConnectionChoicesModel();
-		this.connectionProfileModel = initializeConnectionProfileModel();
-		this.overrideDefaultSchemaModel = initializeOverrideDefaultSchemaModel();
-		this.defaultSchemaModel = initializeDefaultSchemaModel();
-		this.combinedDefaultSchemaModel = initializeCombinedDefaultSchemaModel();
-		this.schemaChoicesModel = initializeSchemaChoicesModel();
-		this.discoverAnnotatedClassesModel = initializeDiscoverAnnotatedClassesModel();
-		this.listAnnotatedClassesModel = initializeListAnnotatedClassesModel();
+		this.validationListener = this.initializeValidationListener();
+		this.platformIdModel = this.initializePlatformIdModel();
+		
+		this.connectionModel = this.initializeConnectionModel();
+		this.connectionChoicesModel = this.initializeConnectionChoicesModel();
+		this.connectionProfileModel = this.initializeConnectionProfileModel();
+		
+		this.overrideDefaultCatalogModel = this.initializeOverrideDefaultCatalogModel();
+		this.defaultCatalogModel = this.initializeDefaultCatalogModel();
+		this.combinedDefaultCatalogModel = this.initializeCombinedDefaultCatalogModel();
+		this.catalogChoicesModel = this.initializeCatalogChoicesModel();
+		
+		this.overrideDefaultSchemaModel = this.initializeOverrideDefaultSchemaModel();
+		this.defaultSchemaModel = this.initializeDefaultSchemaModel();
+		this.combinedDefaultSchemaModel = this.initializeCombinedDefaultSchemaModel();
+		this.schemaChoicesModel = this.initializeSchemaChoicesModel();
+		
+		this.discoverAnnotatedClassesModel = this.initializeDiscoverAnnotatedClassesModel();
+		this.listAnnotatedClassesModel = this.initializeListAnnotatedClassesModel();
 	}
-	
 	
 	protected PropertyValueModel<JpaProject> initializeJpaProjectHolder() {
 		return new JpaProjectHolder(this.projectHolder);
@@ -212,6 +235,51 @@ public class JpaProjectPropertiesPage
 				return JptDbPlugin.instance().getConnectionProfileFactory().buildConnectionProfile(value);
 			}
 		};
+	}
+
+	protected BufferedWritablePropertyValueModel<Boolean> initializeOverrideDefaultCatalogModel() {
+		BufferedWritablePropertyValueModel<Boolean> model = 
+			new BufferedWritablePropertyValueModel( 
+				new OverrideDefaultCatalogModel(this.jpaProjectHolder), 
+				this.trigger);
+		model.addPropertyChangeListener(PropertyValueModel.VALUE, this.validationListener);
+		return model;
+		
+	}
+	
+	protected BufferedWritablePropertyValueModel<String> initializeDefaultCatalogModel() {
+		return new BufferedWritablePropertyValueModel(
+			new DefaultCatalogModel(this.jpaProjectHolder),
+			new DefaultCatalogTrigger(this.trigger, this.overrideDefaultCatalogModel));
+	}
+	
+	protected WritablePropertyValueModel<String> initializeCombinedDefaultCatalogModel() {
+		WritablePropertyValueModel<String> model = 
+			new CombinedDefaultCatalogModel(
+				this.defaultCatalogModel,
+				this.overrideDefaultCatalogModel,
+				new DefaultDefaultCatalogModel(this.connectionProfileModel));
+		model.addPropertyChangeListener(PropertyValueModel.VALUE, this.validationListener);
+		return model;
+	}
+	
+	protected ListValueModel<String> initializeCatalogChoicesModel() {
+		Collection<CollectionValueModel> cvms = new ArrayList<CollectionValueModel>();
+		cvms.add(new PropertyCollectionValueModelAdapter(this.defaultCatalogModel));
+		cvms.add(new CatalogChoicesModel(this.connectionProfileModel));
+		return new SortedListValueModelAdapter(
+			new CompositeCollectionValueModel<CollectionValueModel, String>(cvms) {
+				@Override
+				public Iterator<String> iterator() {
+					Set<String> uniqueValues = new HashSet<String>();
+					for (String each : CollectionTools.iterable(super.iterator())) {
+						if (each != null) {
+							uniqueValues.add(each);
+						}
+					}
+					return uniqueValues.iterator();
+				}
+			});
 	}
 	
 	protected BufferedWritablePropertyValueModel<Boolean> initializeOverrideDefaultSchemaModel() {
@@ -281,7 +349,8 @@ public class JpaProjectPropertiesPage
 			}
 		};
 	}
-	
+
+	// ************ queries ************
 	protected JpaProject getJpaProject() {
 		return this.jpaProjectHolder.getValue();
 	}
@@ -299,6 +368,19 @@ public class JpaProjectPropertiesPage
 		return JptDbPlugin.instance().getConnectionProfileFactory().
 			buildConnectionProfile(getConnectionName());
 	}
+	
+	protected Boolean getOverrideDefaultCatalog() {
+		return this.overrideDefaultCatalogModel.getValue();
+	}
+	
+	protected List<String> getDefaultCatalogChoices() {
+		return CollectionTools.list(this.catalogChoicesModel.iterator());
+	}
+	
+	protected String getDefaultCatalog() {
+		return this.defaultCatalogModel.getValue();
+	}
+	
 	
 	protected Boolean getOverrideDefaultSchema() {
 		return this.overrideDefaultSchemaModel.getValue();
@@ -423,6 +505,7 @@ public class JpaProjectPropertiesPage
 			getProject().build(IncrementalProjectBuilder.FULL_BUILD, monitor);
 		}
 		else if (this.connectionModel.isBuffering()
+				|| this.defaultCatalogModel.isBuffering()
 				|| this.defaultSchemaModel.isBuffering()
 				|| this.discoverAnnotatedClassesModel.isBuffering()) {
 			this.trigger.accept();
@@ -466,6 +549,25 @@ public class JpaProjectPropertiesPage
 				statuses.get(IStatus.INFO).add( 
 					buildInfoStatus(
 						JptCoreMessages.VALIDATE_CONNECTION_NOT_CONNECTED));
+			}
+		}
+		
+		/* default catalog */
+		if (getOverrideDefaultCatalog()) {
+			String defaultCatalog = getDefaultCatalog();
+			if (StringTools.stringIsEmpty(defaultCatalog)) {
+				statuses.get(IStatus.ERROR).add( 
+					buildErrorStatus(
+						JptCoreMessages.VALIDATE_DEFAULT_CATALOG_NOT_SPECIFIED));
+			}
+			else if (connectionProfile != null
+				&& connectionProfile.isConnected()
+				&& ! getDefaultCatalogChoices().contains(defaultCatalog)) {
+				statuses.get(IStatus.WARNING).add(
+					buildWarningStatus(
+						NLS.bind(
+							JptCoreMessages.VALIDATE_CONNECTION_DOESNT_CONTAIN_CATALOG,
+							defaultCatalog)));
 			}
 		}
 		
@@ -910,7 +1012,307 @@ public class JpaProjectPropertiesPage
 		}
 	}
 	
+
+	// ************ Catalog ************
+	private static class OverrideDefaultCatalogModel
+	extends BasePropertyAspectAdapter<JpaProject, Boolean>
+	{
+		// the superclass "value" is the *cached* value
+		private Boolean actualValue;
+		
+		
+		private OverrideDefaultCatalogModel(PropertyValueModel<JpaProject> jpaProjectHolder) {
+			super(jpaProjectHolder);
+		}
+		
+		
+		// ************ WritablePropertyValueModel impl ************************
+		
+		@Override
+		public Boolean getValue() {
+			Boolean value = super.getValue();
+			return (value == null) ? Boolean.FALSE : value;
+		}
+		
+		@Override
+		public void setValue_(Boolean newValue) {
+			this.actualValue = newValue;
+			valueChanged();
+		}
+		
+		
+		// ************ AspectAdapter impl *************************************
+		
+		@Override
+		protected void engageSubject_() {
+			this.actualValue = this.buildActualValue_();
+			super.engageSubject_();
+		}
+		
+		@Override
+		protected void disengageSubject_() {
+			this.actualValue = null;
+			super.disengageSubject_();
+		}
+		
+		
+		// ************ internal ***********************************************
+		
+		@Override
+		protected Boolean buildValue_() {
+			return this.actualValue;
+		}
+		
+		protected Boolean buildActualValue_() {
+			return ! StringTools.stringIsEmpty(this.subject.getUserOverrideDefaultCatalog());
+		}
+	}
+
 	
+	private static class DefaultCatalogModel
+		extends PropertyAspectAdapter<JpaProject, String>
+	{
+		private DefaultCatalogModel(PropertyValueModel<JpaProject> jpaProjectModel) { 
+			super(jpaProjectModel, JpaProject.USER_OVERRIDE_DEFAULT_CATALOG_PROPERTY);
+		}
+		
+		
+		// ************ WritablePropertyValueModel impl ************************
+		
+		@Override
+		public void setValue_(String newCatalog) {
+			this.subject.setUserOverrideDefaultCatalog(newCatalog);
+		}
+		
+		
+		// ************ internal ***********************************************
+		
+		@Override
+		protected String buildValue_() {
+			return this.subject.getUserOverrideDefaultCatalog();
+		}
+	}
+	
+	private static class DefaultDefaultCatalogModel
+		extends BasePropertyAspectAdapter<ConnectionProfile, String>
+	{
+		private ConnectionListener connectionListener;
+		
+		
+		private DefaultDefaultCatalogModel(
+				PropertyValueModel<ConnectionProfile> connectionProfileModel) {
+			super(connectionProfileModel);
+			this.connectionListener = buildConnectionListener();
+		}
+		
+		
+		// ************ initialization *****************************************
+		
+		private ConnectionListener buildConnectionListener() {
+			return new ConnectionAdapter() {
+				@Override
+				public void opened(ConnectionProfile profile) {
+					if (profile.equals(DefaultDefaultCatalogModel.this.subject)) {
+						valueChanged();
+					}
+				}
+				@Override
+				public void catalogChanged(ConnectionProfile profile, Catalog catalog) {
+					if (profile.equals(DefaultDefaultCatalogModel.this.subject)) {
+						valueChanged();
+					}
+				}
+			};
+		}
+		
+		
+		// ************ AspectAdapter impl *************************************
+		
+		@Override
+		protected void engageSubject_() {
+			this.subject.addConnectionListener(this.connectionListener);
+			super.engageSubject_();
+		}
+		
+		@Override
+		protected void disengageSubject_() {
+			this.subject.removeConnectionListener(this.connectionListener);
+			super.disengageSubject_();
+		}
+		
+		
+		// ************ internal ***********************************************
+		
+		@Override
+		protected String buildValue_() {
+			Database db = this.subject.getDatabase();
+			if (db == null) {
+				return null;
+			}
+			Catalog catalog = db.getDefaultCatalog();
+			return (catalog == null) ? null : catalog.getIdentifier();
+		}
+	}
+
+	private static class CombinedDefaultCatalogModel
+		extends ListPropertyValueModelAdapter<String>
+		implements WritablePropertyValueModel<String>
+	{
+		private WritablePropertyValueModel<String> defaultCatalogModel;
+		
+		private PropertyValueModel<Boolean> overrideDefaultCatalogModel;
+		
+		private PropertyValueModel<String> defaultDefaultCatalogModel;
+		
+		
+		private CombinedDefaultCatalogModel(
+				WritablePropertyValueModel<String> defaultCatalogModel,
+				PropertyValueModel<Boolean> overrideDefaultCatalogModel,
+				PropertyValueModel<String> defaultDefaultCatalogModel) {
+			super(
+				new CompositeListValueModel(
+					CollectionTools.list(
+						new PropertyListValueModelAdapter<String>(defaultCatalogModel),
+						new PropertyListValueModelAdapter<Boolean>(overrideDefaultCatalogModel),
+						new PropertyListValueModelAdapter<String>(defaultDefaultCatalogModel)
+					)));
+			this.defaultCatalogModel = defaultCatalogModel;
+			this.overrideDefaultCatalogModel = overrideDefaultCatalogModel;
+			this.defaultDefaultCatalogModel = defaultDefaultCatalogModel;
+		}
+		
+		
+		// ************ ListPropertyValueModelAdapter impl *********************
+		
+		@Override
+		protected String buildValue() {
+			if (this.overrideDefaultCatalogModel.getValue()) {
+				return this.defaultCatalogModel.getValue();
+			}
+			else {
+				return this.defaultDefaultCatalogModel.getValue();
+			}
+		}
+		
+		
+		// ************ WritablePropertyValueModel impl ************************
+		
+		public void setValue(String value) {
+			if (this.overrideDefaultCatalogModel.getValue()) {
+				this.defaultCatalogModel.setValue(value);
+			}
+			propertyChanged();
+		}
+	}
+	
+	
+	private static class DefaultCatalogTrigger
+		extends Trigger
+	{
+		private Trigger parentTrigger;
+		
+		private PropertyValueModel<Boolean> overrideDefaultCatalogModel;
+		
+		
+		private DefaultCatalogTrigger(
+				Trigger parentTrigger, 
+				PropertyValueModel<Boolean> overrideDefaultCatalogModel) {
+			super();
+			this.parentTrigger = parentTrigger;
+			this.parentTrigger.addPropertyChangeListener(
+				VALUE,
+				new PropertyChangeListener() {
+					public void propertyChanged(PropertyChangeEvent event) {
+						respondToParent();
+					}
+				});
+			this.overrideDefaultCatalogModel = overrideDefaultCatalogModel;
+			this.overrideDefaultCatalogModel.addPropertyChangeListener(
+				VALUE,
+				new PropertyChangeListener() {
+					public void propertyChanged(PropertyChangeEvent event) {
+						respondToOverride();
+					}
+				});
+		}
+		
+		
+		protected void respondToParent() {
+			if (this.parentTrigger.isAccepted()) {
+				if (this.overrideDefaultCatalogModel.getValue()) {
+					accept();
+				}
+			}
+			else if (this.parentTrigger.isReset()) {
+				reset();
+			}
+		}
+		
+		protected void respondToOverride() {
+			if (! this.overrideDefaultCatalogModel.getValue()) {
+				reset();
+			}
+		}
+	}
+	
+	
+	private static class CatalogChoicesModel
+		extends BaseCollectionAspectAdapter<ConnectionProfile, String>
+	{
+		private ConnectionListener connectionListener;
+		
+		
+		private CatalogChoicesModel(PropertyValueModel<ConnectionProfile> subjectHolder) {
+			super(subjectHolder);
+			this.connectionListener = buildConnectionListener();
+		}
+		
+		
+		// ************ initialization *****************************************
+		
+		private ConnectionListener buildConnectionListener() {
+			return new ConnectionAdapter() {
+				@Override
+				public void opened(ConnectionProfile profile) {
+					if (profile.equals(CatalogChoicesModel.this.subject)) {
+						collectionChanged();
+					}
+				}
+				@Override
+				public void catalogChanged(ConnectionProfile profile, Catalog catalog) {
+					if (profile.equals(CatalogChoicesModel.this.subject)) {
+						collectionChanged();
+					}
+				}
+			};
+		}
+		
+		
+		// ************ AspectAdapter impl *************************************
+		
+		@Override
+		protected void engageSubject_() {
+			this.subject.addConnectionListener(this.connectionListener);
+		}
+		
+		@Override
+		protected void disengageSubject_() {
+			this.subject.removeConnectionListener(this.connectionListener);
+		}
+		
+		
+		// ************ internal ***********************************************
+		
+		@Override
+		protected Iterator<String> iterator_() {
+			return (this.subject.getDatabase() == null) ? 
+				EmptyIterator.<String>instance() : 
+				this.subject.getDatabase().sortedCatalogIdentifiers();
+		}
+	}
+
+	
+	// ************ Schema ************
 	private static class OverrideDefaultSchemaModel
 		extends BasePropertyAspectAdapter<JpaProject, Boolean>
 	{
@@ -1274,8 +1676,35 @@ public class JpaProjectPropertiesPage
 			JpaProjectPropertiesPage.this.connectionModel.addPropertyChangeListener(
 					PropertyValueModel.VALUE,
 					linkUpdateListener);
+
+			// overrideDefaultCatalog
+			Button overrideDefaultCatalogButton = createButton(
+					group, 3, 
+					JptUiMessages.JpaFacetWizardPage_overrideDefaultCatalogLabel, 
+					SWT.CHECK);
 			
+			BooleanButtonModelAdapter.adapt(
+				JpaProjectPropertiesPage.this.overrideDefaultCatalogModel,
+				overrideDefaultCatalogButton);
 			
+			Label defaultCatalogLabel = new Label(group, SWT.LEFT);
+			defaultCatalogLabel.setText(JptUiMessages.JpaFacetWizardPage_defaultCatalogLabel);
+			GridData gd = new GridData();
+			gd.horizontalSpan = 1;
+			defaultCatalogLabel.setLayoutData(gd);
+			
+			Combo defaultCatalogCombo = createCombo(group, 1, true);
+			
+			ComboModelAdapter.adapt(
+				JpaProjectPropertiesPage.this.catalogChoicesModel,
+				JpaProjectPropertiesPage.this.combinedDefaultCatalogModel,
+				defaultCatalogCombo);
+			
+			new ControlEnabler(
+				JpaProjectPropertiesPage.this.overrideDefaultCatalogModel,
+				defaultCatalogLabel, defaultCatalogCombo);
+			
+			// overrideDefaultSchema
 			Button overrideDefaultSchemaButton = createButton(
 					group, 3, 
 					JptUiMessages.JpaFacetWizardPage_overrideDefaultSchemaLabel, 
@@ -1287,7 +1716,7 @@ public class JpaProjectPropertiesPage
 			
 			Label defaultSchemaLabel = new Label(group, SWT.LEFT);
 			defaultSchemaLabel.setText(JptUiMessages.JpaFacetWizardPage_defaultSchemaLabel);
-			GridData gd = new GridData();
+			gd = new GridData();
 			gd.horizontalSpan = 1;
 			defaultSchemaLabel.setLayoutData(gd);
 			

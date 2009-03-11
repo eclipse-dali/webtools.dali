@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -115,6 +115,8 @@ public class JpaFacetWizardPage extends DataModelFacetInstallPage
 			CONNECTION,
 			USER_WANTS_TO_ADD_DB_DRIVER_JARS_TO_CLASSPATH,
 			DB_DRIVER_NAME,
+			USER_WANTS_TO_OVERRIDE_DEFAULT_CATALOG,
+			USER_OVERRIDE_DEFAULT_CATALOG,
 			USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA,
 			USER_OVERRIDE_DEFAULT_SCHEMA,
 			DISCOVER_ANNOTATED_CLASSES,
@@ -195,6 +197,12 @@ public class JpaFacetWizardPage extends DataModelFacetInstallPage
 		private final Label driverLibraryLabel;
 		
 		private final Combo driverLibraryCombo;
+		
+		private final Button overrideDefaultCatalogButton;
+		
+		private final Label defaultCatalogLabel;
+		
+		private final Combo defaultCatalogCombo;
 
 		private final Button overrideDefaultSchemaButton;
 		
@@ -262,6 +270,21 @@ public class JpaFacetWizardPage extends DataModelFacetInstallPage
 			synchHelper.synchCombo(
 				driverLibraryCombo, DB_DRIVER_NAME, 
 				new Control[] {driverLibraryLabel});
+			
+			overrideDefaultCatalogButton = createButton(group, 3, JptUiMessages.JpaFacetWizardPage_overrideDefaultCatalogLabel, SWT.CHECK);
+			overrideDefaultCatalogButton.setSelection(false);
+			synchHelper.synchCheckbox(overrideDefaultCatalogButton, USER_WANTS_TO_OVERRIDE_DEFAULT_CATALOG, null);
+			
+			defaultCatalogLabel = new Label(group, SWT.LEFT);
+			defaultCatalogLabel.setText(JptUiMessages.JpaFacetWizardPage_defaultCatalogLabel);
+			gd = new GridData();
+			gd.horizontalSpan = 1;
+			defaultCatalogLabel.setLayoutData(gd);
+			
+			defaultCatalogCombo = createCombo(group, 1, true);
+			synchHelper.synchCombo(
+				defaultCatalogCombo, USER_OVERRIDE_DEFAULT_CATALOG, 
+				new Control[] {defaultCatalogLabel});
 
 			overrideDefaultSchemaButton = createButton(group, 3, JptUiMessages.JpaFacetWizardPage_overrideDefaultSchemaLabel, SWT.CHECK);
 			overrideDefaultSchemaButton.setSelection(false);

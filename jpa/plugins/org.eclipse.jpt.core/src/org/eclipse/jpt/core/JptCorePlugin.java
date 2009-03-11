@@ -88,6 +88,13 @@ public class JptCorePlugin extends Plugin {
 	 */
 	public static final QualifiedName DATA_SOURCE_CONNECTION_PROFILE_NAME = 
 			new QualifiedName(PLUGIN_ID, "dataSource.connectionProfileName");  //$NON-NLS-1$
+	
+	/**
+	 * The key for storing a JPA project's user overridden default catalog name
+	 * in the Eclipse project's persistent properties.
+	 */
+	public static final QualifiedName USER_OVERRIDE_DEFAULT_CATALOG_NAME = 
+		new QualifiedName(PLUGIN_ID, "userOverrideDefaultCatalogName");  //$NON-NLS-1$
 
 	/**
 	 * The key for storing a JPA project's user overridden default schema name
@@ -407,7 +414,34 @@ public class JptCorePlugin extends Plugin {
 			log(ex);
 		}
 	}
-	
+
+	/**
+	 * Return the default catalog name associated with the specified Eclipse project.
+	 * @see JpaProject#getUserOverrideDefaultCatalogName()
+	 */
+	public static String getUserOverrideDefaultCatalogName(IProject project) {
+		try {
+			return project.getPersistentProperty(USER_OVERRIDE_DEFAULT_CATALOG_NAME);
+		}
+		catch (CoreException ce) {
+			log(ce);
+			return null;
+		}
+	}
+
+	/**
+	 * Set the default catalog name associated with the specified Eclipse project.
+	 * @see JpaProject#setUserOverrideDefaultCatalogName()
+	 */
+	public static void setUserOverrideDefaultCatalogName(IProject project, String defaultCatalogName) {
+		try {
+			project.setPersistentProperty(USER_OVERRIDE_DEFAULT_CATALOG_NAME, defaultCatalogName);
+		}
+		catch (CoreException ce) {
+			log(ce);
+		}
+	}
+
 	/**
 	 * Return the default schema name associated with the specified Eclipse project.
 	 * @see JpaProject#getUserOverrideDefaultSchemaName()

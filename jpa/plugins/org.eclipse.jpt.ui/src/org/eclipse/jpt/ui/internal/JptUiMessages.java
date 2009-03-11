@@ -72,6 +72,7 @@ public class JptUiMessages {
 	public static String JpaFacetWizardPage_connectionLink;
 	public static String JpaFacetWizardPage_connectLink;
 	public static String JpaFacetWizardPage_createOrmXmlButton;
+	public static String JpaFacetWizardPage_defaultCatalogLabel;
 	public static String JpaFacetWizardPage_defaultSchemaLabel;
 	public static String JpaFacetWizardPage_description;
 	public static String JpaFacetWizardPage_discoverClassesButton;
@@ -80,6 +81,7 @@ public class JptUiMessages {
 	public static String JpaFacetWizardPage_jpaPrefsLink;
 	public static String JpaFacetWizardPage_listClassesButton;
 	public static String JpaFacetWizardPage_none;
+	public static String JpaFacetWizardPage_overrideDefaultCatalogLabel;
 	public static String JpaFacetWizardPage_overrideDefaultSchemaLabel;
 	public static String JpaFacetWizardPage_persistentClassManagementLabel;
 	public static String JpaFacetWizardPage_platformLabel;
