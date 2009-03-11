@@ -646,16 +646,20 @@ public class JavaEntityTests extends ContextModelTestCase
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		assertNotSame(getJavaEntity(), getJavaEntity().getRootEntity());
-		assertEquals(InheritanceType.SINGLE_TABLE, getJavaEntity().getDefaultInheritanceStrategy());
+		ListIterator<ClassRef> specifiedClassRefs = getPersistenceUnit().specifiedClassRefs();
+		Entity childEntity = (Entity) specifiedClassRefs.next().getJavaPersistentType().getMapping();
+		Entity rootEntity = (Entity) specifiedClassRefs.next().getJavaPersistentType().getMapping();
+		
+		assertNotSame(childEntity, rootEntity);
+		assertEquals(InheritanceType.SINGLE_TABLE, childEntity.getDefaultInheritanceStrategy());
 		
 		//change root inheritance strategy, verify default is changed for child entity
-		getJavaEntity().getRootEntity().setSpecifiedInheritanceStrategy(InheritanceType.TABLE_PER_CLASS);
+		rootEntity.setSpecifiedInheritanceStrategy(InheritanceType.TABLE_PER_CLASS);
 
-		assertEquals(InheritanceType.SINGLE_TABLE, getJavaEntity().getRootEntity().getDefaultInheritanceStrategy());
-		assertEquals(InheritanceType.TABLE_PER_CLASS, getJavaEntity().getDefaultInheritanceStrategy());
-		assertEquals(InheritanceType.TABLE_PER_CLASS, getJavaEntity().getInheritanceStrategy());
-		assertNull(getJavaEntity().getSpecifiedInheritanceStrategy());
+		assertEquals(InheritanceType.SINGLE_TABLE, rootEntity.getDefaultInheritanceStrategy());
+		assertEquals(InheritanceType.TABLE_PER_CLASS, childEntity.getDefaultInheritanceStrategy());
+		assertEquals(InheritanceType.TABLE_PER_CLASS, childEntity.getInheritanceStrategy());
+		assertNull(childEntity.getSpecifiedInheritanceStrategy());
 	}
 	
 	public void testGetSpecifiedInheritanceStrategy() throws Exception {
@@ -701,6 +705,11 @@ public class JavaEntityTests extends ContextModelTestCase
 	public void testGetDefaultDiscriminatorValue() throws Exception {
 		createTestEntityWithDiscriminatorValue();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
+		assertEquals(null, getJavaEntity().getDefaultDiscriminatorValue());
+		
+		createTestSubType();
+		addXmlClassRef(FULLY_QUALIFIED_SUB_TYPE_NAME);
 		
 		assertEquals(getJavaEntity().getName(), getJavaEntity().getDefaultDiscriminatorValue());
 
@@ -1012,9 +1021,12 @@ public class JavaEntityTests extends ContextModelTestCase
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		Entity parentEntity = getJavaEntity().getRootEntity();
-		assertEquals(3, CollectionTools.size(parentEntity.associatedTablesIncludingInherited()));
-		Iterator<Table> associatedTables = parentEntity.associatedTablesIncludingInherited();
+		ListIterator<ClassRef> specifiedClassRefs = getPersistenceUnit().specifiedClassRefs();
+		Entity childEntity = (Entity) specifiedClassRefs.next().getJavaPersistentType().getMapping();
+		Entity rootEntity = (Entity) specifiedClassRefs.next().getJavaPersistentType().getMapping();
+
+		assertEquals(3, CollectionTools.size(rootEntity.associatedTablesIncludingInherited()));
+		Iterator<Table> associatedTables = rootEntity.associatedTablesIncludingInherited();
 		Table table1 = associatedTables.next();
 		SecondaryTable table2 = (SecondaryTable) associatedTables.next();
 		SecondaryTable table3 = (SecondaryTable) associatedTables.next();
@@ -1022,7 +1034,6 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertEquals("foo", table2.getName());
 		assertEquals("bar", table3.getName());
 
-		Entity childEntity = getJavaEntity();
 		//TODO probably want this to be 3, since in this case the child descriptor really uses the
 		//parent table because it is single table inheritance strategy.  Not sure yet how to deal with this.
 		assertEquals(4, CollectionTools.size(childEntity.associatedTablesIncludingInherited()));
@@ -1034,9 +1045,12 @@ public class JavaEntityTests extends ContextModelTestCase
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		Entity parentEntity = getJavaEntity().getRootEntity();
-		assertEquals(3, CollectionTools.size(parentEntity.associatedTableNamesIncludingInherited()));
-		Iterator<String> associatedTables = parentEntity.associatedTableNamesIncludingInherited();
+		ListIterator<ClassRef> specifiedClassRefs = getPersistenceUnit().specifiedClassRefs();
+		Entity childEntity = (Entity) specifiedClassRefs.next().getJavaPersistentType().getMapping();
+		Entity rootEntity = (Entity) specifiedClassRefs.next().getJavaPersistentType().getMapping();
+		
+		assertEquals(3, CollectionTools.size(rootEntity.associatedTableNamesIncludingInherited()));
+		Iterator<String> associatedTables = rootEntity.associatedTableNamesIncludingInherited();
 		String table1 = associatedTables.next();
 		String table2 = associatedTables.next();
 		String table3 = associatedTables.next();
@@ -1044,7 +1058,6 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertEquals("foo", table2);
 		assertEquals("bar", table3);
 		
-		Entity childEntity = getJavaEntity();
 		//TODO probably want this to be 3, since in this case the child descriptor really uses the
 		//parent table because it is single table inheritance strategy.  Not sure yet how to deal with this.
 		assertEquals(4, CollectionTools.size(childEntity.associatedTableNamesIncludingInherited()));
@@ -3022,12 +3035,20 @@ public class JavaEntityTests extends ContextModelTestCase
 	public void testDiscriminatorValueIsUndefinedConcreteClass() throws Exception {
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		assertTrue(getJavaEntity().discriminatorValueIsUndefined());
+		
+		createTestSubType();
+		addXmlClassRef(FULLY_QUALIFIED_SUB_TYPE_NAME);
 		assertFalse(getJavaEntity().discriminatorValueIsUndefined());
 	}
 	
 	public void testDiscriminatorValueIsUndefinedAbstractClass() throws Exception {
 		createTestAbstractEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		assertTrue(getJavaEntity().discriminatorValueIsUndefined());
+		
+		createTestSubType();
+		addXmlClassRef(FULLY_QUALIFIED_SUB_TYPE_NAME);
 		assertTrue(getJavaEntity().discriminatorValueIsUndefined());
 	}
 	

@@ -121,6 +121,8 @@ public abstract class AbstractOrmEntity
 
 	protected String specifiedDiscriminatorValue;
 
+	protected boolean specifiedDiscriminatorValueIsAllowed;
+
 	protected boolean discriminatorValueIsUndefined;
 
 	protected final OrmDiscriminatorColumn discriminatorColumn;
@@ -145,6 +147,8 @@ public abstract class AbstractOrmEntity
 
 	protected final List<OrmNamedNativeQuery> namedNativeQueries;
 
+	protected Entity rootEntity;
+
 	protected AbstractOrmEntity(OrmPersistentType parent, XmlEntity resourceMapping) {
 		super(parent, resourceMapping);
 		this.table = getJpaFactory().buildOrmTable(this);
@@ -161,10 +165,12 @@ public abstract class AbstractOrmEntity
 		this.namedNativeQueries = new ArrayList<OrmNamedNativeQuery>();
 		this.specifiedName = this.resourceTypeMapping.getName();
 		this.defaultName = this.buildDefaultName();
+		this.rootEntity = this.calculateRootEntity();
 		this.initializeInheritance(this.getResourceInheritance());
 		this.specifiedDiscriminatorColumnIsAllowed = this.buildSpecifiedDiscriminatorColumnIsAllowed();
 		this.discriminatorColumnIsUndefined = this.buildDiscriminatorColumnIsUndefined();
 		this.discriminatorColumn.initialize(this.resourceTypeMapping); //TODO pass in to constructor
+		this.specifiedDiscriminatorValueIsAllowed = this.buildSpecifiedDiscriminatorValueIsAllowed();
 		this.discriminatorValueIsUndefined = this.buildDiscriminatorValueIsUndefined();
 		this.specifiedDiscriminatorValue = this.resourceTypeMapping.getDiscriminatorValue();
 		this.defaultDiscriminatorValue = this.buildDefaultDiscriminatorValue();
@@ -736,6 +742,16 @@ public abstract class AbstractOrmEntity
 		return (this.getSpecifiedDiscriminatorValue() == null) ? getDefaultDiscriminatorValue() : this.getSpecifiedDiscriminatorValue();
 	}
 	
+	public boolean specifiedDiscriminatorValueIsAllowed() {
+		return this.specifiedDiscriminatorValueIsAllowed;
+	}
+	
+	protected void setSpecifiedDiscriminatorValueIsAllowed(boolean specifiedDiscriminatorValueIsAllowed) {
+		boolean old = this.specifiedDiscriminatorValueIsAllowed;
+		this.specifiedDiscriminatorValueIsAllowed = specifiedDiscriminatorValueIsAllowed;
+		firePropertyChanged(Entity.SPECIFIED_DISCRIMINATOR_VALUE_IS_ALLOWED_PROPERTY, old, specifiedDiscriminatorValueIsAllowed);
+	}
+	
 	public boolean discriminatorValueIsUndefined() {
 		return this.discriminatorValueIsUndefined;
 	}
@@ -1229,15 +1245,17 @@ public abstract class AbstractOrmEntity
 		return this;
 	}
 
-	public Entity getRootEntity() {
-		Entity rootEntity = this;
-		for (Iterator<PersistentType> stream = getPersistentType().inheritanceHierarchy(); stream.hasNext();) {
-			PersistentType persistentType = stream.next();
-			if (persistentType.getMapping() instanceof Entity) {
-				rootEntity = (Entity) persistentType.getMapping();
-			}
-		}
-		return rootEntity;
+	/**
+	 * Return the ultimate top of the inheritance hierarchy 
+	 * This method should never return null. The root
+	 * is defined as the persistent type in the inheritance hierarchy
+	 * that has no parent.  The root should be an entity
+	 *  
+	 * Non-entities in the hierarchy should be ignored, ie skip
+	 * over them in the search for the root. 
+	 */
+	protected Entity getRootEntity() {
+		return this.rootEntity;
 	}
 
 	public String getDefaultTableName() {
@@ -1321,6 +1339,15 @@ public abstract class AbstractOrmEntity
 	protected boolean isRoot() {
 		return this == this.getRootEntity();
 	}
+	
+	/**
+	 * Return whether the entity is the top of an inheritance hierarchy
+	 * and has no descendants and no specified inheritance strategy has been defined.
+	 */
+	protected boolean isRootNoDescendantsNoStrategyDefined() {
+		return isRoot() && !getPersistenceUnit().isRootWithSubEntities(this.getName()) && getSpecifiedInheritanceStrategy() == null;
+	}
+
 	/**
 	 * Return whether the entity is abstract and is a part of a 
 	 * "table per class" inheritance hierarchy.
@@ -1639,12 +1666,9 @@ public abstract class AbstractOrmEntity
 		this.setSpecifiedName(this.resourceTypeMapping.getName());
 		this.setDefaultName(this.buildDefaultName());
 		this.updateInheritance(this.getResourceInheritance());
-		this.setSpecifiedDiscriminatorColumnIsAllowed(this.buildSpecifiedDiscriminatorColumnIsAllowed());
-		this.setDiscriminatorColumnIsUndefined(this.buildDiscriminatorColumnIsUndefined());
-		this.discriminatorColumn.update(this.resourceTypeMapping);
-		this.setDiscriminatorValueIsUndefined(this.buildDiscriminatorValueIsUndefined());
-		this.setSpecifiedDiscriminatorValue(this.resourceTypeMapping.getDiscriminatorValue());
-		this.setDefaultDiscriminatorValue(this.buildDefaultDiscriminatorValue());
+		this.updateRootEntity();
+		this.updateDiscriminatorColumn();
+		this.updateDiscriminatorValue();
 		this.setSpecifiedTableIsAllowed(this.buildSpecifiedTableIsAllowed());
 		this.setTableIsUndefined(this.buildTableIsUndefined());
 		this.table.update(this.resourceTypeMapping);
@@ -1661,6 +1685,14 @@ public abstract class AbstractOrmEntity
 		this.updateNamedNativeQueries();
 		this.updateIdClass(this.getResourceIdClass());
 	}
+	
+	@Override
+	public void postUpdate() {
+		super.postUpdate();
+		this.setDiscriminatorColumnIsUndefined(this.buildDiscriminatorColumnIsUndefined());
+		getDiscriminatorColumn().postUpdate();
+		postUpdateDiscriminatorValue();
+	}
 
 	protected String buildDefaultName() {
 		if (!isMetadataComplete()) {
@@ -1674,6 +1706,26 @@ public abstract class AbstractOrmEntity
 			return ClassTools.shortNameForClassNamed(className);
 		}
 		return null;
+	}
+	
+	protected void updateDiscriminatorColumn() {
+		this.setSpecifiedDiscriminatorColumnIsAllowed(this.buildSpecifiedDiscriminatorColumnIsAllowed());
+		getDiscriminatorColumn().update(this.resourceTypeMapping);
+	}
+	
+	protected void postUpdateDiscriminatorColumn() {
+		this.setDiscriminatorColumnIsUndefined(this.buildDiscriminatorColumnIsUndefined());
+		getDiscriminatorColumn().postUpdate();
+	}
+	
+	protected void updateDiscriminatorValue() {
+		this.setSpecifiedDiscriminatorValueIsAllowed(this.buildSpecifiedDiscriminatorValueIsAllowed());
+		this.setSpecifiedDiscriminatorValue(this.resourceTypeMapping.getDiscriminatorValue());
+	}
+	
+	protected void postUpdateDiscriminatorValue() {
+		this.setDiscriminatorValueIsUndefined(this.buildDiscriminatorValueIsUndefined());
+		this.setDefaultDiscriminatorValue(this.buildDefaultDiscriminatorValue());
 	}
 	
 	/**
@@ -1710,8 +1762,12 @@ public abstract class AbstractOrmEntity
 		return null;
 	}
 	
+	protected boolean buildSpecifiedDiscriminatorValueIsAllowed() {
+		return !isTablePerClass() && !isAbstract();
+	}
+		
 	protected boolean buildDiscriminatorValueIsUndefined() {
-		return isTablePerClass() || isAbstract();
+		return isTablePerClass() || isAbstract() || isRootNoDescendantsNoStrategyDefined();
 	}
 	
 	protected boolean buildSpecifiedDiscriminatorColumnIsAllowed() {
@@ -1719,7 +1775,7 @@ public abstract class AbstractOrmEntity
 	}
 	
 	protected boolean buildDiscriminatorColumnIsUndefined() {
-		return isTablePerClass();
+		return isTablePerClass() || isRootNoDescendantsNoStrategyDefined();
 	}
 	
 	protected boolean buildSpecifiedTableIsAllowed() {
@@ -1733,7 +1789,30 @@ public abstract class AbstractOrmEntity
 
 	protected void updateInheritance(Inheritance inheritanceResource) {
 		this.setSpecifiedInheritanceStrategy_(this.getResourceInheritanceStrategy(inheritanceResource));
-		this.setDefaultInheritanceStrategy(this.defaultInheritanceStrategy());
+		this.setDefaultInheritanceStrategy(this.buildDefaultInheritanceStrategy());
+	}
+	
+	protected void updateRootEntity() {
+		//I am making an assumption here that we don't need property change notification for rootEntity, this might be wrong
+		this.rootEntity = calculateRootEntity();
+		if (this.rootEntity != this) {
+			this.rootEntity.addSubEntity(this);
+		}
+	}
+	
+	protected Entity calculateRootEntity() {
+		Entity rootEntity = this;
+		for (Iterator<PersistentType> stream = getPersistentType().inheritanceHierarchy(); stream.hasNext();) {
+			PersistentType persistentType = stream.next();
+			if (persistentType.getMapping() instanceof Entity) {
+				rootEntity = (Entity) persistentType.getMapping();
+			}
+		}
+		return rootEntity;
+	}
+	
+	public void addSubEntity(Entity subEntity) {
+		getPersistenceUnit().addRootWithSubEntities(getName());
 	}
 	
 	protected void updateSpecifiedSecondaryTables() {
@@ -1827,7 +1906,7 @@ public abstract class AbstractOrmEntity
 		return InheritanceType.fromOrmResourceModel(inheritanceResource.getStrategy());
 	}
 	
-	protected InheritanceType defaultInheritanceStrategy() {
+	protected InheritanceType buildDefaultInheritanceStrategy() {
 		if ((this.getResourceInheritance() == null)
 				&& ! this.isMetadataComplete()
 				&& (this.getJavaEntity() != null)) {

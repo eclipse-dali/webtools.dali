@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
 import java.util.Vector;
-
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
@@ -96,7 +95,9 @@ public abstract class AbstractPersistenceUnit
 
 	/* global query definitions, defined elsewhere in model */
 	protected final Vector<Query> queries = new Vector<Query>();
-
+	
+	protected final Set<String> rootEntities = new HashSet<String>();
+	
 	protected AccessType defaultAccess;
 	protected String defaultCatalog;
 	protected String defaultSchema;
@@ -851,7 +852,14 @@ public abstract class AbstractPersistenceUnit
 		this.queries.add(query);
 	}
 
-
+	public void addRootWithSubEntities(String entityName) {
+		this.rootEntities.add(entityName);
+	}
+	
+	public boolean isRootWithSubEntities(String entityName) {
+		return this.rootEntities.contains(entityName);
+	}
+	
 	// ********** updating **********
 
 	public void update(XmlPersistenceUnit xpu) {
@@ -866,6 +874,8 @@ public abstract class AbstractPersistenceUnit
 		this.generators.clear();
 		this.queries.clear();
 
+		this.rootEntities.clear();
+		
 		this.setName(xpu.getName());
 		this.setSpecifiedTransactionType(this.buildSpecifiedTransactionType());
 		this.setDefaultTransactionType(this.buildDefaultTransactionType());
@@ -893,7 +903,24 @@ public abstract class AbstractPersistenceUnit
 		this.fireListChanged(GENERATORS_LIST);
 		this.fireListChanged(QUERIES_LIST);
 	}
-
+	
+	@Override
+	public void postUpdate() {
+		super.postUpdate();
+		for (ClassRef classRef : CollectionTools.iterable(this.specifiedClassRefs())) {
+			classRef.postUpdate();
+		}
+		for (ClassRef classRef : CollectionTools.iterable(this.impliedClassRefs())) {
+			classRef.postUpdate();
+		}
+		for (MappingFileRef mappingFileRef : CollectionTools.iterable(this.specifiedMappingFileRefs())) {
+			mappingFileRef.postUpdate();
+		}
+		if (this.impliedMappingFileRef != null) {
+			this.impliedMappingFileRef.postUpdate();
+		}
+	}
+	
 	protected PersistenceUnitTransactionType buildSpecifiedTransactionType() {
 		return PersistenceUnitTransactionType.fromXmlResourceModel(this.xmlPersistenceUnit.getTransactionType());
 	}

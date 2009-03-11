@@ -1251,8 +1251,12 @@ public class OrmEntityTests extends ContextModelTestCase
 		OrmPersistentType persistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmEntity ormEntity = (OrmEntity) persistentType.getMapping();
 		JavaEntity javaEntity = (JavaEntity) persistentType.getJavaPersistentType().getMapping();
-		assertEquals(ormEntity.getName(), ormEntity.getDefaultDiscriminatorValue());
+		assertEquals(null, ormEntity.getDefaultDiscriminatorValue());
 
+		createTestSubType();
+		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_CHILD_TYPE_NAME);
+		assertEquals(ormEntity.getName(), ormEntity.getDefaultDiscriminatorValue());
+	
 		javaEntity.getDiscriminatorColumn().setSpecifiedDiscriminatorType(DiscriminatorType.INTEGER);
 		assertNull(ormEntity.getDefaultDiscriminatorValue());
 		
@@ -2268,6 +2272,10 @@ public class OrmEntityTests extends ContextModelTestCase
 		createTestType();
 		OrmPersistentType persistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmEntity entity = (OrmEntity) persistentType.getMapping();
+		assertTrue(entity.discriminatorValueIsUndefined());
+		
+		createTestSubType();
+		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_CHILD_TYPE_NAME);
 		assertFalse(entity.discriminatorValueIsUndefined());
 	}
 
@@ -2275,6 +2283,10 @@ public class OrmEntityTests extends ContextModelTestCase
 		createTestAbstractType();
 		OrmPersistentType persistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmEntity entity = (OrmEntity) persistentType.getMapping();
+		assertTrue(entity.discriminatorValueIsUndefined());
+		
+		createTestSubType();
+		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_CHILD_TYPE_NAME);
 		assertTrue(entity.discriminatorValueIsUndefined());
 	}
 	

@@ -617,6 +617,22 @@ public interface PersistenceUnit
 	 */
 	void addQuery(Query query);
 
+	
+	// ********** root entities **********
+	
+	/**
+	 * The entity with the given name should be a root entity that has sub entities.
+	 * This will be stored by the persistence unit so that the entity can later
+	 * call {@link #isRootWithSubEntities(String)}
+	 */
+	void addRootWithSubEntities(String entityName);
+	
+	/**
+	 * Return whether the entity with the given name is a root entity
+	 * that also has sub entities.
+	 * @see #addRootWithSubEntities(String)
+	 */
+	boolean isRootWithSubEntities(String entityName);
 
 	// ********** updating **********
 	 

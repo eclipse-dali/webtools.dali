@@ -177,11 +177,18 @@ public class GenericOrmDiscriminatorColumn extends AbstractOrmNamedColumn<XmlDis
 	
 	@Override
 	protected void update(XmlDiscriminatorColumn column) {
-		super.update(column);
-		this.setDefaultDiscriminatorType(this.buildDefaultDiscriminatorType());
-		this.setDefaultLength(this.buildDefaultLength());
+		this.setSpecifiedName_(this.getResourceColumnName(column));
+		this.setColumnDefinition_(this.getResourceColumnDefinition(column));	
 		this.setSpecifiedLength_(this.getResourceLength(column));
 		this.setSpecifiedDiscriminatorType_(this.getResourceDiscriminatorType(column));
+	}
+	
+	@Override
+	public void postUpdate() {
+		super.postUpdate();
+		this.setDefaultName(this.getOwnerDefaultColumnName());
+		this.setDefaultDiscriminatorType(this.buildDefaultDiscriminatorType());
+		this.setDefaultLength(this.buildDefaultLength());		
 	}
 	
 	protected Integer getResourceLength(XmlDiscriminatorColumn column) {

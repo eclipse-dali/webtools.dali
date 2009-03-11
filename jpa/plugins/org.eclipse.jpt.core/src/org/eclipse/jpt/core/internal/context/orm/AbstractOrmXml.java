@@ -174,6 +174,14 @@ public abstract class AbstractOrmXml
 	
 	protected abstract EntityMappings buildEntityMappings(XmlEntityMappings xmlEntityMappings);
 	
+	@Override
+	public void postUpdate() {
+		super.postUpdate();
+		if (this.entityMappings != null) {
+			this.entityMappings.postUpdate();
+		}
+	}
+	
 	
 	// ********** text **********
 	

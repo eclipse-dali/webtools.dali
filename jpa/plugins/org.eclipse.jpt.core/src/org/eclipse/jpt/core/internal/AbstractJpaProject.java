@@ -61,7 +61,6 @@ import org.eclipse.jpt.utility.internal.ThreadLocalCommandExecutor;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
-import org.eclipse.jpt.utility.internal.iterators.ReadOnlyCompositeListIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.jst.j2ee.model.internal.validation.ValidationCancelledException;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -1004,6 +1003,7 @@ public abstract class AbstractJpaProject
 			// update runs again as a result of the concurrent Java source changes.
 			JptCorePlugin.log(ex);
 		}
+		this.rootContextNode.postUpdate();
 		return Status.OK_STATUS;
 	}
 

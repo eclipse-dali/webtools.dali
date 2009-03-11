@@ -638,7 +638,7 @@ public abstract class AbstractOrmPersistentType
 	
 	protected OrmPersistentAttribute.Owner buildVirtualPersistentAttributeOwner(final JavaPersistentAttribute javaPersistentAttribute) {
 		return new OrmPersistentAttribute.Owner() {
-			public JavaPersistentAttribute findJavaPersistentAttribute(@SuppressWarnings("unused") OrmPersistentAttribute ormPersistentAttribute) {
+			public JavaPersistentAttribute findJavaPersistentAttribute(OrmPersistentAttribute ormPersistentAttribute) {
 				return javaPersistentAttribute;
 			}
 			
@@ -854,7 +854,16 @@ public abstract class AbstractOrmPersistentType
 			return null;
 		}
 	}
-	
+
+	@Override
+	public void postUpdate() {
+		super.postUpdate();
+		if (getJavaPersistentType() != null) {
+			getJavaPersistentType().postUpdate();
+		}
+		getMapping().postUpdate();
+	}
+
 	public JpaStructureNode getStructureNode(int textOffset) {
 		for (OrmPersistentAttribute attribute : CollectionTools.iterable(specifiedAttributes())) {
 			if (attribute.contains(textOffset)) {

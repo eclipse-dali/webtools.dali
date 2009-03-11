@@ -529,7 +529,12 @@ public abstract class AbstractJavaPersistentType
 		return getPersistenceUnit().getPersistentType(fullyQualifiedTypeName);
 	}
 
-
+	@Override
+	public void postUpdate() {
+		super.postUpdate();
+		getMapping().postUpdate();
+	}
+	
 	// ********** validation **********
 
 	public void validate(List<IMessage> messages, IReporter reporter) {

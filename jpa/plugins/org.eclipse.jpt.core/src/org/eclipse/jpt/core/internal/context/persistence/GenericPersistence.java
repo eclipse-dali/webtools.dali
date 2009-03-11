@@ -86,7 +86,7 @@ public class GenericPersistence extends AbstractXmlContextNode
 			throw new IllegalStateException("This implementation does not support multiple persistence units."); //$NON-NLS-1$
 		}
 		XmlPersistenceUnit xmlPersistenceUnit = PersistenceFactory.eINSTANCE.createXmlPersistenceUnit();
-		this.persistenceUnit = createPersistenceUnit(xmlPersistenceUnit);
+		this.persistenceUnit = buildPersistenceUnit(xmlPersistenceUnit);
 		this.xmlPersistence.getPersistenceUnits().add(xmlPersistenceUnit);
 		fireItemAdded(PERSISTENCE_UNITS_LIST, index, this.persistenceUnit);
 		return this.persistenceUnit;
@@ -127,7 +127,7 @@ public class GenericPersistence extends AbstractXmlContextNode
 	protected void initializePersistenceUnits() {
 		// only adding one here, until we support multiple persistence units
 		if (this.xmlPersistence.getPersistenceUnits().size() > 0) {
-			this.persistenceUnit = createPersistenceUnit(this.xmlPersistence.getPersistenceUnits().get(0));
+			this.persistenceUnit = buildPersistenceUnit(this.xmlPersistence.getPersistenceUnits().get(0));
 		}
 	}
 	
@@ -148,12 +148,20 @@ public class GenericPersistence extends AbstractXmlContextNode
 		}
 		else {
 			if (xmlPersistenceUnit != null) {
-				addPersistenceUnit_(createPersistenceUnit(xmlPersistenceUnit));
+				addPersistenceUnit_(buildPersistenceUnit(xmlPersistenceUnit));
 			}
 		}
 	}
 	
-	protected PersistenceUnit createPersistenceUnit(XmlPersistenceUnit xmlPersistenceUnit) {
+	@Override
+	public void postUpdate() {
+		super.postUpdate();
+		if (this.persistenceUnit != null) {
+			this.persistenceUnit.postUpdate();
+		}
+	}
+	
+	protected PersistenceUnit buildPersistenceUnit(XmlPersistenceUnit xmlPersistenceUnit) {
 		return getJpaFactory().buildPersistenceUnit(this, xmlPersistenceUnit);
 	}
 	

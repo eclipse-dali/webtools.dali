@@ -89,4 +89,7 @@ public abstract class AbstractJpaContextNode
 		MappingFileRoot mfr = this.getMappingFileRoot();
 		return (mfr != null) ? mfr.getCatalog() : this.getPersistenceUnit().getDefaultCatalog();
 	}
+	
+	public void postUpdate() {
+	}
 }

@@ -165,7 +165,15 @@ public abstract class AbstractMappingFileRef
 		return this.getJpaPlatform().buildMappingFile(this, resource);
 	}
 
-
+	@Override
+	public void postUpdate() {
+		super.postUpdate();
+		if (this.mappingFile != null) {
+			this.mappingFile.postUpdate();
+		}
+	}
+	
+	
 	// ********** validation **********
 
 	@Override

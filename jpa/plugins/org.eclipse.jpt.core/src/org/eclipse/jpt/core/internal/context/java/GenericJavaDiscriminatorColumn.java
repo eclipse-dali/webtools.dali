@@ -171,11 +171,18 @@ public class GenericJavaDiscriminatorColumn extends AbstractJavaNamedColumn<Disc
 	
 	@Override
 	public void update(DiscriminatorColumnAnnotation discriminatorColumn) {
-		super.update(discriminatorColumn);
-		this.setDefaultDiscriminatorType(this.buildDefaultDiscriminatorType());
-		this.setDefaultLength(this.buildDefaultLength());
+		this.setSpecifiedName_(discriminatorColumn.getName());
+		this.setColumnDefinition_(discriminatorColumn.getColumnDefinition());
 		this.setSpecifiedDiscriminatorType_(this.getResourceDiscriminatorType(discriminatorColumn));
 		this.setSpecifiedLength_(this.getResourceLength(discriminatorColumn));
+	}
+	
+	@Override
+	public void postUpdate() {
+		super.postUpdate();
+		this.setDefaultName(this.buildDefaultName());
+		this.setDefaultLength(this.buildDefaultLength());
+		this.setDefaultDiscriminatorType(this.buildDefaultDiscriminatorType());
 	}
 	
 	protected DiscriminatorType getResourceDiscriminatorType(DiscriminatorColumnAnnotation discriminatorColumn) {

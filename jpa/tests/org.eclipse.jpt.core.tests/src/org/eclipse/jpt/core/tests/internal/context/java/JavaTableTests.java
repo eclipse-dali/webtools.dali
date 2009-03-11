@@ -142,13 +142,17 @@ public class JavaTableTests extends ContextModelTestCase
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		assertNotSame(getJavaEntity(), getJavaEntity().getRootEntity());
-		assertEquals(TYPE_NAME, getJavaEntity().getTable().getDefaultName());
-		assertEquals(TYPE_NAME, getJavaEntity().getRootEntity().getTable().getDefaultName());
+		ListIterator<ClassRef> specifiedClassRefs = getPersistenceUnit().specifiedClassRefs();
+		Entity childEntity = (Entity) specifiedClassRefs.next().getJavaPersistentType().getMapping();
+		Entity rootEntity = (Entity) specifiedClassRefs.next().getJavaPersistentType().getMapping();
+		
+		assertNotSame(getJavaEntity(), rootEntity);
+		assertEquals(TYPE_NAME, childEntity.getTable().getDefaultName());
+		assertEquals(TYPE_NAME, rootEntity.getTable().getDefaultName());
 		
 		//test that setting the root java entity name will change the table default name of the child
-		getJavaEntity().getRootEntity().setSpecifiedName("foo");
-		assertEquals("foo", getJavaEntity().getTable().getDefaultName());
+		rootEntity.setSpecifiedName("foo");
+		assertEquals("foo", childEntity.getTable().getDefaultName());
 	}
 
 	public void testUpdateDefaultSchemaFromPersistenceUnitDefaults() throws Exception {

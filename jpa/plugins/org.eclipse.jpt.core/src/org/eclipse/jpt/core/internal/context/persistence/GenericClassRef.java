@@ -213,7 +213,14 @@ public class GenericClassRef
 		return this.getJpaFactory().buildJavaPersistentType(this, jrpt);
 	}
 
-
+	@Override
+	public void postUpdate() {
+		super.postUpdate();
+		if (this.javaPersistentType != null) {
+			this.javaPersistentType.postUpdate();
+		}
+	}
+	
 	// ********** XmlContextNode implementation **********
 
 	public TextRange getValidationTextRange() {

@@ -139,10 +139,10 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends For
 	}
 	
 	protected WritablePropertyValueModel<Boolean> buildDiscriminatorValueEnabledHolder() {
-		return new PropertyAspectAdapter<Entity, Boolean>(getSubjectHolder(), Entity.DISCRIMINATOR_VALUE_IS_UNDEFINED_PROPERTY) {
+		return new PropertyAspectAdapter<Entity, Boolean>(getSubjectHolder(), Entity.SPECIFIED_DISCRIMINATOR_VALUE_IS_ALLOWED_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
-				return Boolean.valueOf(!this.subject.discriminatorValueIsUndefined());
+				return Boolean.valueOf(this.subject.specifiedDiscriminatorValueIsAllowed());
 			}
 		};
 	}

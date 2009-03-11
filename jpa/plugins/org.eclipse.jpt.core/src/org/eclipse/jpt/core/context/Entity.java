@@ -147,17 +147,6 @@ public interface Entity
 		String SPECIFIED_INHERITANCE_STRATEGY_PROPERTY = "specifiedInheritanceStrategy"; //$NON-NLS-1$
 
 	/**
-	 * Return the ultimate top of the inheritance hierarchy 
-	 * This method should never return null. The root
-	 * is defined as the persistent type in the inheritance hierarchy
-	 * that has no parent.  The root should be an entity
-	 *  
-	 * Non-entities in the hierarchy should be ignored, ie skip
-	 * over them in the search for the root. 
-	 */
-	Entity getRootEntity();
-
-	/**
 	 * The first parent in the class hierarchy that is an entity. 
 	 * This is the parent in the entity (persistent) inheritance hierarchy
 	 * (vs class inheritance hierarchy)
@@ -175,7 +164,15 @@ public interface Entity
 	void setSpecifiedDiscriminatorValue(String value);
 		String SPECIFIED_DISCRIMINATOR_VALUE_PROPERTY = "specifiedDiscriminatorValue"; //$NON-NLS-1$
 
-	/**
+	/** 
+	 * Return whether a DiscriminatorValue is allowed for this Entity.
+	 * It is allowed if the entity is not abstract and not part of 
+	 * a table-per-class inheritance hierarchy
+	 */
+	boolean specifiedDiscriminatorValueIsAllowed();
+ 		String SPECIFIED_DISCRIMINATOR_VALUE_IS_ALLOWED_PROPERTY = "discriminatorValueIsAllowed"; //$NON-NLS-1$
+
+	 /**
 	 * Return whether a DiscriminatorValue is undefined for this Entity.
 	 * It is undefined if the entity is abstract or if it
 	 * is part of a table-per-class inheritance hierarchy
@@ -185,7 +182,7 @@ public interface Entity
 
 	/**
 	 * Return whether a DiscriminatorColumn is allowed for this Entity.
-	 * It is allowed if the entity is the root of the inheritance hierarchy
+	 * It is allowed if the entity is the root of the inheritance hierarchy (with descendant entities)
 	 * and the strategy is not table-per-class
 	 */
 	boolean specifiedDiscriminatorColumnIsAllowed();
@@ -334,5 +331,12 @@ public interface Entity
 	void moveSpecifiedAssociationOverride(int targetIndex, int sourceIndex);
 		String SPECIFIED_ASSOCIATION_OVERRIDES_LIST = "specifiedAssociationOverrides"; //$NON-NLS-1$
 		String VIRTUAL_ASSOCIATION_OVERRIDES_LIST = "virtualAssociationOverrides"; //$NON-NLS-1$
-
+		
+	
+	/**
+	 * The given Entity has this entity as its root entity, add
+	 * it as a sub entity.
+	 * @see org.eclipse.jpt.core.context.persistence.PersistenceUnit#addRootWithSubEntities(String)
+	 */
+	void addSubEntity(Entity subEntity);
 }

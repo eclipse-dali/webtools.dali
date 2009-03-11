@@ -24,6 +24,7 @@ import org.eclipse.jpt.core.context.Generator;
 import org.eclipse.jpt.core.context.MappingFileRoot;
 import org.eclipse.jpt.core.context.NamedNativeQuery;
 import org.eclipse.jpt.core.context.NamedQuery;
+import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.Query;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.orm.OrmGenerator;
@@ -817,6 +818,13 @@ public abstract class AbstractEntityMappings
 		return getJpaFactory().buildOrmNamedNativeQuery(this, resourceNamedQuery);
 	}
 
+	@Override
+	public void postUpdate() {
+		super.postUpdate();
+		for (PersistentType persistentType : CollectionTools.iterable(this.persistentTypes())) {
+			persistentType.postUpdate();
+		}
+	}
 
 	// ********** text **********
 

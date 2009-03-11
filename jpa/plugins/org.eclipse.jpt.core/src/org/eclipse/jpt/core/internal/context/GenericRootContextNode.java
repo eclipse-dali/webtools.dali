@@ -122,6 +122,14 @@ public class GenericRootContextNode
 		}
 	}
 	
+	@Override
+	public void postUpdate() {
+		super.postUpdate();
+		if (this.persistenceXml != null) {
+			this.persistenceXml.postUpdate();
+		}
+	}
+	
 	protected JpaXmlResource getPersistenceXmlResource() {
 		return this.jpaProject.getPersistenceXmlResource();
 	}

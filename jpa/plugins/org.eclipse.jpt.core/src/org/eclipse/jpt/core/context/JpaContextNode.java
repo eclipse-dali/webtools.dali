@@ -45,4 +45,9 @@ public interface JpaContextNode
 	Catalog getContextDefaultDbCatalog();
 	
 	Schema getContextDefaultDbSchema();
+	
+	/**
+	 * Called after the update is called.
+	 */
+	void postUpdate();
 }

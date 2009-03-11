@@ -155,6 +155,14 @@ public class GenericPersistenceXml
 		}
 	}
 	
+	@Override
+	public void postUpdate() {
+		super.postUpdate();
+		if (this.persistence != null) {
+			this.persistence.postUpdate();
+		}
+	}
+	
 	protected Persistence buildPersistence(XmlPersistence xmlPersistence) {
 		return getJpaFactory().buildPersistence(this, xmlPersistence);
 	}

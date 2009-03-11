@@ -116,6 +116,10 @@ public class JavaDiscriminatorColumnTests extends ContextModelTestCase
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
+		assertEquals(null, getJavaEntity().getDiscriminatorColumn().getDefaultName());
+
+		createTestSubType();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		assertEquals("DTYPE", getJavaEntity().getDiscriminatorColumn().getDefaultName());
 	}
 
@@ -123,6 +127,10 @@ public class JavaDiscriminatorColumnTests extends ContextModelTestCase
 		createTestEntityWithDiscriminatorColumn();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
+		assertEquals(null, getJavaEntity().getDiscriminatorColumn().getDefaultName());
+
+		createTestSubType();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		assertEquals("DTYPE", getJavaEntity().getDiscriminatorColumn().getDefaultName());
 		
 		getJavaEntity().getDiscriminatorColumn().setSpecifiedName("foo");
@@ -133,6 +141,10 @@ public class JavaDiscriminatorColumnTests extends ContextModelTestCase
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
+		assertEquals(null, getJavaEntity().getDiscriminatorColumn().getName());
+		
+		createTestSubType();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		assertEquals("DTYPE", getJavaEntity().getDiscriminatorColumn().getName());
 	}
 	
@@ -175,6 +187,10 @@ public class JavaDiscriminatorColumnTests extends ContextModelTestCase
 		createTestEntityWithDiscriminatorColumn();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
+		assertEquals(null, getJavaEntity().getDiscriminatorColumn().getDefaultDiscriminatorType());
+
+		createTestSubType();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		assertEquals(DiscriminatorType.STRING, getJavaEntity().getDiscriminatorColumn().getDefaultDiscriminatorType());
 	}
 	
@@ -182,8 +198,13 @@ public class JavaDiscriminatorColumnTests extends ContextModelTestCase
 		createTestEntityWithDiscriminatorColumn();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		assertEquals(DiscriminatorType.STRING, getJavaEntity().getDiscriminatorColumn().getDiscriminatorType());
+		assertEquals(null, getJavaEntity().getDiscriminatorColumn().getDiscriminatorType());
+
+		createTestSubType();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
+		assertEquals(DiscriminatorType.STRING, getJavaEntity().getDiscriminatorColumn().getDiscriminatorType());
+
 		getJavaEntity().getDiscriminatorColumn().setSpecifiedDiscriminatorType(DiscriminatorType.CHAR);
 		assertEquals(DiscriminatorType.CHAR, getJavaEntity().getDiscriminatorColumn().getDiscriminatorType());
 	}
@@ -235,13 +256,22 @@ public class JavaDiscriminatorColumnTests extends ContextModelTestCase
 		
 		column.setDiscriminatorType(null);
 		assertNull(getJavaEntity().getDiscriminatorColumn().getSpecifiedDiscriminatorType());
+		assertEquals(null, getJavaEntity().getDiscriminatorColumn().getDiscriminatorType());
+
+		createTestSubType();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);		
 		assertEquals(DiscriminatorColumn.DEFAULT_DISCRIMINATOR_TYPE, getJavaEntity().getDiscriminatorColumn().getDiscriminatorType());
 	}
 
 	public void testGetLength() throws Exception {
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-
+		
+		assertEquals(0, getJavaEntity().getDiscriminatorColumn().getLength());
+		
+		createTestSubType();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		
 		assertEquals(DiscriminatorColumn.DEFAULT_LENGTH, getJavaEntity().getDiscriminatorColumn().getLength());
 		getJavaEntity().getDiscriminatorColumn().setSpecifiedLength(Integer.valueOf(55));
 		assertEquals(55, getJavaEntity().getDiscriminatorColumn().getLength());
@@ -251,7 +281,12 @@ public class JavaDiscriminatorColumnTests extends ContextModelTestCase
 		createTestEntityWithDiscriminatorColumn();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
+		assertEquals(0, getJavaEntity().getDiscriminatorColumn().getDefaultLength());
+
+		createTestSubType();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		assertEquals(DiscriminatorColumn.DEFAULT_LENGTH, getJavaEntity().getDiscriminatorColumn().getDefaultLength());
+
 		getJavaEntity().getDiscriminatorColumn().setSpecifiedLength(Integer.valueOf(55));
 		
 		assertEquals(DiscriminatorColumn.DEFAULT_LENGTH, getJavaEntity().getDiscriminatorColumn().getDefaultLength());
@@ -309,6 +344,10 @@ public class JavaDiscriminatorColumnTests extends ContextModelTestCase
 		
 		column.setLength(null);
 		assertNull(getJavaEntity().getDiscriminatorColumn().getSpecifiedLength());
+		assertEquals(0, getJavaEntity().getDiscriminatorColumn().getLength());
+
+		createTestSubType();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		assertEquals(DiscriminatorColumn.DEFAULT_LENGTH, getJavaEntity().getDiscriminatorColumn().getLength());
 	}
 
