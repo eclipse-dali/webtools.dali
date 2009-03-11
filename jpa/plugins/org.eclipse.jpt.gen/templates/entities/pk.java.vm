@@ -1,0 +1,65 @@
+#if ($table.package != "")
+package ${table.package};
+#end
+import java.io.Serializable;
+import javax.persistence.*;
+
+/**
+ * The primary key class for the ${table.name} database table.
+ * 
+ */
+@Embeddable()
+public class ${table.compositeKeyClassName} implements Serializable {
+	//default serial version id, required for serializable classes.
+	private static final long serialVersionUID = 1L;
+#####
+##### fields
+#####
+#foreach ($column in $table.primaryKeyColumns)
+#if ($table.access == "field")
+
+#parse("column.vm")
+#end
+	${column.fieldScope} ${column.propertyType} ${column.propertyName};
+#end
+
+    public ${table.compositeKeyClassName}() {
+    }
+#####
+##### simple properties getters and setters
+#####
+#foreach ($column in $table.primaryKeyColumns)
+#if ($table.access == "property")
+
+#parse("column.vm")
+#end
+	$column.propertyGetScope $column.propertyType $customizer.propertyGetter($column.propertyName)() {
+		return this.${column.propertyName};
+	}
+	$column.propertySetScope void $customizer.propertySetter($column.propertyName)($column.propertyType $column.propertyName) {
+		this.${column.propertyName} = ${column.propertyName};
+	}
+#end
+##
+## equals/hashCode
+
+	public boolean equals(Object other) {
+		if (this == other) {
+			return true;
+		}
+		if (!(other instanceof ${table.compositeKeyClassName})) {
+			return false;
+		}
+		${table.compositeKeyClassName} castOther = (${table.compositeKeyClassName})other;
+		return 
+			${table.primaryKeyEqualsClause}
+
+    }
+    
+	public int hashCode() {
+		final int prime = 31;
+		int hash = 17;
+		${table.primaryKeyHashCodeClause}
+		return hash;
+    }
+}

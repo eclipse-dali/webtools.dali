@@ -19,6 +19,7 @@ class JptGenMessages {
 	public static String PackageGenerator_taskName;
 	public static String GenScope_taskName;
 	public static String EntityGenerator_taskName;
+	public static String Templates_notFound;
 
 	private static final String BUNDLE_NAME = "jpt_gen"; //$NON-NLS-1$
 	private static final Class<?> BUNDLE_CLASS = JptGenMessages.class;
