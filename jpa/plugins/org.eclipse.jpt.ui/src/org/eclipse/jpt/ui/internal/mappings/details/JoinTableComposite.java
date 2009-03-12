@@ -426,12 +426,15 @@ public class JoinTableComposite extends FormPane<JoinTable>
 
 
 	private void updateInverseJoinColumns() {
-
 		if (isPopulating()) {
 			return;
 		}
-
+		
 		JoinTable joinTable = getSubject();
+		if (joinTable == null) {
+			return;
+		}
+		
 		boolean selected = this.overrideDefaultInverseJoinColumnsCheckBox.getSelection();
 		setPopulating(true);
 
@@ -478,12 +481,15 @@ public class JoinTableComposite extends FormPane<JoinTable>
 	}
 
 	private void updateJoinColumns() {
-
 		if (isPopulating()) {
 			return;
 		}
-
+		
 		JoinTable joinTable = getSubject();
+		if (joinTable == null) {
+			return;
+		}
+		
 		boolean selected = this.overrideDefaultJoinColumnsCheckBox.getSelection();
 		setPopulating(true);
 
