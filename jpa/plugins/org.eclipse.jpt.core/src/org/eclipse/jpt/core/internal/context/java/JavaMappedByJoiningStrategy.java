@@ -126,6 +126,11 @@ public class JavaMappedByJoiningStrategy
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
+		
+		if (getMappedByAttribute() == null) {
+			return;
+		}
+		
 		Entity targetEntity = this.getRelationshipMapping().getResolvedTargetEntity();
 		if (targetEntity == null) {
 			return;  // null target entity is validated elsewhere

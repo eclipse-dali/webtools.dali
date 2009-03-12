@@ -101,6 +101,11 @@ public class OrmMappedByJoiningStrategy
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
+		
+		if (getMappedByAttribute() == null) {
+			return;
+		}
+		
 		Entity targetEntity = this.getRelationshipMapping().getResolvedTargetEntity();
 		if (targetEntity == null) {
 			return;  // null target entity is validated elsewhere
@@ -151,6 +156,6 @@ public class OrmMappedByJoiningStrategy
 	
 	public TextRange getValidationTextRange() {
 		TextRange mappedByTextRange = this.resource.getMappedByTextRange();
-		return mappedByTextRange != null ? mappedByTextRange : getValidationTextRange();
+		return mappedByTextRange != null ? mappedByTextRange : getRelationshipReference().getValidationTextRange();
 	}
 }
