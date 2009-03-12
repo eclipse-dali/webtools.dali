@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.java;
 
-import java.util.ListIterator;
 import org.eclipse.jpt.core.context.SingleRelationshipMapping;
 
 /**
@@ -21,15 +20,8 @@ import org.eclipse.jpt.core.context.SingleRelationshipMapping;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface JavaSingleRelationshipMapping extends JavaRelationshipMapping, SingleRelationshipMapping
+public interface JavaSingleRelationshipMapping
+	extends JavaRelationshipMapping, SingleRelationshipMapping
 {
-	@SuppressWarnings("unchecked")
-	ListIterator<JavaJoinColumn> joinColumns();
 	
-	JavaJoinColumn getDefaultJoinColumn();
-	
-	@SuppressWarnings("unchecked")
-	ListIterator<JavaJoinColumn> specifiedJoinColumns();
-	
-	JavaJoinColumn addSpecifiedJoinColumn(int index);
 }

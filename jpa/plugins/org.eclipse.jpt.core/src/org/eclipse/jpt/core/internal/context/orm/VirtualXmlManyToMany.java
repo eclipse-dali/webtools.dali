@@ -24,7 +24,9 @@ import org.eclipse.jpt.core.utility.TextRange;
  * VirtualManyToMany is an implementation of ManyToMany used when there is 
  * no tag in the orm.xml and an underlying javaManyToManyMapping exists.
  */
-public class VirtualXmlManyToMany extends VirtualXmlAttributeMapping<JavaManyToManyMapping> implements XmlManyToMany
+public class VirtualXmlManyToMany 
+	extends VirtualXmlAttributeMapping<JavaManyToManyMapping> 
+	implements XmlManyToMany
 {
 	protected final VirtualXmlJoinTable virtualJoinTable;
 	
@@ -32,15 +34,20 @@ public class VirtualXmlManyToMany extends VirtualXmlAttributeMapping<JavaManyToM
 	
 	protected final MapKey mapKey;
 	
-	//TODO joinColumns not yet supported in the context model
-//	protected EList<JoinColumn> virtualJoinColumns;
-
-	public VirtualXmlManyToMany(OrmTypeMapping ormTypeMapping, JavaManyToManyMapping javaManyToManyMapping) {
+	
+	public VirtualXmlManyToMany(
+			OrmTypeMapping ormTypeMapping, JavaManyToManyMapping javaManyToManyMapping) {
 		super(ormTypeMapping, javaManyToManyMapping);
-		this.virtualCascadeType = new VirtualCascadeType(javaManyToManyMapping.getCascade(), this.isOrmMetadataComplete());
-		this.virtualJoinTable = new VirtualXmlJoinTable(ormTypeMapping, javaManyToManyMapping.getJoinTable());
+		this.virtualCascadeType = 
+			new VirtualCascadeType(javaManyToManyMapping.getCascade(), this.isOrmMetadataComplete());
+		this.virtualJoinTable = 
+			new VirtualXmlJoinTable(
+				ormTypeMapping, 
+				javaManyToManyMapping.getRelationshipReference().
+					getJoinTableJoiningStrategy().getJoinTable());
 		this.mapKey = new VirtualMapKey(javaManyToManyMapping, this.isOrmMetadataComplete());
 	}
+	
 	
 	public FetchType getFetch() {
 		if (this.isOrmMetadataComplete()) {
@@ -88,7 +95,7 @@ public class VirtualXmlManyToMany extends VirtualXmlAttributeMapping<JavaManyToM
 		if (this.isOrmMetadataComplete()) {
 			return null;
 		}
-		return this.javaAttributeMapping.getMappedBy();
+		return this.javaAttributeMapping.getRelationshipReference().getMappedByJoiningStrategy().getMappedByAttribute();
 	}
 	
 	public void setMappedBy(@SuppressWarnings("unused") String value) {

@@ -22,13 +22,14 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.XmlMutable;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class EclipseLinkOrmBasicMapping extends GenericOrmBasicMapping
+public class EclipseLinkOrmBasicMapping<T extends XmlBasic>
+	extends GenericOrmBasicMapping<T>
 	implements EclipseLinkBasicMapping
 {
 	protected EclipseLinkOrmMutable mutable;
 	
 	
-	public EclipseLinkOrmBasicMapping(OrmPersistentAttribute parent, XmlBasic resourceMapping) {
+	public EclipseLinkOrmBasicMapping(OrmPersistentAttribute parent, T resourceMapping) {
 		super(parent, resourceMapping);
 		this.mutable = new EclipseLinkOrmMutable(this, (XmlMutable) this.resourceAttributeMapping);
 	}

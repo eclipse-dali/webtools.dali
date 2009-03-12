@@ -1441,8 +1441,9 @@ public abstract class AbstractJavaEntity
 		return ! CollectionTools.contains(this.associatedTableNamesIncludingInherited(), tableName);
 	}
 	
-	public boolean shouldValidateDbInfo() {
-		return !isAbstractTablePerClass();
+	@Override
+	public boolean shouldValidateAgainstDatabase() {
+		return super.shouldValidateAgainstDatabase() && ! isAbstractTablePerClass();
 	}
 	
 	@Override

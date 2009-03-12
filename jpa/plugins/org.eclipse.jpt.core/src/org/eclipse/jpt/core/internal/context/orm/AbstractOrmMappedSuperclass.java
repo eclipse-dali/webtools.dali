@@ -103,7 +103,8 @@ public abstract class AbstractOrmMappedSuperclass extends AbstractOrmTypeMapping
 		return false;
 	}
 	
-	public boolean shouldValidateDbInfo() {
+	@Override
+	public boolean shouldValidateAgainstDatabase() {
 		return false;
 	}
 	

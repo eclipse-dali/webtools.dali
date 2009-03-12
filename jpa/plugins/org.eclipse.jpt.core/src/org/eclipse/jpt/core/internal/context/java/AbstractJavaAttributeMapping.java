@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
@@ -23,9 +24,7 @@ import org.eclipse.jpt.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-/**
- * 
- */
+
 public abstract class AbstractJavaAttributeMapping<T extends JavaResourceNode>
 	extends AbstractJavaJpaContextNode
 	implements JavaAttributeMapping
@@ -52,6 +51,10 @@ public abstract class AbstractJavaAttributeMapping<T extends JavaResourceNode>
 		return this.resourcePersistentAttribute;
 	}
 	
+	public T getMappingAnnotation() {
+		return this.resourceMapping;
+	}
+		
 	/**
 	 * the persistent attribute can tell whether there is a "specified" mapping
 	 * or a "default" one
@@ -60,15 +63,15 @@ public abstract class AbstractJavaAttributeMapping<T extends JavaResourceNode>
 		return this.getPersistentAttribute().mappingIsDefault(this);
 	}
 
-	protected boolean shouldValidateDbInfo() {
-		return this.getTypeMapping().shouldValidateDbInfo() && connectionProfileIsActive();
+	public boolean shouldValidateAgainstDatabase() {
+		return this.getTypeMapping().shouldValidateAgainstDatabase();
 	}
 	
 	public TypeMapping getTypeMapping() {
 		return this.getPersistentAttribute().getTypeMapping();
 	}
 
-	protected String getAttributeName() {
+	public String getName() {
 		return this.getPersistentAttribute().getName();
 	}
 	
@@ -89,6 +92,11 @@ public abstract class AbstractJavaAttributeMapping<T extends JavaResourceNode>
 	}
 
 	public boolean isIdMapping() {
+		return false;
+	}
+	
+	public boolean isOwnedBy(RelationshipMapping mapping) {
+		// Default implementation - override where needed
 		return false;
 	}
 
@@ -125,7 +133,7 @@ public abstract class AbstractJavaAttributeMapping<T extends JavaResourceNode>
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
 					JpaValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_MAPPING,
-					new String[] {this.getAttributeName()},
+					new String[] {this.getName()},
 					this,
 					this.getValidationTextRange(astRoot)
 				)
@@ -144,7 +152,7 @@ public abstract class AbstractJavaAttributeMapping<T extends JavaResourceNode>
 	
 	@Override
 	public void toString(StringBuilder sb) {
-		sb.append(this.getAttributeName());
+		sb.append(this.getName());
 	}
 
 }

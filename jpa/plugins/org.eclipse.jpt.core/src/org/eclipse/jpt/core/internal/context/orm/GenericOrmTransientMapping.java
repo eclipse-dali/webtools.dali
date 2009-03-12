@@ -17,10 +17,12 @@ import org.eclipse.jpt.core.resource.orm.Attributes;
 import org.eclipse.jpt.core.resource.orm.XmlTransient;
 
 
-public class GenericOrmTransientMapping extends AbstractOrmAttributeMapping<XmlTransient> implements OrmTransientMapping
+public class GenericOrmTransientMapping<T extends XmlTransient>
+	extends AbstractOrmAttributeMapping<T> 
+	implements OrmTransientMapping
 {
 	
-	public GenericOrmTransientMapping(OrmPersistentAttribute parent, XmlTransient resourceMapping) {
+	public GenericOrmTransientMapping(OrmPersistentAttribute parent, T resourceMapping) {
 		super(parent, resourceMapping);
 	}
 

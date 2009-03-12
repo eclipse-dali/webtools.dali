@@ -149,17 +149,23 @@
     <genClasses image="false" ecoreClass="orm.ecore#//XmlRelationshipMapping">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlRelationshipMapping/targetEntity"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlRelationshipMapping/fetch"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlRelationshipMapping/joinTable"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlRelationshipMapping/cascade"/>
     </genClasses>
+    <genClasses image="false" ecoreClass="orm.ecore#//XmlMappedByMapping">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlMappedByMapping/mappedBy"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="orm.ecore#//XmlJoinColumnsMapping">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlJoinColumnsMapping/joinColumns"/>
+    </genClasses>
+    <genClasses ecoreClass="orm.ecore#//XmlJoinTableMapping">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlJoinTableMapping/joinTable"/>
+    </genClasses>
     <genClasses image="false" ecoreClass="orm.ecore#//XmlMultiRelationshipMapping">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlMultiRelationshipMapping/mappedBy"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlMultiRelationshipMapping/orderBy"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlMultiRelationshipMapping/mapKey"/>
     </genClasses>
     <genClasses image="false" ecoreClass="orm.ecore#//XmlSingleRelationshipMapping">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlSingleRelationshipMapping/optional"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlSingleRelationshipMapping/joinColumns"/>
     </genClasses>
     <genClasses image="false" ecoreClass="orm.ecore#//XmlId">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlId/generatedValue"/>
@@ -188,12 +194,9 @@
     <genClasses ecoreClass="orm.ecore#//XmlVersionImpl"/>
     <genClasses image="false" ecoreClass="orm.ecore#//XmlManyToOne"/>
     <genClasses ecoreClass="orm.ecore#//XmlManyToOneImpl"/>
-    <genClasses image="false" ecoreClass="orm.ecore#//XmlOneToMany">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlOneToMany/joinColumns"/>
-    </genClasses>
+    <genClasses image="false" ecoreClass="orm.ecore#//XmlOneToMany"/>
     <genClasses ecoreClass="orm.ecore#//XmlOneToManyImpl"/>
     <genClasses image="false" ecoreClass="orm.ecore#//XmlOneToOne">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlOneToOne/mappedBy"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlOneToOne/primaryKeyJoinColumns"/>
     </genClasses>
     <genClasses ecoreClass="orm.ecore#//XmlOneToOneImpl"/>

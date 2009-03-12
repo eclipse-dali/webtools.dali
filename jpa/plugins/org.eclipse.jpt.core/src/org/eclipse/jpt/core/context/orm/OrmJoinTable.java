@@ -12,7 +12,6 @@ package org.eclipse.jpt.core.context.orm;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.context.JoinTable;
 import org.eclipse.jpt.core.context.XmlContextNode;
-import org.eclipse.jpt.core.resource.orm.XmlRelationshipMapping;
 
 /**
  * 
@@ -25,7 +24,8 @@ import org.eclipse.jpt.core.resource.orm.XmlRelationshipMapping;
  */
 public interface OrmJoinTable extends JoinTable, XmlContextNode
 {
-
+	OrmRelationshipMapping getRelationshipMapping();
+	
 	boolean isSpecified();
 
 	/**
@@ -38,8 +38,6 @@ public interface OrmJoinTable extends JoinTable, XmlContextNode
 
 	
 	//****************** covariant overrides *******************
-	
-	OrmRelationshipMapping getParent();
 	
 	@SuppressWarnings("unchecked")
 	ListIterator<OrmJoinColumn> joinColumns();

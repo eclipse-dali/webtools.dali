@@ -17,7 +17,9 @@ import org.eclipse.jpt.eclipselink.core.context.BasicCollectionMapping;
 import org.eclipse.jpt.eclipselink.core.resource.java.BasicCollectionAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
-public class JavaBasicCollectionMapping extends AbstractJavaAttributeMapping<BasicCollectionAnnotation> implements BasicCollectionMapping
+public class JavaBasicCollectionMapping
+	extends AbstractJavaAttributeMapping<BasicCollectionAnnotation>
+	implements BasicCollectionMapping
 {
 	
 	public JavaBasicCollectionMapping(JavaPersistentAttribute parent) {

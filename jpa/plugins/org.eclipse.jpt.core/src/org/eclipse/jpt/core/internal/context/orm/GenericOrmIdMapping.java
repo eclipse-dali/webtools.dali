@@ -12,7 +12,6 @@ package org.eclipse.jpt.core.internal.context.orm;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.Converter;
 import org.eclipse.jpt.core.context.Generator;
@@ -39,11 +38,8 @@ import org.eclipse.jpt.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-/**
- * 
- */
-public class GenericOrmIdMapping
-	extends AbstractOrmAttributeMapping<XmlId>
+public class GenericOrmIdMapping<T extends XmlId>
+	extends AbstractOrmAttributeMapping<T>
 	implements OrmIdMapping
 {
 	protected final OrmColumn column;
@@ -57,7 +53,7 @@ public class GenericOrmIdMapping
 	protected OrmSequenceGenerator sequenceGenerator;
 
 	
-	public GenericOrmIdMapping(OrmPersistentAttribute parent, XmlId resourceMapping) {
+	public GenericOrmIdMapping(OrmPersistentAttribute parent, T resourceMapping) {
 		super(parent, resourceMapping);
 		this.column = getJpaFactory().buildOrmColumn(this, this);
 		this.column.initialize(this.resourceAttributeMapping.getColumn());//TODO pass in to constructor
@@ -405,7 +401,7 @@ public class GenericOrmIdMapping
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
 		
-		if (this.shouldValidateDbInfo()) {
+		if (this.shouldValidateAgainstDatabase()) {
 			this.validateColumn(messages);
 		}
 		if (this.generatedValue != null) {

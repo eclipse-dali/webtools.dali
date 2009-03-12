@@ -11,13 +11,15 @@ package org.eclipse.jpt.eclipselink.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.context.Cascade;
 import org.eclipse.jpt.core.context.ManyToOneMapping;
+import org.eclipse.jpt.core.context.ManyToOneRelationshipReference;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkRelationshipMapping;
 import org.eclipse.jpt.eclipselink.core.context.JoinFetch;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
+import org.eclipse.jpt.ui.internal.BaseJpaUiFactory;
 import org.eclipse.jpt.ui.internal.mappings.details.CascadeComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.FetchTypeComposite;
-import org.eclipse.jpt.ui.internal.mappings.details.JoinColumnComposite;
+import org.eclipse.jpt.ui.internal.mappings.details.ManyToOneJoiningStrategyPane;
 import org.eclipse.jpt.ui.internal.mappings.details.OptionalComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.TargetEntityComposite;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
@@ -37,6 +39,11 @@ import org.eclipse.swt.widgets.Composite;
  * | ------------------------------------------------------------------------- |
  * | ------------------------------------------------------------------------- |
  * | |                                                                       | |
+ * | | JoiningStrategyComposite                                              | |
+ * | |                                                                       | |
+ * | ------------------------------------------------------------------------- |
+ * | ------------------------------------------------------------------------- |
+ * | |                                                                       | |
  * | | FetchTypeComposite                                                    | |
  * | |                                                                       | |
  * | ------------------------------------------------------------------------- |
@@ -50,20 +57,15 @@ import org.eclipse.swt.widgets.Composite;
  * | | CascadeComposite                                                      | |
  * | |                                                                       | |
  * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | JoinColumnComposite                                                   | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see ManyToOneMapping
- * @see BaseJpaUiFactory - The factory creating this pane
- * @see CascadeComposite
- * @see FetchTypeComposite
- * @see JoinColumnComposite
- * @see OptionalComposite
- * @see TargetEntityComposite
+ * @see {@link ManyToOneMapping}
+ * @see {@link BaseJpaUiFactory} - The factory creating this pane
+ * @see {@link TargetEntityComposite}
+ * @see {@link ManyToOneJoiningStrategyPane}
+ * @see {@link FetchTypeComposite}
+ * @see {@link OptionalComposite}
+ * @see {@link CascadeComposite}
  *
  * @version 2.1
  * @since 2.1
@@ -88,18 +90,27 @@ public class EclipseLinkManyToOneMappingComposite extends FormPane<ManyToOneMapp
 	@Override
 	protected void initializeLayout(Composite container) {
 		int groupBoxMargin = getGroupBoxMargin();
-		Composite subPane = addPane(container, groupBoxMargin);
-
-		new TargetEntityComposite(this, subPane);
-		new FetchTypeComposite(this, subPane);
-		new JoinFetchComposite(this, buildJoinFetchableHolder(), subPane);
-		new OptionalComposite(this, addSubPane(subPane, 4));
-		new CascadeComposite(this, buildCascadeHolder(), container);
-		new JoinColumnComposite(this, container);
+		
+		new TargetEntityComposite(this, addPane(container, groupBoxMargin));
+		new ManyToOneJoiningStrategyPane(this, buildJoiningHolder(), container);
+		new FetchTypeComposite(this, addPane(container));
+		new JoinFetchComposite(this, buildJoinFetchableHolder(), addPane(container));
+		new OptionalComposite(this, addPane(container, 4));
+		new CascadeComposite(this, buildCascadeHolder(), addPane(container));
 	}
 
 	protected Composite addPane(Composite container, int groupBoxMargin) {
 		return addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
+	}
+	
+	private PropertyValueModel<ManyToOneRelationshipReference> buildJoiningHolder() {
+		return new TransformationPropertyValueModel<ManyToOneMapping, ManyToOneRelationshipReference>(
+				getSubjectHolder()) {
+			@Override
+			protected ManyToOneRelationshipReference transform_(ManyToOneMapping value) {
+				return value.getRelationshipReference();
+			}
+		};
 	}
 	
 	protected PropertyValueModel<JoinFetch> buildJoinFetchableHolder() {

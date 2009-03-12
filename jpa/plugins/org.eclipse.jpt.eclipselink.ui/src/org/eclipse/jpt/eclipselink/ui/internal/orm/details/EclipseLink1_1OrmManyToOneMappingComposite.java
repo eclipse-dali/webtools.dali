@@ -14,10 +14,11 @@ import org.eclipse.jpt.core.context.ManyToOneMapping;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkManyToOneMappingComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.JoinFetchComposite;
 import org.eclipse.jpt.ui.WidgetFactory;
+import org.eclipse.jpt.ui.internal.BaseJpaUiFactory;
 import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.CascadeComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.FetchTypeComposite;
-import org.eclipse.jpt.ui.internal.mappings.details.JoinColumnComposite;
+import org.eclipse.jpt.ui.internal.mappings.details.ManyToOneJoiningStrategyPane;
 import org.eclipse.jpt.ui.internal.mappings.details.OptionalComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.TargetEntityComposite;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
@@ -35,6 +36,11 @@ import org.eclipse.swt.widgets.Composite;
  * | ------------------------------------------------------------------------- |
  * | ------------------------------------------------------------------------- |
  * | |                                                                       | |
+ * | | JoiningStrategyComposite                                              | |
+ * | |                                                                       | |
+ * | ------------------------------------------------------------------------- |
+ * | ------------------------------------------------------------------------- |
+ * | |                                                                       | |
  * | | FetchTypeComposite                                                    | |
  * | |                                                                       | |
  * | ------------------------------------------------------------------------- |
@@ -48,20 +54,15 @@ import org.eclipse.swt.widgets.Composite;
  * | | CascadeComposite                                                      | |
  * | |                                                                       | |
  * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | JoinColumnComposite                                                   | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see ManyToOneMapping
- * @see BaseJpaUiFactory - The factory creating this pane
- * @see CascadeComposite
- * @see FetchTypeComposite
- * @see JoinColumnComposite
- * @see OptionalComposite
- * @see TargetEntityComposite
+ * @see {@link ManyToOneMapping}
+ * @see {@link BaseJpaUiFactory} - The factory creating this pane
+ * @see {@link TargetEntityComposite}
+ * @see {@link ManyToOneJoiningStrategyPane}
+ * @see {@link FetchTypeComposite}
+ * @see {@link OptionalComposite}
+ * @see {@link CascadeComposite}
  *
  * @version 2.2
  * @since 2.2
@@ -84,17 +85,14 @@ public class EclipseLink1_1OrmManyToOneMappingComposite extends EclipseLinkManyT
 
 	@Override
 	protected void initializeLayout(Composite container) {
-
 		int groupBoxMargin = getGroupBoxMargin();
-		Composite subPane = addPane(container, groupBoxMargin);
-
-		new TargetEntityComposite(this, subPane);
-		new AccessTypeComposite(this, buildAccessHolderHolder(), subPane);
-		new FetchTypeComposite(this, subPane);		
-		new JoinFetchComposite(this, buildJoinFetchableHolder(), subPane);
-		new OptionalComposite(this, addSubPane(subPane, 4));
+		
+		new TargetEntityComposite(this, addPane(container, groupBoxMargin));
+		new AccessTypeComposite(this, buildAccessHolderHolder(), addPane(container, groupBoxMargin));
+		new FetchTypeComposite(this, addPane(container, groupBoxMargin));		
+		new JoinFetchComposite(this, buildJoinFetchableHolder(), addPane(container, groupBoxMargin));
+		new OptionalComposite(this, addPane(container, 4));
 		new CascadeComposite(this, buildCascadeHolder(), container);
-		new JoinColumnComposite(this, container);
 	}
 	
 	protected PropertyValueModel<AccessHolder> buildAccessHolderHolder() {

@@ -10,7 +10,7 @@
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.context.JoinColumn;
-import org.eclipse.jpt.core.context.RelationshipMapping;
+import org.eclipse.jpt.core.context.JoinColumnJoiningStrategy;
 import org.eclipse.swt.widgets.Shell;
 
 /**
@@ -18,15 +18,16 @@ import org.eclipse.swt.widgets.Shell;
  * on a relational mapping.
  *
  * @see JoinColumn
- * @see RelationshipMapping
- * @see JoinColumnInRelationshipMappingStateObject
+ * @see JoinColumnJoiningStrategy
+ * @see JoinColumnInJoiningStrategyStateObject
  * @see JoinColumnDialogPane
  *
  * @version 2.0
  * @since 2.0
  */
-public class JoinColumnInRelationshipMappingDialog extends JoinColumnDialog<JoinColumnInRelationshipMappingStateObject> {
-
+public class JoinColumnInJoiningStrategyDialog 
+	extends JoinColumnDialog<JoinColumnInJoiningStrategyStateObject> 
+{
 	/**
 	 * Creates a new <code>AbstractJoinColumnDialog</code>.
 	 *
@@ -36,19 +37,20 @@ public class JoinColumnInRelationshipMappingDialog extends JoinColumnDialog<Join
 	 * @param joinColumn The join column to edit or <code>null</code> if this is
 	 * used to create a new one
 	 */
-	JoinColumnInRelationshipMappingDialog(Shell parent,
-	                                      RelationshipMapping relationshipMapping,
-	                                      JoinColumn joinColumn) {
+	JoinColumnInJoiningStrategyDialog(
+		Shell parent,
+	    JoinColumnJoiningStrategy joinColumnOwner,
+	    JoinColumn joinColumn) {
 
-		super(parent, relationshipMapping, joinColumn);
+		super(parent, joinColumnOwner, joinColumn);
 	}
 
 	/*
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected JoinColumnInRelationshipMappingStateObject buildStateObject() {
-		return new JoinColumnInRelationshipMappingStateObject(
+	protected JoinColumnInJoiningStrategyStateObject buildStateObject() {
+		return new JoinColumnInJoiningStrategyStateObject(
 			getOwner(),
 			getJoinColumn()
 		);
@@ -58,7 +60,7 @@ public class JoinColumnInRelationshipMappingDialog extends JoinColumnDialog<Join
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected RelationshipMapping getOwner() {
-		return (RelationshipMapping) super.getOwner();
+	protected JoinColumnJoiningStrategy getOwner() {
+		return (JoinColumnJoiningStrategy) super.getOwner();
 	}
 }

@@ -62,7 +62,7 @@ public class ManyToManyTranslator extends Translator
 	}
 	
 	protected Translator createMappedByTranslator() {
-		return new Translator(MAPPED_BY, ORM_PKG.getXmlMultiRelationshipMapping_MappedBy(), DOM_ATTRIBUTE);
+		return new Translator(MAPPED_BY, ORM_PKG.getXmlMappedByMapping_MappedBy(), DOM_ATTRIBUTE);
 	}
 	
 	protected Translator createOrderByTranslator() {
@@ -74,7 +74,7 @@ public class ManyToManyTranslator extends Translator
 	}
 	
 	protected Translator createJoinTableTranslator() {
-		return new JoinTableTranslator(JOIN_TABLE, ORM_PKG.getXmlRelationshipMapping_JoinTable());
+		return new JoinTableTranslator(JOIN_TABLE, ORM_PKG.getXmlJoinTableMapping_JoinTable());
 	}
 	
 	protected Translator createCascadeTranslator() {

@@ -18,6 +18,9 @@ import org.eclipse.jpt.core.resource.orm.AbstractXmlAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.BaseXmlEmbedded;
 import org.eclipse.jpt.core.resource.orm.ColumnMapping;
 import org.eclipse.jpt.core.resource.orm.XmlConvertibleMapping;
+import org.eclipse.jpt.core.resource.orm.XmlJoinColumnsMapping;
+import org.eclipse.jpt.core.resource.orm.XmlJoinTableMapping;
+import org.eclipse.jpt.core.resource.orm.XmlMappedByMapping;
 import org.eclipse.jpt.core.resource.orm.XmlMultiRelationshipMapping;
 import org.eclipse.jpt.core.resource.orm.XmlRelationshipMapping;
 import org.eclipse.jpt.core.resource.orm.XmlSingleRelationshipMapping;
@@ -118,8 +121,8 @@ public class EclipseLink1_1OrmSwitch<T>
 			{
 				XmlEntityMappings xmlEntityMappings = (XmlEntityMappings)theEObject;
 				T result = caseXmlEntityMappings(xmlEntityMappings);
-				if (result == null) result = caseXmlEntityMappings_2(xmlEntityMappings);
-				if (result == null) result = caseXmlEntityMappings_1(xmlEntityMappings);
+				if (result == null) result = caseEclipseLinkOrm_XmlEntityMappings(xmlEntityMappings);
+				if (result == null) result = caseOrm_XmlEntityMappings(xmlEntityMappings);
 				if (result == null) result = caseXmlConvertersHolder(xmlEntityMappings);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -128,7 +131,7 @@ public class EclipseLink1_1OrmSwitch<T>
 			{
 				XmlAttributeMapping xmlAttributeMapping = (XmlAttributeMapping)theEObject;
 				T result = caseXmlAttributeMapping(xmlAttributeMapping);
-				if (result == null) result = caseXmlAttributeMapping_1(xmlAttributeMapping);
+				if (result == null) result = caseOrm_XmlAttributeMapping(xmlAttributeMapping);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -136,13 +139,13 @@ public class EclipseLink1_1OrmSwitch<T>
 			{
 				XmlId xmlId = (XmlId)theEObject;
 				T result = caseXmlId(xmlId);
-				if (result == null) result = caseXmlId_2(xmlId);
+				if (result == null) result = caseEclipseLinkOrm_XmlId(xmlId);
 				if (result == null) result = caseXmlAttributeMapping(xmlId);
-				if (result == null) result = caseXmlId_1(xmlId);
+				if (result == null) result = caseOrm_XmlId(xmlId);
 				if (result == null) result = caseXmlMutable(xmlId);
-				if (result == null) result = caseXmlConvertibleMapping_1(xmlId);
+				if (result == null) result = caseEclipseLinkOrm_XmlConvertibleMapping(xmlId);
 				if (result == null) result = caseXmlAccessMethodsHolder(xmlId);
-				if (result == null) result = caseXmlAttributeMapping_1(xmlId);
+				if (result == null) result = caseOrm_XmlAttributeMapping(xmlId);
 				if (result == null) result = caseColumnMapping(xmlId);
 				if (result == null) result = caseXmlConvertibleMapping(xmlId);
 				if (result == null) result = caseXmlConverterHolder(xmlId);
@@ -153,17 +156,17 @@ public class EclipseLink1_1OrmSwitch<T>
 			{
 				XmlIdImpl xmlIdImpl = (XmlIdImpl)theEObject;
 				T result = caseXmlIdImpl(xmlIdImpl);
-				if (result == null) result = caseXmlIdImpl_2(xmlIdImpl);
+				if (result == null) result = caseEclipseLinkOrm_XmlIdImpl(xmlIdImpl);
 				if (result == null) result = caseXmlId(xmlIdImpl);
-				if (result == null) result = caseXmlIdImpl_1(xmlIdImpl);
-				if (result == null) result = caseXmlId_2(xmlIdImpl);
+				if (result == null) result = caseOrm_XmlIdImpl(xmlIdImpl);
+				if (result == null) result = caseEclipseLinkOrm_XmlId(xmlIdImpl);
 				if (result == null) result = caseXmlAttributeMapping(xmlIdImpl);
 				if (result == null) result = caseAbstractXmlAttributeMapping(xmlIdImpl);
-				if (result == null) result = caseXmlId_1(xmlIdImpl);
+				if (result == null) result = caseOrm_XmlId(xmlIdImpl);
 				if (result == null) result = caseXmlMutable(xmlIdImpl);
-				if (result == null) result = caseXmlConvertibleMapping_1(xmlIdImpl);
+				if (result == null) result = caseEclipseLinkOrm_XmlConvertibleMapping(xmlIdImpl);
 				if (result == null) result = caseXmlAccessMethodsHolder(xmlIdImpl);
-				if (result == null) result = caseXmlAttributeMapping_1(xmlIdImpl);
+				if (result == null) result = caseOrm_XmlAttributeMapping(xmlIdImpl);
 				if (result == null) result = caseColumnMapping(xmlIdImpl);
 				if (result == null) result = caseXmlConvertibleMapping(xmlIdImpl);
 				if (result == null) result = caseXmlConverterHolder(xmlIdImpl);
@@ -174,11 +177,11 @@ public class EclipseLink1_1OrmSwitch<T>
 			{
 				XmlEmbeddedId xmlEmbeddedId = (XmlEmbeddedId)theEObject;
 				T result = caseXmlEmbeddedId(xmlEmbeddedId);
-				if (result == null) result = caseXmlEmbeddedId_2(xmlEmbeddedId);
+				if (result == null) result = caseEclipseLinkOrm_XmlEmbeddedId(xmlEmbeddedId);
 				if (result == null) result = caseXmlAttributeMapping(xmlEmbeddedId);
-				if (result == null) result = caseXmlEmbeddedId_1(xmlEmbeddedId);
+				if (result == null) result = caseOrm_XmlEmbeddedId(xmlEmbeddedId);
 				if (result == null) result = caseXmlAccessMethodsHolder(xmlEmbeddedId);
-				if (result == null) result = caseXmlAttributeMapping_1(xmlEmbeddedId);
+				if (result == null) result = caseOrm_XmlAttributeMapping(xmlEmbeddedId);
 				if (result == null) result = caseBaseXmlEmbedded(xmlEmbeddedId);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -187,15 +190,15 @@ public class EclipseLink1_1OrmSwitch<T>
 			{
 				XmlEmbeddedIdImpl xmlEmbeddedIdImpl = (XmlEmbeddedIdImpl)theEObject;
 				T result = caseXmlEmbeddedIdImpl(xmlEmbeddedIdImpl);
-				if (result == null) result = caseXmlEmbeddedIdImpl_2(xmlEmbeddedIdImpl);
+				if (result == null) result = caseEclipseLinkOrm_XmlEmbeddedIdImpl(xmlEmbeddedIdImpl);
 				if (result == null) result = caseXmlEmbeddedId(xmlEmbeddedIdImpl);
-				if (result == null) result = caseXmlEmbeddedIdImpl_1(xmlEmbeddedIdImpl);
-				if (result == null) result = caseXmlEmbeddedId_2(xmlEmbeddedIdImpl);
+				if (result == null) result = caseOrm_XmlEmbeddedIdImpl(xmlEmbeddedIdImpl);
+				if (result == null) result = caseEclipseLinkOrm_XmlEmbeddedId(xmlEmbeddedIdImpl);
 				if (result == null) result = caseXmlAttributeMapping(xmlEmbeddedIdImpl);
 				if (result == null) result = caseAbstractXmlAttributeMapping(xmlEmbeddedIdImpl);
-				if (result == null) result = caseXmlEmbeddedId_1(xmlEmbeddedIdImpl);
+				if (result == null) result = caseOrm_XmlEmbeddedId(xmlEmbeddedIdImpl);
 				if (result == null) result = caseXmlAccessMethodsHolder(xmlEmbeddedIdImpl);
-				if (result == null) result = caseXmlAttributeMapping_1(xmlEmbeddedIdImpl);
+				if (result == null) result = caseOrm_XmlAttributeMapping(xmlEmbeddedIdImpl);
 				if (result == null) result = caseBaseXmlEmbedded(xmlEmbeddedIdImpl);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -204,11 +207,11 @@ public class EclipseLink1_1OrmSwitch<T>
 			{
 				XmlEmbedded xmlEmbedded = (XmlEmbedded)theEObject;
 				T result = caseXmlEmbedded(xmlEmbedded);
-				if (result == null) result = caseXmlEmbedded_2(xmlEmbedded);
+				if (result == null) result = caseEclipseLinkOrm_XmlEmbedded(xmlEmbedded);
 				if (result == null) result = caseXmlAttributeMapping(xmlEmbedded);
-				if (result == null) result = caseXmlEmbedded_1(xmlEmbedded);
+				if (result == null) result = caseOrm_XmlEmbedded(xmlEmbedded);
 				if (result == null) result = caseXmlAccessMethodsHolder(xmlEmbedded);
-				if (result == null) result = caseXmlAttributeMapping_1(xmlEmbedded);
+				if (result == null) result = caseOrm_XmlAttributeMapping(xmlEmbedded);
 				if (result == null) result = caseBaseXmlEmbedded(xmlEmbedded);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -217,15 +220,15 @@ public class EclipseLink1_1OrmSwitch<T>
 			{
 				XmlEmbeddedImpl xmlEmbeddedImpl = (XmlEmbeddedImpl)theEObject;
 				T result = caseXmlEmbeddedImpl(xmlEmbeddedImpl);
-				if (result == null) result = caseXmlEmbeddedImpl_2(xmlEmbeddedImpl);
+				if (result == null) result = caseEclipseLinkOrm_XmlEmbeddedImpl(xmlEmbeddedImpl);
 				if (result == null) result = caseXmlEmbedded(xmlEmbeddedImpl);
-				if (result == null) result = caseXmlEmbeddedImpl_1(xmlEmbeddedImpl);
-				if (result == null) result = caseXmlEmbedded_2(xmlEmbeddedImpl);
+				if (result == null) result = caseOrm_XmlEmbeddedImpl(xmlEmbeddedImpl);
+				if (result == null) result = caseEclipseLinkOrm_XmlEmbedded(xmlEmbeddedImpl);
 				if (result == null) result = caseXmlAttributeMapping(xmlEmbeddedImpl);
 				if (result == null) result = caseAbstractXmlAttributeMapping(xmlEmbeddedImpl);
-				if (result == null) result = caseXmlEmbedded_1(xmlEmbeddedImpl);
+				if (result == null) result = caseOrm_XmlEmbedded(xmlEmbeddedImpl);
 				if (result == null) result = caseXmlAccessMethodsHolder(xmlEmbeddedImpl);
-				if (result == null) result = caseXmlAttributeMapping_1(xmlEmbeddedImpl);
+				if (result == null) result = caseOrm_XmlAttributeMapping(xmlEmbeddedImpl);
 				if (result == null) result = caseBaseXmlEmbedded(xmlEmbeddedImpl);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -234,13 +237,13 @@ public class EclipseLink1_1OrmSwitch<T>
 			{
 				XmlBasic xmlBasic = (XmlBasic)theEObject;
 				T result = caseXmlBasic(xmlBasic);
-				if (result == null) result = caseXmlBasic_2(xmlBasic);
+				if (result == null) result = caseEclipseLinkOrm_XmlBasic(xmlBasic);
 				if (result == null) result = caseXmlAttributeMapping(xmlBasic);
-				if (result == null) result = caseXmlBasic_1(xmlBasic);
+				if (result == null) result = caseOrm_XmlBasic(xmlBasic);
 				if (result == null) result = caseXmlMutable(xmlBasic);
-				if (result == null) result = caseXmlConvertibleMapping_1(xmlBasic);
+				if (result == null) result = caseEclipseLinkOrm_XmlConvertibleMapping(xmlBasic);
 				if (result == null) result = caseXmlAccessMethodsHolder(xmlBasic);
-				if (result == null) result = caseXmlAttributeMapping_1(xmlBasic);
+				if (result == null) result = caseOrm_XmlAttributeMapping(xmlBasic);
 				if (result == null) result = caseColumnMapping(xmlBasic);
 				if (result == null) result = caseXmlConvertibleMapping(xmlBasic);
 				if (result == null) result = caseXmlConverterHolder(xmlBasic);
@@ -251,17 +254,17 @@ public class EclipseLink1_1OrmSwitch<T>
 			{
 				XmlBasicImpl xmlBasicImpl = (XmlBasicImpl)theEObject;
 				T result = caseXmlBasicImpl(xmlBasicImpl);
-				if (result == null) result = caseXmlBasicImpl_2(xmlBasicImpl);
+				if (result == null) result = caseEclipseLinkOrm_XmlBasicImpl(xmlBasicImpl);
 				if (result == null) result = caseXmlBasic(xmlBasicImpl);
-				if (result == null) result = caseXmlBasicImpl_1(xmlBasicImpl);
-				if (result == null) result = caseXmlBasic_2(xmlBasicImpl);
+				if (result == null) result = caseOrm_XmlBasicImpl(xmlBasicImpl);
+				if (result == null) result = caseEclipseLinkOrm_XmlBasic(xmlBasicImpl);
 				if (result == null) result = caseXmlAttributeMapping(xmlBasicImpl);
 				if (result == null) result = caseAbstractXmlAttributeMapping(xmlBasicImpl);
-				if (result == null) result = caseXmlBasic_1(xmlBasicImpl);
+				if (result == null) result = caseOrm_XmlBasic(xmlBasicImpl);
 				if (result == null) result = caseXmlMutable(xmlBasicImpl);
-				if (result == null) result = caseXmlConvertibleMapping_1(xmlBasicImpl);
+				if (result == null) result = caseEclipseLinkOrm_XmlConvertibleMapping(xmlBasicImpl);
 				if (result == null) result = caseXmlAccessMethodsHolder(xmlBasicImpl);
-				if (result == null) result = caseXmlAttributeMapping_1(xmlBasicImpl);
+				if (result == null) result = caseOrm_XmlAttributeMapping(xmlBasicImpl);
 				if (result == null) result = caseColumnMapping(xmlBasicImpl);
 				if (result == null) result = caseXmlConvertibleMapping(xmlBasicImpl);
 				if (result == null) result = caseXmlConverterHolder(xmlBasicImpl);
@@ -272,13 +275,13 @@ public class EclipseLink1_1OrmSwitch<T>
 			{
 				XmlVersion xmlVersion = (XmlVersion)theEObject;
 				T result = caseXmlVersion(xmlVersion);
-				if (result == null) result = caseXmlVersion_2(xmlVersion);
+				if (result == null) result = caseEclipseLinkOrm_XmlVersion(xmlVersion);
 				if (result == null) result = caseXmlAttributeMapping(xmlVersion);
-				if (result == null) result = caseXmlVersion_1(xmlVersion);
+				if (result == null) result = caseOrm_XmlVersion(xmlVersion);
 				if (result == null) result = caseXmlMutable(xmlVersion);
-				if (result == null) result = caseXmlConvertibleMapping_1(xmlVersion);
+				if (result == null) result = caseEclipseLinkOrm_XmlConvertibleMapping(xmlVersion);
 				if (result == null) result = caseXmlAccessMethodsHolder(xmlVersion);
-				if (result == null) result = caseXmlAttributeMapping_1(xmlVersion);
+				if (result == null) result = caseOrm_XmlAttributeMapping(xmlVersion);
 				if (result == null) result = caseColumnMapping(xmlVersion);
 				if (result == null) result = caseXmlConvertibleMapping(xmlVersion);
 				if (result == null) result = caseXmlConverterHolder(xmlVersion);
@@ -289,17 +292,17 @@ public class EclipseLink1_1OrmSwitch<T>
 			{
 				XmlVersionImpl xmlVersionImpl = (XmlVersionImpl)theEObject;
 				T result = caseXmlVersionImpl(xmlVersionImpl);
-				if (result == null) result = caseXmlVersionImpl_2(xmlVersionImpl);
+				if (result == null) result = caseEclipseLinkOrm_XmlVersionImpl(xmlVersionImpl);
 				if (result == null) result = caseXmlVersion(xmlVersionImpl);
-				if (result == null) result = caseXmlVersionImpl_1(xmlVersionImpl);
-				if (result == null) result = caseXmlVersion_2(xmlVersionImpl);
+				if (result == null) result = caseOrm_XmlVersionImpl(xmlVersionImpl);
+				if (result == null) result = caseEclipseLinkOrm_XmlVersion(xmlVersionImpl);
 				if (result == null) result = caseXmlAttributeMapping(xmlVersionImpl);
 				if (result == null) result = caseAbstractXmlAttributeMapping(xmlVersionImpl);
-				if (result == null) result = caseXmlVersion_1(xmlVersionImpl);
+				if (result == null) result = caseOrm_XmlVersion(xmlVersionImpl);
 				if (result == null) result = caseXmlMutable(xmlVersionImpl);
-				if (result == null) result = caseXmlConvertibleMapping_1(xmlVersionImpl);
+				if (result == null) result = caseEclipseLinkOrm_XmlConvertibleMapping(xmlVersionImpl);
 				if (result == null) result = caseXmlAccessMethodsHolder(xmlVersionImpl);
-				if (result == null) result = caseXmlAttributeMapping_1(xmlVersionImpl);
+				if (result == null) result = caseOrm_XmlAttributeMapping(xmlVersionImpl);
 				if (result == null) result = caseColumnMapping(xmlVersionImpl);
 				if (result == null) result = caseXmlConvertibleMapping(xmlVersionImpl);
 				if (result == null) result = caseXmlConverterHolder(xmlVersionImpl);
@@ -310,15 +313,18 @@ public class EclipseLink1_1OrmSwitch<T>
 			{
 				XmlOneToOne xmlOneToOne = (XmlOneToOne)theEObject;
 				T result = caseXmlOneToOne(xmlOneToOne);
-				if (result == null) result = caseXmlOneToOne_2(xmlOneToOne);
+				if (result == null) result = caseEclipseLinkOrm_XmlOneToOne(xmlOneToOne);
 				if (result == null) result = caseXmlAttributeMapping(xmlOneToOne);
-				if (result == null) result = caseXmlOneToOne_1(xmlOneToOne);
+				if (result == null) result = caseOrm_XmlOneToOne(xmlOneToOne);
 				if (result == null) result = caseXmlPrivateOwned(xmlOneToOne);
 				if (result == null) result = caseXmlJoinFetch(xmlOneToOne);
 				if (result == null) result = caseXmlAccessMethodsHolder(xmlOneToOne);
-				if (result == null) result = caseXmlAttributeMapping_1(xmlOneToOne);
+				if (result == null) result = caseOrm_XmlAttributeMapping(xmlOneToOne);
 				if (result == null) result = caseXmlSingleRelationshipMapping(xmlOneToOne);
+				if (result == null) result = caseXmlMappedByMapping(xmlOneToOne);
 				if (result == null) result = caseXmlRelationshipMapping(xmlOneToOne);
+				if (result == null) result = caseXmlJoinTableMapping(xmlOneToOne);
+				if (result == null) result = caseXmlJoinColumnsMapping(xmlOneToOne);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -326,19 +332,22 @@ public class EclipseLink1_1OrmSwitch<T>
 			{
 				XmlOneToOneImpl xmlOneToOneImpl = (XmlOneToOneImpl)theEObject;
 				T result = caseXmlOneToOneImpl(xmlOneToOneImpl);
-				if (result == null) result = caseXmlOneToOneImpl_2(xmlOneToOneImpl);
+				if (result == null) result = caseEclipseLinkOrm_XmlOneToOneImpl(xmlOneToOneImpl);
 				if (result == null) result = caseXmlOneToOne(xmlOneToOneImpl);
-				if (result == null) result = caseXmlOneToOneImpl_1(xmlOneToOneImpl);
-				if (result == null) result = caseXmlOneToOne_2(xmlOneToOneImpl);
+				if (result == null) result = caseOrm_XmlOneToOneImpl(xmlOneToOneImpl);
+				if (result == null) result = caseEclipseLinkOrm_XmlOneToOne(xmlOneToOneImpl);
 				if (result == null) result = caseXmlAttributeMapping(xmlOneToOneImpl);
 				if (result == null) result = caseAbstractXmlAttributeMapping(xmlOneToOneImpl);
-				if (result == null) result = caseXmlOneToOne_1(xmlOneToOneImpl);
+				if (result == null) result = caseOrm_XmlOneToOne(xmlOneToOneImpl);
 				if (result == null) result = caseXmlPrivateOwned(xmlOneToOneImpl);
 				if (result == null) result = caseXmlJoinFetch(xmlOneToOneImpl);
 				if (result == null) result = caseXmlAccessMethodsHolder(xmlOneToOneImpl);
-				if (result == null) result = caseXmlAttributeMapping_1(xmlOneToOneImpl);
+				if (result == null) result = caseOrm_XmlAttributeMapping(xmlOneToOneImpl);
 				if (result == null) result = caseXmlSingleRelationshipMapping(xmlOneToOneImpl);
+				if (result == null) result = caseXmlMappedByMapping(xmlOneToOneImpl);
 				if (result == null) result = caseXmlRelationshipMapping(xmlOneToOneImpl);
+				if (result == null) result = caseXmlJoinTableMapping(xmlOneToOneImpl);
+				if (result == null) result = caseXmlJoinColumnsMapping(xmlOneToOneImpl);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -346,14 +355,17 @@ public class EclipseLink1_1OrmSwitch<T>
 			{
 				XmlOneToMany xmlOneToMany = (XmlOneToMany)theEObject;
 				T result = caseXmlOneToMany(xmlOneToMany);
-				if (result == null) result = caseXmlOneToMany_2(xmlOneToMany);
+				if (result == null) result = caseEclipseLinkOrm_XmlOneToMany(xmlOneToMany);
 				if (result == null) result = caseXmlAttributeMapping(xmlOneToMany);
-				if (result == null) result = caseXmlOneToMany_1(xmlOneToMany);
+				if (result == null) result = caseOrm_XmlOneToMany(xmlOneToMany);
 				if (result == null) result = caseXmlPrivateOwned(xmlOneToMany);
 				if (result == null) result = caseXmlJoinFetch(xmlOneToMany);
 				if (result == null) result = caseXmlAccessMethodsHolder(xmlOneToMany);
-				if (result == null) result = caseXmlAttributeMapping_1(xmlOneToMany);
+				if (result == null) result = caseOrm_XmlAttributeMapping(xmlOneToMany);
 				if (result == null) result = caseXmlMultiRelationshipMapping(xmlOneToMany);
+				if (result == null) result = caseXmlJoinColumnsMapping(xmlOneToMany);
+				if (result == null) result = caseXmlMappedByMapping(xmlOneToMany);
+				if (result == null) result = caseXmlJoinTableMapping(xmlOneToMany);
 				if (result == null) result = caseXmlRelationshipMapping(xmlOneToMany);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -362,18 +374,21 @@ public class EclipseLink1_1OrmSwitch<T>
 			{
 				XmlOneToManyImpl xmlOneToManyImpl = (XmlOneToManyImpl)theEObject;
 				T result = caseXmlOneToManyImpl(xmlOneToManyImpl);
-				if (result == null) result = caseXmlOneToManyImpl_2(xmlOneToManyImpl);
+				if (result == null) result = caseEclipseLinkOrm_XmlOneToManyImpl(xmlOneToManyImpl);
 				if (result == null) result = caseXmlOneToMany(xmlOneToManyImpl);
-				if (result == null) result = caseXmlOneToManyImpl_1(xmlOneToManyImpl);
-				if (result == null) result = caseXmlOneToMany_2(xmlOneToManyImpl);
+				if (result == null) result = caseOrm_XmlOneToManyImpl(xmlOneToManyImpl);
+				if (result == null) result = caseEclipseLinkOrm_XmlOneToMany(xmlOneToManyImpl);
 				if (result == null) result = caseXmlAttributeMapping(xmlOneToManyImpl);
 				if (result == null) result = caseAbstractXmlAttributeMapping(xmlOneToManyImpl);
-				if (result == null) result = caseXmlOneToMany_1(xmlOneToManyImpl);
+				if (result == null) result = caseOrm_XmlOneToMany(xmlOneToManyImpl);
 				if (result == null) result = caseXmlPrivateOwned(xmlOneToManyImpl);
 				if (result == null) result = caseXmlJoinFetch(xmlOneToManyImpl);
 				if (result == null) result = caseXmlAccessMethodsHolder(xmlOneToManyImpl);
-				if (result == null) result = caseXmlAttributeMapping_1(xmlOneToManyImpl);
+				if (result == null) result = caseOrm_XmlAttributeMapping(xmlOneToManyImpl);
 				if (result == null) result = caseXmlMultiRelationshipMapping(xmlOneToManyImpl);
+				if (result == null) result = caseXmlJoinColumnsMapping(xmlOneToManyImpl);
+				if (result == null) result = caseXmlMappedByMapping(xmlOneToManyImpl);
+				if (result == null) result = caseXmlJoinTableMapping(xmlOneToManyImpl);
 				if (result == null) result = caseXmlRelationshipMapping(xmlOneToManyImpl);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -382,14 +397,16 @@ public class EclipseLink1_1OrmSwitch<T>
 			{
 				XmlManyToOne xmlManyToOne = (XmlManyToOne)theEObject;
 				T result = caseXmlManyToOne(xmlManyToOne);
-				if (result == null) result = caseXmlManyToOne_2(xmlManyToOne);
+				if (result == null) result = caseEclipseLinkOrm_XmlManyToOne(xmlManyToOne);
 				if (result == null) result = caseXmlAttributeMapping(xmlManyToOne);
-				if (result == null) result = caseXmlManyToOne_1(xmlManyToOne);
+				if (result == null) result = caseOrm_XmlManyToOne(xmlManyToOne);
 				if (result == null) result = caseXmlJoinFetch(xmlManyToOne);
 				if (result == null) result = caseXmlAccessMethodsHolder(xmlManyToOne);
-				if (result == null) result = caseXmlAttributeMapping_1(xmlManyToOne);
+				if (result == null) result = caseOrm_XmlAttributeMapping(xmlManyToOne);
 				if (result == null) result = caseXmlSingleRelationshipMapping(xmlManyToOne);
 				if (result == null) result = caseXmlRelationshipMapping(xmlManyToOne);
+				if (result == null) result = caseXmlJoinTableMapping(xmlManyToOne);
+				if (result == null) result = caseXmlJoinColumnsMapping(xmlManyToOne);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -397,18 +414,20 @@ public class EclipseLink1_1OrmSwitch<T>
 			{
 				XmlManyToOneImpl xmlManyToOneImpl = (XmlManyToOneImpl)theEObject;
 				T result = caseXmlManyToOneImpl(xmlManyToOneImpl);
-				if (result == null) result = caseXmlManyToOneImpl_2(xmlManyToOneImpl);
+				if (result == null) result = caseEclipseLinkOrm_XmlManyToOneImpl(xmlManyToOneImpl);
 				if (result == null) result = caseXmlManyToOne(xmlManyToOneImpl);
-				if (result == null) result = caseXmlManyToOneImpl_1(xmlManyToOneImpl);
-				if (result == null) result = caseXmlManyToOne_2(xmlManyToOneImpl);
+				if (result == null) result = caseOrm_XmlManyToOneImpl(xmlManyToOneImpl);
+				if (result == null) result = caseEclipseLinkOrm_XmlManyToOne(xmlManyToOneImpl);
 				if (result == null) result = caseXmlAttributeMapping(xmlManyToOneImpl);
 				if (result == null) result = caseAbstractXmlAttributeMapping(xmlManyToOneImpl);
-				if (result == null) result = caseXmlManyToOne_1(xmlManyToOneImpl);
+				if (result == null) result = caseOrm_XmlManyToOne(xmlManyToOneImpl);
 				if (result == null) result = caseXmlJoinFetch(xmlManyToOneImpl);
 				if (result == null) result = caseXmlAccessMethodsHolder(xmlManyToOneImpl);
-				if (result == null) result = caseXmlAttributeMapping_1(xmlManyToOneImpl);
+				if (result == null) result = caseOrm_XmlAttributeMapping(xmlManyToOneImpl);
 				if (result == null) result = caseXmlSingleRelationshipMapping(xmlManyToOneImpl);
 				if (result == null) result = caseXmlRelationshipMapping(xmlManyToOneImpl);
+				if (result == null) result = caseXmlJoinTableMapping(xmlManyToOneImpl);
+				if (result == null) result = caseXmlJoinColumnsMapping(xmlManyToOneImpl);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -416,13 +435,15 @@ public class EclipseLink1_1OrmSwitch<T>
 			{
 				XmlManyToMany xmlManyToMany = (XmlManyToMany)theEObject;
 				T result = caseXmlManyToMany(xmlManyToMany);
-				if (result == null) result = caseXmlManyToMany_2(xmlManyToMany);
+				if (result == null) result = caseEclipseLinkOrm_XmlManyToMany(xmlManyToMany);
 				if (result == null) result = caseXmlAttributeMapping(xmlManyToMany);
-				if (result == null) result = caseXmlManyToMany_1(xmlManyToMany);
+				if (result == null) result = caseOrm_XmlManyToMany(xmlManyToMany);
 				if (result == null) result = caseXmlJoinFetch(xmlManyToMany);
 				if (result == null) result = caseXmlAccessMethodsHolder(xmlManyToMany);
-				if (result == null) result = caseXmlAttributeMapping_1(xmlManyToMany);
+				if (result == null) result = caseOrm_XmlAttributeMapping(xmlManyToMany);
 				if (result == null) result = caseXmlMultiRelationshipMapping(xmlManyToMany);
+				if (result == null) result = caseXmlMappedByMapping(xmlManyToMany);
+				if (result == null) result = caseXmlJoinTableMapping(xmlManyToMany);
 				if (result == null) result = caseXmlRelationshipMapping(xmlManyToMany);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -431,17 +452,19 @@ public class EclipseLink1_1OrmSwitch<T>
 			{
 				XmlManyToManyImpl xmlManyToManyImpl = (XmlManyToManyImpl)theEObject;
 				T result = caseXmlManyToManyImpl(xmlManyToManyImpl);
-				if (result == null) result = caseXmlManyToManyImpl_2(xmlManyToManyImpl);
+				if (result == null) result = caseEclipseLinkOrm_XmlManyToManyImpl(xmlManyToManyImpl);
 				if (result == null) result = caseXmlManyToMany(xmlManyToManyImpl);
-				if (result == null) result = caseXmlManyToManyImpl_1(xmlManyToManyImpl);
-				if (result == null) result = caseXmlManyToMany_2(xmlManyToManyImpl);
+				if (result == null) result = caseOrm_XmlManyToManyImpl(xmlManyToManyImpl);
+				if (result == null) result = caseEclipseLinkOrm_XmlManyToMany(xmlManyToManyImpl);
 				if (result == null) result = caseXmlAttributeMapping(xmlManyToManyImpl);
 				if (result == null) result = caseAbstractXmlAttributeMapping(xmlManyToManyImpl);
-				if (result == null) result = caseXmlManyToMany_1(xmlManyToManyImpl);
+				if (result == null) result = caseOrm_XmlManyToMany(xmlManyToManyImpl);
 				if (result == null) result = caseXmlJoinFetch(xmlManyToManyImpl);
 				if (result == null) result = caseXmlAccessMethodsHolder(xmlManyToManyImpl);
-				if (result == null) result = caseXmlAttributeMapping_1(xmlManyToManyImpl);
+				if (result == null) result = caseOrm_XmlAttributeMapping(xmlManyToManyImpl);
 				if (result == null) result = caseXmlMultiRelationshipMapping(xmlManyToManyImpl);
+				if (result == null) result = caseXmlMappedByMapping(xmlManyToManyImpl);
+				if (result == null) result = caseXmlJoinTableMapping(xmlManyToManyImpl);
 				if (result == null) result = caseXmlRelationshipMapping(xmlManyToManyImpl);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -450,9 +473,9 @@ public class EclipseLink1_1OrmSwitch<T>
 			{
 				XmlBasicCollection xmlBasicCollection = (XmlBasicCollection)theEObject;
 				T result = caseXmlBasicCollection(xmlBasicCollection);
-				if (result == null) result = caseXmlBasicCollection_1(xmlBasicCollection);
+				if (result == null) result = caseEclipseLinkOrm_XmlBasicCollection(xmlBasicCollection);
 				if (result == null) result = caseXmlAttributeMapping(xmlBasicCollection);
-				if (result == null) result = caseXmlAttributeMapping_1(xmlBasicCollection);
+				if (result == null) result = caseOrm_XmlAttributeMapping(xmlBasicCollection);
 				if (result == null) result = caseXmlAccessMethodsHolder(xmlBasicCollection);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -461,12 +484,12 @@ public class EclipseLink1_1OrmSwitch<T>
 			{
 				XmlBasicCollectionImpl xmlBasicCollectionImpl = (XmlBasicCollectionImpl)theEObject;
 				T result = caseXmlBasicCollectionImpl(xmlBasicCollectionImpl);
-				if (result == null) result = caseXmlBasicCollectionImpl_1(xmlBasicCollectionImpl);
+				if (result == null) result = caseEclipseLinkOrm_XmlBasicCollectionImpl(xmlBasicCollectionImpl);
 				if (result == null) result = caseXmlBasicCollection(xmlBasicCollectionImpl);
 				if (result == null) result = caseAbstractXmlAttributeMapping(xmlBasicCollectionImpl);
-				if (result == null) result = caseXmlBasicCollection_1(xmlBasicCollectionImpl);
+				if (result == null) result = caseEclipseLinkOrm_XmlBasicCollection(xmlBasicCollectionImpl);
 				if (result == null) result = caseXmlAttributeMapping(xmlBasicCollectionImpl);
-				if (result == null) result = caseXmlAttributeMapping_1(xmlBasicCollectionImpl);
+				if (result == null) result = caseOrm_XmlAttributeMapping(xmlBasicCollectionImpl);
 				if (result == null) result = caseXmlAccessMethodsHolder(xmlBasicCollectionImpl);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -475,9 +498,9 @@ public class EclipseLink1_1OrmSwitch<T>
 			{
 				XmlBasicMap xmlBasicMap = (XmlBasicMap)theEObject;
 				T result = caseXmlBasicMap(xmlBasicMap);
-				if (result == null) result = caseXmlBasicMap_1(xmlBasicMap);
+				if (result == null) result = caseEclipseLinkOrm_XmlBasicMap(xmlBasicMap);
 				if (result == null) result = caseXmlAttributeMapping(xmlBasicMap);
-				if (result == null) result = caseXmlAttributeMapping_1(xmlBasicMap);
+				if (result == null) result = caseOrm_XmlAttributeMapping(xmlBasicMap);
 				if (result == null) result = caseXmlAccessMethodsHolder(xmlBasicMap);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -486,12 +509,12 @@ public class EclipseLink1_1OrmSwitch<T>
 			{
 				XmlBasicMapImpl xmlBasicMapImpl = (XmlBasicMapImpl)theEObject;
 				T result = caseXmlBasicMapImpl(xmlBasicMapImpl);
-				if (result == null) result = caseXmlBasicMapImpl_1(xmlBasicMapImpl);
+				if (result == null) result = caseEclipseLinkOrm_XmlBasicMapImpl(xmlBasicMapImpl);
 				if (result == null) result = caseXmlBasicMap(xmlBasicMapImpl);
 				if (result == null) result = caseAbstractXmlAttributeMapping(xmlBasicMapImpl);
-				if (result == null) result = caseXmlBasicMap_1(xmlBasicMapImpl);
+				if (result == null) result = caseEclipseLinkOrm_XmlBasicMap(xmlBasicMapImpl);
 				if (result == null) result = caseXmlAttributeMapping(xmlBasicMapImpl);
-				if (result == null) result = caseXmlAttributeMapping_1(xmlBasicMapImpl);
+				if (result == null) result = caseOrm_XmlAttributeMapping(xmlBasicMapImpl);
 				if (result == null) result = caseXmlAccessMethodsHolder(xmlBasicMapImpl);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -500,9 +523,9 @@ public class EclipseLink1_1OrmSwitch<T>
 			{
 				XmlTransformation xmlTransformation = (XmlTransformation)theEObject;
 				T result = caseXmlTransformation(xmlTransformation);
-				if (result == null) result = caseXmlTransformation_1(xmlTransformation);
+				if (result == null) result = caseEclipseLinkOrm_XmlTransformation(xmlTransformation);
 				if (result == null) result = caseXmlAttributeMapping(xmlTransformation);
-				if (result == null) result = caseXmlAttributeMapping_1(xmlTransformation);
+				if (result == null) result = caseOrm_XmlAttributeMapping(xmlTransformation);
 				if (result == null) result = caseXmlAccessMethodsHolder(xmlTransformation);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -511,12 +534,12 @@ public class EclipseLink1_1OrmSwitch<T>
 			{
 				XmlTransformationImpl xmlTransformationImpl = (XmlTransformationImpl)theEObject;
 				T result = caseXmlTransformationImpl(xmlTransformationImpl);
-				if (result == null) result = caseXmlTransformationImpl_1(xmlTransformationImpl);
+				if (result == null) result = caseEclipseLinkOrm_XmlTransformationImpl(xmlTransformationImpl);
 				if (result == null) result = caseXmlTransformation(xmlTransformationImpl);
 				if (result == null) result = caseAbstractXmlAttributeMapping(xmlTransformationImpl);
-				if (result == null) result = caseXmlTransformation_1(xmlTransformationImpl);
+				if (result == null) result = caseEclipseLinkOrm_XmlTransformation(xmlTransformationImpl);
 				if (result == null) result = caseXmlAttributeMapping(xmlTransformationImpl);
-				if (result == null) result = caseXmlAttributeMapping_1(xmlTransformationImpl);
+				if (result == null) result = caseOrm_XmlAttributeMapping(xmlTransformationImpl);
 				if (result == null) result = caseXmlAccessMethodsHolder(xmlTransformationImpl);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -525,9 +548,9 @@ public class EclipseLink1_1OrmSwitch<T>
 			{
 				XmlVariableOneToOne xmlVariableOneToOne = (XmlVariableOneToOne)theEObject;
 				T result = caseXmlVariableOneToOne(xmlVariableOneToOne);
-				if (result == null) result = caseXmlVariableOneToOne_1(xmlVariableOneToOne);
+				if (result == null) result = caseEclipseLinkOrm_XmlVariableOneToOne(xmlVariableOneToOne);
 				if (result == null) result = caseXmlAttributeMapping(xmlVariableOneToOne);
-				if (result == null) result = caseXmlAttributeMapping_1(xmlVariableOneToOne);
+				if (result == null) result = caseOrm_XmlAttributeMapping(xmlVariableOneToOne);
 				if (result == null) result = caseXmlAccessMethodsHolder(xmlVariableOneToOne);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -536,12 +559,12 @@ public class EclipseLink1_1OrmSwitch<T>
 			{
 				XmlVariableOneToOneImpl xmlVariableOneToOneImpl = (XmlVariableOneToOneImpl)theEObject;
 				T result = caseXmlVariableOneToOneImpl(xmlVariableOneToOneImpl);
-				if (result == null) result = caseXmlVariableOneToOneImpl_1(xmlVariableOneToOneImpl);
+				if (result == null) result = caseEclipseLinkOrm_XmlVariableOneToOneImpl(xmlVariableOneToOneImpl);
 				if (result == null) result = caseXmlVariableOneToOne(xmlVariableOneToOneImpl);
 				if (result == null) result = caseAbstractXmlAttributeMapping(xmlVariableOneToOneImpl);
-				if (result == null) result = caseXmlVariableOneToOne_1(xmlVariableOneToOneImpl);
+				if (result == null) result = caseEclipseLinkOrm_XmlVariableOneToOne(xmlVariableOneToOneImpl);
 				if (result == null) result = caseXmlAttributeMapping(xmlVariableOneToOneImpl);
-				if (result == null) result = caseXmlAttributeMapping_1(xmlVariableOneToOneImpl);
+				if (result == null) result = caseOrm_XmlAttributeMapping(xmlVariableOneToOneImpl);
 				if (result == null) result = caseXmlAccessMethodsHolder(xmlVariableOneToOneImpl);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -550,9 +573,9 @@ public class EclipseLink1_1OrmSwitch<T>
 			{
 				XmlTransient xmlTransient = (XmlTransient)theEObject;
 				T result = caseXmlTransient(xmlTransient);
-				if (result == null) result = caseXmlTransient_1(xmlTransient);
+				if (result == null) result = caseOrm_XmlTransient(xmlTransient);
 				if (result == null) result = caseXmlAttributeMapping(xmlTransient);
-				if (result == null) result = caseXmlAttributeMapping_1(xmlTransient);
+				if (result == null) result = caseOrm_XmlAttributeMapping(xmlTransient);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -560,12 +583,12 @@ public class EclipseLink1_1OrmSwitch<T>
 			{
 				XmlTransientImpl xmlTransientImpl = (XmlTransientImpl)theEObject;
 				T result = caseXmlTransientImpl(xmlTransientImpl);
-				if (result == null) result = caseXmlTransientImpl_1(xmlTransientImpl);
+				if (result == null) result = caseOrm_XmlTransientImpl(xmlTransientImpl);
 				if (result == null) result = caseXmlTransient(xmlTransientImpl);
 				if (result == null) result = caseAbstractXmlAttributeMapping(xmlTransientImpl);
-				if (result == null) result = caseXmlTransient_1(xmlTransientImpl);
+				if (result == null) result = caseOrm_XmlTransient(xmlTransientImpl);
 				if (result == null) result = caseXmlAttributeMapping(xmlTransientImpl);
-				if (result == null) result = caseXmlAttributeMapping_1(xmlTransientImpl);
+				if (result == null) result = caseOrm_XmlAttributeMapping(xmlTransientImpl);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -1064,7 +1087,7 @@ public class EclipseLink1_1OrmSwitch<T>
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseXmlEntityMappings_1(org.eclipse.jpt.core.resource.orm.XmlEntityMappings object)
+	public T caseOrm_XmlEntityMappings(org.eclipse.jpt.core.resource.orm.XmlEntityMappings object)
 	{
 		return null;
 	}
@@ -1096,7 +1119,7 @@ public class EclipseLink1_1OrmSwitch<T>
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseXmlEntityMappings_2(org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntityMappings object)
+	public T caseEclipseLinkOrm_XmlEntityMappings(org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntityMappings object)
 	{
 		return null;
 	}
@@ -1112,7 +1135,7 @@ public class EclipseLink1_1OrmSwitch<T>
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseXmlAttributeMapping_1(org.eclipse.jpt.core.resource.orm.XmlAttributeMapping object)
+	public T caseOrm_XmlAttributeMapping(org.eclipse.jpt.core.resource.orm.XmlAttributeMapping object)
 	{
 		return null;
 	}
@@ -1160,7 +1183,7 @@ public class EclipseLink1_1OrmSwitch<T>
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseXmlId_1(org.eclipse.jpt.core.resource.orm.XmlId object)
+	public T caseOrm_XmlId(org.eclipse.jpt.core.resource.orm.XmlId object)
 	{
 		return null;
 	}
@@ -1208,7 +1231,7 @@ public class EclipseLink1_1OrmSwitch<T>
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseXmlConvertibleMapping_1(org.eclipse.jpt.eclipselink.core.resource.orm.XmlConvertibleMapping object)
+	public T caseEclipseLinkOrm_XmlConvertibleMapping(org.eclipse.jpt.eclipselink.core.resource.orm.XmlConvertibleMapping object)
 	{
 		return null;
 	}
@@ -1240,7 +1263,7 @@ public class EclipseLink1_1OrmSwitch<T>
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseXmlId_2(org.eclipse.jpt.eclipselink.core.resource.orm.XmlId object)
+	public T caseEclipseLinkOrm_XmlId(org.eclipse.jpt.eclipselink.core.resource.orm.XmlId object)
 	{
 		return null;
 	}
@@ -1272,7 +1295,7 @@ public class EclipseLink1_1OrmSwitch<T>
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseXmlIdImpl_1(org.eclipse.jpt.core.resource.orm.XmlIdImpl object)
+	public T caseOrm_XmlIdImpl(org.eclipse.jpt.core.resource.orm.XmlIdImpl object)
 	{
 		return null;
 	}
@@ -1288,7 +1311,7 @@ public class EclipseLink1_1OrmSwitch<T>
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseXmlIdImpl_2(org.eclipse.jpt.eclipselink.core.resource.orm.XmlIdImpl object)
+	public T caseEclipseLinkOrm_XmlIdImpl(org.eclipse.jpt.eclipselink.core.resource.orm.XmlIdImpl object)
 	{
 		return null;
 	}
@@ -1320,7 +1343,7 @@ public class EclipseLink1_1OrmSwitch<T>
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseXmlEmbeddedId_1(org.eclipse.jpt.core.resource.orm.XmlEmbeddedId object)
+	public T caseOrm_XmlEmbeddedId(org.eclipse.jpt.core.resource.orm.XmlEmbeddedId object)
 	{
 		return null;
 	}
@@ -1336,7 +1359,7 @@ public class EclipseLink1_1OrmSwitch<T>
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseXmlEmbeddedId_2(org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbeddedId object)
+	public T caseEclipseLinkOrm_XmlEmbeddedId(org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbeddedId object)
 	{
 		return null;
 	}
@@ -1352,7 +1375,7 @@ public class EclipseLink1_1OrmSwitch<T>
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseXmlEmbeddedIdImpl_1(org.eclipse.jpt.core.resource.orm.XmlEmbeddedIdImpl object)
+	public T caseOrm_XmlEmbeddedIdImpl(org.eclipse.jpt.core.resource.orm.XmlEmbeddedIdImpl object)
 	{
 		return null;
 	}
@@ -1368,7 +1391,7 @@ public class EclipseLink1_1OrmSwitch<T>
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseXmlEmbeddedIdImpl_2(org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbeddedIdImpl object)
+	public T caseEclipseLinkOrm_XmlEmbeddedIdImpl(org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbeddedIdImpl object)
 	{
 		return null;
 	}
@@ -1384,7 +1407,7 @@ public class EclipseLink1_1OrmSwitch<T>
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseXmlEmbedded_1(org.eclipse.jpt.core.resource.orm.XmlEmbedded object)
+	public T caseOrm_XmlEmbedded(org.eclipse.jpt.core.resource.orm.XmlEmbedded object)
 	{
 		return null;
 	}
@@ -1400,7 +1423,7 @@ public class EclipseLink1_1OrmSwitch<T>
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseXmlEmbedded_2(org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbedded object)
+	public T caseEclipseLinkOrm_XmlEmbedded(org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbedded object)
 	{
 		return null;
 	}
@@ -1416,7 +1439,7 @@ public class EclipseLink1_1OrmSwitch<T>
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseXmlEmbeddedImpl_1(org.eclipse.jpt.core.resource.orm.XmlEmbeddedImpl object)
+	public T caseOrm_XmlEmbeddedImpl(org.eclipse.jpt.core.resource.orm.XmlEmbeddedImpl object)
 	{
 		return null;
 	}
@@ -1432,7 +1455,7 @@ public class EclipseLink1_1OrmSwitch<T>
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseXmlEmbeddedImpl_2(org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbeddedImpl object)
+	public T caseEclipseLinkOrm_XmlEmbeddedImpl(org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbeddedImpl object)
 	{
 		return null;
 	}
@@ -1448,7 +1471,7 @@ public class EclipseLink1_1OrmSwitch<T>
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseXmlBasic_1(org.eclipse.jpt.core.resource.orm.XmlBasic object)
+	public T caseOrm_XmlBasic(org.eclipse.jpt.core.resource.orm.XmlBasic object)
 	{
 		return null;
 	}
@@ -1464,7 +1487,7 @@ public class EclipseLink1_1OrmSwitch<T>
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseXmlBasic_2(org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasic object)
+	public T caseEclipseLinkOrm_XmlBasic(org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasic object)
 	{
 		return null;
 	}
@@ -1480,7 +1503,7 @@ public class EclipseLink1_1OrmSwitch<T>
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseXmlBasicImpl_1(org.eclipse.jpt.core.resource.orm.XmlBasicImpl object)
+	public T caseOrm_XmlBasicImpl(org.eclipse.jpt.core.resource.orm.XmlBasicImpl object)
 	{
 		return null;
 	}
@@ -1496,7 +1519,7 @@ public class EclipseLink1_1OrmSwitch<T>
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseXmlBasicImpl_2(org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicImpl object)
+	public T caseEclipseLinkOrm_XmlBasicImpl(org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicImpl object)
 	{
 		return null;
 	}
@@ -1512,7 +1535,7 @@ public class EclipseLink1_1OrmSwitch<T>
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseXmlVersion_1(org.eclipse.jpt.core.resource.orm.XmlVersion object)
+	public T caseOrm_XmlVersion(org.eclipse.jpt.core.resource.orm.XmlVersion object)
 	{
 		return null;
 	}
@@ -1528,7 +1551,7 @@ public class EclipseLink1_1OrmSwitch<T>
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseXmlVersion_2(org.eclipse.jpt.eclipselink.core.resource.orm.XmlVersion object)
+	public T caseEclipseLinkOrm_XmlVersion(org.eclipse.jpt.eclipselink.core.resource.orm.XmlVersion object)
 	{
 		return null;
 	}
@@ -1544,7 +1567,7 @@ public class EclipseLink1_1OrmSwitch<T>
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseXmlVersionImpl_1(org.eclipse.jpt.core.resource.orm.XmlVersionImpl object)
+	public T caseOrm_XmlVersionImpl(org.eclipse.jpt.core.resource.orm.XmlVersionImpl object)
 	{
 		return null;
 	}
@@ -1560,7 +1583,7 @@ public class EclipseLink1_1OrmSwitch<T>
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseXmlVersionImpl_2(org.eclipse.jpt.eclipselink.core.resource.orm.XmlVersionImpl object)
+	public T caseEclipseLinkOrm_XmlVersionImpl(org.eclipse.jpt.eclipselink.core.resource.orm.XmlVersionImpl object)
 	{
 		return null;
 	}
@@ -1582,6 +1605,38 @@ public class EclipseLink1_1OrmSwitch<T>
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Xml Join Table Mapping</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Xml Join Table Mapping</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseXmlJoinTableMapping(XmlJoinTableMapping object)
+	{
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Xml Join Columns Mapping</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Xml Join Columns Mapping</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseXmlJoinColumnsMapping(XmlJoinColumnsMapping object)
+	{
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Xml Single Relationship Mapping</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -1598,6 +1653,22 @@ public class EclipseLink1_1OrmSwitch<T>
 	}
 
 	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Xml Mapped By Mapping</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Xml Mapped By Mapping</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseXmlMappedByMapping(XmlMappedByMapping object)
+	{
+		return null;
+	}
+
+	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Xml One To One</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -1608,7 +1679,7 @@ public class EclipseLink1_1OrmSwitch<T>
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseXmlOneToOne_1(org.eclipse.jpt.core.resource.orm.XmlOneToOne object)
+	public T caseOrm_XmlOneToOne(org.eclipse.jpt.core.resource.orm.XmlOneToOne object)
 	{
 		return null;
 	}
@@ -1656,7 +1727,7 @@ public class EclipseLink1_1OrmSwitch<T>
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseXmlOneToOne_2(org.eclipse.jpt.eclipselink.core.resource.orm.XmlOneToOne object)
+	public T caseEclipseLinkOrm_XmlOneToOne(org.eclipse.jpt.eclipselink.core.resource.orm.XmlOneToOne object)
 	{
 		return null;
 	}
@@ -1672,7 +1743,7 @@ public class EclipseLink1_1OrmSwitch<T>
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseXmlOneToOneImpl_1(org.eclipse.jpt.core.resource.orm.XmlOneToOneImpl object)
+	public T caseOrm_XmlOneToOneImpl(org.eclipse.jpt.core.resource.orm.XmlOneToOneImpl object)
 	{
 		return null;
 	}
@@ -1688,7 +1759,7 @@ public class EclipseLink1_1OrmSwitch<T>
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseXmlOneToOneImpl_2(org.eclipse.jpt.eclipselink.core.resource.orm.XmlOneToOneImpl object)
+	public T caseEclipseLinkOrm_XmlOneToOneImpl(org.eclipse.jpt.eclipselink.core.resource.orm.XmlOneToOneImpl object)
 	{
 		return null;
 	}
@@ -1720,7 +1791,7 @@ public class EclipseLink1_1OrmSwitch<T>
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseXmlOneToMany_1(org.eclipse.jpt.core.resource.orm.XmlOneToMany object)
+	public T caseOrm_XmlOneToMany(org.eclipse.jpt.core.resource.orm.XmlOneToMany object)
 	{
 		return null;
 	}
@@ -1736,7 +1807,7 @@ public class EclipseLink1_1OrmSwitch<T>
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseXmlOneToMany_2(org.eclipse.jpt.eclipselink.core.resource.orm.XmlOneToMany object)
+	public T caseEclipseLinkOrm_XmlOneToMany(org.eclipse.jpt.eclipselink.core.resource.orm.XmlOneToMany object)
 	{
 		return null;
 	}
@@ -1752,7 +1823,7 @@ public class EclipseLink1_1OrmSwitch<T>
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseXmlOneToManyImpl_1(org.eclipse.jpt.core.resource.orm.XmlOneToManyImpl object)
+	public T caseOrm_XmlOneToManyImpl(org.eclipse.jpt.core.resource.orm.XmlOneToManyImpl object)
 	{
 		return null;
 	}
@@ -1768,7 +1839,7 @@ public class EclipseLink1_1OrmSwitch<T>
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseXmlOneToManyImpl_2(org.eclipse.jpt.eclipselink.core.resource.orm.XmlOneToManyImpl object)
+	public T caseEclipseLinkOrm_XmlOneToManyImpl(org.eclipse.jpt.eclipselink.core.resource.orm.XmlOneToManyImpl object)
 	{
 		return null;
 	}
@@ -1784,7 +1855,7 @@ public class EclipseLink1_1OrmSwitch<T>
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseXmlManyToOne_1(org.eclipse.jpt.core.resource.orm.XmlManyToOne object)
+	public T caseOrm_XmlManyToOne(org.eclipse.jpt.core.resource.orm.XmlManyToOne object)
 	{
 		return null;
 	}
@@ -1800,7 +1871,7 @@ public class EclipseLink1_1OrmSwitch<T>
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseXmlManyToOne_2(org.eclipse.jpt.eclipselink.core.resource.orm.XmlManyToOne object)
+	public T caseEclipseLinkOrm_XmlManyToOne(org.eclipse.jpt.eclipselink.core.resource.orm.XmlManyToOne object)
 	{
 		return null;
 	}
@@ -1816,7 +1887,7 @@ public class EclipseLink1_1OrmSwitch<T>
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseXmlManyToOneImpl_1(org.eclipse.jpt.core.resource.orm.XmlManyToOneImpl object)
+	public T caseOrm_XmlManyToOneImpl(org.eclipse.jpt.core.resource.orm.XmlManyToOneImpl object)
 	{
 		return null;
 	}
@@ -1832,7 +1903,7 @@ public class EclipseLink1_1OrmSwitch<T>
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseXmlManyToOneImpl_2(org.eclipse.jpt.eclipselink.core.resource.orm.XmlManyToOneImpl object)
+	public T caseEclipseLinkOrm_XmlManyToOneImpl(org.eclipse.jpt.eclipselink.core.resource.orm.XmlManyToOneImpl object)
 	{
 		return null;
 	}
@@ -1848,7 +1919,7 @@ public class EclipseLink1_1OrmSwitch<T>
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseXmlManyToMany_1(org.eclipse.jpt.core.resource.orm.XmlManyToMany object)
+	public T caseOrm_XmlManyToMany(org.eclipse.jpt.core.resource.orm.XmlManyToMany object)
 	{
 		return null;
 	}
@@ -1864,7 +1935,7 @@ public class EclipseLink1_1OrmSwitch<T>
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseXmlManyToMany_2(org.eclipse.jpt.eclipselink.core.resource.orm.XmlManyToMany object)
+	public T caseEclipseLinkOrm_XmlManyToMany(org.eclipse.jpt.eclipselink.core.resource.orm.XmlManyToMany object)
 	{
 		return null;
 	}
@@ -1880,7 +1951,7 @@ public class EclipseLink1_1OrmSwitch<T>
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseXmlManyToManyImpl_1(org.eclipse.jpt.core.resource.orm.XmlManyToManyImpl object)
+	public T caseOrm_XmlManyToManyImpl(org.eclipse.jpt.core.resource.orm.XmlManyToManyImpl object)
 	{
 		return null;
 	}
@@ -1896,7 +1967,7 @@ public class EclipseLink1_1OrmSwitch<T>
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseXmlManyToManyImpl_2(org.eclipse.jpt.eclipselink.core.resource.orm.XmlManyToManyImpl object)
+	public T caseEclipseLinkOrm_XmlManyToManyImpl(org.eclipse.jpt.eclipselink.core.resource.orm.XmlManyToManyImpl object)
 	{
 		return null;
 	}
@@ -1912,7 +1983,7 @@ public class EclipseLink1_1OrmSwitch<T>
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseXmlBasicCollection_1(org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicCollection object)
+	public T caseEclipseLinkOrm_XmlBasicCollection(org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicCollection object)
 	{
 		return null;
 	}
@@ -1928,7 +1999,7 @@ public class EclipseLink1_1OrmSwitch<T>
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseXmlBasicCollectionImpl_1(org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicCollectionImpl object)
+	public T caseEclipseLinkOrm_XmlBasicCollectionImpl(org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicCollectionImpl object)
 	{
 		return null;
 	}
@@ -1944,7 +2015,7 @@ public class EclipseLink1_1OrmSwitch<T>
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseXmlBasicMap_1(org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicMap object)
+	public T caseEclipseLinkOrm_XmlBasicMap(org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicMap object)
 	{
 		return null;
 	}
@@ -1960,7 +2031,7 @@ public class EclipseLink1_1OrmSwitch<T>
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseXmlBasicMapImpl_1(org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicMapImpl object)
+	public T caseEclipseLinkOrm_XmlBasicMapImpl(org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicMapImpl object)
 	{
 		return null;
 	}
@@ -1976,7 +2047,7 @@ public class EclipseLink1_1OrmSwitch<T>
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseXmlTransformation_1(org.eclipse.jpt.eclipselink.core.resource.orm.XmlTransformation object)
+	public T caseEclipseLinkOrm_XmlTransformation(org.eclipse.jpt.eclipselink.core.resource.orm.XmlTransformation object)
 	{
 		return null;
 	}
@@ -1992,7 +2063,7 @@ public class EclipseLink1_1OrmSwitch<T>
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseXmlTransformationImpl_1(org.eclipse.jpt.eclipselink.core.resource.orm.XmlTransformationImpl object)
+	public T caseEclipseLinkOrm_XmlTransformationImpl(org.eclipse.jpt.eclipselink.core.resource.orm.XmlTransformationImpl object)
 	{
 		return null;
 	}
@@ -2008,7 +2079,7 @@ public class EclipseLink1_1OrmSwitch<T>
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseXmlVariableOneToOne_1(org.eclipse.jpt.eclipselink.core.resource.orm.XmlVariableOneToOne object)
+	public T caseEclipseLinkOrm_XmlVariableOneToOne(org.eclipse.jpt.eclipselink.core.resource.orm.XmlVariableOneToOne object)
 	{
 		return null;
 	}
@@ -2024,7 +2095,7 @@ public class EclipseLink1_1OrmSwitch<T>
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseXmlVariableOneToOneImpl_1(org.eclipse.jpt.eclipselink.core.resource.orm.XmlVariableOneToOneImpl object)
+	public T caseEclipseLinkOrm_XmlVariableOneToOneImpl(org.eclipse.jpt.eclipselink.core.resource.orm.XmlVariableOneToOneImpl object)
 	{
 		return null;
 	}
@@ -2040,7 +2111,7 @@ public class EclipseLink1_1OrmSwitch<T>
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseXmlTransient_1(org.eclipse.jpt.core.resource.orm.XmlTransient object)
+	public T caseOrm_XmlTransient(org.eclipse.jpt.core.resource.orm.XmlTransient object)
 	{
 		return null;
 	}
@@ -2056,7 +2127,7 @@ public class EclipseLink1_1OrmSwitch<T>
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseXmlTransientImpl_1(org.eclipse.jpt.core.resource.orm.XmlTransientImpl object)
+	public T caseOrm_XmlTransientImpl(org.eclipse.jpt.core.resource.orm.XmlTransientImpl object)
 	{
 		return null;
 	}

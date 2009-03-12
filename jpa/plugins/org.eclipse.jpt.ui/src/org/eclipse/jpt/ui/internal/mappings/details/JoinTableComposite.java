@@ -65,12 +65,11 @@ import org.eclipse.swt.widgets.Group;
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see JoinTable
- * @see OneToManyMappingComposite - A container of this pane
- * @see ManyToManyMappingComposite - A container of this pane
- * @see JoinColumnsComposite
+ * @see {@link JoinTable}
+ * @see {@link JoinTableJoiningStrategyPane}
+ * @see {@link JoinColumnsComposite
  *
- * @version 2.0
+ * @version 2.1
  * @since 1.0
  */
 public class JoinTableComposite extends FormPane<JoinTable>
@@ -87,9 +86,10 @@ public class JoinTableComposite extends FormPane<JoinTable>
 	 * @param subjectHolder The holder of this pane's subject
 	 * @param parent The parent container
 	 */
-	public JoinTableComposite(FormPane<?> parentPane,
-	                          PropertyValueModel<? extends JoinTable> subjectHolder,
-	                          Composite parent) {
+	public JoinTableComposite(
+			FormPane<?> parentPane,
+			PropertyValueModel<? extends JoinTable> subjectHolder,
+			Composite parent) {
 
 		super(parentPane, subjectHolder, parent, false);
 	}

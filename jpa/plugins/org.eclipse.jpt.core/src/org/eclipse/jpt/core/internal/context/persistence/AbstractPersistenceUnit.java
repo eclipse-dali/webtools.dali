@@ -1291,6 +1291,10 @@ public abstract class AbstractPersistenceUnit
 		}
 		return this;
 	}
+	
+	public boolean shouldValidateAgainstDatabase() {
+		return connectionProfileIsActive();
+	}
 
 	public TextRange getValidationTextRange() {
 		return this.xmlPersistenceUnit.getValidationTextRange();

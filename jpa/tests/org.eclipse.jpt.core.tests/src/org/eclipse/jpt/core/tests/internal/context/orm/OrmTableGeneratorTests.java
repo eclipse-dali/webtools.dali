@@ -29,7 +29,6 @@ import org.eclipse.jpt.core.resource.orm.XmlUniqueConstraint;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
-import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
@@ -63,24 +62,6 @@ public class OrmTableGeneratorTests extends ContextModelTestCase
 				sb.append("@Id");
 			}
 		});
-	}
-	
-	private void createTestSubType() throws Exception {
-		SourceWriter sourceWriter = new SourceWriter() {
-			public void appendSourceTo(StringBuilder sb) {
-				sb.append(CR);
-					sb.append("import ");
-					sb.append(JPA.ENTITY);
-					sb.append(";");
-					sb.append(CR);
-				sb.append("@Entity");
-				sb.append(CR);
-				sb.append("public class ").append("AnnotationTestTypeChild").append(" ");
-				sb.append("extends " + TYPE_NAME + " ");
-				sb.append("{}").append(CR);
-			}
-		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "AnnotationTestTypeChild.java", sourceWriter);
 	}
 	
 	public void testUpdateSpecifiedName() throws Exception {

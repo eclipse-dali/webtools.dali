@@ -22,6 +22,7 @@ import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
 import org.eclipse.jpt.core.context.java.JavaOneToOneMapping;
 import org.eclipse.jpt.core.context.java.JavaVersionMapping;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaOneToManyMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.caching.Caching;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.connection.Connection;
@@ -36,9 +37,9 @@ import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkBasic
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkIdMappingComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkManyToManyMappingComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkManyToOneMappingComposite;
-import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkVersionMappingComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkOneToManyMappingComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkOneToOneMappingComposite;
+import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkVersionMappingComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.persistence.caching.PersistenceXmlCachingTab;
 import org.eclipse.jpt.eclipselink.ui.internal.persistence.connection.PersistenceXmlConnectionTab;
 import org.eclipse.jpt.eclipselink.ui.internal.persistence.customization.PersistenceXmlCustomizationTab;
@@ -237,10 +238,10 @@ public class EclipseLinkJpaUiFactory extends BaseJpaUiFactory
 	
 	@Override
 	public JpaComposite createJavaOneToManyMappingComposite(
-			PropertyValueModel<JavaOneToManyMapping> subjectHolder, 
+			PropertyValueModel<? extends JavaOneToManyMapping> subjectHolder, 
 			Composite parent, 
 			WidgetFactory widgetFactory) {
-		return new EclipseLinkOneToManyMappingComposite(subjectHolder, parent, widgetFactory);
+		return new EclipseLinkOneToManyMappingComposite((PropertyValueModel<EclipseLinkJavaOneToManyMapping>) subjectHolder, parent, widgetFactory);
 	}
 	
 	@Override

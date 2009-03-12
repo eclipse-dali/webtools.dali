@@ -9,38 +9,64 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.context.java;
 
+import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.MappingKeys;
-import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.core.context.java.JavaRelationshipReference;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaOneToManyMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToManyMapping;
 import org.eclipse.jpt.eclipselink.core.context.JoinFetch;
 import org.eclipse.jpt.eclipselink.core.context.PrivateOwned;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
 import org.eclipse.jpt.eclipselink.core.resource.java.PrivateOwnedAnnotation;
+import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class EclipseLinkJavaOneToManyMappingImpl extends GenericJavaOneToManyMapping implements EclipseLinkOneToManyMapping
+public class EclipseLinkJavaOneToManyMapping
+	extends GenericJavaOneToManyMapping
+	implements EclipseLinkOneToManyMapping
 {
 	protected final EclipseLinkJavaJoinFetch joinFetch;
 	
 	protected final EclipseLinkJavaPrivateOwned privateOwned;
 	
 	
-	public EclipseLinkJavaOneToManyMappingImpl(JavaPersistentAttribute parent) {
+	public EclipseLinkJavaOneToManyMapping(JavaPersistentAttribute parent) {
 		super(parent);
 		this.joinFetch = new EclipseLinkJavaJoinFetch(this);
 		this.privateOwned = new EclipseLinkJavaPrivateOwned(this);
 	}
 	
-	// ********** NonOwningMapping implementation **********
+	
 	@Override
-	public boolean mappedByIsValid(AttributeMapping mappedByMapping) {
-		return super.mappedByIsValid(mappedByMapping) || (mappedByMapping.getKey() == MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+	protected JavaRelationshipReference buildRelationshipReference() {
+		return new EclipseLinkJavaOneToManyRelationshipReference(this);
 	}
-
+	
+	@Override
+	public Iterator<String> supportingAnnotationNames() {
+		return new CompositeIterator<String>(
+			super.supportingAnnotationNames(),
+			new ArrayIterator<String>(
+				EclipseLinkJPA.JOIN_FETCH,
+				EclipseLinkJPA.PRIVATE_OWNED));
+	}
+	
+	@Override
+	public EclipseLinkJavaOneToManyRelationshipReference getRelationshipReference() {
+		return (EclipseLinkJavaOneToManyRelationshipReference) super.getRelationshipReference();
+	}
+	
+	
+	// **************** private owned ******************************************
+	
+	public PrivateOwned getPrivateOwned() {
+		return this.privateOwned;
+	}
+	
 	protected String getPrivateOwnedAnnotationName() {
 		return PrivateOwnedAnnotation.ANNOTATION_NAME;
 	}
@@ -57,13 +83,15 @@ public class EclipseLinkJavaOneToManyMappingImpl extends GenericJavaOneToManyMap
 		this.resourcePersistentAttribute.removeSupportingAnnotation(getPrivateOwnedAnnotationName());
 	}
 	
+	
+	// **************** join fetch *********************************************
+	
 	public JoinFetch getJoinFetch() {
 		return this.joinFetch;
 	}
-
-	public PrivateOwned getPrivateOwned() {
-		return this.privateOwned;
-	}
+	
+	
+	// **************** resource -> context ************************************
 	
 	@Override
 	protected void initialize() {
@@ -78,7 +106,10 @@ public class EclipseLinkJavaOneToManyMappingImpl extends GenericJavaOneToManyMap
 		this.joinFetch.update(this.resourcePersistentAttribute);
 		this.privateOwned.update(this.resourcePersistentAttribute);
 	}
-		
+	
+	
+	// **************** validation *********************************************
+	
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);

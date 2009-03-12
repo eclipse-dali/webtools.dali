@@ -12,8 +12,6 @@ package org.eclipse.jpt.eclipselink.core.context;
 import org.eclipse.jpt.core.context.OneToManyMapping;
 
 /**
- * 
- * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -23,7 +21,10 @@ import org.eclipse.jpt.core.context.OneToManyMapping;
  * @version 2.1
  * @since 2.1
  */
-public interface EclipseLinkOneToManyMapping extends OneToManyMapping, EclipseLinkRelationshipMapping
+public interface EclipseLinkOneToManyMapping 
+	extends OneToManyMapping, EclipseLinkRelationshipMapping
 {
+	EclipseLinkOneToManyRelationshipReference getRelationshipReference();
+	
 	PrivateOwned getPrivateOwned();
 }

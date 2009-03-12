@@ -179,7 +179,7 @@ public abstract class BaseJpaUiFactory implements JpaUiFactory
 	}
 	
 	public JpaComposite createJavaOneToManyMappingComposite(
-			PropertyValueModel<JavaOneToManyMapping> subjectHolder,
+			PropertyValueModel<? extends JavaOneToManyMapping> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
 		return new OneToManyMappingComposite(subjectHolder, parent, widgetFactory);

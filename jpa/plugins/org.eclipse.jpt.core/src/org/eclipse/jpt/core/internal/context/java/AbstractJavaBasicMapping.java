@@ -91,7 +91,7 @@ public abstract class AbstractJavaBasicMapping extends AbstractJavaAttributeMapp
 	}
 	
 	public String getDefaultColumnName() {
-		return getAttributeName();
+		return getName();
 	}
 
 	public String getDefaultTableName() {
@@ -276,7 +276,7 @@ public abstract class AbstractJavaBasicMapping extends AbstractJavaAttributeMapp
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
-		if (this.shouldValidateDbInfo()) {
+		if (this.shouldValidateAgainstDatabase()) {
 			this.validateColumn(messages, astRoot);
 		}
 		if (this.specifiedConverter != null) {
@@ -310,5 +310,4 @@ public abstract class AbstractJavaBasicMapping extends AbstractJavaAttributeMapp
 			);
 		}
 	}
-
 }

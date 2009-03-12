@@ -11,6 +11,7 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.context.Cascade;
 import org.eclipse.jpt.core.context.OneToOneMapping;
+import org.eclipse.jpt.core.context.OneToOneRelationshipReference;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.BaseJpaUiFactory;
@@ -30,12 +31,12 @@ import org.eclipse.swt.widgets.Composite;
  * | ------------------------------------------------------------------------- |
  * | ------------------------------------------------------------------------- |
  * | |                                                                       | |
+ * | | JoiningStrategyComposite                                              | |
+ * | |                                                                       | |
+ * | ------------------------------------------------------------------------- |
+ * | ------------------------------------------------------------------------- |
+ * | |                                                                       | |
  * | | FetchTypeComposite                                                    | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | MappedByComposite                                                     | |
  * | |                                                                       | |
  * | ------------------------------------------------------------------------- |
  * | ------------------------------------------------------------------------- |
@@ -48,27 +49,22 @@ import org.eclipse.swt.widgets.Composite;
  * | | CascadeComposite                                                      | |
  * | |                                                                       | |
  * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | JoinColumnComposite                                                   | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
  * @see OneToOneMapping
  * @see BaseJpaUiFactory - The factory creating this pane
- * @see CascadeComposite
- * @see FetchTypeComposite
- * @see JoinColumnComposite
- * @see MappedByComposite
- * @see OptionalComposite
  * @see TargetEntityComposite
+ * @see JoiningStrategyComposite
+ * @see FetchTypeComposite
+ * @see OptionalComposite
+ * @see CascadeComposite
  *
  * @version 2.0
  * @since 1.0
  */
-public class OneToOneMappingComposite extends FormPane<OneToOneMapping>
-                                      implements JpaComposite
+public class OneToOneMappingComposite 
+	extends FormPane<OneToOneMapping>
+	implements JpaComposite
 {
 	/**
 	 * Creates a new <code>OneToOneMappingComposite</code>.
@@ -83,7 +79,18 @@ public class OneToOneMappingComposite extends FormPane<OneToOneMapping>
 
 		super(subjectHolder, parent, widgetFactory);
 	}
-
+	
+	
+	private PropertyValueModel<OneToOneRelationshipReference> buildJoiningHolder() {
+		return new TransformationPropertyValueModel<OneToOneMapping, OneToOneRelationshipReference>(
+				getSubjectHolder()) {
+			@Override
+			protected OneToOneRelationshipReference transform_(OneToOneMapping value) {
+				return value.getRelationshipReference();
+			}
+		};
+	}
+	
 	private PropertyValueModel<Cascade> buildCascadeHolder() {
 		return new TransformationPropertyValueModel<OneToOneMapping, Cascade>(getSubjectHolder()) {
 			@Override
@@ -93,31 +100,23 @@ public class OneToOneMappingComposite extends FormPane<OneToOneMapping>
 		};
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected void initializeLayout(Composite container) {
-
 		int groupBoxMargin = getGroupBoxMargin();
-		Composite subPane = addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
-
+		
 		// Target Entity widgets
-		new TargetEntityComposite(this, subPane);
-
+		new TargetEntityComposite(this, addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin));
+		
+		// Joining Strategy widgets
+		new OneToOneJoiningStrategyPane(this, buildJoiningHolder(), container);
+		
 		// Fetch Type widgets
-		new FetchTypeComposite(this, subPane);
-
-		// Mapped By widgets
-		new MappedByComposite(this, subPane);
-
+		new FetchTypeComposite(this, addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin));
+		
 		// Optional check box
-		new OptionalComposite(this, addSubPane(subPane, 4));
-
+		new OptionalComposite(this, addSubPane(container, 4, groupBoxMargin, 0, groupBoxMargin));
+		
 		// Cascade widgets
 		new CascadeComposite(this, buildCascadeHolder(), container);
-
-		// Join Column widgets
-		new JoinColumnComposite(this, container);
 	}
 }

@@ -9,19 +9,22 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
-import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.resource.orm.AccessType;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaOneToManyMapping;
 import org.eclipse.jpt.eclipselink1_1.core.resource.orm.XmlOneToMany;
 
 /**
  * VirtualBasic is an implementation of Basic used when there is 
  * no tag in the orm.xml and an underlying javaBasicMapping exists.
  */
-public class EclipseLink1_1VirtualXmlOneToMany extends EclipseLinkVirtualXmlOneToMany implements XmlOneToMany
+public class EclipseLink1_1VirtualXmlOneToMany<T extends EclipseLinkJavaOneToManyMapping>
+	extends EclipseLinkVirtualXmlOneToMany<T>
+	implements XmlOneToMany
 {
 		
-	public EclipseLink1_1VirtualXmlOneToMany(OrmTypeMapping ormTypeMapping, JavaOneToManyMapping javaOneToManyMapping) {
+	public EclipseLink1_1VirtualXmlOneToMany(
+			OrmTypeMapping ormTypeMapping, T javaOneToManyMapping) {
 		super(ormTypeMapping, javaOneToManyMapping);
 	}
 	

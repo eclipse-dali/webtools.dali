@@ -10,17 +10,16 @@
 package org.eclipse.jpt.eclipselink.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.context.Cascade;
-import org.eclipse.jpt.core.context.JoinTable;
 import org.eclipse.jpt.core.context.ManyToManyMapping;
+import org.eclipse.jpt.core.context.ManyToManyRelationshipReference;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkRelationshipMapping;
 import org.eclipse.jpt.eclipselink.core.context.JoinFetch;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
-import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.BaseJpaUiFactory;
 import org.eclipse.jpt.ui.internal.mappings.details.CascadeComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.FetchTypeComposite;
-import org.eclipse.jpt.ui.internal.mappings.details.JoinTableComposite;
-import org.eclipse.jpt.ui.internal.mappings.details.MappedByComposite;
+import org.eclipse.jpt.ui.internal.mappings.details.ManyToManyJoiningStrategyPane;
 import org.eclipse.jpt.ui.internal.mappings.details.OrderingComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.TargetEntityComposite;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
@@ -40,6 +39,11 @@ import org.eclipse.swt.widgets.Composite;
  * | ------------------------------------------------------------------------- |
  * | ------------------------------------------------------------------------- |
  * | |                                                                       | |
+ * | | JoiningStrategyComposite                                              | |
+ * | |                                                                       | |
+ * | ------------------------------------------------------------------------- |
+ * | ------------------------------------------------------------------------- |
+ * | |                                                                       | |
  * | | FetchTypeComposite                                                    | |
  * | |                                                                       | |
  * | ------------------------------------------------------------------------- |
@@ -53,27 +57,22 @@ import org.eclipse.swt.widgets.Composite;
  * | | OrderingComposite                                                     | |
  * | |                                                                       | |
  * | ------------------------------------------------------------------------- |
- * |                                                                           |
- * | - Join Table ------------------------------------------------------------ |
- * | |                                                                       | |
- * | | JoinTableComposite                                                    | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see ManyToManyMapping
- * @see BaseJpaUiFactory - The factory creating this pane
- * @see CascadeComposite
- * @see FetchTypeComposite
- * @see JoinTableComposite
- * @see OrderingComposite
- * @see TargetEntityComposite
+ * @see {@link ManyToManyMapping}
+ * @see {@link BaseJpaUiFactory} - The factory creating this pane
+ * @see {@link TargetEntityComposite}
+ * @see {@link ManyToManyJoiningStrategyPane}
+ * @see {@link FetchTypeComposite}
+ * @see {@link CascadeComposite}
+ * @see {@link OrderingComposite}
  *
  * @version 2.1
  * @since 2.1
  */
-public class EclipseLinkManyToManyMappingComposite extends FormPane<ManyToManyMapping>
-                                        implements JpaComposite
+public class EclipseLinkManyToManyMappingComposite 
+	extends FormPane<ManyToManyMapping>
+	implements JpaComposite
 {
 	/**
 	 * Creates a new <code>ManyToManyMappingComposite</code>.
@@ -91,40 +90,44 @@ public class EclipseLinkManyToManyMappingComposite extends FormPane<ManyToManyMa
 
 	@Override
 	protected void initializeLayout(Composite container) {
-		initializeGeneralPane(container);
-		initializeJoinTablePane(container);
-	}
-
-	protected void initializeGeneralPane(Composite container) {
 		int groupBoxMargin = getGroupBoxMargin();
-
+		
+		// Target Entity widgets
 		new TargetEntityComposite(this, addPane(container, groupBoxMargin));
+		
+		// Joining Strategy widgets
+		new ManyToManyJoiningStrategyPane(this, buildJoiningHolder(), container);
+		
+		// Fetch Type widgets
 		new FetchTypeComposite(this, addPane(container, groupBoxMargin));
+		
+		// Join Fetch widgets
 		new JoinFetchComposite(this, buildJoinFetchableHolder(), addPane(container, groupBoxMargin));
-		new MappedByComposite(this, addPane(container, groupBoxMargin));
+		
+		// Cascade widgets
 		new CascadeComposite(this, buildCascadeHolder(), addSubPane(container, 5));
+		
+		// Ordering widgets
 		new OrderingComposite(this, container);
 	}
 
-	protected void initializeJoinTablePane(Composite container) {
-
-		container = addCollapsableSection(
-			container,
-			JptUiMappingsMessages.MultiRelationshipMappingComposite_joinTable
-		);
-
-		new JoinTableComposite(
-			this,
-			buildJoinTableHolder(),
-			container
-		);
-	}	
+		
 
 	protected Composite addPane(Composite container, int groupBoxMargin) {
 		return addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
 	}
 
 
+	protected PropertyValueModel<ManyToManyRelationshipReference> buildJoiningHolder() {
+		return new TransformationPropertyValueModel<ManyToManyMapping, ManyToManyRelationshipReference>(
+				getSubjectHolder()) {
+			@Override
+			protected ManyToManyRelationshipReference transform_(ManyToManyMapping value) {
+				return value.getRelationshipReference();
+			}
+		};
+	}
+	
 	protected PropertyValueModel<Cascade> buildCascadeHolder() {
 		return new TransformationPropertyValueModel<ManyToManyMapping, Cascade>(getSubjectHolder()) {
 			@Override
@@ -134,15 +137,6 @@ public class EclipseLinkManyToManyMappingComposite extends FormPane<ManyToManyMa
 		};
 	}
 
-	protected PropertyValueModel<JoinTable> buildJoinTableHolder() {
-		return new TransformationPropertyValueModel<ManyToManyMapping, JoinTable>(getSubjectHolder()) {
-			@Override
-			protected JoinTable transform_(ManyToManyMapping value) {
-				return value.getJoinTable();
-			}
-		};
-	}
-	
 	protected PropertyValueModel<JoinFetch> buildJoinFetchableHolder() {
 		return new PropertyAspectAdapter<ManyToManyMapping, JoinFetch>(getSubjectHolder()) {
 			@Override

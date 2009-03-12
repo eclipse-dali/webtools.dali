@@ -9,17 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.context.orm;
 
-import java.util.Iterator;
-import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.SequenceGenerator;
-import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
-import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
-import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
 public class OrmSequenceGeneratorTests extends ContextModelTestCase
@@ -35,41 +30,6 @@ public class OrmSequenceGeneratorTests extends ContextModelTestCase
 		mappingFileRef.setFileName(JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH);
 		getXmlPersistenceUnit().getMappingFiles().add(mappingFileRef);
 		getPersistenceXmlResource().save(null);
-	}
-
-	private ICompilationUnit createTestEntity() throws Exception {
-		return this.createTestType(new DefaultAnnotationWriter() {
-			@Override
-			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID);
-			}
-			@Override
-			public void appendTypeAnnotationTo(StringBuilder sb) {
-				sb.append("@Entity");
-			}
-			@Override
-			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append("@Id");
-			}
-		});
-	}
-	
-	private void createTestSubType() throws Exception {
-		SourceWriter sourceWriter = new SourceWriter() {
-			public void appendSourceTo(StringBuilder sb) {
-				sb.append(CR);
-					sb.append("import ");
-					sb.append(JPA.ENTITY);
-					sb.append(";");
-					sb.append(CR);
-				sb.append("@Entity");
-				sb.append(CR);
-				sb.append("public class ").append("AnnotationTestTypeChild").append(" ");
-				sb.append("extends " + TYPE_NAME + " ");
-				sb.append("{}").append(CR);
-			}
-		};
-		this.javaProject.createCompilationUnit(PACKAGE_NAME, "AnnotationTestTypeChild.java", sourceWriter);
 	}
 	
 	public void testUpdateSpecifiedName() throws Exception {

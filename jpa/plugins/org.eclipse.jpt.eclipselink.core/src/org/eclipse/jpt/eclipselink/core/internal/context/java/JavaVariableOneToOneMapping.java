@@ -17,7 +17,9 @@ import org.eclipse.jpt.eclipselink.core.context.VariableOneToOneMapping;
 import org.eclipse.jpt.eclipselink.core.resource.java.VariableOneToOneAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
-public class JavaVariableOneToOneMapping extends AbstractJavaAttributeMapping<VariableOneToOneAnnotation> implements VariableOneToOneMapping
+public class JavaVariableOneToOneMapping 
+	extends AbstractJavaAttributeMapping<VariableOneToOneAnnotation>
+	implements VariableOneToOneMapping
 {
 	
 	public JavaVariableOneToOneMapping(JavaPersistentAttribute parent) {

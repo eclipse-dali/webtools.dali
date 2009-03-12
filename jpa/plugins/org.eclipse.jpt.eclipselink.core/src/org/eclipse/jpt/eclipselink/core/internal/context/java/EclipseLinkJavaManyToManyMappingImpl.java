@@ -9,16 +9,22 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.context.java;
 
+import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaManyToManyMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkRelationshipMapping;
 import org.eclipse.jpt.eclipselink.core.context.JoinFetch;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
+import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class EclipseLinkJavaManyToManyMappingImpl extends GenericJavaManyToManyMapping implements EclipseLinkRelationshipMapping
+public class EclipseLinkJavaManyToManyMappingImpl
+	extends GenericJavaManyToManyMapping
+	implements EclipseLinkRelationshipMapping
 {
 	protected final EclipseLinkJavaJoinFetch joinFetch;
 	
@@ -28,6 +34,14 @@ public class EclipseLinkJavaManyToManyMappingImpl extends GenericJavaManyToManyM
 		this.joinFetch = new EclipseLinkJavaJoinFetch(this);
 	}
 	
+	
+	@Override
+	public Iterator<String> supportingAnnotationNames() {
+		return new CompositeIterator<String>(
+			super.supportingAnnotationNames(),
+			new ArrayIterator<String>(
+				EclipseLinkJPA.JOIN_FETCH));
+	}	
 	
 	public JoinFetch getJoinFetch() {
 		return this.joinFetch;

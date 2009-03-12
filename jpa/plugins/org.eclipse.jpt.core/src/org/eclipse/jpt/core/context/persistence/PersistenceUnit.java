@@ -666,7 +666,10 @@ public interface PersistenceUnit
 	 * @see org.eclipse.jpt.core.MappingKeys#ENTITY_TYPE_MAPPING_KEY
 	 */
 	Entity getEntity(String typeName);
-
+	
+	
+	// **************** validation *********************************************
+	
 	/**
 	 * Return the embeddable specified in the persistence unit with the
 	 * specified name. Return null if there is no persistent type 
@@ -681,5 +684,10 @@ public interface PersistenceUnit
 	 * the given text offset
 	 */
 	boolean containsOffset(int textOffset);
-
+	
+	/**
+	 * Return whether any database metadata specific validation should occur.
+	 * (For instance, if the connection is not active, then it should not.)
+	 */
+	boolean shouldValidateAgainstDatabase();
 }

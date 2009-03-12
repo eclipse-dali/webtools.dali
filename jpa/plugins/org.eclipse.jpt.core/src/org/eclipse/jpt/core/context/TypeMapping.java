@@ -77,12 +77,6 @@ public interface TypeMapping extends JpaContextNode {
 	boolean tableNameIsInvalid(String tableName);
 	
 	/**
-	 * Return whether database info (columns/tables) should be validated in this context.
-	 * For example, mapped superclasses cannot validate column information
-	 */
-	boolean shouldValidateDbInfo();
-	
-	/**
 	 * Return an Iterator of attributes. The attributes must be BasicMappings or
 	 * IdMappings found in this type mapping
 	 */
@@ -149,4 +143,10 @@ public interface TypeMapping extends JpaContextNode {
 	 * embeddable type mapping)
 	 */
 	boolean attributeMappingKeyAllowed(String attributeMappingKey);
+	
+	/**
+	 * Return whether any database metadata specific validation should occur.
+	 * (For instance, if the connection is not active, then it should not.)
+	 */
+	boolean shouldValidateAgainstDatabase();
 }

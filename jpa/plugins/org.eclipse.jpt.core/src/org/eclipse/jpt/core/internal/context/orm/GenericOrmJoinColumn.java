@@ -161,9 +161,6 @@ public class GenericOrmJoinColumn extends AbstractOrmBaseColumn<XmlJoinColumn> i
 		if (relationshipMapping == null) {
 			return null;
 		}
-		if (!relationshipMapping.isRelationshipOwner()) {
-			return null;
-		}
 		return super.getOwnerDefaultTableName();
 	}
 	

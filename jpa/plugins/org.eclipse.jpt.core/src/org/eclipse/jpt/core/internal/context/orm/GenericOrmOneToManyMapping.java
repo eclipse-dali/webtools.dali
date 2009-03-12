@@ -10,45 +10,39 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.MappingKeys;
-import org.eclipse.jpt.core.context.AttributeMapping;
-import org.eclipse.jpt.core.context.NonOwningMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmOneToManyMapping;
+import org.eclipse.jpt.core.context.orm.OrmOneToManyRelationshipReference;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.core.context.orm.OrmRelationshipReference;
 import org.eclipse.jpt.core.resource.orm.Attributes;
 import org.eclipse.jpt.core.resource.orm.XmlOneToMany;
 
 
-public class GenericOrmOneToManyMapping extends AbstractOrmMultiRelationshipMapping<XmlOneToMany>
+public class GenericOrmOneToManyMapping<T extends XmlOneToMany>
+	extends AbstractOrmMultiRelationshipMapping<T>
 	implements OrmOneToManyMapping
 {
-
-	public GenericOrmOneToManyMapping(OrmPersistentAttribute parent, XmlOneToMany resourceMapping) {
+	public GenericOrmOneToManyMapping(OrmPersistentAttribute parent, T resourceMapping) {
 		super(parent, resourceMapping);
 	}
-
-	public String getKey() {
-		return MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY;
-	}
-
-	public void initializeOn(OrmAttributeMapping newMapping) {
-		newMapping.initializeFromOrmOneToManyMapping(this);
-	}
-
+	
+	
 	@Override
-	public void initializeFromOrmNonOwningMapping(NonOwningMapping oldMapping) {
-		super.initializeFromOrmNonOwningMapping(oldMapping);
-		setMappedBy(oldMapping.getMappedBy());
+	protected OrmRelationshipReference buildRelationshipReference() {
+		return new GenericOrmOneToManyRelationshipReference(this, this.resourceAttributeMapping);
 	}
-
+	
 	public int getXmlSequence() {
 		return 50;
 	}
-
-	// ********** NonOwningMapping implementation **********
-	public boolean mappedByIsValid(AttributeMapping mappedByMapping) {
-		String mappedByKey = mappedByMapping.getKey();
-		return (mappedByKey == MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+	
+	public String getKey() {
+		return MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY;
+	}
+	
+	public void initializeOn(OrmAttributeMapping newMapping) {
+		newMapping.initializeFromOrmOneToManyMapping(this);
 	}
 	
 	public void addToResourceModel(Attributes resourceAttributes) {
@@ -57,5 +51,10 @@ public class GenericOrmOneToManyMapping extends AbstractOrmMultiRelationshipMapp
 	
 	public void removeFromResourceModel(Attributes resourceAttributes) {
 		resourceAttributes.getOneToManys().remove(this.resourceAttributeMapping);
+	}
+	
+	@Override
+	public OrmOneToManyRelationshipReference getRelationshipReference() {
+		return (OrmOneToManyRelationshipReference) super.getRelationshipReference();
 	}
 }

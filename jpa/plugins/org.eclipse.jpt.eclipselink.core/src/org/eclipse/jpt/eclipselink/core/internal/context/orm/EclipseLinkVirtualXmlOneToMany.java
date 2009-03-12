@@ -10,34 +10,58 @@
 package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.jpt.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
+import org.eclipse.jpt.core.internal.context.orm.VirtualXmlJoinColumn;
 import org.eclipse.jpt.core.internal.context.orm.VirtualXmlOneToMany;
+import org.eclipse.jpt.core.resource.orm.OrmPackage;
+import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.JoinFetch;
 import org.eclipse.jpt.eclipselink.core.context.JoinFetchType;
-import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaOneToManyMappingImpl;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaOneToManyMapping;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlAccessMethods;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlJoinFetchType;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlOneToMany;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlProperty;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 
 /**
  * VirtualBasic is an implementation of Basic used when there is 
  * no tag in the orm.xml and an underlying javaBasicMapping exists.
  */
-public class EclipseLinkVirtualXmlOneToMany extends VirtualXmlOneToMany implements XmlOneToMany
-{
-		
-	public EclipseLinkVirtualXmlOneToMany(OrmTypeMapping ormTypeMapping, JavaOneToManyMapping javaOneToManyMapping) {
+public class EclipseLinkVirtualXmlOneToMany<T extends EclipseLinkJavaOneToManyMapping>
+	extends VirtualXmlOneToMany<T>
+	implements XmlOneToMany
+{	
+	public EclipseLinkVirtualXmlOneToMany(
+			OrmTypeMapping ormTypeMapping, T javaOneToManyMapping) {
 		super(ormTypeMapping, javaOneToManyMapping);
+	}
+	
+	
+	@Override
+	public EList<XmlJoinColumn> getJoinColumns() {
+		//TODO need to check metadataComplete here
+		EList<XmlJoinColumn> joinColumns = 
+			new EObjectContainmentEList<XmlJoinColumn>(XmlJoinColumn.class, this, OrmPackage.XML_ONE_TO_ONE__JOIN_COLUMNS);
+		//TODO here i'm using joinColumns() while VirtualXmlJoinTable uses specifiedJoinColumns()???
+		for (JavaJoinColumn joinColumn : 
+				CollectionTools.iterable(
+					this.javaAttributeMapping.getRelationshipReference().
+						getJoinColumnJoiningStrategy().joinColumns())) {
+			XmlJoinColumn xmlJoinColumn = new VirtualXmlJoinColumn(joinColumn, this.isOrmMetadataComplete());
+			joinColumns.add(xmlJoinColumn);
+		}
+		return joinColumns;
 	}
 
 	public XmlJoinFetchType getJoinFetch() {
 		if (isOrmMetadataComplete()) {
 			return JoinFetchType.toOrmResourceModel(JoinFetch.DEFAULT_VALUE);
 		}
-		return JoinFetchType.toOrmResourceModel(((EclipseLinkJavaOneToManyMappingImpl) this.javaAttributeMapping).getJoinFetch().getValue());
+		return JoinFetchType.toOrmResourceModel(((EclipseLinkJavaOneToManyMapping) this.javaAttributeMapping).getJoinFetch().getValue());
 	}
 	
 	public void setJoinFetch(@SuppressWarnings("unused") XmlJoinFetchType value) {
@@ -48,7 +72,7 @@ public class EclipseLinkVirtualXmlOneToMany extends VirtualXmlOneToMany implemen
 		if (isOrmMetadataComplete()) {
 			return false;
 		}
-		return ((EclipseLinkJavaOneToManyMappingImpl) this.javaAttributeMapping).getPrivateOwned().isPrivateOwned();
+		return ((EclipseLinkJavaOneToManyMapping) this.javaAttributeMapping).getPrivateOwned().isPrivateOwned();
 	}
 	
 	public void setPrivateOwned(@SuppressWarnings("unused") boolean value) {

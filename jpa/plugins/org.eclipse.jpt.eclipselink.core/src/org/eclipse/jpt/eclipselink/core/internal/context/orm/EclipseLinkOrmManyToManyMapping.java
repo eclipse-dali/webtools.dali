@@ -20,14 +20,14 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.XmlManyToMany;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class EclipseLinkOrmManyToManyMapping
-	extends GenericOrmManyToManyMapping
+public class EclipseLinkOrmManyToManyMapping<T extends XmlManyToMany>
+	extends GenericOrmManyToManyMapping<T>
 	implements EclipseLinkRelationshipMapping
 {
 	protected EclipseLinkOrmJoinFetch joinFetch;
 	
 	
-	public EclipseLinkOrmManyToManyMapping(OrmPersistentAttribute parent, XmlManyToMany resourceMapping) {
+	public EclipseLinkOrmManyToManyMapping(OrmPersistentAttribute parent, T resourceMapping) {
 		super(parent, resourceMapping);
 		this.joinFetch = new EclipseLinkOrmJoinFetch(this, (XmlJoinFetch) this.resourceAttributeMapping);
 	}

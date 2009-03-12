@@ -15,7 +15,8 @@ import org.eclipse.jpt.core.resource.orm.Attributes;
 import org.eclipse.jpt.core.resource.orm.XmlNullAttributeMapping;
 
 
-public class GenericOrmNullAttributeMapping extends AbstractOrmAttributeMapping<XmlNullAttributeMapping>
+public class GenericOrmNullAttributeMapping 
+	extends AbstractOrmAttributeMapping<XmlNullAttributeMapping>
 {
 
 	public GenericOrmNullAttributeMapping(OrmPersistentAttribute parent, XmlNullAttributeMapping resourceMapping) {

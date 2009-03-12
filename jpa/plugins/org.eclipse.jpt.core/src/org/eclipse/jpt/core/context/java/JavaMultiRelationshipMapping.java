@@ -20,8 +20,8 @@ import org.eclipse.jpt.core.context.MultiRelationshipMapping;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface JavaMultiRelationshipMapping extends JavaRelationshipMapping, MultiRelationshipMapping
+public interface JavaMultiRelationshipMapping
+	extends JavaRelationshipMapping, MultiRelationshipMapping
 {
-
-	JavaJoinTable getJoinTable();
+	
 }

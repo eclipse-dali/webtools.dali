@@ -19,5 +19,4 @@ public class GenericPersistenceUnit
 	public GenericPersistenceUnit(Persistence parent, XmlPersistenceUnit xmlPersistenceUnit) {
 		super(parent, xmlPersistenceUnit);
 	}
-
 }

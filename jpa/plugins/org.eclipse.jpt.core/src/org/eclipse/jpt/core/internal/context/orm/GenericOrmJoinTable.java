@@ -13,13 +13,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-
-import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.JoinTable;
-import org.eclipse.jpt.core.context.NonOwningMapping;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
@@ -31,7 +28,7 @@ import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlJoinTable;
-import org.eclipse.jpt.core.resource.orm.XmlRelationshipMapping;
+import org.eclipse.jpt.core.resource.orm.XmlJoinTableMapping;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
@@ -42,24 +39,24 @@ import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-/**
- * 
- */
+
 public class GenericOrmJoinTable
 	extends AbstractOrmTable
 	implements OrmJoinTable
 {
-
-	protected final List<OrmJoinColumn> specifiedJoinColumns;
+	protected final XmlJoinTableMapping resourceMapping;
+	
 	protected OrmJoinColumn defaultJoinColumn;
-
-	protected final List<OrmJoinColumn> specifiedInverseJoinColumns;
+	
+	protected final List<OrmJoinColumn> specifiedJoinColumns;
+	
 	protected OrmJoinColumn defaultInverseJoinColumn;
 	
-	protected final XmlRelationshipMapping resourceMapping;
+	protected final List<OrmJoinColumn> specifiedInverseJoinColumns;
 	
-
-	public GenericOrmJoinTable(OrmRelationshipMapping parent, XmlRelationshipMapping resourceMapping) {
+	
+	public GenericOrmJoinTable(
+			OrmJoinTableJoiningStrategy parent, XmlJoinTableMapping resourceMapping) {
 		super(parent);
 		this.resourceMapping = resourceMapping;
 		this.specifiedJoinColumns = new ArrayList<OrmJoinColumn>();
@@ -68,12 +65,12 @@ public class GenericOrmJoinTable
 	}
 	
 	@Override
-	public OrmRelationshipMapping getParent() {
-		return (OrmRelationshipMapping) super.getParent();
+	public OrmJoinTableJoiningStrategy getParent() {
+		return (OrmJoinTableJoiningStrategy) super.getParent();
 	}
 	
 	public OrmRelationshipMapping getRelationshipMapping() {
-		return getParent();
+		return getParent().getRelationshipMapping();
 	}
 
 	public void initializeFrom(JoinTable oldJoinTable) {
@@ -90,6 +87,7 @@ public class GenericOrmJoinTable
 		}
 	}
 	
+	
 	//******************* AbstractOrmTable implementation *****************
 	
 	@Override
@@ -103,16 +101,12 @@ public class GenericOrmJoinTable
 	 */
 	@Override
 	protected String buildDefaultSchema() {
-		return this.getRelationshipMapping().isRelationshipOwner() ? this.getContextDefaultSchema() : null;
+		return this.getContextDefaultSchema();
 	}
 
-	/**
-	 * if the join table is on the "mappedBy" side, it's bogus;
-	 * so don't give it a default catalog
-	 */
 	@Override
 	protected String buildDefaultCatalog() {
-		return this.getRelationshipMapping().isRelationshipOwner() ? this.getContextDefaultCatalog() : null;
+		return this.getContextDefaultCatalog();
 	}
 	
 	@Override
@@ -691,15 +685,11 @@ public class GenericOrmJoinTable
 			if (targetEntity == null) {
 				return null;
 			}
-			String attributeName = GenericOrmJoinTable.this.getRelationshipMapping().getName();
-			for (Iterator<PersistentAttribute> stream = targetEntity.getPersistentType().allAttributes(); stream.hasNext();) {
-				PersistentAttribute attribute = stream.next();
-				AttributeMapping mapping = attribute.getMapping();
-				if (mapping instanceof NonOwningMapping) {
-					String mappedBy = ((NonOwningMapping) mapping).getMappedBy();
-					if ((mappedBy != null) && mappedBy.equals(attributeName)) {
-						return attribute.getName();
-					}
+			for (PersistentAttribute each : 
+					CollectionTools.iterable(
+						targetEntity.getPersistentType().allAttributes())) {
+				if (each.getMapping().isOwnedBy(getRelationshipMapping())) {
+					return each.getName();
 				}
 			}
 			return null;
@@ -708,7 +698,7 @@ public class GenericOrmJoinTable
 		@Override
 		public org.eclipse.jpt.db.Table getDbTable(String tableName) {
 			org.eclipse.jpt.db.Table dbTable = super.getDbTable(tableName);
-			return (dbTable != null) ? dbTable : getTypeMapping().getDbTable(tableName);
+			return (dbTable != null) ? dbTable : this.getTypeMapping().getDbTable(tableName);
 		}
 
 		public org.eclipse.jpt.db.Table getReferencedColumnDbTable() {

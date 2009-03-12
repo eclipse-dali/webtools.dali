@@ -17,7 +17,9 @@ import org.eclipse.jpt.eclipselink.core.context.TransformationMapping;
 import org.eclipse.jpt.eclipselink.core.resource.java.TransformationAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
-public class JavaTransformationMapping extends AbstractJavaAttributeMapping<TransformationAnnotation> implements TransformationMapping
+public class JavaTransformationMapping 
+	extends AbstractJavaAttributeMapping<TransformationAnnotation> 
+	implements TransformationMapping
 {
 	
 	public JavaTransformationMapping(JavaPersistentAttribute parent) {

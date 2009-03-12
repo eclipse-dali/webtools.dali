@@ -27,16 +27,18 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
  * VirtualManyToOne is an implementation of ManyToOne used when there is 
  * no tag in the orm.xml and an underlying javaManyToOneMapping exists.
  */
-public class VirtualXmlManyToOne extends VirtualXmlAttributeMapping<JavaManyToOneMapping> implements XmlManyToOne
+public class VirtualXmlManyToOne 
+	extends VirtualXmlAttributeMapping<JavaManyToOneMapping> 
+	implements XmlManyToOne
 {
-	
-//	protected VirtualJoinTable virtualJoinTable;
-	
 	protected final VirtualCascadeType virtualCascadeType;
-
-	public VirtualXmlManyToOne(OrmTypeMapping ormTypeMapping, JavaManyToOneMapping javaManyToOneMapping) {
+	
+	
+	public VirtualXmlManyToOne(
+		OrmTypeMapping ormTypeMapping, JavaManyToOneMapping javaManyToOneMapping) {
 		super(ormTypeMapping, javaManyToOneMapping);
-		this.virtualCascadeType = new VirtualCascadeType(javaManyToOneMapping.getCascade(), this.isOrmMetadataComplete());
+		this.virtualCascadeType = 
+			new VirtualCascadeType(javaManyToOneMapping.getCascade(), this.isOrmMetadataComplete());
 	}
 
 	public FetchType getFetch() {
@@ -60,11 +62,14 @@ public class VirtualXmlManyToOne extends VirtualXmlAttributeMapping<JavaManyToOn
 	public void setOptional(@SuppressWarnings("unused") Boolean newOptional) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
-
+	
 	public EList<XmlJoinColumn> getJoinColumns() {
 		EList<XmlJoinColumn> joinColumns = new EObjectContainmentEList<XmlJoinColumn>(XmlJoinColumn.class, this, OrmPackage.XML_JOIN_TABLE__JOIN_COLUMNS);
 		//TODO here i'm using joinColumns() while VirtualXmlJoinTable uses specifiedJoinColumns()???
-		for (JavaJoinColumn joinColumn : CollectionTools.iterable(this.javaAttributeMapping.joinColumns())) {
+		for (JavaJoinColumn joinColumn : 
+				CollectionTools.iterable(
+					this.javaAttributeMapping.getRelationshipReference().
+						getJoinColumnJoiningStrategy().joinColumns())) {
 			XmlJoinColumn xmlJoinColumn = new VirtualXmlJoinColumn(joinColumn, this.isOrmMetadataComplete());
 			joinColumns.add(xmlJoinColumn);
 		}

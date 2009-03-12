@@ -17,10 +17,11 @@ import org.eclipse.jpt.eclipselink.core.context.TransformationMapping;
 import org.eclipse.jpt.eclipselink.core.resource.orm.Attributes;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlTransformation;
 
-public class OrmTransformationMapping extends AbstractOrmAttributeMapping<XmlTransformation> implements TransformationMapping
+public class OrmTransformationMapping<T extends XmlTransformation>
+	extends AbstractOrmAttributeMapping<T> 
+	implements TransformationMapping
 {
-	
-	public OrmTransformationMapping(OrmPersistentAttribute parent, XmlTransformation resourceMapping) {
+	public OrmTransformationMapping(OrmPersistentAttribute parent, T resourceMapping) {
 		super(parent, resourceMapping);
 	}
 	

@@ -108,9 +108,14 @@ public class JptUiMappingsMessages {
 	public static String InheritanceComposite_strategy;
 	public static String AbstractInheritanceComposite_table_per_class;
 	public static String InverseJoinColumnDialog_editInverseJoinColumnTitle;
+	public static String Joining_title;
+	public static String Joining_mappedByLabel;
+	public static String Joining_mappedByAttributeLabel;
+	public static String Joining_joinColumnJoiningLabel;
+	public static String Joining_primaryKeyJoinColumnJoiningLabel;
+	public static String Joining_joinTableJoiningLabel;
 	public static String JoinColumnComposite_add;
 	public static String JoinColumnComposite_edit;
-	public static String JoinColumnComposite_joinColumn;
 	public static String JoinColumnComposite_mappingBetweenTwoParams;
 	public static String JoinColumnComposite_mappingBetweenTwoParamsBothDefault;
 	public static String JoinColumnComposite_mappingBetweenTwoParamsDefault;

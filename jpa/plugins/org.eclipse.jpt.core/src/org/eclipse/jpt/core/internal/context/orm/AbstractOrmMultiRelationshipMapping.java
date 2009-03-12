@@ -10,49 +10,32 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.Iterator;
-import java.util.List;
-import org.eclipse.jpt.core.context.AttributeMapping;
-import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.MultiRelationshipMapping;
-import org.eclipse.jpt.core.context.NonOwningMapping;
-import org.eclipse.jpt.core.context.PersistentAttribute;
-import org.eclipse.jpt.core.context.orm.OrmJoinTable;
 import org.eclipse.jpt.core.context.orm.OrmMultiRelationshipMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
-import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.orm.MapKey;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlMultiRelationshipMapping;
-import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.wst.validation.internal.provisional.core.IMessage;
-import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 
 public abstract class AbstractOrmMultiRelationshipMapping<T extends XmlMultiRelationshipMapping>
 	extends AbstractOrmRelationshipMapping<T>
 	implements OrmMultiRelationshipMapping
 {
-
-	protected String mappedBy;
-
-	protected String orderBy;//TODO change this to defaultOrderBy and specifiedOrderBy?
-
-	protected boolean isNoOrdering;
-
-	protected boolean isPkOrdering;
-
-	protected boolean isCustomOrdering;
-
-	protected final OrmJoinTable joinTable;
-
 	protected String mapKey;
-
+	
+	protected String orderBy;//TODO change this to defaultOrderBy and specifiedOrderBy?
+	
+	protected boolean isNoOrdering;
+	
+	protected boolean isPkOrdering;
+	
+	protected boolean isCustomOrdering;
+	
+	
 	protected AbstractOrmMultiRelationshipMapping(OrmPersistentAttribute parent, T resourceMapping) {
 		super(parent, resourceMapping);
-		this.joinTable = getJpaFactory().buildOrmJoinTable(this, this.resourceAttributeMapping);
-		this.mappedBy = this.getResourceMappedBy();
 		this.mapKey = this.getResourceMapKeyName();
 		this.orderBy = this.getResourceOrderBy();
 		if (this.orderBy == null) { 
@@ -62,38 +45,62 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends XmlMultiRela
 			this.isCustomOrdering = true;
 		}
 	}
-
-	@Override
-	public void initializeFromOrmMulitRelationshipMapping(OrmMultiRelationshipMapping oldMapping) {
-		super.initializeFromOrmMulitRelationshipMapping(oldMapping);
-		getJoinTable().initializeFrom(oldMapping.getJoinTable());
-	}
 	
-	public boolean isRelationshipOwner() {
-		return getMappedBy() == null;
-	}
-
+	
 	public FetchType getDefaultFetch() {
 		return MultiRelationshipMapping.DEFAULT_FETCH_TYPE;
 	}
 	
-	public String getMappedBy() {
-		return this.mappedBy;
+	
+	// **************** map key ************************************************
+	
+	public String getMapKey() {
+		return this.mapKey;
 	}
 
-	public void setMappedBy(String newMappedBy) {
-		String oldMappedBy = this.mappedBy;
-		this.mappedBy = newMappedBy;
-		this.resourceAttributeMapping.setMappedBy(newMappedBy);
-		firePropertyChanged(MAPPED_BY_PROPERTY, oldMappedBy, newMappedBy);
+	public void setMapKey(String newMapKey) {
+		String oldMapKey = this.mapKey;
+		this.mapKey = newMapKey;
+		if (oldMapKey != newMapKey) {
+			if (this.getResourceMapKey() != null) {
+				this.getResourceMapKey().setName(newMapKey);						
+				if (this.getResourceMapKey().isUnset()) {
+					removeResourceMapKey();
+				}
+			}
+			else if (newMapKey != null) {
+				addResourceMapKey();
+				getResourceMapKey().setName(newMapKey);
+			}
+		}
+		firePropertyChanged(MAP_KEY_PROPERTY, oldMapKey, newMapKey);
 	}
 	
-	protected void setMappedBy_(String newMappedBy) {
-		String oldMappedBy = this.mappedBy;
-		this.mappedBy = newMappedBy;
-		firePropertyChanged(MAPPED_BY_PROPERTY, oldMappedBy, newMappedBy);
+	protected void setMapKey_(String newMapKey) {
+		String oldMapKey = this.mapKey;
+		this.mapKey = newMapKey;
+		firePropertyChanged(MAP_KEY_PROPERTY, oldMapKey, newMapKey);
+	}
+	
+	protected MapKey getResourceMapKey() {
+		return this.resourceAttributeMapping.getMapKey();
+	}
+	
+	protected void removeResourceMapKey() {
+		this.resourceAttributeMapping.setMapKey(null);
+	}
+	
+	protected void addResourceMapKey() {
+		this.resourceAttributeMapping.setMapKey(OrmFactory.eINSTANCE.createMapKeyImpl());
 	}
 
+	public Iterator<String> candidateMapKeyNames() {
+		return this.allTargetEntityAttributeNames();
+	}
+	
+	
+	// **************** ordering ***********************************************
+		
 	public String getOrderBy() {
 		return this.orderBy;
 	}
@@ -168,100 +175,12 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends XmlMultiRela
 		firePropertyChanged(CUSTOM_ORDERING_PROPERTY, oldCustomOrdering, newCustomOrdering);
 	}
 	
-	public OrmJoinTable getJoinTable() {
-		return this.joinTable;
-	}
-
-	public boolean joinTableIsSpecified() {
-		return getJoinTable().isSpecified();
-	}
-
-	public String getMapKey() {
-		return this.mapKey;
-	}
-
-	public void setMapKey(String newMapKey) {
-		String oldMapKey = this.mapKey;
-		this.mapKey = newMapKey;
-		if (oldMapKey != newMapKey) {
-			if (this.getResourceMapKey() != null) {
-				this.getResourceMapKey().setName(newMapKey);						
-				if (this.getResourceMapKey().isUnset()) {
-					removeResourceMapKey();
-				}
-			}
-			else if (newMapKey != null) {
-				addResourceMapKey();
-				getResourceMapKey().setName(newMapKey);
-			}
-		}
-		firePropertyChanged(MAP_KEY_PROPERTY, oldMapKey, newMapKey);
-	}
 	
-	protected void setMapKey_(String newMapKey) {
-		String oldMapKey = this.mapKey;
-		this.mapKey = newMapKey;
-		firePropertyChanged(MAP_KEY_PROPERTY, oldMapKey, newMapKey);
-	}
+	// **************** resource -> context ************************************
 	
-	protected MapKey getResourceMapKey() {
-		return this.resourceAttributeMapping.getMapKey();
-	}
-	
-	protected void removeResourceMapKey() {
-		this.resourceAttributeMapping.setMapKey(null);
-	}
-	
-	protected void addResourceMapKey() {
-		this.resourceAttributeMapping.setMapKey(OrmFactory.eINSTANCE.createMapKeyImpl());
-	}
-
-	public Iterator<String> candidateMapKeyNames() {
-		return this.allTargetEntityAttributeNames();
-	}
-
-//	public void refreshDefaults(DefaultsContext defaultsContext) {
-//		super.refreshDefaults(defaultsContext);
-//		// TODO
-//		//		if (isOrderByPk()) {
-//		//			refreshDefaultOrderBy(defaultsContext);
-//		//		}
-//	}
-//
-//	//primary key ordering when just the @OrderBy annotation is present
-//	protected void refreshDefaultOrderBy(DefaultsContext defaultsContext) {
-//		IEntity targetEntity = getResolvedTargetEntity();
-//		if (targetEntity != null) {
-//			setOrderBy(targetEntity.primaryKeyAttributeName() + " ASC");
-//		}
-//	}
-//
-//	//TODO copied from JavaMultiRelationshipMapping
-//	/**
-//	 * extract the element type from the specified container signature and
-//	 * convert it into a reference entity type name;
-//	 * return null if the type is not a valid reference entity type (e.g. it's
-//	 * another container or an array or a primitive or other Basic type)
-//	 */
-//	@Override
-//	protected String javaDefaultTargetEntity(ITypeBinding typeBinding) {
-//		String typeName = super.javaDefaultTargetEntity(typeBinding);
-//		return JavaRelationshipMapping.typeNamedIsContainer(typeName) ? this.javaDefaultTargetEntityFromContainer(typeBinding) : null;
-//	}
-//
-//	protected String javaDefaultTargetEntityFromContainer(ITypeBinding typeBinding) {
-//		return JavaMultiRelationshipMapping.javaDefaultTargetEntityFromContainer(typeBinding);
-//	}
-	
-	public TextRange getMappedByTextRange() {
-		TextRange mappedByTextRange = this.resourceAttributeMapping.getMappedByTextRange();
-		return mappedByTextRange != null ? mappedByTextRange : getValidationTextRange();
-	}
-		
 	@Override
 	public void update() {
 		super.update();
-		this.setMappedBy_(this.getResourceMappedBy());
 		this.setMapKey_(this.getResourceMapKeyName());
 		this.setOrderBy_(this.getResourceOrderBy());
 		if (getOrderBy() == null) { 
@@ -274,11 +193,6 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends XmlMultiRela
 			setPkOrdering_(false);
 			setCustomOrdering_(true);
 		}
-		this.joinTable.update();
-	}
-	
-	protected String getResourceMappedBy() {
-		return this.resourceAttributeMapping.getMappedBy();
 	}
 	
 	protected String getResourceMapKeyName() {
@@ -292,76 +206,5 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends XmlMultiRela
 	@Override
 	protected String getResourceDefaultTargetEntity() {
 		return this.getJavaPersistentAttribute().getMultiReferenceEntityTypeName();
-	}
-
-	//****************** validation ******************8
-	
-	@Override
-	public void validate(List<IMessage> messages, IReporter reporter) {
-		super.validate(messages, reporter);
-		if (this.shouldValidateDbInfo() && (this.joinTableIsSpecified() || this.isRelationshipOwner())) {
-			this.joinTable.validate(messages, reporter);
-		}
-		if (this.mappedBy != null) {
-			this.validateMappedBy(messages);
-		}
-	}
-	
-	protected void validateMappedBy(List<IMessage> messages) {	
-		if (this.joinTableIsSpecified()) {
-			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.MAPPING_MAPPED_BY_WITH_JOIN_TABLE,
-					this.joinTable,
-					this.joinTable.getValidationTextRange()
-				)
-			);
-		}
-		Entity targetEntity = this.getResolvedTargetEntity();
-		if (targetEntity == null) {
-			return;  // validated elsewhere
-		}
-		
-		PersistentAttribute attribute = targetEntity.getPersistentType().resolveAttribute(this.mappedBy);
-		
-		if (attribute == null) {
-			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.MAPPING_UNRESOLVED_MAPPED_BY,
-					new String[] {this.mappedBy}, 
-					this,
-					this.getMappedByTextRange()
-				)
-			);
-			return;
-		}
-		
-		AttributeMapping mappedByMapping = attribute.getMapping();
-		if ( ! this.mappedByIsValid(mappedByMapping)) {
-			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.MAPPING_INVALID_MAPPED_BY,
-					new String[] {this.mappedBy}, 
-					this,
-					this.getMappedByTextRange()
-				)
-			);
-			return;
-		}
-		
-		if ((mappedByMapping instanceof NonOwningMapping)
-				&& ((NonOwningMapping) mappedByMapping).getMappedBy() != null) {
-			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.MAPPING_MAPPED_BY_ON_BOTH_SIDES,
-					this,
-					this.getMappedByTextRange()
-				)
-			);
-		}
 	}
 }

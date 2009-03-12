@@ -45,7 +45,6 @@ import org.eclipse.jpt.core.resource.java.TemporalAnnotation;
 import org.eclipse.jpt.core.resource.java.TransientAnnotation;
 import org.eclipse.jpt.core.resource.java.VersionAnnotation;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
-import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 public class JavaIdMappingTests extends ContextModelTestCase

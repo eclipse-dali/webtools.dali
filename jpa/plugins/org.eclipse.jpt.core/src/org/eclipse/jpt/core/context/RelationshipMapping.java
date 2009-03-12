@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context;
 
+import java.util.Iterator;
+
 /**
  * 
  * 
@@ -24,6 +26,12 @@ public interface RelationshipMapping extends AttributeMapping, Fetchable
 	 * Return the entity that owns the relationship mapping.
 	 */
 	Entity getEntity();
+	
+	/**
+	 * Return the meta-information used to populate the entities of the 
+	 * relationship
+	 */
+	RelationshipReference getRelationshipReference();
 
 	/**
 	 * Return whether this mapping is the owning side of the relationship.
@@ -51,9 +59,14 @@ public interface RelationshipMapping extends AttributeMapping, Fetchable
 	Entity getResolvedTargetEntity();
 		String RESOLVED_TARGET_ENTITY_PROPERTY = "resolvedTargetEntity"; //$NON-NLS-1$
 	
+	/**
+	 * Return all attribute names on the target entity, provided target entity
+	 * resolves
+	 */
+	Iterator<String> allTargetEntityAttributeNames();
 	
+		
 	// **************** cascade **************************************
 
 	Cascade getCascade();
-
 }

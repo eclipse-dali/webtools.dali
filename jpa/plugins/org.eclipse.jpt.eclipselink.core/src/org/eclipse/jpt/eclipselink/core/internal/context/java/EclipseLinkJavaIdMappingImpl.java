@@ -21,7 +21,9 @@ import org.eclipse.jpt.eclipselink.core.resource.java.ConvertAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class EclipseLinkJavaIdMappingImpl extends GenericJavaIdMapping implements EclipseLinkIdMapping
+public class EclipseLinkJavaIdMappingImpl 
+	extends GenericJavaIdMapping
+	implements EclipseLinkIdMapping
 {
 	protected final EclipseLinkJavaMutable mutable;
 	

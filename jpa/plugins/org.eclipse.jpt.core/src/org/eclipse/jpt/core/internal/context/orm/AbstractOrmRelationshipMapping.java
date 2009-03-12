@@ -11,13 +11,13 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.Iterator;
 import java.util.List;
-
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmRelationshipMapping;
+import org.eclipse.jpt.core.context.orm.OrmRelationshipReference;
 import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
@@ -32,10 +32,11 @@ public abstract class AbstractOrmRelationshipMapping<T extends XmlRelationshipMa
 	extends AbstractOrmAttributeMapping<T>
 	implements OrmRelationshipMapping
 {
-	
 	protected String specifiedTargetEntity;
 	protected String defaultTargetEntity;
 	protected Entity resolvedTargetEntity;
+	
+	protected final OrmRelationshipReference relationshipReference;
 	
 	protected final OrmCascade cascade;
 
@@ -44,19 +45,33 @@ public abstract class AbstractOrmRelationshipMapping<T extends XmlRelationshipMa
 	
 	protected AbstractOrmRelationshipMapping(OrmPersistentAttribute parent, T resourceMapping) {
 		super(parent, resourceMapping);
+		this.relationshipReference = buildRelationshipReference();
 		this.cascade = new OrmCascade(this, this.resourceAttributeMapping);
-		this.specifiedTargetEntity = this.getResourceTargetEntity();
-		this.defaultTargetEntity = this.buildDefaultTargetEntity();
-		this.resolvedTargetEntity = this.buildResolvedTargetEntity();
-		this.specifiedFetch = this.getResourceFetch();
+		this.specifiedTargetEntity = getResourceTargetEntity();
+		this.defaultTargetEntity = buildDefaultTargetEntity();
+		this.resolvedTargetEntity = buildResolvedTargetEntity();
+		this.specifiedFetch = getResourceFetch();
 	}
+	
+	
+	protected abstract OrmRelationshipReference buildRelationshipReference();
 
 	@Override
 	public OrmPersistentAttribute getParent() {
 		return (OrmPersistentAttribute) super.getParent();
 	}
-
-	// ********** target entity **********
+	
+	public boolean isRelationshipOwner() {
+		return this.relationshipReference.isRelationshipOwner();
+	}
+	
+	@Override
+	public boolean isOwnedBy(RelationshipMapping mapping) {
+		return this.relationshipReference.isOwnedBy(mapping);
+	}
+	
+	
+	// **************** target entity ******************************************
 
 	public String getTargetEntity() {
 		return (this.specifiedTargetEntity != null) ? this.specifiedTargetEntity : this.defaultTargetEntity;
@@ -100,14 +115,21 @@ public abstract class AbstractOrmRelationshipMapping<T extends XmlRelationshipMa
 	}
 
 
-	// ********** cascade **********
-
+	// **************** reference **********************************************
+	
+	public OrmRelationshipReference getRelationshipReference() {
+		return this.relationshipReference;
+	}
+	
+	
+	// **************** cascade ************************************************
+	
 	public OrmCascade getCascade() {
 		return this.cascade;
 	}
-
-
-	// ********** fetch **********
+	
+	
+	// **************** fetch **************************************************
 
 	public FetchType getFetch() {
 		return (this.specifiedFetch != null) ? this.specifiedFetch : this.getDefaultFetch();
@@ -131,7 +153,7 @@ public abstract class AbstractOrmRelationshipMapping<T extends XmlRelationshipMa
 	}
 
 
-	// ********** resource => context **********
+	// **************** resource => context ************************************
 	
 	@Override
 	public void update() {
@@ -139,6 +161,7 @@ public abstract class AbstractOrmRelationshipMapping<T extends XmlRelationshipMa
 		this.setSpecifiedTargetEntity_(this.getResourceTargetEntity());
 		this.setDefaultTargetEntity(this.buildDefaultTargetEntity());
 		this.setResolvedTargetEntity(this.buildResolvedTargetEntity());
+		this.relationshipReference.update();
 		this.setSpecifiedFetch_(this.getResourceFetch());
 		this.cascade.update();
 	}
@@ -193,8 +216,8 @@ public abstract class AbstractOrmRelationshipMapping<T extends XmlRelationshipMa
 		String packageName = this.getPersistentAttribute().getPersistentType().getDefaultPackage();
 		return this.getPersistenceUnit().getEntity(packageName + '.' + targetEntityName);
 	}
-
-
+	
+	
 	// ********** RelationshipMapping implementation **********
 
 	public Entity getEntity() {
@@ -213,10 +236,11 @@ public abstract class AbstractOrmRelationshipMapping<T extends XmlRelationshipMa
 		super.initializeFromOrmRelationshipMapping(oldMapping);
 		setSpecifiedTargetEntity(oldMapping.getSpecifiedTargetEntity());
 		setSpecifiedFetch(oldMapping.getSpecifiedFetch());
-		getCascade().initializeFrom(oldMapping.getCascade());
+		oldMapping.getRelationshipReference().initializeOn(this.relationshipReference);
+		this.cascade.initializeFrom(oldMapping.getCascade());
 		//TODO should we set the fetch type from a BasicMapping??
 	}
-
+	
 	public Iterator<String> allTargetEntityAttributeNames() {
 		Entity targetEntity = this.getResolvedTargetEntity();
 		return (targetEntity == null) ? EmptyIterator.<String> instance() : targetEntity.getPersistentType().allAttributeNames();

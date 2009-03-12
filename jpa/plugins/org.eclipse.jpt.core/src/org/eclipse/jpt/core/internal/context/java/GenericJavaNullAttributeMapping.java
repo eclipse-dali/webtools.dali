@@ -20,8 +20,8 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 
-
-public class GenericJavaNullAttributeMapping extends AbstractJavaAttributeMapping<JavaResourceNode>
+public class GenericJavaNullAttributeMapping<T extends JavaResourceNode>
+	extends AbstractJavaAttributeMapping<T>
 {
 	public GenericJavaNullAttributeMapping(JavaPersistentAttribute parent) {
 		super(parent);

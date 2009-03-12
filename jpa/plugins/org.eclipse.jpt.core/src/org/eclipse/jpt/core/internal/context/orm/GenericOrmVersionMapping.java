@@ -29,7 +29,8 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 
-public class GenericOrmVersionMapping extends AbstractOrmAttributeMapping<XmlVersion>
+public class GenericOrmVersionMapping<T extends XmlVersion>
+	extends AbstractOrmAttributeMapping<T>
 	implements OrmVersionMapping
 {
 	protected final OrmColumn column;
@@ -37,7 +38,7 @@ public class GenericOrmVersionMapping extends AbstractOrmAttributeMapping<XmlVer
 	protected OrmConverter defaultConverter;
 	protected OrmConverter specifiedConverter;
 	
-	public GenericOrmVersionMapping(OrmPersistentAttribute parent, XmlVersion resourceMapping) {
+	public GenericOrmVersionMapping(OrmPersistentAttribute parent, T resourceMapping) {
 		super(parent, resourceMapping);
 		this.column = getJpaFactory().buildOrmColumn(this, this);
 		this.column.initialize(this.getResourceColumn());//TODO pass in to constructor
@@ -176,7 +177,7 @@ public class GenericOrmVersionMapping extends AbstractOrmAttributeMapping<XmlVer
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
 		
-		if (this.shouldValidateDbInfo()) {
+		if (this.shouldValidateAgainstDatabase()) {
 			this.validateColumn(messages);
 		}
 	}

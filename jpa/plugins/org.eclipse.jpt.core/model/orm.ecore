@@ -172,23 +172,32 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="targetEntity" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="fetch" eType="#//FetchType"
         defaultValueLiteral="LAZY"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="joinTable" eType="#//XmlJoinTable"
-        containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="cascade" eType="#//CascadeType"
         containment="true" resolveProxies="false"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlMultiRelationshipMapping" abstract="true"
+  <eClassifiers xsi:type="ecore:EClass" name="XmlMappedByMapping" abstract="true"
       interface="true" eSuperTypes="#//XmlRelationshipMapping">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="mappedBy" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlJoinColumnsMapping" abstract="true"
+      interface="true" eSuperTypes="#//XmlRelationshipMapping">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="joinColumns" upperBound="-1"
+        eType="#//XmlJoinColumn" containment="true" resolveProxies="false"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlJoinTableMapping" abstract="true"
+      interface="true" eSuperTypes="#//XmlRelationshipMapping">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="joinTable" eType="#//XmlJoinTable"
+        containment="true" resolveProxies="false"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlMultiRelationshipMapping" abstract="true"
+      interface="true" eSuperTypes="#//XmlMappedByMapping #//XmlJoinTableMapping">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="orderBy" eType="#//OrderBy"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="mapKey" eType="#//MapKey"
         containment="true" resolveProxies="false"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlSingleRelationshipMapping" abstract="true"
-      interface="true" eSuperTypes="#//XmlRelationshipMapping">
+      interface="true" eSuperTypes="#//XmlRelationshipMapping #//XmlJoinTableMapping #//XmlJoinColumnsMapping">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="optional" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="joinColumns" upperBound="-1"
-        eType="#//XmlJoinColumn" containment="true" resolveProxies="false"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlId" abstract="true" interface="true"
       eSuperTypes="#//XmlAttributeMapping #//ColumnMapping #//XmlConvertibleMapping">
@@ -231,14 +240,10 @@
       eSuperTypes="#//XmlSingleRelationshipMapping"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlManyToOneImpl" eSuperTypes="#//AbstractXmlAttributeMapping #//XmlManyToOne"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlOneToMany" abstract="true" interface="true"
-      eSuperTypes="#//XmlMultiRelationshipMapping">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="joinColumns" upperBound="-1"
-        eType="#//XmlJoinColumn" containment="true" resolveProxies="false"/>
-  </eClassifiers>
+      eSuperTypes="#//XmlMultiRelationshipMapping #//XmlJoinColumnsMapping"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlOneToManyImpl" eSuperTypes="#//AbstractXmlAttributeMapping #//XmlOneToMany"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlOneToOne" abstract="true" interface="true"
-      eSuperTypes="#//XmlSingleRelationshipMapping">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="mappedBy" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
+      eSuperTypes="#//XmlSingleRelationshipMapping #//XmlMappedByMapping">
     <eStructuralFeatures xsi:type="ecore:EReference" name="primaryKeyJoinColumns"
         upperBound="-1" eType="#//XmlPrimaryKeyJoinColumn" containment="true" resolveProxies="false"/>
   </eClassifiers>

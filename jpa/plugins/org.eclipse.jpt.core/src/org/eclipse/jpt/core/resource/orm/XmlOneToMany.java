@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.resource.orm;
 
-import org.eclipse.emf.common.util.EList;
 
 /**
  * <!-- begin-user-doc -->
@@ -22,33 +21,12 @@ import org.eclipse.emf.common.util.EList;
  * will almost certainly be broken (repeatedly) as the API evolves.
  * <!-- end-user-doc -->
  *
- * <p>
- * The following features are supported:
- * <ul>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlOneToMany#getJoinColumns <em>Join Columns</em>}</li>
- * </ul>
- * </p>
  *
  * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlOneToMany()
  * @model kind="class" interface="true" abstract="true"
  * @generated
  */
-public interface XmlOneToMany extends XmlMultiRelationshipMapping
+public interface XmlOneToMany extends XmlMultiRelationshipMapping, XmlJoinColumnsMapping
 {
-	/**
-	 * Returns the value of the '<em><b>Join Columns</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.core.resource.orm.XmlJoinColumn}.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Join Columns</em>' containment reference list isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Join Columns</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlOneToMany_JoinColumns()
-	 * @model containment="true"
-	 * @generated
-	 */
-	EList<XmlJoinColumn> getJoinColumns();
 
-} // OneToMany
+}

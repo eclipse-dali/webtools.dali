@@ -18,7 +18,9 @@ import org.eclipse.jpt.eclipselink.core.context.JoinFetch;
 import org.eclipse.jpt.eclipselink.core.context.JoinFetchType;
 import org.eclipse.jpt.eclipselink.core.resource.java.JoinFetchAnnotation;
 
-public class EclipseLinkJavaJoinFetch extends AbstractJavaJpaContextNode implements JoinFetch
+public class EclipseLinkJavaJoinFetch 
+	extends AbstractJavaJpaContextNode 
+	implements JoinFetch
 {
 	protected JoinFetchType joinFetchValue;	
 	

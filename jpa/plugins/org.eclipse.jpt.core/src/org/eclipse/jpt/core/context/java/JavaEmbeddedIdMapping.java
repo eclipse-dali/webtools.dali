@@ -21,7 +21,8 @@ import org.eclipse.jpt.core.context.EmbeddedIdMapping;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface JavaEmbeddedIdMapping extends JavaBaseEmbeddedMapping, EmbeddedIdMapping
+public interface JavaEmbeddedIdMapping
+	extends JavaBaseEmbeddedMapping, EmbeddedIdMapping
 {
 	ListIterator<JavaAttributeOverride> attributeOverrides();
 	ListIterator<JavaAttributeOverride> virtualAttributeOverrides();

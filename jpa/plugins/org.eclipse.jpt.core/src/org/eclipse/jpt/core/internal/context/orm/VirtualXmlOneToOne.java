@@ -29,16 +29,18 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
  * VirtualOneToOne is an implementation of OneToOne used when there is 
  * no tag in the orm.xml and an underlying javaOneToOneMapping exists.
  */
-public class VirtualXmlOneToOne extends VirtualXmlAttributeMapping<JavaOneToOneMapping> implements XmlOneToOne
+public class VirtualXmlOneToOne 
+	extends VirtualXmlAttributeMapping<JavaOneToOneMapping> 
+	implements XmlOneToOne
 {
-	
-//	protected VirtualJoinTable virtualJoinTable;
-		
 	protected final VirtualCascadeType virtualCascadeType;
-
-	public VirtualXmlOneToOne(OrmTypeMapping ormTypeMapping, JavaOneToOneMapping javaOneToOneMapping) {
+	
+	
+	public VirtualXmlOneToOne(
+			OrmTypeMapping ormTypeMapping, JavaOneToOneMapping javaOneToOneMapping) {
 		super(ormTypeMapping, javaOneToOneMapping);
-		this.virtualCascadeType = new VirtualCascadeType(javaOneToOneMapping.getCascade(), this.isOrmMetadataComplete());
+		this.virtualCascadeType = 
+			new VirtualCascadeType(javaOneToOneMapping.getCascade(), this.isOrmMetadataComplete());
 	}
 	
 	public FetchType getFetch() {
@@ -67,7 +69,10 @@ public class VirtualXmlOneToOne extends VirtualXmlAttributeMapping<JavaOneToOneM
 		//TODO need to check metadataComplete here
 		EList<XmlJoinColumn> joinColumns = new EObjectContainmentEList<XmlJoinColumn>(XmlJoinColumn.class, this, OrmPackage.XML_ONE_TO_ONE__JOIN_COLUMNS);
 		//TODO here i'm using joinColumns() while VirtualXmlJoinTable uses specifiedJoinColumns()???
-		for (JavaJoinColumn joinColumn : CollectionTools.iterable(this.javaAttributeMapping.joinColumns())) {
+		for (JavaJoinColumn joinColumn : 
+				CollectionTools.iterable(
+					this.javaAttributeMapping.getRelationshipReference().
+						getJoinColumnJoiningStrategy().joinColumns())) {
 			XmlJoinColumn xmlJoinColumn = new VirtualXmlJoinColumn(joinColumn, this.isOrmMetadataComplete());
 			joinColumns.add(xmlJoinColumn);
 		}
@@ -106,7 +111,8 @@ public class VirtualXmlOneToOne extends VirtualXmlAttributeMapping<JavaOneToOneM
 		if (this.isOrmMetadataComplete()) {
 			return null;
 		}
-		return this.javaAttributeMapping.getMappedBy();
+		return this.javaAttributeMapping.getRelationshipReference().
+			getMappedByJoiningStrategy().getMappedByAttribute();
 	}
 
 	public void setMappedBy(@SuppressWarnings("unused") String value) {
@@ -116,7 +122,10 @@ public class VirtualXmlOneToOne extends VirtualXmlAttributeMapping<JavaOneToOneM
 	public EList<XmlPrimaryKeyJoinColumn> getPrimaryKeyJoinColumns() {
 		EList<XmlPrimaryKeyJoinColumn> joinColumns = new EObjectContainmentEList<XmlPrimaryKeyJoinColumn>(XmlPrimaryKeyJoinColumn.class, this, OrmPackage.XML_ONE_TO_ONE__PRIMARY_KEY_JOIN_COLUMNS);
 		if (!this.isOrmMetadataComplete()) {
-			for (JavaPrimaryKeyJoinColumn joinColumn : CollectionTools.iterable(this.javaAttributeMapping.primaryKeyJoinColumns())) {
+			for (JavaPrimaryKeyJoinColumn joinColumn : 
+					CollectionTools.iterable(
+						this.javaAttributeMapping.getRelationshipReference().
+							getPrimaryKeyJoinColumnJoiningStrategy().primaryKeyJoinColumns())) {
 				XmlPrimaryKeyJoinColumn xmlJoinColumn = new VirtualXmlPrimaryKeyJoinColumn(joinColumn/*, this.metadataComplete*/);
 				joinColumns.add(xmlJoinColumn);
 			}

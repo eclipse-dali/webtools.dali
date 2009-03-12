@@ -17,10 +17,11 @@ import org.eclipse.jpt.eclipselink.core.context.BasicCollectionMapping;
 import org.eclipse.jpt.eclipselink.core.resource.orm.Attributes;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicCollection;
 
-public class OrmBasicCollectionMapping extends AbstractOrmAttributeMapping<XmlBasicCollection> implements BasicCollectionMapping
+public class OrmBasicCollectionMapping<T extends XmlBasicCollection>
+	extends AbstractOrmAttributeMapping<T> 
+	implements BasicCollectionMapping
 {
-	
-	public OrmBasicCollectionMapping(OrmPersistentAttribute parent, XmlBasicCollection resourceMapping) {
+	public OrmBasicCollectionMapping(OrmPersistentAttribute parent, T resourceMapping) {
 		super(parent, resourceMapping);
 	}
 	

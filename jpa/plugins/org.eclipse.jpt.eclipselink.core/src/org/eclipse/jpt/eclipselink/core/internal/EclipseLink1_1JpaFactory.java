@@ -17,7 +17,6 @@ import org.eclipse.jpt.core.context.java.JavaEmbeddedMapping;
 import org.eclipse.jpt.core.context.java.JavaIdMapping;
 import org.eclipse.jpt.core.context.java.JavaManyToManyMapping;
 import org.eclipse.jpt.core.context.java.JavaManyToOneMapping;
-import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
 import org.eclipse.jpt.core.context.java.JavaOneToOneMapping;
 import org.eclipse.jpt.core.context.java.JavaTransientMapping;
 import org.eclipse.jpt.core.context.java.JavaVersionMapping;
@@ -39,6 +38,7 @@ import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.resource.orm.XmlNullAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaOneToManyMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaBasicCollectionMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaBasicMapMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaTransformationMapping;
@@ -148,7 +148,7 @@ public class EclipseLink1_1JpaFactory
 		return new EclipseLink1_1VirtualXmlManyToOne(ormTypeMapping, javaManyToOneMapping);
 	}
 	
-	public XmlOneToMany buildEclipseLink1_1VirtualXmlOneToMany(OrmTypeMapping ormTypeMapping, JavaOneToManyMapping javaOneToManyMapping) {
+	public XmlOneToMany buildEclipseLink1_1VirtualXmlOneToMany(OrmTypeMapping ormTypeMapping, EclipseLinkJavaOneToManyMapping javaOneToManyMapping) {
 		return new EclipseLink1_1VirtualXmlOneToMany(ormTypeMapping, javaOneToManyMapping);
 	}
 	

@@ -121,7 +121,8 @@ public abstract class AbstractJavaMappedSuperclass extends AbstractJavaTypeMappi
 		return false;
 	}
 	
-	public boolean shouldValidateDbInfo() {
+	@Override
+	public boolean shouldValidateAgainstDatabase() {
 		return false;
 	}
 

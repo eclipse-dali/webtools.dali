@@ -17,7 +17,9 @@ import org.eclipse.jpt.eclipselink.core.context.BasicMapMapping;
 import org.eclipse.jpt.eclipselink.core.resource.java.BasicMapAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
-public class JavaBasicMapMapping extends AbstractJavaAttributeMapping<BasicMapAnnotation> implements BasicMapMapping
+public class JavaBasicMapMapping
+	extends AbstractJavaAttributeMapping<BasicMapAnnotation>
+	implements BasicMapMapping
 {
 	
 	public JavaBasicMapMapping(JavaPersistentAttribute parent) {

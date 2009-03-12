@@ -24,6 +24,8 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
  */
 public interface JavaJoinTable extends JoinTable, JavaJpaContextNode
 {
+	JavaRelationshipMapping getRelationshipMapping();
+	
 	void initialize(JavaResourcePersistentAttribute jrpa);
 	
 	/**

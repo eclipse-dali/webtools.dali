@@ -24,22 +24,27 @@ import org.eclipse.jpt.core.utility.TextRange;
  * VirtualOneToMany is an implementation of OneToMany used when there is 
  * no tag in the orm.xml and an underlying javaOneToManyMapping exists.
  */
-public class VirtualXmlOneToMany extends VirtualXmlAttributeMapping<JavaOneToManyMapping> implements XmlOneToMany
+public class VirtualXmlOneToMany<T extends JavaOneToManyMapping>
+	extends VirtualXmlAttributeMapping<T> 
+	implements XmlOneToMany
 {
-	
 	protected final VirtualXmlJoinTable virtualJoinTable;
 	
 	protected final VirtualCascadeType virtualCascadeType;
 	
 	protected final MapKey mapKey;
 	
-	//TODO joinColumns not yet supported in the context model
-//	protected EList<JoinColumn> virtualJoinColumns;
-
-	public VirtualXmlOneToMany(OrmTypeMapping ormTypeMapping, JavaOneToManyMapping javaOneToManyMapping) {
+	
+	public VirtualXmlOneToMany(
+			OrmTypeMapping ormTypeMapping, T javaOneToManyMapping) {
 		super(ormTypeMapping, javaOneToManyMapping);
-		this.virtualCascadeType = new VirtualCascadeType(javaOneToManyMapping.getCascade(), this.isOrmMetadataComplete());
-		this.virtualJoinTable = new VirtualXmlJoinTable(ormTypeMapping, javaOneToManyMapping.getJoinTable());
+		this.virtualCascadeType = 
+			new VirtualCascadeType(javaOneToManyMapping.getCascade(), this.isOrmMetadataComplete());
+		this.virtualJoinTable = 
+			new VirtualXmlJoinTable(
+				ormTypeMapping, 
+				javaOneToManyMapping.getRelationshipReference().
+					getJoinTableJoiningStrategy().getJoinTable());
 		this.mapKey = new VirtualMapKey(javaOneToManyMapping, this.isOrmMetadataComplete());
 	}
 	
@@ -89,7 +94,8 @@ public class VirtualXmlOneToMany extends VirtualXmlAttributeMapping<JavaOneToMan
 		if (this.isOrmMetadataComplete()) {
 			return null;
 		}
-		return this.javaAttributeMapping.getMappedBy();
+		return this.javaAttributeMapping.getRelationshipReference().
+			getMappedByJoiningStrategy().getMappedByAttribute();
 	}
 	
 	public void setMappedBy(@SuppressWarnings("unused") String value) {

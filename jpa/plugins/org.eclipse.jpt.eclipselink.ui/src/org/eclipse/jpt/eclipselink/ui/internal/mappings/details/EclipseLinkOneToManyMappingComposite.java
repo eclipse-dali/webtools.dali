@@ -10,18 +10,20 @@
 package org.eclipse.jpt.eclipselink.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.context.Cascade;
-import org.eclipse.jpt.core.context.JoinTable;
 import org.eclipse.jpt.core.context.OneToManyMapping;
+import org.eclipse.jpt.core.context.OneToOneMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToManyMapping;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToManyRelationshipReference;
 import org.eclipse.jpt.eclipselink.core.context.JoinFetch;
 import org.eclipse.jpt.eclipselink.core.context.PrivateOwned;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
-import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.BaseJpaUiFactory;
 import org.eclipse.jpt.ui.internal.mappings.details.CascadeComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.FetchTypeComposite;
-import org.eclipse.jpt.ui.internal.mappings.details.JoinTableComposite;
-import org.eclipse.jpt.ui.internal.mappings.details.MappedByComposite;
+import org.eclipse.jpt.ui.internal.mappings.details.JoinColumnComposite;
+import org.eclipse.jpt.ui.internal.mappings.details.MappedByPane;
+import org.eclipse.jpt.ui.internal.mappings.details.OptionalComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.OrderingComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.TargetEntityComposite;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
@@ -46,7 +48,7 @@ import org.eclipse.swt.widgets.Composite;
  * | ------------------------------------------------------------------------- |
  * | ------------------------------------------------------------------------- |
  * | |                                                                       | |
- * | | MappedByComposite                                                     | |
+ * | | MappedByPane                                                     | |
  * | |                                                                       | |
  * | ------------------------------------------------------------------------- |
  * | ------------------------------------------------------------------------- |
@@ -71,15 +73,16 @@ import org.eclipse.swt.widgets.Composite;
  * @see CascadeComposite
  * @see FetchTypeComposite
  * @see JoinColumnComposite
- * @see MappedByComposite
+ * @see MappedByPane
  * @see OptionalComposite
  * @see TargetEntityComposite
  *
  * @version 2.1
  * @since 2.1
  */
-public class EclipseLinkOneToManyMappingComposite extends FormPane<OneToManyMapping>
-                                      implements JpaComposite
+public class EclipseLinkOneToManyMappingComposite 
+	extends FormPane<EclipseLinkOneToManyMapping>
+    implements JpaComposite
 {
 	/**
 	 * Creates a new <code>EclipselinkOneToManyMappingComposite</code>.
@@ -88,7 +91,7 @@ public class EclipseLinkOneToManyMappingComposite extends FormPane<OneToManyMapp
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public EclipseLinkOneToManyMappingComposite(PropertyValueModel<? extends OneToManyMapping> subjectHolder,
+	public EclipseLinkOneToManyMappingComposite(PropertyValueModel<? extends EclipseLinkOneToManyMapping> subjectHolder,
 	                                 Composite parent,
 	                                 WidgetFactory widgetFactory) {
 
@@ -97,35 +100,28 @@ public class EclipseLinkOneToManyMappingComposite extends FormPane<OneToManyMapp
 
 	@Override
 	protected void initializeLayout(Composite container) {
-		initializeGeneralPane(container);
-		initializeJoinTablePane(container);
-	}
-
-	protected void initializeGeneralPane(Composite container) {
 		int groupBoxMargin = getGroupBoxMargin();
-		Composite subPane = addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
-
-		new TargetEntityComposite(this, subPane);
-		new FetchTypeComposite(this, subPane);
-		new JoinFetchComposite(this, buildJoinFetchableHolder(), subPane);
-		new MappedByComposite(this, subPane);
-		new PrivateOwnedComposite(this, buildPrivateOwnableHolder(), subPane);
-		new CascadeComposite(this, buildCascadeHolder(), addSubPane(container, 4));
+		
+		new TargetEntityComposite(this, addPane(container, groupBoxMargin));
+		new FetchTypeComposite(this, addPane(container, groupBoxMargin));
+		new EclipseLinkOneToManyJoiningStrategyPane(this, buildJoiningHolder(), addPane(container, groupBoxMargin));
+		new JoinFetchComposite(this, buildJoinFetchableHolder(), addPane(container, groupBoxMargin));
+		new PrivateOwnedComposite(this, buildPrivateOwnableHolder(), addPane(container, groupBoxMargin));
+		new CascadeComposite(this, buildCascadeHolder(), addPane(container, groupBoxMargin));
 		new OrderingComposite(this, container);
 	}
+	
+	protected Composite addPane(Composite container, int groupBoxMargin) {
+		return addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
+	}
 
-	protected void initializeJoinTablePane(Composite container) {
-
-		container = addCollapsableSection(
-			container,
-			JptUiMappingsMessages.MultiRelationshipMappingComposite_joinTable
-		);
-
-		new JoinTableComposite(
-			this,
-			buildJoinTableHolder(),
-			container
-		);
+	protected PropertyValueModel<EclipseLinkOneToManyRelationshipReference> buildJoiningHolder() {
+		return new TransformationPropertyValueModel<EclipseLinkOneToManyMapping, EclipseLinkOneToManyRelationshipReference>(getSubjectHolder()) {
+			@Override
+			protected EclipseLinkOneToManyRelationshipReference transform_(EclipseLinkOneToManyMapping value) {
+				return value.getRelationshipReference();
+			}
+		};
 	}
 	
 	protected PropertyValueModel<PrivateOwned> buildPrivateOwnableHolder() {
@@ -151,15 +147,6 @@ public class EclipseLinkOneToManyMappingComposite extends FormPane<OneToManyMapp
 			@Override
 			protected Cascade transform_(OneToManyMapping value) {
 				return value.getCascade();
-			}
-		};
-	}
-
-	protected PropertyValueModel<JoinTable> buildJoinTableHolder() {
-		return new TransformationPropertyValueModel<OneToManyMapping, JoinTable>(getSubjectHolder()) {
-			@Override
-			protected JoinTable transform_(OneToManyMapping value) {
-				return value.getJoinTable();
 			}
 		};
 	}

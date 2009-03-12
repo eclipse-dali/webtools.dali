@@ -9,11 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.java;
 
-import java.util.ListIterator;
 import org.eclipse.jpt.core.context.ManyToOneMapping;
+import org.eclipse.jpt.core.resource.java.ManyToOneAnnotation;
 
 /**
- * 
+ * The java representation of a {@link ManyToOneMapping}
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -24,10 +24,7 @@ import org.eclipse.jpt.core.context.ManyToOneMapping;
 public interface JavaManyToOneMapping
 	extends JavaSingleRelationshipMapping, ManyToOneMapping
 {
-	// ********** covariant overrides **********
+	ManyToOneAnnotation getMappingAnnotation();
 	
-	ListIterator<JavaJoinColumn> joinColumns();
-
-	ListIterator<JavaJoinColumn> specifiedJoinColumns();
-
+	JavaManyToOneRelationshipReference getRelationshipReference();
 }

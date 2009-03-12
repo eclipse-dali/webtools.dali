@@ -9,8 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.resource.orm;
 
-import org.eclipse.jpt.core.utility.TextRange;
-
 
 /**
  * <!-- begin-user-doc -->
@@ -26,7 +24,6 @@ import org.eclipse.jpt.core.utility.TextRange;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlMultiRelationshipMapping#getMappedBy <em>Mapped By</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlMultiRelationshipMapping#getOrderBy <em>Order By</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlMultiRelationshipMapping#getMapKey <em>Map Key</em>}</li>
  * </ul>
@@ -36,7 +33,7 @@ import org.eclipse.jpt.core.utility.TextRange;
  * @model kind="class" interface="true" abstract="true"
  * @generated
  */
-public interface XmlMultiRelationshipMapping extends XmlRelationshipMapping
+public interface XmlMultiRelationshipMapping extends XmlMappedByMapping, XmlJoinTableMapping
 {
 	/**
 	 * Returns the value of the '<em><b>Order By</b></em>' attribute.
@@ -89,32 +86,4 @@ public interface XmlMultiRelationshipMapping extends XmlRelationshipMapping
 	 * @generated
 	 */
 	void setMapKey(MapKey value);
-
-	/**
-	 * Returns the value of the '<em><b>Mapped By</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Mapped By</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Mapped By</em>' attribute.
-	 * @see #setMappedBy(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlMultiRelationshipMapping_MappedBy()
-	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
-	 * @generated
-	 */
-	String getMappedBy();
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlMultiRelationshipMapping#getMappedBy <em>Mapped By</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Mapped By</em>' attribute.
-	 * @see #getMappedBy()
-	 * @generated
-	 */
-	void setMappedBy(String value);
-
-	TextRange getMappedByTextRange();
-} // MultiRelationshipMapping
+}

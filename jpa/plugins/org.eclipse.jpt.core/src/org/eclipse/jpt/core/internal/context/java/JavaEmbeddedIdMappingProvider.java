@@ -14,7 +14,6 @@ import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.java.DefaultJavaAttributeMappingProvider;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.resource.java.EmbeddedIdAnnotation;
 
 public class JavaEmbeddedIdMappingProvider

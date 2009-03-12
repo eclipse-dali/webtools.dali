@@ -9,11 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.orm;
 
-import java.util.ListIterator;
 import org.eclipse.jpt.core.context.OneToOneMapping;
+import org.eclipse.jpt.core.resource.orm.XmlOneToOne;
 
 /**
- * 
+ * The orm.xml representation of a {@link OneToOneMapping}
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -21,17 +21,10 @@ import org.eclipse.jpt.core.context.OneToOneMapping;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface OrmOneToOneMapping extends OneToOneMapping, OrmSingleRelationshipMapping
+public interface OrmOneToOneMapping 
+	extends OneToOneMapping, OrmSingleRelationshipMapping
 {
+	XmlOneToOne getResourceAttributeMapping();
 	
-	// ********** covariant overrides **********
-	ListIterator<OrmJoinColumn> joinColumns();
-
-	ListIterator<OrmJoinColumn> specifiedJoinColumns();
-	
-	@SuppressWarnings("unchecked")
-	ListIterator<OrmPrimaryKeyJoinColumn> primaryKeyJoinColumns();
-	
-	OrmPrimaryKeyJoinColumn addPrimaryKeyJoinColumn(int index);
-
+	OrmOneToOneRelationshipReference getRelationshipReference();
 }

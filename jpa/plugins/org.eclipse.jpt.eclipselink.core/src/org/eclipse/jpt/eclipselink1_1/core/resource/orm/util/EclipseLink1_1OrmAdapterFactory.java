@@ -20,6 +20,9 @@ import org.eclipse.jpt.core.resource.orm.AbstractXmlAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.BaseXmlEmbedded;
 import org.eclipse.jpt.core.resource.orm.ColumnMapping;
 import org.eclipse.jpt.core.resource.orm.XmlConvertibleMapping;
+import org.eclipse.jpt.core.resource.orm.XmlJoinColumnsMapping;
+import org.eclipse.jpt.core.resource.orm.XmlJoinTableMapping;
+import org.eclipse.jpt.core.resource.orm.XmlMappedByMapping;
 import org.eclipse.jpt.core.resource.orm.XmlMultiRelationshipMapping;
 import org.eclipse.jpt.core.resource.orm.XmlRelationshipMapping;
 import org.eclipse.jpt.core.resource.orm.XmlSingleRelationshipMapping;
@@ -247,9 +250,9 @@ public class EclipseLink1_1OrmAdapterFactory extends AdapterFactoryImpl
 				return createXmlTransientImplAdapter();
 			}
 			@Override
-			public Adapter caseXmlEntityMappings_1(org.eclipse.jpt.core.resource.orm.XmlEntityMappings object)
+			public Adapter caseOrm_XmlEntityMappings(org.eclipse.jpt.core.resource.orm.XmlEntityMappings object)
 			{
-				return createXmlEntityMappings_1Adapter();
+				return createOrm_XmlEntityMappingsAdapter();
 			}
 			@Override
 			public Adapter caseXmlConvertersHolder(XmlConvertersHolder object)
@@ -257,14 +260,14 @@ public class EclipseLink1_1OrmAdapterFactory extends AdapterFactoryImpl
 				return createXmlConvertersHolderAdapter();
 			}
 			@Override
-			public Adapter caseXmlEntityMappings_2(org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntityMappings object)
+			public Adapter caseEclipseLinkOrm_XmlEntityMappings(org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntityMappings object)
 			{
-				return createXmlEntityMappings_2Adapter();
+				return createEclipseLinkOrm_XmlEntityMappingsAdapter();
 			}
 			@Override
-			public Adapter caseXmlAttributeMapping_1(org.eclipse.jpt.core.resource.orm.XmlAttributeMapping object)
+			public Adapter caseOrm_XmlAttributeMapping(org.eclipse.jpt.core.resource.orm.XmlAttributeMapping object)
 			{
-				return createXmlAttributeMapping_1Adapter();
+				return createOrm_XmlAttributeMappingAdapter();
 			}
 			@Override
 			public Adapter caseColumnMapping(ColumnMapping object)
@@ -277,9 +280,9 @@ public class EclipseLink1_1OrmAdapterFactory extends AdapterFactoryImpl
 				return createXmlConvertibleMappingAdapter();
 			}
 			@Override
-			public Adapter caseXmlId_1(org.eclipse.jpt.core.resource.orm.XmlId object)
+			public Adapter caseOrm_XmlId(org.eclipse.jpt.core.resource.orm.XmlId object)
 			{
-				return createXmlId_1Adapter();
+				return createOrm_XmlIdAdapter();
 			}
 			@Override
 			public Adapter caseXmlMutable(XmlMutable object)
@@ -292,9 +295,9 @@ public class EclipseLink1_1OrmAdapterFactory extends AdapterFactoryImpl
 				return createXmlConverterHolderAdapter();
 			}
 			@Override
-			public Adapter caseXmlConvertibleMapping_1(org.eclipse.jpt.eclipselink.core.resource.orm.XmlConvertibleMapping object)
+			public Adapter caseEclipseLinkOrm_XmlConvertibleMapping(org.eclipse.jpt.eclipselink.core.resource.orm.XmlConvertibleMapping object)
 			{
-				return createXmlConvertibleMapping_1Adapter();
+				return createEclipseLinkOrm_XmlConvertibleMappingAdapter();
 			}
 			@Override
 			public Adapter caseXmlAccessMethodsHolder(XmlAccessMethodsHolder object)
@@ -302,9 +305,9 @@ public class EclipseLink1_1OrmAdapterFactory extends AdapterFactoryImpl
 				return createXmlAccessMethodsHolderAdapter();
 			}
 			@Override
-			public Adapter caseXmlId_2(org.eclipse.jpt.eclipselink.core.resource.orm.XmlId object)
+			public Adapter caseEclipseLinkOrm_XmlId(org.eclipse.jpt.eclipselink.core.resource.orm.XmlId object)
 			{
-				return createXmlId_2Adapter();
+				return createEclipseLinkOrm_XmlIdAdapter();
 			}
 			@Override
 			public Adapter caseAbstractXmlAttributeMapping(AbstractXmlAttributeMapping object)
@@ -312,14 +315,14 @@ public class EclipseLink1_1OrmAdapterFactory extends AdapterFactoryImpl
 				return createAbstractXmlAttributeMappingAdapter();
 			}
 			@Override
-			public Adapter caseXmlIdImpl_1(org.eclipse.jpt.core.resource.orm.XmlIdImpl object)
+			public Adapter caseOrm_XmlIdImpl(org.eclipse.jpt.core.resource.orm.XmlIdImpl object)
 			{
-				return createXmlIdImpl_1Adapter();
+				return createOrm_XmlIdImplAdapter();
 			}
 			@Override
-			public Adapter caseXmlIdImpl_2(org.eclipse.jpt.eclipselink.core.resource.orm.XmlIdImpl object)
+			public Adapter caseEclipseLinkOrm_XmlIdImpl(org.eclipse.jpt.eclipselink.core.resource.orm.XmlIdImpl object)
 			{
-				return createXmlIdImpl_2Adapter();
+				return createEclipseLinkOrm_XmlIdImplAdapter();
 			}
 			@Override
 			public Adapter caseBaseXmlEmbedded(BaseXmlEmbedded object)
@@ -327,84 +330,84 @@ public class EclipseLink1_1OrmAdapterFactory extends AdapterFactoryImpl
 				return createBaseXmlEmbeddedAdapter();
 			}
 			@Override
-			public Adapter caseXmlEmbeddedId_1(org.eclipse.jpt.core.resource.orm.XmlEmbeddedId object)
+			public Adapter caseOrm_XmlEmbeddedId(org.eclipse.jpt.core.resource.orm.XmlEmbeddedId object)
 			{
-				return createXmlEmbeddedId_1Adapter();
+				return createOrm_XmlEmbeddedIdAdapter();
 			}
 			@Override
-			public Adapter caseXmlEmbeddedId_2(org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbeddedId object)
+			public Adapter caseEclipseLinkOrm_XmlEmbeddedId(org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbeddedId object)
 			{
-				return createXmlEmbeddedId_2Adapter();
+				return createEclipseLinkOrm_XmlEmbeddedIdAdapter();
 			}
 			@Override
-			public Adapter caseXmlEmbeddedIdImpl_1(org.eclipse.jpt.core.resource.orm.XmlEmbeddedIdImpl object)
+			public Adapter caseOrm_XmlEmbeddedIdImpl(org.eclipse.jpt.core.resource.orm.XmlEmbeddedIdImpl object)
 			{
-				return createXmlEmbeddedIdImpl_1Adapter();
+				return createOrm_XmlEmbeddedIdImplAdapter();
 			}
 			@Override
-			public Adapter caseXmlEmbeddedIdImpl_2(org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbeddedIdImpl object)
+			public Adapter caseEclipseLinkOrm_XmlEmbeddedIdImpl(org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbeddedIdImpl object)
 			{
-				return createXmlEmbeddedIdImpl_2Adapter();
+				return createEclipseLinkOrm_XmlEmbeddedIdImplAdapter();
 			}
 			@Override
-			public Adapter caseXmlEmbedded_1(org.eclipse.jpt.core.resource.orm.XmlEmbedded object)
+			public Adapter caseOrm_XmlEmbedded(org.eclipse.jpt.core.resource.orm.XmlEmbedded object)
 			{
-				return createXmlEmbedded_1Adapter();
+				return createOrm_XmlEmbeddedAdapter();
 			}
 			@Override
-			public Adapter caseXmlEmbedded_2(org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbedded object)
+			public Adapter caseEclipseLinkOrm_XmlEmbedded(org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbedded object)
 			{
-				return createXmlEmbedded_2Adapter();
+				return createEclipseLinkOrm_XmlEmbeddedAdapter();
 			}
 			@Override
-			public Adapter caseXmlEmbeddedImpl_1(org.eclipse.jpt.core.resource.orm.XmlEmbeddedImpl object)
+			public Adapter caseOrm_XmlEmbeddedImpl(org.eclipse.jpt.core.resource.orm.XmlEmbeddedImpl object)
 			{
-				return createXmlEmbeddedImpl_1Adapter();
+				return createOrm_XmlEmbeddedImplAdapter();
 			}
 			@Override
-			public Adapter caseXmlEmbeddedImpl_2(org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbeddedImpl object)
+			public Adapter caseEclipseLinkOrm_XmlEmbeddedImpl(org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbeddedImpl object)
 			{
-				return createXmlEmbeddedImpl_2Adapter();
+				return createEclipseLinkOrm_XmlEmbeddedImplAdapter();
 			}
 			@Override
-			public Adapter caseXmlBasic_1(org.eclipse.jpt.core.resource.orm.XmlBasic object)
+			public Adapter caseOrm_XmlBasic(org.eclipse.jpt.core.resource.orm.XmlBasic object)
 			{
-				return createXmlBasic_1Adapter();
+				return createOrm_XmlBasicAdapter();
 			}
 			@Override
-			public Adapter caseXmlBasic_2(org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasic object)
+			public Adapter caseEclipseLinkOrm_XmlBasic(org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasic object)
 			{
-				return createXmlBasic_2Adapter();
+				return createEclipseLinkOrm_XmlBasicAdapter();
 			}
 			@Override
-			public Adapter caseXmlBasicImpl_1(org.eclipse.jpt.core.resource.orm.XmlBasicImpl object)
+			public Adapter caseOrm_XmlBasicImpl(org.eclipse.jpt.core.resource.orm.XmlBasicImpl object)
 			{
-				return createXmlBasicImpl_1Adapter();
+				return createOrm_XmlBasicImplAdapter();
 			}
 			@Override
-			public Adapter caseXmlBasicImpl_2(org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicImpl object)
+			public Adapter caseEclipseLinkOrm_XmlBasicImpl(org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicImpl object)
 			{
-				return createXmlBasicImpl_2Adapter();
+				return createEclipseLinkOrm_XmlBasicImplAdapter();
 			}
 			@Override
-			public Adapter caseXmlVersion_1(org.eclipse.jpt.core.resource.orm.XmlVersion object)
+			public Adapter caseOrm_XmlVersion(org.eclipse.jpt.core.resource.orm.XmlVersion object)
 			{
-				return createXmlVersion_1Adapter();
+				return createOrm_XmlVersionAdapter();
 			}
 			@Override
-			public Adapter caseXmlVersion_2(org.eclipse.jpt.eclipselink.core.resource.orm.XmlVersion object)
+			public Adapter caseEclipseLinkOrm_XmlVersion(org.eclipse.jpt.eclipselink.core.resource.orm.XmlVersion object)
 			{
-				return createXmlVersion_2Adapter();
+				return createEclipseLinkOrm_XmlVersionAdapter();
 			}
 			@Override
-			public Adapter caseXmlVersionImpl_1(org.eclipse.jpt.core.resource.orm.XmlVersionImpl object)
+			public Adapter caseOrm_XmlVersionImpl(org.eclipse.jpt.core.resource.orm.XmlVersionImpl object)
 			{
-				return createXmlVersionImpl_1Adapter();
+				return createOrm_XmlVersionImplAdapter();
 			}
 			@Override
-			public Adapter caseXmlVersionImpl_2(org.eclipse.jpt.eclipselink.core.resource.orm.XmlVersionImpl object)
+			public Adapter caseEclipseLinkOrm_XmlVersionImpl(org.eclipse.jpt.eclipselink.core.resource.orm.XmlVersionImpl object)
 			{
-				return createXmlVersionImpl_2Adapter();
+				return createEclipseLinkOrm_XmlVersionImplAdapter();
 			}
 			@Override
 			public Adapter caseXmlRelationshipMapping(XmlRelationshipMapping object)
@@ -412,14 +415,29 @@ public class EclipseLink1_1OrmAdapterFactory extends AdapterFactoryImpl
 				return createXmlRelationshipMappingAdapter();
 			}
 			@Override
+			public Adapter caseXmlJoinTableMapping(XmlJoinTableMapping object)
+			{
+				return createXmlJoinTableMappingAdapter();
+			}
+			@Override
+			public Adapter caseXmlJoinColumnsMapping(XmlJoinColumnsMapping object)
+			{
+				return createXmlJoinColumnsMappingAdapter();
+			}
+			@Override
 			public Adapter caseXmlSingleRelationshipMapping(XmlSingleRelationshipMapping object)
 			{
 				return createXmlSingleRelationshipMappingAdapter();
 			}
 			@Override
-			public Adapter caseXmlOneToOne_1(org.eclipse.jpt.core.resource.orm.XmlOneToOne object)
+			public Adapter caseXmlMappedByMapping(XmlMappedByMapping object)
 			{
-				return createXmlOneToOne_1Adapter();
+				return createXmlMappedByMappingAdapter();
+			}
+			@Override
+			public Adapter caseOrm_XmlOneToOne(org.eclipse.jpt.core.resource.orm.XmlOneToOne object)
+			{
+				return createOrm_XmlOneToOneAdapter();
 			}
 			@Override
 			public Adapter caseXmlPrivateOwned(XmlPrivateOwned object)
@@ -432,19 +450,19 @@ public class EclipseLink1_1OrmAdapterFactory extends AdapterFactoryImpl
 				return createXmlJoinFetchAdapter();
 			}
 			@Override
-			public Adapter caseXmlOneToOne_2(org.eclipse.jpt.eclipselink.core.resource.orm.XmlOneToOne object)
+			public Adapter caseEclipseLinkOrm_XmlOneToOne(org.eclipse.jpt.eclipselink.core.resource.orm.XmlOneToOne object)
 			{
-				return createXmlOneToOne_2Adapter();
+				return createEclipseLinkOrm_XmlOneToOneAdapter();
 			}
 			@Override
-			public Adapter caseXmlOneToOneImpl_1(org.eclipse.jpt.core.resource.orm.XmlOneToOneImpl object)
+			public Adapter caseOrm_XmlOneToOneImpl(org.eclipse.jpt.core.resource.orm.XmlOneToOneImpl object)
 			{
-				return createXmlOneToOneImpl_1Adapter();
+				return createOrm_XmlOneToOneImplAdapter();
 			}
 			@Override
-			public Adapter caseXmlOneToOneImpl_2(org.eclipse.jpt.eclipselink.core.resource.orm.XmlOneToOneImpl object)
+			public Adapter caseEclipseLinkOrm_XmlOneToOneImpl(org.eclipse.jpt.eclipselink.core.resource.orm.XmlOneToOneImpl object)
 			{
-				return createXmlOneToOneImpl_2Adapter();
+				return createEclipseLinkOrm_XmlOneToOneImplAdapter();
 			}
 			@Override
 			public Adapter caseXmlMultiRelationshipMapping(XmlMultiRelationshipMapping object)
@@ -452,114 +470,114 @@ public class EclipseLink1_1OrmAdapterFactory extends AdapterFactoryImpl
 				return createXmlMultiRelationshipMappingAdapter();
 			}
 			@Override
-			public Adapter caseXmlOneToMany_1(org.eclipse.jpt.core.resource.orm.XmlOneToMany object)
+			public Adapter caseOrm_XmlOneToMany(org.eclipse.jpt.core.resource.orm.XmlOneToMany object)
 			{
-				return createXmlOneToMany_1Adapter();
+				return createOrm_XmlOneToManyAdapter();
 			}
 			@Override
-			public Adapter caseXmlOneToMany_2(org.eclipse.jpt.eclipselink.core.resource.orm.XmlOneToMany object)
+			public Adapter caseEclipseLinkOrm_XmlOneToMany(org.eclipse.jpt.eclipselink.core.resource.orm.XmlOneToMany object)
 			{
-				return createXmlOneToMany_2Adapter();
+				return createEclipseLinkOrm_XmlOneToManyAdapter();
 			}
 			@Override
-			public Adapter caseXmlOneToManyImpl_1(org.eclipse.jpt.core.resource.orm.XmlOneToManyImpl object)
+			public Adapter caseOrm_XmlOneToManyImpl(org.eclipse.jpt.core.resource.orm.XmlOneToManyImpl object)
 			{
-				return createXmlOneToManyImpl_1Adapter();
+				return createOrm_XmlOneToManyImplAdapter();
 			}
 			@Override
-			public Adapter caseXmlOneToManyImpl_2(org.eclipse.jpt.eclipselink.core.resource.orm.XmlOneToManyImpl object)
+			public Adapter caseEclipseLinkOrm_XmlOneToManyImpl(org.eclipse.jpt.eclipselink.core.resource.orm.XmlOneToManyImpl object)
 			{
-				return createXmlOneToManyImpl_2Adapter();
+				return createEclipseLinkOrm_XmlOneToManyImplAdapter();
 			}
 			@Override
-			public Adapter caseXmlManyToOne_1(org.eclipse.jpt.core.resource.orm.XmlManyToOne object)
+			public Adapter caseOrm_XmlManyToOne(org.eclipse.jpt.core.resource.orm.XmlManyToOne object)
 			{
-				return createXmlManyToOne_1Adapter();
+				return createOrm_XmlManyToOneAdapter();
 			}
 			@Override
-			public Adapter caseXmlManyToOne_2(org.eclipse.jpt.eclipselink.core.resource.orm.XmlManyToOne object)
+			public Adapter caseEclipseLinkOrm_XmlManyToOne(org.eclipse.jpt.eclipselink.core.resource.orm.XmlManyToOne object)
 			{
-				return createXmlManyToOne_2Adapter();
+				return createEclipseLinkOrm_XmlManyToOneAdapter();
 			}
 			@Override
-			public Adapter caseXmlManyToOneImpl_1(org.eclipse.jpt.core.resource.orm.XmlManyToOneImpl object)
+			public Adapter caseOrm_XmlManyToOneImpl(org.eclipse.jpt.core.resource.orm.XmlManyToOneImpl object)
 			{
-				return createXmlManyToOneImpl_1Adapter();
+				return createOrm_XmlManyToOneImplAdapter();
 			}
 			@Override
-			public Adapter caseXmlManyToOneImpl_2(org.eclipse.jpt.eclipselink.core.resource.orm.XmlManyToOneImpl object)
+			public Adapter caseEclipseLinkOrm_XmlManyToOneImpl(org.eclipse.jpt.eclipselink.core.resource.orm.XmlManyToOneImpl object)
 			{
-				return createXmlManyToOneImpl_2Adapter();
+				return createEclipseLinkOrm_XmlManyToOneImplAdapter();
 			}
 			@Override
-			public Adapter caseXmlManyToMany_1(org.eclipse.jpt.core.resource.orm.XmlManyToMany object)
+			public Adapter caseOrm_XmlManyToMany(org.eclipse.jpt.core.resource.orm.XmlManyToMany object)
 			{
-				return createXmlManyToMany_1Adapter();
+				return createOrm_XmlManyToManyAdapter();
 			}
 			@Override
-			public Adapter caseXmlManyToMany_2(org.eclipse.jpt.eclipselink.core.resource.orm.XmlManyToMany object)
+			public Adapter caseEclipseLinkOrm_XmlManyToMany(org.eclipse.jpt.eclipselink.core.resource.orm.XmlManyToMany object)
 			{
-				return createXmlManyToMany_2Adapter();
+				return createEclipseLinkOrm_XmlManyToManyAdapter();
 			}
 			@Override
-			public Adapter caseXmlManyToManyImpl_1(org.eclipse.jpt.core.resource.orm.XmlManyToManyImpl object)
+			public Adapter caseOrm_XmlManyToManyImpl(org.eclipse.jpt.core.resource.orm.XmlManyToManyImpl object)
 			{
-				return createXmlManyToManyImpl_1Adapter();
+				return createOrm_XmlManyToManyImplAdapter();
 			}
 			@Override
-			public Adapter caseXmlManyToManyImpl_2(org.eclipse.jpt.eclipselink.core.resource.orm.XmlManyToManyImpl object)
+			public Adapter caseEclipseLinkOrm_XmlManyToManyImpl(org.eclipse.jpt.eclipselink.core.resource.orm.XmlManyToManyImpl object)
 			{
-				return createXmlManyToManyImpl_2Adapter();
+				return createEclipseLinkOrm_XmlManyToManyImplAdapter();
 			}
 			@Override
-			public Adapter caseXmlBasicCollection_1(org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicCollection object)
+			public Adapter caseEclipseLinkOrm_XmlBasicCollection(org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicCollection object)
 			{
-				return createXmlBasicCollection_1Adapter();
+				return createEclipseLinkOrm_XmlBasicCollectionAdapter();
 			}
 			@Override
-			public Adapter caseXmlBasicCollectionImpl_1(org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicCollectionImpl object)
+			public Adapter caseEclipseLinkOrm_XmlBasicCollectionImpl(org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicCollectionImpl object)
 			{
-				return createXmlBasicCollectionImpl_1Adapter();
+				return createEclipseLinkOrm_XmlBasicCollectionImplAdapter();
 			}
 			@Override
-			public Adapter caseXmlBasicMap_1(org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicMap object)
+			public Adapter caseEclipseLinkOrm_XmlBasicMap(org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicMap object)
 			{
-				return createXmlBasicMap_1Adapter();
+				return createEclipseLinkOrm_XmlBasicMapAdapter();
 			}
 			@Override
-			public Adapter caseXmlBasicMapImpl_1(org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicMapImpl object)
+			public Adapter caseEclipseLinkOrm_XmlBasicMapImpl(org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicMapImpl object)
 			{
-				return createXmlBasicMapImpl_1Adapter();
+				return createEclipseLinkOrm_XmlBasicMapImplAdapter();
 			}
 			@Override
-			public Adapter caseXmlTransformation_1(org.eclipse.jpt.eclipselink.core.resource.orm.XmlTransformation object)
+			public Adapter caseEclipseLinkOrm_XmlTransformation(org.eclipse.jpt.eclipselink.core.resource.orm.XmlTransformation object)
 			{
-				return createXmlTransformation_1Adapter();
+				return createEclipseLinkOrm_XmlTransformationAdapter();
 			}
 			@Override
-			public Adapter caseXmlTransformationImpl_1(org.eclipse.jpt.eclipselink.core.resource.orm.XmlTransformationImpl object)
+			public Adapter caseEclipseLinkOrm_XmlTransformationImpl(org.eclipse.jpt.eclipselink.core.resource.orm.XmlTransformationImpl object)
 			{
-				return createXmlTransformationImpl_1Adapter();
+				return createEclipseLinkOrm_XmlTransformationImplAdapter();
 			}
 			@Override
-			public Adapter caseXmlVariableOneToOne_1(org.eclipse.jpt.eclipselink.core.resource.orm.XmlVariableOneToOne object)
+			public Adapter caseEclipseLinkOrm_XmlVariableOneToOne(org.eclipse.jpt.eclipselink.core.resource.orm.XmlVariableOneToOne object)
 			{
-				return createXmlVariableOneToOne_1Adapter();
+				return createEclipseLinkOrm_XmlVariableOneToOneAdapter();
 			}
 			@Override
-			public Adapter caseXmlVariableOneToOneImpl_1(org.eclipse.jpt.eclipselink.core.resource.orm.XmlVariableOneToOneImpl object)
+			public Adapter caseEclipseLinkOrm_XmlVariableOneToOneImpl(org.eclipse.jpt.eclipselink.core.resource.orm.XmlVariableOneToOneImpl object)
 			{
-				return createXmlVariableOneToOneImpl_1Adapter();
+				return createEclipseLinkOrm_XmlVariableOneToOneImplAdapter();
 			}
 			@Override
-			public Adapter caseXmlTransient_1(org.eclipse.jpt.core.resource.orm.XmlTransient object)
+			public Adapter caseOrm_XmlTransient(org.eclipse.jpt.core.resource.orm.XmlTransient object)
 			{
-				return createXmlTransient_1Adapter();
+				return createOrm_XmlTransientAdapter();
 			}
 			@Override
-			public Adapter caseXmlTransientImpl_1(org.eclipse.jpt.core.resource.orm.XmlTransientImpl object)
+			public Adapter caseOrm_XmlTransientImpl(org.eclipse.jpt.core.resource.orm.XmlTransientImpl object)
 			{
-				return createXmlTransientImpl_1Adapter();
+				return createOrm_XmlTransientImplAdapter();
 			}
 			@Override
 			public Adapter defaultCase(EObject object)
@@ -1043,7 +1061,7 @@ public class EclipseLink1_1OrmAdapterFactory extends AdapterFactoryImpl
 	 * @see org.eclipse.jpt.core.resource.orm.XmlEntityMappings
 	 * @generated
 	 */
-	public Adapter createXmlEntityMappings_1Adapter()
+	public Adapter createOrm_XmlEntityMappingsAdapter()
 	{
 		return null;
 	}
@@ -1073,7 +1091,7 @@ public class EclipseLink1_1OrmAdapterFactory extends AdapterFactoryImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntityMappings
 	 * @generated
 	 */
-	public Adapter createXmlEntityMappings_2Adapter()
+	public Adapter createEclipseLinkOrm_XmlEntityMappingsAdapter()
 	{
 		return null;
 	}
@@ -1088,7 +1106,7 @@ public class EclipseLink1_1OrmAdapterFactory extends AdapterFactoryImpl
 	 * @see org.eclipse.jpt.core.resource.orm.XmlAttributeMapping
 	 * @generated
 	 */
-	public Adapter createXmlAttributeMapping_1Adapter()
+	public Adapter createOrm_XmlAttributeMappingAdapter()
 	{
 		return null;
 	}
@@ -1133,7 +1151,7 @@ public class EclipseLink1_1OrmAdapterFactory extends AdapterFactoryImpl
 	 * @see org.eclipse.jpt.core.resource.orm.XmlId
 	 * @generated
 	 */
-	public Adapter createXmlId_1Adapter()
+	public Adapter createOrm_XmlIdAdapter()
 	{
 		return null;
 	}
@@ -1178,7 +1196,7 @@ public class EclipseLink1_1OrmAdapterFactory extends AdapterFactoryImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlConvertibleMapping
 	 * @generated
 	 */
-	public Adapter createXmlConvertibleMapping_1Adapter()
+	public Adapter createEclipseLinkOrm_XmlConvertibleMappingAdapter()
 	{
 		return null;
 	}
@@ -1208,7 +1226,7 @@ public class EclipseLink1_1OrmAdapterFactory extends AdapterFactoryImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlId
 	 * @generated
 	 */
-	public Adapter createXmlId_2Adapter()
+	public Adapter createEclipseLinkOrm_XmlIdAdapter()
 	{
 		return null;
 	}
@@ -1238,7 +1256,7 @@ public class EclipseLink1_1OrmAdapterFactory extends AdapterFactoryImpl
 	 * @see org.eclipse.jpt.core.resource.orm.XmlIdImpl
 	 * @generated
 	 */
-	public Adapter createXmlIdImpl_1Adapter()
+	public Adapter createOrm_XmlIdImplAdapter()
 	{
 		return null;
 	}
@@ -1253,7 +1271,7 @@ public class EclipseLink1_1OrmAdapterFactory extends AdapterFactoryImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlIdImpl
 	 * @generated
 	 */
-	public Adapter createXmlIdImpl_2Adapter()
+	public Adapter createEclipseLinkOrm_XmlIdImplAdapter()
 	{
 		return null;
 	}
@@ -1283,7 +1301,7 @@ public class EclipseLink1_1OrmAdapterFactory extends AdapterFactoryImpl
 	 * @see org.eclipse.jpt.core.resource.orm.XmlEmbeddedId
 	 * @generated
 	 */
-	public Adapter createXmlEmbeddedId_1Adapter()
+	public Adapter createOrm_XmlEmbeddedIdAdapter()
 	{
 		return null;
 	}
@@ -1298,7 +1316,7 @@ public class EclipseLink1_1OrmAdapterFactory extends AdapterFactoryImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbeddedId
 	 * @generated
 	 */
-	public Adapter createXmlEmbeddedId_2Adapter()
+	public Adapter createEclipseLinkOrm_XmlEmbeddedIdAdapter()
 	{
 		return null;
 	}
@@ -1313,7 +1331,7 @@ public class EclipseLink1_1OrmAdapterFactory extends AdapterFactoryImpl
 	 * @see org.eclipse.jpt.core.resource.orm.XmlEmbeddedIdImpl
 	 * @generated
 	 */
-	public Adapter createXmlEmbeddedIdImpl_1Adapter()
+	public Adapter createOrm_XmlEmbeddedIdImplAdapter()
 	{
 		return null;
 	}
@@ -1328,7 +1346,7 @@ public class EclipseLink1_1OrmAdapterFactory extends AdapterFactoryImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbeddedIdImpl
 	 * @generated
 	 */
-	public Adapter createXmlEmbeddedIdImpl_2Adapter()
+	public Adapter createEclipseLinkOrm_XmlEmbeddedIdImplAdapter()
 	{
 		return null;
 	}
@@ -1343,7 +1361,7 @@ public class EclipseLink1_1OrmAdapterFactory extends AdapterFactoryImpl
 	 * @see org.eclipse.jpt.core.resource.orm.XmlEmbedded
 	 * @generated
 	 */
-	public Adapter createXmlEmbedded_1Adapter()
+	public Adapter createOrm_XmlEmbeddedAdapter()
 	{
 		return null;
 	}
@@ -1358,7 +1376,7 @@ public class EclipseLink1_1OrmAdapterFactory extends AdapterFactoryImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbedded
 	 * @generated
 	 */
-	public Adapter createXmlEmbedded_2Adapter()
+	public Adapter createEclipseLinkOrm_XmlEmbeddedAdapter()
 	{
 		return null;
 	}
@@ -1373,7 +1391,7 @@ public class EclipseLink1_1OrmAdapterFactory extends AdapterFactoryImpl
 	 * @see org.eclipse.jpt.core.resource.orm.XmlEmbeddedImpl
 	 * @generated
 	 */
-	public Adapter createXmlEmbeddedImpl_1Adapter()
+	public Adapter createOrm_XmlEmbeddedImplAdapter()
 	{
 		return null;
 	}
@@ -1388,7 +1406,7 @@ public class EclipseLink1_1OrmAdapterFactory extends AdapterFactoryImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbeddedImpl
 	 * @generated
 	 */
-	public Adapter createXmlEmbeddedImpl_2Adapter()
+	public Adapter createEclipseLinkOrm_XmlEmbeddedImplAdapter()
 	{
 		return null;
 	}
@@ -1403,7 +1421,7 @@ public class EclipseLink1_1OrmAdapterFactory extends AdapterFactoryImpl
 	 * @see org.eclipse.jpt.core.resource.orm.XmlBasic
 	 * @generated
 	 */
-	public Adapter createXmlBasic_1Adapter()
+	public Adapter createOrm_XmlBasicAdapter()
 	{
 		return null;
 	}
@@ -1418,7 +1436,7 @@ public class EclipseLink1_1OrmAdapterFactory extends AdapterFactoryImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasic
 	 * @generated
 	 */
-	public Adapter createXmlBasic_2Adapter()
+	public Adapter createEclipseLinkOrm_XmlBasicAdapter()
 	{
 		return null;
 	}
@@ -1433,7 +1451,7 @@ public class EclipseLink1_1OrmAdapterFactory extends AdapterFactoryImpl
 	 * @see org.eclipse.jpt.core.resource.orm.XmlBasicImpl
 	 * @generated
 	 */
-	public Adapter createXmlBasicImpl_1Adapter()
+	public Adapter createOrm_XmlBasicImplAdapter()
 	{
 		return null;
 	}
@@ -1448,7 +1466,7 @@ public class EclipseLink1_1OrmAdapterFactory extends AdapterFactoryImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicImpl
 	 * @generated
 	 */
-	public Adapter createXmlBasicImpl_2Adapter()
+	public Adapter createEclipseLinkOrm_XmlBasicImplAdapter()
 	{
 		return null;
 	}
@@ -1463,7 +1481,7 @@ public class EclipseLink1_1OrmAdapterFactory extends AdapterFactoryImpl
 	 * @see org.eclipse.jpt.core.resource.orm.XmlVersion
 	 * @generated
 	 */
-	public Adapter createXmlVersion_1Adapter()
+	public Adapter createOrm_XmlVersionAdapter()
 	{
 		return null;
 	}
@@ -1478,7 +1496,7 @@ public class EclipseLink1_1OrmAdapterFactory extends AdapterFactoryImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlVersion
 	 * @generated
 	 */
-	public Adapter createXmlVersion_2Adapter()
+	public Adapter createEclipseLinkOrm_XmlVersionAdapter()
 	{
 		return null;
 	}
@@ -1493,7 +1511,7 @@ public class EclipseLink1_1OrmAdapterFactory extends AdapterFactoryImpl
 	 * @see org.eclipse.jpt.core.resource.orm.XmlVersionImpl
 	 * @generated
 	 */
-	public Adapter createXmlVersionImpl_1Adapter()
+	public Adapter createOrm_XmlVersionImplAdapter()
 	{
 		return null;
 	}
@@ -1508,7 +1526,7 @@ public class EclipseLink1_1OrmAdapterFactory extends AdapterFactoryImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlVersionImpl
 	 * @generated
 	 */
-	public Adapter createXmlVersionImpl_2Adapter()
+	public Adapter createEclipseLinkOrm_XmlVersionImplAdapter()
 	{
 		return null;
 	}
@@ -1529,6 +1547,36 @@ public class EclipseLink1_1OrmAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.resource.orm.XmlJoinTableMapping <em>Xml Join Table Mapping</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.jpt.core.resource.orm.XmlJoinTableMapping
+	 * @generated
+	 */
+	public Adapter createXmlJoinTableMappingAdapter()
+	{
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.resource.orm.XmlJoinColumnsMapping <em>Xml Join Columns Mapping</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.jpt.core.resource.orm.XmlJoinColumnsMapping
+	 * @generated
+	 */
+	public Adapter createXmlJoinColumnsMappingAdapter()
+	{
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.resource.orm.XmlSingleRelationshipMapping <em>Xml Single Relationship Mapping</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -1544,6 +1592,21 @@ public class EclipseLink1_1OrmAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
+	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.resource.orm.XmlMappedByMapping <em>Xml Mapped By Mapping</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.eclipse.jpt.core.resource.orm.XmlMappedByMapping
+	 * @generated
+	 */
+	public Adapter createXmlMappedByMappingAdapter()
+	{
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link org.eclipse.jpt.core.resource.orm.XmlOneToOne <em>Xml One To One</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -1553,7 +1616,7 @@ public class EclipseLink1_1OrmAdapterFactory extends AdapterFactoryImpl
 	 * @see org.eclipse.jpt.core.resource.orm.XmlOneToOne
 	 * @generated
 	 */
-	public Adapter createXmlOneToOne_1Adapter()
+	public Adapter createOrm_XmlOneToOneAdapter()
 	{
 		return null;
 	}
@@ -1598,7 +1661,7 @@ public class EclipseLink1_1OrmAdapterFactory extends AdapterFactoryImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlOneToOne
 	 * @generated
 	 */
-	public Adapter createXmlOneToOne_2Adapter()
+	public Adapter createEclipseLinkOrm_XmlOneToOneAdapter()
 	{
 		return null;
 	}
@@ -1613,7 +1676,7 @@ public class EclipseLink1_1OrmAdapterFactory extends AdapterFactoryImpl
 	 * @see org.eclipse.jpt.core.resource.orm.XmlOneToOneImpl
 	 * @generated
 	 */
-	public Adapter createXmlOneToOneImpl_1Adapter()
+	public Adapter createOrm_XmlOneToOneImplAdapter()
 	{
 		return null;
 	}
@@ -1628,7 +1691,7 @@ public class EclipseLink1_1OrmAdapterFactory extends AdapterFactoryImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlOneToOneImpl
 	 * @generated
 	 */
-	public Adapter createXmlOneToOneImpl_2Adapter()
+	public Adapter createEclipseLinkOrm_XmlOneToOneImplAdapter()
 	{
 		return null;
 	}
@@ -1658,7 +1721,7 @@ public class EclipseLink1_1OrmAdapterFactory extends AdapterFactoryImpl
 	 * @see org.eclipse.jpt.core.resource.orm.XmlOneToMany
 	 * @generated
 	 */
-	public Adapter createXmlOneToMany_1Adapter()
+	public Adapter createOrm_XmlOneToManyAdapter()
 	{
 		return null;
 	}
@@ -1673,7 +1736,7 @@ public class EclipseLink1_1OrmAdapterFactory extends AdapterFactoryImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlOneToMany
 	 * @generated
 	 */
-	public Adapter createXmlOneToMany_2Adapter()
+	public Adapter createEclipseLinkOrm_XmlOneToManyAdapter()
 	{
 		return null;
 	}
@@ -1688,7 +1751,7 @@ public class EclipseLink1_1OrmAdapterFactory extends AdapterFactoryImpl
 	 * @see org.eclipse.jpt.core.resource.orm.XmlOneToManyImpl
 	 * @generated
 	 */
-	public Adapter createXmlOneToManyImpl_1Adapter()
+	public Adapter createOrm_XmlOneToManyImplAdapter()
 	{
 		return null;
 	}
@@ -1703,7 +1766,7 @@ public class EclipseLink1_1OrmAdapterFactory extends AdapterFactoryImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlOneToManyImpl
 	 * @generated
 	 */
-	public Adapter createXmlOneToManyImpl_2Adapter()
+	public Adapter createEclipseLinkOrm_XmlOneToManyImplAdapter()
 	{
 		return null;
 	}
@@ -1718,7 +1781,7 @@ public class EclipseLink1_1OrmAdapterFactory extends AdapterFactoryImpl
 	 * @see org.eclipse.jpt.core.resource.orm.XmlManyToOne
 	 * @generated
 	 */
-	public Adapter createXmlManyToOne_1Adapter()
+	public Adapter createOrm_XmlManyToOneAdapter()
 	{
 		return null;
 	}
@@ -1733,7 +1796,7 @@ public class EclipseLink1_1OrmAdapterFactory extends AdapterFactoryImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlManyToOne
 	 * @generated
 	 */
-	public Adapter createXmlManyToOne_2Adapter()
+	public Adapter createEclipseLinkOrm_XmlManyToOneAdapter()
 	{
 		return null;
 	}
@@ -1748,7 +1811,7 @@ public class EclipseLink1_1OrmAdapterFactory extends AdapterFactoryImpl
 	 * @see org.eclipse.jpt.core.resource.orm.XmlManyToOneImpl
 	 * @generated
 	 */
-	public Adapter createXmlManyToOneImpl_1Adapter()
+	public Adapter createOrm_XmlManyToOneImplAdapter()
 	{
 		return null;
 	}
@@ -1763,7 +1826,7 @@ public class EclipseLink1_1OrmAdapterFactory extends AdapterFactoryImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlManyToOneImpl
 	 * @generated
 	 */
-	public Adapter createXmlManyToOneImpl_2Adapter()
+	public Adapter createEclipseLinkOrm_XmlManyToOneImplAdapter()
 	{
 		return null;
 	}
@@ -1778,7 +1841,7 @@ public class EclipseLink1_1OrmAdapterFactory extends AdapterFactoryImpl
 	 * @see org.eclipse.jpt.core.resource.orm.XmlManyToMany
 	 * @generated
 	 */
-	public Adapter createXmlManyToMany_1Adapter()
+	public Adapter createOrm_XmlManyToManyAdapter()
 	{
 		return null;
 	}
@@ -1793,7 +1856,7 @@ public class EclipseLink1_1OrmAdapterFactory extends AdapterFactoryImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlManyToMany
 	 * @generated
 	 */
-	public Adapter createXmlManyToMany_2Adapter()
+	public Adapter createEclipseLinkOrm_XmlManyToManyAdapter()
 	{
 		return null;
 	}
@@ -1808,7 +1871,7 @@ public class EclipseLink1_1OrmAdapterFactory extends AdapterFactoryImpl
 	 * @see org.eclipse.jpt.core.resource.orm.XmlManyToManyImpl
 	 * @generated
 	 */
-	public Adapter createXmlManyToManyImpl_1Adapter()
+	public Adapter createOrm_XmlManyToManyImplAdapter()
 	{
 		return null;
 	}
@@ -1823,7 +1886,7 @@ public class EclipseLink1_1OrmAdapterFactory extends AdapterFactoryImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlManyToManyImpl
 	 * @generated
 	 */
-	public Adapter createXmlManyToManyImpl_2Adapter()
+	public Adapter createEclipseLinkOrm_XmlManyToManyImplAdapter()
 	{
 		return null;
 	}
@@ -1838,7 +1901,7 @@ public class EclipseLink1_1OrmAdapterFactory extends AdapterFactoryImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicCollection
 	 * @generated
 	 */
-	public Adapter createXmlBasicCollection_1Adapter()
+	public Adapter createEclipseLinkOrm_XmlBasicCollectionAdapter()
 	{
 		return null;
 	}
@@ -1853,7 +1916,7 @@ public class EclipseLink1_1OrmAdapterFactory extends AdapterFactoryImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicCollectionImpl
 	 * @generated
 	 */
-	public Adapter createXmlBasicCollectionImpl_1Adapter()
+	public Adapter createEclipseLinkOrm_XmlBasicCollectionImplAdapter()
 	{
 		return null;
 	}
@@ -1868,7 +1931,7 @@ public class EclipseLink1_1OrmAdapterFactory extends AdapterFactoryImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicMap
 	 * @generated
 	 */
-	public Adapter createXmlBasicMap_1Adapter()
+	public Adapter createEclipseLinkOrm_XmlBasicMapAdapter()
 	{
 		return null;
 	}
@@ -1883,7 +1946,7 @@ public class EclipseLink1_1OrmAdapterFactory extends AdapterFactoryImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicMapImpl
 	 * @generated
 	 */
-	public Adapter createXmlBasicMapImpl_1Adapter()
+	public Adapter createEclipseLinkOrm_XmlBasicMapImplAdapter()
 	{
 		return null;
 	}
@@ -1898,7 +1961,7 @@ public class EclipseLink1_1OrmAdapterFactory extends AdapterFactoryImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlTransformation
 	 * @generated
 	 */
-	public Adapter createXmlTransformation_1Adapter()
+	public Adapter createEclipseLinkOrm_XmlTransformationAdapter()
 	{
 		return null;
 	}
@@ -1913,7 +1976,7 @@ public class EclipseLink1_1OrmAdapterFactory extends AdapterFactoryImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlTransformationImpl
 	 * @generated
 	 */
-	public Adapter createXmlTransformationImpl_1Adapter()
+	public Adapter createEclipseLinkOrm_XmlTransformationImplAdapter()
 	{
 		return null;
 	}
@@ -1928,7 +1991,7 @@ public class EclipseLink1_1OrmAdapterFactory extends AdapterFactoryImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlVariableOneToOne
 	 * @generated
 	 */
-	public Adapter createXmlVariableOneToOne_1Adapter()
+	public Adapter createEclipseLinkOrm_XmlVariableOneToOneAdapter()
 	{
 		return null;
 	}
@@ -1943,7 +2006,7 @@ public class EclipseLink1_1OrmAdapterFactory extends AdapterFactoryImpl
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlVariableOneToOneImpl
 	 * @generated
 	 */
-	public Adapter createXmlVariableOneToOneImpl_1Adapter()
+	public Adapter createEclipseLinkOrm_XmlVariableOneToOneImplAdapter()
 	{
 		return null;
 	}
@@ -1958,7 +2021,7 @@ public class EclipseLink1_1OrmAdapterFactory extends AdapterFactoryImpl
 	 * @see org.eclipse.jpt.core.resource.orm.XmlTransient
 	 * @generated
 	 */
-	public Adapter createXmlTransient_1Adapter()
+	public Adapter createOrm_XmlTransientAdapter()
 	{
 		return null;
 	}
@@ -1973,7 +2036,7 @@ public class EclipseLink1_1OrmAdapterFactory extends AdapterFactoryImpl
 	 * @see org.eclipse.jpt.core.resource.orm.XmlTransientImpl
 	 * @generated
 	 */
-	public Adapter createXmlTransientImpl_1Adapter()
+	public Adapter createOrm_XmlTransientImplAdapter()
 	{
 		return null;
 	}

@@ -73,16 +73,6 @@ public class XmlManyToManyImpl extends AbstractXmlAttributeMapping implements Xm
 	protected FetchType fetch = FETCH_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getJoinTable() <em>Join Table</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getJoinTable()
-	 * @generated
-	 * @ordered
-	 */
-	protected XmlJoinTable joinTable;
-
-	/**
 	 * The cached value of the '{@link #getCascade() <em>Cascade</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -111,6 +101,16 @@ public class XmlManyToManyImpl extends AbstractXmlAttributeMapping implements Xm
 	 * @ordered
 	 */
 	protected String mappedBy = MAPPED_BY_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getJoinTable() <em>Join Table</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getJoinTable()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlJoinTable joinTable;
 
 	/**
 	 * The default value of the '{@link #getOrderBy() <em>Order By</em>}' attribute.
@@ -247,7 +247,7 @@ public class XmlManyToManyImpl extends AbstractXmlAttributeMapping implements Xm
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Mapped By</em>' attribute.
 	 * @see #setMappedBy(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlMultiRelationshipMapping_MappedBy()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlMappedByMapping_MappedBy()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -377,7 +377,7 @@ public class XmlManyToManyImpl extends AbstractXmlAttributeMapping implements Xm
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Join Table</em>' containment reference.
 	 * @see #setJoinTable(XmlJoinTable)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlRelationshipMapping_JoinTable()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlJoinTableMapping_JoinTable()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -497,10 +497,10 @@ public class XmlManyToManyImpl extends AbstractXmlAttributeMapping implements Xm
 	{
 		switch (featureID)
 		{
-			case OrmPackage.XML_MANY_TO_MANY_IMPL__JOIN_TABLE:
-				return basicSetJoinTable(null, msgs);
 			case OrmPackage.XML_MANY_TO_MANY_IMPL__CASCADE:
 				return basicSetCascade(null, msgs);
+			case OrmPackage.XML_MANY_TO_MANY_IMPL__JOIN_TABLE:
+				return basicSetJoinTable(null, msgs);
 			case OrmPackage.XML_MANY_TO_MANY_IMPL__MAP_KEY:
 				return basicSetMapKey(null, msgs);
 		}
@@ -521,12 +521,12 @@ public class XmlManyToManyImpl extends AbstractXmlAttributeMapping implements Xm
 				return getTargetEntity();
 			case OrmPackage.XML_MANY_TO_MANY_IMPL__FETCH:
 				return getFetch();
-			case OrmPackage.XML_MANY_TO_MANY_IMPL__JOIN_TABLE:
-				return getJoinTable();
 			case OrmPackage.XML_MANY_TO_MANY_IMPL__CASCADE:
 				return getCascade();
 			case OrmPackage.XML_MANY_TO_MANY_IMPL__MAPPED_BY:
 				return getMappedBy();
+			case OrmPackage.XML_MANY_TO_MANY_IMPL__JOIN_TABLE:
+				return getJoinTable();
 			case OrmPackage.XML_MANY_TO_MANY_IMPL__ORDER_BY:
 				return getOrderBy();
 			case OrmPackage.XML_MANY_TO_MANY_IMPL__MAP_KEY:
@@ -551,14 +551,14 @@ public class XmlManyToManyImpl extends AbstractXmlAttributeMapping implements Xm
 			case OrmPackage.XML_MANY_TO_MANY_IMPL__FETCH:
 				setFetch((FetchType)newValue);
 				return;
-			case OrmPackage.XML_MANY_TO_MANY_IMPL__JOIN_TABLE:
-				setJoinTable((XmlJoinTable)newValue);
-				return;
 			case OrmPackage.XML_MANY_TO_MANY_IMPL__CASCADE:
 				setCascade((CascadeType)newValue);
 				return;
 			case OrmPackage.XML_MANY_TO_MANY_IMPL__MAPPED_BY:
 				setMappedBy((String)newValue);
+				return;
+			case OrmPackage.XML_MANY_TO_MANY_IMPL__JOIN_TABLE:
+				setJoinTable((XmlJoinTable)newValue);
 				return;
 			case OrmPackage.XML_MANY_TO_MANY_IMPL__ORDER_BY:
 				setOrderBy((String)newValue);
@@ -586,14 +586,14 @@ public class XmlManyToManyImpl extends AbstractXmlAttributeMapping implements Xm
 			case OrmPackage.XML_MANY_TO_MANY_IMPL__FETCH:
 				setFetch(FETCH_EDEFAULT);
 				return;
-			case OrmPackage.XML_MANY_TO_MANY_IMPL__JOIN_TABLE:
-				setJoinTable((XmlJoinTable)null);
-				return;
 			case OrmPackage.XML_MANY_TO_MANY_IMPL__CASCADE:
 				setCascade((CascadeType)null);
 				return;
 			case OrmPackage.XML_MANY_TO_MANY_IMPL__MAPPED_BY:
 				setMappedBy(MAPPED_BY_EDEFAULT);
+				return;
+			case OrmPackage.XML_MANY_TO_MANY_IMPL__JOIN_TABLE:
+				setJoinTable((XmlJoinTable)null);
 				return;
 			case OrmPackage.XML_MANY_TO_MANY_IMPL__ORDER_BY:
 				setOrderBy(ORDER_BY_EDEFAULT);
@@ -619,12 +619,12 @@ public class XmlManyToManyImpl extends AbstractXmlAttributeMapping implements Xm
 				return TARGET_ENTITY_EDEFAULT == null ? targetEntity != null : !TARGET_ENTITY_EDEFAULT.equals(targetEntity);
 			case OrmPackage.XML_MANY_TO_MANY_IMPL__FETCH:
 				return fetch != FETCH_EDEFAULT;
-			case OrmPackage.XML_MANY_TO_MANY_IMPL__JOIN_TABLE:
-				return joinTable != null;
 			case OrmPackage.XML_MANY_TO_MANY_IMPL__CASCADE:
 				return cascade != null;
 			case OrmPackage.XML_MANY_TO_MANY_IMPL__MAPPED_BY:
 				return MAPPED_BY_EDEFAULT == null ? mappedBy != null : !MAPPED_BY_EDEFAULT.equals(mappedBy);
+			case OrmPackage.XML_MANY_TO_MANY_IMPL__JOIN_TABLE:
+				return joinTable != null;
 			case OrmPackage.XML_MANY_TO_MANY_IMPL__ORDER_BY:
 				return ORDER_BY_EDEFAULT == null ? orderBy != null : !ORDER_BY_EDEFAULT.equals(orderBy);
 			case OrmPackage.XML_MANY_TO_MANY_IMPL__MAP_KEY:
@@ -647,8 +647,23 @@ public class XmlManyToManyImpl extends AbstractXmlAttributeMapping implements Xm
 			{
 				case OrmPackage.XML_MANY_TO_MANY_IMPL__TARGET_ENTITY: return OrmPackage.XML_RELATIONSHIP_MAPPING__TARGET_ENTITY;
 				case OrmPackage.XML_MANY_TO_MANY_IMPL__FETCH: return OrmPackage.XML_RELATIONSHIP_MAPPING__FETCH;
-				case OrmPackage.XML_MANY_TO_MANY_IMPL__JOIN_TABLE: return OrmPackage.XML_RELATIONSHIP_MAPPING__JOIN_TABLE;
 				case OrmPackage.XML_MANY_TO_MANY_IMPL__CASCADE: return OrmPackage.XML_RELATIONSHIP_MAPPING__CASCADE;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlMappedByMapping.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.XML_MANY_TO_MANY_IMPL__MAPPED_BY: return OrmPackage.XML_MAPPED_BY_MAPPING__MAPPED_BY;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlJoinTableMapping.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.XML_MANY_TO_MANY_IMPL__JOIN_TABLE: return OrmPackage.XML_JOIN_TABLE_MAPPING__JOIN_TABLE;
 				default: return -1;
 			}
 		}
@@ -656,7 +671,6 @@ public class XmlManyToManyImpl extends AbstractXmlAttributeMapping implements Xm
 		{
 			switch (derivedFeatureID)
 			{
-				case OrmPackage.XML_MANY_TO_MANY_IMPL__MAPPED_BY: return OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__MAPPED_BY;
 				case OrmPackage.XML_MANY_TO_MANY_IMPL__ORDER_BY: return OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__ORDER_BY;
 				case OrmPackage.XML_MANY_TO_MANY_IMPL__MAP_KEY: return OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY;
 				default: return -1;
@@ -686,8 +700,23 @@ public class XmlManyToManyImpl extends AbstractXmlAttributeMapping implements Xm
 			{
 				case OrmPackage.XML_RELATIONSHIP_MAPPING__TARGET_ENTITY: return OrmPackage.XML_MANY_TO_MANY_IMPL__TARGET_ENTITY;
 				case OrmPackage.XML_RELATIONSHIP_MAPPING__FETCH: return OrmPackage.XML_MANY_TO_MANY_IMPL__FETCH;
-				case OrmPackage.XML_RELATIONSHIP_MAPPING__JOIN_TABLE: return OrmPackage.XML_MANY_TO_MANY_IMPL__JOIN_TABLE;
 				case OrmPackage.XML_RELATIONSHIP_MAPPING__CASCADE: return OrmPackage.XML_MANY_TO_MANY_IMPL__CASCADE;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlMappedByMapping.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmPackage.XML_MAPPED_BY_MAPPING__MAPPED_BY: return OrmPackage.XML_MANY_TO_MANY_IMPL__MAPPED_BY;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlJoinTableMapping.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmPackage.XML_JOIN_TABLE_MAPPING__JOIN_TABLE: return OrmPackage.XML_MANY_TO_MANY_IMPL__JOIN_TABLE;
 				default: return -1;
 			}
 		}
@@ -695,7 +724,6 @@ public class XmlManyToManyImpl extends AbstractXmlAttributeMapping implements Xm
 		{
 			switch (baseFeatureID)
 			{
-				case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__MAPPED_BY: return OrmPackage.XML_MANY_TO_MANY_IMPL__MAPPED_BY;
 				case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__ORDER_BY: return OrmPackage.XML_MANY_TO_MANY_IMPL__ORDER_BY;
 				case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY: return OrmPackage.XML_MANY_TO_MANY_IMPL__MAP_KEY;
 				default: return -1;

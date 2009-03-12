@@ -11,7 +11,10 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.JoinColumn;
+import org.eclipse.jpt.core.context.JoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.context.RelationshipMapping;
+import org.eclipse.jpt.core.context.RelationshipReference;
+import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.Table;
 
@@ -20,38 +23,57 @@ import org.eclipse.jpt.db.Table;
  * relationship mapping.
  *
  * @see JoinColumn
- * @see RelationshipMapping
- * @see JoinColumnInRelationshipMappingDialog
+ * @see JoinColumnJoiningStrategy
+ * @see JoinColumnInJoiningStrategyDialog
  *
  * @version 2.0
  * @since 2.0
  */
-public class JoinColumnInRelationshipMappingStateObject extends JoinColumnStateObject
+public class JoinColumnInJoiningStrategyStateObject 
+	extends JoinColumnStateObject
 {
 	/**
-	 * Creates a new <code>JoinColumnInRelationshipMappingStateObject</code>.
+	 * Creates a new <code>JoinColumnInJoiningStrategyStateObject</code>.
 	 *
-	 * @param relationshipMapping The owner of the join column to create
+	 * @param joiningStrategy The owner of the join column to create
 	 * @param joinColumn The join column to edit or <code>null</code> if this is
 	 * used to create a new one
 	 */
-	public JoinColumnInRelationshipMappingStateObject(RelationshipMapping relationshipMapping,
-	                                                  JoinColumn joinColumn) {
-		super(relationshipMapping, joinColumn);
+	public JoinColumnInJoiningStrategyStateObject(
+			JoinColumnJoiningStrategy joiningStrategy,
+		    JoinColumn joinColumn) {
+		super(joiningStrategy, joinColumn);
 	}
-
+	
+	
+	@Override
+	public JoinColumnJoiningStrategy getOwner() {
+		return (JoinColumnJoiningStrategy) super.getOwner();
+	}
+	
+	private RelationshipReference getRelationshipReference() {
+		return getOwner().getRelationshipReference();
+	}
+	
+	private RelationshipMapping getRelationshipMapping() {
+		return getRelationshipReference().getRelationshipMapping();
+	}
+	
+	private TypeMapping getTypeMapping() {
+		return getRelationshipMapping().getTypeMapping();
+	}
+	
 	@Override
 	public String getDefaultTable() {
-
 		JoinColumn joinColumn = getJoinColumn();
-
+		
 		if (joinColumn != null) {
 			return joinColumn.getDefaultTable();
 		}
-
-		return getOwner().getTypeMapping().getPrimaryTableName();
+		
+		return getTypeMapping().getPrimaryTableName();
 	}
-
+	
 	@Override
 	public Table getNameTable() {
 		Schema schema = this.getDbSchema();
@@ -66,15 +88,10 @@ public class JoinColumnInRelationshipMappingStateObject extends JoinColumnStateO
 
 		return schema.getTableForIdentifier(tableIdentifier);
 	}
-
-	@Override
-	public RelationshipMapping getOwner() {
-		return (RelationshipMapping) super.getOwner();
-	}
-
+	
 	@Override
 	public Table getReferencedNameTable() {
-		Entity targetEntity = getOwner().getResolvedTargetEntity();
+		Entity targetEntity = getRelationshipMapping().getResolvedTargetEntity();
 
 		if (targetEntity != null) {
 			return targetEntity.getPrimaryDbTable();
@@ -82,10 +99,9 @@ public class JoinColumnInRelationshipMappingStateObject extends JoinColumnStateO
 
 		return null;
 	}
-
+	
 	@Override
 	public Schema getDbSchema() {
-		return getOwner().getTypeMapping().getDbSchema();
+		return getTypeMapping().getDbSchema();
 	}
-
 }

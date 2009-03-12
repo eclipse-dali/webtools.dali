@@ -30,7 +30,8 @@ import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
  * @version 2.0
  * @since 2.0
  */
-public class JoinColumnInJoinTableStateObject extends JoinColumnStateObject
+public class JoinColumnInJoinTableStateObject 
+	extends JoinColumnStateObject
 {
 	/**
 	 * Creates a new <code>JoinColumnInJoinTableStateObject</code>.
@@ -38,55 +39,52 @@ public class JoinColumnInJoinTableStateObject extends JoinColumnStateObject
 	 * @param joinTable The owner of the join column to create or to edit
 	 * @param joinColumn The join column to edit
 	 */
-	public JoinColumnInJoinTableStateObject(JoinTable joinTable,
-	                                        JoinColumn joinColumn) {
+	public JoinColumnInJoinTableStateObject(
+			JoinTable joinTable,
+	        JoinColumn joinColumn) {
 		super(joinTable, joinColumn);
 	}
-
-	@Override
-	public String getDefaultTable() {
-		return null;
-	}
-
-	@Override
-	public Table getNameTable() {
-		return getOwner().getDbTable();
-	}
-
+	
+	
 	@Override
 	public JoinTable getOwner() {
 		return (JoinTable) super.getOwner();
 	}
-
+	
+	private RelationshipMapping getRelationshipMapping() {
+		return getOwner().getRelationshipMapping();
+	}
+	
+	@Override
+	public String getDefaultTable() {
+		return null;
+	}
+	
+	@Override
+	public Table getNameTable() {
+		return getOwner().getDbTable();
+	}
+	
 	@Override
 	public Table getReferencedNameTable() {
 		return getRelationshipMapping().getTypeMapping().getPrimaryDbTable();
 	}
-
+	
 	@Override
 	protected Schema getDbSchema() {
 		return null;
 	}
-
+	
 	@Override
 	protected String getInitialTable() {
 		return getOwner().getName();
 	}
-
+	
 	@Override
 	protected boolean isTableEditable() {
 		return false;
 	}
-
-	/**
-	 * Returns the mapping owning the join table.
-	 *
-	 * @return The parent of the join table
-	 */
-	public RelationshipMapping getRelationshipMapping() {
-		return getOwner().getParent();
-	}
-
+	
 	@Override
 	public ListIterator<String> tables() {
 		return new SingleElementListIterator<String>(getInitialTable());

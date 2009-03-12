@@ -21,7 +21,8 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 
-public class GenericJavaTransientMapping extends AbstractJavaAttributeMapping<TransientAnnotation>
+public class GenericJavaTransientMapping
+	extends AbstractJavaAttributeMapping<TransientAnnotation>
 	implements JavaTransientMapping
 {
 	public GenericJavaTransientMapping(JavaPersistentAttribute parent) {
@@ -44,5 +45,4 @@ public class GenericJavaTransientMapping extends AbstractJavaAttributeMapping<Tr
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
 	}
-	
 }

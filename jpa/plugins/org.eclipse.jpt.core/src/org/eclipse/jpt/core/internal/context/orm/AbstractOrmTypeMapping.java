@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.Iterator;
 import java.util.List;
-
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.PersistentAttribute;
@@ -257,7 +256,11 @@ public abstract class AbstractOrmTypeMapping<T extends XmlTypeMapping>
 			return;
 		}
 	}
-
+	
+	public boolean shouldValidateAgainstDatabase() {
+		return getPersistenceUnit().shouldValidateAgainstDatabase();
+	}
+	
 	public TextRange getValidationTextRange() {
 		return this.resourceTypeMapping.getValidationTextRange();
 	}
@@ -266,5 +269,4 @@ public abstract class AbstractOrmTypeMapping<T extends XmlTypeMapping>
 	public void toString(StringBuilder sb) {
 		sb.append(this.getPersistentType().getName());
 	}
-
 }

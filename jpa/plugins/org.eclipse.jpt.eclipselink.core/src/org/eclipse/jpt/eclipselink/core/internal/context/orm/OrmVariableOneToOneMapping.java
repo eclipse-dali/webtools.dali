@@ -17,10 +17,11 @@ import org.eclipse.jpt.eclipselink.core.context.VariableOneToOneMapping;
 import org.eclipse.jpt.eclipselink.core.resource.orm.Attributes;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlVariableOneToOne;
 
-public class OrmVariableOneToOneMapping extends AbstractOrmAttributeMapping<XmlVariableOneToOne> implements VariableOneToOneMapping
+public class OrmVariableOneToOneMapping<T extends XmlVariableOneToOne>
+	extends AbstractOrmAttributeMapping<T> 
+	implements VariableOneToOneMapping
 {
-	
-	public OrmVariableOneToOneMapping(OrmPersistentAttribute parent, XmlVariableOneToOne resourceMapping) {
+	public OrmVariableOneToOneMapping(OrmPersistentAttribute parent, T resourceMapping) {
 		super(parent, resourceMapping);
 	}
 	

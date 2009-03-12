@@ -20,5 +20,5 @@ package org.eclipse.jpt.core.context;
  */
 public interface ManyToManyMapping extends MultiRelationshipMapping
 {
-	// nothing yet
+	public ManyToManyRelationshipReference getRelationshipReference();
 }

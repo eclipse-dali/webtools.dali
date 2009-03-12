@@ -22,13 +22,14 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.XmlMutable;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class EclipseLinkOrmIdMapping extends GenericOrmIdMapping
+public class EclipseLinkOrmIdMapping<T extends XmlId> 
+	extends GenericOrmIdMapping<T>
 	implements EclipseLinkIdMapping
 {
 	protected EclipseLinkOrmMutable mutable;
 	
 	
-	public EclipseLinkOrmIdMapping(OrmPersistentAttribute parent, XmlId resourceMapping) {
+	public EclipseLinkOrmIdMapping(OrmPersistentAttribute parent, T resourceMapping) {
 		super(parent, resourceMapping);
 		this.mutable = new EclipseLinkOrmMutable(this, (XmlMutable) this.resourceAttributeMapping);
 	}

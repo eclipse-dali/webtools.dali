@@ -17,10 +17,12 @@ import org.eclipse.jpt.core.resource.orm.Attributes;
 import org.eclipse.jpt.core.resource.orm.XmlEmbeddedId;
 
 
-public class GenericOrmEmbeddedIdMapping extends AbstractOrmBaseEmbeddedMapping<XmlEmbeddedId> implements OrmEmbeddedIdMapping
+public class GenericOrmEmbeddedIdMapping<T extends XmlEmbeddedId>
+	extends AbstractOrmBaseEmbeddedMapping<T> 
+	implements OrmEmbeddedIdMapping
 {
 
-	public GenericOrmEmbeddedIdMapping(OrmPersistentAttribute parent, XmlEmbeddedId resourceMapping) {
+	public GenericOrmEmbeddedIdMapping(OrmPersistentAttribute parent, T resourceMapping) {
 		super(parent, resourceMapping);
 	}
 

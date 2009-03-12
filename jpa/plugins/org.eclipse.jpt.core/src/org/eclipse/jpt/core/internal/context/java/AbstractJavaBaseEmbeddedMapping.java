@@ -44,7 +44,8 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 
-public abstract class AbstractJavaBaseEmbeddedMapping<T extends JavaResourceNode> extends AbstractJavaAttributeMapping<T>
+public abstract class AbstractJavaBaseEmbeddedMapping<T extends JavaResourceNode>
+	extends AbstractJavaAttributeMapping<T>
 	implements JavaBaseEmbeddedMapping
 {
 	protected final List<JavaAttributeOverride> specifiedAttributeOverrides;

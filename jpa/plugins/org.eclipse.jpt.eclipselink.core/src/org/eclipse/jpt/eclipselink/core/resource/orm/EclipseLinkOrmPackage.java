@@ -17,7 +17,6 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.eclipse.emf.ecore.xml.type.XMLTypePackage;
 import org.eclipse.jpt.core.resource.orm.OrmPackage;
-import org.eclipse.jpt.eclipselink1_1.core.resource.orm.EclipseLink1_1OrmPackage;
 
 /**
  * <!-- begin-user-doc -->
@@ -4005,15 +4004,6 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	public static final int XML_ONE_TO_ONE__FETCH = OrmPackage.XML_ONE_TO_ONE__FETCH;
 
 	/**
-	 * The feature id for the '<em><b>Join Table</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ONE_TO_ONE__JOIN_TABLE = OrmPackage.XML_ONE_TO_ONE__JOIN_TABLE;
-
-	/**
 	 * The feature id for the '<em><b>Cascade</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -4023,13 +4013,13 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	public static final int XML_ONE_TO_ONE__CASCADE = OrmPackage.XML_ONE_TO_ONE__CASCADE;
 
 	/**
-	 * The feature id for the '<em><b>Optional</b></em>' attribute.
+	 * The feature id for the '<em><b>Join Table</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ONE_TO_ONE__OPTIONAL = OrmPackage.XML_ONE_TO_ONE__OPTIONAL;
+	public static final int XML_ONE_TO_ONE__JOIN_TABLE = OrmPackage.XML_ONE_TO_ONE__JOIN_TABLE;
 
 	/**
 	 * The feature id for the '<em><b>Join Columns</b></em>' containment reference list.
@@ -4039,6 +4029,15 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int XML_ONE_TO_ONE__JOIN_COLUMNS = OrmPackage.XML_ONE_TO_ONE__JOIN_COLUMNS;
+
+	/**
+	 * The feature id for the '<em><b>Optional</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ONE_TO_ONE__OPTIONAL = OrmPackage.XML_ONE_TO_ONE__OPTIONAL;
 
 	/**
 	 * The feature id for the '<em><b>Mapped By</b></em>' attribute.
@@ -4131,15 +4130,6 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	public static final int XML_ONE_TO_ONE_IMPL__FETCH = OrmPackage.XML_ONE_TO_ONE_IMPL__FETCH;
 
 	/**
-	 * The feature id for the '<em><b>Join Table</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ONE_TO_ONE_IMPL__JOIN_TABLE = OrmPackage.XML_ONE_TO_ONE_IMPL__JOIN_TABLE;
-
-	/**
 	 * The feature id for the '<em><b>Cascade</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -4149,13 +4139,13 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	public static final int XML_ONE_TO_ONE_IMPL__CASCADE = OrmPackage.XML_ONE_TO_ONE_IMPL__CASCADE;
 
 	/**
-	 * The feature id for the '<em><b>Optional</b></em>' attribute.
+	 * The feature id for the '<em><b>Join Table</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ONE_TO_ONE_IMPL__OPTIONAL = OrmPackage.XML_ONE_TO_ONE_IMPL__OPTIONAL;
+	public static final int XML_ONE_TO_ONE_IMPL__JOIN_TABLE = OrmPackage.XML_ONE_TO_ONE_IMPL__JOIN_TABLE;
 
 	/**
 	 * The feature id for the '<em><b>Join Columns</b></em>' containment reference list.
@@ -4165,6 +4155,15 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int XML_ONE_TO_ONE_IMPL__JOIN_COLUMNS = OrmPackage.XML_ONE_TO_ONE_IMPL__JOIN_COLUMNS;
+
+	/**
+	 * The feature id for the '<em><b>Optional</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ONE_TO_ONE_IMPL__OPTIONAL = OrmPackage.XML_ONE_TO_ONE_IMPL__OPTIONAL;
 
 	/**
 	 * The feature id for the '<em><b>Mapped By</b></em>' attribute.
@@ -4257,15 +4256,6 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	public static final int XML_ONE_TO_MANY__FETCH = OrmPackage.XML_ONE_TO_MANY__FETCH;
 
 	/**
-	 * The feature id for the '<em><b>Join Table</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ONE_TO_MANY__JOIN_TABLE = OrmPackage.XML_ONE_TO_MANY__JOIN_TABLE;
-
-	/**
 	 * The feature id for the '<em><b>Cascade</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -4282,6 +4272,15 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int XML_ONE_TO_MANY__MAPPED_BY = OrmPackage.XML_ONE_TO_MANY__MAPPED_BY;
+
+	/**
+	 * The feature id for the '<em><b>Join Table</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ONE_TO_MANY__JOIN_TABLE = OrmPackage.XML_ONE_TO_MANY__JOIN_TABLE;
 
 	/**
 	 * The feature id for the '<em><b>Order By</b></em>' attribute.
@@ -4383,15 +4382,6 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	public static final int XML_ONE_TO_MANY_IMPL__FETCH = OrmPackage.XML_ONE_TO_MANY_IMPL__FETCH;
 
 	/**
-	 * The feature id for the '<em><b>Join Table</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ONE_TO_MANY_IMPL__JOIN_TABLE = OrmPackage.XML_ONE_TO_MANY_IMPL__JOIN_TABLE;
-
-	/**
 	 * The feature id for the '<em><b>Cascade</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -4408,6 +4398,15 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int XML_ONE_TO_MANY_IMPL__MAPPED_BY = OrmPackage.XML_ONE_TO_MANY_IMPL__MAPPED_BY;
+
+	/**
+	 * The feature id for the '<em><b>Join Table</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ONE_TO_MANY_IMPL__JOIN_TABLE = OrmPackage.XML_ONE_TO_MANY_IMPL__JOIN_TABLE;
 
 	/**
 	 * The feature id for the '<em><b>Order By</b></em>' attribute.
@@ -4436,6 +4435,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 */
 	public static final int XML_ONE_TO_MANY_IMPL__JOIN_COLUMNS = OrmPackage.XML_ONE_TO_MANY_IMPL__JOIN_COLUMNS;
 
+	
 	/**
 	 * The feature id for the '<em><b>Private Owned</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -4509,15 +4509,6 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	public static final int XML_MANY_TO_ONE__FETCH = OrmPackage.XML_MANY_TO_ONE__FETCH;
 
 	/**
-	 * The feature id for the '<em><b>Join Table</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_MANY_TO_ONE__JOIN_TABLE = OrmPackage.XML_MANY_TO_ONE__JOIN_TABLE;
-
-	/**
 	 * The feature id for the '<em><b>Cascade</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -4527,13 +4518,13 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	public static final int XML_MANY_TO_ONE__CASCADE = OrmPackage.XML_MANY_TO_ONE__CASCADE;
 
 	/**
-	 * The feature id for the '<em><b>Optional</b></em>' attribute.
+	 * The feature id for the '<em><b>Join Table</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MANY_TO_ONE__OPTIONAL = OrmPackage.XML_MANY_TO_ONE__OPTIONAL;
+	public static final int XML_MANY_TO_ONE__JOIN_TABLE = OrmPackage.XML_MANY_TO_ONE__JOIN_TABLE;
 
 	/**
 	 * The feature id for the '<em><b>Join Columns</b></em>' containment reference list.
@@ -4543,6 +4534,15 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int XML_MANY_TO_ONE__JOIN_COLUMNS = OrmPackage.XML_MANY_TO_ONE__JOIN_COLUMNS;
+
+	/**
+	 * The feature id for the '<em><b>Optional</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MANY_TO_ONE__OPTIONAL = OrmPackage.XML_MANY_TO_ONE__OPTIONAL;
 
 	/**
 	 * The feature id for the '<em><b>Join Fetch</b></em>' attribute.
@@ -4608,15 +4608,6 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	public static final int XML_MANY_TO_ONE_IMPL__FETCH = OrmPackage.XML_MANY_TO_ONE_IMPL__FETCH;
 
 	/**
-	 * The feature id for the '<em><b>Join Table</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_MANY_TO_ONE_IMPL__JOIN_TABLE = OrmPackage.XML_MANY_TO_ONE_IMPL__JOIN_TABLE;
-
-	/**
 	 * The feature id for the '<em><b>Cascade</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -4626,13 +4617,13 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	public static final int XML_MANY_TO_ONE_IMPL__CASCADE = OrmPackage.XML_MANY_TO_ONE_IMPL__CASCADE;
 
 	/**
-	 * The feature id for the '<em><b>Optional</b></em>' attribute.
+	 * The feature id for the '<em><b>Join Table</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MANY_TO_ONE_IMPL__OPTIONAL = OrmPackage.XML_MANY_TO_ONE_IMPL__OPTIONAL;
+	public static final int XML_MANY_TO_ONE_IMPL__JOIN_TABLE = OrmPackage.XML_MANY_TO_ONE_IMPL__JOIN_TABLE;
 
 	/**
 	 * The feature id for the '<em><b>Join Columns</b></em>' containment reference list.
@@ -4642,6 +4633,15 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int XML_MANY_TO_ONE_IMPL__JOIN_COLUMNS = OrmPackage.XML_MANY_TO_ONE_IMPL__JOIN_COLUMNS;
+
+	/**
+	 * The feature id for the '<em><b>Optional</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MANY_TO_ONE_IMPL__OPTIONAL = OrmPackage.XML_MANY_TO_ONE_IMPL__OPTIONAL;
 
 	/**
 	 * The feature id for the '<em><b>Join Fetch</b></em>' attribute.
@@ -4707,15 +4707,6 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	public static final int XML_MANY_TO_MANY__FETCH = OrmPackage.XML_MANY_TO_MANY__FETCH;
 
 	/**
-	 * The feature id for the '<em><b>Join Table</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_MANY_TO_MANY__JOIN_TABLE = OrmPackage.XML_MANY_TO_MANY__JOIN_TABLE;
-
-	/**
 	 * The feature id for the '<em><b>Cascade</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -4732,6 +4723,15 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int XML_MANY_TO_MANY__MAPPED_BY = OrmPackage.XML_MANY_TO_MANY__MAPPED_BY;
+
+	/**
+	 * The feature id for the '<em><b>Join Table</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MANY_TO_MANY__JOIN_TABLE = OrmPackage.XML_MANY_TO_MANY__JOIN_TABLE;
 
 	/**
 	 * The feature id for the '<em><b>Order By</b></em>' attribute.
@@ -4815,15 +4815,6 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	public static final int XML_MANY_TO_MANY_IMPL__FETCH = OrmPackage.XML_MANY_TO_MANY_IMPL__FETCH;
 
 	/**
-	 * The feature id for the '<em><b>Join Table</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_MANY_TO_MANY_IMPL__JOIN_TABLE = OrmPackage.XML_MANY_TO_MANY_IMPL__JOIN_TABLE;
-
-	/**
 	 * The feature id for the '<em><b>Cascade</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -4840,6 +4831,15 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int XML_MANY_TO_MANY_IMPL__MAPPED_BY = OrmPackage.XML_MANY_TO_MANY_IMPL__MAPPED_BY;
+
+	/**
+	 * The feature id for the '<em><b>Join Table</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MANY_TO_MANY_IMPL__JOIN_TABLE = OrmPackage.XML_MANY_TO_MANY_IMPL__JOIN_TABLE;
 
 	/**
 	 * The feature id for the '<em><b>Order By</b></em>' attribute.
@@ -5981,16 +5981,11 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		OrmPackage.eINSTANCE.eClass();
 		XMLTypePackage.eINSTANCE.eClass();
 
-		// Obtain or create and register interdependencies
-		EclipseLink1_1OrmPackage theEclipseLink1_1OrmPackage = (EclipseLink1_1OrmPackage)(EPackage.Registry.INSTANCE.getEPackage(EclipseLink1_1OrmPackage.eNS_URI) instanceof EclipseLink1_1OrmPackage ? EPackage.Registry.INSTANCE.getEPackage(EclipseLink1_1OrmPackage.eNS_URI) : EclipseLink1_1OrmPackage.eINSTANCE);
-
 		// Create package meta-data objects
 		theEclipseLinkOrmPackage.createPackageContents();
-		theEclipseLink1_1OrmPackage.createPackageContents();
 
 		// Initialize created meta-data
 		theEclipseLinkOrmPackage.initializePackageContents();
-		theEclipseLink1_1OrmPackage.initializePackageContents();
 
 		// Mark meta-data to indicate it can't be changed
 		theEclipseLinkOrmPackage.freeze();

@@ -43,7 +43,7 @@ public abstract class AbstractJavaTypeMapping extends AbstractJavaJpaContextNode
 		return this.javaResourcePersistentType.getMappingAnnotation(getAnnotationName());
 	}
 
-	//***************** ITypeMapping implementation *****************
+	//***************** TypeMapping impl ***************************************
 	
 	public JavaPersistentType getPersistentType() {
 		return getParent();
@@ -121,7 +121,8 @@ public abstract class AbstractJavaTypeMapping extends AbstractJavaJpaContextNode
 			}
 		};
 	}
-
+	
+	
 	//******************** updatating *********************
 	public void initialize(JavaResourcePersistentType jrpt) {
 		this.javaResourcePersistentType = jrpt;
@@ -132,7 +133,11 @@ public abstract class AbstractJavaTypeMapping extends AbstractJavaJpaContextNode
 	}
 	
 	//******************** validation *********************
-
+	
+	public boolean shouldValidateAgainstDatabase() {
+		return getPersistenceUnit().shouldValidateAgainstDatabase();
+	}
+	
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
 		TextRange textRange = this.getResourceMapping().getTextRange(astRoot);
 		return (textRange != null) ? textRange : this.getPersistentType().getValidationTextRange(astRoot);
@@ -142,5 +147,4 @@ public abstract class AbstractJavaTypeMapping extends AbstractJavaJpaContextNode
 	public void toString(StringBuilder sb) {
 		sb.append(this.getPersistentType().getName());
 	}
-
 }

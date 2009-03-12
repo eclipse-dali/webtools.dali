@@ -21,7 +21,9 @@ import org.eclipse.jpt.eclipselink.core.resource.java.ConvertAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class EclipseLinkJavaBasicMappingImpl extends AbstractJavaBasicMapping implements EclipseLinkBasicMapping
+public class EclipseLinkJavaBasicMappingImpl
+	extends AbstractJavaBasicMapping 
+	implements EclipseLinkBasicMapping
 {
 	
 	protected final EclipseLinkJavaMutable mutable;

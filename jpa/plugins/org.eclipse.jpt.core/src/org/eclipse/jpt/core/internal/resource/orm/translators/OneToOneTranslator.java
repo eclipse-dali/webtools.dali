@@ -68,7 +68,7 @@ public class OneToOneTranslator extends Translator
 	}
 	
 	protected Translator createMappedByTranslator() {
-		return new Translator(MAPPED_BY, ORM_PKG.getXmlOneToOne_MappedBy(), DOM_ATTRIBUTE);
+		return new Translator(MAPPED_BY, ORM_PKG.getXmlMappedByMapping_MappedBy(), DOM_ATTRIBUTE);
 	}
 	
 	protected Translator createPrimaryKeyJoinColumnTranslator() {
@@ -76,15 +76,14 @@ public class OneToOneTranslator extends Translator
 	}
 	
 	protected Translator createJoinColumnTranslator() {
-		return new JoinColumnTranslator(JOIN_COLUMN, ORM_PKG.getXmlSingleRelationshipMapping_JoinColumns());
+		return new JoinColumnTranslator(JOIN_COLUMN, ORM_PKG.getXmlJoinColumnsMapping_JoinColumns());
 	}
 	
 	protected Translator createJoinTableTranslator() {
-		return new JoinTableTranslator(JOIN_TABLE, ORM_PKG.getXmlRelationshipMapping_JoinTable());
+		return new JoinTableTranslator(JOIN_TABLE, ORM_PKG.getXmlJoinTableMapping_JoinTable());
 	}
 		
 	protected Translator createCascadeTranslator() {
 		return new CascadeTypeTranslator(CASCADE, ORM_PKG.getXmlRelationshipMapping_Cascade());
 	}
-
 }

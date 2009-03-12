@@ -21,7 +21,8 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.XmlPrivateOwned;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class EclipseLinkOrmOneToOneMapping extends GenericOrmOneToOneMapping
+public class EclipseLinkOrmOneToOneMapping<T extends XmlOneToOne>
+	extends GenericOrmOneToOneMapping<T>
 	implements EclipseLinkOneToOneMapping
 {
 	protected EclipseLinkOrmPrivateOwned privateOwned;
@@ -29,7 +30,7 @@ public class EclipseLinkOrmOneToOneMapping extends GenericOrmOneToOneMapping
 	protected EclipseLinkOrmJoinFetch joinFetch;
 	
 	
-	public EclipseLinkOrmOneToOneMapping(OrmPersistentAttribute parent, XmlOneToOne resourceMapping) {
+	public EclipseLinkOrmOneToOneMapping(OrmPersistentAttribute parent, T resourceMapping) {
 		super(parent, resourceMapping);
 		this.privateOwned = new EclipseLinkOrmPrivateOwned(this, (XmlPrivateOwned) this.resourceAttributeMapping);
 		this.joinFetch = new EclipseLinkOrmJoinFetch(this, (XmlJoinFetch) this.resourceAttributeMapping);

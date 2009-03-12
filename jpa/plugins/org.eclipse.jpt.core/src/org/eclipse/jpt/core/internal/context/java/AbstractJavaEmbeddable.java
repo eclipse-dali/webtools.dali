@@ -43,8 +43,8 @@ public abstract class AbstractJavaEmbeddable extends AbstractJavaTypeMapping imp
 		return false;
 	}
 	
-	public boolean shouldValidateDbInfo() {
+	@Override
+	public boolean shouldValidateAgainstDatabase() {
 		return false;
 	}
-
 }

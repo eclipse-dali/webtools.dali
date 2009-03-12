@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.List;
-import org.eclipse.jpt.core.context.NonOwningMapping;
+import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmBaseEmbeddedMapping;
@@ -97,10 +97,6 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 		initializeFromOrmAttributeMapping((OrmAttributeMapping) oldMapping);
 	}
 
-	public void initializeFromOrmNonOwningMapping(NonOwningMapping oldMapping) {
-		initializeFromOrmAttributeMapping((OrmAttributeMapping) oldMapping);
-	}
-
 	public void initializeFromOrmBasicMapping(OrmBasicMapping oldMapping) {
 		initializeFromOrmColumnMapping(oldMapping);
 	}
@@ -133,7 +129,7 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 		initializeFromOrmAttributeMapping(oldMapping);
 	}
 
-	public void initializeFromOrmMulitRelationshipMapping(OrmMultiRelationshipMapping oldMapping) {
+	public void initializeFromOrmMultiRelationshipMapping(OrmMultiRelationshipMapping oldMapping) {
 		initializeFromOrmRelationshipMapping(oldMapping);
 	}
 
@@ -142,8 +138,7 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 	}
 
 	public void initializeFromOrmOneToManyMapping(OrmOneToManyMapping oldMapping) {
-		initializeFromOrmNonOwningMapping(oldMapping);
-		initializeFromOrmMulitRelationshipMapping(oldMapping);
+		initializeFromOrmMultiRelationshipMapping(oldMapping);
 	}
 
 	public void initializeFromOrmManyToOneMapping(OrmManyToOneMapping oldMapping) {
@@ -151,13 +146,11 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 	}
 
 	public void initializeFromOrmOneToOneMapping(OrmOneToOneMapping oldMapping) {
-		initializeFromOrmNonOwningMapping(oldMapping);
 		initializeFromOrmSingleRelationshipMapping(oldMapping);
 	}
 
 	public void initializeFromOrmManyToManyMapping(OrmManyToManyMapping oldMapping) {
-		initializeFromOrmNonOwningMapping(oldMapping);
-		initializeFromOrmMulitRelationshipMapping(oldMapping);
+		initializeFromOrmMultiRelationshipMapping(oldMapping);
 	}
 
 	public String getPrimaryKeyColumnName() {
@@ -180,6 +173,11 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 	public boolean isIdMapping() {
 		return false;
 	}
+	
+	public boolean isOwnedBy(RelationshipMapping mapping) {
+		// Default implementation - override where needed
+		return false;
+	}
 
 	public T getResourceAttributeMapping() {
 		return this.resourceAttributeMapping;
@@ -192,9 +190,9 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 	protected String getResourceMappingName() {
 		return this.resourceAttributeMapping.getName();
 	}
-
-	protected boolean shouldValidateDbInfo() {
-		return this.getTypeMapping().shouldValidateDbInfo() && connectionProfileIsActive();
+	
+	public boolean shouldValidateAgainstDatabase() {
+		return this.getTypeMapping().shouldValidateAgainstDatabase();
 	}
 
 	public boolean contains(int textOffset) {

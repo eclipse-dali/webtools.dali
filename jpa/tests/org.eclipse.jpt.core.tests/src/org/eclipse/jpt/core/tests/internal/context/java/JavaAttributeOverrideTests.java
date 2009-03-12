@@ -56,19 +56,6 @@ public class JavaAttributeOverrideTests extends ContextModelTestCase
 			}
 		});
 	}
-	
-	private ICompilationUnit createTestEntity() throws Exception {
-		return this.createTestType(new DefaultAnnotationWriter() {
-			@Override
-			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY);
-			}
-			@Override
-			public void appendTypeAnnotationTo(StringBuilder sb) {
-				sb.append("@Entity").append(CR);
-			}
-		});
-	}
 
 	private void createTestSubType() throws Exception {
 		SourceWriter sourceWriter = new SourceWriter() {

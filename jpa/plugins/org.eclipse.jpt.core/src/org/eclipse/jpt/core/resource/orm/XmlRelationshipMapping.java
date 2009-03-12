@@ -28,7 +28,6 @@ import org.eclipse.jpt.core.utility.TextRange;
  * <ul>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlRelationshipMapping#getTargetEntity <em>Target Entity</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlRelationshipMapping#getFetch <em>Fetch</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlRelationshipMapping#getJoinTable <em>Join Table</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlRelationshipMapping#getCascade <em>Cascade</em>}</li>
  * </ul>
  * </p>
@@ -121,32 +120,6 @@ public interface XmlRelationshipMapping extends XmlAttributeMapping
 	 */
 	void setCascade(CascadeType value);
 
-	/**
-	 * Returns the value of the '<em><b>Join Table</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Join Table</em>' containment reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Join Table</em>' containment reference.
-	 * @see #setJoinTable(XmlJoinTable)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlRelationshipMapping_JoinTable()
-	 * @model containment="true"
-	 * @generated
-	 */
-	XmlJoinTable getJoinTable();
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlRelationshipMapping#getJoinTable <em>Join Table</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Join Table</em>' containment reference.
-	 * @see #getJoinTable()
-	 * @generated
-	 */
-	void setJoinTable(XmlJoinTable value);
-	
 	/**
 	 * Return the {@link TextRange} for the target-entity attribute.
 	 */

@@ -14,10 +14,7 @@ import org.eclipse.jpt.core.context.java.JavaPersistentType;
 public class GenericJavaEntity
 	extends AbstractJavaEntity
 {
-
-	
 	public GenericJavaEntity(JavaPersistentType parent) {
 		super(parent);
-	}
-	
+	}	
 }

@@ -65,11 +65,11 @@ public class ManyToOneTranslator extends Translator
 	}
 	
 	protected Translator createJoinColumnTranslator() {
-		return new JoinColumnTranslator(JOIN_COLUMN, ORM_PKG.getXmlSingleRelationshipMapping_JoinColumns());
+		return new JoinColumnTranslator(JOIN_COLUMN, ORM_PKG.getXmlJoinColumnsMapping_JoinColumns());
 	}
 	
 	protected Translator createJoinTableTranslator() {
-		return new JoinTableTranslator(JOIN_TABLE, ORM_PKG.getXmlRelationshipMapping_JoinTable());
+		return new JoinTableTranslator(JOIN_TABLE, ORM_PKG.getXmlJoinTableMapping_JoinTable());
 	}
 		
 	protected Translator createCascadeTranslator() {

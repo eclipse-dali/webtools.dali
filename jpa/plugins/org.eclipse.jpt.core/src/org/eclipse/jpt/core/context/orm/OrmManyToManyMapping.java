@@ -10,9 +10,10 @@
 package org.eclipse.jpt.core.context.orm;
 
 import org.eclipse.jpt.core.context.ManyToManyMapping;
+import org.eclipse.jpt.core.resource.orm.XmlManyToMany;
 
 /**
- * 
+ * The orm.xml representation of a {@link ManyToManyMapping}
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -20,7 +21,10 @@ import org.eclipse.jpt.core.context.ManyToManyMapping;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface OrmManyToManyMapping extends ManyToManyMapping, OrmMultiRelationshipMapping
+public interface OrmManyToManyMapping 
+	extends ManyToManyMapping, OrmMultiRelationshipMapping
 {
-
+	XmlManyToMany getResourceAttributeMapping();
+	
+	OrmManyToManyRelationshipReference getRelationshipReference();
 }

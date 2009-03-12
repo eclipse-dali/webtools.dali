@@ -57,7 +57,8 @@ public abstract class AbstractOrmEmbeddable extends AbstractOrmTypeMapping<XmlEm
 		return false;
 	}
 	
-	public boolean shouldValidateDbInfo() {
+	@Override
+	public boolean shouldValidateAgainstDatabase() {
 		return false;
 	}
 

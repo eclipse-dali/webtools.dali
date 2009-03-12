@@ -23,7 +23,8 @@ import org.eclipse.jpt.core.context.VersionMapping;
  * @version 2.1
  * @since 2.1
  */
-public interface EclipseLinkVersionMapping extends VersionMapping
+public interface EclipseLinkVersionMapping
+	extends VersionMapping
 {
 	Mutable getMutable();
 }

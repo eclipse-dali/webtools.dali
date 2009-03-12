@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.resource.orm;
 
-import org.eclipse.emf.common.util.EList;
 
 /**
  * <!-- begin-user-doc -->
@@ -26,7 +25,6 @@ import org.eclipse.emf.common.util.EList;
  * The following features are supported:
  * <ul>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlSingleRelationshipMapping#getOptional <em>Optional</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlSingleRelationshipMapping#getJoinColumns <em>Join Columns</em>}</li>
  * </ul>
  * </p>
  *
@@ -34,7 +32,7 @@ import org.eclipse.emf.common.util.EList;
  * @model kind="class" interface="true" abstract="true"
  * @generated
  */
-public interface XmlSingleRelationshipMapping extends XmlRelationshipMapping
+public interface XmlSingleRelationshipMapping extends XmlRelationshipMapping, XmlJoinTableMapping, XmlJoinColumnsMapping
 {
 	/**
 	 * Returns the value of the '<em><b>Optional</b></em>' attribute.
@@ -61,21 +59,5 @@ public interface XmlSingleRelationshipMapping extends XmlRelationshipMapping
 	 * @generated
 	 */
 	void setOptional(Boolean value);
-
-	/**
-	 * Returns the value of the '<em><b>Join Columns</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.core.resource.orm.XmlJoinColumn}.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Join Columns</em>' containment reference list isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Join Columns</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlSingleRelationshipMapping_JoinColumns()
-	 * @model containment="true"
-	 * @generated
-	 */
-	EList<XmlJoinColumn> getJoinColumns();
 
 } // SingleRelationshipMapping

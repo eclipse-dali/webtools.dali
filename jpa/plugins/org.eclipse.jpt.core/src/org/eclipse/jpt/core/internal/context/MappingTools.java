@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.internal.context;
 
 import java.util.Iterator;
-
 import org.eclipse.jpt.core.context.ColumnMapping;
 import org.eclipse.jpt.core.context.Embeddable;
 import org.eclipse.jpt.core.context.Entity;
@@ -41,9 +40,6 @@ public class MappingTools {
 	 * database connection.
 	 */
 	public static String buildJoinTableDefaultName(RelationshipMapping relationshipMapping) {
-		if ( ! relationshipMapping.isRelationshipOwner()) {
-			return null;
-		}
 		if (relationshipMapping.getJpaProject().getDataSource().connectionProfileIsActive()) {
 			return buildDbJoinTableDefaultName(relationshipMapping);
 		}
@@ -99,9 +95,6 @@ public class MappingTools {
 		if (relationshipMapping == null) {
 			return null;
 		}
-		if ( ! relationshipMapping.isRelationshipOwner()) {
-			return null;
-		}
 		if (owner.joinColumnsSize() != 1) {
 			return null;
 		}
@@ -137,9 +130,6 @@ public class MappingTools {
 	public static String buildJoinColumnDefaultReferencedColumnName(JoinColumn.Owner joinColumnOwner) {
 		RelationshipMapping relationshipMapping = joinColumnOwner.getRelationshipMapping();
 		if (relationshipMapping == null) {
-			return null;
-		}
-		if ( ! relationshipMapping.isRelationshipOwner()) {
 			return null;
 		}
 		if (joinColumnOwner.joinColumnsSize() != 1) {

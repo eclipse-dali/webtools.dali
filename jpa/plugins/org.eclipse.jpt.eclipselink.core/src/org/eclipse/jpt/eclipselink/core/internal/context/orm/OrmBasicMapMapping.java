@@ -17,10 +17,11 @@ import org.eclipse.jpt.eclipselink.core.context.BasicMapMapping;
 import org.eclipse.jpt.eclipselink.core.resource.orm.Attributes;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicMap;
 
-public class OrmBasicMapMapping extends AbstractOrmAttributeMapping<XmlBasicMap> implements BasicMapMapping
+public class OrmBasicMapMapping<T extends XmlBasicMap>
+	extends AbstractOrmAttributeMapping<T> 
+	implements BasicMapMapping
 {
-	
-	public OrmBasicMapMapping(OrmPersistentAttribute parent, XmlBasicMap resourceMapping) {
+	public OrmBasicMapMapping(OrmPersistentAttribute parent, T resourceMapping) {
 		super(parent, resourceMapping);
 	}
 	

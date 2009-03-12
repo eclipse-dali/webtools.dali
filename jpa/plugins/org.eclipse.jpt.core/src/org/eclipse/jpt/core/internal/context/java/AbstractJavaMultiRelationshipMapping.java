@@ -10,35 +10,22 @@
 package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Iterator;
-import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.context.AttributeMapping;
-import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.MultiRelationshipMapping;
-import org.eclipse.jpt.core.context.NonOwningMapping;
-import org.eclipse.jpt.core.context.PersistentAttribute;
-import org.eclipse.jpt.core.context.java.JavaJoinTable;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.MapKeyAnnotation;
 import org.eclipse.jpt.core.resource.java.OrderByAnnotation;
 import org.eclipse.jpt.core.resource.java.RelationshipMappingAnnotation;
-import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
-import org.eclipse.wst.validation.internal.provisional.core.IMessage;
-import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 
 public abstract class AbstractJavaMultiRelationshipMapping<T extends RelationshipMappingAnnotation>
-	extends AbstractJavaRelationshipMapping<T> implements MultiRelationshipMapping
+	extends AbstractJavaRelationshipMapping<T> 
+	implements MultiRelationshipMapping
 {
-
-	protected String mappedBy;
-
 	protected String orderBy;
 
 	protected boolean isNoOrdering;
@@ -47,34 +34,12 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 
 	protected boolean isCustomOrdering;
 	
-	//TODO should this be null if this is the non-owning side of the relationship??
-	protected final JavaJoinTable joinTable; 
-
 	protected String mapKey;
-
+	
+	
 	protected AbstractJavaMultiRelationshipMapping(JavaPersistentAttribute parent) {
 		super(parent);
-		this.joinTable = getJpaFactory().buildJavaJoinTable(this); 
 	}
-
-	public String getMappedBy() {
-		return this.mappedBy;
-	}
-
-	public void setMappedBy(String newMappedBy) {
-		String oldMappedBy = this.mappedBy;
-		this.mappedBy = newMappedBy;
-		this.setMappedByOnResourceModel(newMappedBy);
-		firePropertyChanged(NonOwningMapping.MAPPED_BY_PROPERTY, oldMappedBy, newMappedBy);
-	}
-
-	protected void setMappedBy_(String newMappedBy) {
-		String oldMappedBy = this.mappedBy;
-		this.mappedBy = newMappedBy;
-		firePropertyChanged(NonOwningMapping.MAPPED_BY_PROPERTY, oldMappedBy, newMappedBy);
-	}
-
-	protected abstract void setMappedByOnResourceModel(String mappedBy);
 
 	public String getOrderBy() {
 		return this.orderBy;
@@ -186,18 +151,6 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 		return MultiRelationshipMapping.DEFAULT_FETCH_TYPE;
 	}
 
-	public JavaJoinTable getJoinTable() {
-		return this.joinTable;
-	}
-
-	public boolean joinTableIsSpecified() {
-		return this.joinTable.isResourceSpecified();
-	}
-
-	public boolean isRelationshipOwner() {
-		return getMappedBy() == null;
-	}
-	
 	public String getMapKey() {
 		return this.mapKey;
 	}
@@ -249,8 +202,6 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 		return this.getPersistentAttribute().getMultiReferenceEntityTypeName();
 	}
 	
-	protected abstract boolean mappedByTouches(int pos, CompilationUnit astRoot);
-
 	protected boolean mapKeyNameTouches(int pos, CompilationUnit astRoot) {
 		if (getMapKeyResource() != null) {
 			return getMapKeyResource().nameTouches(pos, astRoot);
@@ -280,13 +231,6 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 		if (result != null) {
 			return result;
 		}
-		result = this.joinTable.javaCompletionProposals(pos, filter, astRoot);
-		if (result != null) {
-			return result;
-		}
-		if (this.mappedByTouches(pos, astRoot)) {
-			return this.javaCandidateMappedByAttributeNames(filter);
-		}
 		if (this.mapKeyNameTouches(pos, astRoot)) {
 			return this.javaCandidateMapKeyNames(filter);
 		}
@@ -301,8 +245,6 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 			this.mapKey = mapKeyAnnotation.getName();
 		}
 		this.initializeOrderBy();
-		this.joinTable.initialize(this.resourcePersistentAttribute);
-		this.mappedBy = this.getResourceMappedBy();
 	}
 	
 	protected void initializeOrderBy() {
@@ -326,8 +268,6 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 		super.update();
 		this.updateMapKey();
 		this.updateOrderBy();
-		this.joinTable.update(this.resourcePersistentAttribute);
-		this.setMappedBy_(this.getResourceMappedBy());
 	}	
 	
 	protected void updateMapKey() {
@@ -362,85 +302,4 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 			setNoOrdering_(true);
 		}
 	}
-
-	protected abstract String getResourceMappedBy();
-
-
-	// ********** validation **********
-	
-	public abstract TextRange getMappedByTextRange(CompilationUnit astRoot);
-	
-	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
-		
-		if (this.shouldValidateDbInfo() && (this.joinTableIsSpecified() || this.isRelationshipOwner())) {
-			this.joinTable.validate(messages, reporter, astRoot);
-		}
-		if (this.getMappedBy() != null) {
-			this.validateMappedBy(messages, astRoot);
-		}
-	}
-	
-	protected void validateMappedBy(List<IMessage> messages, CompilationUnit astRoot) {
-		if (this.joinTableIsSpecified()) {
-			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.MAPPING_MAPPED_BY_WITH_JOIN_TABLE,
-					this.joinTable, 
-					this.joinTable.getValidationTextRange(astRoot)
-				)
-			);
-		}
-		
-		Entity targetEntity = this.getResolvedTargetEntity();
-		
-		if (targetEntity == null) {
-			// already have validation messages for that
-			return;
-		}
-		
-		PersistentAttribute attribute = targetEntity.getPersistentType().resolveAttribute(this.mappedBy);
-		
-		if (attribute == null) {
-			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.MAPPING_UNRESOLVED_MAPPED_BY,
-					new String[] {this.mappedBy}, 
-					this, 
-					this.getMappedByTextRange(astRoot)
-				)
-			);
-			return;
-		}
-
-		AttributeMapping mappedByMapping = attribute.getMapping();
-		if ( ! this.mappedByIsValid(mappedByMapping)) {
-			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.MAPPING_INVALID_MAPPED_BY,
-					new String[] {this.mappedBy}, 
-					this, 
-					this.getMappedByTextRange(astRoot)
-				)
-			);
-			return;
-		}
-		
-		if ((mappedByMapping instanceof NonOwningMapping)
-				&& ((NonOwningMapping) mappedByMapping).getMappedBy() != null) {
-			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.MAPPING_MAPPED_BY_ON_BOTH_SIDES,
-					this, 
-					this.getMappedByTextRange(astRoot)
-				)
-			);
-		}
-	}
-
 }

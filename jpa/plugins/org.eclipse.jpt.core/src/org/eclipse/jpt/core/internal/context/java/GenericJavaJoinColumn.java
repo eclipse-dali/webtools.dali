@@ -178,9 +178,6 @@ public class GenericJavaJoinColumn extends AbstractJavaBaseColumn<JoinColumnAnno
 		if (relationshipMapping == null) {
 			return null;
 		}
-		if (!getOwner().getRelationshipMapping().isRelationshipOwner()) {
-			return null;
-		}
 		return super.defaultTable();
 	}
 

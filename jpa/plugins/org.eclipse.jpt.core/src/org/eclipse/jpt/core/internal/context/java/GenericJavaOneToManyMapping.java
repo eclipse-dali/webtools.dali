@@ -10,28 +10,40 @@
 package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Iterator;
-import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
-import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
+import org.eclipse.jpt.core.context.java.JavaOneToManyRelationshipReference;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.core.context.java.JavaRelationshipReference;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.OneToManyAnnotation;
-import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
-import org.eclipse.wst.validation.internal.provisional.core.IMessage;
-import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 
-public class GenericJavaOneToManyMapping extends AbstractJavaMultiRelationshipMapping<OneToManyAnnotation>
+public class GenericJavaOneToManyMapping
+	extends AbstractJavaMultiRelationshipMapping<OneToManyAnnotation>
 	implements JavaOneToManyMapping
 {
 	
 	public GenericJavaOneToManyMapping(JavaPersistentAttribute parent) {
 		super(parent);
 	}
+	
+	
+	@Override
+	protected JavaRelationshipReference buildRelationshipReference() {
+		return new GenericJavaOneToManyRelationshipReference(this);
+	}
+	
+	public String getAnnotationName() {
+		return OneToManyAnnotation.ANNOTATION_NAME;
+	}
 
+	@Override
+	public OneToManyAnnotation getMappingAnnotation() {
+		return super.getMappingAnnotation();
+	}
+	
 	public Iterator<String> supportingAnnotationNames() {
 		return new ArrayIterator<String>(
 			JPA.ORDER_BY,
@@ -41,47 +53,12 @@ public class GenericJavaOneToManyMapping extends AbstractJavaMultiRelationshipMa
 			JPA.JOIN_COLUMNS);
 	}
 	
-	
 	public String getKey() {
 		return MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY;
 	}
-
-	public String getAnnotationName() {
-		return OneToManyAnnotation.ANNOTATION_NAME;
-	}
-
-	// ********** JavaMultiRelationshipMapping implementation **********
-
-	@Override
-	protected boolean mappedByTouches(int pos, CompilationUnit astRoot) {
-		return this.resourceMapping.mappedByTouches(pos, astRoot);
-	}
-
-	@Override
-	protected void setMappedByOnResourceModel(String mappedBy) {
-		this.resourceMapping.setMappedBy(mappedBy);
-	}
 	
 	@Override
-	protected String getResourceMappedBy() {
-		return this.resourceMapping.getMappedBy();
+	public JavaOneToManyRelationshipReference getRelationshipReference() {
+		return (JavaOneToManyRelationshipReference) super.getRelationshipReference();
 	}
-
-	
-	// ********** NonOwningMapping implementation **********
-	public boolean mappedByIsValid(AttributeMapping mappedByMapping) {
-		String mappedByKey = mappedByMapping.getKey();
-		return (mappedByKey == MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
-	}
-
-	@Override
-	public TextRange getMappedByTextRange(CompilationUnit astRoot) {
-		return this.resourceMapping.getMappedByTextRange(astRoot);
-	}
-	
-	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
-	}
-	
 }

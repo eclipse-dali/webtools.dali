@@ -30,7 +30,9 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 
-public class GenericJavaVersionMapping extends AbstractJavaAttributeMapping<VersionAnnotation> implements JavaVersionMapping
+public class GenericJavaVersionMapping
+	extends AbstractJavaAttributeMapping<VersionAnnotation> 
+	implements JavaVersionMapping
 {
 	protected final JavaColumn column;
 
@@ -78,7 +80,7 @@ public class GenericJavaVersionMapping extends AbstractJavaAttributeMapping<Vers
 	//************** NamedColumn.Owner implementation ***************
 
 	public String getDefaultColumnName() {
-		return getAttributeName();
+		return getName();
 	}
 	
 	public String getDefaultTableName() {
@@ -179,7 +181,7 @@ public class GenericJavaVersionMapping extends AbstractJavaAttributeMapping<Vers
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
-		if (this.shouldValidateDbInfo()) {
+		if (this.shouldValidateAgainstDatabase()) {
 			this.validateColumn(messages, astRoot);
 		}
 		if (this.specifiedConverter != null) {

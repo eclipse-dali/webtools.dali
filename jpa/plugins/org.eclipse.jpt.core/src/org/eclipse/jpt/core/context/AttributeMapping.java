@@ -21,6 +21,8 @@ package org.eclipse.jpt.core.context;
 public interface AttributeMapping extends JpaContextNode
 {
 	PersistentAttribute getPersistentAttribute();
+	
+	String getName();
 
 	boolean isDefault();
 
@@ -29,17 +31,6 @@ public interface AttributeMapping extends JpaContextNode
 	 * an extension they should be equal.
 	 */
 	String getKey();
-
-	/**
-	 * If the mapping is for a primary key column, return the column's name,
-	 * otherwise return null.
-	 */
-	String getPrimaryKeyColumnName();
-
-	/**
-	 * Return the mapping for the attribute mapping's attribute's type.
-	 */
-	TypeMapping getTypeMapping();
 
 	/**
 	 * Return whether the "attribute" mapping can be overridden.
@@ -52,7 +43,29 @@ public interface AttributeMapping extends JpaContextNode
 	boolean isOverridableAssociationMapping();
 
 	/**
+	 * Return the mapping for the attribute mapping's attribute's type.
+	 */
+	TypeMapping getTypeMapping();
+
+	/**
 	 * Return whether the "attribute" mapping is for an ID.
 	 */
 	boolean isIdMapping();
+
+	/**
+	 * If the mapping is for a primary key column, return the column's name,
+	 * otherwise return null.
+	 */
+	String getPrimaryKeyColumnName();
+	
+	/**
+	 * Return whether the given mapping manages a relationship with this mapping
+	 */
+	boolean isOwnedBy(RelationshipMapping mapping);
+	
+	/**
+	 * Return whether any database metadata specific validation should occur.
+	 * (For instance, if the connection is not active, then it should not.)
+	 */
+	boolean shouldValidateAgainstDatabase();
 }

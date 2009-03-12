@@ -20,6 +20,7 @@ import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmManyToOneMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.internal.context.orm.OrmJoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.orm.XmlManyToOne;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
@@ -282,32 +283,33 @@ public class OrmManyToOneMappingTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY, "manyToOneMapping");
 		OrmManyToOneMapping ormManyToOneMapping = (OrmManyToOneMapping) ormPersistentAttribute.getMapping();
+		OrmJoinColumnJoiningStrategy strategy = ormManyToOneMapping.getRelationshipReference().getJoinColumnJoiningStrategy();
 		XmlManyToOne manyToOneResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getManyToOnes().get(0);
 		
-		OrmJoinColumn joinColumn = ormManyToOneMapping.addSpecifiedJoinColumn(0);
+		OrmJoinColumn joinColumn = strategy.addSpecifiedJoinColumn(0);
 		joinColumn.setSpecifiedName("FOO");
 				
 		assertEquals("FOO", manyToOneResource.getJoinColumns().get(0).getName());
 		
-		OrmJoinColumn joinColumn2 = ormManyToOneMapping.addSpecifiedJoinColumn(0);
+		OrmJoinColumn joinColumn2 = strategy.addSpecifiedJoinColumn(0);
 		joinColumn2.setSpecifiedName("BAR");
 		
 		assertEquals("BAR", manyToOneResource.getJoinColumns().get(0).getName());
 		assertEquals("FOO", manyToOneResource.getJoinColumns().get(1).getName());
 		
-		OrmJoinColumn joinColumn3 = ormManyToOneMapping.addSpecifiedJoinColumn(1);
+		OrmJoinColumn joinColumn3 = strategy.addSpecifiedJoinColumn(1);
 		joinColumn3.setSpecifiedName("BAZ");
 		
 		assertEquals("BAR", manyToOneResource.getJoinColumns().get(0).getName());
 		assertEquals("BAZ", manyToOneResource.getJoinColumns().get(1).getName());
 		assertEquals("FOO", manyToOneResource.getJoinColumns().get(2).getName());
 		
-		ListIterator<OrmJoinColumn> joinColumns = ormManyToOneMapping.specifiedJoinColumns();
+		ListIterator<OrmJoinColumn> joinColumns = strategy.specifiedJoinColumns();
 		assertEquals(joinColumn2, joinColumns.next());
 		assertEquals(joinColumn3, joinColumns.next());
 		assertEquals(joinColumn, joinColumns.next());
 		
-		joinColumns = ormManyToOneMapping.specifiedJoinColumns();
+		joinColumns = strategy.specifiedJoinColumns();
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
@@ -317,24 +319,25 @@ public class OrmManyToOneMappingTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY, "manyToOneMapping");
 		OrmManyToOneMapping ormManyToOneMapping = (OrmManyToOneMapping) ormPersistentAttribute.getMapping();
+		OrmJoinColumnJoiningStrategy strategy = ormManyToOneMapping.getRelationshipReference().getJoinColumnJoiningStrategy();
 		XmlManyToOne manyToOneResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getManyToOnes().get(0);
 
-		ormManyToOneMapping.addSpecifiedJoinColumn(0).setSpecifiedName("FOO");
-		ormManyToOneMapping.addSpecifiedJoinColumn(1).setSpecifiedName("BAR");
-		ormManyToOneMapping.addSpecifiedJoinColumn(2).setSpecifiedName("BAZ");
+		strategy.addSpecifiedJoinColumn(0).setSpecifiedName("FOO");
+		strategy.addSpecifiedJoinColumn(1).setSpecifiedName("BAR");
+		strategy.addSpecifiedJoinColumn(2).setSpecifiedName("BAZ");
 		
 		assertEquals(3, manyToOneResource.getJoinColumns().size());
 		
-		ormManyToOneMapping.removeSpecifiedJoinColumn(0);
+		strategy.removeSpecifiedJoinColumn(0);
 		assertEquals(2, manyToOneResource.getJoinColumns().size());
 		assertEquals("BAR", manyToOneResource.getJoinColumns().get(0).getName());
 		assertEquals("BAZ", manyToOneResource.getJoinColumns().get(1).getName());
 
-		ormManyToOneMapping.removeSpecifiedJoinColumn(0);
+		strategy.removeSpecifiedJoinColumn(0);
 		assertEquals(1, manyToOneResource.getJoinColumns().size());
 		assertEquals("BAZ", manyToOneResource.getJoinColumns().get(0).getName());
 		
-		ormManyToOneMapping.removeSpecifiedJoinColumn(0);
+		strategy.removeSpecifiedJoinColumn(0);
 		assertEquals(0, manyToOneResource.getJoinColumns().size());
 	}
 	
@@ -342,17 +345,18 @@ public class OrmManyToOneMappingTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY, "manyToOneMapping");
 		OrmManyToOneMapping ormManyToOneMapping = (OrmManyToOneMapping) ormPersistentAttribute.getMapping();
+		OrmJoinColumnJoiningStrategy strategy = ormManyToOneMapping.getRelationshipReference().getJoinColumnJoiningStrategy();
 		XmlManyToOne manyToOneResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getManyToOnes().get(0);
 
-		ormManyToOneMapping.addSpecifiedJoinColumn(0).setSpecifiedName("FOO");
-		ormManyToOneMapping.addSpecifiedJoinColumn(1).setSpecifiedName("BAR");
-		ormManyToOneMapping.addSpecifiedJoinColumn(2).setSpecifiedName("BAZ");
+		strategy.addSpecifiedJoinColumn(0).setSpecifiedName("FOO");
+		strategy.addSpecifiedJoinColumn(1).setSpecifiedName("BAR");
+		strategy.addSpecifiedJoinColumn(2).setSpecifiedName("BAZ");
 		
 		assertEquals(3, manyToOneResource.getJoinColumns().size());
 		
 		
-		ormManyToOneMapping.moveSpecifiedJoinColumn(2, 0);
-		ListIterator<OrmJoinColumn> joinColumns = ormManyToOneMapping.specifiedJoinColumns();
+		strategy.moveSpecifiedJoinColumn(2, 0);
+		ListIterator<OrmJoinColumn> joinColumns = strategy.specifiedJoinColumns();
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
@@ -362,8 +366,8 @@ public class OrmManyToOneMappingTests extends ContextModelTestCase
 		assertEquals("FOO", manyToOneResource.getJoinColumns().get(2).getName());
 
 
-		ormManyToOneMapping.moveSpecifiedJoinColumn(0, 1);
-		joinColumns = ormManyToOneMapping.specifiedJoinColumns();
+		strategy.moveSpecifiedJoinColumn(0, 1);
+		joinColumns = strategy.specifiedJoinColumns();
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
@@ -385,6 +389,7 @@ public class OrmManyToOneMappingTests extends ContextModelTestCase
 		
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.specifiedAttributes().next();
 		OrmManyToOneMapping ormManyToOneMapping = (OrmManyToOneMapping) ormPersistentAttribute.getMapping();
+		OrmJoinColumnJoiningStrategy strategy = ormManyToOneMapping.getRelationshipReference().getJoinColumnJoiningStrategy();
 		
 		assertEquals("foo", ormManyToOneMapping.getName());
 
@@ -396,7 +401,7 @@ public class OrmManyToOneMappingTests extends ContextModelTestCase
 		assertNull(ormManyToOneMapping.getTargetEntity());
 
 		
-		assertFalse(ormManyToOneMapping.specifiedJoinColumns().hasNext());
+		assertFalse(strategy.specifiedJoinColumns().hasNext());
 		//TODO default joinColumns
 		//assertTrue(ormManyToOneMapping.defaultJoinColumns().hasNext());
 	
@@ -424,7 +429,7 @@ public class OrmManyToOneMappingTests extends ContextModelTestCase
 		assertEquals(Boolean.FALSE, ormManyToOneMapping.getSpecifiedOptional());
 		assertEquals("Address", ormManyToOneMapping.getSpecifiedTargetEntity());
 
-		OrmJoinColumn ormJoinColumn = ormManyToOneMapping.specifiedJoinColumns().next();
+		OrmJoinColumn ormJoinColumn = ormManyToOneMapping.getRelationshipReference().getJoinColumnJoiningStrategy().specifiedJoinColumns().next();
 		assertEquals("MY_COLUMN", ormJoinColumn.getSpecifiedName());
 		assertEquals("MY_REFERENCED_COLUMN", ormJoinColumn.getSpecifiedReferencedColumnName());
 		assertEquals(Boolean.TRUE, ormJoinColumn.getSpecifiedUnique());
@@ -505,7 +510,7 @@ public class OrmManyToOneMappingTests extends ContextModelTestCase
 		assertEquals(true, ormManyToOneMapping.isOptional());
 		assertEquals("test.Address", ormManyToOneMapping.getDefaultTargetEntity());
 		
-		assertFalse(ormManyToOneMapping.specifiedJoinColumns().hasNext());
+		assertFalse(ormManyToOneMapping.getRelationshipReference().getJoinColumnJoiningStrategy().specifiedJoinColumns().hasNext());
 		
 		//TODO default join columns for specified xmlManyToOne mapping
 //		XmlJoinColumn ormJoinColumn = ormManyToOneMapping.defaultJoinColumns().next();

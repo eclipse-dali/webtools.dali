@@ -21,7 +21,8 @@ import org.eclipse.jpt.core.context.BaseEmbeddedMapping;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface JavaBaseEmbeddedMapping extends JavaAttributeMapping, BaseEmbeddedMapping
+public interface JavaBaseEmbeddedMapping
+	extends JavaAttributeMapping, BaseEmbeddedMapping
 {
 	@SuppressWarnings("unchecked")
 	ListIterator<JavaAttributeOverride> attributeOverrides();
@@ -31,5 +32,4 @@ public interface JavaBaseEmbeddedMapping extends JavaAttributeMapping, BaseEmbed
 	ListIterator<JavaAttributeOverride> specifiedAttributeOverrides();
 	
 	JavaAttributeOverride getAttributeOverrideNamed(String name);
-
 }

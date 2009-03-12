@@ -9,8 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.context.orm;
 
-import java.util.Iterator;
-import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.DiscriminatorColumn;
@@ -27,7 +25,6 @@ import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
-import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
 public class OrmDiscriminatorColumnTests extends ContextModelTestCase
@@ -43,23 +40,6 @@ public class OrmDiscriminatorColumnTests extends ContextModelTestCase
 		mappingFileRef.setFileName(JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH);
 		getXmlPersistenceUnit().getMappingFiles().add(mappingFileRef);
 		getPersistenceXmlResource().save(null);
-	}
-	
-	private ICompilationUnit createTestEntity() throws Exception {
-		return this.createTestType(new DefaultAnnotationWriter() {
-			@Override
-			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID);
-			}
-			@Override
-			public void appendTypeAnnotationTo(StringBuilder sb) {
-				sb.append("@Entity");
-			}
-			@Override
-			public void appendIdFieldAnnotationTo(StringBuilder sb) {
-				sb.append("@Id");
-			}
-		});
 	}
 	
 	private void createTestAbstractEntity() throws Exception {

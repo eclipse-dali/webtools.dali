@@ -12,8 +12,6 @@ package org.eclipse.jpt.core.context.orm;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 
 /**
- * 
- * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -23,5 +21,5 @@ import org.eclipse.jpt.core.context.RelationshipMapping;
 public interface OrmRelationshipMapping
 	extends OrmAttributeMapping, RelationshipMapping
 {
-	// nothing yet
+	OrmRelationshipReference getRelationshipReference();
 }

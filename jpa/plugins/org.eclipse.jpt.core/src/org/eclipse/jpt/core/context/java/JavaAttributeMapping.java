@@ -30,8 +30,10 @@ public interface JavaAttributeMapping
 	 */
 	JavaPersistentAttribute getPersistentAttribute();
 	
+	JavaResourceNode getMappingAnnotation();
+	
 	void initialize(JavaResourceNode mappingAnnotation);
-
+	
 	/**
 	 * Update the JavaAttributeMapping context model object to match the JavaResourcePersistentAttribute 
 	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}

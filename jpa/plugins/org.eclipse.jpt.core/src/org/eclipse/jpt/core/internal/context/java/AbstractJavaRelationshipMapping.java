@@ -14,33 +14,31 @@ import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.FetchType;
+import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaRelationshipMapping;
+import org.eclipse.jpt.core.context.java.JavaRelationshipReference;
 import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.RelationshipMappingAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.Filter;
-import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
-import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-/**
- * 
- */
 public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMappingAnnotation>
 	extends AbstractJavaAttributeMapping<T>
 	implements JavaRelationshipMapping
 {
-
 	protected String specifiedTargetEntity;
 	protected String defaultTargetEntity;
 	protected Entity resolvedTargetEntity;
-
+	
+	protected final JavaRelationshipReference relationshipReference;
+	
 	protected final JavaCascade cascade;
 	
 	protected FetchType specifiedFetch;
@@ -48,16 +46,43 @@ public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMapp
 
 	protected AbstractJavaRelationshipMapping(JavaPersistentAttribute parent) {
 		super(parent);
+		this.relationshipReference = buildRelationshipReference();
 		this.cascade = new JavaCascade(this);
 	}
+	
+	
+	protected abstract JavaRelationshipReference buildRelationshipReference();
 	
 	@Override
 	public JavaPersistentAttribute getParent() {
 		return super.getParent();
 	}
-
-
-	// ********** target entity **********
+	
+	public boolean isRelationshipOwner() {
+		return this.relationshipReference.isRelationshipOwner();
+	}
+	
+	@Override
+	public boolean isOwnedBy(RelationshipMapping mapping) {
+		return this.relationshipReference.isOwnedBy(mapping);
+	}
+	
+	public Iterator<String> allTargetEntityAttributeNames() {
+		Entity targetEntity = this.getResolvedTargetEntity();
+		return (targetEntity == null) ? EmptyIterator.<String> instance() : targetEntity.getPersistentType().allAttributeNames();
+	}
+	
+	@Override
+	public Iterator<String> javaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterator<String> result = super.javaCompletionProposals(pos, filter, astRoot);
+		if (result != null) {
+			return result;
+		}
+		return this.relationshipReference.javaCompletionProposals(pos, filter, astRoot);
+	}
+	
+	
+	// **************** target entity ******************************************
 
 	public String getTargetEntity() {
 		return (this.specifiedTargetEntity != null) ? this.specifiedTargetEntity : this.defaultTargetEntity;
@@ -99,16 +124,23 @@ public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMapp
 		this.resolvedTargetEntity = entity;
 		this.firePropertyChanged(RESOLVED_TARGET_ENTITY_PROPERTY, old, entity);
 	}
+	
+	
+	// **************** reference **********************************************
+	
+	public JavaRelationshipReference getRelationshipReference() {
+		return this.relationshipReference;
+	}
 
 
-	// ********** cascade **********
+	// **************** cascade ************************************************
 
 	public JavaCascade getCascade() {
 		return this.cascade;
 	}
 
 
-	// ********** fetch **********
+	// **************** fetch **************************************************
 
 	public FetchType getFetch() {
 		return (this.specifiedFetch != null) ? this.specifiedFetch : this.getDefaultFetch();
@@ -132,12 +164,13 @@ public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMapp
 	}
 	
 
-	// ********** resource => context **********
+	// **************** resource => context ************************************
 
 	@Override
 	protected void initialize() {
 		super.initialize();
 		this.defaultTargetEntity = this.buildDefaultTargetEntity();
+		this.relationshipReference.initialize();
 		this.specifiedFetch = this.getResourceFetch();
 		this.cascade.initialize(this.resourceMapping);
 		this.specifiedTargetEntity = this.getResourceTargetEntity();
@@ -148,6 +181,7 @@ public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMapp
 	protected void update() {
 		super.update();
 		this.setDefaultTargetEntity(this.buildDefaultTargetEntity());
+		this.relationshipReference.update();
 		this.setSpecifiedFetch_(this.getResourceFetch());
 		this.cascade.update(this.resourceMapping);
 		this.setSpecifiedTargetEntity_(this.getResourceTargetEntity());
@@ -172,7 +206,7 @@ public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMapp
 	}
 
 
-	// ********** RelationshipMapping implementation **********
+	// **************** RelationshipMapping impl *******************************
 
 	public Entity getEntity() {
 		TypeMapping typeMapping = this.getTypeMapping();
@@ -183,25 +217,8 @@ public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMapp
 		return MappingTools.buildJoinTableDefaultName(this);
 	}
 
-
-	// ********** convenience methods **********
-
-	protected Iterator<String> allTargetEntityAttributeNames() {
-		Entity targetEntity = this.getResolvedTargetEntity();
-		return (targetEntity == null) ? EmptyIterator.<String> instance() : targetEntity.getPersistentType().allAttributeNames();
-	}
-
-	public Iterator<String> candidateMappedByAttributeNames() {
-		return this.allTargetEntityAttributeNames();
-	}
-
-	protected Iterator<String> candidateMappedByAttributeNames(Filter<String> filter) {
-		return new FilteringIterator<String, String>(this.candidateMappedByAttributeNames(), filter);
-	}
-
-	protected Iterator<String> javaCandidateMappedByAttributeNames(Filter<String> filter) {
-		return StringTools.convertToJavaStringLiterals(this.candidateMappedByAttributeNames(filter));
-	}
+	
+	// **************** validation *********************************************
 	
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
@@ -215,7 +232,7 @@ public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMapp
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
 					JpaValidationMessages.TARGET_ENTITY_NOT_DEFINED,
-					new String[] {this.getAttributeName()}, 
+					new String[] {this.getName()}, 
 					this, 
 					this.getValidationTextRange(astRoot)
 				)
@@ -226,7 +243,7 @@ public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMapp
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
 					JpaValidationMessages.TARGET_ENTITY_IS_NOT_AN_ENTITY,
-					new String[] {getTargetEntity(), this.getAttributeName()}, 
+					new String[] {getTargetEntity(), this.getName()}, 
 					this, 
 					this.getTargetEntityTextRange(astRoot)
 				)

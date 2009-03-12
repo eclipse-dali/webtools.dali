@@ -15,7 +15,9 @@ import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.resource.java.EmbeddedAnnotation;
 
 
-public class GenericJavaEmbeddedMapping extends AbstractJavaBaseEmbeddedMapping<EmbeddedAnnotation> implements JavaEmbeddedMapping
+public class GenericJavaEmbeddedMapping
+	extends AbstractJavaBaseEmbeddedMapping<EmbeddedAnnotation>
+	implements JavaEmbeddedMapping
 {
 	public GenericJavaEmbeddedMapping(JavaPersistentAttribute parent) {
 		super(parent);

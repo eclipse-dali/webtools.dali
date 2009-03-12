@@ -21,10 +21,11 @@ import org.eclipse.jpt.core.utility.TextRange;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface OneToOneAnnotation extends RelationshipMappingAnnotation
+public interface OneToOneAnnotation 
+	extends OwnableRelationshipMappingAnnotation
 {
 	String ANNOTATION_NAME = JPA.ONE_TO_ONE;
-
+	
 	/**
 	 * Corresponds to the optional element of the OneToOne annotation.
 	 * Returns null if the optional element does not exist in java.
@@ -39,34 +40,8 @@ public interface OneToOneAnnotation extends RelationshipMappingAnnotation
 		String OPTIONAL_PROPERTY = "optional"; //$NON-NLS-1$
 	
 	/**
-	 * Corresponds to the mappedBy element of the OneToOne annotation. 
-	 * Returns null if the mappedBy element does not exist in java.
-	 */
-	String getMappedBy();
-	
-	/**
-	 * Corresponds to the mappedBy element of the OneToOne annotation. 
-	 * Set to null to remove the mappedBy element.
-	 */
-	void setMappedBy(String mappedBy);
-		String MAPPED_BY_PROPERTY = "mappedBy"; //$NON-NLS-1$
-	
-	/**
-	 * Return the {@link TextRange} for the mappedBy element.  If the mappedBy element 
-	 * does not exist return the {@link TextRange} for the OneToOne annotation.
-	 */
-	TextRange getMappedByTextRange(CompilationUnit astRoot);
-
-	/**
 	 * Return the {@link TextRange} for the optional element.  If the optional element 
 	 * does not exist return the {@link TextRange} for the OneToOne annotation.
 	 */
 	TextRange getOptionalTextRange(CompilationUnit astRoot);
-
-	/**
-	 * Return whether the specified postition touches the mappedBy element.
-	 * Return false if the mappedBy element does not exist.
-	 */
-	boolean mappedByTouches(int pos, CompilationUnit astRoot);
-
 }

@@ -14,12 +14,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.JoinTable;
-import org.eclipse.jpt.core.context.NonOwningMapping;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
@@ -41,33 +39,37 @@ import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-/**
- * 
- */
+
 public class GenericJavaJoinTable
 	extends AbstractJavaTable
 	implements JavaJoinTable
 {
-	protected final List<JavaJoinColumn> specifiedJoinColumns;
-
-	protected JavaJoinColumn defaultJoinColumn;
-
-	protected final List<JavaJoinColumn> specifiedInverseJoinColumns;
-
-	protected JavaJoinColumn defaultInverseJoinColumn;
-	
 	protected JavaResourcePersistentAttribute resourceAttribute;
 	
-	public GenericJavaJoinTable(JavaRelationshipMapping parent) {
+	protected JavaJoinColumn defaultJoinColumn;
+	
+	protected final List<JavaJoinColumn> specifiedJoinColumns;
+	
+	protected JavaJoinColumn defaultInverseJoinColumn;
+	
+	protected final List<JavaJoinColumn> specifiedInverseJoinColumns;
+	
+	
+	public GenericJavaJoinTable(JavaJoinTableJoiningStrategy parent) {
 		super(parent);
 		this.specifiedJoinColumns = new ArrayList<JavaJoinColumn>();
 		this.specifiedInverseJoinColumns = new ArrayList<JavaJoinColumn>();
 	}
 	
 	@Override
-	public JavaRelationshipMapping getParent() {
-		return (JavaRelationshipMapping) super.getParent();
+	public JavaJoinTableJoiningStrategy getParent() {
+		return (JavaJoinTableJoiningStrategy) super.getParent();
 	}
+	
+	public JavaRelationshipMapping getRelationshipMapping() {
+		return getParent().getRelationshipMapping();
+	}
+	
 	
 	//******************* AbstractJavaTable implementation *****************
 
@@ -81,22 +83,14 @@ public class GenericJavaJoinTable
 		return this.getRelationshipMapping().getJoinTableDefaultName();
 	}
 
-	/**
-	 * if the join table is on the "mappedBy" side, it's bogus;
-	 * so don't give it a default catalog
-	 */
 	@Override
 	protected String buildDefaultCatalog() {
-		return this.getRelationshipMapping().isRelationshipOwner() ? this.getContextDefaultCatalog() : null;
+		return this.getContextDefaultCatalog();
 	}
 
-	/**
-	 * if the join table is on the "mappedBy" side, it's bogus;
-	 * so don't give it a default schema
-	 */
 	@Override
 	protected String buildDefaultSchema() {
-		return this.getRelationshipMapping().isRelationshipOwner() ? this.getContextDefaultSchema() : null;
+		return this.getContextDefaultSchema();
 	}
 	
 	@Override
@@ -327,12 +321,7 @@ public class GenericJavaJoinTable
 		this.getResourceTable().moveInverseJoinColumn(targetIndex, sourceIndex);
 		fireItemMoved(JoinTable.SPECIFIED_INVERSE_JOIN_COLUMNS_LIST, targetIndex, sourceIndex);		
 	}
-
-
-	public RelationshipMapping getRelationshipMapping() {
-		return this.getParent();
-	}
-
+	
 	@Override
 	public Iterator<String> javaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
 		Iterator<String> result = super.javaCompletionProposals(pos, filter, astRoot);
@@ -381,7 +370,7 @@ public class GenericJavaJoinTable
 	}
 	
 	protected boolean shouldBuildDefaultJoinColumn() {
-		return !containsSpecifiedJoinColumns() && getRelationshipMapping().isRelationshipOwner();
+		return ! containsSpecifiedJoinColumns();
 	}
 	
 	protected void initializeDefaultJoinColumn(JoinTableAnnotation joinTable) {
@@ -400,7 +389,7 @@ public class GenericJavaJoinTable
 	}
 	
 	protected boolean shouldBuildDefaultInverseJoinColumn() {
-		return !containsSpecifiedInverseJoinColumns() && getRelationshipMapping().isRelationshipOwner();
+		return ! containsSpecifiedInverseJoinColumns();
 	}
 	
 	protected void initializeDefaultInverseJoinColumn(JoinTableAnnotation joinTable) {
@@ -502,7 +491,7 @@ public class GenericJavaJoinTable
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
-		if (this.connectionProfileIsActive()) {
+		if (this.getRelationshipMapping().shouldValidateAgainstDatabase()) {
 			this.validateAgainstDatabase(messages, reporter, astRoot);
 		}
 	}
@@ -629,7 +618,7 @@ public class GenericJavaJoinTable
 		}
 
 		public String getAttributeName() {
-			return GenericJavaJoinTable.this.getRelationshipMapping().getPersistentAttribute().getName();
+			return GenericJavaJoinTable.this.getRelationshipMapping().getName();
 		}
 
 		@Override
@@ -681,15 +670,11 @@ public class GenericJavaJoinTable
 			if (targetEntity == null) {
 				return null;
 			}
-			String attributeName = GenericJavaJoinTable.this.getRelationshipMapping().getPersistentAttribute().getName();
-			for (Iterator<PersistentAttribute> stream = targetEntity.getPersistentType().allAttributes(); stream.hasNext();) {
-				PersistentAttribute attribute = stream.next();
-				AttributeMapping mapping = attribute.getMapping();
-				if (mapping instanceof NonOwningMapping) {
-					String mappedBy = ((NonOwningMapping) mapping).getMappedBy();
-					if ((mappedBy != null) && mappedBy.equals(attributeName)) {
-						return attribute.getName();
-					}
+			for (PersistentAttribute each : 
+					CollectionTools.iterable(
+						targetEntity.getPersistentType().allAttributes())) {
+				if (each.getMapping().isOwnedBy(getRelationshipMapping())) {
+					return each.getName();
 				}
 			}
 			return null;

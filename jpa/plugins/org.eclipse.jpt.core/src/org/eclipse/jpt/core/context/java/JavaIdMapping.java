@@ -20,7 +20,8 @@ import org.eclipse.jpt.core.context.IdMapping;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface JavaIdMapping extends JavaAttributeMapping, IdMapping, JavaColumnMapping, JavaGeneratorHolder
+public interface JavaIdMapping
+	extends JavaAttributeMapping, IdMapping, JavaColumnMapping, JavaGeneratorHolder
 {
 	//********* covariant overrides **********
 	JavaConverter getDefaultConverter();

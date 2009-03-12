@@ -56,7 +56,6 @@ import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaQuery;
 import org.eclipse.jpt.core.context.java.JavaQueryHint;
-import org.eclipse.jpt.core.context.java.JavaRelationshipMapping;
 import org.eclipse.jpt.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.core.context.java.JavaSequenceGenerator;
 import org.eclipse.jpt.core.context.java.JavaTable;
@@ -95,7 +94,6 @@ import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmQuery;
 import org.eclipse.jpt.core.context.orm.OrmQueryHint;
-import org.eclipse.jpt.core.context.orm.OrmRelationshipMapping;
 import org.eclipse.jpt.core.context.orm.OrmSecondaryTable;
 import org.eclipse.jpt.core.context.orm.OrmSequenceGenerator;
 import org.eclipse.jpt.core.context.orm.OrmTable;
@@ -152,6 +150,7 @@ import org.eclipse.jpt.core.internal.context.java.GenericJavaTemporalConverter;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaTransientMapping;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaUniqueConstraint;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaVersionMapping;
+import org.eclipse.jpt.core.internal.context.java.JavaJoinTableJoiningStrategy;
 import org.eclipse.jpt.core.internal.context.java.JavaNullTypeMapping;
 import org.eclipse.jpt.core.internal.context.orm.GenericEntityMappings;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmAssociationOverride;
@@ -189,6 +188,7 @@ import org.eclipse.jpt.core.internal.context.orm.GenericOrmVersionMapping;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmXml;
 import org.eclipse.jpt.core.internal.context.orm.GenericPersistenceUnitDefaults;
 import org.eclipse.jpt.core.internal.context.orm.GenericPersistenceUnitMetadata;
+import org.eclipse.jpt.core.internal.context.orm.OrmJoinTableJoiningStrategy;
 import org.eclipse.jpt.core.internal.context.orm.VirtualXmlBasic;
 import org.eclipse.jpt.core.internal.context.orm.VirtualXmlEmbedded;
 import org.eclipse.jpt.core.internal.context.orm.VirtualXmlEmbeddedId;
@@ -205,8 +205,8 @@ import org.eclipse.jpt.core.internal.context.persistence.GenericJarFileRef;
 import org.eclipse.jpt.core.internal.context.persistence.GenericMappingFileRef;
 import org.eclipse.jpt.core.internal.context.persistence.GenericPersistence;
 import org.eclipse.jpt.core.internal.context.persistence.GenericPersistenceUnit;
-import org.eclipse.jpt.core.internal.context.persistence.GenericPersistenceXml;
 import org.eclipse.jpt.core.internal.context.persistence.GenericPersistenceUnitProperty;
+import org.eclipse.jpt.core.internal.context.persistence.GenericPersistenceXml;
 import org.eclipse.jpt.core.internal.context.persistence.ImpliedMappingFileRef;
 import org.eclipse.jpt.core.resource.jar.JarResourcePackageFragmentRoot;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
@@ -223,6 +223,7 @@ import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.core.resource.orm.XmlGeneratedValue;
 import org.eclipse.jpt.core.resource.orm.XmlId;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
+import org.eclipse.jpt.core.resource.orm.XmlJoinTableMapping;
 import org.eclipse.jpt.core.resource.orm.XmlManyToMany;
 import org.eclipse.jpt.core.resource.orm.XmlManyToOne;
 import org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass;
@@ -233,7 +234,6 @@ import org.eclipse.jpt.core.resource.orm.XmlOneToMany;
 import org.eclipse.jpt.core.resource.orm.XmlOneToOne;
 import org.eclipse.jpt.core.resource.orm.XmlPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlQueryHint;
-import org.eclipse.jpt.core.resource.orm.XmlRelationshipMapping;
 import org.eclipse.jpt.core.resource.orm.XmlSecondaryTable;
 import org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator;
 import org.eclipse.jpt.core.resource.orm.XmlTableGenerator;
@@ -376,7 +376,7 @@ public class GenericJpaFactory
 		return new GenericOrmPrimaryKeyJoinColumn(parent, owner, resourcePkJoinColumn);
 	}
 	
-	public OrmJoinTable buildOrmJoinTable(OrmRelationshipMapping parent, XmlRelationshipMapping resourceMapping) {
+	public OrmJoinTable buildOrmJoinTable(OrmJoinTableJoiningStrategy parent, XmlJoinTableMapping resourceMapping) {
 		return new GenericOrmJoinTable(parent, resourceMapping);
 	}
 	
@@ -562,7 +562,7 @@ public class GenericJpaFactory
 		return new GenericJavaJoinColumn(parent, owner);
 	}
 	
-	public JavaJoinTable buildJavaJoinTable(JavaRelationshipMapping parent) {
+	public JavaJoinTable buildJavaJoinTable(JavaJoinTableJoiningStrategy parent) {
 		return new GenericJavaJoinTable(parent);
 	}
 	

@@ -14,9 +14,7 @@ import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 
 public class GenericJavaBasicMapping extends AbstractJavaBasicMapping
 {
-	
 	public GenericJavaBasicMapping(JavaPersistentAttribute parent) {
 		super(parent);
 	}
-
 }

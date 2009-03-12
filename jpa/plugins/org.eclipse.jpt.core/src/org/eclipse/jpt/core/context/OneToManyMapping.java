@@ -18,6 +18,7 @@ package org.eclipse.jpt.core.context;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface OneToManyMapping extends MultiRelationshipMapping {
-	// nothing yet
+public interface OneToManyMapping extends MultiRelationshipMapping
+{
+	public OneToManyRelationshipReference getRelationshipReference();
 }

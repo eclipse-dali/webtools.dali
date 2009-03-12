@@ -61,7 +61,7 @@ import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaIdM
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaManyToManyMappingImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaManyToOneMappingImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaMappedSuperclassImpl;
-import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaOneToManyMappingImpl;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaOneToManyMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaOneToOneMappingImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaPersistentAttribute;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaVersionMappingImpl;
@@ -180,7 +180,7 @@ public class EclipseLinkJpaFactory
 		return new EclipseLinkVirtualXmlManyToOne(ormTypeMapping, javaManyToOneMapping);
 	}
 	
-	public XmlOneToMany buildEclipseLinkVirtualXmlOneToMany(OrmTypeMapping ormTypeMapping, JavaOneToManyMapping javaOneToManyMapping) {
+	public XmlOneToMany buildEclipseLinkVirtualXmlOneToMany(OrmTypeMapping ormTypeMapping, EclipseLinkJavaOneToManyMapping javaOneToManyMapping) {
 		return new EclipseLinkVirtualXmlOneToMany(ormTypeMapping, javaOneToManyMapping);
 	}
 	
@@ -326,7 +326,7 @@ public class EclipseLinkJpaFactory
 	
 	@Override
 	public JavaOneToManyMapping buildJavaOneToManyMapping(JavaPersistentAttribute parent) {
-		return new EclipseLinkJavaOneToManyMappingImpl(parent);
+		return new EclipseLinkJavaOneToManyMapping(parent);
 	}
 	
 	@Override

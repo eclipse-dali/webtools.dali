@@ -33,7 +33,8 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 
-public class GenericOrmBasicMapping extends AbstractOrmAttributeMapping<XmlBasic>
+public class GenericOrmBasicMapping<T extends XmlBasic>
+	extends AbstractOrmAttributeMapping<T>
 	implements OrmBasicMapping
 {
 	protected final OrmColumn column;
@@ -46,7 +47,7 @@ public class GenericOrmBasicMapping extends AbstractOrmAttributeMapping<XmlBasic
 	
 	protected OrmConverter specifiedConverter;
 	
-	public GenericOrmBasicMapping(OrmPersistentAttribute parent, XmlBasic resourceMapping) {
+	public GenericOrmBasicMapping(OrmPersistentAttribute parent, T resourceMapping) {
 		super(parent, resourceMapping);
 		this.column = getJpaFactory().buildOrmColumn(this, this);
 		this.column.initialize(this.getResourceColumn());//TODO pass in to factory
@@ -264,7 +265,7 @@ public class GenericOrmBasicMapping extends AbstractOrmAttributeMapping<XmlBasic
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
-		if (this.shouldValidateDbInfo()) {
+		if (this.shouldValidateAgainstDatabase()) {
 			this.validateColumn(messages);
 		}
 	}

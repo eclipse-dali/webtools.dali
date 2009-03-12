@@ -12,7 +12,6 @@ package org.eclipse.jpt.eclipselink.ui.internal.orm.details;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.eclipselink.core.context.BasicCollectionMapping;
 import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
-import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.BasicCollectionMappingComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkBasicCollectionMappingUiProvider;
 import org.eclipse.jpt.ui.JpaUiFactory;
 import org.eclipse.jpt.ui.WidgetFactory;

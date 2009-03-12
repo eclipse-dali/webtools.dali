@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Iterator;
 import java.util.List;
-
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.Converter;
@@ -124,7 +123,7 @@ public class GenericJavaIdMapping
 	}
 
 	public String getDefaultColumnName() {
-		return getAttributeName();
+		return getName();
 	}
 	
 	public String getDefaultTableName() {
@@ -428,7 +427,7 @@ public class GenericJavaIdMapping
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
 		
-		if (this.shouldValidateDbInfo()) {
+		if (this.shouldValidateAgainstDatabase()) {
 			this.validateColumn(messages, astRoot);
 		}
 		if (this.generatedValue != null) {

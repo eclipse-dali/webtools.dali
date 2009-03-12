@@ -20,5 +20,5 @@ package org.eclipse.jpt.core.context;
  */
 public interface ManyToOneMapping extends SingleRelationshipMapping
 {
-	// nothing yet
+	ManyToOneRelationshipReference getRelationshipReference();
 }

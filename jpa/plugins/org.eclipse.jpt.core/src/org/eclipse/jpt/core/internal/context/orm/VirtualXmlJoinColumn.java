@@ -20,7 +20,7 @@ public class VirtualXmlJoinColumn extends AbstractJpaEObject implements XmlJoinC
 
 	protected boolean metadataComplete;
 
-	protected VirtualXmlJoinColumn(JavaJoinColumn javaJoinColumn, boolean metadataComplete) {
+	public VirtualXmlJoinColumn(JavaJoinColumn javaJoinColumn, boolean metadataComplete) {
 		super();
 		this.javaJoinColumn = javaJoinColumn;
 		this.metadataComplete = metadataComplete;

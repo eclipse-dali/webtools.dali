@@ -22,13 +22,14 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.XmlVersion;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class EclipseLinkOrmVersionMapping extends GenericOrmVersionMapping
+public class EclipseLinkOrmVersionMapping<T extends XmlVersion>
+	extends GenericOrmVersionMapping<T>
 	implements EclipseLinkVersionMapping
 {	
 	protected EclipseLinkOrmMutable mutable;
 	
 	
-	public EclipseLinkOrmVersionMapping(OrmPersistentAttribute parent, XmlVersion resourceMapping) {
+	public EclipseLinkOrmVersionMapping(OrmPersistentAttribute parent, T resourceMapping) {
 		super(parent, resourceMapping);
 		this.mutable = new EclipseLinkOrmMutable(this, (XmlMutable) this.resourceAttributeMapping);
 	}

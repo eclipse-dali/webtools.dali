@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.resource.orm;
 
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.jpt.core.utility.TextRange;
 
 /**
  * <!-- begin-user-doc -->
@@ -26,7 +25,6 @@ import org.eclipse.jpt.core.utility.TextRange;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlOneToOne#getMappedBy <em>Mapped By</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlOneToOne#getPrimaryKeyJoinColumns <em>Primary Key Join Columns</em>}</li>
  * </ul>
  * </p>
@@ -35,34 +33,8 @@ import org.eclipse.jpt.core.utility.TextRange;
  * @model kind="class" interface="true" abstract="true"
  * @generated
  */
-public interface XmlOneToOne extends XmlSingleRelationshipMapping
+public interface XmlOneToOne extends XmlSingleRelationshipMapping, XmlMappedByMapping
 {
-	/**
-	 * Returns the value of the '<em><b>Mapped By</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Mapped By</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Mapped By</em>' attribute.
-	 * @see #setMappedBy(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlOneToOne_MappedBy()
-	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
-	 * @generated
-	 */
-	String getMappedBy();
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlOneToOne#getMappedBy <em>Mapped By</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Mapped By</em>' attribute.
-	 * @see #getMappedBy()
-	 * @generated
-	 */
-	void setMappedBy(String value);
-
 	/**
 	 * Returns the value of the '<em><b>Primary Key Join Columns</b></em>' containment reference list.
 	 * The list contents are of type {@link org.eclipse.jpt.core.resource.orm.XmlPrimaryKeyJoinColumn}.
@@ -78,7 +50,4 @@ public interface XmlOneToOne extends XmlSingleRelationshipMapping
 	 * @generated
 	 */
 	EList<XmlPrimaryKeyJoinColumn> getPrimaryKeyJoinColumns();
-	
-	TextRange getMappedByTextRange();
-
-} // OneToOne
+}

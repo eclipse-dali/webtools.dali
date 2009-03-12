@@ -10,11 +10,11 @@
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.context.Cascade;
-import org.eclipse.jpt.core.context.JoinTable;
 import org.eclipse.jpt.core.context.OneToManyMapping;
+import org.eclipse.jpt.core.context.OneToManyRelationshipReference;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
-import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.BaseJpaUiFactory;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -27,6 +27,11 @@ import org.eclipse.swt.widgets.Composite;
  * | ------------------------------------------------------------------------- |
  * | |                                                                       | |
  * | | TargetEntityComposite                                                 | |
+ * | |                                                                       | |
+ * | ------------------------------------------------------------------------- |
+ * | ------------------------------------------------------------------------- |
+ * | |                                                                       | |
+ * | | JoiningStrategyComposite                                              | |
  * | |                                                                       | |
  * | ------------------------------------------------------------------------- |
  * | ------------------------------------------------------------------------- |
@@ -44,12 +49,6 @@ import org.eclipse.swt.widgets.Composite;
  * | | OrderingComposite                                                     | |
  * | |                                                                       | |
  * | ------------------------------------------------------------------------- |
- * |                                                                           |
- * | - Join Table ------------------------------------------------------------ |
- * | |                                                                       | |
- * | | JoinTableComposite                                                    | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
  * @see OneToManyMapping
@@ -63,8 +62,9 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 1.0
  */
-public class OneToManyMappingComposite extends FormPane<OneToManyMapping>
-                                       implements JpaComposite
+public class OneToManyMappingComposite 
+	extends FormPane<OneToManyMapping>
+	implements JpaComposite
 {
 	/**
 	 * Creates a new <code>OneToManyMappingComposite</code>.
@@ -80,6 +80,16 @@ public class OneToManyMappingComposite extends FormPane<OneToManyMapping>
 		super(subjectHolder, parent, widgetFactory);
 	}
 
+	
+	private PropertyValueModel<OneToManyRelationshipReference> buildJoiningHolder() {
+		return new TransformationPropertyValueModel<OneToManyMapping, OneToManyRelationshipReference>(getSubjectHolder()) {
+			@Override
+			protected OneToManyRelationshipReference transform_(OneToManyMapping value) {
+				return value.getRelationshipReference();
+			}
+		};
+	}
+	
 	private PropertyValueModel<Cascade> buildCascadeHolder() {
 		return new TransformationPropertyValueModel<OneToManyMapping, Cascade>(getSubjectHolder()) {
 			@Override
@@ -88,61 +98,25 @@ public class OneToManyMappingComposite extends FormPane<OneToManyMapping>
 			}
 		};
 	}
-
-	private PropertyValueModel<JoinTable> buildJoinTableHolder() {
-		return new TransformationPropertyValueModel<OneToManyMapping, JoinTable>(getSubjectHolder()) {
-			@Override
-			protected JoinTable transform_(OneToManyMapping value) {
-				return value.getJoinTable();
-			}
-		};
-	}
-
-	private void initializeGeneralPane(Composite container) {
-
+	
+	@Override
+	protected void initializeLayout(Composite container) {
 		int groupBoxMargin = getGroupBoxMargin();
 		Composite subPane = addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
 
 		// Target Entity widgets
 		new TargetEntityComposite(this, subPane);
-
+		
+		// Joining Strategy widgets
+		new OneToManyJoiningStrategyPane(this, buildJoiningHolder(), container);
+		
 		// Fetch Type widgets
 		new FetchTypeComposite(this, subPane);
-
-		// Mapped By widgets
-		new MappedByComposite(this, subPane);
 
 		// Cascade widgets
 		new CascadeComposite(this, buildCascadeHolder(), addSubPane(container, 4));
 
 		// Ordering widgets
 		new OrderingComposite(this, container);
-	}
-
-	private void initializeJoinTablePane(Composite container) {
-
-		container = addCollapsableSection(
-			container,
-			JptUiMappingsMessages.MultiRelationshipMappingComposite_joinTable
-		);
-
-		new JoinTableComposite(
-			this,
-			buildJoinTableHolder(),
-			container
-		);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected void initializeLayout(Composite container) {
-
-		// General sub pane
-		initializeGeneralPane(container);
-
-		// Join Table sub pane
-		initializeJoinTablePane(container);
 	}
 }

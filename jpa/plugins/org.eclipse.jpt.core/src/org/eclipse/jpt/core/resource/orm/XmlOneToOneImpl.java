@@ -77,6 +77,16 @@ public class XmlOneToOneImpl extends AbstractXmlAttributeMapping implements XmlO
 	protected FetchType fetch = FETCH_EDEFAULT;
 
 	/**
+	 * The cached value of the '{@link #getCascade() <em>Cascade</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getCascade()
+	 * @generated
+	 * @ordered
+	 */
+	protected CascadeType cascade;
+
+	/**
 	 * The cached value of the '{@link #getJoinTable() <em>Join Table</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -87,14 +97,14 @@ public class XmlOneToOneImpl extends AbstractXmlAttributeMapping implements XmlO
 	protected XmlJoinTable joinTable;
 
 	/**
-	 * The cached value of the '{@link #getCascade() <em>Cascade</em>}' containment reference.
+	 * The cached value of the '{@link #getJoinColumns() <em>Join Columns</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getCascade()
+	 * @see #getJoinColumns()
 	 * @generated
 	 * @ordered
 	 */
-	protected CascadeType cascade;
+	protected EList<XmlJoinColumn> joinColumns;
 
 	/**
 	 * The default value of the '{@link #getOptional() <em>Optional</em>}' attribute.
@@ -115,16 +125,6 @@ public class XmlOneToOneImpl extends AbstractXmlAttributeMapping implements XmlO
 	 * @ordered
 	 */
 	protected Boolean optional = OPTIONAL_EDEFAULT;
-
-	/**
-	 * The cached value of the '{@link #getJoinColumns() <em>Join Columns</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getJoinColumns()
-	 * @generated
-	 * @ordered
-	 */
-	protected EList<XmlJoinColumn> joinColumns;
 
 	/**
 	 * The default value of the '{@link #getMappedBy() <em>Mapped By</em>}' attribute.
@@ -296,7 +296,7 @@ public class XmlOneToOneImpl extends AbstractXmlAttributeMapping implements XmlO
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Mapped By</em>' attribute.
 	 * @see #setMappedBy(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlOneToOne_MappedBy()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlMappedByMapping_MappedBy()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -319,6 +319,29 @@ public class XmlOneToOneImpl extends AbstractXmlAttributeMapping implements XmlO
 		mappedBy = newMappedBy;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_ONE_TO_ONE_IMPL__MAPPED_BY, oldMappedBy, mappedBy));
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Join Columns</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.core.resource.orm.XmlJoinColumn}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Join Columns</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Join Columns</em>' containment reference list.
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlJoinColumnsMapping_JoinColumns()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public EList<XmlJoinColumn> getJoinColumns()
+	{
+		if (joinColumns == null)
+		{
+			joinColumns = new EObjectContainmentEList<XmlJoinColumn>(XmlJoinColumn.class, this, OrmPackage.XML_ONE_TO_ONE_IMPL__JOIN_COLUMNS);
+		}
+		return joinColumns;
 	}
 
 	/**
@@ -345,29 +368,6 @@ public class XmlOneToOneImpl extends AbstractXmlAttributeMapping implements XmlO
 	}
 
 	/**
-	 * Returns the value of the '<em><b>Join Columns</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.core.resource.orm.XmlJoinColumn}.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Join Columns</em>' containment reference list isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Join Columns</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlSingleRelationshipMapping_JoinColumns()
-	 * @model containment="true"
-	 * @generated
-	 */
-	public EList<XmlJoinColumn> getJoinColumns()
-	{
-		if (joinColumns == null)
-		{
-			joinColumns = new EObjectContainmentEList<XmlJoinColumn>(XmlJoinColumn.class, this, OrmPackage.XML_ONE_TO_ONE_IMPL__JOIN_COLUMNS);
-		}
-		return joinColumns;
-	}
-
-	/**
 	 * Returns the value of the '<em><b>Join Table</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -377,7 +377,7 @@ public class XmlOneToOneImpl extends AbstractXmlAttributeMapping implements XmlO
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Join Table</em>' containment reference.
 	 * @see #setJoinTable(XmlJoinTable)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlRelationshipMapping_JoinTable()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlJoinTableMapping_JoinTable()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -497,10 +497,10 @@ public class XmlOneToOneImpl extends AbstractXmlAttributeMapping implements XmlO
 	{
 		switch (featureID)
 		{
-			case OrmPackage.XML_ONE_TO_ONE_IMPL__JOIN_TABLE:
-				return basicSetJoinTable(null, msgs);
 			case OrmPackage.XML_ONE_TO_ONE_IMPL__CASCADE:
 				return basicSetCascade(null, msgs);
+			case OrmPackage.XML_ONE_TO_ONE_IMPL__JOIN_TABLE:
+				return basicSetJoinTable(null, msgs);
 			case OrmPackage.XML_ONE_TO_ONE_IMPL__JOIN_COLUMNS:
 				return ((InternalEList<?>)getJoinColumns()).basicRemove(otherEnd, msgs);
 			case OrmPackage.XML_ONE_TO_ONE_IMPL__PRIMARY_KEY_JOIN_COLUMNS:
@@ -523,14 +523,14 @@ public class XmlOneToOneImpl extends AbstractXmlAttributeMapping implements XmlO
 				return getTargetEntity();
 			case OrmPackage.XML_ONE_TO_ONE_IMPL__FETCH:
 				return getFetch();
-			case OrmPackage.XML_ONE_TO_ONE_IMPL__JOIN_TABLE:
-				return getJoinTable();
 			case OrmPackage.XML_ONE_TO_ONE_IMPL__CASCADE:
 				return getCascade();
-			case OrmPackage.XML_ONE_TO_ONE_IMPL__OPTIONAL:
-				return getOptional();
+			case OrmPackage.XML_ONE_TO_ONE_IMPL__JOIN_TABLE:
+				return getJoinTable();
 			case OrmPackage.XML_ONE_TO_ONE_IMPL__JOIN_COLUMNS:
 				return getJoinColumns();
+			case OrmPackage.XML_ONE_TO_ONE_IMPL__OPTIONAL:
+				return getOptional();
 			case OrmPackage.XML_ONE_TO_ONE_IMPL__MAPPED_BY:
 				return getMappedBy();
 			case OrmPackage.XML_ONE_TO_ONE_IMPL__PRIMARY_KEY_JOIN_COLUMNS:
@@ -556,18 +556,18 @@ public class XmlOneToOneImpl extends AbstractXmlAttributeMapping implements XmlO
 			case OrmPackage.XML_ONE_TO_ONE_IMPL__FETCH:
 				setFetch((FetchType)newValue);
 				return;
-			case OrmPackage.XML_ONE_TO_ONE_IMPL__JOIN_TABLE:
-				setJoinTable((XmlJoinTable)newValue);
-				return;
 			case OrmPackage.XML_ONE_TO_ONE_IMPL__CASCADE:
 				setCascade((CascadeType)newValue);
 				return;
-			case OrmPackage.XML_ONE_TO_ONE_IMPL__OPTIONAL:
-				setOptional((Boolean)newValue);
+			case OrmPackage.XML_ONE_TO_ONE_IMPL__JOIN_TABLE:
+				setJoinTable((XmlJoinTable)newValue);
 				return;
 			case OrmPackage.XML_ONE_TO_ONE_IMPL__JOIN_COLUMNS:
 				getJoinColumns().clear();
 				getJoinColumns().addAll((Collection<? extends XmlJoinColumn>)newValue);
+				return;
+			case OrmPackage.XML_ONE_TO_ONE_IMPL__OPTIONAL:
+				setOptional((Boolean)newValue);
 				return;
 			case OrmPackage.XML_ONE_TO_ONE_IMPL__MAPPED_BY:
 				setMappedBy((String)newValue);
@@ -596,17 +596,17 @@ public class XmlOneToOneImpl extends AbstractXmlAttributeMapping implements XmlO
 			case OrmPackage.XML_ONE_TO_ONE_IMPL__FETCH:
 				setFetch(FETCH_EDEFAULT);
 				return;
-			case OrmPackage.XML_ONE_TO_ONE_IMPL__JOIN_TABLE:
-				setJoinTable((XmlJoinTable)null);
-				return;
 			case OrmPackage.XML_ONE_TO_ONE_IMPL__CASCADE:
 				setCascade((CascadeType)null);
 				return;
-			case OrmPackage.XML_ONE_TO_ONE_IMPL__OPTIONAL:
-				setOptional(OPTIONAL_EDEFAULT);
+			case OrmPackage.XML_ONE_TO_ONE_IMPL__JOIN_TABLE:
+				setJoinTable((XmlJoinTable)null);
 				return;
 			case OrmPackage.XML_ONE_TO_ONE_IMPL__JOIN_COLUMNS:
 				getJoinColumns().clear();
+				return;
+			case OrmPackage.XML_ONE_TO_ONE_IMPL__OPTIONAL:
+				setOptional(OPTIONAL_EDEFAULT);
 				return;
 			case OrmPackage.XML_ONE_TO_ONE_IMPL__MAPPED_BY:
 				setMappedBy(MAPPED_BY_EDEFAULT);
@@ -632,14 +632,14 @@ public class XmlOneToOneImpl extends AbstractXmlAttributeMapping implements XmlO
 				return TARGET_ENTITY_EDEFAULT == null ? targetEntity != null : !TARGET_ENTITY_EDEFAULT.equals(targetEntity);
 			case OrmPackage.XML_ONE_TO_ONE_IMPL__FETCH:
 				return fetch != FETCH_EDEFAULT;
-			case OrmPackage.XML_ONE_TO_ONE_IMPL__JOIN_TABLE:
-				return joinTable != null;
 			case OrmPackage.XML_ONE_TO_ONE_IMPL__CASCADE:
 				return cascade != null;
-			case OrmPackage.XML_ONE_TO_ONE_IMPL__OPTIONAL:
-				return OPTIONAL_EDEFAULT == null ? optional != null : !OPTIONAL_EDEFAULT.equals(optional);
+			case OrmPackage.XML_ONE_TO_ONE_IMPL__JOIN_TABLE:
+				return joinTable != null;
 			case OrmPackage.XML_ONE_TO_ONE_IMPL__JOIN_COLUMNS:
 				return joinColumns != null && !joinColumns.isEmpty();
+			case OrmPackage.XML_ONE_TO_ONE_IMPL__OPTIONAL:
+				return OPTIONAL_EDEFAULT == null ? optional != null : !OPTIONAL_EDEFAULT.equals(optional);
 			case OrmPackage.XML_ONE_TO_ONE_IMPL__MAPPED_BY:
 				return MAPPED_BY_EDEFAULT == null ? mappedBy != null : !MAPPED_BY_EDEFAULT.equals(mappedBy);
 			case OrmPackage.XML_ONE_TO_ONE_IMPL__PRIMARY_KEY_JOIN_COLUMNS:
@@ -662,8 +662,23 @@ public class XmlOneToOneImpl extends AbstractXmlAttributeMapping implements XmlO
 			{
 				case OrmPackage.XML_ONE_TO_ONE_IMPL__TARGET_ENTITY: return OrmPackage.XML_RELATIONSHIP_MAPPING__TARGET_ENTITY;
 				case OrmPackage.XML_ONE_TO_ONE_IMPL__FETCH: return OrmPackage.XML_RELATIONSHIP_MAPPING__FETCH;
-				case OrmPackage.XML_ONE_TO_ONE_IMPL__JOIN_TABLE: return OrmPackage.XML_RELATIONSHIP_MAPPING__JOIN_TABLE;
 				case OrmPackage.XML_ONE_TO_ONE_IMPL__CASCADE: return OrmPackage.XML_RELATIONSHIP_MAPPING__CASCADE;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlJoinTableMapping.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.XML_ONE_TO_ONE_IMPL__JOIN_TABLE: return OrmPackage.XML_JOIN_TABLE_MAPPING__JOIN_TABLE;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlJoinColumnsMapping.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.XML_ONE_TO_ONE_IMPL__JOIN_COLUMNS: return OrmPackage.XML_JOIN_COLUMNS_MAPPING__JOIN_COLUMNS;
 				default: return -1;
 			}
 		}
@@ -672,7 +687,14 @@ public class XmlOneToOneImpl extends AbstractXmlAttributeMapping implements XmlO
 			switch (derivedFeatureID)
 			{
 				case OrmPackage.XML_ONE_TO_ONE_IMPL__OPTIONAL: return OrmPackage.XML_SINGLE_RELATIONSHIP_MAPPING__OPTIONAL;
-				case OrmPackage.XML_ONE_TO_ONE_IMPL__JOIN_COLUMNS: return OrmPackage.XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_COLUMNS;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlMappedByMapping.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.XML_ONE_TO_ONE_IMPL__MAPPED_BY: return OrmPackage.XML_MAPPED_BY_MAPPING__MAPPED_BY;
 				default: return -1;
 			}
 		}
@@ -680,7 +702,6 @@ public class XmlOneToOneImpl extends AbstractXmlAttributeMapping implements XmlO
 		{
 			switch (derivedFeatureID)
 			{
-				case OrmPackage.XML_ONE_TO_ONE_IMPL__MAPPED_BY: return OrmPackage.XML_ONE_TO_ONE__MAPPED_BY;
 				case OrmPackage.XML_ONE_TO_ONE_IMPL__PRIMARY_KEY_JOIN_COLUMNS: return OrmPackage.XML_ONE_TO_ONE__PRIMARY_KEY_JOIN_COLUMNS;
 				default: return -1;
 			}
@@ -702,8 +723,23 @@ public class XmlOneToOneImpl extends AbstractXmlAttributeMapping implements XmlO
 			{
 				case OrmPackage.XML_RELATIONSHIP_MAPPING__TARGET_ENTITY: return OrmPackage.XML_ONE_TO_ONE_IMPL__TARGET_ENTITY;
 				case OrmPackage.XML_RELATIONSHIP_MAPPING__FETCH: return OrmPackage.XML_ONE_TO_ONE_IMPL__FETCH;
-				case OrmPackage.XML_RELATIONSHIP_MAPPING__JOIN_TABLE: return OrmPackage.XML_ONE_TO_ONE_IMPL__JOIN_TABLE;
 				case OrmPackage.XML_RELATIONSHIP_MAPPING__CASCADE: return OrmPackage.XML_ONE_TO_ONE_IMPL__CASCADE;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlJoinTableMapping.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmPackage.XML_JOIN_TABLE_MAPPING__JOIN_TABLE: return OrmPackage.XML_ONE_TO_ONE_IMPL__JOIN_TABLE;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlJoinColumnsMapping.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmPackage.XML_JOIN_COLUMNS_MAPPING__JOIN_COLUMNS: return OrmPackage.XML_ONE_TO_ONE_IMPL__JOIN_COLUMNS;
 				default: return -1;
 			}
 		}
@@ -712,7 +748,14 @@ public class XmlOneToOneImpl extends AbstractXmlAttributeMapping implements XmlO
 			switch (baseFeatureID)
 			{
 				case OrmPackage.XML_SINGLE_RELATIONSHIP_MAPPING__OPTIONAL: return OrmPackage.XML_ONE_TO_ONE_IMPL__OPTIONAL;
-				case OrmPackage.XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_COLUMNS: return OrmPackage.XML_ONE_TO_ONE_IMPL__JOIN_COLUMNS;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlMappedByMapping.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmPackage.XML_MAPPED_BY_MAPPING__MAPPED_BY: return OrmPackage.XML_ONE_TO_ONE_IMPL__MAPPED_BY;
 				default: return -1;
 			}
 		}
@@ -720,7 +763,6 @@ public class XmlOneToOneImpl extends AbstractXmlAttributeMapping implements XmlO
 		{
 			switch (baseFeatureID)
 			{
-				case OrmPackage.XML_ONE_TO_ONE__MAPPED_BY: return OrmPackage.XML_ONE_TO_ONE_IMPL__MAPPED_BY;
 				case OrmPackage.XML_ONE_TO_ONE__PRIMARY_KEY_JOIN_COLUMNS: return OrmPackage.XML_ONE_TO_ONE_IMPL__PRIMARY_KEY_JOIN_COLUMNS;
 				default: return -1;
 			}

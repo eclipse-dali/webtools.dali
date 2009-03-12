@@ -28,4 +28,5 @@ package org.eclipse.jpt.core.resource.orm;
  */
 public interface XmlManyToMany extends XmlMultiRelationshipMapping
 {
-} // ManyToMany
+	
+}

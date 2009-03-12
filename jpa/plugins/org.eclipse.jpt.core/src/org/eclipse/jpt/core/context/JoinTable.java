@@ -22,8 +22,8 @@ import java.util.ListIterator;
  */
 public interface JoinTable extends Table
 {
-
-	RelationshipMapping getParent();
+	RelationshipMapping getRelationshipMapping();
+	
 	
 	// **************** join columns **************************************
 	

@@ -248,7 +248,7 @@ public interface JpaUiFactory
 	 * @return A new <code>JpaComposite</code>
 	 */
 	JpaComposite createJavaOneToManyMappingComposite(
-		PropertyValueModel<JavaOneToManyMapping> subjectHolder,
+		PropertyValueModel<? extends JavaOneToManyMapping> subjectHolder,
 		Composite parent,
 		WidgetFactory widgetFactory);
 	

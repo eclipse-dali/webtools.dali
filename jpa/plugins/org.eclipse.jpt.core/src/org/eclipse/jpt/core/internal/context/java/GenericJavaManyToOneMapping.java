@@ -10,29 +10,38 @@
 package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Iterator;
-import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.java.JavaManyToOneMapping;
+import org.eclipse.jpt.core.context.java.JavaManyToOneRelationshipReference;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.ManyToOneAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
-import org.eclipse.wst.validation.internal.provisional.core.IMessage;
-import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-/**
- * 
- */
+
 public class GenericJavaManyToOneMapping
 	extends AbstractJavaSingleRelationshipMapping<ManyToOneAnnotation>
 	implements JavaManyToOneMapping
 {
-
 	public GenericJavaManyToOneMapping(JavaPersistentAttribute parent) {
 		super(parent);
 	}
-
+	
+	
+	@Override
+	protected JavaManyToOneRelationshipReference buildRelationshipReference() {
+		return new GenericJavaManyToOneRelationshipReference(this);
+	}
+	
+	public String getAnnotationName() {
+		return ManyToOneAnnotation.ANNOTATION_NAME;
+	}
+	
+	@Override
+	public ManyToOneAnnotation getMappingAnnotation() {
+		return super.getMappingAnnotation();
+	}
+	
 	public Iterator<String> supportingAnnotationNames() {
 		return new ArrayIterator<String>(
 						JPA.JOIN_COLUMN,
@@ -40,18 +49,19 @@ public class GenericJavaManyToOneMapping
 						JPA.JOIN_TABLE
 					);
 	}
-
-	public String getAnnotationName() {
-		return ManyToOneAnnotation.ANNOTATION_NAME;
-	}
-
+	
 	public String getKey() {
 		return MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY;
 	}
 	
 	@Override
-	public boolean isOverridableAssociationMapping() {
-		return true;
+	public JavaManyToOneRelationshipReference getRelationshipReference() {
+		return (JavaManyToOneRelationshipReference) super.getRelationshipReference();
+	}
+		
+	@Override
+	protected Boolean getResourceOptional() {
+		return this.resourceMapping.getOptional();
 	}
 	
 	@Override
@@ -60,18 +70,7 @@ public class GenericJavaManyToOneMapping
 	}
 	
 	@Override
-	protected Boolean getResourceOptional() {
-		return this.resourceMapping.getOptional();
-	}
-	
-	//ManyToOne mapping is always the owning side
-	public boolean isRelationshipOwner() {
+	public boolean isOverridableAssociationMapping() {
 		return true;
 	}
-
-	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
-	}
-
 }

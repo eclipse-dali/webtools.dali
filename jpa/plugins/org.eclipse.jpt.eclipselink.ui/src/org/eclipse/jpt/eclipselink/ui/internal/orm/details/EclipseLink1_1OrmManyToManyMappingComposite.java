@@ -14,10 +14,11 @@ import org.eclipse.jpt.core.context.ManyToManyMapping;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkManyToManyMappingComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.JoinFetchComposite;
 import org.eclipse.jpt.ui.WidgetFactory;
+import org.eclipse.jpt.ui.internal.BaseJpaUiFactory;
 import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.CascadeComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.FetchTypeComposite;
-import org.eclipse.jpt.ui.internal.mappings.details.MappedByComposite;
+import org.eclipse.jpt.ui.internal.mappings.details.ManyToManyJoiningStrategyPane;
 import org.eclipse.jpt.ui.internal.mappings.details.OrderingComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.TargetEntityComposite;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
@@ -35,6 +36,11 @@ import org.eclipse.swt.widgets.Composite;
  * | ------------------------------------------------------------------------- |
  * | ------------------------------------------------------------------------- |
  * | |                                                                       | |
+ * | | JoiningStrategyComposite                                              | |
+ * | |                                                                       | |
+ * | ------------------------------------------------------------------------- |
+ * | ------------------------------------------------------------------------- |
+ * | |                                                                       | |
  * | | FetchTypeComposite                                                    | |
  * | |                                                                       | |
  * | ------------------------------------------------------------------------- |
@@ -48,21 +54,15 @@ import org.eclipse.swt.widgets.Composite;
  * | | OrderingComposite                                                     | |
  * | |                                                                       | |
  * | ------------------------------------------------------------------------- |
- * |                                                                           |
- * | - Join Table ------------------------------------------------------------ |
- * | |                                                                       | |
- * | | JoinTableComposite                                                    | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see ManyToManyMapping
- * @see BaseJpaUiFactory - The factory creating this pane
- * @see CascadeComposite
- * @see FetchTypeComposite
- * @see JoinTableComposite
- * @see OrderingComposite
- * @see TargetEntityComposite
+ * @see {@link ManyToManyMapping}
+ * @see {@link BaseJpaUiFactory} - The factory creating this pane
+ * @see {@link TargetEntityComposite}
+ * @see {@link ManyToManyJoiningStrategyPane}
+ * @see {@link FetchTypeComposite}
+ * @see {@link CascadeComposite}
+ * @see {@link OrderingComposite}
  *
  * @version 2.2
  * @since 2.2
@@ -82,16 +82,17 @@ public class EclipseLink1_1OrmManyToManyMappingComposite extends EclipseLinkMany
 
 		super(subjectHolder, parent, widgetFactory);
 	}
-
+	
+	
 	@Override
-	protected void initializeGeneralPane(Composite container) {
+	protected void initializeLayout(Composite container) {
 		int groupBoxMargin = getGroupBoxMargin();
-
+		
 		new TargetEntityComposite(this, addPane(container, groupBoxMargin));
 		new AccessTypeComposite(this, buildAccessHolderHolder(), addPane(container, groupBoxMargin));
+		new ManyToManyJoiningStrategyPane(this, buildJoiningHolder(), container);
 		new FetchTypeComposite(this, addPane(container, groupBoxMargin));
 		new JoinFetchComposite(this, buildJoinFetchableHolder(), addPane(container, groupBoxMargin));
-		new MappedByComposite(this, addPane(container, groupBoxMargin));
 		new CascadeComposite(this, buildCascadeHolder(), addSubPane(container, 5));
 		new OrderingComposite(this, container);
 	}
