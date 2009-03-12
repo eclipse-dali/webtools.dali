@@ -11,8 +11,6 @@
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.context.JoiningStrategy;
-import org.eclipse.jpt.core.context.MappedByJoiningStrategy;
-import org.eclipse.jpt.core.context.OwnableRelationshipReference;
 import org.eclipse.jpt.core.context.RelationshipReference;
 import org.eclipse.jpt.ui.internal.util.ControlSwitcher;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
@@ -55,8 +53,6 @@ public abstract class AbstractJoiningStrategyPane
 	
 	protected Composite strategyDetailsComposite;
 	
-	protected Composite emptyComposite;
-	
 	
 	/**
 	 * Creates a new <code>AbstractJoiningStrategyPane</code>.
@@ -95,7 +91,6 @@ public abstract class AbstractJoiningStrategyPane
 		pageBook.setLayoutData(gd);
 		
 		this.strategyDetailsComposite = buildStrategyDetailsComposite(pageBook);
-		this.emptyComposite = buildEmptyComposite(pageBook);
 		
 		new ControlSwitcher(this.usesStrategyHolder, buildPageBookTransformer(), pageBook);
 	}
@@ -104,20 +99,12 @@ public abstract class AbstractJoiningStrategyPane
 	
 	protected abstract Composite buildStrategyDetailsComposite(Composite parent);
 	
-	protected Composite buildEmptyComposite(Composite parent) {
-		Composite emptyComposite = addSubPane(parent);
-		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
-		gd.heightHint = 0;
-		emptyComposite.setLayoutData(gd);
-		return emptyComposite;
-	}
-	
 	protected Transformer<Boolean, Control> buildPageBookTransformer() {
 		return new Transformer<Boolean, Control>() {
 			public Control transform(Boolean usesStrategy) {
-				return (usesStrategy) ? 
+				return (usesStrategy.booleanValue()) ? 
 					AbstractJoiningStrategyPane.this.strategyDetailsComposite :
-					AbstractJoiningStrategyPane.this.emptyComposite;
+					null;
 			}
 		};
 	}

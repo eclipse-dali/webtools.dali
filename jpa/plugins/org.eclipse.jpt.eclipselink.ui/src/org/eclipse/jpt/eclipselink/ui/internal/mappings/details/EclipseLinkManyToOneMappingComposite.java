@@ -16,7 +16,6 @@ import org.eclipse.jpt.eclipselink.core.context.EclipseLinkRelationshipMapping;
 import org.eclipse.jpt.eclipselink.core.context.JoinFetch;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
-import org.eclipse.jpt.ui.internal.BaseJpaUiFactory;
 import org.eclipse.jpt.ui.internal.mappings.details.CascadeComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.FetchTypeComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.ManyToOneJoiningStrategyPane;
@@ -92,11 +91,11 @@ public class EclipseLinkManyToOneMappingComposite extends FormPane<ManyToOneMapp
 		int groupBoxMargin = getGroupBoxMargin();
 		
 		new TargetEntityComposite(this, addPane(container, groupBoxMargin));
-		new ManyToOneJoiningStrategyPane(this, buildJoiningHolder(), container);
-		new FetchTypeComposite(this, addPane(container));
-		new JoinFetchComposite(this, buildJoinFetchableHolder(), addPane(container));
-		new OptionalComposite(this, addPane(container, 4));
-		new CascadeComposite(this, buildCascadeHolder(), addPane(container));
+		new ManyToOneJoiningStrategyPane(this, buildJoiningHolder(), addPane(container, groupBoxMargin));
+		new FetchTypeComposite(this, addPane(container, groupBoxMargin));
+		new JoinFetchComposite(this, buildJoinFetchableHolder(), addPane(container, groupBoxMargin));
+		new OptionalComposite(this, addPane(container, groupBoxMargin));
+		new CascadeComposite(this, buildCascadeHolder(), addPane(container, groupBoxMargin));
 	}
 
 	protected Composite addPane(Composite container, int groupBoxMargin) {

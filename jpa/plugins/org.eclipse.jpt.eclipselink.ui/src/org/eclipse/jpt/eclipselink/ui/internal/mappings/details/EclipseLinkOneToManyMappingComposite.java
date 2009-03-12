@@ -11,19 +11,14 @@ package org.eclipse.jpt.eclipselink.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.context.Cascade;
 import org.eclipse.jpt.core.context.OneToManyMapping;
-import org.eclipse.jpt.core.context.OneToOneMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToManyMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToManyRelationshipReference;
 import org.eclipse.jpt.eclipselink.core.context.JoinFetch;
 import org.eclipse.jpt.eclipselink.core.context.PrivateOwned;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
-import org.eclipse.jpt.ui.internal.BaseJpaUiFactory;
 import org.eclipse.jpt.ui.internal.mappings.details.CascadeComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.FetchTypeComposite;
-import org.eclipse.jpt.ui.internal.mappings.details.JoinColumnComposite;
-import org.eclipse.jpt.ui.internal.mappings.details.MappedByPane;
-import org.eclipse.jpt.ui.internal.mappings.details.OptionalComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.OrderingComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.TargetEntityComposite;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
@@ -103,8 +98,8 @@ public class EclipseLinkOneToManyMappingComposite
 		int groupBoxMargin = getGroupBoxMargin();
 		
 		new TargetEntityComposite(this, addPane(container, groupBoxMargin));
-		new FetchTypeComposite(this, addPane(container, groupBoxMargin));
 		new EclipseLinkOneToManyJoiningStrategyPane(this, buildJoiningHolder(), addPane(container, groupBoxMargin));
+		new FetchTypeComposite(this, addPane(container, groupBoxMargin));
 		new JoinFetchComposite(this, buildJoinFetchableHolder(), addPane(container, groupBoxMargin));
 		new PrivateOwnedComposite(this, buildPrivateOwnableHolder(), addPane(container, groupBoxMargin));
 		new CascadeComposite(this, buildCascadeHolder(), addPane(container, groupBoxMargin));
