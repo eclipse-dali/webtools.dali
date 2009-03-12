@@ -79,7 +79,7 @@ public class EclipseLinkDDLGenerator
 	static public String ECLIPSELINK_DDL_GEN_JAR = DDL_GEN_PACKAGE_NAME + "_";	//$NON-NLS-1$
 	static public String BUNDLE_CLASSPATH = "Bundle-ClassPath";	  //$NON-NLS-1$
 	static public String PROPERTIES_FILE_NAME = "login.properties";	  //$NON-NLS-1$
-	static public String PLUGINS_DIR = "plugins";	  //$NON-NLS-1$
+	static public String PLUGINS_DIR = "plugins/";	  //$NON-NLS-1$
 	private IVMInstall jre;
 	private ILaunchConfigurationWorkingCopy launchConfig;
 	private ILaunch launch;
@@ -125,17 +125,13 @@ public class EclipseLinkDDLGenerator
 	protected void generate() {
 		this.preGenerate();
 		String propertiesFile  = this.projectLocation + "/" + PROPERTIES_FILE_NAME;
-		try {
-			this.initializeLaunchConfiguration(this.projectLocation, propertiesFile);
-	
-			this.saveLoginProperties(this.projectLocation, propertiesFile);
-	
-			this.launch = this.saveAndLaunchConfig();
-			this.addLaunchListener();
-		} 
-		catch (CoreException e) {
-			throw new RuntimeException(e);
-		}
+		
+		this.initializeLaunchConfiguration(this.projectLocation, propertiesFile);
+
+		this.saveLoginProperties(this.projectLocation, propertiesFile);
+
+		this.launch = this.saveAndLaunchConfig();
+		this.addLaunchListener();
 	}
 	
 	private void initializeLaunchConfiguration(String projectLocation, String propertiesFile) {
@@ -243,6 +239,9 @@ public class EclipseLinkDDLGenerator
 	}
 
 	private void findFile(String fileName, File directory, List<? super File> list) {
+		if(directory.listFiles() == null) {
+			throw new RuntimeException("Could not find directory: " + directory);
+		}
 		for (File file : directory.listFiles()) {
 			if (file.getName().startsWith(fileName)) {
 				list.add(file);
@@ -258,7 +257,10 @@ public class EclipseLinkDDLGenerator
 		if (Platform.inDevelopmentMode()) {
 			Location eclipseHomeLoc = Platform.getInstallLocation();
 			String eclipseHome = eclipseHomeLoc.getURL().getPath();
-			return new File(eclipseHome + PLUGINS_DIR);
+			if ( ! eclipseHome.endsWith(PLUGINS_DIR)) {
+				eclipseHome += PLUGINS_DIR;
+			}
+			return new File(eclipseHome);
 		}
 		Bundle bundle = Platform.getBundle(bundleName);
 		return FileLocator.getBundleFile(bundle).getParentFile();
@@ -381,10 +383,22 @@ public class EclipseLinkDDLGenerator
 
 	// ********** LaunchConfig **********
 	
-	private ILaunch saveAndLaunchConfig() throws CoreException {
-		ILaunchConfiguration configuration = this.launchConfig.doSave();
-		
-		return configuration.launch(ILaunchManager.RUN_MODE, new NullProgressMonitor());
+	private ILaunch saveAndLaunchConfig() {
+		ILaunchConfiguration configuration = null;
+		ILaunch result = null;
+		try {
+			configuration = this.launchConfig.doSave();
+		}
+		catch (CoreException saveException) {
+			throw new RuntimeException("Could not save LaunchConfig", saveException);
+		}
+		 try {
+			result = configuration.launch(ILaunchManager.RUN_MODE, new NullProgressMonitor());
+		}
+		catch (CoreException lauchException) {
+			throw new RuntimeException("An error occured during launch", lauchException);
+		}
+		return result;
 	}
 
 	private ILaunchConfigurationWorkingCopy buildLaunchConfiguration() throws CoreException {
@@ -543,16 +557,18 @@ public class EclipseLinkDDLGenerator
 		return JavaRuntime.getVMInstall(this.jpaProject.getJavaProject());
 	}
 
-	// ********** Bundle *********
+	// ********** Bundles *********
 
 	private Collection<String> getPersistenceOsgiBundlesMemento() throws CoreException {
 
 		Collection<String> result = new HashSet<String>();
-		result.add(this.getBundleClasspathEntry(JAVAX_PERSISTENCE_BUNDLE).getMemento());
-		result.add(this.getBundleClasspathEntry(ORG_ECLIPSE_PERSISTENCE_CORE_BUNDLE).getMemento());
-		result.add(this.getBundleClasspathEntry(ORG_ECLIPSE_PERSISTENCE_ASM_BUNDLE).getMemento());
-		result.add(this.getBundleClasspathEntry(ORG_ECLIPSE_PERSISTENCE_ANTLR_BUNDLE).getMemento());
-		result.add(this.getBundleClasspathEntry(ORG_ECLIPSE_PERSISTENCE_JPA_BUNDLE).getMemento());
+		if (javaxPersistenceBundleExists()) {
+			result.add(this.getBundleClasspathEntry(JAVAX_PERSISTENCE_BUNDLE).getMemento());
+			result.add(this.getBundleClasspathEntry(ORG_ECLIPSE_PERSISTENCE_CORE_BUNDLE).getMemento());
+			result.add(this.getBundleClasspathEntry(ORG_ECLIPSE_PERSISTENCE_ASM_BUNDLE).getMemento());
+			result.add(this.getBundleClasspathEntry(ORG_ECLIPSE_PERSISTENCE_ANTLR_BUNDLE).getMemento());
+			result.add(this.getBundleClasspathEntry(ORG_ECLIPSE_PERSISTENCE_JPA_BUNDLE).getMemento());
+		}
 		return result;
 	}
 	
@@ -605,6 +621,10 @@ public class EclipseLinkDDLGenerator
 			}
 		}
 		return null;
+	}
+	
+	private boolean javaxPersistenceBundleExists() {
+		return Platform.getBundle(JAVAX_PERSISTENCE_BUNDLE) != null;
 	}
 
 	// ********** constants **********
