@@ -96,7 +96,7 @@ public class OrmJoinTableJoiningStrategy extends AbstractXmlContextNode
 	
 	protected boolean mayHaveDefaultJoinTable() {
 		return getJoinTableResource() != null 
-			|| getRelationshipReference().mayHaveDefaultJoinTable();
+			&& getRelationshipReference().mayHaveDefaultJoinTable();
 	}
 	
 	protected XmlJoinTable getJoinTableResource() {
