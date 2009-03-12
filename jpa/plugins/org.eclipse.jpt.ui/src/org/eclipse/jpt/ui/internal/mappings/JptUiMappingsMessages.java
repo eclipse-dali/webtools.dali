@@ -215,7 +215,6 @@ public class JptUiMappingsMessages {
 	public static String NewNameStateObject_nameMustBeSpecified;
 	public static String NoNameSet;
 	public static String NoneSelected;
-	public static String NonOwningMapping_mappedByLabel;
 	public static String NullAttributeMappingUiProvider_label;
 	public static String OptionalComposite_false;
 	public static String OptionalComposite_true;
