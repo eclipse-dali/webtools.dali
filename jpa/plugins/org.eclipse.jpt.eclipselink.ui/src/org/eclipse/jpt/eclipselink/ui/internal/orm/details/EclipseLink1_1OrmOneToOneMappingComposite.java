@@ -15,12 +15,9 @@ import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkOneTo
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.JoinFetchComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.PrivateOwnedComposite;
 import org.eclipse.jpt.ui.WidgetFactory;
-import org.eclipse.jpt.ui.internal.BaseJpaUiFactory;
 import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.CascadeComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.FetchTypeComposite;
-import org.eclipse.jpt.ui.internal.mappings.details.JoinColumnComposite;
-import org.eclipse.jpt.ui.internal.mappings.details.MappedByPane;
 import org.eclipse.jpt.ui.internal.mappings.details.OneToOneJoiningStrategyPane;
 import org.eclipse.jpt.ui.internal.mappings.details.OptionalComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.TargetEntityComposite;
@@ -92,20 +89,18 @@ public class EclipseLink1_1OrmOneToOneMappingComposite extends EclipseLinkOneToO
 		super(subjectHolder, parent, widgetFactory);
 	}
 	
-	
 	@Override
 	protected void initializeLayout(Composite container) {
 		int groupBoxMargin = getGroupBoxMargin();
-		Composite subPane = addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
 
-		new TargetEntityComposite(this, subPane);
-		new AccessTypeComposite(this, buildAccessHolderHolder(), subPane);
+		new TargetEntityComposite(this, addPane(container, groupBoxMargin));
+		new AccessTypeComposite(this, buildAccessHolderHolder(), addPane(container, groupBoxMargin));
 		new OneToOneJoiningStrategyPane(this, buildJoiningHolder(), container);
-		new FetchTypeComposite(this, subPane);
-		new JoinFetchComposite(this, buildJoinFetchableHolder(), subPane);
-		new OptionalComposite(this, addSubPane(subPane, 4));
-		new PrivateOwnedComposite(this, buildPrivateOwnableHolder(), subPane);
-		new CascadeComposite(this, buildCascadeHolder(), container);
+		new FetchTypeComposite(this, addPane(container, groupBoxMargin));
+		new JoinFetchComposite(this, buildJoinFetchableHolder(), addPane(container, groupBoxMargin));
+		new OptionalComposite(this, addPane(container, groupBoxMargin));
+		new PrivateOwnedComposite(this, buildPrivateOwnableHolder(), addPane(container, groupBoxMargin));
+		new CascadeComposite(this, buildCascadeHolder(), addSubPane(container, 5));
 	}
 		
 	protected PropertyValueModel<AccessHolder> buildAccessHolderHolder() {

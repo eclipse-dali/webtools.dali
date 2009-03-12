@@ -49,15 +49,18 @@ public class EclipseLinkOneToOneMappingComposite extends FormPane<OneToOneMappin
 	@Override
 	protected void initializeLayout(Composite container) {
 		int groupBoxMargin = getGroupBoxMargin();
-		Composite subPane = addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
 
-		new TargetEntityComposite(this, subPane);
+		new TargetEntityComposite(this, addPane(container, groupBoxMargin));
 		new OneToOneJoiningStrategyPane(this, buildJoiningHolder(), container);
-		new FetchTypeComposite(this, subPane);
-		new JoinFetchComposite(this, buildJoinFetchableHolder(), subPane);
-		new OptionalComposite(this, addSubPane(subPane, 4));
-		new PrivateOwnedComposite(this, buildPrivateOwnableHolder(), subPane);
-		new CascadeComposite(this, buildCascadeHolder(), container);
+		new FetchTypeComposite(this, addPane(container, groupBoxMargin));
+		new JoinFetchComposite(this, buildJoinFetchableHolder(), addPane(container, groupBoxMargin));
+		new OptionalComposite(this, addPane(container, groupBoxMargin));
+		new PrivateOwnedComposite(this, buildPrivateOwnableHolder(), addPane(container, groupBoxMargin));
+		new CascadeComposite(this, buildCascadeHolder(), addSubPane(container, 5));
+	}
+	
+	protected Composite addPane(Composite container, int groupBoxMargin) {
+		return addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
 	}
 	
 	protected PropertyValueModel<OneToOneRelationshipReference> buildJoiningHolder() {

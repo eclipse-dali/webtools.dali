@@ -14,7 +14,6 @@ import org.eclipse.jpt.core.context.ManyToManyMapping;
 import org.eclipse.jpt.core.context.ManyToManyRelationshipReference;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
-import org.eclipse.jpt.ui.internal.BaseJpaUiFactory;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -79,7 +78,21 @@ public class ManyToManyMappingComposite
 
 		super(subjectHolder, parent, widgetFactory);
 	}
+
+	@Override
+	protected void initializeLayout(Composite container) {
+		int groupBoxMargin = getGroupBoxMargin();
+		
+		new TargetEntityComposite(this, addPane(container, groupBoxMargin));
+		new ManyToManyJoiningStrategyPane(this, buildJoiningHolder(), container);
+		new FetchTypeComposite(this, addPane(container, groupBoxMargin));
+		new CascadeComposite(this, buildCascadeHolder(), addSubPane(container, 5));
+		new OrderingComposite(this, container);
+	}
 	
+	private Composite addPane(Composite container, int groupBoxMargin) {
+		return addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
+	}
 	
 	private PropertyValueModel<ManyToManyRelationshipReference> buildJoiningHolder() {
 		return new TransformationPropertyValueModel<ManyToManyMapping, ManyToManyRelationshipReference>(
@@ -99,28 +112,6 @@ public class ManyToManyMappingComposite
 			}
 		};
 	}
-	
-	private Composite addPane(Composite container, int groupBoxMargin) {
-		return addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
-	}
 
-	@Override
-	protected void initializeLayout(Composite container) {
-		int groupBoxMargin = getGroupBoxMargin();
-		
-		// Target Entity widgets
-		new TargetEntityComposite(this, addPane(container, groupBoxMargin));
-		
-		// Joining Strategy widgets
-		new ManyToManyJoiningStrategyPane(this, buildJoiningHolder(), container);
-		
-		// Fetch Type widgets
-		new FetchTypeComposite(this, addPane(container, groupBoxMargin));
-		
-		// Cascade widgets
-		new CascadeComposite(this, buildCascadeHolder(), addPane(container, 5));
-		
-		// Ordering widgets
-		new OrderingComposite(this, container);
-	}
+
 }

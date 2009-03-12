@@ -14,7 +14,6 @@ import org.eclipse.jpt.core.context.ManyToOneMapping;
 import org.eclipse.jpt.core.context.ManyToOneRelationshipReference;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
-import org.eclipse.jpt.ui.internal.BaseJpaUiFactory;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -103,28 +102,15 @@ public class ManyToOneMappingComposite
 	private Composite addPane(Composite container, int groupBoxMargin) {
 		return addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 */
+
 	@Override
 	protected void initializeLayout(Composite container) {
 		int groupBoxMargin = getGroupBoxMargin();
-		Composite subPane = addPane(container, groupBoxMargin);
 		
-		// Target Entity widgets
-		new TargetEntityComposite(this, subPane);
-		
-		// Joining Strategy widgets
+		new TargetEntityComposite(this, addPane(container, groupBoxMargin));
 		new ManyToOneJoiningStrategyPane(this, buildJoiningHolder(), container);
-		
-		// Fetch Type widgets
-		new FetchTypeComposite(this, subPane);
-		
-		// Optional check box
-		new OptionalComposite(this, addSubPane(subPane, 4));
-		
-		// Cascade widgets
-		new CascadeComposite(this, buildCascadeHolder(), container);
+		new FetchTypeComposite(this, addPane(container, groupBoxMargin));
+		new OptionalComposite(this, addPane(container, groupBoxMargin));
+		new CascadeComposite(this, buildCascadeHolder(),  addSubPane(container, 5));
 	}
 }

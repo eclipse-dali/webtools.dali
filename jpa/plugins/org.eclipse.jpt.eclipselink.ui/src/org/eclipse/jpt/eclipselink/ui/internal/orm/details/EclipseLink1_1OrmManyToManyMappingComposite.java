@@ -14,7 +14,6 @@ import org.eclipse.jpt.core.context.ManyToManyMapping;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkManyToManyMappingComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.JoinFetchComposite;
 import org.eclipse.jpt.ui.WidgetFactory;
-import org.eclipse.jpt.ui.internal.BaseJpaUiFactory;
 import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.CascadeComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.FetchTypeComposite;
@@ -82,7 +81,6 @@ public class EclipseLink1_1OrmManyToManyMappingComposite extends EclipseLinkMany
 
 		super(subjectHolder, parent, widgetFactory);
 	}
-	
 	
 	@Override
 	protected void initializeLayout(Composite container) {

@@ -14,11 +14,9 @@ import org.eclipse.jpt.core.context.ManyToOneMapping;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkManyToOneMappingComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.JoinFetchComposite;
 import org.eclipse.jpt.ui.WidgetFactory;
-import org.eclipse.jpt.ui.internal.BaseJpaUiFactory;
 import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.CascadeComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.FetchTypeComposite;
-import org.eclipse.jpt.ui.internal.mappings.details.ManyToOneJoiningStrategyPane;
 import org.eclipse.jpt.ui.internal.mappings.details.OptionalComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.TargetEntityComposite;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
@@ -91,8 +89,8 @@ public class EclipseLink1_1OrmManyToOneMappingComposite extends EclipseLinkManyT
 		new AccessTypeComposite(this, buildAccessHolderHolder(), addPane(container, groupBoxMargin));
 		new FetchTypeComposite(this, addPane(container, groupBoxMargin));		
 		new JoinFetchComposite(this, buildJoinFetchableHolder(), addPane(container, groupBoxMargin));
-		new OptionalComposite(this, addPane(container, 4));
-		new CascadeComposite(this, buildCascadeHolder(), container);
+		new OptionalComposite(this, addPane(container, groupBoxMargin));
+		new CascadeComposite(this, buildCascadeHolder(), addSubPane(container, 5));
 	}
 	
 	protected PropertyValueModel<AccessHolder> buildAccessHolderHolder() {

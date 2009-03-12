@@ -16,7 +16,6 @@ import org.eclipse.jpt.eclipselink.core.context.EclipseLinkRelationshipMapping;
 import org.eclipse.jpt.eclipselink.core.context.JoinFetch;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
-import org.eclipse.jpt.ui.internal.BaseJpaUiFactory;
 import org.eclipse.jpt.ui.internal.mappings.details.CascadeComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.FetchTypeComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.ManyToManyJoiningStrategyPane;
@@ -92,31 +91,17 @@ public class EclipseLinkManyToManyMappingComposite
 	protected void initializeLayout(Composite container) {
 		int groupBoxMargin = getGroupBoxMargin();
 		
-		// Target Entity widgets
 		new TargetEntityComposite(this, addPane(container, groupBoxMargin));
-		
-		// Joining Strategy widgets
 		new ManyToManyJoiningStrategyPane(this, buildJoiningHolder(), container);
-		
-		// Fetch Type widgets
 		new FetchTypeComposite(this, addPane(container, groupBoxMargin));
-		
-		// Join Fetch widgets
 		new JoinFetchComposite(this, buildJoinFetchableHolder(), addPane(container, groupBoxMargin));
-		
-		// Cascade widgets
 		new CascadeComposite(this, buildCascadeHolder(), addSubPane(container, 5));
-		
-		// Ordering widgets
 		new OrderingComposite(this, container);
 	}
-
-		
 
 	protected Composite addPane(Composite container, int groupBoxMargin) {
 		return addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
 	}
-
 
 	protected PropertyValueModel<ManyToManyRelationshipReference> buildJoiningHolder() {
 		return new TransformationPropertyValueModel<ManyToManyMapping, ManyToManyRelationshipReference>(

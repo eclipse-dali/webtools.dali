@@ -35,7 +35,6 @@ public class EclipseLink1_1OrmOneToManyMappingComposite extends EclipseLinkOneTo
 			WidgetFactory widgetFactory) {
 		super(subjectHolder, parent, widgetFactory);
 	}
-
 	
 	@Override
 	protected void initializeLayout(Composite container) {
@@ -43,11 +42,11 @@ public class EclipseLink1_1OrmOneToManyMappingComposite extends EclipseLinkOneTo
 		
 		new TargetEntityComposite(this, addPane(container, groupBoxMargin));
 		new AccessTypeComposite(this, buildAccessHolderHolder(), addPane(container, groupBoxMargin));
-		new EclipseLinkOneToManyJoiningStrategyPane(this, buildJoiningHolder(), addPane(container, groupBoxMargin));
+		new EclipseLinkOneToManyJoiningStrategyPane(this, buildJoiningHolder(), container);
 		new FetchTypeComposite(this, addPane(container, groupBoxMargin));
 		new JoinFetchComposite(this, buildJoinFetchableHolder(), addPane(container, groupBoxMargin));
 		new PrivateOwnedComposite(this, buildPrivateOwnableHolder(), addPane(container, groupBoxMargin));
-		new CascadeComposite(this, buildCascadeHolder(), addPane(container, groupBoxMargin));
+		new CascadeComposite(this, buildCascadeHolder(), addSubPane(container, 5));
 		new OrderingComposite(this, container);
 	}
 	

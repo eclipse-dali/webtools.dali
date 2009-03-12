@@ -14,7 +14,6 @@ import org.eclipse.jpt.core.context.OneToManyMapping;
 import org.eclipse.jpt.core.context.OneToManyRelationshipReference;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
-import org.eclipse.jpt.ui.internal.BaseJpaUiFactory;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -99,24 +98,18 @@ public class OneToManyMappingComposite
 		};
 	}
 	
+	private Composite addPane(Composite container, int groupBoxMargin) {
+		return addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
+	}
+	
 	@Override
 	protected void initializeLayout(Composite container) {
 		int groupBoxMargin = getGroupBoxMargin();
-		Composite subPane = addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
 
-		// Target Entity widgets
-		new TargetEntityComposite(this, subPane);
-		
-		// Joining Strategy widgets
+		new TargetEntityComposite(this, addPane(container, groupBoxMargin));
 		new OneToManyJoiningStrategyPane(this, buildJoiningHolder(), container);
-		
-		// Fetch Type widgets
-		new FetchTypeComposite(this, subPane);
-
-		// Cascade widgets
-		new CascadeComposite(this, buildCascadeHolder(), addSubPane(container, 4));
-
-		// Ordering widgets
+		new FetchTypeComposite(this, addPane(container, groupBoxMargin));
+		new CascadeComposite(this, buildCascadeHolder(), addSubPane(container, 5));
 		new OrderingComposite(this, container);
 	}
 }

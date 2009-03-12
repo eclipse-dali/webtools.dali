@@ -14,7 +14,6 @@ import org.eclipse.jpt.core.context.OneToOneMapping;
 import org.eclipse.jpt.core.context.OneToOneRelationshipReference;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
-import org.eclipse.jpt.ui.internal.BaseJpaUiFactory;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -78,8 +77,22 @@ public class OneToOneMappingComposite
 	                                WidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
-	}
+	}	
+
+	@Override
+	protected void initializeLayout(Composite container) {
+		int groupBoxMargin = getGroupBoxMargin();
+		
+		new TargetEntityComposite(this, addPane(container, groupBoxMargin));
+		new OneToOneJoiningStrategyPane(this, buildJoiningHolder(), container);
+		new FetchTypeComposite(this, addPane(container, groupBoxMargin));
+		new OptionalComposite(this, addPane(container, groupBoxMargin));
+		new CascadeComposite(this, buildCascadeHolder(),  addSubPane(container, 5));
+	}	
 	
+	private Composite addPane(Composite container, int groupBoxMargin) {
+		return addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
+	}
 	
 	private PropertyValueModel<OneToOneRelationshipReference> buildJoiningHolder() {
 		return new TransformationPropertyValueModel<OneToOneMapping, OneToOneRelationshipReference>(
@@ -100,23 +113,5 @@ public class OneToOneMappingComposite
 		};
 	}
 
-	@Override
-	protected void initializeLayout(Composite container) {
-		int groupBoxMargin = getGroupBoxMargin();
-		
-		// Target Entity widgets
-		new TargetEntityComposite(this, addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin));
-		
-		// Joining Strategy widgets
-		new OneToOneJoiningStrategyPane(this, buildJoiningHolder(), container);
-		
-		// Fetch Type widgets
-		new FetchTypeComposite(this, addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin));
-		
-		// Optional check box
-		new OptionalComposite(this, addSubPane(container, 4, groupBoxMargin, 0, groupBoxMargin));
-		
-		// Cascade widgets
-		new CascadeComposite(this, buildCascadeHolder(), container);
-	}
+
 }
