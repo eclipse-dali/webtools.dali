@@ -224,6 +224,7 @@ public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMapp
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
 		validateTargetEntity(messages, astRoot);
+		this.relationshipReference.validate(messages, reporter, astRoot);
 	}
 	
 	protected void validateTargetEntity(List<IMessage> messages, CompilationUnit astRoot) {

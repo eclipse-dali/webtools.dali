@@ -254,6 +254,7 @@ public abstract class AbstractOrmRelationshipMapping<T extends XmlRelationshipMa
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
 		validateTargetEntity(messages);
+		this.relationshipReference.validate(messages, reporter);
 	}
 	
 	protected void validateTargetEntity(List<IMessage> messages) {
