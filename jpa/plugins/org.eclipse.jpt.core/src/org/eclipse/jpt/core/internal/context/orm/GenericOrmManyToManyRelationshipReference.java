@@ -89,7 +89,7 @@ public class GenericOrmManyToManyRelationshipReference
 	}
 	
 	public boolean isRelationshipOwner() {
-		return this.mappedByJoiningStrategy.getMappedByAttribute() != null;
+		return this.mappedByJoiningStrategy.getMappedByAttribute() == null;
 	}
 	
 	public boolean isOwnedBy(RelationshipMapping mapping) {
