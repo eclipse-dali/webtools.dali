@@ -212,6 +212,7 @@
 	
 		<provider id="eclipselink-102-osgi-bundles-library-provider" extends="wtp-osgi-bundles-library-provider">
 			<label>EclipseLink 1.0.2</label>
+				<param name="container.label" value="EclipseLink 1.0.2"/>
 				<param name="bundle.0" value="javax.persistence:1.99.0"/>
 				<param name="bundle.1" value="org.eclipse.persistence.core:1.0.1"/>
 				<param name="bundle.2" value="org.eclipse.persistence.jpa:1.0.1"/>
@@ -226,6 +227,7 @@
 
 		<provider id="eclipselink-110-osgi-bundles-library-provider" extends="wtp-osgi-bundles-library-provider">
 			<label>EclipseLink 1.1.0</label>
+				<param name="container.label" value="EclipseLink 1.1.0"/>
 				<param name="bundle.0" value="javax.persistence:1.99.0"/>
 				<param name="bundle.1" value="org.eclipse.persistence.core:1.1.0"/>
 				<param name="bundle.2" value="org.eclipse.persistence.jpa:1.1.0"/>
