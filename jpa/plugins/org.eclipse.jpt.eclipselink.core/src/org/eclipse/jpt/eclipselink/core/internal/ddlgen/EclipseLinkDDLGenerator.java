@@ -130,8 +130,8 @@ public class EclipseLinkDDLGenerator
 
 		this.saveLoginProperties(this.projectLocation, propertiesFile);
 
-		this.launch = this.saveAndLaunchConfig();
 		this.addLaunchListener();
+		this.launch = this.saveAndLaunchConfig();
 	}
 	
 	private void initializeLaunchConfiguration(String projectLocation, String propertiesFile) {
@@ -153,6 +153,7 @@ public class EclipseLinkDDLGenerator
 	}
 	
 	protected void preGenerate() {
+		//disconnect since the runtime provider will need to connect to generate the tables
 		ConnectionProfile cp = this.jpaProject.getConnectionProfile();
 		if (cp != null) {
 			cp.disconnect();
@@ -168,6 +169,7 @@ public class EclipseLinkDDLGenerator
 		catch ( CoreException e) {
 			throw new RuntimeException(e);
 		}
+		//reconnect since we disconnected in preGenerate(), 
 		ConnectionProfile cp = this.jpaProject.getConnectionProfile();
 		if (cp != null) {
 			cp.connect();
