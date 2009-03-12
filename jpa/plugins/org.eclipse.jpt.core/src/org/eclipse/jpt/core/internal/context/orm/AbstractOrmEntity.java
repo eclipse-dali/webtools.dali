@@ -2233,7 +2233,7 @@ public abstract class AbstractOrmEntity
 	}
 	
 	protected void validateDiscriminatorColumn(List<IMessage> messages, IReporter reporter) {
-		if (specifiedDiscriminatorColumnIsAllowed()) {
+		if (specifiedDiscriminatorColumnIsAllowed() && !discriminatorColumnIsUndefined()) {
 			getDiscriminatorColumn().validate(messages, reporter);
 		}
 		else if (getDiscriminatorColumn().isResourceSpecified()) {
