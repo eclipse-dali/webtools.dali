@@ -39,6 +39,9 @@ public class VirtualXmlJoinTable extends AbstractJpaEObject implements XmlJoinTa
 	}
 	
 	public String getName() {
+		if (this.javaJoinTable == null) {
+			return null;
+		}
 		if (this.isOrmMetadataComplete()) {
 			return this.javaJoinTable.getDefaultName();
 		}
@@ -50,6 +53,9 @@ public class VirtualXmlJoinTable extends AbstractJpaEObject implements XmlJoinTa
 	}
 
 	public String getCatalog() {
+		if (this.javaJoinTable == null) {
+			return null;
+		}
 		if (this.isOrmMetadataComplete()) {
 			return this.javaJoinTable.getDefaultCatalog();
 		}
@@ -61,6 +67,9 @@ public class VirtualXmlJoinTable extends AbstractJpaEObject implements XmlJoinTa
 	}
 
 	public String getSchema() {
+		if (this.javaJoinTable == null) {
+			return null;
+		}
 		if (this.isOrmMetadataComplete()) {
 			return this.javaJoinTable.getDefaultSchema();
 		}
@@ -74,6 +83,9 @@ public class VirtualXmlJoinTable extends AbstractJpaEObject implements XmlJoinTa
 	//VirtualXmlJoinTable is rebuilt every time, so just rebuilding the joinColumns list as well
 	public EList<XmlJoinColumn> getJoinColumns() {
 		EList<XmlJoinColumn> joinColumns = new EObjectContainmentEList<XmlJoinColumn>(XmlJoinColumn.class, this, OrmPackage.XML_JOIN_TABLE__JOIN_COLUMNS);
+		if (this.javaJoinTable == null) {
+			return joinColumns;
+		}
 		for (JavaJoinColumn joinColumn : CollectionTools.iterable(this.javaJoinTable.specifiedJoinColumns())) {
 			XmlJoinColumn xmlJoinColumn = new VirtualXmlJoinColumn(joinColumn, isOrmMetadataComplete());
 			joinColumns.add(xmlJoinColumn);
@@ -84,6 +96,9 @@ public class VirtualXmlJoinTable extends AbstractJpaEObject implements XmlJoinTa
 	//VirtualXmlJoinTable is rebuilt every time, so just rebuilding the joinColumns list as well
 	public EList<XmlJoinColumn> getInverseJoinColumns() {
 		EList<XmlJoinColumn> inverseJoinColumns = new EObjectContainmentEList<XmlJoinColumn>(XmlJoinColumn.class, this, OrmPackage.XML_JOIN_TABLE__INVERSE_JOIN_COLUMNS);
+		if (this.javaJoinTable == null) {
+			return inverseJoinColumns;
+		}
 		for (JavaJoinColumn joinColumn : CollectionTools.iterable(this.javaJoinTable.specifiedInverseJoinColumns())) {
 			XmlJoinColumn xmlJoinColumn = new VirtualXmlJoinColumn(joinColumn, isOrmMetadataComplete());
 			inverseJoinColumns.add(xmlJoinColumn);
@@ -94,7 +109,9 @@ public class VirtualXmlJoinTable extends AbstractJpaEObject implements XmlJoinTa
 
 	public EList<XmlUniqueConstraint> getUniqueConstraints() {
 		EList<XmlUniqueConstraint> xmlUniqueConstraints = new EObjectContainmentEList<XmlUniqueConstraint>(XmlUniqueConstraint.class, this, OrmPackage.XML_JOIN_TABLE__UNIQUE_CONSTRAINTS);
-
+		if (this.javaJoinTable == null) {
+			return xmlUniqueConstraints;
+		}
 		for (JavaUniqueConstraint uniqueConstraint : CollectionTools.iterable(this.javaJoinTable.uniqueConstraints())) {
 			XmlUniqueConstraint xmlUniqueConstraint = new VirtualXmlUniqueConstraint(uniqueConstraint, isOrmMetadataComplete());
 			xmlUniqueConstraints.add(xmlUniqueConstraint);
@@ -116,6 +133,6 @@ public class VirtualXmlJoinTable extends AbstractJpaEObject implements XmlJoinTa
 	}
 
 	public boolean isSpecified() {
-		return this.javaJoinTable.isResourceSpecified();
+		return this.javaJoinTable != null;
 	}
 }
