@@ -95,8 +95,11 @@ public class GenericOrmManyToManyRelationshipReference
 	public boolean isOwnedBy(RelationshipMapping mapping) {
 		// true if the target entity matches the mapping's entity
 		// and this mappedBy value matches the mapping's name
+		String targetEntity = 
+			(getRelationshipMapping().getResolvedTargetEntity() == null) ?
+				null : getRelationshipMapping().getResolvedTargetEntity().getName();
 		return StringTools.stringsAreEqual(
-				this.getRelationshipMapping().getResolvedTargetEntity().getName(),
+				targetEntity,
 				mapping.getEntity().getName())
 			&& StringTools.stringsAreEqual(
 				this.getMappedByJoiningStrategy().getMappedByAttribute(), 
