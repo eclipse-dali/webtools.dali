@@ -12,8 +12,6 @@ public class JptUiEntityGenMessages {
 	private static final String BUNDLE_NAME = "jpt_ui_entity_gen"; //$NON-NLS-1$
 	private static final Class<?> BUNDLE_CLASS = JptUiEntityGenMessages.class;
 	public static String GenerateEntitiesWizard_generateEntities;
-	public static String GenerateEntitiesWizard_fileWillBeOverwritten;
-	public static String WarningDialogTitle;
 	public static String GenerateEntitiesWizard_doNotShowWarning;
 	public static String GenerateEntitiesWizard_selectJPAProject;
 	public static String GenerateEntitiesWizard_selectJPAProject_msg;
@@ -73,6 +71,7 @@ public class JptUiEntityGenMessages {
 	public static String GenerateEntitiesWizard_newAssoc_tablesPage_assocTables;
 	public static String GenerateEntitiesWizard_newAssoc_tablesPage_table1;
 	public static String GenerateEntitiesWizard_newAssoc_tablesPage_table2;
+	public static String GenerateEntitiesWizard_newAssoc_tablesPage_intermediateTable;
 	public static String GenerateEntitiesWizard_newAssoc_colsPage_title;
 	public static String GenerateEntitiesWizard_newAssoc_colsPage_desc;
 	public static String GenerateEntitiesWizard_newAssoc_colsPage_label;
@@ -85,8 +84,8 @@ public class JptUiEntityGenMessages {
 	public static String oneToOne;
 	public static String manyToMany;
 	//select table dialog
-	public static String AnnotateJavaClassWizard_classMappingPage_selectTableDlgTitle;
-	public static String AnnotateJavaClassWizard_classMappingPage_selectTableDlgDesc;
+	public static String selectTableDlgTitle;
+	public static String selectTableDlgDesc;
 	//individual table and column gen properties
 	public static String GenerateEntitiesWizard_tablesAndColumnsPage_title;
 	public static String GenerateEntitiesWizard_tablesAndColumnsPage_desc;

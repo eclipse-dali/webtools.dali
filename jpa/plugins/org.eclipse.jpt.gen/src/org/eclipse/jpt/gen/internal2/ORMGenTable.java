@@ -16,6 +16,7 @@ import java.util.List;
 
 import org.eclipse.jpt.db.Column;
 import org.eclipse.jpt.db.Table;
+import org.eclipse.jpt.gen.internal.EntityGenTools;
 import org.eclipse.jpt.gen.internal2.util.DTPUtil;
 import org.eclipse.jpt.gen.internal2.util.StringUtil;
 import org.eclipse.jpt.utility.JavaType;
@@ -85,9 +86,7 @@ public class ORMGenTable
 	public String getName() {
 		if( mDbTable == null )
 			return ORMGenCustomizer.ANY_TABLE;
-		String annotationName = this.mCustomizer.getDatabaseAnnotationNameBuilder().
-			buildTableAnnotationName(mDbTable.getName(), mDbTable);
-		return annotationName != null ? annotationName : mDbTable.getName();
+		return mDbTable.getName();
 	}
 	
 	public String getJoinTableAnnotationName(){
@@ -129,8 +128,9 @@ public class ORMGenTable
 	public String getClassName() {
 		String name = customized(CLASS_NAME);
 		if (name == null) {
-			name = StringUtil.tableNameToVarName(getName());
-			name = StringUtil.initUpper(name);
+			//name = StringUtil.tableNameToVarName(getName());
+			//name = StringUtil.initUpper(name);
+			name = EntityGenTools.convertToUniqueJavaStyleClassName( getName(), new ArrayList<String>() );
 			name = StringUtil.singularise(name);
 		}
 		return name;
@@ -533,11 +533,11 @@ public class ORMGenTable
 	 * defaults to false.
 	 */
 	public boolean isGenerateDDLAnnotations() {
-		return "true".equals(customized(GENERATE_DDL_ANNOTATION)); //defaults to false
+		return "true".equals(customized(ORMGenCustomizer.GENERATE_DDL_ANNOTATION)); //defaults to false
 	}
 	
 	public void setGenerateDDLAnnotations(boolean generate) {
-		setCustomizedBoolean(GENERATE_DDL_ANNOTATION, generate, false);		
+		setCustomizedBoolean(ORMGenCustomizer.GENERATE_DDL_ANNOTATION, generate, false);		
 	}
 
 	/**
@@ -623,9 +623,11 @@ public class ORMGenTable
 	 * @return true
 	 */
 	public boolean isDefaultname(){
-		String className = this.getClassName();
-		String tableName = this.getDbTable().getName();
-		return className.equalsIgnoreCase( tableName) ;
+		String entityName = getClassName();
+		String annotationName = this.mCustomizer.getDatabaseAnnotationNameBuilder().
+			buildTableAnnotationName(entityName, mDbTable);
+
+		return annotationName==null;
 	}
 	
 	/**
@@ -790,6 +792,7 @@ public class ORMGenTable
 	public static final String FIELD_ACCESS = "field";
 	
 	/*default fech constants. Note that these strings are used in the gen velocity templates.*/
+	public static final String DEFAULT_FETCH = "defaultFetch";
 	public static final String LAZY_FETCH = "lazy";
 	public static final String EAGER_FETCH = "eager";
 	
@@ -820,9 +823,7 @@ public class ORMGenTable
 	private static final String SEQUENCE = "sequence";
 	private static final String COMPOSITE_KEY_CLASS_NAME = "compositeKeyClassName";
 	private static final String IMPLEMENT_EQUALS = "implementEquals";
-	private static final String GENERATE_DDL_ANNOTATION = "generateDDLAnnotations";
 	private static final String ACCESS = "access";
-	static final String DEFAULT_FETCH = "defaultFetch";
 	private static final String DEFAULT_COLLECTION_TYPE = "defaultCollectionType";
 
 }

@@ -9,8 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.gen.internal2;
 
+import java.util.Collections;
+
 import org.eclipse.jpt.db.Column;
 import org.eclipse.jpt.db.Table;
+import org.eclipse.jpt.gen.internal.EntityGenTools;
 import org.eclipse.jpt.gen.internal2.util.DTPUtil;
 import org.eclipse.jpt.gen.internal2.util.StringUtil;
 
@@ -89,7 +92,8 @@ public class ORMGenColumn
 	public String getPropertyName() {
 		String name = customized(PROPERTY_NAME);
 		if (name == null) {
-			name = StringUtil.columnNameToVarName(getName());
+			//name = StringUtil.columnNameToVarName(getName());
+			name = EntityGenTools.convertToUniqueJavaStyleAttributeName(getName(), Collections.EMPTY_SET);
 		}
 		return name;
 	}
@@ -117,8 +121,11 @@ public class ORMGenColumn
 	 */
 	public boolean isDefaultname(){
 		String propName = getPropertyName();
-		String dbColumnName = getName();
-		return propName.equalsIgnoreCase( dbColumnName );
+//		String dbColumnName = getName();
+//		return propName.equalsIgnoreCase( dbColumnName );
+		String annotationName = this.mCustomizer.getDatabaseAnnotationNameBuilder().
+			buildColumnAnnotationName(propName , this.mDbColumn );
+		return annotationName==null;
 	}
 
 	

@@ -112,7 +112,7 @@ public class AssociationTablesPage extends NewAssociationWizardPage {
 			}
 		});
 		
-		createLabel(assocTablesGroup, 1, JptUiEntityGenMessages.GenerateEntitiesWizard_newAssoc_tablesPage_assocTables );
+		createLabel(assocTablesGroup, 1, JptUiEntityGenMessages.GenerateEntitiesWizard_newAssoc_tablesPage_intermediateTable );
 		joinTableTextField = createText(assocTablesGroup, 1);
 		joinTableTextField.setEnabled(false);
 

@@ -1,6 +1,7 @@
 #if ($table.package != "")
 package ${table.package};
 #end
+
 import java.io.Serializable;
 import javax.persistence.*;
 
@@ -8,7 +9,7 @@ import javax.persistence.*;
  * The primary key class for the ${table.name} database table.
  * 
  */
-@Embeddable()
+@Embeddable
 public class ${table.compositeKeyClassName} implements Serializable {
 	//default serial version id, required for serializable classes.
 	private static final long serialVersionUID = 1L;

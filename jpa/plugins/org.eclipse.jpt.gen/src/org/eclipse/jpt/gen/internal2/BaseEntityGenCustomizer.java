@@ -190,7 +190,7 @@ public class BaseEntityGenCustomizer extends ORMGenCustomizer implements java.io
 	 */
 	public String genFetch(ORMGenTable table) {
 		String fetch = table.getDefaultFetch();
-		if (fetch == null) {
+		if (fetch == null || ORMGenTable.DEFAULT_FETCH.equals( fetch)) {
 			return "";
 		} else if (fetch.equals(ORMGenTable.LAZY_FETCH)) {
 			return "FetchType.LAZY";

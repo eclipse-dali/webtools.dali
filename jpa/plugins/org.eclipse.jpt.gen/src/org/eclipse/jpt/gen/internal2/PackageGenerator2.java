@@ -49,7 +49,11 @@ public class PackageGenerator2 {
 
 	private IJavaProject javaProject;
 	private ORMGenCustomizer customizer ; 
+	private static OverwriteConfirmer overwriteConfirmer = null;
 
+	static public void setOverwriteConfirmer(OverwriteConfirmer confirmer){
+		overwriteConfirmer = confirmer;
+	}
 	/**
 	 * @param customizer
 	 * @param synchronizePersistenceXml
@@ -99,10 +103,12 @@ public class PackageGenerator2 {
 			String tableName = (String) iter.next();
 			ORMGenTable table = (ORMGenTable) customizer.getTable(tableName);
 
+			String className = table.getQualifiedClassName();
+
 			generateClass(table, templDir.getAbsolutePath(), progress);
 			progress.worked(1);
 
-			genClasses.add(table.getQualifiedClassName());
+			genClasses.add( className );
 			/*
 			 * add the composite key class to persistence.xml because some 
 			 * JPA provider(e.g. Kodo) requires it. Hibernate doesn't seem to care). 
@@ -161,6 +167,11 @@ public class PackageGenerator2 {
 		try{
 			IFolder javaPackageFolder = getJavaPackageFolder(table, monitor);
 			IFile javaFile = javaPackageFolder.getFile( table.getClassName() + ".java"); //$NON-NLS-1$
+			
+			if( javaFile.exists() ){
+				if( overwriteConfirmer!=null && !overwriteConfirmer.overwrite(javaFile.getName()) )
+					return;
+			}
 			
 			Properties vep = new Properties();
 			vep.setProperty("file.resource.loader.path", templateDirPath); //$NON-NLS-1$

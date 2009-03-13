@@ -49,6 +49,7 @@ class TableGenPanel
 	
 	private Button entityAccessField;
 	private Button entityAccessProperty;
+	private Button associationFetchDefault;
 	private Button associationFetchEager;
 	private Button associationFetchLazy;
 	
@@ -161,7 +162,10 @@ class TableGenPanel
 		Composite parent = new Composite( composite, SWT.NONE);
 		parent.setLayout(new RowLayout());
 		SWTUtil.fillColumns( parent , 3);
-				
+		associationFetchDefault	= new Button( parent, SWT.RADIO );
+		associationFetchDefault.setText( "Default");
+		associationFetchDefault.setData( ORMGenTable.DEFAULT_FETCH );	
+		
 		associationFetchEager = new Button( parent, SWT.RADIO );
 		associationFetchEager.setText( "&Eager");
 		associationFetchEager.setData( ORMGenTable.EAGER_FETCH );
@@ -171,6 +175,7 @@ class TableGenPanel
 		associationFetchLazy.setData( ORMGenTable.LAZY_FETCH );
 		
 		AssociationFetchListener associationFetchListener = new AssociationFetchListener();
+		associationFetchDefault.addSelectionListener( associationFetchListener );
 		associationFetchLazy.addSelectionListener( associationFetchListener );
 		associationFetchEager.addSelectionListener( associationFetchListener );
 		
@@ -243,7 +248,9 @@ class TableGenPanel
 	
 			if(associationFetchLazy!=null && associationFetchEager != null ){
 				String defaultFetch = mTable.getDefaultFetch();
-				if( ORMGenTable.EAGER_FETCH.equals( defaultFetch ) )
+				if( ORMGenTable.DEFAULT_FETCH.equals( defaultFetch ) )
+					associationFetchDefault.setSelection(true);
+				else if( ORMGenTable.EAGER_FETCH.equals( defaultFetch ) )
 					associationFetchEager.setSelection(true);
 				else
 					associationFetchLazy.setSelection(true);

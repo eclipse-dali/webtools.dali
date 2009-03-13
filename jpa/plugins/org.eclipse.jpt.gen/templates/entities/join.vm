@@ -7,7 +7,7 @@
 #if( !$referencedColumn.primaryKey )
 #set ($members = "$members, referencedColumnName=$customizer.quote($referencedColumn.name)")
 #end
-#if( $table.generateDDLAnnotations )
+#if( $customizer.generateDDLAnnotations )
 #if ($column.unique && !$column.primaryKey)
 #set ($members = "$members, unique=true")
 #end
@@ -15,7 +15,7 @@
 #set ($members = "$members, nullable=false")
 #end
 #end
-#if (!$role.association.joinTable && !$role.referrerTable.isColumnUpdateInsert($role, $column))
+#if ($customizer.generateDDLAnnotations && !$role.association.joinTable && !$role.referrerTable.isColumnUpdateInsert($role, $column))
 #set ($members = "$members, insertable=false, updatable=false")
 #end
 @JoinColumn($members)#end
@@ -48,8 +48,16 @@
 #if ($role.referrerColumns.size() == 1)
 #set ($column = $role.referrerColumns.get(0))
 #set ($referencedColumn = $role.getReferencedColumn(${column.name}))
+#set ($referencedTableName = $role.getReferencedTable().getName() )
+#set( $referencedTablePkName = $role.getReferencedTable().getPrimaryKeyColumn().name )
+#set( $computedJoinColumnName = "${role.propertyName}_${referencedTablePkName}" )
+#if($column.name.toUpperCase() != $computedJoinColumnName.toUpperCase() )
 	#joinColumn($column $referencedColumn)
 
+#elseif( $customizer.generateDDLAnnotations )
+	#joinColumn($column $referencedColumn)
+
+#end
 #else
 	@JoinColumns({
 #foreach ($column in $role.referrerColumns)

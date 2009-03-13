@@ -190,7 +190,8 @@ public class Association implements java.io.Serializable
 	 */
 	public List<ORMGenColumn> getReferrerColumns() {
 		if (mReferrerCols == null) {
-			mReferrerCols = getReferrerTable().getColumnsByNames(mReferrerColNames);
+			ORMGenTable referrerTable = getReferrerTable();
+			mReferrerCols = referrerTable.getColumnsByNames(mReferrerColNames);
 		}
 		return mReferrerCols;
 	}

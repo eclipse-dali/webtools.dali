@@ -18,7 +18,7 @@
     @Temporal( TemporalType.$column.temporalType)
 #end
 #set ($members = "")
-#if ( !$column.default || $table.generateDDLAnnotations )
+#if ( !$column.default || $customizer.generateDDLAnnotations )
 #set ($members = "name=$customizer.quote($column.name)")
 #if (!$column.insertable)
 #set ($members = "$members, insertable=false")
@@ -27,7 +27,7 @@
 #set ($members = "$members, updatable=false")
 #end
 #end
-#if( $table.generateDDLAnnotations )
+#if( $customizer.generateDDLAnnotations )
 #if ($column.unique)
 #append($members  "unique=true")
 #end

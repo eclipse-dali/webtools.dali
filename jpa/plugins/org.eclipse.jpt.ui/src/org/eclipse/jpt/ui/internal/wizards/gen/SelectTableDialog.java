@@ -47,8 +47,8 @@ public class SelectTableDialog extends ElementListSelectionDialog {
 			public void removeListener(ILabelProviderListener listener) {}
 
 		});
-		this.setTitle( JptUiEntityGenMessages.AnnotateJavaClassWizard_classMappingPage_selectTableDlgTitle );//
-		this.setMessage( JptUiEntityGenMessages.AnnotateJavaClassWizard_classMappingPage_selectTableDlgDesc);//
+		this.setTitle( JptUiEntityGenMessages.selectTableDlgTitle );//
+		this.setMessage( JptUiEntityGenMessages.selectTableDlgDesc);//
 	}
 	
 	public SelectTableDialog(Shell shell, Schema schema){

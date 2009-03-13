@@ -1,6 +1,7 @@
 #if ($table.package != "")
 package ${table.package};
 #end
+
 import java.io.Serializable;
 import javax.persistence.*;
 
@@ -9,7 +10,9 @@ import javax.persistence.*;
  * 
  */
 @Entity
+#if( !${table.defaultname} || $customizer.generateDDLAnnotations)
 @Table(name="${table.name}")
+#end
 public class ${table.className} ${table.generateExtendsImplements()} {
 	private static final long serialVersionUID = 1L;
 #####

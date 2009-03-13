@@ -52,6 +52,7 @@ public abstract class ORMGenCustomizer implements java.io.Serializable
 	 * indicating that the value applies to any table.
 	 */
 	public static final String ANY_TABLE = "__anyTable__";
+	public static final String GENERATE_DDL_ANNOTATION = "generateDDLAnnotations";
 	/*the string used in the property name in mProps to indicate 
 	 * a null table value.*/
 	private static final String NULL_TABLE = "";
@@ -170,10 +171,7 @@ public abstract class ORMGenCustomizer implements java.io.Serializable
 		mFile = file;
 		
 		if (!file.exists()) {
-			/*A hack to set the default to eager so thet app does not throw at runtime for new apps
-			 * (in case a lazy strategy is not developed yet). This is done instead of in ORMGenTable.getDefaultFetch 
-			 * for backward compatibility.*/
-			setProperty(ORMGenTable.DEFAULT_FETCH, ORMGenTable.EAGER_FETCH, ORMGenCustomizer.ANY_TABLE, null);
+			setProperty(ORMGenTable.DEFAULT_FETCH, ORMGenTable.DEFAULT_FETCH, ORMGenCustomizer.ANY_TABLE, null);
 			return;
 		}
 		InputStream istream = null;
@@ -276,6 +274,16 @@ public abstract class ORMGenCustomizer implements java.io.Serializable
 	}	
 
 	/**
+	 * Returns {@link #GENERATE_DDL_ANNOTATION}  indicating whether
+	 * the optional DDL parameters like length, nullable, unqiue, etc should be generated 
+	 * in @Column annotation.
+	 * defaults to false.
+	 */
+	public boolean isGenerateDDLAnnotations() {
+		return "true".equals(getProperty(GENERATE_DDL_ANNOTATION, ANY_TABLE, null)); //defaults to false
+	}
+
+	/**
 	 * Returns a property value.
 	 */
 	public String getProperty(String propertyName, String tableName, String colName) {
@@ -322,6 +330,16 @@ public abstract class ORMGenCustomizer implements java.io.Serializable
 	public List<String> getTableNames() {
 		return mTableNames != null ? mTableNames : java.util.Collections.EMPTY_LIST;
 	}
+	
+	/**
+	 * Returns the fetch type annotation member value, or empty string 
+	 * if none.
+	 * Empty string is returned instead of null because Velocity does not like null 
+	 * when used in #set.
+	 */
+	public String genFetch(ORMGenTable table) {
+		return "";
+	}	
 	/**
 	 * Called when the table user selection is changed in the 
 	 * generation wizard.
