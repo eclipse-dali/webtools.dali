@@ -102,7 +102,7 @@ public class EclipseLinkManyToOneMappingComposite extends FormPane<ManyToOneMapp
 		return addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
 	}
 	
-	private PropertyValueModel<ManyToOneRelationshipReference> buildJoiningHolder() {
+	protected PropertyValueModel<ManyToOneRelationshipReference> buildJoiningHolder() {
 		return new TransformationPropertyValueModel<ManyToOneMapping, ManyToOneRelationshipReference>(
 				getSubjectHolder()) {
 			@Override
