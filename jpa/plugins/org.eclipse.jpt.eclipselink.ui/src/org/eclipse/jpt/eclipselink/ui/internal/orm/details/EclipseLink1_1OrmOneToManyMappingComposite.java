@@ -41,8 +41,8 @@ public class EclipseLink1_1OrmOneToManyMappingComposite extends EclipseLinkOneTo
 		int groupBoxMargin = getGroupBoxMargin();
 		
 		new TargetEntityComposite(this, addPane(container, groupBoxMargin));
-		new AccessTypeComposite(this, buildAccessHolderHolder(), addPane(container, groupBoxMargin));
 		new EclipseLinkOneToManyJoiningStrategyPane(this, buildJoiningHolder(), container);
+		new AccessTypeComposite(this, buildAccessHolderHolder(), addPane(container, groupBoxMargin));
 		new FetchTypeComposite(this, addPane(container, groupBoxMargin));
 		new JoinFetchComposite(this, buildJoinFetchableHolder(), addPane(container, groupBoxMargin));
 		new PrivateOwnedComposite(this, buildPrivateOwnableHolder(), addPane(container, groupBoxMargin));
