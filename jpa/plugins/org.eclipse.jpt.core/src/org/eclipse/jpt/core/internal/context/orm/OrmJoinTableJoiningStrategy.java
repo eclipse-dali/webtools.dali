@@ -94,9 +94,9 @@ public class OrmJoinTableJoiningStrategy extends AbstractXmlContextNode
 		this.resource.setJoinTable(null);
 	}
 	
-	protected boolean mayHaveDefaultJoinTable() {
+	protected boolean mayHaveJoinTable() {
 		return getJoinTableResource() != null 
-			&& getRelationshipReference().mayHaveDefaultJoinTable();
+			|| getRelationshipReference().mayHaveDefaultJoinTable();
 	}
 	
 	protected XmlJoinTable getJoinTableResource() {
@@ -107,7 +107,7 @@ public class OrmJoinTableJoiningStrategy extends AbstractXmlContextNode
 	// **************** resource -> context ************************************
 	
 	public void update() {
-		if (mayHaveDefaultJoinTable()) {
+		if (mayHaveJoinTable()) {
 			if (this.joinTable == null) {
 				setJoinTable_(getJpaFactory().buildOrmJoinTable(this, this.resource));
 			}
