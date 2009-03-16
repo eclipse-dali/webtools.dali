@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,7 +20,7 @@ import java.util.List;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.JavaConventions;
-import org.eclipse.jdt.internal.compiler.impl.CompilerOptions;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.internal.ui.dialogs.StatusUtil;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.DialogField;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.IStringButtonAdapter;
@@ -352,7 +352,7 @@ public class TableAssociationsWizardPage extends WizardPage {
 				
 				String fieldName = referencedRolePropertyField.getText();
 				IStatus status = JavaConventions.validateIdentifier(fieldName,
-						CompilerOptions.VERSION_1_3,CompilerOptions.VERSION_1_3);
+						JavaCore.VERSION_1_3, JavaCore.VERSION_1_3);
 				if( !status.matches(IStatus.ERROR) ){
 					if( !fieldName.equals(selectedAssociation.getReferencedRole().getPropertyName()) )
 						selectedAssociation.getReferencedRole().setPropertyName(fieldName);

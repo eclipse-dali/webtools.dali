@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,7 @@ package org.eclipse.jpt.ui.internal.wizards.gen;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jdt.core.JavaConventions;
-import org.eclipse.jdt.internal.compiler.impl.CompilerOptions;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.jpt.gen.internal2.ORMGenColumn;
 import org.eclipse.jpt.gen.internal2.ORMGenCustomizer;
@@ -248,7 +248,7 @@ public class ColumnGenPanel
 				if (!mIsUpdatingControls) {
 					String fldName = mPropNameField.getText();
 					IStatus status = JavaConventions.validateIdentifier( fldName, 
-							CompilerOptions.VERSION_1_3,CompilerOptions.VERSION_1_3 );
+						JavaCore.VERSION_1_3, JavaCore.VERSION_1_3 );
 					if( !status.matches(IStatus.ERROR)){
 						mColumn.setPropertyName(fldName);
 						wizardPage.setErrorMessage(null);
