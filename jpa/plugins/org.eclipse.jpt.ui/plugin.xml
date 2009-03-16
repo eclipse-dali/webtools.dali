@@ -788,16 +788,6 @@
 	
 	
 	<extension
-		point="org.eclipse.ui.preferencePages">
-		
-		<page
-			id="org.eclipse.jpt.ui.jpaPreferencePage"
-			name="%jpaPreferencePage"
-			class="org.eclipse.jpt.ui.internal.prefs.JpaPreferencePage"/>
-		
-	</extension>
-	
-	<extension
 		point="org.eclipse.ui.propertyPages">
 		
 		<page

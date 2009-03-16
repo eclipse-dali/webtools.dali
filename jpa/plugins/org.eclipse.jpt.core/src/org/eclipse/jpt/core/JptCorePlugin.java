@@ -30,6 +30,7 @@ import org.eclipse.jpt.core.internal.JpaModelManager;
 import org.eclipse.jpt.core.internal.platform.GenericJpaPlatformProvider;
 import org.eclipse.jpt.core.internal.platform.JpaPlatformRegistry;
 import org.eclipse.jpt.core.internal.prefs.JpaPreferenceConstants;
+import org.eclipse.jpt.core.internal.prefs.JpaPreferenceInitializer;
 import org.eclipse.jst.j2ee.internal.J2EEConstants;
 import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
@@ -301,15 +302,6 @@ public class JptCorePlugin extends Plugin {
 	public static IEclipsePreferences getProjectPreferences(IProject project) {
 		IScopeContext context = new ProjectScope(project);
 		return context.getNode(PLUGIN_ID);
-	}
-	
-	/**
-	 * Return the default JPA library for creating new JPA projects
-	 */
-	public static String getDefaultJpaLibrary() {
-		return Platform.getPreferencesService().get(
-				JpaPreferenceConstants.PREF_DEFAULT_JPA_LIB, null,
-				new Preferences[] {getWorkspacePreferences(), getDefaultPreferences()});
 	}
 	
 	/**

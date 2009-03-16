@@ -89,9 +89,6 @@ public class JptUiMessages {
 	public static String JpaFacetWizardPage_title;
 	public static String JpaFacetWizardPage_userLibsLink;
 	public static String JpaFacetWizardPage_userServerLibLabel;
-	public static String JpaPreferencePage_defaultJpaLib;
-	public static String JpaPreferencePage_invalidJpaLib;
-	public static String JpaPreferencePage_userLibsLink;
 	public static String JpaStructureView_linkWithEditorDesc;
 	public static String JpaStructureView_linkWithEditorText;
 	public static String JpaStructureView_linkWithEditorTooltip;

@@ -19,21 +19,16 @@ import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Preferences.IPropertyChangeListener;
-import org.eclipse.core.runtime.Preferences.PropertyChangeEvent;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.IElementChangedListener;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaElementDelta;
 import org.eclipse.jdt.core.IOpenable;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaModel;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.core.internal.prefs.JpaPreferenceConstants;
 import org.eclipse.jpt.utility.internal.BitTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.wst.common.project.facet.core.FacetedProjectFramework;
@@ -93,14 +88,8 @@ public class JpaModelManager {
 	 * which will forward them to the JPA projects.
 	 */
 	private final IElementChangedListener javaElementChangeListener;
-
-	/**
-	 * Listen for changes to the "Default JPA Lib" preference
-	 * so we can update the corresponding classpath variable.
-	 */
-	private final IPropertyChangeListener preferencesListener;
-
-
+	
+	
 	// ********** singleton **********
 
 	private static final JpaModelManager INSTANCE = new JpaModelManager();
@@ -123,7 +112,6 @@ public class JpaModelManager {
 		this.resourceChangeListener = new ResourceChangeListener();
 		this.facetedProjectListener = new FacetedProjectListener();
 		this.javaElementChangeListener = new JavaElementChangeListener();
-		this.preferencesListener = new PreferencesListener();
 	}
 
 
@@ -139,7 +127,6 @@ public class JpaModelManager {
 			ResourcesPlugin.getWorkspace().addResourceChangeListener(this.resourceChangeListener);
 			FacetedProjectFramework.addListener(this.facetedProjectListener, IFacetedProjectEvent.Type.values());
 			JavaCore.addElementChangedListener(this.javaElementChangeListener);
-			JptCorePlugin.instance().getPluginPreferences().addPropertyChangeListener(this.preferencesListener);
 		} catch (RuntimeException ex) {
 			this.log(ex);
 			this.stop();
@@ -151,7 +138,6 @@ public class JpaModelManager {
 	 */
 	public synchronized void stop() throws Exception {
 		debug("*** STOP JPA model manager ***"); //$NON-NLS-1$
-		JptCorePlugin.instance().getPluginPreferences().removePropertyChangeListener(this.preferencesListener);
 		JavaCore.removeElementChangedListener(this.javaElementChangeListener);
 		FacetedProjectFramework.removeListener(this.facetedProjectListener);
 		ResourcesPlugin.getWorkspace().removeResourceChangeListener(this.resourceChangeListener);
@@ -442,24 +428,8 @@ public class JpaModelManager {
 		}	
 		return false;
 	}
-
-	// ********** preference changed **********
-
-	/**
-	 * When the "Default JPA Lib" preference changes,
-	 * update the appropriate JDT Core classpath variable.
-	 */
-	/* private */ void preferenceChanged(PropertyChangeEvent event) {
-		if (event.getProperty() == JpaPreferenceConstants.PREF_DEFAULT_JPA_LIB) {
-			try {
-				JavaCore.setClasspathVariable("DEFAULT_JPA_LIB", new Path((String) event.getNewValue()), null); //$NON-NLS-1$
-			} catch (JavaModelException ex) {
-				this.log(ex);  // not sure what would cause this...
-			}
-		}
-	}
-
-
+	
+	
 	// ********** resource change listener **********
 
 	/**
@@ -515,27 +485,8 @@ public class JpaModelManager {
 			return StringTools.buildToStringFor(this);
 		}
 	}
-
-
-	// ********** preferences listener **********
-
-	/**
-	 * Forward the Preferences change event back to the JPA model manager.
-	 */
-	private class PreferencesListener implements IPropertyChangeListener {
-		PreferencesListener() {
-			super();
-		}
-		public void propertyChange(PropertyChangeEvent event) {
-			JpaModelManager.this.preferenceChanged(event);
-		}
-		@Override
-		public String toString() {
-			return StringTools.buildToStringFor(this);
-		}
-	}
-
-
+	
+	
 	// ********** debug **********
 
 	// @see JpaModelTests#testDEBUG()
