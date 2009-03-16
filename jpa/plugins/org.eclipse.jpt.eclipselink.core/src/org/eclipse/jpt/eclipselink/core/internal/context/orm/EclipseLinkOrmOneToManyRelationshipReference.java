@@ -95,8 +95,8 @@ public class EclipseLinkOrmOneToManyRelationshipReference
 	
 	@Override
 	public void setMappedByJoiningStrategy() {
-		this.joinColumnJoiningStrategy.removeStrategy();
 		super.setMappedByJoiningStrategy();
+		this.joinColumnJoiningStrategy.removeStrategy();
 	}
 	
 	@Override
@@ -110,8 +110,8 @@ public class EclipseLinkOrmOneToManyRelationshipReference
 	
 	@Override
 	public void setJoinTableJoiningStrategy() {
-		this.joinColumnJoiningStrategy.removeStrategy();
 		super.setJoinTableJoiningStrategy();
+		this.joinColumnJoiningStrategy.removeStrategy();
 	}
 	
 	@Override
@@ -132,9 +132,10 @@ public class EclipseLinkOrmOneToManyRelationshipReference
 	}
 	
 	public void setJoinColumnJoiningStrategy() {
+		//add the join-column strategy to prevent the update from changing the model out from under us
+		this.joinColumnJoiningStrategy.addStrategy();
 		this.mappedByJoiningStrategy.removeStrategy();
 		this.joinTableJoiningStrategy.removeStrategy();
-		this.joinColumnJoiningStrategy.addStrategy();
 	}
 	
 	public void unsetJoinColumnJoiningStrategy() {

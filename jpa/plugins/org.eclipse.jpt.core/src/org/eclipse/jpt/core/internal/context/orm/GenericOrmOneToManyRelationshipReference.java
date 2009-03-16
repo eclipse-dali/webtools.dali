@@ -122,8 +122,9 @@ public class GenericOrmOneToManyRelationshipReference
 	}
 	
 	public void setMappedByJoiningStrategy() {
-		this.joinTableJoiningStrategy.removeStrategy();
+		//add the mappedByJoinStrategy first to avoid the update changing the model out from under us
 		this.mappedByJoiningStrategy.addStrategy();
+		this.joinTableJoiningStrategy.removeStrategy();
 	}
 	
 	public void unsetMappedByJoiningStrategy() {
@@ -150,8 +151,9 @@ public class GenericOrmOneToManyRelationshipReference
 	}
 	
 	public void setJoinTableJoiningStrategy() {
-		this.mappedByJoiningStrategy.removeStrategy();
+		//add the joinTableJoiningStrategy first to avoid the update changing the model out from under us
 		this.joinTableJoiningStrategy.addStrategy();
+		this.mappedByJoiningStrategy.removeStrategy();
 	}
 	
 	public void unsetJoinTableJoiningStrategy() {

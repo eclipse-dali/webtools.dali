@@ -98,8 +98,9 @@ public class GenericJavaOneToManyRelationshipReference
 	}
 	
 	public void setMappedByJoiningStrategy() {
-		this.joinTableJoiningStrategy.removeStrategy();
+		//add the mappedByJoinStrategy first to avoid the update changing the joinTable strategy out from under us
 		this.mappedByJoiningStrategy.addStrategy();
+		this.joinTableJoiningStrategy.removeStrategy();
 	}
 	
 	public void unsetMappedByJoiningStrategy() {
