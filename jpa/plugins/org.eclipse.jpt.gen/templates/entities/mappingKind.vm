@@ -16,9 +16,13 @@
 #else
 #set ($generationType = "")
 #end
-#if ($idGenerator == "sequence" || ($idGenerator == "auto" && $table.sequence))
+#if ($idGenerator == "sequence" )
 #set ($generatorName = "${table.name.toUpperCase()}_${column.propertyName.toUpperCase()}_GENERATOR")
+#if( $table.formattedSequence != "" )
 	@SequenceGenerator(name="$generatorName", sequenceName="$table.formattedSequence")
+#else
+	@SequenceGenerator(name="$generatorName" )
+#end	
 	@GeneratedValue(strategy=$generationType, generator="$generatorName")
 #elseif ($generationType != "")
 	@GeneratedValue(strategy=$generationType)

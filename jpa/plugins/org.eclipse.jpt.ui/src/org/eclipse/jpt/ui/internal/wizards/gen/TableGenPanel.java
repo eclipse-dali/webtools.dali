@@ -73,7 +73,7 @@ class TableGenPanel
 		this.wizardPage = wizardPage;
 		this.isDefaultTable = isDefaultTable;
 		createTableMappingPropertiesGroup(parent, columns);
-		SWTUtil.createLabel(parent, 4, "");
+		SWTUtil.createLabel(parent, 4, ""); //$NON-NLS-1$
 	}
 	
 	protected void createTableMappingPropertiesGroup(Composite composite, int columns) {
@@ -226,12 +226,14 @@ class TableGenPanel
 			String[] values = new String[schemes.size()];
 			schemes.toArray(values);
 			idGeneratorCombo.setItems( values );
-			idGeneratorCombo.setText( mTable.getIdGenerator());
+			String idGenerator = mTable.getIdGenerator();
+			idGeneratorCombo.setText( idGenerator);
 			
+			boolean isSequence = this.mTable.getCustomizer().getSequenceIdGenerators().contains(idGenerator);		
 			String sequenceName = mTable.isDefaultsTable() ? mTable.getSequence() : mTable.getFormattedSequence();
 			sequenceName  = ( sequenceName==null?"":sequenceName ); 
 			sequenceNameField.setText( sequenceName );
-			if( sequenceName.length()> 0 ){
+			if( isSequence ){
 				sequenceNameField.setEnabled(true);
 				sequenceNameNoteLabel.setEnabled(true);
 			}else{
@@ -300,24 +302,18 @@ class TableGenPanel
 			public void modifyText(ModifyEvent e) {
 				if (e.getSource() == null || !isUpdatingControls) {
 
-					if( idGeneratorCombo.getText().equals("sequence")){
+					if( idGeneratorCombo.getText().equals("sequence")){ //$NON-NLS-1$
 						String sequenceName = sequenceNameField.getText();
-						if( sequenceName.toLowerCase().indexOf("$table")>=0 || 
-								sequenceName.toLowerCase().indexOf("$pk")>=0 ){
-							sequenceName = convertVarToLowerCase("$table", sequenceName);
-							sequenceName = convertVarToLowerCase("$pk", sequenceName);
+						if( sequenceName.toLowerCase().indexOf("$table")>=0 ||  //$NON-NLS-1$
+								sequenceName.toLowerCase().indexOf("$pk")>=0 ){ //$NON-NLS-1$
+							sequenceName = convertVarToLowerCase("$table", sequenceName); //$NON-NLS-1$
+							sequenceName = convertVarToLowerCase("$pk", sequenceName); //$NON-NLS-1$
 						}
 						if( sequenceName.trim().length() != 0 ){
-							mTable.setSeqence( sequenceName );
-							wizardPage.setErrorMessage(null);
-							wizardPage.setPageComplete(true);
+							mTable.setSequence( sequenceName );
 						}else{
-							wizardPage.setErrorMessage("Please specify a sequence name.");
-							wizardPage.setPageComplete(false);
+							mTable.setSequence( "" ); //$NON-NLS-1$
 						}
-					}else{
-						wizardPage.setErrorMessage(null);
-						wizardPage.setPageComplete(true);
 					}
 				}
 			}
@@ -343,14 +339,14 @@ class TableGenPanel
 	}
 
 	private void idGenChanged() {
-		String scheme = (String)idGeneratorCombo.getText();
+		String scheme = idGeneratorCombo.getText();
 		mTable.setIdGenerator(scheme);
 		
 		boolean isSequence = this.mTable.getCustomizer().getSequenceIdGenerators().contains(scheme);		
 		if (!isSequence) {
 			sequenceNameField.setText("");
 			sequenceNameField.setEnabled(false);
-			mTable.setSeqence(null);
+			mTable.setSequence(null);
 			sequenceNameNoteLabel.setEnabled(false);
 		}else{
 			sequenceNameField.setEnabled(true);
@@ -358,8 +354,8 @@ class TableGenPanel
 			sequenceNameNoteLabel.setEnabled(true);
 			if( sequenceNameField.getText().length()==0 ) {
 				String newMessage = "Please specify a sequence name";
-				this.wizardPage.setErrorMessage(newMessage);
-				this.wizardPage.setPageComplete(false);
+				this.wizardPage.setMessage(newMessage);
+				this.wizardPage.setPageComplete(true);
 			}else{
 				this.wizardPage.setErrorMessage(null);
 				this.wizardPage.setPageComplete(true);
