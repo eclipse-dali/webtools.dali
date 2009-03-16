@@ -18,9 +18,12 @@ import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
+import org.apache.velocity.runtime.log.JdkLogChute;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.CoreException;
@@ -47,6 +50,7 @@ import org.osgi.framework.Bundle;
  */
 public class PackageGenerator2 { 
 
+	private static final String LOGGER_NAME = "org.eclipse.jpt.entities.gen.log"; //$NON-NLS-1$
 	private IJavaProject javaProject;
 	private ORMGenCustomizer customizer ; 
 	private static OverwriteConfirmer overwriteConfirmer = null;
@@ -100,8 +104,8 @@ public class PackageGenerator2 {
 
 
 		for (Iterator<String> iter = tableNames.iterator(); iter.hasNext();) {
-			String tableName = (String) iter.next();
-			ORMGenTable table = (ORMGenTable) customizer.getTable(tableName);
+			String tableName = iter.next();
+			ORMGenTable table = customizer.getTable(tableName);
 
 			String className = table.getQualifiedClassName();
 
@@ -172,9 +176,14 @@ public class PackageGenerator2 {
 				if( overwriteConfirmer!=null && !overwriteConfirmer.overwrite(javaFile.getName()) )
 					return;
 			}
+			//JdkLogChute in this version of Velocity not allow to set log level
+			//Workaround by preset the log level before Velocity is initialized
+			Logger logger = Logger.getLogger( LOGGER_NAME );
+			logger.setLevel( Level.SEVERE );
 			
 			Properties vep = new Properties();
 			vep.setProperty("file.resource.loader.path", templateDirPath); //$NON-NLS-1$
+			vep.setProperty( JdkLogChute.RUNTIME_LOG_JDK_LOGGER, LOGGER_NAME );
 			VelocityEngine ve = new VelocityEngine();
 		    ve.init(vep);
 		    sm.worked(20);
