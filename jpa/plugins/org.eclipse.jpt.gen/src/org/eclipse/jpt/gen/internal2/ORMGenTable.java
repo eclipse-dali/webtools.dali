@@ -183,7 +183,7 @@ public class ORMGenTable
 	 * Returns the composite key property name.
 	 */
 	public String getCompositeKeyPropertyName() {
-		return "compId";
+		return "id";
 	}
 	/**
 	 * Returns the <code>ORMGenColumn</code> objects to be 
@@ -238,7 +238,7 @@ public class ORMGenTable
 			 * not having primary keys. */
 			List<ORMGenColumn> columns = getColumns();
 			for (int i = 0, n = columns.size(); i < n; ++i) {
-				ORMGenColumn column = (ORMGenColumn)columns.get(i);
+				ORMGenColumn column = columns.get(i);
 				if (column.getMappingKind().equals(mCustomizer.getIdMappingKind())) {
 					pkCol = column;
 					break;
@@ -270,7 +270,7 @@ public class ORMGenTable
 		List<ORMGenColumn> columns = getColumns();
 		List<AssociationRole> roles = getAssociationRoles();
 		for (int i = 0, n = columns.size(); i < n; ++i) {
-			ORMGenColumn column = (ORMGenColumn)columns.get(i);
+			ORMGenColumn column = columns.get(i);
 			if (genOnly && !column.isGenerated()) {
 				continue;
 			}
@@ -304,7 +304,7 @@ public class ORMGenTable
 	public boolean isColumnUpdateInsert(AssociationRole role, ORMGenColumn column)  {
 		if (column == null) {
 			for (Iterator<ORMGenColumn> iter = role.getReferrerColumns().iterator(); iter.hasNext(); ) {
-				ORMGenColumn c = (ORMGenColumn)iter.next();
+				ORMGenColumn c = iter.next();
 				if (!isColumnUpdateInsert(role, c)) {
 					return false;
 				}
@@ -341,7 +341,7 @@ public class ORMGenTable
 	public ORMGenColumn getColumnByName(String name) {
 		List<ORMGenColumn> columns = getColumns();
 		for (int i = 0, n = columns.size(); i < n; ++i) {
-			ORMGenColumn column = (ORMGenColumn)columns.get(i);
+			ORMGenColumn column = columns.get(i);
 			if (column.getName().equals(name)) {
 				return column;
 			}
@@ -360,7 +360,7 @@ public class ORMGenTable
 		String name = getName();
 		List<Association> associations = mCustomizer.getAssociations();
 		for (Iterator<Association> iter = associations.iterator(); iter.hasNext(); ) {
-			Association association = (Association)iter.next();
+			Association association = iter.next();
 			if (!association.isGenerated()) {
 				continue;
 			}
@@ -428,7 +428,7 @@ public class ORMGenTable
 		buffer.append(" implements Serializable"); //assuming that the Java file template imports the java.io.Serializable
 		
 		for (Iterator<String> iter = getImplements().iterator(); iter.hasNext(); ) {
-			buffer.append(", " + simplifyClassName((String)iter.next())); 
+			buffer.append(", " + simplifyClassName(iter.next())); 
 		}
 		
 		return buffer.toString();
@@ -498,7 +498,7 @@ public class ORMGenTable
 				 List<String> pkNames = DTPUtil.getPrimaryKeyColumnNames( getDbTable() );
 				 String pkName = null;
 				 if (pkNames.size()>0 ) {
-				 	pkName = (String)pkNames.get(0);
+				 	pkName = pkNames.get(0);
 				 }
 				 sequence = StringUtil.strReplace(sequence, PK_SEQ_PATTERN, pkName);
 			}
@@ -518,7 +518,7 @@ public class ORMGenTable
 	public boolean hasColumnsInEquals()  {
 		List<ORMGenColumn> columns = getSimpleColumns();
 		for (int i = 0, n = columns.size(); i < n; ++i) {
-			ORMGenColumn column = (ORMGenColumn)columns.get(i);
+			ORMGenColumn column = columns.get(i);
 			if (column.isUseInEquals()) {
 				return true;
 			}
@@ -597,7 +597,7 @@ public class ORMGenTable
 	public boolean isCompoundKeyUseInEquals()  {
 		if (isCompositeKey()) {
 			for (Iterator<ORMGenColumn> iter = getPrimaryKeyColumns().iterator(); iter.hasNext();) {
-				ORMGenColumn column = (ORMGenColumn) iter.next();
+				ORMGenColumn column = iter.next();
 				if (column.isUseInEquals()) {
 					return true;
 				}
@@ -607,7 +607,7 @@ public class ORMGenTable
 	}
 	public boolean isRoleUseInEquals(AssociationRole role)  {
 		for (Iterator<ORMGenColumn> iter = role.getReferrerColumns().iterator(); iter.hasNext();) {
-			ORMGenColumn column = (ORMGenColumn) iter.next();
+			ORMGenColumn column = iter.next();
 			if (column.isUseInEquals()) {
 				return true;
 			}
@@ -645,7 +645,7 @@ public class ORMGenTable
 	 */
 	private boolean isColumnInAsscociation(ORMGenColumn column, List<AssociationRole> roles) {
 		for (int i = 0, n = roles.size(); i < n; ++i) {
-			AssociationRole role = (AssociationRole)roles.get(i);
+			AssociationRole role = roles.get(i);
 			List<ORMGenColumn> cols = role.getReferrerColumns();
 			for( ORMGenColumn col : cols ){
 				if (col.getName().equals( column.getName() )) {
@@ -778,6 +778,7 @@ public class ORMGenTable
 		buf.append(".hashCode()");
 	}
 	
+	@Override
 	public String toString(){
 		return "name="+ this.getName() + "; columns=" + Arrays.toString( this.getColumnNames().toArray()) ;
 	}
