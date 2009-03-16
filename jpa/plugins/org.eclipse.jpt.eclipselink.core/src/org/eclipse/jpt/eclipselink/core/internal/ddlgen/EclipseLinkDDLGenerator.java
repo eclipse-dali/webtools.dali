@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2008 Oracle. All rights reserved.
+* Copyright (c) 2008, 2009 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,6 +11,7 @@ package org.eclipse.jpt.eclipselink.core.internal.ddlgen;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -18,10 +19,12 @@ import java.util.Properties;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -29,7 +32,6 @@ import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.ILaunchesListener2;
-import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.jdt.launching.IVMInstall;
@@ -39,6 +41,7 @@ import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.internal.validation.JpaHelper;
 import org.eclipse.jpt.core.internal.validation.JpaValidator;
 import org.eclipse.jpt.db.ConnectionProfile;
+import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
 import org.eclipse.jpt.eclipselink.core.internal.context.connection.Connection;
 import org.eclipse.jpt.eclipselink.core.internal.context.customization.Customization;
 import org.eclipse.jpt.eclipselink.core.internal.context.logging.Logging;
@@ -46,7 +49,9 @@ import org.eclipse.jpt.eclipselink.core.internal.context.logging.LoggingLevel;
 import org.eclipse.jpt.eclipselink.core.internal.context.schema.generation.DdlGenerationType;
 import org.eclipse.jpt.eclipselink.core.internal.context.schema.generation.OutputMode;
 import org.eclipse.jpt.eclipselink.core.internal.context.schema.generation.SchemaGeneration;
+import org.eclipse.osgi.service.datalocation.Location;
 import org.eclipse.wst.validation.internal.operations.ValidatorJob;
+import org.osgi.framework.Bundle;
 
 /**
  *  EclipseLinkDLLGenerator launches the EclipseLink DDL generator in a separate VM.
@@ -55,7 +60,7 @@ import org.eclipse.wst.validation.internal.operations.ValidatorJob;
  *  It will than launch the configuration created with the login information from 
  *  the current Dali project, and passes it to EclipseLink.
  *  
- *  Pre-req:
+ *  Pre-req in PDE environment:
  *  	org.eclipse.jpt.eclipselink.core.ddlgen.jar in ECLIPSE_HOME/plugins
  */
 public class EclipseLinkDDLGenerator
@@ -66,8 +71,7 @@ public class EclipseLinkDDLGenerator
 	static public String ECLIPSELINK_DDL_GEN_CLASS = DDL_GEN_PACKAGE_NAME + ".Main";	  //$NON-NLS-1$
 	static public String ECLIPSELINK_DDL_GEN_JAR = DDL_GEN_PACKAGE_NAME + "_" + ECLIPSELINK_DDL_GEN_JAR_VERSION + ".jar";	//$NON-NLS-1$
 	static public String PROPERTIES_FILE_NAME = "login.properties";	  //$NON-NLS-1$
-	static public String ECLIPSE_HOME = "ECLIPSE_HOME";	  //$NON-NLS-1$
-	static public String PLUGINS_DIR = "plugins";	  //$NON-NLS-1$
+	static public String PLUGINS_DIR = "plugins/";		  //$NON-NLS-1$
 	private IVMInstall jre;
 	private ILaunchConfigurationWorkingCopy launchConfig;
 	private ILaunch launch;
@@ -202,8 +206,49 @@ public class EclipseLinkDDLGenerator
 	}
 	
 	private IPath buildBootstrapJarPath() {
-		IPath path = JavaCore.getClasspathVariable(ECLIPSE_HOME);
-		return path.append(PLUGINS_DIR).append(ECLIPSELINK_DDL_GEN_JAR);
+		try {
+			File jarInstallDir = this.getBundleParentDir(JptEclipseLinkCorePlugin.PLUGIN_ID);
+
+			List<File> result = new ArrayList<File>();
+			this.findFile(ECLIPSELINK_DDL_GEN_JAR, jarInstallDir, result);
+			if (result.isEmpty()) {
+				throw new RuntimeException("Could not find: " + ECLIPSELINK_DDL_GEN_JAR + " in: " + jarInstallDir);
+			}
+			File ddlGenJarFile = result.get(0);
+			String ddlGenJarPath = ddlGenJarFile.getCanonicalPath();
+			return new Path(ddlGenJarPath);
+		}
+		catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	private void findFile(String fileName, File directory, List<? super File> list) {
+		if(directory.listFiles() == null) {
+			throw new RuntimeException("Could not find directory: " + directory);
+		}
+		for (File file : directory.listFiles()) {
+			if (file.getName().startsWith(fileName)) {
+				list.add(file);
+			}
+			if (file.isDirectory()) {
+				this.findFile(fileName, file, list);
+			}
+		}
+	}
+
+	private File getBundleParentDir(String bundleName) throws IOException {
+
+		if (Platform.inDevelopmentMode()) {
+			Location eclipseHomeLoc = Platform.getInstallLocation();
+			String eclipseHome = eclipseHomeLoc.getURL().getPath();
+			if ( ! eclipseHome.endsWith(PLUGINS_DIR)) {
+				eclipseHome += PLUGINS_DIR;
+			}
+			return new File(eclipseHome);
+		}
+		Bundle bundle = Platform.getBundle(bundleName);
+		return FileLocator.getBundleFile(bundle).getParentFile();
 	}
 
 	private ILaunchesListener2 buildLaunchListener() {
