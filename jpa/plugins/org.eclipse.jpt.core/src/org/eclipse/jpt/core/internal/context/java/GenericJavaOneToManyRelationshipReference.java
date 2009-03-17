@@ -161,5 +161,6 @@ public class GenericJavaOneToManyRelationshipReference
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
 		this.mappedByJoiningStrategy.validate(messages, reporter, astRoot);
+		this.joinTableJoiningStrategy.validate(messages, reporter, astRoot);
 	}
 }
