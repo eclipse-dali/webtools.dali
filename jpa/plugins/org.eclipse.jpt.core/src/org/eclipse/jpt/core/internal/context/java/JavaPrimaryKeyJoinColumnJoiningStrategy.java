@@ -268,7 +268,7 @@ public class JavaPrimaryKeyJoinColumnJoiningStrategy
 		}
 		
 		public String getAttributeName() {
-			return getRelationshipMapping().getPersistentAttribute().getName();
+			return getRelationshipMapping().getName();
 		}
 		
 		public RelationshipMapping getRelationshipMapping() {
