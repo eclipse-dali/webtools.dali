@@ -28,8 +28,6 @@ public class VirtualXmlOneToMany<T extends JavaOneToManyMapping>
 	extends VirtualXmlAttributeMapping<T> 
 	implements XmlOneToMany
 {
-	protected final VirtualXmlJoinTable virtualJoinTable;
-	
 	protected final VirtualCascadeType virtualCascadeType;
 	
 	protected final MapKey mapKey;
@@ -40,11 +38,6 @@ public class VirtualXmlOneToMany<T extends JavaOneToManyMapping>
 		super(ormTypeMapping, javaOneToManyMapping);
 		this.virtualCascadeType = 
 			new VirtualCascadeType(javaOneToManyMapping.getCascade(), this.isOrmMetadataComplete());
-		this.virtualJoinTable = 
-			new VirtualXmlJoinTable(
-				ormTypeMapping, 
-				javaOneToManyMapping.getRelationshipReference().
-					getJoinTableJoiningStrategy().getJoinTable());
 		this.mapKey = new VirtualMapKey(javaOneToManyMapping, this.isOrmMetadataComplete());
 	}
 	
@@ -72,7 +65,15 @@ public class VirtualXmlOneToMany<T extends JavaOneToManyMapping>
 	}
 	
 	public XmlJoinTable getJoinTable() {
-		return this.virtualJoinTable;
+		if (this.javaAttributeMapping.getRelationshipReference().getJoinTableJoiningStrategy().getJoinTable() != null) {
+			return 	new VirtualXmlJoinTable(
+				ormTypeMapping, 
+				this.javaAttributeMapping.getRelationshipReference().
+					getJoinTableJoiningStrategy().getJoinTable());
+		}
+		else {
+			return null;
+		}
 	}
 
 	public void setJoinTable(@SuppressWarnings("unused") XmlJoinTable value) {

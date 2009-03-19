@@ -26,8 +26,6 @@ public interface OrmJoinTable extends JoinTable, XmlContextNode
 {
 	OrmRelationshipMapping getRelationshipMapping();
 	
-	boolean isSpecified();
-
 	/**
 	 * Update the OrmJoinTable context model object to match the XmlRelationshipMapping 
 	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}

@@ -23,59 +23,55 @@ import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 
-public class VirtualXmlJoinTable extends AbstractJpaEObject implements XmlJoinTable
+public class VirtualXmlJoinTable 
+	extends AbstractJpaEObject 
+	implements XmlJoinTable
 {
 	protected OrmTypeMapping ormTypeMapping;
+	
 	protected JavaJoinTable javaJoinTable;	
-
+	
+	
 	protected VirtualXmlJoinTable(OrmTypeMapping ormTypeMapping, JavaJoinTable javaJoinTable) {
 		super();
 		this.ormTypeMapping = ormTypeMapping;
 		this.javaJoinTable = javaJoinTable;
 	}
 	
+	
 	protected boolean isOrmMetadataComplete() {
 		return this.ormTypeMapping.isMetadataComplete();
 	}
 	
 	public String getName() {
-		if (this.javaJoinTable == null) {
-			return null;
-		}
 		if (this.isOrmMetadataComplete()) {
 			return this.javaJoinTable.getDefaultName();
 		}
 		return this.javaJoinTable.getName();		
 	}
-
+	
 	public void setName(@SuppressWarnings("unused") String value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
-
+	
 	public String getCatalog() {
-		if (this.javaJoinTable == null) {
-			return null;
-		}
 		if (this.isOrmMetadataComplete()) {
 			return this.javaJoinTable.getDefaultCatalog();
 		}
 		return this.javaJoinTable.getCatalog();
 	}
-
+	
 	public void setCatalog(@SuppressWarnings("unused") String value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
-
+	
 	public String getSchema() {
-		if (this.javaJoinTable == null) {
-			return null;
-		}
 		if (this.isOrmMetadataComplete()) {
 			return this.javaJoinTable.getDefaultSchema();
 		}
 		return this.javaJoinTable.getSchema();
 	}
-
+	
 	public void setSchema(@SuppressWarnings("unused") String value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
@@ -106,17 +102,14 @@ public class VirtualXmlJoinTable extends AbstractJpaEObject implements XmlJoinTa
 
 		return inverseJoinColumns;
 	}
-
+	
 	public EList<XmlUniqueConstraint> getUniqueConstraints() {
 		EList<XmlUniqueConstraint> xmlUniqueConstraints = new EObjectContainmentEList<XmlUniqueConstraint>(XmlUniqueConstraint.class, this, OrmPackage.XML_JOIN_TABLE__UNIQUE_CONSTRAINTS);
-		if (this.javaJoinTable == null) {
-			return xmlUniqueConstraints;
-		}
 		for (JavaUniqueConstraint uniqueConstraint : CollectionTools.iterable(this.javaJoinTable.uniqueConstraints())) {
 			XmlUniqueConstraint xmlUniqueConstraint = new VirtualXmlUniqueConstraint(uniqueConstraint, isOrmMetadataComplete());
 			xmlUniqueConstraints.add(xmlUniqueConstraint);
 		}
-
+		
 		return xmlUniqueConstraints;
 	}
 	
@@ -130,9 +123,5 @@ public class VirtualXmlJoinTable extends AbstractJpaEObject implements XmlJoinTa
 	
 	public TextRange getSchemaTextRange() {
 		return null;
-	}
-
-	public boolean isSpecified() {
-		return this.javaJoinTable != null;
 	}
 }

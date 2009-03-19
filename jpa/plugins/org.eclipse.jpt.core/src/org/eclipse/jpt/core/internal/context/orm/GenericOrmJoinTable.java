@@ -317,9 +317,6 @@ public class GenericOrmJoinTable
 	
 	
 	// ****************** OrmJoinTable implementation *****************
-	public boolean isSpecified() {
-		return this.getResourceTable() != null && getResourceTable().isSpecified();
-	}	
 	
 	public void update() {
 		this.update(this.getResourceTable());
