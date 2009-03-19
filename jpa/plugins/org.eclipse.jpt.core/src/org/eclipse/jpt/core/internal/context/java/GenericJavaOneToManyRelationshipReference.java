@@ -126,8 +126,8 @@ public class GenericJavaOneToManyRelationshipReference
 	}
 	
 	public void setJoinTableJoiningStrategy() {
-		this.mappedByJoiningStrategy.removeStrategy();
 		// join table is default, so no need to add annotation
+		this.mappedByJoiningStrategy.removeStrategy();
 	}
 	
 	public void unsetJoinTableJoiningStrategy() {

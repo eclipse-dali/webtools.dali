@@ -152,8 +152,8 @@ public class GenericOrmManyToManyRelationshipReference
 	}
 	
 	public void setJoinTableJoiningStrategy() {
-		this.mappedByJoiningStrategy.removeStrategy();
 		// join table is the default strategy, so no need to add to resource
+		this.mappedByJoiningStrategy.removeStrategy();
 	}
 	
 	public void unsetJoinTableJoiningStrategy() {

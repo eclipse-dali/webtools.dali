@@ -150,7 +150,7 @@ public class GenericOrmOneToManyRelationshipReference
 	}
 	
 	public void setJoinTableJoiningStrategy() {
-		this.joinTableJoiningStrategy.addStrategy();
+		// join table is default, so no need to add to resource
 		this.mappedByJoiningStrategy.removeStrategy();
 	}
 	
