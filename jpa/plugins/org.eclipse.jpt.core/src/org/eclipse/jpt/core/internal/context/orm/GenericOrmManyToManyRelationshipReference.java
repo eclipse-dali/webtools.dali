@@ -128,8 +128,8 @@ public class GenericOrmManyToManyRelationshipReference
 	}
 	
 	public void setMappedByJoiningStrategy() {
-		this.joinTableJoiningStrategy.removeStrategy();
 		this.mappedByJoiningStrategy.addStrategy();
+		this.joinTableJoiningStrategy.removeStrategy();
 	}
 	
 	public void unsetMappedByJoiningStrategy() {
@@ -184,8 +184,6 @@ public class GenericOrmManyToManyRelationshipReference
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
 		this.mappedByJoiningStrategy.validate(messages, reporter);
-		//commenting out for now as a result of 268409 and us wanting to 
-		//lessen the risk of invalid validation errors in 2.2M6
-//		this.joinTableJoiningStrategy.validate(messages, reporter);
+		this.joinTableJoiningStrategy.validate(messages, reporter);
 	}
 }

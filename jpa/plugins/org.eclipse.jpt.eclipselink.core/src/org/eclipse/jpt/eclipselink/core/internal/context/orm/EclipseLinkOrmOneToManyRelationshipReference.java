@@ -132,7 +132,6 @@ public class EclipseLinkOrmOneToManyRelationshipReference
 	}
 	
 	public void setJoinColumnJoiningStrategy() {
-		//add the join-column strategy to prevent the update from changing the model out from under us
 		this.joinColumnJoiningStrategy.addStrategy();
 		this.mappedByJoiningStrategy.removeStrategy();
 		this.joinTableJoiningStrategy.removeStrategy();

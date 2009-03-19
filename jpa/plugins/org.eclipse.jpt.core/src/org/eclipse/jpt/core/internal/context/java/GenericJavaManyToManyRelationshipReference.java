@@ -98,8 +98,8 @@ public class GenericJavaManyToManyRelationshipReference
 	}
 	
 	public void setMappedByJoiningStrategy() {
-		this.joinTableJoiningStrategy.removeStrategy();
 		this.mappedByJoiningStrategy.addStrategy();
+		this.joinTableJoiningStrategy.removeStrategy();
 	}
 	
 	public void unsetMappedByJoiningStrategy() {

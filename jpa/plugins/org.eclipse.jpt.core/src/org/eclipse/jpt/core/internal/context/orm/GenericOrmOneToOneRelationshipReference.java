@@ -144,9 +144,9 @@ public class GenericOrmOneToOneRelationshipReference
 	}
 	
 	public void setMappedByJoiningStrategy() {
+		this.mappedByJoiningStrategy.addStrategy();
 		this.joinColumnJoiningStrategy.removeStrategy();
 		this.primaryKeyJoinColumnJoiningStrategy.removeStrategy();
-		this.mappedByJoiningStrategy.addStrategy();
 	}
 	
 	public void unsetMappedByJoiningStrategy() {
@@ -195,9 +195,9 @@ public class GenericOrmOneToOneRelationshipReference
 	}
 	
 	public void setPrimaryKeyJoinColumnJoiningStrategy() {
+		this.primaryKeyJoinColumnJoiningStrategy.addStrategy();
 		this.mappedByJoiningStrategy.removeStrategy();
 		this.joinColumnJoiningStrategy.removeStrategy();
-		this.primaryKeyJoinColumnJoiningStrategy.addStrategy();
 	}
 	
 	public void unsetPrimaryKeyJoinColumnJoiningStrategy() {

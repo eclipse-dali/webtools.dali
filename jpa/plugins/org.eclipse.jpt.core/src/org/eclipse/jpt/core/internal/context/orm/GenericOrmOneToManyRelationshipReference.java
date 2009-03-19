@@ -122,7 +122,6 @@ public class GenericOrmOneToManyRelationshipReference
 	}
 	
 	public void setMappedByJoiningStrategy() {
-		//add the mappedByJoinStrategy first to avoid the update changing the model out from under us
 		this.mappedByJoiningStrategy.addStrategy();
 		this.joinTableJoiningStrategy.removeStrategy();
 	}
@@ -151,7 +150,6 @@ public class GenericOrmOneToManyRelationshipReference
 	}
 	
 	public void setJoinTableJoiningStrategy() {
-		//add the joinTableJoiningStrategy first to avoid the update changing the model out from under us
 		this.joinTableJoiningStrategy.addStrategy();
 		this.mappedByJoiningStrategy.removeStrategy();
 	}
@@ -184,8 +182,6 @@ public class GenericOrmOneToManyRelationshipReference
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
 		this.mappedByJoiningStrategy.validate(messages, reporter);
-		//commenting out for now as a result of 268409 and us wanting to 
-		//lessen the risk of invalid validation errors in 2.2M6
-		//this.joinTableJoiningStrategy.validate(messages, reporter);
+		this.joinTableJoiningStrategy.validate(messages, reporter);
 	}
 }

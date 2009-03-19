@@ -74,7 +74,8 @@ public class GenericJavaManyToOneRelationshipReference
 	}
 	
 	public void setJoinColumnJoiningStrategy() {
-		this.joinColumnJoiningStrategy.addStrategy();
+		// join columns are default (and only, so far) strategy, so no need
+		// to add to resource model
 	}
 	
 	public void unsetJoinColumnJoiningStrategy() {
