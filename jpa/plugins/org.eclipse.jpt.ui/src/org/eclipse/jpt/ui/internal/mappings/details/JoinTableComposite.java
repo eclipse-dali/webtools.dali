@@ -24,6 +24,7 @@ import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.ui.internal.widgets.PostExecution;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListPropertyValueModelAdapter;
+import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
@@ -117,12 +118,13 @@ public class JoinTableComposite extends FormPane<JoinTable>
 	}
 	
 	private WritablePropertyValueModel<Boolean> buildInverseJoinColumnsPaneEnablerHolder() {
-		return new OverrideDefaultInverseJoinColumnHolder();
+		return new SimplePropertyValueModel<Boolean>();
 	}
 
 	private WritablePropertyValueModel<Boolean> buildJoinColumnsPaneEnablerHolder() {
-		return new OverrideDefaultJoinColumnHolder();
+		return new SimplePropertyValueModel<Boolean>();
 	}
+
 	@Override
 	protected void initializeLayout(Composite container) {
 

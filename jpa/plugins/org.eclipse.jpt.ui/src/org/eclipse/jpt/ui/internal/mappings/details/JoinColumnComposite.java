@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,7 +15,6 @@ import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.JoinColumn;
-import org.eclipse.jpt.core.context.JoinColumnEnabledRelationshipReference;
 import org.eclipse.jpt.core.context.JoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.context.NamedColumn;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
@@ -83,8 +82,8 @@ public class JoinColumnComposite
 	@Override
 	protected void initialize() {
 		super.initialize();
-		joinColumnHolder = buildJoinColumnHolder();
-		joinColumnPaneEnablerHolder = buildJoinColumnPaneEnablerHolder();
+		this.joinColumnHolder = buildJoinColumnHolder();
+		this.joinColumnPaneEnablerHolder = buildJoinColumnPaneEnablerHolder();
 	}
 	
 	private WritablePropertyValueModel<JoinColumn> buildJoinColumnHolder() {
@@ -92,7 +91,7 @@ public class JoinColumnComposite
 	}
 
 	private WritablePropertyValueModel<Boolean> buildJoinColumnPaneEnablerHolder() {
-		return new OverrideDefaultJoinColumnHolder();
+		return new SimplePropertyValueModel<Boolean>();
 	}
 
 	@Override
@@ -149,12 +148,12 @@ public class JoinColumnComposite
 				getSubjectHolder(), JoinColumnJoiningStrategy.SPECIFIED_JOIN_COLUMNS_LIST) {
 			@Override
 			protected ListIterator<JoinColumn> listIterator_() {
-				return subject.specifiedJoinColumns();
+				return this.subject.specifiedJoinColumns();
 			}
 
 			@Override
 			protected int size_() {
-				return subject.specifiedJoinColumnsSize();
+				return this.subject.specifiedJoinColumnsSize();
 			}
 		};
 	}
@@ -165,7 +164,7 @@ public class JoinColumnComposite
 					getSubjectHolder(), JoinColumnJoiningStrategy.DEFAULT_JOIN_COLUMN_PROPERTY) {
 				@Override
 				protected JoinColumn buildValue_() {
-					return subject.getDefaultJoinColumn();
+					return this.subject.getDefaultJoinColumn();
 				}
 			});
 	}
@@ -175,7 +174,7 @@ public class JoinColumnComposite
 	}
 	
 	private void installJoinColumnsListPaneEnabler(AddRemoveListPane<JoinColumnJoiningStrategy> pane) {
-		new PaneEnabler(joinColumnPaneEnablerHolder, pane);
+		new PaneEnabler(this.joinColumnPaneEnablerHolder, pane);
 	}
 	
 	@Override
@@ -193,9 +192,8 @@ public class JoinColumnComposite
 	private void updateJoinColumnPaneEnablement(boolean enabled) {
 		JoinColumnJoiningStrategy subject = getSubject();
 		enabled &= (subject != null) && subject.hasSpecifiedJoinColumns();
-		joinColumnPaneEnablerHolder.setValue(enabled);
+		this.joinColumnPaneEnablerHolder.setValue(Boolean.valueOf(enabled));
 	}
-	
 	
 	private class AddRemoveJoinColumnAdapter 
 		extends AddRemovePane.AbstractAdapter 
@@ -330,11 +328,11 @@ public class JoinColumnComposite
 		
 		@Override
 		protected Boolean buildValue() {
-			return listHolder.size() > 0;
+			return Boolean.valueOf(this.listHolder.size() > 0);
 		}
 		
 		public void setValue(Boolean value) {
-			updateJoinColumns(value);
+			updateJoinColumns(value.booleanValue());
 		}
 		
 		private void updateJoinColumns(boolean selected) {
