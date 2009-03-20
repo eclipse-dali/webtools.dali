@@ -272,7 +272,7 @@ public class JoinColumnsComposite<T extends JpaNode> extends FormPane<T>
 		);
 	}
 	
-	protected void installJoinColumnsPaneEnabler(WritablePropertyValueModel<Boolean> joinColumnsPaneEnablerHolder) {
+	protected void installJoinColumnsPaneEnabler(PropertyValueModel<Boolean> joinColumnsPaneEnablerHolder) {
 		new PaneEnabler(joinColumnsPaneEnablerHolder, this.listPane);
 	}
 	

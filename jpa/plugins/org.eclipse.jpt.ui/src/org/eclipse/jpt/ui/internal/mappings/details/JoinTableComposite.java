@@ -75,8 +75,6 @@ import org.eclipse.swt.widgets.Group;
  */
 public class JoinTableComposite extends FormPane<JoinTable>
 {
-	private WritablePropertyValueModel<Boolean> inverseJoinColumnsPaneEnablerHolder;
-	private WritablePropertyValueModel<Boolean> joinColumnsPaneEnablerHolder;
 	private Button overrideDefaultInverseJoinColumnsCheckBox;
 	private Button overrideDefaultJoinColumnsCheckBox;
 
@@ -107,14 +105,6 @@ public class JoinTableComposite extends FormPane<JoinTable>
 	                          WidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
-	}
-
-	@Override
-	protected void initialize() {
-		super.initialize();
-
-		this.joinColumnsPaneEnablerHolder        = buildJoinColumnsPaneEnablerHolder();
-		this.inverseJoinColumnsPaneEnablerHolder = buildInverseJoinColumnsPaneEnablerHolder();
 	}
 	
 	private WritablePropertyValueModel<Boolean> buildInverseJoinColumnsPaneEnablerHolder() {
@@ -194,11 +184,11 @@ public class JoinTableComposite extends FormPane<JoinTable>
 	}
 
 	private void installInverseJoinColumnsPaneEnabler(JoinColumnsComposite<JoinTable> pane) {
-		pane.installJoinColumnsPaneEnabler(this.inverseJoinColumnsPaneEnablerHolder);
+		pane.installJoinColumnsPaneEnabler(new InverseJoinColumnPaneEnablerHolder());
 	}
 
 	private void installJoinColumnsPaneEnabler(JoinColumnsComposite<JoinTable> pane) {
-		pane.installJoinColumnsPaneEnabler(this.joinColumnsPaneEnablerHolder);
+		pane.installJoinColumnsPaneEnabler(new JoinColumnPaneEnablerHolder());
 	}
 
 	private void addInverseJoinColumn(JoinTable joinTable) {
@@ -295,12 +285,12 @@ public class JoinTableComposite extends FormPane<JoinTable>
 		return new ListAspectAdapter<JoinTable, JoinColumn>(getSubjectHolder(), JoinTable.SPECIFIED_JOIN_COLUMNS_LIST) {
 			@Override
 			protected ListIterator<JoinColumn> listIterator_() {
-				return subject.specifiedJoinColumns();
+				return this.subject.specifiedJoinColumns();
 			}
 
 			@Override
 			protected int size_() {
-				return subject.specifiedJoinColumnsSize();
+				return this.subject.specifiedJoinColumnsSize();
 			}
 		};
 	}
@@ -309,12 +299,12 @@ public class JoinTableComposite extends FormPane<JoinTable>
 		return new ListAspectAdapter<JoinTable, JoinColumn>(getSubjectHolder(), JoinTable.SPECIFIED_INVERSE_JOIN_COLUMNS_LIST) {
 			@Override
 			protected ListIterator<JoinColumn> listIterator_() {
-				return subject.specifiedInverseJoinColumns();
+				return this.subject.specifiedInverseJoinColumns();
 			}
 
 			@Override
 			protected int size_() {
-				return subject.specifiedInverseJoinColumnsSize();
+				return this.subject.specifiedInverseJoinColumnsSize();
 			}
 		};
 	}
@@ -390,12 +380,6 @@ public class JoinTableComposite extends FormPane<JoinTable>
 		};
 	}
 
-	@Override
-	protected void doPopulate() {
-		super.doPopulate();
-		updateJoinColumnPanesEnablement(true);
-	}
-
 	private void editInverseJoinColumn(InverseJoinColumnInJoinTableStateObject stateObject) {
 		stateObject.updateJoinColumn(stateObject.getJoinColumn());
 	}
@@ -419,13 +403,6 @@ public class JoinTableComposite extends FormPane<JoinTable>
 	private void editJoinColumn(JoinColumnInJoinTableStateObject stateObject) {
 		stateObject.updateJoinColumn(stateObject.getJoinColumn());
 	}
-
-	@Override
-	public void enableWidgets(boolean enabled) {
-		super.enableWidgets(enabled);
-		updateJoinColumnPanesEnablement(enabled);
-	}
-
 
 	private void updateInverseJoinColumns() {
 		if (isPopulating()) {
@@ -461,25 +438,10 @@ public class JoinTableComposite extends FormPane<JoinTable>
 					joinTable.removeSpecifiedInverseJoinColumn(index);
 				}
 			}
-
-			this.inverseJoinColumnsPaneEnablerHolder.setValue(selected);
 		}
 		finally {
 			setPopulating(false);
 		}
-	}
-
-	private void updateJoinColumnPanesEnablement(boolean globalEnablement) {
-
-		JoinTable subject      = getSubject();
-		boolean enabled        = globalEnablement && (subject != null) && subject.containsSpecifiedJoinColumns();
-		boolean inverseEnabled = globalEnablement && (subject != null) && subject.containsSpecifiedInverseJoinColumns();
-
-		this.overrideDefaultJoinColumnsCheckBox.setSelection(enabled);
-		this.overrideDefaultInverseJoinColumnsCheckBox.setSelection(inverseEnabled);
-
-		this.joinColumnsPaneEnablerHolder.setValue(Boolean.valueOf(enabled));
-		this.inverseJoinColumnsPaneEnablerHolder.setValue(Boolean.valueOf(inverseEnabled));
 	}
 
 	private void updateJoinColumns() {
@@ -516,8 +478,6 @@ public class JoinTableComposite extends FormPane<JoinTable>
 					joinTable.removeSpecifiedJoinColumn(index);
 				}
 			}
-
-			this.joinColumnsPaneEnablerHolder.setValue(Boolean.valueOf(selected));
 		}
 		finally {
 			setPopulating(false);
@@ -616,7 +576,7 @@ public class JoinTableComposite extends FormPane<JoinTable>
 	
 		@Override
 		protected Boolean buildValue() {
-			return listHolder.size() > 0;
+			return Boolean.valueOf(this.listHolder.size() > 0);
 		}
 	
 		public void setValue(Boolean value) {
@@ -634,7 +594,7 @@ public class JoinTableComposite extends FormPane<JoinTable>
 	
 		@Override
 		protected Boolean buildValue() {
-			return listHolder.size() > 0;
+			return Boolean.valueOf(this.listHolder.size() > 0);
 		}
 	
 		public void setValue(Boolean value) {
@@ -642,5 +602,36 @@ public class JoinTableComposite extends FormPane<JoinTable>
 		}
 	}
 
+	
+	private class JoinColumnPaneEnablerHolder 
+		extends ListPropertyValueModelAdapter<Boolean>
+		implements PropertyValueModel<Boolean> 
+	{
+		public JoinColumnPaneEnablerHolder() {
+			super(buildSpecifiedJoinColumnsListHolder());
+		}
+		
+		@Override
+		protected Boolean buildValue() {
+			boolean virtual = getSubject().getRelationshipMapping().getPersistentAttribute().isVirtual();
+			return Boolean.valueOf(!virtual && this.listHolder.size() > 0);
+		}
 
+	}
+	
+	private class InverseJoinColumnPaneEnablerHolder 
+		extends ListPropertyValueModelAdapter<Boolean>
+		implements PropertyValueModel<Boolean> 
+	{
+		public InverseJoinColumnPaneEnablerHolder() {
+			super(buildSpecifiedInverseJoinColumnsListHolder());
+		}
+		
+		@Override
+		protected Boolean buildValue() {
+			boolean virtual = getSubject().getRelationshipMapping().getPersistentAttribute().isVirtual();
+			return Boolean.valueOf(!virtual && this.listHolder.size() > 0);
+		}
+	
+	}
 }

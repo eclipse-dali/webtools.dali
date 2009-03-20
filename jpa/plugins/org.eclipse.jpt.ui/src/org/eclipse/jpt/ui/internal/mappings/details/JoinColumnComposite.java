@@ -68,30 +68,21 @@ public class JoinColumnComposite
 {
 	private WritablePropertyValueModel<JoinColumn> joinColumnHolder;
 	
-	private WritablePropertyValueModel<Boolean> joinColumnPaneEnablerHolder;
-	
-	
 	public JoinColumnComposite(
 			FormPane<?> parentPane,
 			PropertyValueModel<JoinColumnJoiningStrategy> subjectHolder,
 			Composite parent) {
 		super(parentPane, subjectHolder, parent);
 	}
-	
 
 	@Override
 	protected void initialize() {
 		super.initialize();
 		this.joinColumnHolder = buildJoinColumnHolder();
-		this.joinColumnPaneEnablerHolder = buildJoinColumnPaneEnablerHolder();
 	}
 	
 	private WritablePropertyValueModel<JoinColumn> buildJoinColumnHolder() {
 		return new SimplePropertyValueModel<JoinColumn>();
-	}
-
-	private WritablePropertyValueModel<Boolean> buildJoinColumnPaneEnablerHolder() {
-		return new SimplePropertyValueModel<Boolean>();
 	}
 
 	@Override
@@ -174,26 +165,9 @@ public class JoinColumnComposite
 	}
 	
 	private void installJoinColumnsListPaneEnabler(AddRemoveListPane<JoinColumnJoiningStrategy> pane) {
-		new PaneEnabler(this.joinColumnPaneEnablerHolder, pane);
-	}
-	
-	@Override
-	protected void doPopulate() {
-		super.doPopulate();
-		updateJoinColumnPaneEnablement(true);
-	}
-	
-	@Override
-	public void enableWidgets(boolean enabled) {
-		super.enableWidgets(enabled);
-		updateJoinColumnPaneEnablement(enabled);
+		new PaneEnabler(new JoinColumnPaneEnablerHolder(), pane);
 	}
 
-	private void updateJoinColumnPaneEnablement(boolean enabled) {
-		JoinColumnJoiningStrategy subject = getSubject();
-		enabled &= (subject != null) && subject.hasSpecifiedJoinColumns();
-		this.joinColumnPaneEnablerHolder.setValue(Boolean.valueOf(enabled));
-	}
 	
 	private class AddRemoveJoinColumnAdapter 
 		extends AddRemovePane.AbstractAdapter 
@@ -367,12 +341,27 @@ public class JoinColumnComposite
 						subject.removeSpecifiedJoinColumn(index);
 					}
 				}
-				
-				updateJoinColumnPaneEnablement(selected);
 			}
 			finally {
 				setPopulating(false);
 			}
 		}
+	}
+	
+	
+	private class JoinColumnPaneEnablerHolder 
+		extends ListPropertyValueModelAdapter<Boolean>
+		implements PropertyValueModel<Boolean> 
+	{
+		public JoinColumnPaneEnablerHolder() {
+			super(buildSpecifiedJoinColumnsListHolder());
+		}
+		
+		@Override
+		protected Boolean buildValue() {
+			boolean virtual = getSubject().getRelationshipReference().getRelationshipMapping().getPersistentAttribute().isVirtual();
+			return Boolean.valueOf(!virtual && this.listHolder.size() > 0);
+		}
+
 	}
 }
