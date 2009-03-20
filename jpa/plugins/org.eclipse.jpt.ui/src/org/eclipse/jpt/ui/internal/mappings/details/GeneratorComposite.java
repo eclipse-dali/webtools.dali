@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -41,6 +41,7 @@ import org.eclipse.swt.widgets.Spinner;
 @SuppressWarnings("nls")
 public abstract class GeneratorComposite<T extends Generator> extends Pane<GeneratorHolder>
 {
+	private PropertyValueModel<Generator> generatorHolder;
 	/**
 	 * Creates a new <code>GeneratorComposite</code>.
 	 *
@@ -52,9 +53,33 @@ public abstract class GeneratorComposite<T extends Generator> extends Pane<Gener
 
 		super(parentPane, parent, false);
 	}
+	
+	@Override
+	protected void initialize() {
+		super.initialize();
+		this.generatorHolder = buildGeneratorHolder();
+		
+	}
+	private PropertyValueModel<Generator> buildGeneratorHolder() {
+		return new PropertyAspectAdapter<GeneratorHolder, Generator>(getSubjectHolder(), getPropertyName()) {
+			@Override
+			protected Generator buildValue_() {
+				return GeneratorComposite.this.getGenerator(this.subject);
+			}
+		};
+	}
+
+	/**
+	 * Retrieves without creating the <code>Generator</code> from the subject.
+	 *
+	 * @param subject The subject used to retrieve the generator
+	 * @return The <code>Generator</code> or <code>null</code> if it doesn't
+	 * exists
+	 */
+	protected abstract T getGenerator(GeneratorHolder subject);
 
 	private WritablePropertyValueModel<Integer> buildAllocationSizeHolder() {
-		return new PropertyAspectAdapter<Generator, Integer>(buildGeneratorHolder(), Generator.SPECIFIED_ALLOCATION_SIZE_PROPERTY) {
+		return new PropertyAspectAdapter<Generator, Integer>(this.generatorHolder, Generator.SPECIFIED_ALLOCATION_SIZE_PROPERTY) {
 			@Override
 			protected Integer buildValue_() {
 				Integer value = subject.getSpecifiedAllocationSize();
@@ -87,7 +112,7 @@ public abstract class GeneratorComposite<T extends Generator> extends Pane<Gener
 	}
 
 	private WritablePropertyValueModel<Integer> buildDefaultAllocationSizeHolder() {
-		return new PropertyAspectAdapter<Generator, Integer>(buildGeneratorHolder(), Generator.DEFAULT_ALLOCATION_SIZE_PROPERTY) {
+		return new PropertyAspectAdapter<Generator, Integer>(this.generatorHolder, Generator.DEFAULT_ALLOCATION_SIZE_PROPERTY) {
 			@Override
 			protected Integer buildValue_() {
 				return subject.getDefaultAllocationSize();
@@ -139,7 +164,7 @@ public abstract class GeneratorComposite<T extends Generator> extends Pane<Gener
 	}
 
 	private WritablePropertyValueModel<Integer> buildDefaultInitialValueHolder() {
-		return new PropertyAspectAdapter<Generator, Integer>(buildGeneratorHolder(), Generator.DEFAULT_INITIAL_VALUE_PROPERTY) {
+		return new PropertyAspectAdapter<Generator, Integer>(this.generatorHolder, Generator.DEFAULT_INITIAL_VALUE_PROPERTY) {
 			@Override
 			protected Integer buildValue_() {
 				return subject.getDefaultInitialValue();
@@ -198,17 +223,8 @@ public abstract class GeneratorComposite<T extends Generator> extends Pane<Gener
 	 */
 	protected abstract T buildGenerator(GeneratorHolder subject);
 
-	private PropertyValueModel<Generator> buildGeneratorHolder() {
-		return new PropertyAspectAdapter<GeneratorHolder, Generator>(getSubjectHolder(), getPropertyName()) {
-			@Override
-			protected Generator buildValue_() {
-				return GeneratorComposite.this.getGenerator(subject);
-			}
-		};
-	}
-
 	protected final WritablePropertyValueModel<String> buildGeneratorNameHolder() {
-		return new PropertyAspectAdapter<Generator, String>(buildGeneratorHolder(), Generator.NAME_PROPERTY) {
+		return new PropertyAspectAdapter<Generator, String>(this.generatorHolder, Generator.NAME_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return subject.getName();
@@ -237,7 +253,7 @@ public abstract class GeneratorComposite<T extends Generator> extends Pane<Gener
 	}
 
 	private WritablePropertyValueModel<Integer> buildInitialValueHolder() {
-		return new PropertyAspectAdapter<Generator, Integer>(buildGeneratorHolder(), Generator.SPECIFIED_INITIAL_VALUE_PROPERTY) {
+		return new PropertyAspectAdapter<Generator, Integer>(this.generatorHolder, Generator.SPECIFIED_INITIAL_VALUE_PROPERTY) {
 			@Override
 			protected Integer buildValue_() {
 				Integer value = subject.getSpecifiedInitialValue();
@@ -280,15 +296,6 @@ public abstract class GeneratorComposite<T extends Generator> extends Pane<Gener
 	protected final T getGenerator() {
 		return (this.getSubject() == null) ? null : this.getGenerator(this.getSubject());
 	}
-
-	/**
-	 * Retrieves without creating the <code>Generator</code> from the subject.
-	 *
-	 * @param subject The subject used to retrieve the generator
-	 * @return The <code>Generator</code> or <code>null</code> if it doesn't
-	 * exists
-	 */
-	protected abstract T getGenerator(GeneratorHolder subject);
 
 	/**
 	 * Creates the labeled spinner responsible to edit the allocation size. The

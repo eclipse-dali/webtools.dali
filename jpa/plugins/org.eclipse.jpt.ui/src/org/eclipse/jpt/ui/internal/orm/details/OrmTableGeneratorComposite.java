@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,19 +10,20 @@
 package org.eclipse.jpt.ui.internal.orm.details;
 
 import java.util.Collection;
-import org.eclipse.jpt.core.context.Generator;
 import org.eclipse.jpt.core.context.TableGenerator;
 import org.eclipse.jpt.core.context.orm.OrmTableGenerator;
 import org.eclipse.jpt.db.Schema;
+import org.eclipse.jpt.db.SchemaContainer;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
+import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.mappings.db.CatalogCombo;
 import org.eclipse.jpt.ui.internal.mappings.db.ColumnCombo;
+import org.eclipse.jpt.ui.internal.mappings.db.SchemaCombo;
 import org.eclipse.jpt.ui.internal.mappings.db.TableCombo;
 import org.eclipse.jpt.ui.internal.orm.JptUiOrmMessages;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
-import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -36,6 +37,12 @@ import org.eclipse.swt.widgets.Composite;
  * | Table:                    | I                                         |v| |
  * |                           ----------------------------------------------- |
  * |                           ----------------------------------------------- |
+ * | Catalog:                  | CatalogCombo                                | |
+ * |                           ----------------------------------------------- |
+ * |                           ----------------------------------------------- |
+ * | Schema:                   | SchemaCombo                                 | |
+ * |                           ----------------------------------------------- |
+ * |                           ----------------------------------------------- |
  * | Primary Key Column:       | I                                         |v| |
  * |                           ----------------------------------------------- |
  * |                           ----------------------------------------------- |
@@ -44,6 +51,12 @@ import org.eclipse.swt.widgets.Composite;
  * |                           ----------------------------------------------- |
  * | Primary Key Column Value: | I                                         |v| |
  * |                           ----------------------------------------------- |
+ * |                           -------------                                   |
+ * | Allocation Size:          | I       |I|  Default (XXX)                    |
+ * |                           -------------                                   |
+ * |                           -------------                                   |
+ * | Initial Value:            | I       |I|  Default (XXX)                    |
+ * |                           -------------                                   |
  * -----------------------------------------------------------------------------</pre>
  *
  * @see OrmTableGenerator
@@ -52,7 +65,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 1.0
  */
-public class OrmTableGeneratorComposite extends Pane<OrmTableGenerator>
+public class OrmTableGeneratorComposite extends OrmGeneratorComposite<OrmTableGenerator>
 {
 	/**
 	 * Creates a new <code>OrmTableGeneratorComposite</code>.
@@ -65,23 +78,75 @@ public class OrmTableGeneratorComposite extends Pane<OrmTableGenerator>
 	                                  PropertyValueModel<OrmTableGenerator> subjectHolder,
 	                                  Composite parent) {
 
-		super(parentPane, subjectHolder, parent, false);
+		super(parentPane, subjectHolder, parent);
 	}
 
-	private WritablePropertyValueModel<String> buildGeneratorNameHolder() {
-		return new PropertyAspectAdapter<OrmTableGenerator, String>(getSubjectHolder(), Generator.NAME_PROPERTY) {
-			@Override
-			protected String buildValue_() {
-				return subject.getName();
-			}
+	@Override
+	protected void initializeLayout(Composite container) {
 
-			@Override
-			protected void setValue_(String value) {
-				subject.setName(value);
-			}
-		};
+		// Name widgets
+		addLabeledText(
+			container,
+			JptUiOrmMessages.OrmTableGeneratorComposite_name,
+			buildGeneratorNameHolder(),
+			JpaHelpContextIds.MAPPING_TABLE_GENERATOR_NAME
+		);
+
+		// Table widgets
+		addLabeledComposite(
+			container,
+			JptUiOrmMessages.OrmTableGeneratorComposite_table,
+			addTableNameCombo(container),
+			JpaHelpContextIds.MAPPING_TABLE_GENERATOR_TABLE
+		);
+
+		// Schema widgets
+		addLabeledComposite(
+			container,
+			JptUiMappingsMessages.TableGeneratorComposite_schema,
+			addSchemaCombo(container),
+			JpaHelpContextIds.MAPPING_TABLE_GENERATOR_SCHEMA
+		);
+
+		// Catalog widgets
+		addLabeledComposite(
+			container,
+			JptUiMappingsMessages.TableGeneratorComposite_catalog,
+			addCatalogCombo(container),
+			JpaHelpContextIds.MAPPING_TABLE_GENERATOR_CATALOG
+		);
+
+		// Primary Key Column widgets
+		addLabeledComposite(
+			container,
+			JptUiOrmMessages.OrmTableGeneratorComposite_pkColumn,
+			addPkColumnNameCombo(container),
+			JpaHelpContextIds.MAPPING_TABLE_GENERATOR_PRIMARY_KEY_COLUMN
+		);
+
+		// Value Column widgets
+		addLabeledComposite(
+			container,
+			JptUiOrmMessages.OrmTableGeneratorComposite_valueColumn,
+			addValueColumnCombo(container),
+			JpaHelpContextIds.MAPPING_TABLE_GENERATOR_VALUE_COLUMN
+		);
+
+		// Primary Key Column Value widgets
+		addLabeledComposite(
+			container,
+			JptUiOrmMessages.OrmTableGeneratorComposite_pkColumnValue,
+			addPkColumnValueCombo(container),
+			JpaHelpContextIds.MAPPING_TABLE_GENERATOR_PRIMARY_KEY_COLUMN_VALUE
+		);
+
+		// Allocation Size widgets
+		initializeAllocationSizeWidgets(container);
+
+		// Initial Value widgets
+		initializeInitialValueWidgets(container);
 	}
-
+	
 	private ColumnCombo<OrmTableGenerator> addPkColumnNameCombo(Composite parent) {
 
 		return new ColumnCombo<OrmTableGenerator>(this, parent) {
@@ -196,6 +261,66 @@ public class OrmTableGeneratorComposite extends Pane<OrmTableGenerator>
 
 		};
 	}
+	
+	private SchemaCombo<TableGenerator> addSchemaCombo(Composite parent) {
+		return new SchemaCombo<TableGenerator>(this, parent) {
+
+			@Override
+			protected void addPropertyNames(Collection<String> propertyNames) {
+				super.addPropertyNames(propertyNames);
+				propertyNames.add(TableGenerator.DEFAULT_SCHEMA_PROPERTY);
+				propertyNames.add(TableGenerator.SPECIFIED_SCHEMA_PROPERTY);
+			}
+
+			@Override
+			protected String getDefaultValue() {
+				return getSubject().getDefaultSchema();
+			}
+
+			@Override
+			protected void setValue(String value) {
+				getSubject().setSpecifiedSchema(value);
+			}
+
+			@Override
+			protected String getValue() {
+				return getSubject().getSpecifiedSchema();
+			}
+
+			@Override
+			protected SchemaContainer getDbSchemaContainer_() {
+				return this.getSubject().getDbSchemaContainer();
+			}
+
+		};
+	}
+	
+	private CatalogCombo<TableGenerator> addCatalogCombo(Composite parent) {
+		return new CatalogCombo<TableGenerator>(this, parent) {
+
+			@Override
+			protected void addPropertyNames(Collection<String> propertyNames) {
+				super.addPropertyNames(propertyNames);
+				propertyNames.add(TableGenerator.DEFAULT_CATALOG_PROPERTY);
+				propertyNames.add(TableGenerator.SPECIFIED_CATALOG_PROPERTY);
+			}
+
+			@Override
+			protected String getDefaultValue() {
+				return getSubject().getDefaultCatalog();
+			}
+
+			@Override
+			protected void setValue(String value) {
+				getSubject().setSpecifiedCatalog(value);
+			}
+
+			@Override
+			protected String getValue() {
+				return getSubject().getSpecifiedCatalog();
+			}
+		};
+	}
 
 	private ColumnCombo<OrmTableGenerator> addValueColumnCombo(Composite parent) {
 
@@ -228,52 +353,5 @@ public class OrmTableGeneratorComposite extends Pane<OrmTableGenerator>
 				return getSubject().getSpecifiedValueColumnName();
 			}
 		};
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected void initializeLayout(Composite container) {
-
-		// Name widgets
-		addLabeledText(
-			container,
-			JptUiOrmMessages.OrmTableGeneratorComposite_name,
-			buildGeneratorNameHolder(),
-			JpaHelpContextIds.MAPPING_TABLE_GENERATOR_NAME
-		);
-
-		// Table widgets
-		addLabeledComposite(
-			container,
-			JptUiOrmMessages.OrmTableGeneratorComposite_table,
-			addTableNameCombo(container),
-			JpaHelpContextIds.MAPPING_TABLE_GENERATOR_TABLE
-		);
-
-		// Primary Key Column widgets
-		addLabeledComposite(
-			container,
-			JptUiOrmMessages.OrmTableGeneratorComposite_pkColumn,
-			addPkColumnNameCombo(container),
-			JpaHelpContextIds.MAPPING_TABLE_GENERATOR_PRIMARY_KEY_COLUMN
-		);
-
-		// Value Column widgets
-		addLabeledComposite(
-			container,
-			JptUiOrmMessages.OrmTableGeneratorComposite_valueColumn,
-			addValueColumnCombo(container),
-			JpaHelpContextIds.MAPPING_TABLE_GENERATOR_VALUE_COLUMN
-		);
-
-		// Primary Key Column Value widgets
-		addLabeledComposite(
-			container,
-			JptUiOrmMessages.OrmTableGeneratorComposite_pkColumnValue,
-			addPkColumnValueCombo(container),
-			JpaHelpContextIds.MAPPING_TABLE_GENERATOR_PRIMARY_KEY_COLUMN_VALUE
-		);
 	}
 }
