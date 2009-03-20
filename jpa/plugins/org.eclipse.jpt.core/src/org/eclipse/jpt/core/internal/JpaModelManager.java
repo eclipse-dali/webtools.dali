@@ -303,7 +303,8 @@ public class JpaModelManager {
 				this.checkDeltaFlagsForOpenedProject(project, delta);
 				break;
 			case IResourceDelta.REMOVED :  // already handled with the PRE_DELETE event
-			case IResourceDelta.ADDED :  // all but project rename handled with the facet POST_INSTALL event
+			case IResourceDelta.ADDED :  // all but project import and rename handled with the facet POST_INSTALL event
+				this.checkDeltaFlagsForOpenedProject(project, delta);
 				this.checkDeltaFlagsForRenamedProject(project, delta);
 				break;
 			case IResourceDelta.ADDED_PHANTOM :  // ignore
