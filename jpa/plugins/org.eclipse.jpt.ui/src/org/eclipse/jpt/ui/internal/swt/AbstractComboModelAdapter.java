@@ -376,7 +376,14 @@ public abstract class AbstractComboModelAdapter<E> {
 			this.comboHolder.setItem(index++, this.convert(stream.next()));
 		}
 		if (selectionIndex == 0) {
-			this.comboHolder.setText(this.comboHolder.getItems()[0]);
+			//fixing bug 269100 by setting the populating flag to true
+			this.comboHolder.setPopulating(true);
+			try {
+				this.comboHolder.setText(this.comboHolder.getItems()[0]);
+			}
+			finally {
+				this.comboHolder.setPopulating(false);
+			}
 		}
 	}
 
