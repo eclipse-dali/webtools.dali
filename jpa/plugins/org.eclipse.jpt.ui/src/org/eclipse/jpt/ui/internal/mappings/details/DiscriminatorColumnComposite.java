@@ -173,10 +173,10 @@ public class DiscriminatorColumnComposite<T extends Entity> extends FormPane<T> 
 	}
 
 	private PropertyValueModel<DiscriminatorColumn> buildDiscriminatorColumnHolder() {
-		return new PropertyAspectAdapter<Entity, DiscriminatorColumn>(getSubjectHolder(), Entity.DISCRIMINATOR_COLUMN_IS_UNDEFINED_PROPERTY) {
+		return new PropertyAspectAdapter<Entity, DiscriminatorColumn>(getSubjectHolder()) {
 			@Override
 			protected DiscriminatorColumn buildValue_() {
-				return this.subject.discriminatorColumnIsUndefined() ? null : this.subject.getDiscriminatorColumn();
+				return this.subject.getDiscriminatorColumn();
 			}
 		};
 	}
