@@ -10,6 +10,7 @@
 package org.eclipse.jpt.eclipselink.core.internal.context.persistence;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import org.eclipse.jpt.core.JpaProject;
@@ -390,7 +391,7 @@ public abstract class EclipseLinkPersistenceUnitProperties extends AbstractModel
 			return null;
 		}
 		if (value.getClass().isEnum()) {
-			return (String) ClassTools.staticFieldValue(value.getClass(), value.toString().toUpperCase());
+			return (String) ClassTools.staticFieldValue(value.getClass(), value.toString().toUpperCase(Locale.ENGLISH));
 		}
 		return value.toString();
 	}
