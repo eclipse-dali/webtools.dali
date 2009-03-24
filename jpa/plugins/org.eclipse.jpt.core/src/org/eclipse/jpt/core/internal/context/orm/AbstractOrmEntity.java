@@ -1195,7 +1195,11 @@ public abstract class AbstractOrmEntity
 	public Iterator<OrmQuery> queries() {
 		return new CompositeIterator<OrmQuery>(this.namedQueries(), this.namedNativeQueries());
 	}
-
+	
+	public char getIdClassEnclosingTypeSeparator() {
+		return '$';
+	}
+	
 	public String getIdClass() {
 		return this.idClass;
 	}

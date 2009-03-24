@@ -76,7 +76,10 @@ public class GenericClassRef
 	}
 
 	protected void initializeJavaPersistentType() {
-		JavaResourcePersistentType jrpt = this.getJpaProject().getJavaResourcePersistentType(this.className);
+		if (this.className == null) {
+			return;
+		}
+		JavaResourcePersistentType jrpt = this.getJpaProject().getJavaResourcePersistentType(this.className.replace('$', '.'));
 		if (jrpt != null) {
 			this.javaPersistentType = this.buildJavaPersistentType(jrpt);
 		}
@@ -194,7 +197,8 @@ public class GenericClassRef
 	}
 
 	protected void updateJavaPersistentType() {
-		JavaResourcePersistentType jrpt = this.getJpaProject().getJavaResourcePersistentType(this.className);
+		JavaResourcePersistentType jrpt = 
+			this.getJpaProject().getJavaResourcePersistentType(this.className == null ? null : this.className.replace('$', '.'));
 		if (jrpt == null) {
 			if (this.javaPersistentType != null) {
 				this.javaPersistentType.dispose();

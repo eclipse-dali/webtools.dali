@@ -33,6 +33,10 @@ public class EclipseLinkOrmCustomizer extends AbstractXmlContextNode
 		this.specifiedCustomizerClass = getResourceCustomizerClass();
 	}
 	
+	public char getCustomizerClassEnclosingTypeSeparator() {
+		return '$';
+	}
+	
 	public String getCustomizerClass() {
 		return this.specifiedCustomizerClass == null ? this.defaultCustomizerClass : this.specifiedCustomizerClass;
 	}

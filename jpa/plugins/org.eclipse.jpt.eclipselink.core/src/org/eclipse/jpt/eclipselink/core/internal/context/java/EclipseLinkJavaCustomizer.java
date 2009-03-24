@@ -33,6 +33,10 @@ public class EclipseLinkJavaCustomizer extends AbstractJavaJpaContextNode implem
 		super(parent);
 	}
 	
+	public char getCustomizerClassEnclosingTypeSeparator() {
+		return '.';
+	}
+	
 	@Override
 	protected EclipseLinkJpaFactory getJpaFactory() {
 		return (EclipseLinkJpaFactory) super.getJpaFactory();

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -28,5 +28,11 @@ public interface IdClassHolder
 	void setIdClass(String value);
 	
 		String ID_CLASS_PROPERTY = "idClass"; //$NON-NLS-1$
+	
+	/**
+	 * Return the char to be used for browsing or creating the id class IType.
+	 * @see org.eclipse.jdt.core.IType#getFullyQualifiedName(char)
+	 */
+	char getIdClassEnclosingTypeSeparator();
 	
 }

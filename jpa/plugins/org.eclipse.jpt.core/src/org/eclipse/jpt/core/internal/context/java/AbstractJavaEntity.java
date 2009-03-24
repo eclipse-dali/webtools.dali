@@ -1244,6 +1244,10 @@ public abstract class AbstractJavaEntity
 	public Iterator<JavaQuery> queries() {
 		return new CompositeIterator<JavaQuery>(this.namedNativeQueries(), this.namedQueries());
 	}
+	
+	public char getIdClassEnclosingTypeSeparator() {
+		return '.';
+	}
 
 	public String getIdClass() {
 		return this.idClass;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -98,7 +98,7 @@ public class PersistenceUnitClassesComposite extends Pane<PersistenceUnit>
 		IType type = chooseType();
 
 		if (type != null) {
-			String className = type.getFullyQualifiedName('.');
+			String className = type.getFullyQualifiedName('$');
 			if(classRefExists(className)) {
 				return;
 			}
@@ -322,7 +322,7 @@ public class PersistenceUnitClassesComposite extends Pane<PersistenceUnit>
 
 		if (className != null) {
 			try {
-				return getSubject().getJpaProject().getJavaProject().findType(className);
+				return getSubject().getJpaProject().getJavaProject().findType(className.replace('$', '.'));
 			}
 			catch (JavaModelException e) {
 				JptUiPlugin.log(e);

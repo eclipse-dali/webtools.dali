@@ -40,7 +40,11 @@ public abstract class EclipseLinkOrmConverter<T extends XmlNamedConverter>
 	protected T getXmlResource() {
 		return this.resourceConverter;
 	}
-
+	
+	public char getEnclosingTypeSeparator() {
+		return '$';
+	}
+	
 	// **************** name ***************************************************
 	
 	public String getName() {

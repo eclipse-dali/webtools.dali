@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -98,6 +98,11 @@ public class IdClassComposite extends Pane<IdClassHolder>
 			@Override
 			protected void setClassName(String className) {
 				getSubject().setIdClass(className);
+			}
+			
+			@Override
+			protected char getEnclosingTypeSeparator() {
+				return getSubject().getIdClassEnclosingTypeSeparator();
 			}
 		};
 	}

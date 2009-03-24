@@ -73,6 +73,10 @@ public abstract class AbstractOrmRelationshipMapping<T extends XmlRelationshipMa
 	
 	// **************** target entity ******************************************
 
+	public char getTargetEntityEnclosingTypeSeparator() {
+		return '$';
+	}
+	
 	public String getTargetEntity() {
 		return (this.specifiedTargetEntity != null) ? this.specifiedTargetEntity : this.defaultTargetEntity;
 	}

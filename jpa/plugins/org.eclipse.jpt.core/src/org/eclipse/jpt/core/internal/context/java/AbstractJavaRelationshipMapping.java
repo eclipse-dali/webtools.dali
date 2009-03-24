@@ -84,6 +84,10 @@ public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMapp
 	
 	// **************** target entity ******************************************
 
+	public char getTargetEntityEnclosingTypeSeparator() {
+		return '.';
+	}
+	
 	public String getTargetEntity() {
 		return (this.specifiedTargetEntity != null) ? this.specifiedTargetEntity : this.defaultTargetEntity;
 	}

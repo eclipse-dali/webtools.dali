@@ -535,15 +535,20 @@ public abstract class AbstractOrmPersistentType
 	}
 
 	protected JavaResourcePersistentType getJavaResourcePersistentType() {
+		String className = getMapping().getClass_();
+		if (className == null) {
+			return null;
+		}
+		className = className.replace('$', '.');
 		// try to resolve by only the locally specified name
-		JavaResourcePersistentType jrpt = this.getJpaProject().getJavaResourcePersistentType(getMapping().getClass_());
+		JavaResourcePersistentType jrpt = this.getJpaProject().getJavaResourcePersistentType(className);
 		if (jrpt != null) {
 			return jrpt;
 		}
 
 		// try to resolve by prepending the global package name
 		String packageName = this.getDefaultPackage();
-		return this.getJpaProject().getJavaResourcePersistentType(packageName + '.' + getMapping().getClass_());
+		return this.getJpaProject().getJavaResourcePersistentType(packageName + '.' + className);
 	}
 	
 	protected JavaPersistentType buildJavaPersistentType(JavaResourcePersistentType jrpt) {

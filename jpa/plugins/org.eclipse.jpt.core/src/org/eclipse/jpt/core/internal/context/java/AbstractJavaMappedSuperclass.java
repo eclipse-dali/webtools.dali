@@ -58,6 +58,10 @@ public abstract class AbstractJavaMappedSuperclass extends AbstractJavaTypeMappi
 			JPA.POST_LOAD);
 	}
 	
+	public char getIdClassEnclosingTypeSeparator() {
+		return '.';
+	}
+	
 	public String getIdClass() {
 		return this.idClass;
 	}

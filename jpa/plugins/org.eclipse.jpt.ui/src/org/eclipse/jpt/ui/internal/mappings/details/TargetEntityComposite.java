@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -155,7 +155,7 @@ public class TargetEntityComposite extends FormPane<RelationshipMapping>
 		if (targetEntity != null) {
 
 			try {
-				IType type = getSubject().getJpaProject().getJavaProject().findType(targetEntity);
+				IType type = getSubject().getJpaProject().getJavaProject().findType(targetEntity.replace('$', '.'));
 
 				if (type != null) {
 					IJavaElement javaElement = type.getParent();
@@ -232,7 +232,7 @@ public class TargetEntityComposite extends FormPane<RelationshipMapping>
 
 		if (dialog.open() == Window.OK) {
 			IType type = (IType) dialog.getResult()[0];
-			this.combo.setText(type.getFullyQualifiedName('.'));
+			this.combo.setText(type.getFullyQualifiedName(getSubject().getTargetEntityEnclosingTypeSeparator()));
 		}
 	}
 

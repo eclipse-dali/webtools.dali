@@ -55,6 +55,10 @@ public abstract class AbstractOrmMappedSuperclass extends AbstractOrmTypeMapping
 	}
 
 	
+	public char getIdClassEnclosingTypeSeparator() {
+		return '$';
+	}
+	
 	public String getIdClass() {
 		return this.idClass;
 	}

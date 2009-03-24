@@ -44,6 +44,9 @@ public abstract class EclipseLinkJavaConverter extends AbstractJavaJpaContextNod
 		return (EclipseLinkPersistenceUnit) super.getPersistenceUnit();
 	}
 	
+	public char getEnclosingTypeSeparator() {
+		return '.';
+	}
 	
 	// **************** name ***************************************************
 	

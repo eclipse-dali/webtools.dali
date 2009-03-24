@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -130,7 +130,7 @@ public abstract class ClassChooserPane<T extends Model> extends ChooserPane<T>
 		}
 		IType type = null;
 		try {
-			type = getJpaProject().getJavaProject().findType(getClassName());
+			type = getJpaProject().getJavaProject().findType(getClassName().replace('$', '.'));
 		}
 		catch (JavaModelException e) {
 			JptUiPlugin.log(e);
@@ -156,12 +156,16 @@ public abstract class ClassChooserPane<T extends Model> extends ChooserPane<T>
 		dialog.create();
 		int dResult = dialog.open();
 		if (dResult == Window.OK) {
-			String className = (newClassWizardPage.getCreatedType()).getFullyQualifiedName('.');
+			String className = (newClassWizardPage.getCreatedType()).getFullyQualifiedName(getEnclosingTypeSeparator());
 			setClassName(className);
 		}
 	}
 	
 	protected abstract void setClassName(String className);
+	
+	protected char getEnclosingTypeSeparator() {
+		return '$';
+	}
 	
 	/**
 	 * Override this to set a superclass in the New Class wizard.  If no class is chosen, 
@@ -354,7 +358,7 @@ public abstract class ClassChooserPane<T extends Model> extends ChooserPane<T>
 		IType type = this.chooseType();
 
 		if (type != null) {
-			String className = type.getFullyQualifiedName('.');
+			String className = type.getFullyQualifiedName(getEnclosingTypeSeparator());
 			setClassName(className);
 		}
 	}
