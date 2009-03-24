@@ -57,6 +57,21 @@ public class JavaMappedByJoiningStrategy
 		return getParent().getRelationshipMapping();
 	}
 	
+	public boolean relationshipIsOwnedBy(RelationshipMapping otherMapping) {
+		String thisEntity = 
+			(getRelationshipMapping().getEntity()) == null ?
+				null : getRelationshipMapping().getEntity().getName();
+		String targetEntity = 
+			(getRelationshipMapping().getResolvedTargetEntity() == null) ?
+				null : getRelationshipMapping().getResolvedTargetEntity().getName();
+		return StringTools.stringsAreEqual(
+				thisEntity,
+				targetEntity)
+			&& StringTools.stringsAreEqual(
+				getMappedByAttribute(), 
+				otherMapping.getName());
+	}
+	
 	public String getMappedByAttribute() {
 		return this.mappedByAttribute;
 	}

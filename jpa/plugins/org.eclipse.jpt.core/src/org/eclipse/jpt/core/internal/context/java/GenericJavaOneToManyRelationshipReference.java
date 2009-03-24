@@ -21,7 +21,6 @@ import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
 import org.eclipse.jpt.core.context.java.JavaOneToManyRelationshipReference;
 import org.eclipse.jpt.core.resource.java.OneToManyAnnotation;
 import org.eclipse.jpt.utility.Filter;
-import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -55,17 +54,7 @@ public class GenericJavaOneToManyRelationshipReference
 	}
 	
 	public boolean isOwnedBy(RelationshipMapping mapping) {
-		// true if the target entity matches the mapping's entity
-		// and this mappedByJoiningStrategy value matches the mapping's name
-		String targetEntity = 
-			(getRelationshipMapping().getResolvedTargetEntity() == null) ?
-				null : getRelationshipMapping().getResolvedTargetEntity().getName();
-		return StringTools.stringsAreEqual(
-				targetEntity,
-				mapping.getEntity().getName())
-			&& StringTools.stringsAreEqual(
-				this.getMappedByJoiningStrategy().getMappedByAttribute(), 
-				mapping.getPersistentAttribute().getName());
+		return this.mappedByJoiningStrategy.relationshipIsOwnedBy(mapping);
 	}
 	
 	@Override

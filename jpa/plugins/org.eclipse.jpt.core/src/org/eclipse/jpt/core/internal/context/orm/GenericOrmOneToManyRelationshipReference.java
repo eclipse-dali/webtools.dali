@@ -22,7 +22,6 @@ import org.eclipse.jpt.core.context.orm.OrmOneToManyRelationshipReference;
 import org.eclipse.jpt.core.context.orm.OrmOwnableRelationshipReference;
 import org.eclipse.jpt.core.context.orm.OrmRelationshipReference;
 import org.eclipse.jpt.core.resource.orm.XmlOneToMany;
-import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -91,17 +90,7 @@ public class GenericOrmOneToManyRelationshipReference
 	}
 	
 	public boolean isOwnedBy(RelationshipMapping mapping) {
-		// true if the target entity matches the mapping's entity
-		// and this mappedByJoiningStrategy value matches the mapping's name
-		String targetEntity = 
-			(getRelationshipMapping().getResolvedTargetEntity() == null) ?
-				null : getRelationshipMapping().getResolvedTargetEntity().getName();
-		return StringTools.stringsAreEqual(
-				targetEntity,
-				mapping.getEntity().getName())
-			&& StringTools.stringsAreEqual(
-				this.getMappedByJoiningStrategy().getMappedByAttribute(), 
-				mapping.getPersistentAttribute().getName());
+		return this.mappedByJoiningStrategy.relationshipIsOwnedBy(mapping);
 	}
 	
 	@Override

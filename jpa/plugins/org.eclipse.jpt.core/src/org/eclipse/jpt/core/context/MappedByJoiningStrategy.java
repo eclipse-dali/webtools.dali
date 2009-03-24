@@ -53,4 +53,10 @@ public interface MappedByJoiningStrategy
 	 * Return an iterator of possible attribute names that this object might use
 	 */
 	Iterator<String> candidateMappedByAttributeNames();
+	
+	/**
+	 * Return whether this strategy's relationship is owned by the given other
+	 * relationship mapping
+	 */
+	boolean relationshipIsOwnedBy(RelationshipMapping otherMapping);
 }

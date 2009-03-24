@@ -87,8 +87,8 @@ public class EclipseLinkJavaOneToManyRelationshipReference
 	
 	@Override
 	public void setJoinTableJoiningStrategy() {
-		this.joinColumnJoiningStrategy.removeStrategy();
 		super.setJoinTableJoiningStrategy();
+		this.joinColumnJoiningStrategy.removeStrategy();
 	}
 	
 	@Override
