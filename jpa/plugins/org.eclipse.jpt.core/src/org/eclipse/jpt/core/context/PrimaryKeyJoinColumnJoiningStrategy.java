@@ -28,7 +28,7 @@ import java.util.ListIterator;
  * @see {@link RelationshipMapping}
  * @see {@link PrimaryKeyJoinColumnEnabledRelationshipReference}
  */
-public interface PrimaryKeyJoinColumnJoiningStrategy 
+public interface PrimaryKeyJoinColumnJoiningStrategy
 	extends JoiningStrategy
 {
 	/**
