@@ -9,8 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.resource.java;
 
-import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jpt.core.resource.jar.JarResourcePersistentMember;
 import org.eclipse.jpt.core.utility.jdt.Member;
 
 /**
