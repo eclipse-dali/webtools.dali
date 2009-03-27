@@ -56,8 +56,8 @@ import org.eclipse.wst.common.project.facet.core.events.IProjectFacetActionEvent
  * - Project closed
  *     facet PROJECT_MODIFIED
  * 
- * - Pre-existing project imported (created and opened)
- *     resource POST_CHANGE -> PROJECT -> CHANGED -> OPEN
+ * - Pre-existing project imported from directory or archive (created and opened)
+ *     resource POST_CHANGE -> PROJECT -> ADDED -> OPEN
  * - Project deleted
  *     resource PRE_DELETE
  * 
