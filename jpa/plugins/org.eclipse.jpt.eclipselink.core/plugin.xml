@@ -38,13 +38,13 @@
 		<jpaPlatform
 			id="org.eclipse.eclipselink.platform"
             factoryClass="org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaPlatformFactory"
-			label="%ECLIPSELINK_PLATFORM">
+			label="%ECLIPSELINK1_0_x_PLATFORM">
 		</jpaPlatform>
 	    
 	    <jpaPlatform
 	        id="eclipselink1_1"
 	        factoryClass="org.eclipse.jpt.eclipselink.core.internal.EclipseLink1_1JpaPlatformFactory"
-	        label="%ECLIPSELINK1_1_PLATFORM">
+	        label="%ECLIPSELINK1_1_x_PLATFORM">
 	    </jpaPlatform>
 		
 	</extension>
