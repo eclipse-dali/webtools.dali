@@ -16,6 +16,7 @@ import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
@@ -124,7 +125,9 @@ public class JpaModelManager {
 		debug("*** START JPA model manager ***"); //$NON-NLS-1$
 		try {
 			this.jpaModel = new GenericJpaModel();
-			ResourcesPlugin.getWorkspace().addResourceChangeListener(this.resourceChangeListener);
+			ResourcesPlugin.getWorkspace().addResourceChangeListener(
+				this.resourceChangeListener, 
+				IResourceChangeEvent.PRE_DELETE | IResourceChangeEvent.POST_CHANGE | IResourceChangeEvent.POST_BUILD);
 			FacetedProjectFramework.addListener(this.facetedProjectListener, IFacetedProjectEvent.Type.values());
 			JavaCore.addElementChangedListener(this.javaElementChangeListener);
 		} catch (RuntimeException ex) {
@@ -213,22 +216,31 @@ public class JpaModelManager {
 	 *   - project open/rename
 	 */
 	/* private */ void resourceChanged(IResourceChangeEvent event) {
+		// build events can have the workspace or project as source
+		if (event.getType() == IResourceChangeEvent.POST_BUILD) {
+			this.resourcePostBuild(event);
+			return;
+		}
+		
 		if (! (event.getSource() instanceof IWorkspace)) {
 			return;  // this probably shouldn't happen...
 		}
-		switch (event.getType()){
+		
+		switch (event.getType()) {
 			case IResourceChangeEvent.PRE_DELETE :  // project-only event
 				this.resourcePreDelete(event);
 				break;
 			case IResourceChangeEvent.POST_CHANGE :
 				this.resourcePostChange(event);
 				break;
-			case IResourceChangeEvent.PRE_CLOSE :  // project-only event
-			case IResourceChangeEvent.PRE_BUILD :
-			case IResourceChangeEvent.POST_BUILD :
+			// we do not listen to these event types
+			// case IResourceChangeEvent.PRE_CLOSE :  // project-only event
+			// case IResourceChangeEvent.PRE_BUILD :
 			default :
 				break;
 		}
+		
+		
 	}
 
 	/**
@@ -339,8 +351,54 @@ public class JpaModelManager {
 			this.jpaModel.checkForTransition(project);
 		}
 	}
-
-
+	
+	/**
+	 * A post build event has occurred.
+	 * Check for whether the build was a "clean" build and trigger project update.
+	 */
+	private void resourcePostBuild(IResourceChangeEvent event) {
+		debug("Resource POST_BUILD"); //$NON-NLS-1$
+		if (event.getBuildKind() == IncrementalProjectBuilder.CLEAN_BUILD) {
+			this.resourcePostClean(event.getDelta());
+		}
+	}
+	
+	private void resourcePostClean(IResourceDelta delta) {
+		IResource resource = delta.getResource();
+		switch (resource.getType()) {
+			case IResource.ROOT :
+				this.resourcePostCleanChildren(delta);
+				break;
+			case IResource.PROJECT :
+				this.projectPostClean((IProject) resource);
+				break;
+			case IResource.FILE :
+			case IResource.FOLDER :
+			default :
+				break;
+		}
+	}
+	
+	private void resourcePostCleanChildren(IResourceDelta delta) {
+		for (IResourceDelta child : delta.getAffectedChildren()) {
+			this.resourcePostClean(child);  // recurse
+		}
+	}
+	
+	private void projectPostClean(IProject project) {
+		JpaProject jpaProject = null;
+		try {
+			jpaProject = getJpaProject(project);
+		}
+		catch (CoreException ce) {
+			// nothing to do, we won't be able to update anyway
+		}
+		if (jpaProject != null) {
+			rebuildJpaProject(project);
+		}
+	}
+	
+	
 	// ********** faceted project changed **********
 
 	/**
