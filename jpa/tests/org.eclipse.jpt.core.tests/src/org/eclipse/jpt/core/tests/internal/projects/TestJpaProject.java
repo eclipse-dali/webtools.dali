@@ -26,6 +26,7 @@ public class TestJpaProject extends TestJavaProject {
 	private final JpaProject jpaProject;
 
 	public static final String JPA_JAR_NAME_SYSTEM_PROPERTY = "org.eclipse.jpt.jpa.jar";
+	public static final String ECLIPSELINK_JAR_NAME_SYSTEM_PROPERTY = "org.eclipse.jpt.eclipselink.jar";
 
 
 	// ********** builders **********
@@ -61,11 +62,19 @@ public class TestJpaProject extends TestJavaProject {
 	}
 
 	public static String jpaJarName() {
-		String jarName = System.getProperty(JPA_JAR_NAME_SYSTEM_PROPERTY);
-		if (jarName == null) {
-			throw new RuntimeException("missing Java system property: \"" + JPA_JAR_NAME_SYSTEM_PROPERTY + "\"");
+		return getSystemProperty(JPA_JAR_NAME_SYSTEM_PROPERTY);
+	}
+
+	public static String eclipseLinkJarName() {
+		return getSystemProperty(ECLIPSELINK_JAR_NAME_SYSTEM_PROPERTY);
+	}
+
+	private static String getSystemProperty(String propertyName) {
+		String propertyValue = System.getProperty(propertyName);
+		if(propertyValue == null) {
+			throw new RuntimeException("missing Java system property: \"" + propertyName + "\"");
 		}
-		return jarName;
+		return propertyValue;
 	}
 
 

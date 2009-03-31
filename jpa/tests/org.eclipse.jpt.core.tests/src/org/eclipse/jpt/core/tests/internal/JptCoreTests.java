@@ -27,6 +27,7 @@ import org.eclipse.jpt.core.tests.internal.utility.jdt.JptCoreUtilityJdtTests;
 @SuppressWarnings("nls")
 public class JptCoreTests {
 	private static final String JPA_JAR_PROPERTY = TestJpaProject.JPA_JAR_NAME_SYSTEM_PROPERTY;
+	private static final String ECLIPSELINK_JAR_PROPERTY = TestJpaProject.ECLIPSELINK_JAR_NAME_SYSTEM_PROPERTY;
 
 	public static Test suite() {
 		return suite(false);
@@ -44,26 +45,43 @@ public class JptCoreTests {
 			suite.addTest(JptCoreContextModelTests.suite(all));
 		}
 		else {
-			String message = ( ! jpaJarPropertyExists()) ?
-				"missing Java system property: \"" + JPA_JAR_PROPERTY + "\"" :
-				"missing JPA jar file: \"" + getJpaJarProperty() + "\"";
+			String message = errorMessageMissingJar(JPA_JAR_PROPERTY);
+			suite.addTest(TestSuite.warning(message));
+		}
+		
+		// Temporary jar testing code
+		if( ! (eclipselinkJarPropertyExists() && eclipselinkJarFileExists())) {
+			String message = errorMessageMissingJar(ECLIPSELINK_JAR_PROPERTY);
 			suite.addTest(TestSuite.warning(message));
 		}
 		return suite;
 	}
 	
 	public static boolean jpaJarPropertyExists() {
-		String jpaJarName = getJpaJarProperty();
-		return jpaJarName != null;
+		return getSystemProperty(JPA_JAR_PROPERTY) != null;
 	}
 	
 	public static boolean jpaJarFileExists() {
-		File file = new File(getJpaJarProperty());
-		return file.exists();
+		return (new File(getSystemProperty(JPA_JAR_PROPERTY))).exists();
 	}
 	
-	public static String getJpaJarProperty() {
-		return System.getProperty(JPA_JAR_PROPERTY);
+	public static boolean eclipselinkJarPropertyExists() {
+		return getSystemProperty(ECLIPSELINK_JAR_PROPERTY) != null;
+	}
+	
+	public static boolean eclipselinkJarFileExists() {
+		return (new File(getSystemProperty(ECLIPSELINK_JAR_PROPERTY))).exists();
+	}
+	
+	private static String errorMessageMissingJar(String propertyName) {
+
+		return (getSystemProperty(propertyName) == null) ?
+		"missing Java system property: \"" + propertyName + "\"" :
+		"missing JAR file: \"" + getSystemProperty(propertyName) + "\"";
+	}
+	
+	private static String getSystemProperty(String propertyName) {
+		return System.getProperty(propertyName);
 	}
 	
 	private JptCoreTests() {
