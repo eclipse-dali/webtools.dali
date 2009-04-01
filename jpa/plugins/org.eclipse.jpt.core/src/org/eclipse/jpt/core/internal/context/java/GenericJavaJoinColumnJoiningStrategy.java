@@ -18,11 +18,11 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.JoinColumn;
-import org.eclipse.jpt.core.context.JoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaJoinColumnEnabledRelationshipReference;
+import org.eclipse.jpt.core.context.java.JavaJoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.context.java.JavaRelationshipMapping;
 import org.eclipse.jpt.core.internal.resource.java.NullJoinColumn;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
@@ -41,8 +41,9 @@ import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class JavaJoinColumnJoiningStrategy extends AbstractJavaJpaContextNode
-	implements JoinColumnJoiningStrategy
+public class GenericJavaJoinColumnJoiningStrategy 
+	extends AbstractJavaJpaContextNode
+	implements JavaJoinColumnJoiningStrategy
 {
 	protected JavaResourcePersistentAttribute resourcePersistentAttribute;
 	
@@ -51,7 +52,7 @@ public class JavaJoinColumnJoiningStrategy extends AbstractJavaJpaContextNode
 	protected final List<JavaJoinColumn> specifiedJoinColumns;
 	
 	
-	public JavaJoinColumnJoiningStrategy(JavaJoinColumnEnabledRelationshipReference parent) {
+	public GenericJavaJoinColumnJoiningStrategy(JavaJoinColumnEnabledRelationshipReference parent) {
 		super(parent);
 		this.specifiedJoinColumns = new ArrayList<JavaJoinColumn>();
 	}
@@ -405,7 +406,7 @@ public class JavaJoinColumnJoiningStrategy extends AbstractJavaJpaContextNode
 		}
 		
 		public RelationshipMapping getRelationshipMapping() {
-			return JavaJoinColumnJoiningStrategy.this.getRelationshipMapping();
+			return GenericJavaJoinColumnJoiningStrategy.this.getRelationshipMapping();
 		}
 		
 		public boolean tableNameIsInvalid(String tableName) {
@@ -433,7 +434,7 @@ public class JavaJoinColumnJoiningStrategy extends AbstractJavaJpaContextNode
 		}
 		
 		public boolean isVirtual(BaseJoinColumn joinColumn) {
-			return JavaJoinColumnJoiningStrategy.this.defaultJoinColumn == joinColumn;
+			return GenericJavaJoinColumnJoiningStrategy.this.defaultJoinColumn == joinColumn;
 		}
 		
 		public String getDefaultColumnName() {
@@ -442,11 +443,11 @@ public class JavaJoinColumnJoiningStrategy extends AbstractJavaJpaContextNode
 		}
 		
 		public TextRange getValidationTextRange(CompilationUnit astRoot) {
-			return JavaJoinColumnJoiningStrategy.this.getValidationTextRange(astRoot);
+			return GenericJavaJoinColumnJoiningStrategy.this.getValidationTextRange(astRoot);
 		}
 		
 		public int joinColumnsSize() {
-			return JavaJoinColumnJoiningStrategy.this.joinColumnsSize();
+			return GenericJavaJoinColumnJoiningStrategy.this.joinColumnsSize();
 		}
 	}
 }

@@ -11,7 +11,6 @@
 package org.eclipse.jpt.core.context.orm;
 
 import org.eclipse.jpt.core.context.JoinTableEnabledRelationshipReference;
-import org.eclipse.jpt.core.internal.context.orm.OrmJoinTableJoiningStrategy;
 import org.eclipse.jpt.core.resource.orm.XmlJoinTableMapping;
 
 public interface OrmJoinTableEnabledRelationshipReference

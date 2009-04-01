@@ -18,12 +18,12 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
-import org.eclipse.jpt.core.context.PrimaryKeyJoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaPrimaryKeyJoinColumnEnabledRelationshipReference;
+import org.eclipse.jpt.core.context.java.JavaPrimaryKeyJoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.context.java.JavaRelationshipMapping;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.NestableAnnotation;
@@ -35,16 +35,16 @@ import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
-public class JavaPrimaryKeyJoinColumnJoiningStrategy
+public class GenericJavaPrimaryKeyJoinColumnJoiningStrategy
 	extends AbstractJavaJpaContextNode
-	implements PrimaryKeyJoinColumnJoiningStrategy
+	implements JavaPrimaryKeyJoinColumnJoiningStrategy
 {
 	protected JavaResourcePersistentAttribute resourcePersistentAttribute;
 	
 	protected final List<JavaPrimaryKeyJoinColumn> primaryKeyJoinColumns;
 	
 	
-	public JavaPrimaryKeyJoinColumnJoiningStrategy(
+	public GenericJavaPrimaryKeyJoinColumnJoiningStrategy(
 			JavaPrimaryKeyJoinColumnEnabledRelationshipReference parent) {
 		super(parent);
 		this.primaryKeyJoinColumns = new ArrayList<JavaPrimaryKeyJoinColumn>();
@@ -156,7 +156,7 @@ public class JavaPrimaryKeyJoinColumnJoiningStrategy
 	
 	// **************** resource -> context ************************************
 	
-	protected void initialize() {
+	public void initialize() {
 		this.resourcePersistentAttribute = 
 			getRelationshipReference().getRelationshipMapping().
 				getPersistentAttribute().getResourcePersistentAttribute();
@@ -176,7 +176,7 @@ public class JavaPrimaryKeyJoinColumnJoiningStrategy
 		}
 	}
 	
-	protected void update() {
+	public void update() {
 		this.resourcePersistentAttribute = 
 			getRelationshipReference().getRelationshipMapping().
 				getPersistentAttribute().getResourcePersistentAttribute();
@@ -272,7 +272,7 @@ public class JavaPrimaryKeyJoinColumnJoiningStrategy
 		}
 		
 		public RelationshipMapping getRelationshipMapping() {
-			return JavaPrimaryKeyJoinColumnJoiningStrategy.this.getRelationshipMapping();
+			return GenericJavaPrimaryKeyJoinColumnJoiningStrategy.this.getRelationshipMapping();
 		}
 		
 		public boolean tableNameIsInvalid(String tableName) {
@@ -309,11 +309,11 @@ public class JavaPrimaryKeyJoinColumnJoiningStrategy
 		}
 		
 		public TextRange getValidationTextRange(CompilationUnit astRoot) {
-			return JavaPrimaryKeyJoinColumnJoiningStrategy.this.getValidationTextRange(astRoot);
+			return GenericJavaPrimaryKeyJoinColumnJoiningStrategy.this.getValidationTextRange(astRoot);
 		}
 		
 		public int joinColumnsSize() {
-			return JavaPrimaryKeyJoinColumnJoiningStrategy.this.primaryKeyJoinColumnsSize();
+			return GenericJavaPrimaryKeyJoinColumnJoiningStrategy.this.primaryKeyJoinColumnsSize();
 		}
 	}
 }

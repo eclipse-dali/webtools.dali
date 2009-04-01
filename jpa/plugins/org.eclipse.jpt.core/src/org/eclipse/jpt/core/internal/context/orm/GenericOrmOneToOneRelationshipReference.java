@@ -18,10 +18,13 @@ import org.eclipse.jpt.core.context.JoiningStrategy;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumnEnabledRelationshipReference;
+import org.eclipse.jpt.core.context.orm.OrmJoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.context.orm.OrmJoinTableEnabledRelationshipReference;
+import org.eclipse.jpt.core.context.orm.OrmMappedByJoiningStrategy;
 import org.eclipse.jpt.core.context.orm.OrmOneToOneMapping;
 import org.eclipse.jpt.core.context.orm.OrmOneToOneRelationshipReference;
 import org.eclipse.jpt.core.context.orm.OrmOwnableRelationshipReference;
+import org.eclipse.jpt.core.context.orm.OrmPrimaryKeyJoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.context.orm.OrmRelationshipReference;
 import org.eclipse.jpt.core.resource.orm.XmlOneToOne;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -47,16 +50,25 @@ public class GenericOrmOneToOneRelationshipReference
 	
 	@Override
 	protected void initializeJoiningStrategies() {
-		this.mappedByJoiningStrategy = 
-			new OrmMappedByJoiningStrategy(this, getResourceMapping());
-		this.primaryKeyJoinColumnJoiningStrategy =
-			new OrmPrimaryKeyJoinColumnJoiningStrategy(this, getResourceMapping());
+		this.mappedByJoiningStrategy = buildMappedByJoiningStrategy();
+		this.primaryKeyJoinColumnJoiningStrategy = buildPrimaryKeyJoinColumnJoiningStrategy();
 		
 		// initialize join columns last, as the existence of a default join 
 		// column is dependent on the other mechanisms (mappedBy, join table)
 		// not being specified
-		this.joinColumnJoiningStrategy =
-			new OrmJoinColumnJoiningStrategy(this, getResourceMapping());
+		this.joinColumnJoiningStrategy = buildJoinColumnJoiningStrategy();
+	}
+	
+	protected OrmMappedByJoiningStrategy buildMappedByJoiningStrategy() {
+		return new GenericOrmMappedByJoiningStrategy(this, getResourceMapping());
+	}
+	
+	protected OrmJoinColumnJoiningStrategy buildJoinColumnJoiningStrategy() {
+		return new GenericOrmJoinColumnJoiningStrategy(this, getResourceMapping());
+	}
+	
+	protected OrmPrimaryKeyJoinColumnJoiningStrategy buildPrimaryKeyJoinColumnJoiningStrategy() {
+		return new GenericOrmPrimaryKeyJoinColumnJoiningStrategy(this, getResourceMapping());
 	}
 	
 	public void initializeOn(OrmRelationshipReference newRelationshipReference) {

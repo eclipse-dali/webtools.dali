@@ -11,9 +11,9 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.List;
-import org.eclipse.jpt.core.context.JoinTableJoiningStrategy;
 import org.eclipse.jpt.core.context.orm.OrmJoinTable;
 import org.eclipse.jpt.core.context.orm.OrmJoinTableEnabledRelationshipReference;
+import org.eclipse.jpt.core.context.orm.OrmJoinTableJoiningStrategy;
 import org.eclipse.jpt.core.context.orm.OrmRelationshipMapping;
 import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
@@ -23,15 +23,16 @@ import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class OrmJoinTableJoiningStrategy extends AbstractXmlContextNode
-	implements JoinTableJoiningStrategy
+public class GenericOrmJoinTableJoiningStrategy 
+	extends AbstractXmlContextNode
+	implements OrmJoinTableJoiningStrategy
 {
 	protected XmlJoinTableMapping resource;
 	
 	protected OrmJoinTable joinTable;
 	
 	
-	public OrmJoinTableJoiningStrategy(
+	public GenericOrmJoinTableJoiningStrategy(
 			OrmJoinTableEnabledRelationshipReference parent,
 			XmlJoinTableMapping resource) {
 		super(parent);

@@ -11,7 +11,6 @@
 package org.eclipse.jpt.core.context.java;
 
 import org.eclipse.jpt.core.context.OwnableRelationshipReference;
-import org.eclipse.jpt.core.internal.context.java.JavaMappedByJoiningStrategy;
 import org.eclipse.jpt.core.resource.java.OwnableRelationshipMappingAnnotation;
 
 /**

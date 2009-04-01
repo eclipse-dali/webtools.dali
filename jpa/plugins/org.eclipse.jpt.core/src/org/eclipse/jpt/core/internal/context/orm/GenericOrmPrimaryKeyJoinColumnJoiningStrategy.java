@@ -17,13 +17,13 @@ import java.util.ListIterator;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
-import org.eclipse.jpt.core.context.PrimaryKeyJoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumnEnabledRelationshipReference;
 import org.eclipse.jpt.core.context.orm.OrmPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmPrimaryKeyJoinColumnEnabledRelationshipReference;
+import org.eclipse.jpt.core.context.orm.OrmPrimaryKeyJoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.context.orm.OrmRelationshipMapping;
 import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
@@ -35,16 +35,16 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
-public class OrmPrimaryKeyJoinColumnJoiningStrategy
+public class GenericOrmPrimaryKeyJoinColumnJoiningStrategy
 	extends AbstractXmlContextNode
-	implements PrimaryKeyJoinColumnJoiningStrategy
+	implements OrmPrimaryKeyJoinColumnJoiningStrategy
 {
 	protected XmlOneToOne resource;
 	
 	protected final List<OrmPrimaryKeyJoinColumn> primaryKeyJoinColumns;
 	
 	
-	public OrmPrimaryKeyJoinColumnJoiningStrategy(
+	public GenericOrmPrimaryKeyJoinColumnJoiningStrategy(
 			OrmPrimaryKeyJoinColumnEnabledRelationshipReference parent,
 			XmlOneToOne resource) {
 		super(parent);
@@ -201,7 +201,7 @@ public class OrmPrimaryKeyJoinColumnJoiningStrategy
 		}
 		
 		public RelationshipMapping getRelationshipMapping() {
-			return OrmPrimaryKeyJoinColumnJoiningStrategy.this.getRelationshipMapping();
+			return GenericOrmPrimaryKeyJoinColumnJoiningStrategy.this.getRelationshipMapping();
 		}
 		
 		public boolean tableNameIsInvalid(String tableName) {
@@ -238,11 +238,11 @@ public class OrmPrimaryKeyJoinColumnJoiningStrategy
 		}
 
 		public int joinColumnsSize() {
-			return OrmPrimaryKeyJoinColumnJoiningStrategy.this.primaryKeyJoinColumnsSize();
+			return GenericOrmPrimaryKeyJoinColumnJoiningStrategy.this.primaryKeyJoinColumnsSize();
 		}
 		
 		public TextRange getValidationTextRange() {
-			return OrmPrimaryKeyJoinColumnJoiningStrategy.this.getValidationTextRange();
+			return GenericOrmPrimaryKeyJoinColumnJoiningStrategy.this.getValidationTextRange();
 		}
 	}
 }

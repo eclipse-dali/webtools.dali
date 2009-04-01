@@ -10,17 +10,22 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.context.java;
 
-import org.eclipse.jpt.core.context.JoinColumnEnabledRelationshipReference;
+import java.util.ListIterator;
+import org.eclipse.jpt.core.context.PrimaryKeyJoinColumnJoiningStrategy;
 
 /**
+ * The java representation of a {@link PrimaryKeyJoinColumnJoiningStrategy}
+ * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface JavaJoinColumnEnabledRelationshipReference
-	extends JavaRelationshipReference, JoinColumnEnabledRelationshipReference
+public interface JavaPrimaryKeyJoinColumnJoiningStrategy
+	extends JavaJoiningStrategy, PrimaryKeyJoinColumnJoiningStrategy
 {
-	JavaJoinColumnJoiningStrategy getJoinColumnJoiningStrategy();
+	public ListIterator<JavaPrimaryKeyJoinColumn> primaryKeyJoinColumns();
+	
+	public JavaPrimaryKeyJoinColumn addPrimaryKeyJoinColumn(int index);
 }

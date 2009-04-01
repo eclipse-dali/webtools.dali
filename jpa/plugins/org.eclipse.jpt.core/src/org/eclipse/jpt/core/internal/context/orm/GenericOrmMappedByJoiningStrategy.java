@@ -14,9 +14,9 @@ import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.Entity;
-import org.eclipse.jpt.core.context.MappedByJoiningStrategy;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.RelationshipMapping;
+import org.eclipse.jpt.core.context.orm.OrmMappedByJoiningStrategy;
 import org.eclipse.jpt.core.context.orm.OrmOwnableRelationshipReference;
 import org.eclipse.jpt.core.context.orm.OrmRelationshipMapping;
 import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
@@ -28,16 +28,16 @@ import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class OrmMappedByJoiningStrategy 
+public class GenericOrmMappedByJoiningStrategy 
 	extends AbstractXmlContextNode
-	implements MappedByJoiningStrategy
+	implements OrmMappedByJoiningStrategy
 {
 	protected XmlMappedByMapping resource;
 	
 	protected String mappedByAttribute;
 	
 	
-	public OrmMappedByJoiningStrategy(
+	public GenericOrmMappedByJoiningStrategy(
 			OrmOwnableRelationshipReference parent,
 			XmlMappedByMapping resource) {
 		super(parent);

@@ -10,7 +10,6 @@
 package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
 import java.util.ListIterator;
-
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.orm.OrmNamedNativeQuery;
 import org.eclipse.jpt.core.context.orm.OrmNamedQuery;

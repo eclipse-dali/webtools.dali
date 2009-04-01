@@ -15,6 +15,7 @@ import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.JoiningStrategy;
 import org.eclipse.jpt.core.context.RelationshipMapping;
+import org.eclipse.jpt.core.context.java.JavaJoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.context.java.JavaManyToOneMapping;
 import org.eclipse.jpt.core.context.java.JavaManyToOneRelationshipReference;
 import org.eclipse.jpt.utility.Filter;
@@ -30,9 +31,13 @@ public class GenericJavaManyToOneRelationshipReference
 	
 	public GenericJavaManyToOneRelationshipReference(JavaManyToOneMapping parent) {
 		super(parent);
-		this.joinColumnJoiningStrategy = new JavaJoinColumnJoiningStrategy(this);
+		this.joinColumnJoiningStrategy = buildJoinColumnJoiningStrategy();
 	}
 	
+	
+	protected JavaJoinColumnJoiningStrategy buildJoinColumnJoiningStrategy() {
+		return new GenericJavaJoinColumnJoiningStrategy(this);
+	}
 	
 	@Override
 	public JavaManyToOneMapping getRelationshipMapping() {

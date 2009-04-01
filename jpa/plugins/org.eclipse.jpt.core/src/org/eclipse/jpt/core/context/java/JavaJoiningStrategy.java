@@ -8,15 +8,16 @@
  *  Contributors: 
  *  	Oracle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.core.context.orm;
+package org.eclipse.jpt.core.context.java;
 
-import org.eclipse.jpt.core.context.OwnableRelationshipReference;
-import org.eclipse.jpt.core.resource.orm.XmlMappedByMapping;
+import org.eclipse.jpt.core.context.JoiningStrategy;
 
-public interface OrmOwnableRelationshipReference
-	extends OrmRelationshipReference, OwnableRelationshipReference
+public interface JavaJoiningStrategy
+	extends JavaJpaContextNode, JoiningStrategy
 {
-	XmlMappedByMapping getResourceMapping();
+	public JavaRelationshipReference getRelationshipReference();
 	
-	OrmMappedByJoiningStrategy getMappedByJoiningStrategy();
+	void initialize();
+	
+	void update();
 }

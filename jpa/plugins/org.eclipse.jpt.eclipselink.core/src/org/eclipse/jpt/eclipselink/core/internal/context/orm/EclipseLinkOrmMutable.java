@@ -9,10 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
-import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.Mutable;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.AbstractEclipseLinkJavaPersistentAttribute;

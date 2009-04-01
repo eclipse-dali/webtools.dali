@@ -22,6 +22,7 @@ import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmJoinTable;
+import org.eclipse.jpt.core.context.orm.OrmJoinTableJoiningStrategy;
 import org.eclipse.jpt.core.context.orm.OrmRelationshipMapping;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
@@ -70,7 +71,7 @@ public class GenericOrmJoinTable
 	}
 	
 	public OrmRelationshipMapping getRelationshipMapping() {
-		return getParent().getRelationshipMapping();
+		return getParent().getRelationshipReference().getRelationshipMapping();
 	}
 
 	public void initializeFrom(JoinTable oldJoinTable) {

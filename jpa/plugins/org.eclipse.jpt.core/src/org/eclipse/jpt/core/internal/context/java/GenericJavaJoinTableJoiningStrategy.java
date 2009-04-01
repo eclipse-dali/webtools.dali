@@ -3,9 +3,9 @@ package org.eclipse.jpt.core.internal.context.java;
 import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.context.JoinTableJoiningStrategy;
 import org.eclipse.jpt.core.context.java.JavaJoinTable;
 import org.eclipse.jpt.core.context.java.JavaJoinTableEnabledRelationshipReference;
+import org.eclipse.jpt.core.context.java.JavaJoinTableJoiningStrategy;
 import org.eclipse.jpt.core.context.java.JavaRelationshipMapping;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JoinTableAnnotation;
@@ -14,15 +14,16 @@ import org.eclipse.jpt.utility.Filter;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class JavaJoinTableJoiningStrategy extends AbstractJavaJpaContextNode
-	implements JoinTableJoiningStrategy
+public class GenericJavaJoinTableJoiningStrategy 
+	extends AbstractJavaJpaContextNode
+	implements JavaJoinTableJoiningStrategy
 {
 	protected JavaResourcePersistentAttribute resourcePersistentAttribute;
 	
 	protected JavaJoinTable joinTable;
 	
 	
-	public JavaJoinTableJoiningStrategy(JavaJoinTableEnabledRelationshipReference parent) {
+	public GenericJavaJoinTableJoiningStrategy(JavaJoinTableEnabledRelationshipReference parent) {
 		super(parent);
 	}
 	
@@ -80,7 +81,7 @@ public class JavaJoinTableJoiningStrategy extends AbstractJavaJpaContextNode
 	
 	// **************** resource => context ************************************
 
-	protected void initialize() {
+	public void initialize() {
 		this.resourcePersistentAttribute = 
 			getRelationshipReference().getRelationshipMapping().
 				getPersistentAttribute().getResourcePersistentAttribute();
@@ -90,7 +91,7 @@ public class JavaJoinTableJoiningStrategy extends AbstractJavaJpaContextNode
 		}
 	}
 	
-	protected void update() {
+	public void update() {
 		this.resourcePersistentAttribute = 
 			getRelationshipReference().getRelationshipMapping().
 				getPersistentAttribute().getResourcePersistentAttribute();

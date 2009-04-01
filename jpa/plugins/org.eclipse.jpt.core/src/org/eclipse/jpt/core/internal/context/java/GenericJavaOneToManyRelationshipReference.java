@@ -17,6 +17,8 @@ import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.JoiningStrategy;
 import org.eclipse.jpt.core.context.RelationshipMapping;
+import org.eclipse.jpt.core.context.java.JavaJoinTableJoiningStrategy;
+import org.eclipse.jpt.core.context.java.JavaMappedByJoiningStrategy;
 import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
 import org.eclipse.jpt.core.context.java.JavaOneToManyRelationshipReference;
 import org.eclipse.jpt.core.resource.java.OneToManyAnnotation;
@@ -35,10 +37,18 @@ public class GenericJavaOneToManyRelationshipReference
 	
 	public GenericJavaOneToManyRelationshipReference(JavaOneToManyMapping parent) {
 		super(parent);
-		this.mappedByJoiningStrategy = new JavaMappedByJoiningStrategy(this);
-		this.joinTableJoiningStrategy = new JavaJoinTableJoiningStrategy(this);
+		this.mappedByJoiningStrategy = buildMappedByJoiningStrategy();
+		this.joinTableJoiningStrategy = buildJoinTableJoiningStrategy();
 	}
 	
+	
+	protected JavaMappedByJoiningStrategy buildMappedByJoiningStrategy() {
+		return new GenericJavaMappedByJoiningStrategy(this);
+	}
+	
+	protected JavaJoinTableJoiningStrategy buildJoinTableJoiningStrategy() {
+		return new GenericJavaJoinTableJoiningStrategy(this);
+	}
 	
 	@Override
 	public JavaOneToManyMapping getRelationshipMapping() {

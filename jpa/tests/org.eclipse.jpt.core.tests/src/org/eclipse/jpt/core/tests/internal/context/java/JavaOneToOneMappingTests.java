@@ -31,7 +31,6 @@ import org.eclipse.jpt.core.context.PrimaryKeyJoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.context.TransientMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.VersionMapping;
-import org.eclipse.jpt.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.persistence.ClassRef;
@@ -623,7 +622,7 @@ public class JavaOneToOneMappingTests extends ContextModelTestCase
 		OneToOneMapping oneToOneMapping = (OneToOneMapping) persistentAttribute.getMapping();
 		JoinColumnJoiningStrategy joinColumns = oneToOneMapping.getRelationshipReference().getJoinColumnJoiningStrategy();
 		
-		ListIterator<JavaJoinColumn> specifiedJoinColumns = joinColumns.specifiedJoinColumns();
+		ListIterator<? extends JoinColumn> specifiedJoinColumns = joinColumns.specifiedJoinColumns();
 		
 		assertFalse(specifiedJoinColumns.hasNext());
 
@@ -793,7 +792,7 @@ public class JavaOneToOneMappingTests extends ContextModelTestCase
 		assertEquals("BAZ", ((JoinColumnAnnotation) joinColumnResources.next()).getName());
 		assertFalse(joinColumnResources.hasNext());
 		
-		Iterator<JoinColumn> joinColumnsIterator = joinColumns.specifiedJoinColumns();
+		Iterator<? extends JoinColumn> joinColumnsIterator = joinColumns.specifiedJoinColumns();
 		assertEquals("FOO", joinColumnsIterator.next().getName());		
 		assertEquals("BAZ", joinColumnsIterator.next().getName());
 		assertFalse(joinColumnsIterator.hasNext());
@@ -837,7 +836,7 @@ public class JavaOneToOneMappingTests extends ContextModelTestCase
 		
 		
 		joinColumns.moveSpecifiedJoinColumn(2, 0);
-		ListIterator<JoinColumn> primaryKeyJoinColumns = joinColumns.specifiedJoinColumns();
+		ListIterator<? extends JoinColumn> primaryKeyJoinColumns = joinColumns.specifiedJoinColumns();
 		assertEquals("BAR", primaryKeyJoinColumns.next().getSpecifiedName());
 		assertEquals("BAZ", primaryKeyJoinColumns.next().getSpecifiedName());
 		assertEquals("FOO", primaryKeyJoinColumns.next().getSpecifiedName());
@@ -873,7 +872,7 @@ public class JavaOneToOneMappingTests extends ContextModelTestCase
 		((JoinColumnAnnotation) attributeResource.addSupportingAnnotation(1, JoinColumnAnnotation.ANNOTATION_NAME, JoinColumnsAnnotation.ANNOTATION_NAME)).setName("BAR");
 		((JoinColumnAnnotation) attributeResource.addSupportingAnnotation(2, JoinColumnAnnotation.ANNOTATION_NAME, JoinColumnsAnnotation.ANNOTATION_NAME)).setName("BAZ");
 			
-		ListIterator<JoinColumn> joinColumnsIterator = joinColumns.specifiedJoinColumns();
+		ListIterator<? extends JoinColumn> joinColumnsIterator = joinColumns.specifiedJoinColumns();
 		assertEquals("FOO", joinColumnsIterator.next().getName());
 		assertEquals("BAR", joinColumnsIterator.next().getName());
 		assertEquals("BAZ", joinColumnsIterator.next().getName());

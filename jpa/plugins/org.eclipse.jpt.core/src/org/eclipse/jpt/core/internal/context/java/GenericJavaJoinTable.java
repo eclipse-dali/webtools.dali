@@ -23,6 +23,7 @@ import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaJoinTable;
+import org.eclipse.jpt.core.context.java.JavaJoinTableJoiningStrategy;
 import org.eclipse.jpt.core.context.java.JavaRelationshipMapping;
 import org.eclipse.jpt.core.internal.resource.java.NullJoinColumn;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
@@ -67,7 +68,7 @@ public class GenericJavaJoinTable
 	}
 	
 	public JavaRelationshipMapping getRelationshipMapping() {
-		return getParent().getRelationshipMapping();
+		return getParent().getRelationshipReference().getRelationshipMapping();
 	}
 	
 	

@@ -11,7 +11,6 @@
 package org.eclipse.jpt.core.context.orm;
 
 import org.eclipse.jpt.core.context.PrimaryKeyJoinColumnEnabledRelationshipReference;
-import org.eclipse.jpt.core.internal.context.orm.OrmPrimaryKeyJoinColumnJoiningStrategy;
 
 public interface OrmPrimaryKeyJoinColumnEnabledRelationshipReference
 	extends OrmRelationshipReference,

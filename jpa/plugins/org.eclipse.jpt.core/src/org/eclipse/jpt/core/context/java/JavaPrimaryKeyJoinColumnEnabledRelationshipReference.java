@@ -11,7 +11,6 @@
 package org.eclipse.jpt.core.context.java;
 
 import org.eclipse.jpt.core.context.PrimaryKeyJoinColumnEnabledRelationshipReference;
-import org.eclipse.jpt.core.internal.context.java.JavaPrimaryKeyJoinColumnJoiningStrategy;
 
 /**
  * Provisional API: This interface is part of an interim API that is still

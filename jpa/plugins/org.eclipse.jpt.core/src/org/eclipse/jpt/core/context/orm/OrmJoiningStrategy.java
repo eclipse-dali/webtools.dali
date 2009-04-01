@@ -10,13 +10,13 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.context.orm;
 
-import org.eclipse.jpt.core.context.OwnableRelationshipReference;
-import org.eclipse.jpt.core.resource.orm.XmlMappedByMapping;
+import org.eclipse.jpt.core.context.JoiningStrategy;
+import org.eclipse.jpt.core.context.XmlContextNode;
 
-public interface OrmOwnableRelationshipReference
-	extends OrmRelationshipReference, OwnableRelationshipReference
+public interface OrmJoiningStrategy 
+	extends XmlContextNode, JoiningStrategy
 {
-	XmlMappedByMapping getResourceMapping();
+	public OrmRelationshipReference getRelationshipReference();
 	
-	OrmMappedByJoiningStrategy getMappedByJoiningStrategy();
+	void update();
 }

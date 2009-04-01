@@ -17,8 +17,10 @@ import org.eclipse.jpt.core.context.JoiningStrategy;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.orm.OrmJoinTable;
 import org.eclipse.jpt.core.context.orm.OrmJoinTableEnabledRelationshipReference;
+import org.eclipse.jpt.core.context.orm.OrmJoinTableJoiningStrategy;
 import org.eclipse.jpt.core.context.orm.OrmManyToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmManyToManyRelationshipReference;
+import org.eclipse.jpt.core.context.orm.OrmMappedByJoiningStrategy;
 import org.eclipse.jpt.core.context.orm.OrmOwnableRelationshipReference;
 import org.eclipse.jpt.core.context.orm.OrmRelationshipReference;
 import org.eclipse.jpt.core.resource.orm.XmlManyToMany;
@@ -42,16 +44,21 @@ public class GenericOrmManyToManyRelationshipReference
 	
 	@Override
 	protected void initializeJoiningStrategies() {
-		this.mappedByJoiningStrategy = 
-			new OrmMappedByJoiningStrategy(this, getResourceMapping());
+		this.mappedByJoiningStrategy = buildMappedByJoiningStrategy();
 		
 		// initialize join table last, as the existence of a default join 
 		// table is dependent on the other mechanisms (mappedBy)
 		// not being specified
-		this.joinTableJoiningStrategy =
-			new OrmJoinTableJoiningStrategy(this, getResourceMapping());
+		this.joinTableJoiningStrategy = buildJoinTableJoiningStrategy();
 	}
 	
+	protected OrmMappedByJoiningStrategy buildMappedByJoiningStrategy() {
+		return new GenericOrmMappedByJoiningStrategy(this, getResourceMapping());
+	}
+	
+	protected OrmJoinTableJoiningStrategy buildJoinTableJoiningStrategy() {
+		return 	new GenericOrmJoinTableJoiningStrategy(this, getResourceMapping());
+	}
 	
 	public void initializeOn(OrmRelationshipReference newRelationshipReference) {
 		newRelationshipReference.initializeFromOwnableRelationshipReference(this);

@@ -17,8 +17,11 @@ import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.JoiningStrategy;
 import org.eclipse.jpt.core.context.RelationshipMapping;
+import org.eclipse.jpt.core.context.java.JavaJoinColumnJoiningStrategy;
+import org.eclipse.jpt.core.context.java.JavaMappedByJoiningStrategy;
 import org.eclipse.jpt.core.context.java.JavaOneToOneMapping;
 import org.eclipse.jpt.core.context.java.JavaOneToOneRelationshipReference;
+import org.eclipse.jpt.core.context.java.JavaPrimaryKeyJoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.resource.java.OwnableRelationshipMappingAnnotation;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -37,11 +40,23 @@ public class GenericJavaOneToOneRelationshipReference
 	
 	public GenericJavaOneToOneRelationshipReference(JavaOneToOneMapping parent) {
 		super(parent);
-		this.mappedByJoiningStrategy = new JavaMappedByJoiningStrategy(this);
-		this.joinColumnJoiningStrategy = new JavaJoinColumnJoiningStrategy(this);
-		this.primaryKeyJoinColumnJoiningStrategy = new JavaPrimaryKeyJoinColumnJoiningStrategy(this);
+		this.mappedByJoiningStrategy = buildMappedByJoiningStrategy();
+		this.joinColumnJoiningStrategy = buildJoinColumnJoiningStrategy();
+		this.primaryKeyJoinColumnJoiningStrategy = buildPrimaryKeyJoinColumnJoiningStrategy();
 	}
 	
+	
+	protected JavaMappedByJoiningStrategy buildMappedByJoiningStrategy() {
+		return new GenericJavaMappedByJoiningStrategy(this);
+	}
+	
+	protected JavaJoinColumnJoiningStrategy buildJoinColumnJoiningStrategy() {
+		return new GenericJavaJoinColumnJoiningStrategy(this);
+	}
+	
+	protected JavaPrimaryKeyJoinColumnJoiningStrategy buildPrimaryKeyJoinColumnJoiningStrategy() {
+		return new GenericJavaPrimaryKeyJoinColumnJoiningStrategy(this);
+	}
 	
 	@Override
 	public JavaOneToOneMapping getRelationshipMapping() {

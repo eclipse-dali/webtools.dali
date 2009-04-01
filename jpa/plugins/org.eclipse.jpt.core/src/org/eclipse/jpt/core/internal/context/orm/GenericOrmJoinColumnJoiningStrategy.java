@@ -17,11 +17,11 @@ import java.util.ListIterator;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.JoinColumn;
-import org.eclipse.jpt.core.context.JoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumnEnabledRelationshipReference;
+import org.eclipse.jpt.core.context.orm.OrmJoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.context.orm.OrmRelationshipMapping;
 import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
@@ -39,8 +39,9 @@ import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class OrmJoinColumnJoiningStrategy extends AbstractXmlContextNode
-	implements JoinColumnJoiningStrategy
+public class GenericOrmJoinColumnJoiningStrategy 
+	extends AbstractXmlContextNode
+	implements OrmJoinColumnJoiningStrategy
 {
 	protected XmlJoinColumnsMapping resource;
 	
@@ -49,7 +50,7 @@ public class OrmJoinColumnJoiningStrategy extends AbstractXmlContextNode
 	protected final List<OrmJoinColumn> specifiedJoinColumns;
 	
 	
-	public OrmJoinColumnJoiningStrategy(
+	public GenericOrmJoinColumnJoiningStrategy(
 			OrmJoinColumnEnabledRelationshipReference parent,
 			XmlJoinColumnsMapping resource) {
 		super(parent);
@@ -375,7 +376,7 @@ public class OrmJoinColumnJoiningStrategy extends AbstractXmlContextNode
 		}
 		
 		public RelationshipMapping getRelationshipMapping() {
-			return OrmJoinColumnJoiningStrategy.this.getRelationshipMapping();
+			return GenericOrmJoinColumnJoiningStrategy.this.getRelationshipMapping();
 		}
 		
 		public boolean tableNameIsInvalid(String tableName) {
@@ -403,7 +404,7 @@ public class OrmJoinColumnJoiningStrategy extends AbstractXmlContextNode
 		}
 		
 		public boolean isVirtual(BaseJoinColumn joinColumn) {
-			return OrmJoinColumnJoiningStrategy.this.defaultJoinColumn == joinColumn;
+			return GenericOrmJoinColumnJoiningStrategy.this.defaultJoinColumn == joinColumn;
 		}
 		
 		public String getDefaultColumnName() {
@@ -412,11 +413,11 @@ public class OrmJoinColumnJoiningStrategy extends AbstractXmlContextNode
 		}
 
 		public int joinColumnsSize() {
-			return OrmJoinColumnJoiningStrategy.this.joinColumnsSize();
+			return GenericOrmJoinColumnJoiningStrategy.this.joinColumnsSize();
 		}
 		
 		public TextRange getValidationTextRange() {
-			return OrmJoinColumnJoiningStrategy.this.getValidationTextRange();
+			return GenericOrmJoinColumnJoiningStrategy.this.getValidationTextRange();
 		}
 	}
 }

@@ -11,7 +11,6 @@
 package org.eclipse.jpt.core.context.orm;
 
 import org.eclipse.jpt.core.context.JoinColumnEnabledRelationshipReference;
-import org.eclipse.jpt.core.internal.context.orm.OrmJoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumnsMapping;
 
 /**

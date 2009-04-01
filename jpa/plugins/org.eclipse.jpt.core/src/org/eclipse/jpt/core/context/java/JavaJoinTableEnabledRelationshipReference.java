@@ -11,7 +11,6 @@
 package org.eclipse.jpt.core.context.java;
 
 import org.eclipse.jpt.core.context.JoinTableEnabledRelationshipReference;
-import org.eclipse.jpt.core.internal.context.java.JavaJoinTableJoiningStrategy;
 
 /**
  * Provisional API: This interface is part of an interim API that is still

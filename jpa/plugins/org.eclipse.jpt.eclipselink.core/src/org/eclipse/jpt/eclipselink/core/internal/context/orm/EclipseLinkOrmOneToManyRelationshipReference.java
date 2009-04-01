@@ -17,10 +17,11 @@ import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.JoiningStrategy;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumnEnabledRelationshipReference;
+import org.eclipse.jpt.core.context.orm.OrmJoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.context.orm.OrmOneToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmRelationshipReference;
+import org.eclipse.jpt.core.internal.context.orm.GenericOrmJoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmOneToManyRelationshipReference;
-import org.eclipse.jpt.core.internal.context.orm.OrmJoinColumnJoiningStrategy;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToManyRelationshipReference;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlOneToMany;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -43,9 +44,12 @@ public class EclipseLinkOrmOneToManyRelationshipReference
 	
 	@Override
 	protected void initializeJoiningStrategies() {
-		this.joinColumnJoiningStrategy =
-			new OrmJoinColumnJoiningStrategy(this, getResourceMapping());
+		this.joinColumnJoiningStrategy = buildJoinColumnJoiningStrategy();		
 		super.initializeJoiningStrategies();
+	}
+	
+	protected OrmJoinColumnJoiningStrategy buildJoinColumnJoiningStrategy() {
+		return new GenericOrmJoinColumnJoiningStrategy(this, getResourceMapping());
 	}
 	
 	@Override
