@@ -18,7 +18,6 @@ import org.eclipse.jpt.eclipselink.core.context.Convert;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkIdMapping;
 import org.eclipse.jpt.eclipselink.core.context.Mutable;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlId;
-import org.eclipse.jpt.eclipselink.core.resource.orm.XmlMutable;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -31,7 +30,7 @@ public class EclipseLinkOrmIdMapping<T extends XmlId>
 	
 	public EclipseLinkOrmIdMapping(OrmPersistentAttribute parent, T resourceMapping) {
 		super(parent, resourceMapping);
-		this.mutable = new EclipseLinkOrmMutable(this, (XmlMutable) this.resourceAttributeMapping);
+		this.mutable = new EclipseLinkOrmMutable(this, this.resourceAttributeMapping);
 	}
 	
 	
@@ -46,7 +45,7 @@ public class EclipseLinkOrmIdMapping<T extends XmlId>
 			return ormConverter;
 		}
 		if (converterType == Convert.ECLIPSE_LINK_CONVERTER) {
-			return new EclipseLinkOrmConvert(this, (XmlId) this.resourceAttributeMapping);
+			return new EclipseLinkOrmConvert(this, this.resourceAttributeMapping);
 		}
 		return null;
 	}
