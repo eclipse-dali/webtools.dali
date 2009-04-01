@@ -143,7 +143,7 @@ public class DefaultJpaSelectionManager
 	void checkForNoEditors() {
 		IWorkbenchPage activePage = window.getActivePage();
 		if ((activePage == null)
-				|| (activePage.getActiveEditor() == null)) {
+				|| (activePage.getEditorReferences().length == 0)) {
 			select(DefaultJpaSelection.NULL_SELECTION, null);
 		}
 	}
