@@ -18,6 +18,10 @@ import org.eclipse.jpt.eclipselink.core.tests.internal.resource.JptEclipselinkCo
 
 /**
  * decentralize test creation code
+ * 
+ * Required Java system property:
+ *    -Dorg.eclipse.jpt.jpa.jar=<jpa.jar path>
+ *    -Dorg.eclipse.jpt.eclipselink.jar=<eclipselink.jar path>
  */
 @SuppressWarnings("nls")
 public class JptEclipseLinkCoreTests
