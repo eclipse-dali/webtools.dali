@@ -15,10 +15,6 @@ import junit.framework.TestSuite;
 public class JptCoreUtilityJdtTests {
 
 	public static Test suite() {
-		return suite(true);
-	}
-	
-	public static Test suite(boolean all) {
 		TestSuite suite = new TestSuite(JptCoreUtilityJdtTests.class.getPackage().getName());
 		suite.addTestSuite(CombinationIndexedDeclarationAnnotationAdapterTests.class);
 		suite.addTestSuite(DefaultAnnotationEditFormatterTests.class);

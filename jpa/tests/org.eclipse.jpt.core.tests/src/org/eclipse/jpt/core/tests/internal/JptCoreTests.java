@@ -19,29 +19,23 @@ import org.eclipse.jpt.core.tests.internal.resource.JptCoreResourceModelTests;
 import org.eclipse.jpt.core.tests.internal.utility.jdt.JptCoreUtilityJdtTests;
 
 /**
- * Runs MOST JPT Core Tests. Currently we do not have a jpa.jar checked into cvs. 
- * As a result we cannot run any tests that depend on that jar during the nightly build.
- * In our development environments we should run JptAllCoreTests (NOT this suite)
- * until jpa.jar is checked into CVS.
+ * decentralize test creation code
+ * 
+ * Required Java system property:
+ *    -Dorg.eclipse.jpt.jpa.jar=<jpa.jar path>
  */
 @SuppressWarnings("nls")
 public class JptCoreTests {
 	private static final String JPA_JAR_PROPERTY = TestJpaProject.JPA_JAR_NAME_SYSTEM_PROPERTY;
 
 	public static Test suite() {
-		return suite(false);
-	}
-	
-	// TODO delete parameter all
-	public static Test suite(boolean all) {
-		String quantity = all ? "All" : "Most";
-		TestSuite suite = new TestSuite(quantity + " JPT Core Tests");
+		TestSuite suite = new TestSuite(JptCoreTests.class.getPackage().getName());
 
 		if(requiredJarsExists()) {
-			suite.addTest(JptCoreUtilityJdtTests.suite(all));
-			suite.addTest(JptCoreModelTests.suite(all));
-			suite.addTest(JptCoreResourceModelTests.suite(all));
-			suite.addTest(JptCoreContextModelTests.suite(all));
+			suite.addTest(JptCoreUtilityJdtTests.suite());
+			suite.addTest(JptCoreModelTests.suite());
+			suite.addTest(JptCoreResourceModelTests.suite());
+			suite.addTest(JptCoreContextModelTests.suite());
 		}
 		else {
 			suite.addTest(TestSuite.warning(buildMissingJarErrorMessage()));

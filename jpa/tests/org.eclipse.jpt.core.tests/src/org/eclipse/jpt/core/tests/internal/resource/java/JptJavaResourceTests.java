@@ -15,10 +15,6 @@ import junit.framework.TestSuite;
 public class JptJavaResourceTests {
 
 	public static Test suite() {
-		return suite(true);
-	}
-	
-	public static Test suite(boolean all) {
 		TestSuite suite = new TestSuite(JptJavaResourceTests.class.getName());
 		suite.addTestSuite(JavaResourcePersistentTypeTests.class);
 		suite.addTestSuite(JavaResourcePersistentAttributeTests.class);

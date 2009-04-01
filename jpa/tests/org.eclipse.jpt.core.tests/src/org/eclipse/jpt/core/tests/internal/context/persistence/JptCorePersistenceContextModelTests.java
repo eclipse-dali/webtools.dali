@@ -17,10 +17,6 @@ import junit.framework.TestSuite;
 public class JptCorePersistenceContextModelTests extends TestCase
 {
 	public static Test suite() {
-		return suite(true);
-	}
-	
-	public static Test suite(boolean all) {
 		TestSuite suite = new TestSuite(JptCorePersistenceContextModelTests.class.getName());
 		suite.addTestSuite(RootContextNodeTests.class);
 		suite.addTestSuite(PersistenceXmlTests.class);
