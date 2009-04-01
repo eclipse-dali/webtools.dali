@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -27,7 +27,6 @@ import org.eclipse.jpt.core.tests.internal.utility.jdt.JptCoreUtilityJdtTests;
 @SuppressWarnings("nls")
 public class JptCoreTests {
 	private static final String JPA_JAR_PROPERTY = TestJpaProject.JPA_JAR_NAME_SYSTEM_PROPERTY;
-	private static final String ECLIPSELINK_JAR_PROPERTY = TestJpaProject.ECLIPSELINK_JAR_NAME_SYSTEM_PROPERTY;
 
 	public static Test suite() {
 		return suite(false);
@@ -38,25 +37,22 @@ public class JptCoreTests {
 		String quantity = all ? "All" : "Most";
 		TestSuite suite = new TestSuite(quantity + " JPT Core Tests");
 
-		if(jpaJarPropertyExists() && jpaJarFileExists()) {
+		if(requiredJarsExists()) {
 			suite.addTest(JptCoreUtilityJdtTests.suite(all));
 			suite.addTest(JptCoreModelTests.suite(all));
 			suite.addTest(JptCoreResourceModelTests.suite(all));
 			suite.addTest(JptCoreContextModelTests.suite(all));
 		}
 		else {
-			String message = errorMessageMissingJar(JPA_JAR_PROPERTY);
-			suite.addTest(TestSuite.warning(message));
-		}
-		
-		// Temporary jar testing code
-		if( ! (eclipselinkJarPropertyExists() && eclipselinkJarFileExists())) {
-			String message = errorMessageMissingJar(ECLIPSELINK_JAR_PROPERTY);
-			suite.addTest(TestSuite.warning(message));
+			suite.addTest(TestSuite.warning(buildMissingJarErrorMessage()));
 		}
 		return suite;
 	}
 	
+	public static boolean requiredJarsExists() {
+		return jpaJarPropertyExists() && jpaJarFileExists();
+	}
+
 	public static boolean jpaJarPropertyExists() {
 		return getSystemProperty(JPA_JAR_PROPERTY) != null;
 	}
@@ -64,22 +60,24 @@ public class JptCoreTests {
 	public static boolean jpaJarFileExists() {
 		return (new File(getSystemProperty(JPA_JAR_PROPERTY))).exists();
 	}
-	
-	public static boolean eclipselinkJarPropertyExists() {
-		return getSystemProperty(ECLIPSELINK_JAR_PROPERTY) != null;
-	}
-	
-	public static boolean eclipselinkJarFileExists() {
-		return (new File(getSystemProperty(ECLIPSELINK_JAR_PROPERTY))).exists();
-	}
-	
-	private static String errorMessageMissingJar(String propertyName) {
 
-		return (getSystemProperty(propertyName) == null) ?
-		"missing Java system property: \"" + propertyName + "\"" :
-		"missing JAR file: \"" + getSystemProperty(propertyName) + "\"";
+	/*********** private **********/
+	private static String buildMissingJarErrorMessage() {
+
+		if( ! jpaJarPropertyExists()) {
+			return errorMissingProperty(JPA_JAR_PROPERTY);
+		}
+		return errorJarFileDoesNotExist(getSystemProperty(JPA_JAR_PROPERTY));
 	}
-	
+
+	private static String errorMissingProperty(String propertyName) {
+		return "missing Java system property: \"" + propertyName + "\"";
+	}
+
+	private static String errorJarFileDoesNotExist(String propertyValue) {
+		return "JAR file doesn't exist: \"" + propertyValue + "\"";
+	}
+
 	private static String getSystemProperty(String propertyName) {
 		return System.getProperty(propertyName);
 	}
@@ -88,5 +86,4 @@ public class JptCoreTests {
 		super();
 		throw new UnsupportedOperationException();
 	}
-
 }
