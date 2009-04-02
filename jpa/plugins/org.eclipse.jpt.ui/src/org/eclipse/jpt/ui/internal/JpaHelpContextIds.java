@@ -63,6 +63,8 @@ public interface JpaHelpContextIds {
 	public static final String MAPPING_JOIN_COLUMN_NAME = PREFIX + "mapping_joinColumnName";
 	public static final String MAPPING_JOIN_REFERENCED_COLUMN = PREFIX + "mapping_joinReferencedColumn";
 	public static final String MAPPING_JOIN_TABLE_NAME = PREFIX + "mapping_joinTableName";
+	public static final String MAPPING_JOIN_TABLE_SCHEMA = PREFIX + "mapping_joinTableSchema";
+	public static final String MAPPING_JOIN_TABLE_CATALOG = PREFIX + "mapping_joinTableCatalog";
 	public static final String MAPPING_JOIN_TABLE_COLUMNS = PREFIX + "mapping_joinTableJoinColumns";
 	public static final String MAPPING_JOIN_TABLE_INVERSE_JOIN_COLUMNS = PREFIX + "mapping_joinTableInverseJoinColumns";
 	public static final String MAPPING_LOB = PREFIX + "mapping_lob";

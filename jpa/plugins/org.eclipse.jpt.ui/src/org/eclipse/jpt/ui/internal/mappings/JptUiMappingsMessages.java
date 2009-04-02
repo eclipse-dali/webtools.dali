@@ -151,6 +151,8 @@ public class JptUiMappingsMessages {
 	public static String JoinTableComposite_mappingBetweenTwoParamsFirstDefault;
 	public static String JoinTableComposite_mappingBetweenTwoParamsSecDefault;
 	public static String JoinTableComposite_name;
+	public static String JoinTableComposite_schema;
+	public static String JoinTableComposite_catalog;
 	public static String JoinTableComposite_overrideDefaultInverseJoinColumns;
 	public static String JoinTableComposite_overrideDefaultJoinColumns;
 	public static String JoinTableComposite_remove;

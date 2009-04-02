@@ -15,9 +15,12 @@ import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.JoinTable;
 import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.db.Schema;
+import org.eclipse.jpt.db.SchemaContainer;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.ui.internal.mappings.db.CatalogCombo;
+import org.eclipse.jpt.ui.internal.mappings.db.SchemaCombo;
 import org.eclipse.jpt.ui.internal.mappings.db.TableCombo;
 import org.eclipse.jpt.ui.internal.mappings.details.JoinColumnsComposite.IJoinColumnsEditor;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
@@ -122,12 +125,32 @@ public class JoinTableComposite extends FormPane<JoinTable>
 
 		// Name widgets
 		TableCombo<JoinTable> tableCombo = addTableCombo(container);
-
+		Composite tablePane = addPane(container, groupBoxMargin);
 		addLabeledComposite(
-			addPane(container, groupBoxMargin),
+				tablePane,
 			JptUiMappingsMessages.JoinTableComposite_name,
 			tableCombo.getControl(),
 			JpaHelpContextIds.MAPPING_JOIN_TABLE_NAME
+		);
+		
+		// schema widgets
+		SchemaCombo<JoinTable> schemaCombo = addSchemaCombo(container);
+
+		addLabeledComposite(
+			tablePane,
+			JptUiMappingsMessages.JoinTableComposite_schema,
+			schemaCombo.getControl(),
+			JpaHelpContextIds.MAPPING_JOIN_TABLE_SCHEMA
+		);
+		
+		// catalog widgets
+		CatalogCombo<JoinTable> catalogCombo = addCatalogCombo(container);
+
+		addLabeledComposite(
+			tablePane,
+			JptUiMappingsMessages.JoinTableComposite_catalog,
+			catalogCombo.getControl(),
+			JpaHelpContextIds.MAPPING_JOIN_TABLE_CATALOG
 		);
 
 		// Join Columns group pane
@@ -377,6 +400,78 @@ public class JoinTableComposite extends FormPane<JoinTable>
 				return this.getSubject().getDbSchema();
 			}
 
+		};
+	}
+	
+	private SchemaCombo<JoinTable> addSchemaCombo(Composite container) {
+
+		return new SchemaCombo<JoinTable>(this, container) {
+
+			@Override
+			protected void addPropertyNames(Collection<String> propertyNames) {
+				super.addPropertyNames(propertyNames);
+				propertyNames.add(Table.DEFAULT_SCHEMA_PROPERTY);
+				propertyNames.add(Table.SPECIFIED_SCHEMA_PROPERTY);
+				propertyNames.add(Table.DEFAULT_CATALOG_PROPERTY);
+				propertyNames.add(Table.SPECIFIED_CATALOG_PROPERTY);
+			}
+
+			@Override
+			protected void propertyChanged(String propertyName) {
+				super.propertyChanged(propertyName);
+				if (propertyName == Table.DEFAULT_CATALOG_PROPERTY
+					|| propertyName == Table.SPECIFIED_CATALOG_PROPERTY ) {
+					repopulate();
+				}
+			}
+
+			@Override
+			protected String getDefaultValue() {
+				return this.getSubject().getDefaultSchema();
+			}
+
+			@Override
+			protected void setValue(String value) {
+				this.getSubject().setSpecifiedSchema(value);
+			}
+
+			@Override
+			protected String getValue() {
+				return this.getSubject().getSpecifiedSchema();
+			}
+			
+			@Override
+			protected SchemaContainer getDbSchemaContainer_() {
+				return this.getSubject().getDbSchemaContainer();
+			}
+		};
+	}
+	
+	private CatalogCombo<JoinTable> addCatalogCombo(Composite container) {
+
+		return new CatalogCombo<JoinTable>(this, container) {
+
+			@Override
+			protected void addPropertyNames(Collection<String> propertyNames) {
+				super.addPropertyNames(propertyNames);
+				propertyNames.add(Table.DEFAULT_CATALOG_PROPERTY);
+				propertyNames.add(Table.SPECIFIED_CATALOG_PROPERTY);
+			}
+
+			@Override
+			protected String getDefaultValue() {
+				return this.getSubject().getDefaultCatalog();
+			}
+
+			@Override
+			protected void setValue(String value) {
+				this.getSubject().setSpecifiedCatalog(value);
+			}
+
+			@Override
+			protected String getValue() {
+				return this.getSubject().getSpecifiedCatalog();
+			}
 		};
 	}
 
