@@ -389,24 +389,33 @@ public class JavaEmbeddedIdMappingTests extends ContextModelTestCase
 		assertFalse(specifiedAttributeOverrides.hasNext());
 	}
 
-	public void testDefaultAttributeOverrides() throws Exception {
+	public void testVirtualAttributeOverrides() throws Exception {
 		createTestEntityWithEmbeddedIdMapping();
 		createEmbeddableType();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		addXmlClassRef(FULLY_QUALIFIED_EMBEDDABLE_TYPE_NAME);
 		
-		EmbeddedIdMapping embeddedIdMapping = (EmbeddedIdMapping) getJavaPersistentType().getAttributeNamed("myEmbeddedId").getMapping();
+		EmbeddedIdMapping embeddedMapping = (EmbeddedIdMapping) getJavaPersistentType().getAttributeNamed("myEmbeddedId").getMapping();
+
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		assertEquals("myEmbeddedId", attributeResource.getName());
 		assertNull(attributeResource.getSupportingAnnotation(AttributeOverrideAnnotation.ANNOTATION_NAME));
 		assertNull(attributeResource.getSupportingAnnotation(AttributeOverridesAnnotation.ANNOTATION_NAME));
-	
-		assertEquals(2, embeddedIdMapping.virtualAttributeOverridesSize());
-		AttributeOverride defaultAttributeOverride = embeddedIdMapping.virtualAttributeOverrides().next();
+		
+		assertEquals(2, embeddedMapping.virtualAttributeOverridesSize());
+		AttributeOverride defaultAttributeOverride = embeddedMapping.virtualAttributeOverrides().next();
 		assertEquals("city", defaultAttributeOverride.getName());
 		assertEquals("city", defaultAttributeOverride.getColumn().getName());
 		assertEquals(TYPE_NAME, defaultAttributeOverride.getColumn().getTable());
+		assertEquals(null, defaultAttributeOverride.getColumn().getColumnDefinition());
+		assertEquals(true, defaultAttributeOverride.getColumn().isInsertable());
+		assertEquals(true, defaultAttributeOverride.getColumn().isUpdatable());
+		assertEquals(false, defaultAttributeOverride.getColumn().isUnique());
+		assertEquals(true, defaultAttributeOverride.getColumn().isNullable());
+		assertEquals(255, defaultAttributeOverride.getColumn().getLength());
+		assertEquals(0, defaultAttributeOverride.getColumn().getPrecision());
+		assertEquals(0, defaultAttributeOverride.getColumn().getScale());
 		
 		
 		ListIterator<ClassRef> classRefs = getPersistenceUnit().specifiedClassRefs();
@@ -416,23 +425,59 @@ public class JavaEmbeddedIdMappingTests extends ContextModelTestCase
 		BasicMapping cityMapping = (BasicMapping) embeddable.getPersistentType().getAttributeNamed("city").getMapping();
 		cityMapping.getColumn().setSpecifiedName("FOO");
 		cityMapping.getColumn().setSpecifiedTable("BAR");
+		cityMapping.getColumn().setColumnDefinition("COLUMN_DEF");
+		cityMapping.getColumn().setSpecifiedInsertable(Boolean.FALSE);
+		cityMapping.getColumn().setSpecifiedUpdatable(Boolean.FALSE);
+		cityMapping.getColumn().setSpecifiedUnique(Boolean.TRUE);
+		cityMapping.getColumn().setSpecifiedNullable(Boolean.FALSE);
+		cityMapping.getColumn().setSpecifiedLength(Integer.valueOf(5));
+		cityMapping.getColumn().setSpecifiedPrecision(Integer.valueOf(6));
+		cityMapping.getColumn().setSpecifiedScale(Integer.valueOf(7));
 		
-		assertEquals(2, embeddedIdMapping.virtualAttributeOverridesSize());
-		defaultAttributeOverride = embeddedIdMapping.virtualAttributeOverrides().next();
+		assertEquals("myEmbeddedId", attributeResource.getName());
+		assertNull(attributeResource.getSupportingAnnotation(AttributeOverrideAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getSupportingAnnotation(AttributeOverridesAnnotation.ANNOTATION_NAME));
+
+		assertEquals(2, embeddedMapping.virtualAttributeOverridesSize());
+		defaultAttributeOverride = embeddedMapping.virtualAttributeOverrides().next();
 		assertEquals("city", defaultAttributeOverride.getName());
 		assertEquals("FOO", defaultAttributeOverride.getColumn().getName());
 		assertEquals("BAR", defaultAttributeOverride.getColumn().getTable());
+		assertEquals("COLUMN_DEF", defaultAttributeOverride.getColumn().getColumnDefinition());
+		assertEquals(false, defaultAttributeOverride.getColumn().isInsertable());
+		assertEquals(false, defaultAttributeOverride.getColumn().isUpdatable());
+		assertEquals(true, defaultAttributeOverride.getColumn().isUnique());
+		assertEquals(false, defaultAttributeOverride.getColumn().isNullable());
+		assertEquals(5, defaultAttributeOverride.getColumn().getLength());
+		assertEquals(6, defaultAttributeOverride.getColumn().getPrecision());
+		assertEquals(7, defaultAttributeOverride.getColumn().getScale());
 
 		cityMapping.getColumn().setSpecifiedName(null);
 		cityMapping.getColumn().setSpecifiedTable(null);
-		defaultAttributeOverride = embeddedIdMapping.virtualAttributeOverrides().next();
+		cityMapping.getColumn().setColumnDefinition(null);
+		cityMapping.getColumn().setSpecifiedInsertable(null);
+		cityMapping.getColumn().setSpecifiedUpdatable(null);
+		cityMapping.getColumn().setSpecifiedUnique(null);
+		cityMapping.getColumn().setSpecifiedNullable(null);
+		cityMapping.getColumn().setSpecifiedLength(null);
+		cityMapping.getColumn().setSpecifiedPrecision(null);
+		cityMapping.getColumn().setSpecifiedScale(null);
+		defaultAttributeOverride = embeddedMapping.virtualAttributeOverrides().next();
 		assertEquals("city", defaultAttributeOverride.getName());
 		assertEquals("city", defaultAttributeOverride.getColumn().getName());
 		assertEquals(TYPE_NAME, defaultAttributeOverride.getColumn().getTable());
+		assertEquals(null, defaultAttributeOverride.getColumn().getColumnDefinition());
+		assertEquals(true, defaultAttributeOverride.getColumn().isInsertable());
+		assertEquals(true, defaultAttributeOverride.getColumn().isUpdatable());
+		assertEquals(false, defaultAttributeOverride.getColumn().isUnique());
+		assertEquals(true, defaultAttributeOverride.getColumn().isNullable());
+		assertEquals(255, defaultAttributeOverride.getColumn().getLength());
+		assertEquals(0, defaultAttributeOverride.getColumn().getPrecision());
+		assertEquals(0, defaultAttributeOverride.getColumn().getScale());
 		
 		AttributeOverrideAnnotation annotation = (AttributeOverrideAnnotation) attributeResource.addSupportingAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
 		annotation.setName("city");
-		assertEquals(1, embeddedIdMapping.virtualAttributeOverridesSize());
+		assertEquals(1, embeddedMapping.virtualAttributeOverridesSize());
 	}
 	
 	public void testSpecifiedAttributeOverridesSize() throws Exception {

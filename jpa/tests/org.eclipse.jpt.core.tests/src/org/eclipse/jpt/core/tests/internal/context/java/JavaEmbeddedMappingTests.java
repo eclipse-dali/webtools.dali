@@ -454,6 +454,14 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		assertEquals("city", defaultAttributeOverride.getName());
 		assertEquals("city", defaultAttributeOverride.getColumn().getName());
 		assertEquals(TYPE_NAME, defaultAttributeOverride.getColumn().getTable());
+		assertEquals(null, defaultAttributeOverride.getColumn().getColumnDefinition());
+		assertEquals(true, defaultAttributeOverride.getColumn().isInsertable());
+		assertEquals(true, defaultAttributeOverride.getColumn().isUpdatable());
+		assertEquals(false, defaultAttributeOverride.getColumn().isUnique());
+		assertEquals(true, defaultAttributeOverride.getColumn().isNullable());
+		assertEquals(255, defaultAttributeOverride.getColumn().getLength());
+		assertEquals(0, defaultAttributeOverride.getColumn().getPrecision());
+		assertEquals(0, defaultAttributeOverride.getColumn().getScale());
 		
 		
 		ListIterator<ClassRef> classRefs = getPersistenceUnit().specifiedClassRefs();
@@ -463,6 +471,14 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		BasicMapping cityMapping = (BasicMapping) embeddable.getPersistentType().getAttributeNamed("city").getMapping();
 		cityMapping.getColumn().setSpecifiedName("FOO");
 		cityMapping.getColumn().setSpecifiedTable("BAR");
+		cityMapping.getColumn().setColumnDefinition("COLUMN_DEF");
+		cityMapping.getColumn().setSpecifiedInsertable(Boolean.FALSE);
+		cityMapping.getColumn().setSpecifiedUpdatable(Boolean.FALSE);
+		cityMapping.getColumn().setSpecifiedUnique(Boolean.TRUE);
+		cityMapping.getColumn().setSpecifiedNullable(Boolean.FALSE);
+		cityMapping.getColumn().setSpecifiedLength(Integer.valueOf(5));
+		cityMapping.getColumn().setSpecifiedPrecision(Integer.valueOf(6));
+		cityMapping.getColumn().setSpecifiedScale(Integer.valueOf(7));
 		
 		assertEquals("myEmbedded", attributeResource.getName());
 		assertNull(attributeResource.getSupportingAnnotation(AttributeOverrideAnnotation.ANNOTATION_NAME));
@@ -473,13 +489,37 @@ public class JavaEmbeddedMappingTests extends ContextModelTestCase
 		assertEquals("city", defaultAttributeOverride.getName());
 		assertEquals("FOO", defaultAttributeOverride.getColumn().getName());
 		assertEquals("BAR", defaultAttributeOverride.getColumn().getTable());
+		assertEquals("COLUMN_DEF", defaultAttributeOverride.getColumn().getColumnDefinition());
+		assertEquals(false, defaultAttributeOverride.getColumn().isInsertable());
+		assertEquals(false, defaultAttributeOverride.getColumn().isUpdatable());
+		assertEquals(true, defaultAttributeOverride.getColumn().isUnique());
+		assertEquals(false, defaultAttributeOverride.getColumn().isNullable());
+		assertEquals(5, defaultAttributeOverride.getColumn().getLength());
+		assertEquals(6, defaultAttributeOverride.getColumn().getPrecision());
+		assertEquals(7, defaultAttributeOverride.getColumn().getScale());
 
 		cityMapping.getColumn().setSpecifiedName(null);
 		cityMapping.getColumn().setSpecifiedTable(null);
+		cityMapping.getColumn().setColumnDefinition(null);
+		cityMapping.getColumn().setSpecifiedInsertable(null);
+		cityMapping.getColumn().setSpecifiedUpdatable(null);
+		cityMapping.getColumn().setSpecifiedUnique(null);
+		cityMapping.getColumn().setSpecifiedNullable(null);
+		cityMapping.getColumn().setSpecifiedLength(null);
+		cityMapping.getColumn().setSpecifiedPrecision(null);
+		cityMapping.getColumn().setSpecifiedScale(null);
 		defaultAttributeOverride = embeddedMapping.virtualAttributeOverrides().next();
 		assertEquals("city", defaultAttributeOverride.getName());
 		assertEquals("city", defaultAttributeOverride.getColumn().getName());
 		assertEquals(TYPE_NAME, defaultAttributeOverride.getColumn().getTable());
+		assertEquals(null, defaultAttributeOverride.getColumn().getColumnDefinition());
+		assertEquals(true, defaultAttributeOverride.getColumn().isInsertable());
+		assertEquals(true, defaultAttributeOverride.getColumn().isUpdatable());
+		assertEquals(false, defaultAttributeOverride.getColumn().isUnique());
+		assertEquals(true, defaultAttributeOverride.getColumn().isNullable());
+		assertEquals(255, defaultAttributeOverride.getColumn().getLength());
+		assertEquals(0, defaultAttributeOverride.getColumn().getPrecision());
+		assertEquals(0, defaultAttributeOverride.getColumn().getScale());
 		
 		AttributeOverrideAnnotation annotation = (AttributeOverrideAnnotation) attributeResource.addSupportingAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
 		annotation.setName("city");

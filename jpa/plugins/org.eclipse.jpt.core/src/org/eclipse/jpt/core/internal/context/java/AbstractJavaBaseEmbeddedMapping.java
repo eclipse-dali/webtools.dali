@@ -26,7 +26,6 @@ import org.eclipse.jpt.core.context.java.JavaAttributeOverride;
 import org.eclipse.jpt.core.context.java.JavaBaseEmbeddedMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.MappingTools;
-import org.eclipse.jpt.core.internal.resource.java.NullColumn;
 import org.eclipse.jpt.core.resource.java.AttributeOverrideAnnotation;
 import org.eclipse.jpt.core.resource.java.AttributeOverridesAnnotation;
 import org.eclipse.jpt.core.resource.java.JPA;
@@ -305,7 +304,7 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends JavaResourceNode
 				addVirtualAttributeOverride(buildVirtualAttributeOverride(attributeName));
 			}
 			else if (attributeOverride.isVirtual()) {
-				attributeOverride.getColumn().update(new NullColumn(this.resourcePersistentAttribute));
+				attributeOverride.update(buildVirtualAttributeOverrideResource(attributeName));
 			}
 		}
 		

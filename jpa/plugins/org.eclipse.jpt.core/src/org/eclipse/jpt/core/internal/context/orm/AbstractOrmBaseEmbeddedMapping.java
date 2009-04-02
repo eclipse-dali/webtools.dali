@@ -273,7 +273,7 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends BaseXmlEmbedded> 
 	
 	protected XmlAttributeOverride buildVirtualXmlAttributeOverride(PersistentAttribute persistentAttribute, JavaAttributeOverride javaAttributeOverride) {
 		XmlColumn xmlColumn;
-		if (javaAttributeOverride == null) {
+		if (javaAttributeOverride == null || !isDefault()) {
 			ColumnMapping columnMapping = (ColumnMapping) persistentAttribute.getMapping();
 			xmlColumn = new VirtualXmlColumn(getTypeMapping(), columnMapping.getColumn());			
 		}

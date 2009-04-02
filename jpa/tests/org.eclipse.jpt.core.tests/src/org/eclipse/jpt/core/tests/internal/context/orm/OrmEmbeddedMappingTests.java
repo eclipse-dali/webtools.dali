@@ -16,6 +16,7 @@ import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.BasicMapping;
+import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.context.EmbeddedIdMapping;
 import org.eclipse.jpt.core.context.EmbeddedMapping;
 import org.eclipse.jpt.core.context.IdMapping;
@@ -353,8 +354,19 @@ public class OrmEmbeddedMappingTests extends ContextModelTestCase
 		assertEquals("zip", attributeOverride.getName());
 		
 		JavaEmbeddedMapping javaEmbeddedMapping = (JavaEmbeddedMapping) ormPersistentAttribute.getJavaPersistentAttribute().getMapping();
-		javaEmbeddedMapping.specifiedAttributeOverrides().next().getColumn().setSpecifiedName("FOO_COLUMN");
-		javaEmbeddedMapping.specifiedAttributeOverrides().next().getColumn().setSpecifiedTable("FOO_TABLE");
+		Column javaAttributeOverrideColumn = javaEmbeddedMapping.specifiedAttributeOverrides().next().getColumn();
+		
+		javaAttributeOverrideColumn.setSpecifiedName("FOO_COLUMN");
+		javaAttributeOverrideColumn.setSpecifiedTable("FOO_TABLE");
+		javaAttributeOverrideColumn.setColumnDefinition("COLUMN_DEF");
+		javaAttributeOverrideColumn.setSpecifiedInsertable(Boolean.FALSE);
+		javaAttributeOverrideColumn.setSpecifiedUpdatable(Boolean.FALSE);
+		javaAttributeOverrideColumn.setSpecifiedUnique(Boolean.TRUE);
+		javaAttributeOverrideColumn.setSpecifiedNullable(Boolean.FALSE);
+		javaAttributeOverrideColumn.setSpecifiedLength(Integer.valueOf(5));
+		javaAttributeOverrideColumn.setSpecifiedPrecision(Integer.valueOf(6));
+		javaAttributeOverrideColumn.setSpecifiedScale(Integer.valueOf(7));
+
 		JavaBasicMapping javaBasicMapping = (JavaBasicMapping) persistentType2.getJavaPersistentType().getAttributeNamed("state").getMapping();
 		javaBasicMapping.getColumn().setSpecifiedName("MY_STATE_COLUMN");
 		assertEquals(4, embeddedMapping.attributeOverridesSize());
@@ -365,6 +377,14 @@ public class OrmEmbeddedMappingTests extends ContextModelTestCase
 		assertEquals("city", attributeOverride.getName());
 		assertEquals("FOO_COLUMN", attributeOverride.getColumn().getSpecifiedName());
 		assertEquals("FOO_TABLE", attributeOverride.getColumn().getSpecifiedTable());
+		assertEquals("COLUMN_DEF", attributeOverride.getColumn().getColumnDefinition());
+		assertEquals(false, attributeOverride.getColumn().isInsertable());
+		assertEquals(false, attributeOverride.getColumn().isUpdatable());
+		assertEquals(true, attributeOverride.getColumn().isUnique());
+		assertEquals(false, attributeOverride.getColumn().isNullable());
+		assertEquals(5, attributeOverride.getColumn().getLength());
+		assertEquals(6, attributeOverride.getColumn().getPrecision());
+		assertEquals(7, attributeOverride.getColumn().getScale());
 		
 		attributeOverride = specifiedAttributeOverrides.next();
 		assertEquals("id", attributeOverride.getName());
@@ -388,8 +408,16 @@ public class OrmEmbeddedMappingTests extends ContextModelTestCase
 		assertEquals("id", attributeOverride.getName());
 		attributeOverride = virtualAttributeOverrides.next();
 		assertEquals("city", attributeOverride.getName());
-		assertEquals("city", attributeOverride.getColumn().getDefaultName());
-		assertEquals(TYPE_NAME, attributeOverride.getColumn().getDefaultTable());
+		assertEquals("city", attributeOverride.getColumn().getName());
+		assertEquals(TYPE_NAME, attributeOverride.getColumn().getTable());
+		assertEquals(null, attributeOverride.getColumn().getColumnDefinition());
+		assertEquals(true, attributeOverride.getColumn().isInsertable());
+		assertEquals(true, attributeOverride.getColumn().isUpdatable());
+		assertEquals(false, attributeOverride.getColumn().isUnique());
+		assertEquals(true, attributeOverride.getColumn().isNullable());
+		assertEquals(255, attributeOverride.getColumn().getLength());
+		assertEquals(0, attributeOverride.getColumn().getPrecision());
+		assertEquals(0, attributeOverride.getColumn().getScale());
 		attributeOverride = virtualAttributeOverrides.next();
 		assertEquals("state", attributeOverride.getName());
 		assertEquals("MY_STATE_COLUMN", attributeOverride.getColumn().getDefaultName());
