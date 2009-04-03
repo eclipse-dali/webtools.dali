@@ -26,14 +26,19 @@ import org.eclipse.jpt.ui.internal.widgets.AddRemovePane;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.ui.internal.widgets.PostExecution;
 import org.eclipse.jpt.ui.internal.widgets.AddRemovePane.Adapter;
+import org.eclipse.jpt.utility.internal.model.value.CachingTransformationPropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListPropertyValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyListValueModelAdapter;
+import org.eclipse.jpt.utility.internal.model.value.ReadOnlyWritablePropertyValueModelWrapper;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.ValueListAdapter;
 import org.eclipse.jpt.utility.internal.model.value.swing.ObjectListSelectionModel;
+import org.eclipse.jpt.utility.model.event.StateChangeEvent;
+import org.eclipse.jpt.utility.model.listener.StateChangeListener;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
@@ -351,18 +356,58 @@ public class JoinColumnComposite
 	
 	
 	private class JoinColumnPaneEnablerHolder 
-		extends ListPropertyValueModelAdapter<Boolean>
-		implements PropertyValueModel<Boolean> 
+		extends CachingTransformationPropertyValueModel<JoinColumnJoiningStrategy, Boolean>
 	{
+		private StateChangeListener stateChangeListener;
+		
+		
 		public JoinColumnPaneEnablerHolder() {
-			super(buildSpecifiedJoinColumnsListHolder());
+			super(
+				new ValueListAdapter<JoinColumnJoiningStrategy>(
+					new ReadOnlyWritablePropertyValueModelWrapper(getSubjectHolder()), 
+					JoinColumnJoiningStrategy.SPECIFIED_JOIN_COLUMNS_LIST));
+			this.stateChangeListener = buildStateChangeListener();
+		}
+		
+		
+		private StateChangeListener buildStateChangeListener() {
+			return new StateChangeListener() {
+				public void stateChanged(StateChangeEvent event) {
+					valueStateChanged(event);
+				}
+			};
+		}
+		
+		private void valueStateChanged(StateChangeEvent event) {
+			Object oldValue = this.cachedValue;
+			Object newValue = transformNew(this.valueHolder.getValue());
+			firePropertyChanged(VALUE, oldValue, newValue);
 		}
 		
 		@Override
-		protected Boolean buildValue() {
-			boolean virtual = getSubject().getRelationshipReference().getRelationshipMapping().getPersistentAttribute().isVirtual();
-			return Boolean.valueOf(!virtual && this.listHolder.size() > 0);
+		protected Boolean transform(JoinColumnJoiningStrategy value) {
+			if (value == null) {
+				return false;
+			}
+			return super.transform(value);
 		}
-
+		
+		@Override
+		protected Boolean transform_(JoinColumnJoiningStrategy value) {
+			boolean virtual = value.getRelationshipReference().getRelationshipMapping().getPersistentAttribute().isVirtual();
+			return Boolean.valueOf(! virtual && value.specifiedJoinColumnsSize() > 0);
+		}
+		
+		@Override
+		protected void engageValueHolder() {
+			super.engageValueHolder();
+			this.valueHolder.addStateChangeListener(this.stateChangeListener);
+		}
+		
+		@Override
+		protected void disengageValueHolder() {
+			this.valueHolder.removeStateChangeListener(this.stateChangeListener);
+			super.disengageValueHolder();
+		}
 	}
 }
