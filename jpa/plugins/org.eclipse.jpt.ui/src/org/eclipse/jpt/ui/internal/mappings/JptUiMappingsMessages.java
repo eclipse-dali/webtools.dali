@@ -20,6 +20,17 @@ import org.eclipse.osgi.util.NLS;
 public class JptUiMappingsMessages {
 
 	public static String AccessTypeCombo_default;
+	public static String AddQueryDialog_name;
+	public static String AddQueryDialog_queryType;
+ 	public static String AddQueryDialog_title;
+	public static String AddQueryDialog_descriptionTitle;
+	public static String AddQueryDialog_description;
+	public static String AddQueryDialog_namedQuery;
+	public static String AddQueryDialog_namedNativeQuery;
+	public static String QueryStateObject_nameMustBeSpecified;
+	public static String QueryStateObject_typeMustBeSpecified;
+	public static String NamedQueryComposite_nameTextLabel;
+
 	public static String AttributeOverridesComposite_attributeOverridesGroup;
 	public static String AttributeOverridesComposite_attributeOverridesSection;
 	public static String AttributeOverridesComposite_overrideDefault;
@@ -246,23 +257,7 @@ public class JptUiMappingsMessages {
 	public static String PrimaryKeyJoinColumnsComposite_mappingBetweenTwoParamsSecDefault;
 	public static String PrimaryKeyJoinColumnsComposite_overrideDefaultPrimaryKeyJoinColumns;
 	public static String PrimaryKeyJoinColumnsComposite_primaryKeyJoinColumn;
-	public static String QueriesComposite_addNamedNativeQuery;
-	public static String QueriesComposite_addNamedNativeQueryDescription;
-	public static String QueriesComposite_addNamedNativeQueryDescriptionTitle;
-	public static String QueriesComposite_addNamedNativeQueryTitle;
-	public static String QueriesComposite_addNamedQuery;
-	public static String QueriesComposite_addNamedQueryDescription;
-	public static String QueriesComposite_addNamedQueryDescriptionTitle;
-	public static String QueriesComposite_addNamedQueryTitle;
 	public static String QueriesComposite_displayString;
-	public static String QueriesComposite_edit;
-	public static String QueriesComposite_editNamedNativeQueryDescription;
-	public static String QueriesComposite_editNamedNativeQueryDescriptionTitle;
-	public static String QueriesComposite_editNamedNativeQueryTitle;
-	public static String QueriesComposite_editNamedQueryDescription;
-	public static String QueriesComposite_editNamedQueryDescriptionTitle;
-	public static String QueriesComposite_editNamedQueryTitle;
-	public static String QueriesComposite_label;
 	public static String QueryHintsComposite_nameColumn;
 	public static String QueryHintsComposite_valueColumn;
 	public static String SchemaChooser_label;

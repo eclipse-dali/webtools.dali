@@ -23,6 +23,8 @@ import org.eclipse.jpt.db.SchemaContainer;
 public interface Generator
 	extends JpaContextNode
 {
+	String SEQUENCE_GENERATOR = "sequenceGenerator"; //$NON-NLS-1$
+	String TABLE_GENERATOR = "tableGenerator"; //$NON-NLS-1$
 
 	// ********** name **********
 

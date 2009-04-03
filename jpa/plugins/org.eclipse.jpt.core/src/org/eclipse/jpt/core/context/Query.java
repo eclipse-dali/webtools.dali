@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -23,6 +23,9 @@ import java.util.ListIterator;
 public interface Query
 	extends JpaContextNode
 {
+	String NAMED_QUERY="namedQuery"; //$NON-NLS-1$
+	String NAMED_NATIVE_QUERY="namedNativeQuery"; //$NON-NLS-1$
+	
 	// **************** name ***************************************************
 	
 	String NAME_PROPERTY = "name"; //$NON-NLS-1$

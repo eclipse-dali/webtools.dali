@@ -118,33 +118,32 @@ public class NamedNativeQueryPropertyComposite extends Pane<NamedNativeQuery>
 		return new PropertyAspectAdapter<NamedNativeQuery, String>(getSubjectHolder(), Query.QUERY_PROPERTY) {
 			@Override
 			protected String buildValue_() {
-				return subject.getQuery();
+				return this.subject.getQuery();
 			}
 
 			@Override
 			protected void setValue_(String value) {
-				subject.setQuery(value);
+				this.subject.setQuery(value);
 			}
 		};
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	public void enableWidgets(boolean enabled) {
 		super.enableWidgets(enabled);
-		resultClassChooserPane.enableWidgets(enabled);
+		this.resultClassChooserPane.enableWidgets(enabled);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected void initializeLayout(Composite container) {
+		
+		addLabeledText(
+			container, 
+			JptUiMappingsMessages.NamedQueryComposite_nameTextLabel, 
+			buildNameTextHolder());
 
 		// Result class chooser
-		resultClassChooserPane = addClassChooser(container);
+		this.resultClassChooserPane = addClassChooser(container);
 
 		// Query text area
 		addLabeledMultiLineText(
@@ -162,5 +161,23 @@ public class NamedNativeQueryPropertyComposite extends Pane<NamedNativeQuery>
 		);
 
 		new QueryHintsComposite(this, container);
+	}
+	
+	protected WritablePropertyValueModel<String> buildNameTextHolder() {
+		return new PropertyAspectAdapter<NamedNativeQuery, String>(
+				getSubjectHolder(), Query.NAME_PROPERTY) {
+			@Override
+			protected String buildValue_() {
+				return this.subject.getName();
+			}
+		
+			@Override
+			protected void setValue_(String value) {
+				if (value.length() == 0) {
+					value = null;
+				}
+				this.subject.setName(value);
+			}
+		};
 	}
 }

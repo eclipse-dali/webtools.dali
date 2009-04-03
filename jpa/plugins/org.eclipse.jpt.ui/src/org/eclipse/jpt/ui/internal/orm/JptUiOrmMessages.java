@@ -33,24 +33,8 @@ public class JptUiOrmMessages {
 	public static String EntityMappingsPage_schemaNoDefaultSpecified;
 	public static String MetadataCompleteComposite_metadataComplete;
 	public static String MetadataCompleteComposite_metadataCompleteWithDefault;
-	public static String OrmGeneratorsComposite_addSequenceGenerator;
-	public static String OrmGeneratorsComposite_addSequenceGeneratorDescription;
-	public static String OrmGeneratorsComposite_addSequenceGeneratorDescriptionTitle;
-	public static String OrmGeneratorsComposite_addSequenceGeneratorTitle;
-	public static String OrmGeneratorsComposite_addTableGenerator;
-	public static String OrmGeneratorsComposite_addTableGeneratorDescription;
-	public static String OrmGeneratorsComposite_addTableGeneratorDescriptionTitle;
-	public static String OrmGeneratorsComposite_addTableGeneratorTitle;
 	public static String OrmGeneratorsComposite_displayString;
-	public static String OrmGeneratorsComposite_edit;
-	public static String OrmGeneratorsComposite_editSequenceGeneratorDescription;
-	public static String OrmGeneratorsComposite_editSequenceGeneratorDescriptionTitle;
-	public static String OrmGeneratorsComposite_editSequenceGeneratorTitle;
-	public static String OrmGeneratorsComposite_editTableGeneratorDescription;
-	public static String OrmGeneratorsComposite_editTableGeneratorDescriptionTitle;
-	public static String OrmGeneratorsComposite_editTableGeneratorTitle;
 	public static String OrmGeneratorsComposite_groupBox;
-	public static String OrmGeneratorsComposite_label;
 	public static String OrmJavaAttributeChooser_javaAttribute;
 	public static String OrmJavaClassChooser_javaClass;
 	public static String OrmQueriesComposite_groupBox;
@@ -73,6 +57,16 @@ public class JptUiOrmMessages {
 	public static String PersistenceUnitMetadataComposite_xmlMappingMetadataCompleteCheckBox;
 	public static String PersistenceUnitMetadataSection_catalogDefault;
 	public static String PersistenceUnitMetadataSection_schemaDefault;
+
+	public static String AddGeneratorDialog_name;
+	public static String AddGeneratorDialog_generatorType;
+ 	public static String AddGeneratorDialog_title;
+	public static String AddGeneratorDialog_descriptionTitle;
+	public static String AddGeneratorDialog_description;
+	public static String AddGeneratorDialog_tableGenerator;
+	public static String AddGeneratorDialog_sequenceGenerator;
+	public static String GeneratorStateObject_nameMustBeSpecified;
+	public static String GeneratorStateObject_typeMustBeSpecified;
 
 	private static final String BUNDLE_NAME = "jpt_ui_orm"; //$NON-NLS-1$
 	private static final Class<?> BUNDLE_CLASS = JptUiOrmMessages.class;

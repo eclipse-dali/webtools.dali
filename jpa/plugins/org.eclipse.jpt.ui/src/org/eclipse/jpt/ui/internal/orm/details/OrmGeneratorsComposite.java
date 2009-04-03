@@ -10,11 +10,11 @@
 package org.eclipse.jpt.ui.internal.orm.details;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.core.context.Generator;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.orm.OrmGenerator;
@@ -24,14 +24,10 @@ import org.eclipse.jpt.ui.internal.orm.JptUiOrmMessages;
 import org.eclipse.jpt.ui.internal.util.ControlSwitcher;
 import org.eclipse.jpt.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveListPane;
-import org.eclipse.jpt.ui.internal.widgets.NewNameDialog;
-import org.eclipse.jpt.ui.internal.widgets.NewNameDialogBuilder;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
-import org.eclipse.jpt.ui.internal.widgets.PostExecution;
 import org.eclipse.jpt.ui.internal.widgets.AddRemovePane.Adapter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.Transformer;
-import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.jpt.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
@@ -44,7 +40,6 @@ import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.part.PageBook;
@@ -96,31 +91,33 @@ public class OrmGeneratorsComposite extends Pane<EntityMappings>
 
 		super(parentPane, parent, false);
 	}
-
-	private void addSequenceGenerator(ObjectListSelectionModel listSelectionModel) {
-
-		NewNameDialogBuilder builder = new NewNameDialogBuilder(getShell());
-		builder.setDialogTitle(JptUiOrmMessages.OrmGeneratorsComposite_addSequenceGeneratorTitle);
-		builder.setDescription(JptUiOrmMessages.OrmGeneratorsComposite_addSequenceGeneratorDescription);
-		builder.setDescriptionTitle(JptUiOrmMessages.OrmGeneratorsComposite_addSequenceGeneratorDescriptionTitle);
-		builder.setLabelText(JptUiOrmMessages.OrmGeneratorsComposite_label);
-		builder.setExistingNames(sequenceGeneratorNames());
-
-		NewNameDialog dialog = builder.buildDialog();
-		dialog.openDialog(buildNewSequenceGeneratorPostExecution(listSelectionModel));
+	
+	private void addGenerator(ObjectListSelectionModel listSelectionModel) {
+		addGeneratorFromDialog(listSelectionModel, buildAddGeneratorDialog());
+	}
+	
+	protected AddGeneratorDialog buildAddGeneratorDialog() {
+		return new AddGeneratorDialog(getControl().getShell());
 	}
 
-	private void addTableGenerator(ObjectListSelectionModel listSelectionModel) {
-
-		NewNameDialogBuilder builder = new NewNameDialogBuilder(getShell());
-		builder.setDialogTitle(JptUiOrmMessages.OrmGeneratorsComposite_addTableGeneratorTitle);
-		builder.setDescription(JptUiOrmMessages.OrmGeneratorsComposite_addTableGeneratorDescription);
-		builder.setDescriptionTitle(JptUiOrmMessages.OrmGeneratorsComposite_addTableGeneratorDescriptionTitle);
-		builder.setLabelText(JptUiOrmMessages.OrmGeneratorsComposite_label);
-		builder.setExistingNames(tableGeneratorNames());
-
-		NewNameDialog dialog = builder.buildDialog();
-		dialog.openDialog(buildNewTableGeneratorPostExecution(listSelectionModel));
+	protected void addGeneratorFromDialog(ObjectListSelectionModel listSelectionModel, AddGeneratorDialog dialog) {
+		if (dialog.open() != Window.OK) {
+			return;
+		}
+		String generatorType = dialog.getGeneratorType();
+		OrmGenerator generator;
+		if (generatorType == Generator.TABLE_GENERATOR) {
+			generator = this.getSubject().addTableGenerator(getSubject().tableGeneratorsSize());
+		}
+		else if (generatorType == Generator.SEQUENCE_GENERATOR) {
+			generator = this.getSubject().addSequenceGenerator(getSubject().sequenceGeneratorsSize());
+		}
+		else {
+			throw new IllegalArgumentException();
+		}
+		generator.setName(dialog.getName());
+		this.generatorHolder.setValue(generator);//so that it gets selected in the List for the user to edit
+		listSelectionModel.setSelectedValue(generator);
 	}
 
 	private ListValueModel<OrmGenerator> buildDisplayableGeneratorListHolder() {
@@ -130,44 +127,14 @@ public class OrmGeneratorsComposite extends Pane<EntityMappings>
 		);
 	}
 
-	private PostExecution<NewNameDialog> buildEditGeneratorPostExecution() {
-		return new PostExecution<NewNameDialog>() {
-			public void execute(NewNameDialog dialog) {
-				if (dialog.wasConfirmed()) {
-					OrmGenerator generator = generatorHolder.getValue();
-					generator.setName(dialog.getName());
-				}
-			}
-		};
-	}
-
 	private Adapter buildGeneratorAdapter() {
 
 		return new AddRemoveListPane.AbstractAdapter() {
 
-			@Override
-			public String addButtonText() {
-				return JptUiOrmMessages.OrmGeneratorsComposite_addSequenceGenerator;
-			}
-
 			public void addNewItem(ObjectListSelectionModel listSelectionModel) {
-				addSequenceGenerator(listSelectionModel);
+				addGenerator(listSelectionModel);
 			}
 
-			@Override
-			public boolean hasOptionalButton() {
-				return true;
-			}
-
-			@Override
-			public String optionalButtonText() {
-				return JptUiOrmMessages.OrmGeneratorsComposite_edit;
-			}
-
-			@Override
-			public void optionOnSelection(ObjectListSelectionModel listSelectionModel) {
-				editGenerator(listSelectionModel);
-			}
 
 			public void removeSelectedItems(ObjectListSelectionModel listSelectionModel) {
 				for (Object item : listSelectionModel.selectedValues()) {
@@ -218,40 +185,6 @@ public class OrmGeneratorsComposite extends Pane<EntityMappings>
 		return new CompositeListValueModel<ListValueModel<? extends OrmGenerator>, OrmGenerator>(list);
 	}
 
-	private PostExecution<NewNameDialog> buildNewSequenceGeneratorPostExecution(final ObjectListSelectionModel listSelectionModel) {
-		return new PostExecution<NewNameDialog>() {
-			public void execute(NewNameDialog dialog) {
-				if (dialog.wasConfirmed()) {
-					OrmSequenceGenerator generator = getSubject().addSequenceGenerator(getSubject().sequenceGeneratorsSize());
-					generator.setName(dialog.getName());
-					generatorHolder.setValue(generator);
-					listSelectionModel.setSelectedValue(generator);
-				}
-			}
-		};
-	}
-
-	private Runnable buildNewTableGeneratorAction(final ObjectListSelectionModel selectionModel) {
-		return new Runnable() {
-			public void run() {
-				addTableGenerator(selectionModel);
-			}
-		};
-	}
-
-	private PostExecution<NewNameDialog> buildNewTableGeneratorPostExecution(final ObjectListSelectionModel listSelectionModel) {
-		return new PostExecution<NewNameDialog>() {
-			public void execute(NewNameDialog dialog) {
-				if (dialog.wasConfirmed()) {
-					OrmTableGenerator generator = getSubject().addTableGenerator(getSubject().tableGeneratorsSize());
-					generator.setName(dialog.getName());
-					generatorHolder.setValue(generator);
-					listSelectionModel.setSelectedValue(generator);
-				}
-			}
-		};
-	}
-
 	private PropertyValueModel<Boolean> buildPaneEnablerHolder() {
 		return new TransformationPropertyValueModel<EntityMappings, Boolean>(getSubjectHolder()) {
 			@Override
@@ -279,7 +212,7 @@ public class OrmGeneratorsComposite extends Pane<EntityMappings>
 	}
 
 	private PropertyValueModel<OrmSequenceGenerator> buildSequenceGeneratorHolder() {
-		return new TransformationPropertyValueModel<OrmGenerator, OrmSequenceGenerator>(generatorHolder) {
+		return new TransformationPropertyValueModel<OrmGenerator, OrmSequenceGenerator>(this.generatorHolder) {
 			@Override
 			protected OrmSequenceGenerator transform_(OrmGenerator value) {
 				return (value instanceof OrmSequenceGenerator) ? (OrmSequenceGenerator) value : null;
@@ -294,12 +227,12 @@ public class OrmGeneratorsComposite extends Pane<EntityMappings>
 		{
 			@Override
 			protected ListIterator<OrmSequenceGenerator> listIterator_() {
-				return subject.sequenceGenerators();
+				return this.subject.sequenceGenerators();
 			}
 
 			@Override
 			protected int size_() {
-				return subject.sequenceGeneratorsSize();
+				return this.subject.sequenceGeneratorsSize();
 			}
 		};
 	}
@@ -320,53 +253,23 @@ public class OrmGeneratorsComposite extends Pane<EntityMappings>
 		{
 			@Override
 			protected ListIterator<OrmTableGenerator> listIterator_() {
-				return subject.tableGenerators();
+				return this.subject.tableGenerators();
 			}
 
 			@Override
 			protected int size_() {
-				return subject.tableGeneratorsSize();
+				return this.subject.tableGeneratorsSize();
 			}
 		};
 	}
 
-	private void editGenerator(ObjectListSelectionModel listSelectionModel) {
 
-		OrmGenerator generator = generatorHolder.getValue();
-
-		NewNameDialogBuilder builder = new NewNameDialogBuilder(getShell());
-		builder.setLabelText(JptUiOrmMessages.OrmGeneratorsComposite_label);
-		builder.setName(generator.getName());
-
-		if (generator instanceof OrmSequenceGenerator) {
-			builder.setDialogTitle(JptUiOrmMessages.OrmGeneratorsComposite_editSequenceGeneratorTitle);
-			builder.setDescription(JptUiOrmMessages.OrmGeneratorsComposite_editSequenceGeneratorDescription);
-			builder.setDescriptionTitle(JptUiOrmMessages.OrmGeneratorsComposite_editSequenceGeneratorDescriptionTitle);
-			builder.setExistingNames(sequenceGeneratorNames());
-		}
-		else {
-			builder.setDialogTitle(JptUiOrmMessages.OrmGeneratorsComposite_editTableGeneratorTitle);
-			builder.setDescription(JptUiOrmMessages.OrmGeneratorsComposite_editTableGeneratorDescription);
-			builder.setDescriptionTitle(JptUiOrmMessages.OrmGeneratorsComposite_editTableGeneratorDescriptionTitle);
-			builder.setExistingNames(tableGeneratorNames());
-		}
-
-		NewNameDialog dialog = builder.buildDialog();
-		dialog.openDialog(buildEditGeneratorPostExecution());
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected void initialize() {
 		super.initialize();
-		generatorHolder = buildGeneratorHolder();
+		this.generatorHolder = buildGeneratorHolder();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected void initializeLayout(Composite container) {
 
@@ -376,7 +279,7 @@ public class OrmGeneratorsComposite extends Pane<EntityMappings>
 		);
 
 		// List pane
-		listPane = addListPane(container);
+		this.listPane = addListPane(container);
 		installPaneEnabler();
 
 		// Property pane
@@ -389,21 +292,21 @@ public class OrmGeneratorsComposite extends Pane<EntityMappings>
 		pageBook.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		// Sequence Generator property pane
-		sequenceGeneratorPane = new OrmSequenceGeneratorComposite(
+		this.sequenceGeneratorPane = new OrmSequenceGeneratorComposite(
 			this,
 			sequenceGeneratorHolder,
 			pageBook
 		);
 
 		// Table Generator property pane
-		tableGeneratorPane = new OrmTableGeneratorComposite(
+		this.tableGeneratorPane = new OrmTableGeneratorComposite(
 			this,
 			tableGeneratorHolder,
 			pageBook
 		);
 
-		addAlignRight(sequenceGeneratorPane);
-		addAlignRight(tableGeneratorPane);
+		addAlignRight(this.sequenceGeneratorPane);
+		addAlignRight(this.tableGeneratorPane);
 		installPaneSwitcher(pageBook);
 	}
 
@@ -414,52 +317,19 @@ public class OrmGeneratorsComposite extends Pane<EntityMappings>
 			container,
 			buildGeneratorAdapter(),
 			buildDisplayableGeneratorListHolder(),
-			generatorHolder,
+			this.generatorHolder,
 			buildGeneratorLabelProvider()
-		)
-		{
-			@Override
-			protected void addCustomButtonAfterAddButton(Composite container,
-			                                             String helpId) {
-
-				Button button = addButton(
-					container,
-					JptUiOrmMessages.OrmGeneratorsComposite_addTableGenerator,
-					helpId,
-					buildNewTableGeneratorAction(getSelectionModel())
-				);
-
-				addAlignRight(button);
-			}
-		};
+		);
 	}
 
 	private void installPaneEnabler() {
 		new PaneEnabler(
 			buildPaneEnablerHolder(),
-			listPane
+			this.listPane
 		);
 	}
 
 	private void installPaneSwitcher(PageBook pageBook) {
-		new ControlSwitcher(generatorHolder, buildPaneTransformer(), pageBook);
-	}
-
-	private Iterator<String> sequenceGeneratorNames() {
-		return new TransformationIterator<OrmSequenceGenerator, String>(getSubject().sequenceGenerators()) {
-			@Override
-			protected String transform(OrmSequenceGenerator next) {
-				return next.getName();
-			}
-		};
-	}
-
-	private Iterator<String> tableGeneratorNames() {
-		return new TransformationIterator<OrmTableGenerator, String>(getSubject().tableGenerators()) {
-			@Override
-			protected String transform(OrmTableGenerator next) {
-				return next.getName();
-			}
-		};
+		new ControlSwitcher(this.generatorHolder, buildPaneTransformer(), pageBook);
 	}
 }

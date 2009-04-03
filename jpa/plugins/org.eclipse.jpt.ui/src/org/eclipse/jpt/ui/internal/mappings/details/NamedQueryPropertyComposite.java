@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,7 @@
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.context.NamedQuery;
+import org.eclipse.jpt.core.context.Query;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
@@ -60,24 +61,26 @@ public class NamedQueryPropertyComposite extends Pane<NamedQuery>
 	}
 
 	private WritablePropertyValueModel<String> buildQueryHolder() {
-		return new PropertyAspectAdapter<NamedQuery, String>(getSubjectHolder(), NamedQuery.QUERY_PROPERTY) {
+		return new PropertyAspectAdapter<NamedQuery, String>(getSubjectHolder(), Query.QUERY_PROPERTY) {
 			@Override
 			protected String buildValue_() {
-				return subject.getQuery();
+				return this.subject.getQuery();
 			}
 
 			@Override
 			protected void setValue_(String value) {
-				subject.setQuery(value);
+				this.subject.setQuery(value);
 			}
 		};
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected void initializeLayout(Composite container) {
+		
+		addLabeledText(
+			container, 
+			JptUiMappingsMessages.NamedQueryComposite_nameTextLabel, 
+			buildNameTextHolder());
 
 		// Query text area
 		addLabeledMultiLineText(
@@ -95,5 +98,23 @@ public class NamedQueryPropertyComposite extends Pane<NamedQuery>
 		);
 
 		new QueryHintsComposite(this, container);
+	}
+		
+	protected WritablePropertyValueModel<String> buildNameTextHolder() {
+		return new PropertyAspectAdapter<NamedQuery, String>(
+				getSubjectHolder(), Query.NAME_PROPERTY) {
+			@Override
+			protected String buildValue_() {
+				return this.subject.getName();
+			}
+		
+			@Override
+			protected void setValue_(String value) {
+				if (value.length() == 0) {
+					value = null;
+				}
+				this.subject.setName(value);
+			}
+		};
 	}
 }
