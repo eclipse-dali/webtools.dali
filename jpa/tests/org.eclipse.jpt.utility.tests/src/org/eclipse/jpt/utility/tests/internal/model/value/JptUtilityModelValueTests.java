@@ -46,6 +46,7 @@ public class JptUtilityModelValueTests {
 		suite.addTestSuite(PropertyAspectAdapterTests.class);
 		suite.addTestSuite(PropertyCollectionValueModelAdapterTests.class);
 		suite.addTestSuite(PropertyListValueModelAdapterTests.class);
+		suite.addTestSuite(ReadOnlyWritablePropertyValueModelWrapperTests.class);
 		suite.addTestSuite(StaticCollectionValueModelTests.class);
 		suite.addTestSuite(StaticListValueModelTests.class);
 		suite.addTestSuite(SimpleCollectionValueModelTests.class);
