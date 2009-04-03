@@ -16,9 +16,9 @@ import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 
 /**
  * A simple implementation of {@link WritablePropertyValueModel} that actually
- * isn't ... writable.  It can however be used in places that require a 
- * {@link WritablePropertyValueModel} where the developer is sure that no attempt 
- * will be made to write to it.
+ * ... <i>isn't</i> ... writable.  It can however be used in places that require a 
+ * {@link WritablePropertyValueModel} and where the developer is sure that no 
+ * attempt will be made to write to it.
  */
 public class ReadOnlyWritablePropertyValueModelWrapper<T>
 	extends PropertyValueModelWrapper<T>
