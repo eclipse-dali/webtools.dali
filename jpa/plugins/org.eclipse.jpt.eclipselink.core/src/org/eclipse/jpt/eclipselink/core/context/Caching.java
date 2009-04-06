@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -34,7 +34,7 @@ public interface Caching extends JpaContextNode
 	boolean isShared();
 	
 	boolean isDefaultShared();
-		String DEFAULT_SHARED_PROPERTY = "defaultSharedProperty"; //$NON-NLS-1$
+		String DEFAULT_SHARED_PROPERTY = "defaultShared"; //$NON-NLS-1$
 		boolean DEFAULT_SHARED = true;
 	
 	Boolean getSpecifiedShared();
@@ -46,7 +46,7 @@ public interface Caching extends JpaContextNode
 	 * @param newSpecifiedShared
 	 */
 	void setSpecifiedShared(Boolean newSpecifiedShared);
-		String SPECIFIED_SHARED_PROPERTY = "specifiedSharedProperty"; //$NON-NLS-1$
+		String SPECIFIED_SHARED_PROPERTY = "specifiedShared"; //$NON-NLS-1$
 	
 	
 	//***************** cache type ************************
@@ -58,12 +58,12 @@ public interface Caching extends JpaContextNode
 	CacheType getType();
 	
 	CacheType getDefaultType();		
-		String DEFAULT_TYPE_PROPERTY = "defaultTypeProperty"; //$NON-NLS-1$
+		String DEFAULT_TYPE_PROPERTY = "defaultType"; //$NON-NLS-1$
 		CacheType DEFAULT_TYPE = CacheType.SOFT_WEAK;
 		
 	CacheType getSpecifiedType();	
 	void setSpecifiedType(CacheType newSpecifiedType);
-		String SPECIFIED_TYPE_PROPERTY = "specifiedTypeProperty"; //$NON-NLS-1$
+		String SPECIFIED_TYPE_PROPERTY = "specifiedType"; //$NON-NLS-1$
 	
 	
 	//***************** size ************************
@@ -76,11 +76,11 @@ public interface Caching extends JpaContextNode
 
 	int getDefaultSize();
 	int DEFAULT_SIZE = 100;
-		String DEFAULT_SIZE_PROPERTY = "defaultSizeProperty"; //$NON-NLS-1$
+		String DEFAULT_SIZE_PROPERTY = "defaultSize"; //$NON-NLS-1$
 
 	Integer getSpecifiedSize();
 	void setSpecifiedSize(Integer newSpecifiedSize);
-		String SPECIFIED_SIZE_PROPERTY = "spcifiedSizeProperty"; //$NON-NLS-1$
+		String SPECIFIED_SIZE_PROPERTY = "specifiedSize"; //$NON-NLS-1$
 	
 	//***************** always refresh ************************		
 		
@@ -91,12 +91,12 @@ public interface Caching extends JpaContextNode
 	boolean isAlwaysRefresh();
 	
 	boolean isDefaultAlwaysRefresh();
-		String DEFAULT_ALWAYS_REFRESH_PROPERTY = "defaultAlwaysRefreshProperty"; //$NON-NLS-1$
+		String DEFAULT_ALWAYS_REFRESH_PROPERTY = "defaultAlwaysRefresh"; //$NON-NLS-1$
 		boolean DEFAULT_ALWAYS_REFRESH = false;
 	
 	Boolean getSpecifiedAlwaysRefresh();
 	void setSpecifiedAlwaysRefresh(Boolean newSpecifiedAlwaysRefresh);
-		String SPECIFIED_ALWAYS_REFRESH_PROPERTY = "specifiedAlwaysRefreshProperty"; //$NON-NLS-1$
+		String SPECIFIED_ALWAYS_REFRESH_PROPERTY = "specifiedAlwaysRefresh"; //$NON-NLS-1$
 
 
 	//***************** refresh only if newer ************************
@@ -108,12 +108,12 @@ public interface Caching extends JpaContextNode
 	boolean isRefreshOnlyIfNewer();
 	
 	boolean isDefaultRefreshOnlyIfNewer();
-		String DEFAULT_REFRESH_ONLY_IF_NEWER_PROPERTY = "defaultRefreshOnlyIfNewerProperty"; //$NON-NLS-1$
+		String DEFAULT_REFRESH_ONLY_IF_NEWER_PROPERTY = "defaultRefreshOnlyIfNewer"; //$NON-NLS-1$
 		boolean DEFAULT_REFRESH_ONLY_IF_NEWER = false;
 	
 	Boolean getSpecifiedRefreshOnlyIfNewer();
 	void setSpecifiedRefreshOnlyIfNewer(Boolean newSpecifiedRefreshOnlyIfNewer);
-		String SPECIFIED_REFRESH_ONLY_IF_NEWER_PROPERTY = "specifiedRefreshOnlyIfNewerProperty"; //$NON-NLS-1$
+		String SPECIFIED_REFRESH_ONLY_IF_NEWER_PROPERTY = "specifiedRefreshOnlyIfNewer"; //$NON-NLS-1$
 
 		
 	//***************** disable hits ************************
@@ -125,12 +125,12 @@ public interface Caching extends JpaContextNode
 	boolean isDisableHits();
 	
 	boolean isDefaultDisableHits();
-		String DEFAULT_DISABLE_HITS_PROPERTY = "defaultDisableHitsProperty"; //$NON-NLS-1$
+		String DEFAULT_DISABLE_HITS_PROPERTY = "defaultDisableHits"; //$NON-NLS-1$
 		boolean DEFAULT_DISABLE_HITS = false;
 	
 	Boolean getSpecifiedDisableHits();
 	void setSpecifiedDisableHits(Boolean newSpecifiedDisableHits);
-		String SPECIFIED_DISABLE_HITS_PROPERTY = "specifiedDisableHitsProperty"; //$NON-NLS-1$
+		String SPECIFIED_DISABLE_HITS_PROPERTY = "specifiedDisableHits"; //$NON-NLS-1$
 
 		
 	//***************** coordination type ************************
@@ -142,12 +142,12 @@ public interface Caching extends JpaContextNode
 	CacheCoordinationType getCoordinationType();
 	
 	CacheCoordinationType getDefaultCoordinationType();		
-		String DEFAULT_COORDINATION_TYPE_PROPERTY = "defaultCoordinationTypeProperty"; //$NON-NLS-1$
+		String DEFAULT_COORDINATION_TYPE_PROPERTY = "defaultCoordinationType"; //$NON-NLS-1$
 		CacheCoordinationType DEFAULT_COORDINATION_TYPE = CacheCoordinationType.SEND_OBJECT_CHANGES;
 		
 	CacheCoordinationType getSpecifiedCoordinationType();	
 	void setSpecifiedCoordinationType(CacheCoordinationType newSpecifiedCoordinationType);
-		String SPECIFIED_COORDINATION_TYPE_PROPERTY = "specifiedCoordinationTypeProperty"; //$NON-NLS-1$
+		String SPECIFIED_COORDINATION_TYPE_PROPERTY = "specifiedCoordinationType"; //$NON-NLS-1$
 
 			
 	//***************** existence checking ************************
@@ -159,12 +159,12 @@ public interface Caching extends JpaContextNode
 	ExistenceType getExistenceType();
 	
 	ExistenceType getDefaultExistenceType();		
-		String DEFAULT_EXISTENCE_TYPE_PROPERTY = "defaultExistenceTypeProperty"; //$NON-NLS-1$
+		String DEFAULT_EXISTENCE_TYPE_PROPERTY = "defaultExistenceType"; //$NON-NLS-1$
 		ExistenceType DEFAULT_EXISTENCE_TYPE = ExistenceType.CHECK_DATABASE;
 		
 	ExistenceType getSpecifiedExistenceType();	
 	void setSpecifiedExistenceType(ExistenceType newSpecifiedExistenceType);
-		String SPECIFIED_EXISTENCE_TYPE_PROPERTY = "specifiedExistenceTypeProperty"; //$NON-NLS-1$
+		String SPECIFIED_EXISTENCE_TYPE_PROPERTY = "specifiedExistenceType"; //$NON-NLS-1$
 
 		
 	//***************** expiry ************************
@@ -181,7 +181,7 @@ public interface Caching extends JpaContextNode
 	 * @param expiry
 	 */
 	void setExpiry(Integer expiry);
-		String EXPIRY_PROPERTY = "expiryProperty"; //$NON-NLS-1$
+		String EXPIRY_PROPERTY = "expiry"; //$NON-NLS-1$
 	
 		
 	/**
@@ -201,5 +201,5 @@ public interface Caching extends JpaContextNode
 	 * Removes the Cache expiryTimeOfDay annotation/xml element
 	 */
 	void removeExpiryTimeOfDay();
-		String EXPIRY_TIME_OF_DAY_PROPERTY = "expiryTimeOfDayProperty"; //$NON-NLS-1$
+		String EXPIRY_TIME_OF_DAY_PROPERTY = "expiryTimeOfDay"; //$NON-NLS-1$
 }

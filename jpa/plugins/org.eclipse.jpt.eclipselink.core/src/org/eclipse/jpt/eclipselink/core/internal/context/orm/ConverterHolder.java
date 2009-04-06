@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -51,7 +51,7 @@ public interface ConverterHolder extends JpaContextNode
 	 */
 	void moveCustomConverter(int targetIndex, int sourceIndex);
 
-	String CUSTOM_CONVERTERS_LIST = "customConvertersList"; //$NON-NLS-1$
+	String CUSTOM_CONVERTERS_LIST = "customConverters"; //$NON-NLS-1$
 
 	
 	//************ object type converters *********************
@@ -87,7 +87,7 @@ public interface ConverterHolder extends JpaContextNode
 	 */
 	void moveObjectTypeConverter(int targetIndex, int sourceIndex);
 
-	String OBJECT_TYPE_CONVERTERS_LIST = "objectTypeConvertersList"; //$NON-NLS-1$
+	String OBJECT_TYPE_CONVERTERS_LIST = "objectTypeConverters"; //$NON-NLS-1$
 	
 	
 	//************ struct converters *********************
@@ -123,7 +123,7 @@ public interface ConverterHolder extends JpaContextNode
 	 */
 	void moveStructConverter(int targetIndex, int sourceIndex);
 
-	String STRUCT_CONVERTERS_LIST = "structConvertersList"; //$NON-NLS-1$
+	String STRUCT_CONVERTERS_LIST = "structConverters"; //$NON-NLS-1$
 
 	
 	//************ type converters *********************
@@ -159,6 +159,6 @@ public interface ConverterHolder extends JpaContextNode
 	 */
 	void moveTypeConverter(int targetIndex, int sourceIndex);
 
-	String TYPE_CONVERTERS_LIST = "typeConvertersList"; //$NON-NLS-1$
+	String TYPE_CONVERTERS_LIST = "typeConverters"; //$NON-NLS-1$
 
 }

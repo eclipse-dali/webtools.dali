@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -582,6 +582,67 @@ public class StringToolsTests extends TestCase {
 	private void verifyRemoveAllWhitespaceOnStringBuilder(String string, String expectedString) {
 		StringBuilder sb = new StringBuilder();
 		StringTools.removeAllWhitespaceOn(string, sb);
+		assertEquals(expectedString, sb.toString());
+	}
+//////////////////////////////
+	public void testCompressWhitespace() {
+		this.verifyCompressWhitespace("Employee      Fred\t", "Employee Fred ");
+		this.verifyCompressWhitespace("\tEmployee  \n", " Employee ");
+		this.verifyCompressWhitespace("Employee \t Foo", "Employee Foo");
+		this.verifyCompressWhitespace(" Emp\tloyee \n Foo ", " Emp loyee Foo ");
+	}
+
+	private void verifyCompressWhitespace(String string, String expectedString) {
+		assertEquals(expectedString, StringTools.compressWhitespace(string));
+	}
+
+	public void testCompressWhitespaceCharArray() {
+		this.verifyCompressWhitespaceCharArray("Employee      Fred\t", "Employee Fred ");
+		this.verifyCompressWhitespaceCharArray("\tEmployee  \n", " Employee ");
+		this.verifyCompressWhitespaceCharArray("Employee \t Foo", "Employee Foo");
+		this.verifyCompressWhitespaceCharArray(" Emp\tloyee \n Foo ", " Emp loyee Foo ");
+	}
+
+	private void verifyCompressWhitespaceCharArray(String string, String expectedString) {
+		assertEquals(expectedString, StringTools.compressWhitespace(string.toCharArray()));
+	}
+
+	public void testCompressWhitespaceOnWriter() {
+		this.verifyCompressWhitespaceOnWriter("Employee      Fred\t", "Employee Fred ");
+		this.verifyCompressWhitespaceOnWriter("\tEmployee  \n", " Employee ");
+		this.verifyCompressWhitespaceOnWriter("Employee \t Foo", "Employee Foo");
+		this.verifyCompressWhitespaceOnWriter(" Emp\tloyee \n Foo ", " Emp loyee Foo ");
+	}
+
+	private void verifyCompressWhitespaceOnWriter(String string, String expectedString) {
+		Writer writer = new StringWriter();
+		StringTools.compressWhitespaceOn(string, writer);
+		assertEquals(expectedString, writer.toString());
+	}
+
+	public void testCompressWhitespaceOnStringBuffer() {
+		this.verifyCompressWhitespaceOnStringBuffer("Employee      Fred\t", "Employee Fred ");
+		this.verifyCompressWhitespaceOnStringBuffer("\tEmployee  \n", " Employee ");
+		this.verifyCompressWhitespaceOnStringBuffer("Employee \t Foo", "Employee Foo");
+		this.verifyCompressWhitespaceOnStringBuffer(" Emp\tloyee \n Foo ", " Emp loyee Foo ");
+	}
+
+	private void verifyCompressWhitespaceOnStringBuffer(String string, String expectedString) {
+		StringBuffer sb = new StringBuffer();
+		StringTools.compressWhitespaceOn(string, sb);
+		assertEquals(expectedString, sb.toString());
+	}
+
+	public void testCompressWhitespaceOnStringBuilder() {
+		this.verifyCompressWhitespaceOnStringBuilder("Employee      Fred\t", "Employee Fred ");
+		this.verifyCompressWhitespaceOnStringBuilder("\tEmployee  \n", " Employee ");
+		this.verifyCompressWhitespaceOnStringBuilder("Employee \t Foo", "Employee Foo");
+		this.verifyCompressWhitespaceOnStringBuilder(" Emp\tloyee \n Foo ", " Emp loyee Foo ");
+	}
+
+	private void verifyCompressWhitespaceOnStringBuilder(String string, String expectedString) {
+		StringBuilder sb = new StringBuilder();
+		StringTools.compressWhitespaceOn(string, sb);
 		assertEquals(expectedString, sb.toString());
 	}
 

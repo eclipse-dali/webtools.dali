@@ -30,10 +30,12 @@ import org.eclipse.jpt.utility.model.listener.TreeChangeListener;
 /**
  * Convenience implementation of Model protocol.
  */
-public abstract class AbstractModel implements Model, Serializable {
+public abstract class AbstractModel
+	implements Model, Serializable
+{
 	/**
 	 * Delegate state/property/collection/list/tree change support to this
-	 * helper object. The change support object is "lazy-initialized".
+	 * helper object. The change support object is "lazily-initialized".
 	 */
 	private ChangeSupport changeSupport;
 
@@ -42,7 +44,6 @@ public abstract class AbstractModel implements Model, Serializable {
 
 	/**
 	 * Default constructor.
-	 * This will call #initialize() on the newly-created instance.
 	 */
 	protected AbstractModel() {
 		super();
@@ -50,6 +51,8 @@ public abstract class AbstractModel implements Model, Serializable {
 
 	/**
 	 * This accessor will build the change support when required.
+	 * This only helps reduce the footprint of a model that neither has any
+	 * listeners added to it nor ever changes (fires any events).
 	 */
 	protected synchronized ChangeSupport getChangeSupport() {
 		if (this.changeSupport == null) {
@@ -687,22 +690,9 @@ public abstract class AbstractModel implements Model, Serializable {
 	@Override
 	protected AbstractModel clone() throws CloneNotSupportedException {
 		AbstractModel clone = (AbstractModel) super.clone();
-		clone.postClone();
-		return clone;
-	}
-
-	/**
-	 * Perform any post-clone processing necessary to
-	 * successfully disconnect the clone from the original.
-	 * When this method is called on the clone, the clone
-	 * is a "shallow" copy of the original (i.e. the clone
-	 * shares all its instance variables with the original).
-	 */
-	protected void postClone() {
 		// clear out change support - models do not share listeners
-		this.changeSupport = null;
-	// when you override this method, don't forget to include:
-	//	super.postClone();
+		clone.changeSupport = null;
+		return clone;
 	}
 
 	@Override

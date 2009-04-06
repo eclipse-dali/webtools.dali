@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -27,11 +27,11 @@ public interface ObjectTypeConverter extends EclipseLinkConverter
 {
 	String getDataType();	
 	void setDataType(String dataType);
-		String DATA_TYPE_PROPERTY = "dataTypeProperty"; //$NON-NLS-1$
+		String DATA_TYPE_PROPERTY = "dataType"; //$NON-NLS-1$
 		
 	String getObjectType();	
 	void setObjectType(String objectType);
-		String OBJECT_TYPE_PROPERTY = "objectTypeProperty"; //$NON-NLS-1$
+		String OBJECT_TYPE_PROPERTY = "objectType"; //$NON-NLS-1$
 
 	
 	// **************** conversion values **************************************
@@ -73,7 +73,7 @@ public interface ObjectTypeConverter extends EclipseLinkConverter
 	 * Move the conversion values from the source index to the target index.
 	 */
 	void moveConversionValue(int targetIndex, int sourceIndex);
-		String CONVERSION_VALUES_LIST = "conversionValuesList"; //$NON-NLS-1$
+		String CONVERSION_VALUES_LIST = "conversionValues"; //$NON-NLS-1$
 
 	
 	/**
@@ -87,6 +87,6 @@ public interface ObjectTypeConverter extends EclipseLinkConverter
 	
 	String getDefaultObjectValue();
 	void setDefaultObjectValue(String defaultObjectValue);
-		String DEFAULT_OBJECT_VALUE_PROPERTY = "defaultObjectValueProperty"; //$NON-NLS-1$
+		String DEFAULT_OBJECT_VALUE_PROPERTY = "defaultObjectValue"; //$NON-NLS-1$
 
 }

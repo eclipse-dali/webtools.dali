@@ -39,7 +39,7 @@ public interface EclipseLinkConverter extends JpaContextNode
 	
 	String getName();	
 	void setName(String name);
-		String NAME_PROPERTY = "nameProperty"; //$NON-NLS-1$
+		String NAME_PROPERTY = "name"; //$NON-NLS-1$
 	
 	/**
 	 * Return the char to be used for browsing or creating the converter class IType.

@@ -2571,8 +2571,8 @@ public class JavaEntityTests extends ContextModelTestCase
 		Entity entity = getJavaEntity();		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		
-		NamedQuery namedQuery = entity.addNamedQuery(0);
-		namedQuery.setName("FOO");
+		NamedQuery namedQuery1 = entity.addNamedQuery(0);
+		namedQuery1.setName("FOO");
 		
 		ListIterator<NestableAnnotation> javaNamedQueries = typeResource.supportingAnnotations(NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME);
 		assertEquals("FOO", ((NamedQueryAnnotation) javaNamedQueries.next()).getName());
@@ -2595,7 +2595,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		ListIterator<NamedQuery> namedQueries = entity.namedQueries();
 		assertEquals(namedQuery2, namedQueries.next());
 		assertEquals(namedQuery3, namedQueries.next());
-		assertEquals(namedQuery, namedQueries.next());
+		assertEquals(namedQuery1, namedQueries.next());
 		
 		namedQueries = entity.namedQueries();
 		assertEquals("BAR", namedQueries.next().getName());

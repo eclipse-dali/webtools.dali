@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -2584,7 +2584,7 @@ public final class StringTools {
 	}
 
 	/*
-	 * The index of the first non-whitespace character is passed in.
+	 * The index of the first whitespace character is passed in.
 	 */
 	private static void removeAllWhitespaceOn_(char[] string, int first, Writer writer) {
 		writeStringOn(string, 0, first, writer);
@@ -2613,7 +2613,7 @@ public final class StringTools {
 	}
 
 	/*
-	 * The index of the first non-whitespace character is passed in.
+	 * The index of the first whitespace character is passed in.
 	 */
 	private static void removeAllWhitespaceOn_(char[] string, int first, StringBuffer sb) {
 		sb.append(string, 0, first);
@@ -2642,7 +2642,7 @@ public final class StringTools {
 	}
 
 	/*
-	 * The index of the first non-whitespace character is passed in.
+	 * The index of the first whitespace character is passed in.
 	 */
 	private static void removeAllWhitespaceOn_(char[] string, int first, StringBuilder sb) {
 		sb.append(string, 0, first);
@@ -2650,6 +2650,215 @@ public final class StringTools {
 		for (int i = first; i < len; i++) {
 			char c = string[i];
 			if ( ! Character.isWhitespace(c)) {
+				sb.append(c);
+			}
+		}
+	}
+//===============================
+	/**
+	 * Compress the whitespace in the specified string and return the result.
+	 * The whitespace is compressed by replacing any occurrence of one or more
+	 * whitespace characters with a single space.
+	 * String#compressWhitespace()
+	 */
+	public static String compressWhitespace(String string) {
+		char[] string2 = string.toCharArray();
+		int first = indexOfWhitespace_(string2);
+		return (first == -1) ? string : new String(compressWhitespace_(string2, first));
+	}
+
+	/**
+	 * Compress the whitespace
+	 * in the specified string and append the result to the
+	 * specified writer.
+	 * The whitespace is compressed by replacing any occurrence of one or more
+	 * whitespace characters with a single space.
+	 * String#compressWhitespaceOn(Writer)
+	 */
+	public static void compressWhitespaceOn(String string, Writer writer) {
+		char[] string2 = string.toCharArray();
+		int first = indexOfWhitespace_(string2);
+		if (first == -1) {
+			writeStringOn(string, writer);
+		} else {
+			compressWhitespaceOn_(string2, first, writer);
+		}
+	}
+
+	/**
+	 * Compress the whitespace
+	 * in the specified string and append the result to the
+	 * specified string buffer.
+	 * The whitespace is compressed by replacing any occurrence of one or more
+	 * whitespace characters with a single space.
+	 * String#compressWhitespaceOn(StringBuffer)
+	 */
+	public static void compressWhitespaceOn(String string, StringBuffer sb) {
+		char[] string2 = string.toCharArray();
+		int first = indexOfWhitespace_(string2);
+		if (first == -1) {
+			sb.append(string);
+		} else {
+			compressWhitespaceOn_(string2, first, sb);
+		}
+	}
+
+	/**
+	 * Compress the whitespace
+	 * in the specified string and append the result to the
+	 * specified string builder.
+	 * The whitespace is compressed by replacing any occurrence of one or more
+	 * whitespace characters with a single space.
+	 * String#compressWhitespaceOn(StringBuilder)
+	 */
+	public static void compressWhitespaceOn(String string, StringBuilder sb) {
+		char[] string2 = string.toCharArray();
+		int first = indexOfWhitespace_(string2);
+		if (first == -1) {
+			sb.append(string);
+		} else {
+			compressWhitespaceOn_(string2, first, sb);
+		}
+	}
+
+	/**
+	 * Compress the whitespace in the specified string and return the result.
+	 * The whitespace is compressed by replacing any occurrence of one or more
+	 * whitespace characters with a single space.
+	 * String#compressWhitespace()
+	 */
+	public static char[] compressWhitespace(char[] string) {
+		int first = indexOfWhitespace_(string);
+		return (first == -1) ? string : compressWhitespace_(string, first);
+	}
+
+	/*
+	 * The index of the first whitespace character is passed in.
+	 */
+	private static char[] compressWhitespace_(char[] string, int first) {
+		StringBuilder sb = new StringBuilder(string.length);
+		compressWhitespaceOn_(string, first, sb);
+		return convertToCharArray(sb);
+	}
+
+	/**
+	 * Compress the whitespace
+	 * in the specified string and append the result to the
+	 * specified writer.
+	 * The whitespace is compressed by replacing any occurrence of one or more
+	 * whitespace characters with a single space.
+	 * String#compressWhitespaceOn(Writer)
+	 */
+	public static void compressWhitespaceOn(char[] string, Writer writer) {
+		int first = indexOfWhitespace_(string);
+		if (first == -1) {
+			writeStringOn(string, writer);
+		} else {
+			compressWhitespaceOn_(string, first, writer);
+		}
+	}
+
+	/*
+	 * The index of the first whitespace character is passed in.
+	 */
+	private static void compressWhitespaceOn_(char[] string, int first, Writer writer) {
+		writeStringOn(string, 0, first, writer);
+		boolean spaceWritten = false;
+		int len = string.length;
+		for (int i = first; i < len; i++) {
+			char c = string[i];
+			if (Character.isWhitespace(c)) {
+				if (spaceWritten) {
+					// skip subsequent whitespace characters
+				} else {
+					// replace first whitespace character with a space
+					spaceWritten = true;
+					writeCharOn(' ', writer);
+				}
+			} else {
+				spaceWritten = false;
+				writeCharOn(c, writer);
+			}
+		}
+	}
+
+	/**
+	 * Compress the whitespace
+	 * in the specified string and append the result to the
+	 * specified string buffer.
+	 * The whitespace is compressed by replacing any occurrence of one or more
+	 * whitespace characters with a single space.
+	 * String#compressWhitespaceOn(StringBuffer)
+	 */
+	public static void compressWhitespaceOn(char[] string, StringBuffer sb) {
+		int first = indexOfWhitespace_(string);
+		if (first == -1) {
+			sb.append(string);
+		} else {
+			compressWhitespaceOn_(string, first, sb);
+		}
+	}
+
+	/*
+	 * The index of the first whitespace character is passed in.
+	 */
+	private static void compressWhitespaceOn_(char[] string, int first, StringBuffer sb) {
+		sb.append(string, 0, first);
+		boolean spaceWritten = false;
+		int len = string.length;
+		for (int i = first; i < len; i++) {
+			char c = string[i];
+			if (Character.isWhitespace(c)) {
+				if (spaceWritten) {
+					// skip subsequent whitespace characters
+				} else {
+					// replace first whitespace character with a space
+					spaceWritten = true;
+					sb.append(' ');
+				}
+			} else {
+				spaceWritten = false;
+				sb.append(c);
+			}
+		}
+	}
+
+	/**
+	 * Compress the whitespace
+	 * in the specified string and append the result to the
+	 * specified string builder.
+	 * The whitespace is compressed by replacing any occurrence of one or more
+	 * whitespace characters with a single space.
+	 * String#compressWhitespaceOn(StringBuilder)
+	 */
+	public static void compressWhitespaceOn(char[] string, StringBuilder sb) {
+		int first = indexOfWhitespace_(string);
+		if (first == -1) {
+			sb.append(string);
+		} else {
+			compressWhitespaceOn_(string, first, sb);
+		}
+	}
+
+	/*
+	 * The index of the first whitespace character is passed in.
+	 */
+	private static void compressWhitespaceOn_(char[] string, int first, StringBuilder sb) {
+		sb.append(string, 0, first);
+		boolean spaceWritten = false;
+		int len = string.length;
+		for (int i = first; i < len; i++) {
+			char c = string[i];
+			if (Character.isWhitespace(c)) {
+				if (spaceWritten) {
+					// skip subsequent whitespace characters
+				} else {
+					// replace first whitespace character with a space
+					spaceWritten = true;
+					sb.append(' ');
+				}
+			} else {
+				spaceWritten = false;
 				sb.append(c);
 			}
 		}

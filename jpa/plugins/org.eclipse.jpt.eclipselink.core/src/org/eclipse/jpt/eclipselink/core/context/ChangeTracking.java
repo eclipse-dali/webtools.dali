@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -30,10 +30,10 @@ public interface ChangeTracking extends JpaContextNode
 	ChangeTrackingType getType();
 	
 	ChangeTrackingType getDefaultType();		
-		String DEFAULT_TYPE_PROPERTY = "defaultTypeProperty"; //$NON-NLS-1$
+		String DEFAULT_TYPE_PROPERTY = "defaultType"; //$NON-NLS-1$
 		ChangeTrackingType DEFAULT_TYPE = ChangeTrackingType.AUTO;
 		
 	ChangeTrackingType getSpecifiedType();	
 	void setSpecifiedType(ChangeTrackingType newSpecifiedType);
-		String SPECIFIED_TYPE_PROPERTY = "specifiedTypeProperty"; //$NON-NLS-1$
+		String SPECIFIED_TYPE_PROPERTY = "specifiedType"; //$NON-NLS-1$
 }

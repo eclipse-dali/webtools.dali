@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -70,7 +70,7 @@ public final class TestTools {
 	}
 
 	/**
-	 * execute the specified test and dump the results to the console
+	 * execute the specified test and return a text output of its results
 	 */
 	public static String execute(TestCase testCase) {
 		long start = System.currentTimeMillis();
@@ -80,9 +80,9 @@ public final class TestTools {
 		StringWriter stringWriter = new StringWriter();
 		PrintWriter writer = new PrintWriter(stringWriter);
 		writer.print(testCase.getName());
-		writer.print(": ");
+		writer.print(": "); //$NON-NLS-1$
 		if (result.wasSuccessful()) {
-			writer.println("OK");
+			writer.println("OK"); //$NON-NLS-1$
 		} else {
 			TestFailure failure = null;
 			if (result.failures().hasMoreElements()) {
@@ -92,14 +92,12 @@ public final class TestTools {
 			}
 			failure.thrownException().printStackTrace(writer);
 		}
-		writer.print("elapsed time: ");
+		writer.print("elapsed time: "); //$NON-NLS-1$
 		long elapsed = end - start;
 		writer.print(elapsed / 1000L);
-		writer.println(" sec.");
+		writer.println(" sec."); //$NON-NLS-1$
 		return stringWriter.toString();
 	}
-
-	private static final Class<TestCase> TestCase_class = TestCase.class;
 
 	/**
 	 * Clear out all the instance variable of the specified test case, allowing
@@ -107,10 +105,8 @@ public final class TestTools {
 	 * called in the #tearDown() method.
 	 */
 	public static void clear(TestCase testCase) throws IllegalAccessException {
-		for (Class<?> tempClass = testCase.getClass(); tempClass != TestCase_class; tempClass = tempClass.getSuperclass()) {
-			Field[] fields = tempClass.getDeclaredFields();
-			for (int i = fields.length; i-- > 0;) {
-				Field field = fields[i];
+		for (Class<?> clazz = testCase.getClass(); clazz != TestCase_class; clazz = clazz.getSuperclass()) {
+			for (Field field : clazz.getDeclaredFields()) {
 				// leave primitives alone - they don't get garbage-collected, and we can't set them to null...
 				if (field.getType().isPrimitive()) {
 					continue;
@@ -125,6 +121,8 @@ public final class TestTools {
 		}
 	}
 
+	private static final Class<TestCase> TestCase_class = TestCase.class;
+
 	/**
 	 * Workaround for a JUnit bug: JUnit does not configure the testing Thread
 	 * with a context class loader. This should probably happen in
@@ -134,6 +132,9 @@ public final class TestTools {
 		Thread.currentThread().setContextClassLoader(TestTools.class.getClassLoader());
 	}
 
+	/**
+	 * suppressed constructor
+	 */
 	private TestTools() {
 		super();
 		throw new UnsupportedOperationException();

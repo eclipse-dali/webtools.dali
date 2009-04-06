@@ -29,11 +29,11 @@ public interface Customizer extends JpaContextNode
 	String getCustomizerClass();
 	
 	String getDefaultCustomizerClass();
-		String DEFAULT_CUSTOMIZER_CLASS_PROPERTY = "defaultCustomizerClassProperty"; //$NON-NLS-1$
+		String DEFAULT_CUSTOMIZER_CLASS_PROPERTY = "defaultCustomizerClass"; //$NON-NLS-1$
 	
 	String getSpecifiedCustomizerClass();	
 	void setSpecifiedCustomizerClass(String customizerClass);
-		String SPECIFIED_CUSTOMIZER_CLASS_PROPERTY = "specifiedCustomizerClassProperty"; //$NON-NLS-1$
+		String SPECIFIED_CUSTOMIZER_CLASS_PROPERTY = "specifiedCustomizerClass"; //$NON-NLS-1$
 		String ECLIPSELINK_DESCRIPTOR_CUSTOMIZER_CLASS_NAME = "org.eclipse.persistence.config.DescriptorCustomizer"; //$NON-NLS-1$
 
 	/**

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -25,6 +25,6 @@ public interface JoinFetch extends JpaContextNode
 {
 	JoinFetchType getValue();
 	void setValue(JoinFetchType newJoinFetchValue);
-		String VALUE_PROPERTY = "JoinFetch.valueProperty"; //$NON-NLS-1$
+		String VALUE_PROPERTY = "value"; //$NON-NLS-1$
 		JoinFetchType DEFAULT_VALUE = JoinFetchType.INNER;
 }

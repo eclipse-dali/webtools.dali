@@ -77,11 +77,11 @@ public abstract class ORMGenCustomizer implements java.io.Serializable
 	 * table name. Includes all association derived from foreign keys 
 	 * in user selected tables. Since some of the foreign keys may point to table
 	 * user does not select, this list may be different from  mValidAssociations
-	 **/
+	 */
 	private List<Association> mAssociations;
 	/*
 	 * List of valid associations within the user selected tables  
-	 * */
+	 */
 	private transient List<Association> mValidAssociations;
 	private transient boolean mInvalidForeignAssociations;
 	

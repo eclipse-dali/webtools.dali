@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,8 +18,8 @@ import org.eclipse.jpt.utility.internal.StringTools;
  * allowing for concurrent access to the original collection.
  * <p>
  * The original collection passed to the <code>CloneIterator</code>'s
- * constructor should be synchronized; otherwise you run the risk of
- * a corrupted collection.
+ * constructor should be synchronized (e.g. java.util.Vector);
+ * otherwise you run the risk of a corrupted collection.
  * <p>
  * By default, a <code>CloneIterator</code> does not support the
  * <code>#remove()</code> operation; this is because it does not have
@@ -45,8 +45,8 @@ public class CloneIterator<E>
 	 * The <code>#remove()</code> method will not be supported,
 	 * unless a subclass overrides the <code>#remove(Object)</code>.
 	 */
-	public CloneIterator(Collection<? extends E> c) {
-		this(c, Mutator.ReadOnly.<E>instance());
+	public CloneIterator(Collection<? extends E> collection) {
+		this(collection, Mutator.ReadOnly.<E>instance());
 	}
 
 	/**
@@ -54,9 +54,16 @@ public class CloneIterator<E>
 	 * Use the specified mutator to remove objects from the
 	 * original collection.
 	 */
-	public CloneIterator(Collection<? extends E> c, Mutator<E> mutator) {
+	public CloneIterator(Collection<? extends E> collection, Mutator<E> mutator) {
+		this(collection.toArray(), mutator);
+	}
+
+	/**
+	 * Internal constructor used by subclasses.
+	 */
+	protected CloneIterator(Object[] array, Mutator<E> mutator) {
 		super();
-		this.nestedIterator = new ArrayIterator<Object>(c.toArray());
+		this.nestedIterator = new ArrayIterator<Object>(array);
 		this.current = null;
 		this.mutator = mutator;
 		this.removeAllowed = false;

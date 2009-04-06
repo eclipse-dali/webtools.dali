@@ -25,7 +25,7 @@ public interface PersistenceUnitMetadata extends XmlContextNode
 {
 	boolean isXmlMappingMetadataComplete();
 	void setXmlMappingMetadataComplete(boolean value);
-		String XML_MAPPING_METADATA_COMPLETE_PROPERTY = "xmlMappingMetadataCompleteProperty"; //$NON-NLS-1$
+		String XML_MAPPING_METADATA_COMPLETE_PROPERTY = "xmlMappingMetadataComplete"; //$NON-NLS-1$
 
 	OrmPersistenceUnitDefaults getPersistenceUnitDefaults();
 	

@@ -431,7 +431,7 @@ public class ConnectionAdapterTests extends PersistenceUnitTestCase
 
 	// ********** get/set property **********
 	@Override
-	protected synchronized void setProperty(String propertyName, Object newValue) throws Exception {
+	protected void setProperty(String propertyName, Object newValue) throws Exception {
 		 if (propertyName.equals(Connection.TRANSACTION_TYPE_PROPERTY))
 			this.connection.setTransactionType((PersistenceUnitTransactionType) newValue);
 		 else if (propertyName.equals(Connection.JTA_DATA_SOURCE_PROPERTY))

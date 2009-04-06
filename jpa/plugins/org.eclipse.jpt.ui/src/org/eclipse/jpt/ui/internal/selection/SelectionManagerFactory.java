@@ -1,12 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2006, 2008 Oracle. All rights reserved. This
- *  program and the accompanying materials are made available under the terms of
- *  the Eclipse Public License v1.0 which accompanies this distribution, and is
- *  available at http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
  *
- *  Contributors: Oracle. - initial API and implementation
- *
- *******************************************************************************/
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.ui.internal.selection;
 
 import java.util.HashMap;
@@ -18,7 +18,7 @@ import org.eclipse.ui.PlatformUI;
 
 public class SelectionManagerFactory
 {
-	private static SelectionManagerFactory INSTANCE;
+	private static volatile SelectionManagerFactory INSTANCE;
 
 	private static Object MUTEX = new Object();
 
@@ -48,7 +48,7 @@ public class SelectionManagerFactory
 	}
 
 
-	private Map<IWorkbenchWindow, DefaultJpaSelectionManager> managers;
+	Map<IWorkbenchWindow, DefaultJpaSelectionManager> managers;
 
 	private WindowListener windowListener;
 
@@ -67,9 +67,9 @@ public class SelectionManagerFactory
 	 * Returns the JpaSelectionManager for the IWorkbenchWindow.
 	 * Creates a new one if none exists yet.
 	 */
-	private DefaultJpaSelectionManager internalGetSelectionManager(IWorkbenchWindow window) {
+	DefaultJpaSelectionManager internalGetSelectionManager(IWorkbenchWindow window) {
 		if (window == null) {
-			throw new IllegalArgumentException("The IWorkbenchWindow cannot be null");
+			throw new IllegalArgumentException("The IWorkbenchWindow cannot be null"); //$NON-NLS-1$
 		}
 
 		if (! managers.containsKey(window)) {
@@ -82,9 +82,11 @@ public class SelectionManagerFactory
 	}
 
 
-	private class WindowListener implements IWindowListener
+	class WindowListener implements IWindowListener
 	{
-		public void windowOpened(IWorkbenchWindow aWindow) {}
+		public void windowOpened(IWorkbenchWindow aWindow) {
+			// do nothing
+		}
 
 		public void windowClosed(IWorkbenchWindow aWindow) {
 			DefaultJpaSelectionManager manager = internalGetSelectionManager(aWindow);
@@ -92,8 +94,12 @@ public class SelectionManagerFactory
 			managers.remove(aWindow);
 		}
 
-		public void windowActivated(IWorkbenchWindow aWindow) {}
+		public void windowActivated(IWorkbenchWindow aWindow) {
+			// do nothing
+		}
 
-		public void windowDeactivated(IWorkbenchWindow aWindow) {}
+		public void windowDeactivated(IWorkbenchWindow aWindow) {
+			// do nothing
+		}
 	}
 }

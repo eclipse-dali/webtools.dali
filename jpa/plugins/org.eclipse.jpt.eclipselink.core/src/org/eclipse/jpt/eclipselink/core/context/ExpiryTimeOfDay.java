@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -28,18 +28,18 @@ public interface ExpiryTimeOfDay extends JpaContextNode
 	
 	Integer getHour();
 	void setHour(Integer hour);
-		String HOUR_PROPERTY = "hourProperty"; //$NON-NLS-1$
+		String HOUR_PROPERTY = "hour"; //$NON-NLS-1$
 
 	Integer getMinute();
 	void setMinute(Integer minute);
-		String MINUTE_PROPERTY = "minuteProperty"; //$NON-NLS-1$
+		String MINUTE_PROPERTY = "minute"; //$NON-NLS-1$
 	
 	Integer getSecond();
 	void setSecond(Integer second);
-		String SECOND_PROPERTY = "secondProperty"; //$NON-NLS-1$
+		String SECOND_PROPERTY = "second"; //$NON-NLS-1$
 	
 	Integer getMillisecond();
 	void setMillisecond(Integer millisecond);
-		String MILLISECOND_PROPERTY = "millisecondProperty"; //$NON-NLS-1$
+		String MILLISECOND_PROPERTY = "millisecond"; //$NON-NLS-1$
 
 }

@@ -80,7 +80,7 @@ public abstract class BaseJpaPlatformUi
 	
 	// ********** platform ui providers **********
 	
-	protected synchronized ListIterator<JpaPlatformUiProvider> platformUiProviders() {
+	protected ListIterator<JpaPlatformUiProvider> platformUiProviders() {
 		return new ArrayListIterator<JpaPlatformUiProvider>(this.platformUiProviders);
 	}
 

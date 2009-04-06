@@ -45,12 +45,12 @@ final class EclipseLinkConverterStateObject extends AbstractNode
 	/**
 	 * Notifies a change in the data value property.
 	 */
-	static final String NAME_PROPERTY = "nameProperty"; //$NON-NLS-1$
+	static final String NAME_PROPERTY = "name"; //$NON-NLS-1$
 	
 	/**
 	 * Notifies a change in the object value property.
 	 */
-	static final String CONVERTER_TYPE_PROPERTY = "converterTypeProperty"; //$NON-NLS-1$
+	static final String CONVERTER_TYPE_PROPERTY = "converterType"; //$NON-NLS-1$
 
 	/**
 	 * Creates a new <code>NewNameStateObject</code>.

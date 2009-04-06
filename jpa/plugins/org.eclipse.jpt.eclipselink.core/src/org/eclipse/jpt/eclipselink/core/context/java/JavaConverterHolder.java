@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -45,21 +45,21 @@ public interface JavaConverterHolder extends JavaJpaContextNode
 	CustomConverter getCustomConverter();
 	CustomConverter addCustomConverter();
 	void removeCustomConverter();
-	String CUSTOM_CONVERTER_PROPERTY = "customConverterProperty"; //$NON-NLS-1$
+	String CUSTOM_CONVERTER_PROPERTY = "customConverter"; //$NON-NLS-1$
 	
 	ObjectTypeConverter getObjectTypeConverter();
 	ObjectTypeConverter addObjectTypeConverter();
 	void removeObjectTypeConverter();
-	String OBJECT_TYPE_CONVERTER_PROPERTY = "objectTypeConverterProperty"; //$NON-NLS-1$
+	String OBJECT_TYPE_CONVERTER_PROPERTY = "objectTypeConverter"; //$NON-NLS-1$
 	
 	StructConverter getStructConverter();
 	StructConverter addStructConverter();
 	void removeStructConverter();
-	String STRUCT_CONVERTER_PROPERTY = "structConverterProperty"; //$NON-NLS-1$
+	String STRUCT_CONVERTER_PROPERTY = "structConverter"; //$NON-NLS-1$
 	
 	TypeConverter getTypeConverter();
 	TypeConverter addTypeConverter();
 	void removeTypeConverter();
-	String TYPE_CONVERTER_PROPERTY = "typeCnverterProperty"; //$NON-NLS-1$
+	String TYPE_CONVERTER_PROPERTY = "typeConverter"; //$NON-NLS-1$
 	
 }

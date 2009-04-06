@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -25,10 +25,10 @@ public interface TypeConverter extends EclipseLinkConverter
 {
 	String getDataType();	
 	void setDataType(String dataType);
-		String DATA_TYPE_PROPERTY = "dataTypeProperty"; //$NON-NLS-1$
+		String DATA_TYPE_PROPERTY = "dataType"; //$NON-NLS-1$
 		
 	String getObjectType();	
 	void setObjectType(String objectType);
-		String OBJECT_TYPE_PROPERTY = "objectTypeProperty"; //$NON-NLS-1$
+		String OBJECT_TYPE_PROPERTY = "objectType"; //$NON-NLS-1$
 
 }

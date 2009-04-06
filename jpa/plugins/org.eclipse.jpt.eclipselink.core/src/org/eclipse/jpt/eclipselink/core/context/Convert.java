@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -32,12 +32,12 @@ public interface Convert extends JpaContextNode, Converter
 	String getConverterName();
 	
 	String getDefaultConverterName();
-		String DEFAULT_CONVERTER_NAME_PROPERTY = "defaultConverterNameProperty"; //$NON-NLS-1$
+		String DEFAULT_CONVERTER_NAME_PROPERTY = "defaultConverterName"; //$NON-NLS-1$
 
 	String getSpecifiedConverterName();
 	
 	void setSpecifiedConverterName(String converterName);
-		String SPECIFIED_CONVERTER_NAME_PROPERTY = "specifiedConverterNameProperty"; //$NON-NLS-1$
+		String SPECIFIED_CONVERTER_NAME_PROPERTY = "specifiedConverterName"; //$NON-NLS-1$
 	
 	/**
 	 * Reserved name for specifying a serialized object converter.  In this
@@ -70,7 +70,7 @@ public interface Convert extends JpaContextNode, Converter
 	 * @return
 	 */
 	EclipseLinkConverter getConverter();
-		String CONVERTER_PROPERTY = "converterProperty"; //$NON-NLS-1$
+		String CONVERTER_PROPERTY = "converter"; //$NON-NLS-1$
 	
 	/**
 	 * Possible values for converter type are:

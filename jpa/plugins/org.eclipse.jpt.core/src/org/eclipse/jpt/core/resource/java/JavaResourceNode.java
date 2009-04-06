@@ -43,9 +43,29 @@ public interface JavaResourceNode
 	 */
 	Root getRoot();
 
+	/**
+	 * Return the [source] node's root (the compilation unit).
+	 */
+	JavaResourceCompilationUnit getJavaResourceCompilationUnit();
 
 	/**
-	 * root of containment hierarchy
+	 * Return the [source] node's text range in the compilation unit's file.
+	 */
+	TextRange getTextRange(CompilationUnit astRoot);
+
+	/**
+	 * Initialize the [source] with the specified AST.
+	 */
+	void initialize(CompilationUnit astRoot);
+
+	/**
+	 * Update the [source] with the specified AST.
+	 */
+	void update(CompilationUnit astRoot);
+
+
+	/**
+	 * root of Java resource containment hierarchy
 	 */
 	interface Root extends JavaResourceNode, JpaResourceModel {
 
@@ -68,14 +88,5 @@ public interface JavaResourceNode
 		JpaAnnotationProvider getAnnotationProvider();
 
 	}
-
-	// ========= TODO move all these methods to SourceJavaResourceNode... =================
-	void initialize(CompilationUnit astRoot);
-
-	JavaResourceCompilationUnit getJavaResourceCompilationUnit();
-
-	void update(CompilationUnit astRoot);
-
-	TextRange getTextRange(CompilationUnit astRoot);
 
 }

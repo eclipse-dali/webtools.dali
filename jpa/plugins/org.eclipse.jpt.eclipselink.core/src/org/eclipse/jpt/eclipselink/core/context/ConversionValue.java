@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -27,11 +27,11 @@ public interface ConversionValue extends JpaContextNode
 {
 	String getDataValue();	
 	void setDataValue(String dataValue);
-		String DATA_VALUE_PROPERTY = "dataValueProperty"; //$NON-NLS-1$
+		String DATA_VALUE_PROPERTY = "dataValue"; //$NON-NLS-1$
 		
 	String getObjectValue();	
 	void setObjectValue(String objectValue);
-		String OBJECT_VALUE_PROPERTY = "objectValueProperty"; //$NON-NLS-1$
+		String OBJECT_VALUE_PROPERTY = "objectValue"; //$NON-NLS-1$
 
 	ObjectTypeConverter getParent();
 }

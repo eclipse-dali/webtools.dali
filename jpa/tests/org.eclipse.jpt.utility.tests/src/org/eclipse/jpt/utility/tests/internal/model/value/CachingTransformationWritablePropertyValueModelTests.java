@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -205,10 +205,10 @@ public class CachingTransformationWritablePropertyValueModelTests extends TestCa
 	private class Person extends AbstractModel {
 
 		private String name;
-			public static final String NAME_PROPERTY = "nameProperty";
+			public static final String NAME_PROPERTY = "name";
 		
 		private String parentName;
-			public static final String PARENT_NAME_PROPERTY = "parentNameProperty";
+			public static final String PARENT_NAME_PROPERTY = "parentName";
 		
 		private Person child;
 		

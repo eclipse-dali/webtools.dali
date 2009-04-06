@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.resource.java;
 import java.util.Iterator;
 
 /**
- * Java source code persistent type
+ * Java source code or binary persistent type.
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -105,6 +105,7 @@ public interface JavaResourcePersistentType
 	 */
 	Iterator<JavaResourcePersistentAttribute> persistableFieldsWithSpecifiedFieldAccess();
 
+
 	// ********** methods **********
 
 	/**
@@ -124,6 +125,7 @@ public interface JavaResourcePersistentType
 	 * have the Access annotation with a value of PROPERTY
 	 */
 	Iterator<JavaResourcePersistentAttribute> persistablePropertiesWithSpecifiedPropertyAccess();
+
 
 	// ********** attributes **********
 

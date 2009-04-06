@@ -24,7 +24,7 @@ import org.eclipse.jpt.utility.internal.StringTools;
  * <code>nextLink(Object)</code> method.
  * The starting link will be the first object returned by the iterator.
  * If the starting link is <code>null</code>, the iterator will be empty.
- * Note that the iterator does not support <code>null</code> elements.
+ * Note this iterator does not support <code>null</code> elements.
  */
 public class ChainIterator<E>
 	implements Iterator<E>
@@ -72,7 +72,7 @@ public class ChainIterator<E>
 	}
 	
 	/**
-	 * Return the next link in the chain.
+	 * Return the next link in the chain; null if there are no more links.
 	 */
 	protected E nextLink(E currentLink) {
 		return this.linker.nextLink(currentLink);
@@ -93,7 +93,7 @@ public class ChainIterator<E>
 	public interface Linker<T> {
 
 		/**
-		 * Return the next link in the chain.
+		 * Return the next link in the chain; null if there are no more links.
 		 */
 		T nextLink(T currentLink);
 
