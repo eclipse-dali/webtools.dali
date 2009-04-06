@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.context;
 
 
 /**
- * 
+ * One-to-one mapping
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -22,5 +22,8 @@ package org.eclipse.jpt.core.context;
 public interface OneToOneMapping
 	extends SingleRelationshipMapping
 {
+	/**
+	 * covariant override
+	 */
 	OneToOneRelationshipReference getRelationshipReference();
 }
