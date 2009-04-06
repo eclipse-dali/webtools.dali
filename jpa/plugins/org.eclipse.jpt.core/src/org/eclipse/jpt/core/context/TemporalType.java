@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.context;
 
 /**
- * 
+ * Temporal Type
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -20,74 +20,77 @@ package org.eclipse.jpt.core.context;
  */
 public enum TemporalType {
 
-	DATE,
-	TIME,
-	TIMESTAMP;
-	
+	DATE(
+			org.eclipse.jpt.core.resource.java.TemporalType.DATE,
+			org.eclipse.jpt.core.resource.orm.TemporalType.DATE
+		),
+	TIME(
+			org.eclipse.jpt.core.resource.java.TemporalType.TIME,
+			org.eclipse.jpt.core.resource.orm.TemporalType.TIME
+		),
+	TIMESTAMP(
+			org.eclipse.jpt.core.resource.java.TemporalType.TIMESTAMP,
+			org.eclipse.jpt.core.resource.orm.TemporalType.TIMESTAMP
+		);
+
+
+	private org.eclipse.jpt.core.resource.java.TemporalType javaTemporalType;
+	private org.eclipse.jpt.core.resource.orm.TemporalType ormTemporalType;
+
+	TemporalType(org.eclipse.jpt.core.resource.java.TemporalType javaTemporalType, org.eclipse.jpt.core.resource.orm.TemporalType ormTemporalType) {
+		if (javaTemporalType == null) {
+			throw new NullPointerException();
+		}
+		if (ormTemporalType == null) {
+			throw new NullPointerException();
+		}
+		this.javaTemporalType = javaTemporalType;
+		this.ormTemporalType = ormTemporalType;
+	}
+
+	public org.eclipse.jpt.core.resource.java.TemporalType getJavaTemporalType() {
+		return this.javaTemporalType;
+	}
+
+	public org.eclipse.jpt.core.resource.orm.TemporalType getOrmTemporalType() {
+		return this.ormTemporalType;
+	}
+
+
+	// ********** static methods **********
 
 	public static TemporalType fromJavaResourceModel(org.eclipse.jpt.core.resource.java.TemporalType javaTemporalType) {
-		if (javaTemporalType == null) {
-			return null;
-		}
-		switch (javaTemporalType) {
-			case DATE:
-				return DATE;
-			case TIME:
-				return TIME;
-			case TIMESTAMP:
-				return TIMESTAMP;
-			default:
-				throw new IllegalArgumentException("unknown temporal type: " + javaTemporalType); //$NON-NLS-1$
-		}
+		return (javaTemporalType == null) ? null : fromJavaResourceModel_(javaTemporalType);
 	}
-	
+
+	private static TemporalType fromJavaResourceModel_(org.eclipse.jpt.core.resource.java.TemporalType javaTemporalType) {
+		for (TemporalType temporalType : TemporalType.values()) {
+			if (temporalType.getJavaTemporalType() == javaTemporalType) {
+				return temporalType;
+			}
+		}
+		return null;
+	}
+
 	public static org.eclipse.jpt.core.resource.java.TemporalType toJavaResourceModel(TemporalType temporalType) {
-		if (temporalType == null) {
-			return null;
-		}
-		switch (temporalType) {
-			case DATE:
-				return org.eclipse.jpt.core.resource.java.TemporalType.DATE;
-			case TIME:
-				return org.eclipse.jpt.core.resource.java.TemporalType.TIME;
-			case TIMESTAMP:
-				return org.eclipse.jpt.core.resource.java.TemporalType.TIMESTAMP;
-			default:
-				throw new IllegalArgumentException("unknown temporal type: " + temporalType); //$NON-NLS-1$
-		}
+		return (temporalType == null) ? null : temporalType.getJavaTemporalType();
 	}
-	
 
 	public static TemporalType fromOrmResourceModel(org.eclipse.jpt.core.resource.orm.TemporalType ormTemporalType) {
-		if (ormTemporalType == null) {
-			return null;
-		}
-		switch (ormTemporalType) {
-			case DATE:
-				return DATE;
-			case TIME:
-				return TIME;
-			case TIMESTAMP:
-				return TIMESTAMP;
-			default:
-				throw new IllegalArgumentException("unknown temporal type: " + ormTemporalType); //$NON-NLS-1$
-		}
+		return (ormTemporalType == null) ? null : fromOrmResourceModel_(ormTemporalType);
 	}
-	
+
+	private static TemporalType fromOrmResourceModel_(org.eclipse.jpt.core.resource.orm.TemporalType ormTemporalType) {
+		for (TemporalType temporalType : TemporalType.values()) {
+			if (temporalType.getOrmTemporalType() == ormTemporalType) {
+				return temporalType;
+			}
+		}
+		return null;
+	}
+
 	public static org.eclipse.jpt.core.resource.orm.TemporalType toOrmResourceModel(TemporalType temporalType) {
-		if (temporalType == null) {
-			return null;
-		}
-		switch (temporalType) {
-			case DATE:
-				return org.eclipse.jpt.core.resource.orm.TemporalType.DATE;
-			case TIME:
-				return org.eclipse.jpt.core.resource.orm.TemporalType.TIME;
-			case TIMESTAMP:
-				return org.eclipse.jpt.core.resource.orm.TemporalType.TIMESTAMP;
-			default:
-				throw new IllegalArgumentException("unknown temporal type: " + temporalType); //$NON-NLS-1$
-		}
+		return (temporalType == null) ? null : temporalType.getOrmTemporalType();
 	}
 
 }

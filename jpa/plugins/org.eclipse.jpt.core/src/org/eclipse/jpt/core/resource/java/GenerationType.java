@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,8 @@
 package org.eclipse.jpt.core.resource.java;
 
 /**
- * 
+ * Corresponds to the JPA enum
+ * javax.persistence.GenerationType
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -19,47 +20,44 @@ package org.eclipse.jpt.core.resource.java;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public enum GenerationType {
-	
-	TABLE,
-	SEQUENCE,
-	IDENTITY,
-	AUTO;
-	
-	
-	public static GenerationType fromJavaAnnotationValue(Object javaAnnotationValue) {
+
+	TABLE(JPA.GENERATION_TYPE__TABLE),
+	SEQUENCE(JPA.GENERATION_TYPE__SEQUENCE),
+	IDENTITY(JPA.GENERATION_TYPE__IDENTITY),
+	AUTO(JPA.GENERATION_TYPE__AUTO);
+
+
+	private String javaAnnotationValue;
+
+	GenerationType(String javaAnnotationValue) {
 		if (javaAnnotationValue == null) {
-			return null;
+			throw new NullPointerException();
 		}
-		if (javaAnnotationValue.equals(JPA.GENERATION_TYPE__TABLE)) {
-			return TABLE;
-		}
-		if (javaAnnotationValue.equals(JPA.GENERATION_TYPE__SEQUENCE)) {
-			return SEQUENCE;
-		}
-		if (javaAnnotationValue.equals(JPA.GENERATION_TYPE__IDENTITY)) {
-			return IDENTITY;
-		}
-		if (javaAnnotationValue.equals(JPA.GENERATION_TYPE__AUTO)) {
-			return AUTO;
+		this.javaAnnotationValue = javaAnnotationValue;
+	}
+
+	public String getJavaAnnotationValue() {
+		return this.javaAnnotationValue;
+	}
+
+
+	// ********** static methods **********
+
+	public static GenerationType fromJavaAnnotationValue(Object javaAnnotationValue) {
+		return (javaAnnotationValue == null) ? null : fromJavaAnnotationValue_(javaAnnotationValue);
+	}
+
+	private static GenerationType fromJavaAnnotationValue_(Object javaAnnotationValue) {
+		for (GenerationType generationType : GenerationType.values()) {
+			if (generationType.getJavaAnnotationValue().equals(javaAnnotationValue)) {
+				return generationType;
+			}
 		}
 		return null;
 	}
 
 	public static String toJavaAnnotationValue(GenerationType generationType) {
-		if (generationType == null) {
-			return null;
-		}
-		switch (generationType) {
-			case TABLE :
-				return JPA.GENERATION_TYPE__TABLE;
-			case SEQUENCE :
-				return JPA.GENERATION_TYPE__SEQUENCE;
-			case IDENTITY :
-				return JPA.GENERATION_TYPE__IDENTITY;
-			case AUTO :
-				return JPA.GENERATION_TYPE__AUTO;
-			default :
-				throw new IllegalArgumentException("unknown generation type: " + generationType); //$NON-NLS-1$
-		}
+		return (generationType == null) ? null : generationType.getJavaAnnotationValue();
 	}
+
 }

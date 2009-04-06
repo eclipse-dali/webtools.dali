@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.context;
 
 /**
- * 
+ * Access Type
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -20,64 +20,73 @@ package org.eclipse.jpt.core.context;
  */
 public enum AccessType {
 
-	FIELD,
-	PROPERTY;
+	FIELD(
+			org.eclipse.jpt.core.resource.java.AccessType.FIELD,
+			org.eclipse.jpt.core.resource.orm.AccessType.FIELD
+		),
+	PROPERTY(
+			org.eclipse.jpt.core.resource.java.AccessType.PROPERTY,
+			org.eclipse.jpt.core.resource.orm.AccessType.PROPERTY
+		);
 
+
+	private org.eclipse.jpt.core.resource.java.AccessType javaAccessType;
+	private org.eclipse.jpt.core.resource.orm.AccessType ormAccessType;
+
+	AccessType(org.eclipse.jpt.core.resource.java.AccessType javaAccessType, org.eclipse.jpt.core.resource.orm.AccessType ormAccessType) {
+		if (javaAccessType == null) {
+			throw new NullPointerException();
+		}
+		if (ormAccessType == null) {
+			throw new NullPointerException();
+		}
+		this.javaAccessType = javaAccessType;
+		this.ormAccessType = ormAccessType;
+	}
+
+	public org.eclipse.jpt.core.resource.java.AccessType getJavaAccessType() {
+		return this.javaAccessType;
+	}
+
+	public org.eclipse.jpt.core.resource.orm.AccessType getOrmAccessType() {
+		return this.ormAccessType;
+	}
+
+
+	// ********** static methods **********
 
 	public static AccessType fromJavaResourceModel(org.eclipse.jpt.core.resource.java.AccessType javaAccessType) {
-		if (javaAccessType == null) {
-			return null;
+		return (javaAccessType == null) ? null : fromJavaResourceModel_(javaAccessType);
+	}
+
+	private static AccessType fromJavaResourceModel_(org.eclipse.jpt.core.resource.java.AccessType javaAccessType) {
+		for (AccessType accessType : AccessType.values()) {
+			if (accessType.getJavaAccessType() == javaAccessType) {
+				return accessType;
+			}
 		}
-		switch (javaAccessType) {
-			case FIELD:
-				return FIELD;
-			case PROPERTY:
-				return PROPERTY;
-			default:
-				throw new IllegalArgumentException("unknown access type: " + javaAccessType); //$NON-NLS-1$
-		}
+		return null;
 	}
 
 	public static org.eclipse.jpt.core.resource.java.AccessType toJavaResourceModel(AccessType accessType) {
-		if (accessType == null) {
-			return null;
-		}
-		switch (accessType) {
-			case FIELD:
-				return org.eclipse.jpt.core.resource.java.AccessType.FIELD;
-			case PROPERTY:
-				return org.eclipse.jpt.core.resource.java.AccessType.PROPERTY;
-			default:
-				throw new IllegalArgumentException("unknown access type: " + accessType); //$NON-NLS-1$
-		}
+		return (accessType == null) ? null : accessType.getJavaAccessType();
 	}
-	
+
 	public static AccessType fromOrmResourceModel(org.eclipse.jpt.core.resource.orm.AccessType ormAccessType) {
-		if (ormAccessType == null) {
-			return null;
-		}
-		switch (ormAccessType) {
-			case FIELD:
-				return FIELD;
-			case PROPERTY:
-				return PROPERTY;
-			default:
-				throw new IllegalArgumentException("unknown access type: " + ormAccessType); //$NON-NLS-1$
-		}
+		return (ormAccessType == null) ? null : fromOrmResourceModel_(ormAccessType);
 	}
-	
+
+	private static AccessType fromOrmResourceModel_(org.eclipse.jpt.core.resource.orm.AccessType ormAccessType) {
+		for (AccessType accessType : AccessType.values()) {
+			if (accessType.getOrmAccessType() == ormAccessType) {
+				return accessType;
+			}
+		}
+		return null;
+	}
+
 	public static org.eclipse.jpt.core.resource.orm.AccessType toOrmResourceModel(AccessType accessType) {
-		if (accessType == null) {
-			return null;
-		}
-		switch (accessType) {
-			case FIELD:
-				return org.eclipse.jpt.core.resource.orm.AccessType.FIELD;
-			case PROPERTY:
-				return org.eclipse.jpt.core.resource.orm.AccessType.PROPERTY;
-			default:
-				throw new IllegalArgumentException("unknown access type: " + accessType); //$NON-NLS-1$
-		}
+		return (accessType == null) ? null : accessType.getOrmAccessType();
 	}
 
 }

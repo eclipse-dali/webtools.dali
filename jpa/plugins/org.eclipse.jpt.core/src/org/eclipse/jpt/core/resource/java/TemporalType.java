@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,8 @@
 package org.eclipse.jpt.core.resource.java;
 
 /**
- * 
+ * Corresponds to the JPA enum
+ * javax.persistence.TemporalType
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -19,41 +20,43 @@ package org.eclipse.jpt.core.resource.java;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public enum TemporalType {
-	
-	DATE,
-	TIME,
-	TIMESTAMP;
-	
-	
-	public static TemporalType fromJavaAnnotationValue(Object javaAnnotationValue) {
+
+	DATE(JPA.TEMPORAL_TYPE__DATE),
+	TIME(JPA.TEMPORAL_TYPE__TIME),
+	TIMESTAMP(JPA.TEMPORAL_TYPE__TIMESTAMP);
+
+
+	private String javaAnnotationValue;
+
+	TemporalType(String javaAnnotationValue) {
 		if (javaAnnotationValue == null) {
-			return null;
+			throw new NullPointerException();
 		}
-		if (javaAnnotationValue.equals(JPA.TEMPORAL_TYPE__DATE)) {
-			return DATE;
-		}
-		if (javaAnnotationValue.equals(JPA.TEMPORAL_TYPE__TIME)) {
-			return TIME;
-		}
-		if (javaAnnotationValue.equals(JPA.TEMPORAL_TYPE__TIMESTAMP)) {
-			return TIMESTAMP;
+		this.javaAnnotationValue = javaAnnotationValue;
+	}
+
+	public String getJavaAnnotationValue() {
+		return this.javaAnnotationValue;
+	}
+
+
+	// ********** static methods **********
+
+	public static TemporalType fromJavaAnnotationValue(Object javaAnnotationValue) {
+		return (javaAnnotationValue == null) ? null : fromJavaAnnotationValue_(javaAnnotationValue);
+	}
+
+	private static TemporalType fromJavaAnnotationValue_(Object javaAnnotationValue) {
+		for (TemporalType temporalType : TemporalType.values()) {
+			if (temporalType.getJavaAnnotationValue().equals(javaAnnotationValue)) {
+				return temporalType;
+			}
 		}
 		return null;
 	}
 
 	public static String toJavaAnnotationValue(TemporalType temporalType) {
-		if (temporalType == null) {
-			return null;
-		}
-		switch (temporalType) {
-			case DATE :
-				return JPA.TEMPORAL_TYPE__DATE;
-			case TIME :
-				return JPA.TEMPORAL_TYPE__TIME;
-			case TIMESTAMP :
-				return JPA.TEMPORAL_TYPE__TIMESTAMP;
-			default :
-				throw new IllegalArgumentException("unknown temporal type: " + temporalType); //$NON-NLS-1$
-		}
+		return (temporalType == null) ? null : temporalType.getJavaAnnotationValue();
 	}
+
 }

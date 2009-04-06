@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,8 @@
 package org.eclipse.jpt.eclipselink.core.resource.java;
 
 /**
+ * Corresponds to the EclipseLink enum
+ * org.eclipse.persistence.annotations.CacheType
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -21,65 +23,47 @@ package org.eclipse.jpt.eclipselink.core.resource.java;
  * @since 2.1
  */
 public enum CacheType {
-	
-	FULL,
-	WEAK,
-	SOFT,
-	SOFT_WEAK,
-	HARD_WEAK,
-	CACHE,
-	NONE;
-	
-	
-	public static CacheType fromJavaAnnotationValue(Object javaAnnotationValue) {
+
+	FULL(EclipseLinkJPA.CACHE_TYPE__FULL),
+	WEAK(EclipseLinkJPA.CACHE_TYPE__WEAK),
+	SOFT(EclipseLinkJPA.CACHE_TYPE__SOFT),
+	SOFT_WEAK(EclipseLinkJPA.CACHE_TYPE__SOFT_WEAK),
+	HARD_WEAK(EclipseLinkJPA.CACHE_TYPE__HARD_WEAK),
+	CACHE(EclipseLinkJPA.CACHE_TYPE__CACHE),
+	NONE(EclipseLinkJPA.CACHE_TYPE__NONE);
+
+
+	private String javaAnnotationValue;
+
+	CacheType(String javaAnnotationValue) {
 		if (javaAnnotationValue == null) {
-			return null;
+			throw new NullPointerException();
 		}
-		if (javaAnnotationValue.equals(EclipseLinkJPA.CACHE_TYPE__FULL)) {
-			return FULL;
-		}
-		if (javaAnnotationValue.equals(EclipseLinkJPA.CACHE_TYPE__WEAK)) {
-			return WEAK;
-		}
-		if (javaAnnotationValue.equals(EclipseLinkJPA.CACHE_TYPE__SOFT)) {
-			return SOFT;
-		}
-		if (javaAnnotationValue.equals(EclipseLinkJPA.CACHE_TYPE__SOFT_WEAK)) {
-			return SOFT_WEAK;
-		}
-		if (javaAnnotationValue.equals(EclipseLinkJPA.CACHE_TYPE__HARD_WEAK)) {
-			return HARD_WEAK;
-		}
-		if (javaAnnotationValue.equals(EclipseLinkJPA.CACHE_TYPE__CACHE)) {
-			return CACHE;
-		}
-		if (javaAnnotationValue.equals(EclipseLinkJPA.CACHE_TYPE__NONE)) {
-			return NONE;
+		this.javaAnnotationValue = javaAnnotationValue;
+	}
+
+	public String getJavaAnnotationValue() {
+		return this.javaAnnotationValue;
+	}
+
+
+	// ********** static methods **********
+
+	public static CacheType fromJavaAnnotationValue(Object javaAnnotationValue) {
+		return (javaAnnotationValue == null) ? null : fromJavaAnnotationValue_(javaAnnotationValue);
+	}
+
+	private static CacheType fromJavaAnnotationValue_(Object javaAnnotationValue) {
+		for (CacheType cacheType : CacheType.values()) {
+			if (cacheType.getJavaAnnotationValue().equals(javaAnnotationValue)) {
+				return cacheType;
+			}
 		}
 		return null;
 	}
 
 	public static String toJavaAnnotationValue(CacheType cacheType) {
-		if (cacheType == null) {
-			return null;
-		}
-		switch (cacheType) {
-			case FULL :
-				return EclipseLinkJPA.CACHE_TYPE__FULL;
-			case WEAK :
-				return EclipseLinkJPA.CACHE_TYPE__WEAK;
-			case SOFT :
-				return EclipseLinkJPA.CACHE_TYPE__SOFT;
-			case SOFT_WEAK :
-				return EclipseLinkJPA.CACHE_TYPE__SOFT_WEAK;
-			case HARD_WEAK :
-				return EclipseLinkJPA.CACHE_TYPE__HARD_WEAK;
-			case CACHE :
-				return EclipseLinkJPA.CACHE_TYPE__CACHE;
-			case NONE :
-				return EclipseLinkJPA.CACHE_TYPE__NONE;
-			default :
-				throw new IllegalArgumentException("unknown cache type: " + cacheType); //$NON-NLS-1$
-		}
+		return (cacheType == null) ? null : cacheType.getJavaAnnotationValue();
 	}
+
 }

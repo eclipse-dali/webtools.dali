@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.context;
 
 /**
- * 
+ * Discriminator Type
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -20,73 +20,77 @@ package org.eclipse.jpt.core.context;
  */
 public enum DiscriminatorType {
 
-	STRING,
-	CHAR,
-	INTEGER;
-	
+	STRING(
+			org.eclipse.jpt.core.resource.java.DiscriminatorType.STRING,
+			org.eclipse.jpt.core.resource.orm.DiscriminatorType.STRING
+		),
+	CHAR(
+			org.eclipse.jpt.core.resource.java.DiscriminatorType.CHAR,
+			org.eclipse.jpt.core.resource.orm.DiscriminatorType.CHAR
+		),
+	INTEGER(
+			org.eclipse.jpt.core.resource.java.DiscriminatorType.INTEGER,
+			org.eclipse.jpt.core.resource.orm.DiscriminatorType.INTEGER
+		);
+
+
+	private org.eclipse.jpt.core.resource.java.DiscriminatorType javaDiscriminatorType;
+	private org.eclipse.jpt.core.resource.orm.DiscriminatorType ormDiscriminatorType;
+
+	DiscriminatorType(org.eclipse.jpt.core.resource.java.DiscriminatorType javaDiscriminatorType, org.eclipse.jpt.core.resource.orm.DiscriminatorType ormDiscriminatorType) {
+		if (javaDiscriminatorType == null) {
+			throw new NullPointerException();
+		}
+		if (ormDiscriminatorType == null) {
+			throw new NullPointerException();
+		}
+		this.javaDiscriminatorType = javaDiscriminatorType;
+		this.ormDiscriminatorType = ormDiscriminatorType;
+	}
+
+	public org.eclipse.jpt.core.resource.java.DiscriminatorType getJavaDiscriminatorType() {
+		return this.javaDiscriminatorType;
+	}
+
+	public org.eclipse.jpt.core.resource.orm.DiscriminatorType getOrmDiscriminatorType() {
+		return this.ormDiscriminatorType;
+	}
+
+
+	// ********** static methods **********
 
 	public static DiscriminatorType fromJavaResourceModel(org.eclipse.jpt.core.resource.java.DiscriminatorType javaDiscriminatorType) {
-		if (javaDiscriminatorType == null) {
-			return null;
-		}
-		switch (javaDiscriminatorType) {
-			case STRING:
-				return STRING;
-			case CHAR:
-				return CHAR;
-			case INTEGER:
-				return INTEGER;
-			default:
-				throw new IllegalArgumentException("unknown discriminator type: " + javaDiscriminatorType); //$NON-NLS-1$
-		}
+		return (javaDiscriminatorType == null) ? null : fromJavaResourceModel_(javaDiscriminatorType);
 	}
-	
+
+	private static DiscriminatorType fromJavaResourceModel_(org.eclipse.jpt.core.resource.java.DiscriminatorType javaDiscriminatorType) {
+		for (DiscriminatorType discriminatorType : DiscriminatorType.values()) {
+			if (discriminatorType.getJavaDiscriminatorType() == javaDiscriminatorType) {
+				return discriminatorType;
+			}
+		}
+		return null;
+	}
+
 	public static org.eclipse.jpt.core.resource.java.DiscriminatorType toJavaResourceModel(DiscriminatorType discriminatorType) {
-		if (discriminatorType == null) {
-			return null;
-		}
-		switch (discriminatorType) {
-			case STRING:
-				return org.eclipse.jpt.core.resource.java.DiscriminatorType.STRING;
-			case CHAR:
-				return org.eclipse.jpt.core.resource.java.DiscriminatorType.CHAR;
-			case INTEGER:
-				return org.eclipse.jpt.core.resource.java.DiscriminatorType.INTEGER;
-			default:
-				throw new IllegalArgumentException("unknown discriminator type: " + discriminatorType); //$NON-NLS-1$
-		}
+		return (discriminatorType == null) ? null : discriminatorType.getJavaDiscriminatorType();
 	}
 
 	public static DiscriminatorType fromOrmResourceModel(org.eclipse.jpt.core.resource.orm.DiscriminatorType ormDiscriminatorType) {
-		if (ormDiscriminatorType == null) {
-			return null;
-		}
-		switch (ormDiscriminatorType) {
-			case STRING:
-				return STRING;
-			case CHAR:
-				return CHAR;
-			case INTEGER:
-				return INTEGER;
-			default:
-				throw new IllegalArgumentException("unknown discriminator type: " + ormDiscriminatorType); //$NON-NLS-1$
-		}
+		return (ormDiscriminatorType == null) ? null : fromOrmResourceModel_(ormDiscriminatorType);
 	}
-	
+
+	private static DiscriminatorType fromOrmResourceModel_(org.eclipse.jpt.core.resource.orm.DiscriminatorType ormDiscriminatorType) {
+		for (DiscriminatorType discriminatorType : DiscriminatorType.values()) {
+			if (discriminatorType.getOrmDiscriminatorType() == ormDiscriminatorType) {
+				return discriminatorType;
+			}
+		}
+		return null;
+	}
+
 	public static org.eclipse.jpt.core.resource.orm.DiscriminatorType toOrmResourceModel(DiscriminatorType discriminatorType) {
-		if (discriminatorType == null) {
-			return null;
-		}
-		switch (discriminatorType) {
-			case STRING:
-				return org.eclipse.jpt.core.resource.orm.DiscriminatorType.STRING;
-			case CHAR:
-				return org.eclipse.jpt.core.resource.orm.DiscriminatorType.CHAR;
-			case INTEGER:
-				return org.eclipse.jpt.core.resource.orm.DiscriminatorType.INTEGER;
-			default:
-				throw new IllegalArgumentException("unknown discriminator type: " + discriminatorType); //$NON-NLS-1$
-		}
+		return (discriminatorType == null) ? null : discriminatorType.getOrmDiscriminatorType();
 	}
 
 }

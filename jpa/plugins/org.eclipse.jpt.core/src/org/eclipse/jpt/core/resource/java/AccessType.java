@@ -10,7 +10,8 @@
 package org.eclipse.jpt.core.resource.java;
 
 /**
- * 
+ * Corresponds to the JPA 2.0 enum
+ * javax.persistence.AccessType
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -20,33 +21,41 @@ package org.eclipse.jpt.core.resource.java;
  */
 public enum AccessType {
 
-	PROPERTY,
-	FIELD;
-	
-	public static AccessType fromJavaAnnotationValue(Object javaAnnotationValue) {
+	FIELD(JPA.ACCESS_TYPE__FIELD),
+	PROPERTY(JPA.ACCESS_TYPE__PROPERTY);
+
+
+	private String javaAnnotationValue;
+
+	AccessType(String javaAnnotationValue) {
 		if (javaAnnotationValue == null) {
-			return null;
+			throw new NullPointerException();
 		}
-		if (javaAnnotationValue.equals(JPA.ACCESS_TYPE__FIELD)) {
-			return FIELD;
-		}
-		if (javaAnnotationValue.equals(JPA.ACCESS_TYPE__PROPERTY)) {
-			return PROPERTY;
+		this.javaAnnotationValue = javaAnnotationValue;
+	}
+
+	public String getJavaAnnotationValue() {
+		return this.javaAnnotationValue;
+	}
+
+
+	// ********** static methods **********
+
+	public static AccessType fromJavaAnnotationValue(Object javaAnnotationValue) {
+		return (javaAnnotationValue == null) ? null : fromJavaAnnotationValue_(javaAnnotationValue);
+	}
+
+	private static AccessType fromJavaAnnotationValue_(Object javaAnnotationValue) {
+		for (AccessType accessType : AccessType.values()) {
+			if (accessType.getJavaAnnotationValue().equals(javaAnnotationValue)) {
+				return accessType;
+			}
 		}
 		return null;
 	}
 
 	public static String toJavaAnnotationValue(AccessType accessType) {
-		if (accessType == null) {
-			return null;
-		}
-		switch (accessType) {
-			case FIELD :
-				return JPA.ACCESS_TYPE__FIELD;
-			case PROPERTY :
-				return JPA.ACCESS_TYPE__PROPERTY;
-			default :
-				throw new IllegalArgumentException("unknown access type: " + accessType); //$NON-NLS-1$
-		}
+		return (accessType == null) ? null : accessType.getJavaAnnotationValue();
 	}
+
 }

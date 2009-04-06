@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,8 @@
 package org.eclipse.jpt.eclipselink.core.resource.java;
 
 /**
+ * Corresponds to the EclipseLink enum
+ * org.eclipse.persistence.annotations.ChangeTrackingType
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -22,46 +24,43 @@ package org.eclipse.jpt.eclipselink.core.resource.java;
  */
 public enum ChangeTrackingType {
 
+	ATTRIBUTE(EclipseLinkJPA.CHANGE_TRACKING_TYPE__ATTRIBUTE),
+	OBJECT(EclipseLinkJPA.CHANGE_TRACKING_TYPE__OBJECT),
+	DEFERRED(EclipseLinkJPA.CHANGE_TRACKING_TYPE__DEFERRED),
+	AUTO(EclipseLinkJPA.CHANGE_TRACKING_TYPE__AUTO);
 
-	ATTRIBUTE,
-	OBJECT,
-	DEFERRED,
-	AUTO;
-	
-	public static ChangeTrackingType fromJavaAnnotationValue(Object javaAnnotationValue) {
+
+	private String javaAnnotationValue;
+
+	ChangeTrackingType(String javaAnnotationValue) {
 		if (javaAnnotationValue == null) {
-			return null;
+			throw new NullPointerException();
 		}
-		if (javaAnnotationValue.equals(EclipseLinkJPA.CHANGE_TRACKING_TYPE__ATTRIBUTE)) {
-			return ATTRIBUTE;
-		}
-		if (javaAnnotationValue.equals(EclipseLinkJPA.CHANGE_TRACKING_TYPE__OBJECT)) {
-			return OBJECT;
-		}
-		if (javaAnnotationValue.equals(EclipseLinkJPA.CHANGE_TRACKING_TYPE__DEFERRED)) {
-			return DEFERRED;
-		}
-		if (javaAnnotationValue.equals(EclipseLinkJPA.CHANGE_TRACKING_TYPE__AUTO)) {
-			return AUTO;
+		this.javaAnnotationValue = javaAnnotationValue;
+	}
+
+	public String getJavaAnnotationValue() {
+		return this.javaAnnotationValue;
+	}
+
+
+	// ********** static methods **********
+
+	public static ChangeTrackingType fromJavaAnnotationValue(Object javaAnnotationValue) {
+		return (javaAnnotationValue == null) ? null : fromJavaAnnotationValue_(javaAnnotationValue);
+	}
+
+	private static ChangeTrackingType fromJavaAnnotationValue_(Object javaAnnotationValue) {
+		for (ChangeTrackingType changeTrackingType : ChangeTrackingType.values()) {
+			if (changeTrackingType.getJavaAnnotationValue().equals(javaAnnotationValue)) {
+				return changeTrackingType;
+			}
 		}
 		return null;
 	}
 
 	public static String toJavaAnnotationValue(ChangeTrackingType changeTrackingType) {
-		if (changeTrackingType == null) {
-			return null;
-		}
-		switch (changeTrackingType) {
-			case ATTRIBUTE :
-				return EclipseLinkJPA.CHANGE_TRACKING_TYPE__ATTRIBUTE;
-			case OBJECT :
-				return EclipseLinkJPA.CHANGE_TRACKING_TYPE__OBJECT;
-			case DEFERRED :
-				return EclipseLinkJPA.CHANGE_TRACKING_TYPE__DEFERRED;
-			case AUTO :
-				return EclipseLinkJPA.CHANGE_TRACKING_TYPE__AUTO;
-			default :
-				throw new IllegalArgumentException("unknown change tracking type: " + changeTrackingType); //$NON-NLS-1$
-		}
+		return (changeTrackingType == null) ? null : changeTrackingType.getJavaAnnotationValue();
 	}
+
 }

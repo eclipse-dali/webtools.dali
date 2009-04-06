@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,8 @@
 package org.eclipse.jpt.eclipselink.core.resource.java;
 
 /**
+ * Corresponds to the EclipseLink enum
+ * org.eclipse.persistence.annotations.ExistenceType
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -22,46 +24,43 @@ package org.eclipse.jpt.eclipselink.core.resource.java;
  */
 public enum ExistenceType {
 
+    CHECK_CACHE(EclipseLinkJPA.EXISTENCE_TYPE__CHECK_CACHE),
+    CHECK_DATABASE(EclipseLinkJPA.EXISTENCE_TYPE__CHECK_DATABASE),
+    ASSUME_EXISTENCE(EclipseLinkJPA.EXISTENCE_TYPE__ASSUME_EXISTENCE),
+    ASSUME_NON_EXISTENCE(EclipseLinkJPA.EXISTENCE_TYPE__ASSUME_NON_EXISTENCE);
 
-    CHECK_CACHE,
-    CHECK_DATABASE,
-    ASSUME_EXISTENCE,
-    ASSUME_NON_EXISTENCE;
-	
-	public static ExistenceType fromJavaAnnotationValue(Object javaAnnotationValue) {
+
+	private String javaAnnotationValue;
+
+	ExistenceType(String javaAnnotationValue) {
 		if (javaAnnotationValue == null) {
-			return null;
+			throw new NullPointerException();
 		}
-		if (javaAnnotationValue.equals(EclipseLinkJPA.EXISTENCE_TYPE__CHECK_CACHE)) {
-			return CHECK_CACHE;
-		}
-		if (javaAnnotationValue.equals(EclipseLinkJPA.EXISTENCE_TYPE__CHECK_DATABASE)) {
-			return CHECK_DATABASE;
-		}
-		if (javaAnnotationValue.equals(EclipseLinkJPA.EXISTENCE_TYPE__ASSUME_EXISTENCE)) {
-			return ASSUME_EXISTENCE;
-		}
-		if (javaAnnotationValue.equals(EclipseLinkJPA.EXISTENCE_TYPE__ASSUME_NON_EXISTENCE)) {
-			return ASSUME_NON_EXISTENCE;
+		this.javaAnnotationValue = javaAnnotationValue;
+	}
+
+	public String getJavaAnnotationValue() {
+		return this.javaAnnotationValue;
+	}
+
+
+	// ********** static methods **********
+
+	public static ExistenceType fromJavaAnnotationValue(Object javaAnnotationValue) {
+		return (javaAnnotationValue == null) ? null : fromJavaAnnotationValue_(javaAnnotationValue);
+	}
+
+	private static ExistenceType fromJavaAnnotationValue_(Object javaAnnotationValue) {
+		for (ExistenceType existenceType : ExistenceType.values()) {
+			if (existenceType.getJavaAnnotationValue().equals(javaAnnotationValue)) {
+				return existenceType;
+			}
 		}
 		return null;
 	}
 
 	public static String toJavaAnnotationValue(ExistenceType existenceType) {
-		if (existenceType == null) {
-			return null;
-		}
-		switch (existenceType) {
-			case CHECK_CACHE :
-				return EclipseLinkJPA.EXISTENCE_TYPE__CHECK_CACHE;
-			case CHECK_DATABASE :
-				return EclipseLinkJPA.EXISTENCE_TYPE__CHECK_DATABASE;
-			case ASSUME_EXISTENCE :
-				return EclipseLinkJPA.EXISTENCE_TYPE__ASSUME_EXISTENCE;
-			case ASSUME_NON_EXISTENCE :
-				return EclipseLinkJPA.EXISTENCE_TYPE__ASSUME_NON_EXISTENCE;
-			default :
-				throw new IllegalArgumentException("unknown existence type: " + existenceType); //$NON-NLS-1$
-		}
+		return (existenceType == null) ? null : existenceType.getJavaAnnotationValue();
 	}
+
 }

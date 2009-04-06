@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,8 @@
 package org.eclipse.jpt.eclipselink.core.resource.java;
 
 /**
+ * Corresponds to the EclipseLink enum
+ * org.eclipse.persistence.annotations.CacheCoordinationType
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -21,46 +23,44 @@ package org.eclipse.jpt.eclipselink.core.resource.java;
  * @since 2.1
  */
 public enum CacheCoordinationType {
-	
-	SEND_OBJECT_CHANGES,
-	INVALIDATE_CHANGED_OBJECTS,
-	SEND_NEW_OBJECTS_WITH_CHANGES,
-	NONE;
-	
-	public static CacheCoordinationType fromJavaAnnotationValue(Object javaAnnotationValue) {
+
+	SEND_OBJECT_CHANGES(EclipseLinkJPA.CACHE_COORDINATION_TYPE__SEND_OBJECT_CHANGES),
+	INVALIDATE_CHANGED_OBJECTS(EclipseLinkJPA.CACHE_COORDINATION_TYPE__INVALIDATE_CHANGED_OBJECTS),
+	SEND_NEW_OBJECTS_WITH_CHANGES(EclipseLinkJPA.CACHE_COORDINATION_TYPE__SEND_NEW_OBJECTS_WITH_CHANGES),
+	NONE(EclipseLinkJPA.CACHE_COORDINATION_TYPE__NONE);
+
+
+	private String javaAnnotationValue;
+
+	CacheCoordinationType(String javaAnnotationValue) {
 		if (javaAnnotationValue == null) {
-			return null;
+			throw new NullPointerException();
 		}
-		if (javaAnnotationValue.equals(EclipseLinkJPA.CACHE_COORDINATION_TYPE__SEND_OBJECT_CHANGES)) {
-			return SEND_OBJECT_CHANGES;
-		}
-		if (javaAnnotationValue.equals(EclipseLinkJPA.CACHE_COORDINATION_TYPE__INVALIDATE_CHANGED_OBJECTS)) {
-			return INVALIDATE_CHANGED_OBJECTS;
-		}
-		if (javaAnnotationValue.equals(EclipseLinkJPA.CACHE_COORDINATION_TYPE__SEND_NEW_OBJECTS_WITH_CHANGES)) {
-			return SEND_NEW_OBJECTS_WITH_CHANGES;
-		}
-		if (javaAnnotationValue.equals(EclipseLinkJPA.CACHE_COORDINATION_TYPE__NONE)) {
-			return NONE;
+		this.javaAnnotationValue = javaAnnotationValue;
+	}
+
+	public String getJavaAnnotationValue() {
+		return this.javaAnnotationValue;
+	}
+
+
+	// ********** static methods **********
+
+	public static CacheCoordinationType fromJavaAnnotationValue(Object javaAnnotationValue) {
+		return (javaAnnotationValue == null) ? null : fromJavaAnnotationValue_(javaAnnotationValue);
+	}
+
+	private static CacheCoordinationType fromJavaAnnotationValue_(Object javaAnnotationValue) {
+		for (CacheCoordinationType cacheCoordinationType : CacheCoordinationType.values()) {
+			if (cacheCoordinationType.getJavaAnnotationValue().equals(javaAnnotationValue)) {
+				return cacheCoordinationType;
+			}
 		}
 		return null;
 	}
 
 	public static String toJavaAnnotationValue(CacheCoordinationType cacheCoordinationType) {
-		if (cacheCoordinationType == null) {
-			return null;
-		}
-		switch (cacheCoordinationType) {
-			case SEND_OBJECT_CHANGES :
-				return EclipseLinkJPA.CACHE_COORDINATION_TYPE__SEND_OBJECT_CHANGES;
-			case INVALIDATE_CHANGED_OBJECTS :
-				return EclipseLinkJPA.CACHE_COORDINATION_TYPE__INVALIDATE_CHANGED_OBJECTS;
-			case SEND_NEW_OBJECTS_WITH_CHANGES :
-				return EclipseLinkJPA.CACHE_COORDINATION_TYPE__SEND_NEW_OBJECTS_WITH_CHANGES;
-			case NONE :
-				return EclipseLinkJPA.CACHE_COORDINATION_TYPE__NONE;
-			default :
-				throw new IllegalArgumentException("unknown cache coordination type: " + cacheCoordinationType); //$NON-NLS-1$
-		}
+		return (cacheCoordinationType == null) ? null : cacheCoordinationType.getJavaAnnotationValue();
 	}
+
 }

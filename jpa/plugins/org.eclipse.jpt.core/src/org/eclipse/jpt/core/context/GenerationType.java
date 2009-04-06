@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.context;
 
 /**
- * 
+ * Generation Type
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -20,81 +20,81 @@ package org.eclipse.jpt.core.context;
  */
 public enum GenerationType {
 
-	TABLE,
-	SEQUENCE,
-	IDENTITY,
-	AUTO;
-	
+	TABLE(
+			org.eclipse.jpt.core.resource.java.GenerationType.TABLE,
+			org.eclipse.jpt.core.resource.orm.GenerationType.TABLE
+		),
+	SEQUENCE(
+			org.eclipse.jpt.core.resource.java.GenerationType.SEQUENCE,
+			org.eclipse.jpt.core.resource.orm.GenerationType.SEQUENCE
+		),
+	IDENTITY(
+			org.eclipse.jpt.core.resource.java.GenerationType.IDENTITY,
+			org.eclipse.jpt.core.resource.orm.GenerationType.IDENTITY
+		),
+	AUTO(
+			org.eclipse.jpt.core.resource.java.GenerationType.AUTO,
+			org.eclipse.jpt.core.resource.orm.GenerationType.AUTO
+		);
+
+
+	private org.eclipse.jpt.core.resource.java.GenerationType javaGenerationType;
+	private org.eclipse.jpt.core.resource.orm.GenerationType ormGenerationType;
+
+	GenerationType(org.eclipse.jpt.core.resource.java.GenerationType javaGenerationType, org.eclipse.jpt.core.resource.orm.GenerationType ormGenerationType) {
+		if (javaGenerationType == null) {
+			throw new NullPointerException();
+		}
+		if (ormGenerationType == null) {
+			throw new NullPointerException();
+		}
+		this.javaGenerationType = javaGenerationType;
+		this.ormGenerationType = ormGenerationType;
+	}
+
+	public org.eclipse.jpt.core.resource.java.GenerationType getJavaGenerationType() {
+		return this.javaGenerationType;
+	}
+
+	public org.eclipse.jpt.core.resource.orm.GenerationType getOrmGenerationType() {
+		return this.ormGenerationType;
+	}
+
+
+	// ********** static methods **********
 
 	public static GenerationType fromJavaResourceModel(org.eclipse.jpt.core.resource.java.GenerationType javaGenerationType) {
-		if (javaGenerationType == null) {
-			return null;
-		}
-		switch (javaGenerationType) {
-			case TABLE:
-				return TABLE;
-			case SEQUENCE:
-				return SEQUENCE;
-			case IDENTITY:
-				return IDENTITY;
-			case AUTO:
-				return AUTO;
-			default:
-				throw new IllegalArgumentException("unknown generation type: " + javaGenerationType); //$NON-NLS-1$
-		}
+		return (javaGenerationType == null) ? null : fromJavaResourceModel_(javaGenerationType);
 	}
-	
+
+	private static GenerationType fromJavaResourceModel_(org.eclipse.jpt.core.resource.java.GenerationType javaGenerationType) {
+		for (GenerationType generationType : GenerationType.values()) {
+			if (generationType.getJavaGenerationType() == javaGenerationType) {
+				return generationType;
+			}
+		}
+		return null;
+	}
+
 	public static org.eclipse.jpt.core.resource.java.GenerationType toJavaResourceModel(GenerationType generationType) {
-		if (generationType == null) {
-			return null;
-		}
-		switch (generationType) {
-			case TABLE:
-				return org.eclipse.jpt.core.resource.java.GenerationType.TABLE;
-			case SEQUENCE:
-				return org.eclipse.jpt.core.resource.java.GenerationType.SEQUENCE;
-			case IDENTITY:
-				return org.eclipse.jpt.core.resource.java.GenerationType.IDENTITY;
-			case AUTO:
-				return org.eclipse.jpt.core.resource.java.GenerationType.AUTO;
-			default:
-				throw new IllegalArgumentException("unknown generation type: " + generationType); //$NON-NLS-1$
-		}
+		return (generationType == null) ? null : generationType.getJavaGenerationType();
 	}
 
 	public static GenerationType fromOrmResourceModel(org.eclipse.jpt.core.resource.orm.GenerationType ormGenerationType) {
-		if (ormGenerationType == null) {
-			return null;
-		}
-		switch (ormGenerationType) {
-			case TABLE:
-				return TABLE;
-			case SEQUENCE:
-				return SEQUENCE;
-			case IDENTITY:
-				return IDENTITY;
-			case AUTO:
-				return AUTO;
-			default:
-				throw new IllegalArgumentException("unknown generation type: " + ormGenerationType); //$NON-NLS-1$
-		}
+		return (ormGenerationType == null) ? null : fromOrmResourceModel_(ormGenerationType);
 	}
-	
+
+	private static GenerationType fromOrmResourceModel_(org.eclipse.jpt.core.resource.orm.GenerationType ormGenerationType) {
+		for (GenerationType generationType : GenerationType.values()) {
+			if (generationType.getOrmGenerationType() == ormGenerationType) {
+				return generationType;
+			}
+		}
+		return null;
+	}
+
 	public static org.eclipse.jpt.core.resource.orm.GenerationType toOrmResourceModel(GenerationType generationType) {
-		if (generationType == null) {
-			return null;
-		}
-		switch (generationType) {
-			case TABLE:
-				return org.eclipse.jpt.core.resource.orm.GenerationType.TABLE;
-			case SEQUENCE:
-				return org.eclipse.jpt.core.resource.orm.GenerationType.SEQUENCE;
-			case IDENTITY:
-				return org.eclipse.jpt.core.resource.orm.GenerationType.IDENTITY;
-			case AUTO:
-				return org.eclipse.jpt.core.resource.orm.GenerationType.AUTO;
-			default:
-				throw new IllegalArgumentException("unknown generation type: " + generationType); //$NON-NLS-1$
-		}
+		return (generationType == null) ? null : generationType.getOrmGenerationType();
 	}
+
 }

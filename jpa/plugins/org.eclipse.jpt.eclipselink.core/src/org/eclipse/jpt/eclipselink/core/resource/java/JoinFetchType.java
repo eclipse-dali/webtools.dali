@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,8 +10,8 @@
 package org.eclipse.jpt.eclipselink.core.resource.java;
 
 /**
- * Resource model interface that represents the 
- * org.eclipse.persistence.annotations.JoinFetchType enum
+ * Corresponds to the EclipseLink enum
+ * org.eclipse.persistence.annotations.JoinFetchType
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -24,34 +24,41 @@ package org.eclipse.jpt.eclipselink.core.resource.java;
  */
 public enum JoinFetchType {
 
+    INNER(EclipseLinkJPA.JOIN_FETCH_TYPE__INNER),
+    OUTER(EclipseLinkJPA.JOIN_FETCH_TYPE__OUTER);
 
-    INNER,
-    OUTER;
-	
-	public static JoinFetchType fromJavaAnnotationValue(Object javaAnnotationValue) {
+
+	private String javaAnnotationValue;
+
+	JoinFetchType(String javaAnnotationValue) {
 		if (javaAnnotationValue == null) {
-			return null;
+			throw new NullPointerException();
 		}
-		if (javaAnnotationValue.equals(EclipseLinkJPA.JOIN_FETCH_TYPE__INNER)) {
-			return INNER;
-		}
-		if (javaAnnotationValue.equals(EclipseLinkJPA.JOIN_FETCH_TYPE__OUTER)) {
-			return OUTER;
+		this.javaAnnotationValue = javaAnnotationValue;
+	}
+
+	public String getJavaAnnotationValue() {
+		return this.javaAnnotationValue;
+	}
+
+
+	// ********** static methods **********
+
+	public static JoinFetchType fromJavaAnnotationValue(Object javaAnnotationValue) {
+		return (javaAnnotationValue == null) ? null : fromJavaAnnotationValue_(javaAnnotationValue);
+	}
+
+	private static JoinFetchType fromJavaAnnotationValue_(Object javaAnnotationValue) {
+		for (JoinFetchType joinFetchType : JoinFetchType.values()) {
+			if (joinFetchType.getJavaAnnotationValue().equals(javaAnnotationValue)) {
+				return joinFetchType;
+			}
 		}
 		return null;
 	}
 
 	public static String toJavaAnnotationValue(JoinFetchType joinFetchType) {
-		if (joinFetchType == null) {
-			return null;
-		}
-		switch (joinFetchType) {
-			case INNER :
-				return EclipseLinkJPA.JOIN_FETCH_TYPE__INNER;
-			case OUTER :
-				return EclipseLinkJPA.JOIN_FETCH_TYPE__OUTER;
-			default :
-				throw new IllegalArgumentException("unknown join fetch type: " + joinFetchType); //$NON-NLS-1$
-		}
+		return (joinFetchType == null) ? null : joinFetchType.getJavaAnnotationValue();
 	}
+
 }

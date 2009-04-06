@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,8 @@
 package org.eclipse.jpt.core.resource.java;
 
 /**
- * 
+ * Corresponds to the JPA enum
+ * javax.persistence.InheritanceType
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -19,41 +20,43 @@ package org.eclipse.jpt.core.resource.java;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public enum InheritanceType {
-	
-	SINGLE_TABLE,
-	JOINED,
-	TABLE_PER_CLASS;
-	
-	
-	public static InheritanceType fromJavaAnnotationValue(Object javaAnnotationValue) {
+
+	SINGLE_TABLE(JPA.INHERITANCE_TYPE__SINGLE_TABLE),
+	JOINED(JPA.INHERITANCE_TYPE__JOINED),
+	TABLE_PER_CLASS(JPA.INHERITANCE_TYPE__TABLE_PER_CLASS);
+
+
+	private String javaAnnotationValue;
+
+	InheritanceType(String javaAnnotationValue) {
 		if (javaAnnotationValue == null) {
-			return null;
+			throw new NullPointerException();
 		}
-		if (javaAnnotationValue.equals(JPA.INHERITANCE_TYPE__SINGLE_TABLE)) {
-			return SINGLE_TABLE;
-		}
-		if (javaAnnotationValue.equals(JPA.INHERITANCE_TYPE__JOINED)) {
-			return JOINED;
-		}
-		if (javaAnnotationValue.equals(JPA.INHERITANCE_TYPE__TABLE_PER_CLASS)) {
-			return TABLE_PER_CLASS;
+		this.javaAnnotationValue = javaAnnotationValue;
+	}
+
+	public String getJavaAnnotationValue() {
+		return this.javaAnnotationValue;
+	}
+
+
+	// ********** static methods **********
+
+	public static InheritanceType fromJavaAnnotationValue(Object javaAnnotationValue) {
+		return (javaAnnotationValue == null) ? null : fromJavaAnnotationValue_(javaAnnotationValue);
+	}
+
+	private static InheritanceType fromJavaAnnotationValue_(Object javaAnnotationValue) {
+		for (InheritanceType inheritanceType : InheritanceType.values()) {
+			if (inheritanceType.getJavaAnnotationValue().equals(javaAnnotationValue)) {
+				return inheritanceType;
+			}
 		}
 		return null;
 	}
 
 	public static String toJavaAnnotationValue(InheritanceType inheritanceType) {
-		if (inheritanceType == null) {
-			return null;
-		}
-		switch (inheritanceType) {
-			case SINGLE_TABLE :
-				return JPA.INHERITANCE_TYPE__SINGLE_TABLE;
-			case JOINED :
-				return JPA.INHERITANCE_TYPE__JOINED;
-			case TABLE_PER_CLASS :
-				return JPA.INHERITANCE_TYPE__TABLE_PER_CLASS;
-			default :
-				throw new IllegalArgumentException("unknown inheritance type: " + inheritanceType); //$NON-NLS-1$
-		}
+		return (inheritanceType == null) ? null : inheritanceType.getJavaAnnotationValue();
 	}
+
 }
