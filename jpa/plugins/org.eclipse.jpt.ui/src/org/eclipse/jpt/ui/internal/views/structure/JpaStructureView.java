@@ -46,6 +46,13 @@ public class JpaStructureView
 	}
 	
 	@Override
+	public void partBroughtToTop(IWorkbenchPart part) {
+		// do same thing as partActivated, which will check to see if the 
+		// part is an editor, in which case, we want to show the right page
+		partActivated(part);
+	}
+	
+	@Override
 	protected boolean isImportant(IWorkbenchPart part) {
 		return part instanceof IEditorPart;
 	}

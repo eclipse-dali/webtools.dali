@@ -241,7 +241,10 @@ public class DefaultJpaSelectionManager
 		}
 		
 		public void partBroughtToTop(IWorkbenchPartReference partRef) {
-			// nop
+			IWorkbenchPart part = partRef.getPart(false);
+			if (part != null) {
+				initPart(part);
+			}
 		}
 		
 		public void partClosed(IWorkbenchPartReference partRef) {
