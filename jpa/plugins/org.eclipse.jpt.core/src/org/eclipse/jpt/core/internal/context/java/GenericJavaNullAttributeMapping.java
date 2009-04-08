@@ -14,13 +14,13 @@ import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 
-public class GenericJavaNullAttributeMapping<T extends JavaResourceNode>
+public class GenericJavaNullAttributeMapping<T extends Annotation>
 	extends AbstractJavaAttributeMapping<T>
 {
 	public GenericJavaNullAttributeMapping(JavaPersistentAttribute parent) {

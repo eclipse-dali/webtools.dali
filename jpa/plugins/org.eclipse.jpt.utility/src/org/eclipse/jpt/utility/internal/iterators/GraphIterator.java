@@ -9,18 +9,17 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal.iterators;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
-import java.util.Set;
+
 import org.eclipse.jpt.utility.internal.StringTools;
 
 /**
  * A <code>GraphIterator</code> is similar to a <code>TreeIterator</code>
  * except that it cannot be assumed that all nodes assume a strict tree
- * structure.  For instance, in a tree, a node cannot be a descendent of
+ * structure. For instance, in a tree, a node cannot be a descendent of
  * itself, but a graph may have a cyclical structure.
  * 
  * A <code>GraphIterator</code> simplifies the traversal of a
@@ -39,22 +38,22 @@ import org.eclipse.jpt.utility.internal.StringTools;
  * It is up to the user of this class to ensure a *complete* graph.
  * <p>
  * To use, supply:<ul>
- * <li> either the initial node of the graph or an Iterator over an
- * initial collection of graph nodes
+ * <li> either the initial node of the graph or an <code>Iterator</code>
+ * over an initial collection of graph nodes
  * <li> a <code>MisterRogers</code> that tells who the neighbors are
  * of each node
  * (alternatively, subclass <code>GraphIterator</code>
  * and override the <code>neighbors(Object)</code> method)
  * </ul>
  * <p>
- * <code>remove()</code> is not supported.  This method, if 
+ * <code>remove()</code> is not supported. This method, if 
  * desired, must be implemented by the user of this class.
  */
 public class GraphIterator<E>
 	implements Iterator<E>
 {
-	private final Collection<Iterator<? extends E>> iterators;
-	private final Set<E> visitedNeighbors;
+	private final LinkedList<Iterator<? extends E>> iterators;
+	private final HashSet<E> visitedNeighbors;
 	private final MisterRogers<E> misterRogers;
 	
 	private Iterator<? extends E> currentIterator;
@@ -64,10 +63,11 @@ public class GraphIterator<E>
 
 
 	/**
-	 * Construct an iterator with the specified collection of roots
+	 * Construct an iterator that returns the nodes of a graph
+	 * with the specified collection of roots
 	 * and a disabled mister rogers.
 	 * Use this constructor if you want to override the
-	 * <code>children(Object)</code> method instead of building
+	 * <code>neighbors(Object)</code> method instead of building
 	 * a <code>MisterRogers</code>.
 	 */
 	public GraphIterator(E... roots) {
@@ -75,10 +75,23 @@ public class GraphIterator<E>
 	}
 
 	/**
-	 * Construct an iterator with the specified collection of roots
+	 * Construct an iterator that returns the nodes of a graph
+	 * with the specified collection of roots
 	 * and a disabled mister rogers.
 	 * Use this constructor if you want to override the
-	 * <code>children(Object)</code> method instead of building
+	 * <code>neighbors(Object)</code> method instead of building
+	 * a <code>MisterRogers</code>.
+	 */
+	public GraphIterator(Iterable<? extends E> roots) {
+		this(roots.iterator());
+	}
+
+	/**
+	 * Construct an iterator that returns the nodes of a graph
+	 * with the specified collection of roots
+	 * and a disabled mister rogers.
+	 * Use this constructor if you want to override the
+	 * <code>neighbors(Object)</code> method instead of building
 	 * a <code>MisterRogers</code>.
 	 */
 	public GraphIterator(Iterator<? extends E> roots) {
@@ -86,10 +99,11 @@ public class GraphIterator<E>
 	}
 
 	/**
-	 * Construct an iterator with the specified root
+	 * Construct an iterator that returns the nodes of a graph
+	 * with the specified root
 	 * and a disabled mister rogers.
 	 * Use this constructor if you want to override the
-	 * <code>children(Object)</code> method instead of building
+	 * <code>neighbors(Object)</code> method instead of building
 	 * a <code>MisterRogers</code>.
 	 */
 	public GraphIterator(E root) {
@@ -97,16 +111,32 @@ public class GraphIterator<E>
 	}
 
 	/**
-	 * Construct an iterator with the specified root
-	 * and mister rogers.
+	 * Construct an iterator that returns the nodes of a graph
+	 * with the specified root and mister rogers.
 	 */
 	public GraphIterator(E root, MisterRogers<E> misterRogers) {
 		this(new SingleElementIterator<E>(root), misterRogers);
 	}
 
 	/**
-	 * Construct an iterator with the specified roots
-	 * and mister rogers.
+	 * Construct an iterator that returns the nodes of a graph
+	 * with the specified collection of roots and mister rogers.
+	 */
+	public GraphIterator(E[] roots, MisterRogers<E> misterRogers) {
+		this(new ArrayIterator<E>(roots), misterRogers);
+	}
+
+	/**
+	 * Construct an iterator that returns the nodes of a graph
+	 * with the specified roots and mister rogers.
+	 */
+	public GraphIterator(Iterable<? extends E> roots, MisterRogers<E> misterRogers) {
+		this(roots.iterator(), misterRogers);
+	}
+
+	/**
+	 * Construct an iterator that returns the nodes of a graph
+	 * with the specified roots and mister rogers.
 	 */
 	public GraphIterator(Iterator<? extends E> roots, MisterRogers<E> misterRogers) {
 		super();

@@ -54,6 +54,7 @@ import org.eclipse.jpt.db.Catalog;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.SchemaContainer;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.iterables.CloneIterable;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
@@ -179,7 +180,7 @@ public abstract class AbstractEntityMappings
 	}
 	
 	public void changeMapping(OrmPersistentType ormPersistentType, OrmTypeMapping oldMapping, OrmTypeMapping newMapping) {
-		AccessType specifiedAccess = ormPersistentType.getSpecifiedAccess();
+		AccessType savedAccess = ormPersistentType.getSpecifiedAccess();
 		ormPersistentType.dispose();
 		int sourceIndex = this.persistentTypes.indexOf(ormPersistentType);
 		this.persistentTypes.remove(sourceIndex);
@@ -190,12 +191,12 @@ public abstract class AbstractEntityMappings
 		
 		newMapping.initializeFrom(oldMapping);
 		//not sure where else to put this, need to set the access on the resource model
-		ormPersistentType.setSpecifiedAccess(specifiedAccess);
+		ormPersistentType.setSpecifiedAccess(savedAccess);
 		fireItemMoved(PERSISTENT_TYPES_LIST, targetIndex, sourceIndex);
 	}
 	
 	public OrmPersistentType getPersistentType(String fullyQualifiedTypeName) {
-		for (OrmPersistentType ormPersistentType : CollectionTools.iterable(persistentTypes())) {
+		for (OrmPersistentType ormPersistentType : this.getPersistentTypes()) {
 			if (ormPersistentType.isFor(fullyQualifiedTypeName)) {
 				return ormPersistentType;
 			}
@@ -348,6 +349,10 @@ public abstract class AbstractEntityMappings
 
 	public ListIterator<OrmPersistentType> persistentTypes() {
 		return new CloneListIterator<OrmPersistentType>(this.persistentTypes);
+	}
+	
+	protected Iterable<OrmPersistentType> getPersistentTypes() {
+		return new CloneIterable<OrmPersistentType>(this.persistentTypes);
 	}
 	
 	public int persistentTypesSize() {
@@ -609,7 +614,7 @@ public abstract class AbstractEntityMappings
 	//this needs to be handled both for className and persistentType.getName().
 	//moving on for now since I am just trying to get the ui compiled!  just a warning that this isn't good api
 	public boolean containsPersistentType(String className) {
-		for (OrmPersistentType persistentType : CollectionTools.iterable(persistentTypes())) {
+		for (OrmPersistentType persistentType : this.getPersistentTypes()) {
 			if (persistentType.getName().equals(className)) {
 				return true;
 			}
@@ -821,7 +826,7 @@ public abstract class AbstractEntityMappings
 	@Override
 	public void postUpdate() {
 		super.postUpdate();
-		for (PersistentType persistentType : CollectionTools.iterable(this.persistentTypes())) {
+		for (PersistentType persistentType : this.getPersistentTypes()) {
 			persistentType.postUpdate();
 		}
 	}
@@ -829,7 +834,7 @@ public abstract class AbstractEntityMappings
 	// ********** text **********
 
 	public JpaStructureNode getStructureNode(int textOffset) {
-		for (OrmPersistentType persistentType: CollectionTools.iterable(persistentTypes())) {
+		for (OrmPersistentType persistentType: this.getPersistentTypes()) {
 			if (persistentType.contains(textOffset)) {
 				return persistentType.getStructureNode(textOffset);
 			}
@@ -857,8 +862,8 @@ public abstract class AbstractEntityMappings
 		super.validate(messages, reporter);
 		this.validateGenerators(messages);
 		this.validateQueries(messages);
-		for (Iterator<OrmPersistentType> stream = this.persistentTypes(); stream.hasNext(); ) {
-			this.validatePersistentType(stream.next(), messages, reporter);
+		for (OrmPersistentType  ormPersistentType : this.getPersistentTypes()) {
+			this.validatePersistentType(ormPersistentType, messages, reporter);
 		}
 	}
 	
@@ -934,7 +939,7 @@ public abstract class AbstractEntityMappings
 	// ********** dispose **********
 
 	public void dispose() {
-		for (OrmPersistentType  ormPersistentType : CollectionTools.iterable(persistentTypes())) {
+		for (OrmPersistentType  ormPersistentType : this.getPersistentTypes()) {
 			ormPersistentType.dispose();
 		}
 	}

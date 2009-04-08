@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,8 @@ package org.eclipse.jpt.core.resource.java;
 import java.util.ListIterator;
 
 /**
- * 
+ * Corresponds to the JPA annotation
+ * javax.persistence.JoinTable
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -20,38 +21,84 @@ import java.util.ListIterator;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface JoinTableAnnotation extends TableAnnotation
+public interface JoinTableAnnotation
+	extends BaseTableAnnotation
 {
 	String ANNOTATION_NAME = JPA.JOIN_TABLE;
 
+	/**
+	 * Corresponds to the 'joinColumns' element of the JoinTable annotation.
+	 * Return an empty iterator if the element does not exist in Java.
+	 */
 	ListIterator<JoinColumnAnnotation> joinColumns();
-	
-	JoinColumnAnnotation joinColumnAt(int index);
-	
-	int indexOfJoinColumn(JoinColumnAnnotation joinColumn);
-	
+		String JOIN_COLUMNS_LIST = "joinColumns"; //$NON-NLS-1$
+
+	/**
+	 * Corresponds to the 'joinColumns' element of the JoinTable annotation.
+	 */
 	int joinColumnsSize();
 
+	/**
+	 * Corresponds to the 'joinColumns' element of the JoinTable annotation.
+	 */
+	JoinColumnAnnotation joinColumnAt(int index);
+
+	/**
+	 * Corresponds to the 'joinColumns' element of the JoinTable annotation.
+	 */
+	int indexOfJoinColumn(JoinColumnAnnotation joinColumn);
+
+	/**
+	 * Corresponds to the 'joinColumns' element of the JoinTable annotation.
+	 */
 	JoinColumnAnnotation addJoinColumn(int index);
-	
-	void removeJoinColumn(int index);
-	
+
+	/**
+	 * Corresponds to the 'joinColumns' element of the JoinTable annotation.
+	 */
 	void moveJoinColumn(int targetIndex, int sourceIndex);
-		String JOIN_COLUMNS_LIST = "joinColumns"; //$NON-NLS-1$
-	
+
+	/**
+	 * Corresponds to the 'joinColumns' element of the JoinTable annotation.
+	 */
+	void removeJoinColumn(int index);
+
+
+	/**
+	 * Corresponds to the 'inverseJoinColumns' element of the JoinTable annotation.
+	 * Return an empty iterator if the element does not exist in Java.
+	 */
 	ListIterator<JoinColumnAnnotation> inverseJoinColumns();
-	
-	JoinColumnAnnotation inverseJoinColumnAt(int index);
-	
-	int indexOfInverseJoinColumn(JoinColumnAnnotation joinColumn);
-	
+		String INVERSE_JOIN_COLUMNS_LIST = "inverseJoinColumns"; //$NON-NLS-1$
+
+	/**
+	 * Corresponds to the 'inverseJoinColumns' element of the JoinTable annotation.
+	 */
 	int inverseJoinColumnsSize();
 
+	/**
+	 * Corresponds to the 'inverseJoinColumns' element of the JoinTable annotation.
+	 */
+	JoinColumnAnnotation inverseJoinColumnAt(int index);
+
+	/**
+	 * Corresponds to the 'inverseJoinColumns' element of the JoinTable annotation.
+	 */
+	int indexOfInverseJoinColumn(JoinColumnAnnotation joinColumn);
+
+	/**
+	 * Corresponds to the 'inverseJoinColumns' element of the JoinTable annotation.
+	 */
 	JoinColumnAnnotation addInverseJoinColumn(int index);
-	
-	void removeInverseJoinColumn(int index);
-	
+
+	/**
+	 * Corresponds to the 'inverseJoinColumns' element of the JoinTable annotation.
+	 */
 	void moveInverseJoinColumn(int targetIndex, int sourceIndex);
-		String INVERSE_JOIN_COLUMNS_LIST = "inverseJoinColumns"; //$NON-NLS-1$
+
+	/**
+	 * Corresponds to the 'inverseJoinColumns' element of the JoinTable annotation.
+	 */
+	void removeInverseJoinColumn(int index);
 
 }

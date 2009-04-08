@@ -206,7 +206,7 @@ public class ManyToManyTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		ManyToManyAnnotation manyToMany = (ManyToManyAnnotation) attributeResource.getMappingAnnotation(JPA.MANY_TO_MANY);
-		assertEquals(FULLY_QUALIFIED_TYPE_NAME, manyToMany.getFullyQualifiedTargetEntity());
+		assertEquals(FULLY_QUALIFIED_TYPE_NAME, manyToMany.getFullyQualifiedTargetEntityClassName());
 		
 		manyToMany.setTargetEntity("Foo");
 		
@@ -214,7 +214,7 @@ public class ManyToManyTests extends JavaResourceModelTestCase {
 		
 		assertEquals("Foo", manyToMany.getTargetEntity());
 		
-		assertEquals("Foo", manyToMany.getFullyQualifiedTargetEntity()); //bug 196200 changed this
+		assertEquals("Foo", manyToMany.getFullyQualifiedTargetEntityClassName()); //bug 196200 changed this
 	}
 	
 	public void testGetMappedBy() throws Exception {

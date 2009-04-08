@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,6 +11,9 @@ package org.eclipse.jpt.utility.tests.internal;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
+
+import org.eclipse.jpt.utility.tests.internal.enumerations.JptUtilityEnumerationsTests;
+import org.eclipse.jpt.utility.tests.internal.iterables.JptUtilityIterablesTests;
 import org.eclipse.jpt.utility.tests.internal.iterators.JptUtilityIteratorsTests;
 import org.eclipse.jpt.utility.tests.internal.model.JptUtilityModelTests;
 import org.eclipse.jpt.utility.tests.internal.node.JptUtilityNodeTests;
@@ -23,6 +26,8 @@ public class JptUtilityTests {
 	public static Test suite() {
 		TestSuite suite = new TestSuite(JptUtilityTests.class.getPackage().getName());
 
+		suite.addTest(JptUtilityEnumerationsTests.suite());
+		suite.addTest(JptUtilityIterablesTests.suite());
 		suite.addTest(JptUtilityIteratorsTests.suite());
 		suite.addTest(JptUtilityModelTests.suite());
 		suite.addTest(JptUtilityNodeTests.suite());
@@ -36,6 +41,7 @@ public class JptUtilityTests {
 		suite.addTestSuite(CommandTests.class);
 		suite.addTestSuite(CounterTests.class);
 		suite.addTestSuite(EmptyIterableTests.class);
+//		suite.addTestSuite(ExceptionHandlerTests.class);
 		suite.addTestSuite(FileToolsTests.class);
 		suite.addTestSuite(FilterTests.class);
 		suite.addTestSuite(HashBagTests.class);
@@ -54,6 +60,8 @@ public class JptUtilityTests {
 		suite.addTestSuite(SynchronizedBooleanTests.class);
 		suite.addTestSuite(SynchronizedObjectTests.class);
 		suite.addTestSuite(SynchronizedStackTests.class);
+//		suite.addTestSuite(SynchronizerTests.class);
+//		suite.addTestSuite(SynchronousSynchronizerTests.class);
 		suite.addTestSuite(XMLStringEncoderTests.class);
 
 		return suite;

@@ -20,7 +20,7 @@ import org.eclipse.jpt.utility.internal.StringTools;
 public class ReadOnlyIterator<E>
 	implements Iterator<E>
 {
-	private final Iterator<? extends E> nestedIterator;
+	private final Iterator<? extends E> iterator;
 
 	/**
 	 * Construct an iterator on the specified collection that
@@ -34,19 +34,19 @@ public class ReadOnlyIterator<E>
 	 * Construct an iterator with the specified nested iterator
 	 * and disallow removes.
 	 */
-	public ReadOnlyIterator(Iterator<? extends E> nestedIterator) {
+	public ReadOnlyIterator(Iterator<? extends E> iterator) {
 		super();
-		this.nestedIterator = nestedIterator;
+		this.iterator = iterator;
 	}
 
 	public boolean hasNext() {
 		// delegate to the nested iterator
-		return this.nestedIterator.hasNext();
+		return this.iterator.hasNext();
 	}
 
 	public E next() {
 		// delegate to the nested iterator
-		return this.nestedIterator.next();
+		return this.iterator.next();
 	}
 
 	public void remove() {
@@ -55,7 +55,7 @@ public class ReadOnlyIterator<E>
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.nestedIterator);
+		return StringTools.buildToStringFor(this, this.iterator);
 	}
 	
 }

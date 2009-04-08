@@ -14,8 +14,8 @@ import java.util.Iterator;
 import java.util.List;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jpt.core.internal.resource.java.IdImpl;
-import org.eclipse.jpt.core.internal.resource.java.OneToOneImpl;
+import org.eclipse.jpt.core.internal.resource.java.source.SourceIdAnnotation;
+import org.eclipse.jpt.core.internal.resource.java.source.SourceOneToOneAnnotation;
 import org.eclipse.jpt.core.resource.java.AttributeOverrideAnnotation;
 import org.eclipse.jpt.core.resource.java.BasicAnnotation;
 import org.eclipse.jpt.core.resource.java.ColumnAnnotation;
@@ -500,7 +500,7 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 	
 		idField(cu).edit(new Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				IdImpl.DECLARATION_ANNOTATION_ADAPTER.removeAnnotation(declaration);
+				SourceIdAnnotation.DECLARATION_ANNOTATION_ADAPTER.removeAnnotation(declaration);
 			}
 		});		
 		
@@ -508,7 +508,7 @@ public class JavaResourcePersistentAttributeTests extends JavaResourceModelTestC
 		
 		idField(cu).edit(new Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				OneToOneImpl.DECLARATION_ANNOTATION_ADAPTER.newMarkerAnnotation(declaration);
+				SourceOneToOneAnnotation.DECLARATION_ANNOTATION_ADAPTER.newMarkerAnnotation(declaration);
 			}
 		});		
 		

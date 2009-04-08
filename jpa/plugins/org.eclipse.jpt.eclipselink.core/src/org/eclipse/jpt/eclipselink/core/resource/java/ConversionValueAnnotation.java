@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,12 +10,12 @@
 package org.eclipse.jpt.eclipselink.core.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**
- * Java resource model interface that corresponds to the Eclipselink
- * annotation org.eclipse.persistence.annotations.ConversionValue
+ * Corresponds to the EclipseLink annotation
+ * org.eclipse.persistence.annotations.ConversionValue
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -26,46 +26,46 @@ import org.eclipse.jpt.core.utility.TextRange;
  * @version 2.1
  * @since 2.1
  */
-public interface ConversionValueAnnotation extends JavaResourceNode
+public interface ConversionValueAnnotation
+	extends Annotation
 {
-	
 	String ANNOTATION_NAME = EclipseLinkJPA.CONVERSION_VALUE;
-	
-		
-	/**
-	 * Corresponds to the dataValue element of the ConversionValue annotation.
-	 * Returns null if the dataValue element does not exist in java.
-	 */
-	String getDataValue();
-	
-	/**
-	 * Corresponds to the dataValue element of the ConversionValue annotation.
-	 * Set to null to remove the dataValue element.
-	 */
-	void setDataValue(String dataValue);
-		String DATA_VALUE_PROPERTY = "dataValueProperty"; //$NON-NLS-1$
 
 	/**
-	 * Corresponds to the objectValue element of the ConversionValue annotation.
-	 * Returns null if the objectValue element does not exist in java.
+	 * Corresponds to the 'dataValue' element of the ConversionValue annotation.
+	 * Return null if the element does not exist in Java.
 	 */
-	String getObjectValue();
-	
+	String getDataValue();
+		String DATA_VALUE_PROPERTY = "dataValue"; //$NON-NLS-1$
+
 	/**
-	 * Corresponds to the objectValue element of the ConversionValue annotation.
-	 * Set to null to remove the objectValue element.
+	 * Corresponds to the 'dataValue' element of the ConversionValue annotation.
+	 * Set to null to remove the element.
 	 */
-	void setObjectValue(String objectValue);
-		String OBJECT_VALUE_PROPERTY = "objectValueProperty"; //$NON-NLS-1$
-		
+	void setDataValue(String dataValue);
+
 	/**
-	 * Return the {@link TextRange} for the dataValue element.  If the dataValue element 
+	 * Return the {@link TextRange} for the 'dataValue' element. If the element 
 	 * does not exist return the {@link TextRange} for the ConversionValue annotation.
 	 */
 	TextRange getDataValueTextRange(CompilationUnit astRoot);
-	
+
+
 	/**
-	 * Return the {@link TextRange} for the objectValue element.  If the objectValue element 
+	 * Corresponds to the 'objectValue' element of the ConversionValue annotation.
+	 * Return null if the element does not exist in Java.
+	 */
+	String getObjectValue();
+		String OBJECT_VALUE_PROPERTY = "objectValue"; //$NON-NLS-1$
+
+	/**
+	 * Corresponds to the 'objectValue' element of the ConversionValue annotation.
+	 * Set to null to remove the element.
+	 */
+	void setObjectValue(String objectValue);
+
+	/**
+	 * Return the {@link TextRange} for the 'objectValue' element. If the element 
 	 * does not exist return the {@link TextRange} for the ConversionValue annotation.
 	 */
 	TextRange getObjectValueTextRange(CompilationUnit astRoot);

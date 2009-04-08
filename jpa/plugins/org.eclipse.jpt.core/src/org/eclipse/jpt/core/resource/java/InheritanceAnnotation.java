@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,7 +13,8 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**
- * Corresponds to the javax.persistence.Inheritance annotation
+ * Corresponds to the JPA annotation
+ * javax.persistence.Inheritance
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -21,17 +22,26 @@ import org.eclipse.jpt.core.utility.TextRange;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface InheritanceAnnotation extends JavaResourceNode
+public interface InheritanceAnnotation
+	extends Annotation
 {
 	String ANNOTATION_NAME = JPA.INHERITANCE;
 
-	InheritanceType getStrategy();
-	
-	void setStrategy(InheritanceType strategy);
-		String STRATEGY_PROPERTY = "strategy"; //$NON-NLS-1$
-		
 	/**
-	 * Return the {@link TextRange} for the strategy element.  If the strategy element 
+	 * Corresponds to the 'strategy' element of the Inheritance annotation.
+	 * Return null if the element does not exist in Java.
+	 */
+	InheritanceType getStrategy();
+		String STRATEGY_PROPERTY = "strategy"; //$NON-NLS-1$
+
+	/**
+	 * Corresponds to the 'strategy' element of the Inheritance annotation.
+	 * Set to null to remove the element.
+	 */
+	void setStrategy(InheritanceType strategy);
+
+	/**
+	 * Return the {@link TextRange} for the 'strategy' element. If the element 
 	 * does not exist return the {@link TextRange} for the Inheritance annotation.
 	 */
 	TextRange getStrategyTextRange(CompilationUnit astRoot);

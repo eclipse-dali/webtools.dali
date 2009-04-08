@@ -12,8 +12,6 @@ package org.eclipse.jpt.core;
 import java.util.ListIterator;
 
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jpt.core.resource.jar.JarResourcePersistentAttribute;
-import org.eclipse.jpt.core.resource.jar.JarResourcePersistentType;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
@@ -60,21 +58,7 @@ public interface JpaAnnotationProvider {
 	 * Throw an IllegalArgumentException if the specified annotation is unsupported.
 	 * @see #typeMappingAnnotationNames()
 	 */
-	Annotation buildTypeMappingAnnotation(JarResourcePersistentType parent, IAnnotation jdtAnnotation);
-
-	/**
-	 * Build a null type mapping annotation with the specified name.
-	 * Throw an IllegalArgumentException if the specified name is unsupported.
-	 * @see #typeMappingAnnotationNames()
-	 */
-	Annotation buildNullTypeMappingAnnotation(JavaResourcePersistentType parent, Type type, String annotationName);
-
-	/**
-	 * Build a null type mapping annotation with the specified name.
-	 * Throw an IllegalArgumentException if the specified name is unsupported.
-	 * @see #typeMappingAnnotationNames()
-	 */
-	Annotation buildNullTypeMappingAnnotation(JarResourcePersistentType parent, String annotationName);
+	Annotation buildTypeMappingAnnotation(JavaResourcePersistentType parent, IAnnotation jdtAnnotation);
 
 	/**
 	 * Return the names of the supporting annotations that can modify a type.
@@ -93,21 +77,14 @@ public interface JpaAnnotationProvider {
 	 * Throw an IllegalArgumentException if the specified annotation is unsupported.
 	 * @see #typeSupportingAnnotationNames()
 	 */
-	Annotation buildTypeSupportingAnnotation(JarResourcePersistentType parent, IAnnotation jdtAnnotation);
+	Annotation buildTypeSupportingAnnotation(JavaResourcePersistentType parent, IAnnotation jdtAnnotation);
 
 	/**
 	 * Build a null type supporting annotation with the specified name.
-	 * Throw an IllegalArgumentException if the specified name is unsupported.
+	 * Throw an IllegalArgumentException if the specified annotation is unsupported.
 	 * @see #typeSupportingAnnotationNames()
 	 */
-	Annotation buildNullTypeSupportingAnnotation(JavaResourcePersistentType parent, Type type, String annotationName);
-
-	/**
-	 * Build a null type supporting annotation with the specified name.
-	 * Throw an IllegalArgumentException if the specified name is unsupported.
-	 * @see #typeSupportingAnnotationNames()
-	 */
-	Annotation buildNullTypeSupportingAnnotation(JarResourcePersistentType parent, String annotationName);
+	Annotation buildNullTypeSupportingAnnotation(JavaResourcePersistentType parent, String annotationName);
 
 
 	// ********** attribute annotations **********
@@ -129,21 +106,16 @@ public interface JpaAnnotationProvider {
 	 * Throw an IllegalArgumentException if the specified annotation is unsupported.
 	 * @see #attributeMappingAnnotationNames()
 	 */
-	Annotation buildAttributeMappingAnnotation(JarResourcePersistentAttribute parent, IAnnotation jdtAnnotation);
+	Annotation buildAttributeMappingAnnotation(JavaResourcePersistentAttribute parent, IAnnotation jdtAnnotation);
 
 	/**
 	 * Build a null attribute mapping annotation with the specified name.
-	 * Throw an IllegalArgumentException if the specified name is unsupported.
+	 * Throw an IllegalArgumentException if the specified annotation is unsupported.
+	 * This is used by an attribute's "default" mapping, since there is no
+	 * annotation present (thus the "default" part...).
 	 * @see #attributeMappingAnnotationNames()
 	 */
-	Annotation buildNullAttributeMappingAnnotation(JavaResourcePersistentAttribute parent, Attribute attribute, String annotationName);
-
-	/**
-	 * Build a null attribute mapping annotation with the specified name.
-	 * Throw an IllegalArgumentException if the specified name is unsupported.
-	 * @see #attributeMappingAnnotationNames()
-	 */
-	Annotation buildNullAttributeMappingAnnotation(JarResourcePersistentAttribute parent, String annotationName);
+	Annotation buildNullAttributeMappingAnnotation(JavaResourcePersistentAttribute parent, String annotationName);
 
 	/**
 	 * Return the names of the supporting annotations that can modify an attribute.
@@ -162,20 +134,13 @@ public interface JpaAnnotationProvider {
 	 * Throw an IllegalArgumentException if the specified annotation is unsupported.
 	 * @see #attributeSupportingAnnotationNames()
 	 */
-	Annotation buildAttributeSupportingAnnotation(JarResourcePersistentAttribute parent, IAnnotation jdtAnnotation);
+	Annotation buildAttributeSupportingAnnotation(JavaResourcePersistentAttribute parent, IAnnotation jdtAnnotation);
 
 	/**
 	 * Build a null attribute supporting annotation with the specified name.
-	 * Throw an IllegalArgumentException if the specified name is unsupported.
+	 * Throw an IllegalArgumentException if the specified annotation is unsupported.
 	 * @see #attributeSupportingAnnotationNames()
 	 */
-	Annotation buildNullAttributeSupportingAnnotation(JavaResourcePersistentAttribute parent, Attribute attribute, String annotationName);
-
-	/**
-	 * Build a null attribute supporting annotation with the specified name.
-	 * Throw an IllegalArgumentException if the specified name is unsupported.
-	 * @see #attributeSupportingAnnotationNames()
-	 */
-	Annotation buildNullAttributeSupportingAnnotation(JarResourcePersistentAttribute parent, String annotationName);
+	Annotation buildNullAttributeSupportingAnnotation(JavaResourcePersistentAttribute parent, String annotationName);
 
 }

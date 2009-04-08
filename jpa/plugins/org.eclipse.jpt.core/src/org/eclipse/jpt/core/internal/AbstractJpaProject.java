@@ -44,9 +44,9 @@ import org.eclipse.jpt.core.context.JpaRootContextNode;
 import org.eclipse.jpt.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.core.resource.jar.JarResourcePackageFragmentRoot;
 import org.eclipse.jpt.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.core.resource.java.JavaResourcePackageFragmentRoot;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.db.Catalog;
@@ -58,6 +58,7 @@ import org.eclipse.jpt.utility.CommandExecutor;
 import org.eclipse.jpt.utility.internal.BitTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.ThreadLocalCommandExecutor;
+import org.eclipse.jpt.utility.internal.iterables.CloneIterable;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
@@ -381,6 +382,10 @@ public abstract class AbstractJpaProject
 		return new CloneIterator<JpaFile>(this.jpaFiles);  // read-only
 	}
 
+	protected Iterable<JpaFile> getJpaFiles() {
+		return new CloneIterable<JpaFile>(this.jpaFiles);  // read-only
+	}
+
 	public int jpaFilesSize() {
 		return this.jpaFiles.size();
 	}
@@ -396,11 +401,9 @@ public abstract class AbstractJpaProject
 
 	@Override
 	public JpaFile getJpaFile(IFile file) {
-		synchronized (this.jpaFiles) {
-			for (JpaFile jpaFile : this.jpaFiles) {
-				if (jpaFile.getFile().equals(file)) {
-					return jpaFile;
-				}
+		for (JpaFile jpaFile : this.getJpaFiles()) {
+			if (jpaFile.getFile().equals(file)) {
+				return jpaFile;
 			}
 		}
 		return null;
@@ -443,14 +446,12 @@ public abstract class AbstractJpaProject
 	 * Return true if a JPA File was removed, false otherwise
 	 */
 	protected boolean removeJpaFile(IFile file) {
-		synchronized (this.jpaFiles) {
-			JpaFile jpaFile = this.getJpaFile(file);
-			if (jpaFile != null) {  // a JpaFile is not added for every IFile
-				this.removeJpaFile(jpaFile);
-				return true;
-			}
-			return false;
+		JpaFile jpaFile = this.getJpaFile(file);
+		if (jpaFile != null) {  // a JpaFile is not added for every IFile
+			this.removeJpaFile(jpaFile);
+			return true;
 		}
+		return false;
 	}
 	
 	/**
@@ -619,7 +620,7 @@ public abstract class AbstractJpaProject
 	protected Iterator<JavaResourceNode.Root> javaResourceNodeRoots() {
 		return new CompositeIterator<JavaResourceNode.Root>(
 					this.javaResourceCompilationUnits(),
-					this.jarResourcePackageFragmentRoots()
+					this.javaResourcePackageFragmentRoots()
 				);
 	}
 
@@ -627,14 +628,14 @@ public abstract class AbstractJpaProject
 	// ********** JARs **********
 
 	// TODO
-	public JarResourcePackageFragmentRoot getJarResourcePackageFragmentRoot(String jarFileName) {
+	public JavaResourcePackageFragmentRoot getJavaResourcePackageFragmentRoot(String jarFileName) {
 //		return this.getJarResourcePackageFragmentRoot(this.convertToPlatformFile(jarFileName));
-		return this.getJarResourcePackageFragmentRoot(this.getProject().getFile(jarFileName));
+		return this.getJavaResourcePackageFragmentRoot(this.getProject().getFile(jarFileName));
 	}
 
-	protected JarResourcePackageFragmentRoot getJarResourcePackageFragmentRoot(IFile jarFile) {
-		for (Iterator<JarResourcePackageFragmentRoot> stream = this.jarResourcePackageFragmentRoots(); stream.hasNext(); ) {
-			JarResourcePackageFragmentRoot pfr = stream.next();
+	protected JavaResourcePackageFragmentRoot getJavaResourcePackageFragmentRoot(IFile jarFile) {
+		for (Iterator<JavaResourcePackageFragmentRoot> stream = this.javaResourcePackageFragmentRoots(); stream.hasNext(); ) {
+			JavaResourcePackageFragmentRoot pfr = stream.next();
 			if (pfr.getFile().equals(jarFile)) {
 				return pfr;
 			}
@@ -642,11 +643,11 @@ public abstract class AbstractJpaProject
 		return null;
 	}
 
-	protected Iterator<JarResourcePackageFragmentRoot> jarResourcePackageFragmentRoots() {
-		return new TransformationIterator<JpaFile, JarResourcePackageFragmentRoot>(this.jarJpaFiles()) {
+	protected Iterator<JavaResourcePackageFragmentRoot> javaResourcePackageFragmentRoots() {
+		return new TransformationIterator<JpaFile, JavaResourcePackageFragmentRoot>(this.jarJpaFiles()) {
 			@Override
-			protected JarResourcePackageFragmentRoot transform(JpaFile jpaFile) {
-				return (JarResourcePackageFragmentRoot) jpaFile.getResourceModel();
+			protected JavaResourcePackageFragmentRoot transform(JpaFile jpaFile) {
+				return (JavaResourcePackageFragmentRoot) jpaFile.getResourceModel();
 			}
 		};
 	}

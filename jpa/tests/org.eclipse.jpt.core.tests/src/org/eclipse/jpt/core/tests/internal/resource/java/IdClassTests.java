@@ -94,12 +94,12 @@ public class IdClassTests extends JavaResourceModelTestCase {
 
 		IdClassAnnotation idClass = (IdClassAnnotation) typeResource.getSupportingAnnotation(JPA.ID_CLASS);
 		assertNotNull(idClass.getValue());
-		assertEquals("MyClass", idClass.getFullyQualifiedClass()); //bug 196200 changed this
+		assertEquals("MyClass", idClass.getFullyQualifiedClassName()); //bug 196200 changed this
 
 
 		idClass.setValue(TYPE_NAME);
 				
-		assertEquals(FULLY_QUALIFIED_TYPE_NAME, idClass.getFullyQualifiedClass());				
+		assertEquals(FULLY_QUALIFIED_TYPE_NAME, idClass.getFullyQualifiedClassName());				
 		assertSourceContains("@IdClass(" + TYPE_NAME + ".class)", cu);
 	}
 

@@ -20,7 +20,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
-import org.eclipse.jpt.core.resource.jar.JarResourcePackageFragmentRoot;
+import org.eclipse.jpt.core.resource.java.JavaResourcePackageFragmentRoot;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.db.Catalog;
@@ -151,14 +151,11 @@ public interface JpaProject
 	 */
 	JavaResourcePersistentType getJavaResourcePersistentType(String typeName);
 
-
-	// ********** JAR resources **********
-
 	/**
-	 * Return the JAR resource package fragement root for the specified JAR.
+	 * Return the Java resource package fragement root for the specified JAR.
 	 * Return null if absent.
 	 */
-	JarResourcePackageFragmentRoot getJarResourcePackageFragmentRoot(String jarFileName);
+	JavaResourcePackageFragmentRoot getJavaResourcePackageFragmentRoot(String jarFileName);
 
 
 	// ********** model synchronization **********

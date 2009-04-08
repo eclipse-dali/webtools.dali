@@ -26,19 +26,21 @@ public class ArrayIterator<E>
 	int nextIndex;		// private-protected
 	private final int maxIndex;
 
+
 	/**
 	 * Construct an iterator for the specified array.
 	 */
 	public ArrayIterator(E... array) {
 		this(array, 0, array.length);
 	}
-	
+
 	/**
 	 * Construct an iterator for the specified array,
 	 * starting at the specified start index and continuing for
 	 * the specified length.
 	 */
 	public ArrayIterator(E[] array, int start, int length) {
+		super();
 		if ((start < 0) || (start > array.length)) {
 			throw new IllegalArgumentException("start: " + start); //$NON-NLS-1$
 		}
@@ -49,25 +51,25 @@ public class ArrayIterator<E>
 		this.nextIndex = start;
 		this.maxIndex = start + length;
 	}
-	
+
 	public boolean hasNext() {
 		return this.nextIndex < this.maxIndex;
 	}
-	
+
 	public E next() {
 		if (this.hasNext()) {
 			return this.array[this.nextIndex++];
 		}
 		throw new NoSuchElementException();
 	}
-	
+
 	public void remove() {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	@Override
 	public String toString() {
 		return StringTools.buildToStringFor(this, Arrays.toString(this.array));
 	}
-	
+
 }

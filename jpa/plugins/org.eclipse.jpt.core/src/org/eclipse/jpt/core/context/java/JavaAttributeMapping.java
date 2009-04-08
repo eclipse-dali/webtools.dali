@@ -10,8 +10,9 @@
 package org.eclipse.jpt.core.context.java;
 
 import java.util.Iterator;
+
 import org.eclipse.jpt.core.context.AttributeMapping;
-import org.eclipse.jpt.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.core.resource.java.Annotation;
 
 /**
  * Java attribute mapping
@@ -29,11 +30,11 @@ public interface JavaAttributeMapping
 	 * Covariant override.
 	 */
 	JavaPersistentAttribute getPersistentAttribute();
-	
-	JavaResourceNode getMappingAnnotation();
-	
-	void initialize(JavaResourceNode mappingAnnotation);
-	
+
+	Annotation getMappingAnnotation();
+
+	void initialize(Annotation mappingAnnotation);
+
 	/**
 	 * Update the JavaAttributeMapping context model object to match the JavaResourcePersistentAttribute 
 	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
@@ -41,7 +42,7 @@ public interface JavaAttributeMapping
 	//TODO want to remove parameter from the update method, but we have to have
 	//it because of GenericJavaPersistentAttribute.setSpecifiedMappingKey(), it is unable
 	//to call initialize and pass the resource object in before the update is called.
-	void update(JavaResourceNode mappingAnnotation);
+	void update(Annotation mappingAnnotation);
 	
 	String getAnnotationName();
 	

@@ -19,6 +19,7 @@ import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JpaResourceModel;
 import org.eclipse.jpt.core.JpaStructureNode;
+import org.eclipse.jpt.utility.internal.iterables.CloneIterable;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 
 /**
@@ -102,6 +103,10 @@ public class GenericJpaFile
 		return new CloneIterator<JpaStructureNode>(this.rootStructureNodes.values());
 	}
 
+	protected Iterable<JpaStructureNode> getRootStructureNodes() {
+		return new CloneIterable<JpaStructureNode>(this.rootStructureNodes.values());
+	}
+
 	public int rootStructureNodesSize() {
 		return this.rootStructureNodes.size();
 	}
@@ -121,12 +126,10 @@ public class GenericJpaFile
 	}
 
 	public JpaStructureNode getStructureNode(int textOffset) {
-		synchronized (this.rootStructureNodes) {
-			for (JpaStructureNode rootNode : this.rootStructureNodes.values()) {
-				JpaStructureNode node = rootNode.getStructureNode(textOffset);
-				if (node != null) {
-					return node;
-				}
+		for (JpaStructureNode rootNode : this.getRootStructureNodes()) {
+			JpaStructureNode node = rootNode.getStructureNode(textOffset);
+			if (node != null) {
+				return node;
 			}
 		}
 		return null;

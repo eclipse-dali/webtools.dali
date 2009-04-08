@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal.iterators;
 
+import java.util.List;
 import java.util.ListIterator;
 
 import org.eclipse.jpt.utility.internal.StringTools;
@@ -23,6 +24,11 @@ public class GenericListIteratorWrapper<E>
 	implements ListIterator<E>
 {
 	private final ListIterator<? extends E> listIterator;
+
+
+	public GenericListIteratorWrapper(List<? extends E> list) {
+		this(list.listIterator());
+	}
 
 	public GenericListIteratorWrapper(ListIterator<? extends E> listIterator) {
 		super();

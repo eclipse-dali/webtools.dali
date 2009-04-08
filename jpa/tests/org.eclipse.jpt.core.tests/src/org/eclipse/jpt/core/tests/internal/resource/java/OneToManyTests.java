@@ -207,7 +207,7 @@ public class OneToManyTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		OneToManyAnnotation oneToMany = (OneToManyAnnotation) attributeResource.getMappingAnnotation(JPA.ONE_TO_MANY);
-		assertEquals(FULLY_QUALIFIED_TYPE_NAME, oneToMany.getFullyQualifiedTargetEntity());
+		assertEquals(FULLY_QUALIFIED_TYPE_NAME, oneToMany.getFullyQualifiedTargetEntityClassName());
 		
 		oneToMany.setTargetEntity("Foo");
 		
@@ -215,7 +215,7 @@ public class OneToManyTests extends JavaResourceModelTestCase {
 		
 		assertEquals("Foo", oneToMany.getTargetEntity());
 		
-		assertEquals("Foo", oneToMany.getFullyQualifiedTargetEntity()); //bug 196200 changed this
+		assertEquals("Foo", oneToMany.getFullyQualifiedTargetEntityClassName()); //bug 196200 changed this
 	}
 	
 	public void testGetMappedBy() throws Exception {

@@ -44,7 +44,7 @@ import org.eclipse.jpt.utility.model.listener.TreeChangeListener;
  * It provides for state, property, collection, list, and tree change notifications to
  * listeners.
  * 
- * NB: There is lots of copy-n-paste code in this class. Nearly all of this duplication
+ * NB1: There is lots of copy-n-paste code in this class. Nearly all of this duplication
  * is an effort to prevent the unnecessary creation of new objects (typically event
  * objects). Since many events are fired when there are no listeners, we postpone
  * the creation of event objects until we know we have interested listeners.
@@ -112,7 +112,7 @@ public class ChangeSupport
 	 */
 	protected <T extends ChangeListener> void addListener(Class<T> listenerClass, T listener) {
 		if (listener == null) {
-			throw new NullPointerException();		// better sooner than later
+			throw new NullPointerException();  // better sooner than later
 		}
 		synchronized (this) {
 			GenericListenerList gll = this.getGenericListenerList(listenerClass);
@@ -154,7 +154,7 @@ public class ChangeSupport
 	 */
 	protected <T extends ChangeListener> void addListener(String aspectName, Class<T> listenerClass, T listener) {
 		if ((aspectName == null) || (listener == null)) {
-			throw new NullPointerException();		// better sooner than later
+			throw new NullPointerException();  // better sooner than later
 		}
 		synchronized (this) {
 			ChangeSupport child = this.getChild(aspectName);
@@ -175,7 +175,7 @@ public class ChangeSupport
 			return null;
 		}
 		for (AspectChild aspectChild : this.aspectChildren) {
-			if (aspectChild.aspectName == aspectName) {
+			if (aspectChild.aspectName.equals(aspectName)) {
 				return aspectChild.child;
 			}
 		}
@@ -187,7 +187,7 @@ public class ChangeSupport
 	 * Return the newly-built child change support.
 	 */
 	protected ChangeSupport addChild(String aspectName) {
-		ChangeSupport child = this.buildChildChangeSupport();
+		ChangeSupport child = this.buildChild();
 		this.aspectChildren = CollectionTools.add(this.aspectChildren, new AspectChild(aspectName, child));
 		return child;
 	}
@@ -195,7 +195,7 @@ public class ChangeSupport
 	/**
 	 * Build and return a child change support to hold aspect-specific listeners.
 	 */
-	protected ChangeSupport buildChildChangeSupport() {
+	protected ChangeSupport buildChild() {
 		return new Child(this.source);
 	}
 
@@ -288,7 +288,7 @@ public class ChangeSupport
 	 * dirty flag or validating the source's state.
 	 * The aspect ID will be null if a "state change" occurred.
 	 */
-	protected void sourceChanged(@SuppressWarnings("unused") String aspectName) {
+	protected void aspectChanged(@SuppressWarnings("unused") String aspectName) {
 		// the default is to do nothing
 	}
 
@@ -348,7 +348,7 @@ public class ChangeSupport
 			}
 		}
 
-		this.sourceChanged(null);
+		this.aspectChanged(null);
 	}
 
 	/**
@@ -384,7 +384,7 @@ public class ChangeSupport
 			}
 		}
 
-		this.sourceChanged(null);
+		this.aspectChanged(null);
 	}
 
 
@@ -480,7 +480,7 @@ public class ChangeSupport
 			child.firePropertyChanged(event);
 		}
 
-		this.sourceChanged(propertyName);
+		this.aspectChanged(propertyName);
 	}
 
 	/**
@@ -531,7 +531,7 @@ public class ChangeSupport
 			}
 		}
 
-		this.sourceChanged(propertyName);
+		this.aspectChanged(propertyName);
 	}
 
 	/**
@@ -569,7 +569,7 @@ public class ChangeSupport
 				if (stillListening) {
 					if (event == null) {
 						// here's the reason for the duplicate code...
-						event = new PropertyChangeEvent(this.source, propertyName, new Integer(oldValue), new Integer(newValue));
+						event = new PropertyChangeEvent(this.source, propertyName, Integer.valueOf(oldValue), Integer.valueOf(newValue));
 					}
 					target.propertyChanged(event);
 				}
@@ -583,7 +583,7 @@ public class ChangeSupport
 			}
 		}
 
-		this.sourceChanged(propertyName);
+		this.aspectChanged(propertyName);
 	}
 
 	/**
@@ -635,7 +635,7 @@ public class ChangeSupport
 			}
 		}
 
-		this.sourceChanged(propertyName);
+		this.aspectChanged(propertyName);
 	}
 
 
@@ -728,7 +728,7 @@ public class ChangeSupport
 			child.fireItemsAdded(event);
 		}
 
-		this.sourceChanged(collectionName);
+		this.aspectChanged(collectionName);
 	}
 
 	/**
@@ -776,7 +776,7 @@ public class ChangeSupport
 			}
 		}
 
-		this.sourceChanged(collectionName);
+		this.aspectChanged(collectionName);
 	}
 
 	/**
@@ -821,7 +821,7 @@ public class ChangeSupport
 			}
 		}
 
-		this.sourceChanged(collectionName);
+		this.aspectChanged(collectionName);
 	}
 
 	/**
@@ -860,7 +860,7 @@ public class ChangeSupport
 			child.fireItemsRemoved(event);
 		}
 
-		this.sourceChanged(collectionName);
+		this.aspectChanged(collectionName);
 	}
 
 	/**
@@ -908,7 +908,7 @@ public class ChangeSupport
 			}
 		}
 
-		this.sourceChanged(collectionName);
+		this.aspectChanged(collectionName);
 	}
 
 	/**
@@ -953,7 +953,7 @@ public class ChangeSupport
 			}
 		}
 
-		this.sourceChanged(collectionName);
+		this.aspectChanged(collectionName);
 	}
 
 	/**
@@ -988,7 +988,7 @@ public class ChangeSupport
 			child.fireCollectionCleared(event);
 		}
 
-		this.sourceChanged(collectionName);
+		this.aspectChanged(collectionName);
 	}
 
 	/**
@@ -1033,7 +1033,7 @@ public class ChangeSupport
 			}
 		}
 
-		this.sourceChanged(collectionName);
+		this.aspectChanged(collectionName);
 	}
 
 	/**
@@ -1068,7 +1068,7 @@ public class ChangeSupport
 			child.fireCollectionChanged(event);
 		}
 
-		this.sourceChanged(collectionName);
+		this.aspectChanged(collectionName);
 	}
 
 	/**
@@ -1113,7 +1113,7 @@ public class ChangeSupport
 			}
 		}
 
-		this.sourceChanged(collectionName);
+		this.aspectChanged(collectionName);
 	}
 
 	/**
@@ -1374,7 +1374,7 @@ public class ChangeSupport
 		}
 
 		if (collection.isEmpty()) {
-			return this.addItemsToCollection(newCollection, collection, collectionName);
+			return this.addItemsToCollection_(newCollection.iterator(), collection, collectionName);
 		}
 
 		return this.synchronizeCollection_(newCollection, collection, collectionName);
@@ -1391,7 +1391,7 @@ public class ChangeSupport
 		}
 
 		if (collection.isEmpty()) {
-			return this.addItemsToCollection(newCollection, collection, collectionName);
+			return this.addItemsToCollection_(newCollection, collection, collectionName);
 		}
 
 		return this.synchronizeCollection_(CollectionTools.collection(newCollection), collection, collectionName);
@@ -1503,7 +1503,7 @@ public class ChangeSupport
 			child.fireItemsAdded(event);
 		}
 
-		this.sourceChanged(listName);
+		this.aspectChanged(listName);
 	}
 
 	/**
@@ -1551,7 +1551,7 @@ public class ChangeSupport
 			}
 		}
 
-		this.sourceChanged(listName);
+		this.aspectChanged(listName);
 	}
 
 	/**
@@ -1596,7 +1596,7 @@ public class ChangeSupport
 			}
 		}
 
-		this.sourceChanged(listName);
+		this.aspectChanged(listName);
 	}
 
 	/**
@@ -1635,7 +1635,7 @@ public class ChangeSupport
 			child.fireItemsRemoved(event);
 		}
 
-		this.sourceChanged(listName);
+		this.aspectChanged(listName);
 	}
 
 	/**
@@ -1683,7 +1683,7 @@ public class ChangeSupport
 			}
 		}
 
-		this.sourceChanged(listName);
+		this.aspectChanged(listName);
 	}
 
 	/**
@@ -1728,7 +1728,7 @@ public class ChangeSupport
 			}
 		}
 
-		this.sourceChanged(listName);
+		this.aspectChanged(listName);
 	}
 
 	/**
@@ -1738,7 +1738,10 @@ public class ChangeSupport
 		if (event.itemsSize() == 0) {
 			return;
 		}
-		// TODO check that the items are actually different...
+		// TODO check that the items are actually different... ?
+//		if (this.elementsAreEqual(event.items(), event.replacedItems())) {
+//			return;
+//		}
 
 		String listName = event.getListName();
 
@@ -1768,7 +1771,7 @@ public class ChangeSupport
 			child.fireItemsReplaced(event);
 		}
 
-		this.sourceChanged(listName);
+		this.aspectChanged(listName);
 	}
 
 	/**
@@ -1779,7 +1782,10 @@ public class ChangeSupport
 		if (newItems.isEmpty()) {
 			return;
 		}
-		// TODO check that the items are actually different...
+		// TODO check that the items are actually different... ?
+//		if (newItems.equals(replacedItems)) {
+//			return;
+//		}
 
 		ListChangeListener[] targets = null;
 		ChangeSupport child = null;
@@ -1817,7 +1823,7 @@ public class ChangeSupport
 			}
 		}
 
-		this.sourceChanged(listName);
+		this.aspectChanged(listName);
 	}
 
 	/**
@@ -1825,7 +1831,10 @@ public class ChangeSupport
 	 */
 	public void fireItemReplaced(String listName, int index, Object newItem, Object replacedItem) {
 //		this.fireItemsReplaced(listName, index, Collections.singletonList(newItem), Collections.singletonList(replacedItem));
-		// TODO check that the item is actually different...
+		// TODO check that the item is actually different... ?
+//		if (this.valuesAreEqual(newItem, replacedItem)) {
+//			return;
+//		}
 
 		ListChangeListener[] targets = null;
 		ChangeSupport child = null;
@@ -1863,7 +1872,7 @@ public class ChangeSupport
 			}
 		}
 
-		this.sourceChanged(listName);
+		this.aspectChanged(listName);
 	}
 
 	/**
@@ -1873,6 +1882,7 @@ public class ChangeSupport
 		if (event.getTargetIndex() == event.getSourceIndex()) {
 			return;
 		}
+		// it's unlikely but possible the list is unchanged by the move... (e.g. any moves within ["foo", "foo", "foo"]...)
 
 		String listName = event.getListName();
 
@@ -1902,7 +1912,7 @@ public class ChangeSupport
 			child.fireItemsMoved(event);
 		}
 
-		this.sourceChanged(listName);
+		this.aspectChanged(listName);
 	}
 
 	/**
@@ -1913,6 +1923,7 @@ public class ChangeSupport
 		if (targetIndex == sourceIndex) {
 			return;
 		}
+		// it's unlikely but possible the list is unchanged by the move... (e.g. any moves within ["foo", "foo", "foo"]...)
 
 		ListChangeListener[] targets = null;
 		ChangeSupport child = null;
@@ -1950,7 +1961,7 @@ public class ChangeSupport
 			}
 		}
 
-		this.sourceChanged(listName);
+		this.aspectChanged(listName);
 	}
 
 	/**
@@ -1992,7 +2003,7 @@ public class ChangeSupport
 			child.fireListCleared(event);
 		}
 
-		this.sourceChanged(listName);
+		this.aspectChanged(listName);
 	}
 
 	/**
@@ -2037,7 +2048,7 @@ public class ChangeSupport
 			}
 		}
 
-		this.sourceChanged(listName);
+		this.aspectChanged(listName);
 	}
 
 	/**
@@ -2072,7 +2083,7 @@ public class ChangeSupport
 			child.fireListChanged(event);
 		}
 
-		this.sourceChanged(listName);
+		this.aspectChanged(listName);
 	}
 
 	/**
@@ -2117,7 +2128,7 @@ public class ChangeSupport
 			}
 		}
 
-		this.sourceChanged(listName);
+		this.aspectChanged(listName);
 	}
 
 	/**
@@ -2472,7 +2483,8 @@ public class ChangeSupport
 	}
 
 	/**
-	 * Replace the specified item in the specified bound list
+	 * Replace the first occurrence of the specified item
+	 * in the specified bound list
 	 * and fire the appropriate event if necessary.
 	 * Return the index of the replaced item.
 	 * Return -1 if the item was not found in the list.
@@ -2734,7 +2746,7 @@ public class ChangeSupport
 			child.fireNodeAdded(event);
 		}
 
-		this.sourceChanged(treeName);
+		this.aspectChanged(treeName);
 	}
 
 	/**
@@ -2779,7 +2791,7 @@ public class ChangeSupport
 			}
 		}
 
-		this.sourceChanged(treeName);
+		this.aspectChanged(treeName);
 	}
 
 	/**
@@ -2814,7 +2826,7 @@ public class ChangeSupport
 			child.fireNodeRemoved(event);
 		}
 
-		this.sourceChanged(treeName);
+		this.aspectChanged(treeName);
 	}
 
 	/**
@@ -2859,7 +2871,7 @@ public class ChangeSupport
 			}
 		}
 
-		this.sourceChanged(treeName);
+		this.aspectChanged(treeName);
 	}
 
 	/**
@@ -2894,7 +2906,7 @@ public class ChangeSupport
 			child.fireTreeCleared(event);
 		}
 
-		this.sourceChanged(treeName);
+		this.aspectChanged(treeName);
 	}
 
 	/**
@@ -2939,7 +2951,7 @@ public class ChangeSupport
 			}
 		}
 
-		this.sourceChanged(treeName);
+		this.aspectChanged(treeName);
 	}
 
 	/**
@@ -2981,7 +2993,7 @@ public class ChangeSupport
 			child.fireTreeChanged(event);
 		}
 
-		this.sourceChanged(treeName);
+		this.aspectChanged(treeName);
 	}
 
 	/**
@@ -3026,7 +3038,7 @@ public class ChangeSupport
 			}
 		}
 
-		this.sourceChanged(treeName);
+		this.aspectChanged(treeName);
 	}
 
 	/**
@@ -3040,7 +3052,7 @@ public class ChangeSupport
 	// ********** convenience methods **********
 
 	/**
-	 * Return whether the values are equal, with the appropriate null checks.
+	 * Return whether the specified values are equal, with the appropriate null checks.
 	 * Convenience method for checking whether an attribute value has changed.
 	 */
 	public boolean valuesAreEqual(Object value1, Object value2) {
@@ -3054,11 +3066,32 @@ public class ChangeSupport
 	}
 
 	/**
-	 * Return whether the values are different, with the appropriate null checks.
+	 * Return whether the specified values are different, with the appropriate null checks.
 	 * Convenience method for checking whether an attribute value has changed.
 	 */
 	public boolean valuesAreDifferent(Object value1, Object value2) {
 		return ! this.valuesAreEqual(value1, value2);
+	}
+
+	/**
+	 * Return whether the specified iterators return the same elements
+	 * in the same order.
+	 */
+	public boolean elementsAreEqual(Iterator<?> iterator1, Iterator<?> iterator2) {
+		while (iterator1.hasNext() && iterator2.hasNext()) {
+			if (this.valuesAreDifferent(iterator1.next(), iterator2.next())) {
+				return false;
+			}
+		}
+		return ( ! iterator1.hasNext()) && ( ! iterator2.hasNext());
+	}
+
+	/**
+	 * Return whether the specified iterators do not return the same elements
+	 * in the same order.
+	 */
+	public boolean elementsAreDifferent(Iterator<?> iterator1, Iterator<?> iterator2) {
+		return ! this.elementsAreEqual(iterator1, iterator2);
 	}
 
 
@@ -3209,7 +3242,7 @@ public class ChangeSupport
 		}
 
 		@Override
-		protected ChangeSupport buildChildChangeSupport() {
+		protected ChangeSupport buildChild() {
 			// there should be no grandchildren
 			throw new UnsupportedOperationException();
 		}

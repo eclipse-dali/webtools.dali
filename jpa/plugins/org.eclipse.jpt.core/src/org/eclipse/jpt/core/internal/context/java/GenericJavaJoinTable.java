@@ -25,7 +25,7 @@ import org.eclipse.jpt.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaJoinTable;
 import org.eclipse.jpt.core.context.java.JavaJoinTableJoiningStrategy;
 import org.eclipse.jpt.core.context.java.JavaRelationshipMapping;
-import org.eclipse.jpt.core.internal.resource.java.NullJoinColumn;
+import org.eclipse.jpt.core.internal.resource.java.NullJoinColumnAnnotation;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
@@ -198,7 +198,7 @@ public class GenericJavaJoinTable
 			//create the defaultJoinColumn now or this will happen during project update 
 			//after removing the join column from the resource model. That causes problems 
 			//in the UI because the change notifications end up in the wrong order.
-			this.defaultJoinColumn = buildJoinColumn(new NullJoinColumn(getResourceTable()));
+			this.defaultJoinColumn = buildJoinColumn(new NullJoinColumnAnnotation(getResourceTable()));
 		}
 		this.getResourceTable().removeJoinColumn(index);
 		fireItemRemoved(JoinTable.SPECIFIED_JOIN_COLUMNS_LIST, index, removedJoinColumn);
@@ -303,7 +303,7 @@ public class GenericJavaJoinTable
 			//create the defaultJoinColumn now or this will happen during project update 
 			//after removing the join column from the resource model. That causes problems 
 			//in the UI because the change notifications end up in the wrong order.
-			this.defaultInverseJoinColumn = buildInverseJoinColumn(new NullJoinColumn(getResourceTable()));
+			this.defaultInverseJoinColumn = buildInverseJoinColumn(new NullJoinColumnAnnotation(getResourceTable()));
 		}
 		this.getResourceTable().removeInverseJoinColumn(index);
 		fireItemRemoved(JoinTable.SPECIFIED_INVERSE_JOIN_COLUMNS_LIST, index, removedJoinColumn);
@@ -378,7 +378,7 @@ public class GenericJavaJoinTable
 		if (!shouldBuildDefaultJoinColumn()) {
 			return;
 		}
-		this.defaultJoinColumn = buildJoinColumn(new NullJoinColumn(joinTable));
+		this.defaultJoinColumn = buildJoinColumn(new NullJoinColumnAnnotation(joinTable));
 	}	
 	
 	protected void initializeSpecifiedInverseJoinColumns(JoinTableAnnotation joinTableResource) {
@@ -397,7 +397,7 @@ public class GenericJavaJoinTable
 		if (!shouldBuildDefaultInverseJoinColumn()) {
 			return;
 		}
-		this.defaultInverseJoinColumn = buildInverseJoinColumn(new NullJoinColumn(joinTable));		
+		this.defaultInverseJoinColumn = buildInverseJoinColumn(new NullJoinColumnAnnotation(joinTable));		
 	}
 		
 	public void update(JavaResourcePersistentAttribute jrpa) {
@@ -435,10 +435,10 @@ public class GenericJavaJoinTable
 			return;
 		}
 		if (getDefaultJoinColumn() == null) {
-			this.setDefaultJoinColumn(buildJoinColumn(new NullJoinColumn(joinTable)));
+			this.setDefaultJoinColumn(buildJoinColumn(new NullJoinColumnAnnotation(joinTable)));
 		}
 		else {
-			this.defaultJoinColumn.update(new NullJoinColumn(joinTable));
+			this.defaultJoinColumn.update(new NullJoinColumnAnnotation(joinTable));
 		}
 	}	
 
@@ -467,10 +467,10 @@ public class GenericJavaJoinTable
 			return;
 		}
 		if (getDefaultInverseJoinColumn() == null) {
-			this.setDefaultInverseJoinColumn(buildInverseJoinColumn(new NullJoinColumn(joinTable)));
+			this.setDefaultInverseJoinColumn(buildInverseJoinColumn(new NullJoinColumnAnnotation(joinTable)));
 		}
 		else {
-			this.defaultInverseJoinColumn.update(new NullJoinColumn(joinTable));
+			this.defaultInverseJoinColumn.update(new NullJoinColumnAnnotation(joinTable));
 		}
 	}	
 	

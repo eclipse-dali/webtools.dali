@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -39,7 +39,32 @@ public class TreeIterator<E>
 
 
 	/**
-	 * Construct an iterator with the specified collection of roots
+	 * Construct an iterator that returns the nodes of a tree
+	 * with the specified collection of roots
+	 * and a disabled midwife.
+	 * Use this constructor if you want to override the
+	 * <code>children(Object)</code> method instead of building
+	 * a <code>Midwife</code>.
+	 */
+	public TreeIterator(E... roots) {
+		this(new ArrayIterator<E>(roots));
+	}
+
+	/**
+	 * Construct an iterator that returns the nodes of a tree
+	 * with the specified collection of roots
+	 * and a disabled midwife.
+	 * Use this constructor if you want to override the
+	 * <code>children(Object)</code> method instead of building
+	 * a <code>Midwife</code>.
+	 */
+	public TreeIterator(Iterable<? extends E> roots) {
+		this(roots.iterator());
+	}
+
+	/**
+	 * Construct an iterator that returns the nodes of a tree
+	 * with the specified collection of roots
 	 * and a disabled midwife.
 	 * Use this constructor if you want to override the
 	 * <code>children(Object)</code> method instead of building
@@ -50,8 +75,8 @@ public class TreeIterator<E>
 	}
 
 	/**
-	 * Construct an iterator with the specified root
-	 * and a disabled midwife.
+	 * Construct an iterator that returns the nodes of a tree
+	 * with the specified root and a disabled midwife.
 	 * Use this constructor if you want to override the
 	 * <code>children(Object)</code> method instead of building
 	 * a <code>Midwife</code>.
@@ -61,16 +86,32 @@ public class TreeIterator<E>
 	}
 
 	/**
-	 * Construct an iterator with the specified root
-	 * and midwife.
+	 * Construct an iterator that returns the nodes of a tree
+	 * with the specified root and midwife.
 	 */
 	public TreeIterator(E root, Midwife<E> midwife) {
 		this(new SingleElementIterator<E>(root), midwife);
 	}
 
 	/**
-	 * Construct an iterator with the specified roots
-	 * and midwife.
+	 * Construct an iterator that returns the nodes of a tree
+	 * with the specified roots and midwife.
+	 */
+	public TreeIterator(E[] roots, Midwife<E> midwife) {
+		this(new ArrayIterator<E>(roots), midwife);
+	}
+
+	/**
+	 * Construct an iterator that returns the nodes of a tree
+	 * with the specified roots and midwife.
+	 */
+	public TreeIterator(Iterable<? extends E> roots, Midwife<E> midwife) {
+		this(roots.iterator(), midwife);
+	}
+
+	/**
+	 * Construct an iterator that returns the nodes of a tree
+	 * with the specified roots and midwife.
 	 */
 	public TreeIterator(Iterator<? extends E> roots, Midwife<E> midwife) {
 		super();
@@ -121,6 +162,9 @@ public class TreeIterator<E>
 
 	/**
 	 * Return the immediate children of the specified object.
+	 * <p>
+	 * This method can be overridden by a subclass as an
+	 * alternative to building a <code>Midwife</code>.
 	 */
 	protected Iterator<? extends E> children(E next) {
 		return this.midwife.children(next);

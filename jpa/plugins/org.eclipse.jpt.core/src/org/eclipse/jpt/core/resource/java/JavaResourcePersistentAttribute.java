@@ -15,7 +15,7 @@ import java.util.ListIterator;
 import org.eclipse.jpt.utility.MethodSignature;
 
 /**
- * Java source code persistent attribute (field or property)
+ * Java source code or binary persistent attribute (field or property)
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -33,6 +33,15 @@ public interface JavaResourcePersistentAttribute
 	 * The Java resource persistent attribute's name does not change.
 	 */
 	String getName();
+
+	/**
+	 * Return a null mapping annotation with the specified name.
+	 * Return null if the specified annotation name is null.
+	 * The corresponding AnnotationDefinition must implement #buildNullAnnotation()
+	 * {@link AnnotationDefinition#buildNullAnnotation(JavaResourcePersistentMember,
+	 * org.eclipse.jpt.core.utility.jdt.Member)}
+	 */
+	Annotation getNullMappingAnnotation(String annotationName);
 
 	/**
 	 * Whether the Java resource persistent attribute is a field does not change.

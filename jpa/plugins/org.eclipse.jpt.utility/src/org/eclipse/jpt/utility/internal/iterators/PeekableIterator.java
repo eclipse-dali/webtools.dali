@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -30,18 +30,26 @@ import org.eclipse.jpt.utility.internal.StringTools;
 public class PeekableIterator<E>
 	implements Iterator<E>
 {
-	private final Iterator<? extends E> nestedIterator;
+	private final Iterator<? extends E> iterator;
 	private E next;
 	private boolean done;
 
 
 	/**
+	 * Construct a peekable iterator that wraps the specified
+	 * iterable.
+	 */
+	public PeekableIterator(Iterable<? extends E> iterable) {
+		this(iterable.iterator());
+	}
+
+	/**
 	 * Construct a peekable iterator that wraps the specified nested
 	 * iterator.
 	 */
-	public PeekableIterator(Iterator<? extends E> nestedIterator) {
+	public PeekableIterator(Iterator<? extends E> iterator) {
 		super();
-		this.nestedIterator = nestedIterator;
+		this.iterator = iterator;
 		this.done = false;
 		this.loadNext();
 	}
@@ -84,8 +92,8 @@ public class PeekableIterator<E>
 	 * iterator. If there are none, next is set to <code>END</code>.
 	 */
 	private void loadNext() {
-		if (this.nestedIterator.hasNext()) {
-			this.next = this.nestedIterator.next();
+		if (this.iterator.hasNext()) {
+			this.next = this.iterator.next();
 		} else {
 			this.next = null;
 			this.done = true;
@@ -94,7 +102,7 @@ public class PeekableIterator<E>
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.nestedIterator);
+		return StringTools.buildToStringFor(this, this.iterator);
 	}
 
 }

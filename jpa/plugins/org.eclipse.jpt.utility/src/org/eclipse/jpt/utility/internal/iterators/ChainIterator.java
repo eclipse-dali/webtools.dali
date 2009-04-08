@@ -43,7 +43,7 @@ public class ChainIterator<E>
 	public ChainIterator(E startLink) {
 		this(startLink, Linker.Disabled.<E>instance());
 	}
-	
+
 	/**
 	 * Construct an iterator with the specified starting link
 	 * and linker.
@@ -53,11 +53,11 @@ public class ChainIterator<E>
 		this.nextLink = startLink;
 		this.linker = linker;
 	}
-	
+
 	public boolean hasNext() {
 		return this.nextLink != null;
 	}
-	
+
 	public E next() {
 		if (this.nextLink == null) {
 			throw new NoSuchElementException();
@@ -66,25 +66,25 @@ public class ChainIterator<E>
 		this.nextLink = this.nextLink(this.nextLink);
 		return result;
 	}
-	
+
 	public void remove() {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	/**
 	 * Return the next link in the chain; null if there are no more links.
 	 */
 	protected E nextLink(E currentLink) {
 		return this.linker.nextLink(currentLink);
 	}
-	
+
 	@Override
 	public String toString() {
 		return StringTools.buildToStringFor(this, this.nextLink);
 	}
-	
 
-	//********** inner classes **********
+
+	//********** member interface **********
 
 	/**
 	 * Used by <code>ChainIterator</code> to link

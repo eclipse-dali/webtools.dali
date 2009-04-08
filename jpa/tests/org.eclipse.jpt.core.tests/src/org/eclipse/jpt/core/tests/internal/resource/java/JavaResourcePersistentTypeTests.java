@@ -13,8 +13,8 @@ import java.util.Iterator;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jpt.core.internal.resource.java.EmbeddableImpl;
-import org.eclipse.jpt.core.internal.resource.java.EntityImpl;
+import org.eclipse.jpt.core.internal.resource.java.source.SourceEmbeddableAnnotation;
+import org.eclipse.jpt.core.internal.resource.java.source.SourceEntityAnnotation;
 import org.eclipse.jpt.core.resource.java.AccessType;
 import org.eclipse.jpt.core.resource.java.EmbeddableAnnotation;
 import org.eclipse.jpt.core.resource.java.EntityAnnotation;
@@ -554,7 +554,7 @@ public class JavaResourcePersistentTypeTests extends JavaResourceModelTestCase {
 		
 		testType(cu).edit(new Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				EntityImpl.DECLARATION_ANNOTATION_ADAPTER.removeAnnotation(declaration);
+				SourceEntityAnnotation.DECLARATION_ANNOTATION_ADAPTER.removeAnnotation(declaration);
 			}
 		});	
 
@@ -562,7 +562,7 @@ public class JavaResourcePersistentTypeTests extends JavaResourceModelTestCase {
 				
 		this.testType(cu).edit(new Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				EmbeddableImpl.DECLARATION_ANNOTATION_ADAPTER.newMarkerAnnotation(declaration);
+				SourceEmbeddableAnnotation.DECLARATION_ANNOTATION_ADAPTER.newMarkerAnnotation(declaration);
 			}
 		});		
 		

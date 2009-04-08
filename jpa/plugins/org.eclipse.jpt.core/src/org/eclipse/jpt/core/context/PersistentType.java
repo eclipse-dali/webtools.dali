@@ -17,7 +17,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
- * 
+ * Persistent type.
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -28,9 +28,17 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 public interface PersistentType
 	extends JpaContextNode, JpaStructureNode, AccessHolder
 {
+	/**
+	 * Return the persistent type's [fully-qualified] name.
+	 * @see #getShortName()
+	 */
 	String getName();
 		String NAME_PROPERTY = "name"; //$NON-NLS-1$
-		
+
+	/**
+	 * Return the persistent type's short name.
+	 * @see #getName()
+	 */
 	String getShortName();
 		
 	/**
@@ -46,9 +54,11 @@ public interface PersistentType
 	AccessType getOwnerDefaultAccess();
 
 	TypeMapping getMapping();
-	String getMappingKey();
-	void setMappingKey(String key);
 		String MAPPING_PROPERTY = "mapping"; //$NON-NLS-1$
+
+	String getMappingKey();
+
+	void setMappingKey(String key);
 
 	boolean isMapped();
 	
@@ -79,13 +89,13 @@ public interface PersistentType
 	 * Return a read-only iterator of the contained {@link PersistentAttribute}
 	 */
 	<T extends PersistentAttribute> ListIterator<T> attributes();
+		String ATTRIBUTES_LIST = "specifiedAttributes"; //$NON-NLS-1$
 	
 	/**
 	 * Return the size of {@link PersistentAttribute}s list
 	 * @return
 	 */
 	int attributesSize();
-		String SPECIFIED_ATTRIBUTES_LIST = "specifiedAttributes"; //$NON-NLS-1$
 	
 	Iterator<String> attributeNames();
 

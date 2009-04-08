@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,7 +14,8 @@ import org.eclipse.jpt.core.utility.TextRange;
 
 
 /**
- * Corresponds to the javax.persistence.NamedNativeQuery annotation
+ * Corresponds to the JPA annotation
+ * javax.persistence.NamedNativeQuery
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -22,48 +23,49 @@ import org.eclipse.jpt.core.utility.TextRange;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface NamedNativeQueryAnnotation extends QueryAnnotation
+public interface NamedNativeQueryAnnotation
+	extends BaseNamedQueryAnnotation
 {
 	String ANNOTATION_NAME = JPA.NAMED_NATIVE_QUERY;
 
 	/**
-	 * Corresponds to the resultClass element of the NamedNativeQuery annotation.
-	 * Returns null if the resultClass element does not exist in java.
+	 * Corresponds to the 'resultClass' element of the NamedNativeQuery annotation.
+	 * Return null if the element does not exist in Java.
 	 */
 	String getResultClass();
-	
-	/**
-	 * Corresponds to the resultClass element of the NamedNativeQuery annotation.
-	 * Set to null to remove the resultClass element.
-	 */
-	void setResultClass(String resultClass);
 		String RESULT_CLASS_PROPERTY = "resultClass"; //$NON-NLS-1$
-	
-	/**
-	 * Corresponds to the resultSetMapping element of the NamedNativeQuery annotation.
-	 * Returns null if the resultSetMapping element does not exist in java.
-	 */
-	String getResultSetMapping();
 
 	/**
-	 * Corresponds to the resultSetMapping element of the NamedNativeQuery annotation.
-	 * Set to null to remove the resultSetMapping element.
+	 * Corresponds to the 'resultClass' element of the NamedNativeQuery annotation.
+	 * Set to null to remove the element.
 	 */
-	void setResultSetMapping(String resultSetMapping);
-		String RESULT_SET_MAPPING_PROPERTY = "resultSetMapping"; //$NON-NLS-1$
-	
-	String getFullyQualifiedResultClass();
-	String FULLY_QUALIFIED_RESULT_CLASS_PROPERTY = "fullyQualifiedResultClass"; //$NON-NLS-1$
-	
+	void setResultClass(String resultClass);
+
 	/**
-	 * Return the {@link TextRange} for the resultClass element. If resultClass element
+	 * Return the {@link TextRange} for the 'resultClass' element. If element
 	 * does not exist return the {@link TextRange} for the NamedNativeQuery annotation.
 	 */
 	TextRange getResultClassTextRange(CompilationUnit astRoot);
 
-	
+	String getFullyQualifiedResultClassName();
+		String FULLY_QUALIFIED_RESULT_CLASS_NAME_PROPERTY = "fullyQualifiedResultClassName"; //$NON-NLS-1$
+
+
 	/**
-	 * Return the {@link TextRange} for the resultSetMapping element. If resultSetMapping element
+	 * Corresponds to the 'resultSetMapping' element of the NamedNativeQuery annotation.
+	 * Return null if the element does not exist in Java.
+	 */
+	String getResultSetMapping();
+		String RESULT_SET_MAPPING_PROPERTY = "resultSetMapping"; //$NON-NLS-1$
+
+	/**
+	 * Corresponds to the 'resultSetMapping' element of the NamedNativeQuery annotation.
+	 * Set to null to remove the element.
+	 */
+	void setResultSetMapping(String resultSetMapping);
+
+	/**
+	 * Return the {@link TextRange} for the 'resultSetMapping' element. If element
 	 * does not exist return the {@link TextRange} for the NamedNativeQuery annotation.
 	 */
 	TextRange getResultSetMappingTextRange(CompilationUnit astRoot);

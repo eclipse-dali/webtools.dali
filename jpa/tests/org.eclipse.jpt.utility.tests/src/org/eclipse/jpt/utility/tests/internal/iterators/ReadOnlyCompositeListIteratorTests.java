@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -193,9 +193,9 @@ public class ReadOnlyCompositeListIteratorTests extends CompositeIteratorTests {
 		floatList.add(new Float(111.111f));
 		floatList.add(new Float(77.77f));
 
-		List<ListIterator<? extends Number>> list = new ArrayList<ListIterator<? extends Number>>();
-		list.add(integerList.listIterator());
-		list.add(floatList.listIterator());
+		List<List<? extends Number>> list = new ArrayList<List<? extends Number>>();
+		list.add(integerList);
+		list.add(floatList);
 		ListIterator<Number> li = new ReadOnlyCompositeListIterator<Number>(list);
 		while (li.hasNext()) {
 			assertTrue(li.next().intValue() > 0);

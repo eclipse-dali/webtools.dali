@@ -25,7 +25,7 @@ import org.eclipse.jpt.core.context.MappingFile;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.UniqueConstraint;
 import org.eclipse.jpt.core.context.XmlContextNode;
-import org.eclipse.jpt.core.context.jar.JarFile;
+import org.eclipse.jpt.core.context.java.JarFile;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverride;
@@ -116,7 +116,7 @@ import org.eclipse.jpt.core.internal.GenericJpaDataSource;
 import org.eclipse.jpt.core.internal.GenericJpaFile;
 import org.eclipse.jpt.core.internal.GenericJpaProject;
 import org.eclipse.jpt.core.internal.context.GenericRootContextNode;
-import org.eclipse.jpt.core.internal.context.jar.GenericJarFile;
+import org.eclipse.jpt.core.internal.context.java.GenericJarFile;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaAssociationOverride;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaAttributeOverride;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaBasicMapping;
@@ -208,7 +208,7 @@ import org.eclipse.jpt.core.internal.context.persistence.GenericPersistenceUnit;
 import org.eclipse.jpt.core.internal.context.persistence.GenericPersistenceUnitProperty;
 import org.eclipse.jpt.core.internal.context.persistence.GenericPersistenceXml;
 import org.eclipse.jpt.core.internal.context.persistence.ImpliedMappingFileRef;
-import org.eclipse.jpt.core.resource.jar.JarResourcePackageFragmentRoot;
+import org.eclipse.jpt.core.resource.java.JavaResourcePackageFragmentRoot;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
@@ -669,7 +669,7 @@ public class GenericJpaFactory
 
 	// ********** JAR Context Model **********
 
-	public JarFile buildJarFile(JarFileRef parent, JarResourcePackageFragmentRoot jarResourcePackageFragmentRoot) {
+	public JarFile buildJarFile(JarFileRef parent, JavaResourcePackageFragmentRoot jarResourcePackageFragmentRoot) {
 		return new GenericJarFile(parent, jarResourcePackageFragmentRoot);
 	}
 	

@@ -30,8 +30,8 @@ import org.eclipse.jpt.utility.internal.EmptyIterable;
 import org.eclipse.jpt.utility.internal.HashBag;
 import org.eclipse.jpt.utility.internal.Range;
 import org.eclipse.jpt.utility.internal.ReverseComparator;
+import org.eclipse.jpt.utility.internal.enumerations.EmptyEnumeration;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
-import org.eclipse.jpt.utility.internal.iterators.EmptyEnumeration;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
 @SuppressWarnings("nls")

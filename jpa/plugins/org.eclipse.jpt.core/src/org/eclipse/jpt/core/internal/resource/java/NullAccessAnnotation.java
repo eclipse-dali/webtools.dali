@@ -12,66 +12,43 @@ package org.eclipse.jpt.core.internal.resource.java;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.resource.java.AccessAnnotation;
 import org.eclipse.jpt.core.resource.java.AccessType;
-import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.utility.TextRange;
 
-public class NullAccessAnnotation extends AbstractJavaResourceNode implements AccessAnnotation, Annotation
+/**
+ * javax.persistence.Access
+ */
+public class NullAccessAnnotation
+	extends NullAnnotation
+	implements AccessAnnotation
 {
+
 	protected NullAccessAnnotation(JavaResourcePersistentMember parent) {
 		super(parent);
 	}
 	
-	@Override
-	public JavaResourcePersistentType getParent() {
-		return (JavaResourcePersistentType) super.getParent();
-	}
-	
 	public String getAnnotationName() {
-		return AccessAnnotation.ANNOTATION_NAME;
+		return ANNOTATION_NAME;
 	}
 
-	public void initialize(CompilationUnit astRoot) {
-		//null, nothing to initialize
+	@Override
+	protected AccessAnnotation buildSupportingAnnotation() {
+		return (AccessAnnotation) super.buildSupportingAnnotation();
 	}
 	
-	public org.eclipse.jdt.core.dom.Annotation getJdtAnnotation(CompilationUnit astRoot) {
-		return null;
-	}
-	
-	public void newAnnotation() {
-		throw new UnsupportedOperationException();
-	}
-	
-	public void removeAnnotation() {
-		throw new UnsupportedOperationException();
-	}
-	
-	protected AccessAnnotation createAccessAnnotation() {
-		return (AccessAnnotation) getParent().addSupportingAnnotation(getAnnotationName());
-	}
-	
+	// ***** value
 	public AccessType getValue() {
 		return null;
 	}
 	
 	public void setValue(AccessType value) {
 		if (value != null) {
-			createAccessAnnotation().setValue(value);
+			this.buildSupportingAnnotation().setValue(value);
 		}
-	}
-
-	public TextRange getTextRange(CompilationUnit astRoot) {
-		return null;
 	}
 
 	public TextRange getValueTextRange(CompilationUnit astRoot) {
 		return null;
 	}
 	
-	public void update(CompilationUnit astRoot) {
-		throw new UnsupportedOperationException();
-	}
-
 }

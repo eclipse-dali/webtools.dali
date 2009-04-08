@@ -32,7 +32,7 @@ import org.eclipse.jpt.utility.internal.StringTools;
 public class CloneListIterator<E>
 	implements ListIterator<E>
 {
-	private final ListIterator<Object> nestedListIterator;
+	private final ListIterator<Object> listIterator;
 	private int cursor;
 	private State state;
 	private final Mutator<E> mutator;
@@ -56,14 +56,40 @@ public class CloneListIterator<E>
 	}
 
 	/**
+	 * Construct a list iterator on a copy of the specified array.
+	 * The modification methods will not be supported,
+	 * unless a subclass overrides them.
+	 */
+	public CloneListIterator(E[] array) {
+		this(array, Mutator.ReadOnly.<E>instance());
+	}
+
+	/**
 	 * Construct a list iterator on a copy of the specified list.
 	 * Use the specified list mutator to modify the original list.
 	 */
 	public CloneListIterator(List<? extends E> list, Mutator<E> mutator) {
+		this(mutator, list.toArray());
+	}
+
+	/**
+	 * Construct a list iterator on a copy of the specified array.
+	 * Use the specified list mutator to modify the original list.
+	 */
+	public CloneListIterator(E[] array, Mutator<E> mutator) {
+		this(mutator, array.clone());
+	}
+
+	/**
+	 * Internal constructor used by subclasses.
+	 * Swap order of arguments to prevent collision with other constructor.
+	 * The passed in array will *not* be cloned.
+	 */
+	protected CloneListIterator(Mutator<E> mutator, Object... array) {
 		super();
 		// build a copy of the list and keep it in synch with original (if the mutator allows changes)
 		// that way the nested list iterator will maintain some of our state
-		this.nestedListIterator = CollectionTools.list(list.toArray()).listIterator();
+		this.listIterator = CollectionTools.list(array).listIterator();
 		this.mutator = mutator;
 		this.cursor = 0;
 		this.state = State.UNKNOWN;
@@ -73,7 +99,7 @@ public class CloneListIterator<E>
 	// ********** ListIterator implementation **********
 
 	public boolean hasNext() {
-		return this.nestedListIterator.hasNext();
+		return this.listIterator.hasNext();
 	}
 
 	public E next() {
@@ -86,7 +112,7 @@ public class CloneListIterator<E>
 
 	public void remove() {
 		// allow the nested iterator to throw an exception before we modify the original list
-		this.nestedListIterator.remove();
+		this.listIterator.remove();
 		if (this.state == State.PREVIOUS) {
 			this.remove(this.cursor);
 		} else {
@@ -96,15 +122,15 @@ public class CloneListIterator<E>
 	}
 
 	public int nextIndex() {
-		return this.nestedListIterator.nextIndex();
+		return this.listIterator.nextIndex();
 	}
 
 	public int previousIndex() {
-		return this.nestedListIterator.previousIndex();
+		return this.listIterator.previousIndex();
 	}
 
 	public boolean hasPrevious() {
-		return this.nestedListIterator.hasPrevious();
+		return this.listIterator.hasPrevious();
 	}
 
 	public E previous() {
@@ -117,14 +143,14 @@ public class CloneListIterator<E>
 
 	public void add(E o) {
 		// allow the nested iterator to throw an exception before we modify the original list
-		this.nestedListIterator.add(o);
+		this.listIterator.add(o);
 		this.add(this.cursor, o);
 		this.cursor++;
 	}
 
 	public void set(E o) {
 		// allow the nested iterator to throw an exception before we modify the original list
-		this.nestedListIterator.set(o);
+		this.listIterator.set(o);
 		if (this.state == State.PREVIOUS) {
 			this.set(this.cursor, o);
 		} else {
@@ -143,7 +169,7 @@ public class CloneListIterator<E>
 	 */
 	@SuppressWarnings("unchecked")
 	protected E nestedNext() {
-		return (E) this.nestedListIterator.next();
+		return (E) this.listIterator.next();
 	}
 
 	/**
@@ -154,7 +180,7 @@ public class CloneListIterator<E>
 	 */
 	@SuppressWarnings("unchecked")
 	protected E nestedPrevious() {
-		return (E) this.nestedListIterator.previous();
+		return (E) this.listIterator.previous();
 	}
 
 	/**

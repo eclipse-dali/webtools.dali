@@ -9,11 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.resource.java;
 
-import org.eclipse.jpt.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.core.resource.java.Annotation;
 
 /**
- * Java resource model interface that corresponds to the Eclipselink
- * annotation org.eclipse.persistence.annotations.VariableOneToOne
+ * Corresponds to EclipseLink annotation
+ * org.eclipse.persistence.annotations.VariableOneToOne
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -24,7 +24,8 @@ import org.eclipse.jpt.core.resource.java.JavaResourceNode;
  * @version 2.2
  * @since 2.2
  */
-public interface VariableOneToOneAnnotation extends JavaResourceNode
+public interface VariableOneToOneAnnotation
+	extends Annotation
 {
 	String ANNOTATION_NAME = EclipseLinkJPA.VARIABLE_ONE_TO_ONE;
 }

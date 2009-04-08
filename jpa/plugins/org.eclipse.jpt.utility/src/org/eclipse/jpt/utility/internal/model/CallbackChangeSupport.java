@@ -41,8 +41,8 @@ public class CallbackChangeSupport
 	}
 
 	@Override
-	protected void sourceChanged(String aspectName) {
-		super.sourceChanged(aspectName);
+	protected void aspectChanged(String aspectName) {
+		super.aspectChanged(aspectName);
 		for (Listener listener : this.listenerList.getListeners()) {
 			listener.aspectChanged(aspectName);
 		}

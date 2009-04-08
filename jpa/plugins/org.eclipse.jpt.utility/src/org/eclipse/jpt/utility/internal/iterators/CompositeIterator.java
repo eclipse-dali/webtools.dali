@@ -13,6 +13,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.iterables.ArrayIterable;
 
 /**
  * A <code>CompositeIterator</code> wraps a collection
@@ -30,10 +31,18 @@ public class CompositeIterator<E>
 	// ********** constructors **********
 
 	/**
-	 * Construct an iterator with the specified collection of iterators.
+	 * Construct an iterator that returns all the elements held by the
+	 * specified iterables.
 	 */
-	public CompositeIterator(Iterable<? extends Iterator<? extends E>> iterators) {
-		this(iterators.iterator());
+	public CompositeIterator(Iterable<? extends Iterable<? extends E>> iterables) {
+		this(
+			new TransformationIterator<Iterable<? extends E>, Iterator<? extends E>>(iterables.iterator()) {
+				@Override
+				protected Iterator<? extends E> transform(Iterable<? extends E> iterable) {
+					return iterable.iterator();
+				}
+			}
+		);
 	}
 
 	/**
@@ -42,6 +51,14 @@ public class CompositeIterator<E>
 	public CompositeIterator(Iterator<? extends Iterator<? extends E>> iterators) {
 		super();
 		this.iterators = iterators;
+	}
+
+	/**
+	 * Construct an iterator with the specified object prepended
+	 * to the specified iterable.
+	 */
+	public CompositeIterator(E object, Iterable<? extends E> iterable) {
+		this(object, iterable.iterator());
 	}
 
 	/**
@@ -55,11 +72,26 @@ public class CompositeIterator<E>
 
 	/**
 	 * Construct an iterator with the specified object appended
+	 * to the specified iterable.
+	 */
+	public CompositeIterator(Iterable<? extends E> iterable, E object) {
+		this(iterable.iterator(), object);
+	}
+
+	/**
+	 * Construct an iterator with the specified object appended
 	 * to the specified iterator.
 	 */
 	@SuppressWarnings("unchecked")
 	public CompositeIterator(Iterator<? extends E> iterator, E object) {
 		this(iterator, new SingleElementIterator<E>(object));
+	}
+
+	/**
+	 * Construct an iterator with the specified iterables.
+	 */
+	public CompositeIterator(Iterable<? extends E>... iterables) {
+		this(new ArrayIterable<Iterable<? extends E>>(iterables));
 	}
 
 	/**

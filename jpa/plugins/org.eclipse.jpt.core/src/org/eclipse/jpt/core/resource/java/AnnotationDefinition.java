@@ -9,15 +9,16 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.resource.java;
 
+import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.core.utility.jdt.Member;
 
 /**
- * Used for building new Annotations. 
- * These should be used to define non-mapping annotations.  If you
- * want to provide new AnnotationDefinitions you will need
- * to create a new JpaPlatform by extending GenericJpaPlatform.
+ * Used to build Annotations discovered in the Java source code.
+ * To provide new AnnotationDefinitions, create a new JpaPlatform
+ * by implementing JpaPlatform and/or extending GenericJpaPlatform.
  * 
- * @see MappingAnnotation
+ * @see Annotation
+ * @see org.eclipse.jpt.core.JpaPlatform
  * @see org.eclipse.jpt.core.internal.platform.GenericJpaPlatform
  * 
  * Provisional API: This interface is part of an interim API that is still
@@ -29,7 +30,8 @@ import org.eclipse.jpt.core.utility.jdt.Member;
 public interface AnnotationDefinition
 {
 	/**
-	 * Return the annotation's name.
+	 * Return the name of the annotation the definition will build in the
+	 * various #build...(...) methods.
 	 */
 	String getAnnotationName();
 	
@@ -38,19 +40,23 @@ public interface AnnotationDefinition
 	 */
 	Annotation buildAnnotation(JavaResourcePersistentMember parent, Member member);
 	
-//	/**
-//	 * Build and return an annotation for the specified JDT annotation.
-//	 */
-//	Annotation buildAnnotation(JarResourcePersistentMember parent, IAnnotation jdtAnnotation);
-//	
 	/**
-	 * Build and return a null annotation for the specified member.
+	 * Build and return an annotation for the specified JDT annotation
+	 * on the specified member.
 	 */
-	Annotation buildNullAnnotation(JavaResourcePersistentMember parent, Member member);
+	Annotation buildAnnotation(JavaResourcePersistentMember parent, IAnnotation jdtAnnotation);
+	
+	/**
+	 * Build and return a "null" annotation for the specified member.
+	 * Only certain annotations are required to have "null" implementations;
+	 * typically the annotations with reasonably complex default behavior.
+	 * The "null" annotation is used by the corresponding default context model.
+	 * The "null" annotation simplifies the context model code, allowing the
+	 * context model to simply set various bits of state (e.g. 'name') and the
+	 * "null" annotation will create a new "real" annotation and forward the
+	 * new state to it. This reduces the number of null checks in the context
+	 * model (hopefully).
+	 */
+	Annotation buildNullAnnotation(JavaResourcePersistentMember parent);
 
-//	/**
-//	 * Build and return a null annotation.
-//	 */
-//	Annotation buildNullAnnotation(JarResourcePersistentMember parent);
-//
 }

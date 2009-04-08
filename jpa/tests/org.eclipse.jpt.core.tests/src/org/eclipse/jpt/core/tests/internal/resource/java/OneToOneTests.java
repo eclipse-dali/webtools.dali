@@ -220,7 +220,7 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
 		OneToOneAnnotation oneToOne = (OneToOneAnnotation) attributeResource.getMappingAnnotation(JPA.ONE_TO_ONE);
-		assertEquals(FULLY_QUALIFIED_TYPE_NAME, oneToOne.getFullyQualifiedTargetEntity());
+		assertEquals(FULLY_QUALIFIED_TYPE_NAME, oneToOne.getFullyQualifiedTargetEntityClassName());
 		
 		oneToOne.setTargetEntity("Foo");
 		
@@ -228,7 +228,7 @@ public class OneToOneTests extends JavaResourceModelTestCase {
 		
 		assertEquals("Foo", oneToOne.getTargetEntity());
 		
-		assertEquals("Foo", oneToOne.getFullyQualifiedTargetEntity()); //bug 196200 changed this
+		assertEquals("Foo", oneToOne.getFullyQualifiedTargetEntityClassName()); //bug 196200 changed this
 	}
 	
 	public void testGetOptional() throws Exception {

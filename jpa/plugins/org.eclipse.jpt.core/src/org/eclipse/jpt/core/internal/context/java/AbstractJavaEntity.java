@@ -53,8 +53,8 @@ import org.eclipse.jpt.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.core.context.java.JavaSequenceGenerator;
 import org.eclipse.jpt.core.context.java.JavaTable;
 import org.eclipse.jpt.core.context.java.JavaTableGenerator;
-import org.eclipse.jpt.core.internal.resource.java.NullAssociationOverride;
-import org.eclipse.jpt.core.internal.resource.java.NullPrimaryKeyJoinColumn;
+import org.eclipse.jpt.core.internal.resource.java.NullAssociationOverrideAnnotation;
+import org.eclipse.jpt.core.internal.resource.java.NullPrimaryKeyJoinColumnAnnotation;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.AssociationOverrideAnnotation;
@@ -289,7 +289,7 @@ public abstract class AbstractJavaEntity
 		if (!shouldBuildDefaultPrimaryKeyJoinColumn()) {
 			return;
 		}
-		this.defaultPrimaryKeyJoinColumn = buildPrimaryKeyJoinColumn(new NullPrimaryKeyJoinColumn(this.javaResourcePersistentType));
+		this.defaultPrimaryKeyJoinColumn = buildPrimaryKeyJoinColumn(new NullPrimaryKeyJoinColumnAnnotation(this.javaResourcePersistentType));
 	}	
 
 	protected void initializeSpecifiedAttributeOverrides() {
@@ -318,7 +318,7 @@ public abstract class AbstractJavaEntity
 			String associationName = i.next();
 			JavaAssociationOverride associationOverride = getAssociationOverrideNamed(associationName);
 			if (associationOverride == null) {
-				this.virtualAssociationOverrides.add(buildAssociationOverride(new NullAssociationOverride(this.javaResourcePersistentType, associationName)));
+				this.virtualAssociationOverrides.add(buildAssociationOverride(new NullAssociationOverrideAnnotation(this.javaResourcePersistentType, associationName)));
 			}
 		}
 	}
@@ -355,8 +355,8 @@ public abstract class AbstractJavaEntity
 	}
 	
 	@Override
-	protected EntityAnnotation getResourceMapping() {
-		return (EntityAnnotation) super.getResourceMapping();
+	protected EntityAnnotation getResourceMappingAnnotation() {
+		return (EntityAnnotation) super.getResourceMappingAnnotation();
 	}
 	
 	//****************** TypeMapping implemenation *******************
@@ -467,14 +467,14 @@ public abstract class AbstractJavaEntity
 	public void setSpecifiedName(String newSpecifiedName) {
 		String oldSpecifiedName = this.specifiedName;
 		this.specifiedName = newSpecifiedName;
-		this.getResourceMapping().setName(newSpecifiedName);
-		firePropertyChanged(Entity.SPECIFIED_NAME_PROPERTY, oldSpecifiedName, newSpecifiedName);
+		this.getResourceMappingAnnotation().setName(newSpecifiedName);
+		firePropertyChanged(SPECIFIED_NAME_PROPERTY, oldSpecifiedName, newSpecifiedName);
 	}
 	
 	protected void setSpecifiedName_(String newSpecifiedName) {
 		String oldSpecifiedName = this.specifiedName;
 		this.specifiedName = newSpecifiedName;
-		firePropertyChanged(Entity.SPECIFIED_NAME_PROPERTY, oldSpecifiedName, newSpecifiedName);
+		firePropertyChanged(SPECIFIED_NAME_PROPERTY, oldSpecifiedName, newSpecifiedName);
 	}
 
 	public String getDefaultName() {
@@ -484,7 +484,7 @@ public abstract class AbstractJavaEntity
 	protected/*private-protected*/ void setDefaultName(String newDefaultName) {
 		String oldDefaultName = this.defaultName;
 		this.defaultName = newDefaultName;
-		firePropertyChanged(Entity.DEFAULT_NAME_PROPERTY, oldDefaultName, newDefaultName);
+		firePropertyChanged(DEFAULT_NAME_PROPERTY, oldDefaultName, newDefaultName);
 	}
 
 	public JavaTable getTable() {
@@ -504,7 +504,7 @@ public abstract class AbstractJavaEntity
 		this.specifiedSecondaryTables.add(index, secondaryTable);
 		SecondaryTableAnnotation secondaryTableResource = (SecondaryTableAnnotation) this.javaResourcePersistentType.addSupportingAnnotation(index, SecondaryTableAnnotation.ANNOTATION_NAME, SecondaryTablesAnnotation.ANNOTATION_NAME);
 		secondaryTable.initialize(secondaryTableResource);
-		fireItemAdded(Entity.SPECIFIED_SECONDARY_TABLES_LIST, index, secondaryTable);
+		fireItemAdded(SPECIFIED_SECONDARY_TABLES_LIST, index, secondaryTable);
 		return secondaryTable;
 	}
 
@@ -513,7 +513,7 @@ public abstract class AbstractJavaEntity
 	}
 	
 	protected void addSpecifiedSecondaryTable(int index, JavaSecondaryTable secondaryTable) {
-		addItemToList(index, secondaryTable, this.specifiedSecondaryTables, Entity.SPECIFIED_SECONDARY_TABLES_LIST);
+		addItemToList(index, secondaryTable, this.specifiedSecondaryTables, SPECIFIED_SECONDARY_TABLES_LIST);
 	}
 	
 	protected void addSpecifiedSecondaryTable(JavaSecondaryTable secondaryTable) {
@@ -527,17 +527,17 @@ public abstract class AbstractJavaEntity
 	public void removeSpecifiedSecondaryTable(int index) {
 		JavaSecondaryTable removedSecondaryTable = this.specifiedSecondaryTables.remove(index);
 		this.javaResourcePersistentType.removeSupportingAnnotation(index, SecondaryTableAnnotation.ANNOTATION_NAME, SecondaryTablesAnnotation.ANNOTATION_NAME);
-		fireItemRemoved(Entity.SPECIFIED_SECONDARY_TABLES_LIST, index, removedSecondaryTable);
+		fireItemRemoved(SPECIFIED_SECONDARY_TABLES_LIST, index, removedSecondaryTable);
 	}
 	
 	protected void removeSpecifiedSecondaryTable_(JavaSecondaryTable secondaryTable) {
-		removeItemFromList(secondaryTable, this.specifiedSecondaryTables, Entity.SPECIFIED_SECONDARY_TABLES_LIST);
+		removeItemFromList(secondaryTable, this.specifiedSecondaryTables, SPECIFIED_SECONDARY_TABLES_LIST);
 	}
 	
 	public void moveSpecifiedSecondaryTable(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.specifiedSecondaryTables, targetIndex, sourceIndex);
 		this.javaResourcePersistentType.moveSupportingAnnotation(targetIndex, sourceIndex, SecondaryTablesAnnotation.ANNOTATION_NAME);
-		fireItemMoved(Entity.SPECIFIED_SECONDARY_TABLES_LIST, targetIndex, sourceIndex);		
+		fireItemMoved(SPECIFIED_SECONDARY_TABLES_LIST, targetIndex, sourceIndex);		
 	}
 	
 	public ListIterator<JavaSecondaryTable> secondaryTables() {
@@ -643,7 +643,7 @@ public abstract class AbstractJavaEntity
 	protected void setDiscriminatorValueIsUndefined(boolean discriminatorValueIsUndefined) {
 		boolean old = this.discriminatorValueIsUndefined;
 		this.discriminatorValueIsUndefined = discriminatorValueIsUndefined;
-		firePropertyChanged(Entity.DISCRIMINATOR_VALUE_IS_UNDEFINED_PROPERTY, old, discriminatorValueIsUndefined);
+		firePropertyChanged(DISCRIMINATOR_VALUE_IS_UNDEFINED_PROPERTY, old, discriminatorValueIsUndefined);
 	}
 	
 	public boolean specifiedDiscriminatorColumnIsAllowed() {
@@ -653,7 +653,7 @@ public abstract class AbstractJavaEntity
 	protected void setSpecifiedDiscriminatorColumnIsAllowed(boolean specifiedDiscriminatorColumnIsAllowed) {
 		boolean old = this.specifiedDiscriminatorColumnIsAllowed;
 		this.specifiedDiscriminatorColumnIsAllowed = specifiedDiscriminatorColumnIsAllowed;
-		firePropertyChanged(Entity.SPECIFIED_DISCRIMINATOR_COLUMN_IS_ALLOWED_PROPERTY, old, specifiedDiscriminatorColumnIsAllowed);
+		firePropertyChanged(SPECIFIED_DISCRIMINATOR_COLUMN_IS_ALLOWED_PROPERTY, old, specifiedDiscriminatorColumnIsAllowed);
 	}
 	
 	public boolean discriminatorColumnIsUndefined() {
@@ -663,7 +663,7 @@ public abstract class AbstractJavaEntity
 	protected void setDiscriminatorColumnIsUndefined(boolean discriminatorColumnIsUndefined) {
 		boolean old = this.discriminatorColumnIsUndefined;
 		this.discriminatorColumnIsUndefined = discriminatorColumnIsUndefined;
-		firePropertyChanged(Entity.DISCRIMINATOR_COLUMN_IS_UNDEFINED_PROPERTY, old, discriminatorColumnIsUndefined);
+		firePropertyChanged(DISCRIMINATOR_COLUMN_IS_UNDEFINED_PROPERTY, old, discriminatorColumnIsUndefined);
 	}
 
 	public boolean specifiedTableIsAllowed() {
@@ -673,7 +673,7 @@ public abstract class AbstractJavaEntity
 	protected void setSpecifiedTableIsAllowed(boolean specifiedTableIsAllowed) {
 		boolean old = this.specifiedTableIsAllowed;
 		this.specifiedTableIsAllowed = specifiedTableIsAllowed;
-		firePropertyChanged(Entity.SPECIFIED_TABLE_IS_ALLOWED_PROPERTY, old, specifiedTableIsAllowed);
+		firePropertyChanged(SPECIFIED_TABLE_IS_ALLOWED_PROPERTY, old, specifiedTableIsAllowed);
 	}
 	
 	public boolean tableIsUndefined() {
@@ -683,7 +683,7 @@ public abstract class AbstractJavaEntity
 	protected void setTableIsUndefined(boolean tableIsUndefined) {
 		boolean old = this.tableIsUndefined;
 		this.tableIsUndefined = tableIsUndefined;
-		firePropertyChanged(Entity.TABLE_IS_UNDEFINED_PROPERTY, old, tableIsUndefined);
+		firePropertyChanged(TABLE_IS_UNDEFINED_PROPERTY, old, tableIsUndefined);
 	}
 	
 	public JavaTableGenerator addTableGenerator() {
@@ -790,7 +790,7 @@ public abstract class AbstractJavaEntity
 	protected void setDefaultPrimaryKeyJoinColumn(JavaPrimaryKeyJoinColumn newPkJoinColumn) {
 		JavaPrimaryKeyJoinColumn oldPkJoinColumn = this.defaultPrimaryKeyJoinColumn;
 		this.defaultPrimaryKeyJoinColumn = newPkJoinColumn;
-		firePropertyChanged(Entity.DEFAULT_PRIMARY_KEY_JOIN_COLUMN, oldPkJoinColumn, newPkJoinColumn);
+		firePropertyChanged(DEFAULT_PRIMARY_KEY_JOIN_COLUMN, oldPkJoinColumn, newPkJoinColumn);
 	}
 
 	protected ListIterator<JavaPrimaryKeyJoinColumn> defaultPrimaryKeyJoinColumns() {
@@ -817,15 +817,15 @@ public abstract class AbstractJavaEntity
 		this.specifiedPrimaryKeyJoinColumns.add(index, primaryKeyJoinColumn);
 		PrimaryKeyJoinColumnAnnotation pkJoinColumnResource = (PrimaryKeyJoinColumnAnnotation) this.javaResourcePersistentType.addSupportingAnnotation(index, PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME, PrimaryKeyJoinColumnsAnnotation.ANNOTATION_NAME);
 		primaryKeyJoinColumn.initialize(pkJoinColumnResource);
-		this.fireItemAdded(Entity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST, index, primaryKeyJoinColumn);
+		this.fireItemAdded(SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST, index, primaryKeyJoinColumn);
 		if (oldDefaultPkJoinColumn != null) {
-			this.firePropertyChanged(Entity.DEFAULT_PRIMARY_KEY_JOIN_COLUMN, oldDefaultPkJoinColumn, null);
+			this.firePropertyChanged(DEFAULT_PRIMARY_KEY_JOIN_COLUMN, oldDefaultPkJoinColumn, null);
 		}
 		return primaryKeyJoinColumn;
 	}
 
 	protected void addSpecifiedPrimaryKeyJoinColumn(int index, JavaPrimaryKeyJoinColumn primaryKeyJoinColumn) {
-		addItemToList(index, primaryKeyJoinColumn, this.specifiedPrimaryKeyJoinColumns, Entity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST);
+		addItemToList(index, primaryKeyJoinColumn, this.specifiedPrimaryKeyJoinColumns, SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST);
 	}
 		
 	protected void addSpecifiedPrimaryKeyJoinColumn(JavaPrimaryKeyJoinColumn primaryKeyJoinColumn) {
@@ -842,23 +842,23 @@ public abstract class AbstractJavaEntity
 			//create the defaultJoinColumn now or this will happen during project update 
 			//after removing the join column from the resource model. That causes problems 
 			//in the UI because the change notifications end up in the wrong order.
-			this.defaultPrimaryKeyJoinColumn = buildPrimaryKeyJoinColumn(new NullPrimaryKeyJoinColumn(this.javaResourcePersistentType));
+			this.defaultPrimaryKeyJoinColumn = buildPrimaryKeyJoinColumn(new NullPrimaryKeyJoinColumnAnnotation(this.javaResourcePersistentType));
 		}
 		this.javaResourcePersistentType.removeSupportingAnnotation(index, PrimaryKeyJoinColumnAnnotation.ANNOTATION_NAME, PrimaryKeyJoinColumnsAnnotation.ANNOTATION_NAME);
-		fireItemRemoved(Entity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST, index, removedPrimaryKeyJoinColumn);
+		fireItemRemoved(SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST, index, removedPrimaryKeyJoinColumn);
 		if (this.defaultPrimaryKeyJoinColumn != null) {
 			//fire change notification if a defaultJoinColumn was created above
-			this.firePropertyChanged(Entity.DEFAULT_PRIMARY_KEY_JOIN_COLUMN, null, this.defaultPrimaryKeyJoinColumn);
+			this.firePropertyChanged(DEFAULT_PRIMARY_KEY_JOIN_COLUMN, null, this.defaultPrimaryKeyJoinColumn);
 		}
 	}
 
 	protected void removeSpecifiedPrimaryKeyJoinColumn_(JavaPrimaryKeyJoinColumn primaryKeyJoinColumn) {
-		removeItemFromList(primaryKeyJoinColumn, this.specifiedPrimaryKeyJoinColumns, Entity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST);
+		removeItemFromList(primaryKeyJoinColumn, this.specifiedPrimaryKeyJoinColumns, SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST);
 	}
 	
 	public void moveSpecifiedPrimaryKeyJoinColumn(int targetIndex, int sourceIndex) {
 		this.javaResourcePersistentType.moveSupportingAnnotation(targetIndex, sourceIndex, PrimaryKeyJoinColumnsAnnotation.ANNOTATION_NAME);
-		moveItemInList(targetIndex, sourceIndex, this.specifiedPrimaryKeyJoinColumns, Entity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST);		
+		moveItemInList(targetIndex, sourceIndex, this.specifiedPrimaryKeyJoinColumns, SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST);		
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -891,7 +891,7 @@ public abstract class AbstractJavaEntity
 		this.specifiedAttributeOverrides.add(index, attributeOverride);
 		AttributeOverrideAnnotation attributeOverrideResource = (AttributeOverrideAnnotation) this.javaResourcePersistentType.addSupportingAnnotation(index, AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME);
 		attributeOverride.initialize(attributeOverrideResource);
-		this.fireItemAdded(Entity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, attributeOverride);
+		this.fireItemAdded(SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, attributeOverride);
 		return attributeOverride;
 	}
 	
@@ -923,10 +923,10 @@ public abstract class AbstractJavaEntity
 		}
 
 		this.javaResourcePersistentType.removeSupportingAnnotation(index, AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME);
-		fireItemRemoved(Entity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, attributeOverride);
+		fireItemRemoved(SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, attributeOverride);
 		
 		if (virtualAttributeOverride != null) {
-			fireItemAdded(Entity.VIRTUAL_ATTRIBUTE_OVERRIDES_LIST, virtualAttributeOverridesSize() - 1, virtualAttributeOverride);
+			fireItemAdded(VIRTUAL_ATTRIBUTE_OVERRIDES_LIST, virtualAttributeOverridesSize() - 1, virtualAttributeOverride);
 		}
 		return virtualAttributeOverride;
 	}
@@ -945,8 +945,8 @@ public abstract class AbstractJavaEntity
 		newAttributeOverride.setName(oldAttributeOverride.getName());
 		newAttributeOverride.getColumn().setSpecifiedName(oldAttributeOverride.getColumn().getName());
 		
-		this.fireItemRemoved(Entity.VIRTUAL_ATTRIBUTE_OVERRIDES_LIST, defaultIndex, oldAttributeOverride);
-		this.fireItemAdded(Entity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, newAttributeOverride);		
+		this.fireItemRemoved(VIRTUAL_ATTRIBUTE_OVERRIDES_LIST, defaultIndex, oldAttributeOverride);
+		this.fireItemAdded(SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, newAttributeOverride);		
 
 		return newAttributeOverride;
 	}
@@ -956,7 +956,7 @@ public abstract class AbstractJavaEntity
 	}
 	
 	protected void addSpecifiedAttributeOverride(int index, JavaAttributeOverride attributeOverride) {
-		addItemToList(index, attributeOverride, this.specifiedAttributeOverrides, Entity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST);
+		addItemToList(index, attributeOverride, this.specifiedAttributeOverrides, SPECIFIED_ATTRIBUTE_OVERRIDES_LIST);
 	}
 	
 	protected void addSpecifiedAttributeOverride(JavaAttributeOverride attributeOverride) {
@@ -964,21 +964,21 @@ public abstract class AbstractJavaEntity
 	}
 	
 	protected void removeSpecifiedAttributeOverride_(JavaAttributeOverride attributeOverride) {
-		removeItemFromList(attributeOverride, this.specifiedAttributeOverrides, Entity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST);
+		removeItemFromList(attributeOverride, this.specifiedAttributeOverrides, SPECIFIED_ATTRIBUTE_OVERRIDES_LIST);
 	}
 
 	public void moveSpecifiedAttributeOverride(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.specifiedAttributeOverrides, targetIndex, sourceIndex);
 		this.javaResourcePersistentType.moveSupportingAnnotation(targetIndex, sourceIndex, AttributeOverridesAnnotation.ANNOTATION_NAME);
-		fireItemMoved(Entity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, targetIndex, sourceIndex);		
+		fireItemMoved(SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, targetIndex, sourceIndex);		
 	}
 	
 	protected void addVirtualAttributeOverride(JavaAttributeOverride attributeOverride) {
-		addItemToList(attributeOverride, this.virtualAttributeOverrides, Entity.VIRTUAL_ATTRIBUTE_OVERRIDES_LIST);
+		addItemToList(attributeOverride, this.virtualAttributeOverrides, VIRTUAL_ATTRIBUTE_OVERRIDES_LIST);
 	}
 	
 	protected void removeVirtualAttributeOverride(JavaAttributeOverride attributeOverride) {
-		removeItemFromList(attributeOverride, this.virtualAttributeOverrides, Entity.VIRTUAL_ATTRIBUTE_OVERRIDES_LIST);
+		removeItemFromList(attributeOverride, this.virtualAttributeOverrides, VIRTUAL_ATTRIBUTE_OVERRIDES_LIST);
 	}
 
 	public JavaAttributeOverride getAttributeOverrideNamed(String name) {
@@ -1061,7 +1061,7 @@ public abstract class AbstractJavaEntity
 		this.specifiedAssociationOverrides.add(index, associationOverride);
 		AssociationOverrideAnnotation associationOverrideResource = (AssociationOverrideAnnotation) this.javaResourcePersistentType.addSupportingAnnotation(index, AssociationOverrideAnnotation.ANNOTATION_NAME, AssociationOverridesAnnotation.ANNOTATION_NAME);
 		associationOverride.initialize(associationOverrideResource);
-		this.fireItemAdded(Entity.SPECIFIED_ASSOCIATION_OVERRIDES_LIST, index, associationOverride);
+		this.fireItemAdded(SPECIFIED_ASSOCIATION_OVERRIDES_LIST, index, associationOverride);
 		return associationOverride;
 	}
 	
@@ -1070,7 +1070,7 @@ public abstract class AbstractJavaEntity
 	}
 	
 	protected void addSpecifiedAssociationOverride(int index, JavaAssociationOverride associationOverride) {
-		addItemToList(index, associationOverride, this.specifiedAssociationOverrides, Entity.SPECIFIED_ASSOCIATION_OVERRIDES_LIST);
+		addItemToList(index, associationOverride, this.specifiedAssociationOverrides, SPECIFIED_ASSOCIATION_OVERRIDES_LIST);
 	}
 	
 	protected void addSpecifiedAssociationOverride(JavaAssociationOverride associationOverride) {
@@ -1078,13 +1078,13 @@ public abstract class AbstractJavaEntity
 	}
 	
 	protected void removeSpecifiedAssociationOverride_(JavaAssociationOverride associationOverride) {
-		removeItemFromList(associationOverride, this.specifiedAssociationOverrides, Entity.SPECIFIED_ASSOCIATION_OVERRIDES_LIST);
+		removeItemFromList(associationOverride, this.specifiedAssociationOverrides, SPECIFIED_ASSOCIATION_OVERRIDES_LIST);
 	}
 	
 	public void moveSpecifiedAssociationOverride(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.specifiedAssociationOverrides, targetIndex, sourceIndex);
 		this.javaResourcePersistentType.moveSupportingAnnotation(targetIndex, sourceIndex, AssociationOverridesAnnotation.ANNOTATION_NAME);
-		fireItemMoved(Entity.SPECIFIED_ASSOCIATION_OVERRIDES_LIST, targetIndex, sourceIndex);		
+		fireItemMoved(SPECIFIED_ASSOCIATION_OVERRIDES_LIST, targetIndex, sourceIndex);		
 	}
 
 	protected JavaAssociationOverride setAssociationOverrideVirtual(boolean virtual, JavaAssociationOverride associationOverride) {
@@ -1107,7 +1107,7 @@ public abstract class AbstractJavaEntity
 			for (PersistentAttribute persistentAttribute : CollectionTools.iterable(allOverridableAssociations())) {
 				if (persistentAttribute.getName().equals(associationOverrideName)) {
 					//store the virtualAssociationOverride so we can fire change notification later
-					virtualAssociationOverride = buildAssociationOverride(new NullAssociationOverride(this.javaResourcePersistentType, associationOverrideName));
+					virtualAssociationOverride = buildAssociationOverride(new NullAssociationOverrideAnnotation(this.javaResourcePersistentType, associationOverrideName));
 					this.virtualAssociationOverrides.add(virtualAssociationOverride);
 					break;
 				}
@@ -1115,10 +1115,10 @@ public abstract class AbstractJavaEntity
 		}
 
 		this.javaResourcePersistentType.removeSupportingAnnotation(index, AssociationOverrideAnnotation.ANNOTATION_NAME, AssociationOverridesAnnotation.ANNOTATION_NAME);
-		fireItemRemoved(Entity.SPECIFIED_ASSOCIATION_OVERRIDES_LIST, index, associationOverride);
+		fireItemRemoved(SPECIFIED_ASSOCIATION_OVERRIDES_LIST, index, associationOverride);
 		
 		if (virtualAssociationOverride != null) {
-			fireItemAdded(Entity.VIRTUAL_ASSOCIATION_OVERRIDES_LIST, virtualAssociationOverridesSize() - 1, virtualAssociationOverride);
+			fireItemAdded(VIRTUAL_ASSOCIATION_OVERRIDES_LIST, virtualAssociationOverridesSize() - 1, virtualAssociationOverride);
 		}
 		return virtualAssociationOverride;
 	}
@@ -1136,18 +1136,18 @@ public abstract class AbstractJavaEntity
 
 		newAssociationOverride.setName(oldAssociationOverride.getName());
 		
-		this.fireItemRemoved(Entity.VIRTUAL_ASSOCIATION_OVERRIDES_LIST, virtualIndex, oldAssociationOverride);
-		this.fireItemAdded(Entity.SPECIFIED_ASSOCIATION_OVERRIDES_LIST, index, newAssociationOverride);		
+		this.fireItemRemoved(VIRTUAL_ASSOCIATION_OVERRIDES_LIST, virtualIndex, oldAssociationOverride);
+		this.fireItemAdded(SPECIFIED_ASSOCIATION_OVERRIDES_LIST, index, newAssociationOverride);		
 
 		return newAssociationOverride;
 	}
 	
 	protected void addVirtualAssociationOverride(JavaAssociationOverride associationOverride) {
-		addItemToList(associationOverride, this.virtualAssociationOverrides, Entity.VIRTUAL_ASSOCIATION_OVERRIDES_LIST);
+		addItemToList(associationOverride, this.virtualAssociationOverrides, VIRTUAL_ASSOCIATION_OVERRIDES_LIST);
 	}
 	
 	protected void removeVirtualAssociationOverride(JavaAssociationOverride associationOverride) {
-		removeItemFromList(associationOverride, this.virtualAssociationOverrides, Entity.VIRTUAL_ASSOCIATION_OVERRIDES_LIST);
+		removeItemFromList(associationOverride, this.virtualAssociationOverrides, VIRTUAL_ASSOCIATION_OVERRIDES_LIST);
 	}
 
 	public ListIterator<JavaNamedQuery> namedQueries() {
@@ -1604,7 +1604,7 @@ public abstract class AbstractJavaEntity
 	}
 	
 	protected String getResourceName() {
-		return this.getResourceMapping().getName();
+		return this.getResourceMappingAnnotation().getName();
 	}
 	
 	protected String getResourceDefaultName() {
@@ -1637,14 +1637,14 @@ public abstract class AbstractJavaEntity
 	}
 	
 	protected Entity calculateRootEntity() {
-		Entity rootEntity = this;
+		Entity root = this;
 		for (Iterator<PersistentType> stream = getPersistentType().inheritanceHierarchy(); stream.hasNext();) {
 			PersistentType persistentType = stream.next();
 			if (persistentType.getMapping() instanceof Entity) {
-				rootEntity = (Entity) persistentType.getMapping();
+				root = (Entity) persistentType.getMapping();
 			}
 		}
-		return rootEntity;
+		return root;
 	}
 	
 	public void addSubEntity(Entity subEntity) {
@@ -1830,10 +1830,10 @@ public abstract class AbstractJavaEntity
 			return;
 		}
 		if (getDefaultPrimaryKeyJoinColumn() == null) {
-			this.setDefaultPrimaryKeyJoinColumn(buildPrimaryKeyJoinColumn(new NullPrimaryKeyJoinColumn(this.javaResourcePersistentType)));
+			this.setDefaultPrimaryKeyJoinColumn(buildPrimaryKeyJoinColumn(new NullPrimaryKeyJoinColumnAnnotation(this.javaResourcePersistentType)));
 		}
 		else {
-			this.defaultPrimaryKeyJoinColumn.update(new NullPrimaryKeyJoinColumn(this.javaResourcePersistentType));
+			this.defaultPrimaryKeyJoinColumn.update(new NullPrimaryKeyJoinColumnAnnotation(this.javaResourcePersistentType));
 		}
 	}
 		
@@ -1863,12 +1863,12 @@ public abstract class AbstractJavaEntity
 	}
 	
 	protected JavaAttributeOverride buildVirtualAttributeOverride(PersistentAttribute attribute) {
-		return buildAttributeOverride(buildVirtualAttributeOverrideResource(attribute));
+		return buildAttributeOverride(buildVirtualAttributeOverrideAnnotation(attribute));
 	}
 	
-	protected VirtualAttributeOverride buildVirtualAttributeOverrideResource(PersistentAttribute attribute) {
+	protected VirtualAttributeOverrideAnnotation buildVirtualAttributeOverrideAnnotation(PersistentAttribute attribute) {
 		ColumnMapping columnMapping = (ColumnMapping) attribute.getMapping();
-		return new VirtualAttributeOverride(this.javaResourcePersistentType, attribute.getName(), columnMapping.getColumn());
+		return new VirtualAttributeOverrideAnnotation(this.javaResourcePersistentType, attribute.getName(), columnMapping.getColumn());
 	}
 
 	protected void updateVirtualAttributeOverrides( ) {
@@ -1878,7 +1878,7 @@ public abstract class AbstractJavaEntity
 				addVirtualAttributeOverride(buildVirtualAttributeOverride(persistentAttribute));
 			}
 			else if (attributeOverride.isVirtual()) {
-				attributeOverride.update(buildVirtualAttributeOverrideResource(persistentAttribute));
+				attributeOverride.update(buildVirtualAttributeOverrideAnnotation(persistentAttribute));
 			}
 		}
 		
@@ -1923,11 +1923,11 @@ public abstract class AbstractJavaEntity
 			String associationName = i.next();
 			JavaAssociationOverride associationOverride = getAssociationOverrideNamed(associationName);
 			if (associationOverride == null) {
-				associationOverride = buildAssociationOverride(new NullAssociationOverride(this.javaResourcePersistentType, associationName));
+				associationOverride = buildAssociationOverride(new NullAssociationOverrideAnnotation(this.javaResourcePersistentType, associationName));
 				addVirtualAssociationOverride(associationOverride);
 			}
 			else if (associationOverride.isVirtual()) {
-				associationOverride.update(new NullAssociationOverride(this.javaResourcePersistentType, associationName));
+				associationOverride.update(new NullAssociationOverrideAnnotation(this.javaResourcePersistentType, associationName));
 			}
 		}
 		

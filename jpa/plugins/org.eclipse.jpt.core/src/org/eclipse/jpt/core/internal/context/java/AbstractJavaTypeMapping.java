@@ -16,7 +16,7 @@ import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
-import org.eclipse.jpt.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Schema;
@@ -39,7 +39,7 @@ public abstract class AbstractJavaTypeMapping extends AbstractJavaJpaContextNode
 		return (JavaPersistentType) super.getParent();
 	}
 	
-	protected JavaResourceNode getResourceMapping() {
+	protected Annotation getResourceMappingAnnotation() {
 		return this.javaResourcePersistentType.getMappingAnnotation(getAnnotationName());
 	}
 
@@ -139,7 +139,7 @@ public abstract class AbstractJavaTypeMapping extends AbstractJavaJpaContextNode
 	}
 	
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		TextRange textRange = this.getResourceMapping().getTextRange(astRoot);
+		TextRange textRange = this.getResourceMappingAnnotation().getTextRange(astRoot);
 		return (textRange != null) ? textRange : this.getPersistentType().getValidationTextRange(astRoot);
 	}
 

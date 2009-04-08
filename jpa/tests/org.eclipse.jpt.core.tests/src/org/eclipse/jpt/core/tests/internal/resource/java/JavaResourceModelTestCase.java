@@ -18,7 +18,7 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.internal.platform.GenericJpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.core.internal.platform.GenericJpaAnnotationProvider;
-import org.eclipse.jpt.core.internal.resource.java.JavaResourceCompilationUnitImpl;
+import org.eclipse.jpt.core.internal.resource.java.source.SourceCompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.NullAnnotationEditFormatter;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.java.JavaResourceCompilationUnit;
@@ -147,7 +147,7 @@ public class JavaResourceModelTestCase extends AnnotationTestCase
 		if (this.javaResourceCompilationUnit != null) {
 			throw new IllegalStateException();
 		}
-		return new JavaResourceCompilationUnitImpl(
+		return new SourceCompilationUnit(
 			cu,
 			this.buildAnnotationProvider(),
 			NullAnnotationEditFormatter.instance(),

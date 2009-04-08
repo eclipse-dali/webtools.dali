@@ -99,7 +99,7 @@ public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMapp
 	public void setSpecifiedTargetEntity(String targetEntity) {
 		String old = this.specifiedTargetEntity;
 		this.specifiedTargetEntity = targetEntity;
-		this.resourceMapping.setTargetEntity(targetEntity);
+		this.mappingAnnotation.setTargetEntity(targetEntity);
 		this.firePropertyChanged(SPECIFIED_TARGET_ENTITY_PROPERTY, old, targetEntity);
 	}
 	
@@ -157,7 +157,7 @@ public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMapp
 	public void setSpecifiedFetch(FetchType fetch) {
 		FetchType old = this.specifiedFetch;
 		this.specifiedFetch = fetch;
-		this.resourceMapping.setFetch(FetchType.toJavaResourceModel(fetch));
+		this.mappingAnnotation.setFetch(FetchType.toJavaResourceModel(fetch));
 		this.firePropertyChanged(SPECIFIED_FETCH_PROPERTY, old, fetch);
 	}
 	
@@ -176,7 +176,7 @@ public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMapp
 		this.defaultTargetEntity = this.buildDefaultTargetEntity();
 		this.relationshipReference.initialize();
 		this.specifiedFetch = this.getResourceFetch();
-		this.cascade.initialize(this.resourceMapping);
+		this.cascade.initialize(this.mappingAnnotation);
 		this.specifiedTargetEntity = this.getResourceTargetEntity();
 		this.resolvedTargetEntity = this.buildResolvedTargetEntity();
 	}
@@ -187,26 +187,26 @@ public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMapp
 		this.setDefaultTargetEntity(this.buildDefaultTargetEntity());
 		this.relationshipReference.update();
 		this.setSpecifiedFetch_(this.getResourceFetch());
-		this.cascade.update(this.resourceMapping);
+		this.cascade.update(this.mappingAnnotation);
 		this.setSpecifiedTargetEntity_(this.getResourceTargetEntity());
 		this.setResolvedTargetEntity(this.buildResolvedTargetEntity());
 	}
 	
 	protected FetchType getResourceFetch() {
-		return FetchType.fromJavaResourceModel(this.resourceMapping.getFetch());
+		return FetchType.fromJavaResourceModel(this.mappingAnnotation.getFetch());
 	}
 	
 	protected String getResourceTargetEntity() {
-		return this.resourceMapping.getTargetEntity();
+		return this.mappingAnnotation.getTargetEntity();
 	}
 	
 	protected abstract String buildDefaultTargetEntity();
 	
 	protected Entity buildResolvedTargetEntity() {
-		String targetEntityName = (this.specifiedTargetEntity == null) ?
+		String targetEntityClassName = (this.specifiedTargetEntity == null) ?
 						this.defaultTargetEntity :
-						this.resourceMapping.getFullyQualifiedTargetEntity();
-		return (targetEntityName == null) ? null : this.getPersistenceUnit().getEntity(targetEntityName);
+						this.mappingAnnotation.getFullyQualifiedTargetEntityClassName();
+		return (targetEntityClassName == null) ? null : this.getPersistenceUnit().getEntity(targetEntityClassName);
 	}
 
 
@@ -261,6 +261,6 @@ public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMapp
 	}
 
 	protected TextRange getTargetEntityTextRange(CompilationUnit astRoot) {
-		return this.getTextRange(this.resourceMapping.getTargetEntityTextRange(astRoot), astRoot);
+		return this.getTextRange(this.mappingAnnotation.getTargetEntityTextRange(astRoot), astRoot);
 	}
 }

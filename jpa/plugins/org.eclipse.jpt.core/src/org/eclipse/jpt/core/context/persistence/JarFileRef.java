@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.context.persistence;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.XmlContextNode;
-import org.eclipse.jpt.core.context.jar.JarFile;
+import org.eclipse.jpt.core.context.java.JarFile;
 import org.eclipse.jpt.core.resource.persistence.XmlJarFileRef;
 
 /**

@@ -17,7 +17,7 @@ import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JpaResourceModel;
 import org.eclipse.jpt.core.JpaResourceModelProvider;
 import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.core.internal.resource.jar.JarResourcePackageFragmentRootImpl;
+import org.eclipse.jpt.core.internal.resource.java.binary.BinaryPackageFragmentRoot;
 
 /**
  * JAR files
@@ -55,7 +55,7 @@ public class JarResourceModelProvider
 	 */
 	public JpaResourceModel buildResourceModel(JpaProject jpaProject, IFile file) {
 		IPackageFragmentRoot pfr = JavaCore.createJarPackageFragmentRootFrom(file);
-		return (pfr ==null) ? null : new JarResourcePackageFragmentRootImpl(pfr, jpaProject.getJpaPlatform().getAnnotationProvider());
+		return (pfr ==null) ? null : new BinaryPackageFragmentRoot(pfr, jpaProject.getJpaPlatform().getAnnotationProvider());
 	}
 
 }

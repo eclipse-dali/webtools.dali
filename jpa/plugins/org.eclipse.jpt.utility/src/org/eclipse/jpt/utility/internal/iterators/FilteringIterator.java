@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -36,11 +36,22 @@ import org.eclipse.jpt.utility.internal.StringTools;
 public class FilteringIterator<E1, E2>
 	implements Iterator<E2>
 {
-	private final Iterator<? extends E1> nestedIterator;
+	private final Iterator<? extends E1> iterator;
 	private final Filter<E1> filter;
 	private E2 next;
 	private boolean done;
 
+
+	/**
+	 * Construct an iterator with the specified
+	 * iterable and a disabled filter.
+	 * Use this constructor if you want to override the
+	 * <code>accept(Object)</code> method instead of building
+	 * a <code>Filter</code>.
+	 */
+	public FilteringIterator(Iterable<? extends E1> iterable) {
+		this(iterable.iterator());
+	}
 
 	/**
 	 * Construct an iterator with the specified nested
@@ -49,17 +60,25 @@ public class FilteringIterator<E1, E2>
 	 * <code>accept(Object)</code> method instead of building
 	 * a <code>Filter</code>.
 	 */
-	public FilteringIterator(Iterator<? extends E1> nestedIterator) {
-		this(nestedIterator, Filter.Disabled.<E1>instance());
+	public FilteringIterator(Iterator<? extends E1> iterator) {
+		this(iterator, Filter.Disabled.<E1>instance());
+	}
+
+	/**
+	 * Construct an iterator with the specified
+	 * iterable and filter.
+	 */
+	public FilteringIterator(Iterable<? extends E1> iterable, Filter<E1> filter) {
+		this(iterable.iterator(), filter);
 	}
 
 	/**
 	 * Construct an iterator with the specified nested
 	 * iterator and filter.
 	 */
-	public FilteringIterator(Iterator<? extends E1> nestedIterator, Filter<E1> filter) {
+	public FilteringIterator(Iterator<? extends E1> iterator, Filter<E1> filter) {
 		super();
-		this.nestedIterator = nestedIterator;
+		this.iterator = iterator;
 		this.filter = filter;
 		this.loadNext();
 	}
@@ -92,8 +111,8 @@ public class FilteringIterator<E1, E2>
 	 */
 	private void loadNext() {
 		this.done = true;
-		while (this.nestedIterator.hasNext() && (this.done)) {
-			E1 temp = this.nestedIterator.next();
+		while (this.iterator.hasNext() && (this.done)) {
+			E1 temp = this.iterator.next();
 			if (this.accept(temp)) {
 				// assume that if the object was accepted it is of type E
 				this.next = this.cast(temp);
@@ -128,7 +147,7 @@ public class FilteringIterator<E1, E2>
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.nestedIterator);
+		return StringTools.buildToStringFor(this, this.iterator);
 	}
 
 }

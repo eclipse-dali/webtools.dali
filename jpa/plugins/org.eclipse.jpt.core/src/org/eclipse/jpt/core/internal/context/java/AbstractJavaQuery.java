@@ -18,7 +18,7 @@ import org.eclipse.jpt.core.context.QueryHint;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.context.java.JavaQuery;
 import org.eclipse.jpt.core.context.java.JavaQueryHint;
-import org.eclipse.jpt.core.resource.java.QueryAnnotation;
+import org.eclipse.jpt.core.resource.java.BaseNamedQueryAnnotation;
 import org.eclipse.jpt.core.resource.java.QueryHintAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -35,14 +35,14 @@ public abstract class AbstractJavaQuery extends AbstractJavaJpaContextNode
 
 	protected final List<JavaQueryHint> hints;
 
-	protected QueryAnnotation resourceQuery;
+	protected BaseNamedQueryAnnotation resourceQuery;
 	
 	protected AbstractJavaQuery(JavaJpaContextNode parent) {
 		super(parent);
 		this.hints = new ArrayList<JavaQueryHint>();
 	}
 
-	protected QueryAnnotation getResourceQuery() {
+	protected BaseNamedQueryAnnotation getResourceQuery() {
 		return this.resourceQuery;
 	}
 	
@@ -124,14 +124,14 @@ public abstract class AbstractJavaQuery extends AbstractJavaJpaContextNode
 		fireItemMoved(Query.HINTS_LIST, targetIndex, sourceIndex);		
 	}
 	
-	protected void initialize(QueryAnnotation queryAnnotation) {
+	protected void initialize(BaseNamedQueryAnnotation queryAnnotation) {
 		this.resourceQuery = queryAnnotation;
 		this.name = queryAnnotation.getName();
 		this.query = queryAnnotation.getQuery();
 		this.initializeQueryHints();
 	}
 
-	protected void update(QueryAnnotation queryAnnotation) {
+	protected void update(BaseNamedQueryAnnotation queryAnnotation) {
 		this.resourceQuery = queryAnnotation;
 		this.setName_(queryAnnotation.getName());
 		this.setQuery_(queryAnnotation.getQuery());

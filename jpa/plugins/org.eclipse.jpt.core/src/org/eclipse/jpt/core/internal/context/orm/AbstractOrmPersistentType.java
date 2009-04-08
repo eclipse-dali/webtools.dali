@@ -254,7 +254,7 @@ public abstract class AbstractOrmPersistentType
 		this.specifiedPersistentAttributes.add(targetIndex, ormPersistentAttribute);
 		newMapping.addToResourceModel(getResourceAttributes());
 		oldMapping.initializeOn(newMapping);
-		fireItemMoved(SPECIFIED_ATTRIBUTES_LIST, targetIndex, sourceIndex);
+		fireItemMoved(ATTRIBUTES_LIST, targetIndex, sourceIndex);
 	}
 
 	public void makePersistentAttributeVirtual(OrmPersistentAttribute ormPersistentAttribute) {
@@ -304,7 +304,7 @@ public abstract class AbstractOrmPersistentType
 			newPersistentAttribute.setSpecifiedAccess(ormPersistentAttribute.getJavaPersistentAttribute().getSpecifiedAccess());
 		}
 		
-		fireItemAdded(PersistentType.SPECIFIED_ATTRIBUTES_LIST, insertionIndex, newPersistentAttribute);
+		fireItemAdded(ATTRIBUTES_LIST, insertionIndex, newPersistentAttribute);
 		fireItemRemoved(VIRTUAL_ATTRIBUTES_LIST, removalIndex, ormPersistentAttribute);
 	}
 
@@ -431,7 +431,7 @@ public abstract class AbstractOrmPersistentType
 		persistentAttribute.getMapping().addToResourceModel(resourceAttributes);
 		
 		persistentAttribute.getSpecifiedMapping().setName(attributeName);
-		fireItemAdded(PersistentType.SPECIFIED_ATTRIBUTES_LIST, index, persistentAttribute);
+		fireItemAdded(ATTRIBUTES_LIST, index, persistentAttribute);
 		return persistentAttribute;
 	}
 
@@ -456,11 +456,11 @@ public abstract class AbstractOrmPersistentType
 	}
 
 	protected void removeSpecifiedPersistentAttribute_(OrmPersistentAttribute ormPersistentAttribute) {
-		removeItemFromList(ormPersistentAttribute, this.specifiedPersistentAttributes, PersistentType.SPECIFIED_ATTRIBUTES_LIST);
+		removeItemFromList(ormPersistentAttribute, this.specifiedPersistentAttributes, ATTRIBUTES_LIST);
 	}
 	
 	protected void moveSpecifiedPersistentAttribute_(int index, OrmPersistentAttribute attribute) {
-		moveItemInList(index, this.specifiedPersistentAttributes.indexOf(attribute), this.specifiedPersistentAttributes, PersistentType.SPECIFIED_ATTRIBUTES_LIST);
+		moveItemInList(index, this.specifiedPersistentAttributes.indexOf(attribute), this.specifiedPersistentAttributes, ATTRIBUTES_LIST);
 	}
 
 	public void removeSpecifiedPersistentAttribute(OrmPersistentAttribute ormPersistentAttribute) {
@@ -470,7 +470,7 @@ public abstract class AbstractOrmPersistentType
 		if (getResourceAttributes().isUnset()) {
 			this.typeMapping.getResourceTypeMapping().setAttributes(null);
 		}
-		fireItemRemoved(PersistentType.SPECIFIED_ATTRIBUTES_LIST, index, ormPersistentAttribute);		
+		fireItemRemoved(ATTRIBUTES_LIST, index, ormPersistentAttribute);		
 	}
 
 	public String getName() {
@@ -759,7 +759,7 @@ public abstract class AbstractOrmPersistentType
 				}
 				if (!contextAttributeFound) {
 					OrmPersistentAttribute ormPersistentAttribute = addSpecifiedPersistentAttribute(resourceMapping);
-					fireItemAdded(SPECIFIED_ATTRIBUTES_LIST, specifiedAttributesSize(), ormPersistentAttribute);
+					fireItemAdded(ATTRIBUTES_LIST, specifiedAttributesSize(), ormPersistentAttribute);
 				}
 				resourceIndex++;
 			}

@@ -14,14 +14,14 @@ import java.util.List;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.PersistentType;
-import org.eclipse.jpt.core.context.jar.JarFile;
+import org.eclipse.jpt.core.context.java.JarFile;
 import org.eclipse.jpt.core.context.persistence.JarFileRef;
 import org.eclipse.jpt.core.context.persistence.PersistenceStructureNodes;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.core.resource.jar.JarResourcePackageFragmentRoot;
+import org.eclipse.jpt.core.resource.java.JavaResourcePackageFragmentRoot;
 import org.eclipse.jpt.core.resource.persistence.XmlJarFileRef;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.StringTools;
@@ -49,7 +49,7 @@ public class GenericJarFileRef
 	}
 
 	protected JarFile buildJarFile() {
-		JarResourcePackageFragmentRoot jrpfr = this.getJpaProject().getJarResourcePackageFragmentRoot(this.getJarFileName());
+		JavaResourcePackageFragmentRoot jrpfr = this.getJpaProject().getJavaResourcePackageFragmentRoot(this.getJarFileName());
 		return (jrpfr == null) ? null : this.buildJarFile(jrpfr);
 	}
 	
@@ -120,7 +120,7 @@ public class GenericJarFileRef
 	}
 
 	protected void updateJarFile() {
-		JarResourcePackageFragmentRoot jrpfr = this.getJpaProject().getJarResourcePackageFragmentRoot(this.getJarFileName());
+		JavaResourcePackageFragmentRoot jrpfr = this.getJpaProject().getJavaResourcePackageFragmentRoot(this.getJarFileName());
 		if (jrpfr == null) {
 			if (this.jarFile != null) {
 				this.jarFile.dispose();
@@ -135,7 +135,7 @@ public class GenericJarFileRef
 		}
 	}
 
-	protected JarFile buildJarFile(JarResourcePackageFragmentRoot jrpfr) {
+	protected JarFile buildJarFile(JavaResourcePackageFragmentRoot jrpfr) {
 		return this.getJpaFactory().buildJarFile(this, jrpfr);
 	}
 

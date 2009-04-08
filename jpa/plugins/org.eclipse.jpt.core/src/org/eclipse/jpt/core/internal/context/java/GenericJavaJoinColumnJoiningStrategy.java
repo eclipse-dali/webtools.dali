@@ -1,19 +1,19 @@
 /*******************************************************************************
- *  Copyright (c) 2009  Oracle. 
- *  All rights reserved.  This program and the accompanying materials are 
- *  made available under the terms of the Eclipse Public License v1.0 which 
- *  accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2009 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.Entity;
@@ -24,7 +24,7 @@ import org.eclipse.jpt.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaJoinColumnEnabledRelationshipReference;
 import org.eclipse.jpt.core.context.java.JavaJoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.context.java.JavaRelationshipMapping;
-import org.eclipse.jpt.core.internal.resource.java.NullJoinColumn;
+import org.eclipse.jpt.core.internal.resource.java.NullJoinColumnAnnotation;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
@@ -175,7 +175,7 @@ public class GenericJavaJoinColumnJoiningStrategy
 			//after removing the join column from the resource model. That causes problems 
 			//in the UI because the change notifications end up in the wrong order.
 			this.defaultJoinColumn = buildJoinColumn(
-				new NullJoinColumn(this.resourcePersistentAttribute));
+				new NullJoinColumnAnnotation(this.resourcePersistentAttribute));
 		}
 		removeAnnotation(index);
 		fireItemRemoved(SPECIFIED_JOIN_COLUMNS_LIST, index, removedJoinColumn);
@@ -243,7 +243,7 @@ public class GenericJavaJoinColumnJoiningStrategy
 	public void initializeDefaultJoinColumn() {
 		if (mayHaveDefaultJoinColumn()) {
 			this.defaultJoinColumn = 
-				buildJoinColumn(new NullJoinColumn(this.resourcePersistentAttribute));
+				buildJoinColumn(new NullJoinColumnAnnotation(this.resourcePersistentAttribute));
 		}
 	}
 	
@@ -277,7 +277,7 @@ public class GenericJavaJoinColumnJoiningStrategy
 	protected void updateDefaultJoinColumn() {
 		if (mayHaveDefaultJoinColumn()) {
 			JoinColumnAnnotation nullAnnotation = 
-				new NullJoinColumn(this.resourcePersistentAttribute);
+				new NullJoinColumnAnnotation(this.resourcePersistentAttribute);
 			if (this.defaultJoinColumn == null) {
 				setDefaultJoinColumn(this.buildJoinColumn(nullAnnotation));
 			}

@@ -180,7 +180,7 @@ public class NewEventTests extends TestCase {
 					}
 				}
 			}
-			this.sourceChanged(null);
+			this.aspectChanged(null);
 		}
 	}
 

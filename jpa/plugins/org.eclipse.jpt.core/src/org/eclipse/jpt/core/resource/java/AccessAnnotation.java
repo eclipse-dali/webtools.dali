@@ -13,7 +13,8 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**
- * Corresponds to the JPA 2.0 javax.persistence.Access annotation
+ * Corresponds to the JPA 2.0 annotation
+ * javax.persistence.Access
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -24,26 +25,27 @@ import org.eclipse.jpt.core.utility.TextRange;
  * @version 2.2
  * @since 2.2
  */
-public interface AccessAnnotation extends JavaResourceNode
+public interface AccessAnnotation
+	extends Annotation
 {
 	
 	String ANNOTATION_NAME = JPA.ACCESS;
 	
 	/**
-	 * Corresponds to the value element of the Access annotation.
-	 * Returns null if the value element does not exist in java.
+	 * Corresponds to the 'value' element of the Access annotation.
+	 * Returns null if the element does not exist in Java.
 	 */
 	AccessType getValue();
-	
-	/**
-	 * Corresponds to the value element of the Access annotation.
-	 * Set to null to remove the value element.
-	 */
-	void setValue(AccessType access);
 		String VALUE_PROPERTY = "value"; //$NON-NLS-1$
 	
 	/**
-	 * Return the {@link TextRange} for the value element.  If the value element 
+	 * Corresponds to the 'value' element of the Access annotation.
+	 * Set to null to remove the element.
+	 */
+	void setValue(AccessType access);
+	
+	/**
+	 * Return the {@link TextRange} for the 'value' element.  If the element 
 	 * does not exist return the {@link TextRange} for the Access annotation.
 	 */
 	TextRange getValueTextRange(CompilationUnit astRoot);

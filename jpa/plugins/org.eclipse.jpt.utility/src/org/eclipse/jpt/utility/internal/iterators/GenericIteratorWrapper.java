@@ -22,6 +22,11 @@ public class GenericIteratorWrapper<E>
 {
 	private final Iterator<? extends E> iterator;
 
+
+	public GenericIteratorWrapper(Iterable<? extends E> iterable) {
+		this(iterable.iterator());
+	}
+
 	public GenericIteratorWrapper(Iterator<? extends E> iterator) {
 		super();
 		this.iterator = iterator;

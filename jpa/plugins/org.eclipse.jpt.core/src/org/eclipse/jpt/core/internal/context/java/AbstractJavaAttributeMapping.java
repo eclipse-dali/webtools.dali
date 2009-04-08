@@ -17,7 +17,7 @@ import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Table;
@@ -25,13 +25,13 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 
-public abstract class AbstractJavaAttributeMapping<T extends JavaResourceNode>
+public abstract class AbstractJavaAttributeMapping<T extends Annotation>
 	extends AbstractJavaJpaContextNode
 	implements JavaAttributeMapping
 {
 	protected final JavaResourcePersistentAttribute resourcePersistentAttribute;
 	
-	protected T resourceMapping;
+	protected T mappingAnnotation;
 	
 	protected AbstractJavaAttributeMapping(JavaPersistentAttribute parent) {
 		super(parent);
@@ -52,7 +52,7 @@ public abstract class AbstractJavaAttributeMapping<T extends JavaResourceNode>
 	}
 	
 	public T getMappingAnnotation() {
-		return this.resourceMapping;
+		return this.mappingAnnotation;
 	}
 		
 	/**
@@ -100,8 +100,9 @@ public abstract class AbstractJavaAttributeMapping<T extends JavaResourceNode>
 		return false;
 	}
 
-	public void initialize(JavaResourceNode resourceMapping) {
-		this.resourceMapping = (T) resourceMapping;
+	@SuppressWarnings("unchecked")
+	public void initialize(Annotation annotation) {
+		this.mappingAnnotation = (T) annotation;
 		this.initialize();
 	}
 
@@ -109,8 +110,9 @@ public abstract class AbstractJavaAttributeMapping<T extends JavaResourceNode>
 		// do nothing by default
 	}
 
-	public void update(JavaResourceNode resourceMapping) {
-		this.resourceMapping = (T) resourceMapping;
+	@SuppressWarnings("unchecked")
+	public void update(Annotation annotation) {
+		this.mappingAnnotation = (T) annotation;
 		this.update();
 	}
 	
@@ -147,7 +149,7 @@ public abstract class AbstractJavaAttributeMapping<T extends JavaResourceNode>
 	}
 	
 	protected TextRange getResourceMappingTextRange(CompilationUnit astRoot) {
-		return (this.resourceMapping == null) ? null : this.resourceMapping.getTextRange(astRoot);
+		return (this.mappingAnnotation == null) ? null : this.mappingAnnotation.getTextRange(astRoot);
 	}
 	
 	@Override

@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Iterator;
 import java.util.List;
+
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.Modifier;
@@ -26,7 +27,6 @@ import org.eclipse.jpt.core.context.java.JavaStructureNodes;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.Annotation;
-import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.Filter;
@@ -390,8 +390,8 @@ public abstract class AbstractJavaPersistentAttribute
 
 	protected JavaAttributeMapping buildDefaultMapping() {
 		JavaAttributeMapping mapping = this.getJpaPlatform().buildDefaultJavaAttributeMapping(this);
-		JavaResourceNode resourceMapping = this.resourcePersistentAttribute.getNullMappingAnnotation(mapping.getAnnotationName());
-		mapping.initialize(resourceMapping);
+		Annotation annotation = this.resourcePersistentAttribute.getNullMappingAnnotation(mapping.getAnnotationName());
+		mapping.initialize(annotation);
 		return mapping;
 	}
 
@@ -502,7 +502,7 @@ public abstract class AbstractJavaPersistentAttribute
 	}
 
 	protected String getJavaMappingAnnotationName() {
-		Annotation mappingAnnotation = (Annotation) this.resourcePersistentAttribute.getMappingAnnotation();
+		Annotation mappingAnnotation = this.resourcePersistentAttribute.getMappingAnnotation();
 		return (mappingAnnotation == null) ? null : mappingAnnotation.getAnnotationName();
 	}
 

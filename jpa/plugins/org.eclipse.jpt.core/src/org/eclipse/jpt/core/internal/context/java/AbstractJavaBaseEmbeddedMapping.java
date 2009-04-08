@@ -26,10 +26,11 @@ import org.eclipse.jpt.core.context.java.JavaAttributeOverride;
 import org.eclipse.jpt.core.context.java.JavaBaseEmbeddedMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.MappingTools;
+import org.eclipse.jpt.core.internal.resource.java.NullColumnAnnotation;
+import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.AttributeOverrideAnnotation;
 import org.eclipse.jpt.core.resource.java.AttributeOverridesAnnotation;
 import org.eclipse.jpt.core.resource.java.JPA;
-import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -43,7 +44,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 
-public abstract class AbstractJavaBaseEmbeddedMapping<T extends JavaResourceNode>
+public abstract class AbstractJavaBaseEmbeddedMapping<T extends Annotation>
 	extends AbstractJavaAttributeMapping<T>
 	implements JavaBaseEmbeddedMapping
 {
@@ -288,12 +289,12 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends JavaResourceNode
 	}
 	
 	protected JavaAttributeOverride buildVirtualAttributeOverride(String attributeName) {
-		return buildAttributeOverride(buildVirtualAttributeOverrideResource(attributeName));
+		return buildAttributeOverride(buildVirtualAttributeOverrideAnnotation(attributeName));
 	}
 
-	protected VirtualAttributeOverride buildVirtualAttributeOverrideResource(String attributeName) {
+	protected VirtualAttributeOverrideAnnotation buildVirtualAttributeOverrideAnnotation(String attributeName) {
 		ColumnMapping columnMapping = (ColumnMapping) this.getEmbeddable().getPersistentType().getAttributeNamed(attributeName).getMapping();
-		return new VirtualAttributeOverride(this.resourcePersistentAttribute, attributeName, columnMapping.getColumn());
+		return new VirtualAttributeOverrideAnnotation(this.resourcePersistentAttribute, attributeName, columnMapping.getColumn());
 	}
 
 	protected void updateVirtualAttributeOverrides() {
@@ -304,7 +305,7 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends JavaResourceNode
 				addVirtualAttributeOverride(buildVirtualAttributeOverride(attributeName));
 			}
 			else if (attributeOverride.isVirtual()) {
-				attributeOverride.update(buildVirtualAttributeOverrideResource(attributeName));
+				attributeOverride.update(buildVirtualAttributeOverrideAnnotation(attributeName));
 			}
 		}
 		

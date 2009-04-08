@@ -30,7 +30,7 @@ public class GenericJavaPersistentType
 		return null;
 	}
 	
-	public void setSpecifiedAccess(@SuppressWarnings("unused") AccessType newSpecifiedAccess) {
-		throw new UnsupportedOperationException("specifiedAccess is not supported for GenericJavaPersistentType"); //$NON-NLS-1$
+	public void setSpecifiedAccess(AccessType specifiedAccess) {
+		throw new UnsupportedOperationException();
 	}
 }

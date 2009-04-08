@@ -207,15 +207,15 @@ public abstract class AbstractJavaPersistentType
 	}
 	
 	private void addAttribute(int index, JavaPersistentAttribute attribute) {
-		addItemToList(index, attribute, this.attributes, PersistentType.SPECIFIED_ATTRIBUTES_LIST);
+		addItemToList(index, attribute, this.attributes, ATTRIBUTES_LIST);
 	}
 
 	private void removeAttribute(JavaPersistentAttribute attribute) {
-		removeItemFromList(attribute, this.attributes, PersistentType.SPECIFIED_ATTRIBUTES_LIST);
+		removeItemFromList(attribute, this.attributes, ATTRIBUTES_LIST);
 	}
 	
 	private void moveAttribute(int index, JavaPersistentAttribute attribute) {
-		moveItemInList(index, this.attributes.indexOf(attribute), this.attributes, PersistentType.SPECIFIED_ATTRIBUTES_LIST);
+		moveItemInList(index, this.attributes.indexOf(attribute), this.attributes, ATTRIBUTES_LIST);
 	}
 	
 	public Iterator<String> attributeNames() {
@@ -361,7 +361,7 @@ public abstract class AbstractJavaPersistentType
 	}
 	
 	protected void initializeMapping() {
-		this.mapping = this.getJpaPlatform().buildJavaTypeMappingFromAnnotation(this.javaMappingAnnotationName(), this);
+		this.mapping = this.getJpaPlatform().buildJavaTypeMappingFromAnnotation(this.getJavaMappingAnnotationName(), this);
 		this.mapping.initialize(this.resourcePersistentType);
 	}
 	
@@ -432,7 +432,7 @@ public abstract class AbstractJavaPersistentType
 	}
 	
 	protected void updateMapping() {
-		String javaMappingAnnotationName = this.javaMappingAnnotationName();
+		String javaMappingAnnotationName = this.getJavaMappingAnnotationName();
 		if (this.getMapping().getAnnotationName() == javaMappingAnnotationName) {
 			this.getMapping().update(this.resourcePersistentType);
 		} else {
@@ -450,8 +450,8 @@ public abstract class AbstractJavaPersistentType
 		return typeMapping;
 	}
 
-	protected String javaMappingAnnotationName() {
-		Annotation mappingAnnotation = (Annotation) this.resourcePersistentType.getMappingAnnotation();
+	protected String getJavaMappingAnnotationName() {
+		Annotation mappingAnnotation = this.resourcePersistentType.getMappingAnnotation();
 		return (mappingAnnotation == null) ? null :  mappingAnnotation.getAnnotationName();
 	}
 

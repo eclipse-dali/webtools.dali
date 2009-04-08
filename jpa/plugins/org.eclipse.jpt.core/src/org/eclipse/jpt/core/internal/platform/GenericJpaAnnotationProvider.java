@@ -14,8 +14,6 @@ import java.util.ListIterator;
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.core.JpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.core.JpaAnnotationProvider;
-import org.eclipse.jpt.core.resource.jar.JarResourcePersistentAttribute;
-import org.eclipse.jpt.core.resource.jar.JarResourcePersistentType;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
@@ -28,6 +26,9 @@ import org.eclipse.jpt.utility.internal.iterators.TransformationListIterator;
 
 /**
  * Delegate to annotation definition providers.
+ * The platform factory will build an instance of this annotation provider,
+ * passing in the appropriate array of annotation definition providers necessary
+ * to build the annotations for the platform (vendor and/or version).
  */
 public class GenericJpaAnnotationProvider
 	implements JpaAnnotationProvider
@@ -42,7 +43,7 @@ public class GenericJpaAnnotationProvider
 
 	// ********** annotation definition providers **********
 
-	protected synchronized ListIterator<JpaAnnotationDefinitionProvider> annotationDefinitionProviders() {
+	protected ListIterator<JpaAnnotationDefinitionProvider> annotationDefinitionProviders() {
 		return new ArrayListIterator<JpaAnnotationDefinitionProvider>(this.annotationDefinitionProviders);
 	}
 
@@ -69,20 +70,10 @@ public class GenericJpaAnnotationProvider
 		return this.getTypeMappingAnnotationDefinition(annotationName).buildAnnotation(parent, type);
 	}
 	
-	public Annotation buildTypeMappingAnnotation(JarResourcePersistentType parent, IAnnotation jdtAnnotation) {
-		return null;
-// TODO		return this.getTypeMappingAnnotationDefinition(jdtAnnotation.getElementName()).buildAnnotation(parent, jdtAnnotation);
+	public Annotation buildTypeMappingAnnotation(JavaResourcePersistentType parent, IAnnotation jdtAnnotation) {
+		return this.getTypeMappingAnnotationDefinition(jdtAnnotation.getElementName()).buildAnnotation(parent, jdtAnnotation);
 	}
 	
-	public Annotation buildNullTypeMappingAnnotation(JavaResourcePersistentType parent, Type type, String annotationName) {
-		return this.getTypeMappingAnnotationDefinition(annotationName).buildNullAnnotation(parent, type);
-	}
-
-	public Annotation buildNullTypeMappingAnnotation(JarResourcePersistentType parent, String annotationName) {
-		return null;
-// TODO		return this.getTypeMappingAnnotationDefinition(annotationName).buildNullAnnotation(parent);
-	}
-
 	protected AnnotationDefinition getTypeMappingAnnotationDefinition(String annotationName) {
 		AnnotationDefinition annotationDefinition = getAnnotationDefinition(annotationName, this.typeMappingAnnotationDefinitions());
 		if (annotationDefinition == null) {
@@ -111,18 +102,12 @@ public class GenericJpaAnnotationProvider
 		return this.getTypeSupportingAnnotationDefinition(annotationName).buildAnnotation(parent, type);
 	}
 
-	public Annotation buildTypeSupportingAnnotation(JarResourcePersistentType parent, IAnnotation jdtAnnotation) {
-		return null;
-// TODO		return this.getTypeSupportingAnnotationDefinition(jdtAnnotation.getElementName()).buildAnnotation(parent, jdtAnnotation);
+	public Annotation buildTypeSupportingAnnotation(JavaResourcePersistentType parent, IAnnotation jdtAnnotation) {
+		return this.getTypeSupportingAnnotationDefinition(jdtAnnotation.getElementName()).buildAnnotation(parent, jdtAnnotation);
 	}
 
-	public Annotation buildNullTypeSupportingAnnotation(JavaResourcePersistentType parent, Type type, String annotationName) {
-		return this.getTypeSupportingAnnotationDefinition(annotationName).buildNullAnnotation(parent, type);
-	}
-	
-	public Annotation buildNullTypeSupportingAnnotation(JarResourcePersistentType parent, String annotationName) {
-		return null;
-// TODO		return this.getTypeSupportingAnnotationDefinition(annotationName).buildNullAnnotation(parent);
+	public Annotation buildNullTypeSupportingAnnotation(JavaResourcePersistentType parent, String annotationName) {
+		return this.getTypeSupportingAnnotationDefinition(annotationName).buildNullAnnotation(parent);
 	}
 	
 	protected AnnotationDefinition getTypeSupportingAnnotationDefinition(String annotationName) {
@@ -156,18 +141,12 @@ public class GenericJpaAnnotationProvider
 		return this.getAttributeMappingAnnotationDefinition(annotationName).buildAnnotation(parent, attribute);
 	}
 	
-	public Annotation buildAttributeMappingAnnotation(JarResourcePersistentAttribute parent, IAnnotation jdtAnnotation) {
-		return null;
-// TODO		return this.getAttributeMappingAnnotationDefinition(jdtAnnotation.getElementName()).buildAnnotation(parent, jdtAnnotation);
+	public Annotation buildAttributeMappingAnnotation(JavaResourcePersistentAttribute parent, IAnnotation jdtAnnotation) {
+		return this.getAttributeMappingAnnotationDefinition(jdtAnnotation.getElementName()).buildAnnotation(parent, jdtAnnotation);
 	}
 	
-	public Annotation buildNullAttributeMappingAnnotation(JavaResourcePersistentAttribute parent, Attribute attribute, String annotationName) {
-		return this.getAttributeMappingAnnotationDefinition(annotationName).buildNullAnnotation(parent, attribute);
-	}
-	
-	public Annotation buildNullAttributeMappingAnnotation(JarResourcePersistentAttribute parent, String annotationName) {
-		return null;
-// TODO		return this.getAttributeMappingAnnotationDefinition(annotationName).buildNullAnnotation(parent);
+	public Annotation buildNullAttributeMappingAnnotation(JavaResourcePersistentAttribute parent, String annotationName) {
+		return this.getAttributeMappingAnnotationDefinition(annotationName).buildNullAnnotation(parent);
 	}
 	
 	protected AnnotationDefinition getAttributeMappingAnnotationDefinition(String annotationName) {
@@ -198,18 +177,12 @@ public class GenericJpaAnnotationProvider
 		return this.getAttributeSupportingAnnotationDefinition(annotationName).buildAnnotation(parent, attribute);
 	}
 	
-	public Annotation buildAttributeSupportingAnnotation(JarResourcePersistentAttribute parent, IAnnotation jdtAnnotation) {
-		return null;
-// TODO		return this.getAttributeSupportingAnnotationDefinition(jdtAnnotation.getElementName()).buildAnnotation(parent, jdtAnnotation);
+	public Annotation buildAttributeSupportingAnnotation(JavaResourcePersistentAttribute parent, IAnnotation jdtAnnotation) {
+		return this.getAttributeSupportingAnnotationDefinition(jdtAnnotation.getElementName()).buildAnnotation(parent, jdtAnnotation);
 	}
 	
-	public Annotation buildNullAttributeSupportingAnnotation(JavaResourcePersistentAttribute parent, Attribute attribute, String annotationName) {
-		return this.getAttributeSupportingAnnotationDefinition(annotationName).buildNullAnnotation(parent, attribute);
-	}
-	
-	public Annotation buildNullAttributeSupportingAnnotation(JarResourcePersistentAttribute parent, String annotationName) {
-		return null;
-// TODO		return this.getAttributeSupportingAnnotationDefinition(annotationName).buildNullAnnotation(parent);
+	public Annotation buildNullAttributeSupportingAnnotation(JavaResourcePersistentAttribute parent, String annotationName) {
+		return this.getAttributeSupportingAnnotationDefinition(annotationName).buildNullAnnotation(parent);
 	}
 	
 	protected AnnotationDefinition getAttributeSupportingAnnotationDefinition(String annotationName) {

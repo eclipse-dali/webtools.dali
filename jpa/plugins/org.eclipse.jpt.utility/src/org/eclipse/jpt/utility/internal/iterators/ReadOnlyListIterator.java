@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -23,7 +23,7 @@ import org.eclipse.jpt.utility.internal.StringTools;
 public class ReadOnlyListIterator<E>
 	implements ListIterator<E>
 {
-	private final ListIterator<? extends E> nestedListIterator;
+	private final ListIterator<? extends E> listIterator;
 
 
 	/**
@@ -38,39 +38,39 @@ public class ReadOnlyListIterator<E>
 	 * Construct an iterator on the specified list iterator that
 	 * disallows removes, sets, and adds.
 	 */
-	public ReadOnlyListIterator(ListIterator<? extends E> nestedListIterator) {
+	public ReadOnlyListIterator(ListIterator<? extends E> listIterator) {
 		super();
-		this.nestedListIterator = nestedListIterator;
+		this.listIterator = listIterator;
 	}
 
 	public boolean hasNext() {
 		// delegate to the nested iterator
-		return this.nestedListIterator.hasNext();
+		return this.listIterator.hasNext();
 	}
 
 	public E next() {
 		// delegate to the nested iterator
-		return this.nestedListIterator.next();
+		return this.listIterator.next();
 	}
 
 	public boolean hasPrevious() {
 		// delegate to the nested iterator
-		return this.nestedListIterator.hasPrevious();
+		return this.listIterator.hasPrevious();
 	}
 
 	public E previous() {
 		// delegate to the nested iterator
-		return this.nestedListIterator.previous();
+		return this.listIterator.previous();
 	}
 
 	public int nextIndex() {
 		// delegate to the nested iterator
-		return this.nestedListIterator.nextIndex();
+		return this.listIterator.nextIndex();
 	}
 
 	public int previousIndex() {
 		// delegate to the nested iterator
-		return this.nestedListIterator.previousIndex();
+		return this.listIterator.previousIndex();
 	}
 
 	public void remove() {
@@ -87,7 +87,7 @@ public class ReadOnlyListIterator<E>
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.nestedListIterator);
+		return StringTools.buildToStringFor(this, this.listIterator);
 	}
 	
 }

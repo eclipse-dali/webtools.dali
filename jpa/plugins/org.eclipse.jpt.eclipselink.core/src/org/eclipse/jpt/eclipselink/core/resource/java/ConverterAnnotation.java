@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,8 +13,8 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**
- * Java resource model interface that corresponds to the Eclipselink
- * annotation org.eclipse.persistence.annotations.Converter
+ * Corresponds to the EclipseLink annotation
+ * org.eclipse.persistence.annotations.Converter
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -25,32 +25,34 @@ import org.eclipse.jpt.core.utility.TextRange;
  * @version 2.1
  * @since 2.1
  */
-public interface ConverterAnnotation extends NamedConverterAnnotation
+public interface ConverterAnnotation
+	extends NamedConverterAnnotation
 {
 	String ANNOTATION_NAME = EclipseLinkJPA.CONVERTER;
 		
 	/**
-	 * Corresponds to the converterClass element of the CustomConverter annotation.
-	 * Returns null if the converterClass element does not exist in java.
+	 * Corresponds to the 'converterClass' element of the Converter annotation.
+	 * Returns null if the element does not exist in java.
 	 */
 	String getConverterClass();
+		String CONVERTER_CLASS_PROPERTY = "converterClass"; //$NON-NLS-1$
 	
 	/**
-	 * Corresponds to the converterClass element of the CustomConverter annotation.
-	 * Set to null to remove the converterClass element.
+	 * Corresponds to the 'converterClass' element of the Converter annotation.
+	 * Set to null to remove the element.
 	 */
 	void setConverterClass(String value);
-		String CONVERTER_CLASS_PROPERTY = "converterClass"; //$NON-NLS-1$
 		
 	/**
-	 * Return whether the converterClass implements the eclipselink Converter interface
+	 * Return the {@link TextRange} for the 'converterClass' element. If the element 
+	 * does not exist return the {@link TextRange} for the Converter annotation.
+	 */
+	TextRange getConverterClassTextRange(CompilationUnit astRoot);
+
+	/**
+	 * Return whether the converter class implements the specified interface.
 	 * @see org.eclipse.jpt.eclipselink.core.context.CustomConverter#ECLIPSELINK_CONVERTER_CLASS_NAME
 	 */
 	boolean converterClassImplementsInterface(String interfaceName, CompilationUnit astRoot);
 
-	/**
-	 * Return the {@link TextRange} for the converterClass element.  If the converterClass element 
-	 * does not exist return the {@link TextRange} for the CustomConverter annotation.
-	 */
-	TextRange getConverterClassTextRange(CompilationUnit astRoot);
 }

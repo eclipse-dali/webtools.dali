@@ -1,20 +1,25 @@
 /*******************************************************************************
- *  Copyright (c) 2008  Oracle. 
- *  All rights reserved.  This program and the accompanying materials are 
- *  made available under the terms of the Eclipse Public License v1.0 which 
- *  accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**
+ * Common protocol among:
+ *     org.eclipse.persistence.annotations.Converter
+ *     org.eclipse.persistence.annotations.StructConverter
+ *     org.eclipse.persistence.annotations.TypeConverter
+ *     org.eclipse.persistence.annotations.ObjectTypeConverter
+ * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -24,24 +29,26 @@ import org.eclipse.jpt.core.utility.TextRange;
  * @version 2.1
  * @since 2.1
  */
-public interface NamedConverterAnnotation extends JavaResourceNode
+public interface NamedConverterAnnotation
+	extends Annotation
 {
 	/**
-	 * Corresponds to the name element of the CustomConverter annotation.
-	 * Returns null if the name element does not exist in java.
+	 * Corresponds to the 'name' element of the *Converter annotation.
+	 * Return null if the element does not exist in Java.
 	 */
 	String getName();
+		String NAME_PROPERTY = "name"; //$NON-NLS-1$
 	
 	/**
-	 * Corresponds to the name element of the CustomConverter annotation.
-	 * Set to null to remove the name element.
+	 * Corresponds to the 'name' element of the *Converter annotation.
+	 * Set to null to remove the element.
 	 */
 	void setName(String value);
-		String NAME_PROPERTY = "nameProperty"; //$NON-NLS-1$
 
 	/**
-	 * Return the {@link TextRange} for the name element.  If the name element 
+	 * Return the {@link TextRange} for the 'name' element. If the element 
 	 * does not exist return the {@link TextRange} for the CustomConverter annotation.
 	 */
 	TextRange getNameTextRange(CompilationUnit astRoot);
+
 }

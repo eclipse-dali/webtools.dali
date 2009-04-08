@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,12 +13,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.UniqueConstraint;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.context.java.JavaUniqueConstraint;
-import org.eclipse.jpt.core.resource.java.TableAnnotation;
+import org.eclipse.jpt.core.resource.java.BaseTableAnnotation;
 import org.eclipse.jpt.core.resource.java.UniqueConstraintAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Catalog;
@@ -66,7 +67,7 @@ public abstract class AbstractJavaTable
 	 * Return the Java table annotation. Do not return null if the Java
 	 * annotation does not exist; return a null table annotation instead.
 	 */
-	protected abstract TableAnnotation getResourceTable();
+	protected abstract BaseTableAnnotation getResourceTable();
 
 	/**
 	 * Return the fully qualified name of the Java annotation.
@@ -281,40 +282,40 @@ public abstract class AbstractJavaTable
 
 	// ********** resource => context **********
 
-	protected void initialize(TableAnnotation tableAnnotation) {
+	protected void initialize(BaseTableAnnotation baseTableAnnotation) {
 		this.defaultName = this.buildDefaultName();
-		this.specifiedName = tableAnnotation.getName();
+		this.specifiedName = baseTableAnnotation.getName();
 
 		this.defaultSchema = this.buildDefaultSchema();
-		this.specifiedSchema = tableAnnotation.getSchema();
+		this.specifiedSchema = baseTableAnnotation.getSchema();
 
 		this.defaultCatalog = this.buildDefaultCatalog();
-		this.specifiedCatalog = tableAnnotation.getCatalog();
+		this.specifiedCatalog = baseTableAnnotation.getCatalog();
 
-		this.initializeUniqueConstraints(tableAnnotation);
+		this.initializeUniqueConstraints(baseTableAnnotation);
 	}
 
-	protected void initializeUniqueConstraints(TableAnnotation tableAnnotation) {
-		for (UniqueConstraintAnnotation uniqueConstraintAnnotation : CollectionTools.iterable(tableAnnotation.uniqueConstraints())) {
+	protected void initializeUniqueConstraints(BaseTableAnnotation baseTableAnnotation) {
+		for (UniqueConstraintAnnotation uniqueConstraintAnnotation : CollectionTools.iterable(baseTableAnnotation.uniqueConstraints())) {
 			this.uniqueConstraints.add(buildUniqueConstraint(uniqueConstraintAnnotation));
 		}
 	}
 	
-	protected void update(TableAnnotation tableAnnotation) {
+	protected void update(BaseTableAnnotation baseTableAnnotation) {
 		this.setDefaultName(this.buildDefaultName());
-		this.setSpecifiedName_(tableAnnotation.getName());
+		this.setSpecifiedName_(baseTableAnnotation.getName());
 
 		this.setDefaultSchema(this.buildDefaultSchema());
-		this.setSpecifiedSchema_(tableAnnotation.getSchema());
+		this.setSpecifiedSchema_(baseTableAnnotation.getSchema());
 
 		this.setDefaultCatalog(this.buildDefaultCatalog());
-		this.setSpecifiedCatalog_(tableAnnotation.getCatalog());
+		this.setSpecifiedCatalog_(baseTableAnnotation.getCatalog());
 
-		this.updateUniqueConstraints(tableAnnotation);
+		this.updateUniqueConstraints(baseTableAnnotation);
 	}
 	
-	protected void updateUniqueConstraints(TableAnnotation tableAnnotation) {
-		ListIterator<UniqueConstraintAnnotation> resourceConstraints = tableAnnotation.uniqueConstraints();
+	protected void updateUniqueConstraints(BaseTableAnnotation baseTableAnnotation) {
+		ListIterator<UniqueConstraintAnnotation> resourceConstraints = baseTableAnnotation.uniqueConstraints();
 		ListIterator<JavaUniqueConstraint> contextConstraints = this.uniqueConstraints();
 		while (contextConstraints.hasNext()) {
 			JavaUniqueConstraint uniqueConstraint = contextConstraints.next();

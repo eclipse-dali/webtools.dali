@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jpt.core.JpaAnnotationProvider;
-import org.eclipse.jpt.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.CallbackChangeSupport;
@@ -24,16 +23,19 @@ public abstract class AbstractJavaResourceNode
 	extends AbstractModel
 	implements JavaResourceNode
 {
-	private final JavaResourceNode parent;
+	protected final JavaResourceNode parent;
 
 
-	// ********** construction **********
+	// ********** constructor **********
 	
 	protected AbstractJavaResourceNode(JavaResourceNode parent) {
 		super();
 		this.checkParent(parent);
 		this.parent = parent;
 	}
+
+
+	// ********** parent **********
 
 	protected void checkParent(JavaResourceNode p) {
 		if (p == null) {
@@ -55,17 +57,27 @@ public abstract class AbstractJavaResourceNode
 		return ! this.requiresParent();  // assume 'parent' is not optional
 	}
 
+
+	// ********** change support callback hook **********
+
 	@Override
-	protected ChangeSupport buildChangeSupport() {
+	protected final ChangeSupport buildChangeSupport() {
 		return new CallbackChangeSupport(this, this.buildChangeSupportListener());
 	}
 
-	protected CallbackChangeSupport.Listener buildChangeSupportListener() {
+	private CallbackChangeSupport.Listener buildChangeSupportListener() {
 		return new CallbackChangeSupport.Listener() {
 			public void aspectChanged(String aspectName) {
 				AbstractJavaResourceNode.this.aspectChanged(aspectName);
 			}
 		};
+	}
+
+	/**
+	 * ignore the aspect name, we notify listeners of *every* change
+	 */
+	void aspectChanged(@SuppressWarnings("unused") String aspectName) {
+		this.getRoot().resourceModelChanged();
 	}
 
 
@@ -78,31 +90,12 @@ public abstract class AbstractJavaResourceNode
 	public IFile getFile() {
 		return this.getRoot().getFile();
 	}
-	
-
-	// ********** change support callback **********
-
-	/**
-	 * ignore the aspect name, we notify listeners of *every* change
-	 */
-	protected void aspectChanged(@SuppressWarnings("unused") String aspectName) {
-		this.getRoot().resourceModelChanged();
-	}
 
 
 	// ********** convenience methods **********
-	
-	protected JavaResourceNode getParent() {
-		return this.parent;
-	}
 
 	protected JpaAnnotationProvider getAnnotationProvider() {
 		return this.getRoot().getAnnotationProvider();
-	}
-
-	// TODO move... ========================
-	public JavaResourceCompilationUnit getJavaResourceCompilationUnit() {
-		return (JavaResourceCompilationUnit) this.getRoot();
 	}
 
 }

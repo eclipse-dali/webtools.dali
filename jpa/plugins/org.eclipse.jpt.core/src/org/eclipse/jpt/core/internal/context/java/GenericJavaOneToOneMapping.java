@@ -63,12 +63,12 @@ public class GenericJavaOneToOneMapping
 	
 	@Override
 	protected Boolean getResourceOptional() {
-		return this.resourceMapping.getOptional();
+		return this.mappingAnnotation.getOptional();
 	}
 	
 	@Override
 	protected void setOptionalOnResourceModel(Boolean newOptional) {
-		this.resourceMapping.setOptional(newOptional);
+		this.mappingAnnotation.setOptional(newOptional);
 	}
 	
 	@Override

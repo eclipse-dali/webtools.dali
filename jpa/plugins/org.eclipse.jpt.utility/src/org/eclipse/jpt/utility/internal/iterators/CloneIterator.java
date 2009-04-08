@@ -32,7 +32,7 @@ import org.eclipse.jpt.utility.internal.StringTools;
 public class CloneIterator<E>
 	implements Iterator<E>
 {
-	private final Iterator<Object> nestedIterator;
+	private final Iterator<Object> iterator;
 	private E current;
 	private final Mutator<E> mutator;
 	private boolean removeAllowed;
@@ -50,20 +50,40 @@ public class CloneIterator<E>
 	}
 
 	/**
+	 * Construct an iterator on a copy of the specified array.
+	 * The <code>#remove()</code> method will not be supported,
+	 * unless a subclass overrides the <code>#remove(Object)</code>.
+	 */
+	public CloneIterator(E[] array) {
+		this(array, Mutator.ReadOnly.<E>instance());
+	}
+
+	/**
 	 * Construct an iterator on a copy of the specified collection.
 	 * Use the specified mutator to remove objects from the
 	 * original collection.
 	 */
 	public CloneIterator(Collection<? extends E> collection, Mutator<E> mutator) {
-		this(collection.toArray(), mutator);
+		this(mutator, collection.toArray());
+	}
+
+	/**
+	 * Construct an iterator on a copy of the specified array.
+	 * Use the specified mutator to remove objects from the
+	 * original array.
+	 */
+	public CloneIterator(E[] array, Mutator<E> mutator) {
+		this(mutator, array.clone());
 	}
 
 	/**
 	 * Internal constructor used by subclasses.
+	 * Swap order of arguments to prevent collision with other constructor.
+	 * The passed in array will *not* be cloned.
 	 */
-	protected CloneIterator(Object[] array, Mutator<E> mutator) {
+	protected CloneIterator(Mutator<E> mutator, Object... array) {
 		super();
-		this.nestedIterator = new ArrayIterator<Object>(array);
+		this.iterator = new ArrayIterator<Object>(array);
 		this.current = null;
 		this.mutator = mutator;
 		this.removeAllowed = false;
@@ -73,7 +93,7 @@ public class CloneIterator<E>
 	// ********** Iterator implementation **********
 
 	public boolean hasNext() {
-		return this.nestedIterator.hasNext();
+		return this.iterator.hasNext();
 	}
 
 	public E next() {
@@ -101,7 +121,7 @@ public class CloneIterator<E>
 	 */
 	@SuppressWarnings("unchecked")
 	protected E nestedNext() {
-		return (E) this.nestedIterator.next();
+		return (E) this.iterator.next();
 	}
 
 	/**

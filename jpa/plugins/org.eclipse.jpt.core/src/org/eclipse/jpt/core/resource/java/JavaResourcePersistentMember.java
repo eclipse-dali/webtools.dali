@@ -16,7 +16,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**
- * Java source code persistent member
+ * Java source code or binary persistent member.
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -32,7 +32,7 @@ public interface JavaResourcePersistentMember
 
 	/**
 	 * Return the member's mapping annotations.
-	 * Do not return duplicate annotations as this error is handled by the java
+	 * Do not return duplicate annotations as this error is handled by the Java
 	 * compiler.
 	 * @see #supportingAnnotations()
 	 */
@@ -47,35 +47,26 @@ public interface JavaResourcePersistentMember
 	/**
 	 * Return the member's mapping annotation.
 	 */
-	JavaResourceNode getMappingAnnotation();
+	Annotation getMappingAnnotation();
 
 	/**
 	 * Return the mapping annotation with the specified name.
 	 * Return the first if there are duplicates in the source code.
 	 */
-	JavaResourceNode getMappingAnnotation(String annotationName);
+	Annotation getMappingAnnotation(String annotationName);
 
 	/**
-	 * Change the mapping annotation. Remove any existing mapping annotations.
-	 * Do not remove any non-mapping annotations.
+	 * Change the mapping annotation. Remove any other existing mapping
+	 * annotations. Do not remove any supporting (non-mapping) annotations.
 	 */
-	void setMappingAnnotation(String annotationName);
-
-	/**
-	 * Return a null mapping annotation with the specified name. If annotationName is 
-	 * null then return null instead of throwing an exception
-	 * The corresponding AnnotationDefinition must implement #buildNullAnnotation()
-	 * {@link AnnotationDefinition#buildNullAnnotation(JavaResourcePersistentMember,
-	 * org.eclipse.jpt.core.utility.jdt.Member)}
-	 */
-	JavaResourceNode getNullMappingAnnotation(String annotationName);
+	Annotation setMappingAnnotation(String annotationName);
 
 
 	// ********** supporting annotations **********
 
 	/**
 	 * Return the member's supporting annotations.
-	 * Do not return duplicate annotations as this error is handled by the java
+	 * Do not return duplicate annotations as this error is handled by the Java
 	 * compiler. Do not return any mapping annotations.
 	 * @see #mappingAnnotations()
 	 */
@@ -101,7 +92,7 @@ public interface JavaResourcePersistentMember
 	 * Return the specified supporting annotation.
 	 * Return the first if there are duplicates in the source code.
 	 */
-	JavaResourceNode getSupportingAnnotation(String annotationName);
+	Annotation getSupportingAnnotation(String annotationName);
 
 	/**
 	 * Return the specified supporting annotation.
@@ -109,12 +100,12 @@ public interface JavaResourcePersistentMember
 	 * Do not return null, but a Null Object instead if no annotation
 	 * with the specified name exists in the source code.
 	 */
-	JavaResourceNode getNonNullSupportingAnnotation(String annotationName);
+	Annotation getNonNullSupportingAnnotation(String annotationName);
 
 	/**
 	 * Add a supporting annotation with the specified name.
 	 */
-	JavaResourceNode addSupportingAnnotation(String annotationName);
+	Annotation addSupportingAnnotation(String annotationName);
 	
 	/**
 	 * Remove the specified supporting annotation.
@@ -133,18 +124,18 @@ public interface JavaResourcePersistentMember
 	 * the new one. If neither annotation exists, then create a new nestable
 	 * annotation.
 	 */
-	JavaResourceNode addSupportingAnnotation(int index, String nestableAnnotationName, String containerAnnotationName);
+	Annotation addSupportingAnnotation(int index, String nestableAnnotationName, String containerAnnotationName);
 
-	/**
-	 * Remove the specified supporting nestable annotation.
-	 */
-	void removeSupportingAnnotation(int index, String nestableAnnotationName, String containerAnnotationName);
-	
 	/**
 	 * Move the supporting nestable annotation found in the specified container
 	 * annotation at the specified source index to the specified target index.
 	 */
 	void moveSupportingAnnotation(int targetIndex, int sourceIndex, String containerAnnotationName);
+	
+	/**
+	 * Remove the specified supporting nestable annotation.
+	 */
+	void removeSupportingAnnotation(int index, String nestableAnnotationName, String containerAnnotationName);
 	
 
 	// ********** queries **********

@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
 import java.util.Vector;
+
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
@@ -47,6 +48,7 @@ import org.eclipse.jpt.core.resource.persistence.XmlProperty;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.HashBag;
+import org.eclipse.jpt.utility.internal.iterables.CloneIterable;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
@@ -123,9 +125,11 @@ public abstract class AbstractPersistenceUnit
 		this.nonJtaDataSource = xmlPersistenceUnit.getNonJtaDataSource();
 		this.specifiedExcludeUnlistedClasses = xmlPersistenceUnit.getExcludeUnlistedClasses();
 
-		this.initializeJarFileRefs();
-
+		// initialize the properties before building the entities because the
+		// entities will need the properties
 		this.initializeProperties();
+
+		this.initializeJarFileRefs();
 
 		//initialize specified classRefs before mappingFileRefs because of 
 		//JpaFile rootStructureNode, we want the mapping file to "win",
@@ -608,6 +612,10 @@ public abstract class AbstractPersistenceUnit
 		return new CloneListIterator<Property>(this.properties);
 	}
 
+	protected Iterable<Property> getProperties() {
+		return new CloneIterable<Property>(this.properties);
+	}
+
 	public int propertiesSize() {
 		return this.properties.size();
 	}
@@ -616,11 +624,9 @@ public abstract class AbstractPersistenceUnit
 		if (propertyName == null) {
 			throw new NullPointerException();
 		}
-		synchronized (this.properties) {
-			for (Property property : this.properties) {
-				if (propertyName.equals(property.getName())) {
-					return property;
-				}
+		for (Property property : this.getProperties()) {
+			if (propertyName.equals(property.getName())) {
+				return property;
 			}
 		}
 		return null;
@@ -708,22 +714,18 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	public void removeProperty(Property property) {
-		synchronized (this.properties) {
-			this.removeProperty(this.properties.indexOf(property));
-		}
+		this.removeProperty(this.properties.indexOf(property));
 	}
 
 	public void removeProperty(String propertyName) {
 		if (propertyName == null) {
 			throw new NullPointerException();
 		}
-		synchronized (this.properties) {
-			for (ListIterator<Property> stream = this.properties.listIterator(); stream.hasNext(); ) {
-				Property property = stream.next();
-				if (propertyName.equals(property.getName())) {
-					this.removeProperty(stream.previousIndex());
-					return;
-				}
+		for (ListIterator<Property> stream = this.properties.listIterator(); stream.hasNext(); ) {
+			Property property = stream.next();
+			if (propertyName.equals(property.getName())) {
+				this.removeProperty(stream.previousIndex());
+				return;
 			}
 		}
 		throw new IllegalArgumentException("invalid property name: " + propertyName); //$NON-NLS-1$
@@ -733,13 +735,11 @@ public abstract class AbstractPersistenceUnit
 		if ((propertyName == null) || (value == null)) {
 			throw new NullPointerException();
 		}
-		synchronized (this.properties) {
-			for (ListIterator<Property> stream = this.properties.listIterator(); stream.hasNext(); ) {
-				Property property = stream.next();
-				if (propertyName.equals(property.getName()) && value.equals(property.getValue())) {
-					this.removeProperty(stream.previousIndex());
-					return;
-				}
+		for (ListIterator<Property> stream = this.properties.listIterator(); stream.hasNext(); ) {
+			Property property = stream.next();
+			if (propertyName.equals(property.getName()) && value.equals(property.getValue())) {
+				this.removeProperty(stream.previousIndex());
+				return;
 			}
 		}
 		throw new IllegalArgumentException("invalid property name/value pair: " + propertyName + " = " + value); //$NON-NLS-1$ //$NON-NLS-2$
@@ -1103,8 +1103,7 @@ public abstract class AbstractPersistenceUnit
 	protected void updateProperties() {
 		Iterator<XmlProperty> xmlProperties = this.xmlProperties();
 
-		for (Iterator<Property> contextProperties = this.properties(); contextProperties.hasNext(); ) {
-			Property contextProperty = contextProperties.next();
+		for (Property contextProperty : this.getProperties()) {
 			if (xmlProperties.hasNext()) {
 				contextProperty.update(xmlProperties.next());
 			} else {

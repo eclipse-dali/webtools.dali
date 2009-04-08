@@ -119,7 +119,7 @@ public abstract class AbstractJavaBasicMapping extends AbstractJavaAttributeMapp
 	public void setSpecifiedFetch(FetchType newSpecifiedFetch) {
 		FetchType oldFetch = this.specifiedFetch;
 		this.specifiedFetch = newSpecifiedFetch;
-		this.resourceMapping.setFetch(FetchType.toJavaResourceModel(newSpecifiedFetch));
+		this.mappingAnnotation.setFetch(FetchType.toJavaResourceModel(newSpecifiedFetch));
 		firePropertyChanged(Fetchable.SPECIFIED_FETCH_PROPERTY, oldFetch, newSpecifiedFetch);
 	}
 	
@@ -150,7 +150,7 @@ public abstract class AbstractJavaBasicMapping extends AbstractJavaAttributeMapp
 	public void setSpecifiedOptional(Boolean newSpecifiedOptional) {
 		Boolean oldOptional = this.specifiedOptional;
 		this.specifiedOptional = newSpecifiedOptional;
-		this.resourceMapping.setOptional(newSpecifiedOptional);
+		this.mappingAnnotation.setOptional(newSpecifiedOptional);
 		firePropertyChanged(Nullable.SPECIFIED_OPTIONAL_PROPERTY, oldOptional, newSpecifiedOptional);
 	}
 
@@ -218,11 +218,11 @@ public abstract class AbstractJavaBasicMapping extends AbstractJavaAttributeMapp
 	}
 	
 	protected FetchType getResourceFetch() {
-		return FetchType.fromJavaResourceModel(this.resourceMapping.getFetch());
+		return FetchType.fromJavaResourceModel(this.mappingAnnotation.getFetch());
 	}
 	
 	protected Boolean getResourceOptional() {
-		return this.resourceMapping.getOptional();
+		return this.mappingAnnotation.getOptional();
 	}
 	
 	protected JavaConverter buildSpecifiedConverter(String converterType) {

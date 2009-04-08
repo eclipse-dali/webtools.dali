@@ -51,7 +51,7 @@ public class OrmPersistentTypeItemContentProvider extends AbstractTreeItemConten
 
 		protected CollectionValueModel<OrmPersistentAttribute> buildSpecifiedPersistentAttributesCollectionHolder() {
 			return new ListCollectionValueModelAdapter<OrmPersistentAttribute>(
-			new ListAspectAdapter<OrmPersistentType, OrmPersistentAttribute>(PersistentType.SPECIFIED_ATTRIBUTES_LIST, getModel()) {
+			new ListAspectAdapter<OrmPersistentType, OrmPersistentAttribute>(PersistentType.ATTRIBUTES_LIST, getModel()) {
 				@Override
 				protected ListIterator<OrmPersistentAttribute> listIterator_() {
 					return subject.specifiedAttributes();

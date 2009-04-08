@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal.iterators;
 
+import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.Transformer;
@@ -25,59 +26,77 @@ import org.eclipse.jpt.utility.internal.Transformer;
 public class TransformationListIterator<E1, E2>
 	implements ListIterator<E2>
 {
-	private final ListIterator<? extends E1> nestedIterator;
+	private final ListIterator<? extends E1> listIterator;
 	private final Transformer<E1, ? extends E2> transformer;
 
 
 	/**
-	 * Construct an iterator with the specified nested iterator
+	 * Construct an iterator with the specified list
 	 * and a disabled transformer.
 	 * Use this constructor if you want to override the
 	 * <code>transform(Object)</code> method instead of building
 	 * a <code>Transformer</code>.
 	 */
-	public TransformationListIterator(ListIterator<? extends E1> nestedIterator) {
-		this(nestedIterator, Transformer.Disabled.<E1, E2>instance());
+	public TransformationListIterator(List<? extends E1> list) {
+		this(list.listIterator());
+	}
+
+	/**
+	 * Construct an iterator with the specified nested listed iterator
+	 * and a disabled transformer.
+	 * Use this constructor if you want to override the
+	 * <code>transform(Object)</code> method instead of building
+	 * a <code>Transformer</code>.
+	 */
+	public TransformationListIterator(ListIterator<? extends E1> listIterator) {
+		this(listIterator, Transformer.Disabled.<E1, E2>instance());
+	}
+
+	/**
+	 * Construct an iterator with the specified list and transformer.
+	 */
+	public TransformationListIterator(List<? extends E1> list, Transformer<E1, ? extends E2> transformer) {
+		this(list.listIterator(), transformer);
 	}
 
 	/**
 	 * Construct an iterator with the specified nested iterator
 	 * and transformer.
 	 */
-	public TransformationListIterator(ListIterator<? extends E1> nestedIterator, Transformer<E1, ? extends E2> transformer) {
+	public TransformationListIterator(ListIterator<? extends E1> listIterator, Transformer<E1, ? extends E2> transformer) {
 		super();
-		this.nestedIterator = nestedIterator;
+		this.listIterator = listIterator;
 		this.transformer = transformer;
 	}
 
 	public boolean hasNext() {
 		// delegate to the nested iterator
-		return this.nestedIterator.hasNext();
+		return this.listIterator.hasNext();
 	}
 
 	public E2 next() {
 		// transform the object returned by the nested iterator before returning it
-		return this.transform(this.nestedIterator.next());
+		return this.transform(this.listIterator.next());
 	}
 
 	public int nextIndex() {
 		// delegate to the nested iterator
-		return this.nestedIterator.nextIndex();
+		return this.listIterator.nextIndex();
 	}
 
 	public boolean hasPrevious() {
 		// delegate to the nested iterator
-		return this.nestedIterator.hasPrevious();
+		return this.listIterator.hasPrevious();
 	}
 
 	public E2 previous() {
 		// transform the object returned by the nested iterator before returning it
-		return this.transform(this.nestedIterator.previous());
+		return this.transform(this.listIterator.previous());
 	}
 
 	public int previousIndex() {
 		// delegate to the nested iterator
-		return this.nestedIterator.previousIndex();
+		return this.listIterator.previousIndex();
 	}
 
 	public void add(E2 o) {
@@ -90,7 +109,7 @@ public class TransformationListIterator<E1, E2>
 
 	public void remove() {
 		// delegate to the nested iterator
-		this.nestedIterator.remove();
+		this.listIterator.remove();
 	}
 
 	/**
@@ -102,7 +121,7 @@ public class TransformationListIterator<E1, E2>
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.nestedIterator);
+		return StringTools.buildToStringFor(this, this.listIterator);
 	}
 
 }
