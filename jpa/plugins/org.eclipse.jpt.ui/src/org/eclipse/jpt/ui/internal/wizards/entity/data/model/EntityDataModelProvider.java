@@ -11,12 +11,20 @@
  ***********************************************************************/
 package org.eclipse.jpt.ui.internal.wizards.entity.data.model;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaConventions;
+import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.core.Signature;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JptCorePlugin;
@@ -24,9 +32,11 @@ import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.wizards.entity.EntityWizardMsg;
 import org.eclipse.jpt.ui.internal.wizards.entity.data.operation.NewEntityClassOperation;
 import org.eclipse.jst.j2ee.internal.common.J2EECommonMessages;
+import org.eclipse.jst.j2ee.internal.common.operations.INewJavaClassDataModelProperties;
 import org.eclipse.jst.j2ee.internal.common.operations.NewJavaClassDataModelProvider;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModelOperation;
+import org.eclipse.wst.common.frameworks.datamodel.IDataModelProvider;
 import org.eclipse.wst.common.frameworks.internal.plugin.WTPCommonPlugin;
 
 public class EntityDataModelProvider extends NewJavaClassDataModelProvider implements IEntityDataModelProperties{
@@ -151,7 +161,7 @@ public class EntityDataModelProvider extends NewJavaClassDataModelProvider imple
 			return WTPCommonPlugin.createWarningStatus(EntityWizardMsg.DEFAULT_PACKAGE_WARNING);
 		}			
 		// Use standard java conventions to validate the package name
-		IStatus javaStatus = JavaConventions.validatePackageName(packName);
+		IStatus javaStatus = JavaConventions.validatePackageName(packName, JavaCore.VERSION_1_5, JavaCore.VERSION_1_5);
 		if (javaStatus.getSeverity() == IStatus.ERROR) {
 			String msg = J2EECommonMessages.ERR_JAVA_PACAKGE_NAME_INVALID + javaStatus.getMessage();				
 			return WTPCommonPlugin.createErrorStatus(msg);
@@ -175,7 +185,7 @@ public class EntityDataModelProvider extends NewJavaClassDataModelProvider imple
 	 */
 	private IStatus validateXmlName(String xmlName) {
 		if (getBooleanProperty(XML_SUPPORT)) {
-			String projectName = model.getStringProperty(PROJECT_NAME);
+			String projectName = this.model.getStringProperty(PROJECT_NAME);
 			IProject project = ProjectUtilities.getProject(projectName);
 			if (project != null) {
 				//TODO need to check content type as well since user can type in a file name, should have a different error message for invalid content type
@@ -184,7 +194,6 @@ public class EntityDataModelProvider extends NewJavaClassDataModelProvider imple
 					return new Status(
 						IStatus.ERROR, JptUiPlugin.PLUGIN_ID,
 							EntityWizardMsg.INVALID_XML_NAME);
-						
 				}
 			}
 		}
@@ -209,10 +218,116 @@ public class EntityDataModelProvider extends NewJavaClassDataModelProvider imple
 				String msg = EntityWizardMsg.DUPLICATED_ENTITY_NAMES_MESSAGE;				
 				return WTPCommonPlugin.createErrorStatus(msg);
 			}
+			// Ensure that the entries in the list are valid
+			String errorMsg = checkInputElementsTypeValidation(entities);
+			if (errorMsg != null) {
+				return WTPCommonPlugin.createErrorStatus(errorMsg);
+			}
+			String warningMsg = checkInputElementsTypeExistence(entities);
+			if (warningMsg != null) {
+				return WTPCommonPlugin.createWarningStatus(warningMsg);
+			}
 		}
-		// Return OK
 		return WTPCommonPlugin.OK_STATUS;
 	}
+	
+	private String checkInputElementsTypeValidation(List<EntityRow> inputElements) {
+		IStatus validateFieldTypeStatus = Status.OK_STATUS;
+		for (EntityRow entityRow: inputElements) {
+			String sig = null;
+			try {
+				sig = Signature.createTypeSignature(entityRow.getFqnTypeName(), true);
+			} catch (IllegalArgumentException e) {
+				String message = MessageFormat.format(EntityWizardMsg.EntityDataModelProvider_invalidArgument, e.getLocalizedMessage());
+				validateFieldTypeStatus = new Status(IStatus.ERROR, JptUiPlugin.PLUGIN_ID, message);
+				break;
+			}
+			if (sig == null){
+				validateFieldTypeStatus = JavaConventions.validateJavaTypeName(entityRow.getType(), JavaCore.VERSION_1_5, JavaCore.VERSION_1_5);
+				break;
+			}
+			int sigType = Signature.getTypeSignatureKind(sig);
+			if (sigType == Signature.BASE_TYPE_SIGNATURE) {
+				continue;
+			}
+			else if (sigType == Signature.ARRAY_TYPE_SIGNATURE) {
+				String elementSignature = Signature.getElementType(sig);
+				if (Signature.getTypeSignatureKind(elementSignature) == Signature.BASE_TYPE_SIGNATURE) {
+					continue;
+				}
+			}
+		}
+		if (!validateFieldTypeStatus.isOK()) {
+			return validateFieldTypeStatus.getMessage();
+		}
+		return null;
+	}
+	
+	private String checkInputElementsTypeExistence(List<EntityRow> inputElements) {
+		IStatus validateFieldTypeStatus=Status.OK_STATUS;
+		for (EntityRow entityRow: inputElements) {
+			
+			String sig = Signature.createTypeSignature(entityRow.getFqnTypeName() ,true);
+			if (sig == null) {
+				String message = MessageFormat.format(
+						EntityWizardMsg.EntityDataModelProvider_entityNotInProjectClasspath, entityRow.getFqnTypeName());
+				validateFieldTypeStatus = new Status(IStatus.ERROR,
+						JptUiPlugin.PLUGIN_ID, message);
+				break;
+			}
+			int sigType = Signature.getTypeSignatureKind(sig);
+			if (sigType == Signature.BASE_TYPE_SIGNATURE){
+				continue;
+			}
+			else if (sigType == Signature.ARRAY_TYPE_SIGNATURE) {
+				String elementSignature = Signature.getElementType(sig);
+				if(Signature.getTypeSignatureKind(elementSignature) == Signature.BASE_TYPE_SIGNATURE){
+					continue;
+				}
+				String qualifiedName = Signature.toString(elementSignature);
+				IProject project = (IProject) getProperty(INewJavaClassDataModelProperties.PROJECT);
+				IJavaProject javaProject = JavaCore.create(project);
+				IType type = null;
+				try {
+					type = javaProject.findType(qualifiedName);
+				} catch (JavaModelException e) {
+					validateFieldTypeStatus = e.getStatus();
+					break;
+				}
+				if (type == null) {
+					String message = MessageFormat.format(
+							EntityWizardMsg.EntityDataModelProvider_entityNotInProjectClasspath, entityRow.getFqnTypeName());
+					validateFieldTypeStatus = new Status(IStatus.ERROR,
+							JptUiPlugin.PLUGIN_ID, message);
+					break;
+				}
+			}
+			else {
+				IProject project = (IProject) getProperty(INewJavaClassDataModelProperties.PROJECT);
+				IJavaProject javaProject = JavaCore.create(project);
+				IType type = null;
+				try {
+					type = javaProject.findType(entityRow.getFqnTypeName());
+				} catch (JavaModelException e) {
+					validateFieldTypeStatus = e.getStatus();
+					break;
+				}
+				if (type == null) {
+					String message = MessageFormat.format(
+							EntityWizardMsg.EntityDataModelProvider_entityNotInProjectClasspath, entityRow.getFqnTypeName());
+					validateFieldTypeStatus = new Status(IStatus.ERROR,
+							JptUiPlugin.PLUGIN_ID, message);
+					break;
+				}
+			}
+		}
+		if(!validateFieldTypeStatus.isOK()) {
+			return validateFieldTypeStatus.getMessage();
+		}
+		return null;
+	}
+			
+			
 	
 	/**
 	 * This method is intended for internal use only. It provides a simple algorithm for detecting
@@ -235,7 +350,6 @@ public class EntityDataModelProvider extends NewJavaClassDataModelProvider imple
 				if (intEntity.getName().equals(entity.getName())) {
 					return true;
 				}
-				
 			}
 		}		
 		return false;

@@ -15,11 +15,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.eclipse.jdt.ui.IJavaElementSearchConstants;
+import org.eclipse.jdt.ui.JavaUI;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jdt.core.search.IJavaSearchConstants;
+import org.eclipse.jdt.core.JavaConventions;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.search.IJavaSearchScope;
-import org.eclipse.jdt.internal.ui.dialogs.FilteredTypesSelectionDialog;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.CheckStateChangedEvent;
@@ -37,6 +41,7 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.window.Window;
+import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.wizards.entity.data.model.EntityRow;
 import org.eclipse.jpt.ui.internal.wizards.entity.data.model.IEntityDataModelProperties;
 import org.eclipse.jst.j2ee.internal.common.operations.INewJavaClassDataModelProperties;
@@ -62,6 +67,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.dialogs.SelectionDialog;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 
 /**
@@ -506,7 +512,16 @@ public class EntityRowTableWizardSection extends Composite {
 		 */
 		public boolean validate(Combo combo, Text[] texts) {
 			if (texts.length > 0) {
-				return texts[0].getText().trim().length() > 0;
+				IStatus validateFieldNameStatus = JavaConventions
+						.validateFieldName(texts[0].getText(),
+								JavaCore.VERSION_1_5,
+								JavaCore.VERSION_1_5);
+				if (!validateFieldNameStatus.isOK()) {
+					return false;
+				}
+			}
+			if (combo.getText().equals("")) {
+				return false;
 			}
 			return true;
 		}
@@ -574,7 +589,7 @@ public class EntityRowTableWizardSection extends Composite {
 			label.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
 			
 			
-			combo = new Combo(composite, SWT.SINGLE | SWT.BORDER);// | SWT.READ_ONLY);			
+			combo = new Combo(composite, SWT.SINGLE | SWT.BORDER);// | SWT.READ_ONLY);		
 			combo.setItems(labelsForCombo);
 			data = new GridData(GridData.FILL_HORIZONTAL);
 			data.horizontalSpan = 2;			
@@ -615,7 +630,6 @@ public class EntityRowTableWizardSection extends Composite {
 		/**
 		 * Process browsing when the Browse... button have been pressed. Allow adding of entity field
 		 * with arbitrary type.
-		 * @see org.eclipse.jdt.internal.ui.dialogs.FilteredTypesSelectionDialog
 		 */
 		private void handleChooseEntityTypeButtonPressed() {
 			//getControl().setCursor(new Cursor(getShell().getDisplay(), SWT.CURSOR_WAIT));
@@ -625,15 +639,33 @@ public class EntityRowTableWizardSection extends Composite {
 			}
 
 			// this eliminates the non-exported classpath entries
-			final IJavaSearchScope scope = TypeSearchEngine.createJavaSearchScopeForAProject(packRoot.getJavaProject(), true, true);
-
+			final IJavaSearchScope scope = TypeSearchEngine.createJavaSearchScopeForAProject(packRoot.getJavaProject(), true, true); 
+			
 			// This includes all entries on the classpath.
-			FilteredTypesSelectionDialog dialog = new FilteredTypesSelectionDialog(getShell(), false, null/*getWizard().getContainer()*/, scope, IJavaSearchConstants.TYPE);
+			SelectionDialog dialog=null;
+			try{
+				dialog = JavaUI
+						.createTypeDialog(
+								getShell(),
+								null,
+								scope,
+								IJavaElementSearchConstants.CONSIDER_ALL_TYPES,
+								false);
+			} catch (JavaModelException e) {
+				JptUiPlugin.instance().getLog().log(e.getStatus());
+				return;
+			}
+			
 			dialog.setTitle(EntityWizardMsg.TYPE_DIALOG_TITLE);
 			dialog.setMessage(EntityWizardMsg.TYPE_DIALOG_DESCRIPTION);
 
 			if (dialog.open() == Window.OK) {
-				IType type = (IType) dialog.getFirstResult();
+				IType type;
+				Object[] result = dialog.getResult();
+		        if (result == null || result.length == 0) {
+		        	type = null;
+				}
+		        else type = (IType) result[0];
 				String superclassFullPath = IEntityDataModelProperties.EMPTY_STRING;
 				if (type != null) {
 					superclassFullPath = type.getFullyQualifiedName();
@@ -654,6 +686,7 @@ public class EntityRowTableWizardSection extends Composite {
 			Composite composite = (Composite) super.createContents(parent);
 			
 			combo.addSelectionListener(this);
+			combo.addModifyListener(this);
 			for (int i = 0; i < texts.length; i++) {
 				texts[i].addModifyListener(this);
 			}

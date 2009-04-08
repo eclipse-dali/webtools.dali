@@ -54,7 +54,9 @@ public class EntityWizardMsg extends NLS {
     public static String BROWSE_BUTTON_LABEL;
     public static String ADD_BUTTON_LABEL;
     public static String EDIT_BUTTON_LABEL;
-    public static String REMOVE_BUTTON_LABEL;
+	public static String EntityDataModelProvider_entityNotInProjectClasspath;
+	public static String EntityDataModelProvider_invalidArgument;
+	public static String REMOVE_BUTTON_LABEL;
     public static String DUPLICATED_ENTITY_NAMES_MESSAGE;
     public static String ACCESS_TYPE;
     public static String FIELD_BASED;
