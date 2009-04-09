@@ -186,7 +186,6 @@ public class OverridesComposite extends FormPane<Entity>
 			false
 		);
 
-		this.columnPane.setVisible(false);
 		installColumnsPaneEnabler(columnComposite);
 	}
 
@@ -224,15 +223,11 @@ public class OverridesComposite extends FormPane<Entity>
 				false
 			);
 
-		this.joinColumnsPane.setVisible(false);
 		installJoinColumnsPaneEnabler(joinColumnsComposite);
 	}
 
 	private void installJoinColumnsPaneEnabler(JoinColumnsComposite<AssociationOverride> pane) {
-		new PaneEnabler(
-			getOverrideVirtualAssociationOverrideHolder(),
-			pane
-		);
+		pane.installJoinColumnsPaneEnabler(getOverrideVirtualAssociationOverrideHolder());
 	}
 
 	private void installOverrideControlSwitcher(PropertyValueModel<BaseOverride> overrideHolder,
@@ -352,7 +347,7 @@ public class OverridesComposite extends FormPane<Entity>
 		return new CachingTransformationWritablePropertyValueModel<AssociationOverride, Boolean>(buildAssociationOverrideHolder()) {
 			@Override
 			public void setValue(Boolean value) {
-				updateOverride(value);
+				updateOverride(value.booleanValue());
 			}
 
 			@Override
