@@ -150,13 +150,15 @@ public abstract class JDTMember
 	 * NB: Be careful changing this method.
 	 * Things to look out for:
 	 *     - when editing via the JavaEditor there is no need to create a working copy
-	 *     - when editing headlessly, a "working copy" must be created
+	 *     - when editing without an editor or via a simple text editor, a "working copy" must be created.
 	 *        (at least as far as I can tell  ~kfm)
-	 *     - when editing via a plain text editor, make a working copy or else things are screwed
-	 *        up the second time you edit through the XmlPersistence XmlProperties View
+	 *     - sharedDocument is only ever false in tests (headless mode).  In the UI, even if the file
+	 *        is not open in an editor, sharedDocument is still true (buffer is not null)
+	 *     - if a working copy is created, then we must discard it
 	 */
 	protected void edit_(Editor editor) throws JavaModelException, BadLocationException {
-		if ( ! this.compilationUnit.isWorkingCopy()) {
+		boolean createWorkingCopy = ! this.compilationUnit.isWorkingCopy();
+		if (createWorkingCopy) {
 			this.compilationUnit.becomeWorkingCopy(null);
 		}
 
@@ -167,22 +169,26 @@ public abstract class JDTMember
 			:
 				new Document(this.compilationUnit.getBuffer().getContents());
 
-		CompilationUnit astRoot = this.buildASTRoot();
-		astRoot.recordModifications();
-
-		editor.edit(this.getModifiedDeclaration(astRoot));
-
-		TextEdit edits = astRoot.rewrite(doc, this.compilationUnit.getJavaProject().getOptions(true));
-		if (sharedDocument) {
-			this.modifySharedDocumentCommandExecutor.execute(new ModifySharedDocumentCommand(edits, doc));
-		} else {
-			this.applyEdits(edits, doc);
+		try {
+			CompilationUnit astRoot = this.buildASTRoot();
+			astRoot.recordModifications();
+	
+			editor.edit(this.getModifiedDeclaration(astRoot));
+	
+			TextEdit edits = astRoot.rewrite(doc, this.compilationUnit.getJavaProject().getOptions(true));
+			if (sharedDocument) {
+				this.modifySharedDocumentCommandExecutor.execute(new ModifySharedDocumentCommand(edits, doc));
+			} else {
+				this.applyEdits(edits, doc);
+			}
 		}
-
-		if ( ! sharedDocument) {
-			this.compilationUnit.getBuffer().setContents(doc.get());
-			this.compilationUnit.commitWorkingCopy(true, null);  // true="force"
-			this.compilationUnit.discardWorkingCopy();
+		finally {
+			if (createWorkingCopy) {
+				//discardWorkingCopy must be called every time becomeWorkingCopy is called.
+				this.compilationUnit.getBuffer().setContents(doc.get());
+				this.compilationUnit.commitWorkingCopy(true, null);  // true="force"
+				this.compilationUnit.discardWorkingCopy();
+			}
 		}
 	}
 
