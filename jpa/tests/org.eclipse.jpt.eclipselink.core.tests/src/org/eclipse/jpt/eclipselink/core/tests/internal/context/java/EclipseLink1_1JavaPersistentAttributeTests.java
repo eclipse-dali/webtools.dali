@@ -21,18 +21,8 @@ import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 @SuppressWarnings("nls")
 public class EclipseLink1_1JavaPersistentAttributeTests extends EclipseLink1_1ContextModelTestCase
 {
-	
-	private void createAccessTypeEnum() throws Exception {
-		this.createEnumAndMembers(JPA_ANNOTATIONS_PACKAGE_NAME, "AccessType", "FIELD, PROPERTY;");	
-	}
-	
-	private void createAccessAnnotation() throws Exception {
-		this.createAnnotationAndMembers(JPA_ANNOTATIONS_PACKAGE_NAME, "Access", "AccessType value();");
-		createAccessTypeEnum();
-	}
 
 	private ICompilationUnit createTestEntitySpecifiedAccessField() throws Exception {
-		createAccessAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -60,7 +50,6 @@ public class EclipseLink1_1JavaPersistentAttributeTests extends EclipseLink1_1Co
 	}
 
 	private ICompilationUnit createTestEntitySpecifiedAccessProperty() throws Exception {
-		createAccessAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

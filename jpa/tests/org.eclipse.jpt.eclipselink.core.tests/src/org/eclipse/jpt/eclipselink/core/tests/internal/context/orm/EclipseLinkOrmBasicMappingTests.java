@@ -30,17 +30,8 @@ import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 public class EclipseLinkOrmBasicMappingTests
 	extends EclipseLinkOrmContextModelTestCase
 {
-	private void createConvertAnnotation() throws Exception{
-		this.createAnnotationAndMembers(EclipseLinkJPA.PACKAGE, "Convert", "String value() default \"none\";");		
-	}
-
-	private void createMutableAnnotation() throws Exception{
-		this.createAnnotationAndMembers(EclipseLinkJPA.PACKAGE, "Mutable", "boolean value() default true");		
-	}
 	
 	private ICompilationUnit createTestEntityWithBasicMapping() throws Exception {
-		createConvertAnnotation();
-		createMutableAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -59,8 +50,6 @@ public class EclipseLinkOrmBasicMappingTests
 	}
 	
 	private ICompilationUnit createTestEntityWithMutableBasicDate() throws Exception {
-		createMutableAnnotation();
-		
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

@@ -25,7 +25,6 @@ public class ConvertAnnotationTests extends EclipseLinkJavaResourceModelTestCase
 	}
 
 	private ICompilationUnit createTestConvert() throws Exception {
-		this.createAnnotationAndMembers("Convert", "String value() default \"none\"");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -39,7 +38,6 @@ public class ConvertAnnotationTests extends EclipseLinkJavaResourceModelTestCase
 	}
 	
 	private ICompilationUnit createTestConverterWithValue() throws Exception {
-		this.createAnnotationAndMembers("Convert", "String value() default \"none\"");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

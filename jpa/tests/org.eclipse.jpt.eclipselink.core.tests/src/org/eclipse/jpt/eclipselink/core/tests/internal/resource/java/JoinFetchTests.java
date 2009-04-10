@@ -24,18 +24,8 @@ public class JoinFetchTests extends EclipseLinkJavaResourceModelTestCase {
 	public JoinFetchTests(String name) {
 		super(name);
 	}
-
-	private void createJoinFetchTypeEnum() throws Exception {
-		this.createEnumAndMembers("JoinFetchType", "INNER, OUTER;");	
-	}
-	
-	private void createJoinFetchAnnotation() throws Exception {
-		this.createAnnotationAndMembers("JoinFetch", "JoinFetchType value() default INNER;");
-		createJoinFetchTypeEnum();
-	}
 	
 	private ICompilationUnit createTestJoinFetch() throws Exception {
-		createJoinFetchAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -49,7 +39,6 @@ public class JoinFetchTests extends EclipseLinkJavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestJoinFetchWithValue() throws Exception {
-		createJoinFetchAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

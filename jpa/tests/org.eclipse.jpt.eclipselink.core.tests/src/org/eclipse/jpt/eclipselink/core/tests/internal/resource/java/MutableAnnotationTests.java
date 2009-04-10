@@ -25,7 +25,6 @@ public class MutableAnnotationTests extends EclipseLinkJavaResourceModelTestCase
 	}
 
 	private ICompilationUnit createTestMutable() throws Exception {
-		this.createAnnotationAndMembers("Mutable", "boolean value() default true;");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -39,7 +38,6 @@ public class MutableAnnotationTests extends EclipseLinkJavaResourceModelTestCase
 	}
 	
 	private ICompilationUnit createTestMutableWithValue() throws Exception {
-		this.createAnnotationAndMembers("Mutable", "boolean value() default true;");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

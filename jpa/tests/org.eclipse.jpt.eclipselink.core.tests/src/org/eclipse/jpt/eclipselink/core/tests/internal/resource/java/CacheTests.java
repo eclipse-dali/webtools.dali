@@ -26,41 +26,7 @@ public class CacheTests extends EclipseLinkJavaResourceModelTestCase {
 		super(name);
 	}
 	
-	private void createCacheTypeEnum() throws Exception {
-		this.createEnumAndMembers("CacheType", "SOFT_WEAK, HARD_WEAK, WEAK, SOFT, FULL, CACHE, NONE;");	
-	}
-	
-	private void createCacheCoordinationTypeEnum() throws Exception {
-		this.createEnumAndMembers("CacheCoordinationType", "SEND_OBJECT_CHANGES, INVALIDATE_CHANGED_OBJECTS, SEND_NEW_OBJECTS_WITH_CHANGES, NONE;");	
-	}
-	
-	private void createTimeOfDayAnnotation() throws Exception {
-
-		this.createAnnotationAndMembers("TimeOfDay", 
-			"int hour() default 0; " +
-			"int minute() default 0; " +
-			"int second() default 0; " +
-			"int millisecond() default 0;");
-	}
-
-	private void createCacheAnnotation() throws Exception {
-		createCacheTypeEnum();
-		createCacheCoordinationTypeEnum();
-		createTimeOfDayAnnotation();
-		this.createAnnotationAndMembers("Cache", 
-			"CacheType type() default SOFT_WEAK; " +
-			"int size() default 100; " +
-			"boolean shared() default true; " +
-			"int expiry() default -1; " +
-			"TimeOfDay expiryTimeOfDay() default @TimeOfDay(specified=false); " +
-			"boolean alwaysRefresh() default false; " +
-			"boolean refreshOnlyIfNewer() default false; " +
-			"boolean disableHits() default false; " +
-			"CacheCoordinationType coordinationType() default SEND_OBJECT_CHANGES;");
-	}
-	
 	private ICompilationUnit createTestCache() throws Exception {
-		createCacheAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -74,7 +40,6 @@ public class CacheTests extends EclipseLinkJavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestCacheWithCacheType() throws Exception {
-		createCacheAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -88,7 +53,6 @@ public class CacheTests extends EclipseLinkJavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestCacheWithSize() throws Exception {
-		createCacheAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -102,7 +66,6 @@ public class CacheTests extends EclipseLinkJavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestCacheWithExpiry() throws Exception {
-		createCacheAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -116,7 +79,6 @@ public class CacheTests extends EclipseLinkJavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestCacheWithExpiryTimeOfDay() throws Exception {
-		createCacheAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -130,7 +92,6 @@ public class CacheTests extends EclipseLinkJavaResourceModelTestCase {
 	}
 
 	private ICompilationUnit createTestCacheWithShared() throws Exception {
-		this.createCacheAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -144,7 +105,6 @@ public class CacheTests extends EclipseLinkJavaResourceModelTestCase {
 	}
 
 	private ICompilationUnit createTestCacheWithAlwaysRefresh() throws Exception {
-		this.createCacheAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -158,7 +118,6 @@ public class CacheTests extends EclipseLinkJavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestCacheWithRefreshOnlyIfNewer() throws Exception {
-		this.createCacheAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -172,7 +131,6 @@ public class CacheTests extends EclipseLinkJavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestCacheWithDisableHits() throws Exception {
-		this.createCacheAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -186,7 +144,6 @@ public class CacheTests extends EclipseLinkJavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestExistenceCheckingWithCoordinationType() throws Exception {
-		createCacheAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

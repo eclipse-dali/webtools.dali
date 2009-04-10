@@ -25,18 +25,7 @@ public class AccessAnnotationTests extends EclipseLink1_1JavaResourceModelTestCa
 		super(name);
 	}
 
-	//we can remove the creation of these once we have a jpa2.0.jar to use in our builds for testing
-	private void createAccessTypeEnum() throws Exception {
-		this.createEnumAndMembers(JAVAX_PERSISTENCE_PACKAGE_NAME, "AccessType", "FIELD, PROPERTY;");	
-	}
-	
-	private void createAccessAnnotation() throws Exception {
-		this.createAnnotationAndMembers(JAVAX_PERSISTENCE_PACKAGE_NAME, "Access", "AccessType value();");
-		createAccessTypeEnum();
-	}
-
 	private ICompilationUnit createTestAccessOnType() throws Exception {
-		createAccessAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -51,7 +40,6 @@ public class AccessAnnotationTests extends EclipseLink1_1JavaResourceModelTestCa
 	}
 
 	private ICompilationUnit createTestAccessOnField() throws Exception {
-		createAccessAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -66,7 +54,6 @@ public class AccessAnnotationTests extends EclipseLink1_1JavaResourceModelTestCa
 	}
 
 	private ICompilationUnit createTestAccessOnProperty() throws Exception {
-		createAccessAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -90,7 +77,6 @@ public class AccessAnnotationTests extends EclipseLink1_1JavaResourceModelTestCa
 	}
 
 	public void testSetAccessOnType() throws Exception {
-		createAccessAnnotation();
 		ICompilationUnit cu = this.createTestType();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		
@@ -127,7 +113,6 @@ public class AccessAnnotationTests extends EclipseLink1_1JavaResourceModelTestCa
 	}
 
 	public void testSetAccessOnField() throws Exception {
-		createAccessAnnotation();
 		ICompilationUnit cu = this.createTestType();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableFields().next();
@@ -165,7 +150,6 @@ public class AccessAnnotationTests extends EclipseLink1_1JavaResourceModelTestCa
 	}
 
 	public void testSetAccessOnProperty() throws Exception {
-		createAccessAnnotation();
 		ICompilationUnit cu = this.createTestType();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableProperties().next();

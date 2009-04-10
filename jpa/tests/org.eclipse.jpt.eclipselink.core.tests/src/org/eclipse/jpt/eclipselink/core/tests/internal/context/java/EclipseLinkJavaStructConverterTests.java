@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,23 +20,14 @@ import org.eclipse.jpt.eclipselink.core.context.Convert;
 import org.eclipse.jpt.eclipselink.core.context.StructConverter;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
 import org.eclipse.jpt.eclipselink.core.resource.java.StructConverterAnnotation;
+import org.eclipse.jpt.eclipselink.core.tests.internal.context.EclipseLinkContextModelTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
-public class EclipseLinkJavaStructConverterTests extends EclipseLinkJavaContextModelTestCase
+@SuppressWarnings("nls")
+public class EclipseLinkJavaStructConverterTests extends EclipseLinkContextModelTestCase
 {
-
-	private void createConvertAnnotation() throws Exception{
-		this.createAnnotationAndMembers(EclipseLinkJPA.PACKAGE, "Convert", "String value() default \"none\";");		
-	}
-	
-	private void createStructConverterAnnotation() throws Exception {
-		this.createAnnotationAndMembers(EclipseLinkJPA.PACKAGE, "StructConverter", "String name(); String converter()");		
-	}
-
 	
 	private ICompilationUnit createTestEntityWithConvertAndStructConverter() throws Exception {
-		createConvertAnnotation();
-		createStructConverterAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -56,8 +47,6 @@ public class EclipseLinkJavaStructConverterTests extends EclipseLinkJavaContextM
 	}
 	
 	private ICompilationUnit createTestEntityWithConvertAndStructConverterClass() throws Exception {
-		createConvertAnnotation();
-		createStructConverterAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

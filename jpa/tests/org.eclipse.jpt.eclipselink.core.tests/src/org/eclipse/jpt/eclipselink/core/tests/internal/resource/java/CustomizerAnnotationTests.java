@@ -24,7 +24,6 @@ public class CustomizerAnnotationTests extends EclipseLinkJavaResourceModelTestC
 	}
 
 	private ICompilationUnit createTestCustomizer() throws Exception {
-		this.createAnnotationAndMembers("Customizer", "Class value();");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -38,7 +37,6 @@ public class CustomizerAnnotationTests extends EclipseLinkJavaResourceModelTestC
 	}
 	
 	private ICompilationUnit createTestCustomizerWithValue() throws Exception {
-		this.createAnnotationAndMembers("Customizer", "Class value();");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

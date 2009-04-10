@@ -30,17 +30,8 @@ import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 public class EclipseLinkOrmTypeConverterTests
 	extends EclipseLinkOrmContextModelTestCase
 {
-	private void createConvertAnnotation() throws Exception{
-		this.createAnnotationAndMembers(EclipseLinkJPA.PACKAGE, "Convert", "String value() default \"none\";");		
-	}
-
-	private void createTypeConverterAnnotation() throws Exception{
-		this.createAnnotationAndMembers(EclipseLinkJPA.PACKAGE, "TypeConverter", "String name(); String converterClass();");		
-	}
 	
 	private ICompilationUnit createTestEntityWithBasicMapping() throws Exception {
-		createConvertAnnotation();
-		createTypeConverterAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

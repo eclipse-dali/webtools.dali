@@ -23,12 +23,7 @@ public class ReadOnlyTests extends EclipseLinkJavaResourceModelTestCase {
 		super(name);
 	}
 	
-	private void createReadOnlyAnnotation() throws Exception {
-		this.createAnnotationAndMembers("ReadOnly", "");
-	}
-
 	private ICompilationUnit createTestReadOnly() throws Exception {
-		this.createReadOnlyAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

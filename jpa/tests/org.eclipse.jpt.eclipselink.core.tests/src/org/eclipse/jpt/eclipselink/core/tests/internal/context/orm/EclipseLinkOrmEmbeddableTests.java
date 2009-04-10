@@ -43,7 +43,6 @@ public class EclipseLinkOrmEmbeddableTests extends EclipseLinkOrmContextModelTes
 	}
 
 	private ICompilationUnit createTestEmbeddableForCustomizer() throws Exception {
-		createCustomizerAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -56,13 +55,8 @@ public class EclipseLinkOrmEmbeddableTests extends EclipseLinkOrmContextModelTes
 			}
 		});
 	}
-	
-	private void createCustomizerAnnotation() throws Exception{
-		this.createAnnotationAndMembers(EclipseLinkJPA.PACKAGE, "Customizer", "Class value()");		
-	}
 		
 	private ICompilationUnit createTestEmbeddableForChangeTracking() throws Exception {
-		createChangeTrackingAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -74,19 +68,9 @@ public class EclipseLinkOrmEmbeddableTests extends EclipseLinkOrmContextModelTes
 				sb.append("@Embeddable").append(CR);
 			}
 		});
-	}
-	
-	private void createChangeTrackingAnnotation() throws Exception{
-		createChangeTrackingTypeEnum();
-		this.createAnnotationAndMembers(EclipseLinkJPA.PACKAGE, "ChangeTracking", "ChangeTrackingType value() default ChangeTrackingType.AUTO");		
-	}
-	
-	private void createChangeTrackingTypeEnum() throws Exception {
-		this.createEnumAndMembers(EclipseLinkJPA.PACKAGE, "ChangeTrackingType", "ATTRIBUTE, OBJECT, DEFERRED, AUTO;");	
-	}
+	}	
 	
 	private ICompilationUnit createTestEmbeddableForCustomConverters() throws Exception {
-		createConverterAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -100,7 +84,6 @@ public class EclipseLinkOrmEmbeddableTests extends EclipseLinkOrmContextModelTes
 	}
 
 	private ICompilationUnit createTestEmbeddableForTypeConverters() throws Exception {
-		createTypeConverterAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -114,7 +97,6 @@ public class EclipseLinkOrmEmbeddableTests extends EclipseLinkOrmContextModelTes
 	}
 
 	private ICompilationUnit createTestEmbeddableForObjectTypeConverters() throws Exception {
-		createObjectTypeConverterAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -128,7 +110,6 @@ public class EclipseLinkOrmEmbeddableTests extends EclipseLinkOrmContextModelTes
 	}
 
 	private ICompilationUnit createTestEmbeddableForStructConverters() throws Exception {
-		createStructConverterAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -139,27 +120,6 @@ public class EclipseLinkOrmEmbeddableTests extends EclipseLinkOrmContextModelTes
 				sb.append("@Embeddable").append(CR);
 			}
 		});
-	}
-
-	private void createConverterAnnotation() throws Exception{
-		this.createAnnotationAndMembers(EclipseLinkJPA.PACKAGE, "Converter", "String name(); String converterClass();");		
-	}
-
-	private void createTypeConverterAnnotation() throws Exception{
-		this.createAnnotationAndMembers(EclipseLinkJPA.PACKAGE, "TypeConverter", "String name(); String converterClass();");		
-	}
-
-	private void createStructConverterAnnotation() throws Exception{
-		this.createAnnotationAndMembers(EclipseLinkJPA.PACKAGE, "StructConverter", "String name(); String converterClass();");		
-	}
-
-	private void createObjectTypeConverterAnnotation() throws Exception{
-		createConversionValueAnnotation();
-		this.createAnnotationAndMembers(EclipseLinkJPA.PACKAGE, "ObjectTypeConverter", "String name(); Class dataType() default void.class; Class objectType() default void.class; ConversionValue[] conversionValues();String defaultObjectValue() default \"\";");		
-	}
-	
-	private void createConversionValueAnnotation() throws Exception {
-		this.createAnnotationAndMembers(EclipseLinkJPA.PACKAGE, "ConversionValue", "String dataValue(); String objectValue();");		
 	}
 	
 	public void testUpdateCustomizerClass() throws Exception {

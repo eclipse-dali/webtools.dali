@@ -25,25 +25,8 @@ public class ObjectTypeConverterAnnotationTests extends EclipseLinkJavaResourceM
 	public ObjectTypeConverterAnnotationTests(String name) {
 		super(name);
 	}
-
-	private void createObjectTypeConverterAnnotation() throws Exception {
-		createConversionValueAnnotation();
-		this.createAnnotationAndMembers("ObjectTypeConverter", 
-			"String name(); " +
-			"Class dataType() default void.class; " +
-			"Class objectType() default void.class; " +
-			"ConversionValue[] conversionValues(); " +
-			"String defaultObjectValue() default \"\"");		
-	}
-	
-	private void createConversionValueAnnotation() throws Exception {
-		this.createAnnotationAndMembers("ConversionValue", 
-			" String dataValue(); " +
-			" String objectValue(); ");		
-	}
 	
 	private ICompilationUnit createTestObjectTypeConverter() throws Exception {
-		createObjectTypeConverterAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -57,7 +40,6 @@ public class ObjectTypeConverterAnnotationTests extends EclipseLinkJavaResourceM
 	}
 	
 	private ICompilationUnit createTestObjectTypeConverterWithDataType() throws Exception {
-		createObjectTypeConverterAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -71,7 +53,6 @@ public class ObjectTypeConverterAnnotationTests extends EclipseLinkJavaResourceM
 	}
 	
 	private ICompilationUnit createTestObjectTypeConverterWithObjectType() throws Exception {
-		createObjectTypeConverterAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -85,7 +66,6 @@ public class ObjectTypeConverterAnnotationTests extends EclipseLinkJavaResourceM
 	}
 	
 	private ICompilationUnit createTestObjectTypeConverterWithName() throws Exception {
-		createObjectTypeConverterAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -99,7 +79,6 @@ public class ObjectTypeConverterAnnotationTests extends EclipseLinkJavaResourceM
 	}
 	
 	private ICompilationUnit createTestObjectTypeConverterWithDefaultObjectValue() throws Exception {
-		createObjectTypeConverterAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -113,7 +92,6 @@ public class ObjectTypeConverterAnnotationTests extends EclipseLinkJavaResourceM
 	}
 	
 	private ICompilationUnit createTestObjectTypeConverterWithConversionValues() throws Exception {
-		createObjectTypeConverterAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

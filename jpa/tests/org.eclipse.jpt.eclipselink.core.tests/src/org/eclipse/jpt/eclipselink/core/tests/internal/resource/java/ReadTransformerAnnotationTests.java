@@ -25,7 +25,6 @@ public class ReadTransformerAnnotationTests extends EclipseLinkJavaResourceModel
 	}
 
 	private ICompilationUnit createTestReadTransformer() throws Exception {
-		this.createAnnotationAndMembers("ReadTransformer", "Class transformerClass() default void.class; String method() default \"\"");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -39,7 +38,6 @@ public class ReadTransformerAnnotationTests extends EclipseLinkJavaResourceModel
 	}
 	
 	private ICompilationUnit createTestReadTransformerWithTransformerClass() throws Exception {
-		this.createAnnotationAndMembers("ReadTransformer", "Class transformerClass() default void.class; String method() default \"\"");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -53,7 +51,6 @@ public class ReadTransformerAnnotationTests extends EclipseLinkJavaResourceModel
 	}
 	
 	private ICompilationUnit createTestReadTransformerWithMethod() throws Exception {
-		this.createAnnotationAndMembers("ReadTransformer", "Class transformerClass() default void.class; String method() default \"\"");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

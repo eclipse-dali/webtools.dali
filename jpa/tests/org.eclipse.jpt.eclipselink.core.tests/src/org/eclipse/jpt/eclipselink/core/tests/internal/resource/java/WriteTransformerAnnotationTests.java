@@ -25,27 +25,7 @@ public class WriteTransformerAnnotationTests extends EclipseLinkJavaResourceMode
 		super(name);
 	}
 
-	private void createWriteTransformerAnnotation() throws Exception {
-		this.createAnnotationAndMembers("WriteTransformer", "Class transformerClass() default void.class; String method() default \"\";Column column() default @Column");
-		this.createColumnAnnotation();
-	}
-	
-	private void createColumnAnnotation() throws Exception {
-		this.createAnnotationAndMembers(JPA.PACKAGE, "Column", 
-			"String name() default \"\"; " +
-			"boolean unique() default false; " +
-			"boolean nullable() default true; " +
-			"boolean insertable() default true; " +
-			"boolean updatable() default true; " +
-			"String columnDefinition() default \"\"; " +
-			"String table() default \"\"; " +
-			"int length() default 255; " +
-			"int precision() default 0; " +
-			"int scale() default 0;");
-	}
-
 	private ICompilationUnit createTestWriteTransformer() throws Exception {
-		createWriteTransformerAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -59,7 +39,6 @@ public class WriteTransformerAnnotationTests extends EclipseLinkJavaResourceMode
 	}
 	
 	private ICompilationUnit createTestWriteTransformerWithTransformerClass() throws Exception {
-		createWriteTransformerAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -73,7 +52,6 @@ public class WriteTransformerAnnotationTests extends EclipseLinkJavaResourceMode
 	}
 	
 	private ICompilationUnit createTestWriteTransformerWithMethod() throws Exception {
-		createWriteTransformerAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -87,7 +65,6 @@ public class WriteTransformerAnnotationTests extends EclipseLinkJavaResourceMode
 	}
 	
 	private ICompilationUnit createTestWriteTransformerWithColumn() throws Exception {
-		createWriteTransformerAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

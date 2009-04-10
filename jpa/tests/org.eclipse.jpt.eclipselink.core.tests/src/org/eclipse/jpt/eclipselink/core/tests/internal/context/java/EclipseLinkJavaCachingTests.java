@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,70 +22,17 @@ import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaEntity;
 import org.eclipse.jpt.eclipselink.core.resource.java.CacheAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
 import org.eclipse.jpt.eclipselink.core.resource.java.ExistenceCheckingAnnotation;
+import org.eclipse.jpt.eclipselink.core.tests.internal.context.EclipseLinkContextModelTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
-public class EclipseLinkJavaCachingTests extends EclipseLinkJavaContextModelTestCase
+public class EclipseLinkJavaCachingTests extends EclipseLinkContextModelTestCase
 {	
 	public EclipseLinkJavaCachingTests(String name) {
 		super(name);
 	}
-	
-	private void createCacheTypeEnum() throws Exception {
-		this.createEnumAndMembers(ECLIPSELINK_ANNOTATIONS_PACKAGE_NAME, "CacheType", "SOFT_WEAK, HARD_WEAK, WEAK, SOFT, FULL, CACHE, NONE;");	
-	}
-	
-	private void createCacheCoordinationTypeEnum() throws Exception {
-		this.createEnumAndMembers(ECLIPSELINK_ANNOTATIONS_PACKAGE_NAME, "CacheCoordinationType", "SEND_OBJECT_CHANGES, INVALIDATE_CHANGED_OBJECTS, SEND_NEW_OBJECTS_WITH_CHANGES, NONE;");	
-	}
-	
-	private void createExistenceTypeEnum() throws Exception {
-		this.createEnumAndMembers(ECLIPSELINK_ANNOTATIONS_PACKAGE_NAME, "ExistenceType", "CHECK_CACHE, CHECK_DATABASE, ASSUME_EXISTENCE, ASSUME_NON_EXISTENCE;");	
-	}
-	
-	private void createCacheAnnotation() throws Exception {
-		createCacheTypeEnum();
-		createCacheCoordinationTypeEnum();
-		createTimeOfDayAnnotation();
-		this.createAnnotationAndMembers(ECLIPSELINK_ANNOTATIONS_PACKAGE_NAME, "Cache", 
-			"CacheType type() default SOFT_WEAK; " +
-			"int size() default 100; " +
-			"boolean shared() default true; " +
-			"int expiry() default -1; " +
-			"TimeOfDay expiryTimeOfDay() default @TimeOfDay(specified=false); " +
-			"boolean alwaysRefresh() default false; " +
-			"boolean refreshOnlyIfNewer() default false; " +
-			"boolean disableHits() default false; " +
-			"CacheCoordinationType coordinationType() default SEND_OBJECT_CHANGES;");
-	}
-	
-	private void createTimeOfDayAnnotation() throws Exception {
-		this.createAnnotationAndMembers(ECLIPSELINK_ANNOTATIONS_PACKAGE_NAME, "TimeOfDay", 
-			"int hour() default 0; " +
-			"int minute() default 0; " +
-			"int second() default 0; " +
-			"int millisecond() default 0;");
-	}
-
-	private void createExistenceCheckingAnnotation() throws Exception {
-		createExistenceTypeEnum();
-
-		this.createAnnotationAndMembers(ECLIPSELINK_ANNOTATIONS_PACKAGE_NAME, "ExistenceChecking", 
-			"ExistenceType value() default CHECK_CACHE;; " +
-			"int size() default 100; " +
-			"boolean shared() default true; " +
-			"int expiry() default -1; " +
-			"TimeOfDay expiryTimeOfDay() default @TimeOfDay(specified=false); " +
-			"boolean alwaysRefresh() default false; " +
-			"boolean refreshOnlyIfNewer() default false; " +
-			"boolean disableHits() default false; " +
-			"CacheCoordinationType coordinationType() default SEND_OBJECT_CHANGES;");
-	}
-	
 
 	private ICompilationUnit createTestEntity() throws Exception {
-		createCacheAnnotation();
-		createExistenceCheckingAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

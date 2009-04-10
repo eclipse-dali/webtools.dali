@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -23,27 +23,17 @@ import org.eclipse.jpt.core.resource.java.TemporalAnnotation;
 import org.eclipse.jpt.eclipselink.core.context.Convert;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkIdMapping;
 import org.eclipse.jpt.eclipselink.core.context.Mutable;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.resource.java.ConvertAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
 import org.eclipse.jpt.eclipselink.core.resource.java.MutableAnnotation;
+import org.eclipse.jpt.eclipselink.core.tests.internal.context.EclipseLinkContextModelTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
-public class EclipseLinkJavaIdMappingTests extends EclipseLinkJavaContextModelTestCase
+public class EclipseLinkJavaIdMappingTests extends EclipseLinkContextModelTestCase
 {
-
-	private void createConvertAnnotation() throws Exception{
-		this.createAnnotationAndMembers(EclipseLinkJPA.PACKAGE, "Convert", "String value() default \"none\";");		
-	}
-
-	private void createMutableAnnotation() throws Exception{
-		this.createAnnotationAndMembers(EclipseLinkJPA.PACKAGE, "Mutable", "boolean value() default true");		
-	}
 	
-	private ICompilationUnit createTestEntityWithIdMapping() throws Exception {
-		createConvertAnnotation();
-		
+	private ICompilationUnit createTestEntityWithIdMapping() throws Exception {		
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -63,8 +53,6 @@ public class EclipseLinkJavaIdMappingTests extends EclipseLinkJavaContextModelTe
 
 	
 	private ICompilationUnit createTestEntityWithConvert() throws Exception {
-		createConvertAnnotation();
-	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -84,8 +72,6 @@ public class EclipseLinkJavaIdMappingTests extends EclipseLinkJavaContextModelTe
 	}
 	
 	private ICompilationUnit createTestEntityWithMutableId() throws Exception {
-		createMutableAnnotation();
-		
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -105,8 +91,6 @@ public class EclipseLinkJavaIdMappingTests extends EclipseLinkJavaContextModelTe
 	}
 	
 	private ICompilationUnit createTestEntityWithMutableIdDate() throws Exception {
-		createMutableAnnotation();
-		
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -280,7 +264,7 @@ public class EclipseLinkJavaIdMappingTests extends EclipseLinkJavaContextModelTe
 		assertTrue(mutable.isDefaultMutable());
 		
 		//set mutable default to false in the persistence unit properties, verify default in java still true since this is not a Date/Calendar
-		((EclipseLinkPersistenceUnit) getPersistenceUnit()).getOptions().setTemporalMutable(Boolean.FALSE);
+		(getPersistenceUnit()).getOptions().setTemporalMutable(Boolean.FALSE);
 		assertTrue(mutable.isDefaultMutable());
 	}
 	
@@ -302,13 +286,13 @@ public class EclipseLinkJavaIdMappingTests extends EclipseLinkJavaContextModelTe
 		assertFalse(mutable.isDefaultMutable());
 		
 		//set mutable default to false in the persistence unit properties, verify default in java still true since this is not a Date/Calendar
-		((EclipseLinkPersistenceUnit) getPersistenceUnit()).getOptions().setTemporalMutable(Boolean.TRUE);
+		(getPersistenceUnit()).getOptions().setTemporalMutable(Boolean.TRUE);
 		assertTrue(mutable.isDefaultMutable());
 		
-		((EclipseLinkPersistenceUnit) getPersistenceUnit()).getOptions().setTemporalMutable(Boolean.FALSE);
+		(getPersistenceUnit()).getOptions().setTemporalMutable(Boolean.FALSE);
 		assertFalse(mutable.isDefaultMutable());
 		
-		((EclipseLinkPersistenceUnit) getPersistenceUnit()).getOptions().setTemporalMutable(null);
+		(getPersistenceUnit()).getOptions().setTemporalMutable(null);
 		assertFalse(mutable.isDefaultMutable());
 	}
 	

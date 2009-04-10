@@ -35,17 +35,7 @@ public class EclipseLinkOrmVersionMappingTests
 		super(name);
 	}
 	
-	private void createConvertAnnotation() throws Exception{
-		this.createAnnotationAndMembers(EclipseLinkJPA.PACKAGE, "Convert", "String value() default \"none\";");		
-	}
-
-	private void createMutableAnnotation() throws Exception{
-		this.createAnnotationAndMembers(EclipseLinkJPA.PACKAGE, "Mutable", "boolean value() default true");		
-	}
-	
 	private ICompilationUnit createTestEntityWithVersionMapping() throws Exception {
-		createConvertAnnotation();
-		createMutableAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -64,8 +54,6 @@ public class EclipseLinkOrmVersionMappingTests
 	}
 	
 	private ICompilationUnit createTestEntityWithMutableVersionDate() throws Exception {
-		createMutableAnnotation();
-		
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

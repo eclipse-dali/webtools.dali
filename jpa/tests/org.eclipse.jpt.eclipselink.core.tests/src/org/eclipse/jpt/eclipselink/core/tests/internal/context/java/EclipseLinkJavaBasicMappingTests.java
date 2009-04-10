@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -26,24 +26,14 @@ import org.eclipse.jpt.eclipselink.core.context.Mutable;
 import org.eclipse.jpt.eclipselink.core.resource.java.ConvertAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
 import org.eclipse.jpt.eclipselink.core.resource.java.MutableAnnotation;
+import org.eclipse.jpt.eclipselink.core.tests.internal.context.EclipseLinkContextModelTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
-public class EclipseLinkJavaBasicMappingTests extends EclipseLinkJavaContextModelTestCase
-{
-
-	private void createConvertAnnotation() throws Exception{
-		this.createAnnotationAndMembers(EclipseLinkJPA.PACKAGE, "Convert", "String value() default \"none\";");		
-	}
-
-	private void createMutableAnnotation() throws Exception{
-		this.createAnnotationAndMembers(EclipseLinkJPA.PACKAGE, "Mutable", "boolean value() default true");		
-	}
-	
+public class EclipseLinkJavaBasicMappingTests extends EclipseLinkContextModelTestCase
+{	
 	
 	private ICompilationUnit createTestEntityWithBasicMapping() throws Exception {
-		createConvertAnnotation();
-		
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -63,8 +53,6 @@ public class EclipseLinkJavaBasicMappingTests extends EclipseLinkJavaContextMode
 
 	
 	private ICompilationUnit createTestEntityWithConvert() throws Exception {
-		createConvertAnnotation();
-	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -83,8 +71,6 @@ public class EclipseLinkJavaBasicMappingTests extends EclipseLinkJavaContextMode
 	}
 	
 	private ICompilationUnit createTestEntityWithMutableBasic() throws Exception {
-		createMutableAnnotation();
-		
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -104,8 +90,6 @@ public class EclipseLinkJavaBasicMappingTests extends EclipseLinkJavaContextMode
 	}
 	
 	private ICompilationUnit createTestEntityWithMutableBasicDate() throws Exception {
-		createMutableAnnotation();
-		
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

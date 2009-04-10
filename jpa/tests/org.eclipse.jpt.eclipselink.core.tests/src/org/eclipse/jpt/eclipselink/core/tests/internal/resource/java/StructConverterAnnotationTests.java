@@ -25,7 +25,6 @@ public class StructConverterAnnotationTests extends EclipseLinkJavaResourceModel
 	}
 
 	private ICompilationUnit createTestStructConverter() throws Exception {
-		this.createAnnotationAndMembers("StructConverter", "String name(); String converter()");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -39,7 +38,6 @@ public class StructConverterAnnotationTests extends EclipseLinkJavaResourceModel
 	}
 	
 	private ICompilationUnit createTestStructConverterWithConverter() throws Exception {
-		this.createAnnotationAndMembers("StructConverter", "String name(); String converter()");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -53,7 +51,6 @@ public class StructConverterAnnotationTests extends EclipseLinkJavaResourceModel
 	}
 	
 	private ICompilationUnit createTestStructConverterWithName() throws Exception {
-		this.createAnnotationAndMembers("StructConverter", "String name(); String converter()");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

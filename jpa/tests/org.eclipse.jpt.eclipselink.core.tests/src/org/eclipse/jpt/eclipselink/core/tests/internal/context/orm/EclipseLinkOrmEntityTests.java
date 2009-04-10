@@ -51,7 +51,6 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 	}
 	
 	private ICompilationUnit createTestEntityForReadOnly() throws Exception {
-		createReadOnlyAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -64,12 +63,7 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 		});
 	}
 	
-	private void createReadOnlyAnnotation() throws Exception{
-		this.createAnnotationAndMembers(EclipseLinkJPA.PACKAGE, "ReadOnly", "");		
-	}
-	
 	private ICompilationUnit createTestEntityForCustomizer() throws Exception {
-		createCustomizerAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -81,12 +75,8 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 			}
 		});
 	}
-	
-	private void createCustomizerAnnotation() throws Exception{
-		this.createAnnotationAndMembers(EclipseLinkJPA.PACKAGE, "Customizer", "Class value()");		
-	}
+
 	private ICompilationUnit createTestEntityForChangeTracking() throws Exception {
-		createChangeTrackingAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -99,19 +89,8 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 			}
 		});
 	}
-	
-	private void createChangeTrackingAnnotation() throws Exception{
-		createChangeTrackingTypeEnum();
-		this.createAnnotationAndMembers(EclipseLinkJPA.PACKAGE, "ChangeTracking", "ChangeTrackingType value() default ChangeTrackingType.AUTO");		
-	}
-	
-	private void createChangeTrackingTypeEnum() throws Exception {
-		this.createEnumAndMembers(EclipseLinkJPA.PACKAGE, "ChangeTrackingType", "ATTRIBUTE, OBJECT, DEFERRED, AUTO;");	
-	}
-	
+
 	private ICompilationUnit createTestEntityForCaching() throws Exception {
-		createCacheAnnotation();
-		createExistenceCheckingAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -123,60 +102,8 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 			}
 		});
 	}
-	
-	private void createCacheTypeEnum() throws Exception {
-		this.createEnumAndMembers(EclipseLinkJPA.PACKAGE, "CacheType", "SOFT_WEAK, HARD_WEAK, WEAK, SOFT, FULL, CACHE, NONE;");	
-	}
-	
-	private void createCacheCoordinationTypeEnum() throws Exception {
-		this.createEnumAndMembers(EclipseLinkJPA.PACKAGE, "CacheCoordinationType", "SEND_OBJECT_CHANGES, INVALIDATE_CHANGED_OBJECTS, SEND_NEW_OBJECTS_WITH_CHANGES, NONE;");	
-	}
-	
-	private void createExistenceTypeEnum() throws Exception {
-		this.createEnumAndMembers(EclipseLinkJPA.PACKAGE, "ExistenceType", "CHECK_CACHE, CHECK_DATABASE, ASSUME_EXISTENCE, ASSUME_NON_EXISTENCE;");	
-	}
-	
-	private void createCacheAnnotation() throws Exception {
-		createCacheTypeEnum();
-		createCacheCoordinationTypeEnum();
-		createTimeOfDayAnnotation();
-		this.createAnnotationAndMembers(EclipseLinkJPA.PACKAGE, "Cache", 
-			"CacheType type() default SOFT_WEAK; " +
-			"int size() default 100; " +
-			"boolean shared() default true; " +
-			"int expiry() default -1; " +
-			"TimeOfDay expiryTimeOfDay() default @TimeOfDay(specified=false); " +
-			"boolean alwaysRefresh() default false; " +
-			"boolean refreshOnlyIfNewer() default false; " +
-			"boolean disableHits() default false; " +
-			"CacheCoordinationType coordinationType() default SEND_OBJECT_CHANGES;");
-	}
-	
-	private void createTimeOfDayAnnotation() throws Exception {
-		this.createAnnotationAndMembers(EclipseLinkJPA.PACKAGE, "TimeOfDay", 
-			"int hour() default 0; " +
-			"int minute() default 0; " +
-			"int second() default 0; " +
-			"int millisecond() default 0;");
-	}
-
-	private void createExistenceCheckingAnnotation() throws Exception {
-		createExistenceTypeEnum();
-
-		this.createAnnotationAndMembers(EclipseLinkJPA.PACKAGE, "ExistenceChecking", 
-			"ExistenceType value() default CHECK_CACHE;; " +
-			"int size() default 100; " +
-			"boolean shared() default true; " +
-			"int expiry() default -1; " +
-			"TimeOfDay expiryTimeOfDay() default @TimeOfDay(specified=false); " +
-			"boolean alwaysRefresh() default false; " +
-			"boolean refreshOnlyIfNewer() default false; " +
-			"boolean disableHits() default false; " +
-			"CacheCoordinationType coordinationType() default SEND_OBJECT_CHANGES;");
-	}
 
 	private ICompilationUnit createTestEntityForConverters() throws Exception {
-		createConverterAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -190,7 +117,6 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 	}
 
 	private ICompilationUnit createTestEntityForTypeConverters() throws Exception {
-		createTypeConverterAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -204,7 +130,6 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 	}
 
 	private ICompilationUnit createTestEntityForObjectTypeConverters() throws Exception {
-		createObjectTypeConverterAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -218,7 +143,6 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 	}
 
 	private ICompilationUnit createTestEntityForStructConverters() throws Exception {
-		createStructConverterAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -230,28 +154,6 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 			}
 		});
 	}
-
-	private void createConverterAnnotation() throws Exception{
-		this.createAnnotationAndMembers(EclipseLinkJPA.PACKAGE, "Converter", "String name(); String converterClass();");		
-	}
-
-	private void createTypeConverterAnnotation() throws Exception{
-		this.createAnnotationAndMembers(EclipseLinkJPA.PACKAGE, "TypeConverter", "String name(); String converterClass();");		
-	}
-
-	private void createStructConverterAnnotation() throws Exception{
-		this.createAnnotationAndMembers(EclipseLinkJPA.PACKAGE, "StructConverter", "String name(); String converterClass();");		
-	}
-
-	private void createObjectTypeConverterAnnotation() throws Exception{
-		createConversionValueAnnotation();
-		this.createAnnotationAndMembers(EclipseLinkJPA.PACKAGE, "ObjectTypeConverter", "String name(); Class dataType() default void.class; Class objectType() default void.class; ConversionValue[] conversionValues();String defaultObjectValue() default \"\";");		
-	}
-	
-	private void createConversionValueAnnotation() throws Exception {
-		this.createAnnotationAndMembers(EclipseLinkJPA.PACKAGE, "ConversionValue", "String dataValue(); String objectValue();");		
-	}
-
 	
 	public void testUpdateReadOnly() throws Exception {
 		createTestEntityForReadOnly();

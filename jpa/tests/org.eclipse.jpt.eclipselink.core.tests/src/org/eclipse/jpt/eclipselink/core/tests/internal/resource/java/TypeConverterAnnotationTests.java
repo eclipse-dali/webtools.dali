@@ -25,7 +25,6 @@ public class TypeConverterAnnotationTests extends EclipseLinkJavaResourceModelTe
 	}
 
 	private ICompilationUnit createTestTypeConverter() throws Exception {
-		this.createAnnotationAndMembers("TypeConverter", "String name(); Class dataType() default void.class; Class objectType() default void.class ");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -39,7 +38,6 @@ public class TypeConverterAnnotationTests extends EclipseLinkJavaResourceModelTe
 	}
 	
 	private ICompilationUnit createTestTypeConverterWithDataType() throws Exception {
-		this.createAnnotationAndMembers("TypeConverter", "String name(); Class dataType() default void.class; Class objectType() default void.class ");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -53,7 +51,6 @@ public class TypeConverterAnnotationTests extends EclipseLinkJavaResourceModelTe
 	}
 	
 	private ICompilationUnit createTestTypeConverterWithObjectType() throws Exception {
-		this.createAnnotationAndMembers("TypeConverter", "String name(); Class dataType() default void.class; Class objectType() default void.class ");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -67,7 +64,6 @@ public class TypeConverterAnnotationTests extends EclipseLinkJavaResourceModelTe
 	}
 	
 	private ICompilationUnit createTestTypeConverterWithName() throws Exception {
-		this.createAnnotationAndMembers("TypeConverter", "String name(); Class dataType() default void.class; Class objectType() default void.class ");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

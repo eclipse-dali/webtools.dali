@@ -56,6 +56,9 @@ public class TestJpaProject extends TestJavaProject {
 		this.installFacet("jst.utility", "1.0");
 		this.installFacet("jpt.jpa", "1.0", jpaConfig);
 		this.addJar(jpaJarName());
+		if (eclipseLinkJarName() != null) {
+			this.addJar(eclipseLinkJarName());
+		}
 		this.jpaProject = JptCorePlugin.getJpaProject(this.getProject());
 		this.jpaProject.setDiscoversAnnotatedClasses(true);
 		this.jpaProject.setUpdater(new SynchronousJpaProjectUpdater(this.jpaProject));
@@ -70,11 +73,7 @@ public class TestJpaProject extends TestJavaProject {
 	}
 
 	private static String getSystemProperty(String propertyName) {
-		String propertyValue = System.getProperty(propertyName);
-		if(propertyValue == null) {
-			throw new RuntimeException("missing Java system property: \"" + propertyName + "\"");
-		}
-		return propertyValue;
+		return System.getProperty(propertyName);
 	}
 
 

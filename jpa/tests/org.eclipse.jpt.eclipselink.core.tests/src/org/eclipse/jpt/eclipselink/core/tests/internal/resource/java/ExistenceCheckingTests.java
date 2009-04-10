@@ -23,18 +23,8 @@ public class ExistenceCheckingTests extends EclipseLinkJavaResourceModelTestCase
 	public ExistenceCheckingTests(String name) {
 		super(name);
 	}
-
-	private void createExistenceTypeEnum() throws Exception {
-		this.createEnumAndMembers("ExistenceType", "CHECK_CACHE, CHECK_DATABASE, ASSUME_EXISTENCE, ASSUME_NON_EXISTENCE;");	
-	}
-	
-	private void createExistenceCheckingAnnotation() throws Exception {
-		this.createAnnotationAndMembers("ExistenceChecking", "ExistenceType value() default CHECK_CACHE;");
-		createExistenceTypeEnum();
-	}
 	
 	private ICompilationUnit createTestExistenceChecking() throws Exception {
-		createExistenceCheckingAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -48,7 +38,6 @@ public class ExistenceCheckingTests extends EclipseLinkJavaResourceModelTestCase
 	}
 	
 	private ICompilationUnit createTestExistenceCheckingWithValue() throws Exception {
-		createExistenceCheckingAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

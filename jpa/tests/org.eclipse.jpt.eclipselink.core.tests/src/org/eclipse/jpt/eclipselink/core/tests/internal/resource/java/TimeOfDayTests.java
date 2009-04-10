@@ -23,32 +23,8 @@ public class TimeOfDayTests extends EclipseLinkJavaResourceModelTestCase {
 	public TimeOfDayTests(String name) {
 		super(name);
 	}
-
-	private void createTimeOfDayAnnotation() throws Exception {
-
-		this.createAnnotationAndMembers("TimeOfDay", 
-			"int hour() default 0; " +
-			"int minute() default 0; " +
-			"int second() default 0; " +
-			"int millisecond() default 0;");
-	}
-
-	private void createCacheAnnotation() throws Exception {
-		this.createAnnotationAndMembers("Cache", 
-			"CacheType type() default SOFT_WEAK; " +
-			"int size() default 100; " +
-			"boolean shared() default true; " +
-			"int expiry() default -1; " +
-			"TimeOfDay expiryTimeOfDay() default @TimeOfDay(specified=false); " +
-			"boolean alwaysRefresh() default false; " +
-			"boolean refreshOnlyIfNewer() default false; " +
-			"boolean disableHits() default false; " +
-			"CacheCoordinationType coordinationType() default SEND_OBJECT_CHANGES;");
-	}
 	
 	private ICompilationUnit createTestTimeOfDay() throws Exception {
-		createCacheAnnotation();
-		createTimeOfDayAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -62,8 +38,6 @@ public class TimeOfDayTests extends EclipseLinkJavaResourceModelTestCase {
 	}
 
 	private ICompilationUnit createTestTimeOfDayWithHour() throws Exception {
-		createCacheAnnotation();
-		createTimeOfDayAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -77,8 +51,6 @@ public class TimeOfDayTests extends EclipseLinkJavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestTimeOfDayWithMinute() throws Exception {
-		createCacheAnnotation();
-		createTimeOfDayAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -92,8 +64,6 @@ public class TimeOfDayTests extends EclipseLinkJavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestTimeOfDayWithSecond() throws Exception {
-		createCacheAnnotation();
-		createTimeOfDayAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -107,8 +77,6 @@ public class TimeOfDayTests extends EclipseLinkJavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestTimeOfDayWithMillisecond() throws Exception {
-		createCacheAnnotation();
-		createTimeOfDayAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

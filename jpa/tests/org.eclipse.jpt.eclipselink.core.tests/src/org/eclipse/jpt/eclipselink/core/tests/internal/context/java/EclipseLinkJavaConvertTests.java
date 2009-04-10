@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -23,27 +23,14 @@ import org.eclipse.jpt.eclipselink.core.resource.java.ConvertAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
 import org.eclipse.jpt.eclipselink.core.resource.java.StructConverterAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.TypeConverterAnnotation;
+import org.eclipse.jpt.eclipselink.core.tests.internal.context.EclipseLinkContextModelTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
-public class EclipseLinkJavaConvertTests extends EclipseLinkJavaContextModelTestCase
+public class EclipseLinkJavaConvertTests extends EclipseLinkContextModelTestCase
 {
 
-	private void createConvertAnnotation() throws Exception{
-		this.createAnnotationAndMembers(EclipseLinkJPA.PACKAGE, "Convert", "String value() default \"none\";");		
-	}
-	
-	private void createTypeConverterAnnotation() throws Exception {
-		this.createAnnotationAndMembers(EclipseLinkJPA.PACKAGE, "TypeConverter", "String name(); Class dataType() default void.class; Class objectType default void.class;");		
-	}
-	
-	private void createStructConverterAnnotation() throws Exception {
-		this.createAnnotationAndMembers(EclipseLinkJPA.PACKAGE, "StructConverter", "String name(); String converter();");		
-	}
-
 	private ICompilationUnit createTestEntityWithBasicMapping() throws Exception {
-		createConvertAnnotation();
-		
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -63,8 +50,6 @@ public class EclipseLinkJavaConvertTests extends EclipseLinkJavaContextModelTest
 
 	
 	private ICompilationUnit createTestEntityWithConvert() throws Exception {
-		createConvertAnnotation();
-	
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -83,8 +68,6 @@ public class EclipseLinkJavaConvertTests extends EclipseLinkJavaContextModelTest
 	}
 	
 	private ICompilationUnit createTestEntityWithConvertAndTypeConverter() throws Exception {
-		createConvertAnnotation();
-		createTypeConverterAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -199,8 +182,6 @@ public class EclipseLinkJavaConvertTests extends EclipseLinkJavaContextModelTest
 	
 	public void testSetConverter() throws Exception {
 		createTestEntityWithConvert();
-		createStructConverterAnnotation();
-		createTypeConverterAnnotation();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();

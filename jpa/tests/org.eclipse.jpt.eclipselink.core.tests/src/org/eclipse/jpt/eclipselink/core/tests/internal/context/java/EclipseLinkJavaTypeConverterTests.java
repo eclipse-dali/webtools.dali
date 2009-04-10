@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,23 +20,14 @@ import org.eclipse.jpt.eclipselink.core.context.Convert;
 import org.eclipse.jpt.eclipselink.core.context.TypeConverter;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
 import org.eclipse.jpt.eclipselink.core.resource.java.TypeConverterAnnotation;
+import org.eclipse.jpt.eclipselink.core.tests.internal.context.EclipseLinkContextModelTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
-public class EclipseLinkJavaTypeConverterTests extends EclipseLinkJavaContextModelTestCase
+@SuppressWarnings("nls")
+public class EclipseLinkJavaTypeConverterTests extends EclipseLinkContextModelTestCase
 {
-
-	private void createConvertAnnotation() throws Exception{
-		this.createAnnotationAndMembers(EclipseLinkJPA.PACKAGE, "Convert", "String value() default \"none\";");		
-	}
-	
-	private void createTypeConverterAnnotation() throws Exception {
-		this.createAnnotationAndMembers(EclipseLinkJPA.PACKAGE, "TypeConverter", "String name(); Class dataType() default void.class;  Class objectType() default void.class;");		
-	}
-
 	
 	private ICompilationUnit createTestEntityWithConvertAndTypeConverter() throws Exception {
-		createConvertAnnotation();
-		createTypeConverterAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -56,8 +47,6 @@ public class EclipseLinkJavaTypeConverterTests extends EclipseLinkJavaContextMod
 	}
 	
 	private ICompilationUnit createTestEntityWithConvertAndDataType() throws Exception {
-		createConvertAnnotation();
-		createTypeConverterAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -77,8 +66,6 @@ public class EclipseLinkJavaTypeConverterTests extends EclipseLinkJavaContextMod
 	}
 	
 	private ICompilationUnit createTestEntityWithConvertAndObjectType() throws Exception {
-		createConvertAnnotation();
-		createTypeConverterAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

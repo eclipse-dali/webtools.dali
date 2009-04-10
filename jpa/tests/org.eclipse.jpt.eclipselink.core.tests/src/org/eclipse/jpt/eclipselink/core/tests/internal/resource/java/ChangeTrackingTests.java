@@ -23,18 +23,8 @@ public class ChangeTrackingTests extends EclipseLinkJavaResourceModelTestCase {
 	public ChangeTrackingTests(String name) {
 		super(name);
 	}
-
-	private void createChangeTrackingTypeEnum() throws Exception {
-		this.createEnumAndMembers("ChangeTrackingType", "ATTRIBUTE, OBJECT, DEFERRED, AUTO;");	
-	}
-	
-	private void createChangeTrackingAnnotation() throws Exception {
-		this.createAnnotationAndMembers("ChangeTracking", "ChangeTrackingType value() default AUTO;");
-		createChangeTrackingTypeEnum();
-	}
 	
 	private ICompilationUnit createTestChangeTracking() throws Exception {
-		createChangeTrackingAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -48,7 +38,6 @@ public class ChangeTrackingTests extends EclipseLinkJavaResourceModelTestCase {
 	}
 	
 	private ICompilationUnit createTestChangeTrackingWithValue() throws Exception {
-		createChangeTrackingAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

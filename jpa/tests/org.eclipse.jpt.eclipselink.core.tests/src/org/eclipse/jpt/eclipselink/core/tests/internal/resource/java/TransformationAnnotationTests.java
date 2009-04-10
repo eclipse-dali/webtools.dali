@@ -27,7 +27,6 @@ public class TransformationAnnotationTests extends EclipseLinkJavaResourceModelT
 	}
 
 	private ICompilationUnit createTestTransformation() throws Exception {
-		this.createAnnotationAndMembers("Transformation", "boolean optional() default true;");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -41,7 +40,6 @@ public class TransformationAnnotationTests extends EclipseLinkJavaResourceModelT
 	}
 	
 	private ICompilationUnit createTestTransformationWithOptional() throws Exception {
-		this.createAnnotationAndMembers("Transformation", "boolean optional() default true;");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -55,8 +53,6 @@ public class TransformationAnnotationTests extends EclipseLinkJavaResourceModelT
 	}
 	
 	private ICompilationUnit createTestTransformationWithFetch() throws Exception {
-		this.createAnnotationAndMembers("Transformation", "boolean optional() default true; FetchType fetch() default FetchType.EAGER;");
-		this.createEnumAndMembers(JPA.PACKAGE, "FetchType", "EAGER, LAZY");
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

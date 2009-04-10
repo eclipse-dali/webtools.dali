@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2008  Oracle. 
+ *  Copyright (c) 2008, 2009 Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.tests.internal.context;
 
-import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProperties;
 import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProvider;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
@@ -49,13 +48,5 @@ public abstract class EclipseLinkContextModelTestCase extends ContextModelTestCa
 	@Override
 	protected EclipseLinkJavaEntity getJavaEntity() {
 		return (EclipseLinkJavaEntity) getJavaPersistentType().getMapping();
-	}
-	
-	protected ICompilationUnit createAnnotationAndMembers(String packageName, String annotationName, String annotationBody) throws Exception {
-		return this.javaProject.createCompilationUnit(packageName, annotationName + ".java", "public @interface " + annotationName + " { " + annotationBody + " }");
-	}
-	
-	protected ICompilationUnit createEnumAndMembers(String packageName, String enumName, String enumBody) throws Exception {
-		return this.javaProject.createCompilationUnit(packageName, enumName + ".java", "public enum " + enumName + " { " + enumBody + " }");
 	}
 }

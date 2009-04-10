@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.tests.internal.resource.java;
 
-import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.internal.platform.GenericJpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.core.internal.platform.GenericJpaAnnotationProvider;
@@ -23,16 +22,6 @@ public class EclipseLinkJavaResourceModelTestCase extends JavaResourceModelTestC
 	
 	public EclipseLinkJavaResourceModelTestCase(String name) {
 		super(name);
-	}
-	
-	@Override
-	protected ICompilationUnit createAnnotationAndMembers(String annotationName, String annotationBody) throws Exception {
-		return createAnnotationAndMembers(ECLIPSELINK_ANNOTATIONS_PACKAGE_NAME, annotationName, annotationBody);
-	}
-	
-	@Override
-	protected ICompilationUnit createEnumAndMembers(String enumName, String enumBody) throws Exception {
-		return createEnumAndMembers(ECLIPSELINK_ANNOTATIONS_PACKAGE_NAME, enumName, enumBody);
 	}
 
 	@Override

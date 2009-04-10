@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -28,28 +28,14 @@ import org.eclipse.jpt.eclipselink.core.context.PrivateOwned;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
 import org.eclipse.jpt.eclipselink.core.resource.java.JoinFetchAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.PrivateOwnedAnnotation;
+import org.eclipse.jpt.eclipselink.core.tests.internal.context.EclipseLinkContextModelTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
-public class EclipseLinkJavaOneToManyMappingTests extends EclipseLinkJavaContextModelTestCase
+public class EclipseLinkJavaOneToManyMappingTests extends EclipseLinkContextModelTestCase
 {
-
-	private void createPrivateOwnedAnnotation() throws Exception{
-		this.createAnnotationAndMembers(EclipseLinkJPA.PACKAGE, "PrivateOwned", "");		
-	}
-
-	private void createJoinFetchAnnotation() throws Exception{
-		createJoinFetchTypeEnum();
-		this.createAnnotationAndMembers(EclipseLinkJPA.PACKAGE, "JoinFetch", "JoinFetchType value() default JoinFetchType.INNER");		
-	}
-	
-	private void createJoinFetchTypeEnum() throws Exception {
-		this.createEnumAndMembers(ECLIPSELINK_ANNOTATIONS_PACKAGE_NAME, "JoinFetchType", "INNER, OUTER;");	
-	}
 	
 	private ICompilationUnit createTestEntityWithPrivateOwnedOneToMany() throws Exception {
-		createPrivateOwnedAnnotation();
-		
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -69,8 +55,6 @@ public class EclipseLinkJavaOneToManyMappingTests extends EclipseLinkJavaContext
 	}
 	
 	private ICompilationUnit createTestEntityWithJoinFetchOneToMany() throws Exception {
-		createJoinFetchAnnotation();
-		
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -90,8 +74,6 @@ public class EclipseLinkJavaOneToManyMappingTests extends EclipseLinkJavaContext
 	}
 	
 	private ICompilationUnit createTestEntityWithDefaultOneToMany() throws Exception {
-		createJoinFetchAnnotation();
-		
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

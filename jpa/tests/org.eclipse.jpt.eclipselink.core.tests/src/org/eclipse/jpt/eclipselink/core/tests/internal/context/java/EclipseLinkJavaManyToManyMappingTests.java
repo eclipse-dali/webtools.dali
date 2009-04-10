@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,23 +20,15 @@ import org.eclipse.jpt.eclipselink.core.context.JoinFetch;
 import org.eclipse.jpt.eclipselink.core.context.JoinFetchType;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
 import org.eclipse.jpt.eclipselink.core.resource.java.JoinFetchAnnotation;
+import org.eclipse.jpt.eclipselink.core.tests.internal.context.EclipseLinkContextModelTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
-public class EclipseLinkJavaManyToManyMappingTests extends EclipseLinkJavaContextModelTestCase
-{
 
-	private void createJoinFetchAnnotation() throws Exception{
-		createJoinFetchTypeEnum();
-		this.createAnnotationAndMembers(EclipseLinkJPA.PACKAGE, "JoinFetch", "JoinFetchType value() default JoinFetchType.INNER");		
-	}
-	
-	private void createJoinFetchTypeEnum() throws Exception {
-		this.createEnumAndMembers(ECLIPSELINK_ANNOTATIONS_PACKAGE_NAME, "JoinFetchType", "INNER, OUTER;");	
-	}
+@SuppressWarnings("nls")
+public class EclipseLinkJavaManyToManyMappingTests extends EclipseLinkContextModelTestCase
+{
 		
 	private ICompilationUnit createTestEntityWithJoinFetchManyToMany() throws Exception {
-		createJoinFetchAnnotation();
-		
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

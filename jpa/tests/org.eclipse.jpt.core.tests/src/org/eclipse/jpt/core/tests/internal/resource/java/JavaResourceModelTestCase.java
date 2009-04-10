@@ -22,6 +22,7 @@ import org.eclipse.jpt.core.internal.resource.java.source.SourceCompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.NullAnnotationEditFormatter;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.java.JavaResourceCompilationUnit;
+import org.eclipse.jpt.core.tests.internal.projects.TestJpaProject;
 import org.eclipse.jpt.core.tests.internal.utility.jdt.AnnotationTestCase;
 import org.eclipse.jpt.utility.CommandExecutor;
 import org.eclipse.jpt.utility.internal.BitTools;
@@ -43,7 +44,10 @@ public class JavaResourceModelTestCase extends AnnotationTestCase
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.javaProject.addJar(org.eclipse.jpt.core.tests.internal.projects.TestJpaProject.jpaJarName());
+		this.javaProject.addJar(TestJpaProject.jpaJarName());
+		if (TestJpaProject.eclipseLinkJarName() != null) {
+			this.javaProject.addJar(TestJpaProject.eclipseLinkJarName());
+		}
 		this.javaElementChangeListener = new JavaElementChangeListener();
 		JavaCore.addElementChangedListener(this.javaElementChangeListener);
 	}

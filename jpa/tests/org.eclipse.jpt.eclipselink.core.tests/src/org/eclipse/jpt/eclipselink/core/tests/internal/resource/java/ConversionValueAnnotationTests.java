@@ -23,25 +23,8 @@ public class ConversionValueAnnotationTests extends EclipseLinkJavaResourceModel
 	public ConversionValueAnnotationTests(String name) {
 		super(name);
 	}
-
-	private void createObjectTypeConverterAnnotation() throws Exception {
-		createConversionValueAnnotation();
-		this.createAnnotationAndMembers("ObjectTypeConverter", 
-			"String name(); " +
-			"Class dataType() default void.class; " +
-			"Class objectType() default void.class; " +
-			"ConversionValue[] conversionValues(); " +
-			"String defaultObjectValue() default \"\"");		
-	}
-	
-	private void createConversionValueAnnotation() throws Exception {
-		this.createAnnotationAndMembers("ConversionValue", 
-			" String dataValue(); " +
-			" String objectValue(); ");		
-	}
 	
 	private ICompilationUnit createTestObjectTypeConverter() throws Exception {
-		createObjectTypeConverterAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -55,7 +38,6 @@ public class ConversionValueAnnotationTests extends EclipseLinkJavaResourceModel
 	}	
 	
 	private ICompilationUnit createTestObjectTypeConverterWithConversionValues() throws Exception {
-		createObjectTypeConverterAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

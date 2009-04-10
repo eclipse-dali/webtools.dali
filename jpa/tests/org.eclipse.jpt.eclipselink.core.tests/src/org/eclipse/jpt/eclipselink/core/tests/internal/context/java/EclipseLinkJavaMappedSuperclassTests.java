@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,32 +22,14 @@ import org.eclipse.jpt.eclipselink.core.resource.java.ChangeTrackingAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.CustomizerAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
 import org.eclipse.jpt.eclipselink.core.resource.java.ReadOnlyAnnotation;
+import org.eclipse.jpt.eclipselink.core.tests.internal.context.EclipseLinkContextModelTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
-public class EclipseLinkJavaMappedSuperclassTests extends EclipseLinkJavaContextModelTestCase
+public class EclipseLinkJavaMappedSuperclassTests extends EclipseLinkContextModelTestCase
 {
 
-	private void createReadOnlyAnnotation() throws Exception{
-		this.createAnnotationAndMembers(EclipseLinkJPA.PACKAGE, "ReadOnly", "");		
-	}
-	
-	private void createCustomizerAnnotation() throws Exception {
-		this.createAnnotationAndMembers(EclipseLinkJPA.PACKAGE, "Customizer", "Class value();");		
-	}
-
-	private void createChangeTrackingAnnotation() throws Exception{
-		createChangeTrackingTypeEnum();
-		this.createAnnotationAndMembers(EclipseLinkJPA.PACKAGE, "ChangeTracking", "ChangeTrackingType value() default ChangeTrackingType.AUTO");		
-	}
-	
-	private void createChangeTrackingTypeEnum() throws Exception {
-		this.createEnumAndMembers(ECLIPSELINK_ANNOTATIONS_PACKAGE_NAME, "ChangeTrackingType", "ATTRIBUTE, OBJECT, DEFERRED, AUTO;");	
-	}
-
 	private ICompilationUnit createTestMappedSuperclassWithReadOnly() throws Exception {
-		createReadOnlyAnnotation();
-		
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -62,7 +44,6 @@ public class EclipseLinkJavaMappedSuperclassTests extends EclipseLinkJavaContext
 	}
 	
 	private ICompilationUnit createTestMappedSuperclassWithConvertAndCustomizerClass() throws Exception {
-		createCustomizerAnnotation();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -77,8 +58,6 @@ public class EclipseLinkJavaMappedSuperclassTests extends EclipseLinkJavaContext
 	}
 	
 	private ICompilationUnit createTestMappedSuperclassWithChangeTracking() throws Exception {
-		createChangeTrackingAnnotation();
-		
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
