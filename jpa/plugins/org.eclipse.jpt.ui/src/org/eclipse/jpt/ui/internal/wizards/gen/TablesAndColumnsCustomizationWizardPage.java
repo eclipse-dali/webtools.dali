@@ -282,10 +282,15 @@ public class TablesAndColumnsCustomizationWizardPage extends NewTypeWizardPage {
 				for( ORMGenColumn col : columns){
 					if( col.isForeignKey() )
 						continue;
-					if( col.isPrimaryKey() && isCompositePk ){
-						continue;
+					if( col.isPrimaryKey() ){
+						if( isCompositePk ){
+							continue;
+						}else{
+							ret.add(0,col );
+						}
+					}else{
+						ret.add(col);
 					}
-					ret.add(col);
 				}
 				return ret.toArray();
 			}

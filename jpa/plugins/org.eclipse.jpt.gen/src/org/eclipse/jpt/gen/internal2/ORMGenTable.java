@@ -316,6 +316,9 @@ public class ORMGenTable
 			if (column.isPrimaryKey()) {
 				if (!includePk || isCompositeKey()) {
 					continue;
+				}else{
+					result.add(0, column);
+					continue;
 				}
 			}
 			else if (isColumnInAsscociation(column, roles)) {
