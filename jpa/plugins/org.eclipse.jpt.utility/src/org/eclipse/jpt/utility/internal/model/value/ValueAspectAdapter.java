@@ -41,6 +41,9 @@ public abstract class ValueAspectAdapter<T>
 {
 	/** Cache the value so we can disengage. Null until we have a listener*/
 	protected T value;
+	
+	/** Keep track of whether we're engaged with the value **/
+	protected boolean valueEngaged;
 
 
 	// ********** constructors/initialization **********
@@ -65,7 +68,12 @@ public abstract class ValueAspectAdapter<T>
 	// ********** PropertyValueModel implementation **********
 
 	public T getValue() {
-		return this.value;
+		if (this.valueEngaged) {
+			return this.value;
+		}
+		else {
+			return this.valueHolder().getValue();
+		}
 	}
 
 
@@ -112,6 +120,7 @@ public abstract class ValueAspectAdapter<T>
 	 */
 	protected void engageValue() {
 		this.value = this.valueHolder.getValue();
+		this.valueEngaged = true;
 		if (this.value != null) {
 			this.engageValue_();
 		}
@@ -127,6 +136,7 @@ public abstract class ValueAspectAdapter<T>
 	 * Stop listening to the current value.
 	 */
 	protected void disengageValue() {
+		this.valueEngaged = false;
 		if (this.value != null) {
 			this.disengageValue_();
 			this.value = null;
