@@ -87,6 +87,7 @@ class TablesSelectorWizardPage extends WizardPage{
 
 	public void setVisible(boolean visible) {
 		super.setVisible(visible);
+		doStatusUpdate();
 	}
 
 	// -------- Provide access to wrapped DTP connection related classes ---------
@@ -113,19 +114,6 @@ class TablesSelectorWizardPage extends WizardPage{
 			return CollectionTools.collection(schema.tables());
 		}
 		return Collections.<Table> emptyList();
-	}
-
-
-	// -------- Initialization ---------
-	/**
-	 * The wizard owning this page is responsible for calling this method with the
-	 * current selection. The selection is used to initialize the fields of the wizard
-	 * page.
-	 *
-	 * @param selection used to initialize the fields
-	 */
-	void init(IStructuredSelection selection) {
-		doStatusUpdate();
 	}
 
 	public void createControl(Composite parent) {
@@ -206,6 +194,7 @@ class TablesSelectorWizardPage extends WizardPage{
 				jpaProject.setUserOverrideDefaultSchema(schema.getName());
 				setSchema( schema );
 				updateTablesSelector(schema);
+				doStatusUpdate();
 			}
 		}
 		dbGroup.addListener(new DatabasePageListener());
@@ -385,6 +374,7 @@ class TablesSelectorWizardPage extends WizardPage{
 		if ( ! this.hasTablesSelected()) {
 			this.setPageComplete(false);
 		}else{
+			setPageComplete(true);
 			try{
 				getContainer().run(false, false, new IRunnableWithProgress(){
 					public void run( final IProgressMonitor monitor ) 
@@ -410,7 +400,6 @@ class TablesSelectorWizardPage extends WizardPage{
 				JptUiPlugin.log(e);
 			}
 				
-			setPageComplete(true);
 		}
 	}
 
