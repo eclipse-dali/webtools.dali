@@ -14,7 +14,7 @@ import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**
- * Corresponds to the Eclipselink annotation
+ * Corresponds to the EclipseLink annotation
  * org.eclipse.persistence.annotations.Convert
  * 
  * Provisional API: This interface is part of an interim API that is still
@@ -49,5 +49,11 @@ public interface ConvertAnnotation
 	 * does not exist return the {@link TextRange} for the Convert annotation.
 	 */
 	TextRange getValueTextRange(CompilationUnit astRoot);
+
+	/**
+	 * Return whether the specified position touches the 'value' element.
+	 * Return false if the element does not exist.
+	 */
+	boolean valueTouches(int pos, CompilationUnit astRoot);
 
 }

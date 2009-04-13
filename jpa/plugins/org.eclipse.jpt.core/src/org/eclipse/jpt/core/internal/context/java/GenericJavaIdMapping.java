@@ -33,9 +33,12 @@ import org.eclipse.jpt.core.resource.java.SequenceGeneratorAnnotation;
 import org.eclipse.jpt.core.resource.java.TableGeneratorAnnotation;
 import org.eclipse.jpt.core.resource.java.TemporalAnnotation;
 import org.eclipse.jpt.utility.Filter;
+import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
+import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -391,7 +394,7 @@ public class GenericJavaIdMapping
 		return null;
 	}
 
-	// *************************************************************************
+	// ********** code assist **********
 
 	@Override
 	public Iterator<String> javaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
@@ -403,9 +406,42 @@ public class GenericJavaIdMapping
 		if (result != null) {
 			return result;
 		}
+		if (this.generatorTouches(pos, astRoot)) {
+			if(this.getPersistenceUnit().generatorsSize() > 0) {
+				result = this.persistenceGeneratorNames(filter);
+				if (result != null) {
+					return result;
+				}		
+			}
+		}
 		return null;
 	}
+	
+	protected boolean generatorTouches(int pos, CompilationUnit astRoot) {
+		if (getGeneratedValueResource() != null) {
+			return this.getGeneratedValueResource().generatorTouches(pos, astRoot);
+		}
+		return false;
+	}
+	
+	protected GeneratedValueAnnotation getGeneratedValueResource() {
+		return (GeneratedValueAnnotation) this.resourcePersistentAttribute.getSupportingAnnotation(GeneratedValueAnnotation.ANNOTATION_NAME);
+	}
+	
+	protected Iterator<String> persistenceGeneratorNames() {
+		return (Iterator<String>)CollectionTools.iterator(this.getPersistenceUnit().uniqueGeneratorNames());
+	}
+	
+	private Iterator<String> generatorNames(Filter<String> filter) {
+		return new FilteringIterator<String, String>(this.persistenceGeneratorNames(), filter);
+	}
+	
+	protected Iterator<String> persistenceGeneratorNames(Filter<String> filter) {
+		return StringTools.convertToJavaStringLiterals(this.generatorNames(filter));
+	}
 
+	// *************************************************************************
+	
 	@Override
 	public String getPrimaryKeyColumnName() {
 		return this.getColumn().getName();

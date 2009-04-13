@@ -221,6 +221,10 @@ public class EclipseLinkPersistenceUnit
 		return new CloneListIterator<EclipseLinkConverter>(this.converters);
 	}
 
+	public int convertersSize() {
+		return this.converters.size();
+	}
+
 	/**
 	 * Return an array of the names of the converters defined in the persistence
 	 * unit, with duplicates removed.

@@ -67,4 +67,8 @@ public final class BinaryConvertAnnotation
 		throw new UnsupportedOperationException();
 	}
 
+	public boolean valueTouches(int pos, CompilationUnit astRoot) {
+		throw new UnsupportedOperationException();
+	}
+
 }
