@@ -266,6 +266,7 @@ public class GenericClassRef
 		// 190062 validate Java class only if this is the only reference to it
 		boolean validateJavaPersistentType = true;
 		for (Iterator<MappingFileRef> stream = this.getPersistenceUnit().mappingFileRefsContaining(this.className); stream.hasNext(); ) {
+			validateJavaPersistentType = false;
 			MappingFileRef mappingFileRef = stream.next();
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
