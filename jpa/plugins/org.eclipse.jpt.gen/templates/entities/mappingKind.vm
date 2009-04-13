@@ -28,7 +28,7 @@
 	@GeneratedValue(strategy=$generationType)
 #end      
 #elseif ($mappingKind == "version")
-	@Version()
+	@Version
 #else
-##DEFAULT is @Basic(), no need to generate
+##DEFAULT is @Basic, no need to generate
 #end
