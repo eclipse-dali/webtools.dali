@@ -48,7 +48,7 @@ public class VariableOneToOneAnnotationDefinition
 	}
 
 	public Annotation buildNullAnnotation(JavaResourcePersistentMember parent) {
-		throw new UnsupportedOperationException();
+		return new NullVariableOneToOneAnnotation((JavaResourcePersistentAttribute) parent);
 	}
 
 	public Annotation buildAnnotation(JavaResourcePersistentMember parent, IAnnotation jdtAnnotation) {
