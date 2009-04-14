@@ -480,7 +480,7 @@ public class ORMGenTable
 		if (extendsClass != null && !extendsClass.equals("java.lang.Object") && !extendsClass.equals("Object")) {
 			buffer.append("extends " + simplifyClassName(extendsClass));
 		}
-		buffer.append(" implements Serializable"); // assuming that the Java
+		buffer.append("implements Serializable"); // assuming that the Java
 													// file template imports the
 													// java.io.Serializable
 		for (Iterator<String> iter = getImplements().iterator(); iter.hasNext();) {
