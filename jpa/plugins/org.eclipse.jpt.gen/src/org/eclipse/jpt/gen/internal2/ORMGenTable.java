@@ -136,7 +136,8 @@ public class ORMGenTable
 	 * Returns the Java package (empty string for the default package).
 	 */
 	public String getPackage() {
-		return customized(PACKAGE);
+		String packageName = customized(PACKAGE);
+		return packageName == null ? "" : packageName;
 	}
 
 	/**

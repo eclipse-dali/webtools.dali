@@ -68,7 +68,7 @@ public class DefaultTableGenerationWizardPage extends NewTypeWizardPage {
 	 * @param selection used to initialize the fields
 	 */
 	void init(IStructuredSelection selection) {
-		if( jpaProject != null ){
+		if ( jpaProject != null ) {
 			IJavaElement jelem = this.jpaProject.getJavaProject();
 			initContainerPage(jelem);
 			initTypePage(jelem);
@@ -85,22 +85,22 @@ public class DefaultTableGenerationWizardPage extends NewTypeWizardPage {
 		//PlatformUI.getWorkbench().getHelpSystem().setHelp(composite, JpaHelpContextIds.DIALOG_GENERATE_ENTITIES);
 
 		//Create entity access, collection type, etc 
-		defaultTableGenPanel = new TableGenPanel(composite, 4, true , this);
+		defaultTableGenPanel = new TableGenPanel(composite, 4, true, this);
 		
 		createDomainJavaClassesPropertiesGroup(composite, 4);
 		setControl(composite);
 
 		
 		this.setPageComplete( true );
-		
 	}
 
+	@Override
 	public void setVisible(boolean visible) {
 		super.setVisible(visible);
-		if(visible){
+		if (visible) {
 			ORMGenCustomizer customizer = getCustomizer();
 			//If user changed the connection or schema
-			if( this.customizer != customizer ){
+			if ( this.customizer != customizer ) {
 				this.customizer = customizer; 
 				ORMGenTable newTable;
 				newTable = getCustomizer().createGenTable(null);
@@ -108,20 +108,19 @@ public class DefaultTableGenerationWizardPage extends NewTypeWizardPage {
 				defaultTableGenPanel.setORMGenTable(newTable);
 
 				//set the super class and implemented interfaces value
-				String baseClass = defaultsTable.getExtends()==null?"":defaultsTable.getExtends();
+				String baseClass = defaultsTable.getExtends() == null ?"" : defaultsTable.getExtends();
 				setSuperClass(baseClass, true);
 				setSuperInterfaces(defaultsTable.getImplements(), true);
 				
 				setPackageName( defaultsTable.getPackage() );
-				
-
 			}
 		}
 	}	
 	
 	private void setPackageName(String packageName) {
-		if( packageName==null )
+		if( packageName == null || packageName.length() == 0) {
 			return;
+		}
 		// Copied from org.eclipse.pde.internal.ui.editor.plugin.JavaAttributeWizardPage
 		try {
 			IPackageFragmentRoot srcEntryDft = null;
@@ -134,8 +133,9 @@ public class DefaultTableGenerationWizardPage extends NewTypeWizardPage {
 				}
 			}
 			IPackageFragmentRoot packageFragmentRoot;
-			if (srcEntryDft != null)
+			if (srcEntryDft != null) {
 				packageFragmentRoot = srcEntryDft;
+			}
 			else {
 				packageFragmentRoot = javaProject.getPackageFragmentRoot(javaProject.getResource());
 			}
@@ -164,47 +164,51 @@ public class DefaultTableGenerationWizardPage extends NewTypeWizardPage {
 		createPackageControls(parent, columns);
 		createSuperClassControls(parent, columns);
 		createSuperInterfacesControls(parent, columns);
-
 	}
 	
+	@Override
 	protected IStatus packageChanged() {
 		IStatus status = super.packageChanged(); 
 		IPackageFragment packageFragment = getPackageFragment();
 		String srcFolder = packageFragment.getPath().toPortableString();
-		if(defaultsTable!=null && !status.matches(IStatus.ERROR)){
+		if (defaultsTable != null && !status.matches(IStatus.ERROR)) {
 			defaultsTable.setPackage(srcFolder, packageFragment.getElementName());
 		}
 		return status;
 	}	
 
+	@Override
 	protected IStatus superClassChanged() {
 		IStatus status = super.superClassChanged();
 		String baseClass = getSuperClass();
-		if(baseClass!=null && defaultsTable!=null && !status.matches(IStatus.ERROR)){
+		if (baseClass != null && defaultsTable != null && !status.matches(IStatus.ERROR)) {
 			String oldBaseClass = defaultsTable.getExtends();
-			if( !baseClass.equals(oldBaseClass))
+			if ( !baseClass.equals(oldBaseClass)) {
 				defaultsTable.setExtends(baseClass);
+			}
 		}
 		return status; 
 	}	
 	
+	@Override
 	protected void handleFieldChanged(String fieldName) {
 		super.handleFieldChanged(fieldName);
-		if( this.fPackageStatus.matches(IStatus.ERROR) ){
+		if (this.fPackageStatus.matches(IStatus.ERROR) ) {
 			updateStatus(fPackageStatus);
-		}else if( this.fSuperClassStatus.matches(IStatus.ERROR)){
+		} else if (this.fSuperClassStatus.matches(IStatus.ERROR)) {
 			updateStatus(fSuperClassStatus);
-		}else{
+		} else {
 			setMessage("", IMessageProvider.NONE);
 			setErrorMessage(null);
 			updateStatus(fPackageStatus);
 		}
 	}
 	
+	@Override
 	@SuppressWarnings("unchecked")
 	protected IStatus superInterfacesChanged() {
 		IStatus ret = super.superInterfacesChanged();
-		if( ret.isOK() ){
+		if ( ret.isOK() ) {
 			List interfaces = getSuperInterfaces();
 			if(defaultsTable!=null)
 				defaultsTable.setImplements(interfaces);
@@ -212,14 +216,13 @@ public class DefaultTableGenerationWizardPage extends NewTypeWizardPage {
 		return ret;
 	}	
 
-	private ORMGenCustomizer getCustomizer(){
+	private ORMGenCustomizer getCustomizer() {
 		GenerateEntitiesFromSchemaWizard wizard = (GenerateEntitiesFromSchemaWizard) this.getWizard();
 		return wizard.getCustomizer();
 	}	
 
     @Override
-    public final void performHelp() 
-    {
+    public final void performHelp() {
         PlatformUI.getWorkbench().getHelpSystem().displayHelp( GenerateEntitiesFromSchemaWizard.HELP_CONTEXT_ID );
     }
 }
