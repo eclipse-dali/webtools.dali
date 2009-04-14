@@ -25,9 +25,9 @@ import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.db.ConnectionAdapter;
 import org.eclipse.jpt.db.ConnectionListener;
 import org.eclipse.jpt.db.ConnectionProfile;
+import org.eclipse.jpt.db.Database;
 import org.eclipse.jpt.db.JptDbPlugin;
 import org.eclipse.jpt.db.Schema;
-import org.eclipse.jpt.db.SchemaContainer;
 import org.eclipse.jpt.db.ui.internal.DTPUiTools;
 import org.eclipse.jpt.ui.CommonImages;
 import org.eclipse.jpt.ui.JptUiPlugin;
@@ -223,8 +223,14 @@ public class DatabaseGroup
 	}
 
 	private Iterator<String> getSchemata() {
-		SchemaContainer sc = jpaProject.getDefaultDbSchemaContainer();
-		return (sc == null) ? EmptyIterator.<String>instance() : sc.sortedSchemaIdentifiers();
+		ConnectionProfile profile = this.getSelectedConnectionProfile();
+		if( profile == null )
+			return EmptyIterator.<String>instance() ; 
+		Database db = profile.getDatabase(); 
+		if ( db == null) 
+			return EmptyIterator.<String>instance() ; 
+		Iterator<String> ret = db.sortedSchemaIdentifiers();
+		return ret;
 	}
 
 	/**
@@ -312,12 +318,15 @@ public class DatabaseGroup
 					isConnected[0]=false;
 					Thread t= new Thread(){
 						public void run() {
-							selectedConnectionProfile.connect();
+							try{
+								selectedConnectionProfile.connect();
+							}catch(Exception e ){
+							}
 							isConnected[0]=true;
 						}						
 					};
 					t.start();
-					while( !isConnected[0]){
+					while( !isConnected[0] ){
 						Thread.sleep(1000);
 						monitor.worked(1);
 					}
