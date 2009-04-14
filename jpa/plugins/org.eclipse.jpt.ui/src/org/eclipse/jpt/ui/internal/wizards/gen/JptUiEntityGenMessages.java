@@ -20,6 +20,8 @@ import org.eclipse.osgi.util.NLS;
 public class JptUiEntityGenMessages {
 	private static final String BUNDLE_NAME = "jpt_ui_entity_gen"; //$NON-NLS-1$
 	private static final Class<?> BUNDLE_CLASS = JptUiEntityGenMessages.class;
+	
+	public static String GenerateEntitiesWizard_tableSelectPage_Restore_Defaults;
 	public static String GenerateEntitiesWizard_generateEntities;
 	public static String GenerateEntitiesWizard_doNotShowWarning;
 	public static String GenerateEntitiesWizard_selectJPAProject;

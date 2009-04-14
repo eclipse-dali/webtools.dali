@@ -85,6 +85,7 @@ class TablesSelectorWizardPage extends WizardPage{
 		setMessage(JptUiEntityGenMessages.GenerateEntitiesWizard_tableSelectPage_chooseEntityTable );
 	}
 
+	@Override
 	public void setVisible(boolean visible) {
 		super.setVisible(visible);
 		doStatusUpdate();
@@ -146,6 +147,29 @@ class TablesSelectorWizardPage extends WizardPage{
 		fillColumns( synchronizeClassesCheckBox, 2);
 
 
+		//Filler column
+		new Label( composite, SWT.NONE);
+		//Restore default button
+		final Button restoreBtn = new Button(composite, SWT.PUSH );
+		restoreBtn.setText( JptUiEntityGenMessages.GenerateEntitiesWizard_tableSelectPage_Restore_Defaults );
+		restoreBtn.addSelectionListener(new SelectionListener() {
+			public void widgetDefaultSelected(SelectionEvent e) {}
+			public void widgetSelected(SelectionEvent e) {
+				if( customizer!=null && customizer.getFile()!=null ){
+					if( customizer.getFile().exists() ){
+						customizer.getFile().delete();
+					}
+					updateTablesSelector( databaseGroup.getSelectedSchema() );
+					deselectAllTables();
+				}
+			}
+
+		});
+		GridData gridData = new GridData();
+		gridData.horizontalAlignment = SWT.END;
+		restoreBtn.setLayoutData(gridData);
+		
+		
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(this.tableTable.getControl(), JpaHelpContextIds.DIALOG_GENERATE_ENTITIES_TABLES);
 
 		setControl(composite);
@@ -267,6 +291,7 @@ class TablesSelectorWizardPage extends WizardPage{
 		});
 
 		table.addKeyListener(new KeyAdapter() {
+			@Override
 			public void keyPressed(KeyEvent e) {
 				if (e.keyCode == SWT.F2 && e.stateMask == SWT.NONE) {
 					editEntityNameIfPossible();

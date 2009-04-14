@@ -250,6 +250,10 @@ class TableGenPanel
 	
 			if (associationFetchLazy != null && associationFetchEager != null ) {
 				String defaultFetch = mTable.getDefaultFetch();
+				//reset all three buttons
+				associationFetchDefault.setSelection(false);
+				associationFetchEager.setSelection(false);
+				associationFetchLazy.setSelection(false);
 				if( ORMGenTable.DEFAULT_FETCH.equals( defaultFetch ) )
 					associationFetchDefault.setSelection(true);
 				else if( ORMGenTable.EAGER_FETCH.equals( defaultFetch ) )
@@ -258,13 +262,15 @@ class TableGenPanel
 					associationFetchLazy.setSelection(true);
 			}
 			
-			//DefautlTable only
+			//DefaultTable only
 			if (collectionTypeList != null) {
 				String cType = mTable.getDefaultCollectionType();
 				if ( ORMGenTable.LIST_COLLECTION_TYPE.equals( cType ) ) {
 					this.collectionTypeList.setSelection( true );
+					this.collectionTypeSet.setSelection( false );
 				} else {
 					this.collectionTypeSet.setSelection( true );
+					this.collectionTypeList.setSelection( false );
 				}
 				
 				this.generateOptionalAnnotations.setSelection( mTable.isGenerateDDLAnnotations());
@@ -392,5 +398,5 @@ class TableGenPanel
 		entityAccessField.addSelectionListener( entityAccessFetchListener );
 		entityAccessProperty.addSelectionListener( entityAccessFetchListener );
 	}
-		
+	
 }

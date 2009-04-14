@@ -213,6 +213,10 @@ public abstract class ORMGenCustomizer implements java.io.Serializable
 		}
 	}
 	
+	public File getFile(){
+		return this.mFile;
+	}
+	
 	public void setSchema(Schema schema){
 		this.mSchema = schema;
 	}
@@ -288,7 +292,7 @@ public abstract class ORMGenCustomizer implements java.io.Serializable
 	 */
 	public String getProperty(String propertyName, String tableName, String colName) {
 		String key = getPropKey(propertyName, tableName, colName);
-		String value = (String)mProps.get(key);
+		String value = mProps.get(key);
 		/*if the key does not exist and it is a table property then 
 		 * get the default table property.*/
 		if (value == null && tableName != null && colName == null && !tableName.equals(ANY_TABLE)) {
@@ -363,11 +367,11 @@ public abstract class ORMGenCustomizer implements java.io.Serializable
 		/*filter out join tables*/
 		List<Association> associations = getAssociations();
 		for (Iterator<String> tableNamesIter = names.iterator(); tableNamesIter.hasNext(); ) {
-			String tableName = (String)tableNamesIter.next();
+			String tableName = tableNamesIter.next();
 			boolean isValid = true;
 			
 			for (Iterator<Association> assocIter = associations.iterator(); assocIter.hasNext(); ) {
-				Association association = (Association)assocIter.next();
+				Association association = assocIter.next();
 				if (!association.isGenerated()) {
 					continue;
 				}
@@ -397,14 +401,14 @@ public abstract class ORMGenCustomizer implements java.io.Serializable
 		
 		if(mTableNames!=null && mSchema!=null){
 			for (Iterator<String> iter = mTableNames.iterator(); iter.hasNext(); ) {
-				String name = (String)iter.next();
+				String name = iter.next();
 				Table dbTable = mSchema.getTableNamed( name );
 				if (dbTable != null) {
 					mTables.put(name, createGenTable(dbTable));
 				}
 			}
 		}
-		return (ORMGenTable)mTables.get(tableName);
+		return mTables.get(tableName);
 	}
 	/**
 	 * Returns the <code>Association</code> objects sorted by their "from" 
@@ -443,7 +447,7 @@ public abstract class ORMGenCustomizer implements java.io.Serializable
 	public boolean similarAssociationExists(Association association) {
 		try {
 			for (Iterator<Association> iter = getAssociations(false/*validOnly*/).iterator(); iter.hasNext(); ) {
-				Association association2 = (Association)iter.next();
+				Association association2 = iter.next();
 				if (!association.getReferrerTableName().equals(association2.getReferrerTableName())
 						|| !association.getReferencedTableName().equals(association2.getReferencedTableName())
 						|| !StringUtil.equalObjects(association.getJoinTableName(), association2.getJoinTableName())
@@ -569,7 +573,7 @@ public abstract class ORMGenCustomizer implements java.io.Serializable
 		
 		/*remove invalid table names*/
 		for (int i = mTableNames.size()-1; i >= 0; --i) {
-			String tableName = (String)mTableNames.get(i);
+			String tableName = mTableNames.get(i);
 			if (mSchema.getTableNamed( tableName) == null) {
 				mTableNames.remove(i);
 			}
@@ -577,7 +581,7 @@ public abstract class ORMGenCustomizer implements java.io.Serializable
 		if( mAssociations!=null ){
 			/*restore the associations*/
 			for (Iterator<Association> iter = mAssociations.iterator(); iter.hasNext(); ) {
-				Association association = (Association)iter.next();
+				Association association = iter.next();
 				association.restore(this);
 			}
 			/*add the foreign keys associations just in case the tables changed since 
@@ -619,7 +623,7 @@ public abstract class ORMGenCustomizer implements java.io.Serializable
 				/*filter out the invalid associations*/
 				mValidAssociations = new ArrayList<Association>(mAssociations.size());
 				for (int i = 0, n = mAssociations.size(); i < n; ++i) {
-					Association association = (Association)mAssociations.get(i);
+					Association association = mAssociations.get(i);
 					if (association.isValid()) {
 						mValidAssociations.add(association);
 					}
@@ -634,7 +638,7 @@ public abstract class ORMGenCustomizer implements java.io.Serializable
 	private void addForeignKeyAssociations(boolean checkExisting) {
 		List<String> tableNames = getTableNames();
 		for (Iterator<String> iter = tableNames.iterator(); iter.hasNext(); ) {
-			ORMGenTable table = getTable((String)iter.next());
+			ORMGenTable table = getTable(iter.next());
 			addForeignKeyAssociations(table, checkExisting);
 		}
 	}
@@ -657,7 +661,7 @@ public abstract class ORMGenCustomizer implements java.io.Serializable
 		
 		List<Association> addedAssociations = new java.util.ArrayList<Association>();
 		for (Iterator<ForeignKeyInfo> iter = fKeys.iterator(); iter.hasNext(); ) {
-			ForeignKeyInfo fki = (ForeignKeyInfo)iter.next();
+			ForeignKeyInfo fki = iter.next();
 			ORMGenTable referencedTable = getTable(fki.getReferencedTableName());
 			if (referencedTable == null) {
 				continue;
@@ -677,7 +681,7 @@ public abstract class ORMGenCustomizer implements java.io.Serializable
 		if (m2m != null) {
 			/*do not generate the 2 many-to-one*/
 			for (int i = 0; i < addedAssociations.size(); ++i) {
-				Association association = (Association)addedAssociations.get(i);
+				Association association = addedAssociations.get(i);
 				association.setGenerated(false);
 			}
 			addedAssociations.add(0, m2m);
@@ -713,8 +717,8 @@ public abstract class ORMGenCustomizer implements java.io.Serializable
 			return null;
 		}
 		
-		Association assoc1 = (Association)addedAssociations.get(0);
-		Association assoc2 = (Association)addedAssociations.get(1);
+		Association assoc1 = addedAssociations.get(0);
+		Association assoc2 = addedAssociations.get(1);
 		if (assoc1.getCardinality() != Association.MANY_TO_ONE
 				|| assoc2.getCardinality() != Association.MANY_TO_ONE) {
 			return null;
