@@ -231,7 +231,7 @@ public class JDTMethodAttribute
 			for (IMethodBinding sibling : typeBinding.getDeclaredMethods()) {
 				ITypeBinding[] parmTypes = sibling.getParameterTypes();
 				if ((parmTypes.length == 1)
-						&& parmTypes[0].getQualifiedName().equals(parameterTypeName)
+						&& parmTypes[0].getTypeDeclaration().getQualifiedName().equals(parameterTypeName)
 						&& sibling.getName().equals(name)) {
 					return new JPTToolsAdapter(sibling);
 				}
