@@ -19,12 +19,14 @@
 #end
 #set ($members = "")
 #if ( !$column.default || $customizer.generateDDLAnnotations )
-#set ($members = "name=$customizer.quote($column.name)")
+#if ( !${column.defaultname} )
+#append($members "name=$customizer.quote($column.name)" )
+#end
 #if (!$column.insertable)
-#set ($members = "$members, insertable=false")
+#append(${members} "insertable=false")
 #end
 #if (!$column.updateable)
-#set ($members = "$members, updatable=false")
+#append(${members} "updatable=false")
 #end
 #end
 #if( $customizer.generateDDLAnnotations )
