@@ -63,12 +63,12 @@ public class ${table.className} ${table.generateExtendsImplements()} {
 
     public ${table.className}() {
     }
+
 #####
 ##### simple properties getters and setters
 #####
 #if ($table.compositeKey)
 #if ($table.access == "property")
-
 	@EmbeddedId
 #end
 	public $table.compositeKeyClassName $customizer.propertyGetter($table.compositeKeyPropertyName)() {
@@ -82,7 +82,6 @@ public class ${table.className} ${table.generateExtendsImplements()} {
 #end
 #foreach ($column in $table.getSimpleColumns(true, true, false))
 #if ($table.access == "property")
-
 #parse("mappingKind.vm")
 #parse("column.vm")
 #end
@@ -100,7 +99,6 @@ public class ${table.className} ${table.generateExtendsImplements()} {
 #####
 #foreach ($role in $table.associationRoles)
 #if ($table.access == "property")
-
 	//${role.description}
 #if ($role.cardinality == "many-to-one")
 #parse("manyToOne.vm")
