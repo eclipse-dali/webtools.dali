@@ -108,7 +108,7 @@ public class ORMGenTable
 	 * Returns the database schema containing the table.
 	 */
 	public String getSchema() {
-		if (DTPUtil.isDefaultSchema(mDbTable))
+		if (DTPUtil.isDefaultSchema(mDbTable) || mDbTable.getSchema()==null)
 			return ""; //$NON-NLS-1$
 		String schemaName = mDbTable.getSchema().getName();
 		return schemaName;
