@@ -15,6 +15,7 @@ import java.util.List;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.internal.ui.wizards.dialogfields.LayoutUtil;
 import org.eclipse.jdt.ui.wizards.NewTypeWizardPage;
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.viewers.ISelection;
@@ -38,19 +39,20 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
 
 public class TablesAndColumnsCustomizationWizardPage extends NewTypeWizardPage {
 
-	@SuppressWarnings("unused")
 	private JpaProject jpaProject;
 
-	private TreeViewer tableColumnTreeViewer ;
+	private TreeViewer tableColumnTreeViewer;
 	
 	private Composite detailPanel ;
-	private StackLayout detailPanelStatckLayout ;
+	private StackLayout detailPanelStatckLayout;
 	private Composite tableGenDetatilGroup;
 	private ColumnGenPanel columnGenPanel;
 	private Composite columnGenDetatilGroup;
@@ -75,7 +77,7 @@ public class TablesAndColumnsCustomizationWizardPage extends NewTypeWizardPage {
 	 * @param selection used to initialize the fields
 	 */
 	void init(IStructuredSelection selection) {
-		if( jpaProject != null ){
+		if ( jpaProject != null ) {
 			IJavaElement jelem = this.jpaProject.getJavaProject();
 			initContainerPage(jelem);
 			initTypePage(jelem);
@@ -135,6 +137,7 @@ public class TablesAndColumnsCustomizationWizardPage extends NewTypeWizardPage {
 		});
 	}
 
+	@Override
 	public void setVisible(boolean visible) {
 		super.setVisible(visible);
 		if(visible){
@@ -212,11 +215,21 @@ public class TablesAndColumnsCustomizationWizardPage extends NewTypeWizardPage {
 
 		createSuperClassControls(parent, columns);
 		createSuperInterfacesControls(parent, columns);
+
+		//Resize supper class text width to fill the parent group.
+		//Have to do it indirectly since fSuperClassDialogField is private in super class.
+		Control[] controls = parent.getChildren();
+		if( controls.length>1 && controls[1] instanceof Text ){
+			Text text = (Text)(parent.getChildren()[1]);
+			LayoutUtil.setWidthHint(text, getMaxFieldWidth());
+			LayoutUtil.setHorizontalGrabbing(text);
+		}		
 	}
 	
 	/* (non-Javadoc)
 	 * @see org.eclipse.jdt.ui.wizards.NewTypeWizardPage#superClassChanged()
 	 */
+	@Override
 	protected IStatus superClassChanged() {
 		IStatus status = super.superClassChanged();
 		String baseClass = getSuperClass();
@@ -231,6 +244,7 @@ public class TablesAndColumnsCustomizationWizardPage extends NewTypeWizardPage {
 	/* (non-Javadoc)
 	 * @see org.eclipse.jdt.ui.wizards.NewTypeWizardPage#addSuperInterface(java.lang.String)
 	 */
+	@Override
 	@SuppressWarnings("unchecked")
 	public boolean addSuperInterface(String superInterface) {
 		super.addSuperInterface(superInterface);
@@ -240,6 +254,7 @@ public class TablesAndColumnsCustomizationWizardPage extends NewTypeWizardPage {
 		return true;
 	}
 	
+	@Override
 	protected void handleFieldChanged(String fieldName) {
 		super.handleFieldChanged(fieldName);
 		if( this.fSuperClassStatus.matches(IStatus.ERROR)){
@@ -311,6 +326,7 @@ public class TablesAndColumnsCustomizationWizardPage extends NewTypeWizardPage {
 
 	class TableColumnTreeLabelProvider extends LabelProvider{
 
+		@Override
 		public Image getImage(Object element) {
 			if( element instanceof ORMGenTable ){
 				return CommonImages.createImage( CommonImages.TABLE_IMAGE );
@@ -324,6 +340,7 @@ public class TablesAndColumnsCustomizationWizardPage extends NewTypeWizardPage {
 		}
 		
 
+		@Override
 		public String getText(Object element) {
 			if( element instanceof ORMGenTable ){
 				return ((ORMGenTable)element).getName();
