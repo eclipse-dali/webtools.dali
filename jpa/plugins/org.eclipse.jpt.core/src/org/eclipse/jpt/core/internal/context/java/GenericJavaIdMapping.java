@@ -407,11 +407,9 @@ public class GenericJavaIdMapping
 			return result;
 		}
 		if (this.generatorTouches(pos, astRoot)) {
-			if(this.getPersistenceUnit().generatorsSize() > 0) {
-				result = this.persistenceGeneratorNames(filter);
-				if (result != null) {
-					return result;
-				}		
+			result = this.persistenceGeneratorNames(filter);
+			if (result != null) {
+				return result;
 			}
 		}
 		return null;
@@ -429,6 +427,9 @@ public class GenericJavaIdMapping
 	}
 	
 	protected Iterator<String> persistenceGeneratorNames() {
+		if(this.getPersistenceUnit().generatorsSize() == 0) {
+			return EmptyIterator.<String> instance();
+		}
 		return (Iterator<String>)CollectionTools.iterator(this.getPersistenceUnit().uniqueGeneratorNames());
 	}
 	

@@ -23,6 +23,7 @@ import org.eclipse.jpt.eclipselink.core.resource.java.ConvertAnnotation;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -90,11 +91,9 @@ public class EclipseLinkJavaBasicMappingImpl
 			return result;
 		}
 		if (this.convertValueTouches(pos, astRoot)) {
-			if(this.getEclipseLinkPersistenceUnit().convertersSize() > 0) {
-				result = this.persistenceConvertersNames(filter);
-				if (result != null) {
-					return result;
-				}		
+			result = this.persistenceConvertersNames(filter);
+			if (result != null) {
+				return result;
 			}
 		}
 		return null;
@@ -112,6 +111,9 @@ public class EclipseLinkJavaBasicMappingImpl
 	}
 
 	protected Iterator<String> persistenceConvertersNames() {
+		if(this.getEclipseLinkPersistenceUnit().convertersSize() == 0) {
+			return EmptyIterator.<String> instance();
+		}
 		return (Iterator<String>)CollectionTools.iterator(this.getEclipseLinkPersistenceUnit().uniqueConverterNames());
 	}
 
