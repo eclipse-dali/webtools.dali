@@ -22,6 +22,6 @@ public class GenerateDDLAction extends ProjectAction {
 
 	@Override
 	protected void execute(JpaProject project) {
-        this.jpaPlatformUi(project).generateDDL(project, this.getCurrentSelection());
+        this.getJpaPlatformUi(project).generateDDL(project, this.getCurrentSelection());
 	}
 }
