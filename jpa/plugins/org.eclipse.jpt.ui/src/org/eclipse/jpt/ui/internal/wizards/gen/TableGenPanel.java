@@ -94,7 +94,7 @@ class TableGenPanel
 		createEntityAccessControls(parent, columns);
 		
 		//AssociationFetch and CollectionType only available for default table generation
-		if( isDefaultTable ){
+		if ( isDefaultTable ) {
 			createAssociationFetchControls(parent, columns);
 			createCollectionTypeControls(parent, columns);
 			createGenerateOptionalAnnotationControls(parent, columns);
@@ -122,7 +122,7 @@ class TableGenPanel
 
 	private void createClassNameControl(Composite parent, int columns) {
 		//Customize class name for specific table only
-		if( !isDefaultTable ){
+		if ( !isDefaultTable ) {
 			SWTUtil.createLabel( parent, 1 , JptUiEntityGenMessages.GenerateEntitiesWizard_tablePanel_className );
 			
 			classNameField = new Text(parent, SWT.SINGLE | SWT.BORDER );
@@ -178,10 +178,9 @@ class TableGenPanel
 		associationFetchDefault.addSelectionListener( associationFetchListener );
 		associationFetchLazy.addSelectionListener( associationFetchListener );
 		associationFetchEager.addSelectionListener( associationFetchListener );
-		
 	}
 
-	class CollectionTypeListener implements SelectionListener{
+	class CollectionTypeListener implements SelectionListener {
 		public void widgetDefaultSelected(SelectionEvent e) {}
 		public void widgetSelected(SelectionEvent e) {
 			if (!isUpdatingControls) {
@@ -191,7 +190,7 @@ class TableGenPanel
 		}
 	}	
 	
-	private void createCollectionTypeControls(Composite composite, int columns){
+	private void createCollectionTypeControls(Composite composite, int columns) {
 		SWTUtil.createLabel(composite, 1, JptUiEntityGenMessages.GenerateEntitiesWizard_defaultTablePage_collType );
 		
 		Composite parent = new Composite( composite, SWT.NONE);
@@ -208,7 +207,6 @@ class TableGenPanel
 		CollectionTypeListener collectionTypeListener = new CollectionTypeListener();
 		collectionTypeList.addSelectionListener( collectionTypeListener );
 		collectionTypeSet.addSelectionListener( collectionTypeListener );
-		
 	}
 
 
@@ -231,24 +229,26 @@ class TableGenPanel
 			
 			boolean isSequence = this.mTable.getCustomizer().getSequenceIdGenerators().contains(idGenerator);		
 			String sequenceName = mTable.isDefaultsTable() ? mTable.getSequence() : mTable.getFormattedSequence();
-			sequenceName  = ( sequenceName==null?"":sequenceName ); 
+			sequenceName  = ( sequenceName == null ? "" : sequenceName ); 
 			sequenceNameField.setText( sequenceName );
-			if( isSequence ){
+			if ( isSequence ) {
 				sequenceNameField.setEnabled(true);
 				sequenceNameNoteLabel.setEnabled(true);
-			}else{
+			} else {
 				sequenceNameField.setEnabled(false);
 				sequenceNameNoteLabel.setEnabled(false);
 			}
 			
 			String access = mTable.getAccess() ;
-			if(  ORMGenTable.FIELD_ACCESS.equals( access ) ){
+			if (  ORMGenTable.FIELD_ACCESS.equals( access ) ) {
 				this.entityAccessField.setSelection( true );
-			}else{
+				this.entityAccessProperty.setSelection( false );
+			} else {
 				this.entityAccessProperty.setSelection( true );
+				this.entityAccessField.setSelection( false );
 			}
 	
-			if(associationFetchLazy!=null && associationFetchEager != null ){
+			if (associationFetchLazy != null && associationFetchEager != null ) {
 				String defaultFetch = mTable.getDefaultFetch();
 				if( ORMGenTable.DEFAULT_FETCH.equals( defaultFetch ) )
 					associationFetchDefault.setSelection(true);
@@ -259,11 +259,11 @@ class TableGenPanel
 			}
 			
 			//DefautlTable only
-			if(collectionTypeList!=null){
+			if (collectionTypeList != null) {
 				String cType = mTable.getDefaultCollectionType();
-				if( ORMGenTable.LIST_COLLECTION_TYPE.equals( cType ) ){
+				if ( ORMGenTable.LIST_COLLECTION_TYPE.equals( cType ) ) {
 					this.collectionTypeList.setSelection( true );
-				}else{
+				} else {
 					this.collectionTypeSet.setSelection( true );
 				}
 				
@@ -281,7 +281,7 @@ class TableGenPanel
 		SWTUtil.createLabel(parent, 1, JptUiEntityGenMessages.GenerateEntitiesWizard_defaultTablePage_keyGen );
 
 		idGeneratorCombo = new Combo(parent,SWT.SINGLE | SWT.READ_ONLY);
-		SWTUtil.fillColumns(idGeneratorCombo,3);
+		SWTUtil.fillColumns(idGeneratorCombo, 3);
 		
 		idGeneratorCombo.addSelectionListener( new SelectionListener() {
 			public void widgetDefaultSelected(SelectionEvent e) {}
@@ -302,16 +302,16 @@ class TableGenPanel
 			public void modifyText(ModifyEvent e) {
 				if (e.getSource() == null || !isUpdatingControls) {
 
-					if( idGeneratorCombo.getText().equals("sequence")){ //$NON-NLS-1$
+					if ( idGeneratorCombo.getText().equals("sequence")) { //$NON-NLS-1$
 						String sequenceName = sequenceNameField.getText();
-						if( sequenceName.toLowerCase().indexOf("$table")>=0 ||  //$NON-NLS-1$
-								sequenceName.toLowerCase().indexOf("$pk")>=0 ){ //$NON-NLS-1$
+						if ( sequenceName.toLowerCase().indexOf("$table") >= 0 ||  //$NON-NLS-1$
+								sequenceName.toLowerCase().indexOf("$pk") >= 0 ) { //$NON-NLS-1$
 							sequenceName = convertVarToLowerCase("$table", sequenceName); //$NON-NLS-1$
 							sequenceName = convertVarToLowerCase("$pk", sequenceName); //$NON-NLS-1$
 						}
-						if( sequenceName.trim().length() != 0 ){
+						if ( sequenceName.trim().length() != 0 ) {
 							mTable.setSequence( sequenceName );
-						}else{
+						} else{
 							mTable.setSequence( "" ); //$NON-NLS-1$
 						}
 					}
@@ -320,9 +320,9 @@ class TableGenPanel
 
 			private String convertVarToLowerCase(String var, String sequenceName) {
 				int n = sequenceName.toLowerCase().indexOf( var );
-				if( n==0 ){
+				if( n==0 ) {
 					return var + sequenceName.substring( var.length());
-				}else if( n >0 ){
+				} else if( n >0 ) {
 					return sequenceName.substring(0,n) + var + sequenceName.substring( n + var.length());
 				}
 				return sequenceName;
@@ -348,15 +348,15 @@ class TableGenPanel
 			sequenceNameField.setEnabled(false);
 			mTable.setSequence(null);
 			sequenceNameNoteLabel.setEnabled(false);
-		}else{
+		} else {
 			sequenceNameField.setEnabled(true);
 			sequenceNameNoteLabel.setForeground( NOTE_LABEL_COLOR );
 			sequenceNameNoteLabel.setEnabled(true);
-			if( sequenceNameField.getText().length()==0 ) {
+			if ( sequenceNameField.getText().length()==0 ) {
 				String newMessage = "Please specify a sequence name";
 				this.wizardPage.setMessage(newMessage);
 				this.wizardPage.setPageComplete(true);
-			}else{
+			} else {
 				this.wizardPage.setErrorMessage(null);
 				this.wizardPage.setPageComplete(true);
 			}
