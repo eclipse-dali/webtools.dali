@@ -31,11 +31,13 @@ public class AssociationRole implements java.io.Serializable
 		mAssociation = association;
 		mIsReferrerRole = isReferrerRole;
 	}
+	
 	/**
 	 * Empty constructor needed by the deserialization (should not be used otherwise).
 	 */
 	public AssociationRole() {
 	}
+	
 	/**
 	 * Called after the asscociations are deserialized to attach 
 	 * the customizer object.
@@ -43,12 +45,15 @@ public class AssociationRole implements java.io.Serializable
 	protected void restore(Association association) {
 		mAssociation = association;
 	}
+	
 	public Association getAssociation() {
 		return mAssociation;
 	}
+	
 	public boolean isReferrerRole() {
 		return mIsReferrerRole;
 	}
+	
 	/**
 	 * Returns the opposite role or null if the association 
 	 * is not bi directional.
@@ -64,6 +69,7 @@ public class AssociationRole implements java.io.Serializable
 			return association.getReferrerRole();
 		}
 	}
+	
 	/**
 	 * Returns the association cardinality, one of {@link #MANY_TO_ONE}|{@link #MANY_TO_MANY}
 	 * |{@link #ONE_TO_ONE}|{@link #ONE_TO_MANY}
@@ -79,6 +85,7 @@ public class AssociationRole implements java.io.Serializable
 		}
 		return type;
 	}
+	
 	public ORMGenTable getReferrerTable() {
 		if (mIsReferrerRole) {
 			return mAssociation.getReferrerTable();
@@ -86,6 +93,7 @@ public class AssociationRole implements java.io.Serializable
 			return mAssociation.getReferencedTable();
 		}
 	}
+	
 	public List<ORMGenColumn> getReferrerColumns(){
 		if (mIsReferrerRole) {
 			return mAssociation.getReferrerColumns();
@@ -93,6 +101,7 @@ public class AssociationRole implements java.io.Serializable
 			return mAssociation.getReferencedColumns();
 		}
 	}
+	
 	/**
 	 * Returns the referenced column corresponding to a referrer column.
 	 */
@@ -100,18 +109,19 @@ public class AssociationRole implements java.io.Serializable
 		boolean hasJoinTable = mAssociation.getJoinTable() != null;
 		List<ORMGenColumn> referrerColumns = getReferrerColumns();
 		for (int i = 0, n = referrerColumns.size(); i < n; ++i) {
-			ORMGenColumn column = (ORMGenColumn)referrerColumns.get(i);
+			ORMGenColumn column = referrerColumns.get(i);
 			if (column.getName().equals(referrerColumn)) {
 				if (hasJoinTable) {
-					return (ORMGenColumn)getReferrerJoinColumns().get(i);
+					return getReferrerJoinColumns().get(i);
 				} else {
-					return (ORMGenColumn)getReferencedColumns().get(i);
+					return getReferencedColumns().get(i);
 				}
 			}
 		}
 		assert(false);
 		return null;
 	}
+	
 	/**
 	 * Returns the referrer column corresponding to a referenced column.
 	 */
@@ -119,18 +129,19 @@ public class AssociationRole implements java.io.Serializable
 		boolean hasJoinTable = mAssociation.getJoinTable() != null;
 		List<ORMGenColumn> referencedColumns = getReferencedColumns();
 		for (int i = 0, n = referencedColumns.size(); i < n; ++i) {
-			ORMGenColumn column = (ORMGenColumn)referencedColumns.get(i);
+			ORMGenColumn column = referencedColumns.get(i);
 			if (column.getName().equals(referencedColumn)) {
 				if (hasJoinTable) {
-					return (ORMGenColumn)getReferencedJoinColumns().get(i);
+					return getReferencedJoinColumns().get(i);
 				} else {
-					return (ORMGenColumn)getReferrerColumns().get(i);
+					return getReferrerColumns().get(i);
 				}
 			}
 		}
 		assert(false);
 		return null;
 	}
+	
 	public ORMGenTable getReferencedTable()  {
 		if (mIsReferrerRole) {
 			return mAssociation.getReferencedTable();
@@ -138,6 +149,7 @@ public class AssociationRole implements java.io.Serializable
 			return mAssociation.getReferrerTable();
 		}
 	}
+	
 	public List<ORMGenColumn> getReferencedColumns()  {
 		if (mIsReferrerRole) {
 			return mAssociation.getReferencedColumns();
@@ -145,6 +157,7 @@ public class AssociationRole implements java.io.Serializable
 			return mAssociation.getReferrerColumns();
 		}
 	}
+	
 	public List<ORMGenColumn> getReferrerJoinColumns()  {
 		if (mIsReferrerRole) {
 			return mAssociation.getReferrerJoinColumns();
@@ -168,7 +181,11 @@ public class AssociationRole implements java.io.Serializable
 		if (mPropertyName != null) { //if the user explicitly set it then don't be too smart
 			return mPropertyName;
 		}
-		String propName ="";
+		return getDefaultPropertyName();
+	}
+		
+	private String getDefaultPropertyName() {
+		String propName = "";
 		ORMGenTable referrerTable = getReferrerTable();
 		ORMGenTable referencedTable = getReferencedTable();
 
@@ -178,7 +195,7 @@ public class AssociationRole implements java.io.Serializable
 		List<AssociationRole> clashingRoles = new java.util.ArrayList<AssociationRole>(); //roles with our same referrer and referenced tables (i.e would yield the same property name in the same bean)
 		/*make sure there is no role with the same name.*/
 		for (Iterator<AssociationRole> iter = referrerTable.getAssociationRoles().iterator(); iter.hasNext(); ) {
-			AssociationRole role = (AssociationRole)iter.next();
+			AssociationRole role = iter.next();
 			if (role.getReferrerTable().getName().equals(referrerTable.getName())
 					&& role.getReferencedTable().getName().equals(referencedTable.getName())
 					&& role.isSingular() == isSingular) {
@@ -193,7 +210,7 @@ public class AssociationRole implements java.io.Serializable
 		
 		/*make sure there is no column with the same name.*/
 		for (Iterator<ORMGenColumn> iter = referrerTable.getColumns().iterator(); iter.hasNext(); ) {
-			ORMGenColumn column = (ORMGenColumn)iter.next();
+			ORMGenColumn column = iter.next();
 			if (column.getPropertyName().equals(propName)) {
 				String prefix = isSingular ? "Bean" : "Set";
 				propName += prefix;
@@ -203,10 +220,12 @@ public class AssociationRole implements java.io.Serializable
 		
 		return propName;
 	}
+	
 	private boolean isSingular() {
 		String cardinality = getCardinality();
 		return cardinality.equals(Association.ONE_TO_ONE) || cardinality.equals(Association.MANY_TO_ONE);
 	}
+	
 	/**
 	 * Changes the name that should be used by the generator for 
 	 * the property corresponding to this role.
@@ -217,23 +236,26 @@ public class AssociationRole implements java.io.Serializable
 		if (name != null && name.length() == 0) {
 			name = null;
 		}
-		if (name != null && name.equals(getPropertyName())) {
+		if (name != null && name.equals(getDefaultPropertyName())) {
 			name = null;
 		}
 		mPropertyName = name;
 	}
+	
 	/**
 	 * Returns the cascade value for this role, or null if none.
 	 */
 	public String getCascade() {
 		return mCascade;
 	}
+	
 	public void setCascade(String cascade) {
 		if (cascade != null && cascade.length() == 0) {
 			cascade = null;
 		}
 		mCascade = cascade;
 	}
+	
 	/**
 	 * Returns a descriptive string used in a comment in the generated 
 	 * file (from the Velocity template).
