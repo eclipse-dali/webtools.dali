@@ -296,7 +296,10 @@ public class JoinColumnsPage extends NewAssociationWizardPage {
 	protected SimpleJoin getDefaultNewJoin(TableViewer joinColumnsTable) {
 		String table1Name = "";
 		String table2Name = "";
+
+		TreeMap<String, String> existingJoins = null;
 		if( joinColumnsTable == this.joinColumnsTable1 ){
+			existingJoins = (TreeMap<String, String>)getWizardDataModel().get(NewAssociationWizard.ASSOCIATION_JOIN_COLUMNS1 );
 			if( this.getJoinTableName() == null) {
 				table1Name = this.getReferrerTableName();
 				table2Name = this.getReferencedTableName() ;
@@ -305,12 +308,29 @@ public class JoinColumnsPage extends NewAssociationWizardPage {
 				table2Name = this.getJoinTableName()  ;
 			}
 		}else{
+			existingJoins = (TreeMap<String, String>)getWizardDataModel().get(NewAssociationWizard.ASSOCIATION_JOIN_COLUMNS2 );
 			table1Name = this.getJoinTableName();
 			table2Name = this.getReferencedTableName() ;
 		}
+		//find next available column
 		String[] table1ColumnValues = getTableColumns(table1Name);
+		String nextCol1 = "";
+		for( String s: table1ColumnValues ){
+			if( !existingJoins.keySet().contains(s)){
+				nextCol1 = s;
+				break;
+			}
+		}
+		
 		String[] table2ColumnValues = getTableColumns(table2Name);
-		return new SimpleJoin(table1ColumnValues[0], table2ColumnValues[0]);
+		String nextCol2 = "";
+		for( String s: table2ColumnValues ){
+			if( !existingJoins.values().contains(s)){
+				nextCol2 = s;
+				break;
+			}
+		}
+		return new SimpleJoin( nextCol1, nextCol2);
 	}
 
 	public boolean canFlipToNextPage() {
