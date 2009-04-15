@@ -200,6 +200,13 @@ public class ORMGenColumn
 	public boolean isPrimaryKey(){
 		return this.mDbColumn.isPartOfPrimaryKey() ;
 	}
+	public boolean isPartOfCompositePrimaryKey(){
+		if( this.mDbColumn.isPartOfPrimaryKey() ){
+			if( DTPUtil.getPrimaryKeyColumnNames( this.mTable ).size()>1 )
+				return true;
+		}
+		return false;
+	}
 	public boolean isForeignKey()  {
 		return this.mDbColumn.isPartOfForeignKey() ;
 	}

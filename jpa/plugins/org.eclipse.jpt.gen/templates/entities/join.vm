@@ -4,7 +4,7 @@
 ##macro joinColumn uses $column, $referencedColumn
 #macro (joinColumn $column $referencedColumn)
 #set ($members = "name=$customizer.quote($column.joinColumnName)")
-#if( !$referencedColumn.primaryKey )
+#if( !$referencedColumn.primaryKey || $referencedColumn.partOfCompositePrimaryKey )
 #set ($members = "$members, referencedColumnName=$customizer.quote($referencedColumn.name)")
 #end
 #if( $customizer.generateDDLAnnotations )
