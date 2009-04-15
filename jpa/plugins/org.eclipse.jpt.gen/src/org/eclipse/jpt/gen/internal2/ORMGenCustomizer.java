@@ -681,10 +681,7 @@ public abstract class ORMGenCustomizer implements java.io.Serializable
 		Association m2m = computeManyToMany(table, addedAssociations);
 		if (m2m != null) {
 			/*do not generate the 2 many-to-one*/
-			for (int i = 0; i < addedAssociations.size(); ++i) {
-				Association association = addedAssociations.get(i);
-				association.setGenerated(false);
-			}
+			addedAssociations.clear();
 			addedAssociations.add(0, m2m);
 		}
 		//remove the association if already existing
@@ -693,9 +690,6 @@ public abstract class ORMGenCustomizer implements java.io.Serializable
 			Association newAssociation = it.next();
 			for( Association association : mAssociations ){
 				if( newAssociation.equals( association )){
-					//If the association is existing, don't add.
-					//only copy the generated flag
-					association.setGenerated( newAssociation.isGenerated() );
 					it.remove();
 				}
 			}

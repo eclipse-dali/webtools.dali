@@ -52,7 +52,7 @@ public class AssociationsListComposite extends FigureCanvas {
 	@SuppressWarnings("unchecked")
 	public void updateAssociations(List<Association> associations){
 		Figure figure = (Figure)this.getContents();
-		List<AssociationFigure> associationFigures = (List<AssociationFigure>) figure.getChildren();
+		List<AssociationFigure> associationFigures = figure.getChildren();
 		for(AssociationFigure assocFig : associationFigures){
 			assocFig.removeActionListener(listener);
 		}
@@ -63,11 +63,7 @@ public class AssociationsListComposite extends FigureCanvas {
 		if( associations != null ){
 			for( int i = 0; i <associations.size(); i ++ ){
 				Association association = associations.get(i);
-				//Hide the association from individual table to MTM tables
-				if( !association.isCustom() && !association.isGenerated()){
-					continue;
-				}
-				AssociationFigure assocFigure = new AssociationFigure(associations.get(i));
+				AssociationFigure assocFigure = new AssociationFigure(association);
 				assocFigure.addActionListener( listener );
 				figure.add(assocFigure);
 			}
@@ -81,7 +77,7 @@ public class AssociationsListComposite extends FigureCanvas {
 	@SuppressWarnings("unchecked")
 	public void updateSelectedAssociation(){
 		Figure figure = (Figure)this.getContents();
-		List<AssociationFigure> associationFigures = (List<AssociationFigure>) figure.getChildren();
+		List<AssociationFigure> associationFigures = figure.getChildren();
 		for(AssociationFigure assocFig : associationFigures){
 			if( assocFig == this.selectedAssociationFigure){
 				assocFig.update(); 
@@ -96,7 +92,7 @@ public class AssociationsListComposite extends FigureCanvas {
 	@SuppressWarnings("unchecked")
 	public Association getPreviousAssociation(){
 		Figure figure = (Figure)this.getContents();
-		List<AssociationFigure> associationFigures = (List<AssociationFigure>) figure.getChildren();
+		List<AssociationFigure> associationFigures = figure.getChildren();
 		AssociationFigure ret = null;
 		for(AssociationFigure assocFig : associationFigures){
 			if( assocFig.isSelected() ){
