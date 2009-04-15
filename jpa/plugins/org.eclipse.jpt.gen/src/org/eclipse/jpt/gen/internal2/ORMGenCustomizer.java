@@ -24,6 +24,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jpt.db.Column;
+import org.eclipse.jpt.db.ForeignKey;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.gen.internal2.util.DTPUtil;
@@ -732,6 +733,20 @@ public abstract class ORMGenCustomizer implements java.io.Serializable
 //				t1.getName().equals(table.getName()) || t2.getName().equals(table.getName())) {
 		if( t1.getName().equals(table.getName()) || t2.getName().equals(table.getName()) ) {
 			return null;
+		}
+
+		//Make a guess which table is the owning side of the MTM relation
+		//See https://bugs.eclipse.org/bugs/show_bug.cgi?id=268445
+		//Logic borrowed from DTPTableWrapper.getJoinTableOwningForeignKey()
+		if( !table.getName().equals(t1.getName() + "_" + t2.getName() ) ) {
+			//swap t1 and t2  
+			ORMGenTable t3 = t1;
+			t1=t2;
+			t2=t3;
+			//swap assoc1 and assoc2
+			Association assoc3=assoc1;
+			assoc1=assoc2;
+			assoc2=assoc3;
 		}
 		
 //Commented out because the assumption is too restrictive: 
