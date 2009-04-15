@@ -713,11 +713,6 @@ public abstract class ORMGenCustomizer implements java.io.Serializable
 			return null;
 		}
 		
-		//Assume MTM table should have only two columns that are foreign keys
-		if( table.getColumns().size() != 2 ){
-			return null;
-		}
-		
 		Association assoc1 = addedAssociations.get(0);
 		Association assoc2 = addedAssociations.get(1);
 		if (assoc1.getCardinality() != Association.MANY_TO_ONE

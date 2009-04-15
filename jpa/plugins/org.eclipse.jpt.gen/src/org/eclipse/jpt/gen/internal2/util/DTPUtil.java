@@ -75,17 +75,23 @@ public class DTPUtil {
 			Iterator<ForeignKey> fks = dbTable.foreignKeys();
 			while( fks.hasNext() ){
 				ForeignKey fk  = fks.next();
-				ColumnPair columnPair = fk.getColumnPair();
-
-				String tableName = dbTable.getName();
-				String referencedTableName = "";
-				Table referencedTable = fk.getReferencedTable();
-				referencedTableName = referencedTable.getName();
-				ForeignKeyInfo fkInfo = new ForeignKeyInfo(fk, tableName, referencedTableName );
-				String baseColName = columnPair.getBaseColumn().getName();
-				String referencedColName = columnPair.getReferencedColumn().getName();
-				fkInfo.addColumnMapping( baseColName,  referencedColName );
-				ret.add( fkInfo );
+				Iterator<ColumnPair> columnPaires = fk.columnPairs();
+				ForeignKeyInfo fkInfo = null;
+				while( columnPaires.hasNext() ){
+					ColumnPair columnPair = columnPaires.next();
+					if( fkInfo == null){
+						String tableName = dbTable.getName();
+						String referencedTableName = "";
+						Table referencedTable = fk.getReferencedTable();
+						referencedTableName = referencedTable.getName();
+						fkInfo = new ForeignKeyInfo(fk, tableName, referencedTableName );
+					}
+					String baseColName = columnPair.getBaseColumn().getName();
+					String referencedColName = columnPair.getReferencedColumn().getName();
+					fkInfo.addColumnMapping( baseColName,  referencedColName );
+				} 
+				if( fkInfo !=null )
+					ret.add( fkInfo );
 			}
 		}
 		return ret;
