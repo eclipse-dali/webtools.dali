@@ -115,11 +115,20 @@ public class ORMGenTable
 	}
 
 	/**
+	 * Sets the source folder for the generated class
+	 */
+	public void setSourceFolder(String srcFolder){
+		setCustomized(SRC_FOLDER, srcFolder);
+	}
+	public String getSourceFolder(){
+		String srcFolder = customized(SRC_FOLDER);
+		return srcFolder==null?"":srcFolder;
+	}
+	/**
 	 * Sets the package for the generated class (empty string for the default
 	 * package)
 	 */
-	public void setPackage(String srcFolder, String pkg) {
-		setCustomized(SRC_FOLDER, srcFolder);
+	public void setPackage(String pkg) {
 		getCustomizer().setProperty(PACKAGE, pkg, getName(), null); // not
 																	// calling
 																	// setCustomized

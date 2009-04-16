@@ -251,7 +251,7 @@ public class PackageGenerator2 {
 	}
 	
 	public IFolder getJavaPackageFolder(ORMGenTable table, IProgressMonitor monitor) throws CoreException {
-		IPackageFragmentRoot root = getDefaultJavaSrouceLocation ( javaProject ) ;
+		IPackageFragmentRoot root = getDefaultJavaSrouceLocation ( javaProject , table.getSourceFolder()) ;
 		String packageName = table.getPackage();
 		if( packageName==null ) packageName ="";
 		IPackageFragment packageFragment = root.getPackageFragment(packageName);
@@ -261,14 +261,20 @@ public class PackageGenerator2 {
 		return (IFolder)packageFragment.getResource();
 	}
 	
-	private IPackageFragmentRoot getDefaultJavaSrouceLocation(IJavaProject jproject){
+	private IPackageFragmentRoot getDefaultJavaSrouceLocation(IJavaProject jproject, String sourceFolder){
+		IPackageFragmentRoot defaultSrcPath = null;
 		if (jproject != null) {
 			try {
 				if (jproject.exists()) {
 					IPackageFragmentRoot[] roots = jproject.getPackageFragmentRoots();
 					for (int i= 0; i < roots.length; i++) {
-						if (roots[i].getKind() == IPackageFragmentRoot.K_SOURCE) {
-							return roots[i] ; 
+						if (roots[i].getKind() == IPackageFragmentRoot.K_SOURCE ){
+							if( i == 0 ) 
+								defaultSrcPath = roots[i];
+							String path = roots[i].getPath().toString(); 
+							if( path.equals( "/"+sourceFolder )) {
+								return roots[i] ; 
+							}
 						}
 					}							
 				}
@@ -276,7 +282,7 @@ public class PackageGenerator2 {
 				JptGenPlugin.logException(e);
 			}
 		}
-		return null;
+		return defaultSrcPath;
 	}
 
 	

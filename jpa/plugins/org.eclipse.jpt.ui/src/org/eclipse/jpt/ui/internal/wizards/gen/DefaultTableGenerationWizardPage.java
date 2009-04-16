@@ -12,16 +12,31 @@ package org.eclipse.jpt.ui.internal.wizards.gen;
 
 import java.util.List;
 
-import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.IJavaModel;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
+import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.internal.ui.JavaPlugin;
+import org.eclipse.jdt.internal.ui.wizards.NewWizardMessages;
+import org.eclipse.jdt.internal.ui.wizards.TypedElementSelectionValidator;
+import org.eclipse.jdt.internal.ui.wizards.TypedViewerFilter;
+import org.eclipse.jdt.ui.JavaElementComparator;
+import org.eclipse.jdt.ui.JavaElementLabelProvider;
+import org.eclipse.jdt.ui.StandardJavaElementContentProvider;
 import org.eclipse.jdt.ui.wizards.NewTypeWizardPage;
 import org.eclipse.jface.dialogs.IMessageProvider;
+import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerFilter;
+import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.gen.internal2.ORMGenCustomizer;
 import org.eclipse.jpt.gen.internal2.ORMGenTable;
@@ -32,6 +47,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
 
 /**
  * A wizard page allowing the entry of the default table generation 
@@ -111,40 +127,44 @@ public class DefaultTableGenerationWizardPage extends NewTypeWizardPage {
 				String baseClass = defaultsTable.getExtends() == null ?"" : defaultsTable.getExtends();
 				setSuperClass(baseClass, true);
 				setSuperInterfaces(defaultsTable.getImplements(), true);
-				
-				setPackageName( defaultsTable.getPackage() );
+				IPackageFragmentRoot root = getSourceFolder( defaultsTable.getSourceFolder());
+				setPackageName( root, defaultsTable.getPackage() );
+				setPackageFragmentRoot(root, true/*canBeModified*/);
 			}
 		}
 	}	
 	
-	private void setPackageName(String packageName) {
-		if( packageName == null || packageName.length() == 0) {
-			return;
-		}
+	private IPackageFragmentRoot getSourceFolder(String srcFodler){
+		IPackageFragmentRoot packageFragmentRoot=null;
 		// Copied from org.eclipse.pde.internal.ui.editor.plugin.JavaAttributeWizardPage
 		try {
-			IPackageFragmentRoot srcEntryDft = null;
 			IJavaProject javaProject = jpaProject.getJavaProject();
+
 			IPackageFragmentRoot[] roots = javaProject.getPackageFragmentRoots();
 			for (int i = 0; i < roots.length; i++) {
 				if (roots[i].getKind() == IPackageFragmentRoot.K_SOURCE) {
-					srcEntryDft = roots[i];
-					break;
+					//Save the default source root
+					if(i==0) packageFragmentRoot = roots[i];
+					//find alternative source root match the saved value
+					if( roots[i].getPath().toString().equals("/"+srcFodler)){
+						packageFragmentRoot=roots[i];
+						break;
+					}
 				}
 			}
-			IPackageFragmentRoot packageFragmentRoot;
-			if (srcEntryDft != null) {
-				packageFragmentRoot = srcEntryDft;
-			}
-			else {
-				packageFragmentRoot = javaProject.getPackageFragmentRoot(javaProject.getResource());
-			}
-			IFolder packageFolder = javaProject.getProject().getFolder(packageName);
-			IPackageFragment packageFragment = packageFragmentRoot.getPackageFragment(packageFolder.getProjectRelativePath().toOSString());
-			setPackageFragment(packageFragment, true/*canBeModified*/);
 		} catch (CoreException e) {
 			JptUiPlugin.log(e);
 		}
+		return packageFragmentRoot;
+	}
+	
+	private void setPackageName(IPackageFragmentRoot packageFragmentRoot, String packageName) {
+		if( packageName == null || packageName.length() == 0 || packageFragmentRoot==null) {
+			return;
+		}
+		//IJavaProject javaProject = jpaProject.getJavaProject();
+		IPackageFragment packageFragment = packageFragmentRoot.getPackageFragment(packageName);
+		setPackageFragment(packageFragment, true/*canBeModified*/);
 	}
 
 
@@ -162,6 +182,7 @@ public class DefaultTableGenerationWizardPage extends NewTypeWizardPage {
 		
 		//default Java package name only available for default table generation
 		createPackageControls(parent, columns);
+		createContainerControls(parent, columns);
 		createSuperClassControls(parent, columns);
 		createSuperInterfacesControls(parent, columns);
 	}
@@ -170,9 +191,9 @@ public class DefaultTableGenerationWizardPage extends NewTypeWizardPage {
 	protected IStatus packageChanged() {
 		IStatus status = super.packageChanged(); 
 		IPackageFragment packageFragment = getPackageFragment();
-		String srcFolder = packageFragment.getPath().toPortableString();
+		//String srcFolder = packageFragment.getPath().toPortableString();
 		if (defaultsTable != null && !status.matches(IStatus.ERROR)) {
-			defaultsTable.setPackage(srcFolder, packageFragment.getElementName());
+			defaultsTable.setPackage(packageFragment.getElementName());
 		}
 		return status;
 	}	
@@ -189,18 +210,94 @@ public class DefaultTableGenerationWizardPage extends NewTypeWizardPage {
 		}
 		return status; 
 	}	
+	@Override
+	protected IStatus containerChanged() {
+		IStatus status = super.containerChanged();
+		String srcFolder = getPackageFragmentRootText();
+		if( !status.matches(IStatus.ERROR) ){
+			if (defaultsTable != null ) {
+				defaultsTable.setSourceFolder( srcFolder );
+			}
+		}
+		return status;
+	}
+
+	/** Override to allow select source folder in current project only
+	 * @see org.eclipse.jdt.ui.wizards.NewContainerWizardPage#chooseContainer()
+	 */
+	@Override
+	protected IPackageFragmentRoot chooseContainer() {
+		IJavaElement initElement= getPackageFragmentRoot();
+		Class[] acceptedClasses= new Class[] { IPackageFragmentRoot.class, IJavaProject.class };
+		TypedElementSelectionValidator validator= new TypedElementSelectionValidator(acceptedClasses, false) {
+			public boolean isSelectedValid(Object element) {
+				try {
+					if (element instanceof IJavaProject) {
+						IJavaProject jproject= (IJavaProject)element;
+						IPath path= jproject.getProject().getFullPath();
+						return (jproject.findPackageFragmentRoot(path) != null);
+					} else if (element instanceof IPackageFragmentRoot) {
+						return (((IPackageFragmentRoot)element).getKind() == IPackageFragmentRoot.K_SOURCE);
+					}
+					return true;
+				} catch (JavaModelException e) {
+					JavaPlugin.log(e.getStatus()); // just log, no UI in validation
+				}
+				return false;
+			}
+		};
+
+		acceptedClasses= new Class[] { IJavaModel.class, IPackageFragmentRoot.class, IJavaProject.class };
+		ViewerFilter filter= new TypedViewerFilter(acceptedClasses) {
+			public boolean select(Viewer viewer, Object parent, Object element) {
+				if (element instanceof IPackageFragmentRoot) {
+					try {
+						return (((IPackageFragmentRoot)element).getKind() == IPackageFragmentRoot.K_SOURCE);
+					} catch (JavaModelException e) {
+						JavaPlugin.log(e.getStatus()); // just log, no UI in validation
+						return false;
+					}
+				}
+				return super.select(viewer, parent, element);
+			}
+		};
+
+		StandardJavaElementContentProvider provider= new StandardJavaElementContentProvider();
+		ILabelProvider labelProvider= new JavaElementLabelProvider(JavaElementLabelProvider.SHOW_DEFAULT);
+		ElementTreeSelectionDialog dialog= new ElementTreeSelectionDialog(getShell(), labelProvider, provider);
+		dialog.setValidator(validator);
+		dialog.setComparator(new JavaElementComparator());
+		dialog.setTitle(NewWizardMessages.NewContainerWizardPage_ChooseSourceContainerDialog_title);
+		dialog.setMessage(NewWizardMessages.NewContainerWizardPage_ChooseSourceContainerDialog_description);
+		dialog.addFilter(filter);
+		dialog.setInput(JavaCore.create( jpaProject.getProject()));
+		dialog.setInitialSelection(initElement);
+		dialog.setHelpAvailable(false);
+
+		if (dialog.open() == Window.OK) {
+			Object element= dialog.getFirstResult();
+			if (element instanceof IJavaProject) {
+				IJavaProject jproject= (IJavaProject)element;
+				return jproject.getPackageFragmentRoot(jproject.getProject());
+			} else if (element instanceof IPackageFragmentRoot) {
+				return (IPackageFragmentRoot)element;
+			}
+			return null;
+		}
+		return null;
+	}
 	
 	@Override
 	protected void handleFieldChanged(String fieldName) {
 		super.handleFieldChanged(fieldName);
-		if (this.fPackageStatus.matches(IStatus.ERROR) ) {
+		if (this.fContainerStatus.matches(IStatus.ERROR)) {
+			updateStatus(fContainerStatus);
+		}else if( ! this.fPackageStatus.matches(IStatus.OK) ) {
 			updateStatus(fPackageStatus);
 		} else if (this.fSuperClassStatus.matches(IStatus.ERROR)) {
 			updateStatus(fSuperClassStatus);
 		} else {
-			setMessage("", IMessageProvider.NONE);
-			setErrorMessage(null);
-			updateStatus(fPackageStatus);
+			updateStatus(Status.OK_STATUS);
 		}
 	}
 	
