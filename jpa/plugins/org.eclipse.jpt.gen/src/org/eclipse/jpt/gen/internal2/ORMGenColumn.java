@@ -357,6 +357,11 @@ public class ORMGenColumn
 		setCustomizedBoolean(GENERATED, value, true);
 	}
 	
+	@Override
+	public String toString() {
+		return "name=" + getName() + "; type=" + getPropertyType() ; //$NON-NLS-1$ //$NON-NLS-2$ 
+	}
+
 	/*get/set and field scopes*/
 	public static final String PUBLIC_SCOPE = "public"; //$NON-NLS-1$
 	public static final String PROTECTED_SCOPE = "protected"; //$NON-NLS-1$

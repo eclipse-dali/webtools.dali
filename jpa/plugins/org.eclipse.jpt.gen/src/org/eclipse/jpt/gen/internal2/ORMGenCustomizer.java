@@ -697,9 +697,14 @@ public abstract class ORMGenCustomizer implements java.io.Serializable
 		mAssociations.addAll(addedAssociations);
 	}
 	private Association computeManyToMany(ORMGenTable table, List<Association> addedAssociations) {
-		/*many-to-many associations if:
-		 * -addedAssociations contains 2 many-to-one associations to 2 different tables t1 and t2.
-		 * -<code>table</code> contains only the primary key columns.
+		/** many-to-many associations if:
+		 * - addedAssociations contains 2 many-to-one associations
+		 * - tables t1 and t2 does NOT have to be different( for self-MTM-self situation)
+		 * - <code>table</code> contains only the foreign key columns.
+		 * 
+		 * Note: following restrictions have been removed:
+		 * -table has only two columns
+		 * -t1 and t2 must be different
 		 * -the primary key of <code>table</code> is the concatenation of its foreign 
 		 * 	keys to t1 and t2.*/
 		
@@ -707,19 +712,24 @@ public abstract class ORMGenCustomizer implements java.io.Serializable
 			return null;
 		}
 		
+		//MTM table should have two MTO relations to orginal tables
 		Association assoc1 = addedAssociations.get(0);
 		Association assoc2 = addedAssociations.get(1);
 		if (assoc1.getCardinality() != Association.MANY_TO_ONE
 				|| assoc2.getCardinality() != Association.MANY_TO_ONE) {
 			return null;
 		}
+
+		//MTM table should only include foreign key columns
+		for( ORMGenColumn col : table.getColumns()){
+			if( !col.isForeignKey())
+				return null;
+		}
+		
+
 		ORMGenTable t1 = assoc1.getReferencedTable();
 		ORMGenTable t2 = assoc2.getReferencedTable();
 
-//Commented out because the assumption is too restrictive: 
-//this check will prevent generating table MTM to itself		
-//		if (t1.getName().equals(t2.getName()) || 
-//				t1.getName().equals(table.getName()) || t2.getName().equals(table.getName())) {
 		if( t1.getName().equals(table.getName()) || t2.getName().equals(table.getName()) ) {
 			return null;
 		}
