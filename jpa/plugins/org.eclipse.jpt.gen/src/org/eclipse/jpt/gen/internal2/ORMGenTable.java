@@ -11,9 +11,13 @@ package org.eclipse.jpt.gen.internal2;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+
 import org.eclipse.jpt.db.Column;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.gen.internal.EntityGenTools;
@@ -35,7 +39,7 @@ public class ORMGenTable
 	private ORMGenCustomizer mCustomizer;
 	private List<ORMGenColumn> mColumns;
 	private Table mDbTable;
-
+	private HashMap<String, String> columnTypesMap =  null;
 	/**
 	 * @param table
 	 *            The database table or null if this table is used to get/set
@@ -114,31 +118,109 @@ public class ORMGenTable
 		return schemaName;
 	}
 
-	/**
-	 * Sets the source folder for the generated class
-	 */
 	public void setSourceFolder(String srcFolder){
 		setCustomized(SRC_FOLDER, srcFolder);
 	}
+	
 	public String getSourceFolder(){
 		String srcFolder = customized(SRC_FOLDER);
-		return srcFolder==null?"":srcFolder;
+		return srcFolder == null ? "" : srcFolder;
 	}
+	
+	public String getImportStatements(){
+		buildColumnTypesMap();
+		Collection<String> packages = columnTypesMap.keySet();
+		StringBuilder ret = new StringBuilder();
+		for ( String s : packages ) {
+			ret.append( "import " + s + ";\n"); //$NON-NLS-1$
+		}
+
+		List<AssociationRole> associationRoles = getAssociationRoles();
+		for ( AssociationRole role :  associationRoles ) {
+			if ( role.getCardinality().equals( Association.ONE_TO_MANY )
+					|| role.getCardinality().equals( Association.MANY_TO_MANY ) ) {
+				ret.append( "import " + getDefaultCollectionType() + ";\n"); //$NON-NLS-1$
+				break;
+			}
+		}
+		
+		return ret.toString();
+	}
+	
+	/**
+	 * Construct import statements for types from javax.persistence package
+	 * @return
+	 */
+	private String getJavaxPersistenceImportStatements() {
+		StringBuilder ret = new StringBuilder();
+		ret.append( "import javax.persistence.Entity;\n"); //$NON-NLS-1$
+		//TODO: only if @Columns is needed
+		ret.append( "import javax.persistence.Column;\n");//$NON-NLS-1$
+		//TODO: only if there is @Id
+		ret.append( "import javax.persistence.Id;\n");//$NON-NLS-1$
+		if( !this.isDefaultname() )
+			ret.append( "import javax.persistence.Table;\n");//$NON-NLS-1$
+		if( this.isCompositeKey() )
+			ret.append( "import javax.persistence.EmbeddedId;\n"); //$NON-NLS-1$
+		// append javax.persistence package imports
+		HashSet<String> jpaImports = new HashSet<String>(); 
+		List<AssociationRole> associationRoles = getAssociationRoles();
+		for( AssociationRole role :  associationRoles ){
+			if( role.getCardinality().equals( Association.ONE_TO_ONE ) ){
+				jpaImports.add( "import javax.persistence.OneToOne;" );//$NON-NLS-1$
+			}else{
+				if( role.getCardinality().equals( Association.ONE_TO_MANY ) ){
+					jpaImports.add( "import javax.persistence.OneToMany;\n" );//$NON-NLS-1$
+				}else if( role.getCardinality().equals( Association.MANY_TO_ONE ) ){
+					jpaImports.add( "import javax.persistence.ManyToOne;\n" );//$NON-NLS-1$
+					jpaImports.add( "import javax.persistence.JoinColumn;\n" ); //$NON-NLS-1$
+				}else if( role.getCardinality().equals( Association.MANY_TO_MANY ) ){
+					jpaImports.add( "import javax.persistence.ManyToMany;\n" );//$NON-NLS-1$
+					jpaImports.add( "import javax.persistence.JoinTable;\n" );//$NON-NLS-1$
+					jpaImports.add( "import javax.persistence.JoinColumns;\n");//$NON-NLS-1$
+					jpaImports.add( "import javax.persistence.JoinColumn;\n" );//$NON-NLS-1$
+				}
+			}
+		}
+		for( String s: jpaImports){
+			ret.append(s);
+		}
+		return ret.toString();
+	}
+
+	public HashMap<String, String> buildColumnTypesMap(){
+		if ( columnTypesMap != null) {
+			return columnTypesMap;
+		}
+		columnTypesMap = new HashMap<String, String>();
+		for ( ORMGenColumn col : this.getColumns() ) {
+			String type = col.getPropertyType();
+			if ( !col.isPartOfCompositePrimaryKey()
+					&& !col.isForeignKey()
+					&& !type.startsWith("java.lang") && type.indexOf('.')>0 ) {
+				String simpleType= type.substring( type.lastIndexOf('.')+1 );
+				columnTypesMap.put(type, simpleType);
+			}
+		}
+		return columnTypesMap;
+	}
+	
+	public String getSimplifiedColType(String fqtn ) {
+		HashMap<String, String> map = buildColumnTypesMap();
+		String typeName = map.get(fqtn);
+		if (  typeName != null ) {
+			return typeName;
+		}
+		return fqtn;
+	}
+	
 	/**
 	 * Sets the package for the generated class (empty string for the default
 	 * package)
 	 */
 	public void setPackage(String pkg) {
-		getCustomizer().setProperty(PACKAGE, pkg, getName(), null); // not
-																	// calling
-																	// setCustomized
-																	// so that
-																	// empty
-																	// strings
-																	// do not
-																	// get
-																	// nulled
-																	// out.
+		getCustomizer().setProperty(PACKAGE, pkg, getName(), null); 
+		// not calling setCustomized so that empty strings do not get nulled out.
 	}
 
 	/**
@@ -146,7 +228,7 @@ public class ORMGenTable
 	 */
 	public String getPackage() {
 		String packageName = customized(PACKAGE);
-		return packageName == null ? "" : packageName;
+		return packageName == null ? "" : packageName; //$NON-NLS-1$
 	}
 
 	/**
@@ -234,6 +316,7 @@ public class ORMGenTable
 			while (cols.hasNext()) {
 				Column c = cols.next();
 				ORMGenColumn genColumn = getCustomizer().createGenColumn(c);
+				genColumn.setGenTable(this);
 				mColumns.add(genColumn);
 			}
 		}
@@ -326,7 +409,7 @@ public class ORMGenTable
 			if (column.isPrimaryKey()) {
 				if (!includePk || isCompositeKey()) {
 					continue;
-				}else{
+				} else {
 					result.add(0, column);
 					continue;
 				}
@@ -667,6 +750,11 @@ public class ORMGenTable
 			cType = SET_COLLECTION_TYPE;
 		}
 		return cType;
+	}
+	
+	public String getSimpleCollectionType(){
+		 String type = getDefaultCollectionType();
+		return type.substring( type.lastIndexOf('.') +1 );
 	}
 
 	public void setDefaultCollectionType(String cType) {

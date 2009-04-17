@@ -26,9 +26,6 @@
 #set ($joinTable = $role.association.joinTable)
 	@JoinTable(
 		name="${joinTable.joinTableAnnotationName}"
-#if ($joinTable.schema!="")
-		, schema="${joinTable.schema}"
-#end
 		, joinColumns={
 #foreach ($column in $role.referrerColumns)
 #set ($referencedColumn = $role.getReferencedColumn(${column.name}))

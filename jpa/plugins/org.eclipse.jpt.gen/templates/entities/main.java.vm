@@ -4,6 +4,7 @@ package ${table.package};
 
 import java.io.Serializable;
 import javax.persistence.*;
+${table.importStatements}
 
 /**
  * The persistent class for the ${table.name} database table.
@@ -31,7 +32,7 @@ public class ${table.className} ${table.generateExtendsImplements()} {
 #parse("mappingKind.vm")
 #parse("column.vm")
 #end
-	${column.fieldScope} ${column.propertyType} ${column.propertyName};
+	${column.fieldScope} ${column.simplePropertyType} ${column.propertyName};
 #end
 #foreach ($role in $table.associationRoles)
 #####
@@ -56,7 +57,7 @@ public class ${table.className} ${table.generateExtendsImplements()} {
 #if ($role.cardinality == "many-to-one" || $role.cardinality == "one-to-one")
 #set ($propertyType = ${role.referencedTable.className})
 #elseif ($role.cardinality == "many-to-many" || $role.cardinality == "one-to-many")
-#set ($propertyType = "${role.referencedTable.defaultCollectionType}<${role.referencedTable.className}>")
+#set ($propertyType = "${role.referencedTable.simpleCollectionType}<${role.referencedTable.className}>")
 #end
 	private $propertyType $role.propertyName;
 #end
@@ -69,6 +70,7 @@ public class ${table.className} ${table.generateExtendsImplements()} {
 #####
 #if ($table.compositeKey)
 #if ($table.access == "property")
+
 	@EmbeddedId
 #end
 	public $table.compositeKeyClassName $customizer.propertyGetter($table.compositeKeyPropertyName)() {
@@ -82,14 +84,15 @@ public class ${table.className} ${table.generateExtendsImplements()} {
 #end
 #foreach ($column in $table.getSimpleColumns(true, true, false))
 #if ($table.access == "property")
+
 #parse("mappingKind.vm")
 #parse("column.vm")
 #end
-	$column.propertyGetScope $column.propertyType $customizer.propertyGetter($column.propertyName)() {
+	$column.propertyGetScope $column.simplePropertyType $customizer.propertyGetter($column.propertyName)() {
 		return this.${column.propertyName};
 	}
 
-	$column.propertySetScope void $customizer.propertySetter($column.propertyName)($column.propertyType $column.propertyName) {
+	$column.propertySetScope void $customizer.propertySetter($column.propertyName)($column.simplePropertyType $column.propertyName) {
 		this.${column.propertyName} = ${column.propertyName};
 	}
 
@@ -99,6 +102,7 @@ public class ${table.className} ${table.generateExtendsImplements()} {
 #####
 #foreach ($role in $table.associationRoles)
 #if ($table.access == "property")
+
 	//${role.description}
 #if ($role.cardinality == "many-to-one")
 #parse("manyToOne.vm")
@@ -114,7 +118,7 @@ public class ${table.className} ${table.generateExtendsImplements()} {
 #if ($role.cardinality == "many-to-one" || $role.cardinality == "one-to-one")
 #set ($propertyType = $role.referencedTable.className)
 #elseif ($role.cardinality == "many-to-many" || $role.cardinality == "one-to-many")
-#set ($propertyType = "${role.referencedTable.defaultCollectionType}<${role.referencedTable.className}>")
+#set ($propertyType = "${role.referencedTable.simpleCollectionType}<${role.referencedTable.className}>")
 #end
 	public $propertyType $customizer.propertyGetter($role.propertyName)() {
 		return this.${role.propertyName};
