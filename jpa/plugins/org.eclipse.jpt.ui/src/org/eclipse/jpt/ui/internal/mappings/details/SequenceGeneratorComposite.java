@@ -67,15 +67,11 @@ public class SequenceGeneratorComposite extends GeneratorComposite<SequenceGener
 		return subject.addSequenceGenerator();
 	}
 
-	protected SequenceGenerator buildGenerator() {
-		return this.buildGenerator(this.getSubject());
-	}
-
 	private PropertyValueModel<SequenceGenerator> buildSequenceGeneratorHolder() {
 		return new PropertyAspectAdapter<GeneratorHolder, SequenceGenerator>(getSubjectHolder(), GeneratorHolder.SEQUENCE_GENERATOR_PROPERTY) {
 			@Override
 			protected SequenceGenerator buildValue_() {
-				return subject.getSequenceGenerator();
+				return this.subject.getSequenceGenerator();
 			}
 		};
 	}
@@ -98,11 +94,7 @@ public class SequenceGeneratorComposite extends GeneratorComposite<SequenceGener
 
 			@Override
 			protected void setValue(String value) {
-				SequenceGenerator sg = this.getSubject();
-				if (sg == null) {
-					sg = SequenceGeneratorComposite.this.buildGenerator();
-				}
-				sg.setSpecifiedSequenceName(value);
+				retrieveGenerator(SequenceGeneratorComposite.this.getSubject()).setSpecifiedSequenceName(value);
 			}
 
 			@Override
@@ -156,11 +148,8 @@ public class SequenceGeneratorComposite extends GeneratorComposite<SequenceGener
 			JpaHelpContextIds.MAPPING_SEQUENCE_GENERATOR_SEQUENCE
 		);
 
-		// Allocation Size widgets
-		initializeAllocationSizeWidgets(container);
-
-		// Initial Value widgets
-		initializeInitialValueWidgets(container);
+		addAllocationSizeCombo(container);
+		addInitialValueCombo(container);
 	}
 
 	@Override

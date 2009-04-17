@@ -10,6 +10,7 @@
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.util.Collection;
+
 import org.eclipse.jpt.core.context.DiscriminatorColumn;
 import org.eclipse.jpt.core.context.DiscriminatorType;
 import org.eclipse.jpt.core.context.Entity;
@@ -18,22 +19,15 @@ import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.db.ColumnCombo;
-import org.eclipse.jpt.ui.internal.util.LabeledControlUpdater;
-import org.eclipse.jpt.ui.internal.util.LabeledLabel;
 import org.eclipse.jpt.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
+import org.eclipse.jpt.ui.internal.widgets.IntegerCombo;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
-import org.eclipse.osgi.util.NLS;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Spinner;
 
 /**
  * Here the layout of this pane:
@@ -253,18 +247,7 @@ public class DiscriminatorColumnComposite<T extends Entity> extends FormPane<T> 
 		@Override
 		protected void initializeLayout(Composite container) {
 			// Length widgets
-			Spinner lengthSpinner = addLabeledSpinner(
-				container,
-				JptUiMappingsMessages.ColumnComposite_length,
-				buildLengthHolder(),
-				-1,
-				-1,
-				Integer.MAX_VALUE,
-				addDefaultLengthLabel(container),
-				JpaHelpContextIds.MAPPING_COLUMN_LENGTH
-			);
-
-			updateGridData(container, lengthSpinner);
+			addLengthCombo(container);
 
 			// Column Definition widgets
 			addLabeledText(
@@ -273,79 +256,47 @@ public class DiscriminatorColumnComposite<T extends Entity> extends FormPane<T> 
 				buildColumnDefinitionHolder(getSubjectHolder())
 			);
 		}
-
-		private WritablePropertyValueModel<Integer> buildLengthHolder() {
-
-			return new PropertyAspectAdapter<DiscriminatorColumn, Integer>(getSubjectHolder(), DiscriminatorColumn.SPECIFIED_LENGTH_PROPERTY) {
+		
+		private void addLengthCombo(Composite container) {
+			new IntegerCombo<DiscriminatorColumn>(this, container) {
+				
 				@Override
-				protected Integer buildValue_() {
-					return this.subject.getSpecifiedLength();
+				protected String getLabelText() {
+					return JptUiMappingsMessages.ColumnComposite_length;
+				}
+			
+				@Override
+				protected String getHelpId() {
+					return JpaHelpContextIds.MAPPING_COLUMN_LENGTH;
 				}
 
 				@Override
-				protected void setValue_(Integer value) {
-					if (value.intValue() == -1) {
-						value = null;
-					}
-					this.subject.setSpecifiedLength(value);
+				protected PropertyValueModel<Integer> buildDefaultHolder() {
+					return new PropertyAspectAdapter<DiscriminatorColumn, Integer>(getSubjectHolder(), DiscriminatorColumn.DEFAULT_LENGTH_PROPERTY) {
+						@Override
+						protected Integer buildValue_() {
+							return Integer.valueOf(this.subject.getDefaultLength());
+						}
+					};
 				}
-			};
-		}
-
-		private Control addDefaultLengthLabel(Composite container) {
-
-			Label label = addLabel(
-				container,
-				JptUiMappingsMessages.DefaultEmpty
-			);
-
-			new LabeledControlUpdater(
-				new LabeledLabel(label),
-				buildDefaultLengthLabelHolder()
-			);
-
-			return label;
-		}
-
-		private PropertyValueModel<String> buildDefaultLengthLabelHolder() {
-
-			return new TransformationPropertyValueModel<Integer, String>(buildDefaultLengthHolder()) {
-
+				
 				@Override
-				protected String transform(Integer value) {
+				protected WritablePropertyValueModel<Integer> buildSelectedItemHolder() {
+					return new PropertyAspectAdapter<DiscriminatorColumn, Integer>(getSubjectHolder(), DiscriminatorColumn.SPECIFIED_LENGTH_PROPERTY) {
+						@Override
+						protected Integer buildValue_() {
+							return this.subject.getSpecifiedLength();
+						}
 
-					int defaultValue = (getSubject() != null) ? getSubject().getDefaultLength() :
-					                                             DiscriminatorColumn.DEFAULT_LENGTH;
-
-					return NLS.bind(
-						JptUiMappingsMessages.DefaultWithOneParam,
-						Integer.valueOf(defaultValue)
-					);
+						@Override
+						protected void setValue_(Integer value) {
+							this.subject.setSpecifiedLength(value);
+						}
+					};
 				}
 			};
 		}
-
-		private WritablePropertyValueModel<Integer> buildDefaultLengthHolder() {
-			return new PropertyAspectAdapter<DiscriminatorColumn, Integer>(getSubjectHolder(), DiscriminatorColumn.DEFAULT_LENGTH_PROPERTY) {
-				@Override
-				protected Integer buildValue_() {
-					return Integer.valueOf(this.subject.getDefaultLength());
-				}
-
-				@Override
-				protected void subjectChanged() {
-					Object oldValue = this.getValue();
-					super.subjectChanged();
-					Object newValue = this.getValue();
-
-					// Make sure the default value is appended to the text
-					if (oldValue == newValue && newValue == null) {
-						this.fireAspectChange(Integer.valueOf(Integer.MIN_VALUE), newValue);
-					}
-				}
-			};
-		}
-
+		
 		private WritablePropertyValueModel<String> buildColumnDefinitionHolder(PropertyValueModel<DiscriminatorColumn> discriminatorColumnHolder) {
 
 			return new PropertyAspectAdapter<DiscriminatorColumn, String>(discriminatorColumnHolder, NamedColumn.COLUMN_DEFINITION_PROPERTY) {
@@ -363,37 +314,5 @@ public class DiscriminatorColumnComposite<T extends Entity> extends FormPane<T> 
 				}
 			};
 		}
-		
-		/**
-		 * Changes the layout of the given container by changing which widget will
-		 * grab the excess of horizontal space. By default, the center control grabs
-		 * the excess space, we change it to be the right control.
-		 *
-		 * @param container The container containing the controls needing their
-		 * <code>GridData</code> to be modified from the default values
-		 * @param spinner The spinner that got created
-		 */
-		private void updateGridData(Composite container, Spinner spinner) {
-
-			// It is possible the spinner's parent is not the container of the
-			// label, spinner and right control (a pane is sometimes required for
-			// painting the spinner's border)
-			Composite paneContainer = spinner.getParent();
-
-			while (container != paneContainer.getParent()) {
-				paneContainer = paneContainer.getParent();
-			}
-
-			Control[] controls = paneContainer.getChildren();
-
-			GridData gridData = new GridData();
-			gridData.grabExcessHorizontalSpace = false;
-			gridData.horizontalAlignment       = GridData.BEGINNING;
-			controls[1].setLayoutData(gridData);
-
-			controls[2].setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			removeAlignRight(controls[2]);
-		}
-
 	}
 }

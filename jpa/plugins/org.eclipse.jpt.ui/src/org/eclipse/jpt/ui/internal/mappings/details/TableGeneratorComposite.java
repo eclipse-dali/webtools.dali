@@ -117,11 +117,7 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 
 			@Override
 			protected void setValue(String value) {
-				TableGenerator tg = this.getSubject();
-				if (tg == null) {
-					tg = TableGeneratorComposite.this.buildGenerator();
-				}
-				tg.setSpecifiedCatalog(value);
+				retrieveGenerator(TableGeneratorComposite.this.getSubject()).setSpecifiedCatalog(value);
 			}
 
 			@Override
@@ -134,10 +130,6 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 	@Override
 	protected TableGenerator buildGenerator(GeneratorHolder subject) {
 		return subject.addTableGenerator();
-	}
-
-	protected TableGenerator buildGenerator() {
-		return this.buildGenerator(this.getSubject());
 	}
 
 	private ColumnCombo<TableGenerator> addPkColumnNameCombo(Composite parent) {
@@ -171,11 +163,7 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 
 			@Override
 			protected void setValue(String value) {
-				TableGenerator tg = this.getSubject();
-				if (tg == null) {
-					tg = TableGeneratorComposite.this.buildGenerator();
-				}
-				tg.setSpecifiedPkColumnName(value);
+				retrieveGenerator(TableGeneratorComposite.this.getSubject()).setSpecifiedPkColumnName(value);
 			}
 
 			@Override
@@ -221,11 +209,7 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 
 			@Override
 			protected void setValue(String value) {
-				TableGenerator tg = this.getSubject();
-				if (tg == null) {
-					tg = TableGeneratorComposite.this.buildGenerator();
-				}
-				tg.setSpecifiedPkColumnValue(value);
+				retrieveGenerator(TableGeneratorComposite.this.getSubject()).setSpecifiedPkColumnValue(value);
 			}
 
 			@Override
@@ -271,11 +255,7 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 
 			@Override
 			protected void setValue(String value) {
-				TableGenerator tg = this.getSubject();
-				if (tg == null) {
-					tg = TableGeneratorComposite.this.buildGenerator();
-				}
-				tg.setSpecifiedSchema(value);
+				retrieveGenerator(TableGeneratorComposite.this.getSubject()).setSpecifiedSchema(value);
 			}
 
 			@Override
@@ -295,7 +275,7 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 		return new PropertyAspectAdapter<GeneratorHolder, TableGenerator>(getSubjectHolder(), GeneratorHolder.TABLE_GENERATOR_PROPERTY) {
 			@Override
 			protected TableGenerator buildValue_() {
-				return subject.getTableGenerator();
+				return this.subject.getTableGenerator();
 			}
 		};
 	}
@@ -346,11 +326,7 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 
 			@Override
 			protected void setValue(String value) {
-				TableGenerator tg = this.getSubject();
-				if (tg == null) {
-					tg = TableGeneratorComposite.this.buildGenerator();
-				}
-				tg.setSpecifiedTable(value);
+				retrieveGenerator(TableGeneratorComposite.this.getSubject()).setSpecifiedTable(value);
 			}
 
 			@Override
@@ -407,11 +383,7 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 
 			@Override
 			protected void setValue(String value) {
-				TableGenerator tg = this.getSubject();
-				if (tg == null) {
-					tg = TableGeneratorComposite.this.buildGenerator();
-				}
-				tg.setSpecifiedValueColumnName(value);
+				retrieveGenerator(TableGeneratorComposite.this.getSubject()).setSpecifiedValueColumnName(value);
 			}
 
 			@Override
@@ -496,16 +468,10 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 			JpaHelpContextIds.MAPPING_TABLE_GENERATOR_PRIMARY_KEY_COLUMN_VALUE
 		);
 
-		// Allocation Size widgets
-		initializeAllocationSizeWidgets(container);
-
-		// Initial Value widgets
-		initializeInitialValueWidgets(container);
+		addAllocationSizeCombo(container);
+		addInitialValueCombo(container);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected String getPropertyName() {
 		return GeneratorHolder.TABLE_GENERATOR_PROPERTY;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,6 +11,7 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.util.Collection;
 import java.util.Iterator;
+
 import org.eclipse.jpt.core.context.BaseColumn;
 import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.context.NamedColumn;
@@ -19,9 +20,9 @@ import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.db.ColumnCombo;
 import org.eclipse.jpt.ui.internal.mappings.db.DatabaseObjectCombo;
-import org.eclipse.jpt.ui.internal.util.LabeledControlUpdater;
-import org.eclipse.jpt.ui.internal.util.LabeledLabel;
+import org.eclipse.jpt.ui.internal.mappings.db.TableCombo;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
+import org.eclipse.jpt.ui.internal.widgets.IntegerCombo;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
@@ -29,11 +30,7 @@ import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueM
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.osgi.util.NLS;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Spinner;
 
 /**
  * Here the layout of this pane:
@@ -203,169 +200,7 @@ public class ColumnComposite extends FormPane<Column> {
 			}
 		};
 	}
-
-	private WritablePropertyValueModel<Integer> buildDefaultLengthHolder() {
-		return new PropertyAspectAdapter<Column, Integer>(getSubjectHolder(), Column.DEFAULT_LENGTH_PROPERTY) {
-			@Override
-			protected Integer buildValue_() {
-				return Integer.valueOf(this.subject.getDefaultLength());
-			}
-
-			@Override
-			protected void subjectChanged() {
-				Object oldValue = this.getValue();
-				super.subjectChanged();
-				Object newValue = this.getValue();
-
-				// Make sure the default value is appended to the text
-				if (oldValue == newValue && newValue == null) {
-					this.fireAspectChange(Integer.MIN_VALUE, newValue);
-				}
-			}
-		};
-	}
-
-	private Control addDefaultLengthLabel(Composite container) {
-
-		Label label = addLabel(
-			container,
-			JptUiMappingsMessages.DefaultEmpty
-		);
-
-		new LabeledControlUpdater(
-			new LabeledLabel(label),
-			buildDefaultLengthLabelHolder()
-		);
-
-		return label;
-	}
-
-	private PropertyValueModel<String> buildDefaultLengthLabelHolder() {
-
-		return new TransformationPropertyValueModel<Integer, String>(buildDefaultLengthHolder()) {
-
-			@Override
-			protected String transform(Integer value) {
-
-				int defaultValue = (getSubject() != null) ? getSubject().getDefaultLength() :
-				                                             Column.DEFAULT_LENGTH;
-
-				return NLS.bind(
-					JptUiMappingsMessages.DefaultWithOneParam,
-					Integer.valueOf(defaultValue)
-				);
-			}
-		};
-	}
-
-	private WritablePropertyValueModel<Integer> buildDefaultPrecisionHolder() {
-		return new PropertyAspectAdapter<Column, Integer>(getSubjectHolder(), Column.DEFAULT_PRECISION_PROPERTY) {
-			@Override
-			protected Integer buildValue_() {
-				return Integer.valueOf(this.subject.getDefaultPrecision());
-			}
-
-			@Override
-			protected void subjectChanged() {
-				Object oldValue = this.getValue();
-				super.subjectChanged();
-				Object newValue = this.getValue();
-
-				// Make sure the default value is appended to the text
-				if (oldValue == newValue && newValue == null) {
-					this.fireAspectChange(Integer.MIN_VALUE, newValue);
-				}
-			}
-		};
-	}
-
-	private Control addDefaultPrecisionLabel(Composite container) {
-
-		Label label = addLabel(
-			container,
-			JptUiMappingsMessages.DefaultEmpty
-		);
-
-		new LabeledControlUpdater(
-			new LabeledLabel(label),
-			buildDefaultPrecisionLabelHolder()
-		);
-
-		return label;
-	}
-
-	private PropertyValueModel<String> buildDefaultPrecisionLabelHolder() {
-
-		return new TransformationPropertyValueModel<Integer, String>(buildDefaultPrecisionHolder()) {
-
-			@Override
-			protected String transform(Integer value) {
-
-				int defaultValue = (getSubject() != null) ? getSubject().getDefaultPrecision() :
-				                                             Column.DEFAULT_PRECISION;
-
-				return NLS.bind(
-					JptUiMappingsMessages.DefaultWithOneParam,
-					Integer.valueOf(defaultValue)
-				);
-			}
-		};
-	}
-
-	private WritablePropertyValueModel<Integer> buildDefaultScaleHolder() {
-		return new PropertyAspectAdapter<Column, Integer>(getSubjectHolder(), Column.DEFAULT_SCALE_PROPERTY) {
-			@Override
-			protected Integer buildValue_() {
-				return Integer.valueOf(this.subject.getDefaultScale());
-			}
-
-			@Override
-			protected void subjectChanged() {
-				Object oldValue = this.getValue();
-				super.subjectChanged();
-				Object newValue = this.getValue();
-
-				// Make sure the default value is appended to the text
-				if (oldValue == newValue && newValue == null) {
-					this.fireAspectChange(Boolean.TRUE, newValue);
-				}
-			}
-		};
-	}
-
-	private Control addDefaultScaleLabel(Composite container) {
-
-		Label label = addLabel(
-			container,
-			JptUiMappingsMessages.DefaultEmpty
-		);
-
-		new LabeledControlUpdater(
-			new LabeledLabel(label),
-			buildDefaultScaleLabelHolder()
-		);
-
-		return label;
-	}
-
-	private PropertyValueModel<String> buildDefaultScaleLabelHolder() {
-
-		return new TransformationPropertyValueModel<Integer, String>(buildDefaultScaleHolder()) {
-
-			@Override
-			protected String transform(Integer value) {
-
-				int defaultValue = (getSubject() != null) ? getSubject().getDefaultScale() :
-				                                             Column.DEFAULT_SCALE;
-
-				return NLS.bind(
-					JptUiMappingsMessages.DefaultWithOneParam,
-					Integer.valueOf(defaultValue)
-				);
-			}
-		};
-	}
-
+	
 	private WritablePropertyValueModel<Boolean> buildInsertableHolder() {
 		return new PropertyAspectAdapter<Column, Boolean>(getSubjectHolder(), BaseColumn.SPECIFIED_INSERTABLE_PROPERTY) {
 			@Override
@@ -404,22 +239,6 @@ public class ColumnComposite extends FormPane<Column> {
 		};
 	}
 
-	private WritablePropertyValueModel<Integer> buildLengthHolder() {
-		return new PropertyAspectAdapter<Column, Integer>(getSubjectHolder(), Column.SPECIFIED_LENGTH_PROPERTY) {
-			@Override
-			protected Integer buildValue_() {
-				return this.subject.getSpecifiedLength();
-			}
-
-			@Override
-			protected void setValue_(Integer value) {
-				if (value.intValue() == -1) {
-					value = null;
-				}
-				this.subject.setSpecifiedLength(value);
-			}
-		};
-	}
 
 	private WritablePropertyValueModel<Boolean> buildNullableHolder() {
 		return new PropertyAspectAdapter<Column, Boolean>(
@@ -469,40 +288,6 @@ public class ColumnComposite extends FormPane<Column> {
 				}
 
 				return JptUiMappingsMessages.ColumnComposite_nullable;
-			}
-		};
-	}
-
-	private WritablePropertyValueModel<Integer> buildPrecisionHolder() {
-		return new PropertyAspectAdapter<Column, Integer>(getSubjectHolder(), Column.SPECIFIED_PRECISION_PROPERTY) {
-			@Override
-			protected Integer buildValue_() {
-				return this.subject.getSpecifiedPrecision();
-			}
-
-			@Override
-			protected void setValue_(Integer value) {
-				if (value.intValue() == -1) {
-					value = null;
-				}
-				this.subject.setSpecifiedPrecision(value);
-			}
-		};
-	}
-
-	private WritablePropertyValueModel<Integer> buildScaleHolder() {
-		return new PropertyAspectAdapter<Column, Integer>(getSubjectHolder(), Column.SPECIFIED_SCALE_PROPERTY) {
-			@Override
-			protected Integer buildValue_() {
-				return this.subject.getSpecifiedScale();
-			}
-
-			@Override
-			protected void setValue_(Integer value) {
-				if (value.intValue() == -1) {
-					value = null;
-				}
-				this.subject.setSpecifiedScale(value);
 			}
 		};
 	}
@@ -688,6 +473,7 @@ public class ColumnComposite extends FormPane<Column> {
 	}
 	
 	protected class DetailsComposite extends FormPane<Column> {
+				
 		public DetailsComposite(FormPane<?> parentPane,
             PropertyValueModel<? extends Column> subjectHolder,
             Composite parent) {
@@ -734,47 +520,9 @@ public class ColumnComposite extends FormPane<Column> {
 				JpaHelpContextIds.MAPPING_COLUMN_NULLABLE
 			);
 
-			// Length widgets
-			Spinner lengthSpinner = addLabeledSpinner(
-				container,
-				JptUiMappingsMessages.ColumnComposite_length,
-				buildLengthHolder(),
-				-1,
-				-1,
-				Integer.MAX_VALUE,
-				addDefaultLengthLabel(container),
-				JpaHelpContextIds.MAPPING_COLUMN_LENGTH
-			);
-
-			updateGridData(container, lengthSpinner);
-
-			// Precision widgets
-			Spinner precisionSpinner = addLabeledSpinner(
-				container,
-				JptUiMappingsMessages.ColumnComposite_precision,
-				buildPrecisionHolder(),
-				-1,
-				-1,
-				Integer.MAX_VALUE,
-				addDefaultPrecisionLabel(container),
-				JpaHelpContextIds.MAPPING_COLUMN_PRECISION
-			);
-
-			updateGridData(container, precisionSpinner);
-
-			// Scale widgets
-			Spinner scaleSpinner = addLabeledSpinner(
-				container,
-				JptUiMappingsMessages.ColumnComposite_scale,
-				buildScaleHolder(),
-				-1,
-				-1,
-				Integer.MAX_VALUE,
-				addDefaultScaleLabel(container),
-				JpaHelpContextIds.MAPPING_COLUMN_SCALE
-			);
-
-			updateGridData(container, scaleSpinner);
+			addLengthCombo(container);
+			addPrecisionCombo(container);
+			addScaleCombo(container);
 
 			// Column Definition widgets
 			addLabeledText(
@@ -783,36 +531,125 @@ public class ColumnComposite extends FormPane<Column> {
 				buildColumnDefinitionHolder()
 			);
 		}
-		
-		/**
-		 * Changes the layout of the given container by changing which widget will
-		 * grab the excess of horizontal space. By default, the center control grabs
-		 * the excess space, we change it to be the right control.
-		 *
-		 * @param container The container containing the controls needing their
-		 * <code>GridData</code> to be modified from the default values
-		 * @param spinner The spinner that got created
-		 */
-		private void updateGridData(Composite container, Spinner spinner) {
 
-			// It is possible the spinner's parent is not the container of the
-			// label, spinner and right control (a pane is sometimes required for
-			// painting the spinner's border)
-			Composite paneContainer = spinner.getParent();
+		private void addLengthCombo(Composite container) {
+			new IntegerCombo<Column>(this, container) {
+				
+				@Override
+				protected String getLabelText() {
+					return JptUiMappingsMessages.ColumnComposite_length;
+				}
+			
+				@Override
+				protected String getHelpId() {
+					return JpaHelpContextIds.MAPPING_COLUMN_LENGTH;
+				}
 
-			while (container != paneContainer.getParent()) {
-				paneContainer = paneContainer.getParent();
-			}
+				@Override
+				protected PropertyValueModel<Integer> buildDefaultHolder() {
+					return new PropertyAspectAdapter<Column, Integer>(getSubjectHolder(), Column.DEFAULT_LENGTH_PROPERTY) {
+						@Override
+						protected Integer buildValue_() {
+							return Integer.valueOf(this.subject.getDefaultLength());
+						}
+					};
+				}
+				
+				@Override
+				protected WritablePropertyValueModel<Integer> buildSelectedItemHolder() {
+					return new PropertyAspectAdapter<Column, Integer>(getSubjectHolder(), Column.SPECIFIED_LENGTH_PROPERTY) {
+						@Override
+						protected Integer buildValue_() {
+							return this.subject.getSpecifiedLength();
+						}
 
-			Control[] controls = paneContainer.getChildren();
+						@Override
+						protected void setValue_(Integer value) {
+							this.subject.setSpecifiedLength(value);
+						}
+					};
+				}
+			};
+		}
 
-			GridData gridData = new GridData();
-			gridData.grabExcessHorizontalSpace = false;
-			gridData.horizontalAlignment       = GridData.BEGINNING;
-			controls[1].setLayoutData(gridData);
+		private void addPrecisionCombo(Composite container) {
+			new IntegerCombo<Column>(this, container) {
+				
+				@Override
+				protected String getLabelText() {
+					return JptUiMappingsMessages.ColumnComposite_precision;
+				}
+			
+				@Override
+				protected String getHelpId() {
+					return JpaHelpContextIds.MAPPING_COLUMN_PRECISION;
+				}
 
-			controls[2].setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			removeAlignRight(controls[2]);
+				@Override
+				protected PropertyValueModel<Integer> buildDefaultHolder() {
+					return new PropertyAspectAdapter<Column, Integer>(getSubjectHolder(), Column.DEFAULT_PRECISION_PROPERTY) {
+						@Override
+						protected Integer buildValue_() {
+							return Integer.valueOf(this.subject.getDefaultPrecision());
+						}
+					};
+				}
+				
+				@Override
+				protected WritablePropertyValueModel<Integer> buildSelectedItemHolder() {
+					return new PropertyAspectAdapter<Column, Integer>(getSubjectHolder(), Column.SPECIFIED_PRECISION_PROPERTY) {
+						@Override
+						protected Integer buildValue_() {
+							return this.subject.getSpecifiedPrecision();
+						}
+
+						@Override
+						protected void setValue_(Integer value) {
+							this.subject.setSpecifiedPrecision(value);
+						}
+					};
+				}
+			};
+		}
+
+		private void addScaleCombo(Composite container) {
+			new IntegerCombo<Column>(this, container) {
+				
+				@Override
+				protected String getLabelText() {
+					return JptUiMappingsMessages.ColumnComposite_scale;
+				}
+			
+				@Override
+				protected String getHelpId() {
+					return JpaHelpContextIds.MAPPING_COLUMN_SCALE;
+				}
+
+				@Override
+				protected PropertyValueModel<Integer> buildDefaultHolder() {
+					return new PropertyAspectAdapter<Column, Integer>(getSubjectHolder(), Column.DEFAULT_SCALE_PROPERTY) {
+						@Override
+						protected Integer buildValue_() {
+							return Integer.valueOf(this.subject.getDefaultScale());
+						}
+					};
+				}
+				
+				@Override
+				protected WritablePropertyValueModel<Integer> buildSelectedItemHolder() {
+					return new PropertyAspectAdapter<Column, Integer>(getSubjectHolder(), Column.SPECIFIED_SCALE_PROPERTY) {
+						@Override
+						protected Integer buildValue_() {
+							return this.subject.getSpecifiedScale();
+						}
+
+						@Override
+						protected void setValue_(Integer value) {
+							this.subject.setSpecifiedScale(value);
+						}
+					};
+				}
+			};
 		}
 	}
 }

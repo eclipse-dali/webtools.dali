@@ -140,11 +140,8 @@ public class OrmTableGeneratorComposite extends OrmGeneratorComposite<OrmTableGe
 			JpaHelpContextIds.MAPPING_TABLE_GENERATOR_PRIMARY_KEY_COLUMN_VALUE
 		);
 
-		// Allocation Size widgets
-		initializeAllocationSizeWidgets(container);
-
-		// Initial Value widgets
-		initializeInitialValueWidgets(container);
+		addAllocationSizeCombo(container);
+		addInitialValueCombo(container);
 	}
 	
 	private ColumnCombo<OrmTableGenerator> addPkColumnNameCombo(Composite parent) {

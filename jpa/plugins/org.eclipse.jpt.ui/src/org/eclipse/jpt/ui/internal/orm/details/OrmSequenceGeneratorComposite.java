@@ -76,11 +76,8 @@ public class OrmSequenceGeneratorComposite extends OrmGeneratorComposite<OrmSequ
 			JpaHelpContextIds.MAPPING_SEQUENCE_GENERATOR_SEQUENCE
 		);
 
-		// Allocation Size widgets
-		initializeAllocationSizeWidgets(container);
-
-		// Initial Value widgets
-		initializeInitialValueWidgets(container);
+		addAllocationSizeCombo(container);
+		addInitialValueCombo(container);
 	}
 	
 	private SequenceCombo<OrmSequenceGenerator> addSequenceNameCombo(Composite parent) {
