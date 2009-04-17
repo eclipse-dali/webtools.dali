@@ -77,21 +77,21 @@
          id="org.apache.commons.collections"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="3.2.0.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.apache.commons.lang"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="2.1.0.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.apache.oro"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="2.0.8.qualifier"
          unpack="false"/>
 
 </feature>
