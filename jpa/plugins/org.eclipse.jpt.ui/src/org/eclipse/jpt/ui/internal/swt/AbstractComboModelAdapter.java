@@ -429,8 +429,11 @@ public abstract class AbstractComboModelAdapter<E> {
 		}
 
 		E selectedValue = this.selectedItemHolder.getValue();
+		if (this.comboHolder.getText().equals(selectedValue)) {
+			//if the selection is still the same, don't reset it
+			return;
+		}
 		this.comboHolder.setPopulating(true);
-
 		try {
 			this.comboHolder.deselectAll();
 			String selectedItem = this.convert(selectedValue);
