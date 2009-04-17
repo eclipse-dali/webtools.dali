@@ -195,9 +195,7 @@ public class TargetEntityComposite extends FormPane<RelationshipMapping>
 			public void modifyText(ModifyEvent e) {
 				if (!isPopulating()) {
 					Combo combo = (Combo) e.widget;
-					if (combo.getData("populating") != Boolean.TRUE) {//check !TRUE because null is a possibility as well
-						valueChanged(combo.getText());
-					}
+					valueChanged(combo.getText());
 				}
 			}
 		};

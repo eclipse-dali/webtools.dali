@@ -274,9 +274,7 @@ public abstract class DatabaseObjectCombo<T extends JpaNode>
 
 	protected void comboBoxModified() {
 		if ( ! this.isPopulating()) {
-			if (this.comboBox.getData("populating") != Boolean.TRUE) {//check !TRUE because null is a possibility as well
-				this.valueChanged(this.comboBox.getText());
-			}
+			this.valueChanged(this.comboBox.getText());
 		}
 	}
 
@@ -305,18 +303,12 @@ public abstract class DatabaseObjectCombo<T extends JpaNode>
 		// set the new value if it is different from the old value
 		if (this.valuesAreDifferent(oldValue, newValue)) {
 			this.setPopulating(true);
-			this.comboBox.setData("populating", Boolean.TRUE);
 
 			try {
 				this.setValue(newValue);
 			} finally {
-				this.comboBox.setData("populating", Boolean.FALSE);
 				this.setPopulating(false);
 			}
-		}
-
-		if (newValue == null) {
-			this.clearDefaultValue();
 		}
 	}
 
@@ -352,22 +344,6 @@ public abstract class DatabaseObjectCombo<T extends JpaNode>
 
 	protected boolean valuesAreDifferent(String value1, String value2) {
 		return ! this.valuesAreEqual(value1, value2);
-	}
-
-	/**
-	 * Makes sure the combo shows nothing instead of the default value because
-	 * the focus is still on the combo. The user can start typing something and
-	 * we don't want to start the typing after the default value.
-	 */
-	protected void clearDefaultValue() {
-		if (this.comboBox.isFocusControl()) {
-			this.setPopulating(true);
-			try {
-				this.comboBox.setText("");
-			} finally {
-				this.setPopulating(false);
-			}
-		}
 	}
 
 
