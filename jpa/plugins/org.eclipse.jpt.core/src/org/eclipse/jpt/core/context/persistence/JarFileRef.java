@@ -29,43 +29,57 @@ import org.eclipse.jpt.core.resource.persistence.XmlJarFileRef;
 public interface JarFileRef
 	extends XmlContextNode, JpaStructureNode
 {
-
-	// ********** JAR file **********
-
+	// **************** file name **********************************************
+	
+	/**
+	 * String constant associated with changes to the file name.
+	 */
+	String FILE_NAME_PROPERTY = "fileName"; //$NON-NLS-1$
+	
+	/**
+	 * Return the file name of the jar file ref.
+	 */
+	String getFileName();
+	
+	/**
+	 * Set the file name of the jar file ref.
+	 */
+	void setFileName(String fileName);
+	
+	
+	// **************** JAR file ***********************************************
+	
 	/**
 	 * String constant associated with changes to the JAR file.
 	 */
 	String JAR_FILE_PROPERTY = "jarFile"; //$NON-NLS-1$
-
+	
 	/**
 	 * Return the JAR file ref's JAR file corresponding to the file name.
 	 */
 	JarFile getJarFile();
-
-
-	// ********** updating **********
-
+	
+	
+	// **************** updating ***********************************************
+	
 	/**
 	 * Update the context JAR file ref to match the specified XML JAR file ref.
 	 * @see org.eclipse.jpt.core.JpaProject#update()
 	 */
 	void update(XmlJarFileRef xmlJarFileRef);
-
-
-	// ********** queries **********
-
-	String getJarFileName();
-
+	
+	
+	// **************** queries ************************************************
+	
 	/**
 	 * Return the persistent type, as listed in the JAR file,
 	 * with the specified name. Return null if it does not exists.
 	 */
 	PersistentType getPersistentType(String typeName);
-
+	
 	/**
 	 * Return whether the text representation of the JAR file ref contains
 	 * the specified text offset.
 	 */
 	boolean containsOffset(int textOffset);
-
 }

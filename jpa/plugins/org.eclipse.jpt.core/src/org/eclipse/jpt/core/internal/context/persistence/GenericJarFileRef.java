@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.internal.context.persistence;
 
 import java.util.List;
-
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.PersistentType;
@@ -28,28 +27,32 @@ import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-/**
- * 
- */
+
 public class GenericJarFileRef
 	extends AbstractXmlContextNode
 	implements JarFileRef
 {
 	protected XmlJarFileRef xmlJarFileRef;
-
+	
+	protected String fileName;
+	
 	protected JarFile jarFile;
-
-
-	// ********** construction/initialization **********
-
+	
+	
+	// **************** construction/initialization ****************************
+	
 	public GenericJarFileRef(PersistenceUnit parent, XmlJarFileRef xmlJarFileRef) {
 		super(parent);
 		this.xmlJarFileRef = xmlJarFileRef;
+		this.fileName = xmlJarFileRef.getFileName();
 		this.jarFile = this.buildJarFile();
 	}
-
+	
 	protected JarFile buildJarFile() {
-		JavaResourcePackageFragmentRoot jrpfr = this.getJpaProject().getJavaResourcePackageFragmentRoot(this.getJarFileName());
+		if (StringTools.stringIsEmpty(this.fileName)) {
+			return null;
+		}
+		JavaResourcePackageFragmentRoot jrpfr = this.getJpaProject().getJavaResourcePackageFragmentRoot(this.getFileName());
 		return (jrpfr == null) ? null : this.buildJarFile(jrpfr);
 	}
 	
@@ -57,10 +60,54 @@ public class GenericJarFileRef
 	public PersistenceUnit getParent() {
 		return (PersistenceUnit) super.getParent();
 	}
-
 	
-	// ********** JpaStructureNode implementation **********
-
+	
+	// **************** file name **********************************************
+	
+	public String getFileName() {
+		return this.fileName;
+	}
+	
+	public void setFileName(String newFileName) {
+		String old = this.fileName;
+		this.fileName = newFileName;
+		this.xmlJarFileRef.setFileName(newFileName);
+		this.firePropertyChanged(FILE_NAME_PROPERTY, old, newFileName);
+	}
+	
+	protected void setFileName_(String newFileName) {
+		String old = this.fileName;
+		this.fileName = newFileName;
+		this.firePropertyChanged(FILE_NAME_PROPERTY, old, newFileName);
+	}
+	
+	
+	// **************** JAR file ***********************************************
+	
+	public JarFile getJarFile() {
+		return this.jarFile;
+	}
+	
+	protected void setJarFile(JarFile jarFile) {
+		JarFile old = this.jarFile;
+		this.jarFile = jarFile;
+		this.firePropertyChanged(JAR_FILE_PROPERTY, old, jarFile);
+	}
+	
+	
+	// **************** JarFileRef impl ****************************************
+	
+	public PersistentType getPersistentType(String typeName) {
+		return (this.jarFile == null) ? null : this.jarFile.getPersistentType(typeName);
+	}
+	
+	public boolean containsOffset(int textOffset) {
+		return (this.xmlJarFileRef != null) && this.xmlJarFileRef.containsOffset(textOffset);
+	}
+	
+	
+	// **************** JpaStructureNode impl **********************************
+	
 	public String getId() {
 		return PersistenceStructureNodes.JAR_FILE_REF_ID;
 	}
@@ -82,45 +129,28 @@ public class GenericJarFileRef
 			this.jarFile.dispose();
 		}
 	}
-
-
-	// ********** queries **********
-
-	public String getJarFileName() {
-		return this.xmlJarFileRef.getFileName();
+	
+	
+	// **************** XmlContextNode impl ************************************
+	
+	public TextRange getValidationTextRange() {
+		return (this.xmlJarFileRef == null) ? null : this.xmlJarFileRef.getValidationTextRange();
 	}
-
-	public PersistentType getPersistentType(String typeName) {
-		return (this.jarFile == null) ? null : this.jarFile.getPersistentType(typeName);
-	}
-
-	public boolean containsOffset(int textOffset) {
-		return (this.xmlJarFileRef != null) && this.xmlJarFileRef.containsOffset(textOffset);
-	}
-
-
-	// ********** JAR file **********
-
-	public JarFile getJarFile() {
-		return this.jarFile;
-	}
-
-	protected void setJarFile(JarFile jarFile) {
-		JarFile old = this.jarFile;
-		this.jarFile = jarFile;
-		this.firePropertyChanged(JAR_FILE_PROPERTY, old, jarFile);
-	}
-
-
-	// ********** updating **********
+	
+	
+	// **************** updating ***********************************************
 
 	public void update(XmlJarFileRef xjfr) {
 		this.xmlJarFileRef = xjfr;
+		this.setFileName_(xjfr.getFileName());
 		this.updateJarFile();
 	}
 
 	protected void updateJarFile() {
-		JavaResourcePackageFragmentRoot jrpfr = this.getJpaProject().getJavaResourcePackageFragmentRoot(this.getJarFileName());
+		JavaResourcePackageFragmentRoot jrpfr = null;
+		if (! StringTools.stringIsEmpty(this.fileName)) {
+			jrpfr = this.getJpaProject().getJavaResourcePackageFragmentRoot(this.getFileName());
+		}
 		if (jrpfr == null) {
 			if (this.jarFile != null) {
 				this.jarFile.dispose();
@@ -138,16 +168,9 @@ public class GenericJarFileRef
 	protected JarFile buildJarFile(JavaResourcePackageFragmentRoot jrpfr) {
 		return this.getJpaFactory().buildJarFile(this, jrpfr);
 	}
-
-
-	// ********** XmlContextNode implementation **********
-
-	public TextRange getValidationTextRange() {
-		return (this.xmlJarFileRef == null) ? null : this.xmlJarFileRef.getValidationTextRange();
-	}
-
-
-	// ********** validation **********
+	
+	
+	// **************** validation *********************************************
 
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
@@ -180,14 +203,13 @@ public class GenericJarFileRef
 
 		this.jarFile.validate(messages, reporter);
 	}
-
-
-	// ********** misc **********
-
+	
+	
+	// **************** misc ***************************************************
+	
 	@Override
 	public void toString(StringBuilder sb) {
 		super.toString(sb);
-		sb.append(this.getJarFileName());
+		sb.append(this.getFileName());
 	}
-
 }
