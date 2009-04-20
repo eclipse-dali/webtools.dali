@@ -58,19 +58,16 @@ public abstract class IntegerCombo<T extends Model>
 		super(parentPane, subjectHolder, parent);
 	}
 
-
+	public CCombo getCombo() {
+		return this.comboBox;
+	}
+	
 	// ********** initialization **********
 
 	@Override
 	protected void initializeLayout(Composite container) {
 		this.defaultValueHolder = buildDefaultStringHolder();
-		this.comboBox = this.addLabeledEditableCCombo(
-				container,
-				getLabelText(),
-				buildDefaultListHolder(),
-				buildSelectedItemStringHolder(),
-				getHelpId()
-				);
+		this.comboBox = this.addIntegerCombo(container);
 
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment       = GridData.FILL_HORIZONTAL;
@@ -80,7 +77,18 @@ public abstract class IntegerCombo<T extends Model>
 		this.comboBox.addVerifyListener(this.buildVerifyListener());
 		SWTUtil.attachDefaultValueHandler(this.comboBox);
 	}
-
+	
+	protected CCombo addIntegerCombo(Composite container) {
+		return this.addLabeledEditableCCombo(
+				container,
+				getLabelText(),
+				buildDefaultListHolder(),
+				buildSelectedItemStringHolder(),
+				getHelpId()
+				);
+		
+	}
+	
 	protected VerifyListener buildVerifyListener() {
 		return new VerifyListener() {
 			public void verifyText(VerifyEvent e) {
@@ -89,7 +97,7 @@ public abstract class IntegerCombo<T extends Model>
 		};
 	}
 
-	private ListValueModel<String> buildDefaultListHolder() {
+	protected ListValueModel<String> buildDefaultListHolder() {
 		return new PropertyListValueModelAdapter<String>(this.defaultValueHolder);
 	}
 	
@@ -113,7 +121,7 @@ public abstract class IntegerCombo<T extends Model>
 		return this.defaultValueHolder.getValue();
 	}
 
-	private WritablePropertyValueModel<String> buildSelectedItemStringHolder() {
+	protected WritablePropertyValueModel<String> buildSelectedItemStringHolder() {
 		return new TransformationWritablePropertyValueModel<Integer, String>(buildSelectedItemHolder()) {
 			@Override
 			protected String transform(Integer value) {
@@ -147,18 +155,6 @@ public abstract class IntegerCombo<T extends Model>
 	protected abstract PropertyValueModel<Integer> buildDefaultHolder();
 	
 	protected abstract WritablePropertyValueModel<Integer> buildSelectedItemHolder();
-
-
-	// ********** overrides **********
-
-	@Override
-	public void enableWidgets(boolean enabled) {
-		super.enableWidgets(enabled);
-
-		if ( ! this.comboBox.isDisposed()) {
-			this.comboBox.setEnabled(enabled);
-		}
-	}
 
 	// ********** combo-box verify listener callback **********
 

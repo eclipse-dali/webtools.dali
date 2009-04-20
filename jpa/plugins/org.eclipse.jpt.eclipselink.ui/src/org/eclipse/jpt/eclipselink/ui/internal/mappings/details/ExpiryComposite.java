@@ -13,16 +13,18 @@ import org.eclipse.jpt.eclipselink.core.context.ExpiryTimeOfDay;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.util.ControlEnabler;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
+import org.eclipse.jpt.ui.internal.widgets.IntegerCombo;
+import org.eclipse.jpt.utility.internal.StringConverter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Spinner;
 
 /**
  * Here is the layout of this pane:
@@ -107,28 +109,17 @@ public class ExpiryComposite extends FormPane<Caching> {
 			EclipseLinkUiMappingsMessages.ExpiryComposite_timeToLiveExpiryExpireAfter
 		);
 	
-		Spinner expirySpinner = addUnmanagedSpinner(
-			container,
-			buildTimeToLiveExpiryHolder(),
-			-1,
-			-1,
-			Integer.MAX_VALUE,
-			null
-		);
-		//a border Container is created in FormWidgetFactory.createSpinner
-		if (expirySpinner.getParent() != container) {
-			((GridData) expirySpinner.getParent().getLayoutData()).grabExcessHorizontalSpace = false;
-		}
-		else {
-			((GridData) expirySpinner.getLayoutData()).grabExcessHorizontalSpace = false;
-		}
+		IntegerCombo<?> combo = addTimeToLiveExpiryCombo(container);
+		GridData gridData = new GridData();
+		gridData.grabExcessHorizontalSpace = false;
+		combo.getControl().setLayoutData(gridData);
 		
 		Control millisecondsLabel =	addUnmanagedLabel(
 			container,
 			EclipseLinkUiMappingsMessages.ExpiryComposite_timeToLiveExpiryMilliseconds
 		);
 		
-		new ControlEnabler(buildTimeToLiveExpiryEnabler(), expireAfterLabel, expirySpinner, millisecondsLabel);
+		new ControlEnabler(buildTimeToLiveExpiryEnabler(), expireAfterLabel, combo.getCombo(), millisecondsLabel);
 	}
 	
 	protected void addTimeOfDayComposite(Composite parent) {
@@ -206,20 +197,53 @@ public class ExpiryComposite extends FormPane<Caching> {
 			}
 		};
 	}
-
-	private WritablePropertyValueModel<Integer> buildTimeToLiveExpiryHolder() {
-		return new PropertyAspectAdapter<Caching, Integer>(getSubjectHolder(), Caching.EXPIRY_PROPERTY) {
+	
+	private IntegerCombo<Caching> addTimeToLiveExpiryCombo(Composite container) {
+		return new IntegerCombo<Caching>(this, container) {
+		
 			@Override
-			protected Integer buildValue_() {
-				return this.subject.getExpiry();
+			protected CCombo addIntegerCombo(Composite container) {
+				return this.addUnmanagedEditableCCombo(
+						container,
+						buildDefaultListHolder(),
+						buildSelectedItemStringHolder(),
+						StringConverter.Default.<String>instance());
+			}
+		
+			@Override
+			protected String getLabelText() {
+				throw new UnsupportedOperationException();
+			}
+		
+		
+			@Override
+			protected String getHelpId() {
+				return null;
 			}
 
 			@Override
-			protected void setValue_(Integer value) {
-				if (value == -1) {
-					value = null;
-				}
-				subject.setExpiry(value);
+			protected PropertyValueModel<Integer> buildDefaultHolder() {
+				return new PropertyAspectAdapter<Caching, Integer>(getSubjectHolder()) {
+					@Override
+					protected Integer buildValue_() {
+						return Integer.valueOf(0);
+					}
+				};
+			}
+			
+			@Override
+			protected WritablePropertyValueModel<Integer> buildSelectedItemHolder() {
+				return new PropertyAspectAdapter<Caching, Integer>(getSubjectHolder(), Caching.EXPIRY_PROPERTY) {
+					@Override
+					protected Integer buildValue_() {
+						return this.subject.getExpiry();
+					}
+
+					@Override
+					protected void setValue_(Integer value) {
+						this.subject.setExpiry(value);
+					}
+				};
 			}
 		};
 	}

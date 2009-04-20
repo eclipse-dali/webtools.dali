@@ -935,8 +935,7 @@ public abstract class Pane<T extends Model>
 	 */
 	protected final CCombo addEditableCCombo(Composite container) {
 
-		CCombo combo = this.widgetFactory.createEditableCCombo(container);
-		combo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		CCombo combo = addUnmanagedEditableCCombo(container);
 		this.manageWidget(combo);
 		return combo;
 	}
@@ -958,14 +957,8 @@ public abstract class Pane<T extends Model>
 	                                               WritablePropertyValueModel<V> selectedItemHolder,
 	                                               StringConverter<V> stringConverter) {
 
-		CCombo combo = this.addEditableCCombo(container);
-
-		CComboModelAdapter.adapt(
-			listHolder,
-			selectedItemHolder,
-			combo,
-			stringConverter
-		);
+		CCombo combo = addUnmanagedEditableCCombo(container, listHolder, selectedItemHolder, stringConverter);
+		this.manageWidget(combo);
 
 		return combo;
 	}
@@ -2096,6 +2089,50 @@ public abstract class Pane<T extends Model>
 		}
 
 		return dateTime;
+	}
+	/**
+	 * Creates a new editable <code>CCombo</code>.
+	 *
+	 * @param container The parent container
+	 * @param listHolder The <code>ListValueHolder</code>
+	 * @param selectedItemHolder The holder of the selected item
+	 * @param stringConverter The converter responsible to transform each item
+	 * into a string representation
+	 * @return The newly created <code>CCombo</code>
+	 *
+	 * @category Layout
+	 */
+	protected final <V> CCombo addUnmanagedEditableCCombo(Composite container,
+	                                               ListValueModel<V> listHolder,
+	                                               WritablePropertyValueModel<V> selectedItemHolder,
+	                                               StringConverter<V> stringConverter) {
+
+		CCombo combo = addUnmanagedEditableCCombo(container);
+
+		CComboModelAdapter.adapt(
+			listHolder,
+			selectedItemHolder,
+			combo,
+			stringConverter
+		);
+
+		return combo;
+	}
+
+	
+	/**
+	 * Creates a new editable <code>CCombo</code>.
+	 *
+	 * @param container The parent container
+	 * @return The newly created <code>CCombo</code>
+	 *
+	 * @category Layout
+	 */
+	protected final CCombo addUnmanagedEditableCCombo(Composite container) {
+
+		CCombo combo = this.widgetFactory.createEditableCCombo(container);
+		combo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		return combo;
 	}
 
 	/**
