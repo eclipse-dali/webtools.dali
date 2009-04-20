@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
 import java.util.Vector;
-
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
@@ -1167,8 +1166,9 @@ public abstract class AbstractPersistenceUnit
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
-		this.validateMappingFiles(messages, reporter);
-		this.validateClassRefs(messages, reporter);
+		validateMappingFiles(messages, reporter);
+		validateClassRefs(messages, reporter);
+		validateJarFileRefs(messages, reporter);
 	}
 
 	protected void validateMappingFiles(List<IMessage> messages, IReporter reporter) {
@@ -1262,6 +1262,41 @@ public abstract class AbstractPersistenceUnit
 			@Override
 			protected String transform(ClassRef classRef) {
 				return classRef.getClassName();
+			}
+		};
+	}
+	
+	protected void validateJarFileRefs(List<IMessage> messages, IReporter reporter) {
+		checkForDuplicateJarFileRefs(messages);
+		for (JarFileRef each : CollectionTools.iterable(jarFileRefs())) {
+			each.validate(messages, reporter);
+		}
+	}
+	
+	protected void checkForDuplicateJarFileRefs(List<IMessage> messages) {
+		HashBag<String> jarFileNames = new HashBag<String>();
+		CollectionTools.addAll(jarFileNames, jarFileNames());
+		for (JarFileRef jarFileRef : CollectionTools.iterable(jarFileRefs())) {
+			String jarFileName = jarFileRef.getFileName();
+			if ((jarFileName != null) && (jarFileNames.count(jarFileName) > 1)) {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.PERSISTENCE_UNIT_DUPLICATE_JAR_FILE,
+						new String[] {jarFileName}, 
+						jarFileRef, 
+						jarFileRef.getValidationTextRange()
+					)
+				);
+			}
+		}
+	}
+	
+	protected Iterator<String> jarFileNames() {
+		return new TransformationIterator<JarFileRef, String>(jarFileRefs()) {
+			@Override
+			protected String transform(JarFileRef jarFileRef) {
+				return jarFileRef.getFileName();
 			}
 		};
 	}
