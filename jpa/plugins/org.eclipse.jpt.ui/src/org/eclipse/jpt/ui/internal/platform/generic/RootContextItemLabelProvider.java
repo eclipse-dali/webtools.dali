@@ -26,13 +26,21 @@ public class RootContextItemLabelProvider extends AbstractItemLabelProvider
 		super(rootContextNode, labelProvider);
 	}
 	
+	
+	@Override
+	protected PropertyValueModel<Image> buildImageModel() {
+		return new StaticPropertyValueModel<Image>(JptUiPlugin.getImage(JptUiIcons.JPA_CONTENT));
+	}
+	
 	@Override
 	protected PropertyValueModel<String> buildTextModel() {
 		return new StaticPropertyValueModel<String>(JptUiMessages.JpaContent_label);
 	}
 	
 	@Override
-	protected PropertyValueModel<Image> buildImageModel() {
-		return new StaticPropertyValueModel<Image>(JptUiPlugin.getImage(JptUiIcons.JPA_CONTENT));
-	}	
+	protected PropertyValueModel<String> buildDescriptionModel() {
+		return new StaticPropertyValueModel<String>(
+			JptUiMessages.JpaContent_label
+				+ " - " + ((JpaRootContextNode) model()).getResource().getFullPath().makeRelative());
+	}
 }

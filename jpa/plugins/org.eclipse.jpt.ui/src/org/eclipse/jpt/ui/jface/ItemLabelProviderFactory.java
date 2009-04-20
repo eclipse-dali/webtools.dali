@@ -21,6 +21,6 @@ package org.eclipse.jpt.ui.jface;
  */
 public interface ItemLabelProviderFactory
 {
-	ItemLabelProvider buildItemLabelProvider(
-			Object item, DelegatingContentAndLabelProvider contentAndLabelProvider);
+	ItemLabelProvider buildItemLabelProvider(Object item, 
+			DelegatingContentAndLabelProvider contentAndLabelProvider);
 }

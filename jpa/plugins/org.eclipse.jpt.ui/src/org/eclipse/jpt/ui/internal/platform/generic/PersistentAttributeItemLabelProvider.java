@@ -25,15 +25,7 @@ public class PersistentAttributeItemLabelProvider extends AbstractItemLabelProvi
 		super(persistentAttribute, labelProvider);
 	}
 	
-	@Override
-	protected PropertyValueModel<String> buildTextModel() {
-		return new PropertyAspectAdapter<PersistentAttribute, String>(PersistentAttribute.NAME_PROPERTY, (PersistentAttribute) model()) {
-			@Override
-			protected String buildValue_() {
-				return subject.getName();
-			}
-		};
-	}
+	
 	
 	@Override
 	protected PropertyValueModel<Image> buildImageModel() {
@@ -49,5 +41,28 @@ public class PersistentAttributeItemLabelProvider extends AbstractItemLabelProvi
 				return image;
 			}
 		};
-	}	
+	}
+	
+	@Override
+	protected PropertyValueModel<String> buildTextModel() {
+		return new PropertyAspectAdapter<PersistentAttribute, String>(PersistentAttribute.NAME_PROPERTY, (PersistentAttribute) model()) {
+			@Override
+			protected String buildValue_() {
+				return subject.getName();
+			}
+		};
+	}
+	
+	@Override
+	protected PropertyValueModel<String> buildDescriptionModel() {
+		return new PropertyAspectAdapter<PersistentAttribute, String>(PersistentAttribute.NAME_PROPERTY, (PersistentAttribute) model()) {
+			@Override
+			protected String buildValue_() {
+				return subject.getPersistenceUnit().getName() 
+				+ "/" + subject.getPersistentType().getName()
+				+ "/" + subject.getName()
+				+ " - " + subject.getResource().getFullPath().makeRelative();
+			}
+		};
+	}
 }

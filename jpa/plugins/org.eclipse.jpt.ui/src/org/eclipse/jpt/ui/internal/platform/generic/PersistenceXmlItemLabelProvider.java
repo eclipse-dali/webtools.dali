@@ -25,13 +25,22 @@ public class PersistenceXmlItemLabelProvider extends AbstractItemLabelProvider
 		super(persistenceXml, labelProvider);
 	}
 	
+	
+	@Override
+	protected PropertyValueModel<Image> buildImageModel() {
+		return new StaticPropertyValueModel<Image>(JptUiPlugin.getImage(JptUiIcons.JPA_FILE));
+	}
+	
 	@Override
 	protected PropertyValueModel<String> buildTextModel() {
 		return new StaticPropertyValueModel<String>(((PersistenceXml) model()).getResource().getName());
 	}
 	
 	@Override
-	protected PropertyValueModel<Image> buildImageModel() {
-		return new StaticPropertyValueModel<Image>(JptUiPlugin.getImage(JptUiIcons.JPA_FILE));
-	}	
+	protected PropertyValueModel<String> buildDescriptionModel() {
+		PersistenceXml persistenceXml = (PersistenceXml) model();
+		return new StaticPropertyValueModel<String>(
+			persistenceXml.getResource().getName()
+			+ " - " + persistenceXml.getResource().getParent().getFullPath().makeRelative().toString());
+	}
 }

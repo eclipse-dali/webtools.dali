@@ -36,6 +36,11 @@ public interface ItemLabelProvider
 	public String getText();
 	
 	/**
+	 * Return the description for the item
+	 */
+	public String getDescription();
+	
+	/**
 	 * Dispose of this label provider, cleaning up all references, listeners, etc.
 	 */
 	void dispose();

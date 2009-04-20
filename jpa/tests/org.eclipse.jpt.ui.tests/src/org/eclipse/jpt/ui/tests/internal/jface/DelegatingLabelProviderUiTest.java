@@ -32,7 +32,6 @@ import org.eclipse.jpt.ui.jface.ItemLabelProviderFactory;
 import org.eclipse.jpt.ui.jface.TreeItemContentProvider;
 import org.eclipse.jpt.ui.jface.TreeItemContentProviderFactory;
 import org.eclipse.jpt.utility.internal.ClassTools;
-import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.value.NullCollectionValueModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
@@ -382,6 +381,18 @@ public class DelegatingLabelProviderUiTest extends ApplicationWindow
 		}
 		
 		@Override
+		protected PropertyValueModel<Image> buildImageModel() {
+			return new PropertyAspectAdapter<Vehicle, Image>(
+					new StaticPropertyValueModel<Vehicle>((Vehicle) model()), 
+					Vehicle.COLOR_PROPERTY, Vehicle.GREYED_PROPERTY, Vehicle.TRANSLUCENT_PROPERTY) {
+				@Override
+				protected Image buildValue_() {
+					return subject.image();
+				}
+			};
+		}
+		
+		@Override
 		protected PropertyValueModel<String> buildTextModel() {
 			return new PropertyAspectAdapter<Vehicle, String>(
 					new StaticPropertyValueModel<Vehicle>((Vehicle) model()), 
@@ -394,15 +405,8 @@ public class DelegatingLabelProviderUiTest extends ApplicationWindow
 		}
 		
 		@Override
-		protected PropertyValueModel<Image> buildImageModel() {
-			return new PropertyAspectAdapter<Vehicle, Image>(
-					new StaticPropertyValueModel<Vehicle>((Vehicle) model()), 
-					Vehicle.COLOR_PROPERTY, Vehicle.GREYED_PROPERTY, Vehicle.TRANSLUCENT_PROPERTY) {
-				@Override
-				protected Image buildValue_() {
-					return subject.image();
-				}
-			};
+		protected PropertyValueModel<String> buildDescriptionModel() {
+			return buildTextModel();
 		}
 	}
 	

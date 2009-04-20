@@ -26,6 +26,16 @@ public class ClassRefItemLabelProvider extends AbstractItemLabelProvider
 		super(classRef, labelProvider);
 	}
 	
+	
+	@Override
+	protected PropertyValueModel<Image> buildImageModel() {
+		Image image = JptUiPlugin.getImage(JptUiIcons.CLASS_REF);
+		if (((ClassRef) model()).isVirtual()) {
+			image = JptUiIcons.ghost(image);
+		}
+		return new StaticPropertyValueModel<Image>(image);
+	}
+	
 	@Override
 	protected PropertyValueModel<String> buildTextModel() {
 		return new PropertyAspectAdapter<ClassRef, String>(ClassRef.CLASS_NAME_PROPERTY, (ClassRef) model()) {
@@ -37,11 +47,14 @@ public class ClassRefItemLabelProvider extends AbstractItemLabelProvider
 	}
 	
 	@Override
-	protected PropertyValueModel<Image> buildImageModel() {
-		Image image = JptUiPlugin.getImage(JptUiIcons.CLASS_REF);
-		if (((ClassRef) model()).isVirtual()) {
-			image = JptUiIcons.ghost(image);
-		}
-		return new StaticPropertyValueModel<Image>(image);
+	protected PropertyValueModel<String> buildDescriptionModel() {
+		return new PropertyAspectAdapter<ClassRef, String>(ClassRef.CLASS_NAME_PROPERTY, (ClassRef) model()) {
+			@Override
+			protected String buildValue_() {
+				return subject.getPersistenceUnit().getName() 
+				+ "/\"" + subject.getClassName()
+				+ "\" - " + subject.getResource().getFullPath().makeRelative();
+			}
+		};
 	}
 }

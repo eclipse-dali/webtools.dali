@@ -26,6 +26,12 @@ public class PersistenceUnitItemLabelProvider extends AbstractItemLabelProvider
 		super(persistenceUnit, labelProvider);
 	}
 	
+	
+	@Override
+	protected PropertyValueModel<Image> buildImageModel() {
+		return new StaticPropertyValueModel<Image>(JptUiPlugin.getImage(JptUiIcons.PERSISTENCE_UNIT));
+	}
+	
 	@Override
 	protected PropertyValueModel<String> buildTextModel() {
 		return new PropertyAspectAdapter<PersistenceUnit, String>(PersistenceUnit.NAME_PROPERTY, (PersistenceUnit) model()) {
@@ -37,7 +43,13 @@ public class PersistenceUnitItemLabelProvider extends AbstractItemLabelProvider
 	}
 	
 	@Override
-	protected PropertyValueModel<Image> buildImageModel() {
-		return new StaticPropertyValueModel<Image>(JptUiPlugin.getImage(JptUiIcons.PERSISTENCE_UNIT));
+	protected PropertyValueModel<String> buildDescriptionModel() {
+		return new PropertyAspectAdapter<PersistenceUnit, String>(PersistenceUnit.NAME_PROPERTY, (PersistenceUnit) model()) {
+			@Override
+			protected String buildValue_() {
+				return subject.getName()
+				+ " - " + subject.getResource().getFullPath().makeRelative();
+			}
+		};
 	}
 }

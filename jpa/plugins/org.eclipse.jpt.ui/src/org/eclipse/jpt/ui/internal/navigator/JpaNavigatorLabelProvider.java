@@ -44,6 +44,7 @@ public class JpaNavigatorLabelProvider extends LabelProvider
 	
 	// **************** IBaseLabelProvider implementation **********************
 	
+	@Override
 	public void addListener(ILabelProviderListener listener) {
 		if (delegate != null) {
 			delegate.addListener(listener);
@@ -51,6 +52,7 @@ public class JpaNavigatorLabelProvider extends LabelProvider
 		super.addListener(listener);
 	}
 	
+	@Override
 	public void removeListener(ILabelProviderListener listener) {
 		super.removeListener(listener);
 		if (delegate != null) {
@@ -58,6 +60,7 @@ public class JpaNavigatorLabelProvider extends LabelProvider
 		}
 	}
 	
+	@Override
 	public boolean isLabelProperty(Object element, String property) {
 		if (delegate != null) {
 			return delegate.isLabelProperty(element, property);
@@ -66,6 +69,7 @@ public class JpaNavigatorLabelProvider extends LabelProvider
 		return super.isLabelProperty(element, property);
 	}
 	
+	@Override
 	public void dispose() {
 		if (delegate != null) {
 			delegate.dispose();
@@ -76,6 +80,7 @@ public class JpaNavigatorLabelProvider extends LabelProvider
 	
 	// **************** ILabelProvider implementation **************************
 	
+	@Override
 	public Image getImage(Object element) {
 		if (delegate != null) {
 			return delegate.getImage(element);
@@ -84,6 +89,7 @@ public class JpaNavigatorLabelProvider extends LabelProvider
 		return super.getImage(element);
 	}
 	
+	@Override
 	public String getText(Object element) {
 		if (delegate != null) {
 			return delegate.getText(element);
@@ -96,8 +102,11 @@ public class JpaNavigatorLabelProvider extends LabelProvider
 	// **************** IDescriptionProvider implementation ********************
 	
 	public String getDescription(Object element) {
-		// no op - defer to getText(element)
-		return getText(element);
+		if (delegate != null) {
+			return delegate.getDescription(element);
+		}
+		
+		return super.getText(element);
 	}
 	
 	

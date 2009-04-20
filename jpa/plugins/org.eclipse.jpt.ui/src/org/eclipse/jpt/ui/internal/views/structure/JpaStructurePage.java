@@ -14,22 +14,27 @@ import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.core.runtime.SafeRunner;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.IStatusLineManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.util.SafeRunnable;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaStructureNode;
+import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
 import org.eclipse.jpt.ui.internal.selection.DefaultJpaSelection;
 import org.eclipse.jpt.ui.internal.selection.JpaSelection;
+import org.eclipse.jpt.ui.jface.DelegatingContentAndLabelProvider;
 import org.eclipse.jpt.ui.structure.JpaStructureProvider;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -39,8 +44,9 @@ import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.part.IPageSite;
 import org.eclipse.ui.part.Page;
 
-public class JpaStructurePage extends Page
-	implements ISelectionProvider, ISelectionChangedListener
+public class JpaStructurePage 
+	extends Page
+	implements ISelectionProvider
 {
 	private final JpaStructureView jpaStructureView;
 	
@@ -48,18 +54,31 @@ public class JpaStructurePage extends Page
 	
 	private final JpaStructureProvider structureProvider;
 	
-	private final ListenerList selectionChangedListenerList;
-	
 	private Composite control;
+	
+	private DelegatingContentAndLabelProvider contentAndLabelProvider;
 	
 	private TreeViewer viewer;
 	
-	public JpaStructurePage(JpaStructureView jpaStructureView, JpaFile jpaFile, JpaStructureProvider structureProvider) {
+	private final ListenerList selectionChangedListenerList;
+	
+	private final ISelectionChangedListener treeSelectionListener;
+	
+	private final ISelectionChangedListener treePostSelectionListener;
+	
+	
+	public JpaStructurePage(
+			JpaStructureView jpaStructureView, 
+			JpaFile jpaFile, 
+			JpaStructureProvider structureProvider) {
 		this.jpaStructureView = jpaStructureView;
 		this.jpaFile = jpaFile;
 		this.structureProvider = structureProvider;
 		this.selectionChangedListenerList = new ListenerList();
+		this.treeSelectionListener = new TreeSelectionChangedListener();
+		this.treePostSelectionListener = new TreePostSelectionChangedListener();
 	}
+	
 	
 	@Override
 	public void init(IPageSite pageSite) {
@@ -77,17 +96,20 @@ public class JpaStructurePage extends Page
 			= new DelegatingTreeContentAndLabelProvider(
 				structureProvider.getTreeItemContentProviderFactory(),
 				structureProvider.getItemLabelProviderFactory());
+		this.contentAndLabelProvider = contentAndLabelProvider;
 		viewer.setContentProvider(contentAndLabelProvider);
 		// TODO Use problem decorator
 		viewer.setLabelProvider(contentAndLabelProvider);
 		viewer.setInput(this.jpaFile);
-		viewer.addSelectionChangedListener(this);
+		viewer.addSelectionChangedListener(this.treeSelectionListener);
+		viewer.addPostSelectionChangedListener(this.treePostSelectionListener);
 		initContextMenu();
 	}
 	
 	@Override
 	public void dispose() {
-		viewer.removeSelectionChangedListener(this);
+		viewer.removeSelectionChangedListener(this.treeSelectionListener);
+		viewer.removePostSelectionChangedListener(this.treePostSelectionListener);
 		super.dispose();
 	}
 	
@@ -168,14 +190,9 @@ public class JpaStructurePage extends Page
 		}
 	}
 	
-	
-	
-	// **************** ISelectionChangedListener impl *************************
-	
-	public void selectionChanged(SelectionChangedEvent event) {
-		fireSelectionChanged(event.getSelection());
-	}
-	
+	/*
+	 * relays tree selection event to listeners of this page
+	 */
 	protected void fireSelectionChanged(ISelection selection) {
 		// create an event
 		final SelectionChangedEvent event = 
@@ -193,4 +210,40 @@ public class JpaStructurePage extends Page
 					});
         }
     }
+	
+	protected void updateStatusBar(ISelection selection) {
+		IStatusLineManager statusLineManager = getSite().getActionBars().getStatusLineManager();
+		if (! (selection instanceof IStructuredSelection) || selection.isEmpty()) {
+			statusLineManager.setMessage("");
+			return;
+		}
+		IStructuredSelection sselection = (IStructuredSelection) selection;
+		if (sselection.size() > 1) {
+			statusLineManager.setMessage(NLS.bind(JptUiMessages.JpaStructureView_numItemsSelected, sselection.size()));
+		}
+		else {
+			Object selObj = sselection.getFirstElement();
+			statusLineManager.setMessage(
+				this.contentAndLabelProvider.getImage(selObj), 
+				this.contentAndLabelProvider.getDescription(selObj));
+		}
+	}
+	
+	
+	private class TreeSelectionChangedListener
+		implements ISelectionChangedListener
+	{
+		public void selectionChanged(SelectionChangedEvent event) {
+			JpaStructurePage.this.fireSelectionChanged(event.getSelection());
+		}
+	}
+	
+	
+	private class TreePostSelectionChangedListener
+		implements ISelectionChangedListener
+	{
+		public void selectionChanged(SelectionChangedEvent event) {
+			JpaStructurePage.this.updateStatusBar(event.getSelection());
+		}
+	}
 }

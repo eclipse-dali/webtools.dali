@@ -18,6 +18,7 @@ import org.eclipse.jface.viewers.LabelProviderChangedEvent;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.ui.navigator.IDescriptionProvider;
 
 /**
  * Implementation of {@link IStructuredContentProvider} and {@link ILabelProvider} that 
@@ -35,8 +36,9 @@ import org.eclipse.swt.graphics.Image;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public abstract class DelegatingContentAndLabelProvider extends BaseLabelProvider
-	implements IStructuredContentProvider, ILabelProvider
+public abstract class DelegatingContentAndLabelProvider 
+	extends BaseLabelProvider
+	implements IStructuredContentProvider, ILabelProvider, IDescriptionProvider
 {
 	private final ItemContentProviderFactory itemContentProviderFactory;
 	
@@ -109,6 +111,11 @@ public abstract class DelegatingContentAndLabelProvider extends BaseLabelProvide
 	public String getText(Object element) {
 		ItemLabelProvider provider = itemLabelProvider(element);
 		return (provider == null) ? null : provider.getText();
+	}
+	
+	public String getDescription(Object element) {
+		ItemLabelProvider provider = itemLabelProvider(element);
+		return (provider == null) ? null : provider.getDescription();
 	}
 	
 	/**

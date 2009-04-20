@@ -105,7 +105,6 @@ public class JpaStructureView
 	@Override
 	protected void doDestroyPage(IWorkbenchPart part, PageRec pageRecord) {
 		JpaStructurePage page = (JpaStructurePage) pageRecord.page;
-		this.removeSelectionChangedListener(page);
         page.dispose();
         pageRecord.dispose();
 	}

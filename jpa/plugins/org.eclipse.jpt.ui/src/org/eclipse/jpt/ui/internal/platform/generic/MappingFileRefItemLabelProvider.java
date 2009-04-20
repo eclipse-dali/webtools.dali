@@ -26,6 +26,16 @@ public class MappingFileRefItemLabelProvider extends AbstractItemLabelProvider
 		super(mappingFileRef, labelProvider);
 	}
 	
+	
+	@Override
+	protected PropertyValueModel<Image> buildImageModel() {
+		Image image = JptUiPlugin.getImage(JptUiIcons.MAPPING_FILE_REF);
+		if (((MappingFileRef) model()).isImplied()) {
+			image = JptUiIcons.ghost(image);
+		}
+		return new StaticPropertyValueModel<Image>(image);
+	}
+	
 	@Override
 	protected PropertyValueModel<String> buildTextModel() {
 		return new PropertyAspectAdapter<MappingFileRef, String>(MappingFileRef.FILE_NAME_PROPERTY, (MappingFileRef) model()) {
@@ -37,11 +47,14 @@ public class MappingFileRefItemLabelProvider extends AbstractItemLabelProvider
 	}
 	
 	@Override
-	protected PropertyValueModel<Image> buildImageModel() {
-		Image image = JptUiPlugin.getImage(JptUiIcons.MAPPING_FILE_REF);
-		if (((MappingFileRef) model()).isImplied()) {
-			image = JptUiIcons.ghost(image);
-		}
-		return new StaticPropertyValueModel<Image>(image);
+	protected PropertyValueModel<String> buildDescriptionModel() {
+		return new PropertyAspectAdapter<MappingFileRef, String>(MappingFileRef.FILE_NAME_PROPERTY, (MappingFileRef) model()) {
+			@Override
+			protected String buildValue_() {
+				return subject.getPersistenceUnit().getName() 
+				+ "/\"" + subject.getFileName() + "\""
+				+ " - " + subject.getResource().getFullPath().makeRelative();
+			}
+		};
 	}
 }

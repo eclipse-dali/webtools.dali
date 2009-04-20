@@ -22,12 +22,15 @@ import org.eclipse.swt.graphics.Image;
  * label information for a Model object.
  * 
  * The typical subclass will override the following methods:
- * #buildTextModel()
- *     return a {@link PropertyValueModel} that represents the text for the represented
- *     model object.
  * #buildImageModel()
- * 	   return a {@link PropertyValueModel} that represents the image for the represented
- * 	   model object
+ * 	   return a {@link PropertyValueModel} that represents the image for the 
+ *     represented model object
+ * #buildTextModel()
+ *     return a {@link PropertyValueModel} that represents the text for the 
+ *     represented model object.
+ * #buildDescriptionModel()
+ * 	   return a {@link PropertyValueModel} that represents the description for 
+ *     the represented model object
  * 
  * Other methods may be overridden, but take care to preserve the logic provided 
  * by this class.
@@ -38,9 +41,11 @@ public abstract class AbstractItemLabelProvider implements ItemLabelProvider
 	
 	private Model model;
 	
+	private PropertyValueModel<Image> imageModel;
+	
 	private PropertyValueModel<String> textModel;
 	
-	private PropertyValueModel<Image> imageModel;
+	private PropertyValueModel<String> descriptionModel;
 	
 	private PropertyChangeListener labelChangeListener;
 	
@@ -63,41 +68,6 @@ public abstract class AbstractItemLabelProvider implements ItemLabelProvider
 				labelProvider().updateLabel(model());
 			}
 		};
-	}
-	
-	/**
-	 * Return the text value model
-	 * (lazy and just-in-time initialized)
-	 */
-	protected PropertyValueModel<String> textModel() {
-		if (textModel == null) {
-			textModel = buildTextModel();
-			engageTextModel();
-		}
-		return textModel;
-	}
-	
-	/**
-	 * Construct a text value model
-	 */
-	protected abstract PropertyValueModel<String> buildTextModel();
-	
-	/** 
-	 * Should only be overridden with a call to super.engageTextModel() before 
-	 * subclass logic 
-	 */
-	protected void engageTextModel() {
-		textModel.addPropertyChangeListener(PropertyValueModel.VALUE, labelChangeListener);
-	}
-	
-	/** 
-	 * Should only be overridden with a call to super.disengageTextModel() after 
-	 * subclass logic 
-	 */
-	protected void disengageTextModel() {
-		if (textModel != null) {
-			textModel.removePropertyChangeListener(PropertyValueModel.VALUE, labelChangeListener);
-		}
 	}
 	
 	/**
@@ -136,6 +106,76 @@ public abstract class AbstractItemLabelProvider implements ItemLabelProvider
 	}
 	
 	/**
+	 * Return the text value model
+	 * (lazy and just-in-time initialized)
+	 */
+	protected PropertyValueModel<String> textModel() {
+		if (textModel == null) {
+			textModel = buildTextModel();
+			engageTextModel();
+		}
+		return textModel;
+	}
+	
+	/**
+	 * Construct a text value model
+	 */
+	protected abstract PropertyValueModel<String> buildTextModel();
+	
+	/** 
+	 * Should only be overridden with a call to super.engageTextModel() before 
+	 * subclass logic 
+	 */
+	protected void engageTextModel() {
+		textModel.addPropertyChangeListener(PropertyValueModel.VALUE, labelChangeListener);
+	}
+	
+	/** 
+	 * Should only be overridden with a call to super.disengageTextModel() after 
+	 * subclass logic 
+	 */
+	protected void disengageTextModel() {
+		if (textModel != null) {
+			textModel.removePropertyChangeListener(PropertyValueModel.VALUE, labelChangeListener);
+		}
+	}
+	
+	/**
+	 * Return the description value model
+	 * (lazy and just-in-time initialized)
+	 */
+	protected PropertyValueModel<String> descriptionModel() {
+		if (descriptionModel == null) {
+			descriptionModel = buildDescriptionModel();
+			engageDescriptionModel();
+		}
+		return descriptionModel;
+	}
+	
+	/**
+	 * Construct a description value model
+	 */
+	protected abstract PropertyValueModel<String> buildDescriptionModel();
+	
+	/** 
+	 * Should only be overridden with a call to super.engageDescriptionModel() before 
+	 * subclass logic 
+	 */
+	protected void engageDescriptionModel() {
+		descriptionModel.addPropertyChangeListener(PropertyValueModel.VALUE, labelChangeListener);
+	}
+	
+	/** 
+	 * Should only be overridden with a call to super.disengageDescriptionModel() after 
+	 * subclass logic 
+	 */
+	protected void disengageDescriptionModel() {
+		if (descriptionModel != null) {
+			descriptionModel.removePropertyChangeListener(PropertyValueModel.VALUE, labelChangeListener);
+		}
+	}
+	
+	/**
 	 * Return the model object represented by this item
 	 */
 	public Model model() {
@@ -149,12 +189,16 @@ public abstract class AbstractItemLabelProvider implements ItemLabelProvider
 		return labelProvider;
 	}
 	
+	public Image getImage() {
+		return imageModel().getValue();
+	}
+	
 	public String getText() {
 		return textModel().getValue();
 	}
 	
-	public Image getImage() {
-		return imageModel().getValue();
+	public String getDescription() {
+		return descriptionModel().getValue();
 	}
 	
 	public void dispose() {

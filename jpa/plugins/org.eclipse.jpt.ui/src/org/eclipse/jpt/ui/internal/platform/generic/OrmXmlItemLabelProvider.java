@@ -25,13 +25,22 @@ public class OrmXmlItemLabelProvider extends AbstractItemLabelProvider
 		super(ormXml, labelProvider);
 	}
 	
+	
+	@Override
+	protected PropertyValueModel<Image> buildImageModel() {
+		return new StaticPropertyValueModel<Image>(JptUiPlugin.getImage(JptUiIcons.JPA_FILE));
+	}
+	
 	@Override
 	protected PropertyValueModel<String> buildTextModel() {
 		return new StaticPropertyValueModel<String>(((OrmXml) model()).getResource().getName());
 	}
 	
 	@Override
-	protected PropertyValueModel<Image> buildImageModel() {
-		return new StaticPropertyValueModel<Image>(JptUiPlugin.getImage(JptUiIcons.JPA_FILE));
+	protected PropertyValueModel<String> buildDescriptionModel() {
+		OrmXml ormXml = (OrmXml) model();
+		return new StaticPropertyValueModel<String>(
+			ormXml.getResource().getName()
+			+ " - " + ormXml.getResource().getParent().getFullPath().makeRelative().toString());
 	}
 }

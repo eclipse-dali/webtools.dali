@@ -26,13 +26,22 @@ public class PersistenceItemLabelProvider extends AbstractItemLabelProvider
 		super(persistence, labelProvider);
 	}
 	
-	@Override
-	protected PropertyValueModel<String> buildTextModel() {
-		return new StaticPropertyValueModel<String>(JptUiMessages.PersistenceItemLabelProviderFactory_persistenceLabel);
-	}
 	
 	@Override
 	protected PropertyValueModel<Image> buildImageModel() {
 		return new StaticPropertyValueModel<Image>(JptUiPlugin.getImage(JptUiIcons.PERSISTENCE));
-	}	
+	}
+	
+	@Override
+	protected PropertyValueModel<String> buildTextModel() {
+		return new StaticPropertyValueModel<String>(
+			JptUiMessages.PersistenceItemLabelProviderFactory_persistenceLabel);
+	}
+	
+	@Override
+	protected PropertyValueModel<String> buildDescriptionModel() {
+		return new StaticPropertyValueModel<String>(
+			JptUiMessages.PersistenceItemLabelProviderFactory_persistenceLabel
+				+ " - " + ((Persistence) model()).getResource().getFullPath().makeRelative());
+	}
 }

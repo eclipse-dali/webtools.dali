@@ -26,13 +26,23 @@ public class EntityMappingsItemLabelProvider extends AbstractItemLabelProvider
 		super(entityMappings, labelProvider);
 	}
 	
-	@Override
-	protected PropertyValueModel<String> buildTextModel() {
-		return new StaticPropertyValueModel<String>(JptUiMessages.OrmItemLabelProviderFactory_entityMappingsLabel);
-	}
 	
 	@Override
 	protected PropertyValueModel<Image> buildImageModel() {
-		return new StaticPropertyValueModel<Image>(JptUiPlugin.getImage(JptUiIcons.ENTITY_MAPPINGS));
-	}	
+		return new StaticPropertyValueModel<Image>(
+			JptUiPlugin.getImage(JptUiIcons.ENTITY_MAPPINGS));
+	}
+	
+	@Override
+	protected PropertyValueModel<String> buildTextModel() {
+		return new StaticPropertyValueModel<String>(
+			JptUiMessages.OrmItemLabelProviderFactory_entityMappingsLabel);
+	}
+	
+	@Override
+	protected PropertyValueModel<String> buildDescriptionModel() {
+		return new StaticPropertyValueModel<String>(
+			JptUiMessages.OrmItemLabelProviderFactory_entityMappingsLabel
+				+ " - " + ((EntityMappings) model()).getResource().getFullPath().makeRelative());
+	}
 }

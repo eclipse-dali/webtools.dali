@@ -93,6 +93,7 @@ public class JptUiMessages {
 	public static String JpaStructureView_linkWithEditorText;
 	public static String JpaStructureView_linkWithEditorTooltip;
 	public static String JpaStructureView_structureNotAvailable;
+	public static String JpaStructureView_numItemsSelected;
 	public static String MappingFileWizard_title;
 	public static String MappingFileWizardPage_title;
 	public static String MappingFileWizardPage_desc;

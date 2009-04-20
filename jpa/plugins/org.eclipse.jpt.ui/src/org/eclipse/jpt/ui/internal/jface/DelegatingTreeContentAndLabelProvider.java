@@ -20,7 +20,8 @@ import org.eclipse.jpt.ui.jface.TreeItemContentProviderFactory;
  * Extension of {@link DelegatingContentAndLabelProvider} that provides an extension
  * to provide tree content
  */
-public class DelegatingTreeContentAndLabelProvider extends DelegatingContentAndLabelProvider
+public class DelegatingTreeContentAndLabelProvider 
+	extends DelegatingContentAndLabelProvider
 	implements ITreeContentProvider
 {
 	public DelegatingTreeContentAndLabelProvider(
@@ -35,6 +36,7 @@ public class DelegatingTreeContentAndLabelProvider extends DelegatingContentAndL
 	}
 	
 	
+	@Override
 	protected TreeItemContentProvider itemContentProvider(Object item) {
 		return (TreeItemContentProvider) super.itemContentProvider(item);
 	}

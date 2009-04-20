@@ -24,6 +24,17 @@ public class PersistentTypeItemLabelProvider extends AbstractItemLabelProvider
 		super(persistentType, labelProvider);
 	}
 	
+	
+	@Override
+	protected PropertyValueModel<Image> buildImageModel() {
+		return new PropertyAspectAdapter<PersistentType, Image>(PersistentType.MAPPING_PROPERTY, (PersistentType) model()) {
+			@Override
+			protected Image buildValue_() {
+				return JpaMappingImageHelper.imageForTypeMapping(subject.getMappingKey());
+			}
+		};
+	}
+	
 	@Override
 	protected PropertyValueModel<String> buildTextModel() {
 		return new PropertyAspectAdapter<PersistentType, String>(PersistentType.NAME_PROPERTY, (PersistentType) model()) {
@@ -35,12 +46,14 @@ public class PersistentTypeItemLabelProvider extends AbstractItemLabelProvider
 	}
 	
 	@Override
-	protected PropertyValueModel<Image> buildImageModel() {
-		return new PropertyAspectAdapter<PersistentType, Image>(PersistentType.MAPPING_PROPERTY, (PersistentType) model()) {
+	protected PropertyValueModel<String> buildDescriptionModel() {
+		return new PropertyAspectAdapter<PersistentType, String>(PersistentType.NAME_PROPERTY, (PersistentType) model()) {
 			@Override
-			protected Image buildValue_() {
-				return JpaMappingImageHelper.imageForTypeMapping(subject.getMappingKey());
+			protected String buildValue_() {
+				return subject.getPersistenceUnit().getName() 
+				+ "/" + subject.getName()
+				+ " - " + subject.getResource().getFullPath().makeRelative();
 			}
 		};
-	}	
+	}
 }
