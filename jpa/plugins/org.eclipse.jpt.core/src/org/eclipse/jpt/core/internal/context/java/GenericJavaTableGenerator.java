@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -432,6 +432,8 @@ public class GenericJavaTableGenerator
 		return null;
 	}
 
+	// ********** code assist: table
+	
 	protected boolean tableTouches(int pos, CompilationUnit astRoot) {
 		return this.getResourceGenerator().tableTouches(pos, astRoot);
 	}
@@ -449,6 +451,8 @@ public class GenericJavaTableGenerator
 		return (dbSchema != null) ? dbSchema.sortedTableIdentifiers() : EmptyIterator.<String> instance();
 	}
 
+	// ********** code assist: schema
+	
 	protected boolean schemaTouches(int pos, CompilationUnit astRoot) {
 		return this.getResourceGenerator().schemaTouches(pos, astRoot);
 	}
@@ -464,6 +468,8 @@ public class GenericJavaTableGenerator
 	protected Iterator<String> candidateSchemata() {
 		return this.getDbSchemaContainer().sortedSchemaIdentifiers();
 	}
+
+	// ********** code assist: catalog
 
 	protected boolean catalogTouches(int pos, CompilationUnit astRoot) {
 		return this.getResourceGenerator().catalogTouches(pos, astRoot);
@@ -482,6 +488,8 @@ public class GenericJavaTableGenerator
 		return (db != null) ? db.sortedCatalogIdentifiers() : EmptyIterator.<String> instance();
 	}
 
+	// ********** code assist: pkColumnName
+
 	protected boolean pkColumnNameTouches(int pos, CompilationUnit astRoot) {
 		return this.getResourceGenerator().pkColumnNameTouches(pos, astRoot);
 	}
@@ -498,6 +506,8 @@ public class GenericJavaTableGenerator
 		Table table = this.getDbTable();
 		return (table != null) ? table.sortedColumnIdentifiers() : EmptyIterator.<String> instance();
 	}
+
+	// ********** code assist: valueColumnName
 
 	protected boolean valueColumnNameTouches(int pos, CompilationUnit astRoot) {
 		return this.getResourceGenerator().valueColumnNameTouches(pos, astRoot);
