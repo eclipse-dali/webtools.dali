@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.internal.context.persistence;
 
 import java.util.List;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaStructureNode;
@@ -33,7 +32,6 @@ public abstract class AbstractMappingFileRef
 	extends AbstractXmlContextNode
 	implements MappingFileRef
 {
-
 	protected String fileName;
 
 	protected MappingFile mappingFile;

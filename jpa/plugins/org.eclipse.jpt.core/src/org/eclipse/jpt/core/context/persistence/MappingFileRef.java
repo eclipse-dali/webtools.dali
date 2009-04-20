@@ -100,5 +100,4 @@ public interface MappingFileRef
 	 * the specified text offset.
 	 */
 	boolean containsOffset(int textOffset);
-
 }

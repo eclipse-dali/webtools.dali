@@ -19,29 +19,16 @@ public class GenericMappingFileRef
 	protected XmlMappingFileRef xmlMappingFileRef;
 
 
-	// ********** construction/initialization **********
+	// **************** construction/initialization ****************************
 
 	public GenericMappingFileRef(PersistenceUnit parent, XmlMappingFileRef xmlMappingFileRef) {
 		super(parent, xmlMappingFileRef.getFileName());
 		this.xmlMappingFileRef = xmlMappingFileRef;
 	}
-
-	public boolean isImplied() {
-		return false;
-	}
-
-	public TextRange getSelectionTextRange() {
-		return this.xmlMappingFileRef.getSelectionTextRange();
-	}
 	
-	public TextRange getValidationTextRange() {
-		return this.xmlMappingFileRef.getValidationTextRange();
-	}
-
-	public boolean containsOffset(int textOffset) {
-		return this.xmlMappingFileRef.containsOffset(textOffset);
-	}
-
+	
+	// **************** file name **********************************************
+	
 	public void setFileName(String newFileName) {
 		String old = this.fileName;
 		this.fileName = newFileName;
@@ -55,14 +42,35 @@ public class GenericMappingFileRef
 		this.firePropertyChanged(FILE_NAME_PROPERTY, old, newFileName);
 	}
 	
-	protected String getResourceFileName() {
-		return this.xmlMappingFileRef.getFileName();
-	}
+	
+	// **************** MappingFileRef impl ************************************
 	
 	public void update(XmlMappingFileRef mappingFileRef) {
 		this.xmlMappingFileRef = mappingFileRef;
 		this.setFileName_(this.getResourceFileName());
 		super.update();
 	}
-
+	
+	protected String getResourceFileName() {
+		return this.xmlMappingFileRef.getFileName();
+	}
+	
+	public boolean isImplied() {
+		return false;
+	}
+	
+	public boolean containsOffset(int textOffset) {
+		return this.xmlMappingFileRef.containsOffset(textOffset);
+	}
+	
+	
+	// **************** JpaStructureNode impl **********************************
+	
+	public TextRange getSelectionTextRange() {
+		return this.xmlMappingFileRef.getSelectionTextRange();
+	}
+	
+	public TextRange getValidationTextRange() {
+		return this.xmlMappingFileRef.getValidationTextRange();
+	}
 }
