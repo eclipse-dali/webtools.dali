@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.internal.context.java;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
-
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaNode;
 import org.eclipse.jpt.core.JpaStructureNode;
@@ -113,6 +113,14 @@ public class GenericJarFile
 	public AccessType getOverridePersistentTypeAccess() {
 		// no access type at this level overrides any local access type specification
 		return null;
+	}
+	
+	
+	// **************** JpaNode impl *******************************************
+	
+	@Override
+	public IResource getResource() {
+		return this.jarResourcePackageFragmentRoot.getFile();
 	}
 
 
