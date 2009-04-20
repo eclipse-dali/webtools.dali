@@ -203,7 +203,7 @@ abstract class StateController
 	 * value is <code>null</code>
 	 */
 	protected boolean booleanValue(Boolean value) {
-		return (value == null) ? this.defaultValue : value;
+		return (value == null) ? this.defaultValue : value.booleanValue();
 	}
 
 	/**
