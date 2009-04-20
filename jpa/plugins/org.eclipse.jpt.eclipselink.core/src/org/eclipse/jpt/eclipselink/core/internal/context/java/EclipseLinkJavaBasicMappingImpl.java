@@ -100,13 +100,13 @@ public class EclipseLinkJavaBasicMappingImpl
 	}
 	
 	protected boolean convertValueTouches(int pos, CompilationUnit astRoot) {
-		if (getConvertResource() != null) {
-			return this.getConvertResource().valueTouches(pos, astRoot);
+		if (getResourceConvert() != null) {
+			return this.getResourceConvert().valueTouches(pos, astRoot);
 		}
 		return false;
 	}
 
-	protected ConvertAnnotation getConvertResource() {
+	protected ConvertAnnotation getResourceConvert() {
 		return (ConvertAnnotation) this.resourcePersistentAttribute.getSupportingAnnotation(ConvertAnnotation.ANNOTATION_NAME);
 	}
 
