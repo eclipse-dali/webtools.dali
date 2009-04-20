@@ -31,6 +31,8 @@ public class JptUiIcons
 	
 	public static final String JPA_FILE = "full/obj16/jpa-file";  //$NON-NLS-1$
 	
+	public static final String JAR_FILE = "full/obj16/jpa-jar-file";  //$NON-NLS-1$
+	
 	public static final String WARNING = "full/obj16/warning";  //$NON-NLS-1$
 	
 	
@@ -52,6 +54,8 @@ public class JptUiIcons
 	public static final String MAPPING_FILE_REF = "full/obj16/jpa-file";  //$NON-NLS-1$
 
 	public static final String CLASS_REF = "full/obj16/null-type-mapping";  //$NON-NLS-1$
+	
+	public static final String JAR_FILE_REF = "full/obj16/jpa-jar-file";  //$NON-NLS-1$
 
 
 	// **************** Orm icons **********************************************

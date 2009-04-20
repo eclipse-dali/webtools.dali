@@ -13,10 +13,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-
 import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.persistence.ClassRef;
+import org.eclipse.jpt.core.context.persistence.JarFileRef;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
@@ -26,12 +26,14 @@ import org.eclipse.jpt.ui.jface.DelegatingContentAndLabelProvider;
 import org.eclipse.jpt.ui.jface.TreeItemContentProvider;
 import org.eclipse.jpt.ui.jface.TreeItemContentProviderFactory;
 import org.eclipse.jpt.utility.internal.model.value.CollectionAspectAdapter;
-import org.eclipse.jpt.utility.internal.model.value.CompositeCollectionValueModel;
+import org.eclipse.jpt.utility.internal.model.value.CollectionListValueModelAdapter;
+import org.eclipse.jpt.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListCollectionValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyListValueModelAdapter;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;
+import org.eclipse.jpt.utility.model.value.ListValueModel;
 
 public class PersistenceItemContentProviderFactory
 	implements TreeItemContentProviderFactory
@@ -53,6 +55,9 @@ public class PersistenceItemContentProviderFactory
 		}
 		else if (item instanceof ClassRef) {
 			return new ClassRefItemContentProvider((ClassRef) item, treeContentProvider);	
+		}
+		else if (item instanceof JarFileRef) {
+			return new JarFileRefItemContentProvider((JarFileRef) item, treeContentProvider);
 		}
 		return null;
 	}
@@ -113,8 +118,7 @@ public class PersistenceItemContentProviderFactory
 		
 		@Override
 		protected CollectionValueModel<JpaStructureNode> buildChildrenModel() {
-			CollectionValueModel<MappingFileRef> specifiedMappingFileLvm = 
-				new ListCollectionValueModelAdapter<MappingFileRef>(
+			ListValueModel<MappingFileRef> specifiedMappingFileLvm = 
 				new ListAspectAdapter<PersistenceUnit, MappingFileRef>(
 						PersistenceUnit.SPECIFIED_MAPPING_FILE_REFS_LIST,
 						getModel()) {
@@ -126,10 +130,9 @@ public class PersistenceItemContentProviderFactory
 					protected int size_() {
 						return subject.specifiedMappingFileRefsSize();
 					}
-				});
+				};
 			
-			CollectionValueModel<MappingFileRef> impliedMappingFileCvm = 
-				new ListCollectionValueModelAdapter<MappingFileRef>(
+			ListValueModel<MappingFileRef> impliedMappingFileCvm = 
 				new PropertyListValueModelAdapter<MappingFileRef>(
 					new PropertyAspectAdapter<PersistenceUnit, MappingFileRef>(
 							PersistenceUnit.IMPLIED_MAPPING_FILE_REF_PROPERTY,
@@ -139,9 +142,8 @@ public class PersistenceItemContentProviderFactory
 							return subject.getImpliedMappingFileRef();
 						}
 					}
-				));
-			CollectionValueModel<ClassRef> specifiedClassCvm = 
-				new ListCollectionValueModelAdapter<ClassRef>(
+				);
+			ListValueModel<ClassRef> specifiedClassCvm = 
 				new ListAspectAdapter<PersistenceUnit, ClassRef>(
 						PersistenceUnit.SPECIFIED_CLASS_REFS_LIST,
 						getModel()) {
@@ -153,27 +155,45 @@ public class PersistenceItemContentProviderFactory
 					protected int size_() {
 						return subject.specifiedClassRefsSize();
 					}
-				});
-			CollectionValueModel<ClassRef> impliedClassCvm = 
-				new CollectionAspectAdapter<PersistenceUnit, ClassRef>(
-						PersistenceUnit.IMPLIED_CLASS_REFS_COLLECTION,
+				};
+			ListValueModel<ClassRef> impliedClassCvm = 
+				new CollectionListValueModelAdapter(
+					new CollectionAspectAdapter<PersistenceUnit, ClassRef>(
+							PersistenceUnit.IMPLIED_CLASS_REFS_COLLECTION,
+							getModel()) {
+						@Override
+						protected Iterator<ClassRef> iterator_() {
+							return subject.impliedClassRefs();
+						}
+						@Override
+						protected int size_() {
+							return subject.impliedClassRefsSize();
+						}
+					});
+			ListValueModel<JarFileRef> jarFileCvm =
+				new ListAspectAdapter<PersistenceUnit, JarFileRef>(
+						PersistenceUnit.JAR_FILE_REFS_LIST,
 						getModel()) {
 					@Override
-					protected Iterator<ClassRef> iterator_() {
-						return subject.impliedClassRefs();
+					protected ListIterator<JarFileRef> listIterator_() {
+						return subject.jarFileRefs();
 					}
 					@Override
 					protected int size_() {
-						return subject.impliedClassRefsSize();
+						return subject.jarFileRefsSize();
 					}
 				};
-			List<CollectionValueModel<? extends JpaStructureNode>> list = new ArrayList<CollectionValueModel<? extends JpaStructureNode>>(4);
+			List<ListValueModel<? extends JpaStructureNode>> list = new ArrayList<ListValueModel<? extends JpaStructureNode>>(4);
 			list.add(specifiedMappingFileLvm);
 			list.add(impliedMappingFileCvm);
 			list.add(specifiedClassCvm);
 			list.add(impliedClassCvm);
+			list.add(jarFileCvm);
 			
-			return new CompositeCollectionValueModel<CollectionValueModel<? extends JpaStructureNode>, JpaStructureNode>(list);
+			return new ListCollectionValueModelAdapter(
+				new CompositeListValueModel
+					<ListValueModel<? extends JpaStructureNode>, JpaStructureNode>
+						(list));
 		}
 	}
 	
@@ -212,6 +232,30 @@ public class PersistenceItemContentProviderFactory
 		@Override
 		public ClassRef getModel() {
 			return (ClassRef) super.getModel();
+		}
+		
+		@Override
+		public Object getParent() {
+			return getModel().getPersistenceUnit();
+		}
+		
+		@Override
+		public boolean hasChildren() {
+			return false;
+		}
+	}
+	
+	
+	public static class JarFileRefItemContentProvider extends AbstractTreeItemContentProvider<JarFileRef>
+	{
+		public JarFileRefItemContentProvider(
+				JarFileRef jarFileRef, DelegatingTreeContentAndLabelProvider contentProvider) {
+			super(jarFileRef, contentProvider);
+		}
+		
+		@Override
+		public JarFileRef getModel() {
+			return (JarFileRef) super.getModel();
 		}
 		
 		@Override

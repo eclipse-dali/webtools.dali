@@ -10,10 +10,12 @@
 package org.eclipse.jpt.ui.internal.structure;
 
 import org.eclipse.jpt.core.context.persistence.ClassRef;
+import org.eclipse.jpt.core.context.persistence.JarFileRef;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.ui.internal.platform.generic.ClassRefItemLabelProvider;
+import org.eclipse.jpt.ui.internal.platform.generic.JarFileRefItemLabelProvider;
 import org.eclipse.jpt.ui.internal.platform.generic.MappingFileRefItemLabelProvider;
 import org.eclipse.jpt.ui.internal.platform.generic.PersistenceItemLabelProvider;
 import org.eclipse.jpt.ui.internal.platform.generic.PersistenceUnitItemLabelProvider;
@@ -37,6 +39,9 @@ public class PersistenceItemLabelProviderFactory
 		}
 		else if (item instanceof ClassRef) {
 			return new ClassRefItemLabelProvider((ClassRef) item, contentAndLabelProvider);	
+		}
+		else if (item instanceof JarFileRef) {
+			return new JarFileRefItemLabelProvider((JarFileRef) item, contentAndLabelProvider);
 		}
 		return null;
 	}

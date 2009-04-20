@@ -12,9 +12,11 @@ package org.eclipse.jpt.ui.internal.platform.generic;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PersistentType;
+import org.eclipse.jpt.core.context.java.JarFile;
 import org.eclipse.jpt.core.context.orm.OrmXml;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
+import org.eclipse.jpt.ui.internal.jface.JarFileItemLabelProvider;
 import org.eclipse.jpt.ui.jface.DelegatingContentAndLabelProvider;
 import org.eclipse.jpt.ui.jface.ItemLabelProvider;
 import org.eclipse.jpt.ui.jface.ItemLabelProviderFactory;
@@ -40,6 +42,9 @@ public class GenericNavigatorItemLabelProviderFactory
 		}
 		else if (item instanceof PersistentAttribute) {
 			return new PersistentAttributeItemLabelProvider((PersistentAttribute) item, contentAndLabelProvider);	
+		}
+		else if (item instanceof JarFile) {
+			return new JarFileItemLabelProvider((JarFile) item, contentAndLabelProvider);
 		}
 		return null;
 	}

@@ -13,16 +13,17 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-
 import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
 import org.eclipse.jpt.core.context.MappingFile;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PersistentType;
+import org.eclipse.jpt.core.context.java.JarFile;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmXml;
 import org.eclipse.jpt.core.context.persistence.ClassRef;
+import org.eclipse.jpt.core.context.persistence.JarFileRef;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
@@ -97,6 +98,7 @@ public class GenericNavigatorItemContentProviderFactory
 			list.add(buildSpecifiedOrmXmlCvm());
 			list.add(buildImpliedMappingFileCvm());
 			list.add(buildPersistentTypeCvm());
+			list.add(buildJarFileCvm());
 			return new CompositeCollectionValueModel<CollectionValueModel<? extends JpaContextNode>, JpaContextNode>(list);
 		}
 		
@@ -210,6 +212,43 @@ public class GenericNavigatorItemContentProviderFactory
 						return subject.impliedClassRefsSize();
 					}
 			};
+		}
+		
+		protected CollectionValueModel<JpaContextNode> buildJarFileCvm() {
+			return new FilteringCollectionValueModel<JpaContextNode>(
+					new ListCollectionValueModelAdapter<JarFile>(
+						new TransformationListValueModelAdapter<JarFileRef, JarFile>(
+							new ItemPropertyListValueModelAdapter<JarFileRef>(buildJarFileRefCvm(), JarFileRef.JAR_FILE_PROPERTY)) {
+							@Override
+							protected JarFile transformItem(JarFileRef item) {
+								return item.getJarFile();
+							}
+						})) {
+					@Override
+					protected Iterator<JpaContextNode> filter(Iterator<? extends JpaContextNode> items) {
+						return new FilteringIterator<JpaContextNode, JpaContextNode>(items) {
+							@Override
+							protected boolean accept(JpaContextNode o) {
+								return o != null;
+							}
+						};
+					}
+				};
+		}
+		
+		protected CollectionValueModel<JarFileRef> buildJarFileRefCvm() {
+			return new ListCollectionValueModelAdapter<JarFileRef>(
+				new ListAspectAdapter<PersistenceUnit, JarFileRef>(
+					PersistenceUnit.JAR_FILE_REFS_LIST, getModel()) {
+						@Override
+						protected ListIterator<JarFileRef> listIterator_() {
+							return subject.jarFileRefs();
+						}
+						@Override
+						protected int size_() {
+							return subject.jarFileRefsSize();
+						}
+				});
 		}
 	}
 }
