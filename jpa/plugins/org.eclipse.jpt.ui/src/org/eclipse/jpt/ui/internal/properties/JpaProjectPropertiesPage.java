@@ -19,7 +19,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRunnable;
@@ -118,6 +117,8 @@ public class JpaProjectPropertiesPage
 	private Trigger trigger;
 	
 	private PropertyChangeListener validationListener;
+
+	private PropertyChangeListener platformChangelistener;
 	
 	private BufferedWritablePropertyValueModel<String> platformIdModel;
 	
@@ -146,6 +147,8 @@ public class JpaProjectPropertiesPage
 	private BufferedWritablePropertyValueModel<Boolean> discoverAnnotatedClassesModel;
 	
 	private WritablePropertyValueModel<Boolean> listAnnotatedClassesModel;
+
+
 	
 
 	// ************ construction/initialization ************
@@ -160,6 +163,8 @@ public class JpaProjectPropertiesPage
 		this.jpaProjectHolder = initializeJpaProjectHolder();
 		this.trigger = new Trigger();
 		this.validationListener = this.initializeValidationListener();
+		
+		this.platformChangelistener = this.initializePlatformChangeListener();
 		this.platformIdModel = this.initializePlatformIdModel();
 		
 		this.connectionModel = this.initializeConnectionModel();
@@ -194,21 +199,25 @@ public class JpaProjectPropertiesPage
 		};
 	}
 	
-	protected BufferedWritablePropertyValueModel<String> initializePlatformIdModel() {
-		BufferedWritablePropertyValueModel<String> model =
-			new BufferedWritablePropertyValueModel(
-				new PlatformIdModel(this.jpaProjectHolder), this.trigger);
-		model.addPropertyChangeListener(PropertyValueModel.VALUE, this.validationListener);
-		model.addPropertyChangeListener(
-			PropertyValueModel.VALUE, 
-			new PropertyChangeListener() {
-				public void propertyChanged(PropertyChangeEvent event) {
+	protected PropertyChangeListener initializePlatformChangeListener(){
+		return new PropertyChangeListener() {
+			public void propertyChanged(PropertyChangeEvent event) {
+				if (! JpaProjectPropertiesPage.this.getControl().isDisposed()) {
 					JpaProjectPropertiesPage.this.getLibraryInstallDelegate().
 						setEnablementContextVariable(
 							JpaLibraryProviderConstants.EXPR_VAR_JPA_PLATFORM,
 							event.getNewValue());
 				}
-			});
+			}
+		};
+	}
+	
+	protected BufferedWritablePropertyValueModel<String> initializePlatformIdModel() {
+		BufferedWritablePropertyValueModel<String> model =
+			new BufferedWritablePropertyValueModel(
+				new PlatformIdModel(this.jpaProjectHolder), this.trigger);
+		model.addPropertyChangeListener(PropertyValueModel.VALUE, this.validationListener);
+		model.addPropertyChangeListener(PropertyValueModel.VALUE, this.platformChangelistener);
 		return model;
 	}
 	
@@ -351,6 +360,7 @@ public class JpaProjectPropertiesPage
 	}
 
 	// ************ queries ************
+	
 	protected JpaProject getJpaProject() {
 		return this.jpaProjectHolder.getValue();
 	}
@@ -618,6 +628,12 @@ public class JpaProjectPropertiesPage
 	
 	private IStatus buildStatus(int severity, String message) {
 		return new Status(severity, JptCorePlugin.PLUGIN_ID, message);
+	}
+	
+	@Override
+	public void dispose() {
+		super.dispose();
+		this.platformIdModel.removePropertyChangeListener(PropertyValueModel.VALUE, platformChangelistener);
 	}
 	
 	
