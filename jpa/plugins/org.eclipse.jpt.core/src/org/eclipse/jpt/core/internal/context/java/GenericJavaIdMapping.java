@@ -32,10 +32,6 @@ import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.SequenceGeneratorAnnotation;
 import org.eclipse.jpt.core.resource.java.TableGeneratorAnnotation;
 import org.eclipse.jpt.core.resource.java.TemporalAnnotation;
-import org.eclipse.jpt.db.Catalog;
-import org.eclipse.jpt.db.Database;
-import org.eclipse.jpt.db.Schema;
-import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
@@ -416,133 +412,13 @@ public class GenericJavaIdMapping
 				return result;
 			}
 		}
-		return null;
-	}
-	
-	/**
-	 * called if the database is connected:
-	 * table, schema, catalog, pkColumnName, valueColumnName
-	 */
-	@Override
-	public Iterator<String> connectedJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterator<String> result = super.connectedJavaCompletionProposals(pos, filter, astRoot);
-		if (result != null) {
-			return result;
-		}
-		if (this.tableTouches(pos, astRoot)) {
-			return this.javaCandidateTables(filter);
-		}
-		if (this.schemaTouches(pos, astRoot)) {
-			return this.javaCandidateSchemata(filter);
-		}
-		if (this.catalogTouches(pos, astRoot)) {
-			return this.javaCandidateCatalogs(filter);
-		}
-		if (this.pkColumnNameTouches(pos, astRoot)) {
-			return this.javaCandidateColumnNames(filter);
-		}
-		if (this.valueColumnNameTouches(pos, astRoot)) {
-			return this.javaCandidateColumnNames(filter);
+		if (this.getTableGenerator() != null) {
+			result = this.getTableGenerator().javaCompletionProposals(pos, filter, astRoot);
+			if (result != null) {
+				return result;
+			}
 		}
 		return null;
-	}
-
-	// ********** code assist: table 
-
-	protected boolean tableTouches(int pos, CompilationUnit astRoot) {
-		return this.getResourceTableGenerator().tableTouches(pos, astRoot);
-	}
-
-	protected Iterator<String> javaCandidateTables(Filter<String> filter) {
-		return StringTools.convertToJavaStringLiterals(this.candidateTables(filter));
-	}
-
-	protected Iterator<String> candidateTables(Filter<String> filter) {
-		return new FilteringIterator<String, String>(this.candidateTables(), filter);
-	}
-
-	protected Iterator<String> candidateTables() {
-		Schema schema = this.getTableGeneratorSchema();
-		return (schema != null) ? schema.sortedTableIdentifiers() : this.getContextDefaultDbSchema().sortedTableIdentifiers();
-	}
-	
-	protected Schema getTableGeneratorSchema() {
-		Database db = this.getDatabase();
-		return (db != null) ? db.getSchemaForIdentifier(this.getResourceTableGenerator().getSchema()) : null;
-	}
-
-	// ********** code assist: schema 
-
-	protected boolean schemaTouches(int pos, CompilationUnit astRoot) {
-		return this.getResourceTableGenerator().schemaTouches(pos, astRoot);
-	}
-
-	protected Iterator<String> javaCandidateSchemata(Filter<String> filter) {
-		return StringTools.convertToJavaStringLiterals(this.candidateSchemata(filter));
-	}
-
-	protected Iterator<String> candidateSchemata(Filter<String> filter) {
-		return new FilteringIterator<String, String>(this.candidateSchemata(), filter);
-	}
-
-	protected Iterator<String> candidateSchemata() {
-		Catalog catalog = this.getTableGeneratorCatalog();
-		return (catalog != null) ? catalog.sortedSchemaIdentifiers() : this.getContextDefaultDbSchemaContainer().sortedSchemaIdentifiers();
-	}
-	
-	protected Catalog getTableGeneratorCatalog() {
-		Database db = this.getDatabase();
-		return (db != null) ? db.getCatalogForIdentifier(this.getResourceTableGenerator().getCatalog()) : null;
-	}
-
-	// ********** code assist: catalog 
-
-	protected boolean catalogTouches(int pos, CompilationUnit astRoot) {
-		return this.getResourceTableGenerator().catalogTouches(pos, astRoot);
-	}
-
-	protected Iterator<String> javaCandidateCatalogs(Filter<String> filter) {
-		return StringTools.convertToJavaStringLiterals(this.candidateCatalogs(filter));
-	}
-
-	protected Iterator<String> candidateCatalogs(Filter<String> filter) {
-		return new FilteringIterator<String, String>(this.candidateCatalogs(), filter);
-	}
-
-	protected Iterator<String> candidateCatalogs() {
-		Database db = this.getDatabase();
-		return (db != null) ? db.sortedCatalogIdentifiers() : EmptyIterator.<String> instance();
-	}
-
-	// ********** code assist: pkColumnName 
-
-	protected boolean pkColumnNameTouches(int pos, CompilationUnit astRoot) {
-		return this.getResourceTableGenerator().pkColumnNameTouches(pos, astRoot);
-	}
-
-	protected Iterator<String> javaCandidateColumnNames(Filter<String> filter) {
-		return StringTools.convertToJavaStringLiterals(this.candidateColumnNames(filter));
-	}
-
-	protected Iterator<String> candidateColumnNames(Filter<String> filter) {
-		return new FilteringIterator<String, String>(this.candidateColumnNames(), filter);
-	}
-
-	protected Iterator<String> candidateColumnNames() {
-		Table table = this.getTableGeneratorTable();
-		return (table != null) ? table.sortedColumnIdentifiers() : EmptyIterator.<String> instance();
-	}
-	
-	public Table getTableGeneratorTable() {
-		String tableName = this.getResourceTableGenerator().getTable();
-		Schema schema = this.getTableGeneratorSchema();
-		return (schema != null) ? schema.getTableForIdentifier(tableName) : this.getContextDefaultDbSchema().getTableForIdentifier(tableName);
-	}
-
-	// ********** code assist: valueColumnName 
-
-	protected boolean valueColumnNameTouches(int pos, CompilationUnit astRoot) {
-		return this.getResourceTableGenerator().valueColumnNameTouches(pos, astRoot);
 	}
 
 	// ********** code assist: generator 
@@ -558,7 +434,7 @@ public class GenericJavaIdMapping
 		if(this.getPersistenceUnit().generatorsSize() == 0) {
 			return EmptyIterator.<String> instance();
 		}
-		return (Iterator<String>)CollectionTools.iterator(this.getPersistenceUnit().uniqueGeneratorNames());
+		return CollectionTools.iterator(this.getPersistenceUnit().uniqueGeneratorNames());
 	}
 	
 	private Iterator<String> generatorNames(Filter<String> filter) {
