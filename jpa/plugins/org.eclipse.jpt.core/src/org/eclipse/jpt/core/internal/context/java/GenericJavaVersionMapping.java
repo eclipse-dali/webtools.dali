@@ -204,7 +204,7 @@ public class GenericJavaVersionMapping
 			return;
 		}
 		
-		if ( ! this.column.isResolved()) {
+		if ( ! this.column.isResolved() && this.column.getDbTable() != null) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,

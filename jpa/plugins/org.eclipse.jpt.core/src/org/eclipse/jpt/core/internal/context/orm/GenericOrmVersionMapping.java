@@ -210,7 +210,7 @@ public class GenericOrmVersionMapping<T extends XmlVersion>
 			return;
 		}
 		
-		if ( ! this.column.isResolved()) {
+		if ( ! this.column.isResolved() && this.column.getDbTable() != null) {
 			if (pa.isVirtual()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(

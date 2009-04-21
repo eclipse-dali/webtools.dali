@@ -171,7 +171,7 @@ public class GenericJavaAttributeOverride extends AbstractJavaOverride
 			return;
 		}
 		
-		if ( ! this.column.isResolved()) {
+		if ( ! this.column.isResolved() && this.column.getDbTable() != null) {
 			if (this.isVirtual()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(

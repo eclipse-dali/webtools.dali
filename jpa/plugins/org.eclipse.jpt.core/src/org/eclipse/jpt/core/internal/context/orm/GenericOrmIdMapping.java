@@ -438,7 +438,7 @@ public class GenericOrmIdMapping<T extends XmlId>
 			return;
 		}
 		
-		if ( ! this.column.isResolved()) {
+		if ( ! this.column.isResolved() && this.column.getDbTable() != null) {
 			if (pa.isVirtual()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(

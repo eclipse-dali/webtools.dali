@@ -297,7 +297,7 @@ public class GenericOrmBasicMapping<T extends XmlBasic>
 			return;
 		}
 		
-		if ( ! this.column.isResolved()) {
+		if ( ! this.column.isResolved() && this.column.getDbTable() != null) {
 			if (this.getPersistentAttribute().isVirtual()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
