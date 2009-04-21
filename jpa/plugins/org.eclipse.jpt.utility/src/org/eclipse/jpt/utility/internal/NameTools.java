@@ -354,6 +354,8 @@ public final class NameTools {
 			beginIndex = 3;
 		} else if (methodName.startsWith("is")) { //$NON-NLS-1$
 			beginIndex = 2;
+		} else {
+			return methodName;  // return method name unchanged?
 		}
 		return Introspector.decapitalize(methodName.substring(beginIndex));
 	}
