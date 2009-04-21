@@ -11,6 +11,7 @@ package org.eclipse.jpt.utility.internal.model.value;
 
 import org.eclipse.jpt.utility.internal.model.ChangeSupport;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
+import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.model.listener.StateChangeListener;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 
@@ -41,9 +42,6 @@ public abstract class ValueAspectAdapter<T>
 {
 	/** Cache the value so we can disengage. Null until we have a listener*/
 	protected T value;
-	
-	/** Keep track of whether we're engaged with the value **/
-	protected boolean valueEngaged;
 
 
 	// ********** constructors/initialization **********
@@ -68,12 +66,7 @@ public abstract class ValueAspectAdapter<T>
 	// ********** PropertyValueModel implementation **********
 
 	public T getValue() {
-		if (this.valueEngaged) {
-			return this.value;
-		}
-		else {
-			return this.valueHolder().getValue();
-		}
+		return this.value;
 	}
 
 
@@ -98,7 +91,7 @@ public abstract class ValueAspectAdapter<T>
 
 	@Override
 	public synchronized void addStateChangeListener(StateChangeListener listener) {
-		if (this.hasNoStateChangeListeners()) {
+		if (this.hasNoEngagingListeners()) {
 			this.engageValue();
 		}
 		super.addStateChangeListener(listener);
@@ -107,11 +100,47 @@ public abstract class ValueAspectAdapter<T>
 	@Override
 	public synchronized void removeStateChangeListener(StateChangeListener listener) {
 		super.removeStateChangeListener(listener);
-		if (this.hasNoStateChangeListeners()) {
+		if (this.hasNoEngagingListeners()) {
 			this.disengageValue();
 		}
 	}
-
+	
+	@Override
+	public synchronized void addPropertyChangeListener(PropertyChangeListener listener) {
+		if (this.hasNoEngagingListeners()) {
+			this.engageValue();
+		}
+		super.addPropertyChangeListener(listener);
+	}
+	
+	@Override
+	public synchronized void addPropertyChangeListener(String propertyName, PropertyChangeListener listener) {
+		if (this.hasNoEngagingListeners()) {
+			this.engageValue();
+		}
+		super.addPropertyChangeListener(propertyName, listener);
+	}
+	
+	@Override
+	public synchronized void removePropertyChangeListener(PropertyChangeListener listener) {
+		super.removePropertyChangeListener(listener);
+		if (this.hasNoEngagingListeners()) {
+			this.disengageValue();
+		}
+	}
+	
+	@Override
+	public synchronized void removePropertyChangeListener(String propertyName, PropertyChangeListener listener) {
+		super.removePropertyChangeListener(propertyName, listener);
+		if (this.hasNoEngagingListeners()) {
+			this.disengageValue();
+		}
+	}
+	
+	protected boolean hasNoEngagingListeners() {
+		return hasNoStateChangeListeners() && hasNoPropertyChangeListeners(VALUE);
+	}
+	
 
 	// ********** behavior **********
 
@@ -120,7 +149,6 @@ public abstract class ValueAspectAdapter<T>
 	 */
 	protected void engageValue() {
 		this.value = this.valueHolder.getValue();
-		this.valueEngaged = true;
 		if (this.value != null) {
 			this.engageValue_();
 		}
@@ -136,7 +164,6 @@ public abstract class ValueAspectAdapter<T>
 	 * Stop listening to the current value.
 	 */
 	protected void disengageValue() {
-		this.valueEngaged = false;
 		if (this.value != null) {
 			this.disengageValue_();
 			this.value = null;
