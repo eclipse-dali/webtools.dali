@@ -569,6 +569,10 @@ final class BinaryPersistentAttribute
 			}
 
 			public String getReturnTypeName() {
+				return Signature.toString(this.getReturnTypeSignature());
+			}
+
+			private String getReturnTypeSignature() {
 				try {
 					return this.method.getReturnType();
 				} catch (JavaModelException ex) {
@@ -604,7 +608,7 @@ final class BinaryPersistentAttribute
 				for (IMethod sibling : this.getSiblings()) {
 					String[] parmTypes = sibling.getParameterTypes();
 					if ((parmTypes.length == 1)
-							&& parmTypes[0].equals(parameterTypeName)
+							&& Signature.toString(parmTypes[0]).equals(parameterTypeName)
 							&& sibling.getElementName().equals(name)) {
 						return new JPTToolsAdapter(sibling);
 					}
