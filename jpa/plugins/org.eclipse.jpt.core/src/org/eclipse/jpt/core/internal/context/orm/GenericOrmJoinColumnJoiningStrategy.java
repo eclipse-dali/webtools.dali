@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+
 import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.JoinColumn;
@@ -299,53 +300,109 @@ public class GenericOrmJoinColumnJoiningStrategy
 			}
 			return;
 		}
-		
-		if ( ! joinColumn.isResolved()) {
-			if (getRelationshipMapping().getPersistentAttribute().isVirtual()) {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_UNRESOLVED_NAME,
-						new String[] {getRelationshipMapping().getName(), joinColumn.getName()}, 
-						joinColumn, 
-						joinColumn.getNameTextRange()
-					)
-				);
-			} else {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.JOIN_COLUMN_UNRESOLVED_NAME,
-						new String[] {joinColumn.getName()}, 
-						joinColumn, 
-						joinColumn.getNameTextRange()
-					)
-				);
+		validateJoinColumnName(joinColumn, messages);
+		validationJoinColumnReferencedColumnName(joinColumn, messages);
+	}
+	
+	protected void validateJoinColumnName(OrmJoinColumn joinColumn, List<IMessage> messages) {
+		if ( ! joinColumn.isResolved() && joinColumn.getDbTable() != null) {
+			if (joinColumn.getName() != null) {
+				if (getRelationshipMapping().getPersistentAttribute().isVirtual()) {
+					messages.add(
+						DefaultJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_UNRESOLVED_NAME,
+							new String[] {getRelationshipMapping().getName(), joinColumn.getName()}, 
+							joinColumn, 
+							joinColumn.getNameTextRange()
+						)
+					);
+				} else {
+					messages.add(
+						DefaultJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JpaValidationMessages.JOIN_COLUMN_UNRESOLVED_NAME,
+							new String[] {joinColumn.getName()}, 
+							joinColumn, 
+							joinColumn.getNameTextRange()
+						)
+					);
+				}
+			}
+			else if (joinColumn.getOwner().joinColumnsSize() > 1) {
+				if (getRelationshipMapping().getPersistentAttribute().isVirtual()) {
+					messages.add(
+							DefaultJpaValidationMessages.buildMessage(
+								IMessage.HIGH_SEVERITY,
+								JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_UNRESOLVED_NAME_MULTIPLE_JOIN_COLUMNS,
+								new String[] {getRelationshipMapping().getName()}, 
+								joinColumn,
+								joinColumn.getNameTextRange()
+							)
+						);
+				}
+				else {
+					messages.add(
+							DefaultJpaValidationMessages.buildMessage(
+								IMessage.HIGH_SEVERITY,
+								JpaValidationMessages.JOIN_COLUMN_UNRESOLVED_NAME_MULTIPLE_JOIN_COLUMNS,
+								joinColumn,
+								joinColumn.getNameTextRange()
+							)
+						);
+				}
 			}
 		}
-		
-		if ( ! joinColumn.isReferencedColumnResolved()) {
-			if (getRelationshipMapping().getPersistentAttribute().isVirtual()) {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME,
-						new String[] {getRelationshipMapping().getName(), joinColumn.getReferencedColumnName(), joinColumn.getName()}, 
-						joinColumn, 
-						joinColumn.getReferencedColumnNameTextRange()
-					)
-				);
-			} else {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME,
-						new String[] {joinColumn.getReferencedColumnName(), joinColumn.getName()}, 
-						joinColumn, 
-						joinColumn.getReferencedColumnNameTextRange()
-					)
-				);
+	}
+	
+	protected void validationJoinColumnReferencedColumnName(OrmJoinColumn joinColumn, List<IMessage> messages) {
+		if ( ! joinColumn.isReferencedColumnResolved() && joinColumn.getReferencedColumnDbTable() != null) {
+			if (joinColumn.getReferencedColumnName() != null) {
+				if (getRelationshipMapping().getPersistentAttribute().isVirtual()) {
+					messages.add(
+						DefaultJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME,
+							new String[] {getRelationshipMapping().getName(), joinColumn.getReferencedColumnName(), joinColumn.getName()}, 
+							joinColumn, 
+							joinColumn.getReferencedColumnNameTextRange()
+						)
+					);
+				} else {
+					messages.add(
+						DefaultJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JpaValidationMessages.JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME,
+							new String[] {joinColumn.getReferencedColumnName(), joinColumn.getName()}, 
+							joinColumn, 
+							joinColumn.getReferencedColumnNameTextRange()
+						)
+					);
+				}
 			}
+			else if (joinColumn.getOwner().joinColumnsSize() > 1) {
+				if (getRelationshipMapping().getPersistentAttribute().isVirtual()) {
+					messages.add(
+							DefaultJpaValidationMessages.buildMessage(
+								IMessage.HIGH_SEVERITY,
+								JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME_MULTIPLE_JOIN_COLUMNS,
+								new String[] {getRelationshipMapping().getName(), joinColumn.getName()}, 
+								joinColumn,
+								joinColumn.getReferencedColumnNameTextRange()
+							)
+						);					
+				}
+				else {
+					messages.add(
+							DefaultJpaValidationMessages.buildMessage(
+								IMessage.HIGH_SEVERITY,
+								JpaValidationMessages.JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME_MULTIPLE_JOIN_COLUMNS,
+								joinColumn,
+								joinColumn.getReferencedColumnNameTextRange()
+							)
+						);
+				}
+			}			
 		}
 	}
 	

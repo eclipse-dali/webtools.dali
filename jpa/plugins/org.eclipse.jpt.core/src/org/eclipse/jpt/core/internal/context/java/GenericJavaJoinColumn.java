@@ -90,7 +90,7 @@ public class GenericJavaJoinColumn extends AbstractJavaBaseColumn<JoinColumnAnno
 		return getOwner().isVirtual(this);
 	}
 
-	protected Table getReferencedColumnDbTable() {
+	public Table getReferencedColumnDbTable() {
 		return getOwner().getReferencedColumnDbTable();
 	}
 
@@ -184,28 +184,67 @@ public class GenericJavaJoinColumn extends AbstractJavaBaseColumn<JoinColumnAnno
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
-		if ( ! this.isResolved()) {
-			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.JOIN_COLUMN_UNRESOLVED_NAME,
-					new String[] {this.getName()}, 
-					this,
-					this.getNameTextRange(astRoot)
-				)
-			);
+		validateName(messages, astRoot);
+		validateReferencedColumnName(messages, astRoot);
+	}
+	
+	protected void validateName(List<IMessage> messages, CompilationUnit astRoot) {
+		if ( ! this.isResolved() && getDbTable() != null) {
+			if (getName() != null) {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.JOIN_COLUMN_UNRESOLVED_NAME,
+						new String[] {this.getName()}, 
+						this,
+						this.getNameTextRange(astRoot)
+					)
+				);
+			}
+			else if (getOwner().joinColumnsSize() > 1) {
+				messages.add(
+						DefaultJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JpaValidationMessages.JOIN_COLUMN_UNRESOLVED_NAME_MULTIPLE_JOIN_COLUMNS,
+							this,
+							this.getNameTextRange(astRoot)
+						)
+					);
+			}
+			//If the name is null and there is only one join-column, one of these validation messages will apply
+			// 1. target entity does not have a primary key
+			// 2. target entity is not specified
+			// 3. target entity is not an entity
 		}
-
-		if ( ! this.isReferencedColumnResolved()) {
-			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME,
-					new String[] {this.getReferencedColumnName(), this.getName()}, 
-					this,
-					this.getReferencedColumnNameTextRange(astRoot)
-				)
-			);
+	}
+	
+	protected void validateReferencedColumnName(List<IMessage> messages, CompilationUnit astRoot) {
+		if ( ! this.isReferencedColumnResolved() && getReferencedColumnDbTable() != null) {
+			if (getReferencedColumnName() != null) {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME,
+						new String[] {this.getReferencedColumnName(), this.getName()}, 
+						this,
+						this.getReferencedColumnNameTextRange(astRoot)
+					)
+				);
+			}
+			else if (getOwner().joinColumnsSize() > 1) {
+				messages.add(
+						DefaultJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JpaValidationMessages.JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME_MULTIPLE_JOIN_COLUMNS,
+							this,
+							this.getNameTextRange(astRoot)
+						)
+					);
+			}
+			//If the referenced column name is null and there is only one join-column, one of these validation messages will apply
+			// 1. target entity does not have a primary key
+			// 2. target entity is not specified
+			// 3. target entity is not an entity
 		}
 	}
 

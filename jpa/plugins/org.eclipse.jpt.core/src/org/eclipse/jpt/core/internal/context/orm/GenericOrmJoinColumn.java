@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.List;
+
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.XmlContextNode;
@@ -84,7 +85,7 @@ public class GenericOrmJoinColumn extends AbstractOrmBaseColumn<XmlJoinColumn> i
 		return (OrmJoinColumn.Owner) this.owner;
 	}
 
-	protected Table getReferencedColumnDbTable() {
+	public Table getReferencedColumnDbTable() {
 		return getOwner().getReferencedColumnDbTable();
 	}
 
@@ -170,32 +171,76 @@ public class GenericOrmJoinColumn extends AbstractOrmBaseColumn<XmlJoinColumn> i
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
-		if ( ! this.isResolved()) {
-			messages.add(this.buildUnresolvedMessage());
+		validateName(messages);
+		validateReferencedColumnName(messages);
+	}
+	
+	protected void validateName(List<IMessage> messages) {
+		if ( ! this.isResolved() && getDbTable() != null) {
+			if (getName() != null) {
+				messages.add(this.buildUnresolvedMessage());
+			}
+			else if (getOwner().joinColumnsSize() > 1) {
+			
+			}
 		}
 	}
-
+	
+	protected void validateReferencedColumnName(List<IMessage> messages) {
+		if ( ! this.isReferencedColumnResolved() && getReferencedColumnDbTable() != null) {
+			if (getReferencedColumnName() != null) {
+				messages.add(this.buildUnresolvedMessage());
+			}
+			else if (getOwner().joinColumnsSize() > 1) {
+				
+			}
+		}
+	}
+	
 	protected IMessage buildUnresolvedMessage() {
 		OrmRelationshipMapping mapping = (OrmRelationshipMapping) this.getOwner().getRelationshipMapping();
-		return mapping.getPersistentAttribute().isVirtual() ? this.buildVirtualUnresolvedMessage(mapping) : this.buildNonVirtualUnresolvedMessage();
+		return mapping.getPersistentAttribute().isVirtual() ? this.buildVirtualUnresolvedNameMessage(mapping) : this.buildNonVirtualUnresolvedNameMessage();
 	}
 
-	protected IMessage buildVirtualUnresolvedMessage(OrmRelationshipMapping mapping) {
+	protected IMessage buildVirtualUnresolvedNameMessage(OrmRelationshipMapping mapping) {
 		return this.buildMessage(
 						JpaValidationMessages.VIRTUAL_ATTRIBUTE_COLUMN_UNRESOLVED_NAME,
-						new String[] {mapping.getName(), this.getName()}
+						new String[] {mapping.getName(), this.getName()},
+						this.getNameTextRange()
 					);
 	}
 
-	protected IMessage buildNonVirtualUnresolvedMessage() {
+	protected IMessage buildNonVirtualUnresolvedNameMessage() {
 		return this.buildMessage(
 						JpaValidationMessages.COLUMN_UNRESOLVED_NAME,
-						new String[] {this.getName()}
+						new String[] {this.getName()},
+						this.getNameTextRange()
 					);
 	}
 
-	protected IMessage buildMessage(String msgID, String[] parms) {
-		return DefaultJpaValidationMessages.buildMessage(IMessage.HIGH_SEVERITY, msgID, parms, this, this.getNameTextRange());
+	protected IMessage buildUnresolvedReferenceColumnNameMessage() {
+		OrmRelationshipMapping mapping = (OrmRelationshipMapping) this.getOwner().getRelationshipMapping();
+		return mapping.getPersistentAttribute().isVirtual() ? this.buildVirtualUnresolvedReferenceColumnNameMessage(mapping) : this.buildNonVirtualUnresolvedReferenceColumnNameMessage();
+	}
+
+	protected IMessage buildVirtualUnresolvedReferenceColumnNameMessage(OrmRelationshipMapping mapping) {
+		return this.buildMessage(
+						JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME,
+						new String[] {mapping.getName(), this.getName()},
+						this.getReferencedColumnNameTextRange()
+					);
+	}
+
+	protected IMessage buildNonVirtualUnresolvedReferenceColumnNameMessage() {
+		return this.buildMessage(
+						JpaValidationMessages.JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME,
+						new String[] {this.getName()},
+						this.getReferencedColumnNameTextRange()
+					);
+	}
+
+	protected IMessage buildMessage(String msgID, String[] parms, TextRange textRange) {
+		return DefaultJpaValidationMessages.buildMessage(IMessage.HIGH_SEVERITY, msgID, parms, this, textRange);
 	}
 
 }
