@@ -88,10 +88,10 @@ public class PersistenceFactory extends EFactoryImpl
 			case PersistencePackage.XML_PERSISTENCE: return (EObject)createXmlPersistence();
 			case PersistencePackage.XML_PERSISTENCE_UNIT: return (EObject)createXmlPersistenceUnit();
 			case PersistencePackage.XML_MAPPING_FILE_REF: return (EObject)createXmlMappingFileRef();
+			case PersistencePackage.XML_JAR_FILE_REF: return (EObject)createXmlJarFileRef();
 			case PersistencePackage.XML_JAVA_CLASS_REF: return (EObject)createXmlJavaClassRef();
 			case PersistencePackage.XML_PROPERTIES: return (EObject)createXmlProperties();
 			case PersistencePackage.XML_PROPERTY: return (EObject)createXmlProperty();
-			case PersistencePackage.XML_JAR_FILE_REF: return (EObject)createXmlJarFileRef();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}

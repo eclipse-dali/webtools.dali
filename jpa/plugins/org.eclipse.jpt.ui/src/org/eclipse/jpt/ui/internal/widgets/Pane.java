@@ -760,6 +760,29 @@ public abstract class Pane<T extends Model>
 			new SimplePropertyValueModel<Boolean>(Boolean.FALSE)
 		);
 	}
+	
+	/**
+	 * Creates a new <code>Section</code> that can be collapsed. A sub-pane is
+	 * automatically added as its client and is the returned <code>Composite</code>.
+	 *
+	 * @param container The container of the new widget
+	 * @param sectionText The text of the new section
+	 * @param description The section's description or <code>null</code> if none
+	 * @return The <code>Section</code>'s sub-pane
+	 *
+	 * @category Layout
+	 */
+	protected final Composite addCollapsableSection(Composite container,
+	                                                  String sectionText,
+	                                                  String description) {
+
+		return this.addCollapsableSection(
+			container,
+			sectionText,
+			description,
+			new SimplePropertyValueModel<Boolean>(Boolean.FALSE)
+		);
+	}
 
 	/**
 	 * Creates a new <code>Section</code>. A sub-pane is automatically added as
@@ -778,10 +801,35 @@ public abstract class Pane<T extends Model>
 	                                          String sectionText,
 	                                          int type,
 	                                          PropertyValueModel<Boolean> expandedStateHolder) {
+		
+		return addCollapsableSection(container, sectionText, null, type, expandedStateHolder);
+	}
+	
+	/**
+	 * Creates a new <code>Section</code>. A sub-pane is automatically added as
+	 * its client and is the returned <code>Composite</code>.
+	 *
+	 * @param container The container of the new widget
+	 * @param sectionText The text of the new section
+	 * @param description The section's description or <code>null</code> if none
+	 * was provided
+	 * @param type The type of section to create
+	 * @param expandedStateHolder The holder of the boolean that will dictate
+	 * when to expand or collapse the section
+	 * @return The <code>Section</code>'s sub-pane
+	 *
+	 * @category Layout
+	 */
+	private Composite addCollapsableSection(Composite container,
+	                                          String sectionText,
+	                                          String description,
+	                                          int type,
+	                                          PropertyValueModel<Boolean> expandedStateHolder) {
 
 		Composite subPane = this.addSection(
 			container,
 			sectionText,
+			description,
 			ExpandableComposite.TWISTIE | type
 		);
 
@@ -818,6 +866,33 @@ public abstract class Pane<T extends Model>
 		return this.addCollapsableSection(
 			container,
 			sectionText,
+			ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE,
+			expandedStateHolder
+		);
+	}
+	
+	/**
+	 * Creates a new <code>Section</code>. A sub-pane is automatically added as
+	 * its client and is the returned <code>Composite</code>.
+	 *
+	 * @param container The container of the new widget
+	 * @param sectionText The text of the new section
+	 * @param description The section's description or <code>null</code> if none
+	 * @param expandedStateHolder The holder of the boolean that will dictate
+	 * when to expand or collapse the section
+	 * @return The <code>Section</code>'s sub-pane
+	 *
+	 * @category Layout
+	 */
+	protected final Composite addCollapsableSection(Composite container,
+	                                                  String sectionText,
+	                                                  String description,
+	                                                  PropertyValueModel<Boolean> expandedStateHolder) {
+
+		return this.addCollapsableSection(
+			container,
+			sectionText,
+			description,
 			ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE,
 			expandedStateHolder
 		);

@@ -38,6 +38,11 @@
         unique="false" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"
         defaultValueLiteral=""/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlJarFileRef">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="fileName" ordered="false"
+        unique="false" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"
+        defaultValueLiteral=""/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlJavaClassRef">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="javaClass" ordered="false"
         unique="false" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"
@@ -60,8 +65,4 @@
   <eClassifiers xsi:type="ecore:EDataType" name="XmlPersistenceUnitTransactionTypeObject"
       instanceClassName="org.eclipse.emf.common.util.Enumerator"/>
   <eClassifiers xsi:type="ecore:EDataType" name="XmlVersion" instanceClassName="java.lang.String"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlJarFileRef">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="fileName" ordered="false"
-        unique="false" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
-  </eClassifiers>
 </ecore:EPackage>

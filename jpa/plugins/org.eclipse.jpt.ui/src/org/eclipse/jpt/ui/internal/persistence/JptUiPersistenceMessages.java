@@ -44,14 +44,18 @@ public class JptUiPersistenceMessages {
 	public static String PersistenceUnitConnectionGeneralComposite_transactionType;
 
 	public static String PersistenceUnitGeneralComposite_general;
-	public static String PersistenceUnitGeneralComposite_javaArchives;
+	public static String PersistenceUnitGeneralComposite_jarFiles;
 	public static String PersistenceUnitGeneralComposite_jpaMappingDescriptors;
 	public static String PersistenceUnitGeneralComposite_jpaMappingDescriptors_description;
 	public static String PersistenceUnitGeneralComposite_mappedClasses;
 	public static String PersistenceUnitGeneralComposite_name;
 	public static String PersistenceUnitGeneralComposite_persistenceProvider;
 	public static String PersistenceUnitGeneralComposite_description;
-
+	
+	public static String PersistenceUnitJarFilesComposite_noFileName;
+	public static String PersistenceUnitMappingFilesComposite_jarFileDialog_title;
+	public static String PersistenceUnitMappingFilesComposite_jarFileDialog_message;
+	
 	public static String PersistenceUnitMappingFilesComposite_mappingFileDialog_message;
 	public static String PersistenceUnitMappingFilesComposite_mappingFileDialog_title;
 	public static String PersistenceUnitMappingFilesComposite_ormNoName;

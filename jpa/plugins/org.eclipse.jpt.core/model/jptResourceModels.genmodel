@@ -392,6 +392,9 @@
     <genClasses ecoreClass="persistence.ecore#//XmlMappingFileRef">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute persistence.ecore#//XmlMappingFileRef/fileName"/>
     </genClasses>
+    <genClasses ecoreClass="persistence.ecore#//XmlJarFileRef">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute persistence.ecore#//XmlJarFileRef/fileName"/>
+    </genClasses>
     <genClasses ecoreClass="persistence.ecore#//XmlJavaClassRef">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute persistence.ecore#//XmlJavaClassRef/javaClass"/>
     </genClasses>
@@ -401,9 +404,6 @@
     <genClasses ecoreClass="persistence.ecore#//XmlProperty">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute persistence.ecore#//XmlProperty/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute persistence.ecore#//XmlProperty/value"/>
-    </genClasses>
-    <genClasses ecoreClass="persistence.ecore#//XmlJarFileRef">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute persistence.ecore#//XmlJarFileRef/fileName"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

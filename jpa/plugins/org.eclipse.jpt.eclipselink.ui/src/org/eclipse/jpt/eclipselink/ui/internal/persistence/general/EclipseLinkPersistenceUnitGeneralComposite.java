@@ -36,11 +36,12 @@ public class EclipseLinkPersistenceUnitGeneralComposite
 		this.initializeGeneralPane(container);
 		this.initializeMappedClassesPane(container);
 		this.initializeJPAMappingDescriptorsPane(container);
+		this.initializeJarFilesPane(container);
 	}
 	
 	protected void initializeJPAMappingDescriptorsPane(Composite container) {
 
-		container = addSection(
+		container = addCollapsableSection(
 			container,
 			JptUiPersistenceMessages.PersistenceUnitGeneralComposite_jpaMappingDescriptors,
 			JptUiPersistenceMessages.PersistenceUnitGeneralComposite_jpaMappingDescriptors_description

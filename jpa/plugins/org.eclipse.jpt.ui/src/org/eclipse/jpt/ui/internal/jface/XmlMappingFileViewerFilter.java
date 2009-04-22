@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.ui.internal;
+package org.eclipse.jpt.ui.internal.jface;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;

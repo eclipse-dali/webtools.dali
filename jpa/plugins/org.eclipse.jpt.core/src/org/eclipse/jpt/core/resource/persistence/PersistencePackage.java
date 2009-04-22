@@ -267,7 +267,55 @@ public class PersistencePackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.persistence.PersistencePackage#getXmlJavaClassRef()
 	 * @generated
 	 */
-	public static final int XML_JAVA_CLASS_REF = 3;
+	public static final int XML_JAVA_CLASS_REF = 4;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.persistence.XmlProperties <em>Xml Properties</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.core.resource.persistence.XmlProperties
+	 * @see org.eclipse.jpt.core.resource.persistence.PersistencePackage#getXmlProperties()
+	 * @generated
+	 */
+	public static final int XML_PROPERTIES = 5;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.persistence.XmlProperty <em>Xml Property</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.core.resource.persistence.XmlProperty
+	 * @see org.eclipse.jpt.core.resource.persistence.PersistencePackage#getXmlProperty()
+	 * @generated
+	 */
+	public static final int XML_PROPERTY = 6;
+
+	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.persistence.XmlJarFileRef <em>Xml Jar File Ref</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.core.resource.persistence.XmlJarFileRef
+	 * @see org.eclipse.jpt.core.resource.persistence.PersistencePackage#getXmlJarFileRef()
+	 * @generated
+	 */
+	public static final int XML_JAR_FILE_REF = 3;
+
+	/**
+	 * The feature id for the '<em><b>File Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_JAR_FILE_REF__FILE_NAME = 0;
+
+	/**
+	 * The number of structural features of the '<em>Xml Jar File Ref</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_JAR_FILE_REF_FEATURE_COUNT = 1;
 
 	/**
 	 * The feature id for the '<em><b>Java Class</b></em>' attribute.
@@ -288,16 +336,6 @@ public class PersistencePackage extends EPackageImpl
 	public static final int XML_JAVA_CLASS_REF_FEATURE_COUNT = 1;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.persistence.XmlProperties <em>Xml Properties</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.core.resource.persistence.XmlProperties
-	 * @see org.eclipse.jpt.core.resource.persistence.PersistencePackage#getXmlProperties()
-	 * @generated
-	 */
-	public static final int XML_PROPERTIES = 4;
-
-	/**
 	 * The feature id for the '<em><b>Properties</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -314,16 +352,6 @@ public class PersistencePackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int XML_PROPERTIES_FEATURE_COUNT = 1;
-
-	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.persistence.XmlProperty <em>Xml Property</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.core.resource.persistence.XmlProperty
-	 * @see org.eclipse.jpt.core.resource.persistence.PersistencePackage#getXmlProperty()
-	 * @generated
-	 */
-	public static final int XML_PROPERTY = 5;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -351,34 +379,6 @@ public class PersistencePackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int XML_PROPERTY_FEATURE_COUNT = 2;
-
-	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.persistence.XmlJarFileRef <em>Xml Jar File Ref</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.core.resource.persistence.XmlJarFileRef
-	 * @see org.eclipse.jpt.core.resource.persistence.PersistencePackage#getXmlJarFileRef()
-	 * @generated
-	 */
-	public static final int XML_JAR_FILE_REF = 6;
-
-	/**
-	 * The feature id for the '<em><b>File Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_JAR_FILE_REF__FILE_NAME = 0;
-
-	/**
-	 * The number of structural features of the '<em>Xml Jar File Ref</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_JAR_FILE_REF_FEATURE_COUNT = 1;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnitTransactionType <em>Xml Persistence Unit Transaction Type</em>}' enum.
@@ -1039,6 +1039,9 @@ public class PersistencePackage extends EPackageImpl
 		xmlMappingFileRefEClass = createEClass(XML_MAPPING_FILE_REF);
 		createEAttribute(xmlMappingFileRefEClass, XML_MAPPING_FILE_REF__FILE_NAME);
 
+		xmlJarFileRefEClass = createEClass(XML_JAR_FILE_REF);
+		createEAttribute(xmlJarFileRefEClass, XML_JAR_FILE_REF__FILE_NAME);
+
 		xmlJavaClassRefEClass = createEClass(XML_JAVA_CLASS_REF);
 		createEAttribute(xmlJavaClassRefEClass, XML_JAVA_CLASS_REF__JAVA_CLASS);
 
@@ -1048,9 +1051,6 @@ public class PersistencePackage extends EPackageImpl
 		xmlPropertyEClass = createEClass(XML_PROPERTY);
 		createEAttribute(xmlPropertyEClass, XML_PROPERTY__NAME);
 		createEAttribute(xmlPropertyEClass, XML_PROPERTY__VALUE);
-
-		xmlJarFileRefEClass = createEClass(XML_JAR_FILE_REF);
-		createEAttribute(xmlJarFileRefEClass, XML_JAR_FILE_REF__FILE_NAME);
 
 		// Create enums
 		xmlPersistenceUnitTransactionTypeEEnum = createEEnum(XML_PERSISTENCE_UNIT_TRANSACTION_TYPE);
@@ -1115,6 +1115,9 @@ public class PersistencePackage extends EPackageImpl
 		initEClass(xmlMappingFileRefEClass, XmlMappingFileRef.class, "XmlMappingFileRef", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlMappingFileRef_FileName(), theEcorePackage.getEString(), "fileName", "", 0, 1, XmlMappingFileRef.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 
+		initEClass(xmlJarFileRefEClass, XmlJarFileRef.class, "XmlJarFileRef", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getXmlJarFileRef_FileName(), theEcorePackage.getEString(), "fileName", "", 0, 1, XmlJarFileRef.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
+
 		initEClass(xmlJavaClassRefEClass, XmlJavaClassRef.class, "XmlJavaClassRef", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlJavaClassRef_JavaClass(), theEcorePackage.getEString(), "javaClass", "", 0, 1, XmlJavaClassRef.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 
@@ -1124,9 +1127,6 @@ public class PersistencePackage extends EPackageImpl
 		initEClass(xmlPropertyEClass, XmlProperty.class, "XmlProperty", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlProperty_Name(), theXMLTypePackage.getString(), "name", null, 1, 1, XmlProperty.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getXmlProperty_Value(), theXMLTypePackage.getString(), "value", null, 1, 1, XmlProperty.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-		initEClass(xmlJarFileRefEClass, XmlJarFileRef.class, "XmlJarFileRef", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getXmlJarFileRef_FileName(), theEcorePackage.getEString(), "fileName", null, 0, 1, XmlJarFileRef.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 
 		// Initialize enums and add enum literals
 		initEEnum(xmlPersistenceUnitTransactionTypeEEnum, XmlPersistenceUnitTransactionType.class, "XmlPersistenceUnitTransactionType");

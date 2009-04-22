@@ -28,7 +28,7 @@ import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.JptUiIcons;
-import org.eclipse.jpt.ui.internal.XmlMappingFileViewerFilter;
+import org.eclipse.jpt.ui.internal.jface.XmlMappingFileViewerFilter;
 import org.eclipse.jpt.ui.internal.persistence.JptUiPersistenceMessages;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveListPane;

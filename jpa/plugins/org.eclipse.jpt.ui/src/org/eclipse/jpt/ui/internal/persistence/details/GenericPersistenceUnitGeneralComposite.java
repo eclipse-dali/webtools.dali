@@ -83,13 +83,13 @@ public class GenericPersistenceUnitGeneralComposite extends PersistenceUnitGener
 		initializeGeneralPane(container);
 		initializeMappedClassesPane(container);
 		initializeJPAMappingDescriptorsPane(container);
-//		initializeJavaArchivesPane(container);
+		initializeJarFilesPane(container);
 	}
 	
 
 	protected void initializeJPAMappingDescriptorsPane(Composite container) {
 
-		container = addSection(
+		container = addCollapsableSection(
 			container,
 			JptUiPersistenceMessages.PersistenceUnitGeneralComposite_jpaMappingDescriptors,
 			JptUiPersistenceMessages.PersistenceUnitGeneralComposite_jpaMappingDescriptors_description

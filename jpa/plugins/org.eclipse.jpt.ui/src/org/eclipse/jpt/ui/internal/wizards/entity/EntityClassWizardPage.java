@@ -28,7 +28,7 @@ import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.ui.JptUiPlugin;
-import org.eclipse.jpt.ui.internal.XmlMappingFileViewerFilter;
+import org.eclipse.jpt.ui.internal.jface.XmlMappingFileViewerFilter;
 import org.eclipse.jpt.ui.internal.wizards.entity.data.model.IEntityDataModelProperties;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jst.j2ee.internal.common.operations.INewJavaClassDataModelProperties;

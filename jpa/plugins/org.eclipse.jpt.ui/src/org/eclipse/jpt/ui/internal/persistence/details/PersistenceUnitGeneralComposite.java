@@ -58,12 +58,23 @@ import org.eclipse.swt.widgets.Composite;
  * |   | PersistenceUnitMappingFilesComposite                                | |
  * |   |                                                                     | |
  * |   ----------------------------------------------------------------------- |
+ * |                                                                           |
+ * |                                                                           |
+ * | - JAR Files ------------------------------------------------------------- |
+ * |                                                                           |
+ * |   Description                                                             |
+ * |                                                                           |
+ * |   ----------------------------------------------------------------------- |
+ * |   |                                                                     | |
+ * |   | PersistenceUnitJarFilesComposite                                    | |
+ * |   |                                                                     | |
+ * |   ----------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
  * @see PersistenceUnit
- * @see PersistenceUnitJarFilesComposite
  * @see PersistenceUnitMappedClassesComposite
  * @see PersistenceUnitMappingFilesComposite
+ * @see PersistenceUnitJarFilesComposite
  *
  * @version 2.0
  * @since 2.0
@@ -84,16 +95,7 @@ public abstract class PersistenceUnitGeneralComposite extends FormPane<Persisten
 
 		super(subjectHolder, container, widgetFactory);
 	}
-
-//	private void initializeJavaArchivesPane(Composite container) {
-//
-//		container = buildSection(
-//			container,
-//			JptUiPersistenceMessages.PersistenceUnitComposite_javaArchives
-//		);
-//
-//		new PersistenceUnitJavaArchivesComposite(this, container);
-//	}
+	
 
 	/*
 	 * (non-Javadoc)
@@ -216,7 +218,7 @@ public abstract class PersistenceUnitGeneralComposite extends FormPane<Persisten
 
 	protected void initializeMappedClassesPane(Composite container) {
 
-		container = addSection(
+		container = addCollapsableSection(
 			container,
 			JptUiPersistenceMessages.PersistenceUnitGeneralComposite_mappedClasses
 		);
@@ -225,6 +227,19 @@ public abstract class PersistenceUnitGeneralComposite extends FormPane<Persisten
 		updateGridData(container.getParent());
 
 		new PersistenceUnitClassesComposite(this, container);
+	}
+	
+	protected void initializeJarFilesPane(Composite container) {
+
+		container = addCollapsableSection(
+			container,
+			JptUiPersistenceMessages.PersistenceUnitGeneralComposite_jarFiles
+		);
+		
+		updateGridData(container);
+		updateGridData(container.getParent());
+		
+		new PersistenceUnitJarFilesComposite(this, container);
 	}
 
 	protected void updateGridData(Composite container) {
