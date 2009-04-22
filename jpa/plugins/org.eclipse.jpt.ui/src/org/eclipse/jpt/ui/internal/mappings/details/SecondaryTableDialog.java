@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,14 +12,18 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 import java.util.Iterator;
 
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.context.SecondaryTable;
 import org.eclipse.jpt.db.Database;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.SchemaContainer;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Point;
@@ -155,9 +159,17 @@ public class SecondaryTableDialog extends Dialog {
 		this.initializeSchemaCombo();
 		this.initializeTableCombo();
 
+		return composite;
+	}
+
+	@Override
+	protected Control createContents(Composite parent) {
+		Composite composite = (Composite) super.createContents(parent);
+
+		this.tableCombo.addModifyListener(buildTableModifyListener());
 		this.catalogCombo.addSelectionListener(this.buildCatalogSelectionListener());
 		this.schemaCombo.addSelectionListener(this.buildSchemaSelectionListener());
-
+		this.refreshButtons();
 		return composite;
 	}
 
@@ -303,6 +315,21 @@ public class SecondaryTableDialog extends Dialog {
 		this.tableCombo.setText(table);
 	}
 
+	protected ModifyListener buildTableModifyListener() {
+		return new ModifyListener() {
+			public void modifyText(ModifyEvent event) {
+				SecondaryTableDialog.this.tableChanged();
+			}
+			@Override
+			public String toString() {
+				return "table modify listener"; //$NON-NLS-1$
+			}
+		};
+	}
+
+	protected void tableChanged() {
+		this.refreshButtons();
+	}
 
 	// ********** convenience methods **********
 
@@ -351,6 +378,14 @@ public class SecondaryTableDialog extends Dialog {
 			return this.defaultSchema;
 		}
 		return convertText(this.schemaCombo);
+	}
+	
+	protected void refreshButtons() {
+		this.getButton(IDialogConstants.OK_ID).setEnabled(this.validateEntryValues());
+	}
+
+	protected boolean validateEntryValues() {
+		return ! StringTools.stringIsEmpty(this.tableCombo.getText());
 	}
 
 
