@@ -12,8 +12,6 @@ package org.eclipse.jpt.eclipselink.core.internal.context.persistence.options;
 import java.util.Map;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnitProperties;
-import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
-import org.eclipse.jpt.utility.model.value.ListValueModel;
 
 /**
  *  EclipseLinkOptions
@@ -32,8 +30,8 @@ public class EclipseLinkOptions extends EclipseLinkPersistenceUnitProperties
 
 
 	// ********** constructors **********
-	public EclipseLinkOptions(PersistenceUnit parent, ListValueModel<PersistenceUnit.Property> propertyListAdapter) {
-		super(parent, propertyListAdapter);
+	public EclipseLinkOptions(PersistenceUnit parent) {
+		super(parent);
 	}
 
 	// ********** initialization **********
@@ -78,6 +76,55 @@ public class EclipseLinkOptions extends EclipseLinkPersistenceUnitProperties
 	}
 
 	// ********** behavior **********
+	
+	public void propertyValueChanged(String propertyName, String newValue) {
+		if (propertyName.equals(ECLIPSELINK_SESSION_NAME)) {
+			this.sessionNameChanged(newValue);
+		}
+		else if (propertyName.equals(ECLIPSELINK_SESSIONS_XML)) {
+			this.sessionsXmlChanged(newValue);
+		}
+		else if (propertyName.equals(ECLIPSELINK_TARGET_DATABASE)) {
+			this.targetDatabaseChanged(newValue);
+		}
+		else if (propertyName.equals(ECLIPSELINK_TARGET_SERVER)) {
+			this.targetServerChanged(newValue);
+		}
+		else if (propertyName.equals(ECLIPSELINK_SESSION_INCLUDE_DESCRIPTOR_QUERIES)) {
+			this.includeDescriptorQueriesChanged(newValue);
+		}
+		else if (propertyName.equals(ECLIPSELINK_SESSION_EVENT_LISTENER)) {
+			this.eventListenerChanged(newValue);
+		}
+		else if (propertyName.equals(ECLIPSELINK_TEMPORAL_MUTABLE)) {
+			this.temporalMutableChanged(newValue);
+		}	
+	}
+	
+	public void propertyRemoved(String propertyName) {
+		if (propertyName.equals(ECLIPSELINK_SESSION_NAME)) {
+			this.sessionNameChanged(null);
+		}
+		else if (propertyName.equals(ECLIPSELINK_SESSIONS_XML)) {
+			this.sessionsXmlChanged(null);
+		}
+		else if (propertyName.equals(ECLIPSELINK_TARGET_DATABASE)) {
+			this.targetDatabaseChanged(null);
+		}
+		else if (propertyName.equals(ECLIPSELINK_TARGET_SERVER)) {
+			this.targetServerChanged(null);
+		}
+		else if (propertyName.equals(ECLIPSELINK_SESSION_INCLUDE_DESCRIPTOR_QUERIES)) {
+			this.includeDescriptorQueriesChanged(null);
+		}
+		else if (propertyName.equals(ECLIPSELINK_SESSION_EVENT_LISTENER)) {
+			this.eventListenerChanged(null);
+		}
+		else if (propertyName.equals(ECLIPSELINK_TEMPORAL_MUTABLE)) {
+			this.temporalMutableChanged(null);
+		}	
+	}
+
 	/**
 	 * Adds property names key/value pairs, where: 
 	 * 		key = EclipseLink property key
@@ -108,35 +155,6 @@ public class EclipseLinkOptions extends EclipseLinkPersistenceUnitProperties
 			TEMPORAL_MUTABLE_PROPERTY);
 	}
 
-	public void propertyChanged(PropertyChangeEvent event) {
-		String aspectName = event.getAspectName();
-		if (aspectName.equals(SESSION_NAME_PROPERTY)) {
-			this.sessionNameChanged(event);
-		}
-		else if (aspectName.equals(SESSIONS_XML_PROPERTY)) {
-			this.sessionsXmlChanged(event);
-		}
-		else if (aspectName.equals(TARGET_DATABASE_PROPERTY)) {
-			this.targetDatabaseChanged(event);
-		}
-		else if (aspectName.equals(TARGET_SERVER_PROPERTY)) {
-			this.targetServerChanged(event);
-		}
-		else if (aspectName.equals(SESSION_INCLUDE_DESCRIPTOR_QUERIES_PROPERTY)) {
-			this.includeDescriptorQueriesChanged(event);
-		}
-		else if (aspectName.equals(SESSION_EVENT_LISTENER_PROPERTY)) {
-			this.eventListenerChanged(event);
-		}
-		else if (aspectName.equals(TEMPORAL_MUTABLE_PROPERTY)) {
-			this.temporalMutableChanged(event);
-		}
-		else {
-			throw new IllegalArgumentException("Illegal event received - property not applicable: " + aspectName); //$NON-NLS-1$
-		}
-		return;
-	}
-
 	// ********** SessionName **********
 	public String getSessionName() {
 		return this.sessionName;
@@ -149,39 +167,37 @@ public class EclipseLinkOptions extends EclipseLinkPersistenceUnitProperties
 		this.firePropertyChanged(SESSION_NAME_PROPERTY, old, newSessionName);
 	}
 
-	private void sessionNameChanged(PropertyChangeEvent event) {
-		String newValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
+	private void sessionNameChanged(String newValue) {
 		String old = this.sessionName;
 		this.sessionName = newValue;
-		this.firePropertyChanged(event.getAspectName(), old, newValue);
+		this.firePropertyChanged(SESSION_NAME_PROPERTY, old, newValue);
 	}
 
 	public String getDefaultSessionName() {
 		return DEFAULT_SESSION_NAME;
 	}
 
-		// ********** SessionsXml **********
-		public String getSessionsXml() {
-			return this.sessionsXml;
-		}
+	// ********** SessionsXml **********
+	public String getSessionsXml() {
+		return this.sessionsXml;
+	}
 
-		public void setSessionsXml(String newSessionsXml) {
-			String old = this.sessionsXml;
-			this.sessionsXml = newSessionsXml;
-			this.putProperty(SESSIONS_XML_PROPERTY, newSessionsXml);
-			this.firePropertyChanged(SESSIONS_XML_PROPERTY, old, newSessionsXml);
-		}
+	public void setSessionsXml(String newSessionsXml) {
+		String old = this.sessionsXml;
+		this.sessionsXml = newSessionsXml;
+		this.putProperty(SESSIONS_XML_PROPERTY, newSessionsXml);
+		this.firePropertyChanged(SESSIONS_XML_PROPERTY, old, newSessionsXml);
+	}
 
-		private void sessionsXmlChanged(PropertyChangeEvent event) {
-			String newValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
-			String old = this.sessionsXml;
-			this.sessionsXml = newValue;
-			this.firePropertyChanged(event.getAspectName(), old, newValue);
-		}
+	private void sessionsXmlChanged(String newValue) {
+		String old = this.sessionsXml;
+		this.sessionsXml = newValue;
+		this.firePropertyChanged(SESSIONS_XML_PROPERTY, old, newValue);
+	}
 
-		public String getDefaultSessionsXml() {
-			return DEFAULT_SESSIONS_XML;
-		}
+	public String getDefaultSessionsXml() {
+		return DEFAULT_SESSIONS_XML;
+	}
 
 	// ********** IncludeDescriptorQueries **********
 	public Boolean getIncludeDescriptorQueries() {
@@ -195,13 +211,12 @@ public class EclipseLinkOptions extends EclipseLinkPersistenceUnitProperties
 		this.firePropertyChanged(SESSION_INCLUDE_DESCRIPTOR_QUERIES_PROPERTY, old, newIncludeDescriptorQueries);
 	}
 
-	private void includeDescriptorQueriesChanged(PropertyChangeEvent event) {
-		String stringValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
+	private void includeDescriptorQueriesChanged(String stringValue) {
 		Boolean newValue = getBooleanValueOf(stringValue);
 		
 		Boolean old = this.includeDescriptorQueries;
 		this.includeDescriptorQueries = newValue;
-		this.firePropertyChanged(event.getAspectName(), old, newValue);
+		this.firePropertyChanged(SESSION_INCLUDE_DESCRIPTOR_QUERIES_PROPERTY, old, newValue);
 	}
 
 	public Boolean getDefaultIncludeDescriptorQueries() {
@@ -259,11 +274,10 @@ public class EclipseLinkOptions extends EclipseLinkPersistenceUnitProperties
 		this.firePropertyChanged(TARGET_DATABASE_PROPERTY, old, newTargetDatabase);
 	}
 
-	private void targetDatabaseChanged(PropertyChangeEvent event) {
-		String newValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
+	private void targetDatabaseChanged(String newValue) {
 		String old = this.targetDatabase;
 		this.targetDatabase = newValue;
-		this.firePropertyChanged(event.getAspectName(), old, newValue);
+		this.firePropertyChanged(TARGET_DATABASE_PROPERTY, old, newValue);
 	}
 	
 	public String getDefaultTargetDatabase() {
@@ -321,11 +335,10 @@ public class EclipseLinkOptions extends EclipseLinkPersistenceUnitProperties
 		this.firePropertyChanged(TARGET_SERVER_PROPERTY, old, newTargetServer);
 	}
 
-	private void targetServerChanged(PropertyChangeEvent event) {
-		String newValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
+	private void targetServerChanged(String newValue) {
 		String old = this.targetServer;
 		this.targetServer = newValue;
-		this.firePropertyChanged(event.getAspectName(), old, newValue);
+		this.firePropertyChanged(TARGET_SERVER_PROPERTY, old, newValue);
 	}
 	
 	public String getDefaultTargetServer() {
@@ -344,11 +357,10 @@ public class EclipseLinkOptions extends EclipseLinkPersistenceUnitProperties
 		this.firePropertyChanged(SESSION_EVENT_LISTENER_PROPERTY, old, newEventListener);
 	}
 
-	private void eventListenerChanged(PropertyChangeEvent event) {
-		String newValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
+	private void eventListenerChanged(String newValue) {
 		String old = this.eventListener;
 		this.eventListener = newValue;
-		this.firePropertyChanged(event.getAspectName(), old, newValue);
+		this.firePropertyChanged(SESSION_EVENT_LISTENER_PROPERTY, old, newValue);
 	}
 
 	public String getDefaultEventListener() {
@@ -368,13 +380,12 @@ public class EclipseLinkOptions extends EclipseLinkPersistenceUnitProperties
 		this.firePropertyChanged(TEMPORAL_MUTABLE_PROPERTY, old, newTemporalMutable);
 	}
 
-	private void temporalMutableChanged(PropertyChangeEvent event) {
-		String stringValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
+	private void temporalMutableChanged(String stringValue) {
 		Boolean newValue = getBooleanValueOf(stringValue);
 		
 		Boolean old = this.temporalMutable;
 		this.temporalMutable = newValue;
-		this.firePropertyChanged(event.getAspectName(), old, newValue);
+		this.firePropertyChanged(TEMPORAL_MUTABLE_PROPERTY, old, newValue);
 	}
 	
 	public Boolean getDefaultTemporalMutable() {

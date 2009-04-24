@@ -17,7 +17,6 @@ import java.util.ListIterator;
 import java.util.Set;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.Persistence;
-import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.context.persistence.AbstractPersistenceUnit;
 import org.eclipse.jpt.core.internal.context.persistence.ImpliedMappingFileRef;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
@@ -43,9 +42,6 @@ import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.ReadOnlyCompositeListIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
-import org.eclipse.jpt.utility.internal.model.value.ItemPropertyListValueModelAdapter;
-import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
-import org.eclipse.jpt.utility.model.value.ListValueModel;
 
 /**
  * EclipseLink persistence unit
@@ -55,7 +51,7 @@ public class EclipseLinkPersistenceUnit
 {
 	protected MappingFileRef impliedEclipseLinkMappingFileRef;
 
-	private GeneralProperties generalProperties;
+	private/*final*/ GeneralProperties generalProperties;
 	private Connection connection;
 	private Customization customization;
 	private Caching caching;
@@ -74,32 +70,14 @@ public class EclipseLinkPersistenceUnit
 	@Override
 	protected void initializeProperties() {
 		super.initializeProperties();
-		ListValueModel<Property> propertyListAdapter = this.buildPropertyListAdapter();
 
-		this.generalProperties = new EclipseLinkGeneralProperties(this, propertyListAdapter);
-		this.connection = new EclipseLinkConnection(this, propertyListAdapter);
-		this.customization = new EclipseLinkCustomization(this, propertyListAdapter);
-		this.caching = new EclipseLinkCaching(this, propertyListAdapter);
-		this.logging = new EclipseLinkLogging(this, propertyListAdapter);
-		this.options = new EclipseLinkOptions(this, propertyListAdapter);
-		this.schemaGeneration = new EclipseLinkSchemaGeneration(this, propertyListAdapter);
-	}
-
-	private ListValueModel<Property> buildPropertyListAdapter() {
-		return new ItemPropertyListValueModelAdapter<Property>(this.buildPropertiesAdapter(), Property.VALUE_PROPERTY);
-	}
-
-	private ListValueModel<Property> buildPropertiesAdapter() {
-		return new ListAspectAdapter<PersistenceUnit, Property>(PROPERTIES_LIST, this) {
-			@Override
-			protected ListIterator<Property> listIterator_() {
-				return this.subject.properties();
-			}
-			@Override
-			protected int size_() {
-				return this.subject.propertiesSize();
-			}
-		};
+		this.generalProperties = new EclipseLinkGeneralProperties(this);
+		this.connection = new EclipseLinkConnection(this);
+		this.customization = new EclipseLinkCustomization(this);
+		this.caching = new EclipseLinkCaching(this);
+		this.logging = new EclipseLinkLogging(this);
+		this.options = new EclipseLinkOptions(this);
+		this.schemaGeneration = new EclipseLinkSchemaGeneration(this);
 	}
 
 	@Override
@@ -107,8 +85,32 @@ public class EclipseLinkPersistenceUnit
 		super.addNonUpdateAspectNamesTo(nonUpdateAspectNames);
 		nonUpdateAspectNames.add(CONVERTERS_LIST);
 	}
-
-
+	
+	@Override
+	public void propertyValueChanged(String propertyName, String newValue) {
+		super.propertyValueChanged(propertyName, newValue);
+		this.generalProperties.propertyValueChanged(propertyName, newValue);
+		this.connection.propertyValueChanged(propertyName, newValue);
+		this.customization.propertyValueChanged(propertyName, newValue);
+		this.caching.propertyValueChanged(propertyName, newValue);
+		this.logging.propertyValueChanged(propertyName, newValue);
+		this.options.propertyValueChanged(propertyName, newValue);
+		this.schemaGeneration.propertyValueChanged(propertyName, newValue);
+	}
+	
+	@Override
+	public void propertyRemoved(String propertyName) {
+		super.propertyRemoved(propertyName);
+		this.generalProperties.propertyRemoved(propertyName);
+		this.connection.propertyRemoved(propertyName);
+		this.customization.propertyRemoved(propertyName);
+		this.caching.propertyRemoved(propertyName);
+		this.logging.propertyRemoved(propertyName);
+		this.options.propertyRemoved(propertyName);
+		this.schemaGeneration.propertyRemoved(propertyName);
+	}
+	
+	
 	// **************** mapping file refs **************************************
 
 	@Override

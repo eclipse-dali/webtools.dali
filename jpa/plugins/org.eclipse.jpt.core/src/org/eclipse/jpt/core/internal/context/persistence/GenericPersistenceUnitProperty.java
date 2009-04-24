@@ -22,20 +22,16 @@ public class GenericPersistenceUnitProperty
 	extends AbstractXmlContextNode
 	implements PersistenceUnit.Property
 {
-	protected XmlProperty xmlProperty;
+	protected final XmlProperty xmlProperty;
 	protected String name;
 	protected String value;
 
 
 	public GenericPersistenceUnitProperty(PersistenceUnit parent, XmlProperty xmlProperty) {
 		super(parent);
-		this.initialize(xmlProperty);
-	}
-
-	protected void initialize(XmlProperty xp) {
-		this.xmlProperty = xp;
-		this.name = xp.getName();
-		this.value = xp.getValue();
+		this.xmlProperty = xmlProperty;
+		this.name = xmlProperty.getName();
+		this.value = xmlProperty.getValue();
 	}
 
 	@Override
@@ -43,7 +39,10 @@ public class GenericPersistenceUnitProperty
 		return (PersistenceUnit) super.getParent();
 	}
 
-
+	public XmlProperty getXmlProperty() {
+		return this.xmlProperty;
+	}
+	
 	// ********** name **********
 
 	public String getName() {
@@ -53,8 +52,11 @@ public class GenericPersistenceUnitProperty
 	public void setName(String name) {
 		String old = this.name;
 		this.name = name;
-		this.xmlProperty.setName(name);
-		this.firePropertyChanged(NAME_PROPERTY, old, name);
+		if (attributeValueHasChanged(old, name)) {
+			this.xmlProperty.setName(name);
+			this.firePropertyChanged(NAME_PROPERTY, old, name);
+			getParent().propertyNameChanged(old, this.name, this.value);
+		}
 	}
 
 
@@ -67,17 +69,19 @@ public class GenericPersistenceUnitProperty
 	public void setValue(String value) {
 		String old = this.value;
 		this.value = value;
-		this.xmlProperty.setValue(value);
-		this.firePropertyChanged(VALUE_PROPERTY, old, value);
+		if (attributeValueHasChanged(old, value)) {
+			this.xmlProperty.setValue(value);
+			this.firePropertyChanged(VALUE_PROPERTY, old, value);
+			getParent().propertyValueChanged(this.name, value);
+		}
 	}
 
 
 	// ********** updating **********
 
-	public void update(XmlProperty xp) {
-		this.xmlProperty = xp;
-		this.setName(xp.getName());
-		this.setValue(xp.getValue());
+	public void update() {
+		this.setName(this.xmlProperty.getName());
+		this.setValue(this.xmlProperty.getValue());
 	}
 
 

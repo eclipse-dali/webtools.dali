@@ -12,8 +12,6 @@ package org.eclipse.jpt.eclipselink.core.internal.context.persistence.logging;
 import java.util.Map;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnitProperties;
-import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
-import org.eclipse.jpt.utility.model.value.ListValueModel;
 
 /**
  *  EclipseLinkLogging
@@ -31,8 +29,8 @@ public class EclipseLinkLogging extends EclipseLinkPersistenceUnitProperties
 	private String logger; // storing EclipseLinkStringValue since value can be Logger or custom class
 
 	// ********** constructors **********
-	public EclipseLinkLogging(PersistenceUnit parent, ListValueModel<PersistenceUnit.Property> propertyListAdapter) {
-		super(parent, propertyListAdapter);
+	public EclipseLinkLogging(PersistenceUnit parent) {
+		super(parent);
 	}
 
 	// ********** initialization **********
@@ -72,6 +70,55 @@ public class EclipseLinkLogging extends EclipseLinkPersistenceUnitProperties
 	}
 
 	// ********** behavior **********
+	
+	public void propertyValueChanged(String propertyName, String newValue) {
+		if (propertyName.equals(ECLIPSELINK_LEVEL)) {
+			this.levelChanged(newValue);
+		}
+		else if (propertyName.equals(ECLIPSELINK_TIMESTAMP)) {
+			this.timestampChanged(newValue);
+		}
+		else if (propertyName.equals(ECLIPSELINK_THREAD)) {
+			this.threadChanged(newValue);
+		}
+		else if (propertyName.equals(ECLIPSELINK_SESSION)) {
+			this.sessionChanged(newValue);
+		}
+		else if (propertyName.equals(ECLIPSELINK_EXCEPTIONS)) {
+			this.exceptionsChanged(newValue);
+		}
+		else if (propertyName.equals(ECLIPSELINK_LOG_FILE_LOCATION)) {
+			this.logFileLocationChanged(newValue);
+		}
+		else if (propertyName.equals(ECLIPSELINK_LOGGER)) {
+			this.loggerChanged(newValue);
+		}
+	}
+		
+	public void propertyRemoved(String propertyName) {
+		if (propertyName.equals(ECLIPSELINK_LEVEL)) {
+			this.levelChanged(null);
+		}
+		else if (propertyName.equals(ECLIPSELINK_TIMESTAMP)) {
+			this.timestampChanged(null);
+		}
+		else if (propertyName.equals(ECLIPSELINK_THREAD)) {
+			this.threadChanged(null);
+		}
+		else if (propertyName.equals(ECLIPSELINK_SESSION)) {
+			this.sessionChanged(null);
+		}
+		else if (propertyName.equals(ECLIPSELINK_EXCEPTIONS)) {
+			this.exceptionsChanged(null);
+		}
+		else if (propertyName.equals(ECLIPSELINK_LOG_FILE_LOCATION)) {
+			this.logFileLocationChanged(null);
+		}
+		else if (propertyName.equals(ECLIPSELINK_LOGGER)) {
+			this.loggerChanged(null);
+		}
+	}
+
 	/**
 	 * Adds property names key/value pairs, where: 
 	 * 		key = EclipseLink property key
@@ -102,35 +149,6 @@ public class EclipseLinkLogging extends EclipseLinkPersistenceUnitProperties
 			LOGGER_PROPERTY);
 	}
 
-	public void propertyChanged(PropertyChangeEvent event) {
-		String aspectName = event.getAspectName();
-		if (aspectName.equals(LEVEL_PROPERTY)) {
-			this.levelChanged(event);
-		}
-		else if (aspectName.equals(TIMESTAMP_PROPERTY)) {
-			this.timestampChanged(event);
-		}
-		else if (aspectName.equals(THREAD_PROPERTY)) {
-			this.threadChanged(event);
-		}
-		else if (aspectName.equals(SESSION_PROPERTY)) {
-			this.sessionChanged(event);
-		}
-		else if (aspectName.equals(EXCEPTIONS_PROPERTY)) {
-			this.exceptionsChanged(event);
-		}
-		else if (aspectName.equals(LOG_FILE_LOCATION_PROPERTY)) {
-			this.logFileLocationChanged(event);
-		}
-		else if (aspectName.equals(LOGGER_PROPERTY)) {
-			this.loggerChanged(event);
-		}
-		else {
-			throw new IllegalArgumentException("Illegal event received - property not applicable: " + aspectName); //$NON-NLS-1$
-		}
-		return;
-	}
-
 	// ********** LoggingLevel **********
 	
 	public LoggingLevel getLevel() {
@@ -144,12 +162,11 @@ public class EclipseLinkLogging extends EclipseLinkPersistenceUnitProperties
 		this.firePropertyChanged(LEVEL_PROPERTY, old, newLevel);
 	}
 
-	private void levelChanged(PropertyChangeEvent event) {
-		String stringValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
+	private void levelChanged(String stringValue) {
 		LoggingLevel newValue = getEnumValueOf(stringValue, LoggingLevel.values());
 		LoggingLevel old = this.level;
 		this.level = newValue;
-		this.firePropertyChanged(event.getAspectName(), old, newValue);
+		this.firePropertyChanged(LEVEL_PROPERTY, old, newValue);
 	}
 	
 	public LoggingLevel getDefaultLevel() {
@@ -168,13 +185,12 @@ public class EclipseLinkLogging extends EclipseLinkPersistenceUnitProperties
 		this.firePropertyChanged(TIMESTAMP_PROPERTY, old, newTimestamp);
 	}
 
-	private void timestampChanged(PropertyChangeEvent event) {
-		String stringValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
+	private void timestampChanged(String stringValue) {
 		Boolean newValue = getBooleanValueOf(stringValue);
 		
 		Boolean old = this.timestamp;
 		this.timestamp = newValue;
-		this.firePropertyChanged(event.getAspectName(), old, newValue);
+		this.firePropertyChanged(TIMESTAMP_PROPERTY, old, newValue);
 	}
 
 	public Boolean getDefaultTimestamp() {
@@ -193,13 +209,12 @@ public class EclipseLinkLogging extends EclipseLinkPersistenceUnitProperties
 		this.firePropertyChanged(THREAD_PROPERTY, old, newThread);
 	}
 
-	private void threadChanged(PropertyChangeEvent event) {
-		String stringValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
+	private void threadChanged(String stringValue) {
 		Boolean newValue = getBooleanValueOf(stringValue);
 		
 		Boolean old = this.thread;
 		this.thread = newValue;
-		this.firePropertyChanged(event.getAspectName(), old, newValue);
+		this.firePropertyChanged(THREAD_PROPERTY, old, newValue);
 	}
 
 	public Boolean getDefaultThread() {
@@ -218,13 +233,12 @@ public class EclipseLinkLogging extends EclipseLinkPersistenceUnitProperties
 		this.firePropertyChanged(SESSION_PROPERTY, old, newSession);
 	}
 
-	private void sessionChanged(PropertyChangeEvent event) {
-		String stringValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
+	private void sessionChanged(String stringValue) {
 		Boolean newValue = getBooleanValueOf(stringValue);
 		
 		Boolean old = this.session;
 		this.session = newValue;
-		this.firePropertyChanged(event.getAspectName(), old, newValue);
+		this.firePropertyChanged(SESSION_PROPERTY, old, newValue);
 	}
 
 	public Boolean getDefaultSession() {
@@ -243,13 +257,12 @@ public class EclipseLinkLogging extends EclipseLinkPersistenceUnitProperties
 		this.firePropertyChanged(EXCEPTIONS_PROPERTY, old, newExceptions);
 	}
 
-	private void exceptionsChanged(PropertyChangeEvent event) {
-		String stringValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
+	private void exceptionsChanged(String stringValue) {
 		Boolean newValue = getBooleanValueOf(stringValue);
 		
 		Boolean old = this.exceptions;
 		this.exceptions = newValue;
-		this.firePropertyChanged(event.getAspectName(), old, newValue);
+		this.firePropertyChanged(EXCEPTIONS_PROPERTY, old, newValue);
 	}
 
 	public Boolean getDefaultExceptions() {
@@ -268,11 +281,10 @@ public class EclipseLinkLogging extends EclipseLinkPersistenceUnitProperties
 		this.firePropertyChanged(LOG_FILE_LOCATION_PROPERTY, old, newLogFileLocation);
 	}
 
-	private void logFileLocationChanged(PropertyChangeEvent event) {
-		String newValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
+	private void logFileLocationChanged(String newValue) {
 		String old = this.logFileLocation;
 		this.logFileLocation = newValue;
-		this.firePropertyChanged(event.getAspectName(), old, newValue);
+		this.firePropertyChanged(LOG_FILE_LOCATION_PROPERTY, old, newValue);
 	}
 
 	public String getDefaultLogFileLocation() {
@@ -330,11 +342,10 @@ public class EclipseLinkLogging extends EclipseLinkPersistenceUnitProperties
 		this.firePropertyChanged(LOGGER_PROPERTY, old, newLogger);
 	}
 
-	private void loggerChanged(PropertyChangeEvent event) {
-		String newValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
+	private void loggerChanged(String newValue) {
 		String old = this.logger;
 		this.logger = newValue;
-		this.firePropertyChanged(event.getAspectName(), old, newValue);
+		this.firePropertyChanged(LOGGER_PROPERTY, old, newValue);
 	}
 
 	public String getDefaultLogger() {

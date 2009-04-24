@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,11 +10,15 @@
 package org.eclipse.jpt.eclipselink.ui.internal.persistence.connection;
 
 import java.util.Collection;
+
+import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnitTransactionType;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.connection.Connection;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
+import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -37,12 +41,12 @@ public class TransactionTypeComposite extends FormPane<Connection>
 		super( parentComposite, parent);
 	}
 
-	private EnumFormComboViewer<Connection, PersistenceUnitTransactionType> addTransactionTypeCombo(Composite container) {
-		return new EnumFormComboViewer<Connection, PersistenceUnitTransactionType>(this, container) {
+	private EnumFormComboViewer<PersistenceUnit, PersistenceUnitTransactionType> addTransactionTypeCombo(Composite container) {
+		return new EnumFormComboViewer<PersistenceUnit, PersistenceUnitTransactionType>(this, buildPersistenceUnitHolder(), container) {
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(Connection.TRANSACTION_TYPE_PROPERTY);
+				propertyNames.add(PersistenceUnit.SPECIFIED_TRANSACTION_TYPE_PROPERTY);
 			}
 
 			@Override
@@ -67,7 +71,7 @@ public class TransactionTypeComposite extends FormPane<Connection>
 
 			@Override
 			protected void setValue(PersistenceUnitTransactionType value) {
-				getSubject().setTransactionType(value);
+				getSubject().setSpecifiedTransactionType(value);
 
 				if (value == PersistenceUnitTransactionType.RESOURCE_LOCAL) {
 					clearJTAProperties();
@@ -79,13 +83,23 @@ public class TransactionTypeComposite extends FormPane<Connection>
 		};
 	}
 
+	private PropertyValueModel<PersistenceUnit> buildPersistenceUnitHolder() {
+		return new PropertyAspectAdapter<Connection, PersistenceUnit>(getSubjectHolder()) {
+			@Override
+			protected PersistenceUnit buildValue_() {
+				return this.subject.getPersistenceUnit();
+			}
+		};
+		
+	}
+
 	private void clearJTAProperties() {
-		getSubject().setJtaDataSource(null);
+		getSubject().getPersistenceUnit().setJtaDataSource(null);
 	}
 
 	private void clearResourceLocalProperties() {
 		Connection connection = getSubject();
-		connection.setNonJtaDataSource(null);
+		connection.getPersistenceUnit().setNonJtaDataSource(null);
 		connection.setDriver(null);
 		connection.setUrl(null);
 		connection.setUser(null);

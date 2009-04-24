@@ -99,9 +99,6 @@ public class ConnectionAdapterTests extends PersistenceUnitTestCase
 		this.connection = this.subject.getConnection();
 		PropertyChangeListener propertyChangeListener = this.buildPropertyChangeListener();
 		
-		this.connection.addPropertyChangeListener(Connection.TRANSACTION_TYPE_PROPERTY, propertyChangeListener);
-		this.connection.addPropertyChangeListener(Connection.JTA_DATA_SOURCE_PROPERTY, propertyChangeListener);
-		this.connection.addPropertyChangeListener(Connection.NON_JTA_DATA_SOURCE_PROPERTY, propertyChangeListener);
 		this.connection.addPropertyChangeListener(Connection.NATIVE_SQL_PROPERTY, propertyChangeListener);
 		this.connection.addPropertyChangeListener(Connection.BATCH_WRITING_PROPERTY, propertyChangeListener);
 		this.connection.addPropertyChangeListener(Connection.CACHE_STATEMENTS_PROPERTY, propertyChangeListener);
@@ -156,26 +153,6 @@ public class ConnectionAdapterTests extends PersistenceUnitTestCase
 		return;
 	}
 	
-	// ********** TransactionType tests **********
-	public void testSetTransactionType() throws Exception {
-		this.verifySetPersistenceUnitProperty(Connection.TRANSACTION_TYPE_PROPERTY,
-			TRANSACTION_TYPE_TEST_VALUE,
-			TRANSACTION_TYPE_TEST_VALUE_2);
-	}
-
-	// ********** JtaDataSource tests **********
-	public void testSetJtaDataSource() throws Exception {
-		this.verifySetPersistenceUnitProperty(Connection.JTA_DATA_SOURCE_PROPERTY,
-			JTA_DATA_SOURCE_TEST_VALUE,
-			JTA_DATA_SOURCE_TEST_VALUE_2);
-	}
-
-	// ********** NonJtaDataSource tests **********
-	public void testSetNonJtaDataSource() throws Exception {
-		this.verifySetPersistenceUnitProperty(Connection.NON_JTA_DATA_SOURCE_PROPERTY,
-			NON_JTA_DATA_SOURCE_TEST_VALUE,
-			NON_JTA_DATA_SOURCE_TEST_VALUE_2);
-	}
 
 	// ********** NativeSql tests **********
 	public void testSetNativeSql() throws Exception {
@@ -432,13 +409,7 @@ public class ConnectionAdapterTests extends PersistenceUnitTestCase
 	// ********** get/set property **********
 	@Override
 	protected void setProperty(String propertyName, Object newValue) throws Exception {
-		 if (propertyName.equals(Connection.TRANSACTION_TYPE_PROPERTY))
-			this.connection.setTransactionType((PersistenceUnitTransactionType) newValue);
-		 else if (propertyName.equals(Connection.JTA_DATA_SOURCE_PROPERTY))
-			 this.connection.setJtaDataSource((String) newValue);
-		 else if (propertyName.equals(Connection.NON_JTA_DATA_SOURCE_PROPERTY))
-			 this.connection.setNonJtaDataSource((String) newValue);
-		else if (propertyName.equals(Connection.NATIVE_SQL_PROPERTY))
+		if (propertyName.equals(Connection.NATIVE_SQL_PROPERTY))
 			this.connection.setNativeSql((Boolean) newValue);
 		else if (propertyName.equals(Connection.BATCH_WRITING_PROPERTY))
 			this.connection.setBatchWriting((BatchWriting) newValue);
@@ -473,13 +444,7 @@ public class ConnectionAdapterTests extends PersistenceUnitTestCase
 	@Override
 	protected Object getProperty(String propertyName) throws NoSuchFieldException {
 		Object modelValue = null;
-		if (propertyName.equals(Connection.TRANSACTION_TYPE_PROPERTY))
-			modelValue = this.connection.getTransactionType();
-		else if (propertyName.equals(Connection.JTA_DATA_SOURCE_PROPERTY))
-			modelValue = this.connection.getJtaDataSource();
-		else if (propertyName.equals(Connection.NON_JTA_DATA_SOURCE_PROPERTY))
-			modelValue = this.connection.getNonJtaDataSource();
-		else if (propertyName.equals(Connection.NATIVE_SQL_PROPERTY))
+		if (propertyName.equals(Connection.NATIVE_SQL_PROPERTY))
 			modelValue = this.connection.getNativeSql();
 		else if (propertyName.equals(Connection.BATCH_WRITING_PROPERTY))
 			modelValue = this.connection.getBatchWriting();
@@ -511,33 +476,7 @@ public class ConnectionAdapterTests extends PersistenceUnitTestCase
 			this.throwMissingDefinition("getProperty", propertyName);
 		return modelValue;
 	}
-	
-	@Override
-	protected Object getPersistenceUnitProperty(String propertyName) throws NoSuchFieldException {
-		if (propertyName.equals(Connection.TRANSACTION_TYPE_PROPERTY)) {
-			return this.getPersistenceUnit().getSpecifiedTransactionType();
-		}
-		else if (propertyName.equals(Connection.JTA_DATA_SOURCE_PROPERTY)) {
-			return this.getPersistenceUnit().getJtaDataSource();
-		}
-		else if (propertyName.equals(Connection.NON_JTA_DATA_SOURCE_PROPERTY)) {
-			return this.getPersistenceUnit().getNonJtaDataSource();
-		}
-		this.throwMissingDefinition("getPersistenceUnitProperty", propertyName);
-		return null;
-	}
-	
-	@Override
-	protected void setPersistenceUnitProperty(String propertyName, Object newValue) throws NoSuchFieldException {
-		if (propertyName.equals(Connection.TRANSACTION_TYPE_PROPERTY))
-			this.getPersistenceUnit().setSpecifiedTransactionType((PersistenceUnitTransactionType) newValue);
-		else if (propertyName.equals(Connection.JTA_DATA_SOURCE_PROPERTY))
-			this.getPersistenceUnit().setJtaDataSource((String) newValue);
-		else if (propertyName.equals(Connection.NON_JTA_DATA_SOURCE_PROPERTY))
-			this.getPersistenceUnit().setNonJtaDataSource((String) newValue);
-		else
-			this.throwMissingDefinition("setPersistenceUnitProperty", propertyName);
-	}
+
 	
 	@Override
 	protected PersistenceUnitProperties getModel() {

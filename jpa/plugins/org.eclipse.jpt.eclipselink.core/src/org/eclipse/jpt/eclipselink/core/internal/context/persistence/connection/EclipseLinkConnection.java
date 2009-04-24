@@ -11,11 +11,7 @@ package org.eclipse.jpt.eclipselink.core.internal.context.persistence.connection
 
 import java.util.Map;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.core.context.persistence.PersistenceUnitTransactionType;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnitProperties;
-import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
-import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
-import org.eclipse.jpt.utility.model.value.ListValueModel;
 
 /**
  *  EclipseLinkConnection
@@ -23,10 +19,6 @@ import org.eclipse.jpt.utility.model.value.ListValueModel;
 public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 	implements Connection
 {
-	// ********** PersistenceUnit properties **********
-	private PersistenceUnitTransactionType transactionType;
-	private String jtaDataSource;
-	private String nonJtaDataSource;
 	
 	// ********** EclipseLink properties **********
 	private BatchWriting batchWriting;
@@ -46,8 +38,8 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 	
 
 	// ********** constructors **********
-	public EclipseLinkConnection(PersistenceUnit parent, ListValueModel<PersistenceUnit.Property> propertyListAdapter) {
-		super(parent, propertyListAdapter);
+	public EclipseLinkConnection(PersistenceUnit parent) {
+		super(parent);
 	}
 
 	// ********** initialization **********
@@ -57,12 +49,6 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 	@Override
 	protected void initializeProperties() {
 		// TOREVIEW - handle incorrect String in persistence.xml
-		this.transactionType = 
-			this.getPersistenceUnit().getSpecifiedTransactionType();
-		this.jtaDataSource = 
-			this.getPersistenceUnit().getJtaDataSource();
-		this.nonJtaDataSource = 
-			this.getPersistenceUnit().getNonJtaDataSource();
 		this.batchWriting = 
 			this.getEnumValue(ECLIPSELINK_BATCH_WRITING, BatchWriting.values());
 		this.nativeSql = 
@@ -94,25 +80,98 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 		
 	}
 
-	/**
-	 * Initialize and add listeners to the persistence unit.
-	 */
-	@Override
-	protected void initialize(PersistenceUnit parent, ListValueModel<PersistenceUnit.Property> propertyListAdapter) {
-		super.initialize(parent, propertyListAdapter);
-
-		this.getPersistenceUnit().addPropertyChangeListener(
-			PersistenceUnit.SPECIFIED_TRANSACTION_TYPE_PROPERTY, 
-			this.buildTransactionTypeChangeListener());
-		this.getPersistenceUnit().addPropertyChangeListener(
-			PersistenceUnit.JTA_DATA_SOURCE_PROPERTY,
-			this.buildJtaDataSourceChangeListener());
-		this.getPersistenceUnit().addPropertyChangeListener(
-			PersistenceUnit.NON_JTA_DATA_SOURCE_PROPERTY,
-			this.buildNonJtaDataSourceChangeListener());
+	// ********** behavior **********
+	
+	public void propertyValueChanged(String propertyName, String newValue) {
+		if (propertyName.equals(ECLIPSELINK_NATIVE_SQL)) {
+			this.nativeSqlChanged(newValue);
+		}
+		else if (propertyName.equals(ECLIPSELINK_BATCH_WRITING)) {
+			this.batchWritingChanged(newValue);
+		}
+		else if (propertyName.equals(ECLIPSELINK_CACHE_STATEMENTS)) {
+			this.cacheStatementsChanged(newValue);
+		}
+		else if (propertyName.equals(ECLIPSELINK_DRIVER)) {
+			this.driverChanged(newValue);
+		}
+		else if (propertyName.equals(ECLIPSELINK_URL)) {
+			this.urlChanged(newValue);
+		}
+		else if (propertyName.equals(ECLIPSELINK_USER)) {
+			this.userChanged(newValue);
+		}
+		else if (propertyName.equals(ECLIPSELINK_PASSWORD)) {
+			this.passwordChanged(newValue);
+		}
+		else if (propertyName.equals(ECLIPSELINK_BIND_PARAMETERS)) {
+			this.bindParametersChanged(newValue);
+		}
+		else if (propertyName.equals(ECLIPSELINK_READ_CONNECTIONS_SHARED)) {
+			this.readConnectionsSharedChanged(newValue);
+		}
+		else if (propertyName.equals(ECLIPSELINK_CACHE_STATEMENTS_SIZE)) {
+			this.cacheStatementsSizeChanged(newValue);
+		}
+		else if (propertyName.equals(ECLIPSELINK_READ_CONNECTIONS_MIN)) {
+			readConnectionsMinChanged(newValue);
+		}
+		else if (propertyName.equals(ECLIPSELINK_READ_CONNECTIONS_MAX)) {
+			readConnectionsMaxChanged(newValue);
+		}
+		else if (propertyName.equals(ECLIPSELINK_WRITE_CONNECTIONS_MIN)) {
+			writeConnectionsMinChanged(newValue);
+		}
+		else if (propertyName.equals(ECLIPSELINK_WRITE_CONNECTIONS_MAX)) {
+			writeConnectionsMaxChanged(newValue);
+		}
+	}
+	
+	public void propertyRemoved(String propertyName) {
+		if (propertyName.equals(ECLIPSELINK_NATIVE_SQL)) {
+			this.nativeSqlChanged(null);
+		}
+		else if (propertyName.equals(ECLIPSELINK_BATCH_WRITING)) {
+			this.batchWritingChanged(null);
+		}
+		else if (propertyName.equals(ECLIPSELINK_CACHE_STATEMENTS)) {
+			this.cacheStatementsChanged(null);
+		}
+		else if (propertyName.equals(ECLIPSELINK_DRIVER)) {
+			this.driverChanged(null);
+		}
+		else if (propertyName.equals(ECLIPSELINK_URL)) {
+			this.urlChanged(null);
+		}
+		else if (propertyName.equals(ECLIPSELINK_USER)) {
+			this.userChanged(null);
+		}
+		else if (propertyName.equals(ECLIPSELINK_PASSWORD)) {
+			this.passwordChanged(null);
+		}
+		else if (propertyName.equals(ECLIPSELINK_BIND_PARAMETERS)) {
+			this.bindParametersChanged(null);
+		}
+		else if (propertyName.equals(ECLIPSELINK_READ_CONNECTIONS_SHARED)) {
+			this.readConnectionsSharedChanged(null);
+		}
+		else if (propertyName.equals(ECLIPSELINK_CACHE_STATEMENTS_SIZE)) {
+			this.cacheStatementsSizeChanged(null);
+		}
+		else if (propertyName.equals(ECLIPSELINK_READ_CONNECTIONS_MIN)) {
+			readConnectionsMinChanged(null);
+		}
+		else if (propertyName.equals(ECLIPSELINK_READ_CONNECTIONS_MAX)) {
+			readConnectionsMaxChanged(null);
+		}
+		else if (propertyName.equals(ECLIPSELINK_WRITE_CONNECTIONS_MIN)) {
+			writeConnectionsMinChanged(null);
+		}
+		else if (propertyName.equals(ECLIPSELINK_WRITE_CONNECTIONS_MAX)) {
+			writeConnectionsMaxChanged(null);
+		}
 	}
 
-	// ********** behavior **********
 	/**
 	 * Adds property names key/value pairs, where: 
 	 * 		key = EclipseLink property key
@@ -164,151 +223,6 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 			WRITE_CONNECTIONS_MAX_PROPERTY);
 	}
 
-	public void propertyChanged(PropertyChangeEvent event) {
-		String aspectName = event.getAspectName();
-		if (aspectName.equals(NATIVE_SQL_PROPERTY)) {
-			this.nativeSqlChanged(event);
-		}
-		 else if (aspectName.equals(BATCH_WRITING_PROPERTY)) {
-			this.batchWritingChanged(event);
-		}
-		 else if (aspectName.equals(CACHE_STATEMENTS_PROPERTY)) {
-			 this.cacheStatementsChanged(event);
-		 }
-		 else if (aspectName.equals(DRIVER_PROPERTY)) {
-			 this.driverChanged(event);
-		 }
-		 else if (aspectName.equals(URL_PROPERTY)) {
-			 this.urlChanged(event);
-		 }
-		 else if (aspectName.equals(USER_PROPERTY)) {
-			 this.userChanged(event);
-		 }
-		 else if (aspectName.equals(PASSWORD_PROPERTY)) {
-			 this.passwordChanged(event);
-		 }
-		 else if (aspectName.equals(BIND_PARAMETERS_PROPERTY)) {
-			 this.bindParametersChanged(event);
-		 }
-		 else if (aspectName.equals(READ_CONNECTIONS_SHARED_PROPERTY)) {
-			 this.readConnectionsSharedChanged(event);
-		 }
-		 else if (aspectName.equals(CACHE_STATEMENTS_SIZE_PROPERTY)) {
-			 this.cacheStatementsSizeChanged(event);
-		 }
-		 else if (aspectName.equals(READ_CONNECTIONS_MIN_PROPERTY)) {
-			 this.readConnectionsMinChanged(event);
-		 }
-		 else if (aspectName.equals(READ_CONNECTIONS_MAX_PROPERTY)) {
-			 this.readConnectionsMaxChanged(event);
-		 }
-		 else if (aspectName.equals(WRITE_CONNECTIONS_MIN_PROPERTY)) {
-			 this.writeConnectionsMinChanged(event);
-		 }
-		 else if (aspectName.equals(WRITE_CONNECTIONS_MAX_PROPERTY)) {
-			 this.writeConnectionsMaxChanged(event);
-		 }
-	}
-
-	// ********** TransactionType **********
-	
-	public PersistenceUnitTransactionType getTransactionType() {
-		return this.transactionType;
-	}
-	
-	public void setTransactionType(PersistenceUnitTransactionType newTransactionType) {
-		PersistenceUnitTransactionType old = this.transactionType;
-		this.transactionType = newTransactionType;
-		
-		this.getPersistenceUnit().setSpecifiedTransactionType( newTransactionType);
-		this.firePropertyChanged(TRANSACTION_TYPE_PROPERTY, old, newTransactionType);
-	}
-
-	private void transactionTypeChanged(PropertyChangeEvent event) {
-		PersistenceUnitTransactionType newValue = (PersistenceUnitTransactionType) event.getNewValue();
-		PersistenceUnitTransactionType old = this.transactionType;
-		this.transactionType = newValue;
-		this.firePropertyChanged(TRANSACTION_TYPE_PROPERTY, old, newValue);
-	}
-	
-	public PersistenceUnitTransactionType getDefaultTransactionType() {
-		return DEFAULT_TRANSACTION_TYPE;
-	}
-
-	protected PropertyChangeListener buildTransactionTypeChangeListener() {
-		return new PropertyChangeListener() {
-			public void propertyChanged(PropertyChangeEvent event) {
-				EclipseLinkConnection.this.transactionTypeChanged(event);
-			}
-		};
-	}
-
-	// ********** JtaDataSource **********
-	
-	public String getJtaDataSource() {
-		return this.jtaDataSource;
-	}
-	
-	public void setJtaDataSource(String newJtaDataSource) {
-		String old = this.jtaDataSource;
-		this.jtaDataSource = newJtaDataSource;
-		
-		this.getPersistenceUnit().setJtaDataSource( newJtaDataSource);
-		this.firePropertyChanged(JTA_DATA_SOURCE_PROPERTY, old, newJtaDataSource);
-	}
-
-	private void jtaDataSourceChanged(PropertyChangeEvent event) {
-		String newValue = (String) event.getNewValue();
-		String old = this.jtaDataSource;
-		this.jtaDataSource = newValue;
-		this.firePropertyChanged(JTA_DATA_SOURCE_PROPERTY, old, newValue);
-	}
-	
-	public String getDefaultJtaDataSource() {
-		return DEFAULT_JTA_DATA_SOURCE;
-	}
-
-	protected PropertyChangeListener buildJtaDataSourceChangeListener() {
-		return new PropertyChangeListener() {
-			public void propertyChanged(PropertyChangeEvent event) {
-				EclipseLinkConnection.this.jtaDataSourceChanged(event);
-			}
-		};
-	}
-
-	// ********** NonJtaDataSource **********
-	
-	public String getNonJtaDataSource() {
-		return this.nonJtaDataSource;
-	}
-	
-	public void setNonJtaDataSource(String newNonJtaDataSource) {
-		String old = this.nonJtaDataSource;
-		this.nonJtaDataSource = newNonJtaDataSource;
-		
-		this.getPersistenceUnit().setNonJtaDataSource( newNonJtaDataSource);
-		this.firePropertyChanged(NON_JTA_DATA_SOURCE_PROPERTY, old, newNonJtaDataSource);
-	}
-
-	private void nonJtaDataSourceChanged(PropertyChangeEvent event) {
-		String newValue = (String) event.getNewValue();
-		String old = this.nonJtaDataSource;
-		this.nonJtaDataSource = newValue;
-		this.firePropertyChanged(NON_JTA_DATA_SOURCE_PROPERTY, old, newValue);
-	}
-	
-	public String getDefaultNonJtaDataSource() {
-		return DEFAULT_NON_JTA_DATA_SOURCE;
-	}
-
-	protected PropertyChangeListener buildNonJtaDataSourceChangeListener() {
-		return new PropertyChangeListener() {
-			public void propertyChanged(PropertyChangeEvent event) {
-				EclipseLinkConnection.this.nonJtaDataSourceChanged(event);
-			}
-		};
-	}
-
 	// ********** NativeSql **********
 	public Boolean getNativeSql() {
 		return this.nativeSql;
@@ -320,14 +234,13 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 		this.putProperty(NATIVE_SQL_PROPERTY, newNativeSql);
 		this.firePropertyChanged(NATIVE_SQL_PROPERTY, old, newNativeSql);
 	}
-
-	private void nativeSqlChanged(PropertyChangeEvent event) {
-		String stringValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
+	
+	private void nativeSqlChanged(String stringValue) {
 		Boolean newValue = getBooleanValueOf(stringValue);
 		
 		Boolean old = this.nativeSql;
 		this.nativeSql = newValue;
-		this.firePropertyChanged(event.getAspectName(), old, newValue);
+		this.firePropertyChanged(NATIVE_SQL_PROPERTY, old, newValue);
 	}
 
 	public Boolean getDefaultNativeSql() {
@@ -347,12 +260,11 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 		this.firePropertyChanged(BATCH_WRITING_PROPERTY, old, newBatchWriting);
 	}
 
-	private void batchWritingChanged(PropertyChangeEvent event) {
-		String stringValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
+	private void batchWritingChanged(String stringValue) {
 		BatchWriting newValue = getEnumValueOf(stringValue, BatchWriting.values());
 		BatchWriting old = this.batchWriting;
 		this.batchWriting = newValue;
-		this.firePropertyChanged(event.getAspectName(), old, newValue);
+		this.firePropertyChanged(BATCH_WRITING_PROPERTY, old, newValue);
 	}
 	
 	public BatchWriting getDefaultBatchWriting() {
@@ -371,13 +283,12 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 		this.firePropertyChanged(CACHE_STATEMENTS_PROPERTY, old, newCacheStatements);
 	}
 
-	private void cacheStatementsChanged(PropertyChangeEvent event) {
-		String stringValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
+	private void cacheStatementsChanged(String stringValue) {
 		Boolean newValue = getBooleanValueOf(stringValue);
 		
 		Boolean old = this.cacheStatements;
 		this.cacheStatements = newValue;
-		this.firePropertyChanged(event.getAspectName(), old, newValue);
+		this.firePropertyChanged(CACHE_STATEMENTS_PROPERTY, old, newValue);
 	}
 
 	public Boolean getDefaultCacheStatements() {
@@ -396,13 +307,12 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 		this.firePropertyChanged(CACHE_STATEMENTS_SIZE_PROPERTY, old, newCacheStatementsSize);
 	}
 
-	private void cacheStatementsSizeChanged(PropertyChangeEvent event) {
-		String stringValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
+	private void cacheStatementsSizeChanged(String stringValue) {
 		Integer newValue = getIntegerValueOf(stringValue);
 		
 		Integer old = this.cacheStatementsSize;
 		this.cacheStatementsSize = newValue;
-		this.firePropertyChanged(event.getAspectName(), old, newValue);
+		this.firePropertyChanged(CACHE_STATEMENTS_SIZE_PROPERTY, old, newValue);
 	}
 
 	public Integer getDefaultCacheStatementsSize() {
@@ -421,11 +331,10 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 		this.firePropertyChanged(DRIVER_PROPERTY, old, newDriver);
 	}
 
-	private void driverChanged(PropertyChangeEvent event) {
-		String newValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
+	private void driverChanged(String newValue) {
 		String old = this.driver;
 		this.driver = newValue;
-		this.firePropertyChanged(event.getAspectName(), old, newValue);
+		this.firePropertyChanged(DRIVER_PROPERTY, old, newValue);
 	}
 
 	public String getDefaultDriver() {
@@ -444,11 +353,10 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 		this.firePropertyChanged(URL_PROPERTY, old, newUrl);
 	}
 
-	private void urlChanged(PropertyChangeEvent event) {
-		String newValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
+	private void urlChanged(String newValue) {
 		String old = this.url;
 		this.url = newValue;
-		this.firePropertyChanged(event.getAspectName(), old, newValue);
+		this.firePropertyChanged(URL_PROPERTY, old, newValue);
 	}
 
 	public String getDefaultUrl() {
@@ -467,11 +375,10 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 		this.firePropertyChanged(USER_PROPERTY, old, newUser);
 	}
 
-	private void userChanged(PropertyChangeEvent event) {
-		String newValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
+	private void userChanged(String newValue) {
 		String old = this.user;
 		this.user = newValue;
-		this.firePropertyChanged(event.getAspectName(), old, newValue);
+		this.firePropertyChanged(USER_PROPERTY, old, newValue);
 	}
 
 	public String getDefaultUser() {
@@ -490,11 +397,10 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 		this.firePropertyChanged(PASSWORD_PROPERTY, old, newPassword);
 	}
 
-	private void passwordChanged(PropertyChangeEvent event) {
-		String newValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
+	private void passwordChanged(String newValue) {
 		String old = this.password;
 		this.password = newValue;
-		this.firePropertyChanged(event.getAspectName(), old, newValue);
+		this.firePropertyChanged(PASSWORD_PROPERTY, old, newValue);
 	}
 
 	public String getDefaultPassword() {
@@ -513,13 +419,12 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 		this.firePropertyChanged(BIND_PARAMETERS_PROPERTY, old, newBindParameters);
 	}
 
-	private void bindParametersChanged(PropertyChangeEvent event) {
-		String stringValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
+	private void bindParametersChanged(String stringValue) {
 		Boolean newValue = getBooleanValueOf(stringValue);
 		
 		Boolean old = this.bindParameters;
 		this.bindParameters = newValue;
-		this.firePropertyChanged(event.getAspectName(), old, newValue);
+		this.firePropertyChanged(BIND_PARAMETERS_PROPERTY, old, newValue);
 	}
 
 	public Boolean getDefaultBindParameters() {
@@ -538,13 +443,12 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 		this.firePropertyChanged(READ_CONNECTIONS_SHARED_PROPERTY, old, newReadConnectionsShared);
 	}
 
-	private void readConnectionsSharedChanged(PropertyChangeEvent event) {
-		String stringValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
+	private void readConnectionsSharedChanged(String stringValue) {
 		Boolean newValue = getBooleanValueOf(stringValue);
 		
 		Boolean old = this.readConnectionsShared;
 		this.readConnectionsShared = newValue;
-		this.firePropertyChanged(event.getAspectName(), old, newValue);
+		this.firePropertyChanged(READ_CONNECTIONS_SHARED_PROPERTY, old, newValue);
 	}
 
 	public Boolean getDefaultReadConnectionsShared() {
@@ -563,13 +467,12 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 		this.firePropertyChanged(READ_CONNECTIONS_MIN_PROPERTY, old, newReadConnectionsMin);
 	}
 
-	private void readConnectionsMinChanged(PropertyChangeEvent event) {
-		String stringValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
+	private void readConnectionsMinChanged(String stringValue) {
 		Integer newValue = getIntegerValueOf(stringValue);
 		
 		Integer old = this.readConnectionsMin;
 		this.readConnectionsMin = newValue;
-		this.firePropertyChanged(event.getAspectName(), old, newValue);
+		this.firePropertyChanged(READ_CONNECTIONS_MIN_PROPERTY, old, newValue);
 	}
 
 	public Integer getDefaultReadConnectionsMin() {
@@ -588,13 +491,12 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 		this.firePropertyChanged(READ_CONNECTIONS_MAX_PROPERTY, old, newReadConnectionsMax);
 	}
 
-	private void readConnectionsMaxChanged(PropertyChangeEvent event) {
-		String stringValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
+	private void readConnectionsMaxChanged(String stringValue) {
 		Integer newValue = getIntegerValueOf(stringValue);
 		
 		Integer old = this.readConnectionsMax;
 		this.readConnectionsMax = newValue;
-		this.firePropertyChanged(event.getAspectName(), old, newValue);
+		this.firePropertyChanged(READ_CONNECTIONS_MAX_PROPERTY, old, newValue);
 	}
 
 	public Integer getDefaultReadConnectionsMax() {
@@ -613,13 +515,12 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 		this.firePropertyChanged(WRITE_CONNECTIONS_MIN_PROPERTY, old, newWriteConnectionsMin);
 	}
 
-	private void writeConnectionsMinChanged(PropertyChangeEvent event) {
-		String stringValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
+	private void writeConnectionsMinChanged(String stringValue) {
 		Integer newValue = getIntegerValueOf(stringValue);
 		
 		Integer old = this.writeConnectionsMin;
 		this.writeConnectionsMin = newValue;
-		this.firePropertyChanged(event.getAspectName(), old, newValue);
+		this.firePropertyChanged(WRITE_CONNECTIONS_MIN_PROPERTY, old, newValue);
 	}
 
 	public Integer getDefaultWriteConnectionsMin() {
@@ -638,13 +539,12 @@ public class EclipseLinkConnection extends EclipseLinkPersistenceUnitProperties
 		this.firePropertyChanged(WRITE_CONNECTIONS_MAX_PROPERTY, old, newWriteConnectionsMax);
 	}
 
-	private void writeConnectionsMaxChanged(PropertyChangeEvent event) {
-		String stringValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
+	private void writeConnectionsMaxChanged(String stringValue) {
 		Integer newValue = getIntegerValueOf(stringValue);
 		
 		Integer old = this.writeConnectionsMax;
 		this.writeConnectionsMax = newValue;
-		this.firePropertyChanged(event.getAspectName(), old, newValue);
+		this.firePropertyChanged(WRITE_CONNECTIONS_MAX_PROPERTY, old, newValue);
 	}
 
 	public Integer getDefaultWriteConnectionsMax() {

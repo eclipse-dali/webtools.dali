@@ -18,7 +18,6 @@ import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
-import org.eclipse.jpt.utility.model.value.ListValueModel;
 
 /**
  * EclipseLinkPersistenceUnitProperties
@@ -30,28 +29,19 @@ public abstract class EclipseLinkPersistenceUnitProperties extends AbstractModel
 {
 	private PersistenceUnit persistenceUnit;
 
-	private PersistenceUnitPropertyListListener propertyListListener;
-
 	// key = EclipseLink property key; value = property id
 	private Map<String, String> propertyNames;
 
 	private static final long serialVersionUID = 1L;
 	
 	// ********** constructors / initialization **********
-	protected EclipseLinkPersistenceUnitProperties(
-			PersistenceUnit parent, 
-			ListValueModel<PersistenceUnit.Property> propertyListAdapter) {
+	protected EclipseLinkPersistenceUnitProperties(PersistenceUnit parent) {
 		super();
-		this.initialize(parent, propertyListAdapter);
+		this.initialize(parent);
 	}
 
-	protected void initialize(
-			PersistenceUnit parent, 
-			ListValueModel<PersistenceUnit.Property> propertyListAdapter) {
+	protected void initialize(PersistenceUnit parent) {
 		this.persistenceUnit = parent;
-		
-		this.propertyListListener = new PersistenceUnitPropertyListListener(this);
-		propertyListAdapter.addListChangeListener(ListValueModel.LIST_VALUES, this.propertyListListener);
 		
 		this.initializePropertyNames();
 		this.initializeProperties();
@@ -74,10 +64,6 @@ public abstract class EclipseLinkPersistenceUnitProperties extends AbstractModel
 	
 	public JpaProject getJpaProject() {
 		return this.persistenceUnit.getJpaProject();
-	}
-
-	public PersistenceUnitPropertyListListener propertyListListener() {
-		return this.propertyListListener;
 	}
 
 	private Map<String, String> propertyNames() {

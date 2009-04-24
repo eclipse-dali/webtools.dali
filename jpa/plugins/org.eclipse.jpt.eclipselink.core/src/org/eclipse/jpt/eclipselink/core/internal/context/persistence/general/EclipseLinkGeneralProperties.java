@@ -13,8 +13,6 @@ import java.util.Map;
 
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnitProperties;
-import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
-import org.eclipse.jpt.utility.model.value.ListValueModel;
 
 /**
  *  EclipseLinkGeneralProperties
@@ -26,8 +24,8 @@ public class EclipseLinkGeneralProperties extends EclipseLinkPersistenceUnitProp
 	private Boolean excludeEclipselinkOrm;
 
 	// ********** constructors **********
-	public EclipseLinkGeneralProperties(PersistenceUnit parent, ListValueModel<PersistenceUnit.Property> propertyListAdapter) {
-		super(parent, propertyListAdapter);
+	public EclipseLinkGeneralProperties(PersistenceUnit parent) {
+		super(parent);
 	}
 
 	// ********** initialization **********
@@ -43,6 +41,20 @@ public class EclipseLinkGeneralProperties extends EclipseLinkPersistenceUnitProp
 
 
 	// ********** behavior **********
+	
+	public void propertyValueChanged(String propertyName, String newValue) {
+		if (propertyName.equals(ECLIPSELINK_EXCLUDE_ECLIPSELINK_ORM)) {
+			excludeEclipselinkOrmChanged(newValue);
+		}
+	}
+	
+	public void propertyRemoved(String propertyName) {
+		if (propertyName.equals(ECLIPSELINK_EXCLUDE_ECLIPSELINK_ORM)) {
+			excludeEclipselinkOrmChanged(null);			
+		}
+	}
+	
+	
 	/**
 	 * Adds property names key/value pairs, where: 
 	 * 		key = EclipseLink property key
@@ -53,17 +65,6 @@ public class EclipseLinkGeneralProperties extends EclipseLinkPersistenceUnitProp
 		propertyNames.put(
 			ECLIPSELINK_EXCLUDE_ECLIPSELINK_ORM,
 			EXCLUDE_ECLIPSELINK_ORM_PROPERTY);
-	}
-
-	public void propertyChanged(PropertyChangeEvent event) {
-		String aspectName = event.getAspectName();
-		if (aspectName.equals(EXCLUDE_ECLIPSELINK_ORM_PROPERTY)) {
-			this.excludeEclipselinkOrmChanged(event);
-		}
-		else {
-			throw new IllegalArgumentException("Illegal event received - property not applicable: " + aspectName); //$NON-NLS-1$
-		}
-		return;
 	}
 
 	
@@ -79,13 +80,12 @@ public class EclipseLinkGeneralProperties extends EclipseLinkPersistenceUnitProp
 		this.firePropertyChanged(EXCLUDE_ECLIPSELINK_ORM_PROPERTY, old, newExcludeEclipselinkOrm);
 	}
 
-	private void excludeEclipselinkOrmChanged(PropertyChangeEvent event) {
-		String stringValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
+	private void excludeEclipselinkOrmChanged(String stringValue) {
 		Boolean newValue = getBooleanValueOf(stringValue);
 		
 		Boolean old = this.excludeEclipselinkOrm;
 		this.excludeEclipselinkOrm = newValue;
-		this.firePropertyChanged(event.getAspectName(), old, newValue);
+		this.firePropertyChanged(EXCLUDE_ECLIPSELINK_ORM_PROPERTY, old, newValue);
 	}
 
 	public Boolean getDefaultExcludeEclipselinkOrm() {

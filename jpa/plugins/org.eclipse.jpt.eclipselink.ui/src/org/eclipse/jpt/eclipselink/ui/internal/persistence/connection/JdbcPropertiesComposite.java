@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2008 Oracle. All rights reserved.
+* Copyright (c) 2008, 2009 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,7 @@
 *******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.persistence.connection;
 
+import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnitTransactionType;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.connection.Connection;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
@@ -40,12 +41,25 @@ public class JdbcPropertiesComposite extends Pane<Connection>
 	}
 
 	private PropertyValueModel<PersistenceUnitTransactionType> buildTransactionTypeHolder() {
-		return new PropertyAspectAdapter<Connection, PersistenceUnitTransactionType>(getSubjectHolder(), Connection.TRANSACTION_TYPE_PROPERTY) {
+		return new PropertyAspectAdapter<PersistenceUnit, PersistenceUnitTransactionType>(
+			buildPersistenceUnitHolder(), 
+			PersistenceUnit.SPECIFIED_TRANSACTION_TYPE_PROPERTY, 
+			PersistenceUnit.DEFAULT_TRANSACTION_TYPE_PROPERTY) {
 			@Override
 			protected PersistenceUnitTransactionType buildValue_() {
-				return subject.getTransactionType();
+				return this.subject.getTransactionType();
 			}
 		};
+	}
+
+	private PropertyValueModel<PersistenceUnit> buildPersistenceUnitHolder() {
+		return new PropertyAspectAdapter<Connection, PersistenceUnit>(getSubjectHolder()) {
+			@Override
+			protected PersistenceUnit buildValue_() {
+				return this.subject.getPersistenceUnit();
+			}
+		};
+		
 	}
 
 	@Override

@@ -12,12 +12,11 @@ package org.eclipse.jpt.eclipselink.core.internal.context.persistence;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.utility.model.Model;
-import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 
 /**
  * PersistenceUnitProperties
  */
-public interface PersistenceUnitProperties extends Model, PropertyChangeListener
+public interface PersistenceUnitProperties extends Model
 {
 	/**
 	 * Method used for identifying the given property.
@@ -38,4 +37,16 @@ public interface PersistenceUnitProperties extends Model, PropertyChangeListener
 	 * Return the JPA project the PersistenceUnit belongs to.
 	 */
 	JpaProject getJpaProject();
+	
+	/**
+	 * A Property with the given name had its value changed
+	 */
+	void propertyValueChanged(String propertyName, String newValue);
+	
+	/**
+	 * A Property with the given name was removed
+	 */
+	void propertyRemoved(String propertyName);
+
+
 }

@@ -339,17 +339,17 @@ public abstract class PersistenceUnitTestCase extends ContextModelTestCase
 		assertNotNull("No Event Fired.", this.propertyChangedEvent);
 		// verify event for the expected property
 		assertEquals("Wrong Event.", this.propertyChangedEvent.getAspectName(), propertyName);
-		// verify event occurence
+		// verify event occurrence
 		assertTrue("No Event Received.", this.propertyChangedEventCount > 0);
 		assertTrue("Multiple Event Received (" +  this.propertyChangedEventCount + ")",
 			this.propertyChangedEventCount < 2);
 	}
 
-	protected void verifyHasNoListeners(ListValueModel listValueModel) throws Exception {
+	protected void verifyHasNoListeners(ListValueModel<?> listValueModel) throws Exception {
 		assertTrue(((AbstractModel) listValueModel).hasNoListChangeListeners(ListValueModel.LIST_VALUES));
 	}
 
-	protected void verifyHasListeners(ListValueModel listValueModel) throws Exception {
+	protected void verifyHasListeners(ListValueModel<?> listValueModel) throws Exception {
 		assertTrue(((AbstractModel) listValueModel).hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 	}
 
@@ -357,7 +357,7 @@ public abstract class PersistenceUnitTestCase extends ContextModelTestCase
 		assertTrue("Listener not added in setUp() - " + propertyName, ((AbstractModel) model).hasAnyPropertyChangeListeners(propertyName));
 	}
 
-	protected void verifyHasListeners(PropertyValueModel pvm, String propertyName) throws Exception {
+	protected void verifyHasListeners(PropertyValueModel<?> pvm, String propertyName) throws Exception {
 		assertTrue(((AbstractModel) pvm).hasAnyPropertyChangeListeners(propertyName));
 	}
 
@@ -369,63 +369,4 @@ public abstract class PersistenceUnitTestCase extends ContextModelTestCase
 		assertNull(msg + " - " + eclipseLinkPropertyName, this.getPersistenceUnit().getProperty(eclipseLinkPropertyName));
 	}
 
-	// ****** verify Persistence Unit properties *******
-
-	/**
-	 * Performs the following tests:<br>
-	 * 1. verify Persistence Unit specified property initialized<br>
-	 * 2. set the PU property and verify PU its value<br>
-	 * 3. set the PU property to null and verify PU its value<br>
-	 * 4. set model value property and verify PU modified<br>
-	 * 5. set model value property to null and verify PU modified<br>
-	 */
-	protected void verifySetPersistenceUnitProperty(String propertyName, Object testValue1, Object testValue2) throws Exception {
-		// Basic
-		this.verifyHasListeners(this.getModel(), propertyName);
-		assertEquals("Persistence Unit not initialized.", testValue1, this.getPersistenceUnitProperty(propertyName));
-		Object initialModelValue = this.getProperty(propertyName);
-		assertEquals(
-			"Model not initialized - model.initializeProperties() - modelValue = " + initialModelValue, 
-			testValue1, 
-			initialModelValue);
-		
-		// Modifying value by setting PU
-		this.clearEvent();
-		this.setPersistenceUnitProperty(propertyName, testValue2);
-		this.verifyModelModified(propertyName, testValue2);
-		
-		// Setting PU to null
-		this.clearEvent();
-		this.setPersistenceUnitProperty(propertyName, null);
-		this.verifyModelModified(propertyName, null);
-		
-		// Modifying value by setting model object
-		this.clearEvent();
-		this.setProperty(propertyName, testValue1);
-		this.verifyPersistenceUnitModified(propertyName, testValue1);
-
-		// Setting model to null
-		this.clearEvent();
-		this.setProperty(propertyName, null);
-		this.verifyPersistenceUnitModified(propertyName, null);
-	}
-
-	protected void verifyPersistenceUnitModified(String propertyName, Object expectedValue) throws Exception {
-		assertEquals("Persistence Unit not modified.", expectedValue, this.getPersistenceUnitProperty(propertyName));
-		this.verifyPutProperty(propertyName, expectedValue);
-	}
-
-	protected void verifyModelModified(String propertyName, Object expectedValue) throws Exception {
-		Object modelValue = this.getProperty(propertyName);
-		assertEquals("connection value not modified.", expectedValue, modelValue);
-		this.verifyPutEvent(propertyName, modelValue, expectedValue);
-	}
-	
-	protected void setPersistenceUnitProperty(String propertyName, Object newValue) throws NoSuchFieldException {
-		throw new NoSuchMethodError("Missing implementation for setPersistenceUnitProperty");
-	}
-	
-	protected Object getPersistenceUnitProperty(String propertyName) throws NoSuchFieldException {
-		throw new NoSuchMethodError("Missing implementation for getPersistenceUnitProperty");
-	}
 }

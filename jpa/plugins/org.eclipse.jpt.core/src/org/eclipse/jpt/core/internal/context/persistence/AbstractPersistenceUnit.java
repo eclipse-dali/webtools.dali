@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.context.persistence;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -668,6 +669,9 @@ public abstract class AbstractPersistenceUnit
 		this.properties.add(index, property);
 		xmlProperties.getProperties().add(index, xmlProperty);
 		this.fireItemAdded(PROPERTIES_LIST, index, property);
+		if (property.getName() != null) {
+			this.propertyAdded(property.getName(), property.getValue());
+		}
 		return property;
 	}
 
@@ -753,17 +757,58 @@ public abstract class AbstractPersistenceUnit
 		}
 
 		this.fireItemRemoved(PROPERTIES_LIST, index, removedProperty);
+		if (removedProperty.getName() != null) {
+			this.propertyRemoved(removedProperty.getName());
+		}
 	}
 
-	protected void addProperty_(Property property) {
-		this.addItemToList(property, this.properties, PROPERTIES_LIST);
+	protected void addProperty_(int index, Property property) {
+		this.addItemToList(index, property, this.properties, PROPERTIES_LIST);
+		if (property.getName() != null) {
+			this.propertyAdded(property.getName(), property.getValue());
+		}
+	}
+	
+	protected void removeProperty_(int index) {
+		removeProperty_(this.properties.get(index));
 	}
 
 	protected void removeProperty_(Property property) {
 		this.removeItemFromList(property, this.properties, PROPERTIES_LIST);
+		if (property.getName() != null) {
+			this.propertyRemoved(property.getName());
+		}
+	}
+	
+	protected void moveProperty_(int index, Property property) {
+		this.moveItemInList(index, this.properties.indexOf(property), this.properties, PROPERTIES_LIST);
+	}
+	
+	public void propertyNameChanged(String oldPropertyName, String newPropertyName, String value) {
+		if (oldPropertyName == null && value == null) {
+			//this is a property that is currently being added, we don't need to deal with it until the value is set
+			return;
+		}
+		if (oldPropertyName != null) {
+			this.propertyRemoved(oldPropertyName);
+		}
+		if (newPropertyName != null) {
+			this.propertyAdded(newPropertyName, value);
+		}
+	}
+	
+	public void propertyValueChanged(String propertyName, String newValue) {
+		// do nothing, override in subclasses as necessary
 	}
 
-
+	public void propertyAdded(String propertyName, String value) {
+		this.propertyValueChanged(propertyName, value);
+	}
+	
+	public void propertyRemoved(String propertyName) {
+		// do nothing, override in subclasses as necessary		
+	}
+	
 	// ********** ORM persistence unit defaults **********
 
 	public AccessType getDefaultAccess() {
@@ -1095,23 +1140,32 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	/**
-	 * Since this is a *list*, we simply loop through the elements and match
-	 * the context to the resource element by index, not by name like we do
-	 * with 'impliedClassRefs'.
+	 * Match the elements based on the XmlProperty resource object and also keep the order
+	 * the same as the source.
 	 */
-	protected void updateProperties() {
-		Iterator<XmlProperty> xmlProperties = this.xmlProperties();
-
-		for (Property contextProperty : this.getProperties()) {
-			if (xmlProperties.hasNext()) {
-				contextProperty.update(xmlProperties.next());
-			} else {
-				this.removeProperty_(contextProperty);
+	protected void updateProperties() {		
+		Collection<Property> contextPropertiesToRemove = CollectionTools.collection(properties());		
+		int resourceIndex = 0;
+		
+		for (Iterator<XmlProperty> xmlProperties = this.xmlProperties(); xmlProperties.hasNext(); ) {
+			XmlProperty xmlProperty = xmlProperties.next();
+			boolean contextPropertyFound = false;
+			for (Property contextProperty : contextPropertiesToRemove) {
+				if (contextProperty.getXmlProperty() == xmlProperty) {
+					moveProperty_(resourceIndex, contextProperty);
+					contextProperty.update();
+					contextPropertiesToRemove.remove(contextProperty);
+					contextPropertyFound = true;
+					break;
+				}
 			}
+			if (!contextPropertyFound) {
+				addProperty_(resourceIndex, this.buildProperty(xmlProperty));
+			}
+			resourceIndex++;
 		}
-
-		while (xmlProperties.hasNext()) {
-			this.addProperty_(this.buildProperty(xmlProperties.next()));
+		for (Property contextProperty : contextPropertiesToRemove) {
+			removeProperty_(contextProperty);
 		}
 	}
 
@@ -1119,6 +1173,11 @@ public abstract class AbstractPersistenceUnit
 		XmlProperties xmlProperties = this.xmlPersistenceUnit.getProperties();
 		// make a copy of the XML properties (to prevent ConcurrentModificationException)
 		return (xmlProperties != null) ? new CloneIterator<XmlProperty>(xmlProperties.getProperties()) : EmptyIterator.<XmlProperty>instance();
+	}
+	
+	protected int xmlPropertiesSize() {
+		XmlProperties xmlProperties = this.xmlPersistenceUnit.getProperties();
+		return xmlProperties == null ? 0 : xmlProperties.getProperties().size();
 	}
 
 	protected void updatePersistenceUnitDefaults() {

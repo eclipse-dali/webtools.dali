@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.persistence.connection;
 
+import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnitTransactionType;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.connection.Connection;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
@@ -41,10 +42,10 @@ public class DataSourcePropertiesComposite extends Pane<Connection> {
 	}
 
 	private WritablePropertyValueModel<String> buildJtaDataSourceHolder() {
-		return new PropertyAspectAdapter<Connection, String>(getSubjectHolder(), Connection.JTA_DATA_SOURCE_PROPERTY) {
+		return new PropertyAspectAdapter<PersistenceUnit, String>(buildPersistenceUnitHolder(), PersistenceUnit.JTA_DATA_SOURCE_PROPERTY) {
 			@Override
 			protected String buildValue_() {
-				return subject.getJtaDataSource();
+				return this.subject.getJtaDataSource();
 			}
 
 			@Override
@@ -52,7 +53,7 @@ public class DataSourcePropertiesComposite extends Pane<Connection> {
 				if (value.length() == 0) {
 					value = null;
 				}
-				subject.setJtaDataSource(value);
+				this.subject.setJtaDataSource(value);
 			}
 		};
 	}
@@ -67,10 +68,10 @@ public class DataSourcePropertiesComposite extends Pane<Connection> {
 	}
 
 	private WritablePropertyValueModel<String> buildNonJtaDataSourceHolder() {
-		return new PropertyAspectAdapter<Connection, String>(getSubjectHolder(), Connection.NON_JTA_DATA_SOURCE_PROPERTY) {
+		return new PropertyAspectAdapter<PersistenceUnit, String>(buildPersistenceUnitHolder(), PersistenceUnit.NON_JTA_DATA_SOURCE_PROPERTY) {
 			@Override
 			protected String buildValue_() {
-				return subject.getNonJtaDataSource();
+				return this.subject.getNonJtaDataSource();
 			}
 
 			@Override
@@ -78,7 +79,7 @@ public class DataSourcePropertiesComposite extends Pane<Connection> {
 				if (value.length() == 0) {
 					value = null;
 				}
-				subject.setNonJtaDataSource(value);
+				this.subject.setNonJtaDataSource(value);
 			}
 		};
 	}
@@ -87,20 +88,33 @@ public class DataSourcePropertiesComposite extends Pane<Connection> {
 		return new TransformationPropertyValueModel<PersistenceUnitTransactionType, Boolean>(buildTransactionTypeHolder()) {
 			@Override
 			protected Boolean transform(PersistenceUnitTransactionType value) {
-				return value == PersistenceUnitTransactionType.RESOURCE_LOCAL;
+				return Boolean.valueOf(value == PersistenceUnitTransactionType.RESOURCE_LOCAL);
 			}
 		};
 	}
 
 	private PropertyValueModel<PersistenceUnitTransactionType> buildTransactionTypeHolder() {
-		return new PropertyAspectAdapter<Connection, PersistenceUnitTransactionType>(getSubjectHolder(), Connection.TRANSACTION_TYPE_PROPERTY) {
+		return new PropertyAspectAdapter<PersistenceUnit, PersistenceUnitTransactionType>(
+				buildPersistenceUnitHolder(), 
+				PersistenceUnit.SPECIFIED_TRANSACTION_TYPE_PROPERTY, 
+				PersistenceUnit.DEFAULT_TRANSACTION_TYPE_PROPERTY) {
 			@Override
 			protected PersistenceUnitTransactionType buildValue_() {
-				return subject.getTransactionType();
+				return this.subject.getTransactionType();
 			}
 		};
 	}
 
+	private PropertyValueModel<PersistenceUnit> buildPersistenceUnitHolder() {
+		return new PropertyAspectAdapter<Connection, PersistenceUnit>(getSubjectHolder()) {
+			@Override
+			protected PersistenceUnit buildValue_() {
+				return this.subject.getPersistenceUnit();
+			}
+		};
+		
+	}
+	
 	@Override
 	protected void initializeLayout(Composite container) {
 

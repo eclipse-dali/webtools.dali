@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2008 Oracle. All rights reserved.
+* Copyright (c) 2008, 2009 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,6 @@
 *******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.context.persistence.connection;
 
-import org.eclipse.jpt.core.context.persistence.PersistenceUnitTransactionType;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.PersistenceUnitProperties;
 
 /**
@@ -17,26 +16,6 @@ import org.eclipse.jpt.eclipselink.core.internal.context.persistence.Persistence
  */
 public interface Connection extends PersistenceUnitProperties
 {
-	PersistenceUnitTransactionType getDefaultTransactionType();
-	PersistenceUnitTransactionType getTransactionType();
-	void setTransactionType(PersistenceUnitTransactionType newTransactionType);
-		// PersistenceUnit property
-		static final String TRANSACTION_TYPE_PROPERTY = "transactionType"; //$NON-NLS-1$
-		static final PersistenceUnitTransactionType DEFAULT_TRANSACTION_TYPE = PersistenceUnitTransactionType.JTA;
-
-	String getDefaultJtaDataSource();
-	String getJtaDataSource();
-	void setJtaDataSource(String newJtaDataSource);
-		// PersistenceUnit property
-		static final String JTA_DATA_SOURCE_PROPERTY = "jtaDataSource"; //$NON-NLS-1$
-		static final String DEFAULT_JTA_DATA_SOURCE = ""; //$NON-NLS-1$
-
-	String getDefaultNonJtaDataSource();
-	String getNonJtaDataSource();
-	void setNonJtaDataSource(String newNonJtaDataSource);
-		// PersistenceUnit property
-		static final String NON_JTA_DATA_SOURCE_PROPERTY = "nonJtaDataSource"; //$NON-NLS-1$
-		static final String DEFAULT_NON_JTA_DATA_SOURCE = ""; //$NON-NLS-1$
 
 	Boolean getDefaultNativeSql();
 	Boolean getNativeSql();

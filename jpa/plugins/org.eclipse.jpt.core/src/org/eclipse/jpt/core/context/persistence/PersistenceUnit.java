@@ -474,6 +474,16 @@ public interface PersistenceUnit
 	void removeProperty(String propertyName, String value);
 
 	/**
+	 * Call back method for Property name changing. 
+	 */
+	void propertyNameChanged(String oldPropertyName, String newPropertyName, String value);	
+
+	/**
+	 * Call back method for Property value changing. 
+	 */
+	void propertyValueChanged(String propertyName, String newValue);
+	
+	/**
 	 * Simple property interface.
 	 */
 	interface Property
@@ -490,7 +500,8 @@ public interface PersistenceUnit
 		void setValue(String value);
 		String getValue();
 
-		void update(XmlProperty property);
+		XmlProperty getXmlProperty();
+		void update();
 	}
 
 	// ********** ORM persistence unit defaults **********

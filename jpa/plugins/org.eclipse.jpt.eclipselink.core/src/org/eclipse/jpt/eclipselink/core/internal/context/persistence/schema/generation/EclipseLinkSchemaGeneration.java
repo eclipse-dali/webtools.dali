@@ -12,8 +12,6 @@ package org.eclipse.jpt.eclipselink.core.internal.context.persistence.schema.gen
 import java.util.Map;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnitProperties;
-import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
-import org.eclipse.jpt.utility.model.value.ListValueModel;
 
 /**
  * EclipseLinkSchemaGeneration encapsulates EclipseLink SchemaGeneration
@@ -32,8 +30,8 @@ public class EclipseLinkSchemaGeneration
 
 	// ********** constructors/initialization **********
 	
-	public EclipseLinkSchemaGeneration(PersistenceUnit parent, ListValueModel<PersistenceUnit.Property> propertyListAdapter) {
-		super(parent, propertyListAdapter);
+	public EclipseLinkSchemaGeneration(PersistenceUnit parent) {
+		super(parent);
 	}
 
 	/**
@@ -77,28 +75,41 @@ public class EclipseLinkSchemaGeneration
 	}
 
 	// ********** behavior **********
-	public void propertyChanged(PropertyChangeEvent event) {
-		String aspectName = event.getAspectName();
-		
-		if (aspectName.equals(OUTPUT_MODE_PROPERTY)) {
-			this.outputModeChanged(event);
+	
+	public void propertyValueChanged(String propertyName, String newValue) {
+		if (propertyName.equals(ECLIPSELINK_DDL_GENERATION_OUTPUT_MODE)) {
+			this.outputModeChanged(newValue);
 		}
-		else if (aspectName.equals(DDL_GENERATION_TYPE_PROPERTY)) {
-			this.ddlGenerationTypeChanged(event);
+		else if (propertyName.equals(ECLIPSELINK_DDL_GENERATION_TYPE)) {
+			this.ddlGenerationTypeChanged(newValue);
 		}
-		else if (aspectName.equals(CREATE_FILE_NAME_PROPERTY)) {
-			this.createFileNameChanged(event);
+		else if (propertyName.equals(ECLIPSELINK_CREATE_FILE_NAME)) {
+			this.createFileNameChanged(newValue);
 		}
-		else if (aspectName.equals(DROP_FILE_NAME_PROPERTY)) {
-			this.dropFileNameChanged(event);
+		else if (propertyName.equals(ECLIPSELINK_DROP_FILE_NAME)) {
+			this.dropFileNameChanged(newValue);
 		}
-		else if (aspectName.equals(APPLICATION_LOCATION_PROPERTY)) {
-			this.applicationLocationChanged(event);
+		else if (propertyName.equals(ECLIPSELINK_APPLICATION_LOCATION)) {
+			this.applicationLocationChanged(newValue);
 		}
-		else {
-			throw new IllegalArgumentException("Illegal event received - property not applicable: " + aspectName);
+	}
+	
+	public void propertyRemoved(String propertyName) {
+		if (propertyName.equals(ECLIPSELINK_DDL_GENERATION_OUTPUT_MODE)) {
+			this.outputModeChanged(null);
 		}
-		return;
+		else if (propertyName.equals(ECLIPSELINK_DDL_GENERATION_TYPE)) {
+			this.ddlGenerationTypeChanged(null);
+		}
+		else if (propertyName.equals(ECLIPSELINK_CREATE_FILE_NAME)) {
+			this.createFileNameChanged(null);
+		}
+		else if (propertyName.equals(ECLIPSELINK_DROP_FILE_NAME)) {
+			this.dropFileNameChanged(null);
+		}
+		else if (propertyName.equals(ECLIPSELINK_APPLICATION_LOCATION)) {
+			this.applicationLocationChanged(null);
+		}
 	}
 
 	// ********** DdlGenerationType **********
@@ -113,12 +124,11 @@ public class EclipseLinkSchemaGeneration
 		this.firePropertyChanged(DDL_GENERATION_TYPE_PROPERTY, old, newDdlGenType);
 	}
 
-	private void ddlGenerationTypeChanged(PropertyChangeEvent event) {
-		String stringValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
+	private void ddlGenerationTypeChanged(String stringValue) {
 		DdlGenerationType newValue = getEnumValueOf(stringValue, DdlGenerationType.values());
 		DdlGenerationType old = this.ddlGenerationType;
 		this.ddlGenerationType = newValue;
-		this.firePropertyChanged(event.getAspectName(), old, newValue);
+		this.firePropertyChanged(DDL_GENERATION_TYPE_PROPERTY, old, newValue);
 	}
 
 	public DdlGenerationType getDefaultDdlGenerationType() {
@@ -137,12 +147,11 @@ public class EclipseLinkSchemaGeneration
 		this.firePropertyChanged(OUTPUT_MODE_PROPERTY, old, newOutputMode);
 	}
 
-	private void outputModeChanged(PropertyChangeEvent event) {
-		String stringValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
+	private void outputModeChanged(String stringValue) {
 		OutputMode newValue = getEnumValueOf(stringValue, OutputMode.values());
 		OutputMode old = this.outputMode;
 		this.outputMode = newValue;
-		this.firePropertyChanged(event.getAspectName(), old, newValue);
+		this.firePropertyChanged(OUTPUT_MODE_PROPERTY, old, newValue);
 	}
 
 	public OutputMode getDefaultOutputMode() {
@@ -161,11 +170,10 @@ public class EclipseLinkSchemaGeneration
 		this.firePropertyChanged(CREATE_FILE_NAME_PROPERTY, old, newCreateFileName);
 	}
 
-	private void createFileNameChanged(PropertyChangeEvent event) {
-		String newValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
+	private void createFileNameChanged(String newValue) {
 		String old = this.createFileName;
 		this.createFileName = newValue;
-		this.firePropertyChanged(event.getAspectName(), old, newValue);
+		this.firePropertyChanged(CREATE_FILE_NAME_PROPERTY, old, newValue);
 	}
 
 	public String getDefaultCreateFileName() {
@@ -184,11 +192,10 @@ public class EclipseLinkSchemaGeneration
 		this.firePropertyChanged(DROP_FILE_NAME_PROPERTY, old, newDropFileName);
 	}
 
-	private void dropFileNameChanged(PropertyChangeEvent event) {
-		String newValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
+	private void dropFileNameChanged(String newValue) {
 		String old = this.dropFileName;
 		this.dropFileName = newValue;
-		this.firePropertyChanged(event.getAspectName(), old, newValue);
+		this.firePropertyChanged(DROP_FILE_NAME_PROPERTY, old, newValue);
 	}
 
 	public String getDefaultDropFileName() {
@@ -207,11 +214,10 @@ public class EclipseLinkSchemaGeneration
 		this.firePropertyChanged(APPLICATION_LOCATION_PROPERTY, old, newApplicationLocation);
 	}
 
-	private void applicationLocationChanged(PropertyChangeEvent event) {
-		String newValue = (event.getNewValue() == null) ? null : ((PersistenceUnit.Property) event.getNewValue()).getValue();
+	private void applicationLocationChanged(String newValue) {
 		String old = this.applicationLocation;
 		this.applicationLocation = newValue;
-		this.firePropertyChanged(event.getAspectName(), old, newValue);
+		this.firePropertyChanged(APPLICATION_LOCATION_PROPERTY, old, newValue);
 	}
 
 	public String getDefaultApplicationLocation() {
