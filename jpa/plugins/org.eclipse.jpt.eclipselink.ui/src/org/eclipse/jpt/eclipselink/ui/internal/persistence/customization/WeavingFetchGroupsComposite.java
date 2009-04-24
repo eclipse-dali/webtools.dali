@@ -39,7 +39,7 @@ public class WeavingFetchGroupsComposite extends FormPane<Customization>
 		super(parentComposite, parent);
 	}
 
-	private WritablePropertyValueModel<Boolean> buildWeavingLazyHolder() {
+	private WritablePropertyValueModel<Boolean> buildWeavingFetchGroupsHolder() {
 		return new PropertyAspectAdapter<Customization, Boolean>(getSubjectHolder(), Customization.WEAVING_FETCH_GROUPS_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -65,12 +65,12 @@ public class WeavingFetchGroupsComposite extends FormPane<Customization>
 		};
 	}
 
-	private PropertyValueModel<String> buildWeavingLazyStringHolder() {
-		return new TransformationPropertyValueModel<Boolean, String>(buildWeavingLazyHolder()) {
+	private PropertyValueModel<String> buildWeavingFetchGroupsStringHolder() {
+		return new TransformationPropertyValueModel<Boolean, String>(buildWeavingFetchGroupsHolder()) {
 			@Override
 			protected String transform(Boolean value) {
 				if ((getSubject() != null) && (value == null)) {
-					Boolean defaultValue = getSubject().getDefaultWeavingLazy();
+					Boolean defaultValue = getSubject().getDefaultWeavingFetchGroups();
 					if (defaultValue != null) {
 						String defaultStringValue = defaultValue ? EclipseLinkUiMessages.Boolean_True : EclipseLinkUiMessages.Boolean_False;
 						return NLS.bind(EclipseLinkUiMessages.PersistenceXmlCustomizationTab_weavingFetchGroupsLabelDefault, defaultStringValue);
@@ -87,8 +87,8 @@ public class WeavingFetchGroupsComposite extends FormPane<Customization>
 		this.addTriStateCheckBoxWithDefault(
 			container,
 			EclipseLinkUiMessages.PersistenceXmlCustomizationTab_weavingFetchGroupsLabel,
-			this.buildWeavingLazyHolder(),
-			this.buildWeavingLazyStringHolder(),
+			this.buildWeavingFetchGroupsHolder(),
+			this.buildWeavingFetchGroupsStringHolder(),
 			null
 //			EclipseLinkHelpContextIds.CUSTOMIZATION_WEAVING_FETCH_GROUPS
 		);
