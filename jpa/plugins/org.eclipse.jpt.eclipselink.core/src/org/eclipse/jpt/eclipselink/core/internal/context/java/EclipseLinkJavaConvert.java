@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.context.java;
 
+import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
@@ -18,11 +19,17 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.Convert;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
+import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.resource.java.ConvertAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.ConverterAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.ObjectTypeConverterAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.StructConverterAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.TypeConverterAnnotation;
+import org.eclipse.jpt.utility.Filter;
+import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
+import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -214,6 +221,50 @@ public class EclipseLinkJavaConvert extends AbstractJavaJpaContextNode implement
 		return null;
 	}
 
+	//*************** code assist ******************
+	
+	@Override
+	public Iterator<String> javaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterator<String> result = super.javaCompletionProposals(pos, filter, astRoot);
+		if (result != null) {
+			return result;
+		}
+		if (this.convertValueTouches(pos, astRoot)) {
+			result = this.persistenceConvertersNames(filter);
+			if (result != null) {
+				return result;
+			}
+		}
+		return null;
+	}
+	
+	protected boolean convertValueTouches(int pos, CompilationUnit astRoot) {
+		if (getResourceConvert() != null) {
+			return this.getResourceConvert().valueTouches(pos, astRoot);
+		}
+		return false;
+	}
+
+	protected Iterator<String> persistenceConvertersNames() {
+		if(this.getEclipseLinkPersistenceUnit().convertersSize() == 0) {
+			return EmptyIterator.<String> instance();
+		}
+		return CollectionTools.iterator(this.getEclipseLinkPersistenceUnit().uniqueConverterNames());
+	}
+
+	private Iterator<String> convertersNames(Filter<String> filter) {
+		return new FilteringIterator<String, String>(this.persistenceConvertersNames(), filter);
+	}
+
+	protected Iterator<String> persistenceConvertersNames(Filter<String> filter) {
+		return StringTools.convertToJavaStringLiterals(this.convertersNames(filter));
+	}
+
+	protected EclipseLinkPersistenceUnit getEclipseLinkPersistenceUnit() {
+		return (EclipseLinkPersistenceUnit) this.getPersistenceUnit();
+	}
+	
+	//****************** validation ********************
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);

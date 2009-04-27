@@ -18,13 +18,8 @@ import org.eclipse.jpt.core.internal.context.java.AbstractJavaBasicMapping;
 import org.eclipse.jpt.eclipselink.core.context.Convert;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkBasicMapping;
 import org.eclipse.jpt.eclipselink.core.context.Mutable;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.resource.java.ConvertAnnotation;
 import org.eclipse.jpt.utility.Filter;
-import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.StringTools;
-import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
-import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -90,44 +85,15 @@ public class EclipseLinkJavaBasicMappingImpl
 		if (result != null) {
 			return result;
 		}
-		if (this.convertValueTouches(pos, astRoot)) {
-			result = this.persistenceConvertersNames(filter);
+		if (getConverter() != null) {
+			result = getConverter().javaCompletionProposals(pos, filter, astRoot);
 			if (result != null) {
 				return result;
 			}
 		}
 		return null;
 	}
-	
-	protected boolean convertValueTouches(int pos, CompilationUnit astRoot) {
-		if (getResourceConvert() != null) {
-			return this.getResourceConvert().valueTouches(pos, astRoot);
-		}
-		return false;
-	}
 
-	protected ConvertAnnotation getResourceConvert() {
-		return (ConvertAnnotation) this.resourcePersistentAttribute.getSupportingAnnotation(ConvertAnnotation.ANNOTATION_NAME);
-	}
-
-	protected Iterator<String> persistenceConvertersNames() {
-		if(this.getEclipseLinkPersistenceUnit().convertersSize() == 0) {
-			return EmptyIterator.<String> instance();
-		}
-		return (Iterator<String>)CollectionTools.iterator(this.getEclipseLinkPersistenceUnit().uniqueConverterNames());
-	}
-
-	private Iterator<String> convertersNames(Filter<String> filter) {
-		return new FilteringIterator<String, String>(this.persistenceConvertersNames(), filter);
-	}
-
-	protected Iterator<String> persistenceConvertersNames(Filter<String> filter) {
-		return StringTools.convertToJavaStringLiterals(this.convertersNames(filter));
-	}
-
-	protected EclipseLinkPersistenceUnit getEclipseLinkPersistenceUnit() {
-		return (EclipseLinkPersistenceUnit) this.getPersistenceUnit();
-	}
 	
 	//************ validation ****************
 	

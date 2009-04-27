@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.context.java;
 
+import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaConverter;
@@ -18,6 +19,7 @@ import org.eclipse.jpt.eclipselink.core.context.Convert;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkIdMapping;
 import org.eclipse.jpt.eclipselink.core.context.Mutable;
 import org.eclipse.jpt.eclipselink.core.resource.java.ConvertAnnotation;
+import org.eclipse.jpt.utility.Filter;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -75,6 +77,22 @@ public class EclipseLinkJavaIdMappingImpl
 		this.mutable.update(this.resourcePersistentAttribute);
 	}
 	
+	// ********** code assist **********
+
+	@Override
+	public Iterator<String> javaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterator<String> result = super.javaCompletionProposals(pos, filter, astRoot);
+		if (result != null) {
+			return result;
+		}
+		if (getConverter() != null) {
+			result = getConverter().javaCompletionProposals(pos, filter, astRoot);
+			if (result != null) {
+				return result;
+			}
+		}
+		return null;
+	}
 	
 	//************ validation ****************
 	
