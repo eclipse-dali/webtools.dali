@@ -379,6 +379,10 @@ public abstract class AbstractJavaPersistentType
 
 	public void update(JavaResourcePersistentType jrpt) {
 		this.resourcePersistentType = jrpt;
+		this.update();
+	}
+
+	public void update() {
 		this.getJpaFile(this.resourcePersistentType.getFile()).addRootStructureNode(this.resourcePersistentType.getQualifiedName(), this);
 		this.setParentPersistentType(this.buildParentPersistentType());
 		this.setName(this.buildName());	

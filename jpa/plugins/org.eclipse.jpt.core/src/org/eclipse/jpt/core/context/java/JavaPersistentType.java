@@ -15,7 +15,7 @@ import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 
 /**
- * 
+ * Context Java persistent type.
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -23,7 +23,8 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface JavaPersistentType extends PersistentType, JavaJpaContextNode
+public interface JavaPersistentType
+	extends PersistentType, JavaJpaContextNode
 {
 	JavaTypeMapping getMapping();
 	
@@ -47,9 +48,15 @@ public interface JavaPersistentType extends PersistentType, JavaJpaContextNode
 	JavaResourcePersistentType getResourcePersistentType();
 
 	/**
-	 * Update the JavaPersistentType context model object to match the JavaResourcePersistentType 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 * Synchronize the Java persistent type with the specified resource type.
+	 * @see org.eclipse.jpt.core.JpaProject#update()
 	 */
 	void update(JavaResourcePersistentType jrpt);
+
+	/**
+	 * Re-synchronize the Java persistent type with its resource type.
+	 * @see org.eclipse.jpt.core.JpaProject#update()
+	 */
+	void update();
 
 }

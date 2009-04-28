@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.java;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.jpt.core.JpaStructureNode;
@@ -19,6 +20,10 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
+ * A JAR file identified by a persistence.xml 'jar-file' element.
+ * Holds persistent types corresponding to all the "persistable" types
+ * discovered in the JAR.
+ * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -28,9 +33,28 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 public interface JarFile
 	extends JpaContextNode, JpaStructureNode
 {
+	/**
+	 * Return the JAR file's Java persistent types.
+	 */
+	Iterator<JavaPersistentType> javaPersistentTypes();
+		String JAVA_PERSISTENT_TYPES_COLLECTION = "javaPersistentTypes"; //$NON-NLS-1$
 
+	/**
+	 * Return the size of the JAR file's Java persistent types.
+	 */
+	int javaPersistentTypesSize();
+
+	/**
+	 * Return the persistent type with the specified name.
+	 * Return null if the persistent type is not found.
+	 */
 	PersistentType getPersistentType(String typeName);
 
+	/**
+	 * Synchronize the context JAR file to the specified Java package fragment
+	 * root.
+	 * @see org.eclipse.jpt.core.JpaProject#update()
+	 */
 	void update(JavaResourcePackageFragmentRoot jrpfr);
 
 	/**

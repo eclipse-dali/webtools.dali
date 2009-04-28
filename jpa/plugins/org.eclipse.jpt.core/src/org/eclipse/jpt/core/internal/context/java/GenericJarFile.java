@@ -9,9 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
+
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaNode;
@@ -26,7 +28,9 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePackageFragmentRoot;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.HashBag;
 import org.eclipse.jpt.utility.internal.iterables.CloneIterable;
+import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.jst.j2ee.model.internal.validation.ValidationCancelledException;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -90,7 +94,7 @@ public class GenericJarFile
 
 	// ********** JarFile implementation **********
 
-	public PersistentType getPersistentType(String typeName) {
+	public JavaPersistentType getPersistentType(String typeName) {
 		for (JavaPersistentType pt : this.getJavaPersistentTypes()) {
 			if (pt.getName().equals(typeName)) {
 				return pt;
@@ -99,8 +103,26 @@ public class GenericJarFile
 		return null;
 	}
 
+	public Iterator<JavaPersistentType> javaPersistentTypes() {
+		return new CloneIterator<JavaPersistentType>(this.javaPersistentTypes);
+	}
+
 	protected Iterable<JavaPersistentType> getJavaPersistentTypes() {
 		return new CloneIterable<JavaPersistentType>(this.javaPersistentTypes);
+	}
+
+	public int javaPersistentTypesSize() {
+		return this.javaPersistentTypes.size();
+	}
+
+	protected JavaPersistentType addJavaPersistentType(JavaResourcePersistentType jrpt) {
+		JavaPersistentType javaPersistentType = this.buildJavaPersistentType(jrpt);
+		this.addItemToCollection(javaPersistentType, this.javaPersistentTypes, JAVA_PERSISTENT_TYPES_COLLECTION);
+		return javaPersistentType;
+	}
+
+	protected void removeJavaPersistentType(JavaPersistentType javaPersistentType ) {
+		this.removeItemFromCollection(javaPersistentType, this.javaPersistentTypes, JAVA_PERSISTENT_TYPES_COLLECTION);
 	}
 
 
@@ -116,7 +138,7 @@ public class GenericJarFile
 	}
 	
 	
-	// **************** JpaNode impl *******************************************
+	// ********** JpaNode implementation **********
 	
 	@Override
 	public IResource getResource() {
@@ -128,6 +150,37 @@ public class GenericJarFile
 
 	public void update(JavaResourcePackageFragmentRoot jrpfr) {
 		this.jarResourcePackageFragmentRoot = jrpfr;
+		this.updateJavaPersistentTypes();
+	}
+
+	protected void updateJavaPersistentTypes() {
+		HashBag<JavaPersistentType> contextTypesToRemove = CollectionTools.bag(this.javaPersistentTypes(), this.javaPersistentTypes.size());
+		ArrayList<JavaPersistentType> contextTypesToUpdate = new ArrayList<JavaPersistentType>(this.javaPersistentTypes.size());
+
+		for (Iterator<JavaResourcePersistentType> resourceTypes = this.jarResourcePackageFragmentRoot.persistableTypes(); resourceTypes.hasNext(); ) {
+			JavaResourcePersistentType resourceType = resourceTypes.next();
+			boolean match = false;
+			for (Iterator<JavaPersistentType> contextTypes = contextTypesToRemove.iterator(); contextTypes.hasNext(); ) {
+				JavaPersistentType contextType = contextTypes.next();
+				if (contextType.getResourcePersistentType() == resourceType) {
+					contextTypes.remove();
+					contextTypesToUpdate.add(contextType);
+					match = true;
+					break;
+				}
+			}
+			if ( ! match) {
+				this.addJavaPersistentType(resourceType);
+			}
+		}
+		for (JavaPersistentType contextType : contextTypesToRemove) {
+			this.removeJavaPersistentType(contextType);
+		}
+		// handle adding and removing java persistent types first, update the
+		// remaining java persistent types last; this reduces the churn during "update"
+		for (JavaPersistentType contextType : contextTypesToUpdate) {
+			contextType.update();
+		}
 	}
 
 
