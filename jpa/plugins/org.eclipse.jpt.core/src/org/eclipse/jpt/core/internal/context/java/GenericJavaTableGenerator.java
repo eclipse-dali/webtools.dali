@@ -22,6 +22,7 @@ import org.eclipse.jpt.core.resource.java.TableGeneratorAnnotation;
 import org.eclipse.jpt.core.resource.java.UniqueConstraintAnnotation;
 import org.eclipse.jpt.db.Database;
 import org.eclipse.jpt.db.Schema;
+import org.eclipse.jpt.db.SchemaContainer;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -466,7 +467,8 @@ public class GenericJavaTableGenerator
 	}
 
 	protected Iterator<String> candidateSchemata() {
-		return this.getDbSchemaContainer().sortedSchemaIdentifiers();
+		SchemaContainer schemaContainer = this.getDbSchemaContainer();
+		return (schemaContainer != null) ? schemaContainer.sortedSchemaIdentifiers() : EmptyIterator.<String> instance();
 	}
 
 	// ********** code assist: catalog
