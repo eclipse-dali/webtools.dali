@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -25,14 +25,12 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 public class EntityCustomizerProperties extends AbstractModel {
 
 	private Customization customization;
-	
 	private String entityName;
 
-	public static final String DESCRIPTOR_CUSTOMIZER_PROPERTY = Customization.DESCRIPTOR_CUSTOMIZER_PROPERTY;
-	
-	SimplePropertyValueModel<Customization> customizationHolder;
 	PropertyValueModel<String> descriptorCustomizerHolder;
 	PropertyChangeListener descriptorCustomizerListener;
+	
+	public static final String DESCRIPTOR_CUSTOMIZER_PROPERTY = Customization.DESCRIPTOR_CUSTOMIZER_PROPERTY;
 
 	private static final long serialVersionUID = 1L;
 
@@ -41,11 +39,16 @@ public class EntityCustomizerProperties extends AbstractModel {
 		super();
 		this.customization = customization;
 		this.entityName = entityName;
-		this.customizationHolder = new SimplePropertyValueModel<Customization>(this.customization);
-
-		this.descriptorCustomizerHolder = this.buildDescriptorCustomizerAA(this.customizationHolder);
+		
+		PropertyValueModel<Customization> customizationHolder = new SimplePropertyValueModel<Customization>(this.customization);
+		this.initialize(customizationHolder);
+		
+		this.engageListeners();
+	}
+	
+	protected void initialize(PropertyValueModel<Customization> customizationHolder) {
+		this.descriptorCustomizerHolder = this.buildDescriptorCustomizerAA(customizationHolder);
 		this.descriptorCustomizerListener = this.buildDescriptorCustomizerChangeListener();
-		this.descriptorCustomizerHolder.addPropertyChangeListener(PropertyValueModel.VALUE, this.descriptorCustomizerListener);
 	}
 
 	// ********** behavior **********
@@ -102,6 +105,14 @@ public class EntityCustomizerProperties extends AbstractModel {
 		String newDescriptorCustomizer = (String) e.getNewValue();
 		this.firePropertyChanged(DESCRIPTOR_CUSTOMIZER_PROPERTY, old, newDescriptorCustomizer);
 		return;
+	}
+
+	public void engageListeners() {
+		this.descriptorCustomizerHolder.addPropertyChangeListener(PropertyValueModel.VALUE, this.descriptorCustomizerListener);
+	}
+
+	public void disengageListeners() {
+		this.descriptorCustomizerHolder.removePropertyChangeListener(PropertyValueModel.VALUE, this.descriptorCustomizerListener);
 	}
 
 	@Override

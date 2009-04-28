@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2007, 2008 Oracle. All rights reserved.
+* Copyright (c) 2007, 2009 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -61,7 +61,6 @@ public class EntityListComposite extends Pane<Caching>
 			container,
 			EclipseLinkUiMessages.CachingEntityListComposite_groupTitle
 		);
-
 		WritablePropertyValueModel<EntityCacheProperties> entityHolder = this.buildEntityHolder();
 
 		// Entities add/remove list pane
@@ -87,13 +86,14 @@ public class EntityListComposite extends Pane<Caching>
 	private AddRemoveListPane.Adapter buildEntitiesAdapter() {
 		return new AddRemoveListPane.AbstractAdapter() {
 			public void addNewItem(ObjectListSelectionModel listSelectionModel) {
-				addEntities(listSelectionModel);
+				EntityListComposite.this.addEntities(listSelectionModel);
 			}
 
 			public void removeSelectedItems(ObjectListSelectionModel listSelectionModel) {
 				Caching caching = getSubject();
 				for (Object item : listSelectionModel.selectedValues()) {
 					EntityCacheProperties entityCaching = (EntityCacheProperties) item;
+					entityCaching.disengageListeners();
 					caching.removeEntity(entityCaching.getEntityName());
 				}
 			}
@@ -117,7 +117,7 @@ public class EntityListComposite extends Pane<Caching>
 			}
 		}
 	}
-	
+
 	private String getEntityName(String fullyQualifiedTypeName) {
 
 		Entity entity = getSubject().getPersistenceUnit().getEntity(fullyQualifiedTypeName);
@@ -186,10 +186,10 @@ public class EntityListComposite extends Pane<Caching>
 	}
 
 	private ListValueModel<EntityCacheProperties> buildEntityCachingListHolder() {
-		return new TransformationListValueModelAdapter<String, EntityCacheProperties>(buildEntitiesListHolder()) {
+		return new TransformationListValueModelAdapter<String, EntityCacheProperties>(this.buildEntitiesListHolder()) {
 			@Override
-			protected EntityCacheProperties transformItem(String item) {
-				return new EntityCacheProperties(getSubject(), item);
+			protected EntityCacheProperties transformItem(String entityName) {
+				return new EntityCacheProperties(getSubject(), entityName);
 			}
 		};
 	}

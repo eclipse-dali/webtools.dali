@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2007, 2008 Oracle. All rights reserved.
+* Copyright (c) 2007, 2009 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -60,7 +60,7 @@ public class EntityListComposite extends Pane<Customization>
 	@Override
 	protected void initialize() {
 		super.initialize();
-		entityHolder = this.buildEntityHolder();
+		this.entityHolder = this.buildEntityHolder();
 	}
 
 	@Override
@@ -77,7 +77,7 @@ public class EntityListComposite extends Pane<Customization>
 			container,
 			this.buildEntitiesAdapter(),
 			this.buildEntityCustomizationListHolder(),
-			entityHolder,
+			this.entityHolder,
 			this.buildEntityLabelProvider(),
 			null			//		EclipseLinkHelpContextIds.CUSTOMIZATION_ENTITIES
 		);
@@ -85,22 +85,23 @@ public class EntityListComposite extends Pane<Customization>
 		// Entity Customization property pane
 		EntityCustomizationPropertyComposite pane = new EntityCustomizationPropertyComposite(
 			this,
-			entityHolder,
+			this.entityHolder,
 			container
 		);
-		this.installPaneEnabler(entityHolder, pane);
+		this.installPaneEnabler(this.entityHolder, pane);
 	}
 
 	private AddRemoveListPane.Adapter buildEntitiesAdapter() {
 		return new AddRemoveListPane.AbstractAdapter() {
 			public void addNewItem(ObjectListSelectionModel listSelectionModel) {
-				addEntities(listSelectionModel);
+				EntityListComposite.this.addEntities(listSelectionModel);
 			}
 
 			public void removeSelectedItems(ObjectListSelectionModel listSelectionModel) {
 				Customization customization = getSubject();
 				for (Object item : listSelectionModel.selectedValues()) {
 					EntityCustomizerProperties entityCustomization = (EntityCustomizerProperties) item;
+					entityCustomization.disengageListeners();
 					customization.removeEntity(entityCustomization.getEntityName());
 				}
 			}
@@ -118,11 +119,10 @@ public class EntityListComposite extends Pane<Customization>
 			}
 			
 			if( ! this.getSubject().entityExists(entityName)) {
-				String entity = this.getSubject().addEntity(entityName);
-
+				this.getSubject().addEntity(entityName);
 				int index = CollectionTools.indexOf(this.getSubject().entities(), entityName);
-				EntityCustomizerProperties item = (EntityCustomizerProperties) listSelectionModel.getListModel().getElementAt(index);
-				entityHolder.setValue(item);
+				EntityCustomizerProperties entity = (EntityCustomizerProperties) listSelectionModel.getListModel().getElementAt(index);
+				this.entityHolder.setValue(entity);
 			}
 		}
 	}
@@ -195,10 +195,10 @@ public class EntityListComposite extends Pane<Customization>
 	}
 
 	private ListValueModel<EntityCustomizerProperties> buildEntityCustomizationListHolder() {
-		return new TransformationListValueModelAdapter<String, EntityCustomizerProperties>(buildEntitiesListHolder()) {
+		return new TransformationListValueModelAdapter<String, EntityCustomizerProperties>(this.buildEntitiesListHolder()) {
 			@Override
-			protected EntityCustomizerProperties transformItem(String item) {
-				return new EntityCustomizerProperties(getSubject(), item);
+			protected EntityCustomizerProperties transformItem(String entityName) {
+				return new EntityCustomizerProperties(getSubject(), entityName);
 			}
 		};
 	}

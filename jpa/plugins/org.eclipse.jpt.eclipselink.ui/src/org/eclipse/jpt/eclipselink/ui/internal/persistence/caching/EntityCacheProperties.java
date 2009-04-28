@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -35,11 +35,11 @@ public class EntityCacheProperties extends AbstractModel {
 	private PropertyValueModel<Boolean> sharedCacheHolder;
 	private PropertyChangeListener sharedCacheListener;
 
-	private static final long serialVersionUID = 1L;
-
 	public static final String CACHE_TYPE_PROPERTY = Caching.CACHE_TYPE_PROPERTY;
 	public static final String CACHE_SIZE_PROPERTY = Caching.CACHE_SIZE_PROPERTY;
 	public static final String SHARED_CACHE_PROPERTY = Caching.SHARED_CACHE_PROPERTY;
+
+	private static final long serialVersionUID = 1L;
 
 	// ********** constructors **********
 	public EntityCacheProperties(Caching caching, String entityName) {
@@ -49,20 +49,19 @@ public class EntityCacheProperties extends AbstractModel {
 		
 		PropertyValueModel<Caching> cachingHolder = new SimplePropertyValueModel<Caching>(this.caching);
 		this.initialize(cachingHolder);
+
+		this.engageListeners();
 	}
 	
 	protected void initialize(PropertyValueModel<Caching> cachingHolder) {
 		this.cacheTypeHolder = this.buildCacheTypeAA(cachingHolder);
 		this.cacheTypeListener = this.buildCacheTypeChangeListener();
-		this.cacheTypeHolder.addPropertyChangeListener(PropertyValueModel.VALUE, this.cacheTypeListener);
 
 		this.cacheSizeHolder = this.buildCacheSizeAA(cachingHolder);
 		this.cacheSizeListener = this.buildCacheSizeChangeListener();
-		this.cacheSizeHolder.addPropertyChangeListener(PropertyValueModel.VALUE, this.cacheSizeListener);
 
 		this.sharedCacheHolder = this.buildSharedCacheAA(cachingHolder);
 		this.sharedCacheListener = this.buildSharedCacheChangeListener();
-		this.sharedCacheHolder.addPropertyChangeListener(PropertyValueModel.VALUE, this.sharedCacheListener);
 	}
 	
 	// ********** behavior **********
@@ -180,6 +179,18 @@ public class EntityCacheProperties extends AbstractModel {
 				EntityCacheProperties.this.firePropertyChanged(SHARED_CACHE_PROPERTY, e.getOldValue(), e.getNewValue());
 			}
 		};
+	}
+
+	public void engageListeners() {
+		this.cacheTypeHolder.addPropertyChangeListener(PropertyValueModel.VALUE, this.cacheTypeListener);
+		this.cacheSizeHolder.addPropertyChangeListener(PropertyValueModel.VALUE, this.cacheSizeListener);
+		this.sharedCacheHolder.addPropertyChangeListener(PropertyValueModel.VALUE, this.sharedCacheListener);
+	}
+	
+	public void disengageListeners() {
+		this.cacheTypeHolder.removePropertyChangeListener(PropertyValueModel.VALUE, this.cacheTypeListener);
+		this.cacheSizeHolder.removePropertyChangeListener(PropertyValueModel.VALUE, this.cacheSizeListener);
+		this.sharedCacheHolder.removePropertyChangeListener(PropertyValueModel.VALUE, this.sharedCacheListener);
 	}
 
 	@Override
