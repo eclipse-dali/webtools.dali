@@ -2,29 +2,27 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<!-- Run date = July 23, 2008 8:59:43 -->
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
-<title>Managing the persistence.xml file</title>
  
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 5.0" />
-<meta name="date" content="2005-07-10T12:57:20+08:00" />
+<title>Managing the persistence.xml file</title>
+<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 5.1.1 Build 004" />
+<meta name="date" content="2009-05-01T8:12:43Z" />
 <meta name="robots" content="noarchive" />
 <meta name="doctitle" content="Managing the persistence.xml file" />
-<meta name="relnum" content="Release 2.0" />
+<meta name="relnum" content="Release 2.2" />
 <meta name="copyright" content="Copyright (c) 2000, 2008 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
-<!-- start-->
 <!-- contents -->
 </head>
 <body>
 <p><a id="CIHDAJID" name="CIHDAJID"></a></p>
 <div class="sect1"><!-- infolevel="all" infotype="General" -->
-<h1><a id="sthref35" name="sthref35"></a>Managing the persistence.xml file</h1>
-<p><a id="sthref36" name="sthref36"></a>When you create a project, Eclipse creates the <code>META-INF\persistence.xml</code> file in the project's directory.</p>
-<p>You can create a stub <code>persistence.xml</code> file in the META-INF directory when you create a JPA project (see <a href="task_create_new_project.htm#CIHHEJCJ">"Creating a new JPA project"</a>). You can manage this file either through the XML editor (see <a href="tasks002.htm#CIHEJAIE">"Using the XML Editor to edit the persistence.xml file"</a>) or through the <a href="reference018.htm#CIACCHID">persistence.xml Editor</a>.</p>
+<h1><a id="sthref47" name="sthref47"></a>Managing the persistence.xml file</h1>
+<p><a id="sthref48" name="sthref48"></a>When you create a project, Eclipse creates the <code>META-INF\persistence.xml</code> file in the project's directory.</p>
+<p>You can create a stub <code>persistence.xml</code> file in the META-INF directory when you create a JPA project (see <a href="task_create_new_project.htm#CIHHEJCJ">"Creating a new JPA project"</a>). You can manage this file either through the XML editor (see ) or through the <a href="ref_persistence_xmll_editor.htm#CIACCHID">persistence.xml Editor</a>.</p>
 <div align="center">
 <div class="inftblnote"><br />
 <table class="Note oac_no_warn" summary="" cellpadding="3" cellspacing="0">
@@ -32,31 +30,31 @@
 <tr>
 <td align="left">
 <p class="notep1">Note:</p>
-In additon to the General, Connection, Properties and Source pages, the persistence.xml Editor pages for projects that use the EclipseLink platform include the following:
+Depending on your JPA implementation (for example, EclipseLink), the following additional pages may be available in the persistence.xml Editor:
 <ul>
 <li>
-<p><a href="reference021.htm#CIAJAFEG">Customization</a></p>
+<p><a href="reference019.htm#CIAJAFEG">Customization</a></p>
 <p>Use this page to define change-tracking and session customizer-related properties.</p>
 </li>
 <li>
-<p><a href="reference022.htm#CIABEDCH">Caching</a></p>
+<p><a href="reference020.htm#CIABEDCH">Caching</a></p>
 <p>Use this page to define caching properties.</p>
 </li>
 <li>
-<p><a href="reference023.htm#CIABGHHI">Logging</a></p>
+<p><a href="reference021.htm#CIABGHHI">Logging</a></p>
 <p>Use this page to define logging properties.</p>
 </li>
 <li>
-<p><a href="reference024.htm#CIAFJCHE">Options</a></p>
+<p><a href="reference022.htm#CIAFJCHE">Options</a></p>
 <p>Use this page to define session and target database properties.</p>
 </li>
 <li>
-<p><a href="reference025.htm#CIACCFCB">Schema Generation</a></p>
+<p><a href="reference023.htm#CIACCFCB">Schema Generation</a></p>
 <p>Use this page to define DDL-related properties.</p>
 </li>
 </ul>
-<p>For projects using the EclipseLink platform, the Connections page also includes JDBC connection pool properties.</p>
-<p>If the project uses the Generic platform, then only the General, Connection, Properties and Source pages are available.</p>
+<p>For projects using the EclipseLink JPA implementation, the Connections page also includes JDBC connection pool properties.</p>
+<p>If the project uses the Generic platform, then only the <a href="ref_persistence_general.htm#CIACIFGJ">General</a>, <a href="reference018.htm#CIAFFJIE">Connection</a>, <a href="reference024.htm#CIAHJDFF">Properties</a> and <a href="reference025.htm#CIAHCJAH">Source</a> pages are available.</p>
 </td>
 </tr>
 </tbody>
@@ -64,12 +62,12 @@ In additon to the General, Connection, Properties and Source pages, the persiste
 <br /></div>
 <!-- class="inftblnote" --></div>
 <p>To use the <code>persistence.xml</code> Editor:</p>
-<ol start="1">
+<ol>
 <li>
-<p>Open the <code>peristence.xml</code> file. The <a href="reference019.htm#CIACIFGJ">General</a> page of the editor appears.</p>
+<p>Open the <code>peristence.xml</code> file. The <a href="ref_persistence_general.htm#CIACIFGJ">General</a> page of the editor appears.</p>
 </li>
 <li>
-<p>Use the General page to define the <code>persistence.xml</code> files <code>&lt;persistent-unit&gt;</code>-related attributes as well as the <code>&lt;provider&gt;</code>, and <code>&lt;class&gt;</code> elements (described in the following table).</p>
+<p>Use the <span class="bold">General</span> page to define the <code>persistence.xml</code> files <code>&lt;persistent-unit&gt;</code>-related attributes as well as the <code>&lt;provider&gt;</code>, and <code>&lt;class&gt;</code> elements (described in the following table).</p>
 <div align="center">
 <div class="inftblnotealso"><br />
 <table class="NoteAlso oac_no_warn" summary="" cellpadding="3" cellspacing="0">
@@ -85,6 +83,9 @@ The persistence.xml Editor's Source page enables you to view and edit the raw XM
 <!-- class="inftblnotealso" --></div>
 <div class="inftblinformal">
 <table class="Informal" summary="This table lists the properties of the persistence.xml editor." dir="ltr" border="1" width="100%" frame="hsides" rules="groups" cellpadding="3" cellspacing="0">
+<col width="29%" />
+<col width="29%" />
+<col width="*" />
 <thead>
 <tr align="left" valign="top">
 <th align="left" valign="bottom" id="r1c1-t8">Property</th>
@@ -99,7 +100,7 @@ The persistence.xml Editor's Source page enables you to view and edit the raw XM
 <td align="left" headers="r2c1-t8 r1c3-t8"><code>&lt;persistence-unit name = "&lt;Name&gt;"&gt;</code></td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r3c1-t8" headers="r1c1-t8">Persistence Provider</td>
+<td align="left" id="r3c1-t8" headers="r1c1-t8"><a id="sthref49" name="sthref49"></a>Persistence Provider</td>
 <td align="left" headers="r3c1-t8 r1c2-t8">Enter the name of the persistence provider.</td>
 <td align="left" headers="r3c1-t8 r1c3-t8"><code>&lt;provider&gt;</code></td>
 </tr>
@@ -109,28 +110,35 @@ The persistence.xml Editor's Source page enables you to view and edit the raw XM
 <td align="left" headers="r4c1-t8 r1c3-t8"><code>&lt;description&gt;</code></td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r5c1-t8" headers="r1c1-t8">Managed Classes</td>
+<td align="left" id="r5c1-t8" headers="r1c1-t8"><a id="sthref50" name="sthref50"></a>Managed Classes</td>
 <td align="left" headers="r5c1-t8 r1c2-t8">Add or remove the classes managed through the persistence unit.</td>
 <td align="left" headers="r5c1-t8 r1c3-t8"><code>&lt;class&gt;</code></td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r6c1-t8" headers="r1c1-t8">&nbsp;&nbsp;Exclude Unlisted Classes</td>
+<td align="left" id="r6c1-t8" headers="r1c1-t8">&nbsp;&nbsp;Exclude&nbsp;Unlisted&nbsp;Classes</td>
 <td align="left" headers="r6c1-t8 r1c2-t8">Select to include all annotated entity classes in the root of the persistence unit.</td>
 <td align="left" headers="r6c1-t8 r1c3-t8"><code>&lt;exclude-unlisted-classes&gt;</code></td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r7c1-t8" headers="r1c1-t8">XML Mapping Files</td>
+<td align="left" id="r7c1-t8" headers="r1c1-t8">XML&nbsp;Mapping&nbsp;Files</td>
 <td align="left" headers="r7c1-t8 r1c2-t8">Add or remove the object/relational mapping XML files define the classes managed through the persistence unit.</td>
 <td align="left" headers="r7c1-t8 r1c3-t8"><code>&lt;mapping-file&gt;</code></td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r8c1-t8" headers="r1c1-t8"><a id="sthref51" name="sthref51"></a>&nbsp;&nbsp;Exclude&nbsp;Unlisted&nbsp;EclipseLink&nbsp;XML&nbsp;Mapping&nbsp;File</td>
+<td align="left" headers="r8c1-t8 r1c2-t8">Select to include all annotated EclipseLink mapping files.
+<p><span class="bold">Note</span>: This field applies only when using EclipseLink JPA implementation</p>
+</td>
+<td align="left" headers="r8c1-t8 r1c3-t8"><code>&lt;property name="eclipselink.exclude-eclipselink-orm" value="true"/&gt;</code></td>
 </tr>
 </tbody>
 </table>
 <br /></div>
 <!-- class="inftblinformal" --></li>
 <li>
-<p>Use the <a href="reference020.htm#CIAFFJIE">Connection</a> page to define the <code>&lt;jta-data-source&gt;</code> and <code>&lt;non-jta-data-source&gt;</code> elements as follows:</p>
+<p>Use the <a href="reference018.htm#CIAFFJIE">Connection</a> page to define the <code>&lt;jta-data-source&gt;</code> and <code>&lt;non-jta-data-source&gt;</code> elements as follows:</p>
 <p>To configure the JTA (Java Transaction API) source used by the persistence provider:</p>
-<ol start="1">
+<ol>
 <li>
 <p>Select <span class="bold">JTA</span> from the Transaction Type list.</p>
 </li>
@@ -139,7 +147,7 @@ The persistence.xml Editor's Source page enables you to view and edit the raw XM
 </li>
 </ol>
 <p>To configure a non-JTA data source:</p>
-<ol start="1">
+<ol>
 <li>
 <p>Select <span class="bold">Resource Local</span> from the Transaction Type list.</p>
 </li>
@@ -160,11 +168,12 @@ Select <span class="bold">Default()</span> to use the data source provided by th
 <!-- class="inftblnote" --></div>
 </li>
 </ol>
+<p><a id="sthref52" name="sthref52"></a>For projects using the Generic platform, you can also define the EclipseLink connection pool driver, connection pool driver, URL, user name and password.</p>
 </li>
 <li>
 <p>Use the table in the Properties page to set the vendor-specific <code>&lt;properties&gt;</code> element.</p>
 <p>To add <code>&lt;property&gt;</code> elements:</p>
-<ol start="1">
+<ol>
 <li>
 <p>Click <span class="bold">Add</span>.</p>
 </li>
@@ -190,11 +199,11 @@ If the project uses the EclipseLink platform, the connection page also includes 
 </ol>
 <img src="img/ngrelr.png" alt="Related reference" title="Related reference" /><br />
 <br />
-<a href="reference018.htm#CIACCHID">persistence.xml Editor</a>
+<a href="ref_persistence_xmll_editor.htm#CIACCHID">persistence.xml Editor</a>
 <p>&nbsp;</p>
 <img src="img/ngrelt.png" alt="Related task" title="Related task" /><br />
 <br />
-<a href="tasks002.htm#CIHEJAIE">Using the XML Editor to edit the persistence.xml file</a><br />
+<a href="tasks002.htm#CIHFEBAI">Synchronizing classes</a><br />
 <p>&nbsp;</p>
 <img src="img/ngrelc.png" alt="Related concept" title="Related concept" /><br />
 <br />
@@ -202,8 +211,11 @@ If the project uses the EclipseLink platform, the connection page also includes 
 <!-- Start Footer -->
 <div class="footer">
 <table class="simple oac_no_warn" summary="" cellspacing="0" cellpadding="0" width="100%">
+<col width="86%" />
+<col width="*" />
 <tr>
-<td align="left" width="86%"><a href="dcommon/html/cpyr.htm"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2006, 2008,&nbsp;Oracle.&nbsp;All&nbsp;rights&nbsp;reserved.</span></a></td>
+<td align="left"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2006, 2009,&nbsp;Oracle&nbsp;and/or&nbsp;its&nbsp;affiliates.&nbsp;All&nbsp;rights&nbsp;reserved.</span><br />
+<a href="dcommon/html/cpyr.htm"><span class="copyrightlogo">Legal Notices</span></a></td>
 </tr>
 </table>
 </div>

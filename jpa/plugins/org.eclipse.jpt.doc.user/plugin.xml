@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.0"?>
-<plugin name="JPA Documentation Plug-in" id="org.eclipse.jpt.doc.user" version="2.0.0" provider-name="Oracle">
+<plugin>
 	<!-- =========== -->
 	<!-- Define TOC  -->
 	<!-- =========== -->
@@ -23,7 +23,7 @@
 	<!-- Cheatsheets -->
 	<!-- =========== -->
 	<extension point="org.eclipse.ui.cheatsheets.cheatSheetContent">
-		<category name="%jpaDevelopment" id="com.jpa.category"/>
+		<category name="JPA Development" id="com.jpa.category"/>
 		<cheatsheet name="%createAJpaProject" category="com.jpa.category" contentFile="$nl$/cheatsheets/add_persistence.xml" id="org.eclipse.jpa.cheatsheet.createproject1">
 			<description>%createAJpaProjectDescription</description>
 		</cheatsheet>

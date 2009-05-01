@@ -2,82 +2,95 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<!-- Run date = July 23, 2008 8:59:49 -->
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
-<title>General information</title>
  
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 5.0" />
-<meta name="date" content="2005-07-10T12:57:20+08:00" />
+<title>Inheritance information</title>
+<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 5.1.1 Build 004" />
+<meta name="date" content="2009-05-01T8:12:51Z" />
 <meta name="robots" content="noarchive" />
-<meta name="doctitle" content="General information" />
-<meta name="relnum" content="Release 2.0" />
+<meta name="doctitle" content="Inheritance information" />
+<meta name="relnum" content="Release 2.2" />
 <meta name="copyright" content="Copyright (c) 2000, 2008 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
-<!-- start-->
 <!-- contents -->
 </head>
 <body>
-<p><a id="CACCAGGC" name="CACCAGGC"></a></p>
+<p><a id="CACFHGHE" name="CACFHGHE"></a></p>
 <div class="sect3"><!-- infolevel="all" infotype="General" -->
-<h1>General information</h1>
-<p>This table lists the General information fields available in the <span class="gui-object-title">JPA Details</span> view for each entity type.</p>
-<div class="inftblinformal">
-<table class="Informal" title="This table describes the options on the Persistence Properties view, General tab." summary="This table describes the options on the Persistence Properties view, General tab." dir="ltr" border="1" width="100%" frame="border" rules="all" cellpadding="3" cellspacing="0">
+<h1>Inheritance information</h1>
+<p><a id="sthref220" name="sthref220"></a><a id="sthref221" name="sthref221"></a>This table lists the fields available on the <span class="gui-object-title">Inheritance</span> area in the <span class="gui-object-title">JPA Details</span> view for each entity type.</p>
+<div class="inftblruleinformal">
+<table class="RuleInformal" title="This table describes the options on the Persistence Properties view, Inheritance tab." summary="This table describes the options on the Persistence Properties view, Inheritance tab." dir="ltr" border="1" width="100%" frame="border" rules="all" cellpadding="3" cellspacing="0">
+<col width="24%" />
+<col width="*" />
+<col width="23%" />
 <thead>
 <tr align="left" valign="top">
-<th align="left" valign="bottom" id="r1c1-t7">Property</th>
-<th align="left" valign="bottom" id="r1c2-t7">Description</th>
-<th align="left" valign="bottom" id="r1c3-t7">Default</th>
-<th align="left" valign="bottom" id="r1c4-t7">Available for Entity&nbsp;Type</th>
+<th align="left" valign="bottom" id="r1c1-t15">Property</th>
+<th align="left" valign="bottom" id="r1c2-t15">Description</th>
+<th align="left" valign="bottom" id="r1c3-t15">Default</th>
 </tr>
 </thead>
 <tbody>
 <tr align="left" valign="top">
-<td align="left" id="r2c1-t7" headers="r1c1-t7">Mapping Type Hyperlink</td>
-<td align="left" headers="r2c1-t7 r1c2-t7">Clicking the name of the mapping type, which is represented as a hyperlink, invokes the Mapping Type Selection dialog. Use this dialog to specify the type of entity: Mapped Superclass, Embeddable or the default mapping type.</td>
-<td align="left" headers="r2c1-t7 r1c3-t7">Entity</td>
-<td align="left" headers="r2c1-t7 r1c4-t7"><a href="tasks006.htm#BABGBIEE">Entity</a>, <a href="tasks007.htm#BABFEICE">Embeddable</a>, and <a href="tasks008.htm#BABDAGCI">Mapped superclass</a></td>
+<td align="left" id="r2c1-t15" headers="r1c1-t15">Strategy</td>
+<td align="left" headers="r2c1-t15 r1c2-t15">Specify the strategy to use when mapping a class or class hierarchy:
+<ul>
+<li>
+<p>Single table &ndash; All classes in the hierarchy are mapped to a single table.</p>
+</li>
+<li>
+<p>Joined &ndash; The root of the hierarchy is mapped to a single table; each child maps to its own table.</p>
+</li>
+<li>
+<p>Table per class &ndash; Each class is mapped to a separate table.</p>
+</li>
+</ul>
+<p>This field corresponds to the <code>@Inheritance</code> annotation.</p>
+</td>
+<td align="left" headers="r2c1-t15 r1c3-t15">Single table</td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r3c1-t7" headers="r1c1-t7">Name</td>
-<td align="left" headers="r3c1-t7 r1c2-t7">The name of this entity. By default, the class name is used as the entity name.</td>
-<td align="left" headers="r3c1-t7 r1c3-t7"><br /></td>
-<td align="left" headers="r3c1-t7 r1c4-t7"><a href="tasks006.htm#BABGBIEE">Entity</a><br /></td>
+<td align="left" id="r3c1-t15" headers="r1c1-t15"><a id="sthref222" name="sthref222"></a><a id="sthref223" name="sthref223"></a>Discriminator Value</td>
+<td align="left" headers="r3c1-t15 r1c2-t15">Specify the discriminator value used to differentiate an entity in this inheritance hierarchy. The value must conform to the specified <span class="bold">Discriminator Type</span>.</td>
+<td align="left" headers="r3c1-t15 r1c3-t15"><br /></td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r4c1-t7" headers="r1c1-t7">Table</td>
-<td align="left" headers="r4c1-t7 r1c2-t7">The default database table information for this entity. These fields can be overridden by the information in the <a href="reference010.htm#CACIJBGH">Attribute overrides</a> area.</td>
-<td align="left" headers="r4c1-t7 r1c3-t7"><br /></td>
-<td align="left" headers="r4c1-t7 r1c4-t7"><a href="tasks006.htm#BABGBIEE">Entity</a><br /></td>
+<td align="left" id="r4c1-t15" headers="r1c1-t15"><a id="sthref224" name="sthref224"></a><a id="sthref225" name="sthref225"></a>Discriminator Column</td>
+<td align="left" headers="r4c1-t15 r1c2-t15">These fields are available when using a <span class="bold">Single</span> or <span class="bold">Joined</span> inheritance strategy.
+<p>This field corresponds to the <code>@DiscriminatorColumn</code> annotation.</p>
+<p>Use the <span class="bold">Details</span> area to define the <span class="bold">Length</span> and <span class="bold">Column definition</span> of this Discriminator Column.</p>
+</td>
+<td align="left" headers="r4c1-t15 r1c3-t15"><br /></td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r5c1-t7" headers="r1c1-t7">&nbsp;&nbsp;Name</td>
-<td align="left" headers="r5c1-t7 r1c2-t7">The name of the primary database table associated with the entity.</td>
-<td align="left" headers="r5c1-t7 r1c3-t7"><br /></td>
-<td align="left" headers="r5c1-t7 r1c4-t7"><a href="tasks006.htm#BABGBIEE">Entity</a><br /></td>
+<td align="left" id="r5c1-t15" headers="r1c1-t15">&nbsp;&nbsp;Name</td>
+<td align="left" headers="r5c1-t15 r1c2-t15">Name of the discriminator column</td>
+<td align="left" headers="r5c1-t15 r1c3-t15"><br /></td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r6c1-t7" headers="r1c1-t7">&nbsp;&nbsp;Catalog</td>
-<td align="left" headers="r6c1-t7 r1c2-t7">The database catalog that contains the <span class="bold">Table</span>.</td>
-<td align="left" headers="r6c1-t7 r1c3-t7">As defined in <code>orm.xml</code>.</td>
-<td align="left" headers="r6c1-t7 r1c4-t7"><a href="tasks006.htm#BABGBIEE">Entity</a><br /></td>
+<td align="left" id="r6c1-t15" headers="r1c1-t15">&nbsp;&nbsp;Type</td>
+<td align="left" headers="r6c1-t15 r1c2-t15">Set this field to set the discriminator type to <code>Char</code> or <code>Integer</code> (instead of its default: <code>String</code>). The <span class="bold">Discriminator Value</span> must conform to this type.</td>
+<td align="left" headers="r6c1-t15 r1c3-t15">String</td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r7c1-t7" headers="r1c1-t7">&nbsp;&nbsp;Schema</td>
-<td align="left" headers="r7c1-t7 r1c2-t7">The database schema that contains the <span class="bold">Table</span>.</td>
-<td align="left" headers="r7c1-t7 r1c3-t7">As defined in <code>orm.xml</code>.</td>
-<td align="left" headers="r7c1-t7 r1c4-t7"><a href="tasks006.htm#BABGBIEE">Entity</a><br /></td>
+<td align="left" id="r7c1-t15" headers="r1c1-t15">Primary Key Join Columns</td>
+<td align="left" headers="r7c1-t15 r1c2-t15">Use to override the default primary key join columns. Select <span class="bold">Override Default</span>, then click <span class="bold">Add</span> to select new Join Column.
+<p>This field corresponds with @PrimaryKeyJoinColumn annotation.</p>
+</td>
+<td align="left" headers="r7c1-t15 r1c3-t15"><br /></td>
 </tr>
 </tbody>
 </table>
 <br /></div>
-<!-- class="inftblinformal" -->
+<!-- class="inftblruleinformal" -->
 <p>&nbsp;</p>
 <img src="img/ngrelt.png" alt="Related task" title="Related task" /><br />
 <br />
+<a href="task_inheritance.htm#CIHCCCJD">Specifying entity inheritance</a><br />
 <a href="task_add_persistence.htm#BABHICAI">Adding persistence to a class</a>
 <p>&nbsp;</p>
 <img src="img/ngrelr.png" alt="Related reference" title="Related reference" /><br />
@@ -87,8 +100,11 @@
 <!-- Start Footer -->
 <div class="footer">
 <table class="simple oac_no_warn" summary="" cellspacing="0" cellpadding="0" width="100%">
+<col width="86%" />
+<col width="*" />
 <tr>
-<td align="left" width="86%"><a href="dcommon/html/cpyr.htm"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2006, 2008,&nbsp;Oracle.&nbsp;All&nbsp;rights&nbsp;reserved.</span></a></td>
+<td align="left"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2006, 2009,&nbsp;Oracle&nbsp;and/or&nbsp;its&nbsp;affiliates.&nbsp;All&nbsp;rights&nbsp;reserved.</span><br />
+<a href="dcommon/html/cpyr.htm"><span class="copyrightlogo">Legal Notices</span></a></td>
 </tr>
 </table>
 </div>

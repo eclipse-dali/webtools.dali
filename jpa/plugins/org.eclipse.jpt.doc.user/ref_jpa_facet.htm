@@ -2,21 +2,19 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<!-- Run date = July 23, 2008 8:59:49 -->
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
-<title>JPA Facet page</title>
  
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 5.0" />
-<meta name="date" content="2005-07-10T12:57:20+08:00" />
+<title>JPA Facet page</title>
+<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 5.1.1 Build 004" />
+<meta name="date" content="2009-05-01T8:12:49Z" />
 <meta name="robots" content="noarchive" />
 <meta name="doctitle" content="JPA Facet page" />
-<meta name="relnum" content="Release 2.0" />
+<meta name="relnum" content="Release 2.2" />
 <meta name="copyright" content="Copyright (c) 2000, 2008 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
-<!-- start-->
 <!-- contents -->
 </head>
 <body>
@@ -26,61 +24,96 @@
 <p>This table lists the properties available on the JPA Facet page of the <a href="ref_new_jpa_project_wizard.htm#CACBJGBG">Create New JPA Project wizard</a>.</p>
 <div class="inftblinformal">
 <table class="Informal" title="This table describes the options on the Generate DDL - Objects page." summary="This table describes the options on the Generate DDL - Objects page." dir="ltr" border="1" width="100%" frame="border" rules="all" cellpadding="3" cellspacing="0">
+<col width="24%" />
+<col width="*" />
+<col width="25%" />
 <thead>
 <tr align="left" valign="top">
-<th align="left" valign="bottom" id="r1c1-t3">Property</th>
-<th align="left" valign="bottom" id="r1c2-t3">Description</th>
-<th align="left" valign="bottom" id="r1c3-t3">Default</th>
+<th align="left" valign="bottom" id="r1c1-t4">Property</th>
+<th align="left" valign="bottom" id="r1c2-t4">Description</th>
+<th align="left" valign="bottom" id="r1c3-t4">Default</th>
 </tr>
 </thead>
 <tbody>
 <tr align="left" valign="top">
-<td align="left" id="r2c1-t3" headers="r1c1-t3">Platform</td>
-<td align="left" headers="r2c1-t3 r1c2-t3">Vendor-specific JPA implementation.</td>
-<td align="left" headers="r2c1-t3 r1c3-t3">EclipseLink</td>
+<td align="left" id="r2c1-t4" headers="r1c1-t4">Platform</td>
+<td align="left" headers="r2c1-t4 r1c2-t4">Vendor-specific JPA implementation.</td>
+<td align="left" headers="r2c1-t4 r1c3-t4">EclipseLink</td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r3c1-t3" headers="r1c1-t3">Connection</td>
-<td align="left" headers="r3c1-t3 r1c2-t3">Select the database connection to use with the project. Dali requires an active database connection to use and validate the persistent entities and mappings.
+<td align="left" id="r3c1-t4" headers="r1c1-t4"><a id="sthref190" name="sthref190"></a><a id="sthref191" name="sthref191"></a>JPA Implementation</td>
+<td align="left" headers="r3c1-t4 r1c2-t4">Select a specific JPA library configuration.
+<p>Click <span class="bold">Manage libraries</span> to create or update a user library.</p>
+<p>Click <span class="bold">Download libraries</span> to download a specific library configuration.</p>
+</td>
+<td align="left" headers="r3c1-t4 r1c3-t4"><br /></td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r4c1-t4" headers="r1c1-t4">&nbsp;&nbsp;Type</td>
+<td align="left" headers="r4c1-t4 r1c2-t4">Select <span class="bold">User Library</span> to select from the available user-defined or downloaded libraries.
+<p>If you select Disable, you must manually include the JPA implementation library on the project classpath.</p>
+</td>
+<td align="left" headers="r4c1-t4 r1c3-t4">User Library</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r5c1-t4" headers="r1c1-t4">&nbsp;&nbsp;Include libraries with this application</td>
+<td align="left" headers="r5c1-t4 r1c2-t4">Specify if the selected libraries are included when deploying the application.</td>
+<td align="left" headers="r5c1-t4 r1c3-t4">Selected</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r6c1-t4" headers="r1c1-t4">Connection</td>
+<td align="left" headers="r6c1-t4 r1c2-t4">Select the database connection to use with the project. Dali requires an active database connection to use and validate the persistent entities and mappings.
 <p>Click <span class="bold">Add connection</span> to create a new database connection.</p>
 </td>
-<td align="left" headers="r3c1-t3 r1c3-t3"><br /></td>
+<td align="left" headers="r6c1-t4 r1c3-t4"><br /></td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r4c1-t3" headers="r1c1-t3">&nbsp;&nbsp;Override default schema from connection</td>
-<td align="left" headers="r4c1-t3 r1c2-t3">Select a schema other than the default one that is derived from the connection information. Use this option if the default schema cannot be used. For example, use this option when the deployment login differs from the design-time login.</td>
-<td align="left" headers="r4c1-t3 r1c3-t3">The value calculated by Dali.</td>
+<td align="left" id="r7c1-t4" headers="r1c1-t4">&nbsp;&nbsp;Override&nbsp;default schema from connection</td>
+<td align="left" headers="r7c1-t4 r1c2-t4">Select a schema other than the default one that is derived from the connection information. Use this option if the default schema cannot be used. For example, use this option when the deployment login differs from the design-time login.</td>
+<td align="left" headers="r7c1-t4 r1c3-t4">The value calculated by Dali.</td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r5c1-t3" headers="r1c1-t3">JPA Implementation</td>
-<td align="left" headers="r5c1-t3 r1c2-t3">Select to use the <span class="bold">JPA implementation provided by the server at runtime</span>, or select a specific <span class="bold">implementation library</span> that contain the Java Persistence API (JPA) and entities to be added to the project's Java Build Path.
+<td align="left" id="r8c1-t4" headers="r1c1-t4">JPA Implementation</td>
+<td align="left" headers="r8c1-t4 r1c2-t4">Select to use the <span class="bold">JPA implementation provided by the server at runtime</span>, or select a specific <span class="bold">implementation library</span> that contain the Java Persistence API (JPA) and entities to be added to the project's Java Build Path.
 <p>Click <span class="bold">Configure default JPA implementation library</span> to create a default library for the project or click <span class="bold">Configure user libraries</span> to define additional libraries.</p>
+<p>Depending on your JPA implementation (for example, Generic or EclipseLink), different options may be available when working with JPA projects.</p>
 </td>
-<td align="left" headers="r5c1-t3 r1c3-t3">Determined by server.</td>
+<td align="left" headers="r8c1-t4 r1c3-t4">Determined by server.</td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r6c1-t3" headers="r1c1-t3">Persistent class management</td>
-<td align="left" headers="r6c1-t3 r1c2-t3">Specify if Dali will <span class="bold">discover annotated classes automatically</span>, or if the <span class="bold">annotated classes must be listed in the persistence.xml</span> file.
+<td align="left" id="r9c1-t4" headers="r1c1-t4"><a id="sthref192" name="sthref192"></a>Persistent class management</td>
+<td align="left" headers="r9c1-t4 r1c2-t4">Specify if Dali will <span class="bold">discover annotated classes automatically</span>, or if the <span class="bold">annotated classes must be listed in the persistence.xml</span> file.
 <p><span class="bold">Note</span>: To insure application portability, you should explicitly list the managed persistence classes that are included in the persistence unit.</p>
 </td>
-<td align="left" headers="r6c1-t3 r1c3-t3">Determined by server.</td>
+<td align="left" headers="r9c1-t4 r1c3-t4">Determined by server.</td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r7c1-t3" headers="r1c1-t3">Create orm.xml</td>
-<td align="left" headers="r7c1-t3 r1c2-t3">Specify if Dali should create a default <code>orm.xml</code> file for your entity mappings and persistence unit defaults.</td>
-<td align="left" headers="r7c1-t3 r1c3-t3">Selected</td>
+<td align="left" id="r10c1-t4" headers="r1c1-t4"><a id="sthref193" name="sthref193"></a>Create <code>orm.xml</code></td>
+<td align="left" headers="r10c1-t4 r1c2-t4">Specify if Dali should create a default <code>orm.xml</code> file for your entity mappings and persistence unit defaults.</td>
+<td align="left" headers="r10c1-t4 r1c3-t4">Selected</td>
 </tr>
 </tbody>
 </table>
 <br /></div>
-<!-- class="inftblinformal" --></div>
+<!-- class="inftblinformal" -->
+<p>&nbsp;</p>
+<img src="img/ngrelt.png" alt="Related task" title="Related task" /><br />
+<br />
+<a href="task_create_new_project.htm#CIHHEJCJ">Creating a new JPA project</a>
+<p>&nbsp;</p>
+<img src="img/ngrelr.png" alt="Related task" title="Related task" /><br />
+<br />
+<a href="ref_new_jpa_project_wizard.htm#CACBJGBG">Create New JPA Project wizard</a></div>
 <!-- class="sect3" -->
 <!-- class="sect2" -->
 <!-- Start Footer -->
 <div class="footer">
 <table class="simple oac_no_warn" summary="" cellspacing="0" cellpadding="0" width="100%">
+<col width="86%" />
+<col width="*" />
 <tr>
-<td align="left" width="86%"><a href="dcommon/html/cpyr.htm"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2006, 2008,&nbsp;Oracle.&nbsp;All&nbsp;rights&nbsp;reserved.</span></a></td>
+<td align="left"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2006, 2009,&nbsp;Oracle&nbsp;and/or&nbsp;its&nbsp;affiliates.&nbsp;All&nbsp;rights&nbsp;reserved.</span><br />
+<a href="dcommon/html/cpyr.htm"><span class="copyrightlogo">Legal Notices</span></a></td>
 </tr>
 </table>
 </div>

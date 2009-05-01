@@ -2,62 +2,57 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<!-- Run date = July 23, 2008 8:59:48 -->
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
-<title>Generating entities from tables</title>
  
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 5.0" />
-<meta name="date" content="2005-07-10T12:57:20+08:00" />
+<title>Generating tables from entities</title>
+<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 5.1.1 Build 004" />
+<meta name="date" content="2009-05-01T8:12:48Z" />
 <meta name="robots" content="noarchive" />
-<meta name="doctitle" content="Generating entities from tables" />
-<meta name="relnum" content="Release 2.0" />
+<meta name="doctitle" content="Generating tables from entities" />
+<meta name="relnum" content="Release 2.2" />
 <meta name="copyright" content="Copyright (c) 2000, 2008 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
-<!-- start-->
 <!-- contents -->
 </head>
 <body>
-<p><a id="BABBAGFI" name="BABBAGFI"></a></p>
-<div class="sect1">
-<h1>Generating entities from tables</h1>
-<p><a id="sthref141" name="sthref141"></a><a id="sthref142" name="sthref142"></a>Use this procedure to generate Java persistent entities from database tables. You must create a JPA project and establish a database connection <span class="italic">before</span> generating persistent entities. See <a href="task_create_new_project.htm#CIHHEJCJ">"Creating a new JPA project"</a> for more information.</p>
-<ol start="1">
-<li>
-<p>Right-click the JPA project in the <span class="gui-object-title">Package Explorer</span> and select <span class="gui-object-action">JPA Tools &gt; Generate Entities</span>.</p>
-<div class="figure"><a id="sthref143" name="sthref143"></a>
-<p class="titleinfigure">Generating Entities</p>
-<img src="img/generate_entities.png" alt="Using the JPA Tools &gt; Generate Entities menu option." title="Using the JPA Tools &gt; Generate Entities menu option." /><br /></div>
-<!-- class="figure" --></li>
-<li>
-<p>If you are not currently connected to the database, the Database Connection page appears. Select your database connection and schema, and click <span class="bold">Reconnect</span>.</p>
-<p>To create a new database connection, click <span class="bold">Add connection</span>.</p>
-<p>After connecting to the database, click <span class="bold">Next</span>.</p>
-</li>
-<li>
-<p><a id="sthref144" name="sthref144"></a><a id="sthref145" name="sthref145"></a>On the <a href="task_generate_entities.htm#CACDAFJD">Generate Entities from Tables dialog</a> dialog, select the tables from which to generate Java persistent entities and click <span class="bold">Finish</span>.</p>
-</li>
-</ol>
-<p>Eclipse creates a Java persistent entity for each database table. Each entity contains fields based on the table's columns. Eclipse will also generate entity relationships (such as one-to-one) based on the table constraints. <a href="#CIHJIJJC">Figure: Generating Entities from Tables</a> illustrates how Eclipse generates entities from tables.</p>
-<div class="figure"><a id="CIHJIJJC" name="CIHJIJJC"></a>
-<p class="titleinfigure">Generating Entities from Tables</p>
-<img src="img/table_entity.png" alt="This figure shows the EMPLOYEE and ADDRESS entities generated from database tables." title="This figure shows the EMPLOYEE and ADDRESS entities generated from database tables." /><br /></div>
-<!-- class="figure" -->
+<p><a id="CIHJIGBE" name="CIHJIGBE"></a></p>
+<div class="sect1"><!-- infolevel="all" infotype="General" -->
+<h1>Generating tables from entities</h1>
+<p>When using a vendor-specific platform, you can create a DDL script from your persistent entities.</p>
+<div align="center">
+<div class="inftblnote"><br />
+<table class="Note oac_no_warn" summary="" cellpadding="3" cellspacing="0">
+<tbody>
+<tr>
+<td align="left">
+<p class="notep1">Note:</p>
+The DDL script with DROP existing tables on the database and CREATE new tables, based on the entities in your project.</td>
+</tr>
+</tbody>
+</table>
+<br /></div>
+<!-- class="inftblnote" --></div>
+<p>To generate a DDL script:</p>
+<p>Right-click the JPA project in the <span class="gui-object-title">Project Explorer</span> and select <span class="gui-object-action">JPA Tools &gt; Generate Tables from Entities</span>.</p>
 <p>&nbsp;</p>
 <img src="img/ngrelt.png" alt="Related task" title="Related task" /><br />
-<p><a href="task_create_new_project.htm#CIHHEJCJ">Creating a new JPA project</a></p>
+<p><a href="task_create_jpa_entity.htm#BABFBJBG">Creating a JPA Entity</a></p>
 <p>&nbsp;</p>
 <img src="img/ngrelr.png" alt="Related reference" title="Related reference" /><br />
 <br />
-<a href="ref_project_properties.htm#BABJHBCI">Project Properties page &ndash; JPA Options</a></div>
+<a href="ref_project_properties.htm#BABJHBCI">Project Properties page &ndash; Java Persistence Options</a></div>
 <!-- class="sect1" -->
 <!-- Start Footer -->
 <div class="footer">
 <table class="simple oac_no_warn" summary="" cellspacing="0" cellpadding="0" width="100%">
+<col width="86%" />
+<col width="*" />
 <tr>
-<td align="left" width="86%"><a href="dcommon/html/cpyr.htm"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2006, 2008,&nbsp;Oracle.&nbsp;All&nbsp;rights&nbsp;reserved.</span></a></td>
+<td align="left"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2006, 2009,&nbsp;Oracle&nbsp;and/or&nbsp;its&nbsp;affiliates.&nbsp;All&nbsp;rights&nbsp;reserved.</span><br />
+<a href="dcommon/html/cpyr.htm"><span class="copyrightlogo">Legal Notices</span></a></td>
 </tr>
 </table>
 </div>

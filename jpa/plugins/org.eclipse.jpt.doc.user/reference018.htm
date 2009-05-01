@@ -2,80 +2,182 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<!-- Run date = July 23, 2008 8:59:51 -->
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
-<title>persistence.xml Editor</title>
  
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 5.0" />
-<meta name="date" content="2005-07-10T12:57:20+08:00" />
+<title>Connection</title>
+<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 5.1.1 Build 004" />
+<meta name="date" content="2009-05-01T8:12:52Z" />
 <meta name="robots" content="noarchive" />
-<meta name="doctitle" content="persistence.xml Editor" />
-<meta name="relnum" content="Release 2.0" />
+<meta name="doctitle" content="Connection" />
+<meta name="relnum" content="Release 2.2" />
 <meta name="copyright" content="Copyright (c) 2000, 2008 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
-<!-- start-->
 <!-- contents -->
 </head>
 <body>
-<p><a id="CIACCHID" name="CIACCHID"></a></p>
-<div class="sect2"><!-- infolevel="all" infotype="General" -->
-<h1>persistence.xml Editor</h1>
-<p>The persistence.xml Editor provides an interface that enables you to update the persistence.xml file. For projects using the EclipseLink platform, the perisistence.xml Editor consists of the following pages:</p>
+<p><a id="CIAFFJIE" name="CIAFFJIE"></a></p>
+<div class="sect3"><!-- infolevel="all" infotype="General" -->
+<h1>Connection</h1>
+<p>The following table lists the properties available in the Connection page of the <a href="ref_persistence_xmll_editor.htm#CIACCHID">persistence.xml Editor</a>.</p>
+<div class="tblformal"><a id="sthref258" name="sthref258"></a><a id="sthref259" name="sthref259"></a>
+<p class="titleintable">Properties of the Connection Page</p>
+<table class="Formal" title="Properties of the Connection Page" summary="This table lists the properties for the persistence.xml editor&rsquo;s connection page." dir="ltr" border="1" width="100%" frame="hsides" rules="groups" cellpadding="3" cellspacing="0">
+<col width="24%" />
+<col width="*" />
+<col width="24%" />
+<thead>
+<tr align="left" valign="top">
+<th align="left" valign="bottom" id="r1c1-t25">Property</th>
+<th align="left" valign="bottom" id="r1c2-t25">Description</th>
+<th align="left" valign="bottom" id="r1c3-t25">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr align="left" valign="top">
+<td align="left" id="r2c1-t25" headers="r1c1-t25">
+<p>Transaction Type</p>
+</td>
+<td align="left" headers="r2c1-t25 r1c2-t25">
+<p>Specify if the connection for this persistence unit uses one of the following transaction types:</p>
 <ul>
 <li>
-<p><a href="reference019.htm#CIACIFGJ">General</a></p>
+<p><span class="bold">Default</span> -- Select to use the container used by the container.</p>
 </li>
 <li>
-<p><a href="reference020.htm#CIAFFJIE">Connection</a></p>
+<p><span class="bold">JTA</span> (Java Transaction API) -- Transactions of the Java EE server.</p>
 </li>
 <li>
-<p><a href="reference021.htm#CIAJAFEG">Customization</a></p>
-</li>
-<li>
-<p><a href="reference022.htm#CIABEDCH">Caching</a></p>
-</li>
-<li>
-<p><a href="reference023.htm#CIABGHHI">Logging</a></p>
-</li>
-<li>
-<p><a href="reference024.htm#CIAFJCHE">Options</a></p>
-</li>
-<li>
-<p><a href="reference025.htm#CIACCFCB">Schema Generation</a></p>
-</li>
-<li>
-<p><a href="reference026.htm#CIAHJDFF">Properties</a></p>
-</li>
-<li>
-<p><a href="reference027.htm#CIAHCJAH">Source</a></p>
+<p><span class="bold">Resource Local</span> -- Native actions of a JDBC driver that are referenced by a persistence unit.</p>
 </li>
 </ul>
-<p>For projects using the Generic platform, the following subset of these pages is available:</p>
+</td>
+<td align="left" headers="r2c1-t25 r1c3-t25"><br /></td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r3c1-t25" headers="r1c1-t25">
+<p>Batch Writing</p>
+</td>
+<td align="left" headers="r3c1-t25 r1c2-t25">
+<p>Specify the use of batch writing to optimize transactions with multiple write operations.</p>
+<p>Set the value of this property into the session at deployment time.</p>
+<p>Note: This property applies when used both in a Java SE and Java EE environment.</p>
+<p>The following are the valid values for oracle.toplink.config.BatchWriting:</p>
 <ul>
 <li>
-<p><a href="reference019.htm#CIACIFGJ">General</a></p>
+<p><span class="bold">JDBC</span>&ndash;Use JDBC batch writing.</p>
 </li>
 <li>
-<p><a href="reference020.htm#CIAFFJIE">Connection</a></p>
+<p><span class="bold">Buffered</span>&ndash;Do not use either JDBC batch writing nor native platform batch writing.</p>
 </li>
 <li>
-<p><a href="reference026.htm#CIAHJDFF">Properties</a></p>
+<p><span class="bold">OracleJDBC</span>&ndash;Use both JDBC batch writing and Oracle native platform batch writing.</p>
 </li>
 <li>
-<p><a href="reference027.htm#CIAHCJAH">Source</a></p>
+<p><span class="bold">None</span>&ndash;Do not use batch writing (turn it off).</p>
 </li>
 </ul>
+</td>
+<td align="left" headers="r3c1-t25 r1c3-t25">
+<p>None</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r4c1-t25" headers="r1c1-t25">
+<p>Statement caching</p>
+</td>
+<td align="left" headers="r4c1-t25 r1c2-t25"><br /></td>
+<td align="left" headers="r4c1-t25 r1c3-t25"><br /></td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r5c1-t25" headers="r1c1-t25">
+<p>Native SQL</p>
+</td>
+<td align="left" headers="r5c1-t25 r1c2-t25"><br /></td>
+<td align="left" headers="r5c1-t25 r1c3-t25">
+<p>False</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r6c1-t25" headers="r1c1-t25">
+<p>JTA Data Source Name</p>
+</td>
+<td align="left" headers="r6c1-t25 r1c2-t25">
+<p>If you selected <span class="bold">JTA</span> as the transaction type, then enter the name of the default JTA data source for the persistence unit.</p>
+</td>
+<td align="left" headers="r6c1-t25 r1c3-t25"><br /></td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r7c1-t25" headers="r1c1-t25">
+<p>Non-JTA Data Source Name</p>
+</td>
+<td align="left" headers="r7c1-t25 r1c2-t25">
+<p>If you selected <span class="bold">Resource Local</span> as the transaction type, then enter the name of the non-JTA data source.</p>
+<p>This property is not available for projects using the Generic platform.</p>
+</td>
+<td align="left" headers="r7c1-t25 r1c3-t25"><br /></td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r8c1-t25" headers="r1c1-t25">
+<p>&nbsp;&nbsp;Bind&nbsp;Parameters</p>
+</td>
+<td align="left" headers="r8c1-t25 r1c2-t25">
+<p>Control whether or not the query uses parameter binding.</p>
+<p>Note: This property applies when used in a Java SE environment.</p>
+<p>This property is not available for projects using the Generic platform.</p>
+</td>
+<td align="left" headers="r8c1-t25 r1c3-t25"><br /></td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r9c1-t25" headers="r1c1-t25">
+<p>EclipseLink Connection Pool</p>
+</td>
+<td align="left" headers="r9c1-t25 r1c2-t25">
+<p>Define the connection pool driver, URL, user name and password.</p>
+<p>These properties are note available for projects using the Generic platform.</p>
+</td>
+<td align="left" headers="r9c1-t25 r1c3-t25"><br /></td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r10c1-t25" headers="r1c1-t25">
+<p>&nbsp;&nbsp;Read&nbsp;Connection</p>
+</td>
+<td align="left" headers="r10c1-t25 r1c2-t25">
+<p>The maximum and minimum number of connections allowed in the JDBC read connection pool.</p>
+<p>Note: These property apply when used in a Java SE environment.</p>
+<p>These properties are not available for projects using the Generic platform</p>
+</td>
+<td align="left" headers="r10c1-t25 r1c3-t25"><br /></td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r11c1-t25" headers="r1c1-t25">
+<p>&nbsp;&nbsp;Write&nbsp;Connection</p>
+</td>
+<td align="left" headers="r11c1-t25 r1c2-t25">
+<p>The maximum and minimum number of connections allowed in the JDBC read connection pool.</p>
+<p>Note: These property apply when used in a Java SE environment.</p>
+<p>These properties are not available for projects using the Generic platform</p>
+</td>
+<td align="left" headers="r11c1-t25 r1c3-t25"><br /></td>
+</tr>
+</tbody>
+</table>
+<br /></div>
+<!-- class="tblformal" --></div>
+<!-- class="sect3" -->
 <!-- Start Footer -->
 <div class="footer">
 <table class="simple oac_no_warn" summary="" cellspacing="0" cellpadding="0" width="100%">
+<col width="86%" />
+<col width="*" />
 <tr>
-<td align="left" width="86%"><a href="dcommon/html/cpyr.htm"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2006, 2008,&nbsp;Oracle.&nbsp;All&nbsp;rights&nbsp;reserved.</span></a></td>
+<td align="left"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2006, 2009,&nbsp;Oracle&nbsp;and/or&nbsp;its&nbsp;affiliates.&nbsp;All&nbsp;rights&nbsp;reserved.</span><br />
+<a href="dcommon/html/cpyr.htm"><span class="copyrightlogo">Legal Notices</span></a></td>
 </tr>
 </table>
 </div>
-<!-- class="footer" --></div>
+<!-- class="footer" -->
 </body>
 </html>

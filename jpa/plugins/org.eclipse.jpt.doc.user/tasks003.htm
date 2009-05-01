@@ -2,70 +2,54 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<!-- Run date = July 23, 2008 8:59:43 -->
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
-<title>Synchronizing classes</title>
  
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 5.0" />
-<meta name="date" content="2005-07-10T12:57:20+08:00" />
+<title>Creating an orm.xml file</title>
+<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 5.1.1 Build 004" />
+<meta name="date" content="2009-05-01T8:12:44Z" />
 <meta name="robots" content="noarchive" />
-<meta name="doctitle" content="Synchronizing classes" />
-<meta name="relnum" content="Release 2.0" />
+<meta name="doctitle" content="Creating an orm.xml file" />
+<meta name="relnum" content="Release 2.2" />
 <meta name="copyright" content="Copyright (c) 2000, 2008 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
-<!-- start-->
 <!-- contents -->
 </head>
 <body>
-<p><a id="CIHFEBAI" name="CIHFEBAI"></a></p>
-<div class="sect2"><!-- infolevel="all" infotype="General" -->
-<h1>Synchronizing classes</h1>
-<p>As you work with the classes in your Java project, you will need to update the <code>persistence.xml</code> file to reflect the changes. <a id="sthref43" name="sthref43"></a><a id="sthref44" name="sthref44"></a></p>
-<p>Use this procedure to synchronize the <code>persistence.xml</code> file:</p>
-<ol start="1">
+<div class="sect2"><!-- infolevel="all" infotype="General" --><a id="sthref59" name="sthref59"></a>
+<h1>Creating an orm.xml file</h1>
+<p><a id="sthref60" name="sthref60"></a>If you opt not to create an <code>orm.xml</code> file when you create a JPA project, you can create one using the <a href="reference002.htm#CIAIJCCE">Mapping File Wizard</a>.</p>
+<p>Use this procedure to create an <code>orm.xml</code> file:</p>
+<ol>
 <li>
-<p>Right-click the <code>persistence.xml</code> file in the <span class="gui-object-title">Package Explorer</span> and select <span class="gui-object-action">JPA Tools &gt; Synchronize Classes</span>.</p>
-<div align="center">
-<div class="inftblnote"><br />
-<table class="Note oac_no_warn" summary="" cellpadding="3" cellspacing="0">
-<tbody>
-<tr>
-<td align="left">
-<p class="notep1">Note:</p>
-Use this function if you selected <span class="bold">Annotated classes must be listed in the persistence.xml option</span> in the <a href="ref_jpa_facet.htm#CACIFDIF">JPA Facet page</a>. In general, you do not have to use this function within the container.</td>
-</tr>
-</tbody>
-</table>
-<br /></div>
-<!-- class="inftblnote" --></div>
-<div class="figure"><a id="sthref45" name="sthref45"></a>
-<p class="titleinfigure">Synchronizing the persistence.xml File</p>
-<img src="img/synchornize_classes.png" alt="This figure shows the JPA Tools &gt; Synchronize Classes option." title="This figure shows the JPA Tools &gt; Synchronize Classes option." /><br /></div>
-<!-- class="figure" -->
-<p>Dali adds the necessary <code>&lt;class&gt;</code> elements to the <code>persistence.xml</code> file.</p>
-</li>
+<p>From the Navigator or Project Explorer, select <span class="bold">File &gt; New &gt; Other</span>. The Select a Wizard dialog appears.</p>
+<div class="figure"><a id="sthref61" name="sthref61"></a>
+<p class="titleinfigure">The Select a Wizard Dialog</p>
+<img src="img/select_a_wizard_mapping.png" alt="The Select a Wizard dialog with Mapping file selected." title="The Select a Wizard dialog with Mapping file selected." /><br /></div>
+<!-- class="figure" --></li>
 <li>
-<p>Use the <span class="gui-object-title">Persistence XML Editor</span> to continue editing the <code>persistence.xml</code> file.</p>
+<p>Select <span class="bold">Mapping File</span> and then click <span class="bold">Next</span>. The Mapping File page appears.</p>
+<p>If you are using EclipseLink, you can select <span class="bold">EclipseLink &gt; EclipseLink Mapping File</span>.</p>
+<div class="figure"><a id="sthref62" name="sthref62"></a>
+<p class="titleinfigure">The Mapping File Page</p>
+<img src="img/mapping_file_new.png" alt="The Mapping File page." title="The Mapping File page." /><br /></div>
+<!-- class="figure" --></li>
+<li>
+<p>Define the properties in the page and click <span class="bold">Finish</span>. The <code>orm.xml</code> file appears in the src directory of the selected JPA project. You can manage the orm.xml file using the JPA Details view or through the XML Editor. See also <a href="ref_details_orm.htm#CACGDGHC">JPA Details view (for orm.xml)</a>.</p>
 </li>
 </ol>
-<img src="img/ngrelt.png" alt="Related task" title="Related task" /><br />
-<br />
-<a href="tasks002.htm#CIHEJAIE">Using the XML Editor to edit the persistence.xml file</a>
-<p>&nbsp;</p>
-<img src="img/ngrelc.png" alt="Related concept" title="Related concept" /><br />
-<br />
-<a href="concepts002.htm#CHDHAGIH">The persistence.xml file</a><br />
-<br /></div>
+</div>
 <!-- class="sect2" -->
-<!-- class="sect1" -->
 <!-- Start Footer -->
 <div class="footer">
 <table class="simple oac_no_warn" summary="" cellspacing="0" cellpadding="0" width="100%">
+<col width="86%" />
+<col width="*" />
 <tr>
-<td align="left" width="86%"><a href="dcommon/html/cpyr.htm"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2006, 2008,&nbsp;Oracle.&nbsp;All&nbsp;rights&nbsp;reserved.</span></a></td>
+<td align="left"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2006, 2009,&nbsp;Oracle&nbsp;and/or&nbsp;its&nbsp;affiliates.&nbsp;All&nbsp;rights&nbsp;reserved.</span><br />
+<a href="dcommon/html/cpyr.htm"><span class="copyrightlogo">Legal Notices</span></a></td>
 </tr>
 </table>
 </div>

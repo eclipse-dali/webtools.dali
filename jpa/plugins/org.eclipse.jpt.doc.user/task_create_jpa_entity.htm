@@ -1,0 +1,160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+ 
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<title>Creating a JPA Entity</title>
+<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 5.1.1 Build 004" />
+<meta name="date" content="2009-05-01T8:12:42Z" />
+<meta name="robots" content="noarchive" />
+<meta name="doctitle" content="Creating a JPA Entity" />
+<meta name="relnum" content="Release 2.2" />
+<meta name="copyright" content="Copyright (c) 2000, 2008 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
+<link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
+<link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
+<!-- contents -->
+</head>
+<body>
+<p><a id="BABFBJBG" name="BABFBJBG"></a></p>
+<div class="sect1"><!-- infolevel="all" infotype="General" -->
+<h1><a id="sthref40" name="sthref40"></a>Creating a JPA Entity</h1>
+<p>Use this procedure to create a JPA entity:</p>
+<ol>
+<li>
+<p>From the Navigator or Project Explorer, select the JPA project and then <span class="bold">File &gt; New &gt; Other</span>. The Select a Wizard dialog appears.</p>
+<div class="figure"><a id="sthref41" name="sthref41"></a>
+<p class="titleinfigure">Selecting the Create a JPA Entity Wizard</p>
+<img src="img/select_a_wizard_entity.png" alt="The Select a Wizard dialog with Entity selected." title="The Select a Wizard dialog with Entity selected." /><br /></div>
+<!-- class="figure" --></li>
+<li>
+<p>Select <span class="bold">JPA &gt; Entity</span> and then click <span class="bold">Next</span>. The <a href="ref_EntityClassPage.htm#CIAFEIGF">Entity Class page</a> appears.</p>
+<div class="figure"><a id="sthref42" name="sthref42"></a>
+<p class="titleinfigure"><a id="sthref43" name="sthref43"></a>The Entity Class Page</p>
+<img src="img/create_jpa_entity_wizard.png" alt="The Entity Class page of the Create a JPA Entity wizard." title="The Entity Class page of the Create a JPA Entity wizard." /><br /></div>
+<!-- class="figure" -->
+<p>Complete this page as follows:</p>
+<ul>
+<li>
+<p>Select the JPA project in the <span class="bold">Project</span> field.</p>
+</li>
+<li>
+<p>In the <span class="bold">Source Folder</span> field, select, or enter, the location of the JPA project's <code>src</code> folder.</p>
+</li>
+<li>
+<p>Select, or enter, the name of the class package for this entity in the <span class="bold">Java Package</span> field.</p>
+</li>
+<li>
+<p>Enter the name of the Java class in the <span class="bold">Class name</span> field.</p>
+</li>
+<li>
+<p>If needed, enter, or select a superclass.</p>
+</li>
+<li>
+<p>If needed, complete the Inheritance section as follows (these properties are optional):</p>
+<ul>
+<li>
+<p>Accept the <span class="bold">Entity</span> option (the default) to create a Java class with the <code>@Entity</code> option.</p>
+</li>
+<li>
+<p>Alternatively, select <a href="tasks007.htm#BABDAGCI">Mapped superclass</a> (if you defined a super class).</p>
+</li>
+<li>
+<p>Select <span class="bold">Inheritance</span> and then select one of the JSR 220 inheritance mapping strategies (SINGLE_TABLE, TABLE_PER_CLASS, JOINED).</p>
+</li>
+<li>
+<p>Select <span class="bold">Add to entity mappings in XML</span> to create XML mappings in <code>orm.xml</code>, rather than annotations.</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>Click <span class="bold">Next</span> to proceed to the <a href="ref_EntityPropertiesPage.htm#CIADECIA">Entity Properties page</a> where you define the persistent fields for the entity.</p>
+<div class="figure"><a id="sthref44" name="sthref44"></a>
+<p class="titleinfigure"><a id="sthref45" name="sthref45"></a>The Entity Properties Page</p>
+<img src="img/create_jpa_fields.png" alt="The Entity Properties page of the Create JPA Entity wizard." title="The Entity Properties page of the Create JPA Entity wizard." /><br /></div>
+<!-- class="figure" -->
+<p>Alternatively, click <span class="bold">Finish</span> to complete the entity.</p>
+</li>
+<li>
+<p>Complete the page as follows:</p>
+<ol>
+<li>
+<p>If needed, enter a new name for the entity. Doing so results in adding a <code>name</code> attribute to the <code>@Entity</code> notation (<code>@Entity(name="EntityName")</code>).</p>
+</li>
+<li>
+<p>Accept <span class="bold">Use default</span> (the default setting) to use the default value for the name of the mapped table. Entering a different name results in adding the <code>@Table</code> notation with its <code>name</code> attribute defined as the new table (<code>@Table(name="TableName")</code>).</p>
+<div align="center">
+<div class="inftblnote"><br />
+<table class="Note oac_no_warn" summary="" cellpadding="3" cellspacing="0">
+<tbody>
+<tr>
+<td align="left">
+<p class="notep1">Note:</p>
+The Entity Name-related options are not available if you selected <a href="tasks007.htm#BABDAGCI">Mapped superclass</a> on the <a href="ref_EntityClassPage.htm#CIAFEIGF">Entity Class page</a></td>
+</tr>
+</tbody>
+</table>
+<br /></div>
+<!-- class="inftblnote" --></div>
+</li>
+<li>
+<p>Add persistence fields to the entity by clicking <span class="bold">Add</span>. The Entity Fields dialog appears.</p>
+<div class="figure"><a id="sthref46" name="sthref46"></a>
+<p class="titleinfigure">The Entity Fields Dialog</p>
+<img src="img/jpa_wizard_create_fields.png" alt="The Entity Fields dialog." title="The Entity Fields dialog." /><br /></div>
+<!-- class="figure" --></li>
+<li>
+<p>Select a persistence type from the Type list. You can retrieve additional types using the <span class="bold">Browse</span> function.</p>
+</li>
+<li>
+<p>Enter the field name and then click <span class="bold">OK</span>. Repeat this procedure for each field.</p>
+</li>
+<li>
+<p>If needed, select <span class="bold">Key</span> to designate the field as a primary key.</p>
+</li>
+<li>
+<p>Select either the <span class="bold">Field-based</span> access type (the default) or <span class="bold">Property-based</span> access type.</p>
+</li>
+</ol>
+</li>
+<li>
+<p>Click <span class="bold">Finish</span>. Eclipse adds the entity to your project.</p>
+</li>
+</ol>
+<p>&nbsp;</p>
+<img src="img/ngrelr.png" alt="Related reference" title="Related reference" /><br />
+<br />
+<a href="ref_create_jpa_entity_wizard.htm#CIAGGGDF">Create JPA Entity wizard</a><br />
+<a href="ref_new_jpa_project_wizard.htm#CACBJGBG">Create New JPA Project wizard</a><br />
+<a href="ref_persistence_perspective.htm#BABIFBDB">JPA Development perspective</a>
+<p>&nbsp;</p>
+<img src="img/ngrelt.png" alt="Related tasks" title="Related tasks" /><br />
+<br />
+<a href="task_manage_persistence.htm#CIHDAJID">Managing the persistence.xml file</a><br />
+<a href="task_add_persistence.htm#BABHICAI">Adding persistence to a class</a>
+<p>&nbsp;</p>
+<img src="img/ngrelc.png" alt="Related concept" title="Related concept" /><br />
+<br />
+<a href="concept_persistence.htm#BABCAHIC">Understanding Java persistence</a><br />
+<a href="concepts002.htm#CHDHAGIH">The persistence.xml file</a><br />
+<p>&nbsp;</p>
+</div>
+<!-- class="sect1" -->
+<!-- Start Footer -->
+<div class="footer">
+<table class="simple oac_no_warn" summary="" cellspacing="0" cellpadding="0" width="100%">
+<col width="86%" />
+<col width="*" />
+<tr>
+<td align="left"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2006, 2009,&nbsp;Oracle&nbsp;and/or&nbsp;its&nbsp;affiliates.&nbsp;All&nbsp;rights&nbsp;reserved.</span><br />
+<a href="dcommon/html/cpyr.htm"><span class="copyrightlogo">Legal Notices</span></a></td>
+</tr>
+</table>
+</div>
+<!-- class="footer" -->
+</body>
+</html>

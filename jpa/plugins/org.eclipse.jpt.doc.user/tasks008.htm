@@ -2,79 +2,61 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<!-- Run date = July 23, 2008 8:59:44 -->
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
-<title>Mapped superclass</title>
  
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 5.0" />
-<meta name="date" content="2005-07-10T12:57:20+08:00" />
+<title>Creating Named Queries</title>
+<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 5.1.1 Build 004" />
+<meta name="date" content="2009-05-01T8:12:45Z" />
 <meta name="robots" content="noarchive" />
-<meta name="doctitle" content="Mapped superclass" />
-<meta name="relnum" content="Release 2.0" />
+<meta name="doctitle" content="Creating Named Queries" />
+<meta name="relnum" content="Release 2.2" />
 <meta name="copyright" content="Copyright (c) 2000, 2008 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
-<!-- start-->
 <!-- contents -->
 </head>
 <body>
-<p><a id="BABDAGCI" name="BABDAGCI"></a></p>
-<div class="sect2"><!-- infolevel="all" infotype="General" -->
-<h1>Mapped superclass</h1>
-<p><a id="sthref72" name="sthref72"></a><a id="sthref73" name="sthref73"></a>An entity that extends a <span class="bold">Mapped Superclass</span> class inherits the persistent state and mapping information from a superclass. You should use a mapped superclass to define mapping information that is common to multiple entity classes.</p>
-<p>A mapped superclass <span class="italic">can be</span>:</p>
-<ul>
+<p><a id="BABIGBGG" name="BABIGBGG"></a></p>
+<div class="sect1"><!-- infolevel="all" infotype="General" -->
+<h1>Creating Named Queries</h1>
+<p><a id="sthref106" name="sthref106"></a><a id="sthref107" name="sthref107"></a>Named queries improve application performance because they are prepared once and they (and all of their associated supporting objects) can be efficiently reused thereafter, making them well suited for complex and frequently executed operations. Named queries use the JPA query language for portable execution on any underlying database; named native queries use the SQL language native to the underlying database.</p>
+<p>Use this procedure to add <code>@NamedQuery</code> and <code>@NamedNativeQuery</code> annotations to the entity.</p>
+<p>To create a named query:</p>
+<ol>
 <li>
-<p>Abstract or concrete classes</p>
-</li>
-</ul>
-<p>A mapped superclass <span class="italic">cannot be</span>:</p>
-<ul>
-<li>
-<p>Be queried or passed as an argument to Entity-Manager or Query operations</p>
+<p>Select the entity in the Project Explorer.</p>
 </li>
 <li>
-<p>Be the target of a persistent relationship</p>
-</li>
-</ul>
-<p>A mapped superclass does not have a defined database table. Instead, its mapping information is derived from its superclass. To override the mapping information for a specific subclass, use the <code>@AttributeOverride</code> annotation for that specific class.</p>
-<p><a id="sthref74" name="sthref74"></a><a id="sthref75" name="sthref75"></a><a id="sthref76" name="sthref76"></a><a id="sthref77" name="sthref77"></a>A mapped superclass is identified by the <code>@MappedSuperclass</code> annotation.</p>
-<p>Use this procedure to add Mapped Superclass persistence to an existing entity:</p>
-<ol start="1">
-<li>
-<p>Open the Java class in the <span class="gui-object-title">Package Explorer</span>.</p>
+<p>In the JPA Details view, expand Queries.</p>
 </li>
 <li>
-<p>Select the class in the JPA Structure view.</p>
+<p>Click <span class="bold">Add</span> for a named query, or <span class="bold">Add Native</span> for a native query.</p>
 </li>
 <li>
-<p>In the JPA Details view, click the mapping type hyperlink to open the Mapping Type Selection dialog.</p>
+<p>In the dialog that appears, enter the name of the query in the Name field and then click OK.</p>
 </li>
 <li>
-<p>Select <span class="bold">Mapped Superclass</span> and then <span class="bold">OK</span>.</p>
-<div class="figure"><a id="sthref78" name="sthref78"></a>
-<p class="titleinfigure">Mapping Type Selection Dialog (Mapped Superclass)</p>
-<img src="img/mapping_type_selection_superclass.png" alt="The Mapping Type Selection dialog with Mapped Superclass selected." title="The Mapping Type Selection dialog with Mapped Superclass selected." /><br /></div>
+<p>Enter the query in the Query field.</p>
+</li>
+<li>
+<p><a id="sthref108" name="sthref108"></a><a id="sthref109" name="sthref109"></a><a id="sthref110" name="sthref110"></a><a id="sthref111" name="sthref111"></a>To add a Query hint, click <span class="bold">Add</span>.</p>
+<div class="figure"><a id="sthref112" name="sthref112"></a>
+<p class="titleinfigure">Entering a Named Query</p>
+<img src="img/task_entering_query.png" alt="The Queries section of the JPA Details view." title="The Queries section of the JPA Details view." /><br /></div>
 <!-- class="figure" --></li>
-<li>
-<p>Complete the remaining <a href="ref_persistence_prop_view.htm#BABFAEBB">JPA Details view (for entities)</a>.</p>
-</li>
 </ol>
-<p>&nbsp;</p>
-<img src="img/ngrelt.png" alt="Related tasks" title="Related tasks" /><br />
-<br />
-<a href="task_add_persistence.htm#BABHICAI">Adding persistence to a class</a><br />
-<a href="task_additonal_tables.htm#CIHGBIEI">Specifying additional tables</a><br />
-<a href="task_inheritance.htm#CIHCCCJD">Specifying entity inheritance</a><br /></div>
-<!-- class="sect2" -->
+</div>
 <!-- class="sect1" -->
 <!-- Start Footer -->
 <div class="footer">
 <table class="simple oac_no_warn" summary="" cellspacing="0" cellpadding="0" width="100%">
+<col width="86%" />
+<col width="*" />
 <tr>
-<td align="left" width="86%"><a href="dcommon/html/cpyr.htm"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2006, 2008,&nbsp;Oracle.&nbsp;All&nbsp;rights&nbsp;reserved.</span></a></td>
+<td align="left"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2006, 2009,&nbsp;Oracle&nbsp;and/or&nbsp;its&nbsp;affiliates.&nbsp;All&nbsp;rights&nbsp;reserved.</span><br />
+<a href="dcommon/html/cpyr.htm"><span class="copyrightlogo">Legal Notices</span></a></td>
 </tr>
 </table>
 </div>

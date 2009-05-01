@@ -2,43 +2,78 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<!-- Run date = July 23, 2008 8:59:50 -->
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
-<title>Secondary table information</title>
  
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 5.0" />
-<meta name="date" content="2005-07-10T12:57:20+08:00" />
+<title>Join Table Information</title>
+<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 5.1.1 Build 004" />
+<meta name="date" content="2009-05-01T8:12:51Z" />
 <meta name="robots" content="noarchive" />
-<meta name="doctitle" content="Secondary table information" />
-<meta name="relnum" content="Release 2.0" />
+<meta name="doctitle" content="Join Table Information" />
+<meta name="relnum" content="Release 2.2" />
 <meta name="copyright" content="Copyright (c) 2000, 2008 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
-<!-- start-->
 <!-- contents -->
 </head>
 <body>
-<p><a id="CACBHIDA" name="CACBHIDA"></a></p>
+<p><a id="CACBAEBC" name="CACBAEBC"></a></p>
 <div class="sect3"><!-- infolevel="all" infotype="General" -->
-<h1>Secondary table information</h1>
-<p><a id="sthref183" name="sthref183"></a><a id="sthref184" name="sthref184"></a><a id="sthref185" name="sthref185"></a><a id="sthref186" name="sthref186"></a>Use the <span class="gui-object-title">Secondary Tables</span> area in the <span class="gui-object-title">JPA Details</span> view to associate additional tables with an entity. Use this area if the data associated with an entity is spread across multiple tables.</p>
+<h1>Join Table Information</h1>
+<p>Use area to specify a mapped column for joining an entity association. By default, the mapping is assumed to have a single join.</p>
+<p>This table lists the fields available on the <span class="gui-object-title">Join Table</span> area in <span class="gui-object-title">the JPA Details</span> view for <a href="tasks015.htm#BABHGEBD">One-to-many mapping</a> and <a href="tasks013.htm#BABEIEGD">Many-to-many mapping</a> mapping types.</p>
+<div class="inftblruleinformal">
+<table class="RuleInformal" title="This table describes the options on the Join Table tab." summary="This table describes the options on the Join Table tab." dir="ltr" border="1" width="100%" frame="border" rules="all" cellpadding="3" cellspacing="0">
+<col width="26%" />
+<col width="*" />
+<col width="34%" />
+<thead>
+<tr align="left" valign="top">
+<th align="left" valign="bottom" id="r1c1-t17">Property</th>
+<th align="left" valign="bottom" id="r1c2-t17">Description</th>
+<th align="left" valign="bottom" id="r1c3-t17">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr align="left" valign="top">
+<td align="left" id="r2c1-t17" headers="r1c1-t17">Name</td>
+<td align="left" headers="r2c1-t17 r1c2-t17">Name of the join table that contains the foreign key column.</td>
+<td align="left" headers="r2c1-t17 r1c3-t17">By default, the name is assumed to be the primary tables associated with the entities concatenated with an underscore.</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r3c1-t17" headers="r1c1-t17"><a id="CACBBDFG" name="CACBBDFG"></a>Join Columns</td>
+<td align="left" headers="r3c1-t17 r1c2-t17"><a id="sthref244" name="sthref244"></a><a id="sthref245" name="sthref245"></a>Specify a mapped column for joining an entity association. This field corresponds to the <code>@JoinColum</code> attribute.
+<p>Select <span class="bold">Override Default</span>, then Add, Edit, or Remove the join columns.</p>
+</td>
+<td align="left" headers="r3c1-t17 r1c3-t17">By default, the mapping is assumed to have a single join.</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r4c1-t17" headers="r1c1-t17">Inverse Join Columns</td>
+<td align="left" headers="r4c1-t17 r1c2-t17">Select <span class="bold">Override Default</span>, then Add, Edit, or Remove the join columns.</td>
+<td align="left" headers="r4c1-t17 r1c3-t17"><br /></td>
+</tr>
+</tbody>
+</table>
+<br /></div>
+<!-- class="inftblruleinformal" -->
 <p>&nbsp;</p>
 <img src="img/ngrelt.png" alt="Related task" title="Related task" /><br />
 <br />
-<a href="task_additonal_tables.htm#CIHGBIEI">Specifying additional tables</a><br />
-<a href="task_add_persistence.htm#BABHICAI">Adding persistence to a class</a>
+<a href="task_mapping.htm#BABDGBIJ">Mapping an entity</a>
 <p>&nbsp;</p>
-<img src="img/ngrelr.png" alt="Related reference" title="Related reference" /><br />
+<img src="img/ngrelr.png" alt="Related task" title="Related task" /><br />
 <br />
-<a href="ref_persistence_prop_view.htm#BABFAEBB">JPA Details view (for entities)</a></div>
+<a href="reference028.htm#CACCGEHC">Edit Join Columns Dialog</a></div>
 <!-- class="sect3" -->
 <!-- Start Footer -->
 <div class="footer">
 <table class="simple oac_no_warn" summary="" cellspacing="0" cellpadding="0" width="100%">
+<col width="86%" />
+<col width="*" />
 <tr>
-<td align="left" width="86%"><a href="dcommon/html/cpyr.htm"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2006, 2008,&nbsp;Oracle.&nbsp;All&nbsp;rights&nbsp;reserved.</span></a></td>
+<td align="left"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2006, 2009,&nbsp;Oracle&nbsp;and/or&nbsp;its&nbsp;affiliates.&nbsp;All&nbsp;rights&nbsp;reserved.</span><br />
+<a href="dcommon/html/cpyr.htm"><span class="copyrightlogo">Legal Notices</span></a></td>
 </tr>
 </table>
 </div>

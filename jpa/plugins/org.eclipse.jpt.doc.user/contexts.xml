@@ -416,7 +416,198 @@
 		<topic label="JPA Facet page" href="ref_jpa_facet.htm"/>
 	</context>
 
+	<context id="caching_defaultType">
+		<description>Select the default caching strategy for the project. The default is Weak with hard subcache.</description>
+		<topic label="persistence.xml editor" href="ref_persistence_xml_editor" />
+		<topic label="Managing the persistence.xml file" href="task_manage_persistence" />
+	</context>
+	<context id="caching_defaultSize">
+		<description>Select the default size of the cache. The default is 100 items.</description>
+		<topic label="persistence.xml editor" href="ref_persistence_xml_editor" />
+		<topic label="Managing the persistence.xml file" href="task_manage_persistence" />
+	</context>
+	<context id="caching_defaultShared">
+		<description>Specify if cached instances should be in the shared cache or in a client isolated cache.</description>
+		<topic label="persistence.xml editor" href="ref_persistence_xml_editor" />
+		<topic label="Managing the persistence.xml file" href="task_manage_persistence" />
+	</context>
+	<context id="logging_level">
+		<description>Specifies the amount and detail of log output by selecting the log level. Default is Info level.</description>
+		<topic label="persistence.xml editor" href="ref_persistence_xml_editor" />
+		<topic label="Managing the persistence.xml file" href="task_manage_persistence" />
+	</context>
+	<context id="logging_timeStamp">
+		<description>Control whether the timestamp is logged in each log entry. Default is True.</description>
+		<topic label="persistence.xml editor" href="ref_persistence_xml_editor" />
+		<topic label="Managing the persistence.xml file" href="task_manage_persistence" />
+	</context>
+	<context id="logging_thread">
+		<description>Control whether a thread identifier is logged in each log entry. Default is True.</description>
+		<topic label="persistence.xml editor" href="ref_persistence_xml_editor" />
+		<topic label="Managing the persistence.xml file" href="task_manage_persistence" />
+	</context>
+	<context id="logging_session">
+		<description>Control whether an EclipseLink session identifier is logged in each log entry. Default is True.</description>
+		<topic label="persistence.xml editor" href="ref_persistence_xml_editor" />
+		<topic label="Managing the persistence.xml file" href="task_manage_persistence" />
+	</context>
+	<context id="logging_exceptions">
+		<description>Control whether the exceptions thrown from within the code are logged prior to returning the exception to the calling application. Ensures that all exceptions are logged and not masked by the application code.. Default is False.</description>
+		<topic label="persistence.xml editor" href="ref_persistence_xml_editor" />
+		<topic label="Managing the persistence.xml file" href="task_manage_persistence" />
+	</context>
+	<context id="options_sessionName">
+		<description>Specify the name by which the EclipseLink session is stored in the static session manager.</description>
+		<topic label="persistence.xml editor" href="ref_persistence_xml_editor" />
+		<topic label="Managing the persistence.xml file" href="task_manage_persistence" />
+	</context>
+	<context id="options_sessionsXml">
+		<description>Specify persistence information loaded from the EclipseLink session configuration file. You can use this option as an alternative to annotations and deployment XML.</description>
+		<topic label="persistence.xml editor" href="ref_persistence_xml_editor" />
+		<topic label="Managing the persistence.xml file" href="task_manage_persistence" />
+	</context>
+	<context id="options_targetDatabase">
+		<description></description>
+		<topic label="persistence.xml editor" href="ref_persistence_xml_editor" />
+		<topic label="Managing the persistence.xml file" href="task_manage_persistence" />
+	</context>
+	<context id="options_targetServer">
+		<description> </description>
+		<topic label="persistence.xml editor" href="ref_persistence_xml_editor" />
+		<topic label="Managing the persistence.xml file" href="task_manage_persistence" />
+	</context>
+	<context id="dialog_newJPAProjectJava">
+		<description>Use this dialog to include existing Java source files in this project.</description>
+		<topic label="Java page" href="ref_java_page.htm" />
+		<topic label="New JPA Project wizard" href="ref_new_jpa_project_wizard" />
+		<topic label="Creating a new JPA project" href="task_create_new_project.htm" />
+	</context>
+	<context id="dialog_newJPAProjectFacet">
+		<description>Use this dialog to specify your vender-specific platform, JPA implementation library, and database connection.</description>
+		<topic label="JPA Facet page" href="ref_jpa_facet.htm" />
+		<topic label="New JPA Project wizard" href="ref_new_jpa_project_wizard" />
+		<topic label="Creating a new JPA project" href="task_create_new_project.htm" />
+	</context>
+	<context id="dialog_entityClassPage">
+		<description>Use this dialog to specify package, class name, and inheritance properties of the entity to create.</description>
+		<topic label="Entity Class page" href="ref_EntityClassPage.htm" />
+		<topic label="New JPA Entity wizard" href="ref_create_jpa_entity_wizard.htm" />
+		<topic label="Creating a new JPA entity" href="task_create_jpa_entity.htm" />
+	</context>
+	<context id="dialog_entityPropertiesPage">
+		<description>Use this dialog to specify the entity name, associated table, and mapped fields.</description>
+		<topic label="Entity Properties page" href="ref_EntityPropertiesPage.htm" />
+		<topic label="New JPA Entity wizard" href="ref_create_jpa_entity_wizard.htm" />
+		<topic label="Creating a new JPA entity" href="task_create_jpa_entity.htm" />
+	</context>
+	<context id="dialog_selectTablesPage">
+		<description>Use this dialog to specify the database tables from which to generate entities.</description>
+		<topic label="Select Tables page" href="ref_selectTables.htm" />
+		<topic label="Generate Custom Entities wizard" href="ref_create_custom_entities_wizard.htm" />
+	</context>	
+	<context id="dialog_tableAssociationsPage">
+		<description>Use this dialog to create or edit the association between the database table and entity.</description>
+		<topic label="Table Associations page" href="ref_tableAssociations.htm" />
+		<topic label="Generate Custom Entities wizard" href="ref_create_custom_entities_wizard.htm" />
+	</context>	
+	<context id="dialog_customizeDefaultEntityGeneration">
+		<description>Use this dialog to specify the table mapping and domain class information for the generated entity.</description>
+		<topic label="Customize Default Entity Generation page" href="ref_customizeDefaultEntityGeneration.htm" />
+		<topic label="Generate Custom Entities wizard" href="ref_create_custom_entities_wizard.htm" />
+	</context>	
+	<context id="alog_customizeIndividualEntities">
+		<description>Use this dialog to specify the table mapping and domain class information for the generated entity.</description>
+		<topic label="Customize Individual Entities page" href="ref_customizIndividualEntities.htm" />
+		<topic label="Generate Custom Entities wizard" href="ref_create_custom_entities_wizard.htm" />
+	</context>	
 
-
-
+	<context id="dialog_associationTablesPage">
+		<description>Use this dialog to specify the association tables for an entity.</description>
+		<topic label="Association Tables page" href="ref_association_tables.htm" />
+		<topic label="Create New Association wizard" href="ref_create_new_association_wizard.htm" />
+	</context>	
+	<context id="dialog_joinColumnsPage">
+		<description>Use this dialog to specify the join columns of an association table.</description>
+		<topic label="Join Columns page" href="ref_join_columns.htm" />
+		<topic label="Create New Association wizard" href="ref_create_new_association_wizard.htm" />
+	</context>	
+	<context id="dialog_associationCardinalityPage">
+		<description>Use this dialog to specify cardinality of an association table.</description>
+		<topic label="Association Cardinality page" href="ref_association_cardinality.htm" />
+		<topic label="Create New Association wizard" href="ref_create_new_association_wizard.htm" />
+	</context>	
+	<context id="dialog_selectCascade">
+		<description>Specify which operations are propagated throughout the association: All, Persist, Merge, Remove, or Refresh.</description>
+		<topic label="Select Cascade page" href="ref_select_cascade_dialog.htm"/>
+		<topic label="JPA Details" href="ref_persistence_map_view.htm"/>
+		<topic label="Mapping an entity" href="task_mapping.htm"/>
+		<topic label="Understanding OR mappings" href="concept_mapping.htm"/>
+	</context>
+	<context id="persistence_general">
+		<description>Specify the general persistence options.</description>
+		<topic label="General page" href="ref_persistence_general" />
+		<topic label="persistence.xml editor" href="ref_persistence_xml_editor" />
+		<topic label="Managing the persistence.xml file" href="task_manage_persistence" />
+	</context>
+	<context id="persistence_connection">
+		<description>Specify the data source or JDBC connection properties.</description>
+		<topic label="Connection page" href="ref_persistence_connection" />
+		<topic label="persistence.xml editor" href="ref_persistence_xml_editor" />
+		<topic label="Managing the persistence.xml file" href="task_manage_persistence" />
+	</context>
+	<context id="persistence_customization">
+		<description>Specify the default or entity specific EclipseLink customization and validation properties.</description>
+		<topic label="Customization page" href="ref_persistence_connection" />
+		<topic label="persistence.xml editor" href="ref_persistence_xml_editor" />
+		<topic label="Managing the persistence.xml file" href="task_manage_persistence" />
+	</context>
+	<context id="persistence_caching">
+		<description>Configure the session or entity specific EclipseLink caching properties.</description>
+		<topic label="Caching page" href="ref_persistence_caching" />
+		<topic label="persistence.xml editor" href="ref_persistence_xml_editor" />
+		<topic label="Managing the persistence.xml file" href="task_manage_persistence" />
+	</context>
+	<context id="persistence_logging">
+		<description>Configure the EclipseLink logging properties.</description>
+		<topic label="Logging page" href="ref_persistence_logging" />
+		<topic label="persistence.xml editor" href="ref_persistence_xml_editor" />
+		<topic label="Managing the persistence.xml file" href="task_manage_persistence" />
+	</context>
+	<context id="persistence_options">
+		<description>Configure the EclipseLink session and miscellanous options.</description>
+		<topic label="Options page" href="ref_persistence_options" />
+		<topic label="persistence.xml editor" href="ref_persistence_xml_editor" />
+		<topic label="Managing the persistence.xml file" href="task_manage_persistence" />
+	</context>
+	<context id="persistence_schemaGeneration">
+		<description>Configure the schema generation properties.</description>
+		<topic label="Schema Generation page" href="ref_persistence_schemaGeneration" />
+		<topic label="persistence.xml editor" href="ref_persistence_xml_editor" />
+		<topic label="Managing the persistence.xml file" href="task_manage_persistence" />
+	</context>
+	<context id="persistence_properties">
+		<description>Configure the properties defined for the persistence unit.</description>
+		<topic label="Properties page" href="ref_persistence_properties" />
+		<topic label="persistence.xml editor" href="ref_persistence_xml_editor" />
+		<topic label="Managing the persistence.xml file" href="task_manage_persistence" />
+	</context>
+		<context id="persistence_source">
+		<description>Configure the properties defined for the persistence unit.</description>
+		<topic label="Properties page" href="ref_persistence_properties" />
+		<topic label="persistence.xml editor" href="ref_persistence_xml_editor" />
+		<topic label="Managing the persistence.xml file" href="task_manage_persistence" />
+	</context>	
+	<context id="dialog_eclipselink_mapping_file">
+		<description>Configure the properties defined for the persistence unit.</description>
+		<topic label="New EclipseLink Mapping File page" href="ref_eclipselink_mapping_file" />
+		<topic label="persistence.xml editor" href="ref_persistence_xml_editor" />
+		<topic label="Managing the orm.xml file" href="task_manage_orm" />
+	</context>
+	<context id="dialog_create_new_converters">
+		<description>Use this dialog to create a new EclipseLink conveter.</description>
+		<topic label="Add Converter dialog" href="ref_add_converter" />
+		<topic label="Managing the orm.xml file" href="task_manage_orm" />
+	</context>
+	
+	
 </contexts>

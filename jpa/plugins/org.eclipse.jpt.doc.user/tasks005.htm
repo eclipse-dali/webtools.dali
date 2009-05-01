@@ -2,58 +2,92 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<!-- Run date = July 23, 2008 8:59:44 -->
 <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
-<title>Working with orm.xml file</title>
  
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 5.0" />
-<meta name="date" content="2005-07-10T12:57:20+08:00" />
+<title>Entity</title>
+<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 5.1.1 Build 004" />
+<meta name="date" content="2009-05-01T8:12:44Z" />
 <meta name="robots" content="noarchive" />
-<meta name="doctitle" content="Working with orm.xml file" />
-<meta name="relnum" content="Release 2.0" />
+<meta name="doctitle" content="Entity" />
+<meta name="relnum" content="Release 2.2" />
 <meta name="copyright" content="Copyright (c) 2000, 2008 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
 <link rel="stylesheet" href="dcommon/css/blafdoc.css" title="Oracle BLAFDoc" type="text/css" />
-<!-- start-->
 <!-- contents -->
 </head>
 <body>
-<p><a id="CIHBCDCE" name="CIHBCDCE"></a></p>
+<p><a id="BABGBIEE" name="BABGBIEE"></a></p>
 <div class="sect2"><!-- infolevel="all" infotype="General" -->
-<h1>Working with orm.xml file</h1>
-<p><a id="sthref51" name="sthref51"></a><a id="sthref52" name="sthref52"></a>You can work with the <code>orm.xml</code> by using the JPA Details view.</p>
-<p>Use this procedure to work with the <code>orm.xml</code> file:</p>
-<ol start="1">
+<h1>Entity</h1>
+<p><a id="sthref69" name="sthref69"></a><a id="sthref70" name="sthref70"></a><a id="sthref71" name="sthref71"></a><a id="sthref72" name="sthref72"></a>An <span class="bold">Entity</span> is a persistent domain object.</p>
+<p>An entity <span class="italic">can be</span>:</p>
+<ul>
 <li>
-<p>Right-click the <code>orm.xml</code> file in the <span class="gui-object-title">Package Explorer</span> and select <span class="gui-object-action">Open</span>.</p>
+<p>Abstract or concrete classes. Entities may also extend non-entity classes as well as entity classes, and non-entity classes may extend entity classes.</p>
+</li>
+</ul>
+<p>An entity <span class="italic">must have</span>:</p>
+<ul>
+<li>
+<p>A no-arg constructor (public or protected); the entity class may have other constructors as well.</p>
+</li>
+</ul>
+<p><a id="sthref73" name="sthref73"></a><a id="sthref74" name="sthref74"></a><a id="sthref75" name="sthref75"></a>Each persistent entity must be mapped to a database table and contain a primary key. Persistent entities are identified by the <code>@Entity</code> annotation.</p>
+<p>Use this procedure to add persistence to an existing entity:</p>
+<ol>
+<li>
+<p>Open the Java class in the <span class="gui-object-title">Project Explorer.</span></p>
 </li>
 <li>
-<p>In the JPA Structure view, select <span class="bold">EntityMappings</span>.</p>
+<p>Select the class in the JPA Structure view.</p>
 </li>
 <li>
-<p>Use the JPA Details view to configure the entity mapping and persistence unit defaults.</p>
-<div class="figure"><a id="sthref53" name="sthref53"></a>
-<p class="titleinfigure">JPA Details view for EntityMappings (orm.xml)</p>
-<img src="img/details_entitymappings.png" alt="JPA Details view for orm.xml file." title="JPA Details view for orm.xml file." /><br /></div>
+<p>In the JPA Details view, click the mapping type hyperlink to access the Mapping Type Selection dialog. In the following figure, clicking <span class="italic">entity</span> invokes the dialog from the JPA Details View.</p>
+<div class="figure"><a id="sthref76" name="sthref76"></a>
+<p class="titleinfigure">The Mapping Type Hyperlink</p>
+<img src="img/mapped_entity_type_link.png" alt="The JPA Details view for an entity showing the mapping type hyperlink." title="The JPA Details view for an entity showing the mapping type hyperlink." /><br /></div>
+<!-- class="figure" -->
+<div align="center">
+<div class="inftblnotealso"><br />
+<table class="NoteAlso oac_no_warn" summary="" cellpadding="3" cellspacing="0">
+<tbody>
+<tr>
+<td align="left">
+<p class="notep1">Tip:</p>
+You can also change (or add) persistence for an entity by right-clicking the class in the JPA Structure View and then clicking <span class="bold">Map As &gt; Entity</span>.</td>
+</tr>
+</tbody>
+</table>
+<br /></div>
+<!-- class="inftblnotealso" --></div>
+</li>
+<li>
+<p>Select <span class="bold">Entity</span> from the Mapping Type Selection dialog and then click <span class="bold">OK</span>.</p>
+<div class="figure"><a id="sthref77" name="sthref77"></a>
+<p class="titleinfigure">The Mapping Type Selection Dialog</p>
+<img src="img/mapping_type_selection_entity.png" alt="The Mapping Type selection dialog with Enity selected." title="The Mapping Type selection dialog with Enity selected." /><br /></div>
 <!-- class="figure" --></li>
+<li>
+<p>Complete the remaining <a href="ref_persistence_prop_view.htm#BABFAEBB">JPA Details view (for entities)</a>.</p>
+</li>
 </ol>
-<img src="img/ngrelt.png" alt="Related task" title="Related task" /><br />
-<br />
-<a href="#CIHBCDCE">Working with orm.xml file</a><br />
-<a href="../org.eclipse.wst.xmleditor.doc.user/topics/cworkXML.html">Working with XML Files</a><br />
 <p>&nbsp;</p>
-<img src="img/ngrelc.png" alt="Related concept" title="Related concept" /><br />
+<img src="img/ngrelt.png" alt="Related tasks" title="Related tasks" /><br />
 <br />
-<a href="concepts003.htm#CHDBIJAC">The orm.xml file</a><br /></div>
+<a href="task_add_persistence.htm#BABHICAI">Adding persistence to a class</a><br />
+<a href="task_additonal_tables.htm#CIHGBIEI">Specifying additional tables</a><br />
+<a href="task_inheritance.htm#CIHCCCJD">Specifying entity inheritance</a><br /></div>
 <!-- class="sect2" -->
-<!-- class="sect1" -->
 <!-- Start Footer -->
 <div class="footer">
 <table class="simple oac_no_warn" summary="" cellspacing="0" cellpadding="0" width="100%">
+<col width="86%" />
+<col width="*" />
 <tr>
-<td align="left" width="86%"><a href="dcommon/html/cpyr.htm"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2006, 2008,&nbsp;Oracle.&nbsp;All&nbsp;rights&nbsp;reserved.</span></a></td>
+<td align="left"><span class="copyrightlogo">Copyright&nbsp;&copy;&nbsp;2006, 2009,&nbsp;Oracle&nbsp;and/or&nbsp;its&nbsp;affiliates.&nbsp;All&nbsp;rights&nbsp;reserved.</span><br />
+<a href="dcommon/html/cpyr.htm"><span class="copyrightlogo">Legal Notices</span></a></td>
 </tr>
 </table>
 </div>
