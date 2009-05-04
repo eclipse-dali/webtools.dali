@@ -141,6 +141,18 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 				super.addPropertyNames(propertyNames);
 				propertyNames.add(TableGenerator.DEFAULT_PK_COLUMN_NAME_PROPERTY);
 				propertyNames.add(TableGenerator.SPECIFIED_PK_COLUMN_NAME_PROPERTY);
+				propertyNames.add(TableGenerator.DEFAULT_TABLE_PROPERTY);
+				propertyNames.add(TableGenerator.SPECIFIED_TABLE_PROPERTY);
+			}
+
+			@Override
+			protected void propertyChanged(String propertyName) {
+				if (propertyName == TableGenerator.DEFAULT_TABLE_PROPERTY ||
+				    propertyName == TableGenerator.SPECIFIED_TABLE_PROPERTY) {
+					this.repopulateComboBox();
+				} else {
+					super.propertyChanged(propertyName);
+				}
 			}
 
 			@Override
@@ -233,6 +245,19 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 				super.addPropertyNames(propertyNames);
 				propertyNames.add(TableGenerator.DEFAULT_SCHEMA_PROPERTY);
 				propertyNames.add(TableGenerator.SPECIFIED_SCHEMA_PROPERTY);
+				propertyNames.add(TableGenerator.DEFAULT_CATALOG_PROPERTY);
+				propertyNames.add(TableGenerator.SPECIFIED_CATALOG_PROPERTY);
+			}
+
+			@Override
+			protected void propertyChanged(String propertyName) {
+				if (propertyName == TableGenerator.DEFAULT_CATALOG_PROPERTY
+					|| propertyName == TableGenerator.SPECIFIED_CATALOG_PROPERTY ) {
+					repopulateComboBox();
+				}
+				else {
+					super.propertyChanged(propertyName);
+				}
 			}
 
 			@Override
@@ -264,10 +289,19 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 			}
 
 			@Override
-			protected SchemaContainer getDbSchemaContainer_() {
-				return this.getSubject().getDbSchemaContainer();
+			protected SchemaContainer getDbSchemaContainer() {
+				TableGenerator tg = this.getSubject();
+				if (tg != null) {
+					return tg.getDbSchemaContainer();
+				}
+				return TableGeneratorComposite.this.getSubject().getContextDefaultDbSchemaContainer();
 			}
-
+			
+			@Override
+			protected SchemaContainer getDbSchemaContainer_() {
+				// we overrode #getDbSchemaContainer() instead
+				throw new UnsupportedOperationException();
+			}
 		};
 	}
 
@@ -297,12 +331,14 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 
 			@Override
 			protected void propertyChanged(String propertyName) {
-				super.propertyChanged(propertyName);
 				if (propertyName == TableGenerator.DEFAULT_SCHEMA_PROPERTY 
 					|| propertyName == TableGenerator.SPECIFIED_SCHEMA_PROPERTY
 					|| propertyName == TableGenerator.DEFAULT_CATALOG_PROPERTY
 					|| propertyName == TableGenerator.SPECIFIED_CATALOG_PROPERTY ) {
-					repopulate();
+					repopulateComboBox();
+				}
+				else {
+					super.propertyChanged(propertyName);
 				}
 			}
 
@@ -338,7 +374,7 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 			protected Schema getDbSchema() {
 				TableGenerator tg = this.getSubject();
 				if (tg != null) {
-					tg.getDbSchema();
+					return tg.getDbSchema();
 				}
 				return TableGeneratorComposite.this.getSubject().getContextDefaultDbSchema();
 			}
@@ -361,6 +397,18 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 				super.addPropertyNames(propertyNames);
 				propertyNames.add(TableGenerator.DEFAULT_VALUE_COLUMN_NAME_PROPERTY);
 				propertyNames.add(TableGenerator.SPECIFIED_VALUE_COLUMN_NAME_PROPERTY);
+				propertyNames.add(TableGenerator.DEFAULT_TABLE_PROPERTY);
+				propertyNames.add(TableGenerator.SPECIFIED_TABLE_PROPERTY);
+			}
+
+			@Override
+			protected void propertyChanged(String propertyName) {
+				if (propertyName == TableGenerator.DEFAULT_TABLE_PROPERTY ||
+				    propertyName == TableGenerator.SPECIFIED_TABLE_PROPERTY) {
+					this.repopulateComboBox();
+				} else {
+					super.propertyChanged(propertyName);
+				}
 			}
 
 			@Override
