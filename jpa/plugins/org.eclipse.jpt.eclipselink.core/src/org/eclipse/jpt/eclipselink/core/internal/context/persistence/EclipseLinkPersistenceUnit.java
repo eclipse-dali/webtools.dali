@@ -265,6 +265,14 @@ public class EclipseLinkPersistenceUnit
 	}
 
 	@Override
+	public void postUpdate() {
+		super.postUpdate();
+		if (this.impliedEclipseLinkMappingFileRef != null) {
+			this.impliedEclipseLinkMappingFileRef.postUpdate();
+		}
+	}
+
+	@Override
 	protected void initializeMappingFileRefs() {
 		super.initializeMappingFileRefs();
 
