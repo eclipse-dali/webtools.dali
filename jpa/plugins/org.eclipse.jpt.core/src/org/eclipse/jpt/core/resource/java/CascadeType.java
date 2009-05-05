@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.resource.java;
 
+import org.eclipse.jpt.utility.internal.CollectionTools;
+
 /**
  * Corresponds to the JPA enum
  * javax.persistence.CascadeType
@@ -48,11 +50,12 @@ public enum CascadeType {
 		if (javaAnnotationValues == null) {
 			return EMPTY_CASCADE_TYPE_ARRAY;
 		}
-		int len = javaAnnotationValues.length;
-		if (len == 0) {
+		if (javaAnnotationValues.length == 0) {
 			return EMPTY_CASCADE_TYPE_ARRAY;
 		}
-
+		//nulls will exist if there is a typo in one of the enums
+		javaAnnotationValues = CollectionTools.removeAllOccurrences(javaAnnotationValues, null);
+		int len = javaAnnotationValues.length;
 		CascadeType[] cascadeTypes = new CascadeType[len];
 		for (int i = 0; i < len; i++) {
 			cascadeTypes[i] = fromJavaAnnotationValue(javaAnnotationValues[i]);
