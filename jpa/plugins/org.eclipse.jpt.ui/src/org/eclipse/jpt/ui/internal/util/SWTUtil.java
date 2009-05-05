@@ -232,7 +232,7 @@ public class SWTUtil {
 			composite.setRedraw(false);
 			composite = composite.getParent();
 
-			if (composite instanceof ScrolledForm) {
+			if (composite instanceof ScrolledForm || composite instanceof Shell) {
 				break;
 			}
 		}
@@ -251,7 +251,7 @@ public class SWTUtil {
 			composite.setRedraw(true);
 			composite = composite.getParent();
 
-			if (composite instanceof ScrolledForm) {
+			if (composite instanceof ScrolledForm || composite instanceof Shell) {
 				break;
 			}
 		}
