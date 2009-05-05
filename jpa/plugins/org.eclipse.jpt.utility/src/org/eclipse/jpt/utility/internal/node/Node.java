@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal.node;
 
-import java.text.Collator;
+import com.ibm.icu.text.Collator;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;

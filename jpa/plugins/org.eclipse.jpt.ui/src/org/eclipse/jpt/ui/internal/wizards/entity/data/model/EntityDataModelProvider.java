@@ -11,7 +11,7 @@
  ***********************************************************************/
 package org.eclipse.jpt.ui.internal.wizards.entity.data.model;
 
-import java.text.MessageFormat;
+import com.ibm.icu.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -238,7 +238,7 @@ public class EntityDataModelProvider extends NewJavaClassDataModelProvider imple
 			try {
 				sig = Signature.createTypeSignature(entityRow.getFqnTypeName(), true);
 			} catch (IllegalArgumentException e) {
-				String message = MessageFormat.format(EntityWizardMsg.EntityDataModelProvider_invalidArgument, e.getLocalizedMessage());
+				String message = MessageFormat.format(EntityWizardMsg.EntityDataModelProvider_invalidArgument, new Object[]{e.getLocalizedMessage()});
 				validateFieldTypeStatus = new Status(IStatus.ERROR, JptUiPlugin.PLUGIN_ID, message);
 				break;
 			}
@@ -270,7 +270,7 @@ public class EntityDataModelProvider extends NewJavaClassDataModelProvider imple
 			String sig = Signature.createTypeSignature(entityRow.getFqnTypeName() ,true);
 			if (sig == null) {
 				String message = MessageFormat.format(
-						EntityWizardMsg.EntityDataModelProvider_entityNotInProjectClasspath, entityRow.getFqnTypeName());
+						EntityWizardMsg.EntityDataModelProvider_entityNotInProjectClasspath, new Object[]{entityRow.getFqnTypeName()});
 				validateFieldTypeStatus = new Status(IStatus.ERROR,
 						JptUiPlugin.PLUGIN_ID, message);
 				break;
@@ -296,7 +296,7 @@ public class EntityDataModelProvider extends NewJavaClassDataModelProvider imple
 				}
 				if (type == null) {
 					String message = MessageFormat.format(
-							EntityWizardMsg.EntityDataModelProvider_entityNotInProjectClasspath, entityRow.getFqnTypeName());
+							EntityWizardMsg.EntityDataModelProvider_entityNotInProjectClasspath, new Object[]{entityRow.getFqnTypeName()});
 					validateFieldTypeStatus = new Status(IStatus.ERROR,
 							JptUiPlugin.PLUGIN_ID, message);
 					break;
@@ -314,7 +314,7 @@ public class EntityDataModelProvider extends NewJavaClassDataModelProvider imple
 				}
 				if (type == null) {
 					String message = MessageFormat.format(
-							EntityWizardMsg.EntityDataModelProvider_entityNotInProjectClasspath, entityRow.getFqnTypeName());
+							EntityWizardMsg.EntityDataModelProvider_entityNotInProjectClasspath, new Object[]{entityRow.getFqnTypeName()});
 					validateFieldTypeStatus = new Status(IStatus.ERROR,
 							JptUiPlugin.PLUGIN_ID, message);
 					break;

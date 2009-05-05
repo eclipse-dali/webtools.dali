@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.menus;
 
-import java.text.Collator;
+import com.ibm.icu.text.Collator;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;

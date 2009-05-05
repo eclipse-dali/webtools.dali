@@ -11,7 +11,7 @@
  ***********************************************************************/
 package org.eclipse.jpt.ui.internal.wizards.entity;
 
-import java.text.MessageFormat;
+import com.ibm.icu.text.MessageFormat;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import org.eclipse.osgi.util.NLS;

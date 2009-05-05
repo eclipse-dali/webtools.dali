@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.dialogs;
 
-import java.text.Collator;
+import com.ibm.icu.text.Collator;
 import java.util.Comparator;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;

@@ -12,7 +12,7 @@ package org.eclipse.jpt.utility.internal;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.sql.Types;
-import java.text.Collator;
+import com.ibm.icu.text.Collator;
 
 /**
  * Associate the Java constant and the JDBC type name.

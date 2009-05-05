@@ -13,7 +13,7 @@ import java.io.PrintWriter;
 import java.io.Serializable;
 import java.io.StringWriter;
 import java.lang.reflect.Modifier;
-import java.text.Collator;
+import com.ibm.icu.text.Collator;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;

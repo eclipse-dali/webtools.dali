@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.widgets;
 
-import java.text.Collator;
+import com.ibm.icu.text.Collator;
 import java.util.Arrays;
 import java.util.Comparator;
 import org.eclipse.jface.viewers.ComboViewer;

@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
-import java.text.Collator;
+import com.ibm.icu.text.Collator;
 import java.util.Comparator;
 import java.util.Iterator;
 import org.eclipse.core.runtime.CoreException;

@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.db.internal;
 
-import java.text.Collator;
+import com.ibm.icu.text.Collator;
 import org.eclipse.jpt.db.Sequence;
 
 /**

@@ -12,7 +12,7 @@ package org.eclipse.jpt.utility.internal;
 import java.io.PrintWriter;
 import java.io.Serializable;
 import java.lang.reflect.Method;
-import java.text.Collator;
+import com.ibm.icu.text.Collator;
 import java.util.Arrays;
 import org.eclipse.jpt.utility.JavaType;
 import org.eclipse.jpt.utility.MethodSignature;
