@@ -417,7 +417,7 @@
 	</context>
 
 	<context id="caching_defaultType">
-		<description>Select the default caching strategy for the project. The default is Weak with hard subcache.</description>
+		<description>Select the default caching strategy for the project. The default is Weak with Soft Subcache.</description>
 		<topic label="persistence.xml editor" href="ref_persistence_xml_editor" />
 		<topic label="Managing the persistence.xml file" href="task_manage_persistence" />
 	</context>
