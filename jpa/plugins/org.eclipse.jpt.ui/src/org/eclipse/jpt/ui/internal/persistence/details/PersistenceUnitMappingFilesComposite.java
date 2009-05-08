@@ -27,6 +27,7 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.ui.JptUiPlugin;
+import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.JptUiIcons;
 import org.eclipse.jpt.ui.internal.jface.XmlMappingFileViewerFilter;
 import org.eclipse.jpt.ui.internal.persistence.JptUiPersistenceMessages;
@@ -97,7 +98,8 @@ public abstract class PersistenceUnitMappingFilesComposite extends Pane<Persiste
 			buildAdapter(),
 			buildItemListHolder(),
 			buildSelectedItemHolder(),
-			buildLabelProvider()
+			buildLabelProvider(),
+			JpaHelpContextIds.PERSISTENCE_XML_GENERAL
 		) {
 			@Override
 			protected Composite addContainer(Composite parent) {

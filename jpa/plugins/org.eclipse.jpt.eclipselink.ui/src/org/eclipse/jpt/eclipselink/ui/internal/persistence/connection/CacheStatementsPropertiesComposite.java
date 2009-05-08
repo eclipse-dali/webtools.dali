@@ -11,6 +11,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.persistence.connection;
 
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.connection.Connection;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
+import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.ui.internal.widgets.IntegerCombo;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
@@ -42,7 +43,7 @@ public class CacheStatementsPropertiesComposite extends Pane<Connection>
 			container,
 			EclipseLinkUiMessages.PersistenceXmlConnectionTab_cacheStatementsLabel,
 			cacheStatementsHolder,
-			null
+			JpaHelpContextIds.PERSISTENCE_XML_CONNECTION
 		);
 		IntegerCombo<?> combo = addCacheStatementsSizeCombo(container);
 
@@ -94,7 +95,7 @@ public class CacheStatementsPropertiesComposite extends Pane<Connection>
 		
 			@Override
 			protected String getHelpId() {
-				return null;
+				return JpaHelpContextIds.PERSISTENCE_XML_CONNECTION;
 			}
 
 			@Override

@@ -14,6 +14,8 @@ import java.util.HashMap;
 
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.jpt.gen.internal2.ORMGenCustomizer;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.help.IWorkbenchHelpSystem;
 
 
 public abstract class NewAssociationWizardPage extends WizardPage {
@@ -47,5 +49,12 @@ public abstract class NewAssociationWizardPage extends WizardPage {
 	
 	public void updateWithNewTables() {
 	}
-	
+
+	/**
+	 * Returns the helps system.
+	 * @return The platform's help system
+	 */
+	protected final IWorkbenchHelpSystem getHelpSystem() {
+		return PlatformUI.getWorkbench().getHelpSystem();
+	}
 }

@@ -28,6 +28,7 @@ import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.persistence.ClassRef;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.ui.JptUiPlugin;
+import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.JpaMappingImageHelper;
 import org.eclipse.jpt.ui.internal.JptUiIcons;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
@@ -348,10 +349,11 @@ public class PersistenceUnitClassesComposite extends Pane<PersistenceUnit>
 		new AddRemoveListPane<PersistenceUnit>(
 			this,
 			container,
-			buildAdapter(),
-			buildItemListHolder(),
-			buildSelectedItemHolder(),
-			buildLabelProvider()
+			this.buildAdapter(),
+			this.buildItemListHolder(),
+			this.buildSelectedItemHolder(),
+			this.buildLabelProvider(),
+			JpaHelpContextIds.PERSISTENCE_XML_GENERAL
 		)
 		{
 			@Override
@@ -364,12 +366,12 @@ public class PersistenceUnitClassesComposite extends Pane<PersistenceUnit>
 			}
 		};
 
-		addTriStateCheckBoxWithDefault(
+		this.addTriStateCheckBoxWithDefault(
 			container,
 			JptUiPersistenceMessages.PersistenceUnitClassesComposite_excludeUnlistedMappedClasses,
 			buildExcludeUnlistedMappedClassesHolder(),
 			buildExcludeUnlistedMappedClassesStringHolder(),
-			null
+			JpaHelpContextIds.PERSISTENCE_XML_GENERAL
 		);
 	}
 

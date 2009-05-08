@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the terms of
  * the Eclipse Public License v1.0, which accompanies this distribution and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
@@ -106,17 +106,36 @@ public interface JpaHelpContextIds {
 	public static final String DIALOG_GENERATE_ENTITIES_TABLES = PREFIX + "dialog_generateEntities_tables";
 	public static final String DIALOG_JPA_FACET = PREFIX + "dialog_JPAFacet";
 	public static final String DIALOG_JPA_PLATFORM = PREFIX + "dialog_JPAPlatform";
+	
+	//New JPA Project wizard:
 	public static final String NEW_JPA_PROJECT = PREFIX + "dialog_newJPAProject";
  	public static final String NEW_JPA_PROJECT_CONTENT_PAGE_CLASSPATH = PREFIX + "dialog_addJavaPersistence_classpath";
  	public static final String NEW_JPA_PROJECT_CONTENT_PAGE_DATABASE = PREFIX + "dialog_addJavaPersistence_database";
  	public static final String NEW_JPA_PROJECT_CONTENT_PAGE_PACKAGING = PREFIX + "dialog_addJavaPersistence_packaging";
  	public static final String NEW_JPA_PROJECT_CREATION_PAGE = PREFIX + "dialog_addJavaPersistence";
+	public static final String NEW_JPA_PROJECT_JPA_FACET = PREFIX + "dialog_newJPAProjectFacet";
 
 	//Other
 	public static final String PERSISTENCE_OUTLINE = PREFIX + "persistenceOutline";
 
-	//PersistenceUnit
-	public static final String PERSISTENCE_UNIT_CONNECTION = PREFIX + "persistenceUnit_connection";
-	public static final String PERSISTENCE_UNIT_GENERAL    = PREFIX + "persistenceUnit_general";
-	public static final String PERSISTENCE_UNIT_PROPERTIES = PREFIX + "persistenceUnit_properties";
+	//Persistence Xml Editor
+	public static final String PERSISTENCE_XML_CONNECTION = PREFIX + "persistence_connection";
+	public static final String PERSISTENCE_XML_GENERAL = PREFIX + "persistence_general";
+	public static final String PERSISTENCE_XML_PROPERTIES  = PREFIX + "persistence_properties";
+	public static final String PERSISTENCE_XML_SOURCE  = PREFIX + "persistence_source";
+
+	//New JPA Entity wizard
+	public static final String NEW_JPA_ENTITY_ENTITY_CLASS  = PREFIX + "dialog_entityClassPage";
+	public static final String NEW_JPA_ENTITY_ENTITY_PROPERTIES  = PREFIX + "dialog_entityPropertiesPage";
+	
+	//Generate Entities Wizard
+	public static final String GENERATE_ENTITIES_WIZARD_ASSOCIATION_CARDINALITY = PREFIX + "dialog_associationCardinalityPage";
+	public static final String GENERATE_ENTITIES_WIZARD_ASSOCIATION_TABLES = PREFIX + "dialog_associationTablesPage";
+	public static final String GENERATE_ENTITIES_WIZARD_CUSTOMIZE_DEFAULT_ENTITY_GENERATION = PREFIX + "dialog_customizeDefaultEntityGeneration";
+	public static final String GENERATE_ENTITIES_WIZARD_CUSTOMIZE_INDIVIDUAL_ENTITIES = PREFIX + "dialog_customizeIndividualEntities";
+	public static final String GENERATE_ENTITIES_WIZARD_JOIN_COLUMNS = PREFIX + "dialog_joinColumnsPage";
+	public static final String GENERATE_ENTITIES_WIZARD_SELECT_CASCADE = PREFIX + "dialog_selectCascade";
+	public static final String GENERATE_ENTITIES_WIZARD_SELECT_TABLES = PREFIX + "dialog_selectTablesPage";
+	public static final String GENERATE_ENTITIES_WIZARD_TABLE_ASSOCIATIONS = PREFIX + "dialog_tableAssociationsPage";
+
 }

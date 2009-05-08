@@ -65,6 +65,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.help.IWorkbenchHelpSystem;
 
 class TablesSelectorWizardPage extends WizardPage{
 
@@ -125,6 +126,7 @@ class TablesSelectorWizardPage extends WizardPage{
 		GridLayout layout = new GridLayout();
 		layout.numColumns = nColumns;
 		composite.setLayout(layout);
+		this.getHelpSystem().setHelp(composite, JpaHelpContextIds.GENERATE_ENTITIES_WIZARD_SELECT_TABLES);
 
 		this.databaseGroup = createDatabaseGroup(composite, 400);
 
@@ -170,11 +172,11 @@ class TablesSelectorWizardPage extends WizardPage{
 		restoreBtn.setLayoutData(gridData);
 		
 		
-		PlatformUI.getWorkbench().getHelpSystem().setHelp(this.tableTable.getControl(), JpaHelpContextIds.DIALOG_GENERATE_ENTITIES_TABLES);
+		this.getHelpSystem().setHelp(this.tableTable.getControl(), JpaHelpContextIds.DIALOG_GENERATE_ENTITIES_TABLES);
 
-		setControl(composite);
+		this.setControl(composite);
 
-		setPageComplete(true);
+		this.setPageComplete(true);
 	}
 
 	@Override
@@ -539,6 +541,10 @@ class TablesSelectorWizardPage extends WizardPage{
     @Override
     public final void performHelp() 
     {
-        PlatformUI.getWorkbench().getHelpSystem().displayHelp( GenerateEntitiesFromSchemaWizard.HELP_CONTEXT_ID );
+    	this.getHelpSystem().displayHelp( GenerateEntitiesFromSchemaWizard.HELP_CONTEXT_ID );
     }
+    
+	protected final IWorkbenchHelpSystem getHelpSystem() {
+		return PlatformUI.getWorkbench().getHelpSystem();
+	}
 }

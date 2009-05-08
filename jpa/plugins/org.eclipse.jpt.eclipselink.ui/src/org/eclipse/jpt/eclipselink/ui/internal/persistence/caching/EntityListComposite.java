@@ -27,6 +27,7 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.caching.Caching;
 import org.eclipse.jpt.eclipselink.ui.JptEclipseLinkUiPlugin;
+import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveListPane;
@@ -71,7 +72,7 @@ public class EntityListComposite extends Pane<Caching>
 			this.buildEntityCachingListHolder(),
 			entityHolder,
 			this.buildEntityLabelProvider(),
-			null			//		EclipseLinkHelpContextIds.CACHING_ENTITIES
+			EclipseLinkHelpContextIds.PERSISTENCE_CACHING
 		);
 
 		// Entity Caching property pane

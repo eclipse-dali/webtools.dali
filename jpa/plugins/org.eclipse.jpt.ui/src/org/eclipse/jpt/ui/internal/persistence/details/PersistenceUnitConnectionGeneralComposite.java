@@ -12,6 +12,7 @@ package org.eclipse.jpt.ui.internal.persistence.details;
 import java.util.Collection;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnitTransactionType;
+import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.persistence.JptUiPersistenceMessages;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
@@ -98,7 +99,8 @@ public class PersistenceUnitConnectionGeneralComposite extends Pane<PersistenceU
 		addLabeledComposite(
 			container,
 			JptUiPersistenceMessages.PersistenceUnitConnectionGeneralComposite_transactionType,
-			buildTransactionTypeCombo(container).getControl()
+			buildTransactionTypeCombo(container).getControl(),
+			JpaHelpContextIds.PERSISTENCE_XML_CONNECTION
 		);
 	}
 }

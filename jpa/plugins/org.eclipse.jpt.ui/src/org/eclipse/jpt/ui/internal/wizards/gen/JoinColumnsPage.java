@@ -39,6 +39,7 @@ import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.gen.internal2.Association;
 import org.eclipse.jpt.gen.internal2.ORMGenCustomizer;
+import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.ui.internal.util.TableLayoutComposite;
 import org.eclipse.swt.SWT;
@@ -89,7 +90,8 @@ public class JoinColumnsPage extends NewAssociationWizardPage {
 		GridLayout layout = new GridLayout();
 		layout.numColumns = 1;
 		composite.setLayout(layout);
-		
+		this.getHelpSystem().setHelp(composite, JpaHelpContextIds.GENERATE_ENTITIES_WIZARD_JOIN_COLUMNS);
+
 		tablesGroup1 = new Composite(composite, SWT.SHADOW_ETCHED_IN);
 		tablesGroup1.setLayoutData(new GridData());
 		tablesGroup1.setLayout(new GridLayout(2, false));

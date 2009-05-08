@@ -13,6 +13,7 @@ import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.general.GeneralProperties;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
+import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.persistence.details.PersistenceUnitMappingFilesComposite;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
@@ -56,13 +57,13 @@ public class EclipseLinkPersistenceUnitMappingFilesComposite extends Persistence
 
 	@Override
 	protected void initializeLayout(Composite container) {
-		addMappingFilesList(container);
-		addTriStateCheckBoxWithDefault(
+		this.addMappingFilesList(container);
+		this.addTriStateCheckBoxWithDefault(
 			container,
 			EclipseLinkUiMessages.PersistenceXmlGeneralTab_excludeEclipselinkOrm,
 			this.buildExcludeEclipselinkOrmHolder(),
 			this.buildExcludeEclipselinkOrmStringHolder(),
-			null
+			JpaHelpContextIds.PERSISTENCE_XML_GENERAL
 		);
 
 	}

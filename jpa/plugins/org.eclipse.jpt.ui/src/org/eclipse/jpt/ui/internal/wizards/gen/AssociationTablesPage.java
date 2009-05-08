@@ -18,6 +18,7 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jpt.gen.internal2.Association;
 import org.eclipse.jpt.gen.internal2.ORMGenCustomizer;
 import org.eclipse.jpt.ui.CommonImages;
+import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -57,7 +58,7 @@ public class AssociationTablesPage extends NewAssociationWizardPage {
 		layout.numColumns = nColumns;
 		assocKindGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		assocKindGroup.setLayout(layout);
-		//PlatformUI.getWorkbench().getHelpSystem().setHelp(composite, JpaHelpContextIds.DIALOG_GENERATE_ENTITIES);
+		this.getHelpSystem().setHelp(composite, JpaHelpContextIds.GENERATE_ENTITIES_WIZARD_ASSOCIATION_TABLES);
 		assocKindGroup.setText( JptUiEntityGenMessages.GenerateEntitiesWizard_newAssoc_tablesPage_assocKind);
 
 		simpleAssoBtn = createButton(assocKindGroup, 3, JptUiEntityGenMessages.GenerateEntitiesWizard_newAssoc_tablesPage_simpleAssoc, SWT.RADIO);

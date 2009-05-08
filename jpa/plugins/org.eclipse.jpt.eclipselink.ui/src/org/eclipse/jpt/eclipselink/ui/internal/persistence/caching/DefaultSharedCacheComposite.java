@@ -10,6 +10,7 @@
 package org.eclipse.jpt.eclipselink.ui.internal.persistence.caching;
 
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.caching.Caching;
+import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
@@ -89,8 +90,7 @@ public class DefaultSharedCacheComposite extends FormPane<Caching>
 			EclipseLinkUiMessages.PersistenceXmlCachingTab_sharedCacheDefaultLabel,
 			this.buildDefaultSharedCacheHolder(),
 			this.buildDefaultSharedCacheStringHolder(),
-			null
-//			EclipseLinkHelpContextIds.CACHING_SHARED_CACHE_DEFAULT
+			EclipseLinkHelpContextIds.PERSISTENCE_CACHING_DEFAULT_SHARED
 		);
 	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,9 +10,11 @@
 package org.eclipse.jpt.eclipselink.ui.internal.persistence.connection;
 
 import java.util.Collection;
+
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.connection.BatchWriting;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.connection.Connection;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
+import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.swt.widgets.Composite;
@@ -79,7 +81,7 @@ public class BatchWritingComposite extends FormPane<Connection>
 			container,
 			EclipseLinkUiMessages.PersistenceXmlConnectionTab_batchWritingLabel,
 			this.addBatchWritingCombo( container),
-			null		// TODO IJpaHelpContextIds.
+			JpaHelpContextIds.PERSISTENCE_XML_CONNECTION
 		);
 	}
 }

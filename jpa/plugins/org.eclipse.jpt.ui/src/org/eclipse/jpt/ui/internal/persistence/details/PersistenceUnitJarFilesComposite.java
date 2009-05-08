@@ -22,6 +22,7 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jpt.core.context.persistence.JarFileRef;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.ui.JptUiPlugin;
+import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.JptUiIcons;
 import org.eclipse.jpt.ui.internal.jface.JarFileViewerFilter;
 import org.eclipse.jpt.ui.internal.persistence.JptUiPersistenceMessages;
@@ -94,10 +95,11 @@ public class PersistenceUnitJarFilesComposite extends Pane<PersistenceUnit>
 		new AddRemoveListPane<PersistenceUnit>(
 			this,
 			container,
-			buildAdapter(),
-			buildItemListHolder(),
-			buildSelectedItemHolder(),
-			buildLabelProvider()
+			this.buildAdapter(),
+			this.buildItemListHolder(),
+			this.buildSelectedItemHolder(),
+			this.buildLabelProvider(),
+			JpaHelpContextIds.PERSISTENCE_XML_GENERAL
 		) {
 			@Override
 			protected Composite addContainer(Composite parent) {

@@ -10,6 +10,7 @@
 package org.eclipse.jpt.eclipselink.ui.internal.persistence.customization;
 
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.customization.Customization;
+import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
@@ -89,8 +90,7 @@ public class ValidationOnlyComposite extends FormPane<Customization>
 			EclipseLinkUiMessages.PersistenceXmlCustomizationTab_validationOnlyLabel,
 			this.buildValidationOnlyHolder(),
 			this.buildValidationOnlyStringHolder(),
-			null
-//			EclipseLinkHelpContextIds.
+			EclipseLinkHelpContextIds.PERSISTENCE_CUSTOMIZATION
 		);
 	}
 }

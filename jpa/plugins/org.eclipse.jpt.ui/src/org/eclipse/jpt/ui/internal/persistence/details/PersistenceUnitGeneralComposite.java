@@ -170,7 +170,7 @@ public abstract class PersistenceUnitGeneralComposite extends FormPane<Persisten
 	 * (non-Javadoc)
 	 */
 	public String getHelpID() {
-		return JpaHelpContextIds.PERSISTENCE_UNIT_GENERAL;
+		return JpaHelpContextIds.PERSISTENCE_XML_GENERAL;
 	}
 
 	/*
@@ -189,30 +189,33 @@ public abstract class PersistenceUnitGeneralComposite extends FormPane<Persisten
 
 	protected void initializeGeneralPane(Composite container) {
 
-		container = addSection(
+		container = this.addSection(
 			container,
 			JptUiPersistenceMessages.PersistenceUnitGeneralComposite_general
 		);
 
 		// Name widgets
-		addLabeledText(
+		this.addLabeledText(
 			container,
 			JptUiPersistenceMessages.PersistenceUnitGeneralComposite_name,
-			buildPersistenceUnitNameHolder()
+			this.buildPersistenceUnitNameHolder(),
+			this.getHelpID()
 		);
 
 		// Persistence Provider widgets
-		addLabeledText(
+		this.addLabeledText(
 			container,
 			JptUiPersistenceMessages.PersistenceUnitGeneralComposite_persistenceProvider,
-			buildPersistenceProviderHolder()
+			this.buildPersistenceProviderHolder(),
+			this.getHelpID()
 		);
 
 		// Description widgets
-		addLabeledText(
+		this.addLabeledText(
 			container,
 			JptUiPersistenceMessages.PersistenceUnitGeneralComposite_description,
-			buildPersistenceUnitDescriptionHolder()
+			this.buildPersistenceUnitDescriptionHolder(),
+			this.getHelpID()
 		);
 	}
 

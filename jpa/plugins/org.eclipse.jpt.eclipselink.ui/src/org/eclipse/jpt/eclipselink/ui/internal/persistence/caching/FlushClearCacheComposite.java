@@ -13,6 +13,7 @@ import java.util.Collection;
 
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.caching.Caching;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.caching.FlushClearCache;
+import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
@@ -84,7 +85,7 @@ public class FlushClearCacheComposite extends FormPane<Caching>
 				container,
 				EclipseLinkUiMessages.PersistenceXmlCachingTab_FlushClearCacheLabel,
 				this.addFlushClearCacheCombo(container),
-				null // TODO IJpaHelpContextIds.
+				EclipseLinkHelpContextIds.PERSISTENCE_CACHING
 		);
 	}
 }

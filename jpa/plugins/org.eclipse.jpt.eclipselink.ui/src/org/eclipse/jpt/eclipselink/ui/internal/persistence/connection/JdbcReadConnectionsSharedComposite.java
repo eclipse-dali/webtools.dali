@@ -11,6 +11,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.persistence.connection;
 
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.connection.Connection;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
+import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
@@ -89,8 +90,7 @@ public class JdbcReadConnectionsSharedComposite extends Pane<Connection>
 			EclipseLinkUiMessages.PersistenceXmlConnectionTab_readConnectionsSharedLabel,
 			this.buildReadConnectionsSharedHolder(),
 			this.buildReadConnectionsSharedStringHolder(),
-			null
-//			EclipseLinkHelpContextIds.
+			JpaHelpContextIds.PERSISTENCE_XML_CONNECTION
 		);
 	}
 }

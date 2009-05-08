@@ -11,6 +11,7 @@ package org.eclipse.jpt.ui.internal.persistence.details;
 
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnitTransactionType;
+import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.persistence.JptUiPersistenceMessages;
 import org.eclipse.jpt.ui.internal.util.ControlEnabler;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
@@ -131,10 +132,10 @@ public class PersistenceUnitConnectionDatabaseComposite extends Pane<Persistence
 			JptUiPersistenceMessages.PersistenceUnitConnectionDatabaseComposite_jtaDatasourceName);
 		Text text = addUnmanagedText(
 			container,
-			buildJTADatasourceNameHolder(), 
-			null
+			buildJTADatasourceNameHolder(),
+			JpaHelpContextIds.PERSISTENCE_XML_CONNECTION
 		);
-		addLabeledComposite(container, label, text, null);
+		addLabeledComposite(container, label, text, JpaHelpContextIds.PERSISTENCE_XML_CONNECTION);
 		
 		installJTADatasourceNameEnabler(text, label);
 		
@@ -146,9 +147,9 @@ public class PersistenceUnitConnectionDatabaseComposite extends Pane<Persistence
 		text = addUnmanagedText(
 			container,
 			buildNonJTADatasourceNameHolder(),
-			null
+			JpaHelpContextIds.PERSISTENCE_XML_CONNECTION
 		);
-		addLabeledComposite(container, label, text, null);
+		addLabeledComposite(container, label, text, JpaHelpContextIds.PERSISTENCE_XML_CONNECTION);
 
 		installNonJTADatasourceNameEnabler(text, label);
 	}

@@ -41,6 +41,7 @@ import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.gen.internal2.ORMGenCustomizer;
 import org.eclipse.jpt.gen.internal2.ORMGenTable;
 import org.eclipse.jpt.ui.JptUiPlugin;
+import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -48,6 +49,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
+import org.eclipse.ui.help.IWorkbenchHelpSystem;
 
 /**
  * A wizard page allowing the entry of the default table generation 
@@ -98,7 +100,7 @@ public class DefaultTableGenerationWizardPage extends NewTypeWizardPage {
 		GridLayout layout = new GridLayout();
 		layout.numColumns = nColumns;
 		composite.setLayout(layout);
-		//PlatformUI.getWorkbench().getHelpSystem().setHelp(composite, JpaHelpContextIds.DIALOG_GENERATE_ENTITIES);
+		this.getHelpSystem().setHelp(composite, JpaHelpContextIds.GENERATE_ENTITIES_WIZARD_CUSTOMIZE_DEFAULT_ENTITY_GENERATION);
 
 		//Create entity access, collection type, etc 
 		defaultTableGenPanel = new TableGenPanel(composite, 4, true, this);
@@ -320,7 +322,11 @@ public class DefaultTableGenerationWizardPage extends NewTypeWizardPage {
 
     @Override
     public final void performHelp() {
-        PlatformUI.getWorkbench().getHelpSystem().displayHelp( GenerateEntitiesFromSchemaWizard.HELP_CONTEXT_ID );
+        this.getHelpSystem().displayHelp( GenerateEntitiesFromSchemaWizard.HELP_CONTEXT_ID );
     }
+    
+	protected final IWorkbenchHelpSystem getHelpSystem() {
+		return PlatformUI.getWorkbench().getHelpSystem();
+	}
 }
 

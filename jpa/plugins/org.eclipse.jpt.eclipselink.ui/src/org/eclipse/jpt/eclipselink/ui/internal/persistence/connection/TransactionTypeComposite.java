@@ -15,6 +15,7 @@ import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnitTransactionType;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.connection.Connection;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
+import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
@@ -119,7 +120,7 @@ public class TransactionTypeComposite extends FormPane<Connection>
 			container,
 			EclipseLinkUiMessages.PersistenceXmlConnectionTab_transactionTypeLabel,
 			this.addTransactionTypeCombo( container),
-			null		// TODO IJpaHelpContextIds.
+			JpaHelpContextIds.PERSISTENCE_XML_CONNECTION
 		);
 	}
 }

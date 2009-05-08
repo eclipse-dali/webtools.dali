@@ -91,7 +91,7 @@ public class PersistenceUnitConnectionComposite extends FormPane<PersistenceUnit
 	 * (non-Javadoc)
 	 */
 	public String getHelpID() {
-		return JpaHelpContextIds.PERSISTENCE_UNIT_CONNECTION;
+		return JpaHelpContextIds.PERSISTENCE_XML_CONNECTION;
 	}
 
 	private void initializeDatabasePane(Composite container) {

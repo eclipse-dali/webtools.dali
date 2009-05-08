@@ -12,6 +12,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.persistence.schema.generation;
 import java.util.Collection;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.schema.generation.DdlGenerationType;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.schema.generation.SchemaGeneration;
+import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
@@ -80,7 +81,7 @@ public class DdlGenerationTypeComposite
 			container,
 			EclipseLinkUiMessages.PersistenceXmlSchemaGenerationTab_ddlGenerationTypeLabel,
 			addDdlGenerationTypeCombo( container),
-			null		// TODO IJpaHelpContextIds.
+			EclipseLinkHelpContextIds.PERSISTENCE_SCHEMA_GENERATION
 		);
 	}
 }

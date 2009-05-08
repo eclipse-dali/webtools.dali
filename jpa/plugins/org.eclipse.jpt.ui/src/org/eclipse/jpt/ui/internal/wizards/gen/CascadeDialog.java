@@ -18,6 +18,7 @@ import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.TrayDialog;
 import org.eclipse.jpt.gen.internal2.AssociationRole;
 import org.eclipse.jpt.gen.internal2.util.StringUtil;
+import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -29,6 +30,8 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.help.IWorkbenchHelpSystem;
 
 /**
  * Simple dialog allows user to set the cascade property of an associationRole.
@@ -69,6 +72,7 @@ public class CascadeDialog extends TrayDialog {
     protected void configureShell(Shell newShell) {
         super.configureShell(newShell);
         newShell.setText(JptUiEntityGenMessages.selectCascadeDlgTitle);
+		this.getHelpSystem().setHelp(newShell, JpaHelpContextIds.GENERATE_ENTITIES_WIZARD_SELECT_CASCADE);
     }
 	
 	private void setAssociationRole(AssociationRole role) {
@@ -147,6 +151,10 @@ public class CascadeDialog extends TrayDialog {
 			}
 		}
 		return false;
+	}
+	
+	protected final IWorkbenchHelpSystem getHelpSystem() {
+		return PlatformUI.getWorkbench().getHelpSystem();
 	}
 
 }

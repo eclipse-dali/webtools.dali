@@ -12,6 +12,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.persistence.caching;
 import java.util.Collection;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.caching.CacheType;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.caching.Caching;
+import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
@@ -84,7 +85,7 @@ public class DefaultCacheTypeComposite extends FormPane<Caching>
 			container,
 			EclipseLinkUiMessages.PersistenceXmlCachingTab_defaultCacheTypeLabel,
 			this.buildDefaultCacheTypeCombo( container),
-			null		// TODO IJpaHelpContextIds.
+			EclipseLinkHelpContextIds.PERSISTENCE_CACHING_DEFAULT_TYPE	
 		);
 	}
 }

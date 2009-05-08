@@ -28,6 +28,7 @@ import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.ui.JptUiPlugin;
+import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.jface.XmlMappingFileViewerFilter;
 import org.eclipse.jpt.ui.internal.wizards.entity.data.model.IEntityDataModelProperties;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -46,7 +47,9 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
+import org.eclipse.ui.help.IWorkbenchHelpSystem;
 import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
@@ -97,6 +100,8 @@ public class EntityClassWizardPage extends NewJavaClassWizardPage{
 	@Override
 	protected Composite createTopLevelComposite(Composite parent) {
 		Composite composite = super.createTopLevelComposite(parent);
+		this.getHelpSystem().setHelp(composite, JpaHelpContextIds.NEW_JPA_ENTITY_ENTITY_CLASS);
+		
 		createInheritanceControl(composite);
 		inheritanceButton.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -379,5 +384,9 @@ public class EntityClassWizardPage extends NewJavaClassWizardPage{
 			output = output.replace(File.separatorChar, SLASH);
 			return output;
 		}
-	}	
+	}
+	
+	protected final IWorkbenchHelpSystem getHelpSystem() {
+		return PlatformUI.getWorkbench().getHelpSystem();
+	}
 }

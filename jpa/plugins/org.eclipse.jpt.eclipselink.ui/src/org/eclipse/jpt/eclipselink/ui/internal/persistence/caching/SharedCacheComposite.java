@@ -11,6 +11,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.persistence.caching;
 
 import java.util.ArrayList;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.caching.Caching;
+import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.ui.internal.widgets.TriStateCheckBox;
@@ -147,8 +148,7 @@ public class SharedCacheComposite extends Pane<EntityCacheProperties>
 			EclipseLinkUiMessages.PersistenceXmlCachingTab_sharedCacheLabel,
 			this.buildSharedCacheHolder(),
 			this.buildSharedCacheStringHolder(),
-			null
-//			EclipseLinkHelpContextIds.CACHING_SHARED_CACHE
+			EclipseLinkHelpContextIds.PERSISTENCE_CACHING
 		);
 	}
 }

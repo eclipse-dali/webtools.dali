@@ -131,7 +131,7 @@ public class PersistenceUnitPropertiesComposite extends Pane<PersistenceUnit>
 	 * {@inheritDoc}
 	 */
 	public String getHelpID() {
-		return JpaHelpContextIds.PERSISTENCE_UNIT_PROPERTIES;
+		return JpaHelpContextIds.PERSISTENCE_XML_PROPERTIES;
 	}
 
 	/**

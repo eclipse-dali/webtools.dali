@@ -13,6 +13,7 @@ import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnitTransactionType;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.connection.Connection;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
+import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.util.ControlEnabler;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
@@ -124,15 +125,15 @@ public class DataSourcePropertiesComposite extends Pane<Connection> {
 
 		// JTA Data Source
 		Label jtaLabel = addUnmanagedLabel(container, EclipseLinkUiMessages.PersistenceXmlConnectionTab_jtaDataSourceLabel);
-		Text text = addUnmanagedText(container, buildJtaDataSourceHolder(), null);
-		this.addLabeledComposite(container, jtaLabel, text, null);
+		Text text = addUnmanagedText(container, this.buildJtaDataSourceHolder(), this.getHelpID());
+		this.addLabeledComposite(container, jtaLabel, text, this.getHelpID());
 
 		this.installJTADataSourceControlEnabler(text, jtaLabel);
 
 		// Non-JTA Data Source
 		Label nonJtaLabel = addUnmanagedLabel(container, EclipseLinkUiMessages.PersistenceXmlConnectionTab_nonJtaDataSourceLabel);
-		Text nonJtaText = addUnmanagedText(container, buildNonJtaDataSourceHolder(), null);
-		this.addLabeledComposite(container, nonJtaLabel, nonJtaText, null);
+		Text nonJtaText = addUnmanagedText(container, buildNonJtaDataSourceHolder(), this.getHelpID());
+		this.addLabeledComposite(container, nonJtaLabel, nonJtaText, this.getHelpID());
 
 		this.installNonJTADataSourceControlEnabler(nonJtaText, nonJtaLabel);
 	}
@@ -143,5 +144,9 @@ public class DataSourcePropertiesComposite extends Pane<Connection> {
 
 	private void installNonJTADataSourceControlEnabler(Text text, Label label) {
 		new ControlEnabler(buildNonJTADataSourceHolder(), text, label);
+	}
+	
+	public String getHelpID() {
+		return JpaHelpContextIds.PERSISTENCE_XML_CONNECTION;
 	}
 }

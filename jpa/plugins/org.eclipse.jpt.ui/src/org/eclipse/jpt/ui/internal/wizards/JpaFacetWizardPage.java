@@ -34,6 +34,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.help.IWorkbenchHelpSystem;
 import org.eclipse.wst.common.project.facet.core.IFacetedProjectWorkingCopy;
 import org.eclipse.wst.common.project.facet.core.events.IFacetedProjectEvent;
 import org.eclipse.wst.common.project.facet.core.events.IFacetedProjectListener;
@@ -56,6 +57,7 @@ public class JpaFacetWizardPage extends DataModelFacetInstallPage
 		Composite composite = new Composite(parent, SWT.NULL);
 		GridLayout layout = new GridLayout();
 		composite.setLayout(layout);
+		this.getHelpSystem().setHelp(composite, JpaHelpContextIds.NEW_JPA_PROJECT_JPA_FACET);
 
 		new PlatformGroup(composite);
 		new ClasspathConfigGroup(composite);
@@ -369,5 +371,9 @@ public class JpaFacetWizardPage extends DataModelFacetInstallPage
 			createOrmXmlButton.setText(JptUiMessages.JpaFacetWizardPage_createOrmXmlButton);
 			synchHelper.synchCheckbox(createOrmXmlButton, CREATE_ORM_XML, null);
 		}
+	}
+	
+	protected final IWorkbenchHelpSystem getHelpSystem() {
+		return PlatformUI.getWorkbench().getHelpSystem();
 	}
 }

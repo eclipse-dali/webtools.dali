@@ -33,6 +33,7 @@ import org.eclipse.jpt.gen.internal2.ORMGenCustomizer;
 import org.eclipse.jpt.gen.internal2.ORMGenTable;
 import org.eclipse.jpt.gen.internal2.util.DTPUtil;
 import org.eclipse.jpt.ui.CommonImages;
+import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.graphics.Image;
@@ -44,6 +45,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.help.IWorkbenchHelpSystem;
 
 public class TablesAndColumnsCustomizationWizardPage extends NewTypeWizardPage {
 
@@ -91,7 +93,7 @@ public class TablesAndColumnsCustomizationWizardPage extends NewTypeWizardPage {
 		GridLayout layout = new GridLayout();
 		layout.numColumns = nColumns;
 		composite.setLayout(layout);
-		//PlatformUI.getWorkbench().getHelpSystem().setHelp(composite, JpaHelpContextIds.DIALOG_GENERATE_ENTITIES);
+		this.getHelpSystem().setHelp(composite, JpaHelpContextIds.GENERATE_ENTITIES_WIZARD_CUSTOMIZE_INDIVIDUAL_ENTITIES);
 
 		createTableAndColumnsListPanel(composite, 1);
 		
@@ -368,6 +370,10 @@ public class TablesAndColumnsCustomizationWizardPage extends NewTypeWizardPage {
     @Override
     public final void performHelp() 
     {
-        PlatformUI.getWorkbench().getHelpSystem().displayHelp( GenerateEntitiesFromSchemaWizard.HELP_CONTEXT_ID );
+        this.getHelpSystem().displayHelp( GenerateEntitiesFromSchemaWizard.HELP_CONTEXT_ID );
     }
+
+	protected final IWorkbenchHelpSystem getHelpSystem() {
+		return PlatformUI.getWorkbench().getHelpSystem();
+	}
 }
