@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,7 +14,6 @@ import org.eclipse.jpt.core.context.java.JavaOneToOneMapping;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.context.orm.VirtualXmlOneToOne;
 import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.jpt.eclipselink.core.context.JoinFetch;
 import org.eclipse.jpt.eclipselink.core.context.JoinFetchType;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaOneToOneMappingImpl;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlAccessMethods;
@@ -35,12 +34,12 @@ public class EclipseLinkVirtualXmlOneToOne extends VirtualXmlOneToOne implements
 
 	public XmlJoinFetchType getJoinFetch() {
 		if (isOrmMetadataComplete()) {
-			return JoinFetchType.toOrmResourceModel(JoinFetch.DEFAULT_VALUE);
+			return null; //don't return default value, it only applies for an empty @JoinFetch
 		}
 		return JoinFetchType.toOrmResourceModel(((EclipseLinkJavaOneToOneMappingImpl) this.javaAttributeMapping).getJoinFetch().getValue());
 	}
 	
-	public void setJoinFetch(@SuppressWarnings("unused") XmlJoinFetchType value) {
+	public void setJoinFetch(XmlJoinFetchType value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 	
@@ -51,7 +50,7 @@ public class EclipseLinkVirtualXmlOneToOne extends VirtualXmlOneToOne implements
 		return ((EclipseLinkJavaOneToOneMappingImpl) this.javaAttributeMapping).getPrivateOwned().isPrivateOwned();
 	}
 	
-	public void setPrivateOwned(@SuppressWarnings("unused") boolean value) {
+	public void setPrivateOwned(boolean value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 	

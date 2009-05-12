@@ -12,8 +12,12 @@ package org.eclipse.jpt.eclipselink.core.tests.internal.context.orm;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.resource.java.JPA;
+import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToOneMapping;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkRelationshipMapping;
 import org.eclipse.jpt.eclipselink.core.context.JoinFetchType;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmOneToOneMapping;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntity;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlJoinFetchType;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlOneToOne;
@@ -26,6 +30,54 @@ public class EclipseLinkOrmOneToOneMappingTests
 		super(name);
 	}
 	
+	private void createTestDepartment() throws Exception {
+		SourceWriter sourceWriter = new SourceWriter() {
+			public void appendSourceTo(StringBuilder sb) {
+				sb.append(CR);
+					sb.append("import ").append(JPA.ENTITY).append(";");
+					sb.append(CR);
+					sb.append("import ").append(JPA.ID).append(";");
+					sb.append(CR);
+					sb.append(CR);
+					sb.append("import ").append(JPA.ONE_TO_ONE).append(";");
+				sb.append("@Entity");
+				sb.append(CR);
+				sb.append("public class ").append("Department").append(" ");
+				sb.append("{").append(CR);
+				sb.append(CR);
+				sb.append("    @Id").append(CR);
+				sb.append("    private int id;").append(CR);
+				sb.append(CR);
+				sb.append("    @OneToOne").append(CR);
+				sb.append("    private Employee employee;").append(CR);
+				sb.append(CR);
+				sb.append("}").append(CR);
+		}
+		};
+		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Department.java", sourceWriter);
+	}
+
+	private void createTestEmployee() throws Exception {
+		SourceWriter sourceWriter = new SourceWriter() {
+			public void appendSourceTo(StringBuilder sb) {
+				sb.append(CR);
+					sb.append("import ").append(JPA.ENTITY).append(";");
+					sb.append(CR);
+					sb.append("import ").append(JPA.ID).append(";");
+					sb.append(CR);
+			sb.append("@Entity");
+				sb.append(CR);
+				sb.append("public class ").append("Employee").append(" ");
+				sb.append("{").append(CR);
+				sb.append(CR);
+				sb.append("    @Id").append(CR);
+				sb.append("    private int empId;").append(CR);
+				sb.append(CR);
+				sb.append("}").append(CR);
+		}
+		};
+		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Employee.java", sourceWriter);
+	}	
 	
 	public void testUpdatePrivateOwned() throws Exception {
 		OrmPersistentType ormPersistentType = 
@@ -164,5 +216,29 @@ public class EclipseLinkOrmOneToOneMappingTests
 		
 		assertNull(resourceOneToOne.getJoinFetch());
 		assertNull(contextOneToOne.getJoinFetch().getValue());
+	}
+	
+	public void testJoinFetchDefaultFromJava() throws Exception {
+		createTestEmployee();
+		createTestDepartment();
+		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Department");
+		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Employee");
+		
+		OrmPersistentType departmentPersistentType = getEntityMappings().persistentTypes().next();
+		EclipseLinkOrmOneToOneMapping<?> oneToOne = (EclipseLinkOrmOneToOneMapping<?>) departmentPersistentType.getAttributeNamed("employee").getMapping();
+
+		assertNull(oneToOne.getJoinFetch().getValue());
+		
+		getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
+		oneToOne = (EclipseLinkOrmOneToOneMapping<?>) departmentPersistentType.getAttributeNamed("employee").getMapping();
+		assertNull(oneToOne.getJoinFetch().getValue());		
+		
+		EclipseLinkRelationshipMapping javaRelationshipMapping = (EclipseLinkRelationshipMapping) departmentPersistentType.getJavaPersistentType().getAttributeNamed("employee").getMapping();
+		javaRelationshipMapping.getJoinFetch().setValue(JoinFetchType.OUTER);
+		assertNull(oneToOne.getJoinFetch().getValue());
+		
+		getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(false);
+		oneToOne = (EclipseLinkOrmOneToOneMapping<?>) departmentPersistentType.getAttributeNamed("employee").getMapping();
+		assertEquals(JoinFetchType.OUTER, oneToOne.getJoinFetch().getValue());
 	}
 }
