@@ -16,6 +16,7 @@ import org.eclipse.jpt.ui.internal.widgets.FormWidgetFactory;
 import org.eclipse.jpt.ui.internal.widgets.PropertySheetWidgetFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -51,6 +52,9 @@ public abstract class AbstractJpaView extends ViewPart
 	 */
 	private PageBook pageBook;
 
+	private ScrolledForm scrolledForm;
+	
+	
 	/**
 	 * The factory used to create the various widgets.
 	 */
@@ -74,15 +78,20 @@ public abstract class AbstractJpaView extends ViewPart
 		return composite;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	public final void createPartControl(Composite parent) {
-		pageBook = new PageBook(parent, SWT.NONE);
+		this.scrolledForm = getFormWidgetFactory().createScrolledForm(parent);
+		this.scrolledForm.getBody().setLayout(new GridLayout());
 
-		defaultComposite = buildDefaultComposite();
-		pageBook.showPage(defaultComposite);
+		this.pageBook = new PageBook(this.scrolledForm.getBody(), SWT.NONE);
+		GridData gridData = new GridData();
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.horizontalAlignment = SWT.FILL;
+		this.pageBook.setLayoutData(gridData);
+		this.scrolledForm.setContent(this.pageBook);
+
+		this.defaultComposite = buildDefaultComposite();
+		this.pageBook.showPage(this.defaultComposite);
 
 		subcreatePartControl(parent);
 
@@ -94,7 +103,7 @@ public abstract class AbstractJpaView extends ViewPart
 	}
 
 	protected final PageBook getPageBook() {
-		return pageBook;
+		return this.pageBook;
 	}
 
 	public final WidgetFactory getWidgetFactory() {
@@ -143,21 +152,9 @@ public abstract class AbstractJpaView extends ViewPart
 	 * @param page The new page to show, <code>null</code> can't be passed
 	 */
 	protected final void showPage(Control page) {
-		pageBook.getParent().setRedraw(false);
-		try {
-			// It seems the scroll pane has to be installed right before showing
-			// the page, if it is installed during the creation of the pane then
-			// its layout will not always revalidate correctly, i.e. will not show
-			// all the time the vertical scroll bar
-			ScrolledForm scrolledForm = getFormWidgetFactory().createScrolledForm(pageBook);
-			scrolledForm.getBody().setLayout(new GridLayout(1, false));
-			page.setParent(scrolledForm.getBody());
-
-			pageBook.showPage(scrolledForm);
-		}
-		finally {
-			pageBook.getParent().setRedraw(true);
-		}
+		page.setParent(this.pageBook);
+		this.pageBook.showPage(page);
+		this.scrolledForm.reflow(true);
 	}
 
 	protected void subcreatePartControl(Composite parent) {
