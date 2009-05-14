@@ -13,8 +13,14 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.context.Converter;
+import org.eclipse.jpt.core.context.TemporalConverter;
+import org.eclipse.jpt.core.context.TemporalType;
+import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.core.context.orm.OrmBasicMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlBasic;
 import org.eclipse.jpt.core.resource.orm.XmlBasicImpl;
@@ -35,10 +41,19 @@ import org.eclipse.jpt.core.resource.orm.XmlVersionImpl;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
+import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
+import org.eclipse.jpt.utility.internal.ClassTools;
 
 @SuppressWarnings("nls")
 public class GenericOrmPersistentTypeTests extends ContextModelTestCase
 {
+	public static final String MODEL_TYPE_NAME = "Model";
+	public static final String FULLY_QUALIFIED_MODEL_TYPE_NAME = PACKAGE_NAME + "." + MODEL_TYPE_NAME;
+	
+	public static final String EMPLOYEE_TYPE_NAME = "Employee";
+	public static final String FULLY_QUALIFIED_EMPLOYEE_TYPE_NAME = PACKAGE_NAME + "." + EMPLOYEE_TYPE_NAME;
+
+	
 	public GenericOrmPersistentTypeTests(String name) {
 		super(name);
 	}
@@ -52,6 +67,40 @@ public class GenericOrmPersistentTypeTests extends ContextModelTestCase
 		getXmlPersistenceUnit().getMappingFiles().add(mappingFileRef);
 		getPersistenceXmlResource().save(null);
 	}	
+	
+	private void createModelType() throws Exception {
+		SourceWriter sourceWriter = new SourceWriter() {
+			public void appendSourceTo(StringBuilder sb) {
+				sb.append(CR);
+				sb.append("public abstract class ").append(MODEL_TYPE_NAME).append(" {");
+				sb.append(CR);
+				sb.append("    private int id;").append(CR);
+				sb.append(CR);
+				sb.append("    private String name;").append(CR);
+				sb.append(CR);
+				sb.append("    ");
+				sb.append("}").append(CR);
+			}
+		};
+		this.javaProject.createCompilationUnit(PACKAGE_NAME, MODEL_TYPE_NAME + ".java", sourceWriter);
+	}
+	
+	private void createEmployeeType() throws Exception {
+		SourceWriter sourceWriter = new SourceWriter() {
+			public void appendSourceTo(StringBuilder sb) {
+				sb.append(CR);
+				sb.append("public class ").append(EMPLOYEE_TYPE_NAME).append(" extends ").append(MODEL_TYPE_NAME).append(" {");
+				sb.append(CR);
+				sb.append("    private String department;").append(CR);
+				sb.append(CR);
+				sb.append("    private java.util.Date startDate;").append(CR);
+				sb.append(CR);
+				sb.append("    ");
+				sb.append("}").append(CR);
+			}
+		};
+		this.javaProject.createCompilationUnit(PACKAGE_NAME, EMPLOYEE_TYPE_NAME + ".java", sourceWriter);
+	}
 	
 //	public void testUpdateXmlTypeMapping() throws Exception {
 //		assertFalse(entityMappings().ormPersistentTypes().hasNext());
@@ -506,5 +555,28 @@ public class GenericOrmPersistentTypeTests extends ContextModelTestCase
 		entity.getAttributes().getEmbeddedIds().remove(0);
 		assertFalse(entityPersistentType.attributes().hasNext());
 		assertNotNull(entity.getAttributes());
+	}
+	
+	
+
+	public void testInheritedAttributesResolve() throws Exception {
+		createModelType();
+		createEmployeeType();
+		
+		OrmPersistentType employeePersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_EMPLOYEE_TYPE_NAME);
+
+		
+		employeePersistentType.addSpecifiedPersistentAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, "id");
+		employeePersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "name");
+		OrmPersistentAttribute startDateAttribute = employeePersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "startDate");
+		((OrmBasicMapping) startDateAttribute.getSpecifiedMapping()).setSpecifiedConverter(Converter.TEMPORAL_CONVERTER);
+		((TemporalConverter) ((OrmBasicMapping) startDateAttribute.getSpecifiedMapping()).getSpecifiedConverter()).setTemporalType(TemporalType.DATE);
+		
+		OrmPersistentAttribute idAttribute = employeePersistentType.getAttributeNamed("id");
+		JavaPersistentAttribute javaPersistentAttribute = idAttribute.getJavaPersistentAttribute();
+		assertNotNull(javaPersistentAttribute);
+		assertEquals("id", javaPersistentAttribute.getName());
+		assertEquals("test.Employee", javaPersistentAttribute.getPersistentType().getName());
+		assertEquals("test.Model", ((JavaResourcePersistentType) ClassTools.fieldValue(javaPersistentAttribute.getResourcePersistentAttribute(), "parent")).getQualifiedName());
 	}
 }

@@ -48,6 +48,7 @@ import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.platform.GenericJpaFactory;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
+import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
@@ -80,6 +81,7 @@ import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmManyT
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmMappedSuperclassImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmOneToManyMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmOneToOneMapping;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmPersistentAttribute;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmPersistentType;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmVersionMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmXml;
@@ -221,6 +223,10 @@ public class EclipseLinkJpaFactory
 
 	public OrmPersistentType buildEclipseLinkOrmPersistentType(EclipseLinkEntityMappings parent , XmlTypeMapping resourceMapping) {
 		return new EclipseLinkOrmPersistentType(parent, resourceMapping);
+	}
+	
+	public OrmPersistentAttribute buildEclipseLinkOrmPersistentAttribute(OrmPersistentType parent, OrmPersistentAttribute.Owner owner, XmlAttributeMapping resourceMapping) {
+		return new EclipseLinkOrmPersistentAttribute(parent, owner, resourceMapping);
 	}
 
 	public OrmEmbeddable buildEclipseLinkOrmEmbeddable(OrmPersistentType type, XmlEmbeddable resourceMapping) {

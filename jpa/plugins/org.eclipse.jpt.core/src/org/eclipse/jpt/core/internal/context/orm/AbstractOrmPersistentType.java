@@ -585,11 +585,12 @@ public abstract class AbstractOrmPersistentType
 				return null;
 			}
 			AccessType ormAccess = AbstractOrmPersistentType.this.getAccess(ormPersistentAttribute); 
-			JavaPersistentAttribute javaPersistentAtribute = findExistingJavaPersistentAttribute(javaPersistentType, ormPersistentAttribute);
-			if (javaPersistentAtribute == null || ormAccess == javaPersistentAtribute.getAccess()) {
+			JavaPersistentAttribute javaPersistentAttribute = findExistingJavaPersistentAttribute(javaPersistentType, ormPersistentAttribute);
+			if (javaPersistentAttribute != null && ormAccess == javaPersistentAttribute.getAccess()) {
 				this.cachedJavaPersistentAttribute = null;  //we only want to cache the persistent attribute if we build it
-				return javaPersistentAtribute;
+				return javaPersistentAttribute;
 			}
+			//if the javaPersistentAttribute is null, it might exist in a super class that is not persistent, we need to build it ourselves.
 			//if access is different, we won't be able to find the corresponding java persistent attribute, it won't exist so we build it ourselves
 			return buildJavaPersistentAttribute(javaPersistentType, ormPersistentAttribute);
 		}
@@ -608,19 +609,35 @@ public abstract class AbstractOrmPersistentType
 				}
 			}
 			this.cachedJavaPersistentAttribute = null;
-			Iterator<JavaResourcePersistentAttribute> javaResourceAttributes = javaPersistentType.getResourcePersistentType().persistableFields();
-			if (ormAccess == AccessType.PROPERTY) {
-				javaResourceAttributes = javaPersistentType.getResourcePersistentType().persistableProperties();
+			JavaResourcePersistentAttribute jrpa = getJavaResourcePersistentAttribute(javaPersistentType.getResourcePersistentType(), ormAccess, ormName);
+			if (jrpa != null) {
+				this.cachedJavaPersistentAttribute = getJpaFactory().buildJavaPersistentAttribute(AbstractOrmPersistentType.this, jrpa);
 			}
-			for (JavaResourcePersistentAttribute jrpa : CollectionTools.iterable(javaResourceAttributes)) {
-				if (ormName.equals(jrpa.getName())) {
-					this.cachedJavaPersistentAttribute = getJpaFactory().buildJavaPersistentAttribute(AbstractOrmPersistentType.this, jrpa);
-					break;
-				}
+			else {
+				this.cachedJavaPersistentAttribute = null;
 			}
 			return this.cachedJavaPersistentAttribute;
 		}
-	
+		
+		protected JavaResourcePersistentAttribute getJavaResourcePersistentAttribute(JavaResourcePersistentType javaResourcePersistentType, AccessType ormAccess, String ormName) {
+			Iterator<JavaResourcePersistentAttribute> javaResourceAttributes = javaResourcePersistentType.persistableFields();
+			if (ormAccess == AccessType.PROPERTY) {
+				javaResourceAttributes = javaResourcePersistentType.persistableProperties();
+			}
+			for (JavaResourcePersistentAttribute jrpa : CollectionTools.iterable(javaResourceAttributes)) {
+				if (ormName.equals(jrpa.getName())) {
+					return jrpa;
+				}
+			}
+			JavaResourcePersistentType parent = getParentResourcePersistentType(javaResourcePersistentType);
+			return parent == null ? null : getJavaResourcePersistentAttribute(parent, ormAccess, ormName);
+
+		}
+		
+		protected JavaResourcePersistentType getParentResourcePersistentType(JavaResourcePersistentType javaResourcePersistentType) {
+			return getJpaProject().getJavaResourcePersistentType(javaResourcePersistentType.getSuperClassQualifiedName());
+		}
+
 		public void updateJavaPersistentAttribute() {
 			if (this.cachedJavaPersistentAttribute != null) {
 				this.cachedJavaPersistentAttribute.update();

@@ -9,9 +9,15 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
+import java.util.List;
+
 import org.eclipse.jpt.core.context.AccessType;
+import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 
 public class GenericOrmPersistentAttribute extends AbstractOrmPersistentAttribute
@@ -30,7 +36,26 @@ public class GenericOrmPersistentAttribute extends AbstractOrmPersistentAttribut
 		return null;
 	}
 	
-	public void setSpecifiedAccess(@SuppressWarnings("unused") AccessType newSpecifiedAccess) {
+	public void setSpecifiedAccess(AccessType newSpecifiedAccess) {
 		throw new UnsupportedOperationException("specifiedAccess is not supported for GenericOrmPersistentAttribute"); //$NON-NLS-1$
+	}
+	
+	@Override
+	protected void validateAttribute(List<IMessage> messages) {
+		super.validateAttribute(messages);
+		if (this.javaPersistentAttribute != null) {
+			JavaPersistentType javaPersistentType = getPersistentType().getJavaPersistentType();
+			if (javaPersistentType != null && javaPersistentType.getAttributeNamed(this.javaPersistentAttribute.getName()) == null) {
+				messages.add(
+						DefaultJpaValidationMessages.buildMessage(
+							IMessage.NORMAL_SEVERITY,
+							JpaValidationMessages.PERSISTENT_ATTRIBUTE_INHERITED_ATTRIBUTES_NOT_SUPPORTED,
+							new String[] {this.getName(), this.getPersistentType().getMapping().getClass_()},
+							this.attributeMapping, 
+							this.attributeMapping.getNameTextRange()
+						)
+					);				
+			}
+		}
 	}
 }

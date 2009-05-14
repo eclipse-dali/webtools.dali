@@ -39,7 +39,7 @@ public class EclipseLink1_1OrmPersistentType extends AbstractOrmPersistentType
 	}
 	
 	@Override
-	protected OrmPersistentAttribute buildOrmPersistentAttribute(org.eclipse.jpt.core.context.orm.OrmPersistentAttribute.Owner owner, org.eclipse.jpt.core.resource.orm.XmlAttributeMapping resourceMapping) {
+	protected OrmPersistentAttribute buildOrmPersistentAttribute(OrmPersistentAttribute.Owner owner, org.eclipse.jpt.core.resource.orm.XmlAttributeMapping resourceMapping) {
 		return getJpaFactory().buildEclipseLink1_1OrmPersistentAttribute(this, owner, (XmlAttributeMapping) resourceMapping);
 	}
 	
