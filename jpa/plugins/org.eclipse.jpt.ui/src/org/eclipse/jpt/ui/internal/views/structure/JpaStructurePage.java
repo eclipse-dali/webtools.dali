@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.views.structure;
 
+import java.util.Iterator;
+
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.core.runtime.SafeRunner;
 import org.eclipse.jface.action.IMenuListener;
@@ -27,13 +30,19 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jpt.core.JpaFile;
+import org.eclipse.jpt.core.JpaModel;
+import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JpaStructureNode;
+import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
 import org.eclipse.jpt.ui.internal.selection.DefaultJpaSelection;
 import org.eclipse.jpt.ui.internal.selection.JpaSelection;
+import org.eclipse.jpt.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.ui.jface.DelegatingContentAndLabelProvider;
 import org.eclipse.jpt.ui.structure.JpaStructureProvider;
+import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
@@ -50,7 +59,11 @@ public class JpaStructurePage
 {
 	private final JpaStructureView jpaStructureView;
 	
-	private final JpaFile jpaFile;
+	private JpaFile jpaFile;
+	
+	private final IFile file;
+	
+	private JpaProject jpaProject;
 	
 	private final JpaStructureProvider structureProvider;
 	
@@ -66,6 +79,9 @@ public class JpaStructurePage
 	
 	private final ISelectionChangedListener treePostSelectionListener;
 	
+	private final CollectionChangeListener projectsListener;
+	
+	private final CollectionChangeListener jpaFilesListener;
 	
 	public JpaStructurePage(
 			JpaStructureView jpaStructureView, 
@@ -73,12 +89,142 @@ public class JpaStructurePage
 			JpaStructureProvider structureProvider) {
 		this.jpaStructureView = jpaStructureView;
 		this.jpaFile = jpaFile;
+		this.jpaProject = jpaFile.getJpaProject();
+		this.file = jpaFile.getFile();
 		this.structureProvider = structureProvider;
 		this.selectionChangedListenerList = new ListenerList();
 		this.treeSelectionListener = new TreeSelectionChangedListener();
 		this.treePostSelectionListener = new TreePostSelectionChangedListener();
+		this.projectsListener = buildProjectsListener();
+		this.jpaFilesListener = buildJpaFilesListener();
 	}
 	
+	private CollectionChangeListener buildProjectsListener() {
+		return new CollectionChangeListener(){
+		
+			public void itemsRemoved(CollectionChangeEvent event) {
+				JpaStructurePage.this.projectsRemoved(event);
+			}
+		
+			public void itemsAdded(CollectionChangeEvent event) {
+				JpaStructurePage.this.projectsAdded(event);
+			}
+		
+			public void collectionCleared(CollectionChangeEvent event) {
+				JpaStructurePage.this.projectsCleared(event);
+			}
+		
+			public void collectionChanged(CollectionChangeEvent event) {
+				JpaStructurePage.this.projectsChanged(event);
+			}
+		};
+	}
+
+	private void projectsRemoved(CollectionChangeEvent event) {
+		for (Iterator<?> i = event.items(); i.hasNext();) {
+			JpaProject project = (JpaProject) i.next();
+			if (project.getProject() == JpaStructurePage.this.file.getProject()) {
+				setJpaProject(null);
+				break;
+			}
+		}
+	}
+
+	private void projectsAdded(CollectionChangeEvent event) {
+		for (Iterator<?> i = event.items(); i.hasNext();) {
+			JpaProject jpaProject = (JpaProject) i.next();
+			if (jpaProject.getProject() == JpaStructurePage.this.file.getProject()) {
+				setJpaProject(jpaProject);
+				break;
+			}
+		}
+	}
+
+	private void projectsCleared(CollectionChangeEvent event) {
+		setJpaProject(null);
+	}
+	
+	private void projectsChanged(CollectionChangeEvent event) {
+		setJpaProject(JptCorePlugin.getJpaProject(this.file.getProject()));
+	}
+	
+	private CollectionChangeListener buildJpaFilesListener() {
+		return new CollectionChangeListener(){
+		
+			public void itemsRemoved(CollectionChangeEvent event) {
+				JpaStructurePage.this.jpaFilesRemoved(event);
+			}
+		
+			public void itemsAdded(CollectionChangeEvent event) {
+				JpaStructurePage.this.jpaFilesAdded(event);
+			}
+		
+			public void collectionCleared(CollectionChangeEvent event) {
+				JpaStructurePage.this.jpaFilesCleared(event);
+			}
+		
+			public void collectionChanged(CollectionChangeEvent event) {
+				JpaStructurePage.this.jpaFilesChanged(event);
+			}
+		};
+	}
+	
+	private void jpaFilesRemoved(CollectionChangeEvent event) {
+		for (Iterator<?> i = event.items(); i.hasNext();) {
+			JpaFile jpaFile = (JpaFile) i.next();
+			if (jpaFile == JpaStructurePage.this.jpaFile) {
+				setJpaFile(null);
+				break;
+			}
+		}
+	}
+
+	private void jpaFilesAdded(CollectionChangeEvent event) {
+		for (Iterator<?> i = event.items(); i.hasNext();) {
+			JpaFile jpaFile = (JpaFile) i.next();
+			if (jpaFile.getFile() == JpaStructurePage.this.file) {
+				setJpaFile(jpaFile);
+				break;
+			}
+		}
+	}
+
+	private void jpaFilesCleared(CollectionChangeEvent event) {
+		setJpaFile(null);
+	}
+
+	private void jpaFilesChanged(CollectionChangeEvent event) {
+		setJpaFile(this.jpaProject.getJpaFile(this.file));
+	}
+
+	private void setJpaProject(JpaProject jpaProject) {
+		if (this.jpaProject == jpaProject) {
+			return;
+		}
+		if (this.jpaProject != null) {
+			this.jpaProject.removeCollectionChangeListener(JpaProject.JPA_FILES_COLLECTION, this.jpaFilesListener);
+		}
+		this.jpaProject = jpaProject;
+		if (this.jpaProject != null) {
+			this.jpaProject.addCollectionChangeListener(JpaProject.JPA_FILES_COLLECTION, this.jpaFilesListener);
+			setJpaFile(this.jpaProject.getJpaFile(JpaStructurePage.this.file));
+		}
+		else {
+			setJpaFile(null);
+		}
+	}
+	
+	private void setJpaFile(JpaFile jpaFile) {
+		if (this.jpaFile == jpaFile) {
+			return;
+		}
+		this.jpaFile = jpaFile;
+		SWTUtil.asyncExec(new Runnable(){						
+			public void run() {
+				JpaStructurePage.this.viewer.setInput(JpaStructurePage.this.jpaFile);
+			}
+		});
+	}
 	
 	@Override
 	public void init(IPageSite pageSite) {
@@ -100,20 +246,33 @@ public class JpaStructurePage
 		viewer.setContentProvider(contentAndLabelProvider);
 		// TODO Use problem decorator
 		viewer.setLabelProvider(contentAndLabelProvider);
-		viewer.setInput(this.jpaFile);
-		viewer.addSelectionChangedListener(this.treeSelectionListener);
-		viewer.addPostSelectionChangedListener(this.treePostSelectionListener);
+		this.viewer.setInput(this.jpaFile);
+		engageListeners();
 		initContextMenu();
+	}
+	
+	protected void engageListeners() {
+		this.viewer.addSelectionChangedListener(this.treeSelectionListener);
+		this.viewer.addPostSelectionChangedListener(this.treePostSelectionListener);
+		this.jpaProject.addCollectionChangeListener(JpaProject.JPA_FILES_COLLECTION, this.jpaFilesListener);
+		JptCorePlugin.getJpaModel().addCollectionChangeListener(JpaModel.JPA_PROJECTS_COLLECTION, this.projectsListener);
 	}
 	
 	@Override
 	public void dispose() {
-		viewer.removeSelectionChangedListener(this.treeSelectionListener);
-		viewer.removePostSelectionChangedListener(this.treePostSelectionListener);
+		disengageListeners();
 		super.dispose();
 	}
 	
-	//TODO this isn't really working.  our jpa actions appear, but along with a bunch of other actions!!
+	protected void disengageListeners() {
+		JptCorePlugin.getJpaModel().removeCollectionChangeListener(JpaModel.JPA_PROJECTS_COLLECTION, this.projectsListener);
+		if (this.jpaProject != null) {
+			this.jpaProject.removeCollectionChangeListener(JpaProject.JPA_FILES_COLLECTION, this.jpaFilesListener);
+		}
+		this.viewer.removePostSelectionChangedListener(this.treePostSelectionListener);
+		this.viewer.removeSelectionChangedListener(this.treeSelectionListener);
+	}
+	
     protected void initContextMenu() {
         // Create dynamic menu mgr.  Dynamic is currently required to
         // support action contributions.
