@@ -3452,7 +3452,6 @@ public abstract class Pane<T extends Model>
 	 * @category Populate
 	 */
 	protected void engageListeners() {
-
 		this.log(Tracing.UI_LAYOUT, "   ->engageListeners()");
 
 		this.engageSubjectHolder();
@@ -3463,21 +3462,27 @@ public abstract class Pane<T extends Model>
 		}
 	}
 
+	private void engageSubjectHolder() {
+		this.subjectHolder.addPropertyChangeListener(PropertyValueModel.VALUE, this.subjectChangeListener);
+	}
+	
 	/**
-	 * TODO
-	 *
-	 * @param subject
-	 *
-	 * @category Populate
+	 * engage the specified subject
 	 */
 	protected void engageListeners(T subject) {
 		if (subject != null) {
+			this.engageListeners_(subject);
+		}
+	}
 
-//			this.log("   ->engageListeners() on " + subject);
+	/**
+	 * specified subject is not null
+	 */
+	protected void engageListeners_(T subject) {
+		this.log(Tracing.UI_LAYOUT, "   ->engageListeners_(" + subject + ')');
 
-			for (String propertyName : this.getPropertyNames()) {
-				subject.addPropertyChangeListener(propertyName, this.aspectChangeListener);
-			}
+		for (String propertyName : this.getPropertyNames()) {
+			subject.addPropertyChangeListener(propertyName, this.aspectChangeListener);
 		}
 	}
 
@@ -3488,47 +3493,38 @@ public abstract class Pane<T extends Model>
 	 * @category Populate
 	 */
 	protected void disengageListeners() {
-
 		this.log(Tracing.UI_LAYOUT, "   ->disengageListeners()");
-
-		this.disengageSubjectHolder();
-
-		this.disengageListeners(this.getSubject());
 
 		for (Pane<?> subPane : this.subPanes) {
 			subPane.disengageListeners();
 		}
+
+		this.disengageListeners(this.getSubject());
+		this.disengageSubjectHolder();
 	}
 
 	/**
-	 * Removes any property change listeners from the given subject.
-	 *
-	 * @param subject The old subject
-	 *
-	 * @category Populate
+	 * disengage the specified subject
 	 */
 	protected void disengageListeners(T subject) {
 		if (subject != null) {
-//			this.log("   ->disengageListeners() from " + subject);
-
-			for (String propertyName : this.getPropertyNames()) {
-				subject.removePropertyChangeListener(propertyName, this.aspectChangeListener);
-			}
+			this.disengageListeners_(subject);
 		}
 	}
 
-	private void engageSubjectHolder() {
-		this.subjectHolder.addPropertyChangeListener(
-			PropertyValueModel.VALUE,
-			this.subjectChangeListener
-		);
+	/**
+	 * specified subject is not null
+	 */
+	protected void disengageListeners_(T subject) {
+		this.log(Tracing.UI_LAYOUT, "   ->disengageListeners_(" + subject + ')');
+
+		for (String propertyName : this.getPropertyNames()) {
+			subject.removePropertyChangeListener(propertyName, this.aspectChangeListener);
+		}
 	}
-	
+
 	private void disengageSubjectHolder() {
-		this.subjectHolder.removePropertyChangeListener(
-			PropertyValueModel.VALUE,
-			this.subjectChangeListener
-		);
+		this.subjectHolder.removePropertyChangeListener(PropertyValueModel.VALUE, this.subjectChangeListener);
 	}
 
 	/**

@@ -225,92 +225,50 @@ public class GeneratedValueComposite extends FormPane<IdMapping>
 		};
 	}
 
-	private void disengageListeners(GeneratedValue generatedValue) {
-
-		if (generatedValue != null) {
-
-			generatedValue.removePropertyChangeListener(
-				GeneratedValue.DEFAULT_GENERATOR_PROPERTY,
-				generatorNamePropertyChangeListener
-			);
-
-			generatedValue.removePropertyChangeListener(
-				GeneratedValue.SPECIFIED_GENERATOR_PROPERTY,
-				generatorNamePropertyChangeListener
-			);
-
-			generatedValue.getPersistenceUnit().removeListChangeListener(
-				PersistenceUnit.GENERATORS_LIST,
-				generatorsListChangeListener
-			);
-		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected void disengageListeners(IdMapping subject) {
-		super.disengageListeners(subject);
-
-		if (subject != null) {
-			subject.removePropertyChangeListener(
-				IdMapping.GENERATED_VALUE_PROPERTY,
-				generatedValuePropertyChangeListener
-			);
-			disengageListeners(subject.getGeneratedValue());
-		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected void doPopulate() {
 		super.doPopulate();
 		populateGeneratorNameCombo();
 	}
 
-	private void engageListeners(GeneratedValue generatedValue) {
-
-		if (generatedValue != null) {
-
-			generatedValue.addPropertyChangeListener(
-				GeneratedValue.DEFAULT_GENERATOR_PROPERTY,
-				generatorNamePropertyChangeListener
-			);
-
-			generatedValue.addPropertyChangeListener(
-				GeneratedValue.SPECIFIED_GENERATOR_PROPERTY,
-				generatorNamePropertyChangeListener
-			);
-
-			generatedValue.getPersistenceUnit().addListChangeListener(
-				PersistenceUnit.GENERATORS_LIST,
-				generatorsListChangeListener
-			);
-		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
-	protected void engageListeners(IdMapping subject) {
-		super.engageListeners(subject);
+	protected void engageListeners_(IdMapping subject) {
+		super.engageListeners_(subject);
+		subject.addPropertyChangeListener(IdMapping.GENERATED_VALUE_PROPERTY, this.generatedValuePropertyChangeListener);
+		this.engageListeners(subject.getGeneratedValue());
+	}
 
-		if (subject != null) {
-			engageListeners(subject.getGeneratedValue());
-			subject.addPropertyChangeListener(
-				IdMapping.GENERATED_VALUE_PROPERTY,
-				generatedValuePropertyChangeListener
-			);
+	private void engageListeners(GeneratedValue generatedValue) {
+		if (generatedValue != null) {
+			this.engageListeners_(generatedValue);
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
+	private void engageListeners_(GeneratedValue generatedValue) {
+		generatedValue.getPersistenceUnit().addListChangeListener(PersistenceUnit.GENERATORS_LIST, this.generatorsListChangeListener);
+		generatedValue.addPropertyChangeListener(GeneratedValue.DEFAULT_GENERATOR_PROPERTY, this.generatorNamePropertyChangeListener);
+		generatedValue.addPropertyChangeListener(GeneratedValue.SPECIFIED_GENERATOR_PROPERTY, this.generatorNamePropertyChangeListener);
+	}
+
+	@Override
+	protected void disengageListeners_(IdMapping subject) {
+		this.disengageListeners(subject.getGeneratedValue());
+		subject.removePropertyChangeListener(IdMapping.GENERATED_VALUE_PROPERTY, this.generatedValuePropertyChangeListener);
+		super.disengageListeners_(subject);
+	}
+
+	private void disengageListeners(GeneratedValue generatedValue) {
+		if (generatedValue != null) {
+			this.disengageListeners_(generatedValue);
+		}
+	}
+
+	private void disengageListeners_(GeneratedValue generatedValue) {
+		generatedValue.removePropertyChangeListener(GeneratedValue.SPECIFIED_GENERATOR_PROPERTY, this.generatorNamePropertyChangeListener);
+		generatedValue.removePropertyChangeListener(GeneratedValue.DEFAULT_GENERATOR_PROPERTY, this.generatorNamePropertyChangeListener);
+		generatedValue.getPersistenceUnit().removeListChangeListener(PersistenceUnit.GENERATORS_LIST, this.generatorsListChangeListener);
+	}
+
 	@Override
 	protected void initialize() {
 		super.initialize();
@@ -320,9 +278,6 @@ public class GeneratedValueComposite extends FormPane<IdMapping>
 		generatorsListChangeListener = buildGeneratorsListChangeListener();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected void initializeLayout(Composite container) {
 

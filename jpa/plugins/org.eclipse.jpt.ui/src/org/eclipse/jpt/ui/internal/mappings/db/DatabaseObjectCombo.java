@@ -148,24 +148,25 @@ public abstract class DatabaseObjectCombo<T extends JpaNode>
 
 	// ********** overrides **********
 
+	// TODO probably need to listen to the JPA project's data source's connection profile...
 	@Override
-	protected void engageListeners(T subject) {
-		super.engageListeners(subject);
+	protected void engageListeners_(T subject) {
+		super.engageListeners_(subject);
 
-		ConnectionProfile cp = this.getConnectionProfile();
+		ConnectionProfile cp = subject.getJpaProject().getConnectionProfile();
 		if (cp != null) {
 			cp.addConnectionListener(this.connectionListener);
 		}
 	}
 
 	@Override
-	protected void disengageListeners(T subject) {
-		ConnectionProfile cp = this.getConnectionProfile();
+	protected void disengageListeners_(T subject) {
+		ConnectionProfile cp = subject.getJpaProject().getConnectionProfile();
 		if (cp != null) {
 			cp.removeConnectionListener(this.connectionListener);
 		}
 
-		super.disengageListeners(subject);
+		super.disengageListeners_(subject);
 	}
 
 	@Override
@@ -372,7 +373,7 @@ public abstract class DatabaseObjectCombo<T extends JpaNode>
 	 */
 	protected final boolean connectionProfileIsActive() {
 		ConnectionProfile cp = this.getConnectionProfile();
-		return (cp == null) ? false : cp.isActive();
+		return (cp != null) && cp.isActive();
 	}
 
 	/**
