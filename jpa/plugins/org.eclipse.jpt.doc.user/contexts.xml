@@ -515,7 +515,7 @@
 		<topic label="Customize Default Entity Generation page" href="ref_customizeDefaultEntityGeneration.htm" />
 		<topic label="Generate Custom Entities wizard" href="ref_create_custom_entities_wizard.htm" />
 	</context>	
-	<context id="alog_customizeIndividualEntities">
+	<context id="dialog_customizeIndividualEntities">
 		<description>Use this dialog to specify the table mapping and domain class information for the generated entity.</description>
 		<topic label="Customize Individual Entities page" href="ref_customizIndividualEntities.htm" />
 		<topic label="Generate Custom Entities wizard" href="ref_create_custom_entities_wizard.htm" />
