@@ -19,6 +19,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRunnable;
@@ -109,7 +110,6 @@ public class JpaProjectPropertiesPage
 {
 	public static final String PROP_ID = "org.eclipse.jpt.ui.jpaProjectPropertiesPage"; //$NON-NLS-1$
 
-	
 	private WritablePropertyValueModel<IProject> projectHolder;
 	
 	private PropertyValueModel<JpaProject> jpaProjectHolder;
@@ -117,6 +117,10 @@ public class JpaProjectPropertiesPage
 	private Trigger trigger;
 	
 	private PropertyChangeListener validationListener;
+	
+	private PropertyChangeListener overrideDefaultCatalogListener;
+	
+	private PropertyChangeListener overrideDefaultSchemaListener;
 
 	private PropertyChangeListener platformChangelistener;
 	
@@ -135,7 +139,7 @@ public class JpaProjectPropertiesPage
 	private WritablePropertyValueModel<String> combinedDefaultCatalogModel;
 	
 	private ListValueModel<String> catalogChoicesModel;
-	
+
 	private BufferedWritablePropertyValueModel<Boolean> overrideDefaultSchemaModel;
 	
 	private BufferedWritablePropertyValueModel<String> defaultSchemaModel;
@@ -149,8 +153,6 @@ public class JpaProjectPropertiesPage
 	private WritablePropertyValueModel<Boolean> listAnnotatedClassesModel;
 
 
-	
-
 	// ************ construction/initialization ************
 
 	public JpaProjectPropertiesPage() {
@@ -163,6 +165,8 @@ public class JpaProjectPropertiesPage
 		this.jpaProjectHolder = initializeJpaProjectHolder();
 		this.trigger = new Trigger();
 		this.validationListener = this.initializeValidationListener();
+		this.overrideDefaultCatalogListener = this.initializeOverrideDefaultCatalogChangeListener();
+		this.overrideDefaultSchemaListener = this.initializeOverrideDefaultSchemaChangeListener();
 		
 		this.platformChangelistener = this.initializePlatformChangeListener();
 		this.platformIdModel = this.initializePlatformIdModel();
@@ -194,6 +198,28 @@ public class JpaProjectPropertiesPage
 			public void propertyChanged(PropertyChangeEvent event) {
 				if (! JpaProjectPropertiesPage.this.getControl().isDisposed()) {
 					updateValidation();
+				}
+			}
+		};
+	}
+	
+	protected PropertyChangeListener initializeOverrideDefaultCatalogChangeListener() {
+		return new PropertyChangeListener() {
+			public void propertyChanged(PropertyChangeEvent event) {
+				Boolean enabled = (Boolean) event.getNewValue();
+				if( ! enabled) {
+					defaultCatalogModel.setValue(null);
+				}
+			}
+		};
+	}
+	
+	protected PropertyChangeListener initializeOverrideDefaultSchemaChangeListener() {
+		return new PropertyChangeListener() {
+			public void propertyChanged(PropertyChangeEvent event) {
+				Boolean enabled = (Boolean) event.getNewValue();
+				if( ! enabled) {
+					defaultSchemaModel.setValue(null);
 				}
 			}
 		};
@@ -247,19 +273,19 @@ public class JpaProjectPropertiesPage
 	}
 
 	protected BufferedWritablePropertyValueModel<Boolean> initializeOverrideDefaultCatalogModel() {
-		BufferedWritablePropertyValueModel<Boolean> model = 
-			new BufferedWritablePropertyValueModel( 
-				new OverrideDefaultCatalogModel(this.jpaProjectHolder), 
-				this.trigger);
-		model.addPropertyChangeListener(PropertyValueModel.VALUE, this.validationListener);
-		return model;
+		OverrideDefaultCatalogModel model = new OverrideDefaultCatalogModel(this.jpaProjectHolder);
+		BufferedWritablePropertyValueModel<Boolean> modelBuffer = 
+			new BufferedWritablePropertyValueModel(model, this.trigger);
+		model.addPropertyChangeListener(PropertyValueModel.VALUE, this.overrideDefaultCatalogListener);
+		modelBuffer.addPropertyChangeListener(PropertyValueModel.VALUE, this.validationListener);
+		return modelBuffer;
 		
 	}
 	
 	protected BufferedWritablePropertyValueModel<String> initializeDefaultCatalogModel() {
 		return new BufferedWritablePropertyValueModel(
 			new DefaultCatalogModel(this.jpaProjectHolder),
-			new DefaultCatalogTrigger(this.trigger, this.overrideDefaultCatalogModel));
+			this.trigger);
 	}
 	
 	protected WritablePropertyValueModel<String> initializeCombinedDefaultCatalogModel() {
@@ -290,21 +316,21 @@ public class JpaProjectPropertiesPage
 				}
 			});
 	}
-	
+
 	protected BufferedWritablePropertyValueModel<Boolean> initializeOverrideDefaultSchemaModel() {
-		BufferedWritablePropertyValueModel<Boolean> model = 
-			new BufferedWritablePropertyValueModel( 
-				new OverrideDefaultSchemaModel(this.jpaProjectHolder), 
-				this.trigger);
-		model.addPropertyChangeListener(PropertyValueModel.VALUE, this.validationListener);
-		return model;
+		OverrideDefaultSchemaModel model = new OverrideDefaultSchemaModel(this.jpaProjectHolder);
+		BufferedWritablePropertyValueModel<Boolean> modelBuffer = 
+			new BufferedWritablePropertyValueModel(model, this.trigger);
+		model.addPropertyChangeListener(PropertyValueModel.VALUE, this.overrideDefaultSchemaListener);
+		modelBuffer.addPropertyChangeListener(PropertyValueModel.VALUE, this.validationListener);
+		return modelBuffer;
 	
 	}
 	
 	protected BufferedWritablePropertyValueModel<String> initializeDefaultSchemaModel() {
 		return new BufferedWritablePropertyValueModel(
 			new DefaultSchemaModel(this.jpaProjectHolder),
-			new DefaultSchemaTrigger(this.trigger, this.overrideDefaultSchemaModel));
+			this.trigger);
 	}
 	
 	protected WritablePropertyValueModel<String> initializeCombinedDefaultSchemaModel() {
@@ -515,7 +541,9 @@ public class JpaProjectPropertiesPage
 			getProject().build(IncrementalProjectBuilder.FULL_BUILD, monitor);
 		}
 		else if (this.connectionModel.isBuffering()
+				|| this.overrideDefaultCatalogModel.isBuffering()
 				|| this.defaultCatalogModel.isBuffering()
+				|| this.overrideDefaultSchemaModel.isBuffering()
 				|| this.defaultSchemaModel.isBuffering()
 				|| this.discoverAnnotatedClassesModel.isBuffering()) {
 			this.trigger.accept();
@@ -1220,57 +1248,7 @@ public class JpaProjectPropertiesPage
 			propertyChanged();
 		}
 	}
-	
-	
-	private static class DefaultCatalogTrigger
-		extends Trigger
-	{
-		private Trigger parentTrigger;
-		
-		private PropertyValueModel<Boolean> overrideDefaultCatalogModel;
-		
-		
-		private DefaultCatalogTrigger(
-				Trigger parentTrigger, 
-				PropertyValueModel<Boolean> overrideDefaultCatalogModel) {
-			super();
-			this.parentTrigger = parentTrigger;
-			this.parentTrigger.addPropertyChangeListener(
-				VALUE,
-				new PropertyChangeListener() {
-					public void propertyChanged(PropertyChangeEvent event) {
-						respondToParent();
-					}
-				});
-			this.overrideDefaultCatalogModel = overrideDefaultCatalogModel;
-			this.overrideDefaultCatalogModel.addPropertyChangeListener(
-				VALUE,
-				new PropertyChangeListener() {
-					public void propertyChanged(PropertyChangeEvent event) {
-						respondToOverride();
-					}
-				});
-		}
-		
-		
-		protected void respondToParent() {
-			if (this.parentTrigger.isAccepted()) {
-				if (this.overrideDefaultCatalogModel.getValue()) {
-					accept();
-				}
-			}
-			else if (this.parentTrigger.isReset()) {
-				reset();
-			}
-		}
-		
-		protected void respondToOverride() {
-			if (! this.overrideDefaultCatalogModel.getValue()) {
-				reset();
-			}
-		}
-	}
-	
+
 	
 	private static class CatalogChoicesModel
 		extends BaseCollectionAspectAdapter<ConnectionProfile, String>
@@ -1521,58 +1499,8 @@ public class JpaProjectPropertiesPage
 			propertyChanged();
 		}
 	}
-	
-	
-	private static class DefaultSchemaTrigger
-		extends Trigger
-	{
-		private Trigger parentTrigger;
-		
-		private PropertyValueModel<Boolean> overrideDefaultSchemaModel;
-		
-		
-		private DefaultSchemaTrigger(
-				Trigger parentTrigger, 
-				PropertyValueModel<Boolean> overrideDefaultSchemaModel) {
-			super();
-			this.parentTrigger = parentTrigger;
-			this.parentTrigger.addPropertyChangeListener(
-				VALUE,
-				new PropertyChangeListener() {
-					public void propertyChanged(PropertyChangeEvent event) {
-						respondToParent();
-					}
-				});
-			this.overrideDefaultSchemaModel = overrideDefaultSchemaModel;
-			this.overrideDefaultSchemaModel.addPropertyChangeListener(
-				VALUE,
-				new PropertyChangeListener() {
-					public void propertyChanged(PropertyChangeEvent event) {
-						respondToOverride();
-					}
-				});
-		}
-		
-		
-		protected void respondToParent() {
-			if (this.parentTrigger.isAccepted()) {
-				if (this.overrideDefaultSchemaModel.getValue()) {
-					accept();
-				}
-			}
-			else if (this.parentTrigger.isReset()) {
-				reset();
-			}
-		}
-		
-		protected void respondToOverride() {
-			if (! this.overrideDefaultSchemaModel.getValue()) {
-				reset();
-			}
-		}
-	}
-	
-	
+
+
 	private static class SchemaChoicesModel
 		extends BaseCollectionAspectAdapter<ConnectionProfile, String>
 	{
