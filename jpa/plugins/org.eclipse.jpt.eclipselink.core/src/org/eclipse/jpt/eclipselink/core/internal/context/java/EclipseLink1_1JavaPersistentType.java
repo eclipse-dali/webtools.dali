@@ -52,9 +52,9 @@ public class EclipseLink1_1JavaPersistentType
 	}
 	
 	@Override
-	protected Iterator<JavaResourcePersistentAttribute> persistentAttributes() {
+	protected Iterator<JavaResourcePersistentAttribute> resourceAttributes() {
 		return (this.specifiedAccess == null)
-			? super.persistentAttributes()
+			? super.resourceAttributes()
 			: this.resourcePersistentType.persistableAttributes(AccessType.toJavaResourceModel(this.specifiedAccess));
 	}
 	

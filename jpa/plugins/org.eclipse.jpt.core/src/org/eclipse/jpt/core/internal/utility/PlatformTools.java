@@ -33,7 +33,10 @@ public class PlatformTools {
 		try {
 			fileContents = file.getContents();
 		} catch (CoreException ex) {
-			JptCorePlugin.log(ex);
+			// seems like we can ignore any exception that might occur here;
+			// e.g. we get a FNFE if the workspace is out of synch with the O/S file system
+			// JptCorePlugin.log(ex);
+
 			// look for content type based on the file name only(?)
 			return findContentTypeFor(fileName);
 		}

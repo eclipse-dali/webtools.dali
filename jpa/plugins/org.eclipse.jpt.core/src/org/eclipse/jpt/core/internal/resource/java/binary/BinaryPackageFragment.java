@@ -9,18 +9,18 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java.binary;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.Vector;
 
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jdt.core.IClassFile;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.core.internal.utility.jdt.JPTTools;
 import org.eclipse.jpt.core.resource.java.JavaResourceClassFile;
 import org.eclipse.jpt.core.resource.java.JavaResourcePackageFragment;
 import org.eclipse.jpt.core.resource.java.JavaResourcePackageFragmentRoot;
@@ -38,8 +38,13 @@ final class BinaryPackageFragment
 	/** JDT package fragment */
 	private final IPackageFragment packageFragment;
 
-	/** class files in the package fragment */
-	private final Vector<JavaResourceClassFile> classFiles;
+	/**
+	 * class files in the package fragment;
+	 * we only hold class files/types that are actually annotated;
+	 * if the unannotated types are needed (e.g. for orm.xml or an
+	 * inheritance tree) they can be discovered on the classpath as needed
+	 */
+	private final Vector<JavaResourceClassFile> classFiles = new Vector<JavaResourceClassFile>();
 
 
 	// ********** construction/initialization **********
@@ -47,40 +52,23 @@ final class BinaryPackageFragment
 	BinaryPackageFragment(JavaResourcePackageFragmentRoot parent, IPackageFragment packageFragment) {
 		super(parent);
 		this.packageFragment = packageFragment;
-		this.classFiles = this.buildClassFiles();
+		this.classFiles.addAll(this.buildClassFiles());
 	}
 
-	private Vector<JavaResourceClassFile> buildClassFiles() {
-		Vector<JavaResourceClassFile> result = new Vector<JavaResourceClassFile>();
-		for (IJavaElement child : this.getJDTChildren()) {
-			IClassFile classFile = (IClassFile) child;
-			IType type = this.findType(classFile);
-			if (this.typeIsPersistable(type)) {  // we only hold persistable types
-				result.add(new BinaryClassFile(this, classFile, type));
+	private Collection<JavaResourceClassFile> buildClassFiles() {
+		IJavaElement[] children = this.getJDTChildren();
+		ArrayList<JavaResourceClassFile> result = new ArrayList<JavaResourceClassFile>(children.length);
+		for (IJavaElement child : children) {
+			IClassFile jdtClassFile = (IClassFile) child;
+			IType jdtType = jdtClassFile.getType();
+			if (BinaryPersistentType.typeIsPersistable(jdtType)) {
+				JavaResourceClassFile classFile = new BinaryClassFile(this, jdtClassFile, jdtType);
+				if (classFile.getPersistentType().isPersisted()) {  // we only hold annotated types
+					result.add(classFile);
+				}
 			}
 		}
 		return result;
-	}
-
-	/**
-	 * Return the JDT type corresponding to the specified class file
-	 * by searching the Java project's build path; as opposed to taking
-	 * the type directly from the class file, since another type with the
-	 * same name *may* precede the class file on the build path.
-	 */
-	private IType findType(IClassFile classFile) {
-		IType type = classFile.getType();
-		try {
-			return type.getJavaProject().findType(type.getFullyQualifiedName(), (IProgressMonitor) null);
-		} catch (JavaModelException ex) {
-			return null;  // ignore exception?
-		}
-	}
-
-	private boolean typeIsPersistable(IType type) {
-		return (type != null)
-				&& type.exists()
-				&& JPTTools.typeIsPersistable(new JPTToolsAdapter(type));
 	}
 
 
@@ -108,11 +96,11 @@ final class BinaryPackageFragment
 		return this.classFiles.size();
 	}
 
-	public Iterator<JavaResourcePersistentType> persistableTypes() {
+	public Iterator<JavaResourcePersistentType> persistedTypes() {
 		return new TransformationIterator<JavaResourceClassFile, JavaResourcePersistentType>(this.classFiles()) {
 			@Override
 			protected JavaResourcePersistentType transform(JavaResourceClassFile classFile) {
-				return classFile.getPersistentType();  // we only hold persistable types
+				return classFile.getPersistentType();  // we only hold annotated types
 			}
 		};
 	}
@@ -133,97 +121,6 @@ final class BinaryPackageFragment
 	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(this.packageFragment.getElementName());
-	}
-
-
-	// ********** JPT tools adapter **********
-
-	/**
-	 * JPTTools needs an adapter so it can work with either an IType
-	 * or an ITypeBinding etc.
-	 */
-	protected class JPTToolsAdapter implements JPTTools.TypeAdapter {
-		private final IType type;
-
-		protected JPTToolsAdapter(IType type) {
-			super();
-			if (type == null) {
-				throw new NullPointerException();
-			}
-			this.type = type;
-		}
-
-		public int getModifiers() {
-			try {
-				return this.type.getFlags();
-			} catch (JavaModelException ex) {
-				JptCorePlugin.log(ex);
-				return 0;
-			}
-		}
-
-		public boolean isAnnotation() {
-			try {
-				return this.type.isAnnotation();
-			} catch (JavaModelException ex) {
-				JptCorePlugin.log(ex);
-				return false;
-			}
-		}
-
-		public boolean isAnonymous() {
-			try {
-				return this.type.isAnonymous();
-			} catch (JavaModelException ex) {
-				JptCorePlugin.log(ex);
-				return false;
-			}
-		}
-
-		public boolean isArray() {
-			return false;  // ???
-		}
-
-		public boolean isEnum() {
-			try {
-				return this.type.isEnum();
-			} catch (JavaModelException ex) {
-				JptCorePlugin.log(ex);
-				return false;
-			}
-		}
-
-		public boolean isInterface() {
-			try {
-				return this.type.isInterface();
-			} catch (JavaModelException ex) {
-				JptCorePlugin.log(ex);
-				return false;
-			}
-		}
-
-		public boolean isLocal() {
-			try {
-				return this.type.isLocal();
-			} catch (JavaModelException ex) {
-				JptCorePlugin.log(ex);
-				return false;
-			}
-		}
-
-		public boolean isMember() {
-			try {
-				return this.type.isMember();
-			} catch (JavaModelException ex) {
-				JptCorePlugin.log(ex);
-				return false;
-			}
-		}
-
-		public boolean isPrimitive() {
-			return false;  // ???
-		}
-	
 	}
 
 }

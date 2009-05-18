@@ -172,11 +172,13 @@ public class GenericJpaModel
 	}
 
 	/**
-	 * Forward the specified resource delta to the JPA project corresponding
-	 * to the specified Eclipse project.
+	 * Forward the specified resource delta to all our JPA projects;
+	 * they will each determine whether the event is significant.
 	 */
-	synchronized void projectChanged(IProject project, IResourceDelta delta)  throws CoreException {
-		this.getJpaProjectHolder(project).projectChanged(delta);
+	synchronized void projectChanged(IResourceDelta delta)  throws CoreException {
+		for (JpaProjectHolder holder : this.jpaProjectHolders) {
+			holder.projectChanged(delta);
+		}
 	}
 
 

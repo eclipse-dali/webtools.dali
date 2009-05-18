@@ -24,7 +24,7 @@ import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.utility.jdt.JPTTools;
 import org.eclipse.jpt.core.resource.java.AccessType;
 import org.eclipse.jpt.core.resource.java.Annotation;
-import org.eclipse.jpt.core.resource.java.JavaResourceClassFile;
+import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.utility.MethodSignature;
@@ -44,7 +44,7 @@ final class BinaryPersistentType
 
 	private String qualifiedName;
 
-	private String superClassQualifiedName;
+	private String superclassQualifiedName;
 
 	private boolean abstract_;  // 'abstract' is a reserved word
 
@@ -57,11 +57,11 @@ final class BinaryPersistentType
 
 	// ********** construction/initialization **********
 
-	BinaryPersistentType(JavaResourceClassFile parent, IType type) {
+	BinaryPersistentType(JavaResourceNode parent, IType type) {
 		super(parent, new TypeAdapter(type));
 		this.name = this.buildName();
 		this.qualifiedName = this.buildQualifiedName();
-		this.superClassQualifiedName = this.buildSuperClassQualifiedName();
+		this.superclassQualifiedName = this.buildSuperclassQualifiedName();
 		this.abstract_ = this.buildAbstract();
 		this.fields = this.buildFields();
 		this.methods = this.buildMethods();
@@ -77,10 +77,11 @@ final class BinaryPersistentType
 		super.update();
 		this.setName(this.buildName());
 		this.setQualifiedName(this.buildQualifiedName());
-		this.setSuperClassQualifiedName(this.buildSuperClassQualifiedName());
+		this.setSuperclassQualifiedName(this.buildSuperclassQualifiedName());
 		this.setAbstract(this.buildAbstract());
 		this.updateFields();
 		this.updateMethods();
+		// need to wait until everything is updated to calculate 'access'
 		this.setAccess(this.buildAccess());
 	}
 
@@ -157,23 +158,27 @@ final class BinaryPersistentType
 	}
 
 	private String buildQualifiedName() {
-		return this.getMember().getFullyQualifiedName();
+		return this.getMember().getFullyQualifiedName();  // no parameters are included here
 	}
 
 	// ***** superclass qualified name
-	public String getSuperClassQualifiedName() {
-		return this.superClassQualifiedName;
+	public String getSuperclassQualifiedName() {
+		return this.superclassQualifiedName;
 	}
 
-	private void setSuperClassQualifiedName(String superClassQualifiedName) {
-		String old = this.superClassQualifiedName;
-		this.superClassQualifiedName = superClassQualifiedName;
-		this.firePropertyChanged(SUPER_CLASS_QUALIFIED_NAME_PROPERTY, old, superClassQualifiedName);
+	private void setSuperclassQualifiedName(String superclassQualifiedName) {
+		String old = this.superclassQualifiedName;
+		this.superclassQualifiedName = superclassQualifiedName;
+		this.firePropertyChanged(SUPERCLASS_QUALIFIED_NAME_PROPERTY, old, superclassQualifiedName);
 	}
 
-	private String buildSuperClassQualifiedName() {
+	private String buildSuperclassQualifiedName() {
+		return convertTypeSignatureToTypeName(this.getSuperclassTypeSignature());
+	}
+
+	private String getSuperclassTypeSignature() {
 		try {
-			return this.getMember().getSuperclassName();
+			return this.getMember().getSuperclassTypeSignature();
 		} catch (JavaModelException ex) {
 			JptCorePlugin.log(ex);
 			return null;
@@ -397,6 +402,8 @@ final class BinaryPersistentType
 	}
 	
 
+	// ********** IType adapter **********
+
 	static class TypeAdapter implements Adapter {
 		private final IType type;
 
@@ -420,6 +427,106 @@ final class BinaryPersistentType
 	}
 
 
+	// ********** "persistable" check **********
+
+	static boolean typeIsPersistable(IType type) {
+		return (type != null)
+				&& type.exists()
+				&& JPTTools.typeIsPersistable(new JPTToolsAdapter(type));
+	}
+
+
+	// ********** JPT tools adapter **********
+
+	/**
+	 * JPTTools needs an adapter so it can work with either an IType
+	 * or an ITypeBinding etc.
+	 */
+	static class JPTToolsAdapter implements JPTTools.TypeAdapter {
+		private final IType type;
+
+		protected JPTToolsAdapter(IType type) {
+			super();
+			if (type == null) {
+				throw new NullPointerException();
+			}
+			this.type = type;
+		}
+
+		public int getModifiers() {
+			try {
+				return this.type.getFlags();
+			} catch (JavaModelException ex) {
+				JptCorePlugin.log(ex);
+				return 0;
+			}
+		}
+
+		public boolean isAnnotation() {
+			try {
+				return this.type.isAnnotation();
+			} catch (JavaModelException ex) {
+				JptCorePlugin.log(ex);
+				return false;
+			}
+		}
+
+		public boolean isAnonymous() {
+			try {
+				return this.type.isAnonymous();
+			} catch (JavaModelException ex) {
+				JptCorePlugin.log(ex);
+				return false;
+			}
+		}
+
+		public boolean isArray() {
+			return false;  // ???
+		}
+
+		public boolean isEnum() {
+			try {
+				return this.type.isEnum();
+			} catch (JavaModelException ex) {
+				JptCorePlugin.log(ex);
+				return false;
+			}
+		}
+
+		public boolean isInterface() {
+			try {
+				return this.type.isInterface();
+			} catch (JavaModelException ex) {
+				JptCorePlugin.log(ex);
+				return false;
+			}
+		}
+
+		public boolean isLocal() {
+			try {
+				return this.type.isLocal();
+			} catch (JavaModelException ex) {
+				JptCorePlugin.log(ex);
+				return false;
+			}
+		}
+
+		public boolean isMember() {
+			try {
+				return this.type.isMember();
+			} catch (JavaModelException ex) {
+				JptCorePlugin.log(ex);
+				return false;
+			}
+		}
+
+		public boolean isPrimitive() {
+			return false;  // ???
+		}
+	
+	}
+
+
 	// ********** unsupported JavaResourcePersistentType implementation **********
 
 	public Iterator<JavaResourcePersistentType> types() {
@@ -431,10 +538,6 @@ final class BinaryPersistentType
 	}
 
 	public Iterator<JavaResourcePersistentType> persistableTypes() {
-		throw new UnsupportedOperationException();
-	}
-
-	public Iterator<JavaResourcePersistentType> allPersistableTypes() {
 		throw new UnsupportedOperationException();
 	}
 

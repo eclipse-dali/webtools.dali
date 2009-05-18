@@ -34,6 +34,7 @@ import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
  * <code>#remove()</code> operation to the <code>Mutator</code>.
  * 
  * @see CloneIterator
+ * @see FixedCloneIterable
  */
 public class CloneIterable<E>
 	implements Iterable<E>

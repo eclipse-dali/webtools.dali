@@ -36,10 +36,10 @@ public interface JavaResourcePersistentType
 		String QUALIFIED_NAME_PROPERTY = "qualifiedName"; //$NON-NLS-1$
 
 	/**
-	 * Return the fully qualified name of the type's super class.
+	 * Return the fully qualified name of the type's superclass.
 	 */
-	String getSuperClassQualifiedName();
-		String SUPER_CLASS_QUALIFIED_NAME_PROPERTY = "superClassQualifiedName"; //$NON-NLS-1$
+	String getSuperclassQualifiedName();
+		String SUPERCLASS_QUALIFIED_NAME_PROPERTY = "superclassQualifiedName"; //$NON-NLS-1$
 
 	/**
 	 * Return whether the type is abstract.
@@ -78,12 +78,6 @@ public interface JavaResourcePersistentType
 	 * Return the immediately nested persistable types.
 	 */
 	Iterator<JavaResourcePersistentType> persistableTypes();
-
-	/**
-	 * Return all the "persistable" types (the type itself, its children, its
-	 * grandchildren, etc.) as defined by the JPA spec.
-	 */
-	Iterator<JavaResourcePersistentType> allPersistableTypes();
 
 
 	// ********** fields **********

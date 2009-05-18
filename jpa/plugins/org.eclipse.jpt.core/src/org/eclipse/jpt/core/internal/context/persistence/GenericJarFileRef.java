@@ -27,7 +27,9 @@ import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-
+/**
+ * Context JAR file reference (from the persistence unit)
+ */
 public class GenericJarFileRef
 	extends AbstractXmlContextNode
 	implements JarFileRef
@@ -149,7 +151,7 @@ public class GenericJarFileRef
 	protected void updateJarFile() {
 		JavaResourcePackageFragmentRoot jrpfr = null;
 		if (! StringTools.stringIsEmpty(this.fileName)) {
-			jrpfr = this.getJpaProject().getJavaResourcePackageFragmentRoot(this.getFileName());
+			jrpfr = this.getJpaProject().getJavaResourcePackageFragmentRoot(this.fileName);
 		}
 		if (jrpfr == null) {
 			if (this.jarFile != null) {

@@ -9,10 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.resource.java;
 
-import java.util.Iterator;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.jdt.core.IType;
 
 /**
- * Java package fragment
+ * Java persistent type cache - used to hold "external" types
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -20,24 +21,27 @@ import java.util.Iterator;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface JavaResourcePackageFragment
-	extends JavaResourceNode
+public interface JavaResourcePersistentTypeCache
+	extends JavaResourceNode.Root
 {
-	/**
-	 * Return the package fragment's class files that contain "persistable" types.
-	 */
-	Iterator<JavaResourceClassFile> classFiles();
-		String CLASS_FILES_COLLECTION = "classFiles"; //$NON-NLS-1$
+
+	String PERSISTENT_TYPES_COLLECTION = "persistentTypes"; //$NON-NLS-1$
 
 	/**
-	 * Return the size of the package fragment's class files.
+	 * Return the size of the cache's persistent types.
 	 */
-	int classFilesSize();
+	int persistentTypesSize();
 
 	/**
-	 * Return the package fragment's Java persistent types.
-	 * Return only the files that are annotated with JPA annotations.
+	 * Add a Java resource persistent type for the specified JDT type to the
+	 * cache. Return the new type.
 	 */
-	Iterator<JavaResourcePersistentType> persistedTypes();
+	JavaResourcePersistentType addPersistentType(IType jdtType);
+
+	/**
+	 * Remove all the persistent types associated with the specified JAR file.
+	 * Return whether any persistent types were removed.
+	 */
+	boolean removePersistentTypes(IFile jarFile);
 
 }

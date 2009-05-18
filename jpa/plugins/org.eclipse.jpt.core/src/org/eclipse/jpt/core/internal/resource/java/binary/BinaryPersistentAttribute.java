@@ -72,10 +72,12 @@ final class BinaryPersistentAttribute
 		super(parent, adapter);
 		this.modifiers = this.buildModifiers();
 		this.typeName = this.buildTypeName();
-		this.typeIsInterface = this.buildTypeIsInterface();
-		this.typeIsEnum = this.buildTypeIsEnum();
-		this.typeSuperclassNames.addAll(this.buildTypeSuperclassNames());
-		this.typeInterfaceNames.addAll(this.buildTypeInterfaceNames());
+
+		IType type = this.getType();  // shouldn't be an array...
+		this.typeIsInterface = this.buildTypeIsInterface(type);
+		this.typeIsEnum = this.buildTypeIsEnum(type);
+		this.typeSuperclassNames.addAll(this.buildTypeSuperclassNames(type));
+		this.typeInterfaceNames.addAll(this.buildTypeInterfaceNames(type));
 		this.typeTypeArgumentNames.addAll(this.buildTypeTypeArgumentNames());
 	}
 
@@ -87,10 +89,12 @@ final class BinaryPersistentAttribute
 		super.update();
 		this.setModifiers(this.buildModifiers());
 		this.setTypeName(this.buildTypeName());
-		this.setTypeIsInterface(this.buildTypeIsInterface());
-		this.setTypeIsEnum(this.buildTypeIsEnum());
-		this.setTypeSuperclassNames(this.buildTypeSuperclassNames());
-		this.setTypeInterfaceNames(this.buildTypeInterfaceNames());
+
+		IType type = this.getType();  // shouldn't be an array...
+		this.setTypeIsInterface(this.buildTypeIsInterface(type));
+		this.setTypeIsEnum(this.buildTypeIsEnum(type));
+		this.setTypeSuperclassNames(this.buildTypeSuperclassNames(type));
+		this.setTypeInterfaceNames(this.buildTypeInterfaceNames(type));
 		this.setTypeTypeArgumentNames(this.buildTypeTypeArgumentNames());
 	}
 
@@ -214,7 +218,7 @@ final class BinaryPersistentAttribute
 
 	/**
 	 * JARs don't have array types;
-	 * also, no generic type arguments
+	 * also, no generic type parameters
 	 */
 	private String buildTypeName() {
 		return convertTypeSignatureToTypeName(this.getTypeSignature());
@@ -231,8 +235,7 @@ final class BinaryPersistentAttribute
 		this.firePropertyChanged(TYPE_IS_INTERFACE_PROPERTY, old, typeIsInterface);
 	}
 
-	private boolean buildTypeIsInterface() {
-		IType type = this.getType();  // shouldn't be an array...
+	private boolean buildTypeIsInterface(IType type) {
 		try {
 			return (type != null) && type.isInterface();
 		} catch (JavaModelException ex) {
@@ -252,8 +255,7 @@ final class BinaryPersistentAttribute
 		this.firePropertyChanged(TYPE_IS_ENUM_PROPERTY, old, typeIsEnum);
 	}
 
-	private boolean buildTypeIsEnum() {
-		IType type = this.getType();  // shouldn't be an array...
+	private boolean buildTypeIsEnum(IType type) {
 		try {
 			return (type != null) && type.isEnum();
 		} catch (JavaModelException ex) {
@@ -275,8 +277,7 @@ final class BinaryPersistentAttribute
 		this.synchronizeList(typeSuperclassNames, this.typeSuperclassNames, TYPE_SUPERCLASS_NAMES_COLLECTION);
 	}
 
-	private List<String> buildTypeSuperclassNames() {
-		IType type = this.getType();
+	private List<String> buildTypeSuperclassNames(IType type) {
 		if (type == null) {
 			return Collections.emptyList();
 		}
@@ -284,7 +285,7 @@ final class BinaryPersistentAttribute
 		ArrayList<String> names = new ArrayList<String>();
 		type = this.findSuperclass(type);
 		while (type != null) {
-			names.add(type.getFullyQualifiedName());
+			names.add(type.getFullyQualifiedName());  // no parameters are included here
 			type = this.findSuperclass(type);
 		}
 		return names;
@@ -303,8 +304,7 @@ final class BinaryPersistentAttribute
 		this.synchronizeCollection(typeInterfaceNames, this.typeInterfaceNames, TYPE_INTERFACE_NAMES_COLLECTION);
 	}
 
-	private Collection<String> buildTypeInterfaceNames() {
-		IType type = this.getType();
+	private Collection<String> buildTypeInterfaceNames(IType type) {
 		if (type == null) {
 			return Collections.emptySet();
 		}
@@ -403,21 +403,6 @@ final class BinaryPersistentAttribute
 	}
 	private static final String[] EMPTY_STRING_ARRAY = new String[0];
 
-	/**
-	 * Strip off the type signature's parameters if present.
-	 * Convert to a readable string.
-	 */
-	private static String convertTypeSignatureToTypeName(String typeSignature) {
-		return (typeSignature == null) ? null : convertTypeSignatureToTypeName_(typeSignature);
-	}
-
-	/**
-	 * no null check
-	 */
-	private static String convertTypeSignatureToTypeName_(String typeSignature) {
-		return Signature.toString(Signature.getTypeErasure(typeSignature));
-	}
-
 	private IType findTypeBySignature(String typeSignature) {
 		return (typeSignature == null) ? null : this.findType(convertTypeSignatureToTypeName_(typeSignature));
 	}
@@ -440,16 +425,39 @@ final class BinaryPersistentAttribute
 	}
 
 
+
 	// ********** adapters **********
 
-	interface Adapter extends BinaryPersistentMember.Adapter {
+	/**
+	 * Adapt an IField or IMethod.
+	 */
+	interface Adapter
+		extends BinaryPersistentMember.Adapter
+	{
+		/**
+		 * Return the field or getter method's "attribute" name
+		 * (e.g. field "foo" -> "foo"; method "getFoo" -> "foo").
+		 */
 		String getAttributeName();
+
+		/**
+		 * Return whether the attribute is a Java field (as opposed to a method).
+		 */
 		boolean isField();
+
+		/**
+		 * Return the attribute's type signature.
+		 */
 		String getTypeSignature() throws JavaModelException;
 	}
 
-	static class FieldAdapter implements Adapter {
-		private final IField field;
+	/**
+	 * IField adapter
+	 */
+	static class FieldAdapter
+		implements Adapter
+	{
+		final IField field;
 
 		FieldAdapter(IField field) {
 			super();
@@ -461,7 +469,7 @@ final class BinaryPersistentAttribute
 		}
 
 		public boolean isPersistable() {
-			return this.field.exists() && JPTTools.fieldIsPersistable(new JPTToolsAdapter(this.field));
+			return this.field.exists() && JPTTools.fieldIsPersistable(new JPTToolsAdapter());
 		}
 
 		public IAnnotation[] getAnnotations() throws JavaModelException {
@@ -484,20 +492,10 @@ final class BinaryPersistentAttribute
 		 * JPTTools needs an adapter so it can work with either an IField
 		 * or an IVariableBinding etc.
 		 */
-		static class JPTToolsAdapter implements JPTTools.FieldAdapter {
-			private final IField field;
-
-			JPTToolsAdapter(IField field) {
-				super();
-				if (field == null) {
-					throw new NullPointerException();
-				}
-				this.field = field;
-			}
-
+		class JPTToolsAdapter implements JPTTools.FieldAdapter {
 			public int getModifiers() {
 				try {
-					return this.field.getFlags();
+					return FieldAdapter.this.field.getFlags();
 				} catch (JavaModelException ex) {
 					JptCorePlugin.log(ex);
 					return 0;
@@ -508,8 +506,14 @@ final class BinaryPersistentAttribute
 
 	}
 
-	static class MethodAdapter implements Adapter {
-		private final IMethod method;
+	/**
+	 * IMethod adapter
+	 */
+	static class MethodAdapter
+		implements Adapter
+	{
+		final IMethod method;
+		static final IMethod[] EMPTY_METHOD_ARRAY = new IMethod[0];
 
 		MethodAdapter(IMethod method) {
 			super();
@@ -521,7 +525,7 @@ final class BinaryPersistentAttribute
 		}
 
 		public boolean isPersistable() {
-			return JPTTools.methodIsPersistablePropertyGetter(new JPTToolsAdapter(this.method));
+			return JPTTools.methodIsPersistablePropertyGetter(new JPTToolsAdapter());
 		}
 
 		public IAnnotation[] getAnnotations() throws JavaModelException {
@@ -544,37 +548,31 @@ final class BinaryPersistentAttribute
 		 * JPTTools needs an adapter so it can work with either an IMethod
 		 * or an IMethodBinding etc.
 		 */
-		static class JPTToolsAdapter implements JPTTools.MethodAdapter {
-			private final IMethod method;
-
-			JPTToolsAdapter(IMethod method) {
+		abstract static class AbstractJPTToolsAdapter
+			implements JPTTools.SimpleMethodAdapter
+		{
+			AbstractJPTToolsAdapter() {
 				super();
-				if (method == null) {
-					throw new NullPointerException();
-				}
-				this.method = method;
 			}
 
-			public String getName() {
-				return this.method.getElementName();
-			}
+			abstract IMethod getMethod();
 
 			public int getModifiers() {
 				try {
-					return this.method.getFlags();
+					return this.getMethod().getFlags();
 				} catch (JavaModelException ex) {
 					JptCorePlugin.log(ex);
 					return 0;
 				}
 			}
 
-			public String getReturnTypeName() {
-				return Signature.toString(this.getReturnTypeSignature());
+			public String getReturnTypeErasureName() {
+				return convertTypeSignatureToTypeName(this.getReturnTypeSignature());
 			}
 
 			private String getReturnTypeSignature() {
 				try {
-					return this.method.getReturnType();
+					return this.getMethod().getReturnType();
 				} catch (JavaModelException ex) {
 					JptCorePlugin.log(ex);
 					return null;
@@ -583,34 +581,70 @@ final class BinaryPersistentAttribute
 
 			public boolean isConstructor() {
 				try {
-					return this.method.isConstructor();
+					return this.getMethod().isConstructor();
 				} catch (JavaModelException ex) {
 					JptCorePlugin.log(ex);
 					return false;
 				}
 			}
 
-			public int getParametersLength() {
-				return this.method.getParameterTypes().length;
+		}
+
+		static class SimpleJPTToolsAdapter
+			extends AbstractJPTToolsAdapter
+		{
+			private final IMethod method;
+
+			SimpleJPTToolsAdapter(IMethod method) {
+				super();
+				this.method = method;
 			}
 
-			public JPTTools.MethodAdapter getSibling(String name) {
+			@Override
+			IMethod getMethod() {
+				return this.method;
+			}
+
+		}
+
+		class JPTToolsAdapter
+			extends AbstractJPTToolsAdapter
+			implements JPTTools.MethodAdapter
+		{
+			JPTToolsAdapter() {
+				super();
+			}
+
+			@Override
+			IMethod getMethod() {
+				return MethodAdapter.this.method;
+			}
+
+			public String getName() {
+				return this.getMethod().getElementName();
+			}
+
+			public int getParametersLength() {
+				return this.getMethod().getParameterTypes().length;
+			}
+
+			public JPTTools.SimpleMethodAdapter getSibling(String name) {
 				for (IMethod sibling : this.getSiblings()) {
 					if ((sibling.getParameterTypes().length == 0)
 							&& sibling.getElementName().equals(name)) {
-						return new JPTToolsAdapter(sibling);
+						return new SimpleJPTToolsAdapter(sibling);
 					}
 				}
 				return null;
 			}
 
-			public JPTTools.MethodAdapter getSibling(String name, String parameterTypeName) {
+			public JPTTools.SimpleMethodAdapter getSibling(String name, String parameterTypeErasureName) {
 				for (IMethod sibling : this.getSiblings()) {
 					String[] parmTypes = sibling.getParameterTypes();
 					if ((parmTypes.length == 1)
-							&& Signature.toString(parmTypes[0]).equals(parameterTypeName)
-							&& sibling.getElementName().equals(name)) {
-						return new JPTToolsAdapter(sibling);
+							&& sibling.getElementName().equals(name)
+							&& convertTypeSignatureToTypeName(parmTypes[0]).equals(parameterTypeErasureName)) {
+						return new SimpleJPTToolsAdapter(sibling);
 					}
 				}
 				return null;
@@ -618,13 +652,12 @@ final class BinaryPersistentAttribute
 
 			private IMethod[] getSiblings() {
 				try {
-					return this.method.getDeclaringType().getMethods();
+					return this.getMethod().getDeclaringType().getMethods();
 				} catch (JavaModelException ex) {
 					JptCorePlugin.log(ex);
 					return EMPTY_METHOD_ARRAY;
 				}
 			}
-			private static final IMethod[] EMPTY_METHOD_ARRAY = new IMethod[0];
 
 		}
 

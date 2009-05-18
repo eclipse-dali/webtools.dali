@@ -19,7 +19,7 @@ import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.model.Model;
 
 /**
- * Common interface for Java resource nodes (source code or JAR).
+ * Common interface for Java resource nodes (source code or binary).
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -70,10 +70,9 @@ public interface JavaResourceNode
 	interface Root extends JavaResourceNode, JpaResourceModel {
 
 		/**
-		 * Return the root's "persistable" Java resource types, as defined by the
-		 * JPA spec.
+		 * Return the root's Java resource persistent types.
 		 */
-		Iterator<JavaResourcePersistentType> persistableTypes();
+		Iterator<JavaResourcePersistentType> persistentTypes();
 
 		/**
 		 * Called (via a hook in change notification) whenever anything in the

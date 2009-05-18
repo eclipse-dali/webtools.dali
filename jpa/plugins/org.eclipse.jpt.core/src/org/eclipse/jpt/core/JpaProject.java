@@ -20,8 +20,10 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
+import org.eclipse.jpt.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.core.resource.java.JavaResourcePackageFragmentRoot;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentTypeCache;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.db.Catalog;
 import org.eclipse.jpt.db.ConnectionProfile;
@@ -109,7 +111,35 @@ public interface JpaProject
 	 */
 	JpaFile getJpaFile(IFile file);
 
-	
+
+	// ********** external Java resource compilation units **********
+
+	/** 
+	 * ID string used when the JPA project's collection of external Java
+	 * resource compilation units changes.
+	 * @see #addCollectionChangeListener(String, org.eclipse.jpt.utility.model.listener.CollectionChangeListener)
+	 */
+	String EXTERNAL_JAVA_RESOURCE_COMPILATION_UNITS_COLLECTION = "externalJavaResourceCompilationUnits"; //$NON-NLS-1$
+
+	/**
+	 * Return the JPA project's external Java resource compilation units.
+	 */
+	Iterator<JavaResourceCompilationUnit> externalJavaResourceCompilationUnits();
+
+	/**
+	 * Return the size of the JPA project's external Java resource compilation units.
+	 */
+	int externalJavaResourceCompilationUnitsSize();
+
+
+	// ********** external Java resource persistent types **********
+
+	/**
+	 * Return the JPA project's external Java resource persistent type cache.
+	 */
+	JavaResourcePersistentTypeCache getExternalJavaResourcePersistentTypeCache();
+
+
 	// ********** xml resources **********
 
 	/**
@@ -147,7 +177,7 @@ public interface JpaProject
 
 	/**
 	 * Return the Java resource persistent type for the specified type.
-	 * Return null if absent.
+	 * Return null if invalid or absent.
 	 */
 	JavaResourcePersistentType getJavaResourcePersistentType(String typeName);
 

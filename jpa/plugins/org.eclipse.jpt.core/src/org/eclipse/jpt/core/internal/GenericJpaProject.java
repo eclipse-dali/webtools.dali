@@ -13,16 +13,16 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jpt.core.JpaProject;
 
 /**
- * 
+ * Not much different from the abstract JPA project.
  */
 public class GenericJpaProject
 	extends AbstractJpaProject
 {
-
 
 	// ********** constructor/initialization **********
 
 	public GenericJpaProject(JpaProject.Config config) throws CoreException {
 		super(config);
 	}
+
 }

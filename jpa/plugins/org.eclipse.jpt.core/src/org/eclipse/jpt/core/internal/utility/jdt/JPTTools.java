@@ -103,6 +103,10 @@ public class JPTTools {
 	 * Adapted to IVariableBinding and IField.
 	 */
 	public interface FieldAdapter {
+		/**
+		 * Return the field's modifiers. We use these to check whether the
+		 * field is static or transient.
+		 */
 		int getModifiers();
 	}
 
@@ -121,7 +125,7 @@ public class JPTTools {
 			return false;
 		}
 
-		String returnTypeName = methodAdapter.getReturnTypeName();
+		String returnTypeName = methodAdapter.getReturnTypeErasureName();
 		if (returnTypeName == null) {
 			return false;  // DOM method bindings can have a null name
 		}
@@ -167,7 +171,7 @@ public class JPTTools {
 	 * Return whether the method's modifiers prevent it
 	 * from being a getter or setter for a "persistent" property.
 	 */
-	private static boolean methodHasInvalidModifiers(MethodAdapter methodAdapter) {
+	private static boolean methodHasInvalidModifiers(SimpleMethodAdapter methodAdapter) {
 		int modifiers = methodAdapter.getModifiers();
 		if (Modifier.isStatic(modifiers)) {
 			return true;
@@ -193,7 +197,7 @@ public class JPTTools {
 	 * "is" method.
 	 */
 	private static boolean methodHasValidSiblingIsMethod(MethodAdapter methodAdapter, String capitalizedAttributeName) {
-		MethodAdapter isMethodAdapter = methodAdapter.getSibling("is" + capitalizedAttributeName); //$NON-NLS-1$
+		SimpleMethodAdapter isMethodAdapter = methodAdapter.getSibling("is" + capitalizedAttributeName); //$NON-NLS-1$
 		return methodIsValidSibling(isMethodAdapter, "boolean"); //$NON-NLS-1$
 	}
 
@@ -201,8 +205,8 @@ public class JPTTools {
 	 * Return whether the method has a sibling "set" method
 	 * and that method is valid for a "persistable" property.
 	 */
-	private static boolean methodHasValidSiblingSetMethod(MethodAdapter methodAdapter, String capitalizedAttributeName, String returnTypeName) {
-		MethodAdapter setMethodAdapter = methodAdapter.getSibling("set" + capitalizedAttributeName, returnTypeName); //$NON-NLS-1$
+	private static boolean methodHasValidSiblingSetMethod(MethodAdapter methodAdapter, String capitalizedAttributeName, String parameterTypeErasureName) {
+		SimpleMethodAdapter setMethodAdapter = methodAdapter.getSibling("set" + capitalizedAttributeName, parameterTypeErasureName); //$NON-NLS-1$
 		return methodIsValidSibling(setMethodAdapter, "void"); //$NON-NLS-1$
 	}
 
@@ -210,7 +214,7 @@ public class JPTTools {
 	 * Return whether the specified method is a valid sibling with the
 	 * specified return type.
 	 */
-	private static boolean methodIsValidSibling(MethodAdapter methodAdapter, String returnTypeName) {
+	private static boolean methodIsValidSibling(SimpleMethodAdapter methodAdapter, String returnTypeName) {
 		if (methodAdapter == null) {
 			return false;
 		}
@@ -220,7 +224,7 @@ public class JPTTools {
 		if (methodAdapter.isConstructor()) {
 			return false;
 		}
-		String rtName = methodAdapter.getReturnTypeName();
+		String rtName = methodAdapter.getReturnTypeErasureName();
 		if (rtName == null) {
 			return false;  // DOM method bindings can have a null name
 		}
@@ -231,14 +235,59 @@ public class JPTTools {
 	 * Queries needed to calculate whether a method is "persistable".
 	 * Adapted to IMethodBinding and IMethod.
 	 */
-	public interface MethodAdapter {
-		String getName();
+	public interface SimpleMethodAdapter {
+		/**
+		 * Return the method's modifiers.
+		 * We use these to check whether the method is static, final, etc.
+		 */
 		int getModifiers();
-		String getReturnTypeName();
+
+		/**
+		 * Return the name of the method's return type erasure.
+		 * We use this to check for
+		 *   - boolean getters
+		 *   - void return types
+		 *   - matching getters and setters
+		 */
+		String getReturnTypeErasureName();
+
+		/**
+		 * Return whether the method is a constructor.
+		 */
 		boolean isConstructor();
+	}
+
+	/**
+	 * Queries needed to calculate whether a method is "persistable".
+	 * Adapted to IMethodBinding and IMethod.
+	 */
+	public interface MethodAdapter extends SimpleMethodAdapter {
+		/**
+		 * Return the method's name.
+		 * We use this to determine
+		 *   - whether the method is a "getter"
+		 *   - the property name implied by the getter's name
+		 */
+		String getName();
+
+		/**
+		 * Return the number of paramters declared by the method.
+		 * We use this to determine whether the method is a "getter".
+		 */
 		int getParametersLength();
-		MethodAdapter getSibling(String name);
-		MethodAdapter getSibling(String name, String parameterTypeName);
+
+		/**
+		 * Return the method's "sibling" with the specified name and no parameters.
+		 * We use this to find an "is" boolean getter that would take precedence
+		 * over a "get" boolean getter.
+		 */
+		SimpleMethodAdapter getSibling(String name);
+
+		/**
+		 * Return the method's "sibling" with the specified name and single parameter.
+		 * We use this to find a matching "setter" for a possible "getter".
+		 */
+		SimpleMethodAdapter getSibling(String name, String parameterTypeErasureName);
 	}
 
 

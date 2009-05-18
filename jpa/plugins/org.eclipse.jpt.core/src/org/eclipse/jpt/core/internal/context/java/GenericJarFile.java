@@ -56,12 +56,20 @@ public class GenericJarFile
 	}
 
 	protected Iterator<JavaPersistentType> buildJavaPersistentTypes() {
-		return new TransformationIterator<JavaResourcePersistentType, JavaPersistentType>(this.jarResourcePackageFragmentRoot.persistableTypes()) {
+		return new TransformationIterator<JavaResourcePersistentType, JavaPersistentType>(this.javaResourcePersistentTypes()) {
 			@Override
 			protected JavaPersistentType transform(JavaResourcePersistentType jrpt) {
 				return GenericJarFile.this.buildJavaPersistentType(jrpt);
 			}
 		};
+	}
+
+	/**
+	 * the resource JAR holds only annotated types, so we can use them all for
+	 * building the context types
+	 */
+	protected Iterator<JavaResourcePersistentType> javaResourcePersistentTypes() {
+		return this.jarResourcePackageFragmentRoot.persistentTypes();
 	}
 
 	protected JavaPersistentType buildJavaPersistentType(JavaResourcePersistentType jrpt) {
@@ -157,7 +165,7 @@ public class GenericJarFile
 		HashBag<JavaPersistentType> contextTypesToRemove = CollectionTools.bag(this.javaPersistentTypes(), this.javaPersistentTypes.size());
 		ArrayList<JavaPersistentType> contextTypesToUpdate = new ArrayList<JavaPersistentType>(this.javaPersistentTypes.size());
 
-		for (Iterator<JavaResourcePersistentType> resourceTypes = this.jarResourcePackageFragmentRoot.persistableTypes(); resourceTypes.hasNext(); ) {
+		for (Iterator<JavaResourcePersistentType> resourceTypes = this.javaResourcePersistentTypes(); resourceTypes.hasNext(); ) {
 			JavaResourcePersistentType resourceType = resourceTypes.next();
 			boolean match = false;
 			for (Iterator<JavaPersistentType> contextTypes = contextTypesToRemove.iterator(); contextTypes.hasNext(); ) {

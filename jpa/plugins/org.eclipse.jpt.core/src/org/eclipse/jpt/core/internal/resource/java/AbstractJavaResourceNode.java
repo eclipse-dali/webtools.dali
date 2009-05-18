@@ -76,13 +76,18 @@ public abstract class AbstractJavaResourceNode
 	/**
 	 * ignore the aspect name, we notify listeners of *every* change
 	 */
-	void aspectChanged(@SuppressWarnings("unused") String aspectName) {
+	protected void aspectChanged(@SuppressWarnings("unused") String aspectName) {
 		this.getRoot().resourceModelChanged();
 	}
 
 
 	// ********** JavaResourceNode implementation **********
 
+	/**
+	 * @see org.eclipse.jpt.core.internal.resource.java.source.SourceCompilationUnit#getRoot()
+	 * @see org.eclipse.jpt.core.internal.resource.java.binary.BinaryPackageFragmentRoot#getRoot()
+	 * @see org.eclipse.jpt.core.internal.resource.java.binary.BinaryPersistentTypeCache#getRoot()
+	 */
 	public Root getRoot() {
 		return this.parent.getRoot();
 	}

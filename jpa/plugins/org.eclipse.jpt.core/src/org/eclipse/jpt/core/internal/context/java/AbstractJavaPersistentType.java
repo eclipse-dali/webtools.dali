@@ -15,6 +15,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Vector;
+
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jdt.core.dom.CompilationUnit;
@@ -34,6 +36,8 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.HashBag;
+import org.eclipse.jpt.utility.internal.iterables.CloneIterable;
 import org.eclipse.jpt.utility.internal.iterators.ChainIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
@@ -52,7 +56,7 @@ public abstract class AbstractJavaPersistentType
 	
 	protected JavaTypeMapping mapping;
 
-	protected final List<JavaPersistentAttribute> attributes;
+	protected final Vector<JavaPersistentAttribute> attributes = new Vector<JavaPersistentAttribute>();
 
 	protected PersistentType parentPersistentType;
 
@@ -62,7 +66,6 @@ public abstract class AbstractJavaPersistentType
 
 	protected AbstractJavaPersistentType(PersistentType.Owner parent, JavaResourcePersistentType jrpt) {
 		super(parent);
-		this.attributes = new ArrayList<JavaPersistentAttribute>();
 		this.initialize(jrpt);
 	}
 	
@@ -202,6 +205,10 @@ public abstract class AbstractJavaPersistentType
 		return new CloneListIterator<JavaPersistentAttribute>(this.attributes);
 	}
 	
+	protected Iterable<JavaPersistentAttribute> getAttributes() {
+		return new CloneIterable<JavaPersistentAttribute>(this.attributes);
+	}
+	
 	public int attributesSize() {
 		return this.attributes.size();
 	}
@@ -254,8 +261,8 @@ public abstract class AbstractJavaPersistentType
 		if (values != null) {
 			return values;
 		}
-		for (Iterator<JavaPersistentAttribute> stream = attributes(); stream.hasNext();) {
-			values = stream.next().javaCompletionProposals(pos, filter, astRoot);
+		for (JavaPersistentAttribute attribute : this.getAttributes()) {
+			values = attribute.javaCompletionProposals(pos, filter, astRoot);
 			if (values != null) {
 				return values;
 			}
@@ -269,8 +276,7 @@ public abstract class AbstractJavaPersistentType
 		CompilationUnit astRoot = this.buildASTRoot(); 
 		
 		if (this.contains(offset, astRoot)) {
-			for (Iterator<JavaPersistentAttribute> stream = this.attributes(); stream.hasNext();) {
-				JavaPersistentAttribute persistentAttribute = stream.next();
+			for (JavaPersistentAttribute persistentAttribute : this.getAttributes()) {
 				if (persistentAttribute.contains(offset, astRoot)) {
 					return persistentAttribute;
 				}
@@ -353,7 +359,7 @@ public abstract class AbstractJavaPersistentType
 		this.name = this.buildName();
 		this.initializeAccess();
 		this.initializeMapping();
-		this.initializePersistentAttributes();		
+		this.initializeAttributes();		
 	}
 	
 	protected void initializeAccess() {
@@ -365,13 +371,13 @@ public abstract class AbstractJavaPersistentType
 		this.mapping.initialize(this.resourcePersistentType);
 	}
 	
-	protected void initializePersistentAttributes() {
-		for (Iterator<JavaResourcePersistentAttribute> stream = this.persistentAttributes(); stream.hasNext(); ) {
+	protected void initializeAttributes() {
+		for (Iterator<JavaResourcePersistentAttribute> stream = this.resourceAttributes(); stream.hasNext(); ) {
 			this.attributes.add(this.createAttribute(stream.next()));
 		}
 	}
 
-	protected Iterator<JavaResourcePersistentAttribute> persistentAttributes() {
+	protected Iterator<JavaResourcePersistentAttribute> resourceAttributes() {
 		return (this.getAccess() == AccessType.PROPERTY) ?
 				this.resourcePersistentType.persistableProperties() :
 				this.resourcePersistentType.persistableFields();
@@ -383,12 +389,20 @@ public abstract class AbstractJavaPersistentType
 	}
 
 	public void update() {
-		this.getJpaFile(this.resourcePersistentType.getFile()).addRootStructureNode(this.resourcePersistentType.getQualifiedName(), this);
+		JpaFile jpaFile = this.getJpaFile();
+		if (jpaFile != null) {
+			// the JPA file can be null if the resource type is "external"
+			jpaFile.addRootStructureNode(this.resourcePersistentType.getQualifiedName(), this);
+		}
 		this.setParentPersistentType(this.buildParentPersistentType());
 		this.setName(this.buildName());	
 		this.updateAccess();
 		this.updateMapping();
-		this.updatePersistentAttributes();		
+		this.updateAttributes();		
+	}
+
+	protected JpaFile getJpaFile() {
+		return this.getJpaFile(this.resourcePersistentType.getFile());
 	}
 	
 	protected void updateAccess() {
@@ -459,33 +473,34 @@ public abstract class AbstractJavaPersistentType
 		return (mappingAnnotation == null) ? null :  mappingAnnotation.getAnnotationName();
 	}
 
-	protected void updatePersistentAttributes() {
-		Collection<JavaPersistentAttribute> contextAttributesToRemove = CollectionTools.collection(attributes());
-		Collection<JavaPersistentAttribute> contextAttributesToUpdate = new ArrayList<JavaPersistentAttribute>();
+	protected void updateAttributes() {
+		HashBag<JavaPersistentAttribute> contextAttributesToRemove = CollectionTools.bag(this.attributes(), this.attributesSize());
+		ArrayList<JavaPersistentAttribute> contextAttributesToUpdate = new ArrayList<JavaPersistentAttribute>(this.attributesSize());
 		int resourceIndex = 0;
 		
-		for (Iterator<JavaResourcePersistentAttribute> stream = this.persistentAttributes(); stream.hasNext(); ) {
-			JavaResourcePersistentAttribute resourceAttribute = stream.next();
-			boolean contextAttributeFound = false;
-			for (JavaPersistentAttribute contextAttribute : contextAttributesToRemove) {
+		for (Iterator<JavaResourcePersistentAttribute> resourceAttributes = this.resourceAttributes(); resourceAttributes.hasNext(); ) {
+			JavaResourcePersistentAttribute resourceAttribute = resourceAttributes.next();
+			boolean match = false;
+			for (Iterator<JavaPersistentAttribute> contextAttributes = contextAttributesToRemove.iterator(); contextAttributes.hasNext(); ) {
+				JavaPersistentAttribute contextAttribute = contextAttributes.next();
 				if (contextAttribute.getResourcePersistentAttribute() == resourceAttribute) {
-					moveAttribute(resourceIndex, contextAttribute);
-					contextAttributesToRemove.remove(contextAttribute);
+					this.moveAttribute(resourceIndex, contextAttribute);
+					contextAttributes.remove();
 					contextAttributesToUpdate.add(contextAttribute);
-					contextAttributeFound = true;
+					match = true;
 					break;
 				}
 			}
-			if (!contextAttributeFound) {
-				addAttribute(resourceIndex, createAttribute(resourceAttribute));
+			if ( ! match) {
+				this.addAttribute(resourceIndex, this.createAttribute(resourceAttribute));
 			}
 			resourceIndex++;
 		}
 		for (JavaPersistentAttribute contextAttribute : contextAttributesToRemove) {
-			removeAttribute(contextAttribute);
+			this.removeAttribute(contextAttribute);
 		}
-		//first handle adding/removing of the persistent attributes, then update the others last, 
-		//this causes less churn in the update process
+		// handle adding and removing attributes first, update the
+		// remaining attributes last; this reduces the churn during "update"
 		for (JavaPersistentAttribute contextAttribute : contextAttributesToUpdate) {
 			contextAttribute.update();
 		}
@@ -496,9 +511,9 @@ public abstract class AbstractJavaPersistentType
 	}
 
 	protected PersistentType buildParentPersistentType() {
-		HashSet<JavaResourcePersistentType> visitedResourceTypes = new HashSet<JavaResourcePersistentType>();
-		visitedResourceTypes.add(this.resourcePersistentType);
-		PersistentType parent = this.getParent(this.resourcePersistentType.getSuperClassQualifiedName(), visitedResourceTypes);
+		HashSet<JavaResourcePersistentType> visited = new HashSet<JavaResourcePersistentType>();
+		visited.add(this.resourcePersistentType);
+		PersistentType parent = this.getParent(this.resourcePersistentType.getSuperclassQualifiedName(), visited);
 		if (parent == null) {
 			return null;
 		}
@@ -514,19 +529,22 @@ public abstract class AbstractJavaPersistentType
 	 * specified name in the persistence unit. If it is not found we use
 	 * resource persistent type and look for *its* parent type.
 	 * 
-	 * 'visitedResourceTypes' is used to detect a cycle in the resource type
+	 * The 'visited' collection is used to detect a cycle in the *resource* type
 	 * inheritance hierarchy and prevent the resulting stack overflow.
-	 * Any cycles in the persistent type inheritance hierarchy are handled in
+	 * Any cycles in the *context* type inheritance hierarchy are handled in
 	 * #buildParentPersistentType().
 	 */
-	protected PersistentType getParent(String typeName, Collection<JavaResourcePersistentType> visitedResourceTypes) {
-		JavaResourcePersistentType resourceType = this.getJpaProject().getJavaResourcePersistentType(typeName);
-		if ((resourceType == null) || visitedResourceTypes.contains(resourceType)) {
+	protected PersistentType getParent(String typeName, Collection<JavaResourcePersistentType> visited) {
+		if (typeName == null) {
 			return null;
 		}
-		visitedResourceTypes.add(resourceType);
+		JavaResourcePersistentType resourceType = this.getJpaProject().getJavaResourcePersistentType(typeName);
+		if ((resourceType == null) || visited.contains(resourceType)) {
+			return null;
+		}
+		visited.add(resourceType);
 		PersistentType parent = this.getPersistentType(typeName);
-		return (parent != null) ? parent : this.getParent(resourceType.getSuperClassQualifiedName(), visitedResourceTypes);  // recurse
+		return (parent != null) ? parent : this.getParent(resourceType.getSuperclassQualifiedName(), visited);  // recurse
 	}
 
 	protected PersistentType getPersistentType(String fullyQualifiedTypeName) {
@@ -545,8 +563,13 @@ public abstract class AbstractJavaPersistentType
 		if (reporter.isCancelled()) {
 			throw new ValidationCancelledException();
 		}
-		// build the AST root here to pass down
-		this.validate(messages, reporter, this.buildASTRoot());	
+		// TODO temporary hack since we don't know yet where to put
+		// any messages for types in another project (e.g. referenced by
+		// persistence.xml)
+		if (this.resourcePersistentType.getFile().getProject().equals(this.getJpaProject().getProject())) {
+			// build the AST root here to pass down
+			this.validate(messages, reporter, this.buildASTRoot());
+		}
 	}
 	
 	@Override
@@ -565,8 +588,8 @@ public abstract class AbstractJavaPersistentType
 	}
 	
 	protected void validateAttributes(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		for (Iterator<JavaPersistentAttribute> stream = this.attributes(); stream.hasNext(); ) {
-			this.validateAttribute(stream.next(), reporter, messages, astRoot);
+		for (JavaPersistentAttribute attribute : this.getAttributes()) {
+			this.validateAttribute(attribute, reporter, messages, astRoot);
 		}
 	}
 	
@@ -588,9 +611,10 @@ public abstract class AbstractJavaPersistentType
 	}
 
 	public void dispose() {
-		JpaFile jpaFile = getJpaFile(this.resourcePersistentType.getFile());
+		JpaFile jpaFile = this.getJpaFile();
 		if (jpaFile != null) {
 			// the JPA file can be null if the .java file was deleted
+			// or the resource type is "external"
 			jpaFile.removeRootStructureNode(this.resourcePersistentType.getQualifiedName());
 		}
 	}

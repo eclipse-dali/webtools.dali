@@ -52,7 +52,7 @@ final class SourcePersistentType
 
 	private String qualifiedName;
 
-	private String superClassQualifiedName;
+	private String superclassQualifiedName;
 
 	private boolean abstract_;  // 'abstract' is a reserved word
 
@@ -117,7 +117,7 @@ final class SourcePersistentType
 		super.initialize(astRoot);
 		this.name = this.buildName(astRoot);
 		this.qualifiedName = this.buildQualifiedName(astRoot);
-		this.superClassQualifiedName = this.buildSuperClassQualifiedName(astRoot);
+		this.superclassQualifiedName = this.buildSuperclassQualifiedName(astRoot);
 		this.abstract_ = this.buildAbstract(astRoot);
 		this.initializeTypes(astRoot);
 		this.initializeFields(astRoot);
@@ -190,7 +190,7 @@ final class SourcePersistentType
 	public void resolveTypes(CompilationUnit astRoot) {
 		super.resolveTypes(astRoot);
 
-		this.setSuperClassQualifiedName(this.buildSuperClassQualifiedName(astRoot));
+		this.setSuperclassQualifiedName(this.buildSuperclassQualifiedName(astRoot));
 
 		for (JavaResourcePersistentAttribute field : this.getFields()) {
 			field.resolveTypes(astRoot);
@@ -251,17 +251,17 @@ final class SourcePersistentType
 	}
 
 	// ***** superclass qualified name
-	public String getSuperClassQualifiedName() {
-		return this.superClassQualifiedName;
+	public String getSuperclassQualifiedName() {
+		return this.superclassQualifiedName;
 	}
 
-	private void setSuperClassQualifiedName(String superClassQualifiedName) {
-		String old = this.superClassQualifiedName;
-		this.superClassQualifiedName = superClassQualifiedName;
-		this.firePropertyChanged(SUPER_CLASS_QUALIFIED_NAME_PROPERTY, old, superClassQualifiedName);
+	private void setSuperclassQualifiedName(String superclassQualifiedName) {
+		String old = this.superclassQualifiedName;
+		this.superclassQualifiedName = superclassQualifiedName;
+		this.firePropertyChanged(SUPERCLASS_QUALIFIED_NAME_PROPERTY, old, superclassQualifiedName);
 	}
 
-	private String buildSuperClassQualifiedName(CompilationUnit astRoot) {
+	private String buildSuperclassQualifiedName(CompilationUnit astRoot) {
 		ITypeBinding binding = this.member.getBinding(astRoot);
 		if (binding == null) {
 			return null;
@@ -342,10 +342,6 @@ final class SourcePersistentType
 
 	public Iterator<JavaResourcePersistentType> persistableTypes() {
 		return this.persistableMembers(this.types());
-	}
-
-	public Iterator<JavaResourcePersistentType> allPersistableTypes() {
-		return this.persistableMembers(this.allTypes());
 	}
 
 	private JavaResourcePersistentType getType(String typeName, int occurrence) {
@@ -491,7 +487,7 @@ final class SourcePersistentType
 		super.update(astRoot);
 		this.setName(this.buildName(astRoot));
 		this.setQualifiedName(this.buildQualifiedName(astRoot));
-		this.setSuperClassQualifiedName(this.buildSuperClassQualifiedName(astRoot));
+		this.setSuperclassQualifiedName(this.buildSuperclassQualifiedName(astRoot));
 		this.setAbstract(this.buildAbstract(astRoot));
 		this.updateTypes(astRoot);
 		this.updateFields(astRoot);

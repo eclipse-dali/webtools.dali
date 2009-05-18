@@ -31,8 +31,12 @@ import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
  * have access to the original collection. But if the <code>FixedCloneIterable</code>
  * is supplied with an <code>CloneIterator.Mutator</code> it will delegate the
  * <code>#remove()</code> operation to the <code>Mutator</code>.
+ * <p>
+ * This iterable is useful for multiple passes over a collection that should not
+ * be changed between passes (e.g. by another thread).
  * 
  * @see CloneIterator
+ * @see CloneIterable
  */
 public class FixedCloneIterable<E>
 	implements Iterable<E>

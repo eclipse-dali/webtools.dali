@@ -55,7 +55,7 @@ public abstract class BinaryAnnotation
 	/**
 	 * Return the JDT annotation's member-value pair with the specified name.
 	 */
-	protected IMemberValuePair getJdtMemberValuePair(String memberName) {
+	private IMemberValuePair getJdtMemberValuePair(String memberName) {
 		for (IMemberValuePair pair : this.getJdtMemberValuePairs()) {
 			if (pair.getMemberName().equals(memberName)) {
 				return pair;
@@ -64,7 +64,7 @@ public abstract class BinaryAnnotation
 		return null;
 	}
 
-	protected IMemberValuePair[] getJdtMemberValuePairs() {
+	private IMemberValuePair[] getJdtMemberValuePairs() {
 		try {
 			return this.jdtAnnotation.getMemberValuePairs();
 		} catch (JavaModelException ex) {

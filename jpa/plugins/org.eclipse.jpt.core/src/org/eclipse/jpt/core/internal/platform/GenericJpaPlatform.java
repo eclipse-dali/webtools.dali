@@ -121,9 +121,6 @@ public class GenericJpaPlatform
 	/**
 	 * Return null if we don't have a provider for the specified content type
 	 * (since we don't have control over the possible content types).
-	 * NB: We use "is kind of" to match content types; so the search may be
-	 * order-sensitive.
-	 * @see IContentType#isKindOf(IContentType)
 	 */
 	protected JpaResourceModelProvider getResourceModelProvider(IContentType contentType) {
 		for (JpaResourceModelProvider provider : CollectionTools.iterable(resourceModelProviders())) {

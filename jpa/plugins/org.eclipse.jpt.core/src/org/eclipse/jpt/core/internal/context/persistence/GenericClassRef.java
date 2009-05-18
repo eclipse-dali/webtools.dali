@@ -32,7 +32,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
- * @see ClassRef
+ * Context persistence.xml class reference
  */
 public class GenericClassRef
 	extends AbstractXmlContextNode
@@ -72,19 +72,9 @@ public class GenericClassRef
 	protected void initialize(XmlJavaClassRef classRef, String typeName) {
 		this.xmlJavaClassRef = classRef;
 		this.className = typeName;
-		this.initializeJavaPersistentType();
+		this.javaPersistentType = this.buildJavaPersistentType();
 	}
 
-	protected void initializeJavaPersistentType() {
-		if (this.className == null) {
-			return;
-		}
-		JavaResourcePersistentType jrpt = this.getJpaProject().getJavaResourcePersistentType(this.className.replace('$', '.'));
-		if (jrpt != null) {
-			this.javaPersistentType = this.buildJavaPersistentType(jrpt);
-		}
-	}
-	
 	@Override
 	public PersistenceUnit getParent() {
 		return (PersistenceUnit) super.getParent();
@@ -179,6 +169,35 @@ public class GenericClassRef
 		this.firePropertyChanged(JAVA_PERSISTENT_TYPE_PROPERTY, old, javaPersistentType);
 	}
 
+	protected JavaPersistentType buildJavaPersistentType() {
+		JavaResourcePersistentType jrpt = this.getJavaResourcePersistentType();
+		return (jrpt == null) ? null : this.buildJavaPersistentType(jrpt);
+	}
+
+	protected JavaPersistentType buildJavaPersistentType(JavaResourcePersistentType jrpt) {
+		return this.getJpaFactory().buildJavaPersistentType(this, jrpt);
+	}
+
+	protected void updateJavaPersistentType() {
+		JavaResourcePersistentType jrpt = this.getJavaResourcePersistentType();
+		if (jrpt == null) {
+			if (this.javaPersistentType != null) {
+				this.javaPersistentType.dispose();
+				this.setJavaPersistentType(null);
+			}
+		} else { 
+			if (this.javaPersistentType == null) {
+				this.setJavaPersistentType(this.buildJavaPersistentType(jrpt));
+			} else {
+				this.javaPersistentType.update(jrpt);
+			}
+		}
+	}
+
+	protected JavaResourcePersistentType getJavaResourcePersistentType() {
+		return (this.className == null) ? null : this.getJpaProject().getJavaResourcePersistentType(this.className.replace('$', '.'));
+	}
+
 
 	// ********** updating **********
 
@@ -194,27 +213,6 @@ public class GenericClassRef
 		this.xmlJavaClassRef = classRef;
 		this.setClassName_(typeName);
 		this.updateJavaPersistentType();
-	}
-
-	protected void updateJavaPersistentType() {
-		JavaResourcePersistentType jrpt = 
-			this.getJpaProject().getJavaResourcePersistentType(this.className == null ? null : this.className.replace('$', '.'));
-		if (jrpt == null) {
-			if (this.javaPersistentType != null) {
-				this.javaPersistentType.dispose();
-				this.setJavaPersistentType(null);
-			}
-		} else { 
-			if (this.javaPersistentType == null) {
-				this.setJavaPersistentType(this.buildJavaPersistentType(jrpt));
-			} else {
-				this.javaPersistentType.update(jrpt);
-			}
-		}
-	}
-
-	protected JavaPersistentType buildJavaPersistentType(JavaResourcePersistentType jrpt) {
-		return this.getJpaFactory().buildJavaPersistentType(this, jrpt);
 	}
 
 	@Override

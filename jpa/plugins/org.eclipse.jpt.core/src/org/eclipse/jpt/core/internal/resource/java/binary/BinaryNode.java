@@ -13,12 +13,13 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.resource.java.AbstractJavaResourceNode;
 import org.eclipse.jpt.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
-import org.eclipse.jpt.core.resource.java.JavaResourcePackageFragmentRoot;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**
  * Binary convenience methods
  */
+// TODO hopefully this class can go away with some sort of refactoring of the
+// source and binary hierarchies...
 public abstract class BinaryNode
 	extends AbstractJavaResourceNode
 {
@@ -32,11 +33,6 @@ public abstract class BinaryNode
 
 	// ********** JavaResourceNode implementation **********
 	
-	@Override
-	public JavaResourcePackageFragmentRoot getRoot() {
-		return (JavaResourcePackageFragmentRoot) super.getRoot();
-	}
-
 	public void update() {
 		// nothing by default
 	}

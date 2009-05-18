@@ -16,7 +16,7 @@ import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.eclipselink.core.EclipseLinkJpaProject;
 
 /**
- * 
+ * EclipseLink-specific JPA project.
  */
 public class EclipseLinkJpaProjectImpl
 	extends AbstractJpaProject

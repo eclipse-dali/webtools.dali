@@ -35,9 +35,17 @@ public abstract class AbstractModel
 {
 	/**
 	 * Delegate state/property/collection/list/tree change support to this
-	 * helper object. The change support object is "lazily-initialized".
+	 * helper object. The change support object is "lazily-initialized";
+	 * so it may be null. The method #getChangeSupport() will initialize this
+	 * field if it is null.
+	 * 
+	 * NB: We instantiate this when we fire events, even when we do not have
+	 * any listeners (which would be implied if 'changeSupport' were null).
+	 * This allows the change support to have behavior tied to events even when
+	 * we have no listeners.
+	 * @see ChangeSupport#aspectChanged(String)
 	 */
-	private ChangeSupport changeSupport;
+	protected ChangeSupport changeSupport;
 
 
 	// ********** constructors/initialization **********
@@ -71,23 +79,23 @@ public abstract class AbstractModel
 
 	// ********** state change support **********
 
-	public synchronized void addStateChangeListener(StateChangeListener listener) {
+	public void addStateChangeListener(StateChangeListener listener) {
 		this.getChangeSupport().addStateChangeListener(listener);
 	}
 
-	public synchronized void removeStateChangeListener(StateChangeListener listener) {
+	public void removeStateChangeListener(StateChangeListener listener) {
 		this.getChangeSupport().removeStateChangeListener(listener);
 	}
 
 	/**
-	 * Return whether there are any state change listeners.
+	 * Return whether the model has any state change listeners.
 	 */
 	public boolean hasAnyStateChangeListeners() {
-		return this.getChangeSupport().hasAnyStateChangeListeners();
+		return (this.changeSupport != null) && this.changeSupport.hasAnyStateChangeListeners();
 	}
 
 	/**
-	 * Return whether there are no state change listeners.
+	 * Return whether the model has no state change listeners.
 	 */
 	public boolean hasNoStateChangeListeners() {
 		return ! this.hasAnyStateChangeListeners();
@@ -104,45 +112,49 @@ public abstract class AbstractModel
 
 	// ********** property change support **********
 
-	public synchronized void addPropertyChangeListener(PropertyChangeListener listener) {
+	public void addPropertyChangeListener(PropertyChangeListener listener) {
 		this.getChangeSupport().addPropertyChangeListener(listener);
 	}
 
-	public synchronized void addPropertyChangeListener(String propertyName, PropertyChangeListener listener) {
+	public void addPropertyChangeListener(String propertyName, PropertyChangeListener listener) {
 		this.getChangeSupport().addPropertyChangeListener(propertyName, listener);
 	}
 
-	public synchronized void removePropertyChangeListener(PropertyChangeListener listener) {
+	public void removePropertyChangeListener(PropertyChangeListener listener) {
 		this.getChangeSupport().removePropertyChangeListener(listener);
 	}
 
-	public synchronized void removePropertyChangeListener(String propertyName, PropertyChangeListener listener) {
+	public void removePropertyChangeListener(String propertyName, PropertyChangeListener listener) {
 		this.getChangeSupport().removePropertyChangeListener(propertyName, listener);
 	}
 
 	/**
-	 * Return whether there are any property change listeners for a specific property.
+	 * Return whether the model has any property change listeners that will
+	 * be notified when the specified property has changed.
 	 */
 	public boolean hasAnyPropertyChangeListeners(String propertyName) {
-		return this.getChangeSupport().hasAnyPropertyChangeListeners(propertyName);
+		return (this.changeSupport != null) && this.changeSupport.hasAnyPropertyChangeListeners(propertyName);
 	}
 
 	/**
-	 * Return whether there are any property change listeners for a specific property.
+	 * Return whether the model has no property change listeners that will
+	 * be notified when the specified property has changed.
 	 */
 	public boolean hasNoPropertyChangeListeners(String propertyName) {
 		return ! this.hasAnyPropertyChangeListeners(propertyName);
 	}
 
 	/**
-	 * Return whether there are any property change listeners.
+	 * Return whether the model has any property change listeners that will
+	 * be notified when any property has changed.
 	 */
 	public boolean hasAnyPropertyChangeListeners() {
-		return this.getChangeSupport().hasAnyPropertyChangeListeners();
+		return (this.changeSupport != null) && this.changeSupport.hasAnyPropertyChangeListeners();
 	}
 
 	/**
-	 * Return whether there are any property change listeners.
+	 * Return whether the model has no property change listeners that will
+	 * be notified when any property has changed.
 	 */
 	public boolean hasNoPropertyChangeListeners() {
 		return ! this.hasAnyPropertyChangeListeners();
@@ -174,45 +186,49 @@ public abstract class AbstractModel
 
 	// ********** collection change support **********
 
-	public synchronized void addCollectionChangeListener(CollectionChangeListener listener) {
+	public void addCollectionChangeListener(CollectionChangeListener listener) {
 		this.getChangeSupport().addCollectionChangeListener(listener);
 	}
 
-	public synchronized void addCollectionChangeListener(String collectionName, CollectionChangeListener listener) {
+	public void addCollectionChangeListener(String collectionName, CollectionChangeListener listener) {
 		this.getChangeSupport().addCollectionChangeListener(collectionName, listener);
 	}
 
-	public synchronized void removeCollectionChangeListener(CollectionChangeListener listener) {
+	public void removeCollectionChangeListener(CollectionChangeListener listener) {
 		this.getChangeSupport().removeCollectionChangeListener(listener);
 	}
 
-	public synchronized void removeCollectionChangeListener(String collectionName, CollectionChangeListener listener) {
+	public void removeCollectionChangeListener(String collectionName, CollectionChangeListener listener) {
 		this.getChangeSupport().removeCollectionChangeListener(collectionName, listener);
 	}
 
 	/**
-	 * Return whether there are any collection change listeners for a specific collection.
+	 * Return whether the model has any collection change listeners that will
+	 * be notified when the specified collection has changed.
 	 */
 	public boolean hasAnyCollectionChangeListeners(String collectionName) {
-		return this.getChangeSupport().hasAnyCollectionChangeListeners(collectionName);
+		return (this.changeSupport != null) && this.changeSupport.hasAnyCollectionChangeListeners(collectionName);
 	}
 
 	/**
-	 * Return whether there are any collection change listeners for a specific collection.
+	 * Return whether the model has no collection change listeners that will
+	 * be notified when the specified collection has changed.
 	 */
 	public boolean hasNoCollectionChangeListeners(String collectionName) {
 		return ! this.hasAnyCollectionChangeListeners(collectionName);
 	}
 
 	/**
-	 * Return whether there are any collection change listeners.
+	 * Return whether the model has any collection change listeners that will
+	 * be notified when any collection has changed.
 	 */
 	public boolean hasAnyCollectionChangeListeners() {
-		return this.getChangeSupport().hasAnyCollectionChangeListeners();
+		return (this.changeSupport != null) && this.changeSupport.hasAnyCollectionChangeListeners();
 	}
 
 	/**
-	 * Return whether there are any collection change listeners.
+	 * Return whether the model has no collection change listeners that will
+	 * be notified when any collection has changed.
 	 */
 	public boolean hasNoCollectionChangeListeners() {
 		return ! this.hasAnyCollectionChangeListeners();
@@ -329,45 +345,49 @@ public abstract class AbstractModel
 
 	// ********** list change support **********
 
-	public synchronized void addListChangeListener(ListChangeListener listener) {
+	public void addListChangeListener(ListChangeListener listener) {
 		this.getChangeSupport().addListChangeListener(listener);
 	}
 
-	public synchronized void addListChangeListener(String listName, ListChangeListener listener) {
+	public void addListChangeListener(String listName, ListChangeListener listener) {
 		this.getChangeSupport().addListChangeListener(listName, listener);
 	}
 
-	public synchronized void removeListChangeListener(ListChangeListener listener) {
+	public void removeListChangeListener(ListChangeListener listener) {
 		this.getChangeSupport().removeListChangeListener(listener);
 	}
 
-	public synchronized void removeListChangeListener(String listName, ListChangeListener listener) {
+	public void removeListChangeListener(String listName, ListChangeListener listener) {
 		this.getChangeSupport().removeListChangeListener(listName, listener);
 	}
 
 	/**
-	 * Return whether there are any list change listeners for a specific list.
+	 * Return whether the model has any list change listeners that will
+	 * be notified when the specified list has changed.
 	 */
 	public boolean hasAnyListChangeListeners(String listName) {
-		return this.getChangeSupport().hasAnyListChangeListeners(listName);
+		return (this.changeSupport != null) && this.changeSupport.hasAnyListChangeListeners(listName);
 	}
 
 	/**
-	 * Return whether there are any list change listeners for a specific list.
+	 * Return whether the model has no list change listeners that will
+	 * be notified when the specified list has changed.
 	 */
 	public boolean hasNoListChangeListeners(String listName) {
 		return ! this.hasAnyListChangeListeners(listName);
 	}
 
 	/**
-	 * Return whether there are any list change listeners.
+	 * Return whether the model has any list change listeners that will
+	 * be notified when any list has changed.
 	 */
 	public boolean hasAnyListChangeListeners() {
-		return this.getChangeSupport().hasAnyListChangeListeners();
+		return (this.changeSupport != null) && this.changeSupport.hasAnyListChangeListeners();
 	}
 
 	/**
-	 * Return whether there are any list change listeners.
+	 * Return whether the model has no list change listeners that will
+	 * be notified when any list has changed.
 	 */
 	public boolean hasNoListChangeListeners() {
 		return ! this.hasAnyListChangeListeners();
@@ -560,45 +580,49 @@ public abstract class AbstractModel
 
 	// ********** tree change support **********
 
-	public synchronized void addTreeChangeListener(TreeChangeListener listener) {
+	public void addTreeChangeListener(TreeChangeListener listener) {
 		this.getChangeSupport().addTreeChangeListener(listener);
 	}
 
-	public synchronized void addTreeChangeListener(String treeName, TreeChangeListener listener) {
+	public void addTreeChangeListener(String treeName, TreeChangeListener listener) {
 		this.getChangeSupport().addTreeChangeListener(treeName, listener);
 	}
 
-	public synchronized void removeTreeChangeListener(TreeChangeListener listener) {
+	public void removeTreeChangeListener(TreeChangeListener listener) {
 		this.getChangeSupport().removeTreeChangeListener(listener);
 	}
 
-	public synchronized void removeTreeChangeListener(String treeName, TreeChangeListener listener) {
+	public void removeTreeChangeListener(String treeName, TreeChangeListener listener) {
 		this.getChangeSupport().removeTreeChangeListener(treeName, listener);
 	}
 
 	/**
-	 * Return whether there are any tree change listeners for a specific tree.
+	 * Return whether the model has any tree change listeners that will
+	 * be notified when the specified tree has changed.
 	 */
 	public boolean hasAnyTreeChangeListeners(String treeName) {
-		return this.getChangeSupport().hasAnyTreeChangeListeners(treeName);
+		return (this.changeSupport != null) && this.changeSupport.hasAnyTreeChangeListeners(treeName);
 	}
 
 	/**
-	 * Return whether there are any tree change listeners for a specific tree.
+	 * Return whether the model has no tree change listeners that will
+	 * be notified when the specified tree has changed.
 	 */
 	public boolean hasNoTreeChangeListeners(String treeName) {
 		return ! this.hasAnyTreeChangeListeners(treeName);
 	}
 
 	/**
-	 * Return whether there are any tree change listeners.
+	 * Return whether the model has any tree change listeners that will
+	 * be notified when any tree has changed.
 	 */
 	public boolean hasAnyTreeChangeListeners() {
-		return this.getChangeSupport().hasAnyTreeChangeListeners();
+		return (this.changeSupport != null) && this.changeSupport.hasAnyTreeChangeListeners();
 	}
 
 	/**
-	 * Return whether there are any tree change listeners.
+	 * Return whether the model has no tree change listeners that will
+	 * be notified when any tree has changed.
 	 */
 	public boolean hasNoTreeChangeListeners() {
 		return ! this.hasAnyTreeChangeListeners();

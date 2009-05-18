@@ -55,13 +55,13 @@ abstract class SourcePersistentMember<E extends Member>
 	 * mapping annotations; no duplicates (java compiler has an error for
 	 * duplicates)
 	 */
-	final Vector<Annotation> mappingAnnotations;
+	final Vector<Annotation> mappingAnnotations = new Vector<Annotation>();
 
 	/**
 	 * supporting annotations; no duplicates (java compiler has an error for
 	 * duplicates)
 	 */
-	final Vector<Annotation> supportingAnnotations;
+	final Vector<Annotation> supportingAnnotations = new Vector<Annotation>();
 
 	boolean persistable;
 
@@ -71,8 +71,6 @@ abstract class SourcePersistentMember<E extends Member>
 	SourcePersistentMember(JavaResourceNode parent, E member) {
 		super(parent);
 		this.member = member;
-		this.mappingAnnotations = new Vector<Annotation>();
-		this.supportingAnnotations = new Vector<Annotation>();
 	}
 
 	public void initialize(CompilationUnit astRoot) {

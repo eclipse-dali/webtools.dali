@@ -207,10 +207,11 @@ public class ChangeSupport
 		synchronized (this) {
 			GenericListenerList gll = this.getGenericListenerList(listenerClass);
 			if (gll == null) {
-				throw new IllegalArgumentException("listener not registered"); //$NON-NLS-1$
-			}
-			if ( ! gll.removeListener(listener)) {  // leave the GLL, even if it is empty?
-				throw new IllegalArgumentException("listener not registered: " + listener); //$NON-NLS-1$
+				this.handleUnregisteredListener(listener);
+			} else {
+				if ( ! gll.removeListener(listener)) {  // leave the GLL, even if it is empty?
+					this.handleUnregisteredListener(listener);
+				}
 			}
 		}
 	}
@@ -223,10 +224,15 @@ public class ChangeSupport
 		synchronized (this) {
 			ChangeSupport child = this.getChild(aspectName);
 			if (child == null) {
-				throw new IllegalArgumentException("listener not registered"); //$NON-NLS-1$
+				this.handleUnregisteredListener(listener);
+			} else {
+				child.removeListener(listenerClass, listener);  // leave the child, even if it is empty?
 			}
-			child.removeListener(listenerClass, listener);  // leave the child, even if it is empty?
 		}
+	}
+
+	protected <T extends ChangeListener> void handleUnregisteredListener(T listener) {
+		throw new IllegalArgumentException("listener not registered: " + listener); //$NON-NLS-1$
 	}
 
 

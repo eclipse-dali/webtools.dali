@@ -357,6 +357,7 @@
 			<include>
 				<rules>
 					<contentType id="org.eclipse.jdt.core.javaSource"/>
+					<contentType id="org.eclipse.jpt.core.content.jar"/>
 					<contentType id="org.eclipse.jpt.core.content.baseJpaContent" exactMatch="false"/>
 				</rules>
 			</include>

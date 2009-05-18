@@ -210,15 +210,26 @@ public abstract class AbstractOrmRelationshipMapping<T extends XmlRelationshipMa
 			return null;
 		}
 
-		// first try to resolve using only the locally specified name
-		Entity targetEntity = this.getPersistenceUnit().getEntity(targetEntityName);
+		// first try to resolve using only the locally specified name...
+		Entity targetEntity = this.getEntity(targetEntityName);
 		if (targetEntity != null) {
 			return targetEntity;
 		}
 
-		// then try to resolve by prepending the global package name
-		String packageName = this.getPersistentAttribute().getPersistentType().getDefaultPackage();
-		return this.getPersistenceUnit().getEntity(packageName + '.' + targetEntityName);
+		// ...then try to resolve by prepending the global package name
+		String defaultPackageName = this.getDefaultPackageName();
+		if (defaultPackageName == null) {
+			return null;
+		}
+		return this.getEntity(defaultPackageName + '.' + targetEntityName);
+	}
+
+	protected String getDefaultPackageName() {
+		return this.getPersistentAttribute().getPersistentType().getDefaultPackage();
+	}
+
+	protected Entity getEntity(String typeName) {
+		return this.getPersistenceUnit().getEntity(typeName);
 	}
 	
 	

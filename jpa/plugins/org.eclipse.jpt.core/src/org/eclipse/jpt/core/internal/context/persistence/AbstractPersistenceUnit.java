@@ -10,13 +10,13 @@
 package org.eclipse.jpt.core.internal.context.persistence;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
 import java.util.Vector;
+
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
@@ -805,7 +805,7 @@ public abstract class AbstractPersistenceUnit
 		this.propertyValueChanged(propertyName, value);
 	}
 	
-	public void propertyRemoved(String propertyName) {
+	public void propertyRemoved(@SuppressWarnings("unused") String propertyName) {
 		// do nothing, override in subclasses as necessary		
 	}
 	
@@ -1102,17 +1102,17 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected void updateImpliedClassRefs_() {
-		ArrayList<ClassRef> impliedRefsToRemove = CollectionTools.list(this.impliedClassRefs(), this.impliedClassRefsSize());
+		HashBag<ClassRef> impliedRefsToRemove = CollectionTools.bag(this.impliedClassRefs(), this.impliedClassRefsSize());
 		ArrayList<ClassRef> impliedRefsToUpdate = new ArrayList<ClassRef>(this.impliedClassRefsSize());
 
 		for (Iterator<String> annotatedClassNames = this.getJpaProject().annotatedClassNames(); annotatedClassNames.hasNext(); ) {
 			String annotatedClassName = annotatedClassNames.next();
 			if ( ! this.specifiesPersistentType(annotatedClassName)) {
 				boolean match = false;
-				for (Iterator<ClassRef> stream = impliedRefsToRemove.iterator(); stream.hasNext(); ) {
-					ClassRef classRef = stream.next();
+				for (Iterator<ClassRef> classRefs = impliedRefsToRemove.iterator(); classRefs.hasNext(); ) {
+					ClassRef classRef = classRefs.next();
 					if (annotatedClassName.equals(classRef.getClassName())) {
-						stream.remove();
+						classRefs.remove();
 						impliedRefsToUpdate.add(classRef);
 						match = true;
 						break;
@@ -1144,28 +1144,29 @@ public abstract class AbstractPersistenceUnit
 	 * the same as the source.
 	 */
 	protected void updateProperties() {		
-		Collection<Property> contextPropertiesToRemove = CollectionTools.collection(properties());		
+		HashBag<Property> contextPropertiesToRemove = CollectionTools.bag(this.properties(), this.propertiesSize());
 		int resourceIndex = 0;
 		
 		for (Iterator<XmlProperty> xmlProperties = this.xmlProperties(); xmlProperties.hasNext(); ) {
 			XmlProperty xmlProperty = xmlProperties.next();
-			boolean contextPropertyFound = false;
-			for (Property contextProperty : contextPropertiesToRemove) {
+			boolean match = false;
+			for (Iterator<Property> contextProperties = contextPropertiesToRemove.iterator(); contextProperties.hasNext();) {
+				Property contextProperty = contextProperties.next();
 				if (contextProperty.getXmlProperty() == xmlProperty) {
-					moveProperty_(resourceIndex, contextProperty);
+					contextProperties.remove();
+					this.moveProperty_(resourceIndex, contextProperty);
 					contextProperty.update();
-					contextPropertiesToRemove.remove(contextProperty);
-					contextPropertyFound = true;
+					match = true;
 					break;
 				}
 			}
-			if (!contextPropertyFound) {
-				addProperty_(resourceIndex, this.buildProperty(xmlProperty));
+			if ( ! match) {
+				this.addProperty_(resourceIndex, this.buildProperty(xmlProperty));
 			}
 			resourceIndex++;
 		}
 		for (Property contextProperty : contextPropertiesToRemove) {
-			removeProperty_(contextProperty);
+			this.removeProperty_(contextProperty);
 		}
 	}
 

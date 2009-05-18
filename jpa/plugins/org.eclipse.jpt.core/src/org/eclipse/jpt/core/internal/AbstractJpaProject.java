@@ -10,8 +10,10 @@
 package org.eclipse.jpt.core.internal;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.Vector;
 
 import org.eclipse.core.resources.IFile;
@@ -32,7 +34,9 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaElementDelta;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.core.JpaDataSource;
 import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaPlatform;
@@ -41,6 +45,8 @@ import org.eclipse.jpt.core.JpaResourceModel;
 import org.eclipse.jpt.core.JpaResourceModelListener;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
+import org.eclipse.jpt.core.internal.resource.java.binary.BinaryPersistentTypeCache;
+import org.eclipse.jpt.core.internal.resource.java.source.SourceCompilationUnit;
 import org.eclipse.jpt.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
@@ -48,6 +54,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePackageFragmentRoot;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentTypeCache;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.db.Catalog;
 import org.eclipse.jpt.db.ConnectionProfile;
@@ -59,16 +66,26 @@ import org.eclipse.jpt.utility.internal.BitTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.ThreadLocalCommandExecutor;
 import org.eclipse.jpt.utility.internal.iterables.CloneIterable;
-import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
-import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
-import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
-import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
+import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
+import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
+import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jst.j2ee.model.internal.validation.ValidationCancelledException;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
+ * JPA project. Holds all the JPA stuff.
  * 
+ * The JPA platform provides the hooks for vendor-specific stuff.
+ * 
+ * The JPA files are the "resource" model (i.e. objects that correspond directly
+ * to Eclipse resources; e.g. Java source code files, XML files, JAR files).
+ * 
+ * The root context node is the "context"model (i.e. objects that attempt to
+ * model the JPA spec, using the "resource" model as an adapter to the Eclipse
+ * resources).
+ * 
+ * The data source is an adapter to the DTP meta-data model.
  */
 public abstract class AbstractJpaProject
 	extends AbstractJpaNode
@@ -91,7 +108,17 @@ public abstract class AbstractJpaProject
 	 *     orm.xml
 	 *     java
 	 */
-	protected final Vector<JpaFile> jpaFiles;
+	protected final Vector<JpaFile> jpaFiles = new Vector<JpaFile>();
+
+	/**
+	 * The "external" Java resource compilation units (source). Populated upon demand.
+	 */
+	protected final Vector<JavaResourceCompilationUnit> externalJavaResourceCompilationUnits = new Vector<JavaResourceCompilationUnit>();
+
+	/**
+	 * The "external" Java resource persistent types (binary). Populated upon demand.
+	 */
+	protected final JavaResourcePersistentTypeCache externalJavaResourcePersistentTypeCache;
 
 	/**
 	 * Resource models notify this listener when they change. A project update
@@ -160,7 +187,6 @@ public abstract class AbstractJpaProject
 		this.userOverrideDefaultCatalog = config.getUserOverrideDefaultCatalog();
 		this.userOverrideDefaultSchema = config.getUserOverrideDefaultSchema();
 		this.discoversAnnotatedClasses = config.discoverAnnotatedClasses();
-		this.jpaFiles = this.buildEmptyJpaFiles();
 
 		this.modifySharedDocumentCommandExecutor = this.buildModifySharedDocumentCommandExecutor();
 
@@ -168,10 +194,16 @@ public abstract class AbstractJpaProject
 		// build the JPA files corresponding to the Eclipse project's files
 		this.project.accept(this.buildInitialResourceProxyVisitor(), IResource.NONE);
 
+		this.externalJavaResourcePersistentTypeCache = this.buildExternalJavaResourcePersistentTypeCache();
+
 		this.rootContextNode = this.buildRootContextNode();
 
 		// "update" the project before returning
 		this.setUpdater_(new SynchronousJpaProjectUpdater(this));
+
+		// start listening to this cache once the context model has been built
+		// and all the external types are faulted in
+		this.externalJavaResourcePersistentTypeCache.addResourceModelListener(this.resourceModelListener);
 	}
 
 	@Override
@@ -184,10 +216,6 @@ public abstract class AbstractJpaProject
 		return this.project;
 	}
 
-	protected Vector<JpaFile> buildEmptyJpaFiles() {
-		return new Vector<JpaFile>();
-	}
-
 	protected ThreadLocalCommandExecutor buildModifySharedDocumentCommandExecutor() {
 		return new ThreadLocalCommandExecutor();
 	}
@@ -198,6 +226,10 @@ public abstract class AbstractJpaProject
 
 	protected IResourceProxyVisitor buildInitialResourceProxyVisitor() {
 		return new InitialResourceProxyVisitor();
+	}
+
+	protected JavaResourcePersistentTypeCache buildExternalJavaResourcePersistentTypeCache() {
+		return new BinaryPersistentTypeCache(this.jpaPlatform.getAnnotationProvider());
 	}
 
 	protected JpaRootContextNode buildRootContextNode() {
@@ -213,7 +245,9 @@ public abstract class AbstractJpaProject
 		public boolean visit(IResourceProxy resource) throws CoreException {
 			switch (resource.getType()) {
 				case IResource.ROOT :  // shouldn't happen
+					return true;  // visit children
 				case IResource.PROJECT :
+					return true;  // visit children
 				case IResource.FOLDER :
 					return true;  // visit children
 				case IResource.FILE :
@@ -223,6 +257,21 @@ public abstract class AbstractJpaProject
 					return false;  // no children
 			}
 		}
+	}
+
+
+	// ********** miscellaneous **********
+
+	/**
+	 * Ignore changes to this collection. Adds can be ignored since they are triggered
+	 * by requests that will, themselves, trigger updates (typically during the
+	 * update of an object that calls a setter with the newly-created resource
+	 * type). Deletes will be accompanied by manual updates.
+	 */
+	@Override
+	protected void addNonUpdateAspectNamesTo(Set<String> nonUpdateAspectNames) {
+		super.addNonUpdateAspectNamesTo(nonUpdateAspectNames);
+		nonUpdateAspectNames.add(EXTERNAL_JAVA_RESOURCE_COMPILATION_UNITS_COLLECTION);
 	}
 
 
@@ -253,6 +302,14 @@ public abstract class AbstractJpaProject
 	@Override
 	public JpaPlatform getJpaPlatform() {
 		return this.jpaPlatform;
+	}
+
+	@SuppressWarnings("unchecked")
+	protected Iterable<JavaResourceCompilationUnit> getCombinedJavaResourceCompilationUnits() {
+		return new CompositeIterable<JavaResourceCompilationUnit>(
+					this.getInternalJavaResourceCompilationUnits(),
+					this.getExternalJavaResourceCompilationUnits()
+				);
 	}
 
 
@@ -334,7 +391,7 @@ public abstract class AbstractJpaProject
 	}
 
 
-	// **************** user override default catalog **********************
+	// ********** user override default catalog **********
 	
 	public String getUserOverrideDefaultCatalog() {
 		return this.userOverrideDefaultCatalog;
@@ -348,7 +405,7 @@ public abstract class AbstractJpaProject
 	}
 	
 	
-	// **************** user override default schema **********************
+	// ********** user override default schema **********
 	
 	public String getUserOverrideDefaultSchema() {
 		return this.userOverrideDefaultSchema;
@@ -362,7 +419,7 @@ public abstract class AbstractJpaProject
 	}
 	
 	
-	// **************** discover annotated classes *****************************
+	// ********** discover annotated classes **********
 	
 	public boolean discoversAnnotatedClasses() {
 		return this.discoversAnnotatedClasses;
@@ -379,7 +436,7 @@ public abstract class AbstractJpaProject
 	// ********** JPA files **********
 
 	public Iterator<JpaFile> jpaFiles() {
-		return new CloneIterator<JpaFile>(this.jpaFiles);  // read-only
+		return this.getJpaFiles().iterator();
 	}
 
 	protected Iterable<JpaFile> getJpaFiles() {
@@ -390,8 +447,8 @@ public abstract class AbstractJpaProject
 		return this.jpaFiles.size();
 	}
 
-	protected Iterator<JpaFile> jpaFiles(final IContentType contentType) {
-		return new FilteringIterator<JpaFile, JpaFile>(this.jpaFiles()) {
+	protected Iterable<JpaFile> getJpaFiles(final IContentType contentType) {
+		return new FilteringIterable<JpaFile, JpaFile>(this.getJpaFiles()) {
 			@Override
 			protected boolean accept(JpaFile jpaFile) {
 				return jpaFile.getContentType().isKindOf(contentType);
@@ -453,15 +510,116 @@ public abstract class AbstractJpaProject
 		}
 		return false;
 	}
-	
+
 	/**
-	 * Remove the JPA file and dispose of it
+	 * Stop listening to the JPA file and remove it.
 	 */
 	protected void removeJpaFile(JpaFile jpaFile) {
 		jpaFile.getResourceModel().removeResourceModelListener(this.resourceModelListener);
 		if ( ! this.removeItemFromCollection(jpaFile, this.jpaFiles, JPA_FILES_COLLECTION)) {
 			throw new IllegalArgumentException(jpaFile.toString());
 		}
+	}
+
+
+	// ********** external Java resource persistent types (source or binary) **********
+
+	protected JavaResourcePersistentType buildPersistableExternalJavaResourcePersistentType(String typeName) {
+		IType jdtType = this.findType(typeName);
+		return (jdtType == null) ? null : this.buildPersistableExternalJavaResourcePersistentType(jdtType);
+	}
+
+	protected IType findType(String typeName) {
+		try {
+			return this.getJavaProject().findType(typeName);
+		} catch (JavaModelException ex) {
+			return null;  // ignore exception?
+		}
+	}
+
+	protected JavaResourcePersistentType buildPersistableExternalJavaResourcePersistentType(IType jdtType) {
+		JavaResourcePersistentType jrpt = this.buildExternalJavaResourcePersistentType(jdtType);
+		return ((jrpt != null) && jrpt.isPersistable()) ? jrpt : null;
+	}
+
+	protected JavaResourcePersistentType buildExternalJavaResourcePersistentType(IType jdtType) {
+		return jdtType.isBinary() ?
+				this.buildBinaryExternalJavaResourcePersistentType(jdtType) :
+				this.buildSourceExternalJavaResourcePersistentType(jdtType);
+	}
+
+	protected JavaResourcePersistentType buildBinaryExternalJavaResourcePersistentType(IType jdtType) {
+		return this.externalJavaResourcePersistentTypeCache.addPersistentType(jdtType);
+	}
+
+	protected JavaResourcePersistentType buildSourceExternalJavaResourcePersistentType(IType jdtType) {
+		String jdtTypeName = jdtType.getFullyQualifiedName();
+		JavaResourceCompilationUnit jrcu = this.addExternalJavaResourceCompilationUnit(jdtType.getCompilationUnit());
+		for (Iterator<JavaResourcePersistentType> stream = jrcu.persistentTypes(); stream.hasNext(); ) {
+			JavaResourcePersistentType jrpt = stream.next();
+			if (jrpt.getQualifiedName().equals(jdtTypeName)) {
+				return jrpt;
+			}
+		}
+		// seems like we should never get here...
+		JptCorePlugin.log("missing type: " + jdtTypeName); //$NON-NLS-1$
+		return null;
+	}
+
+
+	// ********** external Java resource persistent types (binary) **********
+
+	public JavaResourcePersistentTypeCache getExternalJavaResourcePersistentTypeCache() {
+		return this.externalJavaResourcePersistentTypeCache;
+	}
+
+
+	// ********** external Java resource compilation units (source) **********
+
+	public Iterator<JavaResourceCompilationUnit> externalJavaResourceCompilationUnits() {
+		return this.getExternalJavaResourceCompilationUnits().iterator();
+	}
+
+	protected Iterable<JavaResourceCompilationUnit> getExternalJavaResourceCompilationUnits() {
+		return new CloneIterable<JavaResourceCompilationUnit>(this.externalJavaResourceCompilationUnits);  // read-only
+	}
+
+	public int externalJavaResourceCompilationUnitsSize() {
+		return this.externalJavaResourceCompilationUnits.size();
+	}
+
+	/**
+	 * Add an external Java resource compilation unit.
+	 */
+	protected JavaResourceCompilationUnit addExternalJavaResourceCompilationUnit(ICompilationUnit jdtCompilationUnit) {
+		JavaResourceCompilationUnit jrcu = this.buildJavaResourceCompilationUnit(jdtCompilationUnit);
+		this.addItemToCollection(jrcu, this.externalJavaResourceCompilationUnits, EXTERNAL_JAVA_RESOURCE_COMPILATION_UNITS_COLLECTION);
+		jrcu.addResourceModelListener(this.resourceModelListener);
+		return jrcu;
+	}
+
+	protected JavaResourceCompilationUnit buildJavaResourceCompilationUnit(ICompilationUnit jdtCompilationUnit) {
+		return new SourceCompilationUnit(
+					jdtCompilationUnit,
+					this.jpaPlatform.getAnnotationProvider(),
+					this.jpaPlatform.getAnnotationEditFormatter(),
+					this.modifySharedDocumentCommandExecutor
+				);
+	}
+
+	protected boolean removeExternalJavaResourceCompilationUnit(IFile file) {
+		for (JavaResourceCompilationUnit jrcu : this.getExternalJavaResourceCompilationUnits()) {
+			if (jrcu.getFile().equals(file)) {
+				this.removeExternalJavaResourceCompilationUnit(jrcu);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	protected void removeExternalJavaResourceCompilationUnit(JavaResourceCompilationUnit jrcu) {
+		jrcu.removeResourceModelListener(this.resourceModelListener);
+		this.removeItemFromCollection(jrcu, this.externalJavaResourceCompilationUnits, EXTERNAL_JAVA_RESOURCE_COMPILATION_UNITS_COLLECTION);
 	}
 
 
@@ -517,10 +675,14 @@ public abstract class AbstractJpaProject
 	}
 
 
-	// ********** Java source classes **********
+	// ********** annotated Java source classes **********
 
 	public Iterator<String> annotatedClassNames() {
-		return new TransformationIterator<JavaResourcePersistentType, String>(this.persistedSourceJavaResourcePersistentTypes()) {
+		return this.getAnnotatedClassNames().iterator();
+	}
+
+	protected Iterable<String> getAnnotatedClassNames() {
+		return new TransformationIterable<JavaResourcePersistentType, String>(this.getPersistedInternalSourceJavaResourcePersistentTypes()) {
 			@Override
 			protected String transform(JavaResourcePersistentType jrpType) {
 				return jrpType.getQualifiedName();
@@ -529,43 +691,46 @@ public abstract class AbstractJpaProject
 	}
 
 	/**
-	 * return only those "persisted" Java resource persistent types that are
+	 * return only those valid "persisted" Java resource persistent types that are
 	 * part of the JPA project, ignoring those in JARs referenced in persistence.xml
+	 * @see org.eclipse.jpt.core.internal.utility.jdt.JPTTools#typeIsPersistable(org.eclipse.jpt.core.internal.utility.jdt.JPTTools.TypeAdapter)
 	 */
-	protected Iterator<JavaResourcePersistentType> persistedSourceJavaResourcePersistentTypes() {
-		return new FilteringIterator<JavaResourcePersistentType, JavaResourcePersistentType>(this.persistableSourceJavaResourcePersistentTypes()) {
+	protected Iterable<JavaResourcePersistentType> getPersistedInternalSourceJavaResourcePersistentTypes() {
+		return new FilteringIterable<JavaResourcePersistentType, JavaResourcePersistentType>(this.getInternalSourceJavaResourcePersistentTypes()) {
 			@Override
 			protected boolean accept(JavaResourcePersistentType jrpType) {
-				return jrpType.isPersisted();  // i.e. the type has a type mapping annotation
+				return jrpType.isPersistable() && jrpType.isPersisted();  // i.e. the type is valid and has a type mapping annotation
 			}
 		};
 	}
 	
 	/**
-	 * return only those "persistable" Java resource persistent types that are
+	 * return only those Java resource persistent types that are
 	 * part of the JPA project, ignoring those in JARs referenced in persistence.xml
-	 * @see org.eclipse.jpt.core.internal.utility.jdt.JPTTools#typeIsPersistable(org.eclipse.jdt.core.dom.ITypeBinding)
 	 */
-	protected Iterator<JavaResourcePersistentType> persistableSourceJavaResourcePersistentTypes() {
-		return new CompositeIterator<JavaResourcePersistentType>(this.persistableSourceJavaResourcePersistentTypeIterators());
+	protected Iterable<JavaResourcePersistentType> getInternalSourceJavaResourcePersistentTypes() {
+		return new CompositeIterable<JavaResourcePersistentType>(this.getInternalSourceJavaResourcePersistentTypeSets());
 	}
 
 	/**
-	 * return only those "persistable" Java resource persistent types that are
+	 * return only those Java resource persistent types that are
 	 * part of the JPA project, ignoring those in JARs referenced in persistence.xml
-	 * @see org.eclipse.jpt.core.internal.utility.jdt.JPTTools#typeIsPersistable(org.eclipse.jdt.core.dom.ITypeBinding)
 	 */
-	protected Iterator<Iterator<JavaResourcePersistentType>> persistableSourceJavaResourcePersistentTypeIterators() {
-		return new TransformationIterator<JavaResourceCompilationUnit, Iterator<JavaResourcePersistentType>>(this.javaResourceCompilationUnits()) {
+	protected Iterable<Iterable<JavaResourcePersistentType>> getInternalSourceJavaResourcePersistentTypeSets() {
+		return new TransformationIterable<JavaResourceCompilationUnit, Iterable<JavaResourcePersistentType>>(this.getInternalJavaResourceCompilationUnits()) {
 			@Override
-			protected Iterator<JavaResourcePersistentType> transform(JavaResourceCompilationUnit compilationUnit) {
-				return compilationUnit.persistableTypes();  // i.e. only the types that are *allowed* to be mapped
+			protected Iterable<JavaResourcePersistentType> transform(final JavaResourceCompilationUnit compilationUnit) {
+				return new Iterable<JavaResourcePersistentType>() {
+					public Iterator<JavaResourcePersistentType> iterator() {
+						return compilationUnit.persistentTypes();  // *all* the types in the compilation unit
+					}
+				};
 			}
 		};
 	}
 
-	protected Iterator<JavaResourceCompilationUnit> javaResourceCompilationUnits() {
-		return new TransformationIterator<JpaFile, JavaResourceCompilationUnit>(this.javaSourceJpaFiles()) {
+	protected Iterable<JavaResourceCompilationUnit> getInternalJavaResourceCompilationUnits() {
+		return new TransformationIterable<JpaFile, JavaResourceCompilationUnit>(this.getJavaSourceJpaFiles()) {
 			@Override
 			protected JavaResourceCompilationUnit transform(JpaFile jpaFile) {
 				return (JavaResourceCompilationUnit) jpaFile.getResourceModel();
@@ -576,51 +741,69 @@ public abstract class AbstractJpaProject
 	/**
 	 * return JPA files with Java source "content"
 	 */
-	protected Iterator<JpaFile> javaSourceJpaFiles() {
-		return this.jpaFiles(JptCorePlugin.JAVA_SOURCE_CONTENT_TYPE);
+	protected Iterable<JpaFile> getJavaSourceJpaFiles() {
+		return this.getJpaFiles(JptCorePlugin.JAVA_SOURCE_CONTENT_TYPE);
 	}
 
 
 	// ********** Java resource persistent type look-up **********
 
 	public JavaResourcePersistentType getJavaResourcePersistentType(String typeName) {
-		for (Iterator<JavaResourcePersistentType> stream = this.persistableJavaResourcePersistentTypes(); stream.hasNext(); ) {
-			JavaResourcePersistentType jrpType =  stream.next();
+		for (JavaResourcePersistentType jrpType : this.getPersistableJavaResourcePersistentTypes()) {
 			if (jrpType.getQualifiedName().equals(typeName)) {
 				return jrpType;
 			}
 		}
-		return null;
+		// if we don't have a type already, try to build new one from the project classpath
+		return this.buildPersistableExternalJavaResourcePersistentType(typeName);
 	}
 
 	/**
-	 * return *all* the "persistable" persistent types, including those in JARs referenced in
+	 * return *all* the "persistable" Java resource persistent types, including those in JARs referenced in
 	 * persistence.xml
-	 * @see org.eclipse.jpt.core.internal.utility.jdt.JPTTools#typeIsPersistable(org.eclipse.jdt.core.dom.ITypeBinding)
+	 * @see org.eclipse.jpt.core.internal.utility.jdt.JPTTools#typeIsPersistable(org.eclipse.jpt.core.internal.utility.jdt.JPTTools.TypeAdapter)
 	 */
-	protected Iterator<JavaResourcePersistentType> persistableJavaResourcePersistentTypes() {
-		return new CompositeIterator<JavaResourcePersistentType>(this.persistableJavaResourcePersistentTypeIterators());
-	}
-
-	/**
-	 * return *all* the "persistable" persistent types, including those in JARs referenced in
-	 * persistence.xml
-	 * @see org.eclipse.jpt.core.internal.utility.jdt.JPTTools#typeIsPersistable(org.eclipse.jdt.core.dom.ITypeBinding)
-	 */
-	protected Iterator<Iterator<JavaResourcePersistentType>> persistableJavaResourcePersistentTypeIterators() {
-		return new TransformationIterator<JavaResourceNode.Root, Iterator<JavaResourcePersistentType>>(this.javaResourceNodeRoots()) {
+	protected Iterable<JavaResourcePersistentType> getPersistableJavaResourcePersistentTypes() {
+		return new FilteringIterable<JavaResourcePersistentType, JavaResourcePersistentType>(this.getJavaResourcePersistentTypes()) {
 			@Override
-			protected Iterator<JavaResourcePersistentType> transform(JavaResourceNode.Root root) {
-				return root.persistableTypes();  // i.e. only the types that are *allowed* to be mapped
+			protected boolean accept(JavaResourcePersistentType jrpType) {
+				return jrpType.isPersistable();
+			}
+		};
+	}
+
+	/**
+	 * return *all* the Java resource persistent types, including those in JARs referenced in
+	 * persistence.xml
+	 */
+	protected Iterable<JavaResourcePersistentType> getJavaResourcePersistentTypes() {
+		return new CompositeIterable<JavaResourcePersistentType>(this.getJavaResourcePersistentTypeSets());
+	}
+
+	/**
+	 * return *all* the Java resource persistent types, including those in JARs referenced in
+	 * persistence.xml
+	 */
+	protected Iterable<Iterable<JavaResourcePersistentType>> getJavaResourcePersistentTypeSets() {
+		return new TransformationIterable<JavaResourceNode.Root, Iterable<JavaResourcePersistentType>>(this.getJavaResourceNodeRoots()) {
+			@Override
+			protected Iterable<JavaResourcePersistentType> transform(final JavaResourceNode.Root root) {
+				return new Iterable<JavaResourcePersistentType>() {
+					public Iterator<JavaResourcePersistentType> iterator() {
+						return root.persistentTypes();  // *all* the types held by the root
+					}
+				};
 			}
 		};
 	}
 
 	@SuppressWarnings("unchecked")
-	protected Iterator<JavaResourceNode.Root> javaResourceNodeRoots() {
-		return new CompositeIterator<JavaResourceNode.Root>(
-					this.javaResourceCompilationUnits(),
-					this.javaResourcePackageFragmentRoots()
+	protected Iterable<JavaResourceNode.Root> getJavaResourceNodeRoots() {
+		return new CompositeIterable<JavaResourceNode.Root>(
+					this.getInternalJavaResourceCompilationUnits(),
+					this.getInternalJavaResourcePackageFragmentRoots(),
+					this.getExternalJavaResourceCompilationUnits(),
+					Collections.singleton(this.externalJavaResourcePersistentTypeCache)
 				);
 	}
 
@@ -634,8 +817,7 @@ public abstract class AbstractJpaProject
 	}
 
 	protected JavaResourcePackageFragmentRoot getJavaResourcePackageFragmentRoot(IFile jarFile) {
-		for (Iterator<JavaResourcePackageFragmentRoot> stream = this.javaResourcePackageFragmentRoots(); stream.hasNext(); ) {
-			JavaResourcePackageFragmentRoot pfr = stream.next();
+		for (JavaResourcePackageFragmentRoot pfr : this.getInternalJavaResourcePackageFragmentRoots()) {
 			if (pfr.getFile().equals(jarFile)) {
 				return pfr;
 			}
@@ -643,8 +825,8 @@ public abstract class AbstractJpaProject
 		return null;
 	}
 
-	protected Iterator<JavaResourcePackageFragmentRoot> javaResourcePackageFragmentRoots() {
-		return new TransformationIterator<JpaFile, JavaResourcePackageFragmentRoot>(this.jarJpaFiles()) {
+	protected Iterable<JavaResourcePackageFragmentRoot> getInternalJavaResourcePackageFragmentRoots() {
+		return new TransformationIterable<JpaFile, JavaResourcePackageFragmentRoot>(this.getJarJpaFiles()) {
 			@Override
 			protected JavaResourcePackageFragmentRoot transform(JpaFile jpaFile) {
 				return (JavaResourcePackageFragmentRoot) jpaFile.getResourceModel();
@@ -655,13 +837,14 @@ public abstract class AbstractJpaProject
 	/**
 	 * return JPA files with JAR "content"
 	 */
-	protected Iterator<JpaFile> jarJpaFiles() {
-		return this.jpaFiles(JptCorePlugin.JAR_CONTENT_TYPE);
+	protected Iterable<JpaFile> getJarJpaFiles() {
+		return this.getJpaFiles(JptCorePlugin.JAR_CONTENT_TYPE);
 	}
 
 
-	// ********** Java change **********
+	// ********** Java events **********
 
+	// TODO handle changes to external projects
 	public void javaElementChanged(ElementChangedEvent event) {
 		this.synchWithJavaDelta(event.getDelta());
 	}
@@ -691,30 +874,30 @@ public abstract class AbstractJpaProject
 		}
 	}
 
-	// ***** model
-	protected void javaModelChanged(IJavaElementDelta delta) {
-		// process the java model's projects
-		this.synchWithJavaDeltaChildren(delta);
-	}
-
 	protected void synchWithJavaDeltaChildren(IJavaElementDelta delta) {
 		for (IJavaElementDelta child : delta.getAffectedChildren()) {
 			this.synchWithJavaDelta(child); // recurse
 		}
 	}
 
+	// ***** model
+	protected void javaModelChanged(IJavaElementDelta delta) {
+		// process the java model's projects
+		this.synchWithJavaDeltaChildren(delta);
+	}
+
 	// ***** project
 	protected void javaProjectChanged(IJavaElementDelta delta) {
-		if ( ! delta.getElement().equals(this.getJavaProject())) {
-			return;  // ignore
-		}
-
 		// process the java project's package fragment roots
 		this.synchWithJavaDeltaChildren(delta);
 
 		if (this.classpathHasChanged(delta)) {
-			// the jars were processed above, now force all the JPA files to update
-			this.updateFromJava();
+			if (delta.getElement().equals(this.getJavaProject())) {
+				this.update(this.getInternalJavaResourceCompilationUnits());
+			} else {
+				// TODO see if changed project is on our classpath?
+				this.update(this.getExternalJavaResourceCompilationUnits());
+			}
 		}
 	}
 
@@ -722,9 +905,9 @@ public abstract class AbstractJpaProject
 		return BitTools.flagIsSet(delta.getFlags(), IJavaElementDelta.F_RESOLVED_CLASSPATH_CHANGED);
 	}
 
-	protected void updateFromJava() {
-		for (Iterator<JavaResourceCompilationUnit> stream = this.javaResourceCompilationUnits(); stream.hasNext(); ) {
-			stream.next().update();
+	protected void update(Iterable<JavaResourceCompilationUnit> javaResourceCompilationUnits) {
+		for (JavaResourceCompilationUnit javaResourceCompilationUnit : javaResourceCompilationUnits) {
+			javaResourceCompilationUnit.update();
 		}
 	}
 
@@ -758,10 +941,10 @@ public abstract class AbstractJpaProject
 	protected void javaCompilationUnitChanged(IJavaElementDelta delta) {
 		if (this.javaCompilationUnitDeltaIsRelevant(delta)) {
 			ICompilationUnit compilationUnit = (ICompilationUnit) delta.getElement();
-			for (Iterator<JavaResourceCompilationUnit> stream = this.javaResourceCompilationUnits(); stream.hasNext(); ) {
-				JavaResourceCompilationUnit jrcu = stream.next();
+			for (JavaResourceCompilationUnit jrcu : this.getCombinedJavaResourceCompilationUnits()) {
 				if (jrcu.getCompilationUnit().equals(compilationUnit)) {
 					jrcu.update();
+					// TODO ? this.resolveJavaTypes();  // might have new member types now...
 					break;  // there *shouldn't* be any more...
 				}
 			}
@@ -856,27 +1039,41 @@ public abstract class AbstractJpaProject
 	}
 
 
-	// ********** handling resource deltas **********
+	// ********** resource events **********
 
+	// TODO need to do the same thing for external projects and compilation units
 	public void projectChanged(IResourceDelta delta) throws CoreException {
-		ResourceDeltaVisitor resourceDeltaVisitor = this.buildResourceDeltaVisitor();
-		delta.accept(resourceDeltaVisitor);
-		if (resourceDeltaVisitor.jpaFilesChanged()) {
-			for (Iterator<JavaResourceCompilationUnit> stream = this.javaResourceCompilationUnits(); stream.hasNext(); ) {
-				stream.next().resolveTypes();
-			}
+		if (delta.getResource().equals(this.getProject())) {
+			this.internalProjectChanged(delta);
+		} else {
+			this.externalProjectChanged(delta);
 		}
-		// update JARs???
-		// TODO
 	}
 
-	protected ResourceDeltaVisitor buildResourceDeltaVisitor() {
-		return new ResourceDeltaVisitor();
+	protected void internalProjectChanged(IResourceDelta delta) throws CoreException {
+		ResourceDeltaVisitor resourceDeltaVisitor = this.buildInternalResourceDeltaVisitor();
+		delta.accept(resourceDeltaVisitor);
+		// at this point, if we have added and/or removed JpaFiles, an "update" will have been triggered;
+		// any changes to the resource model during the "resolve" will trigger further "updates";
+		// there should be no need to "resolve" external Java types (they can't have references to
+		// the internal Java types)
+		if (resourceDeltaVisitor.encounteredSignificantChange()) {
+			this.resolveInternalJavaTypes();
+		}
+	}
+
+	protected ResourceDeltaVisitor buildInternalResourceDeltaVisitor() {
+		return new ResourceDeltaVisitor() {
+			@Override
+			public boolean fileChangeIsSignificant(IFile file, int deltaKind) {
+				return AbstractJpaProject.this.synchronizeJpaFiles(file, deltaKind);
+			}
+		};
 	}
 
 	/**
-	 * resource delta visitor callback
-	 * Return true if a JpaFile was either added or removed
+	 * Internal resource delta visitor callback.
+	 * Return true if a JpaFile was either added or removed.
 	 */
 	protected boolean synchronizeJpaFiles(IFile file, int deltaKind) {
 		switch (deltaKind) {
@@ -885,9 +1082,11 @@ public abstract class AbstractJpaProject
 			case IResourceDelta.REMOVED :
 				return this.removeJpaFile(file);
 			case IResourceDelta.CHANGED :
-				return this.checkForChangedJpaFile(file);
+				return this.checkForChangedFileContent(file);
 			case IResourceDelta.ADDED_PHANTOM :
+				break;  // ignore
 			case IResourceDelta.REMOVED_PHANTOM :
+				break;  // ignore
 			default :
 				break;  // only worried about added/removed/changed files
 		}
@@ -895,7 +1094,7 @@ public abstract class AbstractJpaProject
 		return false;
 	}
 
-	protected boolean checkForChangedJpaFile(IFile file) {
+	protected boolean checkForChangedFileContent(IFile file) {
 		JpaFile jpaFile = this.getJpaFile(file);
 		if (jpaFile == null) {
 			// the file might have changed its content to something that we are interested in
@@ -911,15 +1110,101 @@ public abstract class AbstractJpaProject
 		// (e.g. the schema of an orm.xml file changed from JPA to EclipseLink)
 		this.removeJpaFile(jpaFile);
 		this.addJpaFile(file);
-		return true;
+		return true;  // at the least, we have removed a JPA file
 	}
 
-	// ***** inner class
+	protected void resolveInternalJavaTypes() {
+		for (JavaResourceCompilationUnit jrcu : this.getInternalJavaResourceCompilationUnits()) {
+			jrcu.resolveTypes();
+		}
+	}
+
+	protected void externalProjectChanged(IResourceDelta delta) throws CoreException {
+		if (this.getJavaProject().isOnClasspath(delta.getResource())) {
+			ResourceDeltaVisitor resourceDeltaVisitor = this.buildExternalResourceDeltaVisitor();
+			delta.accept(resourceDeltaVisitor);
+			// force an "update" here since adding and/or removing an external Java type
+			// will only trigger an "update" if the "resolve" causes something in the resource model to change
+			if (resourceDeltaVisitor.encounteredSignificantChange()) {
+				this.update();
+				this.resolveExternalJavaTypes();
+				this.resolveInternalJavaTypes();
+			}
+		}
+	}
+
+	protected ResourceDeltaVisitor buildExternalResourceDeltaVisitor() {
+		return new ResourceDeltaVisitor() {
+			@Override
+			public boolean fileChangeIsSignificant(IFile file, int deltaKind) {
+				return AbstractJpaProject.this.synchronizeExternalFiles(file, deltaKind);
+			}
+		};
+	}
+
+	/**
+	 * external resource delta visitor callback
+	 * Return true if a 
+	 */
+	protected boolean synchronizeExternalFiles(IFile file, int deltaKind) {
+		switch (deltaKind) {
+			case IResourceDelta.ADDED :
+				return this.externalFileAdded(file);
+			case IResourceDelta.REMOVED :
+				return this.externalFileRemoved(file);
+			case IResourceDelta.CHANGED :
+				break;  // ignore
+			case IResourceDelta.ADDED_PHANTOM :
+				break;  // ignore
+			case IResourceDelta.REMOVED_PHANTOM :
+				break;  // ignore
+			default :
+				break;  // only worried about added/removed/changed files
+		}
+
+		return false;
+	}
+
+	protected boolean externalFileAdded(IFile file) {
+		IContentType contentType = PlatformTools.getContentType(file);
+		if (contentType == null) {
+			return false;
+		}
+		if (contentType.equals(JptCorePlugin.JAVA_SOURCE_CONTENT_TYPE)) {
+			return true;
+		}
+		if (contentType.equals(JptCorePlugin.JAR_CONTENT_TYPE)) {
+			return true;
+		}
+		return false;
+	}
+
+	protected boolean externalFileRemoved(IFile file) {
+		IContentType contentType = PlatformTools.getContentType(file);
+		if (contentType == null) {
+			return false;
+		}
+		if (contentType.equals(JptCorePlugin.JAVA_SOURCE_CONTENT_TYPE)) {
+			return this.removeExternalJavaResourceCompilationUnit(file);
+		}
+		if (contentType.equals(JptCorePlugin.JAR_CONTENT_TYPE)) {
+			return this.externalJavaResourcePersistentTypeCache.removePersistentTypes(file);
+		}
+		return false;
+	}
+
+	protected void resolveExternalJavaTypes() {
+		for (JavaResourceCompilationUnit jrcu : this.getExternalJavaResourceCompilationUnits()) {
+			jrcu.resolveTypes();
+		}
+	}
+
+	// ***** resource delta visitors
 	/**
 	 * add or remove a JPA file for every [appropriate] file encountered by the visitor
 	 */
-	protected class ResourceDeltaVisitor implements IResourceDeltaVisitor {
-		private boolean jpaFilesChanged = false;
+	protected abstract class ResourceDeltaVisitor implements IResourceDeltaVisitor {
+		protected boolean encounteredSignificantChange = false;
 		
 		protected ResourceDeltaVisitor() {
 			super();
@@ -929,25 +1214,34 @@ public abstract class AbstractJpaProject
 			IResource res = delta.getResource();
 			switch (res.getType()) {
 				case IResource.ROOT :
+					return true;  // visit children
 				case IResource.PROJECT :
+					return true;  // visit children
 				case IResource.FOLDER :
 					return true;  // visit children
 				case IResource.FILE :
-					if (AbstractJpaProject.this.synchronizeJpaFiles((IFile) res, delta.getKind())) {
-						this.jpaFilesChanged = true;
-					}
+					this.fileChanged((IFile) res, delta.getKind());
 					return false;  // no children
 				default :
-					return false;  // no children
+					return false;  // no children (probably shouldn't get here...)
 			}
 		}
 
+		protected void fileChanged(IFile file, int deltaKind) {
+			if (this.fileChangeIsSignificant(file, deltaKind)) {
+				this.encounteredSignificantChange = true;
+			}
+		}
+
+		protected abstract boolean fileChangeIsSignificant(IFile file, int deltaKind);
+
 		/**
-		 * Return whether the collection of JPA files was modified while
-		 * traversing the IResourceDelta (i.e. a JPA file was added or removed).
+		 * Return whether the visitor encountered some sort of "significant"
+		 * change while traversing the IResourceDelta
+		 * (e.g. a JPA file was added or removed).
 		 */
-		protected boolean jpaFilesChanged() {
-			return this.jpaFilesChanged;
+		protected boolean encounteredSignificantChange() {
+			return this.encounteredSignificantChange;
 		}
 
 	}

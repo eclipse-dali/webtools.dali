@@ -233,14 +233,9 @@ public class JpaModelManager {
 			case IResourceChangeEvent.POST_CHANGE :
 				this.resourcePostChange(event);
 				break;
-			// we do not listen to these event types
-			// case IResourceChangeEvent.PRE_CLOSE :  // project-only event
-			// case IResourceChangeEvent.PRE_BUILD :
 			default :
 				break;
 		}
-		
-		
 	}
 
 	/**
@@ -288,7 +283,7 @@ public class JpaModelManager {
 	}
 
 	private void projectChanged(IProject project, IResourceDelta delta) {
-		this.projectChanged_(project, delta);
+		this.projectChanged_(delta);
 		this.checkForOpenedProject(project, delta);
 	}
 
@@ -296,9 +291,9 @@ public class JpaModelManager {
 	/**
 	 * Checked exceptions bite.
 	 */
-	private void projectChanged_(IProject project, IResourceDelta delta) {
+	private void projectChanged_(IResourceDelta delta) {
 		try {
-			this.jpaModel.projectChanged(project, delta);
+			this.jpaModel.projectChanged(delta);
 		} catch (CoreException ex) {
 			this.log(ex);  // problem traversing the project's resources - not much we can do
 		}
@@ -311,16 +306,19 @@ public class JpaModelManager {
 	 */
 	private void checkForOpenedProject(IProject project, IResourceDelta delta) {
 		switch (delta.getKind()) {
-			case IResourceDelta.CHANGED : 
-				this.checkDeltaFlagsForOpenedProject(project, delta);
-				break;
-			case IResourceDelta.REMOVED :  // already handled with the PRE_DELETE event
 			case IResourceDelta.ADDED :  // all but project import and rename handled with the facet POST_INSTALL event
 				this.checkDeltaFlagsForOpenedProject(project, delta);
 				this.checkDeltaFlagsForRenamedProject(project, delta);
 				break;
+			case IResourceDelta.REMOVED :  // already handled with the PRE_DELETE event
+				break;
+			case IResourceDelta.CHANGED : 
+				this.checkDeltaFlagsForOpenedProject(project, delta);
+				break;
 			case IResourceDelta.ADDED_PHANTOM :  // ignore
+				break;
 			case IResourceDelta.REMOVED_PHANTOM :  // ignore
+				break;
 			default :
 				break;
 		}

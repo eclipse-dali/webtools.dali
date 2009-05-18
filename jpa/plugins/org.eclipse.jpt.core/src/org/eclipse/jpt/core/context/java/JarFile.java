@@ -35,6 +35,7 @@ public interface JarFile
 {
 	/**
 	 * Return the JAR file's Java persistent types.
+	 * Return only the types that are annotated with JPA annotations.
 	 */
 	Iterator<JavaPersistentType> javaPersistentTypes();
 		String JAVA_PERSISTENT_TYPES_COLLECTION = "javaPersistentTypes"; //$NON-NLS-1$

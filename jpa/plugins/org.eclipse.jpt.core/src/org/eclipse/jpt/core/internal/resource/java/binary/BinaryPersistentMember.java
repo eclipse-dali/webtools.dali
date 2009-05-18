@@ -16,6 +16,7 @@ import java.util.Vector;
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.core.Signature;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.resource.java.Annotation;
@@ -107,7 +108,7 @@ abstract class BinaryPersistentMember
 	public Annotation getMappingAnnotation() {
 		Iterable<Annotation> annotations = new FixedCloneIterable<Annotation>(this.mappingAnnotations);
 		for (ListIterator<String> stream = this.validMappingAnnotationNames(); stream.hasNext();) {
-			Annotation annotation = this.getAnnotation(annotations, stream.next());
+			Annotation annotation = this.selectAnnotationNamed(annotations, stream.next());
 			if (annotation != null) {
 				return annotation;
 			}
@@ -116,7 +117,7 @@ abstract class BinaryPersistentMember
 	}
 
 	public Annotation getMappingAnnotation(String annotationName) {
-		return this.getAnnotation(this.getMappingAnnotations(), annotationName);
+		return this.selectAnnotationNamed(this.getMappingAnnotations(), annotationName);
 	}
 
 	private boolean annotationIsValidMappingAnnotation(IAnnotation jdtAnnotation) {
@@ -148,7 +149,9 @@ abstract class BinaryPersistentMember
 			return containerAnnotation.nestedAnnotations();
 		}
 		NestableAnnotation nestableAnnotation = this.getSupportingNestableAnnotation(nestableAnnotationName);
-		return (nestableAnnotation == null) ? EmptyListIterator.<NestableAnnotation>instance() : new SingleElementListIterator<NestableAnnotation>(nestableAnnotation);
+		return (nestableAnnotation == null) ?
+				EmptyListIterator.<NestableAnnotation>instance() :
+				new SingleElementListIterator<NestableAnnotation>(nestableAnnotation);
 	}
 
 	private NestableAnnotation getSupportingNestableAnnotation(String annotationName) {
@@ -156,7 +159,7 @@ abstract class BinaryPersistentMember
 	}
 
 	public Annotation getSupportingAnnotation(String annotationName) {
-		return this.getAnnotation(this.getSupportingAnnotations(), annotationName);
+		return this.selectAnnotationNamed(this.getSupportingAnnotations(), annotationName);
 	}
 
 	public Annotation getNonNullSupportingAnnotation(String annotationName) {
@@ -203,11 +206,11 @@ abstract class BinaryPersistentMember
 
 	// ********** miscellaneous **********
 
-	public IMember getMember() {
+	IMember getMember() {
 		return this.adapter.getMember();
 	}
 
-	private Annotation getAnnotation(Iterable<Annotation> annotations, String annotationName) {
+	private Annotation selectAnnotationNamed(Iterable<Annotation> annotations, String annotationName) {
 		for (Annotation annotation : annotations) {
 			if (annotation.getAnnotationName().equals(annotationName)) {
 				return annotation;
@@ -228,6 +231,21 @@ abstract class BinaryPersistentMember
 		};
 	}
 
+	/**
+	 * Strip off the type signature's parameters if present.
+	 * Convert to a readable string.
+	 */
+	static String convertTypeSignatureToTypeName(String typeSignature) {
+		return (typeSignature == null) ? null : convertTypeSignatureToTypeName_(typeSignature);
+	}
+
+	/**
+	 * no null check
+	 */
+	static String convertTypeSignatureToTypeName_(String typeSignature) {
+		return Signature.toString(Signature.getTypeErasure(typeSignature));
+	}
+
 	private IAnnotation[] getJdtAnnotations() {
 		try {
 			return this.adapter.getAnnotations();
@@ -242,8 +260,20 @@ abstract class BinaryPersistentMember
 	// ********** IMember adapter **********
 
 	interface Adapter {
+		/**
+		 * Return the adapter's JDT member (IType, IField, IMethod).
+		 */
 		IMember getMember();
+
+		/**
+		 * Return whether the adapter's member is "persistable"
+		 * (i.e. according to the JPA spec the member can be mapped)
+		 */
 		boolean isPersistable();
+
+		/**
+		 * Return the adapter's member's JDT annotations.
+		 */
 		IAnnotation[] getAnnotations() throws JavaModelException;
 	}
 

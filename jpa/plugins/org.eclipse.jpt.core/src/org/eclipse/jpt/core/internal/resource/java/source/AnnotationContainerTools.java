@@ -9,20 +9,22 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java.source;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
-import org.eclipse.jdt.core.dom.ASTVisitor;
+import org.eclipse.jdt.core.dom.ASTNode;
+import org.eclipse.jdt.core.dom.Annotation;
+import org.eclipse.jdt.core.dom.ArrayInitializer;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jdt.core.dom.MarkerAnnotation;
+import org.eclipse.jdt.core.dom.Expression;
+import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.MemberValuePair;
 import org.eclipse.jdt.core.dom.NormalAnnotation;
 import org.eclipse.jdt.core.dom.SingleMemberAnnotation;
-import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
 import org.eclipse.jpt.core.resource.java.AnnotationContainer;
 import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.HashBag;
 
 /**
  * Utility methods for manipulating annotation containers.
@@ -106,6 +108,9 @@ public final class AnnotationContainerTools {
 	private static <T extends NestableAnnotation> void synchJavaAnnotationsAfterRemove(int index, AnnotationContainer<T> annotationContainer) {
 		List<T> nestableAnnotations = CollectionTools.list(annotationContainer.nestedAnnotations());
 		for (int i = index; i < nestableAnnotations.size(); i++) {
+			// the indices are the same because the model annotations are
+			// already in the proper locations - it's the Java annotations that
+			// need to be moved to the same location
 			nestableAnnotations.get(i).moveAnnotation(i);
 		}
 	}
@@ -125,12 +130,104 @@ public final class AnnotationContainerTools {
 	}
 
 	/**
-	 * Use the annotation visitor to gather up the nested JDT DOM annotations.
+	 * Return a list of the nested JDT DOM annotations.
 	 */
-	private static <T extends NestableAnnotation> HashBag<org.eclipse.jdt.core.dom.Annotation> getNestedJdtAnnotations(CompilationUnit astRoot, AnnotationContainer<T> annotationContainer) {
-		AnnotationVisitor<T> visitor = new AnnotationVisitor<T>(annotationContainer);
-		annotationContainer.getContainerJdtAnnotation(astRoot).accept(visitor);
-		return visitor.jdtAnnotations;
+	private static <T extends NestableAnnotation> ArrayList<Annotation> getNestedJdtAnnotations(CompilationUnit astRoot, AnnotationContainer<T> annotationContainer) {
+		ArrayList<Annotation> result = new ArrayList<Annotation>();
+		Annotation containerJdtAnnotation = annotationContainer.getContainerJdtAnnotation(astRoot);
+		if (containerJdtAnnotation.isMarkerAnnotation()) {
+			// no nested annotations
+		}
+		else if (containerJdtAnnotation.isSingleMemberAnnotation()) {
+			if (annotationContainer.getElementName().equals("value")) { //$NON-NLS-1$
+				Expression ex = ((SingleMemberAnnotation) containerJdtAnnotation).getValue();
+				addJdtAnnotationsTo(ex, annotationContainer.getNestableAnnotationName(), result);
+			} else {
+				// no nested annotations
+			}
+		}
+		else if (containerJdtAnnotation.isNormalAnnotation()) {
+			MemberValuePair pair = getMemberValuePair((NormalAnnotation) containerJdtAnnotation, annotationContainer.getElementName());
+			if (pair == null) {
+				// no nested annotations
+			} else {
+				addJdtAnnotationsTo(pair.getValue(), annotationContainer.getNestableAnnotationName(), result);
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * Add whatever annotations are represented by the specified expression to
+	 * the specified bag. Add null to the bag for any non-annotation expression.
+	 */
+	private static void addJdtAnnotationsTo(Expression expression, String annotationName, ArrayList<Annotation> jdtAnnotations) {
+		if (expression == null) {
+			jdtAnnotations.add(null);  // not sure how we would get here...
+		}
+		else if (expression.getNodeType() == ASTNode.ARRAY_INITIALIZER) {
+			addJdtAnnotationsTo((ArrayInitializer) expression, annotationName, jdtAnnotations);
+		}
+		else {
+			jdtAnnotations.add(getJdtAnnotation_(expression, annotationName));
+		}
+	}
+
+	private static void addJdtAnnotationsTo(ArrayInitializer arrayInitializer, String annotationName, ArrayList<Annotation> jdtAnnotations) {
+		@SuppressWarnings("unchecked")
+		List<Expression> expressions = arrayInitializer.expressions();
+		for (Expression expression : expressions) {
+			jdtAnnotations.add(getJdtAnnotation(expression, annotationName));
+		}
+	}
+
+	/**
+	 * If the specified expression is an annotation with the specified name, return it;
+	 * otherwise return null.
+	 */
+	private static Annotation getJdtAnnotation(Expression expression, String annotationName) {
+		// not sure how the expression could be null...
+		return (expression == null) ? null : getJdtAnnotation_(expression, annotationName);
+	}
+
+	/**
+	 * pre-condition: expression is not null
+	 */
+	private static Annotation getJdtAnnotation_(Expression expression, String annotationName) {
+		switch (expression.getNodeType()) {
+			case ASTNode.NORMAL_ANNOTATION:
+			case ASTNode.SINGLE_MEMBER_ANNOTATION:
+			case ASTNode.MARKER_ANNOTATION:
+				Annotation jdtAnnotation = (Annotation) expression;
+				if (getQualifiedName(jdtAnnotation).equals(annotationName)) {
+					return jdtAnnotation;
+				}
+				return null;
+			default:
+				return null;
+		}
+	}
+
+	private static String getQualifiedName(Annotation jdtAnnotation) {
+		ITypeBinding typeBinding = jdtAnnotation.resolveTypeBinding();
+		if (typeBinding != null) {
+			String resolvedName = typeBinding.getQualifiedName();
+			if (resolvedName != null) {
+				return resolvedName;
+			}
+		}
+		return jdtAnnotation.getTypeName().getFullyQualifiedName();
+	}
+
+	private static MemberValuePair getMemberValuePair(NormalAnnotation annotation, String elementName) {
+		@SuppressWarnings("unchecked")
+		List<MemberValuePair> pairs = annotation.values();
+		for (MemberValuePair pair : pairs) {
+			if (pair.getName().getFullyQualifiedName().equals(elementName)) {
+				return pair;
+			}
+		}
+		return null;
 	}
 
 	/**
@@ -139,113 +236,35 @@ public final class AnnotationContainerTools {
 	 * notification will occur.
 	 */
 	public static <T extends NestableAnnotation> void update(AnnotationContainer<T> annotationContainer, CompilationUnit astRoot) {
-		HashBag<org.eclipse.jdt.core.dom.Annotation> jdtAnnotations = getNestedJdtAnnotations(astRoot, annotationContainer);
-		for (ListIterator<T> stream = annotationContainer.nestedAnnotations(); stream.hasNext(); ) {
-			T nestedAnnotation = stream.next();
-			org.eclipse.jdt.core.dom.Annotation jdtAnnotation = nestedAnnotation.getJdtAnnotation(astRoot);
-			if (jdtAnnotations.isEmpty()) {
+		ListIterator<Annotation> jdtAnnotations = getNestedJdtAnnotations(astRoot, annotationContainer).listIterator();
+
+		for (ListIterator<T> nestedAnnotations = annotationContainer.nestedAnnotations(); nestedAnnotations.hasNext(); ) {
+			T nestedAnnotation = nestedAnnotations.next();
+			if (jdtAnnotations.hasNext()) {
+				// matching JDT DOM annotation is present - update the nested annotation
+				jdtAnnotations.next();  // maybe someday we can pass this to the update
+				nestedAnnotation.update(astRoot);
+			} else {
 				// no more JDT DOM annotations - remove the nested annotation at the end of the container's list
 				int last = annotationContainer.nestedAnnotationsSize() - 1;
 				T remove = annotationContainer.removeNestedAnnotationInternal(last);
 				annotationContainer.nestedAnnotationRemoved(last, remove);
-			} else {
-				if (jdtAnnotations.remove(jdtAnnotation)) {
-					// matching JDT DOM annotation found - update the nested annotation
-					nestedAnnotation.update(astRoot);
-				} else {
-					throw new IllegalStateException("invalid nested annotation: " + nestedAnnotation); //$NON-NLS-1$
-				}
 			}
 		}
+
 		// add nested annotations for the remaining JDT DOM annotations
-		int start = annotationContainer.nestedAnnotationsSize();
-		int size = start + jdtAnnotations.size();
-		for (int i = start; i < size; i++) {
+		int i = annotationContainer.nestedAnnotationsSize();
+		while (jdtAnnotations.hasNext()) {
+			jdtAnnotations.next();  // maybe someday we can pass this to the initialize
 			T nestedAnnotation = annotationContainer.addNestedAnnotationInternal();
 			nestedAnnotation.initialize(astRoot);
-			annotationContainer.nestedAnnotationAdded(i, nestedAnnotation);
+			annotationContainer.nestedAnnotationAdded(i++, nestedAnnotation);
 		}
 	}
 
 	private AnnotationContainerTools() {
 		super();
 		throw new UnsupportedOperationException();
-	}
-
-
-	// ********** annotation visitor **********
-
-	/**
-	 * Gather up the nested JDT annotations.
-	 */
-	static class AnnotationVisitor<T extends NestableAnnotation>
-		extends ASTVisitor
-	{
-		final AnnotationContainer<T> annotationContainer;
-		final HashBag<org.eclipse.jdt.core.dom.Annotation> jdtAnnotations = new HashBag<org.eclipse.jdt.core.dom.Annotation>();
-
-		AnnotationVisitor(AnnotationContainer<T> annotationContainer) {
-			super();
-			this.annotationContainer = annotationContainer;
-		}
-
-		/**
-		 * MarkerAnnotation children:
-		 *     typeName - Name
-		 * we probably don't need to visit a MarkerAnnotation's children
-		 * since it doesn't hold anything interesting...
-		 */
-		@Override
-		public boolean visit(MarkerAnnotation node) {
-			return this.visit_(node);
-		}
-
-		/**
-		 * SingleMemberAnnotation children:
-		 *     typeName - Name
-		 *     value - Expression (which can be an Annotation)
-		 */
-		@Override
-		public boolean visit(SingleMemberAnnotation node) {
-			return this.visit_(node);
-		}
-
-		/**
-		 * NormalAnnotation children:
-		 *     typeName - Name
-		 *     values - MemberValuePair
-		 */
-		@Override
-		public boolean visit(NormalAnnotation node) {
-			return this.visit_(node);
-		}
-
-		/**
-		 * MemberValuePair children:
-		 *     name - SimpleName
-		 *     value - Expression (which can be an Annotation)
-		 */
-		@Override
-		public boolean visit(MemberValuePair node) {
-			// only process the children if the mvp's name matches the container's element name
-			return node.getName().getFullyQualifiedName().equals(this.annotationContainer.getElementName());
-		}
-
-		boolean visit_(org.eclipse.jdt.core.dom.Annotation jdtAnnotation) {
-			String jdtAnnotationName = JDTTools.resolveAnnotation(jdtAnnotation);
-			if (jdtAnnotationName == null) {
-				return false; // unknown annotation - skip its children
-			}
-			if (jdtAnnotationName.equals(this.annotationContainer.getContainerAnnotationName())) {
-				return true; // process the container annotation's children
-			}
-			if (jdtAnnotationName.equals(this.annotationContainer.getNestableAnnotationName())) {
-				this.jdtAnnotations.add(jdtAnnotation);
-				return false; // no need to visit the nested annotation's children
-			}
-			return false; // ignore other annotations
-		}
-
 	}
 
 }

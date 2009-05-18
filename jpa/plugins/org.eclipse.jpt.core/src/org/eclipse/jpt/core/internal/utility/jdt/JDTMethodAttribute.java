@@ -177,10 +177,12 @@ public class JDTMethodAttribute
 	 * JPTTools needs an adapter so it can work with either an IMethod
 	 * or an IMethodBinding etc.
 	 */
-	protected static class JPTToolsAdapter implements JPTTools.MethodAdapter {
-		private final IMethodBinding methodBinding;
+	protected static class SimpleJPTToolsAdapter
+		implements JPTTools.SimpleMethodAdapter
+	{
+		protected final IMethodBinding methodBinding;
 
-		protected JPTToolsAdapter(IMethodBinding methodBinding) {
+		protected SimpleJPTToolsAdapter(IMethodBinding methodBinding) {
 			super();
 			if (methodBinding == null) {
 				throw new NullPointerException();
@@ -188,28 +190,38 @@ public class JDTMethodAttribute
 			this.methodBinding = methodBinding;
 		}
 
-		public String getName() {
-			return this.methodBinding.getName();
-		}
-
 		public int getModifiers() {
 			return this.methodBinding.getModifiers();
 		}
 
-		public String getReturnTypeName() {
+		public String getReturnTypeErasureName() {
 			ITypeBinding returnType = this.methodBinding.getReturnType();
-			return (returnType == null) ? null : returnType.getTypeDeclaration().getQualifiedName();
+			return (returnType == null) ? null : returnType.getTypeDeclaration().getErasure().getQualifiedName();
 		}
 
 		public boolean isConstructor() {
 			return this.methodBinding.isConstructor();
 		}
 
+	}
+
+	protected static class JPTToolsAdapter
+		extends SimpleJPTToolsAdapter
+		implements JPTTools.MethodAdapter
+	{
+		protected JPTToolsAdapter(IMethodBinding methodBinding) {
+			super(methodBinding);
+		}
+
+		public String getName() {
+			return this.methodBinding.getName();
+		}
+
 		public int getParametersLength() {
 			return this.methodBinding.getParameterTypes().length;
 		}
 
-		public JPTTools.MethodAdapter getSibling(String name) {
+		public JPTTools.SimpleMethodAdapter getSibling(String name) {
 			ITypeBinding typeBinding = this.methodBinding.getDeclaringClass();
 			if (typeBinding == null) {
 				return null;
@@ -217,23 +229,23 @@ public class JDTMethodAttribute
 			for (IMethodBinding sibling : typeBinding.getDeclaredMethods()) {
 				if ((sibling.getParameterTypes().length == 0)
 						&& sibling.getName().equals(name)) {
-					return new JPTToolsAdapter(sibling);
+					return new SimpleJPTToolsAdapter(sibling);
 				}
 			}
 			return null;
 		}
 
-		public JPTTools.MethodAdapter getSibling(String name, String parameterTypeName) {
+		public JPTTools.SimpleMethodAdapter getSibling(String name, String parameterTypeErasureName) {
 			ITypeBinding typeBinding = this.methodBinding.getDeclaringClass();
 			if (typeBinding == null) {
 				return null;
 			}
 			for (IMethodBinding sibling : typeBinding.getDeclaredMethods()) {
-				ITypeBinding[] parmTypes = sibling.getParameterTypes();
-				if ((parmTypes.length == 1)
-						&& parmTypes[0].getTypeDeclaration().getQualifiedName().equals(parameterTypeName)
-						&& sibling.getName().equals(name)) {
-					return new JPTToolsAdapter(sibling);
+				ITypeBinding[] siblingParmTypes = sibling.getParameterTypes();
+				if ((siblingParmTypes.length == 1)
+						&& sibling.getName().equals(name)
+						&& siblingParmTypes[0].getTypeDeclaration().getErasure().getQualifiedName().equals(parameterTypeErasureName)) {
+					return new SimpleJPTToolsAdapter(sibling);
 				}
 			}
 			return null;

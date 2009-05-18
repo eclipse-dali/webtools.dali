@@ -156,10 +156,13 @@ public final class SourceCompilationUnit
 
 	// ********** JavaResourceNode.Root implementation **********
 
-	public Iterator<JavaResourcePersistentType> persistableTypes() {
+	/**
+	 * NB: return *all* the persistent types since we build them all
+	 */
+	public Iterator<JavaResourcePersistentType> persistentTypes() {
 		return (this.persistentType == null) ?
 				EmptyIterator.<JavaResourcePersistentType>instance() :
-				this.persistentType.allPersistableTypes();
+				this.persistentType.allTypes();
 	}
 
 	public void resourceModelChanged() {

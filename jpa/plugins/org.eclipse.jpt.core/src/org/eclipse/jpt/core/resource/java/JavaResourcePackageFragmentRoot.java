@@ -9,8 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.resource.java;
 
-import java.util.ListIterator;
-
+import java.util.Iterator;
 
 /**
  * Java package fragement root
@@ -27,7 +26,8 @@ public interface JavaResourcePackageFragmentRoot
 	/**
 	 * Return the package fragment root's package fragments.
 	 */
-	ListIterator<JavaResourcePackageFragment> packageFragments();
+	Iterator<JavaResourcePackageFragment> packageFragments();
+		String PACKAGE_FRAGMENTS_COLLECTION = "packageFragments"; //$NON-NLS-1$
 
 	/**
 	 * Return the size of the package fragment root's package fragments.

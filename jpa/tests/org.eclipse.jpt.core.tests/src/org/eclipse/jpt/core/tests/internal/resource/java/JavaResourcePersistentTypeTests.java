@@ -884,7 +884,7 @@ public class JavaResourcePersistentTypeTests extends JavaResourceModelTestCase {
 		ICompilationUnit cu = createTestEntity();
 		JavaResourcePersistentType persistentType = buildJavaTypeResource(cu);
 		
-		assertEquals("java.lang.Object", persistentType.getSuperClassQualifiedName());
+		assertEquals("java.lang.Object", persistentType.getSuperclassQualifiedName());
 		
 	}
 	
