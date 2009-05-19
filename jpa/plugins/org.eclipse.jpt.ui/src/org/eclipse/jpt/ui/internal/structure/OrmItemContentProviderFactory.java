@@ -12,21 +12,22 @@ package org.eclipse.jpt.ui.internal.structure;
 import java.util.ListIterator;
 
 import org.eclipse.jpt.core.JpaFile;
-import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
+import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.ui.internal.jface.AbstractTreeItemContentProvider;
 import org.eclipse.jpt.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
 import org.eclipse.jpt.ui.internal.platform.generic.OrmPersistentTypeItemContentProvider;
+import org.eclipse.jpt.ui.internal.platform.generic.PersistentAttributeItemContentProvider;
 import org.eclipse.jpt.ui.jface.DelegatingContentAndLabelProvider;
 import org.eclipse.jpt.ui.jface.TreeItemContentProvider;
+import org.eclipse.jpt.ui.jface.TreeItemContentProviderFactory;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListCollectionValueModelAdapter;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 
-public class OrmItemContentProviderFactory extends GeneralJpaMappingItemContentProviderFactory
+public class OrmItemContentProviderFactory implements TreeItemContentProviderFactory
 {
-	@Override
 	public TreeItemContentProvider buildItemContentProvider(
 			Object item, DelegatingContentAndLabelProvider contentProvider) {
 		DelegatingTreeContentAndLabelProvider treeContentProvider = (DelegatingTreeContentAndLabelProvider) contentProvider;
@@ -36,12 +37,13 @@ public class OrmItemContentProviderFactory extends GeneralJpaMappingItemContentP
 		if (item instanceof EntityMappings) {
 			return new EntityMappingsItemContentProvider((EntityMappings) item, treeContentProvider);
 		}
-		return super.buildItemContentProvider(item, treeContentProvider);
-	}
-	
-	@Override
-	protected TreeItemContentProvider buildPersistentTypeItemContentProvider(PersistentType persistentType, DelegatingTreeContentAndLabelProvider treeContentProvider) {
-		return new OrmPersistentTypeItemContentProvider((OrmPersistentType) persistentType, treeContentProvider);
+		if (item instanceof OrmPersistentType) {
+			return new OrmPersistentTypeItemContentProvider((OrmPersistentType) item, treeContentProvider);
+		}
+		if (item instanceof OrmPersistentAttribute) {
+			return new PersistentAttributeItemContentProvider((OrmPersistentAttribute) item, treeContentProvider);
+		}
+		return null;
 	}
 	
 	public static class EntityMappingsItemContentProvider extends AbstractTreeItemContentProvider<OrmPersistentType>
