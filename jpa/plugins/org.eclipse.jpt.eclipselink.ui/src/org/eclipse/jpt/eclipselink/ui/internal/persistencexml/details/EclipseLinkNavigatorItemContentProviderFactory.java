@@ -11,7 +11,6 @@ package org.eclipse.jpt.eclipselink.ui.internal.persistencexml.details;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.context.MappingFile;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
@@ -68,6 +67,7 @@ public class EclipseLinkNavigatorItemContentProviderFactory
 			list.add(buildImpliedMappingFileCvm());
 			list.add(buildImpliedEclipseLinkMappingFileCvm());
 			list.add(buildPersistentTypeCvm());
+			list.add(buildJarFileCvm());
 			return new CompositeCollectionValueModel<CollectionValueModel<? extends JpaContextNode>, JpaContextNode>(list);
 		}
 		

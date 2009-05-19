@@ -10,15 +10,14 @@
 package org.eclipse.jpt.core.resource.persistence;
 
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
 import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
 import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.xml.JpaEObject;
+import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -198,6 +197,13 @@ public class XmlJarFileRef extends AbstractJpaEObject implements JpaEObject
 		result.append(fileName);
 		result.append(')');
 		return result.toString();
+	}
+	
+	@Override
+	public TextRange getValidationTextRange() {
+		return (! StringTools.stringIsEmpty(this.fileName)) ?
+			getTextTextRange() :
+			super.getValidationTextRange();
 	}
 
 

@@ -43,6 +43,7 @@ import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmVersionMapping;
 import org.eclipse.jpt.core.context.orm.OrmXml;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitMetadata;
+import org.eclipse.jpt.core.context.persistence.JarFileRef;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
@@ -50,6 +51,7 @@ import org.eclipse.jpt.core.internal.platform.GenericJpaFactory;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
+import org.eclipse.jpt.core.resource.persistence.XmlJarFileRef;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.eclipselink.core.EclipseLinkJpaProject;
@@ -103,6 +105,7 @@ import org.eclipse.jpt.eclipselink.core.internal.context.orm.VirtualXmlBasicColl
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.VirtualXmlBasicMap;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.VirtualXmlTransformation;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.VirtualXmlVariableOneToOne;
+import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkJarFileRef;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasic;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicCollection;
@@ -153,6 +156,11 @@ public class EclipseLinkJpaFactory
 	@Override
 	public PersistenceUnit buildPersistenceUnit(Persistence parent, XmlPersistenceUnit xmlPersistenceUnit) {
 		return new EclipseLinkPersistenceUnit(parent, xmlPersistenceUnit);
+	}
+	
+	@Override
+	public JarFileRef buildJarFileRef(PersistenceUnit parent, XmlJarFileRef xmlJarFileRef) {
+		return new EclipseLinkJarFileRef(parent, xmlJarFileRef);
 	}
 	
 	

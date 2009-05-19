@@ -14,27 +14,31 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
+import org.eclipse.jpt.ui.JptUiPlugin;
 
 /**
  * This filter will deny showing any file that are not JAR files or folders
  * that don't contain any JAR files in its sub-hierarchy. 
  */
-public class JarFileViewerFilter 
+public class ArchiveFileViewerFilter 
 	extends ViewerFilter 
 {
-	public JarFileViewerFilter() {
+	private static final String[] archiveExtensions= { "jar", "zip" }; //$NON-NLS-1$ 
+	
+	
+	public ArchiveFileViewerFilter() {
 		super();
 	}
-	
 	
 	
 	@Override
 	public boolean select(
 			Viewer viewer, Object parentElement, Object element) {
 		if (element instanceof IFile) {
-			return isJarFile((IFile) element);
+			return isArchivePath(((IFile)element).getFullPath());
 		}
 		else if (element instanceof IFolder) {
 			IFolder folder = (IFolder) element;
@@ -47,15 +51,21 @@ public class JarFileViewerFilter
 			}
 			catch (CoreException ce) {
 				// just skip this one, then
+				JptUiPlugin.log(ce);
 			}
 		}
 		return false;
 	}
 	
-	/* there doesn't seem to be a very good way of determining if a file is an
-	 * actual jar file, so for now, if it's a file => true.
-	 */
-	protected boolean isJarFile(IFile file) {
-		return true;
-	}
+	public static boolean isArchivePath(IPath path) {
+		String ext= path.getFileExtension();
+		if (ext != null && ext.length() != 0) {
+			for (int i= 0; i < archiveExtensions.length; i++) {
+				if (ext.equalsIgnoreCase(archiveExtensions[i])) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}		
 }

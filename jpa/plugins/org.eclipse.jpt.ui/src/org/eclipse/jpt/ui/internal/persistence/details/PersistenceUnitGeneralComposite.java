@@ -232,19 +232,6 @@ public abstract class PersistenceUnitGeneralComposite extends FormPane<Persisten
 		new PersistenceUnitClassesComposite(this, container);
 	}
 	
-	protected void initializeJarFilesPane(Composite container) {
-
-		container = addCollapsableSection(
-			container,
-			JptUiPersistenceMessages.PersistenceUnitGeneralComposite_jarFiles
-		);
-		
-		updateGridData(container);
-		updateGridData(container.getParent());
-		
-		new PersistenceUnitJarFilesComposite(this, container);
-	}
-
 	protected void updateGridData(Composite container) {
 
 		GridData gridData = new GridData();

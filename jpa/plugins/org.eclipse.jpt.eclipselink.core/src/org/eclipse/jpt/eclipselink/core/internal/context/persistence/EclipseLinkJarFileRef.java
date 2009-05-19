@@ -8,23 +8,21 @@
  *  Contributors: 
  *  	Oracle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.core.internal.context.persistence;
+package org.eclipse.jpt.eclipselink.core.internal.context.persistence;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.core.internal.context.persistence.AbstractJarFileRef;
 import org.eclipse.jpt.core.resource.persistence.XmlJarFileRef;
 
-/**
- * Context JAR file reference (from the persistence unit)
- */
-public class GenericJarFileRef 
+public class EclipseLinkJarFileRef 
 	extends AbstractJarFileRef
 {
 	// **************** construction/initialization ****************************
 	
-	public GenericJarFileRef(PersistenceUnit parent, XmlJarFileRef xmlJarFileRef) {
+	public EclipseLinkJarFileRef(PersistenceUnit parent, XmlJarFileRef xmlJarFileRef) {
 		super(parent, xmlJarFileRef);
 	}
 	
@@ -38,10 +36,8 @@ public class GenericJarFileRef
 		
 		if (JptCorePlugin.projectHasWebFacet(project)) {
 			return new IPath[] {
-				// first path assumes form "../lib/other.jar"
-				rootPath.append(jarFilePath.removeFirstSegments(1)),
-				// second path assumes form of first, without ".." ("lib/other.jar")
-				rootPath.append(jarFilePath)
+				// assumes form "../lib/other.jar"
+				rootPath.append(jarFilePath.removeFirstSegments(1))
 			};
 		}
 		else {

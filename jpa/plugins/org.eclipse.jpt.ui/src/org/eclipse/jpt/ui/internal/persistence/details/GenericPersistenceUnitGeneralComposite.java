@@ -100,5 +100,17 @@ public class GenericPersistenceUnitGeneralComposite extends PersistenceUnitGener
 
 		new GenericPersistenceUnitMappingFilesComposite(this, container);
 	}
+	
+	protected void initializeJarFilesPane(Composite container) {
 
+		container = addCollapsableSection(
+			container,
+			JptUiPersistenceMessages.PersistenceUnitGeneralComposite_jarFiles
+		);
+		
+		updateGridData(container);
+		updateGridData(container.getParent());
+		
+		new GenericPersistenceUnitJarFilesComposite(this, container);
+	}
 }

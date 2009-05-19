@@ -267,6 +267,17 @@ public class JptCorePlugin extends Plugin {
 				defaultURI;
 	}
 	
+	/**
+	 * Return the deployment path to which jars are relatively specified for 
+	 * the given project
+	 * (Web projects have a different deployment structure than non-web projects)
+	 */
+	public static IPath getJarDeploymentRootPath(IProject project) {
+		return projectHasWebFacet(project) ? 
+			new Path("/" + J2EEConstants.WEB_INF) : 
+			new Path("/");
+	}
+	
 	public static IFile getPlatformFile(IProject project, String defaultURI) {
 		IPath deploymentPath = new Path(getDeploymentURI(project, defaultURI));
 		IVirtualFile vFile = ComponentCore.createFile(project, deploymentPath);
@@ -509,5 +520,4 @@ public class JptCorePlugin extends Plugin {
 			super.stop(context);
 		}
 	}
-
 }

@@ -52,4 +52,17 @@ public class EclipseLinkPersistenceUnitGeneralComposite
 
 		new EclipseLinkPersistenceUnitMappingFilesComposite(this, container);
 	}
+	
+	protected void initializeJarFilesPane(Composite container) {
+
+		container = addCollapsableSection(
+			container,
+			JptUiPersistenceMessages.PersistenceUnitGeneralComposite_jarFiles
+		);
+		
+		updateGridData(container);
+		updateGridData(container.getParent());
+		
+		new EclipseLinkPersistenceUnitJarFilesComposite(this, container);
+	}
 }

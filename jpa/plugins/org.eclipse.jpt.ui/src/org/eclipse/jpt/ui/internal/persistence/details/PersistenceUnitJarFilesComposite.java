@@ -10,12 +10,7 @@
 package org.eclipse.jpt.ui.internal.persistence.details;
 
 import java.util.ListIterator;
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -24,7 +19,6 @@ import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.JptUiIcons;
-import org.eclipse.jpt.ui.internal.jface.JarFileViewerFilter;
 import org.eclipse.jpt.ui.internal.persistence.JptUiPersistenceMessages;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveListPane;
@@ -43,10 +37,6 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
-import org.eclipse.ui.dialogs.ISelectionStatusValidator;
-import org.eclipse.ui.model.WorkbenchContentProvider;
-import org.eclipse.ui.model.WorkbenchLabelProvider;
-import org.eclipse.ui.views.navigator.ResourceComparator;
 
 /**
  * Here the layout of this pane:
@@ -69,7 +59,8 @@ import org.eclipse.ui.views.navigator.ResourceComparator;
  * @version 2.0
  * @since 2.0
  */
-public class PersistenceUnitJarFilesComposite extends Pane<PersistenceUnit>
+public abstract class PersistenceUnitJarFilesComposite 
+	extends Pane<PersistenceUnit>
 {
 	/**
 	 * Creates a new <code>PersistenceUnitJPAMappingDescriptorsComposite</code>.
@@ -77,8 +68,9 @@ public class PersistenceUnitJarFilesComposite extends Pane<PersistenceUnit>
 	 * @param parentPane The parent pane of this one
 	 * @param parent The parent container
 	 */
-	public PersistenceUnitJarFilesComposite(Pane<? extends PersistenceUnit> parentPane,
-	                                            Composite parent) {
+	public PersistenceUnitJarFilesComposite(
+			Pane<? extends PersistenceUnit> parentPane,
+			Composite parent) {
 
 		super(parentPane, parent, false);
 	}
@@ -188,42 +180,22 @@ public class PersistenceUnitJarFilesComposite extends Pane<PersistenceUnit>
 	private void addJarFileRef(ObjectListSelectionModel listSelectionModel) {
 		IProject project = getSubject().getJpaProject().getProject();
 
-		ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(
-			getShell(),
-			new WorkbenchLabelProvider(),
-			new WorkbenchContentProvider()
-		);
-
+		ElementTreeSelectionDialog dialog = new ArchiveFileSelectionDialog(
+			getShell(), buildJarFileDeploymentPathCalculator());
+		
 		dialog.setHelpAvailable(false);
-		dialog.setValidator(buildValidator());
 		dialog.setTitle(JptUiPersistenceMessages.PersistenceUnitMappingFilesComposite_jarFileDialog_title);
 		dialog.setMessage(JptUiPersistenceMessages.PersistenceUnitMappingFilesComposite_jarFileDialog_message);
-		dialog.addFilter(new JarFileViewerFilter());
 		dialog.setInput(project);
-		dialog.setComparator(new ResourceComparator(ResourceComparator.NAME));
-
+		
 		SWTUtil.show(
 			dialog,
 			buildSelectionDialogPostExecution(listSelectionModel)
 		);
 	}
 	
-	private ISelectionStatusValidator buildValidator() {
-		return new ISelectionStatusValidator() {
-			public IStatus validate(Object[] selection) {
-				if (selection.length == 0) {
-					return new Status(IStatus.ERROR, JptUiPlugin.PLUGIN_ID, "");
-				}
-				
-				for (Object item : selection) {
-					if (item instanceof IFolder) {
-						return new Status(IStatus.ERROR, JptUiPlugin.PLUGIN_ID, "");
-					}
-				}
-
-				return new Status(IStatus.OK, JptUiPlugin.PLUGIN_ID, "");
-			}
-		};
+	protected ArchiveFileSelectionDialog.DeploymentPathCalculator buildJarFileDeploymentPathCalculator() {
+		return new ArchiveFileSelectionDialog.ModuleDeploymentPathCalculator();
 	}
 	
 	private PostExecution<ElementTreeSelectionDialog> buildSelectionDialogPostExecution(
@@ -235,15 +207,12 @@ public class PersistenceUnitJarFilesComposite extends Pane<PersistenceUnit>
 				}
 				
 				for (Object result : dialog.getResult()) {
-					IFile file = (IFile) result;
-					// TODO - move to deploy path location
-					IPath filePath = file.getProjectRelativePath();
-					String fileName = filePath.toPortableString();
-					if (jarFileRefExists(fileName)) {
+					String filePath = (String) result;
+					if (jarFileRefExists(filePath)) {
 						continue;
 					}
 					JarFileRef jarFileRef = getSubject().addJarFileRef();
-					jarFileRef.setFileName(fileName);
+					jarFileRef.setFileName(filePath);
 
 					listSelectionModel.addSelectedValue(jarFileRef);
 				}

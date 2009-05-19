@@ -12,7 +12,6 @@ package org.eclipse.jpt.core.resource.xml;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Set;
-
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.Notifier;
@@ -158,6 +157,26 @@ public abstract class AbstractJpaEObject
 
 
 	// ********** text ranges **********
+	
+	/**
+	 * Return a text range for the "text" node.
+	 * If the text node does not exist, return a text range for this object's node
+	 */
+	protected TextRange getTextTextRange() {
+		IDOMNode textNode = this.getTextNode();
+		return (textNode != null) ? buildTextRange(textNode) : this.getValidationTextRange();
+	}
+	
+	protected IDOMNode getTextNode() {
+		NodeList children = this.node.getChildNodes();
+		for (int i = 0; i < children.getLength(); i ++) {
+			IDOMNode child = (IDOMNode) children.item(i);
+			if (child.getNodeType() == Node.TEXT_NODE) {
+				return child;
+			}
+		}
+		return null;
+	}
 	
 	/**
 	 * Return a text range for the specified attribute node.
