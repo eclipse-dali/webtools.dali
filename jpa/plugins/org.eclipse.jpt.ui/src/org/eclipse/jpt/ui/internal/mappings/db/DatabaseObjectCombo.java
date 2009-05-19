@@ -10,6 +10,8 @@
 package org.eclipse.jpt.ui.internal.mappings.db;
 
 import java.util.Iterator;
+
+import org.eclipse.jpt.core.JpaDataSource;
 import org.eclipse.jpt.core.JpaNode;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.db.Catalog;
@@ -24,10 +26,13 @@ import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.Tracing;
 import org.eclipse.jpt.ui.internal.listeners.SWTConnectionListenerWrapper;
+import org.eclipse.jpt.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
+import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.custom.CCombo;
@@ -61,7 +66,8 @@ public abstract class DatabaseObjectCombo<T extends JpaNode>
 	 */
 	private ConnectionListener connectionListener;
 
-
+	private PropertyChangeListener connectionProfileListener;
+	
 	// ********** constructors **********
 
 	protected DatabaseObjectCombo(
@@ -94,6 +100,7 @@ public abstract class DatabaseObjectCombo<T extends JpaNode>
 	protected void initialize() {
 		super.initialize();
 		this.connectionListener = this.buildConnectionListener();
+		this.connectionProfileListener = this.buildConnectionProfileListener();
 	}
 
 	protected ConnectionListener buildConnectionListener() {
@@ -103,7 +110,30 @@ public abstract class DatabaseObjectCombo<T extends JpaNode>
 	protected ConnectionListener buildConnectionListener_() {
 		return new LocalConnectionListener();
 	}
+	
+	protected PropertyChangeListener buildConnectionProfileListener() {
+		return new SWTPropertyChangeListenerWrapper(this.buildConnectionProfileListener_());
+	}
 
+	protected PropertyChangeListener buildConnectionProfileListener_() {
+		return new PropertyChangeListener(){
+		
+			public void propertyChanged(PropertyChangeEvent event) {
+				connectionProfileChanged(event);
+			}
+		};
+	}
+
+	protected void connectionProfileChanged(PropertyChangeEvent event) {
+		if (event.getOldValue() != null) {
+			((ConnectionProfile) event.getOldValue()).removeConnectionListener(this.connectionListener);
+		}
+		if (event.getNewValue() != null) {
+			((ConnectionProfile) event.getNewValue()).addConnectionListener(this.connectionListener);			
+		}
+		this.repopulateComboBox();
+	}
+	
 	@Override
 	protected void initializeLayout(Composite container) {
 		this.comboBox = this.addEditableCCombo(container);
@@ -148,11 +178,11 @@ public abstract class DatabaseObjectCombo<T extends JpaNode>
 
 	// ********** overrides **********
 
-	// TODO probably need to listen to the JPA project's data source's connection profile...
 	@Override
 	protected void engageListeners_(T subject) {
 		super.engageListeners_(subject);
 
+		subject.getJpaProject().getDataSource().addPropertyChangeListener(JpaDataSource.CONNECTION_PROFILE_PROPERTY, this.connectionProfileListener);
 		ConnectionProfile cp = subject.getJpaProject().getConnectionProfile();
 		if (cp != null) {
 			cp.addConnectionListener(this.connectionListener);
@@ -165,6 +195,7 @@ public abstract class DatabaseObjectCombo<T extends JpaNode>
 		if (cp != null) {
 			cp.removeConnectionListener(this.connectionListener);
 		}
+		subject.getJpaProject().getDataSource().removePropertyChangeListener(JpaDataSource.CONNECTION_PROFILE_PROPERTY, this.connectionProfileListener);
 
 		super.disengageListeners_(subject);
 	}
