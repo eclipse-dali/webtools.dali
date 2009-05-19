@@ -74,7 +74,7 @@ public abstract class AbstractItemLabelProvider implements ItemLabelProvider
 	 * Return the image value model
 	 * (lazy and just-in-time initialized)
 	 */
-	protected PropertyValueModel<Image> imageModel() {
+	protected synchronized PropertyValueModel<Image> imageModel() {
 		if (imageModel == null) {
 			imageModel = buildImageModel();
 			engageImageModel();
@@ -100,16 +100,14 @@ public abstract class AbstractItemLabelProvider implements ItemLabelProvider
 	 * subclass logic 
 	 */
 	protected void disengageImageModel() {
-		if (imageModel != null) {
-			imageModel.removePropertyChangeListener(PropertyValueModel.VALUE, labelChangeListener);
-		}
+		imageModel.removePropertyChangeListener(PropertyValueModel.VALUE, labelChangeListener);
 	}
 	
 	/**
 	 * Return the text value model
 	 * (lazy and just-in-time initialized)
 	 */
-	protected PropertyValueModel<String> textModel() {
+	protected synchronized PropertyValueModel<String> textModel() {
 		if (textModel == null) {
 			textModel = buildTextModel();
 			engageTextModel();
@@ -135,16 +133,14 @@ public abstract class AbstractItemLabelProvider implements ItemLabelProvider
 	 * subclass logic 
 	 */
 	protected void disengageTextModel() {
-		if (textModel != null) {
-			textModel.removePropertyChangeListener(PropertyValueModel.VALUE, labelChangeListener);
-		}
+		textModel.removePropertyChangeListener(PropertyValueModel.VALUE, labelChangeListener);
 	}
 	
 	/**
 	 * Return the description value model
 	 * (lazy and just-in-time initialized)
 	 */
-	protected PropertyValueModel<String> descriptionModel() {
+	protected synchronized PropertyValueModel<String> descriptionModel() {
 		if (descriptionModel == null) {
 			descriptionModel = buildDescriptionModel();
 			engageDescriptionModel();
@@ -170,9 +166,7 @@ public abstract class AbstractItemLabelProvider implements ItemLabelProvider
 	 * subclass logic 
 	 */
 	protected void disengageDescriptionModel() {
-		if (descriptionModel != null) {
-			descriptionModel.removePropertyChangeListener(PropertyValueModel.VALUE, labelChangeListener);
-		}
+		descriptionModel.removePropertyChangeListener(PropertyValueModel.VALUE, labelChangeListener);
 	}
 	
 	/**
@@ -202,7 +196,29 @@ public abstract class AbstractItemLabelProvider implements ItemLabelProvider
 	}
 	
 	public void dispose() {
-		disengageTextModel();
-		disengageImageModel();
+		disposeTextModel();
+		disposeImageModel();
+		disposeDescriptionModel();	
+	}
+	
+	protected synchronized void disposeTextModel() {
+		if (this.textModel != null) {
+			disengageTextModel();
+			this.textModel = null;
+		}
+	}
+	
+	protected synchronized void disposeImageModel() {
+		if (this.imageModel != null) {
+			disengageImageModel();
+			this.imageModel = null;
+		}
+	}
+	
+	protected synchronized void disposeDescriptionModel() {
+		if (this.descriptionModel != null) {
+			disengageDescriptionModel();
+			this.descriptionModel = null;
+		}
 	}
 }

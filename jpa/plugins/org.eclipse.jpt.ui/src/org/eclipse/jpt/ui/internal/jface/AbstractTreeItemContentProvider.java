@@ -99,7 +99,7 @@ public abstract class AbstractTreeItemContentProvider<E>
 	 * Return the children model
 	 * (lazy and just-in-time initialized)
 	 */
-	protected Iterator<E> childrenModel() {
+	protected synchronized Iterator<E> childrenModel() {
 		if (this.childrenModel == null) {
 			this.childrenModel = buildChildrenModel();
 			engageChildren();
@@ -174,7 +174,7 @@ public abstract class AbstractTreeItemContentProvider<E>
 		for (Object child : getChildren()) {
 			getTreeContentProvider().dispose(child);
 		}
-		disengageChildren();
+		disposeChildrenModel();
 	}
 	
 	/** 
@@ -185,13 +185,17 @@ public abstract class AbstractTreeItemContentProvider<E>
 		this.childrenModel.addCollectionChangeListener(CollectionValueModel.VALUES, this.childrenListener);
 	}
 	
+	protected synchronized void disposeChildrenModel() {
+		if (this.childrenModel != null) {
+			this.disengageChildrenModel();
+			this.childrenModel = null;
+		}
+	}
 	/** 
 	 * Should only be overridden with a call to super.disengageChildren() after 
 	 * subclass logic 
 	 */
-	protected void disengageChildren() {
-		if (this.childrenModel != null) {
-			this.childrenModel.removeCollectionChangeListener(CollectionValueModel.VALUES, this.childrenListener);
-		}
+	protected void disengageChildrenModel() {
+		this.childrenModel.removeCollectionChangeListener(CollectionValueModel.VALUES, this.childrenListener);
 	}
 }
