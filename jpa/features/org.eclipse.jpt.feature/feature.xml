@@ -93,5 +93,19 @@
          install-size="0"
          version="2.0.8.qualifier"
          unpack="false"/>
+         
+   <plugin
+         id="org.jdom"
+         download-size="0"
+         install-size="0"
+         version="1.0.0.qualifier"
+         unpack="false"/>         
+         
+   <plugin
+         id="org.apache.velocity"
+         download-size="0"
+         install-size="0"
+         version="1.5.0.qualifier"
+         unpack="false"/>
 
 </feature>
