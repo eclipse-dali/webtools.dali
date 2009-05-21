@@ -583,7 +583,7 @@ public class JpaProjectPropertiesPage
 							JptCoreMessages.VALIDATE_CONNECTION_INVALID, 
 							connectionName)));
 			}
-			if (! connectionProfile.isActive()) {
+			else if (! connectionProfile.isActive()) {
 				statuses.get(IStatus.INFO).add( 
 					buildInfoStatus(
 						JptCoreMessages.VALIDATE_CONNECTION_NOT_CONNECTED));
