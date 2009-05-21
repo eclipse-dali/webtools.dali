@@ -134,15 +134,23 @@ public class OrmFileCreationOperation extends AbstractDataModelOperation
 				public void run() {
 					AccessType defaultAccess = (AccessType) getDataModel().getProperty(DEFAULT_ACCESS); 
 					if (defaultAccess != null) {
-						XmlPersistenceUnitMetadata puMetadata = OrmFactory.eINSTANCE.createXmlPersistenceUnitMetadata();
+						XmlPersistenceUnitMetadata puMetadata = createXmlPersistenceUnitMetadata();
 						((XmlEntityMappings) xmlResource.getRootObject()).setPersistenceUnitMetadata(puMetadata);
-						XmlPersistenceUnitDefaults puDefaults = OrmFactory.eINSTANCE.createXmlPersistenceUnitDefaults();
+						XmlPersistenceUnitDefaults puDefaults = createXmlPersistenceUnitDefaults();
 						puMetadata.setPersistenceUnitDefaults(puDefaults);
 						puDefaults.setAccess(defaultAccess);
 					}
 				}
 			});
 		return file;
+	}
+	
+	protected XmlPersistenceUnitMetadata createXmlPersistenceUnitMetadata() {
+		return OrmFactory.eINSTANCE.createXmlPersistenceUnitMetadata();
+	}
+	
+	protected XmlPersistenceUnitDefaults createXmlPersistenceUnitDefaults() {
+		return OrmFactory.eINSTANCE.createXmlPersistenceUnitDefaults();
 	}
 	
 	protected AbstractXmlResourceProvider getXmlResourceProvider(IFile file) {
