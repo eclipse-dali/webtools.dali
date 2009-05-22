@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
+import org.eclipse.jpt.core.context.TableGenerator;
 import org.eclipse.jpt.core.context.UniqueConstraint;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.orm.OrmTableGenerator;
@@ -64,7 +65,11 @@ public class GenericOrmTableGenerator
 		this.initialize(resourceTableGenerator);
 	}
 
-
+	@Override
+	public int getDefaultInitialValue() {
+		return TableGenerator.DEFAULT_INITIAL_VALUE;
+	}
+	
 	// ********** table **********
 
 	public String getTable() {

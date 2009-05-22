@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
+import org.eclipse.jpt.core.context.SequenceGenerator;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.orm.OrmSequenceGenerator;
 import org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator;
@@ -30,6 +31,11 @@ public class GenericOrmSequenceGenerator
 		this.initialize(resourceSequenceGenerator);
 	}
 
+
+	@Override
+	public int getDefaultInitialValue() {
+		return SequenceGenerator.DEFAULT_INITIAL_VALUE;
+	}
 
 	// ********** sequence name **********
 

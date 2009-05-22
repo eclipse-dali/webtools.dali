@@ -127,7 +127,7 @@ public abstract class AbstractOrmGenerator<T extends XmlGenerator>
 	}
 
 	public int getDefaultAllocationSize() {
-		return this.defaultAllocationSize;
+		return Generator.DEFAULT_ALLOCATION_SIZE;
 	}
 	
 	protected void setDefaultAllocationSize(int defaultAllocationSize) {
