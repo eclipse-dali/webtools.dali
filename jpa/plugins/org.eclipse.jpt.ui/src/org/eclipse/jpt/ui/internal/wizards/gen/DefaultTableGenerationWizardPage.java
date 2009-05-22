@@ -86,8 +86,13 @@ public class DefaultTableGenerationWizardPage extends NewTypeWizardPage {
 	 * @param selection used to initialize the fields
 	 */
 	void init(IStructuredSelection selection) {
-		if ( jpaProject != null ) {
-			IJavaElement jelem = this.jpaProject.getJavaProject();
+		IJavaElement jelem = null;
+		if ( selection.getFirstElement() instanceof IJavaElement ) {
+			jelem = (IJavaElement) selection.getFirstElement();
+		}else{
+			jelem = this.jpaProject.getJavaProject();			
+		}
+		if( jelem !=null ){
 			initContainerPage(jelem);
 			initTypePage(jelem);
 		}
@@ -130,7 +135,10 @@ public class DefaultTableGenerationWizardPage extends NewTypeWizardPage {
 				setSuperClass(baseClass, true);
 				setSuperInterfaces(defaultsTable.getImplements(), true);
 				IPackageFragmentRoot root = getSourceFolder( defaultsTable.getSourceFolder());
-				setPackageName( root, defaultsTable.getPackage() );
+				String initPackageName = this.getPackageText();
+				if( initPackageName.length()==0 ){
+					setPackageName( root, defaultsTable.getPackage() );
+				}
 				setPackageFragmentRoot(root, true/*canBeModified*/);
 			}
 		}
