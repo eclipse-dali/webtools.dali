@@ -976,7 +976,7 @@ public abstract class AbstractPersistenceUnit
 	 * is not specified, a default of RESOURCE_LOCAL may be assumed."
 	 */
 	protected PersistenceUnitTransactionType buildDefaultTransactionType() {
-		return null;
+		return PersistenceUnitTransactionType.JTA; //return JTA for now, fixing regression in bug 277524
 	}
 
 	/**

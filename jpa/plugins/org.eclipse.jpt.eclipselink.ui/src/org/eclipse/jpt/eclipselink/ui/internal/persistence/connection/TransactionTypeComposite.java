@@ -48,6 +48,7 @@ public class TransactionTypeComposite extends FormPane<Connection>
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
 				propertyNames.add(PersistenceUnit.SPECIFIED_TRANSACTION_TYPE_PROPERTY);
+				propertyNames.add(PersistenceUnit.DEFAULT_TRANSACTION_TYPE_PROPERTY);
 			}
 
 			@Override
@@ -67,7 +68,7 @@ public class TransactionTypeComposite extends FormPane<Connection>
 
 			@Override
 			protected PersistenceUnitTransactionType getValue() {
-				return getSubject().getTransactionType();
+				return getSubject().getSpecifiedTransactionType();
 			}
 
 			@Override
