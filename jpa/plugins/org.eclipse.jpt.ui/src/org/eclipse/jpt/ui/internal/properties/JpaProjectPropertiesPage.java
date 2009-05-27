@@ -50,6 +50,7 @@ import org.eclipse.jpt.db.ConnectionProfileListener;
 import org.eclipse.jpt.db.Database;
 import org.eclipse.jpt.db.JptDbPlugin;
 import org.eclipse.jpt.db.Schema;
+import org.eclipse.jpt.db.SchemaContainer;
 import org.eclipse.jpt.db.ui.internal.DTPUiTools;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
@@ -271,15 +272,15 @@ public class JpaProjectPropertiesPage
 			}
 		};
 	}
-
+	
 	protected BufferedWritablePropertyValueModel<Boolean> initializeOverrideDefaultCatalogModel() {
 		OverrideDefaultCatalogModel model = new OverrideDefaultCatalogModel(this.jpaProjectHolder);
-		BufferedWritablePropertyValueModel<Boolean> modelBuffer = 
-			new BufferedWritablePropertyValueModel(model, this.trigger);
 		model.addPropertyChangeListener(PropertyValueModel.VALUE, this.overrideDefaultCatalogListener);
-		modelBuffer.addPropertyChangeListener(PropertyValueModel.VALUE, this.validationListener);
-		return modelBuffer;
-		
+
+		BufferedWritablePropertyValueModel<Boolean> bufferedModel = new BufferedWritablePropertyValueModel<Boolean>(model, this.trigger);
+		bufferedModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.validationListener);
+
+		return bufferedModel;
 	}
 	
 	protected BufferedWritablePropertyValueModel<String> initializeDefaultCatalogModel() {
@@ -338,7 +339,7 @@ public class JpaProjectPropertiesPage
 			new CombinedDefaultSchemaModel(
 				this.defaultSchemaModel,
 				this.overrideDefaultSchemaModel,
-				new DefaultDefaultSchemaModel(this.connectionProfileModel));
+				new DefaultDefaultSchemaModel(this.defaultCatalogModel, this.connectionProfileModel));
 		model.addPropertyChangeListener(PropertyValueModel.VALUE, this.validationListener);
 		return model;
 	}
@@ -346,7 +347,7 @@ public class JpaProjectPropertiesPage
 	protected ListValueModel<String> initializeSchemaChoicesModel() {
 		Collection<CollectionValueModel> cvms = new ArrayList<CollectionValueModel>();
 		cvms.add(new PropertyCollectionValueModelAdapter(this.defaultSchemaModel));
-		cvms.add(new SchemaChoicesModel(this.connectionProfileModel));
+		cvms.add(new SchemaChoicesModel(this.defaultCatalogModel, this.connectionProfileModel));
 		return new SortedListValueModelAdapter(
 			new CompositeCollectionValueModel<CollectionValueModel, String>(cvms) {
 				@Override
@@ -1057,15 +1058,14 @@ public class JpaProjectPropertiesPage
 	}
 	
 
-	// ************ Catalog ************
-	private static class OverrideDefaultCatalogModel
-	extends BasePropertyAspectAdapter<JpaProject, Boolean>
+	private abstract static class OverrideDefaultModel
+		extends BasePropertyAspectAdapter<JpaProject, Boolean>
 	{
 		// the superclass "value" is the *cached* value
 		private Boolean actualValue;
-		
-		
-		private OverrideDefaultCatalogModel(PropertyValueModel<JpaProject> jpaProjectHolder) {
+
+
+		OverrideDefaultModel(PropertyValueModel<JpaProject> jpaProjectHolder) {
 			super(jpaProjectHolder);
 		}
 		
@@ -1074,14 +1074,14 @@ public class JpaProjectPropertiesPage
 		
 		@Override
 		public Boolean getValue() {
-			Boolean value = super.getValue();
-			return (value == null) ? Boolean.FALSE : value;
+			Boolean v = super.getValue();
+			return (v == null) ? Boolean.FALSE : v;
 		}
 		
 		@Override
 		public void setValue_(Boolean newValue) {
 			this.actualValue = newValue;
-			valueChanged();
+			this.valueChanged();
 		}
 		
 		
@@ -1089,14 +1089,16 @@ public class JpaProjectPropertiesPage
 		
 		@Override
 		protected void engageSubject_() {
+			// we need to build 'actualValue' *before* calling 'super'
+			// because 'super' calls back here to #buildValue_()
 			this.actualValue = this.buildActualValue_();
 			super.engageSubject_();
 		}
 		
 		@Override
 		protected void disengageSubject_() {
-			this.actualValue = null;
 			super.disengageSubject_();
+			this.actualValue = null;
 		}
 		
 		
@@ -1108,7 +1110,28 @@ public class JpaProjectPropertiesPage
 		}
 		
 		protected Boolean buildActualValue_() {
-			return ! StringTools.stringIsEmpty(this.subject.getUserOverrideDefaultCatalog());
+			return Boolean.valueOf(this.subjectHasUserOverrideDefault());
+		}
+
+		protected boolean subjectHasUserOverrideDefault() {
+			return ! StringTools.stringIsEmpty(this.getSubjectUserOverrideDefault());
+		}
+		
+		protected abstract String getSubjectUserOverrideDefault();
+	}
+
+	
+	// ************ Catalog ************
+	private static class OverrideDefaultCatalogModel
+		extends OverrideDefaultModel
+	{
+		OverrideDefaultCatalogModel(PropertyValueModel<JpaProject> jpaProjectHolder) {
+			super(jpaProjectHolder);
+		}
+
+		@Override
+		protected String getSubjectUserOverrideDefault() {
+			return this.subject.getUserOverrideDefaultCatalog();
 		}
 	}
 
@@ -1116,7 +1139,7 @@ public class JpaProjectPropertiesPage
 	private static class DefaultCatalogModel
 		extends PropertyAspectAdapter<JpaProject, String>
 	{
-		private DefaultCatalogModel(PropertyValueModel<JpaProject> jpaProjectModel) { 
+		DefaultCatalogModel(PropertyValueModel<JpaProject> jpaProjectModel) { 
 			super(jpaProjectModel, JpaProject.USER_OVERRIDE_DEFAULT_CATALOG_PROPERTY);
 		}
 		
@@ -1136,57 +1159,54 @@ public class JpaProjectPropertiesPage
 			return this.subject.getUserOverrideDefaultCatalog();
 		}
 	}
-	
-	private static class DefaultDefaultCatalogModel
-		extends BasePropertyAspectAdapter<ConnectionProfile, String>
+
+	private abstract static class ConnectionProfilePropertyAspectAdapter<V>
+		extends BasePropertyAspectAdapter<ConnectionProfile, V>
 	{
 		private ConnectionListener connectionListener;
-		
-		
-		private DefaultDefaultCatalogModel(
-				PropertyValueModel<ConnectionProfile> connectionProfileModel) {
+
+		ConnectionProfilePropertyAspectAdapter(PropertyValueModel<ConnectionProfile> connectionProfileModel) {
 			super(connectionProfileModel);
-			this.connectionListener = buildConnectionListener();
+			this.connectionListener = this.buildConnectionListener();
 		}
-		
-		
-		// ************ initialization *****************************************
-		
+
+		// the connection opening is probably the only thing that will happen...
 		private ConnectionListener buildConnectionListener() {
 			return new ConnectionAdapter() {
 				@Override
 				public void opened(ConnectionProfile profile) {
-					if (profile.equals(DefaultDefaultCatalogModel.this.subject)) {
-						valueChanged();
-					}
-				}
-				@Override
-				public void catalogChanged(ConnectionProfile profile, Catalog catalog) {
-					if (profile.equals(DefaultDefaultCatalogModel.this.subject)) {
-						valueChanged();
-					}
+					ConnectionProfilePropertyAspectAdapter.this.profileOpened(profile);
 				}
 			};
 		}
-		
-		
-		// ************ AspectAdapter impl *************************************
-		
+
+		void profileOpened(ConnectionProfile profile) {
+			if (profile.equals(this.subject)) {
+				this.valueChanged();
+			}
+		}
+
 		@Override
 		protected void engageSubject_() {
-			this.subject.addConnectionListener(this.connectionListener);
 			super.engageSubject_();
+			this.subject.addConnectionListener(this.connectionListener);
 		}
-		
+
 		@Override
 		protected void disengageSubject_() {
 			this.subject.removeConnectionListener(this.connectionListener);
 			super.disengageSubject_();
 		}
-		
-		
-		// ************ internal ***********************************************
-		
+
+	}
+
+	private static class DefaultDefaultCatalogModel
+		extends ConnectionProfilePropertyAspectAdapter<String>
+	{
+		DefaultDefaultCatalogModel(PropertyValueModel<ConnectionProfile> connectionProfileModel) {
+			super(connectionProfileModel);
+		}
+
 		@Override
 		protected String buildValue_() {
 			Database db = this.subject.getDatabase();
@@ -1209,13 +1229,13 @@ public class JpaProjectPropertiesPage
 		private PropertyValueModel<String> defaultDefaultCatalogModel;
 		
 		
-		private CombinedDefaultCatalogModel(
+		CombinedDefaultCatalogModel(
 				WritablePropertyValueModel<String> defaultCatalogModel,
 				PropertyValueModel<Boolean> overrideDefaultCatalogModel,
 				PropertyValueModel<String> defaultDefaultCatalogModel) {
 			super(
-				new CompositeListValueModel(
-					CollectionTools.list(
+				new CompositeListValueModel<ListValueModel<?>,Object>(
+					CollectionTools.<ListValueModel<?>>list(
 						new PropertyListValueModelAdapter<String>(defaultCatalogModel),
 						new PropertyListValueModelAdapter<Boolean>(overrideDefaultCatalogModel),
 						new PropertyListValueModelAdapter<String>(defaultDefaultCatalogModel)
@@ -1233,9 +1253,7 @@ public class JpaProjectPropertiesPage
 			if (this.overrideDefaultCatalogModel.getValue()) {
 				return this.defaultCatalogModel.getValue();
 			}
-			else {
-				return this.defaultDefaultCatalogModel.getValue();
-			}
+			return this.defaultDefaultCatalogModel.getValue();
 		}
 		
 		
@@ -1250,114 +1268,72 @@ public class JpaProjectPropertiesPage
 	}
 
 	
-	private static class CatalogChoicesModel
-		extends BaseCollectionAspectAdapter<ConnectionProfile, String>
+	private static class ConnectionProfileCollectionAspectAdapter<E>
+		extends BaseCollectionAspectAdapter<ConnectionProfile, E>
 	{
 		private ConnectionListener connectionListener;
-		
-		
-		private CatalogChoicesModel(PropertyValueModel<ConnectionProfile> subjectHolder) {
+
+		ConnectionProfileCollectionAspectAdapter(PropertyValueModel<ConnectionProfile> subjectHolder) {
 			super(subjectHolder);
-			this.connectionListener = buildConnectionListener();
+			this.connectionListener = this.buildConnectionListener();
 		}
-		
-		
-		// ************ initialization *****************************************
-		
+
+		// the connection opening is probably the only thing that will happen...
 		private ConnectionListener buildConnectionListener() {
 			return new ConnectionAdapter() {
 				@Override
 				public void opened(ConnectionProfile profile) {
-					if (profile.equals(CatalogChoicesModel.this.subject)) {
-						collectionChanged();
-					}
-				}
-				@Override
-				public void catalogChanged(ConnectionProfile profile, Catalog catalog) {
-					if (profile.equals(CatalogChoicesModel.this.subject)) {
-						collectionChanged();
-					}
+					ConnectionProfileCollectionAspectAdapter.this.profileOpened(profile);
 				}
 			};
 		}
-		
-		
-		// ************ AspectAdapter impl *************************************
-		
+
+		void profileOpened(ConnectionProfile profile) {
+			if (profile.equals(this.subject)) {
+				this.collectionChanged();
+			}
+		}
+
 		@Override
 		protected void engageSubject_() {
 			this.subject.addConnectionListener(this.connectionListener);
 		}
-		
+
 		@Override
 		protected void disengageSubject_() {
 			this.subject.removeConnectionListener(this.connectionListener);
 		}
-		
-		
-		// ************ internal ***********************************************
-		
+
+	}
+
+	private static class CatalogChoicesModel
+		extends ConnectionProfileCollectionAspectAdapter<String>
+	{
+		CatalogChoicesModel(PropertyValueModel<ConnectionProfile> subjectHolder) {
+			super(subjectHolder);
+		}
+
 		@Override
 		protected Iterator<String> iterator_() {
-			return (this.subject.getDatabase() == null) ? 
+			Database db = this.subject.getDatabase();
+			return ((db == null) || ( ! db.supportsCatalogs())) ? 
 				EmptyIterator.<String>instance() : 
-				this.subject.getDatabase().sortedCatalogIdentifiers();
+				db.sortedCatalogIdentifiers();
 		}
 	}
 
 	
 	// ************ Schema ************
 	private static class OverrideDefaultSchemaModel
-		extends BasePropertyAspectAdapter<JpaProject, Boolean>
+		extends OverrideDefaultModel
 	{
-		// the superclass "value" is the *cached* value
-		private Boolean actualValue;
-		
-		
-		private OverrideDefaultSchemaModel(PropertyValueModel<JpaProject> jpaProjectHolder) {
+		OverrideDefaultSchemaModel(PropertyValueModel<JpaProject> jpaProjectHolder) {
 			super(jpaProjectHolder);
 		}
-		
-		
-		// ************ WritablePropertyValueModel impl ************************
-		
+
 		@Override
-		public Boolean getValue() {
-			Boolean value = super.getValue();
-			return (value == null) ? Boolean.FALSE : value;
-		}
-		
-		@Override
-		public void setValue_(Boolean newValue) {
-			this.actualValue = newValue;
-			valueChanged();
-		}
-		
-		
-		// ************ AspectAdapter impl *************************************
-		
-		@Override
-		protected void engageSubject_() {
-			this.actualValue = this.buildActualValue_();
-			super.engageSubject_();
-		}
-		
-		@Override
-		protected void disengageSubject_() {
-			this.actualValue = null;
-			super.disengageSubject_();
-		}
-		
-		
-		// ************ internal ***********************************************
-		
-		@Override
-		protected Boolean buildValue_() {
-			return this.actualValue;
-		}
-		
-		protected Boolean buildActualValue_() {
-			return ! StringTools.stringIsEmpty(this.subject.getUserOverrideDefaultSchema());
+		public String getSubjectUserOverrideDefault() {
+			return this.subject.getUserOverrideDefaultSchema();
 		}
 	}
 	
@@ -1365,7 +1341,7 @@ public class JpaProjectPropertiesPage
 	private static class DefaultSchemaModel
 		extends PropertyAspectAdapter<JpaProject, String>
 	{
-		private DefaultSchemaModel(PropertyValueModel<JpaProject> jpaProjectModel) { 
+		DefaultSchemaModel(PropertyValueModel<JpaProject> jpaProjectModel) { 
 			super(jpaProjectModel, JpaProject.USER_OVERRIDE_DEFAULT_SCHEMA_PROPERTY);
 		}
 		
@@ -1388,64 +1364,76 @@ public class JpaProjectPropertiesPage
 	
 	
 	private static class DefaultDefaultSchemaModel
-		extends BasePropertyAspectAdapter<ConnectionProfile, String>
+		extends ConnectionProfilePropertyAspectAdapter<String>
 	{
-		private ConnectionListener connectionListener;
-		
-		
-		private DefaultDefaultSchemaModel(
+		private final PropertyValueModel<String> defaultCatalogModel;
+		private final PropertyChangeListener catalogListener;
+
+		DefaultDefaultSchemaModel(PropertyValueModel<String> defaultCatalogModel,
 				PropertyValueModel<ConnectionProfile> connectionProfileModel) {
 			super(connectionProfileModel);
-			this.connectionListener = buildConnectionListener();
+			this.defaultCatalogModel = defaultCatalogModel;
+			this.catalogListener = this.buildCatalogListener();
 		}
-		
-		
-		// ************ initialization *****************************************
-		
-		private ConnectionListener buildConnectionListener() {
-			return new ConnectionAdapter() {
-				@Override
-				public void opened(ConnectionProfile profile) {
-					if (profile.equals(DefaultDefaultSchemaModel.this.subject)) {
-						valueChanged();
-					}
-				}
-				@Override
-				public void schemaChanged(ConnectionProfile profile, Schema schema) {
-					if (profile.equals(DefaultDefaultSchemaModel.this.subject)) {
-						valueChanged();
-					}
+
+		private PropertyChangeListener buildCatalogListener() {
+			return new PropertyChangeListener() {
+				public void propertyChanged(PropertyChangeEvent event) {
+					DefaultDefaultSchemaModel.this.valueChanged();
 				}
 			};
 		}
-		
-		
-		// ************ AspectAdapter impl *************************************
-		
+
 		@Override
 		protected void engageSubject_() {
-			this.subject.addConnectionListener(this.connectionListener);
+			// call 'super' last?
+			this.defaultCatalogModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.catalogListener);
 			super.engageSubject_();
 		}
 		
 		@Override
 		protected void disengageSubject_() {
-			this.subject.removeConnectionListener(this.connectionListener);
 			super.disengageSubject_();
+			this.defaultCatalogModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.catalogListener);
 		}
-		
-		
-		// ************ internal ***********************************************
-		
+
 		@Override
 		protected String buildValue_() {
-			Database db = this.subject.getDatabase();
-			if (db == null) {
-				return null;
-			}
-			Schema schema = db.getDefaultSchema();
+			Schema schema = this.getDefaultSchema();
 			return (schema == null) ? null : schema.getIdentifier();
 		}
+
+		private Schema getDefaultSchema() {
+			SchemaContainer sc = this.getSchemaContainer();
+			return (sc == null) ? null : sc.getDefaultSchema();
+		}
+
+		private SchemaContainer getSchemaContainer() {
+			return this.databaseSupportsCatalogs() ? this.getCatalog() : this.getDatabase();
+		}
+
+		private boolean databaseSupportsCatalogs() {
+			Database db = this.getDatabase();
+			return (db != null) && db.supportsCatalogs();
+		}
+
+		private Catalog getCatalog() {
+			String name = this.defaultCatalogModel.getValue();
+			return (name == null) ? null : this.getCatalog(name);
+		}
+
+		/**
+		 * pre-condition: 'name' is not null
+		 */
+		private Catalog getCatalog(String name) {
+			Database db = this.getDatabase();
+			return (db == null) ? null : db.getCatalogForIdentifier(name);
+		}
+
+		private Database getDatabase() {
+			return this.subject.getDatabase();
+		}
+
 	}
 	
 	
@@ -1460,7 +1448,7 @@ public class JpaProjectPropertiesPage
 		private PropertyValueModel<String> defaultDefaultSchemaModel;
 		
 		
-		private CombinedDefaultSchemaModel(
+		CombinedDefaultSchemaModel(
 				WritablePropertyValueModel<String> defaultSchemaModel,
 				PropertyValueModel<Boolean> overrideDefaultSchemaModel,
 				PropertyValueModel<String> defaultDefaultSchemaModel) {
@@ -1484,9 +1472,7 @@ public class JpaProjectPropertiesPage
 			if (this.overrideDefaultSchemaModel.getValue()) {
 				return this.defaultSchemaModel.getValue();
 			}
-			else {
-				return this.defaultDefaultSchemaModel.getValue();
-			}
+			return this.defaultDefaultSchemaModel.getValue();
 		}
 		
 		
@@ -1502,58 +1488,71 @@ public class JpaProjectPropertiesPage
 
 
 	private static class SchemaChoicesModel
-		extends BaseCollectionAspectAdapter<ConnectionProfile, String>
+		extends ConnectionProfileCollectionAspectAdapter<String>
 	{
-		private ConnectionListener connectionListener;
-		
-		
-		private SchemaChoicesModel(PropertyValueModel<ConnectionProfile> subjectHolder) {
+		private final PropertyValueModel<String> defaultCatalogModel;
+		private final PropertyChangeListener catalogListener;
+
+		SchemaChoicesModel(PropertyValueModel<String> defaultCatalogModel,
+				PropertyValueModel<ConnectionProfile> subjectHolder) {
 			super(subjectHolder);
-			this.connectionListener = buildConnectionListener();
+			this.defaultCatalogModel = defaultCatalogModel;
+			this.catalogListener = this.buildCatalogListener();
 		}
-		
-		
-		// ************ initialization *****************************************
-		
-		private ConnectionListener buildConnectionListener() {
-			return new ConnectionAdapter() {
-				@Override
-				public void opened(ConnectionProfile profile) {
-					if (profile.equals(SchemaChoicesModel.this.subject)) {
-						collectionChanged();
-					}
-				}
-				@Override
-				public void schemaChanged(ConnectionProfile profile, Schema schema) {
-					if (profile.equals(SchemaChoicesModel.this.subject)) {
-						collectionChanged();
-					}
+
+		private PropertyChangeListener buildCatalogListener() {
+			return new PropertyChangeListener() {
+				public void propertyChanged(PropertyChangeEvent event) {
+					collectionChanged();
 				}
 			};
 		}
-		
-		
-		// ************ AspectAdapter impl *************************************
-		
+
 		@Override
 		protected void engageSubject_() {
-			this.subject.addConnectionListener(this.connectionListener);
+			// call 'super' last?
+			this.defaultCatalogModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.catalogListener);
+			super.engageSubject_();
 		}
-		
+
 		@Override
 		protected void disengageSubject_() {
-			this.subject.removeConnectionListener(this.connectionListener);
+			super.disengageSubject_();
+			this.defaultCatalogModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.catalogListener);
 		}
-		
-		
-		// ************ internal ***********************************************
-		
+
 		@Override
 		protected Iterator<String> iterator_() {
-			return (this.subject.getDatabase() == null) ? 
-				EmptyIterator.<String>instance() : 
-				this.subject.getDatabase().sortedSchemaIdentifiers();
+			SchemaContainer sc = this.getSchemaContainer();
+			return (sc == null) ? EmptyIterator.<String>instance() : sc.sortedSchemaIdentifiers();
 		}
+
+		private SchemaContainer getSchemaContainer() {
+			return this.databaseSupportsCatalogs() ? this.getCatalog() : this.getDatabase();
+		}
+
+		private boolean databaseSupportsCatalogs() {
+			Database db = this.getDatabase();
+			return (db != null) && db.supportsCatalogs();
+		}
+
+		private Catalog getCatalog() {
+			String name = this.defaultCatalogModel.getValue();
+			return (name == null) ? null : this.getCatalog(name);
+		}
+
+		/**
+		 * pre-condition: 'name' is not null
+		 */
+		private Catalog getCatalog(String name) {
+			Database db = this.getDatabase();
+			return (db == null) ? null : db.getCatalogForIdentifier(name);
+		}
+
+		private Database getDatabase() {
+			return this.subject.getDatabase();
+		}
+
 	}
 	
 	

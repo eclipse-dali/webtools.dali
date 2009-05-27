@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.facet;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -29,11 +28,9 @@ import org.eclipse.jpt.db.Database;
 import org.eclipse.jpt.db.DatabaseFinder;
 import org.eclipse.jpt.db.JptDbPlugin;
 import org.eclipse.jpt.db.Schema;
+import org.eclipse.jpt.db.SchemaContainer;
 import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.StringTools;
-import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
-import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.jst.common.project.facet.core.libprov.IPropertyChangeListener;
 import org.eclipse.jst.common.project.facet.core.libprov.LibraryInstallDelegate;
 import org.eclipse.osgi.util.NLS;
@@ -41,21 +38,23 @@ import org.eclipse.wst.common.componentcore.datamodel.FacetInstallDataModelProvi
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelPropertyDescriptor;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
-import org.eclipse.wst.common.frameworks.internal.plugin.WTPCommonMessages;
-import org.eclipse.wst.common.frameworks.internal.plugin.WTPCommonPlugin;
 import org.eclipse.wst.common.project.facet.core.IFacetedProjectWorkingCopy;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 import org.eclipse.wst.common.project.facet.core.runtime.IRuntime;
 
-public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
+public class JpaFacetDataModelProvider
+	extends FacetInstallDataModelProvider
 	implements JpaFacetDataModelProperties
 {
+	private LibraryInstallDelegate defaultLibraryProvider;
+
+	/** cache the connection profile - change it whenever the user selects a different name */
+	private ConnectionProfile connectionProfile;
+	
+	
 	private static final String EJB_FACET_ID = IModuleConstants.JST_EJB_MODULE;
 
-	private static final String RUNTIME_NONE = 
-			WTPCommonPlugin.getResourceString(WTPCommonMessages.RUNTIME_NONE, null);
-	
 	private static final IStatus PLATFORM_NOT_SPECIFIED_STATUS = 
 			buildErrorStatus(JptCoreMessages.VALIDATE_PLATFORM_NOT_SPECIFIED);
 	
@@ -63,29 +62,19 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 			buildInfoStatus(JptCoreMessages.VALIDATE_CONNECTION_NOT_CONNECTED);
 	
 	private static final IStatus USER_OVERRIDE_DEFAULT_CATALOG_NOT_SPECIFIED_STATUS = 
-		buildErrorStatus(JptCoreMessages.VALIDATE_DEFAULT_CATALOG_NOT_SPECIFIED);
+			buildErrorStatus(JptCoreMessages.VALIDATE_DEFAULT_CATALOG_NOT_SPECIFIED);
 	
 	private static final IStatus USER_OVERRIDE_DEFAULT_SCHEMA_NOT_SPECIFIED_STATUS = 
 			buildErrorStatus(JptCoreMessages.VALIDATE_DEFAULT_SCHEMA_NOT_SPECIFIED);
 	
-	private static final IStatus RUNTIME_NOT_SPECIFIED_STATUS = 
-			buildWarningStatus(JptCoreMessages.VALIDATE_RUNTIME_NOT_SPECIFIED);
-	
-	private static final IStatus RUNTIME_DOES_NOT_SUPPORT_EJB_30_STATUS = 
-			buildWarningStatus(JptCoreMessages.VALIDATE_RUNTIME_DOES_NOT_SUPPORT_EJB_30);
-	
-	
-	private LibraryInstallDelegate defaultLibraryProvider;
-	
-	
+
 	/**
 	 * required default constructor
 	 */
 	public JpaFacetDataModelProvider() {
 		super();
 	}
-	
-	
+
 	@Override
 	public Set<String> getPropertyNames() {
 		@SuppressWarnings("unchecked") Set<String> propertyNames = super.getPropertyNames();
@@ -105,24 +94,94 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 		propertyNames.add(CREATE_ORM_XML);
 		return propertyNames;
 	}
-	
-	@Override
-	public boolean isPropertyEnabled(String propertyName) {
-		if (propertyName.equals(USER_OVERRIDE_DEFAULT_CATALOG)) {
-			return getBooleanProperty(USER_WANTS_TO_OVERRIDE_DEFAULT_CATALOG);
-		}
-		if (propertyName.equals(USER_OVERRIDE_DEFAULT_SCHEMA)) {
-			return getBooleanProperty(USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA);
-		}
-		if (propertyName.equals(USER_WANTS_TO_ADD_DB_DRIVER_JARS_TO_CLASSPATH)) {
-			return getConnectionProfile() != null;
-		}
-		if (propertyName.equals(DB_DRIVER_NAME)) {
-			return getBooleanProperty(USER_WANTS_TO_ADD_DB_DRIVER_JARS_TO_CLASSPATH);
-		}
-		return super.isPropertyEnabled(propertyName);
+
+
+	// ********** properties **********
+
+	private String getPlatformId() {
+		return (String) this.getProperty(PLATFORM_ID);
 	}
 	
+	private String getConnectionName() {
+		return (String) this.getProperty(CONNECTION);
+	}
+
+	private boolean userWantsToAddDbDriverJarsToClasspath() {
+		return this.getBooleanProperty(USER_WANTS_TO_ADD_DB_DRIVER_JARS_TO_CLASSPATH);
+	}
+	
+	private String getDriverName() {
+		return (String) this.getProperty(DB_DRIVER_NAME);
+	}
+
+	private boolean userWantsToOverrideDefaultCatalog() {
+		return this.getBooleanProperty(USER_WANTS_TO_OVERRIDE_DEFAULT_CATALOG);
+	}
+	
+	private String getUserOverrideDefaultCatalog() {
+		return (String) this.getProperty(USER_OVERRIDE_DEFAULT_CATALOG);
+	}
+
+	private boolean userWantsToOverrideDefaultSchema() {
+		return this.getBooleanProperty(USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA);
+	}
+	
+	private String getUserOverrideDefaultSchema() {
+		return (String) this.getProperty(USER_OVERRIDE_DEFAULT_SCHEMA);
+	}
+
+	private boolean discoverAnnotatedClasses() {
+		return this.getBooleanProperty(DISCOVER_ANNOTATED_CLASSES);
+	}
+
+	private IFacetedProjectWorkingCopy getFacetedProjectWorkingCopy() {
+		return (IFacetedProjectWorkingCopy) this.getProperty(FACETED_PROJECT_WORKING_COPY);
+	}
+
+	private IProjectFacetVersion getProjectFacetVersion() {
+		return (IProjectFacetVersion) this.getProperty(FACET_VERSION);
+	}
+
+	private IRuntime getRuntime() {
+		return (IRuntime) this.getProperty(RUNTIME);
+	}
+
+	private LibraryInstallDelegate getLibraryInstallDelegate() {
+		return (LibraryInstallDelegate) this.getProperty(LIBRARY_PROVIDER_DELEGATE);
+	}
+
+
+	// ********** enabled **********
+
+	@Override
+	public boolean isPropertyEnabled(String propertyName) {
+		if (propertyName.equals(USER_WANTS_TO_ADD_DB_DRIVER_JARS_TO_CLASSPATH)) {
+			return (this.getConnectionProfile() != null);
+		}
+		if (propertyName.equals(DB_DRIVER_NAME)) {
+			return this.userWantsToAddDbDriverJarsToClasspath();
+		}
+
+		if (propertyName.equals(USER_WANTS_TO_OVERRIDE_DEFAULT_CATALOG)) {
+			return this.connectionIsActive() && this.databaseSupportsCatalogs();
+		}
+		if (propertyName.equals(USER_OVERRIDE_DEFAULT_CATALOG)) {
+			return this.userWantsToOverrideDefaultCatalog();
+		}
+
+		if (propertyName.equals(USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA)) {
+			return this.connectionIsActive();
+		}
+		if (propertyName.equals(USER_OVERRIDE_DEFAULT_SCHEMA)) {
+			return this.userWantsToOverrideDefaultSchema();
+		}
+
+		return super.isPropertyEnabled(propertyName);
+	}
+
+
+	// ********** defaults **********
+
 	@Override
 	public Object getDefaultProperty(String propertyName) {
 		if (propertyName.equals(RUNTIME)) {
@@ -135,37 +194,37 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 			return JptCorePlugin.getDefaultJpaPlatformId();
 		}
 		if (propertyName.equals(LIBRARY_PROVIDER_DELEGATE)) {
-			return getDefaultLibraryProvider();
+			return this.getDefaultLibraryProvider();
 		}
 		if (propertyName.equals(CONNECTION)) {
 			return null;
 		}
 		if (propertyName.equals(CONNECTION_ACTIVE)) {
-			return Boolean.valueOf(connectionIsActive());
+			return Boolean.valueOf(this.connectionIsActive());
 		}
 		if (propertyName.equals(USER_WANTS_TO_ADD_DB_DRIVER_JARS_TO_CLASSPATH)) {
 			return Boolean.FALSE;
 		}
 		if (propertyName.equals(DB_DRIVER_NAME)) {
-			return getDefaultDriverName();
+			return this.getDefaultDriverName();
 		}
 		if (propertyName.equals(USER_WANTS_TO_OVERRIDE_DEFAULT_CATALOG)) {
 			return Boolean.FALSE;
 		}
 		if (propertyName.equals(USER_OVERRIDE_DEFAULT_CATALOG)) {
-			return getDefaultCatalogName();
+			return this.getDefaultCatalogName();
 		}
 		if (propertyName.equals(USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA)) {
 			return Boolean.FALSE;
 		}
 		if (propertyName.equals(USER_OVERRIDE_DEFAULT_SCHEMA)) {
-			return getDefaultSchemaName();
+			return this.getDefaultSchemaName();
 		}
 		if (propertyName.equals(DISCOVER_ANNOTATED_CLASSES)) {
-			return Boolean.valueOf(this.runtimeSupportsEjb30(this.runtime()));
+			return Boolean.valueOf(this.runtimeSupportsEjb30());
 		}
 		if (propertyName.equals(LIST_ANNOTATED_CLASSES)) {
-			return Boolean.valueOf( ! getBooleanProperty(DISCOVER_ANNOTATED_CLASSES));
+			return Boolean.valueOf( ! this.discoverAnnotatedClasses());
 		}
 		if (propertyName.equals(CREATE_ORM_XML)) {
 			return Boolean.TRUE;
@@ -173,63 +232,84 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 		
 		return super.getDefaultProperty(propertyName);
 	}
-	
-	private String getDefaultDriverName() {
-		ConnectionProfile cp = this.getConnectionProfile();
-		if (cp == null) {
-			return null;
-		}
-		return cp.getDriverName();
-	}
 
-	private String getDefaultCatalogName() {
-		ConnectionProfile cp = this.getConnectionProfile();
-		if (cp == null) {
-			return null;
-		}
-		Database db = cp.getDatabase();
-		if (db == null) {
-			return null;
-		}
-		Catalog catalog = db.getDefaultCatalog();
-		return (catalog == null) ? null : catalog.getIdentifier();
-	}
-
-	private String getDefaultSchemaName() {
-		ConnectionProfile cp = this.getConnectionProfile();
-		if (cp == null) {
-			return null;
-		}
-		Database db = cp.getDatabase();
-		if (db == null) {
-			return null;
-		}
-		Schema schema = db.getDefaultSchema();
-		return (schema == null) ? null : schema.getIdentifier();
-	}
-	
 	private LibraryInstallDelegate getDefaultLibraryProvider() {
 		// delegate itself changes, not the instance of delegate
-		if (defaultLibraryProvider == null) {
-			IFacetedProjectWorkingCopy fpjwc = (IFacetedProjectWorkingCopy) getProperty(FACETED_PROJECT_WORKING_COPY);
-			IProjectFacetVersion fv = (IProjectFacetVersion) getProperty(FACET_VERSION);
-			if (fpjwc != null && fv != null ) {
-				Map<String, Object> enablementVariables = new HashMap<String, Object>();
-				enablementVariables.put(
-					JpaLibraryProviderConstants.EXPR_VAR_JPA_PLATFORM, 
-					getPlatformId());	
-				defaultLibraryProvider = new LibraryInstallDelegate(fpjwc, fv, enablementVariables);
-				defaultLibraryProvider.addListener( 
-					new IPropertyChangeListener() {
-						public void propertyChanged(final String property, final Object oldValue, final Object newValue ) {
-							JpaFacetDataModelProvider.this.model.notifyPropertyChange(LIBRARY_PROVIDER_DELEGATE, IDataModel.VALUE_CHG);
-						}
-					});
-			}
+		if (this.defaultLibraryProvider == null) {
+			this.defaultLibraryProvider = this.buildDefaultLibraryProvider();
 		}
 		return defaultLibraryProvider;
 	}
 	
+	private LibraryInstallDelegate buildDefaultLibraryProvider() {
+		IFacetedProjectWorkingCopy fpjwc = this.getFacetedProjectWorkingCopy();
+		if (fpjwc == null) {
+			return null;
+		}
+		IProjectFacetVersion pfv = this.getProjectFacetVersion();
+		if (pfv == null) {
+			return null;
+		}
+		LibraryInstallDelegate lp = new LibraryInstallDelegate(fpjwc, pfv, this.buildEnablementVariables());
+		lp.addListener(this.buildLibraryProviderListener());
+		return lp;
+	}
+
+	private Map<String, Object> buildEnablementVariables() {
+		Map<String, Object> enablementVariables = new HashMap<String, Object>();
+		enablementVariables.put(JpaLibraryProviderConstants.EXPR_VAR_JPA_PLATFORM, this.getPlatformId());
+		return enablementVariables;
+	}
+
+	private IPropertyChangeListener buildLibraryProviderListener() {
+		return new IPropertyChangeListener() {
+				public void propertyChanged(String property, Object oldValue, Object newValue ) {
+					JpaFacetDataModelProvider.this.getDataModel().notifyPropertyChange(LIBRARY_PROVIDER_DELEGATE, IDataModel.VALUE_CHG);
+				}
+			};
+	}
+
+	private String getDefaultDriverName() {
+		ConnectionProfile cp = this.getConnectionProfile();
+		return (cp == null) ? null : cp.getDriverName();
+	}
+
+	private String getDefaultCatalogName() {
+		Catalog catalog = this.getDefaultCatalog();
+		return (catalog == null) ? null : catalog.getIdentifier();
+	}
+
+	private Catalog getDefaultCatalog() {
+		Database db = this.getDatabase();
+		return (db == null) ? null : db.getDefaultCatalog();
+	}
+
+	private String getDefaultSchemaName() {
+		Schema schema = this.getDefaultSchema();
+		return (schema == null) ? null : schema.getIdentifier();
+	}
+	
+	private Schema getDefaultSchema() {
+		SchemaContainer sc = this.getSchemaContainer();
+		return (sc == null) ? null : sc.getDefaultSchema();
+	}
+
+	private boolean runtimeSupportsEjb30() {
+		IRuntime runtime = this.getRuntime();
+		return (runtime != null) && runtime.supports(this.getEJB30());
+	}
+
+	private IProjectFacetVersion getEJB30() {
+		return ProjectFacetsManager.getProjectFacet(EJB_FACET_ID).getVersion("3.0"); //$NON-NLS-1$
+	}
+
+
+	// ********** synchronize data model **********
+
+	/**
+	 * The specified property's value has changed to the specified value.
+	 * Return whether to fire a VALUE_CHG DataModelEvent.
+	 */
 	@Override
 	public boolean propertySet(String propertyName, Object propertyValue) {
 		boolean ok = super.propertySet(propertyName, propertyValue);
@@ -237,11 +317,11 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 		if (propertyName.equals(FACETED_PROJECT_WORKING_COPY)) {
 			//no-op
 		}
-		if( propertyName.equals(FACET_VERSION)){
+		else if (propertyName.equals(FACET_VERSION)) {
 			this.model.notifyPropertyChange(LIBRARY_PROVIDER_DELEGATE, IDataModel.DEFAULT_CHG);
 		}
-		if (propertyName.equals(RUNTIME)) {
-			LibraryInstallDelegate lid = getLibraryInstallDelegate();
+		else if (propertyName.equals(RUNTIME)) {
+			LibraryInstallDelegate lid = this.getLibraryInstallDelegate();
 			if (lid != null) {
 				// may be null while model is being built up
 				// ... or in tests
@@ -250,321 +330,371 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 			this.model.notifyPropertyChange(DISCOVER_ANNOTATED_CLASSES, IDataModel.DEFAULT_CHG);
 			this.model.notifyPropertyChange(LIST_ANNOTATED_CLASSES, IDataModel.DEFAULT_CHG);
 		}
-		if (propertyName.equals(PLATFORM_ID)) {
-			LibraryInstallDelegate lid = getLibraryInstallDelegate();
+		else if (propertyName.equals(PLATFORM_ID)) {
+			LibraryInstallDelegate lid = this.getLibraryInstallDelegate();
 			if (lid != null) {
 				// may be null while model is being built up
 				// ... or in tests
-				lid.setEnablementContextVariable(
-					JpaLibraryProviderConstants.EXPR_VAR_JPA_PLATFORM,
-					(String) propertyValue);
+				lid.setEnablementContextVariable(JpaLibraryProviderConstants.EXPR_VAR_JPA_PLATFORM, propertyValue);
 			}
 		}
-		if (propertyName.equals(CONNECTION)) {
-			this.model.notifyPropertyChange(CONNECTION, IDataModel.VALID_VALUES_CHG);
-			this.model.setBooleanProperty(CONNECTION_ACTIVE, connectionIsActive());
+		else if (propertyName.equals(CONNECTION)) {
+			this.setBooleanProperty(CONNECTION_ACTIVE, this.connectionIsActive());
+
+			// db driver
+			if (propertyValue == null) {  // connection set to '<None>'
+				this.setBooleanProperty(USER_WANTS_TO_ADD_DB_DRIVER_JARS_TO_CLASSPATH, false);
+			}
+			this.model.notifyPropertyChange(USER_WANTS_TO_ADD_DB_DRIVER_JARS_TO_CLASSPATH, IDataModel.ENABLE_CHG);
 			this.model.notifyPropertyChange(DB_DRIVER_NAME, IDataModel.DEFAULT_CHG);
 			this.model.notifyPropertyChange(DB_DRIVER_NAME, IDataModel.VALID_VALUES_CHG);
+
+			// catalog
+			if ((propertyValue != null) && this.databaseSupportsCatalogs()) {  // connection set to something that supports catalogs
+				this.setProperty(USER_OVERRIDE_DEFAULT_CATALOG, this.getDefaultCatalogName());
+			} else {  // connection either '<None>' or non-catalog database
+				this.setBooleanProperty(USER_WANTS_TO_OVERRIDE_DEFAULT_CATALOG, false);
+			}
+			this.model.notifyPropertyChange(USER_WANTS_TO_OVERRIDE_DEFAULT_CATALOG, IDataModel.ENABLE_CHG);
 			this.model.notifyPropertyChange(USER_OVERRIDE_DEFAULT_CATALOG, IDataModel.DEFAULT_CHG);
 			this.model.notifyPropertyChange(USER_OVERRIDE_DEFAULT_CATALOG, IDataModel.VALID_VALUES_CHG);
+
+			// schema
+			if (propertyValue == null) {  // connection set to '<None>'
+				this.setBooleanProperty(USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA, false);
+			} else {
+				this.setProperty(USER_OVERRIDE_DEFAULT_SCHEMA, this.getDefaultSchemaName());
+			}
+			this.model.notifyPropertyChange(USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA, IDataModel.ENABLE_CHG);
 			this.model.notifyPropertyChange(USER_OVERRIDE_DEFAULT_SCHEMA, IDataModel.DEFAULT_CHG);
 			this.model.notifyPropertyChange(USER_OVERRIDE_DEFAULT_SCHEMA, IDataModel.VALID_VALUES_CHG);
 		}
-		if (propertyName.equals(CONNECTION_ACTIVE)) {
+		else if (propertyName.equals(CONNECTION_ACTIVE)) {
+			// catalog
+			if (this.propertyValueIsFalse(propertyValue)) {  // connection is inactive
+				this.setBooleanProperty(USER_WANTS_TO_OVERRIDE_DEFAULT_CATALOG, false);
+			}
+			this.model.notifyPropertyChange(USER_WANTS_TO_OVERRIDE_DEFAULT_CATALOG, IDataModel.ENABLE_CHG);
 			this.model.notifyPropertyChange(USER_OVERRIDE_DEFAULT_CATALOG, IDataModel.DEFAULT_CHG);
 			this.model.notifyPropertyChange(USER_OVERRIDE_DEFAULT_CATALOG, IDataModel.VALID_VALUES_CHG);
+
+			// schema
+			if (this.propertyValueIsFalse(propertyValue)) {  // connection is inactive
+				this.setBooleanProperty(USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA, false);
+			}
+			this.model.notifyPropertyChange(USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA, IDataModel.ENABLE_CHG);
 			this.model.notifyPropertyChange(USER_OVERRIDE_DEFAULT_SCHEMA, IDataModel.DEFAULT_CHG);
 			this.model.notifyPropertyChange(USER_OVERRIDE_DEFAULT_SCHEMA, IDataModel.VALID_VALUES_CHG);
-			this.model.notifyPropertyChange(USER_WANTS_TO_ADD_DB_DRIVER_JARS_TO_CLASSPATH, IDataModel.ENABLE_CHG);
-			this.model.notifyPropertyChange(DB_DRIVER_NAME, IDataModel.ENABLE_CHG);
 		}
-		if (propertyName.equals(USER_WANTS_TO_ADD_DB_DRIVER_JARS_TO_CLASSPATH)) {
+		else if (propertyName.equals(USER_WANTS_TO_ADD_DB_DRIVER_JARS_TO_CLASSPATH)) {
 			this.model.notifyPropertyChange(DB_DRIVER_NAME, IDataModel.ENABLE_CHG);
-			if (! ((Boolean) propertyValue).booleanValue()) {
-				this.model.setProperty(DB_DRIVER_NAME, null);
+			if (this.propertyValueIsFalse(propertyValue)) {
+				this.setProperty(DB_DRIVER_NAME, null);
 			}
 		}
-		if (propertyName.equals(USER_WANTS_TO_OVERRIDE_DEFAULT_CATALOG)) {
+		else if (propertyName.equals(USER_WANTS_TO_OVERRIDE_DEFAULT_CATALOG)) {
 			this.model.notifyPropertyChange(USER_OVERRIDE_DEFAULT_CATALOG, IDataModel.ENABLE_CHG);
-			if (! ((Boolean) propertyValue).booleanValue()) {
-				this.model.setProperty(USER_OVERRIDE_DEFAULT_CATALOG, null);
+			if (this.propertyValueIsFalse(propertyValue)) {
+				this.setProperty(USER_OVERRIDE_DEFAULT_CATALOG, null);
 			}
 		}
-		if (propertyName.equals(USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA)) {
+		else if (propertyName.equals(USER_OVERRIDE_DEFAULT_CATALOG)) {
+			this.setProperty(USER_OVERRIDE_DEFAULT_SCHEMA, this.getDefaultSchemaName());
+		}
+		else if (propertyName.equals(USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA)) {
 			this.model.notifyPropertyChange(USER_OVERRIDE_DEFAULT_SCHEMA, IDataModel.ENABLE_CHG);
-			if (! ((Boolean) propertyValue).booleanValue()) {
-				this.model.setProperty(USER_OVERRIDE_DEFAULT_SCHEMA, null);
+			if (this.propertyValueIsFalse(propertyValue)) {
+				this.setProperty(USER_OVERRIDE_DEFAULT_SCHEMA, null);
 			}
 		}
-//		if (propertyName.equals(USE_SERVER_JPA_IMPLEMENTATION)) {
-//			this.model.setBooleanProperty(USE_USER_JPA_LIBRARY, ! ((Boolean) propertyValue).booleanValue());
-//		}
-//		if (propertyName.equals(USE_USER_JPA_LIBRARY)) {
-//			this.model.setBooleanProperty(USE_SERVER_JPA_IMPLEMENTATION, ! ((Boolean) propertyValue).booleanValue());
-//			this.model.notifyPropertyChange(JPA_LIBRARY, IDataModel.ENABLE_CHG);
-//		}
-		if (propertyName.equals(DISCOVER_ANNOTATED_CLASSES)) {
-			this.model.setBooleanProperty(LIST_ANNOTATED_CLASSES, ! ((Boolean) propertyValue).booleanValue());
+		else if (propertyName.equals(DISCOVER_ANNOTATED_CLASSES)) {
+			this.setBooleanProperty(LIST_ANNOTATED_CLASSES, this.propertyValueIsFalse(propertyValue));
 		}
-		if (propertyName.equals(LIST_ANNOTATED_CLASSES)) {
-			this.model.setBooleanProperty(DISCOVER_ANNOTATED_CLASSES, ! ((Boolean) propertyValue).booleanValue());
+		else if (propertyName.equals(LIST_ANNOTATED_CLASSES)) {
+			this.setBooleanProperty(DISCOVER_ANNOTATED_CLASSES, this.propertyValueIsFalse(propertyValue));
 		}
 		return ok;
 	}
 
-	private static final DataModelPropertyDescriptor[] EMPTY_DMPD_ARRAY = new DataModelPropertyDescriptor[0];
+	private boolean propertyValueIsFalse(Object propertyValue) {
+		return ! this.propertyValueIsTrue(propertyValue);
+	}
+
+	private boolean propertyValueIsTrue(Object propertyValue) {
+		return ((Boolean) propertyValue).booleanValue();
+	}
+
+
+	// ********** property descriptors **********
 
 	@Override
 	public DataModelPropertyDescriptor[] getValidPropertyDescriptors(String propertyName) {
 		if (propertyName.equals(PLATFORM_ID)) {
-			return CollectionTools.sort(
-				CollectionTools.array(
-					new TransformationIterator<String, DataModelPropertyDescriptor>(
-						JpaPlatformRegistry.instance().jpaPlatformIds()) {
-							@Override
-							protected DataModelPropertyDescriptor transform(String platformId) {
-								return platformIdPropertyDescriptor(platformId);
-							}
-						},
-						EMPTY_DMPD_ARRAY),
-				new Comparator<DataModelPropertyDescriptor>() {
-					public int compare(DataModelPropertyDescriptor o1, DataModelPropertyDescriptor o2) {
-						return (o1.getPropertyDescription().compareTo(o2.getPropertyDescription()));
-					};
-				});
+			return this.buildValidPlatformDescriptors();
 		}
+
 		if (propertyName.equals(CONNECTION)) {
-			return CollectionTools.array(
-				new TransformationIterator<String, DataModelPropertyDescriptor>(
-						new CompositeIterator<String>(null, connectionNames())) {
-					@Override
-					protected DataModelPropertyDescriptor transform(String next) {
-						return connectionPropertyDescriptor(next);
-					}
-				},
-				EMPTY_DMPD_ARRAY);
+			return this.buildValidConnectionDescriptors();
 		}
+
 		if (propertyName.equals(DB_DRIVER_NAME)) {
-			return CollectionTools.array(
-				new TransformationIterator<String, DataModelPropertyDescriptor>(driverNames()) {
-					@Override
-					protected DataModelPropertyDescriptor transform(String next) {
-						return new DataModelPropertyDescriptor(next);
-					}
-				},
-				EMPTY_DMPD_ARRAY);
+			return this.buildValidDriverDescriptors();
 		}
+
 		if (propertyName.equals(USER_OVERRIDE_DEFAULT_CATALOG)) {
-			return CollectionTools.array(
-				new TransformationIterator<String, DataModelPropertyDescriptor>(catalogNames()) {
-					@Override
-					protected DataModelPropertyDescriptor transform(String next) {
-						return new DataModelPropertyDescriptor(next);
-					}
-				},
-				EMPTY_DMPD_ARRAY);
+			return this.buildValidCatalogDescriptors();
 		}
+
 		if (propertyName.equals(USER_OVERRIDE_DEFAULT_SCHEMA)) {
-			return CollectionTools.array(
-				new TransformationIterator<String, DataModelPropertyDescriptor>(schemaNames()) {
-					@Override
-					protected DataModelPropertyDescriptor transform(String next) {
-						return new DataModelPropertyDescriptor(next);
-					}
-				},
-				EMPTY_DMPD_ARRAY);
+			return this.buildValidSchemaDescriptors();
 		}
 
 		return super.getValidPropertyDescriptors(propertyName);
 	}
-	
+
+	private DataModelPropertyDescriptor[] buildValidPlatformDescriptors() {
+		List<String> platformIDs = CollectionTools.list(JpaPlatformRegistry.instance().jpaPlatformIds());
+		DataModelPropertyDescriptor[] descriptors = new DataModelPropertyDescriptor[platformIDs.size()];
+		for (int i = 0; i < descriptors.length; i++) {
+			descriptors[i] = this.buildPlatformIdDescriptor(platformIDs.get(i));
+		}
+		return CollectionTools.sort(descriptors, this.buildDescriptorComparator());
+	}
+
+	/**
+	 * sort the descriptors by 'description' (as opposed to 'value')
+	 */
+	private Comparator<DataModelPropertyDescriptor> buildDescriptorComparator() {
+		return new Comparator<DataModelPropertyDescriptor>() {
+				public int compare(DataModelPropertyDescriptor o1, DataModelPropertyDescriptor o2) {
+					return (o1.getPropertyDescription().compareTo(o2.getPropertyDescription()));
+				}
+			};
+	}
+
+	private DataModelPropertyDescriptor[] buildValidConnectionDescriptors() {
+		List<String> connectionNames = this.buildValidConnectionNames();
+		DataModelPropertyDescriptor[] descriptors = new DataModelPropertyDescriptor[connectionNames.size()];
+		for (int i = 0; i < descriptors.length; i++) {
+			descriptors[i] = this.buildConnectionDescriptor(connectionNames.get(i));
+		}
+		return descriptors;
+	}
+
+	/**
+	 * put a null entry at the top of the list (for <none>)
+	 */
+	private List<String> buildValidConnectionNames() {
+		List<String> connectionNames = CollectionTools.sort(CollectionTools.list(this.connectionProfileNames()));
+		connectionNames.add(0, null);
+		return connectionNames;
+	}
+
+	private DataModelPropertyDescriptor[] buildValidDriverDescriptors() {
+		return new DataModelPropertyDescriptor[] { new DataModelPropertyDescriptor(this.getDriverName()) };
+	}
+
+	private DataModelPropertyDescriptor[] buildValidCatalogDescriptors() {
+		Database db = this.getDatabase();
+		return (db == null) ? EMPTY_DMPD_ARRAY : this.buildDescriptors(this.buildValidCatalogNames(db));
+	}
+
+	/**
+	 * pre-condition: 'db' is not null
+	 */
+	private List<String> buildValidCatalogNames(Database db) {
+		return this.buildValidStrings(db.sortedCatalogIdentifiers(), this.getDefaultCatalogName());
+	}
+
+	private DataModelPropertyDescriptor[] buildValidSchemaDescriptors() {
+		Database db = this.getDatabase();
+		return (db == null) ? EMPTY_DMPD_ARRAY : this.buildDescriptors(this.buildValidSchemaNames());
+	}
+
+	private List<String> buildValidSchemaNames() {
+		return this.buildValidStrings(this.schemaNames(), this.getDefaultSchemaName());
+	}
+
+	private Iterator<String> schemaNames() {
+		SchemaContainer sc = this.getSchemaContainer();
+		return (sc == null) ? EmptyIterator.<String>instance() : sc.sortedSchemaIdentifiers();
+	}
+
+	/**
+	 * put an entry for the default at the top of the list
+	 */
+	private List<String> buildValidStrings(Iterator<String> stream, String defaultString) {
+		List<String> strings = CollectionTools.list(stream);
+		if ((defaultString != null) && ! strings.contains(defaultString)) {
+			strings.add(0, defaultString);
+		}
+		return strings;
+	}
+
+	private DataModelPropertyDescriptor[] buildDescriptors(List<String> strings) {
+		DataModelPropertyDescriptor[] descriptors = new DataModelPropertyDescriptor[strings.size()];
+		for (int i = 0; i < descriptors.length; i++) {
+			descriptors[i] = new DataModelPropertyDescriptor(strings.get(i));
+		}
+		return descriptors;
+	}
+
+	private static final DataModelPropertyDescriptor[] EMPTY_DMPD_ARRAY = new DataModelPropertyDescriptor[0];
+
+	/**
+	 * platform and connection have 'description's (in addition to 'value's)
+	 */
 	@Override
 	public DataModelPropertyDescriptor getPropertyDescriptor(String propertyName) {
 		if (propertyName.equals(PLATFORM_ID)) {
-			return platformIdPropertyDescriptor(getStringProperty(PLATFORM_ID));
+			return this.buildPlatformIdDescriptor(this.getPlatformId());
 		}
 		if (propertyName.equals(CONNECTION)) {
-			return connectionPropertyDescriptor(getStringProperty(CONNECTION));
+			return this.buildConnectionDescriptor(this.getConnectionName());
 		}
 		return super.getPropertyDescriptor(propertyName);
 	}
-	
-	DataModelPropertyDescriptor platformIdPropertyDescriptor(String platformId) {
-		return new DataModelPropertyDescriptor(
-			platformId, JpaPlatformRegistry.instance().getJpaPlatformLabel(platformId));
-	}
-	
-	DataModelPropertyDescriptor connectionPropertyDescriptor(String connection) {
-		return StringTools.stringIsEmpty(connection) ?
-					new DataModelPropertyDescriptor(null, JptCoreMessages.NONE)
-				:
-					new DataModelPropertyDescriptor(connection);
+
+	DataModelPropertyDescriptor buildPlatformIdDescriptor(String platformId) {
+		return new DataModelPropertyDescriptor(platformId, this.getPlatformLabel(platformId));
 	}
 
-	@Override
-	public IStatus validate(String name) {
-		if (name.equals(PLATFORM_ID)) {
-			return this.validatePlatformId(this.getStringProperty(name));
-		}
-		if (name.equals(LIBRARY_PROVIDER_DELEGATE)) {
-			LibraryInstallDelegate delegate = (LibraryInstallDelegate) getProperty(LIBRARY_PROVIDER_DELEGATE);
-		    return delegate.validate();
-		}
-		if (name.equals(CONNECTION)) {
-			return this.validateConnectionName(this.getStringProperty(name));
-		}
-		if (name.equals(USER_WANTS_TO_ADD_DB_DRIVER_JARS_TO_CLASSPATH)
-				|| name.equals(DB_DRIVER_NAME)) {
-			return this.validateDbDriverName();
-		}
-		if (name.equals(USER_WANTS_TO_OVERRIDE_DEFAULT_CATALOG)
-			|| name.equals(USER_OVERRIDE_DEFAULT_CATALOG)) {
-			return this.validateUserOverrideDefaultCatalog();
-		}
-		if (name.equals(USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA)
-				|| name.equals(USER_OVERRIDE_DEFAULT_SCHEMA)) {
-			return this.validateUserOverrideDefaultSchema();
-		}
-		if (name.equals(DISCOVER_ANNOTATED_CLASSES)) {
-			return this.validatePersistentClassManagement(this.getBooleanProperty(name));
-		}
-		
-		return super.validate(name);
+	private String getPlatformLabel(String platformId) {
+		return JpaPlatformRegistry.instance().getJpaPlatformLabel(platformId);
 	}
 
-	private IRuntime runtime() {
-		return (IRuntime) this.getProperty(RUNTIME);
+	private DataModelPropertyDescriptor buildConnectionDescriptor(String connectionName) {
+		String description = (connectionName == null) ? JptCoreMessages.NONE : null;
+		return new DataModelPropertyDescriptor(connectionName, description);
 	}
 
-	private boolean runtimeSupportsEjb30(IRuntime runtime) {
-		IProjectFacetVersion ejb30 = ProjectFacetsManager.getProjectFacet(EJB_FACET_ID).getVersion("3.0"); //$NON-NLS-1$
-		return (runtime == null) ? false : runtime.supports(ejb30);
-	}
-	
-	private String getPlatformId() {
-		return this.getStringProperty(PLATFORM_ID);
-	}
-	
-	private LibraryInstallDelegate getLibraryInstallDelegate() {
-		return (LibraryInstallDelegate) getProperty(LIBRARY_PROVIDER_DELEGATE);
+
+	// ********** database **********
+
+	private SchemaContainer getSchemaContainer() {
+		return this.databaseSupportsCatalogs() ? this.getCatalog() : this.getDatabase();
 	}
 
-	private String getConnectionName() {
-		return this.getStringProperty(CONNECTION);
+	private Catalog getCatalog() {
+		String name = this.getUserOverrideDefaultCatalog();
+		return (name == null) ? null : this.getCatalog(name);
+	}
+
+	/**
+	 * pre-condition: 'name' is not null
+	 */
+	private Catalog getCatalog(String name) {
+		Database db = this.getDatabase();
+		return (db == null) ? null : db.getCatalogForIdentifier(name);
+	}
+
+	private boolean databaseSupportsCatalogs() {
+		Database db = this.getDatabase();
+		return (db != null) && db.supportsCatalogs();
 	}
 	
+	private Database getDatabase() {
+		ConnectionProfile cp = this.getConnectionProfile();
+		return (cp == null) ? null : cp.getDatabase();
+	}
+
+	private boolean connectionIsActive() {
+		ConnectionProfile cp = this.getConnectionProfile();
+		return (cp != null) && cp.isActive();
+	}
+
 	private ConnectionProfile getConnectionProfile() {
-		return this.buildConnectionProfile(this.getConnectionName());
+		String name = this.getConnectionName();
+		return (name == null) ? null : this.getConnectionProfile(name);
 	}
 
-	private ConnectionProfileFactory getConnectionProfileFactory() {
-		// we don't have a JPA project yet, so go to the db plug-in directly to get the factory
-		return JptDbPlugin.instance().getConnectionProfileFactory();
+	/**
+	 * pre-condition: 'name' is not null
+	 */
+	private ConnectionProfile getConnectionProfile(String name) {
+		if (this.cachedConnectionProfileIsStale(name)) {
+			this.connectionProfile = this.buildConnectionProfile(name);
+		}
+		return this.connectionProfile;
+	}
+
+	private boolean cachedConnectionProfileIsStale(String name) {
+		return (this.connectionProfile == null) || ! this.connectionProfile.getName().equals(name);
 	}
 
 	private ConnectionProfile buildConnectionProfile(String name) {
 		return this.getConnectionProfileFactory().buildConnectionProfile(name, DatabaseFinder.Default.instance());
 	}
 
-	private boolean connectionIsActive() {
-		return this.connectionIsActive(this.getConnectionName());
-	}
-
-	private boolean connectionIsActive(String connectionName) {
-		ConnectionProfile cp = this.buildConnectionProfile(connectionName);
-		return (cp != null) && cp.isActive();
+	private Iterator<String> connectionProfileNames() {
+		return this.getConnectionProfileFactory().connectionProfileNames();
 	}
 	
-	private Iterator<String> connectionNames() {
-		String setValue = getStringProperty(CONNECTION);
-		
-		List<String> connectionNames = CollectionTools.sort(CollectionTools.list(
-			this.getConnectionProfileFactory().connectionProfileNames()));
-		
-		if (! StringTools.stringIsEmpty(setValue) && ! connectionNames.contains(setValue)) {
-			return new CompositeIterator<String>(setValue, connectionNames.iterator());
-		}
-		return connectionNames.iterator();
-	}
-	
-	private List<String> buildSortedCatalogNames() {
-		ConnectionProfile cp = this.getConnectionProfile();
-		if (cp == null) {
-			return Collections.emptyList();
-		}
-		Database db = cp.getDatabase();
-		if (db == null) {
-			return Collections.emptyList();
-		}
-		return CollectionTools.list(db.sortedCatalogIdentifiers());
-	}
-	
-	private Iterator<String> catalogNames() {
-		String setValue = getStringProperty(USER_OVERRIDE_DEFAULT_CATALOG);
-		List<String> catalogNames = this.buildSortedCatalogNames();
-		
-		if (StringTools.stringIsEmpty(setValue) || catalogNames.contains(setValue)) {
-			return catalogNames.iterator();
-		}
-		return new CompositeIterator<String>(setValue, catalogNames.iterator());
-	}
-	
-	private List<String> buildSortedSchemaNames() {
-		ConnectionProfile cp = this.getConnectionProfile();
-		if (cp == null) {
-			return Collections.emptyList();
-		}
-		Database db = cp.getDatabase();
-		if (db == null) {
-			return Collections.emptyList();
-		}
-		return CollectionTools.list(db.sortedSchemaIdentifiers());  // use identifiers? names seem OK since combo-box is read-only?
-	}
-
-	private Iterator<String> schemaNames() {
-		String setValue = getStringProperty(USER_OVERRIDE_DEFAULT_SCHEMA);
-		List<String> schemaNames = this.buildSortedSchemaNames();
-		
-		if (StringTools.stringIsEmpty(setValue) || schemaNames.contains(setValue)) {
-			return schemaNames.iterator();
-		}
-		return new CompositeIterator<String>(setValue, schemaNames.iterator());
-	}
-	
-	private Iterator<String> driverNames() {
-		String setValue = getStringProperty(DB_DRIVER_NAME);
-		
-		return new CompositeIterator<String>(setValue, EmptyIterator.<String> instance());
+	private ConnectionProfileFactory getConnectionProfileFactory() {
+		// we don't have a JPA project yet, so go to the db plug-in directly to get the factory
+		return JptDbPlugin.instance().getConnectionProfileFactory();
 	}
 
 
 	// ********** validation **********
 
-	private IStatus validatePlatformId(String platformId) {
-		return StringTools.stringIsEmpty(platformId) ?
-				PLATFORM_NOT_SPECIFIED_STATUS
-			:
-				OK_STATUS;
+	@Override
+	public IStatus validate(String propertyName) {
+		if (propertyName.equals(PLATFORM_ID)) {
+			return this.validatePlatformId();
+		}
+		if (propertyName.equals(LIBRARY_PROVIDER_DELEGATE)) {
+		    return this.getLibraryInstallDelegate().validate();
+		}
+		if (propertyName.equals(CONNECTION)) {
+			return this.validateConnection();
+		}
+		if (propertyName.equals(USER_WANTS_TO_ADD_DB_DRIVER_JARS_TO_CLASSPATH)
+				|| propertyName.equals(DB_DRIVER_NAME)) {
+			return this.validateDbDriverName();
+		}
+		if (propertyName.equals(USER_WANTS_TO_OVERRIDE_DEFAULT_CATALOG)
+				|| propertyName.equals(USER_OVERRIDE_DEFAULT_CATALOG)) {
+			return this.validateUserOverrideDefaultCatalog();
+		}
+		if (propertyName.equals(USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA)
+				|| propertyName.equals(USER_OVERRIDE_DEFAULT_SCHEMA)) {
+			return this.validateUserOverrideDefaultSchema();
+		}
+		if (propertyName.equals(DISCOVER_ANNOTATED_CLASSES)) {
+			return this.validatePersistentClassManagement();
+		}
+		
+		return super.validate(propertyName);
 	}
 
-	private IStatus validateConnectionName(String connectionName) {
-		if (StringTools.stringIsEmpty(connectionName)) {
-			return OK_STATUS;
-		}
-		ConnectionProfile connectionProfile = getConnectionProfile();
-		if (connectionProfile == null) {
-			return buildErrorStatus(NLS.bind(JptCoreMessages.VALIDATE_CONNECTION_INVALID, connectionName));
+	private IStatus validatePlatformId() {
+		return (this.getPlatformId() == null) ? PLATFORM_NOT_SPECIFIED_STATUS : OK_STATUS;
+	}
+
+	private IStatus validateConnection() {
+		String connectionName = this.getConnectionName();
+		return (connectionName == null) ? OK_STATUS : this.validateNonNullConnection(connectionName);
+	}
 	
+	private IStatus validateNonNullConnection(String connectionName) {
+		ConnectionProfile cp = this.getConnectionProfile(connectionName);
+		if (cp == null) {
+			return buildErrorStatus(NLS.bind(JptCoreMessages.VALIDATE_CONNECTION_INVALID, connectionName));
 		}
-		if (! connectionProfile.isActive()) {
+		if ( ! cp.isActive()) {
 			return CONNECTION_NOT_CONNECTED_STATUS;
 		}
 		return OK_STATUS;
 	}
 	
+	private IStatus validateDbDriverName() {
+		return OK_STATUS;
+	}
+
 	private IStatus validateUserOverrideDefaultCatalog() {
-		if (getBooleanProperty(USER_WANTS_TO_OVERRIDE_DEFAULT_CATALOG)) {
-			if (StringTools.stringIsEmpty(getStringProperty(USER_OVERRIDE_DEFAULT_CATALOG))) {
+		if (this.userWantsToOverrideDefaultCatalog()) {
+			if (this.getUserOverrideDefaultCatalog() == null) {
 				return USER_OVERRIDE_DEFAULT_CATALOG_NOT_SPECIFIED_STATUS;
 			}
 		}
@@ -572,20 +702,17 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 	}
 	
 	private IStatus validateUserOverrideDefaultSchema() {
-		if (getBooleanProperty(USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA)) {
-			if (StringTools.stringIsEmpty(getStringProperty(USER_OVERRIDE_DEFAULT_SCHEMA))) {
+		if (this.userWantsToOverrideDefaultSchema()) {
+			if (this.getUserOverrideDefaultSchema() == null) {
 				return USER_OVERRIDE_DEFAULT_SCHEMA_NOT_SPECIFIED_STATUS;
 			}
 		}
 		return OK_STATUS;
 	}
 
-	private IStatus validatePersistentClassManagement(boolean discoverAnnotatedClasses) {
+	private IStatus validatePersistentClassManagement() {
+		@SuppressWarnings("unused") boolean discoverAnnotatedClasses = this.discoverAnnotatedClasses();
 		// TODO warning if "discovery" is used, but no runtime specified ??
-		return OK_STATUS;
-	}
-
-	private IStatus validateDbDriverName() {
 		return OK_STATUS;
 	}
 
@@ -596,9 +723,9 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 		return buildStatus(IStatus.INFO, message);
 	}
 
-	private static IStatus buildWarningStatus(String message) {
-		return buildStatus(IStatus.WARNING, message);
-	}
+//	private static IStatus buildWarningStatus(String message) {
+//		return buildStatus(IStatus.WARNING, message);
+//	}
 
 	private static IStatus buildErrorStatus(String message) {
 		return buildStatus(IStatus.ERROR, message);
@@ -607,4 +734,5 @@ public class JpaFacetDataModelProvider extends FacetInstallDataModelProvider
 	private static IStatus buildStatus(int severity, String message) {
 		return new Status(severity, JptCorePlugin.PLUGIN_ID, message);
 	}
+
 }
