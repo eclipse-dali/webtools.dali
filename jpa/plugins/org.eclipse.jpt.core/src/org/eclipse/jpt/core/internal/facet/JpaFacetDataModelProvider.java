@@ -341,6 +341,10 @@ public class JpaFacetDataModelProvider
 		else if (propertyName.equals(CONNECTION)) {
 			this.setBooleanProperty(CONNECTION_ACTIVE, this.connectionIsActive());
 
+			// JpaFacetWizardPage sets the connection when the user adds a new connection
+			// implying that there is a new set of valid connections to choose from
+			this.model.notifyPropertyChange(CONNECTION, IDataModel.VALID_VALUES_CHG);
+
 			// db driver
 			if (propertyValue == null) {  // connection set to '<None>'
 				this.setBooleanProperty(USER_WANTS_TO_ADD_DB_DRIVER_JARS_TO_CLASSPATH, false);
