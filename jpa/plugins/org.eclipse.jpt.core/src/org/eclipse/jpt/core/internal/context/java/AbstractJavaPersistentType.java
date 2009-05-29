@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Vector;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jdt.core.dom.CompilationUnit;
@@ -30,6 +31,7 @@ import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaStructureNodes;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
+import org.eclipse.jpt.core.internal.resource.java.source.SourceNode;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
@@ -566,7 +568,12 @@ public abstract class AbstractJavaPersistentType
 		// TODO temporary hack since we don't know yet where to put
 		// any messages for types in another project (e.g. referenced by
 		// persistence.xml)
-		if (this.resourcePersistentType.getFile().getProject().equals(this.getJpaProject().getProject())) {
+		IFile file = this.resourcePersistentType.getFile();
+		// 'file' will be null if the type is "external" and binary;
+		// the file will be in a different project if the type is "external" and source;
+		// the type will be binary if it is in a JAR in the current project
+		if ((file != null) && file.getProject().equals(this.getJpaProject().getProject()) &&
+				(this.resourcePersistentType instanceof SourceNode)) {
 			// build the AST root here to pass down
 			this.validate(messages, reporter, this.buildASTRoot());
 		}
