@@ -4,7 +4,7 @@
       label="%featureName"
       version="2.2.0.qualifier"
       provider-name="%providerName"
-      image="eclipse_update_120.jpg">
+      plugin="org.eclipse.jpt.branding">
 
    <description>
       %description
@@ -106,6 +106,13 @@
          download-size="0"
          install-size="0"
          version="1.5.0.qualifier"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.jpt.branding"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
          unpack="false"/>
 
 </feature>
