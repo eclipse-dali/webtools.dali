@@ -12,10 +12,10 @@ package org.eclipse.jpt.eclipselink1_1.core.internal.resource.orm.translators;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.jpt.core.internal.resource.orm.translators.TransientTranslator;
 import org.eclipse.jpt.eclipselink1_1.core.resource.orm.EclipseLink1_1OrmFactory;
-import org.eclipse.wst.common.internal.emf.resource.Translator;
 
-public class EclipseLinkTransientTranslator extends org.eclipse.jpt.eclipselink.core.internal.resource.orm.translators.EclipseLinkBasicTranslator
+public class EclipseLinkTransientTranslator extends TransientTranslator
 	implements EclipseLink1_1OrmXmlMapper
 {
 	public EclipseLinkTransientTranslator(String domNameAndPath, EStructuralFeature aFeature) {
@@ -25,17 +25,5 @@ public class EclipseLinkTransientTranslator extends org.eclipse.jpt.eclipselink.
 	@Override
 	public EObject createEMFObject(String nodeName, String readAheadName) {
 		return EclipseLink1_1OrmFactory.eINSTANCE.createXmlTransientImpl();
-	}
-	
-	@Override
-	protected Translator[] createChildren() {
-		return new Translator[] {
-			createNameTranslator()
-		};
-	}
-	
-	@Override
-	protected Translator createNameTranslator() {
-		return new Translator(NAME, ORM_PKG.getXmlAttributeMapping_Name(), DOM_ATTRIBUTE);
 	}
 }
