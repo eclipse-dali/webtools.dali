@@ -570,7 +570,7 @@ public class ORMGenTable
 		StringBuffer buffer = new StringBuffer();
 		String extendsClass = getExtends();
 		if (extendsClass != null && !extendsClass.equals("java.lang.Object") && !extendsClass.equals("Object")) {
-			buffer.append("extends " + simplifyClassName(extendsClass));
+			buffer.append("extends " + simplifyClassName(extendsClass) + " "); //fix for bug 278626
 		}
 		buffer.append("implements Serializable"); // assuming that the Java
 													// file template imports the
