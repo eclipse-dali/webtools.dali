@@ -4,7 +4,7 @@
       label="%featureName"
       version="2.2.0.qualifier"
       provider-name="%providerName"
-      image="eclipse_update_120.jpg">
+      plugin="org.eclipse.jpt.eclipselink.branding">
 
    <description>
       %description
@@ -44,6 +44,13 @@
 
    <plugin
          id="org.eclipse.jpt.eclipselink.core.ddlgen"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.jpt.eclipselink.branding"
          download-size="0"
          install-size="0"
          version="0.0.0"
