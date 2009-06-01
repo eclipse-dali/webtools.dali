@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java.binary;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.resource.java.AbstractJavaResourceNode;
 import org.eclipse.jpt.core.resource.java.JavaResourceCompilationUnit;
@@ -32,7 +33,12 @@ public abstract class BinaryNode
 
 
 	// ********** JavaResourceNode implementation **********
-	
+
+	@Override
+	public IFile getFile() {
+		return null;  // only BinaryPackageFragmentRoot has a file...
+	}
+
 	public void update() {
 		// nothing by default
 	}

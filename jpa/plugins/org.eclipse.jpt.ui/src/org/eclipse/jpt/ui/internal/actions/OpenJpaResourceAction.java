@@ -85,6 +85,9 @@ public class OpenJpaResourceAction extends BaseSelectionListenerAction
 		IEditorRegistry registry = PlatformUI.getWorkbench().getEditorRegistry();
 		IContentType contentType = IDE.getContentType(file);
 		IEditorDescriptor editorDescriptor = registry.getDefaultEditor(file.getName(), contentType);
+		if (editorDescriptor == null) {
+			return;  // no editor associated...
+		}
 		
 		IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 		

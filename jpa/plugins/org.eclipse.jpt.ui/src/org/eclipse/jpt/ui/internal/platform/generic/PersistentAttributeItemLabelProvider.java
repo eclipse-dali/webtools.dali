@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.platform.generic;
 
+import org.eclipse.core.resources.IResource;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.ui.internal.JpaMappingImageHelper;
 import org.eclipse.jpt.ui.internal.JptUiIcons;
@@ -58,10 +59,18 @@ public class PersistentAttributeItemLabelProvider extends AbstractItemLabelProvi
 		return new PropertyAspectAdapter<PersistentAttribute, String>(PersistentAttribute.NAME_PROPERTY, (PersistentAttribute) model()) {
 			@Override
 			protected String buildValue_() {
-				return subject.getPersistenceUnit().getName() 
-				+ "/" + subject.getPersistentType().getName()
-				+ "/" + subject.getName()
-				+ " - " + subject.getResource().getFullPath().makeRelative();
+				StringBuilder sb = new StringBuilder();
+				sb.append(this.subject.getPersistenceUnit().getName());
+				sb.append('/');
+				sb.append(this.subject.getPersistentType().getName());
+				sb.append('/');
+				sb.append(this.subject.getName());
+				IResource resource = this.subject.getResource();
+				if (resource != null) {
+					sb.append(" - "); //$NON-NLS-1$
+					sb.append(resource.getFullPath().makeRelative());
+				}
+				return sb.toString();
 			}
 		};
 	}

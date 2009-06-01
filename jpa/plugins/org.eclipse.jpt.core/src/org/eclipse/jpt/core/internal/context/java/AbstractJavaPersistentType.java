@@ -73,7 +73,7 @@ public abstract class AbstractJavaPersistentType
 	
 	@Override
 	public IResource getResource() {
-		return this.resourcePersistentType.getJavaResourceCompilationUnit().getFile();
+		return this.resourcePersistentType.getFile();
 	}
 
 	//****************** JpaStructureNode implementation *******************

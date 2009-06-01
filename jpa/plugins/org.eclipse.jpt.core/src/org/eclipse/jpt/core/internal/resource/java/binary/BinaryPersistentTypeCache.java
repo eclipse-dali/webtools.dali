@@ -102,11 +102,6 @@ public final class BinaryPersistentTypeCache
 
 	// ********** overrides **********
 
-	@Override
-	public IFile getFile() {
-		return null;  // ???
-	}
-
 	/**
 	 * Ignore changes to this collection. Adds can be ignored since they are triggered
 	 * by requests that will, themselves, trigger updates (typically during the
