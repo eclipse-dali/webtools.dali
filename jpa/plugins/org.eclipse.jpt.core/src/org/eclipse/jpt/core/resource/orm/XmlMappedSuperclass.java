@@ -870,9 +870,9 @@ public class XmlMappedSuperclass extends AbstractXmlTypeMapping
 			case OrmPackage.XML_MAPPED_SUPERCLASS__ID_CLASS:
 				return getIdClass();
 			case OrmPackage.XML_MAPPED_SUPERCLASS__EXCLUDE_DEFAULT_LISTENERS:
-				return isExcludeDefaultListeners() ? Boolean.TRUE : Boolean.FALSE;
+				return isExcludeDefaultListeners();
 			case OrmPackage.XML_MAPPED_SUPERCLASS__EXCLUDE_SUPERCLASS_LISTENERS:
-				return isExcludeSuperclassListeners() ? Boolean.TRUE : Boolean.FALSE;
+				return isExcludeSuperclassListeners();
 			case OrmPackage.XML_MAPPED_SUPERCLASS__ENTITY_LISTENERS:
 				return getEntityListeners();
 			case OrmPackage.XML_MAPPED_SUPERCLASS__PRE_PERSIST:
@@ -907,10 +907,10 @@ public class XmlMappedSuperclass extends AbstractXmlTypeMapping
 				setIdClass((XmlIdClass)newValue);
 				return;
 			case OrmPackage.XML_MAPPED_SUPERCLASS__EXCLUDE_DEFAULT_LISTENERS:
-				setExcludeDefaultListeners(((Boolean)newValue).booleanValue());
+				setExcludeDefaultListeners((Boolean)newValue);
 				return;
 			case OrmPackage.XML_MAPPED_SUPERCLASS__EXCLUDE_SUPERCLASS_LISTENERS:
-				setExcludeSuperclassListeners(((Boolean)newValue).booleanValue());
+				setExcludeSuperclassListeners((Boolean)newValue);
 				return;
 			case OrmPackage.XML_MAPPED_SUPERCLASS__ENTITY_LISTENERS:
 				setEntityListeners((EntityListeners)newValue);

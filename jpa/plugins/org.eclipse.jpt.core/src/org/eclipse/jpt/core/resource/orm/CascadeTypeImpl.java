@@ -339,15 +339,15 @@ public class CascadeTypeImpl extends AbstractJpaEObject implements CascadeType
 		switch (featureID)
 		{
 			case OrmPackage.CASCADE_TYPE_IMPL__CASCADE_ALL:
-				return isCascadeAll() ? Boolean.TRUE : Boolean.FALSE;
+				return isCascadeAll();
 			case OrmPackage.CASCADE_TYPE_IMPL__CASCADE_PERSIST:
-				return isCascadePersist() ? Boolean.TRUE : Boolean.FALSE;
+				return isCascadePersist();
 			case OrmPackage.CASCADE_TYPE_IMPL__CASCADE_MERGE:
-				return isCascadeMerge() ? Boolean.TRUE : Boolean.FALSE;
+				return isCascadeMerge();
 			case OrmPackage.CASCADE_TYPE_IMPL__CASCADE_REMOVE:
-				return isCascadeRemove() ? Boolean.TRUE : Boolean.FALSE;
+				return isCascadeRemove();
 			case OrmPackage.CASCADE_TYPE_IMPL__CASCADE_REFRESH:
-				return isCascadeRefresh() ? Boolean.TRUE : Boolean.FALSE;
+				return isCascadeRefresh();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -363,19 +363,19 @@ public class CascadeTypeImpl extends AbstractJpaEObject implements CascadeType
 		switch (featureID)
 		{
 			case OrmPackage.CASCADE_TYPE_IMPL__CASCADE_ALL:
-				setCascadeAll(((Boolean)newValue).booleanValue());
+				setCascadeAll((Boolean)newValue);
 				return;
 			case OrmPackage.CASCADE_TYPE_IMPL__CASCADE_PERSIST:
-				setCascadePersist(((Boolean)newValue).booleanValue());
+				setCascadePersist((Boolean)newValue);
 				return;
 			case OrmPackage.CASCADE_TYPE_IMPL__CASCADE_MERGE:
-				setCascadeMerge(((Boolean)newValue).booleanValue());
+				setCascadeMerge((Boolean)newValue);
 				return;
 			case OrmPackage.CASCADE_TYPE_IMPL__CASCADE_REMOVE:
-				setCascadeRemove(((Boolean)newValue).booleanValue());
+				setCascadeRemove((Boolean)newValue);
 				return;
 			case OrmPackage.CASCADE_TYPE_IMPL__CASCADE_REFRESH:
-				setCascadeRefresh(((Boolean)newValue).booleanValue());
+				setCascadeRefresh((Boolean)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);

@@ -130,7 +130,7 @@ public class XmlPersistenceUnitMetadata extends org.eclipse.jpt.core.resource.or
 		switch (featureID)
 		{
 			case EclipseLinkOrmPackage.XML_PERSISTENCE_UNIT_METADATA__EXCLUDE_DEFAULT_MAPPINGS:
-				return isExcludeDefaultMappings() ? Boolean.TRUE : Boolean.FALSE;
+				return isExcludeDefaultMappings();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -146,7 +146,7 @@ public class XmlPersistenceUnitMetadata extends org.eclipse.jpt.core.resource.or
 		switch (featureID)
 		{
 			case EclipseLinkOrmPackage.XML_PERSISTENCE_UNIT_METADATA__EXCLUDE_DEFAULT_MAPPINGS:
-				setExcludeDefaultMappings(((Boolean)newValue).booleanValue());
+				setExcludeDefaultMappings((Boolean)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);

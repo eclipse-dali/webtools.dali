@@ -539,7 +539,7 @@ public class XmlIdImpl extends AbstractXmlAttributeMapping implements XmlId
 			case OrmPackage.XML_ID_IMPL__COLUMN:
 				return getColumn();
 			case OrmPackage.XML_ID_IMPL__LOB:
-				return isLob() ? Boolean.TRUE : Boolean.FALSE;
+				return isLob();
 			case OrmPackage.XML_ID_IMPL__TEMPORAL:
 				return getTemporal();
 			case OrmPackage.XML_ID_IMPL__ENUMERATED:
@@ -568,7 +568,7 @@ public class XmlIdImpl extends AbstractXmlAttributeMapping implements XmlId
 				setColumn((XmlColumn)newValue);
 				return;
 			case OrmPackage.XML_ID_IMPL__LOB:
-				setLob(((Boolean)newValue).booleanValue());
+				setLob((Boolean)newValue);
 				return;
 			case OrmPackage.XML_ID_IMPL__TEMPORAL:
 				setTemporal((TemporalType)newValue);

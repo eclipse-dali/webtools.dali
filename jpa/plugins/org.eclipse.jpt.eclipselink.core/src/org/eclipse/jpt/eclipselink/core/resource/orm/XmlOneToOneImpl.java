@@ -306,7 +306,7 @@ public class XmlOneToOneImpl extends org.eclipse.jpt.core.resource.orm.XmlOneToO
 		switch (featureID)
 		{
 			case EclipseLinkOrmPackage.XML_ONE_TO_ONE_IMPL__PRIVATE_OWNED:
-				return isPrivateOwned() ? Boolean.TRUE : Boolean.FALSE;
+				return isPrivateOwned();
 			case EclipseLinkOrmPackage.XML_ONE_TO_ONE_IMPL__JOIN_FETCH:
 				return getJoinFetch();
 			case EclipseLinkOrmPackage.XML_ONE_TO_ONE_IMPL__ACCESS_METHODS:
@@ -329,7 +329,7 @@ public class XmlOneToOneImpl extends org.eclipse.jpt.core.resource.orm.XmlOneToO
 		switch (featureID)
 		{
 			case EclipseLinkOrmPackage.XML_ONE_TO_ONE_IMPL__PRIVATE_OWNED:
-				setPrivateOwned(((Boolean)newValue).booleanValue());
+				setPrivateOwned((Boolean)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_ONE_TO_ONE_IMPL__JOIN_FETCH:
 				setJoinFetch((XmlJoinFetchType)newValue);

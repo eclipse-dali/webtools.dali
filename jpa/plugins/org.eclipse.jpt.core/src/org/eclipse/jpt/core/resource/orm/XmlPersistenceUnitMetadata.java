@@ -216,7 +216,7 @@ public class XmlPersistenceUnitMetadata extends AbstractJpaEObject implements Jp
 		switch (featureID)
 		{
 			case OrmPackage.XML_PERSISTENCE_UNIT_METADATA__XML_MAPPING_METADATA_COMPLETE:
-				return isXmlMappingMetadataComplete() ? Boolean.TRUE : Boolean.FALSE;
+				return isXmlMappingMetadataComplete();
 			case OrmPackage.XML_PERSISTENCE_UNIT_METADATA__PERSISTENCE_UNIT_DEFAULTS:
 				return getPersistenceUnitDefaults();
 		}
@@ -234,7 +234,7 @@ public class XmlPersistenceUnitMetadata extends AbstractJpaEObject implements Jp
 		switch (featureID)
 		{
 			case OrmPackage.XML_PERSISTENCE_UNIT_METADATA__XML_MAPPING_METADATA_COMPLETE:
-				setXmlMappingMetadataComplete(((Boolean)newValue).booleanValue());
+				setXmlMappingMetadataComplete((Boolean)newValue);
 				return;
 			case OrmPackage.XML_PERSISTENCE_UNIT_METADATA__PERSISTENCE_UNIT_DEFAULTS:
 				setPersistenceUnitDefaults((XmlPersistenceUnitDefaults)newValue);

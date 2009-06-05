@@ -429,7 +429,7 @@ public class XmlBasicImpl extends AbstractXmlAttributeMapping implements XmlBasi
 			case OrmPackage.XML_BASIC_IMPL__COLUMN:
 				return getColumn();
 			case OrmPackage.XML_BASIC_IMPL__LOB:
-				return isLob() ? Boolean.TRUE : Boolean.FALSE;
+				return isLob();
 			case OrmPackage.XML_BASIC_IMPL__TEMPORAL:
 				return getTemporal();
 			case OrmPackage.XML_BASIC_IMPL__ENUMERATED:
@@ -456,7 +456,7 @@ public class XmlBasicImpl extends AbstractXmlAttributeMapping implements XmlBasi
 				setColumn((XmlColumn)newValue);
 				return;
 			case OrmPackage.XML_BASIC_IMPL__LOB:
-				setLob(((Boolean)newValue).booleanValue());
+				setLob((Boolean)newValue);
 				return;
 			case OrmPackage.XML_BASIC_IMPL__TEMPORAL:
 				setTemporal((TemporalType)newValue);

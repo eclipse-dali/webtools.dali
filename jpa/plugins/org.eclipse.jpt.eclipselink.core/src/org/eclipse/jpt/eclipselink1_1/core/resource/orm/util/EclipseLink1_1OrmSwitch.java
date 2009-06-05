@@ -181,8 +181,8 @@ public class EclipseLink1_1OrmSwitch<T>
 				if (result == null) result = caseXmlAttributeMapping(xmlEmbeddedId);
 				if (result == null) result = caseOrm_XmlEmbeddedId(xmlEmbeddedId);
 				if (result == null) result = caseXmlAccessMethodsHolder(xmlEmbeddedId);
-				if (result == null) result = caseOrm_XmlAttributeMapping(xmlEmbeddedId);
 				if (result == null) result = caseBaseXmlEmbedded(xmlEmbeddedId);
+				if (result == null) result = caseOrm_XmlAttributeMapping(xmlEmbeddedId);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -198,8 +198,8 @@ public class EclipseLink1_1OrmSwitch<T>
 				if (result == null) result = caseAbstractXmlAttributeMapping(xmlEmbeddedIdImpl);
 				if (result == null) result = caseOrm_XmlEmbeddedId(xmlEmbeddedIdImpl);
 				if (result == null) result = caseXmlAccessMethodsHolder(xmlEmbeddedIdImpl);
-				if (result == null) result = caseOrm_XmlAttributeMapping(xmlEmbeddedIdImpl);
 				if (result == null) result = caseBaseXmlEmbedded(xmlEmbeddedIdImpl);
+				if (result == null) result = caseOrm_XmlAttributeMapping(xmlEmbeddedIdImpl);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -211,8 +211,8 @@ public class EclipseLink1_1OrmSwitch<T>
 				if (result == null) result = caseXmlAttributeMapping(xmlEmbedded);
 				if (result == null) result = caseOrm_XmlEmbedded(xmlEmbedded);
 				if (result == null) result = caseXmlAccessMethodsHolder(xmlEmbedded);
-				if (result == null) result = caseOrm_XmlAttributeMapping(xmlEmbedded);
 				if (result == null) result = caseBaseXmlEmbedded(xmlEmbedded);
+				if (result == null) result = caseOrm_XmlAttributeMapping(xmlEmbedded);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -228,8 +228,8 @@ public class EclipseLink1_1OrmSwitch<T>
 				if (result == null) result = caseAbstractXmlAttributeMapping(xmlEmbeddedImpl);
 				if (result == null) result = caseOrm_XmlEmbedded(xmlEmbeddedImpl);
 				if (result == null) result = caseXmlAccessMethodsHolder(xmlEmbeddedImpl);
-				if (result == null) result = caseOrm_XmlAttributeMapping(xmlEmbeddedImpl);
 				if (result == null) result = caseBaseXmlEmbedded(xmlEmbeddedImpl);
+				if (result == null) result = caseOrm_XmlAttributeMapping(xmlEmbeddedImpl);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -319,12 +319,12 @@ public class EclipseLink1_1OrmSwitch<T>
 				if (result == null) result = caseXmlPrivateOwned(xmlOneToOne);
 				if (result == null) result = caseXmlJoinFetch(xmlOneToOne);
 				if (result == null) result = caseXmlAccessMethodsHolder(xmlOneToOne);
-				if (result == null) result = caseOrm_XmlAttributeMapping(xmlOneToOne);
 				if (result == null) result = caseXmlSingleRelationshipMapping(xmlOneToOne);
 				if (result == null) result = caseXmlMappedByMapping(xmlOneToOne);
-				if (result == null) result = caseXmlRelationshipMapping(xmlOneToOne);
 				if (result == null) result = caseXmlJoinTableMapping(xmlOneToOne);
 				if (result == null) result = caseXmlJoinColumnsMapping(xmlOneToOne);
+				if (result == null) result = caseXmlRelationshipMapping(xmlOneToOne);
+				if (result == null) result = caseOrm_XmlAttributeMapping(xmlOneToOne);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -342,12 +342,12 @@ public class EclipseLink1_1OrmSwitch<T>
 				if (result == null) result = caseXmlPrivateOwned(xmlOneToOneImpl);
 				if (result == null) result = caseXmlJoinFetch(xmlOneToOneImpl);
 				if (result == null) result = caseXmlAccessMethodsHolder(xmlOneToOneImpl);
-				if (result == null) result = caseOrm_XmlAttributeMapping(xmlOneToOneImpl);
 				if (result == null) result = caseXmlSingleRelationshipMapping(xmlOneToOneImpl);
 				if (result == null) result = caseXmlMappedByMapping(xmlOneToOneImpl);
-				if (result == null) result = caseXmlRelationshipMapping(xmlOneToOneImpl);
 				if (result == null) result = caseXmlJoinTableMapping(xmlOneToOneImpl);
 				if (result == null) result = caseXmlJoinColumnsMapping(xmlOneToOneImpl);
+				if (result == null) result = caseOrm_XmlAttributeMapping(xmlOneToOneImpl);
+				if (result == null) result = caseXmlRelationshipMapping(xmlOneToOneImpl);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -361,12 +361,12 @@ public class EclipseLink1_1OrmSwitch<T>
 				if (result == null) result = caseXmlPrivateOwned(xmlOneToMany);
 				if (result == null) result = caseXmlJoinFetch(xmlOneToMany);
 				if (result == null) result = caseXmlAccessMethodsHolder(xmlOneToMany);
-				if (result == null) result = caseOrm_XmlAttributeMapping(xmlOneToMany);
 				if (result == null) result = caseXmlMultiRelationshipMapping(xmlOneToMany);
 				if (result == null) result = caseXmlJoinColumnsMapping(xmlOneToMany);
 				if (result == null) result = caseXmlMappedByMapping(xmlOneToMany);
 				if (result == null) result = caseXmlJoinTableMapping(xmlOneToMany);
 				if (result == null) result = caseXmlRelationshipMapping(xmlOneToMany);
+				if (result == null) result = caseOrm_XmlAttributeMapping(xmlOneToMany);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -384,12 +384,12 @@ public class EclipseLink1_1OrmSwitch<T>
 				if (result == null) result = caseXmlPrivateOwned(xmlOneToManyImpl);
 				if (result == null) result = caseXmlJoinFetch(xmlOneToManyImpl);
 				if (result == null) result = caseXmlAccessMethodsHolder(xmlOneToManyImpl);
-				if (result == null) result = caseOrm_XmlAttributeMapping(xmlOneToManyImpl);
 				if (result == null) result = caseXmlMultiRelationshipMapping(xmlOneToManyImpl);
 				if (result == null) result = caseXmlJoinColumnsMapping(xmlOneToManyImpl);
 				if (result == null) result = caseXmlMappedByMapping(xmlOneToManyImpl);
 				if (result == null) result = caseXmlJoinTableMapping(xmlOneToManyImpl);
 				if (result == null) result = caseXmlRelationshipMapping(xmlOneToManyImpl);
+				if (result == null) result = caseOrm_XmlAttributeMapping(xmlOneToManyImpl);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -402,11 +402,11 @@ public class EclipseLink1_1OrmSwitch<T>
 				if (result == null) result = caseOrm_XmlManyToOne(xmlManyToOne);
 				if (result == null) result = caseXmlJoinFetch(xmlManyToOne);
 				if (result == null) result = caseXmlAccessMethodsHolder(xmlManyToOne);
-				if (result == null) result = caseOrm_XmlAttributeMapping(xmlManyToOne);
 				if (result == null) result = caseXmlSingleRelationshipMapping(xmlManyToOne);
-				if (result == null) result = caseXmlRelationshipMapping(xmlManyToOne);
 				if (result == null) result = caseXmlJoinTableMapping(xmlManyToOne);
 				if (result == null) result = caseXmlJoinColumnsMapping(xmlManyToOne);
+				if (result == null) result = caseXmlRelationshipMapping(xmlManyToOne);
+				if (result == null) result = caseOrm_XmlAttributeMapping(xmlManyToOne);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -423,11 +423,11 @@ public class EclipseLink1_1OrmSwitch<T>
 				if (result == null) result = caseOrm_XmlManyToOne(xmlManyToOneImpl);
 				if (result == null) result = caseXmlJoinFetch(xmlManyToOneImpl);
 				if (result == null) result = caseXmlAccessMethodsHolder(xmlManyToOneImpl);
-				if (result == null) result = caseOrm_XmlAttributeMapping(xmlManyToOneImpl);
 				if (result == null) result = caseXmlSingleRelationshipMapping(xmlManyToOneImpl);
-				if (result == null) result = caseXmlRelationshipMapping(xmlManyToOneImpl);
 				if (result == null) result = caseXmlJoinTableMapping(xmlManyToOneImpl);
 				if (result == null) result = caseXmlJoinColumnsMapping(xmlManyToOneImpl);
+				if (result == null) result = caseOrm_XmlAttributeMapping(xmlManyToOneImpl);
+				if (result == null) result = caseXmlRelationshipMapping(xmlManyToOneImpl);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -440,11 +440,11 @@ public class EclipseLink1_1OrmSwitch<T>
 				if (result == null) result = caseOrm_XmlManyToMany(xmlManyToMany);
 				if (result == null) result = caseXmlJoinFetch(xmlManyToMany);
 				if (result == null) result = caseXmlAccessMethodsHolder(xmlManyToMany);
-				if (result == null) result = caseOrm_XmlAttributeMapping(xmlManyToMany);
 				if (result == null) result = caseXmlMultiRelationshipMapping(xmlManyToMany);
 				if (result == null) result = caseXmlMappedByMapping(xmlManyToMany);
 				if (result == null) result = caseXmlJoinTableMapping(xmlManyToMany);
 				if (result == null) result = caseXmlRelationshipMapping(xmlManyToMany);
+				if (result == null) result = caseOrm_XmlAttributeMapping(xmlManyToMany);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -461,11 +461,11 @@ public class EclipseLink1_1OrmSwitch<T>
 				if (result == null) result = caseOrm_XmlManyToMany(xmlManyToManyImpl);
 				if (result == null) result = caseXmlJoinFetch(xmlManyToManyImpl);
 				if (result == null) result = caseXmlAccessMethodsHolder(xmlManyToManyImpl);
-				if (result == null) result = caseOrm_XmlAttributeMapping(xmlManyToManyImpl);
 				if (result == null) result = caseXmlMultiRelationshipMapping(xmlManyToManyImpl);
 				if (result == null) result = caseXmlMappedByMapping(xmlManyToManyImpl);
 				if (result == null) result = caseXmlJoinTableMapping(xmlManyToManyImpl);
 				if (result == null) result = caseXmlRelationshipMapping(xmlManyToManyImpl);
+				if (result == null) result = caseOrm_XmlAttributeMapping(xmlManyToManyImpl);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}

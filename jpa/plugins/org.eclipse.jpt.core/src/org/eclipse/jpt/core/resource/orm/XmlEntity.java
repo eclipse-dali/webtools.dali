@@ -1629,9 +1629,9 @@ public class XmlEntity extends AbstractXmlTypeMapping
 			case OrmPackage.XML_ENTITY__SQL_RESULT_SET_MAPPINGS:
 				return getSqlResultSetMappings();
 			case OrmPackage.XML_ENTITY__EXCLUDE_DEFAULT_LISTENERS:
-				return isExcludeDefaultListeners() ? Boolean.TRUE : Boolean.FALSE;
+				return isExcludeDefaultListeners();
 			case OrmPackage.XML_ENTITY__EXCLUDE_SUPERCLASS_LISTENERS:
-				return isExcludeSuperclassListeners() ? Boolean.TRUE : Boolean.FALSE;
+				return isExcludeSuperclassListeners();
 			case OrmPackage.XML_ENTITY__ENTITY_LISTENERS:
 				return getEntityListeners();
 			case OrmPackage.XML_ENTITY__PRE_PERSIST:
@@ -1712,10 +1712,10 @@ public class XmlEntity extends AbstractXmlTypeMapping
 				getSqlResultSetMappings().addAll((Collection<? extends SqlResultSetMapping>)newValue);
 				return;
 			case OrmPackage.XML_ENTITY__EXCLUDE_DEFAULT_LISTENERS:
-				setExcludeDefaultListeners(((Boolean)newValue).booleanValue());
+				setExcludeDefaultListeners((Boolean)newValue);
 				return;
 			case OrmPackage.XML_ENTITY__EXCLUDE_SUPERCLASS_LISTENERS:
-				setExcludeSuperclassListeners(((Boolean)newValue).booleanValue());
+				setExcludeSuperclassListeners((Boolean)newValue);
 				return;
 			case OrmPackage.XML_ENTITY__ENTITY_LISTENERS:
 				setEntityListeners((EntityListeners)newValue);

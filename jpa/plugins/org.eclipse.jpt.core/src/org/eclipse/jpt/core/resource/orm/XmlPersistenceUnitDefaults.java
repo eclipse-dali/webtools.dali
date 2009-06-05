@@ -390,7 +390,7 @@ public class XmlPersistenceUnitDefaults extends AbstractJpaEObject implements Jp
 			case OrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__ACCESS:
 				return getAccess();
 			case OrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__CASCADE_PERSIST:
-				return isCascadePersist() ? Boolean.TRUE : Boolean.FALSE;
+				return isCascadePersist();
 			case OrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__ENTITY_LISTENERS:
 				return getEntityListeners();
 		}
@@ -417,7 +417,7 @@ public class XmlPersistenceUnitDefaults extends AbstractJpaEObject implements Jp
 				setAccess((AccessType)newValue);
 				return;
 			case OrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__CASCADE_PERSIST:
-				setCascadePersist(((Boolean)newValue).booleanValue());
+				setCascadePersist((Boolean)newValue);
 				return;
 			case OrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__ENTITY_LISTENERS:
 				setEntityListeners((EntityListeners)newValue);
