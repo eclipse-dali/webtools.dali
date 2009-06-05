@@ -133,16 +133,16 @@ public class EclipseLinkOrmConvert extends AbstractXmlContextNode implements Con
 	
 	protected JpaEObject buildResourceConverter(String converterType) {
 		if (converterType == EclipseLinkConverter.CUSTOM_CONVERTER) {
-			return EclipseLinkOrmFactory.eINSTANCE.createXmlConverterImpl();
+			return EclipseLinkOrmFactory.eINSTANCE.createXmlConverter();
 		}
 		else if (converterType == EclipseLinkConverter.TYPE_CONVERTER) {
-			return EclipseLinkOrmFactory.eINSTANCE.createXmlTypeConverterImpl();
+			return EclipseLinkOrmFactory.eINSTANCE.createXmlTypeConverter();
 		}
 		else if (converterType == EclipseLinkConverter.OBJECT_TYPE_CONVERTER) {
-			return EclipseLinkOrmFactory.eINSTANCE.createXmlObjectTypeConverterImpl();
+			return EclipseLinkOrmFactory.eINSTANCE.createXmlObjectTypeConverter();
 		}
 		else if (converterType == EclipseLinkConverter.STRUCT_CONVERTER) {
-			return EclipseLinkOrmFactory.eINSTANCE.createXmlStructConverterImpl();
+			return EclipseLinkOrmFactory.eINSTANCE.createXmlStructConverter();
 		}
 		return null;
 	}

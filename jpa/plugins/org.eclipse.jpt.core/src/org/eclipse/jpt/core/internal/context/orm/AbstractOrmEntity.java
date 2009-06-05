@@ -401,7 +401,7 @@ public abstract class AbstractOrmEntity
 		if (!secondaryTablesDefinedInXml()) {
 			throw new IllegalStateException("Virtual secondary tables exist, must first call setSecondaryTablesDefinedInXml(true)"); //$NON-NLS-1$
 		}
-		XmlSecondaryTable secondaryTableResource = OrmFactory.eINSTANCE.createXmlSecondaryTableImpl();
+		XmlSecondaryTable secondaryTableResource = OrmFactory.eINSTANCE.createXmlSecondaryTable();
 		OrmSecondaryTable secondaryTable =  buildSecondaryTable(secondaryTableResource);
 		this.specifiedSecondaryTables.add(index, secondaryTable);
 		this.resourceTypeMapping.getSecondaryTables().add(index, secondaryTableResource);
@@ -501,7 +501,7 @@ public abstract class AbstractOrmEntity
 			//are not removed first, they will be removed as a side effect of adding the first specified secondary table.
 			//This screws up the change notification to the UI, since that change notification is in a different thread
 			for (OrmSecondaryTable virtualSecondaryTable : virtualSecondaryTables2) {
-				XmlSecondaryTable secondaryTableResource = OrmFactory.eINSTANCE.createXmlSecondaryTableImpl();
+				XmlSecondaryTable secondaryTableResource = OrmFactory.eINSTANCE.createXmlSecondaryTable();
 				OrmSecondaryTable specifiedSecondaryTable =  buildSecondaryTable(secondaryTableResource);
 				this.specifiedSecondaryTables.add(specifiedSecondaryTable);
 				this.resourceTypeMapping.getSecondaryTables().add(secondaryTableResource);
@@ -645,7 +645,7 @@ public abstract class AbstractOrmEntity
 		if (getSequenceGenerator() != null) {
 			throw new IllegalStateException("sequenceGenerator already exists"); //$NON-NLS-1$
 		}
-		XmlSequenceGenerator resourceSequenceGenerator = OrmFactory.eINSTANCE.createXmlSequenceGeneratorImpl();
+		XmlSequenceGenerator resourceSequenceGenerator = OrmFactory.eINSTANCE.createXmlSequenceGenerator();
 		this.sequenceGenerator = buildSequenceGenerator(resourceSequenceGenerator);
 		this.resourceTypeMapping.setSequenceGenerator(resourceSequenceGenerator);
 		firePropertyChanged(SEQUENCE_GENERATOR_PROPERTY, null, this.sequenceGenerator);
@@ -676,7 +676,7 @@ public abstract class AbstractOrmEntity
 		if (getTableGenerator() != null) {
 			throw new IllegalStateException("tableGenerator already exists"); //$NON-NLS-1$
 		}
-		XmlTableGenerator resourceTableGenerator = OrmFactory.eINSTANCE.createXmlTableGeneratorImpl();
+		XmlTableGenerator resourceTableGenerator = OrmFactory.eINSTANCE.createXmlTableGenerator();
 		this.tableGenerator = buildTableGenerator(resourceTableGenerator);
 		this.resourceTypeMapping.setTableGenerator(resourceTableGenerator);
 		firePropertyChanged(TABLE_GENERATOR_PROPERTY, null, this.tableGenerator);
@@ -848,7 +848,7 @@ public abstract class AbstractOrmEntity
 		if (!this.defaultPrimaryKeyJoinColumns.isEmpty()) {
 			this.defaultPrimaryKeyJoinColumns.clear();
 		}
-		XmlPrimaryKeyJoinColumn resourcePkJoinColumn = OrmFactory.eINSTANCE.createXmlPrimaryKeyJoinColumnImpl();
+		XmlPrimaryKeyJoinColumn resourcePkJoinColumn = OrmFactory.eINSTANCE.createXmlPrimaryKeyJoinColumn();
 		OrmPrimaryKeyJoinColumn contextPkJoinColumn = buildPrimaryKeyJoinColumn(resourcePkJoinColumn);
 		this.specifiedPrimaryKeyJoinColumns.add(index, contextPkJoinColumn);
 		this.resourceTypeMapping.getPrimaryKeyJoinColumns().add(index, resourcePkJoinColumn);
@@ -964,7 +964,7 @@ public abstract class AbstractOrmEntity
 	
 	protected OrmAttributeOverride setAttributeOverrideSpecified(OrmAttributeOverride oldAttributeOverride) {
 		int index = specifiedAttributeOverridesSize();
-		XmlAttributeOverride xmlAttributeOverride = OrmFactory.eINSTANCE.createXmlAttributeOverrideImpl();
+		XmlAttributeOverride xmlAttributeOverride = OrmFactory.eINSTANCE.createXmlAttributeOverride();
 		OrmAttributeOverride newAttributeOverride = getJpaFactory().buildOrmAttributeOverride(this, createAttributeOverrideOwner(), xmlAttributeOverride);
 		this.specifiedAttributeOverrides.add(index, newAttributeOverride);
 		

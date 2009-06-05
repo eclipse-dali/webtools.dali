@@ -12,7 +12,6 @@ package org.eclipse.jpt.core.internal.context.orm;
 import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
-import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**
@@ -25,7 +24,7 @@ import org.eclipse.jpt.core.utility.TextRange;
  * flag determines whether it will get specified or default information from the java column
  *
  */
-public class VirtualXmlColumn extends AbstractJpaEObject implements XmlColumn
+public class VirtualXmlColumn extends XmlColumn
 {
 	
 	protected Column column;
@@ -43,6 +42,7 @@ public class VirtualXmlColumn extends AbstractJpaEObject implements XmlColumn
 		return this.ormTypeMapping.isMetadataComplete();
 	}
 
+	@Override
 	public String getColumnDefinition() {
 		if (this.isOrmMetadataComplete()) {
 			return null;
@@ -50,10 +50,12 @@ public class VirtualXmlColumn extends AbstractJpaEObject implements XmlColumn
 		return this.column.getColumnDefinition();
 	}
 
-	public void setColumnDefinition(@SuppressWarnings("unused")String value) {
+	@Override
+	public void setColumnDefinition(String value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
+	@Override
 	public Boolean getInsertable() {
 		if (this.isOrmMetadataComplete()) {
 			return Boolean.valueOf(this.column.isDefaultInsertable());
@@ -61,10 +63,12 @@ public class VirtualXmlColumn extends AbstractJpaEObject implements XmlColumn
 		return Boolean.valueOf(this.column.isInsertable());
 	}
 
-	public void setInsertable(@SuppressWarnings("unused")Boolean value) {
+	@Override
+	public void setInsertable(Boolean value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
+	@Override
 	public Integer getLength() {
 		if (this.isOrmMetadataComplete()) {
 			return Integer.valueOf(this.column.getDefaultLength());
@@ -72,10 +76,12 @@ public class VirtualXmlColumn extends AbstractJpaEObject implements XmlColumn
 		return Integer.valueOf(this.column.getLength());
 	}
 
-	public void setLength(@SuppressWarnings("unused")Integer value) {
+	@Override
+	public void setLength(Integer value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
+	@Override
 	public String getName() {
 		if (this.isOrmMetadataComplete()) {
 			return this.column.getDefaultName();
@@ -83,10 +89,12 @@ public class VirtualXmlColumn extends AbstractJpaEObject implements XmlColumn
 		return this.column.getName();
 	}
 
-	public void setName(@SuppressWarnings("unused")String value) {
+	@Override
+	public void setName(String value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
+	@Override
 	public Boolean getNullable() {
 		if (this.isOrmMetadataComplete()) {
 			return Boolean.valueOf(this.column.isDefaultNullable());
@@ -94,10 +102,12 @@ public class VirtualXmlColumn extends AbstractJpaEObject implements XmlColumn
 		return Boolean.valueOf(this.column.isNullable());
 	}
 
-	public void setNullable(@SuppressWarnings("unused")Boolean value) {
+	@Override
+	public void setNullable(Boolean value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
+	@Override
 	public Integer getPrecision() {
 		if (this.isOrmMetadataComplete()) {
 			return Integer.valueOf(this.column.getDefaultPrecision());
@@ -105,10 +115,12 @@ public class VirtualXmlColumn extends AbstractJpaEObject implements XmlColumn
 		return Integer.valueOf(this.column.getPrecision());
 	}
 
-	public void setPrecision(@SuppressWarnings("unused")Integer value) {
+	@Override
+	public void setPrecision(Integer value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
+	@Override
 	public Integer getScale() {
 		if (this.isOrmMetadataComplete()) {
 			return Integer.valueOf(this.column.getDefaultScale());
@@ -116,10 +128,12 @@ public class VirtualXmlColumn extends AbstractJpaEObject implements XmlColumn
 		return Integer.valueOf(this.column.getScale());
 	}
 
-	public void setScale(@SuppressWarnings("unused")Integer value) {
+	@Override
+	public void setScale(Integer value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
+	@Override
 	public String getTable() {
 		if (!this.isOrmMetadataComplete()) {
 			if (this.column.getSpecifiedTable() != null) {
@@ -129,10 +143,12 @@ public class VirtualXmlColumn extends AbstractJpaEObject implements XmlColumn
 		return this.ormTypeMapping.getPrimaryTableName();
 	}
 
-	public void setTable(@SuppressWarnings("unused")String value) {
+	@Override
+	public void setTable(String value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
+	@Override
 	public Boolean getUnique() {
 		if (this.isOrmMetadataComplete()) {
 			return Boolean.valueOf(this.column.isDefaultUnique());
@@ -140,10 +156,12 @@ public class VirtualXmlColumn extends AbstractJpaEObject implements XmlColumn
 		return Boolean.valueOf(this.column.isUnique());
 	}
 
-	public void setUnique(@SuppressWarnings("unused")Boolean value) {
+	@Override
+	public void setUnique(Boolean value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
+	@Override
 	public Boolean getUpdatable() {
 		if (this.isOrmMetadataComplete()) {
 			return Boolean.valueOf(this.column.isDefaultUpdatable());
@@ -151,14 +169,17 @@ public class VirtualXmlColumn extends AbstractJpaEObject implements XmlColumn
 		return Boolean.valueOf(this.column.isUpdatable());
 	}
 
-	public void setUpdatable(@SuppressWarnings("unused")Boolean value) {
+	@Override
+	public void setUpdatable(Boolean value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 	
+	@Override
 	public TextRange getNameTextRange() {
 		return null;
 	}
 	
+	@Override
 	public TextRange getTableTextRange() {
 		return null;
 	}

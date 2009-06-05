@@ -86,7 +86,7 @@ public class GenericOrmJoinTableJoiningStrategy
 	}
 	
 	protected XmlJoinTable addJoinTableResource() {
-		XmlJoinTable resourceTable = OrmFactory.eINSTANCE.createXmlJoinTableImpl();
+		XmlJoinTable resourceTable = OrmFactory.eINSTANCE.createXmlJoinTable();
 		this.resource.setJoinTable(resourceTable);
 		return resourceTable;
 	}

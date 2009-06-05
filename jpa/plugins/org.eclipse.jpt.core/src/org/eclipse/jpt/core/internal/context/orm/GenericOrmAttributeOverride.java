@@ -134,7 +134,7 @@ public class GenericOrmAttributeOverride extends AbstractXmlContextNode
 	}
 	
 	public void addResourceColumn() {
-		this.resourceAttributeOverride.setColumn(OrmFactory.eINSTANCE.createXmlColumnImpl());
+		this.resourceAttributeOverride.setColumn(OrmFactory.eINSTANCE.createXmlColumn());
 	}
 	
 	public void removeResourceColumn() {

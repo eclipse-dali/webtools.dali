@@ -17,11 +17,10 @@ import org.eclipse.jpt.core.context.java.JavaUniqueConstraint;
 import org.eclipse.jpt.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.core.resource.orm.XmlTableGenerator;
 import org.eclipse.jpt.core.resource.orm.XmlUniqueConstraint;
-import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 
-public class VirtualXmlTableGenerator extends AbstractJpaEObject implements XmlTableGenerator
+public class VirtualXmlTableGenerator extends XmlTableGenerator
 {
 	JavaGeneratorHolder javaGeneratorHolder;
 
@@ -38,6 +37,7 @@ public class VirtualXmlTableGenerator extends AbstractJpaEObject implements XmlT
 		return this.javaGeneratorHolder.getTableGenerator();
 	}
 	
+	@Override
 	public String getCatalog() {
 		if (this.metadataComplete) {
 			return null;
@@ -45,10 +45,12 @@ public class VirtualXmlTableGenerator extends AbstractJpaEObject implements XmlT
 		return this.getJavaTableGenerator().getCatalog();
 	}
 
-	public void setCatalog(@SuppressWarnings("unused") String value) {
+	@Override
+	public void setCatalog(String value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
+	@Override
 	public String getPkColumnName() {
 		if (this.metadataComplete) {
 			return null;
@@ -56,10 +58,12 @@ public class VirtualXmlTableGenerator extends AbstractJpaEObject implements XmlT
 		return this.getJavaTableGenerator().getPkColumnName();
 	}
 
-	public void setPkColumnName(@SuppressWarnings("unused") String value) {
+	@Override
+	public void setPkColumnName(String value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
+	@Override
 	public String getPkColumnValue() {
 		if (this.metadataComplete) {
 			return null;
@@ -67,10 +71,12 @@ public class VirtualXmlTableGenerator extends AbstractJpaEObject implements XmlT
 		return this.getJavaTableGenerator().getPkColumnValue();
 	}
 
-	public void setPkColumnValue(@SuppressWarnings("unused") String value) {
+	@Override
+	public void setPkColumnValue(String value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
+	@Override
 	public String getSchema() {
 		if (this.metadataComplete) {
 			return null;
@@ -78,10 +84,12 @@ public class VirtualXmlTableGenerator extends AbstractJpaEObject implements XmlT
 		return this.getJavaTableGenerator().getSchema();
 	}
 
-	public void setSchema(@SuppressWarnings("unused") String value) {
+	@Override
+	public void setSchema(String value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
+	@Override
 	public String getTable() {
 		if (this.metadataComplete) {
 			return null;
@@ -89,10 +97,12 @@ public class VirtualXmlTableGenerator extends AbstractJpaEObject implements XmlT
 		return this.getJavaTableGenerator().getTable();
 	}
 
-	public void setTable(@SuppressWarnings("unused") String value) {
+	@Override
+	public void setTable(String value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
+	@Override
 	public String getValueColumnName() {
 		if (this.metadataComplete) {
 			return null;
@@ -100,10 +110,12 @@ public class VirtualXmlTableGenerator extends AbstractJpaEObject implements XmlT
 		return this.getJavaTableGenerator().getValueColumnName();
 	}
 
-	public void setValueColumnName(@SuppressWarnings("unused") String value) {
+	@Override
+	public void setValueColumnName(String value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
+	@Override
 	public Integer getAllocationSize() {
 		if (this.metadataComplete) {
 			return null;
@@ -111,10 +123,12 @@ public class VirtualXmlTableGenerator extends AbstractJpaEObject implements XmlT
 		return this.getJavaTableGenerator().getAllocationSize();
 	}
 
+	@Override
 	public void setAllocationSize(@SuppressWarnings("unused") Integer value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
+	@Override
 	public Integer getInitialValue() {
 		if (this.metadataComplete) {
 			return null;
@@ -122,10 +136,12 @@ public class VirtualXmlTableGenerator extends AbstractJpaEObject implements XmlT
 		return this.getJavaTableGenerator().getInitialValue();
 	}
 
-	public void setInitialValue(@SuppressWarnings("unused") Integer value) {
+	@Override
+	public void setInitialValue(Integer value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
+	@Override
 	public String getName() {
 		if (this.metadataComplete) {
 			return null;
@@ -133,12 +149,14 @@ public class VirtualXmlTableGenerator extends AbstractJpaEObject implements XmlT
 		return this.getJavaTableGenerator().getName();
 	}
 
-	public void setName(@SuppressWarnings("unused") String value) {
+	@Override
+	public void setName(String value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
 
 
+	@Override
 	public EList<XmlUniqueConstraint> getUniqueConstraints() {
 		EList<XmlUniqueConstraint> xmlUniqueConstraints = new EObjectContainmentEList<XmlUniqueConstraint>(XmlUniqueConstraint.class, this, OrmPackage.XML_TABLE_GENERATOR__UNIQUE_CONSTRAINTS);
 
@@ -150,10 +168,12 @@ public class VirtualXmlTableGenerator extends AbstractJpaEObject implements XmlT
 		return xmlUniqueConstraints;
 	}
 	
+	@Override
 	public TextRange getNameTextRange() {
 		return getValidationTextRange();
 	}
 	
+	@Override
 	public boolean isVirtual() {
 		return true;
 	}

@@ -9,12 +9,17 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.resource.orm;
 
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.xml.JpaEObject;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.eclipselink.core.internal.resource.orm.translators.EclipseLinkOrmXmlMapper;
 
 /**
  * <!-- begin-user-doc -->
-
+ * 
  * A representation of the model object '<em><b>Xml Conversion Value</b></em>'.
  *  
  * Provisional API: This interface is part of an interim API that is still
@@ -37,12 +42,73 @@ import org.eclipse.jpt.core.utility.TextRange;
  * </p>
  *
  * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlConversionValue()
- * @model kind="class" interface="true" abstract="true"
+ * @model kind="class"
  * @extends JpaEObject
  * @generated
  */
-public interface XmlConversionValue extends JpaEObject
+public class XmlConversionValue extends AbstractJpaEObject implements JpaEObject
 {
+	/**
+	 * The default value of the '{@link #getDataValue() <em>Data Value</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getDataValue()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String DATA_VALUE_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getDataValue() <em>Data Value</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getDataValue()
+	 * @generated
+	 * @ordered
+	 */
+	protected String dataValue = DATA_VALUE_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getObjectValue() <em>Object Value</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getObjectValue()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String OBJECT_VALUE_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getObjectValue() <em>Object Value</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getObjectValue()
+	 * @generated
+	 * @ordered
+	 */
+	protected String objectValue = OBJECT_VALUE_EDEFAULT;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected XmlConversionValue()
+	{
+		super();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	protected EClass eStaticClass()
+	{
+		return EclipseLinkOrmPackage.Literals.XML_CONVERSION_VALUE;
+	}
+
 	/**
 	 * Returns the value of the '<em><b>Data Value</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -57,7 +123,10 @@ public interface XmlConversionValue extends JpaEObject
 	 * @model
 	 * @generated
 	 */
-	String getDataValue();
+	public String getDataValue()
+	{
+		return dataValue;
+	}
 
 	/**
 	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlConversionValue#getDataValue <em>Data Value</em>}' attribute.
@@ -67,7 +136,13 @@ public interface XmlConversionValue extends JpaEObject
 	 * @see #getDataValue()
 	 * @generated
 	 */
-	void setDataValue(String value);
+	public void setDataValue(String newDataValue)
+	{
+		String oldDataValue = dataValue;
+		dataValue = newDataValue;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_CONVERSION_VALUE__DATA_VALUE, oldDataValue, dataValue));
+	}
 
 	/**
 	 * Returns the value of the '<em><b>Object Value</b></em>' attribute.
@@ -83,7 +158,10 @@ public interface XmlConversionValue extends JpaEObject
 	 * @model
 	 * @generated
 	 */
-	String getObjectValue();
+	public String getObjectValue()
+	{
+		return objectValue;
+	}
 
 	/**
 	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlConversionValue#getObjectValue <em>Object Value</em>}' attribute.
@@ -93,16 +171,114 @@ public interface XmlConversionValue extends JpaEObject
 	 * @see #getObjectValue()
 	 * @generated
 	 */
-	void setObjectValue(String value);
-	
-	/**
-	 * Return the {@link TextRange} for the data-value attribute.
-	 */
-	public TextRange getDataValueTextRange();
-	
-	/**
-	 * Return the {@link TextRange} for the object-value attribute.
-	 */
-	public TextRange getObjectValueTextRange();
+	public void setObjectValue(String newObjectValue)
+	{
+		String oldObjectValue = objectValue;
+		objectValue = newObjectValue;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_CONVERSION_VALUE__OBJECT_VALUE, oldObjectValue, objectValue));
+	}
 
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Object eGet(int featureID, boolean resolve, boolean coreType)
+	{
+		switch (featureID)
+		{
+			case EclipseLinkOrmPackage.XML_CONVERSION_VALUE__DATA_VALUE:
+				return getDataValue();
+			case EclipseLinkOrmPackage.XML_CONVERSION_VALUE__OBJECT_VALUE:
+				return getObjectValue();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void eSet(int featureID, Object newValue)
+	{
+		switch (featureID)
+		{
+			case EclipseLinkOrmPackage.XML_CONVERSION_VALUE__DATA_VALUE:
+				setDataValue((String)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_CONVERSION_VALUE__OBJECT_VALUE:
+				setObjectValue((String)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void eUnset(int featureID)
+	{
+		switch (featureID)
+		{
+			case EclipseLinkOrmPackage.XML_CONVERSION_VALUE__DATA_VALUE:
+				setDataValue(DATA_VALUE_EDEFAULT);
+				return;
+			case EclipseLinkOrmPackage.XML_CONVERSION_VALUE__OBJECT_VALUE:
+				setObjectValue(OBJECT_VALUE_EDEFAULT);
+				return;
+		}
+		super.eUnset(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public boolean eIsSet(int featureID)
+	{
+		switch (featureID)
+		{
+			case EclipseLinkOrmPackage.XML_CONVERSION_VALUE__DATA_VALUE:
+				return DATA_VALUE_EDEFAULT == null ? dataValue != null : !DATA_VALUE_EDEFAULT.equals(dataValue);
+			case EclipseLinkOrmPackage.XML_CONVERSION_VALUE__OBJECT_VALUE:
+				return OBJECT_VALUE_EDEFAULT == null ? objectValue != null : !OBJECT_VALUE_EDEFAULT.equals(objectValue);
+		}
+		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String toString()
+	{
+		if (eIsProxy()) return super.toString();
+
+		StringBuffer result = new StringBuffer(super.toString());
+		result.append(" (dataValue: ");
+		result.append(dataValue);
+		result.append(", objectValue: ");
+		result.append(objectValue);
+		result.append(')');
+		return result.toString();
+	}
+	
+	public TextRange getDataValueTextRange() {
+		return getAttributeTextRange(EclipseLinkOrmXmlMapper.CONVERSION_VALUE__DATA_VALUE);
+	}
+	
+	public TextRange getObjectValueTextRange() {
+		return getAttributeTextRange(EclipseLinkOrmXmlMapper.CONVERSION_VALUE__OBJECT_VALUE);
+	}	
 } // XmlConversionValue

@@ -100,7 +100,7 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends BaseXmlEmbedded> 
 	}
 
 	protected OrmAttributeOverride addSpecifiedAttributeOverride(int index) {
-		XmlAttributeOverride xmlAttributeOverride = OrmFactory.eINSTANCE.createXmlAttributeOverrideImpl();
+		XmlAttributeOverride xmlAttributeOverride = OrmFactory.eINSTANCE.createXmlAttributeOverride();
 		OrmAttributeOverride attributeOverride = buildAttributeOverride(xmlAttributeOverride);
 		this.specifiedAttributeOverrides.add(index, attributeOverride);
 		this.resourceAttributeMapping.getAttributeOverrides().add(index, xmlAttributeOverride);
@@ -190,7 +190,7 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends BaseXmlEmbedded> 
 	
 	protected OrmAttributeOverride setSpecified(OrmAttributeOverride oldAttributeOverride) {
 		int index = specifiedAttributeOverridesSize();
-		XmlAttributeOverride xmlAttributeOverride = OrmFactory.eINSTANCE.createXmlAttributeOverrideImpl();
+		XmlAttributeOverride xmlAttributeOverride = OrmFactory.eINSTANCE.createXmlAttributeOverride();
 		OrmAttributeOverride newAttributeOverride = getJpaFactory().buildOrmAttributeOverride(this, this, xmlAttributeOverride);
 		this.specifiedAttributeOverrides.add(index, newAttributeOverride);
 		

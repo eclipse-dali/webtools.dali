@@ -104,7 +104,7 @@ public class GenericOrmAssociationOverride extends AbstractXmlContextNode
 	}
 	
 	public OrmJoinColumn addSpecifiedJoinColumn(int index) {
-		XmlJoinColumn resourceJoinColumn = OrmFactory.eINSTANCE.createXmlJoinColumnImpl();
+		XmlJoinColumn resourceJoinColumn = OrmFactory.eINSTANCE.createXmlJoinColumn();
 		OrmJoinColumn contextJoinColumn = buildJoinColumn(resourceJoinColumn);
 		this.specifiedJoinColumns.add(index, contextJoinColumn);
 		this.resourceAssociationOverride.getJoinColumns().add(index, resourceJoinColumn);

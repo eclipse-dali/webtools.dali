@@ -11,9 +11,8 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.context.java.JavaMultiRelationshipMapping;
 import org.eclipse.jpt.core.resource.orm.MapKey;
-import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
 
-public class VirtualMapKey extends AbstractJpaEObject implements MapKey
+public class VirtualMapKey extends MapKey
 {
 	JavaMultiRelationshipMapping javaMultiRelationshipMapping;
 
@@ -25,6 +24,7 @@ public class VirtualMapKey extends AbstractJpaEObject implements MapKey
 		this.metadataComplete = metadataComplete;
 	}
 
+	@Override
 	public String getName() {
 		if (this.metadataComplete) {
 			return null;
@@ -32,7 +32,8 @@ public class VirtualMapKey extends AbstractJpaEObject implements MapKey
 		return this.javaMultiRelationshipMapping.getMapKey();
 	}
 
-	public void setName(@SuppressWarnings("unused") String newName) {
+	@Override
+	public void setName(String newName) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 }

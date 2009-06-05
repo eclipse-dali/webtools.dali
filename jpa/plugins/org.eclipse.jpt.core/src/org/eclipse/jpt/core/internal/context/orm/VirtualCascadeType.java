@@ -11,9 +11,8 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.context.Cascade;
 import org.eclipse.jpt.core.resource.orm.CascadeType;
-import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
 
-public class VirtualCascadeType extends AbstractJpaEObject implements CascadeType
+public class VirtualCascadeType extends CascadeType
 {
 	Cascade javaCascade;
 
@@ -25,6 +24,7 @@ public class VirtualCascadeType extends AbstractJpaEObject implements CascadeTyp
 		this.metadataComplete = metadataComplete;
 	}
 
+	@Override
 	public boolean isCascadeAll() {
 		if (this.metadataComplete) {
 			return false;
@@ -32,10 +32,12 @@ public class VirtualCascadeType extends AbstractJpaEObject implements CascadeTyp
 		return this.javaCascade.isAll();
 	}
 
-	public void setCascadeAll(@SuppressWarnings("unused") boolean value) {
+	@Override
+	public void setCascadeAll(boolean value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
+	@Override
 	public boolean isCascadeMerge() {
 		if (this.metadataComplete) {
 			return false;
@@ -43,10 +45,12 @@ public class VirtualCascadeType extends AbstractJpaEObject implements CascadeTyp
 		return this.javaCascade.isMerge();
 	}
 
-	public void setCascadeMerge(@SuppressWarnings("unused") boolean value) {
+	@Override
+	public void setCascadeMerge(boolean value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
+	@Override
 	public boolean isCascadePersist() {
 		if (this.metadataComplete) {
 			return false;
@@ -54,10 +58,12 @@ public class VirtualCascadeType extends AbstractJpaEObject implements CascadeTyp
 		return this.javaCascade.isPersist();
 	}
 
-	public void setCascadePersist(@SuppressWarnings("unused") boolean value) {
+	@Override
+	public void setCascadePersist(boolean value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
+	@Override
 	public boolean isCascadeRefresh() {
 		if (this.metadataComplete) {
 			return false;
@@ -65,10 +71,12 @@ public class VirtualCascadeType extends AbstractJpaEObject implements CascadeTyp
 		return this.javaCascade.isRefresh();
 	}
 
-	public void setCascadeRefresh(@SuppressWarnings("unused") boolean value) {
+	@Override
+	public void setCascadeRefresh(boolean value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
+	@Override
 	public boolean isCascadeRemove() {
 		if (this.metadataComplete) {
 			return false;
@@ -76,7 +84,8 @@ public class VirtualCascadeType extends AbstractJpaEObject implements CascadeTyp
 		return this.javaCascade.isRemove();
 	}
 
-	public void setCascadeRemove(@SuppressWarnings("unused") boolean value) {
+	@Override
+	public void setCascadeRemove(boolean value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 }

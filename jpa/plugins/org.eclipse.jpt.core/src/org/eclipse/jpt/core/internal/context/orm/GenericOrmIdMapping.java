@@ -134,7 +134,7 @@ public class GenericOrmIdMapping<T extends XmlId>
 		if (getGeneratedValue() != null) {
 			throw new IllegalStateException("gemeratedValue already exists"); //$NON-NLS-1$
 		}
-		XmlGeneratedValue resourceGeneratedValue = OrmFactory.eINSTANCE.createXmlGeneratedValueImpl();
+		XmlGeneratedValue resourceGeneratedValue = OrmFactory.eINSTANCE.createXmlGeneratedValue();
 		this.generatedValue = buildGeneratedValue(resourceGeneratedValue);
 		this.resourceAttributeMapping.setGeneratedValue(resourceGeneratedValue);
 		firePropertyChanged(GENERATED_VALUE_PROPERTY, null, this.generatedValue);
@@ -165,7 +165,7 @@ public class GenericOrmIdMapping<T extends XmlId>
 		if (getSequenceGenerator() != null) {
 			throw new IllegalStateException("sequenceGenerator already exists"); //$NON-NLS-1$
 		}
-		XmlSequenceGenerator resourceSequenceGenerator = OrmFactory.eINSTANCE.createXmlSequenceGeneratorImpl();
+		XmlSequenceGenerator resourceSequenceGenerator = OrmFactory.eINSTANCE.createXmlSequenceGenerator();
 		this.sequenceGenerator = buildSequenceGenerator(resourceSequenceGenerator);
 		this.resourceAttributeMapping.setSequenceGenerator(resourceSequenceGenerator);
 		firePropertyChanged(SEQUENCE_GENERATOR_PROPERTY, null, this.sequenceGenerator);
@@ -196,7 +196,7 @@ public class GenericOrmIdMapping<T extends XmlId>
 		if (getTableGenerator() != null) {
 			throw new IllegalStateException("tableGenerator already exists"); //$NON-NLS-1$
 		}
-		XmlTableGenerator resourceTableGenerator = OrmFactory.eINSTANCE.createXmlTableGeneratorImpl();
+		XmlTableGenerator resourceTableGenerator = OrmFactory.eINSTANCE.createXmlTableGenerator();
 		this.tableGenerator = buildTableGenerator(resourceTableGenerator);
 		this.resourceAttributeMapping.setTableGenerator(resourceTableGenerator);
 		firePropertyChanged(TABLE_GENERATOR_PROPERTY, null, this.tableGenerator);
@@ -388,7 +388,7 @@ public class GenericOrmIdMapping<T extends XmlId>
 	}
 	
 	public void addResourceColumn() {
-		this.resourceAttributeMapping.setColumn(OrmFactory.eINSTANCE.createXmlColumnImpl());
+		this.resourceAttributeMapping.setColumn(OrmFactory.eINSTANCE.createXmlColumn());
 	}
 	
 	public void removeResourceColumn() {

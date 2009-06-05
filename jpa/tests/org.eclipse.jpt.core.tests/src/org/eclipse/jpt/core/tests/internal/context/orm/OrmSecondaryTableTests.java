@@ -91,7 +91,7 @@ public class OrmSecondaryTableTests extends ContextModelTestCase
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 				
 		//set name in the resource model, verify context model updated
-		entityResource.getSecondaryTables().add(OrmFactory.eINSTANCE.createXmlSecondaryTableImpl());
+		entityResource.getSecondaryTables().add(OrmFactory.eINSTANCE.createXmlSecondaryTable());
 		entityResource.getSecondaryTables().get(0).setName("FOO");
 		OrmSecondaryTable secondaryTable = ormEntity.specifiedSecondaryTables().next();
 		assertEquals("FOO", secondaryTable.getSpecifiedName());
@@ -155,7 +155,7 @@ public class OrmSecondaryTableTests extends ContextModelTestCase
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 				
 		//set schema in the resource model, verify context model updated
-		entityResource.getSecondaryTables().add(OrmFactory.eINSTANCE.createXmlSecondaryTableImpl());
+		entityResource.getSecondaryTables().add(OrmFactory.eINSTANCE.createXmlSecondaryTable());
 		entityResource.getSecondaryTables().get(0).setSchema("FOO");
 		OrmSecondaryTable secondaryTable = ormEntity.specifiedSecondaryTables().next();
 		assertEquals("FOO", secondaryTable.getSpecifiedSchema());
@@ -270,7 +270,7 @@ public class OrmSecondaryTableTests extends ContextModelTestCase
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 				
 		//set catalog in the resource model, verify context model updated
-		entityResource.getSecondaryTables().add(OrmFactory.eINSTANCE.createXmlSecondaryTableImpl());
+		entityResource.getSecondaryTables().add(OrmFactory.eINSTANCE.createXmlSecondaryTable());
 		entityResource.getSecondaryTables().get(0).setCatalog("FOO");
 		OrmSecondaryTable secondaryTable = ormEntity.specifiedSecondaryTables().next();
 		assertEquals("FOO", secondaryTable.getSpecifiedCatalog());
@@ -462,9 +462,9 @@ public class OrmSecondaryTableTests extends ContextModelTestCase
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		XmlSecondaryTable secondaryTableResource = entityResource.getSecondaryTables().get(0);
 		
-		secondaryTableResource.getPrimaryKeyJoinColumns().add(OrmFactory.eINSTANCE.createXmlPrimaryKeyJoinColumnImpl());
-		secondaryTableResource.getPrimaryKeyJoinColumns().add(OrmFactory.eINSTANCE.createXmlPrimaryKeyJoinColumnImpl());
-		secondaryTableResource.getPrimaryKeyJoinColumns().add(OrmFactory.eINSTANCE.createXmlPrimaryKeyJoinColumnImpl());
+		secondaryTableResource.getPrimaryKeyJoinColumns().add(OrmFactory.eINSTANCE.createXmlPrimaryKeyJoinColumn());
+		secondaryTableResource.getPrimaryKeyJoinColumns().add(OrmFactory.eINSTANCE.createXmlPrimaryKeyJoinColumn());
+		secondaryTableResource.getPrimaryKeyJoinColumns().add(OrmFactory.eINSTANCE.createXmlPrimaryKeyJoinColumn());
 		
 		secondaryTableResource.getPrimaryKeyJoinColumns().get(0).setName("FOO");
 		secondaryTableResource.getPrimaryKeyJoinColumns().get(1).setName("BAR");
@@ -516,11 +516,11 @@ public class OrmSecondaryTableTests extends ContextModelTestCase
 		ListIterator<OrmUniqueConstraint> uniqueConstraints = ormSecondaryTable.uniqueConstraints();
 		assertFalse(uniqueConstraints.hasNext());
 		
-		XmlUniqueConstraint uniqueConstraintResource = OrmFactory.eINSTANCE.createXmlUniqueConstraintImpl();
+		XmlUniqueConstraint uniqueConstraintResource = OrmFactory.eINSTANCE.createXmlUniqueConstraint();
 		secondaryTableResource.getUniqueConstraints().add(0, uniqueConstraintResource);
 		uniqueConstraintResource.getColumnNames().add(0, "foo");
 		
-		uniqueConstraintResource = OrmFactory.eINSTANCE.createXmlUniqueConstraintImpl();
+		uniqueConstraintResource = OrmFactory.eINSTANCE.createXmlUniqueConstraint();
 		secondaryTableResource.getUniqueConstraints().add(0, uniqueConstraintResource);
 		uniqueConstraintResource.getColumnNames().add(0, "bar");
 		
@@ -540,11 +540,11 @@ public class OrmSecondaryTableTests extends ContextModelTestCase
 		
 		assertEquals(0,  ormSecondaryTable.uniqueConstraintsSize());
 		
-		XmlUniqueConstraint uniqueConstraintResource = OrmFactory.eINSTANCE.createXmlUniqueConstraintImpl();
+		XmlUniqueConstraint uniqueConstraintResource = OrmFactory.eINSTANCE.createXmlUniqueConstraint();
 		secondaryTableResource.getUniqueConstraints().add(0, uniqueConstraintResource);
 		uniqueConstraintResource.getColumnNames().add(0, "foo");
 		
-		uniqueConstraintResource = OrmFactory.eINSTANCE.createXmlUniqueConstraintImpl();
+		uniqueConstraintResource = OrmFactory.eINSTANCE.createXmlUniqueConstraint();
 		secondaryTableResource.getUniqueConstraints().add(1, uniqueConstraintResource);
 		uniqueConstraintResource.getColumnNames().add(0, "bar");
 		
@@ -677,15 +677,15 @@ public class OrmSecondaryTableTests extends ContextModelTestCase
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		XmlSecondaryTable secondaryTableResource = entityResource.getSecondaryTables().get(0);
 	
-		XmlUniqueConstraint uniqueConstraintResource = OrmFactory.eINSTANCE.createXmlUniqueConstraintImpl();
+		XmlUniqueConstraint uniqueConstraintResource = OrmFactory.eINSTANCE.createXmlUniqueConstraint();
 		secondaryTableResource.getUniqueConstraints().add(0, uniqueConstraintResource);
 		uniqueConstraintResource.getColumnNames().add(0, "FOO");
 
-		uniqueConstraintResource = OrmFactory.eINSTANCE.createXmlUniqueConstraintImpl();
+		uniqueConstraintResource = OrmFactory.eINSTANCE.createXmlUniqueConstraint();
 		secondaryTableResource.getUniqueConstraints().add(1, uniqueConstraintResource);
 		uniqueConstraintResource.getColumnNames().add(0, "BAR");
 
-		uniqueConstraintResource = OrmFactory.eINSTANCE.createXmlUniqueConstraintImpl();
+		uniqueConstraintResource = OrmFactory.eINSTANCE.createXmlUniqueConstraint();
 		secondaryTableResource.getUniqueConstraints().add(2, uniqueConstraintResource);
 		uniqueConstraintResource.getColumnNames().add(0, "BAZ");
 

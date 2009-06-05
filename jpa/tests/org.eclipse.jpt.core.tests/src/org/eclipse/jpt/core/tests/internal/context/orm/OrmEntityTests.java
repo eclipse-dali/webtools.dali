@@ -806,9 +806,9 @@ public class OrmEntityTests extends ContextModelTestCase
 		OrmEntity ormEntity = (OrmEntity) persistentType.getMapping();
 		
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
-		entityResource.getSecondaryTables().add(OrmFactory.eINSTANCE.createXmlSecondaryTableImpl());
-		entityResource.getSecondaryTables().add(OrmFactory.eINSTANCE.createXmlSecondaryTableImpl());
-		entityResource.getSecondaryTables().add(OrmFactory.eINSTANCE.createXmlSecondaryTableImpl());
+		entityResource.getSecondaryTables().add(OrmFactory.eINSTANCE.createXmlSecondaryTable());
+		entityResource.getSecondaryTables().add(OrmFactory.eINSTANCE.createXmlSecondaryTable());
+		entityResource.getSecondaryTables().add(OrmFactory.eINSTANCE.createXmlSecondaryTable());
 		
 		entityResource.getSecondaryTables().get(0).setName("FOO");
 		entityResource.getSecondaryTables().get(1).setName("BAR");
@@ -1098,7 +1098,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		assertNull(entityResource.getSequenceGenerator());
 		assertEquals(0, ormEntity.getPersistenceUnit().generatorsSize());
 		
-		entityResource.setSequenceGenerator(OrmFactory.eINSTANCE.createXmlSequenceGeneratorImpl());
+		entityResource.setSequenceGenerator(OrmFactory.eINSTANCE.createXmlSequenceGenerator());
 				
 		assertNotNull(ormEntity.getSequenceGenerator());
 		assertNotNull(entityResource.getSequenceGenerator());
@@ -1170,7 +1170,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		assertNull(entityResource.getTableGenerator());
 		assertEquals(0, ormEntity.getPersistenceUnit().generatorsSize());
 		
-		entityResource.setTableGenerator(OrmFactory.eINSTANCE.createXmlTableGeneratorImpl());
+		entityResource.setTableGenerator(OrmFactory.eINSTANCE.createXmlTableGenerator());
 				
 		assertNotNull(ormEntity.getTableGenerator());
 		assertNotNull(entityResource.getTableGenerator());
@@ -1366,9 +1366,9 @@ public class OrmEntityTests extends ContextModelTestCase
 		OrmEntity ormEntity = (OrmEntity) persistentType.getMapping();
 		
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
-		entityResource.getPrimaryKeyJoinColumns().add(OrmFactory.eINSTANCE.createXmlPrimaryKeyJoinColumnImpl());
-		entityResource.getPrimaryKeyJoinColumns().add(OrmFactory.eINSTANCE.createXmlPrimaryKeyJoinColumnImpl());
-		entityResource.getPrimaryKeyJoinColumns().add(OrmFactory.eINSTANCE.createXmlPrimaryKeyJoinColumnImpl());
+		entityResource.getPrimaryKeyJoinColumns().add(OrmFactory.eINSTANCE.createXmlPrimaryKeyJoinColumn());
+		entityResource.getPrimaryKeyJoinColumns().add(OrmFactory.eINSTANCE.createXmlPrimaryKeyJoinColumn());
+		entityResource.getPrimaryKeyJoinColumns().add(OrmFactory.eINSTANCE.createXmlPrimaryKeyJoinColumn());
 		
 		entityResource.getPrimaryKeyJoinColumns().get(0).setName("FOO");
 		entityResource.getPrimaryKeyJoinColumns().get(1).setName("BAR");
@@ -1514,9 +1514,9 @@ public class OrmEntityTests extends ContextModelTestCase
 		OrmEntity ormEntity = (OrmEntity) persistentType.getMapping();
 
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
-		entityResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createXmlAttributeOverrideImpl());
-		entityResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createXmlAttributeOverrideImpl());
-		entityResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createXmlAttributeOverrideImpl());
+		entityResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createXmlAttributeOverride());
+		entityResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createXmlAttributeOverride());
+		entityResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createXmlAttributeOverride());
 		
 		entityResource.getAttributeOverrides().get(0).setName("FOO");
 		entityResource.getAttributeOverrides().get(1).setName("BAR");
@@ -1552,9 +1552,9 @@ public class OrmEntityTests extends ContextModelTestCase
 		OrmEntity ormEntity = (OrmEntity) persistentType.getMapping();
 		
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
-		entityResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createXmlAttributeOverrideImpl());
-		entityResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createXmlAttributeOverrideImpl());
-		entityResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createXmlAttributeOverrideImpl());
+		entityResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createXmlAttributeOverride());
+		entityResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createXmlAttributeOverride());
+		entityResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createXmlAttributeOverride());
 		
 		entityResource.getAttributeOverrides().get(0).setName("FOO");
 		entityResource.getAttributeOverrides().get(1).setName("BAR");
@@ -1821,9 +1821,9 @@ public class OrmEntityTests extends ContextModelTestCase
 		OrmEntity ormEntity = (OrmEntity) persistentType.getMapping();
 
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
-		entityResource.getAssociationOverrides().add(OrmFactory.eINSTANCE.createXmlAssociationOverrideImpl());
-		entityResource.getAssociationOverrides().add(OrmFactory.eINSTANCE.createXmlAssociationOverrideImpl());
-		entityResource.getAssociationOverrides().add(OrmFactory.eINSTANCE.createXmlAssociationOverrideImpl());
+		entityResource.getAssociationOverrides().add(OrmFactory.eINSTANCE.createXmlAssociationOverride());
+		entityResource.getAssociationOverrides().add(OrmFactory.eINSTANCE.createXmlAssociationOverride());
+		entityResource.getAssociationOverrides().add(OrmFactory.eINSTANCE.createXmlAssociationOverride());
 		
 		entityResource.getAssociationOverrides().get(0).setName("FOO");
 		entityResource.getAssociationOverrides().get(1).setName("BAR");
@@ -1859,9 +1859,9 @@ public class OrmEntityTests extends ContextModelTestCase
 		OrmEntity ormEntity = (OrmEntity) persistentType.getMapping();
 		
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
-		entityResource.getAssociationOverrides().add(OrmFactory.eINSTANCE.createXmlAssociationOverrideImpl());
-		entityResource.getAssociationOverrides().add(OrmFactory.eINSTANCE.createXmlAssociationOverrideImpl());
-		entityResource.getAssociationOverrides().add(OrmFactory.eINSTANCE.createXmlAssociationOverrideImpl());
+		entityResource.getAssociationOverrides().add(OrmFactory.eINSTANCE.createXmlAssociationOverride());
+		entityResource.getAssociationOverrides().add(OrmFactory.eINSTANCE.createXmlAssociationOverride());
+		entityResource.getAssociationOverrides().add(OrmFactory.eINSTANCE.createXmlAssociationOverride());
 		
 		entityResource.getAssociationOverrides().get(0).setName("FOO");
 		entityResource.getAssociationOverrides().get(1).setName("BAR");

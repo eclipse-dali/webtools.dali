@@ -8,9 +8,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.orm.translators;
 
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 public class GeneratedValueTranslator extends Translator 
@@ -21,11 +19,6 @@ public class GeneratedValueTranslator extends Translator
 	
 	public GeneratedValueTranslator(String domNameAndPath, EStructuralFeature aFeature) {
 		super(domNameAndPath, aFeature, END_TAG_NO_INDENT);
-	}
-	
-	@Override
-	public EObject createEMFObject(String nodeName, String readAheadName) {
-		return OrmFactory.eINSTANCE.createXmlGeneratedValueImpl();
 	}
 	
 	@Override

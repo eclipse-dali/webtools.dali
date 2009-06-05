@@ -164,7 +164,7 @@ public class GenericOrmVersionMapping<T extends XmlVersion>
 	}
 	
 	public void addResourceColumn() {
-		this.resourceAttributeMapping.setColumn(OrmFactory.eINSTANCE.createXmlColumnImpl());
+		this.resourceAttributeMapping.setColumn(OrmFactory.eINSTANCE.createXmlColumn());
 	}
 	
 	public void removeResourceColumn() {

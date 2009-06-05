@@ -469,7 +469,7 @@ public class EntityMappingsTests extends ContextModelTestCase
 		assertEquals(0, getXmlEntityMappings().getTableGenerators().size());
 		assertEquals(0, getEntityMappings().getPersistenceUnit().generatorsSize());
 		
-		XmlTableGenerator tableGeneratorResource = OrmFactory.eINSTANCE.createXmlTableGeneratorImpl();
+		XmlTableGenerator tableGeneratorResource = OrmFactory.eINSTANCE.createXmlTableGenerator();
 		getXmlEntityMappings().getTableGenerators().add(tableGeneratorResource);
 		tableGeneratorResource.setName("FOO");
 		
@@ -477,7 +477,7 @@ public class EntityMappingsTests extends ContextModelTestCase
 		assertEquals("FOO", tableGenerator.getName());
 		assertEquals(1, getEntityMappings().getPersistenceUnit().generatorsSize());
 		
-		XmlTableGenerator tableGeneratorResource2 = OrmFactory.eINSTANCE.createXmlTableGeneratorImpl();
+		XmlTableGenerator tableGeneratorResource2 = OrmFactory.eINSTANCE.createXmlTableGenerator();
 		getXmlEntityMappings().getTableGenerators().add(0, tableGeneratorResource2);
 		tableGeneratorResource2.setName("BAR");
 		
@@ -487,7 +487,7 @@ public class EntityMappingsTests extends ContextModelTestCase
 		assertFalse(tableGenerators.hasNext());
 		assertEquals(2, getEntityMappings().getPersistenceUnit().generatorsSize());
 		
-		XmlTableGenerator tableGeneratorResource3 = OrmFactory.eINSTANCE.createXmlTableGeneratorImpl();
+		XmlTableGenerator tableGeneratorResource3 = OrmFactory.eINSTANCE.createXmlTableGenerator();
 		getXmlEntityMappings().getTableGenerators().add(1, tableGeneratorResource3);
 		tableGeneratorResource3.setName("BAZ");
 		
@@ -638,7 +638,7 @@ public class EntityMappingsTests extends ContextModelTestCase
 		assertEquals(0, getXmlEntityMappings().getSequenceGenerators().size());
 		assertEquals(0, getEntityMappings().getPersistenceUnit().generatorsSize());
 		
-		XmlSequenceGenerator sequenceGeneratorResource = OrmFactory.eINSTANCE.createXmlSequenceGeneratorImpl();
+		XmlSequenceGenerator sequenceGeneratorResource = OrmFactory.eINSTANCE.createXmlSequenceGenerator();
 		getXmlEntityMappings().getSequenceGenerators().add(sequenceGeneratorResource);
 		sequenceGeneratorResource.setName("FOO");
 		
@@ -646,7 +646,7 @@ public class EntityMappingsTests extends ContextModelTestCase
 		assertEquals("FOO", sequenceGenerator.getName());
 		assertEquals(1, getEntityMappings().getPersistenceUnit().generatorsSize());
 		
-		XmlSequenceGenerator sequenceGeneratorResource2 = OrmFactory.eINSTANCE.createXmlSequenceGeneratorImpl();
+		XmlSequenceGenerator sequenceGeneratorResource2 = OrmFactory.eINSTANCE.createXmlSequenceGenerator();
 		getXmlEntityMappings().getSequenceGenerators().add(0, sequenceGeneratorResource2);
 		sequenceGeneratorResource2.setName("BAR");
 		
@@ -656,7 +656,7 @@ public class EntityMappingsTests extends ContextModelTestCase
 		assertFalse(sequenceGenerators.hasNext());
 		assertEquals(2, getEntityMappings().getPersistenceUnit().generatorsSize());
 		
-		XmlSequenceGenerator sequenceGeneratorResource3 = OrmFactory.eINSTANCE.createXmlSequenceGeneratorImpl();
+		XmlSequenceGenerator sequenceGeneratorResource3 = OrmFactory.eINSTANCE.createXmlSequenceGenerator();
 		getXmlEntityMappings().getSequenceGenerators().add(1, sequenceGeneratorResource3);
 		sequenceGeneratorResource3.setName("BAZ");
 

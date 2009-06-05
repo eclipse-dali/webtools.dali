@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.context.java.JavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlPrimaryKeyJoinColumn;
-import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**
@@ -22,7 +21,7 @@ import org.eclipse.jpt.core.utility.TextRange;
  * 
  * A virtual pk join column delegates to the underlying java pk join column for its state.
  */
-public class VirtualXmlPrimaryKeyJoinColumn extends AbstractJpaEObject implements XmlPrimaryKeyJoinColumn
+public class VirtualXmlPrimaryKeyJoinColumn extends XmlPrimaryKeyJoinColumn
 {
 	
 	protected JavaPrimaryKeyJoinColumn javaPrimaryKeyJoinColumn;
@@ -33,34 +32,42 @@ public class VirtualXmlPrimaryKeyJoinColumn extends AbstractJpaEObject implement
 		this.javaPrimaryKeyJoinColumn = javaPrimaryKeyJoinColumn;
 	}
 
+	@Override
 	public String getName() {
 		return this.javaPrimaryKeyJoinColumn.getName();
 	}
 
-	public void setName(@SuppressWarnings("unused") String value) {
+	@Override
+	public void setName(String value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
+	@Override
 	public String getColumnDefinition() {
 		return this.javaPrimaryKeyJoinColumn.getColumnDefinition();
 	}
 	
-	public void setColumnDefinition(@SuppressWarnings("unused") String value) {
+	@Override
+	public void setColumnDefinition(String value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 	
+	@Override
 	public String getReferencedColumnName() {
 		return this.javaPrimaryKeyJoinColumn.getReferencedColumnName();
 	}
 	
-	public void setReferencedColumnName(@SuppressWarnings("unused") String value) {
+	@Override
+	public void setReferencedColumnName(String value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 	
+	@Override
 	public TextRange getNameTextRange() {
 		return null;
 	}
 	
+	@Override
 	public TextRange getReferencedColumnNameTextRange() {
 		return null;
 	}

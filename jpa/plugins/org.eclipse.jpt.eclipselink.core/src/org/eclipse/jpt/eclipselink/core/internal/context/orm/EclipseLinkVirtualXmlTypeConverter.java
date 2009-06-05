@@ -10,7 +10,6 @@
 package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
-import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
 import org.eclipse.jpt.eclipselink.core.context.TypeConverter;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlTypeConverter;
 
@@ -18,7 +17,7 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.XmlTypeConverter;
  * VirtualBasic is an implementation of Basic used when there is 
  * no tag in the orm.xml and an underlying javaBasicMapping exists.
  */
-public class EclipseLinkVirtualXmlTypeConverter extends AbstractJpaEObject implements XmlTypeConverter
+public class EclipseLinkVirtualXmlTypeConverter extends XmlTypeConverter
 {
 	protected OrmTypeMapping ormTypeMapping;
 	
@@ -34,6 +33,7 @@ public class EclipseLinkVirtualXmlTypeConverter extends AbstractJpaEObject imple
 		return this.ormTypeMapping.isMetadataComplete();
 	}
 	
+	@Override
 	public String getName() {
 		if (isOrmMetadataComplete()) {
 			return null;
@@ -41,10 +41,12 @@ public class EclipseLinkVirtualXmlTypeConverter extends AbstractJpaEObject imple
 		return this.javaConverter.getName();
 	}
 	
+	@Override
 	public void setName(@SuppressWarnings("unused") String value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
+	@Override
 	public String getDataType() {
 		if (isOrmMetadataComplete()) {
 			return null;
@@ -52,10 +54,12 @@ public class EclipseLinkVirtualXmlTypeConverter extends AbstractJpaEObject imple
 		return this.javaConverter.getDataType();
 	}
 	
+	@Override
 	public void setDataType(@SuppressWarnings("unused") String value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
+	@Override
 	public String getObjectType() {
 		if (isOrmMetadataComplete()) {
 			return null;
@@ -63,6 +67,7 @@ public class EclipseLinkVirtualXmlTypeConverter extends AbstractJpaEObject imple
 		return this.javaConverter.getObjectType();
 	}
 	
+	@Override
 	public void setObjectType(@SuppressWarnings("unused") String value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}

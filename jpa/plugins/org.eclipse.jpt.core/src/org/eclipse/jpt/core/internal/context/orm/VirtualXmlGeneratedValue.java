@@ -13,10 +13,9 @@ import org.eclipse.jpt.core.context.java.JavaGeneratedValue;
 import org.eclipse.jpt.core.context.java.JavaIdMapping;
 import org.eclipse.jpt.core.resource.orm.GenerationType;
 import org.eclipse.jpt.core.resource.orm.XmlGeneratedValue;
-import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
 import org.eclipse.jpt.core.utility.TextRange;
 
-public class VirtualXmlGeneratedValue extends AbstractJpaEObject implements XmlGeneratedValue
+public class VirtualXmlGeneratedValue extends XmlGeneratedValue
 {
 	JavaIdMapping javaIdMapping;
 
@@ -34,22 +33,27 @@ public class VirtualXmlGeneratedValue extends AbstractJpaEObject implements XmlG
 	}
 
 
+	@Override
 	public String getGenerator() {
 		return this.metadataComplete ? null : this.getJavaGeneratedValue().getGenerator();
 	}
 
+	@Override
 	public GenerationType getStrategy() {
 		return this.metadataComplete ? null : org.eclipse.jpt.core.context.GenerationType.toOrmResourceModel(this.getJavaGeneratedValue().getStrategy());
 	}
 
-	public void setGenerator(@SuppressWarnings("unused")String value) {
+	@Override
+	public void setGenerator(String value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
-	public void setStrategy(@SuppressWarnings("unused")GenerationType value) {
+	@Override
+	public void setStrategy(GenerationType value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
+	@Override
 	public TextRange getGeneratorTextRange() {
 		return null;
 	}

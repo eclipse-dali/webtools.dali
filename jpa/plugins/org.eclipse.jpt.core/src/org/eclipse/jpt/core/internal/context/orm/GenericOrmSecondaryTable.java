@@ -124,7 +124,7 @@ public class GenericOrmSecondaryTable
 			//cause change notifications to be sent to the UI in the wrong order
 			this.defaultPrimaryKeyJoinColumn = null;
 		}
-		XmlPrimaryKeyJoinColumn resourcePkJoinColumn = OrmFactory.eINSTANCE.createXmlPrimaryKeyJoinColumnImpl();
+		XmlPrimaryKeyJoinColumn resourcePkJoinColumn = OrmFactory.eINSTANCE.createXmlPrimaryKeyJoinColumn();
 		OrmPrimaryKeyJoinColumn contextPkJoinColumn = buildPrimaryKeyJoinColumn(resourcePkJoinColumn);
 		this.specifiedPrimaryKeyJoinColumns.add(index, contextPkJoinColumn);
 		this.secondaryTable.getPrimaryKeyJoinColumns().add(index, resourcePkJoinColumn);

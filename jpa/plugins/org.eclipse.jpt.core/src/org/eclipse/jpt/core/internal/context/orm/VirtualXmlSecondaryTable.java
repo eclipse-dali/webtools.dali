@@ -18,7 +18,6 @@ import org.eclipse.jpt.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.core.resource.orm.XmlPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlSecondaryTable;
 import org.eclipse.jpt.core.resource.orm.XmlUniqueConstraint;
-import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 
@@ -30,7 +29,7 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
  * 
  * A virtual secondary table delegates to the underlying java secondary table for its state. 
  */
-public class VirtualXmlSecondaryTable extends AbstractJpaEObject implements XmlSecondaryTable
+public class VirtualXmlSecondaryTable extends XmlSecondaryTable
 {
 	
 	protected JavaSecondaryTable javaSecondaryTable;
@@ -40,33 +39,40 @@ public class VirtualXmlSecondaryTable extends AbstractJpaEObject implements XmlS
 		this.javaSecondaryTable = javaSecondaryTable;
 	}
 
+	@Override
 	public String getName() {
 		return this.javaSecondaryTable.getSpecifiedName();
 	}
 
-	public void setName(@SuppressWarnings("unused") String value) {
+	@Override
+	public void setName(String value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
+	@Override
 	public String getCatalog() {
 		return this.javaSecondaryTable.getSpecifiedCatalog();
 	}
 	
-	public void setCatalog(@SuppressWarnings("unused") String value) {
+	@Override
+	public void setCatalog(String value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 	
+	@Override
 	public String getSchema() {
 		return this.javaSecondaryTable.getSpecifiedSchema();
 	}
 	
-	public void setSchema(@SuppressWarnings("unused") String value) {
+	@Override
+	public void setSchema(String value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 	
 	//VirtualXmlSecondaryTable is rebuilt everytime, so rebuilding the joinColumns list as well
+	@Override
 	public EList<XmlPrimaryKeyJoinColumn> getPrimaryKeyJoinColumns() {
-		EList<XmlPrimaryKeyJoinColumn> primaryKeyJoinColumns = new EObjectContainmentEList<XmlPrimaryKeyJoinColumn>(XmlPrimaryKeyJoinColumn.class, this, OrmPackage.XML_SECONDARY_TABLE_IMPL__PRIMARY_KEY_JOIN_COLUMNS);
+		EList<XmlPrimaryKeyJoinColumn> primaryKeyJoinColumns = new EObjectContainmentEList<XmlPrimaryKeyJoinColumn>(XmlPrimaryKeyJoinColumn.class, this, OrmPackage.XML_SECONDARY_TABLE__PRIMARY_KEY_JOIN_COLUMNS);
 		
 		for (JavaPrimaryKeyJoinColumn pkJoinColumn : CollectionTools.iterable(this.javaSecondaryTable.specifiedPrimaryKeyJoinColumns())) {
 			XmlPrimaryKeyJoinColumn xmlPkJoinColumn = new VirtualXmlPrimaryKeyJoinColumn(pkJoinColumn);
@@ -76,6 +82,7 @@ public class VirtualXmlSecondaryTable extends AbstractJpaEObject implements XmlS
 		return primaryKeyJoinColumns;
 	}
 	
+	@Override
 	public EList<XmlUniqueConstraint> getUniqueConstraints() {
 		EList<XmlUniqueConstraint> xmlUniqueConstraints = new EObjectContainmentEList<XmlUniqueConstraint>(XmlUniqueConstraint.class, this, OrmPackage.XML_SECONDARY_TABLE__UNIQUE_CONSTRAINTS);
 
@@ -87,14 +94,17 @@ public class VirtualXmlSecondaryTable extends AbstractJpaEObject implements XmlS
 		return xmlUniqueConstraints;
 	}
 	
+	@Override
 	public TextRange getNameTextRange() {
 		return null;
 	}
 	
+	@Override
 	public TextRange getCatalogTextRange() {
 		return null;
 	}
 	
+	@Override
 	public TextRange getSchemaTextRange() {
 		return null;
 	}

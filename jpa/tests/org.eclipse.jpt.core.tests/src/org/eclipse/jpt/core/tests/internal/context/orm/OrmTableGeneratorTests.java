@@ -372,11 +372,11 @@ public class OrmTableGeneratorTests extends ContextModelTestCase
 		ListIterator<OrmUniqueConstraint> uniqueConstraints = tableGenerator.uniqueConstraints();
 		assertFalse(uniqueConstraints.hasNext());
 		
-		XmlUniqueConstraint uniqueConstraintResource = OrmFactory.eINSTANCE.createXmlUniqueConstraintImpl();
+		XmlUniqueConstraint uniqueConstraintResource = OrmFactory.eINSTANCE.createXmlUniqueConstraint();
 		tableGeneratorResource.getUniqueConstraints().add(0, uniqueConstraintResource);
 		uniqueConstraintResource.getColumnNames().add(0, "foo");
 		
-		uniqueConstraintResource = OrmFactory.eINSTANCE.createXmlUniqueConstraintImpl();
+		uniqueConstraintResource = OrmFactory.eINSTANCE.createXmlUniqueConstraint();
 		tableGeneratorResource.getUniqueConstraints().add(0, uniqueConstraintResource);
 		uniqueConstraintResource.getColumnNames().add(0, "bar");
 		
@@ -393,11 +393,11 @@ public class OrmTableGeneratorTests extends ContextModelTestCase
 		
 		assertEquals(0,  tableGenerator.uniqueConstraintsSize());
 		
-		XmlUniqueConstraint uniqueConstraintResource = OrmFactory.eINSTANCE.createXmlUniqueConstraintImpl();
+		XmlUniqueConstraint uniqueConstraintResource = OrmFactory.eINSTANCE.createXmlUniqueConstraint();
 		tableGeneratorResource.getUniqueConstraints().add(0, uniqueConstraintResource);
 		uniqueConstraintResource.getColumnNames().add(0, "foo");
 		
-		uniqueConstraintResource = OrmFactory.eINSTANCE.createXmlUniqueConstraintImpl();
+		uniqueConstraintResource = OrmFactory.eINSTANCE.createXmlUniqueConstraint();
 		tableGeneratorResource.getUniqueConstraints().add(1, uniqueConstraintResource);
 		uniqueConstraintResource.getColumnNames().add(0, "bar");
 		
@@ -515,15 +515,15 @@ public class OrmTableGeneratorTests extends ContextModelTestCase
 		TableGenerator tableGenerator = getEntityMappings().addTableGenerator(0);		
 		XmlTableGenerator tableGeneratorResource = getXmlEntityMappings().getTableGenerators().get(0);
 	
-		XmlUniqueConstraint uniqueConstraintResource = OrmFactory.eINSTANCE.createXmlUniqueConstraintImpl();
+		XmlUniqueConstraint uniqueConstraintResource = OrmFactory.eINSTANCE.createXmlUniqueConstraint();
 		tableGeneratorResource.getUniqueConstraints().add(0, uniqueConstraintResource);
 		uniqueConstraintResource.getColumnNames().add(0, "FOO");
 
-		uniqueConstraintResource = OrmFactory.eINSTANCE.createXmlUniqueConstraintImpl();
+		uniqueConstraintResource = OrmFactory.eINSTANCE.createXmlUniqueConstraint();
 		tableGeneratorResource.getUniqueConstraints().add(1, uniqueConstraintResource);
 		uniqueConstraintResource.getColumnNames().add(0, "BAR");
 
-		uniqueConstraintResource = OrmFactory.eINSTANCE.createXmlUniqueConstraintImpl();
+		uniqueConstraintResource = OrmFactory.eINSTANCE.createXmlUniqueConstraint();
 		tableGeneratorResource.getUniqueConstraints().add(2, uniqueConstraintResource);
 		uniqueConstraintResource.getColumnNames().add(0, "BAZ");
 

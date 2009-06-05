@@ -9,8 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.resource.orm;
 
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.jpt.core.internal.resource.orm.translators.OrmXmlMapper;
 import org.eclipse.jpt.core.utility.TextRange;
-
 
 /**
  * <!-- begin-user-doc -->
@@ -31,11 +34,52 @@ import org.eclipse.jpt.core.utility.TextRange;
  * </p>
  *
  * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlJoinColumn()
- * @model kind="class" interface="true" abstract="true"
+ * @model kind="class"
  * @generated
  */
-public interface XmlJoinColumn extends XmlAbstractColumn
+public class XmlJoinColumn extends XmlAbstractColumn
 {
+	/**
+	 * The default value of the '{@link #getReferencedColumnName() <em>Referenced Column Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getReferencedColumnName()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String REFERENCED_COLUMN_NAME_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getReferencedColumnName() <em>Referenced Column Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getReferencedColumnName()
+	 * @generated
+	 * @ordered
+	 */
+	protected String referencedColumnName = REFERENCED_COLUMN_NAME_EDEFAULT;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected XmlJoinColumn()
+	{
+		super();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	protected EClass eStaticClass()
+	{
+		return OrmPackage.Literals.XML_JOIN_COLUMN;
+	}
+
 	/**
 	 * Returns the value of the '<em><b>Referenced Column Name</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -50,7 +94,10 @@ public interface XmlJoinColumn extends XmlAbstractColumn
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
-	String getReferencedColumnName();
+	public String getReferencedColumnName()
+	{
+		return referencedColumnName;
+	}
 
 	/**
 	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlJoinColumn#getReferencedColumnName <em>Referenced Column Name</em>}' attribute.
@@ -60,8 +107,98 @@ public interface XmlJoinColumn extends XmlAbstractColumn
 	 * @see #getReferencedColumnName()
 	 * @generated
 	 */
-	void setReferencedColumnName(String value);
-	
-	TextRange getReferencedColumnNameTextRange();
+	public void setReferencedColumnName(String newReferencedColumnName)
+	{
+		String oldReferencedColumnName = referencedColumnName;
+		referencedColumnName = newReferencedColumnName;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_JOIN_COLUMN__REFERENCED_COLUMN_NAME, oldReferencedColumnName, referencedColumnName));
+	}
 
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Object eGet(int featureID, boolean resolve, boolean coreType)
+	{
+		switch (featureID)
+		{
+			case OrmPackage.XML_JOIN_COLUMN__REFERENCED_COLUMN_NAME:
+				return getReferencedColumnName();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void eSet(int featureID, Object newValue)
+	{
+		switch (featureID)
+		{
+			case OrmPackage.XML_JOIN_COLUMN__REFERENCED_COLUMN_NAME:
+				setReferencedColumnName((String)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void eUnset(int featureID)
+	{
+		switch (featureID)
+		{
+			case OrmPackage.XML_JOIN_COLUMN__REFERENCED_COLUMN_NAME:
+				setReferencedColumnName(REFERENCED_COLUMN_NAME_EDEFAULT);
+				return;
+		}
+		super.eUnset(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public boolean eIsSet(int featureID)
+	{
+		switch (featureID)
+		{
+			case OrmPackage.XML_JOIN_COLUMN__REFERENCED_COLUMN_NAME:
+				return REFERENCED_COLUMN_NAME_EDEFAULT == null ? referencedColumnName != null : !REFERENCED_COLUMN_NAME_EDEFAULT.equals(referencedColumnName);
+		}
+		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String toString()
+	{
+		if (eIsProxy()) return super.toString();
+
+		StringBuffer result = new StringBuffer(super.toString());
+		result.append(" (referencedColumnName: ");
+		result.append(referencedColumnName);
+		result.append(')');
+		return result.toString();
+	}
+	
+	public TextRange getReferencedColumnNameTextRange() {
+		return getAttributeTextRange(OrmXmlMapper.REFERENCED_COLUMN_NAME);
+	}
 } // JoinColumn

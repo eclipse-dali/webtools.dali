@@ -208,12 +208,10 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlAssociationOverride/joinColumns"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlAssociationOverride/name"/>
     </genClasses>
-    <genClasses ecoreClass="orm.ecore#//XmlAssociationOverrideImpl"/>
     <genClasses image="false" ecoreClass="orm.ecore#//XmlAttributeOverride">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlAttributeOverride/column"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlAttributeOverride/name"/>
     </genClasses>
-    <genClasses ecoreClass="orm.ecore#//XmlAttributeOverrideImpl"/>
     <genClasses ecoreClass="orm.ecore#//CascadeType">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute orm.ecore#//CascadeType/cascadeAll"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute orm.ecore#//CascadeType/cascadePersist"/>
@@ -221,12 +219,10 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute orm.ecore#//CascadeType/cascadeRemove"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute orm.ecore#//CascadeType/cascadeRefresh"/>
     </genClasses>
-    <genClasses ecoreClass="orm.ecore#//CascadeTypeImpl"/>
     <genClasses image="false" ecoreClass="orm.ecore#//XmlNamedColumn">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlNamedColumn/columnDefinition"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlNamedColumn/name"/>
     </genClasses>
-    <genClasses image="false" ecoreClass="orm.ecore#//AbstractXmlNamedColumn"/>
     <genClasses image="false" ecoreClass="orm.ecore#//XmlAbstractColumn">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlAbstractColumn/insertable"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlAbstractColumn/nullable"/>
@@ -234,13 +230,11 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlAbstractColumn/unique"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlAbstractColumn/updatable"/>
     </genClasses>
-    <genClasses image="false" ecoreClass="orm.ecore#//AbstractXmlAbstractColumn"/>
     <genClasses image="false" ecoreClass="orm.ecore#//XmlColumn">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlColumn/length"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlColumn/precision"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlColumn/scale"/>
     </genClasses>
-    <genClasses ecoreClass="orm.ecore#//XmlColumnImpl"/>
     <genClasses ecoreClass="orm.ecore#//ColumnResult">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//ColumnResult/name"/>
     </genClasses>
@@ -277,7 +271,6 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlGeneratedValue/generator"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlGeneratedValue/strategy"/>
     </genClasses>
-    <genClasses ecoreClass="orm.ecore#//XmlGeneratedValueImpl"/>
     <genClasses ecoreClass="orm.ecore#//XmlIdClass">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlIdClass/className"/>
     </genClasses>
@@ -287,17 +280,14 @@
     <genClasses image="false" ecoreClass="orm.ecore#//XmlJoinColumn">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlJoinColumn/referencedColumnName"/>
     </genClasses>
-    <genClasses ecoreClass="orm.ecore#//XmlJoinColumnImpl"/>
     <genClasses image="false" ecoreClass="orm.ecore#//XmlJoinTable">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlJoinTable/joinColumns"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlJoinTable/inverseJoinColumns"/>
     </genClasses>
-    <genClasses ecoreClass="orm.ecore#//XmlJoinTableImpl"/>
     <genClasses ecoreClass="orm.ecore#//Lob"/>
     <genClasses ecoreClass="orm.ecore#//MapKey">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//MapKey/name"/>
     </genClasses>
-    <genClasses ecoreClass="orm.ecore#//MapKeyImpl"/>
     <genClasses image="false" ecoreClass="orm.ecore#//XmlQuery">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlQuery/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlQuery/query"/>
@@ -318,12 +308,10 @@
     <genClasses ecoreClass="orm.ecore#//XmlPrimaryKeyJoinColumn">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlPrimaryKeyJoinColumn/referencedColumnName"/>
     </genClasses>
-    <genClasses ecoreClass="orm.ecore#//XmlPrimaryKeyJoinColumnImpl"/>
     <genClasses ecoreClass="orm.ecore#//XmlQueryHint">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlQueryHint/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlQueryHint/value"/>
     </genClasses>
-    <genClasses image="false" ecoreClass="orm.ecore#//AbstractXmlBaseTable"/>
     <genClasses image="false" ecoreClass="orm.ecore#//XmlBaseTable">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlBaseTable/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlBaseTable/catalog"/>
@@ -334,7 +322,6 @@
     <genClasses ecoreClass="orm.ecore#//XmlSecondaryTable">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlSecondaryTable/primaryKeyJoinColumns"/>
     </genClasses>
-    <genClasses ecoreClass="orm.ecore#//XmlSecondaryTableImpl"/>
     <genClasses image="false" ecoreClass="orm.ecore#//XmlGenerator">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlGenerator/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlGenerator/initialValue"/>
@@ -343,7 +330,6 @@
     <genClasses image="false" ecoreClass="orm.ecore#//XmlSequenceGenerator">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlSequenceGenerator/sequenceName"/>
     </genClasses>
-    <genClasses ecoreClass="orm.ecore#//XmlSequenceGeneratorImpl"/>
     <genClasses ecoreClass="orm.ecore#//SqlResultSetMapping">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//SqlResultSetMapping/name"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//SqlResultSetMapping/entityResults"/>
@@ -358,11 +344,9 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlTableGenerator/pkColumnValue"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlTableGenerator/uniqueConstraints"/>
     </genClasses>
-    <genClasses ecoreClass="orm.ecore#//XmlTableGeneratorImpl"/>
     <genClasses ecoreClass="orm.ecore#//XmlUniqueConstraint">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlUniqueConstraint/columnNames"/>
     </genClasses>
-    <genClasses ecoreClass="orm.ecore#//XmlUniqueConstraintImpl"/>
   </genPackages>
   <genPackages prefix="Persistence" basePackage="org.eclipse.jpt.core.resource" disposableProviderFactory="true"
       adapterFactory="false" ecorePackage="persistence.ecore#/">

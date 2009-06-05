@@ -166,7 +166,7 @@ public class GenericOrmJoinColumnJoiningStrategy
 			//cause change notifications to be sent to the UI in the wrong order
 			this.defaultJoinColumn = null;
 		}
-		XmlJoinColumn resourceJoinColumn = OrmFactory.eINSTANCE.createXmlJoinColumnImpl();
+		XmlJoinColumn resourceJoinColumn = OrmFactory.eINSTANCE.createXmlJoinColumn();
 		OrmJoinColumn contextJoinColumn = this.buildJoinColumn(resourceJoinColumn);
 		this.specifiedJoinColumns.add(index, contextJoinColumn);
 		this.resource.getJoinColumns().add(index, resourceJoinColumn);

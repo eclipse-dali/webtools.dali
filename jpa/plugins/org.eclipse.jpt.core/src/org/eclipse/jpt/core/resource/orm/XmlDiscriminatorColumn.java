@@ -12,6 +12,8 @@ package org.eclipse.jpt.core.resource.orm;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
+import org.eclipse.jpt.core.resource.xml.JpaEObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -36,7 +38,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * @model kind="class"
  * @generated
  */
-public class XmlDiscriminatorColumn extends AbstractXmlNamedColumn
+public class XmlDiscriminatorColumn extends XmlNamedColumn
 {
 	/**
 	 * changed this to null and removed the generated flag so emf won't generate over it

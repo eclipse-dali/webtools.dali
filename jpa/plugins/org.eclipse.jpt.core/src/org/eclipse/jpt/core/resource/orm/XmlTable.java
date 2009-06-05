@@ -10,6 +10,8 @@
 package org.eclipse.jpt.core.resource.orm;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
+import org.eclipse.jpt.core.resource.xml.JpaEObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -27,7 +29,7 @@ import org.eclipse.emf.ecore.EClass;
  * @model kind="class"
  * @generated
  */
-public class XmlTable extends AbstractXmlBaseTable
+public class XmlTable extends XmlBaseTable
 {
 	/**
 	 * <!-- begin-user-doc -->

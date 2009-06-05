@@ -12,10 +12,9 @@ package org.eclipse.jpt.core.internal.context.orm;
 import org.eclipse.jpt.core.context.java.JavaGeneratorHolder;
 import org.eclipse.jpt.core.context.java.JavaSequenceGenerator;
 import org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator;
-import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
 import org.eclipse.jpt.core.utility.TextRange;
 
-public class VirtualXmlSequenceGenerator extends AbstractJpaEObject implements XmlSequenceGenerator
+public class VirtualXmlSequenceGenerator extends XmlSequenceGenerator
 {
 	JavaGeneratorHolder javaGeneratorHolder;
 
@@ -32,6 +31,7 @@ public class VirtualXmlSequenceGenerator extends AbstractJpaEObject implements X
 		return this.javaGeneratorHolder.getSequenceGenerator();
 	}
 
+	@Override
 	public String getSequenceName() {
 		if (this.metadataComplete) {
 			return null;
@@ -39,10 +39,12 @@ public class VirtualXmlSequenceGenerator extends AbstractJpaEObject implements X
 		return this.getJavaSequenceGenerator().getSequenceName();
 	}
 
-	public void setSequenceName(@SuppressWarnings("unused") String value) {
+	@Override
+	public void setSequenceName(String value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 	
+	@Override
 	public Integer getAllocationSize() {
 		if (this.metadataComplete) {
 			return null;
@@ -50,10 +52,12 @@ public class VirtualXmlSequenceGenerator extends AbstractJpaEObject implements X
 		return this.getJavaSequenceGenerator().getAllocationSize();
 	}
 
+	@Override
 	public void setAllocationSize(@SuppressWarnings("unused") Integer value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
+	@Override
 	public Integer getInitialValue() {
 		if (this.metadataComplete) {
 			return null;
@@ -61,10 +65,12 @@ public class VirtualXmlSequenceGenerator extends AbstractJpaEObject implements X
 		return this.getJavaSequenceGenerator().getInitialValue();
 	}
 
-	public void setInitialValue(@SuppressWarnings("unused") Integer value) {
+	@Override
+	public void setInitialValue(Integer value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
+	@Override
 	public String getName() {
 		if (this.metadataComplete) {
 			return null;
@@ -72,14 +78,17 @@ public class VirtualXmlSequenceGenerator extends AbstractJpaEObject implements X
 		return this.getJavaSequenceGenerator().getName();
 	}
 
-	public void setName(@SuppressWarnings("unused") String value) {
+	@Override
+	public void setName(String value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 	
+	@Override
 	public TextRange getNameTextRange() {
 		return getValidationTextRange();
 	}
 	
+	@Override
 	public boolean isVirtual() {
 		return true;
 	}

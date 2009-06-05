@@ -8,8 +8,6 @@
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.resource.orm.translators;
 
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 public class ConversionValueTranslator extends Translator
@@ -20,11 +18,6 @@ public class ConversionValueTranslator extends Translator
 	
 	public ConversionValueTranslator() {
 		super(CONVERSION_VALUE, ECLIPSELINK_ORM_PKG.getXmlObjectTypeConverter_ConversionValues(), END_TAG_NO_INDENT);
-	}
-	
-	@Override
-	public EObject createEMFObject(@SuppressWarnings("unused") String nodeName, @SuppressWarnings("unused") String readAheadName) {
-		return EclipseLinkOrmFactory.eINSTANCE.createXmlConversionValueImpl();
 	}
 	
 	@Override

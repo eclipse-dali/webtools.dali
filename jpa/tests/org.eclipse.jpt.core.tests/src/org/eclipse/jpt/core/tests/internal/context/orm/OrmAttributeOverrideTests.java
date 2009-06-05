@@ -42,7 +42,7 @@ public class OrmAttributeOverrideTests extends ContextModelTestCase
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
-		entityResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createXmlAttributeOverrideImpl());
+		entityResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createXmlAttributeOverride());
 		XmlAttributeOverride attributeOverrideResource = entityResource.getAttributeOverrides().get(0);
 		OrmAttributeOverride ormAttributeOverride = ormEntity.specifiedAttributeOverrides().next();
 		
@@ -75,7 +75,7 @@ public class OrmAttributeOverrideTests extends ContextModelTestCase
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
-		entityResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createXmlAttributeOverrideImpl());
+		entityResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createXmlAttributeOverride());
 		XmlAttributeOverride attributeOverrideResource = entityResource.getAttributeOverrides().get(0);
 		OrmAttributeOverride ormAttributeOverride = ormEntity.specifiedAttributeOverrides().next();
 

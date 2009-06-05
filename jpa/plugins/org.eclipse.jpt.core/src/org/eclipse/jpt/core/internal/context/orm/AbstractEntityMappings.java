@@ -429,7 +429,7 @@ public abstract class AbstractEntityMappings
 	}
 	
 	public OrmSequenceGenerator addSequenceGenerator(int index) {
-		XmlSequenceGenerator resourceSequenceGenerator = OrmFactory.eINSTANCE.createXmlSequenceGeneratorImpl();
+		XmlSequenceGenerator resourceSequenceGenerator = OrmFactory.eINSTANCE.createXmlSequenceGenerator();
 		OrmSequenceGenerator contextSequenceGenerator =  buildSequenceGenerator(resourceSequenceGenerator);
 		this.sequenceGenerators.add(index, contextSequenceGenerator);
 		this.xmlEntityMappings.getSequenceGenerators().add(index, resourceSequenceGenerator);
@@ -477,7 +477,7 @@ public abstract class AbstractEntityMappings
 	}
 	
 	public OrmTableGenerator addTableGenerator(int index) {
-		XmlTableGenerator resourceTableGenerator = OrmFactory.eINSTANCE.createXmlTableGeneratorImpl();
+		XmlTableGenerator resourceTableGenerator = OrmFactory.eINSTANCE.createXmlTableGenerator();
 		OrmTableGenerator contextTableGenerator = buildTableGenerator(resourceTableGenerator);
 		this.tableGenerators.add(index, contextTableGenerator);
 		this.xmlEntityMappings.getTableGenerators().add(index, resourceTableGenerator);

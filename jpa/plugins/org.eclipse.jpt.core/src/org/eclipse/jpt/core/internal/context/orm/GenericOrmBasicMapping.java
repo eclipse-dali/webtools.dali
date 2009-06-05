@@ -253,7 +253,7 @@ public class GenericOrmBasicMapping<T extends XmlBasic>
 	}
 	
 	public void addResourceColumn() {
-		this.resourceAttributeMapping.setColumn(OrmFactory.eINSTANCE.createXmlColumnImpl());
+		this.resourceAttributeMapping.setColumn(OrmFactory.eINSTANCE.createXmlColumn());
 	}
 	
 	public void removeResourceColumn() {

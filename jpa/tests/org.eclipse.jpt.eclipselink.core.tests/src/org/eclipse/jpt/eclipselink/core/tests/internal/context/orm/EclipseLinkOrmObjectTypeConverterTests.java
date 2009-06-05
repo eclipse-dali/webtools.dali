@@ -377,7 +377,7 @@ public class EclipseLinkOrmObjectTypeConverterTests
 		assertEquals(0, converterResource.getConversionValues().size());
 		
 		//add conversion value to resource model, check context model
-		XmlConversionValue resourceConversionValue = EclipseLinkOrmFactory.eINSTANCE.createXmlConversionValueImpl();
+		XmlConversionValue resourceConversionValue = EclipseLinkOrmFactory.eINSTANCE.createXmlConversionValue();
 		converterResource.getConversionValues().add(resourceConversionValue);
 		resourceConversionValue.setDataValue("foo");
 		resourceConversionValue.setObjectValue("bar");
@@ -392,7 +392,7 @@ public class EclipseLinkOrmObjectTypeConverterTests
 		assertEquals("bar", converterResource.getConversionValues().get(0).getObjectValue());
 		
 		//add a conversion to the beginning of the resource model list
-		XmlConversionValue xmlConversionValue2 = EclipseLinkOrmFactory.eINSTANCE.createXmlConversionValueImpl();
+		XmlConversionValue xmlConversionValue2 = EclipseLinkOrmFactory.eINSTANCE.createXmlConversionValue();
 		converterResource.getConversionValues().add(0, xmlConversionValue2);
 		xmlConversionValue2.setDataValue("foo2");
 		xmlConversionValue2.setObjectValue("bar2");

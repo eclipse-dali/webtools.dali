@@ -99,7 +99,7 @@ public class EclipseLinkOrmObjectTypeConverter extends EclipseLinkOrmConverter<X
 	}
 	
 	public EclipseLinkOrmConversionValue addConversionValue(int index) {
-		XmlConversionValue resourceConversionValue = EclipseLinkOrmFactory.eINSTANCE.createXmlConversionValueImpl();
+		XmlConversionValue resourceConversionValue = EclipseLinkOrmFactory.eINSTANCE.createXmlConversionValue();
 		EclipseLinkOrmConversionValue contextConversionValue = buildConversionValue(resourceConversionValue);
 		this.conversionValues.add(index, contextConversionValue);
 		getXmlResource().getConversionValues().add(index, resourceConversionValue);

@@ -231,7 +231,7 @@ public class OrmManyToManyMappingTests extends ContextModelTestCase
 		assertNull(manyToMany.getMapKey());
 		
 		//set mapKey in the resource model, verify context model does not change
-		manyToMany.setMapKey(OrmFactory.eINSTANCE.createMapKeyImpl());
+		manyToMany.setMapKey(OrmFactory.eINSTANCE.createMapKey());
 		assertNull(ormManyToManyMapping.getMapKey());
 		assertNotNull(manyToMany.getMapKey());
 				

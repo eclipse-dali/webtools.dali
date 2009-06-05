@@ -109,7 +109,7 @@ public class GenericOrmPrimaryKeyJoinColumnJoiningStrategy
 	
 	public OrmPrimaryKeyJoinColumn addPrimaryKeyJoinColumn(int index) {
 		XmlPrimaryKeyJoinColumn resourcePkJoinColumn = 
-			OrmFactory.eINSTANCE.createXmlPrimaryKeyJoinColumnImpl();
+			OrmFactory.eINSTANCE.createXmlPrimaryKeyJoinColumn();
 		OrmPrimaryKeyJoinColumn contextPkJoinColumn = 
 			this.buildPrimaryKeyJoinColumn(resourcePkJoinColumn);
 		this.primaryKeyJoinColumns.add(index, contextPkJoinColumn);

@@ -44,7 +44,7 @@ public class EclipseLinkEntityMappingsTests extends EclipseLinkOrmContextModelTe
 		assertEquals(0, CollectionTools.size(persistenceUnit.allConverters()));		
 		
 		//add a converter to the resource model, check context model
-		XmlConverter resourceConverter = EclipseLinkOrmFactory.eINSTANCE.createXmlConverterImpl();
+		XmlConverter resourceConverter = EclipseLinkOrmFactory.eINSTANCE.createXmlConverter();
 		resourceEntityMappings.getConverters().add(resourceConverter);
 		resourceConverter.setClassName("Foo");
 		resourceConverter.setName("myConverter");
@@ -58,7 +58,7 @@ public class EclipseLinkEntityMappingsTests extends EclipseLinkOrmContextModelTe
 		assertEquals(1, CollectionTools.size(persistenceUnit.allConverters()));		
 		
 		//add another converter to the resource model, check context model
-		XmlConverter resourceConverter2 = EclipseLinkOrmFactory.eINSTANCE.createXmlConverterImpl();
+		XmlConverter resourceConverter2 = EclipseLinkOrmFactory.eINSTANCE.createXmlConverter();
 		resourceEntityMappings.getConverters().add(0, resourceConverter2);
 		resourceConverter2.setClassName("Foo2");
 		resourceConverter2.setName("myConverter2");
@@ -204,7 +204,7 @@ public class EclipseLinkEntityMappingsTests extends EclipseLinkOrmContextModelTe
 		assertEquals(0, CollectionTools.size(persistenceUnit.allConverters()));	
 		
 		//add a converter to the resource model, check context model
-		XmlTypeConverter resourceTypeConverter = EclipseLinkOrmFactory.eINSTANCE.createXmlTypeConverterImpl();
+		XmlTypeConverter resourceTypeConverter = EclipseLinkOrmFactory.eINSTANCE.createXmlTypeConverter();
 		resourceEntityMappings.getTypeConverters().add(resourceTypeConverter);
 		resourceTypeConverter.setDataType("Foo");
 		resourceTypeConverter.setName("myTypeConverter");
@@ -218,7 +218,7 @@ public class EclipseLinkEntityMappingsTests extends EclipseLinkOrmContextModelTe
 		assertEquals(1, CollectionTools.size(persistenceUnit.allConverters()));	
 	
 		//add another converter to the resource model, check context model
-		XmlTypeConverter resourceTypeConverter2 = EclipseLinkOrmFactory.eINSTANCE.createXmlTypeConverterImpl();
+		XmlTypeConverter resourceTypeConverter2 = EclipseLinkOrmFactory.eINSTANCE.createXmlTypeConverter();
 		resourceEntityMappings.getTypeConverters().add(0, resourceTypeConverter2);
 		resourceTypeConverter2.setDataType("Foo2");
 		resourceTypeConverter2.setName("myTypeConverter2");
@@ -364,7 +364,7 @@ public class EclipseLinkEntityMappingsTests extends EclipseLinkOrmContextModelTe
 		assertEquals(0, CollectionTools.size(persistenceUnit.allConverters()));		
 		
 		//add a converter to the resource model, check context model
-		XmlObjectTypeConverter resourceObjectTypeConverter = EclipseLinkOrmFactory.eINSTANCE.createXmlObjectTypeConverterImpl();
+		XmlObjectTypeConverter resourceObjectTypeConverter = EclipseLinkOrmFactory.eINSTANCE.createXmlObjectTypeConverter();
 		resourceEntityMappings.getObjectTypeConverters().add(resourceObjectTypeConverter);
 		resourceObjectTypeConverter.setDataType("Foo");
 		resourceObjectTypeConverter.setName("myObjectTypeConverter");
@@ -378,7 +378,7 @@ public class EclipseLinkEntityMappingsTests extends EclipseLinkOrmContextModelTe
 		assertEquals(1, CollectionTools.size(persistenceUnit.allConverters()));		
 		
 		//add another converter to the resource model, check context model
-		XmlObjectTypeConverter resourceObjectTypeConverter2 = EclipseLinkOrmFactory.eINSTANCE.createXmlObjectTypeConverterImpl();
+		XmlObjectTypeConverter resourceObjectTypeConverter2 = EclipseLinkOrmFactory.eINSTANCE.createXmlObjectTypeConverter();
 		resourceEntityMappings.getObjectTypeConverters().add(0, resourceObjectTypeConverter2);
 		resourceObjectTypeConverter2.setDataType("Foo2");
 		resourceObjectTypeConverter2.setName("myObjectTypeConverter2");
@@ -524,7 +524,7 @@ public class EclipseLinkEntityMappingsTests extends EclipseLinkOrmContextModelTe
 		assertEquals(0, CollectionTools.size(persistenceUnit.allConverters()));	
 		
 		//add a converter to the resource model, check context model
-		XmlStructConverter resourceStructConverter = EclipseLinkOrmFactory.eINSTANCE.createXmlStructConverterImpl();
+		XmlStructConverter resourceStructConverter = EclipseLinkOrmFactory.eINSTANCE.createXmlStructConverter();
 		resourceEntityMappings.getStructConverters().add(resourceStructConverter);
 		resourceStructConverter.setConverter("Foo");
 		resourceStructConverter.setName("myStructConverter");
@@ -538,7 +538,7 @@ public class EclipseLinkEntityMappingsTests extends EclipseLinkOrmContextModelTe
 		assertEquals(1, CollectionTools.size(persistenceUnit.allConverters()));	
 		
 		//add another converter to the resource model, check context model
-		XmlStructConverter resourceStructConverter2 = EclipseLinkOrmFactory.eINSTANCE.createXmlStructConverterImpl();
+		XmlStructConverter resourceStructConverter2 = EclipseLinkOrmFactory.eINSTANCE.createXmlStructConverter();
 		resourceEntityMappings.getStructConverters().add(0, resourceStructConverter2);
 		resourceStructConverter2.setConverter("Foo2");
 		resourceStructConverter2.setName("myStructConverter2");

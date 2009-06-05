@@ -11,9 +11,8 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
-import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
 
-public class VirtualXmlAttributeOverride extends AbstractJpaEObject implements XmlAttributeOverride
+public class VirtualXmlAttributeOverride extends XmlAttributeOverride
 {
 
 	protected String name;
@@ -26,19 +25,23 @@ public class VirtualXmlAttributeOverride extends AbstractJpaEObject implements X
 		this.column = xmlColumn;
 	}
 	
+	@Override
 	public String getName() {
 		return this.name;
 	}
 
+	@Override
 	public void setName(String value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
 
+	@Override
 	public XmlColumn getColumn() {
 		return this.column;
 	}
 
+	@Override
 	public void setColumn(XmlColumn value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}

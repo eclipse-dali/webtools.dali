@@ -102,10 +102,12 @@ public class OrmFactory extends EFactoryImpl
 			case OrmPackage.XML_ONE_TO_ONE_IMPL: return (EObject)createXmlOneToOneImpl();
 			case OrmPackage.XML_MANY_TO_MANY_IMPL: return (EObject)createXmlManyToManyImpl();
 			case OrmPackage.XML_TRANSIENT_IMPL: return (EObject)createXmlTransientImpl();
-			case OrmPackage.XML_ASSOCIATION_OVERRIDE_IMPL: return (EObject)createXmlAssociationOverrideImpl();
-			case OrmPackage.XML_ATTRIBUTE_OVERRIDE_IMPL: return (EObject)createXmlAttributeOverrideImpl();
-			case OrmPackage.CASCADE_TYPE_IMPL: return (EObject)createCascadeTypeImpl();
-			case OrmPackage.XML_COLUMN_IMPL: return (EObject)createXmlColumnImpl();
+			case OrmPackage.XML_ASSOCIATION_OVERRIDE: return (EObject)createXmlAssociationOverride();
+			case OrmPackage.XML_ATTRIBUTE_OVERRIDE: return (EObject)createXmlAttributeOverride();
+			case OrmPackage.CASCADE_TYPE: return (EObject)createCascadeType();
+			case OrmPackage.XML_NAMED_COLUMN: return (EObject)createXmlNamedColumn();
+			case OrmPackage.XML_ABSTRACT_COLUMN: return (EObject)createXmlAbstractColumn();
+			case OrmPackage.XML_COLUMN: return (EObject)createXmlColumn();
 			case OrmPackage.COLUMN_RESULT: return (EObject)createColumnResult();
 			case OrmPackage.XML_DISCRIMINATOR_COLUMN: return (EObject)createXmlDiscriminatorColumn();
 			case OrmPackage.ENTITY_LISTENERS: return (EObject)createEntityListeners();
@@ -113,13 +115,13 @@ public class OrmFactory extends EFactoryImpl
 			case OrmPackage.ENTITY_RESULT: return (EObject)createEntityResult();
 			case OrmPackage.EVENT_METHOD: return (EObject)createEventMethod();
 			case OrmPackage.FIELD_RESULT: return (EObject)createFieldResult();
-			case OrmPackage.XML_GENERATED_VALUE_IMPL: return (EObject)createXmlGeneratedValueImpl();
+			case OrmPackage.XML_GENERATED_VALUE: return (EObject)createXmlGeneratedValue();
 			case OrmPackage.XML_ID_CLASS: return (EObject)createXmlIdClass();
 			case OrmPackage.INHERITANCE: return (EObject)createInheritance();
-			case OrmPackage.XML_JOIN_COLUMN_IMPL: return (EObject)createXmlJoinColumnImpl();
-			case OrmPackage.XML_JOIN_TABLE_IMPL: return (EObject)createXmlJoinTableImpl();
+			case OrmPackage.XML_JOIN_COLUMN: return (EObject)createXmlJoinColumn();
+			case OrmPackage.XML_JOIN_TABLE: return (EObject)createXmlJoinTable();
 			case OrmPackage.LOB: return (EObject)createLob();
-			case OrmPackage.MAP_KEY_IMPL: return (EObject)createMapKeyImpl();
+			case OrmPackage.MAP_KEY: return (EObject)createMapKey();
 			case OrmPackage.XML_NAMED_NATIVE_QUERY: return (EObject)createXmlNamedNativeQuery();
 			case OrmPackage.XML_NAMED_QUERY: return (EObject)createXmlNamedQuery();
 			case OrmPackage.POST_LOAD: return (EObject)createPostLoad();
@@ -129,14 +131,15 @@ public class OrmFactory extends EFactoryImpl
 			case OrmPackage.PRE_PERSIST: return (EObject)createPrePersist();
 			case OrmPackage.PRE_REMOVE: return (EObject)createPreRemove();
 			case OrmPackage.PRE_UPDATE: return (EObject)createPreUpdate();
-			case OrmPackage.XML_PRIMARY_KEY_JOIN_COLUMN_IMPL: return (EObject)createXmlPrimaryKeyJoinColumnImpl();
+			case OrmPackage.XML_PRIMARY_KEY_JOIN_COLUMN: return (EObject)createXmlPrimaryKeyJoinColumn();
 			case OrmPackage.XML_QUERY_HINT: return (EObject)createXmlQueryHint();
+			case OrmPackage.XML_BASE_TABLE: return (EObject)createXmlBaseTable();
 			case OrmPackage.XML_TABLE: return (EObject)createXmlTable();
-			case OrmPackage.XML_SECONDARY_TABLE_IMPL: return (EObject)createXmlSecondaryTableImpl();
-			case OrmPackage.XML_SEQUENCE_GENERATOR_IMPL: return (EObject)createXmlSequenceGeneratorImpl();
+			case OrmPackage.XML_SECONDARY_TABLE: return (EObject)createXmlSecondaryTable();
+			case OrmPackage.XML_SEQUENCE_GENERATOR: return (EObject)createXmlSequenceGenerator();
 			case OrmPackage.SQL_RESULT_SET_MAPPING: return (EObject)createSqlResultSetMapping();
-			case OrmPackage.XML_TABLE_GENERATOR_IMPL: return (EObject)createXmlTableGeneratorImpl();
-			case OrmPackage.XML_UNIQUE_CONSTRAINT_IMPL: return (EObject)createXmlUniqueConstraintImpl();
+			case OrmPackage.XML_TABLE_GENERATOR: return (EObject)createXmlTableGenerator();
+			case OrmPackage.XML_UNIQUE_CONSTRAINT: return (EObject)createXmlUniqueConstraint();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -408,10 +411,10 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlAssociationOverrideImpl createXmlAssociationOverrideImpl()
+	public XmlAssociationOverride createXmlAssociationOverride()
 	{
-		XmlAssociationOverrideImpl xmlAssociationOverrideImpl = new XmlAssociationOverrideImpl();
-		return xmlAssociationOverrideImpl;
+		XmlAssociationOverride xmlAssociationOverride = new XmlAssociationOverride();
+		return xmlAssociationOverride;
 	}
 
 	/**
@@ -419,10 +422,10 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlAttributeOverrideImpl createXmlAttributeOverrideImpl()
+	public XmlAttributeOverride createXmlAttributeOverride()
 	{
-		XmlAttributeOverrideImpl xmlAttributeOverrideImpl = new XmlAttributeOverrideImpl();
-		return xmlAttributeOverrideImpl;
+		XmlAttributeOverride xmlAttributeOverride = new XmlAttributeOverride();
+		return xmlAttributeOverride;
 	}
 
 	/**
@@ -430,10 +433,10 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public CascadeTypeImpl createCascadeTypeImpl()
+	public CascadeType createCascadeType()
 	{
-		CascadeTypeImpl cascadeTypeImpl = new CascadeTypeImpl();
-		return cascadeTypeImpl;
+		CascadeType cascadeType = new CascadeType();
+		return cascadeType;
 	}
 
 	/**
@@ -441,10 +444,32 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlColumnImpl createXmlColumnImpl()
+	public XmlNamedColumn createXmlNamedColumn()
 	{
-		XmlColumnImpl xmlColumnImpl = new XmlColumnImpl();
-		return xmlColumnImpl;
+		XmlNamedColumn xmlNamedColumn = new XmlNamedColumn();
+		return xmlNamedColumn;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlAbstractColumn createXmlAbstractColumn()
+	{
+		XmlAbstractColumn xmlAbstractColumn = new XmlAbstractColumn();
+		return xmlAbstractColumn;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlColumn createXmlColumn()
+	{
+		XmlColumn xmlColumn = new XmlColumn();
+		return xmlColumn;
 	}
 
 	/**
@@ -518,10 +543,10 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlGeneratedValueImpl createXmlGeneratedValueImpl()
+	public XmlGeneratedValue createXmlGeneratedValue()
 	{
-		XmlGeneratedValueImpl xmlGeneratedValueImpl = new XmlGeneratedValueImpl();
-		return xmlGeneratedValueImpl;
+		XmlGeneratedValue xmlGeneratedValue = new XmlGeneratedValue();
+		return xmlGeneratedValue;
 	}
 
 	/**
@@ -551,10 +576,10 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlJoinColumnImpl createXmlJoinColumnImpl()
+	public XmlJoinColumn createXmlJoinColumn()
 	{
-		XmlJoinColumnImpl xmlJoinColumnImpl = new XmlJoinColumnImpl();
-		return xmlJoinColumnImpl;
+		XmlJoinColumn xmlJoinColumn = new XmlJoinColumn();
+		return xmlJoinColumn;
 	}
 
 	/**
@@ -562,10 +587,10 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlJoinTableImpl createXmlJoinTableImpl()
+	public XmlJoinTable createXmlJoinTable()
 	{
-		XmlJoinTableImpl xmlJoinTableImpl = new XmlJoinTableImpl();
-		return xmlJoinTableImpl;
+		XmlJoinTable xmlJoinTable = new XmlJoinTable();
+		return xmlJoinTable;
 	}
 
 	/**
@@ -584,10 +609,10 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public MapKeyImpl createMapKeyImpl()
+	public MapKey createMapKey()
 	{
-		MapKeyImpl mapKeyImpl = new MapKeyImpl();
-		return mapKeyImpl;
+		MapKey mapKey = new MapKey();
+		return mapKey;
 	}
 
 	/**
@@ -705,10 +730,10 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlPrimaryKeyJoinColumnImpl createXmlPrimaryKeyJoinColumnImpl()
+	public XmlPrimaryKeyJoinColumn createXmlPrimaryKeyJoinColumn()
 	{
-		XmlPrimaryKeyJoinColumnImpl xmlPrimaryKeyJoinColumnImpl = new XmlPrimaryKeyJoinColumnImpl();
-		return xmlPrimaryKeyJoinColumnImpl;
+		XmlPrimaryKeyJoinColumn xmlPrimaryKeyJoinColumn = new XmlPrimaryKeyJoinColumn();
+		return xmlPrimaryKeyJoinColumn;
 	}
 
 	/**
@@ -727,6 +752,17 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public XmlBaseTable createXmlBaseTable()
+	{
+		XmlBaseTable xmlBaseTable = new XmlBaseTable();
+		return xmlBaseTable;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public XmlTable createXmlTable()
 	{
 		XmlTable xmlTable = new XmlTable();
@@ -738,10 +774,10 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlSecondaryTableImpl createXmlSecondaryTableImpl()
+	public XmlSecondaryTable createXmlSecondaryTable()
 	{
-		XmlSecondaryTableImpl xmlSecondaryTableImpl = new XmlSecondaryTableImpl();
-		return xmlSecondaryTableImpl;
+		XmlSecondaryTable xmlSecondaryTable = new XmlSecondaryTable();
+		return xmlSecondaryTable;
 	}
 
 	/**
@@ -749,10 +785,10 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlSequenceGeneratorImpl createXmlSequenceGeneratorImpl()
+	public XmlSequenceGenerator createXmlSequenceGenerator()
 	{
-		XmlSequenceGeneratorImpl xmlSequenceGeneratorImpl = new XmlSequenceGeneratorImpl();
-		return xmlSequenceGeneratorImpl;
+		XmlSequenceGenerator xmlSequenceGenerator = new XmlSequenceGenerator();
+		return xmlSequenceGenerator;
 	}
 
 	/**
@@ -771,10 +807,10 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlTableGeneratorImpl createXmlTableGeneratorImpl()
+	public XmlTableGenerator createXmlTableGenerator()
 	{
-		XmlTableGeneratorImpl xmlTableGeneratorImpl = new XmlTableGeneratorImpl();
-		return xmlTableGeneratorImpl;
+		XmlTableGenerator xmlTableGenerator = new XmlTableGenerator();
+		return xmlTableGenerator;
 	}
 
 	/**
@@ -782,10 +818,10 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlUniqueConstraintImpl createXmlUniqueConstraintImpl()
+	public XmlUniqueConstraint createXmlUniqueConstraint()
 	{
-		XmlUniqueConstraintImpl xmlUniqueConstraintImpl = new XmlUniqueConstraintImpl();
-		return xmlUniqueConstraintImpl;
+		XmlUniqueConstraint xmlUniqueConstraint = new XmlUniqueConstraint();
+		return xmlUniqueConstraint;
 	}
 
 	/**

@@ -203,7 +203,7 @@ public class OrmCascade extends AbstractXmlContextNode implements Cascade
 	}
 	
 	protected void addResourceCascade() {
-		this.relationshipMapping.setCascade(OrmFactory.eINSTANCE.createCascadeTypeImpl());			
+		this.relationshipMapping.setCascade(OrmFactory.eINSTANCE.createCascadeType());			
 	}
 	
 	public void update() {

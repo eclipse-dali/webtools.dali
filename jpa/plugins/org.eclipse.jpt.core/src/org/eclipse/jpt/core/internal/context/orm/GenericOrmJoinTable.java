@@ -117,7 +117,7 @@ public class GenericOrmJoinTable
 
 	@Override
 	protected XmlJoinTable addResourceTable() {
-		XmlJoinTable resourceTable = OrmFactory.eINSTANCE.createXmlJoinTableImpl();
+		XmlJoinTable resourceTable = OrmFactory.eINSTANCE.createXmlJoinTable();
 		this.resourceMapping.setJoinTable(resourceTable);
 		return resourceTable;
 	}
@@ -176,7 +176,7 @@ public class GenericOrmJoinTable
 		if (getResourceTable() == null) {
 			addResourceTable();
 		}
-		XmlJoinColumn resourceJoinColumn = OrmFactory.eINSTANCE.createXmlJoinColumnImpl();
+		XmlJoinColumn resourceJoinColumn = OrmFactory.eINSTANCE.createXmlJoinColumn();
 		OrmJoinColumn contextJoinColumn = buildJoinColumn(resourceJoinColumn);
 		this.specifiedJoinColumns.add(index, contextJoinColumn);
 		this.getResourceTable().getJoinColumns().add(index, resourceJoinColumn);
@@ -270,7 +270,7 @@ public class GenericOrmJoinTable
 		if (getResourceTable() == null) {
 			addResourceTable();
 		}
-		XmlJoinColumn resourceJoinColumn = OrmFactory.eINSTANCE.createXmlJoinColumnImpl();
+		XmlJoinColumn resourceJoinColumn = OrmFactory.eINSTANCE.createXmlJoinColumn();
 		OrmJoinColumn contextJoinColumn = buildInverseJoinColumn(resourceJoinColumn);
 		this.specifiedInverseJoinColumns.add(index, contextJoinColumn);
 		this.getResourceTable().getInverseJoinColumns().add(index, resourceJoinColumn);

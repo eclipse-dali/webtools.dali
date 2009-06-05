@@ -287,7 +287,7 @@ public class GenericOrmTableGenerator
 	}
 	
 	public OrmUniqueConstraint addUniqueConstraint(int index) {
-		XmlUniqueConstraint resourceUC = OrmFactory.eINSTANCE.createXmlUniqueConstraintImpl();
+		XmlUniqueConstraint resourceUC = OrmFactory.eINSTANCE.createXmlUniqueConstraint();
 		OrmUniqueConstraint contextUC = this.buildUniqueConstraint(resourceUC);
 		this.uniqueConstraints.add(index, contextUC);
 		this.getResourceGenerator().getUniqueConstraints().add(index, resourceUC);

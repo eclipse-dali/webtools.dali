@@ -61,7 +61,7 @@ public class EclipseLinkOrmConverterHolder extends AbstractXmlContextNode implem
 	}
 
 	public CustomConverter addCustomConverter(int index) {
-		XmlConverter resourceConverter = EclipseLinkOrmFactory.eINSTANCE.createXmlConverterImpl();
+		XmlConverter resourceConverter = EclipseLinkOrmFactory.eINSTANCE.createXmlConverter();
 		EclipseLinkOrmCustomConverter contextConverter = this.buildCustomConverter(resourceConverter);
 		this.customConverters.add(index, contextConverter);
 		this.resourceConvertersHolder.getConverters().add(index, resourceConverter);
@@ -110,7 +110,7 @@ public class EclipseLinkOrmConverterHolder extends AbstractXmlContextNode implem
 	}
 
 	public ObjectTypeConverter addObjectTypeConverter(int index) {
-		XmlObjectTypeConverter resourceObjectTypeConverter = EclipseLinkOrmFactory.eINSTANCE.createXmlObjectTypeConverterImpl();
+		XmlObjectTypeConverter resourceObjectTypeConverter = EclipseLinkOrmFactory.eINSTANCE.createXmlObjectTypeConverter();
 		EclipseLinkOrmObjectTypeConverter contextObjectTypeConverter = this.buildObjectTypeConverter(resourceObjectTypeConverter);
 		this.objectTypeConverters.add(index, contextObjectTypeConverter);
 		this.resourceConvertersHolder.getObjectTypeConverters().add(index, resourceObjectTypeConverter);
@@ -159,7 +159,7 @@ public class EclipseLinkOrmConverterHolder extends AbstractXmlContextNode implem
 	}
 
 	public StructConverter addStructConverter(int index) {
-		XmlStructConverter resourceStructConverter = EclipseLinkOrmFactory.eINSTANCE.createXmlStructConverterImpl();
+		XmlStructConverter resourceStructConverter = EclipseLinkOrmFactory.eINSTANCE.createXmlStructConverter();
 		EclipseLinkOrmStructConverter contextStructConverter = this.buildStructConverter(resourceStructConverter);
 		this.structConverters.add(index, contextStructConverter);
 		this.resourceConvertersHolder.getStructConverters().add(index, resourceStructConverter);
@@ -209,7 +209,7 @@ public class EclipseLinkOrmConverterHolder extends AbstractXmlContextNode implem
 	}
 
 	public TypeConverter addTypeConverter(int index) {
-		XmlTypeConverter resourceTypeConverter = EclipseLinkOrmFactory.eINSTANCE.createXmlTypeConverterImpl();
+		XmlTypeConverter resourceTypeConverter = EclipseLinkOrmFactory.eINSTANCE.createXmlTypeConverter();
 		EclipseLinkOrmTypeConverter contextTypeConverter = this.buildTypeConverter(resourceTypeConverter);
 		this.typeConverters.add(index, contextTypeConverter);
 		this.resourceConvertersHolder.getTypeConverters().add(index, resourceTypeConverter);

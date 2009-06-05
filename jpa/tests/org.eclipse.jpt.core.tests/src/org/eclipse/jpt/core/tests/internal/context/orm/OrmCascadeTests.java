@@ -49,7 +49,7 @@ public class OrmCascadeTests extends ContextModelTestCase
 		assertNull(oneToOne.getCascade());
 		
 		//set cascade in the resource model, verify context model does not change
-		oneToOne.setCascade(OrmFactory.eINSTANCE.createCascadeTypeImpl());
+		oneToOne.setCascade(OrmFactory.eINSTANCE.createCascadeType());
 		assertEquals(false, cascade.isAll());
 		assertNotNull(oneToOne.getCascade());
 				
@@ -97,7 +97,7 @@ public class OrmCascadeTests extends ContextModelTestCase
 		assertNull(oneToOne.getCascade());
 		
 		//set cascade in the resource model, verify context model does not change
-		oneToOne.setCascade(OrmFactory.eINSTANCE.createCascadeTypeImpl());
+		oneToOne.setCascade(OrmFactory.eINSTANCE.createCascadeType());
 		assertEquals(false, cascade.isPersist());
 		assertNotNull(oneToOne.getCascade());
 				
@@ -145,7 +145,7 @@ public class OrmCascadeTests extends ContextModelTestCase
 		assertNull(oneToOne.getCascade());
 		
 		//set cascade in the resource model, verify context model does not change
-		oneToOne.setCascade(OrmFactory.eINSTANCE.createCascadeTypeImpl());
+		oneToOne.setCascade(OrmFactory.eINSTANCE.createCascadeType());
 		assertEquals(false, cascade.isMerge());
 		assertNotNull(oneToOne.getCascade());
 				
@@ -193,7 +193,7 @@ public class OrmCascadeTests extends ContextModelTestCase
 		assertNull(oneToOne.getCascade());
 		
 		//set cascade in the resource model, verify context model does not change
-		oneToOne.setCascade(OrmFactory.eINSTANCE.createCascadeTypeImpl());
+		oneToOne.setCascade(OrmFactory.eINSTANCE.createCascadeType());
 		assertEquals(false, cascade.isRemove());
 		assertNotNull(oneToOne.getCascade());
 				
@@ -241,7 +241,7 @@ public class OrmCascadeTests extends ContextModelTestCase
 		assertNull(oneToOne.getCascade());
 		
 		//set cascade in the resource model, verify context model does not change
-		oneToOne.setCascade(OrmFactory.eINSTANCE.createCascadeTypeImpl());
+		oneToOne.setCascade(OrmFactory.eINSTANCE.createCascadeType());
 		assertEquals(false, cascade.isRefresh());
 		assertNotNull(oneToOne.getCascade());
 				

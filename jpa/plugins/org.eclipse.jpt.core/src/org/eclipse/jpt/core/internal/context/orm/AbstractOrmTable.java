@@ -224,7 +224,7 @@ public abstract class AbstractOrmTable
 	}
 	
 	public OrmUniqueConstraint addUniqueConstraint(int index) {
-		XmlUniqueConstraint resourceConstraint = OrmFactory.eINSTANCE.createXmlUniqueConstraintImpl();
+		XmlUniqueConstraint resourceConstraint = OrmFactory.eINSTANCE.createXmlUniqueConstraint();
 		OrmUniqueConstraint contextConstraint =  this.buildUniqueConstraint(resourceConstraint);
 		this.uniqueConstraints.add(index, contextConstraint);
 		

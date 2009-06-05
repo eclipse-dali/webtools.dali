@@ -19,13 +19,11 @@ import org.eclipse.jpt.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlJoinTable;
 import org.eclipse.jpt.core.resource.orm.XmlUniqueConstraint;
-import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 
 public class VirtualXmlJoinTable 
-	extends AbstractJpaEObject 
-	implements XmlJoinTable
+	extends XmlJoinTable
 {
 	protected OrmTypeMapping ormTypeMapping;
 	
@@ -43,6 +41,7 @@ public class VirtualXmlJoinTable
 		return this.ormTypeMapping.isMetadataComplete();
 	}
 	
+	@Override
 	public String getName() {
 		if (this.isOrmMetadataComplete()) {
 			return this.javaJoinTable.getDefaultName();
@@ -50,10 +49,12 @@ public class VirtualXmlJoinTable
 		return this.javaJoinTable.getName();		
 	}
 	
-	public void setName(@SuppressWarnings("unused") String value) {
+	@Override
+	public void setName(String value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 	
+	@Override
 	public String getCatalog() {
 		if (this.isOrmMetadataComplete()) {
 			return this.javaJoinTable.getDefaultCatalog();
@@ -61,10 +62,12 @@ public class VirtualXmlJoinTable
 		return this.javaJoinTable.getCatalog();
 	}
 	
-	public void setCatalog(@SuppressWarnings("unused") String value) {
+	@Override
+	public void setCatalog(String value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 	
+	@Override
 	public String getSchema() {
 		if (this.isOrmMetadataComplete()) {
 			return this.javaJoinTable.getDefaultSchema();
@@ -72,11 +75,13 @@ public class VirtualXmlJoinTable
 		return this.javaJoinTable.getSchema();
 	}
 	
-	public void setSchema(@SuppressWarnings("unused") String value) {
+	@Override
+	public void setSchema(String value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 	
 	//VirtualXmlJoinTable is rebuilt every time, so just rebuilding the joinColumns list as well
+	@Override
 	public EList<XmlJoinColumn> getJoinColumns() {
 		EList<XmlJoinColumn> joinColumns = new EObjectContainmentEList<XmlJoinColumn>(XmlJoinColumn.class, this, OrmPackage.XML_JOIN_TABLE__JOIN_COLUMNS);
 		if (this.javaJoinTable == null) {
@@ -90,6 +95,7 @@ public class VirtualXmlJoinTable
 	}
 	
 	//VirtualXmlJoinTable is rebuilt every time, so just rebuilding the joinColumns list as well
+	@Override
 	public EList<XmlJoinColumn> getInverseJoinColumns() {
 		EList<XmlJoinColumn> inverseJoinColumns = new EObjectContainmentEList<XmlJoinColumn>(XmlJoinColumn.class, this, OrmPackage.XML_JOIN_TABLE__INVERSE_JOIN_COLUMNS);
 		if (this.javaJoinTable == null) {
@@ -103,6 +109,7 @@ public class VirtualXmlJoinTable
 		return inverseJoinColumns;
 	}
 	
+	@Override
 	public EList<XmlUniqueConstraint> getUniqueConstraints() {
 		EList<XmlUniqueConstraint> xmlUniqueConstraints = new EObjectContainmentEList<XmlUniqueConstraint>(XmlUniqueConstraint.class, this, OrmPackage.XML_JOIN_TABLE__UNIQUE_CONSTRAINTS);
 		for (JavaUniqueConstraint uniqueConstraint : CollectionTools.iterable(this.javaJoinTable.uniqueConstraints())) {
@@ -113,14 +120,17 @@ public class VirtualXmlJoinTable
 		return xmlUniqueConstraints;
 	}
 	
+	@Override
 	public TextRange getNameTextRange() {
 		return null;
 	}
 	
+	@Override
 	public TextRange getCatalogTextRange() {
 		return null;
 	}
 	
+	@Override
 	public TextRange getSchemaTextRange() {
 		return null;
 	}

@@ -91,7 +91,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends XmlMultiRela
 	}
 	
 	protected void addResourceMapKey() {
-		this.resourceAttributeMapping.setMapKey(OrmFactory.eINSTANCE.createMapKeyImpl());
+		this.resourceAttributeMapping.setMapKey(OrmFactory.eINSTANCE.createMapKey());
 	}
 
 	public Iterator<String> candidateMapKeyNames() {

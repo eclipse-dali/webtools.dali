@@ -9,6 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.resource.orm;
 
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.jpt.core.internal.resource.orm.translators.OrmXmlMapper;
+import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.xml.JpaEObject;
 import org.eclipse.jpt.core.utility.TextRange;
 
@@ -32,12 +37,69 @@ import org.eclipse.jpt.core.utility.TextRange;
  * </p>
  *
  * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlGeneratedValue()
- * @model kind="class" interface="true" abstract="true"
+ * @model kind="class"
  * @extends JpaEObject
  * @generated
  */
-public interface XmlGeneratedValue extends JpaEObject
+public class XmlGeneratedValue extends AbstractJpaEObject implements JpaEObject
 {
+	/**
+	 * The default value of the '{@link #getGenerator() <em>Generator</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getGenerator()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String GENERATOR_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getGenerator() <em>Generator</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getGenerator()
+	 * @generated
+	 * @ordered
+	 */
+	protected String generator = GENERATOR_EDEFAULT;
+
+	/**
+	 * changed this to null and removed the generated flag so emf won't generate over it
+	 * we don't want a default for enums, just null if the tag does not exist
+	 */
+	protected static final GenerationType STRATEGY_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getStrategy() <em>Strategy</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getStrategy()
+	 * @generated
+	 * @ordered
+	 */
+	protected GenerationType strategy = STRATEGY_EDEFAULT;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected XmlGeneratedValue()
+	{
+		super();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	protected EClass eStaticClass()
+	{
+		return OrmPackage.Literals.XML_GENERATED_VALUE;
+	}
+
 	/**
 	 * Returns the value of the '<em><b>Generator</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -52,7 +114,10 @@ public interface XmlGeneratedValue extends JpaEObject
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
-	String getGenerator();
+	public String getGenerator()
+	{
+		return generator;
+	}
 
 	/**
 	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlGeneratedValue#getGenerator <em>Generator</em>}' attribute.
@@ -62,7 +127,13 @@ public interface XmlGeneratedValue extends JpaEObject
 	 * @see #getGenerator()
 	 * @generated
 	 */
-	void setGenerator(String value);
+	public void setGenerator(String newGenerator)
+	{
+		String oldGenerator = generator;
+		generator = newGenerator;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_GENERATED_VALUE__GENERATOR, oldGenerator, generator));
+	}
 
 	/**
 	 * Returns the value of the '<em><b>Strategy</b></em>' attribute.
@@ -81,7 +152,10 @@ public interface XmlGeneratedValue extends JpaEObject
 	 * @model default="TABLE"
 	 * @generated
 	 */
-	GenerationType getStrategy();
+	public GenerationType getStrategy()
+	{
+		return strategy;
+	}
 
 	/**
 	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlGeneratedValue#getStrategy <em>Strategy</em>}' attribute.
@@ -92,11 +166,110 @@ public interface XmlGeneratedValue extends JpaEObject
 	 * @see #getStrategy()
 	 * @generated
 	 */
-	void setStrategy(GenerationType value);
+	public void setStrategy(GenerationType newStrategy)
+	{
+		GenerationType oldStrategy = strategy;
+		strategy = newStrategy == null ? STRATEGY_EDEFAULT : newStrategy;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_GENERATED_VALUE__STRATEGY, oldStrategy, strategy));
+	}
 
 	/**
-	 * Return the {@link TextRange} for the generator attibute.  If the generator attibute 
-	 * does not exist return the {@link TextRange} for the generated-value element.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
 	 */
-	TextRange getGeneratorTextRange();
+	@Override
+	public Object eGet(int featureID, boolean resolve, boolean coreType)
+	{
+		switch (featureID)
+		{
+			case OrmPackage.XML_GENERATED_VALUE__GENERATOR:
+				return getGenerator();
+			case OrmPackage.XML_GENERATED_VALUE__STRATEGY:
+				return getStrategy();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void eSet(int featureID, Object newValue)
+	{
+		switch (featureID)
+		{
+			case OrmPackage.XML_GENERATED_VALUE__GENERATOR:
+				setGenerator((String)newValue);
+				return;
+			case OrmPackage.XML_GENERATED_VALUE__STRATEGY:
+				setStrategy((GenerationType)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void eUnset(int featureID)
+	{
+		switch (featureID)
+		{
+			case OrmPackage.XML_GENERATED_VALUE__GENERATOR:
+				setGenerator(GENERATOR_EDEFAULT);
+				return;
+			case OrmPackage.XML_GENERATED_VALUE__STRATEGY:
+				setStrategy(STRATEGY_EDEFAULT);
+				return;
+		}
+		super.eUnset(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public boolean eIsSet(int featureID)
+	{
+		switch (featureID)
+		{
+			case OrmPackage.XML_GENERATED_VALUE__GENERATOR:
+				return GENERATOR_EDEFAULT == null ? generator != null : !GENERATOR_EDEFAULT.equals(generator);
+			case OrmPackage.XML_GENERATED_VALUE__STRATEGY:
+				return strategy != STRATEGY_EDEFAULT;
+		}
+		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String toString()
+	{
+		if (eIsProxy()) return super.toString();
+
+		StringBuffer result = new StringBuffer(super.toString());
+		result.append(" (generator: ");
+		result.append(generator);
+		result.append(", strategy: ");
+		result.append(strategy);
+		result.append(')');
+		return result.toString();
+	}
+
+	public TextRange getGeneratorTextRange() {
+		return getAttributeTextRange(OrmXmlMapper.GENERATOR);
+	}
 } // GeneratedValue

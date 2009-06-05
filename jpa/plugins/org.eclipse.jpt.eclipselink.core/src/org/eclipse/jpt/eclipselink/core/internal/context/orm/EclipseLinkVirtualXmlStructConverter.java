@@ -10,7 +10,6 @@
 package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
-import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
 import org.eclipse.jpt.eclipselink.core.context.StructConverter;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlStructConverter;
 
@@ -18,7 +17,7 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.XmlStructConverter;
  * VirtualBasic is an implementation of Basic used when there is 
  * no tag in the orm.xml and an underlying javaBasicMapping exists.
  */
-public class EclipseLinkVirtualXmlStructConverter extends AbstractJpaEObject implements XmlStructConverter
+public class EclipseLinkVirtualXmlStructConverter extends XmlStructConverter
 {
 	protected OrmTypeMapping ormTypeMapping;
 	
@@ -34,6 +33,7 @@ public class EclipseLinkVirtualXmlStructConverter extends AbstractJpaEObject imp
 		return this.ormTypeMapping.isMetadataComplete();
 	}
 
+	@Override
 	public String getConverter() {
 		if (isOrmMetadataComplete()) {
 			return null;
@@ -41,10 +41,12 @@ public class EclipseLinkVirtualXmlStructConverter extends AbstractJpaEObject imp
 		return this.javaConverter.getConverterClass();
 	}
 	
+	@Override
 	public void setConverter(@SuppressWarnings("unused") String value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 	
+	@Override
 	public String getName() {
 		if (isOrmMetadataComplete()) {
 			return null;
@@ -52,6 +54,7 @@ public class EclipseLinkVirtualXmlStructConverter extends AbstractJpaEObject imp
 		return this.javaConverter.getName();
 	}
 	
+	@Override
 	public void setName(@SuppressWarnings("unused") String value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
