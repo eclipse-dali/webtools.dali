@@ -10,7 +10,7 @@
     complianceLevel="5.0" copyrightFields="false" usedGenPackages="../../org.eclipse.jpt.core/model/jptResourceModels.genmodel#//orm">
   <foreignModel>eclipselink1_1_orm.ecore</foreignModel>
   <genPackages prefix="EclipseLink1_1Orm" basePackage="org.eclipse.jpt.eclipselink1_1.core.resource"
-      disposableProviderFactory="true" ecorePackage="eclipselink1_1_orm.ecore#/">
+      disposableProviderFactory="true" adapterFactory="false" ecorePackage="eclipselink1_1_orm.ecore#/">
     <genClasses ecoreClass="eclipselink1_1_orm.ecore#//XmlEntityMappings"/>
     <genClasses image="false" ecoreClass="eclipselink1_1_orm.ecore#//XmlAttributeMapping">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink1_1_orm.ecore#//XmlAttributeMapping/access"/>
