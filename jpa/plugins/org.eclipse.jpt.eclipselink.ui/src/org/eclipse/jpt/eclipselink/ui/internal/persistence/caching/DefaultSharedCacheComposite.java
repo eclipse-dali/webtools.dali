@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -40,48 +40,6 @@ public class DefaultSharedCacheComposite extends FormPane<Caching>
 		super(parentComposite, parent);
 	}
 
-	private WritablePropertyValueModel<Boolean> buildDefaultSharedCacheHolder() {
-		return new PropertyAspectAdapter<Caching, Boolean>(getSubjectHolder(), Caching.SHARED_CACHE_DEFAULT_PROPERTY) {
-			@Override
-			protected Boolean buildValue_() {
-				return subject.getSharedCacheDefault();
-			}
-
-			@Override
-			protected void setValue_(Boolean value) {
-				subject.setSharedCacheDefault(value);
-			}
-
-			@Override
-			protected void subjectChanged() {
-				Object oldValue = this.getValue();
-				super.subjectChanged();
-				Object newValue = this.getValue();
-
-				// Make sure the default value is appended to the text
-				if (oldValue == newValue && newValue == null) {
-					this.fireAspectChange(Boolean.TRUE, newValue);
-				}
-			}
-		};
-	}
-
-	private PropertyValueModel<String> buildDefaultSharedCacheStringHolder() {
-		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultSharedCacheHolder()) {
-			@Override
-			protected String transform(Boolean value) {
-				if ((getSubject() != null) && (value == null)) {
-					Boolean defaultValue = getSubject().getDefaultSharedCacheDefault();
-					if (defaultValue != null) {
-						String defaultStringValue = defaultValue ? EclipseLinkUiMessages.Boolean_True : EclipseLinkUiMessages.Boolean_False;
-						return NLS.bind(EclipseLinkUiMessages.PersistenceXmlCachingTab_defaultSharedCacheDefaultLabel, defaultStringValue);
-					}
-				}
-				return EclipseLinkUiMessages.PersistenceXmlCachingTab_sharedCacheDefaultLabel;
-			}
-		};
-	}
-
 	@Override
 	protected void initializeLayout(Composite container) {
 
@@ -92,5 +50,46 @@ public class DefaultSharedCacheComposite extends FormPane<Caching>
 			this.buildDefaultSharedCacheStringHolder(),
 			EclipseLinkHelpContextIds.PERSISTENCE_CACHING_DEFAULT_SHARED
 		);
+	}
+	
+	private WritablePropertyValueModel<Boolean> buildDefaultSharedCacheHolder() {
+		return new PropertyAspectAdapter<Caching, Boolean>(getSubjectHolder(), Caching.SHARED_CACHE_DEFAULT_PROPERTY) {
+			@Override
+			protected Boolean buildValue_() {
+				return this.subject.getSharedCacheDefault();
+			}
+
+			@Override
+			protected void setValue_(Boolean value) {
+				this.subject.setSharedCacheDefault(value);
+			}
+		};
+	}
+
+	private PropertyValueModel<String> buildDefaultSharedCacheStringHolder() {
+		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultDefaultSharedCacheHolder()) {
+			@Override
+			protected String transform(Boolean value) {
+				if (value != null) {
+					String defaultStringValue = value.booleanValue() ? EclipseLinkUiMessages.Boolean_True : EclipseLinkUiMessages.Boolean_False;
+					return NLS.bind(EclipseLinkUiMessages.PersistenceXmlCachingTab_defaultSharedCacheDefaultLabel, defaultStringValue);
+				}
+				return EclipseLinkUiMessages.PersistenceXmlCachingTab_sharedCacheDefaultLabel;
+			}
+		};
+	}
+	private PropertyValueModel<Boolean> buildDefaultDefaultSharedCacheHolder() {
+		return new PropertyAspectAdapter<Caching, Boolean>(
+			getSubjectHolder(),
+			Caching.SHARED_CACHE_DEFAULT_PROPERTY)
+		{
+			@Override
+			protected Boolean buildValue_() {
+				if (this.subject.getSharedCacheDefault() != null) {
+					return null;
+				}
+				return this.subject.getDefaultSharedCacheDefault();
+			}
+		};
 	}
 }

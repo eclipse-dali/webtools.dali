@@ -216,34 +216,37 @@ public class ColumnComposite extends FormPane<Column> {
 	}
 
 	private PropertyValueModel<String> buildInsertableStringHolder() {
-
-		return new TransformationPropertyValueModel<Boolean, String>(buildInsertableHolder()) {
-
+		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultInsertableHolder()) {
 			@Override
 			protected String transform(Boolean value) {
-
-				if ((getSubject() != null) && (value == null)) {
-					boolean defaultValue = getSubject().isDefaultInsertable();
-
-					String defaultStringValue = defaultValue ? JptUiMappingsMessages.Boolean_True :
-						                                       JptUiMappingsMessages.Boolean_False;
-
-					return NLS.bind(
-						JptUiMappingsMessages.ColumnComposite_insertableWithDefault,
-						defaultStringValue
-					);
+				if (value != null) {
+					String defaultStringValue = value.booleanValue() ? JptUiMappingsMessages.Boolean_True : JptUiMappingsMessages.Boolean_False;
+					return NLS.bind(JptUiMappingsMessages.ColumnComposite_insertableWithDefault, defaultStringValue);
 				}
-
 				return JptUiMappingsMessages.ColumnComposite_insertable;
 			}
 		};
 	}
-
+	
+	private PropertyValueModel<Boolean> buildDefaultInsertableHolder() {
+		return new PropertyAspectAdapter<Column, Boolean>(
+			getSubjectHolder(),
+			BaseColumn.SPECIFIED_INSERTABLE_PROPERTY,
+			BaseColumn.DEFAULT_INSERTABLE_PROPERTY)
+		{
+			@Override
+			protected Boolean buildValue_() {
+				if (this.subject.getSpecifiedInsertable() != null) {
+					return null;
+				}
+				return Boolean.valueOf(this.subject.isDefaultInsertable());
+			}
+		};
+	}
 
 	private WritablePropertyValueModel<Boolean> buildNullableHolder() {
 		return new PropertyAspectAdapter<Column, Boolean>(
 			getSubjectHolder(),
-			BaseColumn.DEFAULT_NULLABLE_PROPERTY,
 			BaseColumn.SPECIFIED_NULLABLE_PROPERTY)
 		{
 			@Override
@@ -255,39 +258,34 @@ public class ColumnComposite extends FormPane<Column> {
 			protected void setValue_(Boolean value) {
 				this.subject.setSpecifiedNullable(value);
 			}
-
-			@Override
-			protected void subjectChanged() {
-				Object oldValue = this.getValue();
-				super.subjectChanged();
-				Object newValue = this.getValue();
-
-				// Make sure the default value is appended to the text
-				if (oldValue == newValue && newValue == null) {
-					this.fireAspectChange(Boolean.TRUE, newValue);
-				}
-			}
 		};
 	}
 
 	private PropertyValueModel<String> buildNullableStringHolder() {
-		return new TransformationPropertyValueModel<Boolean, String>(buildNullableHolder()) {
+		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultNullableHolder()) {
 			@Override
 			protected String transform(Boolean value) {
-
-				if ((getSubject() != null) && (value == null)) {
-					boolean defaultValue = getSubject().isDefaultNullable();
-
-					String defaultStringValue = defaultValue ? JptUiMappingsMessages.Boolean_True :
-					                                           JptUiMappingsMessages.Boolean_False;
-
-					return NLS.bind(
-						JptUiMappingsMessages.ColumnComposite_nullableWithDefault,
-						defaultStringValue
-					);
+				if (value != null) {
+					String defaultStringValue = value.booleanValue() ? JptUiMappingsMessages.Boolean_True : JptUiMappingsMessages.Boolean_False;
+					return NLS.bind(JptUiMappingsMessages.ColumnComposite_nullableWithDefault, defaultStringValue);
 				}
-
 				return JptUiMappingsMessages.ColumnComposite_nullable;
+			}
+		};
+	}
+	
+	private PropertyValueModel<Boolean> buildDefaultNullableHolder() {
+		return new PropertyAspectAdapter<Column, Boolean>(
+			getSubjectHolder(),
+			BaseColumn.SPECIFIED_NULLABLE_PROPERTY,
+			BaseColumn.DEFAULT_NULLABLE_PROPERTY)
+		{
+			@Override
+			protected Boolean buildValue_() {
+				if (this.subject.getSpecifiedNullable() != null) {
+					return null;
+				}
+				return Boolean.valueOf(this.subject.isDefaultNullable());
 			}
 		};
 	}
@@ -332,7 +330,6 @@ public class ColumnComposite extends FormPane<Column> {
 	private WritablePropertyValueModel<Boolean> buildUniqueHolder() {
 		return new PropertyAspectAdapter<Column, Boolean>(
 			getSubjectHolder(),
-			BaseColumn.DEFAULT_UNIQUE_PROPERTY,
 			BaseColumn.SPECIFIED_UNIQUE_PROPERTY)
 		{
 			@Override
@@ -344,41 +341,36 @@ public class ColumnComposite extends FormPane<Column> {
 			protected void setValue_(Boolean value) {
 				this.subject.setSpecifiedUnique(value);
 			}
-
-			@Override
-			protected void subjectChanged() {
-				Object oldValue = this.getValue();
-				super.subjectChanged();
-				Object newValue = this.getValue();
-
-				// Make sure the default value is appended to the text
-				if (oldValue == newValue && newValue == null) {
-					this.fireAspectChange(Boolean.TRUE, newValue);
-				}
-			}
 		};
 	}
 
 	private PropertyValueModel<String> buildUniqueStringHolder() {
 
-		return new TransformationPropertyValueModel<Boolean, String>(buildUniqueHolder()) {
+		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultUniqueHolder()) {
 
 			@Override
 			protected String transform(Boolean value) {
-
-				if ((getSubject() != null) && (value == null)) {
-					boolean defaultValue = getSubject().isDefaultUnique();
-
-					String defaultStringValue = defaultValue ? JptUiMappingsMessages.Boolean_True :
-					                                           JptUiMappingsMessages.Boolean_False;
-
-					return NLS.bind(
-						JptUiMappingsMessages.ColumnComposite_uniqueWithDefault,
-						defaultStringValue
-					);
+				if (value != null) {
+					String defaultStringValue = value.booleanValue() ? JptUiMappingsMessages.Boolean_True : JptUiMappingsMessages.Boolean_False;
+					return NLS.bind(JptUiMappingsMessages.ColumnComposite_uniqueWithDefault, defaultStringValue);
 				}
-
 				return JptUiMappingsMessages.ColumnComposite_unique;
+			}
+		};
+	}
+	
+	private PropertyValueModel<Boolean> buildDefaultUniqueHolder() {
+		return new PropertyAspectAdapter<Column, Boolean>(
+			getSubjectHolder(),
+			BaseColumn.SPECIFIED_UNIQUE_PROPERTY,
+			BaseColumn.DEFAULT_UNIQUE_PROPERTY)
+		{
+			@Override
+			protected Boolean buildValue_() {
+				if (this.subject.getSpecifiedUnique() != null) {
+					return null;
+				}
+				return Boolean.valueOf(this.subject.isDefaultUnique());
 			}
 		};
 	}
@@ -398,41 +390,36 @@ public class ColumnComposite extends FormPane<Column> {
 			protected void setValue_(Boolean value) {
 				this.subject.setSpecifiedUpdatable(value);
 			}
-
-			@Override
-			protected void subjectChanged() {
-				Object oldValue = this.getValue();
-				super.subjectChanged();
-				Object newValue = this.getValue();
-
-				// Make sure the default value is appended to the text
-				if (oldValue == newValue && newValue == null) {
-					this.fireAspectChange(Boolean.TRUE, newValue);
-				}
-			}
 		};
 	}
 
 	private PropertyValueModel<String> buildUpdatableStringHolder() {
 
-		return new TransformationPropertyValueModel<Boolean, String>(buildUpdatableHolder()) {
+		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultUpdatableHolder()) {
 
 			@Override
 			protected String transform(Boolean value) {
-
-				if ((getSubject() != null) && (value == null)) {
-					boolean defaultValue = getSubject().isDefaultUpdatable();
-
-					String defaultStringValue = defaultValue ? JptUiMappingsMessages.Boolean_True :
-					                                           JptUiMappingsMessages.Boolean_False;
-
-					return NLS.bind(
-						JptUiMappingsMessages.ColumnComposite_updatableWithDefault,
-						defaultStringValue
-					);
+				if (value != null) {
+					String defaultStringValue = value.booleanValue() ? JptUiMappingsMessages.Boolean_True : JptUiMappingsMessages.Boolean_False;
+					return NLS.bind(JptUiMappingsMessages.ColumnComposite_updatableWithDefault, defaultStringValue);
 				}
-
 				return JptUiMappingsMessages.ColumnComposite_updatable;
+			}
+		};
+	}
+	
+	private PropertyValueModel<Boolean> buildDefaultUpdatableHolder() {
+		return new PropertyAspectAdapter<Column, Boolean>(
+			getSubjectHolder(),
+			BaseColumn.SPECIFIED_UPDATABLE_PROPERTY,
+			BaseColumn.DEFAULT_UPDATABLE_PROPERTY)
+		{
+			@Override
+			protected Boolean buildValue_() {
+				if (this.subject.getSpecifiedUpdatable() != null) {
+					return null;
+				}
+				return Boolean.valueOf(this.subject.isDefaultUpdatable());
 			}
 		};
 	}

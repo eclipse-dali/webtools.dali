@@ -40,48 +40,6 @@ public class SessionComposite extends FormPane<Logging>
 		super(parentComposite, parent);
 	}
 
-	private WritablePropertyValueModel<Boolean> buildSessionHolder() {
-		return new PropertyAspectAdapter<Logging, Boolean>(getSubjectHolder(), Logging.SESSION_PROPERTY) {
-			@Override
-			protected Boolean buildValue_() {
-				return subject.getSession();
-			}
-
-			@Override
-			protected void setValue_(Boolean value) {
-				subject.setSession(value);
-			}
-
-			@Override
-			protected void subjectChanged() {
-				Object oldValue = this.getValue();
-				super.subjectChanged();
-				Object newValue = this.getValue();
-
-				// Make sure the default value is appended to the text
-				if (oldValue == newValue && newValue == null) {
-					this.fireAspectChange(Boolean.TRUE, newValue);
-				}
-			}
-		};
-	}
-
-	private PropertyValueModel<String> buildSessionStringHolder() {
-		return new TransformationPropertyValueModel<Boolean, String>(buildSessionHolder()) {
-			@Override
-			protected String transform(Boolean value) {
-				if ((getSubject() != null) && (value == null)) {
-					Boolean defaultValue = getSubject().getDefaultSession();
-					if (defaultValue != null) {
-						String defaultStringValue = defaultValue ? EclipseLinkUiMessages.Boolean_True : EclipseLinkUiMessages.Boolean_False;
-						return NLS.bind(EclipseLinkUiMessages.PersistenceXmlLoggingTab_sessionLabelDefault, defaultStringValue);
-					}
-				}
-				return EclipseLinkUiMessages.PersistenceXmlLoggingTab_sessionLabel;
-			}
-		};
-	}
-
 	@Override
 	protected void initializeLayout(Composite container) {
 
@@ -93,4 +51,47 @@ public class SessionComposite extends FormPane<Logging>
 			EclipseLinkHelpContextIds.PERSISTENCE_LOGGING_SESSION
 		);
 	}
+	
+	private WritablePropertyValueModel<Boolean> buildSessionHolder() {
+		return new PropertyAspectAdapter<Logging, Boolean>(getSubjectHolder(), Logging.SESSION_PROPERTY) {
+			@Override
+			protected Boolean buildValue_() {
+				return this.subject.getSession();
+			}
+
+			@Override
+			protected void setValue_(Boolean value) {
+				this.subject.setSession(value);
+			}
+		};
+	}
+
+	private PropertyValueModel<String> buildSessionStringHolder() {
+		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultSessionHolder()) {
+			@Override
+			protected String transform(Boolean value) {
+				if (value != null) {
+					String defaultStringValue = value.booleanValue() ? EclipseLinkUiMessages.Boolean_True : EclipseLinkUiMessages.Boolean_False;
+					return NLS.bind(EclipseLinkUiMessages.PersistenceXmlLoggingTab_sessionLabelDefault, defaultStringValue);
+				}
+				return EclipseLinkUiMessages.PersistenceXmlLoggingTab_sessionLabel;
+			}
+		};
+	}
+	
+	private PropertyValueModel<Boolean> buildDefaultSessionHolder() {
+		return new PropertyAspectAdapter<Logging, Boolean>(
+			getSubjectHolder(),
+			Logging.SESSION_PROPERTY)
+		{
+			@Override
+			protected Boolean buildValue_() {
+				if (this.subject.getSession() != null) {
+					return null;
+				}
+				return this.subject.getDefaultSession();
+			}
+		};
+	}
+
 }

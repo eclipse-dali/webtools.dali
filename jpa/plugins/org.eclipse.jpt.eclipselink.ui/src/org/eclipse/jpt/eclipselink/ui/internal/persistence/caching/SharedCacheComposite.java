@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2008 Oracle. All rights reserved.
+* Copyright (c) 2008, 2009 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -63,13 +63,13 @@ public class SharedCacheComposite extends Pane<EntityCacheProperties>
 				// If the number of ListValueModel equals 1, that means the shared
 				// Cache properties is not set (partially selected), which means we
 				// want to see the default value appended to the text
-				if (listHolder.size() == 1) {
-					return (Boolean) listHolder.listIterator().next();
+				if (this.listHolder.size() == 1) {
+					return (Boolean) this.listHolder.listIterator().next();
 				}
 				return null;
 			}
 		};
-	};
+	}
 
 	private ListValueModel<Boolean> buildDefaultAndNonDefaultSharedCacheListHolder() {
 		ArrayList<ListValueModel<Boolean>> holders = new ArrayList<ListValueModel<Boolean>>(2);
@@ -85,9 +85,9 @@ public class SharedCacheComposite extends Pane<EntityCacheProperties>
 		return new PropertyAspectAdapter<Caching, Boolean>(buildCachingHolder(), Caching.SHARED_CACHE_DEFAULT_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
-				Boolean value = subject.getSharedCacheDefault();
+				Boolean value = this.subject.getSharedCacheDefault();
 				if (value == null) {
-					value = subject.getDefaultSharedCacheDefault();
+					value = this.subject.getDefaultSharedCacheDefault();
 				}
 				return value;
 			}
@@ -126,7 +126,7 @@ public class SharedCacheComposite extends Pane<EntityCacheProperties>
 			@Override
 			protected String transform(Boolean value) {
 				if (value != null) {
-					String defaultStringValue = value ? EclipseLinkUiMessages.Boolean_True : EclipseLinkUiMessages.Boolean_False;
+					String defaultStringValue = value.booleanValue() ? EclipseLinkUiMessages.Boolean_True : EclipseLinkUiMessages.Boolean_False;
 					return NLS.bind(EclipseLinkUiMessages.PersistenceXmlCachingTab_defaultSharedCacheLabel, defaultStringValue);
 				}
 				return EclipseLinkUiMessages.PersistenceXmlCachingTab_sharedCacheLabel;

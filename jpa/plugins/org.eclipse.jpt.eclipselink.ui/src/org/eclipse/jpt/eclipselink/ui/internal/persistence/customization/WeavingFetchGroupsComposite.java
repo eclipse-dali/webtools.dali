@@ -40,48 +40,6 @@ public class WeavingFetchGroupsComposite extends FormPane<Customization>
 		super(parentComposite, parent);
 	}
 
-	private WritablePropertyValueModel<Boolean> buildWeavingFetchGroupsHolder() {
-		return new PropertyAspectAdapter<Customization, Boolean>(getSubjectHolder(), Customization.WEAVING_FETCH_GROUPS_PROPERTY) {
-			@Override
-			protected Boolean buildValue_() {
-				return subject.getWeavingFetchGroups();
-			}
-
-			@Override
-			protected void setValue_(Boolean value) {
-				subject.setWeavingFetchGroups(value);
-			}
-
-			@Override
-			protected void subjectChanged() {
-				Object oldValue = this.getValue();
-				super.subjectChanged();
-				Object newValue = this.getValue();
-
-				// Make sure the default value is appended to the text
-				if (oldValue == newValue && newValue == null) {
-					this.fireAspectChange(Boolean.TRUE, newValue);
-				}
-			}
-		};
-	}
-
-	private PropertyValueModel<String> buildWeavingFetchGroupsStringHolder() {
-		return new TransformationPropertyValueModel<Boolean, String>(buildWeavingFetchGroupsHolder()) {
-			@Override
-			protected String transform(Boolean value) {
-				if ((getSubject() != null) && (value == null)) {
-					Boolean defaultValue = getSubject().getDefaultWeavingFetchGroups();
-					if (defaultValue != null) {
-						String defaultStringValue = defaultValue ? EclipseLinkUiMessages.Boolean_True : EclipseLinkUiMessages.Boolean_False;
-						return NLS.bind(EclipseLinkUiMessages.PersistenceXmlCustomizationTab_weavingFetchGroupsLabelDefault, defaultStringValue);
-					}
-				}
-				return EclipseLinkUiMessages.PersistenceXmlCustomizationTab_weavingFetchGroupsLabel;
-			}
-		};
-	}
-
 	@Override
 	protected void initializeLayout(Composite container) {
 
@@ -92,5 +50,47 @@ public class WeavingFetchGroupsComposite extends FormPane<Customization>
 			this.buildWeavingFetchGroupsStringHolder(),
 			EclipseLinkHelpContextIds.PERSISTENCE_CUSTOMIZATION
 		);
+	}
+
+	private WritablePropertyValueModel<Boolean> buildWeavingFetchGroupsHolder() {
+		return new PropertyAspectAdapter<Customization, Boolean>(getSubjectHolder(), Customization.WEAVING_FETCH_GROUPS_PROPERTY) {
+			@Override
+			protected Boolean buildValue_() {
+				return this.subject.getWeavingFetchGroups();
+			}
+
+			@Override
+			protected void setValue_(Boolean value) {
+				this.subject.setWeavingFetchGroups(value);
+			}
+		};
+	}
+
+	private PropertyValueModel<String> buildWeavingFetchGroupsStringHolder() {
+		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultWeavingFetchGroupsHolder()) {
+			@Override
+			protected String transform(Boolean value) {
+				if (value != null) {
+					String defaultStringValue = value.booleanValue() ? EclipseLinkUiMessages.Boolean_True : EclipseLinkUiMessages.Boolean_False;
+					return NLS.bind(EclipseLinkUiMessages.PersistenceXmlCustomizationTab_weavingFetchGroupsLabelDefault, defaultStringValue);
+				}
+				return EclipseLinkUiMessages.PersistenceXmlCustomizationTab_weavingFetchGroupsLabel;
+			}
+		};
+	}
+	
+	private PropertyValueModel<Boolean> buildDefaultWeavingFetchGroupsHolder() {
+		return new PropertyAspectAdapter<Customization, Boolean>(
+			getSubjectHolder(),
+			Customization.WEAVING_FETCH_GROUPS_PROPERTY)
+		{
+			@Override
+			protected Boolean buildValue_() {
+				if (this.subject.getWeavingFetchGroups() != null) {
+					return null;
+				}
+				return this.subject.getDefaultWeavingFetchGroups();
+			}
+		};
 	}
 }

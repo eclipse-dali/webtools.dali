@@ -12,6 +12,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.persistence.connection;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.connection.Connection;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
+import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
@@ -39,52 +40,9 @@ public class NativeSqlComposite extends Pane<Connection>
 
 		super(parentComposite, parent);
 	}
-
-	private WritablePropertyValueModel<Boolean> buildNativeSqlHolder() {
-		return new PropertyAspectAdapter<Connection, Boolean>(getSubjectHolder(), Connection.NATIVE_SQL_PROPERTY) {
-			@Override
-			protected Boolean buildValue_() {
-				return subject.getNativeSql();
-			}
-
-			@Override
-			protected void setValue_(Boolean value) {
-				subject.setNativeSql(value);
-			}
-
-			@Override
-			protected void subjectChanged() {
-				Object oldValue = this.getValue();
-				super.subjectChanged();
-				Object newValue = this.getValue();
-
-				// Make sure the default value is appended to the text
-				if (oldValue == newValue && newValue == null) {
-					this.fireAspectChange(Boolean.TRUE, newValue);
-				}
-			}
-		};
-	}
-
-	private PropertyValueModel<String> buildNativeSqlStringHolder() {
-		return new TransformationPropertyValueModel<Boolean, String>(buildNativeSqlHolder()) {
-			@Override
-			protected String transform(Boolean value) {
-				if ((getSubject() != null) && (value == null)) {
-					Boolean defaultValue = getSubject().getDefaultNativeSql();
-					if (defaultValue != null) {
-						String defaultStringValue = defaultValue ? EclipseLinkUiMessages.Boolean_True : EclipseLinkUiMessages.Boolean_False;
-						return NLS.bind(EclipseLinkUiMessages.PersistenceXmlConnectionTab_nativeSqlLabelDefault, defaultStringValue);
-					}
-				}
-				return EclipseLinkUiMessages.PersistenceXmlConnectionTab_nativeSqlLabel;
-			}
-		};
-	}
-
+	
 	@Override
 	protected void initializeLayout(Composite container) {
-
 		this.addTriStateCheckBoxWithDefault(
 			container,
 			EclipseLinkUiMessages.PersistenceXmlConnectionTab_nativeSqlLabel,
@@ -92,5 +50,48 @@ public class NativeSqlComposite extends Pane<Connection>
 			this.buildNativeSqlStringHolder(),
 			JpaHelpContextIds.PERSISTENCE_XML_CONNECTION
 		);
+	}
+	
+	private WritablePropertyValueModel<Boolean> buildNativeSqlHolder() {
+		return new PropertyAspectAdapter<Connection, Boolean>(getSubjectHolder(), Connection.NATIVE_SQL_PROPERTY) {
+			@Override
+			protected Boolean buildValue_() {
+				return this.subject.getNativeSql();
+			}
+
+			@Override
+			protected void setValue_(Boolean value) {
+				this.subject.setNativeSql(value);
+			}
+
+		};
+	}
+
+	private PropertyValueModel<String> buildNativeSqlStringHolder() {
+		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultNativeSqlHolder()) {
+			@Override
+			protected String transform(Boolean value) {
+				if (value != null) {
+					String defaultStringValue = value.booleanValue() ? JptUiMappingsMessages.Boolean_True : JptUiMappingsMessages.Boolean_False;
+					return NLS.bind(EclipseLinkUiMessages.PersistenceXmlConnectionTab_nativeSqlLabelDefault, defaultStringValue);
+				}
+				return EclipseLinkUiMessages.PersistenceXmlConnectionTab_nativeSqlLabel;
+			}
+		};
+	}
+	
+	private PropertyValueModel<Boolean> buildDefaultNativeSqlHolder() {
+		return new PropertyAspectAdapter<Connection, Boolean>(
+			getSubjectHolder(),
+			Connection.NATIVE_SQL_PROPERTY)
+		{
+			@Override
+			protected Boolean buildValue_() {
+				if (this.subject.getNativeSql() != null) {
+					return null;
+				}
+				return this.subject.getDefaultNativeSql();
+			}
+		};
 	}
 }

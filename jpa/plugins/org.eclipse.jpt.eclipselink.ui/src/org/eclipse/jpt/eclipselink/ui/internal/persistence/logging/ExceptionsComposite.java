@@ -40,48 +40,6 @@ public class ExceptionsComposite extends FormPane<Logging>
 		super(parentComposite, parent);
 	}
 
-	private WritablePropertyValueModel<Boolean> buildExceptionsHolder() {
-		return new PropertyAspectAdapter<Logging, Boolean>(getSubjectHolder(), Logging.EXCEPTIONS_PROPERTY) {
-			@Override
-			protected Boolean buildValue_() {
-				return subject.getExceptions();
-			}
-
-			@Override
-			protected void setValue_(Boolean value) {
-				subject.setExceptions(value);
-			}
-
-			@Override
-			protected void subjectChanged() {
-				Object oldValue = this.getValue();
-				super.subjectChanged();
-				Object newValue = this.getValue();
-
-				// Make sure the default value is appended to the text
-				if (oldValue == newValue && newValue == null) {
-					this.fireAspectChange(Boolean.TRUE, newValue);
-				}
-			}
-		};
-	}
-
-	private PropertyValueModel<String> buildExceptionsStringHolder() {
-		return new TransformationPropertyValueModel<Boolean, String>(buildExceptionsHolder()) {
-			@Override
-			protected String transform(Boolean value) {
-				if ((getSubject() != null) && (value == null)) {
-					Boolean defaultValue = getSubject().getDefaultExceptions();
-					if (defaultValue != null) {
-						String defaultStringValue = defaultValue ? EclipseLinkUiMessages.Boolean_True : EclipseLinkUiMessages.Boolean_False;
-						return NLS.bind(EclipseLinkUiMessages.PersistenceXmlLoggingTab_exceptionsLabelDefault, defaultStringValue);
-					}
-				}
-				return EclipseLinkUiMessages.PersistenceXmlLoggingTab_exceptionsLabel;
-			}
-		};
-	}
-
 	@Override
 	protected void initializeLayout(Composite container) {
 
@@ -92,5 +50,47 @@ public class ExceptionsComposite extends FormPane<Logging>
 			this.buildExceptionsStringHolder(),
 			EclipseLinkHelpContextIds.PERSISTENCE_LOGGING_EXCEPTIONS
 		);
+	}
+	
+	private WritablePropertyValueModel<Boolean> buildExceptionsHolder() {
+		return new PropertyAspectAdapter<Logging, Boolean>(getSubjectHolder(), Logging.EXCEPTIONS_PROPERTY) {
+			@Override
+			protected Boolean buildValue_() {
+				return this.subject.getExceptions();
+			}
+
+			@Override
+			protected void setValue_(Boolean value) {
+				this.subject.setExceptions(value);
+			}
+		};
+	}
+
+	private PropertyValueModel<String> buildExceptionsStringHolder() {
+		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultExceptionsHolder()) {
+			@Override
+			protected String transform(Boolean value) {
+				if (value != null) {
+					String defaultStringValue = value.booleanValue() ? EclipseLinkUiMessages.Boolean_True : EclipseLinkUiMessages.Boolean_False;
+					return NLS.bind(EclipseLinkUiMessages.PersistenceXmlLoggingTab_exceptionsLabelDefault, defaultStringValue);
+				}
+				return EclipseLinkUiMessages.PersistenceXmlLoggingTab_exceptionsLabel;
+			}
+		};
+	}
+	
+	private PropertyValueModel<Boolean> buildDefaultExceptionsHolder() {
+		return new PropertyAspectAdapter<Logging, Boolean>(
+			getSubjectHolder(),
+			Logging.EXCEPTIONS_PROPERTY)
+		{
+			@Override
+			protected Boolean buildValue_() {
+				if (this.subject.getExceptions() != null) {
+					return null;
+				}
+				return this.subject.getDefaultExceptions();
+			}
+		};
 	}
 }

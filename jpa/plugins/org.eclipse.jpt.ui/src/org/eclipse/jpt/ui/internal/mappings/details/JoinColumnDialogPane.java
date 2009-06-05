@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -69,41 +69,33 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject> extends BaseJ
 			protected void setValue_(Boolean value) {
 				this.subject.setInsertable(value);
 			}
-
-			@Override
-			protected void subjectChanged() {
-				Object oldValue = this.getValue();
-				super.subjectChanged();
-				Object newValue = this.getValue();
-
-				// Make sure the default value is appended to the text
-				if (oldValue == newValue && newValue == null) {
-					this.fireAspectChange(Boolean.TRUE, newValue);
-				}
-			}
 		};
 	}
 
 	private PropertyValueModel<String> buildInsertableStringHolder() {
-
-		return new TransformationPropertyValueModel<Boolean, String>(buildInsertableHolder()) {
-
+		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultInsertableHolder()) {
 			@Override
 			protected String transform(Boolean value) {
-
-				if ((getSubject() != null) && (value == null)) {
-					boolean defaultValue = getSubject().isDefaultInsertable();
-
-					String defaultStringValue = defaultValue ? JptUiMappingsMessages.Boolean_True :
-					                                           JptUiMappingsMessages.Boolean_False;
-
-					return NLS.bind(
-						JptUiMappingsMessages.JoinColumnDialogPane_insertableWithDefault,
-						defaultStringValue
-					);
+				if (value != null) {
+					String defaultStringValue = value.booleanValue() ? JptUiMappingsMessages.Boolean_True : JptUiMappingsMessages.Boolean_False;
+					return NLS.bind(JptUiMappingsMessages.JoinColumnDialogPane_insertableWithDefault, defaultStringValue);
 				}
-
 				return JptUiMappingsMessages.JoinColumnDialogPane_insertable;
+			}
+		};
+	}
+
+	private PropertyValueModel<Boolean> buildDefaultInsertableHolder() {
+		return new PropertyAspectAdapter<T, Boolean>(
+			getSubjectHolder(),
+			JoinColumnStateObject.INSERTABLE_PROPERTY)
+		{
+			@Override
+			protected Boolean buildValue_() {
+				if (this.subject.getInsertable() != null) {
+					return null;
+				}
+				return Boolean.valueOf(this.subject.isDefaultInsertable());
 			}
 		};
 	}
@@ -122,41 +114,35 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject> extends BaseJ
 			protected void setValue_(Boolean value) {
 				this.subject.setNullable(value);
 			}
-
-			@Override
-			protected void subjectChanged() {
-				Object oldValue = this.getValue();
-				super.subjectChanged();
-				Object newValue = this.getValue();
-
-				// Make sure the default value is appended to the text
-				if (oldValue == newValue && newValue == null) {
-					this.fireAspectChange(Boolean.TRUE, newValue);
-				}
-			}
 		};
 	}
 
 	private PropertyValueModel<String> buildNullableStringHolder() {
 
-		return new TransformationPropertyValueModel<Boolean, String>(buildNullableHolder()) {
+		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultNullableHolder()) {
 
 			@Override
 			protected String transform(Boolean value) {
-
-				if ((getSubject() != null) && (value == null)) {
-					boolean defaultValue = getSubject().isDefaultNullable();
-
-					String defaultStringValue = defaultValue ? JptUiMappingsMessages.Boolean_True :
-					                                           JptUiMappingsMessages.Boolean_False;
-
-					return NLS.bind(
-						JptUiMappingsMessages.JoinColumnDialogPane_nullableWithDefault,
-						defaultStringValue
-					);
+				if (value != null) {
+					String defaultStringValue = value.booleanValue() ? JptUiMappingsMessages.Boolean_True : JptUiMappingsMessages.Boolean_False;
+					return NLS.bind(JptUiMappingsMessages.JoinColumnDialogPane_nullableWithDefault, defaultStringValue);
 				}
-
 				return JptUiMappingsMessages.JoinColumnDialogPane_nullable;
+			}
+		};
+	}
+
+	private PropertyValueModel<Boolean> buildDefaultNullableHolder() {
+		return new PropertyAspectAdapter<T, Boolean>(
+			getSubjectHolder(),
+			JoinColumnStateObject.NULLABLE_PROPERTY)
+		{
+			@Override
+			protected Boolean buildValue_() {
+				if (this.subject.getNullable() != null) {
+					return null;
+				}
+				return Boolean.valueOf(this.subject.isDefaultNullable());
 			}
 		};
 	}
@@ -175,41 +161,33 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject> extends BaseJ
 			protected void setValue_(Boolean value) {
 				this.subject.setUnique(value);
 			}
-
-			@Override
-			protected void subjectChanged() {
-				Object oldValue = this.getValue();
-				super.subjectChanged();
-				Object newValue = this.getValue();
-
-				// Make sure the default value is appended to the text
-				if (oldValue == newValue && newValue == null) {
-					this.fireAspectChange(Boolean.TRUE, newValue);
-				}
-			}
 		};
 	}
 
 	private PropertyValueModel<String> buildUniqueStringHolder() {
-
-		return new TransformationPropertyValueModel<Boolean, String>(buildUniqueHolder()) {
-
+		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultUniqueHolder()) {
 			@Override
 			protected String transform(Boolean value) {
-
-				if ((getSubject() != null) && (value == null)) {
-					boolean defaultValue = getSubject().isDefaultUnique();
-
-					String defaultStringValue = defaultValue ? JptUiMappingsMessages.Boolean_True :
-					                                           JptUiMappingsMessages.Boolean_False;
-
-					return NLS.bind(
-						JptUiMappingsMessages.JoinColumnDialogPane_uniqueWithDefault,
-						defaultStringValue
-					);
+				if (value != null) {
+					String defaultStringValue = value.booleanValue() ? JptUiMappingsMessages.Boolean_True : JptUiMappingsMessages.Boolean_False;
+					return NLS.bind(JptUiMappingsMessages.JoinColumnDialogPane_uniqueWithDefault, defaultStringValue);
 				}
-
 				return JptUiMappingsMessages.JoinColumnDialogPane_unique;
+			}
+		};
+	}
+
+	private PropertyValueModel<Boolean> buildDefaultUniqueHolder() {
+		return new PropertyAspectAdapter<T, Boolean>(
+			getSubjectHolder(),
+			JoinColumnStateObject.UNIQUE_PROPERTY)
+		{
+			@Override
+			protected Boolean buildValue_() {
+				if (this.subject.getUnique() != null) {
+					return null;
+				}
+				return Boolean.valueOf(this.subject.isDefaultUnique());
 			}
 		};
 	}
@@ -225,48 +203,37 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject> extends BaseJ
 			protected void setValue_(Boolean value) {
 				this.subject.setUpdatable(value);
 			}
-
-			@Override
-			protected void subjectChanged() {
-				Object oldValue = this.getValue();
-				super.subjectChanged();
-				Object newValue = this.getValue();
-
-				// Make sure the default value is appended to the text
-				if (oldValue == newValue && newValue == null) {
-					this.fireAspectChange(Boolean.TRUE, newValue);
-				}
-			}
 		};
 	}
 
 	private PropertyValueModel<String> buildUpdatableStringHolder() {
-
-		return new TransformationPropertyValueModel<Boolean, String>(buildUpdatableHolder()) {
-
+		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultUpdatableHolder()) {
 			@Override
 			protected String transform(Boolean value) {
-
-				if ((getSubject() != null) && (value == null)) {
-					boolean defaultValue = getSubject().isDefaultUpdatable();
-
-					String defaultStringValue = defaultValue ? JptUiMappingsMessages.Boolean_True :
-					                                           JptUiMappingsMessages.Boolean_False;
-
-					return NLS.bind(
-						JptUiMappingsMessages.JoinColumnDialogPane_updatableWithDefault,
-						defaultStringValue
-					);
+				if (value != null) {
+					String defaultStringValue = value.booleanValue() ? JptUiMappingsMessages.Boolean_True : JptUiMappingsMessages.Boolean_False;
+					return NLS.bind(JptUiMappingsMessages.JoinColumnDialogPane_updatableWithDefault, defaultStringValue);
 				}
-
 				return JptUiMappingsMessages.JoinColumnDialogPane_updatable;
 			}
 		};
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
+	private PropertyValueModel<Boolean> buildDefaultUpdatableHolder() {
+		return new PropertyAspectAdapter<T, Boolean>(
+			getSubjectHolder(),
+			JoinColumnStateObject.UPDATABLE_PROPERTY)
+		{
+			@Override
+			protected Boolean buildValue_() {
+				if (this.subject.getUpdatable() != null) {
+					return null;
+				}
+				return Boolean.valueOf(this.subject.isDefaultUpdatable());
+			}
+		};
+	}
+
 	@Override
 	protected void initializeLayout(Composite container) {
 

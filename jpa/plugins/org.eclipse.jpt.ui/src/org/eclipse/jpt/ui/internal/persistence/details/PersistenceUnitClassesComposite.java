@@ -32,6 +32,7 @@ import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.JpaMappingImageHelper;
 import org.eclipse.jpt.ui.internal.JptUiIcons;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
+import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.persistence.JptUiPersistenceMessages;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
@@ -160,61 +161,48 @@ public class PersistenceUnitClassesComposite extends Pane<PersistenceUnit>
 	private WritablePropertyValueModel<Boolean> buildExcludeUnlistedMappedClassesHolder() {
 		return new PropertyAspectAdapter<PersistenceUnit, Boolean>(
 			getSubjectHolder(),
-			PersistenceUnit.DEFAULT_EXCLUDE_UNLISTED_CLASSES_PROPERTY,
 			PersistenceUnit.SPECIFIED_EXCLUDE_UNLISTED_CLASSES_PROPERTY)
 		{
 			@Override
 			protected Boolean buildValue_() {
-				return subject.getSpecifiedExcludeUnlistedClasses();
+				return this.subject.getSpecifiedExcludeUnlistedClasses();
 			}
 
 			@Override
 			protected void setValue_(Boolean value) {
-				subject.setSpecifiedExcludeUnlistedClasses(value);
-			}
-
-			@Override
-			protected void subjectChanged() {
-				Object oldValue = this.getValue();
-				super.subjectChanged();
-				Object newValue = this.getValue();
-
-				// Make sure the default value is appended to the text
-				if (oldValue == newValue && newValue == null) {
-					this.fireAspectChange(Boolean.TRUE, newValue);
-				}
+				this.subject.setSpecifiedExcludeUnlistedClasses(value);
 			}
 		};
 	}
 
 	private PropertyValueModel<String> buildExcludeUnlistedMappedClassesStringHolder() {
-
-		return new TransformationPropertyValueModel<Boolean, String>(buildExcludeUnlistedMappedClassesHolder()) {
-
+		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultExcludeUnlistedMappedClassesHolder()) {
 			@Override
 			protected String transform(Boolean value) {
-
-				if ((getSubject() != null) && (value == null)) {
-
-					Boolean defaultValue = getSubject().getDefaultExcludeUnlistedClasses();
-
-					if (defaultValue != null) {
-
-						String defaultStringValue = defaultValue ? JptUiPersistenceMessages.Boolean_True :
-						                                           JptUiPersistenceMessages.Boolean_False;
-
-						return NLS.bind(
-							JptUiPersistenceMessages.PersistenceUnitClassesComposite_excludeUnlistedMappedClassesWithDefault,
-							defaultStringValue
-						);
-					}
+				if (value != null) {
+					String defaultStringValue = value.booleanValue() ? JptUiMappingsMessages.Boolean_True : JptUiMappingsMessages.Boolean_False;
+					return NLS.bind(JptUiPersistenceMessages.PersistenceUnitClassesComposite_excludeUnlistedMappedClassesWithDefault, defaultStringValue);
 				}
-
 				return JptUiPersistenceMessages.PersistenceUnitClassesComposite_excludeUnlistedMappedClasses;
 			}
 		};
 	}
-
+	
+	private PropertyValueModel<Boolean> buildDefaultExcludeUnlistedMappedClassesHolder() {
+		return new PropertyAspectAdapter<PersistenceUnit, Boolean>(
+			getSubjectHolder(),
+			PersistenceUnit.SPECIFIED_EXCLUDE_UNLISTED_CLASSES_PROPERTY,
+			PersistenceUnit.DEFAULT_EXCLUDE_UNLISTED_CLASSES_PROPERTY)
+		{
+			@Override
+			protected Boolean buildValue_() {
+				if (this.subject.getSpecifiedExcludeUnlistedClasses() != null) {
+					return null;
+				}
+				return Boolean.valueOf(this.subject.getDefaultExcludeUnlistedClasses());
+			}
+		};
+	}
 	private ILabelProvider buildLabelProvider() {
 		return new LabelProvider() {
 			@Override

@@ -40,48 +40,6 @@ public class TemporalMutableComposite extends FormPane<Options>
 		super(parentComposite, parent);
 	}
 
-	private WritablePropertyValueModel<Boolean> buildTemporalMutableHolder() {
-		return new PropertyAspectAdapter<Options, Boolean>(getSubjectHolder(), Options.TEMPORAL_MUTABLE_PROPERTY) {
-			@Override
-			protected Boolean buildValue_() {
-				return subject.getTemporalMutable();
-			}
-
-			@Override
-			protected void setValue_(Boolean value) {
-				subject.setTemporalMutable(value);
-			}
-
-			@Override
-			protected void subjectChanged() {
-				Object oldValue = this.getValue();
-				super.subjectChanged();
-				Object newValue = this.getValue();
-
-				// Make sure the default value is appended to the text
-				if (oldValue == newValue && newValue == null) {
-					this.fireAspectChange(Boolean.TRUE, newValue);
-				}
-			}
-		};
-	}
-
-	private PropertyValueModel<String> buildTemporalMutableStringHolder() {
-		return new TransformationPropertyValueModel<Boolean, String>(buildTemporalMutableHolder()) {
-			@Override
-			protected String transform(Boolean value) {
-				if ((getSubject() != null) && (value == null)) {
-					Boolean defaultValue = getSubject().getDefaultTemporalMutable();
-					if (defaultValue != null) {
-						String defaultStringValue = defaultValue ? EclipseLinkUiMessages.Boolean_True : EclipseLinkUiMessages.Boolean_False;
-						return NLS.bind(EclipseLinkUiMessages.PersistenceXmlOptionsTab_temporalMutableLabelDefault, defaultStringValue);
-					}
-				}
-				return EclipseLinkUiMessages.PersistenceXmlOptionsTab_temporalMutableLabel;
-			}
-		};
-	}
-
 	@Override
 	protected void initializeLayout(Composite container) {
 
@@ -92,5 +50,47 @@ public class TemporalMutableComposite extends FormPane<Options>
 			this.buildTemporalMutableStringHolder(),
 			EclipseLinkHelpContextIds.PERSISTENCE_OPTIONS
 		);
+	}
+	
+	private WritablePropertyValueModel<Boolean> buildTemporalMutableHolder() {
+		return new PropertyAspectAdapter<Options, Boolean>(getSubjectHolder(), Options.TEMPORAL_MUTABLE_PROPERTY) {
+			@Override
+			protected Boolean buildValue_() {
+				return this.subject.getTemporalMutable();
+			}
+
+			@Override
+			protected void setValue_(Boolean value) {
+				this.subject.setTemporalMutable(value);
+			}
+		};
+	}
+
+	private PropertyValueModel<String> buildTemporalMutableStringHolder() {
+		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultTemporalMutableHolder()) {
+			@Override
+			protected String transform(Boolean value) {
+				if (value != null) {
+					String defaultStringValue = value.booleanValue() ? EclipseLinkUiMessages.Boolean_True : EclipseLinkUiMessages.Boolean_False;
+					return NLS.bind(EclipseLinkUiMessages.PersistenceXmlOptionsTab_temporalMutableLabelDefault, defaultStringValue);
+				}
+				return EclipseLinkUiMessages.PersistenceXmlOptionsTab_temporalMutableLabel;
+			}
+		};
+	}
+	
+	private PropertyValueModel<Boolean> buildDefaultTemporalMutableHolder() {
+		return new PropertyAspectAdapter<Options, Boolean>(
+			getSubjectHolder(),
+			Options.TEMPORAL_MUTABLE_PROPERTY)
+		{
+			@Override
+			protected Boolean buildValue_() {
+				if (this.subject.getTemporalMutable() != null) {
+					return null;
+				}
+				return this.subject.getDefaultTemporalMutable();
+			}
+		};
 	}
 }

@@ -43,7 +43,6 @@ public class MetadataCompleteComposite extends FormPane<OrmTypeMapping> {
 	private WritablePropertyValueModel<Boolean> buildMetadataCompleteHolder() {
 		return new PropertyAspectAdapter<OrmTypeMapping, Boolean>(
 			getSubjectHolder(),
-			OrmTypeMapping.DEFAULT_METADATA_COMPLETE_PROPERTY,
 			OrmTypeMapping.SPECIFIED_METADATA_COMPLETE_PROPERTY)
 		{
 			@Override
@@ -55,43 +54,34 @@ public class MetadataCompleteComposite extends FormPane<OrmTypeMapping> {
 			protected void setValue_(Boolean value) {
 				this.subject.setSpecifiedMetadataComplete(value);
 			}
-
-			@Override
-			protected void subjectChanged() {
-				Object oldValue = this.getValue();
-				super.subjectChanged();
-				Object newValue = this.getValue();
-
-				// Make sure the default value is appended to the text
-				if (oldValue == newValue && newValue == null) {
-					this.fireAspectChange(Boolean.TRUE, newValue);
-				}
-			}
 		};
 	}
 
 	private PropertyValueModel<String> buildMetadataCompleteStringHolder() {
-
-		return new TransformationPropertyValueModel<Boolean, String>(buildMetadataCompleteHolder()) {
-
+		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultMetadataCompleteHolder()) {
 			@Override
 			protected String transform(Boolean value) {
-
-				if ((getSubject() != null) && (value == null)) {
-
-					boolean defaultValue = getSubject().isDefaultMetadataComplete();
-					String defaultStringValue = defaultValue ? JptUiOrmMessages.Boolean_True :
-						                                           JptUiOrmMessages.Boolean_False;
-
-					return NLS.bind(
-						JptUiOrmMessages.MetadataCompleteComposite_metadataCompleteWithDefault,
-						defaultStringValue
-					);
+				if (value != null) {
+					String defaultStringValue = value.booleanValue() ? JptUiOrmMessages.Boolean_True : JptUiOrmMessages.Boolean_False;
+					return NLS.bind(JptUiOrmMessages.MetadataCompleteComposite_metadataCompleteWithDefault, defaultStringValue);
 				}
-
 				return JptUiOrmMessages.MetadataCompleteComposite_metadataComplete;
 			}
 		};
 	}
-
+	private PropertyValueModel<Boolean> buildDefaultMetadataCompleteHolder() {
+		return new PropertyAspectAdapter<OrmTypeMapping, Boolean>(
+			getSubjectHolder(),
+			OrmTypeMapping.SPECIFIED_METADATA_COMPLETE_PROPERTY,
+			OrmTypeMapping.DEFAULT_METADATA_COMPLETE_PROPERTY)
+		{
+			@Override
+			protected Boolean buildValue_() {
+				if (this.subject.getSpecifiedMetadataComplete() != null) {
+					return null;
+				}
+				return Boolean.valueOf(this.subject.isDefaultMetadataComplete());
+			}
+		};
+	}
 }

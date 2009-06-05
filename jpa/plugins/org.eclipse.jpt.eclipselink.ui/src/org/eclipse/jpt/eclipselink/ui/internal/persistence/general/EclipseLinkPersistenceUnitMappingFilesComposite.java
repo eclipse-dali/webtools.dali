@@ -65,9 +65,7 @@ public class EclipseLinkPersistenceUnitMappingFilesComposite extends Persistence
 			this.buildExcludeEclipselinkOrmStringHolder(),
 			JpaHelpContextIds.PERSISTENCE_XML_GENERAL
 		);
-
 	}
-	
 	
 	protected PropertyValueModel<GeneralProperties> buildGeneralPropertiesHolder() {
 		return new TransformationPropertyValueModel<PersistenceUnit, GeneralProperties>(getSubjectHolder()) {
@@ -92,44 +90,33 @@ public class EclipseLinkPersistenceUnitMappingFilesComposite extends Persistence
 			protected void setValue_(Boolean value) {
 				this.subject.setExcludeEclipselinkOrm(value);
 			}
-
-			@Override
-			protected void subjectChanged() {
-				Object oldValue = this.getValue();
-				super.subjectChanged();
-				Object newValue = this.getValue();
-
-				// Make sure the default value is appended to the text
-				if (oldValue == newValue && newValue == null) {
-					this.fireAspectChange(Boolean.TRUE, newValue);
-				}
-			}
 		};
 	}
 
 	private PropertyValueModel<String> buildExcludeEclipselinkOrmStringHolder() {
-
-		return new TransformationPropertyValueModel<Boolean, String>(buildExcludeEclipselinkOrmHolder()) {
-
+		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultExcludeEclipselinkOrmHolder()) {
 			@Override
 			protected String transform(Boolean value) {
-
-				if ((getSubject() != null) && (value == null)) {
-
-					Boolean defaultValue = ((EclipseLinkPersistenceUnit) getSubject()).getGeneralProperties().getDefaultExcludeEclipselinkOrm();
-
-					if (defaultValue != null) {
-
-						String defaultStringValue = defaultValue ? EclipseLinkUiMessages.Boolean_True :
-																			EclipseLinkUiMessages.Boolean_False;
-
-						return NLS.bind(
-							EclipseLinkUiMessages.PersistenceXmlGeneralTab_excludeEclipselinkOrmWithDefault,
-							defaultStringValue
-						);
-					}
+				if (value != null) {
+					String defaultStringValue = value.booleanValue() ? EclipseLinkUiMessages.Boolean_True : EclipseLinkUiMessages.Boolean_False;
+					return NLS.bind(EclipseLinkUiMessages.PersistenceXmlGeneralTab_excludeEclipselinkOrmWithDefault, defaultStringValue);
 				}
 				return EclipseLinkUiMessages.PersistenceXmlGeneralTab_excludeEclipselinkOrm;
+			}
+		};
+	}	
+	
+	private PropertyValueModel<Boolean> buildDefaultExcludeEclipselinkOrmHolder() {
+		return new PropertyAspectAdapter<GeneralProperties, Boolean>(
+			buildGeneralPropertiesHolder(),
+			GeneralProperties.EXCLUDE_ECLIPSELINK_ORM_PROPERTY)
+		{
+			@Override
+			protected Boolean buildValue_() {
+				if (this.subject.getExcludeEclipselinkOrm() != null) {
+					return null;
+				}
+				return this.subject.getDefaultExcludeEclipselinkOrm();
 			}
 		};
 	}

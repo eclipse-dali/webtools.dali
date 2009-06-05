@@ -40,48 +40,6 @@ public class ThreadComposite extends FormPane<Logging>
 		super(parentComposite, parent);
 	}
 
-	private WritablePropertyValueModel<Boolean> buildThreadHolder() {
-		return new PropertyAspectAdapter<Logging, Boolean>(getSubjectHolder(), Logging.THREAD_PROPERTY) {
-			@Override
-			protected Boolean buildValue_() {
-				return subject.getThread();
-			}
-
-			@Override
-			protected void setValue_(Boolean value) {
-				subject.setThread(value);
-			}
-
-			@Override
-			protected void subjectChanged() {
-				Object oldValue = this.getValue();
-				super.subjectChanged();
-				Object newValue = this.getValue();
-
-				// Make sure the default value is appended to the text
-				if (oldValue == newValue && newValue == null) {
-					this.fireAspectChange(Boolean.TRUE, newValue);
-				}
-			}
-		};
-	}
-
-	private PropertyValueModel<String> buildThreadStringHolder() {
-		return new TransformationPropertyValueModel<Boolean, String>(buildThreadHolder()) {
-			@Override
-			protected String transform(Boolean value) {
-				if ((getSubject() != null) && (value == null)) {
-					Boolean defaultValue = getSubject().getDefaultThread();
-					if (defaultValue != null) {
-						String defaultStringValue = defaultValue ? EclipseLinkUiMessages.Boolean_True : EclipseLinkUiMessages.Boolean_False;
-						return NLS.bind(EclipseLinkUiMessages.PersistenceXmlLoggingTab_threadLabelDefault, defaultStringValue);
-					}
-				}
-				return EclipseLinkUiMessages.PersistenceXmlLoggingTab_threadLabel;
-			}
-		};
-	}
-
 	@Override
 	protected void initializeLayout(Composite container) {
 
@@ -92,5 +50,47 @@ public class ThreadComposite extends FormPane<Logging>
 			this.buildThreadStringHolder(),
 			EclipseLinkHelpContextIds.PERSISTENCE_LOGGING_THREAD
 		);
+	}
+	
+	private WritablePropertyValueModel<Boolean> buildThreadHolder() {
+		return new PropertyAspectAdapter<Logging, Boolean>(getSubjectHolder(), Logging.THREAD_PROPERTY) {
+			@Override
+			protected Boolean buildValue_() {
+				return this.subject.getThread();
+			}
+
+			@Override
+			protected void setValue_(Boolean value) {
+				this.subject.setThread(value);
+			}
+		};
+	}
+
+	private PropertyValueModel<String> buildThreadStringHolder() {
+		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultThreadHolder()) {
+			@Override
+			protected String transform(Boolean value) {
+				if (value != null) {
+					String defaultStringValue = value.booleanValue() ? EclipseLinkUiMessages.Boolean_True : EclipseLinkUiMessages.Boolean_False;
+					return NLS.bind(EclipseLinkUiMessages.PersistenceXmlLoggingTab_threadLabelDefault, defaultStringValue);
+				}
+				return EclipseLinkUiMessages.PersistenceXmlLoggingTab_threadLabel;
+			}
+		};
+	}
+	
+	private PropertyValueModel<Boolean> buildDefaultThreadHolder() {
+		return new PropertyAspectAdapter<Logging, Boolean>(
+			getSubjectHolder(),
+			Logging.THREAD_PROPERTY)
+		{
+			@Override
+			protected Boolean buildValue_() {
+				if (this.subject.getThread() != null) {
+					return null;
+				}
+				return this.subject.getDefaultThread();
+			}
+		};
 	}
 }

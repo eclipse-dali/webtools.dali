@@ -40,48 +40,6 @@ public class TimestampComposite extends FormPane<Logging>
 		super(parentComposite, parent);
 	}
 
-	private WritablePropertyValueModel<Boolean> buildTimestampHolder() {
-		return new PropertyAspectAdapter<Logging, Boolean>(getSubjectHolder(), Logging.TIMESTAMP_PROPERTY) {
-			@Override
-			protected Boolean buildValue_() {
-				return subject.getTimestamp();
-			}
-
-			@Override
-			protected void setValue_(Boolean value) {
-				subject.setTimestamp(value);
-			}
-
-			@Override
-			protected void subjectChanged() {
-				Object oldValue = this.getValue();
-				super.subjectChanged();
-				Object newValue = this.getValue();
-
-				// Make sure the default value is appended to the text
-				if (oldValue == newValue && newValue == null) {
-					this.fireAspectChange(Boolean.TRUE, newValue);
-				}
-			}
-		};
-	}
-
-	private PropertyValueModel<String> buildTimestampStringHolder() {
-		return new TransformationPropertyValueModel<Boolean, String>(buildTimestampHolder()) {
-			@Override
-			protected String transform(Boolean value) {
-				if ((getSubject() != null) && (value == null)) {
-					Boolean defaultValue = getSubject().getDefaultTimestamp();
-					if (defaultValue != null) {
-						String defaultStringValue = defaultValue ? EclipseLinkUiMessages.Boolean_True : EclipseLinkUiMessages.Boolean_False;
-						return NLS.bind(EclipseLinkUiMessages.PersistenceXmlLoggingTab_timestampLabelDefault, defaultStringValue);
-					}
-				}
-				return EclipseLinkUiMessages.PersistenceXmlLoggingTab_timestampLabel;
-			}
-		};
-	}
-
 	@Override
 	protected void initializeLayout(Composite container) {
 
@@ -92,5 +50,46 @@ public class TimestampComposite extends FormPane<Logging>
 			this.buildTimestampStringHolder(),
 			EclipseLinkHelpContextIds.PERSISTENCE_LOGGING_TIMESTAMP
 		);
+	}
+	
+	private WritablePropertyValueModel<Boolean> buildTimestampHolder() {
+		return new PropertyAspectAdapter<Logging, Boolean>(getSubjectHolder(), Logging.TIMESTAMP_PROPERTY) {
+			@Override
+			protected Boolean buildValue_() {
+				return this.subject.getTimestamp();
+			}
+
+			@Override
+			protected void setValue_(Boolean value) {
+				this.subject.setTimestamp(value);
+			}
+		};
+	}
+
+	private PropertyValueModel<String> buildTimestampStringHolder() {
+		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultTimestampHolder()) {
+			@Override
+			protected String transform(Boolean value) {
+				if (value != null) {
+					String defaultStringValue = value.booleanValue() ? EclipseLinkUiMessages.Boolean_True : EclipseLinkUiMessages.Boolean_False;
+					return NLS.bind(EclipseLinkUiMessages.PersistenceXmlLoggingTab_timestampLabelDefault, defaultStringValue);
+				}
+				return EclipseLinkUiMessages.PersistenceXmlLoggingTab_timestampLabel;
+			}
+		};
+	}
+	private PropertyValueModel<Boolean> buildDefaultTimestampHolder() {
+		return new PropertyAspectAdapter<Logging, Boolean>(
+			getSubjectHolder(),
+			Logging.TIMESTAMP_PROPERTY)
+		{
+			@Override
+			protected Boolean buildValue_() {
+				if (this.subject.getTimestamp() != null) {
+					return null;
+				}
+				return this.subject.getDefaultTimestamp();
+			}
+		};
 	}
 }

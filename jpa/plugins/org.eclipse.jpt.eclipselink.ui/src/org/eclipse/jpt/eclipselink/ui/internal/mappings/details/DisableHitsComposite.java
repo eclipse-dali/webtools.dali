@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -43,60 +43,6 @@ public class DisableHitsComposite extends FormPane<Caching>
 	{
 		super(parentPane, parent);
 	}
-
-	private WritablePropertyValueModel<Boolean> buildDisableHitsHolder() {
-		return new PropertyAspectAdapter<Caching, Boolean>(getSubjectHolder(), Caching.SPECIFIED_DISABLE_HITS_PROPERTY) {
-			@Override
-			protected Boolean buildValue_() {
-				return this.subject.getSpecifiedDisableHits();
-			}
-
-			@Override
-			protected void setValue_(Boolean value) {
-				this.subject.setSpecifiedDisableHits(value);
-			}
-
-			@Override
-			protected void subjectChanged() {
-				Object oldValue = this.getValue();
-				super.subjectChanged();
-				Object newValue = this.getValue();
-
-				// Make sure the default value is appended to the text
-				if (oldValue == newValue && newValue == null) {
-					this.fireAspectChange(Boolean.TRUE, newValue);
-				}
-			}
-		};
-	}
-
-	private PropertyValueModel<String> buildDisableHitsStringHolder() {
-
-		return new TransformationPropertyValueModel<Boolean, String>(buildDisableHitsHolder()) {
-
-			@Override
-			protected String transform(Boolean value) {
-
-				if ((getSubject() != null) && (value == null)) {
-
-					Boolean defaultValue = getSubject().isDefaultDisableHits();
-
-					if (defaultValue != null) {
-
-						String defaultStringValue = defaultValue ? JptUiMappingsMessages.Boolean_True :
-						                                           JptUiMappingsMessages.Boolean_False;
-
-						return NLS.bind(
-							EclipseLinkUiMappingsMessages.DisableHitsComposite_disableHitsDefault,
-							defaultStringValue
-						);
-					}
-				}
-
-				return EclipseLinkUiMappingsMessages.DisableHitsComposite_disableHitsLabel;
-			}
-		};
-	}
 	
 	@Override
 	protected void initializeLayout(Composite container) {
@@ -108,5 +54,48 @@ public class DisableHitsComposite extends FormPane<Caching>
 			buildDisableHitsStringHolder(),
 			EclipseLinkHelpContextIds.CACHING_DISABLE_HITS
 		);
+	}
+	
+	private WritablePropertyValueModel<Boolean> buildDisableHitsHolder() {
+		return new PropertyAspectAdapter<Caching, Boolean>(getSubjectHolder(), Caching.SPECIFIED_DISABLE_HITS_PROPERTY) {
+			@Override
+			protected Boolean buildValue_() {
+				return this.subject.getSpecifiedDisableHits();
+			}
+
+			@Override
+			protected void setValue_(Boolean value) {
+				this.subject.setSpecifiedDisableHits(value);
+			}
+		};
+	}
+
+	private PropertyValueModel<String> buildDisableHitsStringHolder() {
+		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultDisableHitsHolder()) {
+			@Override
+			protected String transform(Boolean value) {
+				if (value != null) {
+					String defaultStringValue = value.booleanValue() ? JptUiMappingsMessages.Boolean_True : JptUiMappingsMessages.Boolean_False;
+					return NLS.bind(EclipseLinkUiMappingsMessages.DisableHitsComposite_disableHitsDefault, defaultStringValue);
+				}
+				return EclipseLinkUiMappingsMessages.DisableHitsComposite_disableHitsLabel;
+			}
+		};
+	}
+	
+	private PropertyValueModel<Boolean> buildDefaultDisableHitsHolder() {
+		return new PropertyAspectAdapter<Caching, Boolean>(
+			getSubjectHolder(),
+			Caching.SPECIFIED_DISABLE_HITS_PROPERTY,
+			Caching.DEFAULT_DISABLE_HITS_PROPERTY)
+		{
+			@Override
+			protected Boolean buildValue_() {
+				if (this.subject.getSpecifiedDisableHits() != null) {
+					return null;
+				}
+				return Boolean.valueOf(this.subject.isDefaultDisableHits());
+			}
+		};
 	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -67,41 +67,35 @@ public class MutableComposite extends FormPane<Mutable>
 				this.subject.setSpecifiedMutable(value);
 			}
 
-			@Override
-			protected void subjectChanged() {
-				Object oldValue = this.getValue();
-				super.subjectChanged();
-				Object newValue = this.getValue();
-
-				// Make sure the default value is appended to the text
-				if (oldValue == newValue && newValue == null) {
-					this.fireAspectChange(Boolean.TRUE, newValue);
-				}
-			}
 		};
 	}
 
 	private PropertyValueModel<String> buildMutableStringHolder() {
-
-		return new TransformationPropertyValueModel<Boolean, String>(buildMutableHolder()) {
-
+		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultMutableHolder()) {
 			@Override
 			protected String transform(Boolean value) {
-
-				if ((getSubject() != null) && (value == null)) {
-					boolean defaultValue = getSubject().isDefaultMutable();
-					String defaultStringValue = defaultValue ? JptUiMappingsMessages.Boolean_True :
-					                                           JptUiMappingsMessages.Boolean_False;
-
-					return NLS.bind(
-						EclipseLinkUiMappingsMessages.MutableComposite_mutableLabelDefault,
-						defaultStringValue
-					);
+				if (value != null) {
+					String defaultStringValue = value.booleanValue() ? JptUiMappingsMessages.Boolean_True : JptUiMappingsMessages.Boolean_False;
+					return NLS.bind(EclipseLinkUiMappingsMessages.MutableComposite_mutableLabelDefault, defaultStringValue);
 				}
-
 				return EclipseLinkUiMappingsMessages.MutableComposite_mutableLabel;
 			}
 		};
 	}
-
+	
+	private PropertyValueModel<Boolean> buildDefaultMutableHolder() {
+		return new PropertyAspectAdapter<Mutable, Boolean>(
+			getSubjectHolder(),
+			Mutable.SPECIFIED_MUTABLE_PROPERTY,
+			Mutable.DEFAULT_MUTABLE_PROPERTY)
+		{
+			@Override
+			protected Boolean buildValue_() {
+				if (this.subject.getSpecifiedMutable() != null) {
+					return null;
+				}
+				return Boolean.valueOf(this.subject.isDefaultMutable());
+			}
+		};
+	}
 }

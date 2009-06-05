@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -45,6 +45,17 @@ public class OptionalComposite extends FormPane<Nullable>
 		super(parentPane, parent);
 	}
 
+	@Override
+	protected void initializeLayout(Composite container) {
+
+		addTriStateCheckBoxWithDefault(
+			container,
+			JptUiMappingsMessages.BasicGeneralSection_optionalLabel,
+			buildOptionalHolder(),
+			buildOptionalStringHolder(),
+			JpaHelpContextIds.MAPPING_OPTIONAL
+		);
+	}
 	private WritablePropertyValueModel<Boolean> buildOptionalHolder() {
 		return new PropertyAspectAdapter<Nullable, Boolean>(getSubjectHolder(), Nullable.SPECIFIED_OPTIONAL_PROPERTY) {
 			@Override
@@ -56,54 +67,36 @@ public class OptionalComposite extends FormPane<Nullable>
 			protected void setValue_(Boolean value) {
 				this.subject.setSpecifiedOptional(value);
 			}
-
-			@Override
-			protected void subjectChanged() {
-				Object oldValue = this.getValue();
-				super.subjectChanged();
-				Object newValue = this.getValue();
-
-				// Make sure the default value is appended to the text
-				if (oldValue == newValue && newValue == null) {
-					this.fireAspectChange(Boolean.TRUE, newValue);
-				}
-			}
 		};
 	}
 
 	private PropertyValueModel<String> buildOptionalStringHolder() {
-
-		return new TransformationPropertyValueModel<Boolean, String>(buildOptionalHolder()) {
-
+		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultOptionalHolder()) {
 			@Override
 			protected String transform(Boolean value) {
-
-				if ((getSubject() != null) && (value == null)) {
-					boolean defaultValue = getSubject().isDefaultOptional();
-
-					String defaultStringValue = defaultValue ? JptUiMappingsMessages.Boolean_True :
-					                                           JptUiMappingsMessages.Boolean_False;
-
-					return NLS.bind(
-						JptUiMappingsMessages.BasicGeneralSection_optionalLabelDefault,
-						defaultStringValue
-					);
+				if (value != null) {
+					String defaultStringValue = value.booleanValue() ? JptUiMappingsMessages.Boolean_True : JptUiMappingsMessages.Boolean_False;
+					return NLS.bind(JptUiMappingsMessages.BasicGeneralSection_optionalLabelDefault, defaultStringValue);
 				}
-
 				return JptUiMappingsMessages.BasicGeneralSection_optionalLabel;
 			}
 		};
 	}
-
-	@Override
-	protected void initializeLayout(Composite container) {
-
-		addTriStateCheckBoxWithDefault(
-			container,
-			JptUiMappingsMessages.BasicGeneralSection_optionalLabel,
-			buildOptionalHolder(),
-			buildOptionalStringHolder(),
-			JpaHelpContextIds.MAPPING_OPTIONAL
-		);
+	
+	
+	private PropertyValueModel<Boolean> buildDefaultOptionalHolder() {
+		return new PropertyAspectAdapter<Nullable, Boolean>(
+			getSubjectHolder(),
+			Nullable.SPECIFIED_OPTIONAL_PROPERTY,
+			Nullable.DEFAULT_OPTIONAL_PROPERTY)
+		{
+			@Override
+			protected Boolean buildValue_() {
+				if (this.subject.getSpecifiedOptional() != null) {
+					return null;
+				}
+				return Boolean.valueOf(this.subject.isDefaultOptional());
+			}
+		};
 	}
 }

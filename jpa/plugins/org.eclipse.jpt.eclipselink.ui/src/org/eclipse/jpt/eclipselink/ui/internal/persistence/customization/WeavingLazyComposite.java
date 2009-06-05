@@ -40,48 +40,6 @@ public class WeavingLazyComposite extends FormPane<Customization>
 		super(parentComposite, parent);
 	}
 
-	private WritablePropertyValueModel<Boolean> buildWeavingLazyHolder() {
-		return new PropertyAspectAdapter<Customization, Boolean>(getSubjectHolder(), Customization.WEAVING_LAZY_PROPERTY) {
-			@Override
-			protected Boolean buildValue_() {
-				return subject.getWeavingLazy();
-			}
-
-			@Override
-			protected void setValue_(Boolean value) {
-				subject.setWeavingLazy(value);
-			}
-
-			@Override
-			protected void subjectChanged() {
-				Object oldValue = this.getValue();
-				super.subjectChanged();
-				Object newValue = this.getValue();
-
-				// Make sure the default value is appended to the text
-				if (oldValue == newValue && newValue == null) {
-					this.fireAspectChange(Boolean.TRUE, newValue);
-				}
-			}
-		};
-	}
-
-	private PropertyValueModel<String> buildWeavingLazyStringHolder() {
-		return new TransformationPropertyValueModel<Boolean, String>(buildWeavingLazyHolder()) {
-			@Override
-			protected String transform(Boolean value) {
-				if ((getSubject() != null) && (value == null)) {
-					Boolean defaultValue = getSubject().getDefaultWeavingLazy();
-					if (defaultValue != null) {
-						String defaultStringValue = defaultValue ? EclipseLinkUiMessages.Boolean_True : EclipseLinkUiMessages.Boolean_False;
-						return NLS.bind(EclipseLinkUiMessages.PersistenceXmlCustomizationTab_weavingLazyLabelDefault, defaultStringValue);
-					}
-				}
-				return EclipseLinkUiMessages.PersistenceXmlCustomizationTab_weavingLazyLabel;
-			}
-		};
-	}
-
 	@Override
 	protected void initializeLayout(Composite container) {
 
@@ -92,5 +50,47 @@ public class WeavingLazyComposite extends FormPane<Customization>
 			this.buildWeavingLazyStringHolder(),
 			EclipseLinkHelpContextIds.PERSISTENCE_CUSTOMIZATION
 		);
+	}
+	
+	private WritablePropertyValueModel<Boolean> buildWeavingLazyHolder() {
+		return new PropertyAspectAdapter<Customization, Boolean>(getSubjectHolder(), Customization.WEAVING_LAZY_PROPERTY) {
+			@Override
+			protected Boolean buildValue_() {
+				return this.subject.getWeavingLazy();
+			}
+
+			@Override
+			protected void setValue_(Boolean value) {
+				this.subject.setWeavingLazy(value);
+			}
+		};
+	}
+
+	private PropertyValueModel<String> buildWeavingLazyStringHolder() {
+		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultWeavingLazyHolder()) {
+			@Override
+			protected String transform(Boolean value) {
+				if (value != null) {
+					String defaultStringValue = value.booleanValue() ? EclipseLinkUiMessages.Boolean_True : EclipseLinkUiMessages.Boolean_False;
+					return NLS.bind(EclipseLinkUiMessages.PersistenceXmlCustomizationTab_weavingLazyLabelDefault, defaultStringValue);
+				}
+				return EclipseLinkUiMessages.PersistenceXmlCustomizationTab_weavingLazyLabel;
+			}
+		};
+	}
+	
+	private PropertyValueModel<Boolean> buildDefaultWeavingLazyHolder() {
+		return new PropertyAspectAdapter<Customization, Boolean>(
+			getSubjectHolder(),
+			Customization.WEAVING_LAZY_PROPERTY)
+		{
+			@Override
+			protected Boolean buildValue_() {
+				if (this.subject.getWeavingLazy() != null) {
+					return null;
+				}
+				return this.subject.getDefaultWeavingLazy();
+			}
+		};
 	}
 }

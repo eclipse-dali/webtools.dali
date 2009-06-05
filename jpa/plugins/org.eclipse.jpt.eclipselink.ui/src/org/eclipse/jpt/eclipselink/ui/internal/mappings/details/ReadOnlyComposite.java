@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -49,16 +49,15 @@ public class ReadOnlyComposite extends FormPane<ReadOnly>
 		addTriStateCheckBoxWithDefault(
 			container,
 			EclipseLinkUiMappingsMessages.ReadOnlyComposite_readOnlyLabel,
-			buildReadOnlyHolder(),
+			buildSpecifiedReadOnlyHolder(),
 			buildReadOnlyStringHolder(),
 			null
 		);
 	}
 	
-	private WritablePropertyValueModel<Boolean> buildReadOnlyHolder() {
+	private WritablePropertyValueModel<Boolean> buildSpecifiedReadOnlyHolder() {
 		return new PropertyAspectAdapter<ReadOnly, Boolean>(
 			getSubjectHolder(),
-			ReadOnly.DEFAULT_READ_ONLY_PROPERTY,
 			ReadOnly.SPECIFIED_READ_ONLY_PROPERTY)
 		{
 			@Override
@@ -70,44 +69,35 @@ public class ReadOnlyComposite extends FormPane<ReadOnly>
 			protected void setValue_(Boolean value) {
 				this.subject.setSpecifiedReadOnly(value);
 			}
-
-			@Override
-			protected void subjectChanged() {
-				Object oldValue = this.getValue();
-				super.subjectChanged();
-				Object newValue = this.getValue();
-
-				// Make sure the default value is appended to the text
-				if (oldValue == newValue && newValue == null) {
-					this.fireAspectChange(Boolean.TRUE, newValue);
-				}
-			}
 		};
 	}
 
 	private PropertyValueModel<String> buildReadOnlyStringHolder() {
-
-		return new TransformationPropertyValueModel<Boolean, String>(buildReadOnlyHolder()) {
-
+		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultReadOnlyHolder()) {
 			@Override
 			protected String transform(Boolean value) {
-
-				if ((getSubject() != null) && (value == null)) {
-
-					boolean defaultValue = getSubject().isDefaultReadOnly();
-
-					String defaultStringValue = defaultValue ? JptUiMappingsMessages.Boolean_True :
-					                                           JptUiMappingsMessages.Boolean_False;
-
-					return NLS.bind(
-						EclipseLinkUiMappingsMessages.ReadOnlyComposite_readOnlyWithDefault,
-						defaultStringValue
-					);
+				if (value != null) {
+					String defaultStringValue = value.booleanValue() ? JptUiMappingsMessages.Boolean_True : JptUiMappingsMessages.Boolean_False;
+					return NLS.bind(EclipseLinkUiMappingsMessages.ReadOnlyComposite_readOnlyWithDefault, defaultStringValue);
 				}
-
 				return EclipseLinkUiMappingsMessages.ReadOnlyComposite_readOnlyLabel;
 			}
 		};
 	}
-
+	
+	private PropertyValueModel<Boolean> buildDefaultReadOnlyHolder() {
+		return new PropertyAspectAdapter<ReadOnly, Boolean>(
+			getSubjectHolder(),
+			ReadOnly.SPECIFIED_READ_ONLY_PROPERTY,
+			ReadOnly.DEFAULT_READ_ONLY_PROPERTY)
+		{
+			@Override
+			protected Boolean buildValue_() {
+				if (this.subject.getSpecifiedReadOnly() != null) {
+					return null;
+				}
+				return Boolean.valueOf(this.subject.isDefaultReadOnly());
+			}
+		};
+	}
 }

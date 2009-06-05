@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -43,60 +43,6 @@ public class RefreshOnlyIfNewerComposite extends FormPane<Caching>
 	{
 		super(parentPane, parent);
 	}
-
-	private WritablePropertyValueModel<Boolean> buildRefreshOnlyIfNewerHolder() {
-		return new PropertyAspectAdapter<Caching, Boolean>(getSubjectHolder(), Caching.SPECIFIED_REFRESH_ONLY_IF_NEWER_PROPERTY) {
-			@Override
-			protected Boolean buildValue_() {
-				return this.subject.getSpecifiedRefreshOnlyIfNewer();
-			}
-
-			@Override
-			protected void setValue_(Boolean value) {
-				this.subject.setSpecifiedRefreshOnlyIfNewer(value);
-			}
-
-			@Override
-			protected void subjectChanged() {
-				Object oldValue = this.getValue();
-				super.subjectChanged();
-				Object newValue = this.getValue();
-
-				// Make sure the default value is appended to the text
-				if (oldValue == newValue && newValue == null) {
-					this.fireAspectChange(Boolean.TRUE, newValue);
-				}
-			}
-		};
-	}
-
-	private PropertyValueModel<String> buildRefreshOnlyIfNewerStringHolder() {
-
-		return new TransformationPropertyValueModel<Boolean, String>(buildRefreshOnlyIfNewerHolder()) {
-
-			@Override
-			protected String transform(Boolean value) {
-
-				if ((getSubject() != null) && (value == null)) {
-
-					Boolean defaultValue = getSubject().isDefaultRefreshOnlyIfNewer();
-
-					if (defaultValue != null) {
-
-						String defaultStringValue = defaultValue ? JptUiMappingsMessages.Boolean_True :
-						                                           JptUiMappingsMessages.Boolean_False;
-
-						return NLS.bind(
-							EclipseLinkUiMappingsMessages.RefreshOnlyIfNewerComposite_refreshOnlyIfNewerDefault,
-							defaultStringValue
-						);
-					}
-				}
-
-				return EclipseLinkUiMappingsMessages.RefreshOnlyIfNewerComposite_refreshOnlyIfNewerLabel;
-			}
-		};
-	}
 	
 	@Override
 	protected void initializeLayout(Composite container) {
@@ -108,5 +54,50 @@ public class RefreshOnlyIfNewerComposite extends FormPane<Caching>
 			buildRefreshOnlyIfNewerStringHolder(),
 			EclipseLinkHelpContextIds.CACHING_REFRESH_ONLY_IF_NEWER
 		);
+	}
+	
+	private WritablePropertyValueModel<Boolean> buildRefreshOnlyIfNewerHolder() {
+		return new PropertyAspectAdapter<Caching, Boolean>(getSubjectHolder(), Caching.SPECIFIED_REFRESH_ONLY_IF_NEWER_PROPERTY) {
+			@Override
+			protected Boolean buildValue_() {
+				return this.subject.getSpecifiedRefreshOnlyIfNewer();
+			}
+
+			@Override
+			protected void setValue_(Boolean value) {
+				this.subject.setSpecifiedRefreshOnlyIfNewer(value);
+			}
+		};
+	}
+
+	private PropertyValueModel<String> buildRefreshOnlyIfNewerStringHolder() {
+
+		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultRefreshOnlyIfNewerHolder()) {
+
+			@Override
+			protected String transform(Boolean value) {
+				if (value != null) {
+					String defaultStringValue = value.booleanValue() ? JptUiMappingsMessages.Boolean_True : JptUiMappingsMessages.Boolean_False;
+					return NLS.bind(EclipseLinkUiMappingsMessages.RefreshOnlyIfNewerComposite_refreshOnlyIfNewerDefault, defaultStringValue);
+				}
+				return EclipseLinkUiMappingsMessages.RefreshOnlyIfNewerComposite_refreshOnlyIfNewerLabel;
+			}
+		};
+	}
+	
+	private PropertyValueModel<Boolean> buildDefaultRefreshOnlyIfNewerHolder() {
+		return new PropertyAspectAdapter<Caching, Boolean>(
+			getSubjectHolder(),
+			Caching.SPECIFIED_REFRESH_ONLY_IF_NEWER_PROPERTY,
+			Caching.DEFAULT_REFRESH_ONLY_IF_NEWER_PROPERTY)
+		{
+			@Override
+			protected Boolean buildValue_() {
+				if (this.subject.getSpecifiedRefreshOnlyIfNewer() != null) {
+					return null;
+				}
+				return Boolean.valueOf(this.subject.isDefaultRefreshOnlyIfNewer());
+			}
+		};
 	}
 }

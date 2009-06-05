@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,16 +11,13 @@ package org.eclipse.jpt.eclipselink.ui.internal.mappings.details;
 
 import java.util.ArrayList;
 import java.util.Collection;
+
+import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.eclipselink.core.context.Caching;
+import org.eclipse.jpt.eclipselink.core.internal.context.persistence.caching.EclipseLinkCaching;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkHelpContextIds;
+import org.eclipse.jpt.eclipselink.ui.internal.java.details.EclipseLinkJavaEntityComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
-import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.AlwaysRefreshComposite;
-import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.CacheCoordinationTypeComposite;
-import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.CacheSizeComposite;
-import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.CacheTypeComposite;
-import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.DisableHitsComposite;
-import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.ExpiryComposite;
-import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.RefreshOnlyIfNewerComposite;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
@@ -80,7 +77,7 @@ public abstract class CachingComposite<T extends Caching> extends FormPane<T>
 		addTriStateCheckBoxWithDefault(
 			addSubPane(container, 8),
 			EclipseLinkUiMappingsMessages.CachingComposite_sharedLabel,
-			buildSharedHolder(),
+			buildSpecifiedSharedHolder(),
 			buildSharedStringHolder(),
 			EclipseLinkHelpContextIds.CACHING_SHARED
 		);
@@ -117,7 +114,10 @@ public abstract class CachingComposite<T extends Caching> extends FormPane<T>
 	protected abstract void initializeExistenceCheckingComposite(Composite parent);
 	
 	private PropertyValueModel<Boolean> buildSharedCacheEnabler() {
-		return new PropertyAspectAdapter<Caching, Boolean>(getSubjectHolder(), Caching.SPECIFIED_SHARED_PROPERTY) {
+		return new PropertyAspectAdapter<Caching, Boolean>(
+				getSubjectHolder(), 
+				Caching.SPECIFIED_SHARED_PROPERTY, 
+				Caching.DEFAULT_SHARED_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(this.subject.isShared());
@@ -125,7 +125,7 @@ public abstract class CachingComposite<T extends Caching> extends FormPane<T>
 		};
 	}	
 	
-	private WritablePropertyValueModel<Boolean> buildSharedHolder() {
+	private WritablePropertyValueModel<Boolean> buildSpecifiedSharedHolder() {
 		return new PropertyAspectAdapter<Caching, Boolean>(getSubjectHolder(), Caching.SPECIFIED_SHARED_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -136,43 +136,35 @@ public abstract class CachingComposite<T extends Caching> extends FormPane<T>
 			protected void setValue_(Boolean value) {
 				this.subject.setSpecifiedShared(value);
 			}
-
-			@Override
-			protected void subjectChanged() {
-				Object oldValue = this.getValue();
-				super.subjectChanged();
-				Object newValue = this.getValue();
-
-				// Make sure the default value is appended to the text
-				if (oldValue == newValue && newValue == null) {
-					this.fireAspectChange(Boolean.TRUE, newValue);
-				}
-			}
 		};
 	}
 
 	private PropertyValueModel<String> buildSharedStringHolder() {
-
-		return new TransformationPropertyValueModel<Boolean, String>(buildSharedHolder()) {
-
+		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultSharedHolder()) {
 			@Override
 			protected String transform(Boolean value) {
-
-				if ((getSubject() != null) && (value == null)) {
-					boolean defaultValue = getSubject().isDefaultShared();
-
-					String defaultStringValue = defaultValue ? JptUiMappingsMessages.Boolean_True :
-					                                           JptUiMappingsMessages.Boolean_False;
-
-					return NLS.bind(
-						EclipseLinkUiMappingsMessages.CachingComposite_sharedLabelDefault,
-						defaultStringValue
-					);
+				if (value != null) {
+					String defaultStringValue = value.booleanValue() ? JptUiMappingsMessages.Boolean_True : JptUiMappingsMessages.Boolean_False;
+					return NLS.bind(EclipseLinkUiMappingsMessages.CachingComposite_sharedLabelDefault, defaultStringValue);
 				}
-
 				return EclipseLinkUiMappingsMessages.CachingComposite_sharedLabel;
 			}
 		};
 	}
-
+	
+	private PropertyValueModel<Boolean> buildDefaultSharedHolder() {
+		return new PropertyAspectAdapter<Caching, Boolean>(
+			getSubjectHolder(),
+			Caching.SPECIFIED_SHARED_PROPERTY,
+			Caching.DEFAULT_SHARED_PROPERTY)
+		{
+			@Override
+			protected Boolean buildValue_() {
+				if (this.subject.getSpecifiedShared() != null) {
+					return null;
+				}
+				return Boolean.valueOf(this.subject.isDefaultShared());
+			}
+		};
+	}
 }

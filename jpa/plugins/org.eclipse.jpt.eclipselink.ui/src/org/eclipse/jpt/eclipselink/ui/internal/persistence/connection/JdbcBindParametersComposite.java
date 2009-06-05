@@ -40,48 +40,6 @@ public class JdbcBindParametersComposite extends Pane<Connection>
 		super(parentComposite, parent);
 	}
 
-	private WritablePropertyValueModel<Boolean> buildBindParametersHolder() {
-		return new PropertyAspectAdapter<Connection, Boolean>(getSubjectHolder(), Connection.BIND_PARAMETERS_PROPERTY) {
-			@Override
-			protected Boolean buildValue_() {
-				return subject.getBindParameters();
-			}
-
-			@Override
-			protected void setValue_(Boolean value) {
-				subject.setBindParameters(value);
-			}
-
-			@Override
-			protected void subjectChanged() {
-				Object oldValue = this.getValue();
-				super.subjectChanged();
-				Object newValue = this.getValue();
-
-				// Make sure the default value is appended to the text
-				if (oldValue == newValue && newValue == null) {
-					this.fireAspectChange(Boolean.TRUE, newValue);
-				}
-			}
-		};
-	}
-
-	private PropertyValueModel<String> buildBindParametersStringHolder() {
-		return new TransformationPropertyValueModel<Boolean, String>(buildBindParametersHolder()) {
-			@Override
-			protected String transform(Boolean value) {
-				if ((getSubject() != null) && (value == null)) {
-					Boolean defaultValue = getSubject().getDefaultBindParameters();
-					if (defaultValue != null) {
-						String defaultStringValue = defaultValue ? EclipseLinkUiMessages.Boolean_True : EclipseLinkUiMessages.Boolean_False;
-						return NLS.bind(EclipseLinkUiMessages.PersistenceXmlConnectionTab_bindParametersLabelDefault, defaultStringValue);
-					}
-				}
-				return EclipseLinkUiMessages.PersistenceXmlConnectionTab_bindParametersLabel;
-			}
-		};
-	}
-
 	@Override
 	protected void initializeLayout(Composite container) {
 
@@ -92,5 +50,47 @@ public class JdbcBindParametersComposite extends Pane<Connection>
 			this.buildBindParametersStringHolder(),
 			JpaHelpContextIds.PERSISTENCE_XML_CONNECTION
 		);
+	}
+	
+	private WritablePropertyValueModel<Boolean> buildBindParametersHolder() {
+		return new PropertyAspectAdapter<Connection, Boolean>(getSubjectHolder(), Connection.BIND_PARAMETERS_PROPERTY) {
+			@Override
+			protected Boolean buildValue_() {
+				return this.subject.getBindParameters();
+			}
+
+			@Override
+			protected void setValue_(Boolean value) {
+				this.subject.setBindParameters(value);
+			}
+		};
+	}
+
+	private PropertyValueModel<String> buildBindParametersStringHolder() {
+		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultBindParametersHolder()) {
+			@Override
+			protected String transform(Boolean value) {
+				if (value != null) {
+					String defaultStringValue = value.booleanValue() ? EclipseLinkUiMessages.Boolean_True : EclipseLinkUiMessages.Boolean_False;
+					return NLS.bind(EclipseLinkUiMessages.PersistenceXmlConnectionTab_bindParametersLabelDefault, defaultStringValue);
+				}
+				return EclipseLinkUiMessages.PersistenceXmlConnectionTab_bindParametersLabel;
+			}
+		};
+	}
+	
+	private PropertyValueModel<Boolean> buildDefaultBindParametersHolder() {
+		return new PropertyAspectAdapter<Connection, Boolean>(
+			getSubjectHolder(),
+			Connection.BIND_PARAMETERS_PROPERTY)
+		{
+			@Override
+			protected Boolean buildValue_() {
+				if (this.subject.getBindParameters() != null) {
+					return null;
+				}
+				return this.subject.getDefaultBindParameters();
+			}
+		};
 	}
 }

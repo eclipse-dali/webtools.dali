@@ -40,48 +40,6 @@ public class WeavingEagerComposite extends FormPane<Customization>
 		super(parentComposite, parent);
 	}
 
-	private WritablePropertyValueModel<Boolean> buildWeavingEagerHolder() {
-		return new PropertyAspectAdapter<Customization, Boolean>(getSubjectHolder(), Customization.WEAVING_EAGER_PROPERTY) {
-			@Override
-			protected Boolean buildValue_() {
-				return subject.getWeavingEager();
-			}
-
-			@Override
-			protected void setValue_(Boolean value) {
-				subject.setWeavingEager(value);
-			}
-
-			@Override
-			protected void subjectChanged() {
-				Object oldValue = this.getValue();
-				super.subjectChanged();
-				Object newValue = this.getValue();
-
-				// Make sure the default value is appended to the text
-				if (oldValue == newValue && newValue == null) {
-					this.fireAspectChange(Boolean.TRUE, newValue);
-				}
-			}
-		};
-	}
-
-	private PropertyValueModel<String> buildWeavingEagerStringHolder() {
-		return new TransformationPropertyValueModel<Boolean, String>(buildWeavingEagerHolder()) {
-			@Override
-			protected String transform(Boolean value) {
-				if ((getSubject() != null) && (value == null)) {
-					Boolean defaultValue = getSubject().getDefaultWeavingEager();
-					if (defaultValue != null) {
-						String defaultStringValue = defaultValue ? EclipseLinkUiMessages.Boolean_True : EclipseLinkUiMessages.Boolean_False;
-						return NLS.bind(EclipseLinkUiMessages.PersistenceXmlCustomizationTab_weavingEagerLabelDefault, defaultStringValue);
-					}
-				}
-				return EclipseLinkUiMessages.PersistenceXmlCustomizationTab_weavingEagerLabel;
-			}
-		};
-	}
-
 	@Override
 	protected void initializeLayout(Composite container) {
 
@@ -92,5 +50,47 @@ public class WeavingEagerComposite extends FormPane<Customization>
 			this.buildWeavingEagerStringHolder(),
 			EclipseLinkHelpContextIds.PERSISTENCE_CUSTOMIZATION
 		);
+	}
+	
+	private WritablePropertyValueModel<Boolean> buildWeavingEagerHolder() {
+		return new PropertyAspectAdapter<Customization, Boolean>(getSubjectHolder(), Customization.WEAVING_EAGER_PROPERTY) {
+			@Override
+			protected Boolean buildValue_() {
+				return this.subject.getWeavingEager();
+			}
+
+			@Override
+			protected void setValue_(Boolean value) {
+				this.subject.setWeavingEager(value);
+			}
+		};
+	}
+
+	private PropertyValueModel<String> buildWeavingEagerStringHolder() {
+		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultWeavingEagerHolder()) {
+			@Override
+			protected String transform(Boolean value) {
+				if (value != null) {
+					String defaultStringValue = value.booleanValue() ? EclipseLinkUiMessages.Boolean_True : EclipseLinkUiMessages.Boolean_False;
+					return NLS.bind(EclipseLinkUiMessages.PersistenceXmlCustomizationTab_weavingEagerLabelDefault, defaultStringValue);
+				}
+				return EclipseLinkUiMessages.PersistenceXmlCustomizationTab_weavingEagerLabel;
+			}
+		};
+	}
+	
+	private PropertyValueModel<Boolean> buildDefaultWeavingEagerHolder() {
+		return new PropertyAspectAdapter<Customization, Boolean>(
+			getSubjectHolder(),
+			Customization.WEAVING_EAGER_PROPERTY)
+		{
+			@Override
+			protected Boolean buildValue_() {
+				if (this.subject.getWeavingEager() != null) {
+					return null;
+				}
+				return this.subject.getDefaultWeavingEager();
+			}
+		};
 	}
 }

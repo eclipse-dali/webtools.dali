@@ -40,48 +40,6 @@ public class WeavingChangeTrackingComposite extends FormPane<Customization>
 		super(parentComposite, parent);
 	}
 
-	private WritablePropertyValueModel<Boolean> buildWeavingChangeTrackingHolder() {
-		return new PropertyAspectAdapter<Customization, Boolean>(getSubjectHolder(), Customization.WEAVING_CHANGE_TRACKING_PROPERTY) {
-			@Override
-			protected Boolean buildValue_() {
-				return subject.getWeavingChangeTracking();
-			}
-
-			@Override
-			protected void setValue_(Boolean value) {
-				subject.setWeavingChangeTracking(value);
-			}
-
-			@Override
-			protected void subjectChanged() {
-				Object oldValue = this.getValue();
-				super.subjectChanged();
-				Object newValue = this.getValue();
-
-				// Make sure the default value is appended to the text
-				if (oldValue == newValue && newValue == null) {
-					this.fireAspectChange(Boolean.TRUE, newValue);
-				}
-			}
-		};
-	}
-
-	private PropertyValueModel<String> buildWeavingChangeTrackingStringHolder() {
-		return new TransformationPropertyValueModel<Boolean, String>(buildWeavingChangeTrackingHolder()) {
-			@Override
-			protected String transform(Boolean value) {
-				if ((getSubject() != null) && (value == null)) {
-					Boolean defaultValue = getSubject().getDefaultWeavingChangeTracking();
-					if (defaultValue != null) {
-						String defaultStringValue = defaultValue ? EclipseLinkUiMessages.Boolean_True : EclipseLinkUiMessages.Boolean_False;
-						return NLS.bind(EclipseLinkUiMessages.PersistenceXmlCustomizationTab_weavingChangeTrackingLabelDefault, defaultStringValue);
-					}
-				}
-				return EclipseLinkUiMessages.PersistenceXmlCustomizationTab_weavingChangeTrackingLabel;
-			}
-		};
-	}
-
 	@Override
 	protected void initializeLayout(Composite container) {
 
@@ -92,5 +50,47 @@ public class WeavingChangeTrackingComposite extends FormPane<Customization>
 			this.buildWeavingChangeTrackingStringHolder(),
 			EclipseLinkHelpContextIds.PERSISTENCE_CUSTOMIZATION
 		);
+	}
+	
+	private WritablePropertyValueModel<Boolean> buildWeavingChangeTrackingHolder() {
+		return new PropertyAspectAdapter<Customization, Boolean>(getSubjectHolder(), Customization.WEAVING_CHANGE_TRACKING_PROPERTY) {
+			@Override
+			protected Boolean buildValue_() {
+				return this.subject.getWeavingChangeTracking();
+			}
+
+			@Override
+			protected void setValue_(Boolean value) {
+				this.subject.setWeavingChangeTracking(value);
+			}
+		};
+	}
+
+	private PropertyValueModel<String> buildWeavingChangeTrackingStringHolder() {
+		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultWeavingChangeTrackingHolder()) {
+			@Override
+			protected String transform(Boolean value) {
+				if (value != null) {
+					String defaultStringValue = value.booleanValue() ? EclipseLinkUiMessages.Boolean_True : EclipseLinkUiMessages.Boolean_False;
+					return NLS.bind(EclipseLinkUiMessages.PersistenceXmlCustomizationTab_weavingChangeTrackingLabelDefault, defaultStringValue);
+				}
+				return EclipseLinkUiMessages.PersistenceXmlCustomizationTab_weavingChangeTrackingLabel;
+			}
+		};
+	}
+	
+	private PropertyValueModel<Boolean> buildDefaultWeavingChangeTrackingHolder() {
+		return new PropertyAspectAdapter<Customization, Boolean>(
+			getSubjectHolder(),
+			Customization.WEAVING_CHANGE_TRACKING_PROPERTY)
+		{
+			@Override
+			protected Boolean buildValue_() {
+				if (this.subject.getWeavingChangeTracking() != null) {
+					return null;
+				}
+				return this.subject.getDefaultWeavingChangeTracking();
+			}
+		};
 	}
 }
