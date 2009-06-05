@@ -18,12 +18,12 @@
         eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="nonJtaDataSource" unique="false"
         eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="mappingFiles" unique="false"
-        upperBound="-1" eType="#//XmlMappingFileRef" containment="true" resolveProxies="false"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="jarFiles" unique="false"
-        upperBound="-1" eType="#//XmlJarFileRef" containment="true" resolveProxies="false"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="classes" unique="false"
-        upperBound="-1" eType="#//XmlJavaClassRef" containment="true" resolveProxies="false"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="mappingFiles" upperBound="-1"
+        eType="#//XmlMappingFileRef" containment="true" resolveProxies="false"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="jarFiles" upperBound="-1"
+        eType="#//XmlJarFileRef" containment="true" resolveProxies="false"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="classes" upperBound="-1"
+        eType="#//XmlJavaClassRef" containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="excludeUnlistedClasses"
         eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="properties" eType="#//XmlProperties"
