@@ -147,6 +147,9 @@
 			<newWizardShortcut
 				id="org.eclipse.jpt.eclipselink.ui.wizard.newEclipseLinkMappingFile">
 			</newWizardShortcut>
+   			<newWizardShortcut
+         		id="org.eclipse.jpt.eclipselink.ui.wizard.newEclipseLink1_1MappingFile">
+   			</newWizardShortcut>
 		</perspectiveExtension>
 		
 	</extension>
