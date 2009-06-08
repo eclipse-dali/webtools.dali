@@ -79,16 +79,13 @@ public class QueriesComposite extends Pane<QueryContainer>
 	private NamedQueryPropertyComposite namedQueryPane;
 	private WritablePropertyValueModel<Query> queryHolder;
 
-	/**
-	 * Creates a new <code>QueriesComposite</code>.
-	 *
-	 * @param parentPane The parent controller of this one
-	 * @param parent The parent container
-	 */
-	public QueriesComposite(Pane<? extends QueryContainer> parentPane,
-	                        Composite parent) {
+	
+	public QueriesComposite(
+		Pane<?> parentPane, 
+		PropertyValueModel<? extends QueryContainer> subjectHolder,
+		Composite parent) {
 
-		super(parentPane, parent, false);
+			super(parentPane, subjectHolder, parent, false);
 	}
 	
 	private void addQuery() {

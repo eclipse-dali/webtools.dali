@@ -805,65 +805,65 @@ public class EntityMappingsTests extends ContextModelTestCase
 
 	
 	public void testAddNamedQuery() throws Exception {
-		OrmNamedQuery namedQuery = getEntityMappings().addNamedQuery(0);
+		OrmNamedQuery namedQuery = getEntityMappings().getQueryContainer().addNamedQuery(0);
 		namedQuery.setName("FOO");
 				
 		assertEquals("FOO", getXmlEntityMappings().getNamedQueries().get(0).getName());
 		
-		OrmNamedQuery namedQuery2 = getEntityMappings().addNamedQuery(0);
+		OrmNamedQuery namedQuery2 = getEntityMappings().getQueryContainer().addNamedQuery(0);
 		namedQuery2.setName("BAR");
 		
 		assertEquals("BAR", getXmlEntityMappings().getNamedQueries().get(0).getName());
 		assertEquals("FOO", getXmlEntityMappings().getNamedQueries().get(1).getName());
 		
-		OrmNamedQuery namedQuery3 = getEntityMappings().addNamedQuery(1);
+		OrmNamedQuery namedQuery3 = getEntityMappings().getQueryContainer().addNamedQuery(1);
 		namedQuery3.setName("BAZ");
 		
 		assertEquals("BAR", getXmlEntityMappings().getNamedQueries().get(0).getName());
 		assertEquals("BAZ", getXmlEntityMappings().getNamedQueries().get(1).getName());
 		assertEquals("FOO", getXmlEntityMappings().getNamedQueries().get(2).getName());
 		
-		ListIterator<OrmNamedQuery> namedQueries = getEntityMappings().namedQueries();
+		ListIterator<OrmNamedQuery> namedQueries = getEntityMappings().getQueryContainer().namedQueries();
 		assertEquals(namedQuery2, namedQueries.next());
 		assertEquals(namedQuery3, namedQueries.next());
 		assertEquals(namedQuery, namedQueries.next());
 		
-		namedQueries = getEntityMappings().namedQueries();
+		namedQueries = getEntityMappings().getQueryContainer().namedQueries();
 		assertEquals("BAR", namedQueries.next().getName());
 		assertEquals("BAZ", namedQueries.next().getName());
 		assertEquals("FOO", namedQueries.next().getName());
 	}
 	
 	public void testRemoveNamedQuery() throws Exception {
-		getEntityMappings().addNamedQuery(0).setName("FOO");
-		getEntityMappings().addNamedQuery(1).setName("BAR");
-		getEntityMappings().addNamedQuery(2).setName("BAZ");
+		getEntityMappings().getQueryContainer().addNamedQuery(0).setName("FOO");
+		getEntityMappings().getQueryContainer().addNamedQuery(1).setName("BAR");
+		getEntityMappings().getQueryContainer().addNamedQuery(2).setName("BAZ");
 		
 		assertEquals(3, getXmlEntityMappings().getNamedQueries().size());
 		
-		getEntityMappings().removeNamedQuery(0);
+		getEntityMappings().getQueryContainer().removeNamedQuery(0);
 		assertEquals(2, getXmlEntityMappings().getNamedQueries().size());
 		assertEquals("BAR", getXmlEntityMappings().getNamedQueries().get(0).getName());
 		assertEquals("BAZ", getXmlEntityMappings().getNamedQueries().get(1).getName());
 
-		getEntityMappings().removeNamedQuery(0);
+		getEntityMappings().getQueryContainer().removeNamedQuery(0);
 		assertEquals(1, getXmlEntityMappings().getNamedQueries().size());
 		assertEquals("BAZ", getXmlEntityMappings().getNamedQueries().get(0).getName());
 		
-		getEntityMappings().removeNamedQuery(0);
+		getEntityMappings().getQueryContainer().removeNamedQuery(0);
 		assertEquals(0, getXmlEntityMappings().getNamedQueries().size());
 	}
 	
 	public void testMoveNamedQuery() throws Exception {
-		getEntityMappings().addNamedQuery(0).setName("FOO");
-		getEntityMappings().addNamedQuery(1).setName("BAR");
-		getEntityMappings().addNamedQuery(2).setName("BAZ");
+		getEntityMappings().getQueryContainer().addNamedQuery(0).setName("FOO");
+		getEntityMappings().getQueryContainer().addNamedQuery(1).setName("BAR");
+		getEntityMappings().getQueryContainer().addNamedQuery(2).setName("BAZ");
 		
 		assertEquals(3, getXmlEntityMappings().getNamedQueries().size());
 		
 		
-		getEntityMappings().moveNamedQuery(2, 0);
-		ListIterator<OrmNamedQuery> namedQueries = getEntityMappings().namedQueries();
+		getEntityMappings().getQueryContainer().moveNamedQuery(2, 0);
+		ListIterator<OrmNamedQuery> namedQueries = getEntityMappings().getQueryContainer().namedQueries();
 		assertEquals("BAR", namedQueries.next().getName());
 		assertEquals("BAZ", namedQueries.next().getName());
 		assertEquals("FOO", namedQueries.next().getName());
@@ -873,8 +873,8 @@ public class EntityMappingsTests extends ContextModelTestCase
 		assertEquals("FOO", getXmlEntityMappings().getNamedQueries().get(2).getName());
 
 
-		getEntityMappings().moveNamedQuery(0, 1);
-		namedQueries = getEntityMappings().namedQueries();
+		getEntityMappings().getQueryContainer().moveNamedQuery(0, 1);
+		namedQueries = getEntityMappings().getQueryContainer().namedQueries();
 		assertEquals("BAZ", namedQueries.next().getName());
 		assertEquals("BAR", namedQueries.next().getName());
 		assertEquals("FOO", namedQueries.next().getName());
@@ -895,7 +895,7 @@ public class EntityMappingsTests extends ContextModelTestCase
 		getXmlEntityMappings().getNamedQueries().get(1).setName("BAR");
 		getXmlEntityMappings().getNamedQueries().get(2).setName("BAZ");
 		
-		ListIterator<OrmNamedQuery> namedQueries = getEntityMappings().namedQueries();
+		ListIterator<OrmNamedQuery> namedQueries = getEntityMappings().getQueryContainer().namedQueries();
 		assertEquals("FOO", namedQueries.next().getName());
 		assertEquals("BAR", namedQueries.next().getName());
 		assertEquals("BAZ", namedQueries.next().getName());
@@ -903,97 +903,97 @@ public class EntityMappingsTests extends ContextModelTestCase
 		assertEquals(3, getEntityMappings().getPersistenceUnit().queriesSize());
 		
 		getXmlEntityMappings().getNamedQueries().move(2, 0);
-		namedQueries = getEntityMappings().namedQueries();
+		namedQueries = getEntityMappings().getQueryContainer().namedQueries();
 		assertEquals("BAR", namedQueries.next().getName());
 		assertEquals("BAZ", namedQueries.next().getName());
 		assertEquals("FOO", namedQueries.next().getName());
 		assertFalse(namedQueries.hasNext());
 		
 		getXmlEntityMappings().getNamedQueries().move(0, 1);
-		namedQueries = getEntityMappings().namedQueries();
+		namedQueries = getEntityMappings().getQueryContainer().namedQueries();
 		assertEquals("BAZ", namedQueries.next().getName());
 		assertEquals("BAR", namedQueries.next().getName());
 		assertEquals("FOO", namedQueries.next().getName());
 		assertFalse(namedQueries.hasNext());
 		
 		getXmlEntityMappings().getNamedQueries().remove(1);
-		namedQueries = getEntityMappings().namedQueries();
+		namedQueries = getEntityMappings().getQueryContainer().namedQueries();
 		assertEquals("BAZ", namedQueries.next().getName());
 		assertEquals("FOO", namedQueries.next().getName());
 		assertFalse(namedQueries.hasNext());
 		assertEquals(2, getEntityMappings().getPersistenceUnit().queriesSize());
 		
 		getXmlEntityMappings().getNamedQueries().remove(1);
-		namedQueries = getEntityMappings().namedQueries();
+		namedQueries = getEntityMappings().getQueryContainer().namedQueries();
 		assertEquals("BAZ", namedQueries.next().getName());
 		assertFalse(namedQueries.hasNext());
 		assertEquals(1, getEntityMappings().getPersistenceUnit().queriesSize());
 		
 		getXmlEntityMappings().getNamedQueries().remove(0);
-		assertFalse(getEntityMappings().namedQueries().hasNext());
+		assertFalse(getEntityMappings().getQueryContainer().namedQueries().hasNext());
 		assertEquals(0, getEntityMappings().getPersistenceUnit().queriesSize());
 	}
 	
 	public void testAddNamedNativeQuery() throws Exception {
-		OrmNamedNativeQuery namedNativeQuery = getEntityMappings().addNamedNativeQuery(0);
+		OrmNamedNativeQuery namedNativeQuery = getEntityMappings().getQueryContainer().addNamedNativeQuery(0);
 		namedNativeQuery.setName("FOO");
 				
 		assertEquals("FOO", getXmlEntityMappings().getNamedNativeQueries().get(0).getName());
 		
-		OrmNamedNativeQuery namedNativeQuery2 = getEntityMappings().addNamedNativeQuery(0);
+		OrmNamedNativeQuery namedNativeQuery2 = getEntityMappings().getQueryContainer().addNamedNativeQuery(0);
 		namedNativeQuery2.setName("BAR");
 		
 		assertEquals("BAR", getXmlEntityMappings().getNamedNativeQueries().get(0).getName());
 		assertEquals("FOO", getXmlEntityMappings().getNamedNativeQueries().get(1).getName());
 		
-		OrmNamedNativeQuery namedNativeQuery3 = getEntityMappings().addNamedNativeQuery(1);
+		OrmNamedNativeQuery namedNativeQuery3 = getEntityMappings().getQueryContainer().addNamedNativeQuery(1);
 		namedNativeQuery3.setName("BAZ");
 		
 		assertEquals("BAR", getXmlEntityMappings().getNamedNativeQueries().get(0).getName());
 		assertEquals("BAZ", getXmlEntityMappings().getNamedNativeQueries().get(1).getName());
 		assertEquals("FOO", getXmlEntityMappings().getNamedNativeQueries().get(2).getName());
 		
-		ListIterator<OrmNamedNativeQuery> namedNativeQueries = getEntityMappings().namedNativeQueries();
+		ListIterator<OrmNamedNativeQuery> namedNativeQueries = getEntityMappings().getQueryContainer().namedNativeQueries();
 		assertEquals(namedNativeQuery2, namedNativeQueries.next());
 		assertEquals(namedNativeQuery3, namedNativeQueries.next());
 		assertEquals(namedNativeQuery, namedNativeQueries.next());
 		
-		namedNativeQueries = getEntityMappings().namedNativeQueries();
+		namedNativeQueries = getEntityMappings().getQueryContainer().namedNativeQueries();
 		assertEquals("BAR", namedNativeQueries.next().getName());
 		assertEquals("BAZ", namedNativeQueries.next().getName());
 		assertEquals("FOO", namedNativeQueries.next().getName());
 	}
 	
 	public void testRemoveNamedNativeQuery() throws Exception {
-		getEntityMappings().addNamedNativeQuery(0).setName("FOO");
-		getEntityMappings().addNamedNativeQuery(1).setName("BAR");
-		getEntityMappings().addNamedNativeQuery(2).setName("BAZ");
+		getEntityMappings().getQueryContainer().addNamedNativeQuery(0).setName("FOO");
+		getEntityMappings().getQueryContainer().addNamedNativeQuery(1).setName("BAR");
+		getEntityMappings().getQueryContainer().addNamedNativeQuery(2).setName("BAZ");
 		
 		assertEquals(3, getXmlEntityMappings().getNamedNativeQueries().size());
 		
-		getEntityMappings().removeNamedNativeQuery(0);
+		getEntityMappings().getQueryContainer().removeNamedNativeQuery(0);
 		assertEquals(2, getXmlEntityMappings().getNamedNativeQueries().size());
 		assertEquals("BAR", getXmlEntityMappings().getNamedNativeQueries().get(0).getName());
 		assertEquals("BAZ", getXmlEntityMappings().getNamedNativeQueries().get(1).getName());
 
-		getEntityMappings().removeNamedNativeQuery(0);
+		getEntityMappings().getQueryContainer().removeNamedNativeQuery(0);
 		assertEquals(1, getXmlEntityMappings().getNamedNativeQueries().size());
 		assertEquals("BAZ", getXmlEntityMappings().getNamedNativeQueries().get(0).getName());
 		
-		getEntityMappings().removeNamedNativeQuery(0);
+		getEntityMappings().getQueryContainer().removeNamedNativeQuery(0);
 		assertEquals(0, getXmlEntityMappings().getNamedNativeQueries().size());
 	}
 	
 	public void testMoveNamedNativeQuery() throws Exception {
-		getEntityMappings().addNamedNativeQuery(0).setName("FOO");
-		getEntityMappings().addNamedNativeQuery(1).setName("BAR");
-		getEntityMappings().addNamedNativeQuery(2).setName("BAZ");
+		getEntityMappings().getQueryContainer().addNamedNativeQuery(0).setName("FOO");
+		getEntityMappings().getQueryContainer().addNamedNativeQuery(1).setName("BAR");
+		getEntityMappings().getQueryContainer().addNamedNativeQuery(2).setName("BAZ");
 		
 		assertEquals(3, getXmlEntityMappings().getNamedNativeQueries().size());
 		
 		
-		getEntityMappings().moveNamedNativeQuery(2, 0);
-		ListIterator<OrmNamedNativeQuery> namedNativeQueries = getEntityMappings().namedNativeQueries();
+		getEntityMappings().getQueryContainer().moveNamedNativeQuery(2, 0);
+		ListIterator<OrmNamedNativeQuery> namedNativeQueries = getEntityMappings().getQueryContainer().namedNativeQueries();
 		assertEquals("BAR", namedNativeQueries.next().getName());
 		assertEquals("BAZ", namedNativeQueries.next().getName());
 		assertEquals("FOO", namedNativeQueries.next().getName());
@@ -1003,8 +1003,8 @@ public class EntityMappingsTests extends ContextModelTestCase
 		assertEquals("FOO", getXmlEntityMappings().getNamedNativeQueries().get(2).getName());
 
 
-		getEntityMappings().moveNamedNativeQuery(0, 1);
-		namedNativeQueries = getEntityMappings().namedNativeQueries();
+		getEntityMappings().getQueryContainer().moveNamedNativeQuery(0, 1);
+		namedNativeQueries = getEntityMappings().getQueryContainer().namedNativeQueries();
 		assertEquals("BAZ", namedNativeQueries.next().getName());
 		assertEquals("BAR", namedNativeQueries.next().getName());
 		assertEquals("FOO", namedNativeQueries.next().getName());
@@ -1025,7 +1025,7 @@ public class EntityMappingsTests extends ContextModelTestCase
 		getXmlEntityMappings().getNamedNativeQueries().get(1).setName("BAR");
 		getXmlEntityMappings().getNamedNativeQueries().get(2).setName("BAZ");
 		
-		ListIterator<OrmNamedNativeQuery> namedNativeQueries = getEntityMappings().namedNativeQueries();
+		ListIterator<OrmNamedNativeQuery> namedNativeQueries = getEntityMappings().getQueryContainer().namedNativeQueries();
 		assertEquals("FOO", namedNativeQueries.next().getName());
 		assertEquals("BAR", namedNativeQueries.next().getName());
 		assertEquals("BAZ", namedNativeQueries.next().getName());
@@ -1033,34 +1033,34 @@ public class EntityMappingsTests extends ContextModelTestCase
 		assertEquals(3, getEntityMappings().getPersistenceUnit().queriesSize());
 		
 		getXmlEntityMappings().getNamedNativeQueries().move(2, 0);
-		namedNativeQueries = getEntityMappings().namedNativeQueries();
+		namedNativeQueries = getEntityMappings().getQueryContainer().namedNativeQueries();
 		assertEquals("BAR", namedNativeQueries.next().getName());
 		assertEquals("BAZ", namedNativeQueries.next().getName());
 		assertEquals("FOO", namedNativeQueries.next().getName());
 		assertFalse(namedNativeQueries.hasNext());
 		
 		getXmlEntityMappings().getNamedNativeQueries().move(0, 1);
-		namedNativeQueries = getEntityMappings().namedNativeQueries();
+		namedNativeQueries = getEntityMappings().getQueryContainer().namedNativeQueries();
 		assertEquals("BAZ", namedNativeQueries.next().getName());
 		assertEquals("BAR", namedNativeQueries.next().getName());
 		assertEquals("FOO", namedNativeQueries.next().getName());
 		assertFalse(namedNativeQueries.hasNext());
 		
 		getXmlEntityMappings().getNamedNativeQueries().remove(1);
-		namedNativeQueries = getEntityMappings().namedNativeQueries();
+		namedNativeQueries = getEntityMappings().getQueryContainer().namedNativeQueries();
 		assertEquals("BAZ", namedNativeQueries.next().getName());
 		assertEquals("FOO", namedNativeQueries.next().getName());
 		assertFalse(namedNativeQueries.hasNext());
 		assertEquals(2, getEntityMappings().getPersistenceUnit().queriesSize());
 		
 		getXmlEntityMappings().getNamedNativeQueries().remove(1);
-		namedNativeQueries = getEntityMappings().namedNativeQueries();
+		namedNativeQueries = getEntityMappings().getQueryContainer().namedNativeQueries();
 		assertEquals("BAZ", namedNativeQueries.next().getName());
 		assertFalse(namedNativeQueries.hasNext());
 		assertEquals(1, getEntityMappings().getPersistenceUnit().queriesSize());
 		
 		getXmlEntityMappings().getNamedNativeQueries().remove(0);
-		assertFalse(getEntityMappings().namedNativeQueries().hasNext());
+		assertFalse(getEntityMappings().getQueryContainer().namedNativeQueries().hasNext());
 		assertEquals(0, getEntityMappings().getPersistenceUnit().queriesSize());
 	}
 }

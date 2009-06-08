@@ -45,7 +45,6 @@ import org.eclipse.jpt.eclipselink.core.internal.resource.orm.translators.Eclips
  *   <li>{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntity#getCopyPolicy <em>Copy Policy</em>}</li>
  *   <li>{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntity#getInstantiationCopyPolicy <em>Instantiation Copy Policy</em>}</li>
  *   <li>{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntity#getCloneCopyPolicy <em>Clone Copy Policy</em>}</li>
- *   <li>{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntity#getNamedStoredProcedureQueries <em>Named Stored Procedure Queries</em>}</li>
  *   <li>{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntity#getProperties <em>Properties</em>}</li>
  *   <li>{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntity#getExcludeDefaultMappings <em>Exclude Default Mappings</em>}</li>
  * </ul>
@@ -55,7 +54,7 @@ import org.eclipse.jpt.eclipselink.core.internal.resource.orm.translators.Eclips
  * @model kind="class"
  * @generated
  */
-public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity implements XmlReadOnly, XmlCustomizerHolder, XmlChangeTrackingHolder, XmlCacheHolder, XmlConvertersHolder
+public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity implements XmlReadOnly, XmlCustomizerHolder, XmlChangeTrackingHolder, XmlCacheHolder, XmlConvertersHolder, XmlQueryContainer
 {
 	/**
 	 * The default value of the '{@link #getReadOnly() <em>Read Only</em>}' attribute.
@@ -164,6 +163,16 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 	protected EList<XmlStructConverter> structConverters;
 
 	/**
+	 * The cached value of the '{@link #getNamedStoredProcedureQueries() <em>Named Stored Procedure Queries</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getNamedStoredProcedureQueries()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlNamedStoredProcedureQuery> namedStoredProcedureQueries;
+
+	/**
 	 * The cached value of the '{@link #getOptimisticLocking() <em>Optimistic Locking</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -202,16 +211,6 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 	 * @ordered
 	 */
 	protected XmlCloneCopyPolicy cloneCopyPolicy;
-
-	/**
-	 * The cached value of the '{@link #getNamedStoredProcedureQueries() <em>Named Stored Procedure Queries</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getNamedStoredProcedureQueries()
-	 * @generated
-	 * @ordered
-	 */
-	protected EList<XmlNamedStoredProcedureQuery> namedStoredProcedureQueries;
 
 	/**
 	 * The cached value of the '{@link #getProperties() <em>Properties</em>}' containment reference list.
@@ -860,7 +859,7 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Named Stored Procedure Queries</em>' containment reference list.
-	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEntity_NamedStoredProcedureQueries()
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlQueryContainer_NamedStoredProcedureQueries()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -955,6 +954,8 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 				return ((InternalEList<?>)getObjectTypeConverters()).basicRemove(otherEnd, msgs);
 			case EclipseLinkOrmPackage.XML_ENTITY__STRUCT_CONVERTERS:
 				return ((InternalEList<?>)getStructConverters()).basicRemove(otherEnd, msgs);
+			case EclipseLinkOrmPackage.XML_ENTITY__NAMED_STORED_PROCEDURE_QUERIES:
+				return ((InternalEList<?>)getNamedStoredProcedureQueries()).basicRemove(otherEnd, msgs);
 			case EclipseLinkOrmPackage.XML_ENTITY__OPTIMISTIC_LOCKING:
 				return basicSetOptimisticLocking(null, msgs);
 			case EclipseLinkOrmPackage.XML_ENTITY__COPY_POLICY:
@@ -963,8 +964,6 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 				return basicSetInstantiationCopyPolicy(null, msgs);
 			case EclipseLinkOrmPackage.XML_ENTITY__CLONE_COPY_POLICY:
 				return basicSetCloneCopyPolicy(null, msgs);
-			case EclipseLinkOrmPackage.XML_ENTITY__NAMED_STORED_PROCEDURE_QUERIES:
-				return ((InternalEList<?>)getNamedStoredProcedureQueries()).basicRemove(otherEnd, msgs);
 			case EclipseLinkOrmPackage.XML_ENTITY__PROPERTIES:
 				return ((InternalEList<?>)getProperties()).basicRemove(otherEnd, msgs);
 		}
@@ -999,6 +998,8 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 				return getObjectTypeConverters();
 			case EclipseLinkOrmPackage.XML_ENTITY__STRUCT_CONVERTERS:
 				return getStructConverters();
+			case EclipseLinkOrmPackage.XML_ENTITY__NAMED_STORED_PROCEDURE_QUERIES:
+				return getNamedStoredProcedureQueries();
 			case EclipseLinkOrmPackage.XML_ENTITY__OPTIMISTIC_LOCKING:
 				return getOptimisticLocking();
 			case EclipseLinkOrmPackage.XML_ENTITY__COPY_POLICY:
@@ -1007,8 +1008,6 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 				return getInstantiationCopyPolicy();
 			case EclipseLinkOrmPackage.XML_ENTITY__CLONE_COPY_POLICY:
 				return getCloneCopyPolicy();
-			case EclipseLinkOrmPackage.XML_ENTITY__NAMED_STORED_PROCEDURE_QUERIES:
-				return getNamedStoredProcedureQueries();
 			case EclipseLinkOrmPackage.XML_ENTITY__PROPERTIES:
 				return getProperties();
 			case EclipseLinkOrmPackage.XML_ENTITY__EXCLUDE_DEFAULT_MAPPINGS:
@@ -1059,6 +1058,10 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 				getStructConverters().clear();
 				getStructConverters().addAll((Collection<? extends XmlStructConverter>)newValue);
 				return;
+			case EclipseLinkOrmPackage.XML_ENTITY__NAMED_STORED_PROCEDURE_QUERIES:
+				getNamedStoredProcedureQueries().clear();
+				getNamedStoredProcedureQueries().addAll((Collection<? extends XmlNamedStoredProcedureQuery>)newValue);
+				return;
 			case EclipseLinkOrmPackage.XML_ENTITY__OPTIMISTIC_LOCKING:
 				setOptimisticLocking((XmlOptimisticLocking)newValue);
 				return;
@@ -1070,10 +1073,6 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 				return;
 			case EclipseLinkOrmPackage.XML_ENTITY__CLONE_COPY_POLICY:
 				setCloneCopyPolicy((XmlCloneCopyPolicy)newValue);
-				return;
-			case EclipseLinkOrmPackage.XML_ENTITY__NAMED_STORED_PROCEDURE_QUERIES:
-				getNamedStoredProcedureQueries().clear();
-				getNamedStoredProcedureQueries().addAll((Collection<? extends XmlNamedStoredProcedureQuery>)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_ENTITY__PROPERTIES:
 				getProperties().clear();
@@ -1123,6 +1122,9 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 			case EclipseLinkOrmPackage.XML_ENTITY__STRUCT_CONVERTERS:
 				getStructConverters().clear();
 				return;
+			case EclipseLinkOrmPackage.XML_ENTITY__NAMED_STORED_PROCEDURE_QUERIES:
+				getNamedStoredProcedureQueries().clear();
+				return;
 			case EclipseLinkOrmPackage.XML_ENTITY__OPTIMISTIC_LOCKING:
 				setOptimisticLocking((XmlOptimisticLocking)null);
 				return;
@@ -1134,9 +1136,6 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 				return;
 			case EclipseLinkOrmPackage.XML_ENTITY__CLONE_COPY_POLICY:
 				setCloneCopyPolicy((XmlCloneCopyPolicy)null);
-				return;
-			case EclipseLinkOrmPackage.XML_ENTITY__NAMED_STORED_PROCEDURE_QUERIES:
-				getNamedStoredProcedureQueries().clear();
 				return;
 			case EclipseLinkOrmPackage.XML_ENTITY__PROPERTIES:
 				getProperties().clear();
@@ -1176,6 +1175,8 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 				return objectTypeConverters != null && !objectTypeConverters.isEmpty();
 			case EclipseLinkOrmPackage.XML_ENTITY__STRUCT_CONVERTERS:
 				return structConverters != null && !structConverters.isEmpty();
+			case EclipseLinkOrmPackage.XML_ENTITY__NAMED_STORED_PROCEDURE_QUERIES:
+				return namedStoredProcedureQueries != null && !namedStoredProcedureQueries.isEmpty();
 			case EclipseLinkOrmPackage.XML_ENTITY__OPTIMISTIC_LOCKING:
 				return optimisticLocking != null;
 			case EclipseLinkOrmPackage.XML_ENTITY__COPY_POLICY:
@@ -1184,8 +1185,6 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 				return instantiationCopyPolicy != null;
 			case EclipseLinkOrmPackage.XML_ENTITY__CLONE_COPY_POLICY:
 				return cloneCopyPolicy != null;
-			case EclipseLinkOrmPackage.XML_ENTITY__NAMED_STORED_PROCEDURE_QUERIES:
-				return namedStoredProcedureQueries != null && !namedStoredProcedureQueries.isEmpty();
 			case EclipseLinkOrmPackage.XML_ENTITY__PROPERTIES:
 				return properties != null && !properties.isEmpty();
 			case EclipseLinkOrmPackage.XML_ENTITY__EXCLUDE_DEFAULT_MAPPINGS:
@@ -1246,6 +1245,14 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlQueryContainer.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_ENTITY__NAMED_STORED_PROCEDURE_QUERIES: return EclipseLinkOrmPackage.XML_QUERY_CONTAINER__NAMED_STORED_PROCEDURE_QUERIES;
+				default: return -1;
+			}
+		}
 		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
 	}
 
@@ -1298,6 +1305,14 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 				case EclipseLinkOrmPackage.XML_CONVERTERS_HOLDER__TYPE_CONVERTERS: return EclipseLinkOrmPackage.XML_ENTITY__TYPE_CONVERTERS;
 				case EclipseLinkOrmPackage.XML_CONVERTERS_HOLDER__OBJECT_TYPE_CONVERTERS: return EclipseLinkOrmPackage.XML_ENTITY__OBJECT_TYPE_CONVERTERS;
 				case EclipseLinkOrmPackage.XML_CONVERTERS_HOLDER__STRUCT_CONVERTERS: return EclipseLinkOrmPackage.XML_ENTITY__STRUCT_CONVERTERS;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlQueryContainer.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_QUERY_CONTAINER__NAMED_STORED_PROCEDURE_QUERIES: return EclipseLinkOrmPackage.XML_ENTITY__NAMED_STORED_PROCEDURE_QUERIES;
 				default: return -1;
 			}
 		}

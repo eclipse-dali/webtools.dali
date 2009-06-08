@@ -17,9 +17,9 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
 import org.eclipse.jpt.core.context.MappingFile;
+import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.persistence.ClassRef;
@@ -138,8 +138,8 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 		return getSpecifiedClassRef().getJavaPersistentType();
 	}
 	
-	protected Entity getJavaEntity() {
-		return (Entity) getJavaPersistentType().getMapping();
+	protected JavaEntity getJavaEntity() {
+		return (JavaEntity) getJavaPersistentType().getMapping();
 	}
 	
 	protected void addXmlClassRef(String className) {

@@ -113,11 +113,11 @@ public class EntityMappingsTranslator extends RootTranslator
 	}
 	
 	protected Translator createNamedQueryTranslator() {
-		return new NamedQueryTranslator(NAMED_QUERY, ORM_PKG.getXmlEntityMappings_NamedQueries());
+		return new NamedQueryTranslator(NAMED_QUERY, ORM_PKG.getXmlQueryContainer_NamedQueries());
 	}
 	
 	protected Translator createNamedNativeQueryTranslator() {
-		return new NamedNativeQueryTranslator(NAMED_NATIVE_QUERY, ORM_PKG.getXmlEntityMappings_NamedNativeQueries());
+		return new NamedNativeQueryTranslator(NAMED_NATIVE_QUERY, ORM_PKG.getXmlQueryContainer_NamedNativeQueries());
 	}
 	
 	protected Translator createSqlResultSetMappingTranslator() {

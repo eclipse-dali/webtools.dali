@@ -10,10 +10,12 @@
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.context.Entity;
+import org.eclipse.jpt.core.context.QueryContainer;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
+import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
@@ -133,7 +135,16 @@ public abstract class AbstractEntityComposite<T extends Entity> extends FormPane
 			JptUiMappingsMessages.EntityComposite_queries
 		);
 
-		new QueriesComposite(this, container);
+		new QueriesComposite(this, buildQueryContainer(), container);
+	}
+	
+	private PropertyValueModel<QueryContainer> buildQueryContainer() {
+		return new PropertyAspectAdapter<Entity, QueryContainer>(getSubjectHolder()) {
+			@Override
+			protected QueryContainer buildValue_() {
+				return this.subject.getQueryContainer();
+			}
+		};
 	}
 
 	protected void initializeAttributeOverridesPane(Composite container) {

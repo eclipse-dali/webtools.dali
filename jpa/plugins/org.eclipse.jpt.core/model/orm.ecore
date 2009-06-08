@@ -3,7 +3,7 @@
     xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="orm"
     nsURI="jpt.orm.xmi" nsPrefix="org.eclipse.jpt.core.resource.orm">
-  <eClassifiers xsi:type="ecore:EClass" name="XmlEntityMappings">
+  <eClassifiers xsi:type="ecore:EClass" name="XmlEntityMappings" eSuperTypes="#//XmlQueryContainer">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="version" lowerBound="1"
         eType="#//VersionType" defaultValueLiteral="1.0" unsettable="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
@@ -18,10 +18,6 @@
         eType="#//XmlSequenceGenerator" containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="tableGenerators" upperBound="-1"
         eType="#//XmlTableGenerator" containment="true" resolveProxies="false"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="namedQueries" upperBound="-1"
-        eType="#//XmlNamedQuery" containment="true" resolveProxies="false"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="namedNativeQueries" upperBound="-1"
-        eType="#//XmlNamedNativeQuery" containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="sqlResultSetMappings" upperBound="-1"
         eType="#//SqlResultSetMapping" containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="mappedSuperclasses" upperBound="-1"
@@ -82,7 +78,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="postLoad" eType="#//PostLoad"
         containment="true" resolveProxies="false"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlEntity" eSuperTypes="#//AbstractXmlTypeMapping">
+  <eClassifiers xsi:type="ecore:EClass" name="XmlEntity" eSuperTypes="#//AbstractXmlTypeMapping #//XmlQueryContainer">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="table" eType="#//XmlTable"
         containment="true" resolveProxies="false"/>
@@ -101,10 +97,6 @@
         containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="tableGenerator" eType="#//XmlTableGenerator"
         containment="true" resolveProxies="false"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="namedQueries" upperBound="-1"
-        eType="#//XmlNamedQuery" containment="true" resolveProxies="false"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="namedNativeQueries" upperBound="-1"
-        eType="#//XmlNamedNativeQuery" containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="sqlResultSetMappings" upperBound="-1"
         eType="#//SqlResultSetMapping" containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="excludeDefaultListeners"
@@ -133,6 +125,12 @@
         eType="#//XmlAssociationOverride" containment="true" resolveProxies="false"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlEmbeddable" eSuperTypes="#//AbstractXmlTypeMapping"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlQueryContainer" abstract="true" interface="true">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="namedQueries" upperBound="-1"
+        eType="#//XmlNamedQuery" containment="true" resolveProxies="false"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="namedNativeQueries" upperBound="-1"
+        eType="#//XmlNamedNativeQuery" containment="true" resolveProxies="false"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Attributes">
     <eStructuralFeatures xsi:type="ecore:EReference" name="ids" upperBound="-1" eType="#//XmlId"
         containment="true" resolveProxies="false"/>

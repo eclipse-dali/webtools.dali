@@ -49,6 +49,7 @@ import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaQuery;
+import org.eclipse.jpt.core.context.java.JavaQueryContainer;
 import org.eclipse.jpt.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.core.context.java.JavaSequenceGenerator;
 import org.eclipse.jpt.core.context.java.JavaTable;
@@ -1149,7 +1150,11 @@ public abstract class AbstractJavaEntity
 	protected void removeVirtualAssociationOverride(JavaAssociationOverride associationOverride) {
 		removeItemFromList(associationOverride, this.virtualAssociationOverrides, VIRTUAL_ASSOCIATION_OVERRIDES_LIST);
 	}
-
+	
+	public JavaQueryContainer getQueryContainer() {
+		return this;
+	}
+	
 	public ListIterator<JavaNamedQuery> namedQueries() {
 		return new CloneListIterator<JavaNamedQuery>(this.namedQueries);
 	}

@@ -14,7 +14,6 @@ import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.MappingFileRoot;
 import org.eclipse.jpt.core.context.PersistentType;
-import org.eclipse.jpt.core.context.QueryContainer;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.db.Catalog;
 import org.eclipse.jpt.db.Schema;
@@ -28,7 +27,7 @@ import org.eclipse.jpt.db.SchemaContainer;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface EntityMappings 
-	extends MappingFileRoot, JpaStructureNode, PersistentType.Owner, QueryContainer
+	extends MappingFileRoot, JpaStructureNode, PersistentType.Owner
 {
 	XmlEntityMappings getXmlEntityMappings();
 	
@@ -106,19 +105,7 @@ public interface EntityMappings
 	void moveTableGenerator(int targetIndex, int sourceIndex);
 		String TABLE_GENERATORS_LIST = "tableGenerators"; //$NON-NLS-1$
 
-	@SuppressWarnings("unchecked")
-	ListIterator<OrmNamedQuery> namedQueries();
-	int namedQueriesSize();
-	OrmNamedQuery addNamedQuery(int index);
-	void removeNamedQuery(int index);
-	void moveNamedQuery(int targetIndex, int sourceIndex);
-
-	@SuppressWarnings("unchecked")
-	ListIterator<OrmNamedNativeQuery> namedNativeQueries();
-	int namedNativeQueriesSize();
-	OrmNamedNativeQuery addNamedNativeQuery(int index);
-	void removeNamedNativeQuery(int index);
-	void moveNamedNativeQuery(int targetIndex, int sourceIndex);
+	OrmQueryContainer getQueryContainer();
 	
 	OrmPersistenceUnitDefaults getPersistenceUnitDefaults();
 	

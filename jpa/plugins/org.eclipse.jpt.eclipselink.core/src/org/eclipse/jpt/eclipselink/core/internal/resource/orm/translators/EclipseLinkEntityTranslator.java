@@ -126,7 +126,7 @@ public class EclipseLinkEntityTranslator extends EntityTranslator
 	}
 	
 	protected Translator createNamedStoredProcedureQueryTranslator() {
-		return new NamedStoredProcedureQueryTranslator(NAMED_STORED_PROCEDURE_QUERY, ECLIPSELINK_ORM_PKG.getXmlEntity_NamedStoredProcedureQueries());
+		return new NamedStoredProcedureQueryTranslator(NAMED_STORED_PROCEDURE_QUERY, ECLIPSELINK_ORM_PKG.getXmlQueryContainer_NamedStoredProcedureQueries());
 	}
 	
 	protected Translator createCopyPolicyTranslator() {

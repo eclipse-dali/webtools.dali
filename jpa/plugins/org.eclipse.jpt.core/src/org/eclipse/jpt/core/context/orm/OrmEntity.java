@@ -101,16 +101,10 @@ public interface OrmEntity
 	@SuppressWarnings("unchecked")
 	ListIterator<OrmAssociationOverride> virtualAssociationOverrides();
 	
-	@SuppressWarnings("unchecked")
-	ListIterator<OrmNamedQuery> namedQueries();
-	OrmNamedQuery addNamedQuery(int index);
-	
-	@SuppressWarnings("unchecked")
-	ListIterator<OrmNamedNativeQuery> namedNativeQueries();
-	OrmNamedNativeQuery addNamedNativeQuery(int index);
 	
 	Iterator<OrmPersistentAttribute> overridableAttributes();
 
 	Iterator<OrmPersistentAttribute> overridableAssociations();
 
+	OrmQueryContainer getQueryContainer();
 }

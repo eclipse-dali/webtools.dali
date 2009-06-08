@@ -46,8 +46,6 @@ import org.eclipse.jpt.core.utility.TextRange;
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntity#getDiscriminatorColumn <em>Discriminator Column</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntity#getSequenceGenerator <em>Sequence Generator</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntity#getTableGenerator <em>Table Generator</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntity#getNamedQueries <em>Named Queries</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntity#getNamedNativeQueries <em>Named Native Queries</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntity#getSqlResultSetMappings <em>Sql Result Set Mappings</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntity#isExcludeDefaultListeners <em>Exclude Default Listeners</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntity#isExcludeSuperclassListeners <em>Exclude Superclass Listeners</em>}</li>
@@ -68,13 +66,28 @@ import org.eclipse.jpt.core.utility.TextRange;
  * @model kind="class"
  * @generated
  */
-public class XmlEntity extends AbstractXmlTypeMapping
+public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContainer
 {
+
 	/**
-	 * changed this to null and removed the generated flag so emf won't generate over it
-	 * we don't want a default for enums, just null if the tag does not exist
+	 * The cached value of the '{@link #getNamedQueries() <em>Named Queries</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getNamedQueries()
+	 * @generated
+	 * @ordered
 	 */
-	protected static final AccessType ACCESS_EDEFAULT = null;
+	protected EList<XmlNamedQuery> namedQueries;
+
+	/**
+	 * The cached value of the '{@link #getNamedNativeQueries() <em>Named Native Queries</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getNamedNativeQueries()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlNamedNativeQuery> namedNativeQueries;
 
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
@@ -195,26 +208,6 @@ public class XmlEntity extends AbstractXmlTypeMapping
 	 * @ordered
 	 */
 	protected XmlTableGenerator tableGenerator;
-
-	/**
-	 * The cached value of the '{@link #getNamedQueries() <em>Named Queries</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getNamedQueries()
-	 * @generated
-	 * @ordered
-	 */
-	protected EList<XmlNamedQuery> namedQueries;
-
-	/**
-	 * The cached value of the '{@link #getNamedNativeQueries() <em>Named Native Queries</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getNamedNativeQueries()
-	 * @generated
-	 * @ordered
-	 */
-	protected EList<XmlNamedNativeQuery> namedNativeQueries;
 
 	/**
 	 * The cached value of the '{@link #getSqlResultSetMappings() <em>Sql Result Set Mappings</em>}' containment reference list.
@@ -881,7 +874,7 @@ public class XmlEntity extends AbstractXmlTypeMapping
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Named Queries</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEntity_NamedQueries()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlQueryContainer_NamedQueries()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -904,7 +897,7 @@ public class XmlEntity extends AbstractXmlTypeMapping
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Named Native Queries</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEntity_NamedNativeQueries()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlQueryContainer_NamedNativeQueries()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -1546,6 +1539,10 @@ public class XmlEntity extends AbstractXmlTypeMapping
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_ENTITY__NAMED_QUERIES:
+				return ((InternalEList<?>)getNamedQueries()).basicRemove(otherEnd, msgs);
+			case OrmPackage.XML_ENTITY__NAMED_NATIVE_QUERIES:
+				return ((InternalEList<?>)getNamedNativeQueries()).basicRemove(otherEnd, msgs);
 			case OrmPackage.XML_ENTITY__TABLE:
 				return basicSetTable(null, msgs);
 			case OrmPackage.XML_ENTITY__SECONDARY_TABLES:
@@ -1562,10 +1559,6 @@ public class XmlEntity extends AbstractXmlTypeMapping
 				return basicSetSequenceGenerator(null, msgs);
 			case OrmPackage.XML_ENTITY__TABLE_GENERATOR:
 				return basicSetTableGenerator(null, msgs);
-			case OrmPackage.XML_ENTITY__NAMED_QUERIES:
-				return ((InternalEList<?>)getNamedQueries()).basicRemove(otherEnd, msgs);
-			case OrmPackage.XML_ENTITY__NAMED_NATIVE_QUERIES:
-				return ((InternalEList<?>)getNamedNativeQueries()).basicRemove(otherEnd, msgs);
 			case OrmPackage.XML_ENTITY__SQL_RESULT_SET_MAPPINGS:
 				return ((InternalEList<?>)getSqlResultSetMappings()).basicRemove(otherEnd, msgs);
 			case OrmPackage.XML_ENTITY__ENTITY_LISTENERS:
@@ -1602,6 +1595,10 @@ public class XmlEntity extends AbstractXmlTypeMapping
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_ENTITY__NAMED_QUERIES:
+				return getNamedQueries();
+			case OrmPackage.XML_ENTITY__NAMED_NATIVE_QUERIES:
+				return getNamedNativeQueries();
 			case OrmPackage.XML_ENTITY__NAME:
 				return getName();
 			case OrmPackage.XML_ENTITY__TABLE:
@@ -1622,10 +1619,6 @@ public class XmlEntity extends AbstractXmlTypeMapping
 				return getSequenceGenerator();
 			case OrmPackage.XML_ENTITY__TABLE_GENERATOR:
 				return getTableGenerator();
-			case OrmPackage.XML_ENTITY__NAMED_QUERIES:
-				return getNamedQueries();
-			case OrmPackage.XML_ENTITY__NAMED_NATIVE_QUERIES:
-				return getNamedNativeQueries();
 			case OrmPackage.XML_ENTITY__SQL_RESULT_SET_MAPPINGS:
 				return getSqlResultSetMappings();
 			case OrmPackage.XML_ENTITY__EXCLUDE_DEFAULT_LISTENERS:
@@ -1667,6 +1660,14 @@ public class XmlEntity extends AbstractXmlTypeMapping
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_ENTITY__NAMED_QUERIES:
+				getNamedQueries().clear();
+				getNamedQueries().addAll((Collection<? extends XmlNamedQuery>)newValue);
+				return;
+			case OrmPackage.XML_ENTITY__NAMED_NATIVE_QUERIES:
+				getNamedNativeQueries().clear();
+				getNamedNativeQueries().addAll((Collection<? extends XmlNamedNativeQuery>)newValue);
+				return;
 			case OrmPackage.XML_ENTITY__NAME:
 				setName((String)newValue);
 				return;
@@ -1698,14 +1699,6 @@ public class XmlEntity extends AbstractXmlTypeMapping
 				return;
 			case OrmPackage.XML_ENTITY__TABLE_GENERATOR:
 				setTableGenerator((XmlTableGenerator)newValue);
-				return;
-			case OrmPackage.XML_ENTITY__NAMED_QUERIES:
-				getNamedQueries().clear();
-				getNamedQueries().addAll((Collection<? extends XmlNamedQuery>)newValue);
-				return;
-			case OrmPackage.XML_ENTITY__NAMED_NATIVE_QUERIES:
-				getNamedNativeQueries().clear();
-				getNamedNativeQueries().addAll((Collection<? extends XmlNamedNativeQuery>)newValue);
 				return;
 			case OrmPackage.XML_ENTITY__SQL_RESULT_SET_MAPPINGS:
 				getSqlResultSetMappings().clear();
@@ -1763,6 +1756,12 @@ public class XmlEntity extends AbstractXmlTypeMapping
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_ENTITY__NAMED_QUERIES:
+				getNamedQueries().clear();
+				return;
+			case OrmPackage.XML_ENTITY__NAMED_NATIVE_QUERIES:
+				getNamedNativeQueries().clear();
+				return;
 			case OrmPackage.XML_ENTITY__NAME:
 				setName(NAME_EDEFAULT);
 				return;
@@ -1792,12 +1791,6 @@ public class XmlEntity extends AbstractXmlTypeMapping
 				return;
 			case OrmPackage.XML_ENTITY__TABLE_GENERATOR:
 				setTableGenerator((XmlTableGenerator)null);
-				return;
-			case OrmPackage.XML_ENTITY__NAMED_QUERIES:
-				getNamedQueries().clear();
-				return;
-			case OrmPackage.XML_ENTITY__NAMED_NATIVE_QUERIES:
-				getNamedNativeQueries().clear();
 				return;
 			case OrmPackage.XML_ENTITY__SQL_RESULT_SET_MAPPINGS:
 				getSqlResultSetMappings().clear();
@@ -1852,6 +1845,10 @@ public class XmlEntity extends AbstractXmlTypeMapping
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_ENTITY__NAMED_QUERIES:
+				return namedQueries != null && !namedQueries.isEmpty();
+			case OrmPackage.XML_ENTITY__NAMED_NATIVE_QUERIES:
+				return namedNativeQueries != null && !namedNativeQueries.isEmpty();
 			case OrmPackage.XML_ENTITY__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case OrmPackage.XML_ENTITY__TABLE:
@@ -1872,10 +1869,6 @@ public class XmlEntity extends AbstractXmlTypeMapping
 				return sequenceGenerator != null;
 			case OrmPackage.XML_ENTITY__TABLE_GENERATOR:
 				return tableGenerator != null;
-			case OrmPackage.XML_ENTITY__NAMED_QUERIES:
-				return namedQueries != null && !namedQueries.isEmpty();
-			case OrmPackage.XML_ENTITY__NAMED_NATIVE_QUERIES:
-				return namedNativeQueries != null && !namedNativeQueries.isEmpty();
 			case OrmPackage.XML_ENTITY__SQL_RESULT_SET_MAPPINGS:
 				return sqlResultSetMappings != null && !sqlResultSetMappings.isEmpty();
 			case OrmPackage.XML_ENTITY__EXCLUDE_DEFAULT_LISTENERS:
@@ -1904,6 +1897,46 @@ public class XmlEntity extends AbstractXmlTypeMapping
 				return associationOverrides != null && !associationOverrides.isEmpty();
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
+	{
+		if (baseClass == XmlQueryContainer.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.XML_ENTITY__NAMED_QUERIES: return OrmPackage.XML_QUERY_CONTAINER__NAMED_QUERIES;
+				case OrmPackage.XML_ENTITY__NAMED_NATIVE_QUERIES: return OrmPackage.XML_QUERY_CONTAINER__NAMED_NATIVE_QUERIES;
+				default: return -1;
+			}
+		}
+		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
+	{
+		if (baseClass == XmlQueryContainer.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmPackage.XML_QUERY_CONTAINER__NAMED_QUERIES: return OrmPackage.XML_ENTITY__NAMED_QUERIES;
+				case OrmPackage.XML_QUERY_CONTAINER__NAMED_NATIVE_QUERIES: return OrmPackage.XML_ENTITY__NAMED_NATIVE_QUERIES;
+				default: return -1;
+			}
+		}
+		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
 	/**

@@ -50,11 +50,6 @@ import org.eclipse.jpt.core.MappingKeys;
  */
 public class XmlMappedSuperclass extends AbstractXmlTypeMapping
 {
-	/**
-	 * changed this to null and removed the generated flag so emf won't generate over it
-	 * we don't want a default for enums, just null if the tag does not exist
-	 */
-	protected static final AccessType ACCESS_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getIdClass() <em>Id Class</em>}' containment reference.

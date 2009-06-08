@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.tests.internal.context.java;
 
 import java.util.Iterator;
 import java.util.ListIterator;
-
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.IdMapping;
@@ -20,6 +19,7 @@ import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.SecondaryTable;
 import org.eclipse.jpt.core.context.UniqueConstraint;
 import org.eclipse.jpt.core.context.java.JavaPrimaryKeyJoinColumn;
+import org.eclipse.jpt.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.core.context.java.JavaUniqueConstraint;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
@@ -146,7 +146,7 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		((SecondaryTableAnnotation) secondaryTableResources.next()).setCatalog("foo");
 		((SecondaryTableAnnotation) secondaryTableResources.next()).setCatalog("bar");
 		
-		ListIterator<SecondaryTable> secondaryTsbles = getJavaEntity().secondaryTables();
+		ListIterator<JavaSecondaryTable> secondaryTsbles = getJavaEntity().secondaryTables();
 		assertEquals("foo", secondaryTsbles.next().getSpecifiedCatalog());
 		assertEquals("bar", secondaryTsbles.next().getSpecifiedCatalog());
 	}
@@ -160,7 +160,7 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		((SecondaryTableAnnotation) secondaryTableResources.next()).setSchema("foo");
 		((SecondaryTableAnnotation) secondaryTableResources.next()).setSchema("bar");
 		
-		ListIterator<SecondaryTable> secondaryTsbles = getJavaEntity().secondaryTables();
+		ListIterator<JavaSecondaryTable> secondaryTsbles = getJavaEntity().secondaryTables();
 		assertEquals("foo", secondaryTsbles.next().getSpecifiedSchema());
 		assertEquals("bar", secondaryTsbles.next().getSpecifiedSchema());
 	}

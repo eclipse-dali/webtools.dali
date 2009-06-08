@@ -100,8 +100,9 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlNamedStoredProcedureQuery/hints"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlNamedStoredProcedureQuery/parameters"/>
     </genClasses>
-    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlEntityMappings">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlEntityMappings/namedStoredProcedureQueries"/>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlEntityMappings"/>
+    <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlQueryContainer">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlQueryContainer/namedStoredProcedureQueries"/>
     </genClasses>
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlPersistenceUnitMetadata">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlPersistenceUnitMetadata/excludeDefaultMappings"/>
@@ -121,7 +122,7 @@
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlCopyPolicy">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlCopyPolicy/class"/>
     </genClasses>
-    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlInstantiationPolicy"/>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlInstantiationCopyPolicy"/>
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlCloneCopyPolicy">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlCloneCopyPolicy/method"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlCloneCopyPolicy/workingCopyMethod"/>
@@ -167,7 +168,6 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlEntity/copyPolicy"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlEntity/instantiationCopyPolicy"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlEntity/cloneCopyPolicy"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlEntity/namedStoredProcedureQueries"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlEntity/properties"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlEntity/excludeDefaultMappings"/>
     </genClasses>

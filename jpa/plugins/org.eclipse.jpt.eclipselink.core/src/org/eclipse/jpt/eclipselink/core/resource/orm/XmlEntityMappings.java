@@ -33,18 +33,12 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * 
  * <!-- end-user-doc -->
  *
- * <p>
- * The following features are supported:
- * <ul>
- *   <li>{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntityMappings#getNamedStoredProcedureQueries <em>Named Stored Procedure Queries</em>}</li>
- * </ul>
- * </p>
  *
  * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEntityMappings()
  * @model kind="class"
  * @generated
  */
-public class XmlEntityMappings extends org.eclipse.jpt.core.resource.orm.XmlEntityMappings implements XmlConvertersHolder
+public class XmlEntityMappings extends org.eclipse.jpt.core.resource.orm.XmlEntityMappings implements XmlConvertersHolder, XmlQueryContainer
 {
 	/**
 	 * The cached value of the '{@link #getConverters() <em>Converters</em>}' containment reference list.
@@ -219,7 +213,7 @@ public class XmlEntityMappings extends org.eclipse.jpt.core.resource.orm.XmlEnti
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Named Stored Procedure Queries</em>' containment reference list.
-	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEntityMappings_NamedStoredProcedureQueries()
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlQueryContainer_NamedStoredProcedureQueries()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -387,6 +381,14 @@ public class XmlEntityMappings extends org.eclipse.jpt.core.resource.orm.XmlEnti
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlQueryContainer.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__NAMED_STORED_PROCEDURE_QUERIES: return EclipseLinkOrmPackage.XML_QUERY_CONTAINER__NAMED_STORED_PROCEDURE_QUERIES;
+				default: return -1;
+			}
+		}
 		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
 	}
 
@@ -406,6 +408,14 @@ public class XmlEntityMappings extends org.eclipse.jpt.core.resource.orm.XmlEnti
 				case EclipseLinkOrmPackage.XML_CONVERTERS_HOLDER__TYPE_CONVERTERS: return EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__TYPE_CONVERTERS;
 				case EclipseLinkOrmPackage.XML_CONVERTERS_HOLDER__OBJECT_TYPE_CONVERTERS: return EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__OBJECT_TYPE_CONVERTERS;
 				case EclipseLinkOrmPackage.XML_CONVERTERS_HOLDER__STRUCT_CONVERTERS: return EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__STRUCT_CONVERTERS;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlQueryContainer.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_QUERY_CONTAINER__NAMED_STORED_PROCEDURE_QUERIES: return EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__NAMED_STORED_PROCEDURE_QUERIES;
 				default: return -1;
 			}
 		}

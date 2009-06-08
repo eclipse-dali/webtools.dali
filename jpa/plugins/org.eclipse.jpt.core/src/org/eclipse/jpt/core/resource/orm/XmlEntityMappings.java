@@ -48,8 +48,6 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getAccess <em>Access</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getSequenceGenerators <em>Sequence Generators</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getTableGenerators <em>Table Generators</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getNamedQueries <em>Named Queries</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getNamedNativeQueries <em>Named Native Queries</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getSqlResultSetMappings <em>Sql Result Set Mappings</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getMappedSuperclasses <em>Mapped Superclasses</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getEntities <em>Entities</em>}</li>
@@ -59,11 +57,30 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
  *
  * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEntityMappings()
  * @model kind="class"
- * @extends JpaEObject
  * @generated
  */
-public class XmlEntityMappings extends AbstractJpaEObject implements JpaEObject
+public class XmlEntityMappings extends AbstractJpaEObject implements XmlQueryContainer
 {
+	/**
+	 * The cached value of the '{@link #getNamedQueries() <em>Named Queries</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getNamedQueries()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlNamedQuery> namedQueries;
+
+	/**
+	 * The cached value of the '{@link #getNamedNativeQueries() <em>Named Native Queries</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getNamedNativeQueries()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlNamedNativeQuery> namedNativeQueries;
+
 	/**
 	 * The default value of the '{@link #getVersion() <em>Version</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -220,26 +237,6 @@ public class XmlEntityMappings extends AbstractJpaEObject implements JpaEObject
 	protected EList<XmlTableGenerator> tableGenerators;
 
 	/**
-	 * The cached value of the '{@link #getNamedQueries() <em>Named Queries</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getNamedQueries()
-	 * @generated
-	 * @ordered
-	 */
-	protected EList<XmlNamedQuery> namedQueries;
-
-	/**
-	 * The cached value of the '{@link #getNamedNativeQueries() <em>Named Native Queries</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getNamedNativeQueries()
-	 * @generated
-	 * @ordered
-	 */
-	protected EList<XmlNamedNativeQuery> namedNativeQueries;
-
-	/**
 	 * The cached value of the '{@link #getSqlResultSetMappings() <em>Sql Result Set Mappings</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -298,6 +295,52 @@ public class XmlEntityMappings extends AbstractJpaEObject implements JpaEObject
 	protected EClass eStaticClass()
 	{
 		return OrmPackage.Literals.XML_ENTITY_MAPPINGS;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Named Queries</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.core.resource.orm.XmlNamedQuery}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Named Queries</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Named Queries</em>' containment reference list.
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlQueryContainer_NamedQueries()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public EList<XmlNamedQuery> getNamedQueries()
+	{
+		if (namedQueries == null)
+		{
+			namedQueries = new EObjectContainmentEList<XmlNamedQuery>(XmlNamedQuery.class, this, OrmPackage.XML_ENTITY_MAPPINGS__NAMED_QUERIES);
+		}
+		return namedQueries;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Named Native Queries</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.core.resource.orm.XmlNamedNativeQuery}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Named Native Queries</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Named Native Queries</em>' containment reference list.
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlQueryContainer_NamedNativeQueries()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public EList<XmlNamedNativeQuery> getNamedNativeQueries()
+	{
+		if (namedNativeQueries == null)
+		{
+			namedNativeQueries = new EObjectContainmentEList<XmlNamedNativeQuery>(XmlNamedNativeQuery.class, this, OrmPackage.XML_ENTITY_MAPPINGS__NAMED_NATIVE_QUERIES);
+		}
+		return namedNativeQueries;
 	}
 
 	/**
@@ -662,52 +705,6 @@ public class XmlEntityMappings extends AbstractJpaEObject implements JpaEObject
 	}
 
 	/**
-	 * Returns the value of the '<em><b>Named Queries</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.core.resource.orm.XmlNamedQuery}.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Named Queries</em>' containment reference list isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Named Queries</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEntityMappings_NamedQueries()
-	 * @model containment="true"
-	 * @generated
-	 */
-	public EList<XmlNamedQuery> getNamedQueries()
-	{
-		if (namedQueries == null)
-		{
-			namedQueries = new EObjectContainmentEList<XmlNamedQuery>(XmlNamedQuery.class, this, OrmPackage.XML_ENTITY_MAPPINGS__NAMED_QUERIES);
-		}
-		return namedQueries;
-	}
-
-	/**
-	 * Returns the value of the '<em><b>Named Native Queries</b></em>' containment reference list.
-	 * The list contents are of type {@link org.eclipse.jpt.core.resource.orm.XmlNamedNativeQuery}.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Named Native Queries</em>' containment reference list isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Named Native Queries</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEntityMappings_NamedNativeQueries()
-	 * @model containment="true"
-	 * @generated
-	 */
-	public EList<XmlNamedNativeQuery> getNamedNativeQueries()
-	{
-		if (namedNativeQueries == null)
-		{
-			namedNativeQueries = new EObjectContainmentEList<XmlNamedNativeQuery>(XmlNamedNativeQuery.class, this, OrmPackage.XML_ENTITY_MAPPINGS__NAMED_NATIVE_QUERIES);
-		}
-		return namedNativeQueries;
-	}
-
-	/**
 	 * Returns the value of the '<em><b>Sql Result Set Mappings</b></em>' containment reference list.
 	 * The list contents are of type {@link org.eclipse.jpt.core.resource.orm.SqlResultSetMapping}.
 	 * <!-- begin-user-doc -->
@@ -809,16 +806,16 @@ public class XmlEntityMappings extends AbstractJpaEObject implements JpaEObject
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_ENTITY_MAPPINGS__NAMED_QUERIES:
+				return ((InternalEList<?>)getNamedQueries()).basicRemove(otherEnd, msgs);
+			case OrmPackage.XML_ENTITY_MAPPINGS__NAMED_NATIVE_QUERIES:
+				return ((InternalEList<?>)getNamedNativeQueries()).basicRemove(otherEnd, msgs);
 			case OrmPackage.XML_ENTITY_MAPPINGS__PERSISTENCE_UNIT_METADATA:
 				return basicSetPersistenceUnitMetadata(null, msgs);
 			case OrmPackage.XML_ENTITY_MAPPINGS__SEQUENCE_GENERATORS:
 				return ((InternalEList<?>)getSequenceGenerators()).basicRemove(otherEnd, msgs);
 			case OrmPackage.XML_ENTITY_MAPPINGS__TABLE_GENERATORS:
 				return ((InternalEList<?>)getTableGenerators()).basicRemove(otherEnd, msgs);
-			case OrmPackage.XML_ENTITY_MAPPINGS__NAMED_QUERIES:
-				return ((InternalEList<?>)getNamedQueries()).basicRemove(otherEnd, msgs);
-			case OrmPackage.XML_ENTITY_MAPPINGS__NAMED_NATIVE_QUERIES:
-				return ((InternalEList<?>)getNamedNativeQueries()).basicRemove(otherEnd, msgs);
 			case OrmPackage.XML_ENTITY_MAPPINGS__SQL_RESULT_SET_MAPPINGS:
 				return ((InternalEList<?>)getSqlResultSetMappings()).basicRemove(otherEnd, msgs);
 			case OrmPackage.XML_ENTITY_MAPPINGS__MAPPED_SUPERCLASSES:
@@ -841,6 +838,10 @@ public class XmlEntityMappings extends AbstractJpaEObject implements JpaEObject
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_ENTITY_MAPPINGS__NAMED_QUERIES:
+				return getNamedQueries();
+			case OrmPackage.XML_ENTITY_MAPPINGS__NAMED_NATIVE_QUERIES:
+				return getNamedNativeQueries();
 			case OrmPackage.XML_ENTITY_MAPPINGS__VERSION:
 				return getVersion();
 			case OrmPackage.XML_ENTITY_MAPPINGS__DESCRIPTION:
@@ -859,10 +860,6 @@ public class XmlEntityMappings extends AbstractJpaEObject implements JpaEObject
 				return getSequenceGenerators();
 			case OrmPackage.XML_ENTITY_MAPPINGS__TABLE_GENERATORS:
 				return getTableGenerators();
-			case OrmPackage.XML_ENTITY_MAPPINGS__NAMED_QUERIES:
-				return getNamedQueries();
-			case OrmPackage.XML_ENTITY_MAPPINGS__NAMED_NATIVE_QUERIES:
-				return getNamedNativeQueries();
 			case OrmPackage.XML_ENTITY_MAPPINGS__SQL_RESULT_SET_MAPPINGS:
 				return getSqlResultSetMappings();
 			case OrmPackage.XML_ENTITY_MAPPINGS__MAPPED_SUPERCLASSES:
@@ -886,6 +883,14 @@ public class XmlEntityMappings extends AbstractJpaEObject implements JpaEObject
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_ENTITY_MAPPINGS__NAMED_QUERIES:
+				getNamedQueries().clear();
+				getNamedQueries().addAll((Collection<? extends XmlNamedQuery>)newValue);
+				return;
+			case OrmPackage.XML_ENTITY_MAPPINGS__NAMED_NATIVE_QUERIES:
+				getNamedNativeQueries().clear();
+				getNamedNativeQueries().addAll((Collection<? extends XmlNamedNativeQuery>)newValue);
+				return;
 			case OrmPackage.XML_ENTITY_MAPPINGS__VERSION:
 				setVersion((String)newValue);
 				return;
@@ -914,14 +919,6 @@ public class XmlEntityMappings extends AbstractJpaEObject implements JpaEObject
 			case OrmPackage.XML_ENTITY_MAPPINGS__TABLE_GENERATORS:
 				getTableGenerators().clear();
 				getTableGenerators().addAll((Collection<? extends XmlTableGenerator>)newValue);
-				return;
-			case OrmPackage.XML_ENTITY_MAPPINGS__NAMED_QUERIES:
-				getNamedQueries().clear();
-				getNamedQueries().addAll((Collection<? extends XmlNamedQuery>)newValue);
-				return;
-			case OrmPackage.XML_ENTITY_MAPPINGS__NAMED_NATIVE_QUERIES:
-				getNamedNativeQueries().clear();
-				getNamedNativeQueries().addAll((Collection<? extends XmlNamedNativeQuery>)newValue);
 				return;
 			case OrmPackage.XML_ENTITY_MAPPINGS__SQL_RESULT_SET_MAPPINGS:
 				getSqlResultSetMappings().clear();
@@ -953,6 +950,12 @@ public class XmlEntityMappings extends AbstractJpaEObject implements JpaEObject
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_ENTITY_MAPPINGS__NAMED_QUERIES:
+				getNamedQueries().clear();
+				return;
+			case OrmPackage.XML_ENTITY_MAPPINGS__NAMED_NATIVE_QUERIES:
+				getNamedNativeQueries().clear();
+				return;
 			case OrmPackage.XML_ENTITY_MAPPINGS__VERSION:
 				unsetVersion();
 				return;
@@ -980,12 +983,6 @@ public class XmlEntityMappings extends AbstractJpaEObject implements JpaEObject
 			case OrmPackage.XML_ENTITY_MAPPINGS__TABLE_GENERATORS:
 				getTableGenerators().clear();
 				return;
-			case OrmPackage.XML_ENTITY_MAPPINGS__NAMED_QUERIES:
-				getNamedQueries().clear();
-				return;
-			case OrmPackage.XML_ENTITY_MAPPINGS__NAMED_NATIVE_QUERIES:
-				getNamedNativeQueries().clear();
-				return;
 			case OrmPackage.XML_ENTITY_MAPPINGS__SQL_RESULT_SET_MAPPINGS:
 				getSqlResultSetMappings().clear();
 				return;
@@ -1012,6 +1009,10 @@ public class XmlEntityMappings extends AbstractJpaEObject implements JpaEObject
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_ENTITY_MAPPINGS__NAMED_QUERIES:
+				return namedQueries != null && !namedQueries.isEmpty();
+			case OrmPackage.XML_ENTITY_MAPPINGS__NAMED_NATIVE_QUERIES:
+				return namedNativeQueries != null && !namedNativeQueries.isEmpty();
 			case OrmPackage.XML_ENTITY_MAPPINGS__VERSION:
 				return isSetVersion();
 			case OrmPackage.XML_ENTITY_MAPPINGS__DESCRIPTION:
@@ -1030,10 +1031,6 @@ public class XmlEntityMappings extends AbstractJpaEObject implements JpaEObject
 				return sequenceGenerators != null && !sequenceGenerators.isEmpty();
 			case OrmPackage.XML_ENTITY_MAPPINGS__TABLE_GENERATORS:
 				return tableGenerators != null && !tableGenerators.isEmpty();
-			case OrmPackage.XML_ENTITY_MAPPINGS__NAMED_QUERIES:
-				return namedQueries != null && !namedQueries.isEmpty();
-			case OrmPackage.XML_ENTITY_MAPPINGS__NAMED_NATIVE_QUERIES:
-				return namedNativeQueries != null && !namedNativeQueries.isEmpty();
 			case OrmPackage.XML_ENTITY_MAPPINGS__SQL_RESULT_SET_MAPPINGS:
 				return sqlResultSetMappings != null && !sqlResultSetMappings.isEmpty();
 			case OrmPackage.XML_ENTITY_MAPPINGS__MAPPED_SUPERCLASSES:

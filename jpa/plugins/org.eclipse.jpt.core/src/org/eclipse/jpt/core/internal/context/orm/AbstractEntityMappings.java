@@ -22,17 +22,14 @@ import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.Generator;
 import org.eclipse.jpt.core.context.MappingFileRoot;
-import org.eclipse.jpt.core.context.NamedNativeQuery;
-import org.eclipse.jpt.core.context.NamedQuery;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.Query;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.orm.OrmGenerator;
-import org.eclipse.jpt.core.context.orm.OrmNamedNativeQuery;
-import org.eclipse.jpt.core.context.orm.OrmNamedQuery;
 import org.eclipse.jpt.core.context.orm.OrmPersistenceUnitDefaults;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmQuery;
+import org.eclipse.jpt.core.context.orm.OrmQueryContainer;
 import org.eclipse.jpt.core.context.orm.OrmSequenceGenerator;
 import org.eclipse.jpt.core.context.orm.OrmStructureNodes;
 import org.eclipse.jpt.core.context.orm.OrmTableGenerator;
@@ -44,8 +41,6 @@ import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
-import org.eclipse.jpt.core.resource.orm.XmlNamedNativeQuery;
-import org.eclipse.jpt.core.resource.orm.XmlNamedQuery;
 import org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator;
 import org.eclipse.jpt.core.resource.orm.XmlTableGenerator;
 import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
@@ -88,9 +83,7 @@ public abstract class AbstractEntityMappings
 	
 	protected final List<OrmTableGenerator> tableGenerators;
 
-	protected final List<OrmNamedQuery> namedQueries;
-
-	protected final List<OrmNamedNativeQuery> namedNativeQueries;
+	protected final OrmQueryContainer queryContainer;
 
 
 	protected AbstractEntityMappings(OrmXml parent, XmlEntityMappings xmlEntityMappings) {
@@ -99,9 +92,8 @@ public abstract class AbstractEntityMappings
 		this.persistentTypes = new ArrayList<OrmPersistentType>();
 		this.sequenceGenerators = new ArrayList<OrmSequenceGenerator>();
 		this.tableGenerators = new ArrayList<OrmTableGenerator>();
-		this.namedQueries = new ArrayList<OrmNamedQuery>();
-		this.namedNativeQueries = new ArrayList<OrmNamedNativeQuery>();
-		
+		this.queryContainer = new GenericOrmQueryContainer(this, xmlEntityMappings);
+
 		this.persistenceUnitMetadata = buildPersistenceUnitMetadata();
 		this.description = this.xmlEntityMappings.getDescription();
 		this.package_ = this.xmlEntityMappings.getPackage();
@@ -118,8 +110,6 @@ public abstract class AbstractEntityMappings
 		this.initializePersistentTypes();
 		this.initializeTableGenerators();
 		this.initializeSequenceGenerators();
-		this.initializeNamedQueries();
-		this.initializeNamedNativeQueries();
 	}
 	
 	protected abstract PersistenceUnitMetadata buildPersistenceUnitMetadata();
@@ -515,96 +505,8 @@ public abstract class AbstractEntityMappings
 
 
 	// ********** named queries **********
-
-	public ListIterator<OrmNamedQuery> namedQueries() {
-		return new CloneListIterator<OrmNamedQuery>(this.namedQueries);
-	}
-	
-	public int namedQueriesSize() {
-		return this.namedQueries.size();
-	}
-	
-	public OrmNamedQuery addNamedQuery(int index) {
-		XmlNamedQuery resourceNamedQuery = OrmFactory.eINSTANCE.createXmlNamedQuery();
-		OrmNamedQuery contextNamedQuery = buildNamedQuery(resourceNamedQuery);
-		this.namedQueries.add(index, contextNamedQuery);
-		this.xmlEntityMappings.getNamedQueries().add(index, resourceNamedQuery);
-		this.fireItemAdded(NAMED_QUERIES_LIST, index, contextNamedQuery);
-		return contextNamedQuery;
-	}
-	
-	protected void addNamedQuery(int index, OrmNamedQuery namedQuery) {
-		addItemToList(index, namedQuery, this.namedQueries, NAMED_QUERIES_LIST);
-	}
-	
-	protected void addNamedQuery(OrmNamedQuery namedQuery) {
-		this.addNamedQuery(this.namedQueries.size(), namedQuery);
-	}
-	
-	public void removeNamedQuery(NamedQuery namedQuery) {
-		this.removeNamedQuery(this.namedQueries.indexOf(namedQuery));
-	}
-
-	public void removeNamedQuery(int index) {
-		OrmNamedQuery namedQuery = this.namedQueries.remove(index);
-		this.xmlEntityMappings.getNamedQueries().remove(index);
-		fireItemRemoved(NAMED_QUERIES_LIST, index, namedQuery);
-	}
-
-	protected void removeNamedQuery_(OrmNamedQuery namedQuery) {
-		removeItemFromList(namedQuery, this.namedQueries, NAMED_QUERIES_LIST);
-	}
-	
-	public void moveNamedQuery(int targetIndex, int sourceIndex) {
-		this.xmlEntityMappings.getNamedQueries().move(targetIndex, sourceIndex);
-		moveItemInList(targetIndex, sourceIndex, this.namedQueries, NAMED_QUERIES_LIST);		
-	}
-	
-
-	// ********** named native queries **********
-
-	public ListIterator<OrmNamedNativeQuery> namedNativeQueries() {
-		return new CloneListIterator<OrmNamedNativeQuery>(this.namedNativeQueries);
-	}
-	
-	public int namedNativeQueriesSize() {
-		return this.namedNativeQueries.size();
-	}
-	
-	public OrmNamedNativeQuery addNamedNativeQuery(int index) {
-		XmlNamedNativeQuery resourceNamedNativeQuery = OrmFactory.eINSTANCE.createXmlNamedNativeQuery();
-		OrmNamedNativeQuery namedNativeQuery = buildNamedNativeQuery(resourceNamedNativeQuery);
-		this.namedNativeQueries.add(index, namedNativeQuery);
-		this.xmlEntityMappings.getNamedNativeQueries().add(index, resourceNamedNativeQuery);
-		this.fireItemAdded(NAMED_NATIVE_QUERIES_LIST, index, namedNativeQuery);
-		return namedNativeQuery;
-	}
-	
-	protected void addNamedNativeQuery(int index, OrmNamedNativeQuery namedNativeQuery) {
-		addItemToList(index, namedNativeQuery, this.namedNativeQueries, NAMED_NATIVE_QUERIES_LIST);
-	}
-	
-	protected void addNamedNativeQuery(OrmNamedNativeQuery namedNativeQuery) {
-		this.addNamedNativeQuery(this.namedNativeQueries.size(), namedNativeQuery);
-	}
-	
-	public void removeNamedNativeQuery(NamedNativeQuery namedNativeQuery) {
-		removeNamedNativeQuery(this.namedNativeQueries.indexOf(namedNativeQuery));
-	}
-
-	public void removeNamedNativeQuery(int index) {
-		OrmNamedNativeQuery namedNativeQuery = this.namedNativeQueries.remove(index);
-		this.xmlEntityMappings.getNamedNativeQueries().remove(index);
-		fireItemRemoved(NAMED_NATIVE_QUERIES_LIST, index, namedNativeQuery);
-	}
-
-	protected void removeNamedNativeQuery_(OrmNamedNativeQuery namedNativeQuery) {
-		removeItemFromList(namedNativeQuery, this.namedNativeQueries, NAMED_NATIVE_QUERIES_LIST);
-	}
-	
-	public void moveNamedNativeQuery(int targetIndex, int sourceIndex) {
-		this.xmlEntityMappings.getNamedNativeQueries().move(targetIndex, sourceIndex);
-		moveItemInList(targetIndex, sourceIndex, this.namedNativeQueries, NAMED_NATIVE_QUERIES_LIST);		
+	public OrmQueryContainer getQueryContainer() {
+		return this.queryContainer;
 	}
 
 
@@ -650,20 +552,8 @@ public abstract class AbstractEntityMappings
 			this.sequenceGenerators.add(buildSequenceGenerator(sequenceGenerator));
 		}
 	}
-	
-	protected void initializeNamedQueries() {
-		for (XmlNamedQuery namedQuery : this.xmlEntityMappings.getNamedQueries()) {
-			this.namedQueries.add(buildNamedQuery(namedQuery));
-		}
-	}
-	
-	protected void initializeNamedNativeQueries() {
-		for (XmlNamedNativeQuery namedNativeQuery : this.xmlEntityMappings.getNamedNativeQueries()) {
-			this.namedNativeQueries.add(buildNamedNativeQuery(namedNativeQuery));
-		}
-	}
 
-
+	
 	// ********** update **********
 
 	public void update() {
@@ -683,8 +573,7 @@ public abstract class AbstractEntityMappings
 		this.updatePersistentTypes();
 		this.updateTableGenerators();
 		this.updateSequenceGenerators();
-		this.updateNamedQueries();
-		this.updateNamedNativeQueries();
+		getQueryContainer().update();
 	}
 	
 	protected AccessType getResourceAccess() {
@@ -775,52 +664,6 @@ public abstract class AbstractEntityMappings
 
 	protected OrmSequenceGenerator buildSequenceGenerator(XmlSequenceGenerator resourceSequenceGenerator) {
 		return getJpaFactory().buildOrmSequenceGenerator(this, resourceSequenceGenerator);
-	}
-	
-	protected void updateNamedQueries() {
-		// make a copy of the XML queries (to prevent ConcurrentModificationException)
-		Iterator<XmlNamedQuery> xmlQueries = new CloneIterator<XmlNamedQuery>(this.xmlEntityMappings.getNamedQueries());
-		
-		for (Iterator<OrmNamedQuery> contextQueries = this.namedQueries(); contextQueries.hasNext(); ) {
-			OrmNamedQuery contextQuery = contextQueries.next();
-			if (xmlQueries.hasNext()) {
-				contextQuery.update(xmlQueries.next());
-			}
-			else {
-				removeNamedQuery_(contextQuery);
-			}
-		}
-		
-		while (xmlQueries.hasNext()) {
-			addNamedQuery(buildNamedQuery(xmlQueries.next()));
-		}
-	}
-
-	protected OrmNamedQuery buildNamedQuery(XmlNamedQuery resourceNamedQuery) {
-		return getJpaFactory().buildOrmNamedQuery(this, resourceNamedQuery);
-	}
-
-	protected void updateNamedNativeQueries() {
-		// make a copy of the XML queries (to prevent ConcurrentModificationException)
-		Iterator<XmlNamedNativeQuery> xmlQueries = new CloneIterator<XmlNamedNativeQuery>(this.xmlEntityMappings.getNamedNativeQueries());
-		
-		for (Iterator<OrmNamedNativeQuery> contextQueries = this.namedNativeQueries(); contextQueries.hasNext(); ) {
-			OrmNamedNativeQuery contextQuery = contextQueries.next();
-			if (xmlQueries.hasNext()) {
-				contextQuery.update(xmlQueries.next());
-			}
-			else {
-				removeNamedNativeQuery_(contextQuery);
-			}
-		}
-		
-		while (xmlQueries.hasNext()) {
-			addNamedNativeQuery(buildNamedNativeQuery(xmlQueries.next()));
-		}
-	}
-
-	protected OrmNamedNativeQuery buildNamedNativeQuery(XmlNamedNativeQuery resourceNamedQuery) {
-		return getJpaFactory().buildOrmNamedNativeQuery(this, resourceNamedQuery);
 	}
 
 	@Override
@@ -922,8 +765,8 @@ public abstract class AbstractEntityMappings
 	@SuppressWarnings("unchecked")
 	protected Iterator<OrmQuery> queries() {
 		return new CompositeIterator<OrmQuery>(
-						this.namedQueries(),
-						this.namedNativeQueries()
+						getQueryContainer().namedQueries(),
+						getQueryContainer().namedNativeQueries()
 				);
 	}
 
