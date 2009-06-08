@@ -1184,23 +1184,23 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	public static final int XML_COPY_POLICY_FEATURE_COUNT = 1;
 
 	/**
-	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlInstantiationPolicy <em>Xml Instantiation Policy</em>}' class.
+	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlInstantiationCopyPolicy <em>Xml Instantiation Copy Policy</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlInstantiationPolicy
-	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlInstantiationPolicy()
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlInstantiationCopyPolicy
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlInstantiationCopyPolicy()
 	 * @generated
 	 */
-	public static final int XML_INSTANTIATION_POLICY = 16;
+	public static final int XML_INSTANTIATION_COPY_POLICY = 16;
 
 	/**
-	 * The number of structural features of the '<em>Xml Instantiation Policy</em>' class.
+	 * The number of structural features of the '<em>Xml Instantiation Copy Policy</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_INSTANTIATION_POLICY_FEATURE_COUNT = 0;
+	public static final int XML_INSTANTIATION_COPY_POLICY_FEATURE_COUNT = 0;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlCloneCopyPolicy <em>Xml Clone Copy Policy</em>}' class.
@@ -5235,7 +5235,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass xmlInstantiationPolicyEClass = null;
+	private EClass xmlInstantiationCopyPolicyEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -5716,11 +5716,16 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		OrmPackage.eINSTANCE.eClass();
 		XMLTypePackage.eINSTANCE.eClass();
 
+		// Obtain or create and register interdependencies
+		EclipseLink1_1OrmPackage theEclipseLink1_1OrmPackage = (EclipseLink1_1OrmPackage)(EPackage.Registry.INSTANCE.getEPackage(EclipseLink1_1OrmPackage.eNS_URI) instanceof EclipseLink1_1OrmPackage ? EPackage.Registry.INSTANCE.getEPackage(EclipseLink1_1OrmPackage.eNS_URI) : EclipseLink1_1OrmPackage.eINSTANCE);
+
 		// Create package meta-data objects
 		theEclipseLinkOrmPackage.createPackageContents();
+		theEclipseLink1_1OrmPackage.createPackageContents();
 
 		// Initialize created meta-data
 		theEclipseLinkOrmPackage.initializePackageContents();
+		theEclipseLink1_1OrmPackage.initializePackageContents();
 
 		// Mark meta-data to indicate it can't be changed
 		theEclipseLinkOrmPackage.freeze();
@@ -5903,16 +5908,16 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 
 
 	/**
-	 * Returns the meta object for class '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlInstantiationPolicy <em>Xml Instantiation Policy</em>}'.
+	 * Returns the meta object for class '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlInstantiationCopyPolicy <em>Xml Instantiation Copy Policy</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Xml Instantiation Policy</em>'.
-	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlInstantiationPolicy
+	 * @return the meta object for class '<em>Xml Instantiation Copy Policy</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlInstantiationCopyPolicy
 	 * @generated
 	 */
-	public EClass getXmlInstantiationPolicy()
+	public EClass getXmlInstantiationCopyPolicy()
 	{
-		return xmlInstantiationPolicyEClass;
+		return xmlInstantiationCopyPolicyEClass;
 	}
 
 
@@ -8315,7 +8320,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		xmlCopyPolicyEClass = createEClass(XML_COPY_POLICY);
 		createEAttribute(xmlCopyPolicyEClass, XML_COPY_POLICY__CLASS);
 
-		xmlInstantiationPolicyEClass = createEClass(XML_INSTANTIATION_POLICY);
+		xmlInstantiationCopyPolicyEClass = createEClass(XML_INSTANTIATION_COPY_POLICY);
 
 		xmlCloneCopyPolicyEClass = createEClass(XML_CLONE_COPY_POLICY);
 		createEAttribute(xmlCloneCopyPolicyEClass, XML_CLONE_COPY_POLICY__METHOD);
@@ -8677,7 +8682,7 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		initEClass(xmlCopyPolicyEClass, XmlCopyPolicy.class, "XmlCopyPolicy", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlCopyPolicy_Class(), theXMLTypePackage.getString(), "class", null, 0, 1, XmlCopyPolicy.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(xmlInstantiationPolicyEClass, XmlInstantiationPolicy.class, "XmlInstantiationPolicy", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(xmlInstantiationCopyPolicyEClass, XmlInstantiationCopyPolicy.class, "XmlInstantiationCopyPolicy", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(xmlCloneCopyPolicyEClass, XmlCloneCopyPolicy.class, "XmlCloneCopyPolicy", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlCloneCopyPolicy_Method(), theXMLTypePackage.getString(), "method", null, 0, 1, XmlCloneCopyPolicy.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -8722,8 +8727,8 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		initEClass(xmlEntityEClass, XmlEntity.class, "XmlEntity", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getXmlEntity_OptimisticLocking(), this.getXmlOptimisticLocking(), null, "optimisticLocking", null, 0, 1, XmlEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getXmlEntity_CopyPolicy(), this.getXmlCopyPolicy(), null, "copyPolicy", null, 0, 1, XmlEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlEntity_InstantiationCopyPolicy(), this.getXmlCopyPolicy(), null, "instantiationCopyPolicy", null, 0, 1, XmlEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlEntity_CloneCopyPolicy(), this.getXmlCopyPolicy(), null, "cloneCopyPolicy", null, 0, 1, XmlEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlEntity_InstantiationCopyPolicy(), this.getXmlInstantiationCopyPolicy(), null, "instantiationCopyPolicy", null, 0, 1, XmlEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlEntity_CloneCopyPolicy(), this.getXmlCloneCopyPolicy(), null, "cloneCopyPolicy", null, 0, 1, XmlEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getXmlEntity_NamedStoredProcedureQueries(), this.getXmlNamedStoredProcedureQuery(), null, "namedStoredProcedureQueries", null, 0, -1, XmlEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getXmlEntity_Properties(), this.getXmlProperty(), null, "properties", null, 0, -1, XmlEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getXmlEntity_ExcludeDefaultMappings(), theXMLTypePackage.getBooleanObject(), "excludeDefaultMappings", null, 0, 1, XmlEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -8731,8 +8736,8 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		initEClass(xmlMappedSuperclassEClass, XmlMappedSuperclass.class, "XmlMappedSuperclass", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getXmlMappedSuperclass_OptimisticLocking(), this.getXmlOptimisticLocking(), null, "optimisticLocking", null, 0, 1, XmlMappedSuperclass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getXmlMappedSuperclass_CopyPolicy(), this.getXmlCopyPolicy(), null, "copyPolicy", null, 0, 1, XmlMappedSuperclass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlMappedSuperclass_InstantiationCopyPolicy(), this.getXmlCopyPolicy(), null, "instantiationCopyPolicy", null, 0, 1, XmlMappedSuperclass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlMappedSuperclass_CloneCopyPolicy(), this.getXmlCopyPolicy(), null, "cloneCopyPolicy", null, 0, 1, XmlMappedSuperclass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlMappedSuperclass_InstantiationCopyPolicy(), this.getXmlInstantiationCopyPolicy(), null, "instantiationCopyPolicy", null, 0, 1, XmlMappedSuperclass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlMappedSuperclass_CloneCopyPolicy(), this.getXmlCloneCopyPolicy(), null, "cloneCopyPolicy", null, 0, 1, XmlMappedSuperclass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getXmlMappedSuperclass_Properties(), this.getXmlProperty(), null, "properties", null, 0, -1, XmlMappedSuperclass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getXmlMappedSuperclass_ExcludeDefaultMappings(), theXMLTypePackage.getBooleanObject(), "excludeDefaultMappings", null, 0, 1, XmlMappedSuperclass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
@@ -9008,14 +9013,14 @@ public class EclipseLinkOrmPackage extends EPackageImpl
 		public static final EAttribute XML_COPY_POLICY__CLASS = eINSTANCE.getXmlCopyPolicy_Class();
 
 		/**
-		 * The meta object literal for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlInstantiationPolicy <em>Xml Instantiation Policy</em>}' class.
+		 * The meta object literal for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlInstantiationCopyPolicy <em>Xml Instantiation Copy Policy</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlInstantiationPolicy
-		 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlInstantiationPolicy()
+		 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlInstantiationCopyPolicy
+		 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlInstantiationCopyPolicy()
 		 * @generated
 		 */
-		public static final EClass XML_INSTANTIATION_POLICY = eINSTANCE.getXmlInstantiationPolicy();
+		public static final EClass XML_INSTANTIATION_COPY_POLICY = eINSTANCE.getXmlInstantiationCopyPolicy();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlCloneCopyPolicy <em>Xml Clone Copy Policy</em>}' class.

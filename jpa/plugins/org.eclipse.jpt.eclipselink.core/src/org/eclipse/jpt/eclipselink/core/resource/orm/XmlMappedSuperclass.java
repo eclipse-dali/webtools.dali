@@ -189,7 +189,7 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 	 * @generated
 	 * @ordered
 	 */
-	protected XmlCopyPolicy instantiationCopyPolicy;
+	protected XmlInstantiationCopyPolicy instantiationCopyPolicy;
 
 	/**
 	 * The cached value of the '{@link #getCloneCopyPolicy() <em>Clone Copy Policy</em>}' containment reference.
@@ -199,7 +199,7 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 	 * @generated
 	 * @ordered
 	 */
-	protected XmlCopyPolicy cloneCopyPolicy;
+	protected XmlCloneCopyPolicy cloneCopyPolicy;
 
 	/**
 	 * The cached value of the '{@link #getProperties() <em>Properties</em>}' containment reference list.
@@ -727,12 +727,12 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Instantiation Copy Policy</em>' containment reference.
-	 * @see #setInstantiationCopyPolicy(XmlCopyPolicy)
+	 * @see #setInstantiationCopyPolicy(XmlInstantiationCopyPolicy)
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlMappedSuperclass_InstantiationCopyPolicy()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public XmlCopyPolicy getInstantiationCopyPolicy()
+	public XmlInstantiationCopyPolicy getInstantiationCopyPolicy()
 	{
 		return instantiationCopyPolicy;
 	}
@@ -742,9 +742,9 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetInstantiationCopyPolicy(XmlCopyPolicy newInstantiationCopyPolicy, NotificationChain msgs)
+	public NotificationChain basicSetInstantiationCopyPolicy(XmlInstantiationCopyPolicy newInstantiationCopyPolicy, NotificationChain msgs)
 	{
-		XmlCopyPolicy oldInstantiationCopyPolicy = instantiationCopyPolicy;
+		XmlInstantiationCopyPolicy oldInstantiationCopyPolicy = instantiationCopyPolicy;
 		instantiationCopyPolicy = newInstantiationCopyPolicy;
 		if (eNotificationRequired())
 		{
@@ -762,7 +762,7 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 	 * @see #getInstantiationCopyPolicy()
 	 * @generated
 	 */
-	public void setInstantiationCopyPolicy(XmlCopyPolicy newInstantiationCopyPolicy)
+	public void setInstantiationCopyPolicy(XmlInstantiationCopyPolicy newInstantiationCopyPolicy)
 	{
 		if (newInstantiationCopyPolicy != instantiationCopyPolicy)
 		{
@@ -787,12 +787,12 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Clone Copy Policy</em>' containment reference.
-	 * @see #setCloneCopyPolicy(XmlCopyPolicy)
+	 * @see #setCloneCopyPolicy(XmlCloneCopyPolicy)
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlMappedSuperclass_CloneCopyPolicy()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public XmlCopyPolicy getCloneCopyPolicy()
+	public XmlCloneCopyPolicy getCloneCopyPolicy()
 	{
 		return cloneCopyPolicy;
 	}
@@ -802,9 +802,9 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetCloneCopyPolicy(XmlCopyPolicy newCloneCopyPolicy, NotificationChain msgs)
+	public NotificationChain basicSetCloneCopyPolicy(XmlCloneCopyPolicy newCloneCopyPolicy, NotificationChain msgs)
 	{
-		XmlCopyPolicy oldCloneCopyPolicy = cloneCopyPolicy;
+		XmlCloneCopyPolicy oldCloneCopyPolicy = cloneCopyPolicy;
 		cloneCopyPolicy = newCloneCopyPolicy;
 		if (eNotificationRequired())
 		{
@@ -822,7 +822,7 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 	 * @see #getCloneCopyPolicy()
 	 * @generated
 	 */
-	public void setCloneCopyPolicy(XmlCopyPolicy newCloneCopyPolicy)
+	public void setCloneCopyPolicy(XmlCloneCopyPolicy newCloneCopyPolicy)
 	{
 		if (newCloneCopyPolicy != cloneCopyPolicy)
 		{
@@ -1027,10 +1027,10 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 				setCopyPolicy((XmlCopyPolicy)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__INSTANTIATION_COPY_POLICY:
-				setInstantiationCopyPolicy((XmlCopyPolicy)newValue);
+				setInstantiationCopyPolicy((XmlInstantiationCopyPolicy)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CLONE_COPY_POLICY:
-				setCloneCopyPolicy((XmlCopyPolicy)newValue);
+				setCloneCopyPolicy((XmlCloneCopyPolicy)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PROPERTIES:
 				getProperties().clear();
@@ -1087,10 +1087,10 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 				setCopyPolicy((XmlCopyPolicy)null);
 				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__INSTANTIATION_COPY_POLICY:
-				setInstantiationCopyPolicy((XmlCopyPolicy)null);
+				setInstantiationCopyPolicy((XmlInstantiationCopyPolicy)null);
 				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CLONE_COPY_POLICY:
-				setCloneCopyPolicy((XmlCopyPolicy)null);
+				setCloneCopyPolicy((XmlCloneCopyPolicy)null);
 				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PROPERTIES:
 				getProperties().clear();

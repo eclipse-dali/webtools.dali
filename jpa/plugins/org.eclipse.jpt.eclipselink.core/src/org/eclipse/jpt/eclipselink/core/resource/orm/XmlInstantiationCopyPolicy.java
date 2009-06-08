@@ -30,19 +30,19 @@ import org.eclipse.jpt.core.resource.xml.JpaEObject;
  * <!-- end-user-doc -->
  *
  *
- * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlInstantiationPolicy()
+ * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlInstantiationCopyPolicy()
  * @model kind="class"
  * @extends JpaEObject
  * @generated
  */
-public class XmlInstantiationPolicy extends AbstractJpaEObject implements JpaEObject
+public class XmlInstantiationCopyPolicy extends AbstractJpaEObject implements JpaEObject
 {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected XmlInstantiationPolicy()
+	protected XmlInstantiationCopyPolicy()
 	{
 		super();
 	}
@@ -55,7 +55,7 @@ public class XmlInstantiationPolicy extends AbstractJpaEObject implements JpaEOb
 	@Override
 	protected EClass eStaticClass()
 	{
-		return EclipseLinkOrmPackage.Literals.XML_INSTANTIATION_POLICY;
+		return EclipseLinkOrmPackage.Literals.XML_INSTANTIATION_COPY_POLICY;
 	}
 
 } // XmlInstantiationPolicy
