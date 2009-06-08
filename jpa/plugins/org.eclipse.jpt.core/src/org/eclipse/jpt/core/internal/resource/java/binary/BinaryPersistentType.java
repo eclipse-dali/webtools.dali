@@ -158,7 +158,7 @@ final class BinaryPersistentType
 	}
 
 	private String buildQualifiedName() {
-		return this.getMember().getFullyQualifiedName();  // no parameters are included here
+		return this.getMember().getFullyQualifiedName('.');  // no parameters are included here
 	}
 
 	// ***** superclass qualified name

@@ -553,7 +553,7 @@ public abstract class AbstractJpaProject
 	}
 
 	protected JavaResourcePersistentType buildSourceExternalJavaResourcePersistentType(IType jdtType) {
-		String jdtTypeName = jdtType.getFullyQualifiedName();
+		String jdtTypeName = jdtType.getFullyQualifiedName('.');
 		JavaResourceCompilationUnit jrcu = this.addExternalJavaResourceCompilationUnit(jdtType.getCompilationUnit());
 		for (Iterator<JavaResourcePersistentType> stream = jrcu.persistentTypes(); stream.hasNext(); ) {
 			JavaResourcePersistentType jrpt = stream.next();
