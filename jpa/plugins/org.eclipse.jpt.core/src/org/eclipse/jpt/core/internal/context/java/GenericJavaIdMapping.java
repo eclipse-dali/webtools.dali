@@ -14,15 +14,12 @@ import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.Converter;
-import org.eclipse.jpt.core.context.Generator;
 import org.eclipse.jpt.core.context.java.JavaColumn;
 import org.eclipse.jpt.core.context.java.JavaConverter;
 import org.eclipse.jpt.core.context.java.JavaGeneratedValue;
-import org.eclipse.jpt.core.context.java.JavaGenerator;
+import org.eclipse.jpt.core.context.java.JavaGeneratorContainer;
 import org.eclipse.jpt.core.context.java.JavaIdMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.core.context.java.JavaSequenceGenerator;
-import org.eclipse.jpt.core.context.java.JavaTableGenerator;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.ColumnAnnotation;
@@ -36,10 +33,8 @@ import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
-import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
-import org.eclipse.jpt.utility.internal.iterators.SingleElementIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -52,9 +47,7 @@ public class GenericJavaIdMapping
 
 	protected JavaGeneratedValue generatedValue;
 
-	protected JavaTableGenerator tableGenerator;
-
-	protected JavaSequenceGenerator sequenceGenerator;
+	protected final JavaGeneratorContainer generatorContainer;
 
 	protected final JavaConverter defaultConverter;
 	
@@ -65,6 +58,7 @@ public class GenericJavaIdMapping
 		super(parent);
 		this.column = createJavaColumn();
 		this.defaultConverter = new GenericJavaNullConverter(this);
+		this.generatorContainer = new GenericJavaGeneratorContainer(this);
 	}
 
 	protected JavaColumn createJavaColumn() {
@@ -75,25 +69,11 @@ public class GenericJavaIdMapping
 	protected void initialize() {
 		super.initialize();
 		this.column.initialize(this.getResourceColumn());
-		this.initializeTableGenerator();
-		this.initializeSequenceGenerator();
+		this.generatorContainer.initialize(this.resourcePersistentAttribute);
 		this.initializeGeneratedValue();
 		this.specifiedConverter = this.buildSpecifiedConverter(this.getResourceConverterType());
 	}
 	
-	protected void initializeTableGenerator() {
-		TableGeneratorAnnotation resourceTableGenerator = getResourceTableGenerator();
-		if (resourceTableGenerator != null) {
-			this.tableGenerator = buildTableGenerator(resourceTableGenerator);
-		}
-	}
-	
-	protected void initializeSequenceGenerator() {
-		SequenceGeneratorAnnotation resourceSequenceGenerator = getResourceSequenceGenerator();
-		if (resourceSequenceGenerator != null) {
-			this.sequenceGenerator = buildSequenceGenerator(resourceSequenceGenerator);
-		}
-	}
 	
 	protected void initializeGeneratedValue() {
 		GeneratedValueAnnotation resourceGeneratedValue = getResourceGeneratedValue();
@@ -169,76 +149,11 @@ public class GenericJavaIdMapping
 		this.generatedValue = newGeneratedValue;
 		firePropertyChanged(GENERATED_VALUE_PROPERTY, oldGeneratedValue, newGeneratedValue);
 	}
-
-	public JavaTableGenerator addTableGenerator() {
-		if (getTableGenerator() != null) {
-			throw new IllegalStateException("tableGenerator already exists"); //$NON-NLS-1$
-		}
-		this.tableGenerator = getJpaFactory().buildJavaTableGenerator(this);
-		TableGeneratorAnnotation tableGeneratorResource = (TableGeneratorAnnotation) getResourcePersistentAttribute().addSupportingAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME);
-		this.tableGenerator.initialize(tableGeneratorResource);
-		firePropertyChanged(TABLE_GENERATOR_PROPERTY, null, this.tableGenerator);
-		return this.tableGenerator;
+	
+	public JavaGeneratorContainer getGeneratorContainer() {
+		return this.generatorContainer;
 	}
 	
-	public void removeTableGenerator() {
-		if (getTableGenerator() == null) {
-			throw new IllegalStateException("tableGenerator does not exist, cannot be removed"); //$NON-NLS-1$
-		}
-		JavaTableGenerator oldTableGenerator = this.tableGenerator;
-		this.tableGenerator = null;
-		getResourcePersistentAttribute().removeSupportingAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME);
-		firePropertyChanged(TABLE_GENERATOR_PROPERTY, oldTableGenerator, null);
-	}
-	
-	public JavaTableGenerator getTableGenerator() {
-		return this.tableGenerator;
-	}
-	
-	protected void setTableGenerator(JavaTableGenerator newTableGenerator) {
-		JavaTableGenerator oldTableGenerator = this.tableGenerator;
-		this.tableGenerator = newTableGenerator;
-		firePropertyChanged(TABLE_GENERATOR_PROPERTY, oldTableGenerator, newTableGenerator);
-	}
-
-	public JavaSequenceGenerator addSequenceGenerator() {
-		if (getSequenceGenerator() != null) {
-			throw new IllegalStateException("sequenceGenerator already exists"); //$NON-NLS-1$
-		}
-		
-		this.sequenceGenerator = getJpaFactory().buildJavaSequenceGenerator(this);
-		SequenceGeneratorAnnotation sequenceGeneratorResource = (SequenceGeneratorAnnotation) getResourcePersistentAttribute().addSupportingAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME);
-		this.sequenceGenerator.initialize(sequenceGeneratorResource);
-		firePropertyChanged(SEQUENCE_GENERATOR_PROPERTY, null, this.sequenceGenerator);
-		return this.sequenceGenerator;
-	}
-	
-	public void removeSequenceGenerator() {
-		if (getSequenceGenerator() == null) {
-			throw new IllegalStateException("sequenceGenerator does not exist, cannot be removed"); //$NON-NLS-1$
-		}
-		JavaSequenceGenerator oldSequenceGenerator = this.sequenceGenerator;
-		this.sequenceGenerator = null;
-		getResourcePersistentAttribute().removeSupportingAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME);
-		firePropertyChanged(SEQUENCE_GENERATOR_PROPERTY, oldSequenceGenerator, null);
-	}
-	
-	public JavaSequenceGenerator getSequenceGenerator() {
-		return this.sequenceGenerator;
-	}
-
-	protected void setSequenceGenerator(JavaSequenceGenerator newSequenceGenerator) {
-		JavaSequenceGenerator oldSequenceGenerator = this.sequenceGenerator;
-		this.sequenceGenerator = newSequenceGenerator;
-		firePropertyChanged(SEQUENCE_GENERATOR_PROPERTY, oldSequenceGenerator, newSequenceGenerator);
-	}
-	
-	@SuppressWarnings("unchecked")
-	public Iterator<JavaGenerator> generators() {
-		return new CompositeIterator<JavaGenerator>(
-			(getSequenceGenerator() == null) ? EmptyIterator.instance() : new SingleElementIterator(getSequenceGenerator()),
-			(getTableGenerator() == null) ? EmptyIterator.instance() : new SingleElementIterator(getTableGenerator()));
-	}
 	
 	public JavaConverter getConverter() {
 		return getSpecifiedConverter() == null ? getDefaultConverter() : getSpecifiedConverter();
@@ -286,8 +201,7 @@ public class GenericJavaIdMapping
 	protected void update() {
 		super.update();
 		this.column.update(this.getResourceColumn());
-		this.updateTableGenerator();
-		this.updateSequenceGenerator();
+		this.generatorContainer.update(this.resourcePersistentAttribute);
 		this.updateGeneratedValue();
 		if (getResourceConverterType() == getSpecifedConverterType()) {
 			getSpecifiedConverter().update(this.resourcePersistentAttribute);
@@ -297,53 +211,7 @@ public class GenericJavaIdMapping
 			setSpecifiedConverter(javaConverter);
 		}
 	}
-	
-	protected void updateTableGenerator() {
-		TableGeneratorAnnotation resourceTableGenerator = getResourceTableGenerator();
-		if (resourceTableGenerator == null) {
-			if (getTableGenerator() != null) {
-				setTableGenerator(null);
-			}
-		}
-		else {
-			if (getTableGenerator() == null) {
-				setTableGenerator(buildTableGenerator(resourceTableGenerator));
-			}
-			else {
-				getTableGenerator().update(resourceTableGenerator);
-			}
-		}
-	}
-	
-	protected JavaTableGenerator buildTableGenerator(TableGeneratorAnnotation resourceTableGenerator) {
-		JavaTableGenerator generator = getJpaFactory().buildJavaTableGenerator(this);
-		generator.initialize(resourceTableGenerator);
-		return generator;
-	}
-	
-	protected void updateSequenceGenerator() {
-		SequenceGeneratorAnnotation sequenceGeneratorResource = getResourceSequenceGenerator();
-		if (sequenceGeneratorResource == null) {
-			if (getSequenceGenerator() != null) {
-				setSequenceGenerator(null);
-			}
-		}
-		else {
-			if (getSequenceGenerator() == null) {
-				setSequenceGenerator(buildSequenceGenerator(sequenceGeneratorResource));
-			}
-			else {
-				getSequenceGenerator().update(sequenceGeneratorResource);
-			}
-		}
-	}
-	
-	protected JavaSequenceGenerator buildSequenceGenerator(SequenceGeneratorAnnotation resourceSequenceGenerator) {
-		JavaSequenceGenerator generator = getJpaFactory().buildJavaSequenceGenerator(this);
-		generator.initialize(resourceSequenceGenerator);
-		return generator;
-	}
-	
+
 	protected void updateGeneratedValue() {
 		GeneratedValueAnnotation resourceGeneratedValue = getResourceGeneratedValue();
 		if (resourceGeneratedValue == null) {
@@ -412,11 +280,9 @@ public class GenericJavaIdMapping
 				return result;
 			}
 		}
-		if (this.getTableGenerator() != null) {
-			result = this.getTableGenerator().javaCompletionProposals(pos, filter, astRoot);
-			if (result != null) {
-				return result;
-			}
+		result = this.getGeneratorContainer().javaCompletionProposals(pos, filter, astRoot);
+		if (result != null) {
+			return result;
 		}
 		return null;
 	}
@@ -474,7 +340,7 @@ public class GenericJavaIdMapping
 		if (this.generatedValue != null) {
 			this.generatedValue.validate(messages, reporter, astRoot);
 		}
-		this.validateGenerators(messages, astRoot);
+		getGeneratorContainer().validate(messages, reporter, astRoot);
 		if (this.specifiedConverter != null) {
 			this.specifiedConverter.validate(messages, reporter, astRoot);
 		}
@@ -504,25 +370,6 @@ public class GenericJavaIdMapping
 					this.column.getNameTextRange(astRoot)
 				)
 			);
-		}
-	}
-	
-	protected void validateGenerators(List<IMessage> messages, CompilationUnit astRoot) {
-		for (Iterator<JavaGenerator> localGenerators = this.generators(); localGenerators.hasNext(); ) {
-			JavaGenerator localGenerator = localGenerators.next();
-			for (Iterator<Generator> globalGenerators = this.getPersistenceUnit().generators(); globalGenerators.hasNext(); ) {
-				if (localGenerator.duplicates(globalGenerators.next())) {
-					messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							JpaValidationMessages.GENERATOR_DUPLICATE_NAME,
-							new String[] {localGenerator.getName()},
-							localGenerator,
-							localGenerator.getNameTextRange(astRoot)
-						)
-					);
-				}
-			}
 		}
 	}
 	

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -55,7 +55,7 @@ public class JavaSequenceGeneratorTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		IdMapping idMapping = (IdMapping) getJavaPersistentType().getAttributeNamed("id").getMapping();
-		assertEquals(SEQUENCE_GENERATOR_NAME, idMapping.getSequenceGenerator().getName());
+		assertEquals(SEQUENCE_GENERATOR_NAME, idMapping.getGeneratorContainer().getSequenceGenerator().getName());
 
 		//change resource model sequenceGenerator name, verify the context model is updated
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
@@ -64,7 +64,7 @@ public class JavaSequenceGeneratorTests extends ContextModelTestCase
 		
 		sequenceGenerator.setName("foo");
 		
-		assertEquals("foo", idMapping.getSequenceGenerator().getName());
+		assertEquals("foo", idMapping.getGeneratorContainer().getSequenceGenerator().getName());
 	}
 
 	public void testSetName() throws Exception {
@@ -72,11 +72,11 @@ public class JavaSequenceGeneratorTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		IdMapping idMapping = (IdMapping) getJavaPersistentType().getAttributeNamed("id").getMapping();
-		assertEquals(SEQUENCE_GENERATOR_NAME, idMapping.getSequenceGenerator().getName());
+		assertEquals(SEQUENCE_GENERATOR_NAME, idMapping.getGeneratorContainer().getSequenceGenerator().getName());
 
-		idMapping.getSequenceGenerator().setName("foo");
+		idMapping.getGeneratorContainer().getSequenceGenerator().setName("foo");
 		
-		assertEquals("foo", idMapping.getSequenceGenerator().getName());
+		assertEquals("foo", idMapping.getGeneratorContainer().getSequenceGenerator().getName());
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
@@ -90,11 +90,11 @@ public class JavaSequenceGeneratorTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		IdMapping idMapping = (IdMapping) getJavaPersistentType().getAttributeNamed("id").getMapping();
-		assertEquals(SEQUENCE_GENERATOR_NAME, idMapping.getSequenceGenerator().getName());
+		assertEquals(SEQUENCE_GENERATOR_NAME, idMapping.getGeneratorContainer().getSequenceGenerator().getName());
 
-		idMapping.getSequenceGenerator().setName(null);
+		idMapping.getGeneratorContainer().getSequenceGenerator().setName(null);
 		
-		assertNull(idMapping.getSequenceGenerator());
+		assertNull(idMapping.getGeneratorContainer().getSequenceGenerator());
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
@@ -109,15 +109,15 @@ public class JavaSequenceGeneratorTests extends ContextModelTestCase
 		
 		IdMapping idMapping = (IdMapping) getJavaPersistentType().getAttributeNamed("id").getMapping();
 		
-		assertEquals(SequenceGenerator.DEFAULT_INITIAL_VALUE, idMapping.getSequenceGenerator().getInitialValue());
+		assertEquals(SequenceGenerator.DEFAULT_INITIAL_VALUE, idMapping.getGeneratorContainer().getSequenceGenerator().getInitialValue());
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		SequenceGeneratorAnnotation sequenceGenerator = (SequenceGeneratorAnnotation) attributeResource.getSupportingAnnotation(JPA.SEQUENCE_GENERATOR);	
 		
 		sequenceGenerator.setInitialValue(Integer.valueOf(82));
 		
-		assertEquals(82, idMapping.getSequenceGenerator().getInitialValue());
-		assertEquals(Integer.valueOf(82), idMapping.getSequenceGenerator().getSpecifiedInitialValue());
+		assertEquals(82, idMapping.getGeneratorContainer().getSequenceGenerator().getInitialValue());
+		assertEquals(Integer.valueOf(82), idMapping.getGeneratorContainer().getSequenceGenerator().getSpecifiedInitialValue());
 	}
 	
 	public void testGetDefaultInitialValue() throws Exception {
@@ -126,12 +126,12 @@ public class JavaSequenceGeneratorTests extends ContextModelTestCase
 		
 		IdMapping idMapping = (IdMapping) getJavaPersistentType().getAttributeNamed("id").getMapping();
 
-		assertEquals(SequenceGenerator.DEFAULT_INITIAL_VALUE, idMapping.getSequenceGenerator().getDefaultInitialValue());
+		assertEquals(SequenceGenerator.DEFAULT_INITIAL_VALUE, idMapping.getGeneratorContainer().getSequenceGenerator().getDefaultInitialValue());
 		
-		idMapping.getSequenceGenerator().setSpecifiedInitialValue(Integer.valueOf(82));
+		idMapping.getGeneratorContainer().getSequenceGenerator().setSpecifiedInitialValue(Integer.valueOf(82));
 		
-		assertEquals(SequenceGenerator.DEFAULT_INITIAL_VALUE, idMapping.getSequenceGenerator().getDefaultInitialValue());
-		assertEquals(Integer.valueOf(82), idMapping.getSequenceGenerator().getSpecifiedInitialValue());
+		assertEquals(SequenceGenerator.DEFAULT_INITIAL_VALUE, idMapping.getGeneratorContainer().getSequenceGenerator().getDefaultInitialValue());
+		assertEquals(Integer.valueOf(82), idMapping.getGeneratorContainer().getSequenceGenerator().getSpecifiedInitialValue());
 	}
 	
 	public void testSetSpecifiedInitialValue() throws Exception {
@@ -139,7 +139,7 @@ public class JavaSequenceGeneratorTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		IdMapping idMapping = (IdMapping) getJavaPersistentType().getAttributeNamed("id").getMapping();
-		idMapping.getSequenceGenerator().setSpecifiedInitialValue(Integer.valueOf(20));
+		idMapping.getGeneratorContainer().getSequenceGenerator().setSpecifiedInitialValue(Integer.valueOf(20));
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
@@ -147,8 +147,8 @@ public class JavaSequenceGeneratorTests extends ContextModelTestCase
 		
 		assertEquals(Integer.valueOf(20), sequenceGenerator.getInitialValue());
 		
-		idMapping.getSequenceGenerator().setName(null);
-		idMapping.getSequenceGenerator().setSpecifiedInitialValue(null);
+		idMapping.getGeneratorContainer().getSequenceGenerator().setName(null);
+		idMapping.getGeneratorContainer().getSequenceGenerator().setSpecifiedInitialValue(null);
 		assertNull(attributeResource.getSupportingAnnotation(JPA.SEQUENCE_GENERATOR));
 	}
 	
@@ -158,7 +158,7 @@ public class JavaSequenceGeneratorTests extends ContextModelTestCase
 		
 		IdMapping idMapping = (IdMapping) getJavaPersistentType().getAttributeNamed("id").getMapping();
 		
-		assertEquals(Generator.DEFAULT_ALLOCATION_SIZE, idMapping.getSequenceGenerator().getAllocationSize());
+		assertEquals(Generator.DEFAULT_ALLOCATION_SIZE, idMapping.getGeneratorContainer().getSequenceGenerator().getAllocationSize());
 
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
@@ -166,8 +166,8 @@ public class JavaSequenceGeneratorTests extends ContextModelTestCase
 		
 		sequenceGenerator.setAllocationSize(Integer.valueOf(20));
 		
-		assertEquals(20, idMapping.getSequenceGenerator().getAllocationSize());
-		assertEquals(Integer.valueOf(20), idMapping.getSequenceGenerator().getSpecifiedAllocationSize());
+		assertEquals(20, idMapping.getGeneratorContainer().getSequenceGenerator().getAllocationSize());
+		assertEquals(Integer.valueOf(20), idMapping.getGeneratorContainer().getSequenceGenerator().getSpecifiedAllocationSize());
 	}
 	
 	public void testGetDefaultAllocationSize() throws Exception {
@@ -176,12 +176,12 @@ public class JavaSequenceGeneratorTests extends ContextModelTestCase
 		
 		IdMapping idMapping = (IdMapping) getJavaPersistentType().getAttributeNamed("id").getMapping();
 
-		assertEquals(Generator.DEFAULT_ALLOCATION_SIZE, idMapping.getSequenceGenerator().getDefaultAllocationSize());
+		assertEquals(Generator.DEFAULT_ALLOCATION_SIZE, idMapping.getGeneratorContainer().getSequenceGenerator().getDefaultAllocationSize());
 		
-		idMapping.getSequenceGenerator().setSpecifiedAllocationSize(Integer.valueOf(20));
+		idMapping.getGeneratorContainer().getSequenceGenerator().setSpecifiedAllocationSize(Integer.valueOf(20));
 		
-		assertEquals(Generator.DEFAULT_ALLOCATION_SIZE, idMapping.getSequenceGenerator().getDefaultAllocationSize());
-		assertEquals(Integer.valueOf(20), idMapping.getSequenceGenerator().getSpecifiedAllocationSize());
+		assertEquals(Generator.DEFAULT_ALLOCATION_SIZE, idMapping.getGeneratorContainer().getSequenceGenerator().getDefaultAllocationSize());
+		assertEquals(Integer.valueOf(20), idMapping.getGeneratorContainer().getSequenceGenerator().getSpecifiedAllocationSize());
 	}
 	
 	public void testSetSpecifiedAllocationSize() throws Exception {
@@ -189,7 +189,7 @@ public class JavaSequenceGeneratorTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		IdMapping idMapping = (IdMapping) getJavaPersistentType().getAttributeNamed("id").getMapping();
-		idMapping.getSequenceGenerator().setSpecifiedAllocationSize(Integer.valueOf(25));
+		idMapping.getGeneratorContainer().getSequenceGenerator().setSpecifiedAllocationSize(Integer.valueOf(25));
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
@@ -197,8 +197,8 @@ public class JavaSequenceGeneratorTests extends ContextModelTestCase
 		
 		assertEquals(Integer.valueOf(25), sequenceGenerator.getAllocationSize());
 		
-		idMapping.getSequenceGenerator().setName(null);
-		idMapping.getSequenceGenerator().setSpecifiedAllocationSize(null);
+		idMapping.getGeneratorContainer().getSequenceGenerator().setName(null);
+		idMapping.getGeneratorContainer().getSequenceGenerator().setSpecifiedAllocationSize(null);
 		assertNull(attributeResource.getSupportingAnnotation(JPA.SEQUENCE_GENERATOR));
 	}
 	
@@ -210,15 +210,15 @@ public class JavaSequenceGeneratorTests extends ContextModelTestCase
 		
 		IdMapping idMapping = (IdMapping) getJavaPersistentType().getAttributeNamed("id").getMapping();
 		
-		assertNull(idMapping.getSequenceGenerator().getSequenceName());
+		assertNull(idMapping.getGeneratorContainer().getSequenceGenerator().getSequenceName());
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		SequenceGeneratorAnnotation sequenceGenerator = (SequenceGeneratorAnnotation) attributeResource.getSupportingAnnotation(JPA.SEQUENCE_GENERATOR);	
 		
 		sequenceGenerator.setSequenceName("mySequenceName");
 		
-		assertEquals("mySequenceName", idMapping.getSequenceGenerator().getSequenceName());
-		assertEquals("mySequenceName", idMapping.getSequenceGenerator().getSpecifiedSequenceName());
+		assertEquals("mySequenceName", idMapping.getGeneratorContainer().getSequenceGenerator().getSequenceName());
+		assertEquals("mySequenceName", idMapping.getGeneratorContainer().getSequenceGenerator().getSpecifiedSequenceName());
 	}
 	
 	public void testGetDefaultSequenceName() throws Exception {
@@ -227,12 +227,12 @@ public class JavaSequenceGeneratorTests extends ContextModelTestCase
 		
 		IdMapping idMapping = (IdMapping) getJavaPersistentType().getAttributeNamed("id").getMapping();
 
-		assertNull(idMapping.getSequenceGenerator().getDefaultSequenceName());
+		assertNull(idMapping.getGeneratorContainer().getSequenceGenerator().getDefaultSequenceName());
 		
-		idMapping.getSequenceGenerator().setSpecifiedSequenceName("mySequenceName");
+		idMapping.getGeneratorContainer().getSequenceGenerator().setSpecifiedSequenceName("mySequenceName");
 		
-		assertNull(idMapping.getSequenceGenerator().getDefaultSequenceName());
-		assertEquals("mySequenceName", idMapping.getSequenceGenerator().getSpecifiedSequenceName());
+		assertNull(idMapping.getGeneratorContainer().getSequenceGenerator().getDefaultSequenceName());
+		assertEquals("mySequenceName", idMapping.getGeneratorContainer().getSequenceGenerator().getSpecifiedSequenceName());
 	}
 	
 	public void testSetSpecifiedSequenceName() throws Exception {
@@ -240,7 +240,7 @@ public class JavaSequenceGeneratorTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		IdMapping idMapping = (IdMapping) getJavaPersistentType().getAttributeNamed("id").getMapping();
-		idMapping.getSequenceGenerator().setSpecifiedSequenceName("mySequenceName");
+		idMapping.getGeneratorContainer().getSequenceGenerator().setSpecifiedSequenceName("mySequenceName");
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
@@ -248,8 +248,8 @@ public class JavaSequenceGeneratorTests extends ContextModelTestCase
 		
 		assertEquals("mySequenceName", sequenceGenerator.getSequenceName());
 		
-		idMapping.getSequenceGenerator().setName(null);
-		idMapping.getSequenceGenerator().setSpecifiedSequenceName(null);
+		idMapping.getGeneratorContainer().getSequenceGenerator().setName(null);
+		idMapping.getGeneratorContainer().getSequenceGenerator().setSpecifiedSequenceName(null);
 		assertNull(attributeResource.getSupportingAnnotation(JPA.SEQUENCE_GENERATOR));
 	}
 

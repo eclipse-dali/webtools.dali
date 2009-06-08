@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -103,14 +103,14 @@ public class XmlIdImpl extends AbstractXmlAttributeMapping implements XmlId
 	protected EnumType enumerated = ENUMERATED_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getGeneratedValue() <em>Generated Value</em>}' containment reference.
+	 * The cached value of the '{@link #getSequenceGenerator() <em>Sequence Generator</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getGeneratedValue()
+	 * @see #getSequenceGenerator()
 	 * @generated
 	 * @ordered
 	 */
-	protected XmlGeneratedValue generatedValue;
+	protected XmlSequenceGenerator sequenceGenerator;
 
 	/**
 	 * The cached value of the '{@link #getTableGenerator() <em>Table Generator</em>}' containment reference.
@@ -123,14 +123,14 @@ public class XmlIdImpl extends AbstractXmlAttributeMapping implements XmlId
 	protected XmlTableGenerator tableGenerator;
 
 	/**
-	 * The cached value of the '{@link #getSequenceGenerator() <em>Sequence Generator</em>}' containment reference.
+	 * The cached value of the '{@link #getGeneratedValue() <em>Generated Value</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getSequenceGenerator()
+	 * @see #getGeneratedValue()
 	 * @generated
 	 * @ordered
 	 */
-	protected XmlSequenceGenerator sequenceGenerator;
+	protected XmlGeneratedValue generatedValue;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -394,7 +394,7 @@ public class XmlIdImpl extends AbstractXmlAttributeMapping implements XmlId
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Table Generator</em>' containment reference.
 	 * @see #setTableGenerator(XmlTableGenerator)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlId_TableGenerator()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlGeneratorContainer_TableGenerator()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -454,7 +454,7 @@ public class XmlIdImpl extends AbstractXmlAttributeMapping implements XmlId
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Sequence Generator</em>' containment reference.
 	 * @see #setSequenceGenerator(XmlSequenceGenerator)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlId_SequenceGenerator()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlGeneratorContainer_SequenceGenerator()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -516,12 +516,12 @@ public class XmlIdImpl extends AbstractXmlAttributeMapping implements XmlId
 		{
 			case OrmPackage.XML_ID_IMPL__COLUMN:
 				return basicSetColumn(null, msgs);
-			case OrmPackage.XML_ID_IMPL__GENERATED_VALUE:
-				return basicSetGeneratedValue(null, msgs);
-			case OrmPackage.XML_ID_IMPL__TABLE_GENERATOR:
-				return basicSetTableGenerator(null, msgs);
 			case OrmPackage.XML_ID_IMPL__SEQUENCE_GENERATOR:
 				return basicSetSequenceGenerator(null, msgs);
+			case OrmPackage.XML_ID_IMPL__TABLE_GENERATOR:
+				return basicSetTableGenerator(null, msgs);
+			case OrmPackage.XML_ID_IMPL__GENERATED_VALUE:
+				return basicSetGeneratedValue(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -544,12 +544,12 @@ public class XmlIdImpl extends AbstractXmlAttributeMapping implements XmlId
 				return getTemporal();
 			case OrmPackage.XML_ID_IMPL__ENUMERATED:
 				return getEnumerated();
-			case OrmPackage.XML_ID_IMPL__GENERATED_VALUE:
-				return getGeneratedValue();
-			case OrmPackage.XML_ID_IMPL__TABLE_GENERATOR:
-				return getTableGenerator();
 			case OrmPackage.XML_ID_IMPL__SEQUENCE_GENERATOR:
 				return getSequenceGenerator();
+			case OrmPackage.XML_ID_IMPL__TABLE_GENERATOR:
+				return getTableGenerator();
+			case OrmPackage.XML_ID_IMPL__GENERATED_VALUE:
+				return getGeneratedValue();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -576,14 +576,14 @@ public class XmlIdImpl extends AbstractXmlAttributeMapping implements XmlId
 			case OrmPackage.XML_ID_IMPL__ENUMERATED:
 				setEnumerated((EnumType)newValue);
 				return;
-			case OrmPackage.XML_ID_IMPL__GENERATED_VALUE:
-				setGeneratedValue((XmlGeneratedValue)newValue);
+			case OrmPackage.XML_ID_IMPL__SEQUENCE_GENERATOR:
+				setSequenceGenerator((XmlSequenceGenerator)newValue);
 				return;
 			case OrmPackage.XML_ID_IMPL__TABLE_GENERATOR:
 				setTableGenerator((XmlTableGenerator)newValue);
 				return;
-			case OrmPackage.XML_ID_IMPL__SEQUENCE_GENERATOR:
-				setSequenceGenerator((XmlSequenceGenerator)newValue);
+			case OrmPackage.XML_ID_IMPL__GENERATED_VALUE:
+				setGeneratedValue((XmlGeneratedValue)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -611,14 +611,14 @@ public class XmlIdImpl extends AbstractXmlAttributeMapping implements XmlId
 			case OrmPackage.XML_ID_IMPL__ENUMERATED:
 				setEnumerated(ENUMERATED_EDEFAULT);
 				return;
-			case OrmPackage.XML_ID_IMPL__GENERATED_VALUE:
-				setGeneratedValue((XmlGeneratedValue)null);
+			case OrmPackage.XML_ID_IMPL__SEQUENCE_GENERATOR:
+				setSequenceGenerator((XmlSequenceGenerator)null);
 				return;
 			case OrmPackage.XML_ID_IMPL__TABLE_GENERATOR:
 				setTableGenerator((XmlTableGenerator)null);
 				return;
-			case OrmPackage.XML_ID_IMPL__SEQUENCE_GENERATOR:
-				setSequenceGenerator((XmlSequenceGenerator)null);
+			case OrmPackage.XML_ID_IMPL__GENERATED_VALUE:
+				setGeneratedValue((XmlGeneratedValue)null);
 				return;
 		}
 		super.eUnset(featureID);
@@ -642,12 +642,12 @@ public class XmlIdImpl extends AbstractXmlAttributeMapping implements XmlId
 				return temporal != TEMPORAL_EDEFAULT;
 			case OrmPackage.XML_ID_IMPL__ENUMERATED:
 				return enumerated != ENUMERATED_EDEFAULT;
-			case OrmPackage.XML_ID_IMPL__GENERATED_VALUE:
-				return generatedValue != null;
-			case OrmPackage.XML_ID_IMPL__TABLE_GENERATOR:
-				return tableGenerator != null;
 			case OrmPackage.XML_ID_IMPL__SEQUENCE_GENERATOR:
 				return sequenceGenerator != null;
+			case OrmPackage.XML_ID_IMPL__TABLE_GENERATOR:
+				return tableGenerator != null;
+			case OrmPackage.XML_ID_IMPL__GENERATED_VALUE:
+				return generatedValue != null;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -678,13 +678,20 @@ public class XmlIdImpl extends AbstractXmlAttributeMapping implements XmlId
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlGeneratorContainer.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.XML_ID_IMPL__SEQUENCE_GENERATOR: return OrmPackage.XML_GENERATOR_CONTAINER__SEQUENCE_GENERATOR;
+				case OrmPackage.XML_ID_IMPL__TABLE_GENERATOR: return OrmPackage.XML_GENERATOR_CONTAINER__TABLE_GENERATOR;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlId.class)
 		{
 			switch (derivedFeatureID)
 			{
 				case OrmPackage.XML_ID_IMPL__GENERATED_VALUE: return OrmPackage.XML_ID__GENERATED_VALUE;
-				case OrmPackage.XML_ID_IMPL__TABLE_GENERATOR: return OrmPackage.XML_ID__TABLE_GENERATOR;
-				case OrmPackage.XML_ID_IMPL__SEQUENCE_GENERATOR: return OrmPackage.XML_ID__SEQUENCE_GENERATOR;
 				default: return -1;
 			}
 		}
@@ -717,13 +724,20 @@ public class XmlIdImpl extends AbstractXmlAttributeMapping implements XmlId
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlGeneratorContainer.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmPackage.XML_GENERATOR_CONTAINER__SEQUENCE_GENERATOR: return OrmPackage.XML_ID_IMPL__SEQUENCE_GENERATOR;
+				case OrmPackage.XML_GENERATOR_CONTAINER__TABLE_GENERATOR: return OrmPackage.XML_ID_IMPL__TABLE_GENERATOR;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlId.class)
 		{
 			switch (baseFeatureID)
 			{
 				case OrmPackage.XML_ID__GENERATED_VALUE: return OrmPackage.XML_ID_IMPL__GENERATED_VALUE;
-				case OrmPackage.XML_ID__TABLE_GENERATOR: return OrmPackage.XML_ID_IMPL__TABLE_GENERATOR;
-				case OrmPackage.XML_ID__SEQUENCE_GENERATOR: return OrmPackage.XML_ID_IMPL__SEQUENCE_GENERATOR;
 				default: return -1;
 			}
 		}

@@ -47,6 +47,7 @@ import org.eclipse.jpt.core.resource.java.VersionAnnotation;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
+@SuppressWarnings("nls")
 public class JavaIdMappingTests extends ContextModelTestCase
 {
 
@@ -121,8 +122,8 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		idMapping.setSpecifiedConverter(Converter.TEMPORAL_CONVERTER);
 		((TemporalConverter) idMapping.getSpecifiedConverter()).setTemporalType(TemporalType.TIME);
 		idMapping.addGeneratedValue();
-		idMapping.addTableGenerator();
-		idMapping.addSequenceGenerator();
+		idMapping.getGeneratorContainer().addTableGenerator();
+		idMapping.getGeneratorContainer().addSequenceGenerator();
 		assertFalse(idMapping.isDefault());
 		
 		persistentAttribute.setSpecifiedMappingKey(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
@@ -151,8 +152,8 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		idMapping.setSpecifiedConverter(Converter.TEMPORAL_CONVERTER);
 		((TemporalConverter) idMapping.getSpecifiedConverter()).setTemporalType(TemporalType.TIME);
 		idMapping.addGeneratedValue();
-		idMapping.addTableGenerator();
-		idMapping.addSequenceGenerator();
+		idMapping.getGeneratorContainer().addTableGenerator();
+		idMapping.getGeneratorContainer().addSequenceGenerator();
 		assertFalse(idMapping.isDefault());
 		
 		persistentAttribute.setSpecifiedMappingKey(MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY);
@@ -180,8 +181,8 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		idMapping.setSpecifiedConverter(Converter.TEMPORAL_CONVERTER);
 		((TemporalConverter) idMapping.getSpecifiedConverter()).setTemporalType(TemporalType.TIME);
 		idMapping.addGeneratedValue();
-		idMapping.addTableGenerator();
-		idMapping.addSequenceGenerator();
+		idMapping.getGeneratorContainer().addTableGenerator();
+		idMapping.getGeneratorContainer().addSequenceGenerator();
 		assertFalse(idMapping.isDefault());
 		
 		persistentAttribute.setSpecifiedMappingKey(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY);
@@ -210,8 +211,8 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		idMapping.setSpecifiedConverter(Converter.TEMPORAL_CONVERTER);
 		((TemporalConverter) idMapping.getSpecifiedConverter()).setTemporalType(TemporalType.TIME);
 		idMapping.addGeneratedValue();
-		idMapping.addTableGenerator();
-		idMapping.addSequenceGenerator();
+		idMapping.getGeneratorContainer().addTableGenerator();
+		idMapping.getGeneratorContainer().addSequenceGenerator();
 		assertFalse(idMapping.isDefault());
 		
 		persistentAttribute.setSpecifiedMappingKey(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
@@ -239,8 +240,8 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		idMapping.setSpecifiedConverter(Converter.TEMPORAL_CONVERTER);
 		((TemporalConverter) idMapping.getSpecifiedConverter()).setTemporalType(TemporalType.TIME);
 		idMapping.addGeneratedValue();
-		idMapping.addTableGenerator();
-		idMapping.addSequenceGenerator();
+		idMapping.getGeneratorContainer().addTableGenerator();
+		idMapping.getGeneratorContainer().addSequenceGenerator();
 		assertFalse(idMapping.isDefault());
 		
 		persistentAttribute.setSpecifiedMappingKey(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
@@ -268,8 +269,8 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		idMapping.setSpecifiedConverter(Converter.TEMPORAL_CONVERTER);
 		((TemporalConverter) idMapping.getSpecifiedConverter()).setTemporalType(TemporalType.TIME);
 		idMapping.addGeneratedValue();
-		idMapping.addTableGenerator();
-		idMapping.addSequenceGenerator();
+		idMapping.getGeneratorContainer().addTableGenerator();
+		idMapping.getGeneratorContainer().addSequenceGenerator();
 		assertFalse(idMapping.isDefault());
 		
 		persistentAttribute.setSpecifiedMappingKey(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY);
@@ -297,8 +298,8 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		idMapping.setSpecifiedConverter(Converter.TEMPORAL_CONVERTER);
 		((TemporalConverter) idMapping.getSpecifiedConverter()).setTemporalType(TemporalType.TIME);
 		idMapping.addGeneratedValue();
-		idMapping.addTableGenerator();
-		idMapping.addSequenceGenerator();
+		idMapping.getGeneratorContainer().addTableGenerator();
+		idMapping.getGeneratorContainer().addSequenceGenerator();
 		assertFalse(idMapping.isDefault());
 		
 		persistentAttribute.setSpecifiedMappingKey(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
@@ -326,8 +327,8 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		idMapping.setSpecifiedConverter(Converter.TEMPORAL_CONVERTER);
 		((TemporalConverter) idMapping.getSpecifiedConverter()).setTemporalType(TemporalType.TIME);
 		idMapping.addGeneratedValue();
-		idMapping.addTableGenerator();
-		idMapping.addSequenceGenerator();
+		idMapping.getGeneratorContainer().addTableGenerator();
+		idMapping.getGeneratorContainer().addSequenceGenerator();
 		assertFalse(idMapping.isDefault());
 		
 		persistentAttribute.setSpecifiedMappingKey(MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY);
@@ -355,8 +356,8 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		idMapping.setSpecifiedConverter(Converter.TEMPORAL_CONVERTER);
 		((TemporalConverter) idMapping.getSpecifiedConverter()).setTemporalType(TemporalType.TIME);
 		idMapping.addGeneratedValue();
-		idMapping.addTableGenerator();
-		idMapping.addSequenceGenerator();
+		idMapping.getGeneratorContainer().addTableGenerator();
+		idMapping.getGeneratorContainer().addSequenceGenerator();
 		assertFalse(idMapping.isDefault());
 		
 		persistentAttribute.setSpecifiedMappingKey(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
@@ -384,8 +385,8 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		idMapping.setSpecifiedConverter(Converter.TEMPORAL_CONVERTER);
 		((TemporalConverter) idMapping.getSpecifiedConverter()).setTemporalType(TemporalType.TIME);
 		idMapping.addGeneratedValue();
-		idMapping.addTableGenerator();
-		idMapping.addSequenceGenerator();
+		idMapping.getGeneratorContainer().addTableGenerator();
+		idMapping.getGeneratorContainer().addSequenceGenerator();
 		assertFalse(idMapping.isDefault());
 		
 		persistentAttribute.setSpecifiedMappingKey(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
@@ -483,17 +484,17 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		IdMapping idMapping = (IdMapping) persistentAttribute.getSpecifiedMapping();
-		assertNull(idMapping.getSequenceGenerator());
+		assertNull(idMapping.getGeneratorContainer().getSequenceGenerator());
 		assertEquals(0, idMapping.getPersistenceUnit().generatorsSize());
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		attributeResource.addSupportingAnnotation(JPA.SEQUENCE_GENERATOR);
-		assertNotNull(idMapping.getSequenceGenerator());
+		assertNotNull(idMapping.getGeneratorContainer().getSequenceGenerator());
 		assertEquals(1, attributeResource.supportingAnnotationsSize());
 		assertEquals(1, idMapping.getPersistenceUnit().generatorsSize());
 		
-		idMapping.getSequenceGenerator().setName("foo");
+		idMapping.getGeneratorContainer().getSequenceGenerator().setName("foo");
 		assertEquals(1, idMapping.getPersistenceUnit().generatorsSize());
 	}
 	
@@ -504,19 +505,19 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		IdMapping idMapping = (IdMapping) persistentAttribute.getSpecifiedMapping();
 		
-		assertNull(idMapping.getSequenceGenerator());
+		assertNull(idMapping.getGeneratorContainer().getSequenceGenerator());
 		
-		idMapping.addSequenceGenerator();
+		idMapping.getGeneratorContainer().addSequenceGenerator();
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 	
 		assertNotNull(attributeResource.getSupportingAnnotation(JPA.SEQUENCE_GENERATOR));
-		assertNotNull(idMapping.getSequenceGenerator());
+		assertNotNull(idMapping.getGeneratorContainer().getSequenceGenerator());
 		
 		//try adding another sequence generator, should get an IllegalStateException
 		try {
-				idMapping.addSequenceGenerator();
+				idMapping.getGeneratorContainer().addSequenceGenerator();
 		} catch (IllegalStateException e) {
 			return;
 		}
@@ -535,14 +536,14 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		attributeResource.addSupportingAnnotation(JPA.SEQUENCE_GENERATOR);
 		
 		
-		idMapping.removeSequenceGenerator();
+		idMapping.getGeneratorContainer().removeSequenceGenerator();
 		
-		assertNull(idMapping.getSequenceGenerator());
+		assertNull(idMapping.getGeneratorContainer().getSequenceGenerator());
 		assertNull(attributeResource.getSupportingAnnotation(JPA.SEQUENCE_GENERATOR));
 
 		//try removing the sequence generator again, should get an IllegalStateException
 		try {
-			idMapping.removeSequenceGenerator();		
+			idMapping.getGeneratorContainer().removeSequenceGenerator();		
 		} catch (IllegalStateException e) {
 			return;
 		}
@@ -555,17 +556,17 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		IdMapping idMapping = (IdMapping) persistentAttribute.getSpecifiedMapping();
-		assertNull(idMapping.getTableGenerator());
+		assertNull(idMapping.getGeneratorContainer().getTableGenerator());
 		assertEquals(0, idMapping.getPersistenceUnit().generatorsSize());
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		attributeResource.addSupportingAnnotation(JPA.TABLE_GENERATOR);
-		assertNotNull(idMapping.getTableGenerator());		
+		assertNotNull(idMapping.getGeneratorContainer().getTableGenerator());		
 		assertEquals(1, attributeResource.supportingAnnotationsSize());
 		assertEquals(1, idMapping.getPersistenceUnit().generatorsSize());
 		
-		idMapping.getTableGenerator().setName("foo");
+		idMapping.getGeneratorContainer().getTableGenerator().setName("foo");
 		assertEquals(1, idMapping.getPersistenceUnit().generatorsSize());
 	}
 	
@@ -576,19 +577,19 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		IdMapping idMapping = (IdMapping) persistentAttribute.getSpecifiedMapping();
 		
-		assertNull(idMapping.getTableGenerator());
+		assertNull(idMapping.getGeneratorContainer().getTableGenerator());
 		
-		idMapping.addTableGenerator();
+		idMapping.getGeneratorContainer().addTableGenerator();
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 	
 		assertNotNull(attributeResource.getSupportingAnnotation(JPA.TABLE_GENERATOR));
-		assertNotNull(idMapping.getTableGenerator());
+		assertNotNull(idMapping.getGeneratorContainer().getTableGenerator());
 		
 		//try adding another table generator, should get an IllegalStateException
 		try {
-			idMapping.addTableGenerator();		
+			idMapping.getGeneratorContainer().addTableGenerator();		
 		} catch (IllegalStateException e) {
 			return;
 		}
@@ -607,14 +608,14 @@ public class JavaIdMappingTests extends ContextModelTestCase
 		attributeResource.addSupportingAnnotation(JPA.TABLE_GENERATOR);
 		
 		
-		idMapping.removeTableGenerator();
+		idMapping.getGeneratorContainer().removeTableGenerator();
 		
-		assertNull(idMapping.getTableGenerator());
+		assertNull(idMapping.getGeneratorContainer().getTableGenerator());
 		assertNull(attributeResource.getSupportingAnnotation(JPA.TABLE_GENERATOR));
 		
 		//try removing the table generator again, should get an IllegalStateException
 		try {
-			idMapping.removeTableGenerator();		
+			idMapping.getGeneratorContainer().removeTableGenerator();		
 		} catch (IllegalStateException e) {
 			return;
 		}

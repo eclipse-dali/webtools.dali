@@ -44,8 +44,6 @@ import org.eclipse.jpt.core.utility.TextRange;
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntity#getInheritance <em>Inheritance</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntity#getDiscriminatorValue <em>Discriminator Value</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntity#getDiscriminatorColumn <em>Discriminator Column</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntity#getSequenceGenerator <em>Sequence Generator</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntity#getTableGenerator <em>Table Generator</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntity#getSqlResultSetMappings <em>Sql Result Set Mappings</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntity#isExcludeDefaultListeners <em>Exclude Default Listeners</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntity#isExcludeSuperclassListeners <em>Exclude Superclass Listeners</em>}</li>
@@ -66,7 +64,7 @@ import org.eclipse.jpt.core.utility.TextRange;
  * @model kind="class"
  * @generated
  */
-public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContainer
+public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContainer, XmlGeneratorContainer
 {
 
 	/**
@@ -88,6 +86,26 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	 * @ordered
 	 */
 	protected EList<XmlNamedNativeQuery> namedNativeQueries;
+
+	/**
+	 * The cached value of the '{@link #getSequenceGenerator() <em>Sequence Generator</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getSequenceGenerator()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlSequenceGenerator sequenceGenerator;
+
+	/**
+	 * The cached value of the '{@link #getTableGenerator() <em>Table Generator</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getTableGenerator()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlTableGenerator tableGenerator;
 
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
@@ -188,26 +206,6 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	 * @ordered
 	 */
 	protected XmlDiscriminatorColumn discriminatorColumn;
-
-	/**
-	 * The cached value of the '{@link #getSequenceGenerator() <em>Sequence Generator</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getSequenceGenerator()
-	 * @generated
-	 * @ordered
-	 */
-	protected XmlSequenceGenerator sequenceGenerator;
-
-	/**
-	 * The cached value of the '{@link #getTableGenerator() <em>Table Generator</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getTableGenerator()
-	 * @generated
-	 * @ordered
-	 */
-	protected XmlTableGenerator tableGenerator;
 
 	/**
 	 * The cached value of the '{@link #getSqlResultSetMappings() <em>Sql Result Set Mappings</em>}' containment reference list.
@@ -754,7 +752,7 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Sequence Generator</em>' containment reference.
 	 * @see #setSequenceGenerator(XmlSequenceGenerator)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEntity_SequenceGenerator()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlGeneratorContainer_SequenceGenerator()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -814,7 +812,7 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Table Generator</em>' containment reference.
 	 * @see #setTableGenerator(XmlTableGenerator)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEntity_TableGenerator()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlGeneratorContainer_TableGenerator()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -1543,6 +1541,10 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 				return ((InternalEList<?>)getNamedQueries()).basicRemove(otherEnd, msgs);
 			case OrmPackage.XML_ENTITY__NAMED_NATIVE_QUERIES:
 				return ((InternalEList<?>)getNamedNativeQueries()).basicRemove(otherEnd, msgs);
+			case OrmPackage.XML_ENTITY__SEQUENCE_GENERATOR:
+				return basicSetSequenceGenerator(null, msgs);
+			case OrmPackage.XML_ENTITY__TABLE_GENERATOR:
+				return basicSetTableGenerator(null, msgs);
 			case OrmPackage.XML_ENTITY__TABLE:
 				return basicSetTable(null, msgs);
 			case OrmPackage.XML_ENTITY__SECONDARY_TABLES:
@@ -1555,10 +1557,6 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 				return basicSetInheritance(null, msgs);
 			case OrmPackage.XML_ENTITY__DISCRIMINATOR_COLUMN:
 				return basicSetDiscriminatorColumn(null, msgs);
-			case OrmPackage.XML_ENTITY__SEQUENCE_GENERATOR:
-				return basicSetSequenceGenerator(null, msgs);
-			case OrmPackage.XML_ENTITY__TABLE_GENERATOR:
-				return basicSetTableGenerator(null, msgs);
 			case OrmPackage.XML_ENTITY__SQL_RESULT_SET_MAPPINGS:
 				return ((InternalEList<?>)getSqlResultSetMappings()).basicRemove(otherEnd, msgs);
 			case OrmPackage.XML_ENTITY__ENTITY_LISTENERS:
@@ -1599,6 +1597,10 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 				return getNamedQueries();
 			case OrmPackage.XML_ENTITY__NAMED_NATIVE_QUERIES:
 				return getNamedNativeQueries();
+			case OrmPackage.XML_ENTITY__SEQUENCE_GENERATOR:
+				return getSequenceGenerator();
+			case OrmPackage.XML_ENTITY__TABLE_GENERATOR:
+				return getTableGenerator();
 			case OrmPackage.XML_ENTITY__NAME:
 				return getName();
 			case OrmPackage.XML_ENTITY__TABLE:
@@ -1615,10 +1617,6 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 				return getDiscriminatorValue();
 			case OrmPackage.XML_ENTITY__DISCRIMINATOR_COLUMN:
 				return getDiscriminatorColumn();
-			case OrmPackage.XML_ENTITY__SEQUENCE_GENERATOR:
-				return getSequenceGenerator();
-			case OrmPackage.XML_ENTITY__TABLE_GENERATOR:
-				return getTableGenerator();
 			case OrmPackage.XML_ENTITY__SQL_RESULT_SET_MAPPINGS:
 				return getSqlResultSetMappings();
 			case OrmPackage.XML_ENTITY__EXCLUDE_DEFAULT_LISTENERS:
@@ -1668,6 +1666,12 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 				getNamedNativeQueries().clear();
 				getNamedNativeQueries().addAll((Collection<? extends XmlNamedNativeQuery>)newValue);
 				return;
+			case OrmPackage.XML_ENTITY__SEQUENCE_GENERATOR:
+				setSequenceGenerator((XmlSequenceGenerator)newValue);
+				return;
+			case OrmPackage.XML_ENTITY__TABLE_GENERATOR:
+				setTableGenerator((XmlTableGenerator)newValue);
+				return;
 			case OrmPackage.XML_ENTITY__NAME:
 				setName((String)newValue);
 				return;
@@ -1693,12 +1697,6 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 				return;
 			case OrmPackage.XML_ENTITY__DISCRIMINATOR_COLUMN:
 				setDiscriminatorColumn((XmlDiscriminatorColumn)newValue);
-				return;
-			case OrmPackage.XML_ENTITY__SEQUENCE_GENERATOR:
-				setSequenceGenerator((XmlSequenceGenerator)newValue);
-				return;
-			case OrmPackage.XML_ENTITY__TABLE_GENERATOR:
-				setTableGenerator((XmlTableGenerator)newValue);
 				return;
 			case OrmPackage.XML_ENTITY__SQL_RESULT_SET_MAPPINGS:
 				getSqlResultSetMappings().clear();
@@ -1762,6 +1760,12 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 			case OrmPackage.XML_ENTITY__NAMED_NATIVE_QUERIES:
 				getNamedNativeQueries().clear();
 				return;
+			case OrmPackage.XML_ENTITY__SEQUENCE_GENERATOR:
+				setSequenceGenerator((XmlSequenceGenerator)null);
+				return;
+			case OrmPackage.XML_ENTITY__TABLE_GENERATOR:
+				setTableGenerator((XmlTableGenerator)null);
+				return;
 			case OrmPackage.XML_ENTITY__NAME:
 				setName(NAME_EDEFAULT);
 				return;
@@ -1785,12 +1789,6 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 				return;
 			case OrmPackage.XML_ENTITY__DISCRIMINATOR_COLUMN:
 				setDiscriminatorColumn((XmlDiscriminatorColumn)null);
-				return;
-			case OrmPackage.XML_ENTITY__SEQUENCE_GENERATOR:
-				setSequenceGenerator((XmlSequenceGenerator)null);
-				return;
-			case OrmPackage.XML_ENTITY__TABLE_GENERATOR:
-				setTableGenerator((XmlTableGenerator)null);
 				return;
 			case OrmPackage.XML_ENTITY__SQL_RESULT_SET_MAPPINGS:
 				getSqlResultSetMappings().clear();
@@ -1849,6 +1847,10 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 				return namedQueries != null && !namedQueries.isEmpty();
 			case OrmPackage.XML_ENTITY__NAMED_NATIVE_QUERIES:
 				return namedNativeQueries != null && !namedNativeQueries.isEmpty();
+			case OrmPackage.XML_ENTITY__SEQUENCE_GENERATOR:
+				return sequenceGenerator != null;
+			case OrmPackage.XML_ENTITY__TABLE_GENERATOR:
+				return tableGenerator != null;
 			case OrmPackage.XML_ENTITY__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case OrmPackage.XML_ENTITY__TABLE:
@@ -1865,10 +1867,6 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 				return DISCRIMINATOR_VALUE_EDEFAULT == null ? discriminatorValue != null : !DISCRIMINATOR_VALUE_EDEFAULT.equals(discriminatorValue);
 			case OrmPackage.XML_ENTITY__DISCRIMINATOR_COLUMN:
 				return discriminatorColumn != null;
-			case OrmPackage.XML_ENTITY__SEQUENCE_GENERATOR:
-				return sequenceGenerator != null;
-			case OrmPackage.XML_ENTITY__TABLE_GENERATOR:
-				return tableGenerator != null;
 			case OrmPackage.XML_ENTITY__SQL_RESULT_SET_MAPPINGS:
 				return sqlResultSetMappings != null && !sqlResultSetMappings.isEmpty();
 			case OrmPackage.XML_ENTITY__EXCLUDE_DEFAULT_LISTENERS:
@@ -1916,6 +1914,15 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlGeneratorContainer.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.XML_ENTITY__SEQUENCE_GENERATOR: return OrmPackage.XML_GENERATOR_CONTAINER__SEQUENCE_GENERATOR;
+				case OrmPackage.XML_ENTITY__TABLE_GENERATOR: return OrmPackage.XML_GENERATOR_CONTAINER__TABLE_GENERATOR;
+				default: return -1;
+			}
+		}
 		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
 	}
 
@@ -1933,6 +1940,15 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 			{
 				case OrmPackage.XML_QUERY_CONTAINER__NAMED_QUERIES: return OrmPackage.XML_ENTITY__NAMED_QUERIES;
 				case OrmPackage.XML_QUERY_CONTAINER__NAMED_NATIVE_QUERIES: return OrmPackage.XML_ENTITY__NAMED_NATIVE_QUERIES;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlGeneratorContainer.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmPackage.XML_GENERATOR_CONTAINER__SEQUENCE_GENERATOR: return OrmPackage.XML_ENTITY__SEQUENCE_GENERATOR;
+				case OrmPackage.XML_GENERATOR_CONTAINER__TABLE_GENERATOR: return OrmPackage.XML_ENTITY__TABLE_GENERATOR;
 				default: return -1;
 			}
 		}

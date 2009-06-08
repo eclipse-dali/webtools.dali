@@ -9,19 +9,19 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
-import org.eclipse.jpt.core.context.java.JavaGeneratorHolder;
+import org.eclipse.jpt.core.context.java.JavaGeneratorContainer;
 import org.eclipse.jpt.core.context.java.JavaSequenceGenerator;
 import org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator;
 import org.eclipse.jpt.core.utility.TextRange;
 
 public class VirtualXmlSequenceGenerator extends XmlSequenceGenerator
 {
-	JavaGeneratorHolder javaGeneratorHolder;
+	JavaGeneratorContainer javaGeneratorHolder;
 
 	protected boolean metadataComplete;
 	
 		
-	public VirtualXmlSequenceGenerator(JavaGeneratorHolder javaGeneratorHolder, boolean metadataComplete) {
+	public VirtualXmlSequenceGenerator(JavaGeneratorContainer javaGeneratorHolder, boolean metadataComplete) {
 		super();
 		this.javaGeneratorHolder = javaGeneratorHolder;
 		this.metadataComplete = metadataComplete;

@@ -571,10 +571,10 @@ public class OrmTableGeneratorTests extends ContextModelTestCase
 		OrmIdMapping ormIdMapping = (OrmIdMapping) ormPersistentType.attributes().next().getMapping();
 
 		JavaIdMapping javaIdMapping = (JavaIdMapping) ormPersistentType.getJavaPersistentType().attributes().next().getMapping();
-		JavaTableGenerator javaTableGenerator = javaIdMapping.addTableGenerator();
+		JavaTableGenerator javaTableGenerator = javaIdMapping.getGeneratorContainer().addTableGenerator();
 		javaTableGenerator.setName("TABLE_GENERATOR");
 		
-		OrmTableGenerator ormTableGenerator = ormIdMapping.getTableGenerator();
+		OrmTableGenerator ormTableGenerator = ormIdMapping.getGeneratorContainer().getTableGenerator();
 		assertTrue(ormTableGenerator.isVirtual());
 		ListIterator<OrmUniqueConstraint> uniqueConstraints = ormTableGenerator.uniqueConstraints();
 		assertFalse(uniqueConstraints.hasNext());
@@ -594,7 +594,7 @@ public class OrmTableGeneratorTests extends ContextModelTestCase
 		ormIdMapping.getPersistentAttribute().makeSpecified();
 		ormIdMapping = (OrmIdMapping) ormPersistentType.attributes().next().getMapping();
 	
-		OrmTableGenerator ormTableGenerator2 = ormIdMapping.addTableGenerator();
+		OrmTableGenerator ormTableGenerator2 = ormIdMapping.getGeneratorContainer().addTableGenerator();
 		ormTableGenerator2.setName("TABLE_GENERATOR");
 		
 		assertFalse(ormTableGenerator2.isVirtual());

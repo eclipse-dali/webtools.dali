@@ -64,10 +64,10 @@ public class EclipseLinkBasicTranslator extends org.eclipse.jpt.eclipselink.core
 	}
 	
 	protected Translator createTableGeneratorTranslator() {
-		return new TableGeneratorTranslator(TABLE_GENERATOR, ECLIPSELINK1_1_ORM_PKG.getXmlBasic_TableGenerator());
+		return new TableGeneratorTranslator(TABLE_GENERATOR, ORM_PKG.getXmlGeneratorContainer_TableGenerator());
 	}
 	
 	protected Translator createSequenceGeneratorTranslator() {
-		return new SequenceGeneratorTranslator(SEQUENCE_GENERATOR, ECLIPSELINK1_1_ORM_PKG.getXmlBasic_SequenceGenerator());
+		return new SequenceGeneratorTranslator(SEQUENCE_GENERATOR, ORM_PKG.getXmlGeneratorContainer_SequenceGenerator());
 	}
 }

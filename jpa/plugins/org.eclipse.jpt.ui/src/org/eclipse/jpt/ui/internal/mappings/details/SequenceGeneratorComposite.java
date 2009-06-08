@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,7 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import java.util.Collection;
 import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.core.context.GeneratorHolder;
+import org.eclipse.jpt.core.context.GeneratorContainer;
 import org.eclipse.jpt.core.context.SequenceGenerator;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
@@ -50,25 +50,29 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class SequenceGeneratorComposite extends GeneratorComposite<SequenceGenerator>
 {
-	/**
-	 * Creates a new <code>SequenceGeneratorComposite</code>.
-	 *
-	 * @param parentPane The parent container of this one
-	 * @param parent The parent container
-	 */
-	public SequenceGeneratorComposite(Pane<? extends GeneratorHolder> parentPane,
-	                                  Composite parent) {
+
+	public SequenceGeneratorComposite(
+		Pane<? extends GeneratorContainer> parentPane,
+		Composite parent) {
 
 		super(parentPane, parent);
 	}
+	
+	public SequenceGeneratorComposite(
+		Pane<?> parentPane, 
+		PropertyValueModel<? extends GeneratorContainer> subjectHolder,
+		Composite parent) {
+
+		super(parentPane, subjectHolder, parent);
+	}
 
 	@Override
-	protected SequenceGenerator buildGenerator(GeneratorHolder subject) {
+	protected SequenceGenerator buildGenerator(GeneratorContainer subject) {
 		return subject.addSequenceGenerator();
 	}
 
 	private PropertyValueModel<SequenceGenerator> buildSequenceGeneratorHolder() {
-		return new PropertyAspectAdapter<GeneratorHolder, SequenceGenerator>(getSubjectHolder(), GeneratorHolder.SEQUENCE_GENERATOR_PROPERTY) {
+		return new PropertyAspectAdapter<GeneratorContainer, SequenceGenerator>(getSubjectHolder(), GeneratorContainer.SEQUENCE_GENERATOR_PROPERTY) {
 			@Override
 			protected SequenceGenerator buildValue_() {
 				return this.subject.getSequenceGenerator();
@@ -125,7 +129,7 @@ public class SequenceGeneratorComposite extends GeneratorComposite<SequenceGener
 	}
 
 	@Override
-	protected SequenceGenerator getGenerator(GeneratorHolder subject) {
+	protected SequenceGenerator getGenerator(GeneratorContainer subject) {
 		return subject.getSequenceGenerator();
 	}
 
@@ -154,6 +158,6 @@ public class SequenceGeneratorComposite extends GeneratorComposite<SequenceGener
 
 	@Override
 	protected String getPropertyName() {
-		return GeneratorHolder.SEQUENCE_GENERATOR_PROPERTY;
+		return GeneratorContainer.SEQUENCE_GENERATOR_PROPERTY;
 	}
 }

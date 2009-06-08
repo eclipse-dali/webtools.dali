@@ -11,8 +11,9 @@ package org.eclipse.jpt.core.context.orm;
 
 import java.util.ListIterator;
 import org.eclipse.jpt.core.context.QueryContainer;
+import org.eclipse.jpt.core.context.XmlContextNode;
 
-public interface OrmQueryContainer extends QueryContainer
+public interface OrmQueryContainer extends QueryContainer, XmlContextNode
 {
 	@SuppressWarnings("unchecked")
 	ListIterator<OrmNamedQuery> namedQueries();

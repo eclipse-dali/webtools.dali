@@ -105,8 +105,6 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlEntity/inheritance"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlEntity/discriminatorValue"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlEntity/discriminatorColumn"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlEntity/sequenceGenerator"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlEntity/tableGenerator"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlEntity/sqlResultSetMappings"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlEntity/excludeDefaultListeners"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlEntity/excludeSuperclassListeners"/>
@@ -125,6 +123,10 @@
     <genClasses image="false" ecoreClass="orm.ecore#//XmlQueryContainer">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlQueryContainer/namedQueries"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlQueryContainer/namedNativeQueries"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="orm.ecore#//XmlGeneratorContainer">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlGeneratorContainer/sequenceGenerator"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlGeneratorContainer/tableGenerator"/>
     </genClasses>
     <genClasses ecoreClass="orm.ecore#//Attributes">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//Attributes/ids"/>
@@ -169,8 +171,6 @@
     </genClasses>
     <genClasses image="false" ecoreClass="orm.ecore#//XmlId">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlId/generatedValue"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlId/tableGenerator"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlId/sequenceGenerator"/>
     </genClasses>
     <genClasses ecoreClass="orm.ecore#//XmlIdImpl"/>
     <genClasses image="false" ecoreClass="orm.ecore#//BaseXmlEmbedded">

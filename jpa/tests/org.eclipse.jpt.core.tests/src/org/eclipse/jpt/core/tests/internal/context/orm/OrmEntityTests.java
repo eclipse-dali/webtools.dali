@@ -1046,17 +1046,17 @@ public class OrmEntityTests extends ContextModelTestCase
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		
-		assertNull(ormEntity.getSequenceGenerator());
+		assertNull(ormEntity.getGeneratorContainer().getSequenceGenerator());
 		assertNull(entityResource.getSequenceGenerator());
 		
-		ormEntity.addSequenceGenerator();
+		ormEntity.getGeneratorContainer().addSequenceGenerator();
 		
 		assertNotNull(entityResource.getSequenceGenerator());
-		assertNotNull(ormEntity.getSequenceGenerator());
+		assertNotNull(ormEntity.getGeneratorContainer().getSequenceGenerator());
 				
 		//try adding another sequence generator, should get an IllegalStateException
 		try {
-			ormEntity.addSequenceGenerator();
+			ormEntity.getGeneratorContainer().addSequenceGenerator();
 		} catch (IllegalStateException e) {
 			return;
 		}
@@ -1068,21 +1068,21 @@ public class OrmEntityTests extends ContextModelTestCase
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		
-		assertNull(ormEntity.getSequenceGenerator());
+		assertNull(ormEntity.getGeneratorContainer().getSequenceGenerator());
 		assertNull(entityResource.getSequenceGenerator());
 
-		ormEntity.addSequenceGenerator();
+		ormEntity.getGeneratorContainer().addSequenceGenerator();
 		assertNotNull(entityResource.getSequenceGenerator());
-		assertNotNull(ormEntity.getSequenceGenerator());
+		assertNotNull(ormEntity.getGeneratorContainer().getSequenceGenerator());
 
-		ormEntity.removeSequenceGenerator();
+		ormEntity.getGeneratorContainer().removeSequenceGenerator();
 		
-		assertNull(ormEntity.getSequenceGenerator());
+		assertNull(ormEntity.getGeneratorContainer().getSequenceGenerator());
 		assertNull(entityResource.getSequenceGenerator());
 
 		//try removing the sequence generator again, should get an IllegalStateException
 		try {
-			ormEntity.removeSequenceGenerator();		
+			ormEntity.getGeneratorContainer().removeSequenceGenerator();		
 		} catch (IllegalStateException e) {
 			return;
 		}
@@ -1094,21 +1094,21 @@ public class OrmEntityTests extends ContextModelTestCase
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		
-		assertNull(ormEntity.getSequenceGenerator());
+		assertNull(ormEntity.getGeneratorContainer().getSequenceGenerator());
 		assertNull(entityResource.getSequenceGenerator());
 		assertEquals(0, ormEntity.getPersistenceUnit().generatorsSize());
 		
 		entityResource.setSequenceGenerator(OrmFactory.eINSTANCE.createXmlSequenceGenerator());
 				
-		assertNotNull(ormEntity.getSequenceGenerator());
+		assertNotNull(ormEntity.getGeneratorContainer().getSequenceGenerator());
 		assertNotNull(entityResource.getSequenceGenerator());
 		assertEquals(1, ormEntity.getPersistenceUnit().generatorsSize());
 		
-		ormEntity.getSequenceGenerator().setName("foo");
+		ormEntity.getGeneratorContainer().getSequenceGenerator().setName("foo");
 		assertEquals(1, ormEntity.getPersistenceUnit().generatorsSize());
 
 		entityResource.setSequenceGenerator(null);
-		assertNull(ormEntity.getSequenceGenerator());
+		assertNull(ormEntity.getGeneratorContainer().getSequenceGenerator());
 		assertNull(entityResource.getSequenceGenerator());
 		assertEquals(0, ormEntity.getPersistenceUnit().generatorsSize());
 	}
@@ -1118,17 +1118,17 @@ public class OrmEntityTests extends ContextModelTestCase
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		
-		assertNull(ormEntity.getTableGenerator());
+		assertNull(ormEntity.getGeneratorContainer().getTableGenerator());
 		assertNull(entityResource.getTableGenerator());
 		
-		ormEntity.addTableGenerator();
+		ormEntity.getGeneratorContainer().addTableGenerator();
 		
 		assertNotNull(entityResource.getTableGenerator());
-		assertNotNull(ormEntity.getTableGenerator());
+		assertNotNull(ormEntity.getGeneratorContainer().getTableGenerator());
 				
 		//try adding another table generator, should get an IllegalStateException
 		try {
-			ormEntity.addTableGenerator();
+			ormEntity.getGeneratorContainer().addTableGenerator();
 		} catch (IllegalStateException e) {
 			return;
 		}
@@ -1140,21 +1140,21 @@ public class OrmEntityTests extends ContextModelTestCase
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		
-		assertNull(ormEntity.getTableGenerator());
+		assertNull(ormEntity.getGeneratorContainer().getTableGenerator());
 		assertNull(entityResource.getTableGenerator());
 
-		ormEntity.addTableGenerator();
+		ormEntity.getGeneratorContainer().addTableGenerator();
 		assertNotNull(entityResource.getTableGenerator());
-		assertNotNull(ormEntity.getTableGenerator());
+		assertNotNull(ormEntity.getGeneratorContainer().getTableGenerator());
 
-		ormEntity.removeTableGenerator();
+		ormEntity.getGeneratorContainer().removeTableGenerator();
 		
-		assertNull(ormEntity.getTableGenerator());
+		assertNull(ormEntity.getGeneratorContainer().getTableGenerator());
 		assertNull(entityResource.getTableGenerator());
 
 		//try removing the table generator again, should get an IllegalStateException
 		try {
-			ormEntity.removeTableGenerator();		
+			ormEntity.getGeneratorContainer().removeTableGenerator();		
 		} catch (IllegalStateException e) {
 			return;
 		}
@@ -1166,21 +1166,21 @@ public class OrmEntityTests extends ContextModelTestCase
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		
-		assertNull(ormEntity.getTableGenerator());
+		assertNull(ormEntity.getGeneratorContainer().getTableGenerator());
 		assertNull(entityResource.getTableGenerator());
 		assertEquals(0, ormEntity.getPersistenceUnit().generatorsSize());
 		
 		entityResource.setTableGenerator(OrmFactory.eINSTANCE.createXmlTableGenerator());
 				
-		assertNotNull(ormEntity.getTableGenerator());
+		assertNotNull(ormEntity.getGeneratorContainer().getTableGenerator());
 		assertNotNull(entityResource.getTableGenerator());
 		assertEquals(1, ormEntity.getPersistenceUnit().generatorsSize());
 
-		ormEntity.getTableGenerator().setName("foo");
+		ormEntity.getGeneratorContainer().getTableGenerator().setName("foo");
 		assertEquals(1, ormEntity.getPersistenceUnit().generatorsSize());
 		
 		entityResource.setTableGenerator(null);
-		assertNull(ormEntity.getTableGenerator());
+		assertNull(ormEntity.getGeneratorContainer().getTableGenerator());
 		assertNull(entityResource.getTableGenerator());
 		assertEquals(0, ormEntity.getPersistenceUnit().generatorsSize());
 	}

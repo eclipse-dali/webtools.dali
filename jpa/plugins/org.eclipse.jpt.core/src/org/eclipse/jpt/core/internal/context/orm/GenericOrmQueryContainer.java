@@ -15,11 +15,15 @@ import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.context.NamedNativeQuery;
 import org.eclipse.jpt.core.context.NamedQuery;
+import org.eclipse.jpt.core.context.Query;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.orm.OrmNamedNativeQuery;
 import org.eclipse.jpt.core.context.orm.OrmNamedQuery;
+import org.eclipse.jpt.core.context.orm.OrmQuery;
 import org.eclipse.jpt.core.context.orm.OrmQueryContainer;
 import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
+import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlNamedNativeQuery;
 import org.eclipse.jpt.core.resource.orm.XmlNamedQuery;
@@ -28,6 +32,9 @@ import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
+import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericOrmQueryContainer extends AbstractXmlContextNode
 	implements OrmQueryContainer
@@ -46,7 +53,7 @@ public class GenericOrmQueryContainer extends AbstractXmlContextNode
 		this.namedNativeQueries = new ArrayList<OrmNamedNativeQuery>();
 		this.initializeNamedQueries();
 		this.initializeNamedNativeQueries();
-}
+	}
 
 	public ListIterator<OrmNamedQuery> namedQueries() {
 		return new CloneListIterator<OrmNamedQuery>(this.namedQueries);
@@ -204,6 +211,41 @@ public class GenericOrmQueryContainer extends AbstractXmlContextNode
 	
 	
 	//************ validation ***************
+	
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		this.validateQueries(messages);
+	}
+	
+	protected void validateQueries(List<IMessage> messages) {
+		for (Iterator<OrmQuery> localQueries = this.queries(); localQueries.hasNext(); ) {
+			OrmQuery localQuery = localQueries.next();
+			for (Iterator<Query> globalQueries = this.getPersistenceUnit().queries(); globalQueries.hasNext(); ) {
+				if (localQuery.duplicates(globalQueries.next())) {
+					messages.add(
+						DefaultJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JpaValidationMessages.QUERY_DUPLICATE_NAME,
+							new String[] {localQuery.getName()},
+							localQuery,
+							localQuery.getNameTextRange())
+					);
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Return all the queries, named and named native.
+	 */
+	@SuppressWarnings("unchecked")
+	protected Iterator<OrmQuery> queries() {
+		return new CompositeIterator<OrmQuery>(
+						namedQueries(),
+						namedNativeQueries()
+				);
+	}
 
 	public TextRange getValidationTextRange() {
 		return this.resourceQueryContainer.getValidationTextRange();

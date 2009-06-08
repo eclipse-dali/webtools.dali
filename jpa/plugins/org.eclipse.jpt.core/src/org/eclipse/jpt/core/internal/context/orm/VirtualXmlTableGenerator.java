@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
-import org.eclipse.jpt.core.context.java.JavaGeneratorHolder;
+import org.eclipse.jpt.core.context.java.JavaGeneratorContainer;
 import org.eclipse.jpt.core.context.java.JavaTableGenerator;
 import org.eclipse.jpt.core.context.java.JavaUniqueConstraint;
 import org.eclipse.jpt.core.resource.orm.OrmPackage;
@@ -22,12 +22,12 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 
 public class VirtualXmlTableGenerator extends XmlTableGenerator
 {
-	JavaGeneratorHolder javaGeneratorHolder;
+	JavaGeneratorContainer javaGeneratorHolder;
 
 	protected boolean metadataComplete;
 	
 		
-	public VirtualXmlTableGenerator(JavaGeneratorHolder javaGeneratorHolder, boolean metadataComplete) {
+	public VirtualXmlTableGenerator(JavaGeneratorContainer javaGeneratorHolder, boolean metadataComplete) {
 		super();
 		this.javaGeneratorHolder = javaGeneratorHolder;
 		this.metadataComplete = metadataComplete;

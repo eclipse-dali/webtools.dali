@@ -11,7 +11,7 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.context.Generator;
-import org.eclipse.jpt.core.context.GeneratorHolder;
+import org.eclipse.jpt.core.context.GeneratorContainer;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.IntegerCombo;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
@@ -31,19 +31,23 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 1.0
  */
-public abstract class GeneratorComposite<T extends Generator> extends Pane<GeneratorHolder>
+public abstract class GeneratorComposite<T extends Generator> extends Pane<GeneratorContainer>
 {
 	private PropertyValueModel<Generator> generatorHolder;
-	/**
-	 * Creates a new <code>GeneratorComposite</code>.
-	 *
-	 * @param parentPane The parent container of this one
-	 * @param parent The parent container
-	 */
-	public GeneratorComposite(Pane<? extends GeneratorHolder> parentPane,
-                             Composite parent) {
+
+	protected GeneratorComposite(
+		Pane<? extends GeneratorContainer> parentPane,
+		Composite parent) {
 
 		super(parentPane, parent, false);
+	}
+	
+	protected GeneratorComposite(
+		Pane<?> parentPane, 
+		PropertyValueModel<? extends GeneratorContainer> subjectHolder,
+		Composite parent) {
+
+			super(parentPane, subjectHolder, parent, false);
 	}
 	
 	@Override
@@ -53,7 +57,7 @@ public abstract class GeneratorComposite<T extends Generator> extends Pane<Gener
 		
 	}
 	private PropertyValueModel<Generator> buildGeneratorHolder() {
-		return new PropertyAspectAdapter<GeneratorHolder, Generator>(getSubjectHolder(), getPropertyName()) {
+		return new PropertyAspectAdapter<GeneratorContainer, Generator>(getSubjectHolder(), getPropertyName()) {
 			@Override
 			protected Generator buildValue_() {
 				return GeneratorComposite.this.getGenerator(this.subject);
@@ -68,7 +72,7 @@ public abstract class GeneratorComposite<T extends Generator> extends Pane<Gener
 	 * @return The <code>Generator</code> or <code>null</code> if it doesn't
 	 * exists
 	 */
-	protected abstract T getGenerator(GeneratorHolder subject);
+	protected abstract T getGenerator(GeneratorContainer subject);
 
 
 	/**
@@ -77,7 +81,7 @@ public abstract class GeneratorComposite<T extends Generator> extends Pane<Gener
 	 * @param subject The subject used to retrieve the generator
 	 * @return The newly created <code>IGenerator</code>
 	 */
-	protected abstract T buildGenerator(GeneratorHolder subject);
+	protected abstract T buildGenerator(GeneratorContainer subject);
 
 	protected final WritablePropertyValueModel<String> buildGeneratorNameHolder() {
 		return new PropertyAspectAdapter<Generator, String>(this.generatorHolder, Generator.NAME_PROPERTY) {
@@ -222,7 +226,7 @@ public abstract class GeneratorComposite<T extends Generator> extends Pane<Gener
 	 * @param subject The subject used to retrieve the generator
 	 * @return The <code>Generator</code> which should never be <code>null</code>
 	 */
-	protected final T retrieveGenerator(GeneratorHolder subject) {
+	protected final T retrieveGenerator(GeneratorContainer subject) {
 		T generator = this.getGenerator(subject);
 
 		if (generator == null) {

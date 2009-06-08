@@ -19,12 +19,8 @@
       eSuperTypes="eclipselink_orm.ecore#//XmlEmbedded #//XmlAttributeMapping"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlEmbeddedImpl" eSuperTypes="eclipselink_orm.ecore#//XmlEmbeddedImpl #//XmlEmbedded"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlBasic" abstract="true" interface="true"
-      eSuperTypes="eclipselink_orm.ecore#//XmlBasic #//XmlAttributeMapping">
+      eSuperTypes="eclipselink_orm.ecore#//XmlBasic #//XmlAttributeMapping ../../org.eclipse.jpt.core/model/orm.ecore#//XmlGeneratorContainer">
     <eStructuralFeatures xsi:type="ecore:EReference" name="generatedValue" eType="ecore:EClass ../../org.eclipse.jpt.core/model/orm.ecore#//XmlGeneratedValue"
-        containment="true" resolveProxies="false"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="tableGenerator" eType="ecore:EClass ../../org.eclipse.jpt.core/model/orm.ecore#//XmlTableGenerator"
-        containment="true" resolveProxies="false"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="sequenceGenerator" eType="ecore:EClass ../../org.eclipse.jpt.core/model/orm.ecore#//XmlSequenceGenerator"
         containment="true" resolveProxies="false"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlBasicImpl" eSuperTypes="eclipselink_orm.ecore#//XmlBasicImpl #//XmlBasic"/>

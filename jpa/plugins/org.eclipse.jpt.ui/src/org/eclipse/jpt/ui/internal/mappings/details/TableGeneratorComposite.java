@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,7 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 import java.util.Collection;
 
 import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.core.context.GeneratorHolder;
+import org.eclipse.jpt.core.context.GeneratorContainer;
 import org.eclipse.jpt.core.context.TableGenerator;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.SchemaContainer;
@@ -74,16 +74,20 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 {
-	/**
-	 * Creates a new <code>TableGeneratorComposite</code>.
-	 *
-	 * @param parentPane The parent container of this one
-	 * @param parent The parent container
-	 */
-	public TableGeneratorComposite(Pane<? extends GeneratorHolder> parentPane,
-	                               Composite parent) {
+
+	public TableGeneratorComposite(
+		Pane<? extends GeneratorContainer> parentPane,
+		Composite parent) {
 
 		super(parentPane, parent);
+	}
+	
+	public TableGeneratorComposite(
+		Pane<?> parentPane, 
+		PropertyValueModel<? extends GeneratorContainer> subjectHolder,
+		Composite parent) {
+
+		super(parentPane, subjectHolder, parent);
 	}
 
 	private CatalogCombo<TableGenerator> addCatalogCombo(Composite container) {
@@ -128,7 +132,7 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 	}
 
 	@Override
-	protected TableGenerator buildGenerator(GeneratorHolder subject) {
+	protected TableGenerator buildGenerator(GeneratorContainer subject) {
 		return subject.addTableGenerator();
 	}
 
@@ -306,7 +310,7 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 	}
 
 	private PropertyValueModel<TableGenerator> buildTableGeneratorHolder() {
-		return new PropertyAspectAdapter<GeneratorHolder, TableGenerator>(getSubjectHolder(), GeneratorHolder.TABLE_GENERATOR_PROPERTY) {
+		return new PropertyAspectAdapter<GeneratorContainer, TableGenerator>(getSubjectHolder(), GeneratorContainer.TABLE_GENERATOR_PROPERTY) {
 			@Override
 			protected TableGenerator buildValue_() {
 				return this.subject.getTableGenerator();
@@ -450,7 +454,7 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 	 * (non-Javadoc)
 	 */
 	@Override
-	protected TableGenerator getGenerator(GeneratorHolder subject) {
+	protected TableGenerator getGenerator(GeneratorContainer subject) {
 		return (subject != null) ? subject.getTableGenerator() : null;
 	}
 
@@ -522,6 +526,6 @@ public class TableGeneratorComposite extends GeneratorComposite<TableGenerator>
 
 	@Override
 	protected String getPropertyName() {
-		return GeneratorHolder.TABLE_GENERATOR_PROPERTY;
+		return GeneratorContainer.TABLE_GENERATOR_PROPERTY;
 	}
 }

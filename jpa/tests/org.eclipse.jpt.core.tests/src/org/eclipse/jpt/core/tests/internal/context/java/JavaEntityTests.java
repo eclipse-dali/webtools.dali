@@ -324,8 +324,8 @@ public class JavaEntityTests extends ContextModelTestCase
 		entity.setSpecifiedInheritanceStrategy(InheritanceType.JOINED);
 		entity.setSpecifiedDiscriminatorValue("asdf");
 		entity.getDiscriminatorColumn().setSpecifiedName("BAR");
-		entity.addTableGenerator();
-		entity.addSequenceGenerator();
+		entity.getGeneratorContainer().addTableGenerator();
+		entity.getGeneratorContainer().addSequenceGenerator();
 		entity.setIdClass("myIdClass");
 		entity.addNamedNativeQuery(0);
 		entity.addNamedQuery(0);
@@ -363,8 +363,8 @@ public class JavaEntityTests extends ContextModelTestCase
 		entity.setSpecifiedInheritanceStrategy(InheritanceType.JOINED);
 		entity.setSpecifiedDiscriminatorValue("asdf");
 		entity.getDiscriminatorColumn().setSpecifiedName("BAR");
-		entity.addTableGenerator();
-		entity.addSequenceGenerator();
+		entity.getGeneratorContainer().addTableGenerator();
+		entity.getGeneratorContainer().addSequenceGenerator();
 		entity.setIdClass("myIdClass");
 		entity.addNamedNativeQuery(0);
 		entity.addNamedQuery(0);
@@ -402,8 +402,8 @@ public class JavaEntityTests extends ContextModelTestCase
 		entity.setSpecifiedInheritanceStrategy(InheritanceType.JOINED);
 		entity.setSpecifiedDiscriminatorValue("asdf");
 		entity.getDiscriminatorColumn().setSpecifiedName("BAR");
-		entity.addTableGenerator();
-		entity.addSequenceGenerator();
+		entity.getGeneratorContainer().addTableGenerator();
+		entity.getGeneratorContainer().addSequenceGenerator();
 		entity.setIdClass("myIdClass");
 		entity.addNamedNativeQuery(0);
 		entity.addNamedQuery(0);
@@ -1133,17 +1133,17 @@ public class JavaEntityTests extends ContextModelTestCase
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		assertNull(getJavaEntity().getSequenceGenerator());
+		assertNull(getJavaEntity().getGeneratorContainer().getSequenceGenerator());
 		assertEquals(0, getJavaEntity().getPersistenceUnit().generatorsSize());
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		typeResource.addSupportingAnnotation(JPA.SEQUENCE_GENERATOR);
 		
-		assertNotNull(getJavaEntity().getSequenceGenerator());
+		assertNotNull(getJavaEntity().getGeneratorContainer().getSequenceGenerator());
 		assertEquals(1, typeResource.supportingAnnotationsSize());
 		assertEquals(1, getJavaEntity().getPersistenceUnit().generatorsSize());
 		
-		getJavaEntity().getSequenceGenerator().setName("foo");
+		getJavaEntity().getGeneratorContainer().getSequenceGenerator().setName("foo");
 		assertEquals(1, getJavaEntity().getPersistenceUnit().generatorsSize());
 	}
 	
@@ -1151,18 +1151,18 @@ public class JavaEntityTests extends ContextModelTestCase
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 				
-		assertNull(getJavaEntity().getSequenceGenerator());
+		assertNull(getJavaEntity().getGeneratorContainer().getSequenceGenerator());
 		
-		getJavaEntity().addSequenceGenerator();
+		getJavaEntity().getGeneratorContainer().addSequenceGenerator();
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 	
 		assertNotNull(typeResource.getSupportingAnnotation(JPA.SEQUENCE_GENERATOR));
-		assertNotNull(getJavaEntity().getSequenceGenerator());
+		assertNotNull(getJavaEntity().getGeneratorContainer().getSequenceGenerator());
 		
 		//try adding another sequence generator, should get an IllegalStateException
 		try {
-			getJavaEntity().addSequenceGenerator();
+			getJavaEntity().getGeneratorContainer().addSequenceGenerator();
 		} catch (IllegalStateException e) {
 			return;
 		}
@@ -1176,14 +1176,14 @@ public class JavaEntityTests extends ContextModelTestCase
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		typeResource.addSupportingAnnotation(JPA.SEQUENCE_GENERATOR);
 		
-		getJavaEntity().removeSequenceGenerator();
+		getJavaEntity().getGeneratorContainer().removeSequenceGenerator();
 		
-		assertNull(getJavaEntity().getSequenceGenerator());
+		assertNull(getJavaEntity().getGeneratorContainer().getSequenceGenerator());
 		assertNull(typeResource.getSupportingAnnotation(JPA.SEQUENCE_GENERATOR));
 
 		//try removing the sequence generator again, should get an IllegalStateException
 		try {
-			getJavaEntity().removeSequenceGenerator();		
+			getJavaEntity().getGeneratorContainer().removeSequenceGenerator();		
 		} catch (IllegalStateException e) {
 			return;
 		}
@@ -1194,17 +1194,17 @@ public class JavaEntityTests extends ContextModelTestCase
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		assertNull(getJavaEntity().getTableGenerator());
+		assertNull(getJavaEntity().getGeneratorContainer().getTableGenerator());
 		assertEquals(0, getJavaEntity().getPersistenceUnit().generatorsSize());
 	
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		typeResource.addSupportingAnnotation(JPA.TABLE_GENERATOR);
 		
-		assertNotNull(getJavaEntity().getTableGenerator());		
+		assertNotNull(getJavaEntity().getGeneratorContainer().getTableGenerator());		
 		assertEquals(1, typeResource.supportingAnnotationsSize());
 		assertEquals(1, getJavaEntity().getPersistenceUnit().generatorsSize());
 		
-		getJavaEntity().getTableGenerator().setName("foo");
+		getJavaEntity().getGeneratorContainer().getTableGenerator().setName("foo");
 		assertEquals(1, getJavaEntity().getPersistenceUnit().generatorsSize());
 	}
 	
@@ -1212,18 +1212,18 @@ public class JavaEntityTests extends ContextModelTestCase
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		assertNull(getJavaEntity().getTableGenerator());
+		assertNull(getJavaEntity().getGeneratorContainer().getTableGenerator());
 		
-		getJavaEntity().addTableGenerator();
+		getJavaEntity().getGeneratorContainer().addTableGenerator();
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 	
 		assertNotNull(typeResource.getSupportingAnnotation(JPA.TABLE_GENERATOR));
-		assertNotNull(getJavaEntity().getTableGenerator());
+		assertNotNull(getJavaEntity().getGeneratorContainer().getTableGenerator());
 		
 		//try adding another table generator, should get an IllegalStateException
 		try {
-			getJavaEntity().addTableGenerator();		
+			getJavaEntity().getGeneratorContainer().addTableGenerator();		
 		} catch (IllegalStateException e) {
 			return;
 		}
@@ -1237,14 +1237,14 @@ public class JavaEntityTests extends ContextModelTestCase
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		typeResource.addSupportingAnnotation(JPA.TABLE_GENERATOR);
 		
-		getJavaEntity().removeTableGenerator();
+		getJavaEntity().getGeneratorContainer().removeTableGenerator();
 		
-		assertNull(getJavaEntity().getTableGenerator());
+		assertNull(getJavaEntity().getGeneratorContainer().getTableGenerator());
 		assertNull(typeResource.getSupportingAnnotation(JPA.TABLE_GENERATOR));
 		
 		//try removing the table generator again, should get an IllegalStateException
 		try {
-			getJavaEntity().removeTableGenerator();		
+			getJavaEntity().getGeneratorContainer().removeTableGenerator();		
 		} catch (IllegalStateException e) {
 			return;
 		}

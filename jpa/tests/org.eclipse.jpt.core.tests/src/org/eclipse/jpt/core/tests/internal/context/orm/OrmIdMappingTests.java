@@ -194,17 +194,17 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		OrmIdMapping ormIdMapping = (OrmIdMapping) ormPersistentAttribute.getMapping();
 		XmlId idResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
 		
-		assertNull(ormIdMapping.getSequenceGenerator());
+		assertNull(ormIdMapping.getGeneratorContainer().getSequenceGenerator());
 		assertNull(idResource.getSequenceGenerator());
 		
-		ormIdMapping.addSequenceGenerator();
+		ormIdMapping.getGeneratorContainer().addSequenceGenerator();
 		
 		assertNotNull(idResource.getSequenceGenerator());
-		assertNotNull(ormIdMapping.getSequenceGenerator());
+		assertNotNull(ormIdMapping.getGeneratorContainer().getSequenceGenerator());
 				
 		//try adding another sequence generator, should get an IllegalStateException
 		try {
-			ormIdMapping.addSequenceGenerator();
+			ormIdMapping.getGeneratorContainer().addSequenceGenerator();
 		} catch (IllegalStateException e) {
 			return;
 		}
@@ -217,21 +217,21 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		OrmIdMapping ormIdMapping = (OrmIdMapping) ormPersistentAttribute.getMapping();
 		XmlId idResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
 		
-		assertNull(ormIdMapping.getSequenceGenerator());
+		assertNull(ormIdMapping.getGeneratorContainer().getSequenceGenerator());
 		assertNull(idResource.getSequenceGenerator());
 
-		ormIdMapping.addSequenceGenerator();
+		ormIdMapping.getGeneratorContainer().addSequenceGenerator();
 		assertNotNull(idResource.getSequenceGenerator());
-		assertNotNull(ormIdMapping.getSequenceGenerator());
+		assertNotNull(ormIdMapping.getGeneratorContainer().getSequenceGenerator());
 
-		ormIdMapping.removeSequenceGenerator();
+		ormIdMapping.getGeneratorContainer().removeSequenceGenerator();
 		
-		assertNull(ormIdMapping.getSequenceGenerator());
+		assertNull(ormIdMapping.getGeneratorContainer().getSequenceGenerator());
 		assertNull(idResource.getSequenceGenerator());
 
 		//try removing the sequence generator again, should get an IllegalStateException
 		try {
-			ormIdMapping.removeSequenceGenerator();		
+			ormIdMapping.getGeneratorContainer().removeSequenceGenerator();		
 		} catch (IllegalStateException e) {
 			return;
 		}
@@ -244,20 +244,20 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		OrmIdMapping ormIdMapping = (OrmIdMapping) ormPersistentAttribute.getMapping();
 		XmlId idResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
 		
-		assertNull(ormIdMapping.getSequenceGenerator());
+		assertNull(ormIdMapping.getGeneratorContainer().getSequenceGenerator());
 		assertNull(idResource.getSequenceGenerator());
 		assertEquals(0, ormIdMapping.getPersistenceUnit().generatorsSize());
 		
 		idResource.setSequenceGenerator(OrmFactory.eINSTANCE.createXmlSequenceGenerator());
-		assertNotNull(ormIdMapping.getSequenceGenerator());
+		assertNotNull(ormIdMapping.getGeneratorContainer().getSequenceGenerator());
 		assertNotNull(idResource.getSequenceGenerator());
 		assertEquals(1, ormIdMapping.getPersistenceUnit().generatorsSize());
 		
-		ormIdMapping.getSequenceGenerator().setName("foo");
+		ormIdMapping.getGeneratorContainer().getSequenceGenerator().setName("foo");
 		assertEquals(1, ormIdMapping.getPersistenceUnit().generatorsSize());
 				
 		idResource.setSequenceGenerator(null);
-		assertNull(ormIdMapping.getSequenceGenerator());
+		assertNull(ormIdMapping.getGeneratorContainer().getSequenceGenerator());
 		assertNull(idResource.getSequenceGenerator());
 		assertEquals(0, ormIdMapping.getPersistenceUnit().generatorsSize());
 	}
@@ -268,17 +268,17 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		OrmIdMapping ormIdMapping = (OrmIdMapping) ormPersistentAttribute.getMapping();
 		XmlId idResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
 		
-		assertNull(ormIdMapping.getTableGenerator());
+		assertNull(ormIdMapping.getGeneratorContainer().getTableGenerator());
 		assertNull(idResource.getTableGenerator());
 		
-		ormIdMapping.addTableGenerator();
+		ormIdMapping.getGeneratorContainer().addTableGenerator();
 		
 		assertNotNull(idResource.getTableGenerator());
-		assertNotNull(ormIdMapping.getTableGenerator());
+		assertNotNull(ormIdMapping.getGeneratorContainer().getTableGenerator());
 				
 		//try adding another table generator, should get an IllegalStateException
 		try {
-			ormIdMapping.addTableGenerator();
+			ormIdMapping.getGeneratorContainer().addTableGenerator();
 		} catch (IllegalStateException e) {
 			return;
 		}
@@ -291,21 +291,21 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		OrmIdMapping ormIdMapping = (OrmIdMapping) ormPersistentAttribute.getMapping();
 		XmlId idResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
 		
-		assertNull(ormIdMapping.getTableGenerator());
+		assertNull(ormIdMapping.getGeneratorContainer().getTableGenerator());
 		assertNull(idResource.getTableGenerator());
 
-		ormIdMapping.addTableGenerator();
+		ormIdMapping.getGeneratorContainer().addTableGenerator();
 		assertNotNull(idResource.getTableGenerator());
-		assertNotNull(ormIdMapping.getTableGenerator());
+		assertNotNull(ormIdMapping.getGeneratorContainer().getTableGenerator());
 
-		ormIdMapping.removeTableGenerator();
+		ormIdMapping.getGeneratorContainer().removeTableGenerator();
 		
-		assertNull(ormIdMapping.getTableGenerator());
+		assertNull(ormIdMapping.getGeneratorContainer().getTableGenerator());
 		assertNull(idResource.getTableGenerator());
 
 		//try removing the table generator again, should get an IllegalStateException
 		try {
-			ormIdMapping.removeTableGenerator();		
+			ormIdMapping.getGeneratorContainer().removeTableGenerator();		
 		} catch (IllegalStateException e) {
 			return;
 		}
@@ -318,20 +318,20 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		OrmIdMapping ormIdMapping = (OrmIdMapping) ormPersistentAttribute.getMapping();
 		XmlId idResource = getXmlEntityMappings().getEntities().get(0).getAttributes().getIds().get(0);
 		
-		assertNull(ormIdMapping.getTableGenerator());
+		assertNull(ormIdMapping.getGeneratorContainer().getTableGenerator());
 		assertNull(idResource.getTableGenerator());
 		assertEquals(0, ormIdMapping.getPersistenceUnit().generatorsSize());
 		
 		idResource.setTableGenerator(OrmFactory.eINSTANCE.createXmlTableGenerator());		
-		assertNotNull(ormIdMapping.getTableGenerator());
+		assertNotNull(ormIdMapping.getGeneratorContainer().getTableGenerator());
 		assertNotNull(idResource.getTableGenerator());
 		assertEquals(1, ormIdMapping.getPersistenceUnit().generatorsSize());
 		
-		ormIdMapping.getTableGenerator().setName("foo");
-		assertEquals(1, ormIdMapping.getPersistenceUnit().generatorsSize());
+		ormIdMapping.getGeneratorContainer().getTableGenerator().setName("foo");
+		assertEquals(1, ormIdMapping.getGeneratorContainer().getPersistenceUnit().generatorsSize());
 
 		idResource.setTableGenerator(null);
-		assertNull(ormIdMapping.getTableGenerator());
+		assertNull(ormIdMapping.getGeneratorContainer().getTableGenerator());
 		assertNull(idResource.getTableGenerator());
 		assertEquals(0, ormIdMapping.getPersistenceUnit().generatorsSize());
 	}
@@ -419,8 +419,8 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		assertEquals("foo", ormIdMapping.getName());
 		assertNull(ormIdMapping.getSpecifiedConverter());
 		assertNull(ormIdMapping.getGeneratedValue());
-		assertNull(ormIdMapping.getSequenceGenerator());
-		assertNull(ormIdMapping.getTableGenerator());
+		assertNull(ormIdMapping.getGeneratorContainer().getSequenceGenerator());
+		assertNull(ormIdMapping.getGeneratorContainer().getTableGenerator());
 
 		
 		OrmColumn ormColumn = ormIdMapping.getColumn();
@@ -481,7 +481,7 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		assertEquals("myTableGenerator", ormGeneratedValue.getSpecifiedGenerator());
 		assertEquals(GenerationType.TABLE, ormGeneratedValue.getSpecifiedStrategy());
 		
-		OrmTableGenerator ormTableGenerator = ormIdMapping.getTableGenerator();
+		OrmTableGenerator ormTableGenerator = ormIdMapping.getGeneratorContainer().getTableGenerator();
 		assertEquals("myTableGenerator", ormTableGenerator.getName());
 		assertEquals("myTable", ormTableGenerator.getSpecifiedTable());
 		assertEquals("myCatalog", ormTableGenerator.getSpecifiedCatalog());
@@ -492,7 +492,7 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		assertEquals(Integer.valueOf(1), ormTableGenerator.getSpecifiedInitialValue());
 		assertEquals(Integer.valueOf(1), ormTableGenerator.getSpecifiedAllocationSize());
 
-		OrmSequenceGenerator ormSequenceGenerator = ormIdMapping.getSequenceGenerator();
+		OrmSequenceGenerator ormSequenceGenerator = ormIdMapping.getGeneratorContainer().getSequenceGenerator();
 		assertEquals("mySequenceGenerator", ormSequenceGenerator.getName());
 	}
 	
@@ -512,8 +512,8 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		assertEquals("id", ormIdMapping.getName());
 		assertNull(ormIdMapping.getSpecifiedConverter());
 		assertNull(ormIdMapping.getGeneratedValue());
-		assertNull(ormIdMapping.getSequenceGenerator());
-		assertNull(ormIdMapping.getTableGenerator());
+		assertNull(ormIdMapping.getGeneratorContainer().getSequenceGenerator());
+		assertNull(ormIdMapping.getGeneratorContainer().getTableGenerator());
 		
 		OrmColumn ormColumn = ormIdMapping.getColumn();
 		assertEquals("id", ormColumn.getName());
@@ -541,8 +541,8 @@ public class OrmIdMappingTests extends ContextModelTestCase
 		assertEquals("id", ormIdMapping.getName());
 		assertNull(ormIdMapping.getSpecifiedConverter());
 		assertNull(ormIdMapping.getGeneratedValue());
-		assertNull(ormIdMapping.getSequenceGenerator());
-		assertNull(ormIdMapping.getTableGenerator());
+		assertNull(ormIdMapping.getGeneratorContainer().getSequenceGenerator());
+		assertNull(ormIdMapping.getGeneratorContainer().getTableGenerator());
 		
 		OrmColumn ormColumn = ormIdMapping.getColumn();
 		assertNull(ormColumn.getSpecifiedName());

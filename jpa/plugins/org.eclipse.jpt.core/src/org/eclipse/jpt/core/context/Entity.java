@@ -21,7 +21,7 @@ import java.util.ListIterator;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface Entity
-	extends TypeMapping, GeneratorHolder, IdClassHolder
+	extends TypeMapping, IdClassHolder
 {
 	// **************** name **************************************
 
@@ -333,6 +333,8 @@ public interface Entity
 		String VIRTUAL_ASSOCIATION_OVERRIDES_LIST = "virtualAssociationOverrides"; //$NON-NLS-1$
 		
 	QueryContainer getQueryContainer();
+	
+	GeneratorContainer getGeneratorContainer();
 	
 	/**
 	 * The given Entity has this entity as its root entity, add

@@ -23,12 +23,10 @@ import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.Generator;
 import org.eclipse.jpt.core.context.MappingFileRoot;
 import org.eclipse.jpt.core.context.PersistentType;
-import org.eclipse.jpt.core.context.Query;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.orm.OrmGenerator;
 import org.eclipse.jpt.core.context.orm.OrmPersistenceUnitDefaults;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.core.context.orm.OrmQuery;
 import org.eclipse.jpt.core.context.orm.OrmQueryContainer;
 import org.eclipse.jpt.core.context.orm.OrmSequenceGenerator;
 import org.eclipse.jpt.core.context.orm.OrmStructureNodes;
@@ -704,7 +702,7 @@ public abstract class AbstractEntityMappings
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
 		this.validateGenerators(messages);
-		this.validateQueries(messages);
+		this.queryContainer.validate(messages, reporter);
 		for (OrmPersistentType  ormPersistentType : this.getPersistentTypes()) {
 			this.validatePersistentType(ormPersistentType, messages, reporter);
 		}
@@ -739,36 +737,7 @@ public abstract class AbstractEntityMappings
 						this.sequenceGenerators()
 				);
 	}
-
-	protected void validateQueries(List<IMessage> messages) {
-		for (Iterator<OrmQuery> localQueries = this.queries(); localQueries.hasNext(); ) {
-			OrmQuery localQuery = localQueries.next();
-			for (Iterator<Query> globalQueries = this.getPersistenceUnit().queries(); globalQueries.hasNext(); ) {
-				if (localQuery.duplicates(globalQueries.next())) {
-					messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							JpaValidationMessages.QUERY_DUPLICATE_NAME,
-							new String[] {localQuery.getName()},
-							localQuery,
-							localQuery.getNameTextRange()
-						)
-					);
-				}
-			}
-		}
-	}
 	
-	/**
-	 * Return all the queries, named and named native.
-	 */
-	@SuppressWarnings("unchecked")
-	protected Iterator<OrmQuery> queries() {
-		return new CompositeIterator<OrmQuery>(
-						getQueryContainer().namedQueries(),
-						getQueryContainer().namedNativeQueries()
-				);
-	}
 
 	protected void validatePersistentType(OrmPersistentType persistentType, List<IMessage> messages, IReporter reporter) {
 		try {

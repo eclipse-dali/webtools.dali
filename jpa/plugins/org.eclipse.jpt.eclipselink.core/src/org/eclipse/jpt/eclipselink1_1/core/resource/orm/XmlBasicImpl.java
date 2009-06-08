@@ -18,7 +18,9 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 import org.eclipse.jpt.core.resource.orm.AccessType;
+import org.eclipse.jpt.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.core.resource.orm.XmlGeneratedValue;
+import org.eclipse.jpt.core.resource.orm.XmlGeneratorContainer;
 import org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator;
 import org.eclipse.jpt.core.resource.orm.XmlTableGenerator;
 
@@ -51,14 +53,14 @@ public class XmlBasicImpl extends org.eclipse.jpt.eclipselink.core.resource.orm.
 	protected AccessType access = ACCESS_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getGeneratedValue() <em>Generated Value</em>}' containment reference.
+	 * The cached value of the '{@link #getSequenceGenerator() <em>Sequence Generator</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getGeneratedValue()
+	 * @see #getSequenceGenerator()
 	 * @generated
 	 * @ordered
 	 */
-	protected XmlGeneratedValue generatedValue;
+	protected XmlSequenceGenerator sequenceGenerator;
 
 	/**
 	 * The cached value of the '{@link #getTableGenerator() <em>Table Generator</em>}' containment reference.
@@ -71,14 +73,14 @@ public class XmlBasicImpl extends org.eclipse.jpt.eclipselink.core.resource.orm.
 	protected XmlTableGenerator tableGenerator;
 
 	/**
-	 * The cached value of the '{@link #getSequenceGenerator() <em>Sequence Generator</em>}' containment reference.
+	 * The cached value of the '{@link #getGeneratedValue() <em>Generated Value</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getSequenceGenerator()
+	 * @see #getGeneratedValue()
 	 * @generated
 	 * @ordered
 	 */
-	protected XmlSequenceGenerator sequenceGenerator;
+	protected XmlGeneratedValue generatedValue;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -210,7 +212,7 @@ public class XmlBasicImpl extends org.eclipse.jpt.eclipselink.core.resource.orm.
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Table Generator</em>' containment reference.
 	 * @see #setTableGenerator(XmlTableGenerator)
-	 * @see org.eclipse.jpt.eclipselink1_1.core.resource.orm.EclipseLink1_1OrmPackage#getXmlBasic_TableGenerator()
+	 * @see org.eclipse.jpt.eclipselink1_1.core.resource.orm.EclipseLink1_1OrmPackage#getXmlGeneratorContainer_TableGenerator()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -270,7 +272,7 @@ public class XmlBasicImpl extends org.eclipse.jpt.eclipselink.core.resource.orm.
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Sequence Generator</em>' containment reference.
 	 * @see #setSequenceGenerator(XmlSequenceGenerator)
-	 * @see org.eclipse.jpt.eclipselink1_1.core.resource.orm.EclipseLink1_1OrmPackage#getXmlBasic_SequenceGenerator()
+	 * @see org.eclipse.jpt.eclipselink1_1.core.resource.orm.EclipseLink1_1OrmPackage#getXmlGeneratorContainer_SequenceGenerator()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -330,12 +332,12 @@ public class XmlBasicImpl extends org.eclipse.jpt.eclipselink.core.resource.orm.
 	{
 		switch (featureID)
 		{
-			case EclipseLink1_1OrmPackage.XML_BASIC_IMPL__GENERATED_VALUE:
-				return basicSetGeneratedValue(null, msgs);
-			case EclipseLink1_1OrmPackage.XML_BASIC_IMPL__TABLE_GENERATOR:
-				return basicSetTableGenerator(null, msgs);
 			case EclipseLink1_1OrmPackage.XML_BASIC_IMPL__SEQUENCE_GENERATOR:
 				return basicSetSequenceGenerator(null, msgs);
+			case EclipseLink1_1OrmPackage.XML_BASIC_IMPL__TABLE_GENERATOR:
+				return basicSetTableGenerator(null, msgs);
+			case EclipseLink1_1OrmPackage.XML_BASIC_IMPL__GENERATED_VALUE:
+				return basicSetGeneratedValue(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -352,12 +354,12 @@ public class XmlBasicImpl extends org.eclipse.jpt.eclipselink.core.resource.orm.
 		{
 			case EclipseLink1_1OrmPackage.XML_BASIC_IMPL__ACCESS:
 				return getAccess();
-			case EclipseLink1_1OrmPackage.XML_BASIC_IMPL__GENERATED_VALUE:
-				return getGeneratedValue();
-			case EclipseLink1_1OrmPackage.XML_BASIC_IMPL__TABLE_GENERATOR:
-				return getTableGenerator();
 			case EclipseLink1_1OrmPackage.XML_BASIC_IMPL__SEQUENCE_GENERATOR:
 				return getSequenceGenerator();
+			case EclipseLink1_1OrmPackage.XML_BASIC_IMPL__TABLE_GENERATOR:
+				return getTableGenerator();
+			case EclipseLink1_1OrmPackage.XML_BASIC_IMPL__GENERATED_VALUE:
+				return getGeneratedValue();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -375,14 +377,14 @@ public class XmlBasicImpl extends org.eclipse.jpt.eclipselink.core.resource.orm.
 			case EclipseLink1_1OrmPackage.XML_BASIC_IMPL__ACCESS:
 				setAccess((AccessType)newValue);
 				return;
-			case EclipseLink1_1OrmPackage.XML_BASIC_IMPL__GENERATED_VALUE:
-				setGeneratedValue((XmlGeneratedValue)newValue);
+			case EclipseLink1_1OrmPackage.XML_BASIC_IMPL__SEQUENCE_GENERATOR:
+				setSequenceGenerator((XmlSequenceGenerator)newValue);
 				return;
 			case EclipseLink1_1OrmPackage.XML_BASIC_IMPL__TABLE_GENERATOR:
 				setTableGenerator((XmlTableGenerator)newValue);
 				return;
-			case EclipseLink1_1OrmPackage.XML_BASIC_IMPL__SEQUENCE_GENERATOR:
-				setSequenceGenerator((XmlSequenceGenerator)newValue);
+			case EclipseLink1_1OrmPackage.XML_BASIC_IMPL__GENERATED_VALUE:
+				setGeneratedValue((XmlGeneratedValue)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -401,14 +403,14 @@ public class XmlBasicImpl extends org.eclipse.jpt.eclipselink.core.resource.orm.
 			case EclipseLink1_1OrmPackage.XML_BASIC_IMPL__ACCESS:
 				setAccess(ACCESS_EDEFAULT);
 				return;
-			case EclipseLink1_1OrmPackage.XML_BASIC_IMPL__GENERATED_VALUE:
-				setGeneratedValue((XmlGeneratedValue)null);
+			case EclipseLink1_1OrmPackage.XML_BASIC_IMPL__SEQUENCE_GENERATOR:
+				setSequenceGenerator((XmlSequenceGenerator)null);
 				return;
 			case EclipseLink1_1OrmPackage.XML_BASIC_IMPL__TABLE_GENERATOR:
 				setTableGenerator((XmlTableGenerator)null);
 				return;
-			case EclipseLink1_1OrmPackage.XML_BASIC_IMPL__SEQUENCE_GENERATOR:
-				setSequenceGenerator((XmlSequenceGenerator)null);
+			case EclipseLink1_1OrmPackage.XML_BASIC_IMPL__GENERATED_VALUE:
+				setGeneratedValue((XmlGeneratedValue)null);
 				return;
 		}
 		super.eUnset(featureID);
@@ -426,12 +428,12 @@ public class XmlBasicImpl extends org.eclipse.jpt.eclipselink.core.resource.orm.
 		{
 			case EclipseLink1_1OrmPackage.XML_BASIC_IMPL__ACCESS:
 				return access != ACCESS_EDEFAULT;
-			case EclipseLink1_1OrmPackage.XML_BASIC_IMPL__GENERATED_VALUE:
-				return generatedValue != null;
-			case EclipseLink1_1OrmPackage.XML_BASIC_IMPL__TABLE_GENERATOR:
-				return tableGenerator != null;
 			case EclipseLink1_1OrmPackage.XML_BASIC_IMPL__SEQUENCE_GENERATOR:
 				return sequenceGenerator != null;
+			case EclipseLink1_1OrmPackage.XML_BASIC_IMPL__TABLE_GENERATOR:
+				return tableGenerator != null;
+			case EclipseLink1_1OrmPackage.XML_BASIC_IMPL__GENERATED_VALUE:
+				return generatedValue != null;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -452,13 +454,20 @@ public class XmlBasicImpl extends org.eclipse.jpt.eclipselink.core.resource.orm.
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlGeneratorContainer.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLink1_1OrmPackage.XML_BASIC_IMPL__SEQUENCE_GENERATOR: return OrmPackage.XML_GENERATOR_CONTAINER__SEQUENCE_GENERATOR;
+				case EclipseLink1_1OrmPackage.XML_BASIC_IMPL__TABLE_GENERATOR: return OrmPackage.XML_GENERATOR_CONTAINER__TABLE_GENERATOR;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlBasic.class)
 		{
 			switch (derivedFeatureID)
 			{
 				case EclipseLink1_1OrmPackage.XML_BASIC_IMPL__GENERATED_VALUE: return EclipseLink1_1OrmPackage.XML_BASIC__GENERATED_VALUE;
-				case EclipseLink1_1OrmPackage.XML_BASIC_IMPL__TABLE_GENERATOR: return EclipseLink1_1OrmPackage.XML_BASIC__TABLE_GENERATOR;
-				case EclipseLink1_1OrmPackage.XML_BASIC_IMPL__SEQUENCE_GENERATOR: return EclipseLink1_1OrmPackage.XML_BASIC__SEQUENCE_GENERATOR;
 				default: return -1;
 			}
 		}
@@ -481,13 +490,20 @@ public class XmlBasicImpl extends org.eclipse.jpt.eclipselink.core.resource.orm.
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlGeneratorContainer.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmPackage.XML_GENERATOR_CONTAINER__SEQUENCE_GENERATOR: return EclipseLink1_1OrmPackage.XML_BASIC_IMPL__SEQUENCE_GENERATOR;
+				case OrmPackage.XML_GENERATOR_CONTAINER__TABLE_GENERATOR: return EclipseLink1_1OrmPackage.XML_BASIC_IMPL__TABLE_GENERATOR;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlBasic.class)
 		{
 			switch (baseFeatureID)
 			{
 				case EclipseLink1_1OrmPackage.XML_BASIC__GENERATED_VALUE: return EclipseLink1_1OrmPackage.XML_BASIC_IMPL__GENERATED_VALUE;
-				case EclipseLink1_1OrmPackage.XML_BASIC__TABLE_GENERATOR: return EclipseLink1_1OrmPackage.XML_BASIC_IMPL__TABLE_GENERATOR;
-				case EclipseLink1_1OrmPackage.XML_BASIC__SEQUENCE_GENERATOR: return EclipseLink1_1OrmPackage.XML_BASIC_IMPL__SEQUENCE_GENERATOR;
 				default: return -1;
 			}
 		}

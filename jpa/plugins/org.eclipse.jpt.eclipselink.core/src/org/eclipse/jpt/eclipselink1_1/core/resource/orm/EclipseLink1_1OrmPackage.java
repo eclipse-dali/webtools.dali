@@ -80,6 +80,24 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 	public static final int XML_ENTITY_MAPPINGS = 0;
 
 	/**
+	 * The feature id for the '<em><b>Named Queries</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ENTITY_MAPPINGS__NAMED_QUERIES = EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__NAMED_QUERIES;
+
+	/**
+	 * The feature id for the '<em><b>Named Native Queries</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ENTITY_MAPPINGS__NAMED_NATIVE_QUERIES = EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__NAMED_NATIVE_QUERIES;
+
+	/**
 	 * The feature id for the '<em><b>Version</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -159,24 +177,6 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 	 * @ordered
 	 */
 	public static final int XML_ENTITY_MAPPINGS__TABLE_GENERATORS = EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__TABLE_GENERATORS;
-
-	/**
-	 * The feature id for the '<em><b>Named Queries</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ENTITY_MAPPINGS__NAMED_QUERIES = EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__NAMED_QUERIES;
-
-	/**
-	 * The feature id for the '<em><b>Named Native Queries</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ENTITY_MAPPINGS__NAMED_NATIVE_QUERIES = EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__NAMED_NATIVE_QUERIES;
 
 	/**
 	 * The feature id for the '<em><b>Sql Result Set Mappings</b></em>' containment reference list.
@@ -361,13 +361,13 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 	public static final int XML_ID__ENUMERATED = EclipseLinkOrmPackage.XML_ID__ENUMERATED;
 
 	/**
-	 * The feature id for the '<em><b>Generated Value</b></em>' containment reference.
+	 * The feature id for the '<em><b>Sequence Generator</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ID__GENERATED_VALUE = EclipseLinkOrmPackage.XML_ID__GENERATED_VALUE;
+	public static final int XML_ID__SEQUENCE_GENERATOR = EclipseLinkOrmPackage.XML_ID__SEQUENCE_GENERATOR;
 
 	/**
 	 * The feature id for the '<em><b>Table Generator</b></em>' containment reference.
@@ -379,13 +379,13 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 	public static final int XML_ID__TABLE_GENERATOR = EclipseLinkOrmPackage.XML_ID__TABLE_GENERATOR;
 
 	/**
-	 * The feature id for the '<em><b>Sequence Generator</b></em>' containment reference.
+	 * The feature id for the '<em><b>Generated Value</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ID__SEQUENCE_GENERATOR = EclipseLinkOrmPackage.XML_ID__SEQUENCE_GENERATOR;
+	public static final int XML_ID__GENERATED_VALUE = EclipseLinkOrmPackage.XML_ID__GENERATED_VALUE;
 
 	/**
 	 * The feature id for the '<em><b>Mutable</b></em>' attribute.
@@ -533,13 +533,13 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 	public static final int XML_ID_IMPL__ENUMERATED = EclipseLinkOrmPackage.XML_ID_IMPL__ENUMERATED;
 
 	/**
-	 * The feature id for the '<em><b>Generated Value</b></em>' containment reference.
+	 * The feature id for the '<em><b>Sequence Generator</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ID_IMPL__GENERATED_VALUE = EclipseLinkOrmPackage.XML_ID_IMPL__GENERATED_VALUE;
+	public static final int XML_ID_IMPL__SEQUENCE_GENERATOR = EclipseLinkOrmPackage.XML_ID_IMPL__SEQUENCE_GENERATOR;
 
 	/**
 	 * The feature id for the '<em><b>Table Generator</b></em>' containment reference.
@@ -551,13 +551,13 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 	public static final int XML_ID_IMPL__TABLE_GENERATOR = EclipseLinkOrmPackage.XML_ID_IMPL__TABLE_GENERATOR;
 
 	/**
-	 * The feature id for the '<em><b>Sequence Generator</b></em>' containment reference.
+	 * The feature id for the '<em><b>Generated Value</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ID_IMPL__SEQUENCE_GENERATOR = EclipseLinkOrmPackage.XML_ID_IMPL__SEQUENCE_GENERATOR;
+	public static final int XML_ID_IMPL__GENERATED_VALUE = EclipseLinkOrmPackage.XML_ID_IMPL__GENERATED_VALUE;
 
 	/**
 	 * The feature id for the '<em><b>Mutable</b></em>' attribute.
@@ -1060,13 +1060,13 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 	public static final int XML_BASIC__ACCESS = EclipseLinkOrmPackage.XML_BASIC_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Generated Value</b></em>' containment reference.
+	 * The feature id for the '<em><b>Sequence Generator</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_BASIC__GENERATED_VALUE = EclipseLinkOrmPackage.XML_BASIC_FEATURE_COUNT + 1;
+	public static final int XML_BASIC__SEQUENCE_GENERATOR = EclipseLinkOrmPackage.XML_BASIC_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Table Generator</b></em>' containment reference.
@@ -1078,13 +1078,13 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 	public static final int XML_BASIC__TABLE_GENERATOR = EclipseLinkOrmPackage.XML_BASIC_FEATURE_COUNT + 2;
 
 	/**
-	 * The feature id for the '<em><b>Sequence Generator</b></em>' containment reference.
+	 * The feature id for the '<em><b>Generated Value</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_BASIC__SEQUENCE_GENERATOR = EclipseLinkOrmPackage.XML_BASIC_FEATURE_COUNT + 3;
+	public static final int XML_BASIC__GENERATED_VALUE = EclipseLinkOrmPackage.XML_BASIC_FEATURE_COUNT + 3;
 
 	/**
 	 * The number of structural features of the '<em>Xml Basic</em>' class.
@@ -1250,13 +1250,13 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 	public static final int XML_BASIC_IMPL__ACCESS = EclipseLinkOrmPackage.XML_BASIC_IMPL_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Generated Value</b></em>' containment reference.
+	 * The feature id for the '<em><b>Sequence Generator</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_BASIC_IMPL__GENERATED_VALUE = EclipseLinkOrmPackage.XML_BASIC_IMPL_FEATURE_COUNT + 1;
+	public static final int XML_BASIC_IMPL__SEQUENCE_GENERATOR = EclipseLinkOrmPackage.XML_BASIC_IMPL_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Table Generator</b></em>' containment reference.
@@ -1268,13 +1268,13 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 	public static final int XML_BASIC_IMPL__TABLE_GENERATOR = EclipseLinkOrmPackage.XML_BASIC_IMPL_FEATURE_COUNT + 2;
 
 	/**
-	 * The feature id for the '<em><b>Sequence Generator</b></em>' containment reference.
+	 * The feature id for the '<em><b>Generated Value</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_BASIC_IMPL__SEQUENCE_GENERATOR = EclipseLinkOrmPackage.XML_BASIC_IMPL_FEATURE_COUNT + 3;
+	public static final int XML_BASIC_IMPL__GENERATED_VALUE = EclipseLinkOrmPackage.XML_BASIC_IMPL_FEATURE_COUNT + 3;
 
 	/**
 	 * The number of structural features of the '<em>Xml Basic Impl</em>' class.
@@ -3589,36 +3589,6 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.eclipselink1_1.core.resource.orm.XmlBasic#getTableGenerator <em>Table Generator</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Table Generator</em>'.
-	 * @see org.eclipse.jpt.eclipselink1_1.core.resource.orm.XmlBasic#getTableGenerator()
-	 * @see #getXmlBasic()
-	 * @generated
-	 */
-	public EReference getXmlBasic_TableGenerator()
-	{
-		return (EReference)xmlBasicEClass.getEStructuralFeatures().get(1);
-	}
-
-
-	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.eclipselink1_1.core.resource.orm.XmlBasic#getSequenceGenerator <em>Sequence Generator</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Sequence Generator</em>'.
-	 * @see org.eclipse.jpt.eclipselink1_1.core.resource.orm.XmlBasic#getSequenceGenerator()
-	 * @see #getXmlBasic()
-	 * @generated
-	 */
-	public EReference getXmlBasic_SequenceGenerator()
-	{
-		return (EReference)xmlBasicEClass.getEStructuralFeatures().get(2);
-	}
-
-
-	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.eclipselink1_1.core.resource.orm.XmlBasicImpl <em>Xml Basic Impl</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3944,8 +3914,6 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 
 		xmlBasicEClass = createEClass(XML_BASIC);
 		createEReference(xmlBasicEClass, XML_BASIC__GENERATED_VALUE);
-		createEReference(xmlBasicEClass, XML_BASIC__TABLE_GENERATOR);
-		createEReference(xmlBasicEClass, XML_BASIC__SEQUENCE_GENERATOR);
 
 		xmlBasicImplEClass = createEClass(XML_BASIC_IMPL);
 
@@ -4039,6 +4007,7 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 		xmlEmbeddedImplEClass.getESuperTypes().add(this.getXmlEmbedded());
 		xmlBasicEClass.getESuperTypes().add(theEclipseLinkOrmPackage.getXmlBasic());
 		xmlBasicEClass.getESuperTypes().add(this.getXmlAttributeMapping());
+		xmlBasicEClass.getESuperTypes().add(theOrmPackage.getXmlGeneratorContainer());
 		xmlBasicImplEClass.getESuperTypes().add(theEclipseLinkOrmPackage.getXmlBasicImpl());
 		xmlBasicImplEClass.getESuperTypes().add(this.getXmlBasic());
 		xmlVersionEClass.getESuperTypes().add(theEclipseLinkOrmPackage.getXmlVersion());
@@ -4102,8 +4071,6 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 
 		initEClass(xmlBasicEClass, XmlBasic.class, "XmlBasic", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getXmlBasic_GeneratedValue(), theOrmPackage.getXmlGeneratedValue(), null, "generatedValue", null, 0, 1, XmlBasic.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlBasic_TableGenerator(), theOrmPackage.getXmlTableGenerator(), null, "tableGenerator", null, 0, 1, XmlBasic.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlBasic_SequenceGenerator(), theOrmPackage.getXmlSequenceGenerator(), null, "sequenceGenerator", null, 0, 1, XmlBasic.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlBasicImplEClass, XmlBasicImpl.class, "XmlBasicImpl", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -4270,22 +4237,6 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EReference XML_BASIC__GENERATED_VALUE = eINSTANCE.getXmlBasic_GeneratedValue();
-
-		/**
-		 * The meta object literal for the '<em><b>Table Generator</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference XML_BASIC__TABLE_GENERATOR = eINSTANCE.getXmlBasic_TableGenerator();
-
-		/**
-		 * The meta object literal for the '<em><b>Sequence Generator</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference XML_BASIC__SEQUENCE_GENERATOR = eINSTANCE.getXmlBasic_SequenceGenerator();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.eclipselink1_1.core.resource.orm.XmlBasicImpl <em>Xml Basic Impl</em>}' class.

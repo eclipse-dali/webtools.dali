@@ -22,7 +22,7 @@ import org.eclipse.jpt.core.context.java.JavaEntity;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface OrmEntity 
-	extends Entity, OrmTypeMapping, OrmGeneratorHolder
+	extends Entity, OrmTypeMapping
 {
 	/**
 	 * Return a list iterator of the virtual(not specified) secondary tables.
@@ -107,4 +107,6 @@ public interface OrmEntity
 	Iterator<OrmPersistentAttribute> overridableAssociations();
 
 	OrmQueryContainer getQueryContainer();
+	
+	OrmGeneratorContainer getGeneratorContainer();
 }

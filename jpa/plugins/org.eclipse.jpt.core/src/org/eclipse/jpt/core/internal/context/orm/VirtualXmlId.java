@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -41,15 +41,15 @@ public class VirtualXmlId extends VirtualXmlAttributeMapping<JavaIdMapping> impl
 		super(ormTypeMapping, javaIdMapping);
 		this.column = new VirtualXmlColumn(ormTypeMapping, javaIdMapping.getColumn());
 		this.virtualGeneratedValue = new VirtualXmlGeneratedValue(javaIdMapping, this.isOrmMetadataComplete());
-		this.virtualTableGenerator = new VirtualXmlTableGenerator(javaIdMapping, this.isOrmMetadataComplete());
-		this.virtualSequenceGenerator = new VirtualXmlSequenceGenerator(javaIdMapping, this.isOrmMetadataComplete());
+		this.virtualTableGenerator = new VirtualXmlTableGenerator(javaIdMapping.getGeneratorContainer(), this.isOrmMetadataComplete());
+		this.virtualSequenceGenerator = new VirtualXmlSequenceGenerator(javaIdMapping.getGeneratorContainer(), this.isOrmMetadataComplete());
 	}
 
 	public XmlColumn getColumn() {
 		return this.column;
 	}
 
-	public void setColumn(@SuppressWarnings("unused")XmlColumn value) {
+	public void setColumn(XmlColumn value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
@@ -64,7 +64,7 @@ public class VirtualXmlId extends VirtualXmlAttributeMapping<JavaIdMapping> impl
 		return null;
 	}
 
-	public void setTemporal(@SuppressWarnings("unused")TemporalType newTemporal){
+	public void setTemporal(TemporalType newTemporal){
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
@@ -79,7 +79,7 @@ public class VirtualXmlId extends VirtualXmlAttributeMapping<JavaIdMapping> impl
 		return null;
 	}
 	
-	public void setGeneratedValue(@SuppressWarnings("unused")XmlGeneratedValue value) {
+	public void setGeneratedValue(XmlGeneratedValue value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
@@ -87,13 +87,13 @@ public class VirtualXmlId extends VirtualXmlAttributeMapping<JavaIdMapping> impl
 		if (this.isOrmMetadataComplete()) {
 			return null;
 		}
-		if (this.javaAttributeMapping.getSequenceGenerator() != null) {
+		if (this.javaAttributeMapping.getGeneratorContainer().getSequenceGenerator() != null) {
 			return this.virtualSequenceGenerator;
 		}
 		return null;
 	}
 
-	public void setSequenceGenerator(@SuppressWarnings("unused")XmlSequenceGenerator value) {
+	public void setSequenceGenerator(XmlSequenceGenerator value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
@@ -101,13 +101,13 @@ public class VirtualXmlId extends VirtualXmlAttributeMapping<JavaIdMapping> impl
 		if (this.isOrmMetadataComplete()) {
 			return null;
 		}
-		if (this.javaAttributeMapping.getTableGenerator() != null) {
+		if (this.javaAttributeMapping.getGeneratorContainer().getTableGenerator() != null) {
 			return this.virtualTableGenerator;
 		}
 		return null;
 	}
 
-	public void setTableGenerator(@SuppressWarnings("unused")XmlTableGenerator value) {
+	public void setTableGenerator(XmlTableGenerator value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 	
@@ -116,7 +116,7 @@ public class VirtualXmlId extends VirtualXmlAttributeMapping<JavaIdMapping> impl
 		throw new UnsupportedOperationException("enumerated not supported on id mappings"); //$NON-NLS-1$
 	}
 	
-	public void setEnumerated(@SuppressWarnings("unused")EnumType value) {
+	public void setEnumerated(EnumType value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 	
@@ -125,7 +125,7 @@ public class VirtualXmlId extends VirtualXmlAttributeMapping<JavaIdMapping> impl
 		throw new UnsupportedOperationException("lob not supported on id mappings"); //$NON-NLS-1$
 	}
 	
-	public void setLob(@SuppressWarnings("unused")boolean value) {
+	public void setLob(boolean value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 	

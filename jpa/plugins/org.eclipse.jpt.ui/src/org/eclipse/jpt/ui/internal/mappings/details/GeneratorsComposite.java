@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,12 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
-import org.eclipse.jpt.core.context.GeneratorHolder;
+import org.eclipse.jpt.core.context.GeneratorContainer;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
+import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -42,7 +43,7 @@ import org.eclipse.swt.widgets.Composite;
  * |   ----------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see GeneratorHolder
+ * @see GeneratorContainer
  * @see TableGeneratorComposite
  * @see SequenceGeneratorComposite
  * @see AbstractEntityComposite - The parent container
@@ -50,25 +51,21 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 2.0
  */
-public class GeneratorsComposite extends Pane<GeneratorHolder>
+public class GeneratorsComposite extends Pane<GeneratorContainer>
 {
 	private WritablePropertyValueModel<Boolean> sequenceGeneratorExpansionStateHolder;
 	private WritablePropertyValueModel<Boolean> tableGeneratorExpansionStateHolder;
 
-	/**
-	 * Creates a new <code>GeneratorsComposite</code>.
-	 *
-	 * @param parentPane The parent container of this one
-	 * @param parent The parent container
-	 */
-	public GeneratorsComposite(Pane<? extends GeneratorHolder> parentPane,
-	                           Composite parent) {
+	public GeneratorsComposite(
+		Pane<?> parentPane, 
+		PropertyValueModel<? extends GeneratorContainer> subjectHolder,
+		Composite parent) {
 
-		super(parentPane, parent, false);
+			super(parentPane, subjectHolder, parent, false);
 	}
 
 	private WritablePropertyValueModel<Boolean> buildSequenceGeneratorBooleanHolder() {
-		return new PropertyAspectAdapter<GeneratorHolder, Boolean>(getSubjectHolder(), GeneratorHolder.SEQUENCE_GENERATOR_PROPERTY) {
+		return new PropertyAspectAdapter<GeneratorContainer, Boolean>(getSubjectHolder(), GeneratorContainer.SEQUENCE_GENERATOR_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return subject.getSequenceGenerator() != null;
@@ -88,7 +85,7 @@ public class GeneratorsComposite extends Pane<GeneratorHolder>
 	}
 
 	private WritablePropertyValueModel<Boolean> buildTableGeneratorBooleanHolder() {
-		return new PropertyAspectAdapter<GeneratorHolder, Boolean>(getSubjectHolder(), GeneratorHolder.TABLE_GENERATOR_PROPERTY) {
+		return new PropertyAspectAdapter<GeneratorContainer, Boolean>(getSubjectHolder(), GeneratorContainer.TABLE_GENERATOR_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return subject.getTableGenerator() != null;

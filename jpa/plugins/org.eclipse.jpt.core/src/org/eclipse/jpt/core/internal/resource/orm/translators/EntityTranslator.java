@@ -115,11 +115,11 @@ public class EntityTranslator extends Translator
 	}
 	
 	protected Translator createSequenceGeneratorTranslator() {
-		return new SequenceGeneratorTranslator(SEQUENCE_GENERATOR, ORM_PKG.getXmlEntity_SequenceGenerator());
+		return new SequenceGeneratorTranslator(SEQUENCE_GENERATOR, ORM_PKG.getXmlGeneratorContainer_SequenceGenerator());
 	}
 	
 	protected Translator createTableGeneratorTranslator() {
-		return new TableGeneratorTranslator(TABLE_GENERATOR, ORM_PKG.getXmlEntity_TableGenerator());
+		return new TableGeneratorTranslator(TABLE_GENERATOR, ORM_PKG.getXmlGeneratorContainer_TableGenerator());
 	}
 	
 	protected Translator createNamedQueryTranslator() {

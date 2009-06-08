@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2006, 2008 Oracle. All rights reserved. This
+ *  Copyright (c) 2006, 2009 Oracle. All rights reserved. This
  *  program and the accompanying materials are made available under the terms of
  *  the Eclipse Public License v1.0 which accompanies this distribution, and is
  *  available at http://www.eclipse.org/legal/epl-v10.html
@@ -64,10 +64,10 @@ public class IdTranslator extends Translator
 	}
 	
 	protected Translator createTableGeneratorTranslator() {
-		return new TableGeneratorTranslator(TABLE_GENERATOR, ORM_PKG.getXmlId_TableGenerator());
+		return new TableGeneratorTranslator(TABLE_GENERATOR, ORM_PKG.getXmlGeneratorContainer_TableGenerator());
 	}
 	
 	protected Translator createSequenceGeneratorTranslator() {
-		return new SequenceGeneratorTranslator(SEQUENCE_GENERATOR, ORM_PKG.getXmlId_SequenceGenerator());
+		return new SequenceGeneratorTranslator(SEQUENCE_GENERATOR, ORM_PKG.getXmlGeneratorContainer_SequenceGenerator());
 	}
 }

@@ -23,12 +23,10 @@ import org.eclipse.jpt.core.context.ColumnMapping;
 import org.eclipse.jpt.core.context.DiscriminatorColumn;
 import org.eclipse.jpt.core.context.DiscriminatorType;
 import org.eclipse.jpt.core.context.Entity;
-import org.eclipse.jpt.core.context.Generator;
 import org.eclipse.jpt.core.context.InheritanceType;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
-import org.eclipse.jpt.core.context.Query;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.SecondaryTable;
 import org.eclipse.jpt.core.context.Table;
@@ -45,16 +43,13 @@ import org.eclipse.jpt.core.context.orm.OrmAttributeOverride;
 import org.eclipse.jpt.core.context.orm.OrmBaseJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmDiscriminatorColumn;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
-import org.eclipse.jpt.core.context.orm.OrmGenerator;
+import org.eclipse.jpt.core.context.orm.OrmGeneratorContainer;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmPrimaryKeyJoinColumn;
-import org.eclipse.jpt.core.context.orm.OrmQuery;
 import org.eclipse.jpt.core.context.orm.OrmQueryContainer;
 import org.eclipse.jpt.core.context.orm.OrmSecondaryTable;
-import org.eclipse.jpt.core.context.orm.OrmSequenceGenerator;
 import org.eclipse.jpt.core.context.orm.OrmTable;
-import org.eclipse.jpt.core.context.orm.OrmTableGenerator;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
@@ -68,8 +63,6 @@ import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.core.resource.orm.XmlIdClass;
 import org.eclipse.jpt.core.resource.orm.XmlPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlSecondaryTable;
-import org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator;
-import org.eclipse.jpt.core.resource.orm.XmlTableGenerator;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.utility.internal.ClassTools;
@@ -127,9 +120,7 @@ public abstract class AbstractOrmEntity
 	
 	protected boolean discriminatorColumnIsUndefined;
 
-	protected OrmSequenceGenerator sequenceGenerator;
-
-	protected OrmTableGenerator tableGenerator;
+	protected final OrmGeneratorContainer generatorContainer;
 
 	protected final List<OrmAttributeOverride> specifiedAttributeOverrides;
 	
@@ -156,6 +147,7 @@ public abstract class AbstractOrmEntity
 		this.specifiedAssociationOverrides = new ArrayList<OrmAssociationOverride>();
 		this.virtualAssociationOverrides = new ArrayList<OrmAssociationOverride>();
 		this.queryContainer = new GenericOrmQueryContainer(this, resourceMapping);
+		this.generatorContainer = new GenericOrmGeneratorContainer(parent, resourceMapping);
 		this.specifiedName = this.resourceTypeMapping.getName();
 		this.defaultName = this.buildDefaultName();
 		this.rootEntity = this.calculateRootEntity();
@@ -172,8 +164,6 @@ public abstract class AbstractOrmEntity
 		this.table.initialize(this.resourceTypeMapping);//TODO pass in to constructor
 		this.initializeSpecifiedSecondaryTables();
 		this.initializeVirtualSecondaryTables();
-		this.initializeSequenceGenerator();
-		this.initializeTableGenerator();
 		this.initializeSpecifiedPrimaryKeyJoinColumns();
 		this.initializeDefaultPrimaryKeyJoinColumns();
 		this.initializeSpecifiedAttributeOverrides();
@@ -632,81 +622,8 @@ public abstract class AbstractOrmEntity
 		return this.discriminatorColumn;
 	}
 
-	public OrmSequenceGenerator addSequenceGenerator() {
-		if (getSequenceGenerator() != null) {
-			throw new IllegalStateException("sequenceGenerator already exists"); //$NON-NLS-1$
-		}
-		XmlSequenceGenerator resourceSequenceGenerator = OrmFactory.eINSTANCE.createXmlSequenceGenerator();
-		this.sequenceGenerator = buildSequenceGenerator(resourceSequenceGenerator);
-		this.resourceTypeMapping.setSequenceGenerator(resourceSequenceGenerator);
-		firePropertyChanged(SEQUENCE_GENERATOR_PROPERTY, null, this.sequenceGenerator);
-		return this.sequenceGenerator;
-	}
-	
-	public void removeSequenceGenerator() {
-		if (getSequenceGenerator() == null) {
-			throw new IllegalStateException("sequenceGenerator does not exist, cannot be removed"); //$NON-NLS-1$
-		}
-		OrmSequenceGenerator oldSequenceGenerator = this.sequenceGenerator;
-		this.sequenceGenerator = null;
-		this.resourceTypeMapping.setSequenceGenerator(null);
-		firePropertyChanged(SEQUENCE_GENERATOR_PROPERTY, oldSequenceGenerator, null);
-	}
-	
-	public OrmSequenceGenerator getSequenceGenerator() {
-		return this.sequenceGenerator;
-	}
-
-	protected void setSequenceGenerator(OrmSequenceGenerator newSequenceGenerator) {
-		OrmSequenceGenerator oldSequenceGenerator = this.sequenceGenerator;
-		this.sequenceGenerator = newSequenceGenerator;
-		firePropertyChanged(SEQUENCE_GENERATOR_PROPERTY, oldSequenceGenerator, newSequenceGenerator);
-	}
-
-	public OrmTableGenerator addTableGenerator() {
-		if (getTableGenerator() != null) {
-			throw new IllegalStateException("tableGenerator already exists"); //$NON-NLS-1$
-		}
-		XmlTableGenerator resourceTableGenerator = OrmFactory.eINSTANCE.createXmlTableGenerator();
-		this.tableGenerator = buildTableGenerator(resourceTableGenerator);
-		this.resourceTypeMapping.setTableGenerator(resourceTableGenerator);
-		firePropertyChanged(TABLE_GENERATOR_PROPERTY, null, this.tableGenerator);
-		return this.tableGenerator;
-	}
-	
-	public void removeTableGenerator() {
-		if (getTableGenerator() == null) {
-			throw new IllegalStateException("tableGenerator does not exist, cannot be removed"); //$NON-NLS-1$
-		}
-		OrmTableGenerator oldTableGenerator = this.tableGenerator;
-		this.tableGenerator = null;
-		this.resourceTypeMapping.setTableGenerator(null);
-		firePropertyChanged(TABLE_GENERATOR_PROPERTY, oldTableGenerator, null);
-	}
-	
-	public OrmTableGenerator getTableGenerator() {
-		return this.tableGenerator;
-	}
-
-	protected void setTableGenerator(OrmTableGenerator newTableGenerator) {
-		OrmTableGenerator oldTableGenerator = this.tableGenerator;
-		this.tableGenerator = newTableGenerator;
-		firePropertyChanged(TABLE_GENERATOR_PROPERTY, oldTableGenerator, newTableGenerator);
-	}
-	
-	protected Iterator<OrmGenerator> generators() {
-		ArrayList<OrmGenerator> generators = new ArrayList<OrmGenerator>();
-		this.addGeneratorsTo(generators);
-		return generators.iterator();
-	}
-
-	protected void addGeneratorsTo(ArrayList<OrmGenerator> generators) {
-		if (this.sequenceGenerator != null) {
-			generators.add(this.sequenceGenerator);
-		}
-		if (this.tableGenerator != null) {
-			generators.add(this.tableGenerator);
-		}
+	public OrmGeneratorContainer getGeneratorContainer() {
+		return this.generatorContainer;
 	}
 
 	public String getDefaultDiscriminatorValue() {
@@ -1093,11 +1010,6 @@ public abstract class AbstractOrmEntity
 
 	public OrmQueryContainer getQueryContainer() {
 		return this.queryContainer;
-	}
-	
-	@SuppressWarnings("unchecked")
-	public Iterator<OrmQuery> queries() {
-		return new CompositeIterator<OrmQuery>(getQueryContainer().namedQueries(), getQueryContainer().namedNativeQueries());
 	}
 	
 	public char getIdClassEnclosingTypeSeparator() {
@@ -1495,26 +1407,6 @@ public abstract class AbstractOrmEntity
 		}
 	}
 
-	protected void initializeTableGenerator() {
-		if (this.resourceTypeMapping.getTableGenerator() != null) {
-			this.tableGenerator = buildTableGenerator(this.resourceTypeMapping.getTableGenerator());
-		}
-	}
-	
-	protected OrmTableGenerator buildTableGenerator(XmlTableGenerator resourceTableGenerator) {
-		return getJpaFactory().buildOrmTableGenerator(this, resourceTableGenerator);
-	}
-
-	protected void initializeSequenceGenerator() {
-		if (this.resourceTypeMapping.getSequenceGenerator() != null) {
-			this.sequenceGenerator = buildSequenceGenerator(this.resourceTypeMapping.getSequenceGenerator());
-		}
-	}
-	
-	protected OrmSequenceGenerator buildSequenceGenerator(XmlSequenceGenerator resourceSequenceGenerator) {
-		return getJpaFactory().buildOrmSequenceGenerator(this, resourceSequenceGenerator);
-	}
-
 	protected void initializeSpecifiedPrimaryKeyJoinColumns() {
 		for (XmlPrimaryKeyJoinColumn resourcePkJoinColumn : this.resourceTypeMapping.getPrimaryKeyJoinColumns()) {
 			this.specifiedPrimaryKeyJoinColumns.add(buildPrimaryKeyJoinColumn(resourcePkJoinColumn));
@@ -1571,8 +1463,7 @@ public abstract class AbstractOrmEntity
 		this.table.update(this.resourceTypeMapping);
 		this.updateSpecifiedSecondaryTables();
 		this.updateVirtualSecondaryTables();
-		this.updateSequenceGenerator();
-		this.updateTableGenerator();
+		this.generatorContainer.update();
 		this.updateSpecifiedPrimaryKeyJoinColumns();
 		this.updateDefaultPrimaryKeyJoinColumns();
 		this.updateSpecifiedAttributeOverrides();
@@ -1761,38 +1652,6 @@ public abstract class AbstractOrmEntity
 	
 	protected OrmSecondaryTable buildVirtualSecondaryTable(JavaSecondaryTable javaSecondaryTable) {
 		return buildSecondaryTable(new VirtualXmlSecondaryTable(javaSecondaryTable));
-	}
-	
-	protected void updateTableGenerator() {
-		if (this.resourceTypeMapping.getTableGenerator() == null) {
-			if (getTableGenerator() != null) {
-				setTableGenerator(null);
-			}
-		}
-		else {
-			if (getTableGenerator() == null) {
-				setTableGenerator(buildTableGenerator(this.resourceTypeMapping.getTableGenerator()));
-			}
-			else {
-				getTableGenerator().update(this.resourceTypeMapping.getTableGenerator());
-			}
-		}
-	}
-	
-	protected void updateSequenceGenerator() {
-		if (this.resourceTypeMapping.getSequenceGenerator() == null) {
-			if (getSequenceGenerator() != null) {
-				setSequenceGenerator(null);
-			}
-		}
-		else {
-			if (getSequenceGenerator() == null) {
-				setSequenceGenerator(buildSequenceGenerator(this.resourceTypeMapping.getSequenceGenerator()));
-			}
-			else {
-				getSequenceGenerator().update(this.resourceTypeMapping.getSequenceGenerator());
-			}
-		}
 	}
 
 	protected InheritanceType getResourceInheritanceStrategy(Inheritance inheritanceResource) {
@@ -2014,8 +1873,8 @@ public abstract class AbstractOrmEntity
 		this.validateTable(messages, reporter);	
 		this.validateId(messages);
 		this.validateInheritance(messages, reporter);
-		this.validateGenerators(messages);
-		this.validateQueries(messages);
+		this.generatorContainer.validate(messages, reporter);
+		this.queryContainer.validate(messages, reporter);
 
 		for (Iterator<OrmSecondaryTable> stream = this.secondaryTables(); stream.hasNext(); ) {
 			stream.next().validate(messages, reporter);
@@ -2029,6 +1888,7 @@ public abstract class AbstractOrmEntity
 			stream.next().validate(messages, reporter);
 		}
 	}
+	
 	protected void validateTable(List<IMessage> messages, IReporter reporter) {
 		if (isAbstractTablePerClass()) {
 			if (this.table.isResourceSpecified()) {
@@ -2194,44 +2054,7 @@ public abstract class AbstractOrmEntity
 		}
 		return false;
 	}
-	
-	protected void validateGenerators(List<IMessage> messages) {
-		for (Iterator<OrmGenerator> localGenerators = this.generators(); localGenerators.hasNext(); ) {
-			OrmGenerator localGenerator = localGenerators.next();
-			for (Iterator<Generator> globalGenerators = this.getPersistenceUnit().generators(); globalGenerators.hasNext(); ) {
-				if (localGenerator.duplicates(globalGenerators.next())) {
-					messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							JpaValidationMessages.GENERATOR_DUPLICATE_NAME,
-							new String[] {localGenerator.getName()},
-							localGenerator,
-							localGenerator.getNameTextRange()
-						)
-					);
-				}
-			}
-		}
-	}
-	
-	protected void validateQueries(List<IMessage> messages) {
-		for (Iterator<OrmQuery> localQueries = this.queries(); localQueries.hasNext(); ) {
-			OrmQuery localQuery = localQueries.next();
-			for (Iterator<Query> globalQueries = this.getPersistenceUnit().queries(); globalQueries.hasNext(); ) {
-				if (localQuery.duplicates(globalQueries.next())) {
-					messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							JpaValidationMessages.QUERY_DUPLICATE_NAME,
-							new String[] {localQuery.getName()},
-							localQuery,
-							localQuery.getNameTextRange())
-					);
-				}
-			}
-		}
-	}
-	
+
 	
 	class PrimaryKeyJoinColumnOwner implements OrmBaseJoinColumn.Owner
 	{

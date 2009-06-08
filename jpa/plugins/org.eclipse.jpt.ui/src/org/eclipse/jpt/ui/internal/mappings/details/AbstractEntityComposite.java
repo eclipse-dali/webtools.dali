@@ -10,6 +10,7 @@
 package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.context.Entity;
+import org.eclipse.jpt.core.context.GeneratorContainer;
 import org.eclipse.jpt.core.context.QueryContainer;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
@@ -174,7 +175,16 @@ public abstract class AbstractEntityComposite<T extends Entity> extends FormPane
 			JptUiMappingsMessages.IdMappingComposite_primaryKeyGenerationSection
 		);
 
-		new GeneratorsComposite(this, container);
+		new GeneratorsComposite(this, buildGeneratorContainer(), container);
+	}
+	
+	private PropertyValueModel<GeneratorContainer> buildGeneratorContainer() {
+		return new PropertyAspectAdapter<Entity, GeneratorContainer>(getSubjectHolder()) {
+			@Override
+			protected GeneratorContainer buildValue_() {
+				return this.subject.getGeneratorContainer();
+			}
+		};
 	}
 
 	protected void initializeSecondaryTablesPane(Composite container) {
