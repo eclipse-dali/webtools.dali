@@ -301,11 +301,23 @@
 			</constraint>
 		</project-facet-version>
 		
+		<project-facet-version facet="jpt.jpa" version="2.0">
+			<constraint>
+				<and>
+					<requires facet="jst.java" version="[5.0"/>
+					<or>
+						<requires facet="jst.utility" version="[1.0"/>
+						<requires facet="jst.appclient" version="[1.2"/>
+						<requires facet="jst.ejb" version="[1.1"/>
+						<requires facet="jst.connector" version="[1.0"/>
+						<requires facet="jst.web" version="[2.2"/>
+					</or>
+				</and>
+			</constraint>
+		</project-facet-version>
+		
 		<template id="jpt.jpa.template">
 			<label>%JPA_TEMPLATE_LABEL</label>
-			<fixed facet="jst.java"/>
-			<fixed facet="jst.utility"/>
-			<fixed facet="jpt.jpa"/>
 			<preset id="jpt.jpa.preset"/>
 		</template>
 		
@@ -337,7 +349,7 @@
 			<label>%JPA_PRESET_LABEL</label>
 			<facet id="jst.java" version="5.0"/>
 			<facet id="jst.utility" version="1.0"/>
-			<facet id="jpt.jpa" version="1.0"/>
+			<facet id="jpt.jpa" version="2.0"/>
 		</static-preset>
 		
 	</extension>
