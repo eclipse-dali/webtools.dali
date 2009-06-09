@@ -200,7 +200,10 @@
 						<test property="org.eclipse.wst.common.project.facet.core.projectFacet" value="jpt.jpa" forcePluginActivation="true"/>
 					</with>
 					<with variable="jpaPlatform">
-	
+						<or>
+							<equals value="generic"/>
+							<equals value="generic2_0"/>
+						</or>
 					</with>
 				</and>
 			</enablement>
