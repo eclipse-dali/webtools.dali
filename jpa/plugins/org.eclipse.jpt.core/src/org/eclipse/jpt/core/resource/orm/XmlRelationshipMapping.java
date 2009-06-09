@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.resource.orm;
 
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.jpt.core.internal.resource.orm.translators.OrmXmlMapper;
 import org.eclipse.jpt.core.utility.TextRange;
 
 
@@ -33,11 +39,74 @@ import org.eclipse.jpt.core.utility.TextRange;
  * </p>
  *
  * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlRelationshipMapping()
- * @model kind="class" interface="true" abstract="true"
+ * @model kind="class" abstract="true"
  * @generated
  */
-public interface XmlRelationshipMapping extends XmlAttributeMapping
+public abstract class XmlRelationshipMapping extends AbstractXmlAttributeMapping
 {
+	/**
+	 * The default value of the '{@link #getTargetEntity() <em>Target Entity</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getTargetEntity()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String TARGET_ENTITY_EDEFAULT = null;
+	/**
+	 * The cached value of the '{@link #getTargetEntity() <em>Target Entity</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getTargetEntity()
+	 * @generated
+	 * @ordered
+	 */
+	protected String targetEntity = TARGET_ENTITY_EDEFAULT;
+	/**
+	 * changed this to null and removed the generated flag so emf won't generate over it
+	 * we don't want a default for enums, just null if the tag does not exist
+	 */
+	protected static final FetchType FETCH_EDEFAULT = null;
+	/**
+	 * The cached value of the '{@link #getFetch() <em>Fetch</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getFetch()
+	 * @generated
+	 * @ordered
+	 */
+	protected FetchType fetch = FETCH_EDEFAULT;
+	/**
+	 * The cached value of the '{@link #getCascade() <em>Cascade</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getCascade()
+	 * @generated
+	 * @ordered
+	 */
+	protected CascadeType cascade;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected XmlRelationshipMapping()
+	{
+		super();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	protected EClass eStaticClass()
+	{
+		return OrmPackage.Literals.XML_RELATIONSHIP_MAPPING;
+	}
+
 	/**
 	 * Returns the value of the '<em><b>Target Entity</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -52,7 +121,9 @@ public interface XmlRelationshipMapping extends XmlAttributeMapping
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
-	String getTargetEntity();
+	public String getTargetEntity() {
+		return targetEntity;
+	}
 
 	/**
 	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlRelationshipMapping#getTargetEntity <em>Target Entity</em>}' attribute.
@@ -62,7 +133,12 @@ public interface XmlRelationshipMapping extends XmlAttributeMapping
 	 * @see #getTargetEntity()
 	 * @generated
 	 */
-	void setTargetEntity(String value);
+	public void setTargetEntity(String newTargetEntity) {
+		String oldTargetEntity = targetEntity;
+		targetEntity = newTargetEntity;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_RELATIONSHIP_MAPPING__TARGET_ENTITY, oldTargetEntity, targetEntity));
+	}
 
 	/**
 	 * Returns the value of the '<em><b>Fetch</b></em>' attribute.
@@ -81,7 +157,9 @@ public interface XmlRelationshipMapping extends XmlAttributeMapping
 	 * @model default="LAZY"
 	 * @generated
 	 */
-	FetchType getFetch();
+	public FetchType getFetch() {
+		return fetch;
+	}
 
 	/**
 	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlRelationshipMapping#getFetch <em>Fetch</em>}' attribute.
@@ -92,7 +170,12 @@ public interface XmlRelationshipMapping extends XmlAttributeMapping
 	 * @see #getFetch()
 	 * @generated
 	 */
-	void setFetch(FetchType value);
+	public void setFetch(FetchType newFetch) {
+		FetchType oldFetch = fetch;
+		fetch = newFetch == null ? FETCH_EDEFAULT : newFetch;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_RELATIONSHIP_MAPPING__FETCH, oldFetch, fetch));
+	}
 
 	/**
 	 * Returns the value of the '<em><b>Cascade</b></em>' containment reference.
@@ -108,7 +191,26 @@ public interface XmlRelationshipMapping extends XmlAttributeMapping
 	 * @model containment="true"
 	 * @generated
 	 */
-	CascadeType getCascade();
+	public CascadeType getCascade() {
+		return cascade;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetCascade(CascadeType newCascade, NotificationChain msgs)
+	{
+		CascadeType oldCascade = cascade;
+		cascade = newCascade;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.XML_RELATIONSHIP_MAPPING__CASCADE, oldCascade, newCascade);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
 
 	/**
 	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlRelationshipMapping#getCascade <em>Cascade</em>}' containment reference.
@@ -118,11 +220,148 @@ public interface XmlRelationshipMapping extends XmlAttributeMapping
 	 * @see #getCascade()
 	 * @generated
 	 */
-	void setCascade(CascadeType value);
+	public void setCascade(CascadeType newCascade) {
+		if (newCascade != cascade)
+		{
+			NotificationChain msgs = null;
+			if (cascade != null)
+				msgs = ((InternalEObject)cascade).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_RELATIONSHIP_MAPPING__CASCADE, null, msgs);
+			if (newCascade != null)
+				msgs = ((InternalEObject)newCascade).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_RELATIONSHIP_MAPPING__CASCADE, null, msgs);
+			msgs = basicSetCascade(newCascade, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_RELATIONSHIP_MAPPING__CASCADE, newCascade, newCascade));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
+	{
+		switch (featureID)
+		{
+			case OrmPackage.XML_RELATIONSHIP_MAPPING__CASCADE:
+				return basicSetCascade(null, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Object eGet(int featureID, boolean resolve, boolean coreType)
+	{
+		switch (featureID)
+		{
+			case OrmPackage.XML_RELATIONSHIP_MAPPING__TARGET_ENTITY:
+				return getTargetEntity();
+			case OrmPackage.XML_RELATIONSHIP_MAPPING__FETCH:
+				return getFetch();
+			case OrmPackage.XML_RELATIONSHIP_MAPPING__CASCADE:
+				return getCascade();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void eSet(int featureID, Object newValue)
+	{
+		switch (featureID)
+		{
+			case OrmPackage.XML_RELATIONSHIP_MAPPING__TARGET_ENTITY:
+				setTargetEntity((String)newValue);
+				return;
+			case OrmPackage.XML_RELATIONSHIP_MAPPING__FETCH:
+				setFetch((FetchType)newValue);
+				return;
+			case OrmPackage.XML_RELATIONSHIP_MAPPING__CASCADE:
+				setCascade((CascadeType)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void eUnset(int featureID)
+	{
+		switch (featureID)
+		{
+			case OrmPackage.XML_RELATIONSHIP_MAPPING__TARGET_ENTITY:
+				setTargetEntity(TARGET_ENTITY_EDEFAULT);
+				return;
+			case OrmPackage.XML_RELATIONSHIP_MAPPING__FETCH:
+				setFetch(FETCH_EDEFAULT);
+				return;
+			case OrmPackage.XML_RELATIONSHIP_MAPPING__CASCADE:
+				setCascade((CascadeType)null);
+				return;
+		}
+		super.eUnset(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public boolean eIsSet(int featureID)
+	{
+		switch (featureID)
+		{
+			case OrmPackage.XML_RELATIONSHIP_MAPPING__TARGET_ENTITY:
+				return TARGET_ENTITY_EDEFAULT == null ? targetEntity != null : !TARGET_ENTITY_EDEFAULT.equals(targetEntity);
+			case OrmPackage.XML_RELATIONSHIP_MAPPING__FETCH:
+				return fetch != FETCH_EDEFAULT;
+			case OrmPackage.XML_RELATIONSHIP_MAPPING__CASCADE:
+				return cascade != null;
+		}
+		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String toString()
+	{
+		if (eIsProxy()) return super.toString();
+
+		StringBuffer result = new StringBuffer(super.toString());
+		result.append(" (targetEntity: ");
+		result.append(targetEntity);
+		result.append(", fetch: ");
+		result.append(fetch);
+		result.append(')');
+		return result.toString();
+	}
 
 	/**
 	 * Return the {@link TextRange} for the target-entity attribute.
 	 */
-	TextRange getTargetEntityTextRange();
+	
+	public TextRange getTargetEntityTextRange() {
+		return getAttributeTextRange(OrmXmlMapper.TARGET_ENTITY);
+	}
 
 } // RelationshipMapping

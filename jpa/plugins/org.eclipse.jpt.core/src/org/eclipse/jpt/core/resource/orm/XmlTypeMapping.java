@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.resource.orm;
 
-import org.eclipse.jpt.core.resource.xml.JpaEObject;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**
@@ -28,7 +27,6 @@ import org.eclipse.jpt.core.utility.TextRange;
  * The following features are supported:
  * <ul>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlTypeMapping#getClassName <em>Class Name</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlTypeMapping#getAccess <em>Access</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlTypeMapping#getMetadataComplete <em>Metadata Complete</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlTypeMapping#getDescription <em>Description</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlTypeMapping#getAttributes <em>Attributes</em>}</li>
@@ -37,10 +35,9 @@ import org.eclipse.jpt.core.utility.TextRange;
  *
  * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlTypeMapping()
  * @model kind="class" interface="true" abstract="true"
- * @extends JpaEObject
  * @generated
  */
-public interface XmlTypeMapping extends JpaEObject
+public interface XmlTypeMapping extends XmlAccessHolder
 {
 	/**
 	 * Returns the value of the '<em><b>Class Name</b></em>' attribute.
@@ -67,36 +64,6 @@ public interface XmlTypeMapping extends JpaEObject
 	 * @generated
 	 */
 	void setClassName(String value);
-
-	/**
-	 * Returns the value of the '<em><b>Access</b></em>' attribute.
-	 * The default value is <code>"PROPERTY"</code>.
-	 * The literals are from the enumeration {@link org.eclipse.jpt.core.resource.orm.AccessType}.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Access</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Access</em>' attribute.
-	 * @see org.eclipse.jpt.core.resource.orm.AccessType
-	 * @see #setAccess(AccessType)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlTypeMapping_Access()
-	 * @model default="PROPERTY"
-	 * @generated
-	 */
-	AccessType getAccess();
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlTypeMapping#getAccess <em>Access</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Access</em>' attribute.
-	 * @see org.eclipse.jpt.core.resource.orm.AccessType
-	 * @see #getAccess()
-	 * @generated
-	 */
-	void setAccess(AccessType value);
 
 	/**
 	 * Returns the value of the '<em><b>Metadata Complete</b></em>' attribute.

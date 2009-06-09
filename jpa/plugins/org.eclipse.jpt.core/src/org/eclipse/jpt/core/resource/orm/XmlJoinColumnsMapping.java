@@ -11,6 +11,7 @@
 package org.eclipse.jpt.core.resource.orm;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.jpt.core.resource.xml.JpaEObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -26,9 +27,10 @@ import org.eclipse.emf.common.util.EList;
  *
  * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlJoinColumnsMapping()
  * @model kind="class" interface="true" abstract="true"
+ * @extends JpaEObject
  * @generated
  */
-public interface XmlJoinColumnsMapping extends XmlRelationshipMapping
+public interface XmlJoinColumnsMapping extends JpaEObject
 {
 	/**
 	 * Returns the value of the '<em><b>Join Columns</b></em>' containment reference list.

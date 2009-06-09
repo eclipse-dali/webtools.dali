@@ -52,7 +52,7 @@ public class OrmOneToOneMappingProvider
 	}
 	
 	public XmlAttributeMapping buildResourceMapping() {
-		return OrmFactory.eINSTANCE.createXmlOneToOneImpl();
+		return OrmFactory.eINSTANCE.createXmlOneToOne();
 	}
 
 	public OrmAttributeMapping buildMapping(OrmPersistentAttribute parent, XmlAttributeMapping resourceMapping, JpaFactory factory) {

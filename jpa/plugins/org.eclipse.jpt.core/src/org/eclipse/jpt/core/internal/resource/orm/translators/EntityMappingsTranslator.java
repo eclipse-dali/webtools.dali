@@ -101,7 +101,7 @@ public class EntityMappingsTranslator extends RootTranslator
 	}
 	
 	protected Translator createAccessTranslator() {
-		return new Translator(ACCESS, ORM_PKG.getXmlEntityMappings_Access());
+		return new Translator(ACCESS, ORM_PKG.getXmlAccessHolder_Access());
 	}
 	
 	protected Translator createSequenceGeneratorTranslator() {

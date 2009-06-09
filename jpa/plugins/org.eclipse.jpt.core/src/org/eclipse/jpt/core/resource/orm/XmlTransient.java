@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.resource.orm;
 
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.jpt.core.MappingKeys;
 
 /**
  * <!-- begin-user-doc -->
@@ -23,9 +25,33 @@ package org.eclipse.jpt.core.resource.orm;
  *
  *
  * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlTransient()
- * @model kind="class" interface="true" abstract="true"
+ * @model kind="class"
  * @generated
  */
-public interface XmlTransient extends XmlAttributeMapping
+public class XmlTransient extends AbstractXmlAttributeMapping
 {
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected XmlTransient()
+	{
+		super();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	protected EClass eStaticClass()
+	{
+		return OrmPackage.Literals.XML_TRANSIENT;
+	}
+
+	public String getMappingKey() {
+		return MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY;
+	}
 } // Transient

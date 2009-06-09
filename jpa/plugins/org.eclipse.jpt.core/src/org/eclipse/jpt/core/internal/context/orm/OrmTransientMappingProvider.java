@@ -52,7 +52,7 @@ public class OrmTransientMappingProvider
 	}
 	
 	public XmlAttributeMapping buildResourceMapping() {
-		return OrmFactory.eINSTANCE.createXmlTransientImpl();
+		return OrmFactory.eINSTANCE.createXmlTransient();
 	}
 	
 	public OrmAttributeMapping buildMapping(OrmPersistentAttribute parent, XmlAttributeMapping resourceMapping, JpaFactory factory) {

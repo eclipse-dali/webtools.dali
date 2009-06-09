@@ -54,7 +54,7 @@ public class EclipseLink1_1OrmVariableOneToOneMappingProvider
 	}
 	
 	public XmlAttributeMapping buildResourceMapping() {
-		return EclipseLink1_1OrmFactory.eINSTANCE.createXmlVariableOneToOneImpl();
+		return EclipseLink1_1OrmFactory.eINSTANCE.createXmlVariableOneToOne();
 	}
 
 	public OrmAttributeMapping buildMapping(OrmPersistentAttribute parent, XmlAttributeMapping resourceMapping, JpaFactory factory) {

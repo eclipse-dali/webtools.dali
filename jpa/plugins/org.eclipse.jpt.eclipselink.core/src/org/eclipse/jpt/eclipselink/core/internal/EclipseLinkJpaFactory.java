@@ -13,6 +13,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.context.MappingFile;
 import org.eclipse.jpt.core.context.PersistentType;
+import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.core.context.java.JavaEmbeddable;
 import org.eclipse.jpt.core.context.java.JavaEmbeddedIdMapping;
@@ -26,6 +27,7 @@ import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaVersionMapping;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
+import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmBasicMapping;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddable;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddedIdMapping;
@@ -50,6 +52,7 @@ import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.platform.GenericJpaFactory;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
+import org.eclipse.jpt.core.resource.orm.XmlNullAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.core.resource.persistence.XmlJarFileRef;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
@@ -94,6 +97,7 @@ import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkVirtualX
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkVirtualXmlId;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkVirtualXmlManyToMany;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkVirtualXmlManyToOne;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkVirtualXmlNullAttributeMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkVirtualXmlOneToMany;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkVirtualXmlOneToOne;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkVirtualXmlVersion;
@@ -218,6 +222,9 @@ public class EclipseLinkJpaFactory
 		return new VirtualXmlVariableOneToOne(ormTypeMapping, javaVariableOneToOneMapping);
 	}
 	
+	public XmlNullAttributeMapping buildEclipseLinkVirtualXmlNullAttributeMapping(OrmTypeMapping ormTypeMapping, JavaAttributeMapping javaAttributeMapping) {
+		return new EclipseLinkVirtualXmlNullAttributeMapping(ormTypeMapping, javaAttributeMapping);
+	}
 	
 	// ********** EclipseLink-specific ORM Context Model **********
 	
@@ -299,6 +306,10 @@ public class EclipseLinkJpaFactory
 	
 	public OrmVariableOneToOneMapping buildOrmVariableOneToOneMapping(OrmPersistentAttribute parent, XmlVariableOneToOne resourceMapping) {
 		return new OrmVariableOneToOneMapping(parent, resourceMapping);
+	}
+	
+	public OrmAttributeMapping buildEclipseLinkOrmNullAttributeMapping(OrmPersistentAttribute parent, XmlNullAttributeMapping resourceMapping) {
+		return buildOrmNullAttributeMapping(parent, resourceMapping);
 	}
 	
 	// ********** Java Context Model **********

@@ -5,53 +5,22 @@
     nsURI="jpt.eclipselink1_1.orm.xmi" nsPrefix="org.eclipse.jpt.eclipselink1_1.core.resource.orm">
   <eClassifiers xsi:type="ecore:EClass" name="XmlEntityMappings" eSuperTypes="eclipselink_orm.ecore#//XmlEntityMappings"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlAttributeMapping" abstract="true"
-      interface="true" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlAttributeMapping">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="access" eType="ecore:EEnum ../../org.eclipse.jpt.core/model/orm.ecore#//AccessType"
-        defaultValueLiteral="PROPERTY"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlId" abstract="true" interface="true"
-      eSuperTypes="eclipselink_orm.ecore#//XmlId #//XmlAttributeMapping"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlIdImpl" eSuperTypes="eclipselink_orm.ecore#//XmlIdImpl #//XmlId"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlEmbeddedId" abstract="true" interface="true"
-      eSuperTypes="eclipselink_orm.ecore#//XmlEmbeddedId #//XmlAttributeMapping"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlEmbeddedIdImpl" eSuperTypes="eclipselink_orm.ecore#//XmlEmbeddedIdImpl #//XmlEmbeddedId"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlEmbedded" abstract="true" interface="true"
-      eSuperTypes="eclipselink_orm.ecore#//XmlEmbedded #//XmlAttributeMapping"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlEmbeddedImpl" eSuperTypes="eclipselink_orm.ecore#//XmlEmbeddedImpl #//XmlEmbedded"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlBasic" abstract="true" interface="true"
-      eSuperTypes="eclipselink_orm.ecore#//XmlBasic #//XmlAttributeMapping ../../org.eclipse.jpt.core/model/orm.ecore#//XmlGeneratorContainer">
+      interface="true" eSuperTypes="eclipselink_orm.ecore#//XmlAttributeMapping ../../org.eclipse.jpt.core/model/orm.ecore#//XmlAccessHolder"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlId" eSuperTypes="eclipselink_orm.ecore#//XmlId #//XmlAttributeMapping"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlEmbeddedId" eSuperTypes="eclipselink_orm.ecore#//XmlEmbeddedId #//XmlAttributeMapping"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlEmbedded" eSuperTypes="eclipselink_orm.ecore#//XmlEmbedded #//XmlAttributeMapping"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlBasic" eSuperTypes="eclipselink_orm.ecore#//XmlBasic #//XmlAttributeMapping ../../org.eclipse.jpt.core/model/orm.ecore#//XmlGeneratorContainer">
     <eStructuralFeatures xsi:type="ecore:EReference" name="generatedValue" eType="ecore:EClass ../../org.eclipse.jpt.core/model/orm.ecore#//XmlGeneratedValue"
         containment="true" resolveProxies="false"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlBasicImpl" eSuperTypes="eclipselink_orm.ecore#//XmlBasicImpl #//XmlBasic"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlVersion" abstract="true" interface="true"
-      eSuperTypes="eclipselink_orm.ecore#//XmlVersion #//XmlAttributeMapping"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlVersionImpl" eSuperTypes="eclipselink_orm.ecore#//XmlVersionImpl #//XmlVersion"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlOneToOne" abstract="true" interface="true"
-      eSuperTypes="eclipselink_orm.ecore#//XmlOneToOne #//XmlAttributeMapping"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlOneToOneImpl" eSuperTypes="eclipselink_orm.ecore#//XmlOneToOneImpl #//XmlOneToOne"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlOneToMany" abstract="true" interface="true"
-      eSuperTypes="eclipselink_orm.ecore#//XmlOneToMany #//XmlAttributeMapping"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlOneToManyImpl" eSuperTypes="eclipselink_orm.ecore#//XmlOneToManyImpl #//XmlOneToMany"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlManyToOne" abstract="true" interface="true"
-      eSuperTypes="eclipselink_orm.ecore#//XmlManyToOne #//XmlAttributeMapping"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlManyToOneImpl" eSuperTypes="eclipselink_orm.ecore#//XmlManyToOneImpl #//XmlManyToOne"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlManyToMany" abstract="true" interface="true"
-      eSuperTypes="eclipselink_orm.ecore#//XmlManyToMany #//XmlAttributeMapping"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlManyToManyImpl" eSuperTypes="eclipselink_orm.ecore#//XmlManyToManyImpl #//XmlManyToMany"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlBasicCollection" abstract="true"
-      interface="true" eSuperTypes="eclipselink_orm.ecore#//XmlBasicCollection #//XmlAttributeMapping"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlBasicCollectionImpl" eSuperTypes="eclipselink_orm.ecore#//XmlBasicCollectionImpl #//XmlBasicCollection"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlBasicMap" abstract="true" interface="true"
-      eSuperTypes="eclipselink_orm.ecore#//XmlBasicMap #//XmlAttributeMapping"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlBasicMapImpl" eSuperTypes="eclipselink_orm.ecore#//XmlBasicMapImpl #//XmlBasicMap"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlTransformation" abstract="true" interface="true"
-      eSuperTypes="eclipselink_orm.ecore#//XmlTransformation #//XmlAttributeMapping"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlTransformationImpl" eSuperTypes="eclipselink_orm.ecore#//XmlTransformationImpl #//XmlTransformation"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlVariableOneToOne" abstract="true"
-      interface="true" eSuperTypes="eclipselink_orm.ecore#//XmlVariableOneToOne #//XmlAttributeMapping"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlVariableOneToOneImpl" eSuperTypes="eclipselink_orm.ecore#//XmlVariableOneToOneImpl #//XmlVariableOneToOne"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlTransient" abstract="true" interface="true"
-      eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlTransient #//XmlAttributeMapping"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlTransientImpl" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlTransientImpl #//XmlTransient"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlVersion" eSuperTypes="eclipselink_orm.ecore#//XmlVersion #//XmlAttributeMapping"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlOneToOne" eSuperTypes="eclipselink_orm.ecore#//XmlOneToOne #//XmlAttributeMapping"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlOneToMany" eSuperTypes="eclipselink_orm.ecore#//XmlOneToMany #//XmlAttributeMapping"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlManyToOne" eSuperTypes="eclipselink_orm.ecore#//XmlManyToOne #//XmlAttributeMapping"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlManyToMany" eSuperTypes="eclipselink_orm.ecore#//XmlManyToMany #//XmlAttributeMapping"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlBasicCollection" eSuperTypes="eclipselink_orm.ecore#//XmlBasicCollection #//XmlAttributeMapping"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlBasicMap" eSuperTypes="eclipselink_orm.ecore#//XmlBasicMap #//XmlAttributeMapping"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlTransformation" eSuperTypes="eclipselink_orm.ecore#//XmlTransformation #//XmlAttributeMapping"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlVariableOneToOne" eSuperTypes="eclipselink_orm.ecore#//XmlVariableOneToOne #//XmlAttributeMapping"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlTransient" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlTransient #//XmlAttributeMapping"/>
 </ecore:EPackage>

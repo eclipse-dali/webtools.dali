@@ -53,7 +53,7 @@ public class EclipseLink1_1OrmVersionMappingProvider
 	}
 	
 	public XmlAttributeMapping buildResourceMapping() {
-		return EclipseLink1_1OrmFactory.eINSTANCE.createXmlVersionImpl();
+		return EclipseLink1_1OrmFactory.eINSTANCE.createXmlVersion();
 	}
 
 	public OrmAttributeMapping buildMapping(OrmPersistentAttribute parent, XmlAttributeMapping resourceMapping, JpaFactory factory) {

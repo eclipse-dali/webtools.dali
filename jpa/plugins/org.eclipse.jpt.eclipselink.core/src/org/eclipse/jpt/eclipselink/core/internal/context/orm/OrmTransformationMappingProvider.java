@@ -54,7 +54,7 @@ public class OrmTransformationMappingProvider
 	}
 	
 	public XmlAttributeMapping buildResourceMapping() {
-		return EclipseLinkOrmFactory.eINSTANCE.createXmlTransformationImpl();
+		return EclipseLinkOrmFactory.eINSTANCE.createXmlTransformation();
 	}
 
 	public OrmAttributeMapping buildMapping(OrmPersistentAttribute parent, XmlAttributeMapping resourceMapping, JpaFactory factory) {

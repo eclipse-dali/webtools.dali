@@ -13,6 +13,8 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.jpt.core.context.java.JavaEmbeddedIdMapping;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.context.orm.VirtualXmlEmbeddedId;
+import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
+import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlAccessMethods;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbeddedId;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlProperty;
@@ -21,21 +23,57 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.XmlProperty;
  * VirtualBasic is an implementation of Basic used when there is 
  * no tag in the orm.xml and an underlying javaBasicMapping exists.
  */
-public class EclipseLinkVirtualXmlEmbeddedId extends VirtualXmlEmbeddedId implements XmlEmbeddedId
+public class EclipseLinkVirtualXmlEmbeddedId extends XmlEmbeddedId
 {
+	protected OrmTypeMapping ormTypeMapping;
+	
+	protected final JavaEmbeddedIdMapping javaAttributeMapping;
+
+	protected final VirtualXmlEmbeddedId virtualXmlEmbeddedId;
 		
 	public EclipseLinkVirtualXmlEmbeddedId(OrmTypeMapping ormTypeMapping, JavaEmbeddedIdMapping javaEmbeddedIdMapping) {
-		super(ormTypeMapping, javaEmbeddedIdMapping);
+		super();
+		this.ormTypeMapping = ormTypeMapping;
+		this.javaAttributeMapping = javaEmbeddedIdMapping;
+		this.virtualXmlEmbeddedId = new VirtualXmlEmbeddedId(ormTypeMapping, javaEmbeddedIdMapping);
 	}
 	
+	@Override
+	public String getMappingKey() {
+		return this.virtualXmlEmbeddedId.getMappingKey();
+	}
+	
+	@Override
+	public String getName() {
+		return this.virtualXmlEmbeddedId.getName();
+	}
+
+	@Override
+	public void setName(String newName) {
+		this.virtualXmlEmbeddedId.setName(newName);
+	}
+	
+	@Override
+	public TextRange getNameTextRange() {
+		return this.virtualXmlEmbeddedId.getNameTextRange();
+	}
+
+	@Override
+	public EList<XmlAttributeOverride> getAttributeOverrides() {
+		return this.virtualXmlEmbeddedId.getAttributeOverrides();
+	}
+	
+	@Override
 	public XmlAccessMethods getAccessMethods() {
 		return null;
 	}
 	
+	@Override
 	public void setAccessMethods(XmlAccessMethods value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$		
 	}
 	
+	@Override
 	public EList<XmlProperty> getProperties() {
 		// TODO get from java annotations
 		return null;

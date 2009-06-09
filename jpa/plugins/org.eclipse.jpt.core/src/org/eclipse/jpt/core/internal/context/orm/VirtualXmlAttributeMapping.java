@@ -15,13 +15,13 @@ import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
 import org.eclipse.jpt.core.utility.TextRange;
 
-public abstract class VirtualXmlAttributeMapping<T extends JavaAttributeMapping> extends AbstractJpaEObject implements XmlAttributeMapping
+public class VirtualXmlAttributeMapping extends AbstractJpaEObject implements XmlAttributeMapping
 {
 	protected OrmTypeMapping ormTypeMapping;
 	
-	protected final T javaAttributeMapping;
+	protected final JavaAttributeMapping javaAttributeMapping;
 	
-	protected VirtualXmlAttributeMapping(OrmTypeMapping ormTypeMapping, T javaAttributeMapping) {
+	public VirtualXmlAttributeMapping(OrmTypeMapping ormTypeMapping, JavaAttributeMapping javaAttributeMapping) {
 		super();
 		this.ormTypeMapping = ormTypeMapping;
 		this.javaAttributeMapping = javaAttributeMapping;
@@ -29,10 +29,6 @@ public abstract class VirtualXmlAttributeMapping<T extends JavaAttributeMapping>
 	
 	protected boolean isOrmMetadataComplete() {
 		return this.ormTypeMapping.isMetadataComplete();
-	}
-	
-	protected T getJavaAttributeMapping() {
-		return this.javaAttributeMapping;
 	}
 	
 	public String getMappingKey() {
@@ -46,7 +42,7 @@ public abstract class VirtualXmlAttributeMapping<T extends JavaAttributeMapping>
 		return this.javaAttributeMapping.getPersistentAttribute().getName();
 	}
 
-	public void setName(@SuppressWarnings("unused")String newName) {
+	public void setName(String newName) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 	

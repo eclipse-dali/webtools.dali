@@ -35,6 +35,7 @@ import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmIdMap
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmManyToManyMappingProvider;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmManyToOneMappingProvider;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmMappedSuperclassProvider;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmNullAttributeMappingProvider;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmOneToManyMappingProvider;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmOneToOneMappingProvider;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmVersionMappingProvider;
@@ -131,6 +132,7 @@ public class EclipseLinkJpaPlatformProvider
 		providers.add(EclipseLinkOrmOneToManyMappingProvider.instance());
 		providers.add(EclipseLinkOrmOneToOneMappingProvider.instance());
 		providers.add(EclipseLinkOrmVersionMappingProvider.instance());
+		providers.add(EclipseLinkOrmNullAttributeMappingProvider.instance());
 	}
 
 }

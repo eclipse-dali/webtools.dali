@@ -29,20 +29,52 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
  * VirtualOneToOne is an implementation of OneToOne used when there is 
  * no tag in the orm.xml and an underlying javaOneToOneMapping exists.
  */
-public class VirtualXmlOneToOne 
-	extends VirtualXmlAttributeMapping<JavaOneToOneMapping> 
-	implements XmlOneToOne
+public class VirtualXmlOneToOne extends XmlOneToOne
 {
+	protected OrmTypeMapping ormTypeMapping;
+	
+	protected final JavaOneToOneMapping javaAttributeMapping;
+	
+	protected final VirtualXmlAttributeMapping virtualXmlAttributeMapping;
+
 	protected final VirtualCascadeType virtualCascadeType;
 	
 	
 	public VirtualXmlOneToOne(
 			OrmTypeMapping ormTypeMapping, JavaOneToOneMapping javaOneToOneMapping) {
-		super(ormTypeMapping, javaOneToOneMapping);
+		super();
+		this.ormTypeMapping = ormTypeMapping;
+		this.javaAttributeMapping = javaOneToOneMapping;
+		this.virtualXmlAttributeMapping = new VirtualXmlAttributeMapping(ormTypeMapping, javaOneToOneMapping);
 		this.virtualCascadeType = 
 			new VirtualCascadeType(javaOneToOneMapping.getCascade(), this.isOrmMetadataComplete());
 	}
 	
+	protected boolean isOrmMetadataComplete() {
+		return this.ormTypeMapping.isMetadataComplete();
+	}
+	
+	@Override
+	public String getMappingKey() {
+		return this.virtualXmlAttributeMapping.getMappingKey();
+	}
+	
+	@Override
+	public String getName() {
+		return this.virtualXmlAttributeMapping.getName();
+	}
+
+	@Override
+	public void setName(String newName) {
+		this.virtualXmlAttributeMapping.setName(newName);
+	}
+	
+	@Override
+	public TextRange getNameTextRange() {
+		return this.virtualXmlAttributeMapping.getNameTextRange();
+	}
+	
+	@Override
 	public FetchType getFetch() {
 		if (this.isOrmMetadataComplete()) {
 			return org.eclipse.jpt.core.context.FetchType.toOrmResourceModel(this.javaAttributeMapping.getDefaultFetch());
@@ -50,10 +82,12 @@ public class VirtualXmlOneToOne
 		return org.eclipse.jpt.core.context.FetchType.toOrmResourceModel(this.javaAttributeMapping.getFetch());
 	}
 
-	public void setFetch(@SuppressWarnings("unused") FetchType newFetch) {
+	@Override
+	public void setFetch(FetchType newFetch) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
+	@Override
 	public Boolean getOptional() {
 		if (this.isOrmMetadataComplete()) {
 			return Boolean.valueOf(this.javaAttributeMapping.isDefaultOptional());
@@ -61,10 +95,12 @@ public class VirtualXmlOneToOne
 		return Boolean.valueOf(this.javaAttributeMapping.isOptional());
 	}
 
-	public void setOptional(@SuppressWarnings("unused") Boolean newOptional) {
+	@Override
+	public void setOptional(Boolean newOptional) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
+	@Override
 	public EList<XmlJoinColumn> getJoinColumns() {
 		//TODO need to check metadataComplete here
 		EList<XmlJoinColumn> joinColumns = new EObjectContainmentEList<XmlJoinColumn>(XmlJoinColumn.class, this, OrmPackage.XML_ONE_TO_ONE__JOIN_COLUMNS);
@@ -79,23 +115,28 @@ public class VirtualXmlOneToOne
 		return joinColumns;
 	}
 
+	@Override
 	public CascadeType getCascade() {
 		return this.virtualCascadeType;
 	}
 	
-	public void setCascade(@SuppressWarnings("unused") CascadeType value) {
+	@Override
+	public void setCascade(CascadeType value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 	
+	@Override
 	public XmlJoinTable getJoinTable() {
 		//TODO we don't yet support JoinTable in the context model for many-to-one mappings
 		return null;//this.virtualJoinTable;
 	}
 
-	public void setJoinTable(@SuppressWarnings("unused") XmlJoinTable value) {
+	@Override
+	public void setJoinTable(XmlJoinTable value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 	
+	@Override
 	public String getTargetEntity() {
 		if (this.isOrmMetadataComplete()) {
 			return this.javaAttributeMapping.getDefaultTargetEntity();
@@ -103,10 +144,12 @@ public class VirtualXmlOneToOne
 		return this.javaAttributeMapping.getTargetEntity();
 	}
 
-	public void setTargetEntity(@SuppressWarnings("unused") String value) {
+	@Override
+	public void setTargetEntity(String value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
+	@Override
 	public String getMappedBy() {
 		if (this.isOrmMetadataComplete()) {
 			return null;
@@ -115,10 +158,12 @@ public class VirtualXmlOneToOne
 			getMappedByJoiningStrategy().getMappedByAttribute();
 	}
 
-	public void setMappedBy(@SuppressWarnings("unused") String value) {
+	@Override
+	public void setMappedBy(String value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
+	@Override
 	public EList<XmlPrimaryKeyJoinColumn> getPrimaryKeyJoinColumns() {
 		EList<XmlPrimaryKeyJoinColumn> joinColumns = new EObjectContainmentEList<XmlPrimaryKeyJoinColumn>(XmlPrimaryKeyJoinColumn.class, this, OrmPackage.XML_ONE_TO_ONE__PRIMARY_KEY_JOIN_COLUMNS);
 		if (!this.isOrmMetadataComplete()) {
@@ -133,10 +178,12 @@ public class VirtualXmlOneToOne
 		return joinColumns;
 	}
 	
+	@Override
 	public TextRange getMappedByTextRange() {
 		return null;
 	}
 	
+	@Override
 	public TextRange getTargetEntityTextRange() {
 		return null;
 	}

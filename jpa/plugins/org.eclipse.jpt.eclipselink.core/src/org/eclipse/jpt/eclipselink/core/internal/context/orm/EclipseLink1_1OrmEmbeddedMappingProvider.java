@@ -53,7 +53,7 @@ public class EclipseLink1_1OrmEmbeddedMappingProvider
 	}
 	
 	public XmlAttributeMapping buildResourceMapping() {
-		return EclipseLink1_1OrmFactory.eINSTANCE.createXmlEmbeddedImpl();
+		return EclipseLink1_1OrmFactory.eINSTANCE.createXmlEmbedded();
 	}
 
 	public OrmAttributeMapping buildMapping(OrmPersistentAttribute parent, XmlAttributeMapping resourceMapping, JpaFactory factory) {

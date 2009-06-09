@@ -22,7 +22,6 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
-import org.eclipse.jpt.core.resource.xml.JpaEObject;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 
 /**
@@ -45,7 +44,6 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getPackage <em>Package</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getSchema <em>Schema</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getCatalog <em>Catalog</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getAccess <em>Access</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getSequenceGenerators <em>Sequence Generators</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getTableGenerators <em>Table Generators</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntityMappings#getSqlResultSetMappings <em>Sql Result Set Mappings</em>}</li>
@@ -59,7 +57,7 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
  * @model kind="class"
  * @generated
  */
-public class XmlEntityMappings extends AbstractJpaEObject implements XmlQueryContainer
+public class XmlEntityMappings extends AbstractJpaEObject implements XmlQueryContainer, XmlAccessHolder
 {
 	/**
 	 * The cached value of the '{@link #getNamedQueries() <em>Named Queries</em>}' containment reference list.
@@ -80,6 +78,22 @@ public class XmlEntityMappings extends AbstractJpaEObject implements XmlQueryCon
 	 * @ordered
 	 */
 	protected EList<XmlNamedNativeQuery> namedNativeQueries;
+
+	/**
+	 * changed this to null and removed the generated flag so emf won't generate over it
+	 * we don't want a default for enums, just null if the tag does not exist
+	 */
+	protected static final AccessType ACCESS_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getAccess() <em>Access</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAccess()
+	 * @generated
+	 * @ordered
+	 */
+	protected AccessType access = ACCESS_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getVersion() <em>Version</em>}' attribute.
@@ -199,22 +213,6 @@ public class XmlEntityMappings extends AbstractJpaEObject implements XmlQueryCon
 	 * @ordered
 	 */
 	protected String catalog = CATALOG_EDEFAULT;
-
-	/**
-	 * changed this to null and removed the generated flag so emf won't generate over it
-	 * we don't want a default for enums, just null if the tag does not exist
-	 */
-	protected static final AccessType ACCESS_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getAccess() <em>Access</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getAccess()
-	 * @generated
-	 * @ordered
-	 */
-	protected AccessType access = ACCESS_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getSequenceGenerators() <em>Sequence Generators</em>}' containment reference list.
@@ -621,7 +619,6 @@ public class XmlEntityMappings extends AbstractJpaEObject implements XmlQueryCon
 
 	/**
 	 * Returns the value of the '<em><b>Access</b></em>' attribute.
-	 * The default value is <code>"PROPERTY"</code>.
 	 * The literals are from the enumeration {@link org.eclipse.jpt.core.resource.orm.AccessType}.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -632,8 +629,8 @@ public class XmlEntityMappings extends AbstractJpaEObject implements XmlQueryCon
 	 * @return the value of the '<em>Access</em>' attribute.
 	 * @see org.eclipse.jpt.core.resource.orm.AccessType
 	 * @see #setAccess(AccessType)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEntityMappings_Access()
-	 * @model default="PROPERTY"
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAccessHolder_Access()
+	 * @model
 	 * @generated
 	 */
 	public AccessType getAccess()
@@ -842,6 +839,8 @@ public class XmlEntityMappings extends AbstractJpaEObject implements XmlQueryCon
 				return getNamedQueries();
 			case OrmPackage.XML_ENTITY_MAPPINGS__NAMED_NATIVE_QUERIES:
 				return getNamedNativeQueries();
+			case OrmPackage.XML_ENTITY_MAPPINGS__ACCESS:
+				return getAccess();
 			case OrmPackage.XML_ENTITY_MAPPINGS__VERSION:
 				return getVersion();
 			case OrmPackage.XML_ENTITY_MAPPINGS__DESCRIPTION:
@@ -854,8 +853,6 @@ public class XmlEntityMappings extends AbstractJpaEObject implements XmlQueryCon
 				return getSchema();
 			case OrmPackage.XML_ENTITY_MAPPINGS__CATALOG:
 				return getCatalog();
-			case OrmPackage.XML_ENTITY_MAPPINGS__ACCESS:
-				return getAccess();
 			case OrmPackage.XML_ENTITY_MAPPINGS__SEQUENCE_GENERATORS:
 				return getSequenceGenerators();
 			case OrmPackage.XML_ENTITY_MAPPINGS__TABLE_GENERATORS:
@@ -891,6 +888,9 @@ public class XmlEntityMappings extends AbstractJpaEObject implements XmlQueryCon
 				getNamedNativeQueries().clear();
 				getNamedNativeQueries().addAll((Collection<? extends XmlNamedNativeQuery>)newValue);
 				return;
+			case OrmPackage.XML_ENTITY_MAPPINGS__ACCESS:
+				setAccess((AccessType)newValue);
+				return;
 			case OrmPackage.XML_ENTITY_MAPPINGS__VERSION:
 				setVersion((String)newValue);
 				return;
@@ -908,9 +908,6 @@ public class XmlEntityMappings extends AbstractJpaEObject implements XmlQueryCon
 				return;
 			case OrmPackage.XML_ENTITY_MAPPINGS__CATALOG:
 				setCatalog((String)newValue);
-				return;
-			case OrmPackage.XML_ENTITY_MAPPINGS__ACCESS:
-				setAccess((AccessType)newValue);
 				return;
 			case OrmPackage.XML_ENTITY_MAPPINGS__SEQUENCE_GENERATORS:
 				getSequenceGenerators().clear();
@@ -956,6 +953,9 @@ public class XmlEntityMappings extends AbstractJpaEObject implements XmlQueryCon
 			case OrmPackage.XML_ENTITY_MAPPINGS__NAMED_NATIVE_QUERIES:
 				getNamedNativeQueries().clear();
 				return;
+			case OrmPackage.XML_ENTITY_MAPPINGS__ACCESS:
+				setAccess(ACCESS_EDEFAULT);
+				return;
 			case OrmPackage.XML_ENTITY_MAPPINGS__VERSION:
 				unsetVersion();
 				return;
@@ -973,9 +973,6 @@ public class XmlEntityMappings extends AbstractJpaEObject implements XmlQueryCon
 				return;
 			case OrmPackage.XML_ENTITY_MAPPINGS__CATALOG:
 				setCatalog(CATALOG_EDEFAULT);
-				return;
-			case OrmPackage.XML_ENTITY_MAPPINGS__ACCESS:
-				setAccess(ACCESS_EDEFAULT);
 				return;
 			case OrmPackage.XML_ENTITY_MAPPINGS__SEQUENCE_GENERATORS:
 				getSequenceGenerators().clear();
@@ -1013,6 +1010,8 @@ public class XmlEntityMappings extends AbstractJpaEObject implements XmlQueryCon
 				return namedQueries != null && !namedQueries.isEmpty();
 			case OrmPackage.XML_ENTITY_MAPPINGS__NAMED_NATIVE_QUERIES:
 				return namedNativeQueries != null && !namedNativeQueries.isEmpty();
+			case OrmPackage.XML_ENTITY_MAPPINGS__ACCESS:
+				return access != ACCESS_EDEFAULT;
 			case OrmPackage.XML_ENTITY_MAPPINGS__VERSION:
 				return isSetVersion();
 			case OrmPackage.XML_ENTITY_MAPPINGS__DESCRIPTION:
@@ -1025,8 +1024,6 @@ public class XmlEntityMappings extends AbstractJpaEObject implements XmlQueryCon
 				return SCHEMA_EDEFAULT == null ? schema != null : !SCHEMA_EDEFAULT.equals(schema);
 			case OrmPackage.XML_ENTITY_MAPPINGS__CATALOG:
 				return CATALOG_EDEFAULT == null ? catalog != null : !CATALOG_EDEFAULT.equals(catalog);
-			case OrmPackage.XML_ENTITY_MAPPINGS__ACCESS:
-				return access != ACCESS_EDEFAULT;
 			case OrmPackage.XML_ENTITY_MAPPINGS__SEQUENCE_GENERATORS:
 				return sequenceGenerators != null && !sequenceGenerators.isEmpty();
 			case OrmPackage.XML_ENTITY_MAPPINGS__TABLE_GENERATORS:
@@ -1044,6 +1041,44 @@ public class XmlEntityMappings extends AbstractJpaEObject implements XmlQueryCon
 	}
 	
 	
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
+	{
+		if (baseClass == XmlAccessHolder.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.XML_ENTITY_MAPPINGS__ACCESS: return OrmPackage.XML_ACCESS_HOLDER__ACCESS;
+				default: return -1;
+			}
+		}
+		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
+	{
+		if (baseClass == XmlAccessHolder.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmPackage.XML_ACCESS_HOLDER__ACCESS: return OrmPackage.XML_ENTITY_MAPPINGS__ACCESS;
+				default: return -1;
+			}
+		}
+		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
+	}
+
 	// **************** overrides **********************************************
 	
 	/**
@@ -1057,7 +1092,9 @@ public class XmlEntityMappings extends AbstractJpaEObject implements XmlQueryCon
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (version: ");
+		result.append(" (access: ");
+		result.append(access);
+		result.append(", version: ");
 		if (versionESet) result.append(version); else result.append("<unset>");
 		result.append(", description: ");
 		result.append(description);
@@ -1067,8 +1104,6 @@ public class XmlEntityMappings extends AbstractJpaEObject implements XmlQueryCon
 		result.append(schema);
 		result.append(", catalog: ");
 		result.append(catalog);
-		result.append(", access: ");
-		result.append(access);
 		result.append(')');
 		return result.toString();
 	}

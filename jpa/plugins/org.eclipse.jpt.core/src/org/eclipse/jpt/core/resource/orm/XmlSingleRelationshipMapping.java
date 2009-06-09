@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -8,6 +8,16 @@
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.core.resource.orm;
+
+import java.util.Collection;
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
 
 
 /**
@@ -29,11 +39,152 @@ package org.eclipse.jpt.core.resource.orm;
  * </p>
  *
  * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlSingleRelationshipMapping()
- * @model kind="class" interface="true" abstract="true"
+ * @model kind="class" abstract="true"
  * @generated
  */
-public interface XmlSingleRelationshipMapping extends XmlRelationshipMapping, XmlJoinTableMapping, XmlJoinColumnsMapping
+public abstract class XmlSingleRelationshipMapping extends XmlRelationshipMapping implements XmlJoinTableMapping, XmlJoinColumnsMapping
 {
+	/**
+	 * The cached value of the '{@link #getJoinTable() <em>Join Table</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getJoinTable()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlJoinTable joinTable;
+	/**
+	 * The cached value of the '{@link #getJoinColumns() <em>Join Columns</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getJoinColumns()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlJoinColumn> joinColumns;
+	/**
+	 * The default value of the '{@link #getOptional() <em>Optional</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getOptional()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final Boolean OPTIONAL_EDEFAULT = null;
+	/**
+	 * The cached value of the '{@link #getOptional() <em>Optional</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getOptional()
+	 * @generated
+	 * @ordered
+	 */
+	protected Boolean optional = OPTIONAL_EDEFAULT;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected XmlSingleRelationshipMapping()
+	{
+		super();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	protected EClass eStaticClass()
+	{
+		return OrmPackage.Literals.XML_SINGLE_RELATIONSHIP_MAPPING;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Join Table</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Join Table</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Join Table</em>' containment reference.
+	 * @see #setJoinTable(XmlJoinTable)
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlJoinTableMapping_JoinTable()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public XmlJoinTable getJoinTable()
+	{
+		return joinTable;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetJoinTable(XmlJoinTable newJoinTable, NotificationChain msgs)
+	{
+		XmlJoinTable oldJoinTable = joinTable;
+		joinTable = newJoinTable;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_TABLE, oldJoinTable, newJoinTable);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlSingleRelationshipMapping#getJoinTable <em>Join Table</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Join Table</em>' containment reference.
+	 * @see #getJoinTable()
+	 * @generated
+	 */
+	public void setJoinTable(XmlJoinTable newJoinTable)
+	{
+		if (newJoinTable != joinTable)
+		{
+			NotificationChain msgs = null;
+			if (joinTable != null)
+				msgs = ((InternalEObject)joinTable).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_TABLE, null, msgs);
+			if (newJoinTable != null)
+				msgs = ((InternalEObject)newJoinTable).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_TABLE, null, msgs);
+			msgs = basicSetJoinTable(newJoinTable, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_TABLE, newJoinTable, newJoinTable));
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Join Columns</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.core.resource.orm.XmlJoinColumn}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Join Columns</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Join Columns</em>' containment reference list.
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlJoinColumnsMapping_JoinColumns()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public EList<XmlJoinColumn> getJoinColumns()
+	{
+		if (joinColumns == null)
+		{
+			joinColumns = new EObjectContainmentEList<XmlJoinColumn>(XmlJoinColumn.class, this, OrmPackage.XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_COLUMNS);
+		}
+		return joinColumns;
+	}
+
 	/**
 	 * Returns the value of the '<em><b>Optional</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -48,7 +199,9 @@ public interface XmlSingleRelationshipMapping extends XmlRelationshipMapping, Xm
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.BooleanObject"
 	 * @generated
 	 */
-	Boolean getOptional();
+	public Boolean getOptional() {
+		return optional;
+	}
 
 	/**
 	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlSingleRelationshipMapping#getOptional <em>Optional</em>}' attribute.
@@ -58,6 +211,188 @@ public interface XmlSingleRelationshipMapping extends XmlRelationshipMapping, Xm
 	 * @see #getOptional()
 	 * @generated
 	 */
-	void setOptional(Boolean value);
+	public void setOptional(Boolean newOptional) {
+		Boolean oldOptional = optional;
+		optional = newOptional;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_SINGLE_RELATIONSHIP_MAPPING__OPTIONAL, oldOptional, optional));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
+	{
+		switch (featureID)
+		{
+			case OrmPackage.XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_TABLE:
+				return basicSetJoinTable(null, msgs);
+			case OrmPackage.XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_COLUMNS:
+				return ((InternalEList<?>)getJoinColumns()).basicRemove(otherEnd, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Object eGet(int featureID, boolean resolve, boolean coreType)
+	{
+		switch (featureID)
+		{
+			case OrmPackage.XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_TABLE:
+				return getJoinTable();
+			case OrmPackage.XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_COLUMNS:
+				return getJoinColumns();
+			case OrmPackage.XML_SINGLE_RELATIONSHIP_MAPPING__OPTIONAL:
+				return getOptional();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public void eSet(int featureID, Object newValue)
+	{
+		switch (featureID)
+		{
+			case OrmPackage.XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_TABLE:
+				setJoinTable((XmlJoinTable)newValue);
+				return;
+			case OrmPackage.XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_COLUMNS:
+				getJoinColumns().clear();
+				getJoinColumns().addAll((Collection<? extends XmlJoinColumn>)newValue);
+				return;
+			case OrmPackage.XML_SINGLE_RELATIONSHIP_MAPPING__OPTIONAL:
+				setOptional((Boolean)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void eUnset(int featureID)
+	{
+		switch (featureID)
+		{
+			case OrmPackage.XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_TABLE:
+				setJoinTable((XmlJoinTable)null);
+				return;
+			case OrmPackage.XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_COLUMNS:
+				getJoinColumns().clear();
+				return;
+			case OrmPackage.XML_SINGLE_RELATIONSHIP_MAPPING__OPTIONAL:
+				setOptional(OPTIONAL_EDEFAULT);
+				return;
+		}
+		super.eUnset(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public boolean eIsSet(int featureID)
+	{
+		switch (featureID)
+		{
+			case OrmPackage.XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_TABLE:
+				return joinTable != null;
+			case OrmPackage.XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_COLUMNS:
+				return joinColumns != null && !joinColumns.isEmpty();
+			case OrmPackage.XML_SINGLE_RELATIONSHIP_MAPPING__OPTIONAL:
+				return OPTIONAL_EDEFAULT == null ? optional != null : !OPTIONAL_EDEFAULT.equals(optional);
+		}
+		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
+	{
+		if (baseClass == XmlJoinTableMapping.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_TABLE: return OrmPackage.XML_JOIN_TABLE_MAPPING__JOIN_TABLE;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlJoinColumnsMapping.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_COLUMNS: return OrmPackage.XML_JOIN_COLUMNS_MAPPING__JOIN_COLUMNS;
+				default: return -1;
+			}
+		}
+		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
+	{
+		if (baseClass == XmlJoinTableMapping.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmPackage.XML_JOIN_TABLE_MAPPING__JOIN_TABLE: return OrmPackage.XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_TABLE;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlJoinColumnsMapping.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmPackage.XML_JOIN_COLUMNS_MAPPING__JOIN_COLUMNS: return OrmPackage.XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_COLUMNS;
+				default: return -1;
+			}
+		}
+		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String toString()
+	{
+		if (eIsProxy()) return super.toString();
+
+		StringBuffer result = new StringBuffer(super.toString());
+		result.append(" (optional: ");
+		result.append(optional);
+		result.append(')');
+		return result.toString();
+	}
 
 } // SingleRelationshipMapping

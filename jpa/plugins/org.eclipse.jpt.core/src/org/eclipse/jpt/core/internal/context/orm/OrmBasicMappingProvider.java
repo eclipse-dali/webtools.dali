@@ -52,7 +52,7 @@ public class OrmBasicMappingProvider
 	}
 	
 	public XmlAttributeMapping buildResourceMapping() {
-		return OrmFactory.eINSTANCE.createXmlBasicImpl();
+		return OrmFactory.eINSTANCE.createXmlBasic();
 	}
 	
 	public OrmBasicMapping buildMapping(OrmPersistentAttribute parent, XmlAttributeMapping resourceMapping, JpaFactory factory) {

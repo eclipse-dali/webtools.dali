@@ -53,7 +53,7 @@ public class EclipseLink1_1OrmOneToOneMappingProvider
 	}
 	
 	public XmlAttributeMapping buildResourceMapping() {
-		return EclipseLink1_1OrmFactory.eINSTANCE.createXmlOneToOneImpl();
+		return EclipseLink1_1OrmFactory.eINSTANCE.createXmlOneToOne();
 	}
 
 	public OrmAttributeMapping buildMapping(OrmPersistentAttribute parent, XmlAttributeMapping resourceMapping, JpaFactory factory) {

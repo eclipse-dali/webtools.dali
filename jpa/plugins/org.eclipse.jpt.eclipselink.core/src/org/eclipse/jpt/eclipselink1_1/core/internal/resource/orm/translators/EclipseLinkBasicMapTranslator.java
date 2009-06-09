@@ -10,9 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink1_1.core.internal.resource.orm.translators;
 
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.jpt.eclipselink1_1.core.resource.orm.EclipseLink1_1OrmFactory;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 public class EclipseLinkBasicMapTranslator extends org.eclipse.jpt.eclipselink.core.internal.resource.orm.translators.BasicMapTranslator
@@ -22,12 +20,7 @@ public class EclipseLinkBasicMapTranslator extends org.eclipse.jpt.eclipselink.c
 	public EclipseLinkBasicMapTranslator(String domNameAndPath, EStructuralFeature aFeature) {
 		super(domNameAndPath, aFeature);
 	}
-	
-	@Override
-	public EObject createEMFObject(String nodeName, String readAheadName) {
-		return EclipseLink1_1OrmFactory.eINSTANCE.createXmlBasicMapImpl();
-	}
-	
+
 	@Override
 	protected Translator[] createChildren() {
 		return new Translator[] {
@@ -37,6 +30,6 @@ public class EclipseLinkBasicMapTranslator extends org.eclipse.jpt.eclipselink.c
 	}
 	
 	protected Translator createAccessTranslator() {
-		return new Translator(ACCESS, ECLIPSELINK1_1_ORM_PKG.getXmlAttributeMapping_Access(), DOM_ATTRIBUTE);
+		return new Translator(ACCESS, ORM_PKG.getXmlAccessHolder_Access(), DOM_ATTRIBUTE);
 	}
 }

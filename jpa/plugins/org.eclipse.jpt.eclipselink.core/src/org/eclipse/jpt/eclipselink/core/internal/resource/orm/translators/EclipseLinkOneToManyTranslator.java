@@ -9,11 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.resource.orm.translators;
 
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.jpt.core.internal.resource.orm.translators.OneToManyTranslator;
 import org.eclipse.jpt.core.internal.resource.xml.translators.EmptyTagBooleanTranslator;
-import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 public class EclipseLinkOneToManyTranslator extends OneToManyTranslator
@@ -21,12 +19,6 @@ public class EclipseLinkOneToManyTranslator extends OneToManyTranslator
 {
 	public EclipseLinkOneToManyTranslator(String domNameAndPath, EStructuralFeature aFeature) {
 		super(domNameAndPath, aFeature);
-	}
-	
-	
-	@Override
-	public EObject createEMFObject(String nodeName, String readAheadName) {
-		return EclipseLinkOrmFactory.eINSTANCE.createXmlOneToManyImpl();
 	}
 	
 	@Override

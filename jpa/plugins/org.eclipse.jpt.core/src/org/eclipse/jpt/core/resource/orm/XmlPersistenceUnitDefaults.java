@@ -15,7 +15,6 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
-import org.eclipse.jpt.core.resource.xml.JpaEObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -33,7 +32,6 @@ import org.eclipse.jpt.core.resource.xml.JpaEObject;
  * <ul>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitDefaults#getSchema <em>Schema</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitDefaults#getCatalog <em>Catalog</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitDefaults#getAccess <em>Access</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitDefaults#isCascadePersist <em>Cascade Persist</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitDefaults#getEntityListeners <em>Entity Listeners</em>}</li>
  * </ul>
@@ -41,11 +39,26 @@ import org.eclipse.jpt.core.resource.xml.JpaEObject;
  *
  * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlPersistenceUnitDefaults()
  * @model kind="class"
- * @extends JpaEObject
  * @generated
  */
-public class XmlPersistenceUnitDefaults extends AbstractJpaEObject implements JpaEObject
+public class XmlPersistenceUnitDefaults extends AbstractJpaEObject implements XmlAccessHolder
 {
+	/**
+	 * changed this to null and removed the generated flag so emf won't generate over it
+	 * we don't want a default for enums, just null if the tag does not exist
+	 */
+	protected static final AccessType ACCESS_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getAccess() <em>Access</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAccess()
+	 * @generated
+	 * @ordered
+	 */
+	protected AccessType access = ACCESS_EDEFAULT;
+
 	/**
 	 * The default value of the '{@link #getSchema() <em>Schema</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -85,22 +98,6 @@ public class XmlPersistenceUnitDefaults extends AbstractJpaEObject implements Jp
 	 * @ordered
 	 */
 	protected String catalog = CATALOG_EDEFAULT;
-
-	/**
-	 * changed this to null and removed the generated flag so emf won't generate over it
-	 * we don't want a default for enums, just null if the tag does not exist
-	 */
-	protected static final AccessType ACCESS_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getAccess() <em>Access</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getAccess()
-	 * @generated
-	 * @ordered
-	 */
-	protected AccessType access = ACCESS_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #isCascadePersist() <em>Cascade Persist</em>}' attribute.
@@ -225,7 +222,6 @@ public class XmlPersistenceUnitDefaults extends AbstractJpaEObject implements Jp
 
 	/**
 	 * Returns the value of the '<em><b>Access</b></em>' attribute.
-	 * The default value is <code>"PROPERTY"</code>.
 	 * The literals are from the enumeration {@link org.eclipse.jpt.core.resource.orm.AccessType}.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -236,8 +232,8 @@ public class XmlPersistenceUnitDefaults extends AbstractJpaEObject implements Jp
 	 * @return the value of the '<em>Access</em>' attribute.
 	 * @see org.eclipse.jpt.core.resource.orm.AccessType
 	 * @see #setAccess(AccessType)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlPersistenceUnitDefaults_Access()
-	 * @model default="PROPERTY"
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAccessHolder_Access()
+	 * @model
 	 * @generated
 	 */
 	public AccessType getAccess()
@@ -383,12 +379,12 @@ public class XmlPersistenceUnitDefaults extends AbstractJpaEObject implements Jp
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__ACCESS:
+				return getAccess();
 			case OrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__SCHEMA:
 				return getSchema();
 			case OrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__CATALOG:
 				return getCatalog();
-			case OrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__ACCESS:
-				return getAccess();
 			case OrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__CASCADE_PERSIST:
 				return isCascadePersist();
 			case OrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__ENTITY_LISTENERS:
@@ -407,14 +403,14 @@ public class XmlPersistenceUnitDefaults extends AbstractJpaEObject implements Jp
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__ACCESS:
+				setAccess((AccessType)newValue);
+				return;
 			case OrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__SCHEMA:
 				setSchema((String)newValue);
 				return;
 			case OrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__CATALOG:
 				setCatalog((String)newValue);
-				return;
-			case OrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__ACCESS:
-				setAccess((AccessType)newValue);
 				return;
 			case OrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__CASCADE_PERSIST:
 				setCascadePersist((Boolean)newValue);
@@ -436,14 +432,14 @@ public class XmlPersistenceUnitDefaults extends AbstractJpaEObject implements Jp
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__ACCESS:
+				setAccess(ACCESS_EDEFAULT);
+				return;
 			case OrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__SCHEMA:
 				setSchema(SCHEMA_EDEFAULT);
 				return;
 			case OrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__CATALOG:
 				setCatalog(CATALOG_EDEFAULT);
-				return;
-			case OrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__ACCESS:
-				setAccess(ACCESS_EDEFAULT);
 				return;
 			case OrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__CASCADE_PERSIST:
 				setCascadePersist(CASCADE_PERSIST_EDEFAULT);
@@ -465,12 +461,12 @@ public class XmlPersistenceUnitDefaults extends AbstractJpaEObject implements Jp
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__ACCESS:
+				return access != ACCESS_EDEFAULT;
 			case OrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__SCHEMA:
 				return SCHEMA_EDEFAULT == null ? schema != null : !SCHEMA_EDEFAULT.equals(schema);
 			case OrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__CATALOG:
 				return CATALOG_EDEFAULT == null ? catalog != null : !CATALOG_EDEFAULT.equals(catalog);
-			case OrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__ACCESS:
-				return access != ACCESS_EDEFAULT;
 			case OrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__CASCADE_PERSIST:
 				return cascadePersist != CASCADE_PERSIST_EDEFAULT;
 			case OrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS__ENTITY_LISTENERS:
@@ -490,12 +486,12 @@ public class XmlPersistenceUnitDefaults extends AbstractJpaEObject implements Jp
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (schema: ");
+		result.append(" (access: ");
+		result.append(access);
+		result.append(", schema: ");
 		result.append(schema);
 		result.append(", catalog: ");
 		result.append(catalog);
-		result.append(", access: ");
-		result.append(access);
 		result.append(", cascadePersist: ");
 		result.append(cascadePersist);
 		result.append(')');

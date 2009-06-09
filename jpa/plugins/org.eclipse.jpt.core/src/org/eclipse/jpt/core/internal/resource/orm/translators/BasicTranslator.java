@@ -9,11 +9,9 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.orm.translators;
 
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.jpt.core.internal.resource.xml.translators.BooleanTranslator;
 import org.eclipse.jpt.core.internal.resource.xml.translators.EmptyTagBooleanTranslator;
-import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 public class BasicTranslator extends Translator 
@@ -26,12 +24,6 @@ public class BasicTranslator extends Translator
 		super(domNameAndPath, aFeature);
 	}
 	
-	
-	@Override
-	public EObject createEMFObject(String nodeName, String readAheadName) {
-		return OrmFactory.eINSTANCE.createXmlBasicImpl();
-	}
-
 	@Override
 	protected Translator[] getChildren() {
 		if (this.children == null) {

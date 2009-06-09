@@ -52,7 +52,7 @@ public class OrmManyToManyMappingProvider
 	}
 	
 	public XmlAttributeMapping buildResourceMapping() {
-		return OrmFactory.eINSTANCE.createXmlManyToManyImpl();
+		return OrmFactory.eINSTANCE.createXmlManyToMany();
 	}
 
 	public OrmAttributeMapping buildMapping(OrmPersistentAttribute parent, XmlAttributeMapping resourceMapping, JpaFactory factory) {

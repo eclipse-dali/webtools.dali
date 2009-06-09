@@ -25,24 +25,59 @@ import org.eclipse.jpt.core.utility.TextRange;
  * VirtualBasic is an implementation of Basic used when there is 
  * no tag in the orm.xml and an underlying javaBasicMapping exists.
  */
-public class VirtualXmlBasic extends VirtualXmlAttributeMapping<JavaBasicMapping> implements XmlBasic
+public class VirtualXmlBasic extends XmlBasic
 {
+	protected OrmTypeMapping ormTypeMapping;
+	
+	protected final JavaBasicMapping javaAttributeMapping;
+
+	protected final VirtualXmlAttributeMapping virtualXmlAttributeMapping;
 
 	protected final VirtualXmlColumn column;
-		
+	
 	public VirtualXmlBasic(OrmTypeMapping ormTypeMapping, JavaBasicMapping javaBasicMapping) {
-		super(ormTypeMapping, javaBasicMapping);
+		super();
+		this.ormTypeMapping = ormTypeMapping;
+		this.javaAttributeMapping = javaBasicMapping;
+		this.virtualXmlAttributeMapping = new VirtualXmlAttributeMapping(ormTypeMapping, javaBasicMapping);
 		this.column = new VirtualXmlColumn(ormTypeMapping, javaBasicMapping.getColumn());
 	}
+	
+	protected boolean isOrmMetadataComplete() {
+		return this.ormTypeMapping.isMetadataComplete();
+	}
+	
+	@Override
+	public String getMappingKey() {
+		return this.virtualXmlAttributeMapping.getMappingKey();
+	}
+	
+	@Override
+	public String getName() {
+		return this.virtualXmlAttributeMapping.getName();
+	}
 
+	@Override
+	public void setName(String newName) {
+		this.virtualXmlAttributeMapping.setName(newName);
+	}
+	
+	@Override
+	public TextRange getNameTextRange() {
+		return this.virtualXmlAttributeMapping.getNameTextRange();
+	}
+
+	@Override
 	public XmlColumn getColumn() {
 		return this.column;
 	}
 
-	public void setColumn(@SuppressWarnings("unused")XmlColumn value) {
+	@Override
+	public void setColumn(XmlColumn value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 	
+	@Override
 	public FetchType getFetch() {
 		if (this.isOrmMetadataComplete()) {
 			return org.eclipse.jpt.core.context.FetchType.toOrmResourceModel(this.javaAttributeMapping.getDefaultFetch());
@@ -50,10 +85,12 @@ public class VirtualXmlBasic extends VirtualXmlAttributeMapping<JavaBasicMapping
 		return org.eclipse.jpt.core.context.FetchType.toOrmResourceModel(this.javaAttributeMapping.getFetch());
 	}
 
-	public void setFetch(@SuppressWarnings("unused")FetchType newFetch) {
+	@Override
+	public void setFetch(FetchType newFetch) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
+	@Override
 	public Boolean getOptional() {
 		if (this.isOrmMetadataComplete()) {
 			return Boolean.valueOf(this.javaAttributeMapping.isDefaultOptional());
@@ -61,10 +98,12 @@ public class VirtualXmlBasic extends VirtualXmlAttributeMapping<JavaBasicMapping
 		return Boolean.valueOf(this.javaAttributeMapping.isOptional());
 	}
 
-	public void setOptional(@SuppressWarnings("unused")Boolean newOptional) {
+	@Override
+	public void setOptional(Boolean newOptional) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
+	@Override
 	public boolean isLob() {
 		if (this.isOrmMetadataComplete()) {
 			return false;
@@ -72,10 +111,12 @@ public class VirtualXmlBasic extends VirtualXmlAttributeMapping<JavaBasicMapping
 		return this.javaAttributeMapping.getConverter().getType() == Converter.LOB_CONVERTER;
 	}
 
-	public void setLob(@SuppressWarnings("unused")boolean newLob) {
+	@Override
+	public void setLob(boolean newLob) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
+	@Override
 	public TemporalType getTemporal() {
 		if (this.isOrmMetadataComplete()) {
 			return null;
@@ -87,10 +128,12 @@ public class VirtualXmlBasic extends VirtualXmlAttributeMapping<JavaBasicMapping
 		return null;
 	}
 
-	public void setTemporal(@SuppressWarnings("unused")TemporalType newTemporal){
+	@Override
+	public void setTemporal(TemporalType newTemporal){
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
+	@Override
 	public EnumType getEnumerated() {
 		if (this.javaAttributeMapping.getConverter().getType() != Converter.ENUMERATED_CONVERTER) {
 			return null;
@@ -108,18 +151,22 @@ public class VirtualXmlBasic extends VirtualXmlAttributeMapping<JavaBasicMapping
 		return org.eclipse.jpt.core.context.EnumType.toOrmResourceModel(javaEnumeratedType);
 	}
 
-	public void setEnumerated(@SuppressWarnings("unused")EnumType newEnumerated) {
+	@Override
+	public void setEnumerated(EnumType newEnumerated) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 	
+	@Override
 	public TextRange getEnumeratedTextRange() {
 		return null;
 	}
 	
+	@Override
 	public TextRange getLobTextRange() {
 		return null;
 	}
 	
+	@Override
 	public TextRange getTemporalTextRange() {
 		return null;
 	}

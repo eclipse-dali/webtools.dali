@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,12 +10,11 @@
 package org.eclipse.jpt.core.resource.orm;
 
 import org.eclipse.jpt.core.resource.xml.JpaEObject;
-import org.eclipse.jpt.core.utility.TextRange;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Xml Attribute Mapping</b></em>'.
- * 
+ * A representation of the model object '<em><b>Xml Access Holder</b></em>'.
+ *
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -26,46 +25,44 @@ import org.eclipse.jpt.core.utility.TextRange;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlAttributeMapping#getName <em>Name</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlAccessHolder#getAccess <em>Access</em>}</li>
  * </ul>
  * </p>
  *
- * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAttributeMapping()
+ * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAccessHolder()
  * @model kind="class" interface="true" abstract="true"
  * @extends JpaEObject
  * @generated
  */
-public interface XmlAttributeMapping extends JpaEObject
+public interface XmlAccessHolder extends JpaEObject
 {
 	/**
-	 * Returns the value of the '<em><b>Name</b></em>' attribute.
+	 * Returns the value of the '<em><b>Access</b></em>' attribute.
+	 * The literals are from the enumeration {@link org.eclipse.jpt.core.resource.orm.AccessType}.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Name</em>' attribute isn't clear,
+	 * If the meaning of the '<em>Access</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Name</em>' attribute.
-	 * @see #setName(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAttributeMapping_Name()
-	 * @model dataType="org.eclipse.emf.ecore.xml.type.String" required="true"
+	 * @return the value of the '<em>Access</em>' attribute.
+	 * @see org.eclipse.jpt.core.resource.orm.AccessType
+	 * @see #setAccess(AccessType)
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAccessHolder_Access()
+	 * @model
 	 * @generated
 	 */
-	String getName();
+	AccessType getAccess();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlAttributeMapping#getName <em>Name</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlAccessHolder#getAccess <em>Access</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Name</em>' attribute.
-	 * @see #getName()
+	 * @param value the new value of the '<em>Access</em>' attribute.
+	 * @see org.eclipse.jpt.core.resource.orm.AccessType
+	 * @see #getAccess()
 	 * @generated
 	 */
-	void setName(String value);
-	
-	TextRange getNameTextRange();
-	
-	//TODO unsure about this api, might change soon
-	String getMappingKey();
+	void setAccess(AccessType value);
 
-} // XmlAttributeMapping
+} // XmlAccessHolder

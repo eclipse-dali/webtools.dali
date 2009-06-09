@@ -9,9 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.orm.translators;
 
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 public class EmbeddedTranslator extends Translator
@@ -22,11 +20,6 @@ public class EmbeddedTranslator extends Translator
 	
 	public EmbeddedTranslator(String domNameAndPath, EStructuralFeature aFeature) {
 		super(domNameAndPath, aFeature);
-	}
-	
-	@Override
-	public EObject createEMFObject(String nodeName, String readAheadName) {
-		return OrmFactory.eINSTANCE.createXmlEmbeddedImpl();
 	}
 
 	@Override

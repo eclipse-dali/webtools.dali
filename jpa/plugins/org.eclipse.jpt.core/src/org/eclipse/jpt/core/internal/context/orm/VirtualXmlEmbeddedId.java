@@ -19,19 +19,53 @@ import org.eclipse.jpt.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.core.resource.orm.XmlEmbeddedId;
+import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 
 /**
  * VirtualEmbeddedId is an implementation of EmbeddedId used when there is 
  * no tag in the orm.xml and an underlying javaEmbeddedIdMapping exists.
  */
-public class VirtualXmlEmbeddedId extends VirtualXmlAttributeMapping<JavaEmbeddedIdMapping> implements XmlEmbeddedId
+public class VirtualXmlEmbeddedId extends XmlEmbeddedId
 {
+	protected OrmTypeMapping ormTypeMapping;
+	
+	protected final JavaEmbeddedIdMapping javaAttributeMapping;
 		
+	protected final VirtualXmlAttributeMapping virtualXmlAttributeMapping;
+
 	public VirtualXmlEmbeddedId(OrmTypeMapping ormTypeMapping, JavaEmbeddedIdMapping javaEmbeddedIdMapping) {
-		super(ormTypeMapping, javaEmbeddedIdMapping);
+		super();
+		this.ormTypeMapping = ormTypeMapping;
+		this.javaAttributeMapping = javaEmbeddedIdMapping;
+		this.virtualXmlAttributeMapping = new VirtualXmlAttributeMapping(ormTypeMapping, javaEmbeddedIdMapping);
 	}
 	
+	protected boolean isOrmMetadataComplete() {
+		return this.ormTypeMapping.isMetadataComplete();
+	}
+	
+	@Override
+	public String getMappingKey() {
+		return this.virtualXmlAttributeMapping.getMappingKey();
+	}
+	
+	@Override
+	public String getName() {
+		return this.virtualXmlAttributeMapping.getName();
+	}
+
+	@Override
+	public void setName(String newName) {
+		this.virtualXmlAttributeMapping.setName(newName);
+	}
+	
+	@Override
+	public TextRange getNameTextRange() {
+		return this.virtualXmlAttributeMapping.getNameTextRange();
+	}
+	
+	@Override
 	public EList<XmlAttributeOverride> getAttributeOverrides() {
 		EList<XmlAttributeOverride> attributeOverrides = new EObjectContainmentEList<XmlAttributeOverride>(XmlAttributeOverride.class, this, OrmPackage.XML_EMBEDDED_ID__ATTRIBUTE_OVERRIDES);
 		ListIterator<JavaAttributeOverride> javaAttributeOverrides;

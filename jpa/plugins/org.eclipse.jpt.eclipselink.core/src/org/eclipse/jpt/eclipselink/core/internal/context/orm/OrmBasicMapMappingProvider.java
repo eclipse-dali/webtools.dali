@@ -54,7 +54,7 @@ public class OrmBasicMapMappingProvider
 	}
 	
 	public XmlAttributeMapping buildResourceMapping() {
-		return EclipseLinkOrmFactory.eINSTANCE.createXmlBasicMapImpl();
+		return EclipseLinkOrmFactory.eINSTANCE.createXmlBasicMap();
 	}
 
 	public OrmAttributeMapping buildMapping(OrmPersistentAttribute parent, XmlAttributeMapping resourceMapping, JpaFactory factory) {

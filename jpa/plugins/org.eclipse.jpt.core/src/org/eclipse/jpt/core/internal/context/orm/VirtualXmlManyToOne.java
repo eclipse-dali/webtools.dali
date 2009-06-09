@@ -28,19 +28,52 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
  * no tag in the orm.xml and an underlying javaManyToOneMapping exists.
  */
 public class VirtualXmlManyToOne 
-	extends VirtualXmlAttributeMapping<JavaManyToOneMapping> 
-	implements XmlManyToOne
+	extends XmlManyToOne
 {
+	protected OrmTypeMapping ormTypeMapping;
+	
+	protected final JavaManyToOneMapping javaAttributeMapping;
+
+	protected final VirtualXmlAttributeMapping virtualXmlAttributeMapping;
+
 	protected final VirtualCascadeType virtualCascadeType;
 	
 	
 	public VirtualXmlManyToOne(
 		OrmTypeMapping ormTypeMapping, JavaManyToOneMapping javaManyToOneMapping) {
-		super(ormTypeMapping, javaManyToOneMapping);
+		super();
+		this.ormTypeMapping = ormTypeMapping;
+		this.javaAttributeMapping = javaManyToOneMapping;
+		this.virtualXmlAttributeMapping = new VirtualXmlAttributeMapping(ormTypeMapping, javaManyToOneMapping);
 		this.virtualCascadeType = 
 			new VirtualCascadeType(javaManyToOneMapping.getCascade(), this.isOrmMetadataComplete());
 	}
+	
+	protected boolean isOrmMetadataComplete() {
+		return this.ormTypeMapping.isMetadataComplete();
+	}
+	
+	@Override
+	public String getMappingKey() {
+		return this.virtualXmlAttributeMapping.getMappingKey();
+	}
+	
+	@Override
+	public String getName() {
+		return this.virtualXmlAttributeMapping.getName();
+	}
 
+	@Override
+	public void setName(String newName) {
+		this.virtualXmlAttributeMapping.setName(newName);
+	}
+	
+	@Override
+	public TextRange getNameTextRange() {
+		return this.virtualXmlAttributeMapping.getNameTextRange();
+	}
+
+	@Override
 	public FetchType getFetch() {
 		if (this.isOrmMetadataComplete()) {
 			return org.eclipse.jpt.core.context.FetchType.toOrmResourceModel(this.javaAttributeMapping.getDefaultFetch());
@@ -48,10 +81,12 @@ public class VirtualXmlManyToOne
 		return org.eclipse.jpt.core.context.FetchType.toOrmResourceModel(this.javaAttributeMapping.getFetch());
 	}
 
-	public void setFetch(@SuppressWarnings("unused") FetchType newFetch) {
+	@Override
+	public void setFetch(FetchType newFetch) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
+	@Override
 	public Boolean getOptional() {
 		if (this.isOrmMetadataComplete()) {
 			return Boolean.valueOf(this.javaAttributeMapping.isDefaultOptional());
@@ -59,10 +94,12 @@ public class VirtualXmlManyToOne
 		return Boolean.valueOf(this.javaAttributeMapping.isOptional());
 	}
 
-	public void setOptional(@SuppressWarnings("unused") Boolean newOptional) {
+	@Override
+	public void setOptional(Boolean newOptional) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 	
+	@Override
 	public EList<XmlJoinColumn> getJoinColumns() {
 		EList<XmlJoinColumn> joinColumns = new EObjectContainmentEList<XmlJoinColumn>(XmlJoinColumn.class, this, OrmPackage.XML_JOIN_TABLE__JOIN_COLUMNS);
 		//TODO here i'm using joinColumns() while VirtualXmlJoinTable uses specifiedJoinColumns()???
@@ -76,23 +113,28 @@ public class VirtualXmlManyToOne
 		return joinColumns;
 	}
 
+	@Override
 	public CascadeType getCascade() {
 		return this.virtualCascadeType;
 	}
 	
-	public void setCascade(@SuppressWarnings("unused") CascadeType value) {
+	@Override
+	public void setCascade(CascadeType value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 	
+	@Override
 	public XmlJoinTable getJoinTable() {
 		//TODO we don't yet support JoinTable in the context model for many-to-one mappings
 		return null;//this.virtualJoinTable;
 	}
 
-	public void setJoinTable(@SuppressWarnings("unused") XmlJoinTable value) {
+	@Override
+	public void setJoinTable(XmlJoinTable value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 	
+	@Override
 	public String getTargetEntity() {
 		if (this.isOrmMetadataComplete()) {
 			return this.javaAttributeMapping.getDefaultTargetEntity();
@@ -100,10 +142,12 @@ public class VirtualXmlManyToOne
 		return this.javaAttributeMapping.getTargetEntity();
 	}
 
-	public void setTargetEntity(@SuppressWarnings("unused") String value) {
+	@Override
+	public void setTargetEntity(String value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 	
+	@Override
 	public TextRange getTargetEntityTextRange() {
 		return null;
 	}

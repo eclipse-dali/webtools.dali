@@ -23,21 +23,16 @@ import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlBasic;
-import org.eclipse.jpt.core.resource.orm.XmlBasicImpl;
 import org.eclipse.jpt.core.resource.orm.XmlEmbedded;
-import org.eclipse.jpt.core.resource.orm.XmlEmbeddedIdImpl;
-import org.eclipse.jpt.core.resource.orm.XmlEmbeddedImpl;
+import org.eclipse.jpt.core.resource.orm.XmlEmbeddedId;
 import org.eclipse.jpt.core.resource.orm.XmlEntity;
 import org.eclipse.jpt.core.resource.orm.XmlId;
-import org.eclipse.jpt.core.resource.orm.XmlIdImpl;
-import org.eclipse.jpt.core.resource.orm.XmlManyToManyImpl;
-import org.eclipse.jpt.core.resource.orm.XmlManyToOneImpl;
-import org.eclipse.jpt.core.resource.orm.XmlOneToManyImpl;
-import org.eclipse.jpt.core.resource.orm.XmlOneToOneImpl;
+import org.eclipse.jpt.core.resource.orm.XmlManyToMany;
+import org.eclipse.jpt.core.resource.orm.XmlManyToOne;
+import org.eclipse.jpt.core.resource.orm.XmlOneToMany;
+import org.eclipse.jpt.core.resource.orm.XmlOneToOne;
 import org.eclipse.jpt.core.resource.orm.XmlTransient;
-import org.eclipse.jpt.core.resource.orm.XmlTransientImpl;
 import org.eclipse.jpt.core.resource.orm.XmlVersion;
-import org.eclipse.jpt.core.resource.orm.XmlVersionImpl;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
@@ -309,7 +304,7 @@ public class GenericOrmPersistentTypeTests extends ContextModelTestCase
 		XmlEntity entity = getXmlEntityMappings().getEntities().get(0);
 
 		entity.setAttributes(OrmFactory.eINSTANCE.createAttributes());
-		XmlBasicImpl basic = OrmFactory.eINSTANCE.createXmlBasicImpl();
+		XmlBasic basic = OrmFactory.eINSTANCE.createXmlBasic();
 		entity.getAttributes().getBasics().add(basic);
 		basic.setName("basicAttribute");
 			
@@ -317,7 +312,7 @@ public class GenericOrmPersistentTypeTests extends ContextModelTestCase
 		assertEquals("basicAttribute", ormPersistentAttribute.getName());
 		assertEquals(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, ormPersistentAttribute.getMapping().getKey());
 		
-		XmlEmbeddedImpl embedded = OrmFactory.eINSTANCE.createXmlEmbeddedImpl();
+		XmlEmbedded embedded = OrmFactory.eINSTANCE.createXmlEmbedded();
 		entity.getAttributes().getEmbeddeds().add(embedded);
 		embedded.setName("embeddedAttribute");
 		
@@ -330,7 +325,7 @@ public class GenericOrmPersistentTypeTests extends ContextModelTestCase
 		assertEquals(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, ormPersistentAttribute.getMapping().getKey());
 		assertFalse(attributes.hasNext());
 	
-		XmlVersionImpl version = OrmFactory.eINSTANCE.createXmlVersionImpl();
+		XmlVersion version = OrmFactory.eINSTANCE.createXmlVersion();
 		entity.getAttributes().getVersions().add(version);
 		version.setName("versionAttribute");
 		
@@ -346,7 +341,7 @@ public class GenericOrmPersistentTypeTests extends ContextModelTestCase
 		assertEquals(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, ormPersistentAttribute.getMapping().getKey());
 		assertFalse(attributes.hasNext());
 
-		XmlIdImpl id = OrmFactory.eINSTANCE.createXmlIdImpl();
+		XmlId id = OrmFactory.eINSTANCE.createXmlId();
 		entity.getAttributes().getIds().add(id);
 		id.setName("idAttribute");
 		
@@ -365,7 +360,7 @@ public class GenericOrmPersistentTypeTests extends ContextModelTestCase
 		assertEquals(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, ormPersistentAttribute.getMapping().getKey());
 		assertFalse(attributes.hasNext());
 		
-		XmlTransientImpl transientResource = OrmFactory.eINSTANCE.createXmlTransientImpl();
+		XmlTransient transientResource = OrmFactory.eINSTANCE.createXmlTransient();
 		entity.getAttributes().getTransients().add(transientResource);
 		transientResource.setName("transientAttribute");
 		
@@ -387,7 +382,7 @@ public class GenericOrmPersistentTypeTests extends ContextModelTestCase
 		assertEquals(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, ormPersistentAttribute.getMapping().getKey());
 		assertFalse(attributes.hasNext());
 		
-		XmlManyToOneImpl manyToOneResource = OrmFactory.eINSTANCE.createXmlManyToOneImpl();
+		XmlManyToOne manyToOneResource = OrmFactory.eINSTANCE.createXmlManyToOne();
 		entity.getAttributes().getManyToOnes().add(manyToOneResource);
 		manyToOneResource.setName("manyToOneAttribute");
 		
@@ -412,7 +407,7 @@ public class GenericOrmPersistentTypeTests extends ContextModelTestCase
 		assertEquals(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, ormPersistentAttribute.getMapping().getKey());
 		assertFalse(attributes.hasNext());
 
-		XmlManyToManyImpl manyToManyResource = OrmFactory.eINSTANCE.createXmlManyToManyImpl();
+		XmlManyToMany manyToManyResource = OrmFactory.eINSTANCE.createXmlManyToMany();
 		entity.getAttributes().getManyToManys().add(manyToManyResource);
 		manyToManyResource.setName("manyToManyAttribute");
 		
@@ -440,7 +435,7 @@ public class GenericOrmPersistentTypeTests extends ContextModelTestCase
 		assertEquals(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, ormPersistentAttribute.getMapping().getKey());
 		assertFalse(attributes.hasNext());
 		
-		XmlOneToManyImpl oneToManyResource = OrmFactory.eINSTANCE.createXmlOneToManyImpl();
+		XmlOneToMany oneToManyResource = OrmFactory.eINSTANCE.createXmlOneToMany();
 		entity.getAttributes().getOneToManys().add(oneToManyResource);
 		oneToManyResource.setName("oneToManyAttribute");
 		
@@ -471,7 +466,7 @@ public class GenericOrmPersistentTypeTests extends ContextModelTestCase
 		assertEquals(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, ormPersistentAttribute.getMapping().getKey());
 		assertFalse(attributes.hasNext());
 
-		XmlOneToOneImpl oneToOneResource = OrmFactory.eINSTANCE.createXmlOneToOneImpl();
+		XmlOneToOne oneToOneResource = OrmFactory.eINSTANCE.createXmlOneToOne();
 		entity.getAttributes().getOneToOnes().add(oneToOneResource);
 		oneToOneResource.setName("oneToOneAttribute");
 		
@@ -506,7 +501,7 @@ public class GenericOrmPersistentTypeTests extends ContextModelTestCase
 		assertFalse(attributes.hasNext());
 
 
-		XmlEmbeddedIdImpl embeddedIdResource = OrmFactory.eINSTANCE.createXmlEmbeddedIdImpl();
+		XmlEmbeddedId embeddedIdResource = OrmFactory.eINSTANCE.createXmlEmbeddedId();
 		entity.getAttributes().getEmbeddedIds().add(embeddedIdResource);
 		embeddedIdResource.setName("embeddedIdAttribute");
 		

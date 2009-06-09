@@ -52,7 +52,7 @@ public class OrmEmbeddedIdMappingProvider
 	}
 	
 	public XmlAttributeMapping buildResourceMapping() {
-		return OrmFactory.eINSTANCE.createXmlEmbeddedIdImpl();
+		return OrmFactory.eINSTANCE.createXmlEmbeddedId();
 	}
 	
 	public OrmAttributeMapping buildMapping(OrmPersistentAttribute parent, XmlAttributeMapping resourceMapping, JpaFactory factory) {

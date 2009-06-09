@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.resource.orm;
 
+import org.eclipse.jpt.core.resource.xml.JpaEObject;
+
 
 /**
  * <!-- begin-user-doc -->
@@ -25,9 +27,10 @@ package org.eclipse.jpt.core.resource.orm;
  *
  * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlJoinTableMapping()
  * @model kind="class" interface="true" abstract="true"
+ * @extends JpaEObject
  * @generated
  */
-public interface XmlJoinTableMapping extends XmlRelationshipMapping
+public interface XmlJoinTableMapping extends JpaEObject
 {
 	/**
 	 * Returns the value of the '<em><b>Join Table</b></em>' containment reference.

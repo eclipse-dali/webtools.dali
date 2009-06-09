@@ -53,7 +53,7 @@ public class EclipseLink1_1OrmTransientMappingProvider
 	}
 	
 	public XmlAttributeMapping buildResourceMapping() {
-		return EclipseLink1_1OrmFactory.eINSTANCE.createXmlTransientImpl();
+		return EclipseLink1_1OrmFactory.eINSTANCE.createXmlTransient();
 	}
 	
 	public OrmAttributeMapping buildMapping(OrmPersistentAttribute parent, XmlAttributeMapping resourceMapping, JpaFactory factory) {

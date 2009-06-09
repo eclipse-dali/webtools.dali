@@ -50,7 +50,7 @@ public class PersistenceUnitDefaultsTranslator extends Translator
 	}
 	
 	private Translator createAccessTranslator() {
-		return new Translator(ACCESS, ORM_PKG.getXmlPersistenceUnitDefaults_Access());
+		return new Translator(ACCESS, ORM_PKG.getXmlAccessHolder_Access());
 	}
 	
 	private Translator createCascadePersistTranslator() {

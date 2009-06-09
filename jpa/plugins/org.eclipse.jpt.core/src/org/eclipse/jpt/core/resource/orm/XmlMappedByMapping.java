@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.resource.orm;
 
+import org.eclipse.jpt.core.resource.xml.JpaEObject;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**
@@ -32,9 +33,10 @@ import org.eclipse.jpt.core.utility.TextRange;
  *
  * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlMappedByMapping()
  * @model kind="class" interface="true" abstract="true"
+ * @extends JpaEObject
  * @generated
  */
-public interface XmlMappedByMapping extends XmlRelationshipMapping
+public interface XmlMappedByMapping extends JpaEObject
 {
 	/**
 	 * Returns the value of the '<em><b>Mapped By</b></em>' attribute.

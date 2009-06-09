@@ -44,7 +44,7 @@ public class EmbeddableTranslator extends Translator
 	}
 	
 	protected Translator createAccessTranslator() {
-		return new Translator(ACCESS, ORM_PKG.getXmlTypeMapping_Access(), DOM_ATTRIBUTE);
+		return new Translator(ACCESS, ORM_PKG.getXmlAccessHolder_Access(), DOM_ATTRIBUTE);
 	}
 	
 	protected Translator createMetadataCompleteTranslator() {

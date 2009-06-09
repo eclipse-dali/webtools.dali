@@ -37,6 +37,22 @@ import org.eclipse.jpt.core.utility.TextRange;
 public abstract class AbstractXmlTypeMapping extends AbstractJpaEObject implements XmlTypeMapping
 {
 	/**
+	 * changed this to null and removed the generated flag so emf won't generate over it
+	 * we don't want a default for enums, just null if the tag does not exist
+	 */
+	protected static final AccessType ACCESS_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getAccess() <em>Access</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAccess()
+	 * @generated
+	 * @ordered
+	 */
+	protected AccessType access = ACCESS_EDEFAULT;
+
+	/**
 	 * The default value of the '{@link #getClassName() <em>Class Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -55,22 +71,6 @@ public abstract class AbstractXmlTypeMapping extends AbstractJpaEObject implemen
 	 * @ordered
 	 */
 	protected String className = CLASS_NAME_EDEFAULT;
-
-	/**
-	 * changed this to null and removed the generated flag so emf won't generate over it
-	 * we don't want a default for enums, just null if the tag does not exist
-	 */
-	protected static final AccessType ACCESS_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getAccess() <em>Access</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getAccess()
-	 * @generated
-	 * @ordered
-	 */
-	protected AccessType access = ACCESS_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getMetadataComplete() <em>Metadata Complete</em>}' attribute.
@@ -180,7 +180,6 @@ public abstract class AbstractXmlTypeMapping extends AbstractJpaEObject implemen
 
 	/**
 	 * Returns the value of the '<em><b>Access</b></em>' attribute.
-	 * The default value is <code>"PROPERTY"</code>.
 	 * The literals are from the enumeration {@link org.eclipse.jpt.core.resource.orm.AccessType}.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -191,8 +190,8 @@ public abstract class AbstractXmlTypeMapping extends AbstractJpaEObject implemen
 	 * @return the value of the '<em>Access</em>' attribute.
 	 * @see org.eclipse.jpt.core.resource.orm.AccessType
 	 * @see #setAccess(AccessType)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlTypeMapping_Access()
-	 * @model default="PROPERTY"
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAccessHolder_Access()
+	 * @model
 	 * @generated
 	 */
 	public AccessType getAccess()
@@ -373,10 +372,10 @@ public abstract class AbstractXmlTypeMapping extends AbstractJpaEObject implemen
 	{
 		switch (featureID)
 		{
-			case OrmPackage.ABSTRACT_XML_TYPE_MAPPING__CLASS_NAME:
-				return getClassName();
 			case OrmPackage.ABSTRACT_XML_TYPE_MAPPING__ACCESS:
 				return getAccess();
+			case OrmPackage.ABSTRACT_XML_TYPE_MAPPING__CLASS_NAME:
+				return getClassName();
 			case OrmPackage.ABSTRACT_XML_TYPE_MAPPING__METADATA_COMPLETE:
 				return getMetadataComplete();
 			case OrmPackage.ABSTRACT_XML_TYPE_MAPPING__DESCRIPTION:
@@ -397,11 +396,11 @@ public abstract class AbstractXmlTypeMapping extends AbstractJpaEObject implemen
 	{
 		switch (featureID)
 		{
-			case OrmPackage.ABSTRACT_XML_TYPE_MAPPING__CLASS_NAME:
-				setClassName((String)newValue);
-				return;
 			case OrmPackage.ABSTRACT_XML_TYPE_MAPPING__ACCESS:
 				setAccess((AccessType)newValue);
+				return;
+			case OrmPackage.ABSTRACT_XML_TYPE_MAPPING__CLASS_NAME:
+				setClassName((String)newValue);
 				return;
 			case OrmPackage.ABSTRACT_XML_TYPE_MAPPING__METADATA_COMPLETE:
 				setMetadataComplete((Boolean)newValue);
@@ -426,11 +425,11 @@ public abstract class AbstractXmlTypeMapping extends AbstractJpaEObject implemen
 	{
 		switch (featureID)
 		{
-			case OrmPackage.ABSTRACT_XML_TYPE_MAPPING__CLASS_NAME:
-				setClassName(CLASS_NAME_EDEFAULT);
-				return;
 			case OrmPackage.ABSTRACT_XML_TYPE_MAPPING__ACCESS:
 				setAccess(ACCESS_EDEFAULT);
+				return;
+			case OrmPackage.ABSTRACT_XML_TYPE_MAPPING__CLASS_NAME:
+				setClassName(CLASS_NAME_EDEFAULT);
 				return;
 			case OrmPackage.ABSTRACT_XML_TYPE_MAPPING__METADATA_COMPLETE:
 				setMetadataComplete(METADATA_COMPLETE_EDEFAULT);
@@ -455,10 +454,10 @@ public abstract class AbstractXmlTypeMapping extends AbstractJpaEObject implemen
 	{
 		switch (featureID)
 		{
-			case OrmPackage.ABSTRACT_XML_TYPE_MAPPING__CLASS_NAME:
-				return CLASS_NAME_EDEFAULT == null ? className != null : !CLASS_NAME_EDEFAULT.equals(className);
 			case OrmPackage.ABSTRACT_XML_TYPE_MAPPING__ACCESS:
 				return access != ACCESS_EDEFAULT;
+			case OrmPackage.ABSTRACT_XML_TYPE_MAPPING__CLASS_NAME:
+				return CLASS_NAME_EDEFAULT == null ? className != null : !CLASS_NAME_EDEFAULT.equals(className);
 			case OrmPackage.ABSTRACT_XML_TYPE_MAPPING__METADATA_COMPLETE:
 				return METADATA_COMPLETE_EDEFAULT == null ? metadataComplete != null : !METADATA_COMPLETE_EDEFAULT.equals(metadataComplete);
 			case OrmPackage.ABSTRACT_XML_TYPE_MAPPING__DESCRIPTION:
@@ -480,10 +479,10 @@ public abstract class AbstractXmlTypeMapping extends AbstractJpaEObject implemen
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (className: ");
-		result.append(className);
-		result.append(", access: ");
+		result.append(" (access: ");
 		result.append(access);
+		result.append(", className: ");
+		result.append(className);
 		result.append(", metadataComplete: ");
 		result.append(metadataComplete);
 		result.append(", description: ");

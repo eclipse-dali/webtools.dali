@@ -24,23 +24,56 @@ import org.eclipse.jpt.core.utility.TextRange;
  * VirtualOneToMany is an implementation of OneToMany used when there is 
  * no tag in the orm.xml and an underlying javaOneToManyMapping exists.
  */
-public class VirtualXmlOneToMany<T extends JavaOneToManyMapping>
-	extends VirtualXmlAttributeMapping<T> 
-	implements XmlOneToMany
+public class VirtualXmlOneToMany
+	extends XmlOneToMany
 {
+	protected OrmTypeMapping ormTypeMapping;
+	
+	protected final JavaOneToManyMapping javaAttributeMapping;
+
+	protected final VirtualXmlAttributeMapping virtualXmlAttributeMapping;
+
 	protected final VirtualCascadeType virtualCascadeType;
 	
 	protected final MapKey mapKey;
 	
 	
 	public VirtualXmlOneToMany(
-			OrmTypeMapping ormTypeMapping, T javaOneToManyMapping) {
-		super(ormTypeMapping, javaOneToManyMapping);
+			OrmTypeMapping ormTypeMapping, JavaOneToManyMapping javaOneToManyMapping) {
+		super();
+		this.ormTypeMapping = ormTypeMapping;
+		this.javaAttributeMapping = javaOneToManyMapping;
+		this.virtualXmlAttributeMapping = new VirtualXmlAttributeMapping(ormTypeMapping, javaOneToManyMapping);
 		this.virtualCascadeType = 
 			new VirtualCascadeType(javaOneToManyMapping.getCascade(), this.isOrmMetadataComplete());
 		this.mapKey = new VirtualMapKey(javaOneToManyMapping, this.isOrmMetadataComplete());
 	}
 	
+	protected boolean isOrmMetadataComplete() {
+		return this.ormTypeMapping.isMetadataComplete();
+	}
+		
+	@Override
+	public String getMappingKey() {
+		return this.virtualXmlAttributeMapping.getMappingKey();
+	}
+	
+	@Override
+	public String getName() {
+		return this.virtualXmlAttributeMapping.getName();
+	}
+
+	@Override
+	public void setName(String newName) {
+		this.virtualXmlAttributeMapping.setName(newName);
+	}
+	
+	@Override
+	public TextRange getNameTextRange() {
+		return this.virtualXmlAttributeMapping.getNameTextRange();
+	}
+	
+	@Override
 	public FetchType getFetch() {
 		if (this.isOrmMetadataComplete()) {
 			return org.eclipse.jpt.core.context.FetchType.toOrmResourceModel(this.javaAttributeMapping.getDefaultFetch());
@@ -48,38 +81,43 @@ public class VirtualXmlOneToMany<T extends JavaOneToManyMapping>
 		return org.eclipse.jpt.core.context.FetchType.toOrmResourceModel(this.javaAttributeMapping.getFetch());
 	}
 
-	public void setFetch(@SuppressWarnings("unused") FetchType newFetch) {
+	@Override
+	public void setFetch(FetchType newFetch) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
+	@Override
 	public EList<XmlJoinColumn> getJoinColumns() {
 		return null;
 	}
 
+	@Override
 	public CascadeType getCascade() {
 		return this.virtualCascadeType;
 	}
 	
-	public void setCascade(@SuppressWarnings("unused") CascadeType value) {
+	@Override
+	public void setCascade(CascadeType value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 	
+	@Override
 	public XmlJoinTable getJoinTable() {
 		if (this.javaAttributeMapping.getRelationshipReference().getJoinTableJoiningStrategy().getJoinTable() != null) {
 			return 	new VirtualXmlJoinTable(
-				ormTypeMapping, 
+				this.ormTypeMapping, 
 				this.javaAttributeMapping.getRelationshipReference().
 					getJoinTableJoiningStrategy().getJoinTable());
 		}
-		else {
-			return null;
-		}
+		return null;
 	}
 
-	public void setJoinTable(@SuppressWarnings("unused") XmlJoinTable value) {
+	@Override
+	public void setJoinTable(XmlJoinTable value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 	
+	@Override
 	public String getTargetEntity() {
 		if (this.isOrmMetadataComplete()) {
 			return this.javaAttributeMapping.getDefaultTargetEntity();
@@ -87,10 +125,12 @@ public class VirtualXmlOneToMany<T extends JavaOneToManyMapping>
 		return this.javaAttributeMapping.getTargetEntity();
 	}
 
-	public void setTargetEntity(@SuppressWarnings("unused") String value) {
+	@Override
+	public void setTargetEntity(String value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 	
+	@Override
 	public String getMappedBy() {
 		if (this.isOrmMetadataComplete()) {
 			return null;
@@ -99,19 +139,23 @@ public class VirtualXmlOneToMany<T extends JavaOneToManyMapping>
 			getMappedByJoiningStrategy().getMappedByAttribute();
 	}
 	
-	public void setMappedBy(@SuppressWarnings("unused") String value) {
+	@Override
+	public void setMappedBy(String value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
 	
+	@Override
 	public MapKey getMapKey() {
 		return this.mapKey;
 	}
 	
-	public void setMapKey(@SuppressWarnings("unused") MapKey value) {
+	@Override
+	public void setMapKey(MapKey value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 	
+	@Override
 	public String getOrderBy() {
 		if (this.isOrmMetadataComplete()) {
 			return null;
@@ -119,14 +163,17 @@ public class VirtualXmlOneToMany<T extends JavaOneToManyMapping>
 		return this.javaAttributeMapping.getOrderBy();
 	}
 	
-	public void setOrderBy(@SuppressWarnings("unused") String value) {
+	@Override
+	public void setOrderBy(String value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 	
+	@Override
 	public TextRange getMappedByTextRange() {
 		return null;
 	}
 	
+	@Override
 	public TextRange getTargetEntityTextRange() {
 		return null;
 	}

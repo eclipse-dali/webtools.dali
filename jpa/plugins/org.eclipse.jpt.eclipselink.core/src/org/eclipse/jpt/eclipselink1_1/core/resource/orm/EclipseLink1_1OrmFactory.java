@@ -80,20 +80,20 @@ public class EclipseLink1_1OrmFactory extends EFactoryImpl
 		switch (eClass.getClassifierID())
 		{
 			case EclipseLink1_1OrmPackage.XML_ENTITY_MAPPINGS: return (EObject)createXmlEntityMappings();
-			case EclipseLink1_1OrmPackage.XML_ID_IMPL: return (EObject)createXmlIdImpl();
-			case EclipseLink1_1OrmPackage.XML_EMBEDDED_ID_IMPL: return (EObject)createXmlEmbeddedIdImpl();
-			case EclipseLink1_1OrmPackage.XML_EMBEDDED_IMPL: return (EObject)createXmlEmbeddedImpl();
-			case EclipseLink1_1OrmPackage.XML_BASIC_IMPL: return (EObject)createXmlBasicImpl();
-			case EclipseLink1_1OrmPackage.XML_VERSION_IMPL: return (EObject)createXmlVersionImpl();
-			case EclipseLink1_1OrmPackage.XML_ONE_TO_ONE_IMPL: return (EObject)createXmlOneToOneImpl();
-			case EclipseLink1_1OrmPackage.XML_ONE_TO_MANY_IMPL: return (EObject)createXmlOneToManyImpl();
-			case EclipseLink1_1OrmPackage.XML_MANY_TO_ONE_IMPL: return (EObject)createXmlManyToOneImpl();
-			case EclipseLink1_1OrmPackage.XML_MANY_TO_MANY_IMPL: return (EObject)createXmlManyToManyImpl();
-			case EclipseLink1_1OrmPackage.XML_BASIC_COLLECTION_IMPL: return (EObject)createXmlBasicCollectionImpl();
-			case EclipseLink1_1OrmPackage.XML_BASIC_MAP_IMPL: return (EObject)createXmlBasicMapImpl();
-			case EclipseLink1_1OrmPackage.XML_TRANSFORMATION_IMPL: return (EObject)createXmlTransformationImpl();
-			case EclipseLink1_1OrmPackage.XML_VARIABLE_ONE_TO_ONE_IMPL: return (EObject)createXmlVariableOneToOneImpl();
-			case EclipseLink1_1OrmPackage.XML_TRANSIENT_IMPL: return (EObject)createXmlTransientImpl();
+			case EclipseLink1_1OrmPackage.XML_ID: return (EObject)createXmlId();
+			case EclipseLink1_1OrmPackage.XML_EMBEDDED_ID: return (EObject)createXmlEmbeddedId();
+			case EclipseLink1_1OrmPackage.XML_EMBEDDED: return (EObject)createXmlEmbedded();
+			case EclipseLink1_1OrmPackage.XML_BASIC: return (EObject)createXmlBasic();
+			case EclipseLink1_1OrmPackage.XML_VERSION: return (EObject)createXmlVersion();
+			case EclipseLink1_1OrmPackage.XML_ONE_TO_ONE: return (EObject)createXmlOneToOne();
+			case EclipseLink1_1OrmPackage.XML_ONE_TO_MANY: return (EObject)createXmlOneToMany();
+			case EclipseLink1_1OrmPackage.XML_MANY_TO_ONE: return (EObject)createXmlManyToOne();
+			case EclipseLink1_1OrmPackage.XML_MANY_TO_MANY: return (EObject)createXmlManyToMany();
+			case EclipseLink1_1OrmPackage.XML_BASIC_COLLECTION: return (EObject)createXmlBasicCollection();
+			case EclipseLink1_1OrmPackage.XML_BASIC_MAP: return (EObject)createXmlBasicMap();
+			case EclipseLink1_1OrmPackage.XML_TRANSFORMATION: return (EObject)createXmlTransformation();
+			case EclipseLink1_1OrmPackage.XML_VARIABLE_ONE_TO_ONE: return (EObject)createXmlVariableOneToOne();
+			case EclipseLink1_1OrmPackage.XML_TRANSIENT: return (EObject)createXmlTransient();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -115,10 +115,10 @@ public class EclipseLink1_1OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlIdImpl createXmlIdImpl()
+	public XmlId createXmlId()
 	{
-		XmlIdImpl xmlIdImpl = new XmlIdImpl();
-		return xmlIdImpl;
+		XmlId xmlId = new XmlId();
+		return xmlId;
 	}
 
 	/**
@@ -126,10 +126,10 @@ public class EclipseLink1_1OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlEmbeddedIdImpl createXmlEmbeddedIdImpl()
+	public XmlEmbeddedId createXmlEmbeddedId()
 	{
-		XmlEmbeddedIdImpl xmlEmbeddedIdImpl = new XmlEmbeddedIdImpl();
-		return xmlEmbeddedIdImpl;
+		XmlEmbeddedId xmlEmbeddedId = new XmlEmbeddedId();
+		return xmlEmbeddedId;
 	}
 
 	/**
@@ -137,10 +137,10 @@ public class EclipseLink1_1OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlEmbeddedImpl createXmlEmbeddedImpl()
+	public XmlEmbedded createXmlEmbedded()
 	{
-		XmlEmbeddedImpl xmlEmbeddedImpl = new XmlEmbeddedImpl();
-		return xmlEmbeddedImpl;
+		XmlEmbedded xmlEmbedded = new XmlEmbedded();
+		return xmlEmbedded;
 	}
 
 	/**
@@ -148,10 +148,10 @@ public class EclipseLink1_1OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlBasicImpl createXmlBasicImpl()
+	public XmlBasic createXmlBasic()
 	{
-		XmlBasicImpl xmlBasicImpl = new XmlBasicImpl();
-		return xmlBasicImpl;
+		XmlBasic xmlBasic = new XmlBasic();
+		return xmlBasic;
 	}
 
 	/**
@@ -159,10 +159,10 @@ public class EclipseLink1_1OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlVersionImpl createXmlVersionImpl()
+	public XmlVersion createXmlVersion()
 	{
-		XmlVersionImpl xmlVersionImpl = new XmlVersionImpl();
-		return xmlVersionImpl;
+		XmlVersion xmlVersion = new XmlVersion();
+		return xmlVersion;
 	}
 
 	/**
@@ -170,10 +170,10 @@ public class EclipseLink1_1OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlOneToOneImpl createXmlOneToOneImpl()
+	public XmlOneToOne createXmlOneToOne()
 	{
-		XmlOneToOneImpl xmlOneToOneImpl = new XmlOneToOneImpl();
-		return xmlOneToOneImpl;
+		XmlOneToOne xmlOneToOne = new XmlOneToOne();
+		return xmlOneToOne;
 	}
 
 	/**
@@ -181,10 +181,10 @@ public class EclipseLink1_1OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlOneToManyImpl createXmlOneToManyImpl()
+	public XmlOneToMany createXmlOneToMany()
 	{
-		XmlOneToManyImpl xmlOneToManyImpl = new XmlOneToManyImpl();
-		return xmlOneToManyImpl;
+		XmlOneToMany xmlOneToMany = new XmlOneToMany();
+		return xmlOneToMany;
 	}
 
 	/**
@@ -192,10 +192,10 @@ public class EclipseLink1_1OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlManyToOneImpl createXmlManyToOneImpl()
+	public XmlManyToOne createXmlManyToOne()
 	{
-		XmlManyToOneImpl xmlManyToOneImpl = new XmlManyToOneImpl();
-		return xmlManyToOneImpl;
+		XmlManyToOne xmlManyToOne = new XmlManyToOne();
+		return xmlManyToOne;
 	}
 
 	/**
@@ -203,10 +203,10 @@ public class EclipseLink1_1OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlManyToManyImpl createXmlManyToManyImpl()
+	public XmlManyToMany createXmlManyToMany()
 	{
-		XmlManyToManyImpl xmlManyToManyImpl = new XmlManyToManyImpl();
-		return xmlManyToManyImpl;
+		XmlManyToMany xmlManyToMany = new XmlManyToMany();
+		return xmlManyToMany;
 	}
 
 	/**
@@ -214,10 +214,10 @@ public class EclipseLink1_1OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlBasicCollectionImpl createXmlBasicCollectionImpl()
+	public XmlBasicCollection createXmlBasicCollection()
 	{
-		XmlBasicCollectionImpl xmlBasicCollectionImpl = new XmlBasicCollectionImpl();
-		return xmlBasicCollectionImpl;
+		XmlBasicCollection xmlBasicCollection = new XmlBasicCollection();
+		return xmlBasicCollection;
 	}
 
 	/**
@@ -225,10 +225,10 @@ public class EclipseLink1_1OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlBasicMapImpl createXmlBasicMapImpl()
+	public XmlBasicMap createXmlBasicMap()
 	{
-		XmlBasicMapImpl xmlBasicMapImpl = new XmlBasicMapImpl();
-		return xmlBasicMapImpl;
+		XmlBasicMap xmlBasicMap = new XmlBasicMap();
+		return xmlBasicMap;
 	}
 
 	/**
@@ -236,10 +236,10 @@ public class EclipseLink1_1OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlTransformationImpl createXmlTransformationImpl()
+	public XmlTransformation createXmlTransformation()
 	{
-		XmlTransformationImpl xmlTransformationImpl = new XmlTransformationImpl();
-		return xmlTransformationImpl;
+		XmlTransformation xmlTransformation = new XmlTransformation();
+		return xmlTransformation;
 	}
 
 	/**
@@ -247,10 +247,10 @@ public class EclipseLink1_1OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlVariableOneToOneImpl createXmlVariableOneToOneImpl()
+	public XmlVariableOneToOne createXmlVariableOneToOne()
 	{
-		XmlVariableOneToOneImpl xmlVariableOneToOneImpl = new XmlVariableOneToOneImpl();
-		return xmlVariableOneToOneImpl;
+		XmlVariableOneToOne xmlVariableOneToOne = new XmlVariableOneToOne();
+		return xmlVariableOneToOne;
 	}
 
 	/**
@@ -258,10 +258,10 @@ public class EclipseLink1_1OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlTransientImpl createXmlTransientImpl()
+	public XmlTransient createXmlTransient()
 	{
-		XmlTransientImpl xmlTransientImpl = new XmlTransientImpl();
-		return xmlTransientImpl;
+		XmlTransient xmlTransient = new XmlTransient();
+		return xmlTransient;
 	}
 
 	/**

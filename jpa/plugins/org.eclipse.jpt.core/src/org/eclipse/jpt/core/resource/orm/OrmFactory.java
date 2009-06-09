@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -92,16 +92,16 @@ public class OrmFactory extends EFactoryImpl
 			case OrmPackage.XML_ENTITY: return (EObject)createXmlEntity();
 			case OrmPackage.XML_EMBEDDABLE: return (EObject)createXmlEmbeddable();
 			case OrmPackage.ATTRIBUTES: return (EObject)createAttributes();
-			case OrmPackage.XML_ID_IMPL: return (EObject)createXmlIdImpl();
-			case OrmPackage.XML_EMBEDDED_ID_IMPL: return (EObject)createXmlEmbeddedIdImpl();
-			case OrmPackage.XML_EMBEDDED_IMPL: return (EObject)createXmlEmbeddedImpl();
-			case OrmPackage.XML_BASIC_IMPL: return (EObject)createXmlBasicImpl();
-			case OrmPackage.XML_VERSION_IMPL: return (EObject)createXmlVersionImpl();
-			case OrmPackage.XML_MANY_TO_ONE_IMPL: return (EObject)createXmlManyToOneImpl();
-			case OrmPackage.XML_ONE_TO_MANY_IMPL: return (EObject)createXmlOneToManyImpl();
-			case OrmPackage.XML_ONE_TO_ONE_IMPL: return (EObject)createXmlOneToOneImpl();
-			case OrmPackage.XML_MANY_TO_MANY_IMPL: return (EObject)createXmlManyToManyImpl();
-			case OrmPackage.XML_TRANSIENT_IMPL: return (EObject)createXmlTransientImpl();
+			case OrmPackage.XML_ID: return (EObject)createXmlId();
+			case OrmPackage.XML_EMBEDDED_ID: return (EObject)createXmlEmbeddedId();
+			case OrmPackage.XML_EMBEDDED: return (EObject)createXmlEmbedded();
+			case OrmPackage.XML_BASIC: return (EObject)createXmlBasic();
+			case OrmPackage.XML_VERSION: return (EObject)createXmlVersion();
+			case OrmPackage.XML_MANY_TO_ONE: return (EObject)createXmlManyToOne();
+			case OrmPackage.XML_ONE_TO_MANY: return (EObject)createXmlOneToMany();
+			case OrmPackage.XML_ONE_TO_ONE: return (EObject)createXmlOneToOne();
+			case OrmPackage.XML_MANY_TO_MANY: return (EObject)createXmlManyToMany();
+			case OrmPackage.XML_TRANSIENT: return (EObject)createXmlTransient();
 			case OrmPackage.XML_ASSOCIATION_OVERRIDE: return (EObject)createXmlAssociationOverride();
 			case OrmPackage.XML_ATTRIBUTE_OVERRIDE: return (EObject)createXmlAttributeOverride();
 			case OrmPackage.CASCADE_TYPE: return (EObject)createCascadeType();
@@ -301,10 +301,10 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlIdImpl createXmlIdImpl()
+	public XmlId createXmlId()
 	{
-		XmlIdImpl xmlIdImpl = new XmlIdImpl();
-		return xmlIdImpl;
+		XmlId xmlId = new XmlId();
+		return xmlId;
 	}
 
 	/**
@@ -312,10 +312,10 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlEmbeddedIdImpl createXmlEmbeddedIdImpl()
+	public XmlEmbeddedId createXmlEmbeddedId()
 	{
-		XmlEmbeddedIdImpl xmlEmbeddedIdImpl = new XmlEmbeddedIdImpl();
-		return xmlEmbeddedIdImpl;
+		XmlEmbeddedId xmlEmbeddedId = new XmlEmbeddedId();
+		return xmlEmbeddedId;
 	}
 
 	/**
@@ -323,10 +323,10 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlBasicImpl createXmlBasicImpl()
+	public XmlEmbedded createXmlEmbedded()
 	{
-		XmlBasicImpl xmlBasicImpl = new XmlBasicImpl();
-		return xmlBasicImpl;
+		XmlEmbedded xmlEmbedded = new XmlEmbedded();
+		return xmlEmbedded;
 	}
 
 	/**
@@ -334,10 +334,10 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlVersionImpl createXmlVersionImpl()
+	public XmlBasic createXmlBasic()
 	{
-		XmlVersionImpl xmlVersionImpl = new XmlVersionImpl();
-		return xmlVersionImpl;
+		XmlBasic xmlBasic = new XmlBasic();
+		return xmlBasic;
 	}
 
 	/**
@@ -345,10 +345,10 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlManyToOneImpl createXmlManyToOneImpl()
+	public XmlVersion createXmlVersion()
 	{
-		XmlManyToOneImpl xmlManyToOneImpl = new XmlManyToOneImpl();
-		return xmlManyToOneImpl;
+		XmlVersion xmlVersion = new XmlVersion();
+		return xmlVersion;
 	}
 
 	/**
@@ -356,10 +356,10 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlOneToManyImpl createXmlOneToManyImpl()
+	public XmlManyToOne createXmlManyToOne()
 	{
-		XmlOneToManyImpl xmlOneToManyImpl = new XmlOneToManyImpl();
-		return xmlOneToManyImpl;
+		XmlManyToOne xmlManyToOne = new XmlManyToOne();
+		return xmlManyToOne;
 	}
 
 	/**
@@ -367,10 +367,10 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlOneToOneImpl createXmlOneToOneImpl()
+	public XmlOneToMany createXmlOneToMany()
 	{
-		XmlOneToOneImpl xmlOneToOneImpl = new XmlOneToOneImpl();
-		return xmlOneToOneImpl;
+		XmlOneToMany xmlOneToMany = new XmlOneToMany();
+		return xmlOneToMany;
 	}
 
 	/**
@@ -378,10 +378,10 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlManyToManyImpl createXmlManyToManyImpl()
+	public XmlOneToOne createXmlOneToOne()
 	{
-		XmlManyToManyImpl xmlManyToManyImpl = new XmlManyToManyImpl();
-		return xmlManyToManyImpl;
+		XmlOneToOne xmlOneToOne = new XmlOneToOne();
+		return xmlOneToOne;
 	}
 
 	/**
@@ -389,10 +389,10 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlEmbeddedImpl createXmlEmbeddedImpl()
+	public XmlManyToMany createXmlManyToMany()
 	{
-		XmlEmbeddedImpl xmlEmbeddedImpl = new XmlEmbeddedImpl();
-		return xmlEmbeddedImpl;
+		XmlManyToMany xmlManyToMany = new XmlManyToMany();
+		return xmlManyToMany;
 	}
 
 	/**
@@ -400,10 +400,10 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlTransientImpl createXmlTransientImpl()
+	public XmlTransient createXmlTransient()
 	{
-		XmlTransientImpl xmlTransientImpl = new XmlTransientImpl();
-		return xmlTransientImpl;
+		XmlTransient xmlTransient = new XmlTransient();
+		return xmlTransient;
 	}
 
 	/**

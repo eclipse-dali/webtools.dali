@@ -19,19 +19,53 @@ import org.eclipse.jpt.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.core.resource.orm.XmlEmbedded;
+import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 
 /**
  * VirtualEmbedded is an implementation of Embedded used when there is 
  * no tag in the orm.xml and an underlying javaEmbeddedMapping exists.
  */
-public class VirtualXmlEmbedded extends VirtualXmlAttributeMapping<JavaEmbeddedMapping> implements XmlEmbedded
+public class VirtualXmlEmbedded extends XmlEmbedded
 {
+	protected OrmTypeMapping ormTypeMapping;
 	
+	protected final JavaEmbeddedMapping javaAttributeMapping;
+	
+	protected final VirtualXmlAttributeMapping virtualXmlAttributeMapping;
+
 	public VirtualXmlEmbedded(OrmTypeMapping ormTypeMapping, JavaEmbeddedMapping javaEmbeddedMapping) {
-		super(ormTypeMapping, javaEmbeddedMapping);
+		super();
+		this.ormTypeMapping = ormTypeMapping;
+		this.javaAttributeMapping = javaEmbeddedMapping;
+		this.virtualXmlAttributeMapping = new VirtualXmlAttributeMapping(ormTypeMapping, javaEmbeddedMapping);
 	}
 	
+	protected boolean isOrmMetadataComplete() {
+		return this.ormTypeMapping.isMetadataComplete();
+	}
+	
+	@Override
+	public String getMappingKey() {
+		return this.virtualXmlAttributeMapping.getMappingKey();
+	}
+	
+	@Override
+	public String getName() {
+		return this.virtualXmlAttributeMapping.getName();
+	}
+
+	@Override
+	public void setName(String newName) {
+		this.virtualXmlAttributeMapping.setName(newName);
+	}
+	
+	@Override
+	public TextRange getNameTextRange() {
+		return this.virtualXmlAttributeMapping.getNameTextRange();
+	}
+	
+	@Override
 	public EList<XmlAttributeOverride> getAttributeOverrides() {
 		EList<XmlAttributeOverride> attributeOverrides = new EObjectContainmentEList<XmlAttributeOverride>(XmlAttributeOverride.class, this, OrmPackage.XML_EMBEDDED__ATTRIBUTE_OVERRIDES);
 		ListIterator<JavaAttributeOverride> javaAttributeOverrides;

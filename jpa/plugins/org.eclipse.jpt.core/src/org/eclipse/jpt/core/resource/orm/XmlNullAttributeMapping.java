@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -8,6 +8,8 @@
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.core.resource.orm;
+
+import org.eclipse.emf.ecore.EClass;
 
 
 /**
@@ -23,9 +25,30 @@ package org.eclipse.jpt.core.resource.orm;
  *
  *
  * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlNullAttributeMapping()
- * @model kind="class" interface="true" abstract="true"
+ * @model kind="class" abstract="true"
  * @generated
  */
-public interface XmlNullAttributeMapping extends XmlAttributeMapping
+public abstract class XmlNullAttributeMapping extends AbstractXmlAttributeMapping
 {
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected XmlNullAttributeMapping()
+	{
+		super();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	protected EClass eStaticClass()
+	{
+		return OrmPackage.Literals.XML_NULL_ATTRIBUTE_MAPPING;
+	}
 } // XmlNullAttributeMapping

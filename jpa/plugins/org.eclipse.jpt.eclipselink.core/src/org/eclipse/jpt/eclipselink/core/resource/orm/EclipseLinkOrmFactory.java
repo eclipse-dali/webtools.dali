@@ -110,19 +110,19 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS: return (EObject)createXmlMappedSuperclass();
 			case EclipseLinkOrmPackage.XML_ACCESS_METHODS: return (EObject)createXmlAccessMethods();
 			case EclipseLinkOrmPackage.XML_PROPERTY: return (EObject)createXmlProperty();
-			case EclipseLinkOrmPackage.XML_ID_IMPL: return (EObject)createXmlIdImpl();
-			case EclipseLinkOrmPackage.XML_EMBEDDED_ID_IMPL: return (EObject)createXmlEmbeddedIdImpl();
-			case EclipseLinkOrmPackage.XML_EMBEDDED_IMPL: return (EObject)createXmlEmbeddedImpl();
-			case EclipseLinkOrmPackage.XML_BASIC_IMPL: return (EObject)createXmlBasicImpl();
-			case EclipseLinkOrmPackage.XML_VERSION_IMPL: return (EObject)createXmlVersionImpl();
-			case EclipseLinkOrmPackage.XML_ONE_TO_ONE_IMPL: return (EObject)createXmlOneToOneImpl();
-			case EclipseLinkOrmPackage.XML_ONE_TO_MANY_IMPL: return (EObject)createXmlOneToManyImpl();
-			case EclipseLinkOrmPackage.XML_MANY_TO_ONE_IMPL: return (EObject)createXmlManyToOneImpl();
-			case EclipseLinkOrmPackage.XML_MANY_TO_MANY_IMPL: return (EObject)createXmlManyToManyImpl();
-			case EclipseLinkOrmPackage.XML_BASIC_COLLECTION_IMPL: return (EObject)createXmlBasicCollectionImpl();
-			case EclipseLinkOrmPackage.XML_BASIC_MAP_IMPL: return (EObject)createXmlBasicMapImpl();
-			case EclipseLinkOrmPackage.XML_TRANSFORMATION_IMPL: return (EObject)createXmlTransformationImpl();
-			case EclipseLinkOrmPackage.XML_VARIABLE_ONE_TO_ONE_IMPL: return (EObject)createXmlVariableOneToOneImpl();
+			case EclipseLinkOrmPackage.XML_ID: return (EObject)createXmlId();
+			case EclipseLinkOrmPackage.XML_EMBEDDED_ID: return (EObject)createXmlEmbeddedId();
+			case EclipseLinkOrmPackage.XML_EMBEDDED: return (EObject)createXmlEmbedded();
+			case EclipseLinkOrmPackage.XML_BASIC: return (EObject)createXmlBasic();
+			case EclipseLinkOrmPackage.XML_VERSION: return (EObject)createXmlVersion();
+			case EclipseLinkOrmPackage.XML_ONE_TO_ONE: return (EObject)createXmlOneToOne();
+			case EclipseLinkOrmPackage.XML_ONE_TO_MANY: return (EObject)createXmlOneToMany();
+			case EclipseLinkOrmPackage.XML_MANY_TO_ONE: return (EObject)createXmlManyToOne();
+			case EclipseLinkOrmPackage.XML_MANY_TO_MANY: return (EObject)createXmlManyToMany();
+			case EclipseLinkOrmPackage.XML_BASIC_COLLECTION: return (EObject)createXmlBasicCollection();
+			case EclipseLinkOrmPackage.XML_BASIC_MAP: return (EObject)createXmlBasicMap();
+			case EclipseLinkOrmPackage.XML_TRANSFORMATION: return (EObject)createXmlTransformation();
+			case EclipseLinkOrmPackage.XML_VARIABLE_ONE_TO_ONE: return (EObject)createXmlVariableOneToOne();
 			case EclipseLinkOrmPackage.ATTRIBUTES: return (EObject)createAttributes();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
@@ -401,142 +401,10 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlIdImpl createXmlIdImpl()
-	{
-		XmlIdImpl xmlIdImpl = new XmlIdImpl();
-		return xmlIdImpl;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public XmlEmbeddedIdImpl createXmlEmbeddedIdImpl()
-	{
-		XmlEmbeddedIdImpl xmlEmbeddedIdImpl = new XmlEmbeddedIdImpl();
-		return xmlEmbeddedIdImpl;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public XmlEmbeddedImpl createXmlEmbeddedImpl()
-	{
-		XmlEmbeddedImpl xmlEmbeddedImpl = new XmlEmbeddedImpl();
-		return xmlEmbeddedImpl;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public XmlBasicImpl createXmlBasicImpl()
-	{
-		XmlBasicImpl xmlBasicImpl = new XmlBasicImpl();
-		return xmlBasicImpl;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public XmlVersionImpl createXmlVersionImpl()
-	{
-		XmlVersionImpl xmlVersionImpl = new XmlVersionImpl();
-		return xmlVersionImpl;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public XmlOneToOneImpl createXmlOneToOneImpl()
-	{
-		XmlOneToOneImpl xmlOneToOneImpl = new XmlOneToOneImpl();
-		return xmlOneToOneImpl;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public XmlOneToManyImpl createXmlOneToManyImpl()
-	{
-		XmlOneToManyImpl xmlOneToManyImpl = new XmlOneToManyImpl();
-		return xmlOneToManyImpl;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public XmlManyToOneImpl createXmlManyToOneImpl()
-	{
-		XmlManyToOneImpl xmlManyToOneImpl = new XmlManyToOneImpl();
-		return xmlManyToOneImpl;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public XmlManyToManyImpl createXmlManyToManyImpl()
-	{
-		XmlManyToManyImpl xmlManyToManyImpl = new XmlManyToManyImpl();
-		return xmlManyToManyImpl;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public Attributes createAttributes()
 	{
 		Attributes attributes = new Attributes();
 		return attributes;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public XmlBasicCollectionImpl createXmlBasicCollectionImpl()
-	{
-		XmlBasicCollectionImpl xmlBasicCollectionImpl = new XmlBasicCollectionImpl();
-		return xmlBasicCollectionImpl;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public XmlBasicMapImpl createXmlBasicMapImpl()
-	{
-		XmlBasicMapImpl xmlBasicMapImpl = new XmlBasicMapImpl();
-		return xmlBasicMapImpl;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public XmlTransformationImpl createXmlTransformationImpl()
-	{
-		XmlTransformationImpl xmlTransformationImpl = new XmlTransformationImpl();
-		return xmlTransformationImpl;
 	}
 
 	/**
@@ -555,10 +423,142 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlVariableOneToOneImpl createXmlVariableOneToOneImpl()
+	public XmlId createXmlId()
 	{
-		XmlVariableOneToOneImpl xmlVariableOneToOneImpl = new XmlVariableOneToOneImpl();
-		return xmlVariableOneToOneImpl;
+		XmlId xmlId = new XmlId();
+		return xmlId;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlEmbeddedId createXmlEmbeddedId()
+	{
+		XmlEmbeddedId xmlEmbeddedId = new XmlEmbeddedId();
+		return xmlEmbeddedId;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlEmbedded createXmlEmbedded()
+	{
+		XmlEmbedded xmlEmbedded = new XmlEmbedded();
+		return xmlEmbedded;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlBasic createXmlBasic()
+	{
+		XmlBasic xmlBasic = new XmlBasic();
+		return xmlBasic;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlVersion createXmlVersion()
+	{
+		XmlVersion xmlVersion = new XmlVersion();
+		return xmlVersion;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlOneToOne createXmlOneToOne()
+	{
+		XmlOneToOne xmlOneToOne = new XmlOneToOne();
+		return xmlOneToOne;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlOneToMany createXmlOneToMany()
+	{
+		XmlOneToMany xmlOneToMany = new XmlOneToMany();
+		return xmlOneToMany;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlManyToOne createXmlManyToOne()
+	{
+		XmlManyToOne xmlManyToOne = new XmlManyToOne();
+		return xmlManyToOne;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlManyToMany createXmlManyToMany()
+	{
+		XmlManyToMany xmlManyToMany = new XmlManyToMany();
+		return xmlManyToMany;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlBasicCollection createXmlBasicCollection()
+	{
+		XmlBasicCollection xmlBasicCollection = new XmlBasicCollection();
+		return xmlBasicCollection;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlBasicMap createXmlBasicMap()
+	{
+		XmlBasicMap xmlBasicMap = new XmlBasicMap();
+		return xmlBasicMap;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlTransformation createXmlTransformation()
+	{
+		XmlTransformation xmlTransformation = new XmlTransformation();
+		return xmlTransformation;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlVariableOneToOne createXmlVariableOneToOne()
+	{
+		XmlVariableOneToOne xmlVariableOneToOne = new XmlVariableOneToOne();
+		return xmlVariableOneToOne;
 	}
 
 	/**

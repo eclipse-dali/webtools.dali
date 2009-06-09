@@ -23,24 +23,59 @@ import org.eclipse.jpt.core.utility.TextRange;
  * VirtualVersion is an implementation of Version used when there is 
  * no tag in the orm.xml and an underlying javaVersionMapping exists.
  */
-public class VirtualXmlVersion extends VirtualXmlAttributeMapping<JavaVersionMapping> implements XmlVersion
+public class VirtualXmlVersion extends XmlVersion
 {
+	protected OrmTypeMapping ormTypeMapping;
+	
+	protected final JavaVersionMapping javaAttributeMapping;
+
+	protected final VirtualXmlAttributeMapping virtualXmlAttributeMapping;
 
 	protected final VirtualXmlColumn column;
 	
 	public VirtualXmlVersion(OrmTypeMapping ormTypeMapping, JavaVersionMapping javaVersionMapping) {
-		super(ormTypeMapping, javaVersionMapping);
+		super();
+		this.ormTypeMapping = ormTypeMapping;
+		this.javaAttributeMapping = javaVersionMapping;
+		this.virtualXmlAttributeMapping = new VirtualXmlAttributeMapping(ormTypeMapping, javaVersionMapping);
 		this.column = new VirtualXmlColumn(ormTypeMapping, javaVersionMapping.getColumn());
 	}
+	
+	protected boolean isOrmMetadataComplete() {
+		return this.ormTypeMapping.isMetadataComplete();
+	}
+	
+	@Override
+	public String getMappingKey() {
+		return this.virtualXmlAttributeMapping.getMappingKey();
+	}
+	
+	@Override
+	public String getName() {
+		return this.virtualXmlAttributeMapping.getName();
+	}
 
+	@Override
+	public void setName(String newName) {
+		this.virtualXmlAttributeMapping.setName(newName);
+	}
+	
+	@Override
+	public TextRange getNameTextRange() {
+		return this.virtualXmlAttributeMapping.getNameTextRange();
+	}
+
+	@Override
 	public XmlColumn getColumn() {
 		return this.column;
 	}
 
-	public void setColumn(@SuppressWarnings("unused") XmlColumn value) {
+	@Override
+	public void setColumn(XmlColumn value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
+	@Override
 	public TemporalType getTemporal() {
 		if (this.isOrmMetadataComplete()) {
 			return null;
@@ -52,36 +87,44 @@ public class VirtualXmlVersion extends VirtualXmlAttributeMapping<JavaVersionMap
 		return null;
 	}
 
-	public void setTemporal(@SuppressWarnings("unused") TemporalType newTemporal){
+	@Override
+	public void setTemporal(TemporalType newTemporal){
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 	
 	//see eclipselink bug 247078 for info one why I made the interface XmlConvertibleMapping
+	@Override
 	public EnumType getEnumerated() {
 		throw new UnsupportedOperationException("enumerated not supported on version mappings"); //$NON-NLS-1$
 	}
 	
-	public void setEnumerated(@SuppressWarnings("unused") EnumType value) {
+	@Override
+	public void setEnumerated(EnumType value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 	
 	//see eclipselink bug 247078 for info one why I made the interface XmlConvertibleMapping
+	@Override
 	public boolean isLob() {
 		throw new UnsupportedOperationException("lob not supported on version mappings"); //$NON-NLS-1$
 	}
 	
-	public void setLob(@SuppressWarnings("unused") boolean value) {
+	@Override
+	public void setLob(boolean value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}	
 	
+	@Override
 	public TextRange getEnumeratedTextRange() {
 		return null;
 	}
 	
+	@Override
 	public TextRange getLobTextRange() {
 		return null;
 	}
 	
+	@Override
 	public TextRange getTemporalTextRange() {
 		return null;
 	}

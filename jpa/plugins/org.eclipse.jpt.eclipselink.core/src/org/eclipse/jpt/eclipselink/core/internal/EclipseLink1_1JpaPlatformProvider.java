@@ -73,17 +73,17 @@ public class EclipseLink1_1JpaPlatformProvider
 	// ********* java *********	
 
 	@Override
-	protected void addJavaTypeMappingProvidersTo(@SuppressWarnings("unused") List<JavaTypeMappingProvider> providers) {
+	protected void addJavaTypeMappingProvidersTo(List<JavaTypeMappingProvider> providers) {
 		//none specific to EclipseLink1.1
 	}
 
 	@Override
-	protected void addJavaAttributeMappingProvidersTo(@SuppressWarnings("unused") List<JavaAttributeMappingProvider> providers) {
+	protected void addJavaAttributeMappingProvidersTo(List<JavaAttributeMappingProvider> providers) {
 		//none specific to EclipseLink1.1
 	}
 
 	@Override
-	protected void addDefaultJavaAttributeMappingProvidersTo(@SuppressWarnings("unused") List<DefaultJavaAttributeMappingProvider> providers) {
+	protected void addDefaultJavaAttributeMappingProvidersTo(List<DefaultJavaAttributeMappingProvider> providers) {
 		//none specific to EclipseLink1.1
 	}
 	
@@ -91,7 +91,7 @@ public class EclipseLink1_1JpaPlatformProvider
 	// ********* ORM *********
 	
 	@Override
-	protected void addOrmTypeMappingProvidersTo(@SuppressWarnings("unused") List<OrmTypeMappingProvider> providers) {
+	protected void addOrmTypeMappingProvidersTo(List<OrmTypeMappingProvider> providers) {
 		//none specific to EclipseLink 1.1
 	}
 	

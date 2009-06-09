@@ -52,7 +52,7 @@ public class OrmVersionMappingProvider
 	}
 	
 	public XmlAttributeMapping buildResourceMapping() {
-		return OrmFactory.eINSTANCE.createXmlVersionImpl();
+		return OrmFactory.eINSTANCE.createXmlVersion();
 	}
 
 	public OrmAttributeMapping buildMapping(OrmPersistentAttribute parent, XmlAttributeMapping resourceMapping, JpaFactory factory) {
