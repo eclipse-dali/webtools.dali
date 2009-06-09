@@ -25,7 +25,6 @@ import org.eclipse.wst.validation.ValidationResult;
 import org.eclipse.wst.validation.ValidationState;
 import org.eclipse.wst.validation.ValidatorMessage;
 import org.eclipse.wst.validation.internal.ValConstants;
-import org.eclipse.wst.validation.internal.core.ValidationException;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IProjectValidationContext;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -41,7 +40,7 @@ public class JpaValidator extends AbstractValidator implements IValidator {
 	
 	// ********** IValidator implementation **********
 
-	public void validate(IValidationContext context, IReporter reporter) throws ValidationException {
+	public void validate(IValidationContext context, IReporter reporter) {
 		validate(reporter, project(context));
 	}
 	
