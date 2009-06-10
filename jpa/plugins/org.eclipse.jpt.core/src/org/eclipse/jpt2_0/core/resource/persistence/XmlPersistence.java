@@ -73,8 +73,9 @@ public class XmlPersistence extends org.eclipse.jpt.core.resource.persistence.Xm
 				XmlPersistenceUnit.buildTranslator(JPA.PERSISTENCE_UNIT, PersistencePackage.eINSTANCE.getXmlPersistence_PersistenceUnits())
 			};
 	}
+	
 	private static Translator buildSchemaLocationTranslator() {
-		return new ConstantAttributeTranslator(XML.XSI_SCHEMA_LOCATION, JPA.NAMESPACE_URL + ' ' + JPA.SCHEMA_LOCATION_2_0);
+		return new ConstantAttributeTranslator(XML.XSI_SCHEMA_LOCATION, JPA.NAMESPACE_URL + ' ' + JPA.SCHEMA_LOCATION);
 	}
 
 } // XmlPersistence

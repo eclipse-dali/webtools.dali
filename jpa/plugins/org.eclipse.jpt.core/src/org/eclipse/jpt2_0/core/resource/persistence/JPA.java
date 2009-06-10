@@ -19,12 +19,40 @@ package org.eclipse.jpt2_0.core.resource.persistence;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 @SuppressWarnings("nls")
-public interface JPA extends org.eclipse.jpt.core.resource.persistence.JPA {
+interface JPA {
 
 	String NAMESPACE_URL = "http://java.sun.com/xml/ns/persistence";
-	String SCHEMA_LOCATION_2_0 = "http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd";
+	String SCHEMA_LOCATION = "http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd";
 
-	String PERSISTENCE_UNIT__CACHING = "caching";
-	String PERSISTENCE_UNIT__VALIDATION_MODE = "validation-mode";
+	String CLASS = "class";
 
+	String DESCRIPTION = "description";
+
+	String EXCLUDE_UNLISTED_CLASSES = "exclude-unlisted-classes";
+
+	String JAR_FILE = "jar-file";
+
+	String JTA_DATA_SOURCE = "jta-data-source";
+
+	String MAPPING_FILE = "mapping-file";
+
+	String NON_JTA_DATA_SOURCE = "non-jta-data-source";
+
+	String PERSISTENCE = "persistence";
+		String PERSISTENCE__VERSION = "version";
+
+	String PERSISTENCE_UNIT = "persistence-unit";
+		String PERSISTENCE_UNIT__NAME = "name";
+		String PERSISTENCE_UNIT__TRANSACTION_TYPE = "transaction-type";
+		String PERSISTENCE_UNIT__CACHING = "caching";
+		String PERSISTENCE_UNIT__VALIDATION_MODE = "validation-mode";
+
+	String PROPERTIES = "properties";
+
+	String PROPERTY = "property";
+		String PROPERTY__NAME = "name";
+		String PROPERTY__VALUE = "value";
+
+	String PROVIDER = "provider";
+	
 }
