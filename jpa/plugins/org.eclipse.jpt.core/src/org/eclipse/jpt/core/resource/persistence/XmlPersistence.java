@@ -312,11 +312,11 @@ public class XmlPersistence extends AbstractJpaEObject implements JpaEObject
 			};
 	}
 
-	private static Translator buildNamespaceTranslator() {
+	protected static Translator buildNamespaceTranslator() {
 		return new ConstantAttributeTranslator(XML.NAMESPACE, JPA.NAMESPACE_URL);
 	}
 
-	private static Translator buildSchemaNamespaceTranslator() {
+	protected static Translator buildSchemaNamespaceTranslator() {
 		return new ConstantAttributeTranslator(XML.NAMESPACE_XSI, XML.XSI_NAMESPACE_URL);
 	}
 
@@ -324,7 +324,7 @@ public class XmlPersistence extends AbstractJpaEObject implements JpaEObject
 		return new ConstantAttributeTranslator(XML.XSI_SCHEMA_LOCATION, JPA.NAMESPACE_URL + ' ' + JPA.SCHEMA_LOCATION_1_0);
 	}
 
-	private static Translator buildVersionTranslator() {
+	protected static Translator buildVersionTranslator() {
 		return new Translator(
 				JPA.PERSISTENCE__VERSION,
 				PersistencePackage.eINSTANCE.getXmlPersistence_Version(),

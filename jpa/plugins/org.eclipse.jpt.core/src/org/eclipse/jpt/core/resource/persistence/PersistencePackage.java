@@ -19,7 +19,7 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.eclipse.emf.ecore.xml.type.XMLTypePackage;
-import org.eclipse.jpt.core.resource.orm.OrmPackage;
+import org.eclipse.jpt2_0.core.resource.persistence.Persistence2_0Package;
 
 /**
  * <!-- begin-user-doc -->
@@ -533,15 +533,15 @@ public class PersistencePackage extends EPackageImpl
 		XMLTypePackage.eINSTANCE.eClass();
 
 		// Obtain or create and register interdependencies
-		OrmPackage theOrmPackage = (OrmPackage)(EPackage.Registry.INSTANCE.getEPackage(OrmPackage.eNS_URI) instanceof OrmPackage ? EPackage.Registry.INSTANCE.getEPackage(OrmPackage.eNS_URI) : OrmPackage.eINSTANCE);
+		Persistence2_0Package thePersistence2_0Package = (Persistence2_0Package)(EPackage.Registry.INSTANCE.getEPackage(Persistence2_0Package.eNS_URI) instanceof Persistence2_0Package ? EPackage.Registry.INSTANCE.getEPackage(Persistence2_0Package.eNS_URI) : Persistence2_0Package.eINSTANCE);
 
 		// Create package meta-data objects
 		thePersistencePackage.createPackageContents();
-		theOrmPackage.createPackageContents();
+		thePersistence2_0Package.createPackageContents();
 
 		// Initialize created meta-data
 		thePersistencePackage.initializePackageContents();
-		theOrmPackage.initializePackageContents();
+		thePersistence2_0Package.initializePackageContents();
 
 		// Mark meta-data to indicate it can't be changed
 		thePersistencePackage.freeze();

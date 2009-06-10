@@ -129,6 +129,8 @@ public class JptCorePlugin extends Plugin {
 	 */
 	public static final IContentType PERSISTENCE_XML_CONTENT_TYPE = getJpaContentType("persistence"); //$NON-NLS-1$
 
+	public static final IContentType PERSISTENCE2_0_XML_CONTENT_TYPE = getJpaContentType("persistence2_0"); //$NON-NLS-1$
+
 	/**
 	 * The content type for Java archives (JARs).
 	 */

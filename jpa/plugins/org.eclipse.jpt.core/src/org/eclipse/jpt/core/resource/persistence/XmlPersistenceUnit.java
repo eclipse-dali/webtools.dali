@@ -881,7 +881,7 @@ public class XmlPersistenceUnit extends AbstractJpaEObject implements JpaEObject
 			};
 	}
 
-	private static Translator buildNameTranslator() {
+	protected static Translator buildNameTranslator() {
 		return new Translator(
 				JPA.PERSISTENCE_UNIT__NAME,
 				PersistencePackage.eINSTANCE.getXmlPersistenceUnit_Name(),
@@ -889,7 +889,7 @@ public class XmlPersistenceUnit extends AbstractJpaEObject implements JpaEObject
 			);
 	}
 
-	private static Translator buildTransactionTypeTranslator() {
+	protected static Translator buildTransactionTypeTranslator() {
 		return new Translator(
 				JPA.PERSISTENCE_UNIT__TRANSACTION_TYPE,
 				PersistencePackage.eINSTANCE.getXmlPersistenceUnit_TransactionType(),
@@ -897,35 +897,35 @@ public class XmlPersistenceUnit extends AbstractJpaEObject implements JpaEObject
 			);
 	}
 
-	private static Translator buildDescriptionTranslator() {
+	protected static Translator buildDescriptionTranslator() {
 		return new Translator(
 				JPA.DESCRIPTION,
 				PersistencePackage.eINSTANCE.getXmlPersistenceUnit_Description()
 			);
 	}
 
-	private static Translator buildProviderTranslator() {
+	protected static Translator buildProviderTranslator() {
 		return new Translator(
 				JPA.PROVIDER,
 				PersistencePackage.eINSTANCE.getXmlPersistenceUnit_Provider()
 			);
 	}
 
-	private static Translator buildJtaDataSourceTranslator() {
+	protected static Translator buildJtaDataSourceTranslator() {
 		return new Translator(
 				JPA.JTA_DATA_SOURCE,
 				PersistencePackage.eINSTANCE.getXmlPersistenceUnit_JtaDataSource()
 			);
 	}
 
-	private static Translator buildNonJtaDataSourceTranslator() {
+	protected static Translator buildNonJtaDataSourceTranslator() {
 		return new Translator(
 				JPA.NON_JTA_DATA_SOURCE,
 				PersistencePackage.eINSTANCE.getXmlPersistenceUnit_NonJtaDataSource()
 			);
 	}
 
-	private static Translator buildExcludeUnlistedClassesTranslator() {
+	protected static Translator buildExcludeUnlistedClassesTranslator() {
 		return new BooleanTranslator(
 				JPA.EXCLUDE_UNLISTED_CLASSES,
 				PersistencePackage.eINSTANCE.getXmlPersistenceUnit_ExcludeUnlistedClasses()

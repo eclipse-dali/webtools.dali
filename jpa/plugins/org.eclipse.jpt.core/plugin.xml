@@ -109,9 +109,22 @@
 				class="org.eclipse.core.runtime.content.XMLRootElementContentDescriber2">
 				<parameter 
 					name="element" 
-					value="{http://java.sun.com/xml/ns/persistence}persistence"/>
+					value="{http://java.sun.com/xml/ns/persistence}persistence:1.0"/>
 			</describer>
 		</content-type>
+    <content-type
+          base-type="org.eclipse.jpt.core.content.baseJpaContent"
+          file-names="persistence.xml"
+          id="org.eclipse.jpt.core.content.persistence2_0"
+          name="%PERSISTENCE2_0_XML_CONTENT">
+       <describer
+             class="org.eclipse.core.runtime.content.XMLRootElementContentDescriber2">
+          <parameter
+                name="element"
+                value="{http://java.sun.com/xml/ns/persistence}persistence:2.0">
+          </parameter>
+       </describer>
+    </content-type>
  
 		<!-- JAR content type -->
 		<content-type
@@ -275,6 +288,13 @@
 			</contentTypeBinding>
 		</resourceFactory>
 		
+		<resourceFactory
+			class="org.eclipse.jpt2_0.core.resource.persistence.Persistence2_0XmlResourceFactory"
+			isDefault="true">
+			<contentTypeBinding
+				contentTypeId="org.eclipse.jpt.core.content.persistence2_0">
+			</contentTypeBinding>
+		</resourceFactory>
 	</extension>
 	
 	
