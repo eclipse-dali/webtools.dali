@@ -22,7 +22,7 @@ package org.eclipse.jpt2_0.core.resource.persistence;
 interface JPA {
 
 	String NAMESPACE_URL = "http://java.sun.com/xml/ns/persistence";
-	String SCHEMA_LOCATION = "http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd";
+	String SCHEMA_LOCATION_2_0 = "http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd";
 
 	String CLASS = "class";
 

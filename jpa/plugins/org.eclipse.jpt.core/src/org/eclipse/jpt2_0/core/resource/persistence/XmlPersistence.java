@@ -75,7 +75,7 @@ public class XmlPersistence extends org.eclipse.jpt.core.resource.persistence.Xm
 	}
 	
 	private static Translator buildSchemaLocationTranslator() {
-		return new ConstantAttributeTranslator(XML.XSI_SCHEMA_LOCATION, JPA.NAMESPACE_URL + ' ' + JPA.SCHEMA_LOCATION);
+		return new ConstantAttributeTranslator(XML.XSI_SCHEMA_LOCATION, JPA.NAMESPACE_URL + ' ' + JPA.SCHEMA_LOCATION_2_0);
 	}
 
 } // XmlPersistence
