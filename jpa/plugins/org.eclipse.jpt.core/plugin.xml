@@ -106,7 +106,7 @@
 			base-type="org.eclipse.jpt.core.content.baseJpaContent"
 			file-names="persistence.xml">
 			<describer
-				class="org.eclipse.core.runtime.content.XMLRootElementContentDescriber2">
+				class="org.eclipse.jpt.core.internal.resource.xml.XMLRootElementContentDescriber">
 				<parameter 
 					name="element" 
 					value="{http://java.sun.com/xml/ns/persistence}persistence:1.0"/>
@@ -118,7 +118,7 @@
           id="org.eclipse.jpt.core.content.persistence2_0"
           name="%PERSISTENCE2_0_XML_CONTENT">
        <describer
-             class="org.eclipse.core.runtime.content.XMLRootElementContentDescriber2">
+             class="org.eclipse.jpt.core.internal.resource.xml.XMLRootElementContentDescriber">
           <parameter
                 name="element"
                 value="{http://java.sun.com/xml/ns/persistence}persistence:2.0">
