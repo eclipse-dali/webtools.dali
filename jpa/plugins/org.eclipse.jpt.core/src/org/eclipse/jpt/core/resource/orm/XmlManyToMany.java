@@ -10,7 +10,10 @@
 package org.eclipse.jpt.core.resource.orm;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
+import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
  * <!-- begin-user-doc -->
@@ -28,7 +31,7 @@ import org.eclipse.jpt.core.MappingKeys;
  * @model kind="class"
  * @generated
  */
-public class XmlManyToMany extends XmlMultiRelationshipMapping
+public class XmlManyToMany extends AbstractXmlMultiRelationshipMapping
 {
 
 	/**
@@ -55,4 +58,32 @@ public class XmlManyToMany extends XmlMultiRelationshipMapping
 	public String getMappingKey() {
 		return MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY;
 	}
+	
+	// ********** translators **********
+
+	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
+		return new SimpleTranslator(elementName, structuralFeature, buildTranslatorChildren());
+	}
+
+	private static Translator[] buildTranslatorChildren() {
+		return new Translator[] {
+			buildNameTranslator(),
+			buildTargetEntityTranslator(),
+			buildFetchTranslator(),
+			buildMappedByTranslator(),
+			buildOrderByTranslator(),
+			buildMapKeyTranslator(),
+			buildJoinTableTranslator(),
+			buildCascadeTranslator()
+		};
+	}
+	
+	protected static Translator buildMappedByTranslator() {
+		return new Translator(JPA.MAPPED_BY, OrmPackage.eINSTANCE.getXmlMappedByMapping_MappedBy(), Translator.DOM_ATTRIBUTE);
+	}
+
+	protected static Translator buildJoinTableTranslator() {
+		return XmlJoinTable.buildTranslator(JPA.JOIN_TABLE, OrmPackage.eINSTANCE.getXmlJoinTableMapping_JoinTable());
+	}
+
 }

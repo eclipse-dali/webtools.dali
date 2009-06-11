@@ -12,9 +12,13 @@ package org.eclipse.jpt.core.resource.orm;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.internal.resource.xml.translators.EmptyTagBooleanTranslator;
+import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
+import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
  * <!-- begin-user-doc -->
@@ -1035,6 +1039,53 @@ public class XmlMappedSuperclass extends AbstractXmlTypeMapping
 		result.append(excludeSuperclassListeners);
 		result.append(')');
 		return result.toString();
+	}
+
+	// ********** translators **********
+
+	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
+		return new SimpleTranslator(elementName, structuralFeature, buildTranslatorChildren());
+	}
+
+	private static Translator[] buildTranslatorChildren() {
+		return new Translator[] {
+			buildClassTranslator(),
+			buildAccessTranslator(),
+			buildMetadataCompleteTranslator(),
+			buildDescriptionTranslator(),
+			buildIdClassTranslator(),
+			buildExcludeDefaultListenersTranslator(),
+			buildExcludeSuperclassListenersTranslator(),
+			buildEntityListenersTranslator(),
+			EventMethod.buildTranslator(JPA.PRE_PERSIST, OrmPackage.eINSTANCE.getXmlMappedSuperclass_PrePersist()),
+			EventMethod.buildTranslator(JPA.POST_PERSIST, OrmPackage.eINSTANCE.getXmlMappedSuperclass_PostPersist()),
+			EventMethod.buildTranslator(JPA.PRE_REMOVE, OrmPackage.eINSTANCE.getXmlMappedSuperclass_PreRemove()),
+			EventMethod.buildTranslator(JPA.POST_REMOVE, OrmPackage.eINSTANCE.getXmlMappedSuperclass_PostRemove()),
+			EventMethod.buildTranslator(JPA.PRE_UPDATE, OrmPackage.eINSTANCE.getXmlMappedSuperclass_PreUpdate()),
+			EventMethod.buildTranslator(JPA.POST_UPDATE, OrmPackage.eINSTANCE.getXmlMappedSuperclass_PostUpdate()),
+			EventMethod.buildTranslator(JPA.POST_LOAD, OrmPackage.eINSTANCE.getXmlMappedSuperclass_PostLoad()),
+			buildAttributesTranslator()
+		};
+	}
+	
+	protected static Translator buildAccessTranslator() {
+		return new Translator(JPA.ACCESS, OrmPackage.eINSTANCE.getXmlAccessHolder_Access(), Translator.DOM_ATTRIBUTE);
+	}
+	
+	protected static Translator buildIdClassTranslator() {
+		return XmlIdClass.buildTranslator(JPA.ID_CLASS, OrmPackage.eINSTANCE.getXmlMappedSuperclass_IdClass());
+	}
+	
+	protected static Translator buildExcludeDefaultListenersTranslator() {
+		return new EmptyTagBooleanTranslator(JPA.EXCLUDE_DEFAULT_LISTENERS, OrmPackage.eINSTANCE.getXmlMappedSuperclass_ExcludeDefaultListeners());
+	}
+	
+	protected static Translator buildExcludeSuperclassListenersTranslator() {
+		return new EmptyTagBooleanTranslator(JPA.EXCLUDE_SUPERCLASS_LISTENERS, OrmPackage.eINSTANCE.getXmlMappedSuperclass_ExcludeSuperclassListeners());
+	}
+	
+	protected static Translator buildEntityListenersTranslator() {
+		return EntityListeners.buildTranslator(JPA.ENTITY_LISTENERS, OrmPackage.eINSTANCE.getXmlMappedSuperclass_EntityListeners());
 	}
 
 } // MappedSuperclass

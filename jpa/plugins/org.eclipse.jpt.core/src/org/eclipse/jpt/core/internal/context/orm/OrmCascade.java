@@ -14,7 +14,7 @@ import org.eclipse.jpt.core.context.orm.OrmRelationshipMapping;
 import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.core.resource.orm.CascadeType;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
-import org.eclipse.jpt.core.resource.orm.XmlRelationshipMapping;
+import org.eclipse.jpt.core.resource.orm.AbstractXmlRelationshipMapping;
 import org.eclipse.jpt.core.utility.TextRange;
 
 
@@ -31,9 +31,9 @@ public class OrmCascade extends AbstractXmlContextNode implements Cascade
 	protected boolean refresh;
 
 	
-	protected final XmlRelationshipMapping relationshipMapping;
+	protected final AbstractXmlRelationshipMapping relationshipMapping;
 	
-	protected OrmCascade(OrmRelationshipMapping parent, XmlRelationshipMapping relationshipMapping) {
+	protected OrmCascade(OrmRelationshipMapping parent, AbstractXmlRelationshipMapping relationshipMapping) {
 		super(parent);
 		this.relationshipMapping = relationshipMapping;
 		CascadeType cascade = getResourceCascade();

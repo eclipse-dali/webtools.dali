@@ -12,9 +12,13 @@ package org.eclipse.jpt.core.resource.orm;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.jpt.core.internal.resource.xml.translators.EmptyTagBooleanTranslator;
+import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
 import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
+import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
  * <!-- begin-user-doc -->
@@ -496,6 +500,38 @@ public class XmlPersistenceUnitDefaults extends AbstractJpaEObject implements Xm
 		result.append(cascadePersist);
 		result.append(')');
 		return result.toString();
+	}
+
+	// ********** translators **********
+
+	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
+		return new SimpleTranslator(elementName, structuralFeature, buildTranslatorChildren());
+	}
+
+	private static Translator[] buildTranslatorChildren() {
+		return new Translator[] {
+			buildSchemaTranslator(),
+			buildCatalogTranslator(),
+			buildAccessTranslator(),
+			buildCascadePersistTranslator(),
+			EntityListeners.buildTranslator(JPA.ENTITY_LISTENERS, OrmPackage.eINSTANCE.getXmlPersistenceUnitDefaults_EntityListeners())
+		};
+	}
+	
+	protected static Translator buildSchemaTranslator() {
+		return new Translator(JPA.SCHEMA, OrmPackage.eINSTANCE.getXmlPersistenceUnitDefaults_Schema());
+	}
+	
+	protected static Translator buildCatalogTranslator() {
+		return new Translator(JPA.CATALOG, OrmPackage.eINSTANCE.getXmlPersistenceUnitDefaults_Catalog());
+	}
+	
+	protected static Translator buildAccessTranslator() {
+		return new Translator(JPA.ACCESS, OrmPackage.eINSTANCE.getXmlAccessHolder_Access());
+	}
+	
+	protected static Translator buildCascadePersistTranslator() {
+		return new EmptyTagBooleanTranslator(JPA.CASCADE_PERSIST, OrmPackage.eINSTANCE.getXmlPersistenceUnitDefaults_CascadePersist());
 	}
 
 } // OrmPersistenceUnitDefaults

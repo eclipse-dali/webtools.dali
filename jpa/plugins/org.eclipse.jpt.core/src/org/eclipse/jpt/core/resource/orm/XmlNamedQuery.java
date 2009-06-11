@@ -14,13 +14,15 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-import org.eclipse.jpt.core.internal.resource.orm.translators.OrmXmlMapper;
+import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
 import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
  * <!-- begin-user-doc -->
@@ -328,6 +330,29 @@ public class XmlNamedQuery extends AbstractJpaEObject implements XmlQuery
 	}
 	
 	public TextRange getNameTextRange() {
-		return getAttributeTextRange(OrmXmlMapper.NAME);
+		return getAttributeTextRange(JPA.NAME);
 	}
+	
+	// ********** translators **********
+
+	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
+		return new SimpleTranslator(elementName, structuralFeature, buildTranslatorChildren());
+	}
+
+	private static Translator[] buildTranslatorChildren() {
+		return new Translator[] {
+			buildNameTranslator(),
+			buildQueryTranslator(),
+			XmlQueryHint.buildTranslator(JPA.HINT, OrmPackage.eINSTANCE.getXmlQuery_Hints()),
+		};
+	}
+
+	protected static Translator buildNameTranslator() {
+		return new Translator(JPA.NAME, OrmPackage.eINSTANCE.getXmlQuery_Name(), Translator.DOM_ATTRIBUTE);
+	}
+	
+	protected static Translator buildQueryTranslator() {
+		return new Translator(JPA.QUERY, OrmPackage.eINSTANCE.getXmlQuery_Query());
+	}
+	
 }

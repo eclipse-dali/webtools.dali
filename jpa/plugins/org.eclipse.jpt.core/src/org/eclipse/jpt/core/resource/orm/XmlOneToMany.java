@@ -13,10 +13,13 @@ import java.util.Collection;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
+import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
  * <!-- begin-user-doc -->
@@ -34,7 +37,7 @@ import org.eclipse.jpt.core.MappingKeys;
  * @model kind="class"
  * @generated
  */
-public class XmlOneToMany extends XmlMultiRelationshipMapping implements XmlJoinColumnsMapping
+public class XmlOneToMany extends AbstractXmlMultiRelationshipMapping implements XmlJoinColumnsMapping
 {
 
 	/**
@@ -216,4 +219,37 @@ public class XmlOneToMany extends XmlMultiRelationshipMapping implements XmlJoin
 	public String getMappingKey() {
 		return MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY;
 	}
+	
+	// ********** translators **********
+
+	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
+		return new SimpleTranslator(elementName, structuralFeature, buildTranslatorChildren());
+	}
+
+	private static Translator[] buildTranslatorChildren() {
+		return new Translator[] {
+			buildNameTranslator(),
+			buildTargetEntityTranslator(),
+			buildFetchTranslator(),
+			buildMappedByTranslator(),
+			buildOrderByTranslator(),
+			buildMapKeyTranslator(),
+			buildJoinTableTranslator(),
+			buildJoinColumnTranslator(),
+			buildCascadeTranslator()
+		};
+	}
+	
+	protected static Translator buildMappedByTranslator() {
+		return new Translator(JPA.MAPPED_BY, OrmPackage.eINSTANCE.getXmlMappedByMapping_MappedBy(), Translator.DOM_ATTRIBUTE);
+	}
+	
+	protected static Translator buildJoinColumnTranslator() {
+		return XmlJoinColumn.buildTranslator(JPA.JOIN_COLUMN, OrmPackage.eINSTANCE.getXmlJoinColumnsMapping_JoinColumns());
+	}
+	
+	protected static Translator buildJoinTableTranslator() {
+		return XmlJoinTable.buildTranslator(JPA.JOIN_TABLE, OrmPackage.eINSTANCE.getXmlJoinTableMapping_JoinTable());
+	}
+
 } // OneToMany

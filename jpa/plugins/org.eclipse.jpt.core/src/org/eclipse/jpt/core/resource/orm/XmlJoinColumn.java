@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,9 +11,11 @@ package org.eclipse.jpt.core.resource.orm;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.jpt.core.internal.resource.orm.translators.OrmXmlMapper;
+import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
  * <!-- begin-user-doc -->
@@ -37,7 +39,7 @@ import org.eclipse.jpt.core.utility.TextRange;
  * @model kind="class"
  * @generated
  */
-public class XmlJoinColumn extends XmlAbstractColumn
+public class XmlJoinColumn extends AbstractXmlColumn
 {
 	/**
 	 * The default value of the '{@link #getReferencedColumnName() <em>Referenced Column Name</em>}' attribute.
@@ -199,6 +201,29 @@ public class XmlJoinColumn extends XmlAbstractColumn
 	}
 	
 	public TextRange getReferencedColumnNameTextRange() {
-		return getAttributeTextRange(OrmXmlMapper.REFERENCED_COLUMN_NAME);
+		return getAttributeTextRange(JPA.REFERENCED_COLUMN_NAME);
+	}
+	
+	// ********** translators **********
+
+	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
+		return new SimpleTranslator(elementName, structuralFeature, buildTranslatorChildren());
+	}
+
+	private static Translator[] buildTranslatorChildren() {
+		return new Translator[] {
+			buildNameTranslator(),
+			buildReferencedColumnNameTranslator(),
+			buildUniqueTranslator(),
+			buildNullableTranslator(),
+			buildInsertableTranslator(),
+			buildUpdatableTranslator(),
+			buildColumnDefinitionTranslator(),
+			buildTableTranslator(),
+		};
+	}
+	
+	protected static Translator buildReferencedColumnNameTranslator() {
+		return new Translator(JPA.REFERENCED_COLUMN_NAME, OrmPackage.eINSTANCE.getXmlJoinColumn_ReferencedColumnName(), Translator.DOM_ATTRIBUTE);
 	}
 } // JoinColumn

@@ -39,7 +39,7 @@ public class DiscriminatorColumnTranslator extends Translator
 	}
 	
 	private Translator createNameTranslator() {
-		return new Translator(NAME, ORM_PKG.getXmlNamedColumn_Name(), DOM_ATTRIBUTE);
+		return new Translator(NAME, ORM_PKG.getAbstractXmlNamedColumn_Name(), DOM_ATTRIBUTE);
 	}
 	
 	protected Translator createDiscrminiatorTypeTranslator() {
@@ -47,7 +47,7 @@ public class DiscriminatorColumnTranslator extends Translator
 	}
 	
 	private Translator createColumnDefinitionTranslator() {
-		return new Translator(COLUMN_DEFINITION, ORM_PKG.getXmlNamedColumn_ColumnDefinition(), DOM_ATTRIBUTE);
+		return new Translator(COLUMN_DEFINITION, ORM_PKG.getAbstractXmlNamedColumn_ColumnDefinition(), DOM_ATTRIBUTE);
 	}
 	
 	protected Translator createLengthTranslator() {

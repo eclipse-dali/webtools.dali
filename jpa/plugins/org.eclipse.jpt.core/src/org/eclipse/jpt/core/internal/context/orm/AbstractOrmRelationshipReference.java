@@ -17,21 +17,21 @@ import org.eclipse.jpt.core.context.orm.OrmOwnableRelationshipReference;
 import org.eclipse.jpt.core.context.orm.OrmRelationshipMapping;
 import org.eclipse.jpt.core.context.orm.OrmRelationshipReference;
 import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
-import org.eclipse.jpt.core.resource.orm.XmlRelationshipMapping;
+import org.eclipse.jpt.core.resource.orm.AbstractXmlRelationshipMapping;
 import org.eclipse.jpt.core.utility.TextRange;
 
 public abstract class AbstractOrmRelationshipReference 
 	extends AbstractXmlContextNode
 	implements OrmRelationshipReference
 {
-	protected XmlRelationshipMapping resourceMapping;
+	protected AbstractXmlRelationshipMapping resourceMapping;
 	
 	// cache the strategy for property change notification
 	protected JoiningStrategy cachedPredominantJoiningStrategy;
 	
 	
 	protected AbstractOrmRelationshipReference(
-			OrmRelationshipMapping parent, XmlRelationshipMapping resourceMapping) {
+			OrmRelationshipMapping parent, AbstractXmlRelationshipMapping resourceMapping) {
 		super(parent);
 		this.resourceMapping = resourceMapping;
 		initializeJoiningStrategies();

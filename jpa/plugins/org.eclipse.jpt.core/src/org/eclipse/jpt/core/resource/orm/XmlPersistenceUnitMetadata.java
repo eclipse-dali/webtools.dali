@@ -12,10 +12,14 @@ package org.eclipse.jpt.core.resource.orm;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.jpt.core.internal.resource.xml.translators.EmptyTagBooleanTranslator;
+import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
 import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.xml.JpaEObject;
+import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
  * <!-- begin-user-doc -->
@@ -298,4 +302,20 @@ public class XmlPersistenceUnitMetadata extends AbstractJpaEObject implements Jp
 		return result.toString();
 	}
 
+	// ********** translators **********
+
+	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
+		return new SimpleTranslator(elementName, structuralFeature, buildTranslatorChildren());
+	}
+
+	private static Translator[] buildTranslatorChildren() {
+		return new Translator[] {
+			buildXmlMappingMetadataCompleteTranslator(),
+			XmlPersistenceUnitDefaults.buildTranslator(JPA.PERSISTENCE_UNIT_DEFAULTS, OrmPackage.eINSTANCE.getXmlPersistenceUnitMetadata_PersistenceUnitDefaults())
+		};
+	}
+
+	protected static Translator buildXmlMappingMetadataCompleteTranslator() {
+		return new EmptyTagBooleanTranslator(JPA.XML_MAPPING_METADATA_COMPLETE, OrmPackage.eINSTANCE.getXmlPersistenceUnitMetadata_XmlMappingMetadataComplete());
+	}
 } // PersistenceUnitMetadata

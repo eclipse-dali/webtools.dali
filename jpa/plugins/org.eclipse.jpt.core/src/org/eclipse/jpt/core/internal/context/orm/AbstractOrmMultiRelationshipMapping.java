@@ -16,10 +16,10 @@ import org.eclipse.jpt.core.context.orm.OrmMultiRelationshipMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.resource.orm.MapKey;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
-import org.eclipse.jpt.core.resource.orm.XmlMultiRelationshipMapping;
+import org.eclipse.jpt.core.resource.orm.AbstractXmlMultiRelationshipMapping;
 
 
-public abstract class AbstractOrmMultiRelationshipMapping<T extends XmlMultiRelationshipMapping>
+public abstract class AbstractOrmMultiRelationshipMapping<T extends AbstractXmlMultiRelationshipMapping>
 	extends AbstractOrmRelationshipMapping<T>
 	implements OrmMultiRelationshipMapping
 {

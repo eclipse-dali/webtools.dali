@@ -10,7 +10,10 @@
 package org.eclipse.jpt.core.resource.orm;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
+import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
  * <!-- begin-user-doc -->
@@ -58,6 +61,30 @@ public class XmlEmbeddable extends AbstractXmlTypeMapping
 	protected EClass eStaticClass()
 	{
 		return OrmPackage.Literals.XML_EMBEDDABLE;
+	}
+	
+	// ********** translators **********
+
+	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
+		return new SimpleTranslator(elementName, structuralFeature, buildTranslatorChildren());
+	}
+
+	private static Translator[] buildTranslatorChildren() {
+		return new Translator[] {
+			buildClassTranslator(),
+			buildAccessTranslator(),
+			buildMetadataCompleteTranslator(),
+			buildDescriptionTranslator(),
+			buildAttributesTranslator()
+		};
+	}
+
+	protected static Translator buildNameTranslator() {
+		return new Translator(JPA.NAME, OrmPackage.eINSTANCE.getXmlEntity_Name(), Translator.DOM_ATTRIBUTE);
+	}
+	
+	protected static Translator buildAccessTranslator() {
+		return new Translator(JPA.ACCESS, OrmPackage.eINSTANCE.getXmlAccessHolder_Access(), Translator.DOM_ATTRIBUTE);
 	}
 
 } // Embeddable

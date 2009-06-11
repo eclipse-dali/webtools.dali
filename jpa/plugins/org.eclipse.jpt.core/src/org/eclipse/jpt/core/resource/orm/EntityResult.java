@@ -14,12 +14,15 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
 import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.xml.JpaEObject;
+import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
  * <!-- begin-user-doc -->
@@ -335,4 +338,26 @@ public class EntityResult extends AbstractJpaEObject implements JpaEObject
 		return result.toString();
 	}
 
+	
+	// ********** translators **********
+
+	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
+		return new SimpleTranslator(elementName, structuralFeature, buildTranslatorChildren());
+	}
+
+	private static Translator[] buildTranslatorChildren() {
+		return new Translator[] {
+			buildEntityClassTranslator(),
+			buildDiscriminatorColumnTranslator(),
+			FieldResult.buildTranslator(JPA.FIELD_RESULT, OrmPackage.eINSTANCE.getEntityResult_FieldResults()),
+		};
+	}
+	
+	protected static Translator buildEntityClassTranslator() {
+		return new Translator(JPA.ENTITY_CLASS, OrmPackage.eINSTANCE.getEntityResult_EntityClass(), Translator.DOM_ATTRIBUTE);
+	}
+	
+	protected static Translator buildDiscriminatorColumnTranslator() {
+		return new Translator(JPA.DISCRIMINATOR_COLUMN, OrmPackage.eINSTANCE.getEntityResult_DiscriminatorColumn(), Translator.DOM_ATTRIBUTE);
+	}
 } // EntityResult

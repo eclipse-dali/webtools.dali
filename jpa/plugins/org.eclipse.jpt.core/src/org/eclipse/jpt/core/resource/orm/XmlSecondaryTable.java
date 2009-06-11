@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,9 +13,12 @@ import java.util.Collection;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
+import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
  * <!-- begin-user-doc -->
@@ -39,7 +42,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * @model kind="class"
  * @generated
  */
-public class XmlSecondaryTable extends XmlBaseTable
+public class XmlSecondaryTable extends AbstractXmlTable
 {
 	/**
 	 * The cached value of the '{@link #getPrimaryKeyJoinColumns() <em>Primary Key Join Columns</em>}' containment reference list.
@@ -177,6 +180,26 @@ public class XmlSecondaryTable extends XmlBaseTable
 				return primaryKeyJoinColumns != null && !primaryKeyJoinColumns.isEmpty();
 		}
 		return super.eIsSet(featureID);
+	}
+	
+	// ********** translators **********
+
+	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
+		return new SimpleTranslator(elementName, structuralFeature, buildTranslatorChildren());
+	}
+
+	private static Translator[] buildTranslatorChildren() {
+		return new Translator[] {
+			buildNameTranslator(),
+			buildCatalogTranslator(),
+			buildSchemaTranslator(),
+			buildPrimaryKeyJoinColumnsTranslator(),
+			buildUniqueConstraintTranslator()
+		};
+	}
+	
+	protected static Translator buildPrimaryKeyJoinColumnsTranslator() {
+		return XmlPrimaryKeyJoinColumn.buildTranslator(JPA.PRIMARY_KEY_JOIN_COLUMN, OrmPackage.eINSTANCE.getXmlSecondaryTable_PrimaryKeyJoinColumns());
 	}
 
 } // XmlSecondaryTableImpl

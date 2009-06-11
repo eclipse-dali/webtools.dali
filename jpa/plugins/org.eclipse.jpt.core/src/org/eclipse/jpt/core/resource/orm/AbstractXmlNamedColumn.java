@@ -12,10 +12,10 @@ package org.eclipse.jpt.core.resource.orm;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.jpt.core.internal.resource.orm.translators.OrmXmlMapper;
 import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.xml.JpaEObject;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
  * <!-- begin-user-doc -->
@@ -31,17 +31,17 @@ import org.eclipse.jpt.core.utility.TextRange;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlNamedColumn#getColumnDefinition <em>Column Definition</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlNamedColumn#getName <em>Name</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.resource.orm.AbstractXmlNamedColumn#getColumnDefinition <em>Column Definition</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.resource.orm.AbstractXmlNamedColumn#getName <em>Name</em>}</li>
  * </ul>
  * </p>
  *
- * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlNamedColumn()
- * @model kind="class"
+ * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAbstractXmlNamedColumn()
+ * @model kind="class" abstract="true"
  * @extends JpaEObject
  * @generated
  */
-public class XmlNamedColumn extends AbstractJpaEObject implements JpaEObject
+public abstract class AbstractXmlNamedColumn extends AbstractJpaEObject implements JpaEObject
 {
 	/**
 	 * The default value of the '{@link #getColumnDefinition() <em>Column Definition</em>}' attribute.
@@ -88,7 +88,7 @@ public class XmlNamedColumn extends AbstractJpaEObject implements JpaEObject
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected XmlNamedColumn()
+	protected AbstractXmlNamedColumn()
 	{
 		super();
 	}
@@ -101,7 +101,7 @@ public class XmlNamedColumn extends AbstractJpaEObject implements JpaEObject
 	@Override
 	protected EClass eStaticClass()
 	{
-		return OrmPackage.Literals.XML_NAMED_COLUMN;
+		return OrmPackage.Literals.ABSTRACT_XML_NAMED_COLUMN;
 	}
 
 	/**
@@ -114,7 +114,7 @@ public class XmlNamedColumn extends AbstractJpaEObject implements JpaEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Column Definition</em>' attribute.
 	 * @see #setColumnDefinition(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlNamedColumn_ColumnDefinition()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAbstractXmlNamedColumn_ColumnDefinition()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -124,7 +124,7 @@ public class XmlNamedColumn extends AbstractJpaEObject implements JpaEObject
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlNamedColumn#getColumnDefinition <em>Column Definition</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.AbstractXmlNamedColumn#getColumnDefinition <em>Column Definition</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Column Definition</em>' attribute.
@@ -136,7 +136,7 @@ public class XmlNamedColumn extends AbstractJpaEObject implements JpaEObject
 		String oldColumnDefinition = columnDefinition;
 		columnDefinition = newColumnDefinition;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_NAMED_COLUMN__COLUMN_DEFINITION, oldColumnDefinition, columnDefinition));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ABSTRACT_XML_NAMED_COLUMN__COLUMN_DEFINITION, oldColumnDefinition, columnDefinition));
 	}
 
 	/**
@@ -149,7 +149,7 @@ public class XmlNamedColumn extends AbstractJpaEObject implements JpaEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see #setName(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlNamedColumn_Name()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAbstractXmlNamedColumn_Name()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -159,7 +159,7 @@ public class XmlNamedColumn extends AbstractJpaEObject implements JpaEObject
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlNamedColumn#getName <em>Name</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.AbstractXmlNamedColumn#getName <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Name</em>' attribute.
@@ -171,7 +171,7 @@ public class XmlNamedColumn extends AbstractJpaEObject implements JpaEObject
 		String oldName = name;
 		name = newName;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_NAMED_COLUMN__NAME, oldName, name));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ABSTRACT_XML_NAMED_COLUMN__NAME, oldName, name));
 	}
 
 	/**
@@ -184,9 +184,9 @@ public class XmlNamedColumn extends AbstractJpaEObject implements JpaEObject
 	{
 		switch (featureID)
 		{
-			case OrmPackage.XML_NAMED_COLUMN__COLUMN_DEFINITION:
+			case OrmPackage.ABSTRACT_XML_NAMED_COLUMN__COLUMN_DEFINITION:
 				return getColumnDefinition();
-			case OrmPackage.XML_NAMED_COLUMN__NAME:
+			case OrmPackage.ABSTRACT_XML_NAMED_COLUMN__NAME:
 				return getName();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -202,10 +202,10 @@ public class XmlNamedColumn extends AbstractJpaEObject implements JpaEObject
 	{
 		switch (featureID)
 		{
-			case OrmPackage.XML_NAMED_COLUMN__COLUMN_DEFINITION:
+			case OrmPackage.ABSTRACT_XML_NAMED_COLUMN__COLUMN_DEFINITION:
 				setColumnDefinition((String)newValue);
 				return;
-			case OrmPackage.XML_NAMED_COLUMN__NAME:
+			case OrmPackage.ABSTRACT_XML_NAMED_COLUMN__NAME:
 				setName((String)newValue);
 				return;
 		}
@@ -222,10 +222,10 @@ public class XmlNamedColumn extends AbstractJpaEObject implements JpaEObject
 	{
 		switch (featureID)
 		{
-			case OrmPackage.XML_NAMED_COLUMN__COLUMN_DEFINITION:
+			case OrmPackage.ABSTRACT_XML_NAMED_COLUMN__COLUMN_DEFINITION:
 				setColumnDefinition(COLUMN_DEFINITION_EDEFAULT);
 				return;
-			case OrmPackage.XML_NAMED_COLUMN__NAME:
+			case OrmPackage.ABSTRACT_XML_NAMED_COLUMN__NAME:
 				setName(NAME_EDEFAULT);
 				return;
 		}
@@ -242,9 +242,9 @@ public class XmlNamedColumn extends AbstractJpaEObject implements JpaEObject
 	{
 		switch (featureID)
 		{
-			case OrmPackage.XML_NAMED_COLUMN__COLUMN_DEFINITION:
+			case OrmPackage.ABSTRACT_XML_NAMED_COLUMN__COLUMN_DEFINITION:
 				return COLUMN_DEFINITION_EDEFAULT == null ? columnDefinition != null : !COLUMN_DEFINITION_EDEFAULT.equals(columnDefinition);
-			case OrmPackage.XML_NAMED_COLUMN__NAME:
+			case OrmPackage.ABSTRACT_XML_NAMED_COLUMN__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 		}
 		return super.eIsSet(featureID);
@@ -270,7 +270,17 @@ public class XmlNamedColumn extends AbstractJpaEObject implements JpaEObject
 	}
 	
 	public TextRange getNameTextRange() {
-		return getAttributeTextRange(OrmXmlMapper.NAME);
+		return getAttributeTextRange(JPA.NAME);
+	}
+	
+	// ********** translators **********
+	
+	protected static Translator buildNameTranslator() {
+		return new Translator(JPA.NAME, OrmPackage.eINSTANCE.getAbstractXmlNamedColumn_Name(), Translator.DOM_ATTRIBUTE);
+	}
+	
+	protected static Translator buildColumnDefinitionTranslator() {
+		return new Translator(JPA.NAME, OrmPackage.eINSTANCE.getAbstractXmlNamedColumn_ColumnDefinition(), Translator.DOM_ATTRIBUTE);
 	}
 
 } // AbstractXmlNamedColumn

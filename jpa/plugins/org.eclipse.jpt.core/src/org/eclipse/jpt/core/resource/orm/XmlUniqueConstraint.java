@@ -12,9 +12,12 @@ package org.eclipse.jpt.core.resource.orm;
 import java.util.Collection;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.util.EDataTypeEList;
+import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
 import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.xml.JpaEObject;
+import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
  * <!-- begin-user-doc -->
@@ -179,5 +182,21 @@ public class XmlUniqueConstraint extends AbstractJpaEObject implements JpaEObjec
 		result.append(')');
 		return result.toString();
 	}
+	
+	// ********** translators **********
 
+	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
+		return new SimpleTranslator(elementName, structuralFeature, buildTranslatorChildren());
+	}
+
+	private static Translator[] buildTranslatorChildren() {
+		return new Translator[] {
+			buildColumnNameTranslator(),
+		};
+	}
+	
+	protected static Translator buildColumnNameTranslator() {
+		return new Translator(JPA.COLUMN_NAME, OrmPackage.eINSTANCE.getXmlUniqueConstraint_ColumnNames());
+	}
+	
 } // UniqueConstraint

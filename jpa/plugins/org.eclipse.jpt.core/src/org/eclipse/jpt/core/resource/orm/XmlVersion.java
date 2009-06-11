@@ -12,11 +12,13 @@ package org.eclipse.jpt.core.resource.orm;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.core.MappingKeys;
-import org.eclipse.jpt.core.internal.resource.orm.translators.OrmXmlMapper;
+import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
  * <!-- begin-user-doc -->
@@ -481,7 +483,7 @@ public class XmlVersion extends AbstractXmlAttributeMapping implements ColumnMap
 	}
 
 	public TextRange getEnumeratedTextRange() {
-		return getAttributeTextRange(OrmXmlMapper.ENUMERATED);
+		throw new UnsupportedOperationException("enumerated not supported by version mappings");
 	}
 
 	public TextRange getLobTextRange() {
@@ -489,10 +491,32 @@ public class XmlVersion extends AbstractXmlAttributeMapping implements ColumnMap
 	}
 	
 	public TextRange getTemporalTextRange() {
-		throw new UnsupportedOperationException("temporal not supported by version mappings");
+		return getAttributeTextRange(JPA.TEMPORAL);
 	}
 	
 	public String getMappingKey() {
 		return MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY;
+	}
+	
+	// ********** translators **********
+
+	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
+		return new SimpleTranslator(elementName, structuralFeature, buildTranslatorChildren());
+	}
+
+	private static Translator[] buildTranslatorChildren() {
+		return new Translator[] {
+			buildNameTranslator(),
+			buildColumnTranslator(), 
+			buildTemporalTranslator(),
+		};
+	}
+	
+	protected static Translator buildColumnTranslator() {
+		return XmlColumn.buildTranslator(JPA.COLUMN, OrmPackage.eINSTANCE.getColumnMapping_Column());
+	}
+	
+	protected static Translator buildTemporalTranslator() {
+		return new Translator(JPA.TEMPORAL, OrmPackage.eINSTANCE.getXmlConvertibleMapping_Temporal());
 	}
 } // Version

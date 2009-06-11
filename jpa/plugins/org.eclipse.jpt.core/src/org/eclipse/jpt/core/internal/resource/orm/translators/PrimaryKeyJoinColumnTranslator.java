@@ -39,7 +39,7 @@ public class PrimaryKeyJoinColumnTranslator extends Translator
 	}
 	
 	private Translator createNameTranslator() {
-		return new Translator(NAME, ORM_PKG.getXmlNamedColumn_Name(), DOM_ATTRIBUTE);
+		return new Translator(NAME, ORM_PKG.getAbstractXmlNamedColumn_Name(), DOM_ATTRIBUTE);
 	}
 	
 	private Translator createReferencedColumnNameTranslator() {
@@ -47,6 +47,6 @@ public class PrimaryKeyJoinColumnTranslator extends Translator
 	}
 	
 	private Translator createColumnDefinitionTranslator() {
-		return new Translator(COLUMN_DEFINITION, ORM_PKG.getXmlNamedColumn_ColumnDefinition(), DOM_ATTRIBUTE);
+		return new Translator(COLUMN_DEFINITION, ORM_PKG.getAbstractXmlNamedColumn_ColumnDefinition(), DOM_ATTRIBUTE);
 	}
 }

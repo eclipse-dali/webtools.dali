@@ -12,9 +12,9 @@ package org.eclipse.jpt.core.resource.orm;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.jpt.core.internal.resource.orm.translators.OrmXmlMapper;
 import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
  * <!-- begin-user-doc -->
@@ -194,7 +194,13 @@ public abstract class AbstractXmlAttributeMapping extends AbstractJpaEObject imp
 	}
 	
 	public TextRange getNameTextRange() {
-		return getAttributeTextRange(OrmXmlMapper.NAME);
+		return getAttributeTextRange(JPA.NAME);
+	}
+	
+	// ********** translators **********
+	
+	protected static Translator buildNameTranslator() {
+		return new Translator(JPA.NAME, OrmPackage.eINSTANCE.getXmlAttributeMapping_Name(), Translator.DOM_ATTRIBUTE);
 	}
 
 } // AbstractXmlAttributeMapping

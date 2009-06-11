@@ -42,6 +42,6 @@ public class EmbeddedTranslator extends Translator
 	}
 	
 	protected Translator createAttributeOverrideTranslator() {
-		return new AttributeOverrideTranslator(ATTRIBUTE_OVERRIDE, ORM_PKG.getBaseXmlEmbedded_AttributeOverrides());
+		return new AttributeOverrideTranslator(ATTRIBUTE_OVERRIDE, ORM_PKG.getAbstractXmlEmbedded_AttributeOverrides());
 	}
 }

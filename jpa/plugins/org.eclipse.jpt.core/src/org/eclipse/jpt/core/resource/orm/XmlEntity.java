@@ -14,13 +14,16 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.core.MappingKeys;
-import org.eclipse.jpt.core.internal.resource.orm.translators.OrmXmlMapper;
+import org.eclipse.jpt.core.internal.resource.xml.translators.EmptyTagBooleanTranslator;
+import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
  * <!-- begin-user-doc -->
@@ -1979,11 +1982,128 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	}
 	
 	public TextRange getDiscriminatorValueTextRange() {
-		return getElementTextRange(OrmXmlMapper.DISCRIMINATOR_VALUE);
+		return getElementTextRange(JPA.DISCRIMINATOR_VALUE);
 	}
 	
 	public TextRange getInheritanceStrategyTextRange() {
 		return getInheritance() != null ? getInheritance().getStrategyTextRange() : getValidationTextRange();
+	}
+	
+	// ********** translators **********
+
+	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
+		return new SimpleTranslator(elementName, structuralFeature, buildTranslatorChildren());
+	}
+
+	private static Translator[] buildTranslatorChildren() {
+		return new Translator[] {
+			buildNameTranslator(),
+			buildClassTranslator(),
+			buildAccessTranslator(),
+			buildMetadataCompleteTranslator(),
+			buildDescriptionTranslator(),
+			buildTableTranslator(),
+			buildSecondaryTableTranslator(),
+			buildPrimaryKeyJoinColumnTranslator(),
+			buildIdClassTranslator(),
+			buildInheritanceTranslator(),
+			buildDiscriminatorValueTranslator(),
+			buildDiscriminatorColumnTranslator(),
+			buildSequenceGeneratorTranslator(),
+			buildTableGeneratorTranslator(),
+			buildNamedQueryTranslator(),
+			buildNamedNativeQueryTranslator(),
+			buildSqlResultSetMappingTranslator(),
+			buildExcludeDefaultListenersTranslator(),
+			buildExcludeSuperclassListenersTranslator(),
+			buildEntityListenersTranslator(),
+			EventMethod.buildTranslator(JPA.PRE_PERSIST, OrmPackage.eINSTANCE.getXmlEntity_PrePersist()),
+			EventMethod.buildTranslator(JPA.POST_PERSIST, OrmPackage.eINSTANCE.getXmlEntity_PostPersist()),
+			EventMethod.buildTranslator(JPA.PRE_REMOVE, OrmPackage.eINSTANCE.getXmlEntity_PreRemove()),
+			EventMethod.buildTranslator(JPA.POST_REMOVE, OrmPackage.eINSTANCE.getXmlEntity_PostRemove()),
+			EventMethod.buildTranslator(JPA.PRE_UPDATE, OrmPackage.eINSTANCE.getXmlEntity_PreUpdate()),
+			EventMethod.buildTranslator(JPA.POST_UPDATE, OrmPackage.eINSTANCE.getXmlEntity_PostUpdate()),
+			EventMethod.buildTranslator(JPA.POST_LOAD, OrmPackage.eINSTANCE.getXmlEntity_PostLoad()),
+			buildAttributeOverrideTranslator(),
+			buildAssociationOverrideTranslator(),
+			buildAttributesTranslator()
+		};
+	}
+
+	protected static Translator buildNameTranslator() {
+		return new Translator(JPA.NAME, OrmPackage.eINSTANCE.getXmlEntity_Name(), Translator.DOM_ATTRIBUTE);
+	}
+	
+	protected static Translator buildAccessTranslator() {
+		return new Translator(JPA.ACCESS, OrmPackage.eINSTANCE.getXmlAccessHolder_Access(), Translator.DOM_ATTRIBUTE);
+	}
+	
+	protected static Translator buildTableTranslator() {
+		return XmlTable.buildTranslator(JPA.TABLE, OrmPackage.eINSTANCE.getXmlEntity_Table());
+	}
+	
+	protected static Translator buildSecondaryTableTranslator() {
+		return XmlSecondaryTable.buildTranslator(JPA.SECONDARY_TABLE, OrmPackage.eINSTANCE.getXmlEntity_SecondaryTables());
+	}	
+	
+	protected static Translator buildPrimaryKeyJoinColumnTranslator() {
+		return XmlPrimaryKeyJoinColumn.buildTranslator(JPA.PRIMARY_KEY_JOIN_COLUMN, OrmPackage.eINSTANCE.getXmlEntity_PrimaryKeyJoinColumns());
+	}
+	
+	protected static Translator buildIdClassTranslator() {
+		return XmlIdClass.buildTranslator(JPA.ID_CLASS, OrmPackage.eINSTANCE.getXmlEntity_IdClass());
+	}
+	
+	protected static Translator buildInheritanceTranslator() {
+		return Inheritance.buildTranslator(JPA.INHERITANCE, OrmPackage.eINSTANCE.getXmlEntity_Inheritance());
+	}
+	
+	protected static Translator buildDiscriminatorValueTranslator() {
+		return new Translator(JPA.DISCRIMINATOR_VALUE, OrmPackage.eINSTANCE.getXmlEntity_DiscriminatorValue());
+	}
+	
+	protected static Translator buildDiscriminatorColumnTranslator() {
+		return XmlDiscriminatorColumn.buildTranslator(JPA.DISCRIMINATOR_COLUMN, OrmPackage.eINSTANCE.getXmlEntity_DiscriminatorColumn());
+	}
+	
+	protected static Translator buildSequenceGeneratorTranslator() {
+		return XmlSequenceGenerator.buildTranslator(JPA.SEQUENCE_GENERATOR, OrmPackage.eINSTANCE.getXmlGeneratorContainer_SequenceGenerator());
+	}
+	
+	protected static Translator buildTableGeneratorTranslator() {
+		return XmlTableGenerator.buildTranslator(JPA.TABLE_GENERATOR, OrmPackage.eINSTANCE.getXmlGeneratorContainer_TableGenerator());
+	}
+	
+	protected static Translator buildNamedQueryTranslator() {
+		return XmlNamedQuery.buildTranslator(JPA.NAMED_QUERY, OrmPackage.eINSTANCE.getXmlQueryContainer_NamedQueries());
+	}
+	
+	protected static Translator buildNamedNativeQueryTranslator() {
+		return XmlNamedNativeQuery.buildTranslator(JPA.NAMED_NATIVE_QUERY, OrmPackage.eINSTANCE.getXmlQueryContainer_NamedNativeQueries());
+	}
+	
+	protected static Translator buildSqlResultSetMappingTranslator() {
+		return SqlResultSetMapping.buildTranslator(JPA.SQL_RESULT_SET_MAPPING, OrmPackage.eINSTANCE.getXmlEntity_SqlResultSetMappings());
+	}
+	
+	protected static Translator buildExcludeDefaultListenersTranslator() {
+		return new EmptyTagBooleanTranslator(JPA.EXCLUDE_DEFAULT_LISTENERS, OrmPackage.eINSTANCE.getXmlEntity_ExcludeDefaultListeners());
+	}
+	
+	protected static Translator buildExcludeSuperclassListenersTranslator() {
+		return new EmptyTagBooleanTranslator(JPA.EXCLUDE_SUPERCLASS_LISTENERS, OrmPackage.eINSTANCE.getXmlEntity_ExcludeSuperclassListeners());
+	}
+	
+	protected static Translator buildEntityListenersTranslator() {
+		return EntityListeners.buildTranslator(JPA.ENTITY_LISTENERS, OrmPackage.eINSTANCE.getXmlEntity_EntityListeners());
+	}
+		
+	protected static Translator buildAttributeOverrideTranslator() {
+		return XmlAttributeOverride.buildTranslator(JPA.ATTRIBUTE_OVERRIDE, OrmPackage.eINSTANCE.getXmlEntity_AttributeOverrides());
+	}
+	
+	protected static Translator buildAssociationOverrideTranslator() {
+		return XmlAssociationOverride.buildTranslator(JPA.ASSOCIATION_OVERRIDE, OrmPackage.eINSTANCE.getXmlEntity_AssociationOverrides());
 	}
 
 } // Entity

@@ -14,9 +14,9 @@ import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.jpt.core.internal.resource.orm.translators.OrmXmlMapper;
 import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
  * <!-- begin-user-doc -->
@@ -493,11 +493,29 @@ public abstract class AbstractXmlTypeMapping extends AbstractJpaEObject implemen
 	
 
 	public TextRange getClassTextRange() {
-		return getAttributeTextRange(OrmXmlMapper.CLASS);
+		return getAttributeTextRange(JPA.CLASS);
 	}
 
 	public TextRange getAttributesTextRange() {
-		return getAttributeTextRange(OrmXmlMapper.ATTRIBUTES);
+		return getAttributeTextRange(JPA.ATTRIBUTES);
 	}
+	
+	// ********** translators **********
+	
+	protected static Translator buildClassTranslator() {
+		return new Translator(JPA.CLASS, OrmPackage.eINSTANCE.getXmlTypeMapping_ClassName(), Translator.DOM_ATTRIBUTE);
+	}
+	
+	protected static Translator buildMetadataCompleteTranslator() {
+		return new Translator(JPA.METADATA_COMPLETE, OrmPackage.eINSTANCE.getXmlTypeMapping_MetadataComplete(), Translator.DOM_ATTRIBUTE);
+	}
+	
+	protected static Translator buildDescriptionTranslator() {
+		return new Translator(JPA.DESCRIPTION, OrmPackage.eINSTANCE.getXmlTypeMapping_Description());
+	}
+	
+	protected static Translator buildAttributesTranslator() {
+		return Attributes.buildTranslator(JPA.ATTRIBUTES, OrmPackage.eINSTANCE.getXmlTypeMapping_Attributes());
+	}	
 
 } // TypeMapping

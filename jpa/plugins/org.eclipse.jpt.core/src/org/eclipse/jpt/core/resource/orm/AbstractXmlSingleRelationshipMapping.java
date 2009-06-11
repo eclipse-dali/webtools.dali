@@ -18,6 +18,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 
 /**
@@ -34,15 +35,15 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlSingleRelationshipMapping#getOptional <em>Optional</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.resource.orm.AbstractXmlSingleRelationshipMapping#getOptional <em>Optional</em>}</li>
  * </ul>
  * </p>
  *
- * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlSingleRelationshipMapping()
+ * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAbstractXmlSingleRelationshipMapping()
  * @model kind="class" abstract="true"
  * @generated
  */
-public abstract class XmlSingleRelationshipMapping extends XmlRelationshipMapping implements XmlJoinTableMapping, XmlJoinColumnsMapping
+public abstract class AbstractXmlSingleRelationshipMapping extends AbstractXmlRelationshipMapping implements XmlJoinTableMapping, XmlJoinColumnsMapping
 {
 	/**
 	 * The cached value of the '{@link #getJoinTable() <em>Join Table</em>}' containment reference.
@@ -86,7 +87,7 @@ public abstract class XmlSingleRelationshipMapping extends XmlRelationshipMappin
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected XmlSingleRelationshipMapping()
+	protected AbstractXmlSingleRelationshipMapping()
 	{
 		super();
 	}
@@ -99,7 +100,7 @@ public abstract class XmlSingleRelationshipMapping extends XmlRelationshipMappin
 	@Override
 	protected EClass eStaticClass()
 	{
-		return OrmPackage.Literals.XML_SINGLE_RELATIONSHIP_MAPPING;
+		return OrmPackage.Literals.ABSTRACT_XML_SINGLE_RELATIONSHIP_MAPPING;
 	}
 
 	/**
@@ -132,14 +133,14 @@ public abstract class XmlSingleRelationshipMapping extends XmlRelationshipMappin
 		joinTable = newJoinTable;
 		if (eNotificationRequired())
 		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_TABLE, oldJoinTable, newJoinTable);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.ABSTRACT_XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_TABLE, oldJoinTable, newJoinTable);
 			if (msgs == null) msgs = notification; else msgs.add(notification);
 		}
 		return msgs;
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlSingleRelationshipMapping#getJoinTable <em>Join Table</em>}' containment reference.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.AbstractXmlSingleRelationshipMapping#getJoinTable <em>Join Table</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Join Table</em>' containment reference.
@@ -152,14 +153,14 @@ public abstract class XmlSingleRelationshipMapping extends XmlRelationshipMappin
 		{
 			NotificationChain msgs = null;
 			if (joinTable != null)
-				msgs = ((InternalEObject)joinTable).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_TABLE, null, msgs);
+				msgs = ((InternalEObject)joinTable).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ABSTRACT_XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_TABLE, null, msgs);
 			if (newJoinTable != null)
-				msgs = ((InternalEObject)newJoinTable).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_TABLE, null, msgs);
+				msgs = ((InternalEObject)newJoinTable).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ABSTRACT_XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_TABLE, null, msgs);
 			msgs = basicSetJoinTable(newJoinTable, msgs);
 			if (msgs != null) msgs.dispatch();
 		}
 		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_TABLE, newJoinTable, newJoinTable));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ABSTRACT_XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_TABLE, newJoinTable, newJoinTable));
 	}
 
 	/**
@@ -180,7 +181,7 @@ public abstract class XmlSingleRelationshipMapping extends XmlRelationshipMappin
 	{
 		if (joinColumns == null)
 		{
-			joinColumns = new EObjectContainmentEList<XmlJoinColumn>(XmlJoinColumn.class, this, OrmPackage.XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_COLUMNS);
+			joinColumns = new EObjectContainmentEList<XmlJoinColumn>(XmlJoinColumn.class, this, OrmPackage.ABSTRACT_XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_COLUMNS);
 		}
 		return joinColumns;
 	}
@@ -195,7 +196,7 @@ public abstract class XmlSingleRelationshipMapping extends XmlRelationshipMappin
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Optional</em>' attribute.
 	 * @see #setOptional(Boolean)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlSingleRelationshipMapping_Optional()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAbstractXmlSingleRelationshipMapping_Optional()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.BooleanObject"
 	 * @generated
 	 */
@@ -204,7 +205,7 @@ public abstract class XmlSingleRelationshipMapping extends XmlRelationshipMappin
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlSingleRelationshipMapping#getOptional <em>Optional</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.AbstractXmlSingleRelationshipMapping#getOptional <em>Optional</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Optional</em>' attribute.
@@ -215,7 +216,7 @@ public abstract class XmlSingleRelationshipMapping extends XmlRelationshipMappin
 		Boolean oldOptional = optional;
 		optional = newOptional;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_SINGLE_RELATIONSHIP_MAPPING__OPTIONAL, oldOptional, optional));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ABSTRACT_XML_SINGLE_RELATIONSHIP_MAPPING__OPTIONAL, oldOptional, optional));
 	}
 
 	/**
@@ -228,9 +229,9 @@ public abstract class XmlSingleRelationshipMapping extends XmlRelationshipMappin
 	{
 		switch (featureID)
 		{
-			case OrmPackage.XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_TABLE:
+			case OrmPackage.ABSTRACT_XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_TABLE:
 				return basicSetJoinTable(null, msgs);
-			case OrmPackage.XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_COLUMNS:
+			case OrmPackage.ABSTRACT_XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_COLUMNS:
 				return ((InternalEList<?>)getJoinColumns()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -246,11 +247,11 @@ public abstract class XmlSingleRelationshipMapping extends XmlRelationshipMappin
 	{
 		switch (featureID)
 		{
-			case OrmPackage.XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_TABLE:
+			case OrmPackage.ABSTRACT_XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_TABLE:
 				return getJoinTable();
-			case OrmPackage.XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_COLUMNS:
+			case OrmPackage.ABSTRACT_XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_COLUMNS:
 				return getJoinColumns();
-			case OrmPackage.XML_SINGLE_RELATIONSHIP_MAPPING__OPTIONAL:
+			case OrmPackage.ABSTRACT_XML_SINGLE_RELATIONSHIP_MAPPING__OPTIONAL:
 				return getOptional();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -267,14 +268,14 @@ public abstract class XmlSingleRelationshipMapping extends XmlRelationshipMappin
 	{
 		switch (featureID)
 		{
-			case OrmPackage.XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_TABLE:
+			case OrmPackage.ABSTRACT_XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_TABLE:
 				setJoinTable((XmlJoinTable)newValue);
 				return;
-			case OrmPackage.XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_COLUMNS:
+			case OrmPackage.ABSTRACT_XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_COLUMNS:
 				getJoinColumns().clear();
 				getJoinColumns().addAll((Collection<? extends XmlJoinColumn>)newValue);
 				return;
-			case OrmPackage.XML_SINGLE_RELATIONSHIP_MAPPING__OPTIONAL:
+			case OrmPackage.ABSTRACT_XML_SINGLE_RELATIONSHIP_MAPPING__OPTIONAL:
 				setOptional((Boolean)newValue);
 				return;
 		}
@@ -291,13 +292,13 @@ public abstract class XmlSingleRelationshipMapping extends XmlRelationshipMappin
 	{
 		switch (featureID)
 		{
-			case OrmPackage.XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_TABLE:
+			case OrmPackage.ABSTRACT_XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_TABLE:
 				setJoinTable((XmlJoinTable)null);
 				return;
-			case OrmPackage.XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_COLUMNS:
+			case OrmPackage.ABSTRACT_XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_COLUMNS:
 				getJoinColumns().clear();
 				return;
-			case OrmPackage.XML_SINGLE_RELATIONSHIP_MAPPING__OPTIONAL:
+			case OrmPackage.ABSTRACT_XML_SINGLE_RELATIONSHIP_MAPPING__OPTIONAL:
 				setOptional(OPTIONAL_EDEFAULT);
 				return;
 		}
@@ -314,11 +315,11 @@ public abstract class XmlSingleRelationshipMapping extends XmlRelationshipMappin
 	{
 		switch (featureID)
 		{
-			case OrmPackage.XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_TABLE:
+			case OrmPackage.ABSTRACT_XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_TABLE:
 				return joinTable != null;
-			case OrmPackage.XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_COLUMNS:
+			case OrmPackage.ABSTRACT_XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_COLUMNS:
 				return joinColumns != null && !joinColumns.isEmpty();
-			case OrmPackage.XML_SINGLE_RELATIONSHIP_MAPPING__OPTIONAL:
+			case OrmPackage.ABSTRACT_XML_SINGLE_RELATIONSHIP_MAPPING__OPTIONAL:
 				return OPTIONAL_EDEFAULT == null ? optional != null : !OPTIONAL_EDEFAULT.equals(optional);
 		}
 		return super.eIsSet(featureID);
@@ -336,7 +337,7 @@ public abstract class XmlSingleRelationshipMapping extends XmlRelationshipMappin
 		{
 			switch (derivedFeatureID)
 			{
-				case OrmPackage.XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_TABLE: return OrmPackage.XML_JOIN_TABLE_MAPPING__JOIN_TABLE;
+				case OrmPackage.ABSTRACT_XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_TABLE: return OrmPackage.XML_JOIN_TABLE_MAPPING__JOIN_TABLE;
 				default: return -1;
 			}
 		}
@@ -344,7 +345,7 @@ public abstract class XmlSingleRelationshipMapping extends XmlRelationshipMappin
 		{
 			switch (derivedFeatureID)
 			{
-				case OrmPackage.XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_COLUMNS: return OrmPackage.XML_JOIN_COLUMNS_MAPPING__JOIN_COLUMNS;
+				case OrmPackage.ABSTRACT_XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_COLUMNS: return OrmPackage.XML_JOIN_COLUMNS_MAPPING__JOIN_COLUMNS;
 				default: return -1;
 			}
 		}
@@ -363,7 +364,7 @@ public abstract class XmlSingleRelationshipMapping extends XmlRelationshipMappin
 		{
 			switch (baseFeatureID)
 			{
-				case OrmPackage.XML_JOIN_TABLE_MAPPING__JOIN_TABLE: return OrmPackage.XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_TABLE;
+				case OrmPackage.XML_JOIN_TABLE_MAPPING__JOIN_TABLE: return OrmPackage.ABSTRACT_XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_TABLE;
 				default: return -1;
 			}
 		}
@@ -371,7 +372,7 @@ public abstract class XmlSingleRelationshipMapping extends XmlRelationshipMappin
 		{
 			switch (baseFeatureID)
 			{
-				case OrmPackage.XML_JOIN_COLUMNS_MAPPING__JOIN_COLUMNS: return OrmPackage.XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_COLUMNS;
+				case OrmPackage.XML_JOIN_COLUMNS_MAPPING__JOIN_COLUMNS: return OrmPackage.ABSTRACT_XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_COLUMNS;
 				default: return -1;
 			}
 		}
@@ -393,6 +394,12 @@ public abstract class XmlSingleRelationshipMapping extends XmlRelationshipMappin
 		result.append(optional);
 		result.append(')');
 		return result.toString();
+	}
+	
+	// ********** translators **********
+	
+	protected static Translator buildOptionalTranslator() {
+		return new Translator(JPA.OPTIONAL, OrmPackage.eINSTANCE.getAbstractXmlSingleRelationshipMapping_Optional(), Translator.DOM_ATTRIBUTE);
 	}
 
 } // SingleRelationshipMapping

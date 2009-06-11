@@ -12,11 +12,11 @@ package org.eclipse.jpt.core.internal.context.orm;
 import org.eclipse.jpt.core.context.BaseColumn;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.orm.OrmBaseColumn;
-import org.eclipse.jpt.core.resource.orm.XmlAbstractColumn;
+import org.eclipse.jpt.core.resource.orm.AbstractXmlColumn;
 import org.eclipse.jpt.core.utility.TextRange;
 
 
-public abstract class AbstractOrmBaseColumn<T extends XmlAbstractColumn> extends AbstractOrmNamedColumn<T>
+public abstract class AbstractOrmBaseColumn<T extends AbstractXmlColumn> extends AbstractOrmNamedColumn<T>
 	implements OrmBaseColumn
 {
 	protected String specifiedTable;

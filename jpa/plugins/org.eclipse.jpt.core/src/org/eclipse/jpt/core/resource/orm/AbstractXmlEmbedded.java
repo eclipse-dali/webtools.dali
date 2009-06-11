@@ -16,6 +16,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
  * <!-- begin-user-doc -->
@@ -31,15 +32,15 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.BaseXmlEmbedded#getAttributeOverrides <em>Attribute Overrides</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.resource.orm.AbstractXmlEmbedded#getAttributeOverrides <em>Attribute Overrides</em>}</li>
  * </ul>
  * </p>
  *
- * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getBaseXmlEmbedded()
+ * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAbstractXmlEmbedded()
  * @model kind="class" abstract="true"
  * @generated
  */
-public abstract class BaseXmlEmbedded extends AbstractXmlAttributeMapping
+public abstract class AbstractXmlEmbedded extends AbstractXmlAttributeMapping
 {
 	/**
 	 * The cached value of the '{@link #getAttributeOverrides() <em>Attribute Overrides</em>}' containment reference list.
@@ -56,7 +57,7 @@ public abstract class BaseXmlEmbedded extends AbstractXmlAttributeMapping
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected BaseXmlEmbedded()
+	protected AbstractXmlEmbedded()
 	{
 		super();
 	}
@@ -69,7 +70,7 @@ public abstract class BaseXmlEmbedded extends AbstractXmlAttributeMapping
 	@Override
 	protected EClass eStaticClass()
 	{
-		return OrmPackage.Literals.BASE_XML_EMBEDDED;
+		return OrmPackage.Literals.ABSTRACT_XML_EMBEDDED;
 	}
 
 	/**
@@ -82,14 +83,14 @@ public abstract class BaseXmlEmbedded extends AbstractXmlAttributeMapping
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Attribute Overrides</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getBaseXmlEmbedded_AttributeOverrides()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAbstractXmlEmbedded_AttributeOverrides()
 	 * @model containment="true"
 	 * @generated
 	 */
 	public EList<XmlAttributeOverride> getAttributeOverrides() {
 		if (attributeOverrides == null)
 		{
-			attributeOverrides = new EObjectContainmentEList<XmlAttributeOverride>(XmlAttributeOverride.class, this, OrmPackage.BASE_XML_EMBEDDED__ATTRIBUTE_OVERRIDES);
+			attributeOverrides = new EObjectContainmentEList<XmlAttributeOverride>(XmlAttributeOverride.class, this, OrmPackage.ABSTRACT_XML_EMBEDDED__ATTRIBUTE_OVERRIDES);
 		}
 		return attributeOverrides;
 	}
@@ -104,7 +105,7 @@ public abstract class BaseXmlEmbedded extends AbstractXmlAttributeMapping
 	{
 		switch (featureID)
 		{
-			case OrmPackage.BASE_XML_EMBEDDED__ATTRIBUTE_OVERRIDES:
+			case OrmPackage.ABSTRACT_XML_EMBEDDED__ATTRIBUTE_OVERRIDES:
 				return ((InternalEList<?>)getAttributeOverrides()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -120,7 +121,7 @@ public abstract class BaseXmlEmbedded extends AbstractXmlAttributeMapping
 	{
 		switch (featureID)
 		{
-			case OrmPackage.BASE_XML_EMBEDDED__ATTRIBUTE_OVERRIDES:
+			case OrmPackage.ABSTRACT_XML_EMBEDDED__ATTRIBUTE_OVERRIDES:
 				return getAttributeOverrides();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -137,7 +138,7 @@ public abstract class BaseXmlEmbedded extends AbstractXmlAttributeMapping
 	{
 		switch (featureID)
 		{
-			case OrmPackage.BASE_XML_EMBEDDED__ATTRIBUTE_OVERRIDES:
+			case OrmPackage.ABSTRACT_XML_EMBEDDED__ATTRIBUTE_OVERRIDES:
 				getAttributeOverrides().clear();
 				getAttributeOverrides().addAll((Collection<? extends XmlAttributeOverride>)newValue);
 				return;
@@ -155,7 +156,7 @@ public abstract class BaseXmlEmbedded extends AbstractXmlAttributeMapping
 	{
 		switch (featureID)
 		{
-			case OrmPackage.BASE_XML_EMBEDDED__ATTRIBUTE_OVERRIDES:
+			case OrmPackage.ABSTRACT_XML_EMBEDDED__ATTRIBUTE_OVERRIDES:
 				getAttributeOverrides().clear();
 				return;
 		}
@@ -172,10 +173,16 @@ public abstract class BaseXmlEmbedded extends AbstractXmlAttributeMapping
 	{
 		switch (featureID)
 		{
-			case OrmPackage.BASE_XML_EMBEDDED__ATTRIBUTE_OVERRIDES:
+			case OrmPackage.ABSTRACT_XML_EMBEDDED__ATTRIBUTE_OVERRIDES:
 				return attributeOverrides != null && !attributeOverrides.isEmpty();
 		}
 		return super.eIsSet(featureID);
+	}
+	
+	// ********** translators **********
+
+	protected static Translator buildAttributeOverrideTranslator() {
+		return XmlAttributeOverride.buildTranslator(JPA.ATTRIBUTE_OVERRIDE, OrmPackage.eINSTANCE.getAbstractXmlEmbedded_AttributeOverrides());
 	}
 
 } // BaseXmlEmbedded

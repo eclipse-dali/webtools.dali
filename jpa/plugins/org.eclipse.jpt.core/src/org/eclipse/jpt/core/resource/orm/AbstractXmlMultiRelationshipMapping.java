@@ -14,8 +14,9 @@ import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.jpt.core.internal.resource.orm.translators.OrmXmlMapper;
+import org.eclipse.jpt.core.internal.resource.orm.translators.MapKeyTranslator;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 
 /**
@@ -32,16 +33,16 @@ import org.eclipse.jpt.core.utility.TextRange;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlMultiRelationshipMapping#getOrderBy <em>Order By</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlMultiRelationshipMapping#getMapKey <em>Map Key</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.resource.orm.AbstractXmlMultiRelationshipMapping#getOrderBy <em>Order By</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.resource.orm.AbstractXmlMultiRelationshipMapping#getMapKey <em>Map Key</em>}</li>
  * </ul>
  * </p>
  *
- * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlMultiRelationshipMapping()
+ * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAbstractXmlMultiRelationshipMapping()
  * @model kind="class" abstract="true"
  * @generated
  */
-public abstract class XmlMultiRelationshipMapping extends XmlRelationshipMapping implements XmlMappedByMapping, XmlJoinTableMapping
+public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRelationshipMapping implements XmlMappedByMapping, XmlJoinTableMapping
 {
 	/**
 	 * The default value of the '{@link #getMappedBy() <em>Mapped By</em>}' attribute.
@@ -103,7 +104,7 @@ public abstract class XmlMultiRelationshipMapping extends XmlRelationshipMapping
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected XmlMultiRelationshipMapping()
+	protected AbstractXmlMultiRelationshipMapping()
 	{
 		super();
 	}
@@ -116,7 +117,7 @@ public abstract class XmlMultiRelationshipMapping extends XmlRelationshipMapping
 	@Override
 	protected EClass eStaticClass()
 	{
-		return OrmPackage.Literals.XML_MULTI_RELATIONSHIP_MAPPING;
+		return OrmPackage.Literals.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING;
 	}
 
 	/**
@@ -139,7 +140,7 @@ public abstract class XmlMultiRelationshipMapping extends XmlRelationshipMapping
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlMultiRelationshipMapping#getMappedBy <em>Mapped By</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.AbstractXmlMultiRelationshipMapping#getMappedBy <em>Mapped By</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Mapped By</em>' attribute.
@@ -151,7 +152,7 @@ public abstract class XmlMultiRelationshipMapping extends XmlRelationshipMapping
 		String oldMappedBy = mappedBy;
 		mappedBy = newMappedBy;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__MAPPED_BY, oldMappedBy, mappedBy));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAPPED_BY, oldMappedBy, mappedBy));
 	}
 
 	/**
@@ -184,14 +185,14 @@ public abstract class XmlMultiRelationshipMapping extends XmlRelationshipMapping
 		joinTable = newJoinTable;
 		if (eNotificationRequired())
 		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__JOIN_TABLE, oldJoinTable, newJoinTable);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__JOIN_TABLE, oldJoinTable, newJoinTable);
 			if (msgs == null) msgs = notification; else msgs.add(notification);
 		}
 		return msgs;
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlMultiRelationshipMapping#getJoinTable <em>Join Table</em>}' containment reference.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.AbstractXmlMultiRelationshipMapping#getJoinTable <em>Join Table</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Join Table</em>' containment reference.
@@ -204,14 +205,14 @@ public abstract class XmlMultiRelationshipMapping extends XmlRelationshipMapping
 		{
 			NotificationChain msgs = null;
 			if (joinTable != null)
-				msgs = ((InternalEObject)joinTable).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__JOIN_TABLE, null, msgs);
+				msgs = ((InternalEObject)joinTable).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__JOIN_TABLE, null, msgs);
 			if (newJoinTable != null)
-				msgs = ((InternalEObject)newJoinTable).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__JOIN_TABLE, null, msgs);
+				msgs = ((InternalEObject)newJoinTable).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__JOIN_TABLE, null, msgs);
 			msgs = basicSetJoinTable(newJoinTable, msgs);
 			if (msgs != null) msgs.dispatch();
 		}
 		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__JOIN_TABLE, newJoinTable, newJoinTable));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__JOIN_TABLE, newJoinTable, newJoinTable));
 	}
 
 	/**
@@ -224,7 +225,7 @@ public abstract class XmlMultiRelationshipMapping extends XmlRelationshipMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Order By</em>' attribute.
 	 * @see #setOrderBy(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlMultiRelationshipMapping_OrderBy()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAbstractXmlMultiRelationshipMapping_OrderBy()
 	 * @model dataType="org.eclipse.jpt.core.resource.orm.OrderBy"
 	 * @generated
 	 */
@@ -233,7 +234,7 @@ public abstract class XmlMultiRelationshipMapping extends XmlRelationshipMapping
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlMultiRelationshipMapping#getOrderBy <em>Order By</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.AbstractXmlMultiRelationshipMapping#getOrderBy <em>Order By</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Order By</em>' attribute.
@@ -244,7 +245,7 @@ public abstract class XmlMultiRelationshipMapping extends XmlRelationshipMapping
 		String oldOrderBy = orderBy;
 		orderBy = newOrderBy;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__ORDER_BY, oldOrderBy, orderBy));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__ORDER_BY, oldOrderBy, orderBy));
 	}
 
 	/**
@@ -257,7 +258,7 @@ public abstract class XmlMultiRelationshipMapping extends XmlRelationshipMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Map Key</em>' containment reference.
 	 * @see #setMapKey(MapKey)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlMultiRelationshipMapping_MapKey()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAbstractXmlMultiRelationshipMapping_MapKey()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -276,14 +277,14 @@ public abstract class XmlMultiRelationshipMapping extends XmlRelationshipMapping
 		mapKey = newMapKey;
 		if (eNotificationRequired())
 		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY, oldMapKey, newMapKey);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY, oldMapKey, newMapKey);
 			if (msgs == null) msgs = notification; else msgs.add(notification);
 		}
 		return msgs;
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlMultiRelationshipMapping#getMapKey <em>Map Key</em>}' containment reference.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.AbstractXmlMultiRelationshipMapping#getMapKey <em>Map Key</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Map Key</em>' containment reference.
@@ -295,14 +296,14 @@ public abstract class XmlMultiRelationshipMapping extends XmlRelationshipMapping
 		{
 			NotificationChain msgs = null;
 			if (mapKey != null)
-				msgs = ((InternalEObject)mapKey).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY, null, msgs);
+				msgs = ((InternalEObject)mapKey).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY, null, msgs);
 			if (newMapKey != null)
-				msgs = ((InternalEObject)newMapKey).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY, null, msgs);
+				msgs = ((InternalEObject)newMapKey).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY, null, msgs);
 			msgs = basicSetMapKey(newMapKey, msgs);
 			if (msgs != null) msgs.dispatch();
 		}
 		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY, newMapKey, newMapKey));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY, newMapKey, newMapKey));
 	}
 
 	/**
@@ -315,9 +316,9 @@ public abstract class XmlMultiRelationshipMapping extends XmlRelationshipMapping
 	{
 		switch (featureID)
 		{
-			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__JOIN_TABLE:
+			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__JOIN_TABLE:
 				return basicSetJoinTable(null, msgs);
-			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY:
+			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY:
 				return basicSetMapKey(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -333,13 +334,13 @@ public abstract class XmlMultiRelationshipMapping extends XmlRelationshipMapping
 	{
 		switch (featureID)
 		{
-			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__MAPPED_BY:
+			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAPPED_BY:
 				return getMappedBy();
-			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__JOIN_TABLE:
+			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__JOIN_TABLE:
 				return getJoinTable();
-			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__ORDER_BY:
+			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__ORDER_BY:
 				return getOrderBy();
-			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY:
+			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY:
 				return getMapKey();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -355,16 +356,16 @@ public abstract class XmlMultiRelationshipMapping extends XmlRelationshipMapping
 	{
 		switch (featureID)
 		{
-			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__MAPPED_BY:
+			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAPPED_BY:
 				setMappedBy((String)newValue);
 				return;
-			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__JOIN_TABLE:
+			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__JOIN_TABLE:
 				setJoinTable((XmlJoinTable)newValue);
 				return;
-			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__ORDER_BY:
+			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__ORDER_BY:
 				setOrderBy((String)newValue);
 				return;
-			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY:
+			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY:
 				setMapKey((MapKey)newValue);
 				return;
 		}
@@ -381,16 +382,16 @@ public abstract class XmlMultiRelationshipMapping extends XmlRelationshipMapping
 	{
 		switch (featureID)
 		{
-			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__MAPPED_BY:
+			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAPPED_BY:
 				setMappedBy(MAPPED_BY_EDEFAULT);
 				return;
-			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__JOIN_TABLE:
+			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__JOIN_TABLE:
 				setJoinTable((XmlJoinTable)null);
 				return;
-			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__ORDER_BY:
+			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__ORDER_BY:
 				setOrderBy(ORDER_BY_EDEFAULT);
 				return;
-			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY:
+			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY:
 				setMapKey((MapKey)null);
 				return;
 		}
@@ -407,13 +408,13 @@ public abstract class XmlMultiRelationshipMapping extends XmlRelationshipMapping
 	{
 		switch (featureID)
 		{
-			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__MAPPED_BY:
+			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAPPED_BY:
 				return MAPPED_BY_EDEFAULT == null ? mappedBy != null : !MAPPED_BY_EDEFAULT.equals(mappedBy);
-			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__JOIN_TABLE:
+			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__JOIN_TABLE:
 				return joinTable != null;
-			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__ORDER_BY:
+			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__ORDER_BY:
 				return ORDER_BY_EDEFAULT == null ? orderBy != null : !ORDER_BY_EDEFAULT.equals(orderBy);
-			case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY:
+			case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAP_KEY:
 				return mapKey != null;
 		}
 		return super.eIsSet(featureID);
@@ -431,7 +432,7 @@ public abstract class XmlMultiRelationshipMapping extends XmlRelationshipMapping
 		{
 			switch (derivedFeatureID)
 			{
-				case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__MAPPED_BY: return OrmPackage.XML_MAPPED_BY_MAPPING__MAPPED_BY;
+				case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAPPED_BY: return OrmPackage.XML_MAPPED_BY_MAPPING__MAPPED_BY;
 				default: return -1;
 			}
 		}
@@ -439,7 +440,7 @@ public abstract class XmlMultiRelationshipMapping extends XmlRelationshipMapping
 		{
 			switch (derivedFeatureID)
 			{
-				case OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__JOIN_TABLE: return OrmPackage.XML_JOIN_TABLE_MAPPING__JOIN_TABLE;
+				case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__JOIN_TABLE: return OrmPackage.XML_JOIN_TABLE_MAPPING__JOIN_TABLE;
 				default: return -1;
 			}
 		}
@@ -458,7 +459,7 @@ public abstract class XmlMultiRelationshipMapping extends XmlRelationshipMapping
 		{
 			switch (baseFeatureID)
 			{
-				case OrmPackage.XML_MAPPED_BY_MAPPING__MAPPED_BY: return OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__MAPPED_BY;
+				case OrmPackage.XML_MAPPED_BY_MAPPING__MAPPED_BY: return OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__MAPPED_BY;
 				default: return -1;
 			}
 		}
@@ -466,7 +467,7 @@ public abstract class XmlMultiRelationshipMapping extends XmlRelationshipMapping
 		{
 			switch (baseFeatureID)
 			{
-				case OrmPackage.XML_JOIN_TABLE_MAPPING__JOIN_TABLE: return OrmPackage.XML_MULTI_RELATIONSHIP_MAPPING__JOIN_TABLE;
+				case OrmPackage.XML_JOIN_TABLE_MAPPING__JOIN_TABLE: return OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__JOIN_TABLE;
 				default: return -1;
 			}
 		}
@@ -493,7 +494,17 @@ public abstract class XmlMultiRelationshipMapping extends XmlRelationshipMapping
 	}
 	
 	public TextRange getMappedByTextRange() {
-		return getAttributeTextRange(OrmXmlMapper.MAPPED_BY);
+		return getAttributeTextRange(JPA.MAPPED_BY);
+	}
+	
+	// ********** translators **********
+	
+	protected static Translator buildOrderByTranslator() {
+		return new Translator(JPA.ORDER_BY, OrmPackage.eINSTANCE.getAbstractXmlMultiRelationshipMapping_OrderBy());
+	}
+	
+	protected static Translator buildMapKeyTranslator() {
+		return new MapKeyTranslator(JPA.MAP_KEY, OrmPackage.eINSTANCE.getAbstractXmlMultiRelationshipMapping_MapKey());
 	}
 
 }

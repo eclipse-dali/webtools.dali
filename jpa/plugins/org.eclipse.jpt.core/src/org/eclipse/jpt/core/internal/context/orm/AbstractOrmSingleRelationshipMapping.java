@@ -13,10 +13,10 @@ import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.Nullable;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmSingleRelationshipMapping;
-import org.eclipse.jpt.core.resource.orm.XmlSingleRelationshipMapping;
+import org.eclipse.jpt.core.resource.orm.AbstractXmlSingleRelationshipMapping;
 
 
-public abstract class AbstractOrmSingleRelationshipMapping<T extends XmlSingleRelationshipMapping>
+public abstract class AbstractOrmSingleRelationshipMapping<T extends AbstractXmlSingleRelationshipMapping>
 	extends AbstractOrmRelationshipMapping<T>
 	implements OrmSingleRelationshipMapping
 {

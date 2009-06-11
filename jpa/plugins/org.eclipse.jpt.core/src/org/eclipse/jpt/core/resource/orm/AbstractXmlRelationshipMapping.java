@@ -14,8 +14,9 @@ import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.jpt.core.internal.resource.orm.translators.OrmXmlMapper;
+import org.eclipse.jpt.core.internal.resource.orm.translators.CascadeTypeTranslator;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 
 /**
@@ -32,17 +33,17 @@ import org.eclipse.jpt.core.utility.TextRange;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlRelationshipMapping#getTargetEntity <em>Target Entity</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlRelationshipMapping#getFetch <em>Fetch</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlRelationshipMapping#getCascade <em>Cascade</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.resource.orm.AbstractXmlRelationshipMapping#getTargetEntity <em>Target Entity</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.resource.orm.AbstractXmlRelationshipMapping#getFetch <em>Fetch</em>}</li>
+ *   <li>{@link org.eclipse.jpt.core.resource.orm.AbstractXmlRelationshipMapping#getCascade <em>Cascade</em>}</li>
  * </ul>
  * </p>
  *
- * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlRelationshipMapping()
+ * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAbstractXmlRelationshipMapping()
  * @model kind="class" abstract="true"
  * @generated
  */
-public abstract class XmlRelationshipMapping extends AbstractXmlAttributeMapping
+public abstract class AbstractXmlRelationshipMapping extends AbstractXmlAttributeMapping
 {
 	/**
 	 * The default value of the '{@link #getTargetEntity() <em>Target Entity</em>}' attribute.
@@ -91,7 +92,7 @@ public abstract class XmlRelationshipMapping extends AbstractXmlAttributeMapping
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected XmlRelationshipMapping()
+	protected AbstractXmlRelationshipMapping()
 	{
 		super();
 	}
@@ -104,7 +105,7 @@ public abstract class XmlRelationshipMapping extends AbstractXmlAttributeMapping
 	@Override
 	protected EClass eStaticClass()
 	{
-		return OrmPackage.Literals.XML_RELATIONSHIP_MAPPING;
+		return OrmPackage.Literals.ABSTRACT_XML_RELATIONSHIP_MAPPING;
 	}
 
 	/**
@@ -117,7 +118,7 @@ public abstract class XmlRelationshipMapping extends AbstractXmlAttributeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Target Entity</em>' attribute.
 	 * @see #setTargetEntity(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlRelationshipMapping_TargetEntity()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAbstractXmlRelationshipMapping_TargetEntity()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
@@ -126,7 +127,7 @@ public abstract class XmlRelationshipMapping extends AbstractXmlAttributeMapping
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlRelationshipMapping#getTargetEntity <em>Target Entity</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.AbstractXmlRelationshipMapping#getTargetEntity <em>Target Entity</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Target Entity</em>' attribute.
@@ -137,7 +138,7 @@ public abstract class XmlRelationshipMapping extends AbstractXmlAttributeMapping
 		String oldTargetEntity = targetEntity;
 		targetEntity = newTargetEntity;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_RELATIONSHIP_MAPPING__TARGET_ENTITY, oldTargetEntity, targetEntity));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ABSTRACT_XML_RELATIONSHIP_MAPPING__TARGET_ENTITY, oldTargetEntity, targetEntity));
 	}
 
 	/**
@@ -153,7 +154,7 @@ public abstract class XmlRelationshipMapping extends AbstractXmlAttributeMapping
 	 * @return the value of the '<em>Fetch</em>' attribute.
 	 * @see org.eclipse.jpt.core.resource.orm.FetchType
 	 * @see #setFetch(FetchType)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlRelationshipMapping_Fetch()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAbstractXmlRelationshipMapping_Fetch()
 	 * @model default="LAZY"
 	 * @generated
 	 */
@@ -162,7 +163,7 @@ public abstract class XmlRelationshipMapping extends AbstractXmlAttributeMapping
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlRelationshipMapping#getFetch <em>Fetch</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.AbstractXmlRelationshipMapping#getFetch <em>Fetch</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Fetch</em>' attribute.
@@ -174,7 +175,7 @@ public abstract class XmlRelationshipMapping extends AbstractXmlAttributeMapping
 		FetchType oldFetch = fetch;
 		fetch = newFetch == null ? FETCH_EDEFAULT : newFetch;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_RELATIONSHIP_MAPPING__FETCH, oldFetch, fetch));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ABSTRACT_XML_RELATIONSHIP_MAPPING__FETCH, oldFetch, fetch));
 	}
 
 	/**
@@ -187,7 +188,7 @@ public abstract class XmlRelationshipMapping extends AbstractXmlAttributeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Cascade</em>' containment reference.
 	 * @see #setCascade(CascadeType)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlRelationshipMapping_Cascade()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAbstractXmlRelationshipMapping_Cascade()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -206,14 +207,14 @@ public abstract class XmlRelationshipMapping extends AbstractXmlAttributeMapping
 		cascade = newCascade;
 		if (eNotificationRequired())
 		{
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.XML_RELATIONSHIP_MAPPING__CASCADE, oldCascade, newCascade);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, OrmPackage.ABSTRACT_XML_RELATIONSHIP_MAPPING__CASCADE, oldCascade, newCascade);
 			if (msgs == null) msgs = notification; else msgs.add(notification);
 		}
 		return msgs;
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.XmlRelationshipMapping#getCascade <em>Cascade</em>}' containment reference.
+	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.AbstractXmlRelationshipMapping#getCascade <em>Cascade</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Cascade</em>' containment reference.
@@ -225,14 +226,14 @@ public abstract class XmlRelationshipMapping extends AbstractXmlAttributeMapping
 		{
 			NotificationChain msgs = null;
 			if (cascade != null)
-				msgs = ((InternalEObject)cascade).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_RELATIONSHIP_MAPPING__CASCADE, null, msgs);
+				msgs = ((InternalEObject)cascade).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ABSTRACT_XML_RELATIONSHIP_MAPPING__CASCADE, null, msgs);
 			if (newCascade != null)
-				msgs = ((InternalEObject)newCascade).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.XML_RELATIONSHIP_MAPPING__CASCADE, null, msgs);
+				msgs = ((InternalEObject)newCascade).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - OrmPackage.ABSTRACT_XML_RELATIONSHIP_MAPPING__CASCADE, null, msgs);
 			msgs = basicSetCascade(newCascade, msgs);
 			if (msgs != null) msgs.dispatch();
 		}
 		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.XML_RELATIONSHIP_MAPPING__CASCADE, newCascade, newCascade));
+			eNotify(new ENotificationImpl(this, Notification.SET, OrmPackage.ABSTRACT_XML_RELATIONSHIP_MAPPING__CASCADE, newCascade, newCascade));
 	}
 
 	/**
@@ -245,7 +246,7 @@ public abstract class XmlRelationshipMapping extends AbstractXmlAttributeMapping
 	{
 		switch (featureID)
 		{
-			case OrmPackage.XML_RELATIONSHIP_MAPPING__CASCADE:
+			case OrmPackage.ABSTRACT_XML_RELATIONSHIP_MAPPING__CASCADE:
 				return basicSetCascade(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
@@ -261,11 +262,11 @@ public abstract class XmlRelationshipMapping extends AbstractXmlAttributeMapping
 	{
 		switch (featureID)
 		{
-			case OrmPackage.XML_RELATIONSHIP_MAPPING__TARGET_ENTITY:
+			case OrmPackage.ABSTRACT_XML_RELATIONSHIP_MAPPING__TARGET_ENTITY:
 				return getTargetEntity();
-			case OrmPackage.XML_RELATIONSHIP_MAPPING__FETCH:
+			case OrmPackage.ABSTRACT_XML_RELATIONSHIP_MAPPING__FETCH:
 				return getFetch();
-			case OrmPackage.XML_RELATIONSHIP_MAPPING__CASCADE:
+			case OrmPackage.ABSTRACT_XML_RELATIONSHIP_MAPPING__CASCADE:
 				return getCascade();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -281,13 +282,13 @@ public abstract class XmlRelationshipMapping extends AbstractXmlAttributeMapping
 	{
 		switch (featureID)
 		{
-			case OrmPackage.XML_RELATIONSHIP_MAPPING__TARGET_ENTITY:
+			case OrmPackage.ABSTRACT_XML_RELATIONSHIP_MAPPING__TARGET_ENTITY:
 				setTargetEntity((String)newValue);
 				return;
-			case OrmPackage.XML_RELATIONSHIP_MAPPING__FETCH:
+			case OrmPackage.ABSTRACT_XML_RELATIONSHIP_MAPPING__FETCH:
 				setFetch((FetchType)newValue);
 				return;
-			case OrmPackage.XML_RELATIONSHIP_MAPPING__CASCADE:
+			case OrmPackage.ABSTRACT_XML_RELATIONSHIP_MAPPING__CASCADE:
 				setCascade((CascadeType)newValue);
 				return;
 		}
@@ -304,13 +305,13 @@ public abstract class XmlRelationshipMapping extends AbstractXmlAttributeMapping
 	{
 		switch (featureID)
 		{
-			case OrmPackage.XML_RELATIONSHIP_MAPPING__TARGET_ENTITY:
+			case OrmPackage.ABSTRACT_XML_RELATIONSHIP_MAPPING__TARGET_ENTITY:
 				setTargetEntity(TARGET_ENTITY_EDEFAULT);
 				return;
-			case OrmPackage.XML_RELATIONSHIP_MAPPING__FETCH:
+			case OrmPackage.ABSTRACT_XML_RELATIONSHIP_MAPPING__FETCH:
 				setFetch(FETCH_EDEFAULT);
 				return;
-			case OrmPackage.XML_RELATIONSHIP_MAPPING__CASCADE:
+			case OrmPackage.ABSTRACT_XML_RELATIONSHIP_MAPPING__CASCADE:
 				setCascade((CascadeType)null);
 				return;
 		}
@@ -327,11 +328,11 @@ public abstract class XmlRelationshipMapping extends AbstractXmlAttributeMapping
 	{
 		switch (featureID)
 		{
-			case OrmPackage.XML_RELATIONSHIP_MAPPING__TARGET_ENTITY:
+			case OrmPackage.ABSTRACT_XML_RELATIONSHIP_MAPPING__TARGET_ENTITY:
 				return TARGET_ENTITY_EDEFAULT == null ? targetEntity != null : !TARGET_ENTITY_EDEFAULT.equals(targetEntity);
-			case OrmPackage.XML_RELATIONSHIP_MAPPING__FETCH:
+			case OrmPackage.ABSTRACT_XML_RELATIONSHIP_MAPPING__FETCH:
 				return fetch != FETCH_EDEFAULT;
-			case OrmPackage.XML_RELATIONSHIP_MAPPING__CASCADE:
+			case OrmPackage.ABSTRACT_XML_RELATIONSHIP_MAPPING__CASCADE:
 				return cascade != null;
 		}
 		return super.eIsSet(featureID);
@@ -361,7 +362,20 @@ public abstract class XmlRelationshipMapping extends AbstractXmlAttributeMapping
 	 */
 	
 	public TextRange getTargetEntityTextRange() {
-		return getAttributeTextRange(OrmXmlMapper.TARGET_ENTITY);
+		return getAttributeTextRange(JPA.TARGET_ENTITY);
 	}
 
+	// ********** translators **********
+	
+	protected static Translator buildTargetEntityTranslator() {
+		return new Translator(JPA.TARGET_ENTITY, OrmPackage.eINSTANCE.getAbstractXmlRelationshipMapping_TargetEntity(), Translator.DOM_ATTRIBUTE);
+	}
+	
+	protected static Translator buildFetchTranslator() {
+		return new Translator(JPA.FETCH, OrmPackage.eINSTANCE.getAbstractXmlRelationshipMapping_Fetch(), Translator.DOM_ATTRIBUTE);
+	}
+	
+	protected static Translator buildCascadeTranslator() {
+		return new CascadeTypeTranslator(JPA.CASCADE, OrmPackage.eINSTANCE.getAbstractXmlRelationshipMapping_Cascade());
+	}
 } // RelationshipMapping

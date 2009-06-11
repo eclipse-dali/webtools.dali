@@ -47,11 +47,11 @@ public class ManyToManyTranslator extends Translator
 	}
 	
 	protected Translator createTargetEntityTranslator() {
-		return new Translator(TARGET_ENTITY, ORM_PKG.getXmlRelationshipMapping_TargetEntity(), DOM_ATTRIBUTE);
+		return new Translator(TARGET_ENTITY, ORM_PKG.getAbstractXmlRelationshipMapping_TargetEntity(), DOM_ATTRIBUTE);
 	}
 	
 	protected Translator createFetchTranslator() {
-		return new Translator(FETCH, ORM_PKG.getXmlRelationshipMapping_Fetch(), DOM_ATTRIBUTE);
+		return new Translator(FETCH, ORM_PKG.getAbstractXmlRelationshipMapping_Fetch(), DOM_ATTRIBUTE);
 	}
 	
 	protected Translator createMappedByTranslator() {
@@ -59,11 +59,11 @@ public class ManyToManyTranslator extends Translator
 	}
 	
 	protected Translator createOrderByTranslator() {
-		return new Translator(ORDER_BY, ORM_PKG.getXmlMultiRelationshipMapping_OrderBy());
+		return new Translator(ORDER_BY, ORM_PKG.getAbstractXmlMultiRelationshipMapping_OrderBy());
 	}
 	
 	protected Translator createMapKeyTranslator() {
-		return new MapKeyTranslator(MAP_KEY, ORM_PKG.getXmlMultiRelationshipMapping_MapKey());
+		return new MapKeyTranslator(MAP_KEY, ORM_PKG.getAbstractXmlMultiRelationshipMapping_MapKey());
 	}
 	
 	protected Translator createJoinTableTranslator() {
@@ -71,6 +71,6 @@ public class ManyToManyTranslator extends Translator
 	}
 	
 	protected Translator createCascadeTranslator() {
-		return new CascadeTypeTranslator(CASCADE, ORM_PKG.getXmlRelationshipMapping_Cascade());
+		return new CascadeTypeTranslator(CASCADE, ORM_PKG.getAbstractXmlRelationshipMapping_Cascade());
 	}
 }

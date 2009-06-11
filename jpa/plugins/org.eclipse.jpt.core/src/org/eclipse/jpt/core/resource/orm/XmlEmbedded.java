@@ -10,7 +10,10 @@
 package org.eclipse.jpt.core.resource.orm;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
+import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
  * <!-- begin-user-doc -->
@@ -28,7 +31,7 @@ import org.eclipse.jpt.core.MappingKeys;
  * @model kind="class"
  * @generated
  */
-public class XmlEmbedded extends BaseXmlEmbedded
+public class XmlEmbedded extends AbstractXmlEmbedded
 {
 	/**
 	 * <!-- begin-user-doc -->
@@ -54,4 +57,18 @@ public class XmlEmbedded extends BaseXmlEmbedded
 	public String getMappingKey() {
 		return MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY;
 	}
+	
+	// ********** translators **********
+
+	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
+		return new SimpleTranslator(elementName, structuralFeature, buildTranslatorChildren());
+	}
+
+	private static Translator[] buildTranslatorChildren() {
+		return new Translator[] {
+			buildNameTranslator(),
+			XmlAttributeOverride.buildTranslator(JPA.ATTRIBUTE_OVERRIDE, OrmPackage.eINSTANCE.getAbstractXmlEmbedded_AttributeOverrides())
+		};
+	}
+	
 } // Embedded

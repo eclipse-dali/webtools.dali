@@ -26,7 +26,7 @@ import org.eclipse.jpt.core.context.orm.OrmBaseEmbeddedMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaBaseEmbeddedMapping;
-import org.eclipse.jpt.core.resource.orm.BaseXmlEmbedded;
+import org.eclipse.jpt.core.resource.orm.AbstractXmlEmbedded;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
@@ -39,7 +39,7 @@ import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 
 
-public abstract class AbstractOrmBaseEmbeddedMapping<T extends BaseXmlEmbedded> extends AbstractOrmAttributeMapping<T> implements OrmBaseEmbeddedMapping
+public abstract class AbstractOrmBaseEmbeddedMapping<T extends AbstractXmlEmbedded> extends AbstractOrmAttributeMapping<T> implements OrmBaseEmbeddedMapping
 {
 	protected final List<OrmAttributeOverride> specifiedAttributeOverrides;
 	

@@ -12,9 +12,11 @@ package org.eclipse.jpt.core.tests.internal.context.orm;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.orm.OrmXml;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
+import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
+import org.eclipse.jpt.core.resource.xml.XML;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 
 @SuppressWarnings("nls")
@@ -48,7 +50,9 @@ public class OrmXmlTests extends ContextModelTestCase
 		assertNull(getOrmXml());
 		assertEquals(1, getJpaProject().jpaFilesSize()); //should only be the persistence.xml file
 		
-		ormResource.getContents().add(OrmFactory.eINSTANCE.createXmlEntityMappings());
+		XmlEntityMappings xmlEntityMappings = OrmFactory.eINSTANCE.createXmlEntityMappings();
+		xmlEntityMappings.setVersion(XML.VERSION_1_0_TEXT);
+		ormResource.getContents().add(xmlEntityMappings);
 		ormResource.save(null);
 		
 		assertNotNull(getOrmXml().getEntityMappings());

@@ -105,8 +105,6 @@ public class OrmFactory extends EFactoryImpl
 			case OrmPackage.XML_ASSOCIATION_OVERRIDE: return (EObject)createXmlAssociationOverride();
 			case OrmPackage.XML_ATTRIBUTE_OVERRIDE: return (EObject)createXmlAttributeOverride();
 			case OrmPackage.CASCADE_TYPE: return (EObject)createCascadeType();
-			case OrmPackage.XML_NAMED_COLUMN: return (EObject)createXmlNamedColumn();
-			case OrmPackage.XML_ABSTRACT_COLUMN: return (EObject)createXmlAbstractColumn();
 			case OrmPackage.XML_COLUMN: return (EObject)createXmlColumn();
 			case OrmPackage.COLUMN_RESULT: return (EObject)createColumnResult();
 			case OrmPackage.XML_DISCRIMINATOR_COLUMN: return (EObject)createXmlDiscriminatorColumn();
@@ -133,7 +131,6 @@ public class OrmFactory extends EFactoryImpl
 			case OrmPackage.PRE_UPDATE: return (EObject)createPreUpdate();
 			case OrmPackage.XML_PRIMARY_KEY_JOIN_COLUMN: return (EObject)createXmlPrimaryKeyJoinColumn();
 			case OrmPackage.XML_QUERY_HINT: return (EObject)createXmlQueryHint();
-			case OrmPackage.XML_BASE_TABLE: return (EObject)createXmlBaseTable();
 			case OrmPackage.XML_TABLE: return (EObject)createXmlTable();
 			case OrmPackage.XML_SECONDARY_TABLE: return (EObject)createXmlSecondaryTable();
 			case OrmPackage.XML_SEQUENCE_GENERATOR: return (EObject)createXmlSequenceGenerator();
@@ -444,28 +441,6 @@ public class OrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XmlNamedColumn createXmlNamedColumn()
-	{
-		XmlNamedColumn xmlNamedColumn = new XmlNamedColumn();
-		return xmlNamedColumn;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public XmlAbstractColumn createXmlAbstractColumn()
-	{
-		XmlAbstractColumn xmlAbstractColumn = new XmlAbstractColumn();
-		return xmlAbstractColumn;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public XmlColumn createXmlColumn()
 	{
 		XmlColumn xmlColumn = new XmlColumn();
@@ -745,17 +720,6 @@ public class OrmFactory extends EFactoryImpl
 	{
 		XmlQueryHint xmlQueryHint = new XmlQueryHint();
 		return xmlQueryHint;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public XmlBaseTable createXmlBaseTable()
-	{
-		XmlBaseTable xmlBaseTable = new XmlBaseTable();
-		return xmlBaseTable;
 	}
 
 	/**

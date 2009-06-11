@@ -20,7 +20,7 @@ import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.orm.OrmUniqueConstraint;
 import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
-import org.eclipse.jpt.core.resource.orm.XmlBaseTable;
+import org.eclipse.jpt.core.resource.orm.AbstractXmlTable;
 import org.eclipse.jpt.core.resource.orm.XmlUniqueConstraint;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Catalog;
@@ -64,12 +64,12 @@ public abstract class AbstractOrmTable
 	/**
 	 * Return null if no resource table exists.
 	 */
-	protected abstract XmlBaseTable getResourceTable();
+	protected abstract AbstractXmlTable getResourceTable();
 
 	/**
 	 * Return the added resource table.
 	 */
-	protected abstract XmlBaseTable addResourceTable();
+	protected abstract AbstractXmlTable addResourceTable();
 
 	protected abstract void removeResourceTable();
 
@@ -98,7 +98,7 @@ public abstract class AbstractOrmTable
 		String old = this.specifiedName;
 		this.specifiedName = name;
 		if (this.attributeValueHasChanged(old, name)) {
-			XmlBaseTable resourceTable = this.getResourceTable();
+			AbstractXmlTable resourceTable = this.getResourceTable();
 			if (resourceTable == null) {
 				resourceTable = this.addResourceTable();
 			}
@@ -141,7 +141,7 @@ public abstract class AbstractOrmTable
 		String old = this.specifiedSchema;
 		this.specifiedSchema = schema;
 		if (this.attributeValueHasChanged(old, schema)) {
-			XmlBaseTable resourceTable = this.getResourceTable();
+			AbstractXmlTable resourceTable = this.getResourceTable();
 			if (resourceTable == null) {
 				resourceTable = this.addResourceTable();
 			}
@@ -184,7 +184,7 @@ public abstract class AbstractOrmTable
 		String old = this.specifiedCatalog;
 		this.specifiedCatalog = catalog;
 		if (this.attributeValueHasChanged(old, catalog)) {
-			XmlBaseTable resourceTable = this.getResourceTable();
+			AbstractXmlTable resourceTable = this.getResourceTable();
 			if (resourceTable == null) {
 				resourceTable = this.addResourceTable();
 			}
@@ -228,7 +228,7 @@ public abstract class AbstractOrmTable
 		OrmUniqueConstraint contextConstraint =  this.buildUniqueConstraint(resourceConstraint);
 		this.uniqueConstraints.add(index, contextConstraint);
 		
-		XmlBaseTable resourceTable = this.getResourceTable();
+		AbstractXmlTable resourceTable = this.getResourceTable();
 		if (resourceTable == null) {
 			resourceTable = this.addResourceTable();
 		}
@@ -278,7 +278,7 @@ public abstract class AbstractOrmTable
 	}
 
 	protected TextRange getResourceTableNameTextRange() {
-		XmlBaseTable resourceTable = this.getResourceTable();
+		AbstractXmlTable resourceTable = this.getResourceTable();
 		return (resourceTable == null) ? null : resourceTable.getNameTextRange();
 	}
 
@@ -287,7 +287,7 @@ public abstract class AbstractOrmTable
 	}
 
 	protected TextRange getResourceTableSchemaTextRange() {
-		XmlBaseTable resourceTable = this.getResourceTable();
+		AbstractXmlTable resourceTable = this.getResourceTable();
 		return (resourceTable == null) ? null : resourceTable.getSchemaTextRange();
 	}
 
@@ -296,7 +296,7 @@ public abstract class AbstractOrmTable
 	}
 
 	protected TextRange getResourceTableCatalogTextRange() {
-		XmlBaseTable resourceTable = this.getResourceTable();
+		AbstractXmlTable resourceTable = this.getResourceTable();
 		return (resourceTable == null) ? null : resourceTable.getCatalogTextRange();
 	}
 
@@ -307,7 +307,7 @@ public abstract class AbstractOrmTable
 
 	// ********** resource => context **********
 
-	protected void initialize(XmlBaseTable xmlTable) {
+	protected void initialize(AbstractXmlTable xmlTable) {
 		this.defaultName = this.buildDefaultName();
 		this.specifiedName = this.getResourceTableName(xmlTable);
 
@@ -320,7 +320,7 @@ public abstract class AbstractOrmTable
 		this.initializeUniqueContraints(xmlTable);
 	}
 	
-	protected void initializeUniqueContraints(XmlBaseTable xmlTable) {
+	protected void initializeUniqueContraints(AbstractXmlTable xmlTable) {
 		if (xmlTable == null) {
 			return;
 		}
@@ -329,7 +329,7 @@ public abstract class AbstractOrmTable
 		}
 	}
 
-	protected void update(XmlBaseTable xmlTable) {
+	protected void update(AbstractXmlTable xmlTable) {
 		this.setDefaultName(this.buildDefaultName());
 		this.setSpecifiedName_(this.getResourceTableName(xmlTable));
 
@@ -342,19 +342,19 @@ public abstract class AbstractOrmTable
 		this.updateUniqueConstraints(xmlTable);
 	}
 
-	protected String getResourceTableName(XmlBaseTable xmlTable) {
+	protected String getResourceTableName(AbstractXmlTable xmlTable) {
 		return (xmlTable == null) ? null : xmlTable.getName();
 	}
 
-	protected String getResourceTableSchema(XmlBaseTable xmlTable) {
+	protected String getResourceTableSchema(AbstractXmlTable xmlTable) {
 		return (xmlTable == null) ? null : xmlTable.getSchema();
 	}
 
-	protected String getResourceTableCatalog(XmlBaseTable xmlTable) {
+	protected String getResourceTableCatalog(AbstractXmlTable xmlTable) {
 		return (xmlTable == null) ? null : xmlTable.getCatalog();
 	}
 
-	protected void updateUniqueConstraints(XmlBaseTable xmlTable) {
+	protected void updateUniqueConstraints(AbstractXmlTable xmlTable) {
 		Iterator<XmlUniqueConstraint> xmlConstraints = this.xmlUniqueConstraints(xmlTable);
 
 		for (Iterator<OrmUniqueConstraint> contextConstraints = this.uniqueConstraints(); contextConstraints.hasNext(); ) {
@@ -371,7 +371,7 @@ public abstract class AbstractOrmTable
 		}
 	}
 
-	protected Iterator<XmlUniqueConstraint> xmlUniqueConstraints(XmlBaseTable xmlTable) {
+	protected Iterator<XmlUniqueConstraint> xmlUniqueConstraints(AbstractXmlTable xmlTable) {
 		// make a copy of the XML constraints (to prevent ConcurrentModificationException)
 		return (xmlTable == null) ? EmptyIterator.<XmlUniqueConstraint>instance()
 				: new CloneIterator<XmlUniqueConstraint>(xmlTable.getUniqueConstraints());
@@ -446,7 +446,7 @@ public abstract class AbstractOrmTable
 	}
 
 	protected TextRange getResourceTableValidationTextRange() {
-		XmlBaseTable resourceTable = this.getResourceTable();
+		AbstractXmlTable resourceTable = this.getResourceTable();
 		return (resourceTable == null) ? null : resourceTable.getValidationTextRange();
 	}
 

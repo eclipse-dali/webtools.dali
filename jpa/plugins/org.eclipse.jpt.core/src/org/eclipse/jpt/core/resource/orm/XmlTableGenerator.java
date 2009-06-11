@@ -14,13 +14,15 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-import org.eclipse.jpt.core.internal.resource.orm.translators.OrmXmlMapper;
+import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
 import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
  * <!-- begin-user-doc -->
@@ -809,10 +811,68 @@ public class XmlTableGenerator extends AbstractJpaEObject implements XmlGenerato
 	}
 	
 	public TextRange getNameTextRange() {
-		return getAttributeTextRange(OrmXmlMapper.NAME);
+		return getAttributeTextRange(JPA.NAME);
 	}
 	
 	public boolean isVirtual() {
 		return false;
 	}
+	
+	// ********** translators **********
+
+	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
+		return new SimpleTranslator(elementName, structuralFeature, buildTranslatorChildren());
+	}
+
+	private static Translator[] buildTranslatorChildren() {
+		return new Translator[] {
+			buildNameTranslator(),
+			buildTableTranslator(),
+			buildCatalogTranslator(),
+			buildSchemaTranslator(),
+			buildPkColumnNameTranslator(),
+			buildValueColumnNameTranslator(),
+			buildPkColumnValueTranslator(),
+			buildInitialValueTranslator(),
+			buildAllocationSizeTranslator(),
+			XmlUniqueConstraint.buildTranslator(JPA.UNIQUE_CONSTRAINT, OrmPackage.eINSTANCE.getXmlTableGenerator_UniqueConstraints())
+		};
+	}
+	
+	protected static Translator buildNameTranslator() {
+		return new Translator(JPA.NAME, OrmPackage.eINSTANCE.getXmlGenerator_Name(), Translator.DOM_ATTRIBUTE);
+	}
+	
+	protected static Translator buildTableTranslator() {
+		return new Translator(JPA.TABLE, OrmPackage.eINSTANCE.getXmlTableGenerator_Table(), Translator.DOM_ATTRIBUTE);
+	}
+	
+	protected static Translator buildCatalogTranslator() {
+		return new Translator(JPA.CATALOG, OrmPackage.eINSTANCE.getXmlTableGenerator_Catalog(), Translator.DOM_ATTRIBUTE);
+	}
+	
+	protected static Translator buildSchemaTranslator() {
+		return new Translator(JPA.SCHEMA, OrmPackage.eINSTANCE.getXmlTableGenerator_Schema(), Translator.DOM_ATTRIBUTE);
+	}
+	
+	protected static Translator buildPkColumnNameTranslator() {
+		return new Translator(JPA.PK_COLUMN_NAME, OrmPackage.eINSTANCE.getXmlTableGenerator_PkColumnName(), Translator.DOM_ATTRIBUTE);
+	}
+	
+	protected static Translator buildValueColumnNameTranslator() {
+		return new Translator(JPA.VALUE_COLUMN_NAME, OrmPackage.eINSTANCE.getXmlTableGenerator_ValueColumnName(), Translator.DOM_ATTRIBUTE);
+	}
+	
+	protected static Translator buildPkColumnValueTranslator() {
+		return new Translator(JPA.PK_COLUMN_VALUE, OrmPackage.eINSTANCE.getXmlTableGenerator_PkColumnValue(), Translator.DOM_ATTRIBUTE);
+	}
+	
+	protected static Translator buildInitialValueTranslator() {
+		return new Translator(JPA.INITIAL_VALUE, OrmPackage.eINSTANCE.getXmlGenerator_InitialValue(), Translator.DOM_ATTRIBUTE);
+	}
+	
+	protected static Translator buildAllocationSizeTranslator() {
+		return new Translator(JPA.ALLOCATION_SIZE, OrmPackage.eINSTANCE.getXmlGenerator_AllocationSize(), Translator.DOM_ATTRIBUTE);
+	}
+
 }

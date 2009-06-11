@@ -12,11 +12,15 @@ package org.eclipse.jpt.core.resource.orm;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.core.MappingKeys;
-import org.eclipse.jpt.core.internal.resource.orm.translators.OrmXmlMapper;
+import org.eclipse.jpt.core.internal.resource.xml.translators.BooleanTranslator;
+import org.eclipse.jpt.core.internal.resource.xml.translators.EmptyTagBooleanTranslator;
+import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
  * <!-- begin-user-doc -->
@@ -623,18 +627,61 @@ public class XmlBasic extends AbstractXmlAttributeMapping implements ColumnMappi
 	}
 
 	public TextRange getEnumeratedTextRange() {
-		return getAttributeTextRange(OrmXmlMapper.ENUMERATED);
+		return getAttributeTextRange(JPA.ENUMERATED);
 	}
 
 	public TextRange getLobTextRange() {
-		return getAttributeTextRange(OrmXmlMapper.LOB);
+		return getAttributeTextRange(JPA.LOB);
 	}
 	
 	public TextRange getTemporalTextRange() {
-		return getAttributeTextRange(OrmXmlMapper.TEMPORAL);
+		return getAttributeTextRange(JPA.TEMPORAL);
 	}
 	
 	public String getMappingKey() {
 		return MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY;
 	}
+	
+	// ********** translators **********
+
+	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
+		return new SimpleTranslator(elementName, structuralFeature, buildTranslatorChildren());
+	}
+
+	private static Translator[] buildTranslatorChildren() {
+		return new Translator[] {
+			buildNameTranslator(),
+			buildFetchTranslator(),
+			buildOptionalTranslator(),
+			buildColumnTranslator(), 
+			buildLobTranslator(),
+			buildTemporalTranslator(),
+			buildEnumeratedTranslator()
+		};
+	}
+	
+	protected static Translator buildFetchTranslator() {
+		return new Translator(JPA.FETCH, OrmPackage.eINSTANCE.getXmlBasic_Fetch(), Translator.DOM_ATTRIBUTE);
+	}
+	
+	protected static Translator buildOptionalTranslator() {
+		return new BooleanTranslator(JPA.OPTIONAL, OrmPackage.eINSTANCE.getXmlBasic_Optional(), Translator.DOM_ATTRIBUTE);
+	}
+	
+	protected static Translator buildColumnTranslator() {
+		return XmlColumn.buildTranslator(JPA.COLUMN, OrmPackage.eINSTANCE.getColumnMapping_Column());
+	}
+	
+	protected static Translator buildLobTranslator() {
+		return new EmptyTagBooleanTranslator(JPA.LOB, OrmPackage.eINSTANCE.getXmlConvertibleMapping_Lob());
+	}
+	
+	protected static Translator buildTemporalTranslator() {
+		return new Translator(JPA.TEMPORAL, OrmPackage.eINSTANCE.getXmlConvertibleMapping_Temporal());
+	}
+	
+	protected static Translator buildEnumeratedTranslator() {
+		return new Translator(JPA.ENUMERATED, OrmPackage.eINSTANCE.getXmlConvertibleMapping_Enumerated());
+	}
+	
 } // BasicImpl

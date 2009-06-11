@@ -30,5 +30,6 @@ public interface XML
 	String XSI_SCHEMA_LOCATION = "xsi:schemaLocation";
 
 	String VERSION_1_0_TEXT = "1.0";
+	String VERSION_2_0_TEXT = "2.0";
 
 }

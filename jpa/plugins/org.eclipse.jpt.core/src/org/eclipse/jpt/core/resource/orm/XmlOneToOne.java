@@ -14,13 +14,15 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.core.MappingKeys;
-import org.eclipse.jpt.core.internal.resource.orm.translators.OrmXmlMapper;
+import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
  * <!-- begin-user-doc -->
@@ -44,7 +46,7 @@ import org.eclipse.jpt.core.utility.TextRange;
  * @model kind="class"
  * @generated
  */
-public class XmlOneToOne extends XmlSingleRelationshipMapping implements XmlMappedByMapping
+public class XmlOneToOne extends AbstractXmlSingleRelationshipMapping implements XmlMappedByMapping
 {
 
 	/**
@@ -304,10 +306,47 @@ public class XmlOneToOne extends XmlSingleRelationshipMapping implements XmlMapp
 	}
 
 	public TextRange getMappedByTextRange() {
-		return getAttributeTextRange(OrmXmlMapper.MAPPED_BY);
+		return getAttributeTextRange(JPA.MAPPED_BY);
 	}
 	
 	public String getMappingKey() {
 		return MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY;
 	}
+	
+	// ********** translators **********
+
+	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
+		return new SimpleTranslator(elementName, structuralFeature, buildTranslatorChildren());
+	}
+
+	private static Translator[] buildTranslatorChildren() {
+		return new Translator[] {
+			buildNameTranslator(),
+			buildTargetEntityTranslator(),
+			buildFetchTranslator(),
+			buildOptionalTranslator(),
+			buildMappedByTranslator(),
+			buildPrimaryKeyJoinColumnTranslator(),
+			buildJoinColumnTranslator(),
+			buildJoinTableTranslator(),
+			buildCascadeTranslator()
+		};
+	}
+	
+	protected static Translator buildMappedByTranslator() {
+		return new Translator(JPA.MAPPED_BY, OrmPackage.eINSTANCE.getXmlMappedByMapping_MappedBy(), Translator.DOM_ATTRIBUTE);
+	}
+	
+	protected static Translator buildPrimaryKeyJoinColumnTranslator() {
+		return XmlPrimaryKeyJoinColumn.buildTranslator(JPA.PRIMARY_KEY_JOIN_COLUMN, OrmPackage.eINSTANCE.getXmlOneToOne_PrimaryKeyJoinColumns());
+	}
+	
+	protected static Translator buildJoinColumnTranslator() {
+		return XmlJoinColumn.buildTranslator(JPA.JOIN_COLUMN, OrmPackage.eINSTANCE.getXmlJoinColumnsMapping_JoinColumns());
+	}
+	
+	protected static Translator buildJoinTableTranslator() {
+		return XmlJoinTable.buildTranslator(JPA.JOIN_TABLE, OrmPackage.eINSTANCE.getXmlJoinTableMapping_JoinTable());
+	}
+
 } // OneToOne

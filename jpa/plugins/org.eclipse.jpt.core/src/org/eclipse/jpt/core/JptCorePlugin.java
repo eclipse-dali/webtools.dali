@@ -124,6 +124,12 @@ public class JptCorePlugin extends Plugin {
 	public static final IContentType ORM_XML_CONTENT_TYPE = getJpaContentType("orm"); //$NON-NLS-1$
 
 	/**
+	 * The content type for 2.0 orm.xml mappings files. Use this to add new 
+	 * orm.xml-like extensions to this content type.
+	 */
+	public static final IContentType ORM2_0_XML_CONTENT_TYPE = getJpaContentType("orm2_0"); //$NON-NLS-1$
+
+	/**
 	 * Ditto for persistence.xml.
 	 * @see #ORM_XML_CONTENT_TYPE
 	 */

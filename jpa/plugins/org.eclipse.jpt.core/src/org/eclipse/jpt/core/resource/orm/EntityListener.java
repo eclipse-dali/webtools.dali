@@ -12,10 +12,13 @@ package org.eclipse.jpt.core.resource.orm;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
 import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.xml.JpaEObject;
+import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
  * <!-- begin-user-doc -->
@@ -794,6 +797,29 @@ public class EntityListener extends AbstractJpaEObject implements JpaEObject
 		result.append(className);
 		result.append(')');
 		return result.toString();
+	}
+
+	// ********** translators **********
+
+	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
+		return new SimpleTranslator(elementName, structuralFeature, buildTranslatorChildren());
+	}
+
+	private static Translator[] buildTranslatorChildren() {
+		return new Translator[] {
+			buildClassTranslator(),
+			EventMethod.buildTranslator(JPA.PRE_PERSIST, OrmPackage.eINSTANCE.getEntityListener_PrePersist()),
+			EventMethod.buildTranslator(JPA.POST_PERSIST, OrmPackage.eINSTANCE.getEntityListener_PostPersist()),
+			EventMethod.buildTranslator(JPA.PRE_REMOVE, OrmPackage.eINSTANCE.getEntityListener_PreRemove()),
+			EventMethod.buildTranslator(JPA.POST_REMOVE, OrmPackage.eINSTANCE.getEntityListener_PostRemove()),
+			EventMethod.buildTranslator(JPA.PRE_UPDATE, OrmPackage.eINSTANCE.getEntityListener_PreUpdate()),
+			EventMethod.buildTranslator(JPA.POST_UPDATE, OrmPackage.eINSTANCE.getEntityListener_PostUpdate()),
+			EventMethod.buildTranslator(JPA.POST_LOAD, OrmPackage.eINSTANCE.getEntityListener_PostLoad())
+		};
+	}
+	
+	protected static Translator buildClassTranslator() {
+		return new Translator(JPA.CLASS, OrmPackage.eINSTANCE.getEntityListener_ClassName());
 	}
 
 } // EntityListener

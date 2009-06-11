@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,10 @@ package org.eclipse.jpt.core.resource.orm;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
+import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
  * <!-- begin-user-doc -->
@@ -37,7 +40,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * @model kind="class"
  * @generated
  */
-public class XmlColumn extends XmlAbstractColumn
+public class XmlColumn extends AbstractXmlColumn
 {
 	/**
 	 * The default value of the '{@link #getLength() <em>Length</em>}' attribute.
@@ -332,4 +335,36 @@ public class XmlColumn extends XmlAbstractColumn
 		return result.toString();
 	}
 
+	// ********** translators **********
+
+	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
+		return new SimpleTranslator(elementName, structuralFeature, buildTranslatorChildren());
+	}
+
+	private static Translator[] buildTranslatorChildren() {
+		return new Translator[] {
+			buildNameTranslator(),
+			buildUniqueTranslator(),
+			buildNullableTranslator(),
+			buildInsertableTranslator(),
+			buildUpdatableTranslator(),
+			buildColumnDefinitionTranslator(),
+			buildTableTranslator(),
+			buildLengthTranslator(),
+			buildPrecisionTranslator(),
+			buildScaleTranslator(),
+		};
+	}
+	
+	protected static Translator buildLengthTranslator() {
+		return new Translator(JPA.NAME, OrmPackage.eINSTANCE.getXmlColumn_Length(), Translator.DOM_ATTRIBUTE);
+	}
+	
+	protected static Translator buildPrecisionTranslator() {
+		return new Translator(JPA.NAME, OrmPackage.eINSTANCE.getXmlColumn_Precision(), Translator.DOM_ATTRIBUTE);
+	}
+	
+	protected static Translator buildScaleTranslator() {
+		return new Translator(JPA.NAME, OrmPackage.eINSTANCE.getXmlColumn_Scale(), Translator.DOM_ATTRIBUTE);
+	}
 } // ColumnImpl

@@ -12,11 +12,13 @@ package org.eclipse.jpt.core.resource.orm;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.core.MappingKeys;
-import org.eclipse.jpt.core.internal.resource.orm.translators.OrmXmlMapper;
+import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
  * <!-- begin-user-doc -->
@@ -748,7 +750,7 @@ public class XmlId extends AbstractXmlAttributeMapping implements ColumnMapping,
 	}
 
 	public TextRange getEnumeratedTextRange() {
-		return getAttributeTextRange(OrmXmlMapper.ENUMERATED);
+		return getAttributeTextRange(JPA.ENUMERATED);
 	}
 
 	public TextRange getLobTextRange() {
@@ -761,5 +763,42 @@ public class XmlId extends AbstractXmlAttributeMapping implements ColumnMapping,
 	
 	public String getMappingKey() {
 		return MappingKeys.ID_ATTRIBUTE_MAPPING_KEY;
-	}	
+	}
+	
+	// ********** translators **********
+
+	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
+		return new SimpleTranslator(elementName, structuralFeature, buildTranslatorChildren());
+	}
+
+	private static Translator[] buildTranslatorChildren() {
+		return new Translator[] {
+			buildNameTranslator(),
+			buildColumnTranslator(),
+			buildGeneratedValueTranslator(),
+			buildTemporalTranslator(),
+			buildTableGeneratorTranslator(),
+			buildSequenceGeneratorTranslator()
+		};
+	}
+	
+	protected static Translator buildColumnTranslator() {
+		return XmlColumn.buildTranslator(JPA.COLUMN, OrmPackage.eINSTANCE.getColumnMapping_Column());
+	}
+	
+	protected static Translator buildGeneratedValueTranslator() {
+		return XmlGeneratedValue.buildTranslator(JPA.GENERATED_VALUE, OrmPackage.eINSTANCE.getXmlId_GeneratedValue());
+	}
+	
+	protected static Translator buildTemporalTranslator() {
+		return new Translator(JPA.TEMPORAL, OrmPackage.eINSTANCE.getXmlConvertibleMapping_Temporal());
+	}
+	
+	protected static Translator buildTableGeneratorTranslator() {
+		return XmlTableGenerator.buildTranslator(JPA.TABLE_GENERATOR, OrmPackage.eINSTANCE.getXmlGeneratorContainer_TableGenerator());
+	}
+	
+	protected static Translator buildSequenceGeneratorTranslator() {
+		return XmlSequenceGenerator.buildTranslator(JPA.SEQUENCE_GENERATOR, OrmPackage.eINSTANCE.getXmlGeneratorContainer_SequenceGenerator());
+	}
 } // Id
