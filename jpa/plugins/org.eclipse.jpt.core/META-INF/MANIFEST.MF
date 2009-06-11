@@ -57,6 +57,7 @@ Export-Package: org.eclipse.jpt.core,
  org.eclipse.jpt.core.internal.resource.orm;x-friends:="org.eclipse.jpt.ui",
  org.eclipse.jpt.core.internal.resource.orm.translators;x-friends:="org.eclipse.jpt.ui",
  org.eclipse.jpt.core.internal.resource.persistence;x-friends:="org.eclipse.jpt.ui",
+ org.eclipse.jpt.core.internal.resource.xml,
  org.eclipse.jpt.core.internal.resource.xml.translators;x-friends:="org.eclipse.jpt.ui",
  org.eclipse.jpt.core.internal.synch;x-friends:="org.eclipse.jpt.ui",
  org.eclipse.jpt.core.internal.utility;x-friends:="org.eclipse.jpt.ui",
@@ -68,5 +69,6 @@ Export-Package: org.eclipse.jpt.core,
  org.eclipse.jpt.core.resource.persistence,
  org.eclipse.jpt.core.resource.xml,
  org.eclipse.jpt.core.utility,
- org.eclipse.jpt.core.utility.jdt
+ org.eclipse.jpt.core.utility.jdt,
+ org.eclipse.jpt2_0.core.resource.persistence
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
