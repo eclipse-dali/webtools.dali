@@ -18,7 +18,6 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-import org.eclipse.jpt.core.internal.resource.orm.translators.UniqueConstraintTranslator;
 import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.xml.JpaEObject;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -434,7 +433,7 @@ public abstract class AbstractXmlTable extends AbstractJpaEObject implements Jpa
 	}
 	
 	protected static Translator buildUniqueConstraintTranslator() {
-		return new UniqueConstraintTranslator(JPA.UNIQUE_CONSTRAINT, OrmPackage.eINSTANCE.getAbstractXmlTable_UniqueConstraints());
+		return XmlUniqueConstraint.buildTranslator(JPA.UNIQUE_CONSTRAINT, OrmPackage.eINSTANCE.getAbstractXmlTable_UniqueConstraints());
 	}
 
 } // AbstractXmlBaseTable

@@ -11,9 +11,13 @@ package org.eclipse.jpt.core.resource.orm;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.jpt.core.internal.resource.xml.translators.EmptyTagBooleanTranslator;
+import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
 import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.xml.JpaEObject;
+import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
  * <!-- begin-user-doc -->
@@ -470,5 +474,42 @@ public class CascadeType extends AbstractJpaEObject implements JpaEObject
 		result.append(')');
 		return result.toString();
 	}
+	
+	
+	// ********** translators **********
 
+	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
+		return new SimpleTranslator(elementName, structuralFeature, buildTranslatorChildren());
+	}
+
+	private static Translator[] buildTranslatorChildren() {
+		return new Translator[] {
+			buildCascadeAllTranslator(),
+			buildCascadePersistTranslator(),
+			buildCascadeMergeTranslator(),
+			buildCascadeRemoveTranslator(),
+			buildCascadeRefreshTranslator()
+		};
+	}
+	
+	protected static Translator buildCascadeAllTranslator() {
+		return new EmptyTagBooleanTranslator(JPA.CASCADE_ALL, OrmPackage.eINSTANCE.getCascadeType_CascadeAll());
+	}
+	
+	protected static Translator buildCascadePersistTranslator() {
+		return new EmptyTagBooleanTranslator(JPA.CASCADE_PERSIST, OrmPackage.eINSTANCE.getCascadeType_CascadePersist());
+	}
+	
+	protected static Translator buildCascadeMergeTranslator() {
+		return new EmptyTagBooleanTranslator(JPA.CASCADE_MERGE, OrmPackage.eINSTANCE.getCascadeType_CascadeMerge());
+	}
+	
+	protected static Translator buildCascadeRemoveTranslator() {
+		return new EmptyTagBooleanTranslator(JPA.CASCADE_REMOVE, OrmPackage.eINSTANCE.getCascadeType_CascadeRemove());
+	}
+
+	protected static Translator buildCascadeRefreshTranslator() {
+		return new EmptyTagBooleanTranslator(JPA.CASCADE_REFRESH, OrmPackage.eINSTANCE.getCascadeType_CascadeRefresh());
+	}
+	
 } // CascadeType

@@ -19,7 +19,6 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-import org.eclipse.jpt.core.internal.resource.orm.translators.QueryHintTranslator;
 import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
 import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -508,6 +507,6 @@ public class XmlNamedNativeQuery extends AbstractJpaEObject implements XmlQuery
 	}
 	
 	protected static Translator buildHintTranslator() {
-		return new QueryHintTranslator(JPA.HINT, OrmPackage.eINSTANCE.getXmlQuery_Hints());
+		return XmlQueryHint.buildTranslator(JPA.HINT, OrmPackage.eINSTANCE.getXmlQuery_Hints());
 	}
 }

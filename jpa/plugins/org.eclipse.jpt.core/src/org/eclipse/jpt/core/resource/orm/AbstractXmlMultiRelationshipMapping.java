@@ -14,7 +14,6 @@ import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.jpt.core.internal.resource.orm.translators.MapKeyTranslator;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -504,7 +503,7 @@ public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRel
 	}
 	
 	protected static Translator buildMapKeyTranslator() {
-		return new MapKeyTranslator(JPA.MAP_KEY, OrmPackage.eINSTANCE.getAbstractXmlMultiRelationshipMapping_MapKey());
+		return MapKey.buildTranslator(JPA.MAP_KEY, OrmPackage.eINSTANCE.getAbstractXmlMultiRelationshipMapping_MapKey());
 	}
 
 }

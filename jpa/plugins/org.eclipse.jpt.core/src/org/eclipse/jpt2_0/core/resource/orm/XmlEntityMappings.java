@@ -10,9 +10,6 @@
 package org.eclipse.jpt2_0.core.resource.orm;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.jpt.core.internal.resource.orm.translators.EmbeddableTranslator;
-import org.eclipse.jpt.core.internal.resource.orm.translators.EntityTranslator;
-import org.eclipse.jpt.core.internal.resource.orm.translators.MappedSuperclassTranslator;
 import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleRootTranslator;
 import org.eclipse.jpt.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.core.resource.xml.XML;
@@ -93,16 +90,5 @@ public class XmlEntityMappings extends org.eclipse.jpt.core.resource.orm.XmlEnti
 	private static Translator buildSchemaLocationTranslator() {
 		return new ConstantAttributeTranslator(XML.XSI_SCHEMA_LOCATION, JPA.NAMESPACE_URL + ' ' + JPA.SCHEMA_LOCATION_2_0);
 	}
-	
-	protected static Translator buildMappedSuperclassTranslator() {
-		return new MappedSuperclassTranslator(JPA.MAPPED_SUPERCLASS, OrmPackage.eINSTANCE.getXmlEntityMappings_MappedSuperclasses());
-	}
-	
-	protected static Translator buildEntityTranslator() {
-		return new EntityTranslator(JPA.ENTITY, OrmPackage.eINSTANCE.getXmlEntityMappings_Entities());
-	}
-	
-	protected static Translator buildEmbeddableTranslator() {
-		return new EmbeddableTranslator(JPA.EMBEDDABLE, OrmPackage.eINSTANCE.getXmlEntityMappings_Embeddables());
-	}
+
 } // XmlEntityMappings

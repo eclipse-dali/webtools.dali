@@ -14,7 +14,6 @@ import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.jpt.core.internal.resource.orm.translators.CascadeTypeTranslator;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -376,6 +375,7 @@ public abstract class AbstractXmlRelationshipMapping extends AbstractXmlAttribut
 	}
 	
 	protected static Translator buildCascadeTranslator() {
-		return new CascadeTypeTranslator(JPA.CASCADE, OrmPackage.eINSTANCE.getAbstractXmlRelationshipMapping_Cascade());
+		return CascadeType.buildTranslator(JPA.CASCADE, OrmPackage.eINSTANCE.getAbstractXmlRelationshipMapping_Cascade());
 	}
+	
 } // RelationshipMapping
