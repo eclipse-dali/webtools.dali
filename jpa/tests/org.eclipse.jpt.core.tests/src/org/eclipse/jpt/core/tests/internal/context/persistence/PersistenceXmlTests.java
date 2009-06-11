@@ -11,7 +11,9 @@ package org.eclipse.jpt.core.tests.internal.context.persistence;
 
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
+import org.eclipse.jpt.core.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
+import org.eclipse.jpt.core.resource.xml.XML;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 
 public class PersistenceXmlTests extends ContextModelTestCase
@@ -34,7 +36,9 @@ public class PersistenceXmlTests extends ContextModelTestCase
 		assertNull(getPersistenceXml());
 		assertEquals(1, getJpaProject().jpaFilesSize()); //should only be the orm.xml file
 		
-		prm.getContents().add(PersistenceFactory.eINSTANCE.createXmlPersistence());
+		XmlPersistence xmlPersistence = PersistenceFactory.eINSTANCE.createXmlPersistence();
+		xmlPersistence.setVersion(XML.VERSION_1_0_TEXT);
+		prm.getContents().add(xmlPersistence);
 		prm.save(null);
 		
 		assertNotNull(getPersistenceXml().getPersistence());
