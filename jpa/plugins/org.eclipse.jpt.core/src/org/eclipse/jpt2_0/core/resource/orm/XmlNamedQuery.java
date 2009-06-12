@@ -307,7 +307,11 @@ public class XmlNamedQuery extends org.eclipse.jpt.core.resource.orm.XmlNamedQue
 	// ********** translators **********
 
 	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
-		return new SimpleTranslator(elementName, structuralFeature, buildTranslatorChildren());
+		return new SimpleTranslator(
+			elementName, 
+			structuralFeature, 
+			Orm2_0Package.eINSTANCE.getXmlNamedQuery(), 
+			buildTranslatorChildren());
 	}
 
 	private static Translator[] buildTranslatorChildren() {

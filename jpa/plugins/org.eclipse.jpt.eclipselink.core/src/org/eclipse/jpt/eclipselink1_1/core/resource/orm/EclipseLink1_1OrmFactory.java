@@ -80,6 +80,10 @@ public class EclipseLink1_1OrmFactory extends EFactoryImpl
 		switch (eClass.getClassifierID())
 		{
 			case EclipseLink1_1OrmPackage.XML_ENTITY_MAPPINGS: return (EObject)createXmlEntityMappings();
+			case EclipseLink1_1OrmPackage.XML_ENTITY: return (EObject)createXmlEntity();
+			case EclipseLink1_1OrmPackage.XML_EMBEDDABLE: return (EObject)createXmlEmbeddable();
+			case EclipseLink1_1OrmPackage.XML_MAPPED_SUPERCLASS: return (EObject)createXmlMappedSuperclass();
+			case EclipseLink1_1OrmPackage.ATTRIBUTES: return (EObject)createAttributes();
 			case EclipseLink1_1OrmPackage.XML_ID: return (EObject)createXmlId();
 			case EclipseLink1_1OrmPackage.XML_EMBEDDED_ID: return (EObject)createXmlEmbeddedId();
 			case EclipseLink1_1OrmPackage.XML_EMBEDDED: return (EObject)createXmlEmbedded();
@@ -93,7 +97,6 @@ public class EclipseLink1_1OrmFactory extends EFactoryImpl
 			case EclipseLink1_1OrmPackage.XML_BASIC_MAP: return (EObject)createXmlBasicMap();
 			case EclipseLink1_1OrmPackage.XML_TRANSFORMATION: return (EObject)createXmlTransformation();
 			case EclipseLink1_1OrmPackage.XML_VARIABLE_ONE_TO_ONE: return (EObject)createXmlVariableOneToOne();
-			case EclipseLink1_1OrmPackage.XML_TRANSIENT: return (EObject)createXmlTransient();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -108,6 +111,50 @@ public class EclipseLink1_1OrmFactory extends EFactoryImpl
 	{
 		XmlEntityMappings xmlEntityMappings = new XmlEntityMappings();
 		return xmlEntityMappings;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlEntity createXmlEntity()
+	{
+		XmlEntity xmlEntity = new XmlEntity();
+		return xmlEntity;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlEmbeddable createXmlEmbeddable()
+	{
+		XmlEmbeddable xmlEmbeddable = new XmlEmbeddable();
+		return xmlEmbeddable;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlMappedSuperclass createXmlMappedSuperclass()
+	{
+		XmlMappedSuperclass xmlMappedSuperclass = new XmlMappedSuperclass();
+		return xmlMappedSuperclass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Attributes createAttributes()
+	{
+		Attributes attributes = new Attributes();
+		return attributes;
 	}
 
 	/**
@@ -251,17 +298,6 @@ public class EclipseLink1_1OrmFactory extends EFactoryImpl
 	{
 		XmlVariableOneToOne xmlVariableOneToOne = new XmlVariableOneToOne();
 		return xmlVariableOneToOne;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public XmlTransient createXmlTransient()
-	{
-		XmlTransient xmlTransient = new XmlTransient();
-		return xmlTransient;
 	}
 
 	/**

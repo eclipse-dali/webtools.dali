@@ -15,12 +15,16 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
+import org.eclipse.jpt.core.resource.orm.EventMethod;
+import org.eclipse.jpt.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.jpt.eclipselink.core.internal.resource.orm.translators.EclipseLinkOrmXmlMapper;
+import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
  * <!-- begin-user-doc -->
@@ -45,7 +49,6 @@ import org.eclipse.jpt.eclipselink.core.internal.resource.orm.translators.Eclips
  *   <li>{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntity#getCopyPolicy <em>Copy Policy</em>}</li>
  *   <li>{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntity#getInstantiationCopyPolicy <em>Instantiation Copy Policy</em>}</li>
  *   <li>{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntity#getCloneCopyPolicy <em>Clone Copy Policy</em>}</li>
- *   <li>{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntity#getProperties <em>Properties</em>}</li>
  *   <li>{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntity#getExcludeDefaultMappings <em>Exclude Default Mappings</em>}</li>
  * </ul>
  * </p>
@@ -54,7 +57,7 @@ import org.eclipse.jpt.eclipselink.core.internal.resource.orm.translators.Eclips
  * @model kind="class"
  * @generated
  */
-public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity implements XmlReadOnly, XmlCustomizerHolder, XmlChangeTrackingHolder, XmlCacheHolder, XmlConvertersHolder, XmlQueryContainer
+public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity implements XmlReadOnly, XmlCustomizerHolder, XmlChangeTrackingHolder, XmlCacheHolder, XmlConvertersHolder, XmlQueryContainer, XmlPropertyContainer
 {
 	/**
 	 * The default value of the '{@link #getReadOnly() <em>Read Only</em>}' attribute.
@@ -173,6 +176,16 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 	protected EList<XmlNamedStoredProcedureQuery> namedStoredProcedureQueries;
 
 	/**
+	 * The cached value of the '{@link #getProperties() <em>Properties</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getProperties()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlProperty> properties;
+
+	/**
 	 * The cached value of the '{@link #getOptimisticLocking() <em>Optimistic Locking</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -211,16 +224,6 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 	 * @ordered
 	 */
 	protected XmlCloneCopyPolicy cloneCopyPolicy;
-
-	/**
-	 * The cached value of the '{@link #getProperties() <em>Properties</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getProperties()
-	 * @generated
-	 * @ordered
-	 */
-	protected EList<XmlProperty> properties;
 
 	/**
 	 * The default value of the '{@link #getExcludeDefaultMappings() <em>Exclude Default Mappings</em>}' attribute.
@@ -882,7 +885,7 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Properties</em>' containment reference list.
-	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEntity_Properties()
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlPropertyContainer_Properties()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -956,6 +959,8 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 				return ((InternalEList<?>)getStructConverters()).basicRemove(otherEnd, msgs);
 			case EclipseLinkOrmPackage.XML_ENTITY__NAMED_STORED_PROCEDURE_QUERIES:
 				return ((InternalEList<?>)getNamedStoredProcedureQueries()).basicRemove(otherEnd, msgs);
+			case EclipseLinkOrmPackage.XML_ENTITY__PROPERTIES:
+				return ((InternalEList<?>)getProperties()).basicRemove(otherEnd, msgs);
 			case EclipseLinkOrmPackage.XML_ENTITY__OPTIMISTIC_LOCKING:
 				return basicSetOptimisticLocking(null, msgs);
 			case EclipseLinkOrmPackage.XML_ENTITY__COPY_POLICY:
@@ -964,8 +969,6 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 				return basicSetInstantiationCopyPolicy(null, msgs);
 			case EclipseLinkOrmPackage.XML_ENTITY__CLONE_COPY_POLICY:
 				return basicSetCloneCopyPolicy(null, msgs);
-			case EclipseLinkOrmPackage.XML_ENTITY__PROPERTIES:
-				return ((InternalEList<?>)getProperties()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -1000,6 +1003,8 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 				return getStructConverters();
 			case EclipseLinkOrmPackage.XML_ENTITY__NAMED_STORED_PROCEDURE_QUERIES:
 				return getNamedStoredProcedureQueries();
+			case EclipseLinkOrmPackage.XML_ENTITY__PROPERTIES:
+				return getProperties();
 			case EclipseLinkOrmPackage.XML_ENTITY__OPTIMISTIC_LOCKING:
 				return getOptimisticLocking();
 			case EclipseLinkOrmPackage.XML_ENTITY__COPY_POLICY:
@@ -1008,8 +1013,6 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 				return getInstantiationCopyPolicy();
 			case EclipseLinkOrmPackage.XML_ENTITY__CLONE_COPY_POLICY:
 				return getCloneCopyPolicy();
-			case EclipseLinkOrmPackage.XML_ENTITY__PROPERTIES:
-				return getProperties();
 			case EclipseLinkOrmPackage.XML_ENTITY__EXCLUDE_DEFAULT_MAPPINGS:
 				return getExcludeDefaultMappings();
 		}
@@ -1062,6 +1065,10 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 				getNamedStoredProcedureQueries().clear();
 				getNamedStoredProcedureQueries().addAll((Collection<? extends XmlNamedStoredProcedureQuery>)newValue);
 				return;
+			case EclipseLinkOrmPackage.XML_ENTITY__PROPERTIES:
+				getProperties().clear();
+				getProperties().addAll((Collection<? extends XmlProperty>)newValue);
+				return;
 			case EclipseLinkOrmPackage.XML_ENTITY__OPTIMISTIC_LOCKING:
 				setOptimisticLocking((XmlOptimisticLocking)newValue);
 				return;
@@ -1073,10 +1080,6 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 				return;
 			case EclipseLinkOrmPackage.XML_ENTITY__CLONE_COPY_POLICY:
 				setCloneCopyPolicy((XmlCloneCopyPolicy)newValue);
-				return;
-			case EclipseLinkOrmPackage.XML_ENTITY__PROPERTIES:
-				getProperties().clear();
-				getProperties().addAll((Collection<? extends XmlProperty>)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_ENTITY__EXCLUDE_DEFAULT_MAPPINGS:
 				setExcludeDefaultMappings((Boolean)newValue);
@@ -1125,6 +1128,9 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 			case EclipseLinkOrmPackage.XML_ENTITY__NAMED_STORED_PROCEDURE_QUERIES:
 				getNamedStoredProcedureQueries().clear();
 				return;
+			case EclipseLinkOrmPackage.XML_ENTITY__PROPERTIES:
+				getProperties().clear();
+				return;
 			case EclipseLinkOrmPackage.XML_ENTITY__OPTIMISTIC_LOCKING:
 				setOptimisticLocking((XmlOptimisticLocking)null);
 				return;
@@ -1136,9 +1142,6 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 				return;
 			case EclipseLinkOrmPackage.XML_ENTITY__CLONE_COPY_POLICY:
 				setCloneCopyPolicy((XmlCloneCopyPolicy)null);
-				return;
-			case EclipseLinkOrmPackage.XML_ENTITY__PROPERTIES:
-				getProperties().clear();
 				return;
 			case EclipseLinkOrmPackage.XML_ENTITY__EXCLUDE_DEFAULT_MAPPINGS:
 				setExcludeDefaultMappings(EXCLUDE_DEFAULT_MAPPINGS_EDEFAULT);
@@ -1177,6 +1180,8 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 				return structConverters != null && !structConverters.isEmpty();
 			case EclipseLinkOrmPackage.XML_ENTITY__NAMED_STORED_PROCEDURE_QUERIES:
 				return namedStoredProcedureQueries != null && !namedStoredProcedureQueries.isEmpty();
+			case EclipseLinkOrmPackage.XML_ENTITY__PROPERTIES:
+				return properties != null && !properties.isEmpty();
 			case EclipseLinkOrmPackage.XML_ENTITY__OPTIMISTIC_LOCKING:
 				return optimisticLocking != null;
 			case EclipseLinkOrmPackage.XML_ENTITY__COPY_POLICY:
@@ -1185,8 +1190,6 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 				return instantiationCopyPolicy != null;
 			case EclipseLinkOrmPackage.XML_ENTITY__CLONE_COPY_POLICY:
 				return cloneCopyPolicy != null;
-			case EclipseLinkOrmPackage.XML_ENTITY__PROPERTIES:
-				return properties != null && !properties.isEmpty();
 			case EclipseLinkOrmPackage.XML_ENTITY__EXCLUDE_DEFAULT_MAPPINGS:
 				return EXCLUDE_DEFAULT_MAPPINGS_EDEFAULT == null ? excludeDefaultMappings != null : !EXCLUDE_DEFAULT_MAPPINGS_EDEFAULT.equals(excludeDefaultMappings);
 		}
@@ -1253,6 +1256,14 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlPropertyContainer.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_ENTITY__PROPERTIES: return EclipseLinkOrmPackage.XML_PROPERTY_CONTAINER__PROPERTIES;
+				default: return -1;
+			}
+		}
 		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
 	}
 
@@ -1316,6 +1327,14 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlPropertyContainer.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_PROPERTY_CONTAINER__PROPERTIES: return EclipseLinkOrmPackage.XML_ENTITY__PROPERTIES;
+				default: return -1;
+			}
+		}
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
@@ -1341,6 +1360,132 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 	}
 
 	public TextRange getReadOnlyTextRange() {
-		return getAttributeTextRange(EclipseLinkOrmXmlMapper.READ_ONLY);
+		return getAttributeTextRange(JPA.READ_ONLY);
 	}
+	
+	// ********** translators **********
+
+	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
+		return new SimpleTranslator(
+			elementName, 
+			structuralFeature, 
+			EclipseLinkOrmPackage.eINSTANCE.getXmlEntity(), 
+			buildTranslatorChildren());
+	}
+
+	private static Translator[] buildTranslatorChildren() {
+		return new Translator[] {
+			buildNameTranslator(),
+			buildClassTranslator(),
+			buildAccessTranslator(),
+			buildMetadataCompleteTranslator(),
+			buildReadOnlyTranslator(),
+			buildExistenceCheckingTranslator(),
+			buildExcludeDefaultMappingsTranslator(),
+			buildDescriptionTranslator(),
+			buildCustomizerTranslator(),
+			buildChangeTrackingTranslator(),
+			buildTableTranslator(),
+			buildSecondaryTableTranslator(),
+			buildPrimaryKeyJoinColumnTranslator(),
+			buildIdClassTranslator(),
+			buildInheritanceTranslator(),
+			buildDiscriminatorValueTranslator(),
+			buildDiscriminatorColumnTranslator(),
+			buildOptimisticLockingTranslator(),
+			buildCacheTranslator(),
+			buildConverterTranslator(),
+			buildTypeConverterTranslator(),
+			buildObjectTypeConverterTranslator(),
+			buildStructConverterTranslator(),
+			buildCopyPolicyTranslator(),
+			buildInstantiationCoypPolicyTranslator(),
+			buildCloneCopyPolicyTranslator(),
+			buildSequenceGeneratorTranslator(),
+			buildTableGeneratorTranslator(),
+			buildNamedQueryTranslator(),
+			buildNamedNativeQueryTranslator(),
+			buildNamedStoredProcedureQueryTranslator(),
+			buildSqlResultSetMappingTranslator(),
+			buildExcludeDefaultListenersTranslator(),
+			buildExcludeSuperclassListenersTranslator(),
+			buildEntityListenersTranslator(),
+			EventMethod.buildTranslator(JPA.PRE_PERSIST, OrmPackage.eINSTANCE.getXmlEntity_PrePersist()),
+			EventMethod.buildTranslator(JPA.POST_PERSIST, OrmPackage.eINSTANCE.getXmlEntity_PostPersist()),
+			EventMethod.buildTranslator(JPA.PRE_REMOVE, OrmPackage.eINSTANCE.getXmlEntity_PreRemove()),
+			EventMethod.buildTranslator(JPA.POST_REMOVE, OrmPackage.eINSTANCE.getXmlEntity_PostRemove()),
+			EventMethod.buildTranslator(JPA.PRE_UPDATE, OrmPackage.eINSTANCE.getXmlEntity_PreUpdate()),
+			EventMethod.buildTranslator(JPA.POST_UPDATE, OrmPackage.eINSTANCE.getXmlEntity_PostUpdate()),
+			EventMethod.buildTranslator(JPA.POST_LOAD, OrmPackage.eINSTANCE.getXmlEntity_PostLoad()),
+			buildPropertyTranslator(),
+			buildAttributeOverrideTranslator(),
+			buildAssociationOverrideTranslator(),
+			Attributes.buildTranslator(JPA.ATTRIBUTES, OrmPackage.eINSTANCE.getXmlTypeMapping_Attributes())
+		};
+	}
+
+	protected static Translator buildCustomizerTranslator() {
+		return XmlCustomizer.buildTranslator(JPA.CUSTOMIZER, EclipseLinkOrmPackage.eINSTANCE.getXmlCustomizerHolder_Customizer());
+	}
+
+	protected static Translator buildChangeTrackingTranslator() {
+		return XmlChangeTracking.buildTranslator(JPA.CHANGE_TRACKING, EclipseLinkOrmPackage.eINSTANCE.getXmlChangeTrackingHolder_ChangeTracking());
+	}
+
+	protected static Translator buildOptimisticLockingTranslator() {
+		return XmlOptimisticLocking.buildTranslator(JPA.OPTIMISTIC_LOCKING, EclipseLinkOrmPackage.eINSTANCE.getXmlEntity_OptimisticLocking());
+	}
+
+	protected static Translator buildCacheTranslator() {
+		return XmlCache.buildTranslator(JPA.CACHE, EclipseLinkOrmPackage.eINSTANCE.getXmlCacheHolder_Cache());
+	}
+
+	protected static Translator buildConverterTranslator() {
+		return XmlConverter.buildTranslator(JPA.CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConvertersHolder_Converters());
+	}
+
+	protected static Translator buildTypeConverterTranslator() {
+		return XmlTypeConverter.buildTranslator(JPA.TYPE_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConvertersHolder_TypeConverters());
+	}
+
+	protected static Translator buildObjectTypeConverterTranslator() {
+		return XmlObjectTypeConverter.buildTranslator(JPA.OBJECT_TYPE_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConvertersHolder_ObjectTypeConverters());
+	}
+
+	protected static Translator buildStructConverterTranslator() {
+		return XmlStructConverter.buildTranslator(JPA.STRUCT_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConvertersHolder_StructConverters());
+	}
+
+	protected static Translator buildCopyPolicyTranslator() {
+		return XmlCopyPolicy.buildTranslator(JPA.COPY_POLICY, EclipseLinkOrmPackage.eINSTANCE.getXmlEntity_CopyPolicy());
+	}
+
+	protected static Translator buildInstantiationCoypPolicyTranslator() {
+		return XmlInstantiationCopyPolicy.buildTranslator(JPA.INSTANTIATION_COPY_POLICY, EclipseLinkOrmPackage.eINSTANCE.getXmlEntity_InstantiationCopyPolicy());
+	}
+
+	protected static Translator buildCloneCopyPolicyTranslator() {
+		return XmlCloneCopyPolicy.buildTranslator(JPA.CLONE_COPY_POLICY, EclipseLinkOrmPackage.eINSTANCE.getXmlEntity_CloneCopyPolicy());
+	}
+	
+	protected static Translator buildReadOnlyTranslator() {
+		return new Translator(JPA.READ_ONLY, EclipseLinkOrmPackage.eINSTANCE.getXmlReadOnly_ReadOnly(), Translator.DOM_ATTRIBUTE);
+	}
+	
+	protected static Translator buildExistenceCheckingTranslator() {
+		return new Translator(JPA.EXISTENCE_CHECKING, EclipseLinkOrmPackage.eINSTANCE.getXmlCacheHolder_ExistenceChecking(), Translator.DOM_ATTRIBUTE);
+	}
+
+	protected static Translator buildExcludeDefaultMappingsTranslator() {
+		return new Translator(JPA.EXCLUDE_DEFAULT_MAPPINGS, EclipseLinkOrmPackage.eINSTANCE.getXmlEntity_ExcludeDefaultMappings(), Translator.DOM_ATTRIBUTE);
+	}
+	
+	protected static Translator buildNamedStoredProcedureQueryTranslator() {
+		return XmlNamedStoredProcedureQuery.buildTranslator(JPA.NAMED_STORED_PROCEDURE_QUERY, EclipseLinkOrmPackage.eINSTANCE.getXmlQueryContainer_NamedStoredProcedureQueries());
+	}
+
+	protected static Translator buildPropertyTranslator() {
+		return XmlProperty.buildTranslator(JPA.PROPERTY, EclipseLinkOrmPackage.eINSTANCE.getXmlPropertyContainer_Properties());
+	}
+
 }

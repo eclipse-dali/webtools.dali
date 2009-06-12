@@ -12,12 +12,15 @@ package org.eclipse.jpt.eclipselink1_1.core.resource.orm;
 import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EStructuralFeature;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
+import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
 import org.eclipse.jpt.core.resource.orm.AccessType;
 import org.eclipse.jpt.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.core.resource.orm.XmlAccessHolder;
+import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
  * <!-- begin-user-doc -->
@@ -239,6 +242,36 @@ public class XmlManyToOne extends org.eclipse.jpt.eclipselink.core.resource.orm.
 		result.append(access);
 		result.append(')');
 		return result.toString();
+	}
+	
+	// ********** translators **********
+
+	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
+		return new SimpleTranslator(
+			elementName, 
+			structuralFeature, 
+			EclipseLink1_1OrmPackage.eINSTANCE.getXmlManyToOne(), 
+			buildTranslatorChildren());
+	}
+
+	private static Translator[] buildTranslatorChildren() {
+		return new Translator[] {
+			buildNameTranslator(),
+			buildTargetEntityTranslator(),
+			buildFetchTranslator(),
+			buildOptionalTranslator(),
+			buildAccessTranslator(),
+			buildJoinColumnTranslator(),
+			buildJoinTableTranslator(),
+			buildCascadeTranslator(),
+			buildJoinFetchTranslator(),
+			buildPropertyTranslator(),
+			buildAccessMethodsTranslator()
+		};
+	}
+
+	protected static Translator buildAccessTranslator() {
+		return new Translator(JPA.ACCESS, OrmPackage.eINSTANCE.getXmlAccessHolder_Access(), Translator.DOM_ATTRIBUTE);
 	}
 
 } // XmlManyToOneImpl

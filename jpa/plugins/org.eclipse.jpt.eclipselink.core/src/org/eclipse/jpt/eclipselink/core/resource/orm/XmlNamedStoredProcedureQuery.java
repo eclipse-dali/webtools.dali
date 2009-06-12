@@ -17,6 +17,7 @@ import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
@@ -25,9 +26,12 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 
+import org.eclipse.jpt.core.internal.resource.xml.translators.BooleanTranslator;
+import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
 import org.eclipse.jpt.core.resource.orm.XmlQueryHint;
 import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.xml.JpaEObject;
+import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
  * <!-- begin-user-doc -->
@@ -598,4 +602,49 @@ public class XmlNamedStoredProcedureQuery extends AbstractJpaEObject implements 
 		return result.toString();
 	}
 
+	// ********** translators **********
+
+	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
+		return new SimpleTranslator(elementName, structuralFeature, buildTranslatorChildren());
+	}
+
+	private static Translator[] buildTranslatorChildren() {
+		return new Translator[] {
+			buildNameTranslator(),
+			buildResultClassTranslator(),
+			buildResultSetMappingTranslator(),
+			buildProcedureNameTranslator(),
+			buildReturnResultSetTranslator(),
+			buildHintTranslator(),
+			buildParameterTranslator(),
+		};
+	}
+
+	protected static Translator buildNameTranslator() {
+		return new Translator(JPA.NAMED_STORED_PROCEDURE_QUERY__NAME, EclipseLinkOrmPackage.eINSTANCE.getXmlNamedStoredProcedureQuery_Name(), Translator.DOM_ATTRIBUTE);
+	}
+	
+	protected static Translator buildResultClassTranslator() {
+		return new Translator(JPA.NAMED_STORED_PROCEDURE_QUERY__RESULT_CLASS, EclipseLinkOrmPackage.eINSTANCE.getXmlNamedStoredProcedureQuery_ResultClass(), Translator.DOM_ATTRIBUTE);
+	}
+	
+	protected static Translator buildResultSetMappingTranslator() {
+		return new Translator(JPA.NAMED_STORED_PROCEDURE_QUERY__RESULT_SET_MAPPING, EclipseLinkOrmPackage.eINSTANCE.getXmlNamedStoredProcedureQuery_ResultSetMapping(), Translator.DOM_ATTRIBUTE);
+	}
+	
+	protected static Translator buildProcedureNameTranslator() {
+		return new Translator(JPA.NAMED_STORED_PROCEDURE_QUERY__PROCEDURE_NAME, EclipseLinkOrmPackage.eINSTANCE.getXmlNamedStoredProcedureQuery_ProcedureName(), Translator.DOM_ATTRIBUTE);
+	}
+	
+	protected static Translator buildReturnResultSetTranslator() {
+		return new BooleanTranslator(JPA.NAMED_STORED_PROCEDURE_QUERY__RETURNS_RESULT_SET, EclipseLinkOrmPackage.eINSTANCE.getXmlNamedStoredProcedureQuery_ReturnsResultSet(), Translator.DOM_ATTRIBUTE);
+	}
+	
+	protected static Translator buildHintTranslator() {
+		return XmlQueryHint.buildTranslator(JPA.NAMED_STORED_PROCEDURE_QUERY__HINT, EclipseLinkOrmPackage.eINSTANCE.getXmlNamedStoredProcedureQuery_Hints());
+	}
+	
+	protected static Translator buildParameterTranslator() {
+		return XmlStoredProcedureParameter.buildTranslator(JPA.NAMED_STORED_PROCEDURE_QUERY__PARAMETER, EclipseLinkOrmPackage.eINSTANCE.getXmlNamedStoredProcedureQuery_Parameters());
+	}
 } // XmlNamedStoredProcedureQuery

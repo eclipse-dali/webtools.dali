@@ -131,7 +131,6 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlEmbeddable/copyPolicy"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlEmbeddable/instantiationCopyPolicy"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlEmbeddable/cloneCopyPolicy"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlEmbeddable/properties"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlEmbeddable/excludeDefaultMappings"/>
     </genClasses>
     <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlReadOnly">
@@ -168,7 +167,6 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlEntity/copyPolicy"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlEntity/instantiationCopyPolicy"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlEntity/cloneCopyPolicy"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlEntity/properties"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlEntity/excludeDefaultMappings"/>
     </genClasses>
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlMappedSuperclass">
@@ -176,7 +174,6 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlMappedSuperclass/copyPolicy"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlMappedSuperclass/instantiationCopyPolicy"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlMappedSuperclass/cloneCopyPolicy"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlMappedSuperclass/properties"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlMappedSuperclass/excludeDefaultMappings"/>
     </genClasses>
     <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlMutable">
@@ -199,56 +196,33 @@
     <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlAccessMethodsHolder">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlAccessMethodsHolder/accessMethods"/>
     </genClasses>
+    <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlPropertyContainer">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlPropertyContainer/properties"/>
+    </genClasses>
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlProperty">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlProperty/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlProperty/value"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlProperty/valueType"/>
     </genClasses>
-    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlId">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlId/properties"/>
-    </genClasses>
-    <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlEmbeddedId">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlEmbeddedId/properties"/>
-    </genClasses>
-    <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlEmbedded">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlEmbedded/properties"/>
-    </genClasses>
-    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlBasic">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlBasic/properties"/>
-    </genClasses>
-    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlVersion">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlVersion/properties"/>
-    </genClasses>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlId"/>
+    <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlEmbeddedId"/>
+    <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlEmbedded"/>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlBasic"/>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlVersion"/>
     <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlPrivateOwned">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlPrivateOwned/privateOwned"/>
     </genClasses>
     <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlJoinFetch">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlJoinFetch/joinFetch"/>
     </genClasses>
-    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlOneToOne">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlOneToOne/properties"/>
-    </genClasses>
-    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlOneToMany">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlOneToMany/properties"/>
-    </genClasses>
-    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlManyToOne">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlManyToOne/properties"/>
-    </genClasses>
-    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlManyToMany">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlManyToMany/properties"/>
-    </genClasses>
-    <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlBasicCollection">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlBasicCollection/properties"/>
-    </genClasses>
-    <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlBasicMap">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlBasicMap/properties"/>
-    </genClasses>
-    <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlTransformation">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlTransformation/properties"/>
-    </genClasses>
-    <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlVariableOneToOne">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlVariableOneToOne/properties"/>
-    </genClasses>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlOneToOne"/>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlOneToMany"/>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlManyToOne"/>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlManyToMany"/>
+    <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlBasicCollection"/>
+    <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlBasicMap"/>
+    <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlTransformation"/>
+    <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlVariableOneToOne"/>
     <genClasses ecoreClass="eclipselink_orm.ecore#//Attributes">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//Attributes/basicCollections"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//Attributes/basicMaps"/>

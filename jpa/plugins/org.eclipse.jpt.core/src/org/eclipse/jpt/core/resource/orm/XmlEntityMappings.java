@@ -1161,7 +1161,7 @@ public class XmlEntityMappings extends AbstractJpaEObject implements XmlQueryCon
 		};
 	}
 
-	protected static Translator buildNamespaceTranslator() {
+	private static Translator buildNamespaceTranslator() {
 		return new ConstantAttributeTranslator(XML.NAMESPACE, JPA.NAMESPACE_URL);
 	}
 

@@ -11,8 +11,10 @@ package org.eclipse.jpt.eclipselink.core.resource.orm;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
+import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
+import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
  * <!-- begin-user-doc -->
@@ -266,5 +268,26 @@ public class XmlTypeConverter extends XmlNamedConverter
 		result.append(')');
 		return result.toString();
 	}
+	
+	// ********** translators **********
 
+	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
+		return new SimpleTranslator(elementName, structuralFeature, buildTranslatorChildren());
+	}
+
+	private static Translator[] buildTranslatorChildren() {
+		return new Translator[] {
+			buildNameTranslator(),
+			buildDataTypeTranslator(),
+			buildObjectTypeTranslator(),
+		};
+	}
+	
+	protected static Translator buildDataTypeTranslator() {
+		return new Translator(JPA.TYPE_CONVERTER__DATA_TYPE, EclipseLinkOrmPackage.eINSTANCE.getXmlTypeConverter_DataType(), Translator.DOM_ATTRIBUTE);
+	}
+	
+	protected static Translator buildObjectTypeTranslator() {
+		return new Translator(JPA.TYPE_CONVERTER__OBJECT_TYPE, EclipseLinkOrmPackage.eINSTANCE.getXmlTypeConverter_ObjectType(), Translator.DOM_ATTRIBUTE);
+	}
 } // XmlTypeConverter

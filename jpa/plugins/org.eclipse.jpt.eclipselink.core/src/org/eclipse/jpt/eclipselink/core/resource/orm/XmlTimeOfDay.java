@@ -11,9 +11,12 @@ package org.eclipse.jpt.eclipselink.core.resource.orm;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
 import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.xml.JpaEObject;
+import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
  * <!-- begin-user-doc -->
@@ -407,5 +410,36 @@ public class XmlTimeOfDay extends AbstractJpaEObject implements JpaEObject
 		result.append(')');
 		return result.toString();
 	}
+	
+	// ********** translators **********
 
+	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
+		return new SimpleTranslator(elementName, structuralFeature, buildTranslatorChildren());
+	}
+
+	private static Translator[] buildTranslatorChildren() {
+		return new Translator[] {
+			buildHourTranslator(),
+			buildMinuteTranslator(),
+			buildSecondTranslator(),
+			buildMillisecondTranslator(),
+		};
+	}
+	
+	protected static Translator buildHourTranslator() {
+		return new Translator(JPA.EXPIRY_TIME_OF_DAY__HOUR, EclipseLinkOrmPackage.eINSTANCE.getXmlTimeOfDay_Hour(), Translator.DOM_ATTRIBUTE);
+	}
+	
+	protected static Translator buildMinuteTranslator() {
+		return new Translator(JPA.EXPIRY_TIME_OF_DAY__MINUTE, EclipseLinkOrmPackage.eINSTANCE.getXmlTimeOfDay_Minute(), Translator.DOM_ATTRIBUTE);
+	}
+	
+	protected static Translator buildSecondTranslator() {
+		return new Translator(JPA.EXPIRY_TIME_OF_DAY__SECOND, EclipseLinkOrmPackage.eINSTANCE.getXmlTimeOfDay_Second(), Translator.DOM_ATTRIBUTE);
+	}
+	
+	protected static Translator buildMillisecondTranslator() {
+		return new Translator(JPA.EXPIRY_TIME_OF_DAY__MILLISECOND, EclipseLinkOrmPackage.eINSTANCE.getXmlTimeOfDay_Millisecond(), Translator.DOM_ATTRIBUTE);
+	}
+	
 } // XmlTimeOfDay

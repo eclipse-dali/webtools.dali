@@ -16,7 +16,6 @@ import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
-import org.eclipse.jpt.core.resource.xml.XML;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 
 @SuppressWarnings("nls")
@@ -51,7 +50,7 @@ public class OrmXmlTests extends ContextModelTestCase
 		assertEquals(1, getJpaProject().jpaFilesSize()); //should only be the persistence.xml file
 		
 		XmlEntityMappings xmlEntityMappings = OrmFactory.eINSTANCE.createXmlEntityMappings();
-		xmlEntityMappings.setVersion(XML.VERSION_1_0_TEXT);
+		xmlEntityMappings.setVersion("1.0");
 		ormResource.getContents().add(xmlEntityMappings);
 		ormResource.save(null);
 		

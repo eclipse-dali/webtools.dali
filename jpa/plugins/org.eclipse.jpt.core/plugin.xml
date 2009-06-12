@@ -445,10 +445,14 @@
 				publicId="http://java.sun.com/xml/ns/persistence"
 				uri="platform:/plugin/org.eclipse.jst.standard.schemas/dtdsAndSchemas/persistence_1_0.xsd"/>
 
-		<!-- move this schema to org.eclipse.jst.standard.schemas -->
+		<!-- move these schemas to org.eclipse.jst.standard.schemas -->
 			<public
 				publicId="http://java.sun.com/xml/ns/persistence/orm"
 				uri="schema/orm_2_0.xsd"/>
+				
+				<public
+				publicId="http://java.sun.com/xml/ns/persistence"
+				uri="schema/persistence_2_0.xsd"/>
 		
 		</catalogContribution>
 		

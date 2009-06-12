@@ -19,10 +19,11 @@ package org.eclipse.jpt2_0.core.resource.orm;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 @SuppressWarnings("nls")
-interface JPA {
+public interface JPA {
 
 	String NAMESPACE_URL = "http://java.sun.com/xml/ns/persistence/orm";
 	String SCHEMA_LOCATION_2_0 = "http://java.sun.com/xml/ns/persistence/orm_2_0.xsd";
+	String VERSION_2_0		= "2.0";
 	
 	String ACCESS = "access";
 	String ALLOCATION_SIZE = "allocation-size";

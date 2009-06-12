@@ -12,8 +12,12 @@ package org.eclipse.jpt.eclipselink.core.resource.orm;
 import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EStructuralFeature;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.jpt.core.internal.resource.xml.translators.EmptyTagBooleanTranslator;
+import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
+import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
  * <!-- begin-user-doc -->
@@ -200,6 +204,28 @@ public class XmlPersistenceUnitMetadata extends org.eclipse.jpt.core.resource.or
 		result.append(excludeDefaultMappings);
 		result.append(')');
 		return result.toString();
+	}
+	
+	// ********** translators **********
+
+	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
+		return new SimpleTranslator(
+			elementName, 
+			structuralFeature, 
+			EclipseLinkOrmPackage.eINSTANCE.getXmlPersistenceUnitMetadata(), 
+			buildTranslatorChildren());
+	}
+
+	private static Translator[] buildTranslatorChildren() {
+		return new Translator[] {
+			buildXmlMappingMetadataCompleteTranslator(),
+			buildExcludeDefaultMappingsTranslator(),
+			buildXmlPersistenceUnitDefaultsTranslator(),
+		};
+	}
+	
+	protected static Translator buildExcludeDefaultMappingsTranslator() {
+		return new EmptyTagBooleanTranslator(JPA.EXCLUDE_DEFAULT_MAPPINGS, EclipseLinkOrmPackage.eINSTANCE.getXmlPersistenceUnitMetadata_ExcludeDefaultMappings());
 	}
 
 } // XmlPersistenceUnitMetadata

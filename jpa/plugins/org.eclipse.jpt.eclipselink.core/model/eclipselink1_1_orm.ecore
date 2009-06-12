@@ -4,6 +4,10 @@
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="orm"
     nsURI="jpt.eclipselink1_1.orm.xmi" nsPrefix="org.eclipse.jpt.eclipselink1_1.core.resource.orm">
   <eClassifiers xsi:type="ecore:EClass" name="XmlEntityMappings" eSuperTypes="eclipselink_orm.ecore#//XmlEntityMappings"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlEntity" eSuperTypes="eclipselink_orm.ecore#//XmlEntity"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlEmbeddable" eSuperTypes="eclipselink_orm.ecore#//XmlEmbeddable"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlMappedSuperclass" eSuperTypes="eclipselink_orm.ecore#//XmlMappedSuperclass"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Attributes" eSuperTypes="eclipselink_orm.ecore#//Attributes"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlAttributeMapping" abstract="true"
       interface="true" eSuperTypes="eclipselink_orm.ecore#//XmlAttributeMapping ../../org.eclipse.jpt.core/model/orm.ecore#//XmlAccessHolder"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlId" eSuperTypes="eclipselink_orm.ecore#//XmlId #//XmlAttributeMapping"/>
@@ -22,5 +26,4 @@
   <eClassifiers xsi:type="ecore:EClass" name="XmlBasicMap" eSuperTypes="eclipselink_orm.ecore#//XmlBasicMap #//XmlAttributeMapping"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlTransformation" eSuperTypes="eclipselink_orm.ecore#//XmlTransformation #//XmlAttributeMapping"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlVariableOneToOne" eSuperTypes="eclipselink_orm.ecore#//XmlVariableOneToOne #//XmlAttributeMapping"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlTransient" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlTransient #//XmlAttributeMapping"/>
 </ecore:EPackage>

@@ -12,10 +12,13 @@ package org.eclipse.jpt.eclipselink.core.resource.orm;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
 import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.xml.JpaEObject;
+import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
  * <!-- begin-user-doc -->
@@ -776,6 +779,62 @@ public class XmlCache extends AbstractJpaEObject implements JpaEObject
 		result.append(coordinationType);
 		result.append(')');
 		return result.toString();
+	}
+	
+	// ********** translators **********
+
+	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
+		return new SimpleTranslator(elementName, structuralFeature, buildTranslatorChildren());
+	}
+
+	private static Translator[] buildTranslatorChildren() {
+		return new Translator[] {
+			buildExpiryTranslator(),
+			buildExpiryTimeOfDayTranslator(),
+			buildSizeTranslator(),
+			buildSharedTranslator(),
+			buildTypeTranslator(),
+			buildAlwaysRefreshTranslator(),
+			buildRefreshOnlyIfNewerTranslator(),
+			buildDisableHitsTranslator(),
+			buildCoordinationTypeTranslator(),
+		};
+	}
+
+	protected static Translator buildExpiryTranslator() {
+		return new Translator(JPA.CACHE__EXPIRY, EclipseLinkOrmPackage.eINSTANCE.getXmlCache_Expiry());
+	}
+	
+	protected static Translator buildExpiryTimeOfDayTranslator() {
+		return XmlTimeOfDay.buildTranslator(JPA.EXPIRY_TIME_OF_DAY, EclipseLinkOrmPackage.eINSTANCE.getXmlCache_ExpiryTimeOfDay());
+	}
+	
+	protected static Translator buildSizeTranslator() {
+		return new Translator(JPA.CACHE__SIZE, EclipseLinkOrmPackage.eINSTANCE.getXmlCache_Size(), Translator.DOM_ATTRIBUTE);
+	}
+	
+	protected static Translator buildSharedTranslator() {
+		return new Translator(JPA.CACHE__SHARED, EclipseLinkOrmPackage.eINSTANCE.getXmlCache_Shared(), Translator.DOM_ATTRIBUTE);
+	}
+	
+	protected static Translator buildTypeTranslator() {
+		return new Translator(JPA.CACHE__TYPE, EclipseLinkOrmPackage.eINSTANCE.getXmlCache_Type(), Translator.DOM_ATTRIBUTE);
+	}
+	
+	protected static Translator buildAlwaysRefreshTranslator() {
+		return new Translator(JPA.CACHE__ALWAYS_REFRESH, EclipseLinkOrmPackage.eINSTANCE.getXmlCache_AlwaysRefresh(), Translator.DOM_ATTRIBUTE);
+	}
+	
+	protected static Translator buildRefreshOnlyIfNewerTranslator() {
+		return new Translator(JPA.CACHE__REFRESH_ONLY_IF_NEWER, EclipseLinkOrmPackage.eINSTANCE.getXmlCache_RefreshOnlyIfNewer(), Translator.DOM_ATTRIBUTE);
+	}
+	
+	protected static Translator buildDisableHitsTranslator() {
+		return new Translator(JPA.CACHE__DISABLE_HITS, EclipseLinkOrmPackage.eINSTANCE.getXmlCache_DisableHits(), Translator.DOM_ATTRIBUTE);
+	}
+	
+	protected static Translator buildCoordinationTypeTranslator() {
+		return new Translator(JPA.CACHE__COORDINATION_TYPE, EclipseLinkOrmPackage.eINSTANCE.getXmlCache_CoordinationType(), Translator.DOM_ATTRIBUTE);
 	}
 
 } // XmlCache

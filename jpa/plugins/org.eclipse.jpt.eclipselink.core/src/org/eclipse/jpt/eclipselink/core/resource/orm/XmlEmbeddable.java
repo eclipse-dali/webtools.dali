@@ -14,10 +14,15 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
+import org.eclipse.jpt.core.resource.orm.Attributes;
+import org.eclipse.jpt.core.resource.orm.OrmPackage;
+import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
  * <!-- begin-user-doc -->
@@ -41,7 +46,6 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbeddable#getCopyPolicy <em>Copy Policy</em>}</li>
  *   <li>{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbeddable#getInstantiationCopyPolicy <em>Instantiation Copy Policy</em>}</li>
  *   <li>{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbeddable#getCloneCopyPolicy <em>Clone Copy Policy</em>}</li>
- *   <li>{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbeddable#getProperties <em>Properties</em>}</li>
  *   <li>{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbeddable#getExcludeDefaultMappings <em>Exclude Default Mappings</em>}</li>
  * </ul>
  * </p>
@@ -50,7 +54,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * @model kind="class"
  * @generated
  */
-public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddable implements XmlCustomizerHolder, XmlChangeTrackingHolder, XmlConvertersHolder
+public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddable implements XmlCustomizerHolder, XmlChangeTrackingHolder, XmlConvertersHolder, XmlPropertyContainer
 {
 	/**
 	 * The cached value of the '{@link #getCustomizer() <em>Customizer</em>}' containment reference.
@@ -113,6 +117,16 @@ public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddab
 	protected EList<XmlStructConverter> structConverters;
 
 	/**
+	 * The cached value of the '{@link #getProperties() <em>Properties</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getProperties()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlProperty> properties;
+
+	/**
 	 * The cached value of the '{@link #getCopyPolicy() <em>Copy Policy</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -130,7 +144,7 @@ public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddab
 	 * @generated
 	 * @ordered
 	 */
-	protected XmlCopyPolicy instantiationCopyPolicy;
+	protected XmlInstantiationCopyPolicy instantiationCopyPolicy;
 
 	/**
 	 * The cached value of the '{@link #getCloneCopyPolicy() <em>Clone Copy Policy</em>}' containment reference.
@@ -140,17 +154,7 @@ public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddab
 	 * @generated
 	 * @ordered
 	 */
-	protected XmlCopyPolicy cloneCopyPolicy;
-
-	/**
-	 * The cached value of the '{@link #getProperties() <em>Properties</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getProperties()
-	 * @generated
-	 * @ordered
-	 */
-	protected EList<XmlProperty> properties;
+	protected XmlCloneCopyPolicy cloneCopyPolicy;
 
 	/**
 	 * The default value of the '{@link #getExcludeDefaultMappings() <em>Exclude Default Mappings</em>}' attribute.
@@ -474,12 +478,12 @@ public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddab
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Instantiation Copy Policy</em>' containment reference.
-	 * @see #setInstantiationCopyPolicy(XmlCopyPolicy)
+	 * @see #setInstantiationCopyPolicy(XmlInstantiationCopyPolicy)
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEmbeddable_InstantiationCopyPolicy()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public XmlCopyPolicy getInstantiationCopyPolicy()
+	public XmlInstantiationCopyPolicy getInstantiationCopyPolicy()
 	{
 		return instantiationCopyPolicy;
 	}
@@ -489,9 +493,9 @@ public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddab
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetInstantiationCopyPolicy(XmlCopyPolicy newInstantiationCopyPolicy, NotificationChain msgs)
+	public NotificationChain basicSetInstantiationCopyPolicy(XmlInstantiationCopyPolicy newInstantiationCopyPolicy, NotificationChain msgs)
 	{
-		XmlCopyPolicy oldInstantiationCopyPolicy = instantiationCopyPolicy;
+		XmlInstantiationCopyPolicy oldInstantiationCopyPolicy = instantiationCopyPolicy;
 		instantiationCopyPolicy = newInstantiationCopyPolicy;
 		if (eNotificationRequired())
 		{
@@ -509,7 +513,7 @@ public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddab
 	 * @see #getInstantiationCopyPolicy()
 	 * @generated
 	 */
-	public void setInstantiationCopyPolicy(XmlCopyPolicy newInstantiationCopyPolicy)
+	public void setInstantiationCopyPolicy(XmlInstantiationCopyPolicy newInstantiationCopyPolicy)
 	{
 		if (newInstantiationCopyPolicy != instantiationCopyPolicy)
 		{
@@ -534,12 +538,12 @@ public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddab
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Clone Copy Policy</em>' containment reference.
-	 * @see #setCloneCopyPolicy(XmlCopyPolicy)
+	 * @see #setCloneCopyPolicy(XmlCloneCopyPolicy)
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEmbeddable_CloneCopyPolicy()
 	 * @model containment="true"
 	 * @generated
 	 */
-	public XmlCopyPolicy getCloneCopyPolicy()
+	public XmlCloneCopyPolicy getCloneCopyPolicy()
 	{
 		return cloneCopyPolicy;
 	}
@@ -549,9 +553,9 @@ public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddab
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetCloneCopyPolicy(XmlCopyPolicy newCloneCopyPolicy, NotificationChain msgs)
+	public NotificationChain basicSetCloneCopyPolicy(XmlCloneCopyPolicy newCloneCopyPolicy, NotificationChain msgs)
 	{
-		XmlCopyPolicy oldCloneCopyPolicy = cloneCopyPolicy;
+		XmlCloneCopyPolicy oldCloneCopyPolicy = cloneCopyPolicy;
 		cloneCopyPolicy = newCloneCopyPolicy;
 		if (eNotificationRequired())
 		{
@@ -569,7 +573,7 @@ public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddab
 	 * @see #getCloneCopyPolicy()
 	 * @generated
 	 */
-	public void setCloneCopyPolicy(XmlCopyPolicy newCloneCopyPolicy)
+	public void setCloneCopyPolicy(XmlCloneCopyPolicy newCloneCopyPolicy)
 	{
 		if (newCloneCopyPolicy != cloneCopyPolicy)
 		{
@@ -595,7 +599,7 @@ public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddab
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Properties</em>' containment reference list.
-	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEmbeddable_Properties()
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlPropertyContainer_Properties()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -665,14 +669,14 @@ public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddab
 				return ((InternalEList<?>)getObjectTypeConverters()).basicRemove(otherEnd, msgs);
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__STRUCT_CONVERTERS:
 				return ((InternalEList<?>)getStructConverters()).basicRemove(otherEnd, msgs);
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__PROPERTIES:
+				return ((InternalEList<?>)getProperties()).basicRemove(otherEnd, msgs);
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__COPY_POLICY:
 				return basicSetCopyPolicy(null, msgs);
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__INSTANTIATION_COPY_POLICY:
 				return basicSetInstantiationCopyPolicy(null, msgs);
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__CLONE_COPY_POLICY:
 				return basicSetCloneCopyPolicy(null, msgs);
-			case EclipseLinkOrmPackage.XML_EMBEDDABLE__PROPERTIES:
-				return ((InternalEList<?>)getProperties()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -699,14 +703,14 @@ public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddab
 				return getObjectTypeConverters();
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__STRUCT_CONVERTERS:
 				return getStructConverters();
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__PROPERTIES:
+				return getProperties();
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__COPY_POLICY:
 				return getCopyPolicy();
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__INSTANTIATION_COPY_POLICY:
 				return getInstantiationCopyPolicy();
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__CLONE_COPY_POLICY:
 				return getCloneCopyPolicy();
-			case EclipseLinkOrmPackage.XML_EMBEDDABLE__PROPERTIES:
-				return getProperties();
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__EXCLUDE_DEFAULT_MAPPINGS:
 				return getExcludeDefaultMappings();
 		}
@@ -746,18 +750,18 @@ public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddab
 				getStructConverters().clear();
 				getStructConverters().addAll((Collection<? extends XmlStructConverter>)newValue);
 				return;
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__PROPERTIES:
+				getProperties().clear();
+				getProperties().addAll((Collection<? extends XmlProperty>)newValue);
+				return;
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__COPY_POLICY:
 				setCopyPolicy((XmlCopyPolicy)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__INSTANTIATION_COPY_POLICY:
-				setInstantiationCopyPolicy((XmlCopyPolicy)newValue);
+				setInstantiationCopyPolicy((XmlInstantiationCopyPolicy)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__CLONE_COPY_POLICY:
-				setCloneCopyPolicy((XmlCopyPolicy)newValue);
-				return;
-			case EclipseLinkOrmPackage.XML_EMBEDDABLE__PROPERTIES:
-				getProperties().clear();
-				getProperties().addAll((Collection<? extends XmlProperty>)newValue);
+				setCloneCopyPolicy((XmlCloneCopyPolicy)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__EXCLUDE_DEFAULT_MAPPINGS:
 				setExcludeDefaultMappings((Boolean)newValue);
@@ -794,17 +798,17 @@ public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddab
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__STRUCT_CONVERTERS:
 				getStructConverters().clear();
 				return;
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__PROPERTIES:
+				getProperties().clear();
+				return;
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__COPY_POLICY:
 				setCopyPolicy((XmlCopyPolicy)null);
 				return;
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__INSTANTIATION_COPY_POLICY:
-				setInstantiationCopyPolicy((XmlCopyPolicy)null);
+				setInstantiationCopyPolicy((XmlInstantiationCopyPolicy)null);
 				return;
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__CLONE_COPY_POLICY:
-				setCloneCopyPolicy((XmlCopyPolicy)null);
-				return;
-			case EclipseLinkOrmPackage.XML_EMBEDDABLE__PROPERTIES:
-				getProperties().clear();
+				setCloneCopyPolicy((XmlCloneCopyPolicy)null);
 				return;
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__EXCLUDE_DEFAULT_MAPPINGS:
 				setExcludeDefaultMappings(EXCLUDE_DEFAULT_MAPPINGS_EDEFAULT);
@@ -835,14 +839,14 @@ public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddab
 				return objectTypeConverters != null && !objectTypeConverters.isEmpty();
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__STRUCT_CONVERTERS:
 				return structConverters != null && !structConverters.isEmpty();
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__PROPERTIES:
+				return properties != null && !properties.isEmpty();
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__COPY_POLICY:
 				return copyPolicy != null;
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__INSTANTIATION_COPY_POLICY:
 				return instantiationCopyPolicy != null;
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__CLONE_COPY_POLICY:
 				return cloneCopyPolicy != null;
-			case EclipseLinkOrmPackage.XML_EMBEDDABLE__PROPERTIES:
-				return properties != null && !properties.isEmpty();
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__EXCLUDE_DEFAULT_MAPPINGS:
 				return EXCLUDE_DEFAULT_MAPPINGS_EDEFAULT == null ? excludeDefaultMappings != null : !EXCLUDE_DEFAULT_MAPPINGS_EDEFAULT.equals(excludeDefaultMappings);
 		}
@@ -884,6 +888,14 @@ public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddab
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlPropertyContainer.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_EMBEDDABLE__PROPERTIES: return EclipseLinkOrmPackage.XML_PROPERTY_CONTAINER__PROPERTIES;
+				default: return -1;
+			}
+		}
 		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
 	}
 
@@ -922,6 +934,14 @@ public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddab
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlPropertyContainer.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_PROPERTY_CONTAINER__PROPERTIES: return EclipseLinkOrmPackage.XML_EMBEDDABLE__PROPERTIES;
+				default: return -1;
+			}
+		}
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
@@ -940,6 +960,80 @@ public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddab
 		result.append(excludeDefaultMappings);
 		result.append(')');
 		return result.toString();
+	}
+		
+	// ********** translators **********
+
+	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
+		return new SimpleTranslator(
+			elementName, 
+			structuralFeature, 
+			EclipseLinkOrmPackage.eINSTANCE.getXmlEmbeddable(), 
+			buildTranslatorChildren());
+	}
+
+	private static Translator[] buildTranslatorChildren() {
+		return new Translator[] {
+			buildClassTranslator(),
+			buildAccessTranslator(),
+			buildMetadataCompleteTranslator(),
+			buildExcludeDefaultMappingsTranslator(),
+			buildDescriptionTranslator(),
+			buildCustomizerTranslator(),
+			buildChangeTrackingTranslator(),
+			buildConverterTranslator(),
+			buildTypeConverterTranslator(),
+			buildObjectTypeConverterTranslator(),
+			buildStructConverterTranslator(),
+			buildPropertyTranslator(),
+			Attributes.buildTranslator(JPA.ATTRIBUTES, OrmPackage.eINSTANCE.getXmlTypeMapping_Attributes()),
+			buildCopyPolicyTranslator(),
+			buildInstantiationCoypPolicyTranslator(),
+			buildCloneCopyPolicyTranslator(),
+		};
+	}
+
+	protected static Translator buildExcludeDefaultMappingsTranslator() {
+		return new Translator(JPA.EXCLUDE_DEFAULT_MAPPINGS, EclipseLinkOrmPackage.eINSTANCE.getXmlEmbeddable_ExcludeDefaultMappings(), Translator.DOM_ATTRIBUTE);
+	}
+
+	protected static Translator buildCustomizerTranslator() {
+		return XmlCustomizer.buildTranslator(JPA.CUSTOMIZER, EclipseLinkOrmPackage.eINSTANCE.getXmlCustomizerHolder_Customizer());
+	}
+
+	protected static Translator buildChangeTrackingTranslator() {
+		return XmlChangeTracking.buildTranslator(JPA.CHANGE_TRACKING, EclipseLinkOrmPackage.eINSTANCE.getXmlChangeTrackingHolder_ChangeTracking());
+	}
+	protected static Translator buildConverterTranslator() {
+		return XmlConverter.buildTranslator(JPA.CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConvertersHolder_Converters());
+	}
+
+	protected static Translator buildTypeConverterTranslator() {
+		return XmlTypeConverter.buildTranslator(JPA.TYPE_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConvertersHolder_TypeConverters());
+	}
+
+	protected static Translator buildObjectTypeConverterTranslator() {
+		return XmlObjectTypeConverter.buildTranslator(JPA.OBJECT_TYPE_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConvertersHolder_ObjectTypeConverters());
+	}
+
+	protected static Translator buildStructConverterTranslator() {
+		return XmlStructConverter.buildTranslator(JPA.STRUCT_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConvertersHolder_StructConverters());
+	}
+
+	protected static Translator buildCopyPolicyTranslator() {
+		return XmlCopyPolicy.buildTranslator(JPA.COPY_POLICY, EclipseLinkOrmPackage.eINSTANCE.getXmlEmbeddable_CopyPolicy());
+	}
+
+	protected static Translator buildInstantiationCoypPolicyTranslator() {
+		return XmlInstantiationCopyPolicy.buildTranslator(JPA.INSTANTIATION_COPY_POLICY, EclipseLinkOrmPackage.eINSTANCE.getXmlEmbeddable_InstantiationCopyPolicy());
+	}
+
+	protected static Translator buildCloneCopyPolicyTranslator() {
+		return XmlCloneCopyPolicy.buildTranslator(JPA.CLONE_COPY_POLICY, EclipseLinkOrmPackage.eINSTANCE.getXmlEmbeddable_CloneCopyPolicy());
+	}
+
+	protected static Translator buildPropertyTranslator() {
+		return XmlProperty.buildTranslator(JPA.PROPERTY, EclipseLinkOrmPackage.eINSTANCE.getXmlPropertyContainer_Properties());
 	}
 
 } // XmlEmbeddable

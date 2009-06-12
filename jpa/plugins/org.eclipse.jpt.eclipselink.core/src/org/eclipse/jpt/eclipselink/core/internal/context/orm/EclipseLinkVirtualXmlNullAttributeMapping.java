@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.context.orm.VirtualXmlNullAttributeMapping;
@@ -17,6 +18,7 @@ import org.eclipse.jpt.core.resource.orm.XmlNullAttributeMapping;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlAccessMethods;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlAttributeMapping;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlProperty;
 
 /**
  * VirtualVersion is an implementation of Version used when there is 
@@ -75,5 +77,10 @@ public class EclipseLinkVirtualXmlNullAttributeMapping extends XmlNullAttributeM
 
 	public void setAccess(AccessType value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
+	}
+	
+	public EList<XmlProperty> getProperties() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

@@ -14,12 +14,14 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
 import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.jpt.eclipselink.core.internal.resource.orm.translators.EclipseLinkOrmXmlMapper;
+import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
  * <!-- begin-user-doc -->
@@ -37,12 +39,6 @@ import org.eclipse.jpt.eclipselink.core.internal.resource.orm.translators.Eclips
  * 
  * <!-- end-user-doc -->
  *
- * <p>
- * The following features are supported:
- * <ul>
- *   <li>{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlId#getProperties <em>Properties</em>}</li>
- * </ul>
- * </p>
  *
  * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlId()
  * @model kind="class"
@@ -59,6 +55,16 @@ public class XmlId extends org.eclipse.jpt.core.resource.orm.XmlId implements Xm
 	 * @ordered
 	 */
 	protected XmlAccessMethods accessMethods;
+
+	/**
+	 * The cached value of the '{@link #getProperties() <em>Properties</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getProperties()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlProperty> properties;
 
 	/**
 	 * The default value of the '{@link #getMutable() <em>Mutable</em>}' attribute.
@@ -139,16 +145,6 @@ public class XmlId extends org.eclipse.jpt.core.resource.orm.XmlId implements Xm
 	 * @ordered
 	 */
 	protected String convert = CONVERT_EDEFAULT;
-
-	/**
-	 * The cached value of the '{@link #getProperties() <em>Properties</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getProperties()
-	 * @generated
-	 * @ordered
-	 */
-	protected EList<XmlProperty> properties;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -311,7 +307,7 @@ public class XmlId extends org.eclipse.jpt.core.resource.orm.XmlId implements Xm
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Properties</em>' containment reference list.
-	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlId_Properties()
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlPropertyContainer_Properties()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -576,6 +572,8 @@ public class XmlId extends org.eclipse.jpt.core.resource.orm.XmlId implements Xm
 		{
 			case EclipseLinkOrmPackage.XML_ID__ACCESS_METHODS:
 				return basicSetAccessMethods(null, msgs);
+			case EclipseLinkOrmPackage.XML_ID__PROPERTIES:
+				return ((InternalEList<?>)getProperties()).basicRemove(otherEnd, msgs);
 			case EclipseLinkOrmPackage.XML_ID__CONVERTER:
 				return basicSetConverter(null, msgs);
 			case EclipseLinkOrmPackage.XML_ID__TYPE_CONVERTER:
@@ -584,8 +582,6 @@ public class XmlId extends org.eclipse.jpt.core.resource.orm.XmlId implements Xm
 				return basicSetObjectTypeConverter(null, msgs);
 			case EclipseLinkOrmPackage.XML_ID__STRUCT_CONVERTER:
 				return basicSetStructConverter(null, msgs);
-			case EclipseLinkOrmPackage.XML_ID__PROPERTIES:
-				return ((InternalEList<?>)getProperties()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -602,6 +598,8 @@ public class XmlId extends org.eclipse.jpt.core.resource.orm.XmlId implements Xm
 		{
 			case EclipseLinkOrmPackage.XML_ID__ACCESS_METHODS:
 				return getAccessMethods();
+			case EclipseLinkOrmPackage.XML_ID__PROPERTIES:
+				return getProperties();
 			case EclipseLinkOrmPackage.XML_ID__MUTABLE:
 				return getMutable();
 			case EclipseLinkOrmPackage.XML_ID__CONVERTER:
@@ -614,8 +612,6 @@ public class XmlId extends org.eclipse.jpt.core.resource.orm.XmlId implements Xm
 				return getStructConverter();
 			case EclipseLinkOrmPackage.XML_ID__CONVERT:
 				return getConvert();
-			case EclipseLinkOrmPackage.XML_ID__PROPERTIES:
-				return getProperties();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -633,6 +629,10 @@ public class XmlId extends org.eclipse.jpt.core.resource.orm.XmlId implements Xm
 		{
 			case EclipseLinkOrmPackage.XML_ID__ACCESS_METHODS:
 				setAccessMethods((XmlAccessMethods)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_ID__PROPERTIES:
+				getProperties().clear();
+				getProperties().addAll((Collection<? extends XmlProperty>)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_ID__MUTABLE:
 				setMutable((Boolean)newValue);
@@ -652,10 +652,6 @@ public class XmlId extends org.eclipse.jpt.core.resource.orm.XmlId implements Xm
 			case EclipseLinkOrmPackage.XML_ID__CONVERT:
 				setConvert((String)newValue);
 				return;
-			case EclipseLinkOrmPackage.XML_ID__PROPERTIES:
-				getProperties().clear();
-				getProperties().addAll((Collection<? extends XmlProperty>)newValue);
-				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -672,6 +668,9 @@ public class XmlId extends org.eclipse.jpt.core.resource.orm.XmlId implements Xm
 		{
 			case EclipseLinkOrmPackage.XML_ID__ACCESS_METHODS:
 				setAccessMethods((XmlAccessMethods)null);
+				return;
+			case EclipseLinkOrmPackage.XML_ID__PROPERTIES:
+				getProperties().clear();
 				return;
 			case EclipseLinkOrmPackage.XML_ID__MUTABLE:
 				setMutable(MUTABLE_EDEFAULT);
@@ -691,9 +690,6 @@ public class XmlId extends org.eclipse.jpt.core.resource.orm.XmlId implements Xm
 			case EclipseLinkOrmPackage.XML_ID__CONVERT:
 				setConvert(CONVERT_EDEFAULT);
 				return;
-			case EclipseLinkOrmPackage.XML_ID__PROPERTIES:
-				getProperties().clear();
-				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -710,6 +706,8 @@ public class XmlId extends org.eclipse.jpt.core.resource.orm.XmlId implements Xm
 		{
 			case EclipseLinkOrmPackage.XML_ID__ACCESS_METHODS:
 				return accessMethods != null;
+			case EclipseLinkOrmPackage.XML_ID__PROPERTIES:
+				return properties != null && !properties.isEmpty();
 			case EclipseLinkOrmPackage.XML_ID__MUTABLE:
 				return MUTABLE_EDEFAULT == null ? mutable != null : !MUTABLE_EDEFAULT.equals(mutable);
 			case EclipseLinkOrmPackage.XML_ID__CONVERTER:
@@ -722,8 +720,6 @@ public class XmlId extends org.eclipse.jpt.core.resource.orm.XmlId implements Xm
 				return structConverter != null;
 			case EclipseLinkOrmPackage.XML_ID__CONVERT:
 				return CONVERT_EDEFAULT == null ? convert != null : !CONVERT_EDEFAULT.equals(convert);
-			case EclipseLinkOrmPackage.XML_ID__PROPERTIES:
-				return properties != null && !properties.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
@@ -741,6 +737,14 @@ public class XmlId extends org.eclipse.jpt.core.resource.orm.XmlId implements Xm
 			switch (derivedFeatureID)
 			{
 				case EclipseLinkOrmPackage.XML_ID__ACCESS_METHODS: return EclipseLinkOrmPackage.XML_ACCESS_METHODS_HOLDER__ACCESS_METHODS;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlPropertyContainer.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_ID__PROPERTIES: return EclipseLinkOrmPackage.XML_PROPERTY_CONTAINER__PROPERTIES;
 				default: return -1;
 			}
 		}
@@ -794,6 +798,14 @@ public class XmlId extends org.eclipse.jpt.core.resource.orm.XmlId implements Xm
 			switch (baseFeatureID)
 			{
 				case EclipseLinkOrmPackage.XML_ACCESS_METHODS_HOLDER__ACCESS_METHODS: return EclipseLinkOrmPackage.XML_ID__ACCESS_METHODS;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlPropertyContainer.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_PROPERTY_CONTAINER__PROPERTIES: return EclipseLinkOrmPackage.XML_ID__PROPERTIES;
 				default: return -1;
 			}
 		}
@@ -854,10 +866,71 @@ public class XmlId extends org.eclipse.jpt.core.resource.orm.XmlId implements Xm
 	}
 	
 	public TextRange getMutableTextRange() {
-		return getAttributeTextRange(EclipseLinkOrmXmlMapper.MUTABLE);
+		return getAttributeTextRange(JPA.MUTABLE);
 	}
 	
 	public TextRange getConvertTextRange() {
-		return getElementTextRange(EclipseLinkOrmXmlMapper.CONVERT);
+		return getElementTextRange(JPA.CONVERT);
+	}
+	
+	// ********** translators **********
+
+	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
+		return new SimpleTranslator(
+			elementName, 
+			structuralFeature, 
+			EclipseLinkOrmPackage.eINSTANCE.getXmlId(), 
+			buildTranslatorChildren());
+	}
+
+	private static Translator[] buildTranslatorChildren() {
+		return new Translator[] {
+			buildNameTranslator(),
+			buildMutableTranslator(),
+			buildColumnTranslator(),
+			buildGeneratedValueTranslator(),
+			buildTemporalTranslator(),
+			buildConvertTranslator(),
+			buildConverterTranslator(),
+			buildTypeConverterTranslator(),
+			buildObjectTypeConverterTranslator(),
+			buildStructConverterTranslator(),
+			buildTableGeneratorTranslator(),
+			buildSequenceGeneratorTranslator(),
+			buildPropertyTranslator(),
+			buildAccessMethodsTranslator()
+		};
+	}
+	
+	protected static Translator buildMutableTranslator() {
+		return new Translator(JPA.MUTABLE, EclipseLinkOrmPackage.eINSTANCE.getXmlMutable_Mutable(), Translator.DOM_ATTRIBUTE);
+	}
+	
+	protected static Translator buildConvertTranslator() {
+		return new Translator(JPA.CONVERT, EclipseLinkOrmPackage.eINSTANCE.getXmlConvertibleMapping_Convert());
+	}
+	
+	protected static Translator buildConverterTranslator() {
+		return XmlConverter.buildTranslator(JPA.CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConverterHolder_Converter());
+	}
+	
+	protected static Translator buildTypeConverterTranslator() {
+		return XmlTypeConverter.buildTranslator(JPA.TYPE_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConverterHolder_TypeConverter());
+	}
+	
+	protected static Translator buildObjectTypeConverterTranslator() {
+		return XmlObjectTypeConverter.buildTranslator(JPA.OBJECT_TYPE_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConverterHolder_ObjectTypeConverter());
+	}
+	
+	protected static Translator buildStructConverterTranslator() {
+		return XmlStructConverter.buildTranslator(JPA.STRUCT_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConverterHolder_StructConverter());
+	}
+		
+	protected static Translator buildPropertyTranslator() {
+		return XmlProperty.buildTranslator(JPA.PROPERTY, EclipseLinkOrmPackage.eINSTANCE.getXmlPropertyContainer_Properties());
+	}
+	
+	protected static Translator buildAccessMethodsTranslator() {
+		return XmlAccessMethods.buildTranslator(JPA.ACCESS_METHODS, EclipseLinkOrmPackage.eINSTANCE.getXmlAccessMethodsHolder_AccessMethods());
 	}
 }

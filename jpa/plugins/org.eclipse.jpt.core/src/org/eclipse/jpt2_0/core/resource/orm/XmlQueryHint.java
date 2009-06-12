@@ -195,10 +195,15 @@ public class XmlQueryHint extends org.eclipse.jpt.core.resource.orm.XmlQueryHint
 		result.append(')');
 		return result.toString();
 	}
+	
 	// ********** translators **********
 
 	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
-		return new SimpleTranslator(elementName, structuralFeature, buildTranslatorChildren());
+		return new SimpleTranslator(
+			elementName, 
+			structuralFeature, 
+			Orm2_0Package.eINSTANCE.getXmlQueryHint(), 
+			buildTranslatorChildren());
 	}
 
 	private static Translator[] buildTranslatorChildren() {
@@ -212,4 +217,5 @@ public class XmlQueryHint extends org.eclipse.jpt.core.resource.orm.XmlQueryHint
 	protected static Translator buildDescriptionTranslator() {
 		return new Translator(JPA.DESCRIPTION, Orm2_0Package.eINSTANCE.getXmlQueryHint_Description());
 	}
+	
 } // XmlQueryHint

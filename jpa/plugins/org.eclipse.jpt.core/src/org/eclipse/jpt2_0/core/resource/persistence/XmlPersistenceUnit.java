@@ -272,7 +272,11 @@ public class XmlPersistenceUnit extends org.eclipse.jpt.core.resource.persistenc
 	// ********** translators **********
 
 	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
-		return new SimpleTranslator(elementName, structuralFeature, buildTranslatorChildren());
+		return new SimpleTranslator(
+			elementName, 
+			structuralFeature, 
+			Persistence2_0Package.eINSTANCE.getXmlPersistenceUnit(), 
+			buildTranslatorChildren());
 	}
 
 	private static Translator[] buildTranslatorChildren() {

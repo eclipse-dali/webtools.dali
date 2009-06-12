@@ -236,7 +236,11 @@ public class XmlBasic extends org.eclipse.jpt.core.resource.orm.XmlBasic impleme
 	// ********** translators **********
 
 	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
-		return new SimpleTranslator(elementName, structuralFeature, buildTranslatorChildren());
+		return new SimpleTranslator(
+			elementName, 
+			structuralFeature, 
+			Orm2_0Package.eINSTANCE.getXmlBasic(), 
+			buildTranslatorChildren());
 	}
 
 	private static Translator[] buildTranslatorChildren() {

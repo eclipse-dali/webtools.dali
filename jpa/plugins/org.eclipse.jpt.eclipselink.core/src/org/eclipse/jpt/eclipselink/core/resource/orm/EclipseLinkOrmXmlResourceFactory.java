@@ -12,7 +12,6 @@ package org.eclipse.jpt.eclipselink.core.resource.orm;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
-import org.eclipse.jpt.eclipselink.core.internal.resource.orm.translators.EclipseLinkEntityMappingsTranslator;
 import org.eclipse.wst.common.internal.emf.resource.Renderer;
 import org.eclipse.wst.common.internal.emf.resource.RendererFactory;
 import org.eclipse.wst.common.internal.emf.resource.TranslatorResource;
@@ -48,6 +47,6 @@ public class EclipseLinkOrmXmlResourceFactory extends TranslatorResourceFactory
 	 */
 	@Override
 	protected TranslatorResource createResource(URI uri, Renderer renderer) {
-		return new JpaXmlResource(uri, renderer, JptEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_CONTENT_TYPE, EclipseLinkEntityMappingsTranslator.INSTANCE);
+		return new JpaXmlResource(uri, renderer, JptEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_CONTENT_TYPE, XmlEntityMappings.getRootTranslator());
 	}
 }

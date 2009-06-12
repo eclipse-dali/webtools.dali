@@ -17,6 +17,7 @@ import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
@@ -25,9 +26,12 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 
+import org.eclipse.jpt.core.internal.resource.xml.translators.BooleanTranslator;
+import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.xml.JpaEObject;
+import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
  * <!-- begin-user-doc -->
@@ -344,6 +348,32 @@ public class XmlOptimisticLocking extends AbstractJpaEObject implements JpaEObje
 		result.append(cascade);
 		result.append(')');
 		return result.toString();
+	}
+	
+	// ********** translators **********
+
+	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
+		return new SimpleTranslator(elementName, structuralFeature, buildTranslatorChildren());
+	}
+
+	private static Translator[] buildTranslatorChildren() {
+		return new Translator[] {
+			buildTypeTranslator(),
+			buildCascadeTranslator(),
+			buildSelectedColumnTranslator(),
+		};
+	}
+	
+	protected static Translator buildTypeTranslator() {
+		return new Translator(JPA.OPTIMISTIC_LOCKING__TYPE, EclipseLinkOrmPackage.eINSTANCE.getXmlOptimisticLocking_Type(), Translator.DOM_ATTRIBUTE);
+	}
+	
+	protected static Translator buildCascadeTranslator() {
+		return new BooleanTranslator(JPA.OPTIMISTIC_LOCKING__CASCADE, EclipseLinkOrmPackage.eINSTANCE.getXmlOptimisticLocking_Cascade(), Translator.DOM_ATTRIBUTE);
+	}
+	
+	protected static Translator buildSelectedColumnTranslator() {
+		return XmlColumn.buildTranslator(JPA.OPTIMISTIC_LOCKING__SELECTED_COLUMN, EclipseLinkOrmPackage.eINSTANCE.getXmlOptimisticLocking_SelectedColumns());
 	}
 
 } // XmlOptimisticLocking

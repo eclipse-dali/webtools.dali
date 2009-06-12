@@ -14,6 +14,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.xml.JpaEObject;
+import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
  * <!-- begin-user-doc -->
@@ -199,6 +200,12 @@ public class XmlNamedConverter extends AbstractJpaEObject implements JpaEObject
 		result.append(name);
 		result.append(')');
 		return result.toString();
+	}
+	
+	// ********** translators **********
+	
+	protected static Translator buildNameTranslator() {
+		return new Translator(JPA.CONVERTER__NAME, EclipseLinkOrmPackage.eINSTANCE.getXmlNamedConverter_Name(), Translator.DOM_ATTRIBUTE);
 	}
 
 } // XmlNamedConverter

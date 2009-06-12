@@ -14,13 +14,16 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EStructuralFeature;
 
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlAttributeMapping;
 import org.eclipse.jpt.eclipselink.core.EclipseLinkMappingKeys;
+import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
  * <!-- begin-user-doc -->
@@ -34,12 +37,6 @@ import org.eclipse.jpt.eclipselink.core.EclipseLinkMappingKeys;
  *
  * <!-- end-user-doc -->
  *
- * <p>
- * The following features are supported:
- * <ul>
- *   <li>{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlTransformation#getProperties <em>Properties</em>}</li>
- * </ul>
- * </p>
  *
  * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlTransformation()
  * @model kind="class"
@@ -158,7 +155,7 @@ public class XmlTransformation extends AbstractXmlAttributeMapping implements Xm
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Properties</em>' containment reference list.
-	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlTransformation_Properties()
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlPropertyContainer_Properties()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -283,6 +280,14 @@ public class XmlTransformation extends AbstractXmlAttributeMapping implements Xm
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlPropertyContainer.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_TRANSFORMATION__PROPERTIES: return EclipseLinkOrmPackage.XML_PROPERTY_CONTAINER__PROPERTIES;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlAttributeMapping.class)
 		{
 			switch (derivedFeatureID)
@@ -309,6 +314,14 @@ public class XmlTransformation extends AbstractXmlAttributeMapping implements Xm
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlPropertyContainer.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_PROPERTY_CONTAINER__PROPERTIES: return EclipseLinkOrmPackage.XML_TRANSFORMATION__PROPERTIES;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlAttributeMapping.class)
 		{
 			switch (baseFeatureID)
@@ -321,5 +334,32 @@ public class XmlTransformation extends AbstractXmlAttributeMapping implements Xm
 
 	public String getMappingKey() {
 		return EclipseLinkMappingKeys.TRANSFORMATION_ATTRIBUTE_MAPPING_KEY;
+	}
+	
+	// ********** translators **********
+
+	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
+		return new SimpleTranslator(elementName, structuralFeature, buildTranslatorChildren());
+	}
+
+	private static Translator[] buildTranslatorChildren() {
+		return new Translator[] {
+			buildNameTranslator(),
+//			buildFetchTranslator(),
+//			buildOptionalTranslator(),
+//			buildMutableTranslator(),
+//			buildReadTransformerTranslator(),
+//			buildWriteTransformerTranslator(),
+			buildPropertyTranslator(),
+			buildAccessMethodsTranslator()
+		};
+	}
+	
+	protected static Translator buildPropertyTranslator() {
+		return XmlProperty.buildTranslator(JPA.PROPERTY, EclipseLinkOrmPackage.eINSTANCE.getXmlPropertyContainer_Properties());
+	}
+	
+	protected static Translator buildAccessMethodsTranslator() {
+		return XmlAccessMethods.buildTranslator(JPA.ACCESS_METHODS, EclipseLinkOrmPackage.eINSTANCE.getXmlAccessMethodsHolder_AccessMethods());
 	}
 } // XmlTransformationImpl

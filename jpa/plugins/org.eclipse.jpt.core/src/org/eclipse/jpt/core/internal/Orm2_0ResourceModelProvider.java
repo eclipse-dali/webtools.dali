@@ -14,8 +14,8 @@ import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JpaResourceModelProvider;
 import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.core.internal.resource.orm.Orm2_0XmlResourceProvider;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
-import org.eclipse.jpt2_0.core.resource.orm.Orm2_0XmlResourceProvider;
 
 /**
  * orm.xml

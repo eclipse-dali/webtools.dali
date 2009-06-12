@@ -13,10 +13,12 @@ import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EStructuralFeature;
 
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
+import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
 import org.eclipse.jpt.core.resource.orm.AccessType;
 import org.eclipse.jpt.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.core.resource.orm.XmlAccessHolder;
@@ -24,6 +26,7 @@ import org.eclipse.jpt.core.resource.orm.XmlGeneratedValue;
 import org.eclipse.jpt.core.resource.orm.XmlGeneratorContainer;
 import org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator;
 import org.eclipse.jpt.core.resource.orm.XmlTableGenerator;
+import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
  * <!-- begin-user-doc -->
@@ -529,6 +532,56 @@ public class XmlBasic extends org.eclipse.jpt.eclipselink.core.resource.orm.XmlB
 		result.append(access);
 		result.append(')');
 		return result.toString();
+	}
+	
+	// ********** translators **********
+
+	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
+		return new SimpleTranslator(
+			elementName, 
+			structuralFeature, 
+			EclipseLink1_1OrmPackage.eINSTANCE.getXmlBasic(), 
+			buildTranslatorChildren());
+	}
+
+	private static Translator[] buildTranslatorChildren() {
+		return new Translator[] {
+			buildNameTranslator(),
+			buildFetchTranslator(),
+			buildOptionalTranslator(),
+			buildAccessTranslator(),
+			buildMutableTranslator(),
+			buildColumnTranslator(), 
+			buildGeneratedValueTranslator(), 
+			buildLobTranslator(),
+			buildTemporalTranslator(),
+			buildEnumeratedTranslator(),
+			buildConvertTranslator(),
+			buildConverterTranslator(),
+			buildTypeConverterTranslator(),
+			buildObjectTypeConverterTranslator(),
+			buildStructConverterTranslator(),
+			buildTableGeneratorTranslator(),
+			buildSequenceGeneratorTranslator(),
+			buildPropertyTranslator(),
+			buildAccessMethodsTranslator()
+		};
+	}
+	
+	protected static Translator buildAccessTranslator() {
+		return new Translator(JPA.ACCESS, OrmPackage.eINSTANCE.getXmlAccessHolder_Access(), Translator.DOM_ATTRIBUTE);
+	}
+	
+	protected static Translator buildGeneratedValueTranslator() {
+		return XmlGeneratedValue.buildTranslator(JPA.GENERATED_VALUE, EclipseLink1_1OrmPackage.eINSTANCE.getXmlBasic_GeneratedValue());
+	}
+	
+	protected static Translator buildTableGeneratorTranslator() {
+		return XmlTableGenerator.buildTranslator(JPA.TABLE_GENERATOR, OrmPackage.eINSTANCE.getXmlGeneratorContainer_TableGenerator());
+	}
+	
+	protected static Translator buildSequenceGeneratorTranslator() {
+		return XmlSequenceGenerator.buildTranslator(JPA.SEQUENCE_GENERATOR, OrmPackage.eINSTANCE.getXmlGeneratorContainer_SequenceGenerator());
 	}
 
 } // XmlBasicImpl

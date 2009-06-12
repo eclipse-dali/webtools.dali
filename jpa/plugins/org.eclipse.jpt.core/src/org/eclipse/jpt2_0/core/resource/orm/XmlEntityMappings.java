@@ -86,6 +86,10 @@ public class XmlEntityMappings extends org.eclipse.jpt.core.resource.orm.XmlEnti
 			XmlEmbeddable.buildTranslator(JPA.EMBEDDABLE, OrmPackage.eINSTANCE.getXmlEntityMappings_Embeddables()),
 		};
 	}
+	
+	private static Translator buildNamespaceTranslator() {
+		return new ConstantAttributeTranslator(XML.NAMESPACE, JPA.NAMESPACE_URL);
+	}
 
 	private static Translator buildSchemaLocationTranslator() {
 		return new ConstantAttributeTranslator(XML.XSI_SCHEMA_LOCATION, JPA.NAMESPACE_URL + ' ' + JPA.SCHEMA_LOCATION_2_0);

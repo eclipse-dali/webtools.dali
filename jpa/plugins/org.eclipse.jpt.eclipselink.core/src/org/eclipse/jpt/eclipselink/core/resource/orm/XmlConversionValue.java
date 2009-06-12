@@ -11,11 +11,13 @@ package org.eclipse.jpt.eclipselink.core.resource.orm;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
 import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.xml.JpaEObject;
 import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.jpt.eclipselink.core.internal.resource.orm.translators.EclipseLinkOrmXmlMapper;
+import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
  * <!-- begin-user-doc -->
@@ -275,10 +277,32 @@ public class XmlConversionValue extends AbstractJpaEObject implements JpaEObject
 	}
 	
 	public TextRange getDataValueTextRange() {
-		return getAttributeTextRange(EclipseLinkOrmXmlMapper.CONVERSION_VALUE__DATA_VALUE);
+		return getAttributeTextRange(JPA.CONVERSION_VALUE__DATA_VALUE);
 	}
 	
 	public TextRange getObjectValueTextRange() {
-		return getAttributeTextRange(EclipseLinkOrmXmlMapper.CONVERSION_VALUE__OBJECT_VALUE);
-	}	
+		return getAttributeTextRange(JPA.CONVERSION_VALUE__OBJECT_VALUE);
+	}
+	
+	// ********** translators **********
+
+	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
+		return new SimpleTranslator(elementName, structuralFeature, buildTranslatorChildren());
+	}
+
+	private static Translator[] buildTranslatorChildren() {
+		return new Translator[] {
+			buildDataValueTranslator(),
+			buildObjectValueTranslator()
+		};
+	}
+	
+	protected static Translator buildDataValueTranslator() {
+		return new Translator(JPA.CONVERSION_VALUE__DATA_VALUE, EclipseLinkOrmPackage.eINSTANCE.getXmlConversionValue_DataValue(), Translator.DOM_ATTRIBUTE);
+	}
+	
+	protected static Translator buildObjectValueTranslator() {
+		return new Translator(JPA.CONVERSION_VALUE__OBJECT_VALUE, EclipseLinkOrmPackage.eINSTANCE.getXmlConversionValue_ObjectValue(), Translator.DOM_ATTRIBUTE);
+	}
+	
 } // XmlConversionValue

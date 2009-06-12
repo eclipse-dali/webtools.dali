@@ -311,8 +311,12 @@ public class XmlPersistenceUnitMetadata extends AbstractJpaEObject implements Jp
 	private static Translator[] buildTranslatorChildren() {
 		return new Translator[] {
 			buildXmlMappingMetadataCompleteTranslator(),
-			XmlPersistenceUnitDefaults.buildTranslator(JPA.PERSISTENCE_UNIT_DEFAULTS, OrmPackage.eINSTANCE.getXmlPersistenceUnitMetadata_PersistenceUnitDefaults())
+			buildXmlPersistenceUnitDefaultsTranslator()
 		};
+	}
+
+	protected static Translator buildXmlPersistenceUnitDefaultsTranslator() {
+		return XmlPersistenceUnitDefaults.buildTranslator(JPA.PERSISTENCE_UNIT_DEFAULTS, OrmPackage.eINSTANCE.getXmlPersistenceUnitMetadata_PersistenceUnitDefaults());
 	}
 
 	protected static Translator buildXmlMappingMetadataCompleteTranslator() {

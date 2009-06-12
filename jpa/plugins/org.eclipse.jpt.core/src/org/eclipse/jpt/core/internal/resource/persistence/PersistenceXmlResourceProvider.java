@@ -15,10 +15,10 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.resource.AbstractXmlResourceProvider;
+import org.eclipse.jpt.core.resource.persistence.JPA;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
-import org.eclipse.jpt.core.resource.xml.XML;
 
 public class PersistenceXmlResourceProvider
 	extends AbstractXmlResourceProvider
@@ -63,7 +63,7 @@ public class PersistenceXmlResourceProvider
 	@Override
 	protected void populateRoot() {
 		XmlPersistence persistence = PersistenceFactory.eINSTANCE.createXmlPersistence();
-		persistence.setVersion(XML.VERSION_1_0_TEXT);
+		persistence.setVersion(JPA.VERSION_1_0);
 		XmlPersistenceUnit persistenceUnit = PersistenceFactory.eINSTANCE.createXmlPersistenceUnit();
 		persistenceUnit.setName(getProject().getName());
 		persistence.getPersistenceUnits().add(persistenceUnit);

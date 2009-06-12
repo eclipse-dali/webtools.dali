@@ -11,9 +11,12 @@ package org.eclipse.jpt.eclipselink.core.resource.orm;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
 import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.xml.JpaEObject;
+import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
  * <!-- begin-user-doc -->
@@ -201,6 +204,22 @@ public class XmlChangeTracking extends AbstractJpaEObject implements JpaEObject
 		result.append(type);
 		result.append(')');
 		return result.toString();
+	}
+	
+	// ********** translators **********
+
+	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
+		return new SimpleTranslator(elementName, structuralFeature, Translator.END_TAG_NO_INDENT, buildTranslatorChildren());
+	}
+
+	private static Translator[] buildTranslatorChildren() {
+		return new Translator[] {
+			buildTypeTranslator()
+		};
+	}
+	
+	protected static Translator buildTypeTranslator() {
+		return new Translator(JPA.TYPE, EclipseLinkOrmPackage.eINSTANCE.getXmlChangeTracking_Type(), Translator.DOM_ATTRIBUTE);
 	}
 
 } // XmlChangeTracking

@@ -43,6 +43,11 @@ public class SimpleTranslator
 	public SimpleTranslator(String domPathAndNames, EStructuralFeature eStructuralFeature, EClass eClass) {
 		super(domPathAndNames, eStructuralFeature, eClass);
 	}
+	
+	public SimpleTranslator(String domPathAndNames, EStructuralFeature eStructuralFeature, EClass eClass, Translator[] children) {
+		super(domPathAndNames, eStructuralFeature, eClass);
+		this.children = children;
+	}
 
 	public SimpleTranslator(String domPathAndNames, EStructuralFeature eStructuralFeature, TranslatorPath translatorPath) {
 		super(domPathAndNames, eStructuralFeature, translatorPath);

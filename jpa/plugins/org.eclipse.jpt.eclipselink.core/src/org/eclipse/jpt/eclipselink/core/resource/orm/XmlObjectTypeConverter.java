@@ -14,11 +14,13 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
+import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
+import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
  * <!-- begin-user-doc -->
@@ -399,5 +401,37 @@ public class XmlObjectTypeConverter extends XmlNamedConverter
 		result.append(')');
 		return result.toString();
 	}
+	
+	// ********** translators **********
 
+	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
+		return new SimpleTranslator(elementName, structuralFeature, buildTranslatorChildren());
+	}
+
+	private static Translator[] buildTranslatorChildren() {
+		return new Translator[] {
+			buildConversionValueTranslator(),
+			buildDefaultObjectValueTranslator(),
+			buildNameTranslator(),
+			buildDataTypeTranslator(),
+			buildObjectTypeTranslator(),
+		};
+	}
+	
+	protected static Translator buildConversionValueTranslator() {
+		return XmlConversionValue.buildTranslator(JPA.CONVERSION_VALUE, EclipseLinkOrmPackage.eINSTANCE.getXmlObjectTypeConverter_ConversionValues());
+	}
+	
+	protected static Translator buildDefaultObjectValueTranslator() {
+		return new Translator(JPA.OBJECT_TYPE_CONVERTER__DEFAULT_OBJECT_VALUE, EclipseLinkOrmPackage.eINSTANCE.getXmlObjectTypeConverter_DefaultObjectValue());
+	}
+	
+	protected static Translator buildDataTypeTranslator() {
+		return new Translator(JPA.OBJECT_TYPE_CONVERTER__DATA_TYPE, EclipseLinkOrmPackage.eINSTANCE.getXmlObjectTypeConverter_DataType(), Translator.DOM_ATTRIBUTE);
+	}
+	
+	protected static Translator buildObjectTypeTranslator() {
+		return new Translator(JPA.OBJECT_TYPE_CONVERTER__OBJECT_TYPE, EclipseLinkOrmPackage.eINSTANCE.getXmlObjectTypeConverter_ObjectType(), Translator.DOM_ATTRIBUTE);
+	}
+	
 } // XmlObjectTypeConverter
