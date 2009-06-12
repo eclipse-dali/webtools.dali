@@ -15,13 +15,14 @@ import org.eclipse.jdt.core.IElementChangedListener;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaElementDelta;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jpt.core.JpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.internal.platform.GenericJpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.core.internal.platform.GenericJpaAnnotationProvider;
 import org.eclipse.jpt.core.internal.resource.java.source.SourceCompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.NullAnnotationEditFormatter;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.java.JavaResourceCompilationUnit;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.tests.internal.projects.TestJpaProject;
 import org.eclipse.jpt.core.tests.internal.utility.jdt.AnnotationTestCase;
 import org.eclipse.jpt.utility.CommandExecutor;
@@ -160,7 +161,11 @@ public class JavaResourceModelTestCase extends AnnotationTestCase
 	}
 
 	protected JpaAnnotationProvider buildAnnotationProvider() {
-		return new GenericJpaAnnotationProvider(GenericJpaAnnotationDefinitionProvider.instance());
+		return new GenericJpaAnnotationProvider(this.annotationDefinitionProvider());
+	}
+
+	protected JpaAnnotationDefinitionProvider annotationDefinitionProvider() {
+		return GenericJpaAnnotationDefinitionProvider.instance();
 	}
 
 }

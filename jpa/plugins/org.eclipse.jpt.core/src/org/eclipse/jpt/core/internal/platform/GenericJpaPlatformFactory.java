@@ -9,10 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.platform;
 
+import org.eclipse.jpt.core.JpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaPlatformFactory;
+import org.eclipse.jpt.core.JpaPlatformProvider;
 import org.eclipse.jpt.core.JpaValidation;
 
 /**
@@ -33,10 +35,10 @@ public class GenericJpaPlatformFactory
 	public JpaPlatform buildJpaPlatform(String id) {
 		return new GenericJpaPlatform(
 			id,
-			buildJpaFactory(), 
-			buildJpaAnnotationProvider(), 
-			buildJpaValidation(),
-			GenericJpaPlatformProvider.instance());
+			this.buildJpaFactory(), 
+			this.buildJpaAnnotationProvider(), 
+			this.buildJpaValidation(),
+			this.platformProviders());
 	}
 	
 	protected JpaFactory buildJpaFactory() {
@@ -44,8 +46,17 @@ public class GenericJpaPlatformFactory
 	}
 	
 	protected JpaAnnotationProvider buildJpaAnnotationProvider() {
-		return new GenericJpaAnnotationProvider(
-			GenericJpaAnnotationDefinitionProvider.instance());
+		return new GenericJpaAnnotationProvider(this.annotationDefinitionProvider());
+	}
+
+	protected JpaPlatformProvider[] platformProviders() {
+		JpaPlatformProvider[] platformProviders =  {
+			GenericJpaPlatformProvider.instance()
+		};
+		return platformProviders;
+	}
+	protected JpaAnnotationDefinitionProvider annotationDefinitionProvider() {
+		return GenericJpaAnnotationDefinitionProvider.instance();
 	}
 	
 	protected JpaValidation buildJpaValidation() {
