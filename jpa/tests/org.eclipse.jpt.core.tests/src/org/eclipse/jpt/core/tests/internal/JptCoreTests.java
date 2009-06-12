@@ -34,7 +34,7 @@ public class JptCoreTests {
 		if(requiredJarsExists()) {
 			suite.addTest(JptCoreUtilityJdtTests.suite());
 			suite.addTest(JptCoreModelTests.suite());
-//			suite.addTest(JptCoreResourceModelTests.suite());
+			suite.addTest(JptCoreResourceModelTests.suite());
 			suite.addTest(JptCoreContextModelTests.suite());
 		}
 		else {
