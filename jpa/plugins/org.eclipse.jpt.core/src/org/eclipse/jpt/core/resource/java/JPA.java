@@ -189,6 +189,9 @@ public interface JPA {
 		String SEQUENCE_GENERATOR__SEQUENCE_NAME = "sequenceName";
 		String SEQUENCE_GENERATOR__INITIAL_VALUE = "initialValue";
 		String SEQUENCE_GENERATOR__ALLOCATION_SIZE = "allocationSize";
+	// JPA 2.0 elements
+		String SEQUENCE_GENERATOR__CATALOG = "catalog";
+		String SEQUENCE_GENERATOR__SCHEMA = "schema";
 	String SQL_RESULT_SET_MAPPING = PACKAGE_ + "SqlResultSetMapping";
 		String SQL_RESULT_SET_MAPPING__NAME = "name";
 		String SQL_RESULT_SET_MAPPING__ENTITIES = "entities";
