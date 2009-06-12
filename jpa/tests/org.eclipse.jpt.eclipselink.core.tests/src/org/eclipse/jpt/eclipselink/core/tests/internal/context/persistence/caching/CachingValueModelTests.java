@@ -12,6 +12,7 @@ package org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.cach
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.caching.CacheType;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.caching.Caching;
+import org.eclipse.jpt.eclipselink.core.internal.context.persistence.caching.Entity;
 import org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.PersistenceUnitTestCase;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
@@ -152,12 +153,12 @@ public class CachingValueModelTests extends PersistenceUnitTestCase
 		return new PropertyAspectAdapter<Caching, CacheType>(subjectHolder, Caching.CACHE_TYPE_PROPERTY) {
 			@Override
 			protected CacheType buildValue_() {
-				return this.subject.getCacheType(ENTITY_NAME_TEST_VALUE);
+				return this.subject.getCacheTypeOf(ENTITY_NAME_TEST_VALUE);
 			}
 
 			@Override
 			protected void setValue_(CacheType enumValue) {
-				this.subject.setCacheType(enumValue, ENTITY_NAME_TEST_VALUE);
+				this.subject.setCacheTypeOf(ENTITY_NAME_TEST_VALUE, enumValue);
 			}
 		};
 	}
@@ -175,12 +176,12 @@ public class CachingValueModelTests extends PersistenceUnitTestCase
 		return new PropertyAspectAdapter<Caching, Boolean>(subjectHolder, Caching.SHARED_CACHE_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
-				return this.subject.getSharedCache(ENTITY_NAME_TEST_VALUE);
+				return this.subject.getSharedCacheOf(ENTITY_NAME_TEST_VALUE);
 			}
 
 			@Override
 			protected void setValue_(Boolean enumValue) {
-				this.subject.setSharedCache(enumValue, ENTITY_NAME_TEST_VALUE);
+				this.subject.setSharedCacheOf(ENTITY_NAME_TEST_VALUE, enumValue);
 			}
 		};
 	}
@@ -239,7 +240,49 @@ public class CachingValueModelTests extends PersistenceUnitTestCase
 		};
 	}
 
-	/** ****** Tests ******* */
+	/** ****** Basic Entity's Properties Tests ******* */
+
+	public void testClone() {
+		Entity entity = this.buildEntity("TestEntity", CacheType.full, 100, true);
+
+		this.verifyClone(entity, entity.clone());
+	}
+	
+	public void testEquals() {
+		Entity entity1 = this.buildEntity("TestEntityA", CacheType.full, 100, true);
+		Entity entity2 = this.buildEntity("TestEntityB", CacheType.full, 100, true);
+		assertEquals(entity1, entity2);
+		Entity entity3 = this.buildEntity("TestEntityC", CacheType.full, 100, true);
+		assertEquals(entity1, entity3);
+		assertEquals(entity2, entity3);
+	}
+	
+	public void testIsEmpty() {
+		Entity entity = this.buildEntity("TestEntity");
+		assertTrue(entity.isEmpty());
+		this.caching.setCacheSizeOf(entity.getName(), 100);
+		assertFalse(entity.isEmpty());
+	}
+
+	private void verifyClone(Entity original, Entity clone) {
+		assertNotSame(original, clone);
+		assertEquals(original, original);
+		assertEquals(original, clone);
+	}
+
+	private Entity buildEntity(String name) {
+		return this.caching.addEntity(name);
+	}
+
+	private Entity buildEntity(String name, CacheType cacheType, Integer size, Boolean isShared) {
+		Entity entity = this.caching.addEntity(name);
+		this.caching.setCacheTypeOf(entity.getName(), cacheType);
+		this.caching.setCacheSizeOf(entity.getName(), size);
+		this.caching.setSharedCacheOf(entity.getName(), isShared);
+		return entity;
+	}
+	
+	/** ****** Caching Tests ******* */
 	public void testValue() {
 		/** ****** CacheType - defaults for entity level caching are equal to the persistence unit settings ******* */
 		this.verifyCacheTypeAAValue(CACHE_TYPE_TEST_VALUE);
@@ -340,7 +383,7 @@ public class CachingValueModelTests extends PersistenceUnitTestCase
 	protected void verifyCacheTypeAAValue(CacheType testValue) {
 		this.verifyAAValue(
 			testValue, 
-			this.caching.getCacheType(ENTITY_NAME_TEST_VALUE), 
+			this.caching.getCacheTypeOf(ENTITY_NAME_TEST_VALUE), 
 			this.cacheTypeHolder, 
 			Caching.ECLIPSELINK_CACHE_TYPE + ENTITY_NAME_TEST_VALUE);
 	}
@@ -354,7 +397,7 @@ public class CachingValueModelTests extends PersistenceUnitTestCase
 	protected void verifySharedCacheAAValue(Boolean testValue) {
 		this.verifyAAValue(
 			testValue, 
-			this.caching.getSharedCache(ENTITY_NAME_TEST_VALUE), 
+			this.caching.getSharedCacheOf(ENTITY_NAME_TEST_VALUE), 
 			this.sharedCacheHolder, 
 			Caching.ECLIPSELINK_SHARED_CACHE + ENTITY_NAME_TEST_VALUE);
 	}

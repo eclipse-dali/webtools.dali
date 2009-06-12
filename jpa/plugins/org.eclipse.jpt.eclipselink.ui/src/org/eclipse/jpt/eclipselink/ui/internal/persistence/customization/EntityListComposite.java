@@ -24,8 +24,8 @@ import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.window.Window;
-import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.customization.Customization;
+import org.eclipse.jpt.eclipselink.core.internal.context.persistence.customization.Entity;
 import org.eclipse.jpt.eclipselink.ui.JptEclipseLinkUiPlugin;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
@@ -35,7 +35,6 @@ import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.TransformationListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.swing.ObjectListSelectionModel;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
@@ -51,7 +50,7 @@ import org.eclipse.ui.progress.IProgressService;
  */
 public class EntityListComposite extends Pane<Customization>
 {
-	private WritablePropertyValueModel<EntityCustomizerProperties> entityHolder;
+	private WritablePropertyValueModel<Entity> entityHolder;
 
 	public EntityListComposite(Pane<Customization> parentComposite, Composite parent) {
 
@@ -77,7 +76,7 @@ public class EntityListComposite extends Pane<Customization>
 			this,
 			container,
 			this.buildEntitiesAdapter(),
-			this.buildEntityCustomizationListHolder(),
+			this.buildEntitiesListHolder(),
 			this.entityHolder,
 			this.buildEntityLabelProvider(),
 			EclipseLinkHelpContextIds.PERSISTENCE_CUSTOMIZATION
@@ -101,9 +100,8 @@ public class EntityListComposite extends Pane<Customization>
 			public void removeSelectedItems(ObjectListSelectionModel listSelectionModel) {
 				Customization customization = getSubject();
 				for (Object item : listSelectionModel.selectedValues()) {
-					EntityCustomizerProperties entityCustomization = (EntityCustomizerProperties) item;
-					entityCustomization.disengageListeners();
-					customization.removeEntity(entityCustomization.getEntityName());
+					Entity entityCustomization = (Entity) item;
+					customization.removeEntity(entityCustomization.getName());
 				}
 			}
 		};
@@ -122,7 +120,7 @@ public class EntityListComposite extends Pane<Customization>
 			if( ! this.getSubject().entityExists(entityName)) {
 				this.getSubject().addEntity(entityName);
 				int index = CollectionTools.indexOf(this.getSubject().entities(), entityName);
-				EntityCustomizerProperties entity = (EntityCustomizerProperties) listSelectionModel.getListModel().getElementAt(index);
+				Entity entity = (Entity) listSelectionModel.getListModel().getElementAt(index);
 				this.entityHolder.setValue(entity);
 			}
 		}
@@ -130,7 +128,7 @@ public class EntityListComposite extends Pane<Customization>
 	
 	private String getEntityName(String fullyQualifiedTypeName) {
 
-		Entity entity = getSubject().getPersistenceUnit().getEntity(fullyQualifiedTypeName);
+		org.eclipse.jpt.core.context.Entity entity = getSubject().getPersistenceUnit().getEntity(fullyQualifiedTypeName);
 		return entity != null ? entity.getName() : null;
 	}
 	
@@ -185,30 +183,21 @@ public class EntityListComposite extends Pane<Customization>
 		return new LabelProvider() {
 			@Override
 			public String getText(Object element) {
-				EntityCustomizerProperties entityCustomization = (EntityCustomizerProperties) element;
-				return entityCustomization.getEntityName();
+				Entity entityCustomization = (Entity) element;
+				return entityCustomization.getName();
 			}
 		};
 	}
 
-	private WritablePropertyValueModel<EntityCustomizerProperties> buildEntityHolder() {
-		return new SimplePropertyValueModel<EntityCustomizerProperties>();
+	private WritablePropertyValueModel<Entity> buildEntityHolder() {
+		return new SimplePropertyValueModel<Entity>();
 	}
 
-	private ListValueModel<EntityCustomizerProperties> buildEntityCustomizationListHolder() {
-		return new TransformationListValueModelAdapter<String, EntityCustomizerProperties>(this.buildEntitiesListHolder()) {
-			@Override
-			protected EntityCustomizerProperties transformItem(String entityName) {
-				return new EntityCustomizerProperties(getSubject(), entityName);
-			}
-		};
-	}
-
-	private ListValueModel<String> buildEntitiesListHolder() {
-		return new ListAspectAdapter<Customization, String>(
+	private ListValueModel<Entity> buildEntitiesListHolder() {
+		return new ListAspectAdapter<Customization, Entity>(
 				this.getSubjectHolder(), Customization.ENTITIES_LIST_PROPERTY) {
 			@Override
-			protected ListIterator<String> listIterator_() {
+			protected ListIterator<Entity> listIterator_() {
 				return this.subject.entities();
 			}
 			@Override
@@ -218,7 +207,7 @@ public class EntityListComposite extends Pane<Customization>
 		};
 	}
 
-	private void installPaneEnabler(WritablePropertyValueModel<EntityCustomizerProperties> entityHolder,
+	private void installPaneEnabler(WritablePropertyValueModel<Entity> entityHolder,
 	                                EntityCustomizationPropertyComposite pane) {
 
 		new PaneEnabler(
@@ -227,10 +216,10 @@ public class EntityListComposite extends Pane<Customization>
 		);
 	}
 
-	private PropertyValueModel<Boolean> buildPaneEnablerHolder(WritablePropertyValueModel<EntityCustomizerProperties> entityHolder) {
-		return new TransformationPropertyValueModel<EntityCustomizerProperties, Boolean>(entityHolder) {
+	private PropertyValueModel<Boolean> buildPaneEnablerHolder(WritablePropertyValueModel<Entity> entityHolder) {
+		return new TransformationPropertyValueModel<Entity, Boolean>(entityHolder) {
 			@Override
-			protected Boolean transform_(EntityCustomizerProperties value) {
+			protected Boolean transform_(Entity value) {
 				return value.entityNameIsValid();
 			}
 		};

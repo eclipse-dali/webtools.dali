@@ -24,8 +24,8 @@ import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.window.Window;
-import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.caching.Caching;
+import org.eclipse.jpt.eclipselink.core.internal.context.persistence.caching.Entity;
 import org.eclipse.jpt.eclipselink.ui.JptEclipseLinkUiPlugin;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
@@ -34,7 +34,6 @@ import org.eclipse.jpt.ui.internal.widgets.AddRemoveListPane;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.TransformationListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.swing.ObjectListSelectionModel;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
@@ -62,14 +61,14 @@ public class EntityListComposite extends Pane<Caching>
 			container,
 			EclipseLinkUiMessages.CachingEntityListComposite_groupTitle
 		);
-		WritablePropertyValueModel<EntityCacheProperties> entityHolder = this.buildEntityHolder();
+		WritablePropertyValueModel<Entity> entityHolder = this.buildEntityHolder();
 
 		// Entities add/remove list pane
 		new AddRemoveListPane<Caching>(
 			this,
 			container,
 			this.buildEntitiesAdapter(),
-			this.buildEntityCachingListHolder(),
+			this.buildEntitiesListHolder(),
 			entityHolder,
 			this.buildEntityLabelProvider(),
 			EclipseLinkHelpContextIds.PERSISTENCE_CACHING
@@ -93,9 +92,8 @@ public class EntityListComposite extends Pane<Caching>
 			public void removeSelectedItems(ObjectListSelectionModel listSelectionModel) {
 				Caching caching = getSubject();
 				for (Object item : listSelectionModel.selectedValues()) {
-					EntityCacheProperties entityCaching = (EntityCacheProperties) item;
-					entityCaching.disengageListeners();
-					caching.removeEntity(entityCaching.getEntityName());
+					Entity entityCaching = (Entity) item;
+					caching.removeEntity(entityCaching.getName());
 				}
 			}
 		};
@@ -112,17 +110,17 @@ public class EntityListComposite extends Pane<Caching>
 			}
 			
 			if( ! this.getSubject().entityExists(entityName)) {
-				String entity = this.getSubject().addEntity(entityName);
-	
-				listSelectionModel.setSelectedValue(entity);
+				this.getSubject().addEntity(entityName);
+
+				listSelectionModel.setSelectedValue(entityName);
 			}
 		}
 	}
 
 	private String getEntityName(String fullyQualifiedTypeName) {
 
-		Entity entity = getSubject().getPersistenceUnit().getEntity(fullyQualifiedTypeName);
-		return entity != null ? entity.getName() : null;
+		org.eclipse.jpt.core.context.Entity entity = getSubject().getPersistenceUnit().getEntity(fullyQualifiedTypeName);
+		return (entity != null) ? entity.getName() : null;
 	}
 	
 	private IType chooseEntity() {
@@ -176,30 +174,21 @@ public class EntityListComposite extends Pane<Caching>
 		return new LabelProvider() {
 			@Override
 			public String getText(Object element) {
-				EntityCacheProperties entityCaching = (EntityCacheProperties) element;
-				return entityCaching.getEntityName();
+				Entity entityCaching = (Entity) element;
+				return entityCaching.getName();
 			}
 		};
 	}
 
-	private WritablePropertyValueModel<EntityCacheProperties> buildEntityHolder() {
-		return new SimplePropertyValueModel<EntityCacheProperties>();
+	private WritablePropertyValueModel<Entity> buildEntityHolder() {
+		return new SimplePropertyValueModel<Entity>();
 	}
 
-	private ListValueModel<EntityCacheProperties> buildEntityCachingListHolder() {
-		return new TransformationListValueModelAdapter<String, EntityCacheProperties>(this.buildEntitiesListHolder()) {
-			@Override
-			protected EntityCacheProperties transformItem(String entityName) {
-				return new EntityCacheProperties(getSubject(), entityName);
-			}
-		};
-	}
-
-	private ListValueModel<String> buildEntitiesListHolder() {
-		return new ListAspectAdapter<Caching, String>(
+	private ListValueModel<Entity> buildEntitiesListHolder() {
+		return new ListAspectAdapter<Caching, Entity>(
 					this.getSubjectHolder(), Caching.ENTITIES_LIST_PROPERTY) {
 			@Override
-			protected ListIterator<String> listIterator_() {
+			protected ListIterator<Entity> listIterator_() {
 				return this.subject.entities();
 			}
 			@Override
@@ -209,7 +198,7 @@ public class EntityListComposite extends Pane<Caching>
 		};
 	}
 
-	private void installPaneEnabler(WritablePropertyValueModel<EntityCacheProperties> entityHolder,
+	private void installPaneEnabler(WritablePropertyValueModel<Entity> entityHolder,
 	                                EntityCachingPropertyComposite pane) {
 
 		new PaneEnabler(
@@ -218,10 +207,10 @@ public class EntityListComposite extends Pane<Caching>
 		);
 	}
 
-	private PropertyValueModel<Boolean> buildPaneEnablerHolder(WritablePropertyValueModel<EntityCacheProperties> entityHolder) {
-		return new TransformationPropertyValueModel<EntityCacheProperties, Boolean>(entityHolder) {
+	private PropertyValueModel<Boolean> buildPaneEnablerHolder(WritablePropertyValueModel<Entity> entityHolder) {
+		return new TransformationPropertyValueModel<Entity, Boolean>(entityHolder) {
 			@Override
-			protected Boolean transform_(EntityCacheProperties value) {
+			protected Boolean transform_(Entity value) {
 				return value.entityNameIsValid();
 			}
 		};

@@ -10,6 +10,7 @@
 package org.eclipse.jpt.eclipselink.ui.internal.persistence.caching;
 
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.caching.Caching;
+import org.eclipse.jpt.eclipselink.core.internal.context.persistence.caching.Entity;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.ui.internal.widgets.IntegerCombo;
@@ -23,7 +24,7 @@ import org.eclipse.swt.widgets.Composite;
 /**
  * CacheSizeComposite
  */
-public class CacheSizeComposite extends Pane<EntityCacheProperties>
+public class CacheSizeComposite extends Pane<Entity>
 {
 	/**
 	 * Creates a new <code>CacheTypeComposite</code>.
@@ -33,7 +34,7 @@ public class CacheSizeComposite extends Pane<EntityCacheProperties>
 	 * @param parent
 	 *            The parent container
 	 */
-	public CacheSizeComposite(Pane<EntityCacheProperties> parentComposite,
+	public CacheSizeComposite(Pane<Entity> parentComposite,
 	                          Composite parent) {
 
 		super(parentComposite, parent);
@@ -41,11 +42,11 @@ public class CacheSizeComposite extends Pane<EntityCacheProperties>
 
 	@Override
 	protected void initializeLayout(Composite container) {
-		addCacheSizeCombo(container);
+		this.addCacheSizeCombo(container);
 	}	
 	
 	private void addCacheSizeCombo(Composite container) {
-		new IntegerCombo<EntityCacheProperties>(this, container) {
+		new IntegerCombo<Entity>(this, container) {
 			
 			@Override
 			protected String getLabelText() {
@@ -73,26 +74,34 @@ public class CacheSizeComposite extends Pane<EntityCacheProperties>
 		
 			@Override
 			protected WritablePropertyValueModel<Integer> buildSelectedItemHolder() {
-				return new PropertyAspectAdapter<EntityCacheProperties, Integer>(getSubjectHolder(), EntityCacheProperties.CACHE_SIZE_PROPERTY) {
+				return new PropertyAspectAdapter<Entity, Integer>(this.getSubjectHolder(), Entity.CACHE_SIZE_PROPERTY) {
 					@Override
 					protected Integer buildValue_() {
-						return this.subject.getCacheSize();
+						return getSubjectParent().getCacheSizeOf(getSubjectName());
 					}
 
 					@Override
 					protected void setValue_(Integer value) {
-						this.subject.setCacheSize(value);
+						getSubjectParent().setCacheSizeOf(getSubjectName(), value);
 					}
 				};
 			}
 		};
 	}
 	
+	private String getSubjectName() {
+		return this.getSubjectHolder().getValue().getName();
+	}
+	
+	private Caching getSubjectParent() {
+		return this.getSubjectHolder().getValue().getParent();
+	}
+	
 	private PropertyValueModel<Caching> buildCachingHolder() {
-		return new TransformationPropertyValueModel<EntityCacheProperties, Caching>(getSubjectHolder()) {
+		return new TransformationPropertyValueModel<Entity, Caching>(this.getSubjectHolder()) {
 			@Override
-			protected Caching transform_(EntityCacheProperties value) {
-				return value.getCaching();
+			protected Caching transform_(Entity value) {
+				return value.getParent();
 			}
 		};
 	}

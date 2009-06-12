@@ -14,8 +14,8 @@ import java.util.ListIterator;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.customization.Customization;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.customization.CustomizerProperties;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.customization.EclipseLinkCustomization;
+import org.eclipse.jpt.eclipselink.core.internal.context.persistence.customization.Entity;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.customization.Profiler;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.customization.Weaving;
 import org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.PersistenceUnitTestCase;
@@ -103,10 +103,10 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 		this.customization.addPropertyChangeListener(Customization.WEAVING_EAGER_PROPERTY, propertyChangeListener);
 		this.customization.addPropertyChangeListener(Customization.WEAVING_PROPERTY, propertyChangeListener);
 		this.customization.addPropertyChangeListener(Customization.VALIDATION_ONLY_PROPERTY, propertyChangeListener);
-		this.customization.addPropertyChangeListener(Customization.DESCRIPTOR_CUSTOMIZER_PROPERTY, propertyChangeListener);
+		this.customization.addPropertyChangeListener(Entity.DESCRIPTOR_CUSTOMIZER_PROPERTY, propertyChangeListener);
 		this.customization.addPropertyChangeListener(Customization.SESSION_CUSTOMIZER_PROPERTY, propertyChangeListener);
 		this.customization.addPropertyChangeListener(Customization.PROFILER_PROPERTY, propertyChangeListener);
-		this.customization.addPropertyChangeListener(customization.EXCEPTION_HANDLER_PROPERTY, propertyChangeListener);
+		this.customization.addPropertyChangeListener(Customization.EXCEPTION_HANDLER_PROPERTY, propertyChangeListener);
 
 		ListChangeListener sessionCustomizersChangeListener = this.buildSessionCustomizersChangeListener();
 		this.customization.addListChangeListener(Customization.SESSION_CUSTOMIZER_LIST_PROPERTY, sessionCustomizersChangeListener);
@@ -230,6 +230,7 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 		// remove
 		this.clearEvent();
 		this.customization.removeEntity(ENTITY_TEST_2);
+		
 		// verify event received
 		assertNotNull("No Event Fired.", this.entitiesEvent);
 		// verify event for the expected property
@@ -453,7 +454,7 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 			CUSTOMIZER_KEY,
 			CUSTOMIZER_TEST_VALUE);
 		this.verifySetCustomizationProperty(
-			Customization.DESCRIPTOR_CUSTOMIZER_PROPERTY,
+			Entity.DESCRIPTOR_CUSTOMIZER_PROPERTY,
 			CUSTOMIZER_KEY,
 			CUSTOMIZER_TEST_VALUE,
 			CUSTOMIZER_TEST_VALUE_2);
@@ -461,7 +462,7 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 
 	public void testAddRemoveCustomization() throws Exception {
 		this.verifyAddRemoveCustomizationProperty(
-			Customization.DESCRIPTOR_CUSTOMIZER_PROPERTY,
+			Entity.DESCRIPTOR_CUSTOMIZER_PROPERTY,
 			CUSTOMIZER_KEY,
 			CUSTOMIZER_TEST_VALUE,
 			CUSTOMIZER_TEST_VALUE_2);
@@ -496,7 +497,7 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 	 */
 	protected void verifySetProfiler(String elKey, Object testValue1, Object testValue2) throws Exception {
 		PersistenceUnit.Property property = this.getPersistenceUnit().getProperty(elKey);
-		String propertyName = this.getModel().propertyIdFor(property);
+		String propertyName = this.getModel().propertyIdOf(property);
 		// test set custom profiler.
 		this.clearEvent();
 		this.setProperty(propertyName, testValue2);
@@ -602,10 +603,10 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 
 	protected void verifyCustomizationEvent(String propertyName, String entityName, Object expectedValue) throws Exception {
 		// verify event value
-		CustomizerProperties customizer = (CustomizerProperties) this.propertyChangedEvent.getNewValue();
-		if (propertyName.equals(Customization.DESCRIPTOR_CUSTOMIZER_PROPERTY)) {
-			assertEquals(expectedValue, customizer.getClassName());
-			assertEquals(expectedValue, this.customization.getDescriptorCustomizer(entityName));
+		Entity entity = (Entity) this.propertyChangedEvent.getNewValue();
+		if (propertyName.equals(Entity.DESCRIPTOR_CUSTOMIZER_PROPERTY)) {
+			assertEquals(expectedValue, entity.getParent().getDescriptorCustomizerOf(entityName));
+			assertEquals(expectedValue, this.customization.getDescriptorCustomizerOf(entityName));
 		}
 		else {
 			this.throwMissingDefinition("verifyCustomizationEvent", propertyName);
@@ -613,8 +614,8 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 	}
 
 	protected void setCustomizationProperty(String propertyName, String entityName, Object newValue) throws NoSuchFieldException {
-		if (propertyName.equals(Customization.DESCRIPTOR_CUSTOMIZER_PROPERTY))
-			this.customization.setDescriptorCustomizer((String) newValue, entityName);
+		if (propertyName.equals(Entity.DESCRIPTOR_CUSTOMIZER_PROPERTY))
+			this.customization.setDescriptorCustomizerOf(entityName, (String) newValue);
 		else
 			this.throwMissingDefinition("setCustomizationProperty", propertyName);
 	}
@@ -681,8 +682,8 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 				modelValue = iterator.next();
 			}
 		}
-		else if (propertyName.equals(Customization.DESCRIPTOR_CUSTOMIZER_PROPERTY))
-			modelValue = this.customization.getDescriptorCustomizer(ENTITY_TEST);
+		else if (propertyName.equals(Entity.DESCRIPTOR_CUSTOMIZER_PROPERTY))
+			modelValue = this.customization.getDescriptorCustomizerOf(ENTITY_TEST);
 		else
 			this.throwMissingDefinition("getProperty", propertyName);
 		return modelValue;

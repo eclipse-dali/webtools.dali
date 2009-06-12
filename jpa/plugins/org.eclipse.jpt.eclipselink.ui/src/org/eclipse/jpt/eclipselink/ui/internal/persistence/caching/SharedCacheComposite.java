@@ -11,6 +11,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.persistence.caching;
 
 import java.util.ArrayList;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.caching.Caching;
+import org.eclipse.jpt.eclipselink.core.internal.context.persistence.caching.Entity;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
@@ -29,7 +30,7 @@ import org.eclipse.swt.widgets.Composite;
 /**
  *  SharedCacheComposite
  */
-public class SharedCacheComposite extends Pane<EntityCacheProperties>
+public class SharedCacheComposite extends Pane<Entity>
 {
 	private TriStateCheckBox sharedCacheCheckBox;
 
@@ -39,17 +40,17 @@ public class SharedCacheComposite extends Pane<EntityCacheProperties>
 	 * @param parentController The parent container of this one
 	 * @param parent The parent container
 	 */
-	public SharedCacheComposite(Pane<EntityCacheProperties> parentComposite,
+	public SharedCacheComposite(Pane<Entity> parentComposite,
 	                           Composite parent) {
 
 		super(parentComposite, parent);
 	}
 
 	private PropertyValueModel<Caching> buildCachingHolder() {
-		return new TransformationPropertyValueModel<EntityCacheProperties, Caching>(getSubjectHolder()) {
+		return new TransformationPropertyValueModel<Entity, Caching>(this.getSubjectHolder()) {
 			@Override
-			protected Caching transform_(EntityCacheProperties value) {
-				return value.getCaching();
+			protected Caching transform_(Entity value) {
+				return value.getParent();
 			}
 		};
 	}
@@ -101,18 +102,26 @@ public class SharedCacheComposite extends Pane<EntityCacheProperties>
 	}
 
 	private WritablePropertyValueModel<Boolean> buildSharedCacheHolder() {
-		return new PropertyAspectAdapter<EntityCacheProperties, Boolean>(
-					getSubjectHolder(), EntityCacheProperties.SHARED_CACHE_PROPERTY) {
+		return new PropertyAspectAdapter<Entity, Boolean>(
+					getSubjectHolder(), Entity.SHARED_CACHE_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
-				return this.subject.getSharedCache();
+				return getSubjectParent().getSharedCacheOf(getSubjectName());
 			}
 
 			@Override
 			protected void setValue_(Boolean value) {
-				this.subject.setSharedCache(value);
+				getSubjectParent().setSharedCacheOf(getSubjectName(), value);
 			}
 		};
+	}
+	
+	private String getSubjectName() {
+		return this.getSubjectHolder().getValue().getName();
+	}
+	
+	private Caching getSubjectParent() {
+		return this.getSubjectHolder().getValue().getParent();
 	}
 
 	private ListValueModel<Boolean> buildSharedCacheListHolder() {

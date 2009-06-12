@@ -10,13 +10,13 @@
 package org.eclipse.jpt.eclipselink.core.internal.context.persistence.customization;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
+
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnitProperties;
-import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 /**
@@ -34,12 +34,11 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 	private Boolean weavingInternal;
 	private Boolean weavingEager;
 	private Boolean validationOnly;
-	private ArrayList<String> sessionCustomizers;
+	private List<String> sessionCustomizers;
 	private String profiler; // storing EclipseLinkStringValue since value can be Profiler or custom class
 	private String exceptionHandler;
 
-	// key = Entity name ; value = Customizer properties
-	private Map<String, CustomizerProperties> entitiesCustomizerProperties;
+	private List<Entity> entities;
 	
 	// ********** constructors **********
 	public EclipseLinkCustomization(PersistenceUnit parent) {
@@ -53,8 +52,7 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 	@Override
 	protected void initializeProperties() {
 		// TOREVIEW - handle incorrect String in persistence.xml
-		this.entitiesCustomizerProperties = 
-			new HashMap<String, CustomizerProperties>();
+		this.entities = new ArrayList<Entity>();
 
 		this.throwExceptions = 
 			this.getBooleanValue(ECLIPSELINK_THROW_EXCEPTIONS);
@@ -97,10 +95,9 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 		}
 	}
 
-	private void initializeEntitiesCustomizerClass(Set<PersistenceUnit.Property> properties) {
-		for (PersistenceUnit.Property property : properties) {
-			String entityName = this.getEntityName(property);
-			this.setCustomizerClass_(property, entityName);
+	private void initializeEntitiesCustomizerClass(Set<PersistenceUnit.Property> descriptorCustomizerProperties) {
+		for (PersistenceUnit.Property descriptorCustomizerProperty : descriptorCustomizerProperties) {
+			this.setEntityDescriptorCustomizerOf(descriptorCustomizerProperty);
 		}
 	}
 
@@ -263,9 +260,9 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 	 * property.
 	 */
 	@Override
-	public String propertyIdFor(PersistenceUnit.Property property) {
+	public String propertyIdOf(PersistenceUnit.Property property) {
 		try {
-			return super.propertyIdFor(property);
+			return super.propertyIdOf(property);
 		}
 		catch (IllegalArgumentException e) {
 			if (property.getName().startsWith(ECLIPSELINK_DESCRIPTOR_CUSTOMIZER)) {
@@ -273,6 +270,25 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 			}
 		}
 		throw new IllegalArgumentException("Illegal property: " + property); //$NON-NLS-1$
+	}
+	
+	public Entity addEntity(String entityName) {
+		if (this.entityExists(entityName)) {
+			throw new IllegalStateException("Entity " + entityName + " already exists.");
+		}
+		Entity newEntity = this.buildEntity(entityName);
+		this.entities.add(newEntity);
+		this.fireListChanged(ENTITIES_LIST_PROPERTY);
+		return newEntity;
+	}
+
+	public void removeEntity(String entityName) {
+		if ( ! this.entityExists(entityName)) {
+			return;
+		}
+		Entity entity = this.getEntityNamed(entityName);
+		this.clearEntity(entity);
+		this.removeEntity(entity);
 	}
 
 	
@@ -548,148 +564,56 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 
 	// ********** DescriptorCustomizer **********
 	
-	public String getDescriptorCustomizer(String entityName) {
-		CustomizerProperties customizer = this.customizerPropertiesOf(entityName);
-		return (customizer == null) ? null : customizer.getClassName();
+	public String getDescriptorCustomizerOf(String entityName) {
+		Entity entity = this.getEntityNamed(entityName);
+		return (entity == null) ? null : entity.getDescriptorCustomizer();
 	}
 	
-	public void setDescriptorCustomizer(String newDescriptorCustomizer, String entityName) {
-		CustomizerProperties old = this.setCustomizerClass_(newDescriptorCustomizer, entityName);
+	public void setDescriptorCustomizerOf(String entityName, String newDescriptorCustomizer) {
+		Entity old = this.setEntityDescriptorCustomizerOf(entityName, newDescriptorCustomizer);
 		this.putStringValue(ECLIPSELINK_DESCRIPTOR_CUSTOMIZER, entityName, newDescriptorCustomizer, false);
-		this.firePropertyChanged(DESCRIPTOR_CUSTOMIZER_PROPERTY, old, this.customizerPropertiesOf(entityName));
+		this.firePropertyChanged(DESCRIPTOR_CUSTOMIZER_PROPERTY, old, this.getEntityNamed(entityName));
 	}
-
+	
 	private void descriptorCustomizerChanged(String propertyName, String stringValue) {
-		String entityName = this.getEntityName(propertyName);
-		CustomizerProperties old = this.setCustomizerClass_(stringValue, entityName);
-		this.firePropertyChanged(DESCRIPTOR_CUSTOMIZER_PROPERTY, old, this.customizerPropertiesOf(entityName));
+		String entityName = this.extractEntityNameOf(propertyName);
+		Entity old = this.setEntityDescriptorCustomizerOf(entityName, stringValue);
+		this.firePropertyChanged(DESCRIPTOR_CUSTOMIZER_PROPERTY, old, this.getEntityNamed(entityName));
 	}
 	
 	public String getDefaultDescriptorCustomizer() {
 		return DEFAULT_DESCRIPTOR_CUSTOMIZER;
 	}
 
-
-	// ****** CustomizerProperties *******
-
 	/**
-	 * Convenience method to update the CustomizerClass in entitiesCustomizerProperties map.
-	 * Returns the old value of CustomizerProperties
+	 * Returns the old Entity
 	 */
-	private CustomizerProperties setCustomizerClass_(PersistenceUnit.Property newProperty, String entityName) {
-		String newValue = (newProperty == null) ? null : newProperty.getValue();
-		return this.setCustomizerClass_(newValue, entityName);
-	}
-
-	private CustomizerProperties setCustomizerClass_(String newValue, String entityName) {
-		CustomizerProperties properties = this.customizerPropertiesOf(entityName);
-		CustomizerProperties old = properties.clone();
-		properties.setClassName(newValue);
-		this.putEntityCustomizerProperties(entityName, properties);
-		return old;
-	}
-
-	/**
-	 * Returns the CustomizerProperties of the Entity with the given name.
-	 */
-	private CustomizerProperties customizerPropertiesOf(String entityName) {
-		CustomizerProperties properties = this.entitiesCustomizerProperties.get(entityName);
-		if (properties == null) {
-			properties = new CustomizerProperties(entityName);
-		}
-		return properties;
-	}
-
-	/**
-	 * Set all CustomizerProperties to default.
-	 */
-	private void clearCustomizerProperties(String entityName) {
-		this.setDescriptorCustomizer(null, entityName);
-	}
-
-	// ****** convenience methods *******
-	/**
-	 * Put the given Entity CustomizerProperties in this entitiesCustomizerProperties map.
-	 * @param entityName - Entity name. The entity may be a new or an existing entity.
-	 * @param properties - Entity CustomizerProperties
-	 */
-	private void putEntityCustomizerProperties(String entityName, CustomizerProperties properties) {
-		this.addOrReplacePropertiesForEntity(entityName, properties);
+	private Entity setEntityDescriptorCustomizerOf(String entityName, String descriptorCustomizerClassName) {
+		Entity entity = (this.entityExists(entityName)) ?
+						this.getEntityNamed(entityName) :
+						this.addEntity(entityName);
+		return this.setEntityDescriptorCustomizerOf(entity, descriptorCustomizerClassName);
 	}
 	
-
-
-	// ****** entities list *******
-	
-	public ListIterator<String> entities() {
-		return CollectionTools.list(this.entitiesCustomizerProperties.keySet()).listIterator();
-	}
-
-	public int entitiesSize() {
-		return this.entitiesCustomizerProperties.size();
-	}
-
-	/* 
-	 * Verifies if this entitiesCacheProperties map contains the given Entity. 
-	 */
-	public boolean entityExists(String entity) {
-		return this.entitiesCustomizerProperties.containsKey(entity);
-	}
-
-	public String addEntity(String entity) {
-		if (entityExists(entity)) {
-			throw new IllegalStateException("Entity already exists: " + entity); //$NON-NLS-1$
-		}
-		return this.addOrReplacePropertiesForEntity(entity, new CustomizerProperties(entity));
-	}
-
 	/**
-	 * Adds or Replaces the given Entity CustomizerProperties in 
-	 * this entitiesCustomizerProperties map.
-	 * If the specified Entity exists and the given CustomizerProperties is empty 
-	 * (i.e. all properties are null) the mapping will be removed from the map.
-	 * @param entity - Entity name
-	 * @param properties - Entity CustomizerProperties
-	 * @return
+	 * Returns the old Entity
 	 */
-	private String addOrReplacePropertiesForEntity(String entity, CustomizerProperties properties) {
-		if (entityExists(entity)) {
-			this.replaceEntity_(entity, properties);
-			return null;
+	private Entity setEntityDescriptorCustomizerOf(Entity entity, String descriptorCustomizerClassName) {
+		if(entity == null) {
+			throw new IllegalArgumentException();
 		}
-		this.entitiesCustomizerProperties.put(entity, properties);
-		this.fireListChanged(ENTITIES_LIST_PROPERTY);
-		return entity;
-	}
-
-	/**
-	 * Replaces the given Entity CustomizerProperties in this
-	 * entitiesCustomizerProperties map.
-	 * If the Entity CustomizerProperties is empty (i.e. all properties is null) the 
-	 * mapping will be removed from the map.
-	 * @param entity - Entity name
-	 * @param properties - Entity CustomizerProperties
-	 * @return
-	 */
-	private CustomizerProperties replaceEntity_(String entity, CustomizerProperties properties) {
-		CustomizerProperties old = this.entitiesCustomizerProperties.get(entity);
-		if (properties.isEmpty()) {
-			this.entitiesCustomizerProperties.remove(entity);
-			this.fireListChanged(ENTITIES_LIST_PROPERTY);
-		}
-		else {
-			this.entitiesCustomizerProperties.put(entity, properties);
-		}
+		Entity old = entity.clone();
+		entity.setDescriptorCustomizer(descriptorCustomizerClassName);
 		return old;
 	}
-
-	public void removeEntity(String entity) {
-		if ( ! entityExists(entity)) {
-			return;
-		}
-		this.clearCustomizerProperties(entity);
-		this.entitiesCustomizerProperties.remove(entity);
-		this.fireListChanged(ENTITIES_LIST_PROPERTY);
+	
+	/**
+	 * Convenience method to update the descriptorCustomizerClassName in entities.
+	 * Returns the old Entity
+	 */
+	private Entity setEntityDescriptorCustomizerOf(PersistenceUnit.Property descriptorCustomizerProperty) {
+		String entityName = this.extractEntityNameOf(descriptorCustomizerProperty);
+		return this.setEntityDescriptorCustomizerOf(entityName, descriptorCustomizerProperty.getValue());
 	}
 
 	// ********** Profiler **********
@@ -753,4 +677,63 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 		return DEFAULT_PROFILER;
 	}
 
+
+	// ****** convenience methods *******
+
+	/**
+	 * Set all Entity properties to default.
+	 */
+	private void clearEntity(Entity entity) {
+		if(entity.isEmpty()) {
+			return;
+		}
+		String entityName = entity.getName();
+		this.setDescriptorCustomizerOf(entityName, null);
+	}
+
+	/**
+	 * Returns the Entity with the given name.
+	 */
+	private Entity getEntityNamed(String name) {
+		for(Entity entity: this.entities) {
+			if(entity.getName().equals(name)) {
+				return entity;
+			}
+		}
+		return null;
+	}
+
+	private Entity buildEntity(String name) {
+		return new Entity(this, name);
+	}
+	
+	private void removeEntity(Entity entity) {
+		if(entity == null) {
+			throw new IllegalArgumentException();
+		}
+		this.entities.remove(entity);
+		this.fireListChanged(ENTITIES_LIST_PROPERTY);
+	}
+
+	/**
+	 * Return whether the Entity exist.
+	 */
+	public boolean entityExists(String name) {
+		for(Entity entity: this.entities) {
+			if(entity.getName().equals(name)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	// ****** entities list *******
+
+	public ListIterator<Entity> entities() {
+		return new CloneListIterator<Entity>(this.entities);
+	}
+
+	public int entitiesSize() {
+		return this.entities.size();
+	}
 }

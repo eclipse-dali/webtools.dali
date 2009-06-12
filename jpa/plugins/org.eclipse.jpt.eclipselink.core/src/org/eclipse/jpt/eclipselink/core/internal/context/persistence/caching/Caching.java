@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2008 Oracle. All rights reserved.
+* Copyright (c) 2008, 2009 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -43,24 +43,24 @@ public interface Caching extends PersistenceUnitProperties
 
 
 	CacheType getDefaultCacheType();
-	CacheType getCacheType(String entityName);
-	void setCacheType(CacheType cacheType, String entityName);
+	CacheType getCacheTypeOf(String entityName);
+	void setCacheTypeOf(String entityName, CacheType cacheType);
 		static final String CACHE_TYPE_PROPERTY = "cacheType"; //$NON-NLS-1$
 		// EclipseLink key string
 		static final String ECLIPSELINK_CACHE_TYPE = "eclipselink.cache.type."; //$NON-NLS-1$
 		static final CacheType DEFAULT_CACHE_TYPE = CacheType.soft_weak;
 
 	Integer getDefaultCacheSize();
-	Integer getCacheSize(String entityName);
-	void setCacheSize(Integer cacheSize, String entityName);
+	Integer getCacheSizeOf(String entityName);
+	void setCacheSizeOf(String entityName, Integer cacheSize);
 		static final String CACHE_SIZE_PROPERTY = "cacheSize"; //$NON-NLS-1$
 		// EclipseLink key string
 		static final String ECLIPSELINK_CACHE_SIZE = "eclipselink.cache.size."; //$NON-NLS-1$
 		static final Integer DEFAULT_CACHE_SIZE = Integer.valueOf(100);
 
 	Boolean getDefaultSharedCache();
-	Boolean getSharedCache(String entityName);
-	void setSharedCache(Boolean sharedCache, String entityName);
+	Boolean getSharedCacheOf(String entityName);
+	void setSharedCacheOf(String entityName, Boolean sharedCache);
 		static final String SHARED_CACHE_PROPERTY = "sharedCache"; //$NON-NLS-1$
 		// EclipseLink key string
 		static final String ECLIPSELINK_SHARED_CACHE = "eclipselink.cache.shared."; //$NON-NLS-1$
@@ -75,10 +75,10 @@ public interface Caching extends PersistenceUnitProperties
 		static final FlushClearCache DEFAULT_FLUSH_CLEAR_CACHE = FlushClearCache.drop_invalidate;
 
 
-	ListIterator<String> entities();
+	ListIterator<Entity> entities();
 	int entitiesSize();
 	boolean entityExists(String entity);
-	String addEntity(String entity);
+	Entity addEntity(String entity);
 	void removeEntity(String entity);
 		String ENTITIES_LIST_PROPERTY = "entities"; //$NON-NLS-1$
 

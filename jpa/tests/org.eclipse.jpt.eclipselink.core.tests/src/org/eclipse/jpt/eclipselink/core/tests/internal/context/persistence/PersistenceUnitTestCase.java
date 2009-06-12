@@ -214,7 +214,7 @@ public abstract class PersistenceUnitTestCase extends ContextModelTestCase
 		
 		PersistenceUnit.Property property = this.getPersistenceUnit().getProperty(elKey);
 		assertTrue("model.itemIsProperty() is false: ", getModel().itemIsProperty(property));
-		assertEquals("propertyIdFor() not updated: ", propertyName, getModel().propertyIdFor(property));
+		assertEquals("propertyIdFor() not updated: ", propertyName, getModel().propertyIdOf(property));
 	}
 
 	/**
@@ -228,7 +228,7 @@ public abstract class PersistenceUnitTestCase extends ContextModelTestCase
 		assertTrue("model.itemIsProperty() is false: ", getModel().itemIsProperty(property));
 
 		assertEquals("PersistenceUnit not populated - populatedPu()", this.getEclipseLinkStringValueOf(expectedValue), property.getValue());
-		String propertyName = this.getModel().propertyIdFor(property);
+		String propertyName = this.getModel().propertyIdOf(property);
 		Object modelValue = this.getProperty(propertyName);
 		assertEquals(
 			"Model not initialized - model.initializeProperties() - modelValue = " + modelValue, 
@@ -244,7 +244,7 @@ public abstract class PersistenceUnitTestCase extends ContextModelTestCase
 	 */
 	protected void verifySetProperty(String elKey, Object testValue1, Object testValue2) throws Exception {
 		PersistenceUnit.Property property = this.getPersistenceUnit().getProperty(elKey);
-		String propertyName = this.getModel().propertyIdFor(property);
+		String propertyName = this.getModel().propertyIdOf(property);
 
 		// Replace
 		this.persistenceUnitSetProperty(elKey, testValue2);
@@ -264,7 +264,7 @@ public abstract class PersistenceUnitTestCase extends ContextModelTestCase
 	 */
 	protected void verifyAddRemoveProperty(String elKey, Object testValue1, Object testValue2) throws Exception {
 		PersistenceUnit.Property property = this.getPersistenceUnit().getProperty(elKey);
-		String propertyName = this.getModel().propertyIdFor(property);
+		String propertyName = this.getModel().propertyIdOf(property);
 
 		// Remove
 		this.clearEvent();

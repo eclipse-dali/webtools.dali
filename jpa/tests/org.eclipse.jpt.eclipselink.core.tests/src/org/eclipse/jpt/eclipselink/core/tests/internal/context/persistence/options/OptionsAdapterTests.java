@@ -182,7 +182,7 @@ public class OptionsAdapterTests extends PersistenceUnitTestCase
 	 */
 	protected void verifySetTargetDatabase(String elKey, Object testValue1, Object testValue2) throws Exception {
 		PersistenceUnit.Property property = this.getPersistenceUnit().getProperty(elKey);
-		String propertyName = this.getModel().propertyIdFor(property);
+		String propertyName = this.getModel().propertyIdOf(property);
 		// test set custom targetDatabase.
 		this.clearEvent();
 		this.setProperty(propertyName, testValue2);
@@ -236,7 +236,7 @@ public class OptionsAdapterTests extends PersistenceUnitTestCase
 	 */
 	protected void verifySetTargetServer(String elKey, Object testValue1, Object testValue2) throws Exception {
 		PersistenceUnit.Property property = this.getPersistenceUnit().getProperty(elKey);
-		String propertyName = this.getModel().propertyIdFor(property);
+		String propertyName = this.getModel().propertyIdOf(property);
 		// test set custom targetServer.
 		this.clearEvent();
 		this.setProperty(propertyName, testValue2);

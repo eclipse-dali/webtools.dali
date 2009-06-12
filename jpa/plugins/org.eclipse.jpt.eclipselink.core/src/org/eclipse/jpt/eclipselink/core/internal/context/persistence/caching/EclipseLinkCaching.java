@@ -9,13 +9,15 @@
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.context.persistence.caching;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
+
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnitProperties;
-import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 /**
  * EclipseLinkCaching encapsulates EclipseLink Caching properties.
@@ -29,8 +31,7 @@ public class EclipseLinkCaching extends EclipseLinkPersistenceUnitProperties
 	private Boolean sharedCacheDefault;
 	private FlushClearCache flushClearCache;
 
-	// key = Entity name ; value = Cache properties
-	private Map<String, CacheProperties> entitiesCacheProperties;
+	private List<Entity> entities;
 	
 	// ********** constructors **********
 	public EclipseLinkCaching(PersistenceUnit parent) {
@@ -44,8 +45,7 @@ public class EclipseLinkCaching extends EclipseLinkPersistenceUnitProperties
 	@Override
 	protected void initializeProperties() {
 		// TOREVIEW - handle incorrect String in persistence.xml
-		this.entitiesCacheProperties = 
-			new HashMap<String, CacheProperties>();
+		this.entities = new ArrayList<Entity>();
 		this.cacheTypeDefault = 
 			this.getEnumValue(ECLIPSELINK_CACHE_TYPE_DEFAULT, CacheType.values());
 		this.cacheSizeDefault = 
@@ -67,24 +67,21 @@ public class EclipseLinkCaching extends EclipseLinkPersistenceUnitProperties
 		this.initializeEntitiesSharedCache(sharedCacheProperties);
 	}
 
-	private void initializeEntitiesCacheType(Set<PersistenceUnit.Property> properties) {
-		for (PersistenceUnit.Property property : properties) {
-			String entityName = this.getEntityName(property);
-			this.setCacheType_(property.getValue(), entityName);
+	private void initializeEntitiesCacheType(Set<PersistenceUnit.Property> cacheTypeProperties) {
+		for (PersistenceUnit.Property cacheTypeProperty : cacheTypeProperties) {
+			this.setEntityCacheTypeOf(cacheTypeProperty);
 		}
 	}
 
-	private void initializeEntitiesCacheSize(Set<PersistenceUnit.Property> properties) {
-		for (PersistenceUnit.Property property : properties) {
-			String entityName = this.getEntityName(property);
-			this.setCacheSize_(property.getValue(), entityName);
+	private void initializeEntitiesCacheSize(Set<PersistenceUnit.Property> cacheSizeProperties) {
+		for (PersistenceUnit.Property cacheSizeProperty : cacheSizeProperties) {
+			this.setEntityCacheSizeOf(cacheSizeProperty);
 		}
 	}
 
-	private void initializeEntitiesSharedCache(Set<PersistenceUnit.Property> properties) {
-		for (PersistenceUnit.Property property : properties) {
-			String entityName = this.getEntityName(property);
-			this.setSharedCache_(property.getValue(), entityName);
+	private void initializeEntitiesSharedCache(Set<PersistenceUnit.Property> sharedCacheProperties) {
+		for (PersistenceUnit.Property sharedCacheProperty : sharedCacheProperties) {
+			this.setEntitySharedCacheOf(sharedCacheProperty);
 		}
 	}
 
@@ -184,9 +181,9 @@ public class EclipseLinkCaching extends EclipseLinkPersistenceUnitProperties
 	 * property.
 	 */
 	@Override
-	public String propertyIdFor(PersistenceUnit.Property property) {
+	public String propertyIdOf(PersistenceUnit.Property property) {
 		try {
-			return super.propertyIdFor(property);
+			return super.propertyIdOf(property);
 		}
 		catch (IllegalArgumentException e) {
 			if (property.getName().startsWith(ECLIPSELINK_CACHE_TYPE)) {
@@ -201,23 +198,42 @@ public class EclipseLinkCaching extends EclipseLinkPersistenceUnitProperties
 		}
 		throw new IllegalArgumentException("Illegal property: " + property.toString());
 	}
-
-	// ********** CacheType **********
-	public CacheType getCacheType(String entityName) {
-		CacheProperties cache = this.cachePropertiesOf(entityName);
-		return (cache == null) ? null : cache.getType();
+	
+	public Entity addEntity(String entityName) {
+		if (this.entityExists(entityName)) {
+			throw new IllegalStateException("Entity " + entityName + " already exists.");
+		}
+		Entity newEntity = this.buildEntity(entityName);
+		this.entities.add(newEntity);
+		this.fireListChanged(ENTITIES_LIST_PROPERTY);
+		return newEntity;
 	}
 
-	public void setCacheType(CacheType newCacheType, String entityName) {
-		CacheProperties old = this.setCacheType_(newCacheType, entityName);
+	public void removeEntity(String entityName) {
+		if ( ! this.entityExists(entityName)) {
+			return;
+		}
+		Entity entity = this.getEntityNamed(entityName);
+		this.clearEntity(entity);
+		this.removeEntity(entity);
+	}
+
+	// ********** CacheType **********
+	public CacheType getCacheTypeOf(String entityName) {
+		Entity entity = this.getEntityNamed(entityName);
+		return (entity == null) ? null : entity.getCacheType();
+	}
+
+	public void setCacheTypeOf(String entityName, CacheType newCacheType) {
+		Entity old = this.setEntityCacheTypeOf(entityName, newCacheType);
 		this.putEnumValue(ECLIPSELINK_CACHE_TYPE, entityName, newCacheType, false);
-		this.firePropertyChanged(CACHE_TYPE_PROPERTY, old, this.cachePropertiesOf(entityName));
+		this.firePropertyChanged(CACHE_TYPE_PROPERTY, old, this.getEntityNamed(entityName));
 	}
 
 	private void cacheTypeChanged(String propertyName, String stringValue) {
-		String entityName = this.getEntityName(propertyName);
-		CacheProperties old = this.setCacheType_(stringValue, entityName);
-		this.firePropertyChanged(CACHE_TYPE_PROPERTY, old, this.cachePropertiesOf(entityName));
+		String entityName = this.extractEntityNameOf(propertyName);
+		Entity old = this.setEntityCacheTypeOf(entityName, stringValue); 
+		this.firePropertyChanged(CACHE_TYPE_PROPERTY, old, this.getEntityNamed(entityName));
 	}
 	
 	public CacheType getDefaultCacheType() {
@@ -225,21 +241,21 @@ public class EclipseLinkCaching extends EclipseLinkPersistenceUnitProperties
 	}
 
 	// ********** CacheSize **********
-	public Integer getCacheSize(String entityName) {
-		CacheProperties cache = this.cachePropertiesOf(entityName);
-		return (cache == null) ? null : cache.getSize();
+	public Integer getCacheSizeOf(String entityName) {
+		Entity entity = this.getEntityNamed(entityName);
+		return (entity == null) ? null : entity.getCacheSize();
 	}
 
-	public void setCacheSize(Integer newCacheSize, String entityName) {
-		CacheProperties old = this.setCacheSize_(newCacheSize, entityName);
+	public void setCacheSizeOf(String entityName, Integer newCacheSize) {
+		Entity old = this.setEntityCacheSizeOf(entityName, newCacheSize);
 		this.putIntegerValue(ECLIPSELINK_CACHE_SIZE + entityName, newCacheSize);
-		this.firePropertyChanged(CACHE_SIZE_PROPERTY, old, this.cachePropertiesOf(entityName));
+		this.firePropertyChanged(CACHE_SIZE_PROPERTY, old, this.getEntityNamed(entityName));
 	}
 
 	private void cacheSizeChanged(String propertyName, String stringValue) {
-		String entityName = this.getEntityName(propertyName);
-		CacheProperties old = this.setCacheSize_(stringValue, entityName);
-		this.firePropertyChanged(CACHE_SIZE_PROPERTY, old, this.cachePropertiesOf(entityName));
+		String entityName = this.extractEntityNameOf(propertyName);
+		Entity old = this.setEntityCacheSizeOf(entityName, stringValue);
+		this.firePropertyChanged(CACHE_SIZE_PROPERTY, old, this.getEntityNamed(entityName));
 	}
 
 	public Integer getDefaultCacheSize() {
@@ -247,21 +263,21 @@ public class EclipseLinkCaching extends EclipseLinkPersistenceUnitProperties
 	}
 
 	// ********** SharedCache **********
-	public Boolean getSharedCache(String entityName) {
-		CacheProperties cache = this.cachePropertiesOf(entityName);
-		return (cache == null) ? null : cache.isShared();
+	public Boolean getSharedCacheOf(String entityName) {
+		Entity entity = this.getEntityNamed(entityName);
+		return (entity == null) ? null : entity.cacheIsShared();
 	}
 
-	public void setSharedCache(Boolean newSharedCache, String entityName) {
-		CacheProperties old = this.setSharedCache_(newSharedCache, entityName);
+	public void setSharedCacheOf(String entityName, Boolean newSharedCache) {
+		Entity old = this.setEntitySharedCacheOf(entityName, newSharedCache);
 		this.putBooleanValue(ECLIPSELINK_SHARED_CACHE, entityName, newSharedCache, false);
-		this.firePropertyChanged(SHARED_CACHE_PROPERTY, old, this.cachePropertiesOf(entityName));
+		this.firePropertyChanged(SHARED_CACHE_PROPERTY, old, this.getEntityNamed(entityName));
 	}
 
 	private void sharedCacheChanged(String propertyName, String stringValue) {
-		String entityName = this.getEntityName(propertyName);
-		CacheProperties old = this.setSharedCache_(stringValue, entityName);
-		this.firePropertyChanged(SHARED_CACHE_PROPERTY, old, this.cachePropertiesOf(entityName));
+		String entityName = this.extractEntityNameOf(propertyName);
+		Entity old = this.setEntitySharedCacheOf(entityName, stringValue);
+		this.firePropertyChanged(SHARED_CACHE_PROPERTY, old, this.getEntityNamed(entityName));
 	}
 
 	public Boolean getDefaultSharedCache() {
@@ -362,160 +378,172 @@ public class EclipseLinkCaching extends EclipseLinkPersistenceUnitProperties
 		return DEFAULT_FLUSH_CLEAR_CACHE;
 	}
 
-	// ****** CacheProperties *******
+	// ****** Entity CacheType *******
 	/**
-	 * Convenience method to update the CacheType in entitiesCache map. Returns
-	 * the old value of CacheProperties
+	 * Returns the old Entity
 	 */
-	private CacheProperties setCacheType_(String stringValue, String entityName) {
+	private Entity setEntityCacheTypeOf(String entityName, String stringValue) {
 		CacheType newValue = getEnumValueOf(stringValue, CacheType.values());
-		return this.setCacheType_(newValue, entityName);
-	}
-
-	private CacheProperties setCacheType_(CacheType newValue, String entityName) {
-		CacheProperties properties = this.cachePropertiesOf(entityName);
-		CacheProperties old = properties.clone();
-		properties.setType(newValue);
-		this.putEntityCacheProperties(entityName, properties);
-		return old;
+		return this.setEntityCacheTypeOf(entityName, newValue);
 	}
 
 	/**
-	 * Convenience method to update the CacheSize in entitiesCache map. Returns
-	 * the old value of CacheProperties
+	 * Returns the old Entity
 	 */
-	private CacheProperties setCacheSize_(String stringValue, String entityName) {
-		Integer newValue = getIntegerValueOf(stringValue);
-		return this.setCacheSize_(newValue, entityName);
-	}
-
-	private CacheProperties setCacheSize_(Integer newValue, String entityName) {
-		CacheProperties properties = this.cachePropertiesOf(entityName);
-		CacheProperties old = properties.clone();
-		properties.setSize(newValue);
-		this.putEntityCacheProperties(entityName, properties);
-		return old;
+	private Entity setEntityCacheTypeOf(String entityName, CacheType cacheType) {
+		Entity entity = (this.entityExists(entityName)) ?
+						this.getEntityNamed(entityName) :
+						this.addEntity(entityName);
+		return this.setEntityCacheTypeOf(entity, cacheType);
 	}
 
 	/**
-	 * Convenience method to update the SharedCache in entitiesCacheProperties map.
-	 * Returns the old value of CacheProperties
+	 * Returns the old Entity
 	 */
-	private CacheProperties setSharedCache_(String newString, String entityName) {
-		Boolean newValue = getBooleanValueOf(newString);
-		return setSharedCache_(newValue, entityName);
-	}
-
-	private CacheProperties setSharedCache_(Boolean newValue, String entityName) {
-		CacheProperties properties = this.cachePropertiesOf(entityName);
-		CacheProperties old = properties.clone();
-		properties.setShared(newValue);
-		this.putEntityCacheProperties(entityName, properties);
-		return old;
-	}
-
-	/**
-	 * Returns the CacheProperties of the Entity with the given name.
-	 */
-	private CacheProperties cachePropertiesOf(String entityName) {
-		CacheProperties properties = this.entitiesCacheProperties.get(entityName);
-		if (properties == null) {
-			properties = new CacheProperties(entityName);
+	private Entity setEntityCacheTypeOf(Entity entity, CacheType cacheType) {
+		if(entity == null) {
+			throw new IllegalArgumentException();
 		}
-		return properties;
+		Entity old = entity.clone();
+		entity.setCacheType(cacheType);
+		return old;
+	}
+
+	private void setEntityCacheTypeOf(PersistenceUnit.Property cacheTypeProperty) {
+		String entityName = this.extractEntityNameOf(cacheTypeProperty);
+		this.setEntityCacheTypeOf(entityName, cacheTypeProperty.getValue());
+	}
+
+	// ****** Entity Cache size *******
+	/**
+	 * Returns the old Entity
+	 */
+	private Entity setEntityCacheSizeOf(String entityName, String stringValue) {
+		Integer newValue = getIntegerValueOf(stringValue);
+		return this.setEntityCacheSizeOf(entityName, newValue);
 	}
 
 	/**
-	 * Set all CacheProperties to default.
+	 * Returns the old Entity
 	 */
-	private void clearCacheProperties(String entityName) {
-		this.setCacheType(null, entityName);
-		this.setCacheSize(null, entityName);
-		this.setSharedCache(null, entityName);
+	private Entity setEntityCacheSizeOf(String entityName, Integer size) {
+		Entity entity = (this.entityExists(entityName)) ?
+						this.getEntityNamed(entityName) :
+						this.addEntity(entityName);
+		return this.setEntityCacheSizeOf(entity, size);
+	}
+
+	/**
+	 * Returns the old Entity
+	 */
+	private Entity setEntityCacheSizeOf(Entity entity, Integer size) {
+		if(entity == null) {
+			throw new IllegalArgumentException();
+		}
+		Entity old = entity.clone();
+		entity.setCacheSize(size);
+		return old;
+	}
+
+	private void setEntityCacheSizeOf(PersistenceUnit.Property cacheSizeProperty) {
+		String entityName = this.extractEntityNameOf(cacheSizeProperty);
+		this.setEntityCacheSizeOf(entityName, cacheSizeProperty.getValue());
+	}
+
+	// ****** Entity SharedCache *******
+	/**
+	 * Returns the old Entity
+	 */
+	private Entity setEntitySharedCacheOf(String entityName, String stringValue) {
+		Boolean newValue = getBooleanValueOf(stringValue);
+		return this.setEntitySharedCacheOf(entityName, newValue);
+	}
+
+	/**
+	 * Returns the old Entity
+	 */
+	private Entity setEntitySharedCacheOf(String entityName, Boolean sharedCache) {
+		Entity entity = (this.entityExists(entityName)) ?
+						this.getEntityNamed(entityName) :
+						this.addEntity(entityName);
+		return this.setEntitySharedCacheOf(entity, sharedCache);
+	}
+
+	/**
+	 * Returns the old Entity
+	 */
+	private Entity setEntitySharedCacheOf(Entity entity, Boolean sharedCache) {
+		if(entity == null) {
+			throw new IllegalArgumentException();
+		}
+		Entity old = entity.clone();
+		entity.setSharedCache(sharedCache);
+		return old;
+	}
+
+	private void setEntitySharedCacheOf(PersistenceUnit.Property sharedCacheProperty) {
+		String entityName = this.extractEntityNameOf(sharedCacheProperty);
+		this.setEntitySharedCacheOf(entityName, sharedCacheProperty.getValue());
 	}
 
 	// ****** convenience methods *******
 
 	/**
-	 * Put the given Entity CacheProperties in this entitiesCacheProperties map.
-	 * @param entityName - Entity name. The entity may be a new or an existing entity.
-	 * @param properties - Entity CacheProperties
+	 * Set all Entity properties to default.
 	 */
-	private void putEntityCacheProperties(String entityName, CacheProperties properties) {
-		this.addOrReplacePropertiesForEntity(entityName, properties);
+	private void clearEntity(Entity entity) {
+		if(entity.isEmpty()) {
+			return;
+		}
+		String entityName = entity.getName();
+		this.setCacheTypeOf(entityName, null);
+		this.setCacheSizeOf(entityName, null);
+		this.setSharedCacheOf(entityName, null);
+	}
+
+	/**
+	 * Returns the Entity with the given name.
+	 */
+	private Entity getEntityNamed(String name) {
+		for(Entity entity: this.entities) {
+			if(entity.getName().equals(name)) {
+				return entity;
+			}
+		}
+		return null;
+	}
+
+	private Entity buildEntity(String name) {
+		return new Entity(this, name);
+	}
+	
+	private void removeEntity(Entity entity) {
+		if(entity == null) {
+			throw new IllegalArgumentException();
+		}
+		this.entities.remove(entity);
+		this.fireListChanged(ENTITIES_LIST_PROPERTY);
+	}
+
+	/**
+	 * Return whether the Entity exist.
+	 */
+	public boolean entityExists(String name) {
+		for(Entity entity: this.entities) {
+			if(entity.getName().equals(name)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	// ****** entities list *******
 
-	public ListIterator<String> entities() {
-		return CollectionTools.list(this.entitiesCacheProperties.keySet()).listIterator();
+	public ListIterator<Entity> entities() {
+		return new CloneListIterator<Entity>(this.entities);
 	}
 
 	public int entitiesSize() {
-		return this.entitiesCacheProperties.size();
-	}
-
-	/* 
-	 * Verifies if this entitiesCacheProperties map contains the given Entity. 
-	 */
-	public boolean entityExists(String entity) {
-		return this.entitiesCacheProperties.containsKey(entity);
-	}
-
-	public String addEntity(String entity) {
-		if (entityExists(entity)) {
-			throw new IllegalStateException("Entity " + entity + " already exists.");
-		}
-		return this.addOrReplacePropertiesForEntity(entity, new CacheProperties(entity));
-	}
-
-	/**
-	 * Adds or replaces the given Entity CacheProperties in this
-	 * entitiesCacheProperties map. 
-	 * If the specified Entity exists and the given CacheProperties is empty 
-	 * (i.e. all properties are null) the mapping will be removed from the map.
-	 * 
-	 * @param entity - Entity name
-	 * @param properties - Entity CacheProperties
-	 * @return Entity name added
-	 */
-	private String addOrReplacePropertiesForEntity(String entity, CacheProperties properties) {
-		if (this.entityExists(entity)) {
-			this.replaceEntity_(entity, properties);
-			return null;
-		}
-		this.entitiesCacheProperties.put(entity, properties);
-		this.fireListChanged(ENTITIES_LIST_PROPERTY);
-		return entity;
-	}
-
-	/**
-	 * Replaces the given Entity CacheProperties in this
-	 * entitiesCacheProperties map.
-	 * If the given Entity CacheProperties is empty (i.e. all properties are null) the 
-	 * mapping will be removed from the map.
-	 * @param entity - Entity name
-	 * @param properties - Entity CacheProperties
-	 * @return Entity name replaced
-	 */
-	private CacheProperties replaceEntity_(String entity, CacheProperties properties) {
-		CacheProperties old = this.entitiesCacheProperties.get(entity);
-		if (properties.isEmpty()) {
-			this.entitiesCacheProperties.remove(entity);
-			this.fireListChanged(ENTITIES_LIST_PROPERTY);
-		}
-		else {
-			this.entitiesCacheProperties.put(entity, properties);
-		}
-		return old;
-	}
-
-	public void removeEntity(String entity) {
-		if ( ! this.entityExists(entity)) {
-			return;
-		}
-		this.clearCacheProperties(entity);
-		this.entitiesCacheProperties.remove(entity);
-		this.fireListChanged(ENTITIES_LIST_PROPERTY);
+		return this.entities.size();
 	}
 }

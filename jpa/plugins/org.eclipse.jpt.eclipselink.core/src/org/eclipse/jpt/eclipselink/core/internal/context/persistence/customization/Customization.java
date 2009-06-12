@@ -75,8 +75,8 @@ public interface Customization extends PersistenceUnitProperties
 		static final Boolean DEFAULT_WEAVING_EAGER = Boolean.FALSE;
 
 	String getDefaultDescriptorCustomizer();
-	String getDescriptorCustomizer(String entityName);
-	void setDescriptorCustomizer(String newDescriptorCustomizer, String entityName);
+	String getDescriptorCustomizerOf(String entityName);
+	void setDescriptorCustomizerOf(String entityName, String newDescriptorCustomizer);
 		static final String DESCRIPTOR_CUSTOMIZER_PROPERTY = "descriptorCustomizer"; //$NON-NLS-1$
 		// EclipseLink key string
 		static final String ECLIPSELINK_DESCRIPTOR_CUSTOMIZER = "eclipselink.descriptor.customizer."; //$NON-NLS-1$
@@ -92,10 +92,10 @@ public interface Customization extends PersistenceUnitProperties
 		// EclipseLink key string
 		static final String ECLIPSELINK_SESSION_CUSTOMIZER = "eclipselink.session.customizer"; //$NON-NLS-1$
 
-	ListIterator<String> entities();
+	ListIterator<Entity> entities();
 	int entitiesSize();
 	boolean entityExists(String entity);
-	String addEntity(String entity);
+	Entity addEntity(String entity);
 	void removeEntity(String entity);
 		static final String ENTITIES_LIST_PROPERTY = "entities"; //$NON-NLS-1$
 		

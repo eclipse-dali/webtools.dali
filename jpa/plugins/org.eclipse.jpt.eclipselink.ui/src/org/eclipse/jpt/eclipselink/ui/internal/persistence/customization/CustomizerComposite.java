@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2008 Oracle. All rights reserved.
+* Copyright (c) 2008, 2009 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,6 +12,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.persistence.customization;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.eclipselink.core.context.Customizer;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.customization.Customization;
+import org.eclipse.jpt.eclipselink.core.internal.context.persistence.customization.Entity;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.ui.internal.widgets.ClassChooserPane;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
@@ -22,7 +23,7 @@ import org.eclipse.swt.widgets.Composite;
 /**
  *  CustomizerComposite
  */
-public class CustomizerComposite extends Pane<EntityCustomizerProperties>
+public class CustomizerComposite extends Pane<Entity>
 {
 	/**
 	 * Creates a new <code>CustomizerComposite</code>.
@@ -30,23 +31,23 @@ public class CustomizerComposite extends Pane<EntityCustomizerProperties>
 	 * @param parentPane The parent pane of this one
 	 * @param parent The parent container
 	 */
-	public CustomizerComposite(Pane<? extends EntityCustomizerProperties> parentPane,
+	public CustomizerComposite(Pane<? extends Entity> parentPane,
                            Composite parent) {
 
 		super(parentPane, parent);
 	}
 
-	private ClassChooserPane<EntityCustomizerProperties> initializeClassChooser(Composite container) {
+	private ClassChooserPane<Entity> initializeClassChooser(Composite container) {
 
-		return new ClassChooserPane<EntityCustomizerProperties>(this, container) {
+		return new ClassChooserPane<Entity>(this, container) {
 
 			@Override
 			protected WritablePropertyValueModel<String> buildTextHolder() {
-				return new PropertyAspectAdapter<EntityCustomizerProperties, String>(
-							getSubjectHolder(), Customization.DESCRIPTOR_CUSTOMIZER_PROPERTY) {
+				return new PropertyAspectAdapter<Entity, String>(
+					this.getSubjectHolder(), Entity.DESCRIPTOR_CUSTOMIZER_PROPERTY) {
 					@Override
 					protected String buildValue_() {
-						return this.subject.getDescriptorCustomizer();
+						return getSubjectParent().getDescriptorCustomizerOf(getSubjectName());
 					}
 
 					@Override
@@ -55,14 +56,14 @@ public class CustomizerComposite extends Pane<EntityCustomizerProperties>
 						if (value.length() == 0) {
 							value = null;
 						}
-						this.subject.setDescriptorCustomizer(value);
+						getSubjectParent().setDescriptorCustomizerOf(getSubjectName(), value);
 					}
 				};
 			}
 
 			@Override
 			protected String getClassName() {
-				return getSubject().getDescriptorCustomizer();
+				return getSubjectParent().getDescriptorCustomizerOf(getSubjectName());
 			}
 
 			@Override
@@ -72,12 +73,12 @@ public class CustomizerComposite extends Pane<EntityCustomizerProperties>
 			
 			@Override
 			protected JpaProject getJpaProject() {
-				return getSubject().getJpaProject();
+				return getSubjectParent().getJpaProject();
 			}
 
 			@Override
 			protected void setClassName(String className) {
-				getSubject().setDescriptorCustomizer(className);
+				getSubjectParent().setDescriptorCustomizerOf(getSubjectName(), className);
 			}
 			
 			@Override
@@ -85,6 +86,14 @@ public class CustomizerComposite extends Pane<EntityCustomizerProperties>
 				return Customizer.ECLIPSELINK_DESCRIPTOR_CUSTOMIZER_CLASS_NAME;
 			}
 		};
+	}
+	
+	private String getSubjectName() {
+		return this.getSubjectHolder().getValue().getName();
+	}
+	
+	private Customization getSubjectParent() {
+		return this.getSubjectHolder().getValue().getParent();
 	}
 
 	@Override

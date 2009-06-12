@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,6 +12,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.persistence.caching;
 import java.util.Collection;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.caching.CacheType;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.caching.Caching;
+import org.eclipse.jpt.eclipselink.core.internal.context.persistence.caching.Entity;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
@@ -27,7 +28,7 @@ import org.eclipse.swt.widgets.Composite;
 /**
  * CacheTypeComposite
  */
-public class CacheTypeComposite extends Pane<EntityCacheProperties>
+public class CacheTypeComposite extends Pane<Entity>
 {
 	/**
 	 * Creates a new <code>CacheTypeComposite</code>.
@@ -37,7 +38,7 @@ public class CacheTypeComposite extends Pane<EntityCacheProperties>
 	 * @param parent
 	 *            The parent container
 	 */
-	public CacheTypeComposite(Pane<EntityCacheProperties> parentComposite,
+	public CacheTypeComposite(Pane<Entity> parentComposite,
 	                          Composite parent) {
 
 		super(parentComposite, parent);
@@ -54,7 +55,7 @@ public class CacheTypeComposite extends Pane<EntityCacheProperties>
 		);
 	}
 
-	private class CacheTypeCombo extends EnumFormComboViewer<EntityCacheProperties, CacheType> {
+	private class CacheTypeCombo extends EnumFormComboViewer<Entity, CacheType> {
 
 		private CacheTypeCombo(Composite parent) {
 			super(CacheTypeComposite.this, parent);
@@ -63,14 +64,14 @@ public class CacheTypeComposite extends Pane<EntityCacheProperties>
 		@Override
 		protected void addPropertyNames(Collection<String> propertyNames) {
 			super.addPropertyNames(propertyNames);
-			propertyNames.add(EntityCacheProperties.CACHE_TYPE_PROPERTY);
+			propertyNames.add(Entity.CACHE_TYPE_PROPERTY);
 		}
 
 		private PropertyValueModel<Caching> buildCachingHolder() {
-			return new TransformationPropertyValueModel<EntityCacheProperties, Caching>(getSubjectHolder()) {
+			return new TransformationPropertyValueModel<Entity, Caching>(getSubjectHolder()) {
 				@Override
-				protected Caching transform_(EntityCacheProperties value) {
-					return value.getCaching();
+				protected Caching transform_(Entity value) {
+					return value.getParent();
 				}
 			};
 		}
@@ -111,7 +112,7 @@ public class CacheTypeComposite extends Pane<EntityCacheProperties>
 
 		@Override
 		protected CacheType getDefaultValue() {
-			return this.getSubject().getDefaultCacheType();
+			return getSubjectParent().getDefaultCacheType();
 		}
 
 		@Override
@@ -132,7 +133,7 @@ public class CacheTypeComposite extends Pane<EntityCacheProperties>
 
 		@Override
 		protected CacheType getValue() {
-			return this.getSubject().getCacheType();
+			return getSubjectParent().getCacheTypeOf(getSubjectName());
 		}
 
 		@Override
@@ -150,12 +151,20 @@ public class CacheTypeComposite extends Pane<EntityCacheProperties>
 
 		@Override
 		protected void setValue(CacheType value) {
-			this.getSubject().setCacheType(value);
+			getSubjectParent().setCacheTypeOf(getSubjectName(), value);
 		}
 
 		@Override
 		protected boolean sortChoices() {
 			return false;
 		}
+	}
+	
+	private String getSubjectName() {
+		return this.getSubjectHolder().getValue().getName();
+	}
+
+	private Caching getSubjectParent() {
+		return this.getSubjectHolder().getValue().getParent();
 	}
 }

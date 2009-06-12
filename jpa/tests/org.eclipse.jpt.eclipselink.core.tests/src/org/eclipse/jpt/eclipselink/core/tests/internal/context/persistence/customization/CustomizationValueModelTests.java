@@ -11,6 +11,7 @@ package org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.cust
 
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.customization.Customization;
+import org.eclipse.jpt.eclipselink.core.internal.context.persistence.customization.Entity;
 import org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.PersistenceUnitTestCase;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
@@ -33,6 +34,7 @@ public class CustomizationValueModelTests extends PersistenceUnitTestCase
 
 	public static final String ENTITY_NAME_TEST_VALUE = "Employee";
 	public static final Boolean THROW_EXCEPTIONS_TEST_VALUE = Boolean.FALSE;
+	public static final String CUSTOMIZER_TEST_VALUE = "acme.sessions.Customizer";
 
 	public CustomizationValueModelTests(String name) {
 		super(name);
@@ -100,6 +102,46 @@ public class CustomizationValueModelTests extends PersistenceUnitTestCase
 				CustomizationValueModelTests.this.throwExceptionsEvent = e;
 			}
 		};
+	}
+
+	/** ****** Basic Entity's Properties Tests ******* */
+
+	public void testClone() {
+		Entity entity = this.buildEntity("TestEntity", CUSTOMIZER_TEST_VALUE);
+
+		this.verifyClone(entity, entity.clone());
+	}
+	
+	public void testEquals() {
+		Entity entity1 = this.buildEntity("TestEntityA", CUSTOMIZER_TEST_VALUE);
+		Entity entity2 = this.buildEntity("TestEntityB", CUSTOMIZER_TEST_VALUE);
+		assertEquals(entity1, entity2);
+		Entity entity3 = this.buildEntity("TestEntityC", CUSTOMIZER_TEST_VALUE);
+		assertEquals(entity1, entity3);
+		assertEquals(entity2, entity3);
+	}
+	
+	public void testIsEmpty() {
+		Entity entity = this.buildEntity("TestEntity");
+		assertTrue(entity.isEmpty());
+		this.customization.setDescriptorCustomizerOf(entity.getName(), CUSTOMIZER_TEST_VALUE);
+		assertFalse(entity.isEmpty());
+	}
+
+	private void verifyClone(Entity original, Entity clone) {
+		assertNotSame(original, clone);
+		assertEquals(original, original);
+		assertEquals(original, clone);
+	}
+
+	private Entity buildEntity(String name) {
+		return this.customization.addEntity(name);
+	}
+
+	private Entity buildEntity(String name, String aClassName) {
+		Entity entity = this.customization.addEntity(name);
+		this.customization.setDescriptorCustomizerOf(entity.getName(), aClassName);
+		return entity;
 	}
 
 	// ****** Tests ******* 

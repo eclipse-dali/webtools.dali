@@ -26,7 +26,7 @@ public interface PersistenceUnitProperties extends Model
 	/**
 	 * Returns the property name used for change notification of the given property.
 	 */
-	String propertyIdFor(PersistenceUnit.Property property);
+	String propertyIdOf(PersistenceUnit.Property property);
 	
 	/**
 	 * Return the PersistenceUnit of this Properties.

@@ -234,7 +234,7 @@ public class LoggingAdapterTests extends PersistenceUnitTestCase
 	 */
 	protected void verifySetLogger(String elKey, Object testValue1, Object testValue2) throws Exception {
 		PersistenceUnit.Property property = this.getPersistenceUnit().getProperty(elKey);
-		String propertyName = this.getModel().propertyIdFor(property);
+		String propertyName = this.getModel().propertyIdOf(property);
 		// test set custom logger.
 		this.clearEvent();
 		this.setProperty(propertyName, testValue2);

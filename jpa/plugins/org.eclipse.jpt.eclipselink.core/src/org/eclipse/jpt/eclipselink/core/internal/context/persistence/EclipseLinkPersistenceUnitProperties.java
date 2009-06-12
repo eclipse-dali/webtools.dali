@@ -92,7 +92,7 @@ public abstract class EclipseLinkPersistenceUnitProperties extends AbstractModel
 	 * Returns the property name used for change notification of the given
 	 * property.
 	 */
-	public String propertyIdFor(PersistenceUnit.Property property) {
+	public String propertyIdOf(PersistenceUnit.Property property) {
 		String propertyId = this.propertyNames().get(property.getName());
 		if (propertyId == null) {
 			throw new IllegalArgumentException("Illegal property: " + property); //$NON-NLS-1$
@@ -100,7 +100,10 @@ public abstract class EclipseLinkPersistenceUnitProperties extends AbstractModel
 		return propertyId;
 	}
 
-	protected String eclipseLinkKeyFor(String propertyId) {
+	/*
+	 * Get the EclipseLink key of the given property 
+	 */
+	protected String eclipseLinkKeyOf(String propertyId) {
 		for (String eclipseLinkKey : this.propertyNames().keySet()) {
 			if (this.propertyNames().get(eclipseLinkKey).equals(propertyId)) {
 				return eclipseLinkKey;
@@ -317,7 +320,7 @@ public abstract class EclipseLinkPersistenceUnitProperties extends AbstractModel
 	
 	@SuppressWarnings("unchecked")
 	protected void putProperty(String key, Object value, boolean allowDuplicates) {
-		String elKey = this.eclipseLinkKeyFor(key);
+		String elKey = this.eclipseLinkKeyOf(key);
 		if ((value != null) && value.getClass().isEnum()) {
 			this.putEnumValue(elKey, (Enum) value, allowDuplicates);
 		} else {
@@ -339,7 +342,7 @@ public abstract class EclipseLinkPersistenceUnitProperties extends AbstractModel
 	 *            property value
 	 */
 	protected void removeProperty(String key, String value) {
-		String elKey = this.eclipseLinkKeyFor(key);
+		String elKey = this.eclipseLinkKeyOf(key);
 		
 		this.getPersistenceUnit().removeProperty(elKey, value);
 	}
@@ -352,15 +355,15 @@ public abstract class EclipseLinkPersistenceUnitProperties extends AbstractModel
 	 * Extracts the entityName of the specified property name. If the property name
 	 * has no suffix, return an empty string.
 	 */
-	protected String getEntityName(PersistenceUnit.Property property) {
-		return getEntityName(property.getName());
+	protected String extractEntityNameOf(PersistenceUnit.Property property) {
+		return extractEntityNameOf(property.getName());
 	}
 
 	/**
 	 * Extracts the entityName of the specified string. If the string
 	 * has no suffix, return an empty string.
 	 */
-	protected String getEntityName(String propertyName) {
+	protected String extractEntityNameOf(String propertyName) {
 		int index = propertyName.lastIndexOf('.');
 		if (index == -1) {
 			return ""; //$NON-NLS-1$
@@ -370,7 +373,7 @@ public abstract class EclipseLinkPersistenceUnitProperties extends AbstractModel
 
 	// ****** Static methods ******* 
 	/**
-	 * Returns the EclipseLink string value for the given property value.
+	 * Returns the EclipseLink string value of the given property value.
 	 */
 	public static String getEclipseLinkStringValueOf(Object value) {
 		if (value == null) {
