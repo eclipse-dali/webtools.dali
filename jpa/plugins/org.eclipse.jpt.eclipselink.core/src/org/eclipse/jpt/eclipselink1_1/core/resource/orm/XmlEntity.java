@@ -12,8 +12,8 @@ package org.eclipse.jpt.eclipselink1_1.core.resource.orm;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
-import org.eclipse.jpt.core.resource.orm.EventMethod;
 import org.eclipse.jpt.core.resource.orm.OrmPackage;
+import org.eclipse.jpt2_0.core.resource.orm.JPA;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -97,13 +97,13 @@ public class XmlEntity extends org.eclipse.jpt.eclipselink.core.resource.orm.Xml
 			buildExcludeDefaultListenersTranslator(),
 			buildExcludeSuperclassListenersTranslator(),
 			buildEntityListenersTranslator(),
-			EventMethod.buildTranslator(JPA.PRE_PERSIST, OrmPackage.eINSTANCE.getXmlEntity_PrePersist()),
-			EventMethod.buildTranslator(JPA.POST_PERSIST, OrmPackage.eINSTANCE.getXmlEntity_PostPersist()),
-			EventMethod.buildTranslator(JPA.PRE_REMOVE, OrmPackage.eINSTANCE.getXmlEntity_PreRemove()),
-			EventMethod.buildTranslator(JPA.POST_REMOVE, OrmPackage.eINSTANCE.getXmlEntity_PostRemove()),
-			EventMethod.buildTranslator(JPA.PRE_UPDATE, OrmPackage.eINSTANCE.getXmlEntity_PreUpdate()),
-			EventMethod.buildTranslator(JPA.POST_UPDATE, OrmPackage.eINSTANCE.getXmlEntity_PostUpdate()),
-			EventMethod.buildTranslator(JPA.POST_LOAD, OrmPackage.eINSTANCE.getXmlEntity_PostLoad()),
+			buildPrePersistTranslator(),
+			buildPostPersistTranslator(),
+			buildPreRemoveTranslator(),
+			buildPostRemoveTranslator(),
+			buildPreUpdateTranslator(),
+			buildPostUpdateTranslator(),
+			buildPostLoadTranslator(),
 			buildPropertyTranslator(),
 			buildAttributeOverrideTranslator(),
 			buildAssociationOverrideTranslator(),

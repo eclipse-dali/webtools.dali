@@ -133,16 +133,17 @@
   <eClassifiers xsi:type="ecore:EClass" name="SqlResultSetMapping" eSuperTypes="orm.ecore#//SqlResultSetMapping">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="EventMethod" eSuperTypes="orm.ecore#//EventMethod">
+  <eClassifiers xsi:type="ecore:EClass" name="EventMethod" abstract="true" interface="true"
+      eSuperTypes="orm.ecore#//EventMethod">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="PostLoad" eSuperTypes="#//EventMethod orm.ecore#//PostLoad"/>
-  <eClassifiers xsi:type="ecore:EClass" name="PostPersist" eSuperTypes="#//EventMethod orm.ecore#//PostPersist"/>
-  <eClassifiers xsi:type="ecore:EClass" name="PostRemove" eSuperTypes="#//EventMethod orm.ecore#//PostRemove"/>
-  <eClassifiers xsi:type="ecore:EClass" name="PostUpdate" eSuperTypes="#//EventMethod orm.ecore#//PostUpdate"/>
-  <eClassifiers xsi:type="ecore:EClass" name="PrePersist" eSuperTypes="#//EventMethod orm.ecore#//PrePersist"/>
-  <eClassifiers xsi:type="ecore:EClass" name="PreRemove" eSuperTypes="#//EventMethod orm.ecore#//PreRemove"/>
-  <eClassifiers xsi:type="ecore:EClass" name="PreUpdate" eSuperTypes="#//EventMethod orm.ecore#//PreUpdate"/>
+  <eClassifiers xsi:type="ecore:EClass" name="PostLoad" eSuperTypes="orm.ecore#//PostLoad #//EventMethod"/>
+  <eClassifiers xsi:type="ecore:EClass" name="PostPersist" eSuperTypes="orm.ecore#//PostPersist #//EventMethod"/>
+  <eClassifiers xsi:type="ecore:EClass" name="PostRemove" eSuperTypes="orm.ecore#//PostRemove #//EventMethod"/>
+  <eClassifiers xsi:type="ecore:EClass" name="PostUpdate" eSuperTypes="orm.ecore#//PostUpdate #//EventMethod"/>
+  <eClassifiers xsi:type="ecore:EClass" name="PrePersist" eSuperTypes="orm.ecore#//PrePersist #//EventMethod"/>
+  <eClassifiers xsi:type="ecore:EClass" name="PreRemove" eSuperTypes="orm.ecore#//PreRemove #//EventMethod"/>
+  <eClassifiers xsi:type="ecore:EClass" name="PreUpdate" eSuperTypes="orm.ecore#//PreUpdate #//EventMethod"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlQueryHint" eSuperTypes="orm.ecore#//XmlQueryHint">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"
         defaultValueLiteral=""/>

@@ -299,7 +299,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="fieldResults" upperBound="-1"
         eType="#//FieldResult" containment="true" resolveProxies="false"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="EventMethod">
+  <eClassifiers xsi:type="ecore:EClass" name="EventMethod" abstract="true" interface="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="methodName" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
   </eClassifiers>

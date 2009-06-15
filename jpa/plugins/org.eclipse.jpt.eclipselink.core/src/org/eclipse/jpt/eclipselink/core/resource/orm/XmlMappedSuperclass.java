@@ -20,7 +20,6 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
-import org.eclipse.jpt.core.resource.orm.EventMethod;
 import org.eclipse.jpt.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
@@ -1333,13 +1332,13 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 			buildExcludeDefaultListenersTranslator(),
 			buildExcludeSuperclassListenersTranslator(),
 			buildEntityListenersTranslator(),
-			EventMethod.buildTranslator(JPA.PRE_PERSIST, OrmPackage.eINSTANCE.getXmlMappedSuperclass_PrePersist()),
-			EventMethod.buildTranslator(JPA.POST_PERSIST, OrmPackage.eINSTANCE.getXmlMappedSuperclass_PostPersist()),
-			EventMethod.buildTranslator(JPA.PRE_REMOVE, OrmPackage.eINSTANCE.getXmlMappedSuperclass_PreRemove()),
-			EventMethod.buildTranslator(JPA.POST_REMOVE, OrmPackage.eINSTANCE.getXmlMappedSuperclass_PostRemove()),
-			EventMethod.buildTranslator(JPA.PRE_UPDATE, OrmPackage.eINSTANCE.getXmlMappedSuperclass_PreUpdate()),
-			EventMethod.buildTranslator(JPA.POST_UPDATE, OrmPackage.eINSTANCE.getXmlMappedSuperclass_PostUpdate()),
-			EventMethod.buildTranslator(JPA.POST_LOAD, OrmPackage.eINSTANCE.getXmlMappedSuperclass_PostLoad()),
+			buildPrePersistTranslator(),
+			buildPostPersistTranslator(),
+			buildPreRemoveTranslator(),
+			buildPostRemoveTranslator(),
+			buildPreUpdateTranslator(),
+			buildPostUpdateTranslator(),
+			buildPostLoadTranslator(),
 			buildPropertyTranslator(),
 			Attributes.buildTranslator(JPA.ATTRIBUTES, OrmPackage.eINSTANCE.getXmlTypeMapping_Attributes())
 		};

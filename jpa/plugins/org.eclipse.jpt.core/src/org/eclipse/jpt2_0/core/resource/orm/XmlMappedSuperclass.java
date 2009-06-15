@@ -68,12 +68,13 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 			buildExcludeDefaultListenersTranslator(),
 			buildExcludeSuperclassListenersTranslator(),
 			buildEntityListenersTranslator(),
-			EventMethod.buildTranslator(JPA.PRE_PERSIST, OrmPackage.eINSTANCE.getXmlMappedSuperclass_PrePersist()),
-			EventMethod.buildTranslator(JPA.POST_PERSIST, OrmPackage.eINSTANCE.getXmlMappedSuperclass_PostPersist()),
-			EventMethod.buildTranslator(JPA.PRE_REMOVE, OrmPackage.eINSTANCE.getXmlMappedSuperclass_PreRemove()),
-			EventMethod.buildTranslator(JPA.POST_REMOVE, OrmPackage.eINSTANCE.getXmlMappedSuperclass_PostRemove()),
-			EventMethod.buildTranslator(JPA.PRE_UPDATE, OrmPackage.eINSTANCE.getXmlMappedSuperclass_PreUpdate()),
-			EventMethod.buildTranslator(JPA.POST_UPDATE, OrmPackage.eINSTANCE.getXmlMappedSuperclass_PostUpdate()),
+			PrePersist.buildTranslator(JPA.PRE_PERSIST, OrmPackage.eINSTANCE.getXmlMappedSuperclass_PrePersist()),
+			PostPersist.buildTranslator(JPA.POST_PERSIST, OrmPackage.eINSTANCE.getXmlMappedSuperclass_PostPersist()),
+			PreRemove.buildTranslator(JPA.PRE_REMOVE, OrmPackage.eINSTANCE.getXmlMappedSuperclass_PreRemove()),
+			PostRemove.buildTranslator(JPA.POST_REMOVE, OrmPackage.eINSTANCE.getXmlMappedSuperclass_PostRemove()),
+			PreUpdate.buildTranslator(JPA.PRE_UPDATE, OrmPackage.eINSTANCE.getXmlMappedSuperclass_PreUpdate()),
+			PostUpdate.buildTranslator(JPA.POST_UPDATE, OrmPackage.eINSTANCE.getXmlMappedSuperclass_PostUpdate()),
+			PostLoad.buildTranslator(JPA.POST_LOAD, OrmPackage.eINSTANCE.getXmlMappedSuperclass_PostLoad()),
 			Attributes.buildTranslator(JPA.ATTRIBUTES, OrmPackage.eINSTANCE.getXmlTypeMapping_Attributes())
 		};
 	}

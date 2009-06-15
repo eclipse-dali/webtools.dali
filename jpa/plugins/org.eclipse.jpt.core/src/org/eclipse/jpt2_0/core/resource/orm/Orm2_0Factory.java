@@ -106,7 +106,6 @@ public class Orm2_0Factory extends EFactoryImpl
 			case Orm2_0Package.XML_SEQUENCE_GENERATOR: return (EObject)createXmlSequenceGenerator();
 			case Orm2_0Package.XML_TABLE_GENERATOR: return (EObject)createXmlTableGenerator();
 			case Orm2_0Package.SQL_RESULT_SET_MAPPING: return (EObject)createSqlResultSetMapping();
-			case Orm2_0Package.EVENT_METHOD: return (EObject)createEventMethod();
 			case Orm2_0Package.POST_LOAD: return (EObject)createPostLoad();
 			case Orm2_0Package.POST_PERSIST: return (EObject)createPostPersist();
 			case Orm2_0Package.POST_REMOVE: return (EObject)createPostRemove();
@@ -444,17 +443,6 @@ public class Orm2_0Factory extends EFactoryImpl
 	{
 		SqlResultSetMapping sqlResultSetMapping = new SqlResultSetMapping();
 		return sqlResultSetMapping;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EventMethod createEventMethod()
-	{
-		EventMethod eventMethod = new EventMethod();
-		return eventMethod;
 	}
 
 	/**

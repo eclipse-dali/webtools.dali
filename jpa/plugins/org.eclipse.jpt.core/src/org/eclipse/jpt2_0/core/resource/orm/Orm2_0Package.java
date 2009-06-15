@@ -2946,7 +2946,7 @@ public class Orm2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int POST_LOAD__METHOD_NAME = EVENT_METHOD__METHOD_NAME;
+	public static final int POST_LOAD__METHOD_NAME = OrmPackage.POST_LOAD__METHOD_NAME;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -2955,7 +2955,7 @@ public class Orm2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int POST_LOAD__DESCRIPTION = EVENT_METHOD__DESCRIPTION;
+	public static final int POST_LOAD__DESCRIPTION = OrmPackage.POST_LOAD_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Post Load</em>' class.
@@ -2964,7 +2964,7 @@ public class Orm2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int POST_LOAD_FEATURE_COUNT = EVENT_METHOD_FEATURE_COUNT + 0;
+	public static final int POST_LOAD_FEATURE_COUNT = OrmPackage.POST_LOAD_FEATURE_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt2_0.core.resource.orm.PostPersist <em>Post Persist</em>}' class.
@@ -2983,7 +2983,7 @@ public class Orm2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int POST_PERSIST__METHOD_NAME = EVENT_METHOD__METHOD_NAME;
+	public static final int POST_PERSIST__METHOD_NAME = OrmPackage.POST_PERSIST__METHOD_NAME;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -2992,7 +2992,7 @@ public class Orm2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int POST_PERSIST__DESCRIPTION = EVENT_METHOD__DESCRIPTION;
+	public static final int POST_PERSIST__DESCRIPTION = OrmPackage.POST_PERSIST_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Post Persist</em>' class.
@@ -3001,7 +3001,7 @@ public class Orm2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int POST_PERSIST_FEATURE_COUNT = EVENT_METHOD_FEATURE_COUNT + 0;
+	public static final int POST_PERSIST_FEATURE_COUNT = OrmPackage.POST_PERSIST_FEATURE_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt2_0.core.resource.orm.PostRemove <em>Post Remove</em>}' class.
@@ -3020,7 +3020,7 @@ public class Orm2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int POST_REMOVE__METHOD_NAME = EVENT_METHOD__METHOD_NAME;
+	public static final int POST_REMOVE__METHOD_NAME = OrmPackage.POST_REMOVE__METHOD_NAME;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -3029,7 +3029,7 @@ public class Orm2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int POST_REMOVE__DESCRIPTION = EVENT_METHOD__DESCRIPTION;
+	public static final int POST_REMOVE__DESCRIPTION = OrmPackage.POST_REMOVE_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Post Remove</em>' class.
@@ -3038,7 +3038,7 @@ public class Orm2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int POST_REMOVE_FEATURE_COUNT = EVENT_METHOD_FEATURE_COUNT + 0;
+	public static final int POST_REMOVE_FEATURE_COUNT = OrmPackage.POST_REMOVE_FEATURE_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt2_0.core.resource.orm.PostUpdate <em>Post Update</em>}' class.
@@ -3057,7 +3057,7 @@ public class Orm2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int POST_UPDATE__METHOD_NAME = EVENT_METHOD__METHOD_NAME;
+	public static final int POST_UPDATE__METHOD_NAME = OrmPackage.POST_UPDATE__METHOD_NAME;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -3066,7 +3066,7 @@ public class Orm2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int POST_UPDATE__DESCRIPTION = EVENT_METHOD__DESCRIPTION;
+	public static final int POST_UPDATE__DESCRIPTION = OrmPackage.POST_UPDATE_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Post Update</em>' class.
@@ -3075,7 +3075,7 @@ public class Orm2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int POST_UPDATE_FEATURE_COUNT = EVENT_METHOD_FEATURE_COUNT + 0;
+	public static final int POST_UPDATE_FEATURE_COUNT = OrmPackage.POST_UPDATE_FEATURE_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt2_0.core.resource.orm.PrePersist <em>Pre Persist</em>}' class.
@@ -3094,7 +3094,7 @@ public class Orm2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int PRE_PERSIST__METHOD_NAME = EVENT_METHOD__METHOD_NAME;
+	public static final int PRE_PERSIST__METHOD_NAME = OrmPackage.PRE_PERSIST__METHOD_NAME;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -3103,7 +3103,7 @@ public class Orm2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int PRE_PERSIST__DESCRIPTION = EVENT_METHOD__DESCRIPTION;
+	public static final int PRE_PERSIST__DESCRIPTION = OrmPackage.PRE_PERSIST_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Pre Persist</em>' class.
@@ -3112,7 +3112,7 @@ public class Orm2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int PRE_PERSIST_FEATURE_COUNT = EVENT_METHOD_FEATURE_COUNT + 0;
+	public static final int PRE_PERSIST_FEATURE_COUNT = OrmPackage.PRE_PERSIST_FEATURE_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt2_0.core.resource.orm.PreRemove <em>Pre Remove</em>}' class.
@@ -3131,7 +3131,7 @@ public class Orm2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int PRE_REMOVE__METHOD_NAME = EVENT_METHOD__METHOD_NAME;
+	public static final int PRE_REMOVE__METHOD_NAME = OrmPackage.PRE_REMOVE__METHOD_NAME;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -3140,7 +3140,7 @@ public class Orm2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int PRE_REMOVE__DESCRIPTION = EVENT_METHOD__DESCRIPTION;
+	public static final int PRE_REMOVE__DESCRIPTION = OrmPackage.PRE_REMOVE_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Pre Remove</em>' class.
@@ -3149,7 +3149,7 @@ public class Orm2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int PRE_REMOVE_FEATURE_COUNT = EVENT_METHOD_FEATURE_COUNT + 0;
+	public static final int PRE_REMOVE_FEATURE_COUNT = OrmPackage.PRE_REMOVE_FEATURE_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt2_0.core.resource.orm.PreUpdate <em>Pre Update</em>}' class.
@@ -3168,7 +3168,7 @@ public class Orm2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int PRE_UPDATE__METHOD_NAME = EVENT_METHOD__METHOD_NAME;
+	public static final int PRE_UPDATE__METHOD_NAME = OrmPackage.PRE_UPDATE__METHOD_NAME;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -3177,7 +3177,7 @@ public class Orm2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int PRE_UPDATE__DESCRIPTION = EVENT_METHOD__DESCRIPTION;
+	public static final int PRE_UPDATE__DESCRIPTION = OrmPackage.PRE_UPDATE_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Pre Update</em>' class.
@@ -3186,7 +3186,7 @@ public class Orm2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int PRE_UPDATE_FEATURE_COUNT = EVENT_METHOD_FEATURE_COUNT + 0;
+	public static final int PRE_UPDATE_FEATURE_COUNT = OrmPackage.PRE_UPDATE_FEATURE_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt2_0.core.resource.orm.XmlQueryHint <em>Xml Query Hint</em>}' class.
@@ -5752,20 +5752,20 @@ public class Orm2_0Package extends EPackageImpl
 		xmlTableGeneratorEClass.getESuperTypes().add(this.getXmlGenerator());
 		sqlResultSetMappingEClass.getESuperTypes().add(theOrmPackage.getSqlResultSetMapping());
 		eventMethodEClass.getESuperTypes().add(theOrmPackage.getEventMethod());
-		postLoadEClass.getESuperTypes().add(this.getEventMethod());
 		postLoadEClass.getESuperTypes().add(theOrmPackage.getPostLoad());
-		postPersistEClass.getESuperTypes().add(this.getEventMethod());
+		postLoadEClass.getESuperTypes().add(this.getEventMethod());
 		postPersistEClass.getESuperTypes().add(theOrmPackage.getPostPersist());
-		postRemoveEClass.getESuperTypes().add(this.getEventMethod());
+		postPersistEClass.getESuperTypes().add(this.getEventMethod());
 		postRemoveEClass.getESuperTypes().add(theOrmPackage.getPostRemove());
-		postUpdateEClass.getESuperTypes().add(this.getEventMethod());
+		postRemoveEClass.getESuperTypes().add(this.getEventMethod());
 		postUpdateEClass.getESuperTypes().add(theOrmPackage.getPostUpdate());
-		prePersistEClass.getESuperTypes().add(this.getEventMethod());
+		postUpdateEClass.getESuperTypes().add(this.getEventMethod());
 		prePersistEClass.getESuperTypes().add(theOrmPackage.getPrePersist());
-		preRemoveEClass.getESuperTypes().add(this.getEventMethod());
+		prePersistEClass.getESuperTypes().add(this.getEventMethod());
 		preRemoveEClass.getESuperTypes().add(theOrmPackage.getPreRemove());
-		preUpdateEClass.getESuperTypes().add(this.getEventMethod());
+		preRemoveEClass.getESuperTypes().add(this.getEventMethod());
 		preUpdateEClass.getESuperTypes().add(theOrmPackage.getPreUpdate());
+		preUpdateEClass.getESuperTypes().add(this.getEventMethod());
 		xmlQueryHintEClass.getESuperTypes().add(theOrmPackage.getXmlQueryHint());
 		xmlCollectionTableEClass.getESuperTypes().add(theOrmPackage.getAbstractXmlTable());
 		xmlOrderColumnEClass.getESuperTypes().add(theOrmPackage.getAbstractXmlNamedColumn());
@@ -5884,7 +5884,7 @@ public class Orm2_0Package extends EPackageImpl
 		initEClass(sqlResultSetMappingEClass, SqlResultSetMapping.class, "SqlResultSetMapping", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getSqlResultSetMapping_Description(), theXMLTypePackage.getString(), "description", null, 0, 1, SqlResultSetMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(eventMethodEClass, EventMethod.class, "EventMethod", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(eventMethodEClass, EventMethod.class, "EventMethod", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getEventMethod_Description(), theXMLTypePackage.getString(), "description", null, 0, 1, EventMethod.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(postLoadEClass, PostLoad.class, "PostLoad", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

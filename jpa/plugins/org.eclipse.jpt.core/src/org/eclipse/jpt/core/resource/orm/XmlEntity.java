@@ -2017,13 +2017,13 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 			buildExcludeDefaultListenersTranslator(),
 			buildExcludeSuperclassListenersTranslator(),
 			buildEntityListenersTranslator(),
-			EventMethod.buildTranslator(JPA.PRE_PERSIST, OrmPackage.eINSTANCE.getXmlEntity_PrePersist()),
-			EventMethod.buildTranslator(JPA.POST_PERSIST, OrmPackage.eINSTANCE.getXmlEntity_PostPersist()),
-			EventMethod.buildTranslator(JPA.PRE_REMOVE, OrmPackage.eINSTANCE.getXmlEntity_PreRemove()),
-			EventMethod.buildTranslator(JPA.POST_REMOVE, OrmPackage.eINSTANCE.getXmlEntity_PostRemove()),
-			EventMethod.buildTranslator(JPA.PRE_UPDATE, OrmPackage.eINSTANCE.getXmlEntity_PreUpdate()),
-			EventMethod.buildTranslator(JPA.POST_UPDATE, OrmPackage.eINSTANCE.getXmlEntity_PostUpdate()),
-			EventMethod.buildTranslator(JPA.POST_LOAD, OrmPackage.eINSTANCE.getXmlEntity_PostLoad()),
+			buildPrePersistTranslator(),
+			buildPostPersistTranslator(),
+			buildPreRemoveTranslator(),
+			buildPostRemoveTranslator(),
+			buildPreUpdateTranslator(),
+			buildPostUpdateTranslator(),
+			buildPostLoadTranslator(),
 			buildAttributeOverrideTranslator(),
 			buildAssociationOverrideTranslator(),
 			buildAttributesTranslator()
@@ -2096,6 +2096,34 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	
 	protected static Translator buildEntityListenersTranslator() {
 		return EntityListeners.buildTranslator(JPA.ENTITY_LISTENERS, OrmPackage.eINSTANCE.getXmlEntity_EntityListeners());
+	}
+
+	protected static Translator buildPrePersistTranslator() {
+		return PrePersist.buildTranslator(JPA.PRE_PERSIST, OrmPackage.eINSTANCE.getXmlEntity_PrePersist());
+	}
+
+	protected static Translator buildPostPersistTranslator() {
+		return PostPersist.buildTranslator(JPA.POST_PERSIST, OrmPackage.eINSTANCE.getXmlEntity_PostPersist());
+	}
+
+	protected static Translator buildPreRemoveTranslator() {
+		return PreRemove.buildTranslator(JPA.PRE_REMOVE, OrmPackage.eINSTANCE.getXmlEntity_PreRemove());
+	}
+
+	protected static Translator buildPostRemoveTranslator() {
+		return PostRemove.buildTranslator(JPA.POST_REMOVE, OrmPackage.eINSTANCE.getXmlEntity_PostRemove());
+	}
+	
+	protected static Translator buildPreUpdateTranslator() {
+		return PreUpdate.buildTranslator(JPA.PRE_UPDATE, OrmPackage.eINSTANCE.getXmlEntity_PreUpdate());
+	}
+	
+	protected static Translator buildPostUpdateTranslator() {
+		return PostUpdate.buildTranslator(JPA.POST_UPDATE, OrmPackage.eINSTANCE.getXmlEntity_PostUpdate());
+	}
+
+	protected static Translator buildPostLoadTranslator() {
+		return PostLoad.buildTranslator(JPA.POST_LOAD, OrmPackage.eINSTANCE.getXmlEntity_PostLoad());
 	}
 		
 	protected static Translator buildAttributeOverrideTranslator() {

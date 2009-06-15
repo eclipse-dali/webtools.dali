@@ -111,7 +111,6 @@ public class OrmFactory extends EFactoryImpl
 			case OrmPackage.ENTITY_LISTENERS: return (EObject)createEntityListeners();
 			case OrmPackage.ENTITY_LISTENER: return (EObject)createEntityListener();
 			case OrmPackage.ENTITY_RESULT: return (EObject)createEntityResult();
-			case OrmPackage.EVENT_METHOD: return (EObject)createEventMethod();
 			case OrmPackage.FIELD_RESULT: return (EObject)createFieldResult();
 			case OrmPackage.XML_GENERATED_VALUE: return (EObject)createXmlGeneratedValue();
 			case OrmPackage.XML_ID_CLASS: return (EObject)createXmlIdClass();
@@ -610,17 +609,6 @@ public class OrmFactory extends EFactoryImpl
 	{
 		XmlNamedQuery xmlNamedQuery = new XmlNamedQuery();
 		return xmlNamedQuery;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EventMethod createEventMethod()
-	{
-		EventMethod eventMethod = new EventMethod();
-		return eventMethod;
 	}
 
 	/**
