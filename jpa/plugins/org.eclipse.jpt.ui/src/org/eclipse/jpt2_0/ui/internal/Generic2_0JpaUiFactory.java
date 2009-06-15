@@ -7,7 +7,9 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.ui.internal;
+package org.eclipse.jpt2_0.ui.internal;
+
+import org.eclipse.jpt.ui.internal.GenericJpaUiFactory;
 
 /**
  * The default implementation of the UI factory required to show the information

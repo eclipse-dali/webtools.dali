@@ -7,15 +7,17 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.ui.internal.platform.generic;
+package org.eclipse.jpt2_0.ui.internal.platform.generic;
 
 import org.eclipse.jpt.ui.JpaPlatformUi;
 import org.eclipse.jpt.ui.JpaPlatformUiFactory;
-import org.eclipse.jpt.ui.internal.Generic2_0JpaPlatformUiProvider;
 import org.eclipse.jpt.ui.internal.GenericJpaPlatformUiProvider;
-import org.eclipse.jpt.ui.internal.Generic2_0JpaUiFactory;
+import org.eclipse.jpt.ui.internal.platform.generic.GenericJpaPlatformUi;
+import org.eclipse.jpt.ui.internal.platform.generic.GenericNavigatorProvider;
 import org.eclipse.jpt.ui.internal.structure.JavaResourceModelStructureProvider;
 import org.eclipse.jpt.ui.internal.structure.PersistenceResourceModelStructureProvider;
+import org.eclipse.jpt2_0.ui.internal.Generic2_0JpaPlatformUiProvider;
+import org.eclipse.jpt2_0.ui.internal.Generic2_0JpaUiFactory;
 
 public class Generic2_0JpaPlatformUiFactory implements JpaPlatformUiFactory
 {

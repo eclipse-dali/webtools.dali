@@ -25,7 +25,6 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
-import org.eclipse.jpt.core.MappingKeys2_0;
 import org.eclipse.jpt.core.internal.resource.xml.translators.BooleanTranslator;
 import org.eclipse.jpt.core.internal.resource.xml.translators.EmptyTagBooleanTranslator;
 import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
@@ -39,6 +38,7 @@ import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
+import org.eclipse.jpt2_0.core.MappingKeys2_0;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**

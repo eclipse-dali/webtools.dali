@@ -80,7 +80,7 @@
 			jpaPlatform="generic"
 			factoryClass="org.eclipse.jpt.ui.internal.platform.generic.GenericJpaPlatformUiFactory"/>
   <jpaPlatformUi
-        factoryClass="org.eclipse.jpt.ui.internal.platform.generic.Generic2_0JpaPlatformUiFactory"
+        factoryClass="org.eclipse.jpt2_0.ui.internal.platform.generic.Generic2_0JpaPlatformUiFactory"
         id="generic2_0.ui"
         jpaPlatform="generic2_0">
   </jpaPlatformUi>

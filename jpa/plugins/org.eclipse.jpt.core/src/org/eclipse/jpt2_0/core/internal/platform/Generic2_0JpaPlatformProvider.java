@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.internal.platform;
+package org.eclipse.jpt2_0.core.internal.platform;
 
 import java.util.List;
 import org.eclipse.jpt.core.JpaPlatformProvider;
@@ -18,10 +18,9 @@ import org.eclipse.jpt.core.context.java.JavaAttributeMappingProvider;
 import org.eclipse.jpt.core.context.java.JavaTypeMappingProvider;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMappingProvider;
 import org.eclipse.jpt.core.context.orm.OrmTypeMappingProvider;
-import org.eclipse.jpt.core.internal.Orm2_0ResourceModelProvider;
-import org.eclipse.jpt.core.internal.Persistence2_0ResourceModelProvider;
-import org.eclipse.jpt.core.internal.context.java.JavaBasicMappingProvider;
-import org.eclipse.jpt.core.internal.context.java.JavaEmbeddedMappingProvider;
+import org.eclipse.jpt.core.internal.platform.AbstractJpaPlatformProvider;
+import org.eclipse.jpt2_0.core.internal.Orm2_0ResourceModelProvider;
+import org.eclipse.jpt2_0.core.internal.Persistence2_0ResourceModelProvider;
 
 /**
  * All the state in the JPA platform should be "static" (i.e. unchanging once
@@ -77,8 +76,6 @@ public class Generic2_0JpaPlatformProvider extends AbstractJpaPlatformProvider
 
 	@Override
 	protected void addDefaultJavaAttributeMappingProvidersTo(List<DefaultJavaAttributeMappingProvider> providers) {
-		providers.add(JavaEmbeddedMappingProvider.instance());  // bug 190344 need to test default embedded before basic
-		providers.add(JavaBasicMappingProvider.instance());
 	}
 
 	// ********** Mapping File **********

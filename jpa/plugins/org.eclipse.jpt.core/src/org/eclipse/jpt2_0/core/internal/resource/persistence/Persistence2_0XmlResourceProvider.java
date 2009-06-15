@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.core.internal.resource.persistence;
+package org.eclipse.jpt2_0.core.internal.resource.persistence;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;

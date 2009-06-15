@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.ui.internal;
+package org.eclipse.jpt2_0.ui.internal;
 
 import java.util.List;
 import org.eclipse.jpt.core.context.AttributeMapping;
@@ -17,6 +17,7 @@ import org.eclipse.jpt.ui.details.DefaultAttributeMappingUiProvider;
 import org.eclipse.jpt.ui.details.DefaultTypeMappingUiProvider;
 import org.eclipse.jpt.ui.details.JpaDetailsProvider;
 import org.eclipse.jpt.ui.details.TypeMappingUiProvider;
+import org.eclipse.jpt.ui.internal.AbstractJpaPlatformUiProvider;
 import org.eclipse.jpt.ui.structure.JpaStructureProvider;
 
 /**

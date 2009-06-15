@@ -69,6 +69,12 @@ Export-Package: org.eclipse.jpt.core,
  org.eclipse.jpt.core.resource.xml,
  org.eclipse.jpt.core.utility,
  org.eclipse.jpt.core.utility.jdt,
+ org.eclipse.jpt2_0.core,
+ org.eclipse.jpt2_0.core.internal,
+ org.eclipse.jpt2_0.core.internal.platform,
+ org.eclipse.jpt2_0.core.internal.resource.orm,
+ org.eclipse.jpt2_0.core.internal.resource.persistence,
+ org.eclipse.jpt2_0.core.resource.java,
  org.eclipse.jpt2_0.core.resource.orm,
  org.eclipse.jpt2_0.core.resource.persistence
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
