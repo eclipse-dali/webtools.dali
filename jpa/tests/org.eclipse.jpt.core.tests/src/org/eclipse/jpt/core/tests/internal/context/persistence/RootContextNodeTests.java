@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.tests.internal.context.persistence;
 
 import org.eclipse.jpt.core.context.JpaRootContextNode;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
+import org.eclipse.jpt.core.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 
@@ -29,7 +30,9 @@ public class RootContextNodeTests extends ContextModelTestCase
 		JpaRootContextNode baseJpaContent = getJavaProject().getJpaProject().getRootContextNode();
 		assertNull(baseJpaContent.getPersistenceXml());
 		
-		pr.getContents().add(PersistenceFactory.eINSTANCE.createXmlPersistence());
+		XmlPersistence xmlPersistence = PersistenceFactory.eINSTANCE.createXmlPersistence();
+		xmlPersistence.setVersion("1.0");
+		pr.getContents().add(xmlPersistence);
 		pr.save(null);
 		assertNotNull(baseJpaContent.getPersistenceXml());
 	}
