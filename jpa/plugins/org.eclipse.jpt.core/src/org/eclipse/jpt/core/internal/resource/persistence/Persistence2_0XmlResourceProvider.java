@@ -15,7 +15,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.resource.AbstractXmlResourceProvider;
-import org.eclipse.jpt2_0.core.resource.orm.JPA;
+import org.eclipse.jpt2_0.core.resource.persistence.JPA;
 import org.eclipse.jpt2_0.core.resource.persistence.Persistence2_0Factory;
 import org.eclipse.jpt2_0.core.resource.persistence.XmlPersistence;
 import org.eclipse.jpt2_0.core.resource.persistence.XmlPersistenceUnit;
