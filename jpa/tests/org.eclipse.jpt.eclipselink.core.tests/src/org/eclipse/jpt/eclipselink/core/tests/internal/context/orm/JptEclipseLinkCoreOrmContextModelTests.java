@@ -34,9 +34,7 @@ public class JptEclipseLinkCoreOrmContextModelTests extends TestCase
 		suite.addTestSuite(EclipseLinkOrmManyToOneMappingTests.class);
 		suite.addTestSuite(EclipseLinkOrmOneToManyMappingTests.class);
 		suite.addTestSuite(EclipseLinkOrmOneToOneMappingTests.class);
-		suite.addTestSuite(EclipseLinkOrmPersistentAttributeTests.class);		
-		suite.addTestSuite(EclipseLink1_1OrmPersistentAttributeTests.class);		
-		suite.addTestSuite(EclipseLink1_1OrmPersistentTypeTests.class);		
+		suite.addTestSuite(EclipseLinkOrmPersistentAttributeTests.class);
 		suite.addTestSuite(EclipseLinkOrmVersionMappingTests.class);
 		suite.addTestSuite(EclipseLinkOrmConverterTests.class);
 		suite.addTestSuite(EclipseLinkOrmObjectTypeConverterTests.class);

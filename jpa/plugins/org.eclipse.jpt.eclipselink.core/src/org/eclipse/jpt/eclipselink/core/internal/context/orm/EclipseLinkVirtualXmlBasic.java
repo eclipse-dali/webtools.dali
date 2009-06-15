@@ -52,7 +52,7 @@ public class EclipseLinkVirtualXmlBasic extends XmlBasic
 		this.virtualXmlBasic = new VirtualXmlBasic(ormTypeMapping, javaBasicMapping);
 	}
 	
-	protected boolean isOrmMetadataComplete() {
+	public boolean isOrmMetadataComplete() {
 		return this.ormTypeMapping.isMetadataComplete();
 	}
 	

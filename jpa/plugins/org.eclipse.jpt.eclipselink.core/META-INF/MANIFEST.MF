@@ -51,5 +51,10 @@ Export-Package: org.eclipse.jpt.eclipselink.core,
  org.eclipse.jpt.eclipselink.core.internal.resource.orm;x-internal:=true,
  org.eclipse.jpt.eclipselink.core.resource.java,
  org.eclipse.jpt.eclipselink.core.resource.orm,
+ org.eclipse.jpt.eclipselink1_1.core.internal,
+ org.eclipse.jpt.eclipselink1_1.core.internal.context,
+ org.eclipse.jpt.eclipselink1_1.core.internal.context.orm,
+ org.eclipse.jpt.eclipselink1_1.core.internal.operations,
+ org.eclipse.jpt.eclipselink1_1.core.internal.resource.orm,
  org.eclipse.jpt.eclipselink1_1.core.resource.orm
 Bundle-RequiredExecutionEnvironment: J2SE-1.5

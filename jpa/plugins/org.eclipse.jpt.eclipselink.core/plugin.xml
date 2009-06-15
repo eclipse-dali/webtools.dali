@@ -44,7 +44,7 @@
 	    
 	    <jpaPlatform
 	        id="eclipselink1_1"
-	        factoryClass="org.eclipse.jpt.eclipselink.core.internal.EclipseLink1_1JpaPlatformFactory"
+	        factoryClass="org.eclipse.jpt.eclipselink1_1.core.internal.EclipseLink1_1JpaPlatformFactory"
 	        label="%ECLIPSELINK1_1_x_PLATFORM">
 	    </jpaPlatform>
 		

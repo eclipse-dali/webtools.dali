@@ -45,6 +45,12 @@ Export-Package: org.eclipse.jpt.eclipselink.ui,
  org.eclipse.jpt.eclipselink.ui.internal.persistencexml.details;x-internal:=true,
  org.eclipse.jpt.eclipselink.ui.internal.platform;x-internal:=true,
  org.eclipse.jpt.eclipselink.ui.internal.structure;x-internal:=true,
- org.eclipse.jpt.eclipselink.ui.internal.wizards;x-internal:=true
+ org.eclipse.jpt.eclipselink.ui.internal.wizards;x-internal:=true,
+ org.eclipse.jpt.eclipselink1_1.ui.internal,
+ org.eclipse.jpt.eclipselink1_1.ui.internal.java.details,
+ org.eclipse.jpt.eclipselink1_1.ui.internal.orm.details,
+ org.eclipse.jpt.eclipselink1_1.ui.internal.platform,
+ org.eclipse.jpt.eclipselink1_1.ui.internal.structure,
+ org.eclipse.jpt.eclipselink1_1.ui.internal.wizards
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Import-Package: com.ibm.icu.text;version="4.0.1"
