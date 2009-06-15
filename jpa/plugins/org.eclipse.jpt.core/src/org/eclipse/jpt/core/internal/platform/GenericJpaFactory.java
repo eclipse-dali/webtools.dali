@@ -39,6 +39,7 @@ import org.eclipse.jpt.core.context.java.JavaEmbeddedMapping;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.java.JavaEnumeratedConverter;
 import org.eclipse.jpt.core.context.java.JavaGeneratedValue;
+import org.eclipse.jpt.core.context.java.JavaGeneratorContainer;
 import org.eclipse.jpt.core.context.java.JavaIdMapping;
 import org.eclipse.jpt.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaJoinTable;
@@ -56,6 +57,7 @@ import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaQuery;
+import org.eclipse.jpt.core.context.java.JavaQueryContainer;
 import org.eclipse.jpt.core.context.java.JavaQueryHint;
 import org.eclipse.jpt.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.core.context.java.JavaSequenceGenerator;
@@ -79,6 +81,7 @@ import org.eclipse.jpt.core.context.orm.OrmEmbeddedIdMapping;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddedMapping;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.orm.OrmGeneratedValue;
+import org.eclipse.jpt.core.context.orm.OrmGeneratorContainer;
 import org.eclipse.jpt.core.context.orm.OrmIdMapping;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmJoinTable;
@@ -95,6 +98,7 @@ import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmQuery;
+import org.eclipse.jpt.core.context.orm.OrmQueryContainer;
 import org.eclipse.jpt.core.context.orm.OrmQueryHint;
 import org.eclipse.jpt.core.context.orm.OrmSecondaryTable;
 import org.eclipse.jpt.core.context.orm.OrmSequenceGenerator;
@@ -128,6 +132,7 @@ import org.eclipse.jpt.core.internal.context.java.GenericJavaEmbeddedMapping;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaEntity;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaEnumeratedConverter;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaGeneratedValue;
+import org.eclipse.jpt.core.internal.context.java.GenericJavaGeneratorContainer;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaIdMapping;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaJoinColumn;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaJoinTable;
@@ -143,6 +148,7 @@ import org.eclipse.jpt.core.internal.context.java.GenericJavaOneToOneMapping;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaPersistentType;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaPrimaryKeyJoinColumn;
+import org.eclipse.jpt.core.internal.context.java.GenericJavaQueryContainer;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaQueryHint;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaSecondaryTable;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaSequenceGenerator;
@@ -164,6 +170,7 @@ import org.eclipse.jpt.core.internal.context.orm.GenericOrmEmbeddedIdMapping;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmEmbeddedMapping;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmEntity;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmGeneratedValue;
+import org.eclipse.jpt.core.internal.context.orm.GenericOrmGeneratorContainer;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmIdMapping;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmJoinColumn;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmJoinTable;
@@ -178,6 +185,7 @@ import org.eclipse.jpt.core.internal.context.orm.GenericOrmOneToOneMapping;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmPersistentType;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmPrimaryKeyJoinColumn;
+import org.eclipse.jpt.core.internal.context.orm.GenericOrmQueryContainer;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmQueryHint;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmSecondaryTable;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmSequenceGenerator;
@@ -221,6 +229,7 @@ import org.eclipse.jpt.core.resource.orm.XmlEmbeddedId;
 import org.eclipse.jpt.core.resource.orm.XmlEntity;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.core.resource.orm.XmlGeneratedValue;
+import org.eclipse.jpt.core.resource.orm.XmlGeneratorContainer;
 import org.eclipse.jpt.core.resource.orm.XmlId;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlJoinTableMapping;
@@ -233,6 +242,7 @@ import org.eclipse.jpt.core.resource.orm.XmlNullAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlOneToMany;
 import org.eclipse.jpt.core.resource.orm.XmlOneToOne;
 import org.eclipse.jpt.core.resource.orm.XmlPrimaryKeyJoinColumn;
+import org.eclipse.jpt.core.resource.orm.XmlQueryContainer;
 import org.eclipse.jpt.core.resource.orm.XmlQueryHint;
 import org.eclipse.jpt.core.resource.orm.XmlSecondaryTable;
 import org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator;
@@ -404,12 +414,20 @@ public class GenericJpaFactory
 		return new GenericOrmGeneratedValue(parent, resourceGeneratedValue);
 	}
 	
+	public OrmGeneratorContainer buildOrmGeneratorContainer(XmlContextNode parent, XmlGeneratorContainer resourceGeneratorContainer) {
+		return new GenericOrmGeneratorContainer(parent, resourceGeneratorContainer);
+	}
+	
 	public OrmSequenceGenerator buildOrmSequenceGenerator(XmlContextNode parent, XmlSequenceGenerator resourceSequenceGenerator) {
 		return new GenericOrmSequenceGenerator(parent, resourceSequenceGenerator);
 	}
 	
 	public OrmTableGenerator buildOrmTableGenerator(XmlContextNode parent, XmlTableGenerator resourceTableGenerator) {
 		return new GenericOrmTableGenerator(parent, resourceTableGenerator);
+	}
+	
+	public OrmQueryContainer buildOrmQueryContainer(XmlContextNode parent, XmlQueryContainer resourceQueryContainer) {
+		return new GenericOrmQueryContainer(parent, resourceQueryContainer);
 	}
 	
 	public OrmNamedNativeQuery buildOrmNamedNativeQuery(XmlContextNode parent, XmlNamedNativeQuery resourceNamedNativeQuery) {
@@ -614,6 +632,10 @@ public class GenericJpaFactory
 		return new GenericJavaNullAttributeMapping(parent);
 	}
 	
+	public JavaGeneratorContainer buildJavaGeneratorContainer(JavaJpaContextNode parent) {
+		return new GenericJavaGeneratorContainer(parent);
+	}
+	
 	public JavaSequenceGenerator buildJavaSequenceGenerator(JavaJpaContextNode parent) {
 		return new GenericJavaSequenceGenerator(parent);
 	}
@@ -636,6 +658,10 @@ public class GenericJpaFactory
 	
 	public JavaAssociationOverride buildJavaAssociationOverride(JavaJpaContextNode parent, AssociationOverride.Owner owner) {
 		return new GenericJavaAssociationOverride(parent, owner);
+	}
+	
+	public JavaQueryContainer buildJavaQueryContainer(JavaJpaContextNode parent) {
+		return new GenericJavaQueryContainer(parent);
 	}
 	
 	public JavaNamedQuery buildJavaNamedQuery(JavaJpaContextNode parent) {

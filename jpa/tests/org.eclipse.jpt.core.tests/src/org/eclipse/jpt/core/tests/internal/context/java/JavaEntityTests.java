@@ -327,8 +327,8 @@ public class JavaEntityTests extends ContextModelTestCase
 		entity.getGeneratorContainer().addTableGenerator();
 		entity.getGeneratorContainer().addSequenceGenerator();
 		entity.setIdClass("myIdClass");
-		entity.addNamedNativeQuery(0);
-		entity.addNamedQuery(0);
+		entity.getQueryContainer().addNamedNativeQuery(0);
+		entity.getQueryContainer().addNamedQuery(0);
 		
 		getJavaPersistentType().setMappingKey(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY);
 		assertTrue(getJavaPersistentType().getMapping() instanceof MappedSuperclass);
@@ -366,8 +366,8 @@ public class JavaEntityTests extends ContextModelTestCase
 		entity.getGeneratorContainer().addTableGenerator();
 		entity.getGeneratorContainer().addSequenceGenerator();
 		entity.setIdClass("myIdClass");
-		entity.addNamedNativeQuery(0);
-		entity.addNamedQuery(0);
+		entity.getQueryContainer().addNamedNativeQuery(0);
+		entity.getQueryContainer().addNamedQuery(0);
 		
 		getJavaPersistentType().setMappingKey(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY);
 		assertTrue(getJavaPersistentType().getMapping() instanceof Embeddable);
@@ -405,8 +405,8 @@ public class JavaEntityTests extends ContextModelTestCase
 		entity.getGeneratorContainer().addTableGenerator();
 		entity.getGeneratorContainer().addSequenceGenerator();
 		entity.setIdClass("myIdClass");
-		entity.addNamedNativeQuery(0);
-		entity.addNamedQuery(0);
+		entity.getQueryContainer().addNamedNativeQuery(0);
+		entity.getQueryContainer().addNamedQuery(0);
 		
 		getJavaPersistentType().setMappingKey(MappingKeys.NULL_TYPE_MAPPING_KEY);
 		assertTrue(getJavaPersistentType().getMapping() instanceof JavaNullTypeMapping);
@@ -2573,20 +2573,20 @@ public class JavaEntityTests extends ContextModelTestCase
 		JavaEntity entity = getJavaEntity();		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		
-		NamedQuery namedQuery1 = entity.addNamedQuery(0);
+		NamedQuery namedQuery1 = entity.getQueryContainer().addNamedQuery(0);
 		namedQuery1.setName("FOO");
 		
 		ListIterator<NestableAnnotation> javaNamedQueries = typeResource.supportingAnnotations(NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME);
 		assertEquals("FOO", ((NamedQueryAnnotation) javaNamedQueries.next()).getName());
 		
-		NamedQuery namedQuery2 = entity.addNamedQuery(0);
+		NamedQuery namedQuery2 = entity.getQueryContainer().addNamedQuery(0);
 		namedQuery2.setName("BAR");
 		
 		javaNamedQueries = typeResource.supportingAnnotations(NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME);
 		assertEquals("BAR", ((NamedQueryAnnotation) javaNamedQueries.next()).getName());
 		assertEquals("FOO", ((NamedQueryAnnotation) javaNamedQueries.next()).getName());
 		
-		NamedQuery namedQuery3 = entity.addNamedQuery(1);
+		NamedQuery namedQuery3 = entity.getQueryContainer().addNamedQuery(1);
 		namedQuery3.setName("BAZ");
 		
 		javaNamedQueries = typeResource.supportingAnnotations(NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME);
@@ -2594,17 +2594,17 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertEquals("BAZ", ((NamedQueryAnnotation) javaNamedQueries.next()).getName());
 		assertEquals("FOO", ((NamedQueryAnnotation) javaNamedQueries.next()).getName());
 		
-		ListIterator<JavaNamedQuery> namedQueries = entity.namedQueries();
+		ListIterator<JavaNamedQuery> namedQueries = entity.getQueryContainer().namedQueries();
 		assertEquals(namedQuery2, namedQueries.next());
 		assertEquals(namedQuery3, namedQueries.next());
 		assertEquals(namedQuery1, namedQueries.next());
 		
-		namedQueries = entity.namedQueries();
+		namedQueries = entity.getQueryContainer().namedQueries();
 		assertEquals("BAR", namedQueries.next().getName());
 		assertEquals("BAZ", namedQueries.next().getName());
 		assertEquals("FOO", namedQueries.next().getName());
 		
-		entity.addNamedNativeQuery(0).setName("foo");
+		entity.getQueryContainer().addNamedNativeQuery(0).setName("foo");
 	}
 	
 	public void testRemoveNamedQuery() throws Exception {
@@ -2614,27 +2614,27 @@ public class JavaEntityTests extends ContextModelTestCase
 		JavaEntity entity = getJavaEntity();		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 
-		entity.addNamedQuery(0).setName("FOO");
-		entity.addNamedQuery(1).setName("BAR");
-		entity.addNamedQuery(2).setName("BAZ");
+		entity.getQueryContainer().addNamedQuery(0).setName("FOO");
+		entity.getQueryContainer().addNamedQuery(1).setName("BAR");
+		entity.getQueryContainer().addNamedQuery(2).setName("BAZ");
 		
 		ListIterator<NestableAnnotation> javaNamedQueries = typeResource.supportingAnnotations(NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME);
 		assertEquals(3, CollectionTools.size(javaNamedQueries));
 		
-		entity.removeNamedQuery(0);
+		entity.getQueryContainer().removeNamedQuery(0);
 		javaNamedQueries = typeResource.supportingAnnotations(NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME);
 		assertEquals(2, CollectionTools.size(javaNamedQueries));
 		javaNamedQueries = typeResource.supportingAnnotations(NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME);
 		assertEquals("BAR", ((NamedQueryAnnotation) javaNamedQueries.next()).getName());
 		assertEquals("BAZ", ((NamedQueryAnnotation) javaNamedQueries.next()).getName());
 
-		entity.removeNamedQuery(0);
+		entity.getQueryContainer().removeNamedQuery(0);
 		javaNamedQueries = typeResource.supportingAnnotations(NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME);
 		assertEquals(1, CollectionTools.size(javaNamedQueries));
 		javaNamedQueries = typeResource.supportingAnnotations(NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME);
 		assertEquals("BAZ", ((NamedQueryAnnotation) javaNamedQueries.next()).getName());
 		
-		entity.removeNamedQuery(0);
+		entity.getQueryContainer().removeNamedQuery(0);
 		javaNamedQueries = typeResource.supportingAnnotations(NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME);
 		assertEquals(0, CollectionTools.size(javaNamedQueries));
 	}
@@ -2646,14 +2646,14 @@ public class JavaEntityTests extends ContextModelTestCase
 		JavaEntity entity = getJavaEntity();		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 
-		entity.addNamedQuery(0).setName("FOO");
+		entity.getQueryContainer().addNamedQuery(0).setName("FOO");
 		
 		
 		NamedNativeQueryAnnotation nativeQuery = (NamedNativeQueryAnnotation) typeResource.addSupportingAnnotation(0, JPA.NAMED_NATIVE_QUERY, JPA.NAMED_NATIVE_QUERIES);
 		nativeQuery.setName("BAR");
 		
-		assertEquals(1, entity.namedNativeQueriesSize());
-		ListIterator<JavaNamedNativeQuery> namedQueries = entity.namedNativeQueries();
+		assertEquals(1, entity.getQueryContainer().namedNativeQueriesSize());
+		ListIterator<JavaNamedNativeQuery> namedQueries = entity.getQueryContainer().namedNativeQueries();
 		assertEquals("BAR", namedQueries.next().getName());
 	}
 	
@@ -2664,14 +2664,14 @@ public class JavaEntityTests extends ContextModelTestCase
 		JavaEntity entity = getJavaEntity();		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 
-		entity.addNamedNativeQuery(0).setName("FOO");
+		entity.getQueryContainer().addNamedNativeQuery(0).setName("FOO");
 		
 		
 		NamedQueryAnnotation namedQuery = (NamedQueryAnnotation) typeResource.addSupportingAnnotation(0, JPA.NAMED_QUERY, JPA.NAMED_QUERIES);
 		namedQuery.setName("BAR");
 		
-		assertEquals(1, entity.namedQueriesSize());
-		ListIterator<JavaNamedQuery> namedQueries = entity.namedQueries();
+		assertEquals(1, entity.getQueryContainer().namedQueriesSize());
+		ListIterator<JavaNamedQuery> namedQueries = entity.getQueryContainer().namedQueries();
 		assertEquals("BAR", namedQueries.next().getName());
 	}
 
@@ -2682,16 +2682,16 @@ public class JavaEntityTests extends ContextModelTestCase
 		JavaEntity entity = getJavaEntity();		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 
-		entity.addNamedQuery(0).setName("FOO");
-		entity.addNamedQuery(1).setName("BAR");
-		entity.addNamedQuery(2).setName("BAZ");
+		entity.getQueryContainer().addNamedQuery(0).setName("FOO");
+		entity.getQueryContainer().addNamedQuery(1).setName("BAR");
+		entity.getQueryContainer().addNamedQuery(2).setName("BAZ");
 		
 		ListIterator<NestableAnnotation> javaNamedQueries = typeResource.supportingAnnotations(NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME);
 		assertEquals(3, CollectionTools.size(javaNamedQueries));
 		
 		
-		entity.moveNamedQuery(2, 0);
-		ListIterator<JavaNamedQuery> namedQueries = entity.namedQueries();
+		entity.getQueryContainer().moveNamedQuery(2, 0);
+		ListIterator<JavaNamedQuery> namedQueries = entity.getQueryContainer().namedQueries();
 		assertEquals("BAR", namedQueries.next().getName());
 		assertEquals("BAZ", namedQueries.next().getName());
 		assertEquals("FOO", namedQueries.next().getName());
@@ -2702,8 +2702,8 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertEquals("FOO", ((NamedQueryAnnotation) javaNamedQueries.next()).getName());
 
 
-		entity.moveNamedQuery(0, 1);
-		namedQueries = entity.namedQueries();
+		entity.getQueryContainer().moveNamedQuery(0, 1);
+		namedQueries = entity.getQueryContainer().namedQueries();
 		assertEquals("BAZ", namedQueries.next().getName());
 		assertEquals("BAR", namedQueries.next().getName());
 		assertEquals("FOO", namedQueries.next().getName());
@@ -2726,7 +2726,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		((NamedQueryAnnotation) typeResource.addSupportingAnnotation(0, NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME)).setName("FOO");
 		((NamedQueryAnnotation) typeResource.addSupportingAnnotation(1, NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME)).setName("BAR");
 		((NamedQueryAnnotation) typeResource.addSupportingAnnotation(2, NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME)).setName("BAZ");
-		ListIterator<JavaNamedQuery> namedQueries = entity.namedQueries();
+		ListIterator<JavaNamedQuery> namedQueries = entity.getQueryContainer().namedQueries();
 		assertEquals("FOO", namedQueries.next().getName());
 		assertEquals("BAR", namedQueries.next().getName());
 		assertEquals("BAZ", namedQueries.next().getName());
@@ -2734,34 +2734,34 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertEquals(3, entity.getPersistenceUnit().queriesSize());
 		
 		typeResource.moveSupportingAnnotation(2, 0, NamedQueriesAnnotation.ANNOTATION_NAME);
-		namedQueries = entity.namedQueries();
+		namedQueries = entity.getQueryContainer().namedQueries();
 		assertEquals("BAR", namedQueries.next().getName());
 		assertEquals("BAZ", namedQueries.next().getName());
 		assertEquals("FOO", namedQueries.next().getName());
 		assertFalse(namedQueries.hasNext());
 		
 		typeResource.moveSupportingAnnotation(0, 1, NamedQueriesAnnotation.ANNOTATION_NAME);
-		namedQueries = entity.namedQueries();
+		namedQueries = entity.getQueryContainer().namedQueries();
 		assertEquals("BAZ", namedQueries.next().getName());
 		assertEquals("BAR", namedQueries.next().getName());
 		assertEquals("FOO", namedQueries.next().getName());
 		assertFalse(namedQueries.hasNext());
 		
 		typeResource.removeSupportingAnnotation(1,  NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME);
-		namedQueries = entity.namedQueries();
+		namedQueries = entity.getQueryContainer().namedQueries();
 		assertEquals("BAZ", namedQueries.next().getName());
 		assertEquals("FOO", namedQueries.next().getName());
 		assertFalse(namedQueries.hasNext());
 		assertEquals(2, entity.getPersistenceUnit().queriesSize());
 		
 		typeResource.removeSupportingAnnotation(1,  NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME);
-		namedQueries = entity.namedQueries();
+		namedQueries = entity.getQueryContainer().namedQueries();
 		assertEquals("BAZ", namedQueries.next().getName());
 		assertFalse(namedQueries.hasNext());
 		assertEquals(1, entity.getPersistenceUnit().queriesSize());
 		
 		typeResource.removeSupportingAnnotation(0,  NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME);
-		namedQueries = entity.namedQueries();
+		namedQueries = entity.getQueryContainer().namedQueries();
 		assertFalse(namedQueries.hasNext());
 		assertEquals(0, entity.getPersistenceUnit().queriesSize());
 	}
@@ -2773,13 +2773,13 @@ public class JavaEntityTests extends ContextModelTestCase
 		JavaEntity entity = getJavaEntity();		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 	
-		assertEquals(0, entity.namedQueriesSize());
+		assertEquals(0, entity.getQueryContainer().namedQueriesSize());
 
 		((NamedQueryAnnotation) typeResource.addSupportingAnnotation(0, NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME)).setName("FOO");
 		((NamedQueryAnnotation) typeResource.addSupportingAnnotation(1, NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME)).setName("BAR");
 		((NamedQueryAnnotation) typeResource.addSupportingAnnotation(2, NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME)).setName("BAZ");
 		
-		assertEquals(3, entity.namedQueriesSize());
+		assertEquals(3, entity.getQueryContainer().namedQueriesSize());
 	}
 	
 	public void testAddNamedNativeQuery() throws Exception {
@@ -2789,20 +2789,20 @@ public class JavaEntityTests extends ContextModelTestCase
 		JavaEntity entity = getJavaEntity();		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		
-		NamedNativeQuery namedNativeQuery = entity.addNamedNativeQuery(0);
+		NamedNativeQuery namedNativeQuery = entity.getQueryContainer().addNamedNativeQuery(0);
 		namedNativeQuery.setName("FOO");
 		
 		ListIterator<NestableAnnotation> javaNamedQueries = typeResource.supportingAnnotations(NamedNativeQueryAnnotation.ANNOTATION_NAME, NamedNativeQueriesAnnotation.ANNOTATION_NAME);
 		assertEquals("FOO", ((NamedNativeQueryAnnotation) javaNamedQueries.next()).getName());
 		
-		NamedNativeQuery namedNativeQuery2 = entity.addNamedNativeQuery(0);
+		NamedNativeQuery namedNativeQuery2 = entity.getQueryContainer().addNamedNativeQuery(0);
 		namedNativeQuery2.setName("BAR");
 		
 		javaNamedQueries = typeResource.supportingAnnotations(NamedNativeQueryAnnotation.ANNOTATION_NAME, NamedNativeQueriesAnnotation.ANNOTATION_NAME);
 		assertEquals("BAR", ((NamedNativeQueryAnnotation) javaNamedQueries.next()).getName());
 		assertEquals("FOO", ((NamedNativeQueryAnnotation) javaNamedQueries.next()).getName());
 		
-		NamedNativeQuery namedNativeQuery3 = entity.addNamedNativeQuery(1);
+		NamedNativeQuery namedNativeQuery3 = entity.getQueryContainer().addNamedNativeQuery(1);
 		namedNativeQuery3.setName("BAZ");
 		
 		javaNamedQueries = typeResource.supportingAnnotations(NamedNativeQueryAnnotation.ANNOTATION_NAME, NamedNativeQueriesAnnotation.ANNOTATION_NAME);
@@ -2810,12 +2810,12 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertEquals("BAZ", ((NamedNativeQueryAnnotation) javaNamedQueries.next()).getName());
 		assertEquals("FOO", ((NamedNativeQueryAnnotation) javaNamedQueries.next()).getName());
 		
-		ListIterator<JavaNamedNativeQuery> namedQueries = entity.namedNativeQueries();
+		ListIterator<JavaNamedNativeQuery> namedQueries = entity.getQueryContainer().namedNativeQueries();
 		assertEquals(namedNativeQuery2, namedQueries.next());
 		assertEquals(namedNativeQuery3, namedQueries.next());
 		assertEquals(namedNativeQuery, namedQueries.next());
 		
-		namedQueries = entity.namedNativeQueries();
+		namedQueries = entity.getQueryContainer().namedNativeQueries();
 		assertEquals("BAR", namedQueries.next().getName());
 		assertEquals("BAZ", namedQueries.next().getName());
 		assertEquals("FOO", namedQueries.next().getName());
@@ -2828,27 +2828,27 @@ public class JavaEntityTests extends ContextModelTestCase
 		JavaEntity entity = getJavaEntity();		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 
-		entity.addNamedNativeQuery(0).setName("FOO");
-		entity.addNamedNativeQuery(1).setName("BAR");
-		entity.addNamedNativeQuery(2).setName("BAZ");
+		entity.getQueryContainer().addNamedNativeQuery(0).setName("FOO");
+		entity.getQueryContainer().addNamedNativeQuery(1).setName("BAR");
+		entity.getQueryContainer().addNamedNativeQuery(2).setName("BAZ");
 		
 		ListIterator<NestableAnnotation> javaNamedQueries = typeResource.supportingAnnotations(NamedNativeQueryAnnotation.ANNOTATION_NAME, NamedNativeQueriesAnnotation.ANNOTATION_NAME);
 		assertEquals(3, CollectionTools.size(javaNamedQueries));
 		
-		entity.removeNamedNativeQuery(0);
+		entity.getQueryContainer().removeNamedNativeQuery(0);
 		javaNamedQueries = typeResource.supportingAnnotations(NamedNativeQueryAnnotation.ANNOTATION_NAME, NamedNativeQueriesAnnotation.ANNOTATION_NAME);
 		assertEquals(2, CollectionTools.size(javaNamedQueries));
 		javaNamedQueries = typeResource.supportingAnnotations(NamedNativeQueryAnnotation.ANNOTATION_NAME, NamedNativeQueriesAnnotation.ANNOTATION_NAME);
 		assertEquals("BAR", ((NamedNativeQueryAnnotation) javaNamedQueries.next()).getName());
 		assertEquals("BAZ", ((NamedNativeQueryAnnotation) javaNamedQueries.next()).getName());
 
-		entity.removeNamedNativeQuery(0);
+		entity.getQueryContainer().removeNamedNativeQuery(0);
 		javaNamedQueries = typeResource.supportingAnnotations(NamedNativeQueryAnnotation.ANNOTATION_NAME, NamedNativeQueriesAnnotation.ANNOTATION_NAME);
 		assertEquals(1, CollectionTools.size(javaNamedQueries));
 		javaNamedQueries = typeResource.supportingAnnotations(NamedNativeQueryAnnotation.ANNOTATION_NAME, NamedNativeQueriesAnnotation.ANNOTATION_NAME);
 		assertEquals("BAZ", ((NamedNativeQueryAnnotation) javaNamedQueries.next()).getName());
 		
-		entity.removeNamedNativeQuery(0);
+		entity.getQueryContainer().removeNamedNativeQuery(0);
 		javaNamedQueries = typeResource.supportingAnnotations(NamedNativeQueryAnnotation.ANNOTATION_NAME, NamedNativeQueriesAnnotation.ANNOTATION_NAME);
 		assertEquals(0, CollectionTools.size(javaNamedQueries));
 	}
@@ -2860,16 +2860,16 @@ public class JavaEntityTests extends ContextModelTestCase
 		JavaEntity entity = getJavaEntity();		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 
-		entity.addNamedNativeQuery(0).setName("FOO");
-		entity.addNamedNativeQuery(1).setName("BAR");
-		entity.addNamedNativeQuery(2).setName("BAZ");
+		entity.getQueryContainer().addNamedNativeQuery(0).setName("FOO");
+		entity.getQueryContainer().addNamedNativeQuery(1).setName("BAR");
+		entity.getQueryContainer().addNamedNativeQuery(2).setName("BAZ");
 		
 		ListIterator<NestableAnnotation> javaNamedQueries = typeResource.supportingAnnotations(NamedNativeQueryAnnotation.ANNOTATION_NAME, NamedNativeQueriesAnnotation.ANNOTATION_NAME);
 		assertEquals(3, CollectionTools.size(javaNamedQueries));
 		
 		
-		entity.moveNamedNativeQuery(2, 0);
-		ListIterator<JavaNamedNativeQuery> namedQueries = entity.namedNativeQueries();
+		entity.getQueryContainer().moveNamedNativeQuery(2, 0);
+		ListIterator<JavaNamedNativeQuery> namedQueries = entity.getQueryContainer().namedNativeQueries();
 		assertEquals("BAR", namedQueries.next().getName());
 		assertEquals("BAZ", namedQueries.next().getName());
 		assertEquals("FOO", namedQueries.next().getName());
@@ -2880,8 +2880,8 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertEquals("FOO", ((NamedNativeQueryAnnotation) javaNamedQueries.next()).getName());
 
 
-		entity.moveNamedNativeQuery(0, 1);
-		namedQueries = entity.namedNativeQueries();
+		entity.getQueryContainer().moveNamedNativeQuery(0, 1);
+		namedQueries = entity.getQueryContainer().namedNativeQueries();
 		assertEquals("BAZ", namedQueries.next().getName());
 		assertEquals("BAR", namedQueries.next().getName());
 		assertEquals("FOO", namedQueries.next().getName());
@@ -2904,7 +2904,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		((NamedNativeQueryAnnotation) typeResource.addSupportingAnnotation(0, NamedNativeQueryAnnotation.ANNOTATION_NAME, NamedNativeQueriesAnnotation.ANNOTATION_NAME)).setName("FOO");
 		((NamedNativeQueryAnnotation) typeResource.addSupportingAnnotation(1, NamedNativeQueryAnnotation.ANNOTATION_NAME, NamedNativeQueriesAnnotation.ANNOTATION_NAME)).setName("BAR");
 		((NamedNativeQueryAnnotation) typeResource.addSupportingAnnotation(2, NamedNativeQueryAnnotation.ANNOTATION_NAME, NamedNativeQueriesAnnotation.ANNOTATION_NAME)).setName("BAZ");	
-		ListIterator<JavaNamedNativeQuery> namedQueries = entity.namedNativeQueries();
+		ListIterator<JavaNamedNativeQuery> namedQueries = entity.getQueryContainer().namedNativeQueries();
 		assertEquals("FOO", namedQueries.next().getName());
 		assertEquals("BAR", namedQueries.next().getName());
 		assertEquals("BAZ", namedQueries.next().getName());
@@ -2912,34 +2912,34 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertEquals(3, entity.getPersistenceUnit().queriesSize());
 		
 		typeResource.moveSupportingAnnotation(2, 0, NamedNativeQueriesAnnotation.ANNOTATION_NAME);
-		namedQueries = entity.namedNativeQueries();
+		namedQueries = entity.getQueryContainer().namedNativeQueries();
 		assertEquals("BAR", namedQueries.next().getName());
 		assertEquals("BAZ", namedQueries.next().getName());
 		assertEquals("FOO", namedQueries.next().getName());
 		assertFalse(namedQueries.hasNext());
 		
 		typeResource.moveSupportingAnnotation(0, 1, NamedNativeQueriesAnnotation.ANNOTATION_NAME);
-		namedQueries = entity.namedNativeQueries();
+		namedQueries = entity.getQueryContainer().namedNativeQueries();
 		assertEquals("BAZ", namedQueries.next().getName());
 		assertEquals("BAR", namedQueries.next().getName());
 		assertEquals("FOO", namedQueries.next().getName());
 		assertFalse(namedQueries.hasNext());
 		
 		typeResource.removeSupportingAnnotation(1,  NamedNativeQueryAnnotation.ANNOTATION_NAME, NamedNativeQueriesAnnotation.ANNOTATION_NAME);
-		namedQueries = entity.namedNativeQueries();
+		namedQueries = entity.getQueryContainer().namedNativeQueries();
 		assertEquals("BAZ", namedQueries.next().getName());
 		assertEquals("FOO", namedQueries.next().getName());
 		assertFalse(namedQueries.hasNext());
 		assertEquals(2, entity.getPersistenceUnit().queriesSize());
 		
 		typeResource.removeSupportingAnnotation(1,  NamedNativeQueryAnnotation.ANNOTATION_NAME, NamedNativeQueriesAnnotation.ANNOTATION_NAME);
-		namedQueries = entity.namedNativeQueries();
+		namedQueries = entity.getQueryContainer().namedNativeQueries();
 		assertEquals("BAZ", namedQueries.next().getName());
 		assertFalse(namedQueries.hasNext());
 		assertEquals(1, entity.getPersistenceUnit().queriesSize());
 		
 		typeResource.removeSupportingAnnotation(0,  NamedNativeQueryAnnotation.ANNOTATION_NAME, NamedNativeQueriesAnnotation.ANNOTATION_NAME);
-		namedQueries = entity.namedNativeQueries();
+		namedQueries = entity.getQueryContainer().namedNativeQueries();
 		assertFalse(namedQueries.hasNext());
 		assertEquals(0, entity.getPersistenceUnit().queriesSize());
 	}	
@@ -2951,13 +2951,13 @@ public class JavaEntityTests extends ContextModelTestCase
 		JavaEntity entity = getJavaEntity();		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 	
-		assertEquals(0, entity.namedNativeQueriesSize());
+		assertEquals(0, entity.getQueryContainer().namedNativeQueriesSize());
 
 		((NamedNativeQueryAnnotation) typeResource.addSupportingAnnotation(0, NamedNativeQueryAnnotation.ANNOTATION_NAME, NamedNativeQueriesAnnotation.ANNOTATION_NAME)).setName("FOO");
 		((NamedNativeQueryAnnotation) typeResource.addSupportingAnnotation(1, NamedNativeQueryAnnotation.ANNOTATION_NAME, NamedNativeQueriesAnnotation.ANNOTATION_NAME)).setName("BAR");
 		((NamedNativeQueryAnnotation) typeResource.addSupportingAnnotation(2, NamedNativeQueryAnnotation.ANNOTATION_NAME, NamedNativeQueriesAnnotation.ANNOTATION_NAME)).setName("BAZ");
 		
-		assertEquals(3, entity.namedNativeQueriesSize());
+		assertEquals(3, entity.getQueryContainer().namedNativeQueriesSize());
 	}
 
 	public void testUpdateIdClass() throws Exception {

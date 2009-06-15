@@ -22,7 +22,7 @@ import org.eclipse.jpt.core.context.Entity;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface JavaEntity extends JavaTypeMapping, Entity, JavaQueryContainer
+public interface JavaEntity extends JavaTypeMapping, Entity
 {
 	JavaTable getTable();
 	

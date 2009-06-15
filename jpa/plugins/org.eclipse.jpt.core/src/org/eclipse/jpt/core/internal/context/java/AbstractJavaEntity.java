@@ -26,12 +26,9 @@ import org.eclipse.jpt.core.context.DiscriminatorColumn;
 import org.eclipse.jpt.core.context.DiscriminatorType;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.InheritanceType;
-import org.eclipse.jpt.core.context.NamedNativeQuery;
-import org.eclipse.jpt.core.context.NamedQuery;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
-import org.eclipse.jpt.core.context.Query;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.SecondaryTable;
 import org.eclipse.jpt.core.context.Table;
@@ -42,12 +39,9 @@ import org.eclipse.jpt.core.context.java.JavaBaseJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaDiscriminatorColumn;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.java.JavaGeneratorContainer;
-import org.eclipse.jpt.core.context.java.JavaNamedNativeQuery;
-import org.eclipse.jpt.core.context.java.JavaNamedQuery;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaPrimaryKeyJoinColumn;
-import org.eclipse.jpt.core.context.java.JavaQuery;
 import org.eclipse.jpt.core.context.java.JavaQueryContainer;
 import org.eclipse.jpt.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.core.context.java.JavaTable;
@@ -65,10 +59,6 @@ import org.eclipse.jpt.core.resource.java.IdClassAnnotation;
 import org.eclipse.jpt.core.resource.java.InheritanceAnnotation;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.core.resource.java.NamedNativeQueriesAnnotation;
-import org.eclipse.jpt.core.resource.java.NamedNativeQueryAnnotation;
-import org.eclipse.jpt.core.resource.java.NamedQueriesAnnotation;
-import org.eclipse.jpt.core.resource.java.NamedQueryAnnotation;
 import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.core.resource.java.PrimaryKeyJoinColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.PrimaryKeyJoinColumnsAnnotation;
@@ -138,9 +128,7 @@ public abstract class AbstractJavaEntity
 
 	protected final List<JavaAssociationOverride> virtualAssociationOverrides;
 
-	protected final List<JavaNamedQuery> namedQueries;
-
-	protected final List<JavaNamedNativeQuery> namedNativeQueries;
+	protected final JavaQueryContainer queryContainer;
 
 	protected final JavaGeneratorContainer generatorContainer;
 	
@@ -156,11 +144,10 @@ public abstract class AbstractJavaEntity
 		this.specifiedPrimaryKeyJoinColumns = new ArrayList<JavaPrimaryKeyJoinColumn>();
 		this.specifiedAttributeOverrides = new ArrayList<JavaAttributeOverride>();
 		this.virtualAttributeOverrides = new ArrayList<JavaAttributeOverride>();
-		this.namedQueries = new ArrayList<JavaNamedQuery>();
-		this.namedNativeQueries = new ArrayList<JavaNamedNativeQuery>();
 		this.specifiedAssociationOverrides = new ArrayList<JavaAssociationOverride>();
 		this.virtualAssociationOverrides = new ArrayList<JavaAssociationOverride>();
-		this.generatorContainer = new GenericJavaGeneratorContainer(this);
+		this.queryContainer = getJpaFactory().buildJavaQueryContainer(this);
+		this.generatorContainer = getJpaFactory().buildJavaGeneratorContainer(this);
 	}
 	
 	protected JavaBaseJoinColumn.Owner createPrimaryKeyJoinColumnOwner() {
@@ -238,14 +225,13 @@ public abstract class AbstractJavaEntity
 		this.table.initialize(resourcePersistentType);
 		this.initializeSecondaryTables();
 		this.generatorContainer.initialize(resourcePersistentType);
+		this.queryContainer.initialize(resourcePersistentType);
 		this.initializePrimaryKeyJoinColumns();
 		this.initializeDefaultPrimaryKeyJoinColumn();
 		this.initializeSpecifiedAttributeOverrides();
 		this.initializeVirtualAttributeOverrides();
 		this.initializeSpecifiedAssociationOverrides();
 		this.initializeDefaultAssociationOverrides();
-		this.initializeNamedQueries();
-		this.initializeNamedNativeQueries();
 		this.initializeIdClass();
 	}
 	
@@ -300,18 +286,6 @@ public abstract class AbstractJavaEntity
 			if (associationOverride == null) {
 				this.virtualAssociationOverrides.add(buildAssociationOverride(new NullAssociationOverrideAnnotation(this.javaResourcePersistentType, associationName)));
 			}
-		}
-	}
-
-	protected void initializeNamedQueries() {
-		for (ListIterator<NestableAnnotation> stream = this.javaResourcePersistentType.supportingAnnotations(NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME); stream.hasNext(); ) {
-			this.namedQueries.add(buildNamedQuery((NamedQueryAnnotation) stream.next()));
-		}
-	}
-	
-	protected void initializeNamedNativeQueries() {
-		for (ListIterator<NestableAnnotation> stream = this.javaResourcePersistentType.supportingAnnotations(NamedNativeQueryAnnotation.ANNOTATION_NAME, NamedNativeQueriesAnnotation.ANNOTATION_NAME); stream.hasNext(); ) {
-			this.namedNativeQueries.add(buildNamedNativeQuery((NamedNativeQueryAnnotation) stream.next()));
 		}
 	}
 
@@ -1058,102 +1032,7 @@ public abstract class AbstractJavaEntity
 	}
 	
 	public JavaQueryContainer getQueryContainer() {
-		return this;
-	}
-	
-	public ListIterator<JavaNamedQuery> namedQueries() {
-		return new CloneListIterator<JavaNamedQuery>(this.namedQueries);
-	}
-	
-	public int namedQueriesSize() {
-		return this.namedQueries.size();
-	}
-	
-	public JavaNamedQuery addNamedQuery(int index) {
-		JavaNamedQuery namedQuery = getJpaFactory().buildJavaNamedQuery(this);
-		this.namedQueries.add(index, namedQuery);
-		NamedQueryAnnotation namedQueryAnnotation = (NamedQueryAnnotation) this.javaResourcePersistentType.addSupportingAnnotation(index, NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME);
-		namedQuery.initialize(namedQueryAnnotation);
-		fireItemAdded(NAMED_QUERIES_LIST, index, namedQuery);
-		return namedQuery;
-	}
-	
-	protected void addNamedQuery(int index, JavaNamedQuery namedQuery) {
-		addItemToList(index, namedQuery, this.namedQueries, NAMED_QUERIES_LIST);
-	}
-	
-	protected void addNamedQuery(JavaNamedQuery namedQuery) {
-		this.addNamedQuery(this.namedQueries.size(), namedQuery);
-	}
-	
-	public void removeNamedQuery(NamedQuery namedQuery) {
-		removeNamedQuery(this.namedQueries.indexOf(namedQuery));
-	}
-	
-	public void removeNamedQuery(int index) {
-		JavaNamedQuery removedNamedQuery = this.namedQueries.remove(index);
-		this.javaResourcePersistentType.removeSupportingAnnotation(index, NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME);
-		fireItemRemoved(NAMED_QUERIES_LIST, index, removedNamedQuery);
-	}	
-	
-	protected void removeNamedQuery_(JavaNamedQuery namedQuery) {
-		removeItemFromList(namedQuery, this.namedQueries, NAMED_QUERIES_LIST);
-	}
-	
-	public void moveNamedQuery(int targetIndex, int sourceIndex) {
-		CollectionTools.move(this.namedQueries, targetIndex, sourceIndex);
-		this.javaResourcePersistentType.moveSupportingAnnotation(targetIndex, sourceIndex, NamedQueriesAnnotation.ANNOTATION_NAME);
-		fireItemMoved(NAMED_QUERIES_LIST, targetIndex, sourceIndex);		
-	}
-	
-	public ListIterator<JavaNamedNativeQuery> namedNativeQueries() {
-		return new CloneListIterator<JavaNamedNativeQuery>(this.namedNativeQueries);
-	}
-	
-	public int namedNativeQueriesSize() {
-		return this.namedNativeQueries.size();
-	}
-	
-	public JavaNamedNativeQuery addNamedNativeQuery(int index) {
-		JavaNamedNativeQuery namedNativeQuery = getJpaFactory().buildJavaNamedNativeQuery(this);
-		this.namedNativeQueries.add(index, namedNativeQuery);
-		NamedNativeQueryAnnotation namedNativeQueryAnnotation = (NamedNativeQueryAnnotation) this.javaResourcePersistentType.addSupportingAnnotation(index, NamedNativeQueryAnnotation.ANNOTATION_NAME, NamedNativeQueriesAnnotation.ANNOTATION_NAME);
-		namedNativeQuery.initialize(namedNativeQueryAnnotation);		
-		fireItemAdded(NAMED_NATIVE_QUERIES_LIST, index, namedNativeQuery);
-		return namedNativeQuery;
-	}
-	
-	protected void addNamedNativeQuery(int index, JavaNamedNativeQuery namedNativeQuery) {
-		addItemToList(index, namedNativeQuery, this.namedNativeQueries, NAMED_NATIVE_QUERIES_LIST);
-	}
-	
-	protected void addNamedNativeQuery(JavaNamedNativeQuery namedNativeQuery) {
-		this.addNamedNativeQuery(this.namedNativeQueries.size(), namedNativeQuery);
-	}
-	
-	public void removeNamedNativeQuery(NamedNativeQuery namedNativeQuery) {
-		this.removeNamedNativeQuery(this.namedNativeQueries.indexOf(namedNativeQuery));
-	}
-	
-	public void removeNamedNativeQuery(int index) {
-		JavaNamedNativeQuery removedNamedNativeQuery = this.namedNativeQueries.remove(index);
-		this.javaResourcePersistentType.removeSupportingAnnotation(index, NamedNativeQueryAnnotation.ANNOTATION_NAME, NamedNativeQueriesAnnotation.ANNOTATION_NAME);
-		fireItemRemoved(NAMED_NATIVE_QUERIES_LIST, index, removedNamedNativeQuery);
-	}	
-	
-	protected void removeNamedNativeQuery_(JavaNamedNativeQuery namedNativeQuery) {
-		removeItemFromList(namedNativeQuery, this.namedNativeQueries, NAMED_NATIVE_QUERIES_LIST);
-	}
-	
-	public void moveNamedNativeQuery(int targetIndex, int sourceIndex) {
-		CollectionTools.move(this.namedNativeQueries, targetIndex, sourceIndex);
-		this.javaResourcePersistentType.moveSupportingAnnotation(targetIndex, sourceIndex, NamedNativeQueriesAnnotation.ANNOTATION_NAME);
-		fireItemMoved(NAMED_NATIVE_QUERIES_LIST, targetIndex, sourceIndex);		
-	}
-	
-	@SuppressWarnings("unchecked")
-	public Iterator<JavaQuery> queries() {
-		return new CompositeIterator<JavaQuery>(this.namedNativeQueries(), this.namedQueries());
+		return this.queryContainer;
 	}
 	
 	public char getIdClassEnclosingTypeSeparator() {
@@ -1495,14 +1374,13 @@ public abstract class AbstractJavaEntity
 		this.updateTable();
 		this.updateSecondaryTables();
 		this.generatorContainer.update(resourcePersistentType);
+		this.queryContainer.update(resourcePersistentType);
 		this.updateSpecifiedPrimaryKeyJoinColumns();
 		this.updateDefaultPrimaryKeyJoinColumn();
 		this.updateSpecifiedAttributeOverrides();
 		this.updateVirtualAttributeOverrides();
 		this.updateSpecifiedAssociationOverrides();
 		this.updateVirtualAssociationOverrides();
-		this.updateNamedQueries();
-		this.updateNamedNativeQueries();
 		this.updateIdClass();
 	}
 	
@@ -1799,57 +1677,6 @@ public abstract class AbstractJavaEntity
 		}
 	}
 
-	protected void updateNamedQueries() {
-		ListIterator<JavaNamedQuery> queries = namedQueries();
-		ListIterator<NestableAnnotation> resourceNamedQueries = this.javaResourcePersistentType.supportingAnnotations(NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME);
-		
-		while (queries.hasNext()) {
-			JavaNamedQuery namedQuery = queries.next();
-			if (resourceNamedQueries.hasNext()) {
-				namedQuery.update((NamedQueryAnnotation) resourceNamedQueries.next());
-			}
-			else {
-				removeNamedQuery_(namedQuery);
-			}
-		}
-		
-		while (resourceNamedQueries.hasNext()) {
-			addNamedQuery(buildNamedQuery((NamedQueryAnnotation) resourceNamedQueries.next()));
-		}
-	}
-	
-	protected void updateNamedNativeQueries() {
-		ListIterator<JavaNamedNativeQuery> queries = namedNativeQueries();
-		ListIterator<NestableAnnotation> resourceNamedNativeQueries = this.javaResourcePersistentType.supportingAnnotations(NamedNativeQueryAnnotation.ANNOTATION_NAME, NamedNativeQueriesAnnotation.ANNOTATION_NAME);
-		
-		while (queries.hasNext()) {
-			JavaNamedNativeQuery namedQuery = queries.next();
-			if (resourceNamedNativeQueries.hasNext()) {
-				namedQuery.update((NamedNativeQueryAnnotation) resourceNamedNativeQueries.next());
-			}
-			else {
-				removeNamedNativeQuery_(namedQuery);
-			}
-		}
-		
-		while (resourceNamedNativeQueries.hasNext()) {
-			addNamedNativeQuery(buildNamedNativeQuery((NamedNativeQueryAnnotation) resourceNamedNativeQueries.next()));
-		}	
-	}
-	
-	
-	protected JavaNamedQuery buildNamedQuery(NamedQueryAnnotation namedQueryResource) {
-		JavaNamedQuery namedQuery = getJpaFactory().buildJavaNamedQuery(this);
-		namedQuery.initialize(namedQueryResource);
-		return namedQuery;
-	}
-	
-	protected JavaNamedNativeQuery buildNamedNativeQuery(NamedNativeQueryAnnotation namedNativeQueryResource) {
-		JavaNamedNativeQuery namedNativeQuery = getJpaFactory().buildJavaNamedNativeQuery(this);
-		namedNativeQuery.initialize(namedNativeQueryResource);
-		return namedNativeQuery;
-	}
-
 	protected void updateIdClass( ) {
 		IdClassAnnotation annotation = getResourceIdClass();
 		if (annotation != null) {
@@ -1919,7 +1746,7 @@ public abstract class AbstractJavaEntity
 		this.validateId(messages, astRoot);
 		this.validateInheritance(messages, reporter, astRoot);
 		this.getGeneratorContainer().validate(messages, reporter, astRoot);
-		this.validateQueries(messages, astRoot);
+		this.getQueryContainer().validate(messages, reporter, astRoot);
 		
 		for (Iterator<JavaSecondaryTable> stream = this.specifiedSecondaryTables(); stream.hasNext();) {
 			stream.next().validate(messages, reporter, astRoot);
@@ -1932,7 +1759,6 @@ public abstract class AbstractJavaEntity
 		for (Iterator<JavaAssociationOverride> stream = this.associationOverrides(); stream.hasNext();) {
 			stream.next().validate(messages, reporter, astRoot);
 		}
-		
 	}
 	
 	protected void validateTable(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
@@ -2098,25 +1924,6 @@ public abstract class AbstractJavaEntity
 			}
 		}
 		return false;
-	}
-	
-	protected void validateQueries(List<IMessage> messages, CompilationUnit astRoot) {
-		for (Iterator<JavaQuery> localQueries = this.queries(); localQueries.hasNext(); ) {
-			JavaQuery localQuery = localQueries.next();
-			for (Iterator<Query> globalQueries = this.getPersistenceUnit().queries(); globalQueries.hasNext(); ) {
-				if (localQuery.duplicates(globalQueries.next())) {
-					messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							JpaValidationMessages.QUERY_DUPLICATE_NAME,
-							new String[] {localQuery.getName()},
-							localQuery,
-							localQuery.getNameTextRange(astRoot)
-						)
-					);
-				}
-			}
-		}
 	}
 	
 	

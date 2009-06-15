@@ -49,7 +49,7 @@ public class GenericOrmIdMapping<T extends XmlId>
 		super(parent, resourceMapping);
 		this.column = getJpaFactory().buildOrmColumn(this, this);
 		this.column.initialize(this.resourceAttributeMapping.getColumn());//TODO pass in to constructor
-		this.generatorContainer = new GenericOrmGeneratorContainer(parent, resourceMapping);
+		this.generatorContainer = getJpaFactory().buildOrmGeneratorContainer(parent, resourceMapping);
 		this.initializeGeneratedValue();
 		this.defaultConverter = new GenericOrmNullConverter(this);
 		this.specifiedConverter = this.buildSpecifiedConverter(this.getResourceConverterType());

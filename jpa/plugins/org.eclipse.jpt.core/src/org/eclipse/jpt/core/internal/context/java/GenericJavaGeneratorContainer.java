@@ -38,7 +38,7 @@ public class GenericJavaGeneratorContainer extends AbstractJavaJpaContextNode
 
 	protected JavaTableGenerator tableGenerator;
 	
-	protected GenericJavaGeneratorContainer(JavaJpaContextNode parent) {
+	public GenericJavaGeneratorContainer(JavaJpaContextNode parent) {
 		super(parent);
 	}
 

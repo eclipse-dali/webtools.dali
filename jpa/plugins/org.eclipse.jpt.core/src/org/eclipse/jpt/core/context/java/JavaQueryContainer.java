@@ -11,8 +11,9 @@ package org.eclipse.jpt.core.context.java;
 
 import java.util.ListIterator;
 import org.eclipse.jpt.core.context.QueryContainer;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 
-public interface JavaQueryContainer extends QueryContainer
+public interface JavaQueryContainer extends QueryContainer, JavaJpaContextNode
 {
 	@SuppressWarnings("unchecked")
 	ListIterator<JavaNamedQuery> namedQueries();
@@ -23,4 +24,13 @@ public interface JavaQueryContainer extends QueryContainer
 	ListIterator<JavaNamedNativeQuery> namedNativeQueries();
 
 	JavaNamedNativeQuery addNamedNativeQuery(int index);
+	
+	void initialize(JavaResourcePersistentMember jrpm);
+	
+	/**
+	 * Update the JavaGeneratorContainer context model object to match the JavaResourcePersistentMember 
+	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 */
+	void update(JavaResourcePersistentMember jrpm);
+
 }

@@ -56,13 +56,9 @@ public class GenericJavaIdMapping
 	
 	public GenericJavaIdMapping(JavaPersistentAttribute parent) {
 		super(parent);
-		this.column = createJavaColumn();
+		this.column = getJpaFactory().buildJavaColumn(this, this);
 		this.defaultConverter = new GenericJavaNullConverter(this);
-		this.generatorContainer = new GenericJavaGeneratorContainer(this);
-	}
-
-	protected JavaColumn createJavaColumn() {
-		return getJpaFactory().buildJavaColumn(this, this);
+		this.generatorContainer = getJpaFactory().buildJavaGeneratorContainer(this);
 	}
 
 	@Override

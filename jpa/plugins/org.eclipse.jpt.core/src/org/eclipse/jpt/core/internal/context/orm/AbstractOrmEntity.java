@@ -35,7 +35,6 @@ import org.eclipse.jpt.core.context.java.JavaAttributeOverride;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaPrimaryKeyJoinColumn;
-import org.eclipse.jpt.core.context.java.JavaQueryContainer;
 import org.eclipse.jpt.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.core.context.java.JavaTable;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
@@ -146,8 +145,8 @@ public abstract class AbstractOrmEntity
 		this.virtualAttributeOverrides = new ArrayList<OrmAttributeOverride>();
 		this.specifiedAssociationOverrides = new ArrayList<OrmAssociationOverride>();
 		this.virtualAssociationOverrides = new ArrayList<OrmAssociationOverride>();
-		this.queryContainer = new GenericOrmQueryContainer(this, resourceMapping);
-		this.generatorContainer = new GenericOrmGeneratorContainer(parent, resourceMapping);
+		this.queryContainer = getJpaFactory().buildOrmQueryContainer(this, resourceMapping);
+		this.generatorContainer = getJpaFactory().buildOrmGeneratorContainer(parent, resourceMapping);
 		this.specifiedName = this.resourceTypeMapping.getName();
 		this.defaultName = this.buildDefaultName();
 		this.rootEntity = this.calculateRootEntity();
@@ -304,7 +303,7 @@ public abstract class AbstractOrmEntity
 	 * This checks metaDataComplete before returning the JavaEntity.
 	 * As far as defaults are concerned, if metadataComplete is true, the JavaEntity is ignored.
 	 */
-	protected JavaQueryContainer getJavaEntityForDefaults() {
+	protected JavaEntity getJavaEntityForDefaults() {
 		if (isMetadataComplete()) {
 			return null;
 		}
