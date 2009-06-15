@@ -48,7 +48,7 @@ public interface JavaResourcePersistentType
 		String ABSTRACT_PROPERTY = "abstract"; //$NON-NLS-1$
 
 	/**
-	 * Return tye type's access type ("field" or "property").
+	 * Return the type's access type ("field" or "property").
 	 */
 	AccessType getAccess();
 		String ACCESS_PROPERTY = "access"; //$NON-NLS-1$
