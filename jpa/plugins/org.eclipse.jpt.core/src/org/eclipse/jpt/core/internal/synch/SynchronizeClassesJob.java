@@ -63,13 +63,7 @@ public class SynchronizeClassesJob extends WorkspaceJob
 		
 		resource.modify(new Runnable() {
 				public void run() {
-					XmlPersistence persistence = (XmlPersistence) resource.getRootObject();
-					
-					if (persistence == null) {
-						persistence = PersistenceFactory.eINSTANCE.createXmlPersistence();
-						resource.getContents().add(persistence);
-					}
-					
+					XmlPersistence persistence = (XmlPersistence) resource.getRootObject();					
 					XmlPersistenceUnit persistenceUnit;
 					
 					if (persistence.getPersistenceUnits().size() > 0) {
