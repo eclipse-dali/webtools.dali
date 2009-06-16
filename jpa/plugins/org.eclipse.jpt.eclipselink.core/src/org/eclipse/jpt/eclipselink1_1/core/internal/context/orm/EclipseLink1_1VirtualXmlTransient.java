@@ -73,11 +73,11 @@ public class EclipseLink1_1VirtualXmlTransient extends XmlTransient
 	
 	@Override
 	public AccessType getAccess() {
-		return this.virtualXmlTransient.getAccess();
+		return null;
 	}
 	
 	@Override
 	public void setAccess(AccessType value) {
-		this.virtualXmlTransient.setAccess(value);
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$		
 	}
 }

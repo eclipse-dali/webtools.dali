@@ -97,6 +97,7 @@ public class Orm2_0Factory extends EFactoryImpl
 			case Orm2_0Package.XML_ONE_TO_MANY: return (EObject)createXmlOneToMany();
 			case Orm2_0Package.XML_ONE_TO_ONE: return (EObject)createXmlOneToOne();
 			case Orm2_0Package.XML_MANY_TO_MANY: return (EObject)createXmlManyToMany();
+			case Orm2_0Package.XML_TRANSIENT: return (EObject)createXmlTransient();
 			case Orm2_0Package.XML_ASSOCIATION_OVERRIDE: return (EObject)createXmlAssociationOverride();
 			case Orm2_0Package.XML_ATTRIBUTE_OVERRIDE: return (EObject)createXmlAttributeOverride();
 			case Orm2_0Package.ENTITY_LISTENERS: return (EObject)createEntityListeners();
@@ -344,6 +345,17 @@ public class Orm2_0Factory extends EFactoryImpl
 	{
 		XmlManyToMany xmlManyToMany = new XmlManyToMany();
 		return xmlManyToMany;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlTransient createXmlTransient()
+	{
+		XmlTransient xmlTransient = new XmlTransient();
+		return xmlTransient;
 	}
 
 	/**

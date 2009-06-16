@@ -10,10 +10,8 @@
 package org.eclipse.jpt2_0.core.resource.orm;
 
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
@@ -24,15 +22,15 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Xml Embedded Id</b></em>'.
+ * A representation of the model object '<em><b>Xml Transient</b></em>'.
  * <!-- end-user-doc -->
  *
  *
- * @see org.eclipse.jpt2_0.core.resource.orm.Orm2_0Package#getXmlEmbeddedId()
+ * @see org.eclipse.jpt2_0.core.resource.orm.Orm2_0Package#getXmlTransient()
  * @model kind="class"
  * @generated
  */
-public class XmlEmbeddedId extends org.eclipse.jpt.core.resource.orm.XmlEmbeddedId implements XmlAttributeMapping
+public class XmlTransient extends org.eclipse.jpt.core.resource.orm.XmlTransient implements XmlAttributeMapping
 {
 	/**
 	 * The default value of the '{@link #getAccess() <em>Access</em>}' attribute.
@@ -59,7 +57,7 @@ public class XmlEmbeddedId extends org.eclipse.jpt.core.resource.orm.XmlEmbedded
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected XmlEmbeddedId()
+	protected XmlTransient()
 	{
 		super();
 	}
@@ -72,7 +70,7 @@ public class XmlEmbeddedId extends org.eclipse.jpt.core.resource.orm.XmlEmbedded
 	@Override
 	protected EClass eStaticClass()
 	{
-		return Orm2_0Package.Literals.XML_EMBEDDED_ID;
+		return Orm2_0Package.Literals.XML_TRANSIENT;
 	}
 
 	/**
@@ -97,7 +95,7 @@ public class XmlEmbeddedId extends org.eclipse.jpt.core.resource.orm.XmlEmbedded
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt2_0.core.resource.orm.XmlEmbeddedId#getAccess <em>Access</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt2_0.core.resource.orm.XmlTransient#getAccess <em>Access</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Access</em>' attribute.
@@ -110,7 +108,7 @@ public class XmlEmbeddedId extends org.eclipse.jpt.core.resource.orm.XmlEmbedded
 		AccessType oldAccess = access;
 		access = newAccess == null ? ACCESS_EDEFAULT : newAccess;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, Orm2_0Package.XML_EMBEDDED_ID__ACCESS, oldAccess, access));
+			eNotify(new ENotificationImpl(this, Notification.SET, Orm2_0Package.XML_TRANSIENT__ACCESS, oldAccess, access));
 	}
 
 	/**
@@ -123,7 +121,7 @@ public class XmlEmbeddedId extends org.eclipse.jpt.core.resource.orm.XmlEmbedded
 	{
 		switch (featureID)
 		{
-			case Orm2_0Package.XML_EMBEDDED_ID__ACCESS:
+			case Orm2_0Package.XML_TRANSIENT__ACCESS:
 				return getAccess();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -134,12 +132,13 @@ public class XmlEmbeddedId extends org.eclipse.jpt.core.resource.orm.XmlEmbedded
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue)
 	{
 		switch (featureID)
 		{
-			case Orm2_0Package.XML_EMBEDDED_ID__ACCESS:
+			case Orm2_0Package.XML_TRANSIENT__ACCESS:
 				setAccess((AccessType)newValue);
 				return;
 		}
@@ -156,7 +155,7 @@ public class XmlEmbeddedId extends org.eclipse.jpt.core.resource.orm.XmlEmbedded
 	{
 		switch (featureID)
 		{
-			case Orm2_0Package.XML_EMBEDDED_ID__ACCESS:
+			case Orm2_0Package.XML_TRANSIENT__ACCESS:
 				setAccess(ACCESS_EDEFAULT);
 				return;
 		}
@@ -173,7 +172,7 @@ public class XmlEmbeddedId extends org.eclipse.jpt.core.resource.orm.XmlEmbedded
 	{
 		switch (featureID)
 		{
-			case Orm2_0Package.XML_EMBEDDED_ID__ACCESS:
+			case Orm2_0Package.XML_TRANSIENT__ACCESS:
 				return access != ACCESS_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
@@ -191,7 +190,7 @@ public class XmlEmbeddedId extends org.eclipse.jpt.core.resource.orm.XmlEmbedded
 		{
 			switch (derivedFeatureID)
 			{
-				case Orm2_0Package.XML_EMBEDDED_ID__ACCESS: return OrmPackage.XML_ACCESS_HOLDER__ACCESS;
+				case Orm2_0Package.XML_TRANSIENT__ACCESS: return OrmPackage.XML_ACCESS_HOLDER__ACCESS;
 				default: return -1;
 			}
 		}
@@ -217,7 +216,7 @@ public class XmlEmbeddedId extends org.eclipse.jpt.core.resource.orm.XmlEmbedded
 		{
 			switch (baseFeatureID)
 			{
-				case OrmPackage.XML_ACCESS_HOLDER__ACCESS: return Orm2_0Package.XML_EMBEDDED_ID__ACCESS;
+				case OrmPackage.XML_ACCESS_HOLDER__ACCESS: return Orm2_0Package.XML_TRANSIENT__ACCESS;
 				default: return -1;
 			}
 		}
@@ -251,23 +250,13 @@ public class XmlEmbeddedId extends org.eclipse.jpt.core.resource.orm.XmlEmbedded
 	// ********** translators **********
 
 	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
-		return new SimpleTranslator(
-			elementName, 
-			structuralFeature, 
-			Orm2_0Package.eINSTANCE.getXmlEmbeddedId(),
-			buildTranslatorChildren());
+		return new SimpleTranslator(elementName, structuralFeature, buildTranslatorChildren());
 	}
 
 	private static Translator[] buildTranslatorChildren() {
 		return new Translator[] {
-			buildNameTranslator(),
-			buildAccessTranslator(),
-			buildAttributeOverrideTranslator()
+			buildNameTranslator()
 		};
 	}
 	
-	protected static Translator buildAccessTranslator() {
-		return new Translator(JPA.ACCESS, OrmPackage.eINSTANCE.getXmlAccessHolder_Access(), Translator.DOM_ATTRIBUTE);
-	}		
-
-} // XmlEmbeddedId
+} // XmlTransient

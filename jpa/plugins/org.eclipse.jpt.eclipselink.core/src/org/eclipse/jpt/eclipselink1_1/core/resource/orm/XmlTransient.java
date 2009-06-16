@@ -9,28 +9,17 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink1_1.core.resource.orm;
 
-import java.util.Collection;
 import org.eclipse.emf.common.notify.Notification;
 
-import org.eclipse.emf.common.notify.NotificationChain;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import org.eclipse.emf.ecore.util.EObjectContainmentEList;
-import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
 import org.eclipse.jpt.core.resource.orm.AccessType;
 import org.eclipse.jpt.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.core.resource.orm.XmlAccessHolder;
-import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage;
-import org.eclipse.jpt.eclipselink.core.resource.orm.XmlAccessMethods;
-import org.eclipse.jpt.eclipselink.core.resource.orm.XmlAccessMethodsHolder;
-import org.eclipse.jpt.eclipselink.core.resource.orm.XmlProperty;
-import org.eclipse.jpt.eclipselink.core.resource.orm.XmlPropertyContainer;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -268,13 +257,8 @@ public class XmlTransient extends org.eclipse.jpt.eclipselink.core.resource.orm.
 
 	private static Translator[] buildTranslatorChildren() {
 		return new Translator[] {
-			buildNameTranslator(),
-			buildAccessTranslator()
+			buildNameTranslator()
 		};
-	}
-	
-	protected static Translator buildAccessTranslator() {
-		return new Translator(JPA.ACCESS, OrmPackage.eINSTANCE.getXmlAccessHolder_Access(), Translator.DOM_ATTRIBUTE);
 	}
 
 } // XmlTransient

@@ -295,7 +295,7 @@ public class Attributes extends org.eclipse.jpt.core.resource.orm.Attributes
 			XmlManyToMany.buildTranslator(JPA.MANY_TO_MANY, OrmPackage.eINSTANCE.getAttributes_ManyToManys()),
 			XmlElementCollection.buildTranslator(JPA.ELEMENT_COLLECTION, Orm2_0Package.eINSTANCE.getAttributes_ElementCollections()),
 			XmlEmbedded.buildTranslator(JPA.EMBEDDED, OrmPackage.eINSTANCE.getAttributes_Embeddeds()),
-			buildTransientTranslator(),
+			XmlTransient.buildTranslator(JPA.TRANSIENT, OrmPackage.eINSTANCE.getAttributes_Transients()),
 		};
 	}
 

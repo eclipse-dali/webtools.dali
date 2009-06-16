@@ -18,6 +18,8 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
 import org.eclipse.jpt.core.resource.orm.AccessType;
+import org.eclipse.jpt.core.resource.orm.OrmPackage;
+import org.eclipse.jpt.core.resource.orm.XmlAccessHolder;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -143,7 +145,6 @@ public class XmlOneToOne extends org.eclipse.jpt.core.resource.orm.XmlOneToOne i
 
 	/**
 	 * Returns the value of the '<em><b>Access</b></em>' attribute.
-	 * The default value is <code>"PROPERTY"</code>.
 	 * The literals are from the enumeration {@link org.eclipse.jpt.core.resource.orm.AccessType}.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -154,8 +155,8 @@ public class XmlOneToOne extends org.eclipse.jpt.core.resource.orm.XmlOneToOne i
 	 * @return the value of the '<em>Access</em>' attribute.
 	 * @see org.eclipse.jpt.core.resource.orm.AccessType
 	 * @see #setAccess(AccessType)
-	 * @see org.eclipse.jpt2_0.core.resource.orm.Orm2_0Package#getXmlAttributeMapping_Access()
-	 * @model default="PROPERTY"
+	 * @see org.eclipse.jpt2_0.core.resource.orm.Orm2_0Package#getXmlAccessHolder_Access()
+	 * @model
 	 * @generated
 	 */
 	public AccessType getAccess()
@@ -389,11 +390,18 @@ public class XmlOneToOne extends org.eclipse.jpt.core.resource.orm.XmlOneToOne i
 	@Override
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
 	{
+		if (baseClass == XmlAccessHolder.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case Orm2_0Package.XML_ONE_TO_ONE__ACCESS: return OrmPackage.XML_ACCESS_HOLDER__ACCESS;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlAttributeMapping.class)
 		{
 			switch (derivedFeatureID)
 			{
-				case Orm2_0Package.XML_ONE_TO_ONE__ACCESS: return Orm2_0Package.XML_ATTRIBUTE_MAPPING__ACCESS;
 				default: return -1;
 			}
 		}
@@ -408,11 +416,18 @@ public class XmlOneToOne extends org.eclipse.jpt.core.resource.orm.XmlOneToOne i
 	@Override
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
 	{
+		if (baseClass == XmlAccessHolder.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmPackage.XML_ACCESS_HOLDER__ACCESS: return Orm2_0Package.XML_ONE_TO_ONE__ACCESS;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlAttributeMapping.class)
 		{
 			switch (baseFeatureID)
 			{
-				case Orm2_0Package.XML_ATTRIBUTE_MAPPING__ACCESS: return Orm2_0Package.XML_ONE_TO_ONE__ACCESS;
 				default: return -1;
 			}
 		}
@@ -471,7 +486,7 @@ public class XmlOneToOne extends org.eclipse.jpt.core.resource.orm.XmlOneToOne i
 	}
 	
 	protected static Translator buildAccessTranslator() {
-		return new Translator(JPA.ACCESS, Orm2_0Package.eINSTANCE.getXmlAttributeMapping_Access(), Translator.DOM_ATTRIBUTE);
+		return new Translator(JPA.ACCESS, OrmPackage.eINSTANCE.getXmlAccessHolder_Access(), Translator.DOM_ATTRIBUTE);
 	}
 	
 	protected static Translator buildOrphanRemovalTranslator() {

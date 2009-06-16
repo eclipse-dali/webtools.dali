@@ -12,10 +12,9 @@ package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 import org.eclipse.jpt.core.context.java.JavaTransientMapping;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.context.orm.VirtualXmlTransient;
-import org.eclipse.jpt.core.resource.orm.AccessType;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlAccessMethods;
-import org.eclipse.jpt.eclipselink1_1.core.resource.orm.XmlTransient;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlTransient;
 
 /**
  * VirtualBasic is an implementation of Basic used when there is 
@@ -70,14 +69,5 @@ public class EclipseLinkVirtualXmlTransient extends XmlTransient
 	public void setAccessMethods(XmlAccessMethods newAccessMethods) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$		
 	}
-	
-	@Override
-	public AccessType getAccess() {
-		return null;
-	}
-	
-	@Override
-	public void setAccess(AccessType value) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$		
-	}
+
 }

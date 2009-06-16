@@ -24,7 +24,6 @@ import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
 import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.xml.JpaEObject;
 import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt2_0.core.resource.orm.JPA;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -655,11 +654,8 @@ public class Attributes extends AbstractJpaEObject implements JpaEObject
 			XmlOneToOne.buildTranslator(JPA.ONE_TO_ONE, OrmPackage.eINSTANCE.getAttributes_OneToOnes()),
 			XmlManyToMany.buildTranslator(JPA.MANY_TO_MANY, OrmPackage.eINSTANCE.getAttributes_ManyToManys()),
 			XmlEmbedded.buildTranslator(JPA.EMBEDDED, OrmPackage.eINSTANCE.getAttributes_Embeddeds()),
-			buildTransientTranslator()
+			XmlTransient.buildTranslator(JPA.TRANSIENT, OrmPackage.eINSTANCE.getAttributes_Transients()),
 		};
 	}
-	
-	protected static Translator buildTransientTranslator() {
-		return XmlTransient.buildTranslator(JPA.TRANSIENT, OrmPackage.eINSTANCE.getAttributes_Transients());
-	}
+
 } // Attributes

@@ -35,9 +35,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm2_0.ecore#//Attributes/description"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm2_0.ecore#//Attributes/elementCollections"/>
     </genClasses>
-    <genClasses image="false" ecoreClass="orm2_0.ecore#//XmlAttributeMapping">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm2_0.ecore#//XmlAttributeMapping/access"/>
-    </genClasses>
+    <genClasses image="false" ecoreClass="orm2_0.ecore#//XmlAttributeMapping"/>
     <genClasses image="false" ecoreClass="orm2_0.ecore#//XmlElementCollection">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm2_0.ecore#//XmlElementCollection/targetClass"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm2_0.ecore#//XmlElementCollection/fetch"/>
@@ -93,6 +91,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm2_0.ecore#//XmlManyToMany/mapKeyColumn"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm2_0.ecore#//XmlManyToMany/mapKeyJoinColumns"/>
     </genClasses>
+    <genClasses ecoreClass="orm2_0.ecore#//XmlTransient"/>
     <genClasses image="false" ecoreClass="orm2_0.ecore#//XmlAssociationOverride">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm2_0.ecore#//XmlAssociationOverride/description"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm2_0.ecore#//XmlAssociationOverride/joinTable"/>
