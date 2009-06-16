@@ -119,6 +119,7 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 			case EclipseLinkOrmPackage.XML_ONE_TO_MANY: return (EObject)createXmlOneToMany();
 			case EclipseLinkOrmPackage.XML_MANY_TO_ONE: return (EObject)createXmlManyToOne();
 			case EclipseLinkOrmPackage.XML_MANY_TO_MANY: return (EObject)createXmlManyToMany();
+			case EclipseLinkOrmPackage.XML_TRANSIENT: return (EObject)createXmlTransient();
 			case EclipseLinkOrmPackage.XML_BASIC_COLLECTION: return (EObject)createXmlBasicCollection();
 			case EclipseLinkOrmPackage.XML_BASIC_MAP: return (EObject)createXmlBasicMap();
 			case EclipseLinkOrmPackage.XML_TRANSFORMATION: return (EObject)createXmlTransformation();
@@ -515,6 +516,17 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 	{
 		XmlManyToMany xmlManyToMany = new XmlManyToMany();
 		return xmlManyToMany;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlTransient createXmlTransient()
+	{
+		XmlTransient xmlTransient = new XmlTransient();
+		return xmlTransient;
 	}
 
 	/**

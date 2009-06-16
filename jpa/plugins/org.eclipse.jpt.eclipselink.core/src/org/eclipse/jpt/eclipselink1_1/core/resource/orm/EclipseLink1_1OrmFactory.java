@@ -97,6 +97,7 @@ public class EclipseLink1_1OrmFactory extends EFactoryImpl
 			case EclipseLink1_1OrmPackage.XML_BASIC_MAP: return (EObject)createXmlBasicMap();
 			case EclipseLink1_1OrmPackage.XML_TRANSFORMATION: return (EObject)createXmlTransformation();
 			case EclipseLink1_1OrmPackage.XML_VARIABLE_ONE_TO_ONE: return (EObject)createXmlVariableOneToOne();
+			case EclipseLink1_1OrmPackage.XML_TRANSIENT: return (EObject)createXmlTransient();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -298,6 +299,17 @@ public class EclipseLink1_1OrmFactory extends EFactoryImpl
 	{
 		XmlVariableOneToOne xmlVariableOneToOne = new XmlVariableOneToOne();
 		return xmlVariableOneToOne;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlTransient createXmlTransient()
+	{
+		XmlTransient xmlTransient = new XmlTransient();
+		return xmlTransient;
 	}
 
 	/**

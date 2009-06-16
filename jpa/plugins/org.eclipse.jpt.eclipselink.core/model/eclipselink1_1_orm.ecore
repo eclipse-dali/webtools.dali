@@ -26,4 +26,5 @@
   <eClassifiers xsi:type="ecore:EClass" name="XmlBasicMap" eSuperTypes="eclipselink_orm.ecore#//XmlBasicMap #//XmlAttributeMapping"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlTransformation" eSuperTypes="eclipselink_orm.ecore#//XmlTransformation #//XmlAttributeMapping"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlVariableOneToOne" eSuperTypes="eclipselink_orm.ecore#//XmlVariableOneToOne #//XmlAttributeMapping"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlTransient" eSuperTypes="eclipselink_orm.ecore#//XmlTransient #//XmlAttributeMapping"/>
 </ecore:EPackage>

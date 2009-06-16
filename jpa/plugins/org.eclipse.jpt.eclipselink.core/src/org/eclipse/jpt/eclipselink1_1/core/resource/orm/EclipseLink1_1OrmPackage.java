@@ -2752,6 +2752,61 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 	public static final int XML_VARIABLE_ONE_TO_ONE_FEATURE_COUNT = EclipseLinkOrmPackage.XML_VARIABLE_ONE_TO_ONE_FEATURE_COUNT + 1;
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink1_1.core.resource.orm.XmlTransient <em>Xml Transient</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.eclipselink1_1.core.resource.orm.XmlTransient
+	 * @see org.eclipse.jpt.eclipselink1_1.core.resource.orm.EclipseLink1_1OrmPackage#getXmlTransient()
+	 * @generated
+	 */
+	public static final int XML_TRANSIENT = 19;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_TRANSIENT__NAME = EclipseLinkOrmPackage.XML_TRANSIENT__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Access Methods</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_TRANSIENT__ACCESS_METHODS = EclipseLinkOrmPackage.XML_TRANSIENT__ACCESS_METHODS;
+
+	/**
+	 * The feature id for the '<em><b>Properties</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_TRANSIENT__PROPERTIES = EclipseLinkOrmPackage.XML_TRANSIENT__PROPERTIES;
+
+	/**
+	 * The feature id for the '<em><b>Access</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_TRANSIENT__ACCESS = EclipseLinkOrmPackage.XML_TRANSIENT_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Xml Transient</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_TRANSIENT_FEATURE_COUNT = EclipseLinkOrmPackage.XML_TRANSIENT_FEATURE_COUNT + 1;
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -2883,6 +2938,13 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 	 * @generated
 	 */
 	private EClass xmlVariableOneToOneEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass xmlTransientEClass = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -3225,6 +3287,20 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 	}
 
 	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.eclipselink1_1.core.resource.orm.XmlTransient <em>Xml Transient</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Xml Transient</em>'.
+	 * @see org.eclipse.jpt.eclipselink1_1.core.resource.orm.XmlTransient
+	 * @generated
+	 */
+	public EClass getXmlTransient()
+	{
+		return xmlTransientEClass;
+	}
+
+
+	/**
 	 * Returns the factory that creates the instances of the model.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3294,6 +3370,8 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 		xmlTransformationEClass = createEClass(XML_TRANSFORMATION);
 
 		xmlVariableOneToOneEClass = createEClass(XML_VARIABLE_ONE_TO_ONE);
+
+		xmlTransientEClass = createEClass(XML_TRANSIENT);
 	}
 
 	/**
@@ -3363,6 +3441,8 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 		xmlTransformationEClass.getESuperTypes().add(this.getXmlAttributeMapping());
 		xmlVariableOneToOneEClass.getESuperTypes().add(theEclipseLinkOrmPackage.getXmlVariableOneToOne());
 		xmlVariableOneToOneEClass.getESuperTypes().add(this.getXmlAttributeMapping());
+		xmlTransientEClass.getESuperTypes().add(theEclipseLinkOrmPackage.getXmlTransient());
+		xmlTransientEClass.getESuperTypes().add(this.getXmlAttributeMapping());
 
 		// Initialize classes and features; add operations and parameters
 		initEClass(xmlEntityMappingsEClass, XmlEntityMappings.class, "XmlEntityMappings", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -3403,6 +3483,8 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 		initEClass(xmlTransformationEClass, XmlTransformation.class, "XmlTransformation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(xmlVariableOneToOneEClass, XmlVariableOneToOne.class, "XmlVariableOneToOne", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(xmlTransientEClass, XmlTransient.class, "XmlTransient", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		// Create resource
 		createResource(eNS_URI);
@@ -3619,6 +3701,16 @@ public class EclipseLink1_1OrmPackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EClass XML_VARIABLE_ONE_TO_ONE = eINSTANCE.getXmlVariableOneToOne();
+
+		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.eclipselink1_1.core.resource.orm.XmlTransient <em>Xml Transient</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.eclipselink1_1.core.resource.orm.XmlTransient
+		 * @see org.eclipse.jpt.eclipselink1_1.core.resource.orm.EclipseLink1_1OrmPackage#getXmlTransient()
+		 * @generated
+		 */
+		public static final EClass XML_TRANSIENT = eINSTANCE.getXmlTransient();
 
 	}
 

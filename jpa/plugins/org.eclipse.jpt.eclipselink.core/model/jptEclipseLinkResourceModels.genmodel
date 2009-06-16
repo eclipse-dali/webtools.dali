@@ -219,6 +219,7 @@
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlOneToMany"/>
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlManyToOne"/>
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlManyToMany"/>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlTransient"/>
     <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlBasicCollection"/>
     <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlBasicMap"/>
     <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlTransformation"/>

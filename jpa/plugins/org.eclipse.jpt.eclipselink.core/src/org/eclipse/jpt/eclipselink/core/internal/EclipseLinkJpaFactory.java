@@ -25,6 +25,7 @@ import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
 import org.eclipse.jpt.core.context.java.JavaOneToOneMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.core.context.java.JavaTransientMapping;
 import org.eclipse.jpt.core.context.java.JavaVersionMapping;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
@@ -41,6 +42,7 @@ import org.eclipse.jpt.core.context.orm.OrmOneToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmOneToOneMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.context.orm.OrmTransientMapping;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmVersionMapping;
 import org.eclipse.jpt.core.context.orm.OrmXml;
@@ -100,6 +102,7 @@ import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkVirtualX
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkVirtualXmlNullAttributeMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkVirtualXmlOneToMany;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkVirtualXmlOneToOne;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkVirtualXmlTransient;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkVirtualXmlVersion;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmBasicCollectionMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmBasicMapMapping;
@@ -126,6 +129,7 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.XmlMappedSuperclass;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlOneToMany;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlOneToOne;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlTransformation;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlTransient;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlVariableOneToOne;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlVersion;
 
@@ -204,6 +208,10 @@ public class EclipseLinkJpaFactory
 	
 	public XmlVersion buildEclipseLinkVirtualXmlVersion(OrmTypeMapping ormTypeMapping, JavaVersionMapping javaVersionMapping) {
 		return new EclipseLinkVirtualXmlVersion(ormTypeMapping, javaVersionMapping);
+	}
+	
+	public XmlTransient buildEclipseLinkVirtualXmlTransient(OrmTypeMapping ormTypeMapping, JavaTransientMapping javaTransientMapping) {
+		return new EclipseLinkVirtualXmlTransient(ormTypeMapping, javaTransientMapping);
 	}
 	
 	public XmlBasicCollection buildVirtualXmlBasicCollection(OrmTypeMapping ormTypeMapping, JavaBasicCollectionMapping javaBasicCollectionMapping) {
@@ -291,7 +299,11 @@ public class EclipseLinkJpaFactory
 	public OrmVersionMapping buildEclipseLinkOrmVersionMapping(OrmPersistentAttribute parent, XmlVersion resourceMapping) {
 		return new EclipseLinkOrmVersionMapping(parent, resourceMapping);
 	}
-		
+	
+	public OrmTransientMapping buildEclipseLinkOrmTransientMapping(OrmPersistentAttribute parent, XmlTransient resourceMapping) {
+		return buildOrmTransientMapping(parent, resourceMapping);
+	}
+	
 	public OrmBasicCollectionMapping buildOrmBasicCollectionMapping(OrmPersistentAttribute parent, XmlBasicCollection resourceMapping) {
 		return new OrmBasicCollectionMapping(parent, resourceMapping);
 	}

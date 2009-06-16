@@ -258,6 +258,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="XmlOneToMany" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlOneToMany #//XmlAttributeMapping #//XmlPrivateOwned #//XmlJoinFetch"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlManyToOne" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlManyToOne #//XmlAttributeMapping #//XmlJoinFetch"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlManyToMany" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlManyToMany #//XmlAttributeMapping #//XmlJoinFetch"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlTransient" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlTransient #//XmlAttributeMapping"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlBasicCollection" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//AbstractXmlAttributeMapping #//XmlAttributeMapping"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlBasicMap" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//AbstractXmlAttributeMapping #//XmlAttributeMapping"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlTransformation" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//AbstractXmlAttributeMapping #//XmlAttributeMapping"/>

@@ -25,6 +25,7 @@ public class JptEclipseLink1_1CoreOrmContextModelTests extends TestCase
 		
 		suite.addTestSuite(EclipseLink1_1OrmPersistentAttributeTests.class);		
 		suite.addTestSuite(EclipseLink1_1OrmPersistentTypeTests.class);	
+		suite.addTestSuite(EclipseLink1_1OrmTransientMappingTests.class);	
 		
 		return suite;
 	}
