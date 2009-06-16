@@ -198,6 +198,12 @@ public class PostRemove extends AbstractJpaEObject implements EventMethod
 	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
 		return new SimpleTranslator(elementName, structuralFeature, buildTranslatorChildren());
 	}
+	
+	public static Translator buildTranslator() {
+		return buildTranslator(
+			JPA.POST_REMOVE,
+			OrmPackage.eINSTANCE.getXmlEventMethodContainer_PostRemove());
+	}
 
 	private static Translator[] buildTranslatorChildren() {
 		return new Translator[] {

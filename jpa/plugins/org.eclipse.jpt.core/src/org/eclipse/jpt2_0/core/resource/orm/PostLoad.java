@@ -15,6 +15,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
 import org.eclipse.jpt.core.resource.orm.JPA;
+import org.eclipse.jpt.core.resource.orm.OrmPackage;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -233,6 +234,12 @@ public class PostLoad extends org.eclipse.jpt.core.resource.orm.PostLoad impleme
 			structuralFeature,
 			Orm2_0Package.eINSTANCE.getPostLoad(),
 			buildTranslatorChildren());
+	}
+	
+	public static Translator buildTranslator() {
+		return buildTranslator(
+			JPA.POST_LOAD,
+			OrmPackage.eINSTANCE.getXmlEventMethodContainer_PostLoad());
 	}
 
 	private static Translator[] buildTranslatorChildren() {

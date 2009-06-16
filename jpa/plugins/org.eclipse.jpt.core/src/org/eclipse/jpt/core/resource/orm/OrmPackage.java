@@ -582,49 +582,13 @@ public class OrmPackage extends EPackageImpl
 	public static final int XML_MAPPED_SUPERCLASS__ATTRIBUTES = ABSTRACT_XML_TYPE_MAPPING__ATTRIBUTES;
 
 	/**
-	 * The feature id for the '<em><b>Id Class</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_MAPPED_SUPERCLASS__ID_CLASS = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 0;
-
-	/**
-	 * The feature id for the '<em><b>Exclude Default Listeners</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_MAPPED_SUPERCLASS__EXCLUDE_DEFAULT_LISTENERS = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 1;
-
-	/**
-	 * The feature id for the '<em><b>Exclude Superclass Listeners</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_MAPPED_SUPERCLASS__EXCLUDE_SUPERCLASS_LISTENERS = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 2;
-
-	/**
-	 * The feature id for the '<em><b>Entity Listeners</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_MAPPED_SUPERCLASS__ENTITY_LISTENERS = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 3;
-
-	/**
 	 * The feature id for the '<em><b>Pre Persist</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MAPPED_SUPERCLASS__PRE_PERSIST = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 4;
+	public static final int XML_MAPPED_SUPERCLASS__PRE_PERSIST = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Post Persist</b></em>' containment reference.
@@ -633,7 +597,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MAPPED_SUPERCLASS__POST_PERSIST = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 5;
+	public static final int XML_MAPPED_SUPERCLASS__POST_PERSIST = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Pre Remove</b></em>' containment reference.
@@ -642,7 +606,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MAPPED_SUPERCLASS__PRE_REMOVE = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 6;
+	public static final int XML_MAPPED_SUPERCLASS__PRE_REMOVE = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Post Remove</b></em>' containment reference.
@@ -651,7 +615,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MAPPED_SUPERCLASS__POST_REMOVE = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 7;
+	public static final int XML_MAPPED_SUPERCLASS__POST_REMOVE = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 3;
 
 	/**
 	 * The feature id for the '<em><b>Pre Update</b></em>' containment reference.
@@ -660,7 +624,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MAPPED_SUPERCLASS__PRE_UPDATE = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 8;
+	public static final int XML_MAPPED_SUPERCLASS__PRE_UPDATE = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Post Update</b></em>' containment reference.
@@ -669,7 +633,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MAPPED_SUPERCLASS__POST_UPDATE = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 9;
+	public static final int XML_MAPPED_SUPERCLASS__POST_UPDATE = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 5;
 
 	/**
 	 * The feature id for the '<em><b>Post Load</b></em>' containment reference.
@@ -678,7 +642,43 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MAPPED_SUPERCLASS__POST_LOAD = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 10;
+	public static final int XML_MAPPED_SUPERCLASS__POST_LOAD = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 6;
+
+	/**
+	 * The feature id for the '<em><b>Id Class</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MAPPED_SUPERCLASS__ID_CLASS = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 7;
+
+	/**
+	 * The feature id for the '<em><b>Exclude Default Listeners</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MAPPED_SUPERCLASS__EXCLUDE_DEFAULT_LISTENERS = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 8;
+
+	/**
+	 * The feature id for the '<em><b>Exclude Superclass Listeners</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MAPPED_SUPERCLASS__EXCLUDE_SUPERCLASS_LISTENERS = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 9;
+
+	/**
+	 * The feature id for the '<em><b>Entity Listeners</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MAPPED_SUPERCLASS__ENTITY_LISTENERS = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 10;
 
 	/**
 	 * The number of structural features of the '<em>Xml Mapped Superclass</em>' class.
@@ -781,121 +781,13 @@ public class OrmPackage extends EPackageImpl
 	public static final int XML_ENTITY__TABLE_GENERATOR = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 3;
 
 	/**
-	 * The feature id for the '<em><b>Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ENTITY__NAME = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 4;
-
-	/**
-	 * The feature id for the '<em><b>Table</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ENTITY__TABLE = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 5;
-
-	/**
-	 * The feature id for the '<em><b>Secondary Tables</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ENTITY__SECONDARY_TABLES = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 6;
-
-	/**
-	 * The feature id for the '<em><b>Primary Key Join Columns</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ENTITY__PRIMARY_KEY_JOIN_COLUMNS = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 7;
-
-	/**
-	 * The feature id for the '<em><b>Id Class</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ENTITY__ID_CLASS = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 8;
-
-	/**
-	 * The feature id for the '<em><b>Inheritance</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ENTITY__INHERITANCE = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 9;
-
-	/**
-	 * The feature id for the '<em><b>Discriminator Value</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ENTITY__DISCRIMINATOR_VALUE = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 10;
-
-	/**
-	 * The feature id for the '<em><b>Discriminator Column</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ENTITY__DISCRIMINATOR_COLUMN = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 11;
-
-	/**
-	 * The feature id for the '<em><b>Sql Result Set Mappings</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ENTITY__SQL_RESULT_SET_MAPPINGS = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 12;
-
-	/**
-	 * The feature id for the '<em><b>Exclude Default Listeners</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ENTITY__EXCLUDE_DEFAULT_LISTENERS = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 13;
-
-	/**
-	 * The feature id for the '<em><b>Exclude Superclass Listeners</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ENTITY__EXCLUDE_SUPERCLASS_LISTENERS = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 14;
-
-	/**
-	 * The feature id for the '<em><b>Entity Listeners</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ENTITY__ENTITY_LISTENERS = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 15;
-
-	/**
 	 * The feature id for the '<em><b>Pre Persist</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY__PRE_PERSIST = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 16;
+	public static final int XML_ENTITY__PRE_PERSIST = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 4;
 
 	/**
 	 * The feature id for the '<em><b>Post Persist</b></em>' containment reference.
@@ -904,7 +796,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY__POST_PERSIST = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 17;
+	public static final int XML_ENTITY__POST_PERSIST = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 5;
 
 	/**
 	 * The feature id for the '<em><b>Pre Remove</b></em>' containment reference.
@@ -913,7 +805,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY__PRE_REMOVE = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 18;
+	public static final int XML_ENTITY__PRE_REMOVE = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 6;
 
 	/**
 	 * The feature id for the '<em><b>Post Remove</b></em>' containment reference.
@@ -922,7 +814,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY__POST_REMOVE = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 19;
+	public static final int XML_ENTITY__POST_REMOVE = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 7;
 
 	/**
 	 * The feature id for the '<em><b>Pre Update</b></em>' containment reference.
@@ -931,7 +823,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY__PRE_UPDATE = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 20;
+	public static final int XML_ENTITY__PRE_UPDATE = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 8;
 
 	/**
 	 * The feature id for the '<em><b>Post Update</b></em>' containment reference.
@@ -940,7 +832,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY__POST_UPDATE = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 21;
+	public static final int XML_ENTITY__POST_UPDATE = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 9;
 
 	/**
 	 * The feature id for the '<em><b>Post Load</b></em>' containment reference.
@@ -949,7 +841,115 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY__POST_LOAD = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 22;
+	public static final int XML_ENTITY__POST_LOAD = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 10;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ENTITY__NAME = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 11;
+
+	/**
+	 * The feature id for the '<em><b>Table</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ENTITY__TABLE = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 12;
+
+	/**
+	 * The feature id for the '<em><b>Secondary Tables</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ENTITY__SECONDARY_TABLES = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 13;
+
+	/**
+	 * The feature id for the '<em><b>Primary Key Join Columns</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ENTITY__PRIMARY_KEY_JOIN_COLUMNS = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 14;
+
+	/**
+	 * The feature id for the '<em><b>Id Class</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ENTITY__ID_CLASS = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 15;
+
+	/**
+	 * The feature id for the '<em><b>Inheritance</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ENTITY__INHERITANCE = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 16;
+
+	/**
+	 * The feature id for the '<em><b>Discriminator Value</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ENTITY__DISCRIMINATOR_VALUE = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 17;
+
+	/**
+	 * The feature id for the '<em><b>Discriminator Column</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ENTITY__DISCRIMINATOR_COLUMN = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 18;
+
+	/**
+	 * The feature id for the '<em><b>Sql Result Set Mappings</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ENTITY__SQL_RESULT_SET_MAPPINGS = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 19;
+
+	/**
+	 * The feature id for the '<em><b>Exclude Default Listeners</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ENTITY__EXCLUDE_DEFAULT_LISTENERS = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 20;
+
+	/**
+	 * The feature id for the '<em><b>Exclude Superclass Listeners</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ENTITY__EXCLUDE_SUPERCLASS_LISTENERS = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 21;
+
+	/**
+	 * The feature id for the '<em><b>Entity Listeners</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ENTITY__ENTITY_LISTENERS = ABSTRACT_XML_TYPE_MAPPING_FEATURE_COUNT + 22;
 
 	/**
 	 * The feature id for the '<em><b>Attribute Overrides</b></em>' containment reference list.
@@ -1790,7 +1790,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEntityListeners()
 	 * @generated
 	 */
-	public static final int ENTITY_LISTENERS = 42;
+	public static final int ENTITY_LISTENERS = 43;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.EntityListener <em>Entity Listener</em>}' class.
@@ -1800,7 +1800,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEntityListener()
 	 * @generated
 	 */
-	public static final int ENTITY_LISTENER = 43;
+	public static final int ENTITY_LISTENER = 44;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.EntityResult <em>Entity Result</em>}' class.
@@ -1810,7 +1810,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEntityResult()
 	 * @generated
 	 */
-	public static final int ENTITY_RESULT = 44;
+	public static final int ENTITY_RESULT = 45;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.FieldResult <em>Field Result</em>}' class.
@@ -1820,7 +1820,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getFieldResult()
 	 * @generated
 	 */
-	public static final int FIELD_RESULT = 46;
+	public static final int FIELD_RESULT = 47;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.Inheritance <em>Inheritance</em>}' class.
@@ -1830,7 +1830,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getInheritance()
 	 * @generated
 	 */
-	public static final int INHERITANCE = 49;
+	public static final int INHERITANCE = 50;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.Lob <em>Lob</em>}' class.
@@ -1840,7 +1840,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getLob()
 	 * @generated
 	 */
-	public static final int LOB = 52;
+	public static final int LOB = 53;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.MapKey <em>Map Key</em>}' class.
@@ -1850,7 +1850,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getMapKey()
 	 * @generated
 	 */
-	public static final int MAP_KEY = 53;
+	public static final int MAP_KEY = 54;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.EventMethod <em>Event Method</em>}' class.
@@ -1860,7 +1860,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEventMethod()
 	 * @generated
 	 */
-	public static final int EVENT_METHOD = 45;
+	public static final int EVENT_METHOD = 46;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.XmlGeneratedValue <em>Xml Generated Value</em>}' class.
@@ -1870,7 +1870,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlGeneratedValue()
 	 * @generated
 	 */
-	public static final int XML_GENERATED_VALUE = 47;
+	public static final int XML_GENERATED_VALUE = 48;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.XmlIdClass <em>Xml Id Class</em>}' class.
@@ -1880,7 +1880,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlIdClass()
 	 * @generated
 	 */
-	public static final int XML_ID_CLASS = 48;
+	public static final int XML_ID_CLASS = 49;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.XmlJoinColumn <em>Xml Join Column</em>}' class.
@@ -1890,7 +1890,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlJoinColumn()
 	 * @generated
 	 */
-	public static final int XML_JOIN_COLUMN = 50;
+	public static final int XML_JOIN_COLUMN = 51;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.XmlJoinTable <em>Xml Join Table</em>}' class.
@@ -1900,7 +1900,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlJoinTable()
 	 * @generated
 	 */
-	public static final int XML_JOIN_TABLE = 51;
+	public static final int XML_JOIN_TABLE = 52;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -2977,6 +2977,88 @@ public class OrmPackage extends EPackageImpl
 	public static final int XML_DISCRIMINATOR_COLUMN_FEATURE_COUNT = ABSTRACT_XML_NAMED_COLUMN_FEATURE_COUNT + 2;
 
 	/**
+	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.XmlEventMethodContainer <em>Xml Event Method Container</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.eclipse.jpt.core.resource.orm.XmlEventMethodContainer
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEventMethodContainer()
+	 * @generated
+	 */
+	public static final int XML_EVENT_METHOD_CONTAINER = 42;
+
+	/**
+	 * The feature id for the '<em><b>Pre Persist</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_EVENT_METHOD_CONTAINER__PRE_PERSIST = 0;
+
+	/**
+	 * The feature id for the '<em><b>Post Persist</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_EVENT_METHOD_CONTAINER__POST_PERSIST = 1;
+
+	/**
+	 * The feature id for the '<em><b>Pre Remove</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_EVENT_METHOD_CONTAINER__PRE_REMOVE = 2;
+
+	/**
+	 * The feature id for the '<em><b>Post Remove</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_EVENT_METHOD_CONTAINER__POST_REMOVE = 3;
+
+	/**
+	 * The feature id for the '<em><b>Pre Update</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_EVENT_METHOD_CONTAINER__PRE_UPDATE = 4;
+
+	/**
+	 * The feature id for the '<em><b>Post Update</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_EVENT_METHOD_CONTAINER__POST_UPDATE = 5;
+
+	/**
+	 * The feature id for the '<em><b>Post Load</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_EVENT_METHOD_CONTAINER__POST_LOAD = 6;
+
+	/**
+	 * The number of structural features of the '<em>Xml Event Method Container</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_EVENT_METHOD_CONTAINER_FEATURE_COUNT = 7;
+
+	/**
 	 * The feature id for the '<em><b>Entity Listeners</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2995,22 +3077,13 @@ public class OrmPackage extends EPackageImpl
 	public static final int ENTITY_LISTENERS_FEATURE_COUNT = 1;
 
 	/**
-	 * The feature id for the '<em><b>Class Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int ENTITY_LISTENER__CLASS_NAME = 0;
-
-	/**
 	 * The feature id for the '<em><b>Pre Persist</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ENTITY_LISTENER__PRE_PERSIST = 1;
+	public static final int ENTITY_LISTENER__PRE_PERSIST = XML_EVENT_METHOD_CONTAINER__PRE_PERSIST;
 
 	/**
 	 * The feature id for the '<em><b>Post Persist</b></em>' containment reference.
@@ -3019,7 +3092,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ENTITY_LISTENER__POST_PERSIST = 2;
+	public static final int ENTITY_LISTENER__POST_PERSIST = XML_EVENT_METHOD_CONTAINER__POST_PERSIST;
 
 	/**
 	 * The feature id for the '<em><b>Pre Remove</b></em>' containment reference.
@@ -3028,7 +3101,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ENTITY_LISTENER__PRE_REMOVE = 3;
+	public static final int ENTITY_LISTENER__PRE_REMOVE = XML_EVENT_METHOD_CONTAINER__PRE_REMOVE;
 
 	/**
 	 * The feature id for the '<em><b>Post Remove</b></em>' containment reference.
@@ -3037,7 +3110,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ENTITY_LISTENER__POST_REMOVE = 4;
+	public static final int ENTITY_LISTENER__POST_REMOVE = XML_EVENT_METHOD_CONTAINER__POST_REMOVE;
 
 	/**
 	 * The feature id for the '<em><b>Pre Update</b></em>' containment reference.
@@ -3046,7 +3119,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ENTITY_LISTENER__PRE_UPDATE = 5;
+	public static final int ENTITY_LISTENER__PRE_UPDATE = XML_EVENT_METHOD_CONTAINER__PRE_UPDATE;
 
 	/**
 	 * The feature id for the '<em><b>Post Update</b></em>' containment reference.
@@ -3055,7 +3128,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ENTITY_LISTENER__POST_UPDATE = 6;
+	public static final int ENTITY_LISTENER__POST_UPDATE = XML_EVENT_METHOD_CONTAINER__POST_UPDATE;
 
 	/**
 	 * The feature id for the '<em><b>Post Load</b></em>' containment reference.
@@ -3064,7 +3137,16 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ENTITY_LISTENER__POST_LOAD = 7;
+	public static final int ENTITY_LISTENER__POST_LOAD = XML_EVENT_METHOD_CONTAINER__POST_LOAD;
+
+	/**
+	 * The feature id for the '<em><b>Class Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int ENTITY_LISTENER__CLASS_NAME = XML_EVENT_METHOD_CONTAINER_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Entity Listener</em>' class.
@@ -3073,7 +3155,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int ENTITY_LISTENER_FEATURE_COUNT = 8;
+	public static final int ENTITY_LISTENER_FEATURE_COUNT = XML_EVENT_METHOD_CONTAINER_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Discriminator Column</b></em>' attribute.
@@ -3308,7 +3390,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAbstractXmlTable()
 	 * @generated
 	 */
-	public static final int ABSTRACT_XML_TABLE = 66;
+	public static final int ABSTRACT_XML_TABLE = 67;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -3453,7 +3535,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlQuery()
 	 * @generated
 	 */
-	public static final int XML_QUERY = 54;
+	public static final int XML_QUERY = 55;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -3499,7 +3581,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlNamedNativeQuery()
 	 * @generated
 	 */
-	public static final int XML_NAMED_NATIVE_QUERY = 55;
+	public static final int XML_NAMED_NATIVE_QUERY = 56;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -3563,7 +3645,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlNamedQuery()
 	 * @generated
 	 */
-	public static final int XML_NAMED_QUERY = 56;
+	public static final int XML_NAMED_QUERY = 57;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -3609,7 +3691,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getPostLoad()
 	 * @generated
 	 */
-	public static final int POST_LOAD = 57;
+	public static final int POST_LOAD = 58;
 
 	/**
 	 * The feature id for the '<em><b>Method Name</b></em>' attribute.
@@ -3637,7 +3719,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getPostPersist()
 	 * @generated
 	 */
-	public static final int POST_PERSIST = 58;
+	public static final int POST_PERSIST = 59;
 
 	/**
 	 * The feature id for the '<em><b>Method Name</b></em>' attribute.
@@ -3665,7 +3747,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getPostRemove()
 	 * @generated
 	 */
-	public static final int POST_REMOVE = 59;
+	public static final int POST_REMOVE = 60;
 
 	/**
 	 * The feature id for the '<em><b>Method Name</b></em>' attribute.
@@ -3693,7 +3775,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getPostUpdate()
 	 * @generated
 	 */
-	public static final int POST_UPDATE = 60;
+	public static final int POST_UPDATE = 61;
 
 	/**
 	 * The feature id for the '<em><b>Method Name</b></em>' attribute.
@@ -3721,7 +3803,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getPrePersist()
 	 * @generated
 	 */
-	public static final int PRE_PERSIST = 61;
+	public static final int PRE_PERSIST = 62;
 
 	/**
 	 * The feature id for the '<em><b>Method Name</b></em>' attribute.
@@ -3749,7 +3831,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getPreRemove()
 	 * @generated
 	 */
-	public static final int PRE_REMOVE = 62;
+	public static final int PRE_REMOVE = 63;
 
 	/**
 	 * The feature id for the '<em><b>Method Name</b></em>' attribute.
@@ -3777,7 +3859,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getPreUpdate()
 	 * @generated
 	 */
-	public static final int PRE_UPDATE = 63;
+	public static final int PRE_UPDATE = 64;
 
 	/**
 	 * The feature id for the '<em><b>Method Name</b></em>' attribute.
@@ -3805,7 +3887,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlPrimaryKeyJoinColumn()
 	 * @generated
 	 */
-	public static final int XML_PRIMARY_KEY_JOIN_COLUMN = 64;
+	public static final int XML_PRIMARY_KEY_JOIN_COLUMN = 65;
 
 	/**
 	 * The feature id for the '<em><b>Column Definition</b></em>' attribute.
@@ -3851,7 +3933,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlQueryHint()
 	 * @generated
 	 */
-	public static final int XML_QUERY_HINT = 65;
+	public static final int XML_QUERY_HINT = 66;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -3888,7 +3970,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlTable()
 	 * @generated
 	 */
-	public static final int XML_TABLE = 67;
+	public static final int XML_TABLE = 68;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -3943,7 +4025,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlSecondaryTable()
 	 * @generated
 	 */
-	public static final int XML_SECONDARY_TABLE = 68;
+	public static final int XML_SECONDARY_TABLE = 69;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -4007,7 +4089,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlGenerator()
 	 * @generated
 	 */
-	public static final int XML_GENERATOR = 69;
+	public static final int XML_GENERATOR = 70;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -4053,7 +4135,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlSequenceGenerator()
 	 * @generated
 	 */
-	public static final int XML_SEQUENCE_GENERATOR = 70;
+	public static final int XML_SEQUENCE_GENERATOR = 71;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -4108,7 +4190,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getSqlResultSetMapping()
 	 * @generated
 	 */
-	public static final int SQL_RESULT_SET_MAPPING = 71;
+	public static final int SQL_RESULT_SET_MAPPING = 72;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -4154,7 +4236,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlTableGenerator()
 	 * @generated
 	 */
-	public static final int XML_TABLE_GENERATOR = 72;
+	public static final int XML_TABLE_GENERATOR = 73;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -4263,7 +4345,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlUniqueConstraint()
 	 * @generated
 	 */
-	public static final int XML_UNIQUE_CONSTRAINT = 73;
+	public static final int XML_UNIQUE_CONSTRAINT = 74;
 
 	/**
 	 * The feature id for the '<em><b>Column Names</b></em>' attribute list.
@@ -4291,7 +4373,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getAccessType()
 	 * @generated
 	 */
-	public static final int ACCESS_TYPE = 74;
+	public static final int ACCESS_TYPE = 75;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.DiscriminatorType <em>Discriminator Type</em>}' enum.
@@ -4301,7 +4383,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getDiscriminatorType()
 	 * @generated
 	 */
-	public static final int DISCRIMINATOR_TYPE = 75;
+	public static final int DISCRIMINATOR_TYPE = 76;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.EnumType <em>Enum Type</em>}' enum.
@@ -4311,7 +4393,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEnumType()
 	 * @generated
 	 */
-	public static final int ENUM_TYPE = 76;
+	public static final int ENUM_TYPE = 77;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.FetchType <em>Fetch Type</em>}' enum.
@@ -4321,7 +4403,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getFetchType()
 	 * @generated
 	 */
-	public static final int FETCH_TYPE = 77;
+	public static final int FETCH_TYPE = 78;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.GenerationType <em>Generation Type</em>}' enum.
@@ -4331,7 +4413,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getGenerationType()
 	 * @generated
 	 */
-	public static final int GENERATION_TYPE = 78;
+	public static final int GENERATION_TYPE = 79;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.InheritanceType <em>Inheritance Type</em>}' enum.
@@ -4341,7 +4423,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getInheritanceType()
 	 * @generated
 	 */
-	public static final int INHERITANCE_TYPE = 79;
+	public static final int INHERITANCE_TYPE = 80;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.core.resource.orm.TemporalType <em>Temporal Type</em>}' enum.
@@ -4351,7 +4433,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getTemporalType()
 	 * @generated
 	 */
-	public static final int TEMPORAL_TYPE = 80;
+	public static final int TEMPORAL_TYPE = 81;
 
 	/**
 	 * The meta object id for the '<em>Discriminator Value</em>' data type.
@@ -4361,7 +4443,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getDiscriminatorValue()
 	 * @generated
 	 */
-	public static final int DISCRIMINATOR_VALUE = 81;
+	public static final int DISCRIMINATOR_VALUE = 82;
 
 	/**
 	 * The meta object id for the '<em>Enumerated</em>' data type.
@@ -4371,7 +4453,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEnumerated()
 	 * @generated
 	 */
-	public static final int ENUMERATED = 82;
+	public static final int ENUMERATED = 83;
 
 	/**
 	 * The meta object id for the '<em>Order By</em>' data type.
@@ -4381,7 +4463,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getOrderBy()
 	 * @generated
 	 */
-	public static final int ORDER_BY = 83;
+	public static final int ORDER_BY = 84;
 
 	/**
 	 * The meta object id for the '<em>Version Type</em>' data type.
@@ -4391,7 +4473,7 @@ public class OrmPackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getVersionType()
 	 * @generated
 	 */
-	public static final int VERSION_TYPE = 84;
+	public static final int VERSION_TYPE = 85;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -4686,6 +4768,13 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 */
 	private EClass xmlDiscriminatorColumnEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass xmlEventMethodContainerEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -5571,111 +5660,6 @@ public class OrmPackage extends EPackageImpl
 
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass#getPrePersist <em>Pre Persist</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Pre Persist</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass#getPrePersist()
-	 * @see #getXmlMappedSuperclass()
-	 * @generated
-	 */
-	public EReference getXmlMappedSuperclass_PrePersist()
-	{
-		return (EReference)xmlMappedSuperclassEClass.getEStructuralFeatures().get(4);
-	}
-
-
-	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass#getPostPersist <em>Post Persist</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Post Persist</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass#getPostPersist()
-	 * @see #getXmlMappedSuperclass()
-	 * @generated
-	 */
-	public EReference getXmlMappedSuperclass_PostPersist()
-	{
-		return (EReference)xmlMappedSuperclassEClass.getEStructuralFeatures().get(5);
-	}
-
-
-	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass#getPreRemove <em>Pre Remove</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Pre Remove</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass#getPreRemove()
-	 * @see #getXmlMappedSuperclass()
-	 * @generated
-	 */
-	public EReference getXmlMappedSuperclass_PreRemove()
-	{
-		return (EReference)xmlMappedSuperclassEClass.getEStructuralFeatures().get(6);
-	}
-
-
-	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass#getPostRemove <em>Post Remove</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Post Remove</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass#getPostRemove()
-	 * @see #getXmlMappedSuperclass()
-	 * @generated
-	 */
-	public EReference getXmlMappedSuperclass_PostRemove()
-	{
-		return (EReference)xmlMappedSuperclassEClass.getEStructuralFeatures().get(7);
-	}
-
-
-	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass#getPreUpdate <em>Pre Update</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Pre Update</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass#getPreUpdate()
-	 * @see #getXmlMappedSuperclass()
-	 * @generated
-	 */
-	public EReference getXmlMappedSuperclass_PreUpdate()
-	{
-		return (EReference)xmlMappedSuperclassEClass.getEStructuralFeatures().get(8);
-	}
-
-
-	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass#getPostUpdate <em>Post Update</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Post Update</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass#getPostUpdate()
-	 * @see #getXmlMappedSuperclass()
-	 * @generated
-	 */
-	public EReference getXmlMappedSuperclass_PostUpdate()
-	{
-		return (EReference)xmlMappedSuperclassEClass.getEStructuralFeatures().get(9);
-	}
-
-
-	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass#getPostLoad <em>Post Load</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Post Load</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass#getPostLoad()
-	 * @see #getXmlMappedSuperclass()
-	 * @generated
-	 */
-	public EReference getXmlMappedSuperclass_PostLoad()
-	{
-		return (EReference)xmlMappedSuperclassEClass.getEStructuralFeatures().get(10);
-	}
-
-
-	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.core.resource.orm.XmlEntity <em>Xml Entity</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -5870,111 +5854,6 @@ public class OrmPackage extends EPackageImpl
 
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.resource.orm.XmlEntity#getPrePersist <em>Pre Persist</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Pre Persist</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.XmlEntity#getPrePersist()
-	 * @see #getXmlEntity()
-	 * @generated
-	 */
-	public EReference getXmlEntity_PrePersist()
-	{
-		return (EReference)xmlEntityEClass.getEStructuralFeatures().get(12);
-	}
-
-
-	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.resource.orm.XmlEntity#getPostPersist <em>Post Persist</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Post Persist</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.XmlEntity#getPostPersist()
-	 * @see #getXmlEntity()
-	 * @generated
-	 */
-	public EReference getXmlEntity_PostPersist()
-	{
-		return (EReference)xmlEntityEClass.getEStructuralFeatures().get(13);
-	}
-
-
-	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.resource.orm.XmlEntity#getPreRemove <em>Pre Remove</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Pre Remove</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.XmlEntity#getPreRemove()
-	 * @see #getXmlEntity()
-	 * @generated
-	 */
-	public EReference getXmlEntity_PreRemove()
-	{
-		return (EReference)xmlEntityEClass.getEStructuralFeatures().get(14);
-	}
-
-
-	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.resource.orm.XmlEntity#getPostRemove <em>Post Remove</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Post Remove</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.XmlEntity#getPostRemove()
-	 * @see #getXmlEntity()
-	 * @generated
-	 */
-	public EReference getXmlEntity_PostRemove()
-	{
-		return (EReference)xmlEntityEClass.getEStructuralFeatures().get(15);
-	}
-
-
-	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.resource.orm.XmlEntity#getPreUpdate <em>Pre Update</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Pre Update</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.XmlEntity#getPreUpdate()
-	 * @see #getXmlEntity()
-	 * @generated
-	 */
-	public EReference getXmlEntity_PreUpdate()
-	{
-		return (EReference)xmlEntityEClass.getEStructuralFeatures().get(16);
-	}
-
-
-	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.resource.orm.XmlEntity#getPostUpdate <em>Post Update</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Post Update</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.XmlEntity#getPostUpdate()
-	 * @see #getXmlEntity()
-	 * @generated
-	 */
-	public EReference getXmlEntity_PostUpdate()
-	{
-		return (EReference)xmlEntityEClass.getEStructuralFeatures().get(17);
-	}
-
-
-	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.resource.orm.XmlEntity#getPostLoad <em>Post Load</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Post Load</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.XmlEntity#getPostLoad()
-	 * @see #getXmlEntity()
-	 * @generated
-	 */
-	public EReference getXmlEntity_PostLoad()
-	{
-		return (EReference)xmlEntityEClass.getEStructuralFeatures().get(18);
-	}
-
-
-	/**
 	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.resource.orm.XmlEntity#getAttributeOverrides <em>Attribute Overrides</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -5985,7 +5864,7 @@ public class OrmPackage extends EPackageImpl
 	 */
 	public EReference getXmlEntity_AttributeOverrides()
 	{
-		return (EReference)xmlEntityEClass.getEStructuralFeatures().get(19);
+		return (EReference)xmlEntityEClass.getEStructuralFeatures().get(12);
 	}
 
 
@@ -6000,7 +5879,7 @@ public class OrmPackage extends EPackageImpl
 	 */
 	public EReference getXmlEntity_AssociationOverrides()
 	{
-		return (EReference)xmlEntityEClass.getEStructuralFeatures().get(20);
+		return (EReference)xmlEntityEClass.getEStructuralFeatures().get(13);
 	}
 
 
@@ -7290,6 +7169,125 @@ public class OrmPackage extends EPackageImpl
 
 
 	/**
+	 * Returns the meta object for class '{@link org.eclipse.jpt.core.resource.orm.XmlEventMethodContainer <em>Xml Event Method Container</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Xml Event Method Container</em>'.
+	 * @see org.eclipse.jpt.core.resource.orm.XmlEventMethodContainer
+	 * @generated
+	 */
+	public EClass getXmlEventMethodContainer()
+	{
+		return xmlEventMethodContainerEClass;
+	}
+
+
+	/**
+	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.resource.orm.XmlEventMethodContainer#getPrePersist <em>Pre Persist</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Pre Persist</em>'.
+	 * @see org.eclipse.jpt.core.resource.orm.XmlEventMethodContainer#getPrePersist()
+	 * @see #getXmlEventMethodContainer()
+	 * @generated
+	 */
+	public EReference getXmlEventMethodContainer_PrePersist()
+	{
+		return (EReference)xmlEventMethodContainerEClass.getEStructuralFeatures().get(0);
+	}
+
+
+	/**
+	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.resource.orm.XmlEventMethodContainer#getPostPersist <em>Post Persist</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Post Persist</em>'.
+	 * @see org.eclipse.jpt.core.resource.orm.XmlEventMethodContainer#getPostPersist()
+	 * @see #getXmlEventMethodContainer()
+	 * @generated
+	 */
+	public EReference getXmlEventMethodContainer_PostPersist()
+	{
+		return (EReference)xmlEventMethodContainerEClass.getEStructuralFeatures().get(1);
+	}
+
+
+	/**
+	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.resource.orm.XmlEventMethodContainer#getPreRemove <em>Pre Remove</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Pre Remove</em>'.
+	 * @see org.eclipse.jpt.core.resource.orm.XmlEventMethodContainer#getPreRemove()
+	 * @see #getXmlEventMethodContainer()
+	 * @generated
+	 */
+	public EReference getXmlEventMethodContainer_PreRemove()
+	{
+		return (EReference)xmlEventMethodContainerEClass.getEStructuralFeatures().get(2);
+	}
+
+
+	/**
+	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.resource.orm.XmlEventMethodContainer#getPostRemove <em>Post Remove</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Post Remove</em>'.
+	 * @see org.eclipse.jpt.core.resource.orm.XmlEventMethodContainer#getPostRemove()
+	 * @see #getXmlEventMethodContainer()
+	 * @generated
+	 */
+	public EReference getXmlEventMethodContainer_PostRemove()
+	{
+		return (EReference)xmlEventMethodContainerEClass.getEStructuralFeatures().get(3);
+	}
+
+
+	/**
+	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.resource.orm.XmlEventMethodContainer#getPreUpdate <em>Pre Update</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Pre Update</em>'.
+	 * @see org.eclipse.jpt.core.resource.orm.XmlEventMethodContainer#getPreUpdate()
+	 * @see #getXmlEventMethodContainer()
+	 * @generated
+	 */
+	public EReference getXmlEventMethodContainer_PreUpdate()
+	{
+		return (EReference)xmlEventMethodContainerEClass.getEStructuralFeatures().get(4);
+	}
+
+
+	/**
+	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.resource.orm.XmlEventMethodContainer#getPostUpdate <em>Post Update</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Post Update</em>'.
+	 * @see org.eclipse.jpt.core.resource.orm.XmlEventMethodContainer#getPostUpdate()
+	 * @see #getXmlEventMethodContainer()
+	 * @generated
+	 */
+	public EReference getXmlEventMethodContainer_PostUpdate()
+	{
+		return (EReference)xmlEventMethodContainerEClass.getEStructuralFeatures().get(5);
+	}
+
+
+	/**
+	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.resource.orm.XmlEventMethodContainer#getPostLoad <em>Post Load</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Post Load</em>'.
+	 * @see org.eclipse.jpt.core.resource.orm.XmlEventMethodContainer#getPostLoad()
+	 * @see #getXmlEventMethodContainer()
+	 * @generated
+	 */
+	public EReference getXmlEventMethodContainer_PostLoad()
+	{
+		return (EReference)xmlEventMethodContainerEClass.getEStructuralFeatures().get(6);
+	}
+
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.core.resource.orm.EntityListeners <em>Entity Listeners</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -7341,104 +7339,6 @@ public class OrmPackage extends EPackageImpl
 	public EAttribute getEntityListener_ClassName()
 	{
 		return (EAttribute)entityListenerEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.resource.orm.EntityListener#getPrePersist <em>Pre Persist</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Pre Persist</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.EntityListener#getPrePersist()
-	 * @see #getEntityListener()
-	 * @generated
-	 */
-	public EReference getEntityListener_PrePersist()
-	{
-		return (EReference)entityListenerEClass.getEStructuralFeatures().get(1);
-	}
-
-	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.resource.orm.EntityListener#getPostPersist <em>Post Persist</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Post Persist</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.EntityListener#getPostPersist()
-	 * @see #getEntityListener()
-	 * @generated
-	 */
-	public EReference getEntityListener_PostPersist()
-	{
-		return (EReference)entityListenerEClass.getEStructuralFeatures().get(2);
-	}
-
-	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.resource.orm.EntityListener#getPreRemove <em>Pre Remove</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Pre Remove</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.EntityListener#getPreRemove()
-	 * @see #getEntityListener()
-	 * @generated
-	 */
-	public EReference getEntityListener_PreRemove()
-	{
-		return (EReference)entityListenerEClass.getEStructuralFeatures().get(3);
-	}
-
-	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.resource.orm.EntityListener#getPostRemove <em>Post Remove</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Post Remove</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.EntityListener#getPostRemove()
-	 * @see #getEntityListener()
-	 * @generated
-	 */
-	public EReference getEntityListener_PostRemove()
-	{
-		return (EReference)entityListenerEClass.getEStructuralFeatures().get(4);
-	}
-
-	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.resource.orm.EntityListener#getPreUpdate <em>Pre Update</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Pre Update</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.EntityListener#getPreUpdate()
-	 * @see #getEntityListener()
-	 * @generated
-	 */
-	public EReference getEntityListener_PreUpdate()
-	{
-		return (EReference)entityListenerEClass.getEStructuralFeatures().get(5);
-	}
-
-	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.resource.orm.EntityListener#getPostUpdate <em>Post Update</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Post Update</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.EntityListener#getPostUpdate()
-	 * @see #getEntityListener()
-	 * @generated
-	 */
-	public EReference getEntityListener_PostUpdate()
-	{
-		return (EReference)entityListenerEClass.getEStructuralFeatures().get(6);
-	}
-
-	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.resource.orm.EntityListener#getPostLoad <em>Post Load</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Post Load</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.EntityListener#getPostLoad()
-	 * @see #getEntityListener()
-	 * @generated
-	 */
-	public EReference getEntityListener_PostLoad()
-	{
-		return (EReference)entityListenerEClass.getEStructuralFeatures().get(7);
 	}
 
 	/**
@@ -8687,13 +8587,6 @@ public class OrmPackage extends EPackageImpl
 		createEAttribute(xmlMappedSuperclassEClass, XML_MAPPED_SUPERCLASS__EXCLUDE_DEFAULT_LISTENERS);
 		createEAttribute(xmlMappedSuperclassEClass, XML_MAPPED_SUPERCLASS__EXCLUDE_SUPERCLASS_LISTENERS);
 		createEReference(xmlMappedSuperclassEClass, XML_MAPPED_SUPERCLASS__ENTITY_LISTENERS);
-		createEReference(xmlMappedSuperclassEClass, XML_MAPPED_SUPERCLASS__PRE_PERSIST);
-		createEReference(xmlMappedSuperclassEClass, XML_MAPPED_SUPERCLASS__POST_PERSIST);
-		createEReference(xmlMappedSuperclassEClass, XML_MAPPED_SUPERCLASS__PRE_REMOVE);
-		createEReference(xmlMappedSuperclassEClass, XML_MAPPED_SUPERCLASS__POST_REMOVE);
-		createEReference(xmlMappedSuperclassEClass, XML_MAPPED_SUPERCLASS__PRE_UPDATE);
-		createEReference(xmlMappedSuperclassEClass, XML_MAPPED_SUPERCLASS__POST_UPDATE);
-		createEReference(xmlMappedSuperclassEClass, XML_MAPPED_SUPERCLASS__POST_LOAD);
 
 		xmlEntityEClass = createEClass(XML_ENTITY);
 		createEAttribute(xmlEntityEClass, XML_ENTITY__NAME);
@@ -8708,13 +8601,6 @@ public class OrmPackage extends EPackageImpl
 		createEAttribute(xmlEntityEClass, XML_ENTITY__EXCLUDE_DEFAULT_LISTENERS);
 		createEAttribute(xmlEntityEClass, XML_ENTITY__EXCLUDE_SUPERCLASS_LISTENERS);
 		createEReference(xmlEntityEClass, XML_ENTITY__ENTITY_LISTENERS);
-		createEReference(xmlEntityEClass, XML_ENTITY__PRE_PERSIST);
-		createEReference(xmlEntityEClass, XML_ENTITY__POST_PERSIST);
-		createEReference(xmlEntityEClass, XML_ENTITY__PRE_REMOVE);
-		createEReference(xmlEntityEClass, XML_ENTITY__POST_REMOVE);
-		createEReference(xmlEntityEClass, XML_ENTITY__PRE_UPDATE);
-		createEReference(xmlEntityEClass, XML_ENTITY__POST_UPDATE);
-		createEReference(xmlEntityEClass, XML_ENTITY__POST_LOAD);
 		createEReference(xmlEntityEClass, XML_ENTITY__ATTRIBUTE_OVERRIDES);
 		createEReference(xmlEntityEClass, XML_ENTITY__ASSOCIATION_OVERRIDES);
 
@@ -8841,18 +8727,20 @@ public class OrmPackage extends EPackageImpl
 		createEAttribute(xmlDiscriminatorColumnEClass, XML_DISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE);
 		createEAttribute(xmlDiscriminatorColumnEClass, XML_DISCRIMINATOR_COLUMN__LENGTH);
 
+		xmlEventMethodContainerEClass = createEClass(XML_EVENT_METHOD_CONTAINER);
+		createEReference(xmlEventMethodContainerEClass, XML_EVENT_METHOD_CONTAINER__PRE_PERSIST);
+		createEReference(xmlEventMethodContainerEClass, XML_EVENT_METHOD_CONTAINER__POST_PERSIST);
+		createEReference(xmlEventMethodContainerEClass, XML_EVENT_METHOD_CONTAINER__PRE_REMOVE);
+		createEReference(xmlEventMethodContainerEClass, XML_EVENT_METHOD_CONTAINER__POST_REMOVE);
+		createEReference(xmlEventMethodContainerEClass, XML_EVENT_METHOD_CONTAINER__PRE_UPDATE);
+		createEReference(xmlEventMethodContainerEClass, XML_EVENT_METHOD_CONTAINER__POST_UPDATE);
+		createEReference(xmlEventMethodContainerEClass, XML_EVENT_METHOD_CONTAINER__POST_LOAD);
+
 		entityListenersEClass = createEClass(ENTITY_LISTENERS);
 		createEReference(entityListenersEClass, ENTITY_LISTENERS__ENTITY_LISTENERS);
 
 		entityListenerEClass = createEClass(ENTITY_LISTENER);
 		createEAttribute(entityListenerEClass, ENTITY_LISTENER__CLASS_NAME);
-		createEReference(entityListenerEClass, ENTITY_LISTENER__PRE_PERSIST);
-		createEReference(entityListenerEClass, ENTITY_LISTENER__POST_PERSIST);
-		createEReference(entityListenerEClass, ENTITY_LISTENER__PRE_REMOVE);
-		createEReference(entityListenerEClass, ENTITY_LISTENER__POST_REMOVE);
-		createEReference(entityListenerEClass, ENTITY_LISTENER__PRE_UPDATE);
-		createEReference(entityListenerEClass, ENTITY_LISTENER__POST_UPDATE);
-		createEReference(entityListenerEClass, ENTITY_LISTENER__POST_LOAD);
 
 		entityResultEClass = createEClass(ENTITY_RESULT);
 		createEAttribute(entityResultEClass, ENTITY_RESULT__DISCRIMINATOR_COLUMN);
@@ -9010,9 +8898,11 @@ public class OrmPackage extends EPackageImpl
 		xmlTypeMappingEClass.getESuperTypes().add(this.getXmlAccessHolder());
 		abstractXmlTypeMappingEClass.getESuperTypes().add(this.getXmlTypeMapping());
 		xmlMappedSuperclassEClass.getESuperTypes().add(this.getAbstractXmlTypeMapping());
+		xmlMappedSuperclassEClass.getESuperTypes().add(this.getXmlEventMethodContainer());
 		xmlEntityEClass.getESuperTypes().add(this.getAbstractXmlTypeMapping());
 		xmlEntityEClass.getESuperTypes().add(this.getXmlQueryContainer());
 		xmlEntityEClass.getESuperTypes().add(this.getXmlGeneratorContainer());
+		xmlEntityEClass.getESuperTypes().add(this.getXmlEventMethodContainer());
 		xmlEmbeddableEClass.getESuperTypes().add(this.getAbstractXmlTypeMapping());
 		abstractXmlAttributeMappingEClass.getESuperTypes().add(this.getXmlAttributeMapping());
 		xmlNullAttributeMappingEClass.getESuperTypes().add(this.getAbstractXmlAttributeMapping());
@@ -9046,6 +8936,7 @@ public class OrmPackage extends EPackageImpl
 		abstractXmlColumnEClass.getESuperTypes().add(this.getAbstractXmlNamedColumn());
 		xmlColumnEClass.getESuperTypes().add(this.getAbstractXmlColumn());
 		xmlDiscriminatorColumnEClass.getESuperTypes().add(this.getAbstractXmlNamedColumn());
+		entityListenerEClass.getESuperTypes().add(this.getXmlEventMethodContainer());
 		xmlJoinColumnEClass.getESuperTypes().add(this.getAbstractXmlColumn());
 		xmlJoinTableEClass.getESuperTypes().add(this.getAbstractXmlTable());
 		xmlNamedNativeQueryEClass.getESuperTypes().add(this.getXmlQuery());
@@ -9104,13 +8995,6 @@ public class OrmPackage extends EPackageImpl
 		initEAttribute(getXmlMappedSuperclass_ExcludeDefaultListeners(), theXMLTypePackage.getBoolean(), "excludeDefaultListeners", null, 0, 1, XmlMappedSuperclass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getXmlMappedSuperclass_ExcludeSuperclassListeners(), theXMLTypePackage.getBoolean(), "excludeSuperclassListeners", null, 0, 1, XmlMappedSuperclass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getXmlMappedSuperclass_EntityListeners(), this.getEntityListeners(), null, "entityListeners", null, 0, 1, XmlMappedSuperclass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlMappedSuperclass_PrePersist(), this.getPrePersist(), null, "prePersist", null, 0, 1, XmlMappedSuperclass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlMappedSuperclass_PostPersist(), this.getPostPersist(), null, "postPersist", null, 0, 1, XmlMappedSuperclass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlMappedSuperclass_PreRemove(), this.getPreRemove(), null, "preRemove", null, 0, 1, XmlMappedSuperclass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlMappedSuperclass_PostRemove(), this.getPostRemove(), null, "postRemove", null, 0, 1, XmlMappedSuperclass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlMappedSuperclass_PreUpdate(), this.getPreUpdate(), null, "preUpdate", null, 0, 1, XmlMappedSuperclass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlMappedSuperclass_PostUpdate(), this.getPostUpdate(), null, "postUpdate", null, 0, 1, XmlMappedSuperclass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlMappedSuperclass_PostLoad(), this.getPostLoad(), null, "postLoad", null, 0, 1, XmlMappedSuperclass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlEntityEClass, XmlEntity.class, "XmlEntity", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlEntity_Name(), theXMLTypePackage.getString(), "name", null, 0, 1, XmlEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -9125,13 +9009,6 @@ public class OrmPackage extends EPackageImpl
 		initEAttribute(getXmlEntity_ExcludeDefaultListeners(), theXMLTypePackage.getBoolean(), "excludeDefaultListeners", null, 0, 1, XmlEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getXmlEntity_ExcludeSuperclassListeners(), theXMLTypePackage.getBoolean(), "excludeSuperclassListeners", null, 0, 1, XmlEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getXmlEntity_EntityListeners(), this.getEntityListeners(), null, "entityListeners", null, 0, 1, XmlEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlEntity_PrePersist(), this.getPrePersist(), null, "prePersist", null, 0, 1, XmlEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlEntity_PostPersist(), this.getPostPersist(), null, "postPersist", null, 0, 1, XmlEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlEntity_PreRemove(), this.getPreRemove(), null, "preRemove", null, 0, 1, XmlEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlEntity_PostRemove(), this.getPostRemove(), null, "postRemove", null, 0, 1, XmlEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlEntity_PreUpdate(), this.getPreUpdate(), null, "preUpdate", null, 0, 1, XmlEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlEntity_PostUpdate(), this.getPostUpdate(), null, "postUpdate", null, 0, 1, XmlEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlEntity_PostLoad(), this.getPostLoad(), null, "postLoad", null, 0, 1, XmlEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getXmlEntity_AttributeOverrides(), this.getXmlAttributeOverride(), null, "attributeOverrides", null, 0, -1, XmlEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getXmlEntity_AssociationOverrides(), this.getXmlAssociationOverride(), null, "associationOverrides", null, 0, -1, XmlEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
@@ -9258,18 +9135,20 @@ public class OrmPackage extends EPackageImpl
 		initEAttribute(getXmlDiscriminatorColumn_DiscriminatorType(), this.getDiscriminatorType(), "discriminatorType", "STRING", 0, 1, XmlDiscriminatorColumn.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getXmlDiscriminatorColumn_Length(), theXMLTypePackage.getIntObject(), "length", null, 0, 1, XmlDiscriminatorColumn.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+		initEClass(xmlEventMethodContainerEClass, XmlEventMethodContainer.class, "XmlEventMethodContainer", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getXmlEventMethodContainer_PrePersist(), this.getPrePersist(), null, "prePersist", null, 0, 1, XmlEventMethodContainer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlEventMethodContainer_PostPersist(), this.getPostPersist(), null, "postPersist", null, 0, 1, XmlEventMethodContainer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlEventMethodContainer_PreRemove(), this.getPreRemove(), null, "preRemove", null, 0, 1, XmlEventMethodContainer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlEventMethodContainer_PostRemove(), this.getPostRemove(), null, "postRemove", null, 0, 1, XmlEventMethodContainer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlEventMethodContainer_PreUpdate(), this.getPreUpdate(), null, "preUpdate", null, 0, 1, XmlEventMethodContainer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlEventMethodContainer_PostUpdate(), this.getPostUpdate(), null, "postUpdate", null, 0, 1, XmlEventMethodContainer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getXmlEventMethodContainer_PostLoad(), this.getPostLoad(), null, "postLoad", null, 0, 1, XmlEventMethodContainer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
 		initEClass(entityListenersEClass, EntityListeners.class, "EntityListeners", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getEntityListeners_EntityListeners(), this.getEntityListener(), null, "entityListeners", null, 0, -1, EntityListeners.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(entityListenerEClass, EntityListener.class, "EntityListener", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getEntityListener_ClassName(), theXMLTypePackage.getString(), "className", null, 1, 1, EntityListener.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getEntityListener_PrePersist(), this.getPrePersist(), null, "prePersist", null, 0, 1, EntityListener.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getEntityListener_PostPersist(), this.getPostPersist(), null, "postPersist", null, 0, 1, EntityListener.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getEntityListener_PreRemove(), this.getPreRemove(), null, "preRemove", null, 0, 1, EntityListener.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getEntityListener_PostRemove(), this.getPostRemove(), null, "postRemove", null, 0, 1, EntityListener.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getEntityListener_PreUpdate(), this.getPreUpdate(), null, "preUpdate", null, 0, 1, EntityListener.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getEntityListener_PostUpdate(), this.getPostUpdate(), null, "postUpdate", null, 0, 1, EntityListener.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getEntityListener_PostLoad(), this.getPostLoad(), null, "postLoad", null, 0, 1, EntityListener.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(entityResultEClass, EntityResult.class, "EntityResult", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getEntityResult_DiscriminatorColumn(), theXMLTypePackage.getString(), "discriminatorColumn", null, 0, 1, EntityResult.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -9718,62 +9597,6 @@ public class OrmPackage extends EPackageImpl
 		public static final EReference XML_MAPPED_SUPERCLASS__ENTITY_LISTENERS = eINSTANCE.getXmlMappedSuperclass_EntityListeners();
 
 		/**
-		 * The meta object literal for the '<em><b>Pre Persist</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference XML_MAPPED_SUPERCLASS__PRE_PERSIST = eINSTANCE.getXmlMappedSuperclass_PrePersist();
-
-		/**
-		 * The meta object literal for the '<em><b>Post Persist</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference XML_MAPPED_SUPERCLASS__POST_PERSIST = eINSTANCE.getXmlMappedSuperclass_PostPersist();
-
-		/**
-		 * The meta object literal for the '<em><b>Pre Remove</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference XML_MAPPED_SUPERCLASS__PRE_REMOVE = eINSTANCE.getXmlMappedSuperclass_PreRemove();
-
-		/**
-		 * The meta object literal for the '<em><b>Post Remove</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference XML_MAPPED_SUPERCLASS__POST_REMOVE = eINSTANCE.getXmlMappedSuperclass_PostRemove();
-
-		/**
-		 * The meta object literal for the '<em><b>Pre Update</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference XML_MAPPED_SUPERCLASS__PRE_UPDATE = eINSTANCE.getXmlMappedSuperclass_PreUpdate();
-
-		/**
-		 * The meta object literal for the '<em><b>Post Update</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference XML_MAPPED_SUPERCLASS__POST_UPDATE = eINSTANCE.getXmlMappedSuperclass_PostUpdate();
-
-		/**
-		 * The meta object literal for the '<em><b>Post Load</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference XML_MAPPED_SUPERCLASS__POST_LOAD = eINSTANCE.getXmlMappedSuperclass_PostLoad();
-
-		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.orm.XmlEntity <em>Xml Entity</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -9878,62 +9701,6 @@ public class OrmPackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EReference XML_ENTITY__ENTITY_LISTENERS = eINSTANCE.getXmlEntity_EntityListeners();
-
-		/**
-		 * The meta object literal for the '<em><b>Pre Persist</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference XML_ENTITY__PRE_PERSIST = eINSTANCE.getXmlEntity_PrePersist();
-
-		/**
-		 * The meta object literal for the '<em><b>Post Persist</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference XML_ENTITY__POST_PERSIST = eINSTANCE.getXmlEntity_PostPersist();
-
-		/**
-		 * The meta object literal for the '<em><b>Pre Remove</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference XML_ENTITY__PRE_REMOVE = eINSTANCE.getXmlEntity_PreRemove();
-
-		/**
-		 * The meta object literal for the '<em><b>Post Remove</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference XML_ENTITY__POST_REMOVE = eINSTANCE.getXmlEntity_PostRemove();
-
-		/**
-		 * The meta object literal for the '<em><b>Pre Update</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference XML_ENTITY__PRE_UPDATE = eINSTANCE.getXmlEntity_PreUpdate();
-
-		/**
-		 * The meta object literal for the '<em><b>Post Update</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference XML_ENTITY__POST_UPDATE = eINSTANCE.getXmlEntity_PostUpdate();
-
-		/**
-		 * The meta object literal for the '<em><b>Post Load</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference XML_ENTITY__POST_LOAD = eINSTANCE.getXmlEntity_PostLoad();
 
 		/**
 		 * The meta object literal for the '<em><b>Attribute Overrides</b></em>' containment reference list feature.
@@ -10732,6 +10499,72 @@ public class OrmPackage extends EPackageImpl
 		public static final EAttribute XML_DISCRIMINATOR_COLUMN__LENGTH = eINSTANCE.getXmlDiscriminatorColumn_Length();
 
 		/**
+		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.orm.XmlEventMethodContainer <em>Xml Event Method Container</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.eclipse.jpt.core.resource.orm.XmlEventMethodContainer
+		 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEventMethodContainer()
+		 * @generated
+		 */
+		public static final EClass XML_EVENT_METHOD_CONTAINER = eINSTANCE.getXmlEventMethodContainer();
+
+		/**
+		 * The meta object literal for the '<em><b>Pre Persist</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EReference XML_EVENT_METHOD_CONTAINER__PRE_PERSIST = eINSTANCE.getXmlEventMethodContainer_PrePersist();
+
+		/**
+		 * The meta object literal for the '<em><b>Post Persist</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EReference XML_EVENT_METHOD_CONTAINER__POST_PERSIST = eINSTANCE.getXmlEventMethodContainer_PostPersist();
+
+		/**
+		 * The meta object literal for the '<em><b>Pre Remove</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EReference XML_EVENT_METHOD_CONTAINER__PRE_REMOVE = eINSTANCE.getXmlEventMethodContainer_PreRemove();
+
+		/**
+		 * The meta object literal for the '<em><b>Post Remove</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EReference XML_EVENT_METHOD_CONTAINER__POST_REMOVE = eINSTANCE.getXmlEventMethodContainer_PostRemove();
+
+		/**
+		 * The meta object literal for the '<em><b>Pre Update</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EReference XML_EVENT_METHOD_CONTAINER__PRE_UPDATE = eINSTANCE.getXmlEventMethodContainer_PreUpdate();
+
+		/**
+		 * The meta object literal for the '<em><b>Post Update</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EReference XML_EVENT_METHOD_CONTAINER__POST_UPDATE = eINSTANCE.getXmlEventMethodContainer_PostUpdate();
+
+		/**
+		 * The meta object literal for the '<em><b>Post Load</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EReference XML_EVENT_METHOD_CONTAINER__POST_LOAD = eINSTANCE.getXmlEventMethodContainer_PostLoad();
+
+		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.orm.EntityListeners <em>Entity Listeners</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -10766,62 +10599,6 @@ public class OrmPackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EAttribute ENTITY_LISTENER__CLASS_NAME = eINSTANCE.getEntityListener_ClassName();
-
-		/**
-		 * The meta object literal for the '<em><b>Pre Persist</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference ENTITY_LISTENER__PRE_PERSIST = eINSTANCE.getEntityListener_PrePersist();
-
-		/**
-		 * The meta object literal for the '<em><b>Post Persist</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference ENTITY_LISTENER__POST_PERSIST = eINSTANCE.getEntityListener_PostPersist();
-
-		/**
-		 * The meta object literal for the '<em><b>Pre Remove</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference ENTITY_LISTENER__PRE_REMOVE = eINSTANCE.getEntityListener_PreRemove();
-
-		/**
-		 * The meta object literal for the '<em><b>Post Remove</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference ENTITY_LISTENER__POST_REMOVE = eINSTANCE.getEntityListener_PostRemove();
-
-		/**
-		 * The meta object literal for the '<em><b>Pre Update</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference ENTITY_LISTENER__PRE_UPDATE = eINSTANCE.getEntityListener_PreUpdate();
-
-		/**
-		 * The meta object literal for the '<em><b>Post Update</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference ENTITY_LISTENER__POST_UPDATE = eINSTANCE.getEntityListener_PostUpdate();
-
-		/**
-		 * The meta object literal for the '<em><b>Post Load</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference ENTITY_LISTENER__POST_LOAD = eINSTANCE.getEntityListener_PostLoad();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.orm.EntityResult <em>Entity Result</em>}' class.

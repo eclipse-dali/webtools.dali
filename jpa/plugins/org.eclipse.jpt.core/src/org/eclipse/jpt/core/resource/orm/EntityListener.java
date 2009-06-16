@@ -17,7 +17,6 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
 import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
-import org.eclipse.jpt.core.resource.xml.JpaEObject;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -35,43 +34,15 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * The following features are supported:
  * <ul>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.EntityListener#getClassName <em>Class Name</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.EntityListener#getPrePersist <em>Pre Persist</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.EntityListener#getPostPersist <em>Post Persist</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.EntityListener#getPreRemove <em>Pre Remove</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.EntityListener#getPostRemove <em>Post Remove</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.EntityListener#getPreUpdate <em>Pre Update</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.EntityListener#getPostUpdate <em>Post Update</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.EntityListener#getPostLoad <em>Post Load</em>}</li>
  * </ul>
  * </p>
  *
  * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEntityListener()
  * @model kind="class"
- * @extends JpaEObject
  * @generated
  */
-public class EntityListener extends AbstractJpaEObject implements JpaEObject
+public class EntityListener extends AbstractJpaEObject implements XmlEventMethodContainer
 {
-	/**
-	 * The default value of the '{@link #getClassName() <em>Class Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getClassName()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String CLASS_NAME_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getClassName() <em>Class Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getClassName()
-	 * @generated
-	 * @ordered
-	 */
-	protected String className = CLASS_NAME_EDEFAULT;
-
 	/**
 	 * The cached value of the '{@link #getPrePersist() <em>Pre Persist</em>}' containment reference.
 	 * <!-- begin-user-doc -->
@@ -143,6 +114,26 @@ public class EntityListener extends AbstractJpaEObject implements JpaEObject
 	protected PostLoad postLoad;
 
 	/**
+	 * The default value of the '{@link #getClassName() <em>Class Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getClassName()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String CLASS_NAME_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getClassName() <em>Class Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getClassName()
+	 * @generated
+	 * @ordered
+	 */
+	protected String className = CLASS_NAME_EDEFAULT;
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -208,7 +199,7 @@ public class EntityListener extends AbstractJpaEObject implements JpaEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Pre Persist</em>' containment reference.
 	 * @see #setPrePersist(PrePersist)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEntityListener_PrePersist()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEventMethodContainer_PrePersist()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -268,7 +259,7 @@ public class EntityListener extends AbstractJpaEObject implements JpaEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Post Persist</em>' containment reference.
 	 * @see #setPostPersist(PostPersist)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEntityListener_PostPersist()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEventMethodContainer_PostPersist()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -328,7 +319,7 @@ public class EntityListener extends AbstractJpaEObject implements JpaEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Pre Remove</em>' containment reference.
 	 * @see #setPreRemove(PreRemove)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEntityListener_PreRemove()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEventMethodContainer_PreRemove()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -388,7 +379,7 @@ public class EntityListener extends AbstractJpaEObject implements JpaEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Post Remove</em>' containment reference.
 	 * @see #setPostRemove(PostRemove)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEntityListener_PostRemove()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEventMethodContainer_PostRemove()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -448,7 +439,7 @@ public class EntityListener extends AbstractJpaEObject implements JpaEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Pre Update</em>' containment reference.
 	 * @see #setPreUpdate(PreUpdate)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEntityListener_PreUpdate()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEventMethodContainer_PreUpdate()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -508,7 +499,7 @@ public class EntityListener extends AbstractJpaEObject implements JpaEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Post Update</em>' containment reference.
 	 * @see #setPostUpdate(PostUpdate)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEntityListener_PostUpdate()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEventMethodContainer_PostUpdate()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -568,7 +559,7 @@ public class EntityListener extends AbstractJpaEObject implements JpaEObject
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Post Load</em>' containment reference.
 	 * @see #setPostLoad(PostLoad)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getEntityListener_PostLoad()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEventMethodContainer_PostLoad()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -656,8 +647,6 @@ public class EntityListener extends AbstractJpaEObject implements JpaEObject
 	{
 		switch (featureID)
 		{
-			case OrmPackage.ENTITY_LISTENER__CLASS_NAME:
-				return getClassName();
 			case OrmPackage.ENTITY_LISTENER__PRE_PERSIST:
 				return getPrePersist();
 			case OrmPackage.ENTITY_LISTENER__POST_PERSIST:
@@ -672,6 +661,8 @@ public class EntityListener extends AbstractJpaEObject implements JpaEObject
 				return getPostUpdate();
 			case OrmPackage.ENTITY_LISTENER__POST_LOAD:
 				return getPostLoad();
+			case OrmPackage.ENTITY_LISTENER__CLASS_NAME:
+				return getClassName();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -686,9 +677,6 @@ public class EntityListener extends AbstractJpaEObject implements JpaEObject
 	{
 		switch (featureID)
 		{
-			case OrmPackage.ENTITY_LISTENER__CLASS_NAME:
-				setClassName((String)newValue);
-				return;
 			case OrmPackage.ENTITY_LISTENER__PRE_PERSIST:
 				setPrePersist((PrePersist)newValue);
 				return;
@@ -710,6 +698,9 @@ public class EntityListener extends AbstractJpaEObject implements JpaEObject
 			case OrmPackage.ENTITY_LISTENER__POST_LOAD:
 				setPostLoad((PostLoad)newValue);
 				return;
+			case OrmPackage.ENTITY_LISTENER__CLASS_NAME:
+				setClassName((String)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -724,9 +715,6 @@ public class EntityListener extends AbstractJpaEObject implements JpaEObject
 	{
 		switch (featureID)
 		{
-			case OrmPackage.ENTITY_LISTENER__CLASS_NAME:
-				setClassName(CLASS_NAME_EDEFAULT);
-				return;
 			case OrmPackage.ENTITY_LISTENER__PRE_PERSIST:
 				setPrePersist((PrePersist)null);
 				return;
@@ -748,6 +736,9 @@ public class EntityListener extends AbstractJpaEObject implements JpaEObject
 			case OrmPackage.ENTITY_LISTENER__POST_LOAD:
 				setPostLoad((PostLoad)null);
 				return;
+			case OrmPackage.ENTITY_LISTENER__CLASS_NAME:
+				setClassName(CLASS_NAME_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -762,8 +753,6 @@ public class EntityListener extends AbstractJpaEObject implements JpaEObject
 	{
 		switch (featureID)
 		{
-			case OrmPackage.ENTITY_LISTENER__CLASS_NAME:
-				return CLASS_NAME_EDEFAULT == null ? className != null : !CLASS_NAME_EDEFAULT.equals(className);
 			case OrmPackage.ENTITY_LISTENER__PRE_PERSIST:
 				return prePersist != null;
 			case OrmPackage.ENTITY_LISTENER__POST_PERSIST:
@@ -778,6 +767,8 @@ public class EntityListener extends AbstractJpaEObject implements JpaEObject
 				return postUpdate != null;
 			case OrmPackage.ENTITY_LISTENER__POST_LOAD:
 				return postLoad != null;
+			case OrmPackage.ENTITY_LISTENER__CLASS_NAME:
+				return CLASS_NAME_EDEFAULT == null ? className != null : !CLASS_NAME_EDEFAULT.equals(className);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -808,13 +799,13 @@ public class EntityListener extends AbstractJpaEObject implements JpaEObject
 	private static Translator[] buildTranslatorChildren() {
 		return new Translator[] {
 			buildClassTranslator(),
-			PrePersist.buildTranslator(JPA.PRE_PERSIST, OrmPackage.eINSTANCE.getEntityListener_PrePersist()),
-			PostPersist.buildTranslator(JPA.POST_PERSIST, OrmPackage.eINSTANCE.getEntityListener_PostPersist()),
-			PreRemove.buildTranslator(JPA.PRE_REMOVE, OrmPackage.eINSTANCE.getEntityListener_PreRemove()),
-			PostRemove.buildTranslator(JPA.POST_REMOVE, OrmPackage.eINSTANCE.getEntityListener_PostRemove()),
-			PreUpdate.buildTranslator(JPA.PRE_UPDATE, OrmPackage.eINSTANCE.getEntityListener_PreUpdate()),
-			PostUpdate.buildTranslator(JPA.POST_UPDATE, OrmPackage.eINSTANCE.getEntityListener_PostUpdate()),
-			PostLoad.buildTranslator(JPA.POST_LOAD, OrmPackage.eINSTANCE.getEntityListener_PostLoad())
+			PrePersist.buildTranslator(),
+			PostPersist.buildTranslator(),
+			PreRemove.buildTranslator(),
+			PostRemove.buildTranslator(),
+			PreUpdate.buildTranslator(),
+			PostUpdate.buildTranslator(),
+			PostLoad.buildTranslator()
 		};
 	}
 	

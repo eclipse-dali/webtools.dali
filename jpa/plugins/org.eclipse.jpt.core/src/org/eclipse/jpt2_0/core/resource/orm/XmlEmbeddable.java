@@ -12,7 +12,6 @@ package org.eclipse.jpt2_0.core.resource.orm;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
-import org.eclipse.jpt.core.resource.orm.OrmPackage;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -63,7 +62,7 @@ public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddab
 			buildAccessTranslator(),
 			buildMetadataCompleteTranslator(),
 			buildDescriptionTranslator(),
-			Attributes.buildTranslator(JPA.ATTRIBUTES, OrmPackage.eINSTANCE.getXmlTypeMapping_Attributes())
+			Attributes.buildTranslator()
 		};
 	}
 

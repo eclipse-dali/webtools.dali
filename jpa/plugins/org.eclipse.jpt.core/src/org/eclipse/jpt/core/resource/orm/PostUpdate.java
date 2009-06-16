@@ -198,6 +198,12 @@ public class PostUpdate extends AbstractJpaEObject implements EventMethod
 	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
 		return new SimpleTranslator(elementName, structuralFeature, buildTranslatorChildren());
 	}
+	
+	public static Translator buildTranslator() {
+		return buildTranslator(
+			JPA.POST_UPDATE,
+			OrmPackage.eINSTANCE.getXmlEventMethodContainer_PostUpdate());
+	}
 
 	private static Translator[] buildTranslatorChildren() {
 		return new Translator[] {

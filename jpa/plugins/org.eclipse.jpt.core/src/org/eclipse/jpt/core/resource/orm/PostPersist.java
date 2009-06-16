@@ -198,6 +198,12 @@ public class PostPersist extends AbstractJpaEObject implements EventMethod
 	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
 		return new SimpleTranslator(elementName, structuralFeature, buildTranslatorChildren());
 	}
+	
+	public static Translator buildTranslator() {
+		return buildTranslator(
+			JPA.POST_PERSIST,
+			OrmPackage.eINSTANCE.getXmlEventMethodContainer_PostPersist());
+	}
 
 	private static Translator[] buildTranslatorChildren() {
 		return new Translator[] {

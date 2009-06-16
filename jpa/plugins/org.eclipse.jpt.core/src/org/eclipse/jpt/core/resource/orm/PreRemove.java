@@ -198,6 +198,12 @@ public class PreRemove extends AbstractJpaEObject implements EventMethod
 	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
 		return new SimpleTranslator(elementName, structuralFeature, buildTranslatorChildren());
 	}
+	
+	public static Translator buildTranslator() {
+		return buildTranslator(
+			JPA.PRE_REMOVE,
+			OrmPackage.eINSTANCE.getXmlEventMethodContainer_PreRemove());
+	}
 
 	private static Translator[] buildTranslatorChildren() {
 		return new Translator[] {

@@ -107,7 +107,7 @@ public class XmlEntity extends org.eclipse.jpt.eclipselink.core.resource.orm.Xml
 			buildPropertyTranslator(),
 			buildAttributeOverrideTranslator(),
 			buildAssociationOverrideTranslator(),
-			Attributes.buildTranslator(JPA.ATTRIBUTES, OrmPackage.eINSTANCE.getXmlTypeMapping_Attributes())
+			Attributes.buildTranslator()
 		};
 	}
 

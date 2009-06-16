@@ -12,18 +12,6 @@ package org.eclipse.jpt.eclipselink1_1.core.resource.orm;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
-import org.eclipse.jpt.core.resource.orm.OrmPackage;
-import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage;
-import org.eclipse.jpt.eclipselink.core.resource.orm.XmlChangeTracking;
-import org.eclipse.jpt.eclipselink.core.resource.orm.XmlCloneCopyPolicy;
-import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConverter;
-import org.eclipse.jpt.eclipselink.core.resource.orm.XmlCopyPolicy;
-import org.eclipse.jpt.eclipselink.core.resource.orm.XmlCustomizer;
-import org.eclipse.jpt.eclipselink.core.resource.orm.XmlInstantiationCopyPolicy;
-import org.eclipse.jpt.eclipselink.core.resource.orm.XmlObjectTypeConverter;
-import org.eclipse.jpt.eclipselink.core.resource.orm.XmlProperty;
-import org.eclipse.jpt.eclipselink.core.resource.orm.XmlStructConverter;
-import org.eclipse.jpt.eclipselink.core.resource.orm.XmlTypeConverter;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -83,7 +71,7 @@ public class XmlEmbeddable extends org.eclipse.jpt.eclipselink.core.resource.orm
 			buildObjectTypeConverterTranslator(),
 			buildStructConverterTranslator(),
 			buildPropertyTranslator(),
-			Attributes.buildTranslator(JPA.ATTRIBUTES, OrmPackage.eINSTANCE.getXmlTypeMapping_Attributes()),
+			Attributes.buildTranslator(),
 			buildCopyPolicyTranslator(),
 			buildInstantiationCoypPolicyTranslator(),
 			buildCloneCopyPolicyTranslator(),

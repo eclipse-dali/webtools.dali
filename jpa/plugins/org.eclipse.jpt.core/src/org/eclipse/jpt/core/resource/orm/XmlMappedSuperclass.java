@@ -38,13 +38,6 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass#isExcludeDefaultListeners <em>Exclude Default Listeners</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass#isExcludeSuperclassListeners <em>Exclude Superclass Listeners</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass#getEntityListeners <em>Entity Listeners</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass#getPrePersist <em>Pre Persist</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass#getPostPersist <em>Post Persist</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass#getPreRemove <em>Pre Remove</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass#getPostRemove <em>Post Remove</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass#getPreUpdate <em>Pre Update</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass#getPostUpdate <em>Post Update</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass#getPostLoad <em>Post Load</em>}</li>
  * </ul>
  * </p>
  *
@@ -52,68 +45,8 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlMappedSuperclass extends AbstractXmlTypeMapping
+public class XmlMappedSuperclass extends AbstractXmlTypeMapping implements XmlEventMethodContainer
 {
-
-	/**
-	 * The cached value of the '{@link #getIdClass() <em>Id Class</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getIdClass()
-	 * @generated
-	 * @ordered
-	 */
-	protected XmlIdClass idClass;
-
-	/**
-	 * The default value of the '{@link #isExcludeDefaultListeners() <em>Exclude Default Listeners</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isExcludeDefaultListeners()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final boolean EXCLUDE_DEFAULT_LISTENERS_EDEFAULT = false;
-
-	/**
-	 * The cached value of the '{@link #isExcludeDefaultListeners() <em>Exclude Default Listeners</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isExcludeDefaultListeners()
-	 * @generated
-	 * @ordered
-	 */
-	protected boolean excludeDefaultListeners = EXCLUDE_DEFAULT_LISTENERS_EDEFAULT;
-
-	/**
-	 * The default value of the '{@link #isExcludeSuperclassListeners() <em>Exclude Superclass Listeners</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isExcludeSuperclassListeners()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final boolean EXCLUDE_SUPERCLASS_LISTENERS_EDEFAULT = false;
-
-	/**
-	 * The cached value of the '{@link #isExcludeSuperclassListeners() <em>Exclude Superclass Listeners</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isExcludeSuperclassListeners()
-	 * @generated
-	 * @ordered
-	 */
-	protected boolean excludeSuperclassListeners = EXCLUDE_SUPERCLASS_LISTENERS_EDEFAULT;
-
-	/**
-	 * The cached value of the '{@link #getEntityListeners() <em>Entity Listeners</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getEntityListeners()
-	 * @generated
-	 * @ordered
-	 */
-	protected EntityListeners entityListeners;
 
 	/**
 	 * The cached value of the '{@link #getPrePersist() <em>Pre Persist</em>}' containment reference.
@@ -184,6 +117,66 @@ public class XmlMappedSuperclass extends AbstractXmlTypeMapping
 	 * @ordered
 	 */
 	protected PostLoad postLoad;
+
+	/**
+	 * The cached value of the '{@link #getIdClass() <em>Id Class</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getIdClass()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlIdClass idClass;
+
+	/**
+	 * The default value of the '{@link #isExcludeDefaultListeners() <em>Exclude Default Listeners</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isExcludeDefaultListeners()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean EXCLUDE_DEFAULT_LISTENERS_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isExcludeDefaultListeners() <em>Exclude Default Listeners</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isExcludeDefaultListeners()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean excludeDefaultListeners = EXCLUDE_DEFAULT_LISTENERS_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #isExcludeSuperclassListeners() <em>Exclude Superclass Listeners</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isExcludeSuperclassListeners()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean EXCLUDE_SUPERCLASS_LISTENERS_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isExcludeSuperclassListeners() <em>Exclude Superclass Listeners</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isExcludeSuperclassListeners()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean excludeSuperclassListeners = EXCLUDE_SUPERCLASS_LISTENERS_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getEntityListeners() <em>Entity Listeners</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getEntityListeners()
+	 * @generated
+	 * @ordered
+	 */
+	protected EntityListeners entityListeners;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -414,7 +407,7 @@ public class XmlMappedSuperclass extends AbstractXmlTypeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Pre Persist</em>' containment reference.
 	 * @see #setPrePersist(PrePersist)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlMappedSuperclass_PrePersist()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEventMethodContainer_PrePersist()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -474,7 +467,7 @@ public class XmlMappedSuperclass extends AbstractXmlTypeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Post Persist</em>' containment reference.
 	 * @see #setPostPersist(PostPersist)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlMappedSuperclass_PostPersist()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEventMethodContainer_PostPersist()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -534,7 +527,7 @@ public class XmlMappedSuperclass extends AbstractXmlTypeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Pre Remove</em>' containment reference.
 	 * @see #setPreRemove(PreRemove)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlMappedSuperclass_PreRemove()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEventMethodContainer_PreRemove()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -594,7 +587,7 @@ public class XmlMappedSuperclass extends AbstractXmlTypeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Post Remove</em>' containment reference.
 	 * @see #setPostRemove(PostRemove)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlMappedSuperclass_PostRemove()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEventMethodContainer_PostRemove()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -654,7 +647,7 @@ public class XmlMappedSuperclass extends AbstractXmlTypeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Pre Update</em>' containment reference.
 	 * @see #setPreUpdate(PreUpdate)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlMappedSuperclass_PreUpdate()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEventMethodContainer_PreUpdate()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -714,7 +707,7 @@ public class XmlMappedSuperclass extends AbstractXmlTypeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Post Update</em>' containment reference.
 	 * @see #setPostUpdate(PostUpdate)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlMappedSuperclass_PostUpdate()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEventMethodContainer_PostUpdate()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -774,7 +767,7 @@ public class XmlMappedSuperclass extends AbstractXmlTypeMapping
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Post Load</em>' containment reference.
 	 * @see #setPostLoad(PostLoad)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlMappedSuperclass_PostLoad()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEventMethodContainer_PostLoad()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -834,10 +827,6 @@ public class XmlMappedSuperclass extends AbstractXmlTypeMapping
 	{
 		switch (featureID)
 		{
-			case OrmPackage.XML_MAPPED_SUPERCLASS__ID_CLASS:
-				return basicSetIdClass(null, msgs);
-			case OrmPackage.XML_MAPPED_SUPERCLASS__ENTITY_LISTENERS:
-				return basicSetEntityListeners(null, msgs);
 			case OrmPackage.XML_MAPPED_SUPERCLASS__PRE_PERSIST:
 				return basicSetPrePersist(null, msgs);
 			case OrmPackage.XML_MAPPED_SUPERCLASS__POST_PERSIST:
@@ -852,6 +841,10 @@ public class XmlMappedSuperclass extends AbstractXmlTypeMapping
 				return basicSetPostUpdate(null, msgs);
 			case OrmPackage.XML_MAPPED_SUPERCLASS__POST_LOAD:
 				return basicSetPostLoad(null, msgs);
+			case OrmPackage.XML_MAPPED_SUPERCLASS__ID_CLASS:
+				return basicSetIdClass(null, msgs);
+			case OrmPackage.XML_MAPPED_SUPERCLASS__ENTITY_LISTENERS:
+				return basicSetEntityListeners(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -866,14 +859,6 @@ public class XmlMappedSuperclass extends AbstractXmlTypeMapping
 	{
 		switch (featureID)
 		{
-			case OrmPackage.XML_MAPPED_SUPERCLASS__ID_CLASS:
-				return getIdClass();
-			case OrmPackage.XML_MAPPED_SUPERCLASS__EXCLUDE_DEFAULT_LISTENERS:
-				return isExcludeDefaultListeners();
-			case OrmPackage.XML_MAPPED_SUPERCLASS__EXCLUDE_SUPERCLASS_LISTENERS:
-				return isExcludeSuperclassListeners();
-			case OrmPackage.XML_MAPPED_SUPERCLASS__ENTITY_LISTENERS:
-				return getEntityListeners();
 			case OrmPackage.XML_MAPPED_SUPERCLASS__PRE_PERSIST:
 				return getPrePersist();
 			case OrmPackage.XML_MAPPED_SUPERCLASS__POST_PERSIST:
@@ -888,6 +873,14 @@ public class XmlMappedSuperclass extends AbstractXmlTypeMapping
 				return getPostUpdate();
 			case OrmPackage.XML_MAPPED_SUPERCLASS__POST_LOAD:
 				return getPostLoad();
+			case OrmPackage.XML_MAPPED_SUPERCLASS__ID_CLASS:
+				return getIdClass();
+			case OrmPackage.XML_MAPPED_SUPERCLASS__EXCLUDE_DEFAULT_LISTENERS:
+				return isExcludeDefaultListeners();
+			case OrmPackage.XML_MAPPED_SUPERCLASS__EXCLUDE_SUPERCLASS_LISTENERS:
+				return isExcludeSuperclassListeners();
+			case OrmPackage.XML_MAPPED_SUPERCLASS__ENTITY_LISTENERS:
+				return getEntityListeners();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -902,18 +895,6 @@ public class XmlMappedSuperclass extends AbstractXmlTypeMapping
 	{
 		switch (featureID)
 		{
-			case OrmPackage.XML_MAPPED_SUPERCLASS__ID_CLASS:
-				setIdClass((XmlIdClass)newValue);
-				return;
-			case OrmPackage.XML_MAPPED_SUPERCLASS__EXCLUDE_DEFAULT_LISTENERS:
-				setExcludeDefaultListeners((Boolean)newValue);
-				return;
-			case OrmPackage.XML_MAPPED_SUPERCLASS__EXCLUDE_SUPERCLASS_LISTENERS:
-				setExcludeSuperclassListeners((Boolean)newValue);
-				return;
-			case OrmPackage.XML_MAPPED_SUPERCLASS__ENTITY_LISTENERS:
-				setEntityListeners((EntityListeners)newValue);
-				return;
 			case OrmPackage.XML_MAPPED_SUPERCLASS__PRE_PERSIST:
 				setPrePersist((PrePersist)newValue);
 				return;
@@ -935,6 +916,18 @@ public class XmlMappedSuperclass extends AbstractXmlTypeMapping
 			case OrmPackage.XML_MAPPED_SUPERCLASS__POST_LOAD:
 				setPostLoad((PostLoad)newValue);
 				return;
+			case OrmPackage.XML_MAPPED_SUPERCLASS__ID_CLASS:
+				setIdClass((XmlIdClass)newValue);
+				return;
+			case OrmPackage.XML_MAPPED_SUPERCLASS__EXCLUDE_DEFAULT_LISTENERS:
+				setExcludeDefaultListeners((Boolean)newValue);
+				return;
+			case OrmPackage.XML_MAPPED_SUPERCLASS__EXCLUDE_SUPERCLASS_LISTENERS:
+				setExcludeSuperclassListeners((Boolean)newValue);
+				return;
+			case OrmPackage.XML_MAPPED_SUPERCLASS__ENTITY_LISTENERS:
+				setEntityListeners((EntityListeners)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -949,18 +942,6 @@ public class XmlMappedSuperclass extends AbstractXmlTypeMapping
 	{
 		switch (featureID)
 		{
-			case OrmPackage.XML_MAPPED_SUPERCLASS__ID_CLASS:
-				setIdClass((XmlIdClass)null);
-				return;
-			case OrmPackage.XML_MAPPED_SUPERCLASS__EXCLUDE_DEFAULT_LISTENERS:
-				setExcludeDefaultListeners(EXCLUDE_DEFAULT_LISTENERS_EDEFAULT);
-				return;
-			case OrmPackage.XML_MAPPED_SUPERCLASS__EXCLUDE_SUPERCLASS_LISTENERS:
-				setExcludeSuperclassListeners(EXCLUDE_SUPERCLASS_LISTENERS_EDEFAULT);
-				return;
-			case OrmPackage.XML_MAPPED_SUPERCLASS__ENTITY_LISTENERS:
-				setEntityListeners((EntityListeners)null);
-				return;
 			case OrmPackage.XML_MAPPED_SUPERCLASS__PRE_PERSIST:
 				setPrePersist((PrePersist)null);
 				return;
@@ -982,6 +963,18 @@ public class XmlMappedSuperclass extends AbstractXmlTypeMapping
 			case OrmPackage.XML_MAPPED_SUPERCLASS__POST_LOAD:
 				setPostLoad((PostLoad)null);
 				return;
+			case OrmPackage.XML_MAPPED_SUPERCLASS__ID_CLASS:
+				setIdClass((XmlIdClass)null);
+				return;
+			case OrmPackage.XML_MAPPED_SUPERCLASS__EXCLUDE_DEFAULT_LISTENERS:
+				setExcludeDefaultListeners(EXCLUDE_DEFAULT_LISTENERS_EDEFAULT);
+				return;
+			case OrmPackage.XML_MAPPED_SUPERCLASS__EXCLUDE_SUPERCLASS_LISTENERS:
+				setExcludeSuperclassListeners(EXCLUDE_SUPERCLASS_LISTENERS_EDEFAULT);
+				return;
+			case OrmPackage.XML_MAPPED_SUPERCLASS__ENTITY_LISTENERS:
+				setEntityListeners((EntityListeners)null);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -996,14 +989,6 @@ public class XmlMappedSuperclass extends AbstractXmlTypeMapping
 	{
 		switch (featureID)
 		{
-			case OrmPackage.XML_MAPPED_SUPERCLASS__ID_CLASS:
-				return idClass != null;
-			case OrmPackage.XML_MAPPED_SUPERCLASS__EXCLUDE_DEFAULT_LISTENERS:
-				return excludeDefaultListeners != EXCLUDE_DEFAULT_LISTENERS_EDEFAULT;
-			case OrmPackage.XML_MAPPED_SUPERCLASS__EXCLUDE_SUPERCLASS_LISTENERS:
-				return excludeSuperclassListeners != EXCLUDE_SUPERCLASS_LISTENERS_EDEFAULT;
-			case OrmPackage.XML_MAPPED_SUPERCLASS__ENTITY_LISTENERS:
-				return entityListeners != null;
 			case OrmPackage.XML_MAPPED_SUPERCLASS__PRE_PERSIST:
 				return prePersist != null;
 			case OrmPackage.XML_MAPPED_SUPERCLASS__POST_PERSIST:
@@ -1018,8 +1003,66 @@ public class XmlMappedSuperclass extends AbstractXmlTypeMapping
 				return postUpdate != null;
 			case OrmPackage.XML_MAPPED_SUPERCLASS__POST_LOAD:
 				return postLoad != null;
+			case OrmPackage.XML_MAPPED_SUPERCLASS__ID_CLASS:
+				return idClass != null;
+			case OrmPackage.XML_MAPPED_SUPERCLASS__EXCLUDE_DEFAULT_LISTENERS:
+				return excludeDefaultListeners != EXCLUDE_DEFAULT_LISTENERS_EDEFAULT;
+			case OrmPackage.XML_MAPPED_SUPERCLASS__EXCLUDE_SUPERCLASS_LISTENERS:
+				return excludeSuperclassListeners != EXCLUDE_SUPERCLASS_LISTENERS_EDEFAULT;
+			case OrmPackage.XML_MAPPED_SUPERCLASS__ENTITY_LISTENERS:
+				return entityListeners != null;
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
+	{
+		if (baseClass == XmlEventMethodContainer.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.XML_MAPPED_SUPERCLASS__PRE_PERSIST: return OrmPackage.XML_EVENT_METHOD_CONTAINER__PRE_PERSIST;
+				case OrmPackage.XML_MAPPED_SUPERCLASS__POST_PERSIST: return OrmPackage.XML_EVENT_METHOD_CONTAINER__POST_PERSIST;
+				case OrmPackage.XML_MAPPED_SUPERCLASS__PRE_REMOVE: return OrmPackage.XML_EVENT_METHOD_CONTAINER__PRE_REMOVE;
+				case OrmPackage.XML_MAPPED_SUPERCLASS__POST_REMOVE: return OrmPackage.XML_EVENT_METHOD_CONTAINER__POST_REMOVE;
+				case OrmPackage.XML_MAPPED_SUPERCLASS__PRE_UPDATE: return OrmPackage.XML_EVENT_METHOD_CONTAINER__PRE_UPDATE;
+				case OrmPackage.XML_MAPPED_SUPERCLASS__POST_UPDATE: return OrmPackage.XML_EVENT_METHOD_CONTAINER__POST_UPDATE;
+				case OrmPackage.XML_MAPPED_SUPERCLASS__POST_LOAD: return OrmPackage.XML_EVENT_METHOD_CONTAINER__POST_LOAD;
+				default: return -1;
+			}
+		}
+		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
+	{
+		if (baseClass == XmlEventMethodContainer.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmPackage.XML_EVENT_METHOD_CONTAINER__PRE_PERSIST: return OrmPackage.XML_MAPPED_SUPERCLASS__PRE_PERSIST;
+				case OrmPackage.XML_EVENT_METHOD_CONTAINER__POST_PERSIST: return OrmPackage.XML_MAPPED_SUPERCLASS__POST_PERSIST;
+				case OrmPackage.XML_EVENT_METHOD_CONTAINER__PRE_REMOVE: return OrmPackage.XML_MAPPED_SUPERCLASS__PRE_REMOVE;
+				case OrmPackage.XML_EVENT_METHOD_CONTAINER__POST_REMOVE: return OrmPackage.XML_MAPPED_SUPERCLASS__POST_REMOVE;
+				case OrmPackage.XML_EVENT_METHOD_CONTAINER__PRE_UPDATE: return OrmPackage.XML_MAPPED_SUPERCLASS__PRE_UPDATE;
+				case OrmPackage.XML_EVENT_METHOD_CONTAINER__POST_UPDATE: return OrmPackage.XML_MAPPED_SUPERCLASS__POST_UPDATE;
+				case OrmPackage.XML_EVENT_METHOD_CONTAINER__POST_LOAD: return OrmPackage.XML_MAPPED_SUPERCLASS__POST_LOAD;
+				default: return -1;
+			}
+		}
+		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
 	/**
@@ -1089,31 +1132,31 @@ public class XmlMappedSuperclass extends AbstractXmlTypeMapping
 	}
 	
 	protected static Translator buildPrePersistTranslator() {
-		return PrePersist.buildTranslator(JPA.PRE_PERSIST, OrmPackage.eINSTANCE.getXmlMappedSuperclass_PrePersist());
+		return PrePersist.buildTranslator();
 	}
 
 	protected static Translator buildPostPersistTranslator() {
-		return PostPersist.buildTranslator(JPA.POST_PERSIST, OrmPackage.eINSTANCE.getXmlMappedSuperclass_PostPersist());
+		return PostPersist.buildTranslator();
 	}
 
 	protected static Translator buildPreRemoveTranslator() {
-		return PreRemove.buildTranslator(JPA.PRE_REMOVE, OrmPackage.eINSTANCE.getXmlMappedSuperclass_PreRemove());
+		return PreRemove.buildTranslator();
 	}
 
 	protected static Translator buildPostRemoveTranslator() {
-		return PostRemove.buildTranslator(JPA.POST_REMOVE, OrmPackage.eINSTANCE.getXmlMappedSuperclass_PostRemove());
+		return PostRemove.buildTranslator();
 	}
 	
 	protected static Translator buildPreUpdateTranslator() {
-		return PreUpdate.buildTranslator(JPA.PRE_UPDATE, OrmPackage.eINSTANCE.getXmlMappedSuperclass_PreUpdate());
+		return PreUpdate.buildTranslator();
 	}
 	
 	protected static Translator buildPostUpdateTranslator() {
-		return PostUpdate.buildTranslator(JPA.POST_UPDATE, OrmPackage.eINSTANCE.getXmlMappedSuperclass_PostUpdate());
+		return PostUpdate.buildTranslator();
 	}
 
 	protected static Translator buildPostLoadTranslator() {
-		return PostLoad.buildTranslator(JPA.POST_LOAD, OrmPackage.eINSTANCE.getXmlMappedSuperclass_PostLoad());
+		return PostLoad.buildTranslator();
 	}
 
 } // MappedSuperclass

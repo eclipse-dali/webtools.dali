@@ -14,6 +14,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
 import org.eclipse.jpt.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage;
+import org.eclipse.jpt.eclipselink.core.resource.orm.JPA;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -57,6 +58,12 @@ public class Attributes extends org.eclipse.jpt.eclipselink.core.resource.orm.At
 			structuralFeature, 
 			EclipseLink1_1OrmPackage.eINSTANCE.getAttributes(), 
 			buildTranslatorChildren());
+	}
+	
+	public static Translator buildTranslator() {
+		return buildTranslator(
+			JPA.ATTRIBUTES, 
+			OrmPackage.eINSTANCE.getXmlTypeMapping_Attributes());
 	}
 
 	private static Translator[] buildTranslatorChildren() {

@@ -52,7 +52,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="AbstractXmlTypeMapping" abstract="true"
       eSuperTypes="#//XmlTypeMapping"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlMappedSuperclass" eSuperTypes="#//AbstractXmlTypeMapping">
+  <eClassifiers xsi:type="ecore:EClass" name="XmlMappedSuperclass" eSuperTypes="#//AbstractXmlTypeMapping #//XmlEventMethodContainer">
     <eStructuralFeatures xsi:type="ecore:EReference" name="idClass" eType="#//XmlIdClass"
         containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="excludeDefaultListeners"
@@ -61,22 +61,8 @@
         eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="entityListeners" eType="#//EntityListeners"
         containment="true" resolveProxies="false"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="prePersist" eType="#//PrePersist"
-        containment="true" resolveProxies="false"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="postPersist" eType="#//PostPersist"
-        containment="true" resolveProxies="false"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="preRemove" eType="#//PreRemove"
-        containment="true" resolveProxies="false"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="postRemove" eType="#//PostRemove"
-        containment="true" resolveProxies="false"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="preUpdate" eType="#//PreUpdate"
-        containment="true" resolveProxies="false"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="postUpdate" eType="#//PostUpdate"
-        containment="true" resolveProxies="false"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="postLoad" eType="#//PostLoad"
-        containment="true" resolveProxies="false"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlEntity" eSuperTypes="#//AbstractXmlTypeMapping #//XmlQueryContainer #//XmlGeneratorContainer">
+  <eClassifiers xsi:type="ecore:EClass" name="XmlEntity" eSuperTypes="#//AbstractXmlTypeMapping #//XmlQueryContainer #//XmlGeneratorContainer #//XmlEventMethodContainer">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="table" eType="#//XmlTable"
         containment="true" resolveProxies="false"/>
@@ -98,20 +84,6 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="excludeSuperclassListeners"
         eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="entityListeners" eType="#//EntityListeners"
-        containment="true" resolveProxies="false"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="prePersist" eType="#//PrePersist"
-        containment="true" resolveProxies="false"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="postPersist" eType="#//PostPersist"
-        containment="true" resolveProxies="false"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="preRemove" eType="#//PreRemove"
-        containment="true" resolveProxies="false"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="postRemove" eType="#//PostRemove"
-        containment="true" resolveProxies="false"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="preUpdate" eType="#//PreUpdate"
-        containment="true" resolveProxies="false"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="postUpdate" eType="#//PostUpdate"
-        containment="true" resolveProxies="false"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="postLoad" eType="#//PostLoad"
         containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="attributeOverrides" upperBound="-1"
         eType="#//XmlAttributeOverride" containment="true" resolveProxies="false"/>
@@ -270,13 +242,8 @@
         defaultValueLiteral="STRING"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="length" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//IntObject"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="EntityListeners">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="entityListeners" upperBound="-1"
-        eType="#//EntityListener" containment="true" resolveProxies="false"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="EntityListener">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="className" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlEventMethodContainer" abstract="true"
+      interface="true">
     <eStructuralFeatures xsi:type="ecore:EReference" name="prePersist" eType="#//PrePersist"
         containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="postPersist" eType="#//PostPersist"
@@ -291,6 +258,14 @@
         containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="postLoad" eType="#//PostLoad"
         containment="true" resolveProxies="false"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="EntityListeners">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="entityListeners" upperBound="-1"
+        eType="#//EntityListener" containment="true" resolveProxies="false"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="EntityListener" eSuperTypes="#//XmlEventMethodContainer">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="className" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="EntityResult">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="discriminatorColumn" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>

@@ -15,6 +15,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
 import org.eclipse.jpt.core.resource.orm.JPA;
+import org.eclipse.jpt.core.resource.orm.OrmPackage;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -233,6 +234,12 @@ public class PrePersist extends org.eclipse.jpt.core.resource.orm.PrePersist imp
 			structuralFeature,
 			Orm2_0Package.eINSTANCE.getPrePersist(),
 			buildTranslatorChildren());
+	}
+	
+	public static Translator buildTranslator() {
+		return buildTranslator(
+			JPA.PRE_PERSIST,
+			OrmPackage.eINSTANCE.getXmlEventMethodContainer_PrePersist());
 	}
 
 	private static Translator[] buildTranslatorChildren() {

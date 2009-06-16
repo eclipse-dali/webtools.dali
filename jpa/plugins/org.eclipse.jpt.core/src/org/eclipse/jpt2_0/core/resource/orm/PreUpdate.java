@@ -15,6 +15,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
 import org.eclipse.jpt.core.resource.orm.JPA;
+import org.eclipse.jpt.core.resource.orm.OrmPackage;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -233,6 +234,12 @@ public class PreUpdate extends org.eclipse.jpt.core.resource.orm.PreUpdate imple
 			structuralFeature,
 			Orm2_0Package.eINSTANCE.getPreUpdate(),
 			buildTranslatorChildren());
+	}
+	
+	public static Translator buildTranslator() {
+		return buildTranslator(
+			JPA.PRE_UPDATE,
+			OrmPackage.eINSTANCE.getXmlEventMethodContainer_PreUpdate());
 	}
 
 	private static Translator[] buildTranslatorChildren() {

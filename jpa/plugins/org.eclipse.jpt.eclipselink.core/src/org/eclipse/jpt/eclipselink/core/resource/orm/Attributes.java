@@ -362,6 +362,12 @@ public class Attributes extends org.eclipse.jpt.core.resource.orm.Attributes
 			EclipseLinkOrmPackage.eINSTANCE.getAttributes(), 
 			buildTranslatorChildren());
 	}
+	
+	public static Translator buildTranslator() {
+		return buildTranslator(
+			JPA.ATTRIBUTES, 
+			OrmPackage.eINSTANCE.getXmlTypeMapping_Attributes());
+	}
 
 	private static Translator[] buildTranslatorChildren() {
 		return new Translator[] {

@@ -515,7 +515,7 @@ public abstract class AbstractXmlTypeMapping extends AbstractJpaEObject implemen
 	}
 	
 	protected static Translator buildAttributesTranslator() {
-		return Attributes.buildTranslator(JPA.ATTRIBUTES, OrmPackage.eINSTANCE.getXmlTypeMapping_Attributes());
+		return Attributes.buildTranslator();
 	}	
 
 } // TypeMapping

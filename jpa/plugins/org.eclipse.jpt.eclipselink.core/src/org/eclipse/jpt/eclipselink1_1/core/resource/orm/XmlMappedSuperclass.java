@@ -12,7 +12,6 @@ package org.eclipse.jpt.eclipselink1_1.core.resource.orm;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
-import org.eclipse.jpt.core.resource.orm.OrmPackage;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -89,7 +88,7 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.eclipselink.core.resour
 			buildPostUpdateTranslator(),
 			buildPostLoadTranslator(),
 			buildPropertyTranslator(),
-			Attributes.buildTranslator(JPA.ATTRIBUTES, OrmPackage.eINSTANCE.getXmlTypeMapping_Attributes())
+			Attributes.buildTranslator()
 		};
 	}
 

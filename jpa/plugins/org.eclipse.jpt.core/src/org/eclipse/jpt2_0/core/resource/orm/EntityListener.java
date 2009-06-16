@@ -210,13 +210,13 @@ public class EntityListener extends org.eclipse.jpt.core.resource.orm.EntityList
 		return new Translator[] {
 			buildDescriptionTranslator(),
 			buildClassTranslator(),
-			PrePersist.buildTranslator(JPA.PRE_PERSIST, OrmPackage.eINSTANCE.getEntityListener_PrePersist()),
-			PostPersist.buildTranslator(JPA.POST_PERSIST, OrmPackage.eINSTANCE.getEntityListener_PostPersist()),
-			PreRemove.buildTranslator(JPA.PRE_REMOVE, OrmPackage.eINSTANCE.getEntityListener_PreRemove()),
-			PostRemove.buildTranslator(JPA.POST_REMOVE, OrmPackage.eINSTANCE.getEntityListener_PostRemove()),
-			PreUpdate.buildTranslator(JPA.PRE_UPDATE, OrmPackage.eINSTANCE.getEntityListener_PreUpdate()),
-			PostUpdate.buildTranslator(JPA.POST_UPDATE, OrmPackage.eINSTANCE.getEntityListener_PostUpdate()),
-			PostLoad.buildTranslator(JPA.POST_LOAD, OrmPackage.eINSTANCE.getEntityListener_PostLoad())
+			PrePersist.buildTranslator(),
+			PostPersist.buildTranslator(),
+			PreRemove.buildTranslator(),
+			PostRemove.buildTranslator(),
+			PreUpdate.buildTranslator(),
+			PostUpdate.buildTranslator(),
+			PostLoad.buildTranslator()
 		};
 	}
 	

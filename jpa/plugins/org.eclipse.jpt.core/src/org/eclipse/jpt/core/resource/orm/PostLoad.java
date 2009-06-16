@@ -198,6 +198,12 @@ public class PostLoad extends AbstractJpaEObject implements EventMethod
 	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
 		return new SimpleTranslator(elementName, structuralFeature, buildTranslatorChildren());
 	}
+	
+	public static Translator buildTranslator() {
+		return buildTranslator(
+			JPA.POST_LOAD,
+			OrmPackage.eINSTANCE.getXmlEventMethodContainer_PostLoad());
+	}
 
 	private static Translator[] buildTranslatorChildren() {
 		return new Translator[] {

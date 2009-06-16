@@ -24,6 +24,7 @@ import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
 import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.xml.JpaEObject;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt2_0.core.resource.orm.JPA;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -635,6 +636,12 @@ public class Attributes extends AbstractJpaEObject implements JpaEObject
 
 	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
 		return new SimpleTranslator(elementName, structuralFeature, buildTranslatorChildren());
+	}
+	
+	public static Translator buildTranslator() {
+		return buildTranslator(
+			JPA.ATTRIBUTES, 
+			OrmPackage.eINSTANCE.getXmlTypeMapping_Attributes());
 	}
 
 	private static Translator[] buildTranslatorChildren() {

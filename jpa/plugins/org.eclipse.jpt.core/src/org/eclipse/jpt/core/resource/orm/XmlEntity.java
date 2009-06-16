@@ -51,13 +51,6 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntity#isExcludeDefaultListeners <em>Exclude Default Listeners</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntity#isExcludeSuperclassListeners <em>Exclude Superclass Listeners</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntity#getEntityListeners <em>Entity Listeners</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntity#getPrePersist <em>Pre Persist</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntity#getPostPersist <em>Post Persist</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntity#getPreRemove <em>Pre Remove</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntity#getPostRemove <em>Post Remove</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntity#getPreUpdate <em>Pre Update</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntity#getPostUpdate <em>Post Update</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntity#getPostLoad <em>Post Load</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntity#getAttributeOverrides <em>Attribute Overrides</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlEntity#getAssociationOverrides <em>Association Overrides</em>}</li>
  * </ul>
@@ -67,7 +60,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContainer, XmlGeneratorContainer
+public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContainer, XmlGeneratorContainer, XmlEventMethodContainer
 {
 
 	/**
@@ -109,6 +102,76 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	 * @ordered
 	 */
 	protected XmlTableGenerator tableGenerator;
+
+	/**
+	 * The cached value of the '{@link #getPrePersist() <em>Pre Persist</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getPrePersist()
+	 * @generated
+	 * @ordered
+	 */
+	protected PrePersist prePersist;
+
+	/**
+	 * The cached value of the '{@link #getPostPersist() <em>Post Persist</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getPostPersist()
+	 * @generated
+	 * @ordered
+	 */
+	protected PostPersist postPersist;
+
+	/**
+	 * The cached value of the '{@link #getPreRemove() <em>Pre Remove</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getPreRemove()
+	 * @generated
+	 * @ordered
+	 */
+	protected PreRemove preRemove;
+
+	/**
+	 * The cached value of the '{@link #getPostRemove() <em>Post Remove</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getPostRemove()
+	 * @generated
+	 * @ordered
+	 */
+	protected PostRemove postRemove;
+
+	/**
+	 * The cached value of the '{@link #getPreUpdate() <em>Pre Update</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getPreUpdate()
+	 * @generated
+	 * @ordered
+	 */
+	protected PreUpdate preUpdate;
+
+	/**
+	 * The cached value of the '{@link #getPostUpdate() <em>Post Update</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getPostUpdate()
+	 * @generated
+	 * @ordered
+	 */
+	protected PostUpdate postUpdate;
+
+	/**
+	 * The cached value of the '{@link #getPostLoad() <em>Post Load</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getPostLoad()
+	 * @generated
+	 * @ordered
+	 */
+	protected PostLoad postLoad;
 
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
@@ -269,76 +332,6 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	 * @ordered
 	 */
 	protected EntityListeners entityListeners;
-
-	/**
-	 * The cached value of the '{@link #getPrePersist() <em>Pre Persist</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getPrePersist()
-	 * @generated
-	 * @ordered
-	 */
-	protected PrePersist prePersist;
-
-	/**
-	 * The cached value of the '{@link #getPostPersist() <em>Post Persist</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getPostPersist()
-	 * @generated
-	 * @ordered
-	 */
-	protected PostPersist postPersist;
-
-	/**
-	 * The cached value of the '{@link #getPreRemove() <em>Pre Remove</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getPreRemove()
-	 * @generated
-	 * @ordered
-	 */
-	protected PreRemove preRemove;
-
-	/**
-	 * The cached value of the '{@link #getPostRemove() <em>Post Remove</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getPostRemove()
-	 * @generated
-	 * @ordered
-	 */
-	protected PostRemove postRemove;
-
-	/**
-	 * The cached value of the '{@link #getPreUpdate() <em>Pre Update</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getPreUpdate()
-	 * @generated
-	 * @ordered
-	 */
-	protected PreUpdate preUpdate;
-
-	/**
-	 * The cached value of the '{@link #getPostUpdate() <em>Post Update</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getPostUpdate()
-	 * @generated
-	 * @ordered
-	 */
-	protected PostUpdate postUpdate;
-
-	/**
-	 * The cached value of the '{@link #getPostLoad() <em>Post Load</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getPostLoad()
-	 * @generated
-	 * @ordered
-	 */
-	protected PostLoad postLoad;
 
 	/**
 	 * The cached value of the '{@link #getAttributeOverrides() <em>Attribute Overrides</em>}' containment reference list.
@@ -1074,7 +1067,7 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Pre Persist</em>' containment reference.
 	 * @see #setPrePersist(PrePersist)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEntity_PrePersist()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEventMethodContainer_PrePersist()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -1134,7 +1127,7 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Post Persist</em>' containment reference.
 	 * @see #setPostPersist(PostPersist)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEntity_PostPersist()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEventMethodContainer_PostPersist()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -1194,7 +1187,7 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Pre Remove</em>' containment reference.
 	 * @see #setPreRemove(PreRemove)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEntity_PreRemove()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEventMethodContainer_PreRemove()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -1254,7 +1247,7 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Post Remove</em>' containment reference.
 	 * @see #setPostRemove(PostRemove)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEntity_PostRemove()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEventMethodContainer_PostRemove()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -1314,7 +1307,7 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Pre Update</em>' containment reference.
 	 * @see #setPreUpdate(PreUpdate)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEntity_PreUpdate()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEventMethodContainer_PreUpdate()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -1374,7 +1367,7 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Post Update</em>' containment reference.
 	 * @see #setPostUpdate(PostUpdate)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEntity_PostUpdate()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEventMethodContainer_PostUpdate()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -1434,7 +1427,7 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Post Load</em>' containment reference.
 	 * @see #setPostLoad(PostLoad)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEntity_PostLoad()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlEventMethodContainer_PostLoad()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -1548,6 +1541,20 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 				return basicSetSequenceGenerator(null, msgs);
 			case OrmPackage.XML_ENTITY__TABLE_GENERATOR:
 				return basicSetTableGenerator(null, msgs);
+			case OrmPackage.XML_ENTITY__PRE_PERSIST:
+				return basicSetPrePersist(null, msgs);
+			case OrmPackage.XML_ENTITY__POST_PERSIST:
+				return basicSetPostPersist(null, msgs);
+			case OrmPackage.XML_ENTITY__PRE_REMOVE:
+				return basicSetPreRemove(null, msgs);
+			case OrmPackage.XML_ENTITY__POST_REMOVE:
+				return basicSetPostRemove(null, msgs);
+			case OrmPackage.XML_ENTITY__PRE_UPDATE:
+				return basicSetPreUpdate(null, msgs);
+			case OrmPackage.XML_ENTITY__POST_UPDATE:
+				return basicSetPostUpdate(null, msgs);
+			case OrmPackage.XML_ENTITY__POST_LOAD:
+				return basicSetPostLoad(null, msgs);
 			case OrmPackage.XML_ENTITY__TABLE:
 				return basicSetTable(null, msgs);
 			case OrmPackage.XML_ENTITY__SECONDARY_TABLES:
@@ -1564,20 +1571,6 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 				return ((InternalEList<?>)getSqlResultSetMappings()).basicRemove(otherEnd, msgs);
 			case OrmPackage.XML_ENTITY__ENTITY_LISTENERS:
 				return basicSetEntityListeners(null, msgs);
-			case OrmPackage.XML_ENTITY__PRE_PERSIST:
-				return basicSetPrePersist(null, msgs);
-			case OrmPackage.XML_ENTITY__POST_PERSIST:
-				return basicSetPostPersist(null, msgs);
-			case OrmPackage.XML_ENTITY__PRE_REMOVE:
-				return basicSetPreRemove(null, msgs);
-			case OrmPackage.XML_ENTITY__POST_REMOVE:
-				return basicSetPostRemove(null, msgs);
-			case OrmPackage.XML_ENTITY__PRE_UPDATE:
-				return basicSetPreUpdate(null, msgs);
-			case OrmPackage.XML_ENTITY__POST_UPDATE:
-				return basicSetPostUpdate(null, msgs);
-			case OrmPackage.XML_ENTITY__POST_LOAD:
-				return basicSetPostLoad(null, msgs);
 			case OrmPackage.XML_ENTITY__ATTRIBUTE_OVERRIDES:
 				return ((InternalEList<?>)getAttributeOverrides()).basicRemove(otherEnd, msgs);
 			case OrmPackage.XML_ENTITY__ASSOCIATION_OVERRIDES:
@@ -1604,6 +1597,20 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 				return getSequenceGenerator();
 			case OrmPackage.XML_ENTITY__TABLE_GENERATOR:
 				return getTableGenerator();
+			case OrmPackage.XML_ENTITY__PRE_PERSIST:
+				return getPrePersist();
+			case OrmPackage.XML_ENTITY__POST_PERSIST:
+				return getPostPersist();
+			case OrmPackage.XML_ENTITY__PRE_REMOVE:
+				return getPreRemove();
+			case OrmPackage.XML_ENTITY__POST_REMOVE:
+				return getPostRemove();
+			case OrmPackage.XML_ENTITY__PRE_UPDATE:
+				return getPreUpdate();
+			case OrmPackage.XML_ENTITY__POST_UPDATE:
+				return getPostUpdate();
+			case OrmPackage.XML_ENTITY__POST_LOAD:
+				return getPostLoad();
 			case OrmPackage.XML_ENTITY__NAME:
 				return getName();
 			case OrmPackage.XML_ENTITY__TABLE:
@@ -1628,20 +1635,6 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 				return isExcludeSuperclassListeners();
 			case OrmPackage.XML_ENTITY__ENTITY_LISTENERS:
 				return getEntityListeners();
-			case OrmPackage.XML_ENTITY__PRE_PERSIST:
-				return getPrePersist();
-			case OrmPackage.XML_ENTITY__POST_PERSIST:
-				return getPostPersist();
-			case OrmPackage.XML_ENTITY__PRE_REMOVE:
-				return getPreRemove();
-			case OrmPackage.XML_ENTITY__POST_REMOVE:
-				return getPostRemove();
-			case OrmPackage.XML_ENTITY__PRE_UPDATE:
-				return getPreUpdate();
-			case OrmPackage.XML_ENTITY__POST_UPDATE:
-				return getPostUpdate();
-			case OrmPackage.XML_ENTITY__POST_LOAD:
-				return getPostLoad();
 			case OrmPackage.XML_ENTITY__ATTRIBUTE_OVERRIDES:
 				return getAttributeOverrides();
 			case OrmPackage.XML_ENTITY__ASSOCIATION_OVERRIDES:
@@ -1674,6 +1667,27 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 				return;
 			case OrmPackage.XML_ENTITY__TABLE_GENERATOR:
 				setTableGenerator((XmlTableGenerator)newValue);
+				return;
+			case OrmPackage.XML_ENTITY__PRE_PERSIST:
+				setPrePersist((PrePersist)newValue);
+				return;
+			case OrmPackage.XML_ENTITY__POST_PERSIST:
+				setPostPersist((PostPersist)newValue);
+				return;
+			case OrmPackage.XML_ENTITY__PRE_REMOVE:
+				setPreRemove((PreRemove)newValue);
+				return;
+			case OrmPackage.XML_ENTITY__POST_REMOVE:
+				setPostRemove((PostRemove)newValue);
+				return;
+			case OrmPackage.XML_ENTITY__PRE_UPDATE:
+				setPreUpdate((PreUpdate)newValue);
+				return;
+			case OrmPackage.XML_ENTITY__POST_UPDATE:
+				setPostUpdate((PostUpdate)newValue);
+				return;
+			case OrmPackage.XML_ENTITY__POST_LOAD:
+				setPostLoad((PostLoad)newValue);
 				return;
 			case OrmPackage.XML_ENTITY__NAME:
 				setName((String)newValue);
@@ -1714,27 +1728,6 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 			case OrmPackage.XML_ENTITY__ENTITY_LISTENERS:
 				setEntityListeners((EntityListeners)newValue);
 				return;
-			case OrmPackage.XML_ENTITY__PRE_PERSIST:
-				setPrePersist((PrePersist)newValue);
-				return;
-			case OrmPackage.XML_ENTITY__POST_PERSIST:
-				setPostPersist((PostPersist)newValue);
-				return;
-			case OrmPackage.XML_ENTITY__PRE_REMOVE:
-				setPreRemove((PreRemove)newValue);
-				return;
-			case OrmPackage.XML_ENTITY__POST_REMOVE:
-				setPostRemove((PostRemove)newValue);
-				return;
-			case OrmPackage.XML_ENTITY__PRE_UPDATE:
-				setPreUpdate((PreUpdate)newValue);
-				return;
-			case OrmPackage.XML_ENTITY__POST_UPDATE:
-				setPostUpdate((PostUpdate)newValue);
-				return;
-			case OrmPackage.XML_ENTITY__POST_LOAD:
-				setPostLoad((PostLoad)newValue);
-				return;
 			case OrmPackage.XML_ENTITY__ATTRIBUTE_OVERRIDES:
 				getAttributeOverrides().clear();
 				getAttributeOverrides().addAll((Collection<? extends XmlAttributeOverride>)newValue);
@@ -1768,6 +1761,27 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 				return;
 			case OrmPackage.XML_ENTITY__TABLE_GENERATOR:
 				setTableGenerator((XmlTableGenerator)null);
+				return;
+			case OrmPackage.XML_ENTITY__PRE_PERSIST:
+				setPrePersist((PrePersist)null);
+				return;
+			case OrmPackage.XML_ENTITY__POST_PERSIST:
+				setPostPersist((PostPersist)null);
+				return;
+			case OrmPackage.XML_ENTITY__PRE_REMOVE:
+				setPreRemove((PreRemove)null);
+				return;
+			case OrmPackage.XML_ENTITY__POST_REMOVE:
+				setPostRemove((PostRemove)null);
+				return;
+			case OrmPackage.XML_ENTITY__PRE_UPDATE:
+				setPreUpdate((PreUpdate)null);
+				return;
+			case OrmPackage.XML_ENTITY__POST_UPDATE:
+				setPostUpdate((PostUpdate)null);
+				return;
+			case OrmPackage.XML_ENTITY__POST_LOAD:
+				setPostLoad((PostLoad)null);
 				return;
 			case OrmPackage.XML_ENTITY__NAME:
 				setName(NAME_EDEFAULT);
@@ -1805,27 +1819,6 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 			case OrmPackage.XML_ENTITY__ENTITY_LISTENERS:
 				setEntityListeners((EntityListeners)null);
 				return;
-			case OrmPackage.XML_ENTITY__PRE_PERSIST:
-				setPrePersist((PrePersist)null);
-				return;
-			case OrmPackage.XML_ENTITY__POST_PERSIST:
-				setPostPersist((PostPersist)null);
-				return;
-			case OrmPackage.XML_ENTITY__PRE_REMOVE:
-				setPreRemove((PreRemove)null);
-				return;
-			case OrmPackage.XML_ENTITY__POST_REMOVE:
-				setPostRemove((PostRemove)null);
-				return;
-			case OrmPackage.XML_ENTITY__PRE_UPDATE:
-				setPreUpdate((PreUpdate)null);
-				return;
-			case OrmPackage.XML_ENTITY__POST_UPDATE:
-				setPostUpdate((PostUpdate)null);
-				return;
-			case OrmPackage.XML_ENTITY__POST_LOAD:
-				setPostLoad((PostLoad)null);
-				return;
 			case OrmPackage.XML_ENTITY__ATTRIBUTE_OVERRIDES:
 				getAttributeOverrides().clear();
 				return;
@@ -1854,6 +1847,20 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 				return sequenceGenerator != null;
 			case OrmPackage.XML_ENTITY__TABLE_GENERATOR:
 				return tableGenerator != null;
+			case OrmPackage.XML_ENTITY__PRE_PERSIST:
+				return prePersist != null;
+			case OrmPackage.XML_ENTITY__POST_PERSIST:
+				return postPersist != null;
+			case OrmPackage.XML_ENTITY__PRE_REMOVE:
+				return preRemove != null;
+			case OrmPackage.XML_ENTITY__POST_REMOVE:
+				return postRemove != null;
+			case OrmPackage.XML_ENTITY__PRE_UPDATE:
+				return preUpdate != null;
+			case OrmPackage.XML_ENTITY__POST_UPDATE:
+				return postUpdate != null;
+			case OrmPackage.XML_ENTITY__POST_LOAD:
+				return postLoad != null;
 			case OrmPackage.XML_ENTITY__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case OrmPackage.XML_ENTITY__TABLE:
@@ -1878,20 +1885,6 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 				return excludeSuperclassListeners != EXCLUDE_SUPERCLASS_LISTENERS_EDEFAULT;
 			case OrmPackage.XML_ENTITY__ENTITY_LISTENERS:
 				return entityListeners != null;
-			case OrmPackage.XML_ENTITY__PRE_PERSIST:
-				return prePersist != null;
-			case OrmPackage.XML_ENTITY__POST_PERSIST:
-				return postPersist != null;
-			case OrmPackage.XML_ENTITY__PRE_REMOVE:
-				return preRemove != null;
-			case OrmPackage.XML_ENTITY__POST_REMOVE:
-				return postRemove != null;
-			case OrmPackage.XML_ENTITY__PRE_UPDATE:
-				return preUpdate != null;
-			case OrmPackage.XML_ENTITY__POST_UPDATE:
-				return postUpdate != null;
-			case OrmPackage.XML_ENTITY__POST_LOAD:
-				return postLoad != null;
 			case OrmPackage.XML_ENTITY__ATTRIBUTE_OVERRIDES:
 				return attributeOverrides != null && !attributeOverrides.isEmpty();
 			case OrmPackage.XML_ENTITY__ASSOCIATION_OVERRIDES:
@@ -1926,6 +1919,20 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlEventMethodContainer.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.XML_ENTITY__PRE_PERSIST: return OrmPackage.XML_EVENT_METHOD_CONTAINER__PRE_PERSIST;
+				case OrmPackage.XML_ENTITY__POST_PERSIST: return OrmPackage.XML_EVENT_METHOD_CONTAINER__POST_PERSIST;
+				case OrmPackage.XML_ENTITY__PRE_REMOVE: return OrmPackage.XML_EVENT_METHOD_CONTAINER__PRE_REMOVE;
+				case OrmPackage.XML_ENTITY__POST_REMOVE: return OrmPackage.XML_EVENT_METHOD_CONTAINER__POST_REMOVE;
+				case OrmPackage.XML_ENTITY__PRE_UPDATE: return OrmPackage.XML_EVENT_METHOD_CONTAINER__PRE_UPDATE;
+				case OrmPackage.XML_ENTITY__POST_UPDATE: return OrmPackage.XML_EVENT_METHOD_CONTAINER__POST_UPDATE;
+				case OrmPackage.XML_ENTITY__POST_LOAD: return OrmPackage.XML_EVENT_METHOD_CONTAINER__POST_LOAD;
+				default: return -1;
+			}
+		}
 		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
 	}
 
@@ -1952,6 +1959,20 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 			{
 				case OrmPackage.XML_GENERATOR_CONTAINER__SEQUENCE_GENERATOR: return OrmPackage.XML_ENTITY__SEQUENCE_GENERATOR;
 				case OrmPackage.XML_GENERATOR_CONTAINER__TABLE_GENERATOR: return OrmPackage.XML_ENTITY__TABLE_GENERATOR;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlEventMethodContainer.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmPackage.XML_EVENT_METHOD_CONTAINER__PRE_PERSIST: return OrmPackage.XML_ENTITY__PRE_PERSIST;
+				case OrmPackage.XML_EVENT_METHOD_CONTAINER__POST_PERSIST: return OrmPackage.XML_ENTITY__POST_PERSIST;
+				case OrmPackage.XML_EVENT_METHOD_CONTAINER__PRE_REMOVE: return OrmPackage.XML_ENTITY__PRE_REMOVE;
+				case OrmPackage.XML_EVENT_METHOD_CONTAINER__POST_REMOVE: return OrmPackage.XML_ENTITY__POST_REMOVE;
+				case OrmPackage.XML_EVENT_METHOD_CONTAINER__PRE_UPDATE: return OrmPackage.XML_ENTITY__PRE_UPDATE;
+				case OrmPackage.XML_EVENT_METHOD_CONTAINER__POST_UPDATE: return OrmPackage.XML_ENTITY__POST_UPDATE;
+				case OrmPackage.XML_EVENT_METHOD_CONTAINER__POST_LOAD: return OrmPackage.XML_ENTITY__POST_LOAD;
 				default: return -1;
 			}
 		}
@@ -2099,31 +2120,31 @@ public class XmlEntity extends AbstractXmlTypeMapping implements XmlQueryContain
 	}
 
 	protected static Translator buildPrePersistTranslator() {
-		return PrePersist.buildTranslator(JPA.PRE_PERSIST, OrmPackage.eINSTANCE.getXmlEntity_PrePersist());
+		return PrePersist.buildTranslator();
 	}
 
 	protected static Translator buildPostPersistTranslator() {
-		return PostPersist.buildTranslator(JPA.POST_PERSIST, OrmPackage.eINSTANCE.getXmlEntity_PostPersist());
+		return PostPersist.buildTranslator();
 	}
 
 	protected static Translator buildPreRemoveTranslator() {
-		return PreRemove.buildTranslator(JPA.PRE_REMOVE, OrmPackage.eINSTANCE.getXmlEntity_PreRemove());
+		return PreRemove.buildTranslator();
 	}
 
 	protected static Translator buildPostRemoveTranslator() {
-		return PostRemove.buildTranslator(JPA.POST_REMOVE, OrmPackage.eINSTANCE.getXmlEntity_PostRemove());
+		return PostRemove.buildTranslator();
 	}
 	
 	protected static Translator buildPreUpdateTranslator() {
-		return PreUpdate.buildTranslator(JPA.PRE_UPDATE, OrmPackage.eINSTANCE.getXmlEntity_PreUpdate());
+		return PreUpdate.buildTranslator();
 	}
 	
 	protected static Translator buildPostUpdateTranslator() {
-		return PostUpdate.buildTranslator(JPA.POST_UPDATE, OrmPackage.eINSTANCE.getXmlEntity_PostUpdate());
+		return PostUpdate.buildTranslator();
 	}
 
 	protected static Translator buildPostLoadTranslator() {
-		return PostLoad.buildTranslator(JPA.POST_LOAD, OrmPackage.eINSTANCE.getXmlEntity_PostLoad());
+		return PostLoad.buildTranslator();
 	}
 		
 	protected static Translator buildAttributeOverrideTranslator() {
