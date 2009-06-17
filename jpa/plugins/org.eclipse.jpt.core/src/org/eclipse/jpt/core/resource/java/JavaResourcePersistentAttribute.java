@@ -61,7 +61,8 @@ public interface JavaResourcePersistentAttribute
 
 	/**
 	 * Return the access type explicitly specified by the javax.persistence.Access annotation.
-	 * Return null if the Access annotation is not present.
+	 * Return null if the Access annotation is not present. 
+	 * For JPA 1.0 this is always going to return null; Access annotation is not supported in 1.0.
 	 */
 	AccessType getSpecifiedAccess();
 

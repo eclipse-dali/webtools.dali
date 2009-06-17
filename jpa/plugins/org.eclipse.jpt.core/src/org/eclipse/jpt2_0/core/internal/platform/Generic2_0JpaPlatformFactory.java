@@ -16,7 +16,6 @@ import org.eclipse.jpt.core.JpaPlatformFactory;
 import org.eclipse.jpt.core.JpaValidation;
 import org.eclipse.jpt.core.internal.platform.GenericJpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.core.internal.platform.GenericJpaAnnotationProvider;
-import org.eclipse.jpt.core.internal.platform.GenericJpaFactory;
 import org.eclipse.jpt.core.internal.platform.GenericJpaPlatform;
 import org.eclipse.jpt.core.internal.platform.GenericJpaPlatformProvider;
 
@@ -38,24 +37,26 @@ public class Generic2_0JpaPlatformFactory
 	public JpaPlatform buildJpaPlatform(String id) {
 		return new GenericJpaPlatform(
 			id,
-			this.buildJpaFactory(), 
-			this.buildJpaAnnotationProvider(), 
-			this.buildJpaValidation(),
-			GenericJpaPlatformProvider.instance(),
+			buildJpaFactory(), 
+			buildJpaAnnotationProvider(), 
+			buildJpaValidation(),
+			GenericJpaPlatformProvider.instance(), 
 			Generic2_0JpaPlatformProvider.instance());
 	}
 	
 	protected JpaFactory buildJpaFactory() {
-		return new GenericJpaFactory();//Generic2_0JpaFactory
+		return new Generic2_0JpaFactory();
 	}
 	
 	protected JpaAnnotationProvider buildJpaAnnotationProvider() {
 		return new GenericJpaAnnotationProvider(
-			GenericJpaAnnotationDefinitionProvider.instance());//Generic2_0JpaAnnotationDefinitionProvider.instance()
+			GenericJpaAnnotationDefinitionProvider.instance(),
+			Generic2_0JpaAnnotationDefinitionProvider.instance());
 	}
 	
 	protected JpaValidation buildJpaValidation() {
 		return new JpaValidation() {
+			//table_per_class inheritance support is optional in the 2.0 spec
 			public Supported getTablePerConcreteClassInheritanceIsSupported() {
 				return Supported.MAYBE;
 			}

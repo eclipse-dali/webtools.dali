@@ -7,9 +7,11 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.resource.java;
+package org.eclipse.jpt2_0.core.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.resource.java.AccessType;
+import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**
@@ -22,8 +24,8 @@ import org.eclipse.jpt.core.utility.TextRange;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.2
- * @since 2.2
+ * @version 3.0
+ * @since 3.0
  */
 public interface AccessAnnotation
 	extends Annotation

@@ -27,7 +27,6 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.Signature;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.utility.jdt.JPTTools;
-import org.eclipse.jpt.core.resource.java.AccessAnnotation;
 import org.eclipse.jpt.core.resource.java.AccessType;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
@@ -37,6 +36,7 @@ import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.NameTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
+import org.eclipse.jpt2_0.core.resource.java.AccessAnnotation;
 
 /**
  * binary persistent attribute (field or property)

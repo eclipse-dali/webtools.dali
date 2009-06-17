@@ -7,13 +7,13 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.internal.resource.java.source;
+package org.eclipse.jpt2_0.core.internal.resource.java.source;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.core.internal.utility.jdt.EnumDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.ShortCircuitAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
-import org.eclipse.jpt.core.resource.java.AccessAnnotation;
 import org.eclipse.jpt.core.resource.java.AccessType;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
@@ -22,6 +22,7 @@ import org.eclipse.jpt.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.Member;
+import org.eclipse.jpt2_0.core.resource.java.AccessAnnotation;
 
 /**
  * javax.persistence.Access

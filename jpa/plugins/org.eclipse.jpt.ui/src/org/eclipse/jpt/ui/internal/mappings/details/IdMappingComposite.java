@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -74,15 +74,6 @@ public class IdMappingComposite extends FormPane<IdMapping>
 		super(subjectHolder, parent, widgetFactory);
 	}
 
-	private PropertyValueModel<? extends Column> buildColumnHolder() {
-		return new TransformationPropertyValueModel<IdMapping, Column>(getSubjectHolder())  {
-			@Override
-			protected Column transform_(IdMapping value) {
-				return value.getColumn();
-			}
-		};
-	}
-
 	@Override
 	protected void initializeLayout(Composite container) {
 		
@@ -94,9 +85,17 @@ public class IdMappingComposite extends FormPane<IdMapping>
 		// Generation pane
 		new GenerationComposite(this, addSubPane(container, 10));
 	}
-	
-	
-	private void initializeTypePane(Composite container) {
+
+	protected PropertyValueModel<? extends Column> buildColumnHolder() {
+		return new TransformationPropertyValueModel<IdMapping, Column>(getSubjectHolder())  {
+			@Override
+			protected Column transform_(IdMapping value) {
+				return value.getColumn();
+			}
+		};
+	}
+
+	protected void initializeTypePane(Composite container) {
 
 		container = addCollapsableSection(
 			container,
@@ -121,7 +120,6 @@ public class IdMappingComposite extends FormPane<IdMapping>
 			null);
 		registerSubPane(new TemporalTypeComposite(buildTemporalConverterHolder(specifiedConverterHolder), container, getWidgetFactory()));
 	}
-	
 
 	private WritablePropertyValueModel<Boolean> buildNoConverterHolder() {
 		return new PropertyAspectAdapter<IdMapping, Boolean>(getSubjectHolder(), ConvertibleMapping.SPECIFIED_CONVERTER_PROPERTY) {

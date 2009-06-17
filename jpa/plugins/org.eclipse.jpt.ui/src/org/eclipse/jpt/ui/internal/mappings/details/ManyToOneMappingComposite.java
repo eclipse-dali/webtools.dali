@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -79,30 +79,6 @@ public class ManyToOneMappingComposite
 		super(subjectHolder, parent, widgetFactory);
 	}
 
-	
-	private PropertyValueModel<ManyToOneRelationshipReference> buildJoiningHolder() {
-		return new TransformationPropertyValueModel<ManyToOneMapping, ManyToOneRelationshipReference>(
-				getSubjectHolder()) {
-			@Override
-			protected ManyToOneRelationshipReference transform_(ManyToOneMapping value) {
-				return value.getRelationshipReference();
-			}
-		};
-	}
-	
-	private PropertyValueModel<Cascade> buildCascadeHolder() {
-		return new TransformationPropertyValueModel<ManyToOneMapping, Cascade>(getSubjectHolder()) {
-			@Override
-			protected Cascade transform_(ManyToOneMapping value) {
-				return value.getCascade();
-			}
-		};
-	}
-	
-	private Composite addPane(Composite container, int groupBoxMargin) {
-		return addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
-	}
-
 	@Override
 	protected void initializeLayout(Composite container) {
 		int groupBoxMargin = getGroupBoxMargin();
@@ -113,4 +89,28 @@ public class ManyToOneMappingComposite
 		new OptionalComposite(this, addPane(container, groupBoxMargin));
 		new CascadeComposite(this, buildCascadeHolder(),  addSubPane(container, 5));
 	}
+	
+	protected PropertyValueModel<ManyToOneRelationshipReference> buildJoiningHolder() {
+		return new TransformationPropertyValueModel<ManyToOneMapping, ManyToOneRelationshipReference>(
+				getSubjectHolder()) {
+			@Override
+			protected ManyToOneRelationshipReference transform_(ManyToOneMapping value) {
+				return value.getRelationshipReference();
+			}
+		};
+	}
+	
+	protected PropertyValueModel<Cascade> buildCascadeHolder() {
+		return new TransformationPropertyValueModel<ManyToOneMapping, Cascade>(getSubjectHolder()) {
+			@Override
+			protected Cascade transform_(ManyToOneMapping value) {
+				return value.getCascade();
+			}
+		};
+	}
+	
+	protected Composite addPane(Composite container, int groupBoxMargin) {
+		return addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
+	}
+
 }

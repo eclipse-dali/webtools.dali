@@ -9,7 +9,17 @@
  ******************************************************************************/
 package org.eclipse.jpt2_0.ui.internal;
 
+import org.eclipse.jpt.core.context.java.JavaEmbeddable;
+import org.eclipse.jpt.core.context.java.JavaEntity;
+import org.eclipse.jpt.core.context.java.JavaMappedSuperclass;
+import org.eclipse.jpt.ui.WidgetFactory;
+import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.GenericJpaUiFactory;
+import org.eclipse.jpt.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt2_0.ui.internal.java.details.Java2_0EmbeddableComposite;
+import org.eclipse.jpt2_0.ui.internal.java.details.Java2_0EntityComposite;
+import org.eclipse.jpt2_0.ui.internal.java.details.Java2_0MappedSuperclassComposite;
+import org.eclipse.swt.widgets.Composite;
 
 /**
  * The default implementation of the UI factory required to show the information
@@ -22,4 +32,25 @@ import org.eclipse.jpt.ui.internal.GenericJpaUiFactory;
  */
 public class Generic2_0JpaUiFactory extends GenericJpaUiFactory
 {
+	
+	@Override
+	public JpaComposite createJavaMappedSuperclassComposite(
+			PropertyValueModel<JavaMappedSuperclass> subjectHolder,
+			Composite parent, WidgetFactory widgetFactory) {
+		return new Java2_0MappedSuperclassComposite(subjectHolder, parent, widgetFactory);
+	}
+	
+	@Override
+	public JpaComposite createJavaEntityComposite(
+			PropertyValueModel<JavaEntity> subjectHolder,
+			Composite parent, WidgetFactory widgetFactory) {
+		return new Java2_0EntityComposite(subjectHolder, parent, widgetFactory);
+	}
+	
+	@Override
+	public JpaComposite createJavaEmbeddableComposite(
+			PropertyValueModel<JavaEmbeddable> subjectHolder,
+			Composite parent, WidgetFactory widgetFactory) {
+		return new Java2_0EmbeddableComposite(subjectHolder, parent, widgetFactory);
+	}
 }

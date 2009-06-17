@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -90,11 +90,11 @@ public class ManyToManyMappingComposite
 		new OrderingComposite(this, container);
 	}
 	
-	private Composite addPane(Composite container, int groupBoxMargin) {
+	protected Composite addPane(Composite container, int groupBoxMargin) {
 		return addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
 	}
 	
-	private PropertyValueModel<ManyToManyRelationshipReference> buildJoiningHolder() {
+	protected PropertyValueModel<ManyToManyRelationshipReference> buildJoiningHolder() {
 		return new TransformationPropertyValueModel<ManyToManyMapping, ManyToManyRelationshipReference>(
 				getSubjectHolder()) {
 			@Override
@@ -104,7 +104,7 @@ public class ManyToManyMappingComposite
 		};
 	}
 	
-	private PropertyValueModel<Cascade> buildCascadeHolder() {
+	protected PropertyValueModel<Cascade> buildCascadeHolder() {
 		return new TransformationPropertyValueModel<ManyToManyMapping, Cascade>(getSubjectHolder()) {
 			@Override
 			protected Cascade transform_(ManyToManyMapping value) {
@@ -112,6 +112,4 @@ public class ManyToManyMappingComposite
 			}
 		};
 	}
-
-
 }

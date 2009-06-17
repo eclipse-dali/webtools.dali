@@ -14,12 +14,14 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import org.eclipse.jpt.core.tests.internal.resource.java.JptJavaResourceTests;
+import org.eclipse.jpt2_0.core.tests.internal.resource.java.Generic2_0JavaResourceTests;
 
 public class JptCoreResourceModelTests extends TestCase
 {
 	public static Test suite() {
 		TestSuite suite = new TestSuite(JptCoreResourceModelTests.class.getName());
 		suite.addTest(JptJavaResourceTests.suite());
+		suite.addTest(Generic2_0JavaResourceTests.suite());
 		return suite;
 	}
 

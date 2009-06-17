@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -78,29 +78,6 @@ public class OneToManyMappingComposite
 
 		super(subjectHolder, parent, widgetFactory);
 	}
-
-	
-	private PropertyValueModel<OneToManyRelationshipReference> buildJoiningHolder() {
-		return new TransformationPropertyValueModel<OneToManyMapping, OneToManyRelationshipReference>(getSubjectHolder()) {
-			@Override
-			protected OneToManyRelationshipReference transform_(OneToManyMapping value) {
-				return value.getRelationshipReference();
-			}
-		};
-	}
-	
-	private PropertyValueModel<Cascade> buildCascadeHolder() {
-		return new TransformationPropertyValueModel<OneToManyMapping, Cascade>(getSubjectHolder()) {
-			@Override
-			protected Cascade transform_(OneToManyMapping value) {
-				return value.getCascade();
-			}
-		};
-	}
-	
-	private Composite addPane(Composite container, int groupBoxMargin) {
-		return addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
-	}
 	
 	@Override
 	protected void initializeLayout(Composite container) {
@@ -112,4 +89,27 @@ public class OneToManyMappingComposite
 		new CascadeComposite(this, buildCascadeHolder(), addSubPane(container, 5));
 		new OrderingComposite(this, container);
 	}
+	
+	protected PropertyValueModel<OneToManyRelationshipReference> buildJoiningHolder() {
+		return new TransformationPropertyValueModel<OneToManyMapping, OneToManyRelationshipReference>(getSubjectHolder()) {
+			@Override
+			protected OneToManyRelationshipReference transform_(OneToManyMapping value) {
+				return value.getRelationshipReference();
+			}
+		};
+	}
+	
+	protected PropertyValueModel<Cascade> buildCascadeHolder() {
+		return new TransformationPropertyValueModel<OneToManyMapping, Cascade>(getSubjectHolder()) {
+			@Override
+			protected Cascade transform_(OneToManyMapping value) {
+				return value.getCascade();
+			}
+		};
+	}
+	
+	protected Composite addPane(Composite container, int groupBoxMargin) {
+		return addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
+	}
+
 }

@@ -46,7 +46,7 @@ public class EclipseLink1_1OrmPersistentType extends AbstractOrmPersistentType
 	
 	@Override
 	protected AccessType getAccess(OrmPersistentAttribute ormPersistentAttribute) {
-		return ((EclipseLink1_1OrmPersistentAttribute) ormPersistentAttribute).getAccess();
+		return ormPersistentAttribute.getAccess();
 	}
 	
 	@Override

@@ -21,6 +21,18 @@ import org.eclipse.jpt.core.context.orm.OrmTypeMappingProvider;
 import org.eclipse.jpt.core.internal.platform.AbstractJpaPlatformProvider;
 import org.eclipse.jpt2_0.core.internal.Orm2_0ResourceModelProvider;
 import org.eclipse.jpt2_0.core.internal.Persistence2_0ResourceModelProvider;
+import org.eclipse.jpt2_0.core.internal.context.Generic2_0MappingFileProvider;
+import org.eclipse.jpt2_0.core.internal.context.orm.Generic2_0OrmBasicMappingProvider;
+import org.eclipse.jpt2_0.core.internal.context.orm.Generic2_0OrmEmbeddedIdMappingProvider;
+import org.eclipse.jpt2_0.core.internal.context.orm.Generic2_0OrmEmbeddedMappingProvider;
+import org.eclipse.jpt2_0.core.internal.context.orm.Generic2_0OrmIdMappingProvider;
+import org.eclipse.jpt2_0.core.internal.context.orm.Generic2_0OrmManyToManyMappingProvider;
+import org.eclipse.jpt2_0.core.internal.context.orm.Generic2_0OrmManyToOneMappingProvider;
+import org.eclipse.jpt2_0.core.internal.context.orm.Generic2_0OrmNullAttributeMappingProvider;
+import org.eclipse.jpt2_0.core.internal.context.orm.Generic2_0OrmOneToManyMappingProvider;
+import org.eclipse.jpt2_0.core.internal.context.orm.Generic2_0OrmOneToOneMappingProvider;
+import org.eclipse.jpt2_0.core.internal.context.orm.Generic2_0OrmTransientMappingProvider;
+import org.eclipse.jpt2_0.core.internal.context.orm.Generic2_0OrmVersionMappingProvider;
 
 /**
  * All the state in the JPA platform should be "static" (i.e. unchanging once
@@ -28,7 +40,7 @@ import org.eclipse.jpt2_0.core.internal.Persistence2_0ResourceModelProvider;
  */
 public class Generic2_0JpaPlatformProvider extends AbstractJpaPlatformProvider
 {
-	public static final String ID = "generic"; //$NON-NLS-1$
+	public static final String ID = "generic2_0"; //$NON-NLS-1$
 
 	// singleton
 	private static final JpaPlatformProvider INSTANCE = new Generic2_0JpaPlatformProvider();
@@ -85,7 +97,7 @@ public class Generic2_0JpaPlatformProvider extends AbstractJpaPlatformProvider
 	 */
 	@Override
 	protected void addMappingFileProvidersTo(List<MappingFileProvider> providers) {
-		//providers.add(Generic2_0MappingFileProvider.instance());
+		providers.add(Generic2_0MappingFileProvider.instance());
 	}
 
 
@@ -100,6 +112,17 @@ public class Generic2_0JpaPlatformProvider extends AbstractJpaPlatformProvider
 
 	@Override
 	protected void addOrmAttributeMappingProvidersTo(List<OrmAttributeMappingProvider> providers) {
+		providers.add(Generic2_0OrmBasicMappingProvider.instance());
+		providers.add(Generic2_0OrmIdMappingProvider.instance());
 		//providers.add(OrmElementCollectionMappingProvider.instance());
+		providers.add(Generic2_0OrmEmbeddedIdMappingProvider.instance());
+		providers.add(Generic2_0OrmEmbeddedMappingProvider.instance());
+		providers.add(Generic2_0OrmManyToManyMappingProvider.instance());
+		providers.add(Generic2_0OrmManyToOneMappingProvider.instance());
+		providers.add(Generic2_0OrmOneToManyMappingProvider.instance());
+		providers.add(Generic2_0OrmOneToOneMappingProvider.instance());
+		providers.add(Generic2_0OrmVersionMappingProvider.instance());
+		providers.add(Generic2_0OrmTransientMappingProvider.instance());
+		providers.add(Generic2_0OrmNullAttributeMappingProvider.instance());
 	}
 }

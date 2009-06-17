@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -100,7 +100,7 @@ public class BasicMappingComposite extends FormPane<BasicMapping>
 		initializeTypePane(container);
 	}
 	
-	private void initializeGeneralPane(Composite container) {
+	protected void initializeGeneralPane(Composite container) {
 		int groupBoxMargin = getGroupBoxMargin();
 
 		new ColumnComposite(this, buildColumnHolder(), container);
@@ -112,6 +112,7 @@ public class BasicMappingComposite extends FormPane<BasicMapping>
 		new OptionalComposite(this, addSubPane(container, 4));
 
 	}
+	
 	private void initializeTypePane(Composite container) {
 
 		container = addCollapsableSection(
@@ -155,7 +156,7 @@ public class BasicMappingComposite extends FormPane<BasicMapping>
 		registerSubPane(new EnumTypeComposite(buildEnumeratedConverterHolder(specifiedConverterHolder), container, getWidgetFactory()));
 	}
 
-	private PropertyValueModel<Column> buildColumnHolder() {
+	protected PropertyValueModel<Column> buildColumnHolder() {
 		return new TransformationPropertyValueModel<BasicMapping, Column>(getSubjectHolder()) {
 			@Override
 			protected Column transform_(BasicMapping value) {

@@ -7,16 +7,16 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.internal.resource.java;
+package org.eclipse.jpt2_0.core.internal.resource.java;
 
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jpt.core.internal.resource.java.binary.BinaryAccessAnnotation;
-import org.eclipse.jpt.core.internal.resource.java.source.SourceAccessAnnotation;
-import org.eclipse.jpt.core.resource.java.AccessAnnotation;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.utility.jdt.Member;
+import org.eclipse.jpt2_0.core.internal.resource.java.binary.BinaryAccessAnnotation;
+import org.eclipse.jpt2_0.core.internal.resource.java.source.SourceAccessAnnotation;
+import org.eclipse.jpt2_0.core.resource.java.AccessAnnotation;
 
 /**
  * javax.persistence.Access
