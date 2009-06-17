@@ -27,8 +27,11 @@
     </genClasses>
     <genClasses ecoreClass="orm2_0.ecore#//XmlPersistenceUnitDefaults">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm2_0.ecore#//XmlPersistenceUnitDefaults/description"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm2_0.ecore#//XmlPersistenceUnitDefaults/delimitedIdentifiers"/>
     </genClasses>
-    <genClasses ecoreClass="orm2_0.ecore#//XmlEntity"/>
+    <genClasses ecoreClass="orm2_0.ecore#//XmlEntity">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm2_0.ecore#//XmlEntity/cacheable"/>
+    </genClasses>
     <genClasses ecoreClass="orm2_0.ecore#//XmlMappedSuperclass"/>
     <genClasses ecoreClass="orm2_0.ecore#//XmlEmbeddable"/>
     <genClasses ecoreClass="orm2_0.ecore#//Attributes">

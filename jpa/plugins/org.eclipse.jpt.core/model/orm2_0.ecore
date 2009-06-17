@@ -9,8 +9,11 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlPersistenceUnitDefaults" eSuperTypes="orm.ecore#//XmlPersistenceUnitDefaults">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="delimitedIdentifiers" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlEntity" eSuperTypes="orm.ecore#//XmlEntity"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlEntity" eSuperTypes="orm.ecore#//XmlEntity">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="cacheable" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//Boolean"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlMappedSuperclass" eSuperTypes="orm.ecore#//XmlMappedSuperclass"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlEmbeddable" eSuperTypes="orm.ecore#//XmlEmbeddable"/>
   <eClassifiers xsi:type="ecore:EClass" name="Attributes" eSuperTypes="orm.ecore#//Attributes">

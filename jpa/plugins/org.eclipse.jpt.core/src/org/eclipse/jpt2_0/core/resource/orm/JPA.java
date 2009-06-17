@@ -113,13 +113,13 @@ public interface JPA {
 	String PRE_PERSIST = "pre-persist";
 	String PRE_REMOVE = "pre-remove";
 	String PRE_UPDATE = "pre-update";
-	String PRECISION= "precision";
+	String PRECISION = "precision";
 	String PRIMARY_KEY_JOIN_COLUMN = "primary-key-join-column";
 	String QUERY = "query";
 	String REFERENCED_COLUMN_NAME = "referenced-column-name";
 	String RESULT_CLASS = "result-class";
 	String RESULT_SET_MAPPING = "result-set-mapping";
-	String SCALE= "scale";
+	String SCALE = "scale";
 	String SCHEMA = "schema";
 	String SECONDARY_TABLE = "secondary-table";
 	String SEQUENCE_GENERATOR = "sequence-generator";
@@ -140,4 +140,11 @@ public interface JPA {
 	String VERSION = "version";	
 	String XML_MAPPING_METADATA_COMPLETE = "xml-mapping-metadata-complete";
 	
+
+	// JPA 2.0 specific elements
+	
+	String CACHEABLE = "cacheable";
+	String DELIMITIED_IDENTIFIERS = "delimited-identifiers";
+
+
 }

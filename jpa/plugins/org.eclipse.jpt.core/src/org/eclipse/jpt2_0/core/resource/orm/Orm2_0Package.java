@@ -338,13 +338,22 @@ public class Orm2_0Package extends EPackageImpl
 	public static final int XML_PERSISTENCE_UNIT_DEFAULTS__DESCRIPTION = OrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS_FEATURE_COUNT + 0;
 
 	/**
+	 * The feature id for the '<em><b>Delimited Identifiers</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_PERSISTENCE_UNIT_DEFAULTS__DELIMITED_IDENTIFIERS = OrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS_FEATURE_COUNT + 1;
+
+	/**
 	 * The number of structural features of the '<em>Xml Persistence Unit Defaults</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_PERSISTENCE_UNIT_DEFAULTS_FEATURE_COUNT = OrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS_FEATURE_COUNT + 1;
+	public static final int XML_PERSISTENCE_UNIT_DEFAULTS_FEATURE_COUNT = OrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS_FEATURE_COUNT + 2;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt2_0.core.resource.orm.XmlEntity <em>Xml Entity</em>}' class.
@@ -627,13 +636,22 @@ public class Orm2_0Package extends EPackageImpl
 	public static final int XML_ENTITY__ASSOCIATION_OVERRIDES = OrmPackage.XML_ENTITY__ASSOCIATION_OVERRIDES;
 
 	/**
+	 * The feature id for the '<em><b>Cacheable</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ENTITY__CACHEABLE = OrmPackage.XML_ENTITY_FEATURE_COUNT + 0;
+
+	/**
 	 * The number of structural features of the '<em>Xml Entity</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_FEATURE_COUNT = OrmPackage.XML_ENTITY_FEATURE_COUNT + 0;
+	public static final int XML_ENTITY_FEATURE_COUNT = OrmPackage.XML_ENTITY_FEATURE_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt2_0.core.resource.orm.XmlMappedSuperclass <em>Xml Mapped Superclass</em>}' class.
@@ -4152,6 +4170,21 @@ public class Orm2_0Package extends EPackageImpl
 	}
 
 	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt2_0.core.resource.orm.XmlPersistenceUnitDefaults#isDelimitedIdentifiers <em>Delimited Identifiers</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Delimited Identifiers</em>'.
+	 * @see org.eclipse.jpt2_0.core.resource.orm.XmlPersistenceUnitDefaults#isDelimitedIdentifiers()
+	 * @see #getXmlPersistenceUnitDefaults()
+	 * @generated
+	 */
+	public EAttribute getXmlPersistenceUnitDefaults_DelimitedIdentifiers()
+	{
+		return (EAttribute)xmlPersistenceUnitDefaultsEClass.getEStructuralFeatures().get(1);
+	}
+
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt2_0.core.resource.orm.XmlEntity <em>Xml Entity</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -4162,6 +4195,21 @@ public class Orm2_0Package extends EPackageImpl
 	public EClass getXmlEntity()
 	{
 		return xmlEntityEClass;
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt2_0.core.resource.orm.XmlEntity#isCacheable <em>Cacheable</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Cacheable</em>'.
+	 * @see org.eclipse.jpt2_0.core.resource.orm.XmlEntity#isCacheable()
+	 * @see #getXmlEntity()
+	 * @generated
+	 */
+	public EAttribute getXmlEntity_Cacheable()
+	{
+		return (EAttribute)xmlEntityEClass.getEStructuralFeatures().get(0);
 	}
 
 
@@ -5573,8 +5621,10 @@ public class Orm2_0Package extends EPackageImpl
 
 		xmlPersistenceUnitDefaultsEClass = createEClass(XML_PERSISTENCE_UNIT_DEFAULTS);
 		createEAttribute(xmlPersistenceUnitDefaultsEClass, XML_PERSISTENCE_UNIT_DEFAULTS__DESCRIPTION);
+		createEAttribute(xmlPersistenceUnitDefaultsEClass, XML_PERSISTENCE_UNIT_DEFAULTS__DELIMITED_IDENTIFIERS);
 
 		xmlEntityEClass = createEClass(XML_ENTITY);
+		createEAttribute(xmlEntityEClass, XML_ENTITY__CACHEABLE);
 
 		xmlMappedSuperclassEClass = createEClass(XML_MAPPED_SUPERCLASS);
 
@@ -5829,8 +5879,10 @@ public class Orm2_0Package extends EPackageImpl
 
 		initEClass(xmlPersistenceUnitDefaultsEClass, XmlPersistenceUnitDefaults.class, "XmlPersistenceUnitDefaults", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlPersistenceUnitDefaults_Description(), theXMLTypePackage.getString(), "description", null, 0, 1, XmlPersistenceUnitDefaults.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXmlPersistenceUnitDefaults_DelimitedIdentifiers(), theXMLTypePackage.getBoolean(), "delimitedIdentifiers", null, 0, 1, XmlPersistenceUnitDefaults.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlEntityEClass, XmlEntity.class, "XmlEntity", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getXmlEntity_Cacheable(), theXMLTypePackage.getBoolean(), "cacheable", null, 0, 1, XmlEntity.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlMappedSuperclassEClass, XmlMappedSuperclass.class, "XmlMappedSuperclass", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -6047,6 +6099,14 @@ public class Orm2_0Package extends EPackageImpl
 		public static final EAttribute XML_PERSISTENCE_UNIT_DEFAULTS__DESCRIPTION = eINSTANCE.getXmlPersistenceUnitDefaults_Description();
 
 		/**
+		 * The meta object literal for the '<em><b>Delimited Identifiers</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_PERSISTENCE_UNIT_DEFAULTS__DELIMITED_IDENTIFIERS = eINSTANCE.getXmlPersistenceUnitDefaults_DelimitedIdentifiers();
+
+		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt2_0.core.resource.orm.XmlEntity <em>Xml Entity</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -6055,6 +6115,14 @@ public class Orm2_0Package extends EPackageImpl
 		 * @generated
 		 */
 		public static final EClass XML_ENTITY = eINSTANCE.getXmlEntity();
+
+		/**
+		 * The meta object literal for the '<em><b>Cacheable</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_ENTITY__CACHEABLE = eINSTANCE.getXmlEntity_Cacheable();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt2_0.core.resource.orm.XmlMappedSuperclass <em>Xml Mapped Superclass</em>}' class.
