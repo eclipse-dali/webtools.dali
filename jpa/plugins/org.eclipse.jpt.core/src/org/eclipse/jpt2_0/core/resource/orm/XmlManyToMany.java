@@ -61,14 +61,10 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
 public class XmlManyToMany extends org.eclipse.jpt.core.resource.orm.XmlManyToMany implements XmlAttributeMapping
 {
 	/**
-	 * The default value of the '{@link #getAccess() <em>Access</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getAccess()
-	 * @generated
-	 * @ordered
+	 * changed this to null and removed the generated flag so emf won't generate over it
+	 * we don't want a default for enums, just null if the tag does not exist
 	 */
-	protected static final AccessType ACCESS_EDEFAULT = AccessType.PROPERTY;
+	protected static final AccessType ACCESS_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getAccess() <em>Access</em>}' attribute.
@@ -101,14 +97,10 @@ public class XmlManyToMany extends org.eclipse.jpt.core.resource.orm.XmlManyToMa
 	protected XmlMapKeyClass mapKeyClass;
 
 	/**
-	 * The default value of the '{@link #getMapKeyTemporal() <em>Map Key Temporal</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getMapKeyTemporal()
-	 * @generated
-	 * @ordered
+	 * changed this to null and removed the generated flag so emf won't generate over it
+	 * we don't want a default for enums, just null if the tag does not exist
 	 */
-	protected static final TemporalType MAP_KEY_TEMPORAL_EDEFAULT = TemporalType.DATE;
+	protected static final TemporalType MAP_KEY_TEMPORAL_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getMapKeyTemporal() <em>Map Key Temporal</em>}' attribute.
@@ -121,14 +113,10 @@ public class XmlManyToMany extends org.eclipse.jpt.core.resource.orm.XmlManyToMa
 	protected TemporalType mapKeyTemporal = MAP_KEY_TEMPORAL_EDEFAULT;
 
 	/**
-	 * The default value of the '{@link #getMapKeyEnumerated() <em>Map Key Enumerated</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getMapKeyEnumerated()
-	 * @generated
-	 * @ordered
+	 * changed this to null and removed the generated flag so emf won't generate over it
+	 * we don't want a default for enums, just null if the tag does not exist
 	 */
-	protected static final EnumType MAP_KEY_ENUMERATED_EDEFAULT = EnumType.ORDINAL;
+	protected static final EnumType MAP_KEY_ENUMERATED_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getMapKeyEnumerated() <em>Map Key Enumerated</em>}' attribute.
