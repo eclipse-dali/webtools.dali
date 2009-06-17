@@ -8,6 +8,7 @@
  ********************************************************************************/
 package org.eclipse.jpt.ui.internal.views;
 
+import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.selection.JpaSelection;
 import org.eclipse.jpt.ui.internal.selection.JpaSelectionManager;
@@ -81,6 +82,7 @@ public abstract class AbstractJpaView extends ViewPart
 	@Override
 	public final void createPartControl(Composite parent) {
 		this.scrolledForm = getFormWidgetFactory().createScrolledForm(parent);
+		JptUiPlugin.instance().controlAffectsJavaSource(this.scrolledForm);
 		this.scrolledForm.getBody().setLayout(new GridLayout());
 
 		this.pageBook = new PageBook(this.scrolledForm.getBody(), SWT.NONE);
@@ -157,7 +159,8 @@ public abstract class AbstractJpaView extends ViewPart
 		this.scrolledForm.reflow(true);
 	}
 
-	protected void subcreatePartControl(Composite parent) {
+	protected void subcreatePartControl(@SuppressWarnings("unused") Composite parent) {
 		// no op - for subclasses to override if wished
 	}
+
 }

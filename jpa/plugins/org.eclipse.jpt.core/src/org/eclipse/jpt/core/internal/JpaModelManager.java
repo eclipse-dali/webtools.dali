@@ -89,6 +89,7 @@ public class JpaModelManager {
 	 * which will forward them to the JPA projects.
 	 */
 	private final IElementChangedListener javaElementChangeListener;
+	private boolean javaElementChangeListenerIsActive;
 	
 	
 	// ********** singleton **********
@@ -113,6 +114,7 @@ public class JpaModelManager {
 		this.resourceChangeListener = new ResourceChangeListener();
 		this.facetedProjectListener = new FacetedProjectListener();
 		this.javaElementChangeListener = new JavaElementChangeListener();
+		this.javaElementChangeListenerIsActive = true;
 	}
 
 
@@ -183,6 +185,20 @@ public class JpaModelManager {
 	 */
 	public void rebuildJpaProject(IProject project) {
 		this.jpaModel.rebuildJpaProject(project);
+	}
+
+	/**
+	 * Return whether the model manager's Java change listener is active.
+	 */
+	public boolean javaElementChangeListenerIsActive() {
+		return this.javaElementChangeListenerIsActive;
+	}
+
+	/**
+	 * Set whether the model manager's Java change listener is active.
+	 */
+	public void setJavaElementChangeListenerIsActive(boolean javaElementChangeListenerIsActive) {
+		this.javaElementChangeListenerIsActive = javaElementChangeListenerIsActive;
 	}
 
 	/**
@@ -454,6 +470,9 @@ public class JpaModelManager {
 	 * Forward the event to the JPA model.
 	 */
 	/* private */ void javaElementChanged(ElementChangedEvent event) {
+		if ( ! this.javaElementChangeListenerIsActive) {
+			return;  // ignore Java events
+		}
 		if (this.eventIndicatesProjectAddedButNotOpen(event)) {
 			return;
 		}
