@@ -13,6 +13,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.SynchronousJpaProjectUpdater;
+import org.eclipse.wst.common.componentcore.datamodel.properties.IFacetDataModelProperties;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 
 /**
@@ -22,6 +23,7 @@ import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
  * The JPA project's settings (platform, database connection, etc.) can be
  * controlled by building a data model and passing it into the constructor.
  */
+@SuppressWarnings("nls")
 public class TestJpaProject extends TestJavaProject {
 	private final JpaProject jpaProject;
 
@@ -53,8 +55,12 @@ public class TestJpaProject extends TestJavaProject {
 
 	public TestJpaProject(String projectName, boolean autoBuild, IDataModel jpaConfig) throws CoreException {
 		super(projectName, autoBuild);
+		String jpaFacetVersion = "1.0";
+		if (jpaConfig != null) {
+			jpaFacetVersion = jpaConfig.getStringProperty(IFacetDataModelProperties.FACET_VERSION_STR);
+		}
 		this.installFacet("jst.utility", "1.0");
-		this.installFacet("jpt.jpa", "1.0", jpaConfig);
+		this.installFacet("jpt.jpa", jpaFacetVersion, jpaConfig);
 		this.addJar(jpaJarName());
 		if (eclipseLinkJarName() != null) {
 			this.addJar(eclipseLinkJarName());
