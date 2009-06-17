@@ -2,7 +2,7 @@
  * <copyright>
  * </copyright>
  *
- * $Id: XmlTransient.java,v 1.4 2009/06/16 23:05:30 kmoore Exp $
+ * $Id: XmlTransient.java,v 1.5 2009/06/17 16:45:57 kmoore Exp $
  */
 package org.eclipse.jpt.eclipselink.core.resource.orm;
 
@@ -327,7 +327,11 @@ public class XmlTransient extends org.eclipse.jpt.core.resource.orm.XmlTransient
 	// ********** translators **********
 
 	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
-		return new SimpleTranslator(elementName, structuralFeature, buildTranslatorChildren());
+		return new SimpleTranslator(
+			elementName, 
+			structuralFeature, 
+			EclipseLinkOrmPackage.eINSTANCE.getXmlTransient(), 
+			buildTranslatorChildren());
 	}
 
 	private static Translator[] buildTranslatorChildren() {

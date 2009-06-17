@@ -252,7 +252,11 @@ public class XmlTransient extends org.eclipse.jpt.eclipselink.core.resource.orm.
 	// ********** translators **********
 
 	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
-		return new SimpleTranslator(elementName, structuralFeature, buildTranslatorChildren());
+		return new SimpleTranslator(
+			elementName, 
+			structuralFeature, 
+			EclipseLink1_1OrmPackage.eINSTANCE.getXmlTransient(), 
+			buildTranslatorChildren());
 	}
 
 	private static Translator[] buildTranslatorChildren() {
