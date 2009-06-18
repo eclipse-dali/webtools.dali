@@ -23,6 +23,7 @@ import org.eclipse.jpt2_0.core.internal.Orm2_0ResourceModelProvider;
 import org.eclipse.jpt2_0.core.internal.Persistence2_0ResourceModelProvider;
 import org.eclipse.jpt2_0.core.internal.context.Generic2_0MappingFileProvider;
 import org.eclipse.jpt2_0.core.internal.context.orm.Generic2_0OrmBasicMappingProvider;
+import org.eclipse.jpt2_0.core.internal.context.orm.Generic2_0OrmEmbeddableMappingProvider;
 import org.eclipse.jpt2_0.core.internal.context.orm.Generic2_0OrmEmbeddedIdMappingProvider;
 import org.eclipse.jpt2_0.core.internal.context.orm.Generic2_0OrmEmbeddedMappingProvider;
 import org.eclipse.jpt2_0.core.internal.context.orm.Generic2_0OrmIdMappingProvider;
@@ -105,6 +106,7 @@ public class Generic2_0JpaPlatformProvider extends AbstractJpaPlatformProvider
 
 	@Override
 	protected void addOrmTypeMappingProvidersTo(List<OrmTypeMappingProvider> providers) {
+		providers.add(Generic2_0OrmEmbeddableMappingProvider.instance());
 	}
 
 

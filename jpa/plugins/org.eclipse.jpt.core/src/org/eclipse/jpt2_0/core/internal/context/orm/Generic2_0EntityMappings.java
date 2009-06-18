@@ -26,12 +26,12 @@ public class Generic2_0EntityMappings
 	
 	@Override
 	protected PersistenceUnitMetadata buildPersistenceUnitMetadata() {
-		return 	getJpaFactory().buildGeneric2_0PersistenceUnitMetadata(this, (XmlEntityMappings) this.xmlEntityMappings);
+		return 	getJpaFactory().build2_0PersistenceUnitMetadata(this, (XmlEntityMappings) this.xmlEntityMappings);
 	}
 	
 	@Override
 	protected OrmPersistentType buildPersistentType(XmlTypeMapping resourceMapping) {
-		return getJpaFactory().buildGeneric2_0OrmPersistentType(this, resourceMapping);
+		return getJpaFactory().build2_0OrmPersistentType(this, resourceMapping);
 	}
 	
 	// **************** JpaNode impl *******************************************

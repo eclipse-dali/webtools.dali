@@ -14,6 +14,7 @@ import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.PersistentType.Owner;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaBasicMapping;
+import org.eclipse.jpt.core.context.java.JavaEmbeddable;
 import org.eclipse.jpt.core.context.java.JavaEmbeddedIdMapping;
 import org.eclipse.jpt.core.context.java.JavaEmbeddedMapping;
 import org.eclipse.jpt.core.context.java.JavaIdMapping;
@@ -28,6 +29,7 @@ import org.eclipse.jpt.core.context.java.JavaVersionMapping;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmBasicMapping;
+import org.eclipse.jpt.core.context.orm.OrmEmbeddable;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddedIdMapping;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddedMapping;
 import org.eclipse.jpt.core.context.orm.OrmIdMapping;
@@ -42,37 +44,17 @@ import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmVersionMapping;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitMetadata;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmBasicMapping;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmEmbeddedIdMapping;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmEmbeddedMapping;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmIdMapping;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmManyToManyMapping;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmManyToOneMapping;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmNullAttributeMapping;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmOneToManyMapping;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmOneToOneMapping;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmTransientMapping;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmVersionMapping;
 import org.eclipse.jpt.core.internal.platform.GenericJpaFactory;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
-import org.eclipse.jpt.core.resource.orm.XmlBasic;
-import org.eclipse.jpt.core.resource.orm.XmlEmbedded;
-import org.eclipse.jpt.core.resource.orm.XmlEmbeddedId;
-import org.eclipse.jpt.core.resource.orm.XmlId;
-import org.eclipse.jpt.core.resource.orm.XmlManyToMany;
-import org.eclipse.jpt.core.resource.orm.XmlManyToOne;
 import org.eclipse.jpt.core.resource.orm.XmlNullAttributeMapping;
-import org.eclipse.jpt.core.resource.orm.XmlOneToMany;
-import org.eclipse.jpt.core.resource.orm.XmlOneToOne;
-import org.eclipse.jpt.core.resource.orm.XmlTransient;
 import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
-import org.eclipse.jpt.core.resource.orm.XmlVersion;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
+import org.eclipse.jpt2_0.core.internal.context.java.Generic2_0JavaEmbeddable;
 import org.eclipse.jpt2_0.core.internal.context.java.Generic2_0JavaPersistentAttribute;
 import org.eclipse.jpt2_0.core.internal.context.java.Generic2_0JavaPersistentType;
 import org.eclipse.jpt2_0.core.internal.context.orm.Generic2_0EntityMappings;
+import org.eclipse.jpt2_0.core.internal.context.orm.Generic2_0OrmEmbeddable;
 import org.eclipse.jpt2_0.core.internal.context.orm.Generic2_0OrmPersistentAttribute;
 import org.eclipse.jpt2_0.core.internal.context.orm.Generic2_0OrmPersistentType;
 import org.eclipse.jpt2_0.core.internal.context.orm.Generic2_0OrmXml;
@@ -88,7 +70,19 @@ import org.eclipse.jpt2_0.core.internal.context.orm.Generic2_0VirtualXmlOneToMan
 import org.eclipse.jpt2_0.core.internal.context.orm.Generic2_0VirtualXmlOneToOne;
 import org.eclipse.jpt2_0.core.internal.context.orm.Generic2_0VirtualXmlTransient;
 import org.eclipse.jpt2_0.core.internal.context.orm.Generic2_0VirtualXmlVersion;
+import org.eclipse.jpt2_0.core.resource.orm.XmlAttributeMapping;
+import org.eclipse.jpt2_0.core.resource.orm.XmlBasic;
+import org.eclipse.jpt2_0.core.resource.orm.XmlEmbeddable;
+import org.eclipse.jpt2_0.core.resource.orm.XmlEmbedded;
+import org.eclipse.jpt2_0.core.resource.orm.XmlEmbeddedId;
 import org.eclipse.jpt2_0.core.resource.orm.XmlEntityMappings;
+import org.eclipse.jpt2_0.core.resource.orm.XmlId;
+import org.eclipse.jpt2_0.core.resource.orm.XmlManyToMany;
+import org.eclipse.jpt2_0.core.resource.orm.XmlManyToOne;
+import org.eclipse.jpt2_0.core.resource.orm.XmlOneToMany;
+import org.eclipse.jpt2_0.core.resource.orm.XmlOneToOne;
+import org.eclipse.jpt2_0.core.resource.orm.XmlTransient;
+import org.eclipse.jpt2_0.core.resource.orm.XmlVersion;
 
 /**
  * Central class that allows extenders to easily replace implementations of
@@ -100,76 +94,85 @@ public class Generic2_0JpaFactory extends GenericJpaFactory
 		super();
 	}
 	
-	// ********** Context Nodes **********
-	
-	public MappingFile buildGeneric2_0MappingFile(MappingFileRef parent, JpaXmlResource resource) {
-		return buildGeneric2_0OrmXml(parent, resource);
+	@Override
+	public JavaEmbeddable buildJavaEmbeddable(JavaPersistentType parent) {
+		return new Generic2_0JavaEmbeddable(parent);
 	}
 	
-	protected Generic2_0OrmXml buildGeneric2_0OrmXml(MappingFileRef parent, JpaXmlResource resource) {
+	// ********** Context Nodes **********
+	
+	public MappingFile build2_0MappingFile(MappingFileRef parent, JpaXmlResource resource) {
+		return build2_0OrmXml(parent, resource);
+	}
+	
+	protected Generic2_0OrmXml build2_0OrmXml(MappingFileRef parent, JpaXmlResource resource) {
 		return new Generic2_0OrmXml(parent, resource);
 	}
 
 	// ********** Generic 2.0-specific ORM Context Model **********
 	
-	public EntityMappings buildGeneric2_0EntityMappings(Generic2_0OrmXml parent, XmlEntityMappings xmlEntityMappings) {
+	public EntityMappings build2_0EntityMappings(Generic2_0OrmXml parent, XmlEntityMappings xmlEntityMappings) {
 		return new Generic2_0EntityMappings(parent, xmlEntityMappings);
 	}
 	
-	public PersistenceUnitMetadata buildGeneric2_0PersistenceUnitMetadata(Generic2_0EntityMappings parent, XmlEntityMappings xmlEntityMappings) {
+	public PersistenceUnitMetadata build2_0PersistenceUnitMetadata(Generic2_0EntityMappings parent, XmlEntityMappings xmlEntityMappings) {
 		return new Generic2_0PersistenceUnitMetadata(parent, xmlEntityMappings);
 	}
 	
-	public OrmPersistentType buildGeneric2_0OrmPersistentType(EntityMappings parent, XmlTypeMapping resourceMapping) {
+	public OrmPersistentType build2_0OrmPersistentType(EntityMappings parent, XmlTypeMapping resourceMapping) {
 		return new Generic2_0OrmPersistentType(parent, resourceMapping);
 	}
 
-	public OrmPersistentAttribute buildGeneric2_0OrmPersistentAttribute(OrmPersistentType parent, OrmPersistentAttribute.Owner owner, XmlAttributeMapping resourceMapping) {
+	public OrmEmbeddable build2_0OrmEmbeddable(OrmPersistentType parent, XmlEmbeddable resourceMapping) {
+		return new Generic2_0OrmEmbeddable(parent, resourceMapping);
+	}
+	
+	public OrmPersistentAttribute build2_0OrmPersistentAttribute(OrmPersistentType parent, OrmPersistentAttribute.Owner owner, XmlAttributeMapping resourceMapping) {
 		return new Generic2_0OrmPersistentAttribute(parent, owner, resourceMapping);
 	}
 	
 	public OrmBasicMapping build2_0OrmBasicMapping(OrmPersistentAttribute parent, XmlBasic resourceMapping) {
-		return new GenericOrmBasicMapping(parent, resourceMapping);
+		return buildOrmBasicMapping(parent, resourceMapping);
 	}
 	
 	public OrmEmbeddedMapping build2_0OrmEmbeddedMapping(OrmPersistentAttribute parent, XmlEmbedded resourceMapping) {
-		return new GenericOrmEmbeddedMapping(parent, resourceMapping);
+		return buildOrmEmbeddedMapping(parent, resourceMapping);
 	}
 	
 	public OrmEmbeddedIdMapping build2_0OrmEmbeddedIdMapping(OrmPersistentAttribute parent, XmlEmbeddedId resourceMapping) {
-		return new GenericOrmEmbeddedIdMapping(parent, resourceMapping);
+		return buildOrmEmbeddedIdMapping(parent, resourceMapping);
 	}
 	
 	public OrmIdMapping build2_0OrmIdMapping(OrmPersistentAttribute parent, XmlId resourceMapping) {
-		return new GenericOrmIdMapping(parent, resourceMapping);
+		return buildOrmIdMapping(parent, resourceMapping);
 	}
 	
 	public OrmManyToManyMapping build2_0OrmManyToManyMapping(OrmPersistentAttribute parent, XmlManyToMany resourceMapping) {
-		return new GenericOrmManyToManyMapping(parent, resourceMapping);
+		return buildOrmManyToManyMapping(parent, resourceMapping);
 	}
 	
 	public OrmManyToOneMapping build2_0OrmManyToOneMapping(OrmPersistentAttribute parent, XmlManyToOne resourceMapping) {
-		return new GenericOrmManyToOneMapping(parent, resourceMapping);
+		return buildOrmManyToOneMapping(parent, resourceMapping);
 	}
 	
 	public OrmOneToManyMapping build2_0OrmOneToManyMapping(OrmPersistentAttribute parent, XmlOneToMany resourceMapping) {
-		return new GenericOrmOneToManyMapping(parent, resourceMapping);
+		return buildOrmOneToManyMapping(parent, resourceMapping);
 	}
 	
 	public OrmOneToOneMapping build2_0OrmOneToOneMapping(OrmPersistentAttribute parent, XmlOneToOne resourceMapping) {
-		return new GenericOrmOneToOneMapping(parent, resourceMapping);
+		return buildOrmOneToOneMapping(parent, resourceMapping);
 	}
 	
 	public OrmTransientMapping build2_0OrmTransientMapping(OrmPersistentAttribute parent, XmlTransient resourceMapping) {
-		return new GenericOrmTransientMapping(parent, resourceMapping);
+		return buildOrmTransientMapping(parent, resourceMapping);
 	}
 	
 	public OrmVersionMapping build2_0OrmVersionMapping(OrmPersistentAttribute parent, XmlVersion resourceMapping) {
-		return new GenericOrmVersionMapping(parent, resourceMapping);
+		return buildOrmVersionMapping(parent, resourceMapping);
 	}
 	
 	public OrmAttributeMapping build2_0OrmNullAttributeMapping(OrmPersistentAttribute parent, XmlNullAttributeMapping resourceMapping) {
-		return new GenericOrmNullAttributeMapping(parent, resourceMapping);
+		return buildOrmNullAttributeMapping(parent, resourceMapping);
 	}
 	
 	public XmlBasic build2_0VirtualXmlBasic(OrmTypeMapping ormTypeMapping, JavaBasicMapping javaBasicMapping) {

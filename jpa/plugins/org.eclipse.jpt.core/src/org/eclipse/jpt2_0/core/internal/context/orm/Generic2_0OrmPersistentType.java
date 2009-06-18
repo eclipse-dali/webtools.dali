@@ -20,6 +20,7 @@ import org.eclipse.jpt.core.resource.orm.Attributes;
 import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt2_0.core.internal.platform.Generic2_0JpaFactory;
 import org.eclipse.jpt2_0.core.resource.orm.Orm2_0Factory;
+import org.eclipse.jpt2_0.core.resource.orm.XmlAttributeMapping;
 
 public class Generic2_0OrmPersistentType extends AbstractOrmPersistentType
 {
@@ -40,7 +41,7 @@ public class Generic2_0OrmPersistentType extends AbstractOrmPersistentType
 	
 	@Override
 	protected OrmPersistentAttribute buildOrmPersistentAttribute(OrmPersistentAttribute.Owner owner, org.eclipse.jpt.core.resource.orm.XmlAttributeMapping resourceMapping) {
-		return getJpaFactory().buildGeneric2_0OrmPersistentAttribute(this, owner, resourceMapping);
+		return getJpaFactory().build2_0OrmPersistentAttribute(this, owner, (XmlAttributeMapping) resourceMapping);
 	}
 	
 	@Override
