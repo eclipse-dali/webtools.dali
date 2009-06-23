@@ -23,7 +23,7 @@ import org.eclipse.jpt.core.utility.jdt.Member;
 /**
  * javax.persistence.SequenceGenerator
  */
-public final class SourceSequenceGeneratorAnnotation
+public class SourceSequenceGeneratorAnnotation
 	extends SourceGeneratorAnnotation
 	implements SequenceGeneratorAnnotation
 {
@@ -112,11 +112,11 @@ public final class SourceSequenceGeneratorAnnotation
 
 	// ********** static methods **********
 
-	private static DeclarationAnnotationElementAdapter<String> buildAdapter(String elementName) {
+	protected static DeclarationAnnotationElementAdapter<String> buildAdapter(String elementName) {
 		return buildAdapter(DECLARATION_ANNOTATION_ADAPTER, elementName);
 	}
 
-	private static DeclarationAnnotationElementAdapter<Integer> buildIntegerAdapter(String elementName) {
+	protected static DeclarationAnnotationElementAdapter<Integer> buildIntegerAdapter(String elementName) {
 		return buildIntegerAdapter(DECLARATION_ANNOTATION_ADAPTER, elementName);
 	}
 

@@ -19,7 +19,7 @@ import org.eclipse.jpt.core.utility.TextRange;
 /**
  * javax.persistence.SequenceGenerator
  */
-public final class BinarySequenceGeneratorAnnotation
+public class BinarySequenceGeneratorAnnotation
 	extends BinaryGeneratorAnnotation
 	implements SequenceGeneratorAnnotation
 {
