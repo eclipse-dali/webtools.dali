@@ -10,16 +10,18 @@
 package org.eclipse.jpt2_0.core.internal.platform;
 
 import java.util.List;
+
 import org.eclipse.jpt.core.JpaAnnotationDefinitionProvider;
-import org.eclipse.jpt.core.internal.platform.AbstractJpaAnnotationDefintionProvider;
+import org.eclipse.jpt.core.internal.platform.GenericJpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt2_0.core.internal.resource.java.AccessAnnotationDefinition;
+import org.eclipse.jpt2_0.core.internal.resource.java.SequenceGenerator2_0AnnotationDefinition;
 
 /**
  * Provides annotations only for JPA 2.0
  */
 public class Generic2_0JpaAnnotationDefinitionProvider
-	extends AbstractJpaAnnotationDefintionProvider
+	extends GenericJpaAnnotationDefinitionProvider
 {
 	// singleton
 	private static final JpaAnnotationDefinitionProvider INSTANCE = new Generic2_0JpaAnnotationDefinitionProvider();
@@ -40,21 +42,31 @@ public class Generic2_0JpaAnnotationDefinitionProvider
 
 	@Override
 	protected void addTypeMappingAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
-		//none
+		super.addTypeMappingAnnotationDefinitionsTo(definitions);
 	}
 	
 	@Override
 	protected void addTypeSupportingAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
+		super.addTypeSupportingAnnotationDefinitionsTo(definitions);
+
 		definitions.add(AccessAnnotationDefinition.instance());
 	}
 
 	@Override
 	protected void addAttributeMappingAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
-		//none
+		super.addAttributeMappingAnnotationDefinitionsTo(definitions);
 	}
 	
 	@Override
 	protected void addAttributeSupportingAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
+		super.addAttributeSupportingAnnotationDefinitionsTo(definitions);
+		
 		definitions.add(AccessAnnotationDefinition.instance());
 	}
+
+	@Override
+	protected  AnnotationDefinition sequenceGeneratorAnnotationDefinition() {
+		return SequenceGenerator2_0AnnotationDefinition.instance();
+	}
+
 }
