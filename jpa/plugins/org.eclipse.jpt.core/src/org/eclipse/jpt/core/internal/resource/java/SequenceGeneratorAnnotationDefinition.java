@@ -37,7 +37,7 @@ public class SequenceGeneratorAnnotationDefinition
 	/**
 	 * Ensure single instance.
 	 */
-	private SequenceGeneratorAnnotationDefinition() {
+	protected SequenceGeneratorAnnotationDefinition() {
 		super();
 	}
 

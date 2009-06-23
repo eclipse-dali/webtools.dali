@@ -52,11 +52,11 @@ abstract class SourceGeneratorAnnotation
 		this.allocationSizeAdapter = this.buildIntegerAdapter(this.allocationSizeDeclarationAdapter);
 	}
 
-	AnnotationElementAdapter<String> buildAdapter(DeclarationAnnotationElementAdapter<String> daea) {
+	protected AnnotationElementAdapter<String> buildAdapter(DeclarationAnnotationElementAdapter<String> daea) {
 		return new ShortCircuitAnnotationElementAdapter<String>(this.member, daea);
 	}
 
-	AnnotationElementAdapter<Integer> buildIntegerAdapter(DeclarationAnnotationElementAdapter<Integer> daea) {
+	protected AnnotationElementAdapter<Integer> buildIntegerAdapter(DeclarationAnnotationElementAdapter<Integer> daea) {
 		return new ShortCircuitAnnotationElementAdapter<Integer>(this.member, daea);
 	}
 
