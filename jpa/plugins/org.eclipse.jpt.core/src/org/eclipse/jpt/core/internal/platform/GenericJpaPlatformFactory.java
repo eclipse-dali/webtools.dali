@@ -55,6 +55,7 @@ public class GenericJpaPlatformFactory
 		};
 		return platformProviders;
 	}
+
 	protected JpaAnnotationDefinitionProvider annotationDefinitionProvider() {
 		return GenericJpaAnnotationDefinitionProvider.instance();
 	}
