@@ -115,27 +115,35 @@ public class JptCorePlugin extends Plugin {
 	 */
 	public static final IContentType JAVA_SOURCE_CONTENT_TYPE = getContentType(JavaCore.JAVA_SOURCE_CONTENT_TYPE);
 
-	public static final IContentType MAPPING_FILE_CONTENT_TYPE = getJpaContentType("mappingFile"); //$NON-NLS-1$
-
 	/**
-	 * The content type for orm.xml mappings files. Use this to add new 
-	 * orm.xml-like extensions to this content type.
+	 * The base content type for all persistence.xml files.
+	 */
+	public static final IContentType PERSISTENCE_FILE_CONTENT_TYPE = getJpaContentType("persistenceFile"); //$NON-NLS-1$
+	
+	/**
+	 * The content type for persistence.xml 1.0 (based on the persistence 1.0 schema) files.
+	 */
+	public static final IContentType PERSISTENCE_XML_CONTENT_TYPE = getJpaContentType("persistence"); //$NON-NLS-1$
+	
+	/**
+	 * The content type for persistence.xml 2.0 (based on the persistence 2.0 schema) files.
+	 */
+	public static final IContentType PERSISTENCE2_0_XML_CONTENT_TYPE = getJpaContentType("persistence2_0"); //$NON-NLS-1$
+	
+	/**
+	 * The base content type for all mapping files.
+	 */
+	public static final IContentType MAPPING_FILE_CONTENT_TYPE = getJpaContentType("mappingFile"); //$NON-NLS-1$
+	
+	/**
+	 * The content type for orm.xml 1.0 (based on the orm 1.0 schema) mapping files.
 	 */
 	public static final IContentType ORM_XML_CONTENT_TYPE = getJpaContentType("orm"); //$NON-NLS-1$
 
 	/**
-	 * The content type for 2.0 orm.xml mappings files. Use this to add new 
-	 * orm.xml-like extensions to this content type.
+	 * The content type for orm.xml 2.0 (based on the orm 2.0 schema) mapping files.
 	 */
 	public static final IContentType ORM2_0_XML_CONTENT_TYPE = getJpaContentType("orm2_0"); //$NON-NLS-1$
-
-	/**
-	 * Ditto for persistence.xml.
-	 * @see #ORM_XML_CONTENT_TYPE
-	 */
-	public static final IContentType PERSISTENCE_XML_CONTENT_TYPE = getJpaContentType("persistence"); //$NON-NLS-1$
-
-	public static final IContentType PERSISTENCE2_0_XML_CONTENT_TYPE = getJpaContentType("persistence2_0"); //$NON-NLS-1$
 
 	/**
 	 * The content type for Java archives (JARs).

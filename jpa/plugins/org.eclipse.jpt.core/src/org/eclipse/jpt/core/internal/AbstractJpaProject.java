@@ -15,7 +15,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.Vector;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -641,9 +640,8 @@ public abstract class AbstractJpaProject
 
 	public JpaXmlResource getPersistenceXmlResource() {
 		return (JpaXmlResource) this.getResourceModel(
-				JptCorePlugin.DEFAULT_PERSISTENCE_XML_FILE_PATH,
-				JptCorePlugin.PERSISTENCE_XML_CONTENT_TYPE
-			);
+			JptCorePlugin.DEFAULT_PERSISTENCE_XML_FILE_PATH,
+			JptCorePlugin.PERSISTENCE_FILE_CONTENT_TYPE);
 	}
 
 	public JpaXmlResource getDefaultOrmXmlResource() {
@@ -651,7 +649,9 @@ public abstract class AbstractJpaProject
 	}
 
 	public JpaXmlResource getMappingFileXmlResource(String fileName) {
-		return (JpaXmlResource) this.getResourceModel(fileName, JptCorePlugin.MAPPING_FILE_CONTENT_TYPE);
+		return (JpaXmlResource) this.getResourceModel(
+			fileName, 
+			JptCorePlugin.MAPPING_FILE_CONTENT_TYPE);
 	}
 
 	/**

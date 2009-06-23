@@ -54,7 +54,8 @@ public class GenericRootContextNode
 			this.persistenceXml = buildPersistenceXml(resource);
 		}
 	}
-
+	
+	
 	@Override
 	protected boolean requiresParent() {
 		return false;
