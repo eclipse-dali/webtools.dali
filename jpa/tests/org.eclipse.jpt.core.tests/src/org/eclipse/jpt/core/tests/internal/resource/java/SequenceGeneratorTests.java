@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.tests.internal.resource.java;
 
 import java.util.Iterator;
+
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
@@ -63,7 +64,8 @@ public class SequenceGeneratorTests extends JavaResourceModelTestCase {
 		return createTestSequenceGeneratorWithStringElement("sequenceName", GENERATOR_SEQUENCE_NAME);
 	}
 		
-	private ICompilationUnit createTestSequenceGeneratorWithStringElement(final String elementName, final String value) throws Exception {		return this.createTestType(new DefaultAnnotationWriter() {
+	protected ICompilationUnit createTestSequenceGeneratorWithStringElement(final String elementName, final String value) throws Exception {
+		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
 				return new ArrayIterator<String>(JPA.SEQUENCE_GENERATOR);
@@ -228,4 +230,5 @@ public class SequenceGeneratorTests extends JavaResourceModelTestCase {
 		sequenceGenerator.setInitialValue(Integer.valueOf(0));
 		assertSourceContains("@SequenceGenerator(initialValue = 0)", cu);
 	}
+
 }

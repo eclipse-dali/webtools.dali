@@ -27,7 +27,7 @@ public class JavaSequenceGeneratorTests extends ContextModelTestCase
 	private static final String SEQUENCE_GENERATOR_NAME = "MY_SEQUENCE_GENERATOR";
 	
 
-	private ICompilationUnit createTestEntityWithSequenceGenerator() throws Exception {
+	protected ICompilationUnit createTestEntityWithSequenceGenerator() throws Exception {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {

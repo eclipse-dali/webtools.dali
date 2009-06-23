@@ -18,12 +18,14 @@ import org.eclipse.jpt.core.context.java.JavaEmbeddable;
 import org.eclipse.jpt.core.context.java.JavaEmbeddedIdMapping;
 import org.eclipse.jpt.core.context.java.JavaEmbeddedMapping;
 import org.eclipse.jpt.core.context.java.JavaIdMapping;
+import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.context.java.JavaManyToManyMapping;
 import org.eclipse.jpt.core.context.java.JavaManyToOneMapping;
 import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
 import org.eclipse.jpt.core.context.java.JavaOneToOneMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.core.context.java.JavaSequenceGenerator;
 import org.eclipse.jpt.core.context.java.JavaTransientMapping;
 import org.eclipse.jpt.core.context.java.JavaVersionMapping;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
@@ -53,6 +55,7 @@ import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt2_0.core.internal.context.java.Generic2_0JavaEmbeddable;
 import org.eclipse.jpt2_0.core.internal.context.java.Generic2_0JavaPersistentAttribute;
 import org.eclipse.jpt2_0.core.internal.context.java.Generic2_0JavaPersistentType;
+import org.eclipse.jpt2_0.core.internal.context.java.Generic2_0JavaSequenceGenerator;
 import org.eclipse.jpt2_0.core.internal.context.orm.Generic2_0EntityMappings;
 import org.eclipse.jpt2_0.core.internal.context.orm.Generic2_0OrmEmbeddable;
 import org.eclipse.jpt2_0.core.internal.context.orm.Generic2_0OrmPersistentAttribute;
@@ -230,4 +233,10 @@ public class Generic2_0JpaFactory extends GenericJpaFactory
 	public JavaPersistentType buildJavaPersistentType(Owner owner, JavaResourcePersistentType jrpt) {
 		return new Generic2_0JavaPersistentType(owner, jrpt);
 	}
+
+	@Override
+	public JavaSequenceGenerator buildJavaSequenceGenerator(JavaJpaContextNode parent) {
+		return new Generic2_0JavaSequenceGenerator(parent);
+	}
+
 }
