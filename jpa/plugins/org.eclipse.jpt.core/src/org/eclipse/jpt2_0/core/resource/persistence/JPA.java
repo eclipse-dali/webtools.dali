@@ -45,7 +45,7 @@ public interface JPA {
 	String PERSISTENCE_UNIT = "persistence-unit";
 		String PERSISTENCE_UNIT__NAME = "name";
 		String PERSISTENCE_UNIT__TRANSACTION_TYPE = "transaction-type";
-		String PERSISTENCE_UNIT__CACHING = "caching";
+		String PERSISTENCE_UNIT__SHARED_CACHE_MODE = "shared-cache-mode";
 		String PERSISTENCE_UNIT__VALIDATION_MODE = "validation-mode";
 
 	String PROPERTIES = "properties";

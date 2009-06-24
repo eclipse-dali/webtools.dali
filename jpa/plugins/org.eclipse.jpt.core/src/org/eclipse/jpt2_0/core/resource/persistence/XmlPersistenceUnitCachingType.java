@@ -64,7 +64,15 @@ public enum XmlPersistenceUnitCachingType implements Enumerator
 	 * @generated
 	 * @ordered
 	 */
-	DISABLE_SELECTIVE(3, "DISABLE_SELECTIVE", "DISABLE_SELECTIVE");
+	DISABLE_SELECTIVE(3, "DISABLE_SELECTIVE", "DISABLE_SELECTIVE"), /**
+	 * The '<em><b>UNSPECIFIED</b></em>' literal object.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #UNSPECIFIED_VALUE
+	 * @generated
+	 * @ordered
+	 */
+	UNSPECIFIED(4, "UNSPECIFIED", "UNSPECIFIED");
 
 	/**
 	 * The '<em><b>ALL</b></em>' literal value.
@@ -127,6 +135,21 @@ public enum XmlPersistenceUnitCachingType implements Enumerator
 	public static final int DISABLE_SELECTIVE_VALUE = 3;
 
 	/**
+	 * The '<em><b>UNSPECIFIED</b></em>' literal value.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of '<em><b>UNSPECIFIED</b></em>' literal object isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @see #UNSPECIFIED
+	 * @model
+	 * @generated
+	 * @ordered
+	 */
+	public static final int UNSPECIFIED_VALUE = 4;
+
+	/**
 	 * An array of all the '<em><b>Xml Persistence Unit Caching Type</b></em>' enumerators.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -139,6 +162,7 @@ public enum XmlPersistenceUnitCachingType implements Enumerator
 			NONE,
 			ENABLE_SELECTIVE,
 			DISABLE_SELECTIVE,
+			UNSPECIFIED,
 		};
 
 	/**
@@ -201,6 +225,7 @@ public enum XmlPersistenceUnitCachingType implements Enumerator
 			case NONE_VALUE: return NONE;
 			case ENABLE_SELECTIVE_VALUE: return ENABLE_SELECTIVE;
 			case DISABLE_SELECTIVE_VALUE: return DISABLE_SELECTIVE;
+			case UNSPECIFIED_VALUE: return UNSPECIFIED;
 		}
 		return null;
 	}

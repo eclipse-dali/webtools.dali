@@ -393,16 +393,6 @@ public class PersistencePackage extends EPackageImpl
 	public static final int XML_PERSISTENCE_UNIT_TRANSACTION_TYPE = 7;
 
 	/**
-	 * The meta object id for the '<em>Xml Persistence Unit Transaction Type Object</em>' data type.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.emf.common.util.Enumerator
-	 * @see org.eclipse.jpt.core.resource.persistence.PersistencePackage#getXmlPersistenceUnitTransactionTypeObject()
-	 * @generated
-	 */
-	public static final int XML_PERSISTENCE_UNIT_TRANSACTION_TYPE_OBJECT = 8;
-
-	/**
 	 * The meta object id for the '<em>Xml Version</em>' data type.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -410,7 +400,7 @@ public class PersistencePackage extends EPackageImpl
 	 * @see org.eclipse.jpt.core.resource.persistence.PersistencePackage#getXmlVersion()
 	 * @generated
 	 */
-	public static final int XML_VERSION = 9;
+	public static final int XML_VERSION = 8;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -467,13 +457,6 @@ public class PersistencePackage extends EPackageImpl
 	 * @generated
 	 */
 	private EEnum xmlPersistenceUnitTransactionTypeEEnum = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EDataType xmlPersistenceUnitTransactionTypeObjectEDataType = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -959,21 +942,6 @@ public class PersistencePackage extends EPackageImpl
 
 
 	/**
-	 * Returns the meta object for data type '{@link org.eclipse.emf.common.util.Enumerator <em>Xml Persistence Unit Transaction Type Object</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for data type '<em>Xml Persistence Unit Transaction Type Object</em>'.
-	 * @see org.eclipse.emf.common.util.Enumerator
-	 * @model instanceClass="org.eclipse.emf.common.util.Enumerator"
-	 * @generated
-	 */
-	public EDataType getXmlPersistenceUnitTransactionTypeObject()
-	{
-		return xmlPersistenceUnitTransactionTypeObjectEDataType;
-	}
-
-
-	/**
 	 * Returns the meta object for data type '{@link java.lang.String <em>Xml Version</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1057,7 +1025,6 @@ public class PersistencePackage extends EPackageImpl
 		xmlPersistenceUnitTransactionTypeEEnum = createEEnum(XML_PERSISTENCE_UNIT_TRANSACTION_TYPE);
 
 		// Create data types
-		xmlPersistenceUnitTransactionTypeObjectEDataType = createEDataType(XML_PERSISTENCE_UNIT_TRANSACTION_TYPE_OBJECT);
 		xmlVersionEDataType = createEDataType(XML_VERSION);
 	}
 
@@ -1135,7 +1102,6 @@ public class PersistencePackage extends EPackageImpl
 		addEEnumLiteral(xmlPersistenceUnitTransactionTypeEEnum, XmlPersistenceUnitTransactionType.RESOURCE_LOCAL);
 
 		// Initialize data types
-		initEDataType(xmlPersistenceUnitTransactionTypeObjectEDataType, Enumerator.class, "XmlPersistenceUnitTransactionTypeObject", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 		initEDataType(xmlVersionEDataType, String.class, "XmlVersion", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
 		// Create resource
@@ -1387,16 +1353,6 @@ public class PersistencePackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EEnum XML_PERSISTENCE_UNIT_TRANSACTION_TYPE = eINSTANCE.getXmlPersistenceUnitTransactionType();
-
-		/**
-		 * The meta object literal for the '<em>Xml Persistence Unit Transaction Type Object</em>' data type.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.eclipse.emf.common.util.Enumerator
-		 * @see org.eclipse.jpt.core.resource.persistence.PersistencePackage#getXmlPersistenceUnitTransactionTypeObject()
-		 * @generated
-		 */
-		public static final EDataType XML_PERSISTENCE_UNIT_TRANSACTION_TYPE_OBJECT = eINSTANCE.getXmlPersistenceUnitTransactionTypeObject();
 
 		/**
 		 * The meta object literal for the '<em>Xml Version</em>' data type.

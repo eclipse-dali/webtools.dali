@@ -109,8 +109,6 @@ public class PersistenceFactory extends EFactoryImpl
 		{
 			case PersistencePackage.XML_PERSISTENCE_UNIT_TRANSACTION_TYPE:
 				return createXmlPersistenceUnitTransactionTypeFromString(eDataType, initialValue);
-			case PersistencePackage.XML_PERSISTENCE_UNIT_TRANSACTION_TYPE_OBJECT:
-				return createXmlPersistenceUnitTransactionTypeObjectFromString(eDataType, initialValue);
 			case PersistencePackage.XML_VERSION:
 				return createXmlVersionFromString(eDataType, initialValue);
 			default:
@@ -130,8 +128,6 @@ public class PersistenceFactory extends EFactoryImpl
 		{
 			case PersistencePackage.XML_PERSISTENCE_UNIT_TRANSACTION_TYPE:
 				return convertXmlPersistenceUnitTransactionTypeToString(eDataType, instanceValue);
-			case PersistencePackage.XML_PERSISTENCE_UNIT_TRANSACTION_TYPE_OBJECT:
-				return convertXmlPersistenceUnitTransactionTypeObjectToString(eDataType, instanceValue);
 			case PersistencePackage.XML_VERSION:
 				return convertXmlVersionToString(eDataType, instanceValue);
 			default:
@@ -236,26 +232,6 @@ public class PersistenceFactory extends EFactoryImpl
 	public String convertXmlPersistenceUnitTransactionTypeToString(EDataType eDataType, Object instanceValue)
 	{
 		return instanceValue == null ? null : instanceValue.toString();
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public Enumerator createXmlPersistenceUnitTransactionTypeObjectFromString(EDataType eDataType, String initialValue)
-	{
-		return (Enumerator)super.createFromString(eDataType, initialValue);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public String convertXmlPersistenceUnitTransactionTypeObjectToString(EDataType eDataType, Object instanceValue)
-	{
-		return super.convertToString(eDataType, instanceValue);
 	}
 
 	/**

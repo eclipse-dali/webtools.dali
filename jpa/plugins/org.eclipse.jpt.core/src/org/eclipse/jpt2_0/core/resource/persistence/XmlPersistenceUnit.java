@@ -31,7 +31,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.jpt2_0.core.resource.persistence.XmlPersistenceUnit#getCaching <em>Caching</em>}</li>
+ *   <li>{@link org.eclipse.jpt2_0.core.resource.persistence.XmlPersistenceUnit#getSharedCacheMode <em>Shared Cache Mode</em>}</li>
  *   <li>{@link org.eclipse.jpt2_0.core.resource.persistence.XmlPersistenceUnit#getValidationMode <em>Validation Mode</em>}</li>
  * </ul>
  * </p>
@@ -46,17 +46,18 @@ public class XmlPersistenceUnit extends org.eclipse.jpt.core.resource.persistenc
 	 * changed this to null and removed the generated flag so emf won't generate over it
 	 * we don't want a default for enums, just null if the tag does not exist
 	 */
-	protected static final XmlPersistenceUnitCachingType CACHING_EDEFAULT = null;
+	protected static final XmlPersistenceUnitCachingType SHARED_CACHE_MODE_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getCaching() <em>Caching</em>}' attribute.
+	 * The cached value of the '{@link #getSharedCacheMode() <em>Shared Cache Mode</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getCaching()
+	 * @see #getSharedCacheMode()
 	 * @generated
 	 * @ordered
 	 */
-	protected XmlPersistenceUnitCachingType caching = CACHING_EDEFAULT;
+	protected XmlPersistenceUnitCachingType sharedCacheMode = SHARED_CACHE_MODE_EDEFAULT;
+
 
 	/**
 	 * changed this to null and removed the generated flag so emf won't generate over it
@@ -96,42 +97,42 @@ public class XmlPersistenceUnit extends org.eclipse.jpt.core.resource.persistenc
 	}
 
 	/**
-	 * Returns the value of the '<em><b>Caching</b></em>' attribute.
+	 * Returns the value of the '<em><b>Shared Cache Mode</b></em>' attribute.
 	 * The default value is <code>"JTA"</code>.
 	 * The literals are from the enumeration {@link org.eclipse.jpt2_0.core.resource.persistence.XmlPersistenceUnitCachingType}.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Caching</em>' attribute isn't clear,
+	 * If the meaning of the '<em>Shared Cache Mode</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Caching</em>' attribute.
+	 * @return the value of the '<em>Shared Cache Mode</em>' attribute.
 	 * @see org.eclipse.jpt2_0.core.resource.persistence.XmlPersistenceUnitCachingType
-	 * @see #setCaching(XmlPersistenceUnitCachingType)
-	 * @see org.eclipse.jpt2_0.core.resource.persistence.Persistence2_0Package#getXmlPersistenceUnit_Caching()
+	 * @see #setSharedCacheMode(XmlPersistenceUnitCachingType)
+	 * @see org.eclipse.jpt2_0.core.resource.persistence.Persistence2_0Package#getXmlPersistenceUnit_SharedCacheMode()
 	 * @model default="JTA" unique="false"
 	 * @generated
 	 */
-	public XmlPersistenceUnitCachingType getCaching()
+	public XmlPersistenceUnitCachingType getSharedCacheMode()
 	{
-		return caching;
+		return sharedCacheMode;
 	}
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt2_0.core.resource.persistence.XmlPersistenceUnit#getCaching <em>Caching</em>}' attribute.
+	 * Sets the value of the '{@link org.eclipse.jpt2_0.core.resource.persistence.XmlPersistenceUnit#getSharedCacheMode <em>Shared Cache Mode</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Caching</em>' attribute.
+	 * @param value the new value of the '<em>Shared Cache Mode</em>' attribute.
 	 * @see org.eclipse.jpt2_0.core.resource.persistence.XmlPersistenceUnitCachingType
-	 * @see #getCaching()
+	 * @see #getSharedCacheMode()
 	 * @generated
 	 */
-	public void setCaching(XmlPersistenceUnitCachingType newCaching)
+	public void setSharedCacheMode(XmlPersistenceUnitCachingType newSharedCacheMode)
 	{
-		XmlPersistenceUnitCachingType oldCaching = caching;
-		caching = newCaching == null ? CACHING_EDEFAULT : newCaching;
+		XmlPersistenceUnitCachingType oldSharedCacheMode = sharedCacheMode;
+		sharedCacheMode = newSharedCacheMode == null ? SHARED_CACHE_MODE_EDEFAULT : newSharedCacheMode;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, Persistence2_0Package.XML_PERSISTENCE_UNIT__CACHING, oldCaching, caching));
+			eNotify(new ENotificationImpl(this, Notification.SET, Persistence2_0Package.XML_PERSISTENCE_UNIT__SHARED_CACHE_MODE, oldSharedCacheMode, sharedCacheMode));
 	}
 
 	/**
@@ -183,8 +184,8 @@ public class XmlPersistenceUnit extends org.eclipse.jpt.core.resource.persistenc
 	{
 		switch (featureID)
 		{
-			case Persistence2_0Package.XML_PERSISTENCE_UNIT__CACHING:
-				return getCaching();
+			case Persistence2_0Package.XML_PERSISTENCE_UNIT__SHARED_CACHE_MODE:
+				return getSharedCacheMode();
 			case Persistence2_0Package.XML_PERSISTENCE_UNIT__VALIDATION_MODE:
 				return getValidationMode();
 		}
@@ -201,8 +202,8 @@ public class XmlPersistenceUnit extends org.eclipse.jpt.core.resource.persistenc
 	{
 		switch (featureID)
 		{
-			case Persistence2_0Package.XML_PERSISTENCE_UNIT__CACHING:
-				setCaching((XmlPersistenceUnitCachingType)newValue);
+			case Persistence2_0Package.XML_PERSISTENCE_UNIT__SHARED_CACHE_MODE:
+				setSharedCacheMode((XmlPersistenceUnitCachingType)newValue);
 				return;
 			case Persistence2_0Package.XML_PERSISTENCE_UNIT__VALIDATION_MODE:
 				setValidationMode((XmlPersistenceUnitValidationModeType)newValue);
@@ -221,8 +222,8 @@ public class XmlPersistenceUnit extends org.eclipse.jpt.core.resource.persistenc
 	{
 		switch (featureID)
 		{
-			case Persistence2_0Package.XML_PERSISTENCE_UNIT__CACHING:
-				setCaching(CACHING_EDEFAULT);
+			case Persistence2_0Package.XML_PERSISTENCE_UNIT__SHARED_CACHE_MODE:
+				setSharedCacheMode(SHARED_CACHE_MODE_EDEFAULT);
 				return;
 			case Persistence2_0Package.XML_PERSISTENCE_UNIT__VALIDATION_MODE:
 				setValidationMode(VALIDATION_MODE_EDEFAULT);
@@ -241,8 +242,8 @@ public class XmlPersistenceUnit extends org.eclipse.jpt.core.resource.persistenc
 	{
 		switch (featureID)
 		{
-			case Persistence2_0Package.XML_PERSISTENCE_UNIT__CACHING:
-				return caching != CACHING_EDEFAULT;
+			case Persistence2_0Package.XML_PERSISTENCE_UNIT__SHARED_CACHE_MODE:
+				return sharedCacheMode != SHARED_CACHE_MODE_EDEFAULT;
 			case Persistence2_0Package.XML_PERSISTENCE_UNIT__VALIDATION_MODE:
 				return validationMode != VALIDATION_MODE_EDEFAULT;
 		}
@@ -260,8 +261,8 @@ public class XmlPersistenceUnit extends org.eclipse.jpt.core.resource.persistenc
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (caching: ");
-		result.append(caching);
+		result.append(" (sharedCacheMode: ");
+		result.append(sharedCacheMode);
 		result.append(", validationMode: ");
 		result.append(validationMode);
 		result.append(')');
@@ -300,8 +301,8 @@ public class XmlPersistenceUnit extends org.eclipse.jpt.core.resource.persistenc
 
 	protected static Translator buildCachingTranslator() {
 		return new Translator(
-				JPA.PERSISTENCE_UNIT__CACHING,
-				Persistence2_0Package.eINSTANCE.getXmlPersistenceUnit_Caching()
+				JPA.PERSISTENCE_UNIT__SHARED_CACHE_MODE,
+				Persistence2_0Package.eINSTANCE.getXmlPersistenceUnit_SharedCacheMode()
 			);
 	}
 

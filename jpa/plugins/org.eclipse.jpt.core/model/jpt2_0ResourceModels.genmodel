@@ -159,6 +159,7 @@
       <genEnumLiterals ecoreEnumLiteral="persistence2_0.ecore#//XmlPersistenceUnitCachingType/NONE"/>
       <genEnumLiterals ecoreEnumLiteral="persistence2_0.ecore#//XmlPersistenceUnitCachingType/ENABLE_SELECTIVE"/>
       <genEnumLiterals ecoreEnumLiteral="persistence2_0.ecore#//XmlPersistenceUnitCachingType/DISABLE_SELECTIVE"/>
+      <genEnumLiterals ecoreEnumLiteral="persistence2_0.ecore#//XmlPersistenceUnitCachingType/UNSPECIFIED"/>
     </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="persistence2_0.ecore#//XmlPersistenceUnitValidationModeType">
       <genEnumLiterals ecoreEnumLiteral="persistence2_0.ecore#//XmlPersistenceUnitValidationModeType/AUTO"/>
@@ -167,7 +168,7 @@
     </genEnums>
     <genClasses ecoreClass="persistence2_0.ecore#//XmlPersistence"/>
     <genClasses ecoreClass="persistence2_0.ecore#//XmlPersistenceUnit">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute persistence2_0.ecore#//XmlPersistenceUnit/caching"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute persistence2_0.ecore#//XmlPersistenceUnit/sharedCacheMode"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute persistence2_0.ecore#//XmlPersistenceUnit/validationMode"/>
     </genClasses>
   </genPackages>
@@ -493,7 +494,6 @@
       <genEnumLiterals ecoreEnumLiteral="persistence.ecore#//XmlPersistenceUnitTransactionType/JTA"/>
       <genEnumLiterals ecoreEnumLiteral="persistence.ecore#//XmlPersistenceUnitTransactionType/RESOURCE_LOCAL"/>
     </genEnums>
-    <genDataTypes ecoreDataType="persistence.ecore#//XmlPersistenceUnitTransactionTypeObject"/>
     <genDataTypes ecoreDataType="persistence.ecore#//XmlVersion"/>
     <genClasses ecoreClass="persistence.ecore#//XmlPersistence">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference persistence.ecore#//XmlPersistence/persistenceUnits"/>

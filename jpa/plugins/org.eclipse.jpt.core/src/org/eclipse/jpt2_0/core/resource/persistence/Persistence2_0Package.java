@@ -217,13 +217,13 @@ public class Persistence2_0Package extends EPackageImpl
 	public static final int XML_PERSISTENCE_UNIT__TRANSACTION_TYPE = PersistencePackage.XML_PERSISTENCE_UNIT__TRANSACTION_TYPE;
 
 	/**
-	 * The feature id for the '<em><b>Caching</b></em>' attribute.
+	 * The feature id for the '<em><b>Shared Cache Mode</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_PERSISTENCE_UNIT__CACHING = PersistencePackage.XML_PERSISTENCE_UNIT_FEATURE_COUNT + 0;
+	public static final int XML_PERSISTENCE_UNIT__SHARED_CACHE_MODE = PersistencePackage.XML_PERSISTENCE_UNIT_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Validation Mode</b></em>' attribute.
@@ -397,18 +397,19 @@ public class Persistence2_0Package extends EPackageImpl
 	}
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.eclipse.jpt2_0.core.resource.persistence.XmlPersistenceUnit#getCaching <em>Caching</em>}'.
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt2_0.core.resource.persistence.XmlPersistenceUnit#getSharedCacheMode <em>Shared Cache Mode</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Caching</em>'.
-	 * @see org.eclipse.jpt2_0.core.resource.persistence.XmlPersistenceUnit#getCaching()
+	 * @return the meta object for the attribute '<em>Shared Cache Mode</em>'.
+	 * @see org.eclipse.jpt2_0.core.resource.persistence.XmlPersistenceUnit#getSharedCacheMode()
 	 * @see #getXmlPersistenceUnit()
 	 * @generated
 	 */
-	public EAttribute getXmlPersistenceUnit_Caching()
+	public EAttribute getXmlPersistenceUnit_SharedCacheMode()
 	{
 		return (EAttribute)xmlPersistenceUnitEClass.getEStructuralFeatures().get(0);
 	}
+
 
 	/**
 	 * Returns the meta object for the attribute '{@link org.eclipse.jpt2_0.core.resource.persistence.XmlPersistenceUnit#getValidationMode <em>Validation Mode</em>}'.
@@ -436,6 +437,7 @@ public class Persistence2_0Package extends EPackageImpl
 	{
 		return xmlPersistenceUnitCachingTypeEEnum;
 	}
+
 
 	/**
 	 * Returns the meta object for enum '{@link org.eclipse.jpt2_0.core.resource.persistence.XmlPersistenceUnitValidationModeType <em>Xml Persistence Unit Validation Mode Type</em>}'.
@@ -486,7 +488,7 @@ public class Persistence2_0Package extends EPackageImpl
 		xmlPersistenceEClass = createEClass(XML_PERSISTENCE);
 
 		xmlPersistenceUnitEClass = createEClass(XML_PERSISTENCE_UNIT);
-		createEAttribute(xmlPersistenceUnitEClass, XML_PERSISTENCE_UNIT__CACHING);
+		createEAttribute(xmlPersistenceUnitEClass, XML_PERSISTENCE_UNIT__SHARED_CACHE_MODE);
 		createEAttribute(xmlPersistenceUnitEClass, XML_PERSISTENCE_UNIT__VALIDATION_MODE);
 
 		// Create enums
@@ -533,7 +535,7 @@ public class Persistence2_0Package extends EPackageImpl
 		initEClass(xmlPersistenceEClass, XmlPersistence.class, "XmlPersistence", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(xmlPersistenceUnitEClass, XmlPersistenceUnit.class, "XmlPersistenceUnit", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getXmlPersistenceUnit_Caching(), this.getXmlPersistenceUnitCachingType(), "caching", "JTA", 0, 1, XmlPersistenceUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXmlPersistenceUnit_SharedCacheMode(), this.getXmlPersistenceUnitCachingType(), "sharedCacheMode", "JTA", 0, 1, XmlPersistenceUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getXmlPersistenceUnit_ValidationMode(), this.getXmlPersistenceUnitValidationModeType(), "validationMode", "JTA", 0, 1, XmlPersistenceUnit.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Initialize enums and add enum literals
@@ -542,6 +544,7 @@ public class Persistence2_0Package extends EPackageImpl
 		addEEnumLiteral(xmlPersistenceUnitCachingTypeEEnum, XmlPersistenceUnitCachingType.NONE);
 		addEEnumLiteral(xmlPersistenceUnitCachingTypeEEnum, XmlPersistenceUnitCachingType.ENABLE_SELECTIVE);
 		addEEnumLiteral(xmlPersistenceUnitCachingTypeEEnum, XmlPersistenceUnitCachingType.DISABLE_SELECTIVE);
+		addEEnumLiteral(xmlPersistenceUnitCachingTypeEEnum, XmlPersistenceUnitCachingType.UNSPECIFIED);
 
 		initEEnum(xmlPersistenceUnitValidationModeTypeEEnum, XmlPersistenceUnitValidationModeType.class, "XmlPersistenceUnitValidationModeType");
 		addEEnumLiteral(xmlPersistenceUnitValidationModeTypeEEnum, XmlPersistenceUnitValidationModeType.AUTO);
@@ -587,12 +590,12 @@ public class Persistence2_0Package extends EPackageImpl
 		public static final EClass XML_PERSISTENCE_UNIT = eINSTANCE.getXmlPersistenceUnit();
 
 		/**
-		 * The meta object literal for the '<em><b>Caching</b></em>' attribute feature.
+		 * The meta object literal for the '<em><b>Shared Cache Mode</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		public static final EAttribute XML_PERSISTENCE_UNIT__CACHING = eINSTANCE.getXmlPersistenceUnit_Caching();
+		public static final EAttribute XML_PERSISTENCE_UNIT__SHARED_CACHE_MODE = eINSTANCE.getXmlPersistenceUnit_SharedCacheMode();
 
 		/**
 		 * The meta object literal for the '<em><b>Validation Mode</b></em>' attribute feature.

@@ -5,7 +5,7 @@
     nsURI="jpt2_0.persistence.xmi" nsPrefix="org.eclipse.jpt2_0.core.resource.persistence">
   <eClassifiers xsi:type="ecore:EClass" name="XmlPersistence" eSuperTypes="persistence.ecore#//XmlPersistence"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlPersistenceUnit" eSuperTypes="persistence.ecore#//XmlPersistenceUnit">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="caching" unique="false"
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="sharedCacheMode" unique="false"
         eType="#//XmlPersistenceUnitCachingType" defaultValueLiteral="JTA"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="validationMode" unique="false"
         eType="#//XmlPersistenceUnitValidationModeType" defaultValueLiteral="JTA"/>
@@ -15,6 +15,7 @@
     <eLiterals name="NONE" value="1"/>
     <eLiterals name="ENABLE_SELECTIVE" value="2"/>
     <eLiterals name="DISABLE_SELECTIVE" value="3"/>
+    <eLiterals name="UNSPECIFIED" value="4"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="XmlPersistenceUnitValidationModeType">
     <eLiterals name="AUTO"/>
