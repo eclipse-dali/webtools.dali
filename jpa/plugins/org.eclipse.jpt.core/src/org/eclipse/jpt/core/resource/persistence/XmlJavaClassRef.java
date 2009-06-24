@@ -51,7 +51,7 @@ public class XmlJavaClassRef extends AbstractJpaEObject implements JpaEObject
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String JAVA_CLASS_EDEFAULT = "";
+	protected static final String JAVA_CLASS_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getJavaClass() <em>Java Class</em>}' attribute.
@@ -86,7 +86,6 @@ public class XmlJavaClassRef extends AbstractJpaEObject implements JpaEObject
 
 	/**
 	 * Returns the value of the '<em><b>Java Class</b></em>' attribute.
-	 * The default value is <code>""</code>.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Java Class</em>' attribute isn't clear,
@@ -96,7 +95,7 @@ public class XmlJavaClassRef extends AbstractJpaEObject implements JpaEObject
 	 * @return the value of the '<em>Java Class</em>' attribute.
 	 * @see #setJavaClass(String)
 	 * @see org.eclipse.jpt.core.resource.persistence.PersistencePackage#getXmlJavaClassRef_JavaClass()
-	 * @model default="" unique="false" ordered="false"
+	 * @model unique="false" ordered="false"
 	 * @generated
 	 */
 	public String getJavaClass()

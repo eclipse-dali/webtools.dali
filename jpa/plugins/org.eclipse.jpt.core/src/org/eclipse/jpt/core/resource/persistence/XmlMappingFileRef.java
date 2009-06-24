@@ -51,7 +51,7 @@ public class XmlMappingFileRef extends AbstractJpaEObject implements JpaEObject
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String FILE_NAME_EDEFAULT = "";
+	protected static final String FILE_NAME_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getFileName() <em>File Name</em>}' attribute.
@@ -86,7 +86,6 @@ public class XmlMappingFileRef extends AbstractJpaEObject implements JpaEObject
 
 	/**
 	 * Returns the value of the '<em><b>File Name</b></em>' attribute.
-	 * The default value is <code>""</code>.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>File Name</em>' attribute isn't clear,
@@ -96,7 +95,7 @@ public class XmlMappingFileRef extends AbstractJpaEObject implements JpaEObject
 	 * @return the value of the '<em>File Name</em>' attribute.
 	 * @see #setFileName(String)
 	 * @see org.eclipse.jpt.core.resource.persistence.PersistencePackage#getXmlMappingFileRef_FileName()
-	 * @model default="" unique="false" ordered="false"
+	 * @model unique="false" ordered="false"
 	 * @generated
 	 */
 	public String getFileName()
