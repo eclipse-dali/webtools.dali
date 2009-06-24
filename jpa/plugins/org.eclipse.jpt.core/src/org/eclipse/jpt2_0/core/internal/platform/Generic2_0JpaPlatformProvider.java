@@ -26,9 +26,11 @@ import org.eclipse.jpt2_0.core.internal.context.orm.Generic2_0OrmBasicMappingPro
 import org.eclipse.jpt2_0.core.internal.context.orm.Generic2_0OrmEmbeddableMappingProvider;
 import org.eclipse.jpt2_0.core.internal.context.orm.Generic2_0OrmEmbeddedIdMappingProvider;
 import org.eclipse.jpt2_0.core.internal.context.orm.Generic2_0OrmEmbeddedMappingProvider;
+import org.eclipse.jpt2_0.core.internal.context.orm.Generic2_0OrmEntityMappingProvider;
 import org.eclipse.jpt2_0.core.internal.context.orm.Generic2_0OrmIdMappingProvider;
 import org.eclipse.jpt2_0.core.internal.context.orm.Generic2_0OrmManyToManyMappingProvider;
 import org.eclipse.jpt2_0.core.internal.context.orm.Generic2_0OrmManyToOneMappingProvider;
+import org.eclipse.jpt2_0.core.internal.context.orm.Generic2_0OrmMappedSuperclassMappingProvider;
 import org.eclipse.jpt2_0.core.internal.context.orm.Generic2_0OrmNullAttributeMappingProvider;
 import org.eclipse.jpt2_0.core.internal.context.orm.Generic2_0OrmOneToManyMappingProvider;
 import org.eclipse.jpt2_0.core.internal.context.orm.Generic2_0OrmOneToOneMappingProvider;
@@ -107,6 +109,8 @@ public class Generic2_0JpaPlatformProvider extends AbstractJpaPlatformProvider
 	@Override
 	protected void addOrmTypeMappingProvidersTo(List<OrmTypeMappingProvider> providers) {
 		providers.add(Generic2_0OrmEmbeddableMappingProvider.instance());
+		providers.add(Generic2_0OrmEntityMappingProvider.instance());
+		providers.add(Generic2_0OrmMappedSuperclassMappingProvider.instance());
 	}
 
 

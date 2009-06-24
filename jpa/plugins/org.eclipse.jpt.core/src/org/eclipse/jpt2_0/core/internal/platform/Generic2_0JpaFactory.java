@@ -34,9 +34,11 @@ import org.eclipse.jpt.core.context.orm.OrmBasicMapping;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddable;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddedIdMapping;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddedMapping;
+import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.orm.OrmIdMapping;
 import org.eclipse.jpt.core.context.orm.OrmManyToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmManyToOneMapping;
+import org.eclipse.jpt.core.context.orm.OrmMappedSuperclass;
 import org.eclipse.jpt.core.context.orm.OrmOneToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmOneToOneMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
@@ -78,10 +80,12 @@ import org.eclipse.jpt2_0.core.resource.orm.XmlBasic;
 import org.eclipse.jpt2_0.core.resource.orm.XmlEmbeddable;
 import org.eclipse.jpt2_0.core.resource.orm.XmlEmbedded;
 import org.eclipse.jpt2_0.core.resource.orm.XmlEmbeddedId;
+import org.eclipse.jpt2_0.core.resource.orm.XmlEntity;
 import org.eclipse.jpt2_0.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt2_0.core.resource.orm.XmlId;
 import org.eclipse.jpt2_0.core.resource.orm.XmlManyToMany;
 import org.eclipse.jpt2_0.core.resource.orm.XmlManyToOne;
+import org.eclipse.jpt2_0.core.resource.orm.XmlMappedSuperclass;
 import org.eclipse.jpt2_0.core.resource.orm.XmlOneToMany;
 import org.eclipse.jpt2_0.core.resource.orm.XmlOneToOne;
 import org.eclipse.jpt2_0.core.resource.orm.XmlTransient;
@@ -128,6 +132,14 @@ public class Generic2_0JpaFactory extends GenericJpaFactory
 
 	public OrmEmbeddable build2_0OrmEmbeddable(OrmPersistentType parent, XmlEmbeddable resourceMapping) {
 		return new Generic2_0OrmEmbeddable(parent, resourceMapping);
+	}
+
+	public OrmEntity build2_0OrmEntity(OrmPersistentType parent, XmlEntity resourceMapping) {
+		return buildOrmEntity(parent, resourceMapping);
+	}
+
+	public OrmMappedSuperclass build2_0OrmMappedSuperclass(OrmPersistentType parent, XmlMappedSuperclass resourceMapping) {
+		return buildOrmMappedSuperclass(parent, resourceMapping);
 	}
 	
 	public OrmPersistentAttribute build2_0OrmPersistentAttribute(OrmPersistentType parent, OrmPersistentAttribute.Owner owner, XmlAttributeMapping resourceMapping) {
