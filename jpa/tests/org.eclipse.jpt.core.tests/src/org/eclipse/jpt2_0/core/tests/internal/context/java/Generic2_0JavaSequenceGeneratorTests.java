@@ -29,13 +29,13 @@ import org.eclipse.jpt2_0.core.context.SequenceGenerator2_0;
 import org.eclipse.jpt2_0.core.resource.java.SequenceGenerator2_0Annotation;
 
 /**
- *  JavaSequenceGenerator2_0Tests
+ *  Generic2_0JavaSequenceGeneratorTests
  */
-public class JavaSequenceGenerator2_0Tests extends Generic2_0ContextModelTestCase
+public class Generic2_0JavaSequenceGeneratorTests extends Generic2_0ContextModelTestCase
 {
 	private static final String SEQUENCE_GENERATOR_NAME = "TEST_SEQUENCE_GENERATOR";
 
-	public JavaSequenceGenerator2_0Tests(String name) {
+	public Generic2_0JavaSequenceGeneratorTests(String name) {
 		super(name);
 	}
 	
