@@ -332,7 +332,6 @@
       <genEnumLiterals ecoreEnumLiteral="persistence.ecore#//XmlPersistenceUnitTransactionType/JTA"/>
       <genEnumLiterals ecoreEnumLiteral="persistence.ecore#//XmlPersistenceUnitTransactionType/RESOURCE_LOCAL"/>
     </genEnums>
-    <genDataTypes ecoreDataType="persistence.ecore#//XmlPersistenceUnitTransactionTypeObject"/>
     <genDataTypes ecoreDataType="persistence.ecore#//XmlVersion"/>
     <genClasses ecoreClass="persistence.ecore#//XmlPersistence">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference persistence.ecore#//XmlPersistence/persistenceUnits"/>

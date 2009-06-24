@@ -62,7 +62,5 @@
     <eLiterals name="JTA"/>
     <eLiterals name="RESOURCE_LOCAL" value="1"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EDataType" name="XmlPersistenceUnitTransactionTypeObject"
-      instanceClassName="org.eclipse.emf.common.util.Enumerator"/>
   <eClassifiers xsi:type="ecore:EDataType" name="XmlVersion" instanceClassName="java.lang.String"/>
 </ecore:EPackage>
