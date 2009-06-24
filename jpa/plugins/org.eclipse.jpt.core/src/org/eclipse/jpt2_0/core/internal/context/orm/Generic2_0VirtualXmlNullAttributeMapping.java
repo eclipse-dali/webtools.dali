@@ -13,15 +13,15 @@ import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.context.orm.VirtualXmlNullAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.AccessType;
-import org.eclipse.jpt.core.resource.orm.XmlAccessHolder;
 import org.eclipse.jpt.core.resource.orm.XmlNullAttributeMapping;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt2_0.core.resource.orm.XmlAttributeMapping;
 
 /**
  * VirtualVersion is an implementation of Version used when there is 
  * no tag in the orm.xml and an underlying javaVersionMapping exists.
  */
-public class Generic2_0VirtualXmlNullAttributeMapping extends XmlNullAttributeMapping implements XmlAccessHolder
+public class Generic2_0VirtualXmlNullAttributeMapping extends XmlNullAttributeMapping implements XmlAttributeMapping
 {
 	
 	protected OrmTypeMapping ormTypeMapping;
