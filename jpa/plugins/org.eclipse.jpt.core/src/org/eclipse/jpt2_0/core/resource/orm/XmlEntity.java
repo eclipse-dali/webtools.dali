@@ -238,7 +238,7 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity
 	}
 	
 	protected static Translator buildCacheableTranslator() {
-		return new Translator(JPA.METADATA_COMPLETE, Orm2_0Package.eINSTANCE.getXmlEntity_Cacheable(), Translator.DOM_ATTRIBUTE);
+		return new Translator(JPA.CACHEABLE, Orm2_0Package.eINSTANCE.getXmlEntity_Cacheable(), Translator.DOM_ATTRIBUTE);
 	}
 
 } // XmlEntity
