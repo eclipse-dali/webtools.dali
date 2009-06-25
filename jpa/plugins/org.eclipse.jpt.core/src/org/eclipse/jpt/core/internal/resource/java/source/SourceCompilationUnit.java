@@ -228,15 +228,15 @@ public final class SourceCompilationUnit
 	 * NB: this type could be in error if there is an annotation or enum
 	 * with the same name preceding it in the compilation unit
 	 * 
-	 * Return null if resolveBinding() on the TypeDeclaration returns null
-	 * This can occur if the project JRE is removed (bug 225332)
+	 * Return null if the parser did not resolve the type declaration's binding.
+	 * This can occur if the project JRE is removed (bug 225332).
 	 */
 	protected TypeDeclaration getPrimaryType(CompilationUnit astRoot) {
 		String primaryTypeName = this.getPrimaryTypeName();
 		for (AbstractTypeDeclaration atd : types(astRoot)) {
 			if ((atd.getNodeType() == ASTNode.TYPE_DECLARATION)
 					&& atd.getName().getFullyQualifiedName().equals(primaryTypeName)) {
-				return (atd.resolveBinding()) != null ? (TypeDeclaration) atd : null;
+				return (atd.resolveBinding() == null) ? null : (TypeDeclaration) atd;
 			}
 		}
 		return null;
@@ -262,7 +262,7 @@ public final class SourceCompilationUnit
 
 	@Override
 	public void toString(StringBuilder sb) {
-		sb.append(this.persistentType.getName());
+		sb.append(this.getPrimaryTypeName());
 	}
 
 }

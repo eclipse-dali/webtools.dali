@@ -78,6 +78,7 @@ final class BinaryPersistentAttribute
 		this.typeIsEnum = this.buildTypeIsEnum(type);
 		this.typeSuperclassNames.addAll(this.buildTypeSuperclassNames(type));
 		this.typeInterfaceNames.addAll(this.buildTypeInterfaceNames(type));
+
 		this.typeTypeArgumentNames.addAll(this.buildTypeTypeArgumentNames());
 	}
 
@@ -95,6 +96,7 @@ final class BinaryPersistentAttribute
 		this.setTypeIsEnum(this.buildTypeIsEnum(type));
 		this.setTypeSuperclassNames(this.buildTypeSuperclassNames(type));
 		this.setTypeInterfaceNames(this.buildTypeInterfaceNames(type));
+
 		this.setTypeTypeArgumentNames(this.buildTypeTypeArgumentNames());
 	}
 
@@ -285,7 +287,7 @@ final class BinaryPersistentAttribute
 		ArrayList<String> names = new ArrayList<String>();
 		type = this.findSuperclass(type);
 		while (type != null) {
-			names.add(type.getFullyQualifiedName());  // no parameters are included here
+			names.add(type.getFullyQualifiedName('.'));  // no parameters are included here
 			type = this.findSuperclass(type);
 		}
 		return names;

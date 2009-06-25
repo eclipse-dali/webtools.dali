@@ -82,7 +82,7 @@ final class DTPDatabaseWrapper
 
 	/* TODO
 	 * We might want to listen to the "virtual" catalog; but that's probably
-	 * not necessary since there is not easy way for the user to refresh it
+	 * not necessary since there is no easy way for the user to refresh it
 	 * (i.e. it is not displayed in the DTP UI).
 	 */
 	@Override
@@ -354,7 +354,7 @@ final class DTPDatabaseWrapper
 	// ********** clear **********
 
 	@Override
-	void clear() {
+	synchronized void clear() {
 		if (this.catalogs != null) {
 			this.clearCatalogs();
 		}

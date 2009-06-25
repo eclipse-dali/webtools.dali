@@ -11,7 +11,8 @@ package org.eclipse.jpt.utility.internal.enumerations;
 
 import java.util.Enumeration;
 import java.util.NoSuchElementException;
-import org.eclipse.jpt.utility.internal.StringTools;
+
+import org.eclipse.jpt.utility.internal.ClassTools;
 
 /**
  * An <code>EmptyEnumeration</code> is just that.
@@ -49,7 +50,7 @@ public final class EmptyEnumeration<E>
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this);
+		return ClassTools.shortClassNameForObject(this);
 	}
 
 }
