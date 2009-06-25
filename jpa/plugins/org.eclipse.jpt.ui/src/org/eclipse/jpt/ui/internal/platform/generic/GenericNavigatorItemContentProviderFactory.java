@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+
 import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
 import org.eclipse.jpt.core.context.MappingFile;
@@ -32,7 +33,7 @@ import org.eclipse.jpt.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
 import org.eclipse.jpt.ui.jface.DelegatingContentAndLabelProvider;
 import org.eclipse.jpt.ui.jface.TreeItemContentProvider;
 import org.eclipse.jpt.ui.jface.TreeItemContentProviderFactory;
-import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
+import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.utility.internal.model.value.CollectionAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.CompositeCollectionValueModel;
 import org.eclipse.jpt.utility.internal.model.value.FilteringCollectionValueModel;
@@ -125,8 +126,8 @@ public class GenericNavigatorItemContentProviderFactory
 							}
 						})) {
 					@Override
-					protected Iterator<JpaContextNode> filter(Iterator<? extends JpaContextNode> items) {
-						return new FilteringIterator<JpaContextNode, JpaContextNode>(items) {
+					protected Iterable<JpaContextNode> filter(Iterable<? extends JpaContextNode> items) {
+						return new FilteringIterable<JpaContextNode, JpaContextNode>(items) {
 							@Override
 							protected boolean accept(JpaContextNode o) {
 								return o != null;
@@ -167,8 +168,8 @@ public class GenericNavigatorItemContentProviderFactory
 							}
 						})) {
 					@Override
-					protected Iterator<JpaContextNode> filter(Iterator<? extends JpaContextNode> items) {
-						return new FilteringIterator<JpaContextNode, JpaContextNode>(items) {
+					protected Iterable<JpaContextNode> filter(Iterable<? extends JpaContextNode> items) {
+						return new FilteringIterable<JpaContextNode, JpaContextNode>(items) {
 							@Override
 							protected boolean accept(JpaContextNode o) {
 								return o != null;
@@ -225,8 +226,8 @@ public class GenericNavigatorItemContentProviderFactory
 							}
 						})) {
 					@Override
-					protected Iterator<JpaContextNode> filter(Iterator<? extends JpaContextNode> items) {
-						return new FilteringIterator<JpaContextNode, JpaContextNode>(items) {
+					protected Iterable<JpaContextNode> filter(Iterable<? extends JpaContextNode> items) {
+						return new FilteringIterable<JpaContextNode, JpaContextNode>(items) {
 							@Override
 							protected boolean accept(JpaContextNode o) {
 								return o != null;

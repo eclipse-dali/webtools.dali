@@ -16,7 +16,7 @@ import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 
 /**
- * A <code>CompositeIterable</code> wraps a collection
+ * A <code>CompositeIterable</code> wraps an <code>Iterable</code>
  * of <code>Iterable</code>s and makes them appear to be a single
  * <code>Iterable</code>.
  * 

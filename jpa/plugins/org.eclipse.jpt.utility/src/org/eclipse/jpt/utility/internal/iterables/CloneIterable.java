@@ -9,81 +9,57 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal.iterables;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
-
-import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 
 /**
- * A <code>CloneIterable</code> returns an iterator on a current copy of a
- * collection, allowing for concurrent access to the original collection. A
- * copy of the collection is created every time <code>#iterable()</code> is
- * called. As a result, the contents of the collection can be different with
- * each call to <code>#iterable()</code>.
- * <p>
- * The original collection passed to the <code>CloneIterabler</code>'s
- * constructor should be synchronized (e.g. java.util.Vector);
- * otherwise you run the risk of a corrupted collection.
- * <p>
- * By default, the iterator returned by a <code>CloneIterable</code> does not
- * support the <code>#remove()</code> operation; this is because it does not
- * have access to the original collection. But if the <code>CloneIterable</code>
- * is supplied with an <code>CloneIterator.Mutator</code> it will delegate the
- * <code>#remove()</code> operation to the <code>Mutator</code>.
+ * Pull together remover state and behavior.
  * 
- * @see CloneIterator
  * @see FixedCloneIterable
+ * @see LiveCloneIterable
  */
-public class CloneIterable<E>
+public abstract class CloneIterable<E>
 	implements Iterable<E>
 {
-	private final Collection<? extends E> collection;
-	private final CloneIterator.Mutator<E> mutator;
+	final CloneIterator.Remover<E> remover;
 
 
 	// ********** constructors **********
 
-	/**
-	 * Construct a live iterable for the specified collection.
-	 * The <code>#remove()</code> method will not be supported
-	 * by the <code>Iterator</code> returned by <code>#iterable()</code>.
-	 */
-	public CloneIterable(E[] array) {
-		this(Arrays.asList(array));
-	}
-
-	/**
-	 * Construct a live iterable for the specified collection.
-	 * The <code>#remove()</code> method will not be supported
-	 * by the <code>Iterator</code> returned by <code>#iterable()</code>.
-	 */
-	public CloneIterable(Collection<? extends E> collection) {
-		this(collection, CloneIterator.Mutator.ReadOnly.<E>instance());
-	}
-
-	/**
-	 * Construct a live iterable for the specified collection.
-	 * Use the specified mutator to remove objects from the
-	 * original collection.
-	 */
-	public CloneIterable(Collection<? extends E> collection, CloneIterator.Mutator<E> mutator) {
+	protected CloneIterable() {
 		super();
-		this.collection = collection;
-		this.mutator = mutator;
+		this.remover = this.buildDefaultRemover();
+	}
+
+	protected CloneIterable(CloneIterator.Remover<E> remover) {
+		super();
+		this.remover = remover;
+	}
+
+	protected CloneIterator.Remover<E> buildDefaultRemover() {
+		return new DefaultRemover();
 	}
 
 
-	// ********** Iterable implementation **********
+	// ********** default removal **********
 
-	public Iterator<E> iterator() {
-		return new CloneIterator<E>(this.collection, this.mutator);
+	/**
+	 * Remove the specified element from the original collection.
+	 * <p>
+	 * This method can be overridden by a subclass as an
+	 * alternative to building a <code>CloneIterator.Remover</code>.
+	 */
+	protected void remove(@SuppressWarnings("unused") E element) {
+		// CloneIterable.remove(Object) was not overridden
+		throw new UnsupportedOperationException();
 	}
 
-	@Override
-	public String toString() {
-		return StringTools.buildToStringFor(this);
+
+	//********** default mutator **********
+
+	protected class DefaultRemover implements CloneIterator.Remover<E> {
+		public void remove(E element) {
+			CloneIterable.this.remove(element);
+		}
 	}
 
 }

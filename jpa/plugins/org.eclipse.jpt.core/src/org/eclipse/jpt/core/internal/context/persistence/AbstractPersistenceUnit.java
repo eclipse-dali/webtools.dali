@@ -48,7 +48,7 @@ import org.eclipse.jpt.core.resource.persistence.XmlProperty;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.HashBag;
-import org.eclipse.jpt.utility.internal.iterables.CloneIterable;
+import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
@@ -613,7 +613,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected Iterable<Property> getProperties() {
-		return new CloneIterable<Property>(this.properties);
+		return new LiveCloneIterable<Property>(this.properties);
 	}
 
 	public int propertiesSize() {

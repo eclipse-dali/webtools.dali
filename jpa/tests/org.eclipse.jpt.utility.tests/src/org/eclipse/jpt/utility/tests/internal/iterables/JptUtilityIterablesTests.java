@@ -21,6 +21,17 @@ public class JptUtilityIterablesTests {
 		TestSuite suite = new TestSuite(JptUtilityIterablesTests.class.getPackage().getName());
 
 		suite.addTestSuite(ArrayIterableTests.class);
+		suite.addTestSuite(ChainIterableTests.class);
+		suite.addTestSuite(CompositeIterableTests.class);
+		suite.addTestSuite(EmptyIterableTests.class);
+		suite.addTestSuite(FilteringIterableTests.class);
+		suite.addTestSuite(GraphIterableTests.class);
+		suite.addTestSuite(LiveCloneIterableTests.class);
+		suite.addTestSuite(ReadOnlyIterableTests.class);
+		suite.addTestSuite(SingleElementIterableTests.class);
+		suite.addTestSuite(StaticCloneIterableTests.class);
+		suite.addTestSuite(TransformationIterableTests.class);
+		suite.addTestSuite(TreeIterableTests.class);
 
 		return suite;
 	}

@@ -18,7 +18,7 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentTypeCache;
-import org.eclipse.jpt.utility.internal.iterables.CloneIterable;
+import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.utility.internal.StringTools;
 
@@ -57,7 +57,7 @@ public final class BinaryPersistentTypeCache
 	}
 
 	private Iterable<Entry> getEntries() {
-		return new CloneIterable<Entry>(this.entries);
+		return new LiveCloneIterable<Entry>(this.entries);
 	}
 
 

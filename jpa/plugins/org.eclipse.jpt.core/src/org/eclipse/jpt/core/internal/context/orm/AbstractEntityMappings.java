@@ -47,7 +47,7 @@ import org.eclipse.jpt.db.Catalog;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.SchemaContainer;
 import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.iterables.CloneIterable;
+import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
@@ -340,7 +340,7 @@ public abstract class AbstractEntityMappings
 	}
 	
 	protected Iterable<OrmPersistentType> getPersistentTypes() {
-		return new CloneIterable<OrmPersistentType>(this.persistentTypes);
+		return new LiveCloneIterable<OrmPersistentType>(this.persistentTypes);
 	}
 	
 	public int persistentTypesSize() {

@@ -28,8 +28,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.utility.MethodSignature;
-import org.eclipse.jpt.utility.internal.iterables.CloneIterable;
-import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
+import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 
@@ -241,11 +240,11 @@ final class BinaryPersistentType
 	// ********** fields **********
 
 	public Iterator<JavaResourcePersistentAttribute> fields() {
-		return new CloneIterator<JavaResourcePersistentAttribute>(this.fields);
+		return this.getFields().iterator();
 	}
 
 	private Iterable<JavaResourcePersistentAttribute> getFields() {
-		return new CloneIterable<JavaResourcePersistentAttribute>(this.fields);
+		return new LiveCloneIterable<JavaResourcePersistentAttribute>(this.fields);
 	}
 
 	public Iterator<JavaResourcePersistentAttribute> persistableFields() {
@@ -305,11 +304,11 @@ final class BinaryPersistentType
 	// ********** methods **********
 
 	public Iterator<JavaResourcePersistentAttribute> methods() {
-		return new CloneIterator<JavaResourcePersistentAttribute>(this.methods);
+		return this.getMethods().iterator();
 	}
 
 	private Iterable<JavaResourcePersistentAttribute> getMethods() {
-		return new CloneIterable<JavaResourcePersistentAttribute>(this.methods);
+		return new LiveCloneIterable<JavaResourcePersistentAttribute>(this.methods);
 	}
 
 	public Iterator<JavaResourcePersistentAttribute> persistableProperties() {

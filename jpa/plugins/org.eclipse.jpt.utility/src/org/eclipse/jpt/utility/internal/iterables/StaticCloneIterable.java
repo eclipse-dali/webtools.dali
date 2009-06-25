@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal.iterables;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -29,20 +30,21 @@ import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
  * By default, the iterator returned by a <code>FixedCloneIterable</code> does not
  * support the <code>#remove()</code> operation; this is because it does not
  * have access to the original collection. But if the <code>FixedCloneIterable</code>
- * is supplied with an <code>CloneIterator.Mutator</code> it will delegate the
- * <code>#remove()</code> operation to the <code>Mutator</code>.
+ * is supplied with an <code>CloneIterator.Remover</code> it will delegate the
+ * <code>#remove()</code> operation to the <code>Remover</code>.
+ * Alternatively, a subclass can override the <code>#remove(Object)</code>
+ * method.
  * <p>
  * This iterable is useful for multiple passes over a collection that should not
  * be changed between passes (e.g. by another thread).
  * 
  * @see CloneIterator
- * @see CloneIterable
+ * @see LiveCloneIterable
  */
-public class FixedCloneIterable<E>
-	implements Iterable<E>
+public class StaticCloneIterable<E>
+	extends CloneIterable<E>
 {
 	private final Object[] array;
-	private final CloneIterator.Mutator<E> mutator;
 
 
 	// ********** constructors **********
@@ -50,33 +52,34 @@ public class FixedCloneIterable<E>
 	/**
 	 * Construct a static iterable for the specified collection.
 	 * The <code>#remove()</code> method will not be supported
-	 * by the <code>Iterator</code> returned by <code>#iterable()</code>.
+	 * by the <code>Iterator</code> returned by <code>#iterable()</code>
+	 * unless a subclass overrides the <code>#remove(Object)</code>.
 	 */
-	public FixedCloneIterable(Collection<? extends E> collection) {
-		this(collection, CloneIterator.Mutator.ReadOnly.<E>instance());
+	public StaticCloneIterable(Collection<? extends E> collection) {
+		super();
+		this.array = collection.toArray();
 	}
 
 	/**
 	 * Construct a static iterable for the specified collection.
-	 * Use the specified mutator to remove objects from the
+	 * Use the specified remover to remove objects from the
 	 * original collection.
 	 */
-	public FixedCloneIterable(Collection<? extends E> collection, CloneIterator.Mutator<E> mutator) {
-		super();
+	public StaticCloneIterable(Collection<? extends E> collection, CloneIterator.Remover<E> remover) {
+		super(remover);
 		this.array = collection.toArray();
-		this.mutator = mutator;
 	}
 
 
 	// ********** Iterable implementation **********
 
 	public Iterator<E> iterator() {
-		return new LocalCloneIterator<E>(this.mutator, this.array);
+		return new LocalCloneIterator<E>(this.remover, this.array);
 	}
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this);
+		return StringTools.buildToStringFor(this, Arrays.toString(this.array));
 	}
 
 
@@ -86,8 +89,8 @@ public class FixedCloneIterable<E>
 	 * provide access to "internal" constructor
 	 */
 	protected static class LocalCloneIterator<E> extends CloneIterator<E> {
-		protected LocalCloneIterator(Mutator<E> mutator, Object[] array) {
-			super(mutator, array);
+		protected LocalCloneIterator(Remover<E> remover, Object[] array) {
+			super(remover, array);
 		}
 	}
 

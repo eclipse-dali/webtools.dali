@@ -29,8 +29,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.HashBag;
-import org.eclipse.jpt.utility.internal.iterables.CloneIterable;
-import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
+import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.jst.j2ee.model.internal.validation.ValidationCancelledException;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -112,11 +111,11 @@ public class GenericJarFile
 	}
 
 	public Iterator<JavaPersistentType> javaPersistentTypes() {
-		return new CloneIterator<JavaPersistentType>(this.javaPersistentTypes);
+		return this.getJavaPersistentTypes().iterator();
 	}
 
 	protected Iterable<JavaPersistentType> getJavaPersistentTypes() {
-		return new CloneIterable<JavaPersistentType>(this.javaPersistentTypes);
+		return new LiveCloneIterable<JavaPersistentType>(this.javaPersistentTypes);
 	}
 
 	public int javaPersistentTypesSize() {
@@ -198,6 +197,7 @@ public class GenericJarFile
 		if (reporter.isCancelled()) {
 			throw new ValidationCancelledException();
 		}
+		// TODO validate 'javaPersistentTypes'
 	}
 
 }

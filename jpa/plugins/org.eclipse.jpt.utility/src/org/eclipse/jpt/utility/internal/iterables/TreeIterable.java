@@ -89,7 +89,7 @@ public class TreeIterable<E>
 	public TreeIterable(Iterable<? extends E> roots) {
 		super();
 		this.roots = roots;
-		this.midwife = new DefaultMidwife();
+		this.midwife = this.buildDefaultMidwife();
 	}
 
 	/**
@@ -100,6 +100,10 @@ public class TreeIterable<E>
 		super();
 		this.roots = roots;
 		this.midwife = midwife;
+	}
+
+	protected TreeIterator.Midwife<E> buildDefaultMidwife() {
+		return new DefaultMidwife();
 	}
 
 	public Iterator<E> iterator() {
@@ -125,7 +129,7 @@ public class TreeIterable<E>
 
 	//********** default midwife **********
 
-	class DefaultMidwife implements TreeIterator.Midwife<E> {
+	protected class DefaultMidwife implements TreeIterator.Midwife<E> {
 		public Iterator<? extends E> children(E node) {
 			return TreeIterable.this.children(node);
 		}

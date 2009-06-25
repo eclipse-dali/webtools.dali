@@ -61,5 +61,5 @@ public class ArrayIterable<E>
 	public String toString() {
 		return StringTools.buildToStringFor(this, Arrays.toString(this.array));
 	}
-	
+
 }

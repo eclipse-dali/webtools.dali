@@ -9,13 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.tests.internal.iterables;
 
-import java.util.Iterator;
-import java.util.NoSuchElementException;
-
 import junit.framework.TestCase;
 
 import org.eclipse.jpt.utility.internal.iterables.ArrayIterable;
-import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
 public class ArrayIterableTests extends TestCase {
@@ -24,49 +20,11 @@ public class ArrayIterableTests extends TestCase {
 		super(name);
 	}
 
-	public void testHasNext() {
-		int i = 0;
-		for (Iterator<String> stream = this.buildIterator(); stream.hasNext();) {
-			stream.next();
-			i++;
+	public void testIterator() {
+		int i = 1;
+		for (String string : this.buildIterable()) {
+			assertEquals(i++, Integer.parseInt(string));
 		}
-		assertEquals(this.buildArray().length, i);
-	}
-
-	public void testNext() {
-		int i = 0;
-		for (Iterator<String> stream = this.buildIterator(); stream.hasNext();) {
-			assertEquals("bogus element", ++i, Integer.parseInt(stream.next()));
-		}
-	}
-
-	public void testNoSuchElementException() {
-		boolean exCaught = false;
-		Iterator<String> stream = this.buildIterator();
-		String string = null;
-		while (stream.hasNext()) {
-			string = stream.next();
-		}
-		try {
-			string = stream.next();
-		} catch (NoSuchElementException ex) {
-			exCaught = true;
-		}
-		assertTrue("NoSuchElementException not thrown: " + string, exCaught);
-	}
-
-	public void testUnsupportedOperationException() {
-		boolean exCaught = false;
-		for (Iterator<String> stream = this.buildIterator(); stream.hasNext();) {
-			if (stream.next().equals("3")) {
-				try {
-					stream.remove();
-				} catch (UnsupportedOperationException ex) {
-					exCaught = true;
-				}
-			}
-		}
-		assertTrue("UnsupportedOperationException not thrown", exCaught);
 	}
 
 	public void testIllegalArgumentException() {
@@ -76,54 +34,34 @@ public class ArrayIterableTests extends TestCase {
 		this.triggerIllegalArgumentException(0, 9);
 	}
 
-	public void testGenerics() {
-		Integer[] integers = new Integer[3];
-		integers[0] = new Integer(0);
-		integers[1] = new Integer(1);
-		integers[2] = new Integer(2);
-		int i = 0;
-		for (Iterator<Number> stream = new ArrayIterator<Number>(integers); stream.hasNext();) {
-			assertEquals(i++, stream.next().intValue());
-		}
-		assertEquals(integers.length, i);
-	}
-
-	public void testVarargs() {
-		int i = 0;
-		for (Iterator<Number> stream = new ArrayIterator<Number>(new Integer(0), new Integer(1), new Integer(2)); stream.hasNext();) {
-			assertEquals(i++, stream.next().intValue());
-		}
-		assertEquals(3, i);
-	}
-
-	public void triggerIllegalArgumentException(int start, int length) {
+	private void triggerIllegalArgumentException(int start, int length) {
 		boolean exCaught = false;
-		Iterator<String> stream = null;
 		try {
-			stream = this.buildIterator(start, length);
+			Iterable<String> iterable = this.buildIterable(start, length);
+			fail("bogus iterable: " + iterable);
 		} catch (IllegalArgumentException ex) {
 			exCaught = true;
 		}
-		assertTrue("IllegalArgumentException not thrown: " + stream, exCaught);
+		assertTrue(exCaught);
 	}
 
-	Iterator<String> buildIterator() {
-		return this.buildIterable(this.buildArray()).iterator();
+	private Iterable<String> buildIterable() {
+		return this.buildIterable(this.buildArray());
 	}
 
-	Iterable<String> buildIterable(String[] array) {
+	private Iterable<String> buildIterable(String[] array) {
 		return new ArrayIterable<String>(array);
 	}
 
-	Iterator<String> buildIterator(int start, int length) {
-		return this.buildIterable(this.buildArray(), start, length).iterator();
+	private Iterable<String> buildIterable(int start, int length) {
+		return this.buildIterable(this.buildArray(), start, length);
 	}
 
-	Iterable<String> buildIterable(String[] array, int start, int length) {
+	private Iterable<String> buildIterable(String[] array, int start, int length) {
 		return new ArrayIterable<String>(array, start, length);
 	}
 
-	String[] buildArray() {
+	private String[] buildArray() {
 		return new String[] { "1", "2", "3", "4", "5", "6", "7", "8" };
 	}
 

@@ -107,7 +107,7 @@ public class GraphIterable<E>
 	public GraphIterable(Iterable<? extends E> roots) {
 		super();
 		this.roots = roots;
-		this.misterRogers = new DefaultMisterRogers();
+		this.misterRogers = this.buildDefaultMisterRogers();
 	}
 
 	/**
@@ -118,6 +118,10 @@ public class GraphIterable<E>
 		super();
 		this.roots = roots;
 		this.misterRogers = misterRogers;
+	}
+
+	protected GraphIterator.MisterRogers<E> buildDefaultMisterRogers() {
+		return new DefaultMisterRogers();
 	}
 
 	public Iterator<E> iterator() {
@@ -143,7 +147,7 @@ public class GraphIterable<E>
 
 	//********** default Mr. Rogers **********
 
-	class DefaultMisterRogers implements GraphIterator.MisterRogers<E> {
+	protected class DefaultMisterRogers implements GraphIterator.MisterRogers<E> {
 		public Iterator<? extends E> neighbors(E node) {
 			return GraphIterable.this.neighbors(node);
 		}

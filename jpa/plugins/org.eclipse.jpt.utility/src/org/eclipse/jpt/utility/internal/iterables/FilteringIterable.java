@@ -18,7 +18,7 @@ import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 /**
  * A <code>FilteringIterable</code> wraps another <code>Iterable</code>
  * and uses a <code>Filter</code> to determine which elements in the
- * nested iterable's iterator are to be returned by calls to <code>next()</code>.
+ * nested iterable are to be returned by the iterable's iterator.
  * <p>
  * As an alternative to building a <code>Filter</code>, a subclass
  * of <code>FilteringIterable</code> can override the
@@ -43,7 +43,7 @@ public class FilteringIterable<E1, E2>
 	public FilteringIterable(Iterable<? extends E1> iterable) {
 		super();
 		this.iterable = iterable;
-		this.filter = new DefaultFilter();
+		this.filter = this.buildDefaultFilter();
 	}
 
 	/**
@@ -54,6 +54,10 @@ public class FilteringIterable<E1, E2>
 		super();
 		this.iterable = iterable;
 		this.filter = filter;
+	}
+
+	protected Filter<E1> buildDefaultFilter() {
+		return new DefaultFilter();
 	}
 
 	public Iterator<E2> iterator() {
@@ -81,7 +85,7 @@ public class FilteringIterable<E1, E2>
 
 	//********** default filter **********
 
-	class DefaultFilter implements Filter<E1> {
+	protected class DefaultFilter implements Filter<E1> {
 		public boolean accept(E1 o) {
 			return FilteringIterable.this.accept(o);
 		}

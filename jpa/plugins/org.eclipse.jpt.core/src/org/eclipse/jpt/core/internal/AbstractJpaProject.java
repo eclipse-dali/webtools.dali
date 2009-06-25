@@ -64,7 +64,7 @@ import org.eclipse.jpt.utility.CommandExecutor;
 import org.eclipse.jpt.utility.internal.BitTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.ThreadLocalCommandExecutor;
-import org.eclipse.jpt.utility.internal.iterables.CloneIterable;
+import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
@@ -439,7 +439,7 @@ public abstract class AbstractJpaProject
 	}
 
 	protected Iterable<JpaFile> getJpaFiles() {
-		return new CloneIterable<JpaFile>(this.jpaFiles);  // read-only
+		return new LiveCloneIterable<JpaFile>(this.jpaFiles);  // read-only
 	}
 
 	public int jpaFilesSize() {
@@ -552,16 +552,17 @@ public abstract class AbstractJpaProject
 	}
 
 	protected JavaResourcePersistentType buildSourceExternalJavaResourcePersistentType(IType jdtType) {
-		String jdtTypeName = jdtType.getFullyQualifiedName('.');
-		JavaResourceCompilationUnit jrcu = this.addExternalJavaResourceCompilationUnit(jdtType.getCompilationUnit());
+		JavaResourceCompilationUnit jrcu = this.getExternalJavaResourceCompilationUnit(jdtType.getCompilationUnit());
+		String jdtTypeName = jdtType.getFullyQualifiedName('.');  // JDT member type names use '$'
 		for (Iterator<JavaResourcePersistentType> stream = jrcu.persistentTypes(); stream.hasNext(); ) {
 			JavaResourcePersistentType jrpt = stream.next();
 			if (jrpt.getQualifiedName().equals(jdtTypeName)) {
 				return jrpt;
 			}
 		}
-		// seems like we should never get here...
-		JptCorePlugin.log("missing type: " + jdtTypeName); //$NON-NLS-1$
+		// we can get here if the project JRE is removed;
+		// see SourceCompilationUnit#getPrimaryType(CompilationUnit)
+		// bug 225332
 		return null;
 	}
 
@@ -580,11 +581,25 @@ public abstract class AbstractJpaProject
 	}
 
 	protected Iterable<JavaResourceCompilationUnit> getExternalJavaResourceCompilationUnits() {
-		return new CloneIterable<JavaResourceCompilationUnit>(this.externalJavaResourceCompilationUnits);  // read-only
+		return new LiveCloneIterable<JavaResourceCompilationUnit>(this.externalJavaResourceCompilationUnits);  // read-only
 	}
 
 	public int externalJavaResourceCompilationUnitsSize() {
 		return this.externalJavaResourceCompilationUnits.size();
+	}
+
+	/**
+	 * Return the resource model compilation unit corresponding to the specified
+	 * JDT compilation unit. If it does not exist, build it.
+	 */
+	protected JavaResourceCompilationUnit getExternalJavaResourceCompilationUnit(ICompilationUnit jdtCompilationUnit) {
+		for (JavaResourceCompilationUnit jrcu : this.getExternalJavaResourceCompilationUnits()) {
+			if (jrcu.getCompilationUnit().equals(jdtCompilationUnit)) {
+				// we will get here if the JRCU could not build its persistent type...
+				return jrcu;
+			}
+		}
+		return this.addExternalJavaResourceCompilationUnit(jdtCompilationUnit);
 	}
 
 	/**
@@ -640,8 +655,9 @@ public abstract class AbstractJpaProject
 
 	public JpaXmlResource getPersistenceXmlResource() {
 		return (JpaXmlResource) this.getResourceModel(
-			JptCorePlugin.DEFAULT_PERSISTENCE_XML_FILE_PATH,
-			JptCorePlugin.PERSISTENCE_FILE_CONTENT_TYPE);
+				JptCorePlugin.DEFAULT_PERSISTENCE_XML_FILE_PATH,
+				JptCorePlugin.PERSISTENCE_FILE_CONTENT_TYPE
+			);
 	}
 
 	public JpaXmlResource getDefaultOrmXmlResource() {
@@ -649,9 +665,7 @@ public abstract class AbstractJpaProject
 	}
 
 	public JpaXmlResource getMappingFileXmlResource(String fileName) {
-		return (JpaXmlResource) this.getResourceModel(
-			fileName, 
-			JptCorePlugin.MAPPING_FILE_CONTENT_TYPE);
+		return (JpaXmlResource) this.getResourceModel(fileName, JptCorePlugin.MAPPING_FILE_CONTENT_TYPE);
 	}
 
 	/**
@@ -1144,7 +1158,8 @@ public abstract class AbstractJpaProject
 
 	/**
 	 * external resource delta visitor callback
-	 * Return true if a 
+	 * Return true if an "external" Java resource compilation unit
+	 * was added or removed.
 	 */
 	protected boolean synchronizeExternalFiles(IFile file, int deltaKind) {
 		switch (deltaKind) {

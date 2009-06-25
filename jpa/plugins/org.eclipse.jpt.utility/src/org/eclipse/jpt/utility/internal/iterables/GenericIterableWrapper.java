@@ -27,7 +27,8 @@ public class GenericIterableWrapper<E>
 	@SuppressWarnings("unchecked")
 	public GenericIterableWrapper(Iterable<? extends E> iterable) {
 		super();
-		// this should be a safe cast - the iterator will only ever return E from #next()
+		// this should be a safe cast - the iterator will only ever
+		// return E (or a sub-type) from #next()
 		this.iterable = (Iterable<E>) iterable;
 	}
 

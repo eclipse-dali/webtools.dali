@@ -19,8 +19,7 @@ import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JpaResourceModel;
 import org.eclipse.jpt.core.JpaStructureNode;
-import org.eclipse.jpt.utility.internal.iterables.CloneIterable;
-import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
+import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
 
 /**
  * The transition between a JPA project and the resource model associated
@@ -100,11 +99,11 @@ public class GenericJpaFile
 	// ********** root structure nodes **********
 
 	public Iterator<JpaStructureNode> rootStructureNodes() {
-		return new CloneIterator<JpaStructureNode>(this.rootStructureNodes.values());
+		return this.getRootStructureNodes().iterator();
 	}
 
 	protected Iterable<JpaStructureNode> getRootStructureNodes() {
-		return new CloneIterable<JpaStructureNode>(this.rootStructureNodes.values());
+		return new LiveCloneIterable<JpaStructureNode>(this.rootStructureNodes.values());
 	}
 
 	public int rootStructureNodesSize() {

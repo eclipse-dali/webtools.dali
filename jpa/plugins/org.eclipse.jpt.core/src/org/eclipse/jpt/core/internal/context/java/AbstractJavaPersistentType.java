@@ -39,7 +39,7 @@ import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.HashBag;
-import org.eclipse.jpt.utility.internal.iterables.CloneIterable;
+import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.utility.internal.iterators.ChainIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
@@ -208,7 +208,7 @@ public abstract class AbstractJavaPersistentType
 	}
 	
 	protected Iterable<JavaPersistentAttribute> getAttributes() {
-		return new CloneIterable<JavaPersistentAttribute>(this.attributes);
+		return new LiveCloneIterable<JavaPersistentAttribute>(this.attributes);
 	}
 	
 	public int attributesSize() {

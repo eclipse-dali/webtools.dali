@@ -46,7 +46,7 @@ public class ChainIterable<E>
 	public ChainIterable(E startLink) {
 		super();
 		this.startLink = startLink;
-		this.linker = new DefaultLinker();
+		this.linker = this.buildDefaultLinker();
 	}
 
 	/**
@@ -57,6 +57,10 @@ public class ChainIterable<E>
 		super();
 		this.startLink = startLink;
 		this.linker = linker;
+	}
+
+	protected ChainIterator.Linker<E> buildDefaultLinker() {
+		return new DefaultLinker();
 	}
 
 	public Iterator<E> iterator() {
@@ -82,7 +86,7 @@ public class ChainIterable<E>
 
 	//********** default linker **********
 
-	class DefaultLinker implements ChainIterator.Linker<E> {
+	protected class DefaultLinker implements ChainIterator.Linker<E> {
 		public E nextLink(E currentLink) {
 			return ChainIterable.this.nextLink(currentLink);
 		}

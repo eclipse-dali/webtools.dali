@@ -35,7 +35,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.utility.jdt.Type;
 import org.eclipse.jpt.utility.MethodSignature;
 import org.eclipse.jpt.utility.internal.Counter;
-import org.eclipse.jpt.utility.internal.iterables.CloneIterable;
+import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
@@ -324,11 +324,11 @@ final class SourcePersistentType
 	// ********** types **********
 
 	public Iterator<JavaResourcePersistentType> types() {
-		return new CloneIterator<JavaResourcePersistentType>(this.types);  // read-only
+		return this.getTypes().iterator();
 	}
 
 	private Iterable<JavaResourcePersistentType> getTypes() {
-		return new CloneIterable<JavaResourcePersistentType>(this.types);  // read-only
+		return new LiveCloneIterable<JavaResourcePersistentType>(this.types);  // read-only
 	}
 
 	public Iterator<JavaResourcePersistentType> allTypes() {
@@ -365,11 +365,11 @@ final class SourcePersistentType
 	// ********** fields **********
 
 	public Iterator<JavaResourcePersistentAttribute> fields() {
-		return new CloneIterator<JavaResourcePersistentAttribute>(this.fields);
+		return this.getFields().iterator();
 	}
 
 	private Iterable<JavaResourcePersistentAttribute> getFields() {
-		return new CloneIterable<JavaResourcePersistentAttribute>(this.fields);
+		return new LiveCloneIterable<JavaResourcePersistentAttribute>(this.fields);
 	}
 
 	public Iterator<JavaResourcePersistentAttribute> persistableFields() {
@@ -406,11 +406,11 @@ final class SourcePersistentType
 	// ********** methods **********
 
 	public Iterator<JavaResourcePersistentAttribute> methods() {
-		return new CloneIterator<JavaResourcePersistentAttribute>(this.methods);
+		return this.getMethods().iterator();
 	}
 
 	private Iterable<JavaResourcePersistentAttribute> getMethods() {
-		return new CloneIterable<JavaResourcePersistentAttribute>(this.methods);
+		return new LiveCloneIterable<JavaResourcePersistentAttribute>(this.methods);
 	}
 
 	public Iterator<JavaResourcePersistentAttribute> persistableProperties() {

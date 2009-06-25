@@ -42,7 +42,7 @@ public class TransformationIterable<E1, E2>
 	public TransformationIterable(Iterable<? extends E1> iterable) {
 		super();
 		this.iterable = iterable;
-		this.transformer = new DefaultTransformer();
+		this.transformer = this.buildDefaultTransformer();
 	}
 
 	/**
@@ -53,6 +53,10 @@ public class TransformationIterable<E1, E2>
 		super();
 		this.iterable = iterable;
 		this.transformer = transformer;
+	}
+
+	protected Transformer<E1, ? extends E2> buildDefaultTransformer() {
+		return new DefaultTransformer();
 	}
 
 	public Iterator<E2> iterator() {
@@ -75,7 +79,7 @@ public class TransformationIterable<E1, E2>
 
 	//********** default linker **********
 
-	class DefaultTransformer implements Transformer<E1, E2> {
+	protected class DefaultTransformer implements Transformer<E1, E2> {
 		public E2 transform(E1 o) {
 			return TransformationIterable.this.transform(o);
 		}
