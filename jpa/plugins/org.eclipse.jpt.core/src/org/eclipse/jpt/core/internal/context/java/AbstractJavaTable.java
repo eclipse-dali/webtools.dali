@@ -9,10 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.ListIterator;
+import java.util.Vector;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.Table;
@@ -35,7 +34,7 @@ import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 
 /**
- * 
+ * Java table
  */
 public abstract class AbstractJavaTable
 	extends AbstractJavaJpaContextNode
@@ -46,18 +45,17 @@ public abstract class AbstractJavaTable
 
 	protected String specifiedSchema;
 	protected String defaultSchema;
-	
+
 	protected String specifiedCatalog;
 	protected String defaultCatalog;
 
-	protected final List<JavaUniqueConstraint> uniqueConstraints;
+	protected final Vector<JavaUniqueConstraint> uniqueConstraints = new Vector<JavaUniqueConstraint>();
 
 
 	// ********** constructor **********
 
 	protected AbstractJavaTable(JavaJpaContextNode parent) {
 		super(parent);
-		this.uniqueConstraints = new ArrayList<JavaUniqueConstraint>();
 	}
 
 
@@ -67,19 +65,19 @@ public abstract class AbstractJavaTable
 	 * Return the Java table annotation. Do not return null if the Java
 	 * annotation does not exist; return a null table annotation instead.
 	 */
-	protected abstract BaseTableAnnotation getResourceTable();
+	protected abstract BaseTableAnnotation getTableAnnotation();
 
 	/**
-	 * Return the fully qualified name of the Java annotation.
+	 * Return the name of the Java annotation.
 	 */
 	protected abstract String getAnnotationName();
 
 	protected abstract String buildDefaultName();
 
 	protected abstract String buildDefaultSchema();
-	
+
 	protected abstract String buildDefaultCatalog();
-	
+
 
 	// ********** name **********
 
@@ -94,10 +92,10 @@ public abstract class AbstractJavaTable
 	public void setSpecifiedName(String name) {
 		String old = this.specifiedName;
 		this.specifiedName = name;
-		this.getResourceTable().setName(name);
+		this.getTableAnnotation().setName(name);
 		this.firePropertyChanged(SPECIFIED_NAME_PROPERTY, old, name);
 	}
-	
+
 	/**
 	 * internal setter used only for updating from the resource model.
 	 * There were problems with InvalidThreadAccess exceptions in the UI
@@ -130,14 +128,14 @@ public abstract class AbstractJavaTable
 	public String getSpecifiedSchema() {
 		return this.specifiedSchema;
 	}
-	
+
 	public void setSpecifiedSchema(String schema) {
 		String old = this.specifiedSchema;
 		this.specifiedSchema = schema;
-		this.getResourceTable().setSchema(schema);
+		this.getTableAnnotation().setSchema(schema);
 		this.firePropertyChanged(SPECIFIED_SCHEMA_PROPERTY, old, schema);
 	}
-	
+
 	/**
 	 * internal setter used only for updating from the resource model.
 	 * There were problems with InvalidThreadAccess exceptions in the UI
@@ -153,13 +151,13 @@ public abstract class AbstractJavaTable
 	public String getDefaultSchema() {
 		return this.defaultSchema;
 	}
-	
+
 	protected void setDefaultSchema(String schema) {
 		String old = this.defaultSchema;
 		this.defaultSchema = schema;
 		this.firePropertyChanged(DEFAULT_SCHEMA_PROPERTY, old, schema);
 	}
-	
+
 
 	// ********** catalog **********
 
@@ -174,7 +172,7 @@ public abstract class AbstractJavaTable
 	public void setSpecifiedCatalog(String catalog) {
 		String old = this.specifiedCatalog;
 		this.specifiedCatalog = catalog;
-		this.getResourceTable().setCatalog(catalog);
+		this.getTableAnnotation().setCatalog(catalog);
 		this.firePropertyChanged(SPECIFIED_CATALOG_PROPERTY, old, catalog);
 	}
 
@@ -202,50 +200,79 @@ public abstract class AbstractJavaTable
 
 
 	// ********** unique constraints **********
-	
+
 	public @SuppressWarnings("unchecked") ListIterator<JavaUniqueConstraint> uniqueConstraints() {
 		return new CloneListIterator<JavaUniqueConstraint>(this.uniqueConstraints);
 	}
-	
+
 	public int uniqueConstraintsSize() {
 		return this.uniqueConstraints.size();
 	}
-	
+
 	public JavaUniqueConstraint addUniqueConstraint(int index) {
 		JavaUniqueConstraint uniqueConstraint = getJpaFactory().buildJavaUniqueConstraint(this, this);
 		this.uniqueConstraints.add(index, uniqueConstraint);
-		UniqueConstraintAnnotation uniqueConstraintAnnotation = this.getResourceTable().addUniqueConstraint(index);
+		UniqueConstraintAnnotation uniqueConstraintAnnotation = this.getTableAnnotation().addUniqueConstraint(index);
 		uniqueConstraint.initialize(uniqueConstraintAnnotation);
 		fireItemAdded(UNIQUE_CONSTRAINTS_LIST, index, uniqueConstraint);
 		return uniqueConstraint;
 	}
-		
+
 	public void removeUniqueConstraint(UniqueConstraint uniqueConstraint) {
 		this.removeUniqueConstraint(this.uniqueConstraints.indexOf(uniqueConstraint));
 	}
 
 	public void removeUniqueConstraint(int index) {
 		JavaUniqueConstraint removedUniqueConstraint = this.uniqueConstraints.remove(index);
-		this.getResourceTable().removeUniqueConstraint(index);
+		this.getTableAnnotation().removeUniqueConstraint(index);
 		fireItemRemoved(UNIQUE_CONSTRAINTS_LIST, index, removedUniqueConstraint);
 	}
-	
+
 	public void moveUniqueConstraint(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.uniqueConstraints, targetIndex, sourceIndex);
-		this.getResourceTable().moveUniqueConstraint(targetIndex, sourceIndex);
-		fireItemMoved(UNIQUE_CONSTRAINTS_LIST, targetIndex, sourceIndex);		
+		this.getTableAnnotation().moveUniqueConstraint(targetIndex, sourceIndex);
+		fireItemMoved(UNIQUE_CONSTRAINTS_LIST, targetIndex, sourceIndex);
 	}
-	
+
 	protected void addUniqueConstraint(int index, JavaUniqueConstraint uniqueConstraint) {
 		addItemToList(index, uniqueConstraint, this.uniqueConstraints, UNIQUE_CONSTRAINTS_LIST);
 	}
-	
+
 	protected void addUniqueConstraint(JavaUniqueConstraint uniqueConstraint) {
 		this.addUniqueConstraint(this.uniqueConstraints.size(), uniqueConstraint);
 	}
-	
+
 	protected void removeUniqueConstraint_(JavaUniqueConstraint uniqueConstraint) {
 		removeItemFromList(uniqueConstraint, this.uniqueConstraints, UNIQUE_CONSTRAINTS_LIST);
+	}
+
+	protected void initializeUniqueConstraints(BaseTableAnnotation baseTableAnnotation) {
+		for (Iterator<UniqueConstraintAnnotation> stream = baseTableAnnotation.uniqueConstraints(); stream.hasNext(); ) {
+			this.uniqueConstraints.add(buildUniqueConstraint(stream.next()));
+		}
+	}
+
+	protected void updateUniqueConstraints(BaseTableAnnotation baseTableAnnotation) {
+		ListIterator<UniqueConstraintAnnotation> constraintAnnotations = baseTableAnnotation.uniqueConstraints();
+		ListIterator<JavaUniqueConstraint> constraints = this.uniqueConstraints();
+		while (constraints.hasNext()) {
+			JavaUniqueConstraint uniqueConstraint = constraints.next();
+			if (constraintAnnotations.hasNext()) {
+				uniqueConstraint.update(constraintAnnotations.next());
+			} else {
+				this.removeUniqueConstraint_(uniqueConstraint);
+			}
+		}
+
+		while (constraintAnnotations.hasNext()) {
+			this.addUniqueConstraint(this.buildUniqueConstraint(constraintAnnotations.next()));
+		}
+	}
+
+	protected JavaUniqueConstraint buildUniqueConstraint(UniqueConstraintAnnotation uniqueConstraintAnnotation) {
+		JavaUniqueConstraint uniqueConstraint = this.getJpaFactory().buildJavaUniqueConstraint(this, this);
+		uniqueConstraint.initialize(uniqueConstraintAnnotation);
+		return uniqueConstraint;
 	}
 
 
@@ -256,27 +283,27 @@ public abstract class AbstractJavaTable
 	}
 
 	protected TextRange getNameTextRange(CompilationUnit astRoot) {
-		return this.getTextRange(this.getResourceTable().getNameTextRange(astRoot), astRoot);
+		return this.getTextRange(this.getTableAnnotation().getNameTextRange(astRoot), astRoot);
 	}
 
 	protected boolean nameTouches(int pos, CompilationUnit astRoot) {
-		return this.getResourceTable().nameTouches(pos, astRoot);
+		return this.getTableAnnotation().nameTouches(pos, astRoot);
 	}
 
 	protected TextRange getSchemaTextRange(CompilationUnit astRoot) {
-		return this.getTextRange(this.getResourceTable().getSchemaTextRange(astRoot), astRoot);
+		return this.getTextRange(this.getTableAnnotation().getSchemaTextRange(astRoot), astRoot);
 	}
 
 	protected boolean schemaTouches(int pos, CompilationUnit astRoot) {
-		return this.getResourceTable().schemaTouches(pos, astRoot);
+		return this.getTableAnnotation().schemaTouches(pos, astRoot);
 	}
 
 	protected TextRange getCatalogTextRange(CompilationUnit astRoot) {
-		return this.getTextRange(this.getResourceTable().getCatalogTextRange(astRoot), astRoot);
+		return this.getTextRange(this.getTableAnnotation().getCatalogTextRange(astRoot), astRoot);
 	}
 
 	protected boolean catalogTouches(int pos, CompilationUnit astRoot) {
-		return this.getResourceTable().catalogTouches(pos, astRoot);
+		return this.getTableAnnotation().catalogTouches(pos, astRoot);
 	}
 
 
@@ -295,12 +322,6 @@ public abstract class AbstractJavaTable
 		this.initializeUniqueConstraints(baseTableAnnotation);
 	}
 
-	protected void initializeUniqueConstraints(BaseTableAnnotation baseTableAnnotation) {
-		for (UniqueConstraintAnnotation uniqueConstraintAnnotation : CollectionTools.iterable(baseTableAnnotation.uniqueConstraints())) {
-			this.uniqueConstraints.add(buildUniqueConstraint(uniqueConstraintAnnotation));
-		}
-	}
-	
 	protected void update(BaseTableAnnotation baseTableAnnotation) {
 		this.setDefaultName(this.buildDefaultName());
 		this.setSpecifiedName_(baseTableAnnotation.getName());
@@ -313,33 +334,9 @@ public abstract class AbstractJavaTable
 
 		this.updateUniqueConstraints(baseTableAnnotation);
 	}
-	
-	protected void updateUniqueConstraints(BaseTableAnnotation baseTableAnnotation) {
-		ListIterator<UniqueConstraintAnnotation> resourceConstraints = baseTableAnnotation.uniqueConstraints();
-		ListIterator<JavaUniqueConstraint> contextConstraints = this.uniqueConstraints();
-		while (contextConstraints.hasNext()) {
-			JavaUniqueConstraint uniqueConstraint = contextConstraints.next();
-			if (resourceConstraints.hasNext()) {
-				uniqueConstraint.update(resourceConstraints.next());
-			}
-			else {
-				removeUniqueConstraint_(uniqueConstraint);
-			}
-		}
-		
-		while (resourceConstraints.hasNext()) {
-			addUniqueConstraint(buildUniqueConstraint(resourceConstraints.next()));
-		}
-	}
-
-	protected JavaUniqueConstraint buildUniqueConstraint(UniqueConstraintAnnotation uniqueConstraintAnnotation) {
-		JavaUniqueConstraint uniqueConstraint = getJpaFactory().buildJavaUniqueConstraint(this, this);
-		uniqueConstraint.initialize(uniqueConstraintAnnotation);
-		return uniqueConstraint;
-	}
 
 
-	// ********** database stuff **********
+	// ********** database **********
 
 	public org.eclipse.jpt.db.Table getDbTable() {
 		Schema dbSchema = this.getDbSchema();
@@ -392,12 +389,12 @@ public abstract class AbstractJavaTable
 		org.eclipse.jpt.db.Table dbTable = this.getDbTable();
 		return (dbTable != null) ? dbTable.sortedColumnIdentifiers() : EmptyIterator.<String>instance();
 	}
-	
+
 
 	// ********** validation **********
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.getTextRange(this.getResourceTable().getTextRange(astRoot), astRoot);
+		return this.getTextRange(this.getTableAnnotation().getTextRange(astRoot), astRoot);
 	}
 
 
