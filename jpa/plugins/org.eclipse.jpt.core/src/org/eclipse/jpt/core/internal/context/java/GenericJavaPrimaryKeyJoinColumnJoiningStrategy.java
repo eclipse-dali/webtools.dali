@@ -1,19 +1,19 @@
 /*******************************************************************************
- *  Copyright (c) 2009  Oracle. 
- *  All rights reserved.  This program and the accompanying materials are 
- *  made available under the terms of the Eclipse Public License v1.0 which 
- *  accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2009 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.Entity;
@@ -42,15 +42,20 @@ public class GenericJavaPrimaryKeyJoinColumnJoiningStrategy
 	protected JavaResourcePersistentAttribute resourcePersistentAttribute;
 	
 	protected final List<JavaPrimaryKeyJoinColumn> primaryKeyJoinColumns;
+	protected final JavaJoinColumn.Owner joinColumnOwner;
 	
 	
 	public GenericJavaPrimaryKeyJoinColumnJoiningStrategy(
 			JavaPrimaryKeyJoinColumnEnabledRelationshipReference parent) {
 		super(parent);
 		this.primaryKeyJoinColumns = new ArrayList<JavaPrimaryKeyJoinColumn>();
+		this.joinColumnOwner = this.buildJoinColumnOwner();
 	}
 	
-	
+	protected JavaJoinColumn.Owner buildJoinColumnOwner() {
+		return new JoinColumnOwner();
+	}
+
 	@Override
 	public JavaPrimaryKeyJoinColumnEnabledRelationshipReference getParent() {
 		return (JavaPrimaryKeyJoinColumnEnabledRelationshipReference) super.getParent();
@@ -81,7 +86,7 @@ public class GenericJavaPrimaryKeyJoinColumnJoiningStrategy
 	
 	public JavaPrimaryKeyJoinColumn addPrimaryKeyJoinColumn(int index) {
 		JavaPrimaryKeyJoinColumn pkJoinColumn = 
-			getJpaFactory().buildJavaPrimaryKeyJoinColumn(this, createJoinColumnOwner());
+			getJpaFactory().buildJavaPrimaryKeyJoinColumn(this, this.joinColumnOwner);
 		this.primaryKeyJoinColumns.add(index, pkJoinColumn);
 		PrimaryKeyJoinColumnAnnotation pkJoinColumnAnnotation = addAnnotation(index);
 		pkJoinColumn.initialize(pkJoinColumnAnnotation);
@@ -211,13 +216,9 @@ public class GenericJavaPrimaryKeyJoinColumnJoiningStrategy
 	protected JavaPrimaryKeyJoinColumn buildPrimaryKeyJoinColumn(
 			PrimaryKeyJoinColumnAnnotation annotation) {
 		JavaPrimaryKeyJoinColumn joinColumn = 
-			getJpaFactory().buildJavaPrimaryKeyJoinColumn(this, createJoinColumnOwner());
+			getJpaFactory().buildJavaPrimaryKeyJoinColumn(this, this.joinColumnOwner);
 		joinColumn.initialize(annotation);
 		return joinColumn;
-	}
-	
-	protected JavaJoinColumn.Owner createJoinColumnOwner() {
-		return new JoinColumnOwner();
 	}
 	
 	
@@ -246,12 +247,12 @@ public class GenericJavaPrimaryKeyJoinColumnJoiningStrategy
 	}
 	
 	
-	// **************** join column owner adapter ******************************
+	// ********** join column owner adapter **********
 
-	public class JoinColumnOwner 
+	protected class JoinColumnOwner 
 		implements JavaJoinColumn.Owner 
 	{
-		public JoinColumnOwner() {
+		protected JoinColumnOwner() {
 			super();
 		}
 		

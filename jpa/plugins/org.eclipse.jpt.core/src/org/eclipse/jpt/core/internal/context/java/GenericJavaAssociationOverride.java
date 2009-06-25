@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
@@ -39,6 +40,7 @@ public class GenericJavaAssociationOverride extends AbstractJavaOverride
 {
 
 	protected final List<JavaJoinColumn> specifiedJoinColumns;
+	protected final JavaJoinColumn.Owner joinColumnOwner;
 
 	protected final List<JavaJoinColumn> defaultJoinColumns;
 
@@ -46,7 +48,12 @@ public class GenericJavaAssociationOverride extends AbstractJavaOverride
 	public GenericJavaAssociationOverride(JavaJpaContextNode parent, AssociationOverride.Owner owner) {
 		super(parent, owner);
 		this.specifiedJoinColumns = new ArrayList<JavaJoinColumn>();
+		this.joinColumnOwner = this.buildJoinColumnOwner();
 		this.defaultJoinColumns = new ArrayList<JavaJoinColumn>();
+	}
+
+	protected JavaJoinColumn.Owner buildJoinColumnOwner() {
+		return new JoinColumnOwner();
 	}
 
 	@Override
@@ -89,7 +96,7 @@ public class GenericJavaAssociationOverride extends AbstractJavaOverride
 	}
 	
 	public JavaJoinColumn addSpecifiedJoinColumn(int index) {
-		JavaJoinColumn joinColumn = getJpaFactory().buildJavaJoinColumn(this, createJoinColumnOwner());
+		JavaJoinColumn joinColumn = getJpaFactory().buildJavaJoinColumn(this, this.joinColumnOwner);
 		this.specifiedJoinColumns.add(index, joinColumn);
 		JoinColumnAnnotation joinColumnResource = getResourceOverride().addJoinColumn(index);
 		joinColumn.initialize(joinColumnResource);
@@ -97,10 +104,6 @@ public class GenericJavaAssociationOverride extends AbstractJavaOverride
 		return joinColumn;
 	}
 	
-	protected JavaJoinColumn.Owner createJoinColumnOwner() {
-		return new JoinColumnOwner();
-	}
-
 	protected void addSpecifiedJoinColumn(int index, JavaJoinColumn joinColumn) {
 		addItemToList(index, joinColumn, this.specifiedJoinColumns, AssociationOverride.SPECIFIED_JOIN_COLUMNS_LIST);
 	}
@@ -189,7 +192,7 @@ public class GenericJavaAssociationOverride extends AbstractJavaOverride
 	
 	
 	protected JavaJoinColumn createJoinColumn(JoinColumnAnnotation joinColumnResource) {
-		JavaJoinColumn joinColumn = getJpaFactory().buildJavaJoinColumn(this, createJoinColumnOwner());
+		JavaJoinColumn joinColumn = getJpaFactory().buildJavaJoinColumn(this, this.joinColumnOwner);
 		joinColumn.initialize(joinColumnResource);
 		return joinColumn;
 	}
@@ -288,12 +291,13 @@ public class GenericJavaAssociationOverride extends AbstractJavaOverride
 	}
 
 
-	// ********** JavaJoinColumn.Owner implementation **********
+	// ********** join column owner adapter **********
 
-	public class JoinColumnOwner implements JavaJoinColumn.Owner
+	protected class JoinColumnOwner
+		implements JavaJoinColumn.Owner
 	{
 
-		public JoinColumnOwner() {
+		protected JoinColumnOwner() {
 			super();
 		}
 

@@ -14,7 +14,7 @@ import org.eclipse.jpt.core.context.JoinTable;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 
 /**
- * 
+ * Java join table
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -22,44 +22,42 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface JavaJoinTable extends JoinTable, JavaJpaContextNode
+public interface JavaJoinTable
+	extends JoinTable, JavaJpaContextNode
 {
 	JavaRelationshipMapping getRelationshipMapping();
-	
+
 	void initialize(JavaResourcePersistentAttribute jrpa);
-	
-	/**
-	 * Update the JavaJoinTable context model object to match the JavaResourcePersistentAttribute 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
-	 */
+
 	void update(JavaResourcePersistentAttribute jrpa);
-	
-	
-	//****************** covariant overrides *******************
+
+
+	// ********** covariant overrides **********
 
 	@SuppressWarnings("unchecked")
 	ListIterator<JavaJoinColumn> joinColumns();
-	
+
 	JavaJoinColumn getDefaultJoinColumn();
-	
+
 	@SuppressWarnings("unchecked")
 	ListIterator<JavaJoinColumn> specifiedJoinColumns();
-	
+
 	JavaJoinColumn addSpecifiedJoinColumn(int index);
-	
-	
+
+
 	@SuppressWarnings("unchecked")
 	ListIterator<JavaJoinColumn> inverseJoinColumns();
-	
+
 	JavaJoinColumn getDefaultInverseJoinColumn();
-	
+
 	@SuppressWarnings("unchecked")
 	ListIterator<JavaJoinColumn> specifiedInverseJoinColumns();
-	
+
 	JavaJoinColumn addSpecifiedInverseJoinColumn(int index);
 
 	@SuppressWarnings("unchecked")
 	ListIterator<JavaUniqueConstraint> uniqueConstraints();
-	
+
 	JavaUniqueConstraint addUniqueConstraint(int index);
+
 }

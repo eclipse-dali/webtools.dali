@@ -9,10 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Vector;
 
 import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.Entity;
@@ -39,7 +39,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
- * 
+ * orm.xml secondary table
  */
 public class GenericOrmSecondaryTable
 	extends AbstractOrmTable
@@ -47,16 +47,23 @@ public class GenericOrmSecondaryTable
 {
 	protected XmlSecondaryTable secondaryTable;
 	
-	protected final List<OrmPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumns;
+	protected final Vector<OrmPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumns = new Vector<OrmPrimaryKeyJoinColumn>();
 	
 	protected OrmPrimaryKeyJoinColumn defaultPrimaryKeyJoinColumn;
 
+	protected final OrmBaseJoinColumn.Owner joinColumnOwner;
+
+
 	public GenericOrmSecondaryTable(OrmEntity parent, XmlSecondaryTable xmlSecondaryTable) {
 		super(parent);
-		this.specifiedPrimaryKeyJoinColumns = new ArrayList<OrmPrimaryKeyJoinColumn>();
-		initialize(xmlSecondaryTable);
+		this.joinColumnOwner = this.buildJoinColumnOwner();
+		this.initialize(xmlSecondaryTable);
 	}
 	
+	protected OrmBaseJoinColumn.Owner buildJoinColumnOwner() {
+		return new PrimaryKeyJoinColumnOwner();
+	}
+
 	public void initializeFrom(SecondaryTable oldSecondaryTable) {
 		super.initializeFrom(oldSecondaryTable);
 		for (PrimaryKeyJoinColumn oldPkJoinColumn : CollectionTools.iterable(oldSecondaryTable.specifiedPrimaryKeyJoinColumns())) {
@@ -136,10 +143,6 @@ public class GenericOrmSecondaryTable
 		return contextPkJoinColumn;
 	}
 	
-	protected OrmBaseJoinColumn.Owner createPrimaryKeyJoinColumnOwner() {
-		return new PrimaryKeyJoinColumnOwner();
-	}
-
 	protected void addSpecifiedPrimaryKeyJoinColumn(int index, OrmPrimaryKeyJoinColumn primaryKeyJoinColumn) {
 		addItemToList(index, primaryKeyJoinColumn, this.specifiedPrimaryKeyJoinColumns, SecondaryTable.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST);
 	}
@@ -265,7 +268,7 @@ public class GenericOrmSecondaryTable
 	}	
 
 	protected OrmPrimaryKeyJoinColumn buildPrimaryKeyJoinColumn(XmlPrimaryKeyJoinColumn resourcePkJoinColumn) {
-		return getJpaFactory().buildOrmPrimaryKeyJoinColumn(this, createPrimaryKeyJoinColumnOwner(), resourcePkJoinColumn);
+		return getJpaFactory().buildOrmPrimaryKeyJoinColumn(this, this.joinColumnOwner, resourcePkJoinColumn);
 	}
 
 	/**
@@ -340,13 +343,13 @@ public class GenericOrmSecondaryTable
 			return;
 		}
 	}
-	
+
 
 	// ********** pk join column owner adapter **********
 
-	class PrimaryKeyJoinColumnOwner implements OrmBaseJoinColumn.Owner
+	class PrimaryKeyJoinColumnOwner
+		implements OrmBaseJoinColumn.Owner
 	{
-
 		public TypeMapping getTypeMapping() {
 			return GenericOrmSecondaryTable.this.getOrmEntity();
 		}
@@ -375,7 +378,6 @@ public class GenericOrmSecondaryTable
 		}
 		
 		public TextRange getValidationTextRange() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 

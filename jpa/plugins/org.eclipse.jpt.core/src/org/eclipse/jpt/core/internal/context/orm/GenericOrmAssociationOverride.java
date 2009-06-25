@@ -9,10 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.ListIterator;
+import java.util.Vector;
 
 import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
@@ -35,28 +34,31 @@ import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 public class GenericOrmAssociationOverride extends AbstractXmlContextNode
 	implements OrmAssociationOverride
 {
-
-	protected String name;
-
-	protected final List<OrmJoinColumn> specifiedJoinColumns;
-
-	protected final List<OrmJoinColumn> defaultJoinColumns;
-
-	private final AssociationOverride.Owner owner;
+	protected final AssociationOverride.Owner owner;
 
 	protected XmlAssociationOverride resourceAssociationOverride;
 
+	protected String name;
 
-	public GenericOrmAssociationOverride(XmlContextNode parent, AssociationOverride.Owner owner, XmlAssociationOverride resourceAssociationOverride) {
+	protected final Vector<OrmJoinColumn> specifiedJoinColumns = new Vector<OrmJoinColumn>();
+	protected final OrmJoinColumn.Owner joinColumnOwner;
+
+	protected final Vector<OrmJoinColumn> defaultJoinColumns = new Vector<OrmJoinColumn>();
+
+
+	public GenericOrmAssociationOverride(XmlContextNode parent, AssociationOverride.Owner owner, XmlAssociationOverride xmlAssociationOverride) {
 		super(parent);
 		this.owner = owner;
-		this.specifiedJoinColumns = new ArrayList<OrmJoinColumn>();
-		this.defaultJoinColumns = new ArrayList<OrmJoinColumn>();
-		this.resourceAssociationOverride = resourceAssociationOverride;
-		this.name = resourceAssociationOverride.getName();
-		initializeSpecifiedJoinColumns();
+		this.resourceAssociationOverride = xmlAssociationOverride;
+		this.name = xmlAssociationOverride.getName();
+		this.joinColumnOwner = this.buildJoinColumnOwner();
+		this.initializeSpecifiedJoinColumns();
 	}
 	
+	protected OrmJoinColumn.Owner buildJoinColumnOwner() {
+		return new JoinColumnOwner();
+	}
+
 	public OrmAssociationOverride setVirtual(boolean virtual) {
 		return (OrmAssociationOverride) getOwner().setVirtual(virtual, this);
 	}
@@ -112,10 +114,6 @@ public class GenericOrmAssociationOverride extends AbstractXmlContextNode
 		return contextJoinColumn;
 	}
 	
-	protected OrmJoinColumn.Owner createJoinColumnOwner() {
-		return new JoinColumnOwner();
-	}
-
 	protected void addSpecifiedJoinColumn(int index, OrmJoinColumn joinColumn) {
 		addItemToList(index, joinColumn, this.specifiedJoinColumns, AssociationOverride.SPECIFIED_JOIN_COLUMNS_LIST);
 	}
@@ -153,9 +151,9 @@ public class GenericOrmAssociationOverride extends AbstractXmlContextNode
 		}
 	}
 
-	public void update(XmlAssociationOverride resourceAssociationOverride) {
-		this.resourceAssociationOverride = resourceAssociationOverride;
-		this.setName(resourceAssociationOverride.getName());
+	public void update(XmlAssociationOverride xao) {
+		this.resourceAssociationOverride = xao;
+		this.setName(xao.getName());
 		updateSpecifiedJoinColumns();
 	}	
 	
@@ -179,11 +177,10 @@ public class GenericOrmAssociationOverride extends AbstractXmlContextNode
 	}
 	
 	protected OrmJoinColumn buildJoinColumn(XmlJoinColumn resourceJoinColumn) {
-		return getJpaFactory().buildOrmJoinColumn(this, new JoinColumnOwner(), resourceJoinColumn);
+		return this.getJpaFactory().buildOrmJoinColumn(this, this.joinColumnOwner, resourceJoinColumn);
 	}
 
 	public TextRange getValidationTextRange() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -192,10 +189,13 @@ public class GenericOrmAssociationOverride extends AbstractXmlContextNode
 		sb.append(this.name);
 	}
 
-	class JoinColumnOwner implements OrmJoinColumn.Owner
-	{
 
-		public JoinColumnOwner() {
+	// ********** join column owner adapter **********
+
+	protected class JoinColumnOwner
+		implements OrmJoinColumn.Owner
+	{
+		protected JoinColumnOwner() {
 			super();
 		}
 
@@ -256,7 +256,6 @@ public class GenericOrmAssociationOverride extends AbstractXmlContextNode
 		}
 		
 		public TextRange getValidationTextRange() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 

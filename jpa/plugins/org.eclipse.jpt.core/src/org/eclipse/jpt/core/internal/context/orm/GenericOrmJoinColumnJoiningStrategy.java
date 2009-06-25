@@ -1,19 +1,18 @@
 /*******************************************************************************
- *  Copyright (c) 2009  Oracle. 
- *  All rights reserved.  This program and the accompanying materials are 
- *  made available under the terms of the Eclipse Public License v1.0 which 
- *  accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2009 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Vector;
 
 import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.Entity;
@@ -48,7 +47,9 @@ public class GenericOrmJoinColumnJoiningStrategy
 	
 	protected OrmJoinColumn defaultJoinColumn;
 	
-	protected final List<OrmJoinColumn> specifiedJoinColumns;
+	protected final Vector<OrmJoinColumn> specifiedJoinColumns = new Vector<OrmJoinColumn>();
+
+	protected final OrmJoinColumn.Owner joinColumnOwner;
 	
 	
 	public GenericOrmJoinColumnJoiningStrategy(
@@ -56,12 +57,15 @@ public class GenericOrmJoinColumnJoiningStrategy
 			XmlJoinColumnsMapping resource) {
 		super(parent);
 		this.resource = resource;
-		this.specifiedJoinColumns = new ArrayList<OrmJoinColumn>();
+		this.joinColumnOwner = this.buildJoinColumnOwner();
 		this.initializeSpecifiedJoinColumns();
 		this.initializeDefaultJoinColumn();
 	}
 	
-	
+	protected OrmJoinColumn.Owner buildJoinColumnOwner() {
+		return new JoinColumnOwner();
+	}
+
 	protected void initializeSpecifiedJoinColumns() {
 		if (this.resource != null) {
 			for (XmlJoinColumn resourceJoinColumn : this.resource.getJoinColumns()) {
@@ -77,7 +81,7 @@ public class GenericOrmJoinColumnJoiningStrategy
 	}
 	
 	protected OrmJoinColumn buildJoinColumn(XmlJoinColumn resourceJoinColumn) {
-		return this.getJpaFactory().buildOrmJoinColumn(this, new JoinColumnOwner(), resourceJoinColumn);
+		return this.getJpaFactory().buildOrmJoinColumn(this, this.joinColumnOwner, resourceJoinColumn);
 	}
 	
 	@Override
@@ -410,10 +414,13 @@ public class GenericOrmJoinColumnJoiningStrategy
 		return this.getRelationshipReference().getValidationTextRange();
 	}
 	
-	
-	public class JoinColumnOwner implements OrmJoinColumn.Owner 
+
+	// ********** join column owner adapter **********
+
+	protected class JoinColumnOwner
+		implements OrmJoinColumn.Owner 
 	{
-		public JoinColumnOwner() {
+		protected JoinColumnOwner() {
 			super();
 		}
 		
@@ -465,8 +472,7 @@ public class GenericOrmJoinColumnJoiningStrategy
 		}
 		
 		public String getDefaultColumnName() {
-			// TODO Auto-generated method stub
-			return null;
+			return null;  // no default
 		}
 
 		public int joinColumnsSize() {
@@ -476,5 +482,7 @@ public class GenericOrmJoinColumnJoiningStrategy
 		public TextRange getValidationTextRange() {
 			return GenericOrmJoinColumnJoiningStrategy.this.getValidationTextRange();
 		}
+
 	}
+
 }

@@ -50,14 +50,19 @@ public class GenericJavaJoinColumnJoiningStrategy
 	protected JavaJoinColumn defaultJoinColumn;
 	
 	protected final List<JavaJoinColumn> specifiedJoinColumns;
+	protected final JavaJoinColumn.Owner joinColumnOwner;
 	
 	
 	public GenericJavaJoinColumnJoiningStrategy(JavaJoinColumnEnabledRelationshipReference parent) {
 		super(parent);
 		this.specifiedJoinColumns = new ArrayList<JavaJoinColumn>();
+		this.joinColumnOwner = this.buildJoinColumnOwner();
 	}
 	
-	
+	protected JavaJoinColumn.Owner buildJoinColumnOwner() {
+		return new JoinColumnOwner();
+	}
+
 	@Override
 	public JavaJoinColumnEnabledRelationshipReference getParent() {
 		return (JavaJoinColumnEnabledRelationshipReference) super.getParent();
@@ -136,23 +141,18 @@ public class GenericJavaJoinColumnJoiningStrategy
 	}
 	
 	public JavaJoinColumn addSpecifiedJoinColumn(int index) {
-		JavaJoinColumn oldDefaultJoinColumn = this.defaultJoinColumn;
-		if (oldDefaultJoinColumn != null) {
-			//null the default join column now if one already exists.
-			//if one does not exist, there is already a specified join column.
-			//Remove it now so that it doesn't get removed during an update and
-			//cause change notifications to be sent to the UI in the wrong order
-			this.defaultJoinColumn = null;
-		}
-		JavaJoinColumn joinColumn = 
-			getJpaFactory().buildJavaJoinColumn(this, createJoinColumnOwner());
+		// Clear out the default now so it doesn't get removed during an update and
+		// cause change notifications to be sent to the UI in the wrong order.
+		JavaJoinColumn oldDefault = this.defaultJoinColumn;
+		this.defaultJoinColumn = null;
+
+		JavaJoinColumn joinColumn = this.getJpaFactory().buildJavaJoinColumn(this, this.joinColumnOwner);
 		this.specifiedJoinColumns.add(index, joinColumn);
-		JoinColumnAnnotation joinColumnAnnotation = addAnnotation(index);
+		JoinColumnAnnotation joinColumnAnnotation = this.addAnnotation(index);
 		joinColumn.initialize(joinColumnAnnotation);
-		fireItemAdded(SPECIFIED_JOIN_COLUMNS_LIST, index, joinColumn);
-		if (oldDefaultJoinColumn != null) {
-			firePropertyChanged(DEFAULT_JOIN_COLUMN_PROPERTY, oldDefaultJoinColumn, null);
-		}
+		this.fireItemAdded(SPECIFIED_JOIN_COLUMNS_LIST, index, joinColumn);
+
+		this.firePropertyChanged(DEFAULT_JOIN_COLUMN_PROPERTY, oldDefault, null);
 		return joinColumn;
 	}
 
@@ -296,13 +296,9 @@ public class GenericJavaJoinColumnJoiningStrategy
 	}
 
 	protected JavaJoinColumn buildJoinColumn(JoinColumnAnnotation joinColumnResource) {
-		JavaJoinColumn joinColumn = getJpaFactory().buildJavaJoinColumn(this, createJoinColumnOwner());
+		JavaJoinColumn joinColumn = getJpaFactory().buildJavaJoinColumn(this, this.joinColumnOwner);
 		joinColumn.initialize(joinColumnResource);
 		return joinColumn;
-	}
-	
-	protected JavaJoinColumn.Owner createJoinColumnOwner() {
-		return new JoinColumnOwner();
 	}
 	
 	
@@ -418,12 +414,12 @@ public class GenericJavaJoinColumnJoiningStrategy
 	}
 
 
-	// **************** join column owner adapter ******************************
+	// ********** join column owner adapter **********
 
-	public class JoinColumnOwner 
+	protected class JoinColumnOwner 
 		implements JavaJoinColumn.Owner 
 	{
-		public JoinColumnOwner() {
+		protected JoinColumnOwner() {
 			super();
 		}
 		

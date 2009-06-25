@@ -1,19 +1,18 @@
 /*******************************************************************************
- *  Copyright (c) 2009  Oracle. 
- *  All rights reserved.  This program and the accompanying materials are 
- *  made available under the terms of the Eclipse Public License v1.0 which 
- *  accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2009 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.ListIterator;
+import java.util.Vector;
+
 import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
@@ -41,7 +40,9 @@ public class GenericOrmPrimaryKeyJoinColumnJoiningStrategy
 {
 	protected XmlOneToOne resource;
 	
-	protected final List<OrmPrimaryKeyJoinColumn> primaryKeyJoinColumns;
+	protected final Vector<OrmPrimaryKeyJoinColumn> primaryKeyJoinColumns = new Vector<OrmPrimaryKeyJoinColumn>();
+	
+	protected final OrmJoinColumn.Owner joinColumnOwner;
 	
 	
 	public GenericOrmPrimaryKeyJoinColumnJoiningStrategy(
@@ -49,11 +50,14 @@ public class GenericOrmPrimaryKeyJoinColumnJoiningStrategy
 			XmlOneToOne resource) {
 		super(parent);
 		this.resource = resource;
-		this.primaryKeyJoinColumns = new ArrayList<OrmPrimaryKeyJoinColumn>();
+		this.joinColumnOwner = this.buildJoinColumnOwner();
 		this.initializePrimaryKeyJoinColumns();
 	}
 	
-	
+	protected OrmJoinColumn.Owner buildJoinColumnOwner() {
+		return new JoinColumnOwner();
+	}
+
 	protected void initializePrimaryKeyJoinColumns() {
 		if (this.resource != null) {
 			for (XmlPrimaryKeyJoinColumn resourceJoinColumn : this.resource.getPrimaryKeyJoinColumns()) {
@@ -64,7 +68,7 @@ public class GenericOrmPrimaryKeyJoinColumnJoiningStrategy
 	
 	protected OrmPrimaryKeyJoinColumn buildPrimaryKeyJoinColumn(
 			XmlPrimaryKeyJoinColumn resourceJoinColumn) {
-		return this.getJpaFactory().buildOrmPrimaryKeyJoinColumn(this, new JoinColumnOwner(), resourceJoinColumn);
+		return this.getJpaFactory().buildOrmPrimaryKeyJoinColumn(this, this.joinColumnOwner, resourceJoinColumn);
 	}
 	
 	@Override
@@ -178,10 +182,13 @@ public class GenericOrmPrimaryKeyJoinColumnJoiningStrategy
 		return this.getRelationshipReference().getValidationTextRange();
 	}
 	
-	
-	public class JoinColumnOwner implements OrmJoinColumn.Owner 
+
+	// ********** join column owner adapter **********
+
+	protected class JoinColumnOwner
+		implements OrmJoinColumn.Owner 
 	{
-		public JoinColumnOwner() {
+		protected JoinColumnOwner() {
 			super();
 		}
 		
@@ -233,7 +240,6 @@ public class GenericOrmPrimaryKeyJoinColumnJoiningStrategy
 		}
 		
 		public String getDefaultColumnName() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
@@ -244,5 +250,7 @@ public class GenericOrmPrimaryKeyJoinColumnJoiningStrategy
 		public TextRange getValidationTextRange() {
 			return GenericOrmPrimaryKeyJoinColumnJoiningStrategy.this.getValidationTextRange();
 		}
+
 	}
+
 }

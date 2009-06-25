@@ -14,7 +14,7 @@ import org.eclipse.jpt.core.context.JoinTable;
 import org.eclipse.jpt.core.context.XmlContextNode;
 
 /**
- * 
+ * orm.xml join table
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -22,20 +22,17 @@ import org.eclipse.jpt.core.context.XmlContextNode;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface OrmJoinTable extends JoinTable, XmlContextNode
+public interface OrmJoinTable
+	extends JoinTable, XmlContextNode
 {
 	OrmRelationshipMapping getRelationshipMapping();
 	
-	/**
-	 * Update the OrmJoinTable context model object to match the XmlRelationshipMapping 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
-	 */
 	void update();
 		
 	void initializeFrom(JoinTable oldJoinTable);
 
 	
-	//****************** covariant overrides *******************
+	// ********** covariant overrides **********
 	
 	@SuppressWarnings("unchecked")
 	ListIterator<OrmJoinColumn> joinColumns();
@@ -61,4 +58,5 @@ public interface OrmJoinTable extends JoinTable, XmlContextNode
 	ListIterator<OrmUniqueConstraint> uniqueConstraints();
 	
 	OrmUniqueConstraint addUniqueConstraint(int index);
+
 }
