@@ -250,7 +250,7 @@ public class CloneListIteratorTests extends TestCase {
 		} catch (IllegalStateException ex) {
 			exCaught = true;
 		}
-		assertTrue("IllegalStateException not thrown", exCaught);
+		assertTrue(exCaught);
 		while (iterator.hasNext()) {
 			String next = iterator.next();
 			if (next.equals(addedAfter)) {
@@ -265,7 +265,7 @@ public class CloneListIteratorTests extends TestCase {
 				} catch (IllegalStateException ex) {
 					exCaught = true;
 				}
-				assertTrue("IllegalStateException not thrown", exCaught);
+				assertTrue(exCaught);
 			}
 			if (next.equals(replaced)) {
 				iterator.set(replacement);

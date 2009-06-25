@@ -91,9 +91,9 @@ public class CloneIteratorTests extends TestCase {
 	}
 
 	public void testRemoveEliminator() {
-		CloneIterator.Mutator<String> eliminator = new CloneIterator.Mutator<String>() {
-			public void remove(String current) {
-				CloneIteratorTests.this.originalCollection.remove(current);
+		CloneIterator.Remover<String> eliminator = new CloneIterator.Remover<String>() {
+			public void remove(String element) {
+				CloneIteratorTests.this.originalCollection.remove(element);
 			}
 		};
 		this.verifyRemove(new CloneIterator<String>(this.originalCollection, eliminator));

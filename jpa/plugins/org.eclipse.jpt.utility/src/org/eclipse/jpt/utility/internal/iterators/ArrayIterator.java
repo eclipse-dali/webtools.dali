@@ -23,8 +23,8 @@ public class ArrayIterator<E>
 	implements Iterator<E>
 {
 	final E[] array;	// private-protected
-	int nextIndex;		// private-protected
-	private final int maxIndex;
+	int cursor;		// private-protected
+	private final int max;
 
 
 	/**
@@ -48,17 +48,17 @@ public class ArrayIterator<E>
 			throw new IllegalArgumentException("length: " + length); //$NON-NLS-1$
 		}
 		this.array = array;
-		this.nextIndex = start;
-		this.maxIndex = start + length;
+		this.cursor = start;
+		this.max = start + length;
 	}
 
 	public boolean hasNext() {
-		return this.nextIndex < this.maxIndex;
+		return this.cursor != this.max;
 	}
 
 	public E next() {
 		if (this.hasNext()) {
-			return this.array[this.nextIndex++];
+			return this.array[this.cursor++];
 		}
 		throw new NoSuchElementException();
 	}

@@ -24,7 +24,7 @@ public class ArrayListIterator<E>
 	extends ArrayIterator<E>
 	implements ListIterator<E>
 {
-	private final int minIndex;
+	private final int min;
 
 
 	/**
@@ -41,24 +41,24 @@ public class ArrayListIterator<E>
 	 */
 	public ArrayListIterator(E[] array, int start, int length) {
 		super(array, start, length);
-		this.minIndex = start;
+		this.min = start;
 	}
 	
 	public int nextIndex() {
-		return this.nextIndex;
+		return this.cursor;
 	}
 	
 	public int previousIndex() {
-		return this.nextIndex - 1;
+		return this.cursor - 1;
 	}
 	
 	public boolean hasPrevious() {
-		return this.nextIndex > this.minIndex;
+		return this.cursor != this.min;
 	}
 	
 	public E previous() {
 		if (this.hasPrevious()) {
-			return this.array[--this.nextIndex];
+			return this.array[--this.cursor];
 		}
 		throw new NoSuchElementException();
 	}

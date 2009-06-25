@@ -38,6 +38,8 @@ public class JptUtilityIteratorsTests {
 		suite.addTestSuite(ReadOnlyListIteratorTests.class);
 		suite.addTestSuite(SingleElementIteratorTests.class);
 		suite.addTestSuite(SingleElementListIteratorTests.class);
+		suite.addTestSuite(SynchronizedIteratorTests.class);
+		suite.addTestSuite(SynchronizedListIteratorTests.class);
 		suite.addTestSuite(TransformationIteratorTests.class);
 		suite.addTestSuite(TransformationListIteratorTests.class);
 		suite.addTestSuite(TreeIteratorTests.class);

@@ -23,7 +23,7 @@ public class ArrayIteratorTests extends TestCase {
 
 	public void testHasNext() {
 		int i = 0;
-		for (Iterator<String> stream = this.buildIterator(); stream.hasNext();) {
+		for (Iterator<String> stream = this.buildIterator(); stream.hasNext(); ) {
 			stream.next();
 			i++;
 		}
@@ -31,9 +31,9 @@ public class ArrayIteratorTests extends TestCase {
 	}
 
 	public void testNext() {
-		int i = 0;
-		for (Iterator<String> stream = this.buildIterator(); stream.hasNext();) {
-			assertEquals("bogus element", ++i, Integer.parseInt(stream.next()));
+		int i = 1;
+		for (Iterator<String> stream = this.buildIterator(); stream.hasNext(); ) {
+			assertEquals("bogus element", i++, Integer.parseInt(stream.next()));
 		}
 	}
 
@@ -54,7 +54,7 @@ public class ArrayIteratorTests extends TestCase {
 
 	public void testUnsupportedOperationException() {
 		boolean exCaught = false;
-		for (Iterator<String> stream = this.buildIterator(); stream.hasNext();) {
+		for (Iterator<String> stream = this.buildIterator(); stream.hasNext(); ) {
 			if (stream.next().equals("3")) {
 				try {
 					stream.remove();
@@ -79,21 +79,29 @@ public class ArrayIteratorTests extends TestCase {
 		integers[1] = new Integer(1);
 		integers[2] = new Integer(2);
 		int i = 0;
-		for (Iterator<Number> stream = new ArrayIterator<Number>(integers); stream.hasNext();) {
+		for (Iterator<Number> stream = this.buildGenericIterator(integers); stream.hasNext();) {
 			assertEquals(i++, stream.next().intValue());
 		}
 		assertEquals(integers.length, i);
 	}
 
+	Iterator<Number> buildGenericIterator(Integer[] integers) {
+		return new ArrayIterator<Number>(integers);
+	}
+
 	public void testVarargs() {
 		int i = 0;
-		for (Iterator<Number> stream = new ArrayIterator<Number>(new Integer(0), new Integer(1), new Integer(2)); stream.hasNext();) {
+		for (Iterator<Number> stream = this.buildVarArgIterator(); stream.hasNext();) {
 			assertEquals(i++, stream.next().intValue());
 		}
 		assertEquals(3, i);
 	}
 
-	public void triggerIllegalArgumentException(int start, int length) {
+	Iterator<Number> buildVarArgIterator() {
+		return new ArrayIterator<Number>(new Integer(0), new Integer(1), new Integer(2));
+	}
+
+	void triggerIllegalArgumentException(int start, int length) {
 		boolean exCaught = false;
 		Iterator<String> stream = null;
 		try {

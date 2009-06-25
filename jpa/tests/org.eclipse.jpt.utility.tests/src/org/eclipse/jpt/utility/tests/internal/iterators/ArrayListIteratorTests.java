@@ -12,6 +12,7 @@ package org.eclipse.jpt.utility.tests.internal.iterators;
 import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
+
 import org.eclipse.jpt.utility.internal.iterators.ArrayListIterator;
 
 @SuppressWarnings("nls")
@@ -109,25 +110,13 @@ public class ArrayListIteratorTests extends ArrayIteratorTests {
 	}
 
 	@Override
-	public void testGenerics() {
-		Integer[] integers = new Integer[3];
-		integers[0] = new Integer(0);
-		integers[1] = new Integer(1);
-		integers[2] = new Integer(2);
-		int i = 0;
-		for (Iterator<Number> stream = new ArrayListIterator<Number>(integers); stream.hasNext();) {
-			assertEquals(i++, stream.next().intValue());
-		}
-		assertEquals(integers.length, i);
+	Iterator<Number> buildGenericIterator(Integer[] integers) {
+		return new ArrayListIterator<Number>(integers);
 	}
 
 	@Override
-	public void testVarargs() {
-		int i = 0;
-		for (Iterator<Number> stream = new ArrayListIterator<Number>(new Integer(0), new Integer(1), new Integer(2)); stream.hasNext();) {
-			assertEquals(i++, stream.next().intValue());
-		}
-		assertEquals(3, i);
+	Iterator<Number> buildVarArgIterator() {
+		return new ArrayListIterator<Number>(new Integer(0), new Integer(1), new Integer(2));
 	}
 
 	private ListIterator<String> buildListIterator() {

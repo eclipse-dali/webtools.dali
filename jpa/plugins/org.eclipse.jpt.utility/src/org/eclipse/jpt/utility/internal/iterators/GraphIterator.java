@@ -52,8 +52,9 @@ import org.eclipse.jpt.utility.internal.StringTools;
 public class GraphIterator<E>
 	implements Iterator<E>
 {
-	private final LinkedList<Iterator<? extends E>> iterators;
-	private final HashSet<E> visitedNeighbors;
+	// use a LinkedList since we will be pulling off the front and adding to the end
+	private final LinkedList<Iterator<? extends E>> iterators = new LinkedList<Iterator<? extends E>>();
+	private final HashSet<E> visitedNeighbors = new HashSet<E>();
 	private final MisterRogers<E> misterRogers;
 	
 	private Iterator<? extends E> currentIterator;
@@ -141,10 +142,7 @@ public class GraphIterator<E>
 	public GraphIterator(Iterator<? extends E> roots, MisterRogers<E> misterRogers) {
 		super();
 		this.currentIterator = roots;
-		// use a LinkedList since we will be pulling off the front and adding to the end
-		this.iterators = new LinkedList<Iterator<? extends E>>();
 		this.misterRogers = misterRogers;
-		this.visitedNeighbors = new HashSet<E>();
 		this.loadNextNeighbor();
 	}
 
