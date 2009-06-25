@@ -63,6 +63,12 @@ public interface JoinTableAnnotation
 	 */
 	void removeJoinColumn(int index);
 
+	/**
+	 * Silently add an initial join column to the join table (i.e. without
+	 * change notification).
+	 */
+	JoinColumnAnnotation initializeJoinColumns();
+
 
 	/**
 	 * Corresponds to the 'inverseJoinColumns' element of the JoinTable annotation.
@@ -100,5 +106,11 @@ public interface JoinTableAnnotation
 	 * Corresponds to the 'inverseJoinColumns' element of the JoinTable annotation.
 	 */
 	void removeInverseJoinColumn(int index);
+
+	/**
+	 * Silently add an initial inverse join column to the join table (i.e. without
+	 * change notification).
+	 */
+	JoinColumnAnnotation initializeInverseJoinColumns();
 
 }

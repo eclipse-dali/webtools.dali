@@ -505,82 +505,52 @@ public class JoinTableComposite extends FormPane<JoinTable>
 	}
 
 	private void updateInverseJoinColumns() {
-		if (isPopulating()) {
+		if (this.isPopulating()) {
 			return;
 		}
 		
-		JoinTable joinTable = getSubject();
+		JoinTable joinTable = this.getSubject();
 		if (joinTable == null) {
 			return;
 		}
 		
 		boolean selected = this.overrideDefaultInverseJoinColumnsCheckBox.getSelection();
-		setPopulating(true);
+		this.setPopulating(true);
 
 		try {
-			// Add a join column by creating a specified one using the default
-			// one if it exists
 			if (selected) {
-
-				JoinColumn defaultJoinColumn = joinTable.getDefaultInverseJoinColumn(); //TODO null check, override default button disabled
-
-				if (defaultJoinColumn != null) {
-					String columnName = defaultJoinColumn.getDefaultName();
-					String referencedColumnName = defaultJoinColumn.getDefaultReferencedColumnName();
-
-					JoinColumn joinColumn = joinTable.addSpecifiedInverseJoinColumn(0);
-					joinColumn.setSpecifiedName(columnName);
-					joinColumn.setSpecifiedReferencedColumnName(referencedColumnName);
-				}
+				joinTable.convertDefaultToSpecifiedInverseJoinColumn();
+			} else {
+				joinTable.clearSpecifiedInverseJoinColumns();
 			}
-			else {
-				for (int index = joinTable.specifiedInverseJoinColumnsSize(); --index >= 0; ) {
-					joinTable.removeSpecifiedInverseJoinColumn(index);
-				}
-			}
-		}
-		finally {
-			setPopulating(false);
+		} finally {
+			this.setPopulating(false);
 		}
 	}
 
 	private void updateJoinColumns() {
-		if (isPopulating()) {
+		if (this.isPopulating()) {
 			return;
 		}
 		
-		JoinTable joinTable = getSubject();
+		JoinTable joinTable = this.getSubject();
 		if (joinTable == null) {
 			return;
 		}
 		
 		boolean selected = this.overrideDefaultJoinColumnsCheckBox.getSelection();
-		setPopulating(true);
+		this.setPopulating(true);
 
 		try {
-			// Add a join column by creating a specified one using the default
-			// one if it exists
 			if (selected) {
-
-				JoinColumn defaultJoinColumn = joinTable.getDefaultJoinColumn(); //TODO null check, override default button disabled
-
-				if (defaultJoinColumn != null) {
-					String columnName = defaultJoinColumn.getDefaultName();
-					String referencedColumnName = defaultJoinColumn.getDefaultReferencedColumnName();
-
-					JoinColumn joinColumn = joinTable.addSpecifiedJoinColumn(0);
-					joinColumn.setSpecifiedName(columnName);
-					joinColumn.setSpecifiedReferencedColumnName(referencedColumnName);
-				}
-			}
-			else {
+				joinTable.convertDefaultToSpecifiedJoinColumn();
+			} else {
 				for (int index = joinTable.specifiedJoinColumnsSize(); --index >= 0; ) {
 					joinTable.removeSpecifiedJoinColumn(index);
 				}
 			}
-		}
-		finally {
-			setPopulating(false);
+		} finally {
+			this.setPopulating(false);
 		}
 	}
 

@@ -35,9 +35,8 @@ import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.core.utility.jdt.Member;
 import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.iterables.CloneIterable;
-import org.eclipse.jpt.utility.internal.iterables.FixedCloneIterable;
-import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
+import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
+import org.eclipse.jpt.utility.internal.iterables.StaticCloneIterable;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
@@ -109,11 +108,11 @@ abstract class SourcePersistentMember<E extends Member>
 	// ********** mapping annotations **********
 
 	public Iterator<Annotation> mappingAnnotations() {
-		return new CloneIterator<Annotation>(this.mappingAnnotations);
+		return this.getMappingAnnotations().iterator();
 	}
 
 	private Iterable<Annotation> getMappingAnnotations() {
-		return new CloneIterable<Annotation>(this.mappingAnnotations);
+		return new LiveCloneIterable<Annotation>(this.mappingAnnotations);
 	}
 
 	public int mappingAnnotationsSize() {
@@ -124,7 +123,7 @@ abstract class SourcePersistentMember<E extends Member>
 	// from the context model we don't really care if their are multiple mapping
 	// annotations, just which one we need to use
 	public Annotation getMappingAnnotation() {
-		Iterable<Annotation> annotations = new FixedCloneIterable<Annotation>(this.mappingAnnotations);
+		Iterable<Annotation> annotations = new StaticCloneIterable<Annotation>(this.mappingAnnotations);
 		for (ListIterator<String> stream = this.validMappingAnnotationNames(); stream.hasNext();) {
 			Annotation annotation = this.selectAnnotationNamed(annotations, stream.next());
 			if (annotation != null) {
@@ -203,11 +202,11 @@ abstract class SourcePersistentMember<E extends Member>
 	// ********** supporting annotations **********
 
 	public Iterator<Annotation> supportingAnnotations() {
-		return new CloneIterator<Annotation>(this.supportingAnnotations);
+		return this.getSupportingAnnotations().iterator();
 	}
 
 	private Iterable<Annotation> getSupportingAnnotations() {
-		return new CloneIterable<Annotation>(this.supportingAnnotations);
+		return new LiveCloneIterable<Annotation>(this.supportingAnnotations);
 	}
 
 	public int supportingAnnotationsSize() {
@@ -231,6 +230,16 @@ abstract class SourcePersistentMember<E extends Member>
 		annotation.newAnnotation();
 		this.fireItemAdded(SUPPORTING_ANNOTATIONS_COLLECTION, annotation);
 		return annotation;
+	}
+
+	public Annotation addSupportingAnnotation(String annotationName, AnnotationInitializer annotationInitializer) {
+		Annotation annotation = this.buildSupportingAnnotation(annotationName);
+		this.supportingAnnotations.add(annotation);
+		annotation.newAnnotation();
+		Annotation nestedAnnotation = annotationInitializer.initializeAnnotation(annotation);
+		nestedAnnotation.newAnnotation();
+		this.fireItemAdded(SUPPORTING_ANNOTATIONS_COLLECTION, annotation);
+		return nestedAnnotation;
 	}
 
 	abstract Annotation buildSupportingAnnotation(String annotationName);

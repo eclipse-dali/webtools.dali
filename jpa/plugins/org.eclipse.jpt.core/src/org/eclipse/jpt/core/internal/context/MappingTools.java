@@ -14,6 +14,7 @@ import org.eclipse.jpt.core.context.ColumnMapping;
 import org.eclipse.jpt.core.context.Embeddable;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.JoinColumn;
+import org.eclipse.jpt.core.context.JoinTable;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.db.Table;
@@ -156,6 +157,28 @@ public class MappingTools {
 			}
 		}
 		return null;		
+	}
+
+	public static void convertJoinTableDefaultToSpecifiedJoinColumn(JoinTable joinTable) {
+		JoinColumn defaultJoinColumn = joinTable.getDefaultJoinColumn();
+		if (defaultJoinColumn != null) {
+			String columnName = defaultJoinColumn.getDefaultName();
+			String referencedColumnName = defaultJoinColumn.getDefaultReferencedColumnName();
+			JoinColumn joinColumn = joinTable.addSpecifiedJoinColumn(0);
+			joinColumn.setSpecifiedName(columnName);
+			joinColumn.setSpecifiedReferencedColumnName(referencedColumnName);
+		}
+	}
+
+	public static void convertJoinTableDefaultToSpecifiedInverseJoinColumn(JoinTable joinTable) {
+		JoinColumn defaultInverseJoinColumn = joinTable.getDefaultInverseJoinColumn();
+		if (defaultInverseJoinColumn != null) {
+			String columnName = defaultInverseJoinColumn.getDefaultName();
+			String referencedColumnName = defaultInverseJoinColumn.getDefaultReferencedColumnName();
+			JoinColumn joinColumn = joinTable.addSpecifiedInverseJoinColumn(0);
+			joinColumn.setSpecifiedName(columnName);
+			joinColumn.setSpecifiedReferencedColumnName(referencedColumnName);
+		}
 	}
 
 }

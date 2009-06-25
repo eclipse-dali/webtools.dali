@@ -170,6 +170,10 @@ public final class SourceJoinTableAnnotation
 		this.fireItemRemoved(JOIN_COLUMNS_LIST, index, joinColumn);
 	}
 
+	public JoinColumnAnnotation initializeJoinColumns() {
+		return this.addJoinColumnInternal();
+	}
+
 	// ***** inverse join columns
 	public ListIterator<JoinColumnAnnotation> inverseJoinColumns() {
 		return new CloneListIterator<JoinColumnAnnotation>(this.inverseJoinColumns);
@@ -231,6 +235,10 @@ public final class SourceJoinTableAnnotation
 
 	void inverseJoinColumnRemoved(int index, NestableJoinColumnAnnotation joinColumn) {
 		this.fireItemRemoved(INVERSE_JOIN_COLUMNS_LIST, index, joinColumn);
+	}
+
+	public JoinColumnAnnotation initializeInverseJoinColumns() {
+		return this.addInverseJoinColumnInternal();
 	}
 
 

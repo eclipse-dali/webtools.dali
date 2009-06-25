@@ -116,6 +116,10 @@ public final class BinaryJoinTableAnnotation
 		throw new UnsupportedOperationException();
 	}
 
+	public JoinColumnAnnotation initializeJoinColumns() {
+		throw new UnsupportedOperationException();
+	}
+
 	// ***** inverse join columns
 	public ListIterator<JoinColumnAnnotation> inverseJoinColumns() {
 		return new CloneListIterator<JoinColumnAnnotation>(this.inverseJoinColumns);
@@ -156,6 +160,10 @@ public final class BinaryJoinTableAnnotation
 
 	// TODO
 	private void updateInverseJoinColumns() {
+		throw new UnsupportedOperationException();
+	}
+
+	public JoinColumnAnnotation initializeInverseJoinColumns() {
 		throw new UnsupportedOperationException();
 	}
 

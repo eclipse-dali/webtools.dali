@@ -104,9 +104,30 @@ public interface JavaResourcePersistentMember
 
 	/**
 	 * Add a supporting annotation with the specified name.
+	 * Return the newly-created annotation.
 	 */
 	Annotation addSupportingAnnotation(String annotationName);
-	
+
+	/**
+	 * Add a supporting annotation with the specified name.
+	 * Initialize the newly-created annotation with the specified annotation initializer.
+	 * Return the annotation returned by the annotation initializer.
+	 */
+	Annotation addSupportingAnnotation(String annotationName, AnnotationInitializer annotationInitializer);
+
+	/**
+	 * Callback that allows clients to initialize an annotation added to the
+	 * member before the member fires a change event. The initializer should
+	 * not trigger any change events either.
+	 */
+	interface AnnotationInitializer {
+		/**
+		 * Initialize the specified supporting annotation.
+		 * Return the newly-created nested annotation.
+		 */
+		Annotation initializeAnnotation(Annotation supportingAnnotation);
+	}
+
 	/**
 	 * Remove the specified supporting annotation.
 	 */
@@ -118,7 +139,7 @@ public interface JavaResourcePersistentMember
 	 * annotation to it.
 	 * If both the nestable annotation and the container annotation already
 	 * exist, then add to the container annotation, leaving the existing
-	 * nestable annotaion alone.
+	 * nestable annotation alone.
 	 * If only the nestable annotation exists, then create the new container
 	 * annotation and move the existing nestable annotation to it along with
 	 * the new one. If neither annotation exists, then create a new nestable

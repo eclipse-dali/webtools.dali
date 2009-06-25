@@ -9,10 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Vector;
+
 import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.JoinColumn;
@@ -24,6 +25,7 @@ import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmJoinTable;
 import org.eclipse.jpt.core.context.orm.OrmJoinTableJoiningStrategy;
 import org.eclipse.jpt.core.context.orm.OrmRelationshipMapping;
+import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
@@ -40,62 +42,89 @@ import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-
+/**
+ * orm.xml join table
+ */
 public class GenericOrmJoinTable
 	extends AbstractOrmTable
 	implements OrmJoinTable
 {
 	protected final XmlJoinTableMapping resourceMapping;
-	
+
 	protected OrmJoinColumn defaultJoinColumn;
-	
-	protected final List<OrmJoinColumn> specifiedJoinColumns;
-	
+
+	protected final Vector<OrmJoinColumn> specifiedJoinColumns = new Vector<OrmJoinColumn>();
+	protected final OrmJoinColumn.Owner joinColumnOwner;
+
 	protected OrmJoinColumn defaultInverseJoinColumn;
-	
-	protected final List<OrmJoinColumn> specifiedInverseJoinColumns;
-	
-	
-	public GenericOrmJoinTable(
-			OrmJoinTableJoiningStrategy parent, XmlJoinTableMapping resourceMapping) {
+
+	protected final Vector<OrmJoinColumn> specifiedInverseJoinColumns = new Vector<OrmJoinColumn>();
+	protected final OrmJoinColumn.Owner inverseJoinColumnOwner;
+
+
+	public GenericOrmJoinTable(OrmJoinTableJoiningStrategy parent, XmlJoinTableMapping resourceMapping) {
 		super(parent);
 		this.resourceMapping = resourceMapping;
-		this.specifiedJoinColumns = new ArrayList<OrmJoinColumn>();
-		this.specifiedInverseJoinColumns = new ArrayList<OrmJoinColumn>();
+		this.joinColumnOwner = this.buildJoinColumnOwner();
+		this.inverseJoinColumnOwner = this.buildInverseJoinColumnOwner();
 		this.initialize(this.getResourceTable());
 	}
-	
-	@Override
-	public OrmJoinTableJoiningStrategy getParent() {
-		return (OrmJoinTableJoiningStrategy) super.getParent();
+
+	protected OrmJoinColumn.Owner buildJoinColumnOwner() {
+		return new JoinColumnOwner();
 	}
-	
+
+	protected OrmJoinColumn.Owner buildInverseJoinColumnOwner() {
+		return new InverseJoinColumnOwner();
+	}
+
 	public OrmRelationshipMapping getRelationshipMapping() {
 		return getParent().getRelationshipReference().getRelationshipMapping();
 	}
 
 	public void initializeFrom(JoinTable oldJoinTable) {
 		super.initializeFrom(oldJoinTable);
-		int index = 0;
-		for (JoinColumn joinColumn : CollectionTools.iterable(oldJoinTable.specifiedJoinColumns())) {
-			OrmJoinColumn newJoinColumn = addSpecifiedJoinColumn(index++);
-			newJoinColumn.initializeFrom(joinColumn);
+		for (Iterator<OrmJoinColumn> stream = oldJoinTable.specifiedJoinColumns(); stream.hasNext(); ) {
+			this.addSpecifiedJoinColumnFrom(stream.next());
 		}
-		index = 0;
-		for (JoinColumn joinColumn : CollectionTools.iterable(oldJoinTable.specifiedInverseJoinColumns())) {
-			OrmJoinColumn newJoinColumn = addSpecifiedInverseJoinColumn(index++);
-			newJoinColumn.initializeFrom(joinColumn);
+		for (Iterator<OrmJoinColumn> stream = oldJoinTable.specifiedInverseJoinColumns(); stream.hasNext(); ) {
+			this.addSpecifiedInverseJoinColumnFrom(stream.next());
 		}
 	}
-	
-	
-	//******************* AbstractOrmTable implementation *****************
-	
+
+	protected void initialize(XmlJoinTable joinTable) {
+		super.initialize(joinTable);
+		this.initializeSpecifiedJoinColumns(joinTable);
+		this.initializeDefaultJoinColumn();
+		this.initializeSpecifiedInverseJoinColumns(joinTable);
+		this.initializeDefaultInverseJoinColumn();
+	}
+
+	public void update() {
+		this.update(this.getResourceTable());
+	}
+
+	protected void update(XmlJoinTable joinTable) {
+		super.update(joinTable);
+		this.updateSpecifiedJoinColumns(joinTable);
+		this.updateDefaultJoinColumn();
+		this.updateSpecifiedInverseJoinColumns(joinTable);
+		this.updateDefaultInverseJoinColumn();
+	}
+
+
+	// ********** AbstractOrmTable implementation **********
+
+	@Override
+	public OrmJoinTableJoiningStrategy getParent() {
+		return (OrmJoinTableJoiningStrategy) super.getParent();
+	}
+
 	@Override
 	protected String buildDefaultName() {
 		return this.getRelationshipMapping().getJoinTableDefaultName();
 	}
-	
+
 	/**
 	 * if the join table is on the "mappedBy" side, it's bogus;
 	 * so don't give it a default schema
@@ -109,7 +138,7 @@ public class GenericOrmJoinTable
 	protected String buildDefaultCatalog() {
 		return this.getContextDefaultCatalog();
 	}
-	
+
 	@Override
 	protected XmlJoinTable getResourceTable() {
 		return this.resourceMapping.getJoinTable();
@@ -126,18 +155,70 @@ public class GenericOrmJoinTable
 	protected void removeResourceTable() {
 		this.resourceMapping.setJoinTable(null);
 	}
-	
-	
-	//******************* JoinTable implementation *****************
 
-	//****************** join columns **********************
+
+	// ********** join columns **********
+
 	public ListIterator<OrmJoinColumn> joinColumns() {
 		return this.containsSpecifiedJoinColumns() ? this.specifiedJoinColumns() : this.defaultJoinColumns();
 	}
-	
+
 	public int joinColumnsSize() {
 		return this.containsSpecifiedJoinColumns() ? this.specifiedJoinColumnsSize() : this.defaultJoinColumnsSize();
 	}
+
+	public void convertDefaultToSpecifiedJoinColumn() {
+		MappingTools.convertJoinTableDefaultToSpecifiedJoinColumn(this);
+	}
+
+
+	// ********** default join column **********
+
+	public OrmJoinColumn getDefaultJoinColumn() {
+		return this.defaultJoinColumn;
+	}
+
+	protected void setDefaultJoinColumn(OrmJoinColumn defaultJoinColumn) {
+		OrmJoinColumn old = this.defaultJoinColumn;
+		this.defaultJoinColumn = defaultJoinColumn;
+		this.firePropertyChanged(DEFAULT_JOIN_COLUMN, old, defaultJoinColumn);
+	}
+
+	protected ListIterator<OrmJoinColumn> defaultJoinColumns() {
+		if (this.defaultJoinColumn != null) {
+			return new SingleElementListIterator<OrmJoinColumn>(this.defaultJoinColumn);
+		}
+		return EmptyListIterator.instance();
+	}
+
+	protected int defaultJoinColumnsSize() {
+		return (this.defaultJoinColumn == null) ? 0 : 1;
+	}
+
+	protected void initializeDefaultJoinColumn() {
+		if (this.shouldBuildDefaultJoinColumn()) {
+			this.defaultJoinColumn = this.buildJoinColumn(null);
+		}
+	}
+
+	protected void updateDefaultJoinColumn() {
+		if (this.shouldBuildDefaultJoinColumn()) {
+			if (this.defaultJoinColumn == null) {
+				this.setDefaultJoinColumn(this.buildJoinColumn(null));
+			} else {
+				this.defaultJoinColumn.update(null);
+			}
+		} else {
+			this.setDefaultJoinColumn(null);
+		}
+	}
+
+	protected boolean shouldBuildDefaultJoinColumn() {
+		return ! this.containsSpecifiedJoinColumns();
+	}
+
+
+	// ********** specified join columns **********
 
 	public ListIterator<OrmJoinColumn> specifiedJoinColumns() {
 		return new CloneListIterator<OrmJoinColumn>(this.specifiedJoinColumns);
@@ -146,46 +227,30 @@ public class GenericOrmJoinTable
 	public int specifiedJoinColumnsSize() {
 		return this.specifiedJoinColumns.size();
 	}
-	
-	protected ListIterator<OrmJoinColumn> defaultJoinColumns() {
-		if (this.defaultJoinColumn != null) {
-			return new SingleElementListIterator<OrmJoinColumn>(this.defaultJoinColumn);
-		}
-		return EmptyListIterator.instance();
-	}
-	
-	protected int defaultJoinColumnsSize() {
-		return (this.defaultJoinColumn == null) ? 0 : 1;
-	}
-	
-	public OrmJoinColumn getDefaultJoinColumn() {
-		return this.defaultJoinColumn;
-	}
-	
-	protected void setDefaultJoinColumn(OrmJoinColumn newJoinColumn) {
-		OrmJoinColumn oldJoinColumn = this.defaultJoinColumn;
-		this.defaultJoinColumn = newJoinColumn;
-		firePropertyChanged(JoinTable.DEFAULT_JOIN_COLUMN, oldJoinColumn, newJoinColumn);
-	}
 
 	public boolean containsSpecifiedJoinColumns() {
-		return !this.specifiedJoinColumns.isEmpty();
+		return this.specifiedJoinColumns.size() != 0;
+	}
+
+	protected void addSpecifiedJoinColumnFrom(OrmJoinColumn oldJoinColumn) {
+		OrmJoinColumn newJoinColumn = this.addSpecifiedJoinColumn(this.specifiedJoinColumns.size());
+		newJoinColumn.initializeFrom(oldJoinColumn);
 	}
 
 	public OrmJoinColumn addSpecifiedJoinColumn(int index) {
-		if (getResourceTable() == null) {
-			addResourceTable();
+		if (this.getResourceTable() == null) {
+			this.addResourceTable();
 		}
-		XmlJoinColumn resourceJoinColumn = OrmFactory.eINSTANCE.createXmlJoinColumn();
-		OrmJoinColumn contextJoinColumn = buildJoinColumn(resourceJoinColumn);
-		this.specifiedJoinColumns.add(index, contextJoinColumn);
-		this.getResourceTable().getJoinColumns().add(index, resourceJoinColumn);
-		this.fireItemAdded(JoinTable.SPECIFIED_JOIN_COLUMNS_LIST, index, contextJoinColumn);
-		return contextJoinColumn;
+		XmlJoinColumn xmlJoinColumn = OrmFactory.eINSTANCE.createXmlJoinColumn();
+		OrmJoinColumn joinColumn = this.buildJoinColumn(xmlJoinColumn);
+		this.specifiedJoinColumns.add(index, joinColumn);
+		this.getResourceTable().getJoinColumns().add(index, xmlJoinColumn);
+		this.fireItemAdded(SPECIFIED_JOIN_COLUMNS_LIST, index, joinColumn);
+		return joinColumn;
 	}
 
 	protected void addSpecifiedJoinColumn(int index, OrmJoinColumn joinColumn) {
-		addItemToList(index, joinColumn, this.specifiedJoinColumns, JoinTable.SPECIFIED_JOIN_COLUMNS_LIST);
+		this.addItemToList(index, joinColumn, this.specifiedJoinColumns, SPECIFIED_JOIN_COLUMNS_LIST);
 	}
 
 	protected void addSpecifiedJoinColumn(OrmJoinColumn joinColumn) {
@@ -195,43 +260,139 @@ public class GenericOrmJoinTable
 	public void removeSpecifiedJoinColumn(JoinColumn joinColumn) {
 		this.removeSpecifiedJoinColumn(this.specifiedJoinColumns.indexOf(joinColumn));
 	}
-	
+
 	public void removeSpecifiedJoinColumn(int index) {
 		OrmJoinColumn removedJoinColumn = this.specifiedJoinColumns.remove(index);
-		if (!containsSpecifiedJoinColumns()) {
+		if ( ! this.containsSpecifiedJoinColumns()) {
 			//create the defaultJoinColumn now or this will happen during project update 
 			//after removing the join column from the resource model. That causes problems 
 			//in the UI because the change notifications end up in the wrong order.
-			this.defaultJoinColumn = buildJoinColumn(null);
+			this.defaultJoinColumn = this.buildJoinColumn(null);
 		}
 		this.getResourceTable().getJoinColumns().remove(index);
-		fireItemRemoved(JoinTable.SPECIFIED_JOIN_COLUMNS_LIST, index, removedJoinColumn);
+		this.fireItemRemoved(SPECIFIED_JOIN_COLUMNS_LIST, index, removedJoinColumn);
 		if (this.defaultJoinColumn != null) {
 			//fire change notification if a defaultJoinColumn was created above
-			this.firePropertyChanged(JoinTable.DEFAULT_JOIN_COLUMN, null, this.defaultJoinColumn);
+			this.firePropertyChanged(DEFAULT_JOIN_COLUMN, null, this.defaultJoinColumn);
 		}
 	}
 
 	protected void removeSpecifiedJoinColumn_(OrmJoinColumn joinColumn) {
-		removeItemFromList(joinColumn, this.specifiedJoinColumns, JoinTable.SPECIFIED_JOIN_COLUMNS_LIST);
+		this.removeItemFromList(joinColumn, this.specifiedJoinColumns, SPECIFIED_JOIN_COLUMNS_LIST);
 	}
-	
+
 	public void moveSpecifiedJoinColumn(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.specifiedJoinColumns, targetIndex, sourceIndex);
 		this.getResourceTable().getJoinColumns().move(targetIndex, sourceIndex);
-		fireItemMoved(JoinTable.SPECIFIED_JOIN_COLUMNS_LIST, targetIndex, sourceIndex);		
+		this.fireItemMoved(SPECIFIED_JOIN_COLUMNS_LIST, targetIndex, sourceIndex);
 	}
-	
-	
-	//****************** inverse join columns **********************
+
+	public void clearSpecifiedJoinColumns() {
+		this.specifiedJoinColumns.clear();
+		this.defaultJoinColumn = this.buildJoinColumn(null);
+		this.getResourceTable().getJoinColumns().clear();
+		this.fireListCleared(SPECIFIED_JOIN_COLUMNS_LIST);
+		this.firePropertyChanged(DEFAULT_JOIN_COLUMN, null, this.defaultJoinColumn);
+	}
+
+	protected OrmJoinColumn buildJoinColumn(XmlJoinColumn resourceJoinColumn) {
+		return this.buildJoinColumn(resourceJoinColumn, this.joinColumnOwner);
+	}
+
+	protected void initializeSpecifiedJoinColumns(XmlJoinTable xmlJoinTable) {
+		if (xmlJoinTable != null) {
+			for (XmlJoinColumn xmlJoinColumn : xmlJoinTable.getJoinColumns()) {
+				this.specifiedJoinColumns.add(this.buildJoinColumn(xmlJoinColumn));
+			}
+		}
+	}
+
+	protected void updateSpecifiedJoinColumns(XmlJoinTable xmlJoinTable) {
+		Iterator<XmlJoinColumn> xmlJoinColumns = this.xmlJoinColumns(xmlJoinTable);
+
+		for (Iterator<OrmJoinColumn> contextJoinColumns = this.specifiedJoinColumns(); contextJoinColumns.hasNext(); ) {
+			OrmJoinColumn contextJoinColumn = contextJoinColumns.next();
+			if (xmlJoinColumns.hasNext()) {
+				contextJoinColumn.update(xmlJoinColumns.next());
+			} else {
+				this.removeSpecifiedJoinColumn_(contextJoinColumn);
+			}
+		}
+
+		while (xmlJoinColumns.hasNext()) {
+			this.addSpecifiedJoinColumn(this.buildJoinColumn(xmlJoinColumns.next()));
+		}
+	}
+
+	protected Iterator<XmlJoinColumn> xmlJoinColumns(XmlJoinTable xmlJoinTable) {
+		// make a copy of the XML join columns (to prevent ConcurrentModificationException)
+		return (xmlJoinTable == null) ? EmptyIterator.<XmlJoinColumn>instance()
+			: new CloneIterator<XmlJoinColumn>(xmlJoinTable.getJoinColumns());
+	}
+
+
+	// ********** inverse join columns **********
 
 	public ListIterator<OrmJoinColumn> inverseJoinColumns() {
 		return this.containsSpecifiedInverseJoinColumns() ? this.specifiedInverseJoinColumns() : this.defaultInverseJoinColumns();
 	}
-	
+
 	public int inverseJoinColumnsSize() {
 		return this.containsSpecifiedInverseJoinColumns() ? this.specifiedInverseJoinColumnsSize() : this.defaultInverseJoinColumnsSize();
 	}
+
+	public void convertDefaultToSpecifiedInverseJoinColumn() {
+		MappingTools.convertJoinTableDefaultToSpecifiedInverseJoinColumn(this);
+	}
+
+
+	// ********** default inverse join column **********
+
+	public OrmJoinColumn getDefaultInverseJoinColumn() {
+		return this.defaultInverseJoinColumn;
+	}
+
+	protected void setDefaultInverseJoinColumn(OrmJoinColumn defaultInverseJoinColumn) {
+		OrmJoinColumn old = this.defaultInverseJoinColumn;
+		this.defaultInverseJoinColumn = defaultInverseJoinColumn;
+		this.firePropertyChanged(DEFAULT_INVERSE_JOIN_COLUMN, old, defaultInverseJoinColumn);
+	}
+
+	protected ListIterator<OrmJoinColumn> defaultInverseJoinColumns() {
+		if (this.defaultInverseJoinColumn != null) {
+			return new SingleElementListIterator<OrmJoinColumn>(this.defaultInverseJoinColumn);
+		}
+		return EmptyListIterator.instance();
+	}
+
+	protected int defaultInverseJoinColumnsSize() {
+		return (this.defaultInverseJoinColumn == null) ? 0 : 1;
+	}
+
+	protected void initializeDefaultInverseJoinColumn() {
+		if (this.shouldBuildDefaultInverseJoinColumn()) {
+			this.defaultInverseJoinColumn = this.buildInverseJoinColumn(null);
+		}
+	}
+
+	protected void updateDefaultInverseJoinColumn() {
+		if (this.shouldBuildDefaultInverseJoinColumn()) {
+			if (this.defaultInverseJoinColumn == null) {
+				this.setDefaultInverseJoinColumn(this.buildInverseJoinColumn(null));
+			} else {
+				this.defaultInverseJoinColumn.update(null);
+			}
+		} else {
+			this.setDefaultInverseJoinColumn(null);
+		}
+	}
+
+	protected boolean shouldBuildDefaultInverseJoinColumn() {
+		return ! this.containsSpecifiedInverseJoinColumns();
+	}
+
+
+	// ********** specified inverse join columns **********
 
 	public ListIterator<OrmJoinColumn> specifiedInverseJoinColumns() {
 		return new CloneListIterator<OrmJoinColumn>(this.specifiedInverseJoinColumns);
@@ -240,46 +401,30 @@ public class GenericOrmJoinTable
 	public int specifiedInverseJoinColumnsSize() {
 		return this.specifiedInverseJoinColumns.size();
 	}
-	
-	protected ListIterator<OrmJoinColumn> defaultInverseJoinColumns() {
-		if (this.defaultInverseJoinColumn != null) {
-			return new SingleElementListIterator<OrmJoinColumn>(this.defaultInverseJoinColumn);
-		}
-		return EmptyListIterator.instance();
-	}
-	
-	protected int defaultInverseJoinColumnsSize() {
-		return (this.defaultInverseJoinColumn == null) ? 0 : 1;
-	}
 
-	public OrmJoinColumn getDefaultInverseJoinColumn() {
-		return this.defaultInverseJoinColumn;
-	}
-	
-	protected void setDefaultInverseJoinColumn(OrmJoinColumn newJoinColumn) {
-		OrmJoinColumn oldJoinColumn = this.defaultInverseJoinColumn;
-		this.defaultInverseJoinColumn = newJoinColumn;
-		firePropertyChanged(JoinTable.DEFAULT_INVERSE_JOIN_COLUMN, oldJoinColumn, newJoinColumn);
-	}
-	
 	public boolean containsSpecifiedInverseJoinColumns() {
 		return !this.specifiedInverseJoinColumns.isEmpty();
 	}
 
-	public OrmJoinColumn addSpecifiedInverseJoinColumn(int index) {
-		if (getResourceTable() == null) {
-			addResourceTable();
-		}
-		XmlJoinColumn resourceJoinColumn = OrmFactory.eINSTANCE.createXmlJoinColumn();
-		OrmJoinColumn contextJoinColumn = buildInverseJoinColumn(resourceJoinColumn);
-		this.specifiedInverseJoinColumns.add(index, contextJoinColumn);
-		this.getResourceTable().getInverseJoinColumns().add(index, resourceJoinColumn);
-		this.fireItemAdded(JoinTable.SPECIFIED_INVERSE_JOIN_COLUMNS_LIST, index, contextJoinColumn);
-		return contextJoinColumn;
+	protected void addSpecifiedInverseJoinColumnFrom(OrmJoinColumn oldJoinColumn) {
+		OrmJoinColumn newJoinColumn = this.addSpecifiedInverseJoinColumn(this.specifiedInverseJoinColumns.size());
+		newJoinColumn.initializeFrom(oldJoinColumn);
 	}
-	
+
+	public OrmJoinColumn addSpecifiedInverseJoinColumn(int index) {
+		if (this.getResourceTable() == null) {
+			this.addResourceTable();
+		}
+		XmlJoinColumn xmlJoinColumn = OrmFactory.eINSTANCE.createXmlJoinColumn();
+		OrmJoinColumn joinColumn = this.buildInverseJoinColumn(xmlJoinColumn);
+		this.specifiedInverseJoinColumns.add(index, joinColumn);
+		this.getResourceTable().getInverseJoinColumns().add(index, xmlJoinColumn);
+		this.fireItemAdded(SPECIFIED_INVERSE_JOIN_COLUMNS_LIST, index, joinColumn);
+		return joinColumn;
+	}
+
 	protected void addSpecifiedInverseJoinColumn(int index, OrmJoinColumn joinColumn) {
-		addItemToList(index, joinColumn, this.specifiedInverseJoinColumns, JoinTable.SPECIFIED_INVERSE_JOIN_COLUMNS_LIST);
+		this.addItemToList(index, joinColumn, this.specifiedInverseJoinColumns, SPECIFIED_INVERSE_JOIN_COLUMNS_LIST);
 	}
 
 	protected void addSpecifiedInverseJoinColumn(OrmJoinColumn joinColumn) {
@@ -289,180 +434,85 @@ public class GenericOrmJoinTable
 	public void removeSpecifiedInverseJoinColumn(JoinColumn joinColumn) {
 		this.removeSpecifiedInverseJoinColumn(this.specifiedInverseJoinColumns.indexOf(joinColumn));
 	}
-	
+
 	public void removeSpecifiedInverseJoinColumn(int index) {
 		OrmJoinColumn removedJoinColumn = this.specifiedInverseJoinColumns.remove(index);
-		if (!containsSpecifiedInverseJoinColumns()) {
+		if ( ! this.containsSpecifiedInverseJoinColumns()) {
 			//create the defaultInverseJoinColumn now or this will happen during project update 
 			//after removing the join column from the resource model. That causes problems 
 			//in the UI because the change notifications end up in the wrong order.
-			this.defaultInverseJoinColumn = buildInverseJoinColumn(null);
+			this.defaultInverseJoinColumn = this.buildInverseJoinColumn(null);
 		}
 		this.getResourceTable().getInverseJoinColumns().remove(index);
-		fireItemRemoved(JoinTable.SPECIFIED_INVERSE_JOIN_COLUMNS_LIST, index, removedJoinColumn);
+		this.fireItemRemoved(SPECIFIED_INVERSE_JOIN_COLUMNS_LIST, index, removedJoinColumn);
 		if (this.defaultInverseJoinColumn != null) {
 			//fire change notification if a defaultJoinColumn was created above
-			this.firePropertyChanged(JoinTable.DEFAULT_INVERSE_JOIN_COLUMN, null, this.defaultInverseJoinColumn);
+			this.firePropertyChanged(DEFAULT_INVERSE_JOIN_COLUMN, null, this.defaultInverseJoinColumn);
 		}
 	}
 
 	protected void removeSpecifiedInverseJoinColumn_(OrmJoinColumn joinColumn) {
-		removeItemFromList(joinColumn, this.specifiedInverseJoinColumns, JoinTable.SPECIFIED_INVERSE_JOIN_COLUMNS_LIST);
+		this.removeItemFromList(joinColumn, this.specifiedInverseJoinColumns, SPECIFIED_INVERSE_JOIN_COLUMNS_LIST);
 	}
-	
+
 	public void moveSpecifiedInverseJoinColumn(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.specifiedInverseJoinColumns, targetIndex, sourceIndex);
 		this.getResourceTable().getInverseJoinColumns().move(targetIndex, sourceIndex);
-		fireItemMoved(JoinTable.SPECIFIED_INVERSE_JOIN_COLUMNS_LIST, targetIndex, sourceIndex);		
-	}
-	
-	
-	// ****************** OrmJoinTable implementation *****************
-	
-	public void update() {
-		this.update(this.getResourceTable());
+		this.fireItemMoved(SPECIFIED_INVERSE_JOIN_COLUMNS_LIST, targetIndex, sourceIndex);
 	}
 
-	protected void initialize(XmlJoinTable joinTable) {
-		super.initialize(joinTable);
-		this.initializeSpecifiedJoinColumns(joinTable);
-		this.initializeDefaultJoinColumn();
-		this.initializeSpecifiedInverseJoinColumns(joinTable);
-		this.initializeDefaultInverseJoinColumn();
+	public void clearSpecifiedInverseJoinColumns() {
+		this.specifiedInverseJoinColumns.clear();
+		this.defaultInverseJoinColumn = this.buildInverseJoinColumn(null);
+		this.getResourceTable().getInverseJoinColumns().clear();
+		this.fireListCleared(SPECIFIED_INVERSE_JOIN_COLUMNS_LIST);
+		this.firePropertyChanged(DEFAULT_INVERSE_JOIN_COLUMN, null, this.defaultInverseJoinColumn);
 	}
-	
-	protected void initializeSpecifiedJoinColumns(XmlJoinTable joinTable) {
-		if (joinTable == null) {
-			return;
-		}
-		for (XmlJoinColumn joinColumn : joinTable.getJoinColumns()) {
-			this.specifiedJoinColumns.add(buildJoinColumn(joinColumn));
-		}
-	}
-	
-	protected void initializeDefaultJoinColumn() {
-		if (!shouldBuildDefaultJoinColumn()) {
-			return;
-		}
-		this.defaultJoinColumn = buildJoinColumn(null);
-	}	
 
-	protected void initializeSpecifiedInverseJoinColumns(XmlJoinTable joinTable) {
-		if (joinTable == null) {
-			return;
-		}
-		for (XmlJoinColumn joinColumn : joinTable.getInverseJoinColumns()) {
-			this.specifiedInverseJoinColumns.add(buildInverseJoinColumn(joinColumn));
-		}
+	protected OrmJoinColumn buildInverseJoinColumn(XmlJoinColumn resourceJoinColumn) {
+		return this.buildJoinColumn(resourceJoinColumn, this.inverseJoinColumnOwner);
 	}
-	
-	protected void initializeDefaultInverseJoinColumn() {
-		if (!shouldBuildDefaultInverseJoinColumn()) {
-			return;
-		}
-		this.defaultInverseJoinColumn = buildInverseJoinColumn(null);
-	}	
-	
-	protected void update(XmlJoinTable joinTable) {
-		super.update(joinTable);
-		this.updateSpecifiedJoinColumns(joinTable);
-		this.updateDefaultJoinColumn();
-		this.updateSpecifiedInverseJoinColumns(joinTable);
-		this.updateDefaultInverseJoinColumn();
-	}
-		
-	protected void updateSpecifiedJoinColumns(XmlJoinTable joinTable) {
-		Iterator<XmlJoinColumn> xmlJoinColumns = this.xmlJoinColumns(joinTable);
-		
-		for (Iterator<OrmJoinColumn> contextJoinColumns = this.specifiedJoinColumns(); contextJoinColumns.hasNext(); ) {
-			OrmJoinColumn contextJoinColumn = contextJoinColumns.next();
-			if (xmlJoinColumns.hasNext()) {
-				contextJoinColumn.update(xmlJoinColumns.next());
-			}
-			else {
-				removeSpecifiedJoinColumn_(contextJoinColumn);
+
+	protected void initializeSpecifiedInverseJoinColumns(XmlJoinTable xmlJoinTable) {
+		if (xmlJoinTable != null) {
+			for (XmlJoinColumn xmlJoinColumn : xmlJoinTable.getInverseJoinColumns()) {
+				this.specifiedInverseJoinColumns.add(this.buildInverseJoinColumn(xmlJoinColumn));
 			}
 		}
-		
-		while (xmlJoinColumns.hasNext()) {
-			addSpecifiedJoinColumn(buildJoinColumn(xmlJoinColumns.next()));
-		}
 	}
 
-	protected Iterator<XmlJoinColumn> xmlJoinColumns(XmlJoinTable xmlJoinTable) {
-		// make a copy of the XML join columns (to prevent ConcurrentModificationException)
-		return (xmlJoinTable == null) ? EmptyIterator.<XmlJoinColumn>instance()
-			: new CloneIterator<XmlJoinColumn>(xmlJoinTable.getJoinColumns());
-	}
-	
-	protected boolean shouldBuildDefaultJoinColumn() {
-		return !containsSpecifiedJoinColumns();
-	}
+	protected void updateSpecifiedInverseJoinColumns(XmlJoinTable xmlJoinTable) {
+		Iterator<XmlJoinColumn> xmlJoinColumns = this.xmlInverseJoinColumns(xmlJoinTable);
 
-	protected void updateDefaultJoinColumn() {
-		if (!shouldBuildDefaultJoinColumn()) {
-			setDefaultJoinColumn(null);
-			return;
-		}
-		if (getDefaultJoinColumn() == null) {
-			this.setDefaultJoinColumn(buildJoinColumn(null));
-		}
-		else {
-			this.defaultJoinColumn.update(null);
-		}
-	}	
-
-	protected void updateSpecifiedInverseJoinColumns(XmlJoinTable joinTable) {
-		Iterator<XmlJoinColumn> xmlJoinColumns = this.xmlInverseJoinColumns(joinTable);
-		
-		for (ListIterator<OrmJoinColumn> contextJoinColumns = specifiedInverseJoinColumns(); contextJoinColumns.hasNext(); ) {
+		for (ListIterator<OrmJoinColumn> contextJoinColumns = this.specifiedInverseJoinColumns(); contextJoinColumns.hasNext(); ) {
 			OrmJoinColumn contextColumn = contextJoinColumns.next();
 			if (xmlJoinColumns.hasNext()) {
 				contextColumn.update(xmlJoinColumns.next());
-			}
-			else {
-				removeSpecifiedInverseJoinColumn_(contextColumn);
+			} else {
+				this.removeSpecifiedInverseJoinColumn_(contextColumn);
 			}
 		}
-		
+
 		while (xmlJoinColumns.hasNext()) {
-			addSpecifiedInverseJoinColumn(buildInverseJoinColumn(xmlJoinColumns.next()));
+			this.addSpecifiedInverseJoinColumn(this.buildInverseJoinColumn(xmlJoinColumns.next()));
 		}
 	}
-	
+
 	protected Iterator<XmlJoinColumn> xmlInverseJoinColumns(XmlJoinTable xmlJoinTable) {
 		// make a copy of the XML join columns (to prevent ConcurrentModificationException)
 		return (xmlJoinTable == null) ? EmptyIterator.<XmlJoinColumn>instance()
 			: new CloneIterator<XmlJoinColumn>(xmlJoinTable.getInverseJoinColumns());
 	}
-	
-	protected boolean shouldBuildDefaultInverseJoinColumn() {
-		return !containsSpecifiedInverseJoinColumns();
-	}
 
-	protected void updateDefaultInverseJoinColumn() {
-		if (!shouldBuildDefaultInverseJoinColumn()) {
-			setDefaultInverseJoinColumn(null);
-			return;
-		}
-		if (getDefaultInverseJoinColumn() == null) {
-			this.setDefaultInverseJoinColumn(buildInverseJoinColumn(null));
-		}
-		else {
-			this.defaultInverseJoinColumn.update(null);
-		}
-	}	
-	
-	protected OrmJoinColumn buildJoinColumn(XmlJoinColumn resourceJoinColumn) {
-		return getJpaFactory().buildOrmJoinColumn(this, new JoinColumnOwner(), resourceJoinColumn);
-	}
-	
-	protected OrmJoinColumn buildInverseJoinColumn(XmlJoinColumn resourceJoinColumn) {
-		return getJpaFactory().buildOrmJoinColumn(this, new InverseJoinColumnOwner(), resourceJoinColumn);
+
+	// ********** misc **********
+
+	protected OrmJoinColumn buildJoinColumn(XmlJoinColumn resourceJoinColumn, OrmJoinColumn.Owner owner) {
+		return this.getJpaFactory().buildOrmJoinColumn(this, owner, resourceJoinColumn);
 	}
 
 
-	// ************************** validation ***********************
+	// ********** validation **********
 
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
@@ -486,7 +536,7 @@ public class GenericOrmJoinTable
 						this.getCatalogTextRange()
 					)
 				);
-				
+
 			} else {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
@@ -500,7 +550,7 @@ public class GenericOrmJoinTable
 			}
 			return;
 		}
-		
+
 		if ( ! this.hasResolvedSchema()) {
 			if (mapping.getPersistentAttribute().isVirtual()) {
 				messages.add(
@@ -546,7 +596,7 @@ public class GenericOrmJoinTable
 								new String[] {this.getName()}, 
 								this, 
 								this.getNameTextRange())
-						);				
+						);
 				}
 			}
 			return;
@@ -562,19 +612,23 @@ public class GenericOrmJoinTable
 		}
 	}
 
+
+	// ********** join column owner adapters **********
+
 	/**
 	 * just a little common behavior
 	 */
-	abstract class AbstractJoinColumnOwner implements OrmJoinColumn.Owner
+	protected abstract class AbstractJoinColumnOwner
+		implements OrmJoinColumn.Owner
 	{
-		AbstractJoinColumnOwner() {
+		protected AbstractJoinColumnOwner() {
 			super();
 		}
 
 		public TypeMapping getTypeMapping() {
-			return getRelationshipMapping().getTypeMapping();
+			return this.getRelationshipMapping().getTypeMapping();
 		}
-		
+
 		public RelationshipMapping getRelationshipMapping() {
 			return GenericOrmJoinTable.this.getRelationshipMapping();
 		}
@@ -595,12 +649,10 @@ public class GenericOrmJoinTable
 		}
 
 		public org.eclipse.jpt.db.Table getDbTable(String tableName) {
-			if (GenericOrmJoinTable.this.getName() == null) {
-				return null;
-			}
-			return (GenericOrmJoinTable.this.getName().equals(tableName)) ? GenericOrmJoinTable.this.getDbTable() : null;
+			String joinTableName = GenericOrmJoinTable.this.getName();
+			return (joinTableName == null) ? null : (joinTableName.equals(tableName)) ? GenericOrmJoinTable.this.getDbTable() : null;
 		}
-		
+
 		/**
 		 * by default, the join column is, obviously, in the join table;
 		 * not sure whether it can be anywhere else...
@@ -616,12 +668,65 @@ public class GenericOrmJoinTable
 
 
 	/**
+	 * owner for "back-pointer" JoinColumns;
+	 * these point at the source/owning entity
+	 */
+	protected class JoinColumnOwner
+		extends AbstractJoinColumnOwner
+	{
+		protected JoinColumnOwner() {
+			super();
+		}
+
+		public Entity getTargetEntity() {
+			return GenericOrmJoinTable.this.getRelationshipMapping().getEntity();
+		}
+
+		public String getAttributeName() {
+			Entity targetEntity = GenericOrmJoinTable.this.getRelationshipMapping().getResolvedTargetEntity();
+			if (targetEntity == null) {
+				return null;
+			}
+			for (PersistentAttribute each : CollectionTools.iterable(targetEntity.getPersistentType().allAttributes())) {
+				if (each.getMapping().isOwnedBy(this.getRelationshipMapping())) {
+					return each.getName();
+				}
+			}
+			return null;
+		}
+
+		@Override
+		public org.eclipse.jpt.db.Table getDbTable(String tableName) {
+			org.eclipse.jpt.db.Table dbTable = super.getDbTable(tableName);
+			return (dbTable != null) ? dbTable : this.getTypeMapping().getDbTable(tableName);
+		}
+
+		public org.eclipse.jpt.db.Table getReferencedColumnDbTable() {
+			return getTypeMapping().getPrimaryDbTable();
+		}
+
+		public boolean isVirtual(BaseJoinColumn joinColumn) {
+			return GenericOrmJoinTable.this.defaultJoinColumn == joinColumn;
+		}
+
+		public String getDefaultColumnName() {
+			return null;  // no default
+		}
+
+		public int joinColumnsSize() {
+			return GenericOrmJoinTable.this.joinColumnsSize();
+		}
+	}
+
+
+	/**
 	 * owner for "forward-pointer" JoinColumns;
 	 * these point at the target/inverse entity
 	 */
-	class InverseJoinColumnOwner extends AbstractJoinColumnOwner
+	protected class InverseJoinColumnOwner
+		extends AbstractJoinColumnOwner
 	{
-		public InverseJoinColumnOwner() {
+		protected InverseJoinColumnOwner() {
 			super();
 		}
 
@@ -639,82 +744,26 @@ public class GenericOrmJoinTable
 			if (dbTable != null) {
 				return dbTable;
 			}
-			Entity targetEntity = getTargetEntity();
+			Entity targetEntity = this.getTargetEntity();
 			return (targetEntity == null) ? null : targetEntity.getDbTable(tableName);
 		}
 
 		public org.eclipse.jpt.db.Table getReferencedColumnDbTable() {
-			Entity targetEntity = getTargetEntity();
+			Entity targetEntity = this.getTargetEntity();
 			return (targetEntity == null) ? null : targetEntity.getPrimaryDbTable();
 		}
-		
+
 		public boolean isVirtual(BaseJoinColumn joinColumn) {
 			return GenericOrmJoinTable.this.defaultInverseJoinColumn == joinColumn;
 		}
-		
+
 		public String getDefaultColumnName() {
-			// TODO Auto-generated method stub
-			return null;
+			return null;  // no default
 		}
-		
+
 		public int joinColumnsSize() {
 			return GenericOrmJoinTable.this.inverseJoinColumnsSize();
 		}
-		
 	}
 
-
-	/**
-	 * owner for "back-pointer" JoinColumns;
-	 * these point at the source/owning entity
-	 */
-	class JoinColumnOwner extends AbstractJoinColumnOwner
-	{
-		public JoinColumnOwner() {
-			super();
-		}
-
-		public Entity getTargetEntity() {
-			return GenericOrmJoinTable.this.getRelationshipMapping().getEntity();
-		}
-
-		public String getAttributeName() {
-			Entity targetEntity = GenericOrmJoinTable.this.getRelationshipMapping().getResolvedTargetEntity();
-			if (targetEntity == null) {
-				return null;
-			}
-			for (PersistentAttribute each : 
-					CollectionTools.iterable(
-						targetEntity.getPersistentType().allAttributes())) {
-				if (each.getMapping().isOwnedBy(getRelationshipMapping())) {
-					return each.getName();
-				}
-			}
-			return null;
-		}
-
-		@Override
-		public org.eclipse.jpt.db.Table getDbTable(String tableName) {
-			org.eclipse.jpt.db.Table dbTable = super.getDbTable(tableName);
-			return (dbTable != null) ? dbTable : this.getTypeMapping().getDbTable(tableName);
-		}
-
-		public org.eclipse.jpt.db.Table getReferencedColumnDbTable() {
-			return getTypeMapping().getPrimaryDbTable();
-		}
-		
-		public boolean isVirtual(BaseJoinColumn joinColumn) {
-			return GenericOrmJoinTable.this.defaultJoinColumn == joinColumn;
-		}
-		
-		public String getDefaultColumnName() {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-		public int joinColumnsSize() {
-			return GenericOrmJoinTable.this.joinColumnsSize();
-		}
-	}
-	
 }

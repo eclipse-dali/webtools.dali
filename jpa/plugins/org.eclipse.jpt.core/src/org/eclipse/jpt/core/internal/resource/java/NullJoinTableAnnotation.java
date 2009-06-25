@@ -65,6 +65,10 @@ public final class NullJoinTableAnnotation
 		throw new UnsupportedOperationException();
 	}
 
+	public JoinColumnAnnotation initializeJoinColumns() {
+		throw new UnsupportedOperationException();
+	}
+
 	// ***** inverse join columns
 	public ListIterator<JoinColumnAnnotation> inverseJoinColumns() {
 		return EmptyListIterator.instance();
@@ -91,6 +95,10 @@ public final class NullJoinTableAnnotation
 	}
 
 	public void removeInverseJoinColumn(int index) {
+		throw new UnsupportedOperationException();
+	}
+
+	public JoinColumnAnnotation initializeInverseJoinColumns() {
 		throw new UnsupportedOperationException();
 	}
 
