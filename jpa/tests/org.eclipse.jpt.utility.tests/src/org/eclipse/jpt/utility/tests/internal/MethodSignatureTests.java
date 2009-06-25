@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -171,30 +171,6 @@ public class MethodSignatureTests extends TestCase {
 		assertFalse(ms1.equals(ms3));
 	}
 
-	public void testCompareTo1() throws Exception {
-		MethodSignature ms1 = new SimpleMethodSignature(this.getMethod("method3"));
-		MethodSignature ms2 = new SimpleMethodSignature(this.getMethod("method3"));
-		assertEquals(0, ms1.compareTo(ms2));
-	}
-
-	public void testCompareTo2() throws Exception {
-		MethodSignature ms1 = new SimpleMethodSignature(this.getMethod("method3"));
-		MethodSignature ms2 = new SimpleMethodSignature(this.getMethod("method2"));
-		assertTrue(ms1.compareTo(ms2) > 0);
-	}
-
-	public void testCompareTo3() throws Exception {
-		MethodSignature msA1 = new SimpleMethodSignature(this.getMethod("methodA", new Class[] {int.class, String.class}));
-		MethodSignature msA2 = new SimpleMethodSignature(this.getMethod("methodA", new Class[] {int.class, String.class, String.class}));
-		assertTrue(msA1.compareTo(msA2) < 0);
-	}
-
-	public void testCompareTo4() throws Exception {
-		MethodSignature msB1 = new SimpleMethodSignature(this.getMethod("methodB", new Class[] {int.class, Object.class}));
-		MethodSignature msB2 = new SimpleMethodSignature(this.getMethod("methodB", new Class[] {int.class, String.class}));
-		assertTrue(msB1.compareTo(msB2) < 0);
-	}
-
 	public void testClone() throws Exception {
 		SimpleMethodSignature ms1 = new SimpleMethodSignature(this.getMethod("method3"));
 		SimpleMethodSignature ms2 = (SimpleMethodSignature) ms1.clone();
@@ -216,10 +192,6 @@ public class MethodSignatureTests extends TestCase {
 			}
 		}
 		throw new IllegalArgumentException("method not found: " + methodName);
-	}
-
-	private Method getMethod(String methodName, Class<?>... parameterTypes) throws Exception {
-		return this.getClass().getMethod(methodName, parameterTypes);
 	}
 
 	public void method0() { /* used by tests */ }

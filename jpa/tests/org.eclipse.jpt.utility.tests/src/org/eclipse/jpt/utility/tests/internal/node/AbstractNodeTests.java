@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,20 +9,21 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.tests.internal.node;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+
 import junit.framework.TestCase;
+
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.HashBag;
-import org.eclipse.jpt.utility.internal.Range;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.node.AbstractNode;
 import org.eclipse.jpt.utility.internal.node.Node;
 import org.eclipse.jpt.utility.internal.node.Problem;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
+@SuppressWarnings("nls")
 public class AbstractNodeTests extends TestCase {
 	private TestWorkbenchModel root;
 
@@ -353,42 +354,10 @@ public class AbstractNodeTests extends TestCase {
 		assertEquals(1, parent.branchProblemsSize());
 	}
 
-	public void testSort() {
-		List<TestWorkbenchModel> nodes = this.buildSortedNodes();
-		assertTrue(new Range(0, 1).includes(this.indexOf(nodes, "aaa")));
-		assertTrue(new Range(0, 1).includes(this.indexOf(nodes, "AAA")));
-		assertTrue(new Range(2, 3).includes(this.indexOf(nodes, "bbb")));
-		assertTrue(new Range(2, 3).includes(this.indexOf(nodes, "BBB")));
-		assertTrue(new Range(4, 6).includes(this.indexOf(nodes, "ccc")));
-		assertTrue(new Range(4, 6).includes(this.indexOf(nodes, "CCC")));
-		assertTrue(new Range(4, 6).includes(this.indexOf(nodes, "���")));
-	}
-
-	private int indexOf(List<TestWorkbenchModel> nodes, String nodeName) {
-		for (int i = nodes.size(); i-- > 0; ) {
-			if (nodes.get(i).getName().equals(nodeName)) {
-				return i;
-			}
-		}
-		throw new IllegalArgumentException();
-	}
-
-	private List<TestWorkbenchModel> buildSortedNodes() {
-		List<TestWorkbenchModel> result = new ArrayList<TestWorkbenchModel>();
-		result.add(new RootTestWorkbenchModel("AAA"));
-		result.add(new RootTestWorkbenchModel("BBB"));
-		result.add(new RootTestWorkbenchModel("CCC"));
-		result.add(new RootTestWorkbenchModel("���"));
-		result.add(new RootTestWorkbenchModel("ccc"));
-		result.add(new RootTestWorkbenchModel("bbb"));
-		result.add(new RootTestWorkbenchModel("aaa"));
-		return CollectionTools.sort(result);
-	}
-
 
 	// ********** inner classes **********
 
-	private class TestWorkbenchModel extends AbstractNode {
+	public class TestWorkbenchModel extends AbstractNode {
 		private String name;
 			public static final String NAME_PROPERTY = "name";
 		private int size;

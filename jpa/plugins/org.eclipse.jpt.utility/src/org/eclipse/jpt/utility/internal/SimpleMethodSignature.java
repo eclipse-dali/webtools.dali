@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,8 +12,8 @@ package org.eclipse.jpt.utility.internal;
 import java.io.PrintWriter;
 import java.io.Serializable;
 import java.lang.reflect.Method;
-import com.ibm.icu.text.Collator;
 import java.util.Arrays;
+
 import org.eclipse.jpt.utility.JavaType;
 import org.eclipse.jpt.utility.MethodSignature;
 
@@ -176,25 +176,6 @@ public final class SimpleMethodSignature
 	@Override
 	public int hashCode() {
 		return this.name.hashCode() ^ Arrays.hashCode(this.parameterTypes);
-	}
-
-	public int compareTo(MethodSignature ms) {
-		int compare = Collator.getInstance().compare(this.name, ms.getName());
-		return (compare != 0) ? compare : this.compareParameterTypes(ms.getParameterTypes());
-	}
-
-	private int compareParameterTypes(JavaType[] otherParameterTypes) {
-		JavaType[] localParameterTypes = this.parameterTypes;
-		int len1 = localParameterTypes.length;
-		int len2 = otherParameterTypes.length;
-		int min = Math.min(len1, len2);
-		for (int i = 0; i < min; i++) {
-			int compare = localParameterTypes[i].compareTo(otherParameterTypes[i]);
-			if (compare != 0) {
-				return compare;
-			}
-		}
-		return (len1 == len2) ? 0 : (len1 < len2) ? -1 : 1;
 	}
 
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -46,6 +46,7 @@ import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 /**
  * an example UI for testing various permutations of the ListModelAdapter
  */
+@SuppressWarnings("nls")
 public class ListModelAdapterUITest {
 
 	private WritablePropertyValueModel<TaskList> taskListHolder;
@@ -59,7 +60,7 @@ public class ListModelAdapterUITest {
 		super();
 	}
 
-	private void exec(String[] args) throws Exception {
+	private void exec(@SuppressWarnings("unused") String[] args) throws Exception {
 		this.taskListHolder = new SimplePropertyValueModel<TaskList>(new TaskList());
 		this.openWindow();
 	}
@@ -185,7 +186,7 @@ public class ListModelAdapterUITest {
 	private Comparator<Task> buildCustomTaskObjectComparator() {
 		return new Comparator<Task>() {
 			public int compare(Task to1, Task to2) {
-				return to2.compareTo(to1);
+				return to2.displayString().compareTo(to1.displayString());
 			}
 		};
 	}
@@ -296,7 +297,7 @@ public class ListModelAdapterUITest {
 		return action;
 	}
 
-	private class TaskList extends AbstractModel {
+	public class TaskList extends AbstractModel {
 		private List<String> taskNames = new ArrayList<String>();
 		private List<Task> taskObjects = new ArrayList<Task>();
 		public static final String TASK_NAMES_LIST = "taskNames";
@@ -337,7 +338,7 @@ public class ListModelAdapterUITest {
 		}
 	}
 
-	private class Task extends AbstractModel implements Displayable {
+	public class Task extends AbstractModel implements Displayable {
 		private String name;
 		private Date creationTimeStamp;
 		public Task(String name) {
@@ -349,9 +350,6 @@ public class ListModelAdapterUITest {
 		}
 		public Icon icon() {
 			return null;
-		}
-		public int compareTo(Displayable o) {
-			return DEFAULT_COMPARATOR.compare(this, o);
 		}
 		public String getName() {
 			return this.name;

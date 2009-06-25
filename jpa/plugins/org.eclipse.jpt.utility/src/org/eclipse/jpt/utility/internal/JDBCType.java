@@ -12,7 +12,6 @@ package org.eclipse.jpt.utility.internal;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.sql.Types;
-import com.ibm.icu.text.Collator;
 
 /**
  * Associate the Java constant and the JDBC type name.
@@ -21,7 +20,7 @@ import com.ibm.icu.text.Collator;
  * @see java.sql.Types
  */
 public final class JDBCType
-	implements Comparable<JDBCType>, Cloneable, Serializable
+	implements Cloneable, Serializable
 {
 
 	/**
@@ -93,10 +92,6 @@ public final class JDBCType
 		} catch (CloneNotSupportedException ex) {
 			throw new InternalError();
 		}
-	}
-
-	public int compareTo(JDBCType type) {
-		return Collator.getInstance().compare(this.name, type.name);
 	}
 
 

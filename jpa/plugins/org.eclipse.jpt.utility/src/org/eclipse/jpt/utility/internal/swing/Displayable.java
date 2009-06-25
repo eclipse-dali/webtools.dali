@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,9 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal.swing;
 
-import com.ibm.icu.text.Collator;
-import java.util.Comparator;
 import javax.swing.Icon;
+
 import org.eclipse.jpt.utility.model.Model;
 
 /**
@@ -19,7 +18,7 @@ import org.eclipse.jpt.utility.model.Model;
  * application model objects to something displayable.
  */
 public interface Displayable
-	extends Model, Comparable<Displayable>
+	extends Model
 {
 
 	/**
@@ -30,7 +29,7 @@ public interface Displayable
 	 *     this.firePropertyChanged(DISPLAY_STRING_PROPERTY, oldDisplayString, this.displayString());
 	 */
 	String displayString();
-		String DISPLAY_STRING_PROPERTY = "displayString";
+		String DISPLAY_STRING_PROPERTY = "displayString"; //$NON-NLS-1$
 
 	/**
 	 * Return an icon that can be used to identify the model
@@ -40,54 +39,6 @@ public interface Displayable
 	 *     this.firePropertyChanged(ICON_PROPERTY, oldIcon, this.icon());
 	 */
 	Icon icon();
-		String ICON_PROPERTY = "icon";
-
-
-	// ********** helper implementations **********
-
-	Collator DEFAULT_COLLATOR = Collator.getInstance();
-
-	/**
-	 * Since all displayable objects must be comparable, provide a
-	 * typical comparator that can be used to sort a collection of
-	 * displayable objects.
-	 * Sort based on display string:
-	 *     - identical objects are equal (which means they cannot
-	 *         co-exist in a SortedSet)
-	 *     - use the default collator (which typically interleaves
-	 *         lower- and upper-case letters)
-	 *     - allow duplicate display strings (from different objects)
-	 *     - try to return consistent results for same object pairs
-	 */
-	Comparator<Displayable> DEFAULT_COMPARATOR =
-		new Comparator<Displayable>() {
-			public int compare(Displayable d1, Displayable d2) {
-				// disallow duplicates based on object identity
-				if (d1 == d2) {
-					return 0;
-				}
-
-				// first compare display strings using the default collator
-				int result = DEFAULT_COLLATOR.compare(d1.displayString(), d2.displayString());
-				if (result != 0) {
-					return result;
-				}
-
-				// then compare using object-id
-				result = System.identityHashCode(d1) - System.identityHashCode(d2);
-				if (result != 0) {
-					return result;
-				}
-
-				// It's unlikely that we get to this point; but, just in case, we will return -1.
-				// Unfortunately, this introduces some mild unpredictability to the sort order
-				// (unless the objects are always passed into this method in the same order).
-				return -1;		// if all else fails, indicate that o1 < o2
-			}
-			@Override
-			public String toString() {
-				return "Displayable.DEFAULT_COMPARATOR";
-			}
-		};
+		String ICON_PROPERTY = "icon"; //$NON-NLS-1$
 
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -48,9 +48,7 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.TreeNodeValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 
-/**
- * 
- */
+@SuppressWarnings("nls")
 public class TreeModelAdapterTests extends TestCase {
 	boolean eventFired;
 
@@ -395,7 +393,7 @@ public class TreeModelAdapterTests extends TestCase {
 	 * TestModel's children into a ListValueModel of Nodes whose order is
 	 * determined by subclass implementations.
 	 */
-	public static abstract class TestNode extends AbstractTreeNodeValueModel<Object> implements Displayable {
+	public static abstract class TestNode extends AbstractTreeNodeValueModel<Object> implements Displayable, Comparable<TestNode> {
 		/** the model object wrapped by this node */
 		private final TestModel testModel;
 		/** this node's parent node; null for the root node */
@@ -580,11 +578,8 @@ public class TreeModelAdapterTests extends TestCase {
 
 		// ********** standard methods **********
 
-		/**
-		 * use the standard Displayable comparator
-		 */
-		public int compareTo(Displayable d) {
-			return DEFAULT_COMPARATOR.compare(this, d);
+		public int compareTo(TestNode o) {
+			return this.displayString().compareTo(o.displayString());
 		}
 
 		@Override
@@ -673,11 +668,11 @@ public class TreeModelAdapterTests extends TestCase {
 		@Override
 		protected ListValueModel<TreeNodeValueModel<Object>> buildChildrenModel(TestModel testModel) {
 			if (testModel.getName().equals("node 3")) {
-				return this.buildSpecialChildrenModel(testModel);
+				return this.buildSpecialChildrenModel();
 			}
 			return super.buildChildrenModel(testModel);
 		}
-		protected ListValueModel<TreeNodeValueModel<Object>> buildSpecialChildrenModel(TestModel testModel) {
+		protected ListValueModel<TreeNodeValueModel<Object>> buildSpecialChildrenModel() {
 			TreeNodeValueModel<Object>[] children = new NameTestNode[1];
 			children[0] = new NameTestNode(this);
 			return new SimpleListValueModel<TreeNodeValueModel<Object>>(Arrays.asList(children));

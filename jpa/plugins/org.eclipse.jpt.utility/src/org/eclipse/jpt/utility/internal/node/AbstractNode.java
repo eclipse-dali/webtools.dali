@@ -925,13 +925,6 @@ public abstract class AbstractNode
 	// ********** display methods **********
 
 	/**
-	 * Compare display strings.
-	 */
-	public int compareTo(Node node) {
-		return DEFAULT_COMPARATOR.compare(this, node);
-	}
-
-	/**
 	 * Return a developer-friendly String. If you want something useful for
 	 * displaying in a user interface, use #displayString().
 	 * If you want to give more information in your #toString(),

@@ -11,7 +11,6 @@ package org.eclipse.jpt.utility.internal;
 
 import java.io.PrintWriter;
 import java.io.Serializable;
-import com.ibm.icu.text.Collator;
 import org.eclipse.jpt.utility.JavaType;
 
 /**
@@ -150,11 +149,6 @@ public final class SimpleJavaType
 	@Override
 	public int hashCode() {
 		return this.elementTypeName.hashCode() ^ this.arrayDepth;
-	}
-
-	public int compareTo(JavaType jt) {
-		int x = Collator.getInstance().compare(this.elementTypeName, jt.getElementTypeName());
-		return (x != 0) ? x : (this.arrayDepth - jt.getArrayDepth());
 	}
 
 

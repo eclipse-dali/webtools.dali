@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,12 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal.node;
 
-import com.ibm.icu.text.Collator;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.model.Model;
 
@@ -27,7 +26,7 @@ import org.eclipse.jpt.utility.model.Model;
  * the nodes themselves, as opposed to clients of the nodes. These
  * methods are called by a node on either its parent or its children.
  */
-public interface Node extends Model, Comparable<Node> {
+public interface Node extends Model {
 
 
 	// ********** containment hierarchy (parent/children) **********
@@ -116,7 +115,7 @@ public interface Node extends Model, Comparable<Node> {
 	 * its descendants were last read or saved.
 	 */
 	boolean isDirtyBranch();
-		String DIRTY_BRANCH_PROPERTY = "dirtyBranch";
+		String DIRTY_BRANCH_PROPERTY = "dirtyBranch"; //$NON-NLS-1$
 
 	/**
 	 * INTRA-TREE API
@@ -203,7 +202,7 @@ public interface Node extends Model, Comparable<Node> {
 	 * node's descendants' problems.
 	 */
 	ListIterator<Problem> branchProblems();
-		String BRANCH_PROBLEMS_LIST = "branchProblems";
+		String BRANCH_PROBLEMS_LIST = "branchProblems"; //$NON-NLS-1$
 
 	/**
 	 * Return the size of all the node's problems along with all the
@@ -215,7 +214,7 @@ public interface Node extends Model, Comparable<Node> {
 	 * Return whether the node or any of its descendants have problems.
 	 */
 	boolean hasBranchProblems();
-		String HAS_BRANCH_PROBLEMS_PROPERTY = "hasBranchProblems";
+		String HAS_BRANCH_PROBLEMS_PROPERTY = "hasBranchProblems"; //$NON-NLS-1$
 
 	/**
 	 * Return whether the node contains the specified branch problem.
@@ -262,7 +261,7 @@ public interface Node extends Model, Comparable<Node> {
 	 * Return the user comment concerning the node.
 	 */
 	String comment();
-		String COMMENT_PROPERTY = "comment";
+		String COMMENT_PROPERTY = "comment"; //$NON-NLS-1$
 
 	/**
 	 * Set the user comment concerning the node.
@@ -359,50 +358,9 @@ public interface Node extends Model, Comparable<Node> {
 		}
 		@Override
 		public String toString() {
-			return StringTools.buildToStringFor(this, this.source + " => " + this.target);
+			return StringTools.buildToStringFor(this, this.source + " => " + this.target); //$NON-NLS-1$
 		}
 	}
-
-	/**
-	 * Typical comparator that can be used to sort a collection of nodes.
-	 * Sort based on display string:
-	 * 	- identical objects are equal (which means that cannot
-	 * 		co-exist in a SortedSet)
-	 * 	- use the default collator (which typically interleaves
-	 * 		lower- and upper-case letters)
-	 * 	- allow duplicate display strings (from different objects)
-	 * 	- try to return consistent results for same object pairs
-	 */
-	Comparator<Node> DEFAULT_COMPARATOR =
-		new Comparator<Node>() {
-			public int compare(Node node1, Node node2) {
-				// disallow duplicates based on object identity
-				if (node1 == node2) {
-					return 0;
-				}
-
-				// first compare display strings using the default collator
-				int result = Collator.getInstance().compare(node1.displayString(), node2.displayString());
-				if (result != 0) {
-					return result;
-				}
-
-				// then compare using object-id
-				result = System.identityHashCode(node1) - System.identityHashCode(node2);
-				if (result != 0) {
-					return result;
-				}
-
-				// It's unlikely that we get to this point; but, just in case, we will return -1.
-				// Unfortunately, this introduces some mild unpredictability to the sort order
-				// (unless the objects are always passed into this method in the same order).
-				return -1;		// if all else fails, indicate that o1 < o2
-			}
-			@Override
-			public String toString() {
-				return "Node.DEFAULT_COMPARATOR";
-			}
-		};
 
 
 	/**
@@ -412,7 +370,7 @@ public interface Node extends Model, Comparable<Node> {
 		new PluggableValidator(PluggableValidator.Delegate.Null.instance()) {
 			@Override
 			public String toString() {
-				return "Node.NULL_VALIDATOR";
+				return "Node.NULL_VALIDATOR"; //$NON-NLS-1$
 			}
 		};
 

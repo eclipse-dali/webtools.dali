@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -25,6 +25,7 @@ import org.eclipse.jpt.utility.internal.swing.Displayable;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
+@SuppressWarnings("nls")
 public class ItemListListValueModelAdapterTests extends TestCase {
 	private Junk foo;
 	private Junk bar;
@@ -199,7 +200,7 @@ public class ItemListListValueModelAdapterTests extends TestCase {
 
 	// ********** Junk class **********
 
-	private class Junk extends AbstractModel implements Displayable {
+	private class Junk extends AbstractModel implements Displayable, Comparable<Junk> {
 		private List<String> stuff;
 			public static final String STUFF_LIST = "stuff";
 			
@@ -226,11 +227,11 @@ public class ItemListListValueModelAdapterTests extends TestCase {
 		public Icon icon() {
 			return null;
 		}
-		
-		public int compareTo(Displayable o) {
-			return DEFAULT_COMPARATOR.compare(this, o);
+
+		public int compareTo(Junk o) {
+			return this.displayString().compareTo(o.displayString());
 		}
-	
+
 		@Override
 		public String toString() {
 			return "Junk(" + this.stuff + ")";

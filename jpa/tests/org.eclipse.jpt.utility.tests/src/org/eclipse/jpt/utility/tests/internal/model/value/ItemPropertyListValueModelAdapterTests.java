@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -29,6 +29,7 @@ import org.eclipse.jpt.utility.internal.swing.Displayable;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
+@SuppressWarnings("nls")
 public class ItemPropertyListValueModelAdapterTests extends TestCase {
 	private Junk foo;
 	private Junk bar;
@@ -142,7 +143,7 @@ public class ItemPropertyListValueModelAdapterTests extends TestCase {
 		// sort with reverse order
 		return new Comparator<Junk>() {
 			public int compare(Junk o1, Junk o2) {
-				return o2.compareTo(o1);
+				return o2.displayString().compareTo(o1.displayString());
 			}
 		};
 	}
@@ -302,7 +303,7 @@ public class ItemPropertyListValueModelAdapterTests extends TestCase {
 
 	// ********** Junk class **********
 
-	private class Junk extends AbstractModel implements Displayable {
+	private class Junk extends AbstractModel implements Displayable, Comparable<Junk> {
 		private String name;
 		public Junk(String name) {
 			this.name = name;
@@ -313,13 +314,13 @@ public class ItemPropertyListValueModelAdapterTests extends TestCase {
 		public Icon icon() {
 			return null;
 		}
-		public int compareTo(Displayable o) {
-			return DEFAULT_COMPARATOR.compare(this, o);
-		}
 		public void setName(String name) {
 			Object old = this.name;
 			this.name = name;
 			this.firePropertyChanged(DISPLAY_STRING_PROPERTY, old, name);
+		}
+		public int compareTo(Junk o) {
+			return this.displayString().compareTo(o.displayString());
 		}
 		@Override
 		public String toString() {
