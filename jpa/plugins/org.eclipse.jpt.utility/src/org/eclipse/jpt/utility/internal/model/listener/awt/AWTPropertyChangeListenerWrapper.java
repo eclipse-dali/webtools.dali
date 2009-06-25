@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,12 +10,15 @@
 package org.eclipse.jpt.utility.internal.model.listener.awt;
 
 import java.awt.EventQueue;
+
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 
 /**
  * Wrap another property change listener and forward events to it on the AWT
  * event queue.
+ * Forward *every* event asynchronously via the UI thread so the listener
+ * receives in the same order they were generated.
  */
 public class AWTPropertyChangeListenerWrapper
 	implements PropertyChangeListener
@@ -32,11 +35,7 @@ public class AWTPropertyChangeListenerWrapper
 	}
 
 	public void propertyChanged(PropertyChangeEvent event) {
-		if (EventQueue.isDispatchThread()) {
-			this.propertyChanged_(event);
-		} else {
-			this.executeOnEventQueue(this.buildRunnable(event));
-		}
+		this.executeOnEventQueue(this.buildRunnable(event));
 	}
 
 	private Runnable buildRunnable(final PropertyChangeEvent event) {
@@ -69,7 +68,7 @@ public class AWTPropertyChangeListenerWrapper
 
 	@Override
 	public String toString() {
-		return "AWT(" + this.listener.toString() + ")";
+		return "AWT(" + this.listener.toString() + ')'; //$NON-NLS-1$
 	}
 
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,12 +10,15 @@
 package org.eclipse.jpt.utility.internal.model.listener.awt;
 
 import java.awt.EventQueue;
+
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
 import org.eclipse.jpt.utility.model.listener.ListChangeListener;
 
 /**
  * Wrap another list change listener and forward events to it on the AWT
  * event queue.
+ * Forward *every* event asynchronously via the UI thread so the listener
+ * receives in the same order they were generated.
  */
 public class AWTListChangeListenerWrapper
 	implements ListChangeListener
@@ -31,51 +34,27 @@ public class AWTListChangeListenerWrapper
 	}
 
 	public void itemsAdded(ListChangeEvent event) {
-		if (EventQueue.isDispatchThread()) {
-			this.itemsAdded_(event);
-		} else {
-			this.executeOnEventQueue(this.buildItemsAddedRunnable(event));
-		}
+		this.executeOnEventQueue(this.buildItemsAddedRunnable(event));
 	}
 
 	public void itemsRemoved(ListChangeEvent event) {
-		if (EventQueue.isDispatchThread()) {
-			this.itemsRemoved_(event);
-		} else {
-			this.executeOnEventQueue(this.buildItemsRemovedRunnable(event));
-		}
+		this.executeOnEventQueue(this.buildItemsRemovedRunnable(event));
 	}
 
 	public void itemsMoved(ListChangeEvent event) {
-		if (EventQueue.isDispatchThread()) {
-			this.itemsMoved_(event);
-		} else {
-			this.executeOnEventQueue(this.buildItemsMovedRunnable(event));
-		}
+		this.executeOnEventQueue(this.buildItemsMovedRunnable(event));
 	}
 
 	public void itemsReplaced(ListChangeEvent event) {
-		if (EventQueue.isDispatchThread()) {
-			this.itemsReplaced_(event);
-		} else {
-			this.executeOnEventQueue(this.buildItemsReplacedRunnable(event));
-		}
+		this.executeOnEventQueue(this.buildItemsReplacedRunnable(event));
 	}
 
 	public void listCleared(ListChangeEvent event) {
-		if (EventQueue.isDispatchThread()) {
-			this.listCleared_(event);
-		} else {
-			this.executeOnEventQueue(this.buildListClearedRunnable(event));
-		}
+		this.executeOnEventQueue(this.buildListClearedRunnable(event));
 	}
 
 	public void listChanged(ListChangeEvent event) {
-		if (EventQueue.isDispatchThread()) {
-			this.listChanged_(event);
-		} else {
-			this.executeOnEventQueue(this.buildListChangedRunnable(event));
-		}
+		this.executeOnEventQueue(this.buildListChangedRunnable(event));
 	}
 
 	private Runnable buildItemsAddedRunnable(final ListChangeEvent event) {
@@ -85,7 +64,7 @@ public class AWTListChangeListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "items added";
+				return "items added"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -97,7 +76,7 @@ public class AWTListChangeListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "items removed";
+				return "items removed"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -109,7 +88,7 @@ public class AWTListChangeListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "items moved";
+				return "items moved"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -121,7 +100,7 @@ public class AWTListChangeListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "items replaced";
+				return "items replaced"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -133,7 +112,7 @@ public class AWTListChangeListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "list cleared";
+				return "list cleared"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -145,7 +124,7 @@ public class AWTListChangeListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "list changed";
+				return "list changed"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -192,7 +171,7 @@ public class AWTListChangeListenerWrapper
 
 	@Override
 	public String toString() {
-		return "AWT(" + this.listener.toString() + ")";
+		return "AWT(" + this.listener.toString() + ')'; //$NON-NLS-1$
 	}
 
 }

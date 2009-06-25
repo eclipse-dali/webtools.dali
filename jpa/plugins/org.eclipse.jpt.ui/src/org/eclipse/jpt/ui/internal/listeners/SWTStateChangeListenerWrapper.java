@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,6 +16,8 @@ import org.eclipse.swt.widgets.Display;
 /**
  * Wrap another state change listener and forward events to it on the SWT
  * UI thread.
+ * Forward *every* event asynchronously via the UI thread so the listener
+ * receives in the same order they were generated.
  */
 public class SWTStateChangeListenerWrapper
 	implements StateChangeListener
@@ -31,11 +33,7 @@ public class SWTStateChangeListenerWrapper
 	}
 
 	public void stateChanged(StateChangeEvent event) {
-		if (this.isExecutingUIThread()) {
-			this.stateChanged_(event);
-		} else {
-			this.executeOnUIThread(this.buildRunnable(event));
-		}
+		this.executeOnUIThread(this.buildRunnable(event));
 	}
 
 	private Runnable buildRunnable(final StateChangeEvent event) {
@@ -44,10 +42,6 @@ public class SWTStateChangeListenerWrapper
 				SWTStateChangeListenerWrapper.this.stateChanged_(event);
 			}
 		};
-	}
-
-	private boolean isExecutingUIThread() {
-		return Display.getCurrent() != null;
 	}
 
 	/**

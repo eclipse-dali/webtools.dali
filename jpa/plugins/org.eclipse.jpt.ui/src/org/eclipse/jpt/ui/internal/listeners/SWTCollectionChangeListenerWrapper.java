@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,13 +9,17 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.listeners;
 
+import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
 import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 import org.eclipse.swt.widgets.Display;
 
 /**
  * Wrap another collection change listener and forward events to it on the SWT
  * UI thread.
+ * Forward *every* event asynchronously via the UI thread so the listener
+ * receives in the same order they were generated.
  */
 public class SWTCollectionChangeListenerWrapper
 	implements CollectionChangeListener
@@ -30,39 +34,23 @@ public class SWTCollectionChangeListenerWrapper
 		this.listener = listener;
 	}
 
-	public void itemsAdded(CollectionChangeEvent event) {
-		if (this.isExecutingUIThread()) {
-			this.itemsAdded_(event);
-		} else {
-			this.executeOnUIThread(this.buildItemsAddedRunnable(event));
-		}
+	public void itemsAdded(CollectionAddEvent event) {
+		this.executeOnUIThread(this.buildItemsAddedRunnable(event));
 	}
 
-	public void itemsRemoved(CollectionChangeEvent event) {
-		if (this.isExecutingUIThread()) {
-			this.itemsRemoved_(event);
-		} else {
-			this.executeOnUIThread(this.buildItemsRemovedRunnable(event));
-		}
+	public void itemsRemoved(CollectionRemoveEvent event) {
+		this.executeOnUIThread(this.buildItemsRemovedRunnable(event));
 	}
 
 	public void collectionCleared(CollectionChangeEvent event) {
-		if (this.isExecutingUIThread()) {
-			this.collectionCleared_(event);
-		} else {
-			this.executeOnUIThread(this.buildCollectionClearedRunnable(event));
-		}
+		this.executeOnUIThread(this.buildCollectionClearedRunnable(event));
 	}
 
 	public void collectionChanged(CollectionChangeEvent event) {
-		if (this.isExecutingUIThread()) {
-			this.collectionChanged_(event);
-		} else {
-			this.executeOnUIThread(this.buildCollectionChangedRunnable(event));
-		}
+		this.executeOnUIThread(this.buildCollectionChangedRunnable(event));
 	}
 
-	private Runnable buildItemsAddedRunnable(final CollectionChangeEvent event) {
+	private Runnable buildItemsAddedRunnable(final CollectionAddEvent event) {
 		return new Runnable() {
 			public void run() {
 				SWTCollectionChangeListenerWrapper.this.itemsAdded_(event);
@@ -74,7 +62,7 @@ public class SWTCollectionChangeListenerWrapper
 		};
 	}
 
-	private Runnable buildItemsRemovedRunnable(final CollectionChangeEvent event) {
+	private Runnable buildItemsRemovedRunnable(final CollectionRemoveEvent event) {
 		return new Runnable() {
 			public void run() {
 				SWTCollectionChangeListenerWrapper.this.itemsRemoved_(event);
@@ -110,10 +98,6 @@ public class SWTCollectionChangeListenerWrapper
 		};
 	}
 
-	private boolean isExecutingUIThread() {
-		return Display.getCurrent() != null;
-	}
-
 	/**
 	 * Display#asyncExec(Runnable) seems to work OK;
 	 * but using #syncExec(Runnable) can somtimes make things
@@ -124,11 +108,11 @@ public class SWTCollectionChangeListenerWrapper
 //		Display.getDefault().syncExec(r);
 	}
 
-	void itemsAdded_(CollectionChangeEvent event) {
+	void itemsAdded_(CollectionAddEvent event) {
 		this.listener.itemsAdded(event);
 	}
 
-	void itemsRemoved_(CollectionChangeEvent event) {
+	void itemsRemoved_(CollectionRemoveEvent event) {
 		this.listener.itemsRemoved(event);
 	}
 

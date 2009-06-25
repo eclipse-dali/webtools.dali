@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,12 +10,17 @@
 package org.eclipse.jpt.utility.internal.model.listener.awt;
 
 import java.awt.EventQueue;
+
+import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
 import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 
 /**
  * Wrap another collection change listener and forward events to it on the AWT
  * event queue.
+ * Forward *every* event asynchronously via the UI thread so the listener
+ * receives in the same order they were generated.
  */
 public class AWTCollectionChangeListenerWrapper
 	implements CollectionChangeListener
@@ -30,58 +35,42 @@ public class AWTCollectionChangeListenerWrapper
 		this.listener = listener;
 	}
 
-	public void itemsAdded(CollectionChangeEvent event) {
-		if (EventQueue.isDispatchThread()) {
-			this.itemsAdded_(event);
-		} else {
-			this.executeOnEventQueue(this.buildItemsAddedRunnable(event));
-		}
+	public void itemsAdded(CollectionAddEvent event) {
+		this.executeOnEventQueue(this.buildItemsAddedRunnable(event));
 	}
 
-	public void itemsRemoved(CollectionChangeEvent event) {
-		if (EventQueue.isDispatchThread()) {
-			this.itemsRemoved_(event);
-		} else {
-			this.executeOnEventQueue(this.buildItemsRemovedRunnable(event));
-		}
+	public void itemsRemoved(CollectionRemoveEvent event) {
+		this.executeOnEventQueue(this.buildItemsRemovedRunnable(event));
 	}
 
 	public void collectionCleared(CollectionChangeEvent event) {
-		if (EventQueue.isDispatchThread()) {
-			this.collectionCleared_(event);
-		} else {
-			this.executeOnEventQueue(this.buildCollectionClearedRunnable(event));
-		}
+		this.executeOnEventQueue(this.buildCollectionClearedRunnable(event));
 	}
 
 	public void collectionChanged(CollectionChangeEvent event) {
-		if (EventQueue.isDispatchThread()) {
-			this.collectionChanged_(event);
-		} else {
-			this.executeOnEventQueue(this.buildCollectionChangedRunnable(event));
-		}
+		this.executeOnEventQueue(this.buildCollectionChangedRunnable(event));
 	}
 
-	private Runnable buildItemsAddedRunnable(final CollectionChangeEvent event) {
+	private Runnable buildItemsAddedRunnable(final CollectionAddEvent event) {
 		return new Runnable() {
 			public void run() {
 				AWTCollectionChangeListenerWrapper.this.itemsAdded_(event);
 			}
 			@Override
 			public String toString() {
-				return "items added";
+				return "items added"; //$NON-NLS-1$
 			}
 		};
 	}
 
-	private Runnable buildItemsRemovedRunnable(final CollectionChangeEvent event) {
+	private Runnable buildItemsRemovedRunnable(final CollectionRemoveEvent event) {
 		return new Runnable() {
 			public void run() {
 				AWTCollectionChangeListenerWrapper.this.itemsRemoved_(event);
 			}
 			@Override
 			public String toString() {
-				return "items removed";
+				return "items removed"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -93,7 +82,7 @@ public class AWTCollectionChangeListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "collection cleared";
+				return "collection cleared"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -105,7 +94,7 @@ public class AWTCollectionChangeListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "collection changed";
+				return "collection changed"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -126,11 +115,11 @@ public class AWTCollectionChangeListenerWrapper
 //		}
 	}
 
-	void itemsAdded_(CollectionChangeEvent event) {
+	void itemsAdded_(CollectionAddEvent event) {
 		this.listener.itemsAdded(event);
 	}
 
-	void itemsRemoved_(CollectionChangeEvent event) {
+	void itemsRemoved_(CollectionRemoveEvent event) {
 		this.listener.itemsRemoved(event);
 	}
 
@@ -144,7 +133,7 @@ public class AWTCollectionChangeListenerWrapper
 
 	@Override
 	public String toString() {
-		return "AWT(" + this.listener.toString() + ")";
+		return "AWT(" + this.listener.toString() + ')'; //$NON-NLS-1$
 	}
 
 }
