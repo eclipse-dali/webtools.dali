@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -27,6 +27,7 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
  * "Java" projects aren't required to be "faceted" projects, but for JPA
  * testing they are.
  */
+@SuppressWarnings("nls")
 public class TestJavaProject extends TestFacetedProject {
 	private final IJavaProject javaProject;
 	private final IPackageFragmentRoot sourceFolder;
@@ -63,6 +64,10 @@ public class TestJavaProject extends TestFacetedProject {
 	
 
 	// ********** public methods **********
+
+	public IJavaProject getJavaProject() {
+		return this.javaProject;
+	}
 
 	public IPackageFragment createPackage(String packageName) throws CoreException {
 		return this.sourceFolder.createPackageFragment(packageName, false, null);	// false = "no force"
