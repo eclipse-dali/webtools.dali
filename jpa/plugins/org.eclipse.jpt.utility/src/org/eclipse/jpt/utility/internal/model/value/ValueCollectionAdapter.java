@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,8 +10,11 @@
 package org.eclipse.jpt.utility.internal.model.value;
 
 import java.util.Arrays;
+
 import org.eclipse.jpt.utility.model.Model;
+import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
 import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 
@@ -50,10 +53,10 @@ public class ValueCollectionAdapter<T extends Model>
 	 */
 	protected CollectionChangeListener buildValueCollectionListener() {
 		return new CollectionChangeListener() {
-			public void itemsAdded(CollectionChangeEvent event) {
+			public void itemsAdded(CollectionAddEvent event) {
 				ValueCollectionAdapter.this.valueAspectChanged();
 			}
-			public void itemsRemoved(CollectionChangeEvent event) {
+			public void itemsRemoved(CollectionRemoveEvent event) {
 				ValueCollectionAdapter.this.valueAspectChanged();
 			}
 			public void collectionCleared(CollectionChangeEvent event) {
@@ -64,7 +67,7 @@ public class ValueCollectionAdapter<T extends Model>
 			}
 			@Override
 			public String toString() {
-				return "value collection listener: " + Arrays.asList(ValueCollectionAdapter.this.collectionNames);
+				return "value collection listener: " + Arrays.asList(ValueCollectionAdapter.this.collectionNames); //$NON-NLS-1$
 			}
 		};
 	}

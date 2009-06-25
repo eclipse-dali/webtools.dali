@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,9 +10,12 @@
 package org.eclipse.jpt.utility.model.listener;
 
 import java.lang.reflect.Method;
+
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.model.event.ChangeEvent;
+import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.model.event.StateChangeEvent;
@@ -53,6 +56,18 @@ public abstract class ReflectiveChangeListener {
 	@SuppressWarnings("unchecked")
 	protected static final Class<CollectionChangeEvent>[] COLLECTION_CHANGE_EVENT_CLASS_ARRAY = new Class[] {COLLECTION_CHANGE_EVENT_CLASS};
 	protected static final CollectionChangeEvent[] EMPTY_COLLECTION_CHANGE_EVENT_ARRAY = new CollectionChangeEvent[0];
+
+
+	protected static final Class<CollectionAddEvent> COLLECTION_ADD_EVENT_CLASS = CollectionAddEvent.class;
+	@SuppressWarnings("unchecked")
+	protected static final Class<CollectionAddEvent>[] COLLECTION_ADD_EVENT_CLASS_ARRAY = new Class[] {COLLECTION_ADD_EVENT_CLASS};
+	protected static final CollectionAddEvent[] EMPTY_COLLECTION_ADD_EVENT_ARRAY = new CollectionAddEvent[0];
+
+
+	protected static final Class<CollectionRemoveEvent> COLLECTION_REMOVE_EVENT_CLASS = CollectionRemoveEvent.class;
+	@SuppressWarnings("unchecked")
+	protected static final Class<CollectionRemoveEvent>[] COLLECTION_REMOVE_EVENT_CLASS_ARRAY = new Class[] {COLLECTION_REMOVE_EVENT_CLASS};
+	protected static final CollectionRemoveEvent[] EMPTY_COLLECTION_REMOVE_EVENT_ARRAY = new CollectionRemoveEvent[0];
 
 	protected static final Class<ListChangeEvent> LIST_CHANGE_EVENT_CLASS = ListChangeEvent.class;
 	@SuppressWarnings("unchecked")
@@ -154,19 +169,11 @@ public abstract class ReflectiveChangeListener {
 	 * on the specified target.
 	 */
 	public static CollectionChangeListener buildCollectionChangeListener(Object target, Method addMethod, Method removeMethod, Method clearMethod, Method changeMethod) {
-		checkChangeListenerMethod(addMethod, COLLECTION_CHANGE_EVENT_CLASS);
-		checkChangeListenerMethod(removeMethod, COLLECTION_CHANGE_EVENT_CLASS);
+		checkChangeListenerMethod(addMethod, COLLECTION_ADD_EVENT_CLASS);
+		checkChangeListenerMethod(removeMethod, COLLECTION_REMOVE_EVENT_CLASS);
 		checkChangeListenerMethod(clearMethod, COLLECTION_CHANGE_EVENT_CLASS);
 		checkChangeListenerMethod(changeMethod, COLLECTION_CHANGE_EVENT_CLASS);
 		return new MultiMethodReflectiveChangeListener(target, addMethod, removeMethod, clearMethod, changeMethod);
-	}
-
-	/**
-	 * Construct a collection change listener that will invoke the specified method
-	 * on the specified target for any change event.
-	 */
-	public static CollectionChangeListener buildCollectionChangeListener(Object target, Method method) {
-		return buildCollectionChangeListener(target, method, method, method, method);
 	}
 
 	/**
@@ -178,21 +185,11 @@ public abstract class ReflectiveChangeListener {
 	public static CollectionChangeListener buildCollectionChangeListener(Object target, String addMethodName, String removeMethodName, String clearMethodName, String changeMethodName) {
 		return buildCollectionChangeListener(
 				target,
-				findChangeListenerMethod(target, addMethodName, COLLECTION_CHANGE_EVENT_CLASS_ARRAY),
-				findChangeListenerMethod(target, removeMethodName, COLLECTION_CHANGE_EVENT_CLASS_ARRAY),
+				findChangeListenerMethod(target, addMethodName, COLLECTION_ADD_EVENT_CLASS_ARRAY),
+				findChangeListenerMethod(target, removeMethodName, COLLECTION_REMOVE_EVENT_CLASS_ARRAY),
 				findChangeListenerMethod(target, clearMethodName, COLLECTION_CHANGE_EVENT_CLASS_ARRAY),
 				findChangeListenerMethod(target, changeMethodName, COLLECTION_CHANGE_EVENT_CLASS_ARRAY)
 		);
-	}
-
-	/**
-	 * Construct a collection change listener that will invoke the specified method
-	 * on the specified target for any change event. If a single-argument method
-	 * with the specified name and appropriate argument is found, it will be invoked;
-	 * otherwise, a zero-argument method with the specified name will be invoked.
-	 */
-	public static CollectionChangeListener buildCollectionChangeListener(Object target, String methodName) {
-		return buildCollectionChangeListener(target, findChangeListenerMethod(target, methodName, COLLECTION_CHANGE_EVENT_CLASS_ARRAY));
 	}
 
 

@@ -1,16 +1,13 @@
 /*******************************************************************************
- *  Copyright (c) 2007 Oracle. 
- *  All rights reserved.  This program and the accompanying materials 
- *  are made available under the terms of the Eclipse Public License v1.0 
- *  which accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.ui.internal.views.structure;
-
-import java.util.Iterator;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.ListenerList;
@@ -41,7 +38,9 @@ import org.eclipse.jpt.ui.internal.selection.JpaSelection;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.ui.jface.DelegatingContentAndLabelProvider;
 import org.eclipse.jpt.ui.structure.JpaStructureProvider;
+import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
 import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
@@ -59,7 +58,7 @@ public class JpaStructurePage
 {
 	private final JpaStructureView jpaStructureView;
 	
-	private JpaFile jpaFile;
+	JpaFile jpaFile;
 	
 	private final IFile file;
 	
@@ -71,7 +70,7 @@ public class JpaStructurePage
 	
 	private DelegatingContentAndLabelProvider contentAndLabelProvider;
 	
-	private TreeViewer viewer;
+	TreeViewer viewer;
 	
 	private final ListenerList selectionChangedListenerList;
 	
@@ -102,11 +101,11 @@ public class JpaStructurePage
 	private CollectionChangeListener buildProjectsListener() {
 		return new CollectionChangeListener(){
 		
-			public void itemsRemoved(CollectionChangeEvent event) {
+			public void itemsRemoved(CollectionRemoveEvent event) {
 				JpaStructurePage.this.projectsRemoved(event);
 			}
 		
-			public void itemsAdded(CollectionChangeEvent event) {
+			public void itemsAdded(CollectionAddEvent event) {
 				JpaStructurePage.this.projectsAdded(event);
 			}
 		
@@ -120,42 +119,42 @@ public class JpaStructurePage
 		};
 	}
 
-	private void projectsRemoved(CollectionChangeEvent event) {
-		for (Iterator<?> i = event.items(); i.hasNext();) {
-			JpaProject project = (JpaProject) i.next();
-			if (project.getProject() == JpaStructurePage.this.file.getProject()) {
+	@SuppressWarnings("unchecked")
+	void projectsRemoved(CollectionRemoveEvent event) {
+		for (JpaProject item : (Iterable<JpaProject>) event.getRemovedItems()) {
+			if (item.getProject() == JpaStructurePage.this.file.getProject()) {
 				setJpaProject(null);
 				break;
 			}
 		}
 	}
 
-	private void projectsAdded(CollectionChangeEvent event) {
-		for (Iterator<?> i = event.items(); i.hasNext();) {
-			JpaProject jpaProject = (JpaProject) i.next();
-			if (jpaProject.getProject() == JpaStructurePage.this.file.getProject()) {
-				setJpaProject(jpaProject);
+	@SuppressWarnings("unchecked")
+	void projectsAdded(CollectionAddEvent event) {
+		for (JpaProject item : (Iterable<JpaProject>) event.getAddedItems()) {
+			if (item.getProject() == JpaStructurePage.this.file.getProject()) {
+				setJpaProject(item);
 				break;
 			}
 		}
 	}
 
-	private void projectsCleared(CollectionChangeEvent event) {
+	void projectsCleared(@SuppressWarnings("unused") CollectionChangeEvent event) {
 		setJpaProject(null);
 	}
 	
-	private void projectsChanged(CollectionChangeEvent event) {
+	void projectsChanged(@SuppressWarnings("unused") CollectionChangeEvent event) {
 		setJpaProject(JptCorePlugin.getJpaProject(this.file.getProject()));
 	}
 	
 	private CollectionChangeListener buildJpaFilesListener() {
 		return new CollectionChangeListener(){
 		
-			public void itemsRemoved(CollectionChangeEvent event) {
+			public void itemsRemoved(CollectionRemoveEvent event) {
 				JpaStructurePage.this.jpaFilesRemoved(event);
 			}
 		
-			public void itemsAdded(CollectionChangeEvent event) {
+			public void itemsAdded(CollectionAddEvent event) {
 				JpaStructurePage.this.jpaFilesAdded(event);
 			}
 		
@@ -169,31 +168,31 @@ public class JpaStructurePage
 		};
 	}
 	
-	private void jpaFilesRemoved(CollectionChangeEvent event) {
-		for (Iterator<?> i = event.items(); i.hasNext();) {
-			JpaFile jpaFile = (JpaFile) i.next();
-			if (jpaFile == JpaStructurePage.this.jpaFile) {
+	@SuppressWarnings("unchecked")
+	void jpaFilesRemoved(CollectionRemoveEvent event) {
+		for (JpaFile item : (Iterable<JpaFile>) event.getRemovedItems()) {
+			if (item == JpaStructurePage.this.jpaFile) {
 				setJpaFile(null);
 				break;
 			}
 		}
 	}
 
-	private void jpaFilesAdded(CollectionChangeEvent event) {
-		for (Iterator<?> i = event.items(); i.hasNext();) {
-			JpaFile jpaFile = (JpaFile) i.next();
-			if (jpaFile.getFile() == JpaStructurePage.this.file) {
-				setJpaFile(jpaFile);
+	@SuppressWarnings("unchecked")
+	void jpaFilesAdded(CollectionAddEvent event) {
+		for (JpaFile item : (Iterable<JpaFile>) event.getAddedItems()) {
+			if (item.getFile() == JpaStructurePage.this.file) {
+				setJpaFile(item);
 				break;
 			}
 		}
 	}
 
-	private void jpaFilesCleared(CollectionChangeEvent event) {
+	void jpaFilesCleared(@SuppressWarnings("unused") CollectionChangeEvent event) {
 		setJpaFile(null);
 	}
 
-	private void jpaFilesChanged(CollectionChangeEvent event) {
+	void jpaFilesChanged(@SuppressWarnings("unused") CollectionChangeEvent event) {
 		setJpaFile(this.jpaProject.getJpaFile(this.file));
 	}
 
@@ -238,14 +237,14 @@ public class JpaStructurePage
 		control.setLayout(new FillLayout());		
 		viewer = new TreeViewer(control, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
 		viewer.setAutoExpandLevel(2);
-		DelegatingTreeContentAndLabelProvider contentAndLabelProvider
+		DelegatingTreeContentAndLabelProvider provider
 			= new DelegatingTreeContentAndLabelProvider(
 				structureProvider.getTreeItemContentProviderFactory(),
 				structureProvider.getItemLabelProviderFactory());
-		this.contentAndLabelProvider = contentAndLabelProvider;
-		viewer.setContentProvider(contentAndLabelProvider);
+		this.contentAndLabelProvider = provider;
+		viewer.setContentProvider(provider);
 		// TODO Use problem decorator
-		viewer.setLabelProvider(contentAndLabelProvider);
+		viewer.setLabelProvider(provider);
 		this.viewer.setInput(this.jpaFile);
 		engageListeners();
 		initContextMenu();
@@ -373,7 +372,7 @@ public class JpaStructurePage
 	protected void updateStatusBar(ISelection selection) {
 		IStatusLineManager statusLineManager = getSite().getActionBars().getStatusLineManager();
 		if (! (selection instanceof IStructuredSelection) || selection.isEmpty()) {
-			statusLineManager.setMessage("");
+			statusLineManager.setMessage(""); //$NON-NLS-1$
 			return;
 		}
 		IStructuredSelection sselection = (IStructuredSelection) selection;
@@ -389,7 +388,7 @@ public class JpaStructurePage
 	}
 	
 	
-	private class TreeSelectionChangedListener
+	class TreeSelectionChangedListener
 		implements ISelectionChangedListener
 	{
 		public void selectionChanged(SelectionChangedEvent event) {
@@ -398,7 +397,7 @@ public class JpaStructurePage
 	}
 	
 	
-	private class TreePostSelectionChangedListener
+	class TreePostSelectionChangedListener
 		implements ISelectionChangedListener
 	{
 		public void selectionChanged(SelectionChangedEvent event) {

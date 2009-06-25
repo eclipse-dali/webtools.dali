@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,12 +12,14 @@ package org.eclipse.jpt.utility.internal.model.value;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.ListIterator;
-import org.eclipse.jpt.utility.internal.CollectionTools;
+
 import org.eclipse.jpt.utility.internal.iterators.ReadOnlyListIterator;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.ChangeSupport;
 import org.eclipse.jpt.utility.internal.model.SingleAspectChangeSupport;
+import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
 import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;
@@ -86,10 +88,10 @@ public class CollectionListValueModelAdapter<E>
 	 */
 	protected CollectionChangeListener buildCollectionChangeListener() {
 		return new CollectionChangeListener() {
-			public void itemsAdded(CollectionChangeEvent event) {
+			public void itemsAdded(CollectionAddEvent event) {
 				CollectionListValueModelAdapter.this.itemsAdded(event);
 			}
-			public void itemsRemoved(CollectionChangeEvent event) {
+			public void itemsRemoved(CollectionRemoveEvent event) {
 				CollectionListValueModelAdapter.this.itemsRemoved(event);
 			}
 			public void collectionCleared(CollectionChangeEvent event) {
@@ -100,7 +102,7 @@ public class CollectionListValueModelAdapter<E>
 			}
 			@Override
 			public String toString() {
-				return "collection change listener";
+				return "collection change listener"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -147,7 +149,7 @@ public class CollectionListValueModelAdapter<E>
 	 */
 	@Override
 	public void addListChangeListener(String listName, ListChangeListener listener) {
-		if (listName == LIST_VALUES && this.hasNoListeners()) {
+		if (listName.equals(LIST_VALUES) && this.hasNoListeners()) {
 			this.engageModel();
 		}
 		super.addListChangeListener(listName, listener);
@@ -170,7 +172,7 @@ public class CollectionListValueModelAdapter<E>
 	@Override
 	public void removeListChangeListener(String listName, ListChangeListener listener) {
 		super.removeListChangeListener(listName, listener);
-		if (listName == LIST_VALUES && this.hasNoListeners()) {
+		if (listName.equals(LIST_VALUES) && this.hasNoListeners()) {
 			this.disengageModel();
 		}
 	}
@@ -243,28 +245,35 @@ public class CollectionListValueModelAdapter<E>
 		this.list.clear();
 	}
 
-	protected void itemsAdded(CollectionChangeEvent e) {
-		this.addItemsToList(this.indexToAddItems(), CollectionTools.list(this.items(e)), this.list, LIST_VALUES);
+	protected void itemsAdded(CollectionAddEvent event) {
+		this.addItemsToList(this.indexToAddItems(), this.getAddedItems(event), this.list, LIST_VALUES);
 	}
 	
 	protected int indexToAddItems() {
 		return this.list.size();
 	}
 
+	// minimize scope of suppressed warnings
 	@SuppressWarnings("unchecked")
-	protected Iterator<E> items(CollectionChangeEvent e) {
-		return (Iterator<E>) e.items();
+	protected Iterable<E> getAddedItems(CollectionAddEvent event) {
+		return (Iterable<E>) event.getAddedItems();
 	}
 
-	protected void itemsRemoved(CollectionChangeEvent e) {
+	// minimize scope of suppressed warnings
+	@SuppressWarnings("unchecked")
+	protected Iterable<E> getRemovedItems(CollectionRemoveEvent event) {
+		return (Iterable<E>) event.getRemovedItems();
+	}
+
+	protected void itemsRemoved(CollectionRemoveEvent event) {
 		// we have to remove the items individually,
 		// since they are probably not in sequence
-		for (Iterator<E> stream = this.items(e); stream.hasNext(); ) {
-			this.removeItemFromList(this.lastIdentityIndexOf(stream.next()), this.list, LIST_VALUES);
+		for (E item : this.getRemovedItems(event)) {
+			this.removeItemFromList(this.lastIdentityIndexOf(item), this.list, LIST_VALUES);
 		}
 	}
 
-	protected void collectionCleared(CollectionChangeEvent e) {
+	protected void collectionCleared(@SuppressWarnings("unused") CollectionChangeEvent event) {
 		this.clearList(this.list, LIST_VALUES);
 	}
 	
@@ -272,7 +281,7 @@ public class CollectionListValueModelAdapter<E>
 	 * synchronize our internal list with the wrapped collection
 	 * and fire the appropriate events
 	 */
-	protected void collectionChanged(CollectionChangeEvent e) {
+	protected void collectionChanged(@SuppressWarnings("unused") CollectionChangeEvent event) {
 		// put in empty check so we don't fire events unnecessarily
 		if ( ! this.list.isEmpty()) {
 			@SuppressWarnings("unchecked")

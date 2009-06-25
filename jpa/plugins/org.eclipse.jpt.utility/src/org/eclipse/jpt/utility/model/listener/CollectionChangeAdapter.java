@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.model.listener;
 
+import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
 
 /**
  * Convenience implementation of CollectionChangeListener.
@@ -29,11 +31,11 @@ public class CollectionChangeAdapter implements CollectionChangeListener {
 		super();
 	}
 
-	public void itemsAdded(CollectionChangeEvent event) {
+	public void itemsAdded(CollectionAddEvent event) {
 		// do nothing
 	}
 
-	public void itemsRemoved(CollectionChangeEvent event) {
+	public void itemsRemoved(CollectionRemoveEvent event) {
 		// do nothing
 	}
 

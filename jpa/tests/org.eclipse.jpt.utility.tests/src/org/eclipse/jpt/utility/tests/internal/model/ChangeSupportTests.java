@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.tests.internal.model;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -20,16 +19,16 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
-import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.ChangeSupport;
+import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.model.event.StateChangeEvent;
 import org.eclipse.jpt.utility.model.event.TreeChangeEvent;
-import org.eclipse.jpt.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.utility.model.listener.CollectionChangeAdapter;
 import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.model.listener.ListChangeAdapter;
@@ -150,11 +149,23 @@ public class ChangeSupportTests
 	public void testHasAnyStateChangeListenersDuplicate() {
 		assertTrue(this.testModel.hasNoStateChangeListeners());
 		this.testModel.addStateChangeListener(this);
-		this.testModel.addStateChangeListener(this);
+		boolean exCaught = false;
+		try {
+			this.testModel.addStateChangeListener(this);
+		} catch (IllegalArgumentException ex) {
+			exCaught = true;
+		}
+		assertTrue(exCaught);
 		assertTrue(this.testModel.hasAnyStateChangeListeners());
 		this.testModel.removeStateChangeListener(this);
-		assertTrue(this.testModel.hasAnyStateChangeListeners());
-		this.testModel.removeStateChangeListener(this);
+		assertTrue(this.testModel.hasNoStateChangeListeners());
+
+		exCaught = false;
+		try {
+			this.testModel.removeStateChangeListener(this);
+		} catch (IllegalArgumentException ex) {
+			exCaught = true;
+		}
 		assertTrue(this.testModel.hasNoStateChangeListeners());
 	}
 
@@ -1581,13 +1592,13 @@ public class ChangeSupportTests
 		public void collectionCleared(CollectionChangeEvent event) {
 			this.collectionCleared = true;
 		}
-		public void itemsAdded(CollectionChangeEvent event) {
+		public void itemsAdded(CollectionAddEvent event) {
 			this.itemsAdded = true;
-			CollectionTools.addAll(this.addedItems, event.items());
+			CollectionTools.addAll(this.addedItems, event.getAddedItems());
 		}
-		public void itemsRemoved(CollectionChangeEvent event) {
+		public void itemsRemoved(CollectionRemoveEvent event) {
 			this.itemsRemoved = true;
-			CollectionTools.addAll(this.removedItems, event.items());
+			CollectionTools.addAll(this.removedItems, event.getRemovedItems());
 		}
 	}
 
@@ -1702,20 +1713,38 @@ public class ChangeSupportTests
 		assertEquals(this.testModel, this.collectionChangeEvent.getSource());
 		assertEquals(COLLECTION_NAME, this.collectionChangeEvent.getCollectionName());
 		if (item == null) {
-			assertFalse(this.collectionChangeEvent.items().hasNext());
+			assertEquals(CollectionChangeEvent.class, this.collectionChangeEvent.getClass());
 		} else {
-			assertEquals(item, this.collectionChangeEvent.items().next());
+			assertEquals(item, this.getCollectionEventItems().iterator().next());
 		}
+	}
+
+	private Iterable<?> getCollectionEventItems() {
+		if (this.collectionChangeEvent instanceof CollectionAddEvent) {
+			return ((CollectionAddEvent) this.collectionChangeEvent).getAddedItems();
+		} else if (this.collectionChangeEvent instanceof CollectionRemoveEvent) {
+			return ((CollectionRemoveEvent) this.collectionChangeEvent).getRemovedItems();
+		}
+		throw new IllegalStateException();
 	}
 
 	private void verifyCollectionChangeEvent2(Object... items) {
 		assertNotNull(this.collectionChangeEvent);
 		assertEquals(this.testModel, this.collectionChangeEvent.getSource());
 		assertEquals(COLLECTION_NAME, this.collectionChangeEvent.getCollectionName());
-		assertEquals(items.length, this.collectionChangeEvent.itemsSize());
+		assertEquals(items.length, this.getCollectionEventItemsSize());
 		for (Object item : items) {
-			assertTrue(CollectionTools.contains(this.collectionChangeEvent.items(), item));
+			assertTrue(CollectionTools.contains(this.getCollectionEventItems(), item));
 		}
+	}
+
+	private int getCollectionEventItemsSize() {
+		if (this.collectionChangeEvent instanceof CollectionAddEvent) {
+			return ((CollectionAddEvent) this.collectionChangeEvent).getAddedItemsSize();
+		} else if (this.collectionChangeEvent instanceof CollectionRemoveEvent) {
+			return ((CollectionRemoveEvent) this.collectionChangeEvent).getRemovedItemsSize();
+		}
+		throw new IllegalStateException();
 	}
 
 
@@ -2621,13 +2650,373 @@ public class ChangeSupportTests
 		assertFalse(this.itemsAddedListCalled);
 	}
 
-// TODO remove
-// TODO retain
-// TODO replace
-// TODO set
-// TODO move
-// TODO clear
-// TODO synchronize
+	public void testRemoveItemFromListIndex() {
+		this.listChangeEvent = null;
+		this.itemsRemovedListCalled = false;
+		this.testModel.addListChangeListener(this);
+		this.testModel.testRemoveItemFromListIndex();
+		this.verifyListChangeEvent(1, "bar");
+		assertTrue(this.itemsRemovedListCalled);
+
+		this.listChangeEvent = null;
+		this.itemsRemovedListCalled = false;
+		this.testModel.removeListChangeListener(this);
+		this.testModel.testRemoveItemFromListIndex();
+		assertNull(this.listChangeEvent);
+		assertFalse(this.itemsRemovedListCalled);
+
+		this.listChangeEvent = null;
+		this.itemsRemovedListCalled = false;
+		this.testModel.addListChangeListener(LIST_NAME, this);
+		this.testModel.testRemoveItemFromListIndex();
+		this.verifyListChangeEvent(1, "bar");
+		assertTrue(this.itemsRemovedListCalled);
+
+		this.listChangeEvent = null;
+		this.itemsRemovedListCalled = false;
+		this.testModel.removeListChangeListener(LIST_NAME, this);
+		this.testModel.testRemoveItemFromListIndex();
+		assertNull(this.listChangeEvent);
+		assertFalse(this.itemsRemovedListCalled);
+	}
+
+	public void testRemoveItemFromList() {
+		this.listChangeEvent = null;
+		this.itemsRemovedListCalled = false;
+		this.testModel.addListChangeListener(this);
+		this.testModel.testRemoveItemFromList();
+		this.verifyListChangeEvent(1, "bar");
+		assertTrue(this.itemsRemovedListCalled);
+
+		this.listChangeEvent = null;
+		this.itemsRemovedListCalled = false;
+		this.testModel.removeListChangeListener(this);
+		this.testModel.testRemoveItemFromList();
+		assertNull(this.listChangeEvent);
+		assertFalse(this.itemsRemovedListCalled);
+
+		this.listChangeEvent = null;
+		this.itemsRemovedListCalled = false;
+		this.testModel.addListChangeListener(LIST_NAME, this);
+		this.testModel.testRemoveItemFromList();
+		this.verifyListChangeEvent(1, "bar");
+		assertTrue(this.itemsRemovedListCalled);
+
+		this.listChangeEvent = null;
+		this.itemsRemovedListCalled = false;
+		this.testModel.removeListChangeListener(LIST_NAME, this);
+		this.testModel.testRemoveItemFromList();
+		assertNull(this.listChangeEvent);
+		assertFalse(this.itemsRemovedListCalled);
+	}
+
+	public void testRemoveItemsFromListIndex() {
+		this.listChangeEvent = null;
+		this.itemsRemovedListCalled = false;
+		this.testModel.addListChangeListener(this);
+		this.testModel.testRemoveItemsFromListIndex();
+		this.verifyListChangeEvent(1, "bar");
+		assertTrue(this.itemsRemovedListCalled);
+
+		this.listChangeEvent = null;
+		this.itemsRemovedListCalled = false;
+		this.testModel.removeListChangeListener(this);
+		this.testModel.testRemoveItemsFromListIndex();
+		assertNull(this.listChangeEvent);
+		assertFalse(this.itemsRemovedListCalled);
+
+		this.listChangeEvent = null;
+		this.itemsRemovedListCalled = false;
+		this.testModel.addListChangeListener(LIST_NAME, this);
+		this.testModel.testRemoveItemsFromListIndex();
+		this.verifyListChangeEvent(1, "bar");
+		assertTrue(this.itemsRemovedListCalled);
+
+		this.listChangeEvent = null;
+		this.itemsRemovedListCalled = false;
+		this.testModel.removeListChangeListener(LIST_NAME, this);
+		this.testModel.testRemoveItemsFromListIndex();
+		assertNull(this.listChangeEvent);
+		assertFalse(this.itemsRemovedListCalled);
+	}
+
+	public void testRemoveItemsFromListIndexNoChange() {
+		this.listChangeEvent = null;
+		this.itemsRemovedListCalled = false;
+		this.testModel.addListChangeListener(this);
+		this.testModel.testRemoveItemsFromListIndexNoChange();
+		assertNull(this.listChangeEvent);
+		assertFalse(this.itemsRemovedListCalled);
+
+		this.listChangeEvent = null;
+		this.itemsRemovedListCalled = false;
+		this.testModel.removeListChangeListener(this);
+		this.testModel.testRemoveItemsFromListIndexNoChange();
+		assertNull(this.listChangeEvent);
+		assertFalse(this.itemsRemovedListCalled);
+
+		this.listChangeEvent = null;
+		this.itemsRemovedListCalled = false;
+		this.testModel.addListChangeListener(LIST_NAME, this);
+		this.testModel.testRemoveItemsFromListIndexNoChange();
+		assertNull(this.listChangeEvent);
+		assertFalse(this.itemsRemovedListCalled);
+
+		this.listChangeEvent = null;
+		this.itemsRemovedListCalled = false;
+		this.testModel.removeListChangeListener(LIST_NAME, this);
+		this.testModel.testRemoveItemsFromListIndexNoChange();
+		assertNull(this.listChangeEvent);
+		assertFalse(this.itemsRemovedListCalled);
+	}
+
+	public void testRemoveItemsFromList() {
+		this.listChangeEvent = null;
+		this.itemsRemovedListCalled = false;
+		this.testModel.addListChangeListener(this);
+		this.testModel.testRemoveItemsFromList();
+		this.verifyListChangeEvent(1, "bar");
+		assertTrue(this.itemsRemovedListCalled);
+
+		this.listChangeEvent = null;
+		this.itemsRemovedListCalled = false;
+		this.testModel.removeListChangeListener(this);
+		this.testModel.testRemoveItemsFromList();
+		assertNull(this.listChangeEvent);
+		assertFalse(this.itemsRemovedListCalled);
+
+		this.listChangeEvent = null;
+		this.itemsRemovedListCalled = false;
+		this.testModel.addListChangeListener(LIST_NAME, this);
+		this.testModel.testRemoveItemsFromList();
+		this.verifyListChangeEvent(1, "bar");
+		assertTrue(this.itemsRemovedListCalled);
+
+		this.listChangeEvent = null;
+		this.itemsRemovedListCalled = false;
+		this.testModel.removeListChangeListener(LIST_NAME, this);
+		this.testModel.testRemoveItemsFromList();
+		assertNull(this.listChangeEvent);
+		assertFalse(this.itemsRemovedListCalled);
+	}
+
+	public void testRemoveItemsFromListNoChange() {
+		this.listChangeEvent = null;
+		this.itemsRemovedListCalled = false;
+		this.testModel.addListChangeListener(this);
+		this.testModel.testRemoveItemsFromListNoChange();
+		assertNull(this.listChangeEvent);
+		assertFalse(this.itemsRemovedListCalled);
+
+		this.listChangeEvent = null;
+		this.itemsRemovedListCalled = false;
+		this.testModel.removeListChangeListener(this);
+		this.testModel.testRemoveItemsFromListNoChange();
+		assertNull(this.listChangeEvent);
+		assertFalse(this.itemsRemovedListCalled);
+
+		this.listChangeEvent = null;
+		this.itemsRemovedListCalled = false;
+		this.testModel.addListChangeListener(LIST_NAME, this);
+		this.testModel.testRemoveItemsFromListNoChange();
+		assertNull(this.listChangeEvent);
+		assertFalse(this.itemsRemovedListCalled);
+
+		this.listChangeEvent = null;
+		this.itemsRemovedListCalled = false;
+		this.testModel.removeListChangeListener(LIST_NAME, this);
+		this.testModel.testRemoveItemsFromListNoChange();
+		assertNull(this.listChangeEvent);
+		assertFalse(this.itemsRemovedListCalled);
+	}
+
+	public void testRetainItemsInList() {
+		this.listChangeEvent = null;
+		this.itemsRemovedListCalled = false;
+		this.testModel.addListChangeListener(this);
+		this.testModel.testRetainItemsInList();
+		this.verifyListChangeEvent(0, "foo");
+		assertTrue(this.itemsRemovedListCalled);
+
+		this.listChangeEvent = null;
+		this.itemsRemovedListCalled = false;
+		this.testModel.removeListChangeListener(this);
+		this.testModel.testRetainItemsInList();
+		assertNull(this.listChangeEvent);
+		assertFalse(this.itemsRemovedListCalled);
+
+		this.listChangeEvent = null;
+		this.itemsRemovedListCalled = false;
+		this.testModel.addListChangeListener(LIST_NAME, this);
+		this.testModel.testRetainItemsInList();
+		this.verifyListChangeEvent(0, "foo");
+		assertTrue(this.itemsRemovedListCalled);
+
+		this.listChangeEvent = null;
+		this.itemsRemovedListCalled = false;
+		this.testModel.removeListChangeListener(LIST_NAME, this);
+		this.testModel.testRetainItemsInList();
+		assertNull(this.listChangeEvent);
+		assertFalse(this.itemsRemovedListCalled);
+	}
+
+	public void testReplaceItemInList() {
+		this.listChangeEvent = null;
+		this.itemsReplacedListCalled = false;
+		this.testModel.addListChangeListener(this);
+		this.testModel.testReplaceItemInList();
+		this.verifyListChangeEvent(1, "xxx", "bar");
+		assertTrue(this.itemsReplacedListCalled);
+
+		this.listChangeEvent = null;
+		this.itemsReplacedListCalled = false;
+		this.testModel.removeListChangeListener(this);
+		this.testModel.testReplaceItemInList();
+		assertNull(this.listChangeEvent);
+		assertFalse(this.itemsReplacedListCalled);
+
+		this.listChangeEvent = null;
+		this.itemsReplacedListCalled = false;
+		this.testModel.addListChangeListener(LIST_NAME, this);
+		this.testModel.testReplaceItemInList();
+		this.verifyListChangeEvent(1, "xxx", "bar");
+		assertTrue(this.itemsReplacedListCalled);
+
+		this.listChangeEvent = null;
+		this.itemsReplacedListCalled = false;
+		this.testModel.removeListChangeListener(LIST_NAME, this);
+		this.testModel.testReplaceItemInList();
+		assertNull(this.listChangeEvent);
+		assertFalse(this.itemsReplacedListCalled);
+	}
+
+	public void testSetItemsInList() {
+		this.listChangeEvent = null;
+		this.itemsReplacedListCalled = false;
+		this.testModel.addListChangeListener(this);
+		this.testModel.testSetItemsInList();
+		this.verifyListChangeEvent(1, "xxx", "bar");
+		assertTrue(this.itemsReplacedListCalled);
+
+		this.listChangeEvent = null;
+		this.itemsReplacedListCalled = false;
+		this.testModel.removeListChangeListener(this);
+		this.testModel.testSetItemsInList();
+		assertNull(this.listChangeEvent);
+		assertFalse(this.itemsReplacedListCalled);
+
+		this.listChangeEvent = null;
+		this.itemsReplacedListCalled = false;
+		this.testModel.addListChangeListener(LIST_NAME, this);
+		this.testModel.testSetItemsInList();
+		this.verifyListChangeEvent(1, "xxx", "bar");
+		assertTrue(this.itemsReplacedListCalled);
+
+		this.listChangeEvent = null;
+		this.itemsReplacedListCalled = false;
+		this.testModel.removeListChangeListener(LIST_NAME, this);
+		this.testModel.testSetItemsInList();
+		assertNull(this.listChangeEvent);
+		assertFalse(this.itemsReplacedListCalled);
+	}
+
+	public void testMoveItemsInList() {
+		this.listChangeEvent = null;
+		this.itemsMovedListCalled = false;
+		this.testModel.addListChangeListener(this);
+		this.testModel.testMoveItemsInList();
+		this.verifyListChangeEvent(2, 4);
+		assertTrue(this.itemsMovedListCalled);
+
+		this.listChangeEvent = null;
+		this.itemsMovedListCalled = false;
+		this.testModel.removeListChangeListener(this);
+		this.testModel.testMoveItemsInList();
+		assertNull(this.listChangeEvent);
+		assertFalse(this.itemsMovedListCalled);
+
+		this.listChangeEvent = null;
+		this.itemsMovedListCalled = false;
+		this.testModel.addListChangeListener(LIST_NAME, this);
+		this.testModel.testMoveItemsInList();
+		this.verifyListChangeEvent(2, 4);
+		assertTrue(this.itemsMovedListCalled);
+
+		this.listChangeEvent = null;
+		this.itemsMovedListCalled = false;
+		this.testModel.removeListChangeListener(LIST_NAME, this);
+		this.testModel.testMoveItemsInList();
+		assertNull(this.listChangeEvent);
+		assertFalse(this.itemsMovedListCalled);
+	}
+
+	public void testClearList() {
+		this.listChangeEvent = null;
+		this.listClearedCalled = false;
+		this.testModel.addListChangeListener(this);
+		this.testModel.testClearList();
+		this.verifyListChangeEvent(-1, -1);
+		assertTrue(this.listClearedCalled);
+
+		this.listChangeEvent = null;
+		this.listClearedCalled = false;
+		this.testModel.removeListChangeListener(this);
+		this.testModel.testClearList();
+		assertNull(this.listChangeEvent);
+		assertFalse(this.listClearedCalled);
+
+		this.listChangeEvent = null;
+		this.listClearedCalled = false;
+		this.testModel.addListChangeListener(LIST_NAME, this);
+		this.testModel.testClearList();
+		this.verifyListChangeEvent(-1, -1);
+		assertTrue(this.listClearedCalled);
+
+		this.listChangeEvent = null;
+		this.listClearedCalled = false;
+		this.testModel.removeListChangeListener(LIST_NAME, this);
+		this.testModel.testClearList();
+		assertNull(this.listChangeEvent);
+		assertFalse(this.listClearedCalled);
+	}
+
+	public void testSynchronizeList() {
+		this.listChangeEvent = null;
+		this.itemsReplacedListCalled = false;
+		this.itemsRemovedListCalled = false;
+		this.testModel.addListChangeListener(this);
+		this.testModel.testSynchronizeList();
+		assertNotNull(this.listChangeEvent);
+		assertTrue(this.itemsReplacedListCalled);
+		assertTrue(this.itemsRemovedListCalled);
+
+		this.listChangeEvent = null;
+		this.itemsReplacedListCalled = false;
+		this.itemsRemovedListCalled = false;
+		this.testModel.removeListChangeListener(this);
+		this.testModel.testSynchronizeList();
+		assertNull(this.listChangeEvent);
+		assertFalse(this.itemsReplacedListCalled);
+		assertFalse(this.itemsRemovedListCalled);
+
+		this.listChangeEvent = null;
+		this.itemsReplacedListCalled = false;
+		this.itemsRemovedListCalled = false;
+		this.testModel.addListChangeListener(LIST_NAME, this);
+		this.testModel.testSynchronizeList();
+		assertNotNull(this.listChangeEvent);
+		assertTrue(this.itemsReplacedListCalled);
+		assertTrue(this.itemsRemovedListCalled);
+
+		this.listChangeEvent = null;
+		this.itemsReplacedListCalled = false;
+		this.itemsRemovedListCalled = false;
+		this.testModel.removeListChangeListener(LIST_NAME, this);
+		this.testModel.testSynchronizeList();
+		assertNull(this.listChangeEvent);
+		assertFalse(this.itemsReplacedListCalled);
+		assertFalse(this.itemsRemovedListCalled);
+	}
 
 	public void testHasAnyListChangeListeners() {
 		assertTrue(this.testModel.hasNoListChangeListeners(LIST_NAME));
@@ -2753,14 +3142,14 @@ public class ChangeSupportTests
 		assertEquals(LIST_NAME, this.listChangeEvent.getListName());
 		assertEquals(index, this.listChangeEvent.getIndex());
 		if (item == null) {
-			assertFalse(this.listChangeEvent.items().hasNext());
+			assertFalse(this.listChangeEvent.getItems().iterator().hasNext());
 		} else {
-			assertEquals(item, this.listChangeEvent.items().next());
+			assertEquals(item, this.listChangeEvent.getItems().iterator().next());
 		}
 		if (replacedItem == null) {
-			assertFalse(this.listChangeEvent.replacedItems().hasNext());
+			assertFalse(this.listChangeEvent.getReplacedItems().iterator().hasNext());
 		} else {
-			assertEquals(replacedItem, this.listChangeEvent.replacedItems().next());
+			assertEquals(replacedItem, this.listChangeEvent.getReplacedItems().iterator().next());
 		}
 	}
 
@@ -3275,11 +3664,11 @@ public class ChangeSupportTests
 		this.propertyChangeEvent = e;
 	}
 
-	public void itemsAdded(CollectionChangeEvent e) {
+	public void itemsAdded(CollectionAddEvent e) {
 		this.itemsAddedCollectionCalled = true;
 		this.collectionChangeEvent = e;
 	}
-	public void itemsRemoved(CollectionChangeEvent e) {
+	public void itemsRemoved(CollectionRemoveEvent e) {
 		this.itemsRemovedCollectionCalled = true;
 		this.collectionChangeEvent = e;
 	}
@@ -3390,11 +3779,11 @@ public class ChangeSupportTests
 
 		// ***** collection
 		public void testFireItemsAddedCollectionEvent() {
-			this.fireItemsAdded(new CollectionChangeEvent(this, COLLECTION_NAME, Collections.singleton(ADDED_OBJECT_VALUE)));
+			this.fireItemsAdded(new CollectionAddEvent(this, COLLECTION_NAME, Collections.singleton(ADDED_OBJECT_VALUE)));
 		}
 
 		public void testFireItemsAddedCollectionEventNoChange() {
-			this.fireItemsAdded(new CollectionChangeEvent(this, COLLECTION_NAME, Collections.emptySet()));
+			this.fireItemsAdded(new CollectionAddEvent(this, COLLECTION_NAME, Collections.emptySet()));
 		}
 
 		public void testFireItemsAddedCollection() {
@@ -3410,11 +3799,11 @@ public class ChangeSupportTests
 		}
 
 		public void testFireItemsRemovedCollectionEvent() {
-			this.fireItemsRemoved(new CollectionChangeEvent(this, COLLECTION_NAME, Collections.singleton(REMOVED_OBJECT_VALUE)));
+			this.fireItemsRemoved(new CollectionRemoveEvent(this, COLLECTION_NAME, Collections.singleton(REMOVED_OBJECT_VALUE)));
 		}
 
 		public void testFireItemsRemovedCollectionEventNoChange() {
-			this.fireItemsRemoved(new CollectionChangeEvent(this, COLLECTION_NAME, Collections.emptySet()));
+			this.fireItemsRemoved(new CollectionRemoveEvent(this, COLLECTION_NAME, Collections.emptySet()));
 		}
 
 		public void testFireItemsRemovedCollection() {
@@ -3727,6 +4116,115 @@ public class ChangeSupportTests
 			this.addItemsToList(Collections.<String>emptyList(), list, LIST_NAME);
 		}
 
+		public void testRemoveItemFromListIndex() {
+			List<String> list = new ArrayList<String>();
+			list.add("foo");
+			list.add("bar");
+			list.add("baz");
+			this.removeItemFromList(1, list, LIST_NAME);
+		}
+
+		public void testRemoveItemFromList() {
+			List<String> list = new ArrayList<String>();
+			list.add("foo");
+			list.add("bar");
+			list.add("baz");
+			this.removeItemFromList("bar", list, LIST_NAME);
+		}
+
+		public void testRemoveItemsFromListIndex() {
+			List<String> list = new ArrayList<String>();
+			list.add("foo");
+			list.add("bar");
+			list.add("baz");
+			this.removeItemsFromList(1, 1, list, LIST_NAME);
+		}
+
+		public void testRemoveItemsFromListIndexNoChange() {
+			List<String> list = new ArrayList<String>();
+			list.add("foo");
+			list.add("bar");
+			list.add("baz");
+			this.removeItemsFromList(2, 0, list, LIST_NAME);
+		}
+
+		public void testRemoveItemsFromList() {
+			List<String> list = new ArrayList<String>();
+			list.add("foo");
+			list.add("bar");
+			list.add("baz");
+			this.removeItemsFromList(Collections.singletonList("bar"), list, LIST_NAME);
+		}
+
+		public void testRemoveItemsFromListNoChange() {
+			List<String> list = new ArrayList<String>();
+			list.add("foo");
+			list.add("bar");
+			list.add("baz");
+			this.addItemsToList(Collections.<String>emptyList(), list, LIST_NAME);
+		}
+
+		public void testRetainItemsInList() {
+			List<String> list = new ArrayList<String>();
+			list.add("foo");
+			list.add("bar");
+			list.add("baz");
+			this.retainItemsInList(new String[] {"bar", "baz"}, list, LIST_NAME);
+		}
+
+		public void testReplaceItemInList() {
+			List<String> list = new ArrayList<String>();
+			list.add("foo");
+			list.add("bar");
+			list.add("baz");
+			this.replaceItemInList("bar", "xxx", list, LIST_NAME);
+		}
+
+		public void testSetItemsInList() {
+			List<String> list = new ArrayList<String>();
+			list.add("foo");
+			list.add("bar");
+			list.add("baz");
+			this.setItemsInList(1, new String[] {"xxx"}, list, LIST_NAME);
+		}
+
+		public void testMoveItemsInList() {
+			List<String> list = new ArrayList<String>();
+			list.add("foo");
+			list.add("bar");
+			list.add("baz");
+			list.add("xxx");
+			list.add("yyy");
+			list.add("zzz");
+			this.moveItemsInList(2, 4, 2, list, LIST_NAME);
+		}
+
+		public void testClearList() {
+			List<String> list = new ArrayList<String>();
+			list.add("foo");
+			list.add("bar");
+			list.add("baz");
+			this.clearList(list, LIST_NAME);
+		}
+
+		public void testSynchronizeList() {
+			List<String> oldList = new ArrayList<String>();
+			oldList.add("foo");
+			oldList.add("bar");
+			oldList.add("baz");
+			oldList.add("xxx");
+			oldList.add("yyy");
+			oldList.add("zzz");
+			List<String> newList = new ArrayList<String>();
+			newList.add("foo");
+			newList.add("ppp");
+			newList.add("baz");
+			newList.add("xxx");
+			newList.add("qqq");
+			this.synchronizeList(newList, oldList, LIST_NAME);
+			assertEquals(newList, oldList);
+		}
+
 		// ***** tree
 		public void testFireNodeAddedTreeEvent() {
 			this.fireNodeAdded(new TreeChangeEvent(this, TREE_NAME, OBJECT_ARRAY_PATH));
@@ -3815,13 +4313,13 @@ public class ChangeSupportTests
 //		model1.addListChangeListener(joo1);
 //		model1.addListChangeListener(jar1);
 //
-//		ChangeListener[] listeners1 = this.listeners(model1, StateChangeListener.class);
+//		ChangeListener[] listeners1 = this.getListeners(model1, StateChangeListener.class);
 //		assertEquals(2, listeners1.length);
 //		// the order of these could change...
 //		assertEquals(Foo.class, listeners1[0].getClass());
 //		assertEquals(Bar.class, listeners1[1].getClass());
 //
-//		listeners1 = this.listeners(model1, ListChangeListener.class);
+//		listeners1 = this.getListeners(model1, ListChangeListener.class);
 //		assertEquals(2, listeners1.length);
 //		// the order of these could change...
 //		assertEquals(Joo.class, listeners1[0].getClass());
@@ -3829,56 +4327,56 @@ public class ChangeSupportTests
 //
 //		LocalModel model2 = TestTools.serialize(model1);
 //
-//		ChangeListener[] listeners2 = this.listeners(model2, StateChangeListener.class);
+//		ChangeListener[] listeners2 = this.getListeners(model2, StateChangeListener.class);
 //		assertEquals(1, listeners2.length);
 //		assertEquals(Foo.class, listeners2[0].getClass());
 //
-//		listeners2 = this.listeners(model2, ListChangeListener.class);
+//		listeners2 = this.getListeners(model2, ListChangeListener.class);
 //		assertEquals(1, listeners2.length);
 //		assertEquals(Joo.class, listeners2[0].getClass());
 //	}
-
-	private ChangeListener[] listeners(LocalModel model, Class<? extends ChangeListener> listenerClass) {
-		ChangeSupport changeSupport = (ChangeSupport) ClassTools.fieldValue(model, "changeSupport");
-		return (ChangeListener[]) ClassTools.executeMethod(changeSupport, "getListeners", Class.class, listenerClass);
-	}
-
-	private static class LocalModel extends AbstractModel {
-		LocalModel() {
-			super();
-		}
-	}
-
-	private static class Foo implements Serializable, StateChangeListener {
-		Foo() {
-			super();
-		}
-		public void stateChanged(StateChangeEvent event) {
-			// do nothing
-		}
-	}
-
-	private static class Bar implements StateChangeListener {
-		Bar() {
-			super();
-		}
-		public void stateChanged(StateChangeEvent event) {
-			// do nothing
-		}
-	}
-
-	private static class Joo extends ListChangeAdapter implements Serializable {
-//		private static final ObjectStreamField[] serialPersistentFields = {new ObjectStreamField("changeSupport", ChangeSupport.class)};
-		Joo() {
-			super();
-		}
-	}
-
-	private static class Jar extends ListChangeAdapter {
-		Jar() {
-			super();
-		}
-	}
+//
+//	private ChangeListener[] getListeners(LocalModel model, Class<? extends ChangeListener> listenerClass) {
+//		ChangeSupport changeSupport = (ChangeSupport) ClassTools.fieldValue(model, "changeSupport");
+//		return (ChangeListener[]) ClassTools.executeMethod(changeSupport, "getListeners", Class.class, listenerClass);
+//	}
+//
+//	private static class LocalModel extends AbstractModel {
+//		LocalModel() {
+//			super();
+//		}
+//	}
+//
+//	private static class Foo implements Serializable, StateChangeListener {
+//		Foo() {
+//			super();
+//		}
+//		public void stateChanged(StateChangeEvent event) {
+//			// do nothing
+//		}
+//	}
+//
+//	private static class Bar implements StateChangeListener {
+//		Bar() {
+//			super();
+//		}
+//		public void stateChanged(StateChangeEvent event) {
+//			// do nothing
+//		}
+//	}
+//
+//	private static class Joo extends ListChangeAdapter implements Serializable {
+////		private static final ObjectStreamField[] serialPersistentFields = {new ObjectStreamField("changeSupport", ChangeSupport.class)};
+//		Joo() {
+//			super();
+//		}
+//	}
+//
+//	private static class Jar extends ListChangeAdapter {
+//		Jar() {
+//			super();
+//		}
+//	}
 
 
 	// ********** bug(?) test **********
@@ -4032,8 +4530,8 @@ public class ChangeSupportTests
 			this.fireCollectionChanged("bar");
 		}
 		public void collectionCleared(CollectionChangeEvent e) {/*ignore*/}
-		public void itemsAdded(CollectionChangeEvent e) {/*ignore*/}
-		public void itemsRemoved(CollectionChangeEvent e) {/*ignore*/}
+		public void itemsAdded(CollectionAddEvent e) {/*ignore*/}
+		public void itemsRemoved(CollectionRemoveEvent e) {/*ignore*/}
 
 		public void listChanged(ListChangeEvent e) {
 			this.fireListChanged("bar");
@@ -4133,8 +4631,8 @@ public class ChangeSupportTests
 			}
 		}
 		public void collectionCleared(CollectionChangeEvent e) {/*ignore*/}
-		public void itemsAdded(CollectionChangeEvent e) {/*ignore*/}
-		public void itemsRemoved(CollectionChangeEvent e) {/*ignore*/}
+		public void itemsAdded(CollectionAddEvent e) {/*ignore*/}
+		public void itemsRemoved(CollectionRemoveEvent e) {/*ignore*/}
 
 		public void listChanged(ListChangeEvent e) {
 			Object source = e.getSource();

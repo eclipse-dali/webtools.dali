@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -125,30 +125,30 @@ public class TransformationListValueModelAdapter<E1, E2>
 	 * Transform the items associated with the specified event.
 	 */
 	protected List<E2> transformItems(ListChangeEvent event) {
-		return this.transformItems(this.items(event), event.itemsSize());
+		return this.transformItems(this.getItems(event), event.getItemsSize());
 	}
 
 	/**
 	 * Transform the items in the specified list value model.
 	 */
 	protected List<E2> transformItems(ListValueModel<? extends E1> lvm) {
-		return this.transformItems(lvm.listIterator(), lvm.size());
+		return this.transformItems(lvm, lvm.size());
 	}
 
 	/**
 	 * Transform the replaced items associated with the specified event.
 	 */
 	protected List<E2> transformReplacedItems(ListChangeEvent event) {
-		return this.transformItems(this.replacedItems(event), event.itemsSize());
+		return this.transformItems(this.getReplacedItems(event), event.getItemsSize());
 	}
 
 	/**
 	 * Transform the specified items.
 	 */
-	protected List<E2> transformItems(ListIterator<? extends E1> items, int size) {
+	protected List<E2> transformItems(Iterable<? extends E1> items, int size) {
 		List<E2> result = new ArrayList<E2>(size);
-		while (items.hasNext()) {
-			result.add(this.transformItem(items.next()));
+		for (E1 item : items) {
+			result.add(this.transformItem(item));
 		}
 		return result;
 	}
@@ -197,7 +197,7 @@ public class TransformationListValueModelAdapter<E1, E2>
 	 */
     @Override
 	protected void itemsRemoved(ListChangeEvent event) {
-		this.removeItemsFromList(event.getIndex(), event.itemsSize(), this.transformedList, LIST_VALUES);
+		this.removeItemsFromList(event.getIndex(), event.getItemsSize(), this.transformedList, LIST_VALUES);
 	}
 
 	/**

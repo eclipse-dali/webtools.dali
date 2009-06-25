@@ -105,7 +105,7 @@ public class NewEventTests extends TestCase {
 		}
 		@Override
 		public String getAspectName() {
-			return null;  // the point of the event is that the name is unknown...
+			return null;  // the point of the event is that the aspect is unknown...
 		}
 		@Override
 		public FooChangeEvent cloneWithSource(Model newSource) {
@@ -153,30 +153,23 @@ public class NewEventTests extends TestCase {
 		public boolean hasAnyFooChangeListeners() {
 			return this.hasAnyListeners(FOO_CHANGE_LISTENER_CLASS);
 		}
-		private FooChangeListener[] fooChangeListeners() {
+		private FooChangeListener[] getFooChangeListeners() {
 			return (FooChangeListener[]) this.getListeners(FOO_CHANGE_LISTENER_CLASS);
 		}
+		private boolean hasFooChangeListener(FooChangeListener listener) {
+			return CollectionTools.contains(this.getFooChangeListeners(), listener);
+		}
 		public void fireFooChanged() {
-			FooChangeListener[] targets = null;
-			synchronized (this) {
-				FooChangeListener[] fooChangeListeners = this.fooChangeListeners();
-				if (fooChangeListeners != null) {
-					targets = fooChangeListeners.clone();
-				}
-			}
-			if (targets != null) {
+			FooChangeListener[] listeners = this.getFooChangeListeners();
+			if (listeners != null) {
 				FooChangeEvent event = null;
-				for (FooChangeListener target : targets) {
-					boolean stillListening;
-					synchronized (this) {
-						stillListening = CollectionTools.contains(this.fooChangeListeners(), target);
-					}
-					if (stillListening) {
+				for (FooChangeListener listener : listeners) {
+					if (this.hasFooChangeListener(listener)) {
 						if (event == null) {
 							// here's the reason for the duplicate code...
 							event = new FooChangeEvent((FooModel) this.source);
 						}
-						target.fooChanged(event);
+						listener.fooChanged(event);
 					}
 				}
 			}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,13 +11,14 @@ package org.eclipse.jpt.utility.internal.model.value.swing;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.ListIterator;
+
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
+
 import org.eclipse.jpt.utility.internal.model.listener.awt.AWTListChangeListenerWrapper;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
 import org.eclipse.jpt.utility.model.listener.ListChangeListener;
@@ -191,21 +192,21 @@ public abstract class PrimitiveListTreeModel
 
 		public void itemsAdded(ListChangeEvent event) {
 			int i = event.getIndex();
-			for (ListIterator<?> stream = event.items(); stream.hasNext(); ) {
-				PrimitiveListTreeModel.this.insertPrimitive(i++, stream.next());
+			for (Object item : event.getItems()) {
+				PrimitiveListTreeModel.this.insertPrimitive(i++, item);
 			}
 		}
 
 		public void itemsRemoved(ListChangeEvent event) {
-			for (int i = 0; i < event.itemsSize(); i++) {
+			for (int i = 0; i < event.getItemsSize(); i++) {
 				PrimitiveListTreeModel.this.removeNode(event.getIndex());
 			}
 		}
 
 		public void itemsReplaced(ListChangeEvent event) {
 			int i = event.getIndex();
-			for (ListIterator<?> stream = event.items(); stream.hasNext(); ) {
-				PrimitiveListTreeModel.this.replacePrimitive(i++, stream.next());
+			for (Object item : event.getItems()) {
+				PrimitiveListTreeModel.this.replacePrimitive(i++, item);
 			}
 		}
 

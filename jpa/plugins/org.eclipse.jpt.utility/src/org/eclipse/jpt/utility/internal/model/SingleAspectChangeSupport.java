@@ -11,8 +11,11 @@ package org.eclipse.jpt.utility.internal.model;
 
 import java.util.Collection;
 import java.util.List;
+
 import org.eclipse.jpt.utility.model.Model;
+import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.model.event.StateChangeEvent;
@@ -21,7 +24,7 @@ import org.eclipse.jpt.utility.model.listener.ChangeListener;
 
 /**
  * This change support class changes the behavior of the standard
- * ChangeSupport in several ways:
+ * change support in several ways:
  * 	- All events fired by the source must specify the single aspect.
  * 	- Listeners are required to be either "generic" listeners or
  * 	    listeners of the single aspect.
@@ -53,40 +56,56 @@ public class SingleAspectChangeSupport
 			);
 	}
 
-	private void check(Class<? extends ChangeListener> lClass, String aName) {
+	private void check(Class<? extends ChangeListener> lClass) {
 		if (lClass != this.listenerClass) {
 			throw new IllegalArgumentException(
 					"This Model supports only changes for the listener type \"" + this.listenerClass.getName() //$NON-NLS-1$
 					+ "\" : \"" + lClass.getName() + '"' //$NON-NLS-1$
 				);
 		}
-		if (aName != this.aspectName) {
+	}
+
+	private void check(Class<? extends ChangeListener> lClass, String listenerAspectName) {
+		this.check(lClass);
+		if ( ! listenerAspectName.equals(this.aspectName)) {
 			throw new IllegalArgumentException(
 					"This Model supports only changes for the aspect \"" + this.aspectName //$NON-NLS-1$
-					+ "\" : \"" + aName + '"' //$NON-NLS-1$
+					+ "\" : \"" + listenerAspectName + '"' //$NON-NLS-1$
 				);
 		}
 	}
 
 	@Override
-	protected <T extends ChangeListener> void addListener(String aName, Class<T> lClass, T listener) {
-		this.check(lClass, aName);
-		super.addListener(aName, lClass, listener);
+	protected synchronized <T extends ChangeListener> void addListener(Class<T> lClass, T listener) {
+		this.check(lClass);
+		super.addListener(lClass, listener);
 	}
 
 	@Override
-	protected <T extends ChangeListener> void removeListener(String aName, Class<T> lClass, T listener) {
-		this.check(lClass, aName);
-		super.removeListener(aName, lClass, listener);
+	protected synchronized <T extends ChangeListener> void addListener(String listenerAspectName, Class<T> lClass, T listener) {
+		this.check(lClass, listenerAspectName);
+		super.addListener(listenerAspectName, lClass, listener);
+	}
+
+	@Override
+	protected synchronized <T extends ChangeListener> void removeListener(Class<T> lClass, T listener) {
+		this.check(lClass);
+		super.removeListener(lClass, listener);
+	}
+
+	@Override
+	protected <T extends ChangeListener> void removeListener(String listenerAspectName, Class<T> lClass, T listener) {
+		this.check(lClass, listenerAspectName);
+		super.removeListener(listenerAspectName, lClass, listener);
 	}
 
 
 	// ********** internal queries **********
 
 	@Override
-	protected boolean hasAnyListeners(Class<? extends ChangeListener> lClass, String aName) {
-		this.check(lClass, aName);
-		return super.hasAnyListeners(lClass, aName);
+	protected boolean hasAnyListeners(Class<? extends ChangeListener> lClass, String listenerAspectName) {
+		this.check(lClass, listenerAspectName);
+		return super.hasAnyListeners(lClass, listenerAspectName);
 	}
 
 
@@ -133,7 +152,7 @@ public class SingleAspectChangeSupport
 	// ********** collection change support **********
 
 	@Override
-	public void fireItemsAdded(CollectionChangeEvent event) {
+	public void fireItemsAdded(CollectionAddEvent event) {
 		this.check(COLLECTION_CHANGE_LISTENER_CLASS, event.getCollectionName());
 		super.fireItemsAdded(event);
 	}
@@ -151,7 +170,7 @@ public class SingleAspectChangeSupport
 	}
 
 	@Override
-	public void fireItemsRemoved(CollectionChangeEvent event) {
+	public void fireItemsRemoved(CollectionRemoveEvent event) {
 		this.check(COLLECTION_CHANGE_LISTENER_CLASS, event.getCollectionName());
 		super.fireItemsRemoved(event);
 	}

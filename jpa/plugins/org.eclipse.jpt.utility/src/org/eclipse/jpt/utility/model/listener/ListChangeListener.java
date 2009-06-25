@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -30,6 +30,10 @@ public interface ListChangeListener extends ChangeListener {
 	 * @param event A ListChangeEvent describing the event source,
 	 * the list that changed, the items that were added, and the index
 	 * at which the items were added.
+	 * 
+	 * @see ListChangeEvent#getIndex()
+	 * @see ListChangeEvent#items()
+	 * @see ListChangeEvent#itemsSize()
 	 */
 	void itemsAdded(ListChangeEvent event);
 
@@ -39,6 +43,10 @@ public interface ListChangeListener extends ChangeListener {
 	 * @param event A ListChangeEvent describing the event source,
 	 * the list that changed, the items that were removed, and the index
 	 * at which the items were removed.
+	 * 
+	 * @see ListChangeEvent#getIndex()
+	 * @see ListChangeEvent#items()
+	 * @see ListChangeEvent#itemsSize()
 	 */
 	void itemsRemoved(ListChangeEvent event);
 
@@ -48,6 +56,12 @@ public interface ListChangeListener extends ChangeListener {
 	 * @param event A ListChangeEvent describing the event source,
 	 * the list that changed, the items that were added, the items that were
 	 * replaced, and the index at which the items were replaced.
+	 * 
+	 * @see ListChangeEvent#getIndex()
+	 * @see ListChangeEvent#items()
+	 * @see ListChangeEvent#itemsSize()
+	 * @see ListChangeEvent#replacedItems()
+	 * @see ListChangeEvent#replacedItemsSize()
 	 */
 	void itemsReplaced(ListChangeEvent event);
 
@@ -57,6 +71,10 @@ public interface ListChangeListener extends ChangeListener {
 	 * @param event A ListChangeEvent describing the event source,
 	 * the list that changed, and the indices of where items were moved
 	 * from and to.
+	 * 
+	 * @see ListChangeEvent#getSourceIndex()
+	 * @see ListChangeEvent#getTargetIndex()
+	 * @see ListChangeEvent#getMoveLength()
 	 */
 	void itemsMoved(ListChangeEvent event);
 
@@ -76,5 +94,20 @@ public interface ListChangeListener extends ChangeListener {
 	 * and the list that changed.
 	 */
 	void listChanged(ListChangeEvent event);
+
+	/**
+	 * This method gets called when the items in a bound list are changed.
+	 * The list itself has not changed, but some significant aspect(s) of the
+	 * objects contained by the list has changed.
+	 * 
+	 * @param event A ListChangeEvent describing the event source,
+	 * the list whose items have changed, the items that changed, and the index
+	 * at which the items were located.
+	 * 
+	 * @see ListChangeEvent#getIndex()
+	 * @see ListChangeEvent#items()
+	 * @see ListChangeEvent#itemsSize()
+	 */
+//	void itemsChanged(ListChangeEvent event);
 
 }

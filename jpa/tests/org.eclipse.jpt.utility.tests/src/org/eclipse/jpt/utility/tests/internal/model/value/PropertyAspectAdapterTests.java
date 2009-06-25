@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,11 +14,13 @@ import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
+import org.eclipse.jpt.utility.model.listener.PropertyChangeAdapter;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
+@SuppressWarnings("nls")
 public class PropertyAspectAdapterTests extends TestCase {
 	private TestSubject subject1;
 	private WritablePropertyValueModel<TestSubject> subjectHolder1;
@@ -271,6 +273,19 @@ public class PropertyAspectAdapterTests extends TestCase {
 		assertEquals("<unnamed>", this.customValueEvent.getNewValue());
 	}
 
+	/**
+	 * Test a bug:
+	 * If two listeners were added to an aspect adapter, one with an
+	 * aspect name and one without, the aspect adapter would add its
+	 * 'subjectChangeListener' to its 'subjectHolder' twice. As a result,
+	 * the following code will trigger an IllegalArgumentException
+	 * if the bug is present; otherwise, it completes silently.
+	 */
+	public void testDuplicateListener() {
+		PropertyChangeListener listener2 = new PropertyChangeAdapter();
+		this.aa1.addPropertyChangeListener(listener2);
+	}
+
 	private WritablePropertyValueModel<String> buildCustomAspectAdapter(PropertyValueModel<TestSubject> subjectHolder) {
 		return new PropertyAspectAdapter<TestSubject, String>(subjectHolder, TestSubject.NAME_PROPERTY) {
 			@Override
@@ -293,9 +308,9 @@ public class PropertyAspectAdapterTests extends TestCase {
 	}
 
 
-	// ********** inner class **********
+	// ********** test model **********
 	
-	private class TestSubject extends AbstractModel {
+	private static class TestSubject extends AbstractModel {
 		private String name;
 		public static final String NAME_PROPERTY = "name";
 		private String description;

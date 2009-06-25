@@ -17,7 +17,9 @@ import org.eclipse.jpt.utility.internal.model.value.ListCollectionValueModelAdap
 import org.eclipse.jpt.utility.internal.model.value.NullCollectionValueModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyListValueModelAdapter;
 import org.eclipse.jpt.utility.model.Model;
+import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
 import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
@@ -68,14 +70,14 @@ public abstract class AbstractTreeItemContentProvider<E>
 	protected CollectionChangeListener buildChildrenListener() {
 		return new CollectionChangeListener() {
 			
-			public void itemsAdded(CollectionChangeEvent event) {
+			public void itemsAdded(CollectionAddEvent event) {
 				getTreeContentProvider().updateContent(getModel());
 			}
 			
-			public void itemsRemoved(CollectionChangeEvent event) {
+			public void itemsRemoved(CollectionRemoveEvent event) {
 				getTreeContentProvider().updateContent(getModel());
-				for (Iterator<?> stream = event.items(); stream.hasNext(); ) {
-					getTreeContentProvider().dispose(stream.next());
+				for (Object item : event.getRemovedItems()) {
+					getTreeContentProvider().dispose(item);
 				}
 			}
 			

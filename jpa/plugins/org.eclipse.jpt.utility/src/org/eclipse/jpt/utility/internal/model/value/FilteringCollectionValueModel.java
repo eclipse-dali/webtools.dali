@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,11 +12,14 @@ package org.eclipse.jpt.utility.internal.model.value;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
+import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.utility.internal.iterators.ReadOnlyIterator;
+import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 
@@ -107,7 +110,7 @@ public class FilteringCollectionValueModel<E>
 		super.engageModel();
 		// synch our cache *after* we start listening to the nested collection,
 		// since its value might change when a listener is added
-		CollectionTools.addAll(this.filteredItems, this.filter(this.collectionHolder.iterator()));
+		CollectionTools.addAll(this.filteredItems, this.filter(this.collectionHolder));
 	}
 
 	@Override
@@ -118,17 +121,17 @@ public class FilteringCollectionValueModel<E>
 	}
 
 	@Override
-	protected void itemsAdded(CollectionChangeEvent event) {
+	protected void itemsAdded(CollectionAddEvent event) {
 		// filter the values before propagating the change event
-		this.addItemsToCollection(this.filter(this.items(event)), this.filteredItems, VALUES);
+		this.addItemsToCollection(this.filter(this.getAddedItems(event)), this.filteredItems, VALUES);
 	}
 
 	@Override
-	protected void itemsRemoved(CollectionChangeEvent event) {
+	protected void itemsRemoved(CollectionRemoveEvent event) {
 		// do *not* filter the values, because they may no longer be
 		// "accepted" and that might be why they were removed in the first place;
 		// anyway, any extraneous items are harmless
-		this.removeItemsFromCollection(event.items(), this.filteredItems, VALUES);
+		this.removeItemsFromCollection(event.getRemovedItems(), this.filteredItems, VALUES);
 	}
 
 	@Override
@@ -153,10 +156,10 @@ public class FilteringCollectionValueModel<E>
 	}
 
 	/**
-	 * Return an iterator that filters the specified iterator.
+	 * Return an iterable that filters the specified iterable.
 	 */
-	protected Iterator<E> filter(Iterator<? extends E> items) {
-		return new FilteringIterator<E, E>(items, this.filter);
+	protected Iterable<E> filter(Iterable<? extends E> items) {
+		return new FilteringIterable<E, E>(items, this.filter);
 	}
 
 	/**
@@ -164,7 +167,7 @@ public class FilteringCollectionValueModel<E>
 	 */
 	protected void rebuildFilteredItems() {
 		this.filteredItems.clear();
-		CollectionTools.addAll(this.filteredItems, this.filter(this.collectionHolder.iterator()));
+		CollectionTools.addAll(this.filteredItems, this.filter(this.collectionHolder));
 		this.fireCollectionChanged(VALUES);
 	}
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,7 +15,7 @@ import java.util.Collections;
 import java.util.EventListener;
 import java.util.EventObject;
 import java.util.Iterator;
-import java.util.ListIterator;
+
 import org.eclipse.jpt.ui.internal.listeners.SWTCollectionChangeListenerWrapper;
 import org.eclipse.jpt.ui.internal.listeners.SWTListChangeListenerWrapper;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -23,7 +23,9 @@ import org.eclipse.jpt.utility.internal.ListenerList;
 import org.eclipse.jpt.utility.internal.StringConverter;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.value.PropertyCollectionValueModelAdapter;
+import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
 import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.model.listener.ListChangeListener;
@@ -244,10 +246,10 @@ public class ListBoxModelAdapter<E> {
 
 	protected CollectionChangeListener buildSelectedItemsChangeListener_() {
 		return new CollectionChangeListener() {
-			public void itemsAdded(CollectionChangeEvent event) {
+			public void itemsAdded(CollectionAddEvent event) {
 				ListBoxModelAdapter.this.selectedItemsAdded(event);
 			}
-			public void itemsRemoved(CollectionChangeEvent event) {
+			public void itemsRemoved(CollectionRemoveEvent event) {
 				ListBoxModelAdapter.this.selectedItemsRemoved(event);
 			}
 			public void collectionCleared(CollectionChangeEvent event) {
@@ -350,8 +352,8 @@ public class ListBoxModelAdapter<E> {
 			return;
 		}
 		int i = event.getIndex();
-		for (ListIterator<E> stream = this.items(event); stream.hasNext(); ) {
-			this.listBox.add(this.convert(stream.next()), i++);
+		for (E item : this.getItems(event)) {
+			this.listBox.add(this.convert(item), i++);
 		}
 	}
 
@@ -362,7 +364,7 @@ public class ListBoxModelAdapter<E> {
 		if (this.listBox.isDisposed()) {
 			return;
 		}
-		this.listBox.remove(event.getIndex(), event.getIndex() + event.itemsSize() - 1);
+		this.listBox.remove(event.getIndex(), event.getIndex() + event.getItemsSize() - 1);
 	}
 
 	/**
@@ -395,15 +397,15 @@ public class ListBoxModelAdapter<E> {
 			return;
 		}
 		int i = event.getIndex();
-		for (ListIterator<E> stream = this.items(event); stream.hasNext(); ) {
-			this.listBox.setItem(i++, this.convert(stream.next()));
+		for (E item : this.getItems(event)) {
+			this.listBox.setItem(i++, this.convert(item));
 		}
 	}
 
 	/**
 	 * The model has changed - synchronize the list box.
 	 */
-	protected void listCleared(ListChangeEvent event) {
+	protected void listCleared(@SuppressWarnings("unused") ListChangeEvent event) {
 		if (this.listBox.isDisposed()) {
 			return;
 		}
@@ -413,14 +415,14 @@ public class ListBoxModelAdapter<E> {
 	/**
 	 * The model has changed - synchronize the list box.
 	 */
-	protected void listChanged(ListChangeEvent event) {
+	protected void listChanged(@SuppressWarnings("unused") ListChangeEvent event) {
 		this.synchronizeListBoxItems();
 	}
 
-	// minimized unchecked code
+	// minimized scope of suppressed warnings
 	@SuppressWarnings("unchecked")
-	protected ListIterator<E> items(ListChangeEvent event) {
-		return ((ListIterator<E>) event.items());
+	protected Iterable<E> getItems(ListChangeEvent event) {
+		return (Iterable<E>) event.getItems();
 	}
 
 
@@ -449,51 +451,57 @@ public class ListBoxModelAdapter<E> {
 		this.listBox.select(indices);
 	}
 
-	protected void selectedItemsAdded(CollectionChangeEvent event) {
+	protected void selectedItemsAdded(CollectionAddEvent event) {
 		if (this.listBox.isDisposed()) {
 			return;
 		}
-		int[] indices = new int[event.itemsSize()];
+		int[] indices = new int[event.getAddedItemsSize()];
 		int i = 0;
-		for (Iterator<E> stream = this.items(event); stream.hasNext(); ) {
-			indices[i++] = this.indexOf(stream.next());
+		for (E item : this.getAddedItems(event)) {
+			indices[i++] = this.indexOf(item);
 		}
 		this.listBox.select(indices);
 	}
 
-	protected void selectedItemsRemoved(CollectionChangeEvent event) {
+	protected void selectedItemsRemoved(CollectionRemoveEvent event) {
 		if (this.listBox.isDisposed()) {
 			return;
 		}
-		int[] indices = new int[event.itemsSize()];
+		int[] indices = new int[event.getRemovedItemsSize()];
 		int i = 0;
-		for (Iterator<E> stream = this.items(event); stream.hasNext(); ) {
-			indices[i++] = this.indexOf(stream.next());
+		for (E item : this.getRemovedItems(event)) {
+			indices[i++] = this.indexOf(item);
 		}
 		this.listBox.deselect(indices);
 	}
 
-	protected void selectedItemsCleared(CollectionChangeEvent event) {
+	protected void selectedItemsCleared(@SuppressWarnings("unused") CollectionChangeEvent event) {
 		if (this.listBox.isDisposed()) {
 			return;
 		}
 		this.listBox.deselectAll();
 	}
 
-	protected void selectedItemsChanged(CollectionChangeEvent event) {
+	protected void selectedItemsChanged(@SuppressWarnings("unused") CollectionChangeEvent event) {
 		this.synchronizeListBoxSelection();
 	}
 
-	// minimized unchecked code
+	// minimized scope of suppressed warnings
 	@SuppressWarnings("unchecked")
-	protected Iterator<E> items(CollectionChangeEvent event) {
-		return ((Iterator<E>) event.items());
+	protected Iterable<E> getAddedItems(CollectionAddEvent event) {
+		return (Iterable<E>) event.getAddedItems();
+	}
+
+	// minimized scope of suppressed warnings
+	@SuppressWarnings("unchecked")
+	protected Iterable<E> getRemovedItems(CollectionRemoveEvent event) {
+		return (Iterable<E>) event.getRemovedItems();
 	}
 
 
 	// ********** list box events **********
 
-	protected void listBoxSelectionChanged(SelectionEvent event) {
+	protected void listBoxSelectionChanged(@SuppressWarnings("unused") SelectionEvent event) {
 		if (this.selectionChangeListenerList.size() > 0) {
 			@SuppressWarnings("unchecked")
 			SelectionChangeEvent<E> scEvent = new SelectionChangeEvent(this, this.selectedItems());
@@ -515,7 +523,7 @@ public class ListBoxModelAdapter<E> {
 		return selectedItems;
 	}
 
-	protected void listBoxDoubleClicked(SelectionEvent event) {
+	protected void listBoxDoubleClicked(@SuppressWarnings("unused") SelectionEvent event) {
 		if (this.listBox.isDisposed()) {
 			return;
 		}
@@ -533,7 +541,7 @@ public class ListBoxModelAdapter<E> {
 
 	// ********** dispose **********
 
-	protected void listBoxDisposed(DisposeEvent event) {
+	protected void listBoxDisposed(@SuppressWarnings("unused") DisposeEvent event) {
 		// the list box is not yet "disposed" when we receive this event
 		// so we can still remove our listeners
 		this.listBox.removeDisposeListener(this.listBoxDisposeListener);

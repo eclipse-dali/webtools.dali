@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -144,7 +144,7 @@ public class CompositeListValueModel<E1, E2>
 			}
 			@Override
 			public String toString() {
-				return "component LVM listener";
+				return "component LVM listener"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -154,7 +154,7 @@ public class CompositeListValueModel<E1, E2>
 
 	public E2 get(int index) {
 		if ((index < 0) || (index >= this.size)) {
-			throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + this.size);
+			throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + this.size); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		// move backwards through the info list
 		for (int i = this.infoList.size(); i-- > 0; ) {
@@ -199,7 +199,7 @@ public class CompositeListValueModel<E1, E2>
 		super.engageModel();
 		// synch our cache *after* we start listening to the wrapped list,
 		// since its value might change when a listener is added
-		this.addComponentSources(0, this.listHolder.listIterator(), this.listHolder.size());
+		this.addComponentSources(0, this.listHolder, this.listHolder.size());
 	}
 
 	@Override
@@ -219,13 +219,13 @@ public class CompositeListValueModel<E1, E2>
 	 */
 	@Override
 	protected void itemsAdded(ListChangeEvent event) {
-		this.addComponentSources(event.getIndex(), this.items(event), event.itemsSize(), true);  // true = fire event
+		this.addComponentSources(event.getIndex(), this.getItems(event), event.getItemsSize(), true);  // true = fire event
 	}
 
 	/**
 	 * Do not fire an event.
 	 */
-	protected void addComponentSources(int addedSourcesIndex, ListIterator<? extends E1> addedSources, int addedSourcesSize) {
+	protected void addComponentSources(int addedSourcesIndex, Iterable<? extends E1> addedSources, int addedSourcesSize) {
 		this.addComponentSources(addedSourcesIndex, addedSources, addedSourcesSize, false);  // false = do not fire event
 	}
 
@@ -233,15 +233,14 @@ public class CompositeListValueModel<E1, E2>
 	 * Add infos corresponding to the specified sources to our cache.
 	 * Fire the appropriate event if requested.
 	 */
-	protected void addComponentSources(int addedSourcesIndex, ListIterator<? extends E1> addedSources, int addedSourcesSize, boolean fireEvent) {
+	protected void addComponentSources(int addedSourcesIndex, Iterable<? extends E1> addedSources, int addedSourcesSize, boolean fireEvent) {
 		ArrayList<Info> newInfoList = new ArrayList<Info>(addedSourcesSize);
 		// the 'items' are either tacked on to the end or
 		// at the 'begin' index of the first 'info' that is being pushed back
 		int newItemsIndex = (addedSourcesIndex == this.infoList.size()) ? this.size : this.infoList.get(addedSourcesIndex).begin;
 
 		int begin = newItemsIndex;
-		while (addedSources.hasNext()) {
-			E1 source = addedSources.next();
+		for (E1 source : addedSources) {
 			ListValueModel<E2> componentLVM = this.transform(source);
 			componentLVM.addListChangeListener(LIST_VALUES, this.componentLVMListener);
 			ArrayList<E2> items = new ArrayList<E2>(componentLVM.size());
@@ -273,7 +272,7 @@ public class CompositeListValueModel<E1, E2>
 	 */
 	@Override
 	protected void itemsRemoved(ListChangeEvent event) {
-		this.removeComponentSources(event.getIndex(), event.itemsSize(), true);  // true = fire event
+		this.removeComponentSources(event.getIndex(), event.getItemsSize(), true);  // true = fire event
 	}
 
 	/**
@@ -320,7 +319,7 @@ public class CompositeListValueModel<E1, E2>
 	 */
 	@Override
 	protected void itemsReplaced(ListChangeEvent event) {
-		this.replaceComponentSources(event.getIndex(), this.items(event), event.itemsSize(), true);  // true = fire event
+		this.replaceComponentSources(event.getIndex(), this.getItems(event), event.getItemsSize(), true);  // true = fire event
 	}
 
 	/**
@@ -328,7 +327,7 @@ public class CompositeListValueModel<E1, E2>
 	 * items, so we remove and add the corresponding lists of items, resulting in
 	 * two events.
 	 */
-	protected void replaceComponentSources(int replacedSourcesIndex, ListIterator<? extends E1> newSources, int replacedSourcesSize, boolean fireEvent) {
+	protected void replaceComponentSources(int replacedSourcesIndex, Iterable<? extends E1> newSources, int replacedSourcesSize, boolean fireEvent) {
 		this.removeComponentSources(replacedSourcesIndex, replacedSourcesSize, fireEvent);
 		this.addComponentSources(replacedSourcesIndex, newSources, replacedSourcesSize, fireEvent);
 	}
@@ -391,7 +390,7 @@ public class CompositeListValueModel<E1, E2>
 	@Override
 	protected void listChanged(ListChangeEvent event) {
 		this.removeComponentSources(0, this.infoList.size());
-		this.addComponentSources(0, this.listHolder.listIterator(), this.listHolder.size());
+		this.addComponentSources(0, this.listHolder, this.listHolder.size());
 		this.fireListChanged(LIST_VALUES);
 	}
 
@@ -422,7 +421,7 @@ public class CompositeListValueModel<E1, E2>
 				return i;
 			}
 		}
-		throw new IllegalArgumentException("invalid component LVM: " + componentLVM);
+		throw new IllegalArgumentException("invalid component LVM: " + componentLVM); //$NON-NLS-1$
 	}
 
 	/**
@@ -439,7 +438,7 @@ public class CompositeListValueModel<E1, E2>
 	protected void componentItemsAdded(ListChangeEvent event) {
 		// update the affected 'begin' indices
 		int componentLVMIndex = this.indexFor(event);
-		int newItemsSize = event.itemsSize();
+		int newItemsSize = event.getItemsSize();
 		for (int i = componentLVMIndex + 1; i < this.infoList.size(); i++) {
 			this.infoList.get(i).begin += newItemsSize;
 		}
@@ -447,7 +446,7 @@ public class CompositeListValueModel<E1, E2>
 
 		// synchronize the cached list
 		Info info = this.infoList.get(componentLVMIndex);
-		CollectionTools.addAll(info.items, event.getIndex(), this.componentItems(event), event.itemsSize());
+		CollectionTools.addAll(info.items, event.getIndex(), this.getComponentItems(event), event.getItemsSize());
 
 		// translate the event
 		this.fireItemsAdded(event.cloneWithSource(this, LIST_VALUES, info.begin));
@@ -460,7 +459,7 @@ public class CompositeListValueModel<E1, E2>
 	protected void componentItemsRemoved(ListChangeEvent event) {
 		// update the affected 'begin' indices
 		int componentLVMIndex = this.indexFor(event);
-		int removedItemsSize = event.itemsSize();
+		int removedItemsSize = event.getItemsSize();
 		for (int i = componentLVMIndex + 1; i < this.infoList.size(); i++) {
 			this.infoList.get(i).begin -= removedItemsSize;
 		}
@@ -469,7 +468,7 @@ public class CompositeListValueModel<E1, E2>
 		// synchronize the cached list
 		Info info = this.infoList.get(componentLVMIndex);
 		int itemIndex = event.getIndex();
-		info.items.subList(itemIndex, itemIndex + event.itemsSize()).clear();
+		info.items.subList(itemIndex, itemIndex + event.getItemsSize()).clear();
 
 		// translate the event
 		this.fireItemsRemoved(event.cloneWithSource(this, LIST_VALUES, info.begin));
@@ -486,8 +485,8 @@ public class CompositeListValueModel<E1, E2>
 		int componentLVMIndex = this.indexFor(event);
 		Info info = this.infoList.get(componentLVMIndex);
 		int i = event.getIndex();
-		for (Iterator<E2> stream = this.componentItems(event); stream.hasNext(); ) {
-			info.items.set(i++, stream.next());
+		for (E2 item : this.getComponentItems(event)) {
+			info.items.set(i++, item);
 		}
 
 		// translate the event
@@ -561,8 +560,8 @@ public class CompositeListValueModel<E1, E2>
 
 	// minimize scope of suppressed warnings
 	@SuppressWarnings("unchecked")
-	protected ListIterator<E2> componentItems(ListChangeEvent event) {
-		return (ListIterator<E2>) event.items();
+	protected Iterable<E2> getComponentItems(ListChangeEvent event) {
+		return (Iterable<E2>) event.getItems();
 	}
 
 	// minimize scope of suppressed warnings

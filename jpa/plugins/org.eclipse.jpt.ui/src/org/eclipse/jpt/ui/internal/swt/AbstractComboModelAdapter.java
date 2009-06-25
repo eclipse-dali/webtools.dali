@@ -11,8 +11,7 @@ package org.eclipse.jpt.ui.internal.swt;
 
 import java.util.EventListener;
 import java.util.EventObject;
-import java.util.Iterator;
-import java.util.ListIterator;
+
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jpt.ui.internal.listeners.SWTListChangeListenerWrapper;
 import org.eclipse.jpt.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
@@ -20,7 +19,6 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.ListenerList;
 import org.eclipse.jpt.utility.internal.StringConverter;
 import org.eclipse.jpt.utility.internal.StringTools;
-import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.model.listener.ListChangeListener;
@@ -321,8 +319,8 @@ public abstract class AbstractComboModelAdapter<E> {
 		int count = this.comboHolder.getItemCount();
 		int index = event.getIndex();
 
-		for (ListIterator<E> stream = this.items(event); stream.hasNext(); ) {
-			this.comboHolder.add(this.convert(stream.next()), index++);
+		for (E item : this.getItems(event)) {
+			this.comboHolder.add(this.convert(item), index++);
 		}
 
 		// When the combo is populated, it's possible the selection was already
@@ -337,7 +335,7 @@ public abstract class AbstractComboModelAdapter<E> {
 		if (this.comboHolder.isDisposed()) {
 			return;
 		}
-		this.comboHolder.remove(event.getIndex(), event.getIndex() + event.itemsSize() - 1);
+		this.comboHolder.remove(event.getIndex(), event.getIndex() + event.getItemsSize() - 1);
 		this.synchronizeComboSelection();
 	}
 
@@ -372,8 +370,8 @@ public abstract class AbstractComboModelAdapter<E> {
 		}
 		int index = event.getIndex();
 		int selectionIndex = this.comboHolder.getSelectionIndex();
-		for (ListIterator<E> stream = this.items(event); stream.hasNext(); ) {
-			this.comboHolder.setItem(index++, this.convert(stream.next()));
+		for (E item : this.getItems(event)) {
+			this.comboHolder.setItem(index++, this.convert(item));
 		}
 		if (selectionIndex == 0) {
 			//fixing bug 269100 by setting the populating flag to true
@@ -404,10 +402,10 @@ public abstract class AbstractComboModelAdapter<E> {
 		this.synchronizeComboItems();
 	}
 
-	// minimized unchecked code
+	// minimized scope of suppressed warnings
 	@SuppressWarnings("unchecked")
-	protected ListIterator<E> items(ListChangeEvent event) {
-		return ((ListIterator<E>) event.items());
+	protected Iterable<E> getItems(ListChangeEvent event) {
+		return (Iterable<E>) event.getItems();
 	}
 
 
@@ -451,13 +449,6 @@ public abstract class AbstractComboModelAdapter<E> {
 	protected void selectedItemChanged(PropertyChangeEvent event) {
 		this.synchronizeComboSelection();
 	}
-
-	// minimized unchecked code
-	@SuppressWarnings("unchecked")
-	protected Iterator<E> items(CollectionChangeEvent event) {
-		return ((Iterator<E>) event.items());
-	}
-
 
 	/**
 	 * Return whether the values are equal, with the appropriate null checks.

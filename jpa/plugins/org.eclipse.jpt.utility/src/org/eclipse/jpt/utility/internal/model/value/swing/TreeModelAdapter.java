@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,10 +11,11 @@ package org.eclipse.jpt.utility.internal.model.value.swing;
 
 import java.util.ArrayList;
 import java.util.IdentityHashMap;
-import java.util.Iterator;
 import java.util.List;
+
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreePath;
+
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.listener.awt.AWTListChangeListenerWrapper;
 import org.eclipse.jpt.utility.internal.model.listener.awt.AWTPropertyChangeListenerWrapper;
@@ -143,7 +144,7 @@ public class TreeModelAdapter<T>
 			}
 			@Override
 			public String toString() {
-				return "root listener";
+				return "root listener"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -160,7 +161,7 @@ public class TreeModelAdapter<T>
 			}
 			@Override
 			public String toString() {
-				return "node value listener";
+				return "node value listener"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -177,7 +178,7 @@ public class TreeModelAdapter<T>
 			}
 			@Override
 			public String toString() {
-				return "node state listener";
+				return "node state listener"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -208,7 +209,7 @@ public class TreeModelAdapter<T>
 			}
 			@Override
 			public String toString() {
-				return "children listener";
+				return "children listener"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -510,18 +511,19 @@ public class TreeModelAdapter<T>
 		 * Return an array of the current set of children.
 		 */
 		TreeNodeValueModel<T>[] childArray() {
-			return this.buildArray(this.children(), this.childrenSize());
+			return this.buildArray(this.getChildren(), this.childrenSize());
 		}
 
 		/**
 		 * Build an array to hold the elements in the specified iterator.
 		 * If they are different sizes, something is screwed up...
 		 */
-		TreeNodeValueModel<T>[] buildArray(Iterator<TreeNodeValueModel<T>> stream, int size) {
+		TreeNodeValueModel<T>[] buildArray(Iterable<TreeNodeValueModel<T>> elements, int size) {
 			@SuppressWarnings("unchecked")
 			TreeNodeValueModel<T>[] array = new TreeNodeValueModel[size];
-			for (int i = 0; stream.hasNext(); i++) {
-				array[i] = stream.next();
+			int i = 0;
+			for (TreeNodeValueModel<T> element : elements) {
+				array[i++] = element;
 			}
 			return array;
 		}
@@ -563,9 +565,9 @@ public class TreeModelAdapter<T>
 		abstract int childrenSize();
 
 		/**
-		 * Return an interator on the current set of children.
+		 * Return the current set of children.
 		 */
-		abstract Iterator<TreeNodeValueModel<T>> children();
+		abstract Iterable<TreeNodeValueModel<T>> getChildren();
 
 	}
 
@@ -602,7 +604,7 @@ public class TreeModelAdapter<T>
 		 */
 		@Override
 		int childrenSize() {
-			return this.event.itemsSize();
+			return this.event.getItemsSize();
 		}
 
 		/**
@@ -610,8 +612,8 @@ public class TreeModelAdapter<T>
 		 */
 		@Override
 		@SuppressWarnings("unchecked")
-		Iterator<TreeNodeValueModel<T>> children() {
-			return (Iterator<TreeNodeValueModel<T>>) this.event.items();
+		Iterable<TreeNodeValueModel<T>> getChildren() {
+			return (Iterable<TreeNodeValueModel<T>>) this.event.getItems();
 		}
 
 		/**
@@ -639,7 +641,7 @@ public class TreeModelAdapter<T>
 			TreeNodeValueModel<T>[] parentPath = parent.path();
 			List<TreeNodeValueModel<T>> childrenList = TreeModelAdapter.this.childrenLists.get(parent);
 			int[] childIndices = this.buildIndices(childrenList.size());
-			TreeNodeValueModel<T>[] childArray = this.buildArray(childrenList.iterator(), childrenList.size());
+			TreeNodeValueModel<T>[] childArray = this.buildArray(childrenList, childrenList.size());
 			TreeModelAdapter.this.removeChildren(parentPath, childIndices, childArray);
 		}
 
@@ -651,20 +653,25 @@ public class TreeModelAdapter<T>
 			TreeNodeValueModel<T>[] parentPath = parent.path();
 			List<TreeNodeValueModel<T>> childrenList = TreeModelAdapter.this.childrenLists.get(parent);
 			int[] childIndices = this.buildIndices(childrenList.size());
-			TreeNodeValueModel<T>[] childArray = this.buildArray(childrenList.iterator(), childrenList.size());
+			TreeNodeValueModel<T>[] childArray = this.buildArray(childrenList, childrenList.size());
 			TreeModelAdapter.this.removeChildren(parentPath, childIndices, childArray);
 
 			childIndices = this.buildIndices(parent.childrenModel().size());
-			childArray = this.buildArray(parent.childrenModel().iterator(), parent.childrenSize());
+			childArray = this.buildArray(parent.childrenModel(), parent.childrenSize());
 			TreeModelAdapter.this.addChildren(parentPath, childIndices, childArray);
 		}
 
 		/**
 		 * The ListChangeEvent's replaced items are the replaced children.
 		 */
-		@SuppressWarnings("unchecked")
 		TreeNodeValueModel<T>[] replacedChildren() {
-			return this.buildArray((Iterator<TreeNodeValueModel<T>>) this.event.replacedItems(), this.event.itemsSize());
+			return this.buildArray(this.getReplacedItems(), this.event.getItemsSize());
+		}
+
+		// minimized scope of suppressed warnings
+		@SuppressWarnings("unchecked")
+		protected Iterable<TreeNodeValueModel<T>> getReplacedItems() {
+			return (Iterable<TreeNodeValueModel<T>>) this.event.getReplacedItems();
 		}
 
 	}
@@ -713,8 +720,8 @@ public class TreeModelAdapter<T>
 		 * the children model.
 		 */
 		@Override
-		Iterator<TreeNodeValueModel<T>> children() {
-			return this.node.childrenModel().iterator();
+		Iterable<TreeNodeValueModel<T>> getChildren() {
+			return this.node.childrenModel();
 		}
 
 	}

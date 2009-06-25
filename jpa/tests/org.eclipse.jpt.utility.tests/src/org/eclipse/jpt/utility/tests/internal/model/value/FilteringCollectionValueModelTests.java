@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,27 +12,32 @@ package org.eclipse.jpt.utility.tests.internal.model.value;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Vector;
+
 import junit.framework.TestCase;
+
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.value.FilteringCollectionValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimpleCollectionValueModel;
+import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
 import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
+@SuppressWarnings("nls")
 public class FilteringCollectionValueModelTests extends TestCase {
 	private SimpleCollectionValueModel<String> collectionHolder;
-	CollectionChangeEvent addEvent;
-	CollectionChangeEvent removeEvent;
+	CollectionAddEvent addEvent;
+	CollectionRemoveEvent removeEvent;
 	CollectionChangeEvent collectionClearedEvent;
 	CollectionChangeEvent collectionChangedEvent;
 
 	private CollectionValueModel<String> filteredCollectionHolder;
-	CollectionChangeEvent filteredAddEvent;
-	CollectionChangeEvent filteredRemoveEvent;
+	CollectionAddEvent filteredAddEvent;
+	CollectionRemoveEvent filteredRemoveEvent;
 	CollectionChangeEvent filteredCollectionClearedEvent;
 	CollectionChangeEvent filteredCollectionChangedEvent;
 
@@ -188,20 +193,20 @@ public class FilteringCollectionValueModelTests extends TestCase {
 		
 		this.collectionHolder.setCollection(newCollection);
 
-		this.verifyEvent(this.collectionChangedEvent, this.collectionHolder, new Vector<String>());
+		this.verifyEvent(this.collectionChangedEvent, this.collectionHolder);
 		
 		tempCollection.remove("foo");
 		tempCollection.add("baz");
-		this.verifyEvent(this.filteredCollectionChangedEvent, this.filteredCollectionHolder, new Vector<String>());
+		this.verifyEvent(this.filteredCollectionChangedEvent, this.filteredCollectionHolder);
 		
 	}
 
 	private CollectionChangeListener buildListener() {
 		return new CollectionChangeListener() {
-			public void itemsAdded(CollectionChangeEvent e) {
+			public void itemsAdded(CollectionAddEvent e) {
 				FilteringCollectionValueModelTests.this.addEvent = e;
 			}
-			public void itemsRemoved(CollectionChangeEvent e) {
+			public void itemsRemoved(CollectionRemoveEvent e) {
 				FilteringCollectionValueModelTests.this.removeEvent = e;
 			}
 			public void collectionCleared(CollectionChangeEvent e) {
@@ -215,10 +220,10 @@ public class FilteringCollectionValueModelTests extends TestCase {
 
 	private CollectionChangeListener buildFilteredListener() {
 		return new CollectionChangeListener() {
-			public void itemsAdded(CollectionChangeEvent e) {
+			public void itemsAdded(CollectionAddEvent e) {
 				FilteringCollectionValueModelTests.this.filteredAddEvent = e;
 			}
-			public void itemsRemoved(CollectionChangeEvent e) {
+			public void itemsRemoved(CollectionRemoveEvent e) {
 				FilteringCollectionValueModelTests.this.filteredRemoveEvent = e;
 			}
 			public void collectionCleared(CollectionChangeEvent e) {
@@ -230,10 +235,21 @@ public class FilteringCollectionValueModelTests extends TestCase {
 		};
 	}
 
-	private void verifyEvent(CollectionChangeEvent event, Object source, Object items) {
+	private void verifyEvent(CollectionChangeEvent event, Object source) {
 		assertEquals(source, event.getSource());
 		assertEquals(CollectionValueModel.VALUES, event.getCollectionName());
-		assertEquals(items, CollectionTools.vector(event.items()));
+	}
+
+	private void verifyEvent(CollectionAddEvent event, Object source, Object items) {
+		assertEquals(source, event.getSource());
+		assertEquals(CollectionValueModel.VALUES, event.getCollectionName());
+		assertEquals(items, CollectionTools.vector(event.getAddedItems()));
+	}
+
+	private void verifyEvent(CollectionRemoveEvent event, Object source, Object items) {
+		assertEquals(source, event.getSource());
+		assertEquals(CollectionValueModel.VALUES, event.getCollectionName());
+		assertEquals(items, CollectionTools.vector(event.getRemovedItems()));
 	}
 
 	public void testRemoveFilteredItem() {

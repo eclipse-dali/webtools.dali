@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,20 +12,25 @@ package org.eclipse.jpt.utility.tests.internal.model.value;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
+
 import junit.framework.TestCase;
+
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.HashBag;
 import org.eclipse.jpt.utility.internal.iterators.ReadOnlyIterator;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.value.CollectionAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
+import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
 import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
+@SuppressWarnings("nls")
 public class CollectionAspectAdapterTests extends TestCase {
 	private TestSubject subject1;
 	private WritablePropertyValueModel<TestSubject> subjectHolder1;
@@ -97,10 +102,10 @@ public class CollectionAspectAdapterTests extends TestCase {
 
 	private CollectionChangeListener buildValueChangeListener1() {
 		return new CollectionChangeListener() {
-			public void itemsAdded(CollectionChangeEvent e) {
+			public void itemsAdded(CollectionAddEvent e) {
 				CollectionAspectAdapterTests.this.value1Changed(e, ADD);
 			}
-			public void itemsRemoved(CollectionChangeEvent e) {
+			public void itemsRemoved(CollectionRemoveEvent e) {
 				CollectionAspectAdapterTests.this.value1Changed(e, REMOVE);
 			}
 			public void collectionCleared(CollectionChangeEvent e) {
@@ -132,7 +137,6 @@ public class CollectionAspectAdapterTests extends TestCase {
 		assertEquals(this.event1Type, CHANGE);
 		assertEquals(this.aa1, this.event1.getSource());
 		assertEquals(CollectionValueModel.VALUES, this.event1.getCollectionName());
-		assertFalse(this.event1.items().hasNext());
 		assertEquals(this.subject2Names(), CollectionTools.bag(this.aa1.iterator()));
 		
 		this.event1 = null;
@@ -142,8 +146,7 @@ public class CollectionAspectAdapterTests extends TestCase {
 		assertEquals(this.event1Type, CHANGE);
 		assertEquals(this.aa1, this.event1.getSource());
 		assertEquals(CollectionValueModel.VALUES, this.event1.getCollectionName());
-		assertFalse(this.event1.items().hasNext());
-		assertFalse((this.aa1.iterator()).hasNext());
+		assertFalse(this.aa1.iterator().hasNext());
 		
 		this.event1 = null;
 		this.event1Type = null;
@@ -152,7 +155,6 @@ public class CollectionAspectAdapterTests extends TestCase {
 		assertEquals(this.event1Type, CHANGE);
 		assertEquals(this.aa1, this.event1.getSource());
 		assertEquals(CollectionValueModel.VALUES, this.event1.getCollectionName());
-		assertFalse(this.event1.items().hasNext());
 		assertEquals(this.subject1Names(), CollectionTools.bag(this.aa1.iterator()));
 	}
 
@@ -165,7 +167,7 @@ public class CollectionAspectAdapterTests extends TestCase {
 		assertEquals(this.event1Type, ADD);
 		assertEquals(this.aa1, this.event1.getSource());
 		assertEquals(CollectionValueModel.VALUES, this.event1.getCollectionName());
-		assertEquals("jam", this.event1.items().next());
+		assertEquals("jam", ((CollectionAddEvent) this.event1).getAddedItems().iterator().next());
 		Collection<String> namesPlus = this.subject1Names();
 		namesPlus.add("jam");
 		assertEquals(namesPlus, CollectionTools.bag(this.aa1.iterator()));
@@ -177,7 +179,7 @@ public class CollectionAspectAdapterTests extends TestCase {
 		assertEquals(this.event1Type, ADD);
 		assertEquals(this.aa1, this.event1.getSource());
 		assertEquals(CollectionValueModel.VALUES, this.event1.getCollectionName());
-		assertEquals("jaz", this.event1.items().next());
+		assertEquals("jaz", ((CollectionAddEvent) this.event1).getAddedItems().iterator().next());
 		namesPlus.add("jaz");
 		assertEquals(namesPlus, CollectionTools.bag(this.aa1.iterator()));
 	}
@@ -191,7 +193,7 @@ public class CollectionAspectAdapterTests extends TestCase {
 		assertEquals(this.event1Type, REMOVE);
 		assertEquals(this.aa1, this.event1.getSource());
 		assertEquals(CollectionValueModel.VALUES, this.event1.getCollectionName());
-		assertEquals("foo", this.event1.items().next());
+		assertEquals("foo", ((CollectionRemoveEvent) this.event1).getRemovedItems().iterator().next());
 		Collection<String> namesMinus = this.subject1Names();
 		namesMinus.remove("foo");
 		assertEquals(namesMinus, CollectionTools.bag(this.aa1.iterator()));
@@ -203,7 +205,7 @@ public class CollectionAspectAdapterTests extends TestCase {
 		assertEquals(this.event1Type, REMOVE);
 		assertEquals(this.aa1, this.event1.getSource());
 		assertEquals(CollectionValueModel.VALUES, this.event1.getCollectionName());
-		assertEquals("bar", this.event1.items().next());
+		assertEquals("bar", ((CollectionRemoveEvent) this.event1).getRemovedItems().iterator().next());
 		namesMinus.remove("bar");
 		assertEquals(namesMinus, CollectionTools.bag(this.aa1.iterator()));
 	}
@@ -217,7 +219,6 @@ public class CollectionAspectAdapterTests extends TestCase {
 		assertEquals(this.event1Type, CHANGE);
 		assertEquals(this.aa1, this.event1.getSource());
 		assertEquals(CollectionValueModel.VALUES, this.event1.getCollectionName());
-		assertFalse(this.event1.items().hasNext());
 		Collection<String> namesPlus2 = this.subject1Names();
 		namesPlus2.add("jam");
 		namesPlus2.add("jaz");

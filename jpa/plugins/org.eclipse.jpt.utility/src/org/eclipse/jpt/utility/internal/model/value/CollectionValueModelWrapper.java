@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,11 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal.model.value;
 
-import java.util.Iterator;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.ChangeSupport;
 import org.eclipse.jpt.utility.internal.model.SingleAspectChangeSupport;
+import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
 import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 
@@ -55,10 +56,10 @@ public abstract class CollectionValueModelWrapper<E>
 
 	protected CollectionChangeListener buildCollectionChangeListener() {
 		return new CollectionChangeListener() {
-			public void itemsAdded(CollectionChangeEvent event) {
+			public void itemsAdded(CollectionAddEvent event) {
 				CollectionValueModelWrapper.this.itemsAdded(event);
 			}		
-			public void itemsRemoved(CollectionChangeEvent event) {
+			public void itemsRemoved(CollectionRemoveEvent event) {
 				CollectionValueModelWrapper.this.itemsRemoved(event);
 			}
 			public void collectionCleared(CollectionChangeEvent event) {
@@ -69,7 +70,7 @@ public abstract class CollectionValueModelWrapper<E>
 			}
 			@Override
 			public String toString() {
-				return "collection change listener";
+				return "collection change listener"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -93,7 +94,7 @@ public abstract class CollectionValueModelWrapper<E>
 	 */
 	@Override
 	public synchronized void addCollectionChangeListener(String collectionName, CollectionChangeListener listener) {
-		if (collectionName == CollectionValueModel.VALUES && this.hasNoCollectionChangeListeners(CollectionValueModel.VALUES)) {
+		if (collectionName.equals(CollectionValueModel.VALUES) && this.hasNoCollectionChangeListeners(CollectionValueModel.VALUES)) {
 			this.engageModel();
 		}
 		super.addCollectionChangeListener(collectionName, listener);
@@ -116,7 +117,7 @@ public abstract class CollectionValueModelWrapper<E>
 	@Override
 	public synchronized void removeCollectionChangeListener(String collectionName, CollectionChangeListener listener) {
 		super.removeCollectionChangeListener(collectionName, listener);
-		if (collectionName == CollectionValueModel.VALUES && this.hasNoCollectionChangeListeners(CollectionValueModel.VALUES)) {
+		if (collectionName.equals(CollectionValueModel.VALUES) && this.hasNoCollectionChangeListeners(CollectionValueModel.VALUES)) {
 			this.disengageModel();
 		}
 	}
@@ -140,8 +141,14 @@ public abstract class CollectionValueModelWrapper<E>
 
 	// minimize scope of suppressed warnings
 	@SuppressWarnings("unchecked")
-	protected Iterator<E> items(CollectionChangeEvent event) {
-		return (Iterator<E>) event.items();
+	protected Iterable<E> getAddedItems(CollectionAddEvent event) {
+		return (Iterable<E>) event.getAddedItems();
+	}
+
+	// minimize scope of suppressed warnings
+	@SuppressWarnings("unchecked")
+	protected Iterable<E> getRemovedItems(CollectionRemoveEvent event) {
+		return (Iterable<E>) event.getRemovedItems();
 	}
 
 	@Override
@@ -156,13 +163,13 @@ public abstract class CollectionValueModelWrapper<E>
 	 * Items were added to the wrapped collection holder;
 	 * propagate the change notification appropriately.
 	 */
-	protected abstract void itemsAdded(CollectionChangeEvent event);
+	protected abstract void itemsAdded(CollectionAddEvent event);
 
 	/**
 	 * Items were removed from the wrapped collection holder;
 	 * propagate the change notification appropriately.
 	 */
-	protected abstract void itemsRemoved(CollectionChangeEvent event);
+	protected abstract void itemsRemoved(CollectionRemoveEvent event);
 
 	/**
 	 * The wrapped collection holder was cleared;

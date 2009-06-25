@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,8 +10,11 @@
 package org.eclipse.jpt.utility.tests.internal.model.value;
 
 import java.util.Collection;
+
 import javax.swing.JList;
+
 import junit.framework.TestCase;
+
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.HashBag;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementIterator;
@@ -19,12 +22,15 @@ import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyCollectionValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.swing.ListModelAdapter;
+import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
 import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
+@SuppressWarnings("nls")
 public class PropertyCollectionValueModelAdapterTests extends TestCase {
 	private CollectionValueModel<String> adapter;
 	private WritablePropertyValueModel<String> wrappedValueHolder;
@@ -53,7 +59,7 @@ public class PropertyCollectionValueModelAdapterTests extends TestCase {
 	public void testIterator() {
 		this.adapter.addCollectionChangeListener(CollectionValueModel.VALUES, new TestListener() {
 			@Override
-			public void itemsAdded(CollectionChangeEvent e) {/* OK */}
+			public void itemsAdded(CollectionAddEvent e) {/* OK */}
 		});
 		this.wrappedValueHolder.setValue("foo");
 		Collection<String> adapterCollection = CollectionTools.collection(this.adapter.iterator());
@@ -65,7 +71,7 @@ public class PropertyCollectionValueModelAdapterTests extends TestCase {
 	public void testStaleValue() {
 		CollectionChangeListener listener = new TestListener() {
 			@Override
-			public void itemsAdded(CollectionChangeEvent e) {/* OK */}
+			public void itemsAdded(CollectionAddEvent e) {/* OK */}
 		};
 		this.adapter.addCollectionChangeListener(CollectionValueModel.VALUES, listener);
 		this.wrappedValueHolder.setValue("foo");
@@ -101,9 +107,9 @@ public class PropertyCollectionValueModelAdapterTests extends TestCase {
 	public void testListChangedToEmpty() {
 		this.adapter.addCollectionChangeListener(CollectionValueModel.VALUES, new TestListener() {
 			@Override
-			public void itemsAdded(CollectionChangeEvent e) {/* OK */}
+			public void itemsAdded(CollectionAddEvent e) {/* OK */}
 			@Override
-			public void itemsRemoved(CollectionChangeEvent e) {/* OK */}
+			public void itemsRemoved(CollectionRemoveEvent e) {/* OK */}
 		});
 		this.wrappedValueHolder.setValue("foo");
 		JList jList = new JList(new ListModelAdapter(this.adapter));
@@ -114,7 +120,7 @@ public class PropertyCollectionValueModelAdapterTests extends TestCase {
 	public void testCollectionChangedFromEmpty() {
 		this.adapter.addCollectionChangeListener(CollectionValueModel.VALUES, new TestListener() {
 			@Override
-			public void itemsAdded(CollectionChangeEvent e) {/* OK */}
+			public void itemsAdded(CollectionAddEvent e) {/* OK */}
 		});
 		JList jList = new JList(new ListModelAdapter(this.adapter));
 		
@@ -140,10 +146,10 @@ public class PropertyCollectionValueModelAdapterTests extends TestCase {
 		public void collectionCleared(CollectionChangeEvent event) {
 			fail("unexpected event");
 		}
-		public void itemsAdded(CollectionChangeEvent event) {
+		public void itemsAdded(CollectionAddEvent event) {
 			fail("unexpected event");
 		}
-		public void itemsRemoved(CollectionChangeEvent event) {
+		public void itemsRemoved(CollectionRemoveEvent event) {
 			fail("unexpected event");
 		}
 	}

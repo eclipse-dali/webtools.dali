@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -143,23 +143,22 @@ public class CoordinatedList<E> implements List<E>, ListChangeListener, ListData
 
 	public void itemsAdded(ListChangeEvent e) {
 		int i = e.getIndex();
-		for (Iterator<E> stream = this.items(e); stream.hasNext(); ) {
-			this.list.add(i++, stream.next());
+		for (E item : this.getItems(e)) {
+			this.list.add(i++, item);
 		}
 	}
 
 	public void itemsRemoved(ListChangeEvent e) {
-		int i = e.getIndex();
-		for (Iterator<E> stream = this.items(e); stream.hasNext(); ) {
-			stream.next();
-			this.list.remove(i);
+		int base = e.getIndex();
+		for (int i = e.getItemsSize(); i-- > 0; ) {
+			this.list.remove(base + i);  // remove from end
 		}
 	}
 
 	public void itemsReplaced(ListChangeEvent e) {
 		int i = e.getIndex();
-		for (Iterator<E> stream = this.items(e); stream.hasNext(); ) {
-			this.list.set(i++, stream.next());
+		for (E item : this.getItems(e)) {
+			this.list.set(i++, item);
 		}
 	}
 
@@ -235,12 +234,10 @@ public class CoordinatedList<E> implements List<E>, ListChangeListener, ListData
 		return (E) listModel.getElementAt(index);
 	}
 
-	/**
-	 * minimize the scope of the suppressed warnings.=
-	 */
+	// minimized scope of suppressed warnings
 	@SuppressWarnings("unchecked")
-	private Iterator<E> items(ListChangeEvent event) {
-		return (Iterator<E>) event.items();
+	private Iterable<E> getItems(ListChangeEvent event) {
+		return (Iterable<E>) event.getItems();
 	}
 
 	/**

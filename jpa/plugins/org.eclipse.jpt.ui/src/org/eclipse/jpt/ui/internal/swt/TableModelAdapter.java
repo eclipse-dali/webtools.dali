@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,7 +16,7 @@ import java.util.EventListener;
 import java.util.EventObject;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
+
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jpt.ui.internal.listeners.SWTCollectionChangeListenerWrapper;
 import org.eclipse.jpt.ui.internal.listeners.SWTListChangeListenerWrapper;
@@ -24,7 +24,9 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.ListenerList;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.value.PropertyCollectionValueModelAdapter;
+import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
 import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.model.listener.ListChangeListener;
@@ -227,10 +229,10 @@ public class TableModelAdapter<E> {
 
 	protected CollectionChangeListener buildSelectedItemsChangeListener_() {
 		return new CollectionChangeListener() {
-			public void itemsAdded(CollectionChangeEvent event) {
+			public void itemsAdded(CollectionAddEvent event) {
 				TableModelAdapter.this.selectedItemsAdded(event);
 			}
-			public void itemsRemoved(CollectionChangeEvent event) {
+			public void itemsRemoved(CollectionRemoveEvent event) {
 				TableModelAdapter.this.selectedItemsRemoved(event);
 			}
 			public void collectionCleared(CollectionChangeEvent event) {
@@ -354,13 +356,13 @@ public class TableModelAdapter<E> {
 
 		int index = event.getIndex();
 
-		for (ListIterator<E> stream = this.items(event); stream.hasNext(); index++) {
+		for (E item : this.getItems(event)) {
 
 			TableItem tableItem = new TableItem(this.table, SWT.NULL, index);
-			tableItem.setData(stream.next());
+			tableItem.setData(item);
 
 			TableItemModelAdapter adapter = this.buildItemModel(tableItem);
-			tableItemModelAdapters.add(index, adapter);
+			tableItemModelAdapters.add(index++, adapter);
 		}
 	}
 
@@ -373,9 +375,9 @@ public class TableModelAdapter<E> {
 			return;
 		}
 
-		this.table.remove(event.getIndex(), event.getIndex() + event.itemsSize() - 1);
+		this.table.remove(event.getIndex(), event.getIndex() + event.getItemsSize() - 1);
 
-		for (int index = event.getIndex() + event.itemsSize(); --index >= event.getIndex(); ) {
+		for (int index = event.getIndex() + event.getItemsSize(); --index >= event.getIndex(); ) {
 			tableItemModelAdapters.remove(index);
 		}
 	}
@@ -451,9 +453,9 @@ public class TableModelAdapter<E> {
 
 		int rowIndex = event.getIndex();
 
-		for (ListIterator<E> stream = this.items(event); stream.hasNext(); ) {
+		for (E item : this.getItems(event)) {
 			TableItem tableItem = this.table.getItem(rowIndex);
-			tableItem.setData(stream.next());
+			tableItem.setData(item);
 
 			TableItemModelAdapter adapter = tableItemModelAdapters.get(rowIndex);
 
@@ -471,7 +473,7 @@ public class TableModelAdapter<E> {
 	/**
 	 * The model has changed - synchronize the table.
 	 */
-	protected void listCleared(ListChangeEvent event) {
+	protected void listCleared(@SuppressWarnings("unused") ListChangeEvent event) {
 		if (this.table.isDisposed()) {
 			return;
 		}
@@ -481,14 +483,14 @@ public class TableModelAdapter<E> {
 	/**
 	 * The model has changed - synchronize the table.
 	 */
-	protected void listChanged(ListChangeEvent event) {
+	protected void listChanged(@SuppressWarnings("unused") ListChangeEvent event) {
 		this.synchronizeTableItems();
 	}
 
-	// minimized unchecked code
+	// minimized scope of suppressed warnings
 	@SuppressWarnings("unchecked")
-	protected ListIterator<E> items(ListChangeEvent event) {
-		return ((ListIterator<E>) event.items());
+	protected Iterable<E> getItems(ListChangeEvent event) {
+		return (Iterable<E>) event.getItems();
 	}
 
 
@@ -517,52 +519,57 @@ public class TableModelAdapter<E> {
 		this.table.select(indices);
 	}
 
-	protected void selectedItemsAdded(CollectionChangeEvent event) {
+	protected void selectedItemsAdded(CollectionAddEvent event) {
 		if (this.table.isDisposed()) {
 			return;
 		}
-		int[] indices = new int[event.itemsSize()];
-		int i = 0;
-		for (Iterator<E> stream = this.items(event); stream.hasNext(); ) {
-			indices[i++] = this.indexOf(stream.next());
-		}
-		this.table.select(indices);
+		this.table.select(this.getIndices(event.getAddedItemsSize(), this.getAddedItems(event)));
 	}
 
-	protected void selectedItemsRemoved(CollectionChangeEvent event) {
+	protected void selectedItemsRemoved(CollectionRemoveEvent event) {
 		if (this.table.isDisposed()) {
 			return;
 		}
-		int[] indices = new int[event.itemsSize()];
-		int i = 0;
-		for (Iterator<E> stream = this.items(event); stream.hasNext(); ) {
-			indices[i++] = this.indexOf(stream.next());
-		}
-		this.table.deselect(indices);
+		this.table.deselect(this.getIndices(event.getRemovedItemsSize(), this.getRemovedItems(event)));
 	}
 
-	protected void selectedItemsCleared(CollectionChangeEvent event) {
+	protected int[] getIndices(int itemsSize, Iterable<E> items) {
+		int[] indices = new int[itemsSize];
+		int i = 0;
+		for (E item : items) {
+			indices[i++] = this.indexOf(item);
+		}
+		return indices;
+	}
+
+	protected void selectedItemsCleared(@SuppressWarnings("unused") CollectionChangeEvent event) {
 		if (this.table.isDisposed()) {
 			return;
 		}
 		this.table.deselectAll();
 	}
 
-	protected void selectedItemsChanged(CollectionChangeEvent event) {
+	protected void selectedItemsChanged(@SuppressWarnings("unused") CollectionChangeEvent event) {
 		this.synchronizeTableSelection();
 	}
 
-	// minimized unchecked code
+	// minimized scope of suppressed warnings
 	@SuppressWarnings("unchecked")
-	protected Iterator<E> items(CollectionChangeEvent event) {
-		return ((Iterator<E>) event.items());
+	protected Iterable<E> getAddedItems(CollectionAddEvent event) {
+		return (Iterable<E>) event.getAddedItems();
+	}
+
+	// minimized scope of suppressed warnings
+	@SuppressWarnings("unchecked")
+	protected Iterable<E> getRemovedItems(CollectionRemoveEvent event) {
+		return (Iterable<E>) event.getRemovedItems();
 	}
 
 
 	// ********** list box events **********
 
 	@SuppressWarnings("unchecked")
-	protected void tableSelectionChanged(SelectionEvent event) {
+	protected void tableSelectionChanged(@SuppressWarnings("unused") SelectionEvent event) {
 		if (this.selectionChangeListenerList.size() > 0) {
 			SelectionChangeEvent<E> scEvent = new SelectionChangeEvent(this, this.selectedItems());
 			for (SelectionChangeListener<E> selectionChangeListener : this.selectionChangeListenerList.getListeners()) {
@@ -584,7 +591,7 @@ public class TableModelAdapter<E> {
 	}
 
 	@SuppressWarnings("unchecked")
-	protected void tableDoubleClicked(SelectionEvent event) {
+	protected void tableDoubleClicked(@SuppressWarnings("unused") SelectionEvent event) {
 		if (this.table.isDisposed()) {
 			return;
 		}
@@ -601,7 +608,7 @@ public class TableModelAdapter<E> {
 
 	// ********** dispose **********
 
-	protected void tableDisposed(DisposeEvent event) {
+	protected void tableDisposed(@SuppressWarnings("unused") DisposeEvent event) {
 		// the table is not yet "disposed" when we receive this event
 		// so we can still remove our listeners
 		this.table.removeDisposeListener(this.tableDisposeListener);

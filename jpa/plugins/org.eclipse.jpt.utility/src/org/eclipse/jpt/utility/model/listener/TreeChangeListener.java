@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -29,6 +29,8 @@ public interface TreeChangeListener extends ChangeListener {
 	 * 
 	 * @param event A TreeChangeEvent describing the event source,
 	 * the tree that changed, and the path to the node that was added.
+	 * 
+	 * @see TreeChangeEvent#getPath()
 	 */
 	void nodeAdded(TreeChangeEvent event);
 
@@ -37,6 +39,8 @@ public interface TreeChangeListener extends ChangeListener {
 	 * 
 	 * @param event A TreeChangeEvent describing the event source,
 	 * the tree that changed, and the path to the node that was removed.
+	 * 
+	 * @see TreeChangeEvent#getPath()
 	 */
 	void nodeRemoved(TreeChangeEvent event);
 
@@ -58,5 +62,17 @@ public interface TreeChangeListener extends ChangeListener {
 	 * tree that changed.
 	 */
 	void treeChanged(TreeChangeEvent event);
+
+	/**
+	 * This method gets called when a node is changed in a bound tree.
+	 * The tree itself has not changed, but some significant aspect(s) of a
+	 * node contained by the tree has changed.
+	 * 
+	 * @param event A TreeChangeEvent describing the event source,
+	 * the tree that changed, and the path to the node that changed.
+	 * 
+	 * @see TreeChangeEvent#getPath()
+	 */
+//	void nodeChanged(TreeChangeEvent event);
 
 }

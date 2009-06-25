@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -23,6 +23,7 @@ import org.eclipse.jpt.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
+@SuppressWarnings("nls")
 public class ExtendedListValueModelWrapperTests extends TestCase {
 	private SimpleListValueModel<String> listHolder;
 	private ListValueModel<String> extendedListHolder;
@@ -214,14 +215,14 @@ public class ExtendedListValueModelWrapperTests extends TestCase {
 		this.eventType = null;
 		this.listHolder.addAll(0, this.buildList());
 		this.verifyEvent(ADD);
-		assertEquals(this.buildList(), CollectionTools.list(this.event.items()));
+		assertEquals(this.buildList(), CollectionTools.list(this.event.getItems()));
 
 		this.event = null;
 		this.eventType = null;
 		this.listHolder.set(0, "AA");
 		this.verifyEvent(REPLACE);
-		assertFalse(CollectionTools.contains(this.event.items(), "A"));
-		assertTrue(CollectionTools.contains(this.event.items(), "AA"));
+		assertFalse(CollectionTools.contains(this.event.getItems(), "A"));
+		assertTrue(CollectionTools.contains(this.event.getItems(), "AA"));
 	}
 
 	private ListChangeListener buildListener() {
@@ -262,7 +263,7 @@ public class ExtendedListValueModelWrapperTests extends TestCase {
 	private void verifyEvent(String type, int index, Object item) {
 		this.verifyEvent(type);
 		assertEquals(index, this.event.getIndex());
-		assertEquals(item, this.event.items().next());
+		assertEquals(item, this.event.getItems().iterator().next());
 	}
 
 	public void testHasListeners() {

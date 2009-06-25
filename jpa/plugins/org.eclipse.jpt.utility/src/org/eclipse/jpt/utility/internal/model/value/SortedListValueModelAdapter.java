@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,9 +13,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.Range;
-import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 
@@ -106,7 +107,7 @@ public class SortedListValueModelAdapter<E>
 	 * the list will need to be sorted after the item is added
 	 */
 	@Override
-	protected void itemsAdded(CollectionChangeEvent event) {
+	protected void itemsAdded(CollectionAddEvent event) {
 		// first add the items and notify our listeners...
 		super.itemsAdded(event);
 		// ...then sort the list

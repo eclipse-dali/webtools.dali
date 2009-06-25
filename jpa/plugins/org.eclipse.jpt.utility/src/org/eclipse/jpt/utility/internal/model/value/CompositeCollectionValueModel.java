@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,12 +14,15 @@ import java.util.Collection;
 import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.List;
+
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.NullList;
 import org.eclipse.jpt.utility.internal.Transformer;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
+import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
 import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
@@ -146,10 +149,10 @@ public class CompositeCollectionValueModel<E1, E2>
 
 	protected CollectionChangeListener buildComponentListener() {
 		return new CollectionChangeListener() {
-			public void itemsAdded(CollectionChangeEvent event) {
+			public void itemsAdded(CollectionAddEvent event) {
 				CompositeCollectionValueModel.this.componentItemsAdded(event);
 			}		
-			public void itemsRemoved(CollectionChangeEvent event) {
+			public void itemsRemoved(CollectionRemoveEvent event) {
 				CompositeCollectionValueModel.this.componentItemsRemoved(event);
 			}
 			public void collectionCleared(CollectionChangeEvent event) {
@@ -160,7 +163,7 @@ public class CompositeCollectionValueModel<E1, E2>
 			}
 			@Override
 			public String toString() {
-				return "component listener";
+				return "component listener"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -224,10 +227,10 @@ public class CompositeCollectionValueModel<E1, E2>
 	 * add their corresponding items to our cache.
 	 */
 	@Override
-	protected void itemsAdded(CollectionChangeEvent event) {
+	protected void itemsAdded(CollectionAddEvent event) {
 		ArrayList<E2> addedItems = new ArrayList<E2>();
-		for (Iterator<E1> stream = this.items(event); stream.hasNext(); ) {
-			this.addComponentSource(stream.next(), addedItems);
+		for (E1 item : this.getAddedItems(event)) {
+			this.addComponentSource(item, addedItems);
 		}
 		this.fireItemsAdded(VALUES, addedItems);
 	}
@@ -239,12 +242,12 @@ public class CompositeCollectionValueModel<E1, E2>
 	protected void addComponentSource(E1 source, List<E2> addedItems) {
 		CollectionValueModel<E2> componentCVM = this.transform(source);
 		if (this.componentCVMs.put(source, componentCVM) != null) {
-			throw new IllegalStateException("duplicate component: " + source);
+			throw new IllegalStateException("duplicate component: " + source); //$NON-NLS-1$
 		}
 		componentCVM.addCollectionChangeListener(VALUES, this.componentCVMListener);
 		ArrayList<E2> componentCollection = new ArrayList<E2>(componentCVM.size());
 		if (this.collections.put(componentCVM, componentCollection) != null) {
-			throw new IllegalStateException("duplicate collection: " + source);
+			throw new IllegalStateException("duplicate collection: " + source); //$NON-NLS-1$
 		}
 		this.addComponentItems(componentCVM, componentCollection);
 		addedItems.addAll(componentCollection);
@@ -266,10 +269,10 @@ public class CompositeCollectionValueModel<E1, E2>
 	 * remove their corresponding items from our cache.
 	 */
 	@Override
-	protected void itemsRemoved(CollectionChangeEvent event) {
+	protected void itemsRemoved(CollectionRemoveEvent event) {
 		ArrayList<E2> removedItems = new ArrayList<E2>();
-		for (Iterator<E1> stream = this.items(event); stream.hasNext(); ) {
-			this.removeComponentSource(stream.next(), removedItems);
+		for (E1 item : this.getRemovedItems(event)) {
+			this.removeComponentSource(item, removedItems);
 		}
 		this.fireItemsRemoved(VALUES, removedItems);
 	}
@@ -281,12 +284,12 @@ public class CompositeCollectionValueModel<E1, E2>
 	protected void removeComponentSource(E1 source, List<E2> removedItems) {
 		CollectionValueModel<E2> componentCVM = this.componentCVMs.remove(source);
 		if (componentCVM == null) {
-			throw new IllegalStateException("missing component: " + source);
+			throw new IllegalStateException("missing component: " + source); //$NON-NLS-1$
 		}
 		componentCVM.removeCollectionChangeListener(VALUES, this.componentCVMListener);
 		ArrayList<E2> componentCollection = this.collections.remove(componentCVM);
 		if (componentCollection == null) {
-			throw new IllegalStateException("missing collection: " + source);
+			throw new IllegalStateException("missing collection: " + source); //$NON-NLS-1$
 		}
 		removedItems.addAll(componentCollection);
 		this.removeComponentItems(componentCollection);
@@ -346,24 +349,24 @@ public class CompositeCollectionValueModel<E1, E2>
 	 * One of the component collections had items added;
 	 * synchronize our caches.
 	 */
-	protected void componentItemsAdded(CollectionChangeEvent event) {
-		int itemsSize = event.itemsSize();
+	protected void componentItemsAdded(CollectionAddEvent event) {
+		int itemsSize = event.getAddedItemsSize();
 		this.size += itemsSize;
 
 		ArrayList<E2> componentCollection = this.collections.get(this.componentCVM(event));
 		componentCollection.ensureCapacity(componentCollection.size() + itemsSize);
 
-		this.addItemsToCollection(this.componentItems(event), componentCollection, VALUES);
+		this.addItemsToCollection(this.getAddedComponentItems(event), componentCollection, VALUES);
 	}
 
 	/**
 	 * One of the component collections had items removed;
 	 * synchronize our caches.
 	 */
-	protected void componentItemsRemoved(CollectionChangeEvent event) {
-		this.size -= event.itemsSize();
+	protected void componentItemsRemoved(CollectionRemoveEvent event) {
+		this.size -= event.getRemovedItemsSize();
 		ArrayList<E2> componentCollection = this.collections.get(this.componentCVM(event));
-		this.removeItemsFromCollection(this.componentItems(event), componentCollection, VALUES);
+		this.removeItemsFromCollection(this.getRemovedComponentItems(event), componentCollection, VALUES);
 	}
 
 	/**
@@ -393,8 +396,14 @@ public class CompositeCollectionValueModel<E1, E2>
 
 	// minimize scope of suppressed warnings
 	@SuppressWarnings("unchecked")
-	protected Iterator<E2> componentItems(CollectionChangeEvent event) {
-		return (Iterator<E2>) event.items();
+	protected Iterable<E2> getAddedComponentItems(CollectionAddEvent event) {
+		return (Iterable<E2>) event.getAddedItems();
+	}
+
+	// minimize scope of suppressed warnings
+	@SuppressWarnings("unchecked")
+	protected Iterable<E2> getRemovedComponentItems(CollectionRemoveEvent event) {
+		return (Iterable<E2>) event.getRemovedItems();
 	}
 
 	// minimize scope of suppressed warnings

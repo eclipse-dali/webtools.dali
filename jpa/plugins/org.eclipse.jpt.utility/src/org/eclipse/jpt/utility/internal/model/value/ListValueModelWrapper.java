@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal.model.value;
 
-import java.util.ListIterator;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.ChangeSupport;
 import org.eclipse.jpt.utility.internal.model.SingleAspectChangeSupport;
@@ -78,7 +77,7 @@ public abstract class ListValueModelWrapper<E>
 			}
 			@Override
 			public String toString() {
-				return "list change listener";
+				return "list change listener"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -102,7 +101,7 @@ public abstract class ListValueModelWrapper<E>
 	 */
 	@Override
 	public synchronized void addListChangeListener(String listName, ListChangeListener listener) {
-		if (listName == ListValueModel.LIST_VALUES && this.hasNoListChangeListeners(ListValueModel.LIST_VALUES)) {
+		if (listName.equals(ListValueModel.LIST_VALUES) && this.hasNoListChangeListeners(ListValueModel.LIST_VALUES)) {
 			this.engageModel();
 		}
 		super.addListChangeListener(listName, listener);
@@ -125,7 +124,7 @@ public abstract class ListValueModelWrapper<E>
 	@Override
 	public synchronized void removeListChangeListener(String listName, ListChangeListener listener) {
 		super.removeListChangeListener(listName, listener);
-		if (listName == ListValueModel.LIST_VALUES && this.hasNoListChangeListeners(ListValueModel.LIST_VALUES)) {
+		if (listName.equals(ListValueModel.LIST_VALUES) && this.hasNoListChangeListeners(ListValueModel.LIST_VALUES)) {
 			this.disengageModel();
 		}
 	}
@@ -152,16 +151,16 @@ public abstract class ListValueModelWrapper<E>
 		sb.append(this.listHolder);
 	}
 
-	// minimize suppressed warnings
+	// minimized scope of suppressed warnings
 	@SuppressWarnings("unchecked")
-	protected ListIterator<E> items(ListChangeEvent event) {
-		return (ListIterator<E>) event.items();
+	protected Iterable<E> getItems(ListChangeEvent event) {
+		return (Iterable<E>) event.getItems();
 	}
 
-	// minimize suppressed warnings
+	// minimized scope of suppressed warnings
 	@SuppressWarnings("unchecked")
-	protected ListIterator<E> replacedItems(ListChangeEvent event) {
-		return (ListIterator<E>) event.replacedItems();
+	protected Iterable<E> getReplacedItems(ListChangeEvent event) {
+		return (Iterable<E>) event.getReplacedItems();
 	}
 
 

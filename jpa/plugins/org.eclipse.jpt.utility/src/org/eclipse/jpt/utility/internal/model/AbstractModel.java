@@ -16,7 +16,9 @@ import java.util.List;
 
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.model.Model;
+import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.model.event.StateChangeEvent;
@@ -28,7 +30,8 @@ import org.eclipse.jpt.utility.model.listener.StateChangeListener;
 import org.eclipse.jpt.utility.model.listener.TreeChangeListener;
 
 /**
- * Convenience implementation of Model protocol.
+ * Reasonable implementation of the <code>Model</code> protocol
+ * with numerous convenience methods.
  */
 public abstract class AbstractModel
 	implements Model, Serializable
@@ -234,7 +237,7 @@ public abstract class AbstractModel
 		return ! this.hasAnyCollectionChangeListeners();
 	}
 
-	protected final void fireItemsAdded(CollectionChangeEvent event) {
+	protected final void fireItemsAdded(CollectionAddEvent event) {
 		this.getChangeSupport().fireItemsAdded(event);
 	}
 
@@ -246,7 +249,7 @@ public abstract class AbstractModel
 		this.getChangeSupport().fireItemAdded(collectionName, addedItem);
 	}
 
-	protected final void fireItemsRemoved(CollectionChangeEvent event) {
+	protected final void fireItemsRemoved(CollectionRemoveEvent event) {
 		this.getChangeSupport().fireItemsRemoved(event);
 	}
 

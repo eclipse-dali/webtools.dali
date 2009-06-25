@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,10 +11,13 @@ package org.eclipse.jpt.utility.tests.internal.model.value;
 
 import java.util.Collection;
 import java.util.Iterator;
+
 import org.eclipse.jpt.utility.internal.Bag;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.HashBag;
+import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
 import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 
@@ -110,26 +113,28 @@ class CoordinatedBag<E> implements Bag<E>, CollectionChangeListener {
 
 	// ********** CollectionChangeListener implementation **********
 
-	public void itemsAdded(CollectionChangeEvent e) {
-		for (@SuppressWarnings("unchecked") Iterator<E> stream = (Iterator<E>) e.items(); stream.hasNext(); ) {
-			this.bag.add(stream.next());
+	@SuppressWarnings("unchecked")
+	public void itemsAdded(CollectionAddEvent event) {
+		for (E item : (Iterable<E>) event.getAddedItems()) {
+			this.bag.add(item);
 		}
 	}
 
-	public void itemsRemoved(CollectionChangeEvent e) {
-		for (@SuppressWarnings("unchecked") Iterator<E> stream = (Iterator<E>) e.items(); stream.hasNext(); ) {
-			this.bag.remove(stream.next());
+	@SuppressWarnings("unchecked")
+	public void itemsRemoved(CollectionRemoveEvent event) {
+		for (E item : (Iterable<E>) event.getRemovedItems()) {
+			this.bag.remove(item);
 		}
 	}
 
-	public void collectionCleared(CollectionChangeEvent e) {
+	public void collectionCleared(CollectionChangeEvent event) {
 		this.bag.clear();
 	}
 
 	@SuppressWarnings("unchecked")
-	public void collectionChanged(CollectionChangeEvent e) {
+	public void collectionChanged(CollectionChangeEvent event) {
 		this.bag.clear();
-		CollectionTools.addAll(this.bag, ((CollectionValueModel<E>) e.getSource()).iterator());
+		CollectionTools.addAll(this.bag, ((CollectionValueModel<E>) event.getSource()).iterator());
 	}
 
 

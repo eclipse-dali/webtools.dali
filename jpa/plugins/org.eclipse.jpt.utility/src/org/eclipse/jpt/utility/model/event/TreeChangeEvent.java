@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -31,7 +31,7 @@ public class TreeChangeEvent extends ChangeEvent {
 	private final String treeName;
 
     /**
-     * Path to the parent of the part of the tree that was changed.
+     * Path to the node that added, removed, or changed.
      * May be empty, if not known or if the entire tree changed.
      */
 	protected final Object[] path;
@@ -68,7 +68,7 @@ public class TreeChangeEvent extends ChangeEvent {
 	public TreeChangeEvent(Model source, String treeName) {
 		this(source, treeName, EMPTY_PATH);
 	}
-	
+
 
 	// ********** standard state **********
 
@@ -89,7 +89,7 @@ public class TreeChangeEvent extends ChangeEvent {
 	 * May be empty, if not known.
 	 */
 	public Object[] getPath() {
-		return this.path;
+		return (this.path.length == 0) ? this.path : this.path.clone();
 	}
 
 
@@ -101,8 +101,8 @@ public class TreeChangeEvent extends ChangeEvent {
 	}
 
 	/**
-	 * Return a copy of the event with the specified source
-	 * replacing the current source and the tree name.
+	 * Return a copy of the event with the specified source and tree name
+	 * replacing the current source and tree name.
 	 */
 	public TreeChangeEvent cloneWithSource(Model newSource, String newTreeName) {
 		return new TreeChangeEvent(newSource, newTreeName, this.path);

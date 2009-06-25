@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -23,6 +23,7 @@ import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.model.listener.ReflectiveChangeListener;
 
+@SuppressWarnings("nls")
 public class ReflectiveListChangeListenerTests extends TestCase {
 	
 	public ReflectiveListChangeListenerTests(String name) {
@@ -602,7 +603,7 @@ public class ReflectiveListChangeListenerTests extends TestCase {
 	}
 
 
-	private class TestModel extends AbstractModel {
+	class TestModel extends AbstractModel {
 		private List<String> strings = new ArrayList<String>();
 			public static final String STRINGS_LIST = "strings";
 		TestModel() {
@@ -636,7 +637,7 @@ public class ReflectiveListChangeListenerTests extends TestCase {
 		}
 	}
 
-	private class Target {
+	class Target {
 		TestModel testModel;
 		String listName;
 		String string;
@@ -680,7 +681,7 @@ public class ReflectiveListChangeListenerTests extends TestCase {
 			this.itemAddedSingleArgumentFlag = true;
 			assertSame(this.testModel, e.getSource());
 			assertEquals(this.listName, e.getListName());
-			assertEquals(this.string, e.items().next());
+			assertEquals(this.string, e.getItems().iterator().next());
 			assertEquals(this.index, e.getIndex());
 		}
 		void itemRemovedZeroArgument() {
@@ -690,7 +691,7 @@ public class ReflectiveListChangeListenerTests extends TestCase {
 			this.itemRemovedSingleArgumentFlag = true;
 			assertSame(this.testModel, e.getSource());
 			assertEquals(this.listName, e.getListName());
-			assertEquals(this.string, e.items().next());
+			assertEquals(this.string, e.getItems().iterator().next());
 			assertEquals(this.index, e.getIndex());
 		}
 		void itemReplacedZeroArgument() {
@@ -700,8 +701,8 @@ public class ReflectiveListChangeListenerTests extends TestCase {
 			this.itemReplacedSingleArgumentFlag = true;
 			assertSame(this.testModel, e.getSource());
 			assertEquals(this.listName, e.getListName());
-			assertEquals(this.string, e.items().next());
-			assertEquals(this.replacedString, e.replacedItems().next());
+			assertEquals(this.string, e.getItems().iterator().next());
+			assertEquals(this.replacedString, e.getReplacedItems().iterator().next());
 			assertEquals(this.index, e.getIndex());
 		}
 		void itemMovedZeroArgument() {
@@ -721,7 +722,7 @@ public class ReflectiveListChangeListenerTests extends TestCase {
 			this.listClearedSingleArgumentFlag = true;
 			assertSame(this.testModel, e.getSource());
 			assertEquals(this.listName, e.getListName());
-			assertFalse(e.items().hasNext());
+			assertFalse(e.getItems().iterator().hasNext());
 			assertEquals(this.index, e.getIndex());
 		}
 		void listClearedZeroArgument() {
@@ -731,11 +732,11 @@ public class ReflectiveListChangeListenerTests extends TestCase {
 			this.listChangedSingleArgumentFlag = true;
 			assertSame(this.testModel, e.getSource());
 			assertEquals(this.listName, e.getListName());
-			assertFalse(e.items().hasNext());
+			assertFalse(e.getItems().iterator().hasNext());
 			assertEquals(this.index, e.getIndex());
 		}
 		void listChangedDoubleArgument(ListChangeEvent e, Object o) {
-			fail("bogus event: " + e);
+			fail("bogus event: " + e + " - object: " + o);
 		}
 	}
 

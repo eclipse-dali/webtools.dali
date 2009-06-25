@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,16 +13,21 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+
 import junit.framework.TestCase;
+
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
+import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
 import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.model.listener.ReflectiveChangeListener;
 
+@SuppressWarnings("nls")
 public class ReflectiveCollectionChangeListenerTests extends TestCase {
 	
 	public ReflectiveCollectionChangeListenerTests(String name) {
@@ -311,7 +316,7 @@ public class ReflectiveCollectionChangeListenerTests extends TestCase {
 		Target target = new Target(testModel, TestModel.STRINGS_COLLECTION, string);
 		boolean exCaught = false;
 		try {
-			CollectionChangeListener listener = ReflectiveChangeListener.buildCollectionChangeListener(target, "collectionChangedDoubleArgument");
+			CollectionChangeListener listener = ReflectiveChangeListener.buildCollectionChangeListener(target, "collectionChangedDoubleArgument", "collectionChangedDoubleArgument", "collectionChangedDoubleArgument", "collectionChangedDoubleArgument");
 			fail("bogus listener: " + listener);
 		} catch (RuntimeException ex) {
 			if (ex.getCause().getClass() == NoSuchMethodException.class) {
@@ -328,7 +333,7 @@ public class ReflectiveCollectionChangeListenerTests extends TestCase {
 		Method method = ClassTools.method(target, "collectionChangedDoubleArgument", new Class[] {CollectionChangeEvent.class, Object.class});
 		boolean exCaught = false;
 		try {
-			CollectionChangeListener listener = ReflectiveChangeListener.buildCollectionChangeListener(target, method);
+			CollectionChangeListener listener = ReflectiveChangeListener.buildCollectionChangeListener(target, method, method, method, method);
 			fail("bogus listener: " + listener);
 		} catch (RuntimeException ex) {
 			if (ex.getMessage().equals(method.toString())) {
@@ -344,7 +349,7 @@ public class ReflectiveCollectionChangeListenerTests extends TestCase {
 		Target target = new Target(testModel, TestModel.STRINGS_COLLECTION, string);
 		// build a COLLECTION change listener and hack it so we
 		// can add it as a LIST change listener
-		Object listener = ReflectiveChangeListener.buildCollectionChangeListener(target, "itemAddedSingleArgument");
+		Object listener = ReflectiveChangeListener.buildCollectionChangeListener(target, "itemAddedSingleArgument", "itemRemovedSingleArgument", "collectionClearedSingleArgument", "collectionChangedSingleArgument");
 		testModel.addListChangeListener((ListChangeListener) listener);
 
 		boolean exCaught = false;
@@ -358,7 +363,7 @@ public class ReflectiveCollectionChangeListenerTests extends TestCase {
 	}
 
 
-	private class TestModel extends AbstractModel {
+	class TestModel extends AbstractModel {
 		private Collection<String> strings = new ArrayList<String>();
 			public static final String STRINGS_COLLECTION = "strings";
 		TestModel() {
@@ -391,7 +396,7 @@ public class ReflectiveCollectionChangeListenerTests extends TestCase {
 		}
 	}
 
-	private class Target {
+	class Target {
 		TestModel testModel;
 		String collectionName;
 		String string;
@@ -412,20 +417,20 @@ public class ReflectiveCollectionChangeListenerTests extends TestCase {
 		void itemAddedZeroArgument() {
 			this.itemAddedZeroArgumentFlag = true;
 		}
-		void itemAddedSingleArgument(CollectionChangeEvent e) {
+		void itemAddedSingleArgument(CollectionAddEvent e) {
 			this.itemAddedSingleArgumentFlag = true;
 			assertSame(this.testModel, e.getSource());
 			assertEquals(this.collectionName, e.getCollectionName());
-			assertEquals(this.string, e.items().next());
+			assertEquals(this.string, e.getAddedItems().iterator().next());
 		}
 		void itemRemovedZeroArgument() {
 			this.itemRemovedZeroArgumentFlag = true;
 		}
-		void itemRemovedSingleArgument(CollectionChangeEvent e) {
+		void itemRemovedSingleArgument(CollectionRemoveEvent e) {
 			this.itemRemovedSingleArgumentFlag = true;
 			assertSame(this.testModel, e.getSource());
 			assertEquals(this.collectionName, e.getCollectionName());
-			assertEquals(this.string, e.items().next());
+			assertEquals(this.string, e.getRemovedItems().iterator().next());
 		}
 		void collectionClearedZeroArgument() {
 			this.collectionClearedZeroArgumentFlag = true;
@@ -434,7 +439,6 @@ public class ReflectiveCollectionChangeListenerTests extends TestCase {
 			this.collectionClearedSingleArgumentFlag = true;
 			assertSame(this.testModel, e.getSource());
 			assertEquals(this.collectionName, e.getCollectionName());
-			assertFalse(e.items().hasNext());
 		}
 		void collectionChangedZeroArgument() {
 			this.collectionChangedZeroArgumentFlag = true;
@@ -443,10 +447,9 @@ public class ReflectiveCollectionChangeListenerTests extends TestCase {
 			this.collectionChangedSingleArgumentFlag = true;
 			assertSame(this.testModel, e.getSource());
 			assertEquals(this.collectionName, e.getCollectionName());
-			assertFalse(e.items().hasNext());
 		}
 		void collectionChangedDoubleArgument(CollectionChangeEvent e, Object o) {
-			fail("bogus event: " + e);
+			fail("bogus event: " + e + " object: " + o);
 		}
 	}
 

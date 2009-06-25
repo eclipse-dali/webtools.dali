@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -106,12 +106,12 @@ public abstract class ItemAspectListValueModelAdapter<E>
 	}
 
 	protected void engageAllItems() {
-		this.engageItems(this.listHolder.iterator());
+		this.engageItems(this.listHolder);
 	}
 
-	protected void engageItems(Iterator<? extends E> stream) {
-		while (stream.hasNext()) {
-			this.engageItem(stream.next());
+	protected void engageItems(Iterable<? extends E> items) {
+		for (E item : items) {
+			this.engageItem(item);
 		}
 	}
 
@@ -141,12 +141,12 @@ public abstract class ItemAspectListValueModelAdapter<E>
 	}
 
 	protected void disengageAllItems() {
-		this.disengageItems(this.listHolder.iterator());
+		this.disengageItems(this.listHolder);
 	}
 
-	protected void disengageItems(Iterator<? extends E> stream) {
-		while (stream.hasNext()) {
-			this.disengageItem(stream.next());
+	protected void disengageItems(Iterable<? extends E> items) {
+		for (E item : items) {
+			this.disengageItem(item);
 		}
 	}
 
@@ -155,7 +155,7 @@ public abstract class ItemAspectListValueModelAdapter<E>
 		Counter counter = this.counters.get(item);
 		if (counter == null) {
 			// something is wrong if this happens...  ~bjv
-			throw new IllegalStateException("missing counter: " + item);
+			throw new IllegalStateException("missing counter: " + item); //$NON-NLS-1$
 		}
 		if (counter.decrement() == 0) {
 			this.counters.remove(item);
@@ -179,7 +179,7 @@ public abstract class ItemAspectListValueModelAdapter<E>
 	protected void itemsAdded(ListChangeEvent event) {
 		// re-fire event with the wrapper as the source
 		this.fireItemsAdded(event.cloneWithSource(this, LIST_VALUES));
-		this.engageItems(this.items(event));
+		this.engageItems(this.getItems(event));
 	}
 
 	/**
@@ -188,7 +188,7 @@ public abstract class ItemAspectListValueModelAdapter<E>
 	 */
 	@Override
 	protected void itemsRemoved(ListChangeEvent event) {
-		this.disengageItems(this.items(event));
+		this.disengageItems(this.getItems(event));
 		// re-fire event with the wrapper as the source
 		this.fireItemsRemoved(event.cloneWithSource(this, LIST_VALUES));
 	}
@@ -200,10 +200,10 @@ public abstract class ItemAspectListValueModelAdapter<E>
 	 */
 	@Override
 	protected void itemsReplaced(ListChangeEvent event) {
-		this.disengageItems(this.replacedItems(event));
+		this.disengageItems(this.getReplacedItems(event));
 		// re-fire event with the wrapper as the source
 		this.fireItemsReplaced(event.cloneWithSource(this, LIST_VALUES));
-		this.engageItems(this.items(event));
+		this.engageItems(this.getItems(event));
 	}
 
 	/**
@@ -225,7 +225,7 @@ public abstract class ItemAspectListValueModelAdapter<E>
 		// we should only need to disengage each item once...
 		// make a copy to prevent a ConcurrentModificationException
 		Collection<E> keys = new ArrayList<E>(this.counters.keySet());
-		this.disengageItems(keys.iterator());
+		this.disengageItems(keys);
 		this.counters.clear();
 		// re-fire event with the wrapper as the source
 		this.fireListCleared(LIST_VALUES);
@@ -240,7 +240,7 @@ public abstract class ItemAspectListValueModelAdapter<E>
 		// we should only need to disengage each item once...
 		// make a copy to prevent a ConcurrentModificationException
 		Collection<E> keys = new ArrayList<E>(this.counters.keySet());
-		this.disengageItems(keys.iterator());
+		this.disengageItems(keys);
 		this.counters.clear();
 		// re-fire event with the wrapper as the source
 		this.fireListChanged(LIST_VALUES);

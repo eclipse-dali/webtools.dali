@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,16 +12,21 @@ package org.eclipse.jpt.utility.tests.internal.model.value;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+
 import junit.framework.TestCase;
+
 import org.eclipse.jpt.utility.internal.Bag;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.HashBag;
 import org.eclipse.jpt.utility.internal.model.value.SimpleCollectionValueModel;
+import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
 import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
+@SuppressWarnings("nls")
 public class SimpleCollectionValueModelTests extends TestCase {
 	private SimpleCollectionValueModel<String> bagHolder;
 	CollectionChangeEvent bagEvent;
@@ -282,7 +287,7 @@ public class SimpleCollectionValueModelTests extends TestCase {
 		this.bagEventType = null;
 		this.bagHolder.addAll(this.buildBag());
 		this.verifyBagEvent(ADD);
-		assertEquals(this.buildBag(), CollectionTools.bag(this.bagEvent.items()));
+		assertEquals(this.buildBag(), CollectionTools.bag(((CollectionAddEvent) this.bagEvent).getAddedItems()));
 	}
 
 	private void verifySetChange() {
@@ -344,11 +349,11 @@ public class SimpleCollectionValueModelTests extends TestCase {
 
 	private CollectionChangeListener buildBagListener() {
 		return new CollectionChangeListener() {
-			public void itemsAdded(CollectionChangeEvent e) {
+			public void itemsAdded(CollectionAddEvent e) {
 				SimpleCollectionValueModelTests.this.bagEventType = ADD;
 				SimpleCollectionValueModelTests.this.bagEvent = e;
 			}
-			public void itemsRemoved(CollectionChangeEvent e) {
+			public void itemsRemoved(CollectionRemoveEvent e) {
 				SimpleCollectionValueModelTests.this.bagEventType = REMOVE;
 				SimpleCollectionValueModelTests.this.bagEvent = e;
 			}
@@ -365,11 +370,11 @@ public class SimpleCollectionValueModelTests extends TestCase {
 
 	private CollectionChangeListener buildSetListener() {
 		return new CollectionChangeListener() {
-			public void itemsAdded(CollectionChangeEvent e) {
+			public void itemsAdded(CollectionAddEvent e) {
 				SimpleCollectionValueModelTests.this.setEventType = ADD;
 				SimpleCollectionValueModelTests.this.setEvent = e;
 			}
-			public void itemsRemoved(CollectionChangeEvent e) {
+			public void itemsRemoved(CollectionRemoveEvent e) {
 				SimpleCollectionValueModelTests.this.setEventType = REMOVE;
 				SimpleCollectionValueModelTests.this.setEvent = e;
 			}
@@ -392,7 +397,16 @@ public class SimpleCollectionValueModelTests extends TestCase {
 
 	private void verifyBagEvent(String eventType, Object item) {
 		this.verifyBagEvent(eventType);
-		assertEquals(item, this.bagEvent.items().next());
+		assertEquals(item, this.getBagEventItems().iterator().next());
+	}
+
+	private Iterable<?> getBagEventItems() {
+		if (this.bagEvent instanceof CollectionAddEvent) {
+			return ((CollectionAddEvent) this.bagEvent).getAddedItems();
+		} else if (this.bagEvent instanceof CollectionRemoveEvent) {
+			return ((CollectionRemoveEvent) this.bagEvent).getRemovedItems();
+		}
+		throw new IllegalStateException();
 	}
 
 	private void verifySetEvent(String eventType) {
@@ -403,7 +417,16 @@ public class SimpleCollectionValueModelTests extends TestCase {
 
 	private void verifySetEvent(String eventType, Object item) {
 		this.verifySetEvent(eventType);
-		assertEquals(item, this.setEvent.items().next());
+		assertEquals(item, this.getSetEventItems().iterator().next());
+	}
+
+	private Iterable<?> getSetEventItems() {
+		if (this.setEvent instanceof CollectionAddEvent) {
+			return ((CollectionAddEvent) this.setEvent).getAddedItems();
+		} else if (this.setEvent instanceof CollectionRemoveEvent) {
+			return ((CollectionRemoveEvent) this.setEvent).getRemovedItems();
+		}
+		throw new IllegalStateException();
 	}
 
 }

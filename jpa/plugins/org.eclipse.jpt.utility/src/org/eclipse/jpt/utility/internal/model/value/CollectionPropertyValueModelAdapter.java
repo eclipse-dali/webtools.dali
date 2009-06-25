@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal.model.value;
 
+import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
 import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 
@@ -55,10 +57,10 @@ public abstract class CollectionPropertyValueModelAdapter<T>
 
 	protected CollectionChangeListener buildCollectionChangeListener() {
 		return new CollectionChangeListener() {
-			public void itemsAdded(CollectionChangeEvent event) {
+			public void itemsAdded(CollectionAddEvent event) {
 				CollectionPropertyValueModelAdapter.this.itemsAdded(event);
 			}		
-			public void itemsRemoved(CollectionChangeEvent event) {
+			public void itemsRemoved(CollectionRemoveEvent event) {
 				CollectionPropertyValueModelAdapter.this.itemsRemoved(event);
 			}
 			public void collectionCleared(CollectionChangeEvent event) {
@@ -69,7 +71,7 @@ public abstract class CollectionPropertyValueModelAdapter<T>
 			}
 			@Override
 			public String toString() {
-				return "collection change listener";
+				return "collection change listener"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -105,7 +107,7 @@ public abstract class CollectionPropertyValueModelAdapter<T>
 	 * Items were added to the wrapped collection holder;
 	 * propagate the change notification appropriately.
 	 */
-	protected void itemsAdded(CollectionChangeEvent event) {
+	protected void itemsAdded(@SuppressWarnings("unused") CollectionChangeEvent event) {
 		// by default, simply recalculate the value and fire an event
 		this.propertyChanged();
 	}
@@ -114,7 +116,7 @@ public abstract class CollectionPropertyValueModelAdapter<T>
 	 * Items were removed from the wrapped collection holder;
 	 * propagate the change notification appropriately.
 	 */
-	protected void itemsRemoved(CollectionChangeEvent event) {
+	protected void itemsRemoved(@SuppressWarnings("unused") CollectionChangeEvent event) {
 		// by default, simply recalculate the value and fire an event
 		this.propertyChanged();
 	}
@@ -123,7 +125,7 @@ public abstract class CollectionPropertyValueModelAdapter<T>
 	 * The wrapped collection holder was cleared;
 	 * propagate the change notification appropriately.
 	 */
-	protected void collectionCleared(CollectionChangeEvent event) {
+	protected void collectionCleared(@SuppressWarnings("unused") CollectionChangeEvent event) {
 		// by default, simply recalculate the value and fire an event
 		this.propertyChanged();
 	}
@@ -132,7 +134,7 @@ public abstract class CollectionPropertyValueModelAdapter<T>
 	 * The value of the wrapped collection holder has changed;
 	 * propagate the change notification appropriately.
 	 */
-	protected void collectionChanged(CollectionChangeEvent event) {
+	protected void collectionChanged(@SuppressWarnings("unused") CollectionChangeEvent event) {
 		// by default, simply recalculate the value and fire an event
 		this.propertyChanged();
 	}

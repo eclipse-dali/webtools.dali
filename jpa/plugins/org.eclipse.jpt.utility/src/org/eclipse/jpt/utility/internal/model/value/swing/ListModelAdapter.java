@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -214,9 +214,9 @@ public class ListModelAdapter
 	 */
 	protected void itemsAdded(ListChangeEvent event) {
 		int start = event.getIndex();
-		int end = start + event.itemsSize() - 1;
+		int end = start + event.getItemsSize() - 1;
 		this.fireIntervalAdded(this, start, end);
-		this.listSize += event.itemsSize();
+		this.listSize += event.getItemsSize();
 	}
 
 	/**
@@ -225,9 +225,9 @@ public class ListModelAdapter
 	 */
 	protected void itemsRemoved(ListChangeEvent event) {
 		int start = event.getIndex();
-		int end = start + event.itemsSize() - 1;
+		int end = start + event.getItemsSize() - 1;
 		this.fireIntervalRemoved(this, start, end);
-		this.listSize -= event.itemsSize();
+		this.listSize -= event.getItemsSize();
 	}
 
 	/**
@@ -236,7 +236,7 @@ public class ListModelAdapter
 	 */
 	protected void itemsReplaced(ListChangeEvent event) {
 		int start = event.getIndex();
-		int end = start + event.itemsSize() - 1;
+		int end = start + event.getItemsSize() - 1;
 		this.fireContentsChanged(this, start, end);
 	}
 

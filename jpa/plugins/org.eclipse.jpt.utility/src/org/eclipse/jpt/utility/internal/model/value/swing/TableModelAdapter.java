@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -122,13 +122,13 @@ public class TableModelAdapter<E>
 	protected ListChangeListener buildListChangeListener_() {
 		return new ListChangeListener() {
 			public void itemsAdded(ListChangeEvent event) {
-				TableModelAdapter.this.addRows(event.getIndex(), event.itemsSize(), this.items(event));
+				TableModelAdapter.this.addRows(event.getIndex(), event.getItemsSize(), this.getItems(event));
 			}
 			public void itemsRemoved(ListChangeEvent event) {
-				TableModelAdapter.this.removeRows(event.getIndex(), event.itemsSize());
+				TableModelAdapter.this.removeRows(event.getIndex(), event.getItemsSize());
 			}
 			public void itemsReplaced(ListChangeEvent event) {
-				TableModelAdapter.this.replaceRows(event.getIndex(), this.items(event));
+				TableModelAdapter.this.replaceRows(event.getIndex(), this.getItems(event));
 			}
 			public void itemsMoved(ListChangeEvent event) {
 				TableModelAdapter.this.moveRows(event.getTargetIndex(), event.getSourceIndex(), event.getMoveLength());
@@ -139,16 +139,14 @@ public class TableModelAdapter<E>
 			public void listChanged(ListChangeEvent event) {
 				TableModelAdapter.this.rebuildTable();
 			}
-			/**
-			 * minimize scope of suppressed warnings
-			 */
+			// minimized scope of suppressed warnings
 			@SuppressWarnings("unchecked")
-			protected Iterator<Object> items(ListChangeEvent event) {
-				return (Iterator<Object>) event.items();
+			protected Iterable<Object> getItems(ListChangeEvent event) {
+				return (Iterable<Object>) event.getItems();
 			}
 			@Override
 			public String toString() {
-				return "list listener";
+				return "list listener"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -166,7 +164,7 @@ public class TableModelAdapter<E>
 			}
 			@Override
 			public String toString() {
-				return "cell listener";
+				return "cell listener"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -353,10 +351,10 @@ public class TableModelAdapter<E>
 	/**
 	 * convert the items to rows
 	 */
-	void addRows(int index, int size, Iterator<Object> items) {
+	void addRows(int index, int size, Iterable<Object> items) {
 		List<WritablePropertyValueModel<Object>[]> newRows = new ArrayList<WritablePropertyValueModel<Object>[]>(size);
-		while (items.hasNext()) {
-			WritablePropertyValueModel<Object>[] row = this.columnAdapter.cellModels(items.next());
+		for (Object item : items) {
+			WritablePropertyValueModel<Object>[] row = this.columnAdapter.cellModels(item);
 			this.engageRow(row);
 			newRows.add(row);
 		}
@@ -371,12 +369,12 @@ public class TableModelAdapter<E>
 		this.fireTableRowsDeleted(index, index + size - 1);
 	}
 
-	void replaceRows(int index, Iterator<Object> items) {
+	void replaceRows(int index, Iterable<Object> items) {
 		int i = index;
-		while (items.hasNext()) {
+		for (Object item : items) {
 			WritablePropertyValueModel<Object>[] row = this.rows.get(i);
 			this.disengageRow(row);
-			row = this.columnAdapter.cellModels(items.next());
+			row = this.columnAdapter.cellModels(item);
 			this.engageRow(row);
 			this.rows.set(i, row);
 			i++;

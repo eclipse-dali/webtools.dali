@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.model.listener;
 
+import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
 
 /**
  * A "collection change" event gets fired whenever a model changes a "bound"
@@ -27,18 +29,18 @@ public interface CollectionChangeListener extends ChangeListener {
 	/**
 	 * This method gets called when items are added to a bound collection.
 	 * 
-	 * @param event A CollectionChangeEvent describing the event source,
+	 * @param event A CollectionAddEvent describing the event source,
 	 * the collection that changed, and the items that were added.
 	 */
-	void itemsAdded(CollectionChangeEvent event);
+	void itemsAdded(CollectionAddEvent event);
 
 	/**
 	 * This method gets called when items are removed from a bound collection.
 	 * 
-	 * @param event A CollectionChangeEvent describing the event source,
+	 * @param event A CollectionRemoveEvent describing the event source,
 	 * the collection that changed, and the items that were removed.
 	 */
-	void itemsRemoved(CollectionChangeEvent event);
+	void itemsRemoved(CollectionRemoveEvent event);
 
 	/**
 	 * This method gets called when a bound collection is cleared.
@@ -56,5 +58,16 @@ public interface CollectionChangeListener extends ChangeListener {
 	 * and the collection that changed.
 	 */
 	void collectionChanged(CollectionChangeEvent event);
+
+	/**
+	 * This method gets called when the items in a bound collection are changed.
+	 * The collection itself has not changed, but some significant aspect(s) of the
+	 * objects contained by the collection has changed.
+	 * 
+	 * @param event A CollectionItemChangeEvent describing the event source,
+	 * the collection whose items have changed, and the items that changed.
+	 */
+//	void itemsChanged(CollectionChangeEvent event);
+//	void itemsReplaced(CollectionChangeEvent event);???
 
 }

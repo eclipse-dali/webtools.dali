@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -25,6 +25,7 @@ import org.eclipse.jpt.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
+@SuppressWarnings("nls")
 public class TransformationListValueModelAdapterTests extends TestCase {
 	private SimpleListValueModel<String> listHolder;
 	private ListValueModel<String> transformedListHolder;
@@ -217,14 +218,14 @@ public class TransformationListValueModelAdapterTests extends TestCase {
 		this.eventType = null;
 		this.listHolder.addAll(0, this.buildList());
 		this.verifyEvent(ADD);
-		assertEquals(this.buildTransformedList(), CollectionTools.list(this.event.items()));
+		assertEquals(this.buildTransformedList(), CollectionTools.list(this.event.getItems()));
 
 		this.event = null;
 		this.eventType = null;
 		this.listHolder.set(0, "joo");
 		this.verifyEvent(REPLACE);
-		assertFalse(CollectionTools.contains(this.event.items(), "FOO"));
-		assertTrue(CollectionTools.contains(this.event.items(), "JOO"));
+		assertFalse(CollectionTools.contains(this.event.getItems(), "FOO"));
+		assertTrue(CollectionTools.contains(this.event.getItems(), "JOO"));
 	}
 
 	private ListChangeListener buildListener() {
@@ -265,7 +266,7 @@ public class TransformationListValueModelAdapterTests extends TestCase {
 	private void verifyEvent(String type, int index, Object item) {
 		this.verifyEvent(type);
 		assertEquals(index, this.event.getIndex());
-		assertEquals(item, this.event.items().next());
+		assertEquals(item, this.event.getItems().iterator().next());
 	}
 
 	public void testHasListeners() {

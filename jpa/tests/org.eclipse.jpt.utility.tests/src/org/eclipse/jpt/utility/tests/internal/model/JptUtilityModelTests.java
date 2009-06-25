@@ -24,6 +24,7 @@ public class JptUtilityModelTests {
 
 		suite.addTestSuite(ChangeSupportTests.class);
 		suite.addTestSuite(NewEventTests.class);
+		suite.addTestSuite(SingleAspectChangeSupportTests.class);
 
 		return suite;
 	}

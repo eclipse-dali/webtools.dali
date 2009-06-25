@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,19 +9,20 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.tests.internal.model.value.prefs;
 
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.prefs.NodeChangeEvent;
 import java.util.prefs.NodeChangeListener;
 import java.util.prefs.PreferenceChangeListener;
 import java.util.prefs.Preferences;
+
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.prefs.PreferencePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.prefs.PreferencesCollectionValueModel;
+import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
@@ -29,6 +30,7 @@ import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 
+@SuppressWarnings("nls")
 public class PreferencesCollectionValueModelTests extends PreferencesTestCase {
 	private Map<String, String> expectedValues;
 	private WritablePropertyValueModel<Preferences> nodeHolder;
@@ -72,10 +74,10 @@ public class PreferencesCollectionValueModelTests extends PreferencesTestCase {
 			public void collectionCleared(CollectionChangeEvent e) {
 				this.logEvent(e);
 			}
-			public void itemsAdded(CollectionChangeEvent e) {
+			public void itemsAdded(CollectionAddEvent e) {
 				this.logEvent(e);
 			}
-			public void itemsRemoved(CollectionChangeEvent e) {
+			public void itemsRemoved(CollectionRemoveEvent e) {
 				this.logEvent(e);
 			}
 			private void logEvent(CollectionChangeEvent e) {
@@ -113,18 +115,18 @@ public class PreferencesCollectionValueModelTests extends PreferencesTestCase {
 
 		this.nodeHolder.setValue(anotherNode);
 		// collectionChanged does not pass any items in the this.event
-		this.verifyEvent(Collections.<String, String>emptyMap());
+		this.verifyEvent();
 		this.verifyAdapter(this.preferencesAdapter);
 		
 		this.event = null;
 		this.expectedValues.clear();
 		this.nodeHolder.setValue(null);
-		this.verifyEvent(this.expectedValues);
+		this.verifyEvent();
 		assertFalse(this.preferencesAdapter.iterator().hasNext());
 		
 		this.event = null;
 		this.nodeHolder.setValue(this.testNode);
-		this.verifyEvent(Collections.<String, String>emptyMap());
+		this.verifyEvent();
 		this.expectedValues.clear();
 		this.expectedValues.put(KEY_NAME_1, STRING_VALUE_1);
 		this.expectedValues.put(KEY_NAME_2, STRING_VALUE_2);
@@ -157,9 +159,9 @@ public class PreferencesCollectionValueModelTests extends PreferencesTestCase {
 		assertNotNull(this.event);
 		assertEquals(this.preferencesAdapter, this.event.getSource());
 		assertEquals(CollectionValueModel.VALUES, this.event.getCollectionName());
-		assertEquals(1, this.event.itemsSize());
+		assertEquals(1, ((CollectionRemoveEvent) this.event).getRemovedItemsSize());
 		@SuppressWarnings("unchecked")
-		String key = ((PreferencePropertyValueModel<String>) this.event.items().next()).getKey();
+		String key = ((PreferencePropertyValueModel<String>) ((CollectionRemoveEvent) this.event).getRemovedItems().iterator().next()).getKey();
 		assertEquals(KEY_NAME_2, key);
 
 		this.expectedValues.remove(KEY_NAME_2);
@@ -237,13 +239,17 @@ public class PreferencesCollectionValueModelTests extends PreferencesTestCase {
 	}
 
 	private void verifyEvent(Map<String, String> items) {
+		this.verifyEvent();
+		assertEquals(items.size(), ((CollectionAddEvent) this.event).getAddedItemsSize());
+		@SuppressWarnings("unchecked")
+		Iterable<PreferencePropertyValueModel<String>> eventItems = (Iterable<PreferencePropertyValueModel<String>>) ((CollectionAddEvent) this.event).getAddedItems();
+		this.verifyItems(items, eventItems);
+	}
+
+	private void verifyEvent() {
 		assertNotNull(this.event);
 		assertEquals(this.preferencesAdapter, this.event.getSource());
 		assertEquals(CollectionValueModel.VALUES, this.event.getCollectionName());
-		assertEquals(items.size(), this.event.itemsSize());
-		@SuppressWarnings("unchecked")
-		Iterator<PreferencePropertyValueModel<String>> eventItems = (Iterator<PreferencePropertyValueModel<String>>) this.event.items();
-		this.verifyItems(items, eventItems);
 	}
 
 	private void verifyNode(Preferences node) throws Exception {
@@ -256,12 +262,11 @@ public class PreferencesCollectionValueModelTests extends PreferencesTestCase {
 
 	private void verifyAdapter(PreferencesCollectionValueModel<String> cvm) {
 		assertEquals(this.expectedValues.size(), cvm.size());
-		this.verifyItems(this.expectedValues, cvm.iterator());
+		this.verifyItems(this.expectedValues, cvm);
 	}
 
-	private void verifyItems(Map<String, String> expected, Iterator<PreferencePropertyValueModel<String>> stream) {
-		while (stream.hasNext()) {
-			PreferencePropertyValueModel<String> model = stream.next();
+	private void verifyItems(Map<String, String> expected, Iterable<PreferencePropertyValueModel<String>> actual) {
+		for (PreferencePropertyValueModel<String> model : actual) {
 			model.addPropertyChangeListener(PropertyValueModel.VALUE, this.itemListener);
 			assertEquals(expected.get(model.getKey()), model.getValue());
 			model.removePropertyChangeListener(PropertyValueModel.VALUE, this.itemListener);

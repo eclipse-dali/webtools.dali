@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,15 +9,15 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.model.event;
 
+import java.util.Collection;
+import java.util.Collections;
+
 import org.eclipse.jpt.utility.model.Model;
-// TODO add "item/original/nested event" for item changed?
+
 /**
- * A "collection change" event gets delivered whenever a model changes a "bound"
- * or "constrained" collection. A CollectionChangeEvent is sent as an
+ * A "collection add" event gets delivered whenever a model adds items to a
+ * "bound" or "constrained" collection. A CollectionAddEvent is sent as an
  * argument to the CollectionChangeListener.
- * 
- * Normally a CollectionChangeEvent is accompanied by the collection name and
- * the items that were added to or removed from the changed collection.
  * 
  * Design options:
  * - create a collection to wrap a single added or removed item
@@ -39,10 +39,10 @@ import org.eclipse.jpt.utility.model.Model;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public class CollectionChangeEvent extends ChangeEvent {
+public class CollectionAddEvent extends CollectionChangeEvent {
 
-	/** Name of the collection that changed. */
-	final String collectionName;
+	/** The items added to the collection. */
+	private final Collection<?> addedItems;
 
 	private static final long serialVersionUID = 1L;
 
@@ -50,32 +50,35 @@ public class CollectionChangeEvent extends ChangeEvent {
 	// ********** constructors **********
 
 	/**
-	 * Construct a new collection change event.
+	 * Construct a new collection add event.
 	 *
 	 * @param source The object on which the event initially occurred.
 	 * @param collectionName The programmatic name of the collection that was changed.
+	 * @param items The items added to the collection.
 	 */
-	public CollectionChangeEvent(Model source, String collectionName) {
-		super(source);
-		if (collectionName == null) {
+	public CollectionAddEvent(Model source, String collectionName, Collection<?> addedItems) {
+		super(source, collectionName);
+		if (addedItems == null) {
 			throw new NullPointerException();
 		}
-		this.collectionName = collectionName;
+		this.addedItems = Collections.unmodifiableCollection(addedItems);
 	}
 
 
 	// ********** standard state **********
 
 	/**
-	 * Return the programmatic name of the collection that was changed.
+	 * Return the items added to the collection.
 	 */
-	public String getCollectionName() {
-		return this.collectionName;
+	public Iterable<?> getAddedItems() {
+		return this.addedItems;
 	}
 
-	@Override
-	public String getAspectName() {
-		return this.collectionName;
+	/**
+	 * Return the number of items added to the collection.
+	 */
+	public int getAddedItemsSize() {
+		return this.addedItems.size();
 	}
 
 
@@ -86,7 +89,7 @@ public class CollectionChangeEvent extends ChangeEvent {
 	 * replacing the current source.
 	 */
 	@Override
-	public CollectionChangeEvent cloneWithSource(Model newSource) {
+	public CollectionAddEvent cloneWithSource(Model newSource) {
 		return this.cloneWithSource(newSource, this.collectionName);
 	}
 
@@ -94,8 +97,9 @@ public class CollectionChangeEvent extends ChangeEvent {
 	 * Return a copy of the event with the specified source and collection name
 	 * replacing the current source and collection name.
 	 */
-	public CollectionChangeEvent cloneWithSource(Model newSource, String newCollectionName) {
-		return new CollectionChangeEvent(newSource, newCollectionName);
+	@Override
+	public CollectionAddEvent cloneWithSource(Model newSource, String newCollectionName) {
+		return new CollectionAddEvent(newSource, newCollectionName, this.addedItems);
 	}
 
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,7 @@ package org.eclipse.jpt.utility.model.event;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.ListIterator;
+
 import org.eclipse.jpt.utility.model.Model;
 
 /**
@@ -93,6 +93,12 @@ public class ListChangeEvent extends ChangeEvent {
 		if ((listName == null) || (items == null) || (replacedItems == null)) {
 			throw new NullPointerException();
 		}
+		if ( ! replacedItems.isEmpty()) {
+			if (replacedItems.size() != items.size()) {
+				throw new IllegalArgumentException("sizes must match - items size: " + items.size() //$NON-NLS-1$
+						+ " replaced items size: " + replacedItems.size()); //$NON-NLS-1$
+			}
+		}
 		this.listName = listName;
 		this.index = index;
 		this.items = Collections.unmodifiableList(items);
@@ -115,8 +121,9 @@ public class ListChangeEvent extends ChangeEvent {
 	}
 
 	/**
-	 * Construct a new list change event for a list of added or removed items.
-	 *
+	 * Construct a new list change event for a list of added, removed, or
+	 * changed items.
+	 * 
 	 * @param source The object on which the event initially occurred.
 	 * @param listName The programmatic name of the list that was changed.
 	 * @param index The index at which the items were added to or removed from the list.
@@ -174,13 +181,13 @@ public class ListChangeEvent extends ChangeEvent {
 	}
 
 	/**
-	 * Return a list iterator on the items that were added to or
+	 * Return the items that were added to or
 	 * removed from the list. In the case of "replaced" items, these
 	 * are the new items in the list.
 	 * May be empty if inappropriate or unknown.
 	 */
-	public ListIterator<?> items() {
-		return this.items.listIterator();
+	public Iterable<?> getItems() {
+		return this.items;
 	}
 
 	/**
@@ -188,7 +195,7 @@ public class ListChangeEvent extends ChangeEvent {
 	 * removed from, or replaced in the list.
 	 * May be 0 if inappropriate or unknown.
 	 */
-	public int itemsSize() {
+	public int getItemsSize() {
 		return this.items.size();
 	}
 
@@ -199,8 +206,17 @@ public class ListChangeEvent extends ChangeEvent {
 	 * Return a list iterator on the items in the list that were replaced.
 	 * May be empty if inappropriate or unknown.
 	 */
-	public ListIterator<?> replacedItems() {
-		return this.replacedItems.listIterator();
+	public Iterable<?> getReplacedItems() {
+		return this.replacedItems;
+	}
+
+	/**
+	 * Return the number of items that were replaced in the list.
+	 * The size of replaced items is the same as the size of items.
+	 * May be 0 if inappropriate or unknown.
+	 */
+	public int getReplacedItemsSize() {
+		return this.replacedItems.size();
 	}
 
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -96,7 +96,7 @@ public abstract class AspectAdapter<S>
 			}
 			@Override
 			public String toString() {
-				return "subject change listener";
+				return "subject change listener"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -226,12 +226,12 @@ public abstract class AspectAdapter<S>
 
 		protected boolean hasNoRelevantListeners(Class<? extends ChangeListener> lClass) {
 			return this.listenerIsRelevant(lClass)
-						&& this.hasNoListeners(lClass);
+						&& this.hasNoListeners(lClass, this.aspectName);  // tack on the aspect name
 		}
 
 		protected boolean listenerIsRelevant(Class<? extends ChangeListener> lClass, String listenerAspectName) {
 			return this.listenerIsRelevant(lClass)
-						&& (listenerAspectName == AspectAdapter.this.getListenerAspectName());
+						&& (listenerAspectName.equals(AspectAdapter.this.getListenerAspectName()));
 		}
 
 		protected boolean hasNoRelevantListeners(Class<? extends ChangeListener> lClass, String listenerAspectName) {
@@ -243,7 +243,7 @@ public abstract class AspectAdapter<S>
 		// ********** overrides **********
 
 		@Override
-		protected <T extends ChangeListener> void addListener(Class<T> lClass, T listener) {
+		protected synchronized <T extends ChangeListener> void addListener(Class<T> lClass, T listener) {
 			if (this.hasNoRelevantListeners(lClass)) {
 				AspectAdapter.this.engageModels();
 			}
@@ -251,7 +251,7 @@ public abstract class AspectAdapter<S>
 		}
 
 		@Override
-		protected <T extends ChangeListener> void addListener(String listenerAspectName, Class<T> lClass, T listener) {
+		protected synchronized <T extends ChangeListener> void addListener(String listenerAspectName, Class<T> lClass, T listener) {
 			if (this.hasNoRelevantListeners(lClass, listenerAspectName)) {
 				AspectAdapter.this.engageModels();
 			}
@@ -259,7 +259,7 @@ public abstract class AspectAdapter<S>
 		}
 
 		@Override
-		protected <T extends ChangeListener> void removeListener(Class<T> lClass, T listener) {
+		protected synchronized <T extends ChangeListener> void removeListener(Class<T> lClass, T listener) {
 			super.removeListener(lClass, listener);
 			if (this.hasNoRelevantListeners(lClass)) {
 				AspectAdapter.this.disengageModels();

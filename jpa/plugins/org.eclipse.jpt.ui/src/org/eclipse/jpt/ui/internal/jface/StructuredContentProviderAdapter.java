@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.jface;
 
-import java.util.ListIterator;
 import org.eclipse.jface.viewers.AbstractListViewer;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
@@ -190,8 +189,8 @@ public class StructuredContentProviderAdapter
 	 */
 	protected void itemsAdded(ListChangeEvent e) {
 		int i = e.getIndex();
-		for (@SuppressWarnings("unchecked") ListIterator stream = e.items(); stream.hasNext(); i++) {
-			this.listViewer.insert(stream.next(), i);
+		for (Object item : e.getItems()) {
+			this.listViewer.insert(item, i++);
 		}
 	}
 
@@ -200,7 +199,7 @@ public class StructuredContentProviderAdapter
 	 * Synchronize the list viewer.
 	 */
 	protected void itemsRemoved(ListChangeEvent e) {
-		this.listViewer.remove(CollectionTools.array(e.items(), e.itemsSize()));
+		this.listViewer.remove(CollectionTools.array(e.getItems(), e.getItemsSize()));
 	}
 
 	/**
@@ -208,10 +207,10 @@ public class StructuredContentProviderAdapter
 	 * Synchronize the list viewer.
 	 */
 	protected void itemsReplaced(ListChangeEvent e) {
-		this.listViewer.remove(CollectionTools.array(e.replacedItems(), e.itemsSize()));
+		this.listViewer.remove(CollectionTools.array(e.getReplacedItems(), e.getItemsSize()));
 		int i = e.getIndex();
-		for (@SuppressWarnings("unchecked") ListIterator stream = e.items(); stream.hasNext(); i++) {
-			this.listViewer.insert(stream.next(), i);
+		for (Object item : e.getItems()) {
+			this.listViewer.insert(item, i++);
 		}
 	}
 

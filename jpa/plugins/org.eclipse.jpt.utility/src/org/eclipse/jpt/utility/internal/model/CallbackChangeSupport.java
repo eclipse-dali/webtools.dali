@@ -26,18 +26,17 @@ import org.eclipse.jpt.utility.model.Model;
 public class CallbackChangeSupport
 	extends ChangeSupport
 {
-	protected final ListenerList<Listener> listenerList;
+	protected final ListenerList<Listener> listenerList = new ListenerList<Listener>(Listener.class);
 	private static final long serialVersionUID = 1L;
 
 
 	public CallbackChangeSupport(Model source, Listener listener) {
 		this(source);
-		this.listenerList.add(listener);
+		this.addListener(listener);
 	}
 
 	public CallbackChangeSupport(Model source) {
 		super(source);
-		this.listenerList = new ListenerList<Listener>(Listener.class);
 	}
 
 	@Override

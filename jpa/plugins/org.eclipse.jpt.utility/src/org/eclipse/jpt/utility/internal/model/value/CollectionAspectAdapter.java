@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,10 +12,13 @@ package org.eclipse.jpt.utility.internal.model.value;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
+
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.model.Model;
+import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
 import org.eclipse.jpt.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;
@@ -110,10 +113,10 @@ public abstract class CollectionAspectAdapter<S extends Model, E>
 	protected CollectionChangeListener buildCollectionChangeListener() {
 		// transform the subject's collection change events into VALUE collection change events
 		return new CollectionChangeListener() {
-			public void itemsAdded(CollectionChangeEvent event) {
+			public void itemsAdded(CollectionAddEvent event) {
 				CollectionAspectAdapter.this.itemsAdded(event);
 			}
-			public void itemsRemoved(CollectionChangeEvent event) {
+			public void itemsRemoved(CollectionRemoveEvent event) {
 				CollectionAspectAdapter.this.itemsRemoved(event);
 			}
 			public void collectionCleared(CollectionChangeEvent event) {
@@ -124,7 +127,7 @@ public abstract class CollectionAspectAdapter<S extends Model, E>
 			}
 			@Override
 			public String toString() {
-				return "collection change listener: " + Arrays.asList(CollectionAspectAdapter.this.collectionNames);
+				return "collection change listener: " + Arrays.asList(CollectionAspectAdapter.this.collectionNames); //$NON-NLS-1$
 			}
 		};
 	}
@@ -210,7 +213,7 @@ public abstract class CollectionAspectAdapter<S extends Model, E>
 	public void toString(StringBuilder sb) {
 		for (int i = 0; i < this.collectionNames.length; i++) {
 			if (i != 0) {
-				sb.append(", ");
+				sb.append(", "); //$NON-NLS-1$
 			}
 			sb.append(this.collectionNames[i]);
 		}
@@ -219,19 +222,19 @@ public abstract class CollectionAspectAdapter<S extends Model, E>
 
 	// ********** behavior **********
 
-	protected void itemsAdded(CollectionChangeEvent event) {
+	protected void itemsAdded(CollectionAddEvent event) {
 		this.fireItemsAdded(event.cloneWithSource(this, VALUES));
 	}
 
-	protected void itemsRemoved(CollectionChangeEvent event) {
+	protected void itemsRemoved(CollectionRemoveEvent event) {
 		this.fireItemsRemoved(event.cloneWithSource(this, VALUES));
 	}
 
-	protected void collectionCleared(CollectionChangeEvent event) {
+	protected void collectionCleared(@SuppressWarnings("unused") CollectionChangeEvent event) {
 		this.fireCollectionCleared(VALUES);  // nothing from original event to forward
 	}
 
-	protected void collectionChanged(CollectionChangeEvent event) {
+	protected void collectionChanged(@SuppressWarnings("unused") CollectionChangeEvent event) {
 		this.fireCollectionChanged(VALUES);  // nothing from original event to forward
 	}
 
