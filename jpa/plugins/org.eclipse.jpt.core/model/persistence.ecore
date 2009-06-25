@@ -35,15 +35,18 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlMappingFileRef">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="fileName" ordered="false"
-        unique="false" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+        unique="false" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"
+        defaultValueLiteral=""/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlJarFileRef">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="fileName" ordered="false"
-        unique="false" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+        unique="false" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"
+        defaultValueLiteral=""/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlJavaClassRef">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="javaClass" ordered="false"
-        unique="false" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+        unique="false" eType="ecore:EDataType platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#//EString"
+        defaultValueLiteral=""/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlProperties">
     <eStructuralFeatures xsi:type="ecore:EReference" name="properties" upperBound="-1"
