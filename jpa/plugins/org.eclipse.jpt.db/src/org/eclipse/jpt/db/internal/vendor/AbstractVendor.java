@@ -55,27 +55,27 @@ abstract class AbstractVendor
 	/**
 	 * Typically, the name of the default catalog is the user name.
 	 */
-	public List<String> getDefaultCatalogIdentifiers(Database database, String userName) {
+	public final List<String> getDefaultCatalogIdentifiers(Database database, String userName) {
 		ArrayList<String> identifiers = new ArrayList<String>();
 		this.addDefaultCatalogIdentifiersTo(database, userName, identifiers);
 		return identifiers;
 	}
 
 	void addDefaultCatalogIdentifiersTo(@SuppressWarnings("unused") Database database, String userName, ArrayList<String> identifiers) {
-		identifiers.add(userName);
+		identifiers.add(this.convertNameToIdentifier(userName));
 	}
 
 	/**
 	 * Typically, the name of the default schema is the user name.
 	 */
-	public List<String> getDefaultSchemaIdentifiers(Database database, String userName) {
+	public final List<String> getDefaultSchemaIdentifiers(Database database, String userName) {
 		ArrayList<String> identifiers = new ArrayList<String>();
 		this.addDefaultSchemaIdentifiersTo(database, userName, identifiers);
 		return identifiers;
 	}
 
 	void addDefaultSchemaIdentifiersTo(@SuppressWarnings("unused") Database database, String userName, ArrayList<String> identifiers) {
-		identifiers.add(userName);
+		identifiers.add(this.convertNameToIdentifier(userName));
 	}
 
 

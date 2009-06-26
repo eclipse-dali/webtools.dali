@@ -63,20 +63,28 @@ class PostgreSQL
 	 */
 	@Override
 	void addDefaultCatalogIdentifiersTo(Database database, String userName, ArrayList<String> identifiers) {
-		identifiers.add(((Catalog) database.getCatalogs().get(0)).getName());
+		identifiers.add(this.buildDefaultCatalogIdentifier(database));
+	}
+
+	private String buildDefaultCatalogIdentifier(Database database) {
+		return this.convertNameToIdentifier(this.buildDefaultCatalogName(database));
+	}
+
+	private String buildDefaultCatalogName(Database database) {
+		return ((Catalog) database.getCatalogs().get(0)).getName();
 	}
 
 	/**
 	 * PostgreSQL has a "schema search path". The default is:
 	 *     "$user",public
-	 * If "$user" is not found, return "public".
+	 * If the "$user" schema is not found, use the "public" schema.
 	 */
 	@Override
 	void addDefaultSchemaIdentifiersTo(Database database, String userName, ArrayList<String> identifiers) {
 		super.addDefaultSchemaIdentifiersTo(database, userName, identifiers);
-		identifiers.add(PUBLIC_SCHEMA_NAME);
+		identifiers.add(PUBLIC_SCHEMA_IDENTIFIER);
 	}
-	private static final String PUBLIC_SCHEMA_NAME = "public";  //$NON-NLS-1$
+	private static final String PUBLIC_SCHEMA_IDENTIFIER = "public";  //$NON-NLS-1$
 
 	@Override
 	char[] getExtendedNormalNameStartCharacters() {

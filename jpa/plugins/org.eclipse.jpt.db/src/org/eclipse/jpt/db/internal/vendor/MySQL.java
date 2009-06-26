@@ -77,7 +77,7 @@ class MySQL
 
 	@Override
 	void addDefaultSchemaIdentifiersTo(Database database, String userName, ArrayList<String> identifiers) {
-		identifiers.add(database.getName());  // hmmm... ~bjv
+		identifiers.add(this.convertNameToIdentifier(database.getName()));  // hmmm... ~bjv
 	}
 
 	/**

@@ -58,9 +58,9 @@ class SQLServer
 	 */
 	@Override
 	void addDefaultSchemaIdentifiersTo(Database database, String userName, ArrayList<String> identifiers) {
-		identifiers.add(DEFAULT_SCHEMA_NAME);
+		identifiers.add(DEFAULT_SCHEMA_IDENTIFIER);
 	}
-	private static final String DEFAULT_SCHEMA_NAME = "dbo";  //$NON-NLS-1$
+	private static final String DEFAULT_SCHEMA_IDENTIFIER = "dbo";  //$NON-NLS-1$
 
 	@Override
 	char[] getExtendedNormalNameStartCharacters() {

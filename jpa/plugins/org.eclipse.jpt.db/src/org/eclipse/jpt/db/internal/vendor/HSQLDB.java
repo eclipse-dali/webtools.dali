@@ -50,8 +50,8 @@ class HSQLDB
 
 	@Override
 	void addDefaultSchemaIdentifiersTo(Database database, String userName, ArrayList<String> identifiers) {
-		identifiers.add(PUBLIC_SCHEMA_NAME);
+		identifiers.add(PUBLIC_SCHEMA_IDENTIFIER);
 	}
-	private static final String PUBLIC_SCHEMA_NAME = "PUBLIC";  //$NON-NLS-1$
+	private static final String PUBLIC_SCHEMA_IDENTIFIER = "PUBLIC";  //$NON-NLS-1$
 
 }
