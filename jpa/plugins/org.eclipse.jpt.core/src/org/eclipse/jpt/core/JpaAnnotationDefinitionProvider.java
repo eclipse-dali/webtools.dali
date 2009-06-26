@@ -35,7 +35,7 @@ public interface JpaAnnotationDefinitionProvider {
 	
 	/**
 	 * Return a ListIterator of supporting annotation definitions which can 
-	 * be placed on a type.  These annotations in conjuction with the 
+	 * be placed on a type.  These annotations are used in conjunction with the 
 	 * type mapping annotations
 	 */
 	ListIterator<AnnotationDefinition> typeSupportingAnnotationDefinitions();
@@ -48,7 +48,7 @@ public interface JpaAnnotationDefinitionProvider {
 	
 	/**
 	 * Return a ListIterator of supporting annotation definitions which can 
-	 * be placed on a attribute.  These annotations in conjuction with the 
+	 * be placed on a attribute.  These annotations are used in conjunction with the 
 	 * attribute mapping annotations
 	 */
 	ListIterator<AnnotationDefinition> attributeSupportingAnnotationDefinitions();
