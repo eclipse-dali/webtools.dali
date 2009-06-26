@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -55,21 +55,56 @@ public class JpaJavaCompletionProposalComputer implements IJavaCompletionProposa
 					Collections.emptyList();
 	}
 
+	/**
+	 * We fail silently here because (it seems) "expected" exceptions occur
+	 * more frequently than intermittent "unexpected" exceptions that might
+	 * merit investigation (and a logged stacktrace might be the only hint as
+	 * to what happened).
+	 * 
+	 * We will get an "expected" exception (typically a NPE) here if the user:
+	 *   1. modifies the Java source file in a way that puts it drastically out
+	 *     of synch with the Dali context model (e.g. deleting a field or
+	 *     annotation)
+	 *   2. immediately invokes Content Assist (Ctrl+Space)
+	 * The AST we build here will be based on the just-modified Java source; but,
+	 * since the user moved quickly and we will not have yet received any Java
+	 * change notification (since we only get a Java change notification when
+	 * the user has paused typing for at least 0.5 seconds), the context model
+	 * will still be based on the unmodified Java source. As the new AST is
+	 * passed down through the context model to the resource model all the code
+	 * expects to find the AST in synch with the model. When this is not the
+	 * case (e.g. a field in the resource model is no longer present in the AST
+	 * because the user has deleted it or modified the code in such a way that
+	 * the parser can no longer detect the field) the model will probably choke
+	 * when it cannot find the corresponding AST node.
+	 * 
+	 * It seems reasonable, in these situations, to simply return no completion
+	 * proposals. If the user simply waits a moment and tries again, we will be
+	 * able to successfully calculate some proposals.
+	 * 
+	 * ~bjv
+	 */
 	private List<ICompletionProposal> computeCompletionProposals(JavaContentAssistInvocationContext context) {
 		try {
 			return this.computeCompletionProposals_(context);
-		} catch (JavaModelException ex) {
-			throw new RuntimeException(ex);
+		} catch (Exception ex) {
+			// JptCorePlugin.log(ex);  // don't log "expected" exceptions (?)
+			return Collections.emptyList();
 		}
 	}
 
-	private List<ICompletionProposal> computeCompletionProposals_(JavaContentAssistInvocationContext context) throws JavaModelException {
+	private List<ICompletionProposal> computeCompletionProposals_(JavaContentAssistInvocationContext context) {
 		ICompilationUnit cu = context.getCompilationUnit();
 		if (cu == null) {
 			return Collections.emptyList();
 		}
 
-		JpaFile jpaFile = JptCorePlugin.getJpaFile((IFile) cu.getCorrespondingResource());
+		IFile file = this.getCorrespondingResource(cu);
+		if (file == null) {
+			return Collections.emptyList();
+		}
+
+		JpaFile jpaFile = JptCorePlugin.getJpaFile(file);
 		if (jpaFile == null) {
 			return Collections.emptyList();
 		}
@@ -111,6 +146,15 @@ public class JpaJavaCompletionProposalComputer implements IJavaCompletionProposa
 			}
 		}
 		return proposals;
+	}
+
+	private IFile getCorrespondingResource(ICompilationUnit cu) {
+		try {
+			return (IFile) cu.getCorrespondingResource();
+		} catch (JavaModelException ex) {
+			JptCorePlugin.log(ex);
+			return null;
+		}
 	}
 
 	@SuppressWarnings("unchecked")
