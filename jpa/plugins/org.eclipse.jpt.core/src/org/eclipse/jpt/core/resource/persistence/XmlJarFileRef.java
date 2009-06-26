@@ -227,8 +227,7 @@ public class XmlJarFileRef extends AbstractJpaEObject implements JpaEObject
 	private static Translator buildFileNameTranslator() {
 		return new Translator(
 				Translator.TEXT_ATTRIBUTE_VALUE,
-				PersistencePackage.eINSTANCE.getXmlJarFileRef_FileName(),
-				Translator.EMPTY_CONTENT_IS_SIGNIFICANT
+				PersistencePackage.eINSTANCE.getXmlJarFileRef_FileName()
 			);
 	}
 

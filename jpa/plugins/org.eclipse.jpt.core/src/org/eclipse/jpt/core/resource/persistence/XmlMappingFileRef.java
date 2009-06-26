@@ -9,7 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.resource.persistence;
 
+import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
@@ -120,6 +122,11 @@ public class XmlMappingFileRef extends AbstractJpaEObject implements JpaEObject
 			eNotify(new ENotificationImpl(this, Notification.SET, PersistencePackage.XML_MAPPING_FILE_REF__FILE_NAME, oldFileName, fileName));
 	}
 
+	@Override
+	public EList<Adapter> eAdapters() {
+		// TODO Auto-generated method stub
+		return super.eAdapters();
+	}
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -224,8 +231,7 @@ public class XmlMappingFileRef extends AbstractJpaEObject implements JpaEObject
 	private static Translator buildFileNameTranslator() {
 		return new Translator(
 				Translator.TEXT_ATTRIBUTE_VALUE,
-				PersistencePackage.eINSTANCE.getXmlMappingFileRef_FileName(),
-				Translator.EMPTY_CONTENT_IS_SIGNIFICANT
+				PersistencePackage.eINSTANCE.getXmlMappingFileRef_FileName()
 			);
 	}
 
