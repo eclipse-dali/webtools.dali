@@ -12,8 +12,10 @@ package org.eclipse.jpt2_0.core.internal.context.orm;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitMetadata;
 import org.eclipse.jpt.core.internal.context.orm.AbstractEntityMappings;
+import org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator;
 import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt2_0.core.internal.platform.Generic2_0JpaFactory;
+import org.eclipse.jpt2_0.core.resource.orm.Orm2_0Factory;
 import org.eclipse.jpt2_0.core.resource.orm.XmlEntityMappings;
 
 public class Generic2_0EntityMappings
@@ -32,6 +34,11 @@ public class Generic2_0EntityMappings
 	@Override
 	protected OrmPersistentType buildPersistentType(XmlTypeMapping resourceMapping) {
 		return getJpaFactory().build2_0OrmPersistentType(this, resourceMapping);
+	}
+
+	@Override
+	protected XmlSequenceGenerator buildXmlSequenceGenerator() {
+		return Orm2_0Factory.eINSTANCE.createXmlSequenceGenerator();
 	}
 	
 	// **************** JpaNode impl *******************************************

@@ -28,18 +28,24 @@ import org.eclipse.jpt2_0.core.resource.orm.XmlId;
  */
 public class Generic2_0VirtualXmlId extends XmlId
 {
-		
 	protected OrmTypeMapping ormTypeMapping;
 	
 	protected final JavaIdMapping javaAttributeMapping;
 
 	protected final VirtualXmlId virtualXmlId;
+
+	protected final Generic2_0VirtualXmlSequenceGenerator virtualSequenceGenerator;
 		
 	public Generic2_0VirtualXmlId(OrmTypeMapping ormTypeMapping, JavaIdMapping javaIdMapping) {
 		super();
 		this.ormTypeMapping = ormTypeMapping;
 		this.javaAttributeMapping = javaIdMapping;
 		this.virtualXmlId = new VirtualXmlId(ormTypeMapping, javaIdMapping);
+		this.virtualSequenceGenerator = new Generic2_0VirtualXmlSequenceGenerator(javaIdMapping.getGeneratorContainer(), this.isOrmMetadataComplete());
+	}
+	
+	protected boolean isOrmMetadataComplete() {
+		return this.ormTypeMapping.isMetadataComplete();
 	}
 	
 	@Override
@@ -99,12 +105,18 @@ public class Generic2_0VirtualXmlId extends XmlId
 
 	@Override
 	public XmlSequenceGenerator getSequenceGenerator() {
-		return this.virtualXmlId.getSequenceGenerator();
+		if (this.isOrmMetadataComplete()) {
+			return null;
+		}
+		if (this.javaAttributeMapping.getGeneratorContainer().getSequenceGenerator() != null) {
+			return this.virtualSequenceGenerator;
+		}
+		return null;
 	}
 
 	@Override
 	public void setSequenceGenerator(XmlSequenceGenerator value) {
-		this.virtualXmlId.setSequenceGenerator(value);
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
 	@Override

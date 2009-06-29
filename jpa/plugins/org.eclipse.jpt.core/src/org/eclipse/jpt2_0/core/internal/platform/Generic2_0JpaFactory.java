@@ -11,6 +11,7 @@ package org.eclipse.jpt2_0.core.internal.platform;
 
 import org.eclipse.jpt.core.context.MappingFile;
 import org.eclipse.jpt.core.context.PersistentType;
+import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.PersistentType.Owner;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaBasicMapping;
@@ -43,6 +44,7 @@ import org.eclipse.jpt.core.context.orm.OrmOneToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmOneToOneMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.context.orm.OrmSequenceGenerator;
 import org.eclipse.jpt.core.context.orm.OrmTransientMapping;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmVersionMapping;
@@ -52,6 +54,7 @@ import org.eclipse.jpt.core.internal.platform.GenericJpaFactory;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.orm.XmlNullAttributeMapping;
+import org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator;
 import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt2_0.core.internal.context.java.Generic2_0JavaEmbeddable;
@@ -62,6 +65,7 @@ import org.eclipse.jpt2_0.core.internal.context.orm.Generic2_0EntityMappings;
 import org.eclipse.jpt2_0.core.internal.context.orm.Generic2_0OrmEmbeddable;
 import org.eclipse.jpt2_0.core.internal.context.orm.Generic2_0OrmPersistentAttribute;
 import org.eclipse.jpt2_0.core.internal.context.orm.Generic2_0OrmPersistentType;
+import org.eclipse.jpt2_0.core.internal.context.orm.Generic2_0OrmSequenceGenerator;
 import org.eclipse.jpt2_0.core.internal.context.orm.Generic2_0OrmXml;
 import org.eclipse.jpt2_0.core.internal.context.orm.Generic2_0PersistenceUnitMetadata;
 import org.eclipse.jpt2_0.core.internal.context.orm.Generic2_0VirtualXmlBasic;
@@ -232,6 +236,13 @@ public class Generic2_0JpaFactory extends GenericJpaFactory
 	
 	public XmlNullAttributeMapping build2_0VirtualXmlNullAttributeMapping(OrmTypeMapping ormTypeMapping, JavaAttributeMapping javaAttributeMapping) {
 		return new Generic2_0VirtualXmlNullAttributeMapping(ormTypeMapping, javaAttributeMapping);
+	}
+
+	@Override
+	public OrmSequenceGenerator buildOrmSequenceGenerator(XmlContextNode parent, XmlSequenceGenerator resourceSequenceGenerator) {
+		return new Generic2_0OrmSequenceGenerator(
+							parent, 
+							(org.eclipse.jpt2_0.core.resource.orm.XmlSequenceGenerator) resourceSequenceGenerator);
 	}
 
 	// ********** Java Context Model **********

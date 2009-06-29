@@ -129,7 +129,10 @@
       eSuperTypes="orm.ecore#//XmlGenerator">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlSequenceGenerator" eSuperTypes="orm.ecore#//XmlSequenceGenerator #//XmlGenerator"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlSequenceGenerator" eSuperTypes="orm.ecore#//XmlSequenceGenerator #//XmlGenerator">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="catalog" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="schema" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlTableGenerator" eSuperTypes="orm.ecore#//XmlTableGenerator #//XmlGenerator"/>
   <eClassifiers xsi:type="ecore:EClass" name="SqlResultSetMapping" eSuperTypes="orm.ecore#//SqlResultSetMapping">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>

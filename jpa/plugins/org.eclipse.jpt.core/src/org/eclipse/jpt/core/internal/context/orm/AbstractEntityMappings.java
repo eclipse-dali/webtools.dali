@@ -417,8 +417,8 @@ public abstract class AbstractEntityMappings
 	}
 	
 	public OrmSequenceGenerator addSequenceGenerator(int index) {
-		XmlSequenceGenerator resourceSequenceGenerator = OrmFactory.eINSTANCE.createXmlSequenceGenerator();
-		OrmSequenceGenerator contextSequenceGenerator =  buildSequenceGenerator(resourceSequenceGenerator);
+		XmlSequenceGenerator resourceSequenceGenerator = this.buildXmlSequenceGenerator();
+		OrmSequenceGenerator contextSequenceGenerator =  this.buildSequenceGenerator(resourceSequenceGenerator);
 		this.sequenceGenerators.add(index, contextSequenceGenerator);
 		this.xmlEntityMappings.getSequenceGenerators().add(index, resourceSequenceGenerator);
 		fireItemAdded(SEQUENCE_GENERATORS_LIST, index, contextSequenceGenerator);
@@ -451,6 +451,10 @@ public abstract class AbstractEntityMappings
 		CollectionTools.move(this.sequenceGenerators, targetIndex, sourceIndex);
 		this.xmlEntityMappings.getSequenceGenerators().move(targetIndex, sourceIndex);
 		fireItemMoved(EntityMappings.SEQUENCE_GENERATORS_LIST, targetIndex, sourceIndex);	
+	}
+	
+	protected XmlSequenceGenerator buildXmlSequenceGenerator() {
+		return OrmFactory.eINSTANCE.createXmlSequenceGenerator();
 	}
 	
 

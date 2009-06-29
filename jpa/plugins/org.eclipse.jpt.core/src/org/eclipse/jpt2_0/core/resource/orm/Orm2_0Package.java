@@ -2766,13 +2766,31 @@ public class Orm2_0Package extends EPackageImpl
 	public static final int XML_SEQUENCE_GENERATOR__DESCRIPTION = OrmPackage.XML_SEQUENCE_GENERATOR_FEATURE_COUNT + 0;
 
 	/**
+	 * The feature id for the '<em><b>Catalog</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_SEQUENCE_GENERATOR__CATALOG = OrmPackage.XML_SEQUENCE_GENERATOR_FEATURE_COUNT + 1;
+
+	/**
+	 * The feature id for the '<em><b>Schema</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_SEQUENCE_GENERATOR__SCHEMA = OrmPackage.XML_SEQUENCE_GENERATOR_FEATURE_COUNT + 2;
+
+	/**
 	 * The number of structural features of the '<em>Xml Sequence Generator</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_SEQUENCE_GENERATOR_FEATURE_COUNT = OrmPackage.XML_SEQUENCE_GENERATOR_FEATURE_COUNT + 1;
+	public static final int XML_SEQUENCE_GENERATOR_FEATURE_COUNT = OrmPackage.XML_SEQUENCE_GENERATOR_FEATURE_COUNT + 3;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt2_0.core.resource.orm.XmlTableGenerator <em>Xml Table Generator</em>}' class.
@@ -5206,6 +5224,36 @@ public class Orm2_0Package extends EPackageImpl
 	}
 
 	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt2_0.core.resource.orm.XmlSequenceGenerator#getCatalog <em>Catalog</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Catalog</em>'.
+	 * @see org.eclipse.jpt2_0.core.resource.orm.XmlSequenceGenerator#getCatalog()
+	 * @see #getXmlSequenceGenerator()
+	 * @generated
+	 */
+	public EAttribute getXmlSequenceGenerator_Catalog()
+	{
+		return (EAttribute)xmlSequenceGeneratorEClass.getEStructuralFeatures().get(0);
+	}
+
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt2_0.core.resource.orm.XmlSequenceGenerator#getSchema <em>Schema</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Schema</em>'.
+	 * @see org.eclipse.jpt2_0.core.resource.orm.XmlSequenceGenerator#getSchema()
+	 * @see #getXmlSequenceGenerator()
+	 * @generated
+	 */
+	public EAttribute getXmlSequenceGenerator_Schema()
+	{
+		return (EAttribute)xmlSequenceGeneratorEClass.getEStructuralFeatures().get(1);
+	}
+
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt2_0.core.resource.orm.XmlTableGenerator <em>Xml Table Generator</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -5721,6 +5769,8 @@ public class Orm2_0Package extends EPackageImpl
 		createEAttribute(xmlGeneratorEClass, XML_GENERATOR__DESCRIPTION);
 
 		xmlSequenceGeneratorEClass = createEClass(XML_SEQUENCE_GENERATOR);
+		createEAttribute(xmlSequenceGeneratorEClass, XML_SEQUENCE_GENERATOR__CATALOG);
+		createEAttribute(xmlSequenceGeneratorEClass, XML_SEQUENCE_GENERATOR__SCHEMA);
 
 		xmlTableGeneratorEClass = createEClass(XML_TABLE_GENERATOR);
 
@@ -5979,6 +6029,8 @@ public class Orm2_0Package extends EPackageImpl
 		initEAttribute(getXmlGenerator_Description(), theXMLTypePackage.getString(), "description", null, 0, 1, XmlGenerator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlSequenceGeneratorEClass, XmlSequenceGenerator.class, "XmlSequenceGenerator", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getXmlSequenceGenerator_Catalog(), theXMLTypePackage.getString(), "catalog", null, 0, 1, XmlSequenceGenerator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXmlSequenceGenerator_Schema(), theXMLTypePackage.getString(), "schema", null, 0, 1, XmlSequenceGenerator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlTableGeneratorEClass, XmlTableGenerator.class, "XmlTableGenerator", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -6747,6 +6799,22 @@ public class Orm2_0Package extends EPackageImpl
 		 * @generated
 		 */
 		public static final EClass XML_SEQUENCE_GENERATOR = eINSTANCE.getXmlSequenceGenerator();
+
+		/**
+		 * The meta object literal for the '<em><b>Catalog</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_SEQUENCE_GENERATOR__CATALOG = eINSTANCE.getXmlSequenceGenerator_Catalog();
+
+		/**
+		 * The meta object literal for the '<em><b>Schema</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_SEQUENCE_GENERATOR__SCHEMA = eINSTANCE.getXmlSequenceGenerator_Schema();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt2_0.core.resource.orm.XmlTableGenerator <em>Xml Table Generator</em>}' class.
