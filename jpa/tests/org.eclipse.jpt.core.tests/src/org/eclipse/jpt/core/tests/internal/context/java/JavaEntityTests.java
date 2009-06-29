@@ -140,7 +140,18 @@ public class JavaEntityTests extends ContextModelTestCase
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.MAPPED_SUPERCLASS, JPA.ONE_TO_ONE);
+				return new ArrayIterator<String>(
+					JPA.MAPPED_SUPERCLASS, 
+					JPA.BASIC,
+					JPA.VERSION,
+					JPA.TRANSIENT,
+					JPA.EMBEDDED,
+					JPA.EMBEDDED_ID,
+					JPA.ONE_TO_ONE,
+					JPA.ONE_TO_MANY,
+					JPA.MANY_TO_ONE,
+					JPA.MANY_TO_MANY,
+					JPA.ID);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -148,18 +159,46 @@ public class JavaEntityTests extends ContextModelTestCase
 			}
 			
 			@Override
-			public void appendGetIdMethodAnnotationTo(StringBuilder sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("private String foo;").append(CR);
 				sb.append(CR);
+				sb.append("    @Basic");
+				sb.append(CR);
+				sb.append("    private int basic;").append(CR);
+				sb.append(CR);
+				sb.append("    @Version");
+				sb.append(CR);
+				sb.append("    private int version;").append(CR);
+				sb.append(CR);
+				sb.append("    @Transient");
+				sb.append(CR);
+				sb.append("    private int transient;").append(CR);
+				sb.append(CR);
+				sb.append("    @Embedded");
+				sb.append(CR);
+				sb.append("    private int embedded;").append(CR);
+				sb.append(CR);
+				sb.append("    @EmbeddedId");
+				sb.append(CR);
+				sb.append("    private int embeddedId;").append(CR);
+				sb.append(CR);
 				sb.append("    @OneToOne");
 				sb.append(CR);
-				sb.append("    private int address;").append(CR);
+				sb.append("    private int oneToOne;").append(CR);
 				sb.append(CR);
-				sb.append("    @OneToOne");
+				sb.append("    @OneToMany");
 				sb.append(CR);
-				sb.append("    private int address2;").append(CR);
+				sb.append("    private int oneToMany;").append(CR);
 				sb.append(CR);
-				sb.append("    ");
+				sb.append("    @ManyToOne");
+				sb.append(CR);
+				sb.append("    private int manyToOne;").append(CR);
+				sb.append(CR);
+				sb.append("    @ManyToMany");
+				sb.append(CR);
+				sb.append("    private int manyToMany;").append(CR);
+				sb.append(CR);
+				sb.append("    @Id");
 			}
 		});
 	}
@@ -1615,9 +1654,10 @@ public class JavaEntityTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
 		Iterator<PersistentAttribute> overridableAttributes = getJavaEntity().allOverridableAttributes();
+		assertEquals("foo", overridableAttributes.next().getName());
+		assertEquals("basic", overridableAttributes.next().getName());
 		assertEquals("id", overridableAttributes.next().getName());
 		assertEquals("name", overridableAttributes.next().getName());
-		assertEquals("foo", overridableAttributes.next().getName());
 		assertFalse(overridableAttributes.hasNext());
 	}
 	
@@ -1667,9 +1707,10 @@ public class JavaEntityTests extends ContextModelTestCase
 		getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
 		Iterator<PersistentAttribute> overridableAttributes = getJavaEntity().allOverridableAttributes();
+		assertEquals("foo", overridableAttributes.next().getName());
+		assertEquals("basic", overridableAttributes.next().getName());
 		assertEquals("id", overridableAttributes.next().getName());
 		assertEquals("name", overridableAttributes.next().getName());
-		assertEquals("foo", overridableAttributes.next().getName());
 		assertFalse(overridableAttributes.hasNext());
 	}
 
@@ -1680,9 +1721,10 @@ public class JavaEntityTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
 		Iterator<String> overridableAttributeNames = getJavaEntity().allOverridableAttributeNames();
+		assertEquals("foo", overridableAttributeNames.next());
+		assertEquals("basic", overridableAttributeNames.next());
 		assertEquals("id", overridableAttributeNames.next());
 		assertEquals("name", overridableAttributeNames.next());
-		assertEquals("foo", overridableAttributeNames.next());
 		assertFalse(overridableAttributeNames.hasNext());
 	}
 		
@@ -1760,42 +1802,42 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertNull(typeResource.getSupportingAnnotation(AttributeOverrideAnnotation.ANNOTATION_NAME));
 		assertNull(typeResource.getSupportingAnnotation(AttributeOverridesAnnotation.ANNOTATION_NAME));
 		
-		assertEquals(3, javaEntity.virtualAttributeOverridesSize());
+		assertEquals(4, javaEntity.virtualAttributeOverridesSize());
 		AttributeOverride virtualAttributeOverride = javaEntity.virtualAttributeOverrides().next();
-		assertEquals("id", virtualAttributeOverride.getName());
-		assertEquals("id", virtualAttributeOverride.getColumn().getName());
+		assertEquals("foo", virtualAttributeOverride.getName());
+		assertEquals("foo", virtualAttributeOverride.getColumn().getName());
 		assertEquals(SUB_TYPE_NAME, virtualAttributeOverride.getColumn().getTable());
 		
 
 		MappedSuperclass mappedSuperclass = (MappedSuperclass) getJavaPersistentType().getMapping();
 		
-		BasicMapping idMapping = (BasicMapping) mappedSuperclass.getPersistentType().getAttributeNamed("id").getMapping();
-		idMapping.getColumn().setSpecifiedName("FOO");
-		idMapping.getColumn().setSpecifiedTable("BAR");
+		BasicMapping fooMapping = (BasicMapping) mappedSuperclass.getPersistentType().getAttributeNamed("foo").getMapping();
+		fooMapping.getColumn().setSpecifiedName("FOO");
+		fooMapping.getColumn().setSpecifiedTable("BAR");
 		
 		assertEquals(SUB_TYPE_NAME, typeResource.getName());
 		assertNull(typeResource.getSupportingAnnotation(AttributeOverrideAnnotation.ANNOTATION_NAME));
 		assertNull(typeResource.getSupportingAnnotation(AttributeOverridesAnnotation.ANNOTATION_NAME));
 
-		assertEquals(3, javaEntity.virtualAttributeOverridesSize());
+		assertEquals(4, javaEntity.virtualAttributeOverridesSize());
 		virtualAttributeOverride = javaEntity.virtualAttributeOverrides().next();
-		assertEquals("id", virtualAttributeOverride.getName());
+		assertEquals("foo", virtualAttributeOverride.getName());
 		assertEquals("FOO", virtualAttributeOverride.getColumn().getName());
 		assertEquals("BAR", virtualAttributeOverride.getColumn().getTable());
 
-		idMapping.getColumn().setSpecifiedName(null);
-		idMapping.getColumn().setSpecifiedTable(null);
+		fooMapping.getColumn().setSpecifiedName(null);
+		fooMapping.getColumn().setSpecifiedTable(null);
 		assertEquals(SUB_TYPE_NAME, typeResource.getName());
 		assertNull(typeResource.getSupportingAnnotation(AttributeOverrideAnnotation.ANNOTATION_NAME));
 		assertNull(typeResource.getSupportingAnnotation(AttributeOverridesAnnotation.ANNOTATION_NAME));
 
 		virtualAttributeOverride = javaEntity.virtualAttributeOverrides().next();
-		assertEquals("id", virtualAttributeOverride.getName());
-		assertEquals("id", virtualAttributeOverride.getColumn().getName());
+		assertEquals("foo", virtualAttributeOverride.getName());
+		assertEquals("foo", virtualAttributeOverride.getColumn().getName());
 		assertEquals(SUB_TYPE_NAME, virtualAttributeOverride.getColumn().getTable());
 		
 		virtualAttributeOverride = virtualAttributeOverride.setVirtual(false);
-		assertEquals(2, javaEntity.virtualAttributeOverridesSize());
+		assertEquals(3, javaEntity.virtualAttributeOverridesSize());
 	}
 	
 	public void testDefaultAttributeOverridesEntityHierachy() throws Exception {
@@ -1877,8 +1919,11 @@ public class JavaEntityTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		Entity javaEntity = getJavaEntity();
 		
-		assertEquals(3, javaEntity.virtualAttributeOverridesSize());
+		assertEquals(4, javaEntity.virtualAttributeOverridesSize());
 
+		javaEntity.virtualAttributeOverrides().next().setVirtual(false);
+		assertEquals(3, javaEntity.virtualAttributeOverridesSize());
+		
 		javaEntity.virtualAttributeOverrides().next().setVirtual(false);
 		assertEquals(2, javaEntity.virtualAttributeOverridesSize());
 		
@@ -1897,19 +1942,19 @@ public class JavaEntityTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		Entity javaEntity = getJavaEntity();
 		
-		assertEquals(3, javaEntity.attributeOverridesSize());
+		assertEquals(4, javaEntity.attributeOverridesSize());
 
 		javaEntity.virtualAttributeOverrides().next().setVirtual(false);
-		assertEquals(3, javaEntity.attributeOverridesSize());
+		assertEquals(4, javaEntity.attributeOverridesSize());
 		
 		javaEntity.virtualAttributeOverrides().next().setVirtual(false);
-		assertEquals(3, javaEntity.attributeOverridesSize());
+		assertEquals(4, javaEntity.attributeOverridesSize());
 		
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_SUB_TYPE_NAME);
 		AttributeOverrideAnnotation annotation = (AttributeOverrideAnnotation) typeResource.addSupportingAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
 		annotation.setName("bar");	
-		assertEquals(4, javaEntity.attributeOverridesSize());
+		assertEquals(5, javaEntity.attributeOverridesSize());
 	}
 
 	public void testAttributeOverrideSetVirtual() throws Exception {
@@ -1925,8 +1970,8 @@ public class JavaEntityTests extends ContextModelTestCase
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_SUB_TYPE_NAME);
 		Iterator<NestableAnnotation> attributeOverrides = typeResource.supportingAnnotations(AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME);
 		
-		assertEquals("id", ((AttributeOverrideAnnotation) attributeOverrides.next()).getName());
-		assertEquals("name", ((AttributeOverrideAnnotation) attributeOverrides.next()).getName());
+		assertEquals("foo", ((AttributeOverrideAnnotation) attributeOverrides.next()).getName());
+		assertEquals("basic", ((AttributeOverrideAnnotation) attributeOverrides.next()).getName());
 		assertFalse(attributeOverrides.hasNext());
 	}
 	
@@ -1945,8 +1990,8 @@ public class JavaEntityTests extends ContextModelTestCase
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_SUB_TYPE_NAME);
 		Iterator<NestableAnnotation> attributeOverrides = typeResource.supportingAnnotations(AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME);
 		
-		assertEquals("name", ((AttributeOverrideAnnotation) attributeOverrides.next()).getName());
-		assertEquals("id", ((AttributeOverrideAnnotation) attributeOverrides.next()).getName());
+		assertEquals("basic", ((AttributeOverrideAnnotation) attributeOverrides.next()).getName());
+		assertEquals("foo", ((AttributeOverrideAnnotation) attributeOverrides.next()).getName());
 		assertFalse(attributeOverrides.hasNext());
 	}
 	
@@ -1967,23 +2012,23 @@ public class JavaEntityTests extends ContextModelTestCase
 		getJavaEntity().specifiedAttributeOverrides().next().setVirtual(true);
 		
 		Iterator<NestableAnnotation> attributeOverrideResources = typeResource.supportingAnnotations(AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME);
-		assertEquals("name", ((AttributeOverrideAnnotation) attributeOverrideResources.next()).getName());		
-		assertEquals("foo", ((AttributeOverrideAnnotation) attributeOverrideResources.next()).getName());
+		assertEquals("basic", ((AttributeOverrideAnnotation) attributeOverrideResources.next()).getName());		
+		assertEquals("id", ((AttributeOverrideAnnotation) attributeOverrideResources.next()).getName());
 		assertFalse(attributeOverrideResources.hasNext());
 		
 		Iterator<JavaAttributeOverride> attributeOverrides = getJavaEntity().specifiedAttributeOverrides();
-		assertEquals("name", attributeOverrides.next().getName());		
-		assertEquals("foo", attributeOverrides.next().getName());
+		assertEquals("basic", attributeOverrides.next().getName());		
+		assertEquals("id", attributeOverrides.next().getName());
 		assertFalse(attributeOverrides.hasNext());
 	
 		
 		getJavaEntity().specifiedAttributeOverrides().next().setVirtual(true);
 		attributeOverrideResources = typeResource.supportingAnnotations(AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME);
-		assertEquals("foo", ((AttributeOverrideAnnotation) attributeOverrideResources.next()).getName());		
+		assertEquals("id", ((AttributeOverrideAnnotation) attributeOverrideResources.next()).getName());		
 		assertFalse(attributeOverrideResources.hasNext());
 
 		attributeOverrides = getJavaEntity().specifiedAttributeOverrides();
-		assertEquals("foo", attributeOverrides.next().getName());
+		assertEquals("id", attributeOverrides.next().getName());
 		assertFalse(attributeOverrides.hasNext());
 
 		
@@ -2014,29 +2059,28 @@ public class JavaEntityTests extends ContextModelTestCase
 		ListIterator<NestableAnnotation> javaAttributeOverrides = typeResource.supportingAnnotations(AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME);
 		assertEquals(3, CollectionTools.size(javaAttributeOverrides));
 		
-		
 		entity.moveSpecifiedAttributeOverride(2, 0);
 		ListIterator<AttributeOverride> attributeOverrides = entity.specifiedAttributeOverrides();
-		assertEquals("name", attributeOverrides.next().getName());
-		assertEquals("foo", attributeOverrides.next().getName());
+		assertEquals("basic", attributeOverrides.next().getName());
 		assertEquals("id", attributeOverrides.next().getName());
+		assertEquals("foo", attributeOverrides.next().getName());
 
 		javaAttributeOverrides = typeResource.supportingAnnotations(AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME);
-		assertEquals("name", ((AttributeOverrideAnnotation) javaAttributeOverrides.next()).getName());
-		assertEquals("foo", ((AttributeOverrideAnnotation) javaAttributeOverrides.next()).getName());
+		assertEquals("basic", ((AttributeOverrideAnnotation) javaAttributeOverrides.next()).getName());
 		assertEquals("id", ((AttributeOverrideAnnotation) javaAttributeOverrides.next()).getName());
+		assertEquals("foo", ((AttributeOverrideAnnotation) javaAttributeOverrides.next()).getName());
 
 
 		entity.moveSpecifiedAttributeOverride(0, 1);
 		attributeOverrides = entity.specifiedAttributeOverrides();
-		assertEquals("foo", attributeOverrides.next().getName());
-		assertEquals("name", attributeOverrides.next().getName());
 		assertEquals("id", attributeOverrides.next().getName());
+		assertEquals("basic", attributeOverrides.next().getName());
+		assertEquals("foo", attributeOverrides.next().getName());
 
 		javaAttributeOverrides = typeResource.supportingAnnotations(AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME);
-		assertEquals("foo", ((AttributeOverrideAnnotation) javaAttributeOverrides.next()).getName());
-		assertEquals("name", ((AttributeOverrideAnnotation) javaAttributeOverrides.next()).getName());
 		assertEquals("id", ((AttributeOverrideAnnotation) javaAttributeOverrides.next()).getName());
+		assertEquals("basic", ((AttributeOverrideAnnotation) javaAttributeOverrides.next()).getName());
+		assertEquals("foo", ((AttributeOverrideAnnotation) javaAttributeOverrides.next()).getName());
 	}
 //	
 	public void testUpdateSpecifiedAttributeOverrides() throws Exception {
@@ -2094,15 +2138,19 @@ public class JavaEntityTests extends ContextModelTestCase
 		
 		ListIterator<JavaAttributeOverride> virtualAttributeOverrides = getJavaEntity().virtualAttributeOverrides();	
 		AttributeOverride virtualAttributeOverride = virtualAttributeOverrides.next();
-		assertEquals("id", virtualAttributeOverride.getName());
+		assertEquals("foo", virtualAttributeOverride.getName());
 		assertTrue(virtualAttributeOverride.isVirtual());
 
 		virtualAttributeOverride = virtualAttributeOverrides.next();
-		assertEquals("name", virtualAttributeOverride.getName());
+		assertEquals("basic", virtualAttributeOverride.getName());
 		assertTrue(virtualAttributeOverride.isVirtual());
 		
 		virtualAttributeOverride = virtualAttributeOverrides.next();
-		assertEquals("foo", virtualAttributeOverride.getName());
+		assertEquals("id", virtualAttributeOverride.getName());
+		assertTrue(virtualAttributeOverride.isVirtual());
+		
+		virtualAttributeOverride = virtualAttributeOverrides.next();
+		assertEquals("name", virtualAttributeOverride.getName());
 		assertTrue(virtualAttributeOverride.isVirtual());
 		assertFalse(virtualAttributeOverrides.hasNext());
 
@@ -2113,11 +2161,15 @@ public class JavaEntityTests extends ContextModelTestCase
 		
 		virtualAttributeOverrides = getJavaEntity().virtualAttributeOverrides();	
 		virtualAttributeOverride = virtualAttributeOverrides.next();
-		assertEquals("name", virtualAttributeOverride.getName());
+		assertEquals("basic", virtualAttributeOverride.getName());
 		assertTrue(virtualAttributeOverride.isVirtual());
 		
 		virtualAttributeOverride = virtualAttributeOverrides.next();
-		assertEquals("foo", virtualAttributeOverride.getName());
+		assertEquals("id", virtualAttributeOverride.getName());
+		assertTrue(virtualAttributeOverride.isVirtual());
+		
+		virtualAttributeOverride = virtualAttributeOverrides.next();
+		assertEquals("name", virtualAttributeOverride.getName());
 		assertTrue(virtualAttributeOverride.isVirtual());
 		assertFalse(virtualAttributeOverrides.hasNext());
 	}
@@ -2139,7 +2191,6 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertFalse(overridableAssociationNames.hasNext());
 	}
 	
-//	//TODO add all mapping types to the mapped superclass to test which ones are overridable
 	public void testAllOverridableAssociationNames() throws Exception {
 		createTestMappedSuperclass();
 		createTestSubType();
@@ -2147,8 +2198,8 @@ public class JavaEntityTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		Iterator<String> overridableAssociationNames = getJavaEntity().allOverridableAssociationNames();
-		assertEquals("address", overridableAssociationNames.next());
-		assertEquals("address2", overridableAssociationNames.next());
+		assertEquals("oneToOne", overridableAssociationNames.next());
+		assertEquals("manyToOne", overridableAssociationNames.next());
 		assertFalse(overridableAssociationNames.hasNext());
 	}
 	
@@ -2159,8 +2210,8 @@ public class JavaEntityTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
 		Iterator<PersistentAttribute> overridableAssociations = getJavaEntity().allOverridableAssociations();
-		assertEquals("address", overridableAssociations.next().getName());
-		assertEquals("address2", overridableAssociations.next().getName());
+		assertEquals("oneToOne", overridableAssociations.next().getName());
+		assertEquals("manyToOne", overridableAssociations.next().getName());
 		assertFalse(overridableAssociations.hasNext());
 	}
 	
@@ -2171,8 +2222,8 @@ public class JavaEntityTests extends ContextModelTestCase
 		getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
 		Iterator<PersistentAttribute> overridableAssociations = getJavaEntity().allOverridableAssociations();
-		assertEquals("address", overridableAssociations.next().getName());
-		assertEquals("address2", overridableAssociations.next().getName());
+		assertEquals("oneToOne", overridableAssociations.next().getName());
+		assertEquals("manyToOne", overridableAssociations.next().getName());
 		assertFalse(overridableAssociations.hasNext());
 	}
 
@@ -2252,7 +2303,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		
 		assertEquals(2, javaEntity.virtualAssociationOverridesSize());
 		AssociationOverride virtualAssociationOverride = javaEntity.virtualAssociationOverrides().next();
-		assertEquals("address", virtualAssociationOverride.getName());
+		assertEquals("oneToOne", virtualAssociationOverride.getName());
 		
 
 		//MappedSuperclass mappedSuperclass = (MappedSuperclass) javaPersistentType().getMapping();
@@ -2266,7 +2317,7 @@ public class JavaEntityTests extends ContextModelTestCase
 
 		assertEquals(2, javaEntity.virtualAssociationOverridesSize());
 		virtualAssociationOverride = javaEntity.virtualAssociationOverrides().next();
-		assertEquals("address", virtualAssociationOverride.getName());
+		assertEquals("oneToOne", virtualAssociationOverride.getName());
 
 		//idMapping.getColumn().setSpecifiedName(null);
 		//idMapping.getColumn().setSpecifiedTable(null);
@@ -2275,7 +2326,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertNull(typeResource.getSupportingAnnotation(AssociationOverridesAnnotation.ANNOTATION_NAME));
 
 		virtualAssociationOverride = javaEntity.virtualAssociationOverrides().next();
-		assertEquals("address", virtualAssociationOverride.getName());
+		assertEquals("oneToOne", virtualAssociationOverride.getName());
 		
 		virtualAssociationOverride = virtualAssociationOverride.setVirtual(false);
 		assertEquals(1, javaEntity.virtualAssociationOverridesSize());
@@ -2395,8 +2446,8 @@ public class JavaEntityTests extends ContextModelTestCase
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_SUB_TYPE_NAME);
 		Iterator<NestableAnnotation> associationOverrides = typeResource.supportingAnnotations(AssociationOverrideAnnotation.ANNOTATION_NAME, AssociationOverridesAnnotation.ANNOTATION_NAME);
 		
-		assertEquals("address", ((AssociationOverrideAnnotation) associationOverrides.next()).getName());
-		assertEquals("address2", ((AssociationOverrideAnnotation) associationOverrides.next()).getName());
+		assertEquals("oneToOne", ((AssociationOverrideAnnotation) associationOverrides.next()).getName());
+		assertEquals("manyToOne", ((AssociationOverrideAnnotation) associationOverrides.next()).getName());
 		assertFalse(associationOverrides.hasNext());
 	}
 	
@@ -2415,8 +2466,8 @@ public class JavaEntityTests extends ContextModelTestCase
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_SUB_TYPE_NAME);
 		Iterator<NestableAnnotation> associationOverrides = typeResource.supportingAnnotations(AssociationOverrideAnnotation.ANNOTATION_NAME, AssociationOverridesAnnotation.ANNOTATION_NAME);
 		
-		assertEquals("address2", ((AssociationOverrideAnnotation) associationOverrides.next()).getName());
-		assertEquals("address", ((AssociationOverrideAnnotation) associationOverrides.next()).getName());
+		assertEquals("manyToOne", ((AssociationOverrideAnnotation) associationOverrides.next()).getName());
+		assertEquals("oneToOne", ((AssociationOverrideAnnotation) associationOverrides.next()).getName());
 		assertFalse(associationOverrides.hasNext());
 	}
 	
@@ -2436,11 +2487,11 @@ public class JavaEntityTests extends ContextModelTestCase
 		getJavaEntity().specifiedAssociationOverrides().next().setVirtual(true);
 		
 		Iterator<NestableAnnotation> associationOverrideResources = typeResource.supportingAnnotations(AssociationOverrideAnnotation.ANNOTATION_NAME, AssociationOverridesAnnotation.ANNOTATION_NAME);
-		assertEquals("address2", ((AssociationOverrideAnnotation) associationOverrideResources.next()).getName());		
+		assertEquals("manyToOne", ((AssociationOverrideAnnotation) associationOverrideResources.next()).getName());		
 		assertFalse(associationOverrideResources.hasNext());
 
 		Iterator<JavaAssociationOverride> associationOverrides = getJavaEntity().specifiedAssociationOverrides();
-		assertEquals("address2", associationOverrides.next().getName());
+		assertEquals("manyToOne", associationOverrides.next().getName());
 		assertFalse(associationOverrides.hasNext());
 
 		
@@ -2473,22 +2524,22 @@ public class JavaEntityTests extends ContextModelTestCase
 		
 		entity.moveSpecifiedAssociationOverride(1, 0);
 		ListIterator<AssociationOverride> associationOverrides = entity.specifiedAssociationOverrides();
-		assertEquals("address2", associationOverrides.next().getName());
-		assertEquals("address", associationOverrides.next().getName());
+		assertEquals("manyToOne", associationOverrides.next().getName());
+		assertEquals("oneToOne", associationOverrides.next().getName());
 
 		javaAssociationOverrides = typeResource.supportingAnnotations(AssociationOverrideAnnotation.ANNOTATION_NAME, AssociationOverridesAnnotation.ANNOTATION_NAME);
-		assertEquals("address2", ((AssociationOverrideAnnotation) javaAssociationOverrides.next()).getName());
-		assertEquals("address", ((AssociationOverrideAnnotation) javaAssociationOverrides.next()).getName());
+		assertEquals("manyToOne", ((AssociationOverrideAnnotation) javaAssociationOverrides.next()).getName());
+		assertEquals("oneToOne", ((AssociationOverrideAnnotation) javaAssociationOverrides.next()).getName());
 
 
 		entity.moveSpecifiedAssociationOverride(0, 1);
 		associationOverrides = entity.specifiedAssociationOverrides();
-		assertEquals("address", associationOverrides.next().getName());
-		assertEquals("address2", associationOverrides.next().getName());
+		assertEquals("oneToOne", associationOverrides.next().getName());
+		assertEquals("manyToOne", associationOverrides.next().getName());
 
 		javaAssociationOverrides = typeResource.supportingAnnotations(AssociationOverrideAnnotation.ANNOTATION_NAME, AssociationOverridesAnnotation.ANNOTATION_NAME);
-		assertEquals("address", ((AssociationOverrideAnnotation) javaAssociationOverrides.next()).getName());
-		assertEquals("address2", ((AssociationOverrideAnnotation) javaAssociationOverrides.next()).getName());
+		assertEquals("oneToOne", ((AssociationOverrideAnnotation) javaAssociationOverrides.next()).getName());
+		assertEquals("manyToOne", ((AssociationOverrideAnnotation) javaAssociationOverrides.next()).getName());
 	}
 
 	public void testUpdateSpecifiedAssociationOverrides() throws Exception {
@@ -2546,11 +2597,11 @@ public class JavaEntityTests extends ContextModelTestCase
 		
 		ListIterator<JavaAssociationOverride> virtualAssociationOverrides = getJavaEntity().virtualAssociationOverrides();	
 		AssociationOverride virtualAssociationOverride = virtualAssociationOverrides.next();
-		assertEquals("address", virtualAssociationOverride.getName());
+		assertEquals("oneToOne", virtualAssociationOverride.getName());
 		assertTrue(virtualAssociationOverride.isVirtual());
 
 		virtualAssociationOverride = virtualAssociationOverrides.next();
-		assertEquals("address2", virtualAssociationOverride.getName());
+		assertEquals("manyToOne", virtualAssociationOverride.getName());
 		assertTrue(virtualAssociationOverride.isVirtual());
 		assertFalse(virtualAssociationOverrides.hasNext());
 
@@ -2561,7 +2612,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		
 		virtualAssociationOverrides = getJavaEntity().virtualAssociationOverrides();	
 		virtualAssociationOverride = virtualAssociationOverrides.next();
-		assertEquals("address2", virtualAssociationOverride.getName());
+		assertEquals("manyToOne", virtualAssociationOverride.getName());
 		assertTrue(virtualAssociationOverride.isVirtual());
 		assertFalse(virtualAssociationOverrides.hasNext());
 	}
@@ -3020,15 +3071,15 @@ public class JavaEntityTests extends ContextModelTestCase
 		JavaEntity javaEntity = (JavaEntity) entityPersistentType.getMapping();
 		JavaPersistentType mappedSuperclassPersistentType = classRefs.next().getJavaPersistentType();
 		
-		assertNull(javaEntity.getPrimaryKeyColumnName());
-
-		mappedSuperclassPersistentType.getAttributeNamed("id").setSpecifiedMappingKey(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
 		assertEquals("id", javaEntity.getPrimaryKeyColumnName());
 		
 		((JavaIdMapping) mappedSuperclassPersistentType.getAttributeNamed("id").getMapping()).getColumn().setSpecifiedName("MY_ID");
 		assertEquals("MY_ID", javaEntity.getPrimaryKeyColumnName());
 		
-		JavaAttributeOverride javaAttributeOverride = javaEntity.virtualAttributeOverrides().next();
+		ListIterator<JavaAttributeOverride> virtualAttributeOverrides = javaEntity.virtualAttributeOverrides();
+		virtualAttributeOverrides.next();
+		virtualAttributeOverrides.next();
+		JavaAttributeOverride javaAttributeOverride = virtualAttributeOverrides.next();
 		assertEquals("id", javaAttributeOverride.getName());
 		
 		javaAttributeOverride = (JavaAttributeOverride) javaAttributeOverride.setVirtual(false);
