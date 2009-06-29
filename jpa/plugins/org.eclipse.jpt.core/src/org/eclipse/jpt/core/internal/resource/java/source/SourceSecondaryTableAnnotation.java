@@ -24,10 +24,8 @@ import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.core.resource.java.NestablePrimaryKeyJoinColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.NestableSecondaryTableAnnotation;
-import org.eclipse.jpt.core.resource.java.NestableUniqueConstraintAnnotation;
 import org.eclipse.jpt.core.resource.java.PrimaryKeyJoinColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.SecondaryTableAnnotation;
-import org.eclipse.jpt.core.resource.java.UniqueConstraintAnnotation;
 import org.eclipse.jpt.core.utility.jdt.AnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
@@ -92,11 +90,6 @@ public final class SourceSecondaryTableAnnotation
 	@Override
 	String getUniqueConstraintsElementName() {
 		return JPA.SECONDARY_TABLE__UNIQUE_CONSTRAINTS;
-	}
-
-	@Override
-	NestableUniqueConstraintAnnotation buildUniqueConstraint(int index) {
-		return SourceUniqueConstraintAnnotation.createSecondaryTableUniqueConstraint(this, this.member, this.daa, index);
 	}
 
 
@@ -176,15 +169,10 @@ public final class SourceSecondaryTableAnnotation
 		return (IndexedAnnotationAdapter) this.annotationAdapter;
 	}
 
+	@Override
 	public void initializeFrom(NestableAnnotation oldAnnotation) {
+		super.initializeFrom(oldAnnotation);
 		SecondaryTableAnnotation oldTable = (SecondaryTableAnnotation) oldAnnotation;
-		this.setName(oldTable.getName());
-		this.setSchema(oldTable.getSchema());
-		this.setCatalog(oldTable.getCatalog());
-		for (UniqueConstraintAnnotation oldUniqueConstraint : CollectionTools.iterable(oldTable.uniqueConstraints())) {
-			NestableUniqueConstraintAnnotation newUniqueConstraint = this.addUniqueConstraint(oldTable.indexOfUniqueConstraint(oldUniqueConstraint));
-			newUniqueConstraint.initializeFrom((NestableAnnotation) oldUniqueConstraint);
-		}
 		for (PrimaryKeyJoinColumnAnnotation oldPkJoinColumn : CollectionTools.iterable(oldTable.pkJoinColumns())) {
 			NestablePrimaryKeyJoinColumnAnnotation newPkJoinColumn = this.addPkJoinColumn(oldTable.indexOfPkJoinColumn(oldPkJoinColumn));
 			newPkJoinColumn.initializeFrom((NestableAnnotation) oldPkJoinColumn);

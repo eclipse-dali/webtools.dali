@@ -27,7 +27,7 @@ import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 /**
  * javax.persistence.AssociationOverrides
  */
-public final class SourceAssociationOverridesAnnotation
+public class SourceAssociationOverridesAnnotation
 	extends SourceAnnotation<Member>
 	implements AssociationOverridesAnnotation
 {
@@ -90,7 +90,7 @@ public final class SourceAssociationOverridesAnnotation
 		return associationOverride;
 	}
 
-	private NestableAssociationOverrideAnnotation buildAssociationOverride(int index) {
+	protected NestableAssociationOverrideAnnotation buildAssociationOverride(int index) {
 		return SourceAssociationOverrideAnnotation.createNestedAssociationOverride(this, this.member, index, this.daa);
 	}
 

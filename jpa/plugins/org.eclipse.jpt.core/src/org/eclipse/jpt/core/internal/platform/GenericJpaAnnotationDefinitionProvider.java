@@ -89,7 +89,6 @@ public class GenericJpaAnnotationDefinitionProvider extends AbstractJpaAnnotatio
 		definitions.add(AssociationOverrideAnnotationDefinition.instance());
 		definitions.add(AssociationOverridesAnnotationDefinition.instance());
 		definitions.add(AttributeOverrideAnnotationDefinition.instance());
-		definitions.add(AttributeOverrideAnnotationDefinition.instance());
 		definitions.add(AttributeOverridesAnnotationDefinition.instance());
 		definitions.add(DiscriminatorColumnAnnotationDefinition.instance());
 		definitions.add(DiscriminatorValueAnnotationDefinition.instance());
@@ -103,7 +102,7 @@ public class GenericJpaAnnotationDefinitionProvider extends AbstractJpaAnnotatio
 		definitions.add(PrimaryKeyJoinColumnsAnnotationDefinition.instance());
 		definitions.add(SecondaryTableAnnotationDefinition.instance());
 		definitions.add(SecondaryTablesAnnotationDefinition.instance());
-		definitions.add(this.sequenceGeneratorAnnotationDefinition());
+		definitions.add(SequenceGeneratorAnnotationDefinition.instance());
 		definitions.add(TableAnnotationDefinition.instance());
 		definitions.add(TableGeneratorAnnotationDefinition.instance());
 	}
@@ -139,12 +138,9 @@ public class GenericJpaAnnotationDefinitionProvider extends AbstractJpaAnnotatio
 		definitions.add(OrderByAnnotationDefinition.instance());
 		definitions.add(PrimaryKeyJoinColumnAnnotationDefinition.instance());
 		definitions.add(PrimaryKeyJoinColumnsAnnotationDefinition.instance());
-		definitions.add(this.sequenceGeneratorAnnotationDefinition());
+		definitions.add(SequenceGeneratorAnnotationDefinition.instance());
 		definitions.add(TableGeneratorAnnotationDefinition.instance());
 		definitions.add(TemporalAnnotationDefinition.instance());
 	}
-	
-	protected  AnnotationDefinition sequenceGeneratorAnnotationDefinition() {
-		return SequenceGeneratorAnnotationDefinition.instance();
-	}
+
 }

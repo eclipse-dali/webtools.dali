@@ -13,7 +13,6 @@ import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotation
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
-import org.eclipse.jpt.core.resource.java.NestableUniqueConstraintAnnotation;
 import org.eclipse.jpt.core.resource.java.TableAnnotation;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
@@ -67,11 +66,6 @@ public final class SourceTableAnnotation
 	@Override
 	String getUniqueConstraintsElementName() {
 		return JPA.TABLE__UNIQUE_CONSTRAINTS;
-	}
-
-	@Override
-	NestableUniqueConstraintAnnotation buildUniqueConstraint(int index) {
-		return SourceUniqueConstraintAnnotation.createTableUniqueConstraint(this, this.member, index);
 	}
 
 }

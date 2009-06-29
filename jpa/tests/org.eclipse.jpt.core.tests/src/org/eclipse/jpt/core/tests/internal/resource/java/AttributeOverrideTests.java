@@ -136,6 +136,11 @@ public class AttributeOverrideTests extends JavaResourceModelTestCase {
 		AttributeOverrideAnnotation attributeOverride = (AttributeOverrideAnnotation) attributeResource.getSupportingAnnotation(JPA.ATTRIBUTE_OVERRIDE);
 		ColumnAnnotation column = attributeOverride.getColumn();
 		assertNull(column);
+		
+		attributeOverride.addColumn();
+		column = attributeOverride.getColumn();
+		assertNotNull(column);
+		assertSourceContains("@AttributeOverride(name = \"" + ATTRIBUTE_OVERRIDE_NAME + "\", column = @Column)", cu);		
 	}
 	
 	public void testRemoveColumn() throws Exception {

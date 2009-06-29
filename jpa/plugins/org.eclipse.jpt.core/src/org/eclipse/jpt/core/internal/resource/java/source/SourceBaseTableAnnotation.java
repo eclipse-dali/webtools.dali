@@ -15,10 +15,13 @@ import java.util.Vector;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.NestedIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.ShortCircuitAnnotationElementAdapter;
 import org.eclipse.jpt.core.resource.java.AnnotationContainer;
 import org.eclipse.jpt.core.resource.java.BaseTableAnnotation;
+import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.core.resource.java.NestableUniqueConstraintAnnotation;
 import org.eclipse.jpt.core.resource.java.UniqueConstraintAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -26,6 +29,7 @@ import org.eclipse.jpt.core.utility.jdt.AnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.Member;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
@@ -228,7 +232,13 @@ abstract class SourceBaseTableAnnotation
 		return uniqueConstraint;
 	}
 
-	abstract NestableUniqueConstraintAnnotation buildUniqueConstraint(int index);
+	NestableUniqueConstraintAnnotation buildUniqueConstraint(int index) {
+		return new SourceUniqueConstraintAnnotation(this, this.member, buildUniqueConstraintAnnotationAdapter(index));
+	}
+
+	IndexedDeclarationAnnotationAdapter buildUniqueConstraintAnnotationAdapter(int index) {
+		return new NestedIndexedDeclarationAnnotationAdapter(this.daa, getUniqueConstraintsElementName(), index, JPA.UNIQUE_CONSTRAINT);
+	}
 
 	void uniqueConstraintAdded(int index, NestableUniqueConstraintAnnotation constraint) {
 		this.fireItemAdded(UNIQUE_CONSTRAINTS_LIST, index, constraint);
@@ -258,7 +268,20 @@ abstract class SourceBaseTableAnnotation
 		this.fireItemRemoved(UNIQUE_CONSTRAINTS_LIST, index, constraint);
 	}
 
+	
+	// ********** NestableAnnotation implementation **********
 
+	protected void initializeFrom(NestableAnnotation oldAnnotation) {
+		BaseTableAnnotation oldTable = (BaseTableAnnotation) oldAnnotation;
+		this.setName(oldTable.getName());
+		this.setSchema(oldTable.getSchema());
+		this.setCatalog(oldTable.getCatalog());
+		for (UniqueConstraintAnnotation oldUniqueConstraint : CollectionTools.iterable(oldTable.uniqueConstraints())) {
+			NestableUniqueConstraintAnnotation newUniqueConstraint = this.addUniqueConstraint(oldTable.indexOfUniqueConstraint(oldUniqueConstraint));
+			newUniqueConstraint.initializeFrom((NestableAnnotation) oldUniqueConstraint);
+		}
+	}
+	
 	// ********** unique constraint container **********
 
 	/**

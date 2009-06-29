@@ -178,23 +178,6 @@ public final class SourceJoinColumnAnnotation
 		return new NestedIndexedDeclarationAnnotationAdapter(joinColumnsAdapter, index, JPA.JOIN_COLUMN);
 	}
 
-	static NestableJoinColumnAnnotation createJoinTableJoinColumn(JavaResourceNode parent, Member member, int index) {
-		return new SourceJoinColumnAnnotation(parent, member, buildJoinTableAnnotationAdapter(index));
-	}
-
-	private static IndexedDeclarationAnnotationAdapter buildJoinTableAnnotationAdapter(int index) {
-		return new NestedIndexedDeclarationAnnotationAdapter(SourceJoinTableAnnotation.DECLARATION_ANNOTATION_ADAPTER, JPA.JOIN_TABLE__JOIN_COLUMNS, index, JPA.JOIN_COLUMN);
-	}
-
-	static NestableJoinColumnAnnotation createJoinTableInverseJoinColumn(JavaResourceNode parent, Member member, int index) {
-		return new SourceJoinColumnAnnotation(parent, member, buildJoinTableInverseAnnotationAdapter(index));
-	}
-
-	private static IndexedDeclarationAnnotationAdapter buildJoinTableInverseAnnotationAdapter(int index) {
-		return new NestedIndexedDeclarationAnnotationAdapter(SourceJoinTableAnnotation.DECLARATION_ANNOTATION_ADAPTER, JPA.JOIN_TABLE__INVERSE_JOIN_COLUMNS, index, JPA.JOIN_COLUMN);
-	}
-
-
 	static NestableJoinColumnAnnotation createAssociationOverrideJoinColumn(DeclarationAnnotationAdapter associationOverrideAdapter, JavaResourceNode parent, Member member, int index) {
 		return new SourceJoinColumnAnnotation(parent, member, buildAssociationOverrideAnnotationAdapter(associationOverrideAdapter, index));
 	}

@@ -34,8 +34,7 @@ import org.eclipse.jpt.eclipselink.core.internal.resource.java.VariableOneToOneA
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.WriteTransformerAnnotationDefinition;
 
 /**
- * Provides annotations for 1.0 EclipseLink platform which includes JPA annotations and
- * EclipseLink 1.0 annotations
+ * Provides annotations for 1.0 EclipseLink platform
  */
 public class EclipseLinkJpaAnnotationDefinitionProvider
 	extends AbstractJpaAnnotationDefintionProvider

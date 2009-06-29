@@ -23,6 +23,11 @@ public final class NullTableAnnotation
 		super(parent);
 	}
 
+	@Override
+	protected TableAnnotation buildAnnotation() {
+		return (TableAnnotation) buildSupportingAnnotation();
+	}
+	
 	public String getAnnotationName() {
 		return ANNOTATION_NAME;
 	}

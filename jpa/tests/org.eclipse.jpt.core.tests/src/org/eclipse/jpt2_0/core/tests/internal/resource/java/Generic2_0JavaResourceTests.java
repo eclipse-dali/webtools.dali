@@ -18,6 +18,8 @@ public class Generic2_0JavaResourceTests {
 		TestSuite suite = new TestSuite(Generic2_0JavaResourceTests.class.getName());
 		
 		suite.addTestSuite(AccessAnnotationTests.class);
+		suite.addTestSuite(AssociationOverride2_0Tests.class);
+		suite.addTestSuite(AssociationOverrides2_0Tests.class);
 		suite.addTestSuite(SequenceGenerator2_0Tests.class);
 			
 		return suite;

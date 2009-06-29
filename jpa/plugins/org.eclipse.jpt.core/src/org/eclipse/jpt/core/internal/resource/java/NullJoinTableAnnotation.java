@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.internal.resource.java;
 
 import java.util.ListIterator;
 
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
+import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.JoinTableAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
@@ -19,11 +19,11 @@ import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 /**
  * javax.persistence.JoinTable
  */
-public final class NullJoinTableAnnotation
+public class NullJoinTableAnnotation
 	extends NullBaseTableAnnotation
 	implements JoinTableAnnotation
 {	
-	protected NullJoinTableAnnotation(JavaResourcePersistentAttribute parent) {
+	public NullJoinTableAnnotation(JavaResourceNode parent) {
 		super(parent);
 	}
 
@@ -32,8 +32,8 @@ public final class NullJoinTableAnnotation
 	}
 
 	@Override
-	protected JoinTableAnnotation buildSupportingAnnotation() {
-		return (JoinTableAnnotation) super.buildSupportingAnnotation();
+	protected JoinTableAnnotation buildAnnotation() {
+		return (JoinTableAnnotation) this.buildSupportingAnnotation();
 	}
 
 	// ***** join columns

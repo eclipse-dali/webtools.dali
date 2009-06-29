@@ -37,7 +37,7 @@ import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 /**
  * javax.persistence.AssociationOverride
  */
-public final class SourceAssociationOverrideAnnotation
+public class SourceAssociationOverrideAnnotation
 	extends SourceOverrideAnnotation
 	implements NestableAssociationOverrideAnnotation
 {

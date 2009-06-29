@@ -13,7 +13,7 @@ import java.util.ListIterator;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.resource.java.BaseTableAnnotation;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.UniqueConstraintAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
@@ -26,14 +26,12 @@ public abstract class NullBaseTableAnnotation
 	extends NullAnnotation
 	implements BaseTableAnnotation
 {
-	protected NullBaseTableAnnotation(JavaResourcePersistentMember parent) {
+	protected NullBaseTableAnnotation(JavaResourceNode parent) {
 		super(parent);
 	}
+	
+	protected abstract BaseTableAnnotation buildAnnotation();
 
-	@Override
-	protected BaseTableAnnotation buildSupportingAnnotation() {
-		return (BaseTableAnnotation) super.buildSupportingAnnotation();
-	}
 
 	// ***** name
 	public String getName() {
@@ -42,7 +40,7 @@ public abstract class NullBaseTableAnnotation
 
 	public void setName(String name) {
 		if (name != null) {
-			this.buildSupportingAnnotation().setName(name);
+			this.buildAnnotation().setName(name);
 		}
 	}
 
@@ -61,7 +59,7 @@ public abstract class NullBaseTableAnnotation
 
 	public void setSchema(String schema) {
 		if (schema != null) {
-			this.buildSupportingAnnotation().setSchema(schema);
+			this.buildAnnotation().setSchema(schema);
 		}
 	}
 
@@ -80,7 +78,7 @@ public abstract class NullBaseTableAnnotation
 
 	public void setCatalog(String catalog) {
 		if (catalog != null) {
-			this.buildSupportingAnnotation().setCatalog(catalog);
+			this.buildAnnotation().setCatalog(catalog);
 		}
 	}
 
@@ -110,7 +108,7 @@ public abstract class NullBaseTableAnnotation
 	}
 
 	public UniqueConstraintAnnotation addUniqueConstraint(int index) {
-		return this.buildSupportingAnnotation().addUniqueConstraint(index);
+		return this.buildAnnotation().addUniqueConstraint(index);
 	}
 
 	public void moveUniqueConstraint(int targetIndex, int sourceIndex) {

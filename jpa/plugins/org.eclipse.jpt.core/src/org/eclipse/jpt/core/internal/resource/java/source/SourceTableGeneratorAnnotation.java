@@ -13,6 +13,7 @@ import java.util.ListIterator;
 import java.util.Vector;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.utility.jdt.NestedIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.resource.java.AnnotationContainer;
 import org.eclipse.jpt.core.resource.java.JPA;
@@ -24,6 +25,7 @@ import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.Member;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
@@ -323,9 +325,13 @@ public final class SourceTableGeneratorAnnotation
 		this.uniqueConstraints.add(uniqueConstraint);
 		return uniqueConstraint;
 	}
+	
+	NestableUniqueConstraintAnnotation buildUniqueConstraint(int index) {
+		return new SourceUniqueConstraintAnnotation(this, this.member, buildUniqueConstraintAnnotationAdapter(index));
+	}
 
-	private NestableUniqueConstraintAnnotation buildUniqueConstraint(int index) {
-		return SourceUniqueConstraintAnnotation.createTableGeneratorUniqueConstraint(this, this.member, index);
+	IndexedDeclarationAnnotationAdapter buildUniqueConstraintAnnotationAdapter(int index) {
+		return new NestedIndexedDeclarationAnnotationAdapter(this.daa, JPA.TABLE_GENERATOR__UNIQUE_CONSTRAINTS, index, JPA.UNIQUE_CONSTRAINT);
 	}
 
 	void uniqueConstraintAdded(int index, NestableUniqueConstraintAnnotation constraint) {

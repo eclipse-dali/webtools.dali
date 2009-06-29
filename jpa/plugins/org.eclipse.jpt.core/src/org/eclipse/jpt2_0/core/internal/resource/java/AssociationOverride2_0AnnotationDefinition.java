@@ -7,25 +7,25 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.internal.resource.java;
+package org.eclipse.jpt2_0.core.internal.resource.java;
 
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jpt.core.internal.resource.java.binary.BinaryJoinTableAnnotation;
-import org.eclipse.jpt.core.internal.resource.java.source.SourceJoinTableAnnotation;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.core.resource.java.AssociationOverrideAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
-import org.eclipse.jpt.core.resource.java.JoinTableAnnotation;
 import org.eclipse.jpt.core.utility.jdt.Member;
+import org.eclipse.jpt2_0.core.internal.resource.java.binary.BinaryAssociationOverride2_0Annotation;
+import org.eclipse.jpt2_0.core.internal.resource.java.source.SourceAssociationOverride2_0Annotation;
 
 /**
- * javax.persistence.JoinTable
+ * javax.persistence.AssociationOverride
  */
-public class JoinTableAnnotationDefinition
+public class AssociationOverride2_0AnnotationDefinition
 	implements AnnotationDefinition
 {
 	// singleton
-	private static final AnnotationDefinition INSTANCE = new JoinTableAnnotationDefinition();
+	private static final AnnotationDefinition INSTANCE = new AssociationOverride2_0AnnotationDefinition();
 
 	/**
 	 * Return the singleton.
@@ -37,24 +37,24 @@ public class JoinTableAnnotationDefinition
 	/**
 	 * Ensure single instance.
 	 */
-	private JoinTableAnnotationDefinition() {
+	private AssociationOverride2_0AnnotationDefinition() {
 		super();
 	}
 
 	public Annotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
-		return new SourceJoinTableAnnotation(parent, member);
+		return SourceAssociationOverride2_0Annotation.createAssociationOverride(parent, member);
 	}
 
 	public Annotation buildNullAnnotation(JavaResourcePersistentMember parent) {
-		return new NullJoinTableAnnotation(parent);
+		throw new UnsupportedOperationException();
 	}
 
 	public Annotation buildAnnotation(JavaResourcePersistentMember parent, IAnnotation jdtAnnotation) {
-		return new BinaryJoinTableAnnotation(parent, jdtAnnotation);
+		return new BinaryAssociationOverride2_0Annotation(parent, jdtAnnotation);
 	}
 
 	public String getAnnotationName() {
-		return JoinTableAnnotation.ANNOTATION_NAME;
+		return AssociationOverrideAnnotation.ANNOTATION_NAME;
 	}
 
 }

@@ -22,7 +22,7 @@ import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 /**
  * javax.persistence.AssociationOverride
  */
-public final class BinaryAssociationOverrideAnnotation
+public class BinaryAssociationOverrideAnnotation
 	extends BinaryOverrideAnnotation
 	implements NestableAssociationOverrideAnnotation
 {

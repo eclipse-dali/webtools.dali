@@ -17,7 +17,6 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.AnnotationStringArrayExpressionConverter;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.MemberIndexedAnnotationAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.NestedIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.ShortCircuitArrayAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.resource.java.JPA;
@@ -152,41 +151,6 @@ public final class SourceUniqueConstraintAnnotation
 
 	public void moveAnnotation(int newIndex) {
 		this.getIndexedAnnotationAdapter().moveAnnotation(newIndex);
-	}
-
-
-	// ********** static methods **********
-
-	static NestableUniqueConstraintAnnotation createSecondaryTableUniqueConstraint(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter declarationAnnotationAdapter, int index) {
-		return new SourceUniqueConstraintAnnotation(parent, member, buildSecondaryTableUniqueConstraintAnnotationAdapter(declarationAnnotationAdapter, index));
-	}
-
-	private static IndexedDeclarationAnnotationAdapter buildSecondaryTableUniqueConstraintAnnotationAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter, int index) {
-		return new NestedIndexedDeclarationAnnotationAdapter(declarationAnnotationAdapter, JPA.SECONDARY_TABLE__UNIQUE_CONSTRAINTS, index, JPA.UNIQUE_CONSTRAINT);
-	}
-
-	static NestableUniqueConstraintAnnotation createJoinTableUniqueConstraint(JavaResourceNode parent, Member member, int index) {
-		return new SourceUniqueConstraintAnnotation(parent, member, buildJoinTableUniqueConstraintAnnotationAdapter(index));
-	}
-
-	private static IndexedDeclarationAnnotationAdapter buildJoinTableUniqueConstraintAnnotationAdapter(int index) {
-		return new NestedIndexedDeclarationAnnotationAdapter(SourceJoinTableAnnotation.DECLARATION_ANNOTATION_ADAPTER, JPA.JOIN_TABLE__UNIQUE_CONSTRAINTS, index, JPA.UNIQUE_CONSTRAINT);
-	}
-
-	static NestableUniqueConstraintAnnotation createTableUniqueConstraint(JavaResourceNode parent, Member member, int index) {
-		return new SourceUniqueConstraintAnnotation(parent, member, buildTableUniqueConstraintAnnotationAdapter(index));
-	}
-
-	private static IndexedDeclarationAnnotationAdapter buildTableUniqueConstraintAnnotationAdapter(int index) {
-		return new NestedIndexedDeclarationAnnotationAdapter(SourceTableAnnotation.DECLARATION_ANNOTATION_ADAPTER, JPA.TABLE__UNIQUE_CONSTRAINTS, index, JPA.UNIQUE_CONSTRAINT);
-	}
-
-	static NestableUniqueConstraintAnnotation createTableGeneratorUniqueConstraint(JavaResourceNode parent, Member member, int index) {
-		return new SourceUniqueConstraintAnnotation(parent, member, buildTableGeneratorUniqueConstraintAnnotationAdapter(index));
-	}
-
-	private static IndexedDeclarationAnnotationAdapter buildTableGeneratorUniqueConstraintAnnotationAdapter(int index) {
-		return new NestedIndexedDeclarationAnnotationAdapter(SourceTableGeneratorAnnotation.DECLARATION_ANNOTATION_ADAPTER, JPA.TABLE_GENERATOR__UNIQUE_CONSTRAINTS, index, JPA.UNIQUE_CONSTRAINT);
 	}
 
 }
