@@ -21,7 +21,7 @@ import org.eclipse.jpt2_0.core.resource.java.AccessAnnotation;
 /**
  * javax.persistence.Access
  */
-public class AccessAnnotationDefinition
+public final class AccessAnnotationDefinition
 	implements AnnotationDefinition
 {
 	// singleton

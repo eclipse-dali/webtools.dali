@@ -22,7 +22,7 @@ import org.eclipse.jpt.core.utility.jdt.Member;
 /**
  * javax.persistence.OrderBy
  */
-public class OrderByAnnotationDefinition
+public final class OrderByAnnotationDefinition
 	implements AnnotationDefinition
 {
 	// singleton

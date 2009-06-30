@@ -23,7 +23,7 @@ import org.eclipse.jpt.core.utility.jdt.Member;
 /**
  * javax.persistence.Id
  */
-public class IdAnnotationDefinition
+public final class IdAnnotationDefinition
 	implements AnnotationDefinition
 {
 	// singleton

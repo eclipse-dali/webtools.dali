@@ -21,7 +21,7 @@ import org.eclipse.jpt.core.utility.jdt.Member;
 /**
  * javax.persistence.SecondaryTable
  */
-public class SecondaryTableAnnotationDefinition
+public final class SecondaryTableAnnotationDefinition
 	implements AnnotationDefinition
 {
 	// singleton

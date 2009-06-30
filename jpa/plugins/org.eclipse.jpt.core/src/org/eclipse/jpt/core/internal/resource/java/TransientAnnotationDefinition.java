@@ -23,7 +23,7 @@ import org.eclipse.jpt.core.utility.jdt.Member;
 /**
  * javax.persistence.Transient
  */
-public class TransientAnnotationDefinition
+public final class TransientAnnotationDefinition
 	implements AnnotationDefinition
 {
 	// singleton

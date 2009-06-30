@@ -23,7 +23,7 @@ import org.eclipse.jpt.core.utility.jdt.Type;
 /**
  * javax.persistence.Inheritance
  */
-public class InheritanceAnnotationDefinition
+public final class InheritanceAnnotationDefinition
 	implements AnnotationDefinition
 {
 	// singleton

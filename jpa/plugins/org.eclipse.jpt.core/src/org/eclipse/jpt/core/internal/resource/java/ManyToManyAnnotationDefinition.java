@@ -23,7 +23,7 @@ import org.eclipse.jpt.core.utility.jdt.Member;
 /**
  * javax.persistence.ManyToMany
  */
-public class ManyToManyAnnotationDefinition
+public final class ManyToManyAnnotationDefinition
 	implements AnnotationDefinition
 {
 	// singleton

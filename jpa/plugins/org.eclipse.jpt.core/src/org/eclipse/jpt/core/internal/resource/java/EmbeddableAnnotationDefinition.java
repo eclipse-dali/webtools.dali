@@ -23,7 +23,7 @@ import org.eclipse.jpt.core.utility.jdt.Type;
 /**
  * javax.persistence.Embeddable
  */
-public class EmbeddableAnnotationDefinition
+public final class EmbeddableAnnotationDefinition
 	implements AnnotationDefinition
 {
 	// singleton

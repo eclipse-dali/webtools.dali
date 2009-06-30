@@ -22,7 +22,7 @@ import org.eclipse.jpt.core.utility.jdt.Member;
 /**
  * javax.persistence.DiscriminatorColumn
  */
-public class DiscriminatorColumnAnnotationDefinition
+public final class DiscriminatorColumnAnnotationDefinition
 	implements AnnotationDefinition
 {
 	// singleton

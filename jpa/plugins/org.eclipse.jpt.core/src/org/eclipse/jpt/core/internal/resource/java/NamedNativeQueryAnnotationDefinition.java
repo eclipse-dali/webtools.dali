@@ -22,7 +22,7 @@ import org.eclipse.jpt.core.utility.jdt.Type;
 /**
  * javax.persistence.NamedNativeQuery
  */
-public class NamedNativeQueryAnnotationDefinition
+public final class NamedNativeQueryAnnotationDefinition
 	implements AnnotationDefinition
 {
 	// singleton

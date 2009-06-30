@@ -23,7 +23,7 @@ import org.eclipse.jpt.core.utility.jdt.Member;
 /**
  * javax.persistence.Enumerated
  */
-public class EnumeratedAnnotationDefinition
+public final class EnumeratedAnnotationDefinition
 	implements AnnotationDefinition
 {
 	// singleton

@@ -23,7 +23,7 @@ import org.eclipse.jpt.core.utility.jdt.Member;
 /**
  * javax.persistence.Embedded
  */
-public class EmbeddedAnnotationDefinition
+public final class EmbeddedAnnotationDefinition
 	implements AnnotationDefinition
 {
 	// singleton

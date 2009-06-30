@@ -21,7 +21,7 @@ import org.eclipse.jpt.core.utility.jdt.Member;
 /**
  * javax.persistence.GeneratedValue
  */
-public class GeneratedValueAnnotationDefinition
+public final class GeneratedValueAnnotationDefinition
 	implements AnnotationDefinition
 {
 	// singleton

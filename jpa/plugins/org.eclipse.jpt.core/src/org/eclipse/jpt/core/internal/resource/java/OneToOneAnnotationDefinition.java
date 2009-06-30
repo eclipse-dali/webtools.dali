@@ -23,7 +23,7 @@ import org.eclipse.jpt.core.utility.jdt.Member;
 /**
  * javax.persistence.OneToOne
  */
-public class OneToOneAnnotationDefinition
+public final class OneToOneAnnotationDefinition
 	implements AnnotationDefinition
 {
 	// singleton

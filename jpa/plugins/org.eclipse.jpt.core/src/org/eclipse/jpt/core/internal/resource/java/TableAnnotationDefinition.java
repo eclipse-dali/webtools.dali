@@ -22,7 +22,7 @@ import org.eclipse.jpt.core.utility.jdt.Member;
 /**
  * javax.persistence.Table
  */
-public class TableAnnotationDefinition
+public final class TableAnnotationDefinition
 	implements AnnotationDefinition
 {
 	// singleton

@@ -22,7 +22,7 @@ import org.eclipse.jpt.core.utility.jdt.Member;
 /**
  * javax.persistence.Lob
  */
-public class LobAnnotationDefinition
+public final class LobAnnotationDefinition
 	implements AnnotationDefinition
 {
 	// singleton

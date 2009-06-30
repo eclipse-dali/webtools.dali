@@ -23,7 +23,7 @@ import org.eclipse.jpt.core.utility.jdt.Type;
 /**
  * javax.persistence.DiscriminatorValue
  */
-public class DiscriminatorValueAnnotationDefinition
+public final class DiscriminatorValueAnnotationDefinition
 	implements AnnotationDefinition
 {
 	// singleton

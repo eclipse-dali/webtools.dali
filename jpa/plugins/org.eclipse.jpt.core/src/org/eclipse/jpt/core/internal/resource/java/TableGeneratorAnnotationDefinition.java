@@ -21,7 +21,7 @@ import org.eclipse.jpt.core.utility.jdt.Member;
 /**
  * javax.persistence.TableGenerator
  */
-public class TableGeneratorAnnotationDefinition
+public final class TableGeneratorAnnotationDefinition
 	implements AnnotationDefinition
 {
 	// singleton

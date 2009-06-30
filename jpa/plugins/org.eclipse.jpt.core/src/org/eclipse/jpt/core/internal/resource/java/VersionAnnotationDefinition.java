@@ -23,7 +23,7 @@ import org.eclipse.jpt.core.utility.jdt.Member;
 /**
  * javax.persistence.Version
  */
-public class VersionAnnotationDefinition
+public final class VersionAnnotationDefinition
 	implements AnnotationDefinition
 {
 	// singleton

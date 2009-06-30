@@ -22,7 +22,7 @@ import org.eclipse.jpt.core.utility.jdt.Member;
 /**
  * javax.persistence.MapKey
  */
-public class MapKeyAnnotationDefinition
+public final class MapKeyAnnotationDefinition
 	implements AnnotationDefinition
 {
 	// singleton

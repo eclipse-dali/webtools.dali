@@ -23,7 +23,7 @@ import org.eclipse.jpt.core.utility.jdt.Member;
 /**
  * javax.persistence.Basic
  */
-public class BasicAnnotationDefinition
+public final class BasicAnnotationDefinition
 	implements AnnotationDefinition
 {
 	// singleton

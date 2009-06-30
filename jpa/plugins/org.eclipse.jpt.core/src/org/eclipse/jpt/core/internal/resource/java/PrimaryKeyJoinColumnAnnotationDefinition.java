@@ -21,7 +21,7 @@ import org.eclipse.jpt.core.utility.jdt.Member;
 /**
  * javax.persistence.PrimaryKeyJoinColumn
  */
-public class PrimaryKeyJoinColumnAnnotationDefinition
+public final class PrimaryKeyJoinColumnAnnotationDefinition
 	implements AnnotationDefinition
 {
 	// singleton

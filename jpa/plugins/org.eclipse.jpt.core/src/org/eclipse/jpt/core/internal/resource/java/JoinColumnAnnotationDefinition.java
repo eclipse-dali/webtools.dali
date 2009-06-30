@@ -21,7 +21,7 @@ import org.eclipse.jpt.core.utility.jdt.Member;
 /**
  * javax.persistence.JoinColumn
  */
-public class JoinColumnAnnotationDefinition
+public final class JoinColumnAnnotationDefinition
 	implements AnnotationDefinition
 {
 	// singleton

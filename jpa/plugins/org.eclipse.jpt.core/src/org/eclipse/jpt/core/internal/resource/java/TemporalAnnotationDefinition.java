@@ -23,7 +23,7 @@ import org.eclipse.jpt.core.utility.jdt.Member;
 /**
  * javax.persistence.Temporal
  */
-public class TemporalAnnotationDefinition
+public final class TemporalAnnotationDefinition
 	implements AnnotationDefinition
 {
 	// singleton

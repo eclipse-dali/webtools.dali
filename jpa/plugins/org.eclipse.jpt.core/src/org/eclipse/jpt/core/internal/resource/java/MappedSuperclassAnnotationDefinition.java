@@ -23,7 +23,7 @@ import org.eclipse.jpt.core.utility.jdt.Type;
 /**
  * javax.persistence.MappedSuperclass
  */
-public class MappedSuperclassAnnotationDefinition
+public final class MappedSuperclassAnnotationDefinition
 	implements AnnotationDefinition
 {
 	// singleton

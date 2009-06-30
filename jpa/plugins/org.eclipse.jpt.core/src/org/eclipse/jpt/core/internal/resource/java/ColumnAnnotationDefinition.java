@@ -21,7 +21,7 @@ import org.eclipse.jpt.core.utility.jdt.Member;
 /**
  * javax.persistence.Column
  */
-public class ColumnAnnotationDefinition
+public final class ColumnAnnotationDefinition
 	implements AnnotationDefinition
 {
 	// singleton
