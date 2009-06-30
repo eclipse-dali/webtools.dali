@@ -13,9 +13,6 @@ import java.util.ListIterator;
 import java.util.Vector;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.MemberIndexedAnnotationAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.NestedIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.resource.java.AnnotationContainer;
 import org.eclipse.jpt.core.resource.java.AssociationOverrideAnnotation;
@@ -27,8 +24,6 @@ import org.eclipse.jpt.core.resource.java.NestableAssociationOverrideAnnotation;
 import org.eclipse.jpt.core.resource.java.NestableJoinColumnAnnotation;
 import org.eclipse.jpt.core.utility.jdt.AnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
-import org.eclipse.jpt.core.utility.jdt.IndexedAnnotationAdapter;
-import org.eclipse.jpt.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.Member;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
@@ -37,7 +32,7 @@ import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 /**
  * javax.persistence.AssociationOverride
  */
-public class SourceAssociationOverrideAnnotation
+public abstract class SourceAssociationOverrideAnnotation
 	extends SourceOverrideAnnotation
 	implements NestableAssociationOverrideAnnotation
 {
@@ -49,7 +44,7 @@ public class SourceAssociationOverrideAnnotation
 
 	// ********** construction/initialization **********
 
-	public SourceAssociationOverrideAnnotation(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
+	protected SourceAssociationOverrideAnnotation(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent, member, daa, annotationAdapter);
 	}
 
@@ -69,11 +64,11 @@ public class SourceAssociationOverrideAnnotation
 		AnnotationContainerTools.update(this.joinColumnsContainer, astRoot);
 	}
 
-
+	
 	// ********** SourceOverrideAnnotation implementation **********
 
 	@Override
-	String getNameElementName() {
+	protected String getNameElementName() {
 		return JPA.ASSOCIATION_OVERRIDE__NAME;
 	}
 
@@ -155,24 +150,6 @@ public class SourceAssociationOverrideAnnotation
 			newJoinColumn.initializeFrom((NestableAnnotation) oldJoinColumn);
 		}
 	}
-
-
-	// ********** static methods **********
-
-	public static SourceAssociationOverrideAnnotation createAssociationOverride(JavaResourceNode parent, Member member) {
-		return new SourceAssociationOverrideAnnotation(parent, member, DECLARATION_ANNOTATION_ADAPTER, new MemberAnnotationAdapter(member, DECLARATION_ANNOTATION_ADAPTER));
-	}
-
-	static SourceAssociationOverrideAnnotation createNestedAssociationOverride(JavaResourceNode parent, Member member, int index, DeclarationAnnotationAdapter attributeOverridesAdapter) {
-		IndexedDeclarationAnnotationAdapter idaa = buildNestedDeclarationAnnotationAdapter(index, attributeOverridesAdapter);
-		IndexedAnnotationAdapter annotationAdapter = new MemberIndexedAnnotationAdapter(member, idaa);
-		return new SourceAssociationOverrideAnnotation(parent, member, idaa, annotationAdapter);
-	}
-
-	protected static IndexedDeclarationAnnotationAdapter buildNestedDeclarationAnnotationAdapter(int index, DeclarationAnnotationAdapter attributeOverridesAdapter) {
-		return new NestedIndexedDeclarationAnnotationAdapter(attributeOverridesAdapter, index, JPA.ASSOCIATION_OVERRIDE);
-	}
-
 
 	// ********** join column container **********
 

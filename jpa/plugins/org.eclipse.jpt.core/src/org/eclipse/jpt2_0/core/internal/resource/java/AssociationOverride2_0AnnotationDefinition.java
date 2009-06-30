@@ -21,7 +21,7 @@ import org.eclipse.jpt2_0.core.internal.resource.java.source.SourceAssociationOv
 /**
  * javax.persistence.AssociationOverride
  */
-public class AssociationOverride2_0AnnotationDefinition
+public final class AssociationOverride2_0AnnotationDefinition
 	implements AnnotationDefinition
 {
 	// singleton
@@ -42,7 +42,7 @@ public class AssociationOverride2_0AnnotationDefinition
 	}
 
 	public Annotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
-		return SourceAssociationOverride2_0Annotation.createAssociationOverride(parent, member);
+		return SourceAssociationOverride2_0Annotation.buildAssociationOverride(parent, member);
 	}
 
 	public Annotation buildNullAnnotation(JavaResourcePersistentMember parent) {

@@ -7,27 +7,26 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt2_0.core.internal.resource.java.source;
+package org.eclipse.jpt.core.internal.resource.java.binary;
 
-import org.eclipse.jpt.core.internal.resource.java.source.SourceAssociationOverridesAnnotation;
+import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.NestableAssociationOverrideAnnotation;
-import org.eclipse.jpt.core.utility.jdt.Member;
 
 /**
  * javax.persistence.AssociationOverrides
  */
-public final class SourceAssociationOverrides2_0Annotation
-	extends SourceAssociationOverridesAnnotation
+public final class BinaryAssociationOverrides1_0Annotation
+	extends BinaryAssociationOverridesAnnotation
 {
 
-	public SourceAssociationOverrides2_0Annotation(JavaResourceNode parent, Member member) {
-		super(parent, member);
+	public BinaryAssociationOverrides1_0Annotation(JavaResourceNode parent, IAnnotation jdtAnnotation) {
+		super(parent, jdtAnnotation);
 	}
 
 	@Override
-	protected NestableAssociationOverrideAnnotation buildAssociationOverride(int index) {
-		return SourceAssociationOverride2_0Annotation.buildNestedAssociationOverride(this, this.member, index, this.daa);
+	protected NestableAssociationOverrideAnnotation buildAssociationOverride(Object jdtAssociationOverride) {
+		return new BinaryAssociationOverride1_0Annotation(this, (IAnnotation) jdtAssociationOverride);
 	}
 
 }

@@ -22,14 +22,14 @@ import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 /**
  * javax.persistence.AssociationOverrides
  */
-public class BinaryAssociationOverridesAnnotation
+public abstract class BinaryAssociationOverridesAnnotation
 	extends BinaryContainerAnnotation<NestableAssociationOverrideAnnotation>
 	implements AssociationOverridesAnnotation
 {
 	private final Vector<NestableAssociationOverrideAnnotation> associationOverrides;
 
 
-	public BinaryAssociationOverridesAnnotation(JavaResourceNode parent, IAnnotation jdtAnnotation) {
+	protected BinaryAssociationOverridesAnnotation(JavaResourceNode parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 		this.associationOverrides = this.buildAssociationOverrides();
 	}
@@ -55,9 +55,7 @@ public class BinaryAssociationOverridesAnnotation
 		return result;
 	}
 
-	protected NestableAssociationOverrideAnnotation buildAssociationOverride(Object jdtAssociationOverride) {
-		return new BinaryAssociationOverrideAnnotation(this, (IAnnotation) jdtAssociationOverride);
-	}
+	protected abstract NestableAssociationOverrideAnnotation buildAssociationOverride(Object jdtAssociationOverride);
 	
 	@Override
 	public void update() {

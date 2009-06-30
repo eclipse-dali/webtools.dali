@@ -42,10 +42,10 @@ public final class BinaryAttributeOverrideAnnotation
 	}
 
 
-	//************ JarOverrideAnnotation implementation ****************
+	//************ BinaryOverrideAnnotation implementation ****************
 
 	@Override
-	String getNameElementName() {
+	protected String getNameElementName() {
 		return JPA.ATTRIBUTE_OVERRIDE__NAME;
 	}
 	

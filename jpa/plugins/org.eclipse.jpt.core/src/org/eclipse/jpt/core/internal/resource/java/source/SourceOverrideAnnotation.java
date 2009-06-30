@@ -88,7 +88,7 @@ abstract class SourceOverrideAnnotation
 		return this.elementTouches(this.nameDeclarationAdapter, pos, astRoot);
 	}
 
-	abstract String getNameElementName();
+	protected abstract String getNameElementName();
 
 
 	// ********** NestableAnnotation implementation **********

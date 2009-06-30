@@ -19,14 +19,14 @@ import org.eclipse.jpt.core.utility.TextRange;
 /**
  * javax.persistence.SequenceGenerator
  */
-public class BinarySequenceGeneratorAnnotation
+public abstract class BinarySequenceGeneratorAnnotation
 	extends BinaryGeneratorAnnotation
 	implements SequenceGeneratorAnnotation
 {
 	private String sequenceName;
 
 
-	public BinarySequenceGeneratorAnnotation(JavaResourceNode parent, IAnnotation jdtAnnotation) {
+	protected BinarySequenceGeneratorAnnotation(JavaResourceNode parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 		this.sequenceName = this.buildSequenceName();
 	}

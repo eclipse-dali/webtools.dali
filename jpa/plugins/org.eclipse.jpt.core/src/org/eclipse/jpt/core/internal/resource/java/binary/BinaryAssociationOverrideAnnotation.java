@@ -22,14 +22,14 @@ import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 /**
  * javax.persistence.AssociationOverride
  */
-public class BinaryAssociationOverrideAnnotation
+public abstract class BinaryAssociationOverrideAnnotation
 	extends BinaryOverrideAnnotation
 	implements NestableAssociationOverrideAnnotation
 {
 	private final Vector<JoinColumnAnnotation> joinColumns;
 
 
-	public BinaryAssociationOverrideAnnotation(JavaResourceNode parent, IAnnotation jdtAnnotation) {
+	protected BinaryAssociationOverrideAnnotation(JavaResourceNode parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 		this.joinColumns = this.buildJoinColumns();
 	}
@@ -45,14 +45,14 @@ public class BinaryAssociationOverrideAnnotation
 	}
 
 
-	// ********** JarOverrideAnnotation implementation **********
+	// ********** BinaryOverrideAnnotation implementation **********
 
 	@Override
-	String getNameElementName() {
+	protected String getNameElementName() {
 		return JPA.ASSOCIATION_OVERRIDE__NAME;
 	}
 
-
+	
 	// ********** AssociationOverrideAnnotation implementation **********
 
 	// ***** join columns

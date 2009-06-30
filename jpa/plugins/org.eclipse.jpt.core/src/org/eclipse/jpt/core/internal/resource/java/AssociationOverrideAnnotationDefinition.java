@@ -10,8 +10,8 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jpt.core.internal.resource.java.binary.BinaryAssociationOverrideAnnotation;
-import org.eclipse.jpt.core.internal.resource.java.source.SourceAssociationOverrideAnnotation;
+import org.eclipse.jpt.core.internal.resource.java.binary.BinaryAssociationOverride1_0Annotation;
+import org.eclipse.jpt.core.internal.resource.java.source.SourceAssociationOverride1_0Annotation;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.core.resource.java.AssociationOverrideAnnotation;
@@ -21,7 +21,7 @@ import org.eclipse.jpt.core.utility.jdt.Member;
 /**
  * javax.persistence.AssociationOverride
  */
-public class AssociationOverrideAnnotationDefinition
+public final class AssociationOverrideAnnotationDefinition
 	implements AnnotationDefinition
 {
 	// singleton
@@ -42,7 +42,7 @@ public class AssociationOverrideAnnotationDefinition
 	}
 
 	public Annotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
-		return SourceAssociationOverrideAnnotation.createAssociationOverride(parent, member);
+		return SourceAssociationOverride1_0Annotation.buildAssociationOverride(parent, member);
 	}
 
 	public Annotation buildNullAnnotation(JavaResourcePersistentMember parent) {
@@ -50,7 +50,7 @@ public class AssociationOverrideAnnotationDefinition
 	}
 
 	public Annotation buildAnnotation(JavaResourcePersistentMember parent, IAnnotation jdtAnnotation) {
-		return new BinaryAssociationOverrideAnnotation(parent, jdtAnnotation);
+		return new BinaryAssociationOverride1_0Annotation(parent, jdtAnnotation);
 	}
 
 	public String getAnnotationName() {

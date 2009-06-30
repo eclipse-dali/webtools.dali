@@ -10,8 +10,8 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jpt.core.internal.resource.java.binary.BinarySequenceGeneratorAnnotation;
-import org.eclipse.jpt.core.internal.resource.java.source.SourceSequenceGeneratorAnnotation;
+import org.eclipse.jpt.core.internal.resource.java.binary.BinarySequenceGenerator1_0Annotation;
+import org.eclipse.jpt.core.internal.resource.java.source.SourceSequenceGenerator1_0Annotation;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
@@ -21,7 +21,7 @@ import org.eclipse.jpt.core.utility.jdt.Member;
 /**
  * javax.persistence.SequenceGenerator
  */
-public class SequenceGeneratorAnnotationDefinition
+public final class SequenceGeneratorAnnotationDefinition
 	implements AnnotationDefinition
 {
 	// singleton
@@ -42,7 +42,7 @@ public class SequenceGeneratorAnnotationDefinition
 	}
 
 	public Annotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
-		return new SourceSequenceGeneratorAnnotation(parent, member);
+		return new SourceSequenceGenerator1_0Annotation(parent, member);
 	}
 
 	public Annotation buildNullAnnotation(JavaResourcePersistentMember parent) {
@@ -50,7 +50,7 @@ public class SequenceGeneratorAnnotationDefinition
 	}
 
 	public Annotation buildAnnotation(JavaResourcePersistentMember parent, IAnnotation jdtAnnotation) {
-		return new BinarySequenceGeneratorAnnotation(parent, jdtAnnotation);
+		return new BinarySequenceGenerator1_0Annotation(parent, jdtAnnotation);
 	}
 
 	public String getAnnotationName() {

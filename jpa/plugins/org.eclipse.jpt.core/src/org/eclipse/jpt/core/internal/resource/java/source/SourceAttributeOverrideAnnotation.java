@@ -71,7 +71,7 @@ public final class SourceAttributeOverrideAnnotation
 	// ********** SourceOverrideAnnotation implementation **********
 
 	@Override
-	String getNameElementName() {
+	protected String getNameElementName() {
 		return JPA.ATTRIBUTE_OVERRIDE__NAME;
 	}
 	
@@ -136,11 +136,11 @@ public final class SourceAttributeOverrideAnnotation
 
 	// ********** static methods **********
 
-	public static SourceAttributeOverrideAnnotation createAttributeOverride(JavaResourceNode parent, Member member) {
+	public static SourceAttributeOverrideAnnotation buildAttributeOverride(JavaResourceNode parent, Member member) {
 		return new SourceAttributeOverrideAnnotation(parent, member, DECLARATION_ANNOTATION_ADAPTER, new MemberAnnotationAdapter(member, DECLARATION_ANNOTATION_ADAPTER));
 	}
 
-	static SourceAttributeOverrideAnnotation createNestedAttributeOverride(JavaResourceNode parent, Member member, int index, DeclarationAnnotationAdapter attributeOverridesAdapter) {
+	static SourceAttributeOverrideAnnotation buildNestedAttributeOverride(JavaResourceNode parent, Member member, int index, DeclarationAnnotationAdapter attributeOverridesAdapter) {
 		IndexedDeclarationAnnotationAdapter idaa = buildNestedDeclarationAnnotationAdapter(index, attributeOverridesAdapter);
 		IndexedAnnotationAdapter annotationAdapter = new MemberIndexedAnnotationAdapter(member, idaa);
 		return new SourceAttributeOverrideAnnotation(parent, member, idaa, annotationAdapter);

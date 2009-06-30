@@ -65,7 +65,7 @@ public abstract class BinaryOverrideAnnotation
 		return (String) this.getJdtMemberValue(this.getNameElementName());
 	}
 
-	abstract String getNameElementName();
+	protected abstract String getNameElementName();
 
 	public TextRange getNameTextRange(CompilationUnit astRoot) {
 		throw new UnsupportedOperationException();

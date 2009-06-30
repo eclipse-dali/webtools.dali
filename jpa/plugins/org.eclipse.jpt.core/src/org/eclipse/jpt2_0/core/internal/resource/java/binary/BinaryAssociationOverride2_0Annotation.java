@@ -38,6 +38,7 @@ public final class BinaryAssociationOverride2_0Annotation
 		this.updateJoinTable();
 	}
 
+
 	// ********** AssociationOverride2_0Annotation implementation **********
 
 	// ***** joinTable

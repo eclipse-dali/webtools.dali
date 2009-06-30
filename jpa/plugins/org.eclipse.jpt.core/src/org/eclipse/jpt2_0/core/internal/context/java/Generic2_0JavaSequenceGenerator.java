@@ -10,7 +10,7 @@
 package org.eclipse.jpt2_0.core.internal.context.java;
 
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
-import org.eclipse.jpt.core.internal.context.java.GenericJavaSequenceGenerator;
+import org.eclipse.jpt.core.internal.context.java.AbstractJavaSequenceGenerator;
 import org.eclipse.jpt.core.resource.java.SequenceGeneratorAnnotation;
 import org.eclipse.jpt2_0.core.context.SequenceGenerator2_0;
 import org.eclipse.jpt2_0.core.resource.java.SequenceGenerator2_0Annotation;
@@ -18,7 +18,7 @@ import org.eclipse.jpt2_0.core.resource.java.SequenceGenerator2_0Annotation;
 /**
  *  Generic2_0JavaSequenceGenerator
  */
-public class Generic2_0JavaSequenceGenerator extends GenericJavaSequenceGenerator
+public class Generic2_0JavaSequenceGenerator extends AbstractJavaSequenceGenerator
 	implements SequenceGenerator2_0
 {
 	protected String specifiedCatalog;
@@ -45,7 +45,7 @@ public class Generic2_0JavaSequenceGenerator extends GenericJavaSequenceGenerato
 	public void setSpecifiedCatalog(String catalog) {
 		String old = this.specifiedCatalog;
 		this.specifiedCatalog = catalog;
-		this.getResourceGenerator2_0().setCatalog(catalog);
+		this.getResourceGenerator().setCatalog(catalog);
 		this.firePropertyChanged(SPECIFIED_CATALOG_PROPERTY, old, catalog);
 	}
 	
@@ -83,7 +83,7 @@ public class Generic2_0JavaSequenceGenerator extends GenericJavaSequenceGenerato
 	public void setSpecifiedSchema(String schema) {
 		String old = this.specifiedSchema;
 		this.specifiedSchema = schema;
-		this.getResourceGenerator2_0().setSchema(schema);
+		this.getResourceGenerator().setSchema(schema);
 		this.firePropertyChanged(SPECIFIED_SCHEMA_PROPERTY, old, schema);
 	}
 
@@ -131,7 +131,8 @@ public class Generic2_0JavaSequenceGenerator extends GenericJavaSequenceGenerato
 		this.setSpecifiedSchema_(resource.getSchema());
 	}
 	
-	private SequenceGenerator2_0Annotation getResourceGenerator2_0() {
+	@Override
+	protected SequenceGenerator2_0Annotation getResourceGenerator() {
 		return (SequenceGenerator2_0Annotation) super.getResourceGenerator();
 	}
 

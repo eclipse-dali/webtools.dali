@@ -23,7 +23,7 @@ import org.eclipse.jpt.core.utility.jdt.Member;
 /**
  * javax.persistence.SequenceGenerator
  */
-public class SourceSequenceGeneratorAnnotation
+public abstract class SourceSequenceGeneratorAnnotation
 	extends SourceGeneratorAnnotation
 	implements SequenceGeneratorAnnotation
 {
@@ -40,7 +40,7 @@ public class SourceSequenceGeneratorAnnotation
 	private String sequenceName;
 
 
-	public SourceSequenceGeneratorAnnotation(JavaResourceNode parent, Member member) {
+	protected SourceSequenceGeneratorAnnotation(JavaResourceNode parent, Member member) {
 		super(parent, member, DECLARATION_ANNOTATION_ADAPTER);
 		this.sequenceNameAdapter = this.buildAdapter(SEQUENCE_NAME_ADAPTER);
 	}

@@ -10,10 +10,10 @@
 package org.eclipse.jpt2_0.core.internal.resource.java;
 
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jpt.core.internal.resource.java.SequenceGeneratorAnnotationDefinition;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.core.resource.java.SequenceGeneratorAnnotation;
 import org.eclipse.jpt.core.utility.jdt.Member;
 import org.eclipse.jpt2_0.core.internal.resource.java.binary.BinarySequenceGenerator2_0Annotation;
 import org.eclipse.jpt2_0.core.internal.resource.java.source.SourceSequenceGenerator2_0Annotation;
@@ -21,8 +21,8 @@ import org.eclipse.jpt2_0.core.internal.resource.java.source.SourceSequenceGener
 /**
  *  SequenceGenerator2_0AnnotationDefinition
  */
-public class SequenceGenerator2_0AnnotationDefinition
-	extends SequenceGeneratorAnnotationDefinition
+public final class SequenceGenerator2_0AnnotationDefinition
+	implements AnnotationDefinition
 {
 	// singleton
 	private static final AnnotationDefinition INSTANCE = new SequenceGenerator2_0AnnotationDefinition();
@@ -41,13 +41,20 @@ public class SequenceGenerator2_0AnnotationDefinition
 		super();
 	}
 
-	@Override
 	public Annotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
 		return new SourceSequenceGenerator2_0Annotation(parent, member);
 	}
 
-	@Override
+	public Annotation buildNullAnnotation(JavaResourcePersistentMember parent) {
+		throw new UnsupportedOperationException();
+	}
+
 	public Annotation buildAnnotation(JavaResourcePersistentMember parent, IAnnotation jdtAnnotation) {
 		return new BinarySequenceGenerator2_0Annotation(parent, jdtAnnotation);
 	}
+
+	public String getAnnotationName() {
+		return SequenceGeneratorAnnotation.ANNOTATION_NAME;
+	}
+
 }

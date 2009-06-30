@@ -44,12 +44,12 @@ public final class SourceAssociationOverride2_0Annotation
 		super(parent, member, daa, annotationAdapter);
 		this.joinTableAdapter = new MemberAnnotationAdapter(this.member, buildJoinTableAnnotationAdapter(this.daa));
 	}
-	
+
 	@Override
 	public void initialize(CompilationUnit astRoot) {
 		super.initialize(astRoot);
 		if (this.joinTableAdapter.getAnnotation(astRoot) != null) {
-			this.joinTable = createJoinTableAnnotation(this, this.member, this.daa);
+			this.joinTable = buildJoinTableAnnotation(this, this.member, this.daa);
 			this.joinTable.initialize(astRoot);
 		}
 	}
@@ -68,7 +68,7 @@ public final class SourceAssociationOverride2_0Annotation
 	}
 
 	public NestableJoinTableAnnotation addJoinTable() {
-		NestableJoinTableAnnotation table = createJoinTableAnnotation(this, this.member, this.daa);
+		NestableJoinTableAnnotation table = buildJoinTableAnnotation(this, this.member, this.daa);
 		table.newAnnotation();
 		this.setJoinTable(table);
 		return table;
@@ -88,13 +88,13 @@ public final class SourceAssociationOverride2_0Annotation
 	public JoinTableAnnotation getNonNullJoinTable() {
 		return (this.joinTable != null) ? this.joinTable : new NullAssociationOverrideJoinTableAnnotation(this);
 	}
-
+	
 	private void updateJoinTable(CompilationUnit astRoot) {
 		if (this.joinTableAdapter.getAnnotation(astRoot) == null) {
 			this.setJoinTable(null);
 		} else {
 			if (this.joinTable == null) {
-				NestableJoinTableAnnotation table = createJoinTableAnnotation(this, this.member, this.daa);
+				NestableJoinTableAnnotation table = buildJoinTableAnnotation(this, this.member, this.daa);
 				table.initialize(astRoot);
 				this.setJoinTable(table);
 			} else {
@@ -106,11 +106,11 @@ public final class SourceAssociationOverride2_0Annotation
 	
 	// ********** static methods **********
 
-	public static SourceAssociationOverride2_0Annotation createAssociationOverride(JavaResourceNode parent, Member member) {
+	public static SourceAssociationOverride2_0Annotation buildAssociationOverride(JavaResourceNode parent, Member member) {
 		return new SourceAssociationOverride2_0Annotation(parent, member, DECLARATION_ANNOTATION_ADAPTER, new MemberAnnotationAdapter(member, DECLARATION_ANNOTATION_ADAPTER));
 	}
 
-	static NestableJoinTableAnnotation createJoinTableAnnotation(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter associationOverrideAnnotationAdapter) {
+	static NestableJoinTableAnnotation buildJoinTableAnnotation(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter associationOverrideAnnotationAdapter) {
 		return new SourceJoinTableAnnotation(parent, member, buildJoinTableAnnotationAdapter(associationOverrideAnnotationAdapter));
 	}
 
@@ -119,7 +119,7 @@ public final class SourceAssociationOverride2_0Annotation
 	}
 
 	
-	static SourceAssociationOverrideAnnotation createNestedAssociationOverride(JavaResourceNode parent, Member member, int index, DeclarationAnnotationAdapter attributeOverridesAdapter) {
+	static SourceAssociationOverrideAnnotation buildNestedAssociationOverride(JavaResourceNode parent, Member member, int index, DeclarationAnnotationAdapter attributeOverridesAdapter) {
 		IndexedDeclarationAnnotationAdapter idaa = buildNestedDeclarationAnnotationAdapter(index, attributeOverridesAdapter);
 		IndexedAnnotationAdapter annotationAdapter = new MemberIndexedAnnotationAdapter(member, idaa);
 		return new SourceAssociationOverride2_0Annotation(parent, member, idaa, annotationAdapter);

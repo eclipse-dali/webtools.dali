@@ -21,7 +21,7 @@ import org.eclipse.jpt.core.utility.jdt.Member;
 /**
  * javax.persistence.AttributeOverrides
  */
-public class AttributeOverridesAnnotationDefinition
+public final class AttributeOverridesAnnotationDefinition
 	implements AnnotationDefinition
 {
 	// singleton

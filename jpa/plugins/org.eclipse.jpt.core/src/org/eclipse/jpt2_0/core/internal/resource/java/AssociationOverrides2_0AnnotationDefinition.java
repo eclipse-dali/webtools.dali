@@ -21,7 +21,7 @@ import org.eclipse.jpt2_0.core.internal.resource.java.source.SourceAssociationOv
 /**
  * javax.persistence.AssociationOverrides
  */
-public class AssociationOverrides2_0AnnotationDefinition
+public final class AssociationOverrides2_0AnnotationDefinition
 	implements AnnotationDefinition
 {
 	// singleton

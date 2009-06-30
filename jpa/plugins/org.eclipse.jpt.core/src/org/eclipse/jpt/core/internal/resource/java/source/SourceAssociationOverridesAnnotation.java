@@ -27,7 +27,7 @@ import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 /**
  * javax.persistence.AssociationOverrides
  */
-public class SourceAssociationOverridesAnnotation
+public abstract class SourceAssociationOverridesAnnotation
 	extends SourceAnnotation<Member>
 	implements AssociationOverridesAnnotation
 {
@@ -36,7 +36,7 @@ public class SourceAssociationOverridesAnnotation
 	private final Vector<NestableAssociationOverrideAnnotation> associationOverrides = new Vector<NestableAssociationOverrideAnnotation>();
 
 
-	public SourceAssociationOverridesAnnotation(JavaResourceNode parent, Member member) {
+	protected SourceAssociationOverridesAnnotation(JavaResourceNode parent, Member member) {
 		super(parent, member, DECLARATION_ANNOTATION_ADAPTER);
 	}
 
@@ -90,9 +90,7 @@ public class SourceAssociationOverridesAnnotation
 		return associationOverride;
 	}
 
-	protected NestableAssociationOverrideAnnotation buildAssociationOverride(int index) {
-		return SourceAssociationOverrideAnnotation.createNestedAssociationOverride(this, this.member, index, this.daa);
-	}
+	protected abstract NestableAssociationOverrideAnnotation buildAssociationOverride(int index);
 
 	public void nestedAnnotationAdded(int index, NestableAssociationOverrideAnnotation nestedAnnotation) {
 		this.fireItemAdded(ASSOCIATION_OVERRIDES_LIST, index, nestedAnnotation);

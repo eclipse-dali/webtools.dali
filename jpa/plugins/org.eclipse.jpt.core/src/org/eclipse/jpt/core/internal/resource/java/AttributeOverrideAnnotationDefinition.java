@@ -21,7 +21,7 @@ import org.eclipse.jpt.core.utility.jdt.Member;
 /**
  * javax.persistence.AttributeOverride
  */
-public class AttributeOverrideAnnotationDefinition
+public final class AttributeOverrideAnnotationDefinition
 	implements AnnotationDefinition
 {
 	// singleton
@@ -42,7 +42,7 @@ public class AttributeOverrideAnnotationDefinition
 	}
 
 	public Annotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
-		return SourceAttributeOverrideAnnotation.createAttributeOverride(parent, member);
+		return SourceAttributeOverrideAnnotation.buildAttributeOverride(parent, member);
 	}
 
 	public Annotation buildNullAnnotation(JavaResourcePersistentMember parent) {
