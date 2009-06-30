@@ -13,7 +13,7 @@ import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.Mutable;
-import org.eclipse.jpt.eclipselink.core.internal.context.java.AbstractEclipseLinkJavaPersistentAttribute;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaPersistentAttribute;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlMutable;
 
@@ -87,7 +87,7 @@ public class EclipseLinkOrmMutable extends AbstractXmlContextNode
 	}
 	
 	protected boolean calculateDefaultMutable() {
-		AbstractEclipseLinkJavaPersistentAttribute javaAttribute = (AbstractEclipseLinkJavaPersistentAttribute) this.getAttributeMapping().getPersistentAttribute().getJavaPersistentAttribute();
+		EclipseLinkJavaPersistentAttribute javaAttribute = (EclipseLinkJavaPersistentAttribute) this.getAttributeMapping().getPersistentAttribute().getJavaPersistentAttribute();
 		if (javaAttribute == null) {
 			return false;
 		}

@@ -51,7 +51,7 @@ public class JavaVariableOneToOneMappingProvider
 	}
 	
 	public boolean defaultApplies(JavaPersistentAttribute persistentAttribute) {
-		return ((AbstractEclipseLinkJavaPersistentAttribute) persistentAttribute).typeIsValidForVariableOneToOne();
+		return ((EclipseLinkJavaPersistentAttribute) persistentAttribute).typeIsValidForVariableOneToOne();
 	}
 
 }

@@ -55,7 +55,7 @@ public class EclipseLinkJavaMutable extends AbstractJavaJpaContextNode implement
 	}
 
 	protected boolean calculateDefaultMutable() {
-		AbstractEclipseLinkJavaPersistentAttribute javaAttribute = (AbstractEclipseLinkJavaPersistentAttribute) this.getAttributeMapping().getPersistentAttribute();
+		EclipseLinkJavaPersistentAttribute javaAttribute = (EclipseLinkJavaPersistentAttribute) this.getAttributeMapping().getPersistentAttribute();
 		if (javaAttribute.typeIsDateOrCalendar()) {
 			Boolean persistenceUnitDefaultMutable = this.getPersistenceUnit().getOptions().getTemporalMutable();
 			return persistenceUnitDefaultMutable == null ? false : persistenceUnitDefaultMutable.booleanValue();
