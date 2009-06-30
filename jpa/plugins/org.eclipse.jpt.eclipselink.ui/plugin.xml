@@ -47,7 +47,7 @@
         %newEclipseLink1_1JpaMappingFileWizardDesc
      </description>
      <class
-           class="org.eclipse.jpt.eclipselink.ui.internal.wizards.EclipseLink1_1MappingFileWizard">
+           class="org.eclipse.jpt.eclipselink1_1.ui.internal.wizards.EclipseLink1_1MappingFileWizard">
         <parameter
               name="javaeeartifact"
               value="true">
