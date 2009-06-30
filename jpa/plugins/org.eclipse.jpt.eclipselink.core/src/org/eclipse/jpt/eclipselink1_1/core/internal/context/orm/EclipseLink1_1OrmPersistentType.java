@@ -18,8 +18,8 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.orm.Attributes;
 import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkEntityMappings;
-import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.eclipselink1_1.core.internal.EclipseLink1_1JpaFactory;
+import org.eclipse.jpt.eclipselink1_1.core.resource.orm.EclipseLink1_1OrmFactory;
 import org.eclipse.jpt.eclipselink1_1.core.resource.orm.XmlAttributeMapping;
 
 public class EclipseLink1_1OrmPersistentType extends AbstractOrmPersistentType
@@ -36,7 +36,7 @@ public class EclipseLink1_1OrmPersistentType extends AbstractOrmPersistentType
 	
 	@Override
 	protected Attributes createResourceAttributes() {
-		return EclipseLinkOrmFactory.eINSTANCE.createAttributes();
+		return EclipseLink1_1OrmFactory.eINSTANCE.createAttributes();
 	}
 	
 	@Override
