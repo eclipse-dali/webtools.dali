@@ -13,18 +13,15 @@ package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 import java.util.List;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmRelationshipReference;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmOneToManyMapping;
+import org.eclipse.jpt.core.internal.context.orm.AbstractOrmOneToManyMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToManyMapping;
 import org.eclipse.jpt.eclipselink.core.context.JoinFetch;
 import org.eclipse.jpt.eclipselink.core.context.PrivateOwned;
-import org.eclipse.jpt.eclipselink.core.resource.orm.XmlJoinFetch;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlOneToMany;
-import org.eclipse.jpt.eclipselink.core.resource.orm.XmlPrivateOwned;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class EclipseLinkOrmOneToManyMapping<T extends XmlOneToMany>
-	extends GenericOrmOneToManyMapping<T>
+public class EclipseLinkOrmOneToManyMapping extends AbstractOrmOneToManyMapping<XmlOneToMany>
 	implements EclipseLinkOneToManyMapping
 {
 	protected EclipseLinkOrmPrivateOwned privateOwned;
@@ -32,10 +29,10 @@ public class EclipseLinkOrmOneToManyMapping<T extends XmlOneToMany>
 	protected EclipseLinkOrmJoinFetch joinFetch;
 	
 	
-	public EclipseLinkOrmOneToManyMapping(OrmPersistentAttribute parent, T resourceMapping) {
+	public EclipseLinkOrmOneToManyMapping(OrmPersistentAttribute parent, XmlOneToMany resourceMapping) {
 		super(parent, resourceMapping);
-		this.privateOwned = new EclipseLinkOrmPrivateOwned(this, (XmlPrivateOwned) this.resourceAttributeMapping);
-		this.joinFetch = new EclipseLinkOrmJoinFetch(this, (XmlJoinFetch) this.resourceAttributeMapping);
+		this.privateOwned = new EclipseLinkOrmPrivateOwned(this, this.resourceAttributeMapping);
+		this.joinFetch = new EclipseLinkOrmJoinFetch(this, this.resourceAttributeMapping);
 	}
 	
 	

@@ -13,7 +13,7 @@ package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 import java.util.List;
 import org.eclipse.jpt.core.context.orm.OrmConverter;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmVersionMapping;
+import org.eclipse.jpt.core.internal.context.orm.AbstractOrmVersionMapping;
 import org.eclipse.jpt.eclipselink.core.context.Convert;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkVersionMapping;
 import org.eclipse.jpt.eclipselink.core.context.Mutable;
@@ -21,14 +21,13 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.XmlVersion;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class EclipseLinkOrmVersionMapping<T extends XmlVersion>
-	extends GenericOrmVersionMapping<T>
+public class EclipseLinkOrmVersionMapping extends AbstractOrmVersionMapping<XmlVersion>
 	implements EclipseLinkVersionMapping
 {	
 	protected EclipseLinkOrmMutable mutable;
 	
 	
-	public EclipseLinkOrmVersionMapping(OrmPersistentAttribute parent, T resourceMapping) {
+	public EclipseLinkOrmVersionMapping(OrmPersistentAttribute parent, XmlVersion resourceMapping) {
 		super(parent, resourceMapping);
 		this.mutable = new EclipseLinkOrmMutable(this, this.resourceAttributeMapping);
 	}
@@ -53,7 +52,7 @@ public class EclipseLinkOrmVersionMapping<T extends XmlVersion>
 	@Override
 	protected String getResourceConverterType() {
 		//check @Convert first, this is the order that EclipseLink searches
-		if (((XmlVersion) this.resourceAttributeMapping).getConvert() != null) {
+		if (this.resourceAttributeMapping.getConvert() != null) {
 			return Convert.ECLIPSE_LINK_CONVERTER;
 		}
 		return super.getResourceConverterType();

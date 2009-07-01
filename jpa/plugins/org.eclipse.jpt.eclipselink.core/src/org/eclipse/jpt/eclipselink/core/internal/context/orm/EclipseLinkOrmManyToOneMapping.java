@@ -12,24 +12,22 @@ package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
 import java.util.List;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmManyToOneMapping;
+import org.eclipse.jpt.core.internal.context.orm.AbstractOrmManyToOneMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkRelationshipMapping;
 import org.eclipse.jpt.eclipselink.core.context.JoinFetch;
-import org.eclipse.jpt.eclipselink.core.resource.orm.XmlJoinFetch;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlManyToOne;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class EclipseLinkOrmManyToOneMapping<T extends XmlManyToOne>
-	extends GenericOrmManyToOneMapping<T>
+public class EclipseLinkOrmManyToOneMapping extends AbstractOrmManyToOneMapping<XmlManyToOne>
 	implements EclipseLinkRelationshipMapping
 {
 	protected EclipseLinkOrmJoinFetch joinFetch;
 	
 	
-	public EclipseLinkOrmManyToOneMapping(OrmPersistentAttribute parent, T resourceMapping) {
+	public EclipseLinkOrmManyToOneMapping(OrmPersistentAttribute parent, XmlManyToOne resourceMapping) {
 		super(parent, resourceMapping);
-		this.joinFetch = new EclipseLinkOrmJoinFetch(this, (XmlJoinFetch) this.resourceAttributeMapping);
+		this.joinFetch = new EclipseLinkOrmJoinFetch(this, this.resourceAttributeMapping);
 	}
 	
 	

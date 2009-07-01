@@ -11,18 +11,15 @@ package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
 import java.util.List;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmOneToOneMapping;
+import org.eclipse.jpt.core.internal.context.orm.AbstractOrmOneToOneMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToOneMapping;
 import org.eclipse.jpt.eclipselink.core.context.JoinFetch;
 import org.eclipse.jpt.eclipselink.core.context.PrivateOwned;
-import org.eclipse.jpt.eclipselink.core.resource.orm.XmlJoinFetch;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlOneToOne;
-import org.eclipse.jpt.eclipselink.core.resource.orm.XmlPrivateOwned;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class EclipseLinkOrmOneToOneMapping<T extends XmlOneToOne>
-	extends GenericOrmOneToOneMapping<T>
+public class EclipseLinkOrmOneToOneMapping extends AbstractOrmOneToOneMapping<XmlOneToOne>
 	implements EclipseLinkOneToOneMapping
 {
 	protected EclipseLinkOrmPrivateOwned privateOwned;
@@ -30,10 +27,10 @@ public class EclipseLinkOrmOneToOneMapping<T extends XmlOneToOne>
 	protected EclipseLinkOrmJoinFetch joinFetch;
 	
 	
-	public EclipseLinkOrmOneToOneMapping(OrmPersistentAttribute parent, T resourceMapping) {
+	public EclipseLinkOrmOneToOneMapping(OrmPersistentAttribute parent, XmlOneToOne resourceMapping) {
 		super(parent, resourceMapping);
-		this.privateOwned = new EclipseLinkOrmPrivateOwned(this, (XmlPrivateOwned) this.resourceAttributeMapping);
-		this.joinFetch = new EclipseLinkOrmJoinFetch(this, (XmlJoinFetch) this.resourceAttributeMapping);
+		this.privateOwned = new EclipseLinkOrmPrivateOwned(this, this.resourceAttributeMapping);
+		this.joinFetch = new EclipseLinkOrmJoinFetch(this, this.resourceAttributeMapping);
 	}
 	
 	

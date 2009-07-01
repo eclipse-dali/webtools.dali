@@ -13,7 +13,7 @@ package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 import java.util.List;
 import org.eclipse.jpt.core.context.orm.OrmConverter;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmBasicMapping;
+import org.eclipse.jpt.core.internal.context.orm.AbstractOrmBasicMapping;
 import org.eclipse.jpt.eclipselink.core.context.Convert;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkBasicMapping;
 import org.eclipse.jpt.eclipselink.core.context.Mutable;
@@ -21,14 +21,13 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasic;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class EclipseLinkOrmBasicMapping<T extends XmlBasic>
-	extends GenericOrmBasicMapping<T>
+public class EclipseLinkOrmBasicMapping extends AbstractOrmBasicMapping<XmlBasic>
 	implements EclipseLinkBasicMapping
 {
 	protected EclipseLinkOrmMutable mutable;
 	
 	
-	public EclipseLinkOrmBasicMapping(OrmPersistentAttribute parent, T resourceMapping) {
+	public EclipseLinkOrmBasicMapping(OrmPersistentAttribute parent, XmlBasic resourceMapping) {
 		super(parent, resourceMapping);
 		this.mutable = new EclipseLinkOrmMutable(this, this.resourceAttributeMapping);
 	}
@@ -53,7 +52,7 @@ public class EclipseLinkOrmBasicMapping<T extends XmlBasic>
 	@Override
 	protected String getResourceConverterType() {
 		//check @Convert first, this is the order that EclipseLink searches
-		if (((XmlBasic) this.resourceAttributeMapping).getConvert() != null) {
+		if (this.resourceAttributeMapping.getConvert() != null) {
 			return Convert.ECLIPSE_LINK_CONVERTER;
 		}
 		return super.getResourceConverterType();

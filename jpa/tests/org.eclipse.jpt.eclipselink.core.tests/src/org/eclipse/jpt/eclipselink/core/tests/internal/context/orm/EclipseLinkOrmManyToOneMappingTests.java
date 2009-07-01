@@ -164,13 +164,13 @@ public class EclipseLinkOrmManyToOneMappingTests
 		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Employee");
 		
 		OrmPersistentType departmentPersistentType = getEntityMappings().persistentTypes().next();
-		EclipseLinkOrmManyToOneMapping<?> manyToOne = (EclipseLinkOrmManyToOneMapping<?>) departmentPersistentType.getAttributeNamed("employee").getMapping();
+		EclipseLinkOrmManyToOneMapping manyToOne = (EclipseLinkOrmManyToOneMapping) departmentPersistentType.getAttributeNamed("employee").getMapping();
 
 		assertNull(manyToOne.getJoinFetch().getValue());
 		
 		getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
-		EclipseLinkOrmOneToOneMapping<?> oneToOne = (EclipseLinkOrmOneToOneMapping<?>) departmentPersistentType.getAttributeNamed("employee").getMapping();
-		assertNull(manyToOne.getJoinFetch().getValue());
+		EclipseLinkOrmOneToOneMapping oneToOne = (EclipseLinkOrmOneToOneMapping) departmentPersistentType.getAttributeNamed("employee").getMapping();
+		assertNull(oneToOne.getJoinFetch().getValue());
 		
 		
 		EclipseLinkRelationshipMapping javaRelationshipMapping = (EclipseLinkRelationshipMapping) departmentPersistentType.getJavaPersistentType().getAttributeNamed("employee").getMapping();
@@ -178,7 +178,7 @@ public class EclipseLinkOrmManyToOneMappingTests
 		assertNull(manyToOne.getJoinFetch().getValue());
 		
 		getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(false);
-		manyToOne = (EclipseLinkOrmManyToOneMapping<?>) departmentPersistentType.getAttributeNamed("employee").getMapping();
+		manyToOne = (EclipseLinkOrmManyToOneMapping) departmentPersistentType.getAttributeNamed("employee").getMapping();
 		assertEquals(JoinFetchType.OUTER, manyToOne.getJoinFetch().getValue());
 	}
 
