@@ -13,7 +13,7 @@ package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 import java.util.List;
 import org.eclipse.jpt.core.context.orm.OrmConverter;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmIdMapping;
+import org.eclipse.jpt.core.internal.context.orm.AbstractOrmIdMapping;
 import org.eclipse.jpt.eclipselink.core.context.Convert;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkIdMapping;
 import org.eclipse.jpt.eclipselink.core.context.Mutable;
@@ -21,14 +21,13 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.XmlId;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class EclipseLinkOrmIdMapping<T extends XmlId> 
-	extends GenericOrmIdMapping<T>
+public class EclipseLinkOrmIdMapping extends AbstractOrmIdMapping<XmlId>
 	implements EclipseLinkIdMapping
 {
 	protected EclipseLinkOrmMutable mutable;
 	
 	
-	public EclipseLinkOrmIdMapping(OrmPersistentAttribute parent, T resourceMapping) {
+	public EclipseLinkOrmIdMapping(OrmPersistentAttribute parent, XmlId resourceMapping) {
 		super(parent, resourceMapping);
 		this.mutable = new EclipseLinkOrmMutable(this, this.resourceAttributeMapping);
 	}
@@ -53,7 +52,7 @@ public class EclipseLinkOrmIdMapping<T extends XmlId>
 	@Override
 	protected String getResourceConverterType() {
 		//check @Convert first, this is the order that EclipseLink searches
-		if (((XmlId) this.resourceAttributeMapping).getConvert() != null) {
+		if (this.resourceAttributeMapping.getConvert() != null) {
 			return Convert.ECLIPSE_LINK_CONVERTER;
 		}
 		return super.getResourceConverterType();

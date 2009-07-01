@@ -10,15 +10,15 @@
 package org.eclipse.jpt2_0.core.internal.context.orm;
 
 import org.eclipse.jpt.core.context.XmlContextNode;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmSequenceGenerator;
-import org.eclipse.jpt2_0.core.context.SequenceGenerator2_0;
+import org.eclipse.jpt.core.internal.context.orm.AbstractOrmSequenceGenerator;
+import org.eclipse.jpt2_0.core.context.orm.OrmSequenceGenerator2_0;
 import org.eclipse.jpt2_0.core.resource.orm.XmlSequenceGenerator;
 
 /**
- *  Generic2_0JavaSequenceGenerator
+ *  Generic2_0OrmSequenceGenerator
  */
-public class Generic2_0OrmSequenceGenerator extends GenericOrmSequenceGenerator
-	implements SequenceGenerator2_0
+public class Generic2_0OrmSequenceGenerator extends AbstractOrmSequenceGenerator
+	implements OrmSequenceGenerator2_0
 {
 	protected String specifiedCatalog;
 	protected String defaultCatalog;
@@ -44,7 +44,7 @@ public class Generic2_0OrmSequenceGenerator extends GenericOrmSequenceGenerator
 	public void setSpecifiedCatalog(String catalog) {
 		String old = this.specifiedCatalog;
 		this.specifiedCatalog = catalog;
-		this.getResourceGenerator2_0().setCatalog(catalog);
+		this.getResourceGenerator().setCatalog(catalog);
 		this.firePropertyChanged(SPECIFIED_CATALOG_PROPERTY, old, catalog);
 	}
 
@@ -82,7 +82,7 @@ public class Generic2_0OrmSequenceGenerator extends GenericOrmSequenceGenerator
 	public void setSpecifiedSchema(String schema) {
 		String old = this.specifiedSchema;
 		this.specifiedSchema = schema;
-		this.getResourceGenerator2_0().setSchema(schema);
+		this.getResourceGenerator().setSchema(schema);
 		this.firePropertyChanged(SPECIFIED_SCHEMA_PROPERTY, old, schema);
 	}
 
@@ -130,7 +130,8 @@ public class Generic2_0OrmSequenceGenerator extends GenericOrmSequenceGenerator
 		this.setSpecifiedSchema_(xmlResource2_0.getSchema());
 	}
 
-	private XmlSequenceGenerator getResourceGenerator2_0() {
+	@Override
+	protected XmlSequenceGenerator getResourceGenerator() {
 		return (XmlSequenceGenerator) super.getResourceGenerator();
 	}
 

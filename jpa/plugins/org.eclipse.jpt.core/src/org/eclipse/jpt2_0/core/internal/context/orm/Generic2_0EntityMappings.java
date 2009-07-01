@@ -12,11 +12,12 @@ package org.eclipse.jpt2_0.core.internal.context.orm;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitMetadata;
 import org.eclipse.jpt.core.internal.context.orm.AbstractEntityMappings;
-import org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator;
 import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
+import org.eclipse.jpt2_0.core.context.orm.OrmSequenceGenerator2_0;
 import org.eclipse.jpt2_0.core.internal.platform.Generic2_0JpaFactory;
 import org.eclipse.jpt2_0.core.resource.orm.Orm2_0Factory;
 import org.eclipse.jpt2_0.core.resource.orm.XmlEntityMappings;
+import org.eclipse.jpt2_0.core.resource.orm.XmlSequenceGenerator;
 
 public class Generic2_0EntityMappings
 	extends AbstractEntityMappings
@@ -37,8 +38,13 @@ public class Generic2_0EntityMappings
 	}
 
 	@Override
-	protected XmlSequenceGenerator buildXmlSequenceGenerator() {
+	protected XmlSequenceGenerator buildResourceSequenceGenerator() {
 		return Orm2_0Factory.eINSTANCE.createXmlSequenceGenerator();
+	}
+	
+	@Override
+	protected OrmSequenceGenerator2_0 buildSequenceGenerator(org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator resourceSequenceGenerator) {
+		return getJpaFactory().build2_0OrmSequenceGenerator(this, (XmlSequenceGenerator) resourceSequenceGenerator);
 	}
 	
 	// **************** JpaNode impl *******************************************

@@ -20,13 +20,13 @@ import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmIdMapping;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmNullAttributeMapping;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmOneToOneMapping;
 import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProperties;
 import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProvider;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmIdMapping;
 import org.eclipse.jpt.eclipselink1_1.core.internal.EclipseLink1_1JpaPlatformProvider;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
@@ -257,7 +257,7 @@ public class EclipseLink1_1OrmPersistentAttributeTests extends EclipseLink1_1Orm
 		specifiedOrmPersistentAttribute = specifiedAttributes.next();
 		assertEquals("id", specifiedOrmPersistentAttribute.getName());
 		assertFalse(specifiedOrmPersistentAttribute.isVirtual());
-		assertTrue(specifiedOrmPersistentAttribute.getMapping() instanceof GenericOrmIdMapping);
+		assertTrue(specifiedOrmPersistentAttribute.getMapping() instanceof EclipseLinkOrmIdMapping);
 		
 		specifiedOrmPersistentAttribute = specifiedAttributes.next();
 		assertEquals("address", specifiedOrmPersistentAttribute.getName());

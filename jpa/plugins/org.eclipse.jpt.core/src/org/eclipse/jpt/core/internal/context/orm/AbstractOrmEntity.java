@@ -145,8 +145,8 @@ public abstract class AbstractOrmEntity
 		this.virtualAttributeOverrides = new ArrayList<OrmAttributeOverride>();
 		this.specifiedAssociationOverrides = new ArrayList<OrmAssociationOverride>();
 		this.virtualAssociationOverrides = new ArrayList<OrmAssociationOverride>();
-		this.queryContainer = getJpaFactory().buildOrmQueryContainer(this, resourceMapping);
-		this.generatorContainer = getJpaFactory().buildOrmGeneratorContainer(parent, resourceMapping);
+		this.queryContainer = this.buildQueryContainer();
+		this.generatorContainer = this.buildGeneratorContainer();
 		this.specifiedName = this.resourceTypeMapping.getName();
 		this.defaultName = this.buildDefaultName();
 		this.rootEntity = this.calculateRootEntity();
@@ -241,6 +241,14 @@ public abstract class AbstractOrmEntity
 		};
 	}
 
+	protected OrmGeneratorContainer buildGeneratorContainer() {
+		return getJpaFactory().buildOrmGeneratorContainer(this, this.resourceTypeMapping);
+	}
+
+	protected OrmQueryContainer buildQueryContainer() {
+		return getJpaFactory().buildOrmQueryContainer(this, this.resourceTypeMapping);
+	}
+	
 	// ******************* ITypeMapping implementation ********************
 
 	public String getKey() {
