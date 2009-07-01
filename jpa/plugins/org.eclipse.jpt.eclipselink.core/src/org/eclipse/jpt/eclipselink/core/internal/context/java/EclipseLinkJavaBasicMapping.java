@@ -19,21 +19,37 @@ import org.eclipse.jpt.eclipselink.core.context.Convert;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkBasicMapping;
 import org.eclipse.jpt.eclipselink.core.context.Mutable;
 import org.eclipse.jpt.eclipselink.core.resource.java.ConvertAnnotation;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
 import org.eclipse.jpt.utility.Filter;
+import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class EclipseLinkJavaBasicMappingImpl
+public class EclipseLinkJavaBasicMapping
 	extends AbstractJavaBasicMapping 
 	implements EclipseLinkBasicMapping
 {
 	
 	protected final EclipseLinkJavaMutable mutable;
 	
-	public EclipseLinkJavaBasicMappingImpl(JavaPersistentAttribute parent) {
+	public EclipseLinkJavaBasicMapping(JavaPersistentAttribute parent) {
 		super(parent);
 		this.mutable = new EclipseLinkJavaMutable(this);
 	}
+	
+	//************** JavaAttributeMapping implementation ***************
+	
+	@Override
+	public Iterator<String> supportingAnnotationNames() {
+		return new CompositeIterator<String>(
+			super.supportingAnnotationNames(),
+			new ArrayIterator<String>(
+				EclipseLinkJPA.MUTABLE,
+				EclipseLinkJPA.CONVERT));
+	}
+
+	//************** AbstractJavaBasicMapping implementation ***************
 
 	@Override
 	protected JavaConverter buildSpecifiedConverter(String converterType) {

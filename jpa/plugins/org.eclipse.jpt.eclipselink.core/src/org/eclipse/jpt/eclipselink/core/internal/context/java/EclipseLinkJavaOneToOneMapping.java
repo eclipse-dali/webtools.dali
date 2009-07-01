@@ -13,7 +13,7 @@ import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.core.internal.context.java.GenericJavaOneToOneMapping;
+import org.eclipse.jpt.core.internal.context.java.AbstractJavaOneToOneMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToOneMapping;
 import org.eclipse.jpt.eclipselink.core.context.JoinFetch;
 import org.eclipse.jpt.eclipselink.core.context.PrivateOwned;
@@ -23,8 +23,8 @@ import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class EclipseLinkJavaOneToOneMappingImpl
-	extends GenericJavaOneToOneMapping
+public class EclipseLinkJavaOneToOneMapping
+	extends AbstractJavaOneToOneMapping
 	implements EclipseLinkOneToOneMapping
 {
 	protected final EclipseLinkJavaJoinFetch joinFetch;
@@ -32,19 +32,19 @@ public class EclipseLinkJavaOneToOneMappingImpl
 	protected final EclipseLinkJavaPrivateOwned privateOwned;
 	
 	
-	public EclipseLinkJavaOneToOneMappingImpl(JavaPersistentAttribute parent) {
+	public EclipseLinkJavaOneToOneMapping(JavaPersistentAttribute parent) {
 		super(parent);
 		this.joinFetch = new EclipseLinkJavaJoinFetch(this);
 		this.privateOwned = new EclipseLinkJavaPrivateOwned(this);
 	}
-	
-	
+		
 	@Override
 	public Iterator<String> supportingAnnotationNames() {
 		return new CompositeIterator<String>(
 			super.supportingAnnotationNames(),
 			new ArrayIterator<String>(
-				EclipseLinkJPA.JOIN_FETCH));
+				EclipseLinkJPA.JOIN_FETCH,
+				EclipseLinkJPA.PRIVATE_OWNED));
 	}
 	
 	public JoinFetch getJoinFetch() {

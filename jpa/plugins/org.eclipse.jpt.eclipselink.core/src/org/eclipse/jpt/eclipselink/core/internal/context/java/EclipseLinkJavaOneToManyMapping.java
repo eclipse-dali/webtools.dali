@@ -14,7 +14,7 @@ import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaRelationshipReference;
-import org.eclipse.jpt.core.internal.context.java.GenericJavaOneToManyMapping;
+import org.eclipse.jpt.core.internal.context.java.AbstractJavaOneToManyMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToManyMapping;
 import org.eclipse.jpt.eclipselink.core.context.JoinFetch;
 import org.eclipse.jpt.eclipselink.core.context.PrivateOwned;
@@ -26,7 +26,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class EclipseLinkJavaOneToManyMapping
-	extends GenericJavaOneToManyMapping
+	extends AbstractJavaOneToManyMapping
 	implements EclipseLinkOneToManyMapping
 {
 	protected final EclipseLinkJavaJoinFetch joinFetch;
@@ -39,7 +39,6 @@ public class EclipseLinkJavaOneToManyMapping
 		this.joinFetch = new EclipseLinkJavaJoinFetch(this);
 		this.privateOwned = new EclipseLinkJavaPrivateOwned(this);
 	}
-	
 	
 	@Override
 	protected JavaRelationshipReference buildRelationshipReference() {

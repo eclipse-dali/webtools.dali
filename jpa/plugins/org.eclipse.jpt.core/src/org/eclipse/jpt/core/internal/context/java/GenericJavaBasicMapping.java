@@ -17,4 +17,5 @@ public class GenericJavaBasicMapping extends AbstractJavaBasicMapping
 	public GenericJavaBasicMapping(JavaPersistentAttribute parent) {
 		super(parent);
 	}
+
 }

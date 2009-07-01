@@ -9,56 +9,21 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
-import java.util.Iterator;
-import org.eclipse.jpt.core.MappingKeys;
-import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
-import org.eclipse.jpt.core.context.java.JavaOneToManyRelationshipReference;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaRelationshipReference;
-import org.eclipse.jpt.core.resource.java.JPA;
-import org.eclipse.jpt.core.resource.java.OneToManyAnnotation;
-import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 
 public class GenericJavaOneToManyMapping
-	extends AbstractJavaMultiRelationshipMapping<OneToManyAnnotation>
-	implements JavaOneToManyMapping
+	extends AbstractJavaOneToManyMapping
 {
 	
 	public GenericJavaOneToManyMapping(JavaPersistentAttribute parent) {
 		super(parent);
-	}
-	
+	}	
 	
 	@Override
 	protected JavaRelationshipReference buildRelationshipReference() {
 		return new GenericJavaOneToManyRelationshipReference(this);
 	}
-	
-	public String getAnnotationName() {
-		return OneToManyAnnotation.ANNOTATION_NAME;
-	}
 
-	@Override
-	public OneToManyAnnotation getMappingAnnotation() {
-		return super.getMappingAnnotation();
-	}
-	
-	public Iterator<String> supportingAnnotationNames() {
-		return new ArrayIterator<String>(
-			JPA.ORDER_BY,
-			JPA.MAP_KEY,
-			JPA.JOIN_TABLE,
-			JPA.JOIN_COLUMN,
-			JPA.JOIN_COLUMNS);
-	}
-	
-	public String getKey() {
-		return MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY;
-	}
-	
-	@Override
-	public JavaOneToManyRelationshipReference getRelationshipReference() {
-		return (JavaOneToManyRelationshipReference) super.getRelationshipReference();
-	}
 }

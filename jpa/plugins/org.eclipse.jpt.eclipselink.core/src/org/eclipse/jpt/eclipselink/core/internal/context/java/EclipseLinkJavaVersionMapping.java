@@ -14,25 +14,42 @@ import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaConverter;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.core.internal.context.java.GenericJavaVersionMapping;
+import org.eclipse.jpt.core.internal.context.java.AbstractJavaVersionMapping;
 import org.eclipse.jpt.eclipselink.core.context.Convert;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkVersionMapping;
 import org.eclipse.jpt.eclipselink.core.context.Mutable;
 import org.eclipse.jpt.eclipselink.core.resource.java.ConvertAnnotation;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
 import org.eclipse.jpt.utility.Filter;
+import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class EclipseLinkJavaVersionMappingImpl
-	extends GenericJavaVersionMapping
+public class EclipseLinkJavaVersionMapping
+	extends AbstractJavaVersionMapping
 	implements EclipseLinkVersionMapping
 {
 	protected final EclipseLinkJavaMutable mutable;
 	
-	public EclipseLinkJavaVersionMappingImpl(JavaPersistentAttribute parent) {
+	public EclipseLinkJavaVersionMapping(JavaPersistentAttribute parent) {
 		super(parent);
 		this.mutable = new EclipseLinkJavaMutable(this);
 	}
+	
+	//************** JavaAttributeMapping implementation ***************
+	
+	@Override
+	public Iterator<String> supportingAnnotationNames() {
+		return new CompositeIterator<String>(
+			super.supportingAnnotationNames(),
+			new ArrayIterator<String>(
+				EclipseLinkJPA.MUTABLE,
+				EclipseLinkJPA.CONVERT));
+	}
+
+	
+	//************** EclipseLinkVersionMapping overrides ***************
 
 	@Override
 	protected JavaConverter buildSpecifiedConverter(String converterType) {
@@ -54,7 +71,6 @@ public class EclipseLinkJavaVersionMappingImpl
 		}
 		return super.getResourceConverterType();
 	}
-	
 	
 	
 	//************ EclipselinkVersionMapping implementation ****************

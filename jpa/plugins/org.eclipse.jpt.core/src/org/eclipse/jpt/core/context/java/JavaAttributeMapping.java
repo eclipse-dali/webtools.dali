@@ -47,7 +47,7 @@ public interface JavaAttributeMapping
 	String getAnnotationName();
 	
 	/**
-	 * Return all fully qualfied annotation names that are supported with this mapping type.
+	 * Return all fully qualified annotation names that are supported with this mapping type.
 	 * This includes all possible annotations, not just the ones that currently exist on the attribute.
 	 */
 	Iterator<String> supportingAnnotationNames();

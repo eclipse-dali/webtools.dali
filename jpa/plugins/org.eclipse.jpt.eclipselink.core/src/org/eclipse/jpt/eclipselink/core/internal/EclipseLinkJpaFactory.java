@@ -62,17 +62,17 @@ import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.eclipselink.core.EclipseLinkJpaProject;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaEntity;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaMappedSuperclass;
-import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaBasicMappingImpl;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaBasicMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaEmbeddableImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaEntityImpl;
-import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaIdMappingImpl;
-import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaManyToManyMappingImpl;
-import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaManyToOneMappingImpl;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaIdMapping;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaManyToManyMapping;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaManyToOneMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaMappedSuperclassImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaOneToManyMapping;
-import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaOneToOneMappingImpl;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaOneToOneMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaPersistentAttribute;
-import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaVersionMappingImpl;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaVersionMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaBasicCollectionMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaBasicMapMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaTransformationMapping;
@@ -333,7 +333,7 @@ public class EclipseLinkJpaFactory
 	
 	@Override
 	public JavaBasicMapping buildJavaBasicMapping(JavaPersistentAttribute parent) {
-		return new EclipseLinkJavaBasicMappingImpl(parent);
+		return new EclipseLinkJavaBasicMapping(parent);
 	}
 	
 	@Override
@@ -348,7 +348,7 @@ public class EclipseLinkJpaFactory
 	
 	@Override
 	public JavaIdMapping buildJavaIdMapping(JavaPersistentAttribute parent) {
-		return new EclipseLinkJavaIdMappingImpl(parent);
+		return new EclipseLinkJavaIdMapping(parent);
 	}
 	
 	@Override
@@ -358,7 +358,7 @@ public class EclipseLinkJpaFactory
 	
 	@Override
 	public JavaVersionMapping buildJavaVersionMapping(JavaPersistentAttribute parent) {
-		return new EclipseLinkJavaVersionMappingImpl(parent);
+		return new EclipseLinkJavaVersionMapping(parent);
 	}
 	
 	@Override
@@ -368,17 +368,17 @@ public class EclipseLinkJpaFactory
 	
 	@Override
 	public JavaOneToOneMapping buildJavaOneToOneMapping(JavaPersistentAttribute parent) {
-		return new EclipseLinkJavaOneToOneMappingImpl(parent);
+		return new EclipseLinkJavaOneToOneMapping(parent);
 	}
 	
 	@Override
 	public JavaManyToManyMapping buildJavaManyToManyMapping(JavaPersistentAttribute parent) {
-		return new EclipseLinkJavaManyToManyMappingImpl(parent);
+		return new EclipseLinkJavaManyToManyMapping(parent);
 	}
 	
 	@Override
 	public JavaManyToOneMapping buildJavaManyToOneMapping(JavaPersistentAttribute parent) {
-		return new EclipseLinkJavaManyToOneMappingImpl(parent);
+		return new EclipseLinkJavaManyToOneMapping(parent);
 	}
 
 	public JavaBasicCollectionMapping buildJavaBasicCollectionMapping(JavaPersistentAttribute parent) {

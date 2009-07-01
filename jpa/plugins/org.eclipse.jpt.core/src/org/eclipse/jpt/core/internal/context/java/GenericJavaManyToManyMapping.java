@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,53 +9,14 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
-import java.util.Iterator;
-import org.eclipse.jpt.core.MappingKeys;
-import org.eclipse.jpt.core.context.java.JavaManyToManyMapping;
-import org.eclipse.jpt.core.context.java.JavaManyToManyRelationshipReference;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.core.context.java.JavaRelationshipReference;
-import org.eclipse.jpt.core.resource.java.JPA;
-import org.eclipse.jpt.core.resource.java.ManyToManyAnnotation;
-import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 
 public class GenericJavaManyToManyMapping
-	extends AbstractJavaMultiRelationshipMapping<ManyToManyAnnotation>
-	implements JavaManyToManyMapping
+	extends AbstractJavaManyToManyMapping
 {
 	public GenericJavaManyToManyMapping(JavaPersistentAttribute parent) {
 		super(parent);
 	}
 	
-	
-	@Override
-	protected JavaRelationshipReference buildRelationshipReference() {
-		return new GenericJavaManyToManyRelationshipReference(this);
-	}
-	
-	public String getAnnotationName() {
-		return ManyToManyAnnotation.ANNOTATION_NAME;
-	}
-	
-	@Override
-	public ManyToManyAnnotation getMappingAnnotation() {
-		return super.getMappingAnnotation();
-	}
-	
-	public Iterator<String> supportingAnnotationNames() {
-		return new ArrayIterator<String>(
-			JPA.ORDER_BY,
-			JPA.MAP_KEY,
-			JPA.JOIN_TABLE);
-	}
-	
-	public String getKey() {
-		return MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY;
-	}
-	
-	@Override
-	public JavaManyToManyRelationshipReference getRelationshipReference() {
-		return (JavaManyToManyRelationshipReference) super.getRelationshipReference();
-	}
 }
