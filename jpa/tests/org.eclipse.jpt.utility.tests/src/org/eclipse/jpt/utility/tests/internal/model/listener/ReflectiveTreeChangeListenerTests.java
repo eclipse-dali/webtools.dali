@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,24 +9,30 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.tests.internal.model.listener;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
 import junit.framework.TestCase;
-import org.eclipse.jpt.utility.internal.ClassTools;
+
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
+import org.eclipse.jpt.utility.model.event.TreeAddEvent;
 import org.eclipse.jpt.utility.model.event.TreeChangeEvent;
+import org.eclipse.jpt.utility.model.event.TreeClearEvent;
+import org.eclipse.jpt.utility.model.event.TreeEvent;
+import org.eclipse.jpt.utility.model.event.TreeRemoveEvent;
 import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.model.listener.ReflectiveChangeListener;
 import org.eclipse.jpt.utility.model.listener.TreeChangeListener;
 
+@SuppressWarnings("nls")
 public class ReflectiveTreeChangeListenerTests extends TestCase {
 	
 	public ReflectiveTreeChangeListenerTests(String name) {
@@ -297,46 +303,13 @@ public class ReflectiveTreeChangeListenerTests extends TestCase {
 		assertTrue(target.treeChangedSingleArgumentFlag);
 	}
 
-	public void testBogusDoubleArgument1() {
-		TestModel testModel = new TestModel("root");
-		testModel.addNode("root", "child");
-		Target target = new Target(testModel, TestModel.STRINGS_TREE, new String[]{"root", "child"});
-		boolean exCaught = false;
-		try {
-			TreeChangeListener listener = ReflectiveChangeListener.buildTreeChangeListener(target, "collectionChangedDoubleArgument");
-			fail("bogus listener: " + listener);
-		} catch (RuntimeException ex) {
-			if (ex.getCause().getClass() == NoSuchMethodException.class) {
-				exCaught = true;
-			}
-		}
-		assertTrue(exCaught);
-	}
-
-	public void testBogusDoubleArgument2() throws Exception {
-		TestModel testModel = new TestModel("root");
-		testModel.addNode("root", "child");
-		Target target = new Target(testModel, TestModel.STRINGS_TREE, new String[]{"root", "child"});
-		Method method = ClassTools.method(target, "collectionChangedDoubleArgument", new Class[] {TreeChangeEvent.class, Object.class});
-		boolean exCaught = false;
-		try {
-			TreeChangeListener listener = ReflectiveChangeListener.buildTreeChangeListener(target, method);
-			fail("bogus listener: " + listener);
-		} catch (RuntimeException ex) {
-			if (ex.getMessage().equals(method.toString())) {
-				exCaught = true;
-			}
-		}
-		assertTrue(exCaught);
-	}
-
 	public void testListenerMismatch() {
 		TestModel testModel = new TestModel("root");
 		testModel.addNode("root", "child");
 		Target target = new Target(testModel, TestModel.STRINGS_TREE, new String[]{"root", "child"});
 		// build a TREE change listener and hack it so we
 		// can add it as a COLLECTION change listener
-		Object listener = ReflectiveChangeListener.buildTreeChangeListener(target, "nodeAddedSingleArgument");
+		Object listener = ReflectiveChangeListener.buildTreeChangeListener(target, "treeEventSingleArgument");
 		testModel.addCollectionChangeListener((CollectionChangeListener) listener);
 
 		boolean exCaught = false;
@@ -350,7 +323,7 @@ public class ReflectiveTreeChangeListenerTests extends TestCase {
 	}
 
 
-	private class TestModel extends AbstractModel {
+	class TestModel extends AbstractModel {
 		private final String root;
 		private Map<String, Collection<String>> childrenLists = new HashMap<String, Collection<String>>();
 		private Map<String, String> parents = new HashMap<String, String>();
@@ -367,14 +340,14 @@ public class ReflectiveTreeChangeListenerTests extends TestCase {
 		String getRoot() {
 			return this.root;
 		}
-		private String[] path(String node) {
+		private List<String> path(String node) {
 			String temp = node;
 			List<String> reversePath = new ArrayList<String>();
 			do {
 				reversePath.add(temp);
 				temp = this.parents.get(temp);
 			} while (temp != null);
-			return CollectionTools.reverse(reversePath).toArray(new String[reversePath.size()]);
+			return CollectionTools.reverse(reversePath);
 		}
 		Iterator<String> strings() {
 			return new CloneIterator<String>(this.childrenLists.keySet()) {
@@ -412,7 +385,7 @@ public class ReflectiveTreeChangeListenerTests extends TestCase {
 			if (children == null) {
 				throw new IllegalStateException("node is not in tree");
 			}
-			Object[] path = this.path(node);
+			List<String> path = this.path(node);
 			for (String s : children) {
 				this.removeNode(s);
 			}
@@ -447,14 +420,14 @@ public class ReflectiveTreeChangeListenerTests extends TestCase {
 			this.fireTreeCleared(STRINGS_TREE);
 		}
 		void changeCollection() {
-			this.fireCollectionChanged("bogus collection");
+			this.fireCollectionChanged("bogus collection", Collections.emptySet());
 		}
 	}
 
-	private class Target {
+	class Target {
 		TestModel testModel;
 		String treeName;
-		String[] path;
+		List<String> path;
 		boolean nodeAddedZeroArgumentFlag = false;
 		boolean nodeAddedSingleArgumentFlag = false;
 		boolean nodeRemovedZeroArgumentFlag = false;
@@ -463,38 +436,38 @@ public class ReflectiveTreeChangeListenerTests extends TestCase {
 		boolean treeClearedSingleArgumentFlag = false;
 		boolean treeChangedZeroArgumentFlag = false;
 		boolean treeChangedSingleArgumentFlag = false;
+		boolean treeEventSingleArgumentFlag = false;
 		Target(TestModel testModel, String treeName, String[] path) {
 			super();
 			this.testModel = testModel;
 			this.treeName = treeName;
-			this.path = path;
+			this.path = Arrays.asList(path);
 		}
 		void nodeAddedZeroArgument() {
 			this.nodeAddedZeroArgumentFlag = true;
 		}
-		void nodeAddedSingleArgument(TreeChangeEvent e) {
+		void nodeAddedSingleArgument(TreeAddEvent e) {
 			this.nodeAddedSingleArgumentFlag = true;
 			assertSame(this.testModel, e.getSource());
 			assertEquals(this.treeName, e.getTreeName());
-			assertTrue(Arrays.equals(this.path, e.getPath()));
+			assertEquals(this.path, CollectionTools.list(e.getPath()));
 		}
 		void nodeRemovedZeroArgument() {
 			this.nodeRemovedZeroArgumentFlag = true;
 		}
-		void nodeRemovedSingleArgument(TreeChangeEvent e) {
+		void nodeRemovedSingleArgument(TreeRemoveEvent e) {
 			this.nodeRemovedSingleArgumentFlag = true;
 			assertSame(this.testModel, e.getSource());
 			assertEquals(this.treeName, e.getTreeName());
-			assertTrue(Arrays.equals(this.path, e.getPath()));
+			assertEquals(this.path, CollectionTools.list(e.getPath()));
 		}
 		void treeClearedZeroArgument() {
 			this.treeClearedZeroArgumentFlag = true;
 		}
-		void treeClearedSingleArgument(TreeChangeEvent e) {
+		void treeClearedSingleArgument(TreeClearEvent e) {
 			this.treeClearedSingleArgumentFlag = true;
 			assertSame(this.testModel, e.getSource());
 			assertEquals(this.treeName, e.getTreeName());
-			assertTrue(Arrays.equals(this.path, e.getPath()));
 		}
 		void treeChangedZeroArgument() {
 			this.treeChangedZeroArgumentFlag = true;
@@ -503,10 +476,14 @@ public class ReflectiveTreeChangeListenerTests extends TestCase {
 			this.treeChangedSingleArgumentFlag = true;
 			assertSame(this.testModel, e.getSource());
 			assertEquals(this.treeName, e.getTreeName());
-			assertTrue(Arrays.equals(this.path, e.getPath()));
+		}
+		void treeEventSingleArgument(TreeEvent e) {
+			this.treeChangedSingleArgumentFlag = true;
+			assertSame(this.testModel, e.getSource());
+			assertEquals(this.treeName, e.getTreeName());
 		}
 		void collectionChangedDoubleArgument(TreeChangeEvent e, Object o) {
-			fail("bogus event: " + e);
+			fail("bogus event: " + e + " - object: " + o);
 		}
 	}
 

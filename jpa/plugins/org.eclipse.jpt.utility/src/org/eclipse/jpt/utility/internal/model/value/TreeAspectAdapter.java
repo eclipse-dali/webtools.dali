@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,9 +12,14 @@ package org.eclipse.jpt.utility.internal.model.value;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
+
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.model.Model;
+import org.eclipse.jpt.utility.model.event.TreeAddEvent;
 import org.eclipse.jpt.utility.model.event.TreeChangeEvent;
+import org.eclipse.jpt.utility.model.event.TreeClearEvent;
+import org.eclipse.jpt.utility.model.event.TreeRemoveEvent;
 import org.eclipse.jpt.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.utility.model.listener.TreeChangeListener;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -103,13 +108,13 @@ public abstract class TreeAspectAdapter<S extends Model, E>
 	protected TreeChangeListener buildTreeChangeListener() {
 		// transform the subject's tree change events into VALUE tree change events
 		return new TreeChangeListener() {
-			public void nodeAdded(TreeChangeEvent event) {
+			public void nodeAdded(TreeAddEvent event) {
 				TreeAspectAdapter.this.nodeAdded(event);
 			}
-			public void nodeRemoved(TreeChangeEvent event) {
+			public void nodeRemoved(TreeRemoveEvent event) {
 				TreeAspectAdapter.this.nodeRemoved(event);
 			}
-			public void treeCleared(TreeChangeEvent event) {
+			public void treeCleared(TreeClearEvent event) {
 				TreeAspectAdapter.this.treeCleared(event);
 			}
 			public void treeChanged(TreeChangeEvent event) {
@@ -117,7 +122,7 @@ public abstract class TreeAspectAdapter<S extends Model, E>
 			}
 			@Override
 			public String toString() {
-				return "tree change listener: " + Arrays.asList(TreeAspectAdapter.this.treeNames);
+				return "tree change listener: " + Arrays.asList(TreeAspectAdapter.this.treeNames); //$NON-NLS-1$
 			}
 		};
 	}
@@ -165,8 +170,9 @@ public abstract class TreeAspectAdapter<S extends Model, E>
 	}
 
     @Override
-	protected void fireAspectChange(Object oldValue, Object newValue) {
-		this.fireTreeChanged(NODES);
+	protected void fireAspectChanged(Object oldValue, Object newValue) {
+		@SuppressWarnings("unchecked") Iterator<E> newIterator = (Iterator<E>) newValue;
+		this.fireTreeChanged(NODES, CollectionTools.collection(newIterator));
 	}
 
     @Override
@@ -187,7 +193,7 @@ public abstract class TreeAspectAdapter<S extends Model, E>
 	public void toString(StringBuilder sb) {
 		for (int i = 0; i < this.treeNames.length; i++) {
 			if (i != 0) {
-				sb.append(", ");
+				sb.append(", "); //$NON-NLS-1$
 			}
 			sb.append(this.treeNames[i]);
 		}
@@ -196,20 +202,20 @@ public abstract class TreeAspectAdapter<S extends Model, E>
 
 	// ********** behavior **********
 
-	protected void nodeAdded(TreeChangeEvent event) {
-		this.fireNodeAdded(NODES, event.getPath());
+	protected void nodeAdded(TreeAddEvent event) {
+		this.fireNodeAdded(event.clone(this, NODES));
 	}
 
-	protected void nodeRemoved(TreeChangeEvent event) {
-		this.fireNodeRemoved(NODES, event.getPath());
+	protected void nodeRemoved(TreeRemoveEvent event) {
+		this.fireNodeRemoved(event.clone(this, NODES));
 	}
 
-	protected void treeCleared(TreeChangeEvent event) {
-		this.fireTreeCleared(NODES);
+	protected void treeCleared(TreeClearEvent event) {
+		this.fireTreeCleared(event.clone(this, NODES));
 	}
 
 	protected void treeChanged(TreeChangeEvent event) {
-		this.fireTreeChanged(NODES, event.getPath());
+		this.fireTreeChanged(event.clone(this, NODES));
 	}
 
 }

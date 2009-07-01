@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,6 +18,7 @@ import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.model.listener.ReflectiveChangeListener;
 import org.eclipse.jpt.utility.model.listener.StateChangeListener;
 
+@SuppressWarnings("nls")
 public class ReflectiveStateChangeListenerTests extends TestCase {
 	
 	public ReflectiveStateChangeListenerTests(String name) {
@@ -105,7 +106,7 @@ public class ReflectiveStateChangeListenerTests extends TestCase {
 	}
 
 
-	private class TestModel extends AbstractModel {
+	class TestModel extends AbstractModel {
 		TestModel() {
 			super();
 		}
@@ -117,7 +118,7 @@ public class ReflectiveStateChangeListenerTests extends TestCase {
 		}
 	}
 
-	private class Target {
+	class Target {
 		TestModel testModel;
 		boolean zeroArgumentFlag = false;
 		boolean singleArgumentFlag = false;
@@ -137,7 +138,7 @@ public class ReflectiveStateChangeListenerTests extends TestCase {
 			assertSame(this.testModel, ((StateChangeEvent) e).getSource());
 		}
 		void stateChangedDoubleArgument(StateChangeEvent e, Object o) {
-			fail("bogus event: " + e);
+			fail("bogus event: " + e + " - object: " + o);
 		}
 	}
 

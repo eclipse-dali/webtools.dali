@@ -40,6 +40,7 @@ import org.eclipse.jpt.ui.jface.DelegatingContentAndLabelProvider;
 import org.eclipse.jpt.ui.structure.JpaStructureProvider;
 import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.utility.model.event.CollectionClearEvent;
 import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
 import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 import org.eclipse.osgi.util.NLS;
@@ -109,7 +110,7 @@ public class JpaStructurePage
 				JpaStructurePage.this.projectsAdded(event);
 			}
 		
-			public void collectionCleared(CollectionChangeEvent event) {
+			public void collectionCleared(CollectionClearEvent event) {
 				JpaStructurePage.this.projectsCleared(event);
 			}
 		
@@ -121,7 +122,7 @@ public class JpaStructurePage
 
 	@SuppressWarnings("unchecked")
 	void projectsRemoved(CollectionRemoveEvent event) {
-		for (JpaProject item : (Iterable<JpaProject>) event.getRemovedItems()) {
+		for (JpaProject item : (Iterable<JpaProject>) event.getItems()) {
 			if (item.getProject() == JpaStructurePage.this.file.getProject()) {
 				setJpaProject(null);
 				break;
@@ -131,7 +132,7 @@ public class JpaStructurePage
 
 	@SuppressWarnings("unchecked")
 	void projectsAdded(CollectionAddEvent event) {
-		for (JpaProject item : (Iterable<JpaProject>) event.getAddedItems()) {
+		for (JpaProject item : (Iterable<JpaProject>) event.getItems()) {
 			if (item.getProject() == JpaStructurePage.this.file.getProject()) {
 				setJpaProject(item);
 				break;
@@ -139,7 +140,7 @@ public class JpaStructurePage
 		}
 	}
 
-	void projectsCleared(@SuppressWarnings("unused") CollectionChangeEvent event) {
+	void projectsCleared(@SuppressWarnings("unused") CollectionClearEvent event) {
 		setJpaProject(null);
 	}
 	
@@ -158,7 +159,7 @@ public class JpaStructurePage
 				JpaStructurePage.this.jpaFilesAdded(event);
 			}
 		
-			public void collectionCleared(CollectionChangeEvent event) {
+			public void collectionCleared(CollectionClearEvent event) {
 				JpaStructurePage.this.jpaFilesCleared(event);
 			}
 		
@@ -170,7 +171,7 @@ public class JpaStructurePage
 	
 	@SuppressWarnings("unchecked")
 	void jpaFilesRemoved(CollectionRemoveEvent event) {
-		for (JpaFile item : (Iterable<JpaFile>) event.getRemovedItems()) {
+		for (JpaFile item : (Iterable<JpaFile>) event.getItems()) {
 			if (item == JpaStructurePage.this.jpaFile) {
 				setJpaFile(null);
 				break;
@@ -180,7 +181,7 @@ public class JpaStructurePage
 
 	@SuppressWarnings("unchecked")
 	void jpaFilesAdded(CollectionAddEvent event) {
-		for (JpaFile item : (Iterable<JpaFile>) event.getAddedItems()) {
+		for (JpaFile item : (Iterable<JpaFile>) event.getItems()) {
 			if (item.getFile() == JpaStructurePage.this.file) {
 				setJpaFile(item);
 				break;
@@ -188,7 +189,7 @@ public class JpaStructurePage
 		}
 	}
 
-	void jpaFilesCleared(@SuppressWarnings("unused") CollectionChangeEvent event) {
+	void jpaFilesCleared(@SuppressWarnings("unused") CollectionClearEvent event) {
 		setJpaFile(null);
 	}
 

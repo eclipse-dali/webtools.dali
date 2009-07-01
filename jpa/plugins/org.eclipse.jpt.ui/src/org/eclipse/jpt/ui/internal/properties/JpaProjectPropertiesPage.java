@@ -719,7 +719,7 @@ public class JpaProjectPropertiesPage
 		}
 		
 		@Override
-		protected void fireAspectChange(Object oldValue, Object newValue) {
+		protected void fireAspectChanged(Object oldValue, Object newValue) {
 			firePropertyChanged(VALUE, oldValue, newValue);
 		}
 		
@@ -753,7 +753,7 @@ public class JpaProjectPropertiesPage
 		protected void valueChanged() {
 			V oldValue = this.getValue();
 			this.value = buildValue();
-			this.fireAspectChange(oldValue, this.getValue());
+			this.fireAspectChanged(oldValue, this.getValue());
 		}
 	}
 	
@@ -801,8 +801,9 @@ public class JpaProjectPropertiesPage
 		}
 		
 		@Override
-		protected void fireAspectChange(Object oldValue, Object newValue) {
-			this.fireCollectionChanged(VALUES);
+		protected void fireAspectChanged(Object oldValue, Object newValue) {
+			@SuppressWarnings("unchecked") Iterator<E> newIterator = (Iterator<E>) newValue;
+			this.fireCollectionChanged(VALUES, CollectionTools.collection(newIterator));
 		}
 		
 		
@@ -817,7 +818,7 @@ public class JpaProjectPropertiesPage
 		}
 		
 		protected void collectionChanged() {
-			this.fireCollectionChanged(VALUES);
+			this.fireCollectionChanged(VALUES, CollectionTools.collection(this.iterator()));
 		}
 	}
 	

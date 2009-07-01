@@ -11,6 +11,7 @@ package org.eclipse.jpt.utility.model.listener;
 
 import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.utility.model.event.CollectionClearEvent;
 import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
 
 /**
@@ -45,10 +46,10 @@ public interface CollectionChangeListener extends ChangeListener {
 	/**
 	 * This method gets called when a bound collection is cleared.
 	 * 
-	 * @param event A CollectionChangeEvent describing the event source 
+	 * @param event A CollectionClearEvent describing the event source 
 	 * and the collection that changed.
 	 */
-	void collectionCleared(CollectionChangeEvent event);
+	void collectionCleared(CollectionClearEvent event);
 
 	/**
 	 * This method gets called when a bound collection is changed in a manner

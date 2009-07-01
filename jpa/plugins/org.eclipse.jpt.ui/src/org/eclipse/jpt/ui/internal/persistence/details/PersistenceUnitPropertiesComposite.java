@@ -10,6 +10,7 @@
 package org.eclipse.jpt.ui.internal.persistence.details;
 
 import java.util.ListIterator;
+
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.ICellModifier;
@@ -30,7 +31,9 @@ import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.swing.ObjectListSelectionModel;
+import org.eclipse.jpt.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
+import org.eclipse.jpt.utility.model.event.ListRemoveEvent;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
@@ -396,13 +399,13 @@ public class PersistenceUnitPropertiesComposite extends Pane<PersistenceUnit>
 		}
 
 		@Override
-		protected void itemsAdded(ListChangeEvent e) {
+		protected void itemsAdded(ListAddEvent e) {
 			super.itemsAdded(e);
 			revalidateLayout();
 		}
 
 		@Override
-		protected void itemsRemoved(ListChangeEvent e) {
+		protected void itemsRemoved(ListRemoveEvent e) {
 			super.itemsRemoved(e);
 			revalidateLayout();
 		}

@@ -18,11 +18,20 @@ import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.model.Model;
 import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.utility.model.event.CollectionClearEvent;
 import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
+import org.eclipse.jpt.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
+import org.eclipse.jpt.utility.model.event.ListClearEvent;
+import org.eclipse.jpt.utility.model.event.ListMoveEvent;
+import org.eclipse.jpt.utility.model.event.ListRemoveEvent;
+import org.eclipse.jpt.utility.model.event.ListReplaceEvent;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.model.event.StateChangeEvent;
+import org.eclipse.jpt.utility.model.event.TreeAddEvent;
 import org.eclipse.jpt.utility.model.event.TreeChangeEvent;
+import org.eclipse.jpt.utility.model.event.TreeClearEvent;
+import org.eclipse.jpt.utility.model.event.TreeRemoveEvent;
 import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
@@ -261,7 +270,7 @@ public abstract class AbstractModel
 		this.getChangeSupport().fireItemRemoved(collectionName, removedItem);
 	}
 
-	protected final void fireCollectionCleared(CollectionChangeEvent event) {
+	protected final void fireCollectionCleared(CollectionClearEvent event) {
 		this.getChangeSupport().fireCollectionCleared(event);
 	}
 
@@ -273,8 +282,8 @@ public abstract class AbstractModel
 		this.getChangeSupport().fireCollectionChanged(event);
 	}
 
-	protected final void fireCollectionChanged(String collectionName) {
-		this.getChangeSupport().fireCollectionChanged(collectionName);
+	protected final void fireCollectionChanged(String collectionName, Collection<?> collection) {
+		this.getChangeSupport().fireCollectionChanged(collectionName, collection);
 	}
 
 	protected <E> boolean addItemToCollection(E item, Collection<E> collection, String collectionName) {
@@ -396,7 +405,7 @@ public abstract class AbstractModel
 		return ! this.hasAnyListChangeListeners();
 	}
 
-	protected final void fireItemsAdded(ListChangeEvent event) {
+	protected final void fireItemsAdded(ListAddEvent event) {
 		this.getChangeSupport().fireItemsAdded(event);
 	}
 
@@ -408,7 +417,7 @@ public abstract class AbstractModel
 		this.getChangeSupport().fireItemAdded(listName, index, addedItem);
 	}
 
-	protected final void fireItemsRemoved(ListChangeEvent event) {
+	protected final void fireItemsRemoved(ListRemoveEvent event) {
 		this.getChangeSupport().fireItemsRemoved(event);
 	}
 
@@ -420,7 +429,7 @@ public abstract class AbstractModel
 		this.getChangeSupport().fireItemRemoved(listName, index, removedItem);
 	}
 
-	protected final void fireItemsReplaced(ListChangeEvent event) {
+	protected final void fireItemsReplaced(ListReplaceEvent event) {
 		this.getChangeSupport().fireItemsReplaced(event);
 	}
 
@@ -432,7 +441,7 @@ public abstract class AbstractModel
 		this.getChangeSupport().fireItemReplaced(listName, index, newItem, replacedItem);
 	}
 
-	protected final void fireItemsMoved(ListChangeEvent event) {
+	protected final void fireItemsMoved(ListMoveEvent event) {
 		this.getChangeSupport().fireItemsMoved(event);
 	}
 
@@ -444,7 +453,7 @@ public abstract class AbstractModel
 		this.getChangeSupport().fireItemMoved(listName, targetIndex, sourceIndex);
 	}
 
-	protected final void fireListCleared(ListChangeEvent event) {
+	protected final void fireListCleared(ListClearEvent event) {
 		this.getChangeSupport().fireListCleared(event);
 	}
 
@@ -456,8 +465,8 @@ public abstract class AbstractModel
 		this.getChangeSupport().fireListChanged(event);
 	}
 
-	protected final void fireListChanged(String listName) {
-		this.getChangeSupport().fireListChanged(listName);
+	protected final void fireListChanged(String listName, List<?> list) {
+		this.getChangeSupport().fireListChanged(listName, list);
 	}
 
 	protected <E> void addItemToList(int index, E item, List<E> list, String listName) {
@@ -631,28 +640,24 @@ public abstract class AbstractModel
 		return ! this.hasAnyTreeChangeListeners();
 	}
 
-	protected final void fireNodeAdded(TreeChangeEvent event) {
+	protected final void fireNodeAdded(TreeAddEvent event) {
 		this.getChangeSupport().fireNodeAdded(event);
 	}
 
-	protected final void fireNodeAdded(String treeName, Object[] path) {
+	protected final void fireNodeAdded(String treeName, List<?> path) {
 		this.getChangeSupport().fireNodeAdded(treeName, path);
 	}
 
-	protected final void fireNodeRemoved(TreeChangeEvent event) {
+	protected final void fireNodeRemoved(TreeRemoveEvent event) {
 		this.getChangeSupport().fireNodeRemoved(event);
 	}
 
-	protected final void fireNodeRemoved(String treeName, Object[] path) {
+	protected final void fireNodeRemoved(String treeName, List<?> path) {
 		this.getChangeSupport().fireNodeRemoved(treeName, path);
 	}
 
-	protected final void fireTreeCleared(TreeChangeEvent event) {
+	protected final void fireTreeCleared(TreeClearEvent event) {
 		this.getChangeSupport().fireTreeCleared(event);
-	}
-
-	protected final void fireTreeCleared(String treeName, Object[] path) {
-		this.getChangeSupport().fireTreeCleared(treeName, path);
 	}
 
 	protected final void fireTreeCleared(String treeName) {
@@ -663,12 +668,8 @@ public abstract class AbstractModel
 		this.getChangeSupport().fireTreeChanged(event);
 	}
 
-	protected final void fireTreeChanged(String treeName, Object[] path) {
-		this.getChangeSupport().fireTreeChanged(treeName, path);
-	}
-
-	protected final void fireTreeChanged(String treeName) {
-		this.getChangeSupport().fireTreeChanged(treeName);
+	protected final void fireTreeChanged(String treeName, Collection<?> nodes) {
+		this.getChangeSupport().fireTreeChanged(treeName, nodes);
 	}
 
 
@@ -722,13 +723,21 @@ public abstract class AbstractModel
 		return clone;
 	}
 
+	/**
+	 * "ClassName[00F3EE42](add'l info)"
+	 */
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		StringTools.buildSimpleToStringOn(this, sb);
-		sb.append(" ("); //$NON-NLS-1$
+		sb.append('(');
+		int len = sb.length();
 		this.toString(sb);
-		sb.append(')');
+		if (sb.length() == len) {
+			sb.deleteCharAt(len - 1);
+		} else {
+			sb.append(')');
+		}
 		return sb.toString();
 	}
 

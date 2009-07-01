@@ -44,23 +44,23 @@ public abstract class ChangeEvent extends EventObject {
 		return (Model) super.getSource();
 	}
 
-	/**
-	 * Return the name of the aspect of the source that changed.
-	 * May be null if inappropriate.
-	 */
-	public abstract String getAspectName();
-
-	/**
-	 * Return a copy of the event with the specified source
-	 * replacing the current source.
-	 * 
-	 * @param newSource The new source for the event's clone.
-	 */
-	public abstract ChangeEvent cloneWithSource(Model newSource);
-
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.getAspectName());
+		StringBuilder sb = new StringBuilder();
+		StringTools.buildSimpleToStringOn(this, sb);
+		sb.append('(');
+		int len = sb.length();
+		this.toString(sb);
+		if (sb.length() == len) {
+			sb.deleteCharAt(len - 1);
+		} else {
+			sb.append(')');
+		}
+		return sb.toString();
+	}
+
+	protected void toString(@SuppressWarnings("unused") StringBuilder sb) {
+		// subclasses should override this to do something a bit more helpful
 	}
 
 }

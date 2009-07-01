@@ -13,12 +13,20 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+
 import junit.framework.TestCase;
+
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.value.ExtendedListValueModelWrapper;
 import org.eclipse.jpt.utility.internal.model.value.SimpleListValueModel;
+import org.eclipse.jpt.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
+import org.eclipse.jpt.utility.model.event.ListClearEvent;
+import org.eclipse.jpt.utility.model.event.ListEvent;
+import org.eclipse.jpt.utility.model.event.ListMoveEvent;
+import org.eclipse.jpt.utility.model.event.ListRemoveEvent;
+import org.eclipse.jpt.utility.model.event.ListReplaceEvent;
 import org.eclipse.jpt.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
@@ -27,7 +35,7 @@ import org.eclipse.jpt.utility.tests.internal.TestTools;
 public class ExtendedListValueModelWrapperTests extends TestCase {
 	private SimpleListValueModel<String> listHolder;
 	private ListValueModel<String> extendedListHolder;
-	ListChangeEvent event;
+	ListEvent event;
 	String eventType;
 
 	private static final String ADD = "add";
@@ -215,35 +223,35 @@ public class ExtendedListValueModelWrapperTests extends TestCase {
 		this.eventType = null;
 		this.listHolder.addAll(0, this.buildList());
 		this.verifyEvent(ADD);
-		assertEquals(this.buildList(), CollectionTools.list(this.event.getItems()));
+		assertEquals(this.buildList(), CollectionTools.list(((ListAddEvent) this.event).getItems()));
 
 		this.event = null;
 		this.eventType = null;
 		this.listHolder.set(0, "AA");
 		this.verifyEvent(REPLACE);
-		assertFalse(CollectionTools.contains(this.event.getItems(), "A"));
-		assertTrue(CollectionTools.contains(this.event.getItems(), "AA"));
+		assertFalse(CollectionTools.contains(((ListReplaceEvent) this.event).getNewItems(), "A"));
+		assertTrue(CollectionTools.contains(((ListReplaceEvent) this.event).getNewItems(), "AA"));
 	}
 
 	private ListChangeListener buildListener() {
 		return new ListChangeListener() {
-			public void itemsAdded(ListChangeEvent e) {
+			public void itemsAdded(ListAddEvent e) {
 				ExtendedListValueModelWrapperTests.this.eventType = ADD;
 				ExtendedListValueModelWrapperTests.this.event = e;
 			}
-			public void itemsRemoved(ListChangeEvent e) {
+			public void itemsRemoved(ListRemoveEvent e) {
 				ExtendedListValueModelWrapperTests.this.eventType = REMOVE;
 				ExtendedListValueModelWrapperTests.this.event = e;
 			}
-			public void itemsReplaced(ListChangeEvent e) {
+			public void itemsReplaced(ListReplaceEvent e) {
 				ExtendedListValueModelWrapperTests.this.eventType = REPLACE;
 				ExtendedListValueModelWrapperTests.this.event = e;
 			}
-			public void itemsMoved(ListChangeEvent e) {
+			public void itemsMoved(ListMoveEvent e) {
 				ExtendedListValueModelWrapperTests.this.eventType = MOVE;
 				ExtendedListValueModelWrapperTests.this.event = e;
 			}
-			public void listCleared(ListChangeEvent e) {
+			public void listCleared(ListClearEvent e) {
 				ExtendedListValueModelWrapperTests.this.eventType = CLEAR;
 				ExtendedListValueModelWrapperTests.this.event = e;
 			}
@@ -262,8 +270,13 @@ public class ExtendedListValueModelWrapperTests extends TestCase {
 
 	private void verifyEvent(String type, int index, Object item) {
 		this.verifyEvent(type);
-		assertEquals(index, this.event.getIndex());
-		assertEquals(item, this.event.getItems().iterator().next());
+		if (type == ADD) {
+			assertEquals(index, ((ListAddEvent) this.event).getIndex());
+			assertEquals(item, ((ListAddEvent) this.event).getItems().iterator().next());
+		} else if (type == REMOVE) {
+			assertEquals(index, ((ListRemoveEvent) this.event).getIndex());
+			assertEquals(item, ((ListRemoveEvent) this.event).getItems().iterator().next());
+		}
 	}
 
 	public void testHasListeners() {

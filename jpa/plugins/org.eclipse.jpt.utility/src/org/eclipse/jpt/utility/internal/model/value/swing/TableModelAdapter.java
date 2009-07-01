@@ -12,12 +12,19 @@ package org.eclipse.jpt.utility.internal.model.value.swing;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
+
 import org.eclipse.jpt.utility.internal.model.listener.awt.AWTListChangeListenerWrapper;
 import org.eclipse.jpt.utility.internal.model.listener.awt.AWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.utility.internal.model.value.CollectionListValueModelAdapter;
+import org.eclipse.jpt.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
+import org.eclipse.jpt.utility.model.event.ListClearEvent;
+import org.eclipse.jpt.utility.model.event.ListMoveEvent;
+import org.eclipse.jpt.utility.model.event.ListRemoveEvent;
+import org.eclipse.jpt.utility.model.event.ListReplaceEvent;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
@@ -121,19 +128,19 @@ public class TableModelAdapter<E>
 
 	protected ListChangeListener buildListChangeListener_() {
 		return new ListChangeListener() {
-			public void itemsAdded(ListChangeEvent event) {
-				TableModelAdapter.this.addRows(event.getIndex(), event.getItemsSize(), this.getItems(event));
+			public void itemsAdded(ListAddEvent event) {
+				TableModelAdapter.this.addRows(event.getIndex(), event.getItemsSize(), this.getAddedItems(event));
 			}
-			public void itemsRemoved(ListChangeEvent event) {
+			public void itemsRemoved(ListRemoveEvent event) {
 				TableModelAdapter.this.removeRows(event.getIndex(), event.getItemsSize());
 			}
-			public void itemsReplaced(ListChangeEvent event) {
-				TableModelAdapter.this.replaceRows(event.getIndex(), this.getItems(event));
+			public void itemsReplaced(ListReplaceEvent event) {
+				TableModelAdapter.this.replaceRows(event.getIndex(), this.getNewItems(event));
 			}
-			public void itemsMoved(ListChangeEvent event) {
-				TableModelAdapter.this.moveRows(event.getTargetIndex(), event.getSourceIndex(), event.getMoveLength());
+			public void itemsMoved(ListMoveEvent event) {
+				TableModelAdapter.this.moveRows(event.getTargetIndex(), event.getSourceIndex(), event.getLength());
 			}
-			public void listCleared(ListChangeEvent event) {
+			public void listCleared(ListClearEvent event) {
 				TableModelAdapter.this.clearTable();
 			}
 			public void listChanged(ListChangeEvent event) {
@@ -141,8 +148,13 @@ public class TableModelAdapter<E>
 			}
 			// minimized scope of suppressed warnings
 			@SuppressWarnings("unchecked")
-			protected Iterable<Object> getItems(ListChangeEvent event) {
+			protected Iterable<Object> getAddedItems(ListAddEvent event) {
 				return (Iterable<Object>) event.getItems();
+			}
+			// minimized scope of suppressed warnings
+			@SuppressWarnings("unchecked")
+			protected Iterable<Object> getNewItems(ListReplaceEvent event) {
+				return (Iterable<Object>) event.getNewItems();
 			}
 			@Override
 			public String toString() {

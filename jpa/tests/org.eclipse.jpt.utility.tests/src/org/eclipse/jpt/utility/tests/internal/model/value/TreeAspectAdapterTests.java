@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,10 @@ package org.eclipse.jpt.utility.tests.internal.model.value;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
+
 import junit.framework.TestCase;
+
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.HashBag;
 import org.eclipse.jpt.utility.internal.iterators.ChainIterator;
@@ -21,18 +24,23 @@ import org.eclipse.jpt.utility.internal.iterators.TreeIterator;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TreeAspectAdapter;
+import org.eclipse.jpt.utility.model.event.TreeAddEvent;
 import org.eclipse.jpt.utility.model.event.TreeChangeEvent;
+import org.eclipse.jpt.utility.model.event.TreeClearEvent;
+import org.eclipse.jpt.utility.model.event.TreeEvent;
+import org.eclipse.jpt.utility.model.event.TreeRemoveEvent;
 import org.eclipse.jpt.utility.model.listener.TreeChangeListener;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.TreeValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
+@SuppressWarnings("nls")
 public class TreeAspectAdapterTests extends TestCase {
 	private TestSubject subject1;
 	private WritablePropertyValueModel<TestSubject> subjectHolder1;
-	private TreeAspectAdapter<TestSubject, TestNode[]> aa1;
-	private TreeChangeEvent event1;
+	private TreeAspectAdapter<TestSubject, List<TestNode>> aa1;
+	private TreeEvent event1;
 	private TreeChangeListener listener1;
 
 	private TestSubject subject2;
@@ -89,11 +97,11 @@ public class TreeAspectAdapterTests extends TestCase {
 		node = this.subject2.addDescription(root, "description 2.3");
 	}
 
-	private TreeAspectAdapter<TestSubject, TestNode[]> buildAspectAdapter(PropertyValueModel<TestSubject> subjectHolder) {
-		return new TreeAspectAdapter<TestSubject, TestNode[]>(subjectHolder, TestSubject.NAMES_TREE) {
+	private TreeAspectAdapter<TestSubject, List<TestNode>> buildAspectAdapter(PropertyValueModel<TestSubject> subjectHolder) {
+		return new TreeAspectAdapter<TestSubject, List<TestNode>>(subjectHolder, TestSubject.NAMES_TREE) {
 			// this is not a typical aspect adapter - the value is determined by the aspect name
 			@Override
-			protected Iterator<TestNode[]> nodes_() {
+			protected Iterator<List<TestNode>> nodes_() {
 				if (this.treeNames[0] == TestSubject.NAMES_TREE) {
 					return this.subject.namePaths();
 				}
@@ -107,13 +115,13 @@ public class TreeAspectAdapterTests extends TestCase {
 
 	private TreeChangeListener buildValueChangeListener1() {
 		return new TreeChangeListener() {
-			public void nodeAdded(TreeChangeEvent e) {
+			public void nodeAdded(TreeAddEvent e) {
 				TreeAspectAdapterTests.this.value1Changed(e);
 			}
-			public void nodeRemoved(TreeChangeEvent e) {
+			public void nodeRemoved(TreeRemoveEvent e) {
 				TreeAspectAdapterTests.this.value1Changed(e);
 			}
-			public void treeCleared(TreeChangeEvent e) {
+			public void treeCleared(TreeClearEvent e) {
 				TreeAspectAdapterTests.this.value1Changed(e);
 			}
 			public void treeChanged(TreeChangeEvent e) {
@@ -122,7 +130,7 @@ public class TreeAspectAdapterTests extends TestCase {
 		};
 	}
 
-	void value1Changed(TreeChangeEvent e) {
+	void value1Changed(TreeEvent e) {
 		this.event1 = e;
 	}
 
@@ -139,21 +147,18 @@ public class TreeAspectAdapterTests extends TestCase {
 		assertNotNull(this.event1);
 		assertEquals(this.aa1, this.event1.getSource());
 		assertEquals(TreeValueModel.NODES, this.event1.getTreeName());
-		assertEquals(0, this.event1.getPath().length);
 		
 		this.event1 = null;
 		this.subjectHolder1.setValue(null);
 		assertNotNull(this.event1);
 		assertEquals(this.aa1, this.event1.getSource());
 		assertEquals(TreeValueModel.NODES, this.event1.getTreeName());
-		assertEquals(0, this.event1.getPath().length);
 		
 		this.event1 = null;
 		this.subjectHolder1.setValue(this.subject1);
 		assertNotNull(this.event1);
 		assertEquals(this.aa1, this.event1.getSource());
 		assertEquals(TreeValueModel.NODES, this.event1.getTreeName());
-		assertEquals(0, this.event1.getPath().length);
 	}
 
 	public void testTreeStructureChange() {
@@ -163,8 +168,6 @@ public class TreeAspectAdapterTests extends TestCase {
 		assertNotNull(this.event1);
 		assertEquals(this.aa1, this.event1.getSource());
 		assertEquals(TreeValueModel.NODES, this.event1.getTreeName());
-		Object[] path = this.event1.getPath();
-		assertEquals(this.subject1.getRootNameNode(), path[path.length - 1]);
 		assertTrue(this.subject1.containsNameNode("jam"));
 		assertTrue(this.subject1.containsNameNode("jaz"));
 	}
@@ -173,15 +176,15 @@ public class TreeAspectAdapterTests extends TestCase {
 		assertEquals(this.convertToNames(this.subject1.namePaths()), this.convertToNames(this.aa1.nodes()));
 	}
 
-	private Collection<String> convertToNames(Iterator<TestNode[]> namePaths) {
+	private Collection<String> convertToNames(Iterator<List<TestNode>> namePaths) {
 		Collection<String> result = new HashBag<String>();
 		while (namePaths.hasNext()) {
-			Object[] path = namePaths.next();
+			List<TestNode> path = namePaths.next();
 			StringBuffer sb = new StringBuffer();
 			sb.append('[');
-			for (int i = 0; i < path.length; i++) {
-				sb.append(((TestNode) path[i]).getText());
-				if (i < path.length - 1) {
+			for (int i = 0; i < path.size(); i++) {
+				sb.append(path.get(i).getText());
+				if (i < path.size() - 1) {
 					sb.append(':');
 				}
 			}
@@ -209,7 +212,7 @@ public class TreeAspectAdapterTests extends TestCase {
 
 	// ********** inner classes **********
 	
-	private class TestSubject extends AbstractModel {
+	class TestSubject extends AbstractModel {
 		private TestNode rootNameNode;
 		public static final String NAMES_TREE = "names";
 		private TestNode rootDescriptionNode;
@@ -230,28 +233,28 @@ public class TreeAspectAdapterTests extends TestCase {
 				}
 			};
 		}
-		public Iterator<TestNode[]> namePaths() {
-			return new TransformationIterator<TestNode, TestNode[]>(this.nameNodes()) {
+		public Iterator<List<TestNode>> namePaths() {
+			return new TransformationIterator<TestNode, List<TestNode>>(this.nameNodes()) {
 				@Override
-				protected TestNode[] transform(TestNode next) {
-					return next.path();
+				protected List<TestNode> transform(TestNode next) {
+					return next.getPath();
 				}
 			};
 		}
 		public TestNode addName(TestNode parent, String name) {
 			TestNode child = new TestNode(name);
 			parent.addChild(child);
-			this.fireNodeAdded(NAMES_TREE, child.path());
+			this.fireNodeAdded(NAMES_TREE, child.getPath());
 			return child;
 		}
 		public void addTwoNames(TestNode parent, String name1, String name2) {
 			parent.addChild(new TestNode(name1));
 			parent.addChild(new TestNode(name2));
-			this.fireTreeChanged(NAMES_TREE, parent.path());
+			this.fireTreeChanged(NAMES_TREE, parent.getPath());
 		}
 		public void removeNameNode(TestNode nameNode) {
 			nameNode.getParent().removeChild(nameNode);
-			this.fireNodeRemoved(NAMES_TREE, nameNode.path());
+			this.fireNodeRemoved(NAMES_TREE, nameNode.getPath());
 		}
 		public boolean containsNameNode(String name) {
 			return this.nameNode(name) != null;
@@ -276,23 +279,23 @@ public class TreeAspectAdapterTests extends TestCase {
 				}
 			};
 		}
-		public Iterator<TestNode[]> descriptionPaths() {
-			return new TransformationIterator<TestNode, TestNode[]>(this.descriptionNodes()) {
+		public Iterator<List<TestNode>> descriptionPaths() {
+			return new TransformationIterator<TestNode, List<TestNode>>(this.descriptionNodes()) {
 				@Override
-				protected TestNode[] transform(TestNode next) {
-					return next.path();
+				protected List<TestNode> transform(TestNode next) {
+					return next.getPath();
 				}
 			};
 		}
 		public TestNode addDescription(TestNode parent, String description) {
 			TestNode child = new TestNode(description);
 			parent.addChild(child);
-			this.fireNodeAdded(DESCRIPTIONS_TREE, child.path());
+			this.fireNodeAdded(DESCRIPTIONS_TREE, child.getPath());
 			return child;
 		}
 		public void removeDescriptionNode(TestNode descriptionNode) {
 			descriptionNode.getParent().removeChild(descriptionNode);
-			this.fireNodeRemoved(DESCRIPTIONS_TREE, descriptionNode.path());
+			this.fireNodeRemoved(DESCRIPTIONS_TREE, descriptionNode.getPath());
 		}
 		public boolean containsDescriptionNode(String name) {
 			for (Iterator<TestNode> stream = this.descriptionNodes(); stream.hasNext(); ) {
@@ -305,7 +308,7 @@ public class TreeAspectAdapterTests extends TestCase {
 		}
 	}
 	
-	private class TestNode {
+	class TestNode {
 		private final String text;
 		private TestNode parent;
 		private final Collection<TestNode> children;
@@ -333,8 +336,8 @@ public class TreeAspectAdapterTests extends TestCase {
 		public void removeChild(TestNode child) {
 			this.children.remove(child);
 		}
-		public TestNode[] path() {
-			return CollectionTools.reverseList(this.buildAntiPath()).toArray(new TestNode[0]);
+		public List<TestNode> getPath() {
+			return CollectionTools.reverseList(this.buildAntiPath());
 		}
 		private Iterator<TestNode> buildAntiPath() {
 			return new ChainIterator<TestNode>(this) {

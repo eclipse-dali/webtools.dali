@@ -14,11 +14,18 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+
 import javax.swing.ListModel;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
+
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
+import org.eclipse.jpt.utility.model.event.ListClearEvent;
+import org.eclipse.jpt.utility.model.event.ListMoveEvent;
+import org.eclipse.jpt.utility.model.event.ListRemoveEvent;
+import org.eclipse.jpt.utility.model.event.ListReplaceEvent;
 import org.eclipse.jpt.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 
@@ -141,32 +148,32 @@ public class CoordinatedList<E> implements List<E>, ListChangeListener, ListData
 
 	// ********** ListChangeListener implementation **********
 
-	public void itemsAdded(ListChangeEvent e) {
+	public void itemsAdded(ListAddEvent e) {
 		int i = e.getIndex();
 		for (E item : this.getItems(e)) {
 			this.list.add(i++, item);
 		}
 	}
 
-	public void itemsRemoved(ListChangeEvent e) {
+	public void itemsRemoved(ListRemoveEvent e) {
 		int base = e.getIndex();
 		for (int i = e.getItemsSize(); i-- > 0; ) {
 			this.list.remove(base + i);  // remove from end
 		}
 	}
 
-	public void itemsReplaced(ListChangeEvent e) {
+	public void itemsReplaced(ListReplaceEvent e) {
 		int i = e.getIndex();
-		for (E item : this.getItems(e)) {
+		for (E item : this.getNewItems(e)) {
 			this.list.set(i++, item);
 		}
 	}
 
-	public void itemsMoved(ListChangeEvent e) {
-		CollectionTools.move(this.list, e.getTargetIndex(), e.getSourceIndex(), e.getMoveLength());
+	public void itemsMoved(ListMoveEvent e) {
+		CollectionTools.move(this.list, e.getTargetIndex(), e.getSourceIndex(), e.getLength());
 	}
 
-	public void listCleared(ListChangeEvent e) {
+	public void listCleared(ListClearEvent e) {
 		this.list.clear();
 	}
 
@@ -236,8 +243,14 @@ public class CoordinatedList<E> implements List<E>, ListChangeListener, ListData
 
 	// minimized scope of suppressed warnings
 	@SuppressWarnings("unchecked")
-	private Iterable<E> getItems(ListChangeEvent event) {
+	private Iterable<E> getItems(ListAddEvent event) {
 		return (Iterable<E>) event.getItems();
+	}
+
+	// minimized scope of suppressed warnings
+	@SuppressWarnings("unchecked")
+	private Iterable<E> getNewItems(ListReplaceEvent event) {
+		return (Iterable<E>) event.getNewItems();
 	}
 
 	/**

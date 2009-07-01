@@ -19,6 +19,7 @@ import org.eclipse.jpt.utility.internal.model.value.PropertyListValueModelAdapte
 import org.eclipse.jpt.utility.model.Model;
 import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.utility.model.event.CollectionClearEvent;
 import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
 import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;
@@ -76,7 +77,7 @@ public abstract class AbstractTreeItemContentProvider<E>
 			
 			public void itemsRemoved(CollectionRemoveEvent event) {
 				getTreeContentProvider().updateContent(getModel());
-				for (Object item : event.getRemovedItems()) {
+				for (Object item : event.getItems()) {
 					getTreeContentProvider().dispose(item);
 				}
 			}
@@ -88,7 +89,7 @@ public abstract class AbstractTreeItemContentProvider<E>
 				// keep a watch on this to see if this becomes a problem.
 			}
 			
-			public void collectionCleared(CollectionChangeEvent event) {
+			public void collectionCleared(CollectionClearEvent event) {
 				getTreeContentProvider().updateContent(getModel());
 				// in the case of a list cleared event, we don't have 
 				// access to the removed objects, so we can't dispose them.
@@ -122,8 +123,8 @@ public abstract class AbstractTreeItemContentProvider<E>
 	 * This wraps the children collection model and uses it internally as a list
 	 * model.
 	 */
-	protected CollectionValueModel<E> buildChildrenModel(ListValueModel<E> childrenModel) {
-		return new ListCollectionValueModelAdapter<E>(childrenModel);
+	protected CollectionValueModel<E> buildChildrenModel(ListValueModel<E> lvm) {
+		return new ListCollectionValueModelAdapter<E>(lvm);
 	}
 	
 	/**
@@ -132,8 +133,8 @@ public abstract class AbstractTreeItemContentProvider<E>
 	 * This wraps the children (child) property model and uses it internally as a list
 	 * model.
 	 */
-	protected ListValueModel<E> buildChildrenModel(PropertyValueModel<E> childrenModel) {
-		return new PropertyListValueModelAdapter<E>(childrenModel);
+	protected ListValueModel<E> buildChildrenModel(PropertyValueModel<E> lvm) {
+		return new PropertyListValueModelAdapter<E>(lvm);
 	}
 	
 	/**

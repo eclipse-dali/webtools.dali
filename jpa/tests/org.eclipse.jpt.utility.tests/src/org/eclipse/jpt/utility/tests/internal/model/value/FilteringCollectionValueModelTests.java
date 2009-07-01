@@ -22,6 +22,7 @@ import org.eclipse.jpt.utility.internal.model.value.FilteringCollectionValueMode
 import org.eclipse.jpt.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.utility.model.event.CollectionClearEvent;
 import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
 import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;
@@ -32,13 +33,13 @@ public class FilteringCollectionValueModelTests extends TestCase {
 	private SimpleCollectionValueModel<String> collectionHolder;
 	CollectionAddEvent addEvent;
 	CollectionRemoveEvent removeEvent;
-	CollectionChangeEvent collectionClearedEvent;
+	CollectionClearEvent collectionClearedEvent;
 	CollectionChangeEvent collectionChangedEvent;
 
 	private CollectionValueModel<String> filteredCollectionHolder;
 	CollectionAddEvent filteredAddEvent;
 	CollectionRemoveEvent filteredRemoveEvent;
-	CollectionChangeEvent filteredCollectionClearedEvent;
+	CollectionClearEvent filteredCollectionClearedEvent;
 	CollectionChangeEvent filteredCollectionChangedEvent;
 
 	public FilteringCollectionValueModelTests(String name) {
@@ -209,7 +210,7 @@ public class FilteringCollectionValueModelTests extends TestCase {
 			public void itemsRemoved(CollectionRemoveEvent e) {
 				FilteringCollectionValueModelTests.this.removeEvent = e;
 			}
-			public void collectionCleared(CollectionChangeEvent e) {
+			public void collectionCleared(CollectionClearEvent e) {
 				FilteringCollectionValueModelTests.this.collectionClearedEvent = e;
 			}
 			public void collectionChanged(CollectionChangeEvent e) {
@@ -226,7 +227,7 @@ public class FilteringCollectionValueModelTests extends TestCase {
 			public void itemsRemoved(CollectionRemoveEvent e) {
 				FilteringCollectionValueModelTests.this.filteredRemoveEvent = e;
 			}
-			public void collectionCleared(CollectionChangeEvent e) {
+			public void collectionCleared(CollectionClearEvent e) {
 				FilteringCollectionValueModelTests.this.filteredCollectionClearedEvent = e;
 			}
 			public void collectionChanged(CollectionChangeEvent e) {
@@ -243,13 +244,13 @@ public class FilteringCollectionValueModelTests extends TestCase {
 	private void verifyEvent(CollectionAddEvent event, Object source, Object items) {
 		assertEquals(source, event.getSource());
 		assertEquals(CollectionValueModel.VALUES, event.getCollectionName());
-		assertEquals(items, CollectionTools.vector(event.getAddedItems()));
+		assertEquals(items, CollectionTools.vector(event.getItems()));
 	}
 
 	private void verifyEvent(CollectionRemoveEvent event, Object source, Object items) {
 		assertEquals(source, event.getSource());
 		assertEquals(CollectionValueModel.VALUES, event.getCollectionName());
-		assertEquals(items, CollectionTools.vector(event.getRemovedItems()));
+		assertEquals(items, CollectionTools.vector(event.getItems()));
 	}
 
 	public void testRemoveFilteredItem() {

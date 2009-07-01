@@ -14,9 +14,21 @@ import java.lang.reflect.Method;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.utility.model.event.CollectionClearEvent;
+import org.eclipse.jpt.utility.model.event.CollectionEvent;
 import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
+import org.eclipse.jpt.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
+import org.eclipse.jpt.utility.model.event.ListClearEvent;
+import org.eclipse.jpt.utility.model.event.ListEvent;
+import org.eclipse.jpt.utility.model.event.ListMoveEvent;
+import org.eclipse.jpt.utility.model.event.ListRemoveEvent;
+import org.eclipse.jpt.utility.model.event.ListReplaceEvent;
+import org.eclipse.jpt.utility.model.event.TreeAddEvent;
 import org.eclipse.jpt.utility.model.event.TreeChangeEvent;
+import org.eclipse.jpt.utility.model.event.TreeClearEvent;
+import org.eclipse.jpt.utility.model.event.TreeEvent;
+import org.eclipse.jpt.utility.model.event.TreeRemoveEvent;
 
 /**
  * This class is used by ReflectiveChangeListener when the requested listener
@@ -59,11 +71,11 @@ class MultiMethodReflectiveChangeListener
 
 	// ********** CollectionChangeListener implementation **********
 
-	private void invoke(Method method, CollectionChangeEvent event) {
+	private void invoke(Method method, CollectionEvent event) {
 		if (method.getParameterTypes().length == 0) {
-			ClassTools.executeMethod(method, this.target, EMPTY_COLLECTION_CHANGE_EVENT_ARRAY);
+			ClassTools.executeMethod(method, this.target, EMPTY_OBJECT_ARRAY);
 		} else {
-			ClassTools.executeMethod(method, this.target, new CollectionChangeEvent[] {event});
+			ClassTools.executeMethod(method, this.target, new CollectionEvent[] {event});
 		}
 	}
 
@@ -75,7 +87,7 @@ class MultiMethodReflectiveChangeListener
 		this.invoke(this.removeMethod, event);
 	}
 
-	public void collectionCleared(CollectionChangeEvent event) {
+	public void collectionCleared(CollectionClearEvent event) {
 		this.invoke(this.clearMethod, event);
 	}
 
@@ -86,31 +98,31 @@ class MultiMethodReflectiveChangeListener
 
 	// ********** ListChangeListener implementation **********
 
-	private void invoke(Method method, ListChangeEvent event) {
+	private void invoke(Method method, ListEvent event) {
 		if (method.getParameterTypes().length == 0) {
-			ClassTools.executeMethod(method, this.target, EMPTY_LIST_CHANGE_EVENT_ARRAY);
+			ClassTools.executeMethod(method, this.target, EMPTY_OBJECT_ARRAY);
 		} else {
-			ClassTools.executeMethod(method, this.target, new ListChangeEvent[] {event});
+			ClassTools.executeMethod(method, this.target, new ListEvent[] {event});
 		}
 	}
 
-	public void itemsAdded(ListChangeEvent event) {
+	public void itemsAdded(ListAddEvent event) {
 		this.invoke(this.addMethod, event);
 	}
 
-	public void itemsRemoved(ListChangeEvent event) {
+	public void itemsRemoved(ListRemoveEvent event) {
 		this.invoke(this.removeMethod, event);
 	}
 
-	public void itemsReplaced(ListChangeEvent event) {
+	public void itemsReplaced(ListReplaceEvent event) {
 		this.invoke(this.replaceMethod, event);
 	}
 
-	public void itemsMoved(ListChangeEvent event) {
+	public void itemsMoved(ListMoveEvent event) {
 		this.invoke(this.moveMethod, event);
 	}
 
-	public void listCleared(ListChangeEvent event) {
+	public void listCleared(ListClearEvent event) {
 		this.invoke(this.clearMethod, event);
 	}
 
@@ -121,23 +133,23 @@ class MultiMethodReflectiveChangeListener
 
 	// ********** TreeChangeListener implementation **********
 
-	private void invoke(Method method, TreeChangeEvent event) {
+	private void invoke(Method method, TreeEvent event) {
 		if (method.getParameterTypes().length == 0) {
-			ClassTools.executeMethod(method, this.target, EMPTY_TREE_CHANGE_EVENT_ARRAY);
+			ClassTools.executeMethod(method, this.target, EMPTY_OBJECT_ARRAY);
 		} else {
-			ClassTools.executeMethod(method, this.target, new TreeChangeEvent[] {event});
+			ClassTools.executeMethod(method, this.target, new TreeEvent[] {event});
 		}
 	}
 
-	public void nodeAdded(TreeChangeEvent event) {
+	public void nodeAdded(TreeAddEvent event) {
 		this.invoke(this.addMethod, event);
 	}
 
-	public void nodeRemoved(TreeChangeEvent event) {
+	public void nodeRemoved(TreeRemoveEvent event) {
 		this.invoke(this.removeMethod, event);
 	}
 
-	public void treeCleared(TreeChangeEvent event) {
+	public void treeCleared(TreeClearEvent event) {
 		this.invoke(this.clearMethod, event);
 	}
 

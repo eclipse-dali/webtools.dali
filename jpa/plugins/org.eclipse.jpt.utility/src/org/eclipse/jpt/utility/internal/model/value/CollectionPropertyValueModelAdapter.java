@@ -11,6 +11,7 @@ package org.eclipse.jpt.utility.internal.model.value;
 
 import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.utility.model.event.CollectionClearEvent;
 import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
 import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;
@@ -63,7 +64,7 @@ public abstract class CollectionPropertyValueModelAdapter<T>
 			public void itemsRemoved(CollectionRemoveEvent event) {
 				CollectionPropertyValueModelAdapter.this.itemsRemoved(event);
 			}
-			public void collectionCleared(CollectionChangeEvent event) {
+			public void collectionCleared(CollectionClearEvent event) {
 				CollectionPropertyValueModelAdapter.this.collectionCleared(event);
 			}
 			public void collectionChanged(CollectionChangeEvent event) {
@@ -107,7 +108,7 @@ public abstract class CollectionPropertyValueModelAdapter<T>
 	 * Items were added to the wrapped collection holder;
 	 * propagate the change notification appropriately.
 	 */
-	protected void itemsAdded(@SuppressWarnings("unused") CollectionChangeEvent event) {
+	protected void itemsAdded(@SuppressWarnings("unused") CollectionAddEvent event) {
 		// by default, simply recalculate the value and fire an event
 		this.propertyChanged();
 	}
@@ -116,7 +117,7 @@ public abstract class CollectionPropertyValueModelAdapter<T>
 	 * Items were removed from the wrapped collection holder;
 	 * propagate the change notification appropriately.
 	 */
-	protected void itemsRemoved(@SuppressWarnings("unused") CollectionChangeEvent event) {
+	protected void itemsRemoved(@SuppressWarnings("unused") CollectionRemoveEvent event) {
 		// by default, simply recalculate the value and fire an event
 		this.propertyChanged();
 	}
@@ -125,7 +126,7 @@ public abstract class CollectionPropertyValueModelAdapter<T>
 	 * The wrapped collection holder was cleared;
 	 * propagate the change notification appropriately.
 	 */
-	protected void collectionCleared(@SuppressWarnings("unused") CollectionChangeEvent event) {
+	protected void collectionCleared(@SuppressWarnings("unused") CollectionClearEvent event) {
 		// by default, simply recalculate the value and fire an event
 		this.propertyChanged();
 	}

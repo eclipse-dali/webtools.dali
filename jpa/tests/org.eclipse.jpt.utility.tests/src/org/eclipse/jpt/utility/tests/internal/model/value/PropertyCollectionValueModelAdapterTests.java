@@ -24,6 +24,7 @@ import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.swing.ListModelAdapter;
 import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.utility.model.event.CollectionClearEvent;
 import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
 import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;
@@ -143,7 +144,7 @@ public class PropertyCollectionValueModelAdapterTests extends TestCase {
 		public void collectionChanged(CollectionChangeEvent event) {
 			fail("unexpected event");
 		}
-		public void collectionCleared(CollectionChangeEvent event) {
+		public void collectionCleared(CollectionClearEvent event) {
 			fail("unexpected event");
 		}
 		public void itemsAdded(CollectionAddEvent event) {

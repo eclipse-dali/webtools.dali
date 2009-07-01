@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,8 +10,14 @@
 package org.eclipse.jpt.utility.internal.model.value;
 
 import java.util.Arrays;
+
 import org.eclipse.jpt.utility.model.Model;
+import org.eclipse.jpt.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
+import org.eclipse.jpt.utility.model.event.ListClearEvent;
+import org.eclipse.jpt.utility.model.event.ListMoveEvent;
+import org.eclipse.jpt.utility.model.event.ListRemoveEvent;
+import org.eclipse.jpt.utility.model.event.ListReplaceEvent;
 import org.eclipse.jpt.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
@@ -58,19 +64,19 @@ public class ItemListListValueModelAdapter<E>
 	 */
 	protected ListChangeListener buildItemListListener() {
 		return new ListChangeListener() {
-			public void itemsAdded(ListChangeEvent event) {
+			public void itemsAdded(ListAddEvent event) {
 				ItemListListValueModelAdapter.this.itemAspectChanged(event);
 			}
-			public void itemsRemoved(ListChangeEvent event) {
+			public void itemsRemoved(ListRemoveEvent event) {
 				ItemListListValueModelAdapter.this.itemAspectChanged(event);
 			}
-			public void itemsReplaced(ListChangeEvent event) {
+			public void itemsReplaced(ListReplaceEvent event) {
 				ItemListListValueModelAdapter.this.itemAspectChanged(event);
 			}
-			public void itemsMoved(ListChangeEvent event) {
+			public void itemsMoved(ListMoveEvent event) {
 				ItemListListValueModelAdapter.this.itemAspectChanged(event);
 			}
-			public void listCleared(ListChangeEvent event) {
+			public void listCleared(ListClearEvent event) {
 				ItemListListValueModelAdapter.this.itemAspectChanged(event);
 			}
 			public void listChanged(ListChangeEvent event) {
@@ -78,7 +84,7 @@ public class ItemListListValueModelAdapter<E>
 			}
 			@Override
 			public String toString() {
-				return "item list listener: " + Arrays.asList(ItemListListValueModelAdapter.this.listNames);
+				return "item list listener: " + Arrays.asList(ItemListListValueModelAdapter.this.listNames); //$NON-NLS-1$
 			}
 		};
 	}

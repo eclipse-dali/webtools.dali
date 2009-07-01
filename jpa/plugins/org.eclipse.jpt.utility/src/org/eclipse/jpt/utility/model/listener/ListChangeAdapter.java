@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.model.listener;
 
+import org.eclipse.jpt.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
+import org.eclipse.jpt.utility.model.event.ListClearEvent;
+import org.eclipse.jpt.utility.model.event.ListMoveEvent;
+import org.eclipse.jpt.utility.model.event.ListRemoveEvent;
+import org.eclipse.jpt.utility.model.event.ListReplaceEvent;
 
 /**
  * Convenience implementation of ListChangeListener.
@@ -29,23 +34,23 @@ public class ListChangeAdapter implements ListChangeListener {
 		super();
 	}
 
-	public void itemsAdded(ListChangeEvent event) {
+	public void itemsAdded(ListAddEvent event) {
 		// do nothing
 	}
 
-	public void itemsRemoved(ListChangeEvent event) {
+	public void itemsRemoved(ListRemoveEvent event) {
 		// do nothing
 	}
 
-	public void itemsReplaced(ListChangeEvent event) {
+	public void itemsReplaced(ListReplaceEvent event) {
 		// do nothing
 	}
 
-	public void itemsMoved(ListChangeEvent event) {
+	public void itemsMoved(ListMoveEvent event) {
 		// do nothing
 	}
 
-	public void listCleared(ListChangeEvent event) {
+	public void listCleared(ListClearEvent event) {
 		// do nothing
 	}
 

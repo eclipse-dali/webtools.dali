@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,8 +11,11 @@ package org.eclipse.jpt.utility.tests.internal.model.value;
 
 import java.util.Collection;
 import java.util.List;
+
 import javax.swing.JList;
+
 import junit.framework.TestCase;
+
 import org.eclipse.jpt.utility.internal.Bag;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.HashBag;
@@ -20,11 +23,17 @@ import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.value.CollectionListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.utility.internal.model.value.swing.ListModelAdapter;
+import org.eclipse.jpt.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
+import org.eclipse.jpt.utility.model.event.ListClearEvent;
+import org.eclipse.jpt.utility.model.event.ListMoveEvent;
+import org.eclipse.jpt.utility.model.event.ListRemoveEvent;
+import org.eclipse.jpt.utility.model.event.ListReplaceEvent;
 import org.eclipse.jpt.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
+@SuppressWarnings("nls")
 public class CollectionListValueModelAdapterTests extends TestCase {
 	private ListValueModel<String> adapter;
 	private SimpleCollectionValueModel<String> wrappedCollectionHolder;
@@ -51,7 +60,7 @@ public class CollectionListValueModelAdapterTests extends TestCase {
 	public void testIterator() {
 		this.adapter.addListChangeListener(ListValueModel.LIST_VALUES, new TestListChangeListener() {
 			@Override
-			public void itemsAdded(ListChangeEvent e) {/* OK */}
+			public void itemsAdded(ListAddEvent e) {/* OK */}
 		});
 		this.wrappedCollectionHolder.add("foo");
 		this.wrappedCollectionHolder.add("bar");
@@ -68,7 +77,7 @@ public class CollectionListValueModelAdapterTests extends TestCase {
 	public void testStaleValue() {
 		ListChangeListener listener = new TestListChangeListener() {
 			@Override
-			public void itemsAdded(ListChangeEvent e) {/* OK */}
+			public void itemsAdded(ListAddEvent e) {/* OK */}
 		};
 		this.adapter.addListChangeListener(ListValueModel.LIST_VALUES, listener);
 		this.wrappedCollectionHolder.add("foo");
@@ -132,9 +141,9 @@ public class CollectionListValueModelAdapterTests extends TestCase {
 	public void testListSynch() {
 		this.adapter.addListChangeListener(ListValueModel.LIST_VALUES, new TestListChangeListener() {
 			@Override
-			public void itemsAdded(ListChangeEvent e) {/* OK */}
+			public void itemsAdded(ListAddEvent e) {/* OK */}
 			@Override
-			public void itemsRemoved(ListChangeEvent e) {/* OK */}
+			public void itemsRemoved(ListRemoveEvent e) {/* OK */}
 		});
 		this.wrappedCollectionHolder.add("foo");
 		this.wrappedCollectionHolder.add("bar");
@@ -167,9 +176,9 @@ public class CollectionListValueModelAdapterTests extends TestCase {
 	public void testCollectionChangedToEmpty() {
 		this.adapter.addListChangeListener(ListValueModel.LIST_VALUES, new TestListChangeListener() {
 			@Override
-			public void itemsAdded(ListChangeEvent e) {/* OK */}
+			public void itemsAdded(ListAddEvent e) {/* OK */}
 			@Override
-			public void itemsRemoved(ListChangeEvent e) {/* OK */}
+			public void itemsRemoved(ListRemoveEvent e) {/* OK */}
 		});
 		this.wrappedCollectionHolder.add("foo");
 		this.wrappedCollectionHolder.add("bar");
@@ -182,9 +191,9 @@ public class CollectionListValueModelAdapterTests extends TestCase {
 	public void testCollectionChangedFromEmpty() {
 		this.adapter.addListChangeListener(ListValueModel.LIST_VALUES, new TestListChangeListener() {
 			@Override
-			public void itemsAdded(ListChangeEvent e) {/* OK */}
+			public void itemsAdded(ListAddEvent e) {/* OK */}
 			@Override
-			public void itemsRemoved(ListChangeEvent e) {/* OK */}
+			public void itemsRemoved(ListRemoveEvent e) {/* OK */}
 		});
 		JList jList = new JList(new ListModelAdapter(this.adapter));
 		
@@ -198,9 +207,9 @@ public class CollectionListValueModelAdapterTests extends TestCase {
 	public void testCollectionChangedFromEmptyToEmpty() {
 		this.adapter.addListChangeListener(ListValueModel.LIST_VALUES, new TestListChangeListener() {
 			@Override
-			public void itemsAdded(ListChangeEvent e) {/* OK */}
+			public void itemsAdded(ListAddEvent e) {/* OK */}
 			@Override
-			public void itemsRemoved(ListChangeEvent e) {/* OK */}
+			public void itemsRemoved(ListRemoveEvent e) {/* OK */}
 		});
 		JList jList = new JList(new ListModelAdapter(this.adapter));
 		
@@ -211,19 +220,19 @@ public class CollectionListValueModelAdapterTests extends TestCase {
 
 
 	class TestListChangeListener implements ListChangeListener {
-		public void itemsAdded(ListChangeEvent e) {
+		public void itemsAdded(ListAddEvent e) {
 			fail("unexpected event");
 		}
-		public void itemsRemoved(ListChangeEvent e) {
+		public void itemsRemoved(ListRemoveEvent e) {
 			fail("unexpected event");
 		}
-		public void itemsReplaced(ListChangeEvent e) {
+		public void itemsReplaced(ListReplaceEvent e) {
 			fail("unexpected event");
 		}
-		public void itemsMoved(ListChangeEvent e) {
+		public void itemsMoved(ListMoveEvent e) {
 			fail("unexpected event");
 		}
-		public void listCleared(ListChangeEvent e) {
+		public void listCleared(ListClearEvent e) {
 			fail("unexpected event");
 		}
 		public void listChanged(ListChangeEvent e) {

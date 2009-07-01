@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,6 +15,8 @@ import java.util.prefs.BackingStoreException;
 import java.util.prefs.PreferenceChangeEvent;
 import java.util.prefs.PreferenceChangeListener;
 import java.util.prefs.Preferences;
+
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.jpt.utility.internal.model.value.AspectAdapter;
@@ -73,7 +75,7 @@ public class PreferencesCollectionValueModel<P>
 			}
 			@Override
 			public String toString() {
-				return "preference change listener";
+				return "preference change listener"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -115,9 +117,10 @@ public class PreferencesCollectionValueModel<P>
 		return this.hasAnyCollectionChangeListeners(VALUES);
 	}
 
-    @Override
-	protected void fireAspectChange(Object oldValue, Object newValue) {
-		this.fireCollectionChanged(VALUES);
+	@Override
+	protected void fireAspectChanged(Object oldValue, Object newValue) {
+    	@SuppressWarnings("unchecked") Iterator<PreferencePropertyValueModel<P>> iterator = (Iterator<PreferencePropertyValueModel<P>>) newValue;
+		this.fireCollectionChanged(VALUES, CollectionTools.collection(iterator));
 	}
 
     @Override
@@ -136,7 +139,7 @@ public class PreferencesCollectionValueModel<P>
 		} catch (IllegalStateException ex) {
 			// for some odd reason, we are not allowed to remove a listener from a "dead"
 			// preferences node; so handle the exception that gets thrown here
-			if ( ! ex.getMessage().equals("Node has been removed.")) {
+			if ( ! ex.getMessage().equals("Node has been removed.")) { //$NON-NLS-1$
 				// if it is not the expected exception, re-throw it
 				throw ex;
 			}

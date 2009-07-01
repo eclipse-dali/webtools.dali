@@ -205,7 +205,7 @@ public class EclipseLinkCaching extends EclipseLinkPersistenceUnitProperties
 		}
 		Entity newEntity = this.buildEntity(entityName);
 		this.entities.add(newEntity);
-		this.fireListChanged(ENTITIES_LIST_PROPERTY);
+		this.fireListChanged(ENTITIES_LIST, this.entities);
 		return newEntity;
 	}
 
@@ -522,7 +522,7 @@ public class EclipseLinkCaching extends EclipseLinkPersistenceUnitProperties
 			throw new IllegalArgumentException();
 		}
 		this.entities.remove(entity);
-		this.fireListChanged(ENTITIES_LIST_PROPERTY);
+		this.fireListChanged(ENTITIES_LIST, this.entities);
 	}
 
 	/**

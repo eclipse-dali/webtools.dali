@@ -70,7 +70,7 @@ public class CacheStatementsPropertiesComposite extends Pane<Connection>
 
 				// Make sure the default value is appended to the text
 				if (oldValue == newValue && newValue == null) {
-					this.fireAspectChange(Boolean.TRUE, newValue);
+					this.fireAspectChanged(Boolean.TRUE, newValue);
 				}
 			}
 		};

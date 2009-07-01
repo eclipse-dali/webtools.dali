@@ -10,8 +10,8 @@
 package org.eclipse.jpt.utility.model.event;
 
 import java.util.Collection;
-import java.util.Collections;
 
+import org.eclipse.jpt.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.utility.model.Model;
 
 /**
@@ -19,6 +19,13 @@ import org.eclipse.jpt.utility.model.Model;
  * "bound" or "constrained" collection. A CollectionAddEvent is sent as an
  * argument to the CollectionChangeListener.
  * 
+ * Provisional API: This class is part of an interim API that is still
+ * under development and expected to change significantly before reaching
+ * stability. It is available at this early stage to solicit feedback from
+ * pioneering adopters on the understanding that any code that uses this API
+ * will almost certainly be broken (repeatedly) as the API evolves.
+ */
+/* 
  * Design options:
  * - create a collection to wrap a single added or removed item
  * 	(this is the option we implemented below and in collaborating code)
@@ -32,17 +39,11 @@ import org.eclipse.jpt.utility.model.Model;
  * 
  * - add protocol to support both single items and collections
  * 	adds conditional logic to downstream code
- * 
- * Provisional API: This class is part of an interim API that is still
- * under development and expected to change significantly before reaching
- * stability. It is available at this early stage to solicit feedback from
- * pioneering adopters on the understanding that any code that uses this API
- * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public class CollectionAddEvent extends CollectionChangeEvent {
+public class CollectionAddEvent extends CollectionEvent {
 
 	/** The items added to the collection. */
-	private final Collection<?> addedItems;
+	private final Object[] items;
 
 	private static final long serialVersionUID = 1L;
 
@@ -56,12 +57,13 @@ public class CollectionAddEvent extends CollectionChangeEvent {
 	 * @param collectionName The programmatic name of the collection that was changed.
 	 * @param items The items added to the collection.
 	 */
-	public CollectionAddEvent(Model source, String collectionName, Collection<?> addedItems) {
+	public CollectionAddEvent(Model source, String collectionName, Collection<?> items) {
+		this(source, collectionName, items.toArray());  // NPE if 'items' is null
+	}
+
+	private CollectionAddEvent(Model source, String collectionName, Object[] items) {
 		super(source, collectionName);
-		if (addedItems == null) {
-			throw new NullPointerException();
-		}
-		this.addedItems = Collections.unmodifiableCollection(addedItems);
+		this.items = items;
 	}
 
 
@@ -70,15 +72,15 @@ public class CollectionAddEvent extends CollectionChangeEvent {
 	/**
 	 * Return the items added to the collection.
 	 */
-	public Iterable<?> getAddedItems() {
-		return this.addedItems;
+	public Iterable<?> getItems() {
+		return new ArrayIterable<Object>(this.items);
 	}
 
 	/**
 	 * Return the number of items added to the collection.
 	 */
-	public int getAddedItemsSize() {
-		return this.addedItems.size();
+	public int getItemsSize() {
+		return this.items.length;
 	}
 
 
@@ -88,18 +90,16 @@ public class CollectionAddEvent extends CollectionChangeEvent {
 	 * Return a copy of the event with the specified source
 	 * replacing the current source.
 	 */
-	@Override
-	public CollectionAddEvent cloneWithSource(Model newSource) {
-		return this.cloneWithSource(newSource, this.collectionName);
+	public CollectionAddEvent clone(Model newSource) {
+		return this.clone(newSource, this.collectionName);
 	}
 
 	/**
 	 * Return a copy of the event with the specified source and collection name
 	 * replacing the current source and collection name.
 	 */
-	@Override
-	public CollectionAddEvent cloneWithSource(Model newSource, String newCollectionName) {
-		return new CollectionAddEvent(newSource, newCollectionName, this.addedItems);
+	public CollectionAddEvent clone(Model newSource, String newCollectionName) {
+		return new CollectionAddEvent(newSource, newCollectionName, this.items);
 	}
 
 }

@@ -332,9 +332,9 @@ public class ListModelAdapterUITest {
 		}
 		public void clearTasks() {
 			this.taskNames.clear();
-			this.fireListChanged(TASK_NAMES_LIST);
+			this.fireListChanged(TASK_NAMES_LIST, this.taskNames);
 			this.taskObjects.clear();
-			this.fireListChanged(TASKS_LIST);
+			this.fireListChanged(TASKS_LIST, this.taskObjects);
 		}
 	}
 

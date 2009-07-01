@@ -31,6 +31,7 @@ import org.eclipse.jpt2_0.core.resource.java.SequenceGenerator2_0Annotation;
 /**
  *  Generic2_0JavaSequenceGeneratorTests
  */
+@SuppressWarnings("nls")
 public class Generic2_0JavaSequenceGeneratorTests extends Generic2_0ContextModelTestCase
 {
 	private static final String SEQUENCE_GENERATOR_NAME = "TEST_SEQUENCE_GENERATOR";

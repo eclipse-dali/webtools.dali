@@ -14,6 +14,7 @@ import java.util.Arrays;
 import org.eclipse.jpt.utility.model.Model;
 import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.utility.model.event.CollectionClearEvent;
 import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
 import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;
@@ -67,7 +68,7 @@ public class ItemCollectionListValueModelAdapter<E>
 			public void itemsRemoved(CollectionRemoveEvent event) {
 				ItemCollectionListValueModelAdapter.this.itemAspectChanged(event);
 			}
-			public void collectionCleared(CollectionChangeEvent event) {
+			public void collectionCleared(CollectionClearEvent event) {
 				ItemCollectionListValueModelAdapter.this.itemAspectChanged(event);
 			}
 			public void collectionChanged(CollectionChangeEvent event) {

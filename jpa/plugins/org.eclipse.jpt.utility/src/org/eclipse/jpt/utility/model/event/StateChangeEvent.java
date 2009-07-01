@@ -41,18 +41,9 @@ public class StateChangeEvent extends ChangeEvent {
 	}
 
 
-	// ********** standard state **********
-
-	@Override
-	public String getAspectName() {
-		return null;  // the point of the event is that the aspect is unknown...
-	}
-
-
 	// ********** cloning **********
 
-	@Override
-	public StateChangeEvent cloneWithSource(Model newSource) {
+	public StateChangeEvent clone(Model newSource) {
 		return new StateChangeEvent(newSource);
 	}
 

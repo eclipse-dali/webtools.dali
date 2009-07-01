@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -119,7 +119,7 @@ public class SimpleCollectionValueModel<E>
 		if (o == this) {
 			return true;
 		}
-		if ((o instanceof Collection) && (o instanceof CollectionValueModel)) {
+		if ((o instanceof Collection<?>) && (o instanceof CollectionValueModel<?>)) {
 			Collection<E> c1 = CollectionTools.collection(this.collection);
 			@SuppressWarnings("unchecked")
 			Collection<E> c2 = CollectionTools.collection(((Collection<E>) o).iterator());
@@ -144,7 +144,7 @@ public class SimpleCollectionValueModel<E>
 			throw new NullPointerException();
 		}
 		this.collection = collection;
-		this.fireCollectionChanged(VALUES);
+		this.fireCollectionChanged(VALUES, this.collection);
 	}
 
 	@Override

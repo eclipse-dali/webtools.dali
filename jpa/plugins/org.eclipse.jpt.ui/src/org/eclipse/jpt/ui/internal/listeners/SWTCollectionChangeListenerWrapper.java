@@ -11,6 +11,7 @@ package org.eclipse.jpt.ui.internal.listeners;
 
 import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.utility.model.event.CollectionClearEvent;
 import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
 import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 import org.eclipse.swt.widgets.Display;
@@ -42,7 +43,7 @@ public class SWTCollectionChangeListenerWrapper
 		this.executeOnUIThread(this.buildItemsRemovedRunnable(event));
 	}
 
-	public void collectionCleared(CollectionChangeEvent event) {
+	public void collectionCleared(CollectionClearEvent event) {
 		this.executeOnUIThread(this.buildCollectionClearedRunnable(event));
 	}
 
@@ -74,7 +75,7 @@ public class SWTCollectionChangeListenerWrapper
 		};
 	}
 
-	private Runnable buildCollectionClearedRunnable(final CollectionChangeEvent event) {
+	private Runnable buildCollectionClearedRunnable(final CollectionClearEvent event) {
 		return new Runnable() {
 			public void run() {
 				SWTCollectionChangeListenerWrapper.this.collectionCleared_(event);
@@ -116,7 +117,7 @@ public class SWTCollectionChangeListenerWrapper
 		this.listener.itemsRemoved(event);
 	}
 
-	void collectionCleared_(CollectionChangeEvent event) {
+	void collectionCleared_(CollectionClearEvent event) {
 		this.listener.collectionCleared(event);
 	}
 

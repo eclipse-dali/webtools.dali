@@ -19,7 +19,12 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.ListenerList;
 import org.eclipse.jpt.utility.internal.StringConverter;
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
+import org.eclipse.jpt.utility.model.event.ListClearEvent;
+import org.eclipse.jpt.utility.model.event.ListMoveEvent;
+import org.eclipse.jpt.utility.model.event.ListRemoveEvent;
+import org.eclipse.jpt.utility.model.event.ListReplaceEvent;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
@@ -175,19 +180,19 @@ public abstract class AbstractComboModelAdapter<E> {
 
 	protected ListChangeListener buildListChangeListener_() {
 		return new ListChangeListener() {
-			public void itemsAdded(ListChangeEvent event) {
+			public void itemsAdded(ListAddEvent event) {
 				AbstractComboModelAdapter.this.listItemsAdded(event);
 			}
-			public void itemsRemoved(ListChangeEvent event) {
+			public void itemsRemoved(ListRemoveEvent event) {
 				AbstractComboModelAdapter.this.listItemsRemoved(event);
 			}
-			public void itemsMoved(ListChangeEvent event) {
+			public void itemsMoved(ListMoveEvent event) {
 				AbstractComboModelAdapter.this.listItemsMoved(event);
 			}
-			public void itemsReplaced(ListChangeEvent event) {
+			public void itemsReplaced(ListReplaceEvent event) {
 				AbstractComboModelAdapter.this.listItemsReplaced(event);
 			}
-			public void listCleared(ListChangeEvent event) {
+			public void listCleared(ListClearEvent event) {
 				AbstractComboModelAdapter.this.listCleared(event);
 			}
 			public void listChanged(ListChangeEvent event) {
@@ -311,7 +316,7 @@ public abstract class AbstractComboModelAdapter<E> {
 	/**
 	 * The model has changed - synchronize the combo.
 	 */
-	protected void listItemsAdded(ListChangeEvent event) {
+	protected void listItemsAdded(ListAddEvent event) {
 		if (this.comboHolder.isDisposed()) {
 			return;
 		}
@@ -331,7 +336,7 @@ public abstract class AbstractComboModelAdapter<E> {
 	/**
 	 * The model has changed - synchronize the combo.
 	 */
-	protected void listItemsRemoved(ListChangeEvent event) {
+	protected void listItemsRemoved(ListRemoveEvent event) {
 		if (this.comboHolder.isDisposed()) {
 			return;
 		}
@@ -342,13 +347,13 @@ public abstract class AbstractComboModelAdapter<E> {
 	/**
 	 * The model has changed - synchronize the combo.
 	 */
-	protected void listItemsMoved(ListChangeEvent event) {
+	protected void listItemsMoved(ListMoveEvent event) {
 		if (this.comboHolder.isDisposed()) {
 			return;
 		}
 		int target = event.getTargetIndex();
 		int source = event.getSourceIndex();
-		int len = event.getMoveLength();
+		int len = event.getLength();
 		int loStart = Math.min(target, source);
 		int hiStart = Math.max(target, source);
 		// make a copy of the affected items...
@@ -364,13 +369,13 @@ public abstract class AbstractComboModelAdapter<E> {
 	/**
 	 * The model has changed - synchronize the combo.
 	 */
-	protected void listItemsReplaced(ListChangeEvent event) {
+	protected void listItemsReplaced(ListReplaceEvent event) {
 		if (this.comboHolder.isDisposed()) {
 			return;
 		}
 		int index = event.getIndex();
 		int selectionIndex = this.comboHolder.getSelectionIndex();
-		for (E item : this.getItems(event)) {
+		for (E item : this.getNewItems(event)) {
 			this.comboHolder.setItem(index++, this.convert(item));
 		}
 		if (selectionIndex == 0) {
@@ -388,7 +393,7 @@ public abstract class AbstractComboModelAdapter<E> {
 	/**
 	 * The model has changed - synchronize the combo.
 	 */
-	protected void listCleared(ListChangeEvent event) {
+	protected void listCleared(ListClearEvent event) {
 		if (this.comboHolder.isDisposed()) {
 			return;
 		}
@@ -404,8 +409,14 @@ public abstract class AbstractComboModelAdapter<E> {
 
 	// minimized scope of suppressed warnings
 	@SuppressWarnings("unchecked")
-	protected Iterable<E> getItems(ListChangeEvent event) {
+	protected Iterable<E> getItems(ListAddEvent event) {
 		return (Iterable<E>) event.getItems();
+	}
+
+	// minimized scope of suppressed warnings
+	@SuppressWarnings("unchecked")
+	protected Iterable<E> getNewItems(ListReplaceEvent event) {
+		return (Iterable<E>) event.getNewItems();
 	}
 
 

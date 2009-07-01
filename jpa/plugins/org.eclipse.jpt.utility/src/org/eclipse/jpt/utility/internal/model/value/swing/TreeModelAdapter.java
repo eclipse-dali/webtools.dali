@@ -21,7 +21,13 @@ import org.eclipse.jpt.utility.internal.model.listener.awt.AWTListChangeListener
 import org.eclipse.jpt.utility.internal.model.listener.awt.AWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.utility.internal.model.listener.awt.AWTStateChangeListenerWrapper;
 import org.eclipse.jpt.utility.internal.model.value.StaticPropertyValueModel;
+import org.eclipse.jpt.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
+import org.eclipse.jpt.utility.model.event.ListClearEvent;
+import org.eclipse.jpt.utility.model.event.ListEvent;
+import org.eclipse.jpt.utility.model.event.ListMoveEvent;
+import org.eclipse.jpt.utility.model.event.ListRemoveEvent;
+import org.eclipse.jpt.utility.model.event.ListReplaceEvent;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.model.event.StateChangeEvent;
 import org.eclipse.jpt.utility.model.listener.ListChangeListener;
@@ -189,23 +195,23 @@ public class TreeModelAdapter<T>
 
 	protected ListChangeListener buildChildrenListener_() {
 		return new ListChangeListener() {
-			public void itemsAdded(ListChangeEvent event) {
-				new EventChangePolicy(event).addChildren();
+			public void itemsAdded(ListAddEvent event) {
+				new AddEventChangePolicy(event).addChildren();
 			}
-			public void itemsRemoved(ListChangeEvent event) {
-				new EventChangePolicy(event).removeChildren();
+			public void itemsRemoved(ListRemoveEvent event) {
+				new RemoveEventChangePolicy(event).removeChildren();
 			}
-			public void itemsReplaced(ListChangeEvent event) {
-				new EventChangePolicy(event).replaceChildren();
+			public void itemsReplaced(ListReplaceEvent event) {
+				new ReplaceEventChangePolicy(event).replaceChildren();
 			}
-			public void itemsMoved(ListChangeEvent event) {
-				new EventChangePolicy(event).moveChildren();
+			public void itemsMoved(ListMoveEvent event) {
+				new MoveEventChangePolicy(event).moveChildren();
 			}
-			public void listCleared(ListChangeEvent event) {
-				new EventChangePolicy(event).clearChildren();
+			public void listCleared(ListClearEvent event) {
+				new ClearEventChangePolicy(event).clearChildren();
 			}
 			public void listChanged(ListChangeEvent event) {
-				new EventChangePolicy(event).rebuildChildren();
+				new ChangeEventChangePolicy(event).rebuildChildren();
 			}
 			@Override
 			public String toString() {
@@ -479,7 +485,7 @@ public class TreeModelAdapter<T>
 	/**
 	 * Coalesce some of the common change policy behavior.
 	 */
-	private abstract class ChangePolicy {
+	abstract class ChangePolicy {
 
 		ChangePolicy() {
 			super();
@@ -573,13 +579,14 @@ public class TreeModelAdapter<T>
 
 
 	/**
-	 * Wraps a ListChangeEvent for adding, removing, replacing,
+	 * Wraps a ListEvent for adding, removing, replacing,
 	 * and changing children.
 	 */
-	private class EventChangePolicy extends ChangePolicy {
-		private ListChangeEvent event;
+	abstract class EventChangePolicy extends ChangePolicy {
+		final ListEvent event;
 
-		EventChangePolicy(ListChangeEvent event) {
+		EventChangePolicy(ListEvent event) {
+			super();
 			this.event = event;
 		}
 
@@ -591,29 +598,127 @@ public class TreeModelAdapter<T>
 			return TreeModelAdapter.this.parents.get(this.event.getSource());
 		}
 
+	}
+
+
+	/**
+	 * Wraps a ListAddEvent for adding children.
+	 */
+	class AddEventChangePolicy extends EventChangePolicy {
+
+		AddEventChangePolicy(ListAddEvent event) {
+			super(event);
+		}
+
+		private ListAddEvent getEvent() {
+			return (ListAddEvent) this.event;
+		}
+
 		/**
-		 * The ListChangeEvent's item index is the children start index.
+		 * The ListAddEvent's item index is the children start index.
 		 */
 		@Override
 		int childrenStartIndex() {
-			return this.event.getIndex();
+			return this.getEvent().getIndex();
 		}
 
 		/**
-		 * The ListChangeEvent's size is the children size.
+		 * The ListAddEvent's size is the children size.
 		 */
 		@Override
 		int childrenSize() {
-			return this.event.getItemsSize();
+			return this.getEvent().getItemsSize();
 		}
 
 		/**
-		 * The ListChangeEvent's items are the children.
+		 * The ListAddEvent's items are the children.
 		 */
 		@Override
 		@SuppressWarnings("unchecked")
 		Iterable<TreeNodeValueModel<T>> getChildren() {
-			return (Iterable<TreeNodeValueModel<T>>) this.event.getItems();
+			return (Iterable<TreeNodeValueModel<T>>) this.getEvent().getItems();
+		}
+
+	}
+
+
+	/**
+	 * Wraps a ListRemoveEvent for adding children.
+	 */
+	class RemoveEventChangePolicy extends EventChangePolicy {
+
+		RemoveEventChangePolicy(ListRemoveEvent event) {
+			super(event);
+		}
+
+		private ListRemoveEvent getEvent() {
+			return (ListRemoveEvent) this.event;
+		}
+
+		/**
+		 * The ListRemoveEvent's item index is the children start index.
+		 */
+		@Override
+		int childrenStartIndex() {
+			return this.getEvent().getIndex();
+		}
+
+		/**
+		 * The ListRemoveEvent's size is the children size.
+		 */
+		@Override
+		int childrenSize() {
+			return this.getEvent().getItemsSize();
+		}
+
+		/**
+		 * The ListRemoveEvent's items are the children.
+		 */
+		@Override
+		@SuppressWarnings("unchecked")
+		Iterable<TreeNodeValueModel<T>> getChildren() {
+			return (Iterable<TreeNodeValueModel<T>>) this.getEvent().getItems();
+		}
+
+	}
+
+
+	/**
+	 * Wraps a ListReplaceEvent for replacing children.
+	 */
+	class ReplaceEventChangePolicy extends EventChangePolicy {
+
+		ReplaceEventChangePolicy(ListReplaceEvent event) {
+			super(event);
+		}
+
+		private ListReplaceEvent getEvent() {
+			return (ListReplaceEvent) this.event;
+		}
+
+		/**
+		 * The ListReplaceEvent's item index is the children start index.
+		 */
+		@Override
+		int childrenStartIndex() {
+			return this.getEvent().getIndex();
+		}
+
+		/**
+		 * The ListReplaceEvent's size is the children size.
+		 */
+		@Override
+		int childrenSize() {
+			return this.getEvent().getItemsSize();
+		}
+
+		/**
+		 * The ListReplaceEvent's items are the children.
+		 */
+		@Override
+		@SuppressWarnings("unchecked")
+		Iterable<TreeNodeValueModel<T>> getChildren() {
+			return (Iterable<TreeNodeValueModel<T>>) this.getEvent().getNewItems();
 		}
 
 		/**
@@ -622,15 +727,65 @@ public class TreeModelAdapter<T>
 		void replaceChildren() {
 			TreeNodeValueModel<T>[] parentPath = this.parent().path();
 			int[] childIndices = this.childIndices();
-			TreeModelAdapter.this.removeChildren(parentPath, childIndices, this.replacedChildren());
+			TreeModelAdapter.this.removeChildren(parentPath, childIndices, this.getOldChildren());
 			TreeModelAdapter.this.addChildren(parentPath, childIndices, this.childArray());
 		}
 
-		/**
-		 * Remove the old nodes and add the new ones.
-		 */
+		TreeNodeValueModel<T>[] getOldChildren() {
+			return this.buildArray(this.getOldItems(), this.getEvent().getItemsSize());
+		}
+
+		// minimized scope of suppressed warnings
+		@SuppressWarnings("unchecked")
+		protected Iterable<TreeNodeValueModel<T>> getOldItems() {
+			return (Iterable<TreeNodeValueModel<T>>) this.getEvent().getOldItems();
+		}
+
+	}
+
+
+	/**
+	 * Wraps a ListMoveEvent for moving children.
+	 */
+	class MoveEventChangePolicy extends EventChangePolicy {
+
+		MoveEventChangePolicy(ListMoveEvent event) {
+			super(event);
+		}
+
+		private ListMoveEvent getEvent() {
+			return (ListMoveEvent) this.event;
+		}
+
 		void moveChildren() {
-			TreeModelAdapter.this.moveChildren(this.parent(), this.event.getTargetIndex(), this.event.getSourceIndex(), this.event.getMoveLength());
+			TreeModelAdapter.this.moveChildren(this.parent(), this.getEvent().getTargetIndex(), this.getEvent().getSourceIndex(), this.getEvent().getLength());
+		}
+
+		@Override
+		int childrenStartIndex() {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		int childrenSize() {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		Iterable<TreeNodeValueModel<T>> getChildren() {
+			throw new UnsupportedOperationException();
+		}
+
+	}
+
+
+	/**
+	 * Wraps a ListClearEvent for clearing children.
+	 */
+	class ClearEventChangePolicy extends EventChangePolicy {
+
+		ClearEventChangePolicy(ListClearEvent event) {
+			super(event);
 		}
 
 		/**
@@ -643,6 +798,33 @@ public class TreeModelAdapter<T>
 			int[] childIndices = this.buildIndices(childrenList.size());
 			TreeNodeValueModel<T>[] childArray = this.buildArray(childrenList, childrenList.size());
 			TreeModelAdapter.this.removeChildren(parentPath, childIndices, childArray);
+		}
+
+		@Override
+		int childrenStartIndex() {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		int childrenSize() {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		Iterable<TreeNodeValueModel<T>> getChildren() {
+			throw new UnsupportedOperationException();
+		}
+
+	}
+
+
+	/**
+	 * Wraps a ListChangeEvent for clearing children.
+	 */
+	class ChangeEventChangePolicy extends EventChangePolicy {
+
+		ChangeEventChangePolicy(ListChangeEvent event) {
+			super(event);
 		}
 
 		/**
@@ -661,17 +843,19 @@ public class TreeModelAdapter<T>
 			TreeModelAdapter.this.addChildren(parentPath, childIndices, childArray);
 		}
 
-		/**
-		 * The ListChangeEvent's replaced items are the replaced children.
-		 */
-		TreeNodeValueModel<T>[] replacedChildren() {
-			return this.buildArray(this.getReplacedItems(), this.event.getItemsSize());
+		@Override
+		int childrenStartIndex() {
+			throw new UnsupportedOperationException();
 		}
 
-		// minimized scope of suppressed warnings
-		@SuppressWarnings("unchecked")
-		protected Iterable<TreeNodeValueModel<T>> getReplacedItems() {
-			return (Iterable<TreeNodeValueModel<T>>) this.event.getReplacedItems();
+		@Override
+		int childrenSize() {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		Iterable<TreeNodeValueModel<T>> getChildren() {
+			throw new UnsupportedOperationException();
 		}
 
 	}
@@ -680,10 +864,11 @@ public class TreeModelAdapter<T>
 	/**
 	 * Wraps a TreeNodeValueModel for adding and removing its children.
 	 */
-	private class NodeChangePolicy extends ChangePolicy {
-		private TreeNodeValueModel<T> node;
+	class NodeChangePolicy extends ChangePolicy {
+		private final TreeNodeValueModel<T> node;
 
 		NodeChangePolicy(TreeNodeValueModel<T> node) {
+			super();
 			this.node = node;
 		}
 

@@ -11,7 +11,12 @@ package org.eclipse.jpt.utility.internal.model.listener.awt;
 
 import java.awt.EventQueue;
 
+import org.eclipse.jpt.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
+import org.eclipse.jpt.utility.model.event.ListClearEvent;
+import org.eclipse.jpt.utility.model.event.ListMoveEvent;
+import org.eclipse.jpt.utility.model.event.ListRemoveEvent;
+import org.eclipse.jpt.utility.model.event.ListReplaceEvent;
 import org.eclipse.jpt.utility.model.listener.ListChangeListener;
 
 /**
@@ -33,23 +38,23 @@ public class AWTListChangeListenerWrapper
 		this.listener = listener;
 	}
 
-	public void itemsAdded(ListChangeEvent event) {
+	public void itemsAdded(ListAddEvent event) {
 		this.executeOnEventQueue(this.buildItemsAddedRunnable(event));
 	}
 
-	public void itemsRemoved(ListChangeEvent event) {
+	public void itemsRemoved(ListRemoveEvent event) {
 		this.executeOnEventQueue(this.buildItemsRemovedRunnable(event));
 	}
 
-	public void itemsMoved(ListChangeEvent event) {
+	public void itemsMoved(ListMoveEvent event) {
 		this.executeOnEventQueue(this.buildItemsMovedRunnable(event));
 	}
 
-	public void itemsReplaced(ListChangeEvent event) {
+	public void itemsReplaced(ListReplaceEvent event) {
 		this.executeOnEventQueue(this.buildItemsReplacedRunnable(event));
 	}
 
-	public void listCleared(ListChangeEvent event) {
+	public void listCleared(ListClearEvent event) {
 		this.executeOnEventQueue(this.buildListClearedRunnable(event));
 	}
 
@@ -57,7 +62,7 @@ public class AWTListChangeListenerWrapper
 		this.executeOnEventQueue(this.buildListChangedRunnable(event));
 	}
 
-	private Runnable buildItemsAddedRunnable(final ListChangeEvent event) {
+	private Runnable buildItemsAddedRunnable(final ListAddEvent event) {
 		return new Runnable() {
 			public void run() {
 				AWTListChangeListenerWrapper.this.itemsAdded_(event);
@@ -69,7 +74,7 @@ public class AWTListChangeListenerWrapper
 		};
 	}
 
-	private Runnable buildItemsRemovedRunnable(final ListChangeEvent event) {
+	private Runnable buildItemsRemovedRunnable(final ListRemoveEvent event) {
 		return new Runnable() {
 			public void run() {
 				AWTListChangeListenerWrapper.this.itemsRemoved_(event);
@@ -81,7 +86,7 @@ public class AWTListChangeListenerWrapper
 		};
 	}
 
-	private Runnable buildItemsMovedRunnable(final ListChangeEvent event) {
+	private Runnable buildItemsMovedRunnable(final ListMoveEvent event) {
 		return new Runnable() {
 			public void run() {
 				AWTListChangeListenerWrapper.this.itemsMoved_(event);
@@ -93,7 +98,7 @@ public class AWTListChangeListenerWrapper
 		};
 	}
 
-	private Runnable buildItemsReplacedRunnable(final ListChangeEvent event) {
+	private Runnable buildItemsReplacedRunnable(final ListReplaceEvent event) {
 		return new Runnable() {
 			public void run() {
 				AWTListChangeListenerWrapper.this.itemsReplaced_(event);
@@ -105,7 +110,7 @@ public class AWTListChangeListenerWrapper
 		};
 	}
 
-	private Runnable buildListClearedRunnable(final ListChangeEvent event) {
+	private Runnable buildListClearedRunnable(final ListClearEvent event) {
 		return new Runnable() {
 			public void run() {
 				AWTListChangeListenerWrapper.this.listCleared_(event);
@@ -145,23 +150,23 @@ public class AWTListChangeListenerWrapper
 //		}
 	}
 
-	void itemsAdded_(ListChangeEvent event) {
+	void itemsAdded_(ListAddEvent event) {
 		this.listener.itemsAdded(event);
 	}
 
-	void itemsRemoved_(ListChangeEvent event) {
+	void itemsRemoved_(ListRemoveEvent event) {
 		this.listener.itemsRemoved(event);
 	}
 
-	void itemsMoved_(ListChangeEvent event) {
+	void itemsMoved_(ListMoveEvent event) {
 		this.listener.itemsMoved(event);
 	}
 
-	void itemsReplaced_(ListChangeEvent event) {
+	void itemsReplaced_(ListReplaceEvent event) {
 		this.listener.itemsReplaced(event);
 	}
 
-	void listCleared_(ListChangeEvent event) {
+	void listCleared_(ListClearEvent event) {
 		this.listener.listCleared(event);
 	}
 

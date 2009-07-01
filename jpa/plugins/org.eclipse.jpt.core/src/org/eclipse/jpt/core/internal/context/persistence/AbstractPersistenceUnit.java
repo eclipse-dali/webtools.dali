@@ -944,8 +944,8 @@ public abstract class AbstractPersistenceUnit
 		this.updatePersistenceUnitDefaults();
 
 		// see comment at top of method
-		this.fireListChanged(GENERATORS_LIST);
-		this.fireListChanged(QUERIES_LIST);
+		this.fireListChanged(GENERATORS_LIST, this.generators);
+		this.fireListChanged(QUERIES_LIST, this.queries);
 	}
 	
 	@Override

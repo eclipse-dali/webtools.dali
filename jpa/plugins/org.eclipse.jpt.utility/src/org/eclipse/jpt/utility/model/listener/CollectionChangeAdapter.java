@@ -11,6 +11,7 @@ package org.eclipse.jpt.utility.model.listener;
 
 import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.utility.model.event.CollectionClearEvent;
 import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
 
 /**
@@ -39,7 +40,7 @@ public class CollectionChangeAdapter implements CollectionChangeListener {
 		// do nothing
 	}
 
-	public void collectionCleared(CollectionChangeEvent event) {
+	public void collectionCleared(CollectionClearEvent event) {
 		// do nothing
 	}
 

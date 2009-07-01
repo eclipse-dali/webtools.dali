@@ -19,7 +19,12 @@ import org.eclipse.jpt.eclipselink.core.internal.context.persistence.customizati
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.customization.Profiler;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.customization.Weaving;
 import org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.PersistenceUnitTestCase;
+import org.eclipse.jpt.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
+import org.eclipse.jpt.utility.model.event.ListClearEvent;
+import org.eclipse.jpt.utility.model.event.ListMoveEvent;
+import org.eclipse.jpt.utility.model.event.ListRemoveEvent;
+import org.eclipse.jpt.utility.model.event.ListReplaceEvent;
 import org.eclipse.jpt.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 
@@ -109,10 +114,10 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 		this.customization.addPropertyChangeListener(Customization.EXCEPTION_HANDLER_PROPERTY, propertyChangeListener);
 
 		ListChangeListener sessionCustomizersChangeListener = this.buildSessionCustomizersChangeListener();
-		this.customization.addListChangeListener(Customization.SESSION_CUSTOMIZER_LIST_PROPERTY, sessionCustomizersChangeListener);
+		this.customization.addListChangeListener(Customization.SESSION_CUSTOMIZER_LIST, sessionCustomizersChangeListener);
 		
 		ListChangeListener entitiesChangeListener = this.buildEntitiesChangeListener();
-		this.customization.addListChangeListener(Customization.ENTITIES_LIST_PROPERTY, entitiesChangeListener);
+		this.customization.addListChangeListener(Customization.ENTITIES_LIST, entitiesChangeListener);
 		this.clearEvent();
 	}
 
@@ -147,23 +152,23 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 	// ********** Listeners **********
 	private ListChangeListener buildEntitiesChangeListener() {
 		return new ListChangeListener() {
-			public void itemsAdded(ListChangeEvent e) {
+			public void itemsAdded(ListAddEvent e) {
 				CustomizationAdapterTests.this.throwUnsupportedOperationException(e);
 			}
 
-			public void itemsRemoved(ListChangeEvent e) {
+			public void itemsRemoved(ListRemoveEvent e) {
 				CustomizationAdapterTests.this.throwUnsupportedOperationException(e);
 			}
 
-			public void itemsReplaced(ListChangeEvent e) {
+			public void itemsReplaced(ListReplaceEvent e) {
 				CustomizationAdapterTests.this.throwUnsupportedOperationException(e);
 			}
 
-			public void itemsMoved(ListChangeEvent e) {
+			public void itemsMoved(ListMoveEvent e) {
 				CustomizationAdapterTests.this.throwUnsupportedOperationException(e);
 			}
 
-			public void listCleared(ListChangeEvent e) {
+			public void listCleared(ListClearEvent e) {
 				CustomizationAdapterTests.this.throwUnsupportedOperationException(e);
 			}
 
@@ -175,23 +180,23 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 	
 	private ListChangeListener buildSessionCustomizersChangeListener() {
 		return new ListChangeListener() {
-			public void itemsAdded(ListChangeEvent e) {
+			public void itemsAdded(ListAddEvent e) {
 				CustomizationAdapterTests.this.throwUnsupportedOperationException(e);
 			}
 
-			public void itemsRemoved(ListChangeEvent e) {
+			public void itemsRemoved(ListRemoveEvent e) {
 				CustomizationAdapterTests.this.throwUnsupportedOperationException(e);
 			}
 
-			public void itemsReplaced(ListChangeEvent e) {
+			public void itemsReplaced(ListReplaceEvent e) {
 				CustomizationAdapterTests.this.throwUnsupportedOperationException(e);
 			}
 
-			public void itemsMoved(ListChangeEvent e) {
+			public void itemsMoved(ListMoveEvent e) {
 				CustomizationAdapterTests.this.throwUnsupportedOperationException(e);
 			}
 
-			public void listCleared(ListChangeEvent e) {
+			public void listCleared(ListClearEvent e) {
 				CustomizationAdapterTests.this.throwUnsupportedOperationException(e);
 			}
 
@@ -225,7 +230,7 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 		// verify event received
 		assertNotNull("No Event Fired.", this.entitiesEvent);
 		// verify event for the expected property
-		assertEquals("Wrong Event.", this.entitiesEvent.getAspectName(), Customization.ENTITIES_LIST_PROPERTY);
+		assertEquals("Wrong Event.", this.entitiesEvent.getListName(), Customization.ENTITIES_LIST);
 		
 		// remove
 		this.clearEvent();
@@ -234,7 +239,7 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 		// verify event received
 		assertNotNull("No Event Fired.", this.entitiesEvent);
 		// verify event for the expected property
-		assertEquals("Wrong Event.", this.entitiesEvent.getAspectName(), Customization.ENTITIES_LIST_PROPERTY);
+		assertEquals("Wrong Event.", this.entitiesEvent.getListName(), Customization.ENTITIES_LIST);
 	}
 
 	// ********** sessionCustomizers list **********
@@ -246,7 +251,7 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 		// verify event received
 		assertNotNull("No Event Fired.", this.sessionCustomizersEvent);
 		// verify event for the expected property
-		assertEquals("Wrong Event.", this.sessionCustomizersEvent.getAspectName(), Customization.SESSION_CUSTOMIZER_LIST_PROPERTY);
+		assertEquals("Wrong Event.", this.sessionCustomizersEvent.getListName(), Customization.SESSION_CUSTOMIZER_LIST);
 		
 		// remove
 		this.clearEvent();
@@ -255,7 +260,7 @@ public class CustomizationAdapterTests extends PersistenceUnitTestCase
 		// verify event received
 		assertNotNull("No Event Fired.", this.sessionCustomizersEvent);
 		// verify event for the expected property
-		assertEquals("Wrong Event.", this.sessionCustomizersEvent.getAspectName(), Customization.SESSION_CUSTOMIZER_LIST_PROPERTY);
+		assertEquals("Wrong Event.", this.sessionCustomizersEvent.getListName(), Customization.SESSION_CUSTOMIZER_LIST);
 	}
 
 	// ********** ThrowExceptions tests **********

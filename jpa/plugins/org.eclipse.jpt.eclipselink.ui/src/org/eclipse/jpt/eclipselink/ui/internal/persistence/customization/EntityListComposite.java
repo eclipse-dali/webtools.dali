@@ -195,7 +195,7 @@ public class EntityListComposite extends Pane<Customization>
 
 	private ListValueModel<Entity> buildEntitiesListHolder() {
 		return new ListAspectAdapter<Customization, Entity>(
-				this.getSubjectHolder(), Customization.ENTITIES_LIST_PROPERTY) {
+				this.getSubjectHolder(), Customization.ENTITIES_LIST) {
 			@Override
 			protected ListIterator<Entity> listIterator_() {
 				return this.subject.entities();

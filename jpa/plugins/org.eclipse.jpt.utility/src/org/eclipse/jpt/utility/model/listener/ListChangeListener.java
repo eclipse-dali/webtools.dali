@@ -9,7 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.model.listener;
 
+import org.eclipse.jpt.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
+import org.eclipse.jpt.utility.model.event.ListClearEvent;
+import org.eclipse.jpt.utility.model.event.ListMoveEvent;
+import org.eclipse.jpt.utility.model.event.ListRemoveEvent;
+import org.eclipse.jpt.utility.model.event.ListReplaceEvent;
 
 /**
  * A "list change" event gets fired whenever a model changes a "bound"
@@ -27,64 +32,46 @@ public interface ListChangeListener extends ChangeListener {
 	/**
 	 * This method gets called when items are added to a bound list.
 	 * 
-	 * @param event A ListChangeEvent describing the event source,
+	 * @param event A ListAddEvent describing the event source,
 	 * the list that changed, the items that were added, and the index
 	 * at which the items were added.
-	 * 
-	 * @see ListChangeEvent#getIndex()
-	 * @see ListChangeEvent#items()
-	 * @see ListChangeEvent#itemsSize()
 	 */
-	void itemsAdded(ListChangeEvent event);
+	void itemsAdded(ListAddEvent event);
 
 	/**
 	 * This method gets called when items are removed from a bound list.
 	 * 
-	 * @param event A ListChangeEvent describing the event source,
+	 * @param event A ListRemoveEvent describing the event source,
 	 * the list that changed, the items that were removed, and the index
 	 * at which the items were removed.
-	 * 
-	 * @see ListChangeEvent#getIndex()
-	 * @see ListChangeEvent#items()
-	 * @see ListChangeEvent#itemsSize()
 	 */
-	void itemsRemoved(ListChangeEvent event);
+	void itemsRemoved(ListRemoveEvent event);
 
 	/**
 	 * This method gets called when items in a bound list are replaced.
 	 * 
-	 * @param event A ListChangeEvent describing the event source,
+	 * @param event A ListReplaceEvent describing the event source,
 	 * the list that changed, the items that were added, the items that were
 	 * replaced, and the index at which the items were replaced.
-	 * 
-	 * @see ListChangeEvent#getIndex()
-	 * @see ListChangeEvent#items()
-	 * @see ListChangeEvent#itemsSize()
-	 * @see ListChangeEvent#replacedItems()
-	 * @see ListChangeEvent#replacedItemsSize()
 	 */
-	void itemsReplaced(ListChangeEvent event);
+	void itemsReplaced(ListReplaceEvent event);
 
 	/**
 	 * This method gets called when items in a bound list are moved.
 	 * 
-	 * @param event A ListChangeEvent describing the event source,
+	 * @param event A ListMoveEvent describing the event source,
 	 * the list that changed, and the indices of where items were moved
 	 * from and to.
-	 * 
-	 * @see ListChangeEvent#getSourceIndex()
-	 * @see ListChangeEvent#getTargetIndex()
-	 * @see ListChangeEvent#getMoveLength()
 	 */
-	void itemsMoved(ListChangeEvent event);
+	void itemsMoved(ListMoveEvent event);
 
 	/**
 	 * This method gets called when a bound list is cleared.
 	 * 
-	 * @param event A ListChangeEvent object describing the event source 
+	 * @param event A ListClearEvent object describing the event source 
 	 * and the list that changed.
 	 */
-	void listCleared(ListChangeEvent event);
+	void listCleared(ListClearEvent event);
 
 	/**
 	 * This method gets called when a bound list is changed in a manner
@@ -103,10 +90,6 @@ public interface ListChangeListener extends ChangeListener {
 	 * @param event A ListChangeEvent describing the event source,
 	 * the list whose items have changed, the items that changed, and the index
 	 * at which the items were located.
-	 * 
-	 * @see ListChangeEvent#getIndex()
-	 * @see ListChangeEvent#items()
-	 * @see ListChangeEvent#itemsSize()
 	 */
 //	void itemsChanged(ListChangeEvent event);
 

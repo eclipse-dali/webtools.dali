@@ -12,6 +12,7 @@ package org.eclipse.jpt.utility.tests.internal.model.listener;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 
 import junit.framework.TestCase;
@@ -22,6 +23,8 @@ import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.utility.model.event.CollectionClearEvent;
+import org.eclipse.jpt.utility.model.event.CollectionEvent;
 import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
 import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.model.listener.ListChangeListener;
@@ -316,7 +319,7 @@ public class ReflectiveCollectionChangeListenerTests extends TestCase {
 		Target target = new Target(testModel, TestModel.STRINGS_COLLECTION, string);
 		boolean exCaught = false;
 		try {
-			CollectionChangeListener listener = ReflectiveChangeListener.buildCollectionChangeListener(target, "collectionChangedDoubleArgument", "collectionChangedDoubleArgument", "collectionChangedDoubleArgument", "collectionChangedDoubleArgument");
+			CollectionChangeListener listener = ReflectiveChangeListener.buildCollectionChangeListener(target, "collectionChangedDoubleArgument");
 			fail("bogus listener: " + listener);
 		} catch (RuntimeException ex) {
 			if (ex.getCause().getClass() == NoSuchMethodException.class) {
@@ -333,7 +336,7 @@ public class ReflectiveCollectionChangeListenerTests extends TestCase {
 		Method method = ClassTools.method(target, "collectionChangedDoubleArgument", new Class[] {CollectionChangeEvent.class, Object.class});
 		boolean exCaught = false;
 		try {
-			CollectionChangeListener listener = ReflectiveChangeListener.buildCollectionChangeListener(target, method, method, method, method);
+			CollectionChangeListener listener = ReflectiveChangeListener.buildCollectionChangeListener(target, method);
 			fail("bogus listener: " + listener);
 		} catch (RuntimeException ex) {
 			if (ex.getMessage().equals(method.toString())) {
@@ -349,7 +352,7 @@ public class ReflectiveCollectionChangeListenerTests extends TestCase {
 		Target target = new Target(testModel, TestModel.STRINGS_COLLECTION, string);
 		// build a COLLECTION change listener and hack it so we
 		// can add it as a LIST change listener
-		Object listener = ReflectiveChangeListener.buildCollectionChangeListener(target, "itemAddedSingleArgument", "itemRemovedSingleArgument", "collectionClearedSingleArgument", "collectionChangedSingleArgument");
+		Object listener = ReflectiveChangeListener.buildCollectionChangeListener(target, "collectionEventSingleArgument");
 		testModel.addListChangeListener((ListChangeListener) listener);
 
 		boolean exCaught = false;
@@ -389,10 +392,10 @@ public class ReflectiveCollectionChangeListenerTests extends TestCase {
 		void replaceStrings(String[] newStrings) {
 			this.strings.clear();
 			CollectionTools.addAll(this.strings, newStrings);
-			this.fireCollectionChanged(STRINGS_COLLECTION);
+			this.fireCollectionChanged(STRINGS_COLLECTION, this.strings);
 		}
 		void changeList() {
-			this.fireListChanged("bogus list");
+			this.fireListChanged("bogus list", Collections.emptyList());
 		}
 	}
 
@@ -408,6 +411,7 @@ public class ReflectiveCollectionChangeListenerTests extends TestCase {
 		boolean collectionClearedSingleArgumentFlag = false;
 		boolean collectionChangedZeroArgumentFlag = false;
 		boolean collectionChangedSingleArgumentFlag = false;
+		boolean collectionEventSingleArgumentFlag = false;
 		Target(TestModel testModel, String collectionName, String string) {
 			super();
 			this.testModel = testModel;
@@ -421,7 +425,7 @@ public class ReflectiveCollectionChangeListenerTests extends TestCase {
 			this.itemAddedSingleArgumentFlag = true;
 			assertSame(this.testModel, e.getSource());
 			assertEquals(this.collectionName, e.getCollectionName());
-			assertEquals(this.string, e.getAddedItems().iterator().next());
+			assertEquals(this.string, e.getItems().iterator().next());
 		}
 		void itemRemovedZeroArgument() {
 			this.itemRemovedZeroArgumentFlag = true;
@@ -430,12 +434,12 @@ public class ReflectiveCollectionChangeListenerTests extends TestCase {
 			this.itemRemovedSingleArgumentFlag = true;
 			assertSame(this.testModel, e.getSource());
 			assertEquals(this.collectionName, e.getCollectionName());
-			assertEquals(this.string, e.getRemovedItems().iterator().next());
+			assertEquals(this.string, e.getItems().iterator().next());
 		}
 		void collectionClearedZeroArgument() {
 			this.collectionClearedZeroArgumentFlag = true;
 		}
-		void collectionClearedSingleArgument(CollectionChangeEvent e) {
+		void collectionClearedSingleArgument(CollectionClearEvent e) {
 			this.collectionClearedSingleArgumentFlag = true;
 			assertSame(this.testModel, e.getSource());
 			assertEquals(this.collectionName, e.getCollectionName());
@@ -445,6 +449,11 @@ public class ReflectiveCollectionChangeListenerTests extends TestCase {
 		}
 		void collectionChangedSingleArgument(CollectionChangeEvent e) {
 			this.collectionChangedSingleArgumentFlag = true;
+			assertSame(this.testModel, e.getSource());
+			assertEquals(this.collectionName, e.getCollectionName());
+		}
+		void collectionEventSingleArgument(CollectionEvent e) {
+			this.collectionEventSingleArgumentFlag = true;
 			assertSame(this.testModel, e.getSource());
 			assertEquals(this.collectionName, e.getCollectionName());
 		}

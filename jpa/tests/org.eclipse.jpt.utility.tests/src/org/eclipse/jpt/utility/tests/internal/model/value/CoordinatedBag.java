@@ -17,6 +17,7 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.HashBag;
 import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.utility.model.event.CollectionClearEvent;
 import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
 import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;
@@ -115,19 +116,19 @@ class CoordinatedBag<E> implements Bag<E>, CollectionChangeListener {
 
 	@SuppressWarnings("unchecked")
 	public void itemsAdded(CollectionAddEvent event) {
-		for (E item : (Iterable<E>) event.getAddedItems()) {
+		for (E item : (Iterable<E>) event.getItems()) {
 			this.bag.add(item);
 		}
 	}
 
 	@SuppressWarnings("unchecked")
 	public void itemsRemoved(CollectionRemoveEvent event) {
-		for (E item : (Iterable<E>) event.getRemovedItems()) {
+		for (E item : (Iterable<E>) event.getItems()) {
 			this.bag.remove(item);
 		}
 	}
 
-	public void collectionCleared(CollectionChangeEvent event) {
+	public void collectionCleared(CollectionClearEvent event) {
 		this.bag.clear();
 	}
 

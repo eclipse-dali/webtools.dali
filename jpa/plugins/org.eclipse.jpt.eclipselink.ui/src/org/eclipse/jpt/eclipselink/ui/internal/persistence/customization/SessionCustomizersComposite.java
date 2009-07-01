@@ -106,7 +106,7 @@ public class SessionCustomizersComposite extends Pane<Customization>
 	}
 
 	private ListValueModel<String> buildListHolder() {
-		return new ListAspectAdapter<Customization, String>(getSubjectHolder(), Customization.SESSION_CUSTOMIZER_LIST_PROPERTY) {
+		return new ListAspectAdapter<Customization, String>(getSubjectHolder(), Customization.SESSION_CUSTOMIZER_LIST) {
 			@Override
 			protected ListIterator<String> listIterator_() {
 				return subject.sessionCustomizers();

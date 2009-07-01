@@ -9,7 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.listeners;
 
+import org.eclipse.jpt.utility.model.event.TreeAddEvent;
 import org.eclipse.jpt.utility.model.event.TreeChangeEvent;
+import org.eclipse.jpt.utility.model.event.TreeClearEvent;
+import org.eclipse.jpt.utility.model.event.TreeRemoveEvent;
 import org.eclipse.jpt.utility.model.listener.TreeChangeListener;
 import org.eclipse.swt.widgets.Display;
 
@@ -32,15 +35,15 @@ public class SWTTreeChangeListenerWrapper
 		this.listener = listener;
 	}
 
-	public void nodeAdded(TreeChangeEvent event) {
+	public void nodeAdded(TreeAddEvent event) {
 		this.executeOnUIThread(this.buildNodeAddedRunnable(event));
 	}
 
-	public void nodeRemoved(TreeChangeEvent event) {
+	public void nodeRemoved(TreeRemoveEvent event) {
 		this.executeOnUIThread(this.buildNodeRemovedRunnable(event));
 	}
 
-	public void treeCleared(TreeChangeEvent event) {
+	public void treeCleared(TreeClearEvent event) {
 		this.executeOnUIThread(this.buildTreeClearedRunnable(event));
 	}
 
@@ -48,7 +51,7 @@ public class SWTTreeChangeListenerWrapper
 		this.executeOnUIThread(this.buildTreeChangedRunnable(event));
 	}
 
-	private Runnable buildNodeAddedRunnable(final TreeChangeEvent event) {
+	private Runnable buildNodeAddedRunnable(final TreeAddEvent event) {
 		return new Runnable() {
 			public void run() {
 				SWTTreeChangeListenerWrapper.this.nodeAdded_(event);
@@ -60,7 +63,7 @@ public class SWTTreeChangeListenerWrapper
 		};
 	}
 
-	private Runnable buildNodeRemovedRunnable(final TreeChangeEvent event) {
+	private Runnable buildNodeRemovedRunnable(final TreeRemoveEvent event) {
 		return new Runnable() {
 			public void run() {
 				SWTTreeChangeListenerWrapper.this.nodeRemoved_(event);
@@ -72,7 +75,7 @@ public class SWTTreeChangeListenerWrapper
 		};
 	}
 
-	private Runnable buildTreeClearedRunnable(final TreeChangeEvent event) {
+	private Runnable buildTreeClearedRunnable(final TreeClearEvent event) {
 		return new Runnable() {
 			public void run() {
 				SWTTreeChangeListenerWrapper.this.treeCleared_(event);
@@ -106,15 +109,15 @@ public class SWTTreeChangeListenerWrapper
 //		Display.getDefault().syncExec(r);
 	}
 
-	void nodeAdded_(TreeChangeEvent event) {
+	void nodeAdded_(TreeAddEvent event) {
 		this.listener.nodeAdded(event);
 	}
 
-	void nodeRemoved_(TreeChangeEvent event) {
+	void nodeRemoved_(TreeRemoveEvent event) {
 		this.listener.nodeRemoved(event);
 	}
 
-	void treeCleared_(TreeChangeEvent event) {
+	void treeCleared_(TreeClearEvent event) {
 		this.listener.treeCleared(event);
 	}
 

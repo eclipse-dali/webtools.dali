@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,10 +14,16 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ReadOnlyCompositeListIterator;
 import org.eclipse.jpt.utility.internal.iterators.ReadOnlyListIterator;
+import org.eclipse.jpt.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
+import org.eclipse.jpt.utility.model.event.ListClearEvent;
+import org.eclipse.jpt.utility.model.event.ListMoveEvent;
+import org.eclipse.jpt.utility.model.event.ListRemoveEvent;
+import org.eclipse.jpt.utility.model.event.ListReplaceEvent;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 
 /**
@@ -150,41 +156,41 @@ public class ExtendedListValueModelWrapper<E>
 	// ********** ListValueModelWrapper implementation/overrides **********
 
 	@Override
-	protected void itemsAdded(ListChangeEvent event) {
-		this.fireItemsAdded(event.cloneWithSource(this, LIST_VALUES, this.prefix.size()));
+	protected void itemsAdded(ListAddEvent event) {
+		this.fireItemsAdded(event.clone(this, LIST_VALUES, this.prefix.size()));
 	}
 
 	@Override
-	protected void itemsRemoved(ListChangeEvent event) {
-		this.fireItemsRemoved(event.cloneWithSource(this, LIST_VALUES, this.prefix.size()));
+	protected void itemsRemoved(ListRemoveEvent event) {
+		this.fireItemsRemoved(event.clone(this, LIST_VALUES, this.prefix.size()));
 	}
 
 	@Override
-	protected void itemsReplaced(ListChangeEvent event) {
-		this.fireItemsReplaced(event.cloneWithSource(this, LIST_VALUES, this.prefix.size()));
+	protected void itemsReplaced(ListReplaceEvent event) {
+		this.fireItemsReplaced(event.clone(this, LIST_VALUES, this.prefix.size()));
 	}
 
 	@Override
-	protected void itemsMoved(ListChangeEvent event) {
-		this.fireItemsMoved(event.cloneWithSource(this, LIST_VALUES, this.prefix.size()));
+	protected void itemsMoved(ListMoveEvent event) {
+		this.fireItemsMoved(event.clone(this, LIST_VALUES, this.prefix.size()));
 	}
 
 	@Override
-	protected void listCleared(ListChangeEvent event) {
-		this.fireListChanged(LIST_VALUES);  // not "cleared"
+	protected void listCleared(ListClearEvent event) {
+		this.fireListChanged(LIST_VALUES, this.buildList());  // not "cleared"
 	}
 
 	@Override
 	protected void listChanged(ListChangeEvent event) {
-		this.fireListChanged(LIST_VALUES);
+		this.fireListChanged(LIST_VALUES, this.buildList());
 	}
 
 	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(this.prefix);
-		sb.append(" ");
+		sb.append(' ');
 		super.toString(sb);
-		sb.append(" ");
+		sb.append(' ');
 		sb.append(this.suffix);
 	}
 
@@ -193,12 +199,16 @@ public class ExtendedListValueModelWrapper<E>
 
 	public void setPrefix(List<E> prefix) {
 		this.prefix = prefix;
-		this.fireListChanged(LIST_VALUES);
+		this.fireListChanged(LIST_VALUES, this.buildList());
 	}
 
 	public void setSuffix(List<E> suffix) {
 		this.suffix = suffix;
-		this.fireListChanged(LIST_VALUES);
+		this.fireListChanged(LIST_VALUES, this.buildList());
+	}
+
+	private List<E> buildList() {
+		return CollectionTools.list(this.listIterator_());
 	}
 
 }

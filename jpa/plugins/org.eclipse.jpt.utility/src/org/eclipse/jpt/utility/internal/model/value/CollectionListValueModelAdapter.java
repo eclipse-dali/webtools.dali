@@ -19,6 +19,7 @@ import org.eclipse.jpt.utility.internal.model.ChangeSupport;
 import org.eclipse.jpt.utility.internal.model.SingleAspectChangeSupport;
 import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.utility.model.event.CollectionClearEvent;
 import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
 import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.model.listener.ListChangeListener;
@@ -94,7 +95,7 @@ public class CollectionListValueModelAdapter<E>
 			public void itemsRemoved(CollectionRemoveEvent event) {
 				CollectionListValueModelAdapter.this.itemsRemoved(event);
 			}
-			public void collectionCleared(CollectionChangeEvent event) {
+			public void collectionCleared(CollectionClearEvent event) {
 				CollectionListValueModelAdapter.this.collectionCleared(event);
 			}
 			public void collectionChanged(CollectionChangeEvent event) {
@@ -246,7 +247,7 @@ public class CollectionListValueModelAdapter<E>
 	}
 
 	protected void itemsAdded(CollectionAddEvent event) {
-		this.addItemsToList(this.indexToAddItems(), this.getAddedItems(event), this.list, LIST_VALUES);
+		this.addItemsToList(this.indexToAddItems(), this.getItems(event), this.list, LIST_VALUES);
 	}
 	
 	protected int indexToAddItems() {
@@ -255,25 +256,25 @@ public class CollectionListValueModelAdapter<E>
 
 	// minimize scope of suppressed warnings
 	@SuppressWarnings("unchecked")
-	protected Iterable<E> getAddedItems(CollectionAddEvent event) {
-		return (Iterable<E>) event.getAddedItems();
+	protected Iterable<E> getItems(CollectionAddEvent event) {
+		return (Iterable<E>) event.getItems();
 	}
 
 	// minimize scope of suppressed warnings
 	@SuppressWarnings("unchecked")
-	protected Iterable<E> getRemovedItems(CollectionRemoveEvent event) {
-		return (Iterable<E>) event.getRemovedItems();
+	protected Iterable<E> getItems(CollectionRemoveEvent event) {
+		return (Iterable<E>) event.getItems();
 	}
 
 	protected void itemsRemoved(CollectionRemoveEvent event) {
 		// we have to remove the items individually,
 		// since they are probably not in sequence
-		for (E item : this.getRemovedItems(event)) {
+		for (E item : this.getItems(event)) {
 			this.removeItemFromList(this.lastIdentityIndexOf(item), this.list, LIST_VALUES);
 		}
 	}
 
-	protected void collectionCleared(@SuppressWarnings("unused") CollectionChangeEvent event) {
+	protected void collectionCleared(@SuppressWarnings("unused") CollectionClearEvent event) {
 		this.clearList(this.list, LIST_VALUES);
 	}
 	

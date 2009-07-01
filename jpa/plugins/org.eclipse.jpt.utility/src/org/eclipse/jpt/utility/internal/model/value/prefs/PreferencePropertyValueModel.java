@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -196,7 +196,7 @@ public class PreferencePropertyValueModel<P>
 
 		Object old = this.value;
 		this.value = value;
-		this.fireAspectChange(old, value);
+		this.fireAspectChanged(old, value);
 
 		if ((this.subject != null) && this.shouldSetPreference(old, value)) {
 			this.setValue_(value);
@@ -222,7 +222,7 @@ public class PreferencePropertyValueModel<P>
 	}
 
 	@Override
-	protected void fireAspectChange(Object oldValue, Object newValue) {
+	protected void fireAspectChanged(Object oldValue, Object newValue) {
 		this.firePropertyChanged(VALUE, oldValue, newValue);
 	}
 
@@ -339,7 +339,7 @@ public class PreferencePropertyValueModel<P>
 	protected synchronized void preferenceChanged() {
 		Object old = this.value;
 		this.value = this.buildValue();
-		this.fireAspectChange(old, this.value);
+		this.fireAspectChanged(old, this.value);
 	}
 
 }

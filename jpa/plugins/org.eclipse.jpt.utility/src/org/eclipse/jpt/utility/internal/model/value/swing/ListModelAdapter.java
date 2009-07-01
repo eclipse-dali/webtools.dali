@@ -11,10 +11,16 @@ package org.eclipse.jpt.utility.internal.model.value.swing;
 
 import javax.swing.AbstractListModel;
 import javax.swing.event.ListDataListener;
+
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.listener.awt.AWTListChangeListenerWrapper;
 import org.eclipse.jpt.utility.internal.model.value.CollectionListValueModelAdapter;
+import org.eclipse.jpt.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
+import org.eclipse.jpt.utility.model.event.ListClearEvent;
+import org.eclipse.jpt.utility.model.event.ListMoveEvent;
+import org.eclipse.jpt.utility.model.event.ListRemoveEvent;
+import org.eclipse.jpt.utility.model.event.ListReplaceEvent;
 import org.eclipse.jpt.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
@@ -80,19 +86,19 @@ public class ListModelAdapter
 
 	protected ListChangeListener buildListChangeListener_() {
 		return new ListChangeListener() {
-			public void itemsAdded(ListChangeEvent event) {
+			public void itemsAdded(ListAddEvent event) {
 				ListModelAdapter.this.itemsAdded(event);
 			}
-			public void itemsRemoved(ListChangeEvent event) {
+			public void itemsRemoved(ListRemoveEvent event) {
 				ListModelAdapter.this.itemsRemoved(event);
 			}
-			public void itemsReplaced(ListChangeEvent event) {
+			public void itemsReplaced(ListReplaceEvent event) {
 				ListModelAdapter.this.itemsReplaced(event);
 			}
-			public void itemsMoved(ListChangeEvent event) {
+			public void itemsMoved(ListMoveEvent event) {
 				ListModelAdapter.this.itemsMoved(event);
 			}
-			public void listCleared(ListChangeEvent event) {
+			public void listCleared(ListClearEvent event) {
 				ListModelAdapter.this.listCleared();
 			}
 			public void listChanged(ListChangeEvent event) {
@@ -100,7 +106,7 @@ public class ListModelAdapter
 			}
 			@Override
 			public String toString() {
-				return "list listener";
+				return "list listener"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -212,7 +218,7 @@ public class ListModelAdapter
 	 * Items were added to the underlying model list.
 	 * Notify listeners of the changes.
 	 */
-	protected void itemsAdded(ListChangeEvent event) {
+	protected void itemsAdded(ListAddEvent event) {
 		int start = event.getIndex();
 		int end = start + event.getItemsSize() - 1;
 		this.fireIntervalAdded(this, start, end);
@@ -223,7 +229,7 @@ public class ListModelAdapter
 	 * Items were removed from the underlying model list.
 	 * Notify listeners of the changes.
 	 */
-	protected void itemsRemoved(ListChangeEvent event) {
+	protected void itemsRemoved(ListRemoveEvent event) {
 		int start = event.getIndex();
 		int end = start + event.getItemsSize() - 1;
 		this.fireIntervalRemoved(this, start, end);
@@ -234,7 +240,7 @@ public class ListModelAdapter
 	 * Items were replaced in the underlying model list.
 	 * Notify listeners of the changes.
 	 */
-	protected void itemsReplaced(ListChangeEvent event) {
+	protected void itemsReplaced(ListReplaceEvent event) {
 		int start = event.getIndex();
 		int end = start + event.getItemsSize() - 1;
 		this.fireContentsChanged(this, start, end);
@@ -244,9 +250,9 @@ public class ListModelAdapter
 	 * Items were moved in the underlying model list.
 	 * Notify listeners of the changes.
 	 */
-	protected void itemsMoved(ListChangeEvent event) {
+	protected void itemsMoved(ListMoveEvent event) {
 		int start = Math.min(event.getSourceIndex(), event.getTargetIndex());
-		int end = Math.max(event.getSourceIndex(), event.getTargetIndex()) + event.getMoveLength() - 1;
+		int end = Math.max(event.getSourceIndex(), event.getTargetIndex()) + event.getLength() - 1;
 		this.fireContentsChanged(this, start, end);
 	}
 

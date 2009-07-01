@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,12 +11,17 @@ package org.eclipse.jpt.utility.internal.model.value;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.ListIterator;
+
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.utility.model.Model;
+import org.eclipse.jpt.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
+import org.eclipse.jpt.utility.model.event.ListClearEvent;
+import org.eclipse.jpt.utility.model.event.ListMoveEvent;
+import org.eclipse.jpt.utility.model.event.ListRemoveEvent;
+import org.eclipse.jpt.utility.model.event.ListReplaceEvent;
 import org.eclipse.jpt.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
@@ -115,19 +120,19 @@ public abstract class ListAspectAdapter<S extends Model, E>
 	protected ListChangeListener buildListChangeListener() {
 		// transform the subject's list change events into VALUE list change events
 		return new ListChangeListener() {
-			public void itemsAdded(ListChangeEvent event) {
+			public void itemsAdded(ListAddEvent event) {
 				ListAspectAdapter.this.itemsAdded(event);
 			}
-			public void itemsRemoved(ListChangeEvent event) {
+			public void itemsRemoved(ListRemoveEvent event) {
 				ListAspectAdapter.this.itemsRemoved(event);
 			}
-			public void itemsReplaced(ListChangeEvent event) {
+			public void itemsReplaced(ListReplaceEvent event) {
 				ListAspectAdapter.this.itemsReplaced(event);
 			}
-			public void itemsMoved(ListChangeEvent event) {
+			public void itemsMoved(ListMoveEvent event) {
 				ListAspectAdapter.this.itemsMoved(event);
 			}
-			public void listCleared(ListChangeEvent event) {
+			public void listCleared(ListClearEvent event) {
 				ListAspectAdapter.this.listCleared(event);
 			}
 			public void listChanged(ListChangeEvent event) {
@@ -135,7 +140,7 @@ public abstract class ListAspectAdapter<S extends Model, E>
 			}
 			@Override
 			public String toString() {
-				return "list change listener: " + Arrays.asList(ListAspectAdapter.this.listNames);
+				return "list change listener: " + Arrays.asList(ListAspectAdapter.this.listNames); //$NON-NLS-1$
 			}
 		};
 	}
@@ -146,7 +151,7 @@ public abstract class ListAspectAdapter<S extends Model, E>
 	/**
 	 * Return the elements of the subject's list aspect.
 	 */
-	public Iterator<E> iterator() {
+	public ListIterator<E> iterator() {
 		return this.listIterator();
 	}
 
@@ -209,7 +214,7 @@ public abstract class ListAspectAdapter<S extends Model, E>
 	// ********** AspectAdapter implementation **********
 
 	@Override
-	protected Object getValue() {
+	protected ListIterator<E> getValue() {
 		return this.iterator();
 	}
 
@@ -229,8 +234,9 @@ public abstract class ListAspectAdapter<S extends Model, E>
 	}
 
 	@Override
-	protected void fireAspectChange(Object oldValue, Object newValue) {
-		this.fireListChanged(LIST_VALUES);
+	protected void fireAspectChanged(Object oldValue, Object newValue) {
+		@SuppressWarnings("unchecked") ListIterator<E> listIterator = (ListIterator<E>) newValue;
+		this.fireListChanged(LIST_VALUES, CollectionTools.list(listIterator));
 	}
 
 	@Override
@@ -251,7 +257,7 @@ public abstract class ListAspectAdapter<S extends Model, E>
 	public void toString(StringBuilder sb) {
 		for (int i = 0; i < this.listNames.length; i++) {
 			if (i != 0) {
-				sb.append(", ");
+				sb.append(", "); //$NON-NLS-1$
 			}
 			sb.append(this.listNames[i]);
 		}
@@ -260,28 +266,28 @@ public abstract class ListAspectAdapter<S extends Model, E>
 
 	// ********** behavior **********
 
-	protected void itemsAdded(ListChangeEvent event) {
-		this.fireItemsAdded(event.cloneWithSource(this, LIST_VALUES));
+	protected void itemsAdded(ListAddEvent event) {
+		this.fireItemsAdded(event.clone(this, LIST_VALUES));
 	}
 
-	protected void itemsRemoved(ListChangeEvent event) {
-		this.fireItemsRemoved(event.cloneWithSource(this, LIST_VALUES));
+	protected void itemsRemoved(ListRemoveEvent event) {
+		this.fireItemsRemoved(event.clone(this, LIST_VALUES));
 	}
 
-	protected void itemsReplaced(ListChangeEvent event) {
-		this.fireItemsReplaced(event.cloneWithSource(this, LIST_VALUES));
+	protected void itemsReplaced(ListReplaceEvent event) {
+		this.fireItemsReplaced(event.clone(this, LIST_VALUES));
 	}
 
-	protected void itemsMoved(ListChangeEvent event) {
-		this.fireItemsMoved(event.cloneWithSource(this, LIST_VALUES));
+	protected void itemsMoved(ListMoveEvent event) {
+		this.fireItemsMoved(event.clone(this, LIST_VALUES));
 	}
 
-	protected void listCleared(ListChangeEvent event) {
-		this.fireListCleared(LIST_VALUES);  // nothing from original event to forward
+	protected void listCleared(ListClearEvent event) {
+		this.fireListCleared(event.clone(this, LIST_VALUES));
 	}
 
 	protected void listChanged(ListChangeEvent event) {
-		this.fireListChanged(LIST_VALUES);  // nothing from original event to forward
+		this.fireListChanged(event.clone(this, LIST_VALUES));
 	}
 
 }

@@ -66,11 +66,6 @@ public class PropertyChangeEvent extends ChangeEvent {
 		return this.propertyName;
 	}
 
-	@Override
-	public String getAspectName() {
-		return this.propertyName;
-	}
-
 	/**
 	 * Return the old value of the property.
 	 */
@@ -85,11 +80,15 @@ public class PropertyChangeEvent extends ChangeEvent {
 		return this.newValue;
 	}
 
+	@Override
+	protected void toString(StringBuilder sb) {
+		sb.append(this.propertyName);
+	}
+
 
 	// ********** cloning **********
 
-	@Override
-	public PropertyChangeEvent cloneWithSource(Model newSource) {
+	public PropertyChangeEvent clone(Model newSource) {
 		return new PropertyChangeEvent(newSource, this.propertyName, this.oldValue, this.newValue);
 	}
 
@@ -97,7 +96,7 @@ public class PropertyChangeEvent extends ChangeEvent {
 	 * Return a copy of the event with the specified source and property name
 	 * replacing the current source and property name.
 	 */
-	public PropertyChangeEvent cloneWithSource(Model newSource, String newPropertyName) {
+	public PropertyChangeEvent clone(Model newSource, String newPropertyName) {
 		return new PropertyChangeEvent(newSource, newPropertyName, this.oldValue, this.newValue);
 	}
 

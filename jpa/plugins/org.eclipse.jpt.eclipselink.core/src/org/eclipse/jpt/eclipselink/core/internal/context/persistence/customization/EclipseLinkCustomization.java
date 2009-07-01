@@ -278,7 +278,7 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 		}
 		Entity newEntity = this.buildEntity(entityName);
 		this.entities.add(newEntity);
-		this.fireListChanged(ENTITIES_LIST_PROPERTY);
+		this.fireListChanged(ENTITIES_LIST, this.entities);
 		return newEntity;
 	}
 
@@ -484,7 +484,7 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 		if( ! this.sessionCustomizerExists(newSessionCustomizerClassName)) {
 			this.sessionCustomizers.add(newSessionCustomizerClassName);
 			this.putProperty(SESSION_CUSTOMIZER_PROPERTY, newSessionCustomizerClassName, true);
-			this.fireListChanged(SESSION_CUSTOMIZER_LIST_PROPERTY);
+			this.fireListChanged(SESSION_CUSTOMIZER_LIST, this.sessionCustomizers);
 			return newSessionCustomizerClassName;
 		}
 		return null;
@@ -494,7 +494,7 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 
 		if(this.removeSessionCustomizer_(className) != null) {
 			this.removeProperty(SESSION_CUSTOMIZER_PROPERTY, className);
-			this.fireListChanged(SESSION_CUSTOMIZER_LIST_PROPERTY);
+			this.fireListChanged(SESSION_CUSTOMIZER_LIST, this.sessionCustomizers);
 		}
 	}
 	
@@ -513,7 +513,7 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 	private void sessionCustomizersChanged() {
 
 		this.initializeSessionCustomizersFromPersistenceUnit();
-		this.fireListChanged(SESSION_CUSTOMIZER_LIST_PROPERTY);
+		this.fireListChanged(SESSION_CUSTOMIZER_LIST, this.sessionCustomizers);
 	}
 
 	// ********** Weaving **********
@@ -712,7 +712,7 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 			throw new IllegalArgumentException();
 		}
 		this.entities.remove(entity);
-		this.fireListChanged(ENTITIES_LIST_PROPERTY);
+		this.fireListChanged(ENTITIES_LIST, this.entities);
 	}
 
 	/**

@@ -14,6 +14,7 @@ import org.eclipse.jpt.utility.internal.model.ChangeSupport;
 import org.eclipse.jpt.utility.internal.model.SingleAspectChangeSupport;
 import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.utility.model.event.CollectionClearEvent;
 import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
 import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;
@@ -62,7 +63,7 @@ public abstract class CollectionValueModelWrapper<E>
 			public void itemsRemoved(CollectionRemoveEvent event) {
 				CollectionValueModelWrapper.this.itemsRemoved(event);
 			}
-			public void collectionCleared(CollectionChangeEvent event) {
+			public void collectionCleared(CollectionClearEvent event) {
 				CollectionValueModelWrapper.this.collectionCleared(event);
 			}
 			public void collectionChanged(CollectionChangeEvent event) {
@@ -141,14 +142,14 @@ public abstract class CollectionValueModelWrapper<E>
 
 	// minimize scope of suppressed warnings
 	@SuppressWarnings("unchecked")
-	protected Iterable<E> getAddedItems(CollectionAddEvent event) {
-		return (Iterable<E>) event.getAddedItems();
+	protected Iterable<E> getItems(CollectionAddEvent event) {
+		return (Iterable<E>) event.getItems();
 	}
 
 	// minimize scope of suppressed warnings
 	@SuppressWarnings("unchecked")
-	protected Iterable<E> getRemovedItems(CollectionRemoveEvent event) {
-		return (Iterable<E>) event.getRemovedItems();
+	protected Iterable<E> getItems(CollectionRemoveEvent event) {
+		return (Iterable<E>) event.getItems();
 	}
 
 	@Override
@@ -175,7 +176,7 @@ public abstract class CollectionValueModelWrapper<E>
 	 * The wrapped collection holder was cleared;
 	 * propagate the change notification appropriately.
 	 */
-	protected abstract void collectionCleared(CollectionChangeEvent event);
+	protected abstract void collectionCleared(CollectionClearEvent event);
 
 	/**
 	 * The value of the wrapped collection holder has changed;

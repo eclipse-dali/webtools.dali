@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.model.listener;
 
+import org.eclipse.jpt.utility.model.event.TreeAddEvent;
 import org.eclipse.jpt.utility.model.event.TreeChangeEvent;
+import org.eclipse.jpt.utility.model.event.TreeClearEvent;
+import org.eclipse.jpt.utility.model.event.TreeRemoveEvent;
 
 /**
  * Convenience implementation of TreeChangeListener.
@@ -29,15 +32,15 @@ public class TreeChangeAdapter implements TreeChangeListener {
 		super();
 	}
 
-	public void nodeAdded(TreeChangeEvent event) {
+	public void nodeAdded(TreeAddEvent event) {
 		// do nothing
 	}
 
-	public void nodeRemoved(TreeChangeEvent event) {
+	public void nodeRemoved(TreeRemoveEvent event) {
 		// do nothing
 	}
 
-	public void treeCleared(TreeChangeEvent event) {
+	public void treeCleared(TreeClearEvent event) {
 		// do nothing
 	}
 

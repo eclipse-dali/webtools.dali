@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,6 +20,7 @@ import org.eclipse.jpt.utility.model.listener.StateChangeListener;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
+@SuppressWarnings("nls")
 public class ValueStateAdapterTests extends TestCase {
 	private Junk junk;
 	private SimplePropertyValueModel<Junk> junkHolder;
@@ -89,7 +90,7 @@ public class ValueStateAdapterTests extends TestCase {
 	}
 
 
-	private class LocalListener implements PropertyChangeListener, StateChangeListener {
+	class LocalListener implements PropertyChangeListener, StateChangeListener {
 		private boolean eventReceived = false;
 		private final Object source;
 		private final Object oldValue;
@@ -113,14 +114,13 @@ public class ValueStateAdapterTests extends TestCase {
 		public void stateChanged(StateChangeEvent e) {
 			this.eventReceived = true;
 			assertEquals(this.source, e.getSource());
-			assertNull(e.getAspectName());
 		}
 		boolean eventReceived() {
 			return this.eventReceived;
 		}
 	}
 
-	private class Junk extends AbstractModel {
+	class Junk extends AbstractModel {
 		private String name;
 			public static final String NAME_PROPERTY = "name";
 

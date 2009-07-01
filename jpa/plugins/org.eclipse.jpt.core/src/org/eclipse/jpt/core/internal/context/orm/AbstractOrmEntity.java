@@ -800,7 +800,7 @@ public abstract class AbstractOrmEntity
 		this.resourceTypeMapping.getPrimaryKeyJoinColumns().remove(index);
 		fireItemRemoved(Entity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST, index, removedPrimaryKeyJoinColumn);
 		if (!this.defaultPrimaryKeyJoinColumns.isEmpty()) {
-			fireListChanged(OrmEntity.DEFAULT_PRIMARY_KEY_JOIN_COLUMNS_LIST);
+			fireListChanged(OrmEntity.DEFAULT_PRIMARY_KEY_JOIN_COLUMNS_LIST, this.defaultPrimaryKeyJoinColumns);
 		}
 	}
 

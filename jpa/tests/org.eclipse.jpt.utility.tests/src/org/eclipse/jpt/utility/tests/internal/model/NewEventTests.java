@@ -103,12 +103,7 @@ public class NewEventTests extends TestCase {
 		public FooChangeEvent(FooModel source) {
 			super(source);
 		}
-		@Override
-		public String getAspectName() {
-			return null;  // the point of the event is that the aspect is unknown...
-		}
-		@Override
-		public FooChangeEvent cloneWithSource(Model newSource) {
+		public FooChangeEvent clone(Model newSource) {
 			return new FooChangeEvent((FooModel) newSource);
 		}
 	}

@@ -16,7 +16,12 @@ import org.eclipse.jpt.ui.internal.listeners.SWTListChangeListenerWrapper;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.value.CollectionListValueModelAdapter;
+import org.eclipse.jpt.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
+import org.eclipse.jpt.utility.model.event.ListClearEvent;
+import org.eclipse.jpt.utility.model.event.ListMoveEvent;
+import org.eclipse.jpt.utility.model.event.ListRemoveEvent;
+import org.eclipse.jpt.utility.model.event.ListReplaceEvent;
 import org.eclipse.jpt.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
@@ -90,19 +95,19 @@ public class StructuredContentProviderAdapter
 
 	protected ListChangeListener buildListChangeListener_() {
 		return new ListChangeListener() {
-			public void itemsAdded(ListChangeEvent e) {
+			public void itemsAdded(ListAddEvent e) {
 				StructuredContentProviderAdapter.this.itemsAdded(e);
 			}
-			public void itemsRemoved(ListChangeEvent e) {
+			public void itemsRemoved(ListRemoveEvent e) {
 				StructuredContentProviderAdapter.this.itemsRemoved(e);
 			}
-			public void itemsReplaced(ListChangeEvent e) {
+			public void itemsReplaced(ListReplaceEvent e) {
 				StructuredContentProviderAdapter.this.itemsReplaced(e);
 			}
-			public void itemsMoved(ListChangeEvent e) {
+			public void itemsMoved(ListMoveEvent e) {
 				StructuredContentProviderAdapter.this.itemsMoved(e);
 			}
-			public void listCleared(ListChangeEvent e) {
+			public void listCleared(ListClearEvent e) {
 				StructuredContentProviderAdapter.this.listCleared();
 			}
 			public void listChanged(ListChangeEvent e) {
@@ -187,7 +192,7 @@ public class StructuredContentProviderAdapter
 	 * Items were added to the underlying model list.
 	 * Synchronize the list viewer.
 	 */
-	protected void itemsAdded(ListChangeEvent e) {
+	protected void itemsAdded(ListAddEvent e) {
 		int i = e.getIndex();
 		for (Object item : e.getItems()) {
 			this.listViewer.insert(item, i++);
@@ -198,7 +203,7 @@ public class StructuredContentProviderAdapter
 	 * Items were removed from the underlying model list.
 	 * Synchronize the list viewer.
 	 */
-	protected void itemsRemoved(ListChangeEvent e) {
+	protected void itemsRemoved(ListRemoveEvent e) {
 		this.listViewer.remove(CollectionTools.array(e.getItems(), e.getItemsSize()));
 	}
 
@@ -206,10 +211,10 @@ public class StructuredContentProviderAdapter
 	 * Items were replaced in the underlying model list.
 	 * Synchronize the list viewer.
 	 */
-	protected void itemsReplaced(ListChangeEvent e) {
-		this.listViewer.remove(CollectionTools.array(e.getReplacedItems(), e.getItemsSize()));
+	protected void itemsReplaced(ListReplaceEvent e) {
+		this.listViewer.remove(CollectionTools.array(e.getOldItems(), e.getItemsSize()));
 		int i = e.getIndex();
-		for (Object item : e.getItems()) {
+		for (Object item : e.getNewItems()) {
 			this.listViewer.insert(item, i++);
 		}
 	}
@@ -218,8 +223,8 @@ public class StructuredContentProviderAdapter
 	 * Items were moved in the underlying model list.
 	 * Synchronize the list viewer.
 	 */
-	protected void itemsMoved(ListChangeEvent e) {
-		int len = e.getMoveLength();
+	protected void itemsMoved(ListMoveEvent e) {
+		int len = e.getLength();
 		Object[] items = new Object[len];
 		int offset = e.getSourceIndex();
 		for (int i = 0; i < len; i++) {

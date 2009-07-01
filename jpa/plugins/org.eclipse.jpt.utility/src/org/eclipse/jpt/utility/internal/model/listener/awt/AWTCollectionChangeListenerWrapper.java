@@ -13,6 +13,7 @@ import java.awt.EventQueue;
 
 import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.utility.model.event.CollectionClearEvent;
 import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
 import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 
@@ -43,7 +44,7 @@ public class AWTCollectionChangeListenerWrapper
 		this.executeOnEventQueue(this.buildItemsRemovedRunnable(event));
 	}
 
-	public void collectionCleared(CollectionChangeEvent event) {
+	public void collectionCleared(CollectionClearEvent event) {
 		this.executeOnEventQueue(this.buildCollectionClearedRunnable(event));
 	}
 
@@ -75,7 +76,7 @@ public class AWTCollectionChangeListenerWrapper
 		};
 	}
 
-	private Runnable buildCollectionClearedRunnable(final CollectionChangeEvent event) {
+	private Runnable buildCollectionClearedRunnable(final CollectionClearEvent event) {
 		return new Runnable() {
 			public void run() {
 				AWTCollectionChangeListenerWrapper.this.collectionCleared_(event);
@@ -123,7 +124,7 @@ public class AWTCollectionChangeListenerWrapper
 		this.listener.itemsRemoved(event);
 	}
 
-	void collectionCleared_(CollectionChangeEvent event) {
+	void collectionCleared_(CollectionClearEvent event) {
 		this.listener.collectionCleared(event);
 	}
 

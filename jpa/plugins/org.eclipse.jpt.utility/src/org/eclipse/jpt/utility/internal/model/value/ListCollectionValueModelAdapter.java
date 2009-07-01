@@ -16,7 +16,12 @@ import org.eclipse.jpt.utility.internal.iterators.ReadOnlyIterator;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.ChangeSupport;
 import org.eclipse.jpt.utility.internal.model.SingleAspectChangeSupport;
+import org.eclipse.jpt.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
+import org.eclipse.jpt.utility.model.event.ListClearEvent;
+import org.eclipse.jpt.utility.model.event.ListMoveEvent;
+import org.eclipse.jpt.utility.model.event.ListRemoveEvent;
+import org.eclipse.jpt.utility.model.event.ListReplaceEvent;
 import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;
@@ -81,19 +86,19 @@ public class ListCollectionValueModelAdapter<E>
 	 */
 	protected ListChangeListener buildListChangeListener() {
 		return new ListChangeListener() {
-			public void itemsAdded(ListChangeEvent event) {
+			public void itemsAdded(ListAddEvent event) {
 				ListCollectionValueModelAdapter.this.itemsAdded(event);
 			}
-			public void itemsRemoved(ListChangeEvent event) {
+			public void itemsRemoved(ListRemoveEvent event) {
 				ListCollectionValueModelAdapter.this.itemsRemoved(event);
 			}
-			public void itemsReplaced(ListChangeEvent event) {
+			public void itemsReplaced(ListReplaceEvent event) {
 				ListCollectionValueModelAdapter.this.itemsReplaced(event);
 			}
-			public void itemsMoved(ListChangeEvent event) {
+			public void itemsMoved(ListMoveEvent event) {
 				ListCollectionValueModelAdapter.this.itemsMoved(event);
 			}
-			public void listCleared(ListChangeEvent event) {
+			public void listCleared(ListClearEvent event) {
 				ListCollectionValueModelAdapter.this.listCleared(event);
 			}
 			public void listChanged(ListChangeEvent event) {
@@ -226,17 +231,29 @@ public class ListCollectionValueModelAdapter<E>
 
 	// minimized scope of suppressed warnings
 	@SuppressWarnings("unchecked")
-	protected Iterable<E> getItems(ListChangeEvent event) {
+	protected Iterable<E> getItems(ListAddEvent event) {
 		return (Iterable<E>) event.getItems();
 	}
 
 	// minimized scope of suppressed warnings
 	@SuppressWarnings("unchecked")
-	protected Iterable<E> getReplacedItems(ListChangeEvent event) {
-		return (Iterable<E>) event.getReplacedItems();
+	protected Iterable<E> getItems(ListRemoveEvent event) {
+		return (Iterable<E>) event.getItems();
 	}
 
-	protected void itemsAdded(ListChangeEvent event) {
+	// minimized scope of suppressed warnings
+	@SuppressWarnings("unchecked")
+	protected Iterable<E> getNewItems(ListReplaceEvent event) {
+		return (Iterable<E>) event.getNewItems();
+	}
+
+	// minimized scope of suppressed warnings
+	@SuppressWarnings("unchecked")
+	protected Iterable<E> getOldItems(ListReplaceEvent event) {
+		return (Iterable<E>) event.getOldItems();
+	}
+
+	protected void itemsAdded(ListAddEvent event) {
 		this.addItemsToCollection(this.getItems(event), this.collection, VALUES);
 	}
 
@@ -250,20 +267,20 @@ public class ListCollectionValueModelAdapter<E>
 		}
 	}
 
-	protected void itemsRemoved(ListChangeEvent event) {
+	protected void itemsRemoved(ListRemoveEvent event) {
 		this.removeInternalItems(this.getItems(event));
 	}
 
-	protected void itemsReplaced(ListChangeEvent event) {
-		this.removeInternalItems(this.getReplacedItems(event));
-		this.addItemsToCollection(this.getItems(event), this.collection, VALUES);
+	protected void itemsReplaced(ListReplaceEvent event) {
+		this.removeInternalItems(this.getOldItems(event));
+		this.addItemsToCollection(this.getNewItems(event), this.collection, VALUES);
 	}
 
-	protected void itemsMoved(@SuppressWarnings("unused") ListChangeEvent event) {
+	protected void itemsMoved(@SuppressWarnings("unused") ListMoveEvent event) {
 		// do nothing? moving items in a list has no net effect on a collection...
 	}
 
-	protected void listCleared(@SuppressWarnings("unused") ListChangeEvent event) {
+	protected void listCleared(@SuppressWarnings("unused") ListClearEvent event) {
 		// put in empty check so we don't fire events unnecessarily
 		if ( ! this.collection.isEmpty()) {
 			this.collection.clear();

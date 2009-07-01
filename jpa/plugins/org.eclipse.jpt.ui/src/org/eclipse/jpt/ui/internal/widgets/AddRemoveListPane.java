@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -23,7 +23,12 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.swing.ObjectListSelectionModel;
 import org.eclipse.jpt.utility.model.Model;
+import org.eclipse.jpt.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
+import org.eclipse.jpt.utility.model.event.ListClearEvent;
+import org.eclipse.jpt.utility.model.event.ListMoveEvent;
+import org.eclipse.jpt.utility.model.event.ListRemoveEvent;
+import org.eclipse.jpt.utility.model.event.ListReplaceEvent;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
@@ -243,25 +248,25 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 	}
 
 	@Override
-	protected void itemsAdded(ListChangeEvent e) {
+	protected void itemsAdded(ListAddEvent e) {
 		super.itemsAdded(e);
 		revalidateLayout();
 	}
 
 	@Override
-	protected void itemsMoved(ListChangeEvent e) {
+	protected void itemsMoved(ListMoveEvent e) {
 		super.itemsMoved(e);
 		revalidateLayout();
 	}
 
 	@Override
-	protected void itemsRemoved(ListChangeEvent e) {
+	protected void itemsRemoved(ListRemoveEvent e) {
 		super.itemsRemoved(e);
 		revalidateLayout();
 	}
 
 	@Override
-	protected void itemsReplaced(ListChangeEvent e) {
+	protected void itemsReplaced(ListReplaceEvent e) {
 		super.itemsReplaced(e);
 		revalidateLayout();
 	}
@@ -273,7 +278,7 @@ public class AddRemoveListPane<T extends Model> extends AddRemovePane<T>
 	}
 
 	@Override
-	protected void listCleared(ListChangeEvent e) {
+	protected void listCleared(ListClearEvent e) {
 		super.listCleared(e);
 		revalidateLayout();
 	}

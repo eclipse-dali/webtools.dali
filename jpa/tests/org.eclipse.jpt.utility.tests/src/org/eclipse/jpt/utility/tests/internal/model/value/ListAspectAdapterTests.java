@@ -12,13 +12,21 @@ package org.eclipse.jpt.utility.tests.internal.model.value;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
+
 import junit.framework.TestCase;
+
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ReadOnlyListIterator;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
+import org.eclipse.jpt.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
+import org.eclipse.jpt.utility.model.event.ListClearEvent;
+import org.eclipse.jpt.utility.model.event.ListEvent;
+import org.eclipse.jpt.utility.model.event.ListMoveEvent;
+import org.eclipse.jpt.utility.model.event.ListRemoveEvent;
+import org.eclipse.jpt.utility.model.event.ListReplaceEvent;
 import org.eclipse.jpt.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -30,7 +38,7 @@ public class ListAspectAdapterTests extends TestCase {
 	private TestSubject subject1;
 	private WritablePropertyValueModel<TestSubject> subjectHolder1;
 	private LocalListAspectAdapter aa1;
-	private ListChangeEvent event1;
+	private ListEvent event1;
 	private ListChangeListener listener1;
 
 	private TestSubject subject2;
@@ -94,19 +102,19 @@ public class ListAspectAdapterTests extends TestCase {
 
 	private ListChangeListener buildValueChangeListener1() {
 		return new ListChangeListener() {
-			public void itemsAdded(ListChangeEvent e) {
+			public void itemsAdded(ListAddEvent e) {
 				ListAspectAdapterTests.this.value1Changed(e);
 			}
-			public void itemsRemoved(ListChangeEvent e) {
+			public void itemsRemoved(ListRemoveEvent e) {
 				ListAspectAdapterTests.this.value1Changed(e);
 			}
-			public void itemsReplaced(ListChangeEvent e) {
+			public void itemsReplaced(ListReplaceEvent e) {
 				ListAspectAdapterTests.this.value1Changed(e);
 			}
-			public void itemsMoved(ListChangeEvent e) {
+			public void itemsMoved(ListMoveEvent e) {
 				ListAspectAdapterTests.this.value1Changed(e);
 			}
-			public void listCleared(ListChangeEvent e) {
+			public void listCleared(ListClearEvent e) {
 				ListAspectAdapterTests.this.value1Changed(e);
 			}
 			public void listChanged(ListChangeEvent e) {
@@ -115,7 +123,7 @@ public class ListAspectAdapterTests extends TestCase {
 		};
 	}
 
-	void value1Changed(ListChangeEvent e) {
+	void value1Changed(ListEvent e) {
 		this.event1 = e;
 	}
 
@@ -133,8 +141,6 @@ public class ListAspectAdapterTests extends TestCase {
 		assertNotNull(this.event1);
 		assertEquals(this.aa1, this.event1.getSource());
 		assertEquals(ListValueModel.LIST_VALUES, this.event1.getListName());
-		assertEquals(-1, this.event1.getIndex());
-		assertFalse(this.event1.getItems().iterator().hasNext());
 		assertEquals(this.subject2Names(), CollectionTools.list(this.aa1.listIterator()));
 		
 		this.event1 = null;
@@ -142,8 +148,6 @@ public class ListAspectAdapterTests extends TestCase {
 		assertNotNull(this.event1);
 		assertEquals(this.aa1, this.event1.getSource());
 		assertEquals(ListValueModel.LIST_VALUES, this.event1.getListName());
-		assertEquals(-1, this.event1.getIndex());
-		assertFalse(this.event1.getItems().iterator().hasNext());
 		assertFalse(this.aa1.iterator().hasNext());
 		
 		this.event1 = null;
@@ -151,8 +155,6 @@ public class ListAspectAdapterTests extends TestCase {
 		assertNotNull(this.event1);
 		assertEquals(this.aa1, this.event1.getSource());
 		assertEquals(ListValueModel.LIST_VALUES, this.event1.getListName());
-		assertEquals(-1, this.event1.getIndex());
-		assertFalse(this.event1.getItems().iterator().hasNext());
 		assertEquals(this.subject1Names(), CollectionTools.list(this.aa1.listIterator()));
 	}
 
@@ -164,8 +166,8 @@ public class ListAspectAdapterTests extends TestCase {
 		assertNotNull(this.event1);
 		assertEquals(this.aa1, this.event1.getSource());
 		assertEquals(ListValueModel.LIST_VALUES, this.event1.getListName());
-		assertEquals(this.subject1Names().size(), this.event1.getIndex());
-		assertEquals("jam", this.event1.getItems().iterator().next());
+		assertEquals(this.subject1Names().size(), ((ListAddEvent) this.event1).getIndex());
+		assertEquals("jam", ((ListAddEvent) this.event1).getItems().iterator().next());
 		List<String> namesPlus = this.subject1Names();
 		namesPlus.add("jam");
 		assertEquals(namesPlus, CollectionTools.list(this.aa1.listIterator()));
@@ -175,8 +177,8 @@ public class ListAspectAdapterTests extends TestCase {
 		assertNotNull(this.event1);
 		assertEquals(this.aa1, this.event1.getSource());
 		assertEquals(ListValueModel.LIST_VALUES, this.event1.getListName());
-		assertEquals(2, this.event1.getIndex());
-		assertEquals("jaz", this.event1.getItems().iterator().next());
+		assertEquals(2, ((ListAddEvent) this.event1).getIndex());
+		assertEquals("jaz", ((ListAddEvent) this.event1).getItems().iterator().next());
 		namesPlus.add(2, "jaz");
 		assertEquals(namesPlus, CollectionTools.list(this.aa1.listIterator()));
 	}
@@ -196,8 +198,8 @@ public class ListAspectAdapterTests extends TestCase {
 		assertNotNull(this.event1);
 		assertEquals(this.aa1, this.event1.getSource());
 		assertEquals(ListValueModel.LIST_VALUES, this.event1.getListName());
-		assertEquals(5, this.event1.getIndex());		// only the last "add" event will still be there
-		assertEquals("jam", this.event1.getItems().iterator().next());
+		assertEquals(5, ((ListAddEvent) this.event1).getIndex());		// only the last "add" event will still be there
+		assertEquals("jam", ((ListAddEvent) this.event1).getItems().iterator().next());
 		List<String> namesPlus = this.subject1Names();
 		namesPlus.addAll(2, items);
 		assertEquals(namesPlus, CollectionTools.list(this.aa1.listIterator()));
@@ -211,8 +213,8 @@ public class ListAspectAdapterTests extends TestCase {
 		assertNotNull(this.event1);
 		assertEquals(this.aa1, this.event1.getSource());
 		assertEquals(ListValueModel.LIST_VALUES, this.event1.getListName());
-		assertEquals(0, this.event1.getIndex());
-		assertEquals(removedName, this.event1.getItems().iterator().next());
+		assertEquals(0, ((ListRemoveEvent) this.event1).getIndex());
+		assertEquals(removedName, ((ListRemoveEvent) this.event1).getItems().iterator().next());
 		List<String> namesMinus = this.subject1Names();
 		namesMinus.remove(0);
 		assertEquals(namesMinus, CollectionTools.list(this.aa1.listIterator()));
@@ -222,8 +224,8 @@ public class ListAspectAdapterTests extends TestCase {
 		assertNotNull(this.event1);
 		assertEquals(this.aa1, this.event1.getSource());
 		assertEquals(ListValueModel.LIST_VALUES, this.event1.getListName());
-		assertEquals(0, this.event1.getIndex());
-		assertEquals(removedItem, this.event1.getItems().iterator().next());
+		assertEquals(0, ((ListRemoveEvent) this.event1).getIndex());
+		assertEquals(removedItem, ((ListRemoveEvent) this.event1).getItems().iterator().next());
 		namesMinus.remove(0);
 		assertEquals(namesMinus, CollectionTools.list(this.aa1.listIterator()));
 	}
@@ -241,8 +243,8 @@ public class ListAspectAdapterTests extends TestCase {
 		assertNotNull(this.event1);
 		assertEquals(this.aa1, this.event1.getSource());
 		assertEquals(ListValueModel.LIST_VALUES, this.event1.getListName());
-		assertEquals(1, this.event1.getIndex());		// only the last "remove" event will still be there
-		assertEquals("baz", this.event1.getItems().iterator().next());
+		assertEquals(1, ((ListRemoveEvent) this.event1).getIndex());		// only the last "remove" event will still be there
+		assertEquals("baz", ((ListRemoveEvent) this.event1).getItems().iterator().next());
 		List<String> namesPlus = this.subject1Names();
 		namesPlus.remove(1);
 		namesPlus.remove(1);
@@ -257,9 +259,9 @@ public class ListAspectAdapterTests extends TestCase {
 		assertNotNull(this.event1);
 		assertEquals(this.aa1, this.event1.getSource());
 		assertEquals(ListValueModel.LIST_VALUES, this.event1.getListName());
-		assertEquals(0, this.event1.getIndex());
-		assertEquals("jelly", this.event1.getItems().iterator().next());
-		assertEquals(replacedName, this.event1.getReplacedItems().iterator().next());
+		assertEquals(0, ((ListReplaceEvent) this.event1).getIndex());
+		assertEquals("jelly", ((ListReplaceEvent) this.event1).getNewItems().iterator().next());
+		assertEquals(replacedName, ((ListReplaceEvent) this.event1).getOldItems().iterator().next());
 		List<String> namesChanged = this.subject1Names();
 		namesChanged.set(0, "jelly");
 		assertEquals(namesChanged, CollectionTools.list(this.aa1.listIterator()));
@@ -269,9 +271,9 @@ public class ListAspectAdapterTests extends TestCase {
 		assertNotNull(this.event1);
 		assertEquals(this.aa1, this.event1.getSource());
 		assertEquals(ListValueModel.LIST_VALUES, this.event1.getListName());
-		assertEquals(1, this.event1.getIndex());
-		assertEquals("roll", this.event1.getItems().iterator().next());
-		assertEquals(replacedName, this.event1.getReplacedItems().iterator().next());
+		assertEquals(1, ((ListReplaceEvent) this.event1).getIndex());
+		assertEquals("roll", ((ListReplaceEvent) this.event1).getNewItems().iterator().next());
+		assertEquals(replacedName, ((ListReplaceEvent) this.event1).getOldItems().iterator().next());
 		namesChanged = this.subject1Names();
 		namesChanged.set(0, "jelly");
 		namesChanged.set(1, "roll");
@@ -286,8 +288,6 @@ public class ListAspectAdapterTests extends TestCase {
 		assertNotNull(this.event1);
 		assertEquals(this.aa1, this.event1.getSource());
 		assertEquals(ListValueModel.LIST_VALUES, this.event1.getListName());
-		assertEquals(-1, this.event1.getIndex());
-		assertFalse(this.event1.getItems().iterator().hasNext());
 		List<String> namesPlus2 = this.subject1Names();
 		namesPlus2.add(0, "jaz");
 		namesPlus2.add(0, "jam");
@@ -362,7 +362,7 @@ public class ListAspectAdapterTests extends TestCase {
 		public void addTwoNames(String name1, String name2) {
 			this.names.add(0, name2);
 			this.names.add(0, name1);
-			this.fireListChanged(NAMES_LIST);
+			this.fireListChanged(NAMES_LIST, this.names);
 		}
 		public String removeName(int index) {
 			String removedName = this.names.remove(index);

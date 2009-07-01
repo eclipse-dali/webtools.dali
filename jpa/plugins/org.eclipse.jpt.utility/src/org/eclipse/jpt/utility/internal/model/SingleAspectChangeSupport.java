@@ -15,11 +15,20 @@ import java.util.List;
 import org.eclipse.jpt.utility.model.Model;
 import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.utility.model.event.CollectionClearEvent;
 import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
+import org.eclipse.jpt.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
+import org.eclipse.jpt.utility.model.event.ListClearEvent;
+import org.eclipse.jpt.utility.model.event.ListMoveEvent;
+import org.eclipse.jpt.utility.model.event.ListRemoveEvent;
+import org.eclipse.jpt.utility.model.event.ListReplaceEvent;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.model.event.StateChangeEvent;
+import org.eclipse.jpt.utility.model.event.TreeAddEvent;
 import org.eclipse.jpt.utility.model.event.TreeChangeEvent;
+import org.eclipse.jpt.utility.model.event.TreeClearEvent;
+import org.eclipse.jpt.utility.model.event.TreeRemoveEvent;
 import org.eclipse.jpt.utility.model.listener.ChangeListener;
 
 /**
@@ -188,7 +197,7 @@ public class SingleAspectChangeSupport
 	}
 
 	@Override
-	public void fireCollectionCleared(CollectionChangeEvent event) {
+	public void fireCollectionCleared(CollectionClearEvent event) {
 		this.check(COLLECTION_CHANGE_LISTENER_CLASS, event.getCollectionName());
 		super.fireCollectionCleared(event);
 	}
@@ -206,16 +215,16 @@ public class SingleAspectChangeSupport
 	}
 
 	@Override
-	public void fireCollectionChanged(String collectionName) {
+	public void fireCollectionChanged(String collectionName, Collection<?> collection) {
 		this.check(COLLECTION_CHANGE_LISTENER_CLASS, collectionName);
-		super.fireCollectionChanged(collectionName);
+		super.fireCollectionChanged(collectionName, collection);
 	}
 
 
 	// ********** list change support **********
 
 	@Override
-	public void fireItemsAdded(ListChangeEvent event) {
+	public void fireItemsAdded(ListAddEvent event) {
 		this.check(LIST_CHANGE_LISTENER_CLASS, event.getListName());
 		super.fireItemsAdded(event);
 	}
@@ -233,7 +242,7 @@ public class SingleAspectChangeSupport
 	}
 
 	@Override
-	public void fireItemsRemoved(ListChangeEvent event) {
+	public void fireItemsRemoved(ListRemoveEvent event) {
 		this.check(LIST_CHANGE_LISTENER_CLASS, event.getListName());
 		super.fireItemsRemoved(event);
 	}
@@ -251,7 +260,7 @@ public class SingleAspectChangeSupport
 	}
 
 	@Override
-	public void fireItemsReplaced(ListChangeEvent event) {
+	public void fireItemsReplaced(ListReplaceEvent event) {
 		this.check(LIST_CHANGE_LISTENER_CLASS, event.getListName());
 		super.fireItemsReplaced(event);
 	}
@@ -269,7 +278,7 @@ public class SingleAspectChangeSupport
 	}
 
 	@Override
-	public void fireItemsMoved(ListChangeEvent event) {
+	public void fireItemsMoved(ListMoveEvent event) {
 		this.check(LIST_CHANGE_LISTENER_CLASS, event.getListName());
 		super.fireItemsMoved(event);
 	}
@@ -281,7 +290,7 @@ public class SingleAspectChangeSupport
 	}
 
 	@Override
-	public void fireListCleared(ListChangeEvent event) {
+	public void fireListCleared(ListClearEvent event) {
 		this.check(LIST_CHANGE_LISTENER_CLASS, event.getListName());
 		super.fireListCleared(event);
 	}
@@ -299,48 +308,48 @@ public class SingleAspectChangeSupport
 	}
 
 	@Override
-	public void fireListChanged(String listName) {
+	public void fireListChanged(String listName, List<?> list) {
 		this.check(LIST_CHANGE_LISTENER_CLASS, listName);
-		super.fireListChanged(listName);
+		super.fireListChanged(listName, list);
 	}
 
 
 	// ********** tree change support **********
 
 	@Override
-	public void fireNodeAdded(TreeChangeEvent event) {
+	public void fireNodeAdded(TreeAddEvent event) {
 		this.check(TREE_CHANGE_LISTENER_CLASS, event.getTreeName());
 		super.fireNodeAdded(event);
 	}
 
 	@Override
-	public void fireNodeAdded(String treeName, Object[] path) {
+	public void fireNodeAdded(String treeName, List<?> path) {
 		this.check(TREE_CHANGE_LISTENER_CLASS, treeName);
 		super.fireNodeAdded(treeName, path);
 	}
 
 	@Override
-	public void fireNodeRemoved(TreeChangeEvent event) {
+	public void fireNodeRemoved(TreeRemoveEvent event) {
 		this.check(TREE_CHANGE_LISTENER_CLASS, event.getTreeName());
 		super.fireNodeRemoved(event);
 	}
 
 	@Override
-	public void fireNodeRemoved(String treeName, Object[] path) {
+	public void fireNodeRemoved(String treeName, List<?> path) {
 		this.check(TREE_CHANGE_LISTENER_CLASS, treeName);
 		super.fireNodeRemoved(treeName, path);
 	}
 
 	@Override
-	public void fireTreeCleared(TreeChangeEvent event) {
+	public void fireTreeCleared(TreeClearEvent event) {
 		this.check(TREE_CHANGE_LISTENER_CLASS, event.getTreeName());
 		super.fireTreeCleared(event);
 	}
 
 	@Override
-	public void fireTreeCleared(String treeName, Object[] path) {
+	public void fireTreeCleared(String treeName) {
 		this.check(TREE_CHANGE_LISTENER_CLASS, treeName);
-		super.fireTreeCleared(treeName, path);
+		super.fireTreeCleared(treeName);
 	}
 
 	@Override
@@ -350,9 +359,9 @@ public class SingleAspectChangeSupport
 	}
 
 	@Override
-	public void fireTreeChanged(String treeName, Object[] path) {
+	public void fireTreeChanged(String treeName, Collection<?> nodes) {
 		this.check(TREE_CHANGE_LISTENER_CLASS, treeName);
-		super.fireTreeChanged(treeName, path);
+		super.fireTreeChanged(treeName, nodes);
 	}
 
 }

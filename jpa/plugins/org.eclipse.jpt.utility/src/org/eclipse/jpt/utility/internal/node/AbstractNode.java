@@ -806,7 +806,7 @@ public abstract class AbstractNode
 			return false;		// our "branch" problems did not change
 		}
 		// our "branch" problems changed
-		this.fireListChanged(BRANCH_PROBLEMS_LIST);
+		this.fireListChanged(BRANCH_PROBLEMS_LIST, this.branchProblems);
 		return true;
 	}
 
@@ -868,7 +868,7 @@ public abstract class AbstractNode
 		this.problems.clear();
 		this.branchProblems.clear();
 		this.firePropertyChanged(HAS_BRANCH_PROBLEMS_PROPERTY, true, false);
-		this.fireListChanged(BRANCH_PROBLEMS_LIST);
+		this.fireListChanged(BRANCH_PROBLEMS_LIST, this.branchProblems);
 		return true;
 	}
 

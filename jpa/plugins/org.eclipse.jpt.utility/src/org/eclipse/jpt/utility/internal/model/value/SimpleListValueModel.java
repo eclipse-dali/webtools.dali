@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -133,7 +133,7 @@ public class SimpleListValueModel<E>
 		if (o == this) {
 			return true;
 		}
-		if ((o instanceof List) && (o instanceof ListValueModel)) {
+		if ((o instanceof List<?>) && (o instanceof ListValueModel<?>)) {
 			List<E> l1 = CollectionTools.list(this.list);
 			@SuppressWarnings("unchecked")
 			List<E> l2 = CollectionTools.list(((List<E>) o).iterator());
@@ -187,7 +187,7 @@ public class SimpleListValueModel<E>
 			throw new NullPointerException();
 		}
 		this.list = list;
-		this.fireListChanged(LIST_VALUES);
+		this.fireListChanged(LIST_VALUES, this.list);
 	}
 
 	/**

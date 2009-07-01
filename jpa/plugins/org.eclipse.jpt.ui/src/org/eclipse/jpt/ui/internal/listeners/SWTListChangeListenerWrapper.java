@@ -9,7 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.listeners;
 
+import org.eclipse.jpt.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
+import org.eclipse.jpt.utility.model.event.ListClearEvent;
+import org.eclipse.jpt.utility.model.event.ListMoveEvent;
+import org.eclipse.jpt.utility.model.event.ListRemoveEvent;
+import org.eclipse.jpt.utility.model.event.ListReplaceEvent;
 import org.eclipse.jpt.utility.model.listener.ListChangeListener;
 import org.eclipse.swt.widgets.Display;
 
@@ -32,23 +37,23 @@ public class SWTListChangeListenerWrapper
 		this.listener = listener;
 	}
 
-	public void itemsAdded(ListChangeEvent event) {
+	public void itemsAdded(ListAddEvent event) {
 		this.executeOnUIThread(this.buildItemsAddedRunnable(event));
 	}
 
-	public void itemsRemoved(ListChangeEvent event) {
+	public void itemsRemoved(ListRemoveEvent event) {
 		this.executeOnUIThread(this.buildItemsRemovedRunnable(event));
 	}
 
-	public void itemsMoved(ListChangeEvent event) {
+	public void itemsMoved(ListMoveEvent event) {
 		this.executeOnUIThread(this.buildItemsMovedRunnable(event));
 	}
 
-	public void itemsReplaced(ListChangeEvent event) {
+	public void itemsReplaced(ListReplaceEvent event) {
 		this.executeOnUIThread(this.buildItemsReplacedRunnable(event));
 	}
 
-	public void listCleared(ListChangeEvent event) {
+	public void listCleared(ListClearEvent event) {
 		this.executeOnUIThread(this.buildCollectionClearedRunnable(event));
 	}
 
@@ -56,7 +61,7 @@ public class SWTListChangeListenerWrapper
 		this.executeOnUIThread(this.buildCollectionChangedRunnable(event));
 	}
 
-	private Runnable buildItemsAddedRunnable(final ListChangeEvent event) {
+	private Runnable buildItemsAddedRunnable(final ListAddEvent event) {
 		return new Runnable() {
 			public void run() {
 				SWTListChangeListenerWrapper.this.itemsAdded_(event);
@@ -68,7 +73,7 @@ public class SWTListChangeListenerWrapper
 		};
 	}
 
-	private Runnable buildItemsRemovedRunnable(final ListChangeEvent event) {
+	private Runnable buildItemsRemovedRunnable(final ListRemoveEvent event) {
 		return new Runnable() {
 			public void run() {
 				SWTListChangeListenerWrapper.this.itemsRemoved_(event);
@@ -80,7 +85,7 @@ public class SWTListChangeListenerWrapper
 		};
 	}
 
-	private Runnable buildItemsMovedRunnable(final ListChangeEvent event) {
+	private Runnable buildItemsMovedRunnable(final ListMoveEvent event) {
 		return new Runnable() {
 			public void run() {
 				SWTListChangeListenerWrapper.this.itemsMoved_(event);
@@ -92,7 +97,7 @@ public class SWTListChangeListenerWrapper
 		};
 	}
 
-	private Runnable buildItemsReplacedRunnable(final ListChangeEvent event) {
+	private Runnable buildItemsReplacedRunnable(final ListReplaceEvent event) {
 		return new Runnable() {
 			public void run() {
 				SWTListChangeListenerWrapper.this.itemsReplaced_(event);
@@ -104,7 +109,7 @@ public class SWTListChangeListenerWrapper
 		};
 	}
 
-	private Runnable buildCollectionClearedRunnable(final ListChangeEvent event) {
+	private Runnable buildCollectionClearedRunnable(final ListClearEvent event) {
 		return new Runnable() {
 			public void run() {
 				SWTListChangeListenerWrapper.this.listCleared_(event);
@@ -138,23 +143,23 @@ public class SWTListChangeListenerWrapper
 //		Display.getDefault().syncExec(r);
 	}
 
-	void itemsAdded_(ListChangeEvent event) {
+	void itemsAdded_(ListAddEvent event) {
 		this.listener.itemsAdded(event);
 	}
 
-	void itemsRemoved_(ListChangeEvent event) {
+	void itemsRemoved_(ListRemoveEvent event) {
 		this.listener.itemsRemoved(event);
 	}
 
-	void itemsMoved_(ListChangeEvent event) {
+	void itemsMoved_(ListMoveEvent event) {
 		this.listener.itemsMoved(event);
 	}
 
-	void itemsReplaced_(ListChangeEvent event) {
+	void itemsReplaced_(ListReplaceEvent event) {
 		this.listener.itemsReplaced(event);
 	}
 
-	void listCleared_(ListChangeEvent event) {
+	void listCleared_(ListClearEvent event) {
 		this.listener.listCleared(event);
 	}
 

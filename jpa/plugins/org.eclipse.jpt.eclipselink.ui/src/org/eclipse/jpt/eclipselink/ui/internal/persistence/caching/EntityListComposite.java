@@ -186,7 +186,7 @@ public class EntityListComposite extends Pane<Caching>
 
 	private ListValueModel<Entity> buildEntitiesListHolder() {
 		return new ListAspectAdapter<Caching, Entity>(
-					this.getSubjectHolder(), Caching.ENTITIES_LIST_PROPERTY) {
+					this.getSubjectHolder(), Caching.ENTITIES_LIST) {
 			@Override
 			protected ListIterator<Entity> listIterator_() {
 				return this.subject.entities();

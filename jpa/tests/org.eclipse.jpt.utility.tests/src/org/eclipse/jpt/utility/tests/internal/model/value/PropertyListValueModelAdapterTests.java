@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,20 +12,29 @@ package org.eclipse.jpt.utility.tests.internal.model.value;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
 import javax.swing.JList;
+
 import junit.framework.TestCase;
+
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementIterator;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.swing.ListModelAdapter;
+import org.eclipse.jpt.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
+import org.eclipse.jpt.utility.model.event.ListClearEvent;
+import org.eclipse.jpt.utility.model.event.ListMoveEvent;
+import org.eclipse.jpt.utility.model.event.ListRemoveEvent;
+import org.eclipse.jpt.utility.model.event.ListReplaceEvent;
 import org.eclipse.jpt.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
+@SuppressWarnings("nls")
 public class PropertyListValueModelAdapterTests extends TestCase {
 	private ListValueModel<String> adapter;
 	private WritablePropertyValueModel<String> wrappedValueHolder;
@@ -54,7 +63,7 @@ public class PropertyListValueModelAdapterTests extends TestCase {
 	public void testIterator() {
 		this.adapter.addListChangeListener(ListValueModel.LIST_VALUES, new TestListener() {
 			@Override
-			public void itemsAdded(ListChangeEvent event) {/* OK */}
+			public void itemsAdded(ListAddEvent event) {/* OK */}
 		});
 		assertFalse(this.adapter.iterator().hasNext());
 		this.wrappedValueHolder.setValue("foo");
@@ -67,7 +76,7 @@ public class PropertyListValueModelAdapterTests extends TestCase {
 	public void testGetInt() {
 		this.adapter.addListChangeListener(ListValueModel.LIST_VALUES, new TestListener() {
 			@Override
-			public void itemsAdded(ListChangeEvent event) {/* OK */}
+			public void itemsAdded(ListAddEvent event) {/* OK */}
 		});
 		this.wrappedValueHolder.setValue("foo");
 		assertEquals("foo", this.adapter.get(0));
@@ -76,7 +85,7 @@ public class PropertyListValueModelAdapterTests extends TestCase {
 	public void testToArray1() {
 		this.adapter.addListChangeListener(ListValueModel.LIST_VALUES, new TestListener() {
 			@Override
-			public void itemsAdded(ListChangeEvent event) {/* OK */}
+			public void itemsAdded(ListAddEvent event) {/* OK */}
 		});
 		this.wrappedValueHolder.setValue("foo");
 		Object[] array = this.adapter.toArray();
@@ -93,7 +102,7 @@ public class PropertyListValueModelAdapterTests extends TestCase {
 	public void testStaleValue() {
 		ListChangeListener listener = new TestListener() {
 			@Override
-			public void itemsAdded(ListChangeEvent event) {/* OK */}
+			public void itemsAdded(ListAddEvent event) {/* OK */}
 		};
 		this.adapter.addListChangeListener(ListValueModel.LIST_VALUES, listener);
 		this.wrappedValueHolder.setValue("foo");
@@ -130,7 +139,7 @@ public class PropertyListValueModelAdapterTests extends TestCase {
 		this.wrappedValueHolder.setValue("foo");
 		this.adapter.addListChangeListener(ListValueModel.LIST_VALUES, new TestListener() {
 			@Override
-			public void itemsRemoved(ListChangeEvent event) {/* OK */}
+			public void itemsRemoved(ListRemoveEvent event) {/* OK */}
 		});
 		JList jList = new JList(new ListModelAdapter(this.adapter));
 		this.wrappedValueHolder.setValue(null);
@@ -140,7 +149,7 @@ public class PropertyListValueModelAdapterTests extends TestCase {
 	public void testListChangedFromEmpty() {
 		this.adapter.addListChangeListener(ListValueModel.LIST_VALUES, new TestListener() {
 			@Override
-			public void itemsAdded(ListChangeEvent event) {/* OK */}
+			public void itemsAdded(ListAddEvent event) {/* OK */}
 		});
 		JList jList = new JList(new ListModelAdapter(this.adapter));
 		
@@ -152,7 +161,7 @@ public class PropertyListValueModelAdapterTests extends TestCase {
 		this.wrappedValueHolder.setValue("foo");
 		this.adapter.addListChangeListener(ListValueModel.LIST_VALUES, new TestListener() {
 			@Override
-			public void itemsReplaced(ListChangeEvent event) {/* OK */}
+			public void itemsReplaced(ListReplaceEvent event) {/* OK */}
 		});
 		JList jList = new JList(new ListModelAdapter(this.adapter));
 		assertEquals(1, jList.getModel().getSize());
@@ -178,19 +187,19 @@ public class PropertyListValueModelAdapterTests extends TestCase {
 		public void listChanged(ListChangeEvent event) {
 			fail("unexpected event");
 		}
-		public void listCleared(ListChangeEvent event) {
+		public void listCleared(ListClearEvent event) {
 			fail("unexpected event");
 		}
-		public void itemsAdded(ListChangeEvent event) {
+		public void itemsAdded(ListAddEvent event) {
 			fail("unexpected event");
 		}
-		public void itemsRemoved(ListChangeEvent event) {
+		public void itemsRemoved(ListRemoveEvent event) {
 			fail("unexpected event");
 		}
-		public void itemsMoved(ListChangeEvent event) {
+		public void itemsMoved(ListMoveEvent event) {
 			fail("unexpected event");
 		}
-		public void itemsReplaced(ListChangeEvent event) {
+		public void itemsReplaced(ListReplaceEvent event) {
 			fail("unexpected event");
 		}
 	}

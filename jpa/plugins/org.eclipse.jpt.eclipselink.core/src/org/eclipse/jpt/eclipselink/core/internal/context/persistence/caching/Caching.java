@@ -80,6 +80,6 @@ public interface Caching extends PersistenceUnitProperties
 	boolean entityExists(String entity);
 	Entity addEntity(String entity);
 	void removeEntity(String entity);
-		String ENTITIES_LIST_PROPERTY = "entities"; //$NON-NLS-1$
+		String ENTITIES_LIST = "entities"; //$NON-NLS-1$
 
 }

@@ -20,6 +20,7 @@ import org.eclipse.jpt.eclipselink.core.internal.context.persistence.Persistence
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
+import org.eclipse.jpt.utility.model.event.ListEvent;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
@@ -152,8 +153,8 @@ public abstract class PersistenceUnitTestCase extends ContextModelTestCase
 		throw new NoSuchFieldException("Missing Definition for: " + methodName + "( " + propertyName + ")");
 	}
 
-	protected void throwUnsupportedOperationException(ListChangeEvent e) {
-		throw new UnsupportedOperationException(e.getAspectName());
+	public void throwUnsupportedOperationException(ListEvent e) {
+		throw new UnsupportedOperationException(e.getListName());
 	}
 
 	protected PropertyChangeListener buildPropertyChangeListener() {
@@ -338,7 +339,7 @@ public abstract class PersistenceUnitTestCase extends ContextModelTestCase
 		// verify event received
 		assertNotNull("No Event Fired.", this.propertyChangedEvent);
 		// verify event for the expected property
-		assertEquals("Wrong Event.", this.propertyChangedEvent.getAspectName(), propertyName);
+		assertEquals("Wrong Event.", this.propertyChangedEvent.getPropertyName(), propertyName);
 		// verify event occurrence
 		assertTrue("No Event Received.", this.propertyChangedEventCount > 0);
 		assertTrue("Multiple Event Received (" +  this.propertyChangedEventCount + ")",

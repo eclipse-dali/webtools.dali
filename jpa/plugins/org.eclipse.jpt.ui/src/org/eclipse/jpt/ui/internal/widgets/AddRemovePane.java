@@ -10,6 +10,7 @@
 package org.eclipse.jpt.ui.internal.widgets;
 
 import java.util.Arrays;
+
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.listeners.SWTListChangeListenerWrapper;
@@ -17,7 +18,12 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.model.value.swing.ListModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.swing.ObjectListSelectionModel;
 import org.eclipse.jpt.utility.model.Model;
+import org.eclipse.jpt.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
+import org.eclipse.jpt.utility.model.event.ListClearEvent;
+import org.eclipse.jpt.utility.model.event.ListMoveEvent;
+import org.eclipse.jpt.utility.model.event.ListRemoveEvent;
+import org.eclipse.jpt.utility.model.event.ListReplaceEvent;
 import org.eclipse.jpt.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -295,19 +301,19 @@ public abstract class AddRemovePane<T extends Model> extends Pane<T>
 	private ListChangeListener buildListChangeListener_() {
 		return new ListChangeListener() {
 
-			public void itemsAdded(ListChangeEvent e) {
+			public void itemsAdded(ListAddEvent e) {
 				AddRemovePane.this.itemsAdded(e);
 			}
 
-			public void itemsMoved(ListChangeEvent e) {
+			public void itemsMoved(ListMoveEvent e) {
 				AddRemovePane.this.itemsMoved(e);
 			}
 
-			public void itemsRemoved(ListChangeEvent e) {
+			public void itemsRemoved(ListRemoveEvent e) {
 				AddRemovePane.this.itemsRemoved(e);
 			}
 
-			public void itemsReplaced(ListChangeEvent e) {
+			public void itemsReplaced(ListReplaceEvent e) {
 				AddRemovePane.this.itemsReplaced(e);
 			}
 
@@ -315,21 +321,21 @@ public abstract class AddRemovePane<T extends Model> extends Pane<T>
 				AddRemovePane.this.listChanged(e);
 			}
 
-			public void listCleared(ListChangeEvent e) {
+			public void listCleared(ListClearEvent e) {
 				AddRemovePane.this.listCleared(e);
 			}
 		};
 	}
 
-	protected void itemsAdded(ListChangeEvent e) {
+	protected void itemsAdded(ListAddEvent e) {
 		
 	}
 	
-	protected void itemsMoved(ListChangeEvent e) {
+	protected void itemsMoved(ListMoveEvent e) {
 		
 	}
 	
-	protected void itemsRemoved(ListChangeEvent e) {
+	protected void itemsRemoved(ListRemoveEvent e) {
 		Object selectedItem = this.selectedItemHolder.getValue();
 
 		if (selectedItem == null) {
@@ -343,7 +349,7 @@ public abstract class AddRemovePane<T extends Model> extends Pane<T>
 		}		
 	}
 	
-	protected void itemsReplaced(ListChangeEvent e) {
+	protected void itemsReplaced(ListReplaceEvent e) {
 		
 	}
 	
@@ -351,7 +357,7 @@ public abstract class AddRemovePane<T extends Model> extends Pane<T>
 		
 	}
 	
-	protected void listCleared(ListChangeEvent e) {
+	protected void listCleared(ListClearEvent e) {
 		this.selectedItemHolder.setValue(null);
 		updateButtons();
 	}

@@ -11,14 +11,23 @@ package org.eclipse.jpt.utility.tests.internal.model.listener;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
+
 import junit.framework.TestCase;
+
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
+import org.eclipse.jpt.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
+import org.eclipse.jpt.utility.model.event.ListClearEvent;
+import org.eclipse.jpt.utility.model.event.ListEvent;
+import org.eclipse.jpt.utility.model.event.ListMoveEvent;
+import org.eclipse.jpt.utility.model.event.ListRemoveEvent;
+import org.eclipse.jpt.utility.model.event.ListReplaceEvent;
 import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.model.listener.ReflectiveChangeListener;
@@ -589,7 +598,7 @@ public class ReflectiveListChangeListenerTests extends TestCase {
 		Target target = new Target(testModel, TestModel.STRINGS_LIST, string, 0);
 		// build a LIST change listener and hack it so we
 		// can add it as a COLLECTION change listener
-		Object listener = ReflectiveChangeListener.buildListChangeListener(target, "itemAddedSingleArgument");
+		Object listener = ReflectiveChangeListener.buildListChangeListener(target, "listEventSingleArgument");
 		testModel.addCollectionChangeListener((CollectionChangeListener) listener);
 
 		boolean exCaught = false;
@@ -630,10 +639,10 @@ public class ReflectiveListChangeListenerTests extends TestCase {
 		void replaceAllStrings(String[] newStrings) {
 			this.strings.clear();
 			CollectionTools.addAll(this.strings, newStrings);
-			this.fireListChanged(STRINGS_LIST);
+			this.fireListChanged(STRINGS_LIST, this.strings);
 		}
 		void changeCollection() {
-			this.fireCollectionChanged("bogus collection");
+			this.fireCollectionChanged("bogus collection", Collections.emptySet());
 		}
 	}
 
@@ -656,6 +665,7 @@ public class ReflectiveListChangeListenerTests extends TestCase {
 		boolean listClearedSingleArgumentFlag = false;
 		boolean listChangedZeroArgumentFlag = false;
 		boolean listChangedSingleArgumentFlag = false;
+		boolean listEventSingleArgumentFlag = false;
 		Target(TestModel testModel, String listName, String string, int index) {
 			super();
 			this.testModel = testModel;
@@ -677,7 +687,7 @@ public class ReflectiveListChangeListenerTests extends TestCase {
 		void itemAddedZeroArgument() {
 			this.itemAddedZeroArgumentFlag = true;
 		}
-		void itemAddedSingleArgument(ListChangeEvent e) {
+		void itemAddedSingleArgument(ListAddEvent e) {
 			this.itemAddedSingleArgumentFlag = true;
 			assertSame(this.testModel, e.getSource());
 			assertEquals(this.listName, e.getListName());
@@ -687,7 +697,7 @@ public class ReflectiveListChangeListenerTests extends TestCase {
 		void itemRemovedZeroArgument() {
 			this.itemRemovedZeroArgumentFlag = true;
 		}
-		void itemRemovedSingleArgument(ListChangeEvent e) {
+		void itemRemovedSingleArgument(ListRemoveEvent e) {
 			this.itemRemovedSingleArgumentFlag = true;
 			assertSame(this.testModel, e.getSource());
 			assertEquals(this.listName, e.getListName());
@@ -697,18 +707,18 @@ public class ReflectiveListChangeListenerTests extends TestCase {
 		void itemReplacedZeroArgument() {
 			this.itemReplacedZeroArgumentFlag = true;
 		}
-		void itemReplacedSingleArgument(ListChangeEvent e) {
+		void itemReplacedSingleArgument(ListReplaceEvent e) {
 			this.itemReplacedSingleArgumentFlag = true;
 			assertSame(this.testModel, e.getSource());
 			assertEquals(this.listName, e.getListName());
-			assertEquals(this.string, e.getItems().iterator().next());
-			assertEquals(this.replacedString, e.getReplacedItems().iterator().next());
+			assertEquals(this.string, e.getNewItems().iterator().next());
+			assertEquals(this.replacedString, e.getOldItems().iterator().next());
 			assertEquals(this.index, e.getIndex());
 		}
 		void itemMovedZeroArgument() {
 			this.itemMovedZeroArgumentFlag = true;
 		}
-		void itemMovedSingleArgument(ListChangeEvent e) {
+		void itemMovedSingleArgument(ListMoveEvent e) {
 			this.itemMovedSingleArgumentFlag = true;
 			assertSame(this.testModel, e.getSource());
 			assertEquals(this.listName, e.getListName());
@@ -718,12 +728,10 @@ public class ReflectiveListChangeListenerTests extends TestCase {
 		void listChangedZeroArgument() {
 			this.listChangedZeroArgumentFlag = true;
 		}
-		void listClearedSingleArgument(ListChangeEvent e) {
+		void listClearedSingleArgument(ListClearEvent e) {
 			this.listClearedSingleArgumentFlag = true;
 			assertSame(this.testModel, e.getSource());
 			assertEquals(this.listName, e.getListName());
-			assertFalse(e.getItems().iterator().hasNext());
-			assertEquals(this.index, e.getIndex());
 		}
 		void listClearedZeroArgument() {
 			this.listClearedZeroArgumentFlag = true;
@@ -732,11 +740,14 @@ public class ReflectiveListChangeListenerTests extends TestCase {
 			this.listChangedSingleArgumentFlag = true;
 			assertSame(this.testModel, e.getSource());
 			assertEquals(this.listName, e.getListName());
-			assertFalse(e.getItems().iterator().hasNext());
-			assertEquals(this.index, e.getIndex());
 		}
 		void listChangedDoubleArgument(ListChangeEvent e, Object o) {
 			fail("bogus event: " + e + " - object: " + o);
+		}
+		void listEventSingleArgument(ListEvent e) {
+			this.listEventSingleArgumentFlag = true;
+			assertSame(this.testModel, e.getSource());
+			assertEquals(this.listName, e.getListName());
 		}
 	}
 

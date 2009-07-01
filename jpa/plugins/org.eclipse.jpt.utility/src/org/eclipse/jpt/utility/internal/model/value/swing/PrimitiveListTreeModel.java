@@ -20,7 +20,12 @@ import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
 import org.eclipse.jpt.utility.internal.model.listener.awt.AWTListChangeListenerWrapper;
+import org.eclipse.jpt.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
+import org.eclipse.jpt.utility.model.event.ListClearEvent;
+import org.eclipse.jpt.utility.model.event.ListMoveEvent;
+import org.eclipse.jpt.utility.model.event.ListRemoveEvent;
+import org.eclipse.jpt.utility.model.event.ListReplaceEvent;
 import org.eclipse.jpt.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 
@@ -190,29 +195,29 @@ public abstract class PrimitiveListTreeModel
 			super();
 		}
 
-		public void itemsAdded(ListChangeEvent event) {
+		public void itemsAdded(ListAddEvent event) {
 			int i = event.getIndex();
 			for (Object item : event.getItems()) {
 				PrimitiveListTreeModel.this.insertPrimitive(i++, item);
 			}
 		}
 
-		public void itemsRemoved(ListChangeEvent event) {
+		public void itemsRemoved(ListRemoveEvent event) {
 			for (int i = 0; i < event.getItemsSize(); i++) {
 				PrimitiveListTreeModel.this.removeNode(event.getIndex());
 			}
 		}
 
-		public void itemsReplaced(ListChangeEvent event) {
+		public void itemsReplaced(ListReplaceEvent event) {
 			int i = event.getIndex();
-			for (Object item : event.getItems()) {
+			for (Object item : event.getNewItems()) {
 				PrimitiveListTreeModel.this.replacePrimitive(i++, item);
 			}
 		}
 
-		public void itemsMoved(ListChangeEvent event) {
-			ArrayList<MutableTreeNode> temp = new ArrayList<MutableTreeNode>(event.getMoveLength());
-			for (int i = 0; i < event.getMoveLength(); i++) {
+		public void itemsMoved(ListMoveEvent event) {
+			ArrayList<MutableTreeNode> temp = new ArrayList<MutableTreeNode>(event.getLength());
+			for (int i = 0; i < event.getLength(); i++) {
 				temp.add(PrimitiveListTreeModel.this.removeNode(event.getSourceIndex()));
 			}
 			int i = event.getTargetIndex();
@@ -221,7 +226,7 @@ public abstract class PrimitiveListTreeModel
 			}
 		}
 
-		public void listCleared(ListChangeEvent event) {
+		public void listCleared(ListClearEvent event) {
 			PrimitiveListTreeModel.this.clearList();
 		}
 

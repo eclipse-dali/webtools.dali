@@ -18,6 +18,7 @@ import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.model.Model;
 import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.utility.model.event.CollectionClearEvent;
 import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
 import org.eclipse.jpt.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
@@ -119,7 +120,7 @@ public abstract class CollectionAspectAdapter<S extends Model, E>
 			public void itemsRemoved(CollectionRemoveEvent event) {
 				CollectionAspectAdapter.this.itemsRemoved(event);
 			}
-			public void collectionCleared(CollectionChangeEvent event) {
+			public void collectionCleared(CollectionClearEvent event) {
 				CollectionAspectAdapter.this.collectionCleared(event);
 			}
 			public void collectionChanged(CollectionChangeEvent event) {
@@ -191,8 +192,9 @@ public abstract class CollectionAspectAdapter<S extends Model, E>
 	}
 
 	@Override
-	protected void fireAspectChange(Object oldValue, Object newValue) {
-		this.fireCollectionChanged(VALUES);
+	protected void fireAspectChanged(Object oldValue, Object newValue) {
+		@SuppressWarnings("unchecked") Iterator<E> newIterator = (Iterator<E>) newValue;
+		this.fireCollectionChanged(VALUES, CollectionTools.collection(newIterator));
 	}
 
 	@Override
@@ -223,19 +225,19 @@ public abstract class CollectionAspectAdapter<S extends Model, E>
 	// ********** behavior **********
 
 	protected void itemsAdded(CollectionAddEvent event) {
-		this.fireItemsAdded(event.cloneWithSource(this, VALUES));
+		this.fireItemsAdded(event.clone(this, VALUES));
 	}
 
 	protected void itemsRemoved(CollectionRemoveEvent event) {
-		this.fireItemsRemoved(event.cloneWithSource(this, VALUES));
+		this.fireItemsRemoved(event.clone(this, VALUES));
 	}
 
-	protected void collectionCleared(@SuppressWarnings("unused") CollectionChangeEvent event) {
-		this.fireCollectionCleared(VALUES);  // nothing from original event to forward
+	protected void collectionCleared(CollectionClearEvent event) {
+		this.fireCollectionCleared(event.clone(this, VALUES));
 	}
 
-	protected void collectionChanged(@SuppressWarnings("unused") CollectionChangeEvent event) {
-		this.fireCollectionChanged(VALUES);  // nothing from original event to forward
+	protected void collectionChanged(CollectionChangeEvent event) {
+		this.fireCollectionChanged(event.clone(this, VALUES));
 	}
 
 }

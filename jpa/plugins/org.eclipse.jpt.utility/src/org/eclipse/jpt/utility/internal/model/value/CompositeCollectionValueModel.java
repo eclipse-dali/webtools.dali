@@ -22,6 +22,8 @@ import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.utility.model.event.CollectionClearEvent;
+import org.eclipse.jpt.utility.model.event.CollectionEvent;
 import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
 import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;
@@ -155,7 +157,7 @@ public class CompositeCollectionValueModel<E1, E2>
 			public void itemsRemoved(CollectionRemoveEvent event) {
 				CompositeCollectionValueModel.this.componentItemsRemoved(event);
 			}
-			public void collectionCleared(CollectionChangeEvent event) {
+			public void collectionCleared(CollectionClearEvent event) {
 				CompositeCollectionValueModel.this.componentCollectionCleared(event);
 			}
 			public void collectionChanged(CollectionChangeEvent event) {
@@ -229,7 +231,7 @@ public class CompositeCollectionValueModel<E1, E2>
 	@Override
 	protected void itemsAdded(CollectionAddEvent event) {
 		ArrayList<E2> addedItems = new ArrayList<E2>();
-		for (E1 item : this.getAddedItems(event)) {
+		for (E1 item : this.getItems(event)) {
 			this.addComponentSource(item, addedItems);
 		}
 		this.fireItemsAdded(VALUES, addedItems);
@@ -271,7 +273,7 @@ public class CompositeCollectionValueModel<E1, E2>
 	@Override
 	protected void itemsRemoved(CollectionRemoveEvent event) {
 		ArrayList<E2> removedItems = new ArrayList<E2>();
-		for (E1 item : this.getRemovedItems(event)) {
+		for (E1 item : this.getItems(event)) {
 			this.removeComponentSource(item, removedItems);
 		}
 		this.fireItemsRemoved(VALUES, removedItems);
@@ -308,7 +310,7 @@ public class CompositeCollectionValueModel<E1, E2>
 	 * clear our cache.
 	 */
 	@Override
-	protected void collectionCleared(CollectionChangeEvent event) {
+	protected void collectionCleared(CollectionClearEvent event) {
 		this.removeAllComponentSources();
 		this.fireCollectionCleared(VALUES);
 	}
@@ -329,7 +331,7 @@ public class CompositeCollectionValueModel<E1, E2>
 	protected void collectionChanged(CollectionChangeEvent event) {
 		this.removeAllComponentSources();
 		this.addAllComponentSources();
-		this.fireCollectionChanged(VALUES);
+		this.fireCollectionChanged(VALUES, CollectionTools.collection(this.iterator()));
 	}
 
 
@@ -350,13 +352,13 @@ public class CompositeCollectionValueModel<E1, E2>
 	 * synchronize our caches.
 	 */
 	protected void componentItemsAdded(CollectionAddEvent event) {
-		int itemsSize = event.getAddedItemsSize();
+		int itemsSize = event.getItemsSize();
 		this.size += itemsSize;
 
 		ArrayList<E2> componentCollection = this.collections.get(this.componentCVM(event));
 		componentCollection.ensureCapacity(componentCollection.size() + itemsSize);
 
-		this.addItemsToCollection(this.getAddedComponentItems(event), componentCollection, VALUES);
+		this.addItemsToCollection(this.getComponentItems(event), componentCollection, VALUES);
 	}
 
 	/**
@@ -364,9 +366,9 @@ public class CompositeCollectionValueModel<E1, E2>
 	 * synchronize our caches.
 	 */
 	protected void componentItemsRemoved(CollectionRemoveEvent event) {
-		this.size -= event.getRemovedItemsSize();
+		this.size -= event.getItemsSize();
 		ArrayList<E2> componentCollection = this.collections.get(this.componentCVM(event));
-		this.removeItemsFromCollection(this.getRemovedComponentItems(event), componentCollection, VALUES);
+		this.removeItemsFromCollection(this.getComponentItems(event), componentCollection, VALUES);
 	}
 
 	/**
@@ -374,7 +376,7 @@ public class CompositeCollectionValueModel<E1, E2>
 	 * synchronize our caches by clearing out the appropriate
 	 * collection.
 	 */
-	protected void componentCollectionCleared(CollectionChangeEvent event) {
+	protected void componentCollectionCleared(CollectionClearEvent event) {
 		ArrayList<E2> componentCollection = this.collections.get(this.componentCVM(event));
 		ArrayList<E2> removedItems = new ArrayList<E2>(componentCollection);
 		this.removeComponentItems(componentCollection);
@@ -391,24 +393,24 @@ public class CompositeCollectionValueModel<E1, E2>
 		ArrayList<E2> componentCollection = this.collections.get(componentCVM);
 		this.removeComponentItems(componentCollection);
 		this.addComponentItems(componentCVM, componentCollection);
-		this.fireCollectionChanged(VALUES);
+		this.fireCollectionChanged(VALUES, CollectionTools.collection(this.iterator()));
 	}
 
 	// minimize scope of suppressed warnings
 	@SuppressWarnings("unchecked")
-	protected Iterable<E2> getAddedComponentItems(CollectionAddEvent event) {
-		return (Iterable<E2>) event.getAddedItems();
+	protected Iterable<E2> getComponentItems(CollectionAddEvent event) {
+		return (Iterable<E2>) event.getItems();
 	}
 
 	// minimize scope of suppressed warnings
 	@SuppressWarnings("unchecked")
-	protected Iterable<E2> getRemovedComponentItems(CollectionRemoveEvent event) {
-		return (Iterable<E2>) event.getRemovedItems();
+	protected Iterable<E2> getComponentItems(CollectionRemoveEvent event) {
+		return (Iterable<E2>) event.getItems();
 	}
 
 	// minimize scope of suppressed warnings
 	@SuppressWarnings("unchecked")
-	protected CollectionValueModel<E2> componentCVM(CollectionChangeEvent event) {
+	protected CollectionValueModel<E2> componentCVM(CollectionEvent event) {
 		return (CollectionValueModel<E2>) event.getSource();
 	}
 

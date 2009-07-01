@@ -26,6 +26,7 @@ import org.eclipse.jpt.utility.internal.model.value.SimpleListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.swing.ListModelAdapter;
 import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.utility.model.event.CollectionClearEvent;
 import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
 import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;
@@ -183,13 +184,13 @@ public class ListCollectionValueModelAdapterTests extends TestCase {
 		this.adapter.addCollectionChangeListener(CollectionValueModel.VALUES, new TestListener() {
 			@Override
 			public void itemsRemoved(CollectionRemoveEvent e) {
-				assertEquals("foo", e.getRemovedItems().iterator().next());
+				assertEquals("foo", e.getItems().iterator().next());
 				assertFalse(CollectionTools.contains(ListCollectionValueModelAdapterTests.this.adapter.iterator(), "joo"));
 				assertEquals(2, ListCollectionValueModelAdapterTests.this.adapter.size());
 			}
 			@Override
 			public void itemsAdded(CollectionAddEvent e) {
-				assertEquals("joo", e.getAddedItems().iterator().next());
+				assertEquals("joo", e.getItems().iterator().next());
 				assertEquals(3, ListCollectionValueModelAdapterTests.this.adapter.size());
 			}
 		});
@@ -266,7 +267,7 @@ public class ListCollectionValueModelAdapterTests extends TestCase {
 		public void itemsRemoved(CollectionRemoveEvent e) {
 			fail("unexpected event");
 		}
-		public void collectionCleared(CollectionChangeEvent e) {
+		public void collectionCleared(CollectionClearEvent e) {
 			fail("unexpected event");
 		}
 		public void collectionChanged(CollectionChangeEvent e) {

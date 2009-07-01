@@ -9,7 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.model.listener;
 
+import org.eclipse.jpt.utility.model.event.TreeAddEvent;
 import org.eclipse.jpt.utility.model.event.TreeChangeEvent;
+import org.eclipse.jpt.utility.model.event.TreeClearEvent;
+import org.eclipse.jpt.utility.model.event.TreeRemoveEvent;
 
 /**
  * A "tree change" event gets fired whenever a model changes a "bound"
@@ -27,30 +30,26 @@ public interface TreeChangeListener extends ChangeListener {
 	/**
 	 * This method gets called when a node is added to a bound tree.
 	 * 
-	 * @param event A TreeChangeEvent describing the event source,
+	 * @param event A TreeAddEvent describing the event source,
 	 * the tree that changed, and the path to the node that was added.
-	 * 
-	 * @see TreeChangeEvent#getPath()
 	 */
-	void nodeAdded(TreeChangeEvent event);
+	void nodeAdded(TreeAddEvent event);
 
 	/**
 	 * This method gets called when a node is removed from a bound tree.
 	 * 
-	 * @param event A TreeChangeEvent describing the event source,
+	 * @param event A TreeRemoveEvent describing the event source,
 	 * the tree that changed, and the path to the node that was removed.
-	 * 
-	 * @see TreeChangeEvent#getPath()
 	 */
-	void nodeRemoved(TreeChangeEvent event);
+	void nodeRemoved(TreeRemoveEvent event);
 
 	/**
 	 * This method gets called when a bound tree is cleared.
 	 * 
-	 * @param event A TreeChangeEvent describing the event source,
+	 * @param event A TreeClearEvent describing the event source,
 	 * the tree that changed, and an empty path.
 	 */
-	void treeCleared(TreeChangeEvent event);
+	void treeCleared(TreeClearEvent event);
 
 	/**
 	 * This method gets called when a portion of a bound tree is changed in
@@ -58,7 +57,7 @@ public interface TreeChangeListener extends ChangeListener {
 	 * interface.
 	 * 
 	 * @param event A TreeChangeEvent describing the event source,
-	 * the tree that changed, and the path to the branch of the
+	 * the tree that changed, and the current state of the
 	 * tree that changed.
 	 */
 	void treeChanged(TreeChangeEvent event);
@@ -70,8 +69,6 @@ public interface TreeChangeListener extends ChangeListener {
 	 * 
 	 * @param event A TreeChangeEvent describing the event source,
 	 * the tree that changed, and the path to the node that changed.
-	 * 
-	 * @see TreeChangeEvent#getPath()
 	 */
 //	void nodeChanged(TreeChangeEvent event);
 

@@ -19,6 +19,7 @@ import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.utility.internal.iterators.ReadOnlyIterator;
 import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.utility.model.event.CollectionClearEvent;
 import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
@@ -123,7 +124,7 @@ public class FilteringCollectionValueModel<E>
 	@Override
 	protected void itemsAdded(CollectionAddEvent event) {
 		// filter the values before propagating the change event
-		this.addItemsToCollection(this.filter(this.getAddedItems(event)), this.filteredItems, VALUES);
+		this.addItemsToCollection(this.filter(this.getItems(event)), this.filteredItems, VALUES);
 	}
 
 	@Override
@@ -131,11 +132,11 @@ public class FilteringCollectionValueModel<E>
 		// do *not* filter the values, because they may no longer be
 		// "accepted" and that might be why they were removed in the first place;
 		// anyway, any extraneous items are harmless
-		this.removeItemsFromCollection(event.getRemovedItems(), this.filteredItems, VALUES);
+		this.removeItemsFromCollection(event.getItems(), this.filteredItems, VALUES);
 	}
 
 	@Override
-	protected void collectionCleared(CollectionChangeEvent event) {
+	protected void collectionCleared(CollectionClearEvent event) {
 		this.clearCollection(this.filteredItems, VALUES);
 	}
 
@@ -168,7 +169,7 @@ public class FilteringCollectionValueModel<E>
 	protected void rebuildFilteredItems() {
 		this.filteredItems.clear();
 		CollectionTools.addAll(this.filteredItems, this.filter(this.collectionHolder));
-		this.fireCollectionChanged(VALUES);
+		this.fireCollectionChanged(VALUES, this.filteredItems);
 	}
 
 }

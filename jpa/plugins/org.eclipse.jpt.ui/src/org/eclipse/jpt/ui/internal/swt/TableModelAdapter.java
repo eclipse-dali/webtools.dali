@@ -26,8 +26,14 @@ import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.value.PropertyCollectionValueModelAdapter;
 import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.utility.model.event.CollectionClearEvent;
 import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
+import org.eclipse.jpt.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
+import org.eclipse.jpt.utility.model.event.ListClearEvent;
+import org.eclipse.jpt.utility.model.event.ListMoveEvent;
+import org.eclipse.jpt.utility.model.event.ListRemoveEvent;
+import org.eclipse.jpt.utility.model.event.ListReplaceEvent;
 import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;
@@ -198,19 +204,19 @@ public class TableModelAdapter<E> {
 
 	protected ListChangeListener buildListChangeListener_() {
 		return new ListChangeListener() {
-			public void itemsAdded(ListChangeEvent event) {
+			public void itemsAdded(ListAddEvent event) {
 				TableModelAdapter.this.listItemsAdded(event);
 			}
-			public void itemsRemoved(ListChangeEvent event) {
+			public void itemsRemoved(ListRemoveEvent event) {
 				TableModelAdapter.this.listItemsRemoved(event);
 			}
-			public void itemsMoved(ListChangeEvent event) {
+			public void itemsMoved(ListMoveEvent event) {
 				TableModelAdapter.this.listItemsMoved(event);
 			}
-			public void itemsReplaced(ListChangeEvent event) {
+			public void itemsReplaced(ListReplaceEvent event) {
 				TableModelAdapter.this.listItemsReplaced(event);
 			}
-			public void listCleared(ListChangeEvent event) {
+			public void listCleared(ListClearEvent event) {
 				TableModelAdapter.this.listCleared(event);
 			}
 			public void listChanged(ListChangeEvent event) {
@@ -235,7 +241,7 @@ public class TableModelAdapter<E> {
 			public void itemsRemoved(CollectionRemoveEvent event) {
 				TableModelAdapter.this.selectedItemsRemoved(event);
 			}
-			public void collectionCleared(CollectionChangeEvent event) {
+			public void collectionCleared(CollectionClearEvent event) {
 				TableModelAdapter.this.selectedItemsCleared(event);
 			}
 			public void collectionChanged(CollectionChangeEvent event) {
@@ -348,7 +354,7 @@ public class TableModelAdapter<E> {
 	/**
 	 * The model has changed - synchronize the table.
 	 */
-	protected void listItemsAdded(ListChangeEvent event) {
+	protected void listItemsAdded(ListAddEvent event) {
 
 		if (this.table.isDisposed()) {
 			return;
@@ -369,7 +375,7 @@ public class TableModelAdapter<E> {
 	/**
 	 * The model has changed - synchronize the table.
 	 */
-	protected void listItemsRemoved(ListChangeEvent event) {
+	protected void listItemsRemoved(ListRemoveEvent event) {
 
 		if (this.table.isDisposed()) {
 			return;
@@ -385,13 +391,13 @@ public class TableModelAdapter<E> {
 	/**
 	 * The model has changed - synchronize the table.
 	 */
-	protected void listItemsMoved(ListChangeEvent event) {
+	protected void listItemsMoved(ListMoveEvent event) {
 
 		if (this.table.isDisposed()) {
 			return;
 		}
 
-		int length        = event.getMoveLength();
+		int length        = event.getLength();
 		int sourceIndex   = event.getSourceIndex();
 		int targetIndex   = event.getTargetIndex();
 		int lowStartIndex = Math.min(targetIndex, sourceIndex);
@@ -446,14 +452,14 @@ public class TableModelAdapter<E> {
 	/**
 	 * The model has changed - synchronize the table.
 	 */
-	protected void listItemsReplaced(ListChangeEvent event) {
+	protected void listItemsReplaced(ListReplaceEvent event) {
 		if (this.table.isDisposed()) {
 			return;
 		}
 
 		int rowIndex = event.getIndex();
 
-		for (E item : this.getItems(event)) {
+		for (E item : this.getNewItems(event)) {
 			TableItem tableItem = this.table.getItem(rowIndex);
 			tableItem.setData(item);
 
@@ -473,7 +479,7 @@ public class TableModelAdapter<E> {
 	/**
 	 * The model has changed - synchronize the table.
 	 */
-	protected void listCleared(@SuppressWarnings("unused") ListChangeEvent event) {
+	protected void listCleared(@SuppressWarnings("unused") ListClearEvent event) {
 		if (this.table.isDisposed()) {
 			return;
 		}
@@ -489,8 +495,14 @@ public class TableModelAdapter<E> {
 
 	// minimized scope of suppressed warnings
 	@SuppressWarnings("unchecked")
-	protected Iterable<E> getItems(ListChangeEvent event) {
+	protected Iterable<E> getItems(ListAddEvent event) {
 		return (Iterable<E>) event.getItems();
+	}
+
+	// minimized scope of suppressed warnings
+	@SuppressWarnings("unchecked")
+	protected Iterable<E> getNewItems(ListReplaceEvent event) {
+		return (Iterable<E>) event.getNewItems();
 	}
 
 
@@ -523,14 +535,14 @@ public class TableModelAdapter<E> {
 		if (this.table.isDisposed()) {
 			return;
 		}
-		this.table.select(this.getIndices(event.getAddedItemsSize(), this.getAddedItems(event)));
+		this.table.select(this.getIndices(event.getItemsSize(), this.getItems(event)));
 	}
 
 	protected void selectedItemsRemoved(CollectionRemoveEvent event) {
 		if (this.table.isDisposed()) {
 			return;
 		}
-		this.table.deselect(this.getIndices(event.getRemovedItemsSize(), this.getRemovedItems(event)));
+		this.table.deselect(this.getIndices(event.getItemsSize(), this.getItems(event)));
 	}
 
 	protected int[] getIndices(int itemsSize, Iterable<E> items) {
@@ -542,7 +554,7 @@ public class TableModelAdapter<E> {
 		return indices;
 	}
 
-	protected void selectedItemsCleared(@SuppressWarnings("unused") CollectionChangeEvent event) {
+	protected void selectedItemsCleared(@SuppressWarnings("unused") CollectionClearEvent event) {
 		if (this.table.isDisposed()) {
 			return;
 		}
@@ -555,14 +567,14 @@ public class TableModelAdapter<E> {
 
 	// minimized scope of suppressed warnings
 	@SuppressWarnings("unchecked")
-	protected Iterable<E> getAddedItems(CollectionAddEvent event) {
-		return (Iterable<E>) event.getAddedItems();
+	protected Iterable<E> getItems(CollectionAddEvent event) {
+		return (Iterable<E>) event.getItems();
 	}
 
 	// minimized scope of suppressed warnings
 	@SuppressWarnings("unchecked")
-	protected Iterable<E> getRemovedItems(CollectionRemoveEvent event) {
-		return (Iterable<E>) event.getRemovedItems();
+	protected Iterable<E> getItems(CollectionRemoveEvent event) {
+		return (Iterable<E>) event.getItems();
 	}
 
 

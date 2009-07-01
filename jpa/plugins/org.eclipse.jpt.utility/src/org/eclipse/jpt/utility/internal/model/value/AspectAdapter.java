@@ -116,7 +116,7 @@ public abstract class AspectAdapter<S>
 		this.subject = this.subjectHolder.getValue();
 		if (hasListeners) {
 			this.engageSubject();
-			this.fireAspectChange(oldValue, this.getValue());
+			this.fireAspectChanged(oldValue, this.getValue());
 		}
 	}
 
@@ -153,7 +153,7 @@ public abstract class AspectAdapter<S>
 	/**
 	 * The aspect has changed, notify listeners appropriately.
 	 */
-	protected abstract void fireAspectChange(Object oldValue, Object newValue);
+	protected abstract void fireAspectChanged(Object oldValue, Object newValue);
 
 	protected void engageSubject() {
 		// check for nothing to listen to

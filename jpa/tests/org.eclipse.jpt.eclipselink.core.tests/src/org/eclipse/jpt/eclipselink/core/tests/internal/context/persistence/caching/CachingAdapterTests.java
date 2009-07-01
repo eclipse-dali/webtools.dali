@@ -15,7 +15,12 @@ import org.eclipse.jpt.eclipselink.core.internal.context.persistence.caching.Cac
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.caching.Entity;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.caching.FlushClearCache;
 import org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.PersistenceUnitTestCase;
+import org.eclipse.jpt.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
+import org.eclipse.jpt.utility.model.event.ListClearEvent;
+import org.eclipse.jpt.utility.model.event.ListMoveEvent;
+import org.eclipse.jpt.utility.model.event.ListRemoveEvent;
+import org.eclipse.jpt.utility.model.event.ListReplaceEvent;
 import org.eclipse.jpt.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 
@@ -79,7 +84,7 @@ public class CachingAdapterTests extends PersistenceUnitTestCase
 		this.caching.addPropertyChangeListener(Caching.FLUSH_CLEAR_CACHE_PROPERTY, propertyChangeListener);
 		
 		ListChangeListener entitiesChangeListener = this.buildEntitiesChangeListener();
-		this.caching.addListChangeListener(Caching.ENTITIES_LIST_PROPERTY, entitiesChangeListener);
+		this.caching.addListChangeListener(Caching.ENTITIES_LIST, entitiesChangeListener);
 		this.clearEvent();
 	}
 
@@ -109,23 +114,23 @@ public class CachingAdapterTests extends PersistenceUnitTestCase
 	// ********** Listeners **********
 	private ListChangeListener buildEntitiesChangeListener() {
 		return new ListChangeListener() {
-			public void itemsAdded(ListChangeEvent e) {
+			public void itemsAdded(ListAddEvent e) {
 				CachingAdapterTests.this.throwUnsupportedOperationException(e);
 			}
 
-			public void itemsRemoved(ListChangeEvent e) {
+			public void itemsRemoved(ListRemoveEvent e) {
 				CachingAdapterTests.this.throwUnsupportedOperationException(e);
 			}
 
-			public void itemsReplaced(ListChangeEvent e) {
+			public void itemsReplaced(ListReplaceEvent e) {
 				CachingAdapterTests.this.throwUnsupportedOperationException(e);
 			}
 
-			public void itemsMoved(ListChangeEvent e) {
+			public void itemsMoved(ListMoveEvent e) {
 				CachingAdapterTests.this.throwUnsupportedOperationException(e);
 			}
 
-			public void listCleared(ListChangeEvent e) {
+			public void listCleared(ListClearEvent e) {
 				CachingAdapterTests.this.throwUnsupportedOperationException(e);
 			}
 
@@ -157,7 +162,7 @@ public class CachingAdapterTests extends PersistenceUnitTestCase
 		// verify event received
 		assertNotNull("No Event Fired.", this.entitiesEvent);
 		// verify event for the expected property
-		assertEquals("Wrong Event.", this.entitiesEvent.getAspectName(), Caching.ENTITIES_LIST_PROPERTY);
+		assertEquals("Wrong Event.", this.entitiesEvent.getListName(), Caching.ENTITIES_LIST);
 
 		// remove
 		this.clearEvent();
@@ -167,7 +172,7 @@ public class CachingAdapterTests extends PersistenceUnitTestCase
 		// verify event received
 		assertNotNull("No Event Fired.", this.entitiesEvent);
 		// verify event for the expected property
-		assertEquals("Wrong Event.", this.entitiesEvent.getAspectName(), Caching.ENTITIES_LIST_PROPERTY);
+		assertEquals("Wrong Event.", this.entitiesEvent.getListName(), Caching.ENTITIES_LIST);
 	}
 
 	// ********** CacheTypeDefault **********

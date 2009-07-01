@@ -25,8 +25,14 @@ import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.value.PropertyCollectionValueModelAdapter;
 import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.utility.model.event.CollectionClearEvent;
 import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
+import org.eclipse.jpt.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
+import org.eclipse.jpt.utility.model.event.ListClearEvent;
+import org.eclipse.jpt.utility.model.event.ListMoveEvent;
+import org.eclipse.jpt.utility.model.event.ListRemoveEvent;
+import org.eclipse.jpt.utility.model.event.ListReplaceEvent;
 import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;
@@ -215,19 +221,19 @@ public class ListBoxModelAdapter<E> {
 
 	protected ListChangeListener buildListChangeListener_() {
 		return new ListChangeListener() {
-			public void itemsAdded(ListChangeEvent event) {
+			public void itemsAdded(ListAddEvent event) {
 				ListBoxModelAdapter.this.listItemsAdded(event);
 			}
-			public void itemsRemoved(ListChangeEvent event) {
+			public void itemsRemoved(ListRemoveEvent event) {
 				ListBoxModelAdapter.this.listItemsRemoved(event);
 			}
-			public void itemsMoved(ListChangeEvent event) {
+			public void itemsMoved(ListMoveEvent event) {
 				ListBoxModelAdapter.this.listItemsMoved(event);
 			}
-			public void itemsReplaced(ListChangeEvent event) {
+			public void itemsReplaced(ListReplaceEvent event) {
 				ListBoxModelAdapter.this.listItemsReplaced(event);
 			}
-			public void listCleared(ListChangeEvent event) {
+			public void listCleared(ListClearEvent event) {
 				ListBoxModelAdapter.this.listCleared(event);
 			}
 			public void listChanged(ListChangeEvent event) {
@@ -252,7 +258,7 @@ public class ListBoxModelAdapter<E> {
 			public void itemsRemoved(CollectionRemoveEvent event) {
 				ListBoxModelAdapter.this.selectedItemsRemoved(event);
 			}
-			public void collectionCleared(CollectionChangeEvent event) {
+			public void collectionCleared(CollectionClearEvent event) {
 				ListBoxModelAdapter.this.selectedItemsCleared(event);
 			}
 			public void collectionChanged(CollectionChangeEvent event) {
@@ -347,7 +353,7 @@ public class ListBoxModelAdapter<E> {
 	/**
 	 * The model has changed - synchronize the list box.
 	 */
-	protected void listItemsAdded(ListChangeEvent event) {
+	protected void listItemsAdded(ListAddEvent event) {
 		if (this.listBox.isDisposed()) {
 			return;
 		}
@@ -360,7 +366,7 @@ public class ListBoxModelAdapter<E> {
 	/**
 	 * The model has changed - synchronize the list box.
 	 */
-	protected void listItemsRemoved(ListChangeEvent event) {
+	protected void listItemsRemoved(ListRemoveEvent event) {
 		if (this.listBox.isDisposed()) {
 			return;
 		}
@@ -370,13 +376,13 @@ public class ListBoxModelAdapter<E> {
 	/**
 	 * The model has changed - synchronize the list box.
 	 */
-	protected void listItemsMoved(ListChangeEvent event) {
+	protected void listItemsMoved(ListMoveEvent event) {
 		if (this.listBox.isDisposed()) {
 			return;
 		}
 		int target = event.getTargetIndex();
 		int source = event.getSourceIndex();
-		int len = event.getMoveLength();
+		int len = event.getLength();
 		int loStart = Math.min(target, source);
 		int hiStart = Math.max(target, source);
 		// make a copy of the affected items...
@@ -392,12 +398,12 @@ public class ListBoxModelAdapter<E> {
 	/**
 	 * The model has changed - synchronize the list box.
 	 */
-	protected void listItemsReplaced(ListChangeEvent event) {
+	protected void listItemsReplaced(ListReplaceEvent event) {
 		if (this.listBox.isDisposed()) {
 			return;
 		}
 		int i = event.getIndex();
-		for (E item : this.getItems(event)) {
+		for (E item : this.getNewItems(event)) {
 			this.listBox.setItem(i++, this.convert(item));
 		}
 	}
@@ -405,7 +411,7 @@ public class ListBoxModelAdapter<E> {
 	/**
 	 * The model has changed - synchronize the list box.
 	 */
-	protected void listCleared(@SuppressWarnings("unused") ListChangeEvent event) {
+	protected void listCleared(@SuppressWarnings("unused") ListClearEvent event) {
 		if (this.listBox.isDisposed()) {
 			return;
 		}
@@ -421,8 +427,14 @@ public class ListBoxModelAdapter<E> {
 
 	// minimized scope of suppressed warnings
 	@SuppressWarnings("unchecked")
-	protected Iterable<E> getItems(ListChangeEvent event) {
+	protected Iterable<E> getItems(ListAddEvent event) {
 		return (Iterable<E>) event.getItems();
+	}
+
+	// minimized scope of suppressed warnings
+	@SuppressWarnings("unchecked")
+	protected Iterable<E> getNewItems(ListReplaceEvent event) {
+		return (Iterable<E>) event.getNewItems();
 	}
 
 
@@ -455,9 +467,9 @@ public class ListBoxModelAdapter<E> {
 		if (this.listBox.isDisposed()) {
 			return;
 		}
-		int[] indices = new int[event.getAddedItemsSize()];
+		int[] indices = new int[event.getItemsSize()];
 		int i = 0;
-		for (E item : this.getAddedItems(event)) {
+		for (E item : this.getItems(event)) {
 			indices[i++] = this.indexOf(item);
 		}
 		this.listBox.select(indices);
@@ -467,15 +479,15 @@ public class ListBoxModelAdapter<E> {
 		if (this.listBox.isDisposed()) {
 			return;
 		}
-		int[] indices = new int[event.getRemovedItemsSize()];
+		int[] indices = new int[event.getItemsSize()];
 		int i = 0;
-		for (E item : this.getRemovedItems(event)) {
+		for (E item : this.getItems(event)) {
 			indices[i++] = this.indexOf(item);
 		}
 		this.listBox.deselect(indices);
 	}
 
-	protected void selectedItemsCleared(@SuppressWarnings("unused") CollectionChangeEvent event) {
+	protected void selectedItemsCleared(@SuppressWarnings("unused") CollectionClearEvent event) {
 		if (this.listBox.isDisposed()) {
 			return;
 		}
@@ -488,14 +500,14 @@ public class ListBoxModelAdapter<E> {
 
 	// minimized scope of suppressed warnings
 	@SuppressWarnings("unchecked")
-	protected Iterable<E> getAddedItems(CollectionAddEvent event) {
-		return (Iterable<E>) event.getAddedItems();
+	protected Iterable<E> getItems(CollectionAddEvent event) {
+		return (Iterable<E>) event.getItems();
 	}
 
 	// minimized scope of suppressed warnings
 	@SuppressWarnings("unchecked")
-	protected Iterable<E> getRemovedItems(CollectionRemoveEvent event) {
-		return (Iterable<E>) event.getRemovedItems();
+	protected Iterable<E> getItems(CollectionRemoveEvent event) {
+		return (Iterable<E>) event.getItems();
 	}
 
 

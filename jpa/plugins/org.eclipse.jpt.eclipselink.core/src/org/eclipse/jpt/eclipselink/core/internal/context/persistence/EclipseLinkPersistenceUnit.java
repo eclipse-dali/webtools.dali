@@ -340,7 +340,7 @@ public class EclipseLinkPersistenceUnit
 	// This is called after the persistence unit has been updated to ensure
 	// we catch all added converters
 	protected void convertersUpdated() {
-		fireListChanged(CONVERTERS_LIST);
+		fireListChanged(CONVERTERS_LIST, this.converters);
 	}
 
 }

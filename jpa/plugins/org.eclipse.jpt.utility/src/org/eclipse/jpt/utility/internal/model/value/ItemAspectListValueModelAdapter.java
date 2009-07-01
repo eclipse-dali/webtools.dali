@@ -15,10 +15,16 @@ import java.util.EventObject;
 import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.ListIterator;
+
 import org.eclipse.jpt.utility.internal.Counter;
 import org.eclipse.jpt.utility.internal.iterators.ReadOnlyListIterator;
 import org.eclipse.jpt.utility.model.Model;
+import org.eclipse.jpt.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
+import org.eclipse.jpt.utility.model.event.ListClearEvent;
+import org.eclipse.jpt.utility.model.event.ListMoveEvent;
+import org.eclipse.jpt.utility.model.event.ListRemoveEvent;
+import org.eclipse.jpt.utility.model.event.ListReplaceEvent;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 
@@ -176,10 +182,10 @@ public abstract class ItemAspectListValueModelAdapter<E>
 	 * Forward the event and begin listening to the added items.
 	 */
 	@Override
-	protected void itemsAdded(ListChangeEvent event) {
+	protected void itemsAdded(ListAddEvent event) {
 		// re-fire event with the wrapper as the source
-		this.fireItemsAdded(event.cloneWithSource(this, LIST_VALUES));
-		this.engageItems(this.getItems(event));
+		this.fireItemsAdded(event.clone(this, LIST_VALUES));
+		this.engageItems(this.getAddedItems(event));
 	}
 
 	/**
@@ -187,10 +193,10 @@ public abstract class ItemAspectListValueModelAdapter<E>
 	 * Stop listening to the removed items and forward the event.
 	 */
 	@Override
-	protected void itemsRemoved(ListChangeEvent event) {
-		this.disengageItems(this.getItems(event));
+	protected void itemsRemoved(ListRemoveEvent event) {
+		this.disengageItems(this.getRemovedItems(event));
 		// re-fire event with the wrapper as the source
-		this.fireItemsRemoved(event.cloneWithSource(this, LIST_VALUES));
+		this.fireItemsRemoved(event.clone(this, LIST_VALUES));
 	}
 
 	/**
@@ -199,11 +205,11 @@ public abstract class ItemAspectListValueModelAdapter<E>
 	 * and begin listening to the added items.
 	 */
 	@Override
-	protected void itemsReplaced(ListChangeEvent event) {
-		this.disengageItems(this.getReplacedItems(event));
+	protected void itemsReplaced(ListReplaceEvent event) {
+		this.disengageItems(this.getOldItems(event));
 		// re-fire event with the wrapper as the source
-		this.fireItemsReplaced(event.cloneWithSource(this, LIST_VALUES));
-		this.engageItems(this.getItems(event));
+		this.fireItemsReplaced(event.clone(this, LIST_VALUES));
+		this.engageItems(this.getNewItems(event));
 	}
 
 	/**
@@ -211,9 +217,9 @@ public abstract class ItemAspectListValueModelAdapter<E>
 	 * No need to change any listeners; just forward the event.
 	 */
 	@Override
-	protected void itemsMoved(ListChangeEvent event) {
+	protected void itemsMoved(ListMoveEvent event) {
 		// re-fire event with the wrapper as the source
-		this.fireItemsMoved(event.cloneWithSource(this, LIST_VALUES));
+		this.fireItemsMoved(event.clone(this, LIST_VALUES));
 	}
 
 	/**
@@ -221,7 +227,7 @@ public abstract class ItemAspectListValueModelAdapter<E>
 	 * Stop listening to the removed items and forward the event.
 	 */
 	@Override
-	protected void listCleared(ListChangeEvent event) {
+	protected void listCleared(ListClearEvent event) {
 		// we should only need to disengage each item once...
 		// make a copy to prevent a ConcurrentModificationException
 		Collection<E> keys = new ArrayList<E>(this.counters.keySet());
@@ -243,7 +249,7 @@ public abstract class ItemAspectListValueModelAdapter<E>
 		this.disengageItems(keys);
 		this.counters.clear();
 		// re-fire event with the wrapper as the source
-		this.fireListChanged(LIST_VALUES);
+		this.fireListChanged(event.clone(this));
 		this.engageAllItems();
 	}
 

@@ -14,6 +14,7 @@ import java.util.Arrays;
 import org.eclipse.jpt.utility.model.Model;
 import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.utility.model.event.CollectionClearEvent;
 import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
 import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
@@ -59,7 +60,7 @@ public class ValueCollectionAdapter<T extends Model>
 			public void itemsRemoved(CollectionRemoveEvent event) {
 				ValueCollectionAdapter.this.valueAspectChanged();
 			}
-			public void collectionCleared(CollectionChangeEvent event) {
+			public void collectionCleared(CollectionClearEvent event) {
 				ValueCollectionAdapter.this.valueAspectChanged();
 			}
 			public void collectionChanged(CollectionChangeEvent event) {

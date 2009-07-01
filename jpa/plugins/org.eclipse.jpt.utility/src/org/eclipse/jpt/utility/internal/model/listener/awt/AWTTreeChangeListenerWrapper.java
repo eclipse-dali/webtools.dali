@@ -11,7 +11,10 @@ package org.eclipse.jpt.utility.internal.model.listener.awt;
 
 import java.awt.EventQueue;
 
+import org.eclipse.jpt.utility.model.event.TreeAddEvent;
 import org.eclipse.jpt.utility.model.event.TreeChangeEvent;
+import org.eclipse.jpt.utility.model.event.TreeClearEvent;
+import org.eclipse.jpt.utility.model.event.TreeRemoveEvent;
 import org.eclipse.jpt.utility.model.listener.TreeChangeListener;
 
 /**
@@ -33,15 +36,15 @@ public class AWTTreeChangeListenerWrapper
 		this.listener = listener;
 	}
 
-	public void nodeAdded(TreeChangeEvent event) {
+	public void nodeAdded(TreeAddEvent event) {
 		this.executeOnEventQueue(this.buildNodeAddedRunnable(event));
 	}
 
-	public void nodeRemoved(TreeChangeEvent event) {
+	public void nodeRemoved(TreeRemoveEvent event) {
 		this.executeOnEventQueue(this.buildNodeRemovedRunnable(event));
 	}
 
-	public void treeCleared(TreeChangeEvent event) {
+	public void treeCleared(TreeClearEvent event) {
 		this.executeOnEventQueue(this.buildTreeClearedRunnable(event));
 	}
 
@@ -49,7 +52,7 @@ public class AWTTreeChangeListenerWrapper
 		this.executeOnEventQueue(this.buildTreeChangedRunnable(event));
 	}
 
-	private Runnable buildNodeAddedRunnable(final TreeChangeEvent event) {
+	private Runnable buildNodeAddedRunnable(final TreeAddEvent event) {
 		return new Runnable() {
 			public void run() {
 				AWTTreeChangeListenerWrapper.this.nodeAdded_(event);
@@ -61,7 +64,7 @@ public class AWTTreeChangeListenerWrapper
 		};
 	}
 
-	private Runnable buildNodeRemovedRunnable(final TreeChangeEvent event) {
+	private Runnable buildNodeRemovedRunnable(final TreeRemoveEvent event) {
 		return new Runnable() {
 			public void run() {
 				AWTTreeChangeListenerWrapper.this.nodeRemoved_(event);
@@ -73,7 +76,7 @@ public class AWTTreeChangeListenerWrapper
 		};
 	}
 
-	private Runnable buildTreeClearedRunnable(final TreeChangeEvent event) {
+	private Runnable buildTreeClearedRunnable(final TreeClearEvent event) {
 		return new Runnable() {
 			public void run() {
 				AWTTreeChangeListenerWrapper.this.treeCleared_(event);
@@ -113,15 +116,15 @@ public class AWTTreeChangeListenerWrapper
 //		}
 	}
 
-	void nodeAdded_(TreeChangeEvent event) {
+	void nodeAdded_(TreeAddEvent event) {
 		this.listener.nodeAdded(event);
 	}
 
-	void nodeRemoved_(TreeChangeEvent event) {
+	void nodeRemoved_(TreeRemoveEvent event) {
 		this.listener.nodeRemoved(event);
 	}
 
-	void treeCleared_(TreeChangeEvent event) {
+	void treeCleared_(TreeClearEvent event) {
 		this.listener.treeCleared(event);
 	}
 

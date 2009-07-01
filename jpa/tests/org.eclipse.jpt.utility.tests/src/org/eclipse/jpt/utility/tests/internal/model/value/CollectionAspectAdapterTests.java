@@ -23,6 +23,8 @@ import org.eclipse.jpt.utility.internal.model.value.CollectionAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.utility.model.event.CollectionClearEvent;
+import org.eclipse.jpt.utility.model.event.CollectionEvent;
 import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
 import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;
@@ -35,7 +37,7 @@ public class CollectionAspectAdapterTests extends TestCase {
 	private TestSubject subject1;
 	private WritablePropertyValueModel<TestSubject> subjectHolder1;
 	private LocalCollectionAspectAdapter aa1;
-	private CollectionChangeEvent event1;
+	private CollectionEvent event1;
 	private CollectionChangeListener listener1;
 	private String event1Type;
 
@@ -108,7 +110,7 @@ public class CollectionAspectAdapterTests extends TestCase {
 			public void itemsRemoved(CollectionRemoveEvent e) {
 				CollectionAspectAdapterTests.this.value1Changed(e, REMOVE);
 			}
-			public void collectionCleared(CollectionChangeEvent e) {
+			public void collectionCleared(CollectionClearEvent e) {
 				CollectionAspectAdapterTests.this.value1Changed(e, CLEAR);
 			}
 			public void collectionChanged(CollectionChangeEvent e) {
@@ -117,7 +119,7 @@ public class CollectionAspectAdapterTests extends TestCase {
 		};
 	}
 
-	void value1Changed(CollectionChangeEvent e, String eventType) {
+	void value1Changed(CollectionEvent e, String eventType) {
 		this.event1 = e;
 		this.event1Type = eventType;
 	}
@@ -167,7 +169,7 @@ public class CollectionAspectAdapterTests extends TestCase {
 		assertEquals(this.event1Type, ADD);
 		assertEquals(this.aa1, this.event1.getSource());
 		assertEquals(CollectionValueModel.VALUES, this.event1.getCollectionName());
-		assertEquals("jam", ((CollectionAddEvent) this.event1).getAddedItems().iterator().next());
+		assertEquals("jam", ((CollectionAddEvent) this.event1).getItems().iterator().next());
 		Collection<String> namesPlus = this.subject1Names();
 		namesPlus.add("jam");
 		assertEquals(namesPlus, CollectionTools.bag(this.aa1.iterator()));
@@ -179,7 +181,7 @@ public class CollectionAspectAdapterTests extends TestCase {
 		assertEquals(this.event1Type, ADD);
 		assertEquals(this.aa1, this.event1.getSource());
 		assertEquals(CollectionValueModel.VALUES, this.event1.getCollectionName());
-		assertEquals("jaz", ((CollectionAddEvent) this.event1).getAddedItems().iterator().next());
+		assertEquals("jaz", ((CollectionAddEvent) this.event1).getItems().iterator().next());
 		namesPlus.add("jaz");
 		assertEquals(namesPlus, CollectionTools.bag(this.aa1.iterator()));
 	}
@@ -193,7 +195,7 @@ public class CollectionAspectAdapterTests extends TestCase {
 		assertEquals(this.event1Type, REMOVE);
 		assertEquals(this.aa1, this.event1.getSource());
 		assertEquals(CollectionValueModel.VALUES, this.event1.getCollectionName());
-		assertEquals("foo", ((CollectionRemoveEvent) this.event1).getRemovedItems().iterator().next());
+		assertEquals("foo", ((CollectionRemoveEvent) this.event1).getItems().iterator().next());
 		Collection<String> namesMinus = this.subject1Names();
 		namesMinus.remove("foo");
 		assertEquals(namesMinus, CollectionTools.bag(this.aa1.iterator()));
@@ -205,7 +207,7 @@ public class CollectionAspectAdapterTests extends TestCase {
 		assertEquals(this.event1Type, REMOVE);
 		assertEquals(this.aa1, this.event1.getSource());
 		assertEquals(CollectionValueModel.VALUES, this.event1.getCollectionName());
-		assertEquals("bar", ((CollectionRemoveEvent) this.event1).getRemovedItems().iterator().next());
+		assertEquals("bar", ((CollectionRemoveEvent) this.event1).getItems().iterator().next());
 		namesMinus.remove("bar");
 		assertEquals(namesMinus, CollectionTools.bag(this.aa1.iterator()));
 	}
@@ -282,7 +284,7 @@ public class CollectionAspectAdapterTests extends TestCase {
 		}
 		public void addTwoNames(String name1, String name2) {
 			if (this.names.add(name1) | this.names.add(name2)) {
-				this.fireCollectionChanged(NAMES_COLLECTION);
+				this.fireCollectionChanged(NAMES_COLLECTION, this.names);
 			}
 		}
 		public void removeName(String name) {

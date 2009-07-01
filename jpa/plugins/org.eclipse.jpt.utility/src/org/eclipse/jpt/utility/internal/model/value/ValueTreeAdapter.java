@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,8 +10,12 @@
 package org.eclipse.jpt.utility.internal.model.value;
 
 import java.util.Arrays;
+
 import org.eclipse.jpt.utility.model.Model;
+import org.eclipse.jpt.utility.model.event.TreeAddEvent;
 import org.eclipse.jpt.utility.model.event.TreeChangeEvent;
+import org.eclipse.jpt.utility.model.event.TreeClearEvent;
+import org.eclipse.jpt.utility.model.event.TreeRemoveEvent;
 import org.eclipse.jpt.utility.model.listener.TreeChangeListener;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 
@@ -45,13 +49,13 @@ public class ValueTreeAdapter<T extends Model>
 
 	protected TreeChangeListener buildValueTreeListener() {
 		return new TreeChangeListener() {
-			public void nodeAdded(TreeChangeEvent event) {
+			public void nodeAdded(TreeAddEvent event) {
 				ValueTreeAdapter.this.valueAspectChanged();
 			}
-			public void nodeRemoved(TreeChangeEvent event) {
+			public void nodeRemoved(TreeRemoveEvent event) {
 				ValueTreeAdapter.this.valueAspectChanged();
 			}
-			public void treeCleared(TreeChangeEvent event) {
+			public void treeCleared(TreeClearEvent event) {
 				ValueTreeAdapter.this.valueAspectChanged();
 			}
 			public void treeChanged(TreeChangeEvent event) {
@@ -59,7 +63,7 @@ public class ValueTreeAdapter<T extends Model>
 			}
 			@Override
 			public String toString() {
-				return "value tree listener: " + Arrays.asList(ValueTreeAdapter.this.treeNames);
+				return "value tree listener: " + Arrays.asList(ValueTreeAdapter.this.treeNames); //$NON-NLS-1$
 			}
 		};
 	}

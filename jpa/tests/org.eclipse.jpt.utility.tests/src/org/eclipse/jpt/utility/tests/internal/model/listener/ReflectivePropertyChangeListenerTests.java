@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,6 +18,7 @@ import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.model.listener.ReflectiveChangeListener;
 import org.eclipse.jpt.utility.model.listener.StateChangeListener;
 
+@SuppressWarnings("nls")
 public class ReflectivePropertyChangeListenerTests extends TestCase {
 	
 	public ReflectivePropertyChangeListenerTests(String name) {
@@ -136,7 +137,7 @@ public class ReflectivePropertyChangeListenerTests extends TestCase {
 	}
 
 
-	private class TestModel extends AbstractModel {
+	class TestModel extends AbstractModel {
 		private int value = 0;
 			public static final String VALUE_PROPERTY = "value";
 		TestModel(int value) {
@@ -153,7 +154,7 @@ public class ReflectivePropertyChangeListenerTests extends TestCase {
 		}
 	}
 
-	private class Target {
+	class Target {
 		TestModel testModel;
 		String propertyName;
 		Object oldValue;
@@ -186,7 +187,7 @@ public class ReflectivePropertyChangeListenerTests extends TestCase {
 			assertEquals(this.newValue, e.getNewValue());
 		}
 		void propertyChangedDoubleArgument(PropertyChangeEvent e, Object o) {
-			fail("bogus event: " + e);
+			fail("bogus event: " + e + " - object: " + o);
 		}
 	}
 

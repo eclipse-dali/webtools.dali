@@ -1,9 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- *
+ * 
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -357,8 +357,8 @@ public abstract class BaseJoinColumnStateObject extends AbstractNode
 	 * listeners the list of names and reference column names should be updated.
 	 */
 	protected void tableChanged() {
-		fireListChanged(NAMES_LIST);
-		fireListChanged(REFERENCE_COLUMN_NAMES_LIST);
+		fireListChanged(NAMES_LIST, CollectionTools.list(this.names()));
+		fireListChanged(REFERENCE_COLUMN_NAMES_LIST, CollectionTools.list(this.referenceColumnNames()));
 	}
 
 	/**

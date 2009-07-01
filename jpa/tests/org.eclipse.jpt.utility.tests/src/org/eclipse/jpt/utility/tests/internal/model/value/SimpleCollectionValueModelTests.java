@@ -21,6 +21,8 @@ import org.eclipse.jpt.utility.internal.HashBag;
 import org.eclipse.jpt.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.utility.model.event.CollectionClearEvent;
+import org.eclipse.jpt.utility.model.event.CollectionEvent;
 import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
 import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;
@@ -29,11 +31,11 @@ import org.eclipse.jpt.utility.tests.internal.TestTools;
 @SuppressWarnings("nls")
 public class SimpleCollectionValueModelTests extends TestCase {
 	private SimpleCollectionValueModel<String> bagHolder;
-	CollectionChangeEvent bagEvent;
+	CollectionEvent bagEvent;
 	String bagEventType;
 
 	private SimpleCollectionValueModel<String> setHolder;
-	CollectionChangeEvent setEvent;
+	CollectionEvent setEvent;
 	String setEventType;
 
 	private static final String ADD = "add";
@@ -287,7 +289,7 @@ public class SimpleCollectionValueModelTests extends TestCase {
 		this.bagEventType = null;
 		this.bagHolder.addAll(this.buildBag());
 		this.verifyBagEvent(ADD);
-		assertEquals(this.buildBag(), CollectionTools.bag(((CollectionAddEvent) this.bagEvent).getAddedItems()));
+		assertEquals(this.buildBag(), CollectionTools.bag(((CollectionAddEvent) this.bagEvent).getItems()));
 	}
 
 	private void verifySetChange() {
@@ -357,7 +359,7 @@ public class SimpleCollectionValueModelTests extends TestCase {
 				SimpleCollectionValueModelTests.this.bagEventType = REMOVE;
 				SimpleCollectionValueModelTests.this.bagEvent = e;
 			}
-			public void collectionCleared(CollectionChangeEvent e) {
+			public void collectionCleared(CollectionClearEvent e) {
 				SimpleCollectionValueModelTests.this.bagEventType = CLEAR;
 				SimpleCollectionValueModelTests.this.bagEvent = e;
 			}
@@ -378,7 +380,7 @@ public class SimpleCollectionValueModelTests extends TestCase {
 				SimpleCollectionValueModelTests.this.setEventType = REMOVE;
 				SimpleCollectionValueModelTests.this.setEvent = e;
 			}
-			public void collectionCleared(CollectionChangeEvent e) {
+			public void collectionCleared(CollectionClearEvent e) {
 				SimpleCollectionValueModelTests.this.setEventType = CLEAR;
 				SimpleCollectionValueModelTests.this.setEvent = e;
 			}
@@ -402,9 +404,9 @@ public class SimpleCollectionValueModelTests extends TestCase {
 
 	private Iterable<?> getBagEventItems() {
 		if (this.bagEvent instanceof CollectionAddEvent) {
-			return ((CollectionAddEvent) this.bagEvent).getAddedItems();
+			return ((CollectionAddEvent) this.bagEvent).getItems();
 		} else if (this.bagEvent instanceof CollectionRemoveEvent) {
-			return ((CollectionRemoveEvent) this.bagEvent).getRemovedItems();
+			return ((CollectionRemoveEvent) this.bagEvent).getItems();
 		}
 		throw new IllegalStateException();
 	}
@@ -422,9 +424,9 @@ public class SimpleCollectionValueModelTests extends TestCase {
 
 	private Iterable<?> getSetEventItems() {
 		if (this.setEvent instanceof CollectionAddEvent) {
-			return ((CollectionAddEvent) this.setEvent).getAddedItems();
+			return ((CollectionAddEvent) this.setEvent).getItems();
 		} else if (this.setEvent instanceof CollectionRemoveEvent) {
-			return ((CollectionRemoveEvent) this.setEvent).getRemovedItems();
+			return ((CollectionRemoveEvent) this.setEvent).getItems();
 		}
 		throw new IllegalStateException();
 	}

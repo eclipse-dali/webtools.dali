@@ -22,6 +22,8 @@ import org.eclipse.jpt.utility.internal.model.value.prefs.PreferencePropertyValu
 import org.eclipse.jpt.utility.internal.model.value.prefs.PreferencesCollectionValueModel;
 import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.utility.model.event.CollectionClearEvent;
+import org.eclipse.jpt.utility.model.event.CollectionEvent;
 import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
@@ -35,7 +37,7 @@ public class PreferencesCollectionValueModelTests extends PreferencesTestCase {
 	private Map<String, String> expectedValues;
 	private WritablePropertyValueModel<Preferences> nodeHolder;
 	PreferencesCollectionValueModel<String> preferencesAdapter;
-	CollectionChangeEvent event;
+	CollectionEvent event;
 	CollectionChangeListener listener;
 	private PropertyChangeListener itemListener;
 	boolean listenerRemoved = false;
@@ -71,7 +73,7 @@ public class PreferencesCollectionValueModelTests extends PreferencesTestCase {
 			public void collectionChanged(CollectionChangeEvent e) {
 				this.logEvent(e);
 			}
-			public void collectionCleared(CollectionChangeEvent e) {
+			public void collectionCleared(CollectionClearEvent e) {
 				this.logEvent(e);
 			}
 			public void itemsAdded(CollectionAddEvent e) {
@@ -80,7 +82,7 @@ public class PreferencesCollectionValueModelTests extends PreferencesTestCase {
 			public void itemsRemoved(CollectionRemoveEvent e) {
 				this.logEvent(e);
 			}
-			private void logEvent(CollectionChangeEvent e) {
+			private void logEvent(CollectionEvent e) {
 				if (PreferencesCollectionValueModelTests.this.event != null) {
 					throw new IllegalStateException("unexpected this.event: " + e);
 				}
@@ -159,9 +161,9 @@ public class PreferencesCollectionValueModelTests extends PreferencesTestCase {
 		assertNotNull(this.event);
 		assertEquals(this.preferencesAdapter, this.event.getSource());
 		assertEquals(CollectionValueModel.VALUES, this.event.getCollectionName());
-		assertEquals(1, ((CollectionRemoveEvent) this.event).getRemovedItemsSize());
+		assertEquals(1, ((CollectionRemoveEvent) this.event).getItemsSize());
 		@SuppressWarnings("unchecked")
-		String key = ((PreferencePropertyValueModel<String>) ((CollectionRemoveEvent) this.event).getRemovedItems().iterator().next()).getKey();
+		String key = ((PreferencePropertyValueModel<String>) ((CollectionRemoveEvent) this.event).getItems().iterator().next()).getKey();
 		assertEquals(KEY_NAME_2, key);
 
 		this.expectedValues.remove(KEY_NAME_2);
@@ -240,9 +242,9 @@ public class PreferencesCollectionValueModelTests extends PreferencesTestCase {
 
 	private void verifyEvent(Map<String, String> items) {
 		this.verifyEvent();
-		assertEquals(items.size(), ((CollectionAddEvent) this.event).getAddedItemsSize());
+		assertEquals(items.size(), ((CollectionAddEvent) this.event).getItemsSize());
 		@SuppressWarnings("unchecked")
-		Iterable<PreferencePropertyValueModel<String>> eventItems = (Iterable<PreferencePropertyValueModel<String>>) ((CollectionAddEvent) this.event).getAddedItems();
+		Iterable<PreferencePropertyValueModel<String>> eventItems = (Iterable<PreferencePropertyValueModel<String>>) ((CollectionAddEvent) this.event).getItems();
 		this.verifyItems(items, eventItems);
 	}
 

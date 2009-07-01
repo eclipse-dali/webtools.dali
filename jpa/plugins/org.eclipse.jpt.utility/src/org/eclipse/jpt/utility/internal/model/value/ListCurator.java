@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -71,7 +71,7 @@ public abstract class ListCurator<S extends Model, E>
 			}
 			@Override
 			public String toString() {
-				return "state change listener";
+				return "state change listener"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -79,7 +79,7 @@ public abstract class ListCurator<S extends Model, E>
 
 	// ********** ListValueModel implementation **********
 
-	public Iterator<E> iterator() {
+	public ListIterator<E> iterator() {
 		return this.listIterator();
 	}
 
@@ -112,7 +112,7 @@ public abstract class ListCurator<S extends Model, E>
 	// ********** AspectAdapter implementation **********
 
 	@Override
-	protected Object getValue() {
+	protected ListIterator<E> getValue() {
 		return this.iterator();
 	}
 
@@ -135,8 +135,8 @@ public abstract class ListCurator<S extends Model, E>
 	 * The aspect has changed, notify listeners appropriately.
 	 */
 	@Override
-	protected void fireAspectChange(Object oldValue, Object newValue) {
-		this.fireListChanged(LIST_VALUES);
+	protected void fireAspectChanged(Object oldValue, Object newValue) {
+		this.fireListChanged(LIST_VALUES, this.record);
 	}
 
 	/**
@@ -213,7 +213,7 @@ public abstract class ListCurator<S extends Model, E>
 		this.addItemToList(index, item, this.record, LIST_VALUES);
 	}
 
-	private void removeItemFromInventory(int index, E item) {
+	private void removeItemFromInventory(int index, @SuppressWarnings("unused") E item) {
 		this.removeItemFromList(index, this.record, LIST_VALUES);
 	}
 

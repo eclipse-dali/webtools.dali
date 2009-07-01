@@ -13,11 +13,18 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.Transformer;
 import org.eclipse.jpt.utility.internal.iterators.ReadOnlyCompositeListIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationListIterator;
+import org.eclipse.jpt.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
+import org.eclipse.jpt.utility.model.event.ListClearEvent;
+import org.eclipse.jpt.utility.model.event.ListEvent;
+import org.eclipse.jpt.utility.model.event.ListMoveEvent;
+import org.eclipse.jpt.utility.model.event.ListRemoveEvent;
+import org.eclipse.jpt.utility.model.event.ListReplaceEvent;
 import org.eclipse.jpt.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 
@@ -124,19 +131,19 @@ public class CompositeListValueModel<E1, E2>
 
 	protected ListChangeListener buildComponentLVMListener() {
 		return new ListChangeListener() {
-			public void itemsAdded(ListChangeEvent event) {
+			public void itemsAdded(ListAddEvent event) {
 				CompositeListValueModel.this.componentItemsAdded(event);
 			}		
-			public void itemsRemoved(ListChangeEvent event) {
+			public void itemsRemoved(ListRemoveEvent event) {
 				CompositeListValueModel.this.componentItemsRemoved(event);
 			}
-			public void itemsReplaced(ListChangeEvent event) {
+			public void itemsReplaced(ListReplaceEvent event) {
 				CompositeListValueModel.this.componentItemsReplaced(event);
 			}
-			public void itemsMoved(ListChangeEvent event) {
+			public void itemsMoved(ListMoveEvent event) {
 				CompositeListValueModel.this.componentItemsMoved(event);
 			}
-			public void listCleared(ListChangeEvent event) {
+			public void listCleared(ListClearEvent event) {
 				CompositeListValueModel.this.componentListCleared(event);
 			}
 			public void listChanged(ListChangeEvent event) {
@@ -218,8 +225,8 @@ public class CompositeListValueModel<E1, E2>
 	 * Some component sources were added; update our cache.
 	 */
 	@Override
-	protected void itemsAdded(ListChangeEvent event) {
-		this.addComponentSources(event.getIndex(), this.getItems(event), event.getItemsSize(), true);  // true = fire event
+	protected void itemsAdded(ListAddEvent event) {
+		this.addComponentSources(event.getIndex(), this.getAddedItems(event), event.getItemsSize(), true);  // true = fire event
 	}
 
 	/**
@@ -271,7 +278,7 @@ public class CompositeListValueModel<E1, E2>
 	 * Some component sources were removed; update our cache.
 	 */
 	@Override
-	protected void itemsRemoved(ListChangeEvent event) {
+	protected void itemsRemoved(ListRemoveEvent event) {
 		this.removeComponentSources(event.getIndex(), event.getItemsSize(), true);  // true = fire event
 	}
 
@@ -318,8 +325,8 @@ public class CompositeListValueModel<E1, E2>
 	 * Some component sources were replaced; update our cache.
 	 */
 	@Override
-	protected void itemsReplaced(ListChangeEvent event) {
-		this.replaceComponentSources(event.getIndex(), this.getItems(event), event.getItemsSize(), true);  // true = fire event
+	protected void itemsReplaced(ListReplaceEvent event) {
+		this.replaceComponentSources(event.getIndex(), this.getNewItems(event), event.getItemsSize(), true);  // true = fire event
 	}
 
 	/**
@@ -336,8 +343,8 @@ public class CompositeListValueModel<E1, E2>
 	 * Some component sources were moved; update our cache.
 	 */
 	@Override
-	protected void itemsMoved(ListChangeEvent event) {
-		this.moveComponentSources(event.getTargetIndex(), event.getSourceIndex(), event.getMoveLength(), true);  // true = fire event
+	protected void itemsMoved(ListMoveEvent event) {
+		this.moveComponentSources(event.getTargetIndex(), event.getSourceIndex(), event.getLength(), true);  // true = fire event
 	}
 
 	protected void moveComponentSources(int targetSourcesIndex, int sourceSourcesIndex, int movedSourcesLength, boolean fireEvent) {
@@ -379,7 +386,7 @@ public class CompositeListValueModel<E1, E2>
 	 * The component sources were cleared; clear our cache.
 	 */
 	@Override
-	protected void listCleared(ListChangeEvent event) {
+	protected void listCleared(ListClearEvent event) {
 		this.removeComponentSources(0, this.infoList.size());
 		this.fireListCleared(LIST_VALUES);
 	}
@@ -391,7 +398,7 @@ public class CompositeListValueModel<E1, E2>
 	protected void listChanged(ListChangeEvent event) {
 		this.removeComponentSources(0, this.infoList.size());
 		this.addComponentSources(0, this.listHolder, this.listHolder.size());
-		this.fireListChanged(LIST_VALUES);
+		this.fireListChanged(LIST_VALUES, CollectionTools.list(this.listIterator()));
 	}
 
 	@Override
@@ -427,7 +434,7 @@ public class CompositeListValueModel<E1, E2>
 	/**
 	 * Return the index of the specified event's component LVM.
 	 */
-	protected int indexFor(ListChangeEvent event) {
+	protected int indexFor(ListEvent event) {
 		return this.indexOf(this.componentLVM(event));
 	}
 
@@ -435,7 +442,7 @@ public class CompositeListValueModel<E1, E2>
 	 * Items were added to one of the component lists;
 	 * synchronize our cache.
 	 */
-	protected void componentItemsAdded(ListChangeEvent event) {
+	protected void componentItemsAdded(ListAddEvent event) {
 		// update the affected 'begin' indices
 		int componentLVMIndex = this.indexFor(event);
 		int newItemsSize = event.getItemsSize();
@@ -449,14 +456,14 @@ public class CompositeListValueModel<E1, E2>
 		CollectionTools.addAll(info.items, event.getIndex(), this.getComponentItems(event), event.getItemsSize());
 
 		// translate the event
-		this.fireItemsAdded(event.cloneWithSource(this, LIST_VALUES, info.begin));
+		this.fireItemsAdded(event.clone(this, LIST_VALUES, info.begin));
 	}
 
 	/**
 	 * Items were removed from one of the component lists;
 	 * synchronize our cache.
 	 */
-	protected void componentItemsRemoved(ListChangeEvent event) {
+	protected void componentItemsRemoved(ListRemoveEvent event) {
 		// update the affected 'begin' indices
 		int componentLVMIndex = this.indexFor(event);
 		int removedItemsSize = event.getItemsSize();
@@ -471,14 +478,14 @@ public class CompositeListValueModel<E1, E2>
 		info.items.subList(itemIndex, itemIndex + event.getItemsSize()).clear();
 
 		// translate the event
-		this.fireItemsRemoved(event.cloneWithSource(this, LIST_VALUES, info.begin));
+		this.fireItemsRemoved(event.clone(this, LIST_VALUES, info.begin));
 	}
 
 	/**
 	 * Items were replaced in one of the component lists;
 	 * synchronize our cache.
 	 */
-	protected void componentItemsReplaced(ListChangeEvent event) {
+	protected void componentItemsReplaced(ListReplaceEvent event) {
 		// no changes to the 'begin' indices or size
 
 		// synchronize the cached list
@@ -490,30 +497,30 @@ public class CompositeListValueModel<E1, E2>
 		}
 
 		// translate the event
-		this.fireItemsReplaced(event.cloneWithSource(this, LIST_VALUES, info.begin));
+		this.fireItemsReplaced(event.clone(this, LIST_VALUES, info.begin));
 	}
 
 	/**
 	 * Items were moved in one of the component lists;
 	 * synchronize our cache.
 	 */
-	protected void componentItemsMoved(ListChangeEvent event) {
+	protected void componentItemsMoved(ListMoveEvent event) {
 		// no changes to the 'begin' indices or size
 
 		// synchronize the cached list
 		int componentLVMIndex = this.indexFor(event);
 		Info info = this.infoList.get(componentLVMIndex);
-		CollectionTools.move(info.items, event.getTargetIndex(), event.getSourceIndex(), event.getMoveLength());
+		CollectionTools.move(info.items, event.getTargetIndex(), event.getSourceIndex(), event.getLength());
 
 		// translate the event
-		this.fireItemsMoved(event.cloneWithSource(this, LIST_VALUES, info.begin));
+		this.fireItemsMoved(event.clone(this, LIST_VALUES, info.begin));
 	}
 
 	/**
 	 * One of the component lists was cleared;
 	 * synchronize our cache.
 	 */
-	protected void componentListCleared(ListChangeEvent event) {
+	protected void componentListCleared(ListClearEvent event) {
 		int componentLVMIndex = this.indexFor(event);
 		this.clearComponentList(componentLVMIndex, this.infoList.get(componentLVMIndex));
 	}
@@ -560,13 +567,19 @@ public class CompositeListValueModel<E1, E2>
 
 	// minimize scope of suppressed warnings
 	@SuppressWarnings("unchecked")
-	protected Iterable<E2> getComponentItems(ListChangeEvent event) {
+	protected Iterable<E2> getComponentItems(ListAddEvent event) {
 		return (Iterable<E2>) event.getItems();
 	}
 
 	// minimize scope of suppressed warnings
 	@SuppressWarnings("unchecked")
-	protected ListValueModel<E2> componentLVM(ListChangeEvent event) {
+	protected Iterable<E2> getComponentItems(ListReplaceEvent event) {
+		return (Iterable<E2>) event.getNewItems();
+	}
+
+	// minimize scope of suppressed warnings
+	@SuppressWarnings("unchecked")
+	protected ListValueModel<E2> componentLVM(ListEvent event) {
 		return (ListValueModel<E2>) event.getSource();
 	}
 

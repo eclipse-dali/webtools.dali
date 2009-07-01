@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal.model.value;
 
+import org.eclipse.jpt.utility.model.event.TreeAddEvent;
 import org.eclipse.jpt.utility.model.event.TreeChangeEvent;
+import org.eclipse.jpt.utility.model.event.TreeClearEvent;
+import org.eclipse.jpt.utility.model.event.TreeRemoveEvent;
 import org.eclipse.jpt.utility.model.listener.TreeChangeListener;
 import org.eclipse.jpt.utility.model.value.TreeValueModel;
 
@@ -52,13 +55,13 @@ public abstract class TreePropertyValueModelAdapter<T>
 
 	protected TreeChangeListener buildTreeChangeListener() {
 		return new TreeChangeListener() {
-			public void nodeAdded(TreeChangeEvent event) {
+			public void nodeAdded(TreeAddEvent event) {
 				TreePropertyValueModelAdapter.this.nodeAdded(event);
 			}
-			public void nodeRemoved(TreeChangeEvent event) {
+			public void nodeRemoved(TreeRemoveEvent event) {
 				TreePropertyValueModelAdapter.this.nodeRemoved(event);
 			}
-			public void treeCleared(TreeChangeEvent event) {
+			public void treeCleared(TreeClearEvent event) {
 				TreePropertyValueModelAdapter.this.treeCleared(event);
 			}
 			public void treeChanged(TreeChangeEvent event) {
@@ -66,7 +69,7 @@ public abstract class TreePropertyValueModelAdapter<T>
 			}
 			@Override
 			public String toString() {
-				return "tree change listener";
+				return "tree change listener"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -102,7 +105,7 @@ public abstract class TreePropertyValueModelAdapter<T>
 	 * Nodes were added to the wrapped tree holder;
 	 * propagate the change notification appropriately.
 	 */
-	protected void nodeAdded(TreeChangeEvent event) {
+	protected void nodeAdded(@SuppressWarnings("unused") TreeAddEvent event) {
 		// by default, simply recalculate the value and fire an event
 		this.propertyChanged();
 	}
@@ -111,7 +114,7 @@ public abstract class TreePropertyValueModelAdapter<T>
 	 * Nodes were removed from the wrapped tree holder;
 	 * propagate the change notification appropriately.
 	 */
-	protected void nodeRemoved(TreeChangeEvent event) {
+	protected void nodeRemoved(@SuppressWarnings("unused") TreeRemoveEvent event) {
 		// by default, simply recalculate the value and fire an event
 		this.propertyChanged();
 	}
@@ -120,7 +123,7 @@ public abstract class TreePropertyValueModelAdapter<T>
 	 * The wrapped tree holder was cleared;
 	 * propagate the change notification appropriately.
 	 */
-	protected void treeCleared(TreeChangeEvent event) {
+	protected void treeCleared(@SuppressWarnings("unused") TreeClearEvent event) {
 		// by default, simply recalculate the value and fire an event
 		this.propertyChanged();
 	}
@@ -129,7 +132,7 @@ public abstract class TreePropertyValueModelAdapter<T>
 	 * The wrapped tree holder changed;
 	 * propagate the change notification appropriately.
 	 */
-	protected void treeChanged(TreeChangeEvent event) {
+	protected void treeChanged(@SuppressWarnings("unused") TreeChangeEvent event) {
 		// by default, simply recalculate the value and fire an event
 		this.propertyChanged();
 	}

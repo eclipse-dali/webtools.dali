@@ -87,7 +87,7 @@ public interface Customization extends PersistenceUnitProperties
 	boolean sessionCustomizerExists(String sessionCustomizerClassName);
 	String addSessionCustomizer(String newSessionCustomizerClassName);
 	void removeSessionCustomizer(String sessionCustomizerClassName);
-		static final String SESSION_CUSTOMIZER_LIST_PROPERTY = "sessionCustomizers"; //$NON-NLS-1$
+		static final String SESSION_CUSTOMIZER_LIST = "sessionCustomizers"; //$NON-NLS-1$
 		static final String SESSION_CUSTOMIZER_PROPERTY = "sessionCustomizer"; //$NON-NLS-1$
 		// EclipseLink key string
 		static final String ECLIPSELINK_SESSION_CUSTOMIZER = "eclipselink.session.customizer"; //$NON-NLS-1$
@@ -97,7 +97,7 @@ public interface Customization extends PersistenceUnitProperties
 	boolean entityExists(String entity);
 	Entity addEntity(String entity);
 	void removeEntity(String entity);
-		static final String ENTITIES_LIST_PROPERTY = "entities"; //$NON-NLS-1$
+		static final String ENTITIES_LIST = "entities"; //$NON-NLS-1$
 		
 	String getDefaultProfiler();
 	String getProfiler();

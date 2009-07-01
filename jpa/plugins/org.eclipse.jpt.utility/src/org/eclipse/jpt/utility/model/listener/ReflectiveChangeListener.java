@@ -15,11 +15,23 @@ import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.model.event.ChangeEvent;
 import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.utility.model.event.CollectionClearEvent;
+import org.eclipse.jpt.utility.model.event.CollectionEvent;
 import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
+import org.eclipse.jpt.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
+import org.eclipse.jpt.utility.model.event.ListClearEvent;
+import org.eclipse.jpt.utility.model.event.ListEvent;
+import org.eclipse.jpt.utility.model.event.ListMoveEvent;
+import org.eclipse.jpt.utility.model.event.ListRemoveEvent;
+import org.eclipse.jpt.utility.model.event.ListReplaceEvent;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.model.event.StateChangeEvent;
+import org.eclipse.jpt.utility.model.event.TreeAddEvent;
 import org.eclipse.jpt.utility.model.event.TreeChangeEvent;
+import org.eclipse.jpt.utility.model.event.TreeClearEvent;
+import org.eclipse.jpt.utility.model.event.TreeEvent;
+import org.eclipse.jpt.utility.model.event.TreeRemoveEvent;
 
 /**
  * This factory builds listeners that reflectively forward ChangeEvents.
@@ -45,40 +57,84 @@ public abstract class ReflectiveChangeListener {
 	protected static final Class<StateChangeEvent> STATE_CHANGE_EVENT_CLASS = StateChangeEvent.class;
 	@SuppressWarnings("unchecked")
 	protected static final Class<StateChangeEvent>[] STATE_CHANGE_EVENT_CLASS_ARRAY = new Class[] {STATE_CHANGE_EVENT_CLASS};
-	protected static final StateChangeEvent[] EMPTY_STATE_CHANGE_EVENT_ARRAY = new StateChangeEvent[0];
+
 
 	protected static final Class<PropertyChangeEvent> PROPERTY_CHANGE_EVENT_CLASS = PropertyChangeEvent.class;
 	@SuppressWarnings("unchecked")
 	protected static final Class<PropertyChangeEvent>[] PROPERTY_CHANGE_EVENT_CLASS_ARRAY = new Class[] {PROPERTY_CHANGE_EVENT_CLASS};
-	protected static final PropertyChangeEvent[] EMPTY_PROPERTY_CHANGE_EVENT_ARRAY = new PropertyChangeEvent[0];
 
-	protected static final Class<CollectionChangeEvent> COLLECTION_CHANGE_EVENT_CLASS = CollectionChangeEvent.class;
+
+	protected static final Class<CollectionEvent> COLLECTION_EVENT_CLASS = CollectionEvent.class;
 	@SuppressWarnings("unchecked")
-	protected static final Class<CollectionChangeEvent>[] COLLECTION_CHANGE_EVENT_CLASS_ARRAY = new Class[] {COLLECTION_CHANGE_EVENT_CLASS};
-	protected static final CollectionChangeEvent[] EMPTY_COLLECTION_CHANGE_EVENT_ARRAY = new CollectionChangeEvent[0];
-
+	protected static final Class<CollectionEvent>[] COLLECTION_EVENT_CLASS_ARRAY = new Class[] {COLLECTION_EVENT_CLASS};
 
 	protected static final Class<CollectionAddEvent> COLLECTION_ADD_EVENT_CLASS = CollectionAddEvent.class;
 	@SuppressWarnings("unchecked")
 	protected static final Class<CollectionAddEvent>[] COLLECTION_ADD_EVENT_CLASS_ARRAY = new Class[] {COLLECTION_ADD_EVENT_CLASS};
-	protected static final CollectionAddEvent[] EMPTY_COLLECTION_ADD_EVENT_ARRAY = new CollectionAddEvent[0];
-
 
 	protected static final Class<CollectionRemoveEvent> COLLECTION_REMOVE_EVENT_CLASS = CollectionRemoveEvent.class;
 	@SuppressWarnings("unchecked")
 	protected static final Class<CollectionRemoveEvent>[] COLLECTION_REMOVE_EVENT_CLASS_ARRAY = new Class[] {COLLECTION_REMOVE_EVENT_CLASS};
-	protected static final CollectionRemoveEvent[] EMPTY_COLLECTION_REMOVE_EVENT_ARRAY = new CollectionRemoveEvent[0];
+
+	protected static final Class<CollectionClearEvent> COLLECTION_CLEAR_EVENT_CLASS = CollectionClearEvent.class;
+	@SuppressWarnings("unchecked")
+	protected static final Class<CollectionClearEvent>[] COLLECTION_CLEAR_EVENT_CLASS_ARRAY = new Class[] {COLLECTION_CLEAR_EVENT_CLASS};
+
+	protected static final Class<CollectionChangeEvent> COLLECTION_CHANGE_EVENT_CLASS = CollectionChangeEvent.class;
+	@SuppressWarnings("unchecked")
+	protected static final Class<CollectionChangeEvent>[] COLLECTION_CHANGE_EVENT_CLASS_ARRAY = new Class[] {COLLECTION_CHANGE_EVENT_CLASS};
+
+
+	protected static final Class<ListEvent> LIST_EVENT_CLASS = ListEvent.class;
+	@SuppressWarnings("unchecked")
+	protected static final Class<ListEvent>[] LIST_EVENT_CLASS_ARRAY = new Class[] {LIST_EVENT_CLASS};
+
+	protected static final Class<ListAddEvent> LIST_ADD_EVENT_CLASS = ListAddEvent.class;
+	@SuppressWarnings("unchecked")
+	protected static final Class<ListAddEvent>[] LIST_ADD_EVENT_CLASS_ARRAY = new Class[] {LIST_ADD_EVENT_CLASS};
+
+	protected static final Class<ListRemoveEvent> LIST_REMOVE_EVENT_CLASS = ListRemoveEvent.class;
+	@SuppressWarnings("unchecked")
+	protected static final Class<ListRemoveEvent>[] LIST_REMOVE_EVENT_CLASS_ARRAY = new Class[] {LIST_REMOVE_EVENT_CLASS};
+
+	protected static final Class<ListReplaceEvent> LIST_REPLACE_EVENT_CLASS = ListReplaceEvent.class;
+	@SuppressWarnings("unchecked")
+	protected static final Class<ListReplaceEvent>[] LIST_REPLACE_EVENT_CLASS_ARRAY = new Class[] {LIST_REPLACE_EVENT_CLASS};
+
+	protected static final Class<ListMoveEvent> LIST_MOVE_EVENT_CLASS = ListMoveEvent.class;
+	@SuppressWarnings("unchecked")
+	protected static final Class<ListMoveEvent>[] LIST_MOVE_EVENT_CLASS_ARRAY = new Class[] {LIST_MOVE_EVENT_CLASS};
+
+	protected static final Class<ListClearEvent> LIST_CLEAR_EVENT_CLASS = ListClearEvent.class;
+	@SuppressWarnings("unchecked")
+	protected static final Class<ListClearEvent>[] LIST_CLEAR_EVENT_CLASS_ARRAY = new Class[] {LIST_CLEAR_EVENT_CLASS};
 
 	protected static final Class<ListChangeEvent> LIST_CHANGE_EVENT_CLASS = ListChangeEvent.class;
 	@SuppressWarnings("unchecked")
 	protected static final Class<ListChangeEvent>[] LIST_CHANGE_EVENT_CLASS_ARRAY = new Class[] {LIST_CHANGE_EVENT_CLASS};
-	protected static final ListChangeEvent[] EMPTY_LIST_CHANGE_EVENT_ARRAY = new ListChangeEvent[0];
+
+
+	protected static final Class<TreeEvent> TREE_EVENT_CLASS = TreeEvent.class;
+	@SuppressWarnings("unchecked")
+	protected static final Class<TreeEvent>[] TREE_EVENT_CLASS_ARRAY = new Class[] {TREE_EVENT_CLASS};
+
+	protected static final Class<TreeAddEvent> TREE_ADD_EVENT_CLASS = TreeAddEvent.class;
+	@SuppressWarnings("unchecked")
+	protected static final Class<TreeAddEvent>[] TREE_ADD_EVENT_CLASS_ARRAY = new Class[] {TREE_ADD_EVENT_CLASS};
+
+	protected static final Class<TreeRemoveEvent> TREE_REMOVE_EVENT_CLASS = TreeRemoveEvent.class;
+	@SuppressWarnings("unchecked")
+	protected static final Class<TreeRemoveEvent>[] TREE_REMOVE_EVENT_CLASS_ARRAY = new Class[] {TREE_REMOVE_EVENT_CLASS};
+
+	protected static final Class<TreeClearEvent> TREE_CLEAR_EVENT_CLASS = TreeClearEvent.class;
+	@SuppressWarnings("unchecked")
+	protected static final Class<TreeClearEvent>[] TREE_CLEAR_EVENT_CLASS_ARRAY = new Class[] {TREE_CLEAR_EVENT_CLASS};
 
 	protected static final Class<TreeChangeEvent> TREE_CHANGE_EVENT_CLASS = TreeChangeEvent.class;
 	@SuppressWarnings("unchecked")
 	protected static final Class<TreeChangeEvent>[] TREE_CHANGE_EVENT_CLASS_ARRAY = new Class[] {TREE_CHANGE_EVENT_CLASS};
-	protected static final TreeChangeEvent[] EMPTY_TREE_CHANGE_EVENT_ARRAY = new TreeChangeEvent[0];
 
+	protected static final Object[] EMPTY_OBJECT_ARRAY = new Object[0];
 
 
 	// ********** helper methods **********
@@ -171,9 +227,17 @@ public abstract class ReflectiveChangeListener {
 	public static CollectionChangeListener buildCollectionChangeListener(Object target, Method addMethod, Method removeMethod, Method clearMethod, Method changeMethod) {
 		checkChangeListenerMethod(addMethod, COLLECTION_ADD_EVENT_CLASS);
 		checkChangeListenerMethod(removeMethod, COLLECTION_REMOVE_EVENT_CLASS);
-		checkChangeListenerMethod(clearMethod, COLLECTION_CHANGE_EVENT_CLASS);
+		checkChangeListenerMethod(clearMethod, COLLECTION_CLEAR_EVENT_CLASS);
 		checkChangeListenerMethod(changeMethod, COLLECTION_CHANGE_EVENT_CLASS);
 		return new MultiMethodReflectiveChangeListener(target, addMethod, removeMethod, clearMethod, changeMethod);
+	}
+
+	/**
+	 * Construct a collection change listener that will invoke the specified method
+	 * on the specified target for any change event.
+	 */
+	public static CollectionChangeListener buildCollectionChangeListener(Object target, Method method) {
+		return buildCollectionChangeListener(target, method, method, method, method);
 	}
 
 	/**
@@ -187,9 +251,19 @@ public abstract class ReflectiveChangeListener {
 				target,
 				findChangeListenerMethod(target, addMethodName, COLLECTION_ADD_EVENT_CLASS_ARRAY),
 				findChangeListenerMethod(target, removeMethodName, COLLECTION_REMOVE_EVENT_CLASS_ARRAY),
-				findChangeListenerMethod(target, clearMethodName, COLLECTION_CHANGE_EVENT_CLASS_ARRAY),
+				findChangeListenerMethod(target, clearMethodName, COLLECTION_CLEAR_EVENT_CLASS_ARRAY),
 				findChangeListenerMethod(target, changeMethodName, COLLECTION_CHANGE_EVENT_CLASS_ARRAY)
 		);
+	}
+
+	/**
+	 * Construct a collection change listener that will invoke the specified method
+	 * on the specified target for any change event. If a single-argument method
+	 * with the specified name and appropriate argument is found, it will be invoked;
+	 * otherwise, a zero-argument method with the specified name will be invoked.
+	 */
+	public static CollectionChangeListener buildCollectionChangeListener(Object target, String methodName) {
+		return buildCollectionChangeListener(target, findChangeListenerMethod(target, methodName, COLLECTION_EVENT_CLASS_ARRAY));
 	}
 
 
@@ -200,11 +274,11 @@ public abstract class ReflectiveChangeListener {
 	 * on the specified target.
 	 */
 	public static ListChangeListener buildListChangeListener(Object target, Method addMethod, Method removeMethod, Method replaceMethod, Method moveMethod, Method clearMethod, Method changeMethod) {
-		checkChangeListenerMethod(addMethod, LIST_CHANGE_EVENT_CLASS);
-		checkChangeListenerMethod(removeMethod, LIST_CHANGE_EVENT_CLASS);
-		checkChangeListenerMethod(replaceMethod, LIST_CHANGE_EVENT_CLASS);
-		checkChangeListenerMethod(moveMethod, LIST_CHANGE_EVENT_CLASS);
-		checkChangeListenerMethod(clearMethod, LIST_CHANGE_EVENT_CLASS);
+		checkChangeListenerMethod(addMethod, LIST_ADD_EVENT_CLASS);
+		checkChangeListenerMethod(removeMethod, LIST_REMOVE_EVENT_CLASS);
+		checkChangeListenerMethod(replaceMethod, LIST_REPLACE_EVENT_CLASS);
+		checkChangeListenerMethod(moveMethod, LIST_MOVE_EVENT_CLASS);
+		checkChangeListenerMethod(clearMethod, LIST_CLEAR_EVENT_CLASS);
 		checkChangeListenerMethod(changeMethod, LIST_CHANGE_EVENT_CLASS);
 		return new MultiMethodReflectiveChangeListener(target, addMethod, removeMethod, replaceMethod, moveMethod, clearMethod, changeMethod);
 	}
@@ -226,11 +300,11 @@ public abstract class ReflectiveChangeListener {
 	public static ListChangeListener buildListChangeListener(Object target, String addMethodName, String removeMethodName, String replaceMethodName, String moveMethodName, String clearMethodName, String changeMethodName) {
 		return buildListChangeListener(
 				target,
-				findChangeListenerMethod(target, addMethodName, LIST_CHANGE_EVENT_CLASS_ARRAY),
-				findChangeListenerMethod(target, removeMethodName, LIST_CHANGE_EVENT_CLASS_ARRAY),
-				findChangeListenerMethod(target, replaceMethodName, LIST_CHANGE_EVENT_CLASS_ARRAY),
-				findChangeListenerMethod(target, moveMethodName, LIST_CHANGE_EVENT_CLASS_ARRAY),
-				findChangeListenerMethod(target, clearMethodName, LIST_CHANGE_EVENT_CLASS_ARRAY),
+				findChangeListenerMethod(target, addMethodName, LIST_ADD_EVENT_CLASS_ARRAY),
+				findChangeListenerMethod(target, removeMethodName, LIST_REMOVE_EVENT_CLASS_ARRAY),
+				findChangeListenerMethod(target, replaceMethodName, LIST_REPLACE_EVENT_CLASS_ARRAY),
+				findChangeListenerMethod(target, moveMethodName, LIST_MOVE_EVENT_CLASS_ARRAY),
+				findChangeListenerMethod(target, clearMethodName, LIST_CLEAR_EVENT_CLASS_ARRAY),
 				findChangeListenerMethod(target, changeMethodName, LIST_CHANGE_EVENT_CLASS_ARRAY)
 		);
 	}
@@ -242,7 +316,7 @@ public abstract class ReflectiveChangeListener {
 	 * otherwise, a zero-argument method with the specified name will be invoked.
 	 */
 	public static ListChangeListener buildListChangeListener(Object target, String methodName) {
-		return buildListChangeListener(target, findChangeListenerMethod(target, methodName, LIST_CHANGE_EVENT_CLASS_ARRAY));
+		return buildListChangeListener(target, findChangeListenerMethod(target, methodName, LIST_EVENT_CLASS_ARRAY));
 	}
 
 
@@ -253,9 +327,9 @@ public abstract class ReflectiveChangeListener {
 	 * on the specified target.
 	 */
 	public static TreeChangeListener buildTreeChangeListener(Object target, Method addMethod, Method removeMethod, Method clearMethod, Method changeMethod) {
-		checkChangeListenerMethod(addMethod, TREE_CHANGE_EVENT_CLASS);
-		checkChangeListenerMethod(removeMethod, TREE_CHANGE_EVENT_CLASS);
-		checkChangeListenerMethod(clearMethod, TREE_CHANGE_EVENT_CLASS);
+		checkChangeListenerMethod(addMethod, TREE_ADD_EVENT_CLASS);
+		checkChangeListenerMethod(removeMethod, TREE_REMOVE_EVENT_CLASS);
+		checkChangeListenerMethod(clearMethod, TREE_CLEAR_EVENT_CLASS);
 		checkChangeListenerMethod(changeMethod, TREE_CHANGE_EVENT_CLASS);
 		return new MultiMethodReflectiveChangeListener(target, addMethod, removeMethod, clearMethod, changeMethod);
 	}
@@ -277,9 +351,9 @@ public abstract class ReflectiveChangeListener {
 	public static TreeChangeListener buildTreeChangeListener(Object target, String addMethodName, String removeMethodName, String clearMethodName, String changeMethodName) {
 		return buildTreeChangeListener(
 				target,
-				findChangeListenerMethod(target, addMethodName, TREE_CHANGE_EVENT_CLASS_ARRAY),
-				findChangeListenerMethod(target, removeMethodName, TREE_CHANGE_EVENT_CLASS_ARRAY),
-				findChangeListenerMethod(target, clearMethodName, TREE_CHANGE_EVENT_CLASS_ARRAY),
+				findChangeListenerMethod(target, addMethodName, TREE_ADD_EVENT_CLASS_ARRAY),
+				findChangeListenerMethod(target, removeMethodName, TREE_REMOVE_EVENT_CLASS_ARRAY),
+				findChangeListenerMethod(target, clearMethodName, TREE_CLEAR_EVENT_CLASS_ARRAY),
 				findChangeListenerMethod(target, changeMethodName, TREE_CHANGE_EVENT_CLASS_ARRAY)
 		);
 	}
@@ -291,7 +365,7 @@ public abstract class ReflectiveChangeListener {
 	 * otherwise, a zero-argument method with the specified name will be invoked.
 	 */
 	public static TreeChangeListener buildTreeChangeListener(Object target, String methodName) {
-		return buildTreeChangeListener(target, findChangeListenerMethod(target, methodName, TREE_CHANGE_EVENT_CLASS_ARRAY));
+		return buildTreeChangeListener(target, findChangeListenerMethod(target, methodName, TREE_EVENT_CLASS_ARRAY));
 	}
 
 

@@ -12,7 +12,12 @@ package org.eclipse.jpt.utility.internal.model.value;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.ChangeSupport;
 import org.eclipse.jpt.utility.internal.model.SingleAspectChangeSupport;
+import org.eclipse.jpt.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
+import org.eclipse.jpt.utility.model.event.ListClearEvent;
+import org.eclipse.jpt.utility.model.event.ListMoveEvent;
+import org.eclipse.jpt.utility.model.event.ListRemoveEvent;
+import org.eclipse.jpt.utility.model.event.ListReplaceEvent;
 import org.eclipse.jpt.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 
@@ -57,19 +62,19 @@ public abstract class ListValueModelWrapper<E>
 
 	protected ListChangeListener buildListChangeListener() {
 		return new ListChangeListener() {
-			public void itemsAdded(ListChangeEvent event) {
+			public void itemsAdded(ListAddEvent event) {
 				ListValueModelWrapper.this.itemsAdded(event);
 			}
-			public void itemsRemoved(ListChangeEvent event) {
+			public void itemsRemoved(ListRemoveEvent event) {
 				ListValueModelWrapper.this.itemsRemoved(event);
 			}
-			public void itemsReplaced(ListChangeEvent event) {
+			public void itemsReplaced(ListReplaceEvent event) {
 				ListValueModelWrapper.this.itemsReplaced(event);
 			}
-			public void itemsMoved(ListChangeEvent event) {
+			public void itemsMoved(ListMoveEvent event) {
 				ListValueModelWrapper.this.itemsMoved(event);
 			}
-			public void listCleared(ListChangeEvent event) {
+			public void listCleared(ListClearEvent event) {
 				ListValueModelWrapper.this.listCleared(event);
 			}
 			public void listChanged(ListChangeEvent event) {
@@ -153,14 +158,26 @@ public abstract class ListValueModelWrapper<E>
 
 	// minimized scope of suppressed warnings
 	@SuppressWarnings("unchecked")
-	protected Iterable<E> getItems(ListChangeEvent event) {
+	protected Iterable<E> getAddedItems(ListAddEvent event) {
 		return (Iterable<E>) event.getItems();
 	}
 
 	// minimized scope of suppressed warnings
 	@SuppressWarnings("unchecked")
-	protected Iterable<E> getReplacedItems(ListChangeEvent event) {
-		return (Iterable<E>) event.getReplacedItems();
+	protected Iterable<E> getRemovedItems(ListRemoveEvent event) {
+		return (Iterable<E>) event.getItems();
+	}
+
+	// minimized scope of suppressed warnings
+	@SuppressWarnings("unchecked")
+	protected Iterable<E> getNewItems(ListReplaceEvent event) {
+		return (Iterable<E>) event.getNewItems();
+	}
+
+	// minimized scope of suppressed warnings
+	@SuppressWarnings("unchecked")
+	protected Iterable<E> getOldItems(ListReplaceEvent event) {
+		return (Iterable<E>) event.getOldItems();
 	}
 
 
@@ -170,31 +187,31 @@ public abstract class ListValueModelWrapper<E>
 	 * Items were added to the wrapped list holder;
 	 * propagate the change notification appropriately.
 	 */
-	protected abstract void itemsAdded(ListChangeEvent event);
+	protected abstract void itemsAdded(ListAddEvent event);
 
 	/**
 	 * Items were removed from the wrapped list holder;
 	 * propagate the change notification appropriately.
 	 */
-	protected abstract void itemsRemoved(ListChangeEvent event);
+	protected abstract void itemsRemoved(ListRemoveEvent event);
 
 	/**
 	 * Items were replaced in the wrapped list holder;
 	 * propagate the change notification appropriately.
 	 */
-	protected abstract void itemsReplaced(ListChangeEvent event);
+	protected abstract void itemsReplaced(ListReplaceEvent event);
 
 	/**
 	 * Items were moved in the wrapped list holder;
 	 * propagate the change notification appropriately.
 	 */
-	protected abstract void itemsMoved(ListChangeEvent event);
+	protected abstract void itemsMoved(ListMoveEvent event);
 
 	/**
 	 * The wrapped list holder was cleared;
 	 * propagate the change notification appropriately.
 	 */
-	protected abstract void listCleared(ListChangeEvent event);
+	protected abstract void listCleared(ListClearEvent event);
 
 	/**
 	 * The value of the wrapped list holder has changed;
