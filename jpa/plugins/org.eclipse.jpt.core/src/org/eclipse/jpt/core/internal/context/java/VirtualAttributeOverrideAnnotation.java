@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.internal.context.java;
 
 import org.eclipse.jpt.core.context.Column;
-import org.eclipse.jpt.core.internal.resource.java.NullOverrideAnnotation;
 import org.eclipse.jpt.core.resource.java.AttributeOverrideAnnotation;
 import org.eclipse.jpt.core.resource.java.ColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
@@ -19,7 +18,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
  * javax.persistence.AssociationOverride
  */
 public class VirtualAttributeOverrideAnnotation
-	extends NullOverrideAnnotation
+	extends VirtualOverrideAnnotation
 	implements AttributeOverrideAnnotation 
 {
 	private final VirtualAttributeOverrideColumnAnnotation column;

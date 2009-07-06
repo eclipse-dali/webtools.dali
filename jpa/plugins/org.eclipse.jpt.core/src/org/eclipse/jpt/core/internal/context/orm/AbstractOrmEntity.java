@@ -31,6 +31,7 @@ import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.SecondaryTable;
 import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.TypeMapping;
+import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverride;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
@@ -166,7 +167,9 @@ public abstract class AbstractOrmEntity
 		this.initializeSpecifiedPrimaryKeyJoinColumns();
 		this.initializeDefaultPrimaryKeyJoinColumns();
 		this.initializeSpecifiedAttributeOverrides();
+		this.initializeVirtualAttributeOverrides();
 		this.initializeSpecifiedAssociationOverrides();
+		this.initializeVirtualAssociationOverrides();
 		this.initializeIdClass(this.getResourceIdClass());
 	}
 	
@@ -940,6 +943,72 @@ public abstract class AbstractOrmEntity
 		return this.virtualAssociationOverrides.size();
 	}
 	
+	protected void addVirtualAssociationOverride(OrmAssociationOverride associationOverride) {
+		addItemToList(associationOverride, this.virtualAssociationOverrides, Entity.VIRTUAL_ASSOCIATION_OVERRIDES_LIST);
+	}
+	
+	protected void removeVirtualAssociationOverride(OrmAssociationOverride associationOverride) {
+		removeItemFromList(associationOverride, this.virtualAssociationOverrides, Entity.VIRTUAL_ASSOCIATION_OVERRIDES_LIST);
+	}
+	
+	protected OrmAssociationOverride setAssociationOverrideVirtual(boolean virtual, OrmAssociationOverride associationOverride) {
+		if (virtual) {
+			return setAssociationOverrideVirtual(associationOverride);
+		}
+		return setAssociationOverrideSpecified(associationOverride);
+	}
+	
+	protected OrmAssociationOverride setAssociationOverrideVirtual(OrmAssociationOverride associationOverride) {
+		int index = this.specifiedAssociationOverrides.indexOf(associationOverride);
+		this.specifiedAssociationOverrides.remove(index);
+		String associationOverrideName = associationOverride.getName();
+		//add the virtual attribute override so that I can control the order that change notification is sent.
+		//otherwise when we remove the annotation from java we will get an update and add the attribute override
+		//during the udpate.  This causes the UI to be flaky, since change notification might not occur in the correct order
+		OrmAssociationOverride virtualAssociationOverride = null;
+		if (associationOverrideName != null) {
+			for (PersistentAttribute persistentAttribute : CollectionTools.iterable(allOverridableAssociations())) {
+				if (persistentAttribute.getName().equals(associationOverrideName)) {
+					JavaAssociationOverride javaAssociationOverride = null;
+					if (getJavaEntity() != null) {
+						javaAssociationOverride = getJavaEntity().getAssociationOverrideNamed(associationOverrideName);
+					}
+					//store the virtualAssociationOverride so we can fire change notification later
+					virtualAssociationOverride = buildVirtualAssociationOverride(persistentAttribute, javaAssociationOverride);
+					this.virtualAssociationOverrides.add(virtualAssociationOverride);
+				}
+			}
+		}
+
+		this.resourceTypeMapping.getAssociationOverrides().remove(index);
+		fireItemRemoved(Entity.SPECIFIED_ASSOCIATION_OVERRIDES_LIST, index, associationOverride);
+		
+		if (virtualAssociationOverride != null) {
+			fireItemAdded(Entity.VIRTUAL_ASSOCIATION_OVERRIDES_LIST, virtualAssociationOverridesSize() - 1, virtualAssociationOverride);
+		}
+		return virtualAssociationOverride;
+	}
+	
+	protected OrmAssociationOverride setAssociationOverrideSpecified(OrmAssociationOverride oldAssociationOverride) {
+		int index = specifiedAssociationOverridesSize();
+		XmlAssociationOverride xmlAssociationOverride = OrmFactory.eINSTANCE.createXmlAssociationOverride();
+		OrmAssociationOverride newAssociationOverride = getJpaFactory().buildOrmAssociationOverride(this, createAssociationOverrideOwner(), xmlAssociationOverride);
+		this.specifiedAssociationOverrides.add(index, newAssociationOverride);
+		
+		this.resourceTypeMapping.getAssociationOverrides().add(xmlAssociationOverride);
+		
+		int defaultIndex = this.virtualAssociationOverrides.indexOf(oldAssociationOverride);
+		this.virtualAssociationOverrides.remove(defaultIndex);
+
+		newAssociationOverride.setName(oldAssociationOverride.getName());
+		//newAssociationOverride.getColumn().setSpecifiedName(oldAssociationOverride.getColumn().getName());
+		
+		this.fireItemRemoved(Entity.VIRTUAL_ASSOCIATION_OVERRIDES_LIST, defaultIndex, oldAssociationOverride);
+		this.fireItemAdded(Entity.SPECIFIED_ASSOCIATION_OVERRIDES_LIST, index, newAssociationOverride);		
+
+		return newAssociationOverride;
+	}
+	
 	public ListIterator<OrmAssociationOverride> specifiedAssociationOverrides() {
 		return new CloneListIterator<OrmAssociationOverride>(this.specifiedAssociationOverrides);
 	}
@@ -1420,6 +1489,19 @@ public abstract class AbstractOrmEntity
 		}
 	}
 	
+	protected void initializeVirtualAttributeOverrides() {
+		for (PersistentAttribute persistentAttribute : CollectionTools.iterable(allOverridableAttributes())) {
+			OrmAttributeOverride ormAttributeOverride = getAttributeOverrideNamed(persistentAttribute.getName());
+			if (ormAttributeOverride == null) {
+				JavaAttributeOverride javaAttributeOverride = null;
+				if (getJavaEntity() != null) {
+					javaAttributeOverride = getJavaEntity().getAttributeOverrideNamed(persistentAttribute.getName());
+				}
+				this.virtualAttributeOverrides.add(buildVirtualAttributeOverride(persistentAttribute, javaAttributeOverride));
+			}
+		}
+	}
+	
 	protected void initializeSpecifiedAttributeOverrides() {
 		for (XmlAttributeOverride attributeOverride : this.resourceTypeMapping.getAttributeOverrides()) {
 			this.specifiedAttributeOverrides.add(buildAttributeOverride(attributeOverride));
@@ -1442,6 +1524,35 @@ public abstract class AbstractOrmEntity
 		return new VirtualXmlAttributeOverride(persistentAttribute.getName(), xmlColumn);
 	}
 	
+	protected void initializeVirtualAssociationOverrides() {
+		for (PersistentAttribute persistentAttribute : CollectionTools.iterable(allOverridableAssociations())) {
+			OrmAssociationOverride ormAssociationOverride = getAssociationOverrideNamed(persistentAttribute.getName());
+			if (ormAssociationOverride == null) {
+				JavaAssociationOverride javaAssociationOverride = null;
+				if (getJavaEntity() != null) {
+					javaAssociationOverride = getJavaEntity().getAssociationOverrideNamed(persistentAttribute.getName());
+				}
+				this.virtualAssociationOverrides.add(buildVirtualAssociationOverride(persistentAttribute, javaAssociationOverride));
+			}
+		}
+	}
+
+	protected OrmAssociationOverride buildVirtualAssociationOverride(PersistentAttribute persistentAttribute, JavaAssociationOverride javaAssociationOverride) {
+		return buildAssociationOverride(buildVirtualXmlAssociationOverride(persistentAttribute, javaAssociationOverride));
+	}
+	
+	protected XmlAssociationOverride buildVirtualXmlAssociationOverride(PersistentAttribute persistentAttribute, JavaAssociationOverride javaAssociationOverride) {
+//		XmlColumn xmlColumn;
+//		if (javaAssociationOverride == null) {
+//			RelationshipMapping relationshipMapping = (RelationshipMapping) persistentAttribute.getMapping();
+//			xmlColumn = new VirtualXmlColumn(this, columnMapping.getColumn());		
+//		}
+//		else {
+//			xmlColumn = new VirtualXmlColumn(this, javaAssociationOverride.getColumn());
+//		}
+		return new VirtualXmlAssociationOverride(persistentAttribute.getName(), this, javaAssociationOverride);
+	}
+
 	protected void initializeSpecifiedAssociationOverrides() {
 		for (XmlAssociationOverride associationOverride : this.resourceTypeMapping.getAssociationOverrides()) {
 			this.specifiedAssociationOverrides.add(buildAssociationOverride(associationOverride));
@@ -1476,6 +1587,7 @@ public abstract class AbstractOrmEntity
 		this.updateSpecifiedAttributeOverrides();
 		this.updateVirtualAttributeOverrides();
 		this.updateSpecifiedAssociationOverrides();
+		this.updateVirtualAssociationOverrides();
 		getQueryContainer().update();
 		this.updateIdClass(this.getResourceIdClass());
 	}
@@ -1817,6 +1929,37 @@ public abstract class AbstractOrmEntity
 		}
 	}
 	
+	protected void updateVirtualAssociationOverrides() {
+		Iterator<PersistentAttribute> overridableAssociations = allOverridableAssociations();
+		ListIterator<OrmAssociationOverride> virtualAssociationOverridesCopy = virtualAssociationOverrides();
+		
+		for (PersistentAttribute persistentAttribute : CollectionTools.iterable(overridableAssociations)) {
+			OrmAssociationOverride ormAssociationOverride = getAssociationOverrideNamed(persistentAttribute.getName());
+			if (ormAssociationOverride != null && !ormAssociationOverride.isVirtual()) {
+				continue;
+			}
+			JavaAssociationOverride javaAssociationOverride = null;
+			if (getJavaEntity() != null) {
+				javaAssociationOverride = getJavaEntity().getAssociationOverrideNamed(persistentAttribute.getName());
+			}
+			if (ormAssociationOverride != null) {
+				if (virtualAssociationOverridesCopy.hasNext()) {
+					OrmAssociationOverride virtualAssociationOverride = virtualAssociationOverridesCopy.next();
+					virtualAssociationOverride.update(buildVirtualXmlAssociationOverride(persistentAttribute, javaAssociationOverride));
+				}
+				else {
+					addVirtualAssociationOverride(buildVirtualAssociationOverride(persistentAttribute, javaAssociationOverride));
+				}
+			}
+			else {
+				addVirtualAssociationOverride(buildVirtualAssociationOverride(persistentAttribute, javaAssociationOverride));
+			}
+		}
+		for (OrmAssociationOverride virtualAssociationOverride : CollectionTools.iterable(virtualAssociationOverridesCopy)) {
+			removeVirtualAssociationOverride(virtualAssociationOverride);
+		}
+	}
+	
 	protected OrmAssociationOverride buildAssociationOverride(XmlAssociationOverride associationOverride) {
 		return getJpaFactory().buildOrmAssociationOverride(this, createAssociationOverrideOwner(), associationOverride);
 	}
@@ -2152,8 +2295,7 @@ public abstract class AbstractOrmEntity
 		}
 
 		public BaseOverride setVirtual(boolean virtual, BaseOverride override) {
-			// TODO Auto-generated method stub
-			return null;
+			return AbstractOrmEntity.this.setAssociationOverrideVirtual(virtual, (OrmAssociationOverride) override);
 		}
 
 		public TypeMapping getTypeMapping() {

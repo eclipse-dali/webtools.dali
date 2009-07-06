@@ -80,6 +80,11 @@ public class GenericOrmAssociationOverride extends AbstractXmlContextNode
 		firePropertyChanged(BaseOverride.NAME_PROPERTY, oldName, newName);
 	}
 
+	protected void setName_(String newName) {
+		String oldName = this.name;
+		this.name = newName;
+		firePropertyChanged(BaseOverride.NAME_PROPERTY, oldName, newName);
+	}
 
 	public ListIterator<OrmJoinColumn> joinColumns() {
 		return this.specifiedJoinColumns.isEmpty() ? this.defaultJoinColumns() : this.specifiedJoinColumns();
@@ -153,7 +158,7 @@ public class GenericOrmAssociationOverride extends AbstractXmlContextNode
 
 	public void update(XmlAssociationOverride xao) {
 		this.resourceAssociationOverride = xao;
-		this.setName(xao.getName());
+		this.setName_(xao.getName());
 		updateSpecifiedJoinColumns();
 	}	
 	

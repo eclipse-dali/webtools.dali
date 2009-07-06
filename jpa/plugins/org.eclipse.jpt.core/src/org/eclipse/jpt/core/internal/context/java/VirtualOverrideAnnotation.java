@@ -7,26 +7,27 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.internal.resource.java;
+package org.eclipse.jpt.core.internal.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.resource.java.NullAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.resource.java.OverrideAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**
- * Common behavior for null versions of
+ * Common behavior for virtual versions of
  *     javax.persistence.AttributeOverride
  * and
  *     javax.persistence.AssociationOverride
  */
-public abstract class NullOverrideAnnotation
+public abstract class VirtualOverrideAnnotation
 	extends NullAnnotation
 	implements OverrideAnnotation
 {
 	private final String name;
 
-	public NullOverrideAnnotation(JavaResourcePersistentMember parent, String name) {
+	public VirtualOverrideAnnotation(JavaResourcePersistentMember parent, String name) {
 		super(parent);
 		this.name = name;
 	}

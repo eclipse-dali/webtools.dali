@@ -56,6 +56,7 @@ public interface JavaEntity extends JavaTypeMapping, Entity
 	ListIterator<JavaAssociationOverride> specifiedAssociationOverrides();
 	@SuppressWarnings("unchecked")
 	ListIterator<JavaAssociationOverride> virtualAssociationOverrides();
+	JavaAssociationOverride getAssociationOverrideNamed(String name);
 	
 	Iterator<JavaPersistentAttribute> overridableAttributes();
 	

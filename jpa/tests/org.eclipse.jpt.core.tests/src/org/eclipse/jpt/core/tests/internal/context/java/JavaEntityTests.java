@@ -23,9 +23,11 @@ import org.eclipse.jpt.core.context.Embeddable;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.IdMapping;
 import org.eclipse.jpt.core.context.InheritanceType;
+import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.MappedSuperclass;
 import org.eclipse.jpt.core.context.NamedNativeQuery;
 import org.eclipse.jpt.core.context.NamedQuery;
+import org.eclipse.jpt.core.context.OneToOneMapping;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
@@ -184,7 +186,7 @@ public class JavaEntityTests extends ContextModelTestCase
 				sb.append(CR);
 				sb.append("    @OneToOne");
 				sb.append(CR);
-				sb.append("    private int oneToOne;").append(CR);
+				sb.append("    private " + SUB_TYPE_NAME + " oneToOne;").append(CR);
 				sb.append(CR);
 				sb.append("    @OneToMany");
 				sb.append(CR);
@@ -1786,7 +1788,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertFalse(specifiedAttributeOverrides.hasNext());
 	}
 
-	public void testDefaultAttributeOverrides() throws Exception {
+	public void testVirtualAttributeOverrideDefaults() throws Exception {
 		createTestMappedSuperclass();
 		createTestSubType();
 			
@@ -1807,6 +1809,14 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertEquals("foo", virtualAttributeOverride.getName());
 		assertEquals("foo", virtualAttributeOverride.getColumn().getName());
 		assertEquals(SUB_TYPE_NAME, virtualAttributeOverride.getColumn().getTable());
+		assertEquals(null, virtualAttributeOverride.getColumn().getColumnDefinition());
+		assertEquals(true, virtualAttributeOverride.getColumn().isInsertable());
+		assertEquals(true, virtualAttributeOverride.getColumn().isUpdatable());
+		assertEquals(false, virtualAttributeOverride.getColumn().isUnique());
+		assertEquals(true, virtualAttributeOverride.getColumn().isNullable());
+		assertEquals(255, virtualAttributeOverride.getColumn().getLength());
+		assertEquals(0, virtualAttributeOverride.getColumn().getPrecision());
+		assertEquals(0, virtualAttributeOverride.getColumn().getScale());
 		
 
 		MappedSuperclass mappedSuperclass = (MappedSuperclass) getJavaPersistentType().getMapping();
@@ -1814,6 +1824,14 @@ public class JavaEntityTests extends ContextModelTestCase
 		BasicMapping fooMapping = (BasicMapping) mappedSuperclass.getPersistentType().getAttributeNamed("foo").getMapping();
 		fooMapping.getColumn().setSpecifiedName("FOO");
 		fooMapping.getColumn().setSpecifiedTable("BAR");
+		fooMapping.getColumn().setColumnDefinition("COLUMN_DEF");
+		fooMapping.getColumn().setSpecifiedInsertable(Boolean.FALSE);
+		fooMapping.getColumn().setSpecifiedUpdatable(Boolean.FALSE);
+		fooMapping.getColumn().setSpecifiedUnique(Boolean.TRUE);
+		fooMapping.getColumn().setSpecifiedNullable(Boolean.FALSE);
+		fooMapping.getColumn().setSpecifiedLength(Integer.valueOf(5));
+		fooMapping.getColumn().setSpecifiedPrecision(Integer.valueOf(6));
+		fooMapping.getColumn().setSpecifiedScale(Integer.valueOf(7));
 		
 		assertEquals(SUB_TYPE_NAME, typeResource.getName());
 		assertNull(typeResource.getSupportingAnnotation(AttributeOverrideAnnotation.ANNOTATION_NAME));
@@ -1824,9 +1842,25 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertEquals("foo", virtualAttributeOverride.getName());
 		assertEquals("FOO", virtualAttributeOverride.getColumn().getName());
 		assertEquals("BAR", virtualAttributeOverride.getColumn().getTable());
+		assertEquals("COLUMN_DEF", virtualAttributeOverride.getColumn().getColumnDefinition());
+		assertEquals(false, virtualAttributeOverride.getColumn().isInsertable());
+		assertEquals(false, virtualAttributeOverride.getColumn().isUpdatable());
+		assertEquals(true, virtualAttributeOverride.getColumn().isUnique());
+		assertEquals(false, virtualAttributeOverride.getColumn().isNullable());
+		assertEquals(5, virtualAttributeOverride.getColumn().getLength());
+		assertEquals(6, virtualAttributeOverride.getColumn().getPrecision());
+		assertEquals(7, virtualAttributeOverride.getColumn().getScale());
 
 		fooMapping.getColumn().setSpecifiedName(null);
 		fooMapping.getColumn().setSpecifiedTable(null);
+		fooMapping.getColumn().setColumnDefinition(null);
+		fooMapping.getColumn().setSpecifiedInsertable(null);
+		fooMapping.getColumn().setSpecifiedUpdatable(null);
+		fooMapping.getColumn().setSpecifiedUnique(null);
+		fooMapping.getColumn().setSpecifiedNullable(null);
+		fooMapping.getColumn().setSpecifiedLength(null);
+		fooMapping.getColumn().setSpecifiedPrecision(null);
+		fooMapping.getColumn().setSpecifiedScale(null);
 		assertEquals(SUB_TYPE_NAME, typeResource.getName());
 		assertNull(typeResource.getSupportingAnnotation(AttributeOverrideAnnotation.ANNOTATION_NAME));
 		assertNull(typeResource.getSupportingAnnotation(AttributeOverridesAnnotation.ANNOTATION_NAME));
@@ -1835,12 +1869,20 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertEquals("foo", virtualAttributeOverride.getName());
 		assertEquals("foo", virtualAttributeOverride.getColumn().getName());
 		assertEquals(SUB_TYPE_NAME, virtualAttributeOverride.getColumn().getTable());
+		assertEquals(null, virtualAttributeOverride.getColumn().getColumnDefinition());
+		assertEquals(true, virtualAttributeOverride.getColumn().isInsertable());
+		assertEquals(true, virtualAttributeOverride.getColumn().isUpdatable());
+		assertEquals(false, virtualAttributeOverride.getColumn().isUnique());
+		assertEquals(true, virtualAttributeOverride.getColumn().isNullable());
+		assertEquals(255, virtualAttributeOverride.getColumn().getLength());
+		assertEquals(0, virtualAttributeOverride.getColumn().getPrecision());
+		assertEquals(0, virtualAttributeOverride.getColumn().getScale());
 		
 		virtualAttributeOverride = virtualAttributeOverride.setVirtual(false);
 		assertEquals(3, javaEntity.virtualAttributeOverridesSize());
 	}
 	
-	public void testDefaultAttributeOverridesEntityHierachy() throws Exception {
+	public void testVirtualAttributeOverridesEntityHierachy() throws Exception {
 		createTestAbstractEntityTablePerClass();
 		createTestSubType();
 			
@@ -1911,7 +1953,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertEquals(2, getJavaEntity().specifiedAttributeOverridesSize());
 	}
 	
-	public void testDefaultAttributeOverridesSize() throws Exception {
+	public void testVirtualAttributeOverridesSize() throws Exception {
 		createTestMappedSuperclass();
 		createTestSubType();
 		
@@ -2285,7 +2327,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertFalse(specifiedAssociationOverrides.hasNext());
 	}
 
-	public void testDefaultAssociationOverrides() throws Exception {
+	public void testVirtualAssociationOverrideDefaults() throws Exception {
 		createTestMappedSuperclass();
 		createTestSubType();
 			
@@ -2304,12 +2346,28 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertEquals(2, javaEntity.virtualAssociationOverridesSize());
 		AssociationOverride virtualAssociationOverride = javaEntity.virtualAssociationOverrides().next();
 		assertEquals("oneToOne", virtualAssociationOverride.getName());
+		assertEquals(1, virtualAssociationOverride.joinColumnsSize());
+		JoinColumn virtualJoinColumn = virtualAssociationOverride.joinColumns().next();
+		assertEquals("oneToOne_id", virtualJoinColumn.getName());
+		assertEquals("id", virtualJoinColumn.getReferencedColumnName());
+		assertEquals(SUB_TYPE_NAME, virtualJoinColumn.getTable());
+		assertEquals(null, virtualJoinColumn.getColumnDefinition());
+		assertEquals(true, virtualJoinColumn.isInsertable());
+		assertEquals(true, virtualJoinColumn.isUpdatable());
+		assertEquals(false, virtualJoinColumn.isUnique());
+		assertEquals(true, virtualJoinColumn.isNullable());
 		
 
-		//MappedSuperclass mappedSuperclass = (MappedSuperclass) javaPersistentType().getMapping();
-		//BasicMapping idMapping = (BasicMapping) mappedSuperclass.persistentType().attributeNamed("id").getMapping();
-		//idMapping.getColumn().setSpecifiedName("FOO");
-		//idMapping.getColumn().setSpecifiedTable("BAR");
+		OneToOneMapping oneToOneMapping = (OneToOneMapping) getJavaPersistentType().getAttributeNamed("oneToOne").getMapping();
+		JoinColumn joinColumn = oneToOneMapping.getRelationshipReference().getJoinColumnJoiningStrategy().addSpecifiedJoinColumn(0);
+		joinColumn.setSpecifiedName("MY_JOIN_COLUMN");
+		joinColumn.setSpecifiedReferencedColumnName("MY_REFERENCE_COLUMN");
+		joinColumn.setSpecifiedTable("BAR");
+		joinColumn.setColumnDefinition("COLUMN_DEF");
+		joinColumn.setSpecifiedInsertable(Boolean.FALSE);
+		joinColumn.setSpecifiedUpdatable(Boolean.FALSE);
+		joinColumn.setSpecifiedUnique(Boolean.TRUE);
+		joinColumn.setSpecifiedNullable(Boolean.FALSE);
 		
 		assertEquals(SUB_TYPE_NAME, typeResource.getName());
 		assertNull(typeResource.getSupportingAnnotation(AssociationOverrideAnnotation.ANNOTATION_NAME));
@@ -2318,7 +2376,25 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertEquals(2, javaEntity.virtualAssociationOverridesSize());
 		virtualAssociationOverride = javaEntity.virtualAssociationOverrides().next();
 		assertEquals("oneToOne", virtualAssociationOverride.getName());
+		assertEquals(1, virtualAssociationOverride.joinColumnsSize());
+		virtualAssociationOverride = javaEntity.virtualAssociationOverrides().next();
+		virtualJoinColumn = virtualAssociationOverride.joinColumns().next();
+		assertEquals("MY_JOIN_COLUMN", virtualJoinColumn.getName());
+		assertEquals("MY_REFERENCE_COLUMN", virtualJoinColumn.getReferencedColumnName());
+		assertEquals("BAR", virtualJoinColumn.getTable());
+		assertEquals("COLUMN_DEF", virtualJoinColumn.getColumnDefinition());
+		assertEquals(false, virtualJoinColumn.isInsertable());
+		assertEquals(false, virtualJoinColumn.isUpdatable());
+		assertEquals(true, virtualJoinColumn.isUnique());
+		assertEquals(false, virtualJoinColumn.isNullable());
 
+		assertEquals("MY_JOIN_COLUMN", virtualAssociationOverride.joinColumns().next().getName());
+
+
+		
+		
+		
+		
 		//idMapping.getColumn().setSpecifiedName(null);
 		//idMapping.getColumn().setSpecifiedTable(null);
 		assertEquals(SUB_TYPE_NAME, typeResource.getName());
@@ -2393,7 +2469,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertEquals(2, getJavaEntity().specifiedAssociationOverridesSize());
 	}
 	
-	public void testDefaultAssociationOverridesSize() throws Exception {
+	public void testVirtualAssociationOverridesSize() throws Exception {
 		createTestMappedSuperclass();
 		createTestSubType();
 		

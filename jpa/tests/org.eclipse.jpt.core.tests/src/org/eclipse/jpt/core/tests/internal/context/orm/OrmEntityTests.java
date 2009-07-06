@@ -21,7 +21,10 @@ import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.InheritanceType;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PersistentType;
+import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
+import org.eclipse.jpt.core.context.java.JavaColumn;
 import org.eclipse.jpt.core.context.java.JavaEntity;
+import org.eclipse.jpt.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
@@ -30,6 +33,8 @@ import org.eclipse.jpt.core.context.orm.OrmBasicMapping;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddable;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.orm.OrmIdMapping;
+import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
+import org.eclipse.jpt.core.context.orm.OrmManyToOneMapping;
 import org.eclipse.jpt.core.context.orm.OrmMappedSuperclass;
 import org.eclipse.jpt.core.context.orm.OrmNamedNativeQuery;
 import org.eclipse.jpt.core.context.orm.OrmNamedQuery;
@@ -151,7 +156,18 @@ public class OrmEntityTests extends ContextModelTestCase
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.MAPPED_SUPERCLASS, JPA.ONE_TO_ONE);
+				return new ArrayIterator<String>(
+					JPA.MAPPED_SUPERCLASS, 
+					JPA.BASIC,
+					JPA.VERSION,
+					JPA.TRANSIENT,
+					JPA.EMBEDDED,
+					JPA.EMBEDDED_ID,
+					JPA.ONE_TO_ONE,
+					JPA.ONE_TO_MANY,
+					JPA.MANY_TO_ONE,
+					JPA.MANY_TO_MANY,
+					JPA.ID);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -159,18 +175,46 @@ public class OrmEntityTests extends ContextModelTestCase
 			}
 			
 			@Override
-			public void appendGetIdMethodAnnotationTo(StringBuilder sb) {
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
 				sb.append("private String foo;").append(CR);
 				sb.append(CR);
+				sb.append("    @Basic");
+				sb.append(CR);
+				sb.append("    private int basic;").append(CR);
+				sb.append(CR);
+				sb.append("    @Version");
+				sb.append(CR);
+				sb.append("    private int version;").append(CR);
+				sb.append(CR);
+				sb.append("    @Transient");
+				sb.append(CR);
+				sb.append("    private int transient;").append(CR);
+				sb.append(CR);
+				sb.append("    @Embedded");
+				sb.append(CR);
+				sb.append("    private int embedded;").append(CR);
+				sb.append(CR);
+				sb.append("    @EmbeddedId");
+				sb.append(CR);
+				sb.append("    private int embeddedId;").append(CR);
+				sb.append(CR);
 				sb.append("    @OneToOne");
 				sb.append(CR);
-				sb.append("    private int address;").append(CR);
+				sb.append("    private " + CHILD_TYPE_NAME + " oneToOne;").append(CR);
 				sb.append(CR);
-				sb.append("    @OneToOne");
+				sb.append("    @OneToMany");
 				sb.append(CR);
-				sb.append("    private int address2;").append(CR);
+				sb.append("    private int oneToMany;").append(CR);
 				sb.append(CR);
-				sb.append("    ");
+				sb.append("    @ManyToOne");
+				sb.append(CR);
+				sb.append("    private int manyToOne;").append(CR);
+				sb.append(CR);
+				sb.append("    @ManyToMany");
+				sb.append(CR);
+				sb.append("    private int manyToMany;").append(CR);
+				sb.append(CR);
+				sb.append("    @Id");
 			}
 		});
 	}
@@ -1604,61 +1648,130 @@ public class OrmEntityTests extends ContextModelTestCase
 		
 		OrmEntity entity = (OrmEntity) persistentType.getMapping();
 		
-		assertEquals(3, entity.virtualAttributeOverridesSize());
+		assertEquals(4, entity.virtualAttributeOverridesSize());
 		ListIterator<OrmAttributeOverride> virtualAttributeOverrides = entity.virtualAttributeOverrides();
 		OrmAttributeOverride attributeOverride = virtualAttributeOverrides.next();
+		assertEquals("foo", attributeOverride.getName());
+		attributeOverride = virtualAttributeOverrides.next();
+		assertEquals("basic", attributeOverride.getName());
+		attributeOverride = virtualAttributeOverrides.next();
 		assertEquals("id", attributeOverride.getName());
 		attributeOverride = virtualAttributeOverrides.next();
 		assertEquals("name", attributeOverride.getName());
-		attributeOverride = virtualAttributeOverrides.next();
-		assertEquals("foo", attributeOverride.getName());
+		assertEquals("name", attributeOverride.getColumn().getName());
+		assertEquals(CHILD_TYPE_NAME, attributeOverride.getColumn().getTable());
+		assertEquals(null, attributeOverride.getColumn().getColumnDefinition());
+		assertEquals(true, attributeOverride.getColumn().isInsertable());
+		assertEquals(true, attributeOverride.getColumn().isUpdatable());
+		assertEquals(false, attributeOverride.getColumn().isUnique());
+		assertEquals(true, attributeOverride.getColumn().isNullable());
+		assertEquals(255, attributeOverride.getColumn().getLength());
+		assertEquals(0, attributeOverride.getColumn().getPrecision());
+		assertEquals(0, attributeOverride.getColumn().getScale());
 		
 		entity.virtualAttributeOverrides().next().setVirtual(false);
 		
-		assertEquals(2, entity.virtualAttributeOverridesSize());
+		assertEquals(3, entity.virtualAttributeOverridesSize());
 		virtualAttributeOverrides = entity.virtualAttributeOverrides();
 		attributeOverride = virtualAttributeOverrides.next();
-		assertEquals("name", attributeOverride.getName());
+		assertEquals("basic", attributeOverride.getName());
 		attributeOverride = virtualAttributeOverrides.next();
-		assertEquals("foo", attributeOverride.getName());
+		assertEquals("id", attributeOverride.getName());
+		attributeOverride = virtualAttributeOverrides.next();
+		assertEquals("name", attributeOverride.getName());
 		
 		entity.setSpecifiedMetadataComplete(Boolean.TRUE);
-		assertEquals(2, entity.virtualAttributeOverridesSize());
+		assertEquals(3, entity.virtualAttributeOverridesSize());
 		virtualAttributeOverrides = entity.virtualAttributeOverrides();
 		attributeOverride = virtualAttributeOverrides.next();
-		assertEquals("name", attributeOverride.getName());
+		assertEquals("basic", attributeOverride.getName());
 		attributeOverride = virtualAttributeOverrides.next();
-		assertEquals("foo", attributeOverride.getName());
-		
+		assertEquals("id", attributeOverride.getName());
+		attributeOverride = virtualAttributeOverrides.next();
+		assertEquals("name", attributeOverride.getName());
+	
 		entity.specifiedAttributeOverrides().next().setVirtual(true);
 		entity.setSpecifiedMetadataComplete(Boolean.FALSE);
 		entity.getJavaEntity().virtualAttributeOverrides().next().setVirtual(false);
-		entity.getJavaEntity().specifiedAttributeOverrides().next().getColumn().setSpecifiedName("FOO");
-		assertEquals(3, entity.virtualAttributeOverridesSize());
+		JavaColumn javaColumn = entity.getJavaEntity().specifiedAttributeOverrides().next().getColumn();
+		javaColumn.setSpecifiedName("FOO");
+		javaColumn.setSpecifiedTable("BAR");
+		javaColumn.setColumnDefinition("COLUMN_DEF");
+		javaColumn.setSpecifiedInsertable(Boolean.FALSE);
+		javaColumn.setSpecifiedUpdatable(Boolean.FALSE);
+		javaColumn.setSpecifiedUnique(Boolean.TRUE);
+		javaColumn.setSpecifiedNullable(Boolean.FALSE);
+		javaColumn.setSpecifiedLength(Integer.valueOf(7));
+		javaColumn.setSpecifiedPrecision(Integer.valueOf(8));
+		javaColumn.setSpecifiedScale(Integer.valueOf(9));
+		
+		assertEquals(4, entity.virtualAttributeOverridesSize());
 		virtualAttributeOverrides = entity.virtualAttributeOverrides();
 		attributeOverride = virtualAttributeOverrides.next();
-		assertEquals("id", attributeOverride.getName());
+		assertEquals("foo", attributeOverride.getName());
 		assertEquals("FOO", attributeOverride.getColumn().getSpecifiedName());//TODO specified or default?
+		assertEquals("BAR", attributeOverride.getColumn().getSpecifiedTable());
+		assertEquals("COLUMN_DEF", attributeOverride.getColumn().getColumnDefinition());
+		assertEquals(Boolean.FALSE, attributeOverride.getColumn().getSpecifiedInsertable());
+		assertEquals(Boolean.FALSE, attributeOverride.getColumn().getSpecifiedUpdatable());
+		assertEquals(Boolean.TRUE, attributeOverride.getColumn().getSpecifiedUnique());
+		assertEquals(Boolean.FALSE, attributeOverride.getColumn().getSpecifiedNullable());
+		assertEquals(Integer.valueOf(7), attributeOverride.getColumn().getSpecifiedLength());
+		assertEquals(Integer.valueOf(8), attributeOverride.getColumn().getSpecifiedPrecision());
+		assertEquals(Integer.valueOf(9), attributeOverride.getColumn().getSpecifiedScale());
+		
+		attributeOverride = virtualAttributeOverrides.next();
+		assertEquals("basic", attributeOverride.getName());
+		assertEquals("basic", attributeOverride.getColumn().getSpecifiedName());
+		attributeOverride = virtualAttributeOverrides.next();
+		assertEquals("id", attributeOverride.getName());
 		attributeOverride = virtualAttributeOverrides.next();
 		assertEquals("name", attributeOverride.getName());
-		assertEquals("name", attributeOverride.getColumn().getSpecifiedName());
-		attributeOverride = virtualAttributeOverrides.next();
-		assertEquals("foo", attributeOverride.getName());
 		
-		persistentType2.getAttributeNamed("name").makeSpecified();
-		OrmBasicMapping basicMapping = (OrmBasicMapping) persistentType2.getAttributeNamed("name").getMapping();
+		persistentType2.getAttributeNamed("basic").makeSpecified();
+		OrmBasicMapping basicMapping = (OrmBasicMapping) persistentType2.getAttributeNamed("basic").getMapping();
 		basicMapping.getColumn().setSpecifiedName("MY_NAME");
+		basicMapping.getColumn().setSpecifiedTable("BAR");
+		basicMapping.getColumn().setColumnDefinition("COLUMN_DEF");
+		basicMapping.getColumn().setSpecifiedInsertable(Boolean.FALSE);
+		basicMapping.getColumn().setSpecifiedUpdatable(Boolean.FALSE);
+		basicMapping.getColumn().setSpecifiedUnique(Boolean.TRUE);
+		basicMapping.getColumn().setSpecifiedNullable(Boolean.FALSE);
+		basicMapping.getColumn().setSpecifiedLength(Integer.valueOf(5));
+		basicMapping.getColumn().setSpecifiedPrecision(Integer.valueOf(6));
+		basicMapping.getColumn().setSpecifiedScale(Integer.valueOf(7));
+
 		
-		assertEquals(3, entity.virtualAttributeOverridesSize());
+		
+		assertEquals(4, entity.virtualAttributeOverridesSize());
 		virtualAttributeOverrides = entity.virtualAttributeOverrides();
 		attributeOverride = virtualAttributeOverrides.next();
-		assertEquals("name", attributeOverride.getName());
+		assertEquals("basic", attributeOverride.getName());
 		assertEquals("MY_NAME", attributeOverride.getColumn().getSpecifiedName());
-		attributeOverride = virtualAttributeOverrides.next();
-		assertEquals("id", attributeOverride.getName());
-		assertEquals("FOO", attributeOverride.getColumn().getSpecifiedName());//TODO specified or default?
+		assertEquals("BAR", attributeOverride.getColumn().getTable());
+		assertEquals("COLUMN_DEF", attributeOverride.getColumn().getColumnDefinition());
+		assertEquals(false, attributeOverride.getColumn().isInsertable());
+		assertEquals(false, attributeOverride.getColumn().isUpdatable());
+		assertEquals(true, attributeOverride.getColumn().isUnique());
+		assertEquals(false, attributeOverride.getColumn().isNullable());
+		assertEquals(5, attributeOverride.getColumn().getLength());
+		assertEquals(6, attributeOverride.getColumn().getPrecision());
+		assertEquals(7, attributeOverride.getColumn().getScale());
+
 		attributeOverride = virtualAttributeOverrides.next();
 		assertEquals("foo", attributeOverride.getName());
+		assertEquals("FOO", attributeOverride.getColumn().getSpecifiedName());//TODO specified or default?
+		assertEquals("BAR", attributeOverride.getColumn().getSpecifiedTable());
+		assertEquals("COLUMN_DEF", attributeOverride.getColumn().getColumnDefinition());
+		assertEquals(Boolean.FALSE, attributeOverride.getColumn().getSpecifiedInsertable());
+		assertEquals(Boolean.FALSE, attributeOverride.getColumn().getSpecifiedUpdatable());
+		assertEquals(Boolean.TRUE, attributeOverride.getColumn().getSpecifiedUnique());
+		assertEquals(Boolean.FALSE, attributeOverride.getColumn().getSpecifiedNullable());
+		assertEquals(Integer.valueOf(7), attributeOverride.getColumn().getSpecifiedLength());
+		assertEquals(Integer.valueOf(8), attributeOverride.getColumn().getSpecifiedPrecision());
+		assertEquals(Integer.valueOf(9), attributeOverride.getColumn().getSpecifiedScale());
+		attributeOverride = virtualAttributeOverrides.next();
+		assertEquals("id", attributeOverride.getName());
 	}
 	
 	public void testVirtualAttributeOverridesNoJavaEntity() throws Exception {
@@ -1671,14 +1784,16 @@ public class OrmEntityTests extends ContextModelTestCase
 		OrmEntity entity = (OrmEntity) persistentType.getMapping();
 		
 		persistentType.getJavaPersistentType().setMappingKey(MappingKeys.NULL_TYPE_MAPPING_KEY);
-		assertEquals(3, entity.virtualAttributeOverridesSize());
+		assertEquals(4, entity.virtualAttributeOverridesSize());
 		ListIterator<OrmAttributeOverride> virtualAttributeOverrides = entity.virtualAttributeOverrides();
 		OrmAttributeOverride attributeOverride = virtualAttributeOverrides.next();
+		assertEquals("foo", attributeOverride.getName());
+		attributeOverride = virtualAttributeOverrides.next();
+		assertEquals("basic", attributeOverride.getName());
+		attributeOverride = virtualAttributeOverrides.next();
 		assertEquals("id", attributeOverride.getName());
 		attributeOverride = virtualAttributeOverrides.next();
 		assertEquals("name", attributeOverride.getName());
-		attributeOverride = virtualAttributeOverrides.next();
-		assertEquals("foo", attributeOverride.getName());
 	}
 	
 	public void testAttributeOverrideColumnDefaults() throws Exception {
@@ -1693,20 +1808,20 @@ public class OrmEntityTests extends ContextModelTestCase
 		entity.virtualAttributeOverrides().next().setVirtual(false);
 		
 		OrmAttributeOverride attributeOverride = entity.specifiedAttributeOverrides().next();
-		assertEquals("id", attributeOverride.getColumn().getDefaultName());
+		assertEquals("foo", attributeOverride.getColumn().getDefaultName());
 		assertEquals(CHILD_TYPE_NAME, attributeOverride.getColumn().getDefaultTable());
 		
 		((JavaEntity) persistentType.getJavaPersistentType().getMapping()).getTable().setSpecifiedName("FOO");
-		assertEquals("id", attributeOverride.getColumn().getDefaultName());
+		assertEquals("foo", attributeOverride.getColumn().getDefaultName());
 		assertEquals("FOO", attributeOverride.getColumn().getDefaultTable());
 		
 		entity.setSpecifiedMetadataComplete(Boolean.TRUE);
-		assertEquals("id", attributeOverride.getColumn().getDefaultName());
+		assertEquals("foo", attributeOverride.getColumn().getDefaultName());
 		assertEquals(CHILD_TYPE_NAME, attributeOverride.getColumn().getDefaultTable());
 		
 		entity.setSpecifiedMetadataComplete(Boolean.FALSE);
 		entity.getTable().setSpecifiedName("BAR");
-		assertEquals("id", attributeOverride.getColumn().getDefaultName());
+		assertEquals("foo", attributeOverride.getColumn().getDefaultName());
 		assertEquals("BAR", attributeOverride.getColumn().getDefaultTable());
 	}
 	
@@ -1751,9 +1866,10 @@ public class OrmEntityTests extends ContextModelTestCase
 		OrmEntity entity = (OrmEntity) persistentType.getMapping();
 	
 		Iterator<PersistentAttribute> overridableAttributes = entity.allOverridableAttributes();
+		assertEquals("foo", overridableAttributes.next().getName());
+		assertEquals("basic", overridableAttributes.next().getName());
 		assertEquals("id", overridableAttributes.next().getName());
 		assertEquals("name", overridableAttributes.next().getName());
-		assertEquals("foo", overridableAttributes.next().getName());
 		assertFalse(overridableAttributes.hasNext());
 	}
 
@@ -1776,7 +1892,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		assertFalse(overridableAttributes.hasNext());
 	}
 	
-	public void testDefaultAttributeOverridesEntityHierachy() throws Exception {
+	public void testVirtualAttributeOverridesEntityHierachy() throws Exception {
 		createTestAbstractEntityTablePerClass();
 		createTestSubType();
 		
@@ -1901,7 +2017,245 @@ public class OrmEntityTests extends ContextModelTestCase
 		entityResource.getAssociationOverrides().remove(0);
 		assertFalse(ormEntity.specifiedAssociationOverrides().hasNext());
 	}
+	
+	public void testVirtualAssociationOverrides() throws Exception {
+		createTestMappedSuperclass();
+		createTestSubType();
+		OrmPersistentType persistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_CHILD_TYPE_NAME);
+		OrmPersistentType persistentType2 = getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		
+		
+		OrmEntity entity = (OrmEntity) persistentType.getMapping();
+		
+		assertEquals(2, entity.virtualAssociationOverridesSize());
+		ListIterator<OrmAssociationOverride> virtualAssociationOverrides = entity.virtualAssociationOverrides();
+		OrmAssociationOverride associationOverride = virtualAssociationOverrides.next();
+		assertEquals("oneToOne", associationOverride.getName());
+		assertEquals(1, associationOverride.joinColumnsSize());
+		OrmJoinColumn joinColumn = associationOverride.joinColumns().next();
+		assertEquals("oneToOne_id", joinColumn.getName());
+		assertEquals("id", joinColumn.getReferencedColumnName());
+		assertEquals(CHILD_TYPE_NAME, joinColumn.getTable());
+		assertEquals(null, joinColumn.getColumnDefinition());
+		assertEquals(true, joinColumn.isInsertable());
+		assertEquals(true, joinColumn.isUpdatable());
+		assertEquals(false, joinColumn.isUnique());
+		assertEquals(true, joinColumn.isNullable());
+		
+		
+		associationOverride = virtualAssociationOverrides.next();
+		assertEquals("manyToOne", associationOverride.getName());
+		assertFalse(virtualAssociationOverrides.hasNext());
 
+		
+		entity.virtualAssociationOverrides().next().setVirtual(false);
+		
+		assertEquals(1, entity.virtualAssociationOverridesSize());
+		virtualAssociationOverrides = entity.virtualAssociationOverrides();
+		associationOverride = virtualAssociationOverrides.next();
+		assertEquals("manyToOne", associationOverride.getName());
+		
+		entity.setSpecifiedMetadataComplete(Boolean.TRUE);
+		assertEquals(1, entity.virtualAssociationOverridesSize());
+		virtualAssociationOverrides = entity.virtualAssociationOverrides();
+		associationOverride = virtualAssociationOverrides.next();
+		assertEquals("manyToOne", associationOverride.getName());
+		
+		entity.specifiedAssociationOverrides().next().setVirtual(true);
+		entity.setSpecifiedMetadataComplete(Boolean.FALSE);
+		entity.getJavaEntity().virtualAssociationOverrides().next().setVirtual(false);
+		JavaAssociationOverride javaAssociationOverride = entity.getJavaEntity().specifiedAssociationOverrides().next();
+		JavaJoinColumn javaJoinColumn = javaAssociationOverride.addSpecifiedJoinColumn(0);
+		javaJoinColumn.setSpecifiedName("FOO");
+		javaJoinColumn.setSpecifiedReferencedColumnName("REFERENCE");
+		javaJoinColumn.setSpecifiedTable("BAR");
+		javaJoinColumn.setColumnDefinition("COLUMN_DEF");
+		javaJoinColumn.setSpecifiedInsertable(Boolean.FALSE);
+		javaJoinColumn.setSpecifiedUpdatable(Boolean.FALSE);
+		javaJoinColumn.setSpecifiedUnique(Boolean.TRUE);
+		javaJoinColumn.setSpecifiedNullable(Boolean.FALSE);
+		
+		assertEquals(2, entity.virtualAssociationOverridesSize());
+		virtualAssociationOverrides = entity.virtualAssociationOverrides();
+		associationOverride = virtualAssociationOverrides.next();
+		assertEquals("oneToOne", associationOverride.getName());
+		OrmJoinColumn ormJoinColumn = associationOverride.joinColumns().next();
+		assertEquals("FOO", ormJoinColumn.getSpecifiedName());
+		assertEquals("REFERENCE", ormJoinColumn.getSpecifiedReferencedColumnName());
+		assertEquals("BAR", ormJoinColumn.getSpecifiedTable());
+		assertEquals("COLUMN_DEF", ormJoinColumn.getColumnDefinition());
+		assertEquals(Boolean.FALSE, ormJoinColumn.getSpecifiedInsertable());
+		assertEquals(Boolean.FALSE, ormJoinColumn.getSpecifiedUpdatable());
+		assertEquals(Boolean.TRUE, ormJoinColumn.getSpecifiedUnique());
+		assertEquals(Boolean.FALSE, ormJoinColumn.getSpecifiedNullable());
+		
+		associationOverride = virtualAssociationOverrides.next();
+		assertEquals("manyToOne", associationOverride.getName());
+		assertEquals(null, associationOverride.joinColumns().next().getSpecifiedName());
+		
+		persistentType2.getAttributeNamed("manyToOne").makeSpecified();
+		OrmManyToOneMapping manyToOneMapping = (OrmManyToOneMapping) persistentType2.getAttributeNamed("manyToOne").getMapping();
+		joinColumn = manyToOneMapping.getRelationshipReference().getJoinColumnJoiningStrategy().addSpecifiedJoinColumn(0);
+		joinColumn.setSpecifiedName("MY_NAME");
+		joinColumn.setSpecifiedReferencedColumnName("MY_REFERNCE_NAME");
+		joinColumn.setSpecifiedTable("BAR2");
+		joinColumn.setColumnDefinition("COLUMN_DEF2");
+		joinColumn.setSpecifiedInsertable(Boolean.FALSE);
+		joinColumn.setSpecifiedUpdatable(Boolean.FALSE);
+		joinColumn.setSpecifiedUnique(Boolean.TRUE);
+		joinColumn.setSpecifiedNullable(Boolean.FALSE);
+
+		
+		
+		assertEquals(2, entity.virtualAssociationOverridesSize());
+		virtualAssociationOverrides = entity.virtualAssociationOverrides();
+		assertEquals("oneToOne", associationOverride.getName());
+		ormJoinColumn = associationOverride.joinColumns().next();
+		assertEquals("FOO", ormJoinColumn.getSpecifiedName());
+		assertEquals("REFERENCE", ormJoinColumn.getSpecifiedReferencedColumnName());
+		assertEquals("BAR", ormJoinColumn.getSpecifiedTable());
+		assertEquals("COLUMN_DEF", ormJoinColumn.getColumnDefinition());
+		assertEquals(Boolean.FALSE, ormJoinColumn.getSpecifiedInsertable());
+		assertEquals(Boolean.FALSE, ormJoinColumn.getSpecifiedUpdatable());
+		assertEquals(Boolean.TRUE, ormJoinColumn.getSpecifiedUnique());
+		assertEquals(Boolean.FALSE, ormJoinColumn.getSpecifiedNullable());
+
+		
+		associationOverride = entity.virtualAssociationOverrides().next();
+		associationOverride = entity.virtualAssociationOverrides().next();
+		assertEquals("manyToOne", associationOverride.getName());
+		ormJoinColumn = associationOverride.joinColumns().next();
+		assertEquals("MY_NAME", ormJoinColumn.getSpecifiedName());
+		assertEquals("MY_REFERNCE_NAME", ormJoinColumn.getSpecifiedReferencedColumnName());
+		assertEquals("BAR2", ormJoinColumn.getSpecifiedTable());
+		assertEquals("COLUMN_DEF2", ormJoinColumn.getColumnDefinition());
+		assertEquals(Boolean.FALSE, ormJoinColumn.getSpecifiedInsertable());
+		assertEquals(Boolean.FALSE, ormJoinColumn.getSpecifiedUpdatable());
+		assertEquals(Boolean.TRUE, ormJoinColumn.getSpecifiedUnique());
+		assertEquals(Boolean.FALSE, ormJoinColumn.getSpecifiedNullable());
+	}
+//TODO
+//	public void testVirtualAssociationOverridesNoJavaEntity() throws Exception {
+//		createTestMappedSuperclass();
+//		createTestSubType();
+//		OrmPersistentType persistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_CHILD_TYPE_NAME);
+//		OrmPersistentType persistentType2 = getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+//		
+//		persistentType.getJavaPersistentType().setMappingKey(MappingKeys.NULL_TYPE_MAPPING_KEY);
+//		persistentType2.getJavaPersistentType().setMappingKey(MappingKeys.NULL_TYPE_MAPPING_KEY);
+//		
+//		persistentType2.getAttributeNamed("oneToOne").setSpecifiedMappingKey(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+//		persistentType2.getAttributeNamed("manyToOne").setSpecifiedMappingKey(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+//			
+//		OrmEntity entity = (OrmEntity) persistentType.getMapping();
+//		
+//		assertEquals(2, entity.virtualAssociationOverridesSize());
+//		ListIterator<OrmAssociationOverride> virtualAssociationOverrides = entity.virtualAssociationOverrides();
+//		OrmAssociationOverride associationOverride = virtualAssociationOverrides.next();
+//		assertEquals("oneToOne", associationOverride.getName());
+//		assertEquals(1, associationOverride.joinColumnsSize());
+//		OrmJoinColumn joinColumn = associationOverride.joinColumns().next();
+//		assertEquals("oneToOne_id", joinColumn.getName());
+//		assertEquals("id", joinColumn.getReferencedColumnName());
+//		assertEquals(CHILD_TYPE_NAME, joinColumn.getTable());
+//		assertEquals(null, joinColumn.getColumnDefinition());
+//		assertEquals(true, joinColumn.isInsertable());
+//		assertEquals(true, joinColumn.isUpdatable());
+//		assertEquals(false, joinColumn.isUnique());
+//		assertEquals(true, joinColumn.isNullable());
+//		
+//		
+//		associationOverride = virtualAssociationOverrides.next();
+//		assertEquals("manyToOne", associationOverride.getName());
+//		assertFalse(virtualAssociationOverrides.hasNext());
+//
+//		
+//		entity.virtualAssociationOverrides().next().setVirtual(false);
+//		
+//		assertEquals(1, entity.virtualAssociationOverridesSize());
+//		virtualAssociationOverrides = entity.virtualAssociationOverrides();
+//		associationOverride = virtualAssociationOverrides.next();
+//		assertEquals("manyToOne", associationOverride.getName());
+//		
+//		entity.setSpecifiedMetadataComplete(Boolean.TRUE);
+//		assertEquals(1, entity.virtualAssociationOverridesSize());
+//		virtualAssociationOverrides = entity.virtualAssociationOverrides();
+//		associationOverride = virtualAssociationOverrides.next();
+//		assertEquals("manyToOne", associationOverride.getName());
+//		
+//		entity.specifiedAssociationOverrides().next().setVirtual(true);
+//		entity.setSpecifiedMetadataComplete(Boolean.FALSE);
+//		entity.getJavaEntity().virtualAssociationOverrides().next().setVirtual(false);
+//		JavaAssociationOverride javaAssociationOverride = entity.getJavaEntity().specifiedAssociationOverrides().next();
+//		JavaJoinColumn javaJoinColumn = javaAssociationOverride.addSpecifiedJoinColumn(0);
+//		javaJoinColumn.setSpecifiedName("FOO");
+//		javaJoinColumn.setSpecifiedReferencedColumnName("REFERENCE");
+//		javaJoinColumn.setSpecifiedTable("BAR");
+//		javaJoinColumn.setColumnDefinition("COLUMN_DEF");
+//		javaJoinColumn.setSpecifiedInsertable(Boolean.FALSE);
+//		javaJoinColumn.setSpecifiedUpdatable(Boolean.FALSE);
+//		javaJoinColumn.setSpecifiedUnique(Boolean.TRUE);
+//		javaJoinColumn.setSpecifiedNullable(Boolean.FALSE);
+//		
+//		assertEquals(2, entity.virtualAssociationOverridesSize());
+//		virtualAssociationOverrides = entity.virtualAssociationOverrides();
+//		associationOverride = virtualAssociationOverrides.next();
+//		assertEquals("oneToOne", associationOverride.getName());
+//		OrmJoinColumn ormJoinColumn = associationOverride.joinColumns().next();
+//		assertEquals("FOO", ormJoinColumn.getSpecifiedName());
+//		assertEquals("REFERENCE", ormJoinColumn.getSpecifiedReferencedColumnName());
+//		assertEquals("BAR", ormJoinColumn.getSpecifiedTable());
+//		assertEquals("COLUMN_DEF", ormJoinColumn.getColumnDefinition());
+//		assertEquals(Boolean.FALSE, ormJoinColumn.getSpecifiedInsertable());
+//		assertEquals(Boolean.FALSE, ormJoinColumn.getSpecifiedUpdatable());
+//		assertEquals(Boolean.TRUE, ormJoinColumn.getSpecifiedUnique());
+//		assertEquals(Boolean.FALSE, ormJoinColumn.getSpecifiedNullable());
+//		
+//		associationOverride = virtualAssociationOverrides.next();
+//		assertEquals("manyToOne", associationOverride.getName());
+//		assertEquals(null, associationOverride.joinColumns().next().getSpecifiedName());
+//		
+//		persistentType2.getAttributeNamed("manyToOne").makeSpecified();
+//		OrmManyToOneMapping manyToOneMapping = (OrmManyToOneMapping) persistentType2.getAttributeNamed("manyToOne").getMapping();
+//		joinColumn = manyToOneMapping.getRelationshipReference().getJoinColumnJoiningStrategy().addSpecifiedJoinColumn(0);
+//		joinColumn.setSpecifiedName("MY_NAME");
+//		joinColumn.setSpecifiedReferencedColumnName("MY_REFERNCE_NAME");
+//		joinColumn.setSpecifiedTable("BAR2");
+//		joinColumn.setColumnDefinition("COLUMN_DEF2");
+//		joinColumn.setSpecifiedInsertable(Boolean.FALSE);
+//		joinColumn.setSpecifiedUpdatable(Boolean.FALSE);
+//		joinColumn.setSpecifiedUnique(Boolean.TRUE);
+//		joinColumn.setSpecifiedNullable(Boolean.FALSE);
+//
+//		
+//		
+//		assertEquals(2, entity.virtualAssociationOverridesSize());
+//		virtualAssociationOverrides = entity.virtualAssociationOverrides();
+//		assertEquals("oneToOne", associationOverride.getName());
+//		ormJoinColumn = associationOverride.joinColumns().next();
+//		assertEquals("FOO", ormJoinColumn.getSpecifiedName());
+//		assertEquals("REFERENCE", ormJoinColumn.getSpecifiedReferencedColumnName());
+//		assertEquals("BAR", ormJoinColumn.getSpecifiedTable());
+//		assertEquals("COLUMN_DEF", ormJoinColumn.getColumnDefinition());
+//		assertEquals(Boolean.FALSE, ormJoinColumn.getSpecifiedInsertable());
+//		assertEquals(Boolean.FALSE, ormJoinColumn.getSpecifiedUpdatable());
+//		assertEquals(Boolean.TRUE, ormJoinColumn.getSpecifiedUnique());
+//		assertEquals(Boolean.FALSE, ormJoinColumn.getSpecifiedNullable());
+//
+//		
+//		associationOverride = entity.virtualAssociationOverrides().next();
+//		associationOverride = entity.virtualAssociationOverrides().next();
+//		assertEquals("manyToOne", associationOverride.getName());
+//		ormJoinColumn = associationOverride.joinColumns().next();
+//		assertEquals("MY_NAME", ormJoinColumn.getSpecifiedName());
+//		assertEquals("MY_REFERNCE_NAME", ormJoinColumn.getSpecifiedReferencedColumnName());
+//		assertEquals("BAR2", ormJoinColumn.getSpecifiedTable());
+//		assertEquals("COLUMN_DEF2", ormJoinColumn.getColumnDefinition());
+//		assertEquals(Boolean.FALSE, ormJoinColumn.getSpecifiedInsertable());
+//		assertEquals(Boolean.FALSE, ormJoinColumn.getSpecifiedUpdatable());
+//		assertEquals(Boolean.TRUE, ormJoinColumn.getSpecifiedUnique());
+//		assertEquals(Boolean.FALSE, ormJoinColumn.getSpecifiedNullable());
+//	}
 	
 	public void testAddNamedQuery() throws Exception {
 		OrmPersistentType persistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
@@ -2250,8 +2604,6 @@ public class OrmEntityTests extends ContextModelTestCase
 		OrmPersistentType childPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".AnnotationTestTypeChild");
 		OrmEntity childXmlEntity = (OrmEntity) childPersistentType.getMapping();
 		
-		assertNull(childXmlEntity.getPrimaryKeyColumnName());
-
 		parentPersistentType.getAttributeNamed("id").makeSpecified(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
 		assertEquals("id", childXmlEntity.getPrimaryKeyColumnName());
 		
@@ -2259,12 +2611,12 @@ public class OrmEntityTests extends ContextModelTestCase
 		assertEquals("MY_ID", childXmlEntity.getPrimaryKeyColumnName());
 
 		//TODO once bug 228718 is fixed
-//		OrmAttributeOverride ormAttributeOverride = childXmlEntity.virtualAttributeOverrides().next();
-//		assertEquals("id", ormAttributeOverride.getName());
-//		
-//		ormAttributeOverride = (OrmAttributeOverride) ormAttributeOverride.setVirtual(false);
-//		ormAttributeOverride.getColumn().setSpecifiedName("ID");
-//		assertEquals("ID", childXmlEntity.getPrimaryKeyColumnName());
+		OrmAttributeOverride ormAttributeOverride = childXmlEntity.virtualAttributeOverrides().next();
+		assertEquals("id", ormAttributeOverride.getName());
+		
+		ormAttributeOverride = (OrmAttributeOverride) ormAttributeOverride.setVirtual(false);
+		ormAttributeOverride.getColumn().setSpecifiedName("ID");
+		assertEquals("ID", childXmlEntity.getPrimaryKeyColumnName());
 	}
 
 	

@@ -26,6 +26,7 @@ import org.eclipse.jpt.core.context.DiscriminatorColumn;
 import org.eclipse.jpt.core.context.DiscriminatorType;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.InheritanceType;
+import org.eclipse.jpt.core.context.JoiningStrategy;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
@@ -45,7 +46,6 @@ import org.eclipse.jpt.core.context.java.JavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaQueryContainer;
 import org.eclipse.jpt.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.core.context.java.JavaTable;
-import org.eclipse.jpt.core.internal.resource.java.NullAssociationOverrideAnnotation;
 import org.eclipse.jpt.core.internal.resource.java.NullPrimaryKeyJoinColumnAnnotation;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
@@ -231,7 +231,7 @@ public abstract class AbstractJavaEntity
 		this.initializeSpecifiedAttributeOverrides();
 		this.initializeVirtualAttributeOverrides();
 		this.initializeSpecifiedAssociationOverrides();
-		this.initializeDefaultAssociationOverrides();
+		this.initializeVirtualAssociationOverrides();
 		this.initializeIdClass();
 	}
 	
@@ -279,12 +279,11 @@ public abstract class AbstractJavaEntity
 		}
 	}
 	
-	protected void initializeDefaultAssociationOverrides() {
-		for (Iterator<String> i = allOverridableAssociationNames(); i.hasNext(); ) {
-			String associationName = i.next();
-			JavaAssociationOverride associationOverride = getAssociationOverrideNamed(associationName);
+	protected void initializeVirtualAssociationOverrides() {
+		for (PersistentAttribute persistentAttribute : CollectionTools.iterable(allOverridableAssociations())) {
+			JavaAssociationOverride associationOverride = getAssociationOverrideNamed(persistentAttribute.getName());
 			if (associationOverride == null) {
-				this.virtualAssociationOverrides.add(buildAssociationOverride(new NullAssociationOverrideAnnotation(this.javaResourcePersistentType, associationName)));
+				this.virtualAssociationOverrides.add(buildVirtualAssociationOverride(persistentAttribute));
 			}
 		}
 	}
@@ -982,13 +981,13 @@ public abstract class AbstractJavaEntity
 		String associationOverrideName = associationOverride.getName();
 		//add the virtual attribute override so that I can control the order that change notification is sent.
 		//otherwise when we remove the annotation from java we will get an update and add the attribute override
-		//during the udpate.  This causes the UI to be flaky, since change notification might not occur in the correct order
+		//during the update.  This causes the UI to be flaky, since change notification might not occur in the correct order
 		JavaAssociationOverride virtualAssociationOverride = null;
 		if (associationOverrideName != null) {
-			for (PersistentAttribute persistentAttribute : CollectionTools.iterable(allOverridableAssociations())) {
+			for (PersistentAttribute persistentAttribute : CollectionTools.iterable(allOverridableAttributes())) {
 				if (persistentAttribute.getName().equals(associationOverrideName)) {
-					//store the virtualAssociationOverride so we can fire change notification later
-					virtualAssociationOverride = buildAssociationOverride(new NullAssociationOverrideAnnotation(this.javaResourcePersistentType, associationOverrideName));
+					//store the virtualAttributeOverride so we can fire change notification later
+					virtualAssociationOverride = buildVirtualAssociationOverride(persistentAttribute);
 					this.virtualAssociationOverrides.add(virtualAssociationOverride);
 					break;
 				}
@@ -1016,6 +1015,7 @@ public abstract class AbstractJavaEntity
 		this.virtualAssociationOverrides.remove(virtualIndex);
 
 		newAssociationOverride.setName(oldAssociationOverride.getName());
+//		newAssociationOverride.getColumn().setSpecifiedName(oldAttributeOverride.getColumn().getName());
 		
 		this.fireItemRemoved(VIRTUAL_ASSOCIATION_OVERRIDES_LIST, virtualIndex, oldAssociationOverride);
 		this.fireItemAdded(SPECIFIED_ASSOCIATION_OVERRIDES_LIST, index, newAssociationOverride);		
@@ -1653,16 +1653,23 @@ public abstract class AbstractJavaEntity
 		return associationOverride;
 	}
 	
+	protected JavaAssociationOverride buildVirtualAssociationOverride(PersistentAttribute attribute) {
+		return buildAssociationOverride(buildVirtualAssociationOverrideAnnotation(attribute));
+	}
+	
+	protected VirtualAssociationOverrideAnnotation buildVirtualAssociationOverrideAnnotation(PersistentAttribute attribute) {
+		JoiningStrategy joiningStrategy = ((RelationshipMapping) attribute.getMapping()).getRelationshipReference().getPredominantJoiningStrategy();
+		return new VirtualAssociationOverrideAnnotation(this.javaResourcePersistentType, attribute.getName(), joiningStrategy);
+	}
+
 	protected void updateVirtualAssociationOverrides() {
-		for (Iterator<String> i = allOverridableAssociationNames(); i.hasNext(); ) {
-			String associationName = i.next();
-			JavaAssociationOverride associationOverride = getAssociationOverrideNamed(associationName);
+		for (PersistentAttribute persistentAttribute : CollectionTools.iterable(allOverridableAssociations())) {
+			JavaAssociationOverride associationOverride = getAssociationOverrideNamed(persistentAttribute.getName());
 			if (associationOverride == null) {
-				associationOverride = buildAssociationOverride(new NullAssociationOverrideAnnotation(this.javaResourcePersistentType, associationName));
-				addVirtualAssociationOverride(associationOverride);
+				addVirtualAssociationOverride(buildVirtualAssociationOverride(persistentAttribute));
 			}
 			else if (associationOverride.isVirtual()) {
-				associationOverride.update(new NullAssociationOverrideAnnotation(this.javaResourcePersistentType, associationName));
+				associationOverride.update(buildVirtualAssociationOverrideAnnotation(persistentAttribute));
 			}
 		}
 		
