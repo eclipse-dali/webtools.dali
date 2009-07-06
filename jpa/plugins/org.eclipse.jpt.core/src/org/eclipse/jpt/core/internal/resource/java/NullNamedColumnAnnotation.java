@@ -28,6 +28,10 @@ public abstract class NullNamedColumnAnnotation
 		super(parent);
 	}
 
+	public boolean isSpecified() {
+		return false;
+	}
+
 	protected abstract NamedColumnAnnotation addAnnotation();
 
 	// ***** name

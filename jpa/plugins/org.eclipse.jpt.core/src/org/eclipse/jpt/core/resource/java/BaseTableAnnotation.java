@@ -29,6 +29,12 @@ import org.eclipse.jpt.core.utility.TextRange;
 public interface BaseTableAnnotation
 	extends Annotation
 {
+	
+	/**
+	 * Return true if the table annotation exists in Java, false if it does not.
+	 */
+	boolean isSpecified();
+	
 	/**
 	 * Corresponds to the 'name' element of the *Table annotation.
 	 * Return null if the element does not exist in Java.

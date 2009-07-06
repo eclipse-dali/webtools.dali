@@ -102,6 +102,10 @@ abstract class SourceNamedColumnAnnotation
 
 	// ********** NamedColumn implementation **********
 
+	public boolean isSpecified() {
+		return true;
+	}
+
 	// ***** name
 	public String getName() {
 		return this.name;

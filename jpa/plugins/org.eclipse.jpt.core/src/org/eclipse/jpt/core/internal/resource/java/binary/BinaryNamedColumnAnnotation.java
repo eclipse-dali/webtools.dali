@@ -50,6 +50,10 @@ abstract class BinaryNamedColumnAnnotation
 
 	// ********** NamedColumn implementation **********
 
+	public boolean isSpecified() {
+		return true;
+	}
+
 	// ***** name
 	public String getName() {
 		return this.name;

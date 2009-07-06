@@ -32,7 +32,10 @@ public abstract class NullBaseTableAnnotation
 	
 	protected abstract BaseTableAnnotation addAnnotation();
 
-
+	public boolean isSpecified() {
+		return false;
+	}
+	
 	// ***** name
 	public String getName() {
 		return null;

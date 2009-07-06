@@ -29,6 +29,11 @@ public interface NamedColumnAnnotation
 	extends Annotation
 {
 	/**
+	 * Return true if the annotation exists in Java, false if it does not.
+	 */
+	boolean isSpecified();
+
+	/**
 	 * Corresponds to the 'name' element of the *Column annotation.
 	 * Return null if the element does not exist in Java.
 	 */
