@@ -31,8 +31,8 @@ public final class NullBasicAnnotation
 	}
 
 	@Override
-	protected BasicAnnotation buildMappingAnnotation() {
-		return (BasicAnnotation) super.buildMappingAnnotation();
+	protected BasicAnnotation setMappingAnnotation() {
+		return (BasicAnnotation) super.setMappingAnnotation();
 	}
 
 	// ***** fetch
@@ -42,7 +42,7 @@ public final class NullBasicAnnotation
 
 	public void setFetch(FetchType fetch) {
 		if (fetch != null) {
-			this.buildMappingAnnotation().setFetch(fetch);
+			this.setMappingAnnotation().setFetch(fetch);
 		}
 	}
 
@@ -57,7 +57,7 @@ public final class NullBasicAnnotation
 
 	public void setOptional(Boolean optional) {
 		if (optional != null) {
-			this.buildMappingAnnotation().setOptional(optional);
+			this.setMappingAnnotation().setOptional(optional);
 		}
 	}
 

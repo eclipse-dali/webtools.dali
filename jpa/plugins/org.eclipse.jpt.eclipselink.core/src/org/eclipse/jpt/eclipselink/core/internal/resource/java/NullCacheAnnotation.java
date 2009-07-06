@@ -35,8 +35,8 @@ public class NullCacheAnnotation
 	}
 
 	@Override
-	protected CacheAnnotation buildSupportingAnnotation() {
-		return (CacheAnnotation) super.buildSupportingAnnotation();
+	protected CacheAnnotation addSupportingAnnotation() {
+		return (CacheAnnotation) super.addSupportingAnnotation();
 	}
 
 	// ***** type
@@ -46,7 +46,7 @@ public class NullCacheAnnotation
 
 	public void setType(CacheType type) {
 		if (type != null) {
-			this.buildSupportingAnnotation().setType(type);
+			this.addSupportingAnnotation().setType(type);
 		}
 	}
 
@@ -61,7 +61,7 @@ public class NullCacheAnnotation
 
 	public void setSize(Integer size) {
 		if (size != null) {
-			this.buildSupportingAnnotation().setSize(size);
+			this.addSupportingAnnotation().setSize(size);
 		}
 	}
 
@@ -76,7 +76,7 @@ public class NullCacheAnnotation
 
 	public void setShared(Boolean shared) {
 		if (shared != null) {
-			this.buildSupportingAnnotation().setShared(shared);
+			this.addSupportingAnnotation().setShared(shared);
 		}
 	}
 
@@ -91,7 +91,7 @@ public class NullCacheAnnotation
 
 	public void setExpiry(Integer expiry) {
 		if (expiry != null) {
-			this.buildSupportingAnnotation().setExpiry(expiry);
+			this.addSupportingAnnotation().setExpiry(expiry);
 		}
 	}
 
@@ -105,7 +105,7 @@ public class NullCacheAnnotation
 	}
 
 	public TimeOfDayAnnotation addExpiryTimeOfDay() {
-		return this.buildSupportingAnnotation().addExpiryTimeOfDay();
+		return this.addSupportingAnnotation().addExpiryTimeOfDay();
 	}
 
 	public void removeExpiryTimeOfDay() {
@@ -123,7 +123,7 @@ public class NullCacheAnnotation
 
 	public void setAlwaysRefresh(Boolean alwaysRefresh) {
 		if (alwaysRefresh != null) {
-			this.buildSupportingAnnotation().setAlwaysRefresh(alwaysRefresh);
+			this.addSupportingAnnotation().setAlwaysRefresh(alwaysRefresh);
 		}
 	}
 
@@ -138,7 +138,7 @@ public class NullCacheAnnotation
 
 	public void setRefreshOnlyIfNewer(Boolean refreshOnlyIfNewer) {
 		if (refreshOnlyIfNewer != null) {
-			this.buildSupportingAnnotation().setRefreshOnlyIfNewer(refreshOnlyIfNewer);
+			this.addSupportingAnnotation().setRefreshOnlyIfNewer(refreshOnlyIfNewer);
 		}
 	}
 
@@ -153,7 +153,7 @@ public class NullCacheAnnotation
 
 	public void setDisableHits(Boolean disableHits) {
 		if (disableHits != null) {
-			this.buildSupportingAnnotation().setDisableHits(disableHits);
+			this.addSupportingAnnotation().setDisableHits(disableHits);
 		}
 	}
 
@@ -168,7 +168,7 @@ public class NullCacheAnnotation
 
 	public void setCoordinationType(CacheCoordinationType coordinationType) {
 		if (coordinationType != null) {
-			this.buildSupportingAnnotation().setCoordinationType(coordinationType);
+			this.addSupportingAnnotation().setCoordinationType(coordinationType);
 		}
 	}
 

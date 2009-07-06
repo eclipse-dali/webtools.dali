@@ -28,8 +28,8 @@ public abstract class NullOwnableRelationshipMappingAnnotation
 	}
 
 	@Override
-	protected OwnableRelationshipMappingAnnotation buildMappingAnnotation() {
-		return (OwnableRelationshipMappingAnnotation) super.buildMappingAnnotation();
+	protected OwnableRelationshipMappingAnnotation setMappingAnnotation() {
+		return (OwnableRelationshipMappingAnnotation) super.setMappingAnnotation();
 	}
 
 	// ***** target entity
@@ -39,7 +39,7 @@ public abstract class NullOwnableRelationshipMappingAnnotation
 
 	public void setTargetEntity(String targetEntity) {
 		if (targetEntity != null) {
-			this.buildMappingAnnotation().setTargetEntity(targetEntity);
+			this.setMappingAnnotation().setTargetEntity(targetEntity);
 		}
 	}
 
@@ -59,7 +59,7 @@ public abstract class NullOwnableRelationshipMappingAnnotation
 
 	public void setMappedBy(String mappedBy) {
 		if (mappedBy != null) {
-			this.buildMappingAnnotation().setMappedBy(mappedBy);
+			this.setMappingAnnotation().setMappedBy(mappedBy);
 		}
 	}
 
@@ -78,7 +78,7 @@ public abstract class NullOwnableRelationshipMappingAnnotation
 
 	public void setFetch(FetchType fetch) {
 		if (fetch != null) {
-			this.buildMappingAnnotation().setFetch(fetch);
+			this.setMappingAnnotation().setFetch(fetch);
 		}
 	}
 
@@ -92,7 +92,7 @@ public abstract class NullOwnableRelationshipMappingAnnotation
 	}
 
 	public void setCascadeAll(boolean all) {
-		this.buildMappingAnnotation().setCascadeAll(all);
+		this.setMappingAnnotation().setCascadeAll(all);
 	}
 
 	// ***** cascade merge
@@ -101,7 +101,7 @@ public abstract class NullOwnableRelationshipMappingAnnotation
 	}
 
 	public void setCascadeMerge(boolean merge) {
-		this.buildMappingAnnotation().setCascadeMerge(merge);
+		this.setMappingAnnotation().setCascadeMerge(merge);
 	}
 
 	// ***** cascade persist
@@ -110,7 +110,7 @@ public abstract class NullOwnableRelationshipMappingAnnotation
 	}
 
 	public void setCascadePersist(boolean persist) {
-		this.buildMappingAnnotation().setCascadePersist(persist);
+		this.setMappingAnnotation().setCascadePersist(persist);
 	}
 
 	// ***** cascade refresh
@@ -119,7 +119,7 @@ public abstract class NullOwnableRelationshipMappingAnnotation
 	}
 
 	public void setCascadeRefresh(boolean refresh) {
-		this.buildMappingAnnotation().setCascadeRefresh(refresh);
+		this.setMappingAnnotation().setCascadeRefresh(refresh);
 	}
 
 	// ***** cascade remove
@@ -128,7 +128,7 @@ public abstract class NullOwnableRelationshipMappingAnnotation
 	}
 
 	public void setCascadeRemove(boolean remove) {
-		this.buildMappingAnnotation().setCascadeRemove(remove);
+		this.setMappingAnnotation().setCascadeRemove(remove);
 	}
 
 	public TextRange getCascadeTextRange(CompilationUnit astRoot) {

@@ -48,6 +48,7 @@ public class ClassRefItemLabelProvider extends AbstractItemLabelProvider
 	
 	@Override
 	protected PropertyValueModel<String> buildDescriptionModel() {
+		//TODO also need to listen to the PersistenceUnit name property since this value depends on it
 		return new PropertyAspectAdapter<ClassRef, String>(ClassRef.CLASS_NAME_PROPERTY, (ClassRef) model()) {
 			@Override
 			protected String buildValue_() {

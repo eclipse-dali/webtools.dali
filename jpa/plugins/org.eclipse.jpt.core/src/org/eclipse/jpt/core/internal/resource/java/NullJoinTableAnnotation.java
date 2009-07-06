@@ -33,7 +33,7 @@ public class NullJoinTableAnnotation
 
 	@Override
 	protected JoinTableAnnotation buildAnnotation() {
-		return (JoinTableAnnotation) this.buildSupportingAnnotation();
+		return (JoinTableAnnotation) this.addSupportingAnnotation();
 	}
 
 	// ***** join columns

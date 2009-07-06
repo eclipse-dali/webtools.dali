@@ -33,8 +33,8 @@ public class NullAccessAnnotation
 	}
 
 	@Override
-	protected AccessAnnotation buildSupportingAnnotation() {
-		return (AccessAnnotation) super.buildSupportingAnnotation();
+	protected AccessAnnotation addSupportingAnnotation() {
+		return (AccessAnnotation) super.addSupportingAnnotation();
 	}
 	
 	// ***** value
@@ -44,7 +44,7 @@ public class NullAccessAnnotation
 	
 	public void setValue(AccessType value) {
 		if (value != null) {
-			this.buildSupportingAnnotation().setValue(value);
+			this.addSupportingAnnotation().setValue(value);
 		}
 	}
 

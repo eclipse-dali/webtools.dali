@@ -52,8 +52,8 @@ public final class VirtualAssociationOverrideAnnotation
 	}
 
 	@Override
-	protected AssociationOverrideAnnotation buildSupportingAnnotation() {
-		return (AssociationOverrideAnnotation) super.buildSupportingAnnotation();
+	protected AssociationOverrideAnnotation addSupportingAnnotation() {
+		return (AssociationOverrideAnnotation) super.addSupportingAnnotation();
 	}
 
 	// ***** join columns

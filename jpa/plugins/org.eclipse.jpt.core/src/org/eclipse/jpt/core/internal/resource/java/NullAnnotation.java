@@ -70,7 +70,7 @@ public abstract class NullAnnotation
 	 * Pre-condition: The annotation's parent must be a persistent member
 	 * (type or attribute).
 	 */
-	protected Annotation buildMappingAnnotation() {
+	protected Annotation setMappingAnnotation() {
 		return this.getMember().setMappingAnnotation(this.getAnnotationName());
 	}
 
@@ -80,7 +80,7 @@ public abstract class NullAnnotation
 	 * Pre-condition: The annotation's parent must be a persistent member
 	 * (type or attribute).
 	 */
-	protected Annotation buildSupportingAnnotation() {
+	protected Annotation addSupportingAnnotation() {
 		return this.getMember().addSupportingAnnotation(this.getAnnotationName());
 	}
 	

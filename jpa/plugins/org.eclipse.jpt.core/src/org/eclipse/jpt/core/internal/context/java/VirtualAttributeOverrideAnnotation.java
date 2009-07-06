@@ -34,8 +34,8 @@ public class VirtualAttributeOverrideAnnotation
 	}
 
 	@Override
-	protected AttributeOverrideAnnotation buildSupportingAnnotation() {
-		return (AttributeOverrideAnnotation) super.buildSupportingAnnotation();
+	protected AttributeOverrideAnnotation addSupportingAnnotation() {
+		return (AttributeOverrideAnnotation) super.addSupportingAnnotation();
 	}
 
 	// ****** column

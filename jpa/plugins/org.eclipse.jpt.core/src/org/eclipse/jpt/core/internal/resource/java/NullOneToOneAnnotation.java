@@ -30,8 +30,8 @@ public final class NullOneToOneAnnotation
 	}
 
 	@Override
-	protected OneToOneAnnotation buildMappingAnnotation() {
-		return (OneToOneAnnotation) super.buildMappingAnnotation();
+	protected OneToOneAnnotation setMappingAnnotation() {
+		return (OneToOneAnnotation) super.setMappingAnnotation();
 	}
 
 	// ***** optional
@@ -41,7 +41,7 @@ public final class NullOneToOneAnnotation
 
 	public void setOptional(Boolean optional) {
 		if (optional != null) {
-			this.buildMappingAnnotation().setOptional(optional);
+			this.setMappingAnnotation().setOptional(optional);
 		}
 	}
 

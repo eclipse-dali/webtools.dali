@@ -32,8 +32,8 @@ public class NullJoinFetchAnnotation
 	}
 
 	@Override
-	protected JoinFetchAnnotation buildSupportingAnnotation() {
-		return (JoinFetchAnnotation) super.buildSupportingAnnotation();
+	protected JoinFetchAnnotation addSupportingAnnotation() {
+		return (JoinFetchAnnotation) super.addSupportingAnnotation();
 	}
 
 	// ***** value
@@ -43,7 +43,7 @@ public class NullJoinFetchAnnotation
 
 	public void setValue(JoinFetchType value) {
 		if (value != null) {
-			this.buildSupportingAnnotation().setValue(value);
+			this.addSupportingAnnotation().setValue(value);
 		}
 	}
 

@@ -29,8 +29,8 @@ public class NullVariableOneToOneAnnotation
 	}
 	
 	@Override
-	protected VariableOneToOneAnnotation buildMappingAnnotation() {
-		return (VariableOneToOneAnnotation) super.buildMappingAnnotation();
+	protected VariableOneToOneAnnotation setMappingAnnotation() {
+		return (VariableOneToOneAnnotation) super.setMappingAnnotation();
 	}
 
 }

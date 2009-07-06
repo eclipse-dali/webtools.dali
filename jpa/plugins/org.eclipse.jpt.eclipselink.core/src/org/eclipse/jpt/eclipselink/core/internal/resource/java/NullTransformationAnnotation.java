@@ -32,8 +32,8 @@ public class NullTransformationAnnotation
 	}
 	
 	@Override
-	protected TransformationAnnotation buildMappingAnnotation() {
-		return (TransformationAnnotation) super.buildMappingAnnotation();
+	protected TransformationAnnotation setMappingAnnotation() {
+		return (TransformationAnnotation) super.setMappingAnnotation();
 	}
 
 	// ***** fetch
@@ -43,7 +43,7 @@ public class NullTransformationAnnotation
 	
 	public void setFetch(FetchType fetch) {
 		if (fetch != null) {
-			this.buildMappingAnnotation().setFetch(fetch);
+			this.setMappingAnnotation().setFetch(fetch);
 		}				
 	}
 	
@@ -58,7 +58,7 @@ public class NullTransformationAnnotation
 
 	public void setOptional(Boolean optional) {
 		if (optional != null) {
-			this.buildMappingAnnotation().setOptional(optional);
+			this.setMappingAnnotation().setOptional(optional);
 		}				
 	}
 
