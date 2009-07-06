@@ -123,7 +123,7 @@ public class EclipseLinkDDLGeneratorUi
 			this.project = project;
 		}
 
-		public void run(IProgressMonitor monitor) throws CoreException {
+		public void run(IProgressMonitor monitor) {
 			String projectLocation = this.project.getProject().getLocation().toString();
 			try {
 				EclipseLinkDDLGenerator.generate(this.puName, this.project, projectLocation, monitor);
