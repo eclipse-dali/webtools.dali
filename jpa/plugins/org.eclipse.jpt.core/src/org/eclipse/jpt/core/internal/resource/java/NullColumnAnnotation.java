@@ -30,7 +30,7 @@ public class NullColumnAnnotation
 	}
 
 	@Override
-	protected ColumnAnnotation buildAnnotation() {
+	protected ColumnAnnotation addAnnotation() {
 		return (ColumnAnnotation) this.addSupportingAnnotation();
 	}
 
@@ -41,7 +41,7 @@ public class NullColumnAnnotation
 
 	public void setLength(Integer length) {
 		if (length != null) {
-			this.buildAnnotation().setLength(length);
+			this.addAnnotation().setLength(length);
 		}
 	}
 
@@ -56,7 +56,7 @@ public class NullColumnAnnotation
 
 	public void setScale(Integer scale) {
 		if (scale != null) {
-			this.buildAnnotation().setScale(scale);
+			this.addAnnotation().setScale(scale);
 		}
 	}
 
@@ -71,7 +71,7 @@ public class NullColumnAnnotation
 
 	public void setPrecision(Integer precision) {
 		if (precision != null) {
-			this.buildAnnotation().setPrecision(precision);
+			this.addAnnotation().setPrecision(precision);
 		}
 	}
 

@@ -28,7 +28,7 @@ public class NullWriteTransformerColumnAnnotation
 	}
 	
 	@Override
-	protected ColumnAnnotation buildAnnotation() {
+	protected ColumnAnnotation addAnnotation() {
 		return this.getWriteTransformerAnnotation().addColumn();
 	}
 

@@ -31,7 +31,7 @@ public final class NullPrimaryKeyJoinColumnAnnotation
 	}
 
 	@Override
-	protected NamedColumnAnnotation buildAnnotation() {
+	protected NamedColumnAnnotation addAnnotation() {
 		throw new UnsupportedOperationException();
 	}
 

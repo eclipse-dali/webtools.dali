@@ -28,7 +28,7 @@ public class NullAssociationOverrideJoinTableAnnotation
 	}
 
 	@Override
-	protected JoinTableAnnotation buildAnnotation() {
+	protected JoinTableAnnotation addAnnotation() {
 		return this.getAssociationOverride2_0Annotation().addJoinTable();
 	}
 

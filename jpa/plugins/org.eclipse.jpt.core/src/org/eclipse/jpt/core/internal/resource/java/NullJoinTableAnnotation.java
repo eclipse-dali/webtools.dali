@@ -32,7 +32,7 @@ public class NullJoinTableAnnotation
 	}
 
 	@Override
-	protected JoinTableAnnotation buildAnnotation() {
+	protected JoinTableAnnotation addAnnotation() {
 		return (JoinTableAnnotation) this.addSupportingAnnotation();
 	}
 

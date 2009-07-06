@@ -28,7 +28,7 @@ public abstract class NullNamedColumnAnnotation
 		super(parent);
 	}
 
-	protected abstract NamedColumnAnnotation buildAnnotation();
+	protected abstract NamedColumnAnnotation addAnnotation();
 
 	// ***** name
 	public String getName() {
@@ -37,7 +37,7 @@ public abstract class NullNamedColumnAnnotation
 
 	public void setName(String name) {
 		if (name != null) {
-			this.buildAnnotation().setName(name);
+			this.addAnnotation().setName(name);
 		}	
 	}
 
@@ -56,7 +56,7 @@ public abstract class NullNamedColumnAnnotation
 
 	public void setColumnDefinition(String columnDefinition) {
 		if (columnDefinition != null) {
-			this.buildAnnotation().setColumnDefinition(columnDefinition);
+			this.addAnnotation().setColumnDefinition(columnDefinition);
 		}	
 	}
 

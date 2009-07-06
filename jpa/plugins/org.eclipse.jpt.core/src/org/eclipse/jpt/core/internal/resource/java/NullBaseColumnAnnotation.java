@@ -27,7 +27,7 @@ public abstract class NullBaseColumnAnnotation
 	}
 
 	@Override
-	protected abstract BaseColumnAnnotation buildAnnotation();
+	protected abstract BaseColumnAnnotation addAnnotation();
 
 	// ***** table
 	public String getTable() {
@@ -36,7 +36,7 @@ public abstract class NullBaseColumnAnnotation
 
 	public void setTable(String table) {
 		if (table != null) {
-			this.buildAnnotation().setTable(table);
+			this.addAnnotation().setTable(table);
 		}
 	}
 
@@ -55,7 +55,7 @@ public abstract class NullBaseColumnAnnotation
 
 	public void setUnique(Boolean unique) {
 		if (unique != null) {
-			this.buildAnnotation().setUnique(unique);
+			this.addAnnotation().setUnique(unique);
 		}
 	}
 
@@ -70,7 +70,7 @@ public abstract class NullBaseColumnAnnotation
 
 	public void setUpdatable(Boolean updatable) {
 		if (updatable != null) {
-			this.buildAnnotation().setUpdatable(updatable);
+			this.addAnnotation().setUpdatable(updatable);
 		}
 	}
 
@@ -85,7 +85,7 @@ public abstract class NullBaseColumnAnnotation
 
 	public void setInsertable(Boolean insertable) {
 		if (insertable != null) {
-			this.buildAnnotation().setInsertable(insertable);
+			this.addAnnotation().setInsertable(insertable);
 		}
 	}
 
@@ -100,7 +100,7 @@ public abstract class NullBaseColumnAnnotation
 
 	public void setNullable(Boolean nullable) {
 		if (nullable != null) {
-			this.buildAnnotation().setNullable(nullable);
+			this.addAnnotation().setNullable(nullable);
 		}
 	}
 

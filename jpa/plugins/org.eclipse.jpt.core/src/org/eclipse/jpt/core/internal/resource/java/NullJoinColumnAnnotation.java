@@ -30,7 +30,7 @@ public final class NullJoinColumnAnnotation
 	}
 
 	@Override
-	protected JoinColumnAnnotation buildAnnotation() {
+	protected JoinColumnAnnotation addAnnotation() {
 		throw new UnsupportedOperationException();
 	}
 

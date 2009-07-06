@@ -27,7 +27,7 @@ public class NullAttributeOverrideColumnAnnotation
 	}
 
 	@Override
-	protected ColumnAnnotation buildAnnotation() {
+	protected ColumnAnnotation addAnnotation() {
 		return this.getAttributeOverrideAnnotation().addColumn();
 	}
 

@@ -29,7 +29,7 @@ public final class NullDiscriminatorColumnAnnotation
 	}
 
 	@Override
-	protected DiscriminatorColumnAnnotation buildAnnotation() {
+	protected DiscriminatorColumnAnnotation addAnnotation() {
 		return (DiscriminatorColumnAnnotation) this.addSupportingAnnotation();
 	}
 
@@ -40,7 +40,7 @@ public final class NullDiscriminatorColumnAnnotation
 
 	public void setDiscriminatorType(DiscriminatorType discriminatorType) {
 		if (discriminatorType != null) {
-			this.buildAnnotation().setDiscriminatorType(discriminatorType);
+			this.addAnnotation().setDiscriminatorType(discriminatorType);
 		}
 	}
 
@@ -51,7 +51,7 @@ public final class NullDiscriminatorColumnAnnotation
 
 	public void setLength(Integer length) {
 		if (length != null) {
-			this.buildAnnotation().setLength(length);
+			this.addAnnotation().setLength(length);
 		}
 	}
 

@@ -34,7 +34,7 @@ public final class VirtualAssociationOverrideJoinColumnAnnotation extends NullBa
 	}
 
 	@Override
-	protected JoinColumnAnnotation buildAnnotation() {
+	protected JoinColumnAnnotation addAnnotation() {
 		throw new UnsupportedOperationException();
 	}
 

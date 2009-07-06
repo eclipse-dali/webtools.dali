@@ -24,7 +24,7 @@ public final class NullTableAnnotation
 	}
 
 	@Override
-	protected TableAnnotation buildAnnotation() {
+	protected TableAnnotation addAnnotation() {
 		return (TableAnnotation) addSupportingAnnotation();
 	}
 	

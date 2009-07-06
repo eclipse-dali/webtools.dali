@@ -30,7 +30,7 @@ public abstract class NullBaseTableAnnotation
 		super(parent);
 	}
 	
-	protected abstract BaseTableAnnotation buildAnnotation();
+	protected abstract BaseTableAnnotation addAnnotation();
 
 
 	// ***** name
@@ -40,7 +40,7 @@ public abstract class NullBaseTableAnnotation
 
 	public void setName(String name) {
 		if (name != null) {
-			this.buildAnnotation().setName(name);
+			this.addAnnotation().setName(name);
 		}
 	}
 
@@ -59,7 +59,7 @@ public abstract class NullBaseTableAnnotation
 
 	public void setSchema(String schema) {
 		if (schema != null) {
-			this.buildAnnotation().setSchema(schema);
+			this.addAnnotation().setSchema(schema);
 		}
 	}
 
@@ -78,7 +78,7 @@ public abstract class NullBaseTableAnnotation
 
 	public void setCatalog(String catalog) {
 		if (catalog != null) {
-			this.buildAnnotation().setCatalog(catalog);
+			this.addAnnotation().setCatalog(catalog);
 		}
 	}
 
@@ -108,7 +108,7 @@ public abstract class NullBaseTableAnnotation
 	}
 
 	public UniqueConstraintAnnotation addUniqueConstraint(int index) {
-		return this.buildAnnotation().addUniqueConstraint(index);
+		return this.addAnnotation().addUniqueConstraint(index);
 	}
 
 	public void moveUniqueConstraint(int targetIndex, int sourceIndex) {
