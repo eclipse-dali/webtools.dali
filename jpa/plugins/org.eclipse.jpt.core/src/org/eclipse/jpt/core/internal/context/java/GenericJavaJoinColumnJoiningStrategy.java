@@ -9,10 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Vector;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
@@ -49,13 +49,12 @@ public class GenericJavaJoinColumnJoiningStrategy
 	
 	protected JavaJoinColumn defaultJoinColumn;
 	
-	protected final List<JavaJoinColumn> specifiedJoinColumns;
+	protected final Vector<JavaJoinColumn> specifiedJoinColumns = new Vector<JavaJoinColumn>();
 	protected final JavaJoinColumn.Owner joinColumnOwner;
 	
 	
 	public GenericJavaJoinColumnJoiningStrategy(JavaJoinColumnEnabledRelationshipReference parent) {
 		super(parent);
-		this.specifiedJoinColumns = new ArrayList<JavaJoinColumn>();
 		this.joinColumnOwner = this.buildJoinColumnOwner();
 	}
 	
@@ -472,7 +471,7 @@ public class GenericJavaJoinColumnJoiningStrategy
 		}
 		
 		public String getDefaultColumnName() {
-			// TODO Auto-generated method stub
+			//built in MappingTools.buildJoinColumnDefaultName()
 			return null;
 		}
 		

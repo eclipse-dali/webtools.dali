@@ -30,6 +30,7 @@ import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
+import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 
 public class GenericOrmAssociationOverride extends AbstractXmlContextNode
 	implements OrmAssociationOverride
@@ -42,8 +43,6 @@ public class GenericOrmAssociationOverride extends AbstractXmlContextNode
 
 	protected final Vector<OrmJoinColumn> specifiedJoinColumns = new Vector<OrmJoinColumn>();
 	protected final OrmJoinColumn.Owner joinColumnOwner;
-
-	protected final Vector<OrmJoinColumn> defaultJoinColumns = new Vector<OrmJoinColumn>();
 
 
 	public GenericOrmAssociationOverride(XmlContextNode parent, AssociationOverride.Owner owner, XmlAssociationOverride xmlAssociationOverride) {
@@ -95,11 +94,11 @@ public class GenericOrmAssociationOverride extends AbstractXmlContextNode
 	}
 	
 	public ListIterator<OrmJoinColumn> defaultJoinColumns() {
-		return new CloneListIterator<OrmJoinColumn>(this.defaultJoinColumns);
+		return EmptyListIterator.instance();
 	}
 	
 	public int defaultJoinColumnsSize() {
-		return this.defaultJoinColumns.size();
+		return 0;
 	}
 	
 	public ListIterator<OrmJoinColumn> specifiedJoinColumns() {
@@ -212,6 +211,7 @@ public class GenericOrmAssociationOverride extends AbstractXmlContextNode
 		}
 		
 		public String getDefaultColumnName() {
+			//built in MappingTools.buildJoinColumnDefaultName()
 			return null;
 		}
 		
@@ -253,7 +253,7 @@ public class GenericOrmAssociationOverride extends AbstractXmlContextNode
 		}
 		
 		public boolean isVirtual(BaseJoinColumn joinColumn) {
-			return GenericOrmAssociationOverride.this.defaultJoinColumns.contains(joinColumn);
+			return false;
 		}
 
 		public int joinColumnsSize() {

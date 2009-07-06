@@ -9,11 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.ListIterator;
-
+import java.util.Vector;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.Entity;
@@ -41,14 +39,13 @@ public class GenericJavaPrimaryKeyJoinColumnJoiningStrategy
 {
 	protected JavaResourcePersistentAttribute resourcePersistentAttribute;
 	
-	protected final List<JavaPrimaryKeyJoinColumn> primaryKeyJoinColumns;
+	protected final Vector<JavaPrimaryKeyJoinColumn> primaryKeyJoinColumns = new Vector<JavaPrimaryKeyJoinColumn>();
 	protected final JavaJoinColumn.Owner joinColumnOwner;
 	
 	
 	public GenericJavaPrimaryKeyJoinColumnJoiningStrategy(
 			JavaPrimaryKeyJoinColumnEnabledRelationshipReference parent) {
 		super(parent);
-		this.primaryKeyJoinColumns = new ArrayList<JavaPrimaryKeyJoinColumn>();
 		this.joinColumnOwner = this.buildJoinColumnOwner();
 	}
 	

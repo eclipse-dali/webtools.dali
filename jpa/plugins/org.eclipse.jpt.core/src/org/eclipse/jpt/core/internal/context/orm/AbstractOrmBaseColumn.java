@@ -262,7 +262,7 @@ public abstract class AbstractOrmBaseColumn<T extends AbstractXmlColumn> extends
 	protected void initialize(T column) {
 		super.initialize(column);
 		this.specifiedTable = this.getResourceTable(column);
-		this.defaultTable = this.getOwnerDefaultTableName();
+		this.defaultTable = this.buildDefaultTableName();
 		//TODO default from java for all of these settings
 		this.specifiedNullable = this.getResourceNullable(column);
 		this.specifiedUpdatable = this.getResourceUpdatable(column);
@@ -274,7 +274,7 @@ public abstract class AbstractOrmBaseColumn<T extends AbstractXmlColumn> extends
 	protected void update(T column) {
 		super.update(column);
 		setSpecifiedTable_(this.getResourceTable(column));
-		setDefaultTable(this.getOwnerDefaultTableName());
+		setDefaultTable(this.buildDefaultTableName());
 		setSpecifiedNullable_(this.getResourceNullable(column));
 		setSpecifiedUpdatable_(this.getResourceUpdatable(column));
 		setSpecifiedUnique_(this.getResourceUnique(column));
@@ -301,7 +301,7 @@ public abstract class AbstractOrmBaseColumn<T extends AbstractXmlColumn> extends
 		return column == null ? null : column.getInsertable();
 	}
 	
-	protected String getOwnerDefaultTableName() {
+	protected String buildDefaultTableName() {
 		return getOwner().getDefaultTableName();
 	}
 

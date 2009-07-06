@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -44,12 +44,12 @@ public abstract class AbstractJavaBaseColumn<T extends BaseColumnAnnotation> ext
 	@Override
 	protected void initialize(T column) {
 		super.initialize(column);
-		this.defaultTable = this.defaultTable();
-		this.specifiedTable = this.specifiedTable(column);
-		this.specifiedUnique = this.specifiedUnique(column);
-		this.specifiedNullable = this.specifiedNullable(column);
-		this.specifiedInsertable = this.specifiedInsertable(column);
-		this.specifiedUpdatable = this.specifiedUpdatable(column);
+		this.defaultTable = this.buildDefaultTable();
+		this.specifiedTable = this.getResourceTable(column);
+		this.specifiedUnique = this.getResourceUnique(column);
+		this.specifiedNullable = this.getResourceNullable(column);
+		this.specifiedInsertable = this.getResourceInsertable(column);
+		this.specifiedUpdatable = this.getResourceUpdatable(column);
 	}
 	
 	@Override
@@ -268,35 +268,35 @@ public abstract class AbstractJavaBaseColumn<T extends BaseColumnAnnotation> ext
 	@Override
 	protected void update(T column) {
 		super.update(column);
-		this.setDefaultTable(this.defaultTable());
-		this.setSpecifiedTable_(this.specifiedTable(column));
-		this.setSpecifiedUnique_(this.specifiedUnique(column));
-		this.setSpecifiedNullable_(this.specifiedNullable(column));
-		this.setSpecifiedInsertable_(this.specifiedInsertable(column));
-		this.setSpecifiedUpdatable_(this.specifiedUpdatable(column));
+		this.setDefaultTable(this.buildDefaultTable());
+		this.setSpecifiedTable_(this.getResourceTable(column));
+		this.setSpecifiedUnique_(this.getResourceUnique(column));
+		this.setSpecifiedNullable_(this.getResourceNullable(column));
+		this.setSpecifiedInsertable_(this.getResourceInsertable(column));
+		this.setSpecifiedUpdatable_(this.getResourceUpdatable(column));
 	}
 
-	protected String defaultTable() {
+	protected String buildDefaultTable() {
 		return this.getOwner().getDefaultTableName();
 	}
 	
-	protected String specifiedTable(BaseColumnAnnotation column) {
+	protected String getResourceTable(BaseColumnAnnotation column) {
 		return column.getTable();
 	}
 	
-	protected Boolean specifiedUnique(BaseColumnAnnotation column) {
+	protected Boolean getResourceUnique(BaseColumnAnnotation column) {
 		return column.getUnique();
 	}
 	
-	protected Boolean specifiedNullable(BaseColumnAnnotation column) {
+	protected Boolean getResourceNullable(BaseColumnAnnotation column) {
 		return column.getNullable();
 	}
 	
-	protected Boolean specifiedInsertable(BaseColumnAnnotation column) {
+	protected Boolean getResourceInsertable(BaseColumnAnnotation column) {
 		return column.getInsertable();
 	}
 	
-	protected Boolean specifiedUpdatable(BaseColumnAnnotation column) {
+	protected Boolean getResourceUpdatable(BaseColumnAnnotation column) {
 		return column.getUpdatable();
 	}
 }

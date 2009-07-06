@@ -9,10 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Vector;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.AssociationOverride;
@@ -32,6 +32,7 @@ import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
+import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -39,17 +40,13 @@ public class GenericJavaAssociationOverride extends AbstractJavaOverride
 	implements JavaAssociationOverride
 {
 
-	protected final List<JavaJoinColumn> specifiedJoinColumns;
+	protected final Vector<JavaJoinColumn> specifiedJoinColumns = new Vector<JavaJoinColumn>();
 	protected final JavaJoinColumn.Owner joinColumnOwner;
-
-	protected final List<JavaJoinColumn> defaultJoinColumns;
 
 
 	public GenericJavaAssociationOverride(JavaJpaContextNode parent, AssociationOverride.Owner owner) {
 		super(parent, owner);
-		this.specifiedJoinColumns = new ArrayList<JavaJoinColumn>();
 		this.joinColumnOwner = this.buildJoinColumnOwner();
-		this.defaultJoinColumns = new ArrayList<JavaJoinColumn>();
 	}
 
 	protected JavaJoinColumn.Owner buildJoinColumnOwner() {
@@ -79,12 +76,15 @@ public class GenericJavaAssociationOverride extends AbstractJavaOverride
 		return this.specifiedJoinColumns.isEmpty() ? this.defaultJoinColumnsSize() : this.specifiedJoinColumnsSize();
 	}
 	
+	/**
+	 * No default join columns, an association override has to either specify a join table or join columns
+	 */
 	public ListIterator<JavaJoinColumn> defaultJoinColumns() {
-		return new CloneListIterator<JavaJoinColumn>(this.defaultJoinColumns);
+		return EmptyListIterator.instance();
 	}
 	
 	public int defaultJoinColumnsSize() {
-		return this.defaultJoinColumns.size();
+		return 0;
 	}
 	
 	public ListIterator<JavaJoinColumn> specifiedJoinColumns() {
@@ -309,6 +309,7 @@ public class GenericJavaAssociationOverride extends AbstractJavaOverride
 		}
 		
 		public String getDefaultColumnName() {
+			//built in MappingTools.buildJoinColumnDefaultName()
 			return null;
 		}
 		
@@ -355,7 +356,7 @@ public class GenericJavaAssociationOverride extends AbstractJavaOverride
 		}
 		
 		public boolean isVirtual(BaseJoinColumn joinColumn) {
-			return GenericJavaAssociationOverride.this.defaultJoinColumns.contains(joinColumn);
+			return false;
 		}
 
 		public int joinColumnsSize() {

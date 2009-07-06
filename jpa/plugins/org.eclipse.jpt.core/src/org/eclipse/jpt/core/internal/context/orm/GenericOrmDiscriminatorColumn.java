@@ -177,6 +177,7 @@ public class GenericOrmDiscriminatorColumn extends AbstractOrmNamedColumn<XmlDis
 	
 	@Override
 	protected void update(XmlDiscriminatorColumn column) {
+		//don't call super because postUpdate() handles updating the default column name
 		this.setSpecifiedName_(this.getResourceColumnName(column));
 		this.setColumnDefinition_(this.getResourceColumnDefinition(column));	
 		this.setSpecifiedLength_(this.getResourceLength(column));
@@ -184,9 +185,12 @@ public class GenericOrmDiscriminatorColumn extends AbstractOrmNamedColumn<XmlDis
 	}
 	
 	@Override
+	/**
+	 * Using postUpdate since these defaults are dependent on the entity hierarchy
+	 */
 	public void postUpdate() {
 		super.postUpdate();
-		this.setDefaultName(this.getOwnerDefaultColumnName());
+		this.setDefaultName(this.buildDefaultName());
 		this.setDefaultDiscriminatorType(this.buildDefaultDiscriminatorType());
 		this.setDefaultLength(this.buildDefaultLength());		
 	}

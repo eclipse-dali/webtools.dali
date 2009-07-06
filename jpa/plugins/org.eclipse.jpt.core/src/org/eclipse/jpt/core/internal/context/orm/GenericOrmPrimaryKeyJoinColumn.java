@@ -127,24 +127,24 @@ public class GenericOrmPrimaryKeyJoinColumn extends AbstractOrmNamedColumn<XmlPr
 	protected void initialize(XmlPrimaryKeyJoinColumn resourcePkJoinColumn) {
 		this.resourcePkJoinColumn = resourcePkJoinColumn;
 		super.initialize(resourcePkJoinColumn);
-		this.specifiedReferencedColumnName = specifiedReferencedColumnName();
-		this.defaultReferencedColumnName = defaultReferencedColumnName();
+		this.specifiedReferencedColumnName = getResourceReferencedColumnName();
+		this.defaultReferencedColumnName = buildDefaultReferencedColumnName();
 	}
 	
 	@Override
 	public void update(XmlPrimaryKeyJoinColumn resourcePkJoinColumn) {
 		this.resourcePkJoinColumn = resourcePkJoinColumn;
 		super.update(resourcePkJoinColumn);
-		this.setSpecifiedReferencedColumnName_(specifiedReferencedColumnName());
-		this.setDefaultReferencedColumnName(defaultReferencedColumnName());
+		this.setSpecifiedReferencedColumnName_(getResourceReferencedColumnName());
+		this.setDefaultReferencedColumnName(buildDefaultReferencedColumnName());
 	}
 	
-	protected String specifiedReferencedColumnName() {
+	protected String getResourceReferencedColumnName() {
 		return this.resourcePkJoinColumn == null ? null : this.resourcePkJoinColumn.getReferencedColumnName();
 	}
 	
 	//TODO not correct when we start supporting primaryKeyJoinColumns in 1-1 mappings
-	protected String defaultReferencedColumnName() {
-		return getOwnerDefaultColumnName();
+	protected String buildDefaultReferencedColumnName() {
+		return buildDefaultName();
 	}
 }

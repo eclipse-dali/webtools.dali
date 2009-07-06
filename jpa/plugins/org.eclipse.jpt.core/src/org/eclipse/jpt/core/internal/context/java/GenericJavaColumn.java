@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -32,9 +32,9 @@ public class GenericJavaColumn extends AbstractJavaBaseColumn<ColumnAnnotation> 
 	@Override
 	public void initialize(ColumnAnnotation column) {
 		super.initialize(column);
-		this.specifiedLength = this.specifiedLength(column);
-		this.specifiedPrecision = this.specifiedPrecision(column);
-		this.specifiedScale = this.specifiedScale(column);
+		this.specifiedLength = this.getResourceLength(column);
+		this.specifiedPrecision = this.getResourcePrecision(column);
+		this.specifiedScale = this.getResourceScale(column);
 	}
 	
 	@Override
@@ -135,20 +135,20 @@ public class GenericJavaColumn extends AbstractJavaBaseColumn<ColumnAnnotation> 
 	@Override
 	public void update(ColumnAnnotation column) {
 		super.update(column);
-		this.setSpecifiedLength_(this.specifiedLength(column));
-		this.setSpecifiedPrecision_(this.specifiedPrecision(column));
-		this.setSpecifiedScale_(this.specifiedScale(column));
+		this.setSpecifiedLength_(this.getResourceLength(column));
+		this.setSpecifiedPrecision_(this.getResourcePrecision(column));
+		this.setSpecifiedScale_(this.getResourceScale(column));
 	}
 	
-	protected Integer specifiedLength(ColumnAnnotation column) {
+	protected Integer getResourceLength(ColumnAnnotation column) {
 		return column.getLength();
 	}
 	
-	protected Integer specifiedPrecision(ColumnAnnotation column) {
+	protected Integer getResourcePrecision(ColumnAnnotation column) {
 		return column.getPrecision();
 	}
 	
-	protected Integer specifiedScale(ColumnAnnotation column) {
+	protected Integer getResourceScale(ColumnAnnotation column) {
 		return column.getScale();
 	}
 }

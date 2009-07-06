@@ -41,8 +41,8 @@ public class GenericJavaPrimaryKeyJoinColumn extends AbstractJavaNamedColumn<Pri
 	public void initialize(PrimaryKeyJoinColumnAnnotation column) {
 		this.resourcePrimaryKeyJoinColumn = column;
 		super.initialize(column);
-		this.specifiedReferencedColumnName = this.specifiedReferencedColumnName(column);
-		this.defaultReferencedColumnName = this.defaultReferencedColumnName();
+		this.specifiedReferencedColumnName = this.getResourceReferencedColumnName(column);
+		this.defaultReferencedColumnName = this.buildDefaultReferencedColumnName();
 	}
 
 	//************** JavaNamedColumn implementation ***************
@@ -153,16 +153,16 @@ public class GenericJavaPrimaryKeyJoinColumn extends AbstractJavaNamedColumn<Pri
 	public void update(PrimaryKeyJoinColumnAnnotation resourceColumn) {
 		this.resourcePrimaryKeyJoinColumn = resourceColumn;
 		super.update(resourceColumn);
-		this.setSpecifiedReferencedColumnName_(this.specifiedReferencedColumnName(resourceColumn));
-		this.setDefaultReferencedColumnName(this.defaultReferencedColumnName());
+		this.setSpecifiedReferencedColumnName_(this.getResourceReferencedColumnName(resourceColumn));
+		this.setDefaultReferencedColumnName(this.buildDefaultReferencedColumnName());
 	}
 	
-	protected String specifiedReferencedColumnName(PrimaryKeyJoinColumnAnnotation resourceColumn) {
+	protected String getResourceReferencedColumnName(PrimaryKeyJoinColumnAnnotation resourceColumn) {
 		return resourceColumn.getReferencedColumnName();
 	}
 	
 	//TODO not correct when we start supporting primaryKeyJoinColumns in 1-1 mappings
-	protected String defaultReferencedColumnName() {
+	protected String buildDefaultReferencedColumnName() {
 		return buildDefaultName();
 	}
 

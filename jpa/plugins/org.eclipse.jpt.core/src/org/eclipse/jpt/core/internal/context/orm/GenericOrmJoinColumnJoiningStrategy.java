@@ -472,7 +472,8 @@ public class GenericOrmJoinColumnJoiningStrategy
 		}
 		
 		public String getDefaultColumnName() {
-			return null;  // no default
+			//built in MappingTools.buildJoinColumnDefaultName()
+			return null;
 		}
 
 		public int joinColumnsSize() {

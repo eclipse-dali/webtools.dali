@@ -173,12 +173,12 @@ public class GenericJavaJoinColumn extends AbstractJavaBaseColumn<JoinColumnAnno
 	}
 	
 	@Override
-	protected String defaultTable() {
+	protected String buildDefaultTable() {
 		RelationshipMapping relationshipMapping = getOwner().getRelationshipMapping();
 		if (relationshipMapping == null) {
 			return null;
 		}
-		return super.defaultTable();
+		return super.buildDefaultTable();
 	}
 
 	@Override

@@ -163,13 +163,13 @@ public abstract class AbstractOrmNamedColumn<T extends AbstractXmlNamedColumn>  
 	
 	protected void initialize(T column) {
 		this.specifiedName = this.getResourceColumnName(column);
-		this.defaultName = this.getOwnerDefaultColumnName();
+		this.defaultName = this.buildDefaultName();
 		this.columnDefinition = this.getResourceColumnDefinition(column);
 	}
 	
 	protected void update(T column) {
 		setSpecifiedName_(this.getResourceColumnName(column));
-		setDefaultName(this.getOwnerDefaultColumnName());
+		setDefaultName(this.buildDefaultName());
 		setColumnDefinition_(this.getResourceColumnDefinition(column));	
 	}
 
@@ -184,7 +184,7 @@ public abstract class AbstractOrmNamedColumn<T extends AbstractXmlNamedColumn>  
 	/**
 	 * Return the default column name.
 	 */
-	protected String getOwnerDefaultColumnName() {
+	protected String buildDefaultName() {
 		return this.getOwner().getDefaultColumnName();
 	}
 

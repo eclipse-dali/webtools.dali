@@ -171,6 +171,7 @@ public class GenericJavaDiscriminatorColumn extends AbstractJavaNamedColumn<Disc
 	
 	@Override
 	public void update(DiscriminatorColumnAnnotation discriminatorColumn) {
+		//don't call super because postUpdate() handles updating the default column name
 		this.setSpecifiedName_(discriminatorColumn.getName());
 		this.setColumnDefinition_(discriminatorColumn.getColumnDefinition());
 		this.setSpecifiedDiscriminatorType_(this.getResourceDiscriminatorType(discriminatorColumn));
@@ -178,6 +179,9 @@ public class GenericJavaDiscriminatorColumn extends AbstractJavaNamedColumn<Disc
 	}
 	
 	@Override
+	/**
+	 * Using postUpdate since these defaults are dependent on the entity hierarchy
+	 */
 	public void postUpdate() {
 		super.postUpdate();
 		this.setDefaultName(this.buildDefaultName());

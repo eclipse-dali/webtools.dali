@@ -12,7 +12,6 @@ package org.eclipse.jpt.core.internal.context.orm;
 import java.util.List;
 
 import org.eclipse.jpt.core.context.JoinColumn;
-import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmRelationshipMapping;
@@ -148,7 +147,7 @@ public class GenericOrmJoinColumn extends AbstractOrmBaseColumn<XmlJoinColumn> i
 	}
 
 	@Override
-	protected String getOwnerDefaultColumnName() {
+	protected String buildDefaultName() {
 		return MappingTools.buildJoinColumnDefaultName(this);
 	}
 	
@@ -157,12 +156,11 @@ public class GenericOrmJoinColumn extends AbstractOrmBaseColumn<XmlJoinColumn> i
 	}
 	
 	@Override
-	protected String getOwnerDefaultTableName() {
-		RelationshipMapping relationshipMapping = getOwner().getRelationshipMapping();
-		if (relationshipMapping == null) {
+	protected String buildDefaultTableName() {
+		if (getOwner().getRelationshipMapping() == null) {
 			return null;
 		}
-		return super.getOwnerDefaultTableName();
+		return super.buildDefaultTableName();
 	}
 	
 	
