@@ -52,15 +52,19 @@ public class GenericJavaJoinTableJoiningStrategy
 	
 	public void addStrategy() {
 		if (this.joinTable == null) {
-			setJoinTable_(getJpaFactory().buildJavaJoinTable(this));
+			JavaJoinTable oldJoinTable = this.joinTable;
+			this.joinTable = getJpaFactory().buildJavaJoinTable(this);
 			addAnnotation();
+			this.firePropertyChanged(JOIN_TABLE_PROPERTY, oldJoinTable, this.joinTable);
 		}
 	}
 	
 	public void removeStrategy() {
 		if (this.joinTable != null) {
-			setJoinTable_(null);
+			JavaJoinTable oldJoinTable = this.joinTable;
+			this.joinTable = null;
 			removeAnnotation();
+			this.firePropertyChanged(JOIN_TABLE_PROPERTY, oldJoinTable, this.joinTable);
 		}
 	}
 	
