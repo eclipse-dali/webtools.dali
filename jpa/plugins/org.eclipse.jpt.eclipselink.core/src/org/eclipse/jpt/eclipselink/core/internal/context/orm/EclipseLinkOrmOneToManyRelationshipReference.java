@@ -18,10 +18,9 @@ import org.eclipse.jpt.core.context.JoiningStrategy;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumnEnabledRelationshipReference;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumnJoiningStrategy;
-import org.eclipse.jpt.core.context.orm.OrmOneToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmRelationshipReference;
+import org.eclipse.jpt.core.internal.context.orm.AbstractOrmOneToManyRelationshipReference;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmJoinColumnJoiningStrategy;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmOneToManyRelationshipReference;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToManyRelationshipReference;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlOneToMany;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -29,7 +28,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class EclipseLinkOrmOneToManyRelationshipReference
-	extends GenericOrmOneToManyRelationshipReference
+	extends AbstractOrmOneToManyRelationshipReference
 	implements EclipseLinkOneToManyRelationshipReference,
 		OrmJoinColumnEnabledRelationshipReference
 {
@@ -69,11 +68,6 @@ public class EclipseLinkOrmOneToManyRelationshipReference
 			OrmJoinColumn newJoinColumn = getJoinColumnJoiningStrategy().addSpecifiedJoinColumn(index++);
 			newJoinColumn.initializeFrom(joinColumn);
 		}
-	}
-	
-	@Override
-	public OrmOneToManyMapping getRelationshipMapping() {
-		return (OrmOneToManyMapping) getParent();
 	}
 	
 	@Override

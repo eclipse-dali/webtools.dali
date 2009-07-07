@@ -34,11 +34,8 @@ public abstract class AbstractOrmRelationshipReference
 			OrmRelationshipMapping parent, AbstractXmlRelationshipMapping resourceMapping) {
 		super(parent);
 		this.resourceMapping = resourceMapping;
-		initializeJoiningStrategies();
+		this.initialize();
 	}
-	
-	protected abstract void initializeJoiningStrategies();
-	
 	
 	public void initializeFromOwnableRelationshipReference(
 			OrmOwnableRelationshipReference oldRelationshipReference) {
@@ -63,9 +60,6 @@ public abstract class AbstractOrmRelationshipReference
 	// **************** predominant joining strategy ***************************
 	
 	public JoiningStrategy getPredominantJoiningStrategy() {
-		if (this.cachedPredominantJoiningStrategy == null) {
-			this.cachedPredominantJoiningStrategy = calculatePredominantJoiningStrategy();
-		}
 		return this.cachedPredominantJoiningStrategy;
 	}
 	
@@ -78,6 +72,14 @@ public abstract class AbstractOrmRelationshipReference
 	
 	// **************** resource -> context ************************************
 	
+	protected void initialize() {
+		initializeJoiningStrategies();
+		this.cachedPredominantJoiningStrategy = calculatePredominantJoiningStrategy();
+	}
+	
+	protected abstract void initializeJoiningStrategies();
+	
+
 	public void update() {
 		updateJoiningStrategies();
 		setPredominantJoiningStrategy(calculatePredominantJoiningStrategy());

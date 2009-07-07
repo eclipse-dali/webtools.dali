@@ -13,6 +13,7 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 import org.eclipse.jpt.core.context.JoinTable;
 import org.eclipse.jpt.core.context.JoinTableEnabledRelationshipReference;
 import org.eclipse.jpt.core.context.JoinTableJoiningStrategy;
+import org.eclipse.jpt.core.context.RelationshipReference;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
@@ -55,16 +56,16 @@ public class JoinTableJoiningStrategyPane
 	@Override
 	protected WritablePropertyValueModel<Boolean> buildUsesStrategyHolder() {
 		return new PropertyAspectAdapter<JoinTableEnabledRelationshipReference, Boolean>(
-				this.getSubjectHolder(), JoinTableEnabledRelationshipReference.PREDOMINANT_JOINING_STRATEGY_PROPERTY) {
+				this.getSubjectHolder(), RelationshipReference.PREDOMINANT_JOINING_STRATEGY_PROPERTY) {
 			@Override
 			protected Boolean buildValue() {
 				return (this.subject == null) ? Boolean.FALSE :
-					this.subject.usesJoinTableJoiningStrategy();
+					Boolean.valueOf(this.subject.usesJoinTableJoiningStrategy());
 			}
 			
 			@Override
 			protected void setValue_(Boolean value) {
-				if (value == true) {
+				if (value == Boolean.TRUE) {
 					this.subject.setJoinTableJoiningStrategy();
 				}
 				else {

@@ -25,8 +25,6 @@ public interface OrmRelationshipReference
 {
 	OrmRelationshipMapping getRelationshipMapping();
 	
-	void update();
-	
 	void initializeOn(OrmRelationshipReference newRelationshipReference);
 	
 	void initializeFromOwnableRelationshipReference(

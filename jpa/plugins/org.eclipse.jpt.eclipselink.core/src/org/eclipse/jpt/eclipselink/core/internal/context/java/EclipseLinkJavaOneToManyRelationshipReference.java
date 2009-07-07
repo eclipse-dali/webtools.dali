@@ -18,15 +18,15 @@ import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.JoiningStrategy;
 import org.eclipse.jpt.core.context.java.JavaJoinColumnEnabledRelationshipReference;
 import org.eclipse.jpt.core.context.java.JavaJoinColumnJoiningStrategy;
+import org.eclipse.jpt.core.internal.context.java.AbstractJavaOneToManyRelationshipReference;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaJoinColumnJoiningStrategy;
-import org.eclipse.jpt.core.internal.context.java.GenericJavaOneToManyRelationshipReference;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToManyRelationshipReference;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class EclipseLinkJavaOneToManyRelationshipReference
-	extends GenericJavaOneToManyRelationshipReference
+	extends AbstractJavaOneToManyRelationshipReference
 	implements EclipseLinkOneToManyRelationshipReference,
 		JavaJoinColumnEnabledRelationshipReference
 {

@@ -12,6 +12,7 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.context.PrimaryKeyJoinColumnEnabledRelationshipReference;
 import org.eclipse.jpt.core.context.PrimaryKeyJoinColumnJoiningStrategy;
+import org.eclipse.jpt.core.context.RelationshipReference;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
@@ -49,16 +50,16 @@ public class PrimaryKeyJoinColumnJoiningStrategyPane
 	@Override
 	protected WritablePropertyValueModel<Boolean> buildUsesStrategyHolder() {
 		return new PropertyAspectAdapter<PrimaryKeyJoinColumnEnabledRelationshipReference, Boolean>(
-				this.getSubjectHolder(), PrimaryKeyJoinColumnEnabledRelationshipReference.PREDOMINANT_JOINING_STRATEGY_PROPERTY) {
+				this.getSubjectHolder(), RelationshipReference.PREDOMINANT_JOINING_STRATEGY_PROPERTY) {
 			@Override
 			protected Boolean buildValue() {
 				return (this.subject == null) ? Boolean.FALSE :
-					this.subject.usesPrimaryKeyJoinColumnJoiningStrategy();
+					Boolean.valueOf(this.subject.usesPrimaryKeyJoinColumnJoiningStrategy());
 			}
 			
 			@Override
 			protected void setValue_(Boolean value) {
-				if (value == true) {
+				if (value == Boolean.TRUE) {
 					this.subject.setPrimaryKeyJoinColumnJoiningStrategy();
 				}
 				else {

@@ -25,6 +25,4 @@ public interface JavaRelationshipReference
 	JavaRelationshipMapping getRelationshipMapping();
 	
 	void initialize();
-	
-	void update();
 }

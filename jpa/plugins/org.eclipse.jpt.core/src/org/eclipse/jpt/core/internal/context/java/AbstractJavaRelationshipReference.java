@@ -37,7 +37,7 @@ public abstract class AbstractJavaRelationshipReference
 	// **************** predominant joining strategy ***************************
 	
 	public JoiningStrategy getPredominantJoiningStrategy() {
-		return cachedPredominantJoiningStrategy;
+		return this.cachedPredominantJoiningStrategy;
 	}
 	
 	protected void setPredominantJoiningStrategy(JoiningStrategy newJoiningStrategy) {
