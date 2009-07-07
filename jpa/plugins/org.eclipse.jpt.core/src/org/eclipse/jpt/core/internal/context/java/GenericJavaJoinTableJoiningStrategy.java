@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * Copyright (c) 2009 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Iterator;
@@ -85,9 +94,10 @@ public class GenericJavaJoinTableJoiningStrategy
 		this.resourcePersistentAttribute = 
 			getRelationshipReference().getRelationshipMapping().
 				getPersistentAttribute().getResourcePersistentAttribute();
-		if (getAnnotation() != null || getRelationshipReference().mayHaveDefaultJoinTable()) {
+		JoinTableAnnotation annotation = getAnnotation();
+		if (annotation.isSpecified() || getRelationshipReference().mayHaveDefaultJoinTable()) {
 			this.joinTable = getJpaFactory().buildJavaJoinTable(this);
-			this.joinTable.initialize(this.resourcePersistentAttribute);
+			this.joinTable.initialize(annotation);
 		}
 	}
 	
@@ -95,11 +105,12 @@ public class GenericJavaJoinTableJoiningStrategy
 		this.resourcePersistentAttribute = 
 			getRelationshipReference().getRelationshipMapping().
 				getPersistentAttribute().getResourcePersistentAttribute();
-		if (getAnnotation() != null || getRelationshipReference().mayHaveDefaultJoinTable()) {
+		JoinTableAnnotation annotation = getAnnotation();
+		if (annotation.isSpecified() || getRelationshipReference().mayHaveDefaultJoinTable()) {
 			if (this.joinTable == null) {
 				setJoinTable_(getJpaFactory().buildJavaJoinTable(this));
 			}
-			this.joinTable.update(this.resourcePersistentAttribute);
+			this.joinTable.update(annotation);
 		}
 		else {
 			if (this.joinTable != null) {
@@ -109,12 +120,11 @@ public class GenericJavaJoinTableJoiningStrategy
 		}
 	}
 	
-	protected JoinTableAnnotation getAnnotation() {
+	public JoinTableAnnotation getAnnotation() {
 		return 	(JoinTableAnnotation) 
-			this.resourcePersistentAttribute.getSupportingAnnotation(
+			this.resourcePersistentAttribute.getNonNullSupportingAnnotation(
 				JoinTableAnnotation.ANNOTATION_NAME);
 	}
-	
 	
 	// **************** Java completion proposals ******************************
 	

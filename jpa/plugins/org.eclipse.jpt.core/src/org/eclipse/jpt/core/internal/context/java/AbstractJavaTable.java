@@ -65,7 +65,7 @@ public abstract class AbstractJavaTable
 	 * Return the Java table annotation. Do not return null if the Java
 	 * annotation does not exist; return a null table annotation instead.
 	 */
-	protected abstract BaseTableAnnotation getTableAnnotation();
+	protected abstract BaseTableAnnotation getAnnotation();
 
 	/**
 	 * Return the name of the Java annotation.
@@ -92,7 +92,7 @@ public abstract class AbstractJavaTable
 	public void setSpecifiedName(String name) {
 		String old = this.specifiedName;
 		this.specifiedName = name;
-		this.getTableAnnotation().setName(name);
+		this.getAnnotation().setName(name);
 		this.firePropertyChanged(SPECIFIED_NAME_PROPERTY, old, name);
 	}
 
@@ -132,7 +132,7 @@ public abstract class AbstractJavaTable
 	public void setSpecifiedSchema(String schema) {
 		String old = this.specifiedSchema;
 		this.specifiedSchema = schema;
-		this.getTableAnnotation().setSchema(schema);
+		this.getAnnotation().setSchema(schema);
 		this.firePropertyChanged(SPECIFIED_SCHEMA_PROPERTY, old, schema);
 	}
 
@@ -172,7 +172,7 @@ public abstract class AbstractJavaTable
 	public void setSpecifiedCatalog(String catalog) {
 		String old = this.specifiedCatalog;
 		this.specifiedCatalog = catalog;
-		this.getTableAnnotation().setCatalog(catalog);
+		this.getAnnotation().setCatalog(catalog);
 		this.firePropertyChanged(SPECIFIED_CATALOG_PROPERTY, old, catalog);
 	}
 
@@ -212,7 +212,7 @@ public abstract class AbstractJavaTable
 	public JavaUniqueConstraint addUniqueConstraint(int index) {
 		JavaUniqueConstraint uniqueConstraint = getJpaFactory().buildJavaUniqueConstraint(this, this);
 		this.uniqueConstraints.add(index, uniqueConstraint);
-		UniqueConstraintAnnotation uniqueConstraintAnnotation = this.getTableAnnotation().addUniqueConstraint(index);
+		UniqueConstraintAnnotation uniqueConstraintAnnotation = this.getAnnotation().addUniqueConstraint(index);
 		uniqueConstraint.initialize(uniqueConstraintAnnotation);
 		fireItemAdded(UNIQUE_CONSTRAINTS_LIST, index, uniqueConstraint);
 		return uniqueConstraint;
@@ -224,13 +224,13 @@ public abstract class AbstractJavaTable
 
 	public void removeUniqueConstraint(int index) {
 		JavaUniqueConstraint removedUniqueConstraint = this.uniqueConstraints.remove(index);
-		this.getTableAnnotation().removeUniqueConstraint(index);
+		this.getAnnotation().removeUniqueConstraint(index);
 		fireItemRemoved(UNIQUE_CONSTRAINTS_LIST, index, removedUniqueConstraint);
 	}
 
 	public void moveUniqueConstraint(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.uniqueConstraints, targetIndex, sourceIndex);
-		this.getTableAnnotation().moveUniqueConstraint(targetIndex, sourceIndex);
+		this.getAnnotation().moveUniqueConstraint(targetIndex, sourceIndex);
 		fireItemMoved(UNIQUE_CONSTRAINTS_LIST, targetIndex, sourceIndex);
 	}
 
@@ -283,27 +283,27 @@ public abstract class AbstractJavaTable
 	}
 
 	protected TextRange getNameTextRange(CompilationUnit astRoot) {
-		return this.getTextRange(this.getTableAnnotation().getNameTextRange(astRoot), astRoot);
+		return this.getTextRange(this.getAnnotation().getNameTextRange(astRoot), astRoot);
 	}
 
 	protected boolean nameTouches(int pos, CompilationUnit astRoot) {
-		return this.getTableAnnotation().nameTouches(pos, astRoot);
+		return this.getAnnotation().nameTouches(pos, astRoot);
 	}
 
 	protected TextRange getSchemaTextRange(CompilationUnit astRoot) {
-		return this.getTextRange(this.getTableAnnotation().getSchemaTextRange(astRoot), astRoot);
+		return this.getTextRange(this.getAnnotation().getSchemaTextRange(astRoot), astRoot);
 	}
 
 	protected boolean schemaTouches(int pos, CompilationUnit astRoot) {
-		return this.getTableAnnotation().schemaTouches(pos, astRoot);
+		return this.getAnnotation().schemaTouches(pos, astRoot);
 	}
 
 	protected TextRange getCatalogTextRange(CompilationUnit astRoot) {
-		return this.getTextRange(this.getTableAnnotation().getCatalogTextRange(astRoot), astRoot);
+		return this.getTextRange(this.getAnnotation().getCatalogTextRange(astRoot), astRoot);
 	}
 
 	protected boolean catalogTouches(int pos, CompilationUnit astRoot) {
-		return this.getTableAnnotation().catalogTouches(pos, astRoot);
+		return this.getAnnotation().catalogTouches(pos, astRoot);
 	}
 
 
@@ -394,7 +394,7 @@ public abstract class AbstractJavaTable
 	// ********** validation **********
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.getTextRange(this.getTableAnnotation().getTextRange(astRoot), astRoot);
+		return this.getTextRange(this.getAnnotation().getTextRange(astRoot), astRoot);
 	}
 
 

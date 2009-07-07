@@ -10,11 +10,13 @@
 package org.eclipse.jpt2_0.core.internal.resource.java;
 
 import org.eclipse.jpt.core.internal.resource.java.NullJoinTableAnnotation;
+import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.JoinTableAnnotation;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember.AnnotationInitializer;
 import org.eclipse.jpt2_0.core.resource.java.AssociationOverride2_0Annotation;
 
 /**
- * javax.persistence.Column
+ * javax.persistence.JoinTable found in a javax.persistence.AssociationOverride annotation
  */
 public class NullAssociationOverrideJoinTableAnnotation
 	extends NullJoinTableAnnotation
@@ -30,6 +32,11 @@ public class NullAssociationOverrideJoinTableAnnotation
 	@Override
 	protected JoinTableAnnotation addAnnotation() {
 		return this.getAssociationOverride2_0Annotation().addJoinTable();
+	}
+	
+	@Override
+	protected JoinColumnAnnotation addAnnotation(AnnotationInitializer initializer) {
+		return this.getAssociationOverride2_0Annotation().addJoinTable(initializer);
 	}
 
 }

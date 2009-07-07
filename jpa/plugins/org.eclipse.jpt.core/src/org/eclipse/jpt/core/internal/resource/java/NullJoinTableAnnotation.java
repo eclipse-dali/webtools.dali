@@ -11,7 +11,9 @@ package org.eclipse.jpt.core.internal.resource.java;
 
 import java.util.ListIterator;
 
+import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember.AnnotationInitializer;
 import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.JoinTableAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
@@ -36,6 +38,11 @@ public class NullJoinTableAnnotation
 		return (JoinTableAnnotation) this.addSupportingAnnotation();
 	}
 
+	@Override
+	protected JoinColumnAnnotation addAnnotation(AnnotationInitializer initializer) {
+		return (JoinColumnAnnotation) this.addSupportingAnnotation(initializer);
+	}
+
 	// ***** join columns
 	public ListIterator<JoinColumnAnnotation> joinColumns() {
 		return EmptyListIterator.instance();
@@ -54,8 +61,20 @@ public class NullJoinTableAnnotation
 	}
 
 	public JoinColumnAnnotation addJoinColumn(int index) {
-		throw new UnsupportedOperationException();
+		// the JoinTable annotation is missing, add both it and a join column at the same time
+		return addAnnotation(buildJoinColumnInitializer());
 	}
+	
+	protected AnnotationInitializer buildJoinColumnInitializer() {
+		return JOIN_COLUMN_INITIALIZER;
+	}
+
+	protected static final AnnotationInitializer JOIN_COLUMN_INITIALIZER =
+			new AnnotationInitializer() {
+				public Annotation initializeAnnotation(Annotation supportingAnnotation) {
+					return ((JoinTableAnnotation) supportingAnnotation).initializeJoinColumns();
+				}
+			};
 
 	public void moveJoinColumn(int targetIndex, int sourceIndex) {
 		throw new UnsupportedOperationException();
@@ -87,8 +106,21 @@ public class NullJoinTableAnnotation
 	}
 
 	public JoinColumnAnnotation addInverseJoinColumn(int index) {
-		throw new UnsupportedOperationException();
+		// the JoinTable annotation is missing, add both it and a join column at the same time
+		return addAnnotation(buildInverseJoinColumnInitializer());
 	}
+	
+	protected AnnotationInitializer buildInverseJoinColumnInitializer() {
+		return INVERSE_JOIN_COLUMN_INITIALIZER;
+	}
+
+	protected static final AnnotationInitializer INVERSE_JOIN_COLUMN_INITIALIZER =
+			new AnnotationInitializer() {
+				public Annotation initializeAnnotation(Annotation supportingAnnotation) {
+					return ((JoinTableAnnotation) supportingAnnotation).initializeInverseJoinColumns();
+				}
+			};
+
 
 	public void moveInverseJoinColumn(int targetIndex, int sourceIndex) {
 		throw new UnsupportedOperationException();

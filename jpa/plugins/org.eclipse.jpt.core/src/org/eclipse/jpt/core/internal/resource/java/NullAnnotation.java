@@ -84,4 +84,14 @@ public abstract class NullAnnotation
 		return this.getMember().addSupportingAnnotation(this.getAnnotationName());
 	}
 	
+	/**
+	 * Convenience method: Add to the type or attribute's list of "supporting"
+	 * annotations and return the newly created annotation.
+	 * Pre-condition: The annotation's parent must be a persistent member
+	 * (type or attribute).
+	 */
+	protected Annotation addSupportingAnnotation(JavaResourcePersistentMember.AnnotationInitializer initializer) {
+		return this.getMember().addSupportingAnnotation(this.getAnnotationName(), initializer);
+	}
+	
 }

@@ -35,7 +35,7 @@ public class GenericJavaTable
 	
 	public void initialize(JavaResourcePersistentMember pr) {
 		this.resourcePersistentMember = pr;
-		initialize(getTableAnnotation());
+		initialize(getAnnotation());
 	}
 
 	//query for the table resource every time on setters.
@@ -43,13 +43,13 @@ public class GenericJavaTable
 	//You could call more than one setter before this object has received any notification
 	//from the java resource model
 	@Override
-	protected TableAnnotation getTableAnnotation() {
+	protected TableAnnotation getAnnotation() {
 		//TODO get the NullTable from the resource model or build it here in the context model??
 		return (TableAnnotation) this.resourcePersistentMember.getNonNullSupportingAnnotation(getAnnotationName());
 	}
 
 	public boolean isResourceSpecified() {
-		return getTableAnnotation().isSpecified();
+		return getAnnotation().isSpecified();
 	}
 	
 	@Override
@@ -97,7 +97,7 @@ public class GenericJavaTable
 
 	public void update(JavaResourcePersistentMember jrpm) {
 		this.resourcePersistentMember = jrpm;
-		this.update(getTableAnnotation());
+		this.update(getAnnotation());
 	}
 
 

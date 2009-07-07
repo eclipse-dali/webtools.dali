@@ -76,7 +76,7 @@ public class GenericJavaSecondaryTable
 	}
 	
 	@Override
-	protected SecondaryTableAnnotation getTableAnnotation() {
+	protected SecondaryTableAnnotation getAnnotation() {
 		return this.resourceSecondaryTable;
 	}
 	

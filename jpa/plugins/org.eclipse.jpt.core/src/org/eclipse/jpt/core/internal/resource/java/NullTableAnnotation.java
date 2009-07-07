@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.java.TableAnnotation;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember.AnnotationInitializer;
 
 /**
  * javax.persistence.Table
@@ -26,6 +27,11 @@ public final class NullTableAnnotation
 	@Override
 	protected TableAnnotation addAnnotation() {
 		return (TableAnnotation) addSupportingAnnotation();
+	}
+	
+	@Override
+	protected TableAnnotation addAnnotation(AnnotationInitializer initializer) {
+		return (TableAnnotation) addSupportingAnnotation(initializer);
 	}
 	
 	public String getAnnotationName() {

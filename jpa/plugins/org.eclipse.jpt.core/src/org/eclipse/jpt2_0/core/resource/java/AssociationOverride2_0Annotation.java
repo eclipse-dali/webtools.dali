@@ -10,7 +10,9 @@
 package org.eclipse.jpt2_0.core.resource.java;
 
 import org.eclipse.jpt.core.resource.java.AssociationOverrideAnnotation;
+import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.JoinTableAnnotation;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember.AnnotationInitializer;
 
 /**
  * Corresponds to the JPA 2.0 annotation
@@ -39,6 +41,8 @@ public interface AssociationOverride2_0Annotation
 	 * Add the 'joinTable' element to the AssociationOverride annotation.
 	 */
 	JoinTableAnnotation addJoinTable();
+	
+	JoinColumnAnnotation addJoinTable(AnnotationInitializer initializer);
 
 	/**
 	 * Remove the 'joinTable' element from the AssociationOverride annotation.

@@ -14,7 +14,9 @@ import org.eclipse.jpt.core.internal.resource.java.NullJoinTableAnnotation;
 import org.eclipse.jpt.core.internal.resource.java.binary.BinaryAssociationOverrideAnnotation;
 import org.eclipse.jpt.core.internal.resource.java.binary.BinaryJoinTableAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.JoinTableAnnotation;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember.AnnotationInitializer;
 import org.eclipse.jpt2_0.core.resource.java.AssociationOverride2_0Annotation;
 import org.eclipse.jpt2_0.core.resource.java.JPA;
 
@@ -51,6 +53,10 @@ public final class BinaryAssociationOverride2_0Annotation
 	}
 
 	public JoinTableAnnotation addJoinTable() {
+		throw new UnsupportedOperationException();
+	}
+	
+	public JoinColumnAnnotation addJoinTable(AnnotationInitializer initializer) {
 		throw new UnsupportedOperationException();
 	}
 

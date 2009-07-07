@@ -17,8 +17,10 @@ import org.eclipse.jpt.core.internal.utility.jdt.MemberIndexedAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.NestedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.NestedIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.JoinTableAnnotation;
 import org.eclipse.jpt.core.resource.java.NestableJoinTableAnnotation;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember.AnnotationInitializer;
 import org.eclipse.jpt.core.utility.jdt.AnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.IndexedAnnotationAdapter;
@@ -74,6 +76,14 @@ public final class SourceAssociationOverride2_0Annotation
 		return table;
 	}
 
+	public JoinColumnAnnotation addJoinTable(AnnotationInitializer initializer) {
+		NestableJoinTableAnnotation table = buildJoinTableAnnotation(this, this.member, this.daa);
+		JoinColumnAnnotation joinColumn = (JoinColumnAnnotation) initializer.initializeAnnotation(table);
+		table.newAnnotation();
+		this.setJoinTable(table);
+		return joinColumn;
+	}
+	
 	public void removeJoinTable() {
 		this.joinTable.removeAnnotation();
 		setJoinTable(null);

@@ -11,6 +11,7 @@
 package org.eclipse.jpt.core.context.java;
 
 import org.eclipse.jpt.core.context.JoinTableJoiningStrategy;
+import org.eclipse.jpt.core.resource.java.JoinTableAnnotation;
 
 /**
  * The java representation of a {@link JoinTableJoiningStrategy}
@@ -24,5 +25,11 @@ import org.eclipse.jpt.core.context.JoinTableJoiningStrategy;
 public interface JavaJoinTableJoiningStrategy
 	extends JavaJoiningStrategy, JoinTableJoiningStrategy
 {
-	public JavaJoinTable getJoinTable();
+	JavaJoinTable getJoinTable();
+	
+	/**
+	 * Return the join table annotation, use a null object instead of returning null
+	 * if the join table annotation does not exist.
+	 */
+	JoinTableAnnotation getAnnotation();
 }

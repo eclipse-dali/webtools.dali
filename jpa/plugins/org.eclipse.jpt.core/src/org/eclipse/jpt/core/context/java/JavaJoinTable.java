@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.context.java;
 
 import java.util.ListIterator;
 import org.eclipse.jpt.core.context.JoinTable;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
+import org.eclipse.jpt.core.resource.java.JoinTableAnnotation;
 
 /**
  * Java join table
@@ -27,9 +27,9 @@ public interface JavaJoinTable
 {
 	JavaRelationshipMapping getRelationshipMapping();
 
-	void initialize(JavaResourcePersistentAttribute jrpa);
+	void initialize(JoinTableAnnotation joinTableAnnotation);
 
-	void update(JavaResourcePersistentAttribute jrpa);
+	void update(JoinTableAnnotation joinTableAnnotation);
 
 
 	// ********** covariant overrides **********
