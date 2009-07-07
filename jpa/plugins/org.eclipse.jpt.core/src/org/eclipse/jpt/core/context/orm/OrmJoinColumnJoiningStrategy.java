@@ -25,10 +25,12 @@ import org.eclipse.jpt.core.context.JoinColumnJoiningStrategy;
 public interface OrmJoinColumnJoiningStrategy
 	extends OrmJoiningStrategy, JoinColumnJoiningStrategy
 {
+	@SuppressWarnings("unchecked")
 	ListIterator<OrmJoinColumn> joinColumns();
 	
 	OrmJoinColumn getDefaultJoinColumn();
 	
+	@SuppressWarnings("unchecked")
 	ListIterator<OrmJoinColumn> specifiedJoinColumns();
 	
 	OrmJoinColumn addSpecifiedJoinColumn(int index);

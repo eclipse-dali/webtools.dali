@@ -25,10 +25,12 @@ import org.eclipse.jpt.core.context.JoinColumnJoiningStrategy;
 public interface JavaJoinColumnJoiningStrategy
 	extends JavaJoiningStrategy, JoinColumnJoiningStrategy
 {
+	@SuppressWarnings("unchecked")
 	ListIterator<JavaJoinColumn> joinColumns();
 	
 	JavaJoinColumn getDefaultJoinColumn();
 	
+	@SuppressWarnings("unchecked")
 	ListIterator<JavaJoinColumn> specifiedJoinColumns();
 	
 	JavaJoinColumn addSpecifiedJoinColumn(int index);
