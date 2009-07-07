@@ -31,7 +31,6 @@ import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlJoinTable;
-import org.eclipse.jpt.core.resource.orm.XmlJoinTableMapping;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
@@ -49,8 +48,6 @@ public class GenericOrmJoinTable
 	extends AbstractOrmTable
 	implements OrmJoinTable
 {
-	protected final XmlJoinTableMapping resourceMapping;
-
 	protected OrmJoinColumn defaultJoinColumn;
 
 	protected final Vector<OrmJoinColumn> specifiedJoinColumns = new Vector<OrmJoinColumn>();
@@ -62,12 +59,11 @@ public class GenericOrmJoinTable
 	protected final OrmJoinColumn.Owner inverseJoinColumnOwner;
 
 
-	public GenericOrmJoinTable(OrmJoinTableJoiningStrategy parent, XmlJoinTableMapping resourceMapping) {
+	public GenericOrmJoinTable(OrmJoinTableJoiningStrategy parent, XmlJoinTable resourceJoinTable) {
 		super(parent);
-		this.resourceMapping = resourceMapping;
 		this.joinColumnOwner = this.buildJoinColumnOwner();
 		this.inverseJoinColumnOwner = this.buildInverseJoinColumnOwner();
-		this.initialize(this.getResourceTable());
+		this.initialize(resourceJoinTable);
 	}
 
 	protected OrmJoinColumn.Owner buildJoinColumnOwner() {
@@ -141,19 +137,17 @@ public class GenericOrmJoinTable
 
 	@Override
 	protected XmlJoinTable getResourceTable() {
-		return this.resourceMapping.getJoinTable();
+		return this.getParent().getResourceJoinTable();
 	}
 
 	@Override
 	protected XmlJoinTable addResourceTable() {
-		XmlJoinTable resourceTable = OrmFactory.eINSTANCE.createXmlJoinTable();
-		this.resourceMapping.setJoinTable(resourceTable);
-		return resourceTable;
+		return getParent().addResourceJoinTable();
 	}
 
 	@Override
 	protected void removeResourceTable() {
-		this.resourceMapping.setJoinTable(null);
+		getParent().removeResourceJoinTable();
 	}
 
 

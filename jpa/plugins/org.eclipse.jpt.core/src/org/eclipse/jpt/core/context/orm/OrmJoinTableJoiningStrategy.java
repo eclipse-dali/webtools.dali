@@ -11,6 +11,7 @@
 package org.eclipse.jpt.core.context.orm;
 
 import org.eclipse.jpt.core.context.JoinTableJoiningStrategy;
+import org.eclipse.jpt.core.resource.orm.XmlJoinTable;
 
 /**
  * The orm.xml representation of a {@link JoinTableJoiningStrategy}
@@ -24,7 +25,14 @@ import org.eclipse.jpt.core.context.JoinTableJoiningStrategy;
 public interface OrmJoinTableJoiningStrategy
 	extends OrmJoiningStrategy, JoinTableJoiningStrategy
 {
-	public OrmJoinTable getJoinTable();
+	OrmJoinTable getJoinTable();
 	
-	public OrmJoinTable addJoinTable();
+	OrmJoinTable addJoinTable();
+	
+	XmlJoinTable getResourceJoinTable();
+	
+	XmlJoinTable addResourceJoinTable();
+
+	void removeResourceJoinTable();
+
 }

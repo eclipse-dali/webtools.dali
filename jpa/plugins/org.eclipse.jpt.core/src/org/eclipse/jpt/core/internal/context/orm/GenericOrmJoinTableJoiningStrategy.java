@@ -55,15 +55,20 @@ public class GenericOrmJoinTableJoiningStrategy
 	
 	public void addStrategy() {
 		if (this.joinTable == null) {
-			setJoinTable_(getJpaFactory().buildOrmJoinTable(this, this.resource));
-			addJoinTableResource();
+			OrmJoinTable oldJoinTable = this.joinTable;
+			XmlJoinTable resourceJoinTable = OrmFactory.eINSTANCE.createXmlJoinTable();
+			this.joinTable = getJpaFactory().buildOrmJoinTable(this, resourceJoinTable);
+			this.resource.setJoinTable(resourceJoinTable);
+			this.firePropertyChanged(JOIN_TABLE_PROPERTY, oldJoinTable, this.joinTable);
 		}
 	}
 	
 	public void removeStrategy() {
 		if (this.joinTable != null) {
-			setJoinTable_(null);
-			removeJoinTableResource();
+			OrmJoinTable oldJoinTable = this.joinTable;
+			this.joinTable = null;
+			removeResourceJoinTable();
+			this.firePropertyChanged(JOIN_TABLE_PROPERTY, oldJoinTable, null);
 		}
 	}
 	
@@ -85,22 +90,22 @@ public class GenericOrmJoinTableJoiningStrategy
 		this.firePropertyChanged(JOIN_TABLE_PROPERTY, oldJoinTable, newJoinTable);
 	}
 	
-	protected XmlJoinTable addJoinTableResource() {
-		XmlJoinTable resourceTable = OrmFactory.eINSTANCE.createXmlJoinTable();
-		this.resource.setJoinTable(resourceTable);
-		return resourceTable;
+	public XmlJoinTable addResourceJoinTable() {
+		XmlJoinTable resourceJoinTable = OrmFactory.eINSTANCE.createXmlJoinTable();
+		this.resource.setJoinTable(resourceJoinTable);
+		return resourceJoinTable;
 	}
 	
-	protected void removeJoinTableResource() {
+	public void removeResourceJoinTable() {
 		this.resource.setJoinTable(null);
 	}
 	
 	protected boolean mayHaveJoinTable() {
-		return getJoinTableResource() != null 
+		return getResourceJoinTable() != null 
 			|| getRelationshipReference().mayHaveDefaultJoinTable();
 	}
 	
-	protected XmlJoinTable getJoinTableResource() {
+	public XmlJoinTable getResourceJoinTable() {
 		return this.resource.getJoinTable();
 	}
 	
@@ -110,7 +115,7 @@ public class GenericOrmJoinTableJoiningStrategy
 	public void update() {
 		if (mayHaveJoinTable()) {
 			if (this.joinTable == null) {
-				setJoinTable_(getJpaFactory().buildOrmJoinTable(this, this.resource));
+				setJoinTable_(getJpaFactory().buildOrmJoinTable(this, getResourceJoinTable()));
 			}
 			this.joinTable.update();
 		}
