@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -48,7 +48,7 @@ public abstract class CatalogCombo<T extends JpaNode>
 	@Override
 	protected Iterator<String> values() {
 		Database db = this.getDatabase();
-		return (db == null) ? EmptyIterator.<String>instance() : db.sortedCatalogIdentifiers();
+		return (db != null) ? db.sortedCatalogIdentifiers() : EmptyIterator.<String>instance();
 	}
 
 }

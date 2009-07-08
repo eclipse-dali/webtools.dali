@@ -77,6 +77,14 @@ public interface Database
 	int catalogsSize();
 
 	/**
+	 * Return the database's catalog names, sorted.
+	 * Return an empty iterator if the database does not support catalogs.
+	 * This is useful when the user is selecting a catalog from a read-only
+	 * combo-box (e.g. in a wizard).
+	 */
+	Iterator<String> sortedCatalogNames();
+
+	/**
 	 * Return the catalog with specified name. The name must be an exact match
 	 * of the catalog's name.
 	 * Return null if the database does not support catalogs.
@@ -88,6 +96,8 @@ public interface Database
 	/**
 	 * Return the database's catalog identifiers, sorted by name.
 	 * Return an empty iterator if the database does not support catalogs.
+	 * This is useful when the user is selecting an identifier that will be
+	 * placed in a text file (e.g. in a Java annotation).
 	 */
 	Iterator<String> sortedCatalogIdentifiers();
 

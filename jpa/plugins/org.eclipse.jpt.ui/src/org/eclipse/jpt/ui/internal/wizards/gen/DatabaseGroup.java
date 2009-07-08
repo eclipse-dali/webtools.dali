@@ -60,7 +60,7 @@ public class DatabaseGroup
 	private final Set<Listener> listeners = Collections.synchronizedSet(new HashSet<Listener>());
 
 	// these are kept in synch with the selection
-	private ConnectionProfile selectedConnectionProfile;
+	ConnectionProfile selectedConnectionProfile;
 	private Schema selectedSchema;
 
 	private final Combo connectionComboBox;
@@ -89,7 +89,7 @@ public class DatabaseGroup
 		this.buildButton(parent, JptUiEntityGenMessages.addConnectionLink, CommonImages.createImage( CommonImages.ADD_CONNECTION_IMAGE ), this.buildAddConnectionLinkSelectionListener());
 
 		// A composite holds the reconnect button & text
-		this.buildLabel(parent, 1, "");
+		this.buildLabel(parent, 1, ""); //$NON-NLS-1$
 		Composite comp = new Composite( parent , SWT.NONE );
 		GridData gd = new GridData();
 		gd.grabExcessHorizontalSpace = true ;
@@ -138,10 +138,6 @@ public class DatabaseGroup
 
 	}
 	// ********** intra-wizard methods **********
-
-	ConnectionProfile getSelectedConnectionProfile() {
-		return this.selectedConnectionProfile;
-	}
 
 	Schema getSelectedSchema() {
 		return this.selectedSchema;
@@ -213,7 +209,7 @@ public class DatabaseGroup
 	 */
 	private void updateSchemaComboBox() {
 		this.schemaComboBox.removeAll();
-		for (Iterator<String> stream = this.getSchemata(); stream.hasNext(); ) {
+		for (Iterator<String> stream = this.schemaNames(); stream.hasNext(); ) {
 			this.schemaComboBox.add(stream.next());
 		}
 		// the current schema *should* be in the current connection profile
@@ -222,15 +218,13 @@ public class DatabaseGroup
 		}
 	}
 
-	private Iterator<String> getSchemata() {
-		ConnectionProfile profile = this.getSelectedConnectionProfile();
-		if( profile == null )
-			return EmptyIterator.<String>instance() ; 
-		Database db = profile.getDatabase(); 
-		if ( db == null) 
-			return EmptyIterator.<String>instance() ; 
-		Iterator<String> ret = db.sortedSchemaIdentifiers();
-		return ret;
+	private Iterator<String> schemaNames() {
+		if (this.selectedConnectionProfile == null) {
+			return EmptyIterator.instance();
+		}
+		Database db = this.selectedConnectionProfile.getDatabase();
+		// use schema *names* since the combo-box is read-only
+		return (db != null) ? db.sortedSchemaNames() : EmptyIterator.<String>instance();
 	}
 
 	/**
@@ -279,7 +273,7 @@ public class DatabaseGroup
 
 	void selectedSchemaChanged() {
 		Schema old = this.selectedSchema;
-		this.selectedSchema = this.selectedConnectionProfile.getDatabase().getSchemaForIdentifier(this.schemaComboBox.getText());
+		this.selectedSchema = this.selectedConnectionProfile.getDatabase().getSchemaNamed(this.schemaComboBox.getText());
 		if (this.selectedSchema != old) {
 			fireSchemaChanged(this.selectedSchema);
 		}
@@ -313,14 +307,16 @@ public class DatabaseGroup
 				public void run( final IProgressMonitor monitor ) 
 			    	throws InvocationTargetException, InterruptedException
 			    {
-					monitor.beginTask("Connecting to database", 10);
+					monitor.beginTask(JptUiEntityGenMessages.connectingToDatabase, 10);
 					final boolean[] isConnected= new boolean[1];
 					isConnected[0]=false;
 					Thread t= new Thread(){
+						@Override
 						public void run() {
-							try{
-								selectedConnectionProfile.connect();
-							}catch(Exception e ){
+							try {
+								DatabaseGroup.this.selectedConnectionProfile.connect();
+							} catch (Exception ex) {
+								// huh?
 							}
 							isConnected[0]=true;
 						}						

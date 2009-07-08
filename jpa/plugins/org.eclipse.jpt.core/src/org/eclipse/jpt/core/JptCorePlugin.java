@@ -94,14 +94,14 @@ public class JptCorePlugin extends Plugin {
 	 * The key for storing a JPA project's user overridden default catalog name
 	 * in the Eclipse project's persistent properties.
 	 */
-	public static final QualifiedName USER_OVERRIDE_DEFAULT_CATALOG_NAME = 
+	public static final QualifiedName USER_OVERRIDE_DEFAULT_CATALOG = 
 		new QualifiedName(PLUGIN_ID, "userOverrideDefaultCatalogName");  //$NON-NLS-1$
 
 	/**
 	 * The key for storing a JPA project's user overridden default schema name
 	 * in the Eclipse project's persistent properties.
 	 */
-	public static final QualifiedName USER_OVERRIDE_DEFAULT_SCHEMA_NAME = 
+	public static final QualifiedName USER_OVERRIDE_DEFAULT_SCHEMA = 
 			new QualifiedName(PLUGIN_ID, "userOverrideDefaultSchemaName");  //$NON-NLS-1$
 	
 	/**
@@ -435,56 +435,52 @@ public class JptCorePlugin extends Plugin {
 	}
 
 	/**
-	 * Return the default catalog name associated with the specified Eclipse project.
-	 * @see JpaProject#getUserOverrideDefaultCatalogName()
+	 * Return the default catalog (identifier) associated with the specified Eclipse project.
+	 * @see JpaProject#getUserOverrideDefaultCatalog()
 	 */
-	public static String getUserOverrideDefaultCatalogName(IProject project) {
+	public static String getUserOverrideDefaultCatalog(IProject project) {
 		try {
-			return project.getPersistentProperty(USER_OVERRIDE_DEFAULT_CATALOG_NAME);
-		}
-		catch (CoreException ce) {
-			log(ce);
+			return project.getPersistentProperty(USER_OVERRIDE_DEFAULT_CATALOG);
+		} catch (CoreException ex) {
+			log(ex);
 			return null;
 		}
 	}
 
 	/**
-	 * Set the default catalog name associated with the specified Eclipse project.
-	 * @see JpaProject#setUserOverrideDefaultCatalogName()
+	 * Set the default catalog (identifier) associated with the specified Eclipse project.
+	 * @see JpaProject#setUserOverrideDefaultCatalog(String)
 	 */
-	public static void setUserOverrideDefaultCatalogName(IProject project, String defaultCatalogName) {
+	public static void setUserOverrideDefaultCatalog(IProject project, String defaultCatalog) {
 		try {
-			project.setPersistentProperty(USER_OVERRIDE_DEFAULT_CATALOG_NAME, defaultCatalogName);
-		}
-		catch (CoreException ce) {
-			log(ce);
+			project.setPersistentProperty(USER_OVERRIDE_DEFAULT_CATALOG, defaultCatalog);
+		} catch (CoreException ex) {
+			log(ex);
 		}
 	}
 
 	/**
-	 * Return the default schema name associated with the specified Eclipse project.
-	 * @see JpaProject#getUserOverrideDefaultSchemaName()
+	 * Return the default schema (identifier) associated with the specified Eclipse project.
+	 * @see JpaProject#getUserOverrideDefaultSchema()
 	 */
-	public static String getUserOverrideDefaultSchemaName(IProject project) {
+	public static String getUserOverrideDefaultSchema(IProject project) {
 		try {
-			return project.getPersistentProperty(USER_OVERRIDE_DEFAULT_SCHEMA_NAME);
-		}
-		catch (CoreException ce) {
-			log(ce);
+			return project.getPersistentProperty(USER_OVERRIDE_DEFAULT_SCHEMA);
+		} catch (CoreException ex) {
+			log(ex);
 			return null;
 		}
 	}
 	
 	/**
-	 * Set the default schema name associated with the specified Eclipse project.
-	 * @see JpaProject#setUserOverrideDefaultSchemaName()
+	 * Set the default schema (identifier) associated with the specified Eclipse project.
+	 * @see JpaProject#setUserOverrideDefaultSchema(String)
 	 */
-	public static void setUserOverrideDefaultSchemaName(IProject project, String defaultSchemaName) {
+	public static void setUserOverrideDefaultSchema(IProject project, String defaultSchema) {
 		try {
-			project.setPersistentProperty(USER_OVERRIDE_DEFAULT_SCHEMA_NAME, defaultSchemaName);
-		}
-		catch (CoreException ce) {
-			log(ce);
+			project.setPersistentProperty(USER_OVERRIDE_DEFAULT_SCHEMA, defaultSchema);
+		} catch (CoreException ex) {
+			log(ex);
 		}
 	}
 

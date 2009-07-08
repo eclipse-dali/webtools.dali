@@ -480,8 +480,7 @@ class TablesSelectorWizardPage extends WizardPage{
 	private void updateTablesSelector(final Schema schema) {
 		if(schema ==null)
 			return;
-		this.jpaProject.setUserOverrideDefaultSchema( schema.getName());
-		JptCorePlugin.setUserOverrideDefaultSchemaName(jpaProject.getProject(), schema.getName());
+		this.jpaProject.setUserOverrideDefaultSchema( schema.getIdentifier());
 		
 		updateTablesListViewer( CollectionTools.collection(schema.tables()));
 

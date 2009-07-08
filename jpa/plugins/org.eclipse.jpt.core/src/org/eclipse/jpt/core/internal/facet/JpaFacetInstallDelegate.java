@@ -60,10 +60,10 @@ public class JpaFacetInstallDelegate
 		JptCorePlugin.setJpaPlatformId(project, dataModel.getStringProperty(PLATFORM_ID));
 		JptCorePlugin.setConnectionProfileName(project, dataModel.getStringProperty(CONNECTION));
 		if (dataModel.getBooleanProperty(USER_WANTS_TO_OVERRIDE_DEFAULT_CATALOG)) {
-			JptCorePlugin.setUserOverrideDefaultCatalogName(project, dataModel.getStringProperty(USER_OVERRIDE_DEFAULT_CATALOG));
+			JptCorePlugin.setUserOverrideDefaultCatalog(project, dataModel.getStringProperty(USER_OVERRIDE_DEFAULT_CATALOG));
 		}
 		if (dataModel.getBooleanProperty(USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA)) {
-			JptCorePlugin.setUserOverrideDefaultSchemaName(project, dataModel.getStringProperty(USER_OVERRIDE_DEFAULT_SCHEMA));
+			JptCorePlugin.setUserOverrideDefaultSchema(project, dataModel.getStringProperty(USER_OVERRIDE_DEFAULT_SCHEMA));
 		}
 
 		this.addDbDriverLibraryToClasspath(javaProject, dataModel, monitor);

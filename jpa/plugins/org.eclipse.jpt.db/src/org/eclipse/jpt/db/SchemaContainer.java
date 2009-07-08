@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -37,6 +37,13 @@ public interface SchemaContainer
 	int schemataSize();
 
 	/**
+	 * Return the container's schema names, sorted.
+	 * This is useful when the user is selecting a schema from a read-only
+	 * combo-box (e.g. in a wizard).
+	 */
+	Iterator<String> sortedSchemaNames();
+
+	/**
 	 * Return the schema with specified name. The name must be an exact match
 	 * of the schema's name.
 	 * @see #schemaNames()
@@ -46,6 +53,8 @@ public interface SchemaContainer
 
 	/**
 	 * Return the container's schema identifiers, sorted by name.
+	 * This is useful when the user is selecting an identifier that will be
+	 * placed in a text file (e.g. in a Java annotation).
 	 */
 	Iterator<String> sortedSchemaIdentifiers();
 

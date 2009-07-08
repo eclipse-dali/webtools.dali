@@ -125,6 +125,16 @@ abstract class DTPSchemaContainerWrapper
 		return this.getSchemata().length;
 	}
 
+	public Iterator<String> sortedSchemaNames() {
+		// the schemata are already sorted
+		return new TransformationIterator<DTPSchemaWrapper, String>(this.schemaWrappers()) {
+			@Override
+			protected String transform(DTPSchemaWrapper next) {
+				 return next.getName();
+			}
+		};
+	}
+
 	public DTPSchemaWrapper getSchemaNamed(String name) {
 		return this.selectDatabaseObjectNamed(this.getSchemata(), name);
 	}

@@ -53,17 +53,14 @@ class Derby
 		identifiers.add(this.buildDefaultSchemaIdentifier(userName));
 	}
 
-	private String buildDefaultSchemaIdentifier(String userName) {
-		return this.convertNameToIdentifier(this.buildDefaultSchemaName(userName));
-	}
-
 	/**
-	 * The default user name on Derby is "APP".
+	 * The default user name on Derby is "APP" when the user connects without
+	 * a user name.
 	 */
-	private String buildDefaultSchemaName(String userName) {
-		return ((userName != null) && (userName.length() != 0)) ? userName : DEFAULT_USER_NAME;
+	private String buildDefaultSchemaIdentifier(String userName) {
+		return ((userName != null) && (userName.length() != 0)) ? userName : DEFAULT_USER_IDENTIFIER;
 	}
-	private static final String DEFAULT_USER_NAME = "APP";  //$NON-NLS-1$
+	private static final String DEFAULT_USER_IDENTIFIER = "APP";  //$NON-NLS-1$
 
 	@Override
 	char[] getExtendedNormalNamePartCharacters() {

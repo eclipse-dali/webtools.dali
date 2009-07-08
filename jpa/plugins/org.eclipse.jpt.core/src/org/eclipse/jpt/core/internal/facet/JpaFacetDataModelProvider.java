@@ -212,13 +212,13 @@ public class JpaFacetDataModelProvider
 			return Boolean.FALSE;
 		}
 		if (propertyName.equals(USER_OVERRIDE_DEFAULT_CATALOG)) {
-			return this.getDefaultCatalogName();
+			return this.getDefaultCatalogIdentifier();
 		}
 		if (propertyName.equals(USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA)) {
 			return Boolean.FALSE;
 		}
 		if (propertyName.equals(USER_OVERRIDE_DEFAULT_SCHEMA)) {
-			return this.getDefaultSchemaName();
+			return this.getDefaultSchemaIdentifier();
 		}
 		if (propertyName.equals(DISCOVER_ANNOTATED_CLASSES)) {
 			return Boolean.valueOf(this.runtimeSupportsEjb30());
@@ -274,7 +274,7 @@ public class JpaFacetDataModelProvider
 		return (cp == null) ? null : cp.getDriverName();
 	}
 
-	private String getDefaultCatalogName() {
+	private String getDefaultCatalogIdentifier() {
 		Catalog catalog = this.getDefaultCatalog();
 		return (catalog == null) ? null : catalog.getIdentifier();
 	}
@@ -284,7 +284,7 @@ public class JpaFacetDataModelProvider
 		return (db == null) ? null : db.getDefaultCatalog();
 	}
 
-	private String getDefaultSchemaName() {
+	private String getDefaultSchemaIdentifier() {
 		Schema schema = this.getDefaultSchema();
 		return (schema == null) ? null : schema.getIdentifier();
 	}
@@ -355,7 +355,7 @@ public class JpaFacetDataModelProvider
 
 			// catalog
 			if ((propertyValue != null) && this.databaseSupportsCatalogs()) {  // connection set to something that supports catalogs
-				this.setProperty(USER_OVERRIDE_DEFAULT_CATALOG, this.getDefaultCatalogName());
+				this.setProperty(USER_OVERRIDE_DEFAULT_CATALOG, this.getDefaultCatalogIdentifier());
 			} else {  // connection either '<None>' or non-catalog database
 				this.setBooleanProperty(USER_WANTS_TO_OVERRIDE_DEFAULT_CATALOG, false);
 			}
@@ -367,7 +367,7 @@ public class JpaFacetDataModelProvider
 			if (propertyValue == null) {  // connection set to '<None>'
 				this.setBooleanProperty(USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA, false);
 			} else {
-				this.setProperty(USER_OVERRIDE_DEFAULT_SCHEMA, this.getDefaultSchemaName());
+				this.setProperty(USER_OVERRIDE_DEFAULT_SCHEMA, this.getDefaultSchemaIdentifier());
 			}
 			this.model.notifyPropertyChange(USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA, IDataModel.ENABLE_CHG);
 			this.model.notifyPropertyChange(USER_OVERRIDE_DEFAULT_SCHEMA, IDataModel.DEFAULT_CHG);
@@ -403,7 +403,7 @@ public class JpaFacetDataModelProvider
 			}
 		}
 		else if (propertyName.equals(USER_OVERRIDE_DEFAULT_CATALOG)) {
-			this.setProperty(USER_OVERRIDE_DEFAULT_SCHEMA, this.getDefaultSchemaName());
+			this.setProperty(USER_OVERRIDE_DEFAULT_SCHEMA, this.getDefaultSchemaIdentifier());
 		}
 		else if (propertyName.equals(USER_WANTS_TO_OVERRIDE_DEFAULT_SCHEMA)) {
 			this.model.notifyPropertyChange(USER_OVERRIDE_DEFAULT_SCHEMA, IDataModel.ENABLE_CHG);
@@ -500,28 +500,30 @@ public class JpaFacetDataModelProvider
 
 	private DataModelPropertyDescriptor[] buildValidCatalogDescriptors() {
 		Database db = this.getDatabase();
-		return (db == null) ? EMPTY_DMPD_ARRAY : this.buildDescriptors(this.buildValidCatalogNames(db));
+		return (db == null) ? EMPTY_DMPD_ARRAY : this.buildDescriptors(this.buildValidCatalogIdentifiers(db));
 	}
 
 	/**
 	 * pre-condition: 'db' is not null
 	 */
-	private List<String> buildValidCatalogNames(Database db) {
-		return this.buildValidStrings(db.sortedCatalogIdentifiers(), this.getDefaultCatalogName());
+	private List<String> buildValidCatalogIdentifiers(Database db) {
+		// use catalog *identifiers* since the string ends up being the "default" for various text entries
+		return this.buildValidStrings(db.sortedCatalogIdentifiers(), this.getDefaultCatalogIdentifier());
 	}
 
 	private DataModelPropertyDescriptor[] buildValidSchemaDescriptors() {
 		Database db = this.getDatabase();
-		return (db == null) ? EMPTY_DMPD_ARRAY : this.buildDescriptors(this.buildValidSchemaNames());
+		return (db == null) ? EMPTY_DMPD_ARRAY : this.buildDescriptors(this.buildValidSchemaIdentifiers());
 	}
 
-	private List<String> buildValidSchemaNames() {
-		return this.buildValidStrings(this.schemaNames(), this.getDefaultSchemaName());
+	private List<String> buildValidSchemaIdentifiers() {
+		return this.buildValidStrings(this.schemaIdentifiers(), this.getDefaultSchemaIdentifier());
 	}
 
-	private Iterator<String> schemaNames() {
+	private Iterator<String> schemaIdentifiers() {
 		SchemaContainer sc = this.getSchemaContainer();
-		return (sc == null) ? EmptyIterator.<String>instance() : sc.sortedSchemaIdentifiers();
+		// use schema *identifiers* since the string ends up being the "default" for various text entries
+		return (sc != null) ? sc.sortedSchemaIdentifiers() : EmptyIterator.<String>instance();
 	}
 
 	/**

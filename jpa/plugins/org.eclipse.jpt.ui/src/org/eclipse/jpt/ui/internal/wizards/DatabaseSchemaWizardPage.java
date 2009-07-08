@@ -209,7 +209,7 @@ public class DatabaseSchemaWizardPage extends WizardPage {
 
 		// ********** internal methods **********
 
-		private void addJpaProjectConnectionListener() {
+		void addJpaProjectConnectionListener() {
 			this.addJpaProjectConnectionProfileListener(this.connectionListener);
 		}
 		
@@ -247,7 +247,7 @@ public class DatabaseSchemaWizardPage extends WizardPage {
 			this.reconnectLink.setEnabled(this.reconnectLinkCanBeEnabled());
 		}
 
-		private void updateAddJpaProjectConnectionLink() {
+		void updateAddJpaProjectConnectionLink() {
 			this.addJpaProjectConnectionLink.setEnabled(this.addJpaProjectConnectionLinkCanBeEnabled());
 		}
 
@@ -268,25 +268,26 @@ public class DatabaseSchemaWizardPage extends WizardPage {
 		 */
 		private void updateSchemaComboBox() {
 			this.schemaComboBox.removeAll();
-			for (Iterator<String> stream = this.getSchemata(); stream.hasNext(); ) {
+			for (Iterator<String> stream = this.schemaNames(); stream.hasNext(); ) {
 				this.schemaComboBox.add(stream.next());
 			}
 			// the current schema *should* be in the current connection profile
 			if (this.selectedSchema != null) {
-				this.schemaComboBox.select(this.schemaComboBox.indexOf(this.selectedSchema.getIdentifier()));
+				this.schemaComboBox.select(this.schemaComboBox.indexOf(this.selectedSchema.getName()));
 			}
 		}
 
-		private Iterator<String> getSchemata() {
+		private Iterator<String> schemaNames() {
 			SchemaContainer sc = DatabaseSchemaWizardPage.this.jpaProject.getDefaultDbSchemaContainer();
-			return (sc == null) ? EmptyIterator.<String>instance() : sc.sortedSchemaIdentifiers();
+			// use schema *names* since the combo-box is read-only
+			return (sc != null) ? sc.sortedSchemaNames() : EmptyIterator.<String>instance();
 		}
 
 		// ********** listener callbacks **********
 
 		void selectedSchemaChanged() {
 			Schema old = this.selectedSchema;
-			this.selectedSchema = this.getJpaProjectConnectionProfile().getDatabase().getSchemaForIdentifier(this.schemaComboBox.getText());
+			this.selectedSchema = this.getJpaProjectConnectionProfile().getDatabase().getSchemaNamed(this.schemaComboBox.getText());
 			if (this.selectedSchema != old) {
 				DatabaseSchemaWizardPage.this.fireSchemaChanged(this.selectedSchema);
 			}
@@ -389,7 +390,7 @@ public class DatabaseSchemaWizardPage extends WizardPage {
 			};
 		}
 
-		private void promptToConfigJpaProjectConnection() {
+		void promptToConfigJpaProjectConnection() {
 			PreferenceDialog dialog =
 				PreferencesUtil.createPropertyDialogOn(
 					getShell(), DatabaseSchemaWizardPage.this.jpaProject.getProject(),

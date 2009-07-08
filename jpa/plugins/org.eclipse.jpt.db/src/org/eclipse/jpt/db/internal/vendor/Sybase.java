@@ -62,8 +62,8 @@ class Sybase
 	 * 'dbo'.
 	 * 
 	 * Actually, the default schema is more like a search path:
-	 * The server looks for a schema object (e.g table) first in the user's
-	 * schema, the it look for the schema object in the database owner's
+	 * The server looks for a schema object (e.g. a table) first in the user's
+	 * schema, then it looks for the schema object in the database owner's
 	 * schema (dbo). As a result, it's really not possible to specify
 	 * the "default" schema without knowing the schema object we are
 	 * looking for.

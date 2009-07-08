@@ -74,8 +74,18 @@ abstract class AbstractVendor
 		return identifiers;
 	}
 
+	/**
+	 * The user name passed in here was retrieved from DTP.
+	 * DTP stores the user name that was passed to it during the connection
+	 * to the database. As a result, this user name is an "identifier" not a "name".
+	 * If the user name were retrieved from the JDBC connection it would probably
+	 * be a "name". For example, you can connect to an Oracle database with the
+	 * user name "scott", but that identifer is folded to the actual user name
+	 * "SCOTT". DTP stores the original string "scott", while the Oracle JDBC
+	 * driver stores the folded string "SCOTT".
+	 */
 	void addDefaultSchemaIdentifiersTo(@SuppressWarnings("unused") Database database, String userName, ArrayList<String> identifiers) {
-		identifiers.add(this.convertNameToIdentifier(userName));
+		identifiers.add(userName);
 	}
 
 

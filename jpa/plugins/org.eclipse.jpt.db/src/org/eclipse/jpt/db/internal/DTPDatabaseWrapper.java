@@ -221,6 +221,16 @@ final class DTPDatabaseWrapper
 		throw new IllegalArgumentException("invalid DTP catalog: " + dtpCatalog);  //$NON-NLS-1$
 	}
 
+	public Iterator<String> sortedCatalogNames() {
+		// the catalogs are already sorted
+		return new TransformationIterator<DTPCatalogWrapper, String>(this.catalogWrappers()) {
+			@Override
+			protected String transform(DTPCatalogWrapper next) {
+				 return next.getName();
+			}
+		};
+	}
+
 	public DTPCatalogWrapper getCatalogNamed(String name) {
 		return this.selectDatabaseObjectNamed(this.getCatalogs(), name);
 	}

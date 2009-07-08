@@ -37,6 +37,7 @@ public class JptUiEntityGenMessages {
 	public static String connectLink;
 	public static String schemaInfo;
 	public static String schema;
+	public static String connectingToDatabase;
 	
 	//Default table gen properties
 	public static String GenerateEntitiesWizard_defaultTablePage_title;

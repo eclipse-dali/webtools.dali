@@ -399,7 +399,7 @@ public abstract class AbstractJpaProject
 	public void setUserOverrideDefaultCatalog(String catalog) {
 		String old = this.userOverrideDefaultCatalog;
 		this.userOverrideDefaultCatalog = catalog;
-		JptCorePlugin.setUserOverrideDefaultCatalogName(this.project, catalog);
+		JptCorePlugin.setUserOverrideDefaultCatalog(this.project, catalog);
 		this.firePropertyChanged(USER_OVERRIDE_DEFAULT_CATALOG_PROPERTY, old, catalog);
 	}
 	
@@ -413,7 +413,7 @@ public abstract class AbstractJpaProject
 	public void setUserOverrideDefaultSchema(String schema) {
 		String old = this.userOverrideDefaultSchema;
 		this.userOverrideDefaultSchema = schema;
-		JptCorePlugin.setUserOverrideDefaultSchemaName(this.project, schema);
+		JptCorePlugin.setUserOverrideDefaultSchema(this.project, schema);
 		this.firePropertyChanged(USER_OVERRIDE_DEFAULT_SCHEMA_PROPERTY, old, schema);
 	}
 	
