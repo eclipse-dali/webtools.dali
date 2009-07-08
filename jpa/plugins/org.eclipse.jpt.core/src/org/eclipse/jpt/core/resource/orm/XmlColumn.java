@@ -357,14 +357,14 @@ public class XmlColumn extends AbstractXmlColumn
 	}
 	
 	protected static Translator buildLengthTranslator() {
-		return new Translator(JPA.NAME, OrmPackage.eINSTANCE.getXmlColumn_Length(), Translator.DOM_ATTRIBUTE);
+		return new Translator(JPA.LENGTH, OrmPackage.eINSTANCE.getXmlColumn_Length(), Translator.DOM_ATTRIBUTE);
 	}
 	
 	protected static Translator buildPrecisionTranslator() {
-		return new Translator(JPA.NAME, OrmPackage.eINSTANCE.getXmlColumn_Precision(), Translator.DOM_ATTRIBUTE);
+		return new Translator(JPA.PRECISION, OrmPackage.eINSTANCE.getXmlColumn_Precision(), Translator.DOM_ATTRIBUTE);
 	}
 	
 	protected static Translator buildScaleTranslator() {
-		return new Translator(JPA.NAME, OrmPackage.eINSTANCE.getXmlColumn_Scale(), Translator.DOM_ATTRIBUTE);
+		return new Translator(JPA.SCALE, OrmPackage.eINSTANCE.getXmlColumn_Scale(), Translator.DOM_ATTRIBUTE);
 	}
 } // ColumnImpl

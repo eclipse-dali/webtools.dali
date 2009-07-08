@@ -287,6 +287,6 @@ public class XmlDiscriminatorColumn extends AbstractXmlNamedColumn
 	}
 	
 	protected static Translator buildLengthTranslator() {
-		return new Translator(JPA.NAME, OrmPackage.eINSTANCE.getXmlDiscriminatorColumn_Length(), Translator.DOM_ATTRIBUTE);
+		return new Translator(JPA.LENGTH, OrmPackage.eINSTANCE.getXmlDiscriminatorColumn_Length(), Translator.DOM_ATTRIBUTE);
 	}
 } // DiscriminatorColumn

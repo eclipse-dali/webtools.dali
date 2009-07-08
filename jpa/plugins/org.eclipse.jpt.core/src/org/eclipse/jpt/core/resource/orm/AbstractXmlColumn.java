@@ -478,23 +478,23 @@ public abstract class AbstractXmlColumn extends AbstractXmlNamedColumn
 	// ********** translators **********
 
 	protected static Translator buildUniqueTranslator() {
-		return new BooleanTranslator(JPA.NAME, OrmPackage.eINSTANCE.getAbstractXmlColumn_Unique(), Translator.DOM_ATTRIBUTE);
+		return new BooleanTranslator(JPA.UNIQUE, OrmPackage.eINSTANCE.getAbstractXmlColumn_Unique(), Translator.DOM_ATTRIBUTE);
 	}
 	
 	protected static Translator buildNullableTranslator() {
-		return new BooleanTranslator(JPA.NAME, OrmPackage.eINSTANCE.getAbstractXmlColumn_Nullable(), Translator.DOM_ATTRIBUTE);
+		return new BooleanTranslator(JPA.NULLABLE, OrmPackage.eINSTANCE.getAbstractXmlColumn_Nullable(), Translator.DOM_ATTRIBUTE);
 	}
 	
 	protected static Translator buildInsertableTranslator() {
-		return new BooleanTranslator(JPA.NAME, OrmPackage.eINSTANCE.getAbstractXmlColumn_Insertable(), Translator.DOM_ATTRIBUTE);
+		return new BooleanTranslator(JPA.INSERTABLE, OrmPackage.eINSTANCE.getAbstractXmlColumn_Insertable(), Translator.DOM_ATTRIBUTE);
 	}
 	
 	protected static Translator buildUpdatableTranslator() {
-		return new BooleanTranslator(JPA.NAME, OrmPackage.eINSTANCE.getAbstractXmlColumn_Updatable(), Translator.DOM_ATTRIBUTE);
+		return new BooleanTranslator(JPA.UPDATABLE, OrmPackage.eINSTANCE.getAbstractXmlColumn_Updatable(), Translator.DOM_ATTRIBUTE);
 	}
 	
 	protected static Translator buildTableTranslator() {
-		return new Translator(JPA.NAME, OrmPackage.eINSTANCE.getAbstractXmlColumn_Table(), Translator.DOM_ATTRIBUTE);
+		return new Translator(JPA.TABLE, OrmPackage.eINSTANCE.getAbstractXmlColumn_Table(), Translator.DOM_ATTRIBUTE);
 	}
 	
 } // AbstractXmlAbstractColumn

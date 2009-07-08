@@ -280,7 +280,7 @@ public abstract class AbstractXmlNamedColumn extends AbstractJpaEObject implemen
 	}
 	
 	protected static Translator buildColumnDefinitionTranslator() {
-		return new Translator(JPA.NAME, OrmPackage.eINSTANCE.getAbstractXmlNamedColumn_ColumnDefinition(), Translator.DOM_ATTRIBUTE);
+		return new Translator(JPA.COLUMN_DEFINITION, OrmPackage.eINSTANCE.getAbstractXmlNamedColumn_ColumnDefinition(), Translator.DOM_ATTRIBUTE);
 	}
 
 } // AbstractXmlNamedColumn
