@@ -9,7 +9,7 @@
  *     IBM Corporation - initial API and implementation
  *     Jesper Steen Moeller - added namespace support
  *******************************************************************************/
-package org.eclipse.jpt.core.internal.resource.xml;
+package org.eclipse.jpt.eclipselink.core.internal.resource.orm;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -62,7 +62,7 @@ import org.xml.sax.SAXException;
  * will be detected.
  * </p>
  * <p>
- * This class should be used instead of {@link XMLRootElementContentDescriber}
+ * This class should be used instead of {@link XMLRootElementContentDescriber2}
  * which doesn't detect namespaces and doesn't allow to specify 
  * more than one set of dtds, root element names and namespaces which 
  * should be detected.
@@ -76,7 +76,7 @@ import org.xml.sax.SAXException;
  * 
  * @since org.eclipse.core.contenttype 3.3
  */
-public final class XMLRootElementContentDescriber extends XMLContentDescriber implements IExecutableExtension {
+public final class XMLRootElementContentDescriber2 extends XMLContentDescriber implements IExecutableExtension {
 	private static final String ELEMENT_TO_FIND = "element"; //$NON-NLS-1$
 	
 	/* (Intentionally not included in javadoc)
@@ -253,7 +253,7 @@ public final class XMLRootElementContentDescriber extends XMLContentDescriber im
 		}
 
 		if (elementsToFind.length == 0) {
-			String message = NLS.bind(ContentMessages.content_badInitializationData, XMLRootElementContentDescriber.class.getName());
+			String message = NLS.bind(ContentMessages.content_badInitializationData, XMLRootElementContentDescriber2.class.getName());
 			throw new CoreException(new Status(IStatus.ERROR, ContentMessages.OWNER_NAME, 0, message, null));
 		}
 	}
