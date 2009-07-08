@@ -15,7 +15,7 @@
 	<!-- ***** Eclipse core extensions ***** -->
 	
 	<extension
-		point="org.eclipse.core.contenttype.contentTypes">
+		point="org.eclipse.core.runtime.contentTypes">
 		
 		<!-- "abstract" content type to be extended by all JPA XML file content types -->
 		<content-type
