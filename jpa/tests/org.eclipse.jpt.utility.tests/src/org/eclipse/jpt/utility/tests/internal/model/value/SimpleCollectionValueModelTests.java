@@ -24,7 +24,8 @@ import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
 import org.eclipse.jpt.utility.model.event.CollectionClearEvent;
 import org.eclipse.jpt.utility.model.event.CollectionEvent;
 import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
-import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
+import org.eclipse.jpt.utility.model.listener.ChangeAdapter;
+import org.eclipse.jpt.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
@@ -229,10 +230,10 @@ public class SimpleCollectionValueModelTests extends TestCase {
 	}
 
 	public void testCollectionChange1() {
-		this.bagHolder.addCollectionChangeListener(this.buildBagListener());
+		this.bagHolder.addChangeListener(this.buildBagListener());
 		this.verifyBagChange();
 
-		this.setHolder.addCollectionChangeListener(this.buildSetListener());
+		this.setHolder.addChangeListener(this.buildSetListener());
 		this.verifySetChange();
 	}
 
@@ -349,20 +350,24 @@ public class SimpleCollectionValueModelTests extends TestCase {
 		assertNull(this.setEventType);
 	}
 
-	private CollectionChangeListener buildBagListener() {
-		return new CollectionChangeListener() {
+	private ChangeListener buildBagListener() {
+		return new ChangeAdapter() {
+			@Override
 			public void itemsAdded(CollectionAddEvent e) {
 				SimpleCollectionValueModelTests.this.bagEventType = ADD;
 				SimpleCollectionValueModelTests.this.bagEvent = e;
 			}
+			@Override
 			public void itemsRemoved(CollectionRemoveEvent e) {
 				SimpleCollectionValueModelTests.this.bagEventType = REMOVE;
 				SimpleCollectionValueModelTests.this.bagEvent = e;
 			}
+			@Override
 			public void collectionCleared(CollectionClearEvent e) {
 				SimpleCollectionValueModelTests.this.bagEventType = CLEAR;
 				SimpleCollectionValueModelTests.this.bagEvent = e;
 			}
+			@Override
 			public void collectionChanged(CollectionChangeEvent e) {
 				SimpleCollectionValueModelTests.this.bagEventType = CHANGE;
 				SimpleCollectionValueModelTests.this.bagEvent = e;
@@ -370,20 +375,24 @@ public class SimpleCollectionValueModelTests extends TestCase {
 		};
 	}
 
-	private CollectionChangeListener buildSetListener() {
-		return new CollectionChangeListener() {
+	private ChangeListener buildSetListener() {
+		return new ChangeAdapter() {
+			@Override
 			public void itemsAdded(CollectionAddEvent e) {
 				SimpleCollectionValueModelTests.this.setEventType = ADD;
 				SimpleCollectionValueModelTests.this.setEvent = e;
 			}
+			@Override
 			public void itemsRemoved(CollectionRemoveEvent e) {
 				SimpleCollectionValueModelTests.this.setEventType = REMOVE;
 				SimpleCollectionValueModelTests.this.setEvent = e;
 			}
+			@Override
 			public void collectionCleared(CollectionClearEvent e) {
 				SimpleCollectionValueModelTests.this.setEventType = CLEAR;
 				SimpleCollectionValueModelTests.this.setEvent = e;
 			}
+			@Override
 			public void collectionChanged(CollectionChangeEvent e) {
 				SimpleCollectionValueModelTests.this.setEventType = CHANGE;
 				SimpleCollectionValueModelTests.this.setEvent = e;

@@ -10,13 +10,13 @@
 package org.eclipse.jpt.utility.tests.internal.model.value;
 
 import junit.framework.TestCase;
+
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ValuePropertyAdapter;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.model.event.StateChangeEvent;
-import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
-import org.eclipse.jpt.utility.model.listener.StateChangeListener;
+import org.eclipse.jpt.utility.model.listener.ChangeAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
@@ -48,7 +48,7 @@ public class ValuePropertyAdapterTests extends TestCase {
 	public void testWrappedPVM() {
 		Junk junk2 = new Junk("bar");
 		LocalListener l = new LocalListener(this.junkHolder2, this.junk, junk2);
-		this.junkHolder2.addPropertyChangeListener(l);
+		this.junkHolder2.addChangeListener(l);
 		this.junkHolder.setValue(junk2);
 		assertTrue(l.eventReceived());
 	}
@@ -58,11 +58,11 @@ public class ValuePropertyAdapterTests extends TestCase {
 		assertFalse(this.junkHolder2.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 
 		LocalListener l = new LocalListener(this.junkHolder2, null, this.junk);
-		this.junkHolder2.addPropertyChangeListener(l);
+		this.junkHolder2.addChangeListener(l);
 		assertTrue(this.junkHolder.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 		assertTrue(this.junkHolder2.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 
-		this.junkHolder2.removePropertyChangeListener(l);
+		this.junkHolder2.removeChangeListener(l);
 		assertFalse(this.junkHolder.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 		assertFalse(this.junkHolder2.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 	}
@@ -89,7 +89,7 @@ public class ValuePropertyAdapterTests extends TestCase {
 	}
 
 
-	class LocalListener implements PropertyChangeListener, StateChangeListener {
+	class LocalListener extends ChangeAdapter {
 		private boolean eventReceived = false;
 		private final Object source;
 		private final Object oldValue;
@@ -103,6 +103,7 @@ public class ValuePropertyAdapterTests extends TestCase {
 			this.oldValue = oldValue;
 			this.newValue = newValue;
 		}
+		@Override
 		public void propertyChanged(PropertyChangeEvent e) {
 			this.eventReceived = true;
 			assertEquals(this.source, e.getSource());
@@ -110,6 +111,7 @@ public class ValuePropertyAdapterTests extends TestCase {
 			assertEquals(this.newValue, e.getNewValue());
 			assertEquals(PropertyValueModel.VALUE, e.getPropertyName());
 		}
+		@Override
 		public void stateChanged(StateChangeEvent e) {
 			this.eventReceived = true;
 			assertEquals(this.source, e.getSource());
@@ -119,7 +121,7 @@ public class ValuePropertyAdapterTests extends TestCase {
 		}
 	}
 
-	private class Junk extends AbstractModel {
+	class Junk extends AbstractModel {
 		private String name;
 			public static final String NAME_PROPERTY = "name";
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,12 +11,14 @@ package org.eclipse.jpt.utility.internal.model.value;
 
 import java.util.Iterator;
 import java.util.ListIterator;
+
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.ChangeSupport;
 import org.eclipse.jpt.utility.internal.model.SingleAspectChangeSupport;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
+import org.eclipse.jpt.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
@@ -77,7 +79,7 @@ public class PropertyListValueModelAdapter<E>
 			}
 			@Override
 			public String toString() {
-				return "property change listener";
+				return "property change listener"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -122,11 +124,11 @@ public class PropertyListValueModelAdapter<E>
 	 * Override to start listening to the value holder if necessary.
 	 */
 	@Override
-	public void addListChangeListener(ListChangeListener listener) {
+	public void addChangeListener(ChangeListener listener) {
 		if (this.hasNoListeners()) {
 			this.engageModel();
 		}
-		super.addListChangeListener(listener);
+		super.addChangeListener(listener);
 	}
 
 	/**
@@ -134,7 +136,7 @@ public class PropertyListValueModelAdapter<E>
 	 */
 	@Override
 	public void addListChangeListener(String listName, ListChangeListener listener) {
-		if (listName == LIST_VALUES && this.hasNoListeners()) {
+		if (listName.equals(LIST_VALUES) && this.hasNoListeners()) {
 			this.engageModel();
 		}
 		super.addListChangeListener(listName, listener);
@@ -144,8 +146,8 @@ public class PropertyListValueModelAdapter<E>
 	 * Override to stop listening to the value holder if appropriate.
 	 */
 	@Override
-	public void removeListChangeListener(ListChangeListener listener) {
-		super.removeListChangeListener(listener);
+	public void removeChangeListener(ChangeListener listener) {
+		super.removeChangeListener(listener);
 		if (this.hasNoListeners()) {
 			this.disengageModel();
 		}
@@ -157,7 +159,7 @@ public class PropertyListValueModelAdapter<E>
 	@Override
 	public void removeListChangeListener(String listName, ListChangeListener listener) {
 		super.removeListChangeListener(listName, listener);
-		if (listName == LIST_VALUES && this.hasNoListeners()) {
+		if (listName.equals(LIST_VALUES) && this.hasNoListeners()) {
 			this.disengageModel();
 		}
 	}
@@ -177,7 +179,7 @@ public class PropertyListValueModelAdapter<E>
 	// ********** behavior **********
 
 	protected IndexOutOfBoundsException ioobe(int index, int size) {
-		return new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
+		return new IndexOutOfBoundsException("Index: " + index + ", Size: " + size); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	protected void engageModel() {

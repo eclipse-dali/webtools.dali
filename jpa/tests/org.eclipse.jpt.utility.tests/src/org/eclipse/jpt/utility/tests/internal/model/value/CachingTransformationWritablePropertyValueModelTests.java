@@ -10,12 +10,14 @@
 package org.eclipse.jpt.utility.tests.internal.model.value;
 
 import junit.framework.TestCase;
+
 import org.eclipse.jpt.utility.internal.BidiTransformer;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.value.CachingTransformationWritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
-import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
+import org.eclipse.jpt.utility.model.listener.ChangeAdapter;
+import org.eclipse.jpt.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
@@ -57,8 +59,8 @@ public class CachingTransformationWritablePropertyValueModelTests extends TestCa
 	}
 
 	public void testValue() {
-		PropertyChangeListener listener = this.buildTransformationListener();
-		this.transformationObjectHolder.addPropertyChangeListener(listener);
+		ChangeListener listener = this.buildTransformationListener();
+		this.transformationObjectHolder.addChangeListener(listener);
 
 		
 		Person person = this.objectHolder.getValue();
@@ -90,8 +92,8 @@ public class CachingTransformationWritablePropertyValueModelTests extends TestCa
 	}
 
 	public void testSetValue() {
-		PropertyChangeListener listener = this.buildTransformationListener();
-		this.transformationObjectHolder.addPropertyChangeListener(listener);
+		ChangeListener listener = this.buildTransformationListener();
+		this.transformationObjectHolder.addChangeListener(listener);
 
 		Person person = new Person("Chris", "Noel", null);
 		this.transformationObjectHolder.setValue(person.getParent());
@@ -117,10 +119,10 @@ public class CachingTransformationWritablePropertyValueModelTests extends TestCa
 
 	public void testLazyListening() {
 		assertTrue(((AbstractModel) this.objectHolder).hasNoPropertyChangeListeners(PropertyValueModel.VALUE));
-		PropertyChangeListener listener = this.buildTransformationListener();
-		this.transformationObjectHolder.addPropertyChangeListener(listener);
+		ChangeListener listener = this.buildTransformationListener();
+		this.transformationObjectHolder.addChangeListener(listener);
 		assertTrue(((AbstractModel) this.objectHolder).hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
-		this.transformationObjectHolder.removePropertyChangeListener(listener);
+		this.transformationObjectHolder.removeChangeListener(listener);
 		assertTrue(((AbstractModel) this.objectHolder).hasNoPropertyChangeListeners(PropertyValueModel.VALUE));
 
 		this.transformationObjectHolder.addPropertyChangeListener(PropertyValueModel.VALUE, listener);
@@ -130,8 +132,8 @@ public class CachingTransformationWritablePropertyValueModelTests extends TestCa
 	}
 
 	public void testPropertyChange1() {
-		this.objectHolder.addPropertyChangeListener(this.buildListener());
-		this.transformationObjectHolder.addPropertyChangeListener(this.buildTransformationListener());
+		this.objectHolder.addChangeListener(this.buildListener());
+		this.transformationObjectHolder.addChangeListener(this.buildTransformationListener());
 		this.verifyPropertyChanges();
 	}
 
@@ -178,16 +180,18 @@ public class CachingTransformationWritablePropertyValueModelTests extends TestCa
 //		this.verifyEvent(this.transformationEvent, this.transformationObjectHolder, null, "BAR");
 	}
 
-	private PropertyChangeListener buildListener() {
-		return new PropertyChangeListener() {
+	private ChangeListener buildListener() {
+		return new ChangeAdapter() {
+			@Override
 			public void propertyChanged(PropertyChangeEvent e) {
 				CachingTransformationWritablePropertyValueModelTests.this.event = e;
 			}
 		};
 	}
 
-	private PropertyChangeListener buildTransformationListener() {
-		return new PropertyChangeListener() {
+	private ChangeListener buildTransformationListener() {
+		return new ChangeAdapter() {
+			@Override
 			public void propertyChanged(PropertyChangeEvent e) {
 				CachingTransformationWritablePropertyValueModelTests.this.transformationEvent = e;
 			}
@@ -202,7 +206,7 @@ public class CachingTransformationWritablePropertyValueModelTests extends TestCa
 	}
 
 	
-	private class Person extends AbstractModel {
+	class Person extends AbstractModel {
 
 		private String name;
 			public static final String NAME_PROPERTY = "name";

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,15 +14,19 @@ import java.util.prefs.NodeChangeListener;
 import java.util.prefs.PreferenceChangeEvent;
 import java.util.prefs.PreferenceChangeListener;
 import java.util.prefs.Preferences;
+
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.prefs.PreferencePropertyValueModel;
 import org.eclipse.jpt.utility.model.Model;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
+import org.eclipse.jpt.utility.model.listener.ChangeAdapter;
+import org.eclipse.jpt.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 
+@SuppressWarnings("nls")
 public class PreferencePropertyValueModelTests extends PreferencesTestCase {
 	private WritablePropertyValueModel<Preferences> nodeHolder;
 	PreferencePropertyValueModel<String> preferenceAdapter;
@@ -129,13 +133,25 @@ public class PreferencePropertyValueModelTests extends PreferencesTestCase {
 		assertFalse(this.nodeHasAnyPrefListeners(this.testNode));
 		assertFalse(this.preferenceAdapter.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 
-		PropertyChangeListener listener2 = this.buildValueChangeListener();
-		this.preferenceAdapter.addPropertyChangeListener(listener2);
+		ChangeListener listener2 = this.buildChangeListener();
+		this.preferenceAdapter.addChangeListener(listener2);
 		assertTrue(this.preferenceAdapter.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 		assertTrue(this.nodeHasAnyPrefListeners(this.testNode));
-		this.preferenceAdapter.removePropertyChangeListener(listener2);
+		this.preferenceAdapter.removeChangeListener(listener2);
 		assertFalse(this.nodeHasAnyPrefListeners(this.testNode));
 		assertFalse(this.preferenceAdapter.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
+	}
+
+	private ChangeListener buildChangeListener() {
+		return new ChangeAdapter() {
+			@Override
+			public void propertyChanged(PropertyChangeEvent e) {
+				if (PreferencePropertyValueModelTests.this.event != null) {
+					throw new IllegalStateException("unexpected this.event: " + e);
+				}
+				PreferencePropertyValueModelTests.this.event = e;
+			}
+		};
 	}
 
 	public void testRemoveAndReAddPreference() throws Exception {

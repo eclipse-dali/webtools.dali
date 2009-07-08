@@ -26,6 +26,8 @@ import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
 import org.eclipse.jpt.utility.model.event.CollectionClearEvent;
 import org.eclipse.jpt.utility.model.event.CollectionEvent;
 import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
+import org.eclipse.jpt.utility.model.listener.ChangeAdapter;
+import org.eclipse.jpt.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -244,11 +246,11 @@ public class CollectionAspectAdapterTests extends TestCase {
 		assertFalse(this.subject1.hasAnyCollectionChangeListeners(TestSubject.NAMES_COLLECTION));
 		assertFalse(this.aa1.hasAnyCollectionChangeListeners(CollectionValueModel.VALUES));
 
-		CollectionChangeListener listener2 = this.buildValueChangeListener1();
-		this.aa1.addCollectionChangeListener(listener2);
+		ChangeListener listener2 = new ChangeAdapter();
+		this.aa1.addChangeListener(listener2);
 		assertTrue(this.aa1.hasAnyCollectionChangeListeners(CollectionValueModel.VALUES));
 		assertTrue(this.subject1.hasAnyCollectionChangeListeners(TestSubject.NAMES_COLLECTION));
-		this.aa1.removeCollectionChangeListener(listener2);
+		this.aa1.removeChangeListener(listener2);
 		assertFalse(this.subject1.hasAnyCollectionChangeListeners(TestSubject.NAMES_COLLECTION));
 		assertFalse(this.aa1.hasAnyCollectionChangeListeners(CollectionValueModel.VALUES));
 	}

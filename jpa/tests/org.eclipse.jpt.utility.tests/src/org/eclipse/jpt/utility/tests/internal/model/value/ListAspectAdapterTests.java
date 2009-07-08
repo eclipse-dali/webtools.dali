@@ -27,6 +27,8 @@ import org.eclipse.jpt.utility.model.event.ListEvent;
 import org.eclipse.jpt.utility.model.event.ListMoveEvent;
 import org.eclipse.jpt.utility.model.event.ListRemoveEvent;
 import org.eclipse.jpt.utility.model.event.ListReplaceEvent;
+import org.eclipse.jpt.utility.model.listener.ChangeAdapter;
+import org.eclipse.jpt.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -316,11 +318,11 @@ public class ListAspectAdapterTests extends TestCase {
 		assertFalse(this.subject1.hasAnyListChangeListeners(TestSubject.NAMES_LIST));
 		assertFalse(this.aa1.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 
-		ListChangeListener listener2 = this.buildValueChangeListener1();
-		this.aa1.addListChangeListener(listener2);
+		ChangeListener listener2 = new ChangeAdapter();
+		this.aa1.addChangeListener(listener2);
 		assertTrue(this.aa1.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 		assertTrue(this.subject1.hasAnyListChangeListeners(TestSubject.NAMES_LIST));
-		this.aa1.removeListChangeListener(listener2);
+		this.aa1.removeChangeListener(listener2);
 		assertFalse(this.subject1.hasAnyListChangeListeners(TestSubject.NAMES_LIST));
 		assertFalse(this.aa1.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 	}

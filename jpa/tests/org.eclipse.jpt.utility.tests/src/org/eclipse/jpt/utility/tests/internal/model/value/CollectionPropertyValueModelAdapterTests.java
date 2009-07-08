@@ -10,12 +10,16 @@
 package org.eclipse.jpt.utility.tests.internal.model.value;
 
 import java.util.Collection;
+
 import junit.framework.TestCase;
+
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.value.CollectionPropertyValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimpleCollectionValueModel;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
+import org.eclipse.jpt.utility.model.listener.ChangeAdapter;
+import org.eclipse.jpt.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -156,7 +160,8 @@ public class CollectionPropertyValueModelAdapterTests extends TestCase {
 		assertFalse(((AbstractModel) this.adapter).hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 		assertFalse(((AbstractModel) this.wrappedCollectionHolder).hasAnyCollectionChangeListeners(CollectionValueModel.VALUES));
 
-		PropertyChangeListener listener = new PropertyChangeListener() {
+		ChangeListener listener = new ChangeAdapter() {
+			@Override
 			public void propertyChanged(PropertyChangeEvent e) {/* OK */}
 		};
 		this.adapter.addPropertyChangeListener(PropertyValueModel.VALUE, listener);
@@ -167,11 +172,11 @@ public class CollectionPropertyValueModelAdapterTests extends TestCase {
 		assertFalse(((AbstractModel) this.adapter).hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 		assertFalse(((AbstractModel) this.wrappedCollectionHolder).hasAnyCollectionChangeListeners(CollectionValueModel.VALUES));
 
-		this.adapter.addPropertyChangeListener(listener);
+		this.adapter.addChangeListener(listener);
 		assertTrue(((AbstractModel) this.adapter).hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 		assertTrue(((AbstractModel) this.wrappedCollectionHolder).hasAnyCollectionChangeListeners(CollectionValueModel.VALUES));
 
-		this.adapter.removePropertyChangeListener(listener);
+		this.adapter.removeChangeListener(listener);
 		assertFalse(((AbstractModel) this.adapter).hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 		assertFalse(((AbstractModel) this.wrappedCollectionHolder).hasAnyCollectionChangeListeners(CollectionValueModel.VALUES));
 	}

@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.model;
 
+import org.eclipse.jpt.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
@@ -26,6 +27,22 @@ import org.eclipse.jpt.utility.model.listener.TreeChangeListener;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface Model {
+
+	// ********** change **********
+
+	/**
+	 * Add a listener that listens to all change events.
+	 * Throw an exception if the same listener is added more than once.
+	 * The listener cannot be null.
+	 */
+	void addChangeListener(ChangeListener listener);
+
+	/**
+	 * Remove the specified change listener.
+	 * Throw an exception if the listener is null or if the listener was never added.
+	 */
+	void removeChangeListener(ChangeListener listener);
+
 
 	// ********** state change **********
 
@@ -46,27 +63,12 @@ public interface Model {
 	// ********** property change **********
 
 	/**
-	 * Add a listener that listens to all property change events,
-	 * regardless of the property name associated with that event.
-	 * Throw an exception if the same listener is added more than once.
-	 * The listener cannot be null.
-	 */
-	void addPropertyChangeListener(PropertyChangeListener listener);
-
-	/**
 	 * Add a listener that listens to all property change events with
 	 * the specified property name.
 	 * Throw an exception if the same listener is added more than once.
 	 * The listener cannot be null.
 	 */
 	void addPropertyChangeListener(String propertyName, PropertyChangeListener listener);
-
-	/**
-	 * Remove a listener that listens to all property change events,
-	 * regardless of the property name associated with that event.
-	 * Throw an exception if the listener is null or if the listener was never added.
-	 */
-	void removePropertyChangeListener(PropertyChangeListener listener);
 
 	/**
 	 * Remove a listener that listens to all property change events,
@@ -79,27 +81,12 @@ public interface Model {
 	// ********** collection change **********
 
 	/**
-	 * Add a listener that listens to all collection change events,
-	 * regardless of the collection name associated with that event.
-	 * Throw an exception if the same listener is added more than once.
-	 * The listener cannot be null.
-	 */
-	void addCollectionChangeListener(CollectionChangeListener listener);
-
-	/**
 	 * Add a listener that listens to all collection change events with
 	 * the specified collection name.
 	 * Throw an exception if the same listener is added more than once.
 	 * The listener cannot be null.
 	 */
 	void addCollectionChangeListener(String collectionName, CollectionChangeListener listener);
-
-	/**
-	 * Remove a listener that listens to all collection change events,
-	 * regardless of the collection name associated with that event.
-	 * Throw an exception if the listener is null or if the listener was never added.
-	 */
-	void removeCollectionChangeListener(CollectionChangeListener listener);
 
 	/**
 	 * Remove a listener that listens to all collection change events,
@@ -112,27 +99,12 @@ public interface Model {
 	// ********** list change **********
 
 	/**
-	 * Add a listener that listens to all list change events,
-	 * regardless of the list name associated with that event.
-	 * Throw an exception if the same listener is added more than once.
-	 * The listener cannot be null.
-	 */
-	void addListChangeListener(ListChangeListener listener);
-
-	/**
 	 * Add a listener that listens to all list change events with
 	 * the specified list name.
 	 * Throw an exception if the same listener is added more than once.
 	 * The listener cannot be null.
 	 */
 	void addListChangeListener(String listName, ListChangeListener listener);
-
-	/**
-	 * Remove a listener that listens to all list change events,
-	 * regardless of the list name associated with that event.
-	 * Throw an exception if the listener is null or if the listener was never added.
-	 */
-	void removeListChangeListener(ListChangeListener listener);
 
 	/**
 	 * Remove a listener that listens to all list change events,
@@ -145,27 +117,12 @@ public interface Model {
 	// ********** tree change **********
 
 	/**
-	 * Add a listener that listens to all tree change events,
-	 * regardless of the tree name associated with that event.
-	 * Throw an exception if the same listener is added more than once.
-	 * The listener cannot be null.
-	 */
-	void addTreeChangeListener(TreeChangeListener listener);
-
-	/**
 	 * Add a listener that listens to all tree change events with
 	 * the specified tree name.
 	 * Throw an exception if the same listener is added more than once.
 	 * The listener cannot be null.
 	 */
 	void addTreeChangeListener(String treeName, TreeChangeListener listener);
-
-	/**
-	 * Remove a listener that listens to all tree change events,
-	 * regardless of the tree name associated with that event.
-	 * Throw an exception if the listener is null or if the listener was never added.
-	 */
-	void removeTreeChangeListener(TreeChangeListener listener);
 
 	/**
 	 * Remove a listener that listens to all tree change events,

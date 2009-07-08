@@ -11,6 +11,7 @@ package org.eclipse.jpt.utility.internal.model.value;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.EventListener;
 import java.util.ListIterator;
 
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -22,7 +23,6 @@ import org.eclipse.jpt.utility.model.event.ListClearEvent;
 import org.eclipse.jpt.utility.model.event.ListMoveEvent;
 import org.eclipse.jpt.utility.model.event.ListRemoveEvent;
 import org.eclipse.jpt.utility.model.event.ListReplaceEvent;
-import org.eclipse.jpt.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -219,7 +219,7 @@ public abstract class ListAspectAdapter<S extends Model, E>
 	}
 
 	@Override
-	protected Class<? extends ChangeListener> getListenerClass() {
+	protected Class<? extends EventListener> getListenerClass() {
 		return ListChangeListener.class;
 	}
 

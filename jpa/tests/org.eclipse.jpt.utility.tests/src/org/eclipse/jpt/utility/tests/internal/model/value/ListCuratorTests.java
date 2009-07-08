@@ -28,6 +28,8 @@ import org.eclipse.jpt.utility.model.event.ListEvent;
 import org.eclipse.jpt.utility.model.event.ListMoveEvent;
 import org.eclipse.jpt.utility.model.event.ListRemoveEvent;
 import org.eclipse.jpt.utility.model.event.ListReplaceEvent;
+import org.eclipse.jpt.utility.model.listener.ChangeAdapter;
+import org.eclipse.jpt.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -252,15 +254,44 @@ public final class ListCuratorTests
 		assertFalse(this.subject1.hasAnyStateChangeListeners());
 		assertFalse(this.curator.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 
-		ListChangeListener listener2 = this.buildListChangeListener1();
-		this.curator.addListChangeListener(listener2);
+		ChangeListener listener2 = this.buildChangeListener();
+		this.curator.addChangeListener(listener2);
 		assertTrue(this.curator.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 		assertTrue(this.subject1.hasAnyStateChangeListeners());
-		this.curator.removeListChangeListener(listener2);
+		this.curator.removeChangeListener(listener2);
 		assertFalse(this.subject1.hasAnyStateChangeListeners());
 		assertFalse(this.curator.hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 	}
 	
+	private ChangeListener buildChangeListener() {
+		return new ChangeAdapter() {
+			@Override
+			public void itemsAdded(ListAddEvent e) {
+				ListCuratorTests.this.value1Changed(e);
+			}
+			@Override
+			public void itemsRemoved(ListRemoveEvent e) {
+				ListCuratorTests.this.value1Changed(e);
+			}
+			@Override
+			public void itemsReplaced(ListReplaceEvent e) {
+				ListCuratorTests.this.value1Changed(e);
+			}
+			@Override
+			public void itemsMoved(ListMoveEvent e) {
+				ListCuratorTests.this.value1Changed(e);
+			}
+			@Override
+			public void listCleared(ListClearEvent e) {
+				ListCuratorTests.this.value1Changed(e);
+			}
+			@Override
+			public void listChanged(ListChangeEvent e) {
+				ListCuratorTests.this.value1Changed(e);
+			}
+		};
+	}
+
 	
 	// **************** Inner Class *******************************************
 	

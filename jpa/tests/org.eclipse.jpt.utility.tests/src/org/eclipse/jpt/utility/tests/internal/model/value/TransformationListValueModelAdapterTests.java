@@ -29,6 +29,8 @@ import org.eclipse.jpt.utility.model.event.ListEvent;
 import org.eclipse.jpt.utility.model.event.ListMoveEvent;
 import org.eclipse.jpt.utility.model.event.ListRemoveEvent;
 import org.eclipse.jpt.utility.model.event.ListReplaceEvent;
+import org.eclipse.jpt.utility.model.listener.ChangeAdapter;
+import org.eclipse.jpt.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
@@ -192,7 +194,7 @@ public class TransformationListValueModelAdapterTests extends TestCase {
 	}
 
 	public void testListChangeGeneric() {
-		this.transformedListHolder.addListChangeListener(this.buildListener());
+		this.transformedListHolder.addChangeListener(this.buildListener());
 		this.verifyListChange();
 	}
 
@@ -236,28 +238,34 @@ public class TransformationListValueModelAdapterTests extends TestCase {
 		assertTrue(CollectionTools.contains(((ListReplaceEvent) this.event).getNewItems(), "JOO"));
 	}
 
-	private ListChangeListener buildListener() {
-		return new ListChangeListener() {
+	private ChangeListener buildListener() {
+		return new ChangeAdapter() {
+			@Override
 			public void itemsAdded(ListAddEvent e) {
 				TransformationListValueModelAdapterTests.this.eventType = ADD;
 				TransformationListValueModelAdapterTests.this.event = e;
 			}
+			@Override
 			public void itemsRemoved(ListRemoveEvent e) {
 				TransformationListValueModelAdapterTests.this.eventType = REMOVE;
 				TransformationListValueModelAdapterTests.this.event = e;
 			}
+			@Override
 			public void itemsReplaced(ListReplaceEvent e) {
 				TransformationListValueModelAdapterTests.this.eventType = REPLACE;
 				TransformationListValueModelAdapterTests.this.event = e;
 			}
+			@Override
 			public void itemsMoved(ListMoveEvent e) {
 				TransformationListValueModelAdapterTests.this.eventType = MOVE;
 				TransformationListValueModelAdapterTests.this.event = e;
 			}
+			@Override
 			public void listCleared(ListClearEvent e) {
 				TransformationListValueModelAdapterTests.this.eventType = CLEAR;
 				TransformationListValueModelAdapterTests.this.event = e;
 			}
+			@Override
 			public void listChanged(ListChangeEvent e) {
 				TransformationListValueModelAdapterTests.this.eventType = CHANGE;
 				TransformationListValueModelAdapterTests.this.event = e;
@@ -291,7 +299,7 @@ public class TransformationListValueModelAdapterTests extends TestCase {
 		 */
 		assertFalse(((AbstractModel) this.listHolder).hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 
-		ListChangeListener listener = this.buildListener();
+		ChangeListener listener = this.buildListener();
 
 		this.transformedListHolder.addListChangeListener(ListValueModel.LIST_VALUES, listener);
 		assertTrue(((AbstractModel) this.listHolder).hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
@@ -299,10 +307,10 @@ public class TransformationListValueModelAdapterTests extends TestCase {
 		this.transformedListHolder.removeListChangeListener(ListValueModel.LIST_VALUES, listener);
 		assertFalse(((AbstractModel) this.listHolder).hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 
-		this.transformedListHolder.addListChangeListener(listener);
+		this.transformedListHolder.addChangeListener(listener);
 		assertTrue(((AbstractModel) this.listHolder).hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 
-		this.transformedListHolder.removeListChangeListener(listener);
+		this.transformedListHolder.removeChangeListener(listener);
 		assertFalse(((AbstractModel) this.listHolder).hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 	}
 

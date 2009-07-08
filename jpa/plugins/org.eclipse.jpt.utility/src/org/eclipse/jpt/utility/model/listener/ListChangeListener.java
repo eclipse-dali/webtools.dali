@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.model.listener;
 
+import java.util.EventListener;
+
 import org.eclipse.jpt.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
 import org.eclipse.jpt.utility.model.event.ListClearEvent;
@@ -27,7 +29,7 @@ import org.eclipse.jpt.utility.model.event.ListReplaceEvent;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface ListChangeListener extends ChangeListener {
+public interface ListChangeListener extends EventListener {
 
 	/**
 	 * This method gets called when items are added to a bound list.

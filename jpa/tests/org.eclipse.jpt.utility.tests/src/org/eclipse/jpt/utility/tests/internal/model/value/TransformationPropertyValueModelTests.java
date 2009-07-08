@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,12 +10,14 @@
 package org.eclipse.jpt.utility.tests.internal.model.value;
 
 import junit.framework.TestCase;
+
 import org.eclipse.jpt.utility.internal.BidiTransformer;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TransformationWritablePropertyValueModel;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
-import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
+import org.eclipse.jpt.utility.model.listener.ChangeAdapter;
+import org.eclipse.jpt.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
@@ -97,10 +99,10 @@ public class TransformationPropertyValueModelTests extends TestCase {
 
 	public void testLazyListening() {
 		assertTrue(((AbstractModel) this.objectHolder).hasNoPropertyChangeListeners(PropertyValueModel.VALUE));
-		PropertyChangeListener listener = this.buildTransformationListener();
-		this.transformationObjectHolder.addPropertyChangeListener(listener);
+		ChangeListener listener = this.buildTransformationListener();
+		this.transformationObjectHolder.addChangeListener(listener);
 		assertTrue(((AbstractModel) this.objectHolder).hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
-		this.transformationObjectHolder.removePropertyChangeListener(listener);
+		this.transformationObjectHolder.removeChangeListener(listener);
 		assertTrue(((AbstractModel) this.objectHolder).hasNoPropertyChangeListeners(PropertyValueModel.VALUE));
 
 		this.transformationObjectHolder.addPropertyChangeListener(PropertyValueModel.VALUE, listener);
@@ -110,8 +112,8 @@ public class TransformationPropertyValueModelTests extends TestCase {
 	}
 
 	public void testPropertyChange1() {
-		this.objectHolder.addPropertyChangeListener(this.buildListener());
-		this.transformationObjectHolder.addPropertyChangeListener(this.buildTransformationListener());
+		this.objectHolder.addChangeListener(this.buildListener());
+		this.transformationObjectHolder.addChangeListener(this.buildTransformationListener());
 		this.verifyPropertyChanges();
 	}
 
@@ -159,16 +161,18 @@ public class TransformationPropertyValueModelTests extends TestCase {
 		this.verifyEvent(this.transformationEvent, this.transformationObjectHolder, null, "BAR");
 	}
 
-	private PropertyChangeListener buildListener() {
-		return new PropertyChangeListener() {
+	private ChangeListener buildListener() {
+		return new ChangeAdapter() {
+			@Override
 			public void propertyChanged(PropertyChangeEvent e) {
 				TransformationPropertyValueModelTests.this.event = e;
 			}
 		};
 	}
 
-	private PropertyChangeListener buildTransformationListener() {
-		return new PropertyChangeListener() {
+	private ChangeListener buildTransformationListener() {
+		return new ChangeAdapter() {
+			@Override
 			public void propertyChanged(PropertyChangeEvent e) {
 				TransformationPropertyValueModelTests.this.transformationEvent = e;
 			}

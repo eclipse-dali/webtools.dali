@@ -24,6 +24,8 @@ import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
 import org.eclipse.jpt.utility.model.event.CollectionClearEvent;
 import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
+import org.eclipse.jpt.utility.model.listener.ChangeAdapter;
+import org.eclipse.jpt.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
@@ -120,10 +122,10 @@ public class FilteringCollectionValueModelTests extends TestCase {
 
 	public void testLazyListening() {
 		assertTrue(((AbstractModel) this.collectionHolder).hasNoCollectionChangeListeners(CollectionValueModel.VALUES));
-		CollectionChangeListener listener = this.buildFilteredListener();
-		this.filteredCollectionHolder.addCollectionChangeListener(listener);
+		ChangeListener listener = this.buildFilteredChangeListener();
+		this.filteredCollectionHolder.addChangeListener(listener);
 		assertTrue(((AbstractModel) this.collectionHolder).hasAnyCollectionChangeListeners(CollectionValueModel.VALUES));
-		this.filteredCollectionHolder.removeCollectionChangeListener(listener);
+		this.filteredCollectionHolder.removeChangeListener(listener);
 		assertTrue(((AbstractModel) this.collectionHolder).hasNoCollectionChangeListeners(CollectionValueModel.VALUES));
 
 		this.filteredCollectionHolder.addCollectionChangeListener(CollectionValueModel.VALUES, listener);
@@ -133,8 +135,8 @@ public class FilteringCollectionValueModelTests extends TestCase {
 	}
 
 	public void testCollectionChange1() {
-		this.collectionHolder.addCollectionChangeListener(this.buildListener());
-		this.filteredCollectionHolder.addCollectionChangeListener(this.buildFilteredListener());
+		this.collectionHolder.addChangeListener(this.buildChangeListener());
+		this.filteredCollectionHolder.addChangeListener(this.buildFilteredChangeListener());
 		this.verifyCollectionChanges();
 	}
 
@@ -219,6 +221,27 @@ public class FilteringCollectionValueModelTests extends TestCase {
 		};
 	}
 
+	private ChangeListener buildChangeListener() {
+		return new ChangeAdapter() {
+			@Override
+			public void itemsAdded(CollectionAddEvent e) {
+				FilteringCollectionValueModelTests.this.addEvent = e;
+			}
+			@Override
+			public void itemsRemoved(CollectionRemoveEvent e) {
+				FilteringCollectionValueModelTests.this.removeEvent = e;
+			}
+			@Override
+			public void collectionCleared(CollectionClearEvent e) {
+				FilteringCollectionValueModelTests.this.collectionClearedEvent = e;
+			}
+			@Override
+			public void collectionChanged(CollectionChangeEvent e) {
+				FilteringCollectionValueModelTests.this.collectionChangedEvent = e;
+			}
+		};
+	}
+
 	private CollectionChangeListener buildFilteredListener() {
 		return new CollectionChangeListener() {
 			public void itemsAdded(CollectionAddEvent e) {
@@ -230,6 +253,27 @@ public class FilteringCollectionValueModelTests extends TestCase {
 			public void collectionCleared(CollectionClearEvent e) {
 				FilteringCollectionValueModelTests.this.filteredCollectionClearedEvent = e;
 			}
+			public void collectionChanged(CollectionChangeEvent e) {
+				FilteringCollectionValueModelTests.this.filteredCollectionChangedEvent = e;
+			}
+		};
+	}
+
+	private ChangeListener buildFilteredChangeListener() {
+		return new ChangeAdapter() {
+			@Override
+			public void itemsAdded(CollectionAddEvent e) {
+				FilteringCollectionValueModelTests.this.filteredAddEvent = e;
+			}
+			@Override
+			public void itemsRemoved(CollectionRemoveEvent e) {
+				FilteringCollectionValueModelTests.this.filteredRemoveEvent = e;
+			}
+			@Override
+			public void collectionCleared(CollectionClearEvent e) {
+				FilteringCollectionValueModelTests.this.filteredCollectionClearedEvent = e;
+			}
+			@Override
 			public void collectionChanged(CollectionChangeEvent e) {
 				FilteringCollectionValueModelTests.this.filteredCollectionChangedEvent = e;
 			}

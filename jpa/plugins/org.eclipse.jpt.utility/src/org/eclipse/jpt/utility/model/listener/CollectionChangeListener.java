@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.model.listener;
 
+import java.util.EventListener;
+
 import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
 import org.eclipse.jpt.utility.model.event.CollectionClearEvent;
@@ -25,7 +27,7 @@ import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface CollectionChangeListener extends ChangeListener {
+public interface CollectionChangeListener extends EventListener {
 
 	/**
 	 * This method gets called when items are added to a bound collection.

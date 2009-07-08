@@ -11,6 +11,7 @@ package org.eclipse.jpt.utility.internal.model.value;
 
 import org.eclipse.jpt.utility.internal.model.ChangeSupport;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
+import org.eclipse.jpt.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.model.listener.StateChangeListener;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
@@ -91,7 +92,7 @@ public abstract class ValueAspectAdapter<T>
 
 	@Override
 	public synchronized void addStateChangeListener(StateChangeListener listener) {
-		if (this.hasNoEngagingListeners()) {
+		if (this.hasNoRelevantListeners()) {
 			this.engageValue();
 		}
 		super.addStateChangeListener(listener);
@@ -100,31 +101,31 @@ public abstract class ValueAspectAdapter<T>
 	@Override
 	public synchronized void removeStateChangeListener(StateChangeListener listener) {
 		super.removeStateChangeListener(listener);
-		if (this.hasNoEngagingListeners()) {
+		if (this.hasNoRelevantListeners()) {
 			this.disengageValue();
 		}
 	}
 	
 	@Override
-	public synchronized void addPropertyChangeListener(PropertyChangeListener listener) {
-		if (this.hasNoEngagingListeners()) {
+	public synchronized void addChangeListener(ChangeListener listener) {
+		if (this.hasNoRelevantListeners()) {
 			this.engageValue();
 		}
-		super.addPropertyChangeListener(listener);
+		super.addChangeListener(listener);
 	}
 	
 	@Override
 	public synchronized void addPropertyChangeListener(String propertyName, PropertyChangeListener listener) {
-		if (this.hasNoEngagingListeners()) {
+		if (this.hasNoRelevantListeners()) {
 			this.engageValue();
 		}
 		super.addPropertyChangeListener(propertyName, listener);
 	}
 	
 	@Override
-	public synchronized void removePropertyChangeListener(PropertyChangeListener listener) {
-		super.removePropertyChangeListener(listener);
-		if (this.hasNoEngagingListeners()) {
+	public synchronized void removeChangeListener(ChangeListener listener) {
+		super.removeChangeListener(listener);
+		if (this.hasNoRelevantListeners()) {
 			this.disengageValue();
 		}
 	}
@@ -132,12 +133,12 @@ public abstract class ValueAspectAdapter<T>
 	@Override
 	public synchronized void removePropertyChangeListener(String propertyName, PropertyChangeListener listener) {
 		super.removePropertyChangeListener(propertyName, listener);
-		if (this.hasNoEngagingListeners()) {
+		if (this.hasNoRelevantListeners()) {
 			this.disengageValue();
 		}
 	}
 	
-	protected boolean hasNoEngagingListeners() {
+	protected boolean hasNoRelevantListeners() {
 		return hasNoStateChangeListeners() && hasNoPropertyChangeListeners(VALUE);
 	}
 	

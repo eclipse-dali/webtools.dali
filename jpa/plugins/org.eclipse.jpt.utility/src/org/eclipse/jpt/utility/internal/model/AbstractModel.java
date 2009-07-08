@@ -32,6 +32,7 @@ import org.eclipse.jpt.utility.model.event.TreeAddEvent;
 import org.eclipse.jpt.utility.model.event.TreeChangeEvent;
 import org.eclipse.jpt.utility.model.event.TreeClearEvent;
 import org.eclipse.jpt.utility.model.event.TreeRemoveEvent;
+import org.eclipse.jpt.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
@@ -89,6 +90,31 @@ public abstract class AbstractModel
 	}
 
 
+	// ********** change support **********
+
+	public void addChangeListener(ChangeListener listener) {
+		this.getChangeSupport().addChangeListener(listener);
+	}
+
+	public void removeChangeListener(ChangeListener listener) {
+		this.getChangeSupport().removeChangeListener(listener);
+	}
+
+	/**
+	 * Return whether the model has any change listeners.
+	 */
+	public boolean hasAnyChangeListeners() {
+		return (this.changeSupport != null) && this.changeSupport.hasAnyChangeListeners();
+	}
+
+	/**
+	 * Return whether the model has no change listeners.
+	 */
+	public boolean hasNoChangeListeners() {
+		return ! this.hasAnyChangeListeners();
+	}
+
+
 	// ********** state change support **********
 
 	public void addStateChangeListener(StateChangeListener listener) {
@@ -124,16 +150,8 @@ public abstract class AbstractModel
 
 	// ********** property change support **********
 
-	public void addPropertyChangeListener(PropertyChangeListener listener) {
-		this.getChangeSupport().addPropertyChangeListener(listener);
-	}
-
 	public void addPropertyChangeListener(String propertyName, PropertyChangeListener listener) {
 		this.getChangeSupport().addPropertyChangeListener(propertyName, listener);
-	}
-
-	public void removePropertyChangeListener(PropertyChangeListener listener) {
-		this.getChangeSupport().removePropertyChangeListener(listener);
 	}
 
 	public void removePropertyChangeListener(String propertyName, PropertyChangeListener listener) {
@@ -154,22 +172,6 @@ public abstract class AbstractModel
 	 */
 	public boolean hasNoPropertyChangeListeners(String propertyName) {
 		return ! this.hasAnyPropertyChangeListeners(propertyName);
-	}
-
-	/**
-	 * Return whether the model has any property change listeners that will
-	 * be notified when any property has changed.
-	 */
-	public boolean hasAnyPropertyChangeListeners() {
-		return (this.changeSupport != null) && this.changeSupport.hasAnyPropertyChangeListeners();
-	}
-
-	/**
-	 * Return whether the model has no property change listeners that will
-	 * be notified when any property has changed.
-	 */
-	public boolean hasNoPropertyChangeListeners() {
-		return ! this.hasAnyPropertyChangeListeners();
 	}
 
 	protected final void firePropertyChanged(PropertyChangeEvent event) {
@@ -198,16 +200,8 @@ public abstract class AbstractModel
 
 	// ********** collection change support **********
 
-	public void addCollectionChangeListener(CollectionChangeListener listener) {
-		this.getChangeSupport().addCollectionChangeListener(listener);
-	}
-
 	public void addCollectionChangeListener(String collectionName, CollectionChangeListener listener) {
 		this.getChangeSupport().addCollectionChangeListener(collectionName, listener);
-	}
-
-	public void removeCollectionChangeListener(CollectionChangeListener listener) {
-		this.getChangeSupport().removeCollectionChangeListener(listener);
 	}
 
 	public void removeCollectionChangeListener(String collectionName, CollectionChangeListener listener) {
@@ -228,22 +222,6 @@ public abstract class AbstractModel
 	 */
 	public boolean hasNoCollectionChangeListeners(String collectionName) {
 		return ! this.hasAnyCollectionChangeListeners(collectionName);
-	}
-
-	/**
-	 * Return whether the model has any collection change listeners that will
-	 * be notified when any collection has changed.
-	 */
-	public boolean hasAnyCollectionChangeListeners() {
-		return (this.changeSupport != null) && this.changeSupport.hasAnyCollectionChangeListeners();
-	}
-
-	/**
-	 * Return whether the model has no collection change listeners that will
-	 * be notified when any collection has changed.
-	 */
-	public boolean hasNoCollectionChangeListeners() {
-		return ! this.hasAnyCollectionChangeListeners();
 	}
 
 	protected final void fireItemsAdded(CollectionAddEvent event) {
@@ -357,16 +335,8 @@ public abstract class AbstractModel
 
 	// ********** list change support **********
 
-	public void addListChangeListener(ListChangeListener listener) {
-		this.getChangeSupport().addListChangeListener(listener);
-	}
-
 	public void addListChangeListener(String listName, ListChangeListener listener) {
 		this.getChangeSupport().addListChangeListener(listName, listener);
-	}
-
-	public void removeListChangeListener(ListChangeListener listener) {
-		this.getChangeSupport().removeListChangeListener(listener);
 	}
 
 	public void removeListChangeListener(String listName, ListChangeListener listener) {
@@ -387,22 +357,6 @@ public abstract class AbstractModel
 	 */
 	public boolean hasNoListChangeListeners(String listName) {
 		return ! this.hasAnyListChangeListeners(listName);
-	}
-
-	/**
-	 * Return whether the model has any list change listeners that will
-	 * be notified when any list has changed.
-	 */
-	public boolean hasAnyListChangeListeners() {
-		return (this.changeSupport != null) && this.changeSupport.hasAnyListChangeListeners();
-	}
-
-	/**
-	 * Return whether the model has no list change listeners that will
-	 * be notified when any list has changed.
-	 */
-	public boolean hasNoListChangeListeners() {
-		return ! this.hasAnyListChangeListeners();
 	}
 
 	protected final void fireItemsAdded(ListAddEvent event) {
@@ -592,16 +546,8 @@ public abstract class AbstractModel
 
 	// ********** tree change support **********
 
-	public void addTreeChangeListener(TreeChangeListener listener) {
-		this.getChangeSupport().addTreeChangeListener(listener);
-	}
-
 	public void addTreeChangeListener(String treeName, TreeChangeListener listener) {
 		this.getChangeSupport().addTreeChangeListener(treeName, listener);
-	}
-
-	public void removeTreeChangeListener(TreeChangeListener listener) {
-		this.getChangeSupport().removeTreeChangeListener(listener);
 	}
 
 	public void removeTreeChangeListener(String treeName, TreeChangeListener listener) {
@@ -622,22 +568,6 @@ public abstract class AbstractModel
 	 */
 	public boolean hasNoTreeChangeListeners(String treeName) {
 		return ! this.hasAnyTreeChangeListeners(treeName);
-	}
-
-	/**
-	 * Return whether the model has any tree change listeners that will
-	 * be notified when any tree has changed.
-	 */
-	public boolean hasAnyTreeChangeListeners() {
-		return (this.changeSupport != null) && this.changeSupport.hasAnyTreeChangeListeners();
-	}
-
-	/**
-	 * Return whether the model has no tree change listeners that will
-	 * be notified when any tree has changed.
-	 */
-	public boolean hasNoTreeChangeListeners() {
-		return ! this.hasAnyTreeChangeListeners();
 	}
 
 	protected final void fireNodeAdded(TreeAddEvent event) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,6 +12,7 @@ package org.eclipse.jpt.utility.internal.model.value;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.ChangeSupport;
 import org.eclipse.jpt.utility.internal.model.SingleAspectChangeSupport;
+import org.eclipse.jpt.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 
@@ -71,11 +72,11 @@ public abstract class AspectPropertyValueModelAdapter<T>
 	 * Extend to start listening to the wrapped collection if necessary.
 	 */
 	@Override
-	public synchronized void addPropertyChangeListener(PropertyChangeListener listener) {
+	public synchronized void addChangeListener(ChangeListener listener) {
 		if (this.hasNoListeners()) {
 			this.engageModel();
 		}
-		super.addPropertyChangeListener(listener);
+		super.addChangeListener(listener);
 	}
 	
 	/**
@@ -83,7 +84,7 @@ public abstract class AspectPropertyValueModelAdapter<T>
 	 */
 	@Override
 	public synchronized void addPropertyChangeListener(String propertyName, PropertyChangeListener listener) {
-		if (propertyName == VALUE && this.hasNoListeners()) {
+		if (propertyName.equals(VALUE) && this.hasNoListeners()) {
 			this.engageModel();
 		}
 		super.addPropertyChangeListener(propertyName, listener);
@@ -93,8 +94,8 @@ public abstract class AspectPropertyValueModelAdapter<T>
 	 * Extend to stop listening to the wrapped collection if necessary.
 	 */
 	@Override
-	public synchronized void removePropertyChangeListener(PropertyChangeListener listener) {
-		super.removePropertyChangeListener(listener);
+	public synchronized void removeChangeListener(ChangeListener listener) {
+		super.removeChangeListener(listener);
 		if (this.hasNoListeners()) {
 			this.disengageModel();
 		}
@@ -106,7 +107,7 @@ public abstract class AspectPropertyValueModelAdapter<T>
 	@Override
 	public synchronized void removePropertyChangeListener(String propertyName, PropertyChangeListener listener) {
 		super.removePropertyChangeListener(propertyName, listener);
-		if (propertyName == VALUE && this.hasNoListeners()) {
+		if (propertyName.equals(VALUE) && this.hasNoListeners()) {
 			this.disengageModel();
 		}
 	}

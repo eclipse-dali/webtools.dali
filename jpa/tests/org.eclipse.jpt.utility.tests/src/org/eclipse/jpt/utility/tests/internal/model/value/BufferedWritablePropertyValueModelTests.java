@@ -10,12 +10,16 @@
 package org.eclipse.jpt.utility.tests.internal.model.value;
 
 import java.util.Date;
+
 import junit.framework.TestCase;
+
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.value.BufferedWritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
+import org.eclipse.jpt.utility.model.listener.ChangeAdapter;
+import org.eclipse.jpt.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
@@ -275,14 +279,14 @@ public class BufferedWritablePropertyValueModelTests extends TestCase {
 	}
 
 	public void testPropertyChange2() {
-		PropertyChangeListener bufferedListener = this.buildBufferedListener();
-		this.bufferedNameHolder.addPropertyChangeListener(bufferedListener);
+		ChangeListener bufferedListener = this.buildBufferedListener();
+		this.bufferedNameHolder.addChangeListener(bufferedListener);
 
-		PropertyChangeListener adapterListener = this.buildAdapterListener();
-		this.nameAdapter.addPropertyChangeListener(adapterListener);
+		ChangeListener adapterListener = this.buildAdapterListener();
+		this.nameAdapter.addChangeListener(adapterListener);
 
-		PropertyChangeListener employeeListener = this.buildEmployeeListener();
-		this.employee.addPropertyChangeListener(employeeListener);
+		ChangeListener employeeListener = this.buildEmployeeListener();
+		this.employee.addChangeListener(employeeListener);
 
 		this.verifyPropertyChanges();
 	}
@@ -329,24 +333,27 @@ public class BufferedWritablePropertyValueModelTests extends TestCase {
 		assertNull(this.employeeEvent);
 	}
 
-	private PropertyChangeListener buildBufferedListener() {
-		return new PropertyChangeListener() {
+	private ChangeListener buildBufferedListener() {
+		return new ChangeAdapter() {
+			@Override
 			public void propertyChanged(PropertyChangeEvent e) {
 				BufferedWritablePropertyValueModelTests.this.bufferedEvent = e;
 			}
 		};
 	}
 
-	private PropertyChangeListener buildAdapterListener() {
-		return new PropertyChangeListener() {
+	private ChangeListener buildAdapterListener() {
+		return new ChangeAdapter() {
+			@Override
 			public void propertyChanged(PropertyChangeEvent e) {
 				BufferedWritablePropertyValueModelTests.this.adapterEvent = e;
 			}
 		};
 	}
 
-	private PropertyChangeListener buildEmployeeListener() {
-		return new PropertyChangeListener() {
+	private ChangeListener buildEmployeeListener() {
+		return new ChangeAdapter() {
+			@Override
 			public void propertyChanged(PropertyChangeEvent e) {
 				BufferedWritablePropertyValueModelTests.this.employeeEvent = e;
 			}

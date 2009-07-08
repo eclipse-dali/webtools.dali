@@ -13,6 +13,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.EventListener;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -78,7 +79,6 @@ import org.eclipse.jpt.utility.internal.model.value.SortedListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.TransformationWritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.BufferedWritablePropertyValueModel.Trigger;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
-import org.eclipse.jpt.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;
@@ -300,16 +300,16 @@ public class JpaProjectPropertiesPage
 	}
 	
 	protected ListValueModel<String> initializeCatalogChoicesModel() {
-		Collection<CollectionValueModel> cvms = new ArrayList<CollectionValueModel>();
-		cvms.add(new PropertyCollectionValueModelAdapter(this.defaultCatalogModel));
+		Collection<CollectionValueModel<String>> cvms = new ArrayList<CollectionValueModel<String>>();
+		cvms.add(new PropertyCollectionValueModelAdapter<String>(this.defaultCatalogModel));
 		cvms.add(new CatalogChoicesModel(this.connectionProfileModel));
-		return new SortedListValueModelAdapter(
-			new CompositeCollectionValueModel<CollectionValueModel, String>(cvms) {
+		return new CollectionListValueModelAdapter<String>(
+			new CompositeCollectionValueModel<CollectionValueModel<String>, String>(cvms) {
 				@Override
 				public Iterator<String> iterator() {
-					Set<String> uniqueValues = new HashSet<String>();
+					ArrayList<String> uniqueValues = new ArrayList<String>();
 					for (String each : CollectionTools.iterable(super.iterator())) {
-						if (each != null) {
+						if ((each != null) && ! uniqueValues.contains(each)) {
 							uniqueValues.add(each);
 						}
 					}
@@ -345,16 +345,16 @@ public class JpaProjectPropertiesPage
 	}
 	
 	protected ListValueModel<String> initializeSchemaChoicesModel() {
-		Collection<CollectionValueModel> cvms = new ArrayList<CollectionValueModel>();
-		cvms.add(new PropertyCollectionValueModelAdapter(this.defaultSchemaModel));
+		Collection<CollectionValueModel<String>> cvms = new ArrayList<CollectionValueModel<String>>();
+		cvms.add(new PropertyCollectionValueModelAdapter<String>(this.defaultSchemaModel));
 		cvms.add(new SchemaChoicesModel(this.defaultCatalogModel, this.connectionProfileModel));
-		return new SortedListValueModelAdapter(
-			new CompositeCollectionValueModel<CollectionValueModel, String>(cvms) {
+		return new CollectionListValueModelAdapter<String>(
+			new CompositeCollectionValueModel<CollectionValueModel<String>, String>(cvms) {
 				@Override
 				public Iterator<String> iterator() {
-					Set<String> uniqueValues = new HashSet<String>();
+					ArrayList<String> uniqueValues = new ArrayList<String>();
 					for (String each : CollectionTools.iterable(super.iterator())) {
-						if (each != null) {
+						if ((each != null) && ! uniqueValues.contains(each)) {
 							uniqueValues.add(each);
 						}
 					}
@@ -704,7 +704,7 @@ public class JpaProjectPropertiesPage
 		// ************ AspectAdapter impl *************************************
 		
 		@Override
-		protected Class<? extends ChangeListener> getListenerClass() {
+		protected Class<? extends EventListener> getListenerClass() {
 			return PropertyChangeListener.class;
 		}
 		
@@ -786,7 +786,7 @@ public class JpaProjectPropertiesPage
 		}
 	
 		@Override
-		protected Class<? extends ChangeListener> getListenerClass() {
+		protected Class<? extends EventListener> getListenerClass() {
 			return CollectionChangeListener.class;
 		}
 	
@@ -1317,9 +1317,8 @@ public class JpaProjectPropertiesPage
 		@Override
 		protected Iterator<String> iterator_() {
 			Database db = this.subject.getDatabase();
-			return ((db == null) || ( ! db.supportsCatalogs())) ? 
-				EmptyIterator.<String>instance() : 
-				db.sortedCatalogIdentifiers();
+			// use catalog *identifiers* since the string ends up being the "default" for various text entries
+			return (db != null) ? db.sortedCatalogIdentifiers() : EmptyIterator.<String>instance();
 		}
 	}
 
@@ -1525,7 +1524,8 @@ public class JpaProjectPropertiesPage
 		@Override
 		protected Iterator<String> iterator_() {
 			SchemaContainer sc = this.getSchemaContainer();
-			return (sc == null) ? EmptyIterator.<String>instance() : sc.sortedSchemaIdentifiers();
+			// use schema *identifiers* since the string ends up being the "default" for various text entries
+			return (sc != null) ? sc.sortedSchemaIdentifiers() : EmptyIterator.<String>instance();
 		}
 
 		private SchemaContainer getSchemaContainer() {

@@ -26,6 +26,8 @@ import org.eclipse.jpt.utility.model.event.ListEvent;
 import org.eclipse.jpt.utility.model.event.ListMoveEvent;
 import org.eclipse.jpt.utility.model.event.ListRemoveEvent;
 import org.eclipse.jpt.utility.model.event.ListReplaceEvent;
+import org.eclipse.jpt.utility.model.listener.ChangeAdapter;
+import org.eclipse.jpt.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
@@ -243,7 +245,7 @@ public class SimpleListValueModelTests extends TestCase {
 	}
 
 	public void testListChange1() {
-		this.listHolder.addListChangeListener(this.buildListener());
+		this.listHolder.addChangeListener(this.buildChangeListener());
 		this.verifyListChange();
 	}
 
@@ -314,6 +316,41 @@ public class SimpleListValueModelTests extends TestCase {
 				SimpleListValueModelTests.this.eventType = CLEAR;
 				SimpleListValueModelTests.this.event = e;
 			}
+			public void listChanged(ListChangeEvent e) {
+				SimpleListValueModelTests.this.eventType = CHANGE;
+				SimpleListValueModelTests.this.event = e;
+			}
+		};
+	}
+
+	private ChangeListener buildChangeListener() {
+		return new ChangeAdapter() {
+			@Override
+			public void itemsAdded(ListAddEvent e) {
+				SimpleListValueModelTests.this.eventType = ADD;
+				SimpleListValueModelTests.this.event = e;
+			}
+			@Override
+			public void itemsRemoved(ListRemoveEvent e) {
+				SimpleListValueModelTests.this.eventType = REMOVE;
+				SimpleListValueModelTests.this.event = e;
+			}
+			@Override
+			public void itemsReplaced(ListReplaceEvent e) {
+				SimpleListValueModelTests.this.eventType = REPLACE;
+				SimpleListValueModelTests.this.event = e;
+			}
+			@Override
+			public void itemsMoved(ListMoveEvent e) {
+				SimpleListValueModelTests.this.eventType = MOVE;
+				SimpleListValueModelTests.this.event = e;
+			}
+			@Override
+			public void listCleared(ListClearEvent e) {
+				SimpleListValueModelTests.this.eventType = CLEAR;
+				SimpleListValueModelTests.this.event = e;
+			}
+			@Override
 			public void listChanged(ListChangeEvent e) {
 				SimpleListValueModelTests.this.eventType = CHANGE;
 				SimpleListValueModelTests.this.event = e;

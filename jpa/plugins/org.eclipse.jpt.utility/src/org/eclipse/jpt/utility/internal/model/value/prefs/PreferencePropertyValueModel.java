@@ -9,13 +9,14 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal.model.value.prefs;
 
+import java.util.EventListener;
 import java.util.prefs.PreferenceChangeEvent;
 import java.util.prefs.PreferenceChangeListener;
 import java.util.prefs.Preferences;
+
 import org.eclipse.jpt.utility.internal.BidiStringConverter;
 import org.eclipse.jpt.utility.internal.model.value.AspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.StaticPropertyValueModel;
-import org.eclipse.jpt.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
@@ -118,7 +119,7 @@ public class PreferencePropertyValueModel<P>
 		return new PreferencePropertyValueModel<Integer>(
 				preferences,
 				key,
-				new Integer(defaultValue),
+				Integer.valueOf(defaultValue),
 				BidiStringConverter.IntegerConverter.instance()
 			);
 	}
@@ -167,7 +168,7 @@ public class PreferencePropertyValueModel<P>
 			}
 			@Override
 			public String toString() {
-				return "preference change listener";
+				return "preference change listener"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -207,7 +208,7 @@ public class PreferencePropertyValueModel<P>
 	// ********** AspectAdapter implementation **********
 
 	@Override
-	protected Class<? extends ChangeListener> getListenerClass() {
+	protected Class<? extends EventListener> getListenerClass() {
 		return PropertyChangeListener.class;
 	}
 
@@ -239,7 +240,7 @@ public class PreferencePropertyValueModel<P>
 		} catch (IllegalStateException ex) {
 			// for some odd reason, we are not allowed to remove a listener from a "dead"
 			// preferences node; so handle the exception that gets thrown here
-			if ( ! ex.getMessage().equals("Node has been removed.")) {
+			if ( ! ex.getMessage().equals("Node has been removed.")) { //$NON-NLS-1$
 				// if it is not the expected exception, re-throw it
 				throw ex;
 			}
@@ -253,7 +254,7 @@ public class PreferencePropertyValueModel<P>
 	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(this.key);
-		sb.append(" => ");
+		sb.append(" => "); //$NON-NLS-1$
 		sb.append(this.value);
 	}
 
@@ -324,7 +325,7 @@ public class PreferencePropertyValueModel<P>
 		return this.converter.convertToObject(s);
 	}
 
-	protected void preferenceChanged(String prefKey, String newValue) {
+	protected void preferenceChanged(String prefKey, @SuppressWarnings("unused") String newValue) {
 		if (prefKey.equals(this.key)) {
 			this.preferenceChanged();
 		}

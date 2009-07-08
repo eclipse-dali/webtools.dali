@@ -25,15 +25,6 @@ public class ReflectivePropertyChangeListenerTests extends TestCase {
 		super(name);
 	}
 
-	public void testZeroArgument() {
-		TestModel testModel = new TestModel(7);
-		Target target = new Target(testModel, TestModel.VALUE_PROPERTY, 7, 99);
-		testModel.addPropertyChangeListener(ReflectiveChangeListener.buildPropertyChangeListener(target, "propertyChangedZeroArgument"));
-		testModel.setValue(99);
-		assertTrue(target.zeroArgumentFlag);
-		assertFalse(target.singleArgumentFlag);
-	}
-
 	public void testZeroArgumentNamedProperty() {
 		TestModel testModel = new TestModel(7);
 		Target target = new Target(testModel, TestModel.VALUE_PROPERTY, 7, 99);
@@ -43,15 +34,6 @@ public class ReflectivePropertyChangeListenerTests extends TestCase {
 		assertFalse(target.singleArgumentFlag);
 	}
 
-	public void testSingleArgument() {
-		TestModel testModel = new TestModel(7);
-		Target target = new Target(testModel, TestModel.VALUE_PROPERTY, 7, 99);
-		testModel.addPropertyChangeListener(ReflectiveChangeListener.buildPropertyChangeListener(target, "propertyChangedSingleArgument"));
-		testModel.setValue(99);
-		assertFalse(target.zeroArgumentFlag);
-		assertTrue(target.singleArgumentFlag);
-	}
-
 	/**
 	 * test method that has more general method parameter type
 	 */
@@ -59,7 +41,7 @@ public class ReflectivePropertyChangeListenerTests extends TestCase {
 		TestModel testModel = new TestModel(7);
 		Target target = new Target(testModel, TestModel.VALUE_PROPERTY, 7, 99);
 		Method method = ClassTools.method(target, "propertyChangedSingleArgument2", new Class[] {Object.class});
-		testModel.addPropertyChangeListener(ReflectiveChangeListener.buildPropertyChangeListener(target, method));
+		testModel.addPropertyChangeListener(TestModel.VALUE_PROPERTY, ReflectiveChangeListener.buildPropertyChangeListener(target, method));
 		testModel.setValue(99);
 		assertFalse(target.zeroArgumentFlag);
 		assertTrue(target.singleArgumentFlag);

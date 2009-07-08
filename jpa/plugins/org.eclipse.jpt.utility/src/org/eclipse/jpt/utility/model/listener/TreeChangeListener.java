@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.model.listener;
 
+import java.util.EventListener;
+
 import org.eclipse.jpt.utility.model.event.TreeAddEvent;
 import org.eclipse.jpt.utility.model.event.TreeChangeEvent;
 import org.eclipse.jpt.utility.model.event.TreeClearEvent;
@@ -25,7 +27,7 @@ import org.eclipse.jpt.utility.model.event.TreeRemoveEvent;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface TreeChangeListener extends ChangeListener {
+public interface TreeChangeListener extends EventListener {
 
 	/**
 	 * This method gets called when a node is added to a bound tree.

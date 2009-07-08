@@ -28,6 +28,8 @@ import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
 import org.eclipse.jpt.utility.model.event.CollectionClearEvent;
 import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
+import org.eclipse.jpt.utility.model.listener.ChangeAdapter;
+import org.eclipse.jpt.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
@@ -206,9 +208,11 @@ public class ListCollectionValueModelAdapterTests extends TestCase {
 		assertTrue(((AbstractModel) this.adapter).hasAnyCollectionChangeListeners(CollectionValueModel.VALUES));
 		this.adapter.removeCollectionChangeListener(CollectionValueModel.VALUES, synchCollection);
 		assertFalse(((AbstractModel) this.adapter).hasAnyCollectionChangeListeners(CollectionValueModel.VALUES));
-		this.adapter.addCollectionChangeListener(synchCollection);
+
+		ChangeListener cl = new ChangeAdapter();
+		this.adapter.addChangeListener(cl);
 		assertTrue(((AbstractModel) this.adapter).hasAnyCollectionChangeListeners(CollectionValueModel.VALUES));
-		this.adapter.removeCollectionChangeListener(synchCollection);
+		this.adapter.removeChangeListener(cl);
 		assertFalse(((AbstractModel) this.adapter).hasAnyCollectionChangeListeners(CollectionValueModel.VALUES));
 	}
 	

@@ -16,6 +16,7 @@ import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
 import org.eclipse.jpt.utility.model.event.CollectionClearEvent;
 import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
+import org.eclipse.jpt.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 
@@ -83,11 +84,11 @@ public abstract class CollectionValueModelWrapper<E>
 	 * Extend to start listening to the nested model if necessary.
 	 */
 	@Override
-	public synchronized void addCollectionChangeListener(CollectionChangeListener listener) {
+	public synchronized void addChangeListener(ChangeListener listener) {
 		if (this.hasNoCollectionChangeListeners(CollectionValueModel.VALUES)) {
 			this.engageModel();
 		}
-		super.addCollectionChangeListener(listener);
+		super.addChangeListener(listener);
 	}
 	
 	/**
@@ -105,8 +106,8 @@ public abstract class CollectionValueModelWrapper<E>
 	 * Extend to stop listening to the nested model if necessary.
 	 */
 	@Override
-	public synchronized void removeCollectionChangeListener(CollectionChangeListener listener) {
-		super.removeCollectionChangeListener(listener);
+	public synchronized void removeChangeListener(ChangeListener listener) {
+		super.removeChangeListener(listener);
 		if (this.hasNoCollectionChangeListeners(CollectionValueModel.VALUES)) {
 			this.disengageModel();
 		}

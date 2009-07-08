@@ -37,7 +37,7 @@ public class SingleAspectChangeSupportTests extends TestCase {
 		boolean exCaught = false;
 		PropertyChangeListener listener = new PropertyChangeAdapter();
 		try {
-			model.addPropertyChangeListener(listener);
+			model.addPropertyChangeListener("foo", listener);
 			fail("bogus listener: " + listener);
 		} catch (IllegalArgumentException ex) {
 			exCaught = true;
@@ -63,7 +63,7 @@ public class SingleAspectChangeSupportTests extends TestCase {
 		boolean exCaught = false;
 		CollectionChangeListener listener = new CollectionChangeAdapter();
 		try {
-			model.addCollectionChangeListener(listener);
+			model.addCollectionChangeListener("foo", listener);
 			fail("bogus listener: " + listener);
 		} catch (IllegalArgumentException ex) {
 			exCaught = true;
@@ -89,7 +89,7 @@ public class SingleAspectChangeSupportTests extends TestCase {
 		boolean exCaught = false;
 		ListChangeListener listener = new ListChangeAdapter();
 		try {
-			model.addListChangeListener(listener);
+			model.addListChangeListener("foo", listener);
 			fail("bogus listener: " + listener);
 		} catch (IllegalArgumentException ex) {
 			exCaught = true;
@@ -115,7 +115,7 @@ public class SingleAspectChangeSupportTests extends TestCase {
 		boolean exCaught = false;
 		TreeChangeListener listener = new TreeChangeAdapter();
 		try {
-			model.addTreeChangeListener(listener);
+			model.addTreeChangeListener("foo", listener);
 			fail("bogus listener: " + listener);
 		} catch (IllegalArgumentException ex) {
 			exCaught = true;

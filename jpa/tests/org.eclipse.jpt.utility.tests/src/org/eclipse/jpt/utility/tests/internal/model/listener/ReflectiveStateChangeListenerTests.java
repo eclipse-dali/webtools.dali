@@ -62,7 +62,7 @@ public class ReflectiveStateChangeListenerTests extends TestCase {
 		// build a STATE change listener and hack it so we
 		// can add it as a PROPERTY change listener
 		Object listener = ReflectiveChangeListener.buildStateChangeListener(target, "stateChangedSingleArgument");
-		testModel.addPropertyChangeListener((PropertyChangeListener) listener);
+		testModel.addPropertyChangeListener("value", (PropertyChangeListener) listener);
 
 		boolean exCaught = false;
 		try {

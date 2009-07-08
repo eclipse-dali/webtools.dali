@@ -11,6 +11,7 @@ package org.eclipse.jpt.utility.internal.model.value;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.EventListener;
 import java.util.Iterator;
 
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -20,7 +21,6 @@ import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
 import org.eclipse.jpt.utility.model.event.CollectionClearEvent;
 import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
-import org.eclipse.jpt.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -177,7 +177,7 @@ public abstract class CollectionAspectAdapter<S extends Model, E>
 	}
 
 	@Override
-	protected Class<? extends ChangeListener> getListenerClass() {
+	protected Class<? extends EventListener> getListenerClass() {
 		return CollectionChangeListener.class;
 	}
 

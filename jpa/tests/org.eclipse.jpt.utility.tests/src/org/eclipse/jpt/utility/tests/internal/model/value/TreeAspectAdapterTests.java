@@ -29,6 +29,8 @@ import org.eclipse.jpt.utility.model.event.TreeChangeEvent;
 import org.eclipse.jpt.utility.model.event.TreeClearEvent;
 import org.eclipse.jpt.utility.model.event.TreeEvent;
 import org.eclipse.jpt.utility.model.event.TreeRemoveEvent;
+import org.eclipse.jpt.utility.model.listener.ChangeAdapter;
+import org.eclipse.jpt.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.utility.model.listener.TreeChangeListener;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.TreeValueModel;
@@ -113,17 +115,21 @@ public class TreeAspectAdapterTests extends TestCase {
 		};
 	}
 
-	private TreeChangeListener buildValueChangeListener1() {
-		return new TreeChangeListener() {
+	private ChangeListener buildValueChangeListener1() {
+		return new ChangeAdapter() {
+			@Override
 			public void nodeAdded(TreeAddEvent e) {
 				TreeAspectAdapterTests.this.value1Changed(e);
 			}
+			@Override
 			public void nodeRemoved(TreeRemoveEvent e) {
 				TreeAspectAdapterTests.this.value1Changed(e);
 			}
+			@Override
 			public void treeCleared(TreeClearEvent e) {
 				TreeAspectAdapterTests.this.value1Changed(e);
 			}
+			@Override
 			public void treeChanged(TreeChangeEvent e) {
 				TreeAspectAdapterTests.this.value1Changed(e);
 			}
@@ -201,11 +207,11 @@ public class TreeAspectAdapterTests extends TestCase {
 		assertFalse(this.subject1.hasAnyTreeChangeListeners(TestSubject.NAMES_TREE));
 		assertFalse(this.aa1.hasAnyTreeChangeListeners(TreeValueModel.NODES));
 
-		TreeChangeListener listener2 = this.buildValueChangeListener1();
-		this.aa1.addTreeChangeListener(listener2);
+		ChangeListener listener2 = this.buildValueChangeListener1();
+		this.aa1.addChangeListener(listener2);
 		assertTrue(this.aa1.hasAnyTreeChangeListeners(TreeValueModel.NODES));
 		assertTrue(this.subject1.hasAnyTreeChangeListeners(TestSubject.NAMES_TREE));
-		this.aa1.removeTreeChangeListener(listener2);
+		this.aa1.removeChangeListener(listener2);
 		assertFalse(this.subject1.hasAnyTreeChangeListeners(TestSubject.NAMES_TREE));
 		assertFalse(this.aa1.hasAnyTreeChangeListeners(TreeValueModel.NODES));
 	}

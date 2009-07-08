@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -56,7 +56,7 @@ public abstract class StatePropertyValueModelAdapter<T>
 			}
 			@Override
 			public String toString() {
-				return "state change listener";
+				return "state change listener"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -92,7 +92,7 @@ public abstract class StatePropertyValueModelAdapter<T>
 	 * The model's state changed;
 	 * propagate the change notification appropriately.
 	 */
-	protected void stateChanged(StateChangeEvent event) {
+	protected void stateChanged(@SuppressWarnings("unused") StateChangeEvent event) {
 		// by default, simply recalculate the value and fire an event
 		this.propertyChanged();
 	}

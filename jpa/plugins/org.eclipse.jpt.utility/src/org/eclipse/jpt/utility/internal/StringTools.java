@@ -3280,7 +3280,7 @@ public final class StringTools {
 	public static String buildToStringFor(Object o, Object additionalInfo) {
 		StringBuilder sb = new StringBuilder();
 		buildSimpleToStringOn(o, sb);
-		sb.append(" (");  //$NON-NLS-1$
+		sb.append('(');
 		sb.append(additionalInfo);
 		sb.append(')');
 		return sb.toString();

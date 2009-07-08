@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,6 +13,7 @@ import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.ChangeSupport;
 import org.eclipse.jpt.utility.internal.model.SingleAspectChangeSupport;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
+import org.eclipse.jpt.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 
@@ -71,11 +72,11 @@ public abstract class PropertyValueModelWrapper<T>
 	 * Extend to start listening to the nested model if necessary.
 	 */
     @Override
-	public synchronized void addPropertyChangeListener(PropertyChangeListener listener) {
+	public synchronized void addChangeListener(ChangeListener listener) {
 		if (this.hasNoPropertyChangeListeners(PropertyValueModel.VALUE)) {
 			this.engageValueHolder();
 		}
-		super.addPropertyChangeListener(listener);
+		super.addChangeListener(listener);
 	}
 	
 	/**
@@ -83,7 +84,7 @@ public abstract class PropertyValueModelWrapper<T>
 	 */
     @Override
 	public synchronized void addPropertyChangeListener(String propertyName, PropertyChangeListener listener) {
-		if (propertyName == PropertyValueModel.VALUE && this.hasNoPropertyChangeListeners(PropertyValueModel.VALUE)) {
+		if (propertyName.equals(PropertyValueModel.VALUE) && this.hasNoPropertyChangeListeners(PropertyValueModel.VALUE)) {
 			this.engageValueHolder();
 		}
 		super.addPropertyChangeListener(propertyName, listener);
@@ -93,8 +94,8 @@ public abstract class PropertyValueModelWrapper<T>
 	 * Extend to stop listening to the nested model if necessary.
 	 */
     @Override
-	public synchronized void removePropertyChangeListener(PropertyChangeListener listener) {
-		super.removePropertyChangeListener(listener);
+	public synchronized void removeChangeListener(ChangeListener listener) {
+		super.removeChangeListener(listener);
 		if (this.hasNoPropertyChangeListeners(PropertyValueModel.VALUE)) {
 			this.disengageValueHolder();
 		}
@@ -106,7 +107,7 @@ public abstract class PropertyValueModelWrapper<T>
     @Override
 	public synchronized void removePropertyChangeListener(String propertyName, PropertyChangeListener listener) {
 		super.removePropertyChangeListener(propertyName, listener);
-		if (propertyName == PropertyValueModel.VALUE && this.hasNoPropertyChangeListeners(PropertyValueModel.VALUE)) {
+		if (propertyName.equals(PropertyValueModel.VALUE) && this.hasNoPropertyChangeListeners(PropertyValueModel.VALUE)) {
 			this.disengageValueHolder();
 		}
 	}

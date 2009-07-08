@@ -9,11 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal.model.value;
 
+import java.util.EventListener;
+
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.ChangeSupport;
 import org.eclipse.jpt.utility.internal.model.SingleAspectChangeSupport;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
-import org.eclipse.jpt.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 
@@ -129,7 +130,7 @@ public abstract class AspectAdapter<S>
 	 * Return the class of listener that is interested in the aspect adapter's
 	 * changes.
 	 */
-	protected abstract Class<? extends ChangeListener> getListenerClass();
+	protected abstract Class<? extends EventListener> getListenerClass();
 
 	/**
 	 * Return the name of the aspect adapter's aspect (e.g. VALUE).
@@ -211,65 +212,51 @@ public abstract class AspectAdapter<S>
 	 * relevant listener is added.
 	 * Conversely, stop listening to the aspect adapter's models when the
 	 * last relevant listener is removed.
-	 * A relevant listener is a listener of the relevant type.
+	 * A relevant listener is a listener of the relevant type and aspect or a
+	 * general-purpose listener.
 	 */
 	protected class LocalChangeSupport extends SingleAspectChangeSupport {
 		private static final long serialVersionUID = 1L;
 
-		public LocalChangeSupport(AspectAdapter<S> source, Class<? extends ChangeListener> listenerClass, String aspectName) {
-			super(source, listenerClass, aspectName);
+		public LocalChangeSupport(AspectAdapter<S> source, Class<? extends EventListener> validListenerClass, String validAspectName) {
+			super(source, validListenerClass, validAspectName);
 		}
 
-		protected boolean listenerIsRelevant(Class<? extends ChangeListener> lClass) {
-			return lClass == this.listenerClass;
-		}
-
-		protected boolean hasNoRelevantListeners(Class<? extends ChangeListener> lClass) {
-			return this.listenerIsRelevant(lClass)
-						&& this.hasNoListeners(lClass, this.aspectName);  // tack on the aspect name
-		}
-
-		protected boolean listenerIsRelevant(Class<? extends ChangeListener> lClass, String listenerAspectName) {
-			return this.listenerIsRelevant(lClass)
-						&& (listenerAspectName.equals(AspectAdapter.this.getListenerAspectName()));
-		}
-
-		protected boolean hasNoRelevantListeners(Class<? extends ChangeListener> lClass, String listenerAspectName) {
-			return this.listenerIsRelevant(lClass, listenerAspectName)
-						&& this.hasNoListeners(lClass, listenerAspectName);
+		protected boolean hasNoListeners() {
+			return this.hasNoListeners(this.validListenerClass, this.validAspectName);
 		}
 
 
 		// ********** overrides **********
 
 		@Override
-		protected synchronized <T extends ChangeListener> void addListener(Class<T> lClass, T listener) {
-			if (this.hasNoRelevantListeners(lClass)) {
+		protected synchronized <T extends EventListener> void addListener(Class<T> listenerClass, T listener) {
+			if (this.hasNoListeners()) {
 				AspectAdapter.this.engageModels();
 			}
-			super.addListener(lClass, listener);
+			super.addListener(listenerClass, listener);
 		}
 
 		@Override
-		protected synchronized <T extends ChangeListener> void addListener(String listenerAspectName, Class<T> lClass, T listener) {
-			if (this.hasNoRelevantListeners(lClass, listenerAspectName)) {
+		protected synchronized <T extends EventListener> void addListener(Class<T> listenerClass, String aspectName, T listener) {
+			if (this.hasNoListeners()) {
 				AspectAdapter.this.engageModels();
 			}
-			super.addListener(listenerAspectName, lClass, listener);
+			super.addListener(listenerClass, aspectName, listener);
 		}
 
 		@Override
-		protected synchronized <T extends ChangeListener> void removeListener(Class<T> lClass, T listener) {
-			super.removeListener(lClass, listener);
-			if (this.hasNoRelevantListeners(lClass)) {
+		protected synchronized <T extends EventListener> void removeListener(Class<T> listenerClass, T listener) {
+			super.removeListener(listenerClass, listener);
+			if (this.hasNoListeners()) {
 				AspectAdapter.this.disengageModels();
 			}
 		}
 
 		@Override
-		protected <T extends ChangeListener> void removeListener(String listenerAspectName, Class<T> lClass, T listener) {
-			super.removeListener(listenerAspectName, lClass, listener);
-			if (this.hasNoRelevantListeners(lClass, listenerAspectName)) {
+		protected synchronized <T extends EventListener> void removeListener(Class<T> listenerClass, String aspectName, T listener) {
+			super.removeListener(listenerClass, aspectName, listener);
+			if (this.hasNoListeners()) {
 				AspectAdapter.this.disengageModels();
 			}
 		}

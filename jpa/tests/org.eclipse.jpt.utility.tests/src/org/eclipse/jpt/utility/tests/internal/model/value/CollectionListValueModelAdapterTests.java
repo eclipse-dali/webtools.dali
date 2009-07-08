@@ -29,6 +29,8 @@ import org.eclipse.jpt.utility.model.event.ListClearEvent;
 import org.eclipse.jpt.utility.model.event.ListMoveEvent;
 import org.eclipse.jpt.utility.model.event.ListRemoveEvent;
 import org.eclipse.jpt.utility.model.event.ListReplaceEvent;
+import org.eclipse.jpt.utility.model.listener.ChangeAdapter;
+import org.eclipse.jpt.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
@@ -167,9 +169,11 @@ public class CollectionListValueModelAdapterTests extends TestCase {
 		assertTrue(((AbstractModel) this.adapter).hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 		this.adapter.removeListChangeListener(ListValueModel.LIST_VALUES, synchList);
 		assertFalse(((AbstractModel) this.adapter).hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
-		this.adapter.addListChangeListener(synchList);
+
+		ChangeListener cl = new ChangeAdapter();
+		this.adapter.addChangeListener(cl);
 		assertTrue(((AbstractModel) this.adapter).hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
-		this.adapter.removeListChangeListener(synchList);
+		this.adapter.removeChangeListener(cl);
 		assertFalse(((AbstractModel) this.adapter).hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 	}
 

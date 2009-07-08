@@ -10,14 +10,15 @@
 package org.eclipse.jpt.utility.internal.model.value;
 
 import java.util.ArrayList;
+import java.util.EventListener;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ReadOnlyListIterator;
 import org.eclipse.jpt.utility.model.Model;
 import org.eclipse.jpt.utility.model.event.StateChangeEvent;
-import org.eclipse.jpt.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.model.listener.StateChangeListener;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
@@ -117,7 +118,7 @@ public abstract class ListCurator<S extends Model, E>
 	}
 
 	@Override
-	protected Class<? extends ChangeListener> getListenerClass() {
+	protected Class<? extends EventListener> getListenerClass() {
 		return ListChangeListener.class;
 	}
 

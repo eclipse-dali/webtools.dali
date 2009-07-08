@@ -11,9 +11,10 @@ package org.eclipse.jpt.utility.internal.model.value;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.EventListener;
+
 import org.eclipse.jpt.utility.model.Model;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
-import org.eclipse.jpt.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
@@ -165,7 +166,7 @@ public abstract class PropertyAspectAdapter<S extends Model, T>
 	// ********** AspectAdapter implementation **********
 
 	@Override
-	protected Class<? extends ChangeListener> getListenerClass() {
+	protected Class<? extends EventListener> getListenerClass() {
 		return PropertyChangeListener.class;
 	}
 

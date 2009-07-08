@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal.model.value.prefs;
 
+import java.util.EventListener;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.prefs.BackingStoreException;
@@ -21,7 +22,6 @@ import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.jpt.utility.internal.model.value.AspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.StaticPropertyValueModel;
-import org.eclipse.jpt.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -103,7 +103,7 @@ public class PreferencesCollectionValueModel<P>
 	}
 
 	@Override
-	protected Class<? extends ChangeListener> getListenerClass() {
+	protected Class<? extends EventListener> getListenerClass() {
 		return CollectionChangeListener.class;
 	}
 

@@ -26,6 +26,8 @@ import org.eclipse.jpt.utility.model.event.CollectionClearEvent;
 import org.eclipse.jpt.utility.model.event.CollectionEvent;
 import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
+import org.eclipse.jpt.utility.model.listener.ChangeAdapter;
+import org.eclipse.jpt.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;
@@ -231,13 +233,40 @@ public class PreferencesCollectionValueModelTests extends PreferencesTestCase {
 		assertFalse(this.nodeHasAnyPrefListeners(this.testNode));
 		assertFalse(this.preferencesAdapter.hasAnyCollectionChangeListeners(CollectionValueModel.VALUES));
 
-		CollectionChangeListener listener2 = this.buildCollectionChangeListener();
-		this.preferencesAdapter.addCollectionChangeListener(listener2);
+		ChangeListener listener2 = this.buildChangeListener();
+		this.preferencesAdapter.addChangeListener(listener2);
 		assertTrue(this.preferencesAdapter.hasAnyCollectionChangeListeners(CollectionValueModel.VALUES));
 		assertTrue(this.nodeHasAnyPrefListeners(this.testNode));
-		this.preferencesAdapter.removeCollectionChangeListener(listener2);
+		this.preferencesAdapter.removeChangeListener(listener2);
 		assertFalse(this.nodeHasAnyPrefListeners(this.testNode));
 		assertFalse(this.preferencesAdapter.hasAnyCollectionChangeListeners(CollectionValueModel.VALUES));
+	}
+
+	private ChangeListener buildChangeListener() {
+		return new ChangeAdapter() {
+			@Override
+			public void collectionChanged(CollectionChangeEvent e) {
+				this.logEvent(e);
+			}
+			@Override
+			public void collectionCleared(CollectionClearEvent e) {
+				this.logEvent(e);
+			}
+			@Override
+			public void itemsAdded(CollectionAddEvent e) {
+				this.logEvent(e);
+			}
+			@Override
+			public void itemsRemoved(CollectionRemoveEvent e) {
+				this.logEvent(e);
+			}
+			private void logEvent(CollectionEvent e) {
+				if (PreferencesCollectionValueModelTests.this.event != null) {
+					throw new IllegalStateException("unexpected this.event: " + e);
+				}
+				PreferencesCollectionValueModelTests.this.event = e;
+			}
+		};
 	}
 
 	private void verifyEvent(Map<String, String> items) {

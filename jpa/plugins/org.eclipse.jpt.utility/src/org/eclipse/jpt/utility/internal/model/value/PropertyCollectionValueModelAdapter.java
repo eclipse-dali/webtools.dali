@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,12 +10,14 @@
 package org.eclipse.jpt.utility.internal.model.value;
 
 import java.util.Iterator;
+
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementIterator;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.ChangeSupport;
 import org.eclipse.jpt.utility.internal.model.SingleAspectChangeSupport;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
+import org.eclipse.jpt.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;
@@ -75,7 +77,7 @@ public class PropertyCollectionValueModelAdapter<E>
 			}
 			@Override
 			public String toString() {
-				return "property change listener";
+				return "property change listener"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -101,11 +103,11 @@ public class PropertyCollectionValueModelAdapter<E>
 	 * Override to start listening to the value holder if necessary.
 	 */
 	@Override
-	public void addCollectionChangeListener(CollectionChangeListener listener) {
+	public void addChangeListener(ChangeListener listener) {
 		if (this.hasNoListeners()) {
 			this.engageModel();
 		}
-		super.addCollectionChangeListener(listener);
+		super.addChangeListener(listener);
 	}
 
 	/**
@@ -113,7 +115,7 @@ public class PropertyCollectionValueModelAdapter<E>
 	 */
 	@Override
 	public void addCollectionChangeListener(String collectionName, CollectionChangeListener listener) {
-		if (collectionName == VALUES && this.hasNoListeners()) {
+		if (collectionName.equals(VALUES) && this.hasNoListeners()) {
 			this.engageModel();
 		}
 		super.addCollectionChangeListener(collectionName, listener);
@@ -123,8 +125,8 @@ public class PropertyCollectionValueModelAdapter<E>
 	 * Override to stop listening to the value holder if appropriate.
 	 */
 	@Override
-	public void removeCollectionChangeListener(CollectionChangeListener listener) {
-		super.removeCollectionChangeListener(listener);
+	public void removeChangeListener(ChangeListener listener) {
+		super.removeChangeListener(listener);
 		if (this.hasNoListeners()) {
 			this.disengageModel();
 		}
@@ -136,7 +138,7 @@ public class PropertyCollectionValueModelAdapter<E>
 	@Override
 	public void removeCollectionChangeListener(String collectionName, CollectionChangeListener listener) {
 		super.removeCollectionChangeListener(collectionName, listener);
-		if (collectionName == VALUES && this.hasNoListeners()) {
+		if (collectionName.equals(VALUES) && this.hasNoListeners()) {
 			this.disengageModel();
 		}
 	}

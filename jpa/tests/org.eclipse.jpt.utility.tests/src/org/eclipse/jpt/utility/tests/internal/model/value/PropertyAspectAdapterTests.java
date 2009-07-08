@@ -10,11 +10,13 @@
 package org.eclipse.jpt.utility.tests.internal.model.value;
 
 import junit.framework.TestCase;
+
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
-import org.eclipse.jpt.utility.model.listener.PropertyChangeAdapter;
+import org.eclipse.jpt.utility.model.listener.ChangeAdapter;
+import org.eclipse.jpt.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
@@ -78,8 +80,9 @@ public class PropertyAspectAdapterTests extends TestCase {
 		};
 	}
 
-	private PropertyChangeListener buildValueChangeListener1() {
-		return new PropertyChangeListener() {
+	private ChangeListener buildValueChangeListener1() {
+		return new ChangeAdapter() {
+			@Override
 			public void propertyChanged(PropertyChangeEvent e) {
 				PropertyAspectAdapterTests.this.value1Changed(e);
 			}
@@ -194,11 +197,11 @@ public class PropertyAspectAdapterTests extends TestCase {
 		assertFalse(this.subject1.hasAnyPropertyChangeListeners(TestSubject.NAME_PROPERTY));
 		assertFalse(this.aa1.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 
-		PropertyChangeListener listener2 = this.buildValueChangeListener1();
-		this.aa1.addPropertyChangeListener(listener2);
+		ChangeListener listener2 = this.buildValueChangeListener1();
+		this.aa1.addChangeListener(listener2);
 		assertTrue(this.aa1.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 		assertTrue(this.subject1.hasAnyPropertyChangeListeners(TestSubject.NAME_PROPERTY));
-		this.aa1.removePropertyChangeListener(listener2);
+		this.aa1.removeChangeListener(listener2);
 		assertFalse(this.subject1.hasAnyPropertyChangeListeners(TestSubject.NAME_PROPERTY));
 		assertFalse(this.aa1.hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
 	}
@@ -282,8 +285,8 @@ public class PropertyAspectAdapterTests extends TestCase {
 	 * if the bug is present; otherwise, it completes silently.
 	 */
 	public void testDuplicateListener() {
-		PropertyChangeListener listener2 = new PropertyChangeAdapter();
-		this.aa1.addPropertyChangeListener(listener2);
+		ChangeListener listener2 = new ChangeAdapter();
+		this.aa1.addChangeListener(listener2);
 	}
 
 	private WritablePropertyValueModel<String> buildCustomAspectAdapter(PropertyValueModel<TestSubject> subjectHolder) {

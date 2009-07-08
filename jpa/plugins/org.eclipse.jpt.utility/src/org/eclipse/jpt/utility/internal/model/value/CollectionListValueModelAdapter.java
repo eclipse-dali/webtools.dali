@@ -21,6 +21,7 @@ import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
 import org.eclipse.jpt.utility.model.event.CollectionClearEvent;
 import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
+import org.eclipse.jpt.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;
@@ -138,11 +139,11 @@ public class CollectionListValueModelAdapter<E>
 	 * Override to start listening to the collection holder if necessary.
 	 */
 	@Override
-	public void addListChangeListener(ListChangeListener listener) {
+	public void addChangeListener(ChangeListener listener) {
 		if (this.hasNoListeners()) {
 			this.engageModel();
 		}
-		super.addListChangeListener(listener);
+		super.addChangeListener(listener);
 	}
 
 	/**
@@ -160,8 +161,8 @@ public class CollectionListValueModelAdapter<E>
 	 * Override to stop listening to the collection holder if appropriate.
 	 */
 	@Override
-	public void removeListChangeListener(ListChangeListener listener) {
-		super.removeListChangeListener(listener);
+	public void removeChangeListener(ChangeListener listener) {
+		super.removeChangeListener(listener);
 		if (this.hasNoListeners()) {
 			this.disengageModel();
 		}

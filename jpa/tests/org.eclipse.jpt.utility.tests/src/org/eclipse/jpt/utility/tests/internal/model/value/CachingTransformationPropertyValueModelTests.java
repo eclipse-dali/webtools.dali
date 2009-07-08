@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,11 +10,14 @@
 package org.eclipse.jpt.utility.tests.internal.model.value;
 
 import junit.framework.TestCase;
+
 import org.eclipse.jpt.utility.internal.BidiTransformer;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.value.CachingTransformationPropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
+import org.eclipse.jpt.utility.model.listener.ChangeAdapter;
+import org.eclipse.jpt.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
@@ -57,8 +60,8 @@ public class CachingTransformationPropertyValueModelTests extends TestCase {
 	}
 
 	public void testValue() {
-		PropertyChangeListener listener = this.buildTransformationListener();
-		this.transformationObjectHolder.addPropertyChangeListener(listener);
+		ChangeListener listener = this.buildTransformationChangeListener();
+		this.transformationObjectHolder.addChangeListener(listener);
 		
 		Person person = this.objectHolder.getValue();
 		assertEquals("Karen", person.getName());
@@ -90,10 +93,10 @@ public class CachingTransformationPropertyValueModelTests extends TestCase {
 
 	public void testLazyListening() {
 		assertTrue(((AbstractModel) this.objectHolder).hasNoPropertyChangeListeners(PropertyValueModel.VALUE));
-		PropertyChangeListener listener = this.buildTransformationListener();
-		this.transformationObjectHolder.addPropertyChangeListener(listener);
+		ChangeListener listener = this.buildTransformationChangeListener();
+		this.transformationObjectHolder.addChangeListener(listener);
 		assertTrue(((AbstractModel) this.objectHolder).hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
-		this.transformationObjectHolder.removePropertyChangeListener(listener);
+		this.transformationObjectHolder.removeChangeListener(listener);
 		assertTrue(((AbstractModel) this.objectHolder).hasNoPropertyChangeListeners(PropertyValueModel.VALUE));
 
 		this.transformationObjectHolder.addPropertyChangeListener(PropertyValueModel.VALUE, listener);
@@ -103,8 +106,8 @@ public class CachingTransformationPropertyValueModelTests extends TestCase {
 	}
 
 	public void testPropertyChange1() {
-		this.objectHolder.addPropertyChangeListener(this.buildListener());
-		this.transformationObjectHolder.addPropertyChangeListener(this.buildTransformationListener());
+		this.objectHolder.addChangeListener(this.buildChangeListener());
+		this.transformationObjectHolder.addChangeListener(this.buildTransformationChangeListener());
 		this.verifyPropertyChanges();
 	}
 
@@ -163,6 +166,24 @@ public class CachingTransformationPropertyValueModelTests extends TestCase {
 		};
 	}
 
+	private ChangeListener buildChangeListener() {
+		return new ChangeAdapter() {
+			@Override
+			public void propertyChanged(PropertyChangeEvent e) {
+				CachingTransformationPropertyValueModelTests.this.event = e;
+			}
+		};
+	}
+
+	private ChangeListener buildTransformationChangeListener() {
+		return new ChangeAdapter() {
+			@Override
+			public void propertyChanged(PropertyChangeEvent e) {
+				CachingTransformationPropertyValueModelTests.this.transformationEvent = e;
+			}
+		};
+	}
+
 	private void verifyEvent(PropertyChangeEvent e, Object source, Object oldValue, Object newValue) {
 		assertEquals(source, e.getSource());
 		assertEquals(PropertyValueModel.VALUE, e.getPropertyName());
@@ -171,7 +192,7 @@ public class CachingTransformationPropertyValueModelTests extends TestCase {
 	}
 
 	
-	private class Person extends AbstractModel {
+	class Person extends AbstractModel {
 
 		private String name;
 			public static final String NAME_PROPERTY = "name";

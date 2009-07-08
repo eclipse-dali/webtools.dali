@@ -9,13 +9,16 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.tests.internal.model;
 
+import java.util.EventListener;
+
 import junit.framework.TestCase;
+
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.ListenerList;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.ChangeSupport;
 import org.eclipse.jpt.utility.model.Model;
 import org.eclipse.jpt.utility.model.event.ChangeEvent;
-import org.eclipse.jpt.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
 /**
@@ -94,7 +97,7 @@ public class NewEventTests extends TestCase {
 		void removeFooChangeListener(FooChangeListener listener);
 	}
 
-	interface FooChangeListener extends ChangeListener {
+	interface FooChangeListener extends EventListener {
 		void fooChanged(FooChangeEvent event);
 	}
 
@@ -148,8 +151,12 @@ public class NewEventTests extends TestCase {
 		public boolean hasAnyFooChangeListeners() {
 			return this.hasAnyListeners(FOO_CHANGE_LISTENER_CLASS);
 		}
+		private ListenerList<FooChangeListener> getFooChangeListenerList() {
+			return this.getListenerList(FOO_CHANGE_LISTENER_CLASS);
+		}
 		private FooChangeListener[] getFooChangeListeners() {
-			return (FooChangeListener[]) this.getListeners(FOO_CHANGE_LISTENER_CLASS);
+			ListenerList<FooChangeListener> listenerList = this.getFooChangeListenerList();
+			return (listenerList == null) ? null : listenerList.getListeners();
 		}
 		private boolean hasFooChangeListener(FooChangeListener listener) {
 			return CollectionTools.contains(this.getFooChangeListeners(), listener);

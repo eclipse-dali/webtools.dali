@@ -25,10 +25,13 @@ import org.eclipse.jpt.utility.model.value.TreeValueModel;
  * Subclasses must override:
  * - #buildValue()
  *     to return the current property value, as derived from the
- *     current collection value
+ *     current tree value
  * 
  * Subclasses might want to override:
- * - #stateChanged(StateChangeEvent event)
+ * - #nodeAdded(TreeChangeEvent event)
+ * - #nodeRemoved(TreeChangeEvent event)
+ * - #treeCleared(TreeChangeEvent event)
+ * - #treeChanged(TreeChangeEvent event)
  *     to improve performance (by not recalculating the value, if possible)
  */
 public abstract class TreePropertyValueModelAdapter<T>
@@ -82,7 +85,7 @@ public abstract class TreePropertyValueModelAdapter<T>
 	 */
 	@Override
 	protected void engageModel_() {
-		this.treeHolder.addTreeChangeListener(this.treeChangeListener);
+		this.treeHolder.addTreeChangeListener(TreeValueModel.NODES, this.treeChangeListener);
 	}
 
 	/**
@@ -90,7 +93,7 @@ public abstract class TreePropertyValueModelAdapter<T>
 	 */
 	@Override
 	protected void disengageModel_() {
-		this.treeHolder.removeTreeChangeListener(this.treeChangeListener);
+		this.treeHolder.removeTreeChangeListener(TreeValueModel.NODES, this.treeChangeListener);
 	}
 
 	@Override

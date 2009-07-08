@@ -28,28 +28,56 @@ public class ListenerList<L extends EventListener>
 	private static final long serialVersionUID = 1L;
 
 
+	/**
+	 * Construct a listener list for listeners of the specified listener class type.
+	 */
 	public ListenerList(Class<L> listenerClass) {
 		super();
-		this.listeners = this.buildEmptyArray(listenerClass);
+		this.listeners = this.buildListenerArray(listenerClass, 0);
+	}
+
+	/**
+	 * Construct a listener list for listeners of the specified listener class type.
+	 * Add the specified listener to the list.
+	 */
+	public ListenerList(Class<L> listenerClass, L listener) {
+		super();
+		if (listener == null) {
+			throw new NullPointerException();
+		}
+		this.listeners = this.buildListenerArray(listenerClass, 1);
+		this.listeners[0] = listener;
 	}
 
 	@SuppressWarnings("unchecked")
-	private L[] buildEmptyArray(Class<L> listenerClass) {
-		return (L[]) Array.newInstance(listenerClass, 0);
+	private L[] buildListenerArray(Class<L> listenerClass, int length) {
+		return (L[]) Array.newInstance(listenerClass, length);
 	}
 
+	/**
+	 * Return the listeners.
+	 */
 	public L[] getListeners() {
 		return this.listeners;
 	}
 
+	/**
+	 * Return the number of listeners.
+	 */
 	public int size() {
 		return this.listeners.length;
 	}
 
+	/**
+	 * Return whether the listener list has no listeners.
+	 */
 	public boolean isEmpty() {
 		return this.listeners.length == 0;
 	}
 
+	/**
+	 * Add the specified listener to the listener list.
+	 */
 	public synchronized void add(L listener) {
 		if (listener == null) {
 			throw new NullPointerException();
@@ -60,6 +88,9 @@ public class ListenerList<L extends EventListener>
 		this.listeners = CollectionTools.add(this.listeners, listener);
 	}
 
+	/**
+	 * Remove the specified listener from the listener list.
+	 */
 	public synchronized void remove(L listener) {
 		if (listener == null) {
 			throw new NullPointerException();
@@ -71,6 +102,9 @@ public class ListenerList<L extends EventListener>
 		this.listeners = CollectionTools.removeElementAtIndex(this.listeners, index);
 	}
 
+	/**
+	 * Clear the listener list.
+	 */
 	public synchronized void clear() {
 		this.listeners = CollectionTools.clear(this.listeners);
 	}
@@ -107,10 +141,10 @@ public class ListenerList<L extends EventListener>
 		s.defaultReadObject();
 
 		Class<L> listenerClass = (Class<L>) s.readObject();
-		this.listeners = this.buildEmptyArray(listenerClass);
+		this.listeners = this.buildListenerArray(listenerClass, 0);
 		Object o;
 		while ((o = s.readObject()) != null) {
-			this.add((L) o);
+			this.listeners = CollectionTools.add(this.listeners, (L) o);
 		}
 	}
 

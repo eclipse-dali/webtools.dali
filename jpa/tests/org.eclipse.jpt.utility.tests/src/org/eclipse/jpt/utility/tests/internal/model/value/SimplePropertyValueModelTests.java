@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,13 +10,16 @@
 package org.eclipse.jpt.utility.tests.internal.model.value;
 
 import junit.framework.TestCase;
+
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
-import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
+import org.eclipse.jpt.utility.model.listener.ChangeAdapter;
+import org.eclipse.jpt.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
+@SuppressWarnings("nls")
 public class SimplePropertyValueModelTests extends TestCase {
 	private WritablePropertyValueModel<String> objectHolder;
 	PropertyChangeEvent event;
@@ -52,7 +55,7 @@ public class SimplePropertyValueModelTests extends TestCase {
 	}
 
 	public void testPropertyChange1() {
-		this.objectHolder.addPropertyChangeListener(this.buildListener());
+		this.objectHolder.addChangeListener(this.buildListener());
 		this.verifyPropertyChange();
 	}
 
@@ -75,8 +78,9 @@ public class SimplePropertyValueModelTests extends TestCase {
 		this.verifyEvent(null, "baz");
 	}
 
-	private PropertyChangeListener buildListener() {
-		return new PropertyChangeListener() {
+	private ChangeListener buildListener() {
+		return new ChangeAdapter() {
+			@Override
 			public void propertyChanged(PropertyChangeEvent e) {
 				SimplePropertyValueModelTests.this.event = e;
 			}

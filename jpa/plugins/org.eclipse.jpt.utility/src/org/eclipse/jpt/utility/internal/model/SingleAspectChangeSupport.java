@@ -10,6 +10,7 @@
 package org.eclipse.jpt.utility.internal.model;
 
 import java.util.Collection;
+import java.util.EventListener;
 import java.util.List;
 
 import org.eclipse.jpt.utility.model.Model;
@@ -29,92 +30,103 @@ import org.eclipse.jpt.utility.model.event.TreeAddEvent;
 import org.eclipse.jpt.utility.model.event.TreeChangeEvent;
 import org.eclipse.jpt.utility.model.event.TreeClearEvent;
 import org.eclipse.jpt.utility.model.event.TreeRemoveEvent;
-import org.eclipse.jpt.utility.model.listener.ChangeListener;
 
 /**
  * This change support class changes the behavior of the standard
  * change support in several ways:
  * 	- All events fired by the source must specify the single aspect.
- * 	- Listeners are required to be either "generic" listeners or
+ * 	- Listeners are required to be either "general purpose" listeners or
  * 	    listeners of the single aspect.
  */
 public class SingleAspectChangeSupport
 	extends ChangeSupport
 {
-	protected final Class<? extends ChangeListener> listenerClass;
-	protected final String aspectName;
+	protected final Class<? extends EventListener> validListenerClass;
+	protected final String validAspectName;
 
 	private static final long serialVersionUID = 1L;
 
 
 	// ********** constructor **********
 
-	public SingleAspectChangeSupport(Model source, Class<? extends ChangeListener> listenerClass, String aspectName) {
+	public SingleAspectChangeSupport(Model source, Class<? extends EventListener> validListenerClass, String validAspectName) {
 		super(source);
-		this.listenerClass = listenerClass;
-		this.aspectName = aspectName;
+		if ( ! validListenerClass.isAssignableFrom(this.getChangeListenerClass())) {
+			throw new IllegalArgumentException("The change support's change listener class (" + this.getChangeListenerClass().getName() + //$NON-NLS-1$
+					") does not extend the valid listener class: " + validListenerClass.getName()); //$NON-NLS-1$
+		}
+		this.validListenerClass = validListenerClass;
+		this.validAspectName = validAspectName;
 	}
 
 
-	// ********** internal behavior **********
+	// ********** internal implementation **********
 
-	private UnsupportedOperationException unsupportedOperationException() {
+	private UnsupportedOperationException buildUnsupportedOperationException() {
 		return new UnsupportedOperationException(
-				"This Model supports only changes for the listener type \"" + this.listenerClass.getName() //$NON-NLS-1$
-				+ "\" and the aspect \"" + this.aspectName + '"' //$NON-NLS-1$
+				"This Model supports only changes for the listener type \"" + this.validListenerClass.getName() //$NON-NLS-1$
+				+ "\" and the aspect \"" + this.validAspectName + '"' //$NON-NLS-1$
 			);
 	}
 
-	private void check(Class<? extends ChangeListener> lClass) {
-		if (lClass != this.listenerClass) {
+	/**
+	 * The listener can be either an instance of the valid listener class or
+	 * the "general-purpose" change listener class (which should extend the
+	 * the valid listener class).
+	 */
+	private void check(Class<? extends EventListener> listenerClass) {
+		if ((listenerClass != this.getChangeListenerClass()) && (listenerClass != this.validListenerClass)) {
 			throw new IllegalArgumentException(
-					"This Model supports only changes for the listener type \"" + this.listenerClass.getName() //$NON-NLS-1$
-					+ "\" : \"" + lClass.getName() + '"' //$NON-NLS-1$
+					"This Model supports only changes for the listener type \"" + this.validListenerClass.getName() //$NON-NLS-1$
+					+ "\" : \"" + listenerClass.getName() + '"' //$NON-NLS-1$
 				);
 		}
 	}
 
-	private void check(Class<? extends ChangeListener> lClass, String listenerAspectName) {
-		this.check(lClass);
-		if ( ! listenerAspectName.equals(this.aspectName)) {
+	private void check(Class<? extends EventListener> listenerClass, String aspectName) {
+		this.check(listenerClass);
+		if ( ! aspectName.equals(this.validAspectName)) {
 			throw new IllegalArgumentException(
-					"This Model supports only changes for the aspect \"" + this.aspectName //$NON-NLS-1$
-					+ "\" : \"" + listenerAspectName + '"' //$NON-NLS-1$
+					"This Model supports only changes for the aspect \"" + this.validAspectName //$NON-NLS-1$
+					+ "\" : \"" + aspectName + '"' //$NON-NLS-1$
 				);
 		}
 	}
 
 	@Override
-	protected synchronized <T extends ChangeListener> void addListener(Class<T> lClass, T listener) {
-		this.check(lClass);
-		super.addListener(lClass, listener);
+	protected synchronized <L extends EventListener> void addListener(Class<L> listenerClass, String aspectName, L listener) {
+		this.check(listenerClass, aspectName);
+		super.addListener(listenerClass, aspectName, listener);
 	}
 
 	@Override
-	protected synchronized <T extends ChangeListener> void addListener(String listenerAspectName, Class<T> lClass, T listener) {
-		this.check(lClass, listenerAspectName);
-		super.addListener(listenerAspectName, lClass, listener);
+	protected synchronized <L extends EventListener> void addListener(Class<L> listenerClass, L listener) {
+		this.check(listenerClass);
+		super.addListener(listenerClass, listener);
 	}
 
 	@Override
-	protected synchronized <T extends ChangeListener> void removeListener(Class<T> lClass, T listener) {
-		this.check(lClass);
-		super.removeListener(lClass, listener);
+	protected synchronized <L extends EventListener> void removeListener(Class<L> listenerClass, String aspectName, L listener) {
+		this.check(listenerClass, aspectName);
+		super.removeListener(listenerClass, aspectName, listener);
 	}
 
 	@Override
-	protected <T extends ChangeListener> void removeListener(String listenerAspectName, Class<T> lClass, T listener) {
-		this.check(lClass, listenerAspectName);
-		super.removeListener(listenerAspectName, lClass, listener);
+	protected synchronized <L extends EventListener> void removeListener(Class<L> listenerClass, L listener) {
+		this.check(listenerClass);
+		super.removeListener(listenerClass, listener);
 	}
 
-
-	// ********** internal queries **********
+	@Override
+	protected <L extends EventListener> boolean hasAnyListeners(Class<L> listenerClass, String aspectName) {
+		this.check(listenerClass, aspectName);
+		return super.hasAnyListeners(listenerClass, aspectName);
+	}
 
 	@Override
-	protected boolean hasAnyListeners(Class<? extends ChangeListener> lClass, String listenerAspectName) {
-		this.check(lClass, listenerAspectName);
-		return super.hasAnyListeners(lClass, listenerAspectName);
+	protected <L extends EventListener> boolean hasAnyListeners(Class<L> listenerClass) {
+		this.check(listenerClass);
+		return super.hasAnyListeners(listenerClass);
 	}
 
 
@@ -122,12 +134,12 @@ public class SingleAspectChangeSupport
 
 	@Override
 	public void fireStateChanged(StateChangeEvent event) {
-		throw this.unsupportedOperationException();
+		throw this.buildUnsupportedOperationException();
 	}
 
 	@Override
 	public void fireStateChanged() {
-		throw this.unsupportedOperationException();
+		throw this.buildUnsupportedOperationException();
 	}
 
 

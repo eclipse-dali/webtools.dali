@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,16 +10,19 @@
 package org.eclipse.jpt.utility.tests.internal.model.value;
 
 import junit.framework.TestCase;
+
 import org.eclipse.jpt.utility.internal.BidiFilter;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.value.FilteringWritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
-import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
+import org.eclipse.jpt.utility.model.listener.ChangeAdapter;
+import org.eclipse.jpt.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
+@SuppressWarnings("nls")
 public class FilteringPropertyValueModelTests extends TestCase {
 	private WritablePropertyValueModel<String> objectHolder;
 	PropertyChangeEvent event;
@@ -98,10 +101,10 @@ public class FilteringPropertyValueModelTests extends TestCase {
 
 	public void testLazyListening() {
 		assertTrue(((AbstractModel) this.objectHolder).hasNoPropertyChangeListeners(PropertyValueModel.VALUE));
-		PropertyChangeListener listener = this.buildFilteredListener();
-		this.filteredObjectHolder.addPropertyChangeListener(listener);
+		ChangeListener listener = this.buildFilteredListener();
+		this.filteredObjectHolder.addChangeListener(listener);
 		assertTrue(((AbstractModel) this.objectHolder).hasAnyPropertyChangeListeners(PropertyValueModel.VALUE));
-		this.filteredObjectHolder.removePropertyChangeListener(listener);
+		this.filteredObjectHolder.removeChangeListener(listener);
 		assertTrue(((AbstractModel) this.objectHolder).hasNoPropertyChangeListeners(PropertyValueModel.VALUE));
 
 		this.filteredObjectHolder.addPropertyChangeListener(PropertyValueModel.VALUE, listener);
@@ -111,8 +114,8 @@ public class FilteringPropertyValueModelTests extends TestCase {
 	}
 
 	public void testPropertyChange1() {
-		this.objectHolder.addPropertyChangeListener(this.buildListener());
-		this.filteredObjectHolder.addPropertyChangeListener(this.buildFilteredListener());
+		this.objectHolder.addChangeListener(this.buildListener());
+		this.filteredObjectHolder.addChangeListener(this.buildFilteredListener());
 		this.verifyPropertyChanges();
 	}
 
@@ -160,16 +163,18 @@ public class FilteringPropertyValueModelTests extends TestCase {
 		this.verifyEvent(this.filteredEvent, this.filteredObjectHolder, null, "bar");
 	}
 
-	private PropertyChangeListener buildListener() {
-		return new PropertyChangeListener() {
+	private ChangeListener buildListener() {
+		return new ChangeAdapter() {
+			@Override
 			public void propertyChanged(PropertyChangeEvent e) {
 				FilteringPropertyValueModelTests.this.event = e;
 			}
 		};
 	}
 
-	private PropertyChangeListener buildFilteredListener() {
-		return new PropertyChangeListener() {
+	private ChangeListener buildFilteredListener() {
+		return new ChangeAdapter() {
+			@Override
 			public void propertyChanged(PropertyChangeEvent e) {
 				FilteringPropertyValueModelTests.this.filteredEvent = e;
 			}

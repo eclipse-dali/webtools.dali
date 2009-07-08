@@ -11,6 +11,7 @@ package org.eclipse.jpt.utility.internal.model.value;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.EventListener;
 import java.util.Iterator;
 
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -20,7 +21,6 @@ import org.eclipse.jpt.utility.model.event.TreeAddEvent;
 import org.eclipse.jpt.utility.model.event.TreeChangeEvent;
 import org.eclipse.jpt.utility.model.event.TreeClearEvent;
 import org.eclipse.jpt.utility.model.event.TreeRemoveEvent;
-import org.eclipse.jpt.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.utility.model.listener.TreeChangeListener;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.TreeValueModel;
@@ -155,7 +155,7 @@ public abstract class TreeAspectAdapter<S extends Model, E>
 	}
 
 	@Override
-	protected Class<? extends ChangeListener> getListenerClass() {
+	protected Class<? extends EventListener> getListenerClass() {
 		return TreeChangeListener.class;
 	}
 

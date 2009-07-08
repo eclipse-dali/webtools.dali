@@ -18,6 +18,7 @@ import org.eclipse.jpt.utility.model.event.ListClearEvent;
 import org.eclipse.jpt.utility.model.event.ListMoveEvent;
 import org.eclipse.jpt.utility.model.event.ListRemoveEvent;
 import org.eclipse.jpt.utility.model.event.ListReplaceEvent;
+import org.eclipse.jpt.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 
@@ -94,11 +95,11 @@ public abstract class ListValueModelWrapper<E>
 	 * Extend to start listening to the nested model if necessary.
 	 */
 	@Override
-	public synchronized void addListChangeListener(ListChangeListener listener) {
+	public synchronized void addChangeListener(ChangeListener listener) {
 		if (this.hasNoListChangeListeners(ListValueModel.LIST_VALUES)) {
 			this.engageModel();
 		}
-		super.addListChangeListener(listener);
+		super.addChangeListener(listener);
 	}
 	
 	/**
@@ -116,8 +117,8 @@ public abstract class ListValueModelWrapper<E>
 	 * Extend to stop listening to the nested model if necessary.
 	 */
 	@Override
-	public synchronized void removeListChangeListener(ListChangeListener listener) {
-		super.removeListChangeListener(listener);
+	public synchronized void removeChangeListener(ChangeListener listener) {
+		super.removeChangeListener(listener);
 		if (this.hasNoListChangeListeners(ListValueModel.LIST_VALUES)) {
 			this.disengageModel();
 		}

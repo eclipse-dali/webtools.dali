@@ -27,7 +27,8 @@ import org.eclipse.jpt.utility.model.event.ListEvent;
 import org.eclipse.jpt.utility.model.event.ListMoveEvent;
 import org.eclipse.jpt.utility.model.event.ListRemoveEvent;
 import org.eclipse.jpt.utility.model.event.ListReplaceEvent;
-import org.eclipse.jpt.utility.model.listener.ListChangeListener;
+import org.eclipse.jpt.utility.model.listener.ChangeAdapter;
+import org.eclipse.jpt.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
@@ -189,7 +190,7 @@ public class ExtendedListValueModelWrapperTests extends TestCase {
 	}
 
 	public void testListChangeGeneric() {
-		this.extendedListHolder.addListChangeListener(this.buildListener());
+		this.extendedListHolder.addChangeListener(this.buildListener());
 		this.verifyListChange();
 	}
 
@@ -233,28 +234,34 @@ public class ExtendedListValueModelWrapperTests extends TestCase {
 		assertTrue(CollectionTools.contains(((ListReplaceEvent) this.event).getNewItems(), "AA"));
 	}
 
-	private ListChangeListener buildListener() {
-		return new ListChangeListener() {
+	private ChangeListener buildListener() {
+		return new ChangeAdapter() {
+			@Override
 			public void itemsAdded(ListAddEvent e) {
 				ExtendedListValueModelWrapperTests.this.eventType = ADD;
 				ExtendedListValueModelWrapperTests.this.event = e;
 			}
+			@Override
 			public void itemsRemoved(ListRemoveEvent e) {
 				ExtendedListValueModelWrapperTests.this.eventType = REMOVE;
 				ExtendedListValueModelWrapperTests.this.event = e;
 			}
+			@Override
 			public void itemsReplaced(ListReplaceEvent e) {
 				ExtendedListValueModelWrapperTests.this.eventType = REPLACE;
 				ExtendedListValueModelWrapperTests.this.event = e;
 			}
+			@Override
 			public void itemsMoved(ListMoveEvent e) {
 				ExtendedListValueModelWrapperTests.this.eventType = MOVE;
 				ExtendedListValueModelWrapperTests.this.event = e;
 			}
+			@Override
 			public void listCleared(ListClearEvent e) {
 				ExtendedListValueModelWrapperTests.this.eventType = CLEAR;
 				ExtendedListValueModelWrapperTests.this.event = e;
 			}
+			@Override
 			public void listChanged(ListChangeEvent e) {
 				ExtendedListValueModelWrapperTests.this.eventType = CHANGE;
 				ExtendedListValueModelWrapperTests.this.event = e;
@@ -288,7 +295,7 @@ public class ExtendedListValueModelWrapperTests extends TestCase {
 		 */
 		assertFalse(((AbstractModel) this.listHolder).hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 
-		ListChangeListener listener = this.buildListener();
+		ChangeListener listener = this.buildListener();
 
 		this.extendedListHolder.addListChangeListener(ListValueModel.LIST_VALUES, listener);
 		assertTrue(((AbstractModel) this.listHolder).hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
@@ -296,10 +303,10 @@ public class ExtendedListValueModelWrapperTests extends TestCase {
 		this.extendedListHolder.removeListChangeListener(ListValueModel.LIST_VALUES, listener);
 		assertFalse(((AbstractModel) this.listHolder).hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 
-		this.extendedListHolder.addListChangeListener(listener);
+		this.extendedListHolder.addChangeListener(listener);
 		assertTrue(((AbstractModel) this.listHolder).hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 
-		this.extendedListHolder.removeListChangeListener(listener);
+		this.extendedListHolder.removeChangeListener(listener);
 		assertFalse(((AbstractModel) this.listHolder).hasAnyListChangeListeners(ListValueModel.LIST_VALUES));
 	}
 
