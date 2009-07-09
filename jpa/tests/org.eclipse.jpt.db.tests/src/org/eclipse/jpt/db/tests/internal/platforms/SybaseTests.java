@@ -15,7 +15,6 @@ import org.eclipse.jpt.db.Column;
 import org.eclipse.jpt.db.ForeignKey;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.Table;
-import org.eclipse.jpt.db.tests.internal.platforms.DTPPlatformTests.TestConnectionListener;
 
 @SuppressWarnings("nls")
 public class SybaseTests extends DTPPlatformTests {
