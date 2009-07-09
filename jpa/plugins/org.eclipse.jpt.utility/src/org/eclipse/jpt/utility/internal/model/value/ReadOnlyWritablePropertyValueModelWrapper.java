@@ -33,7 +33,7 @@ public class ReadOnlyWritablePropertyValueModelWrapper<T>
 	}
 	
 	public void setValue(T value) {
-		throw new UnsupportedOperationException("setValue");
+		throw new UnsupportedOperationException();
 	}
 	
 	@Override

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -61,7 +61,7 @@ public class ObjectListSelectionModel
 			}
 			@Override
 			public String toString() {
-				return "list data listener";
+				return "list data listener"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -75,7 +75,7 @@ public class ObjectListSelectionModel
 	 * A subclass can override this method if the selection
 	 * should be cleared because a change could mean the selection is invalid.
 	 */
-	protected void listModelContentsChanged(ListDataEvent event) {
+	protected void listModelContentsChanged(@SuppressWarnings("unused") ListDataEvent event) {
 		/**this.clearSelection();*/
 	}
 
@@ -417,7 +417,7 @@ public class ObjectListSelectionModel
 	// call this method inside loops that do not modify the listModel
 	private int indexOf(Object object, ListModel lm, int listModelSize) {
 		for (int i = listModelSize; i-- > 0; ) {
-			if (lm.getElementAt(i) == object) {
+			if (lm.getElementAt(i).equals(object)) {
 				return i;
 			}
 		}

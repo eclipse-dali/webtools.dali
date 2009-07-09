@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -93,10 +93,10 @@ public class SpinnerTableCellRenderer implements TableCellEditorAdapter.Renderer
 	/**
 	 * Return the cell's foreground color.
 	 */
-	protected Color foregroundColor(JTable table, Object value, boolean selected, boolean hasFocus, int row, int column) {
+	protected Color foregroundColor(JTable table, @SuppressWarnings("unused") Object value, boolean selected, boolean hasFocus, int row, int column) {
 		if (selected) {
 			if (hasFocus && table.isCellEditable(row, column)) {
-				return UIManager.getColor("Table.focusCellForeground");
+				return UIManager.getColor("Table.focusCellForeground"); //$NON-NLS-1$
 			}
 			return table.getSelectionForeground();
 		}
@@ -106,10 +106,10 @@ public class SpinnerTableCellRenderer implements TableCellEditorAdapter.Renderer
 	/**
 	 * Return the cell's background color.
 	 */
-	protected Color backgroundColor(JTable table, Object value, boolean selected, boolean hasFocus, int row, int column) {
+	protected Color backgroundColor(JTable table, @SuppressWarnings("unused") Object value, boolean selected, boolean hasFocus, int row, int column) {
 		if (selected) {
 			if (hasFocus && table.isCellEditable(row, column)) {
-				return UIManager.getColor("Table.focusCellBackground");
+				return UIManager.getColor("Table.focusCellBackground"); //$NON-NLS-1$
 			}
 			return table.getSelectionBackground();
 		}
@@ -119,9 +119,9 @@ public class SpinnerTableCellRenderer implements TableCellEditorAdapter.Renderer
 	/**
 	 * Return the cell's border.
 	 */
-	protected Border border(JTable table, Object value, boolean selected, boolean hasFocus, int row, int column) {
+	protected Border border(JTable table, @SuppressWarnings("unused") Object value, boolean selected, boolean hasFocus, @SuppressWarnings("unused") int row, @SuppressWarnings("unused") int column) {
 		if (hasFocus) {
-			return UIManager.getBorder("Table.focusCellHighlightBorder");
+			return UIManager.getBorder("Table.focusCellHighlightBorder"); //$NON-NLS-1$
 		}
 		if (selected) {
 			return BorderFactory.createLineBorder(table.getSelectionBackground(), 1);
@@ -148,7 +148,7 @@ public class SpinnerTableCellRenderer implements TableCellEditorAdapter.Renderer
 	protected void setValue(Object value) {
 		// CR#3999318 - This null check needs to be removed once JDK bug is fixed
 		if (value == null) {
-			value = new Integer(0);
+			value = Integer.valueOf(0);
 		}
 		this.spinner.setValue(value);
 	}

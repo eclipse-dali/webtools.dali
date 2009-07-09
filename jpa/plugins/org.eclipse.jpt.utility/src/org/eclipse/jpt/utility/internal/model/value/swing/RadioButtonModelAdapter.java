@@ -111,7 +111,7 @@ public class RadioButtonModelAdapter
 		 * *only* when it matches our button value
 		 */
 		public boolean reverseAccept(Object value) {
-			return value == this.buttonValue;
+			return (value != null) && value.equals(this.buttonValue);
 		}
 
 	}
@@ -135,7 +135,7 @@ public class RadioButtonModelAdapter
 		 * button model's default value to be used
 		 */
 		public Boolean transform(Object value) {
-			return (value == null) ? null : Boolean.valueOf(value == this.buttonValue);
+			return (value == null) ? null : Boolean.valueOf(value.equals(this.buttonValue));
 		}
 
 		/**

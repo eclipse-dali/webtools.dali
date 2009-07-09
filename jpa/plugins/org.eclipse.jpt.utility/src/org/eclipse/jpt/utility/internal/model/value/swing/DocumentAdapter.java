@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,8 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal.model.value.swing;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.EventObject;
+
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.EventListenerList;
@@ -23,6 +26,7 @@ import javax.swing.text.Element;
 import javax.swing.text.PlainDocument;
 import javax.swing.text.Position;
 import javax.swing.text.Segment;
+
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.listener.awt.AWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
@@ -52,10 +56,12 @@ public class DocumentAdapter
 	protected final WritablePropertyValueModel<String> stringHolder;
 
 	/** A listener that allows us to synchronize with changes made to the underlying model string. */
-	protected final PropertyChangeListener stringListener;
+	protected transient PropertyChangeListener stringListener;
 
     /** The event listener list for the document. */
     protected final EventListenerList listenerList = new EventListenerList();
+
+	private static final long serialVersionUID = 1L;
 
 
 	// ********** constructors **********
@@ -99,7 +105,7 @@ public class DocumentAdapter
 			}
 			@Override
 			public String toString() {
-				return "string listener";
+				return "string listener"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -310,14 +316,21 @@ public class DocumentAdapter
 		return StringTools.buildToStringFor(this, this.stringHolder);
 	}
 
+	private void readObject(ObjectInputStream s) throws ClassNotFoundException, IOException {
+		// read in any hidden stuff
+		s.defaultReadObject();
+		this.stringListener = this.buildStringListener();
+	}
+
 
 // ********** inner class **********
 
-	protected interface CombinedListener extends DocumentListener, UndoableEditListener {
+	protected interface CombinedListener extends DocumentListener, UndoableEditListener, Serializable {
 		// just consolidate the two interfaces
 	}
 
 	protected class InternalListener implements CombinedListener {
+		private static final long serialVersionUID = 1L;
 		public void changedUpdate(DocumentEvent event) {
 			DocumentAdapter.this.delegateChangedUpdate(event);
 		}

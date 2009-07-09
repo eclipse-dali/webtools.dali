@@ -49,8 +49,7 @@ public abstract class CloneIterable<E>
 	 * alternative to building a <code>CloneIterator.Remover</code>.
 	 */
 	protected void remove(@SuppressWarnings("unused") E element) {
-		// CloneIterable.remove(Object) was not overridden
-		throw new UnsupportedOperationException();
+		throw new RuntimeException("This method was not overridden."); //$NON-NLS-1$
 	}
 
 

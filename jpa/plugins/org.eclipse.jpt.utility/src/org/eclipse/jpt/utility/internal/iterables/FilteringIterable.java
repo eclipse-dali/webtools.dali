@@ -73,8 +73,7 @@ public class FilteringIterable<E1, E2>
 	 * alternative to building a <code>Filter</code>.
 	 */
 	protected boolean accept(@SuppressWarnings("unused") E1 o) {
-		// FilteringIterable.accept(Object) was not overridden
-		throw new UnsupportedOperationException();
+		throw new RuntimeException("This method was not overridden."); //$NON-NLS-1$
 	}
 
 	@Override

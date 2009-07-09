@@ -67,7 +67,7 @@ public class NumberSpinnerModelAdapter
 	 * The step size is one.
 	 */
 	public NumberSpinnerModelAdapter(WritablePropertyValueModel<Number> numberHolder, int defaultValue) {
-		this(numberHolder, null, null, new Integer(1), new Integer(defaultValue));
+		this(numberHolder, null, null, Integer.valueOf(1), Integer.valueOf(defaultValue));
 	}
 
 	/**
@@ -82,22 +82,22 @@ public class NumberSpinnerModelAdapter
 	 * Constructor - the number holder is required.
 	 */
 	public NumberSpinnerModelAdapter(WritablePropertyValueModel<Number> numberHolder, int minimum, int maximum, int stepSize, int defaultValue) {
-		this(numberHolder, new Integer(minimum), new Integer(maximum), new Integer(stepSize), new Integer(defaultValue));
+		this(numberHolder, Integer.valueOf(minimum), Integer.valueOf(maximum), Integer.valueOf(stepSize), Integer.valueOf(defaultValue));
 	}
 
 	/**
 	 * Constructor - the number holder is required.
 	 * Use the minimum value as the default spinner value.
 	 */
-	public NumberSpinnerModelAdapter(WritablePropertyValueModel<Number> numberHolder, double value, double minimum, double maximum, double stepSize) {
-		this(numberHolder, value, minimum, maximum, stepSize, minimum);
+	public NumberSpinnerModelAdapter(WritablePropertyValueModel<Number> numberHolder, double minimum, double maximum, double stepSize) {
+		this(numberHolder, minimum, maximum, stepSize, minimum);
 	}
 
 	/**
 	 * Constructor - the number holder is required.
 	 */
-	public NumberSpinnerModelAdapter(WritablePropertyValueModel<Number> numberHolder, double value, double minimum, double maximum, double stepSize, double defaultValue) {
-		this(numberHolder, new Double(minimum), new Double(maximum), new Double(stepSize), new Double(defaultValue));
+	public NumberSpinnerModelAdapter(WritablePropertyValueModel<Number> numberHolder, double minimum, double maximum, double stepSize, double defaultValue) {
+		this(numberHolder, Double.valueOf(minimum), Double.valueOf(maximum), Double.valueOf(stepSize), Double.valueOf(defaultValue));
 	}
 
 	/**
@@ -126,7 +126,7 @@ public class NumberSpinnerModelAdapter
 			}
 			@Override
 			public String toString() {
-				return "number listener";
+				return "number listener"; //$NON-NLS-1$
 			}
 		};
 	}

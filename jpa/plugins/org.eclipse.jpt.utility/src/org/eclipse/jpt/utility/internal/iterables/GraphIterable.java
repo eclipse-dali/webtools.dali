@@ -135,8 +135,7 @@ public class GraphIterable<E>
 	 * alternative to building a <code>GraphIterator.MisterRogers</code>.
 	 */
 	protected Iterator<? extends E> neighbors(@SuppressWarnings("unused") E next) {
-		// GraphIterable.neighbors(Object) was not overridden
-		throw new UnsupportedOperationException();
+		throw new RuntimeException("This method was not overridden."); //$NON-NLS-1$
 	}
 
 	@Override

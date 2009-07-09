@@ -74,8 +74,7 @@ public class ChainIterable<E>
 	 * building a <code>ChainIterator.Linker</code>
 	 */
 	protected E nextLink(@SuppressWarnings("unused") E currentLink) {
-		// ChainIterable.nextLink(Object) was not overridden
-		throw new UnsupportedOperationException();
+		throw new RuntimeException("This method was not overridden."); //$NON-NLS-1$
 	}
 
 	@Override

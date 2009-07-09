@@ -182,27 +182,6 @@ public class ListCollectionValueModelAdapter<E>
 		return ! this.hasListeners();
 	}
 
-	/**
-	 * Return the index of the specified item, using object
-	 * identity instead of equality.
-	 */
-	protected int lastIdentityIndexOf(Object o) {
-		return this.lastIdentityIndexOf(o, this.collection.size());
-	}
-	
-	/**
-	 * Return the last index of the specified item, starting just before the
-	 * the specified endpoint, and using object identity instead of equality.
-	 */
-	protected int lastIdentityIndexOf(Object o, int end) {
-		for (int i = end; i-- > 0; ) {
-			if (this.collection.get(i) == o) {
-				return i;
-			}
-		}
-		return -1;
-	}
-	
 
 	// ********** behavior **********
 
@@ -262,9 +241,7 @@ public class ListCollectionValueModelAdapter<E>
 		// we have to remove the items individually,
 		// since they are probably not in sequence
 		for (E removedItem : removedItems) {
-			int index = this.lastIdentityIndexOf(removedItem);
-			this.collection.remove(index);
-			this.fireItemRemoved(VALUES, removedItem);
+			this.removeItemFromCollection(removedItem, this.collection, VALUES);
 		}
 	}
 

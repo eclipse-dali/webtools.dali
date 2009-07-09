@@ -117,8 +117,7 @@ public class TreeIterable<E>
 	 * alternative to building a <code>TreeIterator.Midwife</code>.
 	 */
 	protected Iterator<? extends E> children(@SuppressWarnings("unused") E next) {
-		// TreeIterable.children(Object) was not overridden
-		throw new UnsupportedOperationException();
+		throw new RuntimeException("This method was not overridden."); //$NON-NLS-1$
 	}
 
 	@Override

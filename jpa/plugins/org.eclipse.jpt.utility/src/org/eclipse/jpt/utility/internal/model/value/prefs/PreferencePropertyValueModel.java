@@ -228,13 +228,13 @@ public class PreferencePropertyValueModel<P>
 	}
 
 	@Override
-	protected void engageSubject_() {
+	protected synchronized void engageSubject_() {
 		this.subject.addPreferenceChangeListener(this.preferenceChangeListener);
 		this.value = this.buildValue();
 	}
 
 	@Override
-	protected void disengageSubject_() {
+	protected synchronized void disengageSubject_() {
 		try {
 			this.subject.removePreferenceChangeListener(this.preferenceChangeListener);
 		} catch (IllegalStateException ex) {

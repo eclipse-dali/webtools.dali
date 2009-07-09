@@ -512,7 +512,7 @@ public class IdentityHashBag<E>
 
 		@Override
 		public boolean equals(Object o) {
-			if ( ! (o instanceof Bag.Entry)) {
+			if ( ! (o instanceof Bag.Entry<?>)) {
 				return false;
 			}
 			@SuppressWarnings("unchecked")
@@ -783,7 +783,7 @@ public class IdentityHashBag<E>
 	public boolean equals(Object o) {
 		if (o == this) {
 			return true;
-		} else if (o instanceof IdentityHashBag) {
+		} else if (o instanceof IdentityHashBag<?>) {
 			@SuppressWarnings("unchecked")
 			IdentityHashBag<E> b = (IdentityHashBag<E>) o;
 			if (b.size() != this.size()) {
@@ -796,7 +796,7 @@ public class IdentityHashBag<E>
 				}
 			}
 			return clone.isEmpty();
-		} else if (o instanceof Bag) {
+		} else if (o instanceof Bag<?>) {
 			// hmmm...
 			return this.buildBag().equals(o);
 		} else {
@@ -853,7 +853,7 @@ public class IdentityHashBag<E>
 	/**
 	 * Reconstitute the bag from a stream (i.e. deserialize it).
 	 */
-	private synchronized void readObject(java.io.ObjectInputStream s)
+	private void readObject(java.io.ObjectInputStream s)
 				throws java.io.IOException, ClassNotFoundException {
 		// read in the threshold, loadfactor, and any hidden stuff
 		s.defaultReadObject();

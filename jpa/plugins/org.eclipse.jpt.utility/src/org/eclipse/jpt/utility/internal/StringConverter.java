@@ -9,11 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal;
 
+import java.io.Serializable;
+
 /**
  * Used by various "pluggable" classes to transform objects
  * into strings.
  */
-public interface StringConverter<T> {
+public interface StringConverter<T> extends Serializable {
 
 	/**
 	 * Convert the specified object into a string.

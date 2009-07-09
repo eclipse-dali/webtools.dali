@@ -796,7 +796,7 @@ public class Classpath
 			try {
 				zipFile = new ZipFile(this.canonicalFile);
 			} catch (IOException ex) {
-				return;
+				throw new RuntimeException(ex);
 			}
 			for (Enumeration<? extends ZipEntry> stream = zipFile.entries(); stream.hasMoreElements(); ) {
 				ZipEntry zipEntry = stream.nextElement();

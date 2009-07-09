@@ -548,7 +548,7 @@ public class HashBag<E>
 
 		@Override
 		public boolean equals(Object o) {
-			if ( ! (o instanceof Bag.Entry)) {
+			if ( ! (o instanceof Bag.Entry<?>)) {
 				return false;
 			}
 			@SuppressWarnings("unchecked")
@@ -826,7 +826,7 @@ public class HashBag<E>
 		if (o == this) {
 			return true;
 		}
-		if ( ! (o instanceof Bag)) {
+		if ( ! (o instanceof Bag<?>)) {
 			return false;
 		}
 		@SuppressWarnings("unchecked")
@@ -890,7 +890,7 @@ public class HashBag<E>
 	/**
 	 * Reconstitute the bag from a stream (i.e. deserialize it).
 	 */
-	private synchronized void readObject(java.io.ObjectInputStream s)
+	private void readObject(java.io.ObjectInputStream s)
 				throws java.io.IOException, ClassNotFoundException {
 		// read in the threshold, loadfactor, and any hidden stuff
 		s.defaultReadObject();

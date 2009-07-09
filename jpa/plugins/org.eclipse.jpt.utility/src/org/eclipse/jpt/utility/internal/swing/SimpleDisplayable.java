@@ -42,31 +42,31 @@ public class SimpleDisplayable
 	}
 
 	public SimpleDisplayable(char c) {
-		this(new Character(c));
+		this(Character.valueOf(c));
 	}
 
 	public SimpleDisplayable(byte b) {
-		this(new Byte(b));
+		this(Byte.valueOf(b));
 	}
 
 	public SimpleDisplayable(short s) {
-		this(new Short(s));
+		this(Short.valueOf(s));
 	}
 
 	public SimpleDisplayable(int i) {
-		this(new Integer(i));
+		this(Integer.valueOf(i));
 	}
 
 	public SimpleDisplayable(long l) {
-		this(new Long(l));
+		this(Long.valueOf(l));
 	}
 
 	public SimpleDisplayable(float f) {
-		this(new Float(f));
+		this(Float.valueOf(f));
 	}
 
 	public SimpleDisplayable(double d) {
-		this(new Double(d));
+		this(Double.valueOf(d));
 	}
 
 
@@ -108,7 +108,7 @@ public class SimpleDisplayable
 	}
 
 	public void setChar(char c) {
-		this.setObject(new Character(c));
+		this.setObject(Character.valueOf(c));
 	}
 
 	public byte getByte() {
@@ -116,7 +116,7 @@ public class SimpleDisplayable
 	}
 
 	public void setByte(byte b) {
-		this.setObject(new Byte(b));
+		this.setObject(Byte.valueOf(b));
 	}
 
 	public short getShort() {
@@ -124,7 +124,7 @@ public class SimpleDisplayable
 	}
 
 	public void setShort(short s) {
-		this.setObject(new Short(s));
+		this.setObject(Short.valueOf(s));
 	}
 
 	public int getInt() {
@@ -132,7 +132,7 @@ public class SimpleDisplayable
 	}
 
 	public void setInt(int i) {
-		this.setObject(new Integer(i));
+		this.setObject(Integer.valueOf(i));
 	}
 
 	public long getLong() {
@@ -140,7 +140,7 @@ public class SimpleDisplayable
 	}
 
 	public void setLong(long l) {
-		this.setObject(new Long(l));
+		this.setObject(Long.valueOf(l));
 	}
 
 	public float getFloat() {
@@ -148,7 +148,7 @@ public class SimpleDisplayable
 	}
 
 	public void setFloat(float f) {
-		this.setObject(new Float(f));
+		this.setObject(Float.valueOf(f));
 	}
 
 	public double getDouble() {
@@ -156,7 +156,7 @@ public class SimpleDisplayable
 	}
 
 	public void setDouble(double d) {
-		this.setObject(new Double(d));
+		this.setObject(Double.valueOf(d));
 	}
 
 

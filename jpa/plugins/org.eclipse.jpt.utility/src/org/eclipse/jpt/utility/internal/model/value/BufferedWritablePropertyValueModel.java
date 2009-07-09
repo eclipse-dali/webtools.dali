@@ -105,7 +105,7 @@ public class BufferedWritablePropertyValueModel<T>
 			}
 			@Override
 			public String toString() {
-				return "trigger change listener";
+				return "trigger change listener"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -185,7 +185,7 @@ public class BufferedWritablePropertyValueModel<T>
 	 * and replace it with the new "wrapped" value, or you could throw an
 	 * exception.
 	 */
-	protected void handleChangeConflict(PropertyChangeEvent event) {
+	protected void handleChangeConflict(@SuppressWarnings("unused") PropertyChangeEvent event) {
 		// the default is to do nothing
 	}
 	
@@ -274,7 +274,7 @@ public class BufferedWritablePropertyValueModel<T>
 		@Override
 		public Boolean getValue() {
 			if (this.value == null) {
-				throw new IllegalStateException("The method Trigger.value() may only be called during change notification.");
+				throw new IllegalStateException("The method Trigger.getValue() may only be called during change notification."); //$NON-NLS-1$
 			}
 			return this.value;
 		}

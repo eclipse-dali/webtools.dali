@@ -184,7 +184,7 @@ public class ChangeSupport
 	 * Return the listener list for the specified listener class and aspect name.
 	 * Return null if the listener list is not present.
 	 */
-	protected <L extends EventListener> ListenerList<L> getListenerList_(Class<L> listenerClass, String aspectName) {
+	protected synchronized <L extends EventListener> ListenerList<L> getListenerList_(Class<L> listenerClass, String aspectName) {
 		for (AspectListenerListPair<?> pair : this.aspectListenerListPairs) {
 			if (pair.matches(listenerClass, aspectName)) {
 				@SuppressWarnings("unchecked") ListenerList<L> aspectListenerList = (ListenerList<L>) pair.listenerList;
@@ -2767,7 +2767,7 @@ public class ChangeSupport
 		@Override
 		boolean matches(Class<? extends EventListener> listenerClass, String aspectName) {
 			return (aspectName == null)
-					&& super.matches(listenerClass, aspectName);
+					&& super.matches(listenerClass, null);
 		}
 
 		@Override

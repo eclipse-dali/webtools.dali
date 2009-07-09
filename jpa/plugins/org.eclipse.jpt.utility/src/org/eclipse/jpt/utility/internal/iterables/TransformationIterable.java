@@ -67,8 +67,7 @@ public class TransformationIterable<E1, E2>
 	 * Transform the specified object and return the result.
 	 */
 	protected E2 transform(@SuppressWarnings("unused") E1 o) {
-		// TransformationIterable.transform(Object) was not overridden
-		throw new UnsupportedOperationException();
+		throw new RuntimeException("This method was not overridden."); //$NON-NLS-1$
 	}
 
 	@Override

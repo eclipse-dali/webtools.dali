@@ -162,7 +162,9 @@ public final class FileTools {
 		throws IOException
 	{
 		File destinationFile = new File(destinationDirectory, sourceFile.getName());
-		destinationFile.createNewFile();
+		if ( ! destinationFile.createNewFile()) {
+			throw new RuntimeException("createNewFile() failed: " + destinationFile); //$NON-NLS-1$
+		}
 		copyToFile(sourceFile, destinationFile);
 	}
 	
@@ -353,9 +355,15 @@ public final class FileTools {
 		if (dir.exists()) {
 			deleteDirectoryContents(dir);
 		} else {
-			dir.mkdirs();
+			mkdirs(dir);
 		}
 		return dir;
+	}
+
+	private static void mkdirs(File dir) {
+		if ( ! dir.mkdirs()) {
+			throw new RuntimeException("mkdirs() failed: " + dir); //$NON-NLS-1$
+		}
 	}
 	
 	/**
@@ -378,7 +386,7 @@ public final class FileTools {
 	public static File temporaryDirectory(String name) {
 		File dir = new File(userTemporaryDirectory(), name);
 		if ( ! dir.exists()) {
-			dir.mkdirs();
+			mkdirs(dir);
 		}
 		return dir;
 	}
