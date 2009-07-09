@@ -24,6 +24,7 @@ import org.eclipse.jpt.core.context.DiscriminatorColumn;
 import org.eclipse.jpt.core.context.DiscriminatorType;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.InheritanceType;
+import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
@@ -1001,7 +1002,11 @@ public abstract class AbstractOrmEntity
 		this.virtualAssociationOverrides.remove(defaultIndex);
 
 		newAssociationOverride.setName(oldAssociationOverride.getName());
-		//newAssociationOverride.getColumn().setSpecifiedName(oldAssociationOverride.getColumn().getName());
+		for (JoinColumn joinColumn : CollectionTools.iterable(oldAssociationOverride.joinColumns())) {
+			JoinColumn newJoinColumn = newAssociationOverride.addSpecifiedJoinColumn(newAssociationOverride.specifiedJoinColumnsSize());
+			newJoinColumn.setSpecifiedName(joinColumn.getName());
+			newJoinColumn.setSpecifiedReferencedColumnName(joinColumn.getReferencedColumnName());
+		}
 		
 		this.fireItemRemoved(Entity.VIRTUAL_ASSOCIATION_OVERRIDES_LIST, defaultIndex, oldAssociationOverride);
 		this.fireItemAdded(Entity.SPECIFIED_ASSOCIATION_OVERRIDES_LIST, index, newAssociationOverride);		
