@@ -284,7 +284,7 @@ public class XmlAssociationOverride extends AbstractJpaEObject implements JpaEOb
 	}
 	
 	protected static Translator buildNameTranslator() {
-		return new Translator(JPA.NAME, OrmPackage.eINSTANCE.getXmlAttributeOverride_Name(), Translator.DOM_ATTRIBUTE);
+		return new Translator(JPA.NAME, OrmPackage.eINSTANCE.getXmlAssociationOverride_Name(), Translator.DOM_ATTRIBUTE);
 	}
 	
 	protected static Translator buildJoinColumnTranslator() {
