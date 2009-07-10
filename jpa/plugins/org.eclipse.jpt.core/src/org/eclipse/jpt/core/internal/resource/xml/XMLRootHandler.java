@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.eclipselink.core.internal.resource.orm;
+package org.eclipse.jpt.core.internal.resource.xml;
 
 import java.io.IOException;
 import java.io.StringReader;

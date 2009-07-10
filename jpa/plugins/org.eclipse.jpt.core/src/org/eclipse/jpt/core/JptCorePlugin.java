@@ -118,7 +118,7 @@ public class JptCorePlugin extends Plugin {
 	/**
 	 * The base content type for all persistence.xml files.
 	 */
-//	public static final IContentType PERSISTENCE_FILE_CONTENT_TYPE = getJpaContentType("persistenceFile"); //$NON-NLS-1$
+	public static final IContentType PERSISTENCE_FILE_CONTENT_TYPE = getJpaContentType("persistenceFile"); //$NON-NLS-1$
 	
 	/**
 	 * The content type for persistence.xml 1.0 (based on the persistence 1.0 schema) files.
