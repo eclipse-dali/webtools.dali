@@ -26,34 +26,6 @@ import org.eclipse.jpt.gen.internal2.ForeignKeyInfo;
  */
 public class DTPUtil {
 
-	/**
-	 * Return list of the pk names
-	 * @param dbTable
-	 * @return
-	 */
-	public static List<String> getPrimaryKeyColumnNames(Table dbTable ) {
-		Iterator<Column> pkColumns = dbTable.primaryKeyColumns();
-		ArrayList<String> ret = new ArrayList<String>();
-		while( pkColumns.hasNext() ){
-			ret.add( pkColumns.next().getName() );
-		}
-		return ret;
-	}
-
-	/**
-	 * 
-	 * @param dbTable
-	 * @return
-	 */
-	public static List<Column> getPrimaryKeyColumns(Table dbTable ) {
-		Iterator<Column> pkColumns = dbTable.primaryKeyColumns();
-		ArrayList<Column> ret = new ArrayList<Column>();
-		while( pkColumns.hasNext() ){
-			ret.add( pkColumns.next() );
-		}
-		return ret;
-	}
-	
 	public static boolean isAutoIncrement(Column c){
 		//@ TODO
 		//Blocked by DTP bug
@@ -97,23 +69,12 @@ public class DTPUtil {
 		return ret;
 	}
 
-	public static String getJavaType(Schema schema, Column dbColumn) {
-		if( isPrimaryKey(dbColumn) )
-			return dbColumn.getPrimaryKeyJavaTypeDeclaration();
-		return dbColumn.getJavaTypeDeclaration();
+	public static String getJavaType(Column dbColumn) {
+		return dbColumn.isPartOfPrimaryKey() ?
+				dbColumn.getPrimaryKeyJavaTypeDeclaration() :
+				dbColumn.getJavaTypeDeclaration();
 	}
 
-	public static boolean isPrimaryKey(Column dbColumn){
-		Table dbTable = dbColumn.getTable();
-		Iterator<Column> pkColumns = dbTable.primaryKeyColumns();		
-		while( pkColumns.hasNext() ){
-			if( pkColumns.next().equals( dbColumn )){
-				return true;
-			}
-		}
-		return false;
-	}
-	
 	public static boolean isDefaultSchema(Table dbTable){
 		String schemaName = dbTable.getSchema().getName();
 		Schema defaultSchema = dbTable.getSchema().getConnectionProfile().getDatabase().getDefaultSchema();

@@ -542,7 +542,7 @@ public class TableAssociationsWizardPage extends WizardPage {
 			List<ORMGenColumn> list1 = association.getReferrerColumns();	
 			for(ORMGenColumn c : list1 ){
 				if( c.isGenerated() != generateColumn){
-					if( !generateColumn && DTPUtil.isPrimaryKey( c.getDbColumn() ) ){
+					if( !generateColumn && c.getDbColumn().isPartOfPrimaryKey() ){
 						continue;
 					}
 					c.setGenerated(generateColumn);

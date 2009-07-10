@@ -338,10 +338,9 @@ public class ORMGenTable
 	 * primary key.
 	 */
 	public List<ORMGenColumn> getPrimaryKeyColumns() {
-		List<Column> dbCols = DTPUtil.getPrimaryKeyColumns(mDbTable);
 		List<ORMGenColumn> ret = new ArrayList<ORMGenColumn>();
-		for (Column dbCol : dbCols) {
-			ret.add(new ORMGenColumn(dbCol, this.mCustomizer));
+		for (Iterator<Column> stream = mDbTable.primaryKeyColumns(); stream.hasNext(); ) {
+			ret.add(new ORMGenColumn(stream.next(), this.mCustomizer));
 		}
 		return ret;
 	}
@@ -380,7 +379,7 @@ public class ORMGenTable
 	 * Returns true if there is more than 1 pk column.
 	 */
 	public boolean isCompositeKey() {
-		return DTPUtil.getPrimaryKeyColumnNames(mDbTable).size() > 1;
+		return mDbTable.primaryKeyColumnsSize() > 1;
 	}
 
 	/**
@@ -650,11 +649,8 @@ public class ORMGenTable
 			/* resolve the ${table} and ${pk} patterns */
 			sequence = StringUtil.strReplace(sequence, TABLE_SEQ_PATTERN, getName());
 			if (sequence.indexOf(PK_SEQ_PATTERN) >= 0) {
-				List<String> pkNames = DTPUtil.getPrimaryKeyColumnNames(getDbTable());
-				String pkName = null;
-				if (pkNames.size() > 0) {
-					pkName = pkNames.get(0);
-				}
+				Iterator<Column> pkCols = getDbTable().primaryKeyColumns();
+				String pkName = pkCols.hasNext() ? pkCols.next().getName() : null;
 				sequence = StringUtil.strReplace(sequence, PK_SEQ_PATTERN, pkName);
 			}
 		}

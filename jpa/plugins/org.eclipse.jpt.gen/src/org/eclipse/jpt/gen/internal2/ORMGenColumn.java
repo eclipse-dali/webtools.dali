@@ -183,7 +183,7 @@ public class ORMGenColumn
 			kind = getCustomizer().getBasicMappingKind();
 			
 			if ( this.mDbColumn.isPartOfPrimaryKey() 
-				 && DTPUtil.getPrimaryKeyColumnNames( this.mDbColumn.getTable() ).size() == 1) {
+				 && this.mDbColumn.getTable().primaryKeyColumnsSize() == 1) {
 				kind = getCustomizer().getIdMappingKind();
 			}
 		}
@@ -219,11 +219,8 @@ public class ORMGenColumn
 	}
 	
 	public boolean isPartOfCompositePrimaryKey() {
-		if ( this.mDbColumn.isPartOfPrimaryKey() ){
-			if ( DTPUtil.getPrimaryKeyColumnNames( this.mTable ).size() > 1 )
-				return true;
-		}
-		return false;
+		return this.mDbColumn.isPartOfPrimaryKey() &&
+				this.mTable.primaryKeyColumnsSize() > 1;
 	}
 	
 	public boolean isForeignKey() {

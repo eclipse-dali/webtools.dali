@@ -295,7 +295,7 @@ public class TablesAndColumnsCustomizationWizardPage extends NewTypeWizardPage {
 				ORMGenTable table = (ORMGenTable) parentElement;
 				List<ORMGenColumn> columns = table.getColumns();
 				List<ORMGenColumn> ret = new ArrayList<ORMGenColumn>();
-				boolean isCompositePk = DTPUtil.getPrimaryKeyColumnNames(table.getDbTable()).size()>1;
+				boolean isCompositePk = table.getDbTable().primaryKeyColumnsSize()>1;
 				for( ORMGenColumn col : columns){
 					if( col.isForeignKey() )
 						continue;

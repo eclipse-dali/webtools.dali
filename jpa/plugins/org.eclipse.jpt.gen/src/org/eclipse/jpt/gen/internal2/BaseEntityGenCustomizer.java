@@ -87,7 +87,7 @@ public class BaseEntityGenCustomizer extends ORMGenCustomizer
 
 	@Override
 	public String getPropertyTypeFromColumn(Column column) {
-		return DTPUtil.getJavaType(getSchema(), column);
+		return DTPUtil.getJavaType(column);
 	}
 
 	@Override
