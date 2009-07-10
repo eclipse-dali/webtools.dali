@@ -175,7 +175,6 @@ public class NewEventTests extends TestCase {
 					}
 				}
 			}
-			this.aspectChanged(null);
 		}
 	}
 

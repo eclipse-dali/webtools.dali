@@ -234,19 +234,6 @@ public class ChangeSupport
 	}
 
 
-	// ********** miscellaneous **********
-
-	/**
-	 * The specified aspect of the source has changed;
-	 * override this method to perform things like setting a
-	 * dirty flag or validating the source's state.
-	 * The aspect null will be null if a "state change" occurred.
-	 */
-	protected void aspectChanged(@SuppressWarnings("unused") String aspectName) {
-		// the default is to do nothing
-	}
-
-
 	// ********** general purpose change support **********
 
 	/**
@@ -360,8 +347,6 @@ public class ChangeSupport
 				}
 			}
 		}
-
-		this.aspectChanged(null);
 	}
 
 	/**
@@ -394,8 +379,6 @@ public class ChangeSupport
 				}
 			}
 		}
-
-		this.aspectChanged(null);
 	}
 
 
@@ -446,10 +429,15 @@ public class ChangeSupport
 	 * for general purpose notification of changes.
 	 */
 	public void firePropertyChanged(PropertyChangeEvent event) {
-		if (this.valuesAreEqual(event.getOldValue(), event.getNewValue())) {
-			return; 
+		if (this.valuesAreDifferent(event.getOldValue(), event.getNewValue())) {
+			this.firePropertyChanged_(event);
 		}
+	}
 
+	/**
+	 * pre-condition: the specified event's old and new values are different
+	 */
+	protected void firePropertyChanged_(PropertyChangeEvent event) {
 		String propertyName = event.getPropertyName();
 		PropertyChangeListener[] listeners = this.getPropertyChangeListeners(propertyName);
 		if (listeners != null) {
@@ -468,8 +456,6 @@ public class ChangeSupport
 				}
 			}
 		}
-
-		this.aspectChanged(propertyName);
 	}
 
 	/**
@@ -480,10 +466,15 @@ public class ChangeSupport
 	 */
 	public void firePropertyChanged(String propertyName, Object oldValue, Object newValue) {
 //		this.firePropertyChanged(new PropertyChangeEvent(this.source, propertyName, oldValue, newValue));
-		if (this.valuesAreEqual(oldValue, newValue)) {
-			return;
+		if (this.valuesAreDifferent(oldValue, newValue)) {
+			this.firePropertyChanged_(propertyName, oldValue, newValue);
 		}
+	}
 
+	/**
+	 * pre-condition: the specified old and new values are different
+	 */
+	protected void firePropertyChanged_(String propertyName, Object oldValue, Object newValue) {
 		PropertyChangeEvent event = null;
 		PropertyChangeListener[] listeners = this.getPropertyChangeListeners(propertyName);
 		if (listeners != null) {
@@ -508,8 +499,6 @@ public class ChangeSupport
 				}
 			}
 		}
-
-		this.aspectChanged(propertyName);
 	}
 
 	/**
@@ -521,10 +510,15 @@ public class ChangeSupport
 	 */
 	public void firePropertyChanged(String propertyName, int oldValue, int newValue) {
 //		this.firePropertyChanged(propertyName, Integer.valueOf(oldValue), Integer.valueOf(newValue));
-		if (oldValue == newValue) {
-			return;
+		if (oldValue != newValue) {
+			this.firePropertyChanged_(propertyName, oldValue, newValue);
 		}
+	}
 
+	/**
+	 * pre-condition: the specified old and new values are different
+	 */
+	protected void firePropertyChanged_(String propertyName, int oldValue, int newValue) {
 		PropertyChangeEvent event = null;
 		PropertyChangeListener[] listeners = this.getPropertyChangeListeners(propertyName);
 		if (listeners != null) {
@@ -549,8 +543,6 @@ public class ChangeSupport
 				}
 			}
 		}
-
-		this.aspectChanged(propertyName);
 	}
 
 	/**
@@ -562,10 +554,15 @@ public class ChangeSupport
 	 */
 	public void firePropertyChanged(String propertyName, boolean oldValue, boolean newValue) {
 //		this.firePropertyChanged(propertyName, Boolean.valueOf(oldValue), Boolean.valueOf(newValue));
-		if (oldValue == newValue) {
-			return;
+		if (oldValue != newValue) {
+			this.firePropertyChanged_(propertyName, oldValue, newValue);
 		}
+	}
 
+	/**
+	 * pre-condition: the specified old and new values are different
+	 */
+	protected void firePropertyChanged_(String propertyName, boolean oldValue, boolean newValue) {
 		PropertyChangeEvent event = null;
 		PropertyChangeListener[] listeners = this.getPropertyChangeListeners(propertyName);
 		if (listeners != null) {
@@ -590,8 +587,6 @@ public class ChangeSupport
 				}
 			}
 		}
-
-		this.aspectChanged(propertyName);
 	}
 
 
@@ -639,10 +634,15 @@ public class ChangeSupport
 	 * Report a bound collection update to any registered listeners.
 	 */
 	public void fireItemsAdded(CollectionAddEvent event) {
-		if (event.getItemsSize() == 0) {
-			return;
+		if (event.getItemsSize() != 0) {
+			this.fireItemsAdded_(event);
 		}
+	}
 
+	/**
+	 * pre-condition: items were added
+	 */
+	protected void fireItemsAdded_(CollectionAddEvent event) {
 		String collectionName = event.getCollectionName();
 		CollectionChangeListener[] listeners = this.getCollectionChangeListeners(collectionName);
 		if (listeners != null) {
@@ -661,8 +661,6 @@ public class ChangeSupport
 				}
 			}
 		}
-
-		this.aspectChanged(collectionName);
 	}
 
 	/**
@@ -670,10 +668,15 @@ public class ChangeSupport
 	 */
 	public void fireItemsAdded(String collectionName, Collection<?> addedItems) {
 //		this.fireItemsAdded(new CollectionAddEvent(this.source, collectionName, addedItems));
-		if (addedItems.isEmpty()) {
-			return;
+		if ( ! addedItems.isEmpty()) {
+			this.fireItemsAdded_(collectionName, addedItems);
 		}
+	}
 
+	/**
+	 * pre-condition: items were added
+	 */
+	protected void fireItemsAdded_(String collectionName, Collection<?> addedItems) {
 		CollectionAddEvent event = null;
 		CollectionChangeListener[] listeners = this.getCollectionChangeListeners(collectionName);
 		if (listeners != null) {
@@ -698,8 +701,6 @@ public class ChangeSupport
 				}
 			}
 		}
-
-		this.aspectChanged(collectionName);
 	}
 
 	/**
@@ -732,18 +733,21 @@ public class ChangeSupport
 				}
 			}
 		}
-
-		this.aspectChanged(collectionName);
 	}
 
 	/**
 	 * Report a bound collection update to any registered listeners.
 	 */
 	public void fireItemsRemoved(CollectionRemoveEvent event) {
-		if (event.getItemsSize() == 0) {
-			return;
+		if (event.getItemsSize() != 0) {
+			this.fireItemsRemoved_(event);
 		}
+	}
 
+	/**
+	 * pre-condition: items were removed
+	 */
+	protected void fireItemsRemoved_(CollectionRemoveEvent event) {
 		String collectionName = event.getCollectionName();
 		CollectionChangeListener[] listeners = this.getCollectionChangeListeners(collectionName);
 		if (listeners != null) {
@@ -762,8 +766,6 @@ public class ChangeSupport
 				}
 			}
 		}
-
-		this.aspectChanged(collectionName);
 	}
 
 	/**
@@ -771,10 +773,15 @@ public class ChangeSupport
 	 */
 	public void fireItemsRemoved(String collectionName, Collection<?> removedItems) {
 //		this.fireItemsRemoved(new CollectionRemoveEvent(this.source, collectionName, removedItems));
-		if (removedItems.isEmpty()) {
-			return;
+		if ( ! removedItems.isEmpty()) {
+			this.fireItemsRemoved_(collectionName, removedItems);
 		}
+	}
 
+	/**
+	 * pre-condition: items were removed
+	 */
+	protected void fireItemsRemoved_(String collectionName, Collection<?> removedItems) {
 		CollectionRemoveEvent event = null;
 		CollectionChangeListener[] listeners = this.getCollectionChangeListeners(collectionName);
 		if (listeners != null) {
@@ -799,8 +806,6 @@ public class ChangeSupport
 				}
 			}
 		}
-
-		this.aspectChanged(collectionName);
 	}
 
 	/**
@@ -833,8 +838,6 @@ public class ChangeSupport
 				}
 			}
 		}
-
-		this.aspectChanged(collectionName);
 	}
 
 	/**
@@ -859,8 +862,6 @@ public class ChangeSupport
 				}
 			}
 		}
-
-		this.aspectChanged(collectionName);
 	}
 
 	/**
@@ -893,8 +894,6 @@ public class ChangeSupport
 				}
 			}
 		}
-
-		this.aspectChanged(collectionName);
 	}
 
 	/**
@@ -919,8 +918,6 @@ public class ChangeSupport
 				}
 			}
 		}
-
-		this.aspectChanged(collectionName);
 	}
 
 	/**
@@ -953,8 +950,6 @@ public class ChangeSupport
 				}
 			}
 		}
-
-		this.aspectChanged(collectionName);
 	}
 
 	/**
@@ -1299,10 +1294,15 @@ public class ChangeSupport
 	 * Report a bound list update to any registered listeners.
 	 */
 	public void fireItemsAdded(ListAddEvent event) {
-		if (event.getItemsSize() == 0) {
-			return;
+		if (event.getItemsSize() != 0) {
+			this.fireItemsAdded_(event);
 		}
+	}
 
+	/**
+	 * pre-condition: items were added
+	 */
+	protected void fireItemsAdded_(ListAddEvent event) {
 		String listName = event.getListName();
 		ListChangeListener[] listeners = this.getListChangeListeners(listName);
 		if (listeners != null) {
@@ -1321,8 +1321,6 @@ public class ChangeSupport
 				}
 			}
 		}
-
-		this.aspectChanged(listName);
 	}
 
 	/**
@@ -1330,10 +1328,15 @@ public class ChangeSupport
 	 */
 	public void fireItemsAdded(String listName, int index, List<?> addedItems) {
 //		this.fireItemsAdded(new ListAddEvent(this.source, listName, index, addedItems));
-		if (addedItems.isEmpty()) {
-			return;
+		if ( ! addedItems.isEmpty()) {
+			this.fireItemsAdded_(listName, index, addedItems);
 		}
+	}
 
+	/**
+	 * pre-condition: items were added
+	 */
+	protected void fireItemsAdded_(String listName, int index, List<?> addedItems) {
 		ListAddEvent event = null;
 		ListChangeListener[] listeners = this.getListChangeListeners(listName);
 		if (listeners != null) {
@@ -1358,8 +1361,6 @@ public class ChangeSupport
 				}
 			}
 		}
-
-		this.aspectChanged(listName);
 	}
 
 	/**
@@ -1392,18 +1393,21 @@ public class ChangeSupport
 				}
 			}
 		}
-
-		this.aspectChanged(listName);
 	}
 
 	/**
 	 * Report a bound list update to any registered listeners.
 	 */
 	public void fireItemsRemoved(ListRemoveEvent event) {
-		if (event.getItemsSize() == 0) {
-			return;
+		if (event.getItemsSize() != 0) {
+			this.fireItemsRemoved_(event);
 		}
+	}
 
+	/**
+	 * pre-condition: items were removed
+	 */
+	protected void fireItemsRemoved_(ListRemoveEvent event) {
 		String listName = event.getListName();
 		ListChangeListener[] listeners = this.getListChangeListeners(listName);
 		if (listeners != null) {
@@ -1422,8 +1426,6 @@ public class ChangeSupport
 				}
 			}
 		}
-
-		this.aspectChanged(listName);
 	}
 
 	/**
@@ -1431,10 +1433,15 @@ public class ChangeSupport
 	 */
 	public void fireItemsRemoved(String listName, int index, List<?> removedItems) {
 //		this.fireItemsRemoved(new ListRemoveEvent(this.source, listName, index, removedItems));
-		if (removedItems.isEmpty()) {
-			return;
+		if ( ! removedItems.isEmpty()) {
+			this.fireItemsRemoved_(listName, index, removedItems);
 		}
+	}
 
+	/**
+	 * pre-condition: items were removed
+	 */
+	protected void fireItemsRemoved_(String listName, int index, List<?> removedItems) {
 		ListRemoveEvent event = null;
 		ListChangeListener[] listeners = this.getListChangeListeners(listName);
 		if (listeners != null) {
@@ -1459,8 +1466,6 @@ public class ChangeSupport
 				}
 			}
 		}
-
-		this.aspectChanged(listName);
 	}
 
 	/**
@@ -1493,22 +1498,25 @@ public class ChangeSupport
 				}
 			}
 		}
-
-		this.aspectChanged(listName);
 	}
 
 	/**
 	 * Report a bound list update to any registered listeners.
 	 */
 	public void fireItemsReplaced(ListReplaceEvent event) {
-		if (event.getItemsSize() == 0) {
-			return;
+		if (event.getItemsSize() != 0) {
+			this.fireItemsReplaced_(event);
 		}
 		// TODO check that the items are actually different... ?
 //		if (this.elementsAreEqual(event.items(), event.replacedItems())) {
 //			return;
 //		}
+	}
 
+	/**
+	 * pre-condition: items were replaced
+	 */
+	protected void fireItemsReplaced_(ListReplaceEvent event) {
 		String listName = event.getListName();
 		ListChangeListener[] listeners = this.getListChangeListeners(listName);
 		if (listeners != null) {
@@ -1527,8 +1535,6 @@ public class ChangeSupport
 				}
 			}
 		}
-
-		this.aspectChanged(listName);
 	}
 
 	/**
@@ -1536,14 +1542,19 @@ public class ChangeSupport
 	 */
 	public void fireItemsReplaced(String listName, int index, List<?> newItems, List<?> replacedItems) {
 //		this.fireItemsReplaced(new ListReplaceEvent(this.source, listName, index, newItems, replacedItems));
-		if (newItems.isEmpty()) {
-			return;
+		if ( ! newItems.isEmpty()) {
+			this.fireItemsReplaced_(listName, index, newItems, replacedItems);
 		}
 		// TODO check that the items are actually different... ?
 //		if (newItems.equals(replacedItems)) {
 //			return;
 //		}
+	}
 
+	/**
+	 * pre-condition: items were replaced
+	 */
+	protected void fireItemsReplaced_(String listName, int index, List<?> newItems, List<?> replacedItems) {
 		ListReplaceEvent event = null;
 		ListChangeListener[] listeners = this.getListChangeListeners(listName);
 		if (listeners != null) {
@@ -1568,8 +1579,6 @@ public class ChangeSupport
 				}
 			}
 		}
-
-		this.aspectChanged(listName);
 	}
 
 	/**
@@ -1577,11 +1586,17 @@ public class ChangeSupport
 	 */
 	public void fireItemReplaced(String listName, int index, Object newItem, Object replacedItem) {
 //		this.fireItemsReplaced(listName, index, Collections.singletonList(newItem), Collections.singletonList(replacedItem));
+		this.fireItemReplaced_(listName, index, newItem, replacedItem);
 		// TODO check that the item is actually different... ?
 //		if (this.valuesAreEqual(newItem, replacedItem)) {
 //			return;
 //		}
+	}
 
+	/**
+	 * pre-condition: items were replaced
+	 */
+	protected void fireItemReplaced_(String listName, int index, Object newItem, Object replacedItem) {
 		ListReplaceEvent event = null;
 		ListChangeListener[] listeners = this.getListChangeListeners(listName);
 		if (listeners != null) {
@@ -1606,19 +1621,22 @@ public class ChangeSupport
 				}
 			}
 		}
-
-		this.aspectChanged(listName);
 	}
 
 	/**
 	 * Report a bound list update to any registered listeners.
 	 */
 	public void fireItemsMoved(ListMoveEvent event) {
-		if (event.getTargetIndex() == event.getSourceIndex()) {
-			return;
+		if (event.getTargetIndex() != event.getSourceIndex()) {
+			this.fireItemsMoved_(event);
 		}
 		// it's unlikely but possible the list is unchanged by the move... (e.g. any moves within ["foo", "foo", "foo"]...)
+	}
 
+	/**
+	 * pre-condition: items were moved
+	 */
+	protected void fireItemsMoved_(ListMoveEvent event) {
 		String listName = event.getListName();
 		ListChangeListener[] listeners = this.getListChangeListeners(listName);
 		if (listeners != null) {
@@ -1637,8 +1655,6 @@ public class ChangeSupport
 				}
 			}
 		}
-
-		this.aspectChanged(listName);
 	}
 
 	/**
@@ -1646,11 +1662,16 @@ public class ChangeSupport
 	 */
 	public void fireItemsMoved(String listName, int targetIndex, int sourceIndex, int length) {
 //		this.fireItemsMoved(new ListMoveEvent(this.source, listName, targetIndex, sourceIndex, length));
-		if (targetIndex == sourceIndex) {
-			return;
+		if (targetIndex != sourceIndex) {
+			this.fireItemsMoved_(listName, targetIndex, sourceIndex, length);
 		}
 		// it's unlikely but possible the list is unchanged by the move... (e.g. any moves within ["foo", "foo", "foo"]...)
+	}
 
+	/**
+	 * pre-condition: items were moved
+	 */
+	protected void fireItemsMoved_(String listName, int targetIndex, int sourceIndex, int length) {
 		ListMoveEvent event = null;
 		ListChangeListener[] listeners = this.getListChangeListeners(listName);
 		if (listeners != null) {
@@ -1675,8 +1696,6 @@ public class ChangeSupport
 				}
 			}
 		}
-
-		this.aspectChanged(listName);
 	}
 
 	/**
@@ -1708,8 +1727,6 @@ public class ChangeSupport
 				}
 			}
 		}
-
-		this.aspectChanged(listName);
 	}
 
 	/**
@@ -1742,8 +1759,6 @@ public class ChangeSupport
 				}
 			}
 		}
-
-		this.aspectChanged(listName);
 	}
 
 	/**
@@ -1768,8 +1783,6 @@ public class ChangeSupport
 				}
 			}
 		}
-
-		this.aspectChanged(listName);
 	}
 
 	/**
@@ -1802,8 +1815,6 @@ public class ChangeSupport
 				}
 			}
 		}
-
-		this.aspectChanged(listName);
 	}
 
 	/**
@@ -2397,8 +2408,6 @@ public class ChangeSupport
 				}
 			}
 		}
-
-		this.aspectChanged(treeName);
 	}
 
 	/**
@@ -2430,8 +2439,6 @@ public class ChangeSupport
 				}
 			}
 		}
-
-		this.aspectChanged(treeName);
 	}
 
 	/**
@@ -2456,8 +2463,6 @@ public class ChangeSupport
 				}
 			}
 		}
-
-		this.aspectChanged(treeName);
 	}
 
 	/**
@@ -2490,8 +2495,6 @@ public class ChangeSupport
 				}
 			}
 		}
-
-		this.aspectChanged(treeName);
 	}
 
 	/**
@@ -2516,8 +2519,6 @@ public class ChangeSupport
 				}
 			}
 		}
-
-		this.aspectChanged(treeName);
 	}
 
 	/**
@@ -2550,8 +2551,6 @@ public class ChangeSupport
 				}
 			}
 		}
-
-		this.aspectChanged(treeName);
 	}
 
 	/**
@@ -2576,8 +2575,6 @@ public class ChangeSupport
 				}
 			}
 		}
-
-		this.aspectChanged(treeName);
 	}
 
 	/**
@@ -2610,8 +2607,6 @@ public class ChangeSupport
 				}
 			}
 		}
-
-		this.aspectChanged(treeName);
 	}
 
 
