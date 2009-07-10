@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,6 +11,7 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.context.Cascade;
 import org.eclipse.jpt.core.context.RelationshipMapping;
+import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
@@ -18,7 +19,6 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 /**
  * Here the layout of this pane:
@@ -66,7 +66,7 @@ public class CascadeComposite extends FormPane<Cascade>
 	 */
 	public CascadeComposite(PropertyValueModel<? extends Cascade> subjectHolder,
 		                     Composite parent,
-		                     TabbedPropertySheetWidgetFactory widgetFactory) {
+		                     WidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
 	}

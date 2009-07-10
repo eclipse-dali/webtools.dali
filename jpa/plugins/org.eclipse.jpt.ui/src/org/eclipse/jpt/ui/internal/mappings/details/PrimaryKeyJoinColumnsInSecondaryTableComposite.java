@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,6 +18,7 @@ import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.NamedColumn;
 import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.SecondaryTable;
+import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.util.ControlEnabler;
@@ -42,7 +43,6 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetWidgetFactory;
 
 /**
  * Here the layout of this pane:
@@ -94,7 +94,7 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends FormPane<Sec
 	 */
 	public PrimaryKeyJoinColumnsInSecondaryTableComposite(PropertyValueModel<? extends SecondaryTable> subjectHolder,
 	                                                      Composite parent,
-	                                                      TabbedPropertySheetWidgetFactory widgetFactory) {
+	                                                      WidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
 	}
