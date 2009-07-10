@@ -56,9 +56,9 @@ public class ListChooser
 	public static final int DEFAULT_LONG_LIST_SIZE = 20;
 	
 	/** property change associated with long list size */
-	public static final String LONG_LIST_SIZE_PROPERTY = "longListSize";
+	public static final String LONG_LIST_SIZE_PROPERTY = "longListSize"; //$NON-NLS-1$
 	
-    static JLabel prototypeLabel = new JLabel("Prototype", new EmptyIcon(17), SwingConstants.LEADING);
+    static JLabel prototypeLabel = new JLabel("Prototype", new EmptyIcon(17), SwingConstants.LEADING); //$NON-NLS-1$
 
     /** 
 	 * whether the chooser is choosable.  if a chooser is not choosable,
@@ -68,7 +68,7 @@ public class ListChooser
 	boolean choosable = true;
 	
 	/** property change associated with choosable */
-	public static final String CHOOSABLE_PROPERTY = "choosable";
+	public static final String CHOOSABLE_PROPERTY = "choosable"; //$NON-NLS-1$
 	
 	/** the browser used to make a selection from the long list - typically via a dialog */
 	private ListBrowser browser;
@@ -116,7 +116,7 @@ public class ListChooser
 	
     
     private JList listBox() {
-        return (JList) ClassTools.fieldValue(this.ui, "listBox");
+        return (JList) ClassTools.fieldValue(this.ui, "listBox"); //$NON-NLS-1$
     }
     
 	/** 
@@ -137,7 +137,7 @@ public class ListChooser
 			}
 			@Override
 			public String toString() {
-				return "pop-up menu listener";
+				return "pop-up menu listener"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -166,7 +166,7 @@ public class ListChooser
             }
 			@Override
 			public String toString() {
-				return "F3 key listener";
+				return "F3 key listener"; //$NON-NLS-1$
 			}
         };
     }
@@ -213,7 +213,7 @@ public class ListChooser
 	private void updateArrowButton() {
 		try {
 			BasicComboBoxUI comboBoxUi = (BasicComboBoxUI) ListChooser.this.getUI();
-			JButton arrowButton = (JButton) ClassTools.fieldValue(comboBoxUi, "arrowButton");
+			JButton arrowButton = (JButton) ClassTools.fieldValue(comboBoxUi, "arrowButton"); //$NON-NLS-1$
 			arrowButton.setEnabled(this.isEnabled() && this.choosable);
 		}
 		catch (Exception e) {
@@ -387,13 +387,18 @@ public class ListChooser
 		private void checkComboBoxButton() {
 			try {
 				BasicComboBoxUI comboBoxUi = (BasicComboBoxUI) ListChooser.this.getUI();
-				JButton arrowButton = (JButton) ClassTools.fieldValue(comboBoxUi, "arrowButton");
+				JButton arrowButton = (JButton) ClassTools.fieldValue(comboBoxUi, "arrowButton"); //$NON-NLS-1$
 				arrowButton.getModel().setPressed(false);
 			}
-			catch (Exception e) {
+			catch (Exception ex) {
 				// this is a huge hack to try and make the combo box look right,
 				// so if it doesn't work, just swallow the exception
+				this.handleException(ex);
 			}
+		}
+
+		private void handleException(@SuppressWarnings("unused") Exception ex) {
+			// do nothing for now
 		}
 		
 		/**
