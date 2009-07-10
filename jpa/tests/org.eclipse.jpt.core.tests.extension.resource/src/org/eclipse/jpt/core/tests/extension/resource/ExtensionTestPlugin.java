@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -19,7 +19,7 @@ import org.osgi.framework.BundleContext;
 public class ExtensionTestPlugin extends Plugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.eclipse.jpt.core.tests.extension.resource";
+	public static final String PLUGIN_ID = "org.eclipse.jpt.core.tests.extension.resource"; //$NON-NLS-1$
 
 	// The shared instance
 	private static ExtensionTestPlugin plugin;
@@ -28,6 +28,7 @@ public class ExtensionTestPlugin extends Plugin {
 	 * The constructor
 	 */
 	public ExtensionTestPlugin() {
+		super();
 	}
 
 	@Override

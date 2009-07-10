@@ -12,11 +12,13 @@ package org.eclipse.jpt.core.tests.extension.resource;
 import java.util.Iterator;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaAttributeMapping;
+import org.eclipse.jpt.core.resource.java.Annotation;
+import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 
-public class JavaTestAttributeMapping extends AbstractJavaAttributeMapping
+public class JavaTestAttributeMapping extends AbstractJavaAttributeMapping<Annotation>
 {
-	public static final String TEST_ATTRIBUTE_MAPPING_KEY = "testAttribute";
-	public static final String TEST_ATTRIBUTE_ANNOTATION_NAME = "test.TestAttribute";
+	public static final String TEST_ATTRIBUTE_MAPPING_KEY = "testAttribute"; //$NON-NLS-1$
+	public static final String TEST_ATTRIBUTE_ANNOTATION_NAME = "test.TestAttribute"; //$NON-NLS-1$
 
 
 	public JavaTestAttributeMapping(JavaPersistentAttribute parent) {
@@ -32,7 +34,6 @@ public class JavaTestAttributeMapping extends AbstractJavaAttributeMapping
 	}
 
 	public Iterator<String> supportingAnnotationNames() {
-		// TODO Auto-generated method stub
-		return null;
+		return EmptyListIterator.instance();
 	}
 }

@@ -16,8 +16,8 @@ import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
 public class JavaTestTypeMapping extends AbstractJavaTypeMapping
 {
-	public static final String TEST_TYPE_MAPPING_KEY = "test";
-	public static final String TEST_TYPE_ANNOTATION_NAME = "test.Test";
+	public static final String TEST_TYPE_MAPPING_KEY = "test"; //$NON-NLS-1$
+	public static final String TEST_TYPE_ANNOTATION_NAME = "test.Test"; //$NON-NLS-1$
 
 
 	public JavaTestTypeMapping(JavaPersistentType parent) {
