@@ -114,11 +114,6 @@ public class JptCorePlugin extends Plugin {
 	 * The content type for Java source code files.
 	 */
 	public static final IContentType JAVA_SOURCE_CONTENT_TYPE = getContentType(JavaCore.JAVA_SOURCE_CONTENT_TYPE);
-
-	/**
-	 * The base content type for all persistence.xml files.
-	 */
-	public static final IContentType PERSISTENCE_FILE_CONTENT_TYPE = getJpaContentType("persistenceFile"); //$NON-NLS-1$
 	
 	/**
 	 * The content type for persistence.xml 1.0 (based on the persistence 1.0 schema) files.
@@ -129,12 +124,7 @@ public class JptCorePlugin extends Plugin {
 	 * The content type for persistence.xml 2.0 (based on the persistence 2.0 schema) files.
 	 */
 	public static final IContentType PERSISTENCE2_0_XML_CONTENT_TYPE = getJpaContentType("persistence2_0"); //$NON-NLS-1$
-	
-	/**
-	 * The base content type for all mapping files.
-	 */
-	public static final IContentType MAPPING_FILE_CONTENT_TYPE = getJpaContentType("mappingFile"); //$NON-NLS-1$
-	
+		
 	/**
 	 * The content type for orm.xml 1.0 (based on the orm 1.0 schema) mapping files.
 	 */
