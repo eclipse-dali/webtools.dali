@@ -15,7 +15,7 @@
 	<!-- ***** Eclipse core extensions ***** -->
 	
 	<extension
-		point="org.eclipse.core.contenttype.contentTypes">
+		point="org.eclipse.core.runtime.contentTypes">
 		
 		<!-- "abstract" content type to be extended by all JPA XML file content types -->
 		<content-type
@@ -25,11 +25,18 @@
 			describer="org.eclipse.jpt.core.internal.resource.IndeterminateContentDescriber">
 		</content-type>
 		
+		<!-- "abstract" persistence file content type -->
+		<content-type
+			id="org.eclipse.jpt.core.content.persistenceFile"
+			name="%PERSISTENCE_FILE_CONTENT"
+			base-type="org.eclipse.jpt.core.content.baseJpaContent">
+		</content-type>
+		
 		<!-- persistence.xml version 1.0 content type -->
   		<content-type
 			id="org.eclipse.jpt.core.content.persistence"
 			name="%PERSISTENCE_XML_CONTENT"
-			base-type="org.eclipse.jpt.core.content.baseJpaContent"
+			base-type="org.eclipse.jpt.core.content.persistenceFile"
 			file-names="persistence.xml">
 			<describer
 				class="org.eclipse.jpt.core.internal.resource.xml.XMLRootElementVersionContentDescriber">
@@ -43,7 +50,7 @@
   		<content-type
 			id="org.eclipse.jpt.core.content.persistence2_0"
 			name="%PERSISTENCE2_0_XML_CONTENT"
-			base-type="org.eclipse.jpt.core.content.persistence"
+			base-type="org.eclipse.jpt.core.content.persistenceFile"
 			file-names="persistence.xml">
 			<describer
 				class="org.eclipse.jpt.core.internal.resource.xml.XMLRootElementVersionContentDescriber">
@@ -54,11 +61,18 @@
 			</describer>
 		</content-type>
 		
+		<!-- "abstract" mapping file content type -->
+		<content-type
+			id="org.eclipse.jpt.core.content.mappingFile"
+			name="%MAPPING_FILE_CONTENT"
+			base-type="org.eclipse.jpt.core.content.baseJpaContent">
+		</content-type>
+		
 		<!-- orm.xml version 1.0 content type -->
 		<content-type
 			id="org.eclipse.jpt.core.content.orm"
 			name="%ORM_XML_CONTENT"
-			base-type="org.eclipse.jpt.core.content.baseJpaContent">
+			base-type="org.eclipse.jpt.core.content.mappingFile">
 			<describer
 				class="org.eclipse.jpt.core.internal.resource.xml.XMLRootElementVersionContentDescriber">
 				<parameter 
@@ -69,9 +83,9 @@
 		
 		<!-- orm.xml version 2.0 content type -->
 		<content-type
+			base-type="org.eclipse.jpt.core.content.mappingFile"
 	        id="org.eclipse.jpt.core.content.orm2_0"
-	        name="%ORM2_0_XML_CONTENT"
-			base-type="org.eclipse.jpt.core.content.orm">
+	        name="%ORM2_0_XML_CONTENT">
 	     	<describer
 	           class="org.eclipse.jpt.core.internal.resource.xml.XMLRootElementVersionContentDescriber">
 	        	<parameter

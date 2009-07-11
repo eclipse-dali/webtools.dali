@@ -39,7 +39,7 @@ public abstract class AbstractOrmXml
 	
 	public AbstractOrmXml(MappingFileRef parent, JpaXmlResource resource) {
 		super(parent);
-		if (!resource.getContentType().isKindOf(JptCorePlugin.ORM_XML_CONTENT_TYPE)) {
+		if (!resource.getContentType().isKindOf(JptCorePlugin.MAPPING_FILE_CONTENT_TYPE)) {
 			throw new IllegalArgumentException(resource + " does not have mapping file content type"); //$NON-NLS-1$
 		}
 		this.xmlResource = resource;
@@ -139,7 +139,7 @@ public abstract class AbstractOrmXml
 	// ********** updating **********
 	
 	public void update(JpaXmlResource resource) {		
-		if (!resource.getContentType().isKindOf(JptCorePlugin.ORM_XML_CONTENT_TYPE)) {
+		if (!resource.getContentType().isKindOf(JptCorePlugin.MAPPING_FILE_CONTENT_TYPE)) {
 			throw new IllegalArgumentException(resource + " does not have mapping file content type"); //$NON-NLS-1$
 		}
 		this.xmlResource = resource;
