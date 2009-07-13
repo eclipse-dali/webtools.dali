@@ -10,6 +10,7 @@
 package org.eclipse.jpt.db.internal.vendor;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.datatools.modelbase.sql.schema.Catalog;
@@ -56,6 +57,9 @@ abstract class AbstractVendor
 	 * Typically, the name of the default catalog is the user name.
 	 */
 	public final List<String> getDefaultCatalogIdentifiers(Database database, String userName) {
+		if ( ! this.supportsCatalogs(database)) {
+			return Collections.emptyList();
+		}
 		ArrayList<String> identifiers = new ArrayList<String>();
 		this.addDefaultCatalogIdentifiersTo(database, userName, identifiers);
 		return identifiers;

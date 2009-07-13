@@ -27,7 +27,6 @@ import org.eclipse.jpt.db.ConnectionProfileFactory;
 import org.eclipse.jpt.db.Database;
 import org.eclipse.jpt.db.DatabaseFinder;
 import org.eclipse.jpt.db.JptDbPlugin;
-import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.SchemaContainer;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
@@ -275,23 +274,13 @@ public class JpaFacetDataModelProvider
 	}
 
 	private String getDefaultCatalogIdentifier() {
-		Catalog catalog = this.getDefaultCatalog();
-		return (catalog == null) ? null : catalog.getIdentifier();
-	}
-
-	private Catalog getDefaultCatalog() {
 		Database db = this.getDatabase();
-		return (db == null) ? null : db.getDefaultCatalog();
+		return (db == null) ? null : db.getDefaultCatalogIdentifier();
 	}
 
 	private String getDefaultSchemaIdentifier() {
-		Schema schema = this.getDefaultSchema();
-		return (schema == null) ? null : schema.getIdentifier();
-	}
-	
-	private Schema getDefaultSchema() {
 		SchemaContainer sc = this.getSchemaContainer();
-		return (sc == null) ? null : sc.getDefaultSchema();
+		return (sc == null) ? null : sc.getDefaultSchemaIdentifier();
 	}
 
 	private boolean runtimeSupportsEjb30() {
@@ -717,8 +706,8 @@ public class JpaFacetDataModelProvider
 	}
 
 	private IStatus validatePersistentClassManagement() {
-		@SuppressWarnings("unused") boolean discoverAnnotatedClasses = this.discoverAnnotatedClasses();
 		// TODO warning if "discovery" is used, but no runtime specified ??
+		// boolean discoverAnnotatedClasses = this.discoverAnnotatedClasses();
 		return OK_STATUS;
 	}
 

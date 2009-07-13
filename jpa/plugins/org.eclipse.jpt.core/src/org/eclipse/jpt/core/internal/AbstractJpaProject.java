@@ -334,13 +334,8 @@ public abstract class AbstractJpaProject
 	}
 
 	protected String getDatabaseDefaultCatalog() {
-		Catalog dbCatalog = this.getDatabaseDefaultDbCatalog();
-		return (dbCatalog == null ) ? null : dbCatalog.getIdentifier();
-	}
-
-	protected Catalog getDatabaseDefaultDbCatalog() {
 		Database db = this.getDatabase();
-		return (db == null ) ? null : db.getDefaultCatalog();
+		return (db == null ) ? null : db.getDefaultCatalogIdentifier();
 	}
 
 	/**
@@ -363,30 +358,28 @@ public abstract class AbstractJpaProject
 		if (schema != null) {
 			return schema;
 		}
+
 		String catalog = this.getDefaultCatalog();
-		if (catalog != null) {
-			Catalog dbCatalog = this.getDbCatalog(catalog);
-			if (dbCatalog != null) {
-				Schema dbSchema = dbCatalog.getDefaultSchema();
-				if (dbSchema != null) {
-					return dbSchema.getIdentifier();
-				}
-			}
+		if (catalog == null) {
+			// if there is no default catalog (either user-override or database-determined),
+			// the database probably does not support catalogs;
+			// return the database's default schema
+			return this.getDatabaseDefaultSchema();
 		}
-		// if there is no default catalog,
-		// the database probably does not support catalogs;
-		// return the database's default schema
+
+		Catalog dbCatalog = this.getDbCatalog(catalog);
+		if (dbCatalog != null) {
+			return dbCatalog.getDefaultSchemaIdentifier();
+		}
+
+		// if we could not find a catalog on the database that matches the default
+		// catalog name, return the database's default schema(?) - hmmm
 		return this.getDatabaseDefaultSchema();
 	}
 
 	protected String getDatabaseDefaultSchema() {
-		Schema schema = this.getDatabaseDefaultDbSchema();
-		return (schema == null ) ? null : schema.getIdentifier();
-	}
-
-	protected Schema getDatabaseDefaultDbSchema() {
 		Database db = this.getDatabase();
-		return (db == null ) ? null : db.getDefaultSchema();
+		return (db == null ) ? null : db.getDefaultSchemaIdentifier();
 	}
 
 

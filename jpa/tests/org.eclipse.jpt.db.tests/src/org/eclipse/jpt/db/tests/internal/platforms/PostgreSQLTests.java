@@ -400,12 +400,12 @@ public class PostgreSQLTests extends DTPPlatformTests {
 				"ORG_ID integer REFERENCES XREF_TEST1.ORG(ID))");
 
 		((ICatalogObject) this.getDTPDatabase()).refresh();
-		Schema schema1 = this.getDatabase().getDefaultCatalog().getSchemaNamed("xref_test1");
+		Schema schema1 = this.getDefaultCatalog().getSchemaNamed("xref_test1");
 		assertNotNull(schema1);
 		Table orgTable = schema1.getTableNamed("org");
 		assertNotNull(orgTable);
 
-		Schema schema2 = this.getDatabase().getDefaultCatalog().getSchemaNamed("xref_test2");
+		Schema schema2 = this.getDefaultCatalog().getSchemaNamed("xref_test2");
 		assertNotNull(schema2);
 		Table empTable = schema2.getTableNamed("emp");
 		assertNotNull(empTable);

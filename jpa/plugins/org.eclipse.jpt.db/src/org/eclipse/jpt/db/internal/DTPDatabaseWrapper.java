@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.db.internal;
 
-import com.ibm.icu.text.Collator;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -23,6 +23,8 @@ import org.eclipse.jpt.db.internal.vendor.VendorRepository;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
+
+import com.ibm.icu.text.Collator;
 
 /**
  * Wrap a DTP Database.
@@ -198,7 +200,15 @@ final class DTPDatabaseWrapper
 		for (int i = result.length; i-- > 0;) {
 			result[i] = new DTPCatalogWrapper(this, dtpCatalogs.get(i));
 		}
-		return CollectionTools.sort(result);
+		return CollectionTools.sort(result, this.buildCatalogComparator());
+	}
+
+	private Comparator<Catalog> buildCatalogComparator() {
+		return new Comparator<Catalog>() {
+			public int compare(Catalog catalog1, Catalog catalog2) {
+				return Collator.getInstance().compare(catalog1.getName(), catalog2.getName());
+			}
+		};
 	}
 
 	private List<org.eclipse.datatools.modelbase.sql.schema.Catalog> getDTPCatalogs() {
@@ -270,6 +280,22 @@ final class DTPDatabaseWrapper
 		return null;
 	}
 
+	/**
+	 * If we find a default catalog, return its identifier;
+	 * otherwise, return the last identifier on the list of default identifiers.
+	 * (Some databases have multiple possible default names.)
+	 * Return null if the database does not support catalogs.
+	 */
+	public synchronized String getDefaultCatalogIdentifier() {
+		DTPCatalogWrapper catalog = this.getDefaultCatalog();
+		return (catalog != null) ? catalog.getIdentifier() : this.getDefaultCatalogIdentifier_();
+	}
+
+	private String getDefaultCatalogIdentifier_() {
+		List<String> identifiers = this.getDefaultCatalogIdentifiers();
+		return identifiers.isEmpty() ? null : identifiers.get(identifiers.size() - 1);
+	}
+
 	// ***** schemata
 
 	List<String> getDefaultSchemaIdentifiers() {
@@ -313,13 +339,6 @@ final class DTPDatabaseWrapper
 	 */
 	String convertIdentifierToName(String identifier) {
 		return this.vendor.convertIdentifierToName(identifier);
-	}
-
-
-	// ********** Comparable implementation **********
-
-	public int compareTo(Database database) {
-		return Collator.getInstance().compare(this.getName(), database.getName());
 	}
 
 

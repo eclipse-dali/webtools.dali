@@ -40,13 +40,15 @@ public interface SchemaContainer
 	 * Return the container's schema names, sorted.
 	 * This is useful when the user is selecting a schema from a read-only
 	 * combo-box (e.g. in a wizard).
+	 * @see #getSchemaNamed(String)
+	 * @see #sortedSchemaIdentifiers()
 	 */
 	Iterator<String> sortedSchemaNames();
 
 	/**
 	 * Return the schema with specified name. The name must be an exact match
 	 * of the schema's name.
-	 * @see #schemaNames()
+	 * @see #sortedSchemaNames()
 	 * @see #getSchemaForIdentifier(String)
 	 */
 	Schema getSchemaNamed(String name);
@@ -55,6 +57,8 @@ public interface SchemaContainer
 	 * Return the container's schema identifiers, sorted by name.
 	 * This is useful when the user is selecting an identifier that will be
 	 * placed in a text file (e.g. in a Java annotation).
+	 * @see #getSchemaForIdentifier(String)
+	 * @see #sortedSchemaNames()
 	 */
 	Iterator<String> sortedSchemaIdentifiers();
 
@@ -62,15 +66,25 @@ public interface SchemaContainer
 	 * Return the schema for the specified identifier. The identifier should
 	 * be an SQL identifier (i.e. quoted when case-sensitive or containing
 	 * special characters, unquoted otherwise).
-	 * @see #schemaIdentifiers()
+	 * @see #sortedSchemaIdentifiers()
 	 * @see #getSchemaNamed(String)
 	 */
 	Schema getSchemaForIdentifier(String identifier);
 
 	/**
-	 * Return the container's default schema, as defined by the database vendor.
+	 * Return the container's "default" schema, as defined by the database vendor.
 	 * In most cases the default schema's name will match the user name.
+	 * Return null if the default schema does not exist (e.g. the container has
+	 * no schema whose name matches the user name).
+	 * @see #getDefaultSchemaIdentifier()
 	 */
 	Schema getDefaultSchema();
+
+	/**
+	 * Return the container's "default" schema identifier.
+	 * The container may or may not have a schema with a matching name.
+	 * @see #getDefaultSchema()
+	 */
+	String getDefaultSchemaIdentifier();
 
 }

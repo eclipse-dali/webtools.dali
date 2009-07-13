@@ -567,6 +567,13 @@ public abstract class DTPPlatformTests extends TestCase {
 		return this.getDatabase().getDefaultCatalog();
 	}
 
+	/**
+	 * only valid on databases that do not support catalogs
+	 */
+	protected Schema getDefaultSchema() {
+		return this.getDatabase().getDefaultSchema();
+	}
+
 	protected Catalog getCatalogNamed(String catalogName) {
 		return this.connectionProfile.getDatabase().getCatalogNamed(catalogName);
 	}

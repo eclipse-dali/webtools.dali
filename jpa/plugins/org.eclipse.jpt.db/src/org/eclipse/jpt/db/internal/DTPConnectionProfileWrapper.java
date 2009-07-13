@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -8,8 +8,6 @@
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.db.internal;
-
-import com.ibm.icu.text.Collator;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.datatools.connectivity.ConnectEvent;
@@ -367,13 +365,6 @@ final class DTPConnectionProfileWrapper
 
 	private boolean nameIsKeyword(String name) {
 		return name.equalsIgnoreCase("as");  //$NON-NLS-1$
-	}
-
-
-	// ********** Comparable implementation **********
-
-	public int compareTo(ConnectionProfile connectionProfile) {
-		return Collator.getInstance().compare(this.getName(), connectionProfile.getName());
 	}
 
 

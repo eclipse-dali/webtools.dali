@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,9 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.db.internal;
 
-import com.ibm.icu.text.Collator;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+
 import org.eclipse.datatools.modelbase.sql.constraints.PrimaryKey;
 import org.eclipse.datatools.modelbase.sql.tables.BaseTable;
 import org.eclipse.jpt.db.Column;
@@ -20,6 +21,8 @@ import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
+
+import com.ibm.icu.text.Collator;
 
 /**
  *  Wrap a DTP Table
@@ -95,7 +98,15 @@ final class DTPTableWrapper
 		for (int i = result.length; i-- > 0;) {
 			result[i] = new DTPColumnWrapper(this, dtpColumns.get(i));
 		}
-		return CollectionTools.sort(result);
+		return CollectionTools.sort(result, this.buildColumnComparator());
+	}
+
+	private Comparator<Column> buildColumnComparator() {
+		return new Comparator<Column>() {
+			public int compare(Column column1, Column column2) {
+				return Collator.getInstance().compare(column1.getName(), column2.getName());
+			}
+		};
 	}
 
 	// minimize scope of suppressed warnings
@@ -311,13 +322,6 @@ final class DTPTableWrapper
 
 	private Table getJoinTableNonOwningTable() {
 		return this.getJoinTableNonOwningForeignKey().getReferencedTable();
-	}
-
-
-	// ********** Comparable implementation **********
-
-	public int compareTo(Table table) {
-		return Collator.getInstance().compare(this.getName(), table.getName());
 	}
 
 

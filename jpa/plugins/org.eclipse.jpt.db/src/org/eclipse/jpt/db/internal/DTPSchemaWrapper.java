@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,15 +9,18 @@
  ******************************************************************************/
 package org.eclipse.jpt.db.internal;
 
-import com.ibm.icu.text.Collator;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.Sequence;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
+
+import com.ibm.icu.text.Collator;
 
 /**
  *  Wrap a DTP Schema
@@ -86,7 +89,15 @@ final class DTPSchemaWrapper
 		for (int i = result.length; i-- > 0;) {
 			result[i] = new DTPTableWrapper(this, dtpTables.get(i));
 		}
-		return CollectionTools.sort(result);
+		return CollectionTools.sort(result, this.buildTableComparator());
+	}
+
+	private Comparator<Table> buildTableComparator() {
+		return new Comparator<Table>() {
+			public int compare(Table table1, Table table2) {
+				return Collator.getInstance().compare(table1.getName(), table2.getName());
+			}
+		};
 	}
 
 	// minimize scope of suppressed warnings
@@ -163,7 +174,15 @@ final class DTPSchemaWrapper
 		for (int i = result.length; i-- > 0;) {
 			result[i] = new DTPSequenceWrapper(this, dtpSequences.get(i));
 		}
-		return CollectionTools.sort(result);
+		return CollectionTools.sort(result, this.buildSequenceComparator());
+	}
+
+	private Comparator<Sequence> buildSequenceComparator() {
+		return new Comparator<Sequence>() {
+			public int compare(Sequence sequence1, Sequence sequence2) {
+				return Collator.getInstance().compare(sequence1.getName(), sequence2.getName());
+			}
+		};
 	}
 
 	// minimize scope of suppressed warnings
@@ -192,13 +211,6 @@ final class DTPSchemaWrapper
 
 	public DTPSequenceWrapper getSequenceForIdentifier(String identifier) {
 		return this.selectDatabaseObjectForIdentifier(this.getSequences(), identifier);
-	}
-
-
-	// ********** Comparable implementation **********
-
-	public int compareTo(Schema schema) {
-		return Collator.getInstance().compare(this.getName(), schema.getName());
 	}
 
 

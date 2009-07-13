@@ -9,13 +9,17 @@
  ******************************************************************************/
 package org.eclipse.jpt.db.internal;
 
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.SchemaContainer;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
+
+import com.ibm.icu.text.Collator;
 
 /**
  * Coalesce behavior for a schema container (i.e. database or catalog).
@@ -118,7 +122,15 @@ abstract class DTPSchemaContainerWrapper
 		for (int i = result.length; i-- > 0; ) {
 			result[i] = new DTPSchemaWrapper(this, dtpSchemata.get(i));
 		}
-		return CollectionTools.sort(result);
+		return CollectionTools.sort(result, this.buildSchemaComparator());
+	}
+
+	private Comparator<Schema> buildSchemaComparator() {
+		return new Comparator<Schema>() {
+			public int compare(Schema schema1, Schema schema2) {
+				return Collator.getInstance().compare(schema1.getName(), schema2.getName());
+			}
+		};
 	}
 
 	public int schemataSize() {
@@ -168,6 +180,22 @@ abstract class DTPSchemaContainerWrapper
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * If we find a default schema, return its identifier;
+	 * otherwise, return the last identifier on the list of default identifiers.
+	 * (Some containers have multiple possible default names.)
+	 */
+	public synchronized String getDefaultSchemaIdentifier() {
+		DTPSchemaWrapper schema = this.getDefaultSchema();
+		return (schema != null) ? schema.getIdentifier() : this.getDefaultSchemaIdentifier_();
+	}
+
+	private String getDefaultSchemaIdentifier_() {
+		List<String> identifiers = this.getDatabase().getDefaultSchemaIdentifiers();
+		// assume 'identifiers' is non-empty (!)
+		return identifiers.get(identifiers.size() - 1);
 	}
 
 

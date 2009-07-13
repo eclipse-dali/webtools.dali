@@ -116,7 +116,7 @@ public class MySQLTests extends DTPPlatformTests {
 		// DTP: MySQL has a single schema with the same name as the database
 		Schema schema = this.getDatabase().getSchemaNamed(this.getDatabaseName());
 		assertNotNull(schema);
-		assertSame(this.getDatabase().getDefaultSchema(), schema);
+		assertSame(this.getDefaultSchema(), schema);
 
 		this.connectionProfile.removeConnectionListener(listener);
 		this.connectionProfile.disconnect();
@@ -142,7 +142,7 @@ public class MySQLTests extends DTPPlatformTests {
 		this.executeUpdate(this.buildFooBazDDL());
 		((ICatalogObject) this.getDTPDatabase()).refresh();
 
-		Schema schema = this.getDatabase().getDefaultSchema();
+		Schema schema = this.getDefaultSchema();
 
 		// foo
 		Table fooTable = schema.getTableNamed("foo");
@@ -276,7 +276,7 @@ public class MySQLTests extends DTPPlatformTests {
 		this.executeUpdate("CREATE TABLE `TEST3` (id INTEGER, name VARCHAR(20))");
 		((ICatalogObject) this.getDTPDatabase()).refresh();
 
-		Schema schema = this.getDatabase().getDefaultSchema();
+		Schema schema = this.getDefaultSchema();
 
 		Table test1Table = schema.getTableForIdentifier("test1");
 		assertNotNull(test1Table);
@@ -314,7 +314,7 @@ public class MySQLTests extends DTPPlatformTests {
 		this.executeUpdate("CREATE TABLE test (id INTEGER, name VARCHAR(20))");
 		((ICatalogObject) this.getDTPDatabase()).refresh();
 
-		Table table = this.getDatabase().getDefaultSchema().getTableNamed("test");
+		Table table = this.getDefaultSchema().getTableNamed("test");
 		assertNotNull(table.getColumnNamed("id"));
 		assertNotNull(table.getColumnNamed("name"));
 
@@ -324,7 +324,7 @@ public class MySQLTests extends DTPPlatformTests {
 		this.executeUpdate("CREATE TABLE test (ID INTEGER, NAME VARCHAR(20))");
 		((ICatalogObject) this.getDTPDatabase()).refresh();
 
-		table = this.getDatabase().getDefaultSchema().getTableNamed("test");
+		table = this.getDefaultSchema().getTableNamed("test");
 		assertNotNull(table.getColumnNamed("ID"));
 		assertNotNull(table.getColumnNamed("NAME"));
 
@@ -334,7 +334,7 @@ public class MySQLTests extends DTPPlatformTests {
 		this.executeUpdate("CREATE TABLE test (Id INTEGER, Name VARCHAR(20))");
 		((ICatalogObject) this.getDTPDatabase()).refresh();
 
-		table = this.getDatabase().getDefaultSchema().getTableNamed("test");
+		table = this.getDefaultSchema().getTableNamed("test");
 		assertNotNull(table.getColumnNamed("Id"));
 		assertNotNull(table.getColumnNamed("Name"));
 
@@ -344,7 +344,7 @@ public class MySQLTests extends DTPPlatformTests {
 		this.executeUpdate("CREATE TABLE test (`Id` INTEGER, `Name` VARCHAR(20))");
 		((ICatalogObject) this.getDTPDatabase()).refresh();
 
-		table = this.getDatabase().getDefaultSchema().getTableNamed("test");
+		table = this.getDefaultSchema().getTableNamed("test");
 		assertNotNull(table.getColumnForIdentifier("`Id`"));
 		assertNotNull(table.getColumnForIdentifier("`Name`"));
 
@@ -379,7 +379,7 @@ public class MySQLTests extends DTPPlatformTests {
 
 		this.getJDBCConnection().setCatalog("xref_test2");
 		((ICatalogObject) this.getDTPDatabase()).refresh();
-		Schema schema2 = this.getDatabase().getDefaultSchema();
+		Schema schema2 = this.getDefaultSchema();
 		assertNotNull(schema2);
 		Table empTable = schema2.getTableNamed("emp");
 		assertNotNull(empTable);

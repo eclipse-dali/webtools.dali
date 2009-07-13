@@ -22,9 +22,7 @@ import java.util.Iterator;
  * 
  * This interface is not intended to be implemented by clients.
  */
-public interface Database
-	extends SchemaContainer, Comparable<Database>
-{
+public interface Database extends SchemaContainer {
 
 	// ********** properties **********
 
@@ -81,6 +79,8 @@ public interface Database
 	 * Return an empty iterator if the database does not support catalogs.
 	 * This is useful when the user is selecting a catalog from a read-only
 	 * combo-box (e.g. in a wizard).
+	 * @see #sortedCatalogIdentifiers()
+	 * @see #getCatalogNamed(String)
 	 */
 	Iterator<String> sortedCatalogNames();
 
@@ -89,6 +89,7 @@ public interface Database
 	 * of the catalog's name.
 	 * Return null if the database does not support catalogs.
 	 * @see #supportsCatalogs()
+	 * @see #sortedCatalogNames()
 	 * @see #getCatalogForIdentifier(String)
 	 */
 	Catalog getCatalogNamed(String name);
@@ -98,6 +99,8 @@ public interface Database
 	 * Return an empty iterator if the database does not support catalogs.
 	 * This is useful when the user is selecting an identifier that will be
 	 * placed in a text file (e.g. in a Java annotation).
+	 * @see #sortedCatalogNames()
+	 * @see #getCatalogForIdentifier(String)
 	 */
 	Iterator<String> sortedCatalogIdentifiers();
 
@@ -107,16 +110,29 @@ public interface Database
 	 * special characters, unquoted otherwise).
 	 * Return null if the database does not support catalogs.
 	 * @see #supportsCatalogs()
+	 * @see #sortedCatalogIdentifiers()
 	 * @see #getCatalogNamed(String)
 	 */
 	Catalog getCatalogForIdentifier(String identifier);
 
 	/**
-	 * Return the database's "default" catalog.
-	 * Return null if the database does not support catalogs.
+	 * Return the database's "default" catalog, as defined by the database vendor.
+	 * In most cases the default catalog's name will match the user name.
+	 * Return null if the database does not support catalogs or if the default
+	 * catalog does not exist (e.g. the database has no catalog whose name
+	 * matches the user name).
 	 * @see #supportsCatalogs()
+	 * @see #getDefaultCatalogIdentifier()
 	 */
 	Catalog getDefaultCatalog();
+
+	/**
+	 * Return the database's "default" catalog identifier.
+	 * The database may or may not have a catalog with a matching name.
+	 * @see #supportsCatalogs()
+	 * @see #getDefaultCatalog()
+	 */
+	String getDefaultCatalogIdentifier();
 
 
 	// ********** utility methods **********

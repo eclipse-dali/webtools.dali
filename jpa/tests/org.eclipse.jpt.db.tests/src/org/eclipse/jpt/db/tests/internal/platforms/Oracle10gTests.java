@@ -92,7 +92,7 @@ public class Oracle10gTests extends DTPPlatformTests {
 		// Oracle should have a schema with the same name as the user
 		Schema schema = this.getDatabase().getSchemaForIdentifier(this.getUserID());
 		assertNotNull(schema);
-		assertSame(this.getDatabase().getDefaultSchema(), schema);
+		assertSame(this.getDefaultSchema(), schema);
 
 		this.connectionProfile.removeConnectionListener(listener);
 		this.connectionProfile.disconnect();
@@ -114,7 +114,7 @@ public class Oracle10gTests extends DTPPlatformTests {
 		this.executeUpdate(this.buildFooBazDDL());
 		((ICatalogObject) this.getDTPDatabase()).refresh();
 
-		Schema schema = this.getDatabase().getDefaultSchema();
+		Schema schema = this.getDefaultSchema();
 
 		// foo
 		Table fooTable = schema.getTableForIdentifier("foo");
@@ -235,7 +235,7 @@ public class Oracle10gTests extends DTPPlatformTests {
 		this.executeUpdate("CREATE TABLE \"test3\" (id NUMBER(10), name VARCHAR2(20))");
 		((ICatalogObject) this.getDTPDatabase()).refresh();
 
-		Schema schema = this.getDatabase().getDefaultSchema();
+		Schema schema = this.getDefaultSchema();
 
 		Table test1Table = schema.getTableForIdentifier("test1");
 		assertNotNull(test1Table);
@@ -271,7 +271,7 @@ public class Oracle10gTests extends DTPPlatformTests {
 		this.executeUpdate("CREATE TABLE test (id NUMBER(10), name VARCHAR2(20))");
 		((ICatalogObject) this.getDTPDatabase()).refresh();
 
-		Table table = this.getDatabase().getDefaultSchema().getTableForIdentifier("test");
+		Table table = this.getDefaultSchema().getTableForIdentifier("test");
 		assertNotNull(table.getColumnForIdentifier("id"));
 		assertNotNull(table.getColumnForIdentifier("name"));
 
@@ -281,7 +281,7 @@ public class Oracle10gTests extends DTPPlatformTests {
 		this.executeUpdate("CREATE TABLE test (ID NUMBER(10), NAME VARCHAR2(20))");
 		((ICatalogObject) this.getDTPDatabase()).refresh();
 
-		table = this.getDatabase().getDefaultSchema().getTableForIdentifier("test");
+		table = this.getDefaultSchema().getTableForIdentifier("test");
 		assertNotNull(table.getColumnForIdentifier("ID"));
 		assertNotNull(table.getColumnForIdentifier("NAME"));
 
@@ -291,7 +291,7 @@ public class Oracle10gTests extends DTPPlatformTests {
 		this.executeUpdate("CREATE TABLE test (Id NUMBER(10), Name VARCHAR2(20))");
 		((ICatalogObject) this.getDTPDatabase()).refresh();
 
-		table = this.getDatabase().getDefaultSchema().getTableForIdentifier("test");
+		table = this.getDefaultSchema().getTableForIdentifier("test");
 		assertNotNull(table.getColumnForIdentifier("Id"));
 		assertNotNull(table.getColumnForIdentifier("Name"));
 
@@ -301,7 +301,7 @@ public class Oracle10gTests extends DTPPlatformTests {
 		this.executeUpdate("CREATE TABLE test (\"Id\" NUMBER(10), \"Name\" VARCHAR2(20))");
 		((ICatalogObject) this.getDTPDatabase()).refresh();
 
-		table = this.getDatabase().getDefaultSchema().getTableForIdentifier("test");
+		table = this.getDefaultSchema().getTableForIdentifier("test");
 		assertNotNull(table.getColumnForIdentifier("\"Id\""));
 		assertNotNull(table.getColumnForIdentifier("\"Name\""));
 

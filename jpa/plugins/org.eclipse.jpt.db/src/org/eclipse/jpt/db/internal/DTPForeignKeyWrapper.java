@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,10 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.db.internal;
 
-import com.ibm.icu.text.Collator;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+
 import org.eclipse.jpt.db.Column;
 import org.eclipse.jpt.db.ForeignKey;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -20,6 +21,8 @@ import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
+
+import com.ibm.icu.text.Collator;
 
 /**
  *  Wrap a DTP ForeignKey
@@ -131,7 +134,15 @@ final class DTPForeignKeyWrapper
 								this.getBaseTable().getColumn(refColumns.get(i))
 						);
 		}
-		return result;
+		return CollectionTools.sort(result, this.buildColumnPairComparator());
+	}
+
+	private Comparator<ColumnPair> buildColumnPairComparator() {
+		return new Comparator<ColumnPair>() {
+			public int compare(ColumnPair columnPair1, ColumnPair columnPair2) {
+				return Collator.getInstance().compare(columnPair1.getBaseColumn().getName(), columnPair2.getBaseColumn().getName());
+			}
+		};
 	}
 
 	// minimize scope of suppressed warnings
@@ -278,13 +289,6 @@ final class DTPForeignKeyWrapper
 	}
 
 
-	// ********** Comparable implementation **********
-
-	public int compareTo(ForeignKey foreignKey) {
-		return Collator.getInstance().compare(this.getName(), foreignKey.getName());
-	}
-
-
 	// ********** internal methods **********
 
 	boolean wraps(org.eclipse.datatools.modelbase.sql.constraints.ForeignKey foreignKey) {
@@ -304,7 +308,7 @@ final class DTPForeignKeyWrapper
 
 	// ********** column pair implementation **********
 
-	private static class LocalColumnPair implements ColumnPair {
+	static class LocalColumnPair implements ColumnPair {
 		private final DTPColumnWrapper baseColumn;
 		private final DTPColumnWrapper referencedColumn;
 
@@ -323,10 +327,6 @@ final class DTPForeignKeyWrapper
 
 		public DTPColumnWrapper getReferencedColumn() {
 			return this.referencedColumn;
-		}
-
-		public int compareTo(ColumnPair columnPair) {
-			return Collator.getInstance().compare(this.getBaseColumn().getName(), columnPair.getBaseColumn().getName());
 		}
 
 		@Override
