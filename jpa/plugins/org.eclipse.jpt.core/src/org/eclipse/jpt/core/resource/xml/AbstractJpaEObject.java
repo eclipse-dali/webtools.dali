@@ -115,7 +115,7 @@ public abstract class AbstractJpaEObject
 	}
 
 	protected boolean featureIsInsignificant(int featureId) {
-		return this.insignificantFeatureIds().contains(new Integer(featureId));
+		return this.insignificantFeatureIds().contains(Integer.valueOf(featureId));
 	}
 
 	/**
