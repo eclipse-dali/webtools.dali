@@ -13,7 +13,6 @@ import java.io.File;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import org.eclipse.jpt.core.tests.internal.context.JptCoreContextModelTests;
-import org.eclipse.jpt.core.tests.internal.model.JptCoreModelTests;
 import org.eclipse.jpt.core.tests.internal.projects.TestJpaProject;
 import org.eclipse.jpt.core.tests.internal.resource.JptCoreResourceModelTests;
 import org.eclipse.jpt.core.tests.internal.utility.jdt.JptCoreUtilityJdtTests;
@@ -33,7 +32,7 @@ public class JptCoreTests {
 
 		if(requiredJarsExists()) {
 			suite.addTest(JptCoreUtilityJdtTests.suite());
-			suite.addTest(JptCoreModelTests.suite());
+//			suite.addTest(JptCoreModelTests.suite());
 			suite.addTest(JptCoreResourceModelTests.suite());
 			suite.addTest(JptCoreContextModelTests.suite());
 		}
