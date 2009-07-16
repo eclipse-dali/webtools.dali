@@ -8,7 +8,7 @@
 		<content-type
 			id="org.eclipse.jpt.eclipselink.core.content.orm"
 			name="%ECLIPSELINK1_0_x_ORM_XML_CONTENT"
-			base-type="org.eclipse.jpt.core.content.orm">
+			base-type="org.eclipse.jpt.core.content.mappingFile">
 			<describer
 				class="org.eclipse.jpt.core.internal.resource.xml.XMLRootElementVersionContentDescriber">
 				<parameter 
