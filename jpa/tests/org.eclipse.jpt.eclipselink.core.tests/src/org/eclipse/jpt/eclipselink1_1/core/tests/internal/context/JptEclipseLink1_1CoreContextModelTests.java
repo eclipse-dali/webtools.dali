@@ -13,17 +13,14 @@ package org.eclipse.jpt.eclipselink1_1.core.tests.internal.context;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import org.eclipse.jpt.eclipselink1_1.core.tests.internal.context.orm.JptEclipseLink1_1CoreOrmContextModelTests;
 
 public class JptEclipseLink1_1CoreContextModelTests extends TestCase
 {
 	public static Test suite() {
-		return suite(true);
-	}
-	
-	public static Test suite(boolean all) {
 		TestSuite suite = new TestSuite(JptEclipseLink1_1CoreContextModelTests.class.getName());
-//		suite.addTestSuite(EclipseLink1_1JpaProjectTests.class);
-//		suite.addTest(JptEclipseLink1_1CoreOrmContextModelTests.suite(all));
+		suite.addTestSuite(EclipseLink1_1JpaProjectTests.class);
+		suite.addTest(JptEclipseLink1_1CoreOrmContextModelTests.suite());
 		return suite;
 	}
 

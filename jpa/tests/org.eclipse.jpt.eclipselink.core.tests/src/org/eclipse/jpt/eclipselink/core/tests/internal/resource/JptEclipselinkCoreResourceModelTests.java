@@ -18,12 +18,8 @@ import org.eclipse.jpt.eclipselink.core.tests.internal.resource.java.JptEclipseL
 public class JptEclipselinkCoreResourceModelTests extends TestCase
 {
 	public static Test suite() {
-		return suite(true);
-	}
-	
-	public static Test suite(boolean all) {
 		TestSuite suite = new TestSuite(JptEclipselinkCoreResourceModelTests.class.getName());
-		suite.addTest(JptEclipseLinkCoreJavaResourceModelTests.suite(all));
+		suite.addTest(JptEclipseLinkCoreJavaResourceModelTests.suite());
 		return suite;
 	}
 

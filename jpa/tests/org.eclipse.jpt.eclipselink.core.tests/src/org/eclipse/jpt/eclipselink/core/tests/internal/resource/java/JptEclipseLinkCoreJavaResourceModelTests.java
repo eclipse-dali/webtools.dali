@@ -15,10 +15,6 @@ import junit.framework.TestSuite;
 public class JptEclipseLinkCoreJavaResourceModelTests {
 
 	public static Test suite() {
-		return suite(true);
-	}
-	
-	public static Test suite(boolean all) {
 		TestSuite suite = new TestSuite(JptEclipseLinkCoreJavaResourceModelTests.class.getName());
 		suite.addTestSuite(CacheTests.class);
 		suite.addTestSuite(ChangeTrackingTests.class);
