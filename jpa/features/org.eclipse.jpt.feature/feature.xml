@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.jpt.feature"
       label="%featureName"
-      version="2.2.0.qualifier"
+      version="3.0.0.qualifier"
       provider-name="%providerName"
       plugin="org.eclipse.jpt.branding">
 
@@ -23,6 +23,12 @@
       <discovery label="Web Tools Platform (WTP) Updates" url="http://download.eclipse.org/webtools/updates"/>
       <discovery label="Dali Java Persistence Tools Updates" url="http://download.eclipse.org/webtools/updates/"/>
    </url>
+
+   <requires>
+      <import feature="org.eclipse.datatools.enablement.feature" version="1.7.0"/>
+      <import feature="org.eclipse.datatools.sqldevtools.feature" version="1.7.0"/>
+      <import feature="org.eclipse.datatools.connectivity.feature" version="1.7.0"/>
+   </requires>
 
    <plugin
          id="org.eclipse.jpt.utility"
@@ -93,14 +99,14 @@
          install-size="0"
          version="2.0.8.qualifier"
          unpack="false"/>
-         
+
    <plugin
          id="org.jdom"
          download-size="0"
          install-size="0"
          version="1.0.0.qualifier"
-         unpack="false"/>         
-         
+         unpack="false"/>
+
    <plugin
          id="org.apache.velocity"
          download-size="0"
