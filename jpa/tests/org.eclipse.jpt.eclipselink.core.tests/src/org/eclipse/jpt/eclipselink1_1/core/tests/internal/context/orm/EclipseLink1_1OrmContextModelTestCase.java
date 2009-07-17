@@ -15,10 +15,10 @@ import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProperti
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.core.tests.internal.projects.TestJpaProject;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkEntityMappings;
+import org.eclipse.jpt.eclipselink.core.internal.v1_1.EclipseLink1_1JpaPlatformProvider;
+import org.eclipse.jpt.eclipselink.core.internal.v1_1.operations.EclipseLink1_1OrmFileCreationDataModelProvider;
+import org.eclipse.jpt.eclipselink.core.internal.v1_1.operations.EclipseLink1_1OrmFileCreationOperation;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntityMappings;
-import org.eclipse.jpt.eclipselink1_1.core.internal.EclipseLink1_1JpaPlatformProvider;
-import org.eclipse.jpt.eclipselink1_1.core.internal.operations.EclipseLink1_1OrmFileCreationDataModelProvider;
-import org.eclipse.jpt.eclipselink1_1.core.internal.operations.EclipseLink1_1OrmFileCreationOperation;
 import org.eclipse.jpt.eclipselink1_1.core.tests.internal.context.EclipseLink1_1ContextModelTestCase;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;

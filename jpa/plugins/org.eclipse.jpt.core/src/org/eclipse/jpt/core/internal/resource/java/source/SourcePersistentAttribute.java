@@ -23,6 +23,7 @@ import org.eclipse.jdt.core.dom.IBinding;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jpt.core.internal.utility.jdt.JDTFieldAttribute;
 import org.eclipse.jpt.core.internal.utility.jdt.JDTMethodAttribute;
+import org.eclipse.jpt.core.jpa2.resource.java.AccessAnnotation;
 import org.eclipse.jpt.core.resource.java.AccessType;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourceCompilationUnit;
@@ -35,7 +36,6 @@ import org.eclipse.jpt.utility.MethodSignature;
 import org.eclipse.jpt.utility.internal.ClassTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
-import org.eclipse.jpt2_0.core.resource.java.AccessAnnotation;
 
 /**
  * Java source persistent attribute (field or property)

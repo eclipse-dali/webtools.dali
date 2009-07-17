@@ -28,12 +28,12 @@ Export-Package: org.eclipse.jpt.core.tests.internal;x-friends:="org.eclipse.jpt.
  org.eclipse.jpt.core.tests.internal.context.java;x-internal:=true,
  org.eclipse.jpt.core.tests.internal.context.orm;x-internal:=true,
  org.eclipse.jpt.core.tests.internal.context.persistence;x-internal:=true,
+ org.eclipse.jpt.core.tests.internal.jpa2.context.java,
+ org.eclipse.jpt.core.tests.internal.jpa2.context.orm,
+ org.eclipse.jpt.core.tests.internal.jpa2.resource.java,
  org.eclipse.jpt.core.tests.internal.model;x-internal:=true,
  org.eclipse.jpt.core.tests.internal.platform;x-internal:=true,
  org.eclipse.jpt.core.tests.internal.projects;x-friends:="org.eclipse.jpt.ui.tests",
  org.eclipse.jpt.core.tests.internal.resource;x-internal:=true,
  org.eclipse.jpt.core.tests.internal.resource.java;x-internal:=true,
- org.eclipse.jpt.core.tests.internal.utility.jdt;x-internal:=true,
- org.eclipse.jpt2_0.core.tests.internal.context.java,
- org.eclipse.jpt2_0.core.tests.internal.context.orm,
- org.eclipse.jpt2_0.core.tests.internal.resource.java
+ org.eclipse.jpt.core.tests.internal.utility.jdt;x-internal:=true

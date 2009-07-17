@@ -14,7 +14,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProvider;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaPlatformProvider;
 import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
-import org.eclipse.jpt.eclipselink1_1.core.internal.EclipseLink1_1JpaPlatformProvider;
+import org.eclipse.jpt.eclipselink.core.internal.v1_1.EclipseLink1_1JpaPlatformProvider;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModelOperation;
 
 public class EclipseLinkOrmFileCreationDataModelProvider extends OrmFileCreationDataModelProvider

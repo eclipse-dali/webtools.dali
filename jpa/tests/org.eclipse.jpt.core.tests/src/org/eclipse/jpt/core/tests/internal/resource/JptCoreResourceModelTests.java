@@ -13,8 +13,8 @@ package org.eclipse.jpt.core.tests.internal.resource;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import org.eclipse.jpt.core.tests.internal.jpa2.resource.java.Generic2_0JavaResourceTests;
 import org.eclipse.jpt.core.tests.internal.resource.java.JptJavaResourceTests;
-import org.eclipse.jpt2_0.core.tests.internal.resource.java.Generic2_0JavaResourceTests;
 
 public class JptCoreResourceModelTests extends TestCase
 {

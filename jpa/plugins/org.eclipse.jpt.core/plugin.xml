@@ -187,7 +187,7 @@
 	  <jpaPlatform
 	        id="generic2_0"
 	        label="%GENERIC2_0_PLATFORM_LABEL"
-	        factoryClass="org.eclipse.jpt2_0.core.internal.platform.Generic2_0JpaPlatformFactory"
+	        factoryClass="org.eclipse.jpt.core.internal.jpa2.platform.Generic2_0JpaPlatformFactory"
 	        default="false">
 	  </jpaPlatform>
 		
@@ -312,7 +312,7 @@
 		</resourceFactory>
 		
 		<resourceFactory
-			class="org.eclipse.jpt2_0.core.resource.orm.Orm2_0XmlResourceFactory"
+			class="org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0XmlResourceFactory"
 			isDefault="true">
 			<contentTypeBinding
 				contentTypeId="org.eclipse.jpt.core.content.orm2_0">
@@ -320,7 +320,7 @@
 		</resourceFactory>
 		
 		<resourceFactory
-			class="org.eclipse.jpt2_0.core.resource.persistence.Persistence2_0XmlResourceFactory"
+			class="org.eclipse.jpt.core.jpa2.resource.persistence.Persistence2_0XmlResourceFactory"
 			isDefault="true">
 			<contentTypeBinding
 				contentTypeId="org.eclipse.jpt.core.content.persistence2_0">

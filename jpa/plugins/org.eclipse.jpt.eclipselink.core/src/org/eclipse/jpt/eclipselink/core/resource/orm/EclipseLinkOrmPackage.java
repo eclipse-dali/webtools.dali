@@ -17,7 +17,7 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.eclipse.emf.ecore.xml.type.XMLTypePackage;
 import org.eclipse.jpt.core.resource.orm.OrmPackage;
-import org.eclipse.jpt.eclipselink1_1.core.resource.orm.EclipseLink1_1OrmPackage;
+import org.eclipse.jpt.eclipselink.core.v1_1.resource.orm.EclipseLink1_1OrmPackage;
 
 /**
  * <!-- begin-user-doc -->

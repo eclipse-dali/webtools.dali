@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.resource.persistence;
 
-import org.eclipse.emf.common.util.Enumerator;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
@@ -19,9 +18,9 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.eclipse.emf.ecore.xml.type.XMLTypePackage;
+import org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Package;
+import org.eclipse.jpt.core.jpa2.resource.persistence.Persistence2_0Package;
 import org.eclipse.jpt.core.resource.orm.OrmPackage;
-import org.eclipse.jpt2_0.core.resource.orm.Orm2_0Package;
-import org.eclipse.jpt2_0.core.resource.persistence.Persistence2_0Package;
 
 /**
  * <!-- begin-user-doc -->

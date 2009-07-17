@@ -14,7 +14,7 @@ import org.eclipse.jpt.core.internal.resource.orm.OrmXmlResourceProvider;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
 import org.eclipse.jpt.eclipselink.core.internal.resource.orm.EclipseLinkOrmXmlResourceProvider;
-import org.eclipse.jpt.eclipselink1_1.core.internal.resource.orm.EclipseLink1_1OrmXmlResourceProvider;
+import org.eclipse.jpt.eclipselink.core.internal.v1_1.resource.orm.EclipseLink1_1OrmXmlResourceProvider;
 
 @SuppressWarnings("nls")
 public class EclipseLink1_1JpaProjectTests extends EclipseLink1_1ContextModelTestCase

@@ -1,0 +1,134 @@
+/*******************************************************************************
+ * Copyright (c) 2009 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
+package org.eclipse.jpt.core.internal.jpa2.platform;
+
+import java.util.List;
+import org.eclipse.jpt.core.JpaPlatformProvider;
+import org.eclipse.jpt.core.JpaResourceModelProvider;
+import org.eclipse.jpt.core.context.MappingFileProvider;
+import org.eclipse.jpt.core.context.java.DefaultJavaAttributeMappingProvider;
+import org.eclipse.jpt.core.context.java.JavaAttributeMappingProvider;
+import org.eclipse.jpt.core.context.java.JavaTypeMappingProvider;
+import org.eclipse.jpt.core.context.orm.OrmAttributeMappingProvider;
+import org.eclipse.jpt.core.context.orm.OrmTypeMappingProvider;
+import org.eclipse.jpt.core.internal.jpa2.Orm2_0ResourceModelProvider;
+import org.eclipse.jpt.core.internal.jpa2.Persistence2_0ResourceModelProvider;
+import org.eclipse.jpt.core.internal.jpa2.context.Generic2_0MappingFileProvider;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.Generic2_0OrmBasicMappingProvider;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.Generic2_0OrmEmbeddableMappingProvider;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.Generic2_0OrmEmbeddedIdMappingProvider;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.Generic2_0OrmEmbeddedMappingProvider;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.Generic2_0OrmEntityMappingProvider;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.Generic2_0OrmIdMappingProvider;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.Generic2_0OrmManyToManyMappingProvider;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.Generic2_0OrmManyToOneMappingProvider;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.Generic2_0OrmMappedSuperclassMappingProvider;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.Generic2_0OrmNullAttributeMappingProvider;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.Generic2_0OrmOneToManyMappingProvider;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.Generic2_0OrmOneToOneMappingProvider;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.Generic2_0OrmTransientMappingProvider;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.Generic2_0OrmVersionMappingProvider;
+import org.eclipse.jpt.core.internal.platform.AbstractJpaPlatformProvider;
+
+/**
+ * All the state in the JPA platform should be "static" (i.e. unchanging once
+ * it is initialized).
+ */
+public class Generic2_0JpaPlatformProvider extends AbstractJpaPlatformProvider
+{
+	public static final String ID = "generic2_0"; //$NON-NLS-1$
+
+	// singleton
+	private static final JpaPlatformProvider INSTANCE = new Generic2_0JpaPlatformProvider();
+
+	/**
+	 * Return the singleton.
+	 */
+	public static JpaPlatformProvider instance() {
+		return INSTANCE;
+	}
+
+	/**
+	 * Ensure single instance.
+	 */
+	private Generic2_0JpaPlatformProvider() {
+		super();
+	}
+
+
+	// ********** resource models **********
+
+	@Override
+	protected void addResourceModelProvidersTo(List<JpaResourceModelProvider> providers) {
+		providers.add(Persistence2_0ResourceModelProvider.instance());
+		providers.add(Orm2_0ResourceModelProvider.instance());
+	}
+
+
+	// ********** Java type mappings **********
+	
+	@Override
+	protected void addJavaTypeMappingProvidersTo(List<JavaTypeMappingProvider> providers) {
+	}
+
+
+	// ********** Java attribute mappings **********
+
+	@Override
+	protected void addJavaAttributeMappingProvidersTo(List<JavaAttributeMappingProvider> providers) {
+		//providers.add(JavaElementCollectionMappingProvider.instance());
+	}
+
+
+	// ********** default Java attribute mappings **********
+
+	@Override
+	protected void addDefaultJavaAttributeMappingProvidersTo(List<DefaultJavaAttributeMappingProvider> providers) {
+	}
+
+	// ********** Mapping File **********
+
+	/**
+	 * Override this to specify more or different mapping file providers.
+	 */
+	@Override
+	protected void addMappingFileProvidersTo(List<MappingFileProvider> providers) {
+		providers.add(Generic2_0MappingFileProvider.instance());
+	}
+
+
+	// ********** ORM type mappings **********
+
+	@Override
+	protected void addOrmTypeMappingProvidersTo(List<OrmTypeMappingProvider> providers) {
+		providers.add(Generic2_0OrmEmbeddableMappingProvider.instance());
+		providers.add(Generic2_0OrmEntityMappingProvider.instance());
+		providers.add(Generic2_0OrmMappedSuperclassMappingProvider.instance());
+	}
+
+
+	// ********** ORM attribute mappings **********
+
+	@Override
+	protected void addOrmAttributeMappingProvidersTo(List<OrmAttributeMappingProvider> providers) {
+		providers.add(Generic2_0OrmBasicMappingProvider.instance());
+		providers.add(Generic2_0OrmIdMappingProvider.instance());
+		//providers.add(OrmElementCollectionMappingProvider.instance());
+		providers.add(Generic2_0OrmEmbeddedIdMappingProvider.instance());
+		providers.add(Generic2_0OrmEmbeddedMappingProvider.instance());
+		providers.add(Generic2_0OrmManyToManyMappingProvider.instance());
+		providers.add(Generic2_0OrmManyToOneMappingProvider.instance());
+		providers.add(Generic2_0OrmOneToManyMappingProvider.instance());
+		providers.add(Generic2_0OrmOneToOneMappingProvider.instance());
+		providers.add(Generic2_0OrmVersionMappingProvider.instance());
+		providers.add(Generic2_0OrmTransientMappingProvider.instance());
+		providers.add(Generic2_0OrmNullAttributeMappingProvider.instance());
+	}
+}

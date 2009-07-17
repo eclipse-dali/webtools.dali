@@ -13,7 +13,7 @@
 		<jpaPlatformUi
 			id="eclipselink1_1.ui"
 			jpaPlatform="eclipselink1_1"
-			factoryClass="org.eclipse.jpt.eclipselink1_1.ui.internal.platform.EclipseLink1_1JpaPlatformUiFactory"/>
+			factoryClass="org.eclipse.jpt.eclipselink.ui.internal.v1_1.platform.EclipseLink1_1JpaPlatformUiFactory"/>
 		
 	</extension>
    
