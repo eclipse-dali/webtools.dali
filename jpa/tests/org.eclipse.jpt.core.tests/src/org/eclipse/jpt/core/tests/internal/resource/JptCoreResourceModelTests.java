@@ -13,7 +13,7 @@ package org.eclipse.jpt.core.tests.internal.resource;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import org.eclipse.jpt.core.tests.internal.jpa2.resource.java.Generic2_0JavaResourceTests;
+import org.eclipse.jpt.core.tests.internal.jpa2.resource.java.JavaResource2_0Tests;
 import org.eclipse.jpt.core.tests.internal.resource.java.JptJavaResourceTests;
 
 public class JptCoreResourceModelTests extends TestCase
@@ -21,7 +21,7 @@ public class JptCoreResourceModelTests extends TestCase
 	public static Test suite() {
 		TestSuite suite = new TestSuite(JptCoreResourceModelTests.class.getName());
 		suite.addTest(JptJavaResourceTests.suite());
-		suite.addTest(Generic2_0JavaResourceTests.suite());
+		suite.addTest(JavaResource2_0Tests.suite());
 		return suite;
 	}
 

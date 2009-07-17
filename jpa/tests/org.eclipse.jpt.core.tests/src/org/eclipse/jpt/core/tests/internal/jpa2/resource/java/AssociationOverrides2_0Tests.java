@@ -25,7 +25,7 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
-public class AssociationOverrides2_0Tests extends Generic2_0JavaResourceModelTestCase {
+public class AssociationOverrides2_0Tests extends JavaResourceModel2_0TestCase {
 	
 	private static final String ASSOCIATION_OVERRIDE_NAME = "MY_ASSOCIATION_OVERRIDE";
 	private static final String JOIN_TABLE_NAME = "MY_JOIN_TABLE";

@@ -10,8 +10,8 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jpt.core.internal.resource.java.binary.BinaryAssociationOverrides1_0Annotation;
-import org.eclipse.jpt.core.internal.resource.java.source.SourceAssociationOverrides1_0Annotation;
+import org.eclipse.jpt.core.internal.jpa1.resource.java.binary.BinaryAssociationOverrides1_0Annotation;
+import org.eclipse.jpt.core.internal.jpa1.resource.java.source.SourceAssociationOverrides1_0Annotation;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.core.resource.java.AssociationOverridesAnnotation;

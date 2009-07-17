@@ -14,10 +14,10 @@ import org.eclipse.jpt.core.internal.jpa2.platform.Generic2_0JpaAnnotationDefini
 import org.eclipse.jpt.core.internal.platform.GenericJpaAnnotationProvider;
 import org.eclipse.jpt.core.tests.internal.resource.java.JavaResourceModelTestCase;
 
-public class Generic2_0JavaResourceModelTestCase extends JavaResourceModelTestCase
+public class JavaResourceModel2_0TestCase extends JavaResourceModelTestCase
 {	
 	
-	public Generic2_0JavaResourceModelTestCase(String name) {
+	public JavaResourceModel2_0TestCase(String name) {
 		super(name);
 	}
 

@@ -7,9 +7,10 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.internal.resource.java.binary;
+package org.eclipse.jpt.core.internal.jpa1.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
+import org.eclipse.jpt.core.internal.resource.java.binary.BinaryAssociationOverridesAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.NestableAssociationOverrideAnnotation;
 

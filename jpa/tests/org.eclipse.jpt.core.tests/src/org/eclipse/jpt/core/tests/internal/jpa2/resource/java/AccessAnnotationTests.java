@@ -19,7 +19,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
-public class AccessAnnotationTests extends Generic2_0JavaResourceModelTestCase {
+public class AccessAnnotationTests extends JavaResourceModel2_0TestCase {
 	
 	public AccessAnnotationTests(String name) {
 		super(name);

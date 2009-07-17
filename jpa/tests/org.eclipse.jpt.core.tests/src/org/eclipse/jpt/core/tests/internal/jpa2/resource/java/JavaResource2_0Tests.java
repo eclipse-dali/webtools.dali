@@ -12,10 +12,10 @@ package org.eclipse.jpt.core.tests.internal.jpa2.resource.java;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-public class Generic2_0JavaResourceTests {
+public class JavaResource2_0Tests {
 
 	public static Test suite() {
-		TestSuite suite = new TestSuite(Generic2_0JavaResourceTests.class.getName());
+		TestSuite suite = new TestSuite(JavaResource2_0Tests.class.getName());
 		
 		suite.addTestSuite(AccessAnnotationTests.class);
 		suite.addTestSuite(AssociationOverride2_0Tests.class);
@@ -25,7 +25,7 @@ public class Generic2_0JavaResourceTests {
 		return suite;
 	}
 
-	private Generic2_0JavaResourceTests() {
+	private JavaResource2_0Tests() {
 		super();
 		throw new UnsupportedOperationException();
 	}
