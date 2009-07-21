@@ -26,7 +26,7 @@ import org.eclipse.swt.widgets.Composite;
  * |                      ---------------                                      |
  * ----------------------------------------------------------------------------</pre>
  *
- * @see EclipseLinkCaching
+ * @see Caching
  * @see CachingComposite - A container of this widget
  *
  * @version 2.1

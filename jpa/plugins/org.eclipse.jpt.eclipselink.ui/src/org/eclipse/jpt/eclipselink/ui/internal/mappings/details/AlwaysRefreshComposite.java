@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.Composite;
 /**
  * This composite simply shows a tri-state check box for the Always Refresh option.
  * 
- * @see EclipseLinkCaching
+ * @see Caching
  * @see CachingComposite - A container of this widget
  *
  * @version 2.1

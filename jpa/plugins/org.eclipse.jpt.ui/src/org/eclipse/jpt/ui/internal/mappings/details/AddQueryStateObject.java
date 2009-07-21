@@ -17,7 +17,7 @@ import org.eclipse.jpt.utility.internal.node.Node;
 import org.eclipse.jpt.utility.internal.node.Problem;
 
 /**
- * This is the state object used by the <code>EclipseLinkConverterDialog</code>, which stores
+ * This is the state object used by the <code>AddQueryDialog</code>, which stores
  * the current name and validates it when it is modified.
  *
  * @see AddQueryDialog

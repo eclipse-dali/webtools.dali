@@ -42,8 +42,8 @@ import org.eclipse.swt.widgets.Group;
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see EclipseLinkCaching
- * @see EclipseLinkExpiryTimeOfDay
+ * @see Caching
+ * @see ExpiryTimeOfDay
  * @see CachingComposite - A container of this widget
  *
  * @version 2.1

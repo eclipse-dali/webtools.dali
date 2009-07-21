@@ -14,7 +14,6 @@ import java.util.Collection;
 
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.eclipselink.core.context.Caching;
-import org.eclipse.jpt.eclipselink.core.internal.context.persistence.caching.EclipseLinkCaching;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.eclipselink.ui.internal.java.details.EclipseLinkJavaEntityComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
@@ -49,7 +48,7 @@ import org.eclipse.swt.widgets.Composite;
  * -----------------------------------------------------------------------------</pre>
  *
  * @see Entity
- * @see EclipseLinkCaching
+ * @see Caching
  * @see EclipseLinkJavaEntityComposite - The parent container
  * @see CacheTypeComposite
  * @see CacheSizeComposite

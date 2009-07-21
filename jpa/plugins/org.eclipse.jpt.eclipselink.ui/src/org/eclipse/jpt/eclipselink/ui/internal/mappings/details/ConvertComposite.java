@@ -49,7 +49,7 @@ import org.eclipse.swt.widgets.Composite;
  * |            -------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see EclipseLinkConvert
+ * @see Convert
  * @see EclipseLinkBasicMappingComposite - A container of this widget
  *
  * @version 2.1
