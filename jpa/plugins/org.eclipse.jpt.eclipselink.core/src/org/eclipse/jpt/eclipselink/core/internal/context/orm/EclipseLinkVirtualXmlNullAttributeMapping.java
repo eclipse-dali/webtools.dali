@@ -13,7 +13,6 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.context.orm.VirtualXmlNullAttributeMapping;
-import org.eclipse.jpt.core.resource.orm.AccessType;
 import org.eclipse.jpt.core.resource.orm.XmlNullAttributeMapping;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlAccessMethods;
@@ -68,14 +67,6 @@ public class EclipseLinkVirtualXmlNullAttributeMapping extends XmlNullAttributeM
 	}
 	
 	public void setAccessMethods(XmlAccessMethods value) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
-	}
-	
-	public AccessType getAccess() {
-		return org.eclipse.jpt.core.context.AccessType.toOrmResourceModel(this.javaAttributeMapping.getPersistentAttribute().getAccess());
-	}
-
-	public void setAccess(AccessType value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 	

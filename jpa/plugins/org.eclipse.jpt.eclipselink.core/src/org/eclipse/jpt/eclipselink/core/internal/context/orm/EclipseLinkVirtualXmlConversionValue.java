@@ -10,7 +10,6 @@
 package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
-import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.ConversionValue;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConversionValue;
@@ -35,6 +34,7 @@ public class EclipseLinkVirtualXmlConversionValue extends XmlConversionValue
 		return this.ormTypeMapping.isMetadataComplete();
 	}
 	
+	@Override
 	public String getDataValue() {
 		if (isOrmMetadataComplete()) {
 			return null;
@@ -42,10 +42,12 @@ public class EclipseLinkVirtualXmlConversionValue extends XmlConversionValue
 		return this.javaConversionValue.getDataValue();
 	}
 	
-	public void setDataValue(@SuppressWarnings("unused") String value) {
+	@Override
+	public void setDataValue(String value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 	
+	@Override
 	public String getObjectValue() {
 		if (isOrmMetadataComplete()) {
 			return null;
@@ -53,14 +55,17 @@ public class EclipseLinkVirtualXmlConversionValue extends XmlConversionValue
 		return this.javaConversionValue.getObjectValue();
 	}
 	
-	public void setObjectValue(@SuppressWarnings("unused") String value) {
+	@Override
+	public void setObjectValue(String value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
+	@Override
 	public TextRange getDataValueTextRange() {
 		return null;
 	}
 	
+	@Override
 	public TextRange getObjectValueTextRange() {
 		return null;
 	}

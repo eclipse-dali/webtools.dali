@@ -42,7 +42,7 @@ public class EclipseLinkVirtualXmlTypeConverter extends XmlTypeConverter
 	}
 	
 	@Override
-	public void setName(@SuppressWarnings("unused") String value) {
+	public void setName(String value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
@@ -55,7 +55,7 @@ public class EclipseLinkVirtualXmlTypeConverter extends XmlTypeConverter
 	}
 	
 	@Override
-	public void setDataType(@SuppressWarnings("unused") String value) {
+	public void setDataType(String value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
@@ -68,7 +68,7 @@ public class EclipseLinkVirtualXmlTypeConverter extends XmlTypeConverter
 	}
 	
 	@Override
-	public void setObjectType(@SuppressWarnings("unused") String value) {
+	public void setObjectType(String value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 }
