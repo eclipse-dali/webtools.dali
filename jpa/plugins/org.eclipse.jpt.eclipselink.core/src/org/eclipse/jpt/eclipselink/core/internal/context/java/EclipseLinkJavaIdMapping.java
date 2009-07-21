@@ -18,7 +18,7 @@ import org.eclipse.jpt.core.internal.context.java.AbstractJavaIdMapping;
 import org.eclipse.jpt.eclipselink.core.context.Convert;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkIdMapping;
 import org.eclipse.jpt.eclipselink.core.context.Mutable;
-import org.eclipse.jpt.eclipselink.core.resource.java.ConvertAnnotation;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkConvertAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
@@ -66,7 +66,7 @@ public class EclipseLinkJavaIdMapping
 	@Override
 	protected String getResourceConverterType() {
 		//check @Convert first, this is the order that EclipseLink searches
-		if (this.resourcePersistentAttribute.getSupportingAnnotation(ConvertAnnotation.ANNOTATION_NAME) != null) {
+		if (this.resourcePersistentAttribute.getSupportingAnnotation(EclipseLinkConvertAnnotation.ANNOTATION_NAME) != null) {
 			return Convert.ECLIPSE_LINK_CONVERTER;
 		}
 		return super.getResourceConverterType();

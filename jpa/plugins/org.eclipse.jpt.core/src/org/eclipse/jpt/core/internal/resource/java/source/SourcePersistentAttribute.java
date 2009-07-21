@@ -23,7 +23,7 @@ import org.eclipse.jdt.core.dom.IBinding;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jpt.core.internal.utility.jdt.JDTFieldAttribute;
 import org.eclipse.jpt.core.internal.utility.jdt.JDTMethodAttribute;
-import org.eclipse.jpt.core.jpa2.resource.java.AccessAnnotation;
+import org.eclipse.jpt.core.jpa2.resource.java.Access2_0Annotation;
 import org.eclipse.jpt.core.resource.java.AccessType;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourceCompilationUnit;
@@ -209,7 +209,7 @@ final class SourcePersistentAttribute
 	}
 
 	public AccessType getSpecifiedAccess() {
-		AccessAnnotation accessAnnotation = (AccessAnnotation) this.getSupportingAnnotation(AccessAnnotation.ANNOTATION_NAME);
+		Access2_0Annotation accessAnnotation = (Access2_0Annotation) this.getSupportingAnnotation(Access2_0Annotation.ANNOTATION_NAME);
 		return (accessAnnotation == null) ? null : accessAnnotation.getValue();
 	}
 

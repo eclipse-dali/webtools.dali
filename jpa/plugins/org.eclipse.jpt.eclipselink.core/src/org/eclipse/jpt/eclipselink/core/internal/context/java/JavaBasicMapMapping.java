@@ -14,11 +14,11 @@ import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaAttributeMapping;
 import org.eclipse.jpt.eclipselink.core.EclipseLinkMappingKeys;
 import org.eclipse.jpt.eclipselink.core.context.BasicMapMapping;
-import org.eclipse.jpt.eclipselink.core.resource.java.BasicMapAnnotation;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkBasicMapAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
 public class JavaBasicMapMapping
-	extends AbstractJavaAttributeMapping<BasicMapAnnotation>
+	extends AbstractJavaAttributeMapping<EclipseLinkBasicMapAnnotation>
 	implements BasicMapMapping
 {
 	
@@ -31,7 +31,7 @@ public class JavaBasicMapMapping
 	}
 	
 	public String getAnnotationName() {
-		return BasicMapAnnotation.ANNOTATION_NAME;
+		return EclipseLinkBasicMapAnnotation.ANNOTATION_NAME;
 	}
 	
 	public Iterator<String> supportingAnnotationNames() {

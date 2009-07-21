@@ -13,7 +13,7 @@ import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.eclipselink.core.context.StructConverter;
-import org.eclipse.jpt.eclipselink.core.resource.java.StructConverterAnnotation;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkStructConverterAnnotation;
 
 public class EclipseLinkJavaStructConverter extends EclipseLinkJavaConverter
 	implements StructConverter
@@ -32,12 +32,12 @@ public class EclipseLinkJavaStructConverter extends EclipseLinkJavaConverter
 	
 	@Override
 	public String getAnnotationName() {
-		return StructConverterAnnotation.ANNOTATION_NAME;
+		return EclipseLinkStructConverterAnnotation.ANNOTATION_NAME;
 	}
 	
 	@Override
-	protected StructConverterAnnotation getAnnotation() {
-		return (StructConverterAnnotation) super.getAnnotation();
+	protected EclipseLinkStructConverterAnnotation getAnnotation() {
+		return (EclipseLinkStructConverterAnnotation) super.getAnnotation();
 	}
 	
 	
@@ -75,7 +75,7 @@ public class EclipseLinkJavaStructConverter extends EclipseLinkJavaConverter
 		this.setConverterClass_(this.converterClass(getAnnotation()));
 	}
 	
-	protected String converterClass(StructConverterAnnotation resourceConverter) {
+	protected String converterClass(EclipseLinkStructConverterAnnotation resourceConverter) {
 		return resourceConverter == null ? null : resourceConverter.getConverter();
 	}
 }

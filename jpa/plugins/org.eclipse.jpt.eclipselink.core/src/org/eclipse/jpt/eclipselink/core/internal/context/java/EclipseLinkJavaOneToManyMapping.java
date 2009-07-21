@@ -19,7 +19,7 @@ import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToManyMapping;
 import org.eclipse.jpt.eclipselink.core.context.JoinFetch;
 import org.eclipse.jpt.eclipselink.core.context.PrivateOwned;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
-import org.eclipse.jpt.eclipselink.core.resource.java.PrivateOwnedAnnotation;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkPrivateOwnedAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -67,11 +67,11 @@ public class EclipseLinkJavaOneToManyMapping
 	}
 	
 	protected String getPrivateOwnedAnnotationName() {
-		return PrivateOwnedAnnotation.ANNOTATION_NAME;
+		return EclipseLinkPrivateOwnedAnnotation.ANNOTATION_NAME;
 	}
 	
-	protected PrivateOwnedAnnotation getResourcePrivateOwned() {
-		return (PrivateOwnedAnnotation) this.resourcePersistentAttribute.getSupportingAnnotation(getPrivateOwnedAnnotationName());
+	protected EclipseLinkPrivateOwnedAnnotation getResourcePrivateOwned() {
+		return (EclipseLinkPrivateOwnedAnnotation) this.resourcePersistentAttribute.getSupportingAnnotation(getPrivateOwnedAnnotationName());
 	}
 	
 	protected void addResourcePrivateOwned() {

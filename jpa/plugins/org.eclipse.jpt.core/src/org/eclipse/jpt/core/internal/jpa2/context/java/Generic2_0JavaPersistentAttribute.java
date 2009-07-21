@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.internal.jpa2.context.java;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaPersistentAttribute;
-import org.eclipse.jpt.core.jpa2.resource.java.AccessAnnotation;
+import org.eclipse.jpt.core.jpa2.resource.java.Access2_0Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 
 /**
@@ -52,7 +52,7 @@ public class Generic2_0JavaPersistentAttribute
 	}
 
 	protected AccessType buildSpecifiedAccess() {
-		AccessAnnotation accessAnnotation = (AccessAnnotation) this.resourcePersistentAttribute.getSupportingAnnotation(AccessAnnotation.ANNOTATION_NAME);
+		Access2_0Annotation accessAnnotation = (Access2_0Annotation) this.resourcePersistentAttribute.getSupportingAnnotation(Access2_0Annotation.ANNOTATION_NAME);
 		return accessAnnotation == null ? null : AccessType.fromJavaResourceModel(accessAnnotation.getValue());
 	}
 

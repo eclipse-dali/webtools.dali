@@ -17,7 +17,7 @@ public class JavaResource2_0Tests {
 	public static Test suite() {
 		TestSuite suite = new TestSuite(JavaResource2_0Tests.class.getName());
 		
-		suite.addTestSuite(AccessAnnotationTests.class);
+		suite.addTestSuite(Access2_0AnnotationTests.class);
 		suite.addTestSuite(AssociationOverride2_0Tests.class);
 		suite.addTestSuite(AssociationOverrides2_0Tests.class);
 		suite.addTestSuite(SequenceGenerator2_0Tests.class);

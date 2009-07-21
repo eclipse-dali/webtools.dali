@@ -20,10 +20,10 @@ import org.eclipse.jpt.eclipselink.core.context.ObjectTypeConverter;
 import org.eclipse.jpt.eclipselink.core.context.StructConverter;
 import org.eclipse.jpt.eclipselink.core.context.TypeConverter;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaConverterHolder;
-import org.eclipse.jpt.eclipselink.core.resource.java.ConverterAnnotation;
-import org.eclipse.jpt.eclipselink.core.resource.java.ObjectTypeConverterAnnotation;
-import org.eclipse.jpt.eclipselink.core.resource.java.StructConverterAnnotation;
-import org.eclipse.jpt.eclipselink.core.resource.java.TypeConverterAnnotation;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkConverterAnnotation;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkObjectTypeConverterAnnotation;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkStructConverterAnnotation;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkTypeConverterAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -76,11 +76,11 @@ public class EclipseLinkJavaConverterHolder extends AbstractJavaJpaContextNode i
 	}
 	
 	protected String getConverterAnnotationName() {
-		return ConverterAnnotation.ANNOTATION_NAME;
+		return EclipseLinkConverterAnnotation.ANNOTATION_NAME;
 	}
 	
-	protected ConverterAnnotation getResourceConverter() {
-		return (ConverterAnnotation) this.resourcePersistentType.getSupportingAnnotation(getConverterAnnotationName());
+	protected EclipseLinkConverterAnnotation getResourceConverter() {
+		return (EclipseLinkConverterAnnotation) this.resourcePersistentType.getSupportingAnnotation(getConverterAnnotationName());
 	}
 	
 	
@@ -121,11 +121,11 @@ public class EclipseLinkJavaConverterHolder extends AbstractJavaJpaContextNode i
 	}
 	
 	protected String getObjectTypeConverterAnnotationName() {
-		return ObjectTypeConverterAnnotation.ANNOTATION_NAME;
+		return EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME;
 	}
 	
-	protected ObjectTypeConverterAnnotation getResourceObjectTypeConverter() {
-		return (ObjectTypeConverterAnnotation) this.resourcePersistentType.getSupportingAnnotation(getObjectTypeConverterAnnotationName());
+	protected EclipseLinkObjectTypeConverterAnnotation getResourceObjectTypeConverter() {
+		return (EclipseLinkObjectTypeConverterAnnotation) this.resourcePersistentType.getSupportingAnnotation(getObjectTypeConverterAnnotationName());
 	}
 	
 	
@@ -166,11 +166,11 @@ public class EclipseLinkJavaConverterHolder extends AbstractJavaJpaContextNode i
 	}
 	
 	protected String getTypeConverterAnnotationName() {
-		return TypeConverterAnnotation.ANNOTATION_NAME;
+		return EclipseLinkTypeConverterAnnotation.ANNOTATION_NAME;
 	}
 	
-	protected TypeConverterAnnotation getResourceTypeConverter() {
-		return (TypeConverterAnnotation) this.resourcePersistentType.getSupportingAnnotation(getTypeConverterAnnotationName());
+	protected EclipseLinkTypeConverterAnnotation getResourceTypeConverter() {
+		return (EclipseLinkTypeConverterAnnotation) this.resourcePersistentType.getSupportingAnnotation(getTypeConverterAnnotationName());
 	}
 	
 	
@@ -211,11 +211,11 @@ public class EclipseLinkJavaConverterHolder extends AbstractJavaJpaContextNode i
 	}
 	
 	protected String getStructConverterAnnotationName() {
-		return StructConverterAnnotation.ANNOTATION_NAME;
+		return EclipseLinkStructConverterAnnotation.ANNOTATION_NAME;
 	}
 	
-	protected StructConverterAnnotation getResourceStructConverter() {
-		return (StructConverterAnnotation) this.resourcePersistentType.getSupportingAnnotation(getStructConverterAnnotationName());
+	protected EclipseLinkStructConverterAnnotation getResourceStructConverter() {
+		return (EclipseLinkStructConverterAnnotation) this.resourcePersistentType.getSupportingAnnotation(getStructConverterAnnotationName());
 	}
 	
 	public void update(JavaResourcePersistentType jrpt) {

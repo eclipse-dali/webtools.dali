@@ -23,9 +23,9 @@ import org.eclipse.jpt.eclipselink.core.context.ExpiryTimeOfDay;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaCaching;
 import org.eclipse.jpt.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
-import org.eclipse.jpt.eclipselink.core.resource.java.CacheAnnotation;
-import org.eclipse.jpt.eclipselink.core.resource.java.ExistenceCheckingAnnotation;
-import org.eclipse.jpt.eclipselink.core.resource.java.TimeOfDayAnnotation;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkCacheAnnotation;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkExistenceCheckingAnnotation;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkTimeOfDayAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -65,20 +65,20 @@ public class EclipseLinkJavaCaching extends AbstractJavaJpaContextNode implement
 	//call one setter and the CacheAnnotation could change. 
 	//You could call more than one setter before this object has received any notification
 	//from the java resource model
-	protected CacheAnnotation getCacheAnnotation() {
-		return (CacheAnnotation) this.resourcePersistentType.getNonNullSupportingAnnotation(getCacheAnnotationName());
+	protected EclipseLinkCacheAnnotation getCacheAnnotation() {
+		return (EclipseLinkCacheAnnotation) this.resourcePersistentType.getNonNullSupportingAnnotation(getCacheAnnotationName());
 	}
 	
-	protected ExistenceCheckingAnnotation getExistenceCheckingAnnotation() {
-		return (ExistenceCheckingAnnotation) this.resourcePersistentType.getSupportingAnnotation(getExistenceCheckingAnnotationName());
+	protected EclipseLinkExistenceCheckingAnnotation getExistenceCheckingAnnotation() {
+		return (EclipseLinkExistenceCheckingAnnotation) this.resourcePersistentType.getSupportingAnnotation(getExistenceCheckingAnnotationName());
 	}
 
 	protected String getCacheAnnotationName() {
-		return CacheAnnotation.ANNOTATION_NAME;
+		return EclipseLinkCacheAnnotation.ANNOTATION_NAME;
 	}
 	
 	protected String getExistenceCheckingAnnotationName() {
-		return ExistenceCheckingAnnotation.ANNOTATION_NAME;
+		return EclipseLinkExistenceCheckingAnnotation.ANNOTATION_NAME;
 	}
 	
 	public CacheType getType() {
@@ -390,7 +390,7 @@ public class EclipseLinkJavaCaching extends AbstractJavaJpaContextNode implement
 		}
 		EclipseLinkJavaExpiryTimeOfDay newExpiryTimeOfDay = new EclipseLinkJavaExpiryTimeOfDay(this);
 		this.expiryTimeOfDay = newExpiryTimeOfDay;
-		TimeOfDayAnnotation timeOfDayAnnotation = getCacheAnnotation().addExpiryTimeOfDay();
+		EclipseLinkTimeOfDayAnnotation timeOfDayAnnotation = getCacheAnnotation().addExpiryTimeOfDay();
 		newExpiryTimeOfDay.initialize(timeOfDayAnnotation);
 		firePropertyChanged(EXPIRY_TIME_OF_DAY_PROPERTY, null, newExpiryTimeOfDay);
 		setExpiry(null);
@@ -419,7 +419,7 @@ public class EclipseLinkJavaCaching extends AbstractJavaJpaContextNode implement
 		initialize(getExistenceCheckingAnnotation());
 	}
 
-	protected void initialize(CacheAnnotation cache) {
+	protected void initialize(EclipseLinkCacheAnnotation cache) {
 		this.specifiedType = this.specifiedType(cache);
 		this.specifiedSize = this.specifiedSize(cache);
 		this.specifiedShared = this.specifiedShared(cache);
@@ -430,13 +430,13 @@ public class EclipseLinkJavaCaching extends AbstractJavaJpaContextNode implement
 		this.initializeExpiry(cache);
 	}
 	
-	protected void initialize(ExistenceCheckingAnnotation existenceChecking) {
+	protected void initialize(EclipseLinkExistenceCheckingAnnotation existenceChecking) {
 		this.existenceChecking = existenceChecking != null;
 		this.specifiedExistenceType = specifiedExistenceType(existenceChecking);
 		this.defaultExistenceType = this.caclulateDefaultExistenceType();
 	}
 
-	protected void initializeExpiry(CacheAnnotation cache) {
+	protected void initializeExpiry(EclipseLinkCacheAnnotation cache) {
 		if (cache.getExpiryTimeOfDay() == null) {
 			this.expiry = cache.getExpiry();
 		}
@@ -455,7 +455,7 @@ public class EclipseLinkJavaCaching extends AbstractJavaJpaContextNode implement
 		updateExpiry(getCacheAnnotation());
 	}
 	
-	protected void update(CacheAnnotation cache) {
+	protected void update(EclipseLinkCacheAnnotation cache) {
 		setSpecifiedType_(this.specifiedType(cache));
 		setSpecifiedSize_(this.specifiedSize(cache));
 		setSpecifiedShared_(this.specifiedShared(cache));
@@ -465,13 +465,13 @@ public class EclipseLinkJavaCaching extends AbstractJavaJpaContextNode implement
 		setSpecifiedCoordinationType_(this.specifiedCoordinationType(cache));
 	}
 
-	protected void update(ExistenceCheckingAnnotation existenceChecking) {
+	protected void update(EclipseLinkExistenceCheckingAnnotation existenceChecking) {
 		setExistenceChecking_(existenceChecking != null);
 		setSpecifiedExistenceType_(specifiedExistenceType(existenceChecking));
 		setDefaultExistenceType(caclulateDefaultExistenceType());
 	}
 	
-	protected void updateExpiry(CacheAnnotation cache) {
+	protected void updateExpiry(EclipseLinkCacheAnnotation cache) {
 		if (cache.getExpiryTimeOfDay() == null) {
 			setExpiryTimeOfDay(null);
 			setExpiry_(cache.getExpiry());
@@ -490,39 +490,39 @@ public class EclipseLinkJavaCaching extends AbstractJavaJpaContextNode implement
 		}
 	}
 
-	protected CacheType specifiedType(CacheAnnotation cache) {
+	protected CacheType specifiedType(EclipseLinkCacheAnnotation cache) {
 		return CacheType.fromJavaResourceModel(cache.getType());
 	}
 
-	protected Integer specifiedSize(CacheAnnotation cache) {
+	protected Integer specifiedSize(EclipseLinkCacheAnnotation cache) {
 		return cache.getSize();
 	}
 	
-	protected Boolean specifiedShared(CacheAnnotation cache) {
+	protected Boolean specifiedShared(EclipseLinkCacheAnnotation cache) {
 		return cache.getShared();
 	}	
 	
-	protected Boolean specifiedAlwaysRefresh(CacheAnnotation cache) {
+	protected Boolean specifiedAlwaysRefresh(EclipseLinkCacheAnnotation cache) {
 		return cache.getAlwaysRefresh();
 	}	
 	
-	protected Boolean specifiedRefreshOnlyIfNewer(CacheAnnotation cache) {
+	protected Boolean specifiedRefreshOnlyIfNewer(EclipseLinkCacheAnnotation cache) {
 		return cache.getRefreshOnlyIfNewer();
 	}	
 	
-	protected Boolean specifiedDisableHits(CacheAnnotation cache) {
+	protected Boolean specifiedDisableHits(EclipseLinkCacheAnnotation cache) {
 		return cache.getDisableHits();
 	}
 	
-	protected CacheCoordinationType specifiedCoordinationType(CacheAnnotation cache) {
+	protected CacheCoordinationType specifiedCoordinationType(EclipseLinkCacheAnnotation cache) {
 		return CacheCoordinationType.fromJavaResourceModel(cache.getCoordinationType());
 	}
 	
-	protected Integer expiry(CacheAnnotation cache) {
+	protected Integer expiry(EclipseLinkCacheAnnotation cache) {
 		return cache.getExpiry();
 	}
 	
-	protected ExistenceType specifiedExistenceType(ExistenceCheckingAnnotation existenceChecking) {
+	protected ExistenceType specifiedExistenceType(EclipseLinkExistenceCheckingAnnotation existenceChecking) {
 		if (existenceChecking == null) {
 			return null;
 		}
@@ -542,7 +542,7 @@ public class EclipseLinkJavaCaching extends AbstractJavaJpaContextNode implement
 	}
 
 	protected void validateExpiry(List<IMessage> messages, CompilationUnit astRoot) {
-		CacheAnnotation cache = getCacheAnnotation();
+		EclipseLinkCacheAnnotation cache = getCacheAnnotation();
 		if (cache.getExpiry() != null && cache.getExpiryTimeOfDay() != null) {
 			messages.add(
 				DefaultEclipseLinkJpaValidationMessages.buildMessage(

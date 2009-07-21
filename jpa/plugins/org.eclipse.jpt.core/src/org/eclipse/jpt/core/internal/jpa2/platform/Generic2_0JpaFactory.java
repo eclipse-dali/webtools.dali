@@ -53,25 +53,25 @@ import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.internal.jpa2.context.java.Generic2_0JavaEmbeddable;
 import org.eclipse.jpt.core.internal.jpa2.context.java.Generic2_0JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.jpa2.context.java.Generic2_0JavaPersistentType;
-import org.eclipse.jpt.core.internal.jpa2.context.java.Generic2_0JavaSequenceGenerator;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.Generic2_0EntityMappings;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.Generic2_0OrmEmbeddable;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.Generic2_0OrmPersistentAttribute;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.Generic2_0OrmPersistentType;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.Generic2_0OrmSequenceGenerator;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.Generic2_0OrmXml;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.Generic2_0PersistenceUnitMetadata;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.Generic2_0VirtualXmlBasic;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.Generic2_0VirtualXmlEmbedded;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.Generic2_0VirtualXmlEmbeddedId;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.Generic2_0VirtualXmlId;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.Generic2_0VirtualXmlManyToMany;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.Generic2_0VirtualXmlManyToOne;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.Generic2_0VirtualXmlNullAttributeMapping;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.Generic2_0VirtualXmlOneToMany;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.Generic2_0VirtualXmlOneToOne;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.Generic2_0VirtualXmlTransient;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.Generic2_0VirtualXmlVersion;
+import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaSequenceGenerator2_0;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericEntityMappings2_0;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmEmbeddable2_0;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmPersistentAttribute2_0;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmPersistentType2_0;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmSequenceGenerator2_0;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmXml2_0;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericPersistenceUnitMetadata2_0;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.VirtualXmlBasic2_0;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.VirtualXmlEmbedded2_0;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.VirtualXmlEmbeddedId2_0;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.VirtualXmlId2_0;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.VirtualXmlManyToMany2_0;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.VirtualXmlManyToOne2_0;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.VirtualXmlNullAttributeMapping2_0;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.VirtualXmlOneToMany2_0;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.VirtualXmlOneToOne2_0;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.VirtualXmlTransient2_0;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.VirtualXmlVersion2_0;
 import org.eclipse.jpt.core.internal.platform.GenericJpaFactory;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmSequenceGenerator2_0;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlAttributeMapping;
@@ -118,26 +118,26 @@ public class Generic2_0JpaFactory extends GenericJpaFactory
 		return build2_0OrmXml(parent, resource);
 	}
 	
-	protected Generic2_0OrmXml build2_0OrmXml(MappingFileRef parent, JpaXmlResource resource) {
-		return new Generic2_0OrmXml(parent, resource);
+	protected GenericOrmXml2_0 build2_0OrmXml(MappingFileRef parent, JpaXmlResource resource) {
+		return new GenericOrmXml2_0(parent, resource);
 	}
 
 	// ********** Generic 2.0-specific ORM Context Model **********
 	
-	public EntityMappings build2_0EntityMappings(Generic2_0OrmXml parent, XmlEntityMappings xmlEntityMappings) {
-		return new Generic2_0EntityMappings(parent, xmlEntityMappings);
+	public EntityMappings build2_0EntityMappings(GenericOrmXml2_0 parent, XmlEntityMappings xmlEntityMappings) {
+		return new GenericEntityMappings2_0(parent, xmlEntityMappings);
 	}
 	
-	public PersistenceUnitMetadata build2_0PersistenceUnitMetadata(Generic2_0EntityMappings parent, XmlEntityMappings xmlEntityMappings) {
-		return new Generic2_0PersistenceUnitMetadata(parent, xmlEntityMappings);
+	public PersistenceUnitMetadata build2_0PersistenceUnitMetadata(GenericEntityMappings2_0 parent, XmlEntityMappings xmlEntityMappings) {
+		return new GenericPersistenceUnitMetadata2_0(parent, xmlEntityMappings);
 	}
 	
 	public OrmPersistentType build2_0OrmPersistentType(EntityMappings parent, XmlTypeMapping resourceMapping) {
-		return new Generic2_0OrmPersistentType(parent, resourceMapping);
+		return new GenericOrmPersistentType2_0(parent, resourceMapping);
 	}
 
 	public OrmEmbeddable build2_0OrmEmbeddable(OrmPersistentType parent, XmlEmbeddable resourceMapping) {
-		return new Generic2_0OrmEmbeddable(parent, resourceMapping);
+		return new GenericOrmEmbeddable2_0(parent, resourceMapping);
 	}
 
 	public OrmEntity build2_0OrmEntity(OrmPersistentType parent, XmlEntity resourceMapping) {
@@ -149,7 +149,7 @@ public class Generic2_0JpaFactory extends GenericJpaFactory
 	}
 	
 	public OrmPersistentAttribute build2_0OrmPersistentAttribute(OrmPersistentType parent, OrmPersistentAttribute.Owner owner, XmlAttributeMapping resourceMapping) {
-		return new Generic2_0OrmPersistentAttribute(parent, owner, resourceMapping);
+		return new GenericOrmPersistentAttribute2_0(parent, owner, resourceMapping);
 	}
 	
 	public OrmBasicMapping build2_0OrmBasicMapping(OrmPersistentAttribute parent, XmlBasic resourceMapping) {
@@ -201,51 +201,51 @@ public class Generic2_0JpaFactory extends GenericJpaFactory
 	}
 
 	public OrmSequenceGenerator2_0 build2_0OrmSequenceGenerator(XmlContextNode parent, XmlSequenceGenerator resourceSequenceGenerator) {
-		return new Generic2_0OrmSequenceGenerator(parent, resourceSequenceGenerator);
+		return new GenericOrmSequenceGenerator2_0(parent, resourceSequenceGenerator);
 	}
 	
 	public XmlBasic build2_0VirtualXmlBasic(OrmTypeMapping ormTypeMapping, JavaBasicMapping javaBasicMapping) {
-		return new Generic2_0VirtualXmlBasic(ormTypeMapping, javaBasicMapping);
+		return new VirtualXmlBasic2_0(ormTypeMapping, javaBasicMapping);
 	}
 	
 	public XmlId build2_0VirtualXmlId(OrmTypeMapping ormTypeMapping, JavaIdMapping javaIdMapping) {
-		return new Generic2_0VirtualXmlId(ormTypeMapping, javaIdMapping);
+		return new VirtualXmlId2_0(ormTypeMapping, javaIdMapping);
 	}
 	
 	public XmlEmbeddedId build2_0VirtualXmlEmbeddedId(OrmTypeMapping ormTypeMapping, JavaEmbeddedIdMapping javaEmbeddedIdMapping) {
-		return new Generic2_0VirtualXmlEmbeddedId(ormTypeMapping, javaEmbeddedIdMapping);
+		return new VirtualXmlEmbeddedId2_0(ormTypeMapping, javaEmbeddedIdMapping);
 	}
 	
 	public XmlEmbedded build2_0VirtualXmlEmbedded(OrmTypeMapping ormTypeMapping, JavaEmbeddedMapping javaEmbeddedMapping) {
-		return new Generic2_0VirtualXmlEmbedded(ormTypeMapping, javaEmbeddedMapping);
+		return new VirtualXmlEmbedded2_0(ormTypeMapping, javaEmbeddedMapping);
 	}
 	
 	public XmlManyToMany build2_0VirtualXmlManyToMany(OrmTypeMapping ormTypeMapping, JavaManyToManyMapping javaManyToManyMapping) {
-		return new Generic2_0VirtualXmlManyToMany(ormTypeMapping, javaManyToManyMapping);
+		return new VirtualXmlManyToMany2_0(ormTypeMapping, javaManyToManyMapping);
 	}
 	
 	public XmlManyToOne build2_0VirtualXmlManyToOne(OrmTypeMapping ormTypeMapping, JavaManyToOneMapping javaManyToOneMapping) {
-		return new Generic2_0VirtualXmlManyToOne(ormTypeMapping, javaManyToOneMapping);
+		return new VirtualXmlManyToOne2_0(ormTypeMapping, javaManyToOneMapping);
 	}
 	
 	public XmlOneToMany build2_0VirtualXmlOneToMany(OrmTypeMapping ormTypeMapping, JavaOneToManyMapping javaOneToManyMapping) {
-		return new Generic2_0VirtualXmlOneToMany(ormTypeMapping, javaOneToManyMapping);
+		return new VirtualXmlOneToMany2_0(ormTypeMapping, javaOneToManyMapping);
 	}
 	
 	public XmlOneToOne build2_0VirtualXmlOneToOne(OrmTypeMapping ormTypeMapping, JavaOneToOneMapping javaOneToOneMapping) {
-		return new Generic2_0VirtualXmlOneToOne(ormTypeMapping, javaOneToOneMapping);
+		return new VirtualXmlOneToOne2_0(ormTypeMapping, javaOneToOneMapping);
 	}
 	
 	public XmlTransient build2_0VirtualXmlTransient(OrmTypeMapping ormTypeMapping, JavaTransientMapping javaTransientMapping) {
-		return new Generic2_0VirtualXmlTransient(ormTypeMapping, javaTransientMapping);
+		return new VirtualXmlTransient2_0(ormTypeMapping, javaTransientMapping);
 	}
 	
 	public XmlVersion build2_0VirtualXmlVersion(OrmTypeMapping ormTypeMapping, JavaVersionMapping javaVersionMapping) {
-		return new Generic2_0VirtualXmlVersion(ormTypeMapping, javaVersionMapping);
+		return new VirtualXmlVersion2_0(ormTypeMapping, javaVersionMapping);
 	}
 	
 	public XmlNullAttributeMapping build2_0VirtualXmlNullAttributeMapping(OrmTypeMapping ormTypeMapping, JavaAttributeMapping javaAttributeMapping) {
-		return new Generic2_0VirtualXmlNullAttributeMapping(ormTypeMapping, javaAttributeMapping);
+		return new VirtualXmlNullAttributeMapping2_0(ormTypeMapping, javaAttributeMapping);
 	}
 
 	// ********** Java Context Model **********
@@ -262,7 +262,7 @@ public class Generic2_0JpaFactory extends GenericJpaFactory
 
 	@Override
 	public JavaSequenceGenerator buildJavaSequenceGenerator(JavaJpaContextNode parent) {
-		return new Generic2_0JavaSequenceGenerator(parent);
+		return new GenericJavaSequenceGenerator2_0(parent);
 	}
 
 }

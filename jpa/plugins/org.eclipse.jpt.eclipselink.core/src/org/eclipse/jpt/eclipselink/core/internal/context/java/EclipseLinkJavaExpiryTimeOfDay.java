@@ -14,7 +14,7 @@ import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.Caching;
 import org.eclipse.jpt.eclipselink.core.context.ExpiryTimeOfDay;
-import org.eclipse.jpt.eclipselink.core.resource.java.TimeOfDayAnnotation;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkTimeOfDayAnnotation;
 
 public class EclipseLinkJavaExpiryTimeOfDay extends AbstractJavaJpaContextNode
 	implements ExpiryTimeOfDay
@@ -25,7 +25,7 @@ public class EclipseLinkJavaExpiryTimeOfDay extends AbstractJavaJpaContextNode
 	protected Integer second;
 	protected Integer millisecond;
 	
-	protected TimeOfDayAnnotation timeOfDay;
+	protected EclipseLinkTimeOfDayAnnotation timeOfDay;
 	
 	public EclipseLinkJavaExpiryTimeOfDay(Caching parent) {
 		super(parent);
@@ -103,7 +103,7 @@ public class EclipseLinkJavaExpiryTimeOfDay extends AbstractJavaJpaContextNode
 		return this.timeOfDay.getTextRange(astRoot);
 	}
 	
-	public void initialize(TimeOfDayAnnotation timeOfDay) {
+	public void initialize(EclipseLinkTimeOfDayAnnotation timeOfDay) {
 		this.timeOfDay = timeOfDay;
 		this.hour = getHour(timeOfDay);
 		this.minute = getMinute(timeOfDay);
@@ -111,7 +111,7 @@ public class EclipseLinkJavaExpiryTimeOfDay extends AbstractJavaJpaContextNode
 		this.millisecond = getMillisecond(timeOfDay);
 	}
 	
-	public void update(TimeOfDayAnnotation timeOfDay) {
+	public void update(EclipseLinkTimeOfDayAnnotation timeOfDay) {
 		this.timeOfDay = timeOfDay;
 		this.setHour_(getHour(timeOfDay));
 		this.setMinute_(getMinute(timeOfDay));
@@ -119,19 +119,19 @@ public class EclipseLinkJavaExpiryTimeOfDay extends AbstractJavaJpaContextNode
 		this.setMillisecond_(getMillisecond(timeOfDay));
 	}
 	
-	protected Integer getHour(TimeOfDayAnnotation timeOfDay) {
+	protected Integer getHour(EclipseLinkTimeOfDayAnnotation timeOfDay) {
 		return timeOfDay.getHour();
 	}
 	
-	protected Integer getMinute(TimeOfDayAnnotation timeOfDay) {
+	protected Integer getMinute(EclipseLinkTimeOfDayAnnotation timeOfDay) {
 		return timeOfDay.getMinute();
 	}
 	
-	protected Integer getSecond(TimeOfDayAnnotation timeOfDay) {
+	protected Integer getSecond(EclipseLinkTimeOfDayAnnotation timeOfDay) {
 		return timeOfDay.getSecond();
 	}
 	
-	protected Integer getMillisecond(TimeOfDayAnnotation timeOfDay) {
+	protected Integer getMillisecond(EclipseLinkTimeOfDayAnnotation timeOfDay) {
 		return timeOfDay.getMillisecond();
 	}
 }

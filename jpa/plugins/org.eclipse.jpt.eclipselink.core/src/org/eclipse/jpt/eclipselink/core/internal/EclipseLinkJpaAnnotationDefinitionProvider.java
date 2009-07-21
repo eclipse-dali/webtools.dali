@@ -13,25 +13,25 @@ import java.util.List;
 import org.eclipse.jpt.core.JpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.core.internal.platform.AbstractJpaAnnotationDefintionProvider;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
-import org.eclipse.jpt.eclipselink.core.internal.resource.java.BasicCollectionAnnotationDefinition;
-import org.eclipse.jpt.eclipselink.core.internal.resource.java.BasicMapAnnotationDefinition;
-import org.eclipse.jpt.eclipselink.core.internal.resource.java.CacheAnnotationDefinition;
-import org.eclipse.jpt.eclipselink.core.internal.resource.java.ChangeTrackingAnnotationDefinition;
-import org.eclipse.jpt.eclipselink.core.internal.resource.java.ConvertAnnotationDefinition;
-import org.eclipse.jpt.eclipselink.core.internal.resource.java.ConverterAnnotationDefinition;
-import org.eclipse.jpt.eclipselink.core.internal.resource.java.CustomizerAnnotationDefinition;
-import org.eclipse.jpt.eclipselink.core.internal.resource.java.ExistenceCheckingAnnotationDefinition;
-import org.eclipse.jpt.eclipselink.core.internal.resource.java.JoinFetchAnnotationDefinition;
-import org.eclipse.jpt.eclipselink.core.internal.resource.java.MutableAnnotationDefinition;
-import org.eclipse.jpt.eclipselink.core.internal.resource.java.ObjectTypeConverterAnnotationDefinition;
-import org.eclipse.jpt.eclipselink.core.internal.resource.java.PrivateOwnedAnnotationDefinition;
-import org.eclipse.jpt.eclipselink.core.internal.resource.java.ReadOnlyAnnotationDefinition;
-import org.eclipse.jpt.eclipselink.core.internal.resource.java.ReadTransformerAnnotationDefinition;
-import org.eclipse.jpt.eclipselink.core.internal.resource.java.StructConverterAnnotationDefinition;
-import org.eclipse.jpt.eclipselink.core.internal.resource.java.TransformationAnnotationDefinition;
-import org.eclipse.jpt.eclipselink.core.internal.resource.java.TypeConverterAnnotationDefinition;
-import org.eclipse.jpt.eclipselink.core.internal.resource.java.VariableOneToOneAnnotationDefinition;
-import org.eclipse.jpt.eclipselink.core.internal.resource.java.WriteTransformerAnnotationDefinition;
+import org.eclipse.jpt.eclipselink.core.internal.resource.java.EclipseLinkBasicCollectionAnnotationDefinition;
+import org.eclipse.jpt.eclipselink.core.internal.resource.java.EclipseLinkBasicMapAnnotationDefinition;
+import org.eclipse.jpt.eclipselink.core.internal.resource.java.EclipseLinkCacheAnnotationDefinition;
+import org.eclipse.jpt.eclipselink.core.internal.resource.java.EclipseLinkChangeTrackingAnnotationDefinition;
+import org.eclipse.jpt.eclipselink.core.internal.resource.java.EclipseLinkConvertAnnotationDefinition;
+import org.eclipse.jpt.eclipselink.core.internal.resource.java.EclipseLinkConverterAnnotationDefinition;
+import org.eclipse.jpt.eclipselink.core.internal.resource.java.EclipseLinkCustomizerAnnotationDefinition;
+import org.eclipse.jpt.eclipselink.core.internal.resource.java.EclipseLinkExistenceCheckingAnnotationDefinition;
+import org.eclipse.jpt.eclipselink.core.internal.resource.java.EclipseLinkJoinFetchAnnotationDefinition;
+import org.eclipse.jpt.eclipselink.core.internal.resource.java.EclipseLinkMutableAnnotationDefinition;
+import org.eclipse.jpt.eclipselink.core.internal.resource.java.EclipseLinkObjectTypeConverterAnnotationDefinition;
+import org.eclipse.jpt.eclipselink.core.internal.resource.java.EclipseLinkPrivateOwnedAnnotationDefinition;
+import org.eclipse.jpt.eclipselink.core.internal.resource.java.EclipseLinkReadOnlyAnnotationDefinition;
+import org.eclipse.jpt.eclipselink.core.internal.resource.java.EclipseLinkReadTransformerAnnotationDefinition;
+import org.eclipse.jpt.eclipselink.core.internal.resource.java.EclipseLinkStructConverterAnnotationDefinition;
+import org.eclipse.jpt.eclipselink.core.internal.resource.java.EclipseLinkTransformationAnnotationDefinition;
+import org.eclipse.jpt.eclipselink.core.internal.resource.java.EclipseLinkTypeConverterAnnotationDefinition;
+import org.eclipse.jpt.eclipselink.core.internal.resource.java.EclipseLinkVariableOneToOneAnnotationDefinition;
+import org.eclipse.jpt.eclipselink.core.internal.resource.java.EclipseLinkWriteTransformerAnnotationDefinition;
 
 /**
  * Provides annotations for 1.0 EclipseLink platform
@@ -63,37 +63,37 @@ public class EclipseLinkJpaAnnotationDefinitionProvider
 	
 	@Override
 	protected void addTypeSupportingAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
-		definitions.add(CacheAnnotationDefinition.instance());
-		definitions.add(ChangeTrackingAnnotationDefinition.instance());
-		definitions.add(ConverterAnnotationDefinition.instance());
-		definitions.add(CustomizerAnnotationDefinition.instance());
-		definitions.add(ExistenceCheckingAnnotationDefinition.instance());
-		definitions.add(ObjectTypeConverterAnnotationDefinition.instance());
-		definitions.add(ReadOnlyAnnotationDefinition.instance());
-		definitions.add(StructConverterAnnotationDefinition.instance());		
-		definitions.add(TypeConverterAnnotationDefinition.instance());		
+		definitions.add(EclipseLinkCacheAnnotationDefinition.instance());
+		definitions.add(EclipseLinkChangeTrackingAnnotationDefinition.instance());
+		definitions.add(EclipseLinkConverterAnnotationDefinition.instance());
+		definitions.add(EclipseLinkCustomizerAnnotationDefinition.instance());
+		definitions.add(EclipseLinkExistenceCheckingAnnotationDefinition.instance());
+		definitions.add(EclipseLinkObjectTypeConverterAnnotationDefinition.instance());
+		definitions.add(EclipseLinkReadOnlyAnnotationDefinition.instance());
+		definitions.add(EclipseLinkStructConverterAnnotationDefinition.instance());		
+		definitions.add(EclipseLinkTypeConverterAnnotationDefinition.instance());		
 	}
 
 	// 245996 addresses how the attribute mapping annotations should be ordered
 	@Override
 	protected void addAttributeMappingAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
-		definitions.add(BasicCollectionAnnotationDefinition.instance());
-		definitions.add(BasicMapAnnotationDefinition.instance());
-		definitions.add(TransformationAnnotationDefinition.instance());
-		definitions.add(VariableOneToOneAnnotationDefinition.instance());
+		definitions.add(EclipseLinkBasicCollectionAnnotationDefinition.instance());
+		definitions.add(EclipseLinkBasicMapAnnotationDefinition.instance());
+		definitions.add(EclipseLinkTransformationAnnotationDefinition.instance());
+		definitions.add(EclipseLinkVariableOneToOneAnnotationDefinition.instance());
 	}
 	
 	@Override
 	protected void addAttributeSupportingAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
-		definitions.add(ConvertAnnotationDefinition.instance());
-		definitions.add(ConverterAnnotationDefinition.instance());
-		definitions.add(JoinFetchAnnotationDefinition.instance());
-		definitions.add(MutableAnnotationDefinition.instance());
-		definitions.add(ObjectTypeConverterAnnotationDefinition.instance());
-		definitions.add(PrivateOwnedAnnotationDefinition.instance());
-		definitions.add(ReadTransformerAnnotationDefinition.instance());		
-		definitions.add(StructConverterAnnotationDefinition.instance());		
-		definitions.add(TypeConverterAnnotationDefinition.instance());		
-		definitions.add(WriteTransformerAnnotationDefinition.instance());		
+		definitions.add(EclipseLinkConvertAnnotationDefinition.instance());
+		definitions.add(EclipseLinkConverterAnnotationDefinition.instance());
+		definitions.add(EclipseLinkJoinFetchAnnotationDefinition.instance());
+		definitions.add(EclipseLinkMutableAnnotationDefinition.instance());
+		definitions.add(EclipseLinkObjectTypeConverterAnnotationDefinition.instance());
+		definitions.add(EclipseLinkPrivateOwnedAnnotationDefinition.instance());
+		definitions.add(EclipseLinkReadTransformerAnnotationDefinition.instance());		
+		definitions.add(EclipseLinkStructConverterAnnotationDefinition.instance());		
+		definitions.add(EclipseLinkTypeConverterAnnotationDefinition.instance());		
+		definitions.add(EclipseLinkWriteTransformerAnnotationDefinition.instance());		
 	}
 }

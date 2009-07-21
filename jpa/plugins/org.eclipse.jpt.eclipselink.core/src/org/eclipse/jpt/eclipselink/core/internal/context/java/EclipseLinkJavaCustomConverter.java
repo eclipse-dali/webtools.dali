@@ -18,7 +18,7 @@ import org.eclipse.jpt.eclipselink.core.context.CustomConverter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
-import org.eclipse.jpt.eclipselink.core.resource.java.ConverterAnnotation;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkConverterAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -38,12 +38,12 @@ public class EclipseLinkJavaCustomConverter extends EclipseLinkJavaConverter
 	
 	@Override
 	public String getAnnotationName() {
-		return ConverterAnnotation.ANNOTATION_NAME;
+		return EclipseLinkConverterAnnotation.ANNOTATION_NAME;
 	}
 	
 	@Override
-	protected ConverterAnnotation getAnnotation() {
-		return (ConverterAnnotation) super.getAnnotation();
+	protected EclipseLinkConverterAnnotation getAnnotation() {
+		return (EclipseLinkConverterAnnotation) super.getAnnotation();
 	}
 	
 	
@@ -81,7 +81,7 @@ public class EclipseLinkJavaCustomConverter extends EclipseLinkJavaConverter
 		this.setConverterClass_(this.converterClass(getAnnotation()));
 	}
 	
-	protected String converterClass(ConverterAnnotation resourceConverter) {
+	protected String converterClass(EclipseLinkConverterAnnotation resourceConverter) {
 		return resourceConverter == null ? null : resourceConverter.getConverterClass();
 	}
 

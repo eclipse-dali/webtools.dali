@@ -13,7 +13,7 @@ import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
-import org.eclipse.jpt.eclipselink.core.resource.java.ReadOnlyAnnotation;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkReadOnlyAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
@@ -40,7 +40,7 @@ public class ReadOnlyTests extends EclipseLinkJavaResourceModelTestCase {
 		ICompilationUnit cu = this.createTestReadOnly();
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
 		
-		ReadOnlyAnnotation readOnly = (ReadOnlyAnnotation) typeResource.getSupportingAnnotation(EclipseLinkJPA.READ_ONLY);
+		EclipseLinkReadOnlyAnnotation readOnly = (EclipseLinkReadOnlyAnnotation) typeResource.getSupportingAnnotation(EclipseLinkJPA.READ_ONLY);
 		assertNotNull(readOnly);
 	}
 

@@ -15,7 +15,7 @@ import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.PrivateOwned;
-import org.eclipse.jpt.eclipselink.core.resource.java.PrivateOwnedAnnotation;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkPrivateOwnedAnnotation;
 
 public class EclipseLinkJavaPrivateOwned extends AbstractJavaJpaContextNode implements PrivateOwned
 {
@@ -28,11 +28,11 @@ public class EclipseLinkJavaPrivateOwned extends AbstractJavaJpaContextNode impl
 	}
 	
 	protected String getPrivateOwnedAnnotationName() {
-		return PrivateOwnedAnnotation.ANNOTATION_NAME;
+		return EclipseLinkPrivateOwnedAnnotation.ANNOTATION_NAME;
 	}
 	
-	protected PrivateOwnedAnnotation getResourcePrivateOwned() {
-		return (PrivateOwnedAnnotation) this.resourcePersistentAttribute.getSupportingAnnotation(getPrivateOwnedAnnotationName());
+	protected EclipseLinkPrivateOwnedAnnotation getResourcePrivateOwned() {
+		return (EclipseLinkPrivateOwnedAnnotation) this.resourcePersistentAttribute.getSupportingAnnotation(getPrivateOwnedAnnotationName());
 	}
 	
 	protected void addResourcePrivateOwned() {
@@ -87,7 +87,7 @@ public class EclipseLinkJavaPrivateOwned extends AbstractJavaJpaContextNode impl
 	}
 	
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		PrivateOwnedAnnotation resourcePrivateOwned = this.getResourcePrivateOwned();
+		EclipseLinkPrivateOwnedAnnotation resourcePrivateOwned = this.getResourcePrivateOwned();
 		return resourcePrivateOwned == null ? null : resourcePrivateOwned.getTextRange(astRoot);
 	}
 

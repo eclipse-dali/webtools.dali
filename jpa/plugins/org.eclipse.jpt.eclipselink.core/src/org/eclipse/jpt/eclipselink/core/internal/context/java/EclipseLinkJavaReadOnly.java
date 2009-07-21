@@ -15,7 +15,7 @@ import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.ReadOnly;
-import org.eclipse.jpt.eclipselink.core.resource.java.ReadOnlyAnnotation;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkReadOnlyAnnotation;
 
 public class EclipseLinkJavaReadOnly extends AbstractJavaJpaContextNode implements ReadOnly
 {
@@ -30,11 +30,11 @@ public class EclipseLinkJavaReadOnly extends AbstractJavaJpaContextNode implemen
 	
 	
 	protected String getReadOnlyAnnotationName() {
-		return ReadOnlyAnnotation.ANNOTATION_NAME;
+		return EclipseLinkReadOnlyAnnotation.ANNOTATION_NAME;
 	}
 	
-	protected ReadOnlyAnnotation getResourceReadOnly() {
-		return (ReadOnlyAnnotation) this.resourcePersistentType.getSupportingAnnotation(getReadOnlyAnnotationName());
+	protected EclipseLinkReadOnlyAnnotation getResourceReadOnly() {
+		return (EclipseLinkReadOnlyAnnotation) this.resourcePersistentType.getSupportingAnnotation(getReadOnlyAnnotationName());
 	}
 	
 	protected void addResourceReadOnly() {
@@ -97,7 +97,7 @@ public class EclipseLinkJavaReadOnly extends AbstractJavaJpaContextNode implemen
 	}
 	
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		ReadOnlyAnnotation resourceReadOnly = this.getResourceReadOnly();
+		EclipseLinkReadOnlyAnnotation resourceReadOnly = this.getResourceReadOnly();
 		return resourceReadOnly == null ? null : resourceReadOnly.getTextRange(astRoot);
 	}
 }

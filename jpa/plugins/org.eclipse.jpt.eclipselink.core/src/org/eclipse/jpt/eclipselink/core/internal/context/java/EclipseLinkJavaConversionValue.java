@@ -16,14 +16,14 @@ import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.ConversionValue;
 import org.eclipse.jpt.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
-import org.eclipse.jpt.eclipselink.core.resource.java.ConversionValueAnnotation;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkConversionValueAnnotation;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class EclipseLinkJavaConversionValue extends AbstractJavaJpaContextNode implements ConversionValue
 {	
-	private ConversionValueAnnotation resourceConversionValue;
+	private EclipseLinkConversionValueAnnotation resourceConversionValue;
 	
 	private String dataValue;
 	
@@ -39,7 +39,7 @@ public class EclipseLinkJavaConversionValue extends AbstractJavaJpaContextNode i
 	}
 
 	protected String getAnnotationName() {
-		return ConversionValueAnnotation.ANNOTATION_NAME;
+		return EclipseLinkConversionValueAnnotation.ANNOTATION_NAME;
 	}		
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
@@ -80,13 +80,13 @@ public class EclipseLinkJavaConversionValue extends AbstractJavaJpaContextNode i
 		firePropertyChanged(OBJECT_VALUE_PROPERTY, oldObjectValue, newObjectValue);
 	}
 
-	public void initialize(ConversionValueAnnotation resourceConversionValue) {
+	public void initialize(EclipseLinkConversionValueAnnotation resourceConversionValue) {
 		this.resourceConversionValue = resourceConversionValue;
 		this.dataValue = this.dataValue();
 		this.objectValue = this.objectValue();
 	}
 	
-	public void update(ConversionValueAnnotation resourceConversionValue) {
+	public void update(EclipseLinkConversionValueAnnotation resourceConversionValue) {
 		this.resourceConversionValue = resourceConversionValue;
 		this.setDataValue_(this.dataValue());
 		this.setObjectValue_(this.objectValue());

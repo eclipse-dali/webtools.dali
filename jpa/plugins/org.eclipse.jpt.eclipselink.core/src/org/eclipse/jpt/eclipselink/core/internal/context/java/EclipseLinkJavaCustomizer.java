@@ -19,7 +19,7 @@ import org.eclipse.jpt.eclipselink.core.context.Customizer;
 import org.eclipse.jpt.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaFactory;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
-import org.eclipse.jpt.eclipselink.core.resource.java.CustomizerAnnotation;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkCustomizerAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -43,7 +43,7 @@ public class EclipseLinkJavaCustomizer extends AbstractJavaJpaContextNode implem
 	}
 
 	protected String getAnnotationName() {
-		return CustomizerAnnotation.ANNOTATION_NAME;
+		return EclipseLinkCustomizerAnnotation.ANNOTATION_NAME;
 	}
 		
 	protected void addResourceCustomizer() {
@@ -58,8 +58,8 @@ public class EclipseLinkJavaCustomizer extends AbstractJavaJpaContextNode implem
 		return getResourceCustomizer().getTextRange(astRoot);
 	}
 
-	protected CustomizerAnnotation getResourceCustomizer() {
-		return (CustomizerAnnotation) this.resourcePersistentType.getSupportingAnnotation(getAnnotationName());
+	protected EclipseLinkCustomizerAnnotation getResourceCustomizer() {
+		return (EclipseLinkCustomizerAnnotation) this.resourcePersistentType.getSupportingAnnotation(getAnnotationName());
 	}
 	
 	public String getCustomizerClass() {
@@ -100,17 +100,17 @@ public class EclipseLinkJavaCustomizer extends AbstractJavaJpaContextNode implem
 	
 	public void initialize(JavaResourcePersistentType jrpt) {
 		this.resourcePersistentType = jrpt;
-		CustomizerAnnotation resourceCustomizer = getResourceCustomizer();
+		EclipseLinkCustomizerAnnotation resourceCustomizer = getResourceCustomizer();
 		this.customizerClass = this.customizerClass(resourceCustomizer);
 	}
 	
 	public void update(JavaResourcePersistentType jrpt) {
 		this.resourcePersistentType = jrpt;
-		CustomizerAnnotation resourceCustomizer = getResourceCustomizer();
+		EclipseLinkCustomizerAnnotation resourceCustomizer = getResourceCustomizer();
 		this.setCustomizerClass_(this.customizerClass(resourceCustomizer));
 	}
 	
-	protected String customizerClass(CustomizerAnnotation resourceCustomizer) {
+	protected String customizerClass(EclipseLinkCustomizerAnnotation resourceCustomizer) {
 		return resourceCustomizer == null ? null : resourceCustomizer.getValue();
 	}
 
@@ -127,7 +127,7 @@ public class EclipseLinkJavaCustomizer extends AbstractJavaJpaContextNode implem
 	}
 	
 	protected void validateConverterClass(List<IMessage> messages, CompilationUnit astRoot) {
-		CustomizerAnnotation resourceCustomizer = getResourceCustomizer();
+		EclipseLinkCustomizerAnnotation resourceCustomizer = getResourceCustomizer();
 		if (resourceCustomizer != null && !resourceCustomizer.customizerClassImplementsInterface(ECLIPSELINK_DESCRIPTOR_CUSTOMIZER_CLASS_NAME, astRoot)) {
 			messages.add(
 				DefaultEclipseLinkJpaValidationMessages.buildMessage(

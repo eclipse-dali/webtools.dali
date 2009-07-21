@@ -17,7 +17,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
-import org.eclipse.jpt.eclipselink.core.resource.java.NamedConverterAnnotation;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkNamedConverterAnnotation;
 import org.eclipse.jpt.utility.internal.StringTools;
 
 public abstract class EclipseLinkJavaConverter extends AbstractJavaJpaContextNode
@@ -33,8 +33,8 @@ public abstract class EclipseLinkJavaConverter extends AbstractJavaJpaContextNod
 	}
 	
 	
-	protected NamedConverterAnnotation getAnnotation() {
-		return (NamedConverterAnnotation) this.resourcePersistentMember.getSupportingAnnotation(getAnnotationName());
+	protected EclipseLinkNamedConverterAnnotation getAnnotation() {
+		return (EclipseLinkNamedConverterAnnotation) this.resourcePersistentMember.getSupportingAnnotation(getAnnotationName());
 	}
 	
 	protected abstract String getAnnotationName();
@@ -81,7 +81,7 @@ public abstract class EclipseLinkJavaConverter extends AbstractJavaJpaContextNod
 		getPersistenceUnit().addConverter(this);
 	}
 	
-	protected String name(NamedConverterAnnotation resourceConverter) {
+	protected String name(EclipseLinkNamedConverterAnnotation resourceConverter) {
 		return resourceConverter == null ? null : resourceConverter.getName();
 	}
 	

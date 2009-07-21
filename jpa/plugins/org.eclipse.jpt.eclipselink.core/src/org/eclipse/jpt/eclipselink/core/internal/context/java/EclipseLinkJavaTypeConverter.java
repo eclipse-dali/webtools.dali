@@ -13,7 +13,7 @@ import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.eclipselink.core.context.TypeConverter;
-import org.eclipse.jpt.eclipselink.core.resource.java.TypeConverterAnnotation;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkTypeConverterAnnotation;
 
 public class EclipseLinkJavaTypeConverter extends EclipseLinkJavaConverter
 	implements TypeConverter
@@ -33,12 +33,12 @@ public class EclipseLinkJavaTypeConverter extends EclipseLinkJavaConverter
 	
 	@Override
 	public String getAnnotationName() {
-		return TypeConverterAnnotation.ANNOTATION_NAME;
+		return EclipseLinkTypeConverterAnnotation.ANNOTATION_NAME;
 	}
 	
 	@Override
-	protected TypeConverterAnnotation getAnnotation() {
-		return (TypeConverterAnnotation) super.getAnnotation();
+	protected EclipseLinkTypeConverterAnnotation getAnnotation() {
+		return (EclipseLinkTypeConverterAnnotation) super.getAnnotation();
 	}
 	
 	
@@ -87,7 +87,7 @@ public class EclipseLinkJavaTypeConverter extends EclipseLinkJavaConverter
 	@Override
 	protected void initialize(JavaResourcePersistentMember jrpm) {
 		super.initialize(jrpm);
-		TypeConverterAnnotation resourceConverter = getAnnotation();
+		EclipseLinkTypeConverterAnnotation resourceConverter = getAnnotation();
 		this.dataType = this.dataType(resourceConverter);
 		this.objectType = this.objectType(resourceConverter);
 	}
@@ -95,16 +95,16 @@ public class EclipseLinkJavaTypeConverter extends EclipseLinkJavaConverter
 	@Override
 	public void update(JavaResourcePersistentMember jrpm) {
 		super.update(jrpm);
-		TypeConverterAnnotation resourceConverter = getAnnotation();
+		EclipseLinkTypeConverterAnnotation resourceConverter = getAnnotation();
 		this.setDataType_(this.dataType(resourceConverter));
 		this.setObjectType_(this.objectType(resourceConverter));
 	}
 	
-	protected String dataType(TypeConverterAnnotation resourceConverter) {
+	protected String dataType(EclipseLinkTypeConverterAnnotation resourceConverter) {
 		return resourceConverter == null ? null : resourceConverter.getDataType();
 	}
 	
-	protected String objectType(TypeConverterAnnotation resourceConverter) {
+	protected String objectType(EclipseLinkTypeConverterAnnotation resourceConverter) {
 		return resourceConverter == null ? null : resourceConverter.getObjectType();
 	}
 }

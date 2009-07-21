@@ -17,7 +17,7 @@ import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.ChangeTracking;
 import org.eclipse.jpt.eclipselink.core.context.ChangeTrackingType;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaFactory;
-import org.eclipse.jpt.eclipselink.core.resource.java.ChangeTrackingAnnotation;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkChangeTrackingAnnotation;
 
 public class EclipseLinkJavaChangeTracking extends AbstractJavaJpaContextNode implements ChangeTracking
 {
@@ -41,11 +41,11 @@ public class EclipseLinkJavaChangeTracking extends AbstractJavaJpaContextNode im
 	}
 	
 	protected String getChangeTrackingAnnotationName() {
-		return ChangeTrackingAnnotation.ANNOTATION_NAME;
+		return EclipseLinkChangeTrackingAnnotation.ANNOTATION_NAME;
 	}
 	
-	protected ChangeTrackingAnnotation getChangeTrackingAnnotation() {
-		return (ChangeTrackingAnnotation) this.resourcePersistentType.getSupportingAnnotation(getChangeTrackingAnnotationName());
+	protected EclipseLinkChangeTrackingAnnotation getChangeTrackingAnnotation() {
+		return (EclipseLinkChangeTrackingAnnotation) this.resourcePersistentType.getSupportingAnnotation(getChangeTrackingAnnotationName());
 	}
 	
 	protected void addChangeTrackingAnnotation() {
@@ -104,17 +104,17 @@ public class EclipseLinkJavaChangeTracking extends AbstractJavaJpaContextNode im
 	
 	public void initialize(JavaResourcePersistentType resourcePersistentType) {
 		this.resourcePersistentType = resourcePersistentType;
-		ChangeTrackingAnnotation changeTrackingAnnotation = this.getChangeTrackingAnnotation();
+		EclipseLinkChangeTrackingAnnotation changeTrackingAnnotation = this.getChangeTrackingAnnotation();
 		this.specifiedType = changeTrackingType(changeTrackingAnnotation);
 	}
 	
 	public void update(JavaResourcePersistentType resourcePersistentType) {
 		this.resourcePersistentType = resourcePersistentType;
-		ChangeTrackingAnnotation changeTrackingAnnotation = this.getChangeTrackingAnnotation();
+		EclipseLinkChangeTrackingAnnotation changeTrackingAnnotation = this.getChangeTrackingAnnotation();
 		this.setSpecifiedType_(changeTrackingType(changeTrackingAnnotation));
 	}
 	
-	protected ChangeTrackingType changeTrackingType(ChangeTrackingAnnotation changeTracking) {
+	protected ChangeTrackingType changeTrackingType(EclipseLinkChangeTrackingAnnotation changeTracking) {
 		if (changeTracking == null) {
 			return null;
 		}
@@ -127,7 +127,7 @@ public class EclipseLinkJavaChangeTracking extends AbstractJavaJpaContextNode im
 	}
 	
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		ChangeTrackingAnnotation changeTrackingAnnotation = getChangeTrackingAnnotation();
+		EclipseLinkChangeTrackingAnnotation changeTrackingAnnotation = getChangeTrackingAnnotation();
 		TextRange textRange = changeTrackingAnnotation == null ? null : changeTrackingAnnotation.getTextRange(astRoot);
 		return (textRange != null) ? textRange : this.getParent().getValidationTextRange(astRoot);
 	}

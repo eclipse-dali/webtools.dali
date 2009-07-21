@@ -14,11 +14,11 @@ import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaAttributeMapping;
 import org.eclipse.jpt.eclipselink.core.EclipseLinkMappingKeys;
 import org.eclipse.jpt.eclipselink.core.context.TransformationMapping;
-import org.eclipse.jpt.eclipselink.core.resource.java.TransformationAnnotation;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkTransformationAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
 public class JavaTransformationMapping 
-	extends AbstractJavaAttributeMapping<TransformationAnnotation> 
+	extends AbstractJavaAttributeMapping<EclipseLinkTransformationAnnotation> 
 	implements TransformationMapping
 {
 	
@@ -31,7 +31,7 @@ public class JavaTransformationMapping
 	}
 	
 	public String getAnnotationName() {
-		return TransformationAnnotation.ANNOTATION_NAME;
+		return EclipseLinkTransformationAnnotation.ANNOTATION_NAME;
 	}
 	
 	public Iterator<String> supportingAnnotationNames() {

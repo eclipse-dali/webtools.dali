@@ -26,8 +26,8 @@ import org.eclipse.jpt.eclipselink.core.context.JoinFetch;
 import org.eclipse.jpt.eclipselink.core.context.JoinFetchType;
 import org.eclipse.jpt.eclipselink.core.context.PrivateOwned;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
-import org.eclipse.jpt.eclipselink.core.resource.java.JoinFetchAnnotation;
-import org.eclipse.jpt.eclipselink.core.resource.java.PrivateOwnedAnnotation;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJoinFetchAnnotation;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkPrivateOwnedAnnotation;
 import org.eclipse.jpt.eclipselink.core.tests.internal.context.EclipseLinkContextModelTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
@@ -126,11 +126,11 @@ public class EclipseLinkJavaOneToManyMappingTests extends EclipseLinkContextMode
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		assertNull(attributeResource.getSupportingAnnotation(PrivateOwnedAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getSupportingAnnotation(EclipseLinkPrivateOwnedAnnotation.ANNOTATION_NAME));
 		assertEquals(false, privateOwnable.isPrivateOwned());
 
 		privateOwnable.setPrivateOwned(true);
-		assertNotNull(attributeResource.getSupportingAnnotation(PrivateOwnedAnnotation.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getSupportingAnnotation(EclipseLinkPrivateOwnedAnnotation.ANNOTATION_NAME));
 		assertEquals(true, privateOwnable.isPrivateOwned());
 	}
 	
@@ -146,11 +146,11 @@ public class EclipseLinkJavaOneToManyMappingTests extends EclipseLinkContextMode
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		attributeResource.removeSupportingAnnotation(PrivateOwnedAnnotation.ANNOTATION_NAME);
+		attributeResource.removeSupportingAnnotation(EclipseLinkPrivateOwnedAnnotation.ANNOTATION_NAME);
 		
 		assertEquals(false, privateOwnable.isPrivateOwned());
 		
-		attributeResource.addSupportingAnnotation(PrivateOwnedAnnotation.ANNOTATION_NAME);
+		attributeResource.addSupportingAnnotation(EclipseLinkPrivateOwnedAnnotation.ANNOTATION_NAME);
 		assertEquals(true, privateOwnable.isPrivateOwned());
 	}
 	
@@ -163,7 +163,7 @@ public class EclipseLinkJavaOneToManyMappingTests extends EclipseLinkContextMode
 		JoinFetch contextJoinFetch = manyToManyMapping.getJoinFetch();
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		JoinFetchAnnotation joinFetchAnnotation = (JoinFetchAnnotation) attributeResource.getSupportingAnnotation(JoinFetchAnnotation.ANNOTATION_NAME);
+		EclipseLinkJoinFetchAnnotation joinFetchAnnotation = (EclipseLinkJoinFetchAnnotation) attributeResource.getSupportingAnnotation(EclipseLinkJoinFetchAnnotation.ANNOTATION_NAME);
 		
 		// base annotated, test context value
 		
@@ -193,7 +193,7 @@ public class EclipseLinkJavaOneToManyMappingTests extends EclipseLinkContextMode
 		
 		// remove annotation, text context
 		
-		attributeResource.removeSupportingAnnotation(JoinFetchAnnotation.ANNOTATION_NAME);
+		attributeResource.removeSupportingAnnotation(EclipseLinkJoinFetchAnnotation.ANNOTATION_NAME);
 		
 		assertNull(joinFetchAnnotation.getValue());
 		assertNull(contextJoinFetch.getValue());
@@ -208,7 +208,7 @@ public class EclipseLinkJavaOneToManyMappingTests extends EclipseLinkContextMode
 		JoinFetch contextJoinFetch = manyToManyMapping.getJoinFetch();
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		JoinFetchAnnotation joinFetchAnnotation = (JoinFetchAnnotation) attributeResource.getSupportingAnnotation(JoinFetchAnnotation.ANNOTATION_NAME);
+		EclipseLinkJoinFetchAnnotation joinFetchAnnotation = (EclipseLinkJoinFetchAnnotation) attributeResource.getSupportingAnnotation(EclipseLinkJoinFetchAnnotation.ANNOTATION_NAME);
 		
 		// base annotated, test resource value
 		
@@ -233,13 +233,13 @@ public class EclipseLinkJavaOneToManyMappingTests extends EclipseLinkContextMode
 		
 		contextJoinFetch.setValue(null);
 		
-		assertNull(attributeResource.getSupportingAnnotation(JoinFetchAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getSupportingAnnotation(EclipseLinkJoinFetchAnnotation.ANNOTATION_NAME));
 		assertNull(contextJoinFetch.getValue());
 		
 		// change context to INNER specifically (this time from no annotation), test resource
 		
 		contextJoinFetch.setValue(JoinFetchType.INNER);
-		joinFetchAnnotation = (JoinFetchAnnotation) attributeResource.getSupportingAnnotation(JoinFetchAnnotation.ANNOTATION_NAME);
+		joinFetchAnnotation = (EclipseLinkJoinFetchAnnotation) attributeResource.getSupportingAnnotation(EclipseLinkJoinFetchAnnotation.ANNOTATION_NAME);
 		
 		assertEquals(org.eclipse.jpt.eclipselink.core.resource.java.JoinFetchType.INNER, joinFetchAnnotation.getValue());
 		assertEquals(JoinFetchType.INNER, contextJoinFetch.getValue());

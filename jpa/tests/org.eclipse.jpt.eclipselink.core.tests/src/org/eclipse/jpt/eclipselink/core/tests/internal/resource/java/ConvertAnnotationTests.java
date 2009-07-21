@@ -13,7 +13,7 @@ import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.eclipselink.core.resource.java.ConvertAnnotation;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkConvertAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
@@ -69,7 +69,7 @@ public class ConvertAnnotationTests extends EclipseLinkJavaResourceModelTestCase
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		ConvertAnnotation convert = (ConvertAnnotation) attributeResource.getSupportingAnnotation(EclipseLinkJPA.CONVERT);
+		EclipseLinkConvertAnnotation convert = (EclipseLinkConvertAnnotation) attributeResource.getSupportingAnnotation(EclipseLinkJPA.CONVERT);
 		assertEquals("myConverter", convert.getValue());
 	}
 
@@ -78,7 +78,7 @@ public class ConvertAnnotationTests extends EclipseLinkJavaResourceModelTestCase
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		ConvertAnnotation convert = (ConvertAnnotation) attributeResource.getSupportingAnnotation(EclipseLinkJPA.CONVERT);
+		EclipseLinkConvertAnnotation convert = (EclipseLinkConvertAnnotation) attributeResource.getSupportingAnnotation(EclipseLinkJPA.CONVERT);
 		assertEquals("myConverter", convert.getValue());
 		
 		convert.setValue("Bar");
@@ -92,7 +92,7 @@ public class ConvertAnnotationTests extends EclipseLinkJavaResourceModelTestCase
 		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
 		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
 		
-		ConvertAnnotation convert = (ConvertAnnotation) attributeResource.getSupportingAnnotation(EclipseLinkJPA.CONVERT);
+		EclipseLinkConvertAnnotation convert = (EclipseLinkConvertAnnotation) attributeResource.getSupportingAnnotation(EclipseLinkJPA.CONVERT);
 		assertEquals("myConverter", convert.getValue());
 		
 		convert.setValue(null);

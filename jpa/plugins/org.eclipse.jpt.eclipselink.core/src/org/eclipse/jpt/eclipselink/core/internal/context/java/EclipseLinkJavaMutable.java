@@ -16,7 +16,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.Mutable;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
-import org.eclipse.jpt.eclipselink.core.resource.java.MutableAnnotation;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkMutableAnnotation;
 
 public class EclipseLinkJavaMutable extends AbstractJavaJpaContextNode implements Mutable
 {
@@ -39,11 +39,11 @@ public class EclipseLinkJavaMutable extends AbstractJavaJpaContextNode implement
 	}
 	
 	protected String getMutableAnnotationName() {
-		return MutableAnnotation.ANNOTATION_NAME;
+		return EclipseLinkMutableAnnotation.ANNOTATION_NAME;
 	}
 	
-	protected MutableAnnotation getResourceMutable() {
-		return (MutableAnnotation) this.resourcePersistentAttribute.getSupportingAnnotation(getMutableAnnotationName());
+	protected EclipseLinkMutableAnnotation getResourceMutable() {
+		return (EclipseLinkMutableAnnotation) this.resourcePersistentAttribute.getSupportingAnnotation(getMutableAnnotationName());
 	}
 	
 	protected void addResourceMutable() {
@@ -115,19 +115,19 @@ public class EclipseLinkJavaMutable extends AbstractJavaJpaContextNode implement
 	
 	public void initialize(JavaResourcePersistentAttribute jrpa) {
 		this.resourcePersistentAttribute = jrpa;
-		MutableAnnotation resourceMutable = this.getResourceMutable();
+		EclipseLinkMutableAnnotation resourceMutable = this.getResourceMutable();
 		this.specifiedMutable = this.specifiedMutable(resourceMutable);
 		this.defaultMutable = this.calculateDefaultMutable();
 	}
 	
 	public void update(JavaResourcePersistentAttribute jrpa) {
 		this.resourcePersistentAttribute = jrpa;
-		MutableAnnotation resourceMutable = this.getResourceMutable();
+		EclipseLinkMutableAnnotation resourceMutable = this.getResourceMutable();
 		this.setSpecifiedMutable_(this.specifiedMutable(resourceMutable));
 		this.setDefaultMutable(this.calculateDefaultMutable());
 	}
 	
-	private Boolean specifiedMutable(MutableAnnotation resourceMutable) {
+	private Boolean specifiedMutable(EclipseLinkMutableAnnotation resourceMutable) {
 		if (resourceMutable == null) {
 			return null;
 		}
@@ -138,7 +138,7 @@ public class EclipseLinkJavaMutable extends AbstractJavaJpaContextNode implement
 	}
 	
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		MutableAnnotation resourceMutable = this.getResourceMutable();
+		EclipseLinkMutableAnnotation resourceMutable = this.getResourceMutable();
 		return resourceMutable == null ? null : resourceMutable.getTextRange(astRoot);
 	}
 

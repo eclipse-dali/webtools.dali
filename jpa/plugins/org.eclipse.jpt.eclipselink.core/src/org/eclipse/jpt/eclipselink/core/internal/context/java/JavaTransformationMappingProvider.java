@@ -15,7 +15,7 @@ import org.eclipse.jpt.core.context.java.JavaAttributeMappingProvider;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.eclipselink.core.EclipseLinkMappingKeys;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaFactory;
-import org.eclipse.jpt.eclipselink.core.resource.java.TransformationAnnotation;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkTransformationAnnotation;
 
 public class JavaTransformationMappingProvider
 	implements JavaAttributeMappingProvider
@@ -43,7 +43,7 @@ public class JavaTransformationMappingProvider
 	}
 	
 	public String getAnnotationName() {
-		return TransformationAnnotation.ANNOTATION_NAME;
+		return EclipseLinkTransformationAnnotation.ANNOTATION_NAME;
 	}
 
 	public JavaAttributeMapping buildMapping(JavaPersistentAttribute parent, JpaFactory factory) {

@@ -15,7 +15,7 @@ import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.eclipselink.core.EclipseLinkMappingKeys;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaFactory;
-import org.eclipse.jpt.eclipselink.core.resource.java.VariableOneToOneAnnotation;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkVariableOneToOneAnnotation;
 
 public class JavaVariableOneToOneMappingProvider
 	implements DefaultJavaAttributeMappingProvider
@@ -43,7 +43,7 @@ public class JavaVariableOneToOneMappingProvider
 	}
 	
 	public String getAnnotationName() {
-		return VariableOneToOneAnnotation.ANNOTATION_NAME;
+		return EclipseLinkVariableOneToOneAnnotation.ANNOTATION_NAME;
 	}
 
 	public JavaAttributeMapping buildMapping(JavaPersistentAttribute parent, JpaFactory factory) {

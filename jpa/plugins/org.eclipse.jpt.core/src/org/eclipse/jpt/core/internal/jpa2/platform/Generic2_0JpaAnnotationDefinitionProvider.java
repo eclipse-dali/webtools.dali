@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.internal.jpa2.platform;
 
 import java.util.List;
 import org.eclipse.jpt.core.JpaAnnotationDefinitionProvider;
-import org.eclipse.jpt.core.internal.jpa2.resource.java.AccessAnnotationDefinition;
+import org.eclipse.jpt.core.internal.jpa2.resource.java.Access2_0AnnotationDefinition;
 import org.eclipse.jpt.core.internal.jpa2.resource.java.AssociationOverride2_0AnnotationDefinition;
 import org.eclipse.jpt.core.internal.jpa2.resource.java.AssociationOverrides2_0AnnotationDefinition;
 import org.eclipse.jpt.core.internal.jpa2.resource.java.SequenceGenerator2_0AnnotationDefinition;
@@ -89,7 +89,7 @@ public class Generic2_0JpaAnnotationDefinitionProvider
 	
 	@Override
 	protected void addTypeSupportingAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
-		definitions.add(AccessAnnotationDefinition.instance());
+		definitions.add(Access2_0AnnotationDefinition.instance());
 		definitions.add(AssociationOverride2_0AnnotationDefinition.instance());
 		definitions.add(AssociationOverrides2_0AnnotationDefinition.instance());
 		definitions.add(AttributeOverrideAnnotationDefinition.instance());
@@ -127,7 +127,7 @@ public class Generic2_0JpaAnnotationDefinitionProvider
 	
 	@Override
 	protected void addAttributeSupportingAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
-		definitions.add(AccessAnnotationDefinition.instance());
+		definitions.add(Access2_0AnnotationDefinition.instance());
 		definitions.add(AssociationOverride2_0AnnotationDefinition.instance());
 		definitions.add(AssociationOverrides2_0AnnotationDefinition.instance());
 		definitions.add(AttributeOverrideAnnotationDefinition.instance());

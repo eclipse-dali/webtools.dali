@@ -19,8 +19,8 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.eclipselink.core.context.ConversionValue;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.eclipselink.core.context.ObjectTypeConverter;
-import org.eclipse.jpt.eclipselink.core.resource.java.ConversionValueAnnotation;
-import org.eclipse.jpt.eclipselink.core.resource.java.ObjectTypeConverterAnnotation;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkConversionValueAnnotation;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkObjectTypeConverterAnnotation;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationListIterator;
@@ -51,12 +51,12 @@ public class EclipseLinkJavaObjectTypeConverter extends EclipseLinkJavaConverter
 
 	@Override
 	public String getAnnotationName() {
-		return ObjectTypeConverterAnnotation.ANNOTATION_NAME;
+		return EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME;
 	}
 	
 	@Override
-	protected ObjectTypeConverterAnnotation getAnnotation() {
-		return (ObjectTypeConverterAnnotation) super.getAnnotation();
+	protected EclipseLinkObjectTypeConverterAnnotation getAnnotation() {
+		return (EclipseLinkObjectTypeConverterAnnotation) super.getAnnotation();
 	}
 	
 	
@@ -113,7 +113,7 @@ public class EclipseLinkJavaObjectTypeConverter extends EclipseLinkJavaConverter
 	public EclipseLinkJavaConversionValue addConversionValue(int index) {
 		EclipseLinkJavaConversionValue conversionValue = new EclipseLinkJavaConversionValue(this);
 		this.conversionValues.add(index, conversionValue);
-		ConversionValueAnnotation resourceConversionValue = getAnnotation().addConversionValue(index);
+		EclipseLinkConversionValueAnnotation resourceConversionValue = getAnnotation().addConversionValue(index);
 		conversionValue.initialize(resourceConversionValue);
 		fireItemAdded(CONVERSION_VALUES_LIST, index, conversionValue);
 		return conversionValue;
@@ -186,25 +186,25 @@ public class EclipseLinkJavaObjectTypeConverter extends EclipseLinkJavaConverter
 	@Override
 	protected void initialize(JavaResourcePersistentMember jrpm) {
 		super.initialize(jrpm);
-		ObjectTypeConverterAnnotation resourceConverter = getAnnotation();
+		EclipseLinkObjectTypeConverterAnnotation resourceConverter = getAnnotation();
 		this.dataType = this.dataType(resourceConverter);
 		this.objectType = this.objectType(resourceConverter);
 		this.defaultObjectValue = this.defaultObjectValue(resourceConverter);
 		this.initializeConversionValues(resourceConverter);
 	}
 	
-	protected void initializeConversionValues(ObjectTypeConverterAnnotation resourceConverter) {
+	protected void initializeConversionValues(EclipseLinkObjectTypeConverterAnnotation resourceConverter) {
 		if (resourceConverter == null) {
 			return;
 		}
-		ListIterator<ConversionValueAnnotation> resourceConversionValues = resourceConverter.conversionValues();
+		ListIterator<EclipseLinkConversionValueAnnotation> resourceConversionValues = resourceConverter.conversionValues();
 		
 		while(resourceConversionValues.hasNext()) {
 			this.conversionValues.add(buildConversionValue(resourceConversionValues.next()));
 		}
 	}
 
-	protected EclipseLinkJavaConversionValue buildConversionValue(ConversionValueAnnotation resourceConversionValue) {
+	protected EclipseLinkJavaConversionValue buildConversionValue(EclipseLinkConversionValueAnnotation resourceConversionValue) {
 		EclipseLinkJavaConversionValue conversionValue = new EclipseLinkJavaConversionValue(this);
 		conversionValue.initialize(resourceConversionValue);
 		return conversionValue;
@@ -213,16 +213,16 @@ public class EclipseLinkJavaObjectTypeConverter extends EclipseLinkJavaConverter
 	@Override
 	public void update(JavaResourcePersistentMember jrpm) {
 		super.update(jrpm);
-		ObjectTypeConverterAnnotation resourceConverter = getAnnotation();
+		EclipseLinkObjectTypeConverterAnnotation resourceConverter = getAnnotation();
 		this.setDataType_(this.dataType(resourceConverter));
 		this.setObjectType_(this.objectType(resourceConverter));
 		this.setDefaultObjectValue_(this.defaultObjectValue(resourceConverter));
 		this.updateConversionValues(resourceConverter);
 	}
 	
-	protected void updateConversionValues(ObjectTypeConverterAnnotation resourceConverter) {
+	protected void updateConversionValues(EclipseLinkObjectTypeConverterAnnotation resourceConverter) {
 		ListIterator<EclipseLinkJavaConversionValue> contextConversionValues = conversionValues();
-		ListIterator<ConversionValueAnnotation> resourceConversionValues = resourceConverter.conversionValues();
+		ListIterator<EclipseLinkConversionValueAnnotation> resourceConversionValues = resourceConverter.conversionValues();
 		while (contextConversionValues.hasNext()) {
 			EclipseLinkJavaConversionValue conversionValues = contextConversionValues.next();
 			if (resourceConversionValues.hasNext()) {
@@ -238,15 +238,15 @@ public class EclipseLinkJavaObjectTypeConverter extends EclipseLinkJavaConverter
 		}
 	}
 	
-	protected String dataType(ObjectTypeConverterAnnotation resourceConverter) {
+	protected String dataType(EclipseLinkObjectTypeConverterAnnotation resourceConverter) {
 		return resourceConverter == null ? null : resourceConverter.getDataType();
 	}
 	
-	protected String objectType(ObjectTypeConverterAnnotation resourceConverter) {
+	protected String objectType(EclipseLinkObjectTypeConverterAnnotation resourceConverter) {
 		return resourceConverter == null ? null : resourceConverter.getObjectType();
 	}
 	
-	protected String defaultObjectValue(ObjectTypeConverterAnnotation resourceConverter) {
+	protected String defaultObjectValue(EclipseLinkObjectTypeConverterAnnotation resourceConverter) {
 		return resourceConverter == null ? null : resourceConverter.getDefaultObjectValue();
 	}
 	

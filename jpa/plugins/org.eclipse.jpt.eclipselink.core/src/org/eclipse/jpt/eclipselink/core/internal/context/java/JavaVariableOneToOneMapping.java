@@ -14,11 +14,11 @@ import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaAttributeMapping;
 import org.eclipse.jpt.eclipselink.core.EclipseLinkMappingKeys;
 import org.eclipse.jpt.eclipselink.core.context.VariableOneToOneMapping;
-import org.eclipse.jpt.eclipselink.core.resource.java.VariableOneToOneAnnotation;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkVariableOneToOneAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
 public class JavaVariableOneToOneMapping 
-	extends AbstractJavaAttributeMapping<VariableOneToOneAnnotation>
+	extends AbstractJavaAttributeMapping<EclipseLinkVariableOneToOneAnnotation>
 	implements VariableOneToOneMapping
 {
 	
@@ -31,7 +31,7 @@ public class JavaVariableOneToOneMapping
 	}
 	
 	public String getAnnotationName() {
-		return VariableOneToOneAnnotation.ANNOTATION_NAME;
+		return EclipseLinkVariableOneToOneAnnotation.ANNOTATION_NAME;
 	}
 	
 	public Iterator<String> supportingAnnotationNames() {

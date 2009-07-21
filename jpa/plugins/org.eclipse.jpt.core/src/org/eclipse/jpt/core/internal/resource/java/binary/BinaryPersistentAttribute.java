@@ -27,7 +27,7 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.Signature;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.utility.jdt.JPTTools;
-import org.eclipse.jpt.core.jpa2.resource.java.AccessAnnotation;
+import org.eclipse.jpt.core.jpa2.resource.java.Access2_0Annotation;
 import org.eclipse.jpt.core.resource.java.AccessType;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
@@ -170,7 +170,7 @@ final class BinaryPersistentAttribute
 	}
 
 	public AccessType getSpecifiedAccess() {
-		AccessAnnotation accessAnnotation = (AccessAnnotation) this.getSupportingAnnotation(AccessAnnotation.ANNOTATION_NAME);
+		Access2_0Annotation accessAnnotation = (Access2_0Annotation) this.getSupportingAnnotation(Access2_0Annotation.ANNOTATION_NAME);
 		return accessAnnotation == null ? null : accessAnnotation.getValue();
 	}
 

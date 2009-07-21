@@ -20,11 +20,11 @@ import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.Convert;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
-import org.eclipse.jpt.eclipselink.core.resource.java.ConvertAnnotation;
-import org.eclipse.jpt.eclipselink.core.resource.java.ConverterAnnotation;
-import org.eclipse.jpt.eclipselink.core.resource.java.ObjectTypeConverterAnnotation;
-import org.eclipse.jpt.eclipselink.core.resource.java.StructConverterAnnotation;
-import org.eclipse.jpt.eclipselink.core.resource.java.TypeConverterAnnotation;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkConvertAnnotation;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkConverterAnnotation;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkObjectTypeConverterAnnotation;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkStructConverterAnnotation;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkTypeConverterAnnotation;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
@@ -56,7 +56,7 @@ public class EclipseLinkJavaConvert extends AbstractJavaJpaContextNode implement
 	}
 
 	protected String getAnnotationName() {
-		return ConvertAnnotation.ANNOTATION_NAME;
+		return EclipseLinkConvertAnnotation.ANNOTATION_NAME;
 	}
 		
 	public void addToResourceModel() {
@@ -74,8 +74,8 @@ public class EclipseLinkJavaConvert extends AbstractJavaJpaContextNode implement
 		return getResourceConvert().getTextRange(astRoot);
 	}
 
-	protected ConvertAnnotation getResourceConvert() {
-		return (ConvertAnnotation) this.resourcePersistentAttribute.getSupportingAnnotation(getAnnotationName());
+	protected EclipseLinkConvertAnnotation getResourceConvert() {
+		return (EclipseLinkConvertAnnotation) this.resourcePersistentAttribute.getSupportingAnnotation(getAnnotationName());
 	}
 	
 	public String getConverterName() {
@@ -156,7 +156,7 @@ public class EclipseLinkJavaConvert extends AbstractJavaJpaContextNode implement
 	}
 	
 	protected String getResourceConverterName() {
-		ConvertAnnotation resourceConvert = getResourceConvert();
+		EclipseLinkConvertAnnotation resourceConvert = getResourceConvert();
 		return resourceConvert == null ? null : resourceConvert.getValue();
 	}
 
@@ -205,16 +205,16 @@ public class EclipseLinkJavaConvert extends AbstractJavaJpaContextNode implement
 	}
 
 	protected String getResourceConverterType() {
-		if (this.resourcePersistentAttribute.getSupportingAnnotation(ConverterAnnotation.ANNOTATION_NAME) != null) {
+		if (this.resourcePersistentAttribute.getSupportingAnnotation(EclipseLinkConverterAnnotation.ANNOTATION_NAME) != null) {
 			return EclipseLinkConverter.CUSTOM_CONVERTER;
 		}
-		else if (this.resourcePersistentAttribute.getSupportingAnnotation(TypeConverterAnnotation.ANNOTATION_NAME) != null) {
+		else if (this.resourcePersistentAttribute.getSupportingAnnotation(EclipseLinkTypeConverterAnnotation.ANNOTATION_NAME) != null) {
 			return EclipseLinkConverter.TYPE_CONVERTER;
 		}
-		else if (this.resourcePersistentAttribute.getSupportingAnnotation(ObjectTypeConverterAnnotation.ANNOTATION_NAME) != null) {
+		else if (this.resourcePersistentAttribute.getSupportingAnnotation(EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME) != null) {
 			return EclipseLinkConverter.OBJECT_TYPE_CONVERTER;
 		}
-		else if (this.resourcePersistentAttribute.getSupportingAnnotation(StructConverterAnnotation.ANNOTATION_NAME) != null) {
+		else if (this.resourcePersistentAttribute.getSupportingAnnotation(EclipseLinkStructConverterAnnotation.ANNOTATION_NAME) != null) {
 			return EclipseLinkConverter.STRUCT_CONVERTER;
 		}
 		

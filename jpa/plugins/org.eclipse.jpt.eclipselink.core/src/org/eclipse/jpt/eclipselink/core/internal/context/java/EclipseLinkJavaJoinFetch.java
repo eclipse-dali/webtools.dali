@@ -16,7 +16,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.JoinFetch;
 import org.eclipse.jpt.eclipselink.core.context.JoinFetchType;
-import org.eclipse.jpt.eclipselink.core.resource.java.JoinFetchAnnotation;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJoinFetchAnnotation;
 
 public class EclipseLinkJavaJoinFetch 
 	extends AbstractJavaJpaContextNode 
@@ -33,11 +33,11 @@ public class EclipseLinkJavaJoinFetch
 	
 	
 	protected String getJoinFetchAnnotationName() {
-		return JoinFetchAnnotation.ANNOTATION_NAME;
+		return EclipseLinkJoinFetchAnnotation.ANNOTATION_NAME;
 	}
 	
-	protected JoinFetchAnnotation getResourceJoinFetch() {
-		return (JoinFetchAnnotation) this.resourcePersistentAttribute.getSupportingAnnotation(getJoinFetchAnnotationName());
+	protected EclipseLinkJoinFetchAnnotation getResourceJoinFetch() {
+		return (EclipseLinkJoinFetchAnnotation) this.resourcePersistentAttribute.getSupportingAnnotation(getJoinFetchAnnotationName());
 	}
 	
 	protected void addResourceJoinFetch() {
@@ -92,17 +92,17 @@ public class EclipseLinkJavaJoinFetch
 	
 	public void initialize(JavaResourcePersistentAttribute jrpa) {
 		this.resourcePersistentAttribute = jrpa;
-		JoinFetchAnnotation resourceJoinFetch = this.getResourceJoinFetch();
+		EclipseLinkJoinFetchAnnotation resourceJoinFetch = this.getResourceJoinFetch();
 		this.joinFetchValue = this.joinFetch(resourceJoinFetch);
 	}
 	
 	public void update(JavaResourcePersistentAttribute jrpa) {
 		this.resourcePersistentAttribute = jrpa;
-		JoinFetchAnnotation resourceJoinFetch = this.getResourceJoinFetch();
+		EclipseLinkJoinFetchAnnotation resourceJoinFetch = this.getResourceJoinFetch();
 		setValue_(joinFetch(resourceJoinFetch));
 	}
 	
-	private JoinFetchType joinFetch(JoinFetchAnnotation resourceJoinFetch) {
+	private JoinFetchType joinFetch(EclipseLinkJoinFetchAnnotation resourceJoinFetch) {
 		if (resourceJoinFetch == null) {
 			return null;
 		}
@@ -114,7 +114,7 @@ public class EclipseLinkJavaJoinFetch
 	}
 	
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		JoinFetchAnnotation resourceJoinFetch = this.getResourceJoinFetch();
+		EclipseLinkJoinFetchAnnotation resourceJoinFetch = this.getResourceJoinFetch();
 		return resourceJoinFetch == null ? null : resourceJoinFetch.getTextRange(astRoot);
 	}
 }

@@ -15,7 +15,7 @@ import org.eclipse.jpt.core.context.java.JavaAttributeMappingProvider;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.eclipselink.core.EclipseLinkMappingKeys;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaFactory;
-import org.eclipse.jpt.eclipselink.core.resource.java.BasicMapAnnotation;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkBasicMapAnnotation;
 
 public class JavaBasicMapMappingProvider
 	implements JavaAttributeMappingProvider
@@ -43,7 +43,7 @@ public class JavaBasicMapMappingProvider
 	}
 	
 	public String getAnnotationName() {
-		return BasicMapAnnotation.ANNOTATION_NAME;
+		return EclipseLinkBasicMapAnnotation.ANNOTATION_NAME;
 	}
 
 	public JavaAttributeMapping buildMapping(JavaPersistentAttribute parent, JpaFactory factory) {

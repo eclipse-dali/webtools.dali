@@ -21,20 +21,20 @@ import org.eclipse.jpt.core.context.orm.OrmTypeMappingProvider;
 import org.eclipse.jpt.core.internal.jpa2.Orm2_0ResourceModelProvider;
 import org.eclipse.jpt.core.internal.jpa2.Persistence2_0ResourceModelProvider;
 import org.eclipse.jpt.core.internal.jpa2.context.Generic2_0MappingFileProvider;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.Generic2_0OrmBasicMappingProvider;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.Generic2_0OrmEmbeddableMappingProvider;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.Generic2_0OrmEmbeddedIdMappingProvider;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.Generic2_0OrmEmbeddedMappingProvider;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.Generic2_0OrmEntityMappingProvider;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.Generic2_0OrmIdMappingProvider;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.Generic2_0OrmManyToManyMappingProvider;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.Generic2_0OrmManyToOneMappingProvider;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.Generic2_0OrmMappedSuperclassMappingProvider;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.Generic2_0OrmNullAttributeMappingProvider;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.Generic2_0OrmOneToManyMappingProvider;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.Generic2_0OrmOneToOneMappingProvider;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.Generic2_0OrmTransientMappingProvider;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.Generic2_0OrmVersionMappingProvider;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmBasicMapping2_0Provider;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmEmbeddableMapping2_0Provider;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmEmbeddedIdMapping2_0Provider;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmEmbeddedMapping2_0Provider;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmEntityMapping2_0Provider;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmIdMapping2_0Provider;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmManyToManyMapping2_0Provider;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmManyToOneMapping2_0Provider;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmMappedSuperclassMapping2_0Provider;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmNullAttributeMapping2_0Provider;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmOneToManyMapping2_0Provider;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmOneToOneMapping2_0Provider;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmTransientMapping2_0Provider;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmVersionMapping2_0Provider;
 import org.eclipse.jpt.core.internal.platform.AbstractJpaPlatformProvider;
 
 /**
@@ -108,9 +108,9 @@ public class Generic2_0JpaPlatformProvider extends AbstractJpaPlatformProvider
 
 	@Override
 	protected void addOrmTypeMappingProvidersTo(List<OrmTypeMappingProvider> providers) {
-		providers.add(Generic2_0OrmEmbeddableMappingProvider.instance());
-		providers.add(Generic2_0OrmEntityMappingProvider.instance());
-		providers.add(Generic2_0OrmMappedSuperclassMappingProvider.instance());
+		providers.add(GenericOrmEmbeddableMapping2_0Provider.instance());
+		providers.add(GenericOrmEntityMapping2_0Provider.instance());
+		providers.add(GenericOrmMappedSuperclassMapping2_0Provider.instance());
 	}
 
 
@@ -118,17 +118,17 @@ public class Generic2_0JpaPlatformProvider extends AbstractJpaPlatformProvider
 
 	@Override
 	protected void addOrmAttributeMappingProvidersTo(List<OrmAttributeMappingProvider> providers) {
-		providers.add(Generic2_0OrmBasicMappingProvider.instance());
-		providers.add(Generic2_0OrmIdMappingProvider.instance());
+		providers.add(GenericOrmBasicMapping2_0Provider.instance());
+		providers.add(GenericOrmIdMapping2_0Provider.instance());
 		//providers.add(OrmElementCollectionMappingProvider.instance());
-		providers.add(Generic2_0OrmEmbeddedIdMappingProvider.instance());
-		providers.add(Generic2_0OrmEmbeddedMappingProvider.instance());
-		providers.add(Generic2_0OrmManyToManyMappingProvider.instance());
-		providers.add(Generic2_0OrmManyToOneMappingProvider.instance());
-		providers.add(Generic2_0OrmOneToManyMappingProvider.instance());
-		providers.add(Generic2_0OrmOneToOneMappingProvider.instance());
-		providers.add(Generic2_0OrmVersionMappingProvider.instance());
-		providers.add(Generic2_0OrmTransientMappingProvider.instance());
-		providers.add(Generic2_0OrmNullAttributeMappingProvider.instance());
+		providers.add(GenericOrmEmbeddedIdMapping2_0Provider.instance());
+		providers.add(GenericOrmEmbeddedMapping2_0Provider.instance());
+		providers.add(GenericOrmManyToManyMapping2_0Provider.instance());
+		providers.add(GenericOrmManyToOneMapping2_0Provider.instance());
+		providers.add(GenericOrmOneToManyMapping2_0Provider.instance());
+		providers.add(GenericOrmOneToOneMapping2_0Provider.instance());
+		providers.add(GenericOrmVersionMapping2_0Provider.instance());
+		providers.add(GenericOrmTransientMapping2_0Provider.instance());
+		providers.add(GenericOrmNullAttributeMapping2_0Provider.instance());
 	}
 }

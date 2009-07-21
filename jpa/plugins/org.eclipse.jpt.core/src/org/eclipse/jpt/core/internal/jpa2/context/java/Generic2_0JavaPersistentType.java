@@ -13,7 +13,7 @@ import java.util.Iterator;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaPersistentType;
-import org.eclipse.jpt.core.jpa2.resource.java.AccessAnnotation;
+import org.eclipse.jpt.core.jpa2.resource.java.Access2_0Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 
@@ -26,12 +26,12 @@ public class Generic2_0JavaPersistentType
 		super(parent, jrpt);
 	}
 	
-	protected AccessAnnotation getAccessAnnotation() {
-		return (AccessAnnotation) this.resourcePersistentType.getNonNullSupportingAnnotation(getAccessAnnotationName());
+	protected Access2_0Annotation getAccessAnnotation() {
+		return (Access2_0Annotation) this.resourcePersistentType.getNonNullSupportingAnnotation(getAccessAnnotationName());
 	}
 
 	protected String getAccessAnnotationName() {
-		return AccessAnnotation.ANNOTATION_NAME;
+		return Access2_0Annotation.ANNOTATION_NAME;
 	}
 	
 	public AccessType getSpecifiedAccess() {

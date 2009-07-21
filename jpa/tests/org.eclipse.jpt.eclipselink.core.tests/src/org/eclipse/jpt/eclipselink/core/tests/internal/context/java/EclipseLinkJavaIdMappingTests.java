@@ -23,9 +23,9 @@ import org.eclipse.jpt.core.resource.java.TemporalAnnotation;
 import org.eclipse.jpt.eclipselink.core.context.Convert;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkIdMapping;
 import org.eclipse.jpt.eclipselink.core.context.Mutable;
-import org.eclipse.jpt.eclipselink.core.resource.java.ConvertAnnotation;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkConvertAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
-import org.eclipse.jpt.eclipselink.core.resource.java.MutableAnnotation;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkMutableAnnotation;
 import org.eclipse.jpt.eclipselink.core.tests.internal.context.EclipseLinkContextModelTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
@@ -123,7 +123,7 @@ public class EclipseLinkJavaIdMappingTests extends EclipseLinkContextModelTestCa
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		attributeResource.addSupportingAnnotation(ConvertAnnotation.ANNOTATION_NAME);
+		attributeResource.addSupportingAnnotation(EclipseLinkConvertAnnotation.ANNOTATION_NAME);
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		IdMapping idMapping = (IdMapping) persistentAttribute.getSpecifiedMapping();
@@ -175,13 +175,13 @@ public class EclipseLinkJavaIdMappingTests extends EclipseLinkContextModelTestCa
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		ConvertAnnotation convert = (ConvertAnnotation) attributeResource.addSupportingAnnotation(ConvertAnnotation.ANNOTATION_NAME);
+		EclipseLinkConvertAnnotation convert = (EclipseLinkConvertAnnotation) attributeResource.addSupportingAnnotation(EclipseLinkConvertAnnotation.ANNOTATION_NAME);
 		convert.setValue("foo");
 		
 		assertEquals(Convert.ECLIPSE_LINK_CONVERTER, idMapping.getConverter().getType());
 		assertEquals("foo", ((Convert) idMapping.getConverter()).getConverterName());
 		
-		attributeResource.removeSupportingAnnotation(ConvertAnnotation.ANNOTATION_NAME);
+		attributeResource.removeSupportingAnnotation(EclipseLinkConvertAnnotation.ANNOTATION_NAME);
 		
 		assertEquals(Converter.NO_CONVERTER, idMapping.getConverter().getType());
 		assertFalse(idMapping.isDefault());
@@ -199,7 +199,7 @@ public class EclipseLinkJavaIdMappingTests extends EclipseLinkContextModelTestCa
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		MutableAnnotation mutableAnnotation = (MutableAnnotation) attributeResource.getSupportingAnnotation(MutableAnnotation.ANNOTATION_NAME);
+		EclipseLinkMutableAnnotation mutableAnnotation = (EclipseLinkMutableAnnotation) attributeResource.getSupportingAnnotation(EclipseLinkMutableAnnotation.ANNOTATION_NAME);
 		mutableAnnotation.setValue(Boolean.TRUE);
 		
 		assertEquals(Boolean.TRUE, mutable.getSpecifiedMutable());
@@ -210,10 +210,10 @@ public class EclipseLinkJavaIdMappingTests extends EclipseLinkContextModelTestCa
 		mutableAnnotation.setValue(Boolean.FALSE);
 		assertEquals(Boolean.FALSE, mutable.getSpecifiedMutable());
 		
-		attributeResource.removeSupportingAnnotation(MutableAnnotation.ANNOTATION_NAME);
+		attributeResource.removeSupportingAnnotation(EclipseLinkMutableAnnotation.ANNOTATION_NAME);
 		assertEquals(null, mutable.getSpecifiedMutable());
 		
-		attributeResource.addSupportingAnnotation(MutableAnnotation.ANNOTATION_NAME);
+		attributeResource.addSupportingAnnotation(EclipseLinkMutableAnnotation.ANNOTATION_NAME);
 		assertEquals(Boolean.TRUE, mutable.getSpecifiedMutable());
 	}
 	
@@ -228,18 +228,18 @@ public class EclipseLinkJavaIdMappingTests extends EclipseLinkContextModelTestCa
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		MutableAnnotation mutableAnnotation = (MutableAnnotation) attributeResource.getSupportingAnnotation(MutableAnnotation.ANNOTATION_NAME);
+		EclipseLinkMutableAnnotation mutableAnnotation = (EclipseLinkMutableAnnotation) attributeResource.getSupportingAnnotation(EclipseLinkMutableAnnotation.ANNOTATION_NAME);
 		assertEquals(null, mutableAnnotation.getValue());
 		
 		mutable.setSpecifiedMutable(Boolean.TRUE);	
 		assertEquals(null, mutableAnnotation.getValue());
 
 		mutable.setSpecifiedMutable(null);
-		mutableAnnotation = (MutableAnnotation) attributeResource.getSupportingAnnotation(MutableAnnotation.ANNOTATION_NAME);
+		mutableAnnotation = (EclipseLinkMutableAnnotation) attributeResource.getSupportingAnnotation(EclipseLinkMutableAnnotation.ANNOTATION_NAME);
 		assertEquals(null, mutableAnnotation);
 		
 		mutable.setSpecifiedMutable(Boolean.FALSE);	
-		mutableAnnotation = (MutableAnnotation) attributeResource.getSupportingAnnotation(MutableAnnotation.ANNOTATION_NAME);
+		mutableAnnotation = (EclipseLinkMutableAnnotation) attributeResource.getSupportingAnnotation(EclipseLinkMutableAnnotation.ANNOTATION_NAME);
 		assertEquals(Boolean.FALSE, mutableAnnotation.getValue());
 		
 		mutable.setSpecifiedMutable(Boolean.TRUE);	
@@ -257,7 +257,7 @@ public class EclipseLinkJavaIdMappingTests extends EclipseLinkContextModelTestCa
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		attributeResource.removeSupportingAnnotation(MutableAnnotation.ANNOTATION_NAME);
+		attributeResource.removeSupportingAnnotation(EclipseLinkMutableAnnotation.ANNOTATION_NAME);
 		assertTrue(mutable.isDefaultMutable());
 		
 		mutable.setSpecifiedMutable(Boolean.FALSE);	
@@ -279,7 +279,7 @@ public class EclipseLinkJavaIdMappingTests extends EclipseLinkContextModelTestCa
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		attributeResource.removeSupportingAnnotation(MutableAnnotation.ANNOTATION_NAME);
+		attributeResource.removeSupportingAnnotation(EclipseLinkMutableAnnotation.ANNOTATION_NAME);
 		assertFalse(mutable.isDefaultMutable());
 		
 		mutable.setSpecifiedMutable(Boolean.TRUE);	
@@ -307,7 +307,7 @@ public class EclipseLinkJavaIdMappingTests extends EclipseLinkContextModelTestCa
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
-		attributeResource.removeSupportingAnnotation(MutableAnnotation.ANNOTATION_NAME);
+		attributeResource.removeSupportingAnnotation(EclipseLinkMutableAnnotation.ANNOTATION_NAME);
 		assertTrue(mutable.isMutable());
 		
 		mutable.setSpecifiedMutable(Boolean.TRUE);	
