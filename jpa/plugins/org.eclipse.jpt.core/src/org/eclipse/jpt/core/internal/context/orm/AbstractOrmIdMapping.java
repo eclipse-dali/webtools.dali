@@ -51,7 +51,7 @@ public abstract class AbstractOrmIdMapping<T extends XmlId>
 		this.column.initialize(this.resourceAttributeMapping.getColumn());//TODO pass in to constructor
 		this.generatorContainer = buildGeneratorContainer();
 		this.initializeGeneratedValue();
-		this.defaultConverter = new GenericOrmNullConverter(this);
+		this.defaultConverter = getJpaFactory().buildOrmNullConverter(this);
 		this.specifiedConverter = this.buildSpecifiedConverter(this.getResourceConverterType());
 	}
 
@@ -238,7 +238,7 @@ public abstract class AbstractOrmIdMapping<T extends XmlId>
 	
 	protected OrmConverter buildSpecifiedConverter(String converterType) {
 		if (converterType == Converter.TEMPORAL_CONVERTER) {
-			return new GenericOrmTemporalConverter(this, this.resourceAttributeMapping);
+			return getJpaFactory().buildOrmTemporalConverter(this, this.resourceAttributeMapping);
 		}
 		return null;
 	}

@@ -42,7 +42,7 @@ public abstract class AbstractOrmVersionMapping<T extends XmlVersion>
 		super(parent, resourceMapping);
 		this.column = getJpaFactory().buildOrmColumn(this, this);
 		this.column.initialize(this.getResourceColumn());//TODO pass in to constructor
-		this.defaultConverter = new GenericOrmNullConverter(this);
+		this.defaultConverter = getJpaFactory().buildOrmNullConverter(this);
 		this.specifiedConverter = this.buildSpecifiedConverter(this.getResourceConverterType());
 	}
 
@@ -144,7 +144,7 @@ public abstract class AbstractOrmVersionMapping<T extends XmlVersion>
 	
 	protected OrmConverter buildSpecifiedConverter(String converterType) {
 		if (converterType == Converter.TEMPORAL_CONVERTER) {
-			return new GenericOrmTemporalConverter(this, this.resourceAttributeMapping);
+			return getJpaFactory().buildOrmTemporalConverter(this, this.resourceAttributeMapping);
 		}
 		return null;
 	}

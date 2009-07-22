@@ -76,6 +76,7 @@ import org.eclipse.jpt.core.context.orm.OrmAttributeOverride;
 import org.eclipse.jpt.core.context.orm.OrmBaseJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmBasicMapping;
 import org.eclipse.jpt.core.context.orm.OrmColumn;
+import org.eclipse.jpt.core.context.orm.OrmConverter;
 import org.eclipse.jpt.core.context.orm.OrmDiscriminatorColumn;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddable;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddedIdMapping;
@@ -171,17 +172,20 @@ import org.eclipse.jpt.core.internal.context.orm.GenericOrmEmbeddable;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmEmbeddedIdMapping;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmEmbeddedMapping;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmEntity;
+import org.eclipse.jpt.core.internal.context.orm.GenericOrmEnumeratedConverter;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmGeneratedValue;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmGeneratorContainer;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmIdMapping;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmJoinColumn;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmJoinTable;
+import org.eclipse.jpt.core.internal.context.orm.GenericOrmLobConverter;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmManyToManyMapping;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmManyToOneMapping;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmMappedSuperclass;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmNamedNativeQuery;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmNamedQuery;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmNullAttributeMapping;
+import org.eclipse.jpt.core.internal.context.orm.GenericOrmNullConverter;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmOneToManyMapping;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmOneToOneMapping;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmPersistentAttribute;
@@ -193,6 +197,7 @@ import org.eclipse.jpt.core.internal.context.orm.GenericOrmSecondaryTable;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmSequenceGenerator;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmTable;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmTableGenerator;
+import org.eclipse.jpt.core.internal.context.orm.GenericOrmTemporalConverter;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmTransientMapping;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmUniqueConstraint;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmVersionMapping;
@@ -225,6 +230,7 @@ import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
 import org.eclipse.jpt.core.resource.orm.XmlBasic;
+import org.eclipse.jpt.core.resource.orm.XmlConvertibleMapping;
 import org.eclipse.jpt.core.resource.orm.XmlEmbeddable;
 import org.eclipse.jpt.core.resource.orm.XmlEmbedded;
 import org.eclipse.jpt.core.resource.orm.XmlEmbeddedId;
@@ -492,7 +498,23 @@ public class GenericJpaFactory
 		return new GenericOrmUniqueConstraint(parent, owner, resourceUniqueConstraint);
 	}
 	
-
+	public OrmConverter buildOrmEnumeratedConverter(OrmAttributeMapping parent, XmlConvertibleMapping resourceMapping) {
+		return new GenericOrmEnumeratedConverter(parent, resourceMapping);
+	}
+	
+	public OrmConverter buildOrmLobConverter(OrmAttributeMapping parent, XmlConvertibleMapping resourceMapping) {
+		return new GenericOrmLobConverter(parent, resourceMapping);
+	}
+	
+	public OrmConverter buildOrmTemporalConverter(OrmAttributeMapping parent, XmlConvertibleMapping resourceMapping) {
+		return new GenericOrmTemporalConverter(parent, resourceMapping);
+	}
+	
+	public OrmConverter buildOrmNullConverter(OrmAttributeMapping parent) {
+		return new GenericOrmNullConverter(parent);
+	}
+	
+	
 	// ********** ORM Virtual Resource Model **********
 
 	public XmlBasic buildVirtualXmlBasic(OrmTypeMapping ormTypeMapping, JavaBasicMapping javaBasicMapping) {

@@ -15,7 +15,6 @@ import org.eclipse.jpt.core.context.EnumeratedConverter;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmConverter;
 import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
-import org.eclipse.jpt.core.resource.orm.XmlBasic;
 import org.eclipse.jpt.core.resource.orm.XmlConvertibleMapping;
 import org.eclipse.jpt.core.utility.TextRange;
 
@@ -26,9 +25,9 @@ public class GenericOrmEnumeratedConverter extends AbstractXmlContextNode
 	
 	private XmlConvertibleMapping resourceConvertibleMapping;
 	
-	public GenericOrmEnumeratedConverter(OrmAttributeMapping parent, XmlBasic resourceBasic) {
+	public GenericOrmEnumeratedConverter(OrmAttributeMapping parent, XmlConvertibleMapping resourceMapping) {
 		super(parent);
-		this.initialize(resourceBasic);
+		this.initialize(resourceMapping);
 	}
 	
 	@Override

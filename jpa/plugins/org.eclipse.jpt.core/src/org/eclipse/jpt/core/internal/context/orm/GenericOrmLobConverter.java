@@ -14,7 +14,6 @@ import org.eclipse.jpt.core.context.LobConverter;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmConverter;
 import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
-import org.eclipse.jpt.core.resource.orm.XmlBasic;
 import org.eclipse.jpt.core.resource.orm.XmlConvertibleMapping;
 import org.eclipse.jpt.core.utility.TextRange;
 
@@ -23,9 +22,9 @@ public class GenericOrmLobConverter extends AbstractXmlContextNode
 {
 	private XmlConvertibleMapping resourceConvertibleMapping;
 	
-	public GenericOrmLobConverter(OrmAttributeMapping parent, XmlBasic resourceBasic) {
+	public GenericOrmLobConverter(OrmAttributeMapping parent, XmlConvertibleMapping resourceMapping) {
 		super(parent);
-		this.initialize(resourceBasic);
+		this.initialize(resourceMapping);
 	}
 	
 	@Override

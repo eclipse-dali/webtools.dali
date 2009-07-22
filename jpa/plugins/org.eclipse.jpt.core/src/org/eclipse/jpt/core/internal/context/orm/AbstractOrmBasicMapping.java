@@ -53,7 +53,7 @@ public abstract class AbstractOrmBasicMapping<T extends XmlBasic>
 		this.column.initialize(this.getResourceColumn());//TODO pass in to factory
 		this.specifiedFetch = this.getResourceFetch();
 		this.specifiedOptional = this.getResourceOptional();
-		this.defaultConverter = new GenericOrmNullConverter(this);
+		this.defaultConverter = getJpaFactory().buildOrmNullConverter(this);
 		this.specifiedConverter = this.buildSpecifiedConverter(this.getResourceConverterType());
 	}
 
@@ -213,13 +213,13 @@ public abstract class AbstractOrmBasicMapping<T extends XmlBasic>
 	
 	protected OrmConverter buildSpecifiedConverter(String converterType) {
 		if (converterType == Converter.ENUMERATED_CONVERTER) {
-			return new GenericOrmEnumeratedConverter(this, this.resourceAttributeMapping);
+			return getJpaFactory().buildOrmEnumeratedConverter(this, this.resourceAttributeMapping);
 		}
 		else if (converterType == Converter.TEMPORAL_CONVERTER) {
-			return new GenericOrmTemporalConverter(this, this.resourceAttributeMapping);
+			return getJpaFactory().buildOrmTemporalConverter(this, this.resourceAttributeMapping);
 		}
 		else if (converterType == Converter.LOB_CONVERTER) {
-			return new GenericOrmLobConverter(this, this.resourceAttributeMapping);
+			return getJpaFactory().buildOrmLobConverter(this, this.resourceAttributeMapping);
 		}
 		return null;
 	}
