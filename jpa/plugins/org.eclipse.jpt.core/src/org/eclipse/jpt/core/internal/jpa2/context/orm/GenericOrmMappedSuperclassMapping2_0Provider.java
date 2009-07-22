@@ -18,7 +18,6 @@ import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmTypeMappingProvider;
 import org.eclipse.jpt.core.internal.jpa2.platform.Generic2_0JpaFactory;
 import org.eclipse.jpt.core.jpa2.resource.orm.Orm2_0Factory;
-import org.eclipse.jpt.core.jpa2.resource.orm.XmlEmbeddable;
 import org.eclipse.jpt.core.jpa2.resource.orm.XmlMappedSuperclass;
 import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 
