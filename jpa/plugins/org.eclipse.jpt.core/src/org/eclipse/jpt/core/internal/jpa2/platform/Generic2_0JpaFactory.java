@@ -50,9 +50,9 @@ import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmVersionMapping;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitMetadata;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
-import org.eclipse.jpt.core.internal.jpa2.context.java.Generic2_0JavaEmbeddable;
-import org.eclipse.jpt.core.internal.jpa2.context.java.Generic2_0JavaPersistentAttribute;
-import org.eclipse.jpt.core.internal.jpa2.context.java.Generic2_0JavaPersistentType;
+import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaEmbeddable2_0;
+import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaPersistentAttribute2_0;
+import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaPersistentType2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaSequenceGenerator2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericEntityMappings2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmEmbeddable2_0;
@@ -109,7 +109,7 @@ public class Generic2_0JpaFactory extends GenericJpaFactory
 	
 	@Override
 	public JavaEmbeddable buildJavaEmbeddable(JavaPersistentType parent) {
-		return new Generic2_0JavaEmbeddable(parent);
+		return new GenericJavaEmbeddable2_0(parent);
 	}
 	
 	// ********** Context Nodes **********
@@ -252,12 +252,12 @@ public class Generic2_0JpaFactory extends GenericJpaFactory
 
 	@Override
 	public JavaPersistentAttribute buildJavaPersistentAttribute(PersistentType parent, JavaResourcePersistentAttribute jrpa) {
-		return new Generic2_0JavaPersistentAttribute(parent, jrpa);
+		return new GenericJavaPersistentAttribute2_0(parent, jrpa);
 	}
 	
 	@Override
 	public JavaPersistentType buildJavaPersistentType(Owner owner, JavaResourcePersistentType jrpt) {
-		return new Generic2_0JavaPersistentType(owner, jrpt);
+		return new GenericJavaPersistentType2_0(owner, jrpt);
 	}
 
 	@Override

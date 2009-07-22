@@ -29,7 +29,7 @@ import org.eclipse.jpt.core.context.TransientMapping;
 import org.eclipse.jpt.core.context.VersionMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverride;
 import org.eclipse.jpt.core.context.persistence.ClassRef;
-import org.eclipse.jpt.core.internal.context.java.GenericJavaNullAttributeMapping;
+import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaNullAttributeMapping;
 import org.eclipse.jpt.core.resource.java.AttributeOverrideAnnotation;
 import org.eclipse.jpt.core.resource.java.AttributeOverridesAnnotation;
 import org.eclipse.jpt.core.resource.java.BasicAnnotation;
