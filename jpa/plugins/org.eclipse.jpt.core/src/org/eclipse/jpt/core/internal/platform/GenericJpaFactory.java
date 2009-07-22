@@ -32,6 +32,7 @@ import org.eclipse.jpt.core.context.java.JavaAttributeOverride;
 import org.eclipse.jpt.core.context.java.JavaBaseJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.core.context.java.JavaColumn;
+import org.eclipse.jpt.core.context.java.JavaConverter;
 import org.eclipse.jpt.core.context.java.JavaDiscriminatorColumn;
 import org.eclipse.jpt.core.context.java.JavaEmbeddable;
 import org.eclipse.jpt.core.context.java.JavaEmbeddedIdMapping;
@@ -143,6 +144,7 @@ import org.eclipse.jpt.core.internal.context.java.GenericJavaMappedSuperclass;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaNamedNativeQuery;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaNamedQuery;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaNullAttributeMapping;
+import org.eclipse.jpt.core.internal.context.java.GenericJavaNullConverter;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaOneToManyMapping;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaOneToOneMapping;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaPersistentAttribute;
@@ -233,7 +235,6 @@ import org.eclipse.jpt.core.resource.orm.XmlGeneratorContainer;
 import org.eclipse.jpt.core.resource.orm.XmlId;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlJoinTable;
-import org.eclipse.jpt.core.resource.orm.XmlJoinTableMapping;
 import org.eclipse.jpt.core.resource.orm.XmlManyToMany;
 import org.eclipse.jpt.core.resource.orm.XmlManyToOne;
 import org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass;
@@ -693,7 +694,10 @@ public class GenericJpaFactory
 		return new GenericJavaLobConverter(parent, jrpa);
 	}
 	
-
+	public JavaConverter buildJavaNullConverter(JavaAttributeMapping parent) {
+		return new GenericJavaNullConverter(parent);
+	}
+	
 	// ********** JAR Context Model **********
 
 	public JarFile buildJarFile(JarFileRef parent, JavaResourcePackageFragmentRoot jarResourcePackageFragmentRoot) {

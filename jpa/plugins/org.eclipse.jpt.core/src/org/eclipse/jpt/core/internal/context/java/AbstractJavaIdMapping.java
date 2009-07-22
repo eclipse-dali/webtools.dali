@@ -57,7 +57,7 @@ public abstract class AbstractJavaIdMapping
 	protected AbstractJavaIdMapping(JavaPersistentAttribute parent) {
 		super(parent);
 		this.column = getJpaFactory().buildJavaColumn(this, this);
-		this.defaultConverter = new GenericJavaNullConverter(this);
+		this.defaultConverter = getJpaFactory().buildJavaNullConverter(this);
 		this.generatorContainer = getJpaFactory().buildJavaGeneratorContainer(this);
 	}
 

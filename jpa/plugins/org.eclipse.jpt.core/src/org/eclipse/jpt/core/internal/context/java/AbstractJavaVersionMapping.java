@@ -42,12 +42,8 @@ public abstract class AbstractJavaVersionMapping
 
 	protected AbstractJavaVersionMapping(JavaPersistentAttribute parent) {
 		super(parent);
-		this.column = createJavaColumn();
-		this.defaultConverter = new GenericJavaNullConverter(this);
-	}
-
-	protected JavaColumn createJavaColumn() {
-		return getJpaFactory().buildJavaColumn(this, this);
+		this.column = getJpaFactory().buildJavaColumn(this, this);
+		this.defaultConverter = getJpaFactory().buildJavaNullConverter(this);
 	}
 	
 	@Override
