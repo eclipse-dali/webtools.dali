@@ -90,7 +90,7 @@ public abstract class AbstractEntityMappings
 		this.persistentTypes = new ArrayList<OrmPersistentType>();
 		this.sequenceGenerators = new ArrayList<OrmSequenceGenerator>();
 		this.tableGenerators = new ArrayList<OrmTableGenerator>();
-		this.queryContainer = new GenericOrmQueryContainer(this, xmlEntityMappings);
+		this.queryContainer = getJpaFactory().buildOrmQueryContainer(this, xmlEntityMappings);
 
 		this.persistenceUnitMetadata = buildPersistenceUnitMetadata();
 		this.description = this.xmlEntityMappings.getDescription();
