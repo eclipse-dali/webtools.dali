@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.orm.details;
 
-import org.eclipse.jpt.eclipselink.core.context.Caching;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCaching;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.CachingComposite;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -34,7 +34,7 @@ import org.eclipse.swt.widgets.Composite;
  * -----------------------------------------------------------------------------</pre>
  *
  * @see Entity
- * @see Caching
+ * @see EclipseLinkCaching
  * @see EclipseLinkJavaEntityComposite - The parent container
  * @see CacheTypeComposite
  * @see CacheSizeComposite
@@ -45,11 +45,11 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.1
  * @since 2.1
  */
-public class OrmCachingComposite extends CachingComposite<Caching>
+public class OrmCachingComposite extends CachingComposite<EclipseLinkCaching>
 {
 
 	public OrmCachingComposite(FormPane<?> parentPane,
-        PropertyValueModel<Caching> subjectHolder,
+        PropertyValueModel<EclipseLinkCaching> subjectHolder,
         Composite parent) {
 
 		super(parentPane, subjectHolder, parent);

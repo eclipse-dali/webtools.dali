@@ -23,7 +23,7 @@ import org.eclipse.jpt.core.context.Entity;
  */
 public interface EclipseLinkEntity extends Entity
 {
-	Caching getCaching();
+	EclipseLinkCaching getCaching();
 	
 	EclipseLinkReadOnly getReadOnly();
 	

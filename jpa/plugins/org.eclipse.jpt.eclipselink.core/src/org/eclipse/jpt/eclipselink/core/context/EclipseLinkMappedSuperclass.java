@@ -23,7 +23,7 @@ import org.eclipse.jpt.core.context.MappedSuperclass;
  */
 public interface EclipseLinkMappedSuperclass extends MappedSuperclass
 {
-	Caching getCaching();
+	EclipseLinkCaching getCaching();
 	
 	EclipseLinkReadOnly getReadOnly();
 	

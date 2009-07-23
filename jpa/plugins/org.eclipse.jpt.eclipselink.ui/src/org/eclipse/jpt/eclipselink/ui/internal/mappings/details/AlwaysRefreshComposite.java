@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.mappings.details;
 
-import org.eclipse.jpt.eclipselink.core.context.Caching;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCaching;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
@@ -25,13 +25,13 @@ import org.eclipse.swt.widgets.Composite;
 /**
  * This composite simply shows a tri-state check box for the Always Refresh option.
  * 
- * @see Caching
+ * @see EclipseLinkCaching
  * @see CachingComposite - A container of this widget
  *
  * @version 2.1
  * @since 2.1
  */
-public class AlwaysRefreshComposite extends FormPane<Caching>
+public class AlwaysRefreshComposite extends FormPane<EclipseLinkCaching>
 {
 	/**
 	 * Creates a new <code>OptionalComposite</code>.
@@ -39,7 +39,7 @@ public class AlwaysRefreshComposite extends FormPane<Caching>
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public AlwaysRefreshComposite(FormPane<? extends Caching> parentPane,
+	public AlwaysRefreshComposite(FormPane<? extends EclipseLinkCaching> parentPane,
 	                         Composite parent)
 	{
 		super(parentPane, parent);
@@ -58,7 +58,7 @@ public class AlwaysRefreshComposite extends FormPane<Caching>
 	}
 	
 	private WritablePropertyValueModel<Boolean> buildAlwaysRefreshHolder() {
-		return new PropertyAspectAdapter<Caching, Boolean>(getSubjectHolder(), Caching.SPECIFIED_ALWAYS_REFRESH_PROPERTY) {
+		return new PropertyAspectAdapter<EclipseLinkCaching, Boolean>(getSubjectHolder(), EclipseLinkCaching.SPECIFIED_ALWAYS_REFRESH_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getSpecifiedAlwaysRefresh();
@@ -85,10 +85,10 @@ public class AlwaysRefreshComposite extends FormPane<Caching>
 	}
 	
 	private PropertyValueModel<Boolean> buildDefaultAlwaysRefreshHolder() {
-		return new PropertyAspectAdapter<Caching, Boolean>(
+		return new PropertyAspectAdapter<EclipseLinkCaching, Boolean>(
 			getSubjectHolder(),
-			Caching.SPECIFIED_ALWAYS_REFRESH_PROPERTY,
-			Caching.DEFAULT_ALWAYS_REFRESH_PROPERTY)
+			EclipseLinkCaching.SPECIFIED_ALWAYS_REFRESH_PROPERTY,
+			EclipseLinkCaching.DEFAULT_ALWAYS_REFRESH_PROPERTY)
 		{
 			@Override
 			protected Boolean buildValue_() {

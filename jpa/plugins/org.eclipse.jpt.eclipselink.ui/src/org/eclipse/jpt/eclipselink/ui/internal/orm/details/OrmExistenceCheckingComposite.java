@@ -9,7 +9,7 @@
 package org.eclipse.jpt.eclipselink.ui.internal.orm.details;
 
 import java.util.Collection;
-import org.eclipse.jpt.eclipselink.core.context.Caching;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCaching;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkExistenceType;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
@@ -25,13 +25,13 @@ import org.eclipse.swt.widgets.Composite;
  * |       					---------------------------------------------- |
  * -------------------------------------------------------------------------</pre>
  *
- * @see Caching
+ * @see EclipseLinkCaching
  * @see CachingComposite - A container of this widget
  *
  * @version 2.1
  * @since 2.1
  */
-public class OrmExistenceCheckingComposite extends FormPane<Caching> {
+public class OrmExistenceCheckingComposite extends FormPane<EclipseLinkCaching> {
 
 	/**
 	 * Creates a new <code>ExistenceCheckingComposite</code>.
@@ -39,7 +39,7 @@ public class OrmExistenceCheckingComposite extends FormPane<Caching> {
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public OrmExistenceCheckingComposite(FormPane<? extends Caching> parentPane,
+	public OrmExistenceCheckingComposite(FormPane<? extends EclipseLinkCaching> parentPane,
 	                          Composite parent) {
 
 		super(parentPane, parent, false);
@@ -56,15 +56,15 @@ public class OrmExistenceCheckingComposite extends FormPane<Caching> {
        );
 	}
 
-	private EnumFormComboViewer<Caching, EclipseLinkExistenceType> addExistenceCheckingTypeCombo(Composite container) {
+	private EnumFormComboViewer<EclipseLinkCaching, EclipseLinkExistenceType> addExistenceCheckingTypeCombo(Composite container) {
 
-		return new EnumFormComboViewer<Caching, EclipseLinkExistenceType>(this, container) {
+		return new EnumFormComboViewer<EclipseLinkCaching, EclipseLinkExistenceType>(this, container) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(Caching.DEFAULT_EXISTENCE_TYPE_PROPERTY);
-				propertyNames.add(Caching.SPECIFIED_EXISTENCE_TYPE_PROPERTY);
+				propertyNames.add(EclipseLinkCaching.DEFAULT_EXISTENCE_TYPE_PROPERTY);
+				propertyNames.add(EclipseLinkCaching.SPECIFIED_EXISTENCE_TYPE_PROPERTY);
 			}
 
 			@Override

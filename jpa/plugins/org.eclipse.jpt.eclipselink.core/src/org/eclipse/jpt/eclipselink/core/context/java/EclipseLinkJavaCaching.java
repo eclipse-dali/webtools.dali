@@ -11,7 +11,7 @@ package org.eclipse.jpt.eclipselink.core.context.java;
 
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.eclipselink.core.context.Caching;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCaching;
 
 /**
  * 
@@ -25,7 +25,7 @@ import org.eclipse.jpt.eclipselink.core.context.Caching;
  * @version 2.1
  * @since 2.1
  */
-public interface EclipseLinkJavaCaching extends Caching, JavaJpaContextNode
+public interface EclipseLinkJavaCaching extends EclipseLinkCaching, JavaJpaContextNode
 {
 	
 	/**

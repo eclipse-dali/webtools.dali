@@ -11,7 +11,7 @@
 package org.eclipse.jpt.eclipselink.ui.internal.orm.details;
 
 import org.eclipse.jpt.core.context.AccessHolder;
-import org.eclipse.jpt.eclipselink.core.context.Caching;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCaching;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkConverterHolder;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmMappedSuperclass;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
@@ -72,12 +72,12 @@ public class EclipseLinkOrmMappedSuperclassComposite extends FormPane<EclipseLin
 		new OrmCachingComposite(this, buildCachingHolder(), container);
 	}
 
-	private PropertyAspectAdapter<EclipseLinkOrmMappedSuperclass, Caching> buildCachingHolder() {
-		return new PropertyAspectAdapter<EclipseLinkOrmMappedSuperclass, Caching>(
+	private PropertyAspectAdapter<EclipseLinkOrmMappedSuperclass, EclipseLinkCaching> buildCachingHolder() {
+		return new PropertyAspectAdapter<EclipseLinkOrmMappedSuperclass, EclipseLinkCaching>(
 			getSubjectHolder())
 		{
 			@Override
-			protected Caching buildValue_() {
+			protected EclipseLinkCaching buildValue_() {
 				return this.subject.getCaching();
 			}
 		};

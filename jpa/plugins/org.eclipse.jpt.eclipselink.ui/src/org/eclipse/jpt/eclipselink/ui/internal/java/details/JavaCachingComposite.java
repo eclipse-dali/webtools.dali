@@ -34,7 +34,7 @@ import org.eclipse.swt.widgets.Composite;
  * -----------------------------------------------------------------------------</pre>
  *
  * @see Entity
- * @see Caching
+ * @see EclipseLinkCaching
  * @see EclipseLinkJavaEntityComposite - The parent container
  * @see CacheTypeComposite
  * @see CacheSizeComposite

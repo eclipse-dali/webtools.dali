@@ -23,7 +23,7 @@ import org.eclipse.jpt.core.context.JpaContextNode;
  * @version 2.1
  * @since 2.1
  */
-public interface Caching extends JpaContextNode
+public interface EclipseLinkCaching extends JpaContextNode
 {
 	//***************** shared ************************
 	

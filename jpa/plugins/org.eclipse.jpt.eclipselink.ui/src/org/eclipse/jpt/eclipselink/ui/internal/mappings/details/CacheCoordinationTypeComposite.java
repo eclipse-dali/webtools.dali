@@ -10,7 +10,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.mappings.details;
 
 import java.util.Collection;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCacheCoordinationType;
-import org.eclipse.jpt.eclipselink.core.context.Caching;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCaching;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
@@ -26,13 +26,13 @@ import org.eclipse.swt.widgets.Composite;
  * |                    ----------------------------------------------------- |
  * ----------------------------------------------------------------------------</pre>
  *
- * @see Caching
+ * @see EclipseLinkCaching
  * @see CachingComposite - A container of this widget
  *
  * @version 2.1
  * @since 2.1
  */
-public class CacheCoordinationTypeComposite extends FormPane<Caching> {
+public class CacheCoordinationTypeComposite extends FormPane<EclipseLinkCaching> {
 
 	/**
 	 * Creates a new <code>CacheTypeComposite</code>.
@@ -40,21 +40,21 @@ public class CacheCoordinationTypeComposite extends FormPane<Caching> {
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public CacheCoordinationTypeComposite(FormPane<? extends Caching> parentPane,
+	public CacheCoordinationTypeComposite(FormPane<? extends EclipseLinkCaching> parentPane,
 	                          Composite parent) {
 
 		super(parentPane, parent);
 	}
 
-	private EnumFormComboViewer<Caching, EclipseLinkCacheCoordinationType> addCacheCoordinationTypeCombo(Composite container) {
+	private EnumFormComboViewer<EclipseLinkCaching, EclipseLinkCacheCoordinationType> addCacheCoordinationTypeCombo(Composite container) {
 
-		return new EnumFormComboViewer<Caching, EclipseLinkCacheCoordinationType>(this, container) {
+		return new EnumFormComboViewer<EclipseLinkCaching, EclipseLinkCacheCoordinationType>(this, container) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(Caching.DEFAULT_COORDINATION_TYPE_PROPERTY);
-				propertyNames.add(Caching.SPECIFIED_COORDINATION_TYPE_PROPERTY);
+				propertyNames.add(EclipseLinkCaching.DEFAULT_COORDINATION_TYPE_PROPERTY);
+				propertyNames.add(EclipseLinkCaching.SPECIFIED_COORDINATION_TYPE_PROPERTY);
 			}
 
 			@Override

@@ -17,7 +17,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCacheCoordinationType;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCacheType;
-import org.eclipse.jpt.eclipselink.core.context.Caching;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCaching;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkExistenceType;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkExpiryTimeOfDay;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaCaching;
@@ -117,7 +117,7 @@ public class EclipseLinkJavaCachingImpl extends AbstractJavaJpaContextNode imple
 	}
 
 	public int getDefaultSize() {
-		return Caching.DEFAULT_SIZE;
+		return EclipseLinkCaching.DEFAULT_SIZE;
 	}
 	
 	public Integer getSpecifiedSize() {
@@ -143,7 +143,7 @@ public class EclipseLinkJavaCachingImpl extends AbstractJavaJpaContextNode imple
 	}
 	
 	public boolean isDefaultShared() {
-		return Caching.DEFAULT_SHARED;
+		return EclipseLinkCaching.DEFAULT_SHARED;
 	}
 	
 	public Boolean getSpecifiedShared() {
@@ -154,7 +154,7 @@ public class EclipseLinkJavaCachingImpl extends AbstractJavaJpaContextNode imple
 		Boolean oldShared = this.specifiedShared;
 		this.specifiedShared = newSpecifiedShared;
 		this.getCacheAnnotation().setShared(newSpecifiedShared);
-		firePropertyChanged(Caching.SPECIFIED_SHARED_PROPERTY, oldShared, newSpecifiedShared);
+		firePropertyChanged(EclipseLinkCaching.SPECIFIED_SHARED_PROPERTY, oldShared, newSpecifiedShared);
 		
 		if (newSpecifiedShared == Boolean.FALSE) {
 			setSpecifiedType(null);
@@ -173,7 +173,7 @@ public class EclipseLinkJavaCachingImpl extends AbstractJavaJpaContextNode imple
 	protected void setSpecifiedShared_(Boolean newSpecifiedShared) {
 		Boolean oldSpecifiedShared = this.specifiedShared;
 		this.specifiedShared = newSpecifiedShared;
-		firePropertyChanged(Caching.SPECIFIED_SHARED_PROPERTY, oldSpecifiedShared, newSpecifiedShared);
+		firePropertyChanged(EclipseLinkCaching.SPECIFIED_SHARED_PROPERTY, oldSpecifiedShared, newSpecifiedShared);
 	}
 
 	public boolean isAlwaysRefresh() {
@@ -181,7 +181,7 @@ public class EclipseLinkJavaCachingImpl extends AbstractJavaJpaContextNode imple
 	}
 	
 	public boolean isDefaultAlwaysRefresh() {
-		return Caching.DEFAULT_ALWAYS_REFRESH;
+		return EclipseLinkCaching.DEFAULT_ALWAYS_REFRESH;
 	}
 	
 	public Boolean getSpecifiedAlwaysRefresh() {
@@ -192,13 +192,13 @@ public class EclipseLinkJavaCachingImpl extends AbstractJavaJpaContextNode imple
 		Boolean oldAlwaysRefresh = this.specifiedAlwaysRefresh;
 		this.specifiedAlwaysRefresh = newSpecifiedAlwaysRefresh;
 		this.getCacheAnnotation().setAlwaysRefresh(newSpecifiedAlwaysRefresh);
-		firePropertyChanged(Caching.SPECIFIED_ALWAYS_REFRESH_PROPERTY, oldAlwaysRefresh, newSpecifiedAlwaysRefresh);
+		firePropertyChanged(EclipseLinkCaching.SPECIFIED_ALWAYS_REFRESH_PROPERTY, oldAlwaysRefresh, newSpecifiedAlwaysRefresh);
 	}
 
 	protected void setSpecifiedAlwaysRefresh_(Boolean newSpecifiedAlwaysRefresh) {
 		Boolean oldAlwaysRefresh = this.specifiedAlwaysRefresh;
 		this.specifiedAlwaysRefresh = newSpecifiedAlwaysRefresh;
-		firePropertyChanged(Caching.SPECIFIED_ALWAYS_REFRESH_PROPERTY, oldAlwaysRefresh, newSpecifiedAlwaysRefresh);
+		firePropertyChanged(EclipseLinkCaching.SPECIFIED_ALWAYS_REFRESH_PROPERTY, oldAlwaysRefresh, newSpecifiedAlwaysRefresh);
 	}
 
 	public boolean isRefreshOnlyIfNewer() {
@@ -206,7 +206,7 @@ public class EclipseLinkJavaCachingImpl extends AbstractJavaJpaContextNode imple
 	}
 	
 	public boolean isDefaultRefreshOnlyIfNewer() {
-		return Caching.DEFAULT_REFRESH_ONLY_IF_NEWER;
+		return EclipseLinkCaching.DEFAULT_REFRESH_ONLY_IF_NEWER;
 	}
 	
 	public Boolean getSpecifiedRefreshOnlyIfNewer() {
@@ -217,13 +217,13 @@ public class EclipseLinkJavaCachingImpl extends AbstractJavaJpaContextNode imple
 		Boolean oldRefreshOnlyIfNewer = this.specifiedRefreshOnlyIfNewer;
 		this.specifiedRefreshOnlyIfNewer = newSpecifiedRefreshOnlyIfNewer;
 		this.getCacheAnnotation().setRefreshOnlyIfNewer(newSpecifiedRefreshOnlyIfNewer);
-		firePropertyChanged(Caching.SPECIFIED_REFRESH_ONLY_IF_NEWER_PROPERTY, oldRefreshOnlyIfNewer, newSpecifiedRefreshOnlyIfNewer);
+		firePropertyChanged(EclipseLinkCaching.SPECIFIED_REFRESH_ONLY_IF_NEWER_PROPERTY, oldRefreshOnlyIfNewer, newSpecifiedRefreshOnlyIfNewer);
 	}
 
 	protected void setSpecifiedRefreshOnlyIfNewer_(Boolean newSpecifiedRefreshOnlyIfNewer) {
 		Boolean oldRefreshOnlyIfNewer = this.specifiedRefreshOnlyIfNewer;
 		this.specifiedRefreshOnlyIfNewer = newSpecifiedRefreshOnlyIfNewer;
-		firePropertyChanged(Caching.SPECIFIED_REFRESH_ONLY_IF_NEWER_PROPERTY, oldRefreshOnlyIfNewer, newSpecifiedRefreshOnlyIfNewer);
+		firePropertyChanged(EclipseLinkCaching.SPECIFIED_REFRESH_ONLY_IF_NEWER_PROPERTY, oldRefreshOnlyIfNewer, newSpecifiedRefreshOnlyIfNewer);
 	}
 
 	public boolean isDisableHits() {
@@ -231,7 +231,7 @@ public class EclipseLinkJavaCachingImpl extends AbstractJavaJpaContextNode imple
 	}
 	
 	public boolean isDefaultDisableHits() {
-		return Caching.DEFAULT_DISABLE_HITS;
+		return EclipseLinkCaching.DEFAULT_DISABLE_HITS;
 	}
 	
 	public Boolean getSpecifiedDisableHits() {
@@ -242,13 +242,13 @@ public class EclipseLinkJavaCachingImpl extends AbstractJavaJpaContextNode imple
 		Boolean oldDisableHits = this.specifiedDisableHits;
 		this.specifiedDisableHits = newSpecifiedDisableHits;
 		this.getCacheAnnotation().setDisableHits(newSpecifiedDisableHits);
-		firePropertyChanged(Caching.SPECIFIED_DISABLE_HITS_PROPERTY, oldDisableHits, newSpecifiedDisableHits);
+		firePropertyChanged(EclipseLinkCaching.SPECIFIED_DISABLE_HITS_PROPERTY, oldDisableHits, newSpecifiedDisableHits);
 	}
 
 	protected void setSpecifiedDisableHits_(Boolean newSpecifiedDisableHits) {
 		Boolean oldDisableHits = this.specifiedDisableHits;
 		this.specifiedDisableHits = newSpecifiedDisableHits;
-		firePropertyChanged(Caching.SPECIFIED_DISABLE_HITS_PROPERTY, oldDisableHits, newSpecifiedDisableHits);
+		firePropertyChanged(EclipseLinkCaching.SPECIFIED_DISABLE_HITS_PROPERTY, oldDisableHits, newSpecifiedDisableHits);
 	}
 	
 	public EclipseLinkCacheCoordinationType getCoordinationType() {

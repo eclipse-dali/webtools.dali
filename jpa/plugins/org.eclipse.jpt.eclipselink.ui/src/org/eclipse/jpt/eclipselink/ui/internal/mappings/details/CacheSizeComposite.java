@@ -8,7 +8,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.mappings.details;
 
-import org.eclipse.jpt.eclipselink.core.context.Caching;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCaching;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.ui.internal.widgets.IntegerCombo;
@@ -26,13 +26,13 @@ import org.eclipse.swt.widgets.Composite;
  * |                      ---------------                                      |
  * ----------------------------------------------------------------------------</pre>
  *
- * @see Caching
+ * @see EclipseLinkCaching
  * @see CachingComposite - A container of this widget
  *
  * @version 2.1
  * @since 2.1
  */
-public class CacheSizeComposite extends FormPane<Caching> {
+public class CacheSizeComposite extends FormPane<EclipseLinkCaching> {
 
 	/**
 	 * Creates a new <code>CacheSizeComposite</code>.
@@ -40,7 +40,7 @@ public class CacheSizeComposite extends FormPane<Caching> {
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public CacheSizeComposite(FormPane<? extends Caching> parentPane,
+	public CacheSizeComposite(FormPane<? extends EclipseLinkCaching> parentPane,
 	                          Composite parent) {
 
 		super(parentPane, parent);
@@ -52,7 +52,7 @@ public class CacheSizeComposite extends FormPane<Caching> {
 	}
 	
 	private void addSizeCombo(Composite container) {
-		new IntegerCombo<Caching>(this, container) {
+		new IntegerCombo<EclipseLinkCaching>(this, container) {
 			
 			@Override
 			protected String getLabelText() {
@@ -66,7 +66,7 @@ public class CacheSizeComposite extends FormPane<Caching> {
 
 			@Override
 			protected PropertyValueModel<Integer> buildDefaultHolder() {
-				return new PropertyAspectAdapter<Caching, Integer>(getSubjectHolder(), Caching.DEFAULT_SIZE_PROPERTY) {
+				return new PropertyAspectAdapter<EclipseLinkCaching, Integer>(getSubjectHolder(), EclipseLinkCaching.DEFAULT_SIZE_PROPERTY) {
 					@Override
 					protected Integer buildValue_() {
 						return Integer.valueOf(this.subject.getDefaultSize());
@@ -76,7 +76,7 @@ public class CacheSizeComposite extends FormPane<Caching> {
 			
 			@Override
 			protected WritablePropertyValueModel<Integer> buildSelectedItemHolder() {
-				return new PropertyAspectAdapter<Caching, Integer>(getSubjectHolder(), Caching.SPECIFIED_SIZE_PROPERTY) {
+				return new PropertyAspectAdapter<EclipseLinkCaching, Integer>(getSubjectHolder(), EclipseLinkCaching.SPECIFIED_SIZE_PROPERTY) {
 					@Override
 					protected Integer buildValue_() {
 						return this.subject.getSpecifiedSize();

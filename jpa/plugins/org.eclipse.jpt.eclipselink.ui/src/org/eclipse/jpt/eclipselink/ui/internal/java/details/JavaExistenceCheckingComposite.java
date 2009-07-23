@@ -9,7 +9,7 @@
 package org.eclipse.jpt.eclipselink.ui.internal.java.details;
 
 import java.util.Collection;
-import org.eclipse.jpt.eclipselink.core.context.Caching;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCaching;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkExistenceType;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaCaching;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
@@ -28,7 +28,7 @@ import org.eclipse.swt.widgets.Composite;
  * |       					---------------------------------------------- |
  * -------------------------------------------------------------------------</pre>
  *
- * @see Caching
+ * @see EclipseLinkCaching
  * @see CachingComposite - A container of this widget
  *
  * @version 2.1
@@ -64,15 +64,15 @@ public class JavaExistenceCheckingComposite extends FormPane<EclipseLinkJavaCach
        );
 	}
 
-	private EnumFormComboViewer<Caching, EclipseLinkExistenceType> addExistenceCheckingTypeCombo(Composite container) {
+	private EnumFormComboViewer<EclipseLinkCaching, EclipseLinkExistenceType> addExistenceCheckingTypeCombo(Composite container) {
 
-		return new EnumFormComboViewer<Caching, EclipseLinkExistenceType>(this, container) {
+		return new EnumFormComboViewer<EclipseLinkCaching, EclipseLinkExistenceType>(this, container) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(Caching.DEFAULT_EXISTENCE_TYPE_PROPERTY);
-				propertyNames.add(Caching.SPECIFIED_EXISTENCE_TYPE_PROPERTY);
+				propertyNames.add(EclipseLinkCaching.DEFAULT_EXISTENCE_TYPE_PROPERTY);
+				propertyNames.add(EclipseLinkCaching.SPECIFIED_EXISTENCE_TYPE_PROPERTY);
 			}
 
 			@Override

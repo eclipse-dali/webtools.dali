@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.mappings.details;
 
-import org.eclipse.jpt.eclipselink.core.context.Caching;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCaching;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
@@ -24,13 +24,13 @@ import org.eclipse.swt.widgets.Composite;
 /**
  * This composite simply shows a tri-state check box for the Disable Hits option.
  * 
- * @see Caching
+ * @see EclipseLinkCaching
  * @see CachingComposite - A container of this widget
  *
  * @version 2.1
  * @since 2.1
  */
-public class DisableHitsComposite extends FormPane<Caching>
+public class DisableHitsComposite extends FormPane<EclipseLinkCaching>
 {
 	/**
 	 * Creates a new <code>OptionalComposite</code>.
@@ -38,7 +38,7 @@ public class DisableHitsComposite extends FormPane<Caching>
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public DisableHitsComposite(FormPane<? extends Caching> parentPane,
+	public DisableHitsComposite(FormPane<? extends EclipseLinkCaching> parentPane,
 	                         Composite parent)
 	{
 		super(parentPane, parent);
@@ -57,7 +57,7 @@ public class DisableHitsComposite extends FormPane<Caching>
 	}
 	
 	private WritablePropertyValueModel<Boolean> buildDisableHitsHolder() {
-		return new PropertyAspectAdapter<Caching, Boolean>(getSubjectHolder(), Caching.SPECIFIED_DISABLE_HITS_PROPERTY) {
+		return new PropertyAspectAdapter<EclipseLinkCaching, Boolean>(getSubjectHolder(), EclipseLinkCaching.SPECIFIED_DISABLE_HITS_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getSpecifiedDisableHits();
@@ -84,10 +84,10 @@ public class DisableHitsComposite extends FormPane<Caching>
 	}
 	
 	private PropertyValueModel<Boolean> buildDefaultDisableHitsHolder() {
-		return new PropertyAspectAdapter<Caching, Boolean>(
+		return new PropertyAspectAdapter<EclipseLinkCaching, Boolean>(
 			getSubjectHolder(),
-			Caching.SPECIFIED_DISABLE_HITS_PROPERTY,
-			Caching.DEFAULT_DISABLE_HITS_PROPERTY)
+			EclipseLinkCaching.SPECIFIED_DISABLE_HITS_PROPERTY,
+			EclipseLinkCaching.DEFAULT_DISABLE_HITS_PROPERTY)
 		{
 			@Override
 			protected Boolean buildValue_() {

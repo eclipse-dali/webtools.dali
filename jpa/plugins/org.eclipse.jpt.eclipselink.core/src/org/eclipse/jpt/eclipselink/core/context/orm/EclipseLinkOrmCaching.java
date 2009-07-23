@@ -10,10 +10,10 @@
 package org.eclipse.jpt.eclipselink.core.context.orm;
 
 import org.eclipse.jpt.core.context.XmlContextNode;
-import org.eclipse.jpt.eclipselink.core.context.Caching;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCaching;
 
 public interface EclipseLinkOrmCaching
-	extends Caching, XmlContextNode
+	extends EclipseLinkCaching, XmlContextNode
 {
 	// just combine two interfaces
 }

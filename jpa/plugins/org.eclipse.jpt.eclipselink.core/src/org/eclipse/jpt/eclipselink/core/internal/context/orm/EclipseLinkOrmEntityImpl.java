@@ -12,7 +12,7 @@ package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 import java.util.List;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmEntity;
-import org.eclipse.jpt.eclipselink.core.context.Caching;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCaching;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkChangeTracking;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCustomizer;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkReadOnly;
@@ -50,7 +50,7 @@ public class EclipseLinkOrmEntityImpl extends AbstractOrmEntity
 		this.converterHolder = new EclipseLinkOrmConverterHolder(this, (XmlConvertersHolder) this.resourceTypeMapping);
 	}
 	
-	public Caching getCaching() {
+	public EclipseLinkCaching getCaching() {
 		return this.caching;
 	}
 

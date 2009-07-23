@@ -17,7 +17,7 @@ import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCacheCoordinationType;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCacheType;
-import org.eclipse.jpt.eclipselink.core.context.Caching;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCaching;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkChangeTrackingType;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCustomConverter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkExistenceType;
@@ -569,7 +569,7 @@ public class EclipseLinkOrmMappedSuperclassTests extends EclipseLinkOrmContextMo
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		EclipseLinkJavaCaching javaContextCaching = ((EclipseLinkJavaMappedSuperclass) ormPersistentType.getJavaPersistentType().getMapping()).getCaching();
 		EclipseLinkOrmMappedSuperclass ormContextMappedSuperclass = (EclipseLinkOrmMappedSuperclass) ormPersistentType.getMapping();
-		Caching ormContextCaching = ormContextMappedSuperclass.getCaching();
+		EclipseLinkCaching ormContextCaching = ormContextMappedSuperclass.getCaching();
 		XmlMappedSuperclass resourceMappedSuperclass = (XmlMappedSuperclass) getXmlEntityMappings().getMappedSuperclasses().get(0);
 
 
@@ -646,7 +646,7 @@ public class EclipseLinkOrmMappedSuperclassTests extends EclipseLinkOrmContextMo
 		createTestMappedSuperclassForCaching();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		EclipseLinkOrmMappedSuperclass ormContextMappedSuperclass = (EclipseLinkOrmMappedSuperclass) ormPersistentType.getMapping();
-		Caching ormContextCaching = ormContextMappedSuperclass.getCaching();
+		EclipseLinkCaching ormContextCaching = ormContextMappedSuperclass.getCaching();
 		XmlMappedSuperclass resourceMappedSuperclass = (XmlMappedSuperclass) getXmlEntityMappings().getMappedSuperclasses().get(0);
 		
 		// check defaults
@@ -679,7 +679,7 @@ public class EclipseLinkOrmMappedSuperclassTests extends EclipseLinkOrmContextMo
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		EclipseLinkJavaCaching javaContextCaching = ((EclipseLinkJavaMappedSuperclass) ormPersistentType.getJavaPersistentType().getMapping()).getCaching();
 		EclipseLinkOrmMappedSuperclass ormContextMappedSuperclass = (EclipseLinkOrmMappedSuperclass) ormPersistentType.getMapping();
-		Caching ormContextCaching = ormContextMappedSuperclass.getCaching();
+		EclipseLinkCaching ormContextCaching = ormContextMappedSuperclass.getCaching();
 		XmlMappedSuperclass resourceMappedSuperclass = (XmlMappedSuperclass) getXmlEntityMappings().getMappedSuperclasses().get(0);
 
 
@@ -756,7 +756,7 @@ public class EclipseLinkOrmMappedSuperclassTests extends EclipseLinkOrmContextMo
 		createTestMappedSuperclassForCaching();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		EclipseLinkOrmMappedSuperclass ormContextMappedSuperclass = (EclipseLinkOrmMappedSuperclass) ormPersistentType.getMapping();
-		Caching ormContextCaching = ormContextMappedSuperclass.getCaching();
+		EclipseLinkCaching ormContextCaching = ormContextMappedSuperclass.getCaching();
 		XmlMappedSuperclass resourceMappedSuperclass = (XmlMappedSuperclass) getXmlEntityMappings().getMappedSuperclasses().get(0);
 		
 		// check defaults
@@ -790,7 +790,7 @@ public class EclipseLinkOrmMappedSuperclassTests extends EclipseLinkOrmContextMo
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		EclipseLinkJavaCaching javaContextCaching = ((EclipseLinkJavaMappedSuperclass) ormPersistentType.getJavaPersistentType().getMapping()).getCaching();
 		EclipseLinkOrmMappedSuperclass ormContextMappedSuperclass = (EclipseLinkOrmMappedSuperclass) ormPersistentType.getMapping();
-		Caching ormContextCaching = ormContextMappedSuperclass.getCaching();
+		EclipseLinkCaching ormContextCaching = ormContextMappedSuperclass.getCaching();
 		XmlMappedSuperclass resourceMappedSuperclass = (XmlMappedSuperclass) getXmlEntityMappings().getMappedSuperclasses().get(0);
 
 
@@ -867,7 +867,7 @@ public class EclipseLinkOrmMappedSuperclassTests extends EclipseLinkOrmContextMo
 		createTestMappedSuperclassForCaching();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		EclipseLinkOrmMappedSuperclass ormContextMappedSuperclass = (EclipseLinkOrmMappedSuperclass) ormPersistentType.getMapping();
-		Caching ormContextCaching = ormContextMappedSuperclass.getCaching();
+		EclipseLinkCaching ormContextCaching = ormContextMappedSuperclass.getCaching();
 		XmlMappedSuperclass resourceMappedSuperclass = (XmlMappedSuperclass) getXmlEntityMappings().getMappedSuperclasses().get(0);
 		
 		// check defaults
@@ -900,7 +900,7 @@ public class EclipseLinkOrmMappedSuperclassTests extends EclipseLinkOrmContextMo
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		EclipseLinkJavaCaching javaContextCaching = ((EclipseLinkJavaMappedSuperclass) ormPersistentType.getJavaPersistentType().getMapping()).getCaching();
 		EclipseLinkOrmMappedSuperclass ormContextMappedSuperclass = (EclipseLinkOrmMappedSuperclass) ormPersistentType.getMapping();
-		Caching ormContextCaching = ormContextMappedSuperclass.getCaching();
+		EclipseLinkCaching ormContextCaching = ormContextMappedSuperclass.getCaching();
 		XmlMappedSuperclass resourceMappedSuperclass = (XmlMappedSuperclass) getXmlEntityMappings().getMappedSuperclasses().get(0);
 
 
@@ -993,7 +993,7 @@ public class EclipseLinkOrmMappedSuperclassTests extends EclipseLinkOrmContextMo
 		createTestMappedSuperclassForCaching();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		EclipseLinkOrmMappedSuperclass ormContextMappedSuperclass = (EclipseLinkOrmMappedSuperclass) ormPersistentType.getMapping();
-		Caching ormContextCaching = ormContextMappedSuperclass.getCaching();
+		EclipseLinkCaching ormContextCaching = ormContextMappedSuperclass.getCaching();
 		XmlMappedSuperclass resourceMappedSuperclass = (XmlMappedSuperclass) getXmlEntityMappings().getMappedSuperclasses().get(0);
 		
 		// check defaults
@@ -1026,7 +1026,7 @@ public class EclipseLinkOrmMappedSuperclassTests extends EclipseLinkOrmContextMo
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		EclipseLinkJavaCaching javaContextCaching = ((EclipseLinkJavaMappedSuperclass) ormPersistentType.getJavaPersistentType().getMapping()).getCaching();
 		EclipseLinkOrmMappedSuperclass ormContextMappedSuperclass = (EclipseLinkOrmMappedSuperclass) ormPersistentType.getMapping();
-		Caching ormContextCaching = ormContextMappedSuperclass.getCaching();
+		EclipseLinkCaching ormContextCaching = ormContextMappedSuperclass.getCaching();
 		XmlMappedSuperclass resourceMappedSuperclass = (XmlMappedSuperclass) getXmlEntityMappings().getMappedSuperclasses().get(0);
 
 
@@ -1119,7 +1119,7 @@ public class EclipseLinkOrmMappedSuperclassTests extends EclipseLinkOrmContextMo
 		createTestMappedSuperclassForCaching();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		EclipseLinkOrmMappedSuperclass ormContextMappedSuperclass = (EclipseLinkOrmMappedSuperclass) ormPersistentType.getMapping();
-		Caching ormContextCaching = ormContextMappedSuperclass.getCaching();
+		EclipseLinkCaching ormContextCaching = ormContextMappedSuperclass.getCaching();
 		XmlMappedSuperclass resourceMappedSuperclass = (XmlMappedSuperclass) getXmlEntityMappings().getMappedSuperclasses().get(0);
 		
 		// check defaults
@@ -1152,7 +1152,7 @@ public class EclipseLinkOrmMappedSuperclassTests extends EclipseLinkOrmContextMo
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		EclipseLinkJavaCaching javaContextCaching = ((EclipseLinkJavaMappedSuperclass) ormPersistentType.getJavaPersistentType().getMapping()).getCaching();
 		EclipseLinkOrmMappedSuperclass ormContextMappedSuperclass = (EclipseLinkOrmMappedSuperclass) ormPersistentType.getMapping();
-		Caching ormContextCaching = ormContextMappedSuperclass.getCaching();
+		EclipseLinkCaching ormContextCaching = ormContextMappedSuperclass.getCaching();
 		XmlMappedSuperclass resourceMappedSuperclass = (XmlMappedSuperclass) getXmlEntityMappings().getMappedSuperclasses().get(0);
 
 
@@ -1245,7 +1245,7 @@ public class EclipseLinkOrmMappedSuperclassTests extends EclipseLinkOrmContextMo
 		createTestMappedSuperclassForCaching();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		EclipseLinkOrmMappedSuperclass ormContextMappedSuperclass = (EclipseLinkOrmMappedSuperclass) ormPersistentType.getMapping();
-		Caching ormContextCaching = ormContextMappedSuperclass.getCaching();
+		EclipseLinkCaching ormContextCaching = ormContextMappedSuperclass.getCaching();
 		XmlMappedSuperclass resourceMappedSuperclass = (XmlMappedSuperclass) getXmlEntityMappings().getMappedSuperclasses().get(0);
 		
 		// check defaults
@@ -1278,7 +1278,7 @@ public class EclipseLinkOrmMappedSuperclassTests extends EclipseLinkOrmContextMo
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		EclipseLinkJavaCaching javaContextCaching = ((EclipseLinkJavaMappedSuperclass) ormPersistentType.getJavaPersistentType().getMapping()).getCaching();
 		EclipseLinkOrmMappedSuperclass ormContextMappedSuperclass = (EclipseLinkOrmMappedSuperclass) ormPersistentType.getMapping();
-		Caching ormContextCaching = ormContextMappedSuperclass.getCaching();
+		EclipseLinkCaching ormContextCaching = ormContextMappedSuperclass.getCaching();
 		XmlMappedSuperclass resourceMappedSuperclass = (XmlMappedSuperclass) getXmlEntityMappings().getMappedSuperclasses().get(0);
 
 
@@ -1371,7 +1371,7 @@ public class EclipseLinkOrmMappedSuperclassTests extends EclipseLinkOrmContextMo
 		createTestMappedSuperclassForCaching();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		EclipseLinkOrmMappedSuperclass ormContextMappedSuperclass = (EclipseLinkOrmMappedSuperclass) ormPersistentType.getMapping();
-		Caching ormContextCaching = ormContextMappedSuperclass.getCaching();
+		EclipseLinkCaching ormContextCaching = ormContextMappedSuperclass.getCaching();
 		XmlMappedSuperclass resourceMappedSuperclass = (XmlMappedSuperclass) getXmlEntityMappings().getMappedSuperclasses().get(0);
 		
 		// check defaults
@@ -1404,7 +1404,7 @@ public class EclipseLinkOrmMappedSuperclassTests extends EclipseLinkOrmContextMo
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		EclipseLinkJavaCaching javaContextCaching = ((EclipseLinkJavaMappedSuperclass) ormPersistentType.getJavaPersistentType().getMapping()).getCaching();
 		EclipseLinkOrmMappedSuperclass ormContextMappedSuperclass = (EclipseLinkOrmMappedSuperclass) ormPersistentType.getMapping();
-		Caching ormContextCaching = ormContextMappedSuperclass.getCaching();
+		EclipseLinkCaching ormContextCaching = ormContextMappedSuperclass.getCaching();
 		XmlMappedSuperclass resourceMappedSuperclass = (XmlMappedSuperclass) getXmlEntityMappings().getMappedSuperclasses().get(0);
 
 
@@ -1461,7 +1461,7 @@ public class EclipseLinkOrmMappedSuperclassTests extends EclipseLinkOrmContextMo
 		createTestMappedSuperclassForCaching();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		EclipseLinkOrmMappedSuperclass ormContextMappedSuperclass = (EclipseLinkOrmMappedSuperclass) ormPersistentType.getMapping();
-		Caching ormContextCaching = ormContextMappedSuperclass.getCaching();
+		EclipseLinkCaching ormContextCaching = ormContextMappedSuperclass.getCaching();
 		XmlMappedSuperclass resourceMappedSuperclass = (XmlMappedSuperclass) getXmlEntityMappings().getMappedSuperclasses().get(0);
 		
 		// check defaults
