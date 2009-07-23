@@ -120,11 +120,11 @@ public class VirtualXmlTableGenerator extends XmlTableGenerator
 		if (this.metadataComplete) {
 			return null;
 		}
-		return this.getJavaTableGenerator().getAllocationSize();
+		return Integer.valueOf(this.getJavaTableGenerator().getAllocationSize());
 	}
 
 	@Override
-	public void setAllocationSize(@SuppressWarnings("unused") Integer value) {
+	public void setAllocationSize(Integer value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
@@ -133,7 +133,7 @@ public class VirtualXmlTableGenerator extends XmlTableGenerator
 		if (this.metadataComplete) {
 			return null;
 		}
-		return this.getJavaTableGenerator().getInitialValue();
+		return Integer.valueOf(this.getJavaTableGenerator().getInitialValue());
 	}
 
 	@Override

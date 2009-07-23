@@ -25,8 +25,6 @@ public class VirtualXmlAssociationOverride extends XmlAssociationOverride
 	
 	protected final JavaAssociationOverride javaAssociationOverride;
 	//TODO need to support with and without a javaAssociationoverride, the java type might not be annotated.
-
-	protected String name;
 	
 
 	protected VirtualXmlAssociationOverride(String name, OrmTypeMapping ormTypeMapping, JavaAssociationOverride javaAssociationOverride) {
@@ -38,11 +36,6 @@ public class VirtualXmlAssociationOverride extends XmlAssociationOverride
 	
 	protected boolean isOrmMetadataComplete() {
 		return this.ormTypeMapping.isMetadataComplete();
-	}
-	
-	@Override
-	public String getName() {
-		return this.name;
 	}
 
 	@Override

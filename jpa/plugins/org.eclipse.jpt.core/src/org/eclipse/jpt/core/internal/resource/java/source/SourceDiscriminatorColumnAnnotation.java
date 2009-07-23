@@ -125,10 +125,7 @@ public final class SourceDiscriminatorColumnAnnotation
 
 	@Override
 	public void initializeFrom(NestableAnnotation oldAnnotation) {
-		super.initializeFrom(oldAnnotation);
-		DiscriminatorColumnAnnotation oldColumn = (DiscriminatorColumnAnnotation) oldAnnotation;
-		this.setLength(oldColumn.getLength());
-		this.setDiscriminatorType(oldColumn.getDiscriminatorType());
+		throw new UnsupportedOperationException("DiscriminatorColumn is not a nestable annotation"); //$NON-NLS-1$
 	}
 
 

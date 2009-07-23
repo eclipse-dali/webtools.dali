@@ -516,7 +516,9 @@ public class EclipseLinkDDLGenerator
 		this.buildProjectLocationProperty(elProperties, projectLocation);
 	    try {
 	        File file = new File(propertiesFile);
-	        file.createNewFile();
+			if ( ! file.createNewFile()) {
+				throw new RuntimeException("createNewFile() failed: " + file); //$NON-NLS-1$
+			}
 	        FileOutputStream stream = new FileOutputStream(file);
 	        elProperties.store(stream, null);
 		    stream.close();
@@ -631,10 +633,10 @@ public class EclipseLinkDDLGenerator
 
 	// ********** constants **********
 
-	String JAVAX_PERSISTENCE_BUNDLE = "javax.persistence";					//$NON-NLS-1$
-	String ORG_ECLIPSE_PERSISTENCE_CORE_BUNDLE = "org.eclipse.persistence.core";	//$NON-NLS-1$
-	String ORG_ECLIPSE_PERSISTENCE_ASM_BUNDLE = "org.eclipse.persistence.asm";	//$NON-NLS-1$
-	String ORG_ECLIPSE_PERSISTENCE_ANTLR_BUNDLE = "org.eclipse.persistence.antlr";	//$NON-NLS-1$
-	String ORG_ECLIPSE_PERSISTENCE_JPA_BUNDLE = "org.eclipse.persistence.jpa";	//$NON-NLS-1$
+	private static final String JAVAX_PERSISTENCE_BUNDLE = "javax.persistence";					//$NON-NLS-1$
+	private static final String ORG_ECLIPSE_PERSISTENCE_CORE_BUNDLE = "org.eclipse.persistence.core";	//$NON-NLS-1$
+	private static final String ORG_ECLIPSE_PERSISTENCE_ASM_BUNDLE = "org.eclipse.persistence.asm";	//$NON-NLS-1$
+	private static final String ORG_ECLIPSE_PERSISTENCE_ANTLR_BUNDLE = "org.eclipse.persistence.antlr";	//$NON-NLS-1$
+	private static final String ORG_ECLIPSE_PERSISTENCE_JPA_BUNDLE = "org.eclipse.persistence.jpa";	//$NON-NLS-1$
 
 }

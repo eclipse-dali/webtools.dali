@@ -49,11 +49,11 @@ public class VirtualXmlSequenceGenerator extends XmlSequenceGenerator
 		if (this.metadataComplete) {
 			return null;
 		}
-		return this.getJavaSequenceGenerator().getAllocationSize();
+		return Integer.valueOf(this.getJavaSequenceGenerator().getAllocationSize());
 	}
 
 	@Override
-	public void setAllocationSize(@SuppressWarnings("unused") Integer value) {
+	public void setAllocationSize(Integer value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 
@@ -62,7 +62,7 @@ public class VirtualXmlSequenceGenerator extends XmlSequenceGenerator
 		if (this.metadataComplete) {
 			return null;
 		}
-		return this.getJavaSequenceGenerator().getInitialValue();
+		return Integer.valueOf(this.getJavaSequenceGenerator().getInitialValue());
 	}
 
 	@Override
