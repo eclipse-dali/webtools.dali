@@ -39,7 +39,7 @@ public class EclipseLinkOrmXml1_1 extends AbstractOrmXml
 	
 	@Override
 	protected EntityMappings buildEntityMappings(org.eclipse.jpt.core.resource.orm.XmlEntityMappings xmlEntityMappings) {
-		return getJpaFactory().buildEclipseLink1_1EntityMappings(this, (XmlEntityMappings) xmlEntityMappings);
+		return getJpaFactory().buildEclipseLinkEntityMappings1_1(this, (XmlEntityMappings) xmlEntityMappings);
 	}
 	
 	

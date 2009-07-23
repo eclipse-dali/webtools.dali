@@ -57,11 +57,11 @@ public class EclipseLinkOrmOneToManyMapping1_1Provider
 	}
 
 	public OrmAttributeMapping buildMapping(OrmPersistentAttribute parent, XmlAttributeMapping resourceMapping, JpaFactory factory) {
-		return ((EclipseLink1_1JpaFactory) factory).buildEclipseLink1_1OrmOneToManyMapping(parent, (XmlOneToMany) resourceMapping);
+		return ((EclipseLink1_1JpaFactory) factory).buildEclipseLinkOrmOneToManyMapping1_1(parent, (XmlOneToMany) resourceMapping);
 	}
 
 	public XmlAttributeMapping buildVirtualResourceMapping(OrmTypeMapping ormTypeMapping, JavaAttributeMapping javaAttributeMapping, JpaFactory factory) {
-		return ((EclipseLink1_1JpaFactory) factory).buildEclipseLink1_1VirtualXmlOneToMany(ormTypeMapping, (EclipseLinkJavaOneToManyMapping) javaAttributeMapping);
+		return ((EclipseLink1_1JpaFactory) factory).buildEclipseLinkVirtualXmlOneToMany1_1(ormTypeMapping, (EclipseLinkJavaOneToManyMapping) javaAttributeMapping);
 	}
 
 }

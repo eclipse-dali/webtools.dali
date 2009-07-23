@@ -58,10 +58,10 @@ public class EclipseLinkOrmTransientMapping1_1Provider
 	}
 
 	public OrmAttributeMapping buildMapping(OrmPersistentAttribute parent, XmlAttributeMapping resourceMapping, JpaFactory factory) {
-		return ((EclipseLink1_1JpaFactory) factory).buildEclipseLink1_1OrmTransientMapping(parent, (XmlTransient) resourceMapping);
+		return ((EclipseLink1_1JpaFactory) factory).buildEclipseLinkOrmTransientMapping1_1(parent, (XmlTransient) resourceMapping);
 	}
 	
 	public XmlAttributeMapping buildVirtualResourceMapping(OrmTypeMapping ormTypeMapping, JavaAttributeMapping javaAttributeMapping, JpaFactory factory) {
-		return ((EclipseLink1_1JpaFactory) factory).buildEclipseLink1_1VirtualXmlTransient(ormTypeMapping, (JavaTransientMapping) javaAttributeMapping);
+		return ((EclipseLink1_1JpaFactory) factory).buildEclipseLinkVirtualXmlTransient1_1(ormTypeMapping, (JavaTransientMapping) javaAttributeMapping);
 	}
 }

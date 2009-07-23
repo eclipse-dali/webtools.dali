@@ -57,11 +57,11 @@ public class EclipseLinkOrmBasicMapping1_1Provider
 	}
 	
 	public OrmAttributeMapping buildMapping(OrmPersistentAttribute parent, XmlAttributeMapping resourceMapping, JpaFactory factory) {
-		return ((EclipseLink1_1JpaFactory) factory).buildEclipseLink1_1OrmBasicMapping(parent, (XmlBasic) resourceMapping);
+		return ((EclipseLink1_1JpaFactory) factory).buildEclipseLinkOrmBasicMapping1_1(parent, (XmlBasic) resourceMapping);
 	}
 
 	public XmlAttributeMapping buildVirtualResourceMapping(OrmTypeMapping ormTypeMapping, JavaAttributeMapping javaAttributeMapping, JpaFactory factory) {
-		return ((EclipseLink1_1JpaFactory) factory).buildEclipseLink1_1VirtualXmlBasic(ormTypeMapping, (JavaBasicMapping) javaAttributeMapping);
+		return ((EclipseLink1_1JpaFactory) factory).buildEclipseLinkVirtualXmlBasic1_1(ormTypeMapping, (JavaBasicMapping) javaAttributeMapping);
 	}
 
 }
