@@ -2007,11 +2007,6 @@ public abstract class AbstractJavaEntity
 		public TypeMapping getTypeMapping() {
 			return AbstractJavaEntity.this;
 		}
-
-		public TextRange validationTextRange(CompilationUnit astRoot) {
-			// TODO Auto-generated method stub
-			return null;
-		}
 	}
 
 
@@ -2044,11 +2039,6 @@ public abstract class AbstractJavaEntity
 
 		public TypeMapping getTypeMapping() {
 			return AbstractJavaEntity.this;
-		}
-
-		public TextRange validationTextRange(CompilationUnit astRoot) {
-			// TODO Auto-generated method stub
-			return null;
 		}
 	}
 
