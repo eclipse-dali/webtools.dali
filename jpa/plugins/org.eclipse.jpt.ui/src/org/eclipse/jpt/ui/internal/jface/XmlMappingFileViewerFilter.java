@@ -48,7 +48,7 @@ public class XmlMappingFileViewerFilter extends ViewerFilter {
 	 */
 	private boolean isMappingFile(IFile file) {
 		JpaFile jpaFile = this.jpaProject.getJpaFile(file);
-		return jpaFile != null ? jpaFile.getContentType().isKindOf(JptCorePlugin.ORM_XML_CONTENT_TYPE): false;
+		return jpaFile != null ? jpaFile.getContentType().isKindOf(JptCorePlugin.MAPPING_FILE_CONTENT_TYPE): false;
 	}
 
 	@Override
