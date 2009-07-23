@@ -14,5 +14,5 @@ package org.eclipse.jpt.core.internal.prefs;
  */
 public class JpaPreferenceConstants 
 {
-	public static final String PREF_DEFAULT_JPA_PLATFORM = "defaultJpaPlatform";
+	public static final String PREF_DEFAULT_JPA_PLATFORM = "defaultJpaPlatform"; //$NON-NLS-1$
 }

@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.resource;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import org.eclipse.core.runtime.QualifiedName;
@@ -25,11 +24,11 @@ import org.eclipse.core.runtime.content.ITextContentDescriber;
  */
 public class IndeterminateContentDescriber implements ITextContentDescriber
 {
-	public int describe(InputStream contents, IContentDescription description) throws IOException {
+	public int describe(InputStream contents, IContentDescription description) {
 		return INDETERMINATE;
 	}
 	
-	public int describe(Reader contents, IContentDescription description) throws IOException {
+	public int describe(Reader contents, IContentDescription description) {
 		return INDETERMINATE;
 	}
 	
