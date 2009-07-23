@@ -31,6 +31,7 @@ import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverride;
 import org.eclipse.jpt.core.context.java.JavaBaseJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaBasicMapping;
+import org.eclipse.jpt.core.context.java.JavaCascade;
 import org.eclipse.jpt.core.context.java.JavaColumn;
 import org.eclipse.jpt.core.context.java.JavaConverter;
 import org.eclipse.jpt.core.context.java.JavaDiscriminatorColumn;
@@ -60,6 +61,7 @@ import org.eclipse.jpt.core.context.java.JavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaQuery;
 import org.eclipse.jpt.core.context.java.JavaQueryContainer;
 import org.eclipse.jpt.core.context.java.JavaQueryHint;
+import org.eclipse.jpt.core.context.java.JavaRelationshipMapping;
 import org.eclipse.jpt.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.core.context.java.JavaSequenceGenerator;
 import org.eclipse.jpt.core.context.java.JavaTable;
@@ -75,6 +77,7 @@ import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeOverride;
 import org.eclipse.jpt.core.context.orm.OrmBaseJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmBasicMapping;
+import org.eclipse.jpt.core.context.orm.OrmCascade;
 import org.eclipse.jpt.core.context.orm.OrmColumn;
 import org.eclipse.jpt.core.context.orm.OrmConverter;
 import org.eclipse.jpt.core.context.orm.OrmDiscriminatorColumn;
@@ -102,6 +105,7 @@ import org.eclipse.jpt.core.context.orm.OrmPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmQuery;
 import org.eclipse.jpt.core.context.orm.OrmQueryContainer;
 import org.eclipse.jpt.core.context.orm.OrmQueryHint;
+import org.eclipse.jpt.core.context.orm.OrmRelationshipMapping;
 import org.eclipse.jpt.core.context.orm.OrmSecondaryTable;
 import org.eclipse.jpt.core.context.orm.OrmSequenceGenerator;
 import org.eclipse.jpt.core.context.orm.OrmTable;
@@ -139,6 +143,7 @@ import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJarFile;
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaAssociationOverride;
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaAttributeOverride;
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaBasicMapping;
+import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaCascade;
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaColumn;
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaDiscriminatorColumn;
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaEmbeddable;
@@ -178,6 +183,7 @@ import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericEntityMappings;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmAssociationOverride;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmAttributeOverride;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmBasicMapping;
+import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmCascade;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmColumn;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmDiscriminatorColumn;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmEmbeddable;
@@ -226,6 +232,7 @@ import org.eclipse.jpt.core.internal.jpa1.context.persistence.GenericPersistence
 import org.eclipse.jpt.core.resource.java.JavaResourcePackageFragmentRoot;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.core.resource.orm.AbstractXmlRelationshipMapping;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
@@ -414,6 +421,10 @@ public class GenericJpaFactory
 		return new GenericOrmDiscriminatorColumn(parent, owner);
 	}
 	
+	public OrmCascade buildOrmCascade(OrmRelationshipMapping parent, AbstractXmlRelationshipMapping resourceMapping) {
+		return new GenericOrmCascade(parent, resourceMapping);
+	}
+	
 	public OrmColumn buildOrmColumn(XmlContextNode parent, OrmColumn.Owner owner) {
 		return new GenericOrmColumn(parent, owner);
 	}
@@ -590,6 +601,10 @@ public class GenericJpaFactory
 	
 	public JavaTable buildJavaTable(JavaEntity parent) {
 		return new GenericJavaTable(parent);
+	}
+	
+	public JavaCascade buildJavaCascade(JavaRelationshipMapping parent) {
+		return new GenericJavaCascade(parent);
 	}
 	
 	public JavaColumn buildJavaColumn(JavaJpaContextNode parent, JavaColumn.Owner owner) {

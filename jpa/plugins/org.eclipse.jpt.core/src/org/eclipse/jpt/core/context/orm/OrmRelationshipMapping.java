@@ -22,4 +22,6 @@ public interface OrmRelationshipMapping
 	extends OrmAttributeMapping, RelationshipMapping
 {
 	OrmRelationshipReference getRelationshipReference();
+	
+	OrmCascade getCascade();
 }

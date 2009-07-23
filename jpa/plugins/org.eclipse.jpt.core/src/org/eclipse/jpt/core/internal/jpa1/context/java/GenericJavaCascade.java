@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -7,15 +7,17 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.internal.context.java;
+package org.eclipse.jpt.core.internal.jpa1.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.Cascade;
+import org.eclipse.jpt.core.context.java.JavaCascade;
 import org.eclipse.jpt.core.context.java.JavaRelationshipMapping;
+import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.core.resource.java.RelationshipMappingAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 
-public class JavaCascade extends AbstractJavaJpaContextNode implements Cascade
+public class GenericJavaCascade extends AbstractJavaJpaContextNode implements JavaCascade
 {
 	protected boolean all;
 
@@ -29,7 +31,7 @@ public class JavaCascade extends AbstractJavaJpaContextNode implements Cascade
 
 	protected RelationshipMappingAnnotation relationshipMapping;
 
-	protected JavaCascade(JavaRelationshipMapping parent) {
+	public GenericJavaCascade(JavaRelationshipMapping parent) {
 		super(parent);
 	}
 

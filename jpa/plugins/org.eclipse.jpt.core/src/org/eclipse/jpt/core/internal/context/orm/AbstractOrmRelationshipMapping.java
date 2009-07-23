@@ -15,6 +15,7 @@ import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.RelationshipMapping;
+import org.eclipse.jpt.core.context.orm.OrmCascade;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmRelationshipMapping;
 import org.eclipse.jpt.core.context.orm.OrmRelationshipReference;
@@ -46,7 +47,7 @@ public abstract class AbstractOrmRelationshipMapping<T extends AbstractXmlRelati
 	protected AbstractOrmRelationshipMapping(OrmPersistentAttribute parent, T resourceMapping) {
 		super(parent, resourceMapping);
 		this.relationshipReference = buildRelationshipReference();
-		this.cascade = new OrmCascade(this, this.resourceAttributeMapping);
+		this.cascade = getJpaFactory().buildOrmCascade(this, this.resourceAttributeMapping);
 		this.specifiedTargetEntity = getResourceTargetEntity();
 		this.defaultTargetEntity = buildDefaultTargetEntity();
 		this.resolvedTargetEntity = buildResolvedTargetEntity();

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -7,9 +7,9 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.context.java;
+package org.eclipse.jpt.core.context.orm;
 
-import org.eclipse.jpt.core.context.RelationshipMapping;
+import org.eclipse.jpt.core.context.Cascade;
 
 /**
  * 
@@ -20,8 +20,10 @@ import org.eclipse.jpt.core.context.RelationshipMapping;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface JavaRelationshipMapping
-	extends JavaAttributeMapping, RelationshipMapping
+public interface OrmCascade extends Cascade
 {
-	JavaCascade getCascade();
+	void initializeFrom(Cascade oldCascade);
+
+	void update();
+
 }

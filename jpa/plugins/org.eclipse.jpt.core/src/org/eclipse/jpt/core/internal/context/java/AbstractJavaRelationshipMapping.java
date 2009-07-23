@@ -16,6 +16,7 @@ import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
+import org.eclipse.jpt.core.context.java.JavaCascade;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaRelationshipMapping;
 import org.eclipse.jpt.core.context.java.JavaRelationshipReference;
@@ -47,7 +48,7 @@ public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMapp
 	protected AbstractJavaRelationshipMapping(JavaPersistentAttribute parent) {
 		super(parent);
 		this.relationshipReference = buildRelationshipReference();
-		this.cascade = new JavaCascade(this);
+		this.cascade = getJpaFactory().buildJavaCascade(this);
 	}
 	
 	

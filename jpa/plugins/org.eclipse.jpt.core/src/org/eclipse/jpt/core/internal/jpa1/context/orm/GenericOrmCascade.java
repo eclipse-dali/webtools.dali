@@ -7,9 +7,10 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.internal.context.orm;
+package org.eclipse.jpt.core.internal.jpa1.context.orm;
 
 import org.eclipse.jpt.core.context.Cascade;
+import org.eclipse.jpt.core.context.orm.OrmCascade;
 import org.eclipse.jpt.core.context.orm.OrmRelationshipMapping;
 import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.core.resource.orm.CascadeType;
@@ -18,7 +19,7 @@ import org.eclipse.jpt.core.resource.orm.AbstractXmlRelationshipMapping;
 import org.eclipse.jpt.core.utility.TextRange;
 
 
-public class OrmCascade extends AbstractXmlContextNode implements Cascade
+public class GenericOrmCascade extends AbstractXmlContextNode implements OrmCascade
 {
 	protected boolean all;
 
@@ -33,7 +34,7 @@ public class OrmCascade extends AbstractXmlContextNode implements Cascade
 	
 	protected final AbstractXmlRelationshipMapping relationshipMapping;
 	
-	protected OrmCascade(OrmRelationshipMapping parent, AbstractXmlRelationshipMapping relationshipMapping) {
+	public GenericOrmCascade(OrmRelationshipMapping parent, AbstractXmlRelationshipMapping relationshipMapping) {
 		super(parent);
 		this.relationshipMapping = relationshipMapping;
 		CascadeType cascade = getResourceCascade();
