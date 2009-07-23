@@ -10,7 +10,7 @@
 package org.eclipse.jpt.eclipselink.ui.internal.orm.details;
 
 import org.eclipse.jpt.core.context.orm.EntityMappings;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.ConverterHolder;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkConverterHolder;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkEntityMappings;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.ui.WidgetFactory;
@@ -155,10 +155,10 @@ public class EntityMappingsDetailsPage extends org.eclipse.jpt.ui.internal.orm.d
 		);
 	}
 	
-	private PropertyValueModel<ConverterHolder> buildConverterHolder() {
-		return new PropertyAspectAdapter<EntityMappings, ConverterHolder>(getSubjectHolder()) {
+	private PropertyValueModel<EclipseLinkConverterHolder> buildConverterHolder() {
+		return new PropertyAspectAdapter<EntityMappings, EclipseLinkConverterHolder>(getSubjectHolder()) {
 			@Override
-			protected ConverterHolder buildValue_() {
+			protected EclipseLinkConverterHolder buildValue_() {
 				return ((EclipseLinkEntityMappings) this.subject).getConverterHolder();
 			}
 		};

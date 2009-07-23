@@ -12,8 +12,8 @@ package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
-import org.eclipse.jpt.eclipselink.core.context.ConversionValue;
-import org.eclipse.jpt.eclipselink.core.context.ObjectTypeConverter;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConversionValue;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkObjectTypeConverter;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConversionValue;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlObjectTypeConverter;
@@ -27,9 +27,9 @@ public class EclipseLinkVirtualXmlObjectTypeConverter extends XmlObjectTypeConve
 {
 	protected OrmTypeMapping ormTypeMapping;
 	
-	protected ObjectTypeConverter javaConverter;
+	protected EclipseLinkObjectTypeConverter javaConverter;
 	
-	public EclipseLinkVirtualXmlObjectTypeConverter(OrmTypeMapping ormTypeMapping, ObjectTypeConverter javaConverter) {
+	public EclipseLinkVirtualXmlObjectTypeConverter(OrmTypeMapping ormTypeMapping, EclipseLinkObjectTypeConverter javaConverter) {
 		super();
 		this.ormTypeMapping = ormTypeMapping;
 		this.javaConverter = javaConverter;
@@ -97,7 +97,7 @@ public class EclipseLinkVirtualXmlObjectTypeConverter extends XmlObjectTypeConve
 		if (isOrmMetadataComplete()) {
 			return conversionValues;
 		}
-		for (ConversionValue javaConversionValue : CollectionTools.iterable(this.javaConverter.conversionValues())) {
+		for (EclipseLinkConversionValue javaConversionValue : CollectionTools.iterable(this.javaConverter.conversionValues())) {
 			XmlConversionValue xmlConversionValue = new EclipseLinkVirtualXmlConversionValue(this.ormTypeMapping, javaConversionValue);
 			conversionValues.add(xmlConversionValue);
 		}

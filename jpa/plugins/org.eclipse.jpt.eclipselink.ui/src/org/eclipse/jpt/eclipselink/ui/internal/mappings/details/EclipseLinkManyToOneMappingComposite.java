@@ -13,7 +13,7 @@ import org.eclipse.jpt.core.context.Cascade;
 import org.eclipse.jpt.core.context.ManyToOneMapping;
 import org.eclipse.jpt.core.context.ManyToOneRelationshipReference;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkRelationshipMapping;
-import org.eclipse.jpt.eclipselink.core.context.JoinFetch;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkJoinFetch;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.CascadeComposite;
@@ -112,10 +112,10 @@ public class EclipseLinkManyToOneMappingComposite extends FormPane<ManyToOneMapp
 		};
 	}
 	
-	protected PropertyValueModel<JoinFetch> buildJoinFetchableHolder() {
-		return new PropertyAspectAdapter<ManyToOneMapping, JoinFetch>(getSubjectHolder()) {
+	protected PropertyValueModel<EclipseLinkJoinFetch> buildJoinFetchableHolder() {
+		return new PropertyAspectAdapter<ManyToOneMapping, EclipseLinkJoinFetch>(getSubjectHolder()) {
 			@Override
-			protected JoinFetch buildValue_() {
+			protected EclipseLinkJoinFetch buildValue_() {
 				return ((EclipseLinkRelationshipMapping) this.subject).getJoinFetch();
 			}
 		};

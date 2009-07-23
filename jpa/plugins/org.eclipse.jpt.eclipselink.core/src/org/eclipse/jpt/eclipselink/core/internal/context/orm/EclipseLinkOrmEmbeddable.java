@@ -26,5 +26,5 @@ import org.eclipse.jpt.eclipselink.core.context.EclipseLinkEmbeddable;
  */
 public interface EclipseLinkOrmEmbeddable extends EclipseLinkEmbeddable, OrmEmbeddable
 {
-	ConverterHolder getConverterHolder();
+	EclipseLinkConverterHolder getConverterHolder();
 }

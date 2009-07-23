@@ -17,7 +17,7 @@ import org.eclipse.jpt.core.context.java.JavaConverter;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.jpt.eclipselink.core.context.Convert;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkConvertAnnotation;
@@ -33,7 +33,7 @@ import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class EclipseLinkJavaConvert extends AbstractJavaJpaContextNode implements Convert, JavaConverter
+public class EclipseLinkJavaConvert extends AbstractJavaJpaContextNode implements EclipseLinkConvert, JavaConverter
 {
 	private String specifiedConverterName;
 	
@@ -52,7 +52,7 @@ public class EclipseLinkJavaConvert extends AbstractJavaJpaContextNode implement
 	}
 
 	public String getType() {
-		return Convert.ECLIPSE_LINK_CONVERTER;
+		return EclipseLinkConvert.ECLIPSE_LINK_CONVERTER;
 	}
 
 	protected String getAnnotationName() {

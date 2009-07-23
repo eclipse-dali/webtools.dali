@@ -29,6 +29,6 @@ public class GenericOrmIdMapping2_0 extends AbstractOrmIdMapping<XmlId>
 	
 	@Override
 	protected OrmGeneratorContainer buildGeneratorContainer() {
-		return getJpaFactory().build2_0OrmGeneratorContainer(this, this.resourceAttributeMapping);
+		return getJpaFactory().buildOrmGeneratorContainer2_0(this, this.resourceAttributeMapping);
 	}
 }

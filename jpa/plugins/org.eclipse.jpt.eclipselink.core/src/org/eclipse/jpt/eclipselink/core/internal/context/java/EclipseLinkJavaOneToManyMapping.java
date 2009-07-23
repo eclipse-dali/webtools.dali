@@ -16,8 +16,8 @@ import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaRelationshipReference;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaOneToManyMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToManyMapping;
-import org.eclipse.jpt.eclipselink.core.context.JoinFetch;
-import org.eclipse.jpt.eclipselink.core.context.PrivateOwned;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkJoinFetch;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkPrivateOwned;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkPrivateOwnedAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
@@ -62,7 +62,7 @@ public class EclipseLinkJavaOneToManyMapping
 	
 	// **************** private owned ******************************************
 	
-	public PrivateOwned getPrivateOwned() {
+	public EclipseLinkPrivateOwned getPrivateOwned() {
 		return this.privateOwned;
 	}
 	
@@ -85,7 +85,7 @@ public class EclipseLinkJavaOneToManyMapping
 	
 	// **************** join fetch *********************************************
 	
-	public JoinFetch getJoinFetch() {
+	public EclipseLinkJoinFetch getJoinFetch() {
 		return this.joinFetch;
 	}
 	

@@ -11,14 +11,14 @@ package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
 import java.util.List;
 import org.eclipse.jpt.core.context.XmlContextNode;
-import org.eclipse.jpt.eclipselink.core.context.CustomConverter;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCustomConverter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConverter;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class EclipseLinkOrmCustomConverter extends EclipseLinkOrmConverter<XmlConverter>
-	implements CustomConverter
+	implements EclipseLinkCustomConverter
 {	
 	private String converterClass;
 	

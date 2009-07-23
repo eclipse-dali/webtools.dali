@@ -13,11 +13,11 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.Caching;
-import org.eclipse.jpt.eclipselink.core.context.ExpiryTimeOfDay;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkExpiryTimeOfDay;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkTimeOfDayAnnotation;
 
 public class EclipseLinkJavaExpiryTimeOfDay extends AbstractJavaJpaContextNode
-	implements ExpiryTimeOfDay
+	implements EclipseLinkExpiryTimeOfDay
 {
 	
 	protected Integer hour;

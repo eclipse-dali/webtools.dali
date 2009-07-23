@@ -25,9 +25,9 @@ public interface EclipseLinkEntity extends Entity
 {
 	Caching getCaching();
 	
-	ReadOnly getReadOnly();
+	EclipseLinkReadOnly getReadOnly();
 	
-	Customizer getCustomizer();
+	EclipseLinkCustomizer getCustomizer();
 	
-	ChangeTracking getChangeTracking();
+	EclipseLinkChangeTracking getChangeTracking();
 }

@@ -57,11 +57,11 @@ public class GenericOrmManyToOneMapping2_0Provider
 	}
 
 	public OrmAttributeMapping buildMapping(OrmPersistentAttribute parent, XmlAttributeMapping resourceMapping, JpaFactory factory) {
-		return ((Generic2_0JpaFactory) factory).build2_0OrmManyToOneMapping(parent, (XmlManyToOne) resourceMapping);
+		return ((Generic2_0JpaFactory) factory).buildOrmManyToOneMapping2_0(parent, (XmlManyToOne) resourceMapping);
 	}
 
 	public XmlAttributeMapping buildVirtualResourceMapping(OrmTypeMapping ormTypeMapping, JavaAttributeMapping javaAttributeMapping, JpaFactory factory) {
-		return ((Generic2_0JpaFactory) factory).build2_0VirtualXmlManyToOne(ormTypeMapping, (JavaManyToOneMapping) javaAttributeMapping);
+		return ((Generic2_0JpaFactory) factory).buildVirtualXmlManyToOne2_0(ormTypeMapping, (JavaManyToOneMapping) javaAttributeMapping);
 	}
 
 }

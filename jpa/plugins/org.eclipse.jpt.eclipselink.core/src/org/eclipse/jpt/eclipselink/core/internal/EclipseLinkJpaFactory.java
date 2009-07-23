@@ -73,10 +73,10 @@ import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaOne
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaOneToOneMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaPersistentAttribute;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaVersionMapping;
-import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaBasicCollectionMapping;
-import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaBasicMapMapping;
-import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaTransformationMapping;
-import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaVariableOneToOneMapping;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaBasicCollectionMapping;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaBasicMapMapping;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaTransformationMapping;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaVariableOneToOneMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkEntityMappings;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkEntityMappingsImpl;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmBasicMapping;
@@ -104,14 +104,14 @@ import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkVirtualX
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkVirtualXmlOneToOne;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkVirtualXmlTransient;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkVirtualXmlVersion;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmBasicCollectionMapping;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmBasicMapMapping;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmTransformationMapping;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmVariableOneToOneMapping;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.VirtualXmlBasicCollection;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.VirtualXmlBasicMap;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.VirtualXmlTransformation;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.VirtualXmlVariableOneToOne;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmBasicCollectionMapping;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmBasicMapMapping;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmTransformationMapping;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmVariableOneToOneMapping;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkVirtualXmlBasicCollection;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkVirtualXmlBasicMap;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkVirtualXmlTransformation;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkVirtualXmlVariableOneToOne;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkJarFileRef;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasic;
@@ -214,20 +214,20 @@ public class EclipseLinkJpaFactory
 		return new EclipseLinkVirtualXmlTransient(ormTypeMapping, javaTransientMapping);
 	}
 	
-	public XmlBasicCollection buildVirtualXmlBasicCollection(OrmTypeMapping ormTypeMapping, JavaBasicCollectionMapping javaBasicCollectionMapping) {
-		return new VirtualXmlBasicCollection(ormTypeMapping, javaBasicCollectionMapping);
+	public XmlBasicCollection buildVirtualXmlBasicCollection(OrmTypeMapping ormTypeMapping, EclipseLinkJavaBasicCollectionMapping javaBasicCollectionMapping) {
+		return new EclipseLinkVirtualXmlBasicCollection(ormTypeMapping, javaBasicCollectionMapping);
 	}
 	
-	public XmlBasicMap buildVirtualXmlBasicMap(OrmTypeMapping ormTypeMapping, JavaBasicMapMapping javaBasicMapMapping) {
-		return new VirtualXmlBasicMap(ormTypeMapping, javaBasicMapMapping);
+	public XmlBasicMap buildVirtualXmlBasicMap(OrmTypeMapping ormTypeMapping, EclipseLinkJavaBasicMapMapping javaBasicMapMapping) {
+		return new EclipseLinkVirtualXmlBasicMap(ormTypeMapping, javaBasicMapMapping);
 	}
 	
-	public XmlTransformation buildVirtualXmlTransformation(OrmTypeMapping ormTypeMapping, JavaTransformationMapping javaTransformationMapping) {
-		return new VirtualXmlTransformation(ormTypeMapping, javaTransformationMapping);
+	public XmlTransformation buildVirtualXmlTransformation(OrmTypeMapping ormTypeMapping, EclipseLinkJavaTransformationMapping javaTransformationMapping) {
+		return new EclipseLinkVirtualXmlTransformation(ormTypeMapping, javaTransformationMapping);
 	}
 	
-	public XmlVariableOneToOne buildVirtualXmlVariableOneToOne(OrmTypeMapping ormTypeMapping, JavaVariableOneToOneMapping javaVariableOneToOneMapping) {
-		return new VirtualXmlVariableOneToOne(ormTypeMapping, javaVariableOneToOneMapping);
+	public XmlVariableOneToOne buildVirtualXmlVariableOneToOne(OrmTypeMapping ormTypeMapping, EclipseLinkJavaVariableOneToOneMapping javaVariableOneToOneMapping) {
+		return new EclipseLinkVirtualXmlVariableOneToOne(ormTypeMapping, javaVariableOneToOneMapping);
 	}
 	
 	public XmlNullAttributeMapping buildEclipseLinkVirtualXmlNullAttributeMapping(OrmTypeMapping ormTypeMapping, JavaAttributeMapping javaAttributeMapping) {
@@ -304,20 +304,20 @@ public class EclipseLinkJpaFactory
 		return buildOrmTransientMapping(parent, resourceMapping);
 	}
 	
-	public OrmBasicCollectionMapping buildOrmBasicCollectionMapping(OrmPersistentAttribute parent, XmlBasicCollection resourceMapping) {
-		return new OrmBasicCollectionMapping(parent, resourceMapping);
+	public EclipseLinkOrmBasicCollectionMapping buildEclipseLinkOrmBasicCollectionMapping(OrmPersistentAttribute parent, XmlBasicCollection resourceMapping) {
+		return new EclipseLinkOrmBasicCollectionMapping(parent, resourceMapping);
 	}
 	
-	public OrmBasicMapMapping buildOrmBasicMapMapping(OrmPersistentAttribute parent, XmlBasicMap resourceMapping) {
-		return new OrmBasicMapMapping(parent, resourceMapping);
+	public EclipseLinkOrmBasicMapMapping buildEclipseLinkOrmBasicMapMapping(OrmPersistentAttribute parent, XmlBasicMap resourceMapping) {
+		return new EclipseLinkOrmBasicMapMapping(parent, resourceMapping);
 	}
 	
-	public OrmTransformationMapping buildOrmTransformationMapping(OrmPersistentAttribute parent, XmlTransformation resourceMapping) {
-		return new OrmTransformationMapping(parent, resourceMapping);
+	public EclipseLinkOrmTransformationMapping buildEclipseLinkOrmTransformationMapping(OrmPersistentAttribute parent, XmlTransformation resourceMapping) {
+		return new EclipseLinkOrmTransformationMapping(parent, resourceMapping);
 	}
 	
-	public OrmVariableOneToOneMapping buildOrmVariableOneToOneMapping(OrmPersistentAttribute parent, XmlVariableOneToOne resourceMapping) {
-		return new OrmVariableOneToOneMapping(parent, resourceMapping);
+	public EclipseLinkOrmVariableOneToOneMapping buildEclipseLinkOrmVariableOneToOneMapping(OrmPersistentAttribute parent, XmlVariableOneToOne resourceMapping) {
+		return new EclipseLinkOrmVariableOneToOneMapping(parent, resourceMapping);
 	}
 	
 	public OrmAttributeMapping buildEclipseLinkOrmNullAttributeMapping(OrmPersistentAttribute parent, XmlNullAttributeMapping resourceMapping) {
@@ -381,19 +381,19 @@ public class EclipseLinkJpaFactory
 		return new EclipseLinkJavaManyToOneMapping(parent);
 	}
 
-	public JavaBasicCollectionMapping buildJavaBasicCollectionMapping(JavaPersistentAttribute parent) {
-		return new JavaBasicCollectionMapping(parent);
+	public EclipseLinkJavaBasicCollectionMapping buildJavaBasicCollectionMapping(JavaPersistentAttribute parent) {
+		return new EclipseLinkJavaBasicCollectionMapping(parent);
 	}
 	
-	public JavaBasicMapMapping buildJavaBasicMapMapping(JavaPersistentAttribute parent) {
-		return new JavaBasicMapMapping(parent);
+	public EclipseLinkJavaBasicMapMapping buildJavaBasicMapMapping(JavaPersistentAttribute parent) {
+		return new EclipseLinkJavaBasicMapMapping(parent);
 	}
 	
-	public JavaTransformationMapping buildJavaTransformationMapping(JavaPersistentAttribute parent) {
-		return new JavaTransformationMapping(parent);
+	public EclipseLinkJavaTransformationMapping buildJavaTransformationMapping(JavaPersistentAttribute parent) {
+		return new EclipseLinkJavaTransformationMapping(parent);
 	}
 
-	public JavaVariableOneToOneMapping buildJavaVariableOneToOneMapping(JavaPersistentAttribute parent) {
-		return new JavaVariableOneToOneMapping(parent);
+	public EclipseLinkJavaVariableOneToOneMapping buildJavaVariableOneToOneMapping(JavaPersistentAttribute parent) {
+		return new EclipseLinkJavaVariableOneToOneMapping(parent);
 	}
 }

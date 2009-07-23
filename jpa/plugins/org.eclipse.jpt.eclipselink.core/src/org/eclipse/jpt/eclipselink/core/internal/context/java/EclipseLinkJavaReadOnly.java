@@ -14,10 +14,10 @@ import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.jpt.eclipselink.core.context.ReadOnly;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkReadOnly;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkReadOnlyAnnotation;
 
-public class EclipseLinkJavaReadOnly extends AbstractJavaJpaContextNode implements ReadOnly
+public class EclipseLinkJavaReadOnly extends AbstractJavaJpaContextNode implements EclipseLinkReadOnly
 {
 	protected Boolean specifiedReadOnly;
 	
@@ -50,7 +50,7 @@ public class EclipseLinkJavaReadOnly extends AbstractJavaJpaContextNode implemen
 	}
 	
 	public boolean isDefaultReadOnly() {
-		return ReadOnly.DEFAULT_READ_ONLY;
+		return EclipseLinkReadOnly.DEFAULT_READ_ONLY;
 	}
 	
 	public Boolean getSpecifiedReadOnly() {

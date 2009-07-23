@@ -51,7 +51,7 @@ public interface EclipseLinkConverterAnnotation
 
 	/**
 	 * Return whether the converter class implements the specified interface.
-	 * @see org.eclipse.jpt.eclipselink.core.context.CustomConverter#ECLIPSELINK_CONVERTER_CLASS_NAME
+	 * @see org.eclipse.jpt.eclipselink.core.context.EclipseLinkCustomConverter#ECLIPSELINK_CONVERTER_CLASS_NAME
 	 */
 	boolean converterClassImplementsInterface(String interfaceName, CompilationUnit astRoot);
 

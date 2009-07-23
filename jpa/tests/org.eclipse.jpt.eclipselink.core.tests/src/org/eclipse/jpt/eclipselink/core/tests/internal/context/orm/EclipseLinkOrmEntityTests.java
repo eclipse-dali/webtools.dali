@@ -15,19 +15,19 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.resource.java.JPA;
-import org.eclipse.jpt.eclipselink.core.context.CacheCoordinationType;
-import org.eclipse.jpt.eclipselink.core.context.CacheType;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCacheCoordinationType;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCacheType;
 import org.eclipse.jpt.eclipselink.core.context.Caching;
-import org.eclipse.jpt.eclipselink.core.context.ChangeTrackingType;
-import org.eclipse.jpt.eclipselink.core.context.CustomConverter;
-import org.eclipse.jpt.eclipselink.core.context.ExistenceType;
-import org.eclipse.jpt.eclipselink.core.context.ExpiryTimeOfDay;
-import org.eclipse.jpt.eclipselink.core.context.ObjectTypeConverter;
-import org.eclipse.jpt.eclipselink.core.context.StructConverter;
-import org.eclipse.jpt.eclipselink.core.context.TypeConverter;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkChangeTrackingType;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCustomConverter;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkExistenceType;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkExpiryTimeOfDay;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkObjectTypeConverter;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkStructConverter;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkTypeConverter;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaEntity;
-import org.eclipse.jpt.eclipselink.core.context.java.JavaCaching;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.ConverterHolder;
+import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaCaching;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkConverterHolder;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmEntity;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
@@ -430,9 +430,9 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 		// check defaults
 		
 		assertNull(resourceEntity.getChangeTracking());
-		assertEquals(ChangeTrackingType.AUTO, javaContextEntity.getChangeTracking().getType());
-		assertEquals(ChangeTrackingType.AUTO, ormContextEntity.getChangeTracking().getType());
-		assertEquals(ChangeTrackingType.AUTO, ormContextEntity.getChangeTracking().getDefaultType());
+		assertEquals(EclipseLinkChangeTrackingType.AUTO, javaContextEntity.getChangeTracking().getType());
+		assertEquals(EclipseLinkChangeTrackingType.AUTO, ormContextEntity.getChangeTracking().getType());
+		assertEquals(EclipseLinkChangeTrackingType.AUTO, ormContextEntity.getChangeTracking().getDefaultType());
 		assertNull(ormContextEntity.getChangeTracking().getSpecifiedType());
 		
 		// set xml type to ATTRIBUTE, check context
@@ -441,50 +441,50 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 		resourceEntity.getChangeTracking().setType(XmlChangeTrackingType.ATTRIBUTE);
 		
 		assertEquals(XmlChangeTrackingType.ATTRIBUTE, resourceEntity.getChangeTracking().getType());
-		assertEquals(ChangeTrackingType.AUTO, javaContextEntity.getChangeTracking().getType());
-		assertEquals(ChangeTrackingType.ATTRIBUTE, ormContextEntity.getChangeTracking().getType());
-		assertEquals(ChangeTrackingType.AUTO, ormContextEntity.getChangeTracking().getDefaultType());
-		assertEquals(ChangeTrackingType.ATTRIBUTE, ormContextEntity.getChangeTracking().getSpecifiedType());
+		assertEquals(EclipseLinkChangeTrackingType.AUTO, javaContextEntity.getChangeTracking().getType());
+		assertEquals(EclipseLinkChangeTrackingType.ATTRIBUTE, ormContextEntity.getChangeTracking().getType());
+		assertEquals(EclipseLinkChangeTrackingType.AUTO, ormContextEntity.getChangeTracking().getDefaultType());
+		assertEquals(EclipseLinkChangeTrackingType.ATTRIBUTE, ormContextEntity.getChangeTracking().getSpecifiedType());
 		
 		// set xml type to OBJECT, check context
 		
 		resourceEntity.getChangeTracking().setType(XmlChangeTrackingType.OBJECT);
 		
 		assertEquals(XmlChangeTrackingType.OBJECT, resourceEntity.getChangeTracking().getType());
-		assertEquals(ChangeTrackingType.AUTO, javaContextEntity.getChangeTracking().getType());
-		assertEquals(ChangeTrackingType.OBJECT, ormContextEntity.getChangeTracking().getType());
-		assertEquals(ChangeTrackingType.AUTO, ormContextEntity.getChangeTracking().getDefaultType());
-		assertEquals(ChangeTrackingType.OBJECT, ormContextEntity.getChangeTracking().getSpecifiedType());
+		assertEquals(EclipseLinkChangeTrackingType.AUTO, javaContextEntity.getChangeTracking().getType());
+		assertEquals(EclipseLinkChangeTrackingType.OBJECT, ormContextEntity.getChangeTracking().getType());
+		assertEquals(EclipseLinkChangeTrackingType.AUTO, ormContextEntity.getChangeTracking().getDefaultType());
+		assertEquals(EclipseLinkChangeTrackingType.OBJECT, ormContextEntity.getChangeTracking().getSpecifiedType());
 		
 		// set xml type to DEFERRED, check context
 		
 		resourceEntity.getChangeTracking().setType(XmlChangeTrackingType.DEFERRED);
 		
 		assertEquals(XmlChangeTrackingType.DEFERRED, resourceEntity.getChangeTracking().getType());
-		assertEquals(ChangeTrackingType.AUTO, javaContextEntity.getChangeTracking().getType());
-		assertEquals(ChangeTrackingType.DEFERRED, ormContextEntity.getChangeTracking().getType());
-		assertEquals(ChangeTrackingType.AUTO, ormContextEntity.getChangeTracking().getDefaultType());
-		assertEquals(ChangeTrackingType.DEFERRED, ormContextEntity.getChangeTracking().getSpecifiedType());
+		assertEquals(EclipseLinkChangeTrackingType.AUTO, javaContextEntity.getChangeTracking().getType());
+		assertEquals(EclipseLinkChangeTrackingType.DEFERRED, ormContextEntity.getChangeTracking().getType());
+		assertEquals(EclipseLinkChangeTrackingType.AUTO, ormContextEntity.getChangeTracking().getDefaultType());
+		assertEquals(EclipseLinkChangeTrackingType.DEFERRED, ormContextEntity.getChangeTracking().getSpecifiedType());
 		
 		// set xml type to AUTO, check context
 		
 		resourceEntity.getChangeTracking().setType(XmlChangeTrackingType.AUTO);
 		
 		assertEquals(XmlChangeTrackingType.AUTO, resourceEntity.getChangeTracking().getType());
-		assertEquals(ChangeTrackingType.AUTO, javaContextEntity.getChangeTracking().getType());
-		assertEquals(ChangeTrackingType.AUTO, ormContextEntity.getChangeTracking().getType());
-		assertEquals(ChangeTrackingType.AUTO, ormContextEntity.getChangeTracking().getDefaultType());
-		assertEquals(ChangeTrackingType.AUTO, ormContextEntity.getChangeTracking().getSpecifiedType());
+		assertEquals(EclipseLinkChangeTrackingType.AUTO, javaContextEntity.getChangeTracking().getType());
+		assertEquals(EclipseLinkChangeTrackingType.AUTO, ormContextEntity.getChangeTracking().getType());
+		assertEquals(EclipseLinkChangeTrackingType.AUTO, ormContextEntity.getChangeTracking().getDefaultType());
+		assertEquals(EclipseLinkChangeTrackingType.AUTO, ormContextEntity.getChangeTracking().getSpecifiedType());
 		
 		// clear xml change tracking, set java change tracking, check defaults
 		
 		resourceEntity.setChangeTracking(null);
-		javaContextEntity.getChangeTracking().setSpecifiedType(ChangeTrackingType.ATTRIBUTE);
+		javaContextEntity.getChangeTracking().setSpecifiedType(EclipseLinkChangeTrackingType.ATTRIBUTE);
 		
 		assertNull(resourceEntity.getChangeTracking());
-		assertEquals(ChangeTrackingType.ATTRIBUTE, javaContextEntity.getChangeTracking().getType());
-		assertEquals(ChangeTrackingType.ATTRIBUTE, ormContextEntity.getChangeTracking().getType());
-		assertEquals(ChangeTrackingType.ATTRIBUTE, ormContextEntity.getChangeTracking().getDefaultType());
+		assertEquals(EclipseLinkChangeTrackingType.ATTRIBUTE, javaContextEntity.getChangeTracking().getType());
+		assertEquals(EclipseLinkChangeTrackingType.ATTRIBUTE, ormContextEntity.getChangeTracking().getType());
+		assertEquals(EclipseLinkChangeTrackingType.ATTRIBUTE, ormContextEntity.getChangeTracking().getDefaultType());
 		assertNull(ormContextEntity.getChangeTracking().getSpecifiedType());
 		
 		// set metadataComplete to True, check defaults not from java
@@ -492,9 +492,9 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 		ormContextEntity.setSpecifiedMetadataComplete(Boolean.TRUE);
 		
 		assertNull(resourceEntity.getChangeTracking());
-		assertEquals(ChangeTrackingType.ATTRIBUTE, javaContextEntity.getChangeTracking().getType());
-		assertEquals(ChangeTrackingType.AUTO, ormContextEntity.getChangeTracking().getType());
-		assertEquals(ChangeTrackingType.AUTO, ormContextEntity.getChangeTracking().getDefaultType());
+		assertEquals(EclipseLinkChangeTrackingType.ATTRIBUTE, javaContextEntity.getChangeTracking().getType());
+		assertEquals(EclipseLinkChangeTrackingType.AUTO, ormContextEntity.getChangeTracking().getType());
+		assertEquals(EclipseLinkChangeTrackingType.AUTO, ormContextEntity.getChangeTracking().getDefaultType());
 		assertNull(ormContextEntity.getChangeTracking().getSpecifiedType());
 		
 		// unset metadataComplete, set xml change tracking to OBJECT, check context
@@ -504,10 +504,10 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 		resourceEntity.getChangeTracking().setType(XmlChangeTrackingType.OBJECT);
 		
 		assertEquals(XmlChangeTrackingType.OBJECT, resourceEntity.getChangeTracking().getType());
-		assertEquals(ChangeTrackingType.ATTRIBUTE, javaContextEntity.getChangeTracking().getType());
-		assertEquals(ChangeTrackingType.OBJECT, ormContextEntity.getChangeTracking().getType());
-		assertEquals(ChangeTrackingType.ATTRIBUTE, ormContextEntity.getChangeTracking().getDefaultType());
-		assertEquals(ChangeTrackingType.OBJECT, ormContextEntity.getChangeTracking().getSpecifiedType());
+		assertEquals(EclipseLinkChangeTrackingType.ATTRIBUTE, javaContextEntity.getChangeTracking().getType());
+		assertEquals(EclipseLinkChangeTrackingType.OBJECT, ormContextEntity.getChangeTracking().getType());
+		assertEquals(EclipseLinkChangeTrackingType.ATTRIBUTE, ormContextEntity.getChangeTracking().getDefaultType());
+		assertEquals(EclipseLinkChangeTrackingType.OBJECT, ormContextEntity.getChangeTracking().getSpecifiedType());
 	}
 	
 	public void testModifyChangeTracking() throws Exception  {
@@ -519,60 +519,60 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 		// check defaults
 		
 		assertNull(resourceEntity.getChangeTracking());
-		assertEquals(ChangeTrackingType.AUTO, ormContextEntity.getChangeTracking().getType());
-		assertEquals(ChangeTrackingType.AUTO, ormContextEntity.getChangeTracking().getDefaultType());
+		assertEquals(EclipseLinkChangeTrackingType.AUTO, ormContextEntity.getChangeTracking().getType());
+		assertEquals(EclipseLinkChangeTrackingType.AUTO, ormContextEntity.getChangeTracking().getDefaultType());
 		assertNull(ormContextEntity.getChangeTracking().getSpecifiedType());
 		
 		// set context change tracking to ATTRIBUTE, check resource
 		
-		ormContextEntity.getChangeTracking().setSpecifiedType(ChangeTrackingType.ATTRIBUTE);
+		ormContextEntity.getChangeTracking().setSpecifiedType(EclipseLinkChangeTrackingType.ATTRIBUTE);
 		
 		assertEquals(XmlChangeTrackingType.ATTRIBUTE, resourceEntity.getChangeTracking().getType());
-		assertEquals(ChangeTrackingType.ATTRIBUTE, ormContextEntity.getChangeTracking().getType());
-		assertEquals(ChangeTrackingType.AUTO, ormContextEntity.getChangeTracking().getDefaultType());
-		assertEquals(ChangeTrackingType.ATTRIBUTE, ormContextEntity.getChangeTracking().getSpecifiedType());
+		assertEquals(EclipseLinkChangeTrackingType.ATTRIBUTE, ormContextEntity.getChangeTracking().getType());
+		assertEquals(EclipseLinkChangeTrackingType.AUTO, ormContextEntity.getChangeTracking().getDefaultType());
+		assertEquals(EclipseLinkChangeTrackingType.ATTRIBUTE, ormContextEntity.getChangeTracking().getSpecifiedType());
 				
 		// set context change tracking to OBJECT, check resource
 		
-		ormContextEntity.getChangeTracking().setSpecifiedType(ChangeTrackingType.OBJECT);
+		ormContextEntity.getChangeTracking().setSpecifiedType(EclipseLinkChangeTrackingType.OBJECT);
 		
 		assertEquals(XmlChangeTrackingType.OBJECT, resourceEntity.getChangeTracking().getType());
-		assertEquals(ChangeTrackingType.OBJECT, ormContextEntity.getChangeTracking().getType());
-		assertEquals(ChangeTrackingType.AUTO, ormContextEntity.getChangeTracking().getDefaultType());
-		assertEquals(ChangeTrackingType.OBJECT, ormContextEntity.getChangeTracking().getSpecifiedType());
+		assertEquals(EclipseLinkChangeTrackingType.OBJECT, ormContextEntity.getChangeTracking().getType());
+		assertEquals(EclipseLinkChangeTrackingType.AUTO, ormContextEntity.getChangeTracking().getDefaultType());
+		assertEquals(EclipseLinkChangeTrackingType.OBJECT, ormContextEntity.getChangeTracking().getSpecifiedType());
 				
 		// set context change tracking to DEFERRED, check resource
 		
-		ormContextEntity.getChangeTracking().setSpecifiedType(ChangeTrackingType.DEFERRED);
+		ormContextEntity.getChangeTracking().setSpecifiedType(EclipseLinkChangeTrackingType.DEFERRED);
 		
 		assertEquals(XmlChangeTrackingType.DEFERRED, resourceEntity.getChangeTracking().getType());
-		assertEquals(ChangeTrackingType.DEFERRED, ormContextEntity.getChangeTracking().getType());
-		assertEquals(ChangeTrackingType.AUTO, ormContextEntity.getChangeTracking().getDefaultType());
-		assertEquals(ChangeTrackingType.DEFERRED, ormContextEntity.getChangeTracking().getSpecifiedType());
+		assertEquals(EclipseLinkChangeTrackingType.DEFERRED, ormContextEntity.getChangeTracking().getType());
+		assertEquals(EclipseLinkChangeTrackingType.AUTO, ormContextEntity.getChangeTracking().getDefaultType());
+		assertEquals(EclipseLinkChangeTrackingType.DEFERRED, ormContextEntity.getChangeTracking().getSpecifiedType());
 				
 		// set context change tracking to AUTO, check resource
 		
-		ormContextEntity.getChangeTracking().setSpecifiedType(ChangeTrackingType.AUTO);
+		ormContextEntity.getChangeTracking().setSpecifiedType(EclipseLinkChangeTrackingType.AUTO);
 		
 		assertEquals(XmlChangeTrackingType.AUTO, resourceEntity.getChangeTracking().getType());
-		assertEquals(ChangeTrackingType.AUTO, ormContextEntity.getChangeTracking().getType());
-		assertEquals(ChangeTrackingType.AUTO, ormContextEntity.getChangeTracking().getDefaultType());
-		assertEquals(ChangeTrackingType.AUTO, ormContextEntity.getChangeTracking().getSpecifiedType());
+		assertEquals(EclipseLinkChangeTrackingType.AUTO, ormContextEntity.getChangeTracking().getType());
+		assertEquals(EclipseLinkChangeTrackingType.AUTO, ormContextEntity.getChangeTracking().getDefaultType());
+		assertEquals(EclipseLinkChangeTrackingType.AUTO, ormContextEntity.getChangeTracking().getSpecifiedType());
 				
 		// set context change tracking to null, check resource
 		
 		ormContextEntity.getChangeTracking().setSpecifiedType(null);
 		
 		assertNull(resourceEntity.getChangeTracking());
-		assertEquals(ChangeTrackingType.AUTO, ormContextEntity.getChangeTracking().getType());
-		assertEquals(ChangeTrackingType.AUTO, ormContextEntity.getChangeTracking().getDefaultType());
+		assertEquals(EclipseLinkChangeTrackingType.AUTO, ormContextEntity.getChangeTracking().getType());
+		assertEquals(EclipseLinkChangeTrackingType.AUTO, ormContextEntity.getChangeTracking().getDefaultType());
 		assertNull(ormContextEntity.getChangeTracking().getSpecifiedType());
 	}
 	
 	public void testUpdateCacheType() throws Exception {
 		createTestEntityForCaching();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		JavaCaching javaContextCaching = ((EclipseLinkJavaEntity) ormPersistentType.getJavaPersistentType().getMapping()).getCaching();
+		EclipseLinkJavaCaching javaContextCaching = ((EclipseLinkJavaEntity) ormPersistentType.getJavaPersistentType().getMapping()).getCaching();
 		EclipseLinkOrmEntity ormContextEntity = (EclipseLinkOrmEntity) ormPersistentType.getMapping();
 		Caching ormContextCaching = ormContextEntity.getCaching();
 		XmlEntity resourceEntity = (XmlEntity) getXmlEntityMappings().getEntities().get(0);
@@ -581,46 +581,46 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 		// check defaults
 		
 		assertEquals(null, resourceEntity.getCache());
-		assertEquals(CacheType.SOFT_WEAK, javaContextCaching.getType());
-		assertEquals(CacheType.SOFT_WEAK, ormContextCaching.getType());
-		assertEquals(CacheType.SOFT_WEAK, ormContextCaching.getDefaultType());
+		assertEquals(EclipseLinkCacheType.SOFT_WEAK, javaContextCaching.getType());
+		assertEquals(EclipseLinkCacheType.SOFT_WEAK, ormContextCaching.getType());
+		assertEquals(EclipseLinkCacheType.SOFT_WEAK, ormContextCaching.getDefaultType());
 		assertEquals(null, ormContextCaching.getSpecifiedType());
 		
 		// set xml cache, check defaults
 		resourceEntity.setCache(EclipseLinkOrmFactory.eINSTANCE.createXmlCache());
 		assertEquals(null, resourceEntity.getCache().getType());
-		assertEquals(CacheType.SOFT_WEAK, javaContextCaching.getType());
-		assertEquals(CacheType.SOFT_WEAK, ormContextCaching.getType());
-		assertEquals(CacheType.SOFT_WEAK, ormContextCaching.getDefaultType());
+		assertEquals(EclipseLinkCacheType.SOFT_WEAK, javaContextCaching.getType());
+		assertEquals(EclipseLinkCacheType.SOFT_WEAK, ormContextCaching.getType());
+		assertEquals(EclipseLinkCacheType.SOFT_WEAK, ormContextCaching.getDefaultType());
 		assertEquals(null, ormContextCaching.getSpecifiedType());
 
 		
 		// set xml cache type, check settings
 		resourceEntity.getCache().setType(org.eclipse.jpt.eclipselink.core.resource.orm.CacheType.FULL);
 		assertEquals(org.eclipse.jpt.eclipselink.core.resource.orm.CacheType.FULL, resourceEntity.getCache().getType());
-		assertEquals(CacheType.SOFT_WEAK, javaContextCaching.getType());
-		assertEquals(CacheType.FULL, ormContextCaching.getType());
-		assertEquals(CacheType.SOFT_WEAK, ormContextCaching.getDefaultType());
-		assertEquals(CacheType.FULL, ormContextCaching.getSpecifiedType());
+		assertEquals(EclipseLinkCacheType.SOFT_WEAK, javaContextCaching.getType());
+		assertEquals(EclipseLinkCacheType.FULL, ormContextCaching.getType());
+		assertEquals(EclipseLinkCacheType.SOFT_WEAK, ormContextCaching.getDefaultType());
+		assertEquals(EclipseLinkCacheType.FULL, ormContextCaching.getSpecifiedType());
 
 			
 		// set java cache type, check defaults
 		
-		javaContextCaching.setSpecifiedType(CacheType.WEAK);
+		javaContextCaching.setSpecifiedType(EclipseLinkCacheType.WEAK);
 		
 		assertEquals(org.eclipse.jpt.eclipselink.core.resource.orm.CacheType.FULL, resourceEntity.getCache().getType());
-		assertEquals(CacheType.WEAK, javaContextCaching.getType());
-		assertEquals(CacheType.FULL, ormContextCaching.getType());
-		assertEquals(CacheType.SOFT_WEAK, ormContextCaching.getDefaultType());
-		assertEquals(CacheType.FULL, ormContextCaching.getSpecifiedType());
+		assertEquals(EclipseLinkCacheType.WEAK, javaContextCaching.getType());
+		assertEquals(EclipseLinkCacheType.FULL, ormContextCaching.getType());
+		assertEquals(EclipseLinkCacheType.SOFT_WEAK, ormContextCaching.getDefaultType());
+		assertEquals(EclipseLinkCacheType.FULL, ormContextCaching.getSpecifiedType());
 
 		// clear xml cache type, check defaults
 		resourceEntity.getCache().setType(null);
 
 		assertEquals(null, resourceEntity.getCache().getType());
-		assertEquals(CacheType.WEAK, javaContextCaching.getType());
-		assertEquals(CacheType.SOFT_WEAK, ormContextCaching.getType());
-		assertEquals(CacheType.SOFT_WEAK, ormContextCaching.getDefaultType());
+		assertEquals(EclipseLinkCacheType.WEAK, javaContextCaching.getType());
+		assertEquals(EclipseLinkCacheType.SOFT_WEAK, ormContextCaching.getType());
+		assertEquals(EclipseLinkCacheType.SOFT_WEAK, ormContextCaching.getDefaultType());
 		assertEquals(null, ormContextCaching.getSpecifiedType());
 	
 		
@@ -628,9 +628,9 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 		resourceEntity.setCache(null);
 
 		assertEquals(null, resourceEntity.getCache());
-		assertEquals(CacheType.WEAK, javaContextCaching.getType());
-		assertEquals(CacheType.WEAK, ormContextCaching.getType());
-		assertEquals(CacheType.WEAK, ormContextCaching.getDefaultType());
+		assertEquals(EclipseLinkCacheType.WEAK, javaContextCaching.getType());
+		assertEquals(EclipseLinkCacheType.WEAK, ormContextCaching.getType());
+		assertEquals(EclipseLinkCacheType.WEAK, ormContextCaching.getDefaultType());
 		assertEquals(null, ormContextCaching.getSpecifiedType());
 	
 		
@@ -639,9 +639,9 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 		ormContextEntity.setSpecifiedMetadataComplete(Boolean.TRUE);
 		
 		assertEquals(null, resourceEntity.getCache());
-		assertEquals(CacheType.WEAK, javaContextCaching.getType());
-		assertEquals(CacheType.SOFT_WEAK, ormContextCaching.getType());
-		assertEquals(CacheType.SOFT_WEAK, ormContextCaching.getDefaultType());
+		assertEquals(EclipseLinkCacheType.WEAK, javaContextCaching.getType());
+		assertEquals(EclipseLinkCacheType.SOFT_WEAK, ormContextCaching.getType());
+		assertEquals(EclipseLinkCacheType.SOFT_WEAK, ormContextCaching.getDefaultType());
 		assertEquals(null, ormContextCaching.getSpecifiedType());
 
 		ormContextEntity.setSpecifiedMetadataComplete(null);
@@ -657,32 +657,32 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 		// check defaults
 		
 		assertEquals(null, resourceEntity.getCache());
-		assertEquals(CacheType.SOFT_WEAK, ormContextCaching.getType());
-		assertEquals(CacheType.SOFT_WEAK, ormContextCaching.getDefaultType());
+		assertEquals(EclipseLinkCacheType.SOFT_WEAK, ormContextCaching.getType());
+		assertEquals(EclipseLinkCacheType.SOFT_WEAK, ormContextCaching.getDefaultType());
 		assertEquals(null, ormContextCaching.getSpecifiedType());
 		
 		// set context cache type, check resource
 		
-		ormContextEntity.getCaching().setSpecifiedType(CacheType.HARD_WEAK);
+		ormContextEntity.getCaching().setSpecifiedType(EclipseLinkCacheType.HARD_WEAK);
 		assertEquals(org.eclipse.jpt.eclipselink.core.resource.orm.CacheType.HARD_WEAK, resourceEntity.getCache().getType());
-		assertEquals(CacheType.HARD_WEAK, ormContextCaching.getType());
-		assertEquals(CacheType.SOFT_WEAK, ormContextCaching.getDefaultType());
-		assertEquals(CacheType.HARD_WEAK, ormContextCaching.getSpecifiedType());
+		assertEquals(EclipseLinkCacheType.HARD_WEAK, ormContextCaching.getType());
+		assertEquals(EclipseLinkCacheType.SOFT_WEAK, ormContextCaching.getDefaultType());
+		assertEquals(EclipseLinkCacheType.HARD_WEAK, ormContextCaching.getSpecifiedType());
 				
 		// set context customizer to null, check resource
 		
 		ormContextEntity.getCaching().setSpecifiedType(null);
 		
 		assertEquals(null, resourceEntity.getCache());
-		assertEquals(CacheType.SOFT_WEAK, ormContextCaching.getType());
-		assertEquals(CacheType.SOFT_WEAK, ormContextCaching.getDefaultType());
+		assertEquals(EclipseLinkCacheType.SOFT_WEAK, ormContextCaching.getType());
+		assertEquals(EclipseLinkCacheType.SOFT_WEAK, ormContextCaching.getDefaultType());
 		assertEquals(null, ormContextCaching.getSpecifiedType());
 	}
 
 	public void testUpdateCacheCoordinationType() throws Exception {
 		createTestEntityForCaching();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		JavaCaching javaContextCaching = ((EclipseLinkJavaEntity) ormPersistentType.getJavaPersistentType().getMapping()).getCaching();
+		EclipseLinkJavaCaching javaContextCaching = ((EclipseLinkJavaEntity) ormPersistentType.getJavaPersistentType().getMapping()).getCaching();
 		EclipseLinkOrmEntity ormContextEntity = (EclipseLinkOrmEntity) ormPersistentType.getMapping();
 		Caching ormContextCaching = ormContextEntity.getCaching();
 		XmlEntity resourceEntity = (XmlEntity) getXmlEntityMappings().getEntities().get(0);
@@ -691,46 +691,46 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 		// check defaults
 		
 		assertEquals(null, resourceEntity.getCache());
-		assertEquals(CacheCoordinationType.SEND_OBJECT_CHANGES, javaContextCaching.getCoordinationType());
-		assertEquals(CacheCoordinationType.SEND_OBJECT_CHANGES, ormContextCaching.getCoordinationType());
-		assertEquals(CacheCoordinationType.SEND_OBJECT_CHANGES, ormContextCaching.getDefaultCoordinationType());
+		assertEquals(EclipseLinkCacheCoordinationType.SEND_OBJECT_CHANGES, javaContextCaching.getCoordinationType());
+		assertEquals(EclipseLinkCacheCoordinationType.SEND_OBJECT_CHANGES, ormContextCaching.getCoordinationType());
+		assertEquals(EclipseLinkCacheCoordinationType.SEND_OBJECT_CHANGES, ormContextCaching.getDefaultCoordinationType());
 		assertEquals(null, ormContextCaching.getSpecifiedCoordinationType());
 		
 		// set xml cache, check defaults
 		resourceEntity.setCache(EclipseLinkOrmFactory.eINSTANCE.createXmlCache());
 		assertEquals(null, resourceEntity.getCache().getCoordinationType());
-		assertEquals(CacheCoordinationType.SEND_OBJECT_CHANGES, javaContextCaching.getCoordinationType());
-		assertEquals(CacheCoordinationType.SEND_OBJECT_CHANGES, ormContextCaching.getCoordinationType());
-		assertEquals(CacheCoordinationType.SEND_OBJECT_CHANGES, ormContextCaching.getDefaultCoordinationType());
+		assertEquals(EclipseLinkCacheCoordinationType.SEND_OBJECT_CHANGES, javaContextCaching.getCoordinationType());
+		assertEquals(EclipseLinkCacheCoordinationType.SEND_OBJECT_CHANGES, ormContextCaching.getCoordinationType());
+		assertEquals(EclipseLinkCacheCoordinationType.SEND_OBJECT_CHANGES, ormContextCaching.getDefaultCoordinationType());
 		assertEquals(null, ormContextCaching.getSpecifiedCoordinationType());
 
 		
 		// set xml cache type, check settings
 		resourceEntity.getCache().setCoordinationType(org.eclipse.jpt.eclipselink.core.resource.orm.CacheCoordinationType.INVALIDATE_CHANGED_OBJECTS);
 		assertEquals(org.eclipse.jpt.eclipselink.core.resource.orm.CacheCoordinationType.INVALIDATE_CHANGED_OBJECTS, resourceEntity.getCache().getCoordinationType());
-		assertEquals(CacheCoordinationType.SEND_OBJECT_CHANGES, javaContextCaching.getCoordinationType());
-		assertEquals(CacheCoordinationType.INVALIDATE_CHANGED_OBJECTS, ormContextCaching.getCoordinationType());
-		assertEquals(CacheCoordinationType.SEND_OBJECT_CHANGES, ormContextCaching.getDefaultCoordinationType());
-		assertEquals(CacheCoordinationType.INVALIDATE_CHANGED_OBJECTS, ormContextCaching.getSpecifiedCoordinationType());
+		assertEquals(EclipseLinkCacheCoordinationType.SEND_OBJECT_CHANGES, javaContextCaching.getCoordinationType());
+		assertEquals(EclipseLinkCacheCoordinationType.INVALIDATE_CHANGED_OBJECTS, ormContextCaching.getCoordinationType());
+		assertEquals(EclipseLinkCacheCoordinationType.SEND_OBJECT_CHANGES, ormContextCaching.getDefaultCoordinationType());
+		assertEquals(EclipseLinkCacheCoordinationType.INVALIDATE_CHANGED_OBJECTS, ormContextCaching.getSpecifiedCoordinationType());
 
 			
 		// set java cache type, check defaults
 		
-		javaContextCaching.setSpecifiedCoordinationType(CacheCoordinationType.SEND_NEW_OBJECTS_WITH_CHANGES);
+		javaContextCaching.setSpecifiedCoordinationType(EclipseLinkCacheCoordinationType.SEND_NEW_OBJECTS_WITH_CHANGES);
 		
 		assertEquals(org.eclipse.jpt.eclipselink.core.resource.orm.CacheCoordinationType.INVALIDATE_CHANGED_OBJECTS, resourceEntity.getCache().getCoordinationType());
-		assertEquals(CacheCoordinationType.SEND_NEW_OBJECTS_WITH_CHANGES, javaContextCaching.getCoordinationType());
-		assertEquals(CacheCoordinationType.INVALIDATE_CHANGED_OBJECTS, ormContextCaching.getCoordinationType());
-		assertEquals(CacheCoordinationType.SEND_OBJECT_CHANGES, ormContextCaching.getDefaultCoordinationType());
-		assertEquals(CacheCoordinationType.INVALIDATE_CHANGED_OBJECTS, ormContextCaching.getSpecifiedCoordinationType());
+		assertEquals(EclipseLinkCacheCoordinationType.SEND_NEW_OBJECTS_WITH_CHANGES, javaContextCaching.getCoordinationType());
+		assertEquals(EclipseLinkCacheCoordinationType.INVALIDATE_CHANGED_OBJECTS, ormContextCaching.getCoordinationType());
+		assertEquals(EclipseLinkCacheCoordinationType.SEND_OBJECT_CHANGES, ormContextCaching.getDefaultCoordinationType());
+		assertEquals(EclipseLinkCacheCoordinationType.INVALIDATE_CHANGED_OBJECTS, ormContextCaching.getSpecifiedCoordinationType());
 
 		// clear xml cache type, check defaults
 		resourceEntity.getCache().setCoordinationType(null);
 
 		assertEquals(null, resourceEntity.getCache().getCoordinationType());
-		assertEquals(CacheCoordinationType.SEND_NEW_OBJECTS_WITH_CHANGES, javaContextCaching.getCoordinationType());
-		assertEquals(CacheCoordinationType.SEND_OBJECT_CHANGES, ormContextCaching.getCoordinationType());
-		assertEquals(CacheCoordinationType.SEND_OBJECT_CHANGES, ormContextCaching.getDefaultCoordinationType());
+		assertEquals(EclipseLinkCacheCoordinationType.SEND_NEW_OBJECTS_WITH_CHANGES, javaContextCaching.getCoordinationType());
+		assertEquals(EclipseLinkCacheCoordinationType.SEND_OBJECT_CHANGES, ormContextCaching.getCoordinationType());
+		assertEquals(EclipseLinkCacheCoordinationType.SEND_OBJECT_CHANGES, ormContextCaching.getDefaultCoordinationType());
 		assertEquals(null, ormContextCaching.getSpecifiedCoordinationType());
 	
 		
@@ -738,9 +738,9 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 		resourceEntity.setCache(null);
 
 		assertEquals(null, resourceEntity.getCache());
-		assertEquals(CacheCoordinationType.SEND_NEW_OBJECTS_WITH_CHANGES, javaContextCaching.getCoordinationType());
-		assertEquals(CacheCoordinationType.SEND_NEW_OBJECTS_WITH_CHANGES, ormContextCaching.getCoordinationType());
-		assertEquals(CacheCoordinationType.SEND_NEW_OBJECTS_WITH_CHANGES, ormContextCaching.getDefaultCoordinationType());
+		assertEquals(EclipseLinkCacheCoordinationType.SEND_NEW_OBJECTS_WITH_CHANGES, javaContextCaching.getCoordinationType());
+		assertEquals(EclipseLinkCacheCoordinationType.SEND_NEW_OBJECTS_WITH_CHANGES, ormContextCaching.getCoordinationType());
+		assertEquals(EclipseLinkCacheCoordinationType.SEND_NEW_OBJECTS_WITH_CHANGES, ormContextCaching.getDefaultCoordinationType());
 		assertEquals(null, ormContextCaching.getSpecifiedCoordinationType());
 	
 		
@@ -749,9 +749,9 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 		ormContextEntity.setSpecifiedMetadataComplete(Boolean.TRUE);
 		
 		assertEquals(null, resourceEntity.getCache());
-		assertEquals(CacheCoordinationType.SEND_NEW_OBJECTS_WITH_CHANGES, javaContextCaching.getCoordinationType());
-		assertEquals(CacheCoordinationType.SEND_OBJECT_CHANGES, ormContextCaching.getCoordinationType());
-		assertEquals(CacheCoordinationType.SEND_OBJECT_CHANGES, ormContextCaching.getDefaultCoordinationType());
+		assertEquals(EclipseLinkCacheCoordinationType.SEND_NEW_OBJECTS_WITH_CHANGES, javaContextCaching.getCoordinationType());
+		assertEquals(EclipseLinkCacheCoordinationType.SEND_OBJECT_CHANGES, ormContextCaching.getCoordinationType());
+		assertEquals(EclipseLinkCacheCoordinationType.SEND_OBJECT_CHANGES, ormContextCaching.getDefaultCoordinationType());
 		assertEquals(null, ormContextCaching.getSpecifiedCoordinationType());
 
 		ormContextEntity.setSpecifiedMetadataComplete(null);
@@ -767,25 +767,25 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 		// check defaults
 		
 		assertEquals(null, resourceEntity.getCache());
-		assertEquals(CacheCoordinationType.SEND_OBJECT_CHANGES, ormContextCaching.getCoordinationType());
-		assertEquals(CacheCoordinationType.SEND_OBJECT_CHANGES, ormContextCaching.getDefaultCoordinationType());
+		assertEquals(EclipseLinkCacheCoordinationType.SEND_OBJECT_CHANGES, ormContextCaching.getCoordinationType());
+		assertEquals(EclipseLinkCacheCoordinationType.SEND_OBJECT_CHANGES, ormContextCaching.getDefaultCoordinationType());
 		assertEquals(null, ormContextCaching.getSpecifiedCoordinationType());
 		
 		// set context cache coordination type, check resource
 		
-		ormContextEntity.getCaching().setSpecifiedCoordinationType(CacheCoordinationType.SEND_NEW_OBJECTS_WITH_CHANGES);
+		ormContextEntity.getCaching().setSpecifiedCoordinationType(EclipseLinkCacheCoordinationType.SEND_NEW_OBJECTS_WITH_CHANGES);
 		assertEquals(org.eclipse.jpt.eclipselink.core.resource.orm.CacheCoordinationType.SEND_NEW_OBJECTS_WITH_CHANGES, resourceEntity.getCache().getCoordinationType());
-		assertEquals(CacheCoordinationType.SEND_NEW_OBJECTS_WITH_CHANGES, ormContextCaching.getCoordinationType());
-		assertEquals(CacheCoordinationType.SEND_OBJECT_CHANGES, ormContextCaching.getDefaultCoordinationType());
-		assertEquals(CacheCoordinationType.SEND_NEW_OBJECTS_WITH_CHANGES, ormContextCaching.getSpecifiedCoordinationType());
+		assertEquals(EclipseLinkCacheCoordinationType.SEND_NEW_OBJECTS_WITH_CHANGES, ormContextCaching.getCoordinationType());
+		assertEquals(EclipseLinkCacheCoordinationType.SEND_OBJECT_CHANGES, ormContextCaching.getDefaultCoordinationType());
+		assertEquals(EclipseLinkCacheCoordinationType.SEND_NEW_OBJECTS_WITH_CHANGES, ormContextCaching.getSpecifiedCoordinationType());
 				
 		// set context coordination type to null, check resource
 		
 		ormContextEntity.getCaching().setSpecifiedCoordinationType(null);
 		
 		assertEquals(null, resourceEntity.getCache());
-		assertEquals(CacheCoordinationType.SEND_OBJECT_CHANGES, ormContextCaching.getCoordinationType());
-		assertEquals(CacheCoordinationType.SEND_OBJECT_CHANGES, ormContextCaching.getDefaultCoordinationType());
+		assertEquals(EclipseLinkCacheCoordinationType.SEND_OBJECT_CHANGES, ormContextCaching.getCoordinationType());
+		assertEquals(EclipseLinkCacheCoordinationType.SEND_OBJECT_CHANGES, ormContextCaching.getDefaultCoordinationType());
 		assertEquals(null, ormContextCaching.getSpecifiedCoordinationType());
 	}
 
@@ -793,7 +793,7 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 	public void testUpdateCacheSize() throws Exception {
 		createTestEntityForCaching();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		JavaCaching javaContextCaching = ((EclipseLinkJavaEntity) ormPersistentType.getJavaPersistentType().getMapping()).getCaching();
+		EclipseLinkJavaCaching javaContextCaching = ((EclipseLinkJavaEntity) ormPersistentType.getJavaPersistentType().getMapping()).getCaching();
 		EclipseLinkOrmEntity ormContextEntity = (EclipseLinkOrmEntity) ormPersistentType.getMapping();
 		Caching ormContextCaching = ormContextEntity.getCaching();
 		XmlEntity resourceEntity = (XmlEntity) getXmlEntityMappings().getEntities().get(0);
@@ -903,7 +903,7 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 	public void testUpdateCacheAlwaysRefresh() throws Exception {
 		createTestEntityForCaching();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		JavaCaching javaContextCaching = ((EclipseLinkJavaEntity) ormPersistentType.getJavaPersistentType().getMapping()).getCaching();
+		EclipseLinkJavaCaching javaContextCaching = ((EclipseLinkJavaEntity) ormPersistentType.getJavaPersistentType().getMapping()).getCaching();
 		EclipseLinkOrmEntity ormContextEntity = (EclipseLinkOrmEntity) ormPersistentType.getMapping();
 		Caching ormContextCaching = ormContextEntity.getCaching();
 		XmlEntity resourceEntity = (XmlEntity) getXmlEntityMappings().getEntities().get(0);
@@ -1029,7 +1029,7 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 	public void testUpdateCacheRefreshOnlyIfNewer() throws Exception {
 		createTestEntityForCaching();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		JavaCaching javaContextCaching = ((EclipseLinkJavaEntity) ormPersistentType.getJavaPersistentType().getMapping()).getCaching();
+		EclipseLinkJavaCaching javaContextCaching = ((EclipseLinkJavaEntity) ormPersistentType.getJavaPersistentType().getMapping()).getCaching();
 		EclipseLinkOrmEntity ormContextEntity = (EclipseLinkOrmEntity) ormPersistentType.getMapping();
 		Caching ormContextCaching = ormContextEntity.getCaching();
 		XmlEntity resourceEntity = (XmlEntity) getXmlEntityMappings().getEntities().get(0);
@@ -1155,7 +1155,7 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 	public void testUpdateCacheDisableHits() throws Exception {
 		createTestEntityForCaching();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		JavaCaching javaContextCaching = ((EclipseLinkJavaEntity) ormPersistentType.getJavaPersistentType().getMapping()).getCaching();
+		EclipseLinkJavaCaching javaContextCaching = ((EclipseLinkJavaEntity) ormPersistentType.getJavaPersistentType().getMapping()).getCaching();
 		EclipseLinkOrmEntity ormContextEntity = (EclipseLinkOrmEntity) ormPersistentType.getMapping();
 		Caching ormContextCaching = ormContextEntity.getCaching();
 		XmlEntity resourceEntity = (XmlEntity) getXmlEntityMappings().getEntities().get(0);
@@ -1281,7 +1281,7 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 	public void testUpdateCacheShared() throws Exception {
 		createTestEntityForCaching();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		JavaCaching javaContextCaching = ((EclipseLinkJavaEntity) ormPersistentType.getJavaPersistentType().getMapping()).getCaching();
+		EclipseLinkJavaCaching javaContextCaching = ((EclipseLinkJavaEntity) ormPersistentType.getJavaPersistentType().getMapping()).getCaching();
 		EclipseLinkOrmEntity ormContextEntity = (EclipseLinkOrmEntity) ormPersistentType.getMapping();
 		Caching ormContextCaching = ormContextEntity.getCaching();
 		XmlEntity resourceEntity = (XmlEntity) getXmlEntityMappings().getEntities().get(0);
@@ -1410,13 +1410,13 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 		Caching ormContextCaching = ormContextEntity.getCaching();
 		XmlEntity resourceEntity = (XmlEntity) getXmlEntityMappings().getEntities().get(0);
 		
-		ormContextCaching.setSpecifiedType(CacheType.HARD_WEAK);
+		ormContextCaching.setSpecifiedType(EclipseLinkCacheType.HARD_WEAK);
 		ormContextCaching.setSpecifiedSize(Integer.valueOf(500));
 		ormContextCaching.setSpecifiedAlwaysRefresh(Boolean.FALSE);
 		ormContextCaching.setSpecifiedRefreshOnlyIfNewer(Boolean.FALSE);
 		ormContextCaching.setSpecifiedDisableHits(Boolean.FALSE);
-		ormContextCaching.setSpecifiedCoordinationType(CacheCoordinationType.INVALIDATE_CHANGED_OBJECTS);
-		ormContextCaching.setSpecifiedExistenceType(ExistenceType.ASSUME_NON_EXISTENCE);
+		ormContextCaching.setSpecifiedCoordinationType(EclipseLinkCacheCoordinationType.INVALIDATE_CHANGED_OBJECTS);
+		ormContextCaching.setSpecifiedExistenceType(EclipseLinkExistenceType.ASSUME_NON_EXISTENCE);
 		ormContextCaching.setExpiry(Integer.valueOf(8000));
 		
 		ormContextCaching.setSpecifiedShared(Boolean.FALSE);
@@ -1431,10 +1431,10 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 		
 		
 		//existence checking is the only thing that isn't unset when shared is set to false
-		assertEquals(ExistenceType.ASSUME_NON_EXISTENCE, ormContextCaching.getSpecifiedExistenceType());
+		assertEquals(EclipseLinkExistenceType.ASSUME_NON_EXISTENCE, ormContextCaching.getSpecifiedExistenceType());
 		
 		ormContextCaching.setSpecifiedShared(null);
-		ExpiryTimeOfDay timeOfDayExpiry = ormContextCaching.addExpiryTimeOfDay();
+		EclipseLinkExpiryTimeOfDay timeOfDayExpiry = ormContextCaching.addExpiryTimeOfDay();
 		timeOfDayExpiry.setHour(Integer.valueOf(5));
 		
 		ormContextCaching.setSpecifiedShared(Boolean.FALSE);
@@ -1446,7 +1446,7 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 	public void testUpdateExistenceChecking() throws Exception {
 		createTestEntityForCaching();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		JavaCaching javaContextCaching = ((EclipseLinkJavaEntity) ormPersistentType.getJavaPersistentType().getMapping()).getCaching();
+		EclipseLinkJavaCaching javaContextCaching = ((EclipseLinkJavaEntity) ormPersistentType.getJavaPersistentType().getMapping()).getCaching();
 		EclipseLinkOrmEntity ormContextEntity = (EclipseLinkOrmEntity) ormPersistentType.getMapping();
 		Caching ormContextCaching = ormContextEntity.getCaching();
 		XmlEntity resourceEntity = (XmlEntity) getXmlEntityMappings().getEntities().get(0);
@@ -1455,37 +1455,37 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 		// check defaults
 		
 		assertEquals(null, resourceEntity.getExistenceChecking());
-		assertEquals(ExistenceType.CHECK_DATABASE, javaContextCaching.getExistenceType());
-		assertEquals(ExistenceType.CHECK_DATABASE, ormContextCaching.getExistenceType());
-		assertEquals(ExistenceType.CHECK_DATABASE, ormContextCaching.getDefaultExistenceType());
+		assertEquals(EclipseLinkExistenceType.CHECK_DATABASE, javaContextCaching.getExistenceType());
+		assertEquals(EclipseLinkExistenceType.CHECK_DATABASE, ormContextCaching.getExistenceType());
+		assertEquals(EclipseLinkExistenceType.CHECK_DATABASE, ormContextCaching.getDefaultExistenceType());
 		assertEquals(null, ormContextCaching.getSpecifiedExistenceType());
 		
 		// set xml existence checking, check settings
 		resourceEntity.setExistenceChecking(org.eclipse.jpt.eclipselink.core.resource.orm.ExistenceType.ASSUME_EXISTENCE);
 		assertEquals(org.eclipse.jpt.eclipselink.core.resource.orm.ExistenceType.ASSUME_EXISTENCE, resourceEntity.getExistenceChecking());
-		assertEquals(ExistenceType.CHECK_DATABASE, javaContextCaching.getExistenceType());
-		assertEquals(ExistenceType.ASSUME_EXISTENCE, ormContextCaching.getExistenceType());
-		assertEquals(ExistenceType.CHECK_DATABASE, ormContextCaching.getDefaultExistenceType());
-		assertEquals(ExistenceType.ASSUME_EXISTENCE, ormContextCaching.getSpecifiedExistenceType());
+		assertEquals(EclipseLinkExistenceType.CHECK_DATABASE, javaContextCaching.getExistenceType());
+		assertEquals(EclipseLinkExistenceType.ASSUME_EXISTENCE, ormContextCaching.getExistenceType());
+		assertEquals(EclipseLinkExistenceType.CHECK_DATABASE, ormContextCaching.getDefaultExistenceType());
+		assertEquals(EclipseLinkExistenceType.ASSUME_EXISTENCE, ormContextCaching.getSpecifiedExistenceType());
 
 			
 		// set java cache existence checking, check defaults
 		
-		javaContextCaching.setSpecifiedExistenceType(ExistenceType.ASSUME_NON_EXISTENCE);
+		javaContextCaching.setSpecifiedExistenceType(EclipseLinkExistenceType.ASSUME_NON_EXISTENCE);
 		
 		assertEquals(org.eclipse.jpt.eclipselink.core.resource.orm.ExistenceType.ASSUME_EXISTENCE, resourceEntity.getExistenceChecking());
-		assertEquals(ExistenceType.ASSUME_NON_EXISTENCE, javaContextCaching.getExistenceType());
-		assertEquals(ExistenceType.ASSUME_EXISTENCE, ormContextCaching.getExistenceType());
-		assertEquals(ExistenceType.ASSUME_NON_EXISTENCE, ormContextCaching.getDefaultExistenceType());
-		assertEquals(ExistenceType.ASSUME_EXISTENCE, ormContextCaching.getSpecifiedExistenceType());
+		assertEquals(EclipseLinkExistenceType.ASSUME_NON_EXISTENCE, javaContextCaching.getExistenceType());
+		assertEquals(EclipseLinkExistenceType.ASSUME_EXISTENCE, ormContextCaching.getExistenceType());
+		assertEquals(EclipseLinkExistenceType.ASSUME_NON_EXISTENCE, ormContextCaching.getDefaultExistenceType());
+		assertEquals(EclipseLinkExistenceType.ASSUME_EXISTENCE, ormContextCaching.getSpecifiedExistenceType());
 
 		// clear xml existence checking, check defaults
 		resourceEntity.setExistenceChecking(null);
 
 		assertEquals(null, resourceEntity.getExistenceChecking());
-		assertEquals(ExistenceType.ASSUME_NON_EXISTENCE, javaContextCaching.getExistenceType());
-		assertEquals(ExistenceType.ASSUME_NON_EXISTENCE, ormContextCaching.getExistenceType());
-		assertEquals(ExistenceType.ASSUME_NON_EXISTENCE, ormContextCaching.getDefaultExistenceType());
+		assertEquals(EclipseLinkExistenceType.ASSUME_NON_EXISTENCE, javaContextCaching.getExistenceType());
+		assertEquals(EclipseLinkExistenceType.ASSUME_NON_EXISTENCE, ormContextCaching.getExistenceType());
+		assertEquals(EclipseLinkExistenceType.ASSUME_NON_EXISTENCE, ormContextCaching.getDefaultExistenceType());
 		assertEquals(null, ormContextCaching.getSpecifiedExistenceType());	
 		
 		// set metadataComplete to True, check defaults not from java
@@ -1493,9 +1493,9 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 		ormContextEntity.setSpecifiedMetadataComplete(Boolean.TRUE);
 		
 		assertEquals(null, resourceEntity.getExistenceChecking());
-		assertEquals(ExistenceType.ASSUME_NON_EXISTENCE, javaContextCaching.getExistenceType());
-		assertEquals(ExistenceType.CHECK_DATABASE, ormContextCaching.getExistenceType());
-		assertEquals(ExistenceType.CHECK_DATABASE, ormContextCaching.getDefaultExistenceType());
+		assertEquals(EclipseLinkExistenceType.ASSUME_NON_EXISTENCE, javaContextCaching.getExistenceType());
+		assertEquals(EclipseLinkExistenceType.CHECK_DATABASE, ormContextCaching.getExistenceType());
+		assertEquals(EclipseLinkExistenceType.CHECK_DATABASE, ormContextCaching.getDefaultExistenceType());
 		assertEquals(null, ormContextCaching.getSpecifiedExistenceType());
 
 		ormContextEntity.setSpecifiedMetadataComplete(null);
@@ -1511,32 +1511,32 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 		// check defaults
 		
 		assertEquals(null, resourceEntity.getExistenceChecking());
-		assertEquals(ExistenceType.CHECK_DATABASE, ormContextCaching.getExistenceType());
-		assertEquals(ExistenceType.CHECK_DATABASE, ormContextCaching.getDefaultExistenceType());
+		assertEquals(EclipseLinkExistenceType.CHECK_DATABASE, ormContextCaching.getExistenceType());
+		assertEquals(EclipseLinkExistenceType.CHECK_DATABASE, ormContextCaching.getDefaultExistenceType());
 		assertEquals(null, ormContextCaching.getSpecifiedExistenceType());
 		
 		// set context cache existence checking, check resource
 		
-		ormContextEntity.getCaching().setSpecifiedExistenceType(ExistenceType.ASSUME_EXISTENCE);
+		ormContextEntity.getCaching().setSpecifiedExistenceType(EclipseLinkExistenceType.ASSUME_EXISTENCE);
 		assertEquals(org.eclipse.jpt.eclipselink.core.resource.orm.ExistenceType.ASSUME_EXISTENCE, resourceEntity.getExistenceChecking());
-		assertEquals(ExistenceType.ASSUME_EXISTENCE, ormContextCaching.getExistenceType());
-		assertEquals(ExistenceType.CHECK_DATABASE, ormContextCaching.getDefaultExistenceType());
-		assertEquals(ExistenceType.ASSUME_EXISTENCE, ormContextCaching.getSpecifiedExistenceType());
+		assertEquals(EclipseLinkExistenceType.ASSUME_EXISTENCE, ormContextCaching.getExistenceType());
+		assertEquals(EclipseLinkExistenceType.CHECK_DATABASE, ormContextCaching.getDefaultExistenceType());
+		assertEquals(EclipseLinkExistenceType.ASSUME_EXISTENCE, ormContextCaching.getSpecifiedExistenceType());
 				
 		// set context existence checking to null, check resource
 		
 		ormContextEntity.getCaching().setSpecifiedExistenceType(null);
 		
 		assertEquals(null, resourceEntity.getExistenceChecking());
-		assertEquals(ExistenceType.CHECK_DATABASE, ormContextCaching.getExistenceType());
-		assertEquals(ExistenceType.CHECK_DATABASE, ormContextCaching.getDefaultExistenceType());
+		assertEquals(EclipseLinkExistenceType.CHECK_DATABASE, ormContextCaching.getExistenceType());
+		assertEquals(EclipseLinkExistenceType.CHECK_DATABASE, ormContextCaching.getDefaultExistenceType());
 		assertEquals(null, ormContextCaching.getSpecifiedExistenceType());
 	}
 	
 	public void testUpdateCacheExpiry() throws Exception {
 		createTestEntityForCaching();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		JavaCaching javaContextCaching = ((EclipseLinkJavaEntity) ormPersistentType.getJavaPersistentType().getMapping()).getCaching();
+		EclipseLinkJavaCaching javaContextCaching = ((EclipseLinkJavaEntity) ormPersistentType.getJavaPersistentType().getMapping()).getCaching();
 		EclipseLinkOrmEntity ormContextEntity = (EclipseLinkOrmEntity) ormPersistentType.getMapping();
 		Caching ormContextCaching = ormContextEntity.getCaching();
 		XmlEntity resourceEntity = (XmlEntity) getXmlEntityMappings().getEntities().get(0);
@@ -1632,7 +1632,7 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 	public void testUpdateCacheExpiryTimeOfDay() throws Exception {
 		createTestEntityForCaching();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		JavaCaching javaContextCaching = ((EclipseLinkJavaEntity) ormPersistentType.getJavaPersistentType().getMapping()).getCaching();
+		EclipseLinkJavaCaching javaContextCaching = ((EclipseLinkJavaEntity) ormPersistentType.getJavaPersistentType().getMapping()).getCaching();
 		EclipseLinkOrmEntity ormContextEntity = (EclipseLinkOrmEntity) ormPersistentType.getMapping();
 		Caching ormContextCaching = ormContextEntity.getCaching();
 		XmlEntity resourceEntity = (XmlEntity) getXmlEntityMappings().getEntities().get(0);
@@ -1740,7 +1740,7 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 		EclipseLinkPersistenceUnit persistenceUnit = getPersistenceUnit();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		EclipseLinkOrmEntity ormContextEntity = (EclipseLinkOrmEntity) ormPersistentType.getMapping();
-		ConverterHolder ormContextConverterHolder = ormContextEntity.getConverterHolder();
+		EclipseLinkConverterHolder ormContextConverterHolder = ormContextEntity.getConverterHolder();
 		XmlEntity resourceEntity = (XmlEntity) getXmlEntityMappings().getEntities().get(0);
 		
 		assertEquals(0, ormContextConverterHolder.customConvertersSize());
@@ -1754,8 +1754,8 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 		resourceConverter.setName("myConverter");
 		
 		assertEquals(1, ormContextConverterHolder.customConvertersSize());
-		ListIterator<CustomConverter> ormContextConverters = ormContextConverterHolder.customConverters();
-		CustomConverter ormContextConverter = ormContextConverters.next();
+		ListIterator<EclipseLinkCustomConverter> ormContextConverters = ormContextConverterHolder.customConverters();
+		EclipseLinkCustomConverter ormContextConverter = ormContextConverters.next();
 		assertEquals("Foo", ormContextConverter.getConverterClass());
 		assertEquals("myConverter", ormContextConverter.getName());
 		assertEquals(1, resourceEntity.getConverters().size());
@@ -1817,7 +1817,7 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 		EclipseLinkPersistenceUnit persistenceUnit = getPersistenceUnit();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		EclipseLinkOrmEntity ormContextEntity = (EclipseLinkOrmEntity) ormPersistentType.getMapping();
-		ConverterHolder ormContextConverterHolder = ormContextEntity.getConverterHolder();
+		EclipseLinkConverterHolder ormContextConverterHolder = ormContextEntity.getConverterHolder();
 		XmlEntity resourceEntity = (XmlEntity) getXmlEntityMappings().getEntities().get(0);
 		
 		assertEquals(0, ormContextConverterHolder.customConvertersSize());
@@ -1825,7 +1825,7 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 		assertEquals(0, CollectionTools.size(persistenceUnit.allConverters()));
 		
 		//add a converter to the context model, check resource model
-		CustomConverter contextConverter = ormContextConverterHolder.addCustomConverter(0);
+		EclipseLinkCustomConverter contextConverter = ormContextConverterHolder.addCustomConverter(0);
 		contextConverter.setConverterClass("Foo");
 		contextConverter.setName("myConverter");
 		
@@ -1833,14 +1833,14 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 		assertEquals("Foo", resourceEntity.getConverters().get(0).getClassName());
 		assertEquals("myConverter", resourceEntity.getConverters().get(0).getName());
 		assertEquals(1, ormContextConverterHolder.customConvertersSize());
-		ListIterator<CustomConverter> ormContextConverters = ormContextConverterHolder.customConverters();
-		CustomConverter ormContextConverter = ormContextConverters.next();
+		ListIterator<EclipseLinkCustomConverter> ormContextConverters = ormContextConverterHolder.customConverters();
+		EclipseLinkCustomConverter ormContextConverter = ormContextConverters.next();
 		assertEquals("Foo", ormContextConverter.getConverterClass());
 		assertEquals("myConverter", ormContextConverter.getName());
 		assertEquals(1, CollectionTools.size(persistenceUnit.allConverters()));
 		
 		//add another converter to the context model, check resource model
-		CustomConverter contextConverter2 = ormContextConverterHolder.addCustomConverter(0);
+		EclipseLinkCustomConverter contextConverter2 = ormContextConverterHolder.addCustomConverter(0);
 		contextConverter2.setConverterClass("Foo2");
 		contextConverter2.setName("myConverter2");
 		
@@ -1904,7 +1904,7 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 		EclipseLinkPersistenceUnit persistenceUnit = getPersistenceUnit();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		EclipseLinkOrmEntity ormContextEntity = (EclipseLinkOrmEntity) ormPersistentType.getMapping();
-		ConverterHolder ormContextConverterHolder = ormContextEntity.getConverterHolder();
+		EclipseLinkConverterHolder ormContextConverterHolder = ormContextEntity.getConverterHolder();
 		XmlEntity resourceEntity = (XmlEntity) getXmlEntityMappings().getEntities().get(0);
 		
 		assertEquals(0, ormContextConverterHolder.typeConvertersSize());
@@ -1918,8 +1918,8 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 		resourceTypeConverter.setName("myTypeConverter");
 		
 		assertEquals(1, ormContextConverterHolder.typeConvertersSize());
-		ListIterator<TypeConverter> ormContextTypeConverters = ormContextConverterHolder.typeConverters();
-		TypeConverter ormContextTypeConverter = ormContextTypeConverters.next();
+		ListIterator<EclipseLinkTypeConverter> ormContextTypeConverters = ormContextConverterHolder.typeConverters();
+		EclipseLinkTypeConverter ormContextTypeConverter = ormContextTypeConverters.next();
 		assertEquals("Foo", ormContextTypeConverter.getDataType());
 		assertEquals("myTypeConverter", ormContextTypeConverter.getName());
 		assertEquals(1, resourceEntity.getTypeConverters().size());
@@ -1981,7 +1981,7 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 		EclipseLinkPersistenceUnit persistenceUnit = getPersistenceUnit();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		EclipseLinkOrmEntity ormContextEntity = (EclipseLinkOrmEntity) ormPersistentType.getMapping();
-		ConverterHolder ormContextConverterHolder = ormContextEntity.getConverterHolder();
+		EclipseLinkConverterHolder ormContextConverterHolder = ormContextEntity.getConverterHolder();
 		XmlEntity resourceEntity = (XmlEntity) getXmlEntityMappings().getEntities().get(0);
 		
 		assertEquals(0, ormContextConverterHolder.typeConvertersSize());
@@ -1989,7 +1989,7 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 		assertEquals(0, CollectionTools.size(persistenceUnit.allConverters()));
 		
 		//add a converter to the context model, check resource model
-		TypeConverter contextTypeConverter = ormContextConverterHolder.addTypeConverter(0);
+		EclipseLinkTypeConverter contextTypeConverter = ormContextConverterHolder.addTypeConverter(0);
 		contextTypeConverter.setDataType("Foo");
 		contextTypeConverter.setName("myTypeConverter");
 		
@@ -1997,14 +1997,14 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 		assertEquals("Foo", resourceEntity.getTypeConverters().get(0).getDataType());
 		assertEquals("myTypeConverter", resourceEntity.getTypeConverters().get(0).getName());
 		assertEquals(1, ormContextConverterHolder.typeConvertersSize());
-		ListIterator<TypeConverter> ormContextTypeConverters = ormContextConverterHolder.typeConverters();
-		TypeConverter ormContextTypeConverter = ormContextTypeConverters.next();
+		ListIterator<EclipseLinkTypeConverter> ormContextTypeConverters = ormContextConverterHolder.typeConverters();
+		EclipseLinkTypeConverter ormContextTypeConverter = ormContextTypeConverters.next();
 		assertEquals("Foo", ormContextTypeConverter.getDataType());
 		assertEquals("myTypeConverter", ormContextTypeConverter.getName());
 		assertEquals(1, CollectionTools.size(persistenceUnit.allConverters()));
 		
 		//add another converter to the context model, check resource model
-		TypeConverter contextTypeConverter2 = ormContextConverterHolder.addTypeConverter(0);
+		EclipseLinkTypeConverter contextTypeConverter2 = ormContextConverterHolder.addTypeConverter(0);
 		contextTypeConverter2.setDataType("Foo2");
 		contextTypeConverter2.setName("myTypeConverter2");
 		
@@ -2068,7 +2068,7 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 		EclipseLinkPersistenceUnit persistenceUnit = getPersistenceUnit();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		EclipseLinkOrmEntity ormContextEntity = (EclipseLinkOrmEntity) ormPersistentType.getMapping();
-		ConverterHolder ormContextConverterHolder = ormContextEntity.getConverterHolder();
+		EclipseLinkConverterHolder ormContextConverterHolder = ormContextEntity.getConverterHolder();
 		XmlEntity resourceEntity = (XmlEntity) getXmlEntityMappings().getEntities().get(0);
 		
 		assertEquals(0, ormContextConverterHolder.objectTypeConvertersSize());
@@ -2082,8 +2082,8 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 		resourceObjectTypeConverter.setName("myObjectTypeConverter");
 		
 		assertEquals(1, ormContextConverterHolder.objectTypeConvertersSize());
-		ListIterator<ObjectTypeConverter> ormContextObjectTypeConverters = ormContextConverterHolder.objectTypeConverters();
-		ObjectTypeConverter ormContextObjectTypeConverter = ormContextObjectTypeConverters.next();
+		ListIterator<EclipseLinkObjectTypeConverter> ormContextObjectTypeConverters = ormContextConverterHolder.objectTypeConverters();
+		EclipseLinkObjectTypeConverter ormContextObjectTypeConverter = ormContextObjectTypeConverters.next();
 		assertEquals("Foo", ormContextObjectTypeConverter.getDataType());
 		assertEquals("myObjectTypeConverter", ormContextObjectTypeConverter.getName());
 		assertEquals(1, resourceEntity.getObjectTypeConverters().size());
@@ -2145,7 +2145,7 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 		EclipseLinkPersistenceUnit persistenceUnit = getPersistenceUnit();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		EclipseLinkOrmEntity ormContextEntity = (EclipseLinkOrmEntity) ormPersistentType.getMapping();
-		ConverterHolder ormContextConverterHolder = ormContextEntity.getConverterHolder();
+		EclipseLinkConverterHolder ormContextConverterHolder = ormContextEntity.getConverterHolder();
 		XmlEntity resourceEntity = (XmlEntity) getXmlEntityMappings().getEntities().get(0);
 		
 		assertEquals(0, ormContextConverterHolder.objectTypeConvertersSize());
@@ -2153,7 +2153,7 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 		assertEquals(0, CollectionTools.size(persistenceUnit.allConverters()));
 		
 		//add a converter to the context model, check resource model
-		ObjectTypeConverter contextObjectTypeConverter = ormContextConverterHolder.addObjectTypeConverter(0);
+		EclipseLinkObjectTypeConverter contextObjectTypeConverter = ormContextConverterHolder.addObjectTypeConverter(0);
 		contextObjectTypeConverter.setDataType("Foo");
 		contextObjectTypeConverter.setName("myObjectTypeConverter");
 		
@@ -2161,14 +2161,14 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 		assertEquals("Foo", resourceEntity.getObjectTypeConverters().get(0).getDataType());
 		assertEquals("myObjectTypeConverter", resourceEntity.getObjectTypeConverters().get(0).getName());
 		assertEquals(1, ormContextConverterHolder.objectTypeConvertersSize());
-		ListIterator<ObjectTypeConverter> ormContextObjectTypeConverters = ormContextConverterHolder.objectTypeConverters();
-		ObjectTypeConverter ormContextObjectTypeConverter = ormContextObjectTypeConverters.next();
+		ListIterator<EclipseLinkObjectTypeConverter> ormContextObjectTypeConverters = ormContextConverterHolder.objectTypeConverters();
+		EclipseLinkObjectTypeConverter ormContextObjectTypeConverter = ormContextObjectTypeConverters.next();
 		assertEquals("Foo", ormContextObjectTypeConverter.getDataType());
 		assertEquals("myObjectTypeConverter", ormContextObjectTypeConverter.getName());
 		assertEquals(1, CollectionTools.size(persistenceUnit.allConverters()));
 		
 		//add another converter to the context model, check resource model
-		ObjectTypeConverter contextObjectTypeConverter2 = ormContextConverterHolder.addObjectTypeConverter(0);
+		EclipseLinkObjectTypeConverter contextObjectTypeConverter2 = ormContextConverterHolder.addObjectTypeConverter(0);
 		contextObjectTypeConverter2.setDataType("Foo2");
 		contextObjectTypeConverter2.setName("myObjectTypeConverter2");
 		
@@ -2232,7 +2232,7 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 		EclipseLinkPersistenceUnit persistenceUnit = getPersistenceUnit();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		EclipseLinkOrmEntity ormContextEntity = (EclipseLinkOrmEntity) ormPersistentType.getMapping();
-		ConverterHolder ormContextConverterHolder = ormContextEntity.getConverterHolder();
+		EclipseLinkConverterHolder ormContextConverterHolder = ormContextEntity.getConverterHolder();
 		XmlEntity resourceEntity = (XmlEntity) getXmlEntityMappings().getEntities().get(0);
 		
 		assertEquals(0, ormContextConverterHolder.structConvertersSize());
@@ -2246,8 +2246,8 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 		resourceStructConverter.setName("myStructConverter");
 		
 		assertEquals(1, ormContextConverterHolder.structConvertersSize());
-		ListIterator<StructConverter> ormContextStructConverters = ormContextConverterHolder.structConverters();
-		StructConverter ormContextStructConverter = ormContextStructConverters.next();
+		ListIterator<EclipseLinkStructConverter> ormContextStructConverters = ormContextConverterHolder.structConverters();
+		EclipseLinkStructConverter ormContextStructConverter = ormContextStructConverters.next();
 		assertEquals("Foo", ormContextStructConverter.getConverterClass());
 		assertEquals("myStructConverter", ormContextStructConverter.getName());
 		assertEquals(1, resourceEntity.getStructConverters().size());
@@ -2309,7 +2309,7 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 		EclipseLinkPersistenceUnit persistenceUnit = getPersistenceUnit();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		EclipseLinkOrmEntity ormContextEntity = (EclipseLinkOrmEntity) ormPersistentType.getMapping();
-		ConverterHolder ormContextConverterHolder = ormContextEntity.getConverterHolder();
+		EclipseLinkConverterHolder ormContextConverterHolder = ormContextEntity.getConverterHolder();
 		XmlEntity resourceEntity = (XmlEntity) getXmlEntityMappings().getEntities().get(0);
 		
 		assertEquals(0, ormContextConverterHolder.structConvertersSize());
@@ -2317,7 +2317,7 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 		assertEquals(0, CollectionTools.size(persistenceUnit.allConverters()));
 		
 		//add a converter to the context model, check resource model
-		StructConverter contextStructConverter = ormContextConverterHolder.addStructConverter(0);
+		EclipseLinkStructConverter contextStructConverter = ormContextConverterHolder.addStructConverter(0);
 		contextStructConverter.setConverterClass("Foo");
 		contextStructConverter.setName("myStructConverter");
 		
@@ -2325,14 +2325,14 @@ public class EclipseLinkOrmEntityTests extends EclipseLinkOrmContextModelTestCas
 		assertEquals("Foo", resourceEntity.getStructConverters().get(0).getConverter());
 		assertEquals("myStructConverter", resourceEntity.getStructConverters().get(0).getName());
 		assertEquals(1, ormContextConverterHolder.structConvertersSize());
-		ListIterator<StructConverter> ormContextStructConverters = ormContextConverterHolder.structConverters();
-		StructConverter ormContextStructConverter = ormContextStructConverters.next();
+		ListIterator<EclipseLinkStructConverter> ormContextStructConverters = ormContextConverterHolder.structConverters();
+		EclipseLinkStructConverter ormContextStructConverter = ormContextStructConverters.next();
 		assertEquals("Foo", ormContextStructConverter.getConverterClass());
 		assertEquals("myStructConverter", ormContextStructConverter.getName());
 		assertEquals(1, CollectionTools.size(persistenceUnit.allConverters()));
 		
 		//add another converter to the context model, check resource model
-		StructConverter contextStructConverter2 = ormContextConverterHolder.addStructConverter(0);
+		EclipseLinkStructConverter contextStructConverter2 = ormContextConverterHolder.addStructConverter(0);
 		contextStructConverter2.setConverterClass("Foo2");
 		contextStructConverter2.setName("myStructConverter2");
 		

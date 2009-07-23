@@ -10,7 +10,7 @@
 package org.eclipse.jpt.eclipselink.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.eclipselink.core.context.Customizer;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCustomizer;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.ClassChooserPane;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
@@ -21,12 +21,12 @@ import org.eclipse.swt.widgets.Composite;
 
 /**
  *
- * @see Customizer
+ * @see EclipseLinkCustomizer
  *
  * @version 2.1
  * @since 2.1
  */
-public class CustomizerComposite extends FormPane<Customizer>
+public class CustomizerComposite extends FormPane<EclipseLinkCustomizer>
 {
 	/**
 	 * Creates a new <code>CustomizerComposite</code>.
@@ -35,7 +35,7 @@ public class CustomizerComposite extends FormPane<Customizer>
 	 * @param parent The parent container
 	 */
 	public CustomizerComposite(FormPane<?> parentPane, 
-		PropertyValueModel<? extends Customizer> subjectHolder,
+		PropertyValueModel<? extends EclipseLinkCustomizer> subjectHolder,
 		Composite parent) {
 
 			super(parentPane, subjectHolder, parent);
@@ -46,13 +46,13 @@ public class CustomizerComposite extends FormPane<Customizer>
 		addCustomizerClassChooser(container);
 	}
 	
-	private ClassChooserPane<Customizer> addCustomizerClassChooser(Composite container) {
+	private ClassChooserPane<EclipseLinkCustomizer> addCustomizerClassChooser(Composite container) {
 
-		return new ClassChooserPane<Customizer>(this, container) {
+		return new ClassChooserPane<EclipseLinkCustomizer>(this, container) {
 
 			@Override
 			protected WritablePropertyValueModel<String> buildTextHolder() {
-				return new PropertyAspectAdapter<Customizer, String>(getSubjectHolder(), Customizer.SPECIFIED_CUSTOMIZER_CLASS_PROPERTY) {
+				return new PropertyAspectAdapter<EclipseLinkCustomizer, String>(getSubjectHolder(), EclipseLinkCustomizer.SPECIFIED_CUSTOMIZER_CLASS_PROPERTY) {
 					@Override
 					protected String buildValue_() {
 						return this.subject.getSpecifiedCustomizerClass();
@@ -92,7 +92,7 @@ public class CustomizerComposite extends FormPane<Customizer>
 			
 			@Override
 			protected String getSuperInterfaceName() {
-				return Customizer.ECLIPSELINK_DESCRIPTOR_CUSTOMIZER_CLASS_NAME;
+				return EclipseLinkCustomizer.ECLIPSELINK_DESCRIPTOR_CUSTOMIZER_CLASS_NAME;
 			}
 			
 			@Override

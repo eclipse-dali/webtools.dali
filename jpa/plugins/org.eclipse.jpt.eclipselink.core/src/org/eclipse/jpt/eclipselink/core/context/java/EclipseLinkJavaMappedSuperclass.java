@@ -28,11 +28,11 @@ import org.eclipse.jpt.eclipselink.core.context.EclipseLinkMappedSuperclass;
  */
 public interface EclipseLinkJavaMappedSuperclass extends EclipseLinkMappedSuperclass, JavaMappedSuperclass
 {
-	JavaConverterHolder getConverterHolder();
+	EclipseLinkJavaConverterHolder getConverterHolder();
 	
 	//********* covariant overrides ***********
 
-	JavaCaching getCaching();
+	EclipseLinkJavaCaching getCaching();
 	
 	Iterator<JavaPersistentAttribute> overridableAttributes();
 	Iterator<JavaPersistentAttribute> overridableAssociations();

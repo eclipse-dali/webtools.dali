@@ -14,7 +14,7 @@ import java.util.List;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmManyToManyMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkRelationshipMapping;
-import org.eclipse.jpt.eclipselink.core.context.JoinFetch;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkJoinFetch;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlManyToMany;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -31,7 +31,7 @@ public class EclipseLinkOrmManyToManyMapping extends AbstractOrmManyToManyMappin
 	}
 	
 	
-	public JoinFetch getJoinFetch() {
+	public EclipseLinkJoinFetch getJoinFetch() {
 		return this.joinFetch;
 	}
 	

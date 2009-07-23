@@ -57,11 +57,11 @@ public class GenericOrmEmbeddedIdMapping2_0Provider
 	}
 
 	public OrmAttributeMapping buildMapping(OrmPersistentAttribute parent, XmlAttributeMapping resourceMapping, JpaFactory factory) {
-		return ((Generic2_0JpaFactory) factory).build2_0OrmEmbeddedIdMapping(parent, (XmlEmbeddedId) resourceMapping);
+		return ((Generic2_0JpaFactory) factory).buildOrmEmbeddedIdMapping2_0(parent, (XmlEmbeddedId) resourceMapping);
 	}
 
 	public XmlAttributeMapping buildVirtualResourceMapping(OrmTypeMapping ormTypeMapping, JavaAttributeMapping javaAttributeMapping, JpaFactory factory) {
-		return ((Generic2_0JpaFactory) factory).build2_0VirtualXmlEmbeddedId(ormTypeMapping, (JavaEmbeddedIdMapping) javaAttributeMapping);
+		return ((Generic2_0JpaFactory) factory).buildVirtualXmlEmbeddedId2_0(ormTypeMapping, (JavaEmbeddedIdMapping) javaAttributeMapping);
 	}
 
 }

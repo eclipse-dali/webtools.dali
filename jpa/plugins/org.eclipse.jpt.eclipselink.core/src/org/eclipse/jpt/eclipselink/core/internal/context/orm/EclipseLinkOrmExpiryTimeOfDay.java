@@ -11,12 +11,12 @@ package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
 import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.jpt.eclipselink.core.context.ExpiryTimeOfDay;
-import org.eclipse.jpt.eclipselink.core.context.orm.OrmCaching;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkExpiryTimeOfDay;
+import org.eclipse.jpt.eclipselink.core.context.orm.EclipseLinkOrmCaching;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlTimeOfDay;
 
 public class EclipseLinkOrmExpiryTimeOfDay extends AbstractXmlContextNode
-	implements ExpiryTimeOfDay
+	implements EclipseLinkExpiryTimeOfDay
 {
 	
 	protected Integer hour;
@@ -26,7 +26,7 @@ public class EclipseLinkOrmExpiryTimeOfDay extends AbstractXmlContextNode
 	
 	protected XmlTimeOfDay resourceTimeOfDay;
 	
-	public EclipseLinkOrmExpiryTimeOfDay(OrmCaching parent) {
+	public EclipseLinkOrmExpiryTimeOfDay(EclipseLinkOrmCaching parent) {
 		super(parent);
 	}
 	

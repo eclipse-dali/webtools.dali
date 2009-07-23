@@ -15,6 +15,6 @@ public interface EclipseLinkEntityMappings
 	extends EntityMappings
 {
 	
-	ConverterHolder getConverterHolder();
+	EclipseLinkConverterHolder getConverterHolder();
 
 }

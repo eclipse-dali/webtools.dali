@@ -12,11 +12,11 @@ package org.eclipse.jpt.eclipselink.core.internal.context.java;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
-import org.eclipse.jpt.eclipselink.core.context.TypeConverter;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkTypeConverter;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkTypeConverterAnnotation;
 
 public class EclipseLinkJavaTypeConverter extends EclipseLinkJavaConverter
-	implements TypeConverter
+	implements EclipseLinkTypeConverter
 {	
 	private String dataType;
 	

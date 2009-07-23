@@ -9,7 +9,7 @@
 package org.eclipse.jpt.eclipselink.ui.internal.mappings.details;
 
 import java.util.Collection;
-import org.eclipse.jpt.eclipselink.core.context.CacheType;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCacheType;
 import org.eclipse.jpt.eclipselink.core.context.Caching;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
@@ -46,9 +46,9 @@ public class CacheTypeComposite extends FormPane<Caching> {
 		super(parentPane, parent);
 	}
 
-	private EnumFormComboViewer<Caching, CacheType> addCacheTypeCombo(Composite container) {
+	private EnumFormComboViewer<Caching, EclipseLinkCacheType> addCacheTypeCombo(Composite container) {
 
-		return new EnumFormComboViewer<Caching, CacheType>(this, container) {
+		return new EnumFormComboViewer<Caching, EclipseLinkCacheType>(this, container) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
@@ -58,17 +58,17 @@ public class CacheTypeComposite extends FormPane<Caching> {
 			}
 
 			@Override
-			protected CacheType[] getChoices() {
-				return CacheType.values();
+			protected EclipseLinkCacheType[] getChoices() {
+				return EclipseLinkCacheType.values();
 			}
 
 			@Override
-			protected CacheType getDefaultValue() {
+			protected EclipseLinkCacheType getDefaultValue() {
 				return getSubject().getDefaultType();
 			}
 
 			@Override
-			protected String displayString(CacheType value) {
+			protected String displayString(EclipseLinkCacheType value) {
 				return buildDisplayString(
 					EclipseLinkUiMappingsMessages.class,
 					CacheTypeComposite.this,
@@ -77,12 +77,12 @@ public class CacheTypeComposite extends FormPane<Caching> {
 			}
 
 			@Override
-			protected CacheType getValue() {
+			protected EclipseLinkCacheType getValue() {
 				return getSubject().getSpecifiedType();
 			}
 
 			@Override
-			protected void setValue(CacheType value) {
+			protected void setValue(EclipseLinkCacheType value) {
 				getSubject().setSpecifiedType(value);
 			}
 			

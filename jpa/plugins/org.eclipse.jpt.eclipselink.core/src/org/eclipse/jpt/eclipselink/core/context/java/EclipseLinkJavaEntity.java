@@ -26,8 +26,8 @@ import org.eclipse.jpt.eclipselink.core.context.EclipseLinkEntity;
  */
 public interface EclipseLinkJavaEntity extends EclipseLinkEntity, JavaEntity
 {
-	JavaConverterHolder getConverterHolder();
+	EclipseLinkJavaConverterHolder getConverterHolder();
 
-	JavaCaching getCaching();
+	EclipseLinkJavaCaching getCaching();
 	
 }

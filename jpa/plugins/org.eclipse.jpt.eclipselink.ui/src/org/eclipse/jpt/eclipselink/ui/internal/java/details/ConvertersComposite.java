@@ -9,11 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.java.details;
 
-import org.eclipse.jpt.eclipselink.core.context.CustomConverter;
-import org.eclipse.jpt.eclipselink.core.context.ObjectTypeConverter;
-import org.eclipse.jpt.eclipselink.core.context.StructConverter;
-import org.eclipse.jpt.eclipselink.core.context.TypeConverter;
-import org.eclipse.jpt.eclipselink.core.context.java.JavaConverterHolder;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCustomConverter;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkObjectTypeConverter;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkStructConverter;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkTypeConverter;
+import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaConverterHolder;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.CustomConverterComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.ObjectTypeConverterComposite;
@@ -67,7 +67,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.1
  * @since 2.1
  */
-public class ConvertersComposite extends Pane<JavaConverterHolder>
+public class ConvertersComposite extends Pane<EclipseLinkJavaConverterHolder>
 {
 
 	/**
@@ -77,7 +77,7 @@ public class ConvertersComposite extends Pane<JavaConverterHolder>
 	 * @param parent The parent container
 	 */
 	public ConvertersComposite(Pane<?> parentPane,
-								PropertyValueModel<? extends JavaConverterHolder> subjectHolder,
+								PropertyValueModel<? extends EclipseLinkJavaConverterHolder> subjectHolder,
 								Composite parent) {
 
 		super(parentPane, subjectHolder, parent, false);
@@ -157,7 +157,7 @@ public class ConvertersComposite extends Pane<JavaConverterHolder>
 	}
 	
 	private WritablePropertyValueModel<Boolean> buildCustomConverterBooleanHolder() {
-		return new PropertyAspectAdapter<JavaConverterHolder, Boolean>(getSubjectHolder(), JavaConverterHolder.CUSTOM_CONVERTER_PROPERTY) {
+		return new PropertyAspectAdapter<EclipseLinkJavaConverterHolder, Boolean>(getSubjectHolder(), EclipseLinkJavaConverterHolder.CUSTOM_CONVERTER_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(this.subject.getCustomConverter() != null);
@@ -175,17 +175,17 @@ public class ConvertersComposite extends Pane<JavaConverterHolder>
 		};
 	}
 	
-	private PropertyValueModel<CustomConverter> buildCustomConverterHolder() {
-		return new PropertyAspectAdapter<JavaConverterHolder, CustomConverter>(getSubjectHolder(), JavaConverterHolder.CUSTOM_CONVERTER_PROPERTY) {
+	private PropertyValueModel<EclipseLinkCustomConverter> buildCustomConverterHolder() {
+		return new PropertyAspectAdapter<EclipseLinkJavaConverterHolder, EclipseLinkCustomConverter>(getSubjectHolder(), EclipseLinkJavaConverterHolder.CUSTOM_CONVERTER_PROPERTY) {
 			@Override
-			protected CustomConverter buildValue_() {
+			protected EclipseLinkCustomConverter buildValue_() {
 				return this.subject.getCustomConverter();
 			}
 		};
 	}
 	
 	private WritablePropertyValueModel<Boolean> buildTypeConverterBooleanHolder() {
-		return new PropertyAspectAdapter<JavaConverterHolder, Boolean>(getSubjectHolder(), JavaConverterHolder.TYPE_CONVERTER_PROPERTY) {
+		return new PropertyAspectAdapter<EclipseLinkJavaConverterHolder, Boolean>(getSubjectHolder(), EclipseLinkJavaConverterHolder.TYPE_CONVERTER_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(this.subject.getTypeConverter() != null);
@@ -203,17 +203,17 @@ public class ConvertersComposite extends Pane<JavaConverterHolder>
 		};
 	}
 	
-	private PropertyValueModel<TypeConverter> buildTypeConverterHolder() {
-		return new PropertyAspectAdapter<JavaConverterHolder, TypeConverter>(getSubjectHolder(), JavaConverterHolder.TYPE_CONVERTER_PROPERTY) {
+	private PropertyValueModel<EclipseLinkTypeConverter> buildTypeConverterHolder() {
+		return new PropertyAspectAdapter<EclipseLinkJavaConverterHolder, EclipseLinkTypeConverter>(getSubjectHolder(), EclipseLinkJavaConverterHolder.TYPE_CONVERTER_PROPERTY) {
 			@Override
-			protected TypeConverter buildValue_() {
+			protected EclipseLinkTypeConverter buildValue_() {
 				return this.subject.getTypeConverter();
 			}
 		};
 	}
 	
 	private WritablePropertyValueModel<Boolean> buildObjectTypeConverterBooleanHolder() {
-		return new PropertyAspectAdapter<JavaConverterHolder, Boolean>(getSubjectHolder(), JavaConverterHolder.OBJECT_TYPE_CONVERTER_PROPERTY) {
+		return new PropertyAspectAdapter<EclipseLinkJavaConverterHolder, Boolean>(getSubjectHolder(), EclipseLinkJavaConverterHolder.OBJECT_TYPE_CONVERTER_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(this.subject.getObjectTypeConverter() != null);
@@ -231,10 +231,10 @@ public class ConvertersComposite extends Pane<JavaConverterHolder>
 		};
 	}
 	
-	private PropertyValueModel<ObjectTypeConverter> buildObjectTypeConverterHolder() {
-		return new PropertyAspectAdapter<JavaConverterHolder, ObjectTypeConverter>(getSubjectHolder(), JavaConverterHolder.OBJECT_TYPE_CONVERTER_PROPERTY) {
+	private PropertyValueModel<EclipseLinkObjectTypeConverter> buildObjectTypeConverterHolder() {
+		return new PropertyAspectAdapter<EclipseLinkJavaConverterHolder, EclipseLinkObjectTypeConverter>(getSubjectHolder(), EclipseLinkJavaConverterHolder.OBJECT_TYPE_CONVERTER_PROPERTY) {
 			@Override
-			protected ObjectTypeConverter buildValue_() {
+			protected EclipseLinkObjectTypeConverter buildValue_() {
 				return this.subject.getObjectTypeConverter();
 			}
 		};
@@ -242,7 +242,7 @@ public class ConvertersComposite extends Pane<JavaConverterHolder>
 	
 	
 	private WritablePropertyValueModel<Boolean> buildStructConverterBooleanHolder() {
-		return new PropertyAspectAdapter<JavaConverterHolder, Boolean>(getSubjectHolder(), JavaConverterHolder.STRUCT_CONVERTER_PROPERTY) {
+		return new PropertyAspectAdapter<EclipseLinkJavaConverterHolder, Boolean>(getSubjectHolder(), EclipseLinkJavaConverterHolder.STRUCT_CONVERTER_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(this.subject.getStructConverter() != null);
@@ -260,10 +260,10 @@ public class ConvertersComposite extends Pane<JavaConverterHolder>
 		};
 	}
 	
-	private PropertyValueModel<StructConverter> buildStructConverterHolder() {
-		return new PropertyAspectAdapter<JavaConverterHolder, StructConverter>(getSubjectHolder(), JavaConverterHolder.STRUCT_CONVERTER_PROPERTY) {
+	private PropertyValueModel<EclipseLinkStructConverter> buildStructConverterHolder() {
+		return new PropertyAspectAdapter<EclipseLinkJavaConverterHolder, EclipseLinkStructConverter>(getSubjectHolder(), EclipseLinkJavaConverterHolder.STRUCT_CONVERTER_PROPERTY) {
 			@Override
-			protected StructConverter buildValue_() {
+			protected EclipseLinkStructConverter buildValue_() {
 				return this.subject.getStructConverter();
 			}
 		};

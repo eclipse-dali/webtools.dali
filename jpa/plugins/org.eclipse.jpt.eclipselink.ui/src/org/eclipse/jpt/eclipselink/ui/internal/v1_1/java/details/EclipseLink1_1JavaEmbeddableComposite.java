@@ -12,7 +12,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.v1_1.java.details;
 import org.eclipse.jpt.core.context.AccessHolder;
 import org.eclipse.jpt.core.context.java.JavaEmbeddable;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaEmbeddable;
-import org.eclipse.jpt.eclipselink.core.context.java.JavaConverterHolder;
+import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaConverterHolder;
 import org.eclipse.jpt.eclipselink.ui.internal.java.details.ConvertersComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkEmbeddableAdvancedComposite;
@@ -83,10 +83,10 @@ public class EclipseLink1_1JavaEmbeddableComposite extends FormPane<JavaEmbeddab
 		new ConvertersComposite(this, buildConverterHolderValueModel(), container);
 	}
 
-	protected PropertyValueModel<JavaConverterHolder> buildConverterHolderValueModel() {
-		return new PropertyAspectAdapter<JavaEmbeddable, JavaConverterHolder>(getSubjectHolder()) {
+	protected PropertyValueModel<EclipseLinkJavaConverterHolder> buildConverterHolderValueModel() {
+		return new PropertyAspectAdapter<JavaEmbeddable, EclipseLinkJavaConverterHolder>(getSubjectHolder()) {
 			@Override
-			protected JavaConverterHolder buildValue_() {
+			protected EclipseLinkJavaConverterHolder buildValue_() {
 				return ((EclipseLinkJavaEmbeddable) this.subject).getConverterHolder();
 			}	
 		};

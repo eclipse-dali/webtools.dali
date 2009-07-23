@@ -41,7 +41,7 @@ public class GenericOrmPersistentType2_0 extends AbstractOrmPersistentType
 	
 	@Override
 	protected OrmPersistentAttribute buildOrmPersistentAttribute(OrmPersistentAttribute.Owner owner, org.eclipse.jpt.core.resource.orm.XmlAttributeMapping resourceMapping) {
-		return getJpaFactory().build2_0OrmPersistentAttribute(this, owner, (XmlAttributeMapping) resourceMapping);
+		return getJpaFactory().buildOrmPersistentAttribute2_0(this, owner, (XmlAttributeMapping) resourceMapping);
 	}
 	
 	@Override

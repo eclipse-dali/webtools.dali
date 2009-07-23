@@ -14,16 +14,16 @@ import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.jpt.eclipselink.core.context.ChangeTracking;
-import org.eclipse.jpt.eclipselink.core.context.ChangeTrackingType;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkChangeTracking;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkChangeTrackingType;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaFactory;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkChangeTrackingAnnotation;
 
-public class EclipseLinkJavaChangeTracking extends AbstractJavaJpaContextNode implements ChangeTracking
+public class EclipseLinkJavaChangeTracking extends AbstractJavaJpaContextNode implements EclipseLinkChangeTracking
 {
 	protected JavaResourcePersistentType resourcePersistentType;
 	
-	protected ChangeTrackingType specifiedType;
+	protected EclipseLinkChangeTrackingType specifiedType;
 	
 	
 	public EclipseLinkJavaChangeTracking(JavaTypeMapping parent) {
@@ -56,31 +56,31 @@ public class EclipseLinkJavaChangeTracking extends AbstractJavaJpaContextNode im
 		this.resourcePersistentType.removeSupportingAnnotation(getChangeTrackingAnnotationName());
 	}
 	
-	public ChangeTrackingType getType() {
+	public EclipseLinkChangeTrackingType getType() {
 		return (this.getSpecifiedType() != null) ? this.getSpecifiedType() : this.getDefaultType();
 	}
 	
-	public ChangeTrackingType getDefaultType() {
+	public EclipseLinkChangeTrackingType getDefaultType() {
 		return DEFAULT_TYPE;
 	}
 	
-	public ChangeTrackingType getSpecifiedType() {
+	public EclipseLinkChangeTrackingType getSpecifiedType() {
 		return this.specifiedType;
 	}
 	
-	public void setSpecifiedType(ChangeTrackingType newSpecifiedType) {
+	public void setSpecifiedType(EclipseLinkChangeTrackingType newSpecifiedType) {
 		if (this.specifiedType == newSpecifiedType) {
 			return;
 		}
 		
-		ChangeTrackingType oldSpecifiedType = this.specifiedType;
+		EclipseLinkChangeTrackingType oldSpecifiedType = this.specifiedType;
 		this.specifiedType = newSpecifiedType;
 		
 		if (newSpecifiedType != null) {
 			if (getChangeTrackingAnnotation() == null) {
 				addChangeTrackingAnnotation();
 			}
-			getChangeTrackingAnnotation().setValue(ChangeTrackingType.toJavaResourceModel(newSpecifiedType));
+			getChangeTrackingAnnotation().setValue(EclipseLinkChangeTrackingType.toJavaResourceModel(newSpecifiedType));
 		}
 		else {
 			if (getChangeTrackingAnnotation() != null) {
@@ -96,8 +96,8 @@ public class EclipseLinkJavaChangeTracking extends AbstractJavaJpaContextNode im
 	 * when you set a value from the UI and the annotation doesn't exist yet.
 	 * Adding the annotation causes an update to occur and then the exception.
 	 */
-	protected void setSpecifiedType_(ChangeTrackingType newSpecifiedType) {
-		ChangeTrackingType oldSpecifiedType = this.specifiedType;
+	protected void setSpecifiedType_(EclipseLinkChangeTrackingType newSpecifiedType) {
+		EclipseLinkChangeTrackingType oldSpecifiedType = this.specifiedType;
 		this.specifiedType = newSpecifiedType;
 		firePropertyChanged(SPECIFIED_TYPE_PROPERTY, oldSpecifiedType, newSpecifiedType);
 	}
@@ -114,15 +114,15 @@ public class EclipseLinkJavaChangeTracking extends AbstractJavaJpaContextNode im
 		this.setSpecifiedType_(changeTrackingType(changeTrackingAnnotation));
 	}
 	
-	protected ChangeTrackingType changeTrackingType(EclipseLinkChangeTrackingAnnotation changeTracking) {
+	protected EclipseLinkChangeTrackingType changeTrackingType(EclipseLinkChangeTrackingAnnotation changeTracking) {
 		if (changeTracking == null) {
 			return null;
 		}
 		else if (changeTracking.getValue() == null) {
-			return ChangeTracking.DEFAULT_TYPE;
+			return EclipseLinkChangeTracking.DEFAULT_TYPE;
 		}
 		else {
-			return ChangeTrackingType.fromJavaResourceModel(changeTracking.getValue());
+			return EclipseLinkChangeTrackingType.fromJavaResourceModel(changeTracking.getValue());
 		}
 	}
 	

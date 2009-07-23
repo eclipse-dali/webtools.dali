@@ -11,7 +11,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.java.details;
 
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.eclipselink.core.context.VariableOneToOneMapping;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkVariableOneToOneMapping;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkVariableOneToOneMappingUiProvider;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.VariableOneToOneMappingComposite;
 import org.eclipse.jpt.ui.JpaUiFactory;
@@ -21,7 +21,7 @@ import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
-public class EclipseLinkJavaVariableOneToOneMappingUiProvider extends EclipseLinkVariableOneToOneMappingUiProvider<VariableOneToOneMapping>
+public class EclipseLinkJavaVariableOneToOneMappingUiProvider extends EclipseLinkVariableOneToOneMappingUiProvider<EclipseLinkVariableOneToOneMapping>
 {
 	// singleton
 	private static final EclipseLinkJavaVariableOneToOneMappingUiProvider INSTANCE = 
@@ -30,7 +30,7 @@ public class EclipseLinkJavaVariableOneToOneMappingUiProvider extends EclipseLin
 	/**
 	 * Return the singleton.
 	 */
-	public static AttributeMappingUiProvider<VariableOneToOneMapping> instance() {
+	public static AttributeMappingUiProvider<EclipseLinkVariableOneToOneMapping> instance() {
 		return INSTANCE;
 	}
 	
@@ -48,7 +48,7 @@ public class EclipseLinkJavaVariableOneToOneMappingUiProvider extends EclipseLin
 
 	public JpaComposite buildAttributeMappingComposite(
 			JpaUiFactory factory,
-			PropertyValueModel<VariableOneToOneMapping> subjectHolder,
+			PropertyValueModel<EclipseLinkVariableOneToOneMapping> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
 		return new VariableOneToOneMappingComposite(subjectHolder, parent, widgetFactory);

@@ -29,12 +29,12 @@ public class GenericEntityMappings2_0
 	
 	@Override
 	protected PersistenceUnitMetadata buildPersistenceUnitMetadata() {
-		return 	getJpaFactory().build2_0PersistenceUnitMetadata(this, (XmlEntityMappings) this.xmlEntityMappings);
+		return 	getJpaFactory().buildPersistenceUnitMetadata2_0(this, (XmlEntityMappings) this.xmlEntityMappings);
 	}
 	
 	@Override
 	protected OrmPersistentType buildPersistentType(XmlTypeMapping resourceMapping) {
-		return getJpaFactory().build2_0OrmPersistentType(this, resourceMapping);
+		return getJpaFactory().buildOrmPersistentType2_0(this, resourceMapping);
 	}
 
 	@Override
@@ -44,7 +44,7 @@ public class GenericEntityMappings2_0
 	
 	@Override
 	protected OrmSequenceGenerator2_0 buildSequenceGenerator(org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator resourceSequenceGenerator) {
-		return getJpaFactory().build2_0OrmSequenceGenerator(this, (XmlSequenceGenerator) resourceSequenceGenerator);
+		return getJpaFactory().buildOrmSequenceGenerator2_0(this, (XmlSequenceGenerator) resourceSequenceGenerator);
 	}
 	
 	// **************** JpaNode impl *******************************************

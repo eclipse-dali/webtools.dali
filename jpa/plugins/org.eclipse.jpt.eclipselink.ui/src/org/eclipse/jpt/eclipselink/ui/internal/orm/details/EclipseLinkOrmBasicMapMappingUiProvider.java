@@ -10,7 +10,7 @@
 package org.eclipse.jpt.eclipselink.ui.internal.orm.details;
 
 import org.eclipse.core.runtime.content.IContentType;
-import org.eclipse.jpt.eclipselink.core.context.BasicMapMapping;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkBasicMapMapping;
 import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.BasicMapMappingComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkBasicMapMappingUiProvider;
@@ -21,7 +21,7 @@ import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
-public class EclipseLinkOrmBasicMapMappingUiProvider extends EclipseLinkBasicMapMappingUiProvider<BasicMapMapping>
+public class EclipseLinkOrmBasicMapMappingUiProvider extends EclipseLinkBasicMapMappingUiProvider<EclipseLinkBasicMapMapping>
 {
 	// singleton
 	private static final EclipseLinkOrmBasicMapMappingUiProvider INSTANCE = 
@@ -30,7 +30,7 @@ public class EclipseLinkOrmBasicMapMappingUiProvider extends EclipseLinkBasicMap
 	/**
 	 * Return the singleton.
 	 */
-	public static AttributeMappingUiProvider<BasicMapMapping> instance() {
+	public static AttributeMappingUiProvider<EclipseLinkBasicMapMapping> instance() {
 		return INSTANCE;
 	}
 	
@@ -48,7 +48,7 @@ public class EclipseLinkOrmBasicMapMappingUiProvider extends EclipseLinkBasicMap
 		
 	public JpaComposite buildAttributeMappingComposite(
 			JpaUiFactory factory,
-			PropertyValueModel<BasicMapMapping> subjectHolder,
+			PropertyValueModel<EclipseLinkBasicMapMapping> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
 		return new BasicMapMappingComposite(subjectHolder, parent, widgetFactory);

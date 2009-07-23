@@ -10,14 +10,14 @@
 package org.eclipse.jpt.eclipselink.ui.internal.mappings.details;
 
 import org.eclipse.jpt.eclipselink.core.EclipseLinkMappingKeys;
-import org.eclipse.jpt.eclipselink.core.context.BasicCollectionMapping;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkBasicCollectionMapping;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.JptUiIcons;
 import org.eclipse.swt.graphics.Image;
 
-public abstract class EclipseLinkBasicCollectionMappingUiProvider<T extends BasicCollectionMapping>
+public abstract class EclipseLinkBasicCollectionMappingUiProvider<T extends EclipseLinkBasicCollectionMapping>
 	implements AttributeMappingUiProvider<T>
 {
 		

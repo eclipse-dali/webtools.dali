@@ -51,7 +51,7 @@ public class EclipseLinkEntityMappingsImpl
 	
 	// **************** EclipseLinkEntityMappings impl **********************************
 
-	public ConverterHolder getConverterHolder() {
+	public EclipseLinkConverterHolder getConverterHolder() {
 		return this.converterHolder;
 	}
 	

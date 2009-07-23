@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.mappings.details;
 
-import org.eclipse.jpt.eclipselink.core.context.BasicMapMapping;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkBasicMapMapping;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
@@ -21,7 +21,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.1
  * @since 2.1
  */
-public class BasicMapMappingComposite extends FormPane<BasicMapMapping>
+public class BasicMapMappingComposite extends FormPane<EclipseLinkBasicMapMapping>
                                        implements JpaComposite
 {
 	/**
@@ -31,7 +31,7 @@ public class BasicMapMappingComposite extends FormPane<BasicMapMapping>
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public BasicMapMappingComposite(PropertyValueModel<? extends BasicMapMapping> subjectHolder,
+	public BasicMapMappingComposite(PropertyValueModel<? extends EclipseLinkBasicMapMapping> subjectHolder,
 	                                 Composite parent,
 	                                 WidgetFactory widgetFactory) {
 

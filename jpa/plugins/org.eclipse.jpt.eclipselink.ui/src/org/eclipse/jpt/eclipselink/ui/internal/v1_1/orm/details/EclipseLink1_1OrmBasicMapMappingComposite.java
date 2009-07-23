@@ -10,7 +10,7 @@
 package org.eclipse.jpt.eclipselink.ui.internal.v1_1.orm.details;
 
 import org.eclipse.jpt.core.context.AccessHolder;
-import org.eclipse.jpt.eclipselink.core.context.BasicMapMapping;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkBasicMapMapping;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
@@ -24,7 +24,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.2
  * @since 2.2
  */
-public class EclipseLink1_1OrmBasicMapMappingComposite extends FormPane<BasicMapMapping>
+public class EclipseLink1_1OrmBasicMapMappingComposite extends FormPane<EclipseLinkBasicMapMapping>
                                        implements JpaComposite
 {
 	/**
@@ -34,7 +34,7 @@ public class EclipseLink1_1OrmBasicMapMappingComposite extends FormPane<BasicMap
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public EclipseLink1_1OrmBasicMapMappingComposite(PropertyValueModel<? extends BasicMapMapping> subjectHolder,
+	public EclipseLink1_1OrmBasicMapMappingComposite(PropertyValueModel<? extends EclipseLinkBasicMapMapping> subjectHolder,
 	                                 Composite parent,
 	                                 WidgetFactory widgetFactory) {
 
@@ -47,7 +47,7 @@ public class EclipseLink1_1OrmBasicMapMappingComposite extends FormPane<BasicMap
 	}	
 	
 	protected PropertyValueModel<AccessHolder> buildAccessHolderHolder() {
-		return new PropertyAspectAdapter<BasicMapMapping, AccessHolder>(getSubjectHolder()) {
+		return new PropertyAspectAdapter<EclipseLinkBasicMapMapping, AccessHolder>(getSubjectHolder()) {
 			@Override
 			protected AccessHolder buildValue_() {
 				return this.subject.getPersistentAttribute();

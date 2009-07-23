@@ -19,7 +19,7 @@ import org.eclipse.jpt.core.resource.orm.MapKey;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlJoinTable;
 import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.jpt.eclipselink.core.context.JoinFetchType;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkJoinFetchType;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaManyToManyMapping;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlAccessMethods;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlJoinFetchType;
@@ -159,7 +159,7 @@ public class EclipseLinkVirtualXmlManyToMany extends XmlManyToMany
 		if (isOrmMetadataComplete()) {
 			return null; //don't return default value, it only applies for an empty @JoinFetch
 		}
-		return JoinFetchType.toOrmResourceModel(((EclipseLinkJavaManyToManyMapping) this.javaAttributeMapping).getJoinFetch().getValue());
+		return EclipseLinkJoinFetchType.toOrmResourceModel(((EclipseLinkJavaManyToManyMapping) this.javaAttributeMapping).getJoinFetch().getValue());
 	}
 	
 	@Override

@@ -30,6 +30,6 @@ public class GenericOrmEntity2_0
 	
 	@Override
 	protected OrmGeneratorContainer buildGeneratorContainer() {
-		return getJpaFactory().build2_0OrmGeneratorContainer(this, this.resourceTypeMapping);
+		return getJpaFactory().buildOrmGeneratorContainer2_0(this, this.resourceTypeMapping);
 	}
 }

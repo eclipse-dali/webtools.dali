@@ -15,9 +15,9 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaConverter;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaVersionMapping;
-import org.eclipse.jpt.eclipselink.core.context.Convert;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkVersionMapping;
-import org.eclipse.jpt.eclipselink.core.context.Mutable;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkMutable;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkConvertAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
 import org.eclipse.jpt.utility.Filter;
@@ -57,7 +57,7 @@ public class EclipseLinkJavaVersionMapping
 		if (javaConverter != null) {
 			return javaConverter;
 		}
-		if (converterType == Convert.ECLIPSE_LINK_CONVERTER) {
+		if (converterType == EclipseLinkConvert.ECLIPSE_LINK_CONVERTER) {
 			return new EclipseLinkJavaConvert(this, this.resourcePersistentAttribute);
 		}
 		return null;
@@ -67,7 +67,7 @@ public class EclipseLinkJavaVersionMapping
 	protected String getResourceConverterType() {
 		//check @Convert first, this is the order that EclipseLink searches
 		if (this.resourcePersistentAttribute.getSupportingAnnotation(EclipseLinkConvertAnnotation.ANNOTATION_NAME) != null) {
-			return Convert.ECLIPSE_LINK_CONVERTER;
+			return EclipseLinkConvert.ECLIPSE_LINK_CONVERTER;
 		}
 		return super.getResourceConverterType();
 	}
@@ -75,7 +75,7 @@ public class EclipseLinkJavaVersionMapping
 	
 	//************ EclipselinkVersionMapping implementation ****************
 	
-	public Mutable getMutable() {
+	public EclipseLinkMutable getMutable() {
 		return this.mutable;
 	}
 	

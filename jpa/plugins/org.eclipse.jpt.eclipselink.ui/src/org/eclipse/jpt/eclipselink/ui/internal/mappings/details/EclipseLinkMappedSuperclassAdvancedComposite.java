@@ -10,10 +10,10 @@
 package org.eclipse.jpt.eclipselink.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.context.MappedSuperclass;
-import org.eclipse.jpt.eclipselink.core.context.ChangeTracking;
-import org.eclipse.jpt.eclipselink.core.context.Customizer;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkChangeTracking;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCustomizer;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkMappedSuperclass;
-import org.eclipse.jpt.eclipselink.core.context.ReadOnly;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkReadOnly;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
@@ -41,28 +41,28 @@ public class EclipseLinkMappedSuperclassAdvancedComposite extends FormPane<Mappe
 		new ChangeTrackingComposite(this, buildChangeTrackingHolder(), container);
 	}
 	
-	private PropertyValueModel<ReadOnly> buildReadOnlyHolder() {
-		return new PropertyAspectAdapter<MappedSuperclass, ReadOnly>(getSubjectHolder()) {
+	private PropertyValueModel<EclipseLinkReadOnly> buildReadOnlyHolder() {
+		return new PropertyAspectAdapter<MappedSuperclass, EclipseLinkReadOnly>(getSubjectHolder()) {
 			@Override
-			protected ReadOnly buildValue_() {
+			protected EclipseLinkReadOnly buildValue_() {
 				return ((EclipseLinkMappedSuperclass) this.subject).getReadOnly();
 			}
 		};
 	}
 	
-	private PropertyValueModel<Customizer> buildCustomizerHolder() {
-		return new PropertyAspectAdapter<MappedSuperclass, Customizer>(getSubjectHolder()) {
+	private PropertyValueModel<EclipseLinkCustomizer> buildCustomizerHolder() {
+		return new PropertyAspectAdapter<MappedSuperclass, EclipseLinkCustomizer>(getSubjectHolder()) {
 			@Override
-			protected Customizer buildValue_() {
+			protected EclipseLinkCustomizer buildValue_() {
 				return ((EclipseLinkMappedSuperclass) this.subject).getCustomizer();
 			}
 		};
 	}
 	
-	private PropertyValueModel<ChangeTracking> buildChangeTrackingHolder() {
-		return new PropertyAspectAdapter<MappedSuperclass, ChangeTracking>(getSubjectHolder()) {
+	private PropertyValueModel<EclipseLinkChangeTracking> buildChangeTrackingHolder() {
+		return new PropertyAspectAdapter<MappedSuperclass, EclipseLinkChangeTracking>(getSubjectHolder()) {
 			@Override
-			protected ChangeTracking buildValue_() {
+			protected EclipseLinkChangeTracking buildValue_() {
 				return ((EclipseLinkMappedSuperclass) this.subject).getChangeTracking();
 			}
 		};

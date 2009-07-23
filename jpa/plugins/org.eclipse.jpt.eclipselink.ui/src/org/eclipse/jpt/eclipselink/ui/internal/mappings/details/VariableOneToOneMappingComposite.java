@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.mappings.details;
 
-import org.eclipse.jpt.eclipselink.core.context.VariableOneToOneMapping;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkVariableOneToOneMapping;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
@@ -21,7 +21,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.2
  * @since 2.2
  */
-public class VariableOneToOneMappingComposite extends FormPane<VariableOneToOneMapping>
+public class VariableOneToOneMappingComposite extends FormPane<EclipseLinkVariableOneToOneMapping>
                                        implements JpaComposite
 {
 	/**
@@ -31,7 +31,7 @@ public class VariableOneToOneMappingComposite extends FormPane<VariableOneToOneM
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public VariableOneToOneMappingComposite(PropertyValueModel<? extends VariableOneToOneMapping> subjectHolder,
+	public VariableOneToOneMappingComposite(PropertyValueModel<? extends EclipseLinkVariableOneToOneMapping> subjectHolder,
 	                                 Composite parent,
 	                                 WidgetFactory widgetFactory) {
 

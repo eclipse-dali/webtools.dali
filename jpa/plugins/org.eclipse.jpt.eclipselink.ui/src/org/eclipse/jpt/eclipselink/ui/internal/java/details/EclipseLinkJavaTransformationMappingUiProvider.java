@@ -11,7 +11,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.java.details;
 
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.eclipselink.core.context.TransformationMapping;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkTransformationMapping;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkTransformationMappingUiProvider;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.TransformationMappingComposite;
 import org.eclipse.jpt.ui.JpaUiFactory;
@@ -21,7 +21,7 @@ import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
-public class EclipseLinkJavaTransformationMappingUiProvider extends EclipseLinkTransformationMappingUiProvider<TransformationMapping>
+public class EclipseLinkJavaTransformationMappingUiProvider extends EclipseLinkTransformationMappingUiProvider<EclipseLinkTransformationMapping>
 {
 	// singleton
 	private static final EclipseLinkJavaTransformationMappingUiProvider INSTANCE = 
@@ -30,7 +30,7 @@ public class EclipseLinkJavaTransformationMappingUiProvider extends EclipseLinkT
 	/**
 	 * Return the singleton.
 	 */
-	public static AttributeMappingUiProvider<TransformationMapping> instance() {
+	public static AttributeMappingUiProvider<EclipseLinkTransformationMapping> instance() {
 		return INSTANCE;
 	}
 	
@@ -48,7 +48,7 @@ public class EclipseLinkJavaTransformationMappingUiProvider extends EclipseLinkT
 	
 	public JpaComposite buildAttributeMappingComposite(
 		JpaUiFactory factory,
-		PropertyValueModel<TransformationMapping> subjectHolder,
+		PropertyValueModel<EclipseLinkTransformationMapping> subjectHolder,
 		Composite parent,
 		WidgetFactory widgetFactory) {
 		

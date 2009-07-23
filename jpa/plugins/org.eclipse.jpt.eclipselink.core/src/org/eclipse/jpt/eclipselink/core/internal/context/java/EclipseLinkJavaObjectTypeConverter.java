@@ -16,9 +16,9 @@ import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
-import org.eclipse.jpt.eclipselink.core.context.ConversionValue;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConversionValue;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
-import org.eclipse.jpt.eclipselink.core.context.ObjectTypeConverter;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkObjectTypeConverter;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkConversionValueAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkObjectTypeConverterAnnotation;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -28,7 +28,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class EclipseLinkJavaObjectTypeConverter extends EclipseLinkJavaConverter
-	implements ObjectTypeConverter
+	implements EclipseLinkObjectTypeConverter
 {	
 	private String dataType;
 	
@@ -131,7 +131,7 @@ public class EclipseLinkJavaObjectTypeConverter extends EclipseLinkJavaConverter
 		this.addConversionValue(this.conversionValues.size(), conversionValue);
 	}
 	
-	public void removeConversionValue(ConversionValue conversionValue) {
+	public void removeConversionValue(EclipseLinkConversionValue conversionValue) {
 		this.removeConversionValue(this.conversionValues.indexOf(conversionValue));
 	}
 	

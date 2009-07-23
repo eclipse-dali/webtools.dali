@@ -10,7 +10,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.orm.details;
 
 import java.util.ArrayList;
 import java.util.ListIterator;
-import org.eclipse.jpt.eclipselink.core.context.Convert;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.ui.WidgetFactory;
@@ -42,7 +42,7 @@ import org.eclipse.swt.widgets.Composite;
  * |            -------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see Convert
+ * @see EclipseLinkConvert
  * @see EclipseLinkBasicMappingComposite - A container of this widget
  *
  * @version 2.1
@@ -51,7 +51,7 @@ import org.eclipse.swt.widgets.Composite;
 
 //Temporary to remove the Define Converters section from orm basic, id, version mapping.
 //This is supported in EclipseLink in version 1.1, but not 1.0
-public class OrmConvertComposite extends FormPane<Convert>
+public class OrmConvertComposite extends FormPane<EclipseLinkConvert>
 {
 
 	/**
@@ -70,7 +70,7 @@ public class OrmConvertComposite extends FormPane<Convert>
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public OrmConvertComposite(PropertyValueModel<? extends Convert> subjectHolder,
+	public OrmConvertComposite(PropertyValueModel<? extends EclipseLinkConvert> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
 
@@ -93,7 +93,7 @@ public class OrmConvertComposite extends FormPane<Convert>
 	}
 	
 	protected final WritablePropertyValueModel<String> buildConvertNameHolder() {
-		return new PropertyAspectAdapter<Convert, String>(getSubjectHolder(), Convert.SPECIFIED_CONVERTER_NAME_PROPERTY) {
+		return new PropertyAspectAdapter<EclipseLinkConvert, String>(getSubjectHolder(), EclipseLinkConvert.SPECIFIED_CONVERTER_NAME_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return this.subject.getSpecifiedConverterName();
@@ -126,7 +126,7 @@ public class OrmConvertComposite extends FormPane<Convert>
 	}
 
 	private WritablePropertyValueModel<String> buildDefaultNameHolder() {
-		return new PropertyAspectAdapter<Convert, String>(getSubjectHolder(), Convert.DEFAULT_CONVERTER_NAME_PROPERTY) {
+		return new PropertyAspectAdapter<EclipseLinkConvert, String>(getSubjectHolder(), EclipseLinkConvert.DEFAULT_CONVERTER_NAME_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				String name = this.subject.getDefaultConverterName();
@@ -182,7 +182,7 @@ public class OrmConvertComposite extends FormPane<Convert>
 	}
 
 	protected ListValueModel<String> buildReservedConverterNameListHolder() {
-		return new StaticListValueModel<String>(Convert.RESERVED_CONVERTER_NAMES);
+		return new StaticListValueModel<String>(EclipseLinkConvert.RESERVED_CONVERTER_NAMES);
 	}
 	
 	protected ListValueModel<String> buildConverterNameListHolder() {
@@ -198,7 +198,7 @@ public class OrmConvertComposite extends FormPane<Convert>
 	}
 	
 	protected PropertyValueModel<EclipseLinkPersistenceUnit> buildPersistenceUnitHolder() {
-		return new PropertyAspectAdapter<Convert, EclipseLinkPersistenceUnit>(getSubjectHolder()) {
+		return new PropertyAspectAdapter<EclipseLinkConvert, EclipseLinkPersistenceUnit>(getSubjectHolder()) {
 			@Override
 			protected EclipseLinkPersistenceUnit buildValue_() {
 				return (EclipseLinkPersistenceUnit) getSubject().getPersistenceUnit();
@@ -207,9 +207,9 @@ public class OrmConvertComposite extends FormPane<Convert>
 	}
 
 	protected PropertyValueModel<Boolean> buildBooleanHolder() {
-		return new TransformationPropertyValueModel<Convert, Boolean>(getSubjectHolder()) {
+		return new TransformationPropertyValueModel<EclipseLinkConvert, Boolean>(getSubjectHolder()) {
 			@Override
-			protected Boolean transform(Convert value) {
+			protected Boolean transform(EclipseLinkConvert value) {
 				if (getSubject() != null && getSubject().getParent().getPersistentAttribute().isVirtual()) {
 					return Boolean.FALSE;
 				}

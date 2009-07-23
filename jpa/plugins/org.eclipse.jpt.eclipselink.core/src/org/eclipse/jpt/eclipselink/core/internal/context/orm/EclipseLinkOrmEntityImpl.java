@@ -13,11 +13,11 @@ import java.util.List;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmEntity;
 import org.eclipse.jpt.eclipselink.core.context.Caching;
-import org.eclipse.jpt.eclipselink.core.context.ChangeTracking;
-import org.eclipse.jpt.eclipselink.core.context.Customizer;
-import org.eclipse.jpt.eclipselink.core.context.ReadOnly;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkChangeTracking;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCustomizer;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkReadOnly;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaEntity;
-import org.eclipse.jpt.eclipselink.core.context.java.JavaCaching;
+import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaCaching;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlCacheHolder;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlChangeTrackingHolder;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConvertersHolder;
@@ -36,7 +36,7 @@ public class EclipseLinkOrmEntityImpl extends AbstractOrmEntity
 	
 	protected final EclipseLinkOrmChangeTracking changeTracking;
 	
-	protected final EclipseLinkOrmCaching caching;
+	protected final EclipseLinkOrmCachingImpl caching;
 	
 	protected final EclipseLinkOrmConverterHolder converterHolder;
 	
@@ -46,7 +46,7 @@ public class EclipseLinkOrmEntityImpl extends AbstractOrmEntity
 		this.readOnly = new EclipseLinkOrmReadOnly(this, (XmlReadOnly) this.resourceTypeMapping, getJavaReadOnly());
 		this.customizer = new EclipseLinkOrmCustomizer(this, (XmlCustomizerHolder) this.resourceTypeMapping, getJavaCustomizer());
 		this.changeTracking = new EclipseLinkOrmChangeTracking(this, (XmlChangeTrackingHolder) this.resourceTypeMapping, getJavaChangeTracking());
-		this.caching = new EclipseLinkOrmCaching(this, (XmlCacheHolder) this.resourceTypeMapping, getJavaCaching());
+		this.caching = new EclipseLinkOrmCachingImpl(this, (XmlCacheHolder) this.resourceTypeMapping, getJavaCaching());
 		this.converterHolder = new EclipseLinkOrmConverterHolder(this, (XmlConvertersHolder) this.resourceTypeMapping);
 	}
 	
@@ -54,11 +54,11 @@ public class EclipseLinkOrmEntityImpl extends AbstractOrmEntity
 		return this.caching;
 	}
 
-	public Customizer getCustomizer() {
+	public EclipseLinkCustomizer getCustomizer() {
 		return this.customizer;
 	}
 
-	public ChangeTracking getChangeTracking() {
+	public EclipseLinkChangeTracking getChangeTracking() {
 		return this.changeTracking;
 	}
 
@@ -66,7 +66,7 @@ public class EclipseLinkOrmEntityImpl extends AbstractOrmEntity
 		return this.readOnly;
 	}
 	
-	public ConverterHolder getConverterHolder() {
+	public EclipseLinkConverterHolder getConverterHolder() {
 		return this.converterHolder;
 	}
 	
@@ -87,22 +87,22 @@ public class EclipseLinkOrmEntityImpl extends AbstractOrmEntity
 		return (EclipseLinkJavaEntity) super.getJavaEntityForDefaults();
 	}
 	
-	protected ReadOnly getJavaReadOnly() {
+	protected EclipseLinkReadOnly getJavaReadOnly() {
 		EclipseLinkJavaEntity javaEntity = getJavaEntityForDefaults();
 		return (javaEntity == null) ? null : javaEntity.getReadOnly();
 	}
 	
-	protected Customizer getJavaCustomizer() {
+	protected EclipseLinkCustomizer getJavaCustomizer() {
 		EclipseLinkJavaEntity javaEntity = getJavaEntityForDefaults();
 		return (javaEntity == null) ? null : javaEntity.getCustomizer();
 	}
 	
-	protected ChangeTracking getJavaChangeTracking() {
+	protected EclipseLinkChangeTracking getJavaChangeTracking() {
 		EclipseLinkJavaEntity javaEntity = getJavaEntityForDefaults();
 		return (javaEntity == null) ? null : javaEntity.getChangeTracking();
 	}
 	
-	protected JavaCaching getJavaCaching() {
+	protected EclipseLinkJavaCaching getJavaCaching() {
 		EclipseLinkJavaEntity javaEntity = getJavaEntityForDefaults();
 		return (javaEntity == null) ? null : javaEntity.getCaching();
 	}

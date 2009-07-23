@@ -16,12 +16,12 @@ import java.util.ListIterator;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.window.Window;
-import org.eclipse.jpt.eclipselink.core.context.CustomConverter;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCustomConverter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
-import org.eclipse.jpt.eclipselink.core.context.ObjectTypeConverter;
-import org.eclipse.jpt.eclipselink.core.context.StructConverter;
-import org.eclipse.jpt.eclipselink.core.context.TypeConverter;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.ConverterHolder;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkObjectTypeConverter;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkStructConverter;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkTypeConverter;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkConverterHolder;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.CustomConverterComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.ObjectTypeConverterComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.StructConverterComposite;
@@ -78,9 +78,9 @@ import org.eclipse.ui.part.PageBook;
  * @version 2.1
  * @since 2.1
  */
-public class ConvertersComposite extends Pane<ConverterHolder>
+public class ConvertersComposite extends Pane<EclipseLinkConverterHolder>
 {
-	private AddRemoveListPane<ConverterHolder> listPane;
+	private AddRemoveListPane<EclipseLinkConverterHolder> listPane;
 	private CustomConverterComposite converterComposite;
 	private ObjectTypeConverterComposite objectTypeConverterComposite;
 	private StructConverterComposite structConverterComposite;
@@ -89,7 +89,7 @@ public class ConvertersComposite extends Pane<ConverterHolder>
 
 	public ConvertersComposite(
 		FormPane<?> parentPane, 
-		PropertyValueModel<? extends ConverterHolder> subjectHolder,
+		PropertyValueModel<? extends EclipseLinkConverterHolder> subjectHolder,
 		Composite parent) {
 
 			super(parentPane, subjectHolder, parent, false);
@@ -146,9 +146,9 @@ public class ConvertersComposite extends Pane<ConverterHolder>
 		installPaneSwitcher(pageBook);
 	}
 
-	private AddRemoveListPane<ConverterHolder> addListPane(Composite container) {
+	private AddRemoveListPane<EclipseLinkConverterHolder> addListPane(Composite container) {
 
-		return new AddRemoveListPane<ConverterHolder>(
+		return new AddRemoveListPane<EclipseLinkConverterHolder>(
 			this,
 			container,
 			buildConvertersAdapter(),
@@ -184,16 +184,16 @@ public class ConvertersComposite extends Pane<ConverterHolder>
 			public void removeSelectedItems(ObjectListSelectionModel listSelectionModel) {
 				for (Object item : listSelectionModel.selectedValues()) {
 					if (((EclipseLinkConverter) item).getType() == EclipseLinkConverter.CUSTOM_CONVERTER) {
-						getSubject().removeCustomConverter((CustomConverter) item);
+						getSubject().removeCustomConverter((EclipseLinkCustomConverter) item);
 					}
 					else if (((EclipseLinkConverter) item).getType() == EclipseLinkConverter.OBJECT_TYPE_CONVERTER) {
-						getSubject().removeObjectTypeConverter((ObjectTypeConverter) item);
+						getSubject().removeObjectTypeConverter((EclipseLinkObjectTypeConverter) item);
 					}
 					else if (((EclipseLinkConverter) item).getType() == EclipseLinkConverter.STRUCT_CONVERTER) {
-						getSubject().removeStructConverter((StructConverter) item);
+						getSubject().removeStructConverter((EclipseLinkStructConverter) item);
 					}
 					else if (((EclipseLinkConverter) item).getType() == EclipseLinkConverter.TYPE_CONVERTER) {
-						getSubject().removeTypeConverter((TypeConverter) item);
+						getSubject().removeTypeConverter((EclipseLinkTypeConverter) item);
 					}
 				}
 			}
@@ -274,13 +274,13 @@ public class ConvertersComposite extends Pane<ConverterHolder>
 		return new CompositeListValueModel<ListValueModel<? extends EclipseLinkConverter>, EclipseLinkConverter>(list);
 	}
 
-	private ListValueModel<CustomConverter> buildCustomConvertersListHolder() {
-		return new ListAspectAdapter<ConverterHolder, CustomConverter>(
+	private ListValueModel<EclipseLinkCustomConverter> buildCustomConvertersListHolder() {
+		return new ListAspectAdapter<EclipseLinkConverterHolder, EclipseLinkCustomConverter>(
 			getSubjectHolder(),
-			ConverterHolder.CUSTOM_CONVERTERS_LIST)
+			EclipseLinkConverterHolder.CUSTOM_CONVERTERS_LIST)
 		{
 			@Override
-			protected ListIterator<CustomConverter> listIterator_() {
+			protected ListIterator<EclipseLinkCustomConverter> listIterator_() {
 				return this.subject.customConverters();
 			}
 
@@ -291,13 +291,13 @@ public class ConvertersComposite extends Pane<ConverterHolder>
 		};
 	}
 
-	private ListValueModel<ObjectTypeConverter> buildObjectTypeConvertersListHolder() {
-		return new ListAspectAdapter<ConverterHolder, ObjectTypeConverter>(
+	private ListValueModel<EclipseLinkObjectTypeConverter> buildObjectTypeConvertersListHolder() {
+		return new ListAspectAdapter<EclipseLinkConverterHolder, EclipseLinkObjectTypeConverter>(
 			getSubjectHolder(),
-			ConverterHolder.OBJECT_TYPE_CONVERTERS_LIST)
+			EclipseLinkConverterHolder.OBJECT_TYPE_CONVERTERS_LIST)
 		{
 			@Override
-			protected ListIterator<ObjectTypeConverter> listIterator_() {
+			protected ListIterator<EclipseLinkObjectTypeConverter> listIterator_() {
 				return this.subject.objectTypeConverters();
 			}
 
@@ -308,13 +308,13 @@ public class ConvertersComposite extends Pane<ConverterHolder>
 		};
 	}
 
-	private ListValueModel<StructConverter> buildStructConvertersListHolder() {
-		return new ListAspectAdapter<ConverterHolder, StructConverter>(
+	private ListValueModel<EclipseLinkStructConverter> buildStructConvertersListHolder() {
+		return new ListAspectAdapter<EclipseLinkConverterHolder, EclipseLinkStructConverter>(
 			getSubjectHolder(),
-			ConverterHolder.STRUCT_CONVERTERS_LIST)
+			EclipseLinkConverterHolder.STRUCT_CONVERTERS_LIST)
 		{
 			@Override
-			protected ListIterator<StructConverter> listIterator_() {
+			protected ListIterator<EclipseLinkStructConverter> listIterator_() {
 				return this.subject.structConverters();
 			}
 
@@ -325,13 +325,13 @@ public class ConvertersComposite extends Pane<ConverterHolder>
 		};
 	}
 
-	private ListValueModel<TypeConverter> buildTypeConvertersListHolder() {
-		return new ListAspectAdapter<ConverterHolder, TypeConverter>(
+	private ListValueModel<EclipseLinkTypeConverter> buildTypeConvertersListHolder() {
+		return new ListAspectAdapter<EclipseLinkConverterHolder, EclipseLinkTypeConverter>(
 			getSubjectHolder(),
-			ConverterHolder.TYPE_CONVERTERS_LIST)
+			EclipseLinkConverterHolder.TYPE_CONVERTERS_LIST)
 		{
 			@Override
-			protected ListIterator<TypeConverter> listIterator_() {
+			protected ListIterator<EclipseLinkTypeConverter> listIterator_() {
 				return this.subject.typeConverters();
 			}
 
@@ -342,38 +342,38 @@ public class ConvertersComposite extends Pane<ConverterHolder>
 		};
 	}
 
-	private PropertyValueModel<CustomConverter> buildCustomConverterHolder() {
-		return new TransformationPropertyValueModel<EclipseLinkConverter, CustomConverter>(this.selectedConverterHolder) {
+	private PropertyValueModel<EclipseLinkCustomConverter> buildCustomConverterHolder() {
+		return new TransformationPropertyValueModel<EclipseLinkConverter, EclipseLinkCustomConverter>(this.selectedConverterHolder) {
 			@Override
-			protected CustomConverter transform_(EclipseLinkConverter value) {
-				return value.getType() == EclipseLinkConverter.CUSTOM_CONVERTER ? (CustomConverter) value : null;
+			protected EclipseLinkCustomConverter transform_(EclipseLinkConverter value) {
+				return value.getType() == EclipseLinkConverter.CUSTOM_CONVERTER ? (EclipseLinkCustomConverter) value : null;
 			}
 		};
 	}
 
-	private PropertyValueModel<ObjectTypeConverter> buildObjectTypeConverterHolder() {
-		return new TransformationPropertyValueModel<EclipseLinkConverter, ObjectTypeConverter>(this.selectedConverterHolder) {
+	private PropertyValueModel<EclipseLinkObjectTypeConverter> buildObjectTypeConverterHolder() {
+		return new TransformationPropertyValueModel<EclipseLinkConverter, EclipseLinkObjectTypeConverter>(this.selectedConverterHolder) {
 			@Override
-			protected ObjectTypeConverter transform_(EclipseLinkConverter value) {
-				return value.getType() == EclipseLinkConverter.OBJECT_TYPE_CONVERTER ? (ObjectTypeConverter) value : null;
+			protected EclipseLinkObjectTypeConverter transform_(EclipseLinkConverter value) {
+				return value.getType() == EclipseLinkConverter.OBJECT_TYPE_CONVERTER ? (EclipseLinkObjectTypeConverter) value : null;
 			}
 		};
 	}
 
-	private PropertyValueModel<StructConverter> buildStructConverterHolder() {
-		return new TransformationPropertyValueModel<EclipseLinkConverter, StructConverter>(this.selectedConverterHolder) {
+	private PropertyValueModel<EclipseLinkStructConverter> buildStructConverterHolder() {
+		return new TransformationPropertyValueModel<EclipseLinkConverter, EclipseLinkStructConverter>(this.selectedConverterHolder) {
 			@Override
-			protected StructConverter transform_(EclipseLinkConverter value) {
-				return value.getType() == EclipseLinkConverter.STRUCT_CONVERTER ? (StructConverter) value : null;
+			protected EclipseLinkStructConverter transform_(EclipseLinkConverter value) {
+				return value.getType() == EclipseLinkConverter.STRUCT_CONVERTER ? (EclipseLinkStructConverter) value : null;
 			}
 		};
 	}
 
-	private PropertyValueModel<TypeConverter> buildTypeConverterHolder() {
-		return new TransformationPropertyValueModel<EclipseLinkConverter, TypeConverter>(this.selectedConverterHolder) {
+	private PropertyValueModel<EclipseLinkTypeConverter> buildTypeConverterHolder() {
+		return new TransformationPropertyValueModel<EclipseLinkConverter, EclipseLinkTypeConverter>(this.selectedConverterHolder) {
 			@Override
-			protected TypeConverter transform_(EclipseLinkConverter value) {
-				return value.getType() == EclipseLinkConverter.TYPE_CONVERTER ? (TypeConverter) value : null;
+			protected EclipseLinkTypeConverter transform_(EclipseLinkConverter value) {
+				return value.getType() == EclipseLinkConverter.TYPE_CONVERTER ? (EclipseLinkTypeConverter) value : null;
 			}
 		};
 	}
@@ -397,9 +397,9 @@ public class ConvertersComposite extends Pane<ConverterHolder>
 	//we at least need to check typeconverters, converters, structconverters, and objectypeconverters, on this particular
 	//object.  or we need to give a warning about the case where you are overriding or an error if it's not an override?
 	private Iterator<String> converterNames() {
-		return new TransformationIterator<CustomConverter, String>(getSubject().customConverters()) {
+		return new TransformationIterator<EclipseLinkCustomConverter, String>(getSubject().customConverters()) {
 			@Override
-			protected String transform(CustomConverter next) {
+			protected String transform(EclipseLinkCustomConverter next) {
 				return next.getName();
 			}
 		};

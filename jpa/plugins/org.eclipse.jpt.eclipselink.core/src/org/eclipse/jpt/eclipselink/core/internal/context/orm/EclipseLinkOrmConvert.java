@@ -15,7 +15,7 @@ import org.eclipse.jpt.core.context.orm.OrmConverter;
 import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.core.resource.xml.JpaEObject;
 import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.jpt.eclipselink.core.context.Convert;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConverter;
@@ -26,13 +26,13 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.XmlTypeConverter;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class EclipseLinkOrmConvert extends AbstractXmlContextNode implements Convert, OrmConverter
+public class EclipseLinkOrmConvert extends AbstractXmlContextNode implements EclipseLinkConvert, OrmConverter
 {
 	protected String specifiedConverterName;
 	
 	protected XmlConvertibleMapping resourceMapping;
 	
-	protected EclipseLinkOrmConverter converter;
+	protected EclipseLinkOrmConverter<?> converter;
 	
 	public EclipseLinkOrmConvert(OrmAttributeMapping parent, XmlConvertibleMapping resourceMapping) {
 		super(parent);
@@ -45,7 +45,7 @@ public class EclipseLinkOrmConvert extends AbstractXmlContextNode implements Con
 	}
 
 	public String getType() {
-		return Convert.ECLIPSE_LINK_CONVERTER;
+		return EclipseLinkConvert.ECLIPSE_LINK_CONVERTER;
 	}
 		
 	public void addToResourceModel() {
@@ -85,7 +85,7 @@ public class EclipseLinkOrmConvert extends AbstractXmlContextNode implements Con
 		firePropertyChanged(SPECIFIED_CONVERTER_NAME_PROPERTY, oldSpecifiedConverterName, newSpecifiedConverterName);
 	}
 
-	public EclipseLinkOrmConverter getConverter() {
+	public EclipseLinkOrmConverter<?> getConverter() {
 		return this.converter;
 	}
 	
@@ -100,13 +100,13 @@ public class EclipseLinkOrmConvert extends AbstractXmlContextNode implements Con
 		if (getConverterType() == converterType) {
 			return;
 		}
-		EclipseLinkOrmConverter oldConverter = this.converter;
+		EclipseLinkOrmConverter<?> oldConverter = this.converter;
 		if (oldConverter != null) {
 			this.converter = null; //set to null now to avoid update triggering events
 			removeConverter(oldConverter.getType());
 		}
 		JpaEObject resourceConverter = buildResourceConverter(converterType);
-		EclipseLinkOrmConverter newConverter = buildConverter(converterType, resourceConverter);
+		EclipseLinkOrmConverter<?> newConverter = buildConverter(converterType, resourceConverter);
 		this.converter = newConverter;
 		if (newConverter != null) {
 			addConverter(converterType, resourceConverter);

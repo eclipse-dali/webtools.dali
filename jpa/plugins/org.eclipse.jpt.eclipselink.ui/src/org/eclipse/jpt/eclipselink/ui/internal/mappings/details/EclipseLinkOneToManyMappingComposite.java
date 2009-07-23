@@ -13,8 +13,8 @@ import org.eclipse.jpt.core.context.Cascade;
 import org.eclipse.jpt.core.context.OneToManyMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToManyMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToManyRelationshipReference;
-import org.eclipse.jpt.eclipselink.core.context.JoinFetch;
-import org.eclipse.jpt.eclipselink.core.context.PrivateOwned;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkJoinFetch;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkPrivateOwned;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.CascadeComposite;
@@ -119,19 +119,19 @@ public class EclipseLinkOneToManyMappingComposite
 		};
 	}
 	
-	protected PropertyValueModel<PrivateOwned> buildPrivateOwnableHolder() {
-		return new PropertyAspectAdapter<OneToManyMapping, PrivateOwned>(getSubjectHolder()) {
+	protected PropertyValueModel<EclipseLinkPrivateOwned> buildPrivateOwnableHolder() {
+		return new PropertyAspectAdapter<OneToManyMapping, EclipseLinkPrivateOwned>(getSubjectHolder()) {
 			@Override
-			protected PrivateOwned buildValue_() {
+			protected EclipseLinkPrivateOwned buildValue_() {
 				return ((EclipseLinkOneToManyMapping) this.subject).getPrivateOwned();
 			}
 		};
 	}
 	
-	protected PropertyValueModel<JoinFetch> buildJoinFetchableHolder() {
-		return new PropertyAspectAdapter<OneToManyMapping, JoinFetch>(getSubjectHolder()) {
+	protected PropertyValueModel<EclipseLinkJoinFetch> buildJoinFetchableHolder() {
+		return new PropertyAspectAdapter<OneToManyMapping, EclipseLinkJoinFetch>(getSubjectHolder()) {
 			@Override
-			protected JoinFetch buildValue_() {
+			protected EclipseLinkJoinFetch buildValue_() {
 				return ((EclipseLinkOneToManyMapping) this.subject).getJoinFetch();
 			}
 		};

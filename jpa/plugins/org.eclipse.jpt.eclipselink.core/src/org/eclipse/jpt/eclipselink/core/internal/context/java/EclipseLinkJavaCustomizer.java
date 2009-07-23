@@ -15,7 +15,7 @@ import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.jpt.eclipselink.core.context.Customizer;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCustomizer;
 import org.eclipse.jpt.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaFactory;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
@@ -23,7 +23,7 @@ import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkCustomizerAnnot
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class EclipseLinkJavaCustomizer extends AbstractJavaJpaContextNode implements Customizer
+public class EclipseLinkJavaCustomizer extends AbstractJavaJpaContextNode implements EclipseLinkCustomizer
 {	
 	private JavaResourcePersistentType resourcePersistentType;
 	

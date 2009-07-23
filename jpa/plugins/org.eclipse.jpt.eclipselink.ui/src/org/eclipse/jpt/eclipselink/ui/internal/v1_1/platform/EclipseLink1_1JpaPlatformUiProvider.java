@@ -11,23 +11,23 @@ package org.eclipse.jpt.eclipselink.ui.internal.v1_1.platform;
 
 import java.util.List;
 import org.eclipse.jpt.core.context.AttributeMapping;
-import org.eclipse.jpt.eclipselink.ui.internal.v1_1.orm.details.EclipseLink1_1OrmBasicCollectionMappingUiProvider;
-import org.eclipse.jpt.eclipselink.ui.internal.v1_1.orm.details.EclipseLink1_1OrmBasicMapMappingUiProvider;
-import org.eclipse.jpt.eclipselink.ui.internal.v1_1.orm.details.EclipseLink1_1OrmBasicMappingUiProvider;
-import org.eclipse.jpt.eclipselink.ui.internal.v1_1.orm.details.EclipseLink1_1OrmEmbeddableUiProvider;
-import org.eclipse.jpt.eclipselink.ui.internal.v1_1.orm.details.EclipseLink1_1OrmEmbeddedIdMappingUiProvider;
-import org.eclipse.jpt.eclipselink.ui.internal.v1_1.orm.details.EclipseLink1_1OrmEmbeddedMappingUiProvider;
-import org.eclipse.jpt.eclipselink.ui.internal.v1_1.orm.details.EclipseLink1_1OrmEntityUiProvider;
-import org.eclipse.jpt.eclipselink.ui.internal.v1_1.orm.details.EclipseLink1_1OrmIdMappingUiProvider;
-import org.eclipse.jpt.eclipselink.ui.internal.v1_1.orm.details.EclipseLink1_1OrmManyToManyMappingUiProvider;
-import org.eclipse.jpt.eclipselink.ui.internal.v1_1.orm.details.EclipseLink1_1OrmManyToOneMappingUiProvider;
-import org.eclipse.jpt.eclipselink.ui.internal.v1_1.orm.details.EclipseLink1_1OrmMappedSuperclassUiProvider;
-import org.eclipse.jpt.eclipselink.ui.internal.v1_1.orm.details.EclipseLink1_1OrmOneToManyMappingUiProvider;
-import org.eclipse.jpt.eclipselink.ui.internal.v1_1.orm.details.EclipseLink1_1OrmOneToOneMappingUiProvider;
-import org.eclipse.jpt.eclipselink.ui.internal.v1_1.orm.details.EclipseLink1_1OrmTransformationMappingUiProvider;
-import org.eclipse.jpt.eclipselink.ui.internal.v1_1.orm.details.EclipseLink1_1OrmTransientMappingUiProvider;
-import org.eclipse.jpt.eclipselink.ui.internal.v1_1.orm.details.EclipseLink1_1OrmVariableOneToOneMappingUiProvider;
-import org.eclipse.jpt.eclipselink.ui.internal.v1_1.orm.details.EclipseLink1_1OrmVersionMappingUiProvider;
+import org.eclipse.jpt.eclipselink.ui.internal.v1_1.orm.details.EclipseLinkOrmBasicCollectionMapping1_1UiProvider;
+import org.eclipse.jpt.eclipselink.ui.internal.v1_1.orm.details.EclipseLinkOrmBasicMapMapping1_1UiProvider;
+import org.eclipse.jpt.eclipselink.ui.internal.v1_1.orm.details.EclipseLinkOrmBasicMapping1_1UiProvider;
+import org.eclipse.jpt.eclipselink.ui.internal.v1_1.orm.details.EclipseLinkOrmEmbeddable1_1UiProvider;
+import org.eclipse.jpt.eclipselink.ui.internal.v1_1.orm.details.EclipseLinkOrmEmbeddedIdMapping1_1UiProvider;
+import org.eclipse.jpt.eclipselink.ui.internal.v1_1.orm.details.EclipseLinkOrmEmbeddedMapping1_1UiProvider;
+import org.eclipse.jpt.eclipselink.ui.internal.v1_1.orm.details.EclipseLinkOrmEntity1_1UiProvider;
+import org.eclipse.jpt.eclipselink.ui.internal.v1_1.orm.details.EclipseLinkOrmIdMapping1_1UiProvider;
+import org.eclipse.jpt.eclipselink.ui.internal.v1_1.orm.details.EclipseLinkOrmManyToManyMapping1_1UiProvider;
+import org.eclipse.jpt.eclipselink.ui.internal.v1_1.orm.details.EclipseLinkOrmManyToOneMapping1_1UiProvider;
+import org.eclipse.jpt.eclipselink.ui.internal.v1_1.orm.details.EclipseLinkOrmMappedSuperclass1_1UiProvider;
+import org.eclipse.jpt.eclipselink.ui.internal.v1_1.orm.details.EclipseLinkOrmOneToManyMapping1_1UiProvider;
+import org.eclipse.jpt.eclipselink.ui.internal.v1_1.orm.details.EclipseLinkOrmOneToOneMapping1_1UiProvider;
+import org.eclipse.jpt.eclipselink.ui.internal.v1_1.orm.details.EclipseLinkOrmTransformationMapping1_1UiProvider;
+import org.eclipse.jpt.eclipselink.ui.internal.v1_1.orm.details.EclipseLinkOrmTransientMapping1_1UiProvider;
+import org.eclipse.jpt.eclipselink.ui.internal.v1_1.orm.details.EclipseLinkOrmVariableOneToOneMapping1_1UiProvider;
+import org.eclipse.jpt.eclipselink.ui.internal.v1_1.orm.details.EclipseLinkOrmVersionMapping1_1UiProvider;
 import org.eclipse.jpt.eclipselink.ui.internal.v1_1.structure.EclipseLink1_1OrmResourceModelStructureProvider;
 import org.eclipse.jpt.ui.JpaPlatformUiProvider;
 import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
@@ -78,9 +78,9 @@ public class EclipseLink1_1JpaPlatformUiProvider extends AbstractJpaPlatformUiPr
 
 	@Override
 	protected void addTypeMappingUiProvidersTo(List<TypeMappingUiProvider<?>> providers) {
-		providers.add(EclipseLink1_1OrmEntityUiProvider.instance());
-		providers.add(EclipseLink1_1OrmMappedSuperclassUiProvider.instance());
-		providers.add(EclipseLink1_1OrmEmbeddableUiProvider.instance());
+		providers.add(EclipseLinkOrmEntity1_1UiProvider.instance());
+		providers.add(EclipseLinkOrmMappedSuperclass1_1UiProvider.instance());
+		providers.add(EclipseLinkOrmEmbeddable1_1UiProvider.instance());
 	}
 	
 	@Override
@@ -93,20 +93,20 @@ public class EclipseLink1_1JpaPlatformUiProvider extends AbstractJpaPlatformUiPr
 	
 	@Override
 	protected void addAttributeMappingUiProvidersTo(List<AttributeMappingUiProvider<? extends AttributeMapping>> providers) {
-		providers.add(EclipseLink1_1OrmIdMappingUiProvider.instance());
-		providers.add(EclipseLink1_1OrmEmbeddedIdMappingUiProvider.instance());
-		providers.add(EclipseLink1_1OrmBasicMappingUiProvider.instance());
-		providers.add(EclipseLink1_1OrmBasicCollectionMappingUiProvider.instance());
-		providers.add(EclipseLink1_1OrmBasicMapMappingUiProvider.instance());
-		providers.add(EclipseLink1_1OrmVersionMappingUiProvider.instance());
-		providers.add(EclipseLink1_1OrmManyToOneMappingUiProvider.instance());
-		providers.add(EclipseLink1_1OrmOneToManyMappingUiProvider.instance());
-		providers.add(EclipseLink1_1OrmEmbeddedMappingUiProvider.instance());
-		providers.add(EclipseLink1_1OrmOneToOneMappingUiProvider.instance());
-		providers.add(EclipseLink1_1OrmVariableOneToOneMappingUiProvider.instance());
-		providers.add(EclipseLink1_1OrmManyToManyMappingUiProvider.instance());
-		providers.add(EclipseLink1_1OrmTransformationMappingUiProvider.instance());
-		providers.add(EclipseLink1_1OrmTransientMappingUiProvider.instance());
+		providers.add(EclipseLinkOrmIdMapping1_1UiProvider.instance());
+		providers.add(EclipseLinkOrmEmbeddedIdMapping1_1UiProvider.instance());
+		providers.add(EclipseLinkOrmBasicMapping1_1UiProvider.instance());
+		providers.add(EclipseLinkOrmBasicCollectionMapping1_1UiProvider.instance());
+		providers.add(EclipseLinkOrmBasicMapMapping1_1UiProvider.instance());
+		providers.add(EclipseLinkOrmVersionMapping1_1UiProvider.instance());
+		providers.add(EclipseLinkOrmManyToOneMapping1_1UiProvider.instance());
+		providers.add(EclipseLinkOrmOneToManyMapping1_1UiProvider.instance());
+		providers.add(EclipseLinkOrmEmbeddedMapping1_1UiProvider.instance());
+		providers.add(EclipseLinkOrmOneToOneMapping1_1UiProvider.instance());
+		providers.add(EclipseLinkOrmVariableOneToOneMapping1_1UiProvider.instance());
+		providers.add(EclipseLinkOrmManyToManyMapping1_1UiProvider.instance());
+		providers.add(EclipseLinkOrmTransformationMapping1_1UiProvider.instance());
+		providers.add(EclipseLinkOrmTransientMapping1_1UiProvider.instance());
 	}
 	
 	@Override

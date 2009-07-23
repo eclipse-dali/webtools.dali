@@ -26,5 +26,5 @@ public interface EclipseLinkOneToManyMapping
 {
 	EclipseLinkOneToManyRelationshipReference getRelationshipReference();
 	
-	PrivateOwned getPrivateOwned();
+	EclipseLinkPrivateOwned getPrivateOwned();
 }

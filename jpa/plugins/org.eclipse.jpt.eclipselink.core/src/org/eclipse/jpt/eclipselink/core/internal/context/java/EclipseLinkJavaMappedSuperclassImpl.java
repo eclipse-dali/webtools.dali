@@ -14,20 +14,20 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaMappedSuperclass;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.eclipselink.core.context.ChangeTracking;
-import org.eclipse.jpt.eclipselink.core.context.Customizer;
-import org.eclipse.jpt.eclipselink.core.context.ReadOnly;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkChangeTracking;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCustomizer;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkReadOnly;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaMappedSuperclass;
-import org.eclipse.jpt.eclipselink.core.context.java.JavaCaching;
-import org.eclipse.jpt.eclipselink.core.context.java.JavaConverterHolder;
+import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaCaching;
+import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaConverterHolder;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class EclipseLinkJavaMappedSuperclassImpl extends AbstractJavaMappedSuperclass implements EclipseLinkJavaMappedSuperclass
 {
-	protected JavaCaching eclipseLinkCaching;
+	protected EclipseLinkJavaCaching eclipseLinkCaching;
 	
-	protected final JavaConverterHolder converterHolder;
+	protected final EclipseLinkJavaConverterHolder converterHolder;
 	
 	protected final EclipseLinkJavaReadOnly readOnly;
 
@@ -37,30 +37,30 @@ public class EclipseLinkJavaMappedSuperclassImpl extends AbstractJavaMappedSuper
 
 	public EclipseLinkJavaMappedSuperclassImpl(JavaPersistentType parent) {
 		super(parent);
-		this.eclipseLinkCaching = new EclipseLinkJavaCaching(this);
-		this.converterHolder = new EclipseLinkJavaConverterHolder(this);
+		this.eclipseLinkCaching = new EclipseLinkJavaCachingImpl(this);
+		this.converterHolder = new EclipseLinkJavaConverterHolderImpl(this);
 		this.readOnly = new EclipseLinkJavaReadOnly(this);
 		this.customizer = new EclipseLinkJavaCustomizer(this);
 		this.changeTracking = new EclipseLinkJavaChangeTracking(this);
 	}
 	
-	public JavaCaching getCaching() {
+	public EclipseLinkJavaCaching getCaching() {
 		return this.eclipseLinkCaching;
 	}
 	
-	public JavaConverterHolder getConverterHolder() {
+	public EclipseLinkJavaConverterHolder getConverterHolder() {
 		return this.converterHolder;
 	}
 	
-	public ReadOnly getReadOnly() {
+	public EclipseLinkReadOnly getReadOnly() {
 		return this.readOnly;
 	}
 	
-	public Customizer getCustomizer() {
+	public EclipseLinkCustomizer getCustomizer() {
 		return this.customizer;
 	}
 	
-	public ChangeTracking getChangeTracking() {
+	public EclipseLinkChangeTracking getChangeTracking() {
 		return this.changeTracking;
 	}
 	

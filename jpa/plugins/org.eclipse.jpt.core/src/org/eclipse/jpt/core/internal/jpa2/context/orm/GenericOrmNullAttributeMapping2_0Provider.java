@@ -55,11 +55,11 @@ public class GenericOrmNullAttributeMapping2_0Provider
 	}
 
 	public OrmAttributeMapping buildMapping(OrmPersistentAttribute parent, XmlAttributeMapping resourceMapping, JpaFactory factory) {
-		return ((Generic2_0JpaFactory) factory).build2_0OrmNullAttributeMapping(parent, (XmlNullAttributeMapping) resourceMapping);
+		return ((Generic2_0JpaFactory) factory).buildOrmNullAttributeMapping2_0(parent, (XmlNullAttributeMapping) resourceMapping);
 	}
 	
 	public XmlAttributeMapping buildVirtualResourceMapping(OrmTypeMapping ormTypeMapping, JavaAttributeMapping javaAttributeMapping, JpaFactory factory) {
-		return ((Generic2_0JpaFactory) factory).build2_0VirtualXmlNullAttributeMapping(ormTypeMapping, javaAttributeMapping);
+		return ((Generic2_0JpaFactory) factory).buildVirtualXmlNullAttributeMapping2_0(ormTypeMapping, javaAttributeMapping);
 	}
 
 }

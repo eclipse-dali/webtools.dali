@@ -13,11 +13,11 @@ package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.jpt.eclipselink.core.context.ReadOnly;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkReadOnly;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlReadOnly;
 
 public class EclipseLinkOrmReadOnly extends AbstractXmlContextNode
-	implements ReadOnly
+	implements EclipseLinkReadOnly
 {
 	protected final XmlReadOnly resource;
 	
@@ -26,7 +26,7 @@ public class EclipseLinkOrmReadOnly extends AbstractXmlContextNode
 	protected Boolean specifiedReadOnly;
 	
 	
-	public EclipseLinkOrmReadOnly(OrmTypeMapping parent, XmlReadOnly resource, ReadOnly javaReadOnly) {
+	public EclipseLinkOrmReadOnly(OrmTypeMapping parent, XmlReadOnly resource, EclipseLinkReadOnly javaReadOnly) {
 		super(parent);
 		this.resource = resource;
 		this.defaultReadOnly = this.getJavaReadOnly(javaReadOnly);
@@ -62,12 +62,12 @@ public class EclipseLinkOrmReadOnly extends AbstractXmlContextNode
 	
 	// **************** initialize/update **************************************
 	
-	protected void update(ReadOnly javaReadOnly) {
+	protected void update(EclipseLinkReadOnly javaReadOnly) {
 		setDefaultReadOnly(this.getJavaReadOnly(javaReadOnly));
 		setSpecifiedReadOnly(this.getResourceReadOnly());
 	}
 	
-	protected boolean getJavaReadOnly(ReadOnly javaReadOnly) {
+	protected boolean getJavaReadOnly(EclipseLinkReadOnly javaReadOnly) {
 		return (javaReadOnly == null) ? false : javaReadOnly.isReadOnly();
 	}
 	

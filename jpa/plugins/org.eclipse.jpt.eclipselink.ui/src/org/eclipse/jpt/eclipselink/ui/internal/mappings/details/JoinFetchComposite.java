@@ -10,8 +10,8 @@ package org.eclipse.jpt.eclipselink.ui.internal.mappings.details;
 
 import java.util.Collection;
 import org.eclipse.jpt.core.internal.JptCoreMessages;
-import org.eclipse.jpt.eclipselink.core.context.JoinFetch;
-import org.eclipse.jpt.eclipselink.core.context.JoinFetchType;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkJoinFetch;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkJoinFetchType;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
@@ -37,7 +37,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.1
  * @since 2.1
  */
-public class JoinFetchComposite extends FormPane<JoinFetch> {
+public class JoinFetchComposite extends FormPane<EclipseLinkJoinFetch> {
 
 	/**
 	 * Creates a new <code>JoinFetchComposite</code>.
@@ -46,7 +46,7 @@ public class JoinFetchComposite extends FormPane<JoinFetch> {
 	 * @param parent The parent container
 	 */
 	public JoinFetchComposite(FormPane<?> parentPane, 
-								PropertyValueModel<? extends JoinFetch> subjectHolder,
+								PropertyValueModel<? extends EclipseLinkJoinFetch> subjectHolder,
 								Composite parent) {
 
 		super(parentPane, subjectHolder, parent);
@@ -65,28 +65,28 @@ public class JoinFetchComposite extends FormPane<JoinFetch> {
 	}
 	
 
-	private EnumFormComboViewer<JoinFetch, JoinFetchType> addJoinFetchTypeCombo(Composite container) {
+	private EnumFormComboViewer<EclipseLinkJoinFetch, EclipseLinkJoinFetchType> addJoinFetchTypeCombo(Composite container) {
 
-		return new EnumFormComboViewer<JoinFetch, JoinFetchType>(this, container) {
+		return new EnumFormComboViewer<EclipseLinkJoinFetch, EclipseLinkJoinFetchType>(this, container) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(JoinFetch.VALUE_PROPERTY);
+				propertyNames.add(EclipseLinkJoinFetch.VALUE_PROPERTY);
 			}
 
 			@Override
-			protected JoinFetchType[] getChoices() {
-				return JoinFetchType.values();
+			protected EclipseLinkJoinFetchType[] getChoices() {
+				return EclipseLinkJoinFetchType.values();
 			}
 			
 			@Override
-			protected JoinFetchType getDefaultValue() {
+			protected EclipseLinkJoinFetchType getDefaultValue() {
 				return null;
 			}
 			
 			@Override
-			protected String displayString(JoinFetchType value) {
+			protected String displayString(EclipseLinkJoinFetchType value) {
 				return buildDisplayString(
 					EclipseLinkUiMappingsMessages.class,
 					JoinFetchComposite.this,
@@ -100,12 +100,12 @@ public class JoinFetchComposite extends FormPane<JoinFetch> {
 			}
 
 			@Override
-			protected JoinFetchType getValue() {
+			protected EclipseLinkJoinFetchType getValue() {
 				return getSubject().getValue();
 			}
 
 			@Override
-			protected void setValue(JoinFetchType value) {
+			protected void setValue(EclipseLinkJoinFetchType value) {
 				getSubject().setValue(value);
 			}
 		};

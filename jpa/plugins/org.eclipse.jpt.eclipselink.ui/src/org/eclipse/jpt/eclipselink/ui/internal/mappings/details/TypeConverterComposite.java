@@ -10,7 +10,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
-import org.eclipse.jpt.eclipselink.core.context.TypeConverter;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkTypeConverter;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.util.PaneEnabler;
@@ -37,7 +37,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.1
  * @since 2.1
  */
-public class TypeConverterComposite extends FormPane<TypeConverter>
+public class TypeConverterComposite extends FormPane<EclipseLinkTypeConverter>
 {
 
 	/**
@@ -46,7 +46,7 @@ public class TypeConverterComposite extends FormPane<TypeConverter>
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public TypeConverterComposite(PropertyValueModel<? extends TypeConverter> subjectHolder,
+	public TypeConverterComposite(PropertyValueModel<? extends EclipseLinkTypeConverter> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
 
@@ -68,7 +68,7 @@ public class TypeConverterComposite extends FormPane<TypeConverter>
 	}
 	
 	protected WritablePropertyValueModel<String> buildNameTextHolder() {
-		return new PropertyAspectAdapter<TypeConverter, String>(
+		return new PropertyAspectAdapter<EclipseLinkTypeConverter, String>(
 				getSubjectHolder(), EclipseLinkConverter.NAME_PROPERTY) {
 			@Override
 			protected String buildValue_() {
@@ -86,13 +86,13 @@ public class TypeConverterComposite extends FormPane<TypeConverter>
 	}
 
 	
-	private ClassChooserPane<TypeConverter> addDataTypeChooser(Composite container) {
+	private ClassChooserPane<EclipseLinkTypeConverter> addDataTypeChooser(Composite container) {
 
-		return new ClassChooserPane<TypeConverter>(this, container) {
+		return new ClassChooserPane<EclipseLinkTypeConverter>(this, container) {
 
 			@Override
 			protected WritablePropertyValueModel<String> buildTextHolder() {
-				return new PropertyAspectAdapter<TypeConverter, String>(getSubjectHolder(), TypeConverter.DATA_TYPE_PROPERTY) {
+				return new PropertyAspectAdapter<EclipseLinkTypeConverter, String>(getSubjectHolder(), EclipseLinkTypeConverter.DATA_TYPE_PROPERTY) {
 					@Override
 					protected String buildValue_() {
 						return this.subject.getDataType();
@@ -137,13 +137,13 @@ public class TypeConverterComposite extends FormPane<TypeConverter>
 		};
 	}
 
-	private ClassChooserPane<TypeConverter> addObjectTypeChooser(Composite container) {
+	private ClassChooserPane<EclipseLinkTypeConverter> addObjectTypeChooser(Composite container) {
 
-		return new ClassChooserPane<TypeConverter>(this, container) {
+		return new ClassChooserPane<EclipseLinkTypeConverter>(this, container) {
 
 			@Override
 			protected WritablePropertyValueModel<String> buildTextHolder() {
-				return new PropertyAspectAdapter<TypeConverter, String>(getSubjectHolder(), TypeConverter.OBJECT_TYPE_PROPERTY) {
+				return new PropertyAspectAdapter<EclipseLinkTypeConverter, String>(getSubjectHolder(), EclipseLinkTypeConverter.OBJECT_TYPE_PROPERTY) {
 					@Override
 					protected String buildValue_() {
 						return this.subject.getObjectType();
@@ -189,9 +189,9 @@ public class TypeConverterComposite extends FormPane<TypeConverter>
 	}
 
 	protected PropertyValueModel<Boolean> buildBooleanHolder() {
-		return new TransformationPropertyValueModel<TypeConverter, Boolean>(getSubjectHolder()) {
+		return new TransformationPropertyValueModel<EclipseLinkTypeConverter, Boolean>(getSubjectHolder()) {
 			@Override
-			protected Boolean transform(TypeConverter value) {
+			protected Boolean transform(EclipseLinkTypeConverter value) {
 				return Boolean.valueOf(value != null);
 			}
 		};

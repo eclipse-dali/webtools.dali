@@ -11,7 +11,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.java.details;
 
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.eclipselink.core.context.BasicCollectionMapping;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkBasicCollectionMapping;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.BasicCollectionMappingComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkBasicCollectionMappingUiProvider;
 import org.eclipse.jpt.ui.JpaUiFactory;
@@ -21,7 +21,7 @@ import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
-public class EclipseLinkJavaBasicCollectionMappingUiProvider extends EclipseLinkBasicCollectionMappingUiProvider<BasicCollectionMapping>
+public class EclipseLinkJavaBasicCollectionMappingUiProvider extends EclipseLinkBasicCollectionMappingUiProvider<EclipseLinkBasicCollectionMapping>
 {
 	// singleton
 	private static final EclipseLinkJavaBasicCollectionMappingUiProvider INSTANCE = 
@@ -30,7 +30,7 @@ public class EclipseLinkJavaBasicCollectionMappingUiProvider extends EclipseLink
 	/**
 	 * Return the singleton.
 	 */
-	public static AttributeMappingUiProvider<BasicCollectionMapping> instance() {
+	public static AttributeMappingUiProvider<EclipseLinkBasicCollectionMapping> instance() {
 		return INSTANCE;
 	}
 	
@@ -48,7 +48,7 @@ public class EclipseLinkJavaBasicCollectionMappingUiProvider extends EclipseLink
 	
 	public JpaComposite buildAttributeMappingComposite(
 			JpaUiFactory factory,
-			PropertyValueModel<BasicCollectionMapping> subjectHolder,
+			PropertyValueModel<EclipseLinkBasicCollectionMapping> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
 		return new BasicCollectionMappingComposite(subjectHolder, parent, widgetFactory);

@@ -54,7 +54,7 @@ public class GenericOrmEmbeddableMapping2_0Provider
 	}
 
 	public OrmTypeMapping buildMapping(OrmPersistentType parent, XmlTypeMapping resourceMapping, JpaFactory factory) {
-		return ((Generic2_0JpaFactory) factory).build2_0OrmEmbeddable(parent, (XmlEmbeddable) resourceMapping);
+		return ((Generic2_0JpaFactory) factory).buildOrmEmbeddable2_0(parent, (XmlEmbeddable) resourceMapping);
 	}
 
 }

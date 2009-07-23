@@ -13,11 +13,11 @@ import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.eclipselink.core.context.ChangeTracking;
-import org.eclipse.jpt.eclipselink.core.context.ChangeTrackingType;
-import org.eclipse.jpt.eclipselink.core.context.Customizer;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkChangeTracking;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkChangeTrackingType;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCustomizer;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkMappedSuperclass;
-import org.eclipse.jpt.eclipselink.core.context.ReadOnly;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkReadOnly;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkChangeTrackingAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkCustomizerAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
@@ -81,7 +81,7 @@ public class EclipseLinkJavaMappedSuperclassTests extends EclipseLinkContextMode
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		EclipseLinkMappedSuperclass mappedSuperclass = (EclipseLinkMappedSuperclass) getJavaPersistentType().getMapping();
-		ReadOnly readOnly = mappedSuperclass.getReadOnly();
+		EclipseLinkReadOnly readOnly = mappedSuperclass.getReadOnly();
 		assertEquals(true, readOnly.isReadOnly());
 	}
 
@@ -90,7 +90,7 @@ public class EclipseLinkJavaMappedSuperclassTests extends EclipseLinkContextMode
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		EclipseLinkMappedSuperclass mappedSuperclass = (EclipseLinkMappedSuperclass) getJavaPersistentType().getMapping();
-		ReadOnly readOnly = mappedSuperclass.getReadOnly();
+		EclipseLinkReadOnly readOnly = mappedSuperclass.getReadOnly();
 		assertEquals(Boolean.TRUE, readOnly.getSpecifiedReadOnly());
 	}
 
@@ -100,7 +100,7 @@ public class EclipseLinkJavaMappedSuperclassTests extends EclipseLinkContextMode
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		EclipseLinkMappedSuperclass mappedSuperclass = (EclipseLinkMappedSuperclass) getJavaPersistentType().getMapping();
-		ReadOnly readOnly = mappedSuperclass.getReadOnly();
+		EclipseLinkReadOnly readOnly = mappedSuperclass.getReadOnly();
 		assertEquals(false, readOnly.isDefaultReadOnly());
 	}
 
@@ -109,7 +109,7 @@ public class EclipseLinkJavaMappedSuperclassTests extends EclipseLinkContextMode
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		EclipseLinkMappedSuperclass mappedSuperclass = (EclipseLinkMappedSuperclass) getJavaPersistentType().getMapping();
-		ReadOnly readOnly = mappedSuperclass.getReadOnly();
+		EclipseLinkReadOnly readOnly = mappedSuperclass.getReadOnly();
 		assertEquals(true, readOnly.isReadOnly());
 		
 		readOnly.setSpecifiedReadOnly(Boolean.FALSE);
@@ -132,7 +132,7 @@ public class EclipseLinkJavaMappedSuperclassTests extends EclipseLinkContextMode
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		EclipseLinkMappedSuperclass mappedSuperclass = (EclipseLinkMappedSuperclass) getJavaPersistentType().getMapping();
-		ReadOnly readOnly = mappedSuperclass.getReadOnly();
+		EclipseLinkReadOnly readOnly = mappedSuperclass.getReadOnly();
 		assertEquals(Boolean.TRUE, readOnly.getSpecifiedReadOnly());
 		
 		
@@ -150,7 +150,7 @@ public class EclipseLinkJavaMappedSuperclassTests extends EclipseLinkContextMode
 		createTestMappedSuperclassWithConvertAndCustomizerClass();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		Customizer customizer = ((EclipseLinkMappedSuperclass) getJavaPersistentType().getMapping()).getCustomizer();
+		EclipseLinkCustomizer customizer = ((EclipseLinkMappedSuperclass) getJavaPersistentType().getMapping()).getCustomizer();
 		
 		assertEquals("Foo", customizer.getSpecifiedCustomizerClass());
 	}
@@ -159,7 +159,7 @@ public class EclipseLinkJavaMappedSuperclassTests extends EclipseLinkContextMode
 		createTestMappedSuperclassWithConvertAndCustomizerClass();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		Customizer customizer = ((EclipseLinkMappedSuperclass) getJavaPersistentType().getMapping()).getCustomizer();
+		EclipseLinkCustomizer customizer = ((EclipseLinkMappedSuperclass) getJavaPersistentType().getMapping()).getCustomizer();
 		assertEquals("Foo", customizer.getSpecifiedCustomizerClass());
 		
 		customizer.setSpecifiedCustomizerClass("Bar");
@@ -186,7 +186,7 @@ public class EclipseLinkJavaMappedSuperclassTests extends EclipseLinkContextMode
 		createTestMappedSuperclassWithConvertAndCustomizerClass();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		EclipseLinkMappedSuperclass mappedSuperclass = (EclipseLinkMappedSuperclass) getJavaPersistentType().getMapping();
-		Customizer customizer = mappedSuperclass.getCustomizer();
+		EclipseLinkCustomizer customizer = mappedSuperclass.getCustomizer();
 
 		assertEquals("Foo", customizer.getSpecifiedCustomizerClass());
 		
@@ -210,69 +210,69 @@ public class EclipseLinkJavaMappedSuperclassTests extends EclipseLinkContextMode
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		EclipseLinkMappedSuperclass mappedSuperclass = (EclipseLinkMappedSuperclass) getJavaPersistentType().getMapping();
-		ChangeTracking contextChangeTracking = mappedSuperclass.getChangeTracking();
+		EclipseLinkChangeTracking contextChangeTracking = mappedSuperclass.getChangeTracking();
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		EclipseLinkChangeTrackingAnnotation resourceChangeTracking = (EclipseLinkChangeTrackingAnnotation) typeResource.getSupportingAnnotation(EclipseLinkChangeTrackingAnnotation.ANNOTATION_NAME);
 		
 		// base annotated, test context value
 		
 		assertNull(resourceChangeTracking.getValue());
-		assertEquals(ChangeTrackingType.AUTO, contextChangeTracking.getType());
-		assertEquals(ChangeTrackingType.AUTO, contextChangeTracking.getDefaultType());
-		assertEquals(ChangeTrackingType.AUTO, contextChangeTracking.getSpecifiedType());
+		assertEquals(EclipseLinkChangeTrackingType.AUTO, contextChangeTracking.getType());
+		assertEquals(EclipseLinkChangeTrackingType.AUTO, contextChangeTracking.getDefaultType());
+		assertEquals(EclipseLinkChangeTrackingType.AUTO, contextChangeTracking.getSpecifiedType());
 		
 		// change resource to ATTRIBUTE specifically, test context
 		
 		resourceChangeTracking.setValue(org.eclipse.jpt.eclipselink.core.resource.java.ChangeTrackingType.ATTRIBUTE);
 		
 		assertEquals(org.eclipse.jpt.eclipselink.core.resource.java.ChangeTrackingType.ATTRIBUTE, resourceChangeTracking.getValue());
-		assertEquals(ChangeTrackingType.ATTRIBUTE, contextChangeTracking.getType());
-		assertEquals(ChangeTrackingType.AUTO, contextChangeTracking.getDefaultType());
-		assertEquals(ChangeTrackingType.ATTRIBUTE, contextChangeTracking.getSpecifiedType());
+		assertEquals(EclipseLinkChangeTrackingType.ATTRIBUTE, contextChangeTracking.getType());
+		assertEquals(EclipseLinkChangeTrackingType.AUTO, contextChangeTracking.getDefaultType());
+		assertEquals(EclipseLinkChangeTrackingType.ATTRIBUTE, contextChangeTracking.getSpecifiedType());
 		
 		// change resource to OBJECT specifically, test context
 		
 		resourceChangeTracking.setValue(org.eclipse.jpt.eclipselink.core.resource.java.ChangeTrackingType.OBJECT);
 		
 		assertEquals(org.eclipse.jpt.eclipselink.core.resource.java.ChangeTrackingType.OBJECT, resourceChangeTracking.getValue());
-		assertEquals(ChangeTrackingType.OBJECT, contextChangeTracking.getType());
-		assertEquals(ChangeTrackingType.AUTO, contextChangeTracking.getDefaultType());
-		assertEquals(ChangeTrackingType.OBJECT, contextChangeTracking.getSpecifiedType());
+		assertEquals(EclipseLinkChangeTrackingType.OBJECT, contextChangeTracking.getType());
+		assertEquals(EclipseLinkChangeTrackingType.AUTO, contextChangeTracking.getDefaultType());
+		assertEquals(EclipseLinkChangeTrackingType.OBJECT, contextChangeTracking.getSpecifiedType());
 		
 		// change resource to DEFERRED specifically, test context
 		
 		resourceChangeTracking.setValue(org.eclipse.jpt.eclipselink.core.resource.java.ChangeTrackingType.DEFERRED);
 		
 		assertEquals(org.eclipse.jpt.eclipselink.core.resource.java.ChangeTrackingType.DEFERRED, resourceChangeTracking.getValue());
-		assertEquals(ChangeTrackingType.DEFERRED, contextChangeTracking.getType());
-		assertEquals(ChangeTrackingType.AUTO, contextChangeTracking.getDefaultType());
-		assertEquals(ChangeTrackingType.DEFERRED, contextChangeTracking.getSpecifiedType());
+		assertEquals(EclipseLinkChangeTrackingType.DEFERRED, contextChangeTracking.getType());
+		assertEquals(EclipseLinkChangeTrackingType.AUTO, contextChangeTracking.getDefaultType());
+		assertEquals(EclipseLinkChangeTrackingType.DEFERRED, contextChangeTracking.getSpecifiedType());
 		
 		// change resource to AUTO specifically, test context
 		
 		resourceChangeTracking.setValue(org.eclipse.jpt.eclipselink.core.resource.java.ChangeTrackingType.AUTO);
 		
 		assertEquals(org.eclipse.jpt.eclipselink.core.resource.java.ChangeTrackingType.AUTO, resourceChangeTracking.getValue());
-		assertEquals(ChangeTrackingType.AUTO, contextChangeTracking.getType());
-		assertEquals(ChangeTrackingType.AUTO, contextChangeTracking.getDefaultType());
-		assertEquals(ChangeTrackingType.AUTO, contextChangeTracking.getSpecifiedType());
+		assertEquals(EclipseLinkChangeTrackingType.AUTO, contextChangeTracking.getType());
+		assertEquals(EclipseLinkChangeTrackingType.AUTO, contextChangeTracking.getDefaultType());
+		assertEquals(EclipseLinkChangeTrackingType.AUTO, contextChangeTracking.getSpecifiedType());
 		
 		// remove value from resource, test context
 		
 		resourceChangeTracking.setValue(null);
 		
 		assertNull(resourceChangeTracking.getValue());
-		assertEquals(ChangeTrackingType.AUTO, contextChangeTracking.getType());
-		assertEquals(ChangeTrackingType.AUTO, contextChangeTracking.getDefaultType());
-		assertEquals(ChangeTrackingType.AUTO, contextChangeTracking.getSpecifiedType());
+		assertEquals(EclipseLinkChangeTrackingType.AUTO, contextChangeTracking.getType());
+		assertEquals(EclipseLinkChangeTrackingType.AUTO, contextChangeTracking.getDefaultType());
+		assertEquals(EclipseLinkChangeTrackingType.AUTO, contextChangeTracking.getSpecifiedType());
 		
 		// remove annotation, text context
 		
 		typeResource.removeSupportingAnnotation(EclipseLinkChangeTrackingAnnotation.ANNOTATION_NAME);
 		
 		assertNull(resourceChangeTracking.getValue());
-		assertEquals(ChangeTrackingType.AUTO, contextChangeTracking.getType());
-		assertEquals(ChangeTrackingType.AUTO, contextChangeTracking.getDefaultType());
+		assertEquals(EclipseLinkChangeTrackingType.AUTO, contextChangeTracking.getType());
+		assertEquals(EclipseLinkChangeTrackingType.AUTO, contextChangeTracking.getDefaultType());
 		assertNull(contextChangeTracking.getSpecifiedType());
 	}
 	
@@ -281,42 +281,42 @@ public class EclipseLinkJavaMappedSuperclassTests extends EclipseLinkContextMode
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		EclipseLinkMappedSuperclass mappedSuperclass = (EclipseLinkMappedSuperclass) getJavaPersistentType().getMapping();
-		ChangeTracking contextChangeTracking = mappedSuperclass.getChangeTracking();
+		EclipseLinkChangeTracking contextChangeTracking = mappedSuperclass.getChangeTracking();
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		EclipseLinkChangeTrackingAnnotation resourceChangeTracking = (EclipseLinkChangeTrackingAnnotation) typeResource.getSupportingAnnotation(EclipseLinkChangeTrackingAnnotation.ANNOTATION_NAME);
 		
 		// base annotated, test resource value
 		
 		assertNull(resourceChangeTracking.getValue());
-		assertEquals(ChangeTrackingType.AUTO, contextChangeTracking.getSpecifiedType());
+		assertEquals(EclipseLinkChangeTrackingType.AUTO, contextChangeTracking.getSpecifiedType());
 		
 		// change context to AUTO specifically, test resource
 		
-		contextChangeTracking.setSpecifiedType(ChangeTrackingType.AUTO);
+		contextChangeTracking.setSpecifiedType(EclipseLinkChangeTrackingType.AUTO);
 		
 		assertNull(resourceChangeTracking.getValue());
-		assertEquals(ChangeTrackingType.AUTO, contextChangeTracking.getSpecifiedType());
+		assertEquals(EclipseLinkChangeTrackingType.AUTO, contextChangeTracking.getSpecifiedType());
 		
 		// change context to ATTRIBUTE specifically, test resource
 		
-		contextChangeTracking.setSpecifiedType(ChangeTrackingType.ATTRIBUTE);
+		contextChangeTracking.setSpecifiedType(EclipseLinkChangeTrackingType.ATTRIBUTE);
 		
 		assertEquals(org.eclipse.jpt.eclipselink.core.resource.java.ChangeTrackingType.ATTRIBUTE, resourceChangeTracking.getValue());
-		assertEquals(ChangeTrackingType.ATTRIBUTE, contextChangeTracking.getSpecifiedType());
+		assertEquals(EclipseLinkChangeTrackingType.ATTRIBUTE, contextChangeTracking.getSpecifiedType());
 		
 		// change context to OBJECT specifically, test resource
 		
-		contextChangeTracking.setSpecifiedType(ChangeTrackingType.OBJECT);
+		contextChangeTracking.setSpecifiedType(EclipseLinkChangeTrackingType.OBJECT);
 		
 		assertEquals(org.eclipse.jpt.eclipselink.core.resource.java.ChangeTrackingType.OBJECT, resourceChangeTracking.getValue());
-		assertEquals(ChangeTrackingType.OBJECT, contextChangeTracking.getSpecifiedType());
+		assertEquals(EclipseLinkChangeTrackingType.OBJECT, contextChangeTracking.getSpecifiedType());
 		
 		// change context to DEFERRED specifically, test resource
 		
-		contextChangeTracking.setSpecifiedType(ChangeTrackingType.DEFERRED);
+		contextChangeTracking.setSpecifiedType(EclipseLinkChangeTrackingType.DEFERRED);
 		
 		assertEquals(org.eclipse.jpt.eclipselink.core.resource.java.ChangeTrackingType.DEFERRED, resourceChangeTracking.getValue());
-		assertEquals(ChangeTrackingType.DEFERRED, contextChangeTracking.getSpecifiedType());
+		assertEquals(EclipseLinkChangeTrackingType.DEFERRED, contextChangeTracking.getSpecifiedType());
 		
 		// change context to null, test resource
 		
@@ -327,10 +327,10 @@ public class EclipseLinkJavaMappedSuperclassTests extends EclipseLinkContextMode
 		
 		// change context to AUTO specifically (this time from no annotation), test resource
 		
-		contextChangeTracking.setSpecifiedType(ChangeTrackingType.AUTO);
+		contextChangeTracking.setSpecifiedType(EclipseLinkChangeTrackingType.AUTO);
 		resourceChangeTracking = (EclipseLinkChangeTrackingAnnotation) typeResource.getSupportingAnnotation(EclipseLinkChangeTrackingAnnotation.ANNOTATION_NAME);
 		
 		assertEquals(org.eclipse.jpt.eclipselink.core.resource.java.ChangeTrackingType.AUTO, resourceChangeTracking.getValue());
-		assertEquals(ChangeTrackingType.AUTO, contextChangeTracking.getSpecifiedType());
+		assertEquals(EclipseLinkChangeTrackingType.AUTO, contextChangeTracking.getSpecifiedType());
 	}
 }

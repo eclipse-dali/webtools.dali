@@ -15,8 +15,8 @@ import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmRelationshipReference;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmOneToManyMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToManyMapping;
-import org.eclipse.jpt.eclipselink.core.context.JoinFetch;
-import org.eclipse.jpt.eclipselink.core.context.PrivateOwned;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkJoinFetch;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkPrivateOwned;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlOneToMany;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -46,11 +46,11 @@ public class EclipseLinkOrmOneToManyMapping extends AbstractOrmOneToManyMapping<
 		return (EclipseLinkOrmOneToManyRelationshipReference) super.getRelationshipReference();
 	}
 	
-	public PrivateOwned getPrivateOwned() {
+	public EclipseLinkPrivateOwned getPrivateOwned() {
 		return this.privateOwned;
 	}
 	
-	public JoinFetch getJoinFetch() {
+	public EclipseLinkJoinFetch getJoinFetch() {
 		return this.joinFetch;
 	}
 	

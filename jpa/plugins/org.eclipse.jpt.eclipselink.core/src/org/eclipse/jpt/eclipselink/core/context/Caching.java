@@ -55,14 +55,14 @@ public interface Caching extends JpaContextNode
 	 * This is the combination of defaultType and specifiedType.
 	 * If getSpecifiedType() returns null, then return getDefaultType()
 	 */
-	CacheType getType();
+	EclipseLinkCacheType getType();
 	
-	CacheType getDefaultType();		
+	EclipseLinkCacheType getDefaultType();		
 		String DEFAULT_TYPE_PROPERTY = "defaultType"; //$NON-NLS-1$
-		CacheType DEFAULT_TYPE = CacheType.SOFT_WEAK;
+		EclipseLinkCacheType DEFAULT_TYPE = EclipseLinkCacheType.SOFT_WEAK;
 		
-	CacheType getSpecifiedType();	
-	void setSpecifiedType(CacheType newSpecifiedType);
+	EclipseLinkCacheType getSpecifiedType();	
+	void setSpecifiedType(EclipseLinkCacheType newSpecifiedType);
 		String SPECIFIED_TYPE_PROPERTY = "specifiedType"; //$NON-NLS-1$
 	
 	
@@ -139,14 +139,14 @@ public interface Caching extends JpaContextNode
 	 * This is the combination of defaultCoordinationType and specifiedCoordinationType.
 	 * If getSpecifiedCoordinationType() returns null, then return getDefaultCoordinationType()
 	 */
-	CacheCoordinationType getCoordinationType();
+	EclipseLinkCacheCoordinationType getCoordinationType();
 	
-	CacheCoordinationType getDefaultCoordinationType();		
+	EclipseLinkCacheCoordinationType getDefaultCoordinationType();		
 		String DEFAULT_COORDINATION_TYPE_PROPERTY = "defaultCoordinationType"; //$NON-NLS-1$
-		CacheCoordinationType DEFAULT_COORDINATION_TYPE = CacheCoordinationType.SEND_OBJECT_CHANGES;
+		EclipseLinkCacheCoordinationType DEFAULT_COORDINATION_TYPE = EclipseLinkCacheCoordinationType.SEND_OBJECT_CHANGES;
 		
-	CacheCoordinationType getSpecifiedCoordinationType();	
-	void setSpecifiedCoordinationType(CacheCoordinationType newSpecifiedCoordinationType);
+	EclipseLinkCacheCoordinationType getSpecifiedCoordinationType();	
+	void setSpecifiedCoordinationType(EclipseLinkCacheCoordinationType newSpecifiedCoordinationType);
 		String SPECIFIED_COORDINATION_TYPE_PROPERTY = "specifiedCoordinationType"; //$NON-NLS-1$
 
 			
@@ -156,14 +156,14 @@ public interface Caching extends JpaContextNode
 	 * This is the combination of defaultExistenceType and specifiedExistenceType.
 	 * If getSpecifiedExistenceType() returns null, then return getDefaultExistenceType()
 	 */
-	ExistenceType getExistenceType();
+	EclipseLinkExistenceType getExistenceType();
 	
-	ExistenceType getDefaultExistenceType();		
+	EclipseLinkExistenceType getDefaultExistenceType();		
 		String DEFAULT_EXISTENCE_TYPE_PROPERTY = "defaultExistenceType"; //$NON-NLS-1$
-		ExistenceType DEFAULT_EXISTENCE_TYPE = ExistenceType.CHECK_DATABASE;
+		EclipseLinkExistenceType DEFAULT_EXISTENCE_TYPE = EclipseLinkExistenceType.CHECK_DATABASE;
 		
-	ExistenceType getSpecifiedExistenceType();	
-	void setSpecifiedExistenceType(ExistenceType newSpecifiedExistenceType);
+	EclipseLinkExistenceType getSpecifiedExistenceType();	
+	void setSpecifiedExistenceType(EclipseLinkExistenceType newSpecifiedExistenceType);
 		String SPECIFIED_EXISTENCE_TYPE_PROPERTY = "specifiedExistenceType"; //$NON-NLS-1$
 
 		
@@ -189,13 +189,13 @@ public interface Caching extends JpaContextNode
 	 * If this returns a non-null value then getExpiry will return null.
 	 * It is not valid to specify both.
 	 */
-	ExpiryTimeOfDay getExpiryTimeOfDay();
+	EclipseLinkExpiryTimeOfDay getExpiryTimeOfDay();
 	
 	/**
 	 * Add Cache expiryTimeOfDay annotation or xml element, this will set 
 	 * Expiry to null as it is not valid to set both expiry and timeOfDayExpiry
 	 */
-	ExpiryTimeOfDay addExpiryTimeOfDay();
+	EclipseLinkExpiryTimeOfDay addExpiryTimeOfDay();
 	
 	/**
 	 * Removes the Cache expiryTimeOfDay annotation/xml element

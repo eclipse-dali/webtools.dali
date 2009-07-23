@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.mappings.details;
 
-import org.eclipse.jpt.eclipselink.core.context.Mutable;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkMutable;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
@@ -23,13 +23,13 @@ import org.eclipse.swt.widgets.Composite;
 /**
  * This composite simply shows a tri-state check box for the Mutable option.
  *
- * @see Mutable
+ * @see EclipseLinkMutable
  * @see EclipseLinkBasicMappingComposite - A container of this pane
  *
  * @version 2.1
  * @since 2.1
  */
-public class MutableComposite extends FormPane<Mutable>
+public class MutableComposite extends FormPane<EclipseLinkMutable>
 {
 	/**
 	 * Creates a new <code>MutableComposite</code>.
@@ -38,7 +38,7 @@ public class MutableComposite extends FormPane<Mutable>
 	 * @param parent The parent container
 	 */
 	public MutableComposite(FormPane<?> parentPane, 
-		PropertyValueModel<? extends Mutable> subjectHolder,
+		PropertyValueModel<? extends EclipseLinkMutable> subjectHolder,
 		Composite parent) {
 
 			super(parentPane, subjectHolder, parent);
@@ -56,7 +56,7 @@ public class MutableComposite extends FormPane<Mutable>
 	}
 
 	private WritablePropertyValueModel<Boolean> buildMutableHolder() {
-		return new PropertyAspectAdapter<Mutable, Boolean>(getSubjectHolder(), Mutable.SPECIFIED_MUTABLE_PROPERTY) {
+		return new PropertyAspectAdapter<EclipseLinkMutable, Boolean>(getSubjectHolder(), EclipseLinkMutable.SPECIFIED_MUTABLE_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getSpecifiedMutable();
@@ -84,10 +84,10 @@ public class MutableComposite extends FormPane<Mutable>
 	}
 	
 	private PropertyValueModel<Boolean> buildDefaultMutableHolder() {
-		return new PropertyAspectAdapter<Mutable, Boolean>(
+		return new PropertyAspectAdapter<EclipseLinkMutable, Boolean>(
 			getSubjectHolder(),
-			Mutable.SPECIFIED_MUTABLE_PROPERTY,
-			Mutable.DEFAULT_MUTABLE_PROPERTY)
+			EclipseLinkMutable.SPECIFIED_MUTABLE_PROPERTY,
+			EclipseLinkMutable.DEFAULT_MUTABLE_PROPERTY)
 		{
 			@Override
 			protected Boolean buildValue_() {

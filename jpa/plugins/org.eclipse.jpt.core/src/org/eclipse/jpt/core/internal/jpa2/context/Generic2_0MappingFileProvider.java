@@ -43,7 +43,7 @@ public class Generic2_0MappingFileProvider
 	}
 
 	public MappingFile buildMappingFile(MappingFileRef parent, JpaXmlResource resource, JpaFactory factory) {
-		return ((Generic2_0JpaFactory) factory).build2_0MappingFile(parent, resource);
+		return ((Generic2_0JpaFactory) factory).buildMappingFile2_0(parent, resource);
 	}
 
 }

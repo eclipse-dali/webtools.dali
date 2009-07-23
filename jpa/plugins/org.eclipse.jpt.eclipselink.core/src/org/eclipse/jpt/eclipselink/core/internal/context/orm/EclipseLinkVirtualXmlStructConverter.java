@@ -10,7 +10,7 @@
 package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
-import org.eclipse.jpt.eclipselink.core.context.StructConverter;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkStructConverter;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlStructConverter;
 
 /**
@@ -21,9 +21,9 @@ public class EclipseLinkVirtualXmlStructConverter extends XmlStructConverter
 {
 	protected OrmTypeMapping ormTypeMapping;
 	
-	protected StructConverter javaConverter;
+	protected EclipseLinkStructConverter javaConverter;
 	
-	public EclipseLinkVirtualXmlStructConverter(OrmTypeMapping ormTypeMapping, StructConverter javaConverter) {
+	public EclipseLinkVirtualXmlStructConverter(OrmTypeMapping ormTypeMapping, EclipseLinkStructConverter javaConverter) {
 		super();
 		this.ormTypeMapping = ormTypeMapping;
 		this.javaConverter = javaConverter;

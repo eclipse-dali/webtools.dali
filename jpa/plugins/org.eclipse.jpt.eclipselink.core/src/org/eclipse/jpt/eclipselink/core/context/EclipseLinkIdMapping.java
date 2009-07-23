@@ -25,5 +25,5 @@ import org.eclipse.jpt.core.context.IdMapping;
  */
 public interface EclipseLinkIdMapping extends IdMapping
 {
-	Mutable getMutable();
+	EclipseLinkMutable getMutable();
 }

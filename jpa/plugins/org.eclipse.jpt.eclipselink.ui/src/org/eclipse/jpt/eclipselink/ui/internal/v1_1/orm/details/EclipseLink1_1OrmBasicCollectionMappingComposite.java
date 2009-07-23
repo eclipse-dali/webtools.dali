@@ -10,7 +10,7 @@
 package org.eclipse.jpt.eclipselink.ui.internal.v1_1.orm.details;
 
 import org.eclipse.jpt.core.context.AccessHolder;
-import org.eclipse.jpt.eclipselink.core.context.BasicCollectionMapping;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkBasicCollectionMapping;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
@@ -24,7 +24,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.2
  * @since 2.2
  */
-public class EclipseLink1_1OrmBasicCollectionMappingComposite extends FormPane<BasicCollectionMapping>
+public class EclipseLink1_1OrmBasicCollectionMappingComposite extends FormPane<EclipseLinkBasicCollectionMapping>
                                        implements JpaComposite
 {
 	/**
@@ -34,7 +34,7 @@ public class EclipseLink1_1OrmBasicCollectionMappingComposite extends FormPane<B
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public EclipseLink1_1OrmBasicCollectionMappingComposite(PropertyValueModel<? extends BasicCollectionMapping> subjectHolder,
+	public EclipseLink1_1OrmBasicCollectionMappingComposite(PropertyValueModel<? extends EclipseLinkBasicCollectionMapping> subjectHolder,
 	                                 Composite parent,
 	                                 WidgetFactory widgetFactory) {
 
@@ -47,7 +47,7 @@ public class EclipseLink1_1OrmBasicCollectionMappingComposite extends FormPane<B
 	}	
 	
 	protected PropertyValueModel<AccessHolder> buildAccessHolderHolder() {
-		return new PropertyAspectAdapter<BasicCollectionMapping, AccessHolder>(getSubjectHolder()) {
+		return new PropertyAspectAdapter<EclipseLinkBasicCollectionMapping, AccessHolder>(getSubjectHolder()) {
 			@Override
 			protected AccessHolder buildValue_() {
 				return this.subject.getPersistentAttribute();

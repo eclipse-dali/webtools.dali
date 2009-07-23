@@ -10,7 +10,7 @@
 package org.eclipse.jpt.eclipselink.ui.internal.orm.details;
 
 import org.eclipse.jpt.core.context.BasicMapping;
-import org.eclipse.jpt.eclipselink.core.context.Convert;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkBasicMappingComposite;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
@@ -37,7 +37,7 @@ public class EclipseLinkOrmBasicMappingComposite extends EclipseLinkBasicMapping
 
 	@Override
 	//everything but the 'Defaine Converter' section.  This is not supported in eclipselink 1.0, but is in 1.1
-	protected Pane<Convert> buildConvertComposite(PropertyValueModel<Convert> convertHolder, Composite container) {
+	protected Pane<EclipseLinkConvert> buildConvertComposite(PropertyValueModel<EclipseLinkConvert> convertHolder, Composite container) {
 		return new OrmConvertComposite(convertHolder, container, getWidgetFactory());
 	}
 

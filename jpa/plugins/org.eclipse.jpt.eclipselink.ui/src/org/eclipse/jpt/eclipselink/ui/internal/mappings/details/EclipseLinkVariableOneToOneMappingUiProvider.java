@@ -10,14 +10,14 @@
 package org.eclipse.jpt.eclipselink.ui.internal.mappings.details;
 
 import org.eclipse.jpt.eclipselink.core.EclipseLinkMappingKeys;
-import org.eclipse.jpt.eclipselink.core.context.VariableOneToOneMapping;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkVariableOneToOneMapping;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.details.AttributeMappingUiProvider;
 import org.eclipse.jpt.ui.internal.JptUiIcons;
 import org.eclipse.swt.graphics.Image;
 
-public abstract class EclipseLinkVariableOneToOneMappingUiProvider<T extends VariableOneToOneMapping>
+public abstract class EclipseLinkVariableOneToOneMappingUiProvider<T extends EclipseLinkVariableOneToOneMapping>
 	implements AttributeMappingUiProvider<T>
 {	
 	protected EclipseLinkVariableOneToOneMappingUiProvider() {

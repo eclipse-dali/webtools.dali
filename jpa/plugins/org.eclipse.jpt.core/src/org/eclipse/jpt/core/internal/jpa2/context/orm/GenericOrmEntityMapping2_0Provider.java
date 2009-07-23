@@ -54,7 +54,7 @@ public class GenericOrmEntityMapping2_0Provider
 	}
 
 	public OrmTypeMapping buildMapping(OrmPersistentType parent, XmlTypeMapping resourceMapping, JpaFactory factory) {
-		return ((Generic2_0JpaFactory) factory).build2_0OrmEntity(parent, (XmlEntity) resourceMapping);
+		return ((Generic2_0JpaFactory) factory).buildOrmEntity2_0(parent, (XmlEntity) resourceMapping);
 	}
 
 }

@@ -12,8 +12,8 @@ package org.eclipse.jpt.eclipselink.ui.internal.v1_1.java.details;
 import org.eclipse.jpt.core.context.AccessHolder;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaEntity;
-import org.eclipse.jpt.eclipselink.core.context.java.JavaCaching;
-import org.eclipse.jpt.eclipselink.core.context.java.JavaConverterHolder;
+import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaCaching;
+import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaConverterHolder;
 import org.eclipse.jpt.eclipselink.ui.internal.java.details.ConvertersComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.java.details.JavaCachingComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
@@ -100,12 +100,12 @@ public class EclipseLink1_1JavaEntityComposite extends AbstractEntityComposite<J
 		new JavaCachingComposite(this, buildCachingHolder(), container);
 	}
 
-	private PropertyAspectAdapter<JavaEntity, JavaCaching> buildCachingHolder() {
-		return new PropertyAspectAdapter<JavaEntity, JavaCaching>(
+	private PropertyAspectAdapter<JavaEntity, EclipseLinkJavaCaching> buildCachingHolder() {
+		return new PropertyAspectAdapter<JavaEntity, EclipseLinkJavaCaching>(
 			getSubjectHolder())
 		{
 			@Override
-			protected JavaCaching buildValue_() {
+			protected EclipseLinkJavaCaching buildValue_() {
 				return ((EclipseLinkJavaEntity) this.subject).getCaching();
 			}
 		};
@@ -122,10 +122,10 @@ public class EclipseLink1_1JavaEntityComposite extends AbstractEntityComposite<J
 		new ConvertersComposite(this, buildConverterHolderValueModel(), container);
 	}
 
-	protected PropertyValueModel<JavaConverterHolder> buildConverterHolderValueModel() {
-		return new PropertyAspectAdapter<JavaEntity, JavaConverterHolder>(getSubjectHolder()) {
+	protected PropertyValueModel<EclipseLinkJavaConverterHolder> buildConverterHolderValueModel() {
+		return new PropertyAspectAdapter<JavaEntity, EclipseLinkJavaConverterHolder>(getSubjectHolder()) {
 			@Override
-			protected JavaConverterHolder buildValue_() {
+			protected EclipseLinkJavaConverterHolder buildValue_() {
 				return ((EclipseLinkJavaEntity) this.subject).getConverterHolder();
 			}	
 		};

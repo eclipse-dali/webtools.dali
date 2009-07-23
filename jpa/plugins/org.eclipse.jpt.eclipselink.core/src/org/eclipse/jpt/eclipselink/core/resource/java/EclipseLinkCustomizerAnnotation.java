@@ -52,7 +52,7 @@ public interface EclipseLinkCustomizerAnnotation
 
 	/**
 	 * Return whether the customizer class implements the specified interface.
-	 * @see org.eclipse.jpt.eclipselink.core.context.Customizer#ECLIPSELINK_DESCRIPTOR_CUSTOMIZER_CLASS_NAME
+	 * @see org.eclipse.jpt.eclipselink.core.context.EclipseLinkCustomizer#ECLIPSELINK_DESCRIPTOR_CUSTOMIZER_CLASS_NAME
 	 */
 	boolean customizerClassImplementsInterface(String interfaceName, CompilationUnit astRoot);
 

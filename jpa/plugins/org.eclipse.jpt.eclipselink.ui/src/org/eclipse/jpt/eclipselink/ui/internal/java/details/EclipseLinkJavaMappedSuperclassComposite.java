@@ -11,8 +11,8 @@ package org.eclipse.jpt.eclipselink.ui.internal.java.details;
 
 import org.eclipse.jpt.core.context.java.JavaMappedSuperclass;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaMappedSuperclass;
-import org.eclipse.jpt.eclipselink.core.context.java.JavaCaching;
-import org.eclipse.jpt.eclipselink.core.context.java.JavaConverterHolder;
+import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaCaching;
+import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaConverterHolder;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkMappedSuperclassAdvancedComposite;
 import org.eclipse.jpt.ui.WidgetFactory;
@@ -68,12 +68,12 @@ public class EclipseLinkJavaMappedSuperclassComposite extends FormPane<JavaMappe
 		new JavaCachingComposite(this, buildCachingHolder(), container);
 	}
 
-	private PropertyAspectAdapter<JavaMappedSuperclass, JavaCaching> buildCachingHolder() {
-		return new PropertyAspectAdapter<JavaMappedSuperclass, JavaCaching>(
+	private PropertyAspectAdapter<JavaMappedSuperclass, EclipseLinkJavaCaching> buildCachingHolder() {
+		return new PropertyAspectAdapter<JavaMappedSuperclass, EclipseLinkJavaCaching>(
 			getSubjectHolder())
 		{
 			@Override
-			protected JavaCaching buildValue_() {
+			protected EclipseLinkJavaCaching buildValue_() {
 				return ((EclipseLinkJavaMappedSuperclass) this.subject).getCaching();
 			}
 		};
@@ -88,10 +88,10 @@ public class EclipseLinkJavaMappedSuperclassComposite extends FormPane<JavaMappe
 		new ConvertersComposite(this, buildConverterHolderValueModel(), container);
 	}
 
-	protected PropertyValueModel<JavaConverterHolder> buildConverterHolderValueModel() {
-		return new PropertyAspectAdapter<JavaMappedSuperclass, JavaConverterHolder>(getSubjectHolder()) {
+	protected PropertyValueModel<EclipseLinkJavaConverterHolder> buildConverterHolderValueModel() {
+		return new PropertyAspectAdapter<JavaMappedSuperclass, EclipseLinkJavaConverterHolder>(getSubjectHolder()) {
 			@Override
-			protected JavaConverterHolder buildValue_() {
+			protected EclipseLinkJavaConverterHolder buildValue_() {
 				return ((EclipseLinkJavaMappedSuperclass) this.subject).getConverterHolder();
 			}	
 		};

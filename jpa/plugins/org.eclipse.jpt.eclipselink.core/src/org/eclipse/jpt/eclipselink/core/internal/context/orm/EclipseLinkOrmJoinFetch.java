@@ -13,16 +13,16 @@ package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.jpt.eclipselink.core.context.JoinFetch;
-import org.eclipse.jpt.eclipselink.core.context.JoinFetchType;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkJoinFetch;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkJoinFetchType;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlJoinFetch;
 
 public class EclipseLinkOrmJoinFetch extends AbstractXmlContextNode
-	implements JoinFetch
+	implements EclipseLinkJoinFetch
 {
 	protected XmlJoinFetch resource;
 	
-	protected JoinFetchType joinFetchValue;
+	protected EclipseLinkJoinFetchType joinFetchValue;
 	
 	
 	public EclipseLinkOrmJoinFetch(OrmAttributeMapping parent, XmlJoinFetch resource) {
@@ -32,19 +32,19 @@ public class EclipseLinkOrmJoinFetch extends AbstractXmlContextNode
 	}
 	
 	
-	public JoinFetchType getValue() {
+	public EclipseLinkJoinFetchType getValue() {
 		return this.joinFetchValue;
 	}
 	
-	public void setValue(JoinFetchType newJoinFetchValue) {
-		JoinFetchType oldJoinFetchValue = this.joinFetchValue;
+	public void setValue(EclipseLinkJoinFetchType newJoinFetchValue) {
+		EclipseLinkJoinFetchType oldJoinFetchValue = this.joinFetchValue;
 		this.joinFetchValue = newJoinFetchValue;
-		this.resource.setJoinFetch(JoinFetchType.toOrmResourceModel(newJoinFetchValue));
+		this.resource.setJoinFetch(EclipseLinkJoinFetchType.toOrmResourceModel(newJoinFetchValue));
 		firePropertyChanged(VALUE_PROPERTY, oldJoinFetchValue, newJoinFetchValue);
 	}
 	
-	protected void setValue_(JoinFetchType newJoinFetchValue) {
-		JoinFetchType oldJoinFetchValue = this.joinFetchValue;
+	protected void setValue_(EclipseLinkJoinFetchType newJoinFetchValue) {
+		EclipseLinkJoinFetchType oldJoinFetchValue = this.joinFetchValue;
 		this.joinFetchValue = newJoinFetchValue;
 		firePropertyChanged(VALUE_PROPERTY, oldJoinFetchValue, newJoinFetchValue);
 	}
@@ -56,8 +56,8 @@ public class EclipseLinkOrmJoinFetch extends AbstractXmlContextNode
 		setValue_(getResourceJoinFetch());
 	}
 	
-	protected JoinFetchType getResourceJoinFetch() {
-		return JoinFetchType.fromOrmResourceModel(this.resource.getJoinFetch());
+	protected EclipseLinkJoinFetchType getResourceJoinFetch() {
+		return EclipseLinkJoinFetchType.fromOrmResourceModel(this.resource.getJoinFetch());
 	}
 	
 	// **************** validation **************************************

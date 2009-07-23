@@ -14,11 +14,11 @@ import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.jpt.eclipselink.core.context.Mutable;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkMutable;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkMutableAnnotation;
 
-public class EclipseLinkJavaMutable extends AbstractJavaJpaContextNode implements Mutable
+public class EclipseLinkJavaMutable extends AbstractJavaJpaContextNode implements EclipseLinkMutable
 {
 	protected boolean defaultMutable;
 	protected Boolean specifiedMutable;
@@ -104,7 +104,7 @@ public class EclipseLinkJavaMutable extends AbstractJavaJpaContextNode implement
 		else {
 			removeResourceMutable();
 		}
-		firePropertyChanged(Mutable.SPECIFIED_MUTABLE_PROPERTY, oldSpecifiedMutable, newSpecifiedMutable);
+		firePropertyChanged(EclipseLinkMutable.SPECIFIED_MUTABLE_PROPERTY, oldSpecifiedMutable, newSpecifiedMutable);
 	}
 	
 	protected void setSpecifiedMutable_(Boolean newSpecifiedMutable) {

@@ -16,8 +16,8 @@ import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkRelationshipMapping;
-import org.eclipse.jpt.eclipselink.core.context.JoinFetch;
-import org.eclipse.jpt.eclipselink.core.context.JoinFetchType;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkJoinFetch;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkJoinFetchType;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJoinFetchAnnotation;
 import org.eclipse.jpt.eclipselink.core.tests.internal.context.EclipseLinkContextModelTestCase;
@@ -58,7 +58,7 @@ public class EclipseLinkJavaManyToManyMappingTests extends EclipseLinkContextMod
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		EclipseLinkRelationshipMapping manyToManyMapping = (EclipseLinkRelationshipMapping) persistentAttribute.getSpecifiedMapping();
-		JoinFetch contextJoinFetch = manyToManyMapping.getJoinFetch();
+		EclipseLinkJoinFetch contextJoinFetch = manyToManyMapping.getJoinFetch();
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		EclipseLinkJoinFetchAnnotation joinFetchAnnotation = (EclipseLinkJoinFetchAnnotation) attributeResource.getSupportingAnnotation(EclipseLinkJoinFetchAnnotation.ANNOTATION_NAME);
@@ -66,28 +66,28 @@ public class EclipseLinkJavaManyToManyMappingTests extends EclipseLinkContextMod
 		// base annotated, test context value
 		
 		assertNull(joinFetchAnnotation.getValue());
-		assertEquals(JoinFetchType.INNER, contextJoinFetch.getValue());
+		assertEquals(EclipseLinkJoinFetchType.INNER, contextJoinFetch.getValue());
 		
 		// change resource to INNER specifically, test context
 		
 		joinFetchAnnotation.setValue(org.eclipse.jpt.eclipselink.core.resource.java.JoinFetchType.INNER);
 		
 		assertEquals(org.eclipse.jpt.eclipselink.core.resource.java.JoinFetchType.INNER, joinFetchAnnotation.getValue());
-		assertEquals(JoinFetchType.INNER, contextJoinFetch.getValue());
+		assertEquals(EclipseLinkJoinFetchType.INNER, contextJoinFetch.getValue());
 		
 		// change resource to OUTER, test context
 		
 		joinFetchAnnotation.setValue(org.eclipse.jpt.eclipselink.core.resource.java.JoinFetchType.OUTER);
 		
 		assertEquals(org.eclipse.jpt.eclipselink.core.resource.java.JoinFetchType.OUTER, joinFetchAnnotation.getValue());
-		assertEquals(JoinFetchType.OUTER, contextJoinFetch.getValue());
+		assertEquals(EclipseLinkJoinFetchType.OUTER, contextJoinFetch.getValue());
 		
 		// remove value from resource, test context
 		
 		joinFetchAnnotation.setValue(null);
 		
 		assertNull(joinFetchAnnotation.getValue());
-		assertEquals(JoinFetchType.INNER, contextJoinFetch.getValue());
+		assertEquals(EclipseLinkJoinFetchType.INNER, contextJoinFetch.getValue());
 		
 		// remove annotation, text context
 		
@@ -103,7 +103,7 @@ public class EclipseLinkJavaManyToManyMappingTests extends EclipseLinkContextMod
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		EclipseLinkRelationshipMapping manyToManyMapping = (EclipseLinkRelationshipMapping) persistentAttribute.getSpecifiedMapping();
-		JoinFetch contextJoinFetch = manyToManyMapping.getJoinFetch();
+		EclipseLinkJoinFetch contextJoinFetch = manyToManyMapping.getJoinFetch();
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		EclipseLinkJoinFetchAnnotation joinFetchAnnotation = (EclipseLinkJoinFetchAnnotation) attributeResource.getSupportingAnnotation(EclipseLinkJoinFetchAnnotation.ANNOTATION_NAME);
@@ -111,21 +111,21 @@ public class EclipseLinkJavaManyToManyMappingTests extends EclipseLinkContextMod
 		// base annotated, test resource value
 		
 		assertNull(joinFetchAnnotation.getValue());
-		assertEquals(JoinFetchType.INNER, contextJoinFetch.getValue());
+		assertEquals(EclipseLinkJoinFetchType.INNER, contextJoinFetch.getValue());
 		
 		// change context to INNER specifically, test resource
 		
-		contextJoinFetch.setValue(JoinFetchType.INNER);
+		contextJoinFetch.setValue(EclipseLinkJoinFetchType.INNER);
 		
 		assertNull(joinFetchAnnotation.getValue());
-		assertEquals(JoinFetchType.INNER, contextJoinFetch.getValue());
+		assertEquals(EclipseLinkJoinFetchType.INNER, contextJoinFetch.getValue());
 		
 		// change context to OUTER, test resource
 		
-		contextJoinFetch.setValue(JoinFetchType.OUTER);
+		contextJoinFetch.setValue(EclipseLinkJoinFetchType.OUTER);
 		
 		assertEquals(org.eclipse.jpt.eclipselink.core.resource.java.JoinFetchType.OUTER, joinFetchAnnotation.getValue());
-		assertEquals(JoinFetchType.OUTER, contextJoinFetch.getValue());
+		assertEquals(EclipseLinkJoinFetchType.OUTER, contextJoinFetch.getValue());
 		
 		// set context to null, test resource
 		
@@ -136,10 +136,10 @@ public class EclipseLinkJavaManyToManyMappingTests extends EclipseLinkContextMod
 		
 		// change context to INNER specifically (this time from no annotation), test resource
 		
-		contextJoinFetch.setValue(JoinFetchType.INNER);
+		contextJoinFetch.setValue(EclipseLinkJoinFetchType.INNER);
 		joinFetchAnnotation = (EclipseLinkJoinFetchAnnotation) attributeResource.getSupportingAnnotation(EclipseLinkJoinFetchAnnotation.ANNOTATION_NAME);
 		
 		assertEquals(org.eclipse.jpt.eclipselink.core.resource.java.JoinFetchType.INNER, joinFetchAnnotation.getValue());
-		assertEquals(JoinFetchType.INNER, contextJoinFetch.getValue());
+		assertEquals(EclipseLinkJoinFetchType.INNER, contextJoinFetch.getValue());
 	}
 }

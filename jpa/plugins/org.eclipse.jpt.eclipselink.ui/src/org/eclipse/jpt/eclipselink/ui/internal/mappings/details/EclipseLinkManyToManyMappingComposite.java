@@ -13,7 +13,7 @@ import org.eclipse.jpt.core.context.Cascade;
 import org.eclipse.jpt.core.context.ManyToManyMapping;
 import org.eclipse.jpt.core.context.ManyToManyRelationshipReference;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkRelationshipMapping;
-import org.eclipse.jpt.eclipselink.core.context.JoinFetch;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkJoinFetch;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.CascadeComposite;
@@ -122,10 +122,10 @@ public class EclipseLinkManyToManyMappingComposite
 		};
 	}
 
-	protected PropertyValueModel<JoinFetch> buildJoinFetchableHolder() {
-		return new PropertyAspectAdapter<ManyToManyMapping, JoinFetch>(getSubjectHolder()) {
+	protected PropertyValueModel<EclipseLinkJoinFetch> buildJoinFetchableHolder() {
+		return new PropertyAspectAdapter<ManyToManyMapping, EclipseLinkJoinFetch>(getSubjectHolder()) {
 			@Override
-			protected JoinFetch buildValue_() {
+			protected EclipseLinkJoinFetch buildValue_() {
 				return ((EclipseLinkRelationshipMapping) this.subject).getJoinFetch();
 			}
 		};

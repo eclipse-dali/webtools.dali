@@ -10,10 +10,10 @@
 package org.eclipse.jpt.eclipselink.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.context.Entity;
-import org.eclipse.jpt.eclipselink.core.context.ChangeTracking;
-import org.eclipse.jpt.eclipselink.core.context.Customizer;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkChangeTracking;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCustomizer;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkEntity;
-import org.eclipse.jpt.eclipselink.core.context.ReadOnly;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkReadOnly;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
@@ -41,28 +41,28 @@ public class EclipseLinkEntityAdvancedComposite extends FormPane<Entity> {
 		new ChangeTrackingComposite(this, buildChangeTrackingHolder(), container);
 	}
 	
-	private PropertyValueModel<ReadOnly> buildReadOnlyHolder() {
-		return new PropertyAspectAdapter<Entity, ReadOnly>(getSubjectHolder()) {
+	private PropertyValueModel<EclipseLinkReadOnly> buildReadOnlyHolder() {
+		return new PropertyAspectAdapter<Entity, EclipseLinkReadOnly>(getSubjectHolder()) {
 			@Override
-			protected ReadOnly buildValue_() {
+			protected EclipseLinkReadOnly buildValue_() {
 				return ((EclipseLinkEntity) this.subject).getReadOnly();
 			}
 		};
 	}
 	
-	private PropertyValueModel<Customizer> buildCustomizerHolder() {
-		return new PropertyAspectAdapter<Entity, Customizer>(getSubjectHolder()) {
+	private PropertyValueModel<EclipseLinkCustomizer> buildCustomizerHolder() {
+		return new PropertyAspectAdapter<Entity, EclipseLinkCustomizer>(getSubjectHolder()) {
 			@Override
-			protected Customizer buildValue_() {
+			protected EclipseLinkCustomizer buildValue_() {
 				return ((EclipseLinkEntity) this.subject).getCustomizer();
 			}
 		};
 	}
 	
-	private PropertyValueModel<ChangeTracking> buildChangeTrackingHolder() {
-		return new PropertyAspectAdapter<Entity, ChangeTracking>(getSubjectHolder()) {
+	private PropertyValueModel<EclipseLinkChangeTracking> buildChangeTrackingHolder() {
+		return new PropertyAspectAdapter<Entity, EclipseLinkChangeTracking>(getSubjectHolder()) {
 			@Override
-			protected ChangeTracking buildValue_() {
+			protected EclipseLinkChangeTracking buildValue_() {
 				return ((EclipseLinkEntity) this.subject).getChangeTracking();
 			}
 		};

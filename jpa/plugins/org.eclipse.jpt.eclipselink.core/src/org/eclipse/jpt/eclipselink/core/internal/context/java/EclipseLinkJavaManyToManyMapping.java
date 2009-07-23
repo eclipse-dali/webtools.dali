@@ -15,7 +15,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaManyToManyMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkRelationshipMapping;
-import org.eclipse.jpt.eclipselink.core.context.JoinFetch;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkJoinFetch;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -40,7 +40,7 @@ public class EclipseLinkJavaManyToManyMapping
 			EclipseLinkJPA.JOIN_FETCH);
 	}
 	
-	public JoinFetch getJoinFetch() {
+	public EclipseLinkJoinFetch getJoinFetch() {
 		return this.joinFetch;
 	}
 	

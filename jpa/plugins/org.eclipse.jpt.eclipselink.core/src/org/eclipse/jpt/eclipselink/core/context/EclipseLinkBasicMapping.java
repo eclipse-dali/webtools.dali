@@ -25,5 +25,5 @@ import org.eclipse.jpt.core.context.BasicMapping;
  */
 public interface EclipseLinkBasicMapping extends BasicMapping
 {
-	Mutable getMutable();
+	EclipseLinkMutable getMutable();
 }

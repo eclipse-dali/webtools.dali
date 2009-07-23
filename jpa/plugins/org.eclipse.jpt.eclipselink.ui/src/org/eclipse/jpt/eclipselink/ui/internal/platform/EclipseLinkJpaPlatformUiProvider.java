@@ -13,7 +13,7 @@ import java.util.List;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.eclipselink.ui.internal.java.details.DefaultOneToManyMappingUiProvider;
 import org.eclipse.jpt.eclipselink.ui.internal.java.details.DefaultOneToOneMappingUiProvider;
-import org.eclipse.jpt.eclipselink.ui.internal.java.details.DefaultVariableOneToOneMappingUiProvider;
+import org.eclipse.jpt.eclipselink.ui.internal.java.details.DefaultEclipseLinkVariableOneToOneMappingUiProvider;
 import org.eclipse.jpt.eclipselink.ui.internal.java.details.EclipseLinkJavaBasicCollectionMappingUiProvider;
 import org.eclipse.jpt.eclipselink.ui.internal.java.details.EclipseLinkJavaBasicMapMappingUiProvider;
 import org.eclipse.jpt.eclipselink.ui.internal.java.details.EclipseLinkJavaTransformationMappingUiProvider;
@@ -127,6 +127,6 @@ public class EclipseLinkJpaPlatformUiProvider extends AbstractJpaPlatformUiProvi
 	protected void addDefaultAttributeMappingUiProvidersTo(List<DefaultAttributeMappingUiProvider<? extends AttributeMapping>> providers) {
 		providers.add(DefaultOneToOneMappingUiProvider.instance());
 		providers.add(DefaultOneToManyMappingUiProvider.instance());
-		providers.add(DefaultVariableOneToOneMappingUiProvider.instance());
+		providers.add(DefaultEclipseLinkVariableOneToOneMappingUiProvider.instance());
 	}
 }

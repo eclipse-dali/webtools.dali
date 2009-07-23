@@ -12,7 +12,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.orm.details;
 
 import org.eclipse.jpt.core.context.AccessHolder;
 import org.eclipse.jpt.eclipselink.core.context.Caching;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.ConverterHolder;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkConverterHolder;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmMappedSuperclass;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkMappedSuperclassAdvancedComposite;
@@ -93,10 +93,10 @@ public class EclipseLinkOrmMappedSuperclassComposite extends FormPane<EclipseLin
 		new ConvertersComposite(this, buildConverterHolder(), container);
 	}
 	
-	private PropertyValueModel<ConverterHolder> buildConverterHolder() {
-		return new PropertyAspectAdapter<EclipseLinkOrmMappedSuperclass, ConverterHolder>(getSubjectHolder()) {
+	private PropertyValueModel<EclipseLinkConverterHolder> buildConverterHolder() {
+		return new PropertyAspectAdapter<EclipseLinkOrmMappedSuperclass, EclipseLinkConverterHolder>(getSubjectHolder()) {
 			@Override
-			protected ConverterHolder buildValue_() {
+			protected EclipseLinkConverterHolder buildValue_() {
 				return this.subject.getConverterHolder();
 			}
 		};

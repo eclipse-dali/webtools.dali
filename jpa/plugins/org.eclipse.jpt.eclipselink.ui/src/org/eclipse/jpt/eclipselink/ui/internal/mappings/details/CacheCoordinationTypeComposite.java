@@ -9,7 +9,7 @@
 package org.eclipse.jpt.eclipselink.ui.internal.mappings.details;
 
 import java.util.Collection;
-import org.eclipse.jpt.eclipselink.core.context.CacheCoordinationType;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCacheCoordinationType;
 import org.eclipse.jpt.eclipselink.core.context.Caching;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
@@ -46,9 +46,9 @@ public class CacheCoordinationTypeComposite extends FormPane<Caching> {
 		super(parentPane, parent);
 	}
 
-	private EnumFormComboViewer<Caching, CacheCoordinationType> addCacheCoordinationTypeCombo(Composite container) {
+	private EnumFormComboViewer<Caching, EclipseLinkCacheCoordinationType> addCacheCoordinationTypeCombo(Composite container) {
 
-		return new EnumFormComboViewer<Caching, CacheCoordinationType>(this, container) {
+		return new EnumFormComboViewer<Caching, EclipseLinkCacheCoordinationType>(this, container) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
@@ -58,17 +58,17 @@ public class CacheCoordinationTypeComposite extends FormPane<Caching> {
 			}
 
 			@Override
-			protected CacheCoordinationType[] getChoices() {
-				return CacheCoordinationType.values();
+			protected EclipseLinkCacheCoordinationType[] getChoices() {
+				return EclipseLinkCacheCoordinationType.values();
 			}
 
 			@Override
-			protected CacheCoordinationType getDefaultValue() {
+			protected EclipseLinkCacheCoordinationType getDefaultValue() {
 				return getSubject().getDefaultCoordinationType();
 			}
 
 			@Override
-			protected String displayString(CacheCoordinationType value) {
+			protected String displayString(EclipseLinkCacheCoordinationType value) {
 				return buildDisplayString(
 					EclipseLinkUiMappingsMessages.class,
 					CacheCoordinationTypeComposite.this,
@@ -77,12 +77,12 @@ public class CacheCoordinationTypeComposite extends FormPane<Caching> {
 			}
 
 			@Override
-			protected CacheCoordinationType getValue() {
+			protected EclipseLinkCacheCoordinationType getValue() {
 				return getSubject().getSpecifiedCoordinationType();
 			}
 
 			@Override
-			protected void setValue(CacheCoordinationType value) {
+			protected void setValue(EclipseLinkCacheCoordinationType value) {
 				getSubject().setSpecifiedCoordinationType(value);
 			}
 			

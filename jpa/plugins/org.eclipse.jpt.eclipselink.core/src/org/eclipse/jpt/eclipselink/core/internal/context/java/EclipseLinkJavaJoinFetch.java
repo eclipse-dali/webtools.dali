@@ -14,15 +14,15 @@ import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.jpt.eclipselink.core.context.JoinFetch;
-import org.eclipse.jpt.eclipselink.core.context.JoinFetchType;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkJoinFetch;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkJoinFetchType;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJoinFetchAnnotation;
 
 public class EclipseLinkJavaJoinFetch 
 	extends AbstractJavaJpaContextNode 
-	implements JoinFetch
+	implements EclipseLinkJoinFetch
 {
-	protected JoinFetchType joinFetchValue;	
+	protected EclipseLinkJoinFetchType joinFetchValue;	
 	
 	protected JavaResourcePersistentAttribute resourcePersistentAttribute;
 	
@@ -48,34 +48,34 @@ public class EclipseLinkJavaJoinFetch
 		this.resourcePersistentAttribute.removeSupportingAnnotation(getJoinFetchAnnotationName());
 	}
 	
-	public JoinFetchType getValue() {
+	public EclipseLinkJoinFetchType getValue() {
 		return this.joinFetchValue;
 	}
 	
-	protected JoinFetchType getDefaultValue() {
-		return JoinFetch.DEFAULT_VALUE;
+	protected EclipseLinkJoinFetchType getDefaultValue() {
+		return EclipseLinkJoinFetch.DEFAULT_VALUE;
 	}
 	
-	public void setValue(JoinFetchType newJoinFetchValue) {
+	public void setValue(EclipseLinkJoinFetchType newJoinFetchValue) {
 		if (this.joinFetchValue == newJoinFetchValue) {
 			return;
 		}
 				
-		JoinFetchType oldJoinFetchValue = this.joinFetchValue;
+		EclipseLinkJoinFetchType oldJoinFetchValue = this.joinFetchValue;
 		this.joinFetchValue = newJoinFetchValue;
 		
 		if (newJoinFetchValue != null) {
 			if (getResourceJoinFetch() == null) {
 				addResourceJoinFetch();
 			}
-			getResourceJoinFetch().setValue(JoinFetchType.toJavaResourceModel(newJoinFetchValue));		
+			getResourceJoinFetch().setValue(EclipseLinkJoinFetchType.toJavaResourceModel(newJoinFetchValue));		
 		}
 		else {
 			if (getResourceJoinFetch() != null) {
 				removeResourceJoinFetch();
 			}
 		}
-		firePropertyChanged(JoinFetch.VALUE_PROPERTY, oldJoinFetchValue, newJoinFetchValue);
+		firePropertyChanged(EclipseLinkJoinFetch.VALUE_PROPERTY, oldJoinFetchValue, newJoinFetchValue);
 	}
 	
 	/**
@@ -84,10 +84,10 @@ public class EclipseLinkJavaJoinFetch
 	 * when you set a value from the UI and the annotation doesn't exist yet.
 	 * Adding the annotation causes an update to occur and then the exception.
 	 */
-	protected void setValue_(JoinFetchType newJoinFetchValue) {
-		JoinFetchType oldJoinFetchValue = this.joinFetchValue;
+	protected void setValue_(EclipseLinkJoinFetchType newJoinFetchValue) {
+		EclipseLinkJoinFetchType oldJoinFetchValue = this.joinFetchValue;
 		this.joinFetchValue = newJoinFetchValue;
-		firePropertyChanged(JoinFetch.VALUE_PROPERTY, oldJoinFetchValue, newJoinFetchValue);
+		firePropertyChanged(EclipseLinkJoinFetch.VALUE_PROPERTY, oldJoinFetchValue, newJoinFetchValue);
 	}
 	
 	public void initialize(JavaResourcePersistentAttribute jrpa) {
@@ -102,7 +102,7 @@ public class EclipseLinkJavaJoinFetch
 		setValue_(joinFetch(resourceJoinFetch));
 	}
 	
-	private JoinFetchType joinFetch(EclipseLinkJoinFetchAnnotation resourceJoinFetch) {
+	private EclipseLinkJoinFetchType joinFetch(EclipseLinkJoinFetchAnnotation resourceJoinFetch) {
 		if (resourceJoinFetch == null) {
 			return null;
 		}
@@ -110,7 +110,7 @@ public class EclipseLinkJavaJoinFetch
 			// @JoinFetch is equivalent to @JoinFetch(JoinFetch.INNER)
 			return getDefaultValue();
 		}
-		return JoinFetchType.fromJavaResourceModel(resourceJoinFetch.getValue());
+		return EclipseLinkJoinFetchType.fromJavaResourceModel(resourceJoinFetch.getValue());
 	}
 	
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {

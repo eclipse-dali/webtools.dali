@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.mappings.details;
 
-import org.eclipse.jpt.eclipselink.core.context.ReadOnly;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkReadOnly;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
@@ -23,12 +23,12 @@ import org.eclipse.swt.widgets.Composite;
 /**
  * This composite simply shows the Read Only check box.
  *
- * @see ReadOnly
+ * @see EclipseLinkReadOnly
  *
  * @version 2.1
  * @since 2.1
  */
-public class ReadOnlyComposite extends FormPane<ReadOnly>
+public class ReadOnlyComposite extends FormPane<EclipseLinkReadOnly>
 {
 	/**
 	 * Creates a new <code>ReadOnlyComposite</code>.
@@ -37,7 +37,7 @@ public class ReadOnlyComposite extends FormPane<ReadOnly>
 	 * @param parent The parent container
 	 */
 	public ReadOnlyComposite(FormPane<?> parentPane, 
-		PropertyValueModel<? extends ReadOnly> subjectHolder,
+		PropertyValueModel<? extends EclipseLinkReadOnly> subjectHolder,
 		Composite parent) {
 
 			super(parentPane, subjectHolder, parent);
@@ -56,9 +56,9 @@ public class ReadOnlyComposite extends FormPane<ReadOnly>
 	}
 	
 	private WritablePropertyValueModel<Boolean> buildSpecifiedReadOnlyHolder() {
-		return new PropertyAspectAdapter<ReadOnly, Boolean>(
+		return new PropertyAspectAdapter<EclipseLinkReadOnly, Boolean>(
 			getSubjectHolder(),
-			ReadOnly.SPECIFIED_READ_ONLY_PROPERTY)
+			EclipseLinkReadOnly.SPECIFIED_READ_ONLY_PROPERTY)
 		{
 			@Override
 			protected Boolean buildValue_() {
@@ -86,10 +86,10 @@ public class ReadOnlyComposite extends FormPane<ReadOnly>
 	}
 	
 	private PropertyValueModel<Boolean> buildDefaultReadOnlyHolder() {
-		return new PropertyAspectAdapter<ReadOnly, Boolean>(
+		return new PropertyAspectAdapter<EclipseLinkReadOnly, Boolean>(
 			getSubjectHolder(),
-			ReadOnly.SPECIFIED_READ_ONLY_PROPERTY,
-			ReadOnly.DEFAULT_READ_ONLY_PROPERTY)
+			EclipseLinkReadOnly.SPECIFIED_READ_ONLY_PROPERTY,
+			EclipseLinkReadOnly.DEFAULT_READ_ONLY_PROPERTY)
 		{
 			@Override
 			protected Boolean buildValue_() {

@@ -10,12 +10,12 @@ package org.eclipse.jpt.eclipselink.ui.internal.mappings.details;
 
 import java.util.ArrayList;
 import java.util.ListIterator;
-import org.eclipse.jpt.eclipselink.core.context.Convert;
-import org.eclipse.jpt.eclipselink.core.context.CustomConverter;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConvert;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCustomConverter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
-import org.eclipse.jpt.eclipselink.core.context.ObjectTypeConverter;
-import org.eclipse.jpt.eclipselink.core.context.StructConverter;
-import org.eclipse.jpt.eclipselink.core.context.TypeConverter;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkObjectTypeConverter;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkStructConverter;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkTypeConverter;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.ui.WidgetFactory;
@@ -49,13 +49,13 @@ import org.eclipse.swt.widgets.Composite;
  * |            -------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see Convert
+ * @see EclipseLinkConvert
  * @see EclipseLinkBasicMappingComposite - A container of this widget
  *
  * @version 2.1
  * @since 2.1
  */
-public class ConvertComposite extends FormPane<Convert>
+public class ConvertComposite extends FormPane<EclipseLinkConvert>
 {
 
 	/**
@@ -74,7 +74,7 @@ public class ConvertComposite extends FormPane<Convert>
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public ConvertComposite(PropertyValueModel<? extends Convert> subjectHolder,
+	public ConvertComposite(PropertyValueModel<? extends EclipseLinkConvert> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
 
@@ -153,7 +153,7 @@ public class ConvertComposite extends FormPane<Convert>
 	}
 	
 	protected final WritablePropertyValueModel<String> buildConvertNameHolder() {
-		return new PropertyAspectAdapter<Convert, String>(getSubjectHolder(), Convert.SPECIFIED_CONVERTER_NAME_PROPERTY) {
+		return new PropertyAspectAdapter<EclipseLinkConvert, String>(getSubjectHolder(), EclipseLinkConvert.SPECIFIED_CONVERTER_NAME_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return this.subject.getSpecifiedConverterName();
@@ -186,7 +186,7 @@ public class ConvertComposite extends FormPane<Convert>
 	}
 
 	private WritablePropertyValueModel<String> buildDefaultNameHolder() {
-		return new PropertyAspectAdapter<Convert, String>(getSubjectHolder(), Convert.DEFAULT_CONVERTER_NAME_PROPERTY) {
+		return new PropertyAspectAdapter<EclipseLinkConvert, String>(getSubjectHolder(), EclipseLinkConvert.DEFAULT_CONVERTER_NAME_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				String name = this.subject.getDefaultConverterName();
@@ -242,7 +242,7 @@ public class ConvertComposite extends FormPane<Convert>
 	}
 
 	protected ListValueModel<String> buildReservedConverterNameListHolder() {
-		return new StaticListValueModel<String>(Convert.RESERVED_CONVERTER_NAMES);
+		return new StaticListValueModel<String>(EclipseLinkConvert.RESERVED_CONVERTER_NAMES);
 	}
 	
 	protected ListValueModel<String> buildConverterNameListHolder() {
@@ -258,7 +258,7 @@ public class ConvertComposite extends FormPane<Convert>
 	}
 	
 	protected PropertyValueModel<EclipseLinkPersistenceUnit> buildPersistenceUnitHolder() {
-		return new PropertyAspectAdapter<Convert, EclipseLinkPersistenceUnit>(getSubjectHolder()) {
+		return new PropertyAspectAdapter<EclipseLinkConvert, EclipseLinkPersistenceUnit>(getSubjectHolder()) {
 			@Override
 			protected EclipseLinkPersistenceUnit buildValue_() {
 				return (EclipseLinkPersistenceUnit) getSubject().getPersistenceUnit();
@@ -267,7 +267,7 @@ public class ConvertComposite extends FormPane<Convert>
 	}
 	
 	private WritablePropertyValueModel<Boolean> buildNoConverterHolder() {
-		return new PropertyAspectAdapter<Convert, Boolean>(getSubjectHolder(), Convert.CONVERTER_PROPERTY) {
+		return new PropertyAspectAdapter<EclipseLinkConvert, Boolean>(getSubjectHolder(), EclipseLinkConvert.CONVERTER_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(this.subject.getConverter() == null);
@@ -283,7 +283,7 @@ public class ConvertComposite extends FormPane<Convert>
 	}
 	
 	private WritablePropertyValueModel<Boolean> buildConverterHolder(final String converterType) {
-		return new PropertyAspectAdapter<Convert, Boolean>(getSubjectHolder(), Convert.CONVERTER_PROPERTY) {
+		return new PropertyAspectAdapter<EclipseLinkConvert, Boolean>(getSubjectHolder(), EclipseLinkConvert.CONVERTER_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				EclipseLinkConverter converter = this.subject.getConverter();
@@ -303,7 +303,7 @@ public class ConvertComposite extends FormPane<Convert>
 	}
 	
 	private PropertyValueModel<EclipseLinkConverter> buildConverterHolder() {
-		return new PropertyAspectAdapter<Convert, EclipseLinkConverter>(getSubjectHolder(), Convert.CONVERTER_PROPERTY) {
+		return new PropertyAspectAdapter<EclipseLinkConvert, EclipseLinkConverter>(getSubjectHolder(), EclipseLinkConvert.CONVERTER_PROPERTY) {
 			@Override
 			protected EclipseLinkConverter buildValue_() {
 				return this.subject.getConverter();
@@ -311,46 +311,46 @@ public class ConvertComposite extends FormPane<Convert>
 		};
 	}
 	
-	private PropertyValueModel<CustomConverter> buildCustomConverterHolder(PropertyValueModel<EclipseLinkConverter> converterHolder) {
-		return new TransformationPropertyValueModel<EclipseLinkConverter, CustomConverter>(converterHolder) {
+	private PropertyValueModel<EclipseLinkCustomConverter> buildCustomConverterHolder(PropertyValueModel<EclipseLinkConverter> converterHolder) {
+		return new TransformationPropertyValueModel<EclipseLinkConverter, EclipseLinkCustomConverter>(converterHolder) {
 			@Override
-			protected CustomConverter transform_(EclipseLinkConverter converter) {
-				return (converter != null && converter.getType() == EclipseLinkConverter.CUSTOM_CONVERTER) ? (CustomConverter) converter : null;
+			protected EclipseLinkCustomConverter transform_(EclipseLinkConverter converter) {
+				return (converter != null && converter.getType() == EclipseLinkConverter.CUSTOM_CONVERTER) ? (EclipseLinkCustomConverter) converter : null;
 			}
 		};
 	}
 	
-	private PropertyValueModel<TypeConverter> buildTypeConverterHolder(PropertyValueModel<EclipseLinkConverter> converterHolder) {
-		return new TransformationPropertyValueModel<EclipseLinkConverter, TypeConverter>(converterHolder) {
+	private PropertyValueModel<EclipseLinkTypeConverter> buildTypeConverterHolder(PropertyValueModel<EclipseLinkConverter> converterHolder) {
+		return new TransformationPropertyValueModel<EclipseLinkConverter, EclipseLinkTypeConverter>(converterHolder) {
 			@Override
-			protected TypeConverter transform_(EclipseLinkConverter converter) {
-				return (converter != null && converter.getType() == EclipseLinkConverter.TYPE_CONVERTER) ? (TypeConverter) converter : null;
+			protected EclipseLinkTypeConverter transform_(EclipseLinkConverter converter) {
+				return (converter != null && converter.getType() == EclipseLinkConverter.TYPE_CONVERTER) ? (EclipseLinkTypeConverter) converter : null;
 			}
 		};
 	}
 	
-	private PropertyValueModel<ObjectTypeConverter> buildObjectTypeConverterHolder(PropertyValueModel<EclipseLinkConverter> converterHolder) {
-		return new TransformationPropertyValueModel<EclipseLinkConverter, ObjectTypeConverter>(converterHolder) {
+	private PropertyValueModel<EclipseLinkObjectTypeConverter> buildObjectTypeConverterHolder(PropertyValueModel<EclipseLinkConverter> converterHolder) {
+		return new TransformationPropertyValueModel<EclipseLinkConverter, EclipseLinkObjectTypeConverter>(converterHolder) {
 			@Override
-			protected ObjectTypeConverter transform_(EclipseLinkConverter converter) {
-				return (converter != null && converter.getType() == EclipseLinkConverter.OBJECT_TYPE_CONVERTER) ? (ObjectTypeConverter) converter : null;
+			protected EclipseLinkObjectTypeConverter transform_(EclipseLinkConverter converter) {
+				return (converter != null && converter.getType() == EclipseLinkConverter.OBJECT_TYPE_CONVERTER) ? (EclipseLinkObjectTypeConverter) converter : null;
 			}
 		};
 	}
 	
-	private PropertyValueModel<StructConverter> buildStructConverterHolder(PropertyValueModel<EclipseLinkConverter> converterHolder) {
-		return new TransformationPropertyValueModel<EclipseLinkConverter, StructConverter>(converterHolder) {
+	private PropertyValueModel<EclipseLinkStructConverter> buildStructConverterHolder(PropertyValueModel<EclipseLinkConverter> converterHolder) {
+		return new TransformationPropertyValueModel<EclipseLinkConverter, EclipseLinkStructConverter>(converterHolder) {
 			@Override
-			protected StructConverter transform_(EclipseLinkConverter converter) {
-				return (converter != null && converter.getType() == EclipseLinkConverter.STRUCT_CONVERTER) ? (StructConverter) converter : null;
+			protected EclipseLinkStructConverter transform_(EclipseLinkConverter converter) {
+				return (converter != null && converter.getType() == EclipseLinkConverter.STRUCT_CONVERTER) ? (EclipseLinkStructConverter) converter : null;
 			}
 		};
 	}
 
 	protected PropertyValueModel<Boolean> buildBooleanHolder() {
-		return new TransformationPropertyValueModel<Convert, Boolean>(getSubjectHolder()) {
+		return new TransformationPropertyValueModel<EclipseLinkConvert, Boolean>(getSubjectHolder()) {
 			@Override
-			protected Boolean transform(Convert value) {
+			protected Boolean transform(EclipseLinkConvert value) {
 				if (getSubject() != null && getSubject().getParent().getPersistentAttribute().isVirtual()) {
 					return Boolean.FALSE;
 				}

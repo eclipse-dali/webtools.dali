@@ -14,9 +14,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.context.XmlContextNode;
-import org.eclipse.jpt.eclipselink.core.context.ConversionValue;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConversionValue;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
-import org.eclipse.jpt.eclipselink.core.context.ObjectTypeConverter;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkObjectTypeConverter;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConversionValue;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlObjectTypeConverter;
@@ -28,7 +28,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class EclipseLinkOrmObjectTypeConverter extends EclipseLinkOrmConverter<XmlObjectTypeConverter>
-	implements ObjectTypeConverter
+	implements EclipseLinkObjectTypeConverter
 {	
 	private String dataType;
 	
@@ -125,11 +125,11 @@ public class EclipseLinkOrmObjectTypeConverter extends EclipseLinkOrmConverter<X
 		fireItemRemoved(CONVERSION_VALUES_LIST, index, removedJoinColumn);
 	}
 	
-	public void removeConversionValue(ConversionValue conversionValue) {
+	public void removeConversionValue(EclipseLinkConversionValue conversionValue) {
 		this.removeConversionValue(this.conversionValues.indexOf(conversionValue));
 	}
 	
-	protected void removeConversionValue_(ConversionValue conversionValue) {
+	protected void removeConversionValue_(EclipseLinkConversionValue conversionValue) {
 		removeItemFromList(conversionValue, this.conversionValues, CONVERSION_VALUES_LIST);
 	}
 	

@@ -14,9 +14,9 @@ import org.eclipse.jpt.core.context.Converter;
 import org.eclipse.jpt.core.context.ConvertibleMapping;
 import org.eclipse.jpt.core.context.IdMapping;
 import org.eclipse.jpt.core.context.TemporalConverter;
-import org.eclipse.jpt.eclipselink.core.context.Convert;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkIdMapping;
-import org.eclipse.jpt.eclipselink.core.context.Mutable;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkMutable;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
@@ -146,14 +146,14 @@ public class EclipseLinkIdMappingComposite extends FormPane<IdMapping>
 			null);
 		((GridData) elConverterButton.getLayoutData()).horizontalSpan = 2;
 
-		Pane<Convert> convertComposite = buildConvertComposite(buildEclipseLinkConverterHolder(specifiedConverterHolder), container);
+		Pane<EclipseLinkConvert> convertComposite = buildConvertComposite(buildEclipseLinkConverterHolder(specifiedConverterHolder), container);
 		GridData gridData = (GridData) convertComposite.getControl().getLayoutData();
 		gridData.horizontalSpan = 2;
 		gridData.horizontalIndent = 20;
 		registerSubPane(convertComposite);
 	}
 	
-	protected Pane<Convert> buildConvertComposite(PropertyValueModel<Convert> convertHolder, Composite container) {
+	protected Pane<EclipseLinkConvert> buildConvertComposite(PropertyValueModel<EclipseLinkConvert> convertHolder, Composite container) {
 		return new ConvertComposite(convertHolder, container, getWidgetFactory());
 	}
 
@@ -173,11 +173,11 @@ public class EclipseLinkIdMappingComposite extends FormPane<IdMapping>
 		};
 	}
 
-	protected PropertyValueModel<Convert> buildEclipseLinkConverterHolder(PropertyValueModel<Converter> converterHolder) {
-		return new TransformationPropertyValueModel<Converter, Convert>(converterHolder) {
+	protected PropertyValueModel<EclipseLinkConvert> buildEclipseLinkConverterHolder(PropertyValueModel<Converter> converterHolder) {
+		return new TransformationPropertyValueModel<Converter, EclipseLinkConvert>(converterHolder) {
 			@Override
-			protected Convert transform_(Converter converter) {
-				return (converter != null && converter.getType() == Convert.ECLIPSE_LINK_CONVERTER) ? (Convert) converter : null;
+			protected EclipseLinkConvert transform_(Converter converter) {
+				return (converter != null && converter.getType() == EclipseLinkConvert.ECLIPSE_LINK_CONVERTER) ? (EclipseLinkConvert) converter : null;
 			}
 		};
 	}
@@ -210,13 +210,13 @@ public class EclipseLinkIdMappingComposite extends FormPane<IdMapping>
 				if (converter == null) {
 					return Boolean.FALSE;
 				}
-				return Boolean.valueOf(converter.getType() == Convert.ECLIPSE_LINK_CONVERTER);
+				return Boolean.valueOf(converter.getType() == EclipseLinkConvert.ECLIPSE_LINK_CONVERTER);
 			}
 
 			@Override
 			protected void setValue_(Boolean value) {
 				if (value.booleanValue()) {
-					this.subject.setSpecifiedConverter(Convert.ECLIPSE_LINK_CONVERTER);
+					this.subject.setSpecifiedConverter(EclipseLinkConvert.ECLIPSE_LINK_CONVERTER);
 				}
 			}
 		};
@@ -241,10 +241,10 @@ public class EclipseLinkIdMappingComposite extends FormPane<IdMapping>
 	}
 	
 	
-	protected PropertyValueModel<Mutable> buildMutableHolder() {
-		return new PropertyAspectAdapter<IdMapping, Mutable>(getSubjectHolder()) {
+	protected PropertyValueModel<EclipseLinkMutable> buildMutableHolder() {
+		return new PropertyAspectAdapter<IdMapping, EclipseLinkMutable>(getSubjectHolder()) {
 			@Override
-			protected Mutable buildValue_() {
+			protected EclipseLinkMutable buildValue_() {
 				return ((EclipseLinkIdMapping) this.subject).getMutable();
 			}
 		};

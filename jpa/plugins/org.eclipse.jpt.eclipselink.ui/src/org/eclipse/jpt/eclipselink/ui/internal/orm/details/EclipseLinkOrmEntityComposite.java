@@ -13,7 +13,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.orm.details;
 import org.eclipse.jpt.core.context.AccessHolder;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.eclipselink.core.context.Caching;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.ConverterHolder;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkConverterHolder;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmEntity;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkEntityAdvancedComposite;
@@ -112,10 +112,10 @@ public class EclipseLinkOrmEntityComposite extends AbstractEntityComposite<OrmEn
 		new ConvertersComposite(this, buildConverterHolder(), container);
 	}
 	
-	private PropertyValueModel<ConverterHolder> buildConverterHolder() {
-		return new PropertyAspectAdapter<OrmEntity, ConverterHolder>(getSubjectHolder()) {
+	private PropertyValueModel<EclipseLinkConverterHolder> buildConverterHolder() {
+		return new PropertyAspectAdapter<OrmEntity, EclipseLinkConverterHolder>(getSubjectHolder()) {
 			@Override
-			protected ConverterHolder buildValue_() {
+			protected EclipseLinkConverterHolder buildValue_() {
 				return ((EclipseLinkOrmEntity) this.subject).getConverterHolder();
 			}
 		};

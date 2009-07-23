@@ -57,11 +57,11 @@ public class GenericOrmTransientMapping2_0Provider
 	}
 
 	public OrmAttributeMapping buildMapping(OrmPersistentAttribute parent, XmlAttributeMapping resourceMapping, JpaFactory factory) {
-		return ((Generic2_0JpaFactory) factory).build2_0OrmTransientMapping(parent, (XmlTransient) resourceMapping);
+		return ((Generic2_0JpaFactory) factory).buildOrmTransientMapping2_0(parent, (XmlTransient) resourceMapping);
 	}
 
 	public XmlAttributeMapping buildVirtualResourceMapping(OrmTypeMapping ormTypeMapping, JavaAttributeMapping javaAttributeMapping, JpaFactory factory) {
-		return ((Generic2_0JpaFactory) factory).build2_0VirtualXmlTransient(ormTypeMapping, (JavaTransientMapping) javaAttributeMapping);
+		return ((Generic2_0JpaFactory) factory).buildVirtualXmlTransient2_0(ormTypeMapping, (JavaTransientMapping) javaAttributeMapping);
 	}
 
 }

@@ -14,9 +14,9 @@ import java.util.List;
 import org.eclipse.jpt.core.context.orm.OrmConverter;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmVersionMapping;
-import org.eclipse.jpt.eclipselink.core.context.Convert;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkVersionMapping;
-import org.eclipse.jpt.eclipselink.core.context.Mutable;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkMutable;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlVersion;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -33,7 +33,7 @@ public class EclipseLinkOrmVersionMapping extends AbstractOrmVersionMapping<XmlV
 	}
 	
 	
-	public Mutable getMutable() {
+	public EclipseLinkMutable getMutable() {
 		return this.mutable;
 	}
 
@@ -43,7 +43,7 @@ public class EclipseLinkOrmVersionMapping extends AbstractOrmVersionMapping<XmlV
 		if (ormConverter != null) {
 			return ormConverter;
 		}
-		if (converterType == Convert.ECLIPSE_LINK_CONVERTER) {
+		if (converterType == EclipseLinkConvert.ECLIPSE_LINK_CONVERTER) {
 			return new EclipseLinkOrmConvert(this, this.resourceAttributeMapping);
 		}
 		return null;
@@ -53,7 +53,7 @@ public class EclipseLinkOrmVersionMapping extends AbstractOrmVersionMapping<XmlV
 	protected String getResourceConverterType() {
 		//check @Convert first, this is the order that EclipseLink searches
 		if (this.resourceAttributeMapping.getConvert() != null) {
-			return Convert.ECLIPSE_LINK_CONVERTER;
+			return EclipseLinkConvert.ECLIPSE_LINK_CONVERTER;
 		}
 		return super.getResourceConverterType();
 	}

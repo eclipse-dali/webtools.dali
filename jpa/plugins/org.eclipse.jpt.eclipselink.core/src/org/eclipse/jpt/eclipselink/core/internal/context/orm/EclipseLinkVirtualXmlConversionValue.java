@@ -11,7 +11,7 @@ package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.jpt.eclipselink.core.context.ConversionValue;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConversionValue;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConversionValue;
 
 /**
@@ -22,9 +22,9 @@ public class EclipseLinkVirtualXmlConversionValue extends XmlConversionValue
 {
 	protected OrmTypeMapping ormTypeMapping;
 	
-	protected ConversionValue javaConversionValue;
+	protected EclipseLinkConversionValue javaConversionValue;
 	
-	public EclipseLinkVirtualXmlConversionValue(OrmTypeMapping ormTypeMapping, ConversionValue javaConversionValue) {
+	public EclipseLinkVirtualXmlConversionValue(OrmTypeMapping ormTypeMapping, EclipseLinkConversionValue javaConversionValue) {
 		super();
 		this.ormTypeMapping = ormTypeMapping;
 		this.javaConversionValue = javaConversionValue;

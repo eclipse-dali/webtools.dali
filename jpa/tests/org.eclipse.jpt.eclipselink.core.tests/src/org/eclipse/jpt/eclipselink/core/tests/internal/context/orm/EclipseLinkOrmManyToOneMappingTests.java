@@ -15,7 +15,7 @@ import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkRelationshipMapping;
-import org.eclipse.jpt.eclipselink.core.context.JoinFetchType;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkJoinFetchType;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmManyToOneMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmOneToOneMapping;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntity;
@@ -101,14 +101,14 @@ public class EclipseLinkOrmManyToOneMappingTests
 		resourceManyToOne.setJoinFetch(XmlJoinFetchType.INNER);
 		
 		assertEquals(XmlJoinFetchType.INNER, resourceManyToOne.getJoinFetch());
-		assertEquals(JoinFetchType.INNER, contextManyToOne.getJoinFetch().getValue());
+		assertEquals(EclipseLinkJoinFetchType.INNER, contextManyToOne.getJoinFetch().getValue());
 		
 		// set xml join fetch to OUTER, check context
 		
 		resourceManyToOne.setJoinFetch(XmlJoinFetchType.OUTER);
 		
 		assertEquals(XmlJoinFetchType.OUTER, resourceManyToOne.getJoinFetch());
-		assertEquals(JoinFetchType.OUTER, contextManyToOne.getJoinFetch().getValue());
+		assertEquals(EclipseLinkJoinFetchType.OUTER, contextManyToOne.getJoinFetch().getValue());
 		
 		// set xml join fetch to null, check context
 		
@@ -137,17 +137,17 @@ public class EclipseLinkOrmManyToOneMappingTests
 		
 		// set context join fetch to INNER, check resource
 		
-		contextManyToOne.getJoinFetch().setValue(JoinFetchType.INNER);
+		contextManyToOne.getJoinFetch().setValue(EclipseLinkJoinFetchType.INNER);
 		
 		assertEquals(XmlJoinFetchType.INNER, resourceManyToOne.getJoinFetch());
-		assertEquals(JoinFetchType.INNER, contextManyToOne.getJoinFetch().getValue());
+		assertEquals(EclipseLinkJoinFetchType.INNER, contextManyToOne.getJoinFetch().getValue());
 		
 		// set context join fetch to OUTER, check resource
 		
-		contextManyToOne.getJoinFetch().setValue(JoinFetchType.OUTER);
+		contextManyToOne.getJoinFetch().setValue(EclipseLinkJoinFetchType.OUTER);
 		
 		assertEquals(XmlJoinFetchType.OUTER, resourceManyToOne.getJoinFetch());
-		assertEquals(JoinFetchType.OUTER, contextManyToOne.getJoinFetch().getValue());
+		assertEquals(EclipseLinkJoinFetchType.OUTER, contextManyToOne.getJoinFetch().getValue());
 		
 		// set context join fetch to null, check resource
 		
@@ -174,12 +174,12 @@ public class EclipseLinkOrmManyToOneMappingTests
 		
 		
 		EclipseLinkRelationshipMapping javaRelationshipMapping = (EclipseLinkRelationshipMapping) departmentPersistentType.getJavaPersistentType().getAttributeNamed("employee").getMapping();
-		javaRelationshipMapping.getJoinFetch().setValue(JoinFetchType.OUTER);
+		javaRelationshipMapping.getJoinFetch().setValue(EclipseLinkJoinFetchType.OUTER);
 		assertNull(manyToOne.getJoinFetch().getValue());
 		
 		getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(false);
 		manyToOne = (EclipseLinkOrmManyToOneMapping) departmentPersistentType.getAttributeNamed("employee").getMapping();
-		assertEquals(JoinFetchType.OUTER, manyToOne.getJoinFetch().getValue());
+		assertEquals(EclipseLinkJoinFetchType.OUTER, manyToOne.getJoinFetch().getValue());
 	}
 
 }

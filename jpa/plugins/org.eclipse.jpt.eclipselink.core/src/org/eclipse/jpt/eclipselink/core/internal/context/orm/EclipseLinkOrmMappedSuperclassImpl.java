@@ -14,11 +14,11 @@ import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmMappedSuperclass;
 import org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass;
 import org.eclipse.jpt.eclipselink.core.context.Caching;
-import org.eclipse.jpt.eclipselink.core.context.ChangeTracking;
-import org.eclipse.jpt.eclipselink.core.context.Customizer;
-import org.eclipse.jpt.eclipselink.core.context.ReadOnly;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkChangeTracking;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCustomizer;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkReadOnly;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaMappedSuperclass;
-import org.eclipse.jpt.eclipselink.core.context.java.JavaCaching;
+import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaCaching;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlCacheHolder;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlChangeTrackingHolder;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConvertersHolder;
@@ -36,7 +36,7 @@ public class EclipseLinkOrmMappedSuperclassImpl extends AbstractOrmMappedSupercl
 	
 	protected final EclipseLinkOrmChangeTracking changeTracking;
 	
-	protected final EclipseLinkOrmCaching caching;
+	protected final EclipseLinkOrmCachingImpl caching;
 	
 	protected final EclipseLinkOrmConverterHolder converterHolder;
 	
@@ -46,7 +46,7 @@ public class EclipseLinkOrmMappedSuperclassImpl extends AbstractOrmMappedSupercl
 		this.readOnly = new EclipseLinkOrmReadOnly(this, (XmlReadOnly) this.resourceTypeMapping, getJavaReadOnly());
 		this.customizer = new EclipseLinkOrmCustomizer(this, (XmlCustomizerHolder) this.resourceTypeMapping, getJavaCustomizer());
 		this.changeTracking = new EclipseLinkOrmChangeTracking(this, (XmlChangeTrackingHolder) this.resourceTypeMapping, getJavaChangeTracking());
-		this.caching = new EclipseLinkOrmCaching(this, (XmlCacheHolder) this.resourceTypeMapping, getJavaCaching());
+		this.caching = new EclipseLinkOrmCachingImpl(this, (XmlCacheHolder) this.resourceTypeMapping, getJavaCaching());
 		this.converterHolder = new EclipseLinkOrmConverterHolder(this, (XmlConvertersHolder) this.resourceTypeMapping);
 	}
 	
@@ -54,11 +54,11 @@ public class EclipseLinkOrmMappedSuperclassImpl extends AbstractOrmMappedSupercl
 		return this.caching;
 	}
 
-	public Customizer getCustomizer() {
+	public EclipseLinkCustomizer getCustomizer() {
 		return this.customizer;
 	}
 
-	public ChangeTracking getChangeTracking() {
+	public EclipseLinkChangeTracking getChangeTracking() {
 		return this.changeTracking;
 	}
 
@@ -66,7 +66,7 @@ public class EclipseLinkOrmMappedSuperclassImpl extends AbstractOrmMappedSupercl
 		return this.readOnly;
 	}
 	
-	public ConverterHolder getConverterHolder() {
+	public EclipseLinkConverterHolder getConverterHolder() {
 		return this.converterHolder;
 	}
 	
@@ -88,22 +88,22 @@ public class EclipseLinkOrmMappedSuperclassImpl extends AbstractOrmMappedSupercl
 		return (EclipseLinkJavaMappedSuperclass) super.getJavaMappedSuperclassForDefaults();
 	}
 	
-	protected ReadOnly getJavaReadOnly() {
+	protected EclipseLinkReadOnly getJavaReadOnly() {
 		EclipseLinkJavaMappedSuperclass javaMappedSuperclass = getJavaMappedSuperclassForDefaults();
 		return (javaMappedSuperclass == null) ? null : javaMappedSuperclass.getReadOnly();
 	}
 	
-	protected Customizer getJavaCustomizer() {
+	protected EclipseLinkCustomizer getJavaCustomizer() {
 		EclipseLinkJavaMappedSuperclass javaMappedSuperclass = getJavaMappedSuperclassForDefaults();
 		return (javaMappedSuperclass == null) ? null : javaMappedSuperclass.getCustomizer();
 	}
 	
-	protected ChangeTracking getJavaChangeTracking() {
+	protected EclipseLinkChangeTracking getJavaChangeTracking() {
 		EclipseLinkJavaMappedSuperclass javaMappedSuperclass = getJavaMappedSuperclassForDefaults();
 		return (javaMappedSuperclass == null) ? null : javaMappedSuperclass.getChangeTracking();
 	}
 	
-	protected JavaCaching getJavaCaching() {
+	protected EclipseLinkJavaCaching getJavaCaching() {
 		EclipseLinkJavaMappedSuperclass javaMappedSuperclass = getJavaMappedSuperclassForDefaults();
 		return (javaMappedSuperclass == null) ? null : javaMappedSuperclass.getCaching();
 	}

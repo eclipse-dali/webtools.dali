@@ -12,8 +12,8 @@ package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 import java.util.List;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmEmbeddable;
-import org.eclipse.jpt.eclipselink.core.context.ChangeTracking;
-import org.eclipse.jpt.eclipselink.core.context.Customizer;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkChangeTracking;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCustomizer;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaEmbeddable;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlChangeTrackingHolder;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConvertersHolder;
@@ -38,15 +38,15 @@ public class EclipseLinkOrmEmbeddableImpl extends AbstractOrmEmbeddable
 		this.converterHolder = new EclipseLinkOrmConverterHolder(this, (XmlConvertersHolder) this.resourceTypeMapping); 
 	}
 
-	public Customizer getCustomizer() {
+	public EclipseLinkCustomizer getCustomizer() {
 		return this.customizer;
 	}
 	
-	public ChangeTracking getChangeTracking() {
+	public EclipseLinkChangeTracking getChangeTracking() {
 		return this.changeTracking;
 	}
 
-	public ConverterHolder getConverterHolder() {
+	public EclipseLinkConverterHolder getConverterHolder() {
 		return this.converterHolder;
 	}
 
@@ -68,12 +68,12 @@ public class EclipseLinkOrmEmbeddableImpl extends AbstractOrmEmbeddable
 	}
 	
 	
-	protected Customizer getJavaCustomizer() {
+	protected EclipseLinkCustomizer getJavaCustomizer() {
 		EclipseLinkJavaEmbeddable javaEmbeddable = getJavaEmbeddableForDefaults();
 		return (javaEmbeddable == null) ? null : javaEmbeddable.getCustomizer();
 	}
 	
-	protected ChangeTracking getJavaChangeTracking() {
+	protected EclipseLinkChangeTracking getJavaChangeTracking() {
 		EclipseLinkJavaEmbeddable javaEmbeddable = getJavaEmbeddableForDefaults();
 		return (javaEmbeddable == null) ? null : javaEmbeddable.getChangeTracking();
 	}

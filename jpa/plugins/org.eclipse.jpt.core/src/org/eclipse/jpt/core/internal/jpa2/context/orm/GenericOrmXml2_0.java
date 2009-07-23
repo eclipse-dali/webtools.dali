@@ -41,7 +41,7 @@ public class GenericOrmXml2_0
 	
 	@Override
 	protected EntityMappings buildEntityMappings(org.eclipse.jpt.core.resource.orm.XmlEntityMappings xmlEntityMappings) {
-		return getJpaFactory().build2_0EntityMappings(this, (XmlEntityMappings) xmlEntityMappings);
+		return getJpaFactory().buildEntityMappings2_0(this, (XmlEntityMappings) xmlEntityMappings);
 	}	
 	
 	// ********** updating **********

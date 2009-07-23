@@ -41,34 +41,34 @@ import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaFactory;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaOneToManyMapping;
-import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaBasicCollectionMapping;
-import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaBasicMapMapping;
-import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaTransformationMapping;
-import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaVariableOneToOneMapping;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaBasicCollectionMapping;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaBasicMapMapping;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaTransformationMapping;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaVariableOneToOneMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkEntityMappings;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmBasicCollectionMapping;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmBasicMapMapping;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmTransformationMapping;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmVariableOneToOneMapping;
-import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.EclipseLink1_1EntityMappingsImpl;
-import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.EclipseLink1_1OrmPersistentAttribute;
-import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.EclipseLink1_1OrmPersistentType;
-import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.EclipseLink1_1OrmXml;
-import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.EclipseLink1_1VirtualXmlBasic;
-import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.EclipseLink1_1VirtualXmlBasicCollection;
-import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.EclipseLink1_1VirtualXmlBasicMap;
-import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.EclipseLink1_1VirtualXmlEmbedded;
-import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.EclipseLink1_1VirtualXmlEmbeddedId;
-import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.EclipseLink1_1VirtualXmlId;
-import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.EclipseLink1_1VirtualXmlManyToMany;
-import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.EclipseLink1_1VirtualXmlManyToOne;
-import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.EclipseLink1_1VirtualXmlNullAttributeMapping;
-import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.EclipseLink1_1VirtualXmlOneToMany;
-import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.EclipseLink1_1VirtualXmlOneToOne;
-import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.EclipseLink1_1VirtualXmlTransformation;
-import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.EclipseLink1_1VirtualXmlTransient;
-import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.EclipseLink1_1VirtualXmlVariableOneToOne;
-import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.EclipseLink1_1VirtualXmlVersion;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmBasicCollectionMapping;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmBasicMapMapping;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmTransformationMapping;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmVariableOneToOneMapping;
+import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.EclipseLinkEntityMappings1_1;
+import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.EclipseLinkOrmPersistentAttribute1_1;
+import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.EclipseLinkOrmPersistentType1_1;
+import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.EclipseLinkOrmXml1_1;
+import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.EclipseLinkVirtualXmlBasic1_1;
+import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.EclipseLinkVirtualXmlBasicCollection1_1;
+import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.EclipseLinkVirtualXmlBasicMap1_1;
+import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.EclipseLinkVirtualXmlEmbedded1_1;
+import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.EclipseLinkVirtualXmlEmbeddedId1_1;
+import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.EclipseLinkVirtualXmlId1_1;
+import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.EclipseLinkVirtualXmlManyToMany1_1;
+import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.EclipseLinkVirtualXmlManyToOne1_1;
+import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.EclipseLinkVirtualXmlNullAttributeMapping1_1;
+import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.EclipseLinkVirtualXmlOneToMany1_1;
+import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.EclipseLinkVirtualXmlOneToOne1_1;
+import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.EclipseLinkVirtualXmlTransformation1_1;
+import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.EclipseLinkVirtualXmlTransient1_1;
+import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.EclipseLinkVirtualXmlVariableOneToOne1_1;
+import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm.EclipseLinkVirtualXmlVersion1_1;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasic;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicCollection;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicMap;
@@ -104,85 +104,85 @@ public class EclipseLink1_1JpaFactory
 		return this.buildEclipseLink1_1OrmXml(parent, resource);
 	}
 	
-	protected EclipseLink1_1OrmXml buildEclipseLink1_1OrmXml(MappingFileRef parent, JpaXmlResource resource) {
-		return new EclipseLink1_1OrmXml(parent, resource);
+	protected EclipseLinkOrmXml1_1 buildEclipseLink1_1OrmXml(MappingFileRef parent, JpaXmlResource resource) {
+		return new EclipseLinkOrmXml1_1(parent, resource);
 	}
 	
 	
 	// ********** EclipseLink-specific ORM Virtual Resource Model **********
 	
 	public XmlBasic buildEclipseLink1_1VirtualXmlBasic(OrmTypeMapping ormTypeMapping, JavaBasicMapping javaBasicMapping) {
-		return new EclipseLink1_1VirtualXmlBasic(ormTypeMapping, javaBasicMapping);
+		return new EclipseLinkVirtualXmlBasic1_1(ormTypeMapping, javaBasicMapping);
 	}
 	
 	public XmlId buildEclipseLink1_1VirtualXmlId(OrmTypeMapping ormTypeMapping, JavaIdMapping javaIdMapping) {
-		return new EclipseLink1_1VirtualXmlId(ormTypeMapping, javaIdMapping);
+		return new EclipseLinkVirtualXmlId1_1(ormTypeMapping, javaIdMapping);
 	}
 	
 	public XmlEmbeddedId buildEclipseLink1_1VirtualXmlEmbeddedId(OrmTypeMapping ormTypeMapping, JavaEmbeddedIdMapping javaEmbeddedIdMapping) {
-		return new EclipseLink1_1VirtualXmlEmbeddedId(ormTypeMapping, javaEmbeddedIdMapping);
+		return new EclipseLinkVirtualXmlEmbeddedId1_1(ormTypeMapping, javaEmbeddedIdMapping);
 	}
 	
 	public XmlEmbedded buildEclipseLink1_1VirtualXmlEmbedded(OrmTypeMapping ormTypeMapping, JavaEmbeddedMapping javaEmbeddedMapping) {
-		return new EclipseLink1_1VirtualXmlEmbedded(ormTypeMapping, javaEmbeddedMapping);
+		return new EclipseLinkVirtualXmlEmbedded1_1(ormTypeMapping, javaEmbeddedMapping);
 	}
 	
 	public XmlManyToMany buildEclipseLink1_1VirtualXmlManyToMany(OrmTypeMapping ormTypeMapping, JavaManyToManyMapping javaManyToManyMapping) {
-		return new EclipseLink1_1VirtualXmlManyToMany(ormTypeMapping, javaManyToManyMapping);
+		return new EclipseLinkVirtualXmlManyToMany1_1(ormTypeMapping, javaManyToManyMapping);
 	}
 	
 	public XmlManyToOne buildEclipseLink1_1VirtualXmlManyToOne(OrmTypeMapping ormTypeMapping, JavaManyToOneMapping javaManyToOneMapping) {
-		return new EclipseLink1_1VirtualXmlManyToOne(ormTypeMapping, javaManyToOneMapping);
+		return new EclipseLinkVirtualXmlManyToOne1_1(ormTypeMapping, javaManyToOneMapping);
 	}
 	
 	public XmlOneToMany buildEclipseLink1_1VirtualXmlOneToMany(OrmTypeMapping ormTypeMapping, EclipseLinkJavaOneToManyMapping javaOneToManyMapping) {
-		return new EclipseLink1_1VirtualXmlOneToMany(ormTypeMapping, javaOneToManyMapping);
+		return new EclipseLinkVirtualXmlOneToMany1_1(ormTypeMapping, javaOneToManyMapping);
 	}
 	
 	public XmlOneToOne buildEclipseLink1_1VirtualXmlOneToOne(OrmTypeMapping ormTypeMapping, JavaOneToOneMapping javaOneToOneMapping) {
-		return new EclipseLink1_1VirtualXmlOneToOne(ormTypeMapping, javaOneToOneMapping);
+		return new EclipseLinkVirtualXmlOneToOne1_1(ormTypeMapping, javaOneToOneMapping);
 	}
 	
 	public XmlVersion buildEclipseLink1_1VirtualXmlVersion(OrmTypeMapping ormTypeMapping, JavaVersionMapping javaVersionMapping) {
-		return new EclipseLink1_1VirtualXmlVersion(ormTypeMapping, javaVersionMapping);
+		return new EclipseLinkVirtualXmlVersion1_1(ormTypeMapping, javaVersionMapping);
 	}
 	
-	public XmlBasicCollection buildEclipseLink1_1VirtualXmlBasicCollection(OrmTypeMapping ormTypeMapping, JavaBasicCollectionMapping javaBasicCollectionMapping) {
-		return new EclipseLink1_1VirtualXmlBasicCollection(ormTypeMapping, javaBasicCollectionMapping);
+	public XmlBasicCollection buildEclipseLink1_1VirtualXmlBasicCollection(OrmTypeMapping ormTypeMapping, EclipseLinkJavaBasicCollectionMapping javaBasicCollectionMapping) {
+		return new EclipseLinkVirtualXmlBasicCollection1_1(ormTypeMapping, javaBasicCollectionMapping);
 	}
 	
-	public XmlBasicMap buildEclipseLink1_1VirtualXmlBasicMap(OrmTypeMapping ormTypeMapping, JavaBasicMapMapping javaBasicMapMapping) {
-		return new EclipseLink1_1VirtualXmlBasicMap(ormTypeMapping, javaBasicMapMapping);
+	public XmlBasicMap buildEclipseLink1_1VirtualXmlBasicMap(OrmTypeMapping ormTypeMapping, EclipseLinkJavaBasicMapMapping javaBasicMapMapping) {
+		return new EclipseLinkVirtualXmlBasicMap1_1(ormTypeMapping, javaBasicMapMapping);
 	}
 	
-	public XmlTransformation buildEclipseLink1_1VirtualXmlTransformation(OrmTypeMapping ormTypeMapping, JavaTransformationMapping javaTransformationMapping) {
-		return new EclipseLink1_1VirtualXmlTransformation(ormTypeMapping, javaTransformationMapping);
+	public XmlTransformation buildEclipseLink1_1VirtualXmlTransformation(OrmTypeMapping ormTypeMapping, EclipseLinkJavaTransformationMapping javaTransformationMapping) {
+		return new EclipseLinkVirtualXmlTransformation1_1(ormTypeMapping, javaTransformationMapping);
 	}
 	
-	public XmlVariableOneToOne buildEclipseLink1_1VirtualXmlVariableOneToOne(OrmTypeMapping ormTypeMapping, JavaVariableOneToOneMapping javaVariableOneToOneMapping) {
-		return new EclipseLink1_1VirtualXmlVariableOneToOne(ormTypeMapping, javaVariableOneToOneMapping);
+	public XmlVariableOneToOne buildEclipseLink1_1VirtualXmlVariableOneToOne(OrmTypeMapping ormTypeMapping, EclipseLinkJavaVariableOneToOneMapping javaVariableOneToOneMapping) {
+		return new EclipseLinkVirtualXmlVariableOneToOne1_1(ormTypeMapping, javaVariableOneToOneMapping);
 	}
 	
 	public XmlTransient buildEclipseLink1_1VirtualXmlTransient(OrmTypeMapping ormTypeMapping, JavaTransientMapping javaAttributeMapping) {
-		return new EclipseLink1_1VirtualXmlTransient(ormTypeMapping, javaAttributeMapping);
+		return new EclipseLinkVirtualXmlTransient1_1(ormTypeMapping, javaAttributeMapping);
 	}
 	
 	public XmlNullAttributeMapping buildEclipseLink1_1VirtualXmlNullAttributeMapping(OrmTypeMapping ormTypeMapping, JavaAttributeMapping javaAttributeMapping) {
-		return new EclipseLink1_1VirtualXmlNullAttributeMapping(ormTypeMapping, javaAttributeMapping);
+		return new EclipseLinkVirtualXmlNullAttributeMapping1_1(ormTypeMapping, javaAttributeMapping);
 	}
 	
 	// ********** EclipseLink1.1-specific ORM Context Model **********
 	
-	public EntityMappings buildEclipseLink1_1EntityMappings(EclipseLink1_1OrmXml parent, XmlEntityMappings xmlEntityMappings) {
-		return new EclipseLink1_1EntityMappingsImpl(parent, xmlEntityMappings);
+	public EntityMappings buildEclipseLink1_1EntityMappings(EclipseLinkOrmXml1_1 parent, XmlEntityMappings xmlEntityMappings) {
+		return new EclipseLinkEntityMappings1_1(parent, xmlEntityMappings);
 	}
 
 	public OrmPersistentType buildEclipseLink1_1OrmPersistentType(EclipseLinkEntityMappings parent, XmlTypeMapping resourceMapping) {
-		return new EclipseLink1_1OrmPersistentType(parent, resourceMapping);
+		return new EclipseLinkOrmPersistentType1_1(parent, resourceMapping);
 	}
 
 	public OrmPersistentAttribute buildEclipseLink1_1OrmPersistentAttribute(OrmPersistentType parent, OrmPersistentAttribute.Owner owner, XmlAttributeMapping resourceMapping) {
-		return new EclipseLink1_1OrmPersistentAttribute(parent, owner, resourceMapping);
+		return new EclipseLinkOrmPersistentAttribute1_1(parent, owner, resourceMapping);
 	}
 	
 	public OrmBasicMapping buildEclipseLink1_1OrmBasicMapping(OrmPersistentAttribute parent, XmlBasic resourceMapping) {
@@ -225,20 +225,20 @@ public class EclipseLink1_1JpaFactory
 		return buildOrmTransientMapping(parent, resourceMapping);
 	}
 				
-	public OrmBasicCollectionMapping buildEclipseLink1_1OrmBasicCollectionMapping(OrmPersistentAttribute parent, XmlBasicCollection resourceMapping) {
-		return buildOrmBasicCollectionMapping(parent, resourceMapping);
+	public EclipseLinkOrmBasicCollectionMapping buildEclipseLink1_1OrmBasicCollectionMapping(OrmPersistentAttribute parent, XmlBasicCollection resourceMapping) {
+		return buildEclipseLinkOrmBasicCollectionMapping(parent, resourceMapping);
 	}
 	
-	public OrmBasicMapMapping buildEclipseLink1_1OrmBasicMapMapping(OrmPersistentAttribute parent, XmlBasicMap resourceMapping) {
-		return buildOrmBasicMapMapping(parent, resourceMapping);
+	public EclipseLinkOrmBasicMapMapping buildEclipseLink1_1OrmBasicMapMapping(OrmPersistentAttribute parent, XmlBasicMap resourceMapping) {
+		return buildEclipseLinkOrmBasicMapMapping(parent, resourceMapping);
 	}
 	
-	public OrmTransformationMapping buildEclipseLink1_1OrmTransformationMapping(OrmPersistentAttribute parent, XmlTransformation resourceMapping) {
-		return buildOrmTransformationMapping(parent, resourceMapping);
+	public EclipseLinkOrmTransformationMapping buildEclipseLink1_1OrmTransformationMapping(OrmPersistentAttribute parent, XmlTransformation resourceMapping) {
+		return buildEclipseLinkOrmTransformationMapping(parent, resourceMapping);
 	}
 	
-	public OrmVariableOneToOneMapping buildEclipseLink1_1OrmVariableOneToOneMapping(OrmPersistentAttribute parent, XmlVariableOneToOne resourceMapping) {
-		return buildOrmVariableOneToOneMapping(parent, resourceMapping);
+	public EclipseLinkOrmVariableOneToOneMapping buildEclipseLink1_1OrmVariableOneToOneMapping(OrmPersistentAttribute parent, XmlVariableOneToOne resourceMapping) {
+		return buildEclipseLinkOrmVariableOneToOneMapping(parent, resourceMapping);
 	}
 	
 	public OrmAttributeMapping buildEclipseLink1_1OrmNullAttributeMapping(OrmPersistentAttribute parent, XmlNullAttributeMapping resourceMapping) {

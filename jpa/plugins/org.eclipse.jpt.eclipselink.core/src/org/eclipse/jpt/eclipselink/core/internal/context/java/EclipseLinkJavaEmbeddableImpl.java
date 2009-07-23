@@ -14,17 +14,17 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaEmbeddable;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.eclipselink.core.context.ChangeTracking;
-import org.eclipse.jpt.eclipselink.core.context.Customizer;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkChangeTracking;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCustomizer;
 import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaEmbeddable;
-import org.eclipse.jpt.eclipselink.core.context.java.JavaConverterHolder;
+import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaConverterHolder;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class EclipseLinkJavaEmbeddableImpl extends AbstractJavaEmbeddable implements EclipseLinkJavaEmbeddable
 {
 	
-	protected final JavaConverterHolder converterHolder;
+	protected final EclipseLinkJavaConverterHolder converterHolder;
 	
 	protected final EclipseLinkJavaCustomizer customizer;
 	
@@ -32,20 +32,20 @@ public class EclipseLinkJavaEmbeddableImpl extends AbstractJavaEmbeddable implem
 	
 	public EclipseLinkJavaEmbeddableImpl(JavaPersistentType parent) {
 		super(parent);
-		this.converterHolder = new EclipseLinkJavaConverterHolder(this);
+		this.converterHolder = new EclipseLinkJavaConverterHolderImpl(this);
 		this.customizer = new EclipseLinkJavaCustomizer(this);
 		this.changeTracking = new EclipseLinkJavaChangeTracking(this);
 	}
 	
-	public JavaConverterHolder getConverterHolder() {
+	public EclipseLinkJavaConverterHolder getConverterHolder() {
 		return this.converterHolder;
 	}
 	
-	public Customizer getCustomizer() {
+	public EclipseLinkCustomizer getCustomizer() {
 		return this.customizer;
 	}
 	
-	public ChangeTracking getChangeTracking() {
+	public EclipseLinkChangeTracking getChangeTracking() {
 		return this.changeTracking;
 	}	
 	

@@ -114,137 +114,137 @@ public class Generic2_0JpaFactory extends GenericJpaFactory
 	
 	// ********** Context Nodes **********
 	
-	public MappingFile build2_0MappingFile(MappingFileRef parent, JpaXmlResource resource) {
-		return build2_0OrmXml(parent, resource);
+	public MappingFile buildMappingFile2_0(MappingFileRef parent, JpaXmlResource resource) {
+		return buildOrmXml2_0(parent, resource);
 	}
 	
-	protected GenericOrmXml2_0 build2_0OrmXml(MappingFileRef parent, JpaXmlResource resource) {
+	protected GenericOrmXml2_0 buildOrmXml2_0(MappingFileRef parent, JpaXmlResource resource) {
 		return new GenericOrmXml2_0(parent, resource);
 	}
 
 	// ********** Generic 2.0-specific ORM Context Model **********
 	
-	public EntityMappings build2_0EntityMappings(GenericOrmXml2_0 parent, XmlEntityMappings xmlEntityMappings) {
+	public EntityMappings buildEntityMappings2_0(GenericOrmXml2_0 parent, XmlEntityMappings xmlEntityMappings) {
 		return new GenericEntityMappings2_0(parent, xmlEntityMappings);
 	}
 	
-	public PersistenceUnitMetadata build2_0PersistenceUnitMetadata(GenericEntityMappings2_0 parent, XmlEntityMappings xmlEntityMappings) {
+	public PersistenceUnitMetadata buildPersistenceUnitMetadata2_0(GenericEntityMappings2_0 parent, XmlEntityMappings xmlEntityMappings) {
 		return new GenericPersistenceUnitMetadata2_0(parent, xmlEntityMappings);
 	}
 	
-	public OrmPersistentType build2_0OrmPersistentType(EntityMappings parent, XmlTypeMapping resourceMapping) {
+	public OrmPersistentType buildOrmPersistentType2_0(EntityMappings parent, XmlTypeMapping resourceMapping) {
 		return new GenericOrmPersistentType2_0(parent, resourceMapping);
 	}
 
-	public OrmEmbeddable build2_0OrmEmbeddable(OrmPersistentType parent, XmlEmbeddable resourceMapping) {
+	public OrmEmbeddable buildOrmEmbeddable2_0(OrmPersistentType parent, XmlEmbeddable resourceMapping) {
 		return new GenericOrmEmbeddable2_0(parent, resourceMapping);
 	}
 
-	public OrmEntity build2_0OrmEntity(OrmPersistentType parent, XmlEntity resourceMapping) {
+	public OrmEntity buildOrmEntity2_0(OrmPersistentType parent, XmlEntity resourceMapping) {
 		return buildOrmEntity(parent, resourceMapping);
 	}
 
-	public OrmMappedSuperclass build2_0OrmMappedSuperclass(OrmPersistentType parent, XmlMappedSuperclass resourceMapping) {
+	public OrmMappedSuperclass buildOrmMappedSuperclass2_0(OrmPersistentType parent, XmlMappedSuperclass resourceMapping) {
 		return buildOrmMappedSuperclass(parent, resourceMapping);
 	}
 	
-	public OrmPersistentAttribute build2_0OrmPersistentAttribute(OrmPersistentType parent, OrmPersistentAttribute.Owner owner, XmlAttributeMapping resourceMapping) {
+	public OrmPersistentAttribute buildOrmPersistentAttribute2_0(OrmPersistentType parent, OrmPersistentAttribute.Owner owner, XmlAttributeMapping resourceMapping) {
 		return new GenericOrmPersistentAttribute2_0(parent, owner, resourceMapping);
 	}
 	
-	public OrmBasicMapping build2_0OrmBasicMapping(OrmPersistentAttribute parent, XmlBasic resourceMapping) {
+	public OrmBasicMapping buildOrmBasicMapping2_0(OrmPersistentAttribute parent, XmlBasic resourceMapping) {
 		return buildOrmBasicMapping(parent, resourceMapping);
 	}
 	
-	public OrmEmbeddedMapping build2_0OrmEmbeddedMapping(OrmPersistentAttribute parent, XmlEmbedded resourceMapping) {
+	public OrmEmbeddedMapping buildOrmEmbeddedMapping2_0(OrmPersistentAttribute parent, XmlEmbedded resourceMapping) {
 		return buildOrmEmbeddedMapping(parent, resourceMapping);
 	}
 	
-	public OrmEmbeddedIdMapping build2_0OrmEmbeddedIdMapping(OrmPersistentAttribute parent, XmlEmbeddedId resourceMapping) {
+	public OrmEmbeddedIdMapping buildOrmEmbeddedIdMapping2_0(OrmPersistentAttribute parent, XmlEmbeddedId resourceMapping) {
 		return buildOrmEmbeddedIdMapping(parent, resourceMapping);
 	}
 	
-	public OrmIdMapping build2_0OrmIdMapping(OrmPersistentAttribute parent, XmlId resourceMapping) {
+	public OrmIdMapping buildOrmIdMapping2_0(OrmPersistentAttribute parent, XmlId resourceMapping) {
 		return buildOrmIdMapping(parent, resourceMapping);
 	}
 	
-	public OrmManyToManyMapping build2_0OrmManyToManyMapping(OrmPersistentAttribute parent, XmlManyToMany resourceMapping) {
+	public OrmManyToManyMapping buildOrmManyToManyMapping2_0(OrmPersistentAttribute parent, XmlManyToMany resourceMapping) {
 		return buildOrmManyToManyMapping(parent, resourceMapping);
 	}
 	
-	public OrmManyToOneMapping build2_0OrmManyToOneMapping(OrmPersistentAttribute parent, XmlManyToOne resourceMapping) {
+	public OrmManyToOneMapping buildOrmManyToOneMapping2_0(OrmPersistentAttribute parent, XmlManyToOne resourceMapping) {
 		return buildOrmManyToOneMapping(parent, resourceMapping);
 	}
 	
-	public OrmOneToManyMapping build2_0OrmOneToManyMapping(OrmPersistentAttribute parent, XmlOneToMany resourceMapping) {
+	public OrmOneToManyMapping buildOrmOneToManyMapping2_0(OrmPersistentAttribute parent, XmlOneToMany resourceMapping) {
 		return buildOrmOneToManyMapping(parent, resourceMapping);
 	}
 	
-	public OrmOneToOneMapping build2_0OrmOneToOneMapping(OrmPersistentAttribute parent, XmlOneToOne resourceMapping) {
+	public OrmOneToOneMapping buildOrmOneToOneMapping2_0(OrmPersistentAttribute parent, XmlOneToOne resourceMapping) {
 		return buildOrmOneToOneMapping(parent, resourceMapping);
 	}
 	
-	public OrmTransientMapping build2_0OrmTransientMapping(OrmPersistentAttribute parent, XmlTransient resourceMapping) {
+	public OrmTransientMapping buildOrmTransientMapping2_0(OrmPersistentAttribute parent, XmlTransient resourceMapping) {
 		return buildOrmTransientMapping(parent, resourceMapping);
 	}
 	
-	public OrmVersionMapping build2_0OrmVersionMapping(OrmPersistentAttribute parent, XmlVersion resourceMapping) {
+	public OrmVersionMapping buildOrmVersionMapping2_0(OrmPersistentAttribute parent, XmlVersion resourceMapping) {
 		return buildOrmVersionMapping(parent, resourceMapping);
 	}
 	
-	public OrmAttributeMapping build2_0OrmNullAttributeMapping(OrmPersistentAttribute parent, XmlNullAttributeMapping resourceMapping) {
+	public OrmAttributeMapping buildOrmNullAttributeMapping2_0(OrmPersistentAttribute parent, XmlNullAttributeMapping resourceMapping) {
 		return buildOrmNullAttributeMapping(parent, resourceMapping);
 	}
 	
-	public OrmGeneratorContainer build2_0OrmGeneratorContainer(XmlContextNode parent, XmlGeneratorContainer resourceGeneratorContainer) {
+	public OrmGeneratorContainer buildOrmGeneratorContainer2_0(XmlContextNode parent, XmlGeneratorContainer resourceGeneratorContainer) {
 		return super.buildOrmGeneratorContainer(parent, resourceGeneratorContainer);
 	}
 
-	public OrmSequenceGenerator2_0 build2_0OrmSequenceGenerator(XmlContextNode parent, XmlSequenceGenerator resourceSequenceGenerator) {
+	public OrmSequenceGenerator2_0 buildOrmSequenceGenerator2_0(XmlContextNode parent, XmlSequenceGenerator resourceSequenceGenerator) {
 		return new GenericOrmSequenceGenerator2_0(parent, resourceSequenceGenerator);
 	}
 	
-	public XmlBasic build2_0VirtualXmlBasic(OrmTypeMapping ormTypeMapping, JavaBasicMapping javaBasicMapping) {
+	public XmlBasic buildVirtualXmlBasic2_0(OrmTypeMapping ormTypeMapping, JavaBasicMapping javaBasicMapping) {
 		return new VirtualXmlBasic2_0(ormTypeMapping, javaBasicMapping);
 	}
 	
-	public XmlId build2_0VirtualXmlId(OrmTypeMapping ormTypeMapping, JavaIdMapping javaIdMapping) {
+	public XmlId buildVirtualXmlId2_0(OrmTypeMapping ormTypeMapping, JavaIdMapping javaIdMapping) {
 		return new VirtualXmlId2_0(ormTypeMapping, javaIdMapping);
 	}
 	
-	public XmlEmbeddedId build2_0VirtualXmlEmbeddedId(OrmTypeMapping ormTypeMapping, JavaEmbeddedIdMapping javaEmbeddedIdMapping) {
+	public XmlEmbeddedId buildVirtualXmlEmbeddedId2_0(OrmTypeMapping ormTypeMapping, JavaEmbeddedIdMapping javaEmbeddedIdMapping) {
 		return new VirtualXmlEmbeddedId2_0(ormTypeMapping, javaEmbeddedIdMapping);
 	}
 	
-	public XmlEmbedded build2_0VirtualXmlEmbedded(OrmTypeMapping ormTypeMapping, JavaEmbeddedMapping javaEmbeddedMapping) {
+	public XmlEmbedded buildVirtualXmlEmbedded2_0(OrmTypeMapping ormTypeMapping, JavaEmbeddedMapping javaEmbeddedMapping) {
 		return new VirtualXmlEmbedded2_0(ormTypeMapping, javaEmbeddedMapping);
 	}
 	
-	public XmlManyToMany build2_0VirtualXmlManyToMany(OrmTypeMapping ormTypeMapping, JavaManyToManyMapping javaManyToManyMapping) {
+	public XmlManyToMany buildVirtualXmlManyToMany2_0(OrmTypeMapping ormTypeMapping, JavaManyToManyMapping javaManyToManyMapping) {
 		return new VirtualXmlManyToMany2_0(ormTypeMapping, javaManyToManyMapping);
 	}
 	
-	public XmlManyToOne build2_0VirtualXmlManyToOne(OrmTypeMapping ormTypeMapping, JavaManyToOneMapping javaManyToOneMapping) {
+	public XmlManyToOne buildVirtualXmlManyToOne2_0(OrmTypeMapping ormTypeMapping, JavaManyToOneMapping javaManyToOneMapping) {
 		return new VirtualXmlManyToOne2_0(ormTypeMapping, javaManyToOneMapping);
 	}
 	
-	public XmlOneToMany build2_0VirtualXmlOneToMany(OrmTypeMapping ormTypeMapping, JavaOneToManyMapping javaOneToManyMapping) {
+	public XmlOneToMany buildVirtualXmlOneToMany2_0(OrmTypeMapping ormTypeMapping, JavaOneToManyMapping javaOneToManyMapping) {
 		return new VirtualXmlOneToMany2_0(ormTypeMapping, javaOneToManyMapping);
 	}
 	
-	public XmlOneToOne build2_0VirtualXmlOneToOne(OrmTypeMapping ormTypeMapping, JavaOneToOneMapping javaOneToOneMapping) {
+	public XmlOneToOne buildVirtualXmlOneToOne2_0(OrmTypeMapping ormTypeMapping, JavaOneToOneMapping javaOneToOneMapping) {
 		return new VirtualXmlOneToOne2_0(ormTypeMapping, javaOneToOneMapping);
 	}
 	
-	public XmlTransient build2_0VirtualXmlTransient(OrmTypeMapping ormTypeMapping, JavaTransientMapping javaTransientMapping) {
+	public XmlTransient buildVirtualXmlTransient2_0(OrmTypeMapping ormTypeMapping, JavaTransientMapping javaTransientMapping) {
 		return new VirtualXmlTransient2_0(ormTypeMapping, javaTransientMapping);
 	}
 	
-	public XmlVersion build2_0VirtualXmlVersion(OrmTypeMapping ormTypeMapping, JavaVersionMapping javaVersionMapping) {
+	public XmlVersion buildVirtualXmlVersion2_0(OrmTypeMapping ormTypeMapping, JavaVersionMapping javaVersionMapping) {
 		return new VirtualXmlVersion2_0(ormTypeMapping, javaVersionMapping);
 	}
 	
-	public XmlNullAttributeMapping build2_0VirtualXmlNullAttributeMapping(OrmTypeMapping ormTypeMapping, JavaAttributeMapping javaAttributeMapping) {
+	public XmlNullAttributeMapping buildVirtualXmlNullAttributeMapping2_0(OrmTypeMapping ormTypeMapping, JavaAttributeMapping javaAttributeMapping) {
 		return new VirtualXmlNullAttributeMapping2_0(ormTypeMapping, javaAttributeMapping);
 	}
 

@@ -10,7 +10,7 @@
 package org.eclipse.jpt.eclipselink.ui.internal.persistence.customization;
 
 import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.eclipselink.core.context.Customizer;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCustomizer;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.customization.Customization;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.customization.Entity;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
@@ -83,7 +83,7 @@ public class CustomizerComposite extends Pane<Entity>
 			
 			@Override
 			protected String getSuperInterfaceName() {
-				return Customizer.ECLIPSELINK_DESCRIPTOR_CUSTOMIZER_CLASS_NAME;
+				return EclipseLinkCustomizer.ECLIPSELINK_DESCRIPTOR_CUSTOMIZER_CLASS_NAME;
 			}
 		};
 	}

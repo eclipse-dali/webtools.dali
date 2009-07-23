@@ -14,9 +14,9 @@ import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.eclipselink.core.context.ConversionValue;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConversionValue;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
-import org.eclipse.jpt.eclipselink.core.context.ObjectTypeConverter;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkObjectTypeConverter;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.swt.ColumnAdapter;
@@ -55,7 +55,7 @@ import org.eclipse.swt.widgets.Group;
  * @version 2.1
  * @since 2.1
  */
-public class ObjectTypeConverterComposite extends FormPane<ObjectTypeConverter>
+public class ObjectTypeConverterComposite extends FormPane<EclipseLinkObjectTypeConverter>
 {
 
 	/**
@@ -64,7 +64,7 @@ public class ObjectTypeConverterComposite extends FormPane<ObjectTypeConverter>
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public ObjectTypeConverterComposite(PropertyValueModel<? extends ObjectTypeConverter> subjectHolder,
+	public ObjectTypeConverterComposite(PropertyValueModel<? extends EclipseLinkObjectTypeConverter> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
 
@@ -97,7 +97,7 @@ public class ObjectTypeConverterComposite extends FormPane<ObjectTypeConverter>
 	}
 	
 	protected WritablePropertyValueModel<String> buildNameTextHolder() {
-		return new PropertyAspectAdapter<ObjectTypeConverter, String>(
+		return new PropertyAspectAdapter<EclipseLinkObjectTypeConverter, String>(
 				getSubjectHolder(), EclipseLinkConverter.NAME_PROPERTY) {
 			@Override
 			protected String buildValue_() {
@@ -114,13 +114,13 @@ public class ObjectTypeConverterComposite extends FormPane<ObjectTypeConverter>
 		};
 	}
 	
-	private ClassChooserPane<ObjectTypeConverter> addDataTypeChooser(Composite container) {
+	private ClassChooserPane<EclipseLinkObjectTypeConverter> addDataTypeChooser(Composite container) {
 
-		return new ClassChooserPane<ObjectTypeConverter>(this, container) {
+		return new ClassChooserPane<EclipseLinkObjectTypeConverter>(this, container) {
 
 			@Override
 			protected WritablePropertyValueModel<String> buildTextHolder() {
-				return new PropertyAspectAdapter<ObjectTypeConverter, String>(getSubjectHolder(), ObjectTypeConverter.DATA_TYPE_PROPERTY) {
+				return new PropertyAspectAdapter<EclipseLinkObjectTypeConverter, String>(getSubjectHolder(), EclipseLinkObjectTypeConverter.DATA_TYPE_PROPERTY) {
 					@Override
 					protected String buildValue_() {
 						return this.subject.getDataType();
@@ -165,13 +165,13 @@ public class ObjectTypeConverterComposite extends FormPane<ObjectTypeConverter>
 		};
 	}
 
-	private ClassChooserPane<ObjectTypeConverter> addObjectTypeChooser(Composite container) {
+	private ClassChooserPane<EclipseLinkObjectTypeConverter> addObjectTypeChooser(Composite container) {
 
-		return new ClassChooserPane<ObjectTypeConverter>(this, container) {
+		return new ClassChooserPane<EclipseLinkObjectTypeConverter>(this, container) {
 
 			@Override
 			protected WritablePropertyValueModel<String> buildTextHolder() {
-				return new PropertyAspectAdapter<ObjectTypeConverter, String>(getSubjectHolder(), ObjectTypeConverter.OBJECT_TYPE_PROPERTY) {
+				return new PropertyAspectAdapter<EclipseLinkObjectTypeConverter, String>(getSubjectHolder(), EclipseLinkObjectTypeConverter.OBJECT_TYPE_PROPERTY) {
 					@Override
 					protected String buildValue_() {
 						return this.subject.getObjectType();
@@ -229,10 +229,10 @@ public class ObjectTypeConverterComposite extends FormPane<ObjectTypeConverter>
 			EclipseLinkUiMappingsMessages.ObjectTypeConverterComposite_conversionValuesGroupTitle
 		);
 
-		WritablePropertyValueModel<ConversionValue> conversionValueHolder =
+		WritablePropertyValueModel<EclipseLinkConversionValue> conversionValueHolder =
 			buildConversionValueHolder();
 		// Conversion Values add/remove list pane
-		new AddRemoveTablePane<ObjectTypeConverter>(
+		new AddRemoveTablePane<EclipseLinkObjectTypeConverter>(
 			this,
 			conversionValuesGroupPane,
 			buildConversionValuesAdapter(),
@@ -242,15 +242,15 @@ public class ObjectTypeConverterComposite extends FormPane<ObjectTypeConverter>
 			null//TODO need a help context id for this
 		) {
 			@Override
-			protected ColumnAdapter<ConversionValue> buildColumnAdapter() {
+			protected ColumnAdapter<EclipseLinkConversionValue> buildColumnAdapter() {
 				return new ConversionValueColumnAdapter();
 			}
 		};
 
 	}
 
-	protected WritablePropertyValueModel<ConversionValue> buildConversionValueHolder() {
-		return new SimplePropertyValueModel<ConversionValue>();
+	protected WritablePropertyValueModel<EclipseLinkConversionValue> buildConversionValueHolder() {
+		return new SimplePropertyValueModel<EclipseLinkConversionValue>();
 	}
 
 	protected AddRemoveListPane.Adapter buildConversionValuesAdapter() {
@@ -273,13 +273,13 @@ public class ObjectTypeConverterComposite extends FormPane<ObjectTypeConverter>
 
 			@Override
 			public void optionOnSelection(ObjectListSelectionModel listSelectionModel) {
-				ConversionValue conversionValue = (ConversionValue) listSelectionModel.selectedValue();
+				EclipseLinkConversionValue conversionValue = (EclipseLinkConversionValue) listSelectionModel.selectedValue();
 				ConversionValueDialog dialog = new ConversionValueDialog(getControl().getShell(), getSubject(), conversionValue);
 				editConversionValueFromDialog(dialog, conversionValue);
 			}
 
 			public void removeSelectedItems(ObjectListSelectionModel listSelectionModel) {
-				ObjectTypeConverter converter = getSubject();
+				EclipseLinkObjectTypeConverter converter = getSubject();
 				int[] selectedIndices = listSelectionModel.selectedIndices();
 
 				for (int index = selectedIndices.length; --index >= 0; ) {
@@ -299,14 +299,14 @@ public class ObjectTypeConverterComposite extends FormPane<ObjectTypeConverter>
 			return;
 		}
 
-		ConversionValue conversionValue = this.getSubject().addConversionValue();
+		EclipseLinkConversionValue conversionValue = this.getSubject().addConversionValue();
 		conversionValue.setDataValue(dialog.getDataValue());
 		conversionValue.setObjectValue(dialog.getObjectValue());
 
 		listSelectionModel.setSelectedValue(conversionValue);
 	}
 
-	protected void editConversionValueFromDialog(ConversionValueDialog dialog, ConversionValue conversionValue) {
+	protected void editConversionValueFromDialog(ConversionValueDialog dialog, EclipseLinkConversionValue conversionValue) {
 		if (dialog.open() != Window.OK) {
 			return;
 		}
@@ -315,16 +315,16 @@ public class ObjectTypeConverterComposite extends FormPane<ObjectTypeConverter>
 		conversionValue.setObjectValue(dialog.getObjectValue());
 	}
 	
-	private ListValueModel<ConversionValue> buildConversionValuesListModel() {
-		return new ItemPropertyListValueModelAdapter<ConversionValue>(buildConversionValuesListHolder(), 
-			ConversionValue.DATA_VALUE_PROPERTY,
-			ConversionValue.OBJECT_VALUE_PROPERTY);
+	private ListValueModel<EclipseLinkConversionValue> buildConversionValuesListModel() {
+		return new ItemPropertyListValueModelAdapter<EclipseLinkConversionValue>(buildConversionValuesListHolder(), 
+			EclipseLinkConversionValue.DATA_VALUE_PROPERTY,
+			EclipseLinkConversionValue.OBJECT_VALUE_PROPERTY);
 	}	
 
-	private ListValueModel<ConversionValue> buildConversionValuesListHolder() {
-		return new ListAspectAdapter<ObjectTypeConverter, ConversionValue>(getSubjectHolder(), ObjectTypeConverter.CONVERSION_VALUES_LIST) {
+	private ListValueModel<EclipseLinkConversionValue> buildConversionValuesListHolder() {
+		return new ListAspectAdapter<EclipseLinkObjectTypeConverter, EclipseLinkConversionValue>(getSubjectHolder(), EclipseLinkObjectTypeConverter.CONVERSION_VALUES_LIST) {
 			@Override
-			protected ListIterator<ConversionValue> listIterator_() {
+			protected ListIterator<EclipseLinkConversionValue> listIterator_() {
 				return this.subject.conversionValues();
 			}
 
@@ -340,17 +340,17 @@ public class ObjectTypeConverterComposite extends FormPane<ObjectTypeConverter>
 	}
 	
 	protected ListValueModel<String> buildDefaultObjectValueListHolder() {
-		return new TransformationListValueModelAdapter<ConversionValue, String>(buildConversionValuesListModel()) {
+		return new TransformationListValueModelAdapter<EclipseLinkConversionValue, String>(buildConversionValuesListModel()) {
 			@Override
-			protected String transformItem(ConversionValue conversionValue) {
+			protected String transformItem(EclipseLinkConversionValue conversionValue) {
 				return conversionValue.getObjectValue();
 			}
 		};
 	}
 	
 	protected WritablePropertyValueModel<String> buildDefaultObjectValueHolder() {
-		return new PropertyAspectAdapter<ObjectTypeConverter, String>(
-				getSubjectHolder(), ObjectTypeConverter.DEFAULT_OBJECT_VALUE_PROPERTY) {
+		return new PropertyAspectAdapter<EclipseLinkObjectTypeConverter, String>(
+				getSubjectHolder(), EclipseLinkObjectTypeConverter.DEFAULT_OBJECT_VALUE_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return this.subject.getDefaultObjectValue();
@@ -375,9 +375,9 @@ public class ObjectTypeConverterComposite extends FormPane<ObjectTypeConverter>
 	}
 
 	protected PropertyValueModel<Boolean> buildBooleanHolder() {
-		return new TransformationPropertyValueModel<ObjectTypeConverter, Boolean>(getSubjectHolder()) {
+		return new TransformationPropertyValueModel<EclipseLinkObjectTypeConverter, Boolean>(getSubjectHolder()) {
 			@Override
-			protected Boolean transform(ObjectTypeConverter value) {
+			protected Boolean transform(EclipseLinkObjectTypeConverter value) {
 				return Boolean.valueOf(value != null);
 			}
 		};
@@ -392,7 +392,7 @@ public class ObjectTypeConverterComposite extends FormPane<ObjectTypeConverter>
 		
 		public String getColumnText(Object element, int columnIndex) {
 		
-			ConversionValue conversionValue = (ConversionValue) element;
+			EclipseLinkConversionValue conversionValue = (EclipseLinkConversionValue) element;
 			String value = null;
 			
 			switch (columnIndex) {
@@ -415,15 +415,15 @@ public class ObjectTypeConverterComposite extends FormPane<ObjectTypeConverter>
 		}
 	}
 
-	private static class ConversionValueColumnAdapter implements ColumnAdapter<ConversionValue> {
+	private static class ConversionValueColumnAdapter implements ColumnAdapter<EclipseLinkConversionValue> {
 
 		public static final int COLUMN_COUNT = 2;
 		//public static final int SELECTION_COLUMN = 0;
 		public static final int DATA_VALUE_COLUMN = 0;
 		public static final int OBJECT_VALUE_COLUMN = 1;
 
-		private WritablePropertyValueModel<String> buildDataValueHolder(ConversionValue subject) {
-			return new PropertyAspectAdapter<ConversionValue, String>(ConversionValue.DATA_VALUE_PROPERTY, subject) {
+		private WritablePropertyValueModel<String> buildDataValueHolder(EclipseLinkConversionValue subject) {
+			return new PropertyAspectAdapter<EclipseLinkConversionValue, String>(EclipseLinkConversionValue.DATA_VALUE_PROPERTY, subject) {
 				@Override
 				protected String buildValue_() {
 					return this.subject.getDataValue();
@@ -436,8 +436,8 @@ public class ObjectTypeConverterComposite extends FormPane<ObjectTypeConverter>
 			};
 		}
 
-		private WritablePropertyValueModel<String> buildObjectValueHolder(ConversionValue subject) {
-			return new PropertyAspectAdapter<ConversionValue, String>(ConversionValue.OBJECT_VALUE_PROPERTY, subject) {
+		private WritablePropertyValueModel<String> buildObjectValueHolder(EclipseLinkConversionValue subject) {
+			return new PropertyAspectAdapter<EclipseLinkConversionValue, String>(EclipseLinkConversionValue.OBJECT_VALUE_PROPERTY, subject) {
 				@Override
 				protected String buildValue_() {
 					return this.subject.getObjectValue();
@@ -450,7 +450,7 @@ public class ObjectTypeConverterComposite extends FormPane<ObjectTypeConverter>
 			};
 		}
 
-		public WritablePropertyValueModel<?>[] cellModels(ConversionValue subject) {
+		public WritablePropertyValueModel<?>[] cellModels(EclipseLinkConversionValue subject) {
 			WritablePropertyValueModel<?>[] holders = new WritablePropertyValueModel<?>[COLUMN_COUNT];
 			//holders[SELECTION_COLUMN] = new SimplePropertyValueModel<Object>();
 			holders[DATA_VALUE_COLUMN]      = buildDataValueHolder(subject);

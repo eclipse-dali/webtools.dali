@@ -16,10 +16,10 @@ import java.util.ListIterator;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.jpt.eclipselink.core.context.CustomConverter;
-import org.eclipse.jpt.eclipselink.core.context.ObjectTypeConverter;
-import org.eclipse.jpt.eclipselink.core.context.StructConverter;
-import org.eclipse.jpt.eclipselink.core.context.TypeConverter;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCustomConverter;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkObjectTypeConverter;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkStructConverter;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkTypeConverter;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConverter;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConvertersHolder;
@@ -30,7 +30,7 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class EclipseLinkOrmConverterHolder extends AbstractXmlContextNode implements ConverterHolder
+public class EclipseLinkOrmConverterHolder extends AbstractXmlContextNode implements EclipseLinkConverterHolder
 {	
 	private final XmlConvertersHolder resourceConvertersHolder;
 	
@@ -60,7 +60,7 @@ public class EclipseLinkOrmConverterHolder extends AbstractXmlContextNode implem
 		return this.customConverters.size();
 	}
 
-	public CustomConverter addCustomConverter(int index) {
+	public EclipseLinkCustomConverter addCustomConverter(int index) {
 		XmlConverter resourceConverter = EclipseLinkOrmFactory.eINSTANCE.createXmlConverter();
 		EclipseLinkOrmCustomConverter contextConverter = this.buildCustomConverter(resourceConverter);
 		this.customConverters.add(index, contextConverter);
@@ -83,11 +83,11 @@ public class EclipseLinkOrmConverterHolder extends AbstractXmlContextNode implem
 		fireItemRemoved(CUSTOM_CONVERTERS_LIST, index, removedConverter);
 	}
 
-	public void removeCustomConverter(CustomConverter converter) {
+	public void removeCustomConverter(EclipseLinkCustomConverter converter) {
 		this.removeCustomConverter(this.customConverters.indexOf(converter));
 	}
 
-	protected void removeConverter_(CustomConverter converter) {
+	protected void removeConverter_(EclipseLinkCustomConverter converter) {
 		removeItemFromList(converter, this.customConverters, CUSTOM_CONVERTERS_LIST);
 	}
 
@@ -109,7 +109,7 @@ public class EclipseLinkOrmConverterHolder extends AbstractXmlContextNode implem
 		return this.objectTypeConverters.size();
 	}
 
-	public ObjectTypeConverter addObjectTypeConverter(int index) {
+	public EclipseLinkObjectTypeConverter addObjectTypeConverter(int index) {
 		XmlObjectTypeConverter resourceObjectTypeConverter = EclipseLinkOrmFactory.eINSTANCE.createXmlObjectTypeConverter();
 		EclipseLinkOrmObjectTypeConverter contextObjectTypeConverter = this.buildObjectTypeConverter(resourceObjectTypeConverter);
 		this.objectTypeConverters.add(index, contextObjectTypeConverter);
@@ -132,11 +132,11 @@ public class EclipseLinkOrmConverterHolder extends AbstractXmlContextNode implem
 		fireItemRemoved(OBJECT_TYPE_CONVERTERS_LIST, index, removedObjectTypeConverter);
 	}
 
-	public void removeObjectTypeConverter(ObjectTypeConverter converter) {
+	public void removeObjectTypeConverter(EclipseLinkObjectTypeConverter converter) {
 		this.removeObjectTypeConverter(this.objectTypeConverters.indexOf(converter));
 	}
 
-	protected void removeObjectTypeConverter_(ObjectTypeConverter converter) {
+	protected void removeObjectTypeConverter_(EclipseLinkObjectTypeConverter converter) {
 		removeItemFromList(converter, this.objectTypeConverters, OBJECT_TYPE_CONVERTERS_LIST);
 	}
 
@@ -158,7 +158,7 @@ public class EclipseLinkOrmConverterHolder extends AbstractXmlContextNode implem
 		return this.structConverters.size();
 	}
 
-	public StructConverter addStructConverter(int index) {
+	public EclipseLinkStructConverter addStructConverter(int index) {
 		XmlStructConverter resourceStructConverter = EclipseLinkOrmFactory.eINSTANCE.createXmlStructConverter();
 		EclipseLinkOrmStructConverter contextStructConverter = this.buildStructConverter(resourceStructConverter);
 		this.structConverters.add(index, contextStructConverter);
@@ -181,11 +181,11 @@ public class EclipseLinkOrmConverterHolder extends AbstractXmlContextNode implem
 		fireItemRemoved(STRUCT_CONVERTERS_LIST, index, removedStructConverter);
 	}
 
-	public void removeStructConverter(StructConverter converter) {
+	public void removeStructConverter(EclipseLinkStructConverter converter) {
 		this.removeStructConverter(this.structConverters.indexOf(converter));
 	}
 
-	protected void removeStructConverter_(StructConverter converter) {
+	protected void removeStructConverter_(EclipseLinkStructConverter converter) {
 		removeItemFromList(converter, this.structConverters, STRUCT_CONVERTERS_LIST);
 	}
 
@@ -208,7 +208,7 @@ public class EclipseLinkOrmConverterHolder extends AbstractXmlContextNode implem
 		return this.typeConverters.size();
 	}
 
-	public TypeConverter addTypeConverter(int index) {
+	public EclipseLinkTypeConverter addTypeConverter(int index) {
 		XmlTypeConverter resourceTypeConverter = EclipseLinkOrmFactory.eINSTANCE.createXmlTypeConverter();
 		EclipseLinkOrmTypeConverter contextTypeConverter = this.buildTypeConverter(resourceTypeConverter);
 		this.typeConverters.add(index, contextTypeConverter);
@@ -231,11 +231,11 @@ public class EclipseLinkOrmConverterHolder extends AbstractXmlContextNode implem
 		fireItemRemoved(TYPE_CONVERTERS_LIST, index, removedTypeConverter);
 	}
 
-	public void removeTypeConverter(TypeConverter converter) {
+	public void removeTypeConverter(EclipseLinkTypeConverter converter) {
 		this.removeTypeConverter(this.typeConverters.indexOf(converter));
 	}
 
-	protected void removeTypeConverter_(TypeConverter converter) {
+	protected void removeTypeConverter_(EclipseLinkTypeConverter converter) {
 		removeItemFromList(converter, this.typeConverters, TYPE_CONVERTERS_LIST);
 	}
 

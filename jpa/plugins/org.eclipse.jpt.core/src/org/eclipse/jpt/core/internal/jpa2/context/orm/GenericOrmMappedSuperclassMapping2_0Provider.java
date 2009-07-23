@@ -54,7 +54,7 @@ public class GenericOrmMappedSuperclassMapping2_0Provider
 	}
 
 	public OrmTypeMapping buildMapping(OrmPersistentType parent, XmlTypeMapping resourceMapping, JpaFactory factory) {
-		return ((Generic2_0JpaFactory) factory).build2_0OrmMappedSuperclass(parent, (XmlMappedSuperclass) resourceMapping);
+		return ((Generic2_0JpaFactory) factory).buildOrmMappedSuperclass2_0(parent, (XmlMappedSuperclass) resourceMapping);
 	}
 
 }

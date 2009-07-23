@@ -10,7 +10,7 @@
 package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
-import org.eclipse.jpt.eclipselink.core.context.CustomConverter;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCustomConverter;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConverter;
 
 /**
@@ -21,9 +21,9 @@ public class EclipseLinkVirtualXmlConverter extends XmlConverter
 {
 	protected OrmTypeMapping ormTypeMapping;
 	
-	protected CustomConverter javaConverter;
+	protected EclipseLinkCustomConverter javaConverter;
 	
-	public EclipseLinkVirtualXmlConverter(OrmTypeMapping ormTypeMapping, CustomConverter javaConverter) {
+	public EclipseLinkVirtualXmlConverter(OrmTypeMapping ormTypeMapping, EclipseLinkCustomConverter javaConverter) {
 		super();
 		this.ormTypeMapping = ormTypeMapping;
 		this.javaConverter = javaConverter;
@@ -42,7 +42,7 @@ public class EclipseLinkVirtualXmlConverter extends XmlConverter
 	}
 	
 	@Override
-	public void setClassName(@SuppressWarnings("unused") String value) {
+	public void setClassName(String value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 	
@@ -55,7 +55,7 @@ public class EclipseLinkVirtualXmlConverter extends XmlConverter
 	}
 	
 	@Override
-	public void setName(@SuppressWarnings("unused") String value) {
+	public void setName(String value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 }

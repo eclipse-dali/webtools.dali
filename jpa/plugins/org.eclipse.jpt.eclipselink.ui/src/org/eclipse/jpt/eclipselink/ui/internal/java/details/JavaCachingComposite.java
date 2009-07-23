@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.java.details;
 
-import org.eclipse.jpt.eclipselink.core.context.java.JavaCaching;
+import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaCaching;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.CachingComposite;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -45,11 +45,11 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.1
  * @since 2.1
  */
-public class JavaCachingComposite extends CachingComposite<JavaCaching>
+public class JavaCachingComposite extends CachingComposite<EclipseLinkJavaCaching>
 {
 
 	public JavaCachingComposite(FormPane<?> parentPane,
-        PropertyValueModel<JavaCaching> subjectHolder,
+        PropertyValueModel<EclipseLinkJavaCaching> subjectHolder,
         Composite parent) {
 
 		super(parentPane, subjectHolder, parent);

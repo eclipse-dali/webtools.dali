@@ -9,8 +9,8 @@
 package org.eclipse.jpt.eclipselink.ui.internal.mappings.details;
 
 import java.util.Collection;
-import org.eclipse.jpt.eclipselink.core.context.ChangeTracking;
-import org.eclipse.jpt.eclipselink.core.context.ChangeTrackingType;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkChangeTracking;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkChangeTrackingType;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
@@ -26,12 +26,12 @@ import org.eclipse.swt.widgets.Composite;
  * |       					---------------------------------------------- |
  * -------------------------------------------------------------------------</pre>
  *
- * @see ChangeTracking
+ * @see EclipseLinkChangeTracking
  *
  * @version 2.1
  * @since 2.1
  */
-public class ChangeTrackingComposite extends FormPane<ChangeTracking> {
+public class ChangeTrackingComposite extends FormPane<EclipseLinkChangeTracking> {
 
 	/**
 	 * Creates a new <code>ChangeTrackingComposite</code>.
@@ -40,7 +40,7 @@ public class ChangeTrackingComposite extends FormPane<ChangeTracking> {
 	 * @param parent The parent container
 	 */
 	public ChangeTrackingComposite(FormPane<?> parentPane, 
-								PropertyValueModel<? extends ChangeTracking> subjectHolder,
+								PropertyValueModel<? extends EclipseLinkChangeTracking> subjectHolder,
 								Composite parent) {
 
 		super(parentPane, subjectHolder, parent);
@@ -59,29 +59,29 @@ public class ChangeTrackingComposite extends FormPane<ChangeTracking> {
        );
 	}
 
-	private EnumFormComboViewer<ChangeTracking, ChangeTrackingType> addChangeTrackingTypeCombo(Composite container) {
+	private EnumFormComboViewer<EclipseLinkChangeTracking, EclipseLinkChangeTrackingType> addChangeTrackingTypeCombo(Composite container) {
 
-		return new EnumFormComboViewer<ChangeTracking, ChangeTrackingType>(this, container) {
+		return new EnumFormComboViewer<EclipseLinkChangeTracking, EclipseLinkChangeTrackingType>(this, container) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(ChangeTracking.DEFAULT_TYPE_PROPERTY);
-				propertyNames.add(ChangeTracking.SPECIFIED_TYPE_PROPERTY);
+				propertyNames.add(EclipseLinkChangeTracking.DEFAULT_TYPE_PROPERTY);
+				propertyNames.add(EclipseLinkChangeTracking.SPECIFIED_TYPE_PROPERTY);
 			}
 
 			@Override
-			protected ChangeTrackingType[] getChoices() {
-				return ChangeTrackingType.values();
+			protected EclipseLinkChangeTrackingType[] getChoices() {
+				return EclipseLinkChangeTrackingType.values();
 			}
 
 			@Override
-			protected ChangeTrackingType getDefaultValue() {
+			protected EclipseLinkChangeTrackingType getDefaultValue() {
 				return getSubject().getDefaultType();
 			}
 
 			@Override
-			protected String displayString(ChangeTrackingType value) {
+			protected String displayString(EclipseLinkChangeTrackingType value) {
 				return buildDisplayString(
 					EclipseLinkUiMappingsMessages.class,
 					ChangeTrackingComposite.this,
@@ -90,12 +90,12 @@ public class ChangeTrackingComposite extends FormPane<ChangeTracking> {
 			}
 
 			@Override
-			protected ChangeTrackingType getValue() {
+			protected EclipseLinkChangeTrackingType getValue() {
 				return getSubject().getSpecifiedType();
 			}
 
 			@Override
-			protected void setValue(ChangeTrackingType value) {
+			protected void setValue(EclipseLinkChangeTrackingType value) {
 				getSubject().setSpecifiedType(value);
 			}
 			

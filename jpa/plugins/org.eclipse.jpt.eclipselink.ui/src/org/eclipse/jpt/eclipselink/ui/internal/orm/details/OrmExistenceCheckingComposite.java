@@ -10,7 +10,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.orm.details;
 
 import java.util.Collection;
 import org.eclipse.jpt.eclipselink.core.context.Caching;
-import org.eclipse.jpt.eclipselink.core.context.ExistenceType;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkExistenceType;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.EclipseLinkUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
@@ -56,9 +56,9 @@ public class OrmExistenceCheckingComposite extends FormPane<Caching> {
        );
 	}
 
-	private EnumFormComboViewer<Caching, ExistenceType> addExistenceCheckingTypeCombo(Composite container) {
+	private EnumFormComboViewer<Caching, EclipseLinkExistenceType> addExistenceCheckingTypeCombo(Composite container) {
 
-		return new EnumFormComboViewer<Caching, ExistenceType>(this, container) {
+		return new EnumFormComboViewer<Caching, EclipseLinkExistenceType>(this, container) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
@@ -68,17 +68,17 @@ public class OrmExistenceCheckingComposite extends FormPane<Caching> {
 			}
 
 			@Override
-			protected ExistenceType[] getChoices() {
-				return ExistenceType.values();
+			protected EclipseLinkExistenceType[] getChoices() {
+				return EclipseLinkExistenceType.values();
 			}
 
 			@Override
-			protected ExistenceType getDefaultValue() {
+			protected EclipseLinkExistenceType getDefaultValue() {
 				return getSubject().getDefaultExistenceType();
 			}
 
 			@Override
-			protected String displayString(ExistenceType value) {
+			protected String displayString(EclipseLinkExistenceType value) {
 				return buildDisplayString(
 					EclipseLinkUiMappingsMessages.class,
 					OrmExistenceCheckingComposite.this,
@@ -87,12 +87,12 @@ public class OrmExistenceCheckingComposite extends FormPane<Caching> {
 			}
 
 			@Override
-			protected ExistenceType getValue() {
+			protected EclipseLinkExistenceType getValue() {
 				return getSubject().getSpecifiedExistenceType();
 			}
 
 			@Override
-			protected void setValue(ExistenceType value) {
+			protected void setValue(EclipseLinkExistenceType value) {
 				getSubject().setSpecifiedExistenceType(value);
 			}
 			
