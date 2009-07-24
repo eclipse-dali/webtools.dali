@@ -11,12 +11,13 @@ package org.eclipse.jpt.ui.internal.jpa2.orm.details;
 
 import org.eclipse.jpt.core.context.AccessHolder;
 import org.eclipse.jpt.core.context.OneToOneMapping;
+import org.eclipse.jpt.core.context.orm.OrmOneToOneMapping;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
+import org.eclipse.jpt.ui.internal.mappings.details.AbstractOneToOneMappingComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.CascadeComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.FetchTypeComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.OneToOneJoiningStrategyPane;
-import org.eclipse.jpt.ui.internal.mappings.details.OneToOneMappingComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.OptionalComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.TargetEntityComposite;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
@@ -71,7 +72,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.2
  * @since 2.2
  */
-public class OrmOneToOneMapping2_0Composite extends OneToOneMappingComposite
+public class OrmOneToOneMapping2_0Composite extends AbstractOneToOneMappingComposite<OrmOneToOneMapping>
 {
 	/**
 	 * Creates a new <code>Eclipselink1_1OneToOneMappingComposite</code>.
@@ -80,7 +81,7 @@ public class OrmOneToOneMapping2_0Composite extends OneToOneMappingComposite
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public OrmOneToOneMapping2_0Composite(PropertyValueModel<? extends OneToOneMapping> subjectHolder,
+	public OrmOneToOneMapping2_0Composite(PropertyValueModel<? extends OrmOneToOneMapping> subjectHolder,
 	                                Composite parent,
 	                                WidgetFactory widgetFactory) {
 
@@ -100,7 +101,7 @@ public class OrmOneToOneMapping2_0Composite extends OneToOneMappingComposite
 	}
 		
 	protected PropertyValueModel<AccessHolder> buildAccessHolderHolder() {
-		return new PropertyAspectAdapter<OneToOneMapping, AccessHolder>(getSubjectHolder()) {
+		return new PropertyAspectAdapter<OrmOneToOneMapping, AccessHolder>(getSubjectHolder()) {
 			@Override
 			protected AccessHolder buildValue_() {
 				return this.subject.getPersistentAttribute();

@@ -9,13 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
-import org.eclipse.jpt.core.context.Cascade;
 import org.eclipse.jpt.core.context.OneToOneMapping;
-import org.eclipse.jpt.core.context.OneToOneRelationshipReference;
 import org.eclipse.jpt.ui.WidgetFactory;
-import org.eclipse.jpt.ui.details.JpaComposite;
-import org.eclipse.jpt.ui.internal.widgets.FormPane;
-import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
@@ -62,8 +57,7 @@ import org.eclipse.swt.widgets.Composite;
  * @since 1.0
  */
 public class OneToOneMappingComposite 
-	extends FormPane<OneToOneMapping>
-	implements JpaComposite
+	extends AbstractOneToOneMappingComposite<OneToOneMapping>
 {
 	/**
 	 * Creates a new <code>OneToOneMappingComposite</code>.
@@ -89,27 +83,5 @@ public class OneToOneMappingComposite
 		new OptionalComposite(this, addPane(container, groupBoxMargin));
 		new CascadeComposite(this, buildCascadeHolder(),  addSubPane(container, 5));
 	}	
-	
-	protected Composite addPane(Composite container, int groupBoxMargin) {
-		return addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
-	}
-	
-	protected PropertyValueModel<OneToOneRelationshipReference> buildJoiningHolder() {
-		return new TransformationPropertyValueModel<OneToOneMapping, OneToOneRelationshipReference>(
-				getSubjectHolder()) {
-			@Override
-			protected OneToOneRelationshipReference transform_(OneToOneMapping value) {
-				return value.getRelationshipReference();
-			}
-		};
-	}
-	
-	protected PropertyValueModel<Cascade> buildCascadeHolder() {
-		return new TransformationPropertyValueModel<OneToOneMapping, Cascade>(getSubjectHolder()) {
-			@Override
-			protected Cascade transform_(OneToOneMapping value) {
-				return value.getCascade();
-			}
-		};
-	}
+
 }

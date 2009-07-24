@@ -9,13 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.mappings.details;
 
-import org.eclipse.jpt.core.context.Cascade;
 import org.eclipse.jpt.core.context.ManyToOneMapping;
-import org.eclipse.jpt.core.context.ManyToOneRelationshipReference;
 import org.eclipse.jpt.ui.WidgetFactory;
-import org.eclipse.jpt.ui.details.JpaComposite;
-import org.eclipse.jpt.ui.internal.widgets.FormPane;
-import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
@@ -62,8 +57,7 @@ import org.eclipse.swt.widgets.Composite;
  * @since 1.0
  */
 public class ManyToOneMappingComposite 
-	extends FormPane<ManyToOneMapping>
-	implements JpaComposite
+	extends AbstractManyToOneMappingComposite<ManyToOneMapping>
 {
 	/**
 	 * Creates a new <code>ManyToOneMappingComposite</code>.
@@ -88,29 +82,6 @@ public class ManyToOneMappingComposite
 		new FetchTypeComposite(this, addPane(container, groupBoxMargin));
 		new OptionalComposite(this, addPane(container, groupBoxMargin));
 		new CascadeComposite(this, buildCascadeHolder(),  addSubPane(container, 5));
-	}
-	
-	protected PropertyValueModel<ManyToOneRelationshipReference> buildJoiningHolder() {
-		return new TransformationPropertyValueModel<ManyToOneMapping, ManyToOneRelationshipReference>(
-				getSubjectHolder()) {
-			@Override
-			protected ManyToOneRelationshipReference transform_(ManyToOneMapping value) {
-				return value.getRelationshipReference();
-			}
-		};
-	}
-	
-	protected PropertyValueModel<Cascade> buildCascadeHolder() {
-		return new TransformationPropertyValueModel<ManyToOneMapping, Cascade>(getSubjectHolder()) {
-			@Override
-			protected Cascade transform_(ManyToOneMapping value) {
-				return value.getCascade();
-			}
-		};
-	}
-	
-	protected Composite addPane(Composite container, int groupBoxMargin) {
-		return addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
 	}
 
 }

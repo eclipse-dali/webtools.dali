@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -7,20 +7,15 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.ui.internal.jpa2.orm.details;
+package org.eclipse.jpt.ui.internal.mappings.details;
 
-import org.eclipse.jpt.core.context.AccessHolder;
-import org.eclipse.jpt.core.context.ManyToManyMapping;
-import org.eclipse.jpt.core.context.orm.OrmManyToManyMapping;
+import org.eclipse.jpt.core.context.Cascade;
+import org.eclipse.jpt.core.context.ManyToOneMapping;
+import org.eclipse.jpt.core.context.ManyToOneRelationshipReference;
 import org.eclipse.jpt.ui.WidgetFactory;
-import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
-import org.eclipse.jpt.ui.internal.mappings.details.AbstractManyToManyMappingComposite;
-import org.eclipse.jpt.ui.internal.mappings.details.CascadeComposite;
-import org.eclipse.jpt.ui.internal.mappings.details.FetchTypeComposite;
-import org.eclipse.jpt.ui.internal.mappings.details.ManyToManyJoiningStrategyPane;
-import org.eclipse.jpt.ui.internal.mappings.details.OrderingComposite;
-import org.eclipse.jpt.ui.internal.mappings.details.TargetEntityComposite;
-import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.ui.details.JpaComposite;
+import org.eclipse.jpt.ui.internal.widgets.FormPane;
+import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
@@ -45,61 +40,66 @@ import org.eclipse.swt.widgets.Composite;
  * | ------------------------------------------------------------------------- |
  * | ------------------------------------------------------------------------- |
  * | |                                                                       | |
+ * | | OptionalComposite                                                     | |
+ * | |                                                                       | |
+ * | ------------------------------------------------------------------------- |
+ * | ------------------------------------------------------------------------- |
+ * | |                                                                       | |
  * | | CascadeComposite                                                      | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | OrderingComposite                                                     | |
  * | |                                                                       | |
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see {@link ManyToManyMapping}
+ * @see {@link ManyToOneMapping}
  * @see {@link BaseJpaUiFactory} - The factory creating this pane
  * @see {@link TargetEntityComposite}
- * @see {@link ManyToManyJoiningStrategyPane}
+ * @see {@link ManyToOneJoiningStrategyPane}
  * @see {@link FetchTypeComposite}
+ * @see {@link OptionalComposite}
  * @see {@link CascadeComposite}
- * @see {@link OrderingComposite}
  *
- * @version 2.2
- * @since 2.2
+ * @version 2.0
+ * @since 1.0
  */
-public class OrmManyToManyMapping2_0Composite extends AbstractManyToManyMappingComposite<OrmManyToManyMapping>
+public abstract class AbstractManyToOneMappingComposite<T extends ManyToOneMapping> 
+	extends FormPane<T>
+	implements JpaComposite
 {
 	/**
-	 * Creates a new <code>ManyToManyMappingComposite</code>.
+	 * Creates a new <code>ManyToOneMappingComposite</code>.
 	 *
-	 * @param subjectHolder The holder of the subject <code>IManyToManyMapping</code>
+	 * @param subjectHolder The holder of the subject <code>IManyToOneMapping</code>
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public OrmManyToManyMapping2_0Composite(PropertyValueModel<? extends OrmManyToManyMapping> subjectHolder,
-	                                  Composite parent,
-	                                  WidgetFactory widgetFactory) {
+	protected AbstractManyToOneMappingComposite(PropertyValueModel<? extends T> subjectHolder,
+	                                 Composite parent,
+	                                 WidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
 	}
 	
-	@Override
-	protected void initializeLayout(Composite container) {
-		int groupBoxMargin = getGroupBoxMargin();
-		
-		new TargetEntityComposite(this, addPane(container, groupBoxMargin));
-		new ManyToManyJoiningStrategyPane(this, buildJoiningHolder(), container);
-		new AccessTypeComposite(this, buildAccessHolderHolder(), addPane(container, groupBoxMargin));
-		new FetchTypeComposite(this, addPane(container, groupBoxMargin));
-		new CascadeComposite(this, buildCascadeHolder(), addSubPane(container, 5));
-		new OrderingComposite(this, container);
-	}
-	
-	protected PropertyValueModel<AccessHolder> buildAccessHolderHolder() {
-		return new PropertyAspectAdapter<OrmManyToManyMapping, AccessHolder>(getSubjectHolder()) {
+	protected PropertyValueModel<ManyToOneRelationshipReference> buildJoiningHolder() {
+		return new TransformationPropertyValueModel<T, ManyToOneRelationshipReference>(
+				getSubjectHolder()) {
 			@Override
-			protected AccessHolder buildValue_() {
-				return this.subject.getPersistentAttribute();
+			protected ManyToOneRelationshipReference transform_(T value) {
+				return value.getRelationshipReference();
 			}
 		};
 	}
+	
+	protected PropertyValueModel<Cascade> buildCascadeHolder() {
+		return new TransformationPropertyValueModel<T, Cascade>(getSubjectHolder()) {
+			@Override
+			protected Cascade transform_(T value) {
+				return value.getCascade();
+			}
+		};
+	}
+	
+	protected Composite addPane(Composite container, int groupBoxMargin) {
+		return addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
+	}
+
 }

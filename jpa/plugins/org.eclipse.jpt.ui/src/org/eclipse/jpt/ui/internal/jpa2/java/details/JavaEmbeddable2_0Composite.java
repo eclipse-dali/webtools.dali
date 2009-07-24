@@ -11,8 +11,10 @@ package org.eclipse.jpt.ui.internal.jpa2.java.details;
 
 import org.eclipse.jpt.core.context.AccessHolder;
 import org.eclipse.jpt.core.context.Embeddable;
+import org.eclipse.jpt.core.context.java.JavaEmbeddable;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
+import org.eclipse.jpt.ui.internal.BaseJpaUiFactory;
 import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
@@ -29,7 +31,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 2.0
  */
-public class JavaEmbeddable2_0Composite extends FormPane<Embeddable>
+public class JavaEmbeddable2_0Composite extends FormPane<JavaEmbeddable>
                                  implements JpaComposite
 {
 	/**
@@ -39,7 +41,7 @@ public class JavaEmbeddable2_0Composite extends FormPane<Embeddable>
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public JavaEmbeddable2_0Composite(PropertyValueModel<? extends Embeddable> subjectHolder,
+	public JavaEmbeddable2_0Composite(PropertyValueModel<? extends JavaEmbeddable> subjectHolder,
 	                           Composite parent,
 	                           WidgetFactory widgetFactory) {
 
@@ -52,7 +54,7 @@ public class JavaEmbeddable2_0Composite extends FormPane<Embeddable>
 	}
 
 	protected PropertyValueModel<AccessHolder> buildAccessHolder() {
-		return new PropertyAspectAdapter<Embeddable, AccessHolder>(
+		return new PropertyAspectAdapter<JavaEmbeddable, AccessHolder>(
 			getSubjectHolder())
 		{
 			@Override

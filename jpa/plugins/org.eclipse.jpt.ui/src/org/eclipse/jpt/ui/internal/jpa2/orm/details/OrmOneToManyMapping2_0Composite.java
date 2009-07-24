@@ -10,13 +10,13 @@
 package org.eclipse.jpt.ui.internal.jpa2.orm.details;
 
 import org.eclipse.jpt.core.context.AccessHolder;
-import org.eclipse.jpt.core.context.OneToManyMapping;
+import org.eclipse.jpt.core.context.orm.OrmOneToManyMapping;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
+import org.eclipse.jpt.ui.internal.mappings.details.AbstractOneToManyMappingComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.CascadeComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.FetchTypeComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.OneToManyJoiningStrategyPane;
-import org.eclipse.jpt.ui.internal.mappings.details.OneToManyMappingComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.OrderingComposite;
 import org.eclipse.jpt.ui.internal.mappings.details.TargetEntityComposite;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
@@ -24,10 +24,10 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 
-public class OrmOneToManyMapping2_0Composite extends OneToManyMappingComposite
+public class OrmOneToManyMapping2_0Composite extends AbstractOneToManyMappingComposite<OrmOneToManyMapping>
 {
 	public OrmOneToManyMapping2_0Composite(
-			PropertyValueModel<? extends OneToManyMapping> subjectHolder,
+			PropertyValueModel<? extends OrmOneToManyMapping> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
 		super(subjectHolder, parent, widgetFactory);
@@ -46,7 +46,7 @@ public class OrmOneToManyMapping2_0Composite extends OneToManyMappingComposite
 	}
 	
 	protected PropertyValueModel<AccessHolder> buildAccessHolderHolder() {
-		return new PropertyAspectAdapter<OneToManyMapping, AccessHolder>(getSubjectHolder()) {
+		return new PropertyAspectAdapter<OrmOneToManyMapping, AccessHolder>(getSubjectHolder()) {
 			@Override
 			protected AccessHolder buildValue_() {
 				return this.subject.getPersistentAttribute();
