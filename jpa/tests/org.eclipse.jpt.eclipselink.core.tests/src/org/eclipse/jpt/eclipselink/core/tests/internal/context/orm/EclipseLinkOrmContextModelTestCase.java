@@ -13,7 +13,7 @@ import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProperti
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.core.tests.internal.projects.TestJpaProject;
 import org.eclipse.jpt.eclipselink.core.EclipseLinkJpaProject;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkEntityMappings;
+import org.eclipse.jpt.eclipselink.core.context.orm.EclipseLinkEntityMappings;
 import org.eclipse.jpt.eclipselink.core.internal.operations.EclipseLinkOrmFileCreationDataModelProvider;
 import org.eclipse.jpt.eclipselink.core.internal.operations.EclipseLinkOrmFileCreationOperation;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntityMappings;

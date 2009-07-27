@@ -20,137 +20,137 @@ import org.eclipse.osgi.util.NLS;
 @SuppressWarnings("nls")
 public class EclipseLinkUiMappingsMessages extends NLS {
 
-	public static String BasicCollectionMappingUiProvider_label;
-	public static String BasicCollectionMappingUiProvider_linkLabel;
+	public static String EclipseLinkBasicCollectionMappingUiProvider_label;
+	public static String EclipseLinkBasicCollectionMappingUiProvider_linkLabel;
 	
-	public static String BasicMapMappingUiProvider_label;
-	public static String BasicMapMappingUiProvider_linkLabel;
+	public static String EclipseLinkBasicMapMappingUiProvider_label;
+	public static String EclipseLinkBasicMapMappingUiProvider_linkLabel;
 	
-	public static String TransformationMappingUiProvider_label;
-	public static String TransformationMappingUiProvider_linkLabel;
+	public static String EclipseLinkTransformationMappingUiProvider_label;
+	public static String EclipseLinkTransformationMappingUiProvider_linkLabel;
 
-	public static String VariableOneToOneMappingUiProvider_label;
-	public static String VariableOneToOneMappingUiProvider_linkLabel;
+	public static String EclipseLinkVariableOneToOneMappingUiProvider_label;
+	public static String EclipseLinkVariableOneToOneMappingUiProvider_linkLabel;
 
-	public static String CacheTypeComposite_label;
-	public static String CacheTypeComposite_full;
-	public static String CacheTypeComposite_weak;
-	public static String CacheTypeComposite_soft;
-	public static String CacheTypeComposite_soft_weak;
-	public static String CacheTypeComposite_hard_weak;
-	public static String CacheTypeComposite_cache;
-	public static String CacheTypeComposite_none;
+	public static String EclipseLinkCacheTypeComposite_label;
+	public static String EclipseLinkCacheTypeComposite_full;
+	public static String EclipseLinkCacheTypeComposite_weak;
+	public static String EclipseLinkCacheTypeComposite_soft;
+	public static String EclipseLinkCacheTypeComposite_soft_weak;
+	public static String EclipseLinkCacheTypeComposite_hard_weak;
+	public static String EclipseLinkCacheTypeComposite_cache;
+	public static String EclipseLinkCacheTypeComposite_none;
 	public static String EclipseLinkTypeMappingComposite_advanced;
 	public static String EclipseLinkTypeMappingComposite_caching;
 	public static String EclipseLinkTypeMappingComposite_converters;
 	
-	public static String CacheSizeComposite_size;
-	public static String CacheCoordinationTypeComposite_label;
-	public static String CacheCoordinationTypeComposite_send_object_changes;
-	public static String CacheCoordinationTypeComposite_invalidate_changed_objects;
-	public static String CacheCoordinationTypeComposite_send_new_objects_with_changes;
-	public static String CacheCoordinationTypeComposite_none;
+	public static String EclipseLinkCacheSizeComposite_size;
+	public static String EclipseLinkCacheCoordinationTypeComposite_label;
+	public static String EclipseLinkCacheCoordinationTypeComposite_send_object_changes;
+	public static String EclipseLinkCacheCoordinationTypeComposite_invalidate_changed_objects;
+	public static String EclipseLinkCacheCoordinationTypeComposite_send_new_objects_with_changes;
+	public static String EclipseLinkCacheCoordinationTypeComposite_none;
 
-	public static String CachingComposite_sharedLabelDefault;
-	public static String CachingComposite_sharedLabel;
-	public static String CachingComposite_advanced;
-	public static String AlwaysRefreshComposite_alwaysRefreshDefault;
-	public static String AlwaysRefreshComposite_alwaysRefreshLabel;
-	public static String RefreshOnlyIfNewerComposite_refreshOnlyIfNewerDefault;
-	public static String RefreshOnlyIfNewerComposite_refreshOnlyIfNewerLabel;
-	public static String DisableHitsComposite_disableHitsDefault;
-	public static String DisableHitsComposite_disableHitsLabel;
+	public static String EclipseLinkCachingComposite_sharedLabelDefault;
+	public static String EclipseLinkCachingComposite_sharedLabel;
+	public static String EclipseLinkCachingComposite_advanced;
+	public static String EclipseLinkAlwaysRefreshComposite_alwaysRefreshDefault;
+	public static String EclipseLinkAlwaysRefreshComposite_alwaysRefreshLabel;
+	public static String EclipseLinkRefreshOnlyIfNewerComposite_refreshOnlyIfNewerDefault;
+	public static String EclipseLinkRefreshOnlyIfNewerComposite_refreshOnlyIfNewerLabel;
+	public static String EclipseLinkDisableHitsComposite_disableHitsDefault;
+	public static String EclipseLinkDisableHitsComposite_disableHitsLabel;
 	
-	public static String ChangeTrackingComposite_label;
-	public static String ChangeTrackingComposite_attribute;
-	public static String ChangeTrackingComposite_object;
-	public static String ChangeTrackingComposite_deferred;
-	public static String ChangeTrackingComposite_auto;
+	public static String EclipseLinkChangeTrackingComposite_label;
+	public static String EclipseLinkChangeTrackingComposite_attribute;
+	public static String EclipseLinkChangeTrackingComposite_object;
+	public static String EclipseLinkChangeTrackingComposite_deferred;
+	public static String EclipseLinkChangeTrackingComposite_auto;
 	
-	public static String ConvertComposite_converterNameLabel;
-	public static String ConvertComposite_defineConverterSection;
-	public static String ConvertComposite_default;
-	public static String ConvertComposite_custom;
-	public static String ConvertComposite_type;
-	public static String ConvertComposite_objectType;
-	public static String ConvertComposite_struct;
+	public static String EclipseLinkConvertComposite_converterNameLabel;
+	public static String EclipseLinkConvertComposite_defineConverterSection;
+	public static String EclipseLinkConvertComposite_default;
+	public static String EclipseLinkConvertComposite_custom;
+	public static String EclipseLinkConvertComposite_type;
+	public static String EclipseLinkConvertComposite_objectType;
+	public static String EclipseLinkConvertComposite_struct;
 	
-	public static String ConverterComposite_nameTextLabel;
-	public static String ConverterComposite_classLabel;
+	public static String EclipseLinkConverterComposite_nameTextLabel;
+	public static String EclipseLinkConverterComposite_classLabel;
 
-	public static String ConvertersComposite_customConverter;
-	public static String ConvertersComposite_objectTypeConverter;
-	public static String ConvertersComposite_structConverter;
-	public static String ConvertersComposite_typeConverter;
+	public static String EclipseLinkConvertersComposite_customConverter;
+	public static String EclipseLinkConvertersComposite_objectTypeConverter;
+	public static String EclipseLinkConvertersComposite_structConverter;
+	public static String EclipseLinkConvertersComposite_typeConverter;
 	
-	public static String CustomizerComposite_classLabel;
+	public static String EclipseLinkCustomizerComposite_classLabel;
 		
 	public static String TypeSection_converted;
 	
-	public static String ExistenceCheckingComposite_label;
-	public static String JavaExistenceCheckingComposite_check_cache;
-	public static String JavaExistenceCheckingComposite_check_database;
-	public static String JavaExistenceCheckingComposite_assume_existence;
-	public static String JavaExistenceCheckingComposite_assume_non_existence;
-	public static String OrmExistenceCheckingComposite_check_cache;
-	public static String OrmExistenceCheckingComposite_check_database;
-	public static String OrmExistenceCheckingComposite_assume_existence;
-	public static String OrmExistenceCheckingComposite_assume_non_existence;
+	public static String EclipseLinkExistenceCheckingComposite_label;
+	public static String JavaEclipseLinkExistenceCheckingComposite_check_cache;
+	public static String JavaEclipseLinkExistenceCheckingComposite_check_database;
+	public static String JavaEclipseLinkExistenceCheckingComposite_assume_existence;
+	public static String JavaEclipseLinkExistenceCheckingComposite_assume_non_existence;
+	public static String OrmEclipseLinkExistenceCheckingComposite_check_cache;
+	public static String OrmEclipseLinkExistenceCheckingComposite_check_database;
+	public static String OrmEclipseLinkExistenceCheckingComposite_assume_existence;
+	public static String OrmEclipseLinkExistenceCheckingComposite_assume_non_existence;
 	
-	public static String ExpiryComposite_expirySection;
-	public static String ExpiryComposite_noExpiry;
-	public static String ExpiryComposite_timeToLiveExpiry;
-	public static String ExpiryComposite_timeToLiveExpiryExpireAfter;
-	public static String ExpiryComposite_timeToLiveExpiryMilliseconds;
-	public static String ExpiryComposite_dailyExpiry;
-	public static String ExpiryComposite_timeOfDayExpiryExpireAt;
+	public static String EclipseLinkExpiryComposite_expirySection;
+	public static String EclipseLinkExpiryComposite_noExpiry;
+	public static String EclipseLinkExpiryComposite_timeToLiveExpiry;
+	public static String EclipseLinkExpiryComposite_timeToLiveExpiryExpireAfter;
+	public static String EclipseLinkExpiryComposite_timeToLiveExpiryMilliseconds;
+	public static String EclipseLinkExpiryComposite_dailyExpiry;
+	public static String EclipseLinkExpiryComposite_timeOfDayExpiryExpireAt;
 	
-	public static String JoinFetchComposite_label;
-	public static String JoinFetchComposite_inner;
-	public static String JoinFetchComposite_outer;	
+	public static String EclipseLinkJoinFetchComposite_label;
+	public static String EclipseLinkJoinFetchComposite_inner;
+	public static String EclipseLinkJoinFetchComposite_outer;	
 	
-	public static String MutableComposite_mutableLabel;
-	public static String MutableComposite_mutableLabelDefault;
-	public static String MutableComposite_true;
-	public static String MutableComposite_false;
+	public static String EclipseLinkMutableComposite_mutableLabel;
+	public static String EclipseLinkMutableComposite_mutableLabelDefault;
+	public static String EclipseLinkMutableComposite_true;
+	public static String EclipseLinkMutableComposite_false;
 	
-	public static String ObjectTypeConverterComposite_dataTypeLabel;
-	public static String ObjectTypeConverterComposite_objectTypeLabel;
-	public static String ObjectTypeConverterComposite_conversionValueEdit;
-	public static String ObjectTypeConverterComposite_conversionValuesDataValueColumn;
-	public static String ObjectTypeConverterComposite_conversionValuesObjectValueColumn;
-	public static String ObjectTypeConverterComposite_defaultObjectValueLabel;
-	public static String ObjectTypeConverterComposite_conversionValuesGroupTitle;
+	public static String EclipseLinkObjectTypeConverterComposite_dataTypeLabel;
+	public static String EclipseLinkObjectTypeConverterComposite_objectTypeLabel;
+	public static String EclipseLinkObjectTypeConverterComposite_conversionValueEdit;
+	public static String EclipseLinkObjectTypeConverterComposite_conversionValuesDataValueColumn;
+	public static String EclipseLinkObjectTypeConverterComposite_conversionValuesObjectValueColumn;
+	public static String EclipseLinkObjectTypeConverterComposite_defaultObjectValueLabel;
+	public static String EclipseLinkObjectTypeConverterComposite_conversionValuesGroupTitle;
 	
-	public static String ConversionValueDialog_addConversionValue;
-	public static String ConversionValueDialog_editConversionValue;
-	public static String ConversionValueDialog_addConversionValueDescriptionTitle;
-	public static String ConversionValueDialog_editConversionValueDescriptionTitle;
-	public static String ConversionValueDialog_addConversionValueDescription;
-	public static String ConversionValueDialog_editConversionValueDescription;
+	public static String EclipseLinkConversionValueDialog_addConversionValue;
+	public static String EclipseLinkConversionValueDialog_editConversionValue;
+	public static String EclipseLinkConversionValueDialog_addConversionValueDescriptionTitle;
+	public static String EclipseLinkConversionValueDialog_editConversionValueDescriptionTitle;
+	public static String EclipseLinkConversionValueDialog_addConversionValueDescription;
+	public static String EclipseLinkConversionValueDialog_editConversionValueDescription;
 	
-	public static String ConversionValueDialog_dataValue;
-	public static String ConversionValueDialog_objectValue;
-	public static String ConversionValueStateObject_dataValueMustBeSpecified;
-	public static String ConversionValueStateObject_objectValueMustBeSpecified;
-	public static String ConversionValueStateObject_dataValueAlreadyExists;
+	public static String EclipseLinkConversionValueDialog_dataValue;
+	public static String EclipseLinkConversionValueDialog_objectValue;
+	public static String EclipseLinkConversionValueStateObject_dataValueMustBeSpecified;
+	public static String EclipseLinkConversionValueStateObject_objectValueMustBeSpecified;
+	public static String EclipseLinkConversionValueStateObject_dataValueAlreadyExists;
 	
-	public static String PrivateOwnedComposite_privateOwnedLabel;
+	public static String EclipseLinkPrivateOwnedComposite_privateOwnedLabel;
 	
-	public static String ReadOnlyComposite_readOnlyLabel;
-	public static String ReadOnlyComposite_readOnlyWithDefault;
+	public static String EclipseLinkReadOnlyComposite_readOnlyLabel;
+	public static String EclipseLinkReadOnlyComposite_readOnlyWithDefault;
 	
-	public static String TypeConverterComposite_dataTypeLabel;
-	public static String TypeConverterComposite_objectTypeLabel;
+	public static String EclipseLinkTypeConverterComposite_dataTypeLabel;
+	public static String EclipseLinkTypeConverterComposite_objectTypeLabel;
 
-	public static String DefaultOneToOneMappingUiProvider_label;
-	public static String DefaultVariableOneToOneMappingUiProvider_label;
-	public static String DefaultOneToManyMappingUiProvider_label;
-	public static String DefaultOneToOneMappingUiProvider_linkLabel;
-	public static String DefaultVariableOneToOneMappingUiProvider_linkLabel;
-	public static String DefaultOneToManyMappingUiProvider_linkLabel;
+	public static String DefaultEclipseLinkOneToOneMappingUiProvider_label;
+	public static String DefaultEclipseLinkVariableOneToOneMappingUiProvider_label;
+	public static String DefaultEclipseLinkOneToManyMappingUiProvider_label;
+	public static String DefaultEclipseLinkOneToOneMappingUiProvider_linkLabel;
+	public static String DefaultEclipseLinkVariableOneToOneMappingUiProvider_linkLabel;
+	public static String DefaultEclipseLinkOneToManyMappingUiProvider_linkLabel;
 	
-	public static String ConvertersComposite_Label;
+	public static String EclipseLinkConvertersComposite_Label;
 	public static String EclipseLinkConverterDialog_name;
 	public static String EclipseLinkConverterDialog_converterType;
 	public static String EclipseLinkConverterDialog_addConverter;

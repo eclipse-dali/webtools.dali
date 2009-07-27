@@ -28,11 +28,11 @@ public abstract class EclipseLinkBasicCollectionMappingUiProvider<T extends Ecli
 	}
 	
 	public String getLabel() {
-		return EclipseLinkUiMappingsMessages.BasicCollectionMappingUiProvider_label;
+		return EclipseLinkUiMappingsMessages.EclipseLinkBasicCollectionMappingUiProvider_label;
 	}
 	
 	public String getLinkLabel() {
-		return EclipseLinkUiMappingsMessages.BasicCollectionMappingUiProvider_linkLabel;
+		return EclipseLinkUiMappingsMessages.EclipseLinkBasicCollectionMappingUiProvider_linkLabel;
 	}
 	
 	public String getKey() {

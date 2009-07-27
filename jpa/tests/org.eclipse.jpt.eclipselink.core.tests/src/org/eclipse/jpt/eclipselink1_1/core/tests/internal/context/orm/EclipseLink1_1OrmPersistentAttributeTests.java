@@ -25,8 +25,8 @@ import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProvider;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmNullAttributeMapping;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmIdMapping;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmOneToOneMapping;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmEclipseLinkIdMapping;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmEclipseLinkOneToOneMapping;
 import org.eclipse.jpt.eclipselink.core.internal.v1_1.EclipseLink1_1JpaPlatformProvider;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
@@ -166,7 +166,7 @@ public class EclipseLink1_1OrmPersistentAttributeTests extends EclipseLink1_1Orm
 		OrmPersistentAttribute specifiedOrmPersistentAttribute = ormPersistentType.specifiedAttributes().next();
 		assertEquals("address", specifiedOrmPersistentAttribute.getName());
 		assertFalse(specifiedOrmPersistentAttribute.isVirtual());
-		assertTrue(specifiedOrmPersistentAttribute.getMapping() instanceof EclipseLinkOrmOneToOneMapping);
+		assertTrue(specifiedOrmPersistentAttribute.getMapping() instanceof OrmEclipseLinkOneToOneMapping);
 		
 		
 		ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
@@ -179,7 +179,7 @@ public class EclipseLink1_1OrmPersistentAttributeTests extends EclipseLink1_1Orm
 		specifiedOrmPersistentAttribute = specifiedAttributes.next();
 		assertEquals("id", specifiedOrmPersistentAttribute.getName());
 		assertFalse(specifiedOrmPersistentAttribute.isVirtual());
-		assertTrue(specifiedOrmPersistentAttribute.getMapping() instanceof EclipseLinkOrmIdMapping);
+		assertTrue(specifiedOrmPersistentAttribute.getMapping() instanceof OrmEclipseLinkIdMapping);
 		
 		specifiedOrmPersistentAttribute = specifiedAttributes.next();
 		assertEquals("address", specifiedOrmPersistentAttribute.getName());

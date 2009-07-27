@@ -25,7 +25,7 @@ public class EclipseLinkEntityMappings1_1
 	
 	@Override
 	protected OrmPersistentType buildPersistentType(XmlTypeMapping resourceMapping) {
-		return getJpaFactory().buildEclipseLinkOrmPersistentType1_1(this, resourceMapping);
+		return getJpaFactory().buildOrmEclipseLinkPersistentType1_1(this, resourceMapping);
 	}
 	
 	// **************** JpaNode impl *******************************************

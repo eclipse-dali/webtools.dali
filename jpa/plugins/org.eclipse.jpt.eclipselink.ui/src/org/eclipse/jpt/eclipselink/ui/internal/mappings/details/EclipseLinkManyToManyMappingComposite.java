@@ -94,7 +94,7 @@ public class EclipseLinkManyToManyMappingComposite
 		new TargetEntityComposite(this, addPane(container, groupBoxMargin));
 		new ManyToManyJoiningStrategyPane(this, buildJoiningHolder(), container);
 		new FetchTypeComposite(this, addPane(container, groupBoxMargin));
-		new JoinFetchComposite(this, buildJoinFetchableHolder(), addPane(container, groupBoxMargin));
+		new EclipseLinkJoinFetchComposite(this, buildJoinFetchableHolder(), addPane(container, groupBoxMargin));
 		new CascadeComposite(this, buildCascadeHolder(), addSubPane(container, 5));
 		new OrderingComposite(this, container);
 	}

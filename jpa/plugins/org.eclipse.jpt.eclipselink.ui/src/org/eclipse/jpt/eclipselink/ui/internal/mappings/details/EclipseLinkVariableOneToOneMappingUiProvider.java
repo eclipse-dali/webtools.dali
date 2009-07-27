@@ -29,11 +29,11 @@ public abstract class EclipseLinkVariableOneToOneMappingUiProvider<T extends Ecl
 	}
 	
 	public String getLabel() {
-		return EclipseLinkUiMappingsMessages.VariableOneToOneMappingUiProvider_label;
+		return EclipseLinkUiMappingsMessages.EclipseLinkVariableOneToOneMappingUiProvider_label;
 	}
 	
 	public String getLinkLabel() {
-		return EclipseLinkUiMappingsMessages.VariableOneToOneMappingUiProvider_linkLabel;
+		return EclipseLinkUiMappingsMessages.EclipseLinkVariableOneToOneMappingUiProvider_linkLabel;
 	}
 	
 	public String getKey() {

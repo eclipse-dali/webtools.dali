@@ -13,9 +13,9 @@ import org.eclipse.jpt.core.context.java.JavaEmbeddable;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.java.JavaMappedSuperclass;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkJpaUiFactory;
-import org.eclipse.jpt.eclipselink.ui.internal.v1_1.java.details.EclipseLink1_1JavaEmbeddableComposite;
-import org.eclipse.jpt.eclipselink.ui.internal.v1_1.java.details.EclipseLink1_1JavaEntityComposite;
-import org.eclipse.jpt.eclipselink.ui.internal.v1_1.java.details.EclipseLink1_1JavaMappedSuperclassComposite;
+import org.eclipse.jpt.eclipselink.ui.internal.v1_1.java.details.JavaEclipseLinkEmbeddable1_1Composite;
+import org.eclipse.jpt.eclipselink.ui.internal.v1_1.java.details.JavaEclipseLinkEntity1_1Composite;
+import org.eclipse.jpt.eclipselink.ui.internal.v1_1.java.details.JavaEclipseLinkMappedSuperclass1_1Composite;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -35,20 +35,20 @@ public class EclipseLink1_1JpaUiFactory extends EclipseLinkJpaUiFactory //TODO j
 	public JpaComposite createJavaMappedSuperclassComposite(
 			PropertyValueModel<JavaMappedSuperclass> subjectHolder,
 			Composite parent, WidgetFactory widgetFactory) {
-		return new EclipseLink1_1JavaMappedSuperclassComposite(subjectHolder, parent, widgetFactory);
+		return new JavaEclipseLinkMappedSuperclass1_1Composite(subjectHolder, parent, widgetFactory);
 	}
 	
 	@Override
 	public JpaComposite createJavaEntityComposite(
 			PropertyValueModel<JavaEntity> subjectHolder,
 			Composite parent, WidgetFactory widgetFactory) {
-		return new EclipseLink1_1JavaEntityComposite(subjectHolder, parent, widgetFactory);
+		return new JavaEclipseLinkEntity1_1Composite(subjectHolder, parent, widgetFactory);
 	}
 	
 	@Override
 	public JpaComposite createJavaEmbeddableComposite(
 			PropertyValueModel<JavaEmbeddable> subjectHolder,
 			Composite parent, WidgetFactory widgetFactory) {
-		return new EclipseLink1_1JavaEmbeddableComposite(subjectHolder, parent, widgetFactory);
+		return new JavaEclipseLinkEmbeddable1_1Composite(subjectHolder, parent, widgetFactory);
 	}
 }

@@ -58,7 +58,7 @@ public class EclipseLinkEntityMappingsDetailsProvider
 		Composite parent,
 		WidgetFactory widgetFactory) {
 
-		return new EntityMappingsDetailsPage(parent, widgetFactory);
+		return new EclipseLinkEntityMappingsDetailsPage(parent, widgetFactory);
 	}
 
 }

@@ -30,11 +30,11 @@ public abstract class EclipseLinkBasicMapMappingUiProvider<T extends EclipseLink
 	}
 	
 	public String getLabel() {
-		return EclipseLinkUiMappingsMessages.BasicMapMappingUiProvider_label;
+		return EclipseLinkUiMappingsMessages.EclipseLinkBasicMapMappingUiProvider_label;
 	}
 	
 	public String getLinkLabel() {
-		return EclipseLinkUiMappingsMessages.BasicMapMappingUiProvider_linkLabel;
+		return EclipseLinkUiMappingsMessages.EclipseLinkBasicMapMappingUiProvider_linkLabel;
 	}
 	
 	public String getKey() {

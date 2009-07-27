@@ -22,8 +22,8 @@ import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConversionValue;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkObjectTypeConverter;
-import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaConvert;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmObjectTypeConverter;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkConvert;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmEclipseLinkObjectTypeConverter;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasic;
@@ -227,7 +227,7 @@ public class EclipseLinkOrmObjectTypeConverterTests
 		OrmBasicMapping ormBasicMapping = ((OrmBasicMapping) ormPersistentAttribute.getMapping()); 
 		ormBasicMapping.setSpecifiedConverter(EclipseLinkConvert.ECLIPSE_LINK_CONVERTER);
 		((EclipseLinkConvert) ormBasicMapping.getConverter()).setConverter(EclipseLinkConverter.OBJECT_TYPE_CONVERTER);
-		EclipseLinkOrmObjectTypeConverter ormConverter = (EclipseLinkOrmObjectTypeConverter) ((EclipseLinkConvert) ormBasicMapping.getConverter()).getConverter();
+		OrmEclipseLinkObjectTypeConverter ormConverter = (OrmEclipseLinkObjectTypeConverter) ((EclipseLinkConvert) ormBasicMapping.getConverter()).getConverter();
 		XmlObjectTypeConverter converterResource = ((XmlBasic) getXmlEntityMappings().getEntities().get(0).getAttributes().getBasics().get(0)).getObjectTypeConverter();
 		JavaBasicMapping javaBasicMapping = (JavaBasicMapping) ormPersistentType.getJavaPersistentType().getAttributeNamed("id").getMapping();
 		
@@ -251,7 +251,7 @@ public class EclipseLinkOrmObjectTypeConverterTests
 		
 		ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
 		ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
-		ormConverter = (EclipseLinkOrmObjectTypeConverter) ((EclipseLinkConvert) ormBasicMapping.getSpecifiedConverter()).getConverter();
+		ormConverter = (OrmEclipseLinkObjectTypeConverter) ((EclipseLinkConvert) ormBasicMapping.getSpecifiedConverter()).getConverter();
 		
 		EclipseLinkObjectTypeConverter javaConverter = ((EclipseLinkObjectTypeConverter) ((EclipseLinkConvert) javaBasicMapping.getSpecifiedConverter()).getConverter());
 		javaConverter.setName("bar");
@@ -275,7 +275,7 @@ public class EclipseLinkOrmObjectTypeConverterTests
 		OrmBasicMapping ormBasicMapping = ((OrmBasicMapping) ormPersistentAttribute.getMapping()); 
 		ormBasicMapping.setSpecifiedConverter(EclipseLinkConvert.ECLIPSE_LINK_CONVERTER);
 		((EclipseLinkConvert) ormBasicMapping.getConverter()).setConverter(EclipseLinkConverter.OBJECT_TYPE_CONVERTER);
-		EclipseLinkOrmObjectTypeConverter ormConverter = (EclipseLinkOrmObjectTypeConverter) ((EclipseLinkConvert) ormBasicMapping.getConverter()).getConverter();
+		OrmEclipseLinkObjectTypeConverter ormConverter = (OrmEclipseLinkObjectTypeConverter) ((EclipseLinkConvert) ormBasicMapping.getConverter()).getConverter();
 		XmlObjectTypeConverter converterResource = ((XmlBasic) getXmlEntityMappings().getEntities().get(0).getAttributes().getBasics().get(0)).getObjectTypeConverter();
 	
 		assertEquals(null, ormConverter.getName());
@@ -447,7 +447,7 @@ public class EclipseLinkOrmObjectTypeConverterTests
 		
 		//add conversion value to java context model, verify does not affect orm context model
 	
-		EclipseLinkObjectTypeConverter javaConverter = (EclipseLinkObjectTypeConverter) ((EclipseLinkJavaConvert) javaBasicMapping.getConverter()).getConverter();
+		EclipseLinkObjectTypeConverter javaConverter = (EclipseLinkObjectTypeConverter) ((JavaEclipseLinkConvert) javaBasicMapping.getConverter()).getConverter();
 		EclipseLinkConversionValue javaConversionValue = javaConverter.addConversionValue();
 		javaConversionValue.setDataValue("baz");
 		

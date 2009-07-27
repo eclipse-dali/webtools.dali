@@ -36,9 +36,9 @@ public class EclipseLinkMappedSuperclassAdvancedComposite extends FormPane<Mappe
 			EclipseLinkUiMappingsMessages.EclipseLinkTypeMappingComposite_advanced
 		);
 		
-		new ReadOnlyComposite(this, buildReadOnlyHolder(), container);
-		new CustomizerComposite(this, buildCustomizerHolder(), container);
-		new ChangeTrackingComposite(this, buildChangeTrackingHolder(), container);
+		new EclipseLinkReadOnlyComposite(this, buildReadOnlyHolder(), container);
+		new EclipseLinkCustomizerComposite(this, buildCustomizerHolder(), container);
+		new EclipseLinkChangeTrackingComposite(this, buildChangeTrackingHolder(), container);
 	}
 	
 	private PropertyValueModel<EclipseLinkReadOnly> buildReadOnlyHolder() {

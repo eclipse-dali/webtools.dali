@@ -30,11 +30,11 @@ public abstract class EclipseLinkTransformationMappingUiProvider<T extends Eclip
 	}
 	
 	public String getLabel() {
-		return EclipseLinkUiMappingsMessages.TransformationMappingUiProvider_label;
+		return EclipseLinkUiMappingsMessages.EclipseLinkTransformationMappingUiProvider_label;
 	}
 	
 	public String getLinkLabel() {
-		return EclipseLinkUiMappingsMessages.TransformationMappingUiProvider_linkLabel;
+		return EclipseLinkUiMappingsMessages.EclipseLinkTransformationMappingUiProvider_linkLabel;
 	}
 	
 	public String getKey() {

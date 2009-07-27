@@ -144,16 +144,16 @@ public class EclipseLinkConverterDialog extends ValidatingDialog<EclipseLinkConv
 			return new StringConverter<String>() {
 				public String convertToString(String value) {
 					if (value == EclipseLinkConverter.CUSTOM_CONVERTER) {
-						return EclipseLinkUiMappingsMessages.ConvertersComposite_customConverter;
+						return EclipseLinkUiMappingsMessages.EclipseLinkConvertersComposite_customConverter;
 					}
 					if (value == EclipseLinkConverter.OBJECT_TYPE_CONVERTER) {
-						return EclipseLinkUiMappingsMessages.ConvertersComposite_objectTypeConverter;
+						return EclipseLinkUiMappingsMessages.EclipseLinkConvertersComposite_objectTypeConverter;
 					}
 					if (value == EclipseLinkConverter.STRUCT_CONVERTER) {
-						return EclipseLinkUiMappingsMessages.ConvertersComposite_structConverter;
+						return EclipseLinkUiMappingsMessages.EclipseLinkConvertersComposite_structConverter;
 					}
 					if (value == EclipseLinkConverter.TYPE_CONVERTER) {
-						return EclipseLinkUiMappingsMessages.ConvertersComposite_typeConverter;
+						return EclipseLinkUiMappingsMessages.EclipseLinkConvertersComposite_typeConverter;
 					}
 					return value;
 				}

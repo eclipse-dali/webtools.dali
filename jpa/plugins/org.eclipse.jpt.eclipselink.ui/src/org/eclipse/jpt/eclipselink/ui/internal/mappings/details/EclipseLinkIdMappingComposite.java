@@ -110,7 +110,7 @@ public class EclipseLinkIdMappingComposite extends FormPane<IdMapping>
 		container = addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
 
 		// Mutable widgets
-		new MutableComposite(this, buildMutableHolder(), container);
+		new EclipseLinkMutableComposite(this, buildMutableHolder(), container);
 	}	
 	
 	protected void initializeTypePane(Composite container) {
@@ -154,7 +154,7 @@ public class EclipseLinkIdMappingComposite extends FormPane<IdMapping>
 	}
 	
 	protected Pane<EclipseLinkConvert> buildConvertComposite(PropertyValueModel<EclipseLinkConvert> convertHolder, Composite container) {
-		return new ConvertComposite(convertHolder, container, getWidgetFactory());
+		return new EclipseLinkConvertComposite(convertHolder, container, getWidgetFactory());
 	}
 
 	protected WritablePropertyValueModel<Boolean> buildNoConverterHolder() {

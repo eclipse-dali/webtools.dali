@@ -126,7 +126,7 @@ public class EclipseLinkBasicMappingComposite extends FormPane<BasicMapping>
 		new OptionalComposite(this, addSubPane(container, 4));
 		
 		// Mutable widgets
-		new MutableComposite(this, buildMutableHolder(), container);
+		new EclipseLinkMutableComposite(this, buildMutableHolder(), container);
 	}
 	
 	protected void initializeTypePane(Composite container) {
@@ -187,7 +187,7 @@ public class EclipseLinkBasicMappingComposite extends FormPane<BasicMapping>
 	}
 
 	protected Pane<EclipseLinkConvert> buildConvertComposite(PropertyValueModel<EclipseLinkConvert> convertHolder, Composite container) {
-		return new ConvertComposite(convertHolder, container, getWidgetFactory());
+		return new EclipseLinkConvertComposite(convertHolder, container, getWidgetFactory());
 	}
 	
 	protected PropertyValueModel<Column> buildColumnHolder() {

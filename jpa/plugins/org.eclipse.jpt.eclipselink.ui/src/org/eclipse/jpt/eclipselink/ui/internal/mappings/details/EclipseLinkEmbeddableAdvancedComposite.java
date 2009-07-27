@@ -35,8 +35,8 @@ public class EclipseLinkEmbeddableAdvancedComposite extends FormPane<Embeddable>
 			EclipseLinkUiMappingsMessages.EclipseLinkTypeMappingComposite_advanced
 		);
 		
-		new CustomizerComposite(this, buildCustomizerHolder(), container);
-		new ChangeTrackingComposite(this, buildChangeTrackingHolder(), container);
+		new EclipseLinkCustomizerComposite(this, buildCustomizerHolder(), container);
+		new EclipseLinkChangeTrackingComposite(this, buildChangeTrackingHolder(), container);
 	}
 	
 	private PropertyValueModel<EclipseLinkCustomizer> buildCustomizerHolder() {

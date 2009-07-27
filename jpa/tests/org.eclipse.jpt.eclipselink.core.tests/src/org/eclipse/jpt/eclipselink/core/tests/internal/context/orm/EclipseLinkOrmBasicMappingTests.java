@@ -20,7 +20,7 @@ import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkBasicMapping;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmBasicMapping;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmEclipseLinkBasicMapping;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJPA;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasic;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntity;
@@ -82,8 +82,8 @@ public class EclipseLinkOrmBasicMappingTests
 			getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmPersistentAttribute ormPersistentAttribute =
 			ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "id");
-		EclipseLinkOrmBasicMapping contextBasic = 
-			(EclipseLinkOrmBasicMapping) ormPersistentAttribute.getMapping();
+		OrmEclipseLinkBasicMapping contextBasic = 
+			(OrmEclipseLinkBasicMapping) ormPersistentAttribute.getMapping();
 		XmlEntity resourceEntity = 
 			(XmlEntity)getXmlEntityMappings().getEntities().get(0);
 		XmlBasic resourceBasic = 
@@ -140,7 +140,7 @@ public class EclipseLinkOrmBasicMappingTests
 		
 		ormPersistentType.removeSpecifiedPersistentAttribute(ormPersistentAttribute);
 		ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
-		contextBasic = (EclipseLinkOrmBasicMapping) ormPersistentAttribute.getMapping();
+		contextBasic = (OrmEclipseLinkBasicMapping) ormPersistentAttribute.getMapping();
 		
 		assertNull(resourceBasic.getMutable());
 		assertTrue(contextBasic.getMutable().isDefaultMutable());
@@ -151,7 +151,7 @@ public class EclipseLinkOrmBasicMappingTests
 		// set metadata complete
 		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
 		ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
-		contextBasic = (EclipseLinkOrmBasicMapping) ormPersistentAttribute.getMapping();
+		contextBasic = (OrmEclipseLinkBasicMapping) ormPersistentAttribute.getMapping();
 		assertNull(resourceBasic.getMutable());
 		assertTrue(contextBasic.getMutable().isDefaultMutable());
 		assertEquals(Boolean.TRUE, contextBasic.getMutable().getSpecifiedMutable());
@@ -165,8 +165,8 @@ public class EclipseLinkOrmBasicMappingTests
 			getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmPersistentAttribute ormPersistentAttribute =
 			ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "myDate");
-		EclipseLinkOrmBasicMapping contextBasic = 
-			(EclipseLinkOrmBasicMapping) ormPersistentAttribute.getMapping();
+		OrmEclipseLinkBasicMapping contextBasic = 
+			(OrmEclipseLinkBasicMapping) ormPersistentAttribute.getMapping();
 		XmlEntity resourceEntity = 
 			(XmlEntity)getXmlEntityMappings().getEntities().get(0);
 		XmlBasic resourceBasic = 
@@ -239,7 +239,7 @@ public class EclipseLinkOrmBasicMappingTests
 		
 		ormPersistentType.removeSpecifiedPersistentAttribute(ormPersistentAttribute);
 		ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
-		contextBasic = (EclipseLinkOrmBasicMapping) ormPersistentAttribute.getMapping();
+		contextBasic = (OrmEclipseLinkBasicMapping) ormPersistentAttribute.getMapping();
 		
 		assertNull(resourceBasic.getMutable());
 		assertFalse(contextBasic.getMutable().isDefaultMutable());
@@ -250,7 +250,7 @@ public class EclipseLinkOrmBasicMappingTests
 		// set metadata complete
 		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
 		ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
-		contextBasic = (EclipseLinkOrmBasicMapping) ormPersistentAttribute.getMapping();
+		contextBasic = (OrmEclipseLinkBasicMapping) ormPersistentAttribute.getMapping();
 		assertNull(resourceBasic.getMutable());
 		assertFalse(contextBasic.getMutable().isDefaultMutable());
 		assertEquals(Boolean.FALSE, contextBasic.getMutable().getSpecifiedMutable());
@@ -263,8 +263,8 @@ public class EclipseLinkOrmBasicMappingTests
 			getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmPersistentAttribute ormPersistentAttribute =
 			ormPersistentType.addSpecifiedPersistentAttribute(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, "basic");
-		EclipseLinkOrmBasicMapping contextBasic = 
-			(EclipseLinkOrmBasicMapping) ormPersistentAttribute.getMapping();
+		OrmEclipseLinkBasicMapping contextBasic = 
+			(OrmEclipseLinkBasicMapping) ormPersistentAttribute.getMapping();
 		XmlEntity resourceEntity = 
 			(XmlEntity)getXmlEntityMappings().getEntities().get(0);
 		XmlBasic resourceBasic = 

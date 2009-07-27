@@ -100,8 +100,8 @@ public class EclipseLinkOneToManyMappingComposite
 		new TargetEntityComposite(this, addPane(container, groupBoxMargin));
 		new EclipseLinkOneToManyJoiningStrategyPane(this, buildJoiningHolder(), container);
 		new FetchTypeComposite(this, addPane(container, groupBoxMargin));
-		new JoinFetchComposite(this, buildJoinFetchableHolder(), addPane(container, groupBoxMargin));
-		new PrivateOwnedComposite(this, buildPrivateOwnableHolder(), addPane(container, groupBoxMargin));
+		new EclipseLinkJoinFetchComposite(this, buildJoinFetchableHolder(), addPane(container, groupBoxMargin));
+		new EclipseLinkPrivateOwnedComposite(this, buildPrivateOwnableHolder(), addPane(container, groupBoxMargin));
 		new CascadeComposite(this, buildCascadeHolder(), addSubPane(container, 5));
 		new OrderingComposite(this, container);
 	}

@@ -17,7 +17,7 @@ import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToOneMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkRelationshipMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkJoinFetchType;
-import org.eclipse.jpt.eclipselink.core.internal.context.orm.EclipseLinkOrmOneToOneMapping;
+import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmEclipseLinkOneToOneMapping;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntity;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlJoinFetchType;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlOneToOne;
@@ -225,12 +225,12 @@ public class EclipseLinkOrmOneToOneMappingTests
 		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Employee");
 		
 		OrmPersistentType departmentPersistentType = getEntityMappings().persistentTypes().next();
-		EclipseLinkOrmOneToOneMapping oneToOne = (EclipseLinkOrmOneToOneMapping) departmentPersistentType.getAttributeNamed("employee").getMapping();
+		OrmEclipseLinkOneToOneMapping oneToOne = (OrmEclipseLinkOneToOneMapping) departmentPersistentType.getAttributeNamed("employee").getMapping();
 
 		assertNull(oneToOne.getJoinFetch().getValue());
 		
 		getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
-		oneToOne = (EclipseLinkOrmOneToOneMapping) departmentPersistentType.getAttributeNamed("employee").getMapping();
+		oneToOne = (OrmEclipseLinkOneToOneMapping) departmentPersistentType.getAttributeNamed("employee").getMapping();
 		assertNull(oneToOne.getJoinFetch().getValue());		
 		
 		EclipseLinkRelationshipMapping javaRelationshipMapping = (EclipseLinkRelationshipMapping) departmentPersistentType.getJavaPersistentType().getAttributeNamed("employee").getMapping();
@@ -238,7 +238,7 @@ public class EclipseLinkOrmOneToOneMappingTests
 		assertNull(oneToOne.getJoinFetch().getValue());
 		
 		getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(false);
-		oneToOne = (EclipseLinkOrmOneToOneMapping) departmentPersistentType.getAttributeNamed("employee").getMapping();
+		oneToOne = (OrmEclipseLinkOneToOneMapping) departmentPersistentType.getAttributeNamed("employee").getMapping();
 		assertEquals(EclipseLinkJoinFetchType.OUTER, oneToOne.getJoinFetch().getValue());
 	}
 }

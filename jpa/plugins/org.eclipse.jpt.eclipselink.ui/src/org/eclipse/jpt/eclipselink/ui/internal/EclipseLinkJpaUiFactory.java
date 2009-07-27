@@ -22,7 +22,7 @@ import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
 import org.eclipse.jpt.core.context.java.JavaOneToOneMapping;
 import org.eclipse.jpt.core.context.java.JavaVersionMapping;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.eclipselink.core.internal.context.java.EclipseLinkJavaOneToManyMapping;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkOneToManyMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.caching.Caching;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.connection.Connection;
@@ -30,9 +30,9 @@ import org.eclipse.jpt.eclipselink.core.internal.context.persistence.customizati
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.logging.Logging;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.options.Options;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.schema.generation.SchemaGeneration;
-import org.eclipse.jpt.eclipselink.ui.internal.java.details.EclipseLinkJavaEmbeddableComposite;
-import org.eclipse.jpt.eclipselink.ui.internal.java.details.EclipseLinkJavaEntityComposite;
-import org.eclipse.jpt.eclipselink.ui.internal.java.details.EclipseLinkJavaMappedSuperclassComposite;
+import org.eclipse.jpt.eclipselink.ui.internal.java.details.JavaEclipseLinkEmbeddableComposite;
+import org.eclipse.jpt.eclipselink.ui.internal.java.details.JavaEclipseLinkEntityComposite;
+import org.eclipse.jpt.eclipselink.ui.internal.java.details.JavaEclipseLinkMappedSuperclassComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkBasicMappingComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkIdMappingComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.mappings.details.EclipseLinkManyToManyMappingComposite;
@@ -184,21 +184,21 @@ public class EclipseLinkJpaUiFactory extends BaseJpaUiFactory
 	public JpaComposite createJavaMappedSuperclassComposite(
 			PropertyValueModel<JavaMappedSuperclass> subjectHolder,
 			Composite parent, WidgetFactory widgetFactory) {
-		return new EclipseLinkJavaMappedSuperclassComposite(subjectHolder, parent, widgetFactory);
+		return new JavaEclipseLinkMappedSuperclassComposite(subjectHolder, parent, widgetFactory);
 	}
 	
 	@Override
 	public JpaComposite createJavaEntityComposite(
 			PropertyValueModel<JavaEntity> subjectHolder,
 			Composite parent, WidgetFactory widgetFactory) {
-		return new EclipseLinkJavaEntityComposite(subjectHolder, parent, widgetFactory);
+		return new JavaEclipseLinkEntityComposite(subjectHolder, parent, widgetFactory);
 	}
 	
 	@Override
 	public JpaComposite createJavaEmbeddableComposite(
 			PropertyValueModel<JavaEmbeddable> subjectHolder,
 			Composite parent, WidgetFactory widgetFactory) {
-		return new EclipseLinkJavaEmbeddableComposite(subjectHolder, parent, widgetFactory);
+		return new JavaEclipseLinkEmbeddableComposite(subjectHolder, parent, widgetFactory);
 	}
 	
 	
@@ -241,7 +241,7 @@ public class EclipseLinkJpaUiFactory extends BaseJpaUiFactory
 			PropertyValueModel<? extends JavaOneToManyMapping> subjectHolder, 
 			Composite parent, 
 			WidgetFactory widgetFactory) {
-		return new EclipseLinkOneToManyMappingComposite((PropertyValueModel<EclipseLinkJavaOneToManyMapping>) subjectHolder, parent, widgetFactory);
+		return new EclipseLinkOneToManyMappingComposite((PropertyValueModel<JavaEclipseLinkOneToManyMapping>) subjectHolder, parent, widgetFactory);
 	}
 	
 	@Override

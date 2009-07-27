@@ -114,7 +114,7 @@ public class EntityMappingsDetailsPage extends AbstractJpaDetailsPage<EntityMapp
 			protected String displayString(AccessType value) {
 				return buildDisplayString(
 					JptUiOrmMessages.class,
-					EntityMappingsDetailsPage.this,
+					EntityMappingsDetailsPage.class,
 					value
 				);
 			}
