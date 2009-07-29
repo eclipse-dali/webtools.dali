@@ -2379,7 +2379,7 @@ public abstract class Pane<T extends Model>
 	                               WritablePropertyValueModel<String> selectionHolder,
 	                               String helpId) {
 
-		List list = this.addList(container, selectionHolder, helpId);
+		List list = this.addUnmanagedList(container, selectionHolder, helpId);
 		this.manageWidget(list);
 
 		return list;
