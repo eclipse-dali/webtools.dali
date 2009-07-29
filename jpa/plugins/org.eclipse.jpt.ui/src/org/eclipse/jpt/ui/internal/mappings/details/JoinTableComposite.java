@@ -578,7 +578,7 @@ public class JoinTableComposite extends FormPane<JoinTable>
 		}
 
 		public boolean hasSpecifiedJoinColumns(JoinTable subject) {
-			return subject.containsSpecifiedInverseJoinColumns();
+			return subject.hasSpecifiedInverseJoinColumns();
 		}
 
 		public void removeJoinColumns(JoinTable subject, int[] selectedIndices) {
@@ -619,7 +619,7 @@ public class JoinTableComposite extends FormPane<JoinTable>
 		}
 
 		public boolean hasSpecifiedJoinColumns(JoinTable subject) {
-			return subject.containsSpecifiedJoinColumns();
+			return subject.hasSpecifiedJoinColumns();
 		}
 
 		public void removeJoinColumns(JoinTable subject, int[] selectedIndices) {

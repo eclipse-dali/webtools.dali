@@ -155,11 +155,11 @@ public class GenericOrmJoinTable
 	// ********** join columns **********
 
 	public ListIterator<OrmJoinColumn> joinColumns() {
-		return this.containsSpecifiedJoinColumns() ? this.specifiedJoinColumns() : this.defaultJoinColumns();
+		return this.hasSpecifiedJoinColumns() ? this.specifiedJoinColumns() : this.defaultJoinColumns();
 	}
 
 	public int joinColumnsSize() {
-		return this.containsSpecifiedJoinColumns() ? this.specifiedJoinColumnsSize() : this.defaultJoinColumnsSize();
+		return this.hasSpecifiedJoinColumns() ? this.specifiedJoinColumnsSize() : this.defaultJoinColumnsSize();
 	}
 
 	public void convertDefaultToSpecifiedJoinColumn() {
@@ -209,7 +209,7 @@ public class GenericOrmJoinTable
 	}
 
 	protected boolean shouldBuildDefaultJoinColumn() {
-		return ! this.containsSpecifiedJoinColumns();
+		return ! this.hasSpecifiedJoinColumns();
 	}
 
 
@@ -223,7 +223,7 @@ public class GenericOrmJoinTable
 		return this.specifiedJoinColumns.size();
 	}
 
-	public boolean containsSpecifiedJoinColumns() {
+	public boolean hasSpecifiedJoinColumns() {
 		return this.specifiedJoinColumns.size() != 0;
 	}
 
@@ -258,7 +258,7 @@ public class GenericOrmJoinTable
 
 	public void removeSpecifiedJoinColumn(int index) {
 		OrmJoinColumn removedJoinColumn = this.specifiedJoinColumns.remove(index);
-		if ( ! this.containsSpecifiedJoinColumns()) {
+		if ( ! this.hasSpecifiedJoinColumns()) {
 			//create the defaultJoinColumn now or this will happen during project update 
 			//after removing the join column from the resource model. That causes problems 
 			//in the UI because the change notifications end up in the wrong order.
@@ -329,11 +329,11 @@ public class GenericOrmJoinTable
 	// ********** inverse join columns **********
 
 	public ListIterator<OrmJoinColumn> inverseJoinColumns() {
-		return this.containsSpecifiedInverseJoinColumns() ? this.specifiedInverseJoinColumns() : this.defaultInverseJoinColumns();
+		return this.hasSpecifiedInverseJoinColumns() ? this.specifiedInverseJoinColumns() : this.defaultInverseJoinColumns();
 	}
 
 	public int inverseJoinColumnsSize() {
-		return this.containsSpecifiedInverseJoinColumns() ? this.specifiedInverseJoinColumnsSize() : this.defaultInverseJoinColumnsSize();
+		return this.hasSpecifiedInverseJoinColumns() ? this.specifiedInverseJoinColumnsSize() : this.defaultInverseJoinColumnsSize();
 	}
 
 	public void convertDefaultToSpecifiedInverseJoinColumn() {
@@ -383,7 +383,7 @@ public class GenericOrmJoinTable
 	}
 
 	protected boolean shouldBuildDefaultInverseJoinColumn() {
-		return ! this.containsSpecifiedInverseJoinColumns();
+		return ! this.hasSpecifiedInverseJoinColumns();
 	}
 
 
@@ -397,7 +397,7 @@ public class GenericOrmJoinTable
 		return this.specifiedInverseJoinColumns.size();
 	}
 
-	public boolean containsSpecifiedInverseJoinColumns() {
+	public boolean hasSpecifiedInverseJoinColumns() {
 		return !this.specifiedInverseJoinColumns.isEmpty();
 	}
 
@@ -432,7 +432,7 @@ public class GenericOrmJoinTable
 
 	public void removeSpecifiedInverseJoinColumn(int index) {
 		OrmJoinColumn removedJoinColumn = this.specifiedInverseJoinColumns.remove(index);
-		if ( ! this.containsSpecifiedInverseJoinColumns()) {
+		if ( ! this.hasSpecifiedInverseJoinColumns()) {
 			//create the defaultInverseJoinColumn now or this will happen during project update 
 			//after removing the join column from the resource model. That causes problems 
 			//in the UI because the change notifications end up in the wrong order.

@@ -86,7 +86,7 @@ public interface JoinTable
 	/**
 	 * Return whether the join table has specified join columns.
 	 */
-	boolean containsSpecifiedJoinColumns();
+	boolean hasSpecifiedJoinColumns();
 
 	/**
 	 * Remove all the join table's join columns.
@@ -155,7 +155,7 @@ public interface JoinTable
 	/**
 	 * Return whether the join table has specified inverse join columns.
 	 */
-	boolean containsSpecifiedInverseJoinColumns();
+	boolean hasSpecifiedInverseJoinColumns();
 
 	/**
 	 * Remove all the join table's inverse join columns.

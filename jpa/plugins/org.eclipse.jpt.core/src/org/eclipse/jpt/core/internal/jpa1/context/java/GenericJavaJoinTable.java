@@ -138,11 +138,11 @@ public class GenericJavaJoinTable
 	// ********** join columns **********
 
 	public ListIterator<JavaJoinColumn> joinColumns() {
-		return this.containsSpecifiedJoinColumns() ? this.specifiedJoinColumns() : this.defaultJoinColumns();
+		return this.hasSpecifiedJoinColumns() ? this.specifiedJoinColumns() : this.defaultJoinColumns();
 	}
 
 	public int joinColumnsSize() {
-		return this.containsSpecifiedJoinColumns() ? this.specifiedJoinColumnsSize() : this.defaultJoinColumnsSize();
+		return this.hasSpecifiedJoinColumns() ? this.specifiedJoinColumnsSize() : this.defaultJoinColumnsSize();
 	}
 
 	public void convertDefaultToSpecifiedJoinColumn() {
@@ -196,7 +196,7 @@ public class GenericJavaJoinTable
 	}
 
 	protected boolean shouldBuildDefaultJoinColumn() {
-		return ! this.containsSpecifiedJoinColumns();
+		return ! this.hasSpecifiedJoinColumns();
 	}
 
 
@@ -210,7 +210,7 @@ public class GenericJavaJoinTable
 		return this.specifiedJoinColumns.size();
 	}
 
-	public boolean containsSpecifiedJoinColumns() {
+	public boolean hasSpecifiedJoinColumns() {
 		return this.specifiedJoinColumns.size() != 0;
 	}
 
@@ -246,7 +246,7 @@ public class GenericJavaJoinTable
 
 	public void removeSpecifiedJoinColumn(int index) {
 		JavaJoinColumn removedJoinColumn = this.specifiedJoinColumns.remove(index);
-		if ( ! this.containsSpecifiedJoinColumns()) {
+		if ( ! this.hasSpecifiedJoinColumns()) {
 			//create the defaultJoinColumn now or this will happen during project update 
 			//after removing the join column from the resource model. That causes problems 
 			//in the UI because the change notifications end up in the wrong order.
@@ -305,11 +305,11 @@ public class GenericJavaJoinTable
 	// ********** inverse join columns **********
 
 	public ListIterator<JavaJoinColumn> inverseJoinColumns() {
-		return this.containsSpecifiedInverseJoinColumns() ? this.specifiedInverseJoinColumns() : this.defaultInverseJoinColumns();
+		return this.hasSpecifiedInverseJoinColumns() ? this.specifiedInverseJoinColumns() : this.defaultInverseJoinColumns();
 	}
 
 	public int inverseJoinColumnsSize() {
-		return this.containsSpecifiedInverseJoinColumns() ? this.specifiedInverseJoinColumnsSize() : this.defaultInverseJoinColumnsSize();
+		return this.hasSpecifiedInverseJoinColumns() ? this.specifiedInverseJoinColumnsSize() : this.defaultInverseJoinColumnsSize();
 	}
 
 	public void convertDefaultToSpecifiedInverseJoinColumn() {
@@ -351,7 +351,7 @@ public class GenericJavaJoinTable
 	}
 
 	protected boolean shouldBuildDefaultInverseJoinColumn() {
-		return ! this.containsSpecifiedInverseJoinColumns();
+		return ! this.hasSpecifiedInverseJoinColumns();
 	}
 
 	protected void updateDefaultInverseJoinColumn(JoinTableAnnotation joinTableAnnotation) {
@@ -377,7 +377,7 @@ public class GenericJavaJoinTable
 		return this.specifiedInverseJoinColumns.size();
 	}
 
-	public boolean containsSpecifiedInverseJoinColumns() {
+	public boolean hasSpecifiedInverseJoinColumns() {
 		return this.specifiedInverseJoinColumns.size() != 0;
 	}
 
@@ -413,7 +413,7 @@ public class GenericJavaJoinTable
 
 	public void removeSpecifiedInverseJoinColumn(int index) {
 		JavaJoinColumn removedJoinColumn = this.specifiedInverseJoinColumns.remove(index);
-		if ( ! this.containsSpecifiedInverseJoinColumns()) {
+		if ( ! this.hasSpecifiedInverseJoinColumns()) {
 			//create the defaultJoinColumn now or this will happen during project update 
 			//after removing the join column from the resource model. That causes problems 
 			//in the UI because the change notifications end up in the wrong order.
