@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -23,7 +23,7 @@ import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
-import org.eclipse.jpt.ui.internal.mappings.details.JoinColumnsComposite.IJoinColumnsEditor;
+import org.eclipse.jpt.ui.internal.mappings.details.JoinColumnsComposite.JoinColumnsEditor;
 import org.eclipse.jpt.ui.internal.util.ControlSwitcher;
 import org.eclipse.jpt.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
@@ -83,6 +83,7 @@ public class OverridesComposite extends FormPane<Entity>
 {
 	private Composite columnPane;
 	private Composite joinColumnsPane;
+	private JoinColumnsComposite<AssociationOverride> joinColumnsComposite;
 	private WritablePropertyValueModel<BaseOverride> selectedOverrideHolder;
 	private WritablePropertyValueModel<Boolean> overrideVirtualAttributeOverrideHolder;
 	private WritablePropertyValueModel<Boolean> overrideVirtualAssociationOverrideHolder;
@@ -213,8 +214,8 @@ public class OverridesComposite extends FormPane<Entity>
 			JptUiMappingsMessages.OverridesComposite_joinColumn
 		);
 
-		// Join Columns list pane (for IOverrideAssociation)
-		JoinColumnsComposite<AssociationOverride> joinColumnsComposite =
+		// Join Columns list pane (for AssociationOverride)
+		this.joinColumnsComposite =
 			new JoinColumnsComposite<AssociationOverride>(
 				this,
 				buildAssociationOverrideHolder(),
@@ -223,7 +224,7 @@ public class OverridesComposite extends FormPane<Entity>
 				false
 			);
 
-		installJoinColumnsPaneEnabler(joinColumnsComposite);
+		installJoinColumnsPaneEnabler(this.joinColumnsComposite);
 	}
 
 	private void installJoinColumnsPaneEnabler(JoinColumnsComposite<AssociationOverride> pane) {
@@ -265,6 +266,7 @@ public class OverridesComposite extends FormPane<Entity>
 
 		JoinColumn joinColumn = associationOverride.addSpecifiedJoinColumn(index);
 		stateObject.updateJoinColumn(joinColumn);
+		joinColumnsComposite.setSelectedJoinColumn(joinColumn);
 	}
 
 	private WritablePropertyValueModel<AssociationOverride> buildAssociationOverrideHolder() {
@@ -523,17 +525,17 @@ public class OverridesComposite extends FormPane<Entity>
 		}
 	}
 
-	private class JoinColumnsProvider implements IJoinColumnsEditor<AssociationOverride> {
+	private class JoinColumnsProvider implements JoinColumnsEditor<AssociationOverride> {
 
 		public void addJoinColumn(AssociationOverride subject) {
 			OverridesComposite.this.addJoinColumn(subject);
 		}
 
-		public JoinColumn defaultJoinColumn(AssociationOverride subject) {
+		public JoinColumn getDefaultJoinColumn(AssociationOverride subject) {
 			return null;
 		}
 
-		public String defaultPropertyName() {
+		public String getDefaultPropertyName() {
 			return AssociationOverride.DEFAULT_JOIN_COLUMNS_LIST;
 		}
 
@@ -559,7 +561,7 @@ public class OverridesComposite extends FormPane<Entity>
 			return subject.specifiedJoinColumnsSize();
 		}
 
-		public String specifiedListPropertyName() {
+		public String getSpecifiedJoinColumnsListPropertyName() {
 			return AssociationOverride.SPECIFIED_JOIN_COLUMNS_LIST;
 		}
 	}

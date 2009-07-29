@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -39,7 +39,7 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
 
 /**
- * Here the layout of this pane:
+ * Here is the layout of this pane:
  * <pre>
  * -----------------------------------------------------------------------------
  * | ------------------------------------------------------------------------- |
@@ -49,10 +49,11 @@ import org.eclipse.swt.widgets.Composite;
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
+ * @see JoiningStrategyJoinColumnsComposite - A container of this pane
  * @see JoinTableComposite - A container of this pane
  * @see OverridesComposite - A container of this pane
  *
- * @version 2.0
+ * @version 3.0
  * @since 2.0
  */
 public class JoinColumnsComposite<T extends JpaNode> extends FormPane<T>
@@ -60,10 +61,10 @@ public class JoinColumnsComposite<T extends JpaNode> extends FormPane<T>
 	/**
 	 * The editor used to perform the common behaviors defined in the list pane.
 	 */
-	private IJoinColumnsEditor<T> joinColumnsEditor;
+	private JoinColumnsEditor<T> joinColumnsEditor;
 
 	private AddRemoveListPane<T> listPane;
-
+	
 	/**
 	 * Creates a new <code>JoinColumnsComposite</code>.
 	 *
@@ -75,7 +76,7 @@ public class JoinColumnsComposite<T extends JpaNode> extends FormPane<T>
 	 */
 	public JoinColumnsComposite(FormPane<? extends T> parentPane,
 	                            Composite parent,
-	                            IJoinColumnsEditor<T> joinColumnsEditor) {
+	                            JoinColumnsEditor<T> joinColumnsEditor) {
 
 		super(parentPane, parent);
 		this.joinColumnsEditor = joinColumnsEditor;
@@ -95,7 +96,7 @@ public class JoinColumnsComposite<T extends JpaNode> extends FormPane<T>
 	public JoinColumnsComposite(FormPane<?> parentPane,
 	                            PropertyValueModel<? extends T> subjectHolder,
 	                            Composite parent,
-	                            IJoinColumnsEditor<T> joinColumnsEditor,
+	                            JoinColumnsEditor<T> joinColumnsEditor,
 	                            boolean automaticallyAlignWidgets) {
 
 		super(parentPane, subjectHolder, parent, automaticallyAlignWidgets);
@@ -113,11 +114,29 @@ public class JoinColumnsComposite<T extends JpaNode> extends FormPane<T>
 	public JoinColumnsComposite(PropertyValueModel<? extends T> subjectHolder,
 	                            Composite parent,
 	                            WidgetFactory widgetFactory,
-	                            IJoinColumnsEditor<T> joinColumnsEditor) {
+	                            JoinColumnsEditor<T> joinColumnsEditor) {
 
 		super(subjectHolder, parent, widgetFactory);
 		this.joinColumnsEditor = joinColumnsEditor;
 		initializeLayout2();
+	}
+
+	@Override
+	protected void initializeLayout(Composite container) {
+		//see intiailizeLayout2()
+	}
+
+	private void initializeLayout2() {
+		this.listPane = new AddRemoveListPane<T>(
+			this,
+			getControl(),
+			buildJoinColumnsAdapter(),
+			buildJoinColumnsListModel(),
+			buildSelectedJoinColumnHolder(),
+			buildJoinColumnsListLabelProvider(),
+			JpaHelpContextIds.MAPPING_JOIN_TABLE_COLUMNS,
+			false
+		);
 	}
 
 	private WritablePropertyValueModel<JoinColumn> buildSelectedJoinColumnHolder() {
@@ -128,7 +147,7 @@ public class JoinColumnsComposite<T extends JpaNode> extends FormPane<T>
 
 		if (joinColumn.isVirtual()) {
 			return NLS.bind(
-				JptUiMappingsMessages.JoinTableComposite_mappingBetweenTwoParamsDefault,
+				JptUiMappingsMessages.JoinColumnsComposite_mappingBetweenTwoParamsDefault,
 				joinColumn.getName(),
 				joinColumn.getReferencedColumnName()
 			);
@@ -137,14 +156,14 @@ public class JoinColumnsComposite<T extends JpaNode> extends FormPane<T>
 
 			if (joinColumn.getSpecifiedReferencedColumnName() == null) {
 				return NLS.bind(
-					JptUiMappingsMessages.JoinTableComposite_mappingBetweenTwoParamsBothDefault,
+					JptUiMappingsMessages.JoinColumnsComposite_mappingBetweenTwoParamsBothDefault,
 					joinColumn.getName(),
 					joinColumn.getReferencedColumnName()
 				);
 			}
 
 			return NLS.bind(
-				JptUiMappingsMessages.JoinTableComposite_mappingBetweenTwoParamsFirstDefault,
+				JptUiMappingsMessages.JoinColumnsComposite_mappingBetweenTwoParamsFirstDefault,
 				joinColumn.getName(),
 				joinColumn.getReferencedColumnName()
 			);
@@ -152,14 +171,14 @@ public class JoinColumnsComposite<T extends JpaNode> extends FormPane<T>
 
 		if (joinColumn.getSpecifiedReferencedColumnName() == null) {
 			return NLS.bind(
-				JptUiMappingsMessages.JoinTableComposite_mappingBetweenTwoParamsSecDefault,
+				JptUiMappingsMessages.JoinColumnsComposite_mappingBetweenTwoParamsSecDefault,
 				joinColumn.getName(),
 				joinColumn.getReferencedColumnName()
 			);
 		}
 
 		return NLS.bind(
-			JptUiMappingsMessages.JoinTableComposite_mappingBetweenTwoParams,
+			JptUiMappingsMessages.JoinColumnsComposite_mappingBetweenTwoParams,
 			joinColumn.getName(),
 			joinColumn.getReferencedColumnName()
 		);
@@ -169,7 +188,7 @@ public class JoinColumnsComposite<T extends JpaNode> extends FormPane<T>
 		return new AbstractAdapter() {
 
 			public void addNewItem(ObjectListSelectionModel listSelectionModel) {
-				joinColumnsEditor.addJoinColumn(getSubject());
+				JoinColumnsComposite.this.joinColumnsEditor.addJoinColumn(getSubject());
 			}
 
 			@Override
@@ -179,17 +198,17 @@ public class JoinColumnsComposite<T extends JpaNode> extends FormPane<T>
 
 			@Override
 			public String optionalButtonText() {
-				return JptUiMappingsMessages.JoinColumnComposite_edit;
+				return JptUiMappingsMessages.JoinColumnsComposite_edit;
 			}
 
 			@Override
 			public void optionOnSelection(ObjectListSelectionModel listSelectionModel) {
 				JoinColumn joinColumn = (JoinColumn) listSelectionModel.selectedValue();
-				joinColumnsEditor.editJoinColumn(getSubject(), joinColumn);
+				JoinColumnsComposite.this.joinColumnsEditor.editJoinColumn(getSubject(), joinColumn);
 			}
 
 			public void removeSelectedItems(ObjectListSelectionModel listSelectionModel) {
-				joinColumnsEditor.removeJoinColumns(getSubject(), listSelectionModel.selectedIndices());
+				JoinColumnsComposite.this.joinColumnsEditor.removeJoinColumns(getSubject(), listSelectionModel.selectedIndices());
 			}
 		};
 	}
@@ -210,15 +229,15 @@ public class JoinColumnsComposite<T extends JpaNode> extends FormPane<T>
 	}
 
 	private ListValueModel<JoinColumn> buildSpecifiedJoinColumnsListHolder() {
-		return new ListAspectAdapter<T, JoinColumn>(getSubjectHolder(), joinColumnsEditor.specifiedListPropertyName()) {
+		return new ListAspectAdapter<T, JoinColumn>(getSubjectHolder(), this.joinColumnsEditor.getSpecifiedJoinColumnsListPropertyName()) {
 			@Override
 			protected ListIterator<JoinColumn> listIterator_() {
-				return joinColumnsEditor.specifiedJoinColumns(subject);
+				return JoinColumnsComposite.this.joinColumnsEditor.specifiedJoinColumns(this.subject);
 			}
 
 			@Override
 			protected int size_() {
-				return joinColumnsEditor.specifiedJoinColumnsSize(subject);
+				return JoinColumnsComposite.this.joinColumnsEditor.specifiedJoinColumnsSize(this.subject);
 			}
 		};
 	}
@@ -230,10 +249,10 @@ public class JoinColumnsComposite<T extends JpaNode> extends FormPane<T>
 	}
 
 	private PropertyValueModel<JoinColumn> buildDefaultJoinColumnHolder() {
-		return new PropertyAspectAdapter<T, JoinColumn>(getSubjectHolder(), joinColumnsEditor.defaultPropertyName()) {
+		return new PropertyAspectAdapter<T, JoinColumn>(getSubjectHolder(), this.joinColumnsEditor.getDefaultPropertyName()) {
 			@Override
 			protected JoinColumn buildValue_() {
-				return joinColumnsEditor.defaultJoinColumn(subject);
+				return JoinColumnsComposite.this.joinColumnsEditor.getDefaultJoinColumn(this.subject);
 			}
 		};
 	}
@@ -249,46 +268,64 @@ public class JoinColumnsComposite<T extends JpaNode> extends FormPane<T>
 			}
 		};
 	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected void initializeLayout(Composite container) {
-	}
-
-	private void initializeLayout2() {
-
-		// Join Columns list pane
-		this.listPane = new AddRemoveListPane<T>(
-			this,
-			getControl(),
-			buildJoinColumnsAdapter(),
-			buildJoinColumnsListModel(),
-			buildSelectedJoinColumnHolder(),
-			buildJoinColumnsListLabelProvider(),
-			JpaHelpContextIds.MAPPING_JOIN_TABLE_COLUMNS,
-			false
-		);
-	}
 	
 	protected void installJoinColumnsPaneEnabler(PropertyValueModel<Boolean> joinColumnsPaneEnablerHolder) {
 		new PaneEnabler(joinColumnsPaneEnablerHolder, this.listPane);
 	}
 	
+	public void setSelectedJoinColumn(JoinColumn joinColumn) {
+		this.listPane.setSelectedItem(joinColumn);
+	}
+	
 	/**
 	 * The editor is used to complete the behavior of this pane.
 	 */
-	public static interface IJoinColumnsEditor<T> {
+	public static interface JoinColumnsEditor<T> {
 
+		/**
+		 * Add a join column to the given subject and return it
+		 */
 		void addJoinColumn(T subject);
+		
+		/**
+		 * Edit the given join column, the Edit button was pressed
+		 * while this join column was selected.
+		 */
 		void editJoinColumn(T subject, JoinColumn joinColumn);
+		
+		/**
+		 * Return whether the subject has specified join columns
+		 */
 		boolean hasSpecifiedJoinColumns(T subject);
+		
+		/**
+		 * Return the spcified join columns from the given subject
+		 */
 		ListIterator<JoinColumn> specifiedJoinColumns(T subject);
+		
+		/**
+		 * Return the number of specified join columns on the given subject
+		 */
 		int specifiedJoinColumnsSize(T subject);
-		JoinColumn defaultJoinColumn(T subject);
-		String specifiedListPropertyName();
-		String defaultPropertyName();
+		
+		/**
+		 * Return the default join column from the given subject or null.
+		 */
+		JoinColumn getDefaultJoinColumn(T subject);
+		
+		/**
+		 * Return the property name of the specified join columns list
+		 */
+		String getSpecifiedJoinColumnsListPropertyName();
+		
+		/**
+		 * Return the property name of the specified join columns list
+		 */
+		String getDefaultPropertyName();
+		
+		/**
+		 * Remove the join columns at the specified indices from the subject
+		 */
 		void removeJoinColumns(T subject, int[] selectedIndices);
 	}
 }

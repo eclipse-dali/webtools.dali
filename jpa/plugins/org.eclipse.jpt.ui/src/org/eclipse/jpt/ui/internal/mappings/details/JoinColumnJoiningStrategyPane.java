@@ -27,7 +27,7 @@ import org.eclipse.swt.widgets.Composite;
  * | o Join columns __________________________________________________________ |
  * | | --------------------------------------------------------------------- | |
  * | | |                                                                   | | |
- * | | |  JoinColumnComposite                                              | | |
+ * | | |  JoiningStrategyJoinColumnsComposite                              | | |
  * | | |                                                                   | | |
  * | | --------------------------------------------------------------------- | |
  * | ------------------------------------------------------------------------- |
@@ -93,6 +93,6 @@ public class JoinColumnJoiningStrategyPane
 	
 	@Override
 	protected Composite buildStrategyDetailsComposite(Composite parent) {
-		return new JoinColumnComposite(this, this.joiningStrategyHolder, parent).getControl();
+		return new JoiningStrategyJoinColumnsComposite(this, this.joiningStrategyHolder, parent).getControl();
 	}
 }

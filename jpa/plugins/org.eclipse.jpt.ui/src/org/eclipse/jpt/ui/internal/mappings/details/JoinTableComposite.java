@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,14 +22,13 @@ import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
 import org.eclipse.jpt.ui.internal.mappings.db.CatalogCombo;
 import org.eclipse.jpt.ui.internal.mappings.db.SchemaCombo;
 import org.eclipse.jpt.ui.internal.mappings.db.TableCombo;
-import org.eclipse.jpt.ui.internal.mappings.details.JoinColumnsComposite.IJoinColumnsEditor;
+import org.eclipse.jpt.ui.internal.mappings.details.JoinColumnsComposite.JoinColumnsEditor;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.ui.internal.widgets.PostExecution;
 import org.eclipse.jpt.utility.internal.model.value.CachingTransformationPropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListPropertyValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ReadOnlyWritablePropertyValueModelWrapper;
-import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ValueListAdapter;
 import org.eclipse.jpt.utility.model.event.StateChangeEvent;
 import org.eclipse.jpt.utility.model.listener.StateChangeListener;
@@ -86,6 +85,8 @@ public class JoinTableComposite extends FormPane<JoinTable>
 	private Button overrideDefaultInverseJoinColumnsCheckBox;
 	private Button overrideDefaultJoinColumnsCheckBox;
 
+	private JoinColumnsComposite<JoinTable> joinColumnsComposite;
+	private JoinColumnsComposite<JoinTable> inverseJoinColumnsComposite;
 	/**
 	 * Creates a new <code>JoinTableComposite</code>.
 	 *
@@ -113,14 +114,6 @@ public class JoinTableComposite extends FormPane<JoinTable>
 	                          WidgetFactory widgetFactory) {
 
 		super(subjectHolder, parent, widgetFactory);
-	}
-	
-	private WritablePropertyValueModel<Boolean> buildInverseJoinColumnsPaneEnablerHolder() {
-		return new SimplePropertyValueModel<Boolean>();
-	}
-
-	private WritablePropertyValueModel<Boolean> buildJoinColumnsPaneEnablerHolder() {
-		return new SimplePropertyValueModel<Boolean>();
 	}
 
 	@Override
@@ -176,13 +169,13 @@ public class JoinTableComposite extends FormPane<JoinTable>
 			buildOverrideDefaultSelectionListener()
 		);
 
-		JoinColumnsComposite<JoinTable> joinColumnsComposite = new JoinColumnsComposite<JoinTable>(
+		this.joinColumnsComposite = new JoinColumnsComposite<JoinTable>(
 			this,
 			joinColumnGroupPane,
 			buildJoinColumnsEditor()
 		);
 
-		installJoinColumnsPaneEnabler(joinColumnsComposite);
+		installJoinColumnsPaneEnabler(this.joinColumnsComposite);
 
 		// Inverse Join Columns group pane
 		Group inverseJoinColumnGroupPane = addTitledGroup(
@@ -202,13 +195,13 @@ public class JoinTableComposite extends FormPane<JoinTable>
 			buildOverrideDefaultInverseSelectionListener()
 		);
 
-		JoinColumnsComposite<JoinTable> inverseJoinColumnsComposite = new JoinColumnsComposite<JoinTable>(
+		this.inverseJoinColumnsComposite = new JoinColumnsComposite<JoinTable>(
 			this,
 			inverseJoinColumnGroupPane,
 			buildInverseJoinColumnsEditor()
 		);
 
-		installInverseJoinColumnsPaneEnabler(inverseJoinColumnsComposite);
+		installInverseJoinColumnsPaneEnabler(this.inverseJoinColumnsComposite);
 	}
 
 	private void installInverseJoinColumnsPaneEnabler(JoinColumnsComposite<JoinTable> pane) {
@@ -234,6 +227,11 @@ public class JoinTableComposite extends FormPane<JoinTable>
 
 		JoinColumn joinColumn = subject.addSpecifiedInverseJoinColumn(index);
 		stateObject.updateJoinColumn(joinColumn);
+		this.setSelectedInverseJoinColumn(joinColumn);
+	}
+
+	private void setSelectedInverseJoinColumn(JoinColumn joinColumn) {
+		this.inverseJoinColumnsComposite.setSelectedJoinColumn(joinColumn);
 	}
 
 	private void addJoinColumn(JoinTable joinTable) {
@@ -251,6 +249,11 @@ public class JoinTableComposite extends FormPane<JoinTable>
 
 		JoinColumn joinColumn = getSubject().addSpecifiedJoinColumn(index);
 		stateObject.updateJoinColumn(joinColumn);
+		this.setSelectedJoinColumn(joinColumn);
+	}
+
+	private void setSelectedJoinColumn(JoinColumn joinColumn) {
+		this.joinColumnsComposite.setSelectedJoinColumn(joinColumn);
 	}
 
 	private PostExecution<InverseJoinColumnInJoinTableDialog> buildAddInverseJoinColumnPostExecution() {
@@ -520,6 +523,7 @@ public class JoinTableComposite extends FormPane<JoinTable>
 		try {
 			if (selected) {
 				joinTable.convertDefaultToSpecifiedInverseJoinColumn();
+				setSelectedInverseJoinColumn(joinTable.specifiedInverseJoinColumns().next());
 			} else {
 				joinTable.clearSpecifiedInverseJoinColumns();
 			}
@@ -544,6 +548,7 @@ public class JoinTableComposite extends FormPane<JoinTable>
 		try {
 			if (selected) {
 				joinTable.convertDefaultToSpecifiedJoinColumn();
+				setSelectedJoinColumn(joinTable.specifiedJoinColumns().next());
 			} else {
 				for (int index = joinTable.specifiedJoinColumnsSize(); --index >= 0; ) {
 					joinTable.removeSpecifiedJoinColumn(index);
@@ -554,17 +559,17 @@ public class JoinTableComposite extends FormPane<JoinTable>
 		}
 	}
 
-	private class InverseJoinColumnsProvider implements IJoinColumnsEditor<JoinTable> {
+	private class InverseJoinColumnsProvider implements JoinColumnsEditor<JoinTable> {
 
 		public void addJoinColumn(JoinTable subject) {
 			JoinTableComposite.this.addInverseJoinColumn(subject);
 		}
 
-		public JoinColumn defaultJoinColumn(JoinTable subject) {
+		public JoinColumn getDefaultJoinColumn(JoinTable subject) {
 			return subject.getDefaultInverseJoinColumn();
 		}
 
-		public String defaultPropertyName() {
+		public String getDefaultPropertyName() {
 			return JoinTable.DEFAULT_INVERSE_JOIN_COLUMN;
 		}
 
@@ -590,22 +595,22 @@ public class JoinTableComposite extends FormPane<JoinTable>
 			return subject.specifiedInverseJoinColumnsSize();
 		}
 
-		public String specifiedListPropertyName() {
+		public String getSpecifiedJoinColumnsListPropertyName() {
 			return JoinTable.SPECIFIED_INVERSE_JOIN_COLUMNS_LIST;
 		}
 	}
 
-	private class JoinColumnsProvider implements IJoinColumnsEditor<JoinTable> {
+	private class JoinColumnsProvider implements JoinColumnsEditor<JoinTable> {
 
 		public void addJoinColumn(JoinTable subject) {
 			JoinTableComposite.this.addJoinColumn(subject);
 		}
 
-		public JoinColumn defaultJoinColumn(JoinTable subject) {
+		public JoinColumn getDefaultJoinColumn(JoinTable subject) {
 			return subject.getDefaultJoinColumn();
 		}
 
-		public String defaultPropertyName() {
+		public String getDefaultPropertyName() {
 			return JoinTable.DEFAULT_JOIN_COLUMN;
 		}
 
@@ -631,7 +636,7 @@ public class JoinTableComposite extends FormPane<JoinTable>
 			return subject.specifiedJoinColumnsSize();
 		}
 
-		public String specifiedListPropertyName() {
+		public String getSpecifiedJoinColumnsListPropertyName() {
 			return JoinTable.SPECIFIED_JOIN_COLUMNS_LIST;
 		}
 	}

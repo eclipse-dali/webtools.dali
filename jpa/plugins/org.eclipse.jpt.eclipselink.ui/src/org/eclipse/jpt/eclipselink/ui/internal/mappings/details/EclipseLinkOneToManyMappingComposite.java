@@ -38,17 +38,22 @@ import org.eclipse.swt.widgets.Composite;
  * | ------------------------------------------------------------------------- |
  * | ------------------------------------------------------------------------- |
  * | |                                                                       | |
+ * | | EclipseLinkOneToManyJoiningStrategyPane                               | |
+ * | |                                                                       | |
+ * | ------------------------------------------------------------------------- |
+ * | ------------------------------------------------------------------------- |
+ * | |                                                                       | |
  * | | FetchTypeComposite                                                    | |
  * | |                                                                       | |
  * | ------------------------------------------------------------------------- |
  * | ------------------------------------------------------------------------- |
  * | |                                                                       | |
- * | | MappedByPane                                                     | |
+ * | | EclipseLinkJoinFetchComposite                                         | |
  * | |                                                                       | |
  * | ------------------------------------------------------------------------- |
  * | ------------------------------------------------------------------------- |
  * | |                                                                       | |
- * | | OptionalComposite                                                     | |
+ * | | EclipseLinkvateOwnedComposite                                         | |
  * | |                                                                       | |
  * | ------------------------------------------------------------------------- |
  * | ------------------------------------------------------------------------- |
@@ -58,7 +63,7 @@ import org.eclipse.swt.widgets.Composite;
  * | ------------------------------------------------------------------------- |
  * | ------------------------------------------------------------------------- |
  * | |                                                                       | |
- * | | JoinColumnComposite                                                   | |
+ * | | OrderingComposite                                                     | |
  * | |                                                                       | |
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
@@ -66,10 +71,11 @@ import org.eclipse.swt.widgets.Composite;
  * @see OneToOneMapping
  * @see BaseJpaUiFactory - The factory creating this pane
  * @see CascadeComposite
+ * @see EclipseLinkJoinFetchComposite
+ * @see EclipseLinkJoinFetchComposite
+ * @see EclipseLinkOneToManyJoiningStrategyPane
  * @see FetchTypeComposite
- * @see JoinColumnComposite
- * @see MappedByPane
- * @see OptionalComposite
+ * @see OrderingComposite
  * @see TargetEntityComposite
  *
  * @version 2.1
