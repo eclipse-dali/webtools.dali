@@ -24,7 +24,6 @@ import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaJoinTable;
 import org.eclipse.jpt.core.context.java.JavaJoinTableJoiningStrategy;
-import org.eclipse.jpt.core.context.java.JavaRelationshipMapping;
 import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaTable;
 import org.eclipse.jpt.core.internal.resource.java.NullJoinColumnAnnotation;
@@ -74,7 +73,7 @@ public class GenericJavaJoinTable
 		return new InverseJoinColumnOwner();
 	}
 
-	public JavaRelationshipMapping getRelationshipMapping() {
+	public RelationshipMapping getRelationshipMapping() {
 		return this.getParent().getRelationshipReference().getRelationshipMapping();
 	}
 

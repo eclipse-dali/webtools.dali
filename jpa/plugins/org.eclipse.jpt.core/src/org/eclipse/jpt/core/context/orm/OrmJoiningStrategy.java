@@ -16,7 +16,5 @@ import org.eclipse.jpt.core.context.XmlContextNode;
 public interface OrmJoiningStrategy 
 	extends XmlContextNode, JoiningStrategy
 {
-	public OrmRelationshipReference getRelationshipReference();
-	
 	void update();
 }

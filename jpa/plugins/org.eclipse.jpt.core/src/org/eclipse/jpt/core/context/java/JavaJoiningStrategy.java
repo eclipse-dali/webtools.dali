@@ -15,8 +15,6 @@ import org.eclipse.jpt.core.context.JoiningStrategy;
 public interface JavaJoiningStrategy
 	extends JavaJpaContextNode, JoiningStrategy
 {
-	public JavaRelationshipReference getRelationshipReference();
-	
 	void initialize();
 	
 	void update();

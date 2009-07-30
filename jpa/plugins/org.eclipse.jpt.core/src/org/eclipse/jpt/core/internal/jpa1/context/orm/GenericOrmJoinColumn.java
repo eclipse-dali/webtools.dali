@@ -156,14 +156,6 @@ public class GenericOrmJoinColumn extends AbstractOrmBaseColumn<XmlJoinColumn> i
 		return MappingTools.buildJoinColumnDefaultReferencedColumnName(this.getOwner());
 	}
 	
-	@Override
-	protected String buildDefaultTableName() {
-		if (getOwner().getRelationshipMapping() == null) {
-			return null;
-		}
-		return super.buildDefaultTableName();
-	}
-	
 	
 	//******************* validation ***********************
 

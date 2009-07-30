@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -7,62 +7,47 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.internal.jpa1.context.java;
+package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.context.AssociationOverride;
+import org.eclipse.jpt.core.context.JoiningStrategy;
+import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverrideRelationshipReference;
 import org.eclipse.jpt.core.context.java.JavaJoinColumn;
-import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
-import org.eclipse.jpt.core.internal.context.java.AbstractJavaOverride;
-import org.eclipse.jpt.core.internal.context.java.GenericJavaAssociationOverrideRelationshipReference;
+import org.eclipse.jpt.core.context.java.JavaJoinColumnInAssociationOverrideJoiningStrategy;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.AssociationOverrideAnnotation;
+import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class GenericJavaAssociationOverride extends AbstractJavaOverride
-	implements JavaAssociationOverride
+public class GenericJavaAssociationOverrideRelationshipReference extends AbstractJavaJpaContextNode
+	implements JavaAssociationOverrideRelationshipReference
 {
 
-	protected final JavaAssociationOverrideRelationshipReference relationshipReference;
+	protected final JavaJoinColumnInAssociationOverrideJoiningStrategy joinColumnJoiningStrategy;
 
-	public GenericJavaAssociationOverride(JavaJpaContextNode parent, AssociationOverride.Owner owner) {
-		super(parent, owner);
-		this.relationshipReference = buildRelationshipReference();
+	public GenericJavaAssociationOverrideRelationshipReference(JavaAssociationOverride parent) {
+		super(parent);
+		this.joinColumnJoiningStrategy = buildJoinColumnJoiningStrategy();
 	}
 	
-	protected JavaAssociationOverrideRelationshipReference buildRelationshipReference() {
-		return new GenericJavaAssociationOverrideRelationshipReference(this);
-	}
-	
-	public JavaAssociationOverrideRelationshipReference getRelationshipReference() {
-		return this.relationshipReference;
+	protected JavaJoinColumnInAssociationOverrideJoiningStrategy buildJoinColumnJoiningStrategy() {
+		return new GenericJavaJoinColumnInAssociationOverrideJoiningStrategy(this);
 	}
 	
 	@Override
-	public JavaAssociationOverride setVirtual(boolean virtual) {
-		return (JavaAssociationOverride) super.setVirtual(virtual);
-	}
-
-	@Override
-	protected AssociationOverrideAnnotation getOverrideAnnotation() {
-		return (AssociationOverrideAnnotation) super.getOverrideAnnotation();
+	public JavaAssociationOverride getParent() {
+		return (JavaAssociationOverride) super.getParent();
 	}
 	
-	@Override
-	public AssociationOverride.Owner getOwner() {
-		return (AssociationOverride.Owner) super.getOwner();
-	}
-
-	@Override
-	protected Iterator<String> candidateNames() {
-		return this.getOwner().getTypeMapping().allOverridableAssociationNames();
+	public JavaAssociationOverride getAssociationOverride() {
+		return getParent();
 	}
 
 	@Override
@@ -71,7 +56,7 @@ public class GenericJavaAssociationOverride extends AbstractJavaOverride
 		if (result != null) {
 			return result;
 		}
-		result = this.relationshipReference.javaCompletionProposals(pos, filter, astRoot);
+		result = this.joinColumnJoiningStrategy.javaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}
@@ -79,13 +64,11 @@ public class GenericJavaAssociationOverride extends AbstractJavaOverride
 	}
 
 	public void initialize(AssociationOverrideAnnotation associationOverride) {
-		super.initialize(associationOverride);
-		this.relationshipReference.initialize(associationOverride);
+		this.joinColumnJoiningStrategy.initialize(associationOverride);
 	}		
 
 	public void update(AssociationOverrideAnnotation associationOverride) {
-		super.update(associationOverride);
-		this.relationshipReference.update(associationOverride);
+		this.joinColumnJoiningStrategy.update(associationOverride);
 	}
 	
 	
@@ -100,20 +83,20 @@ public class GenericJavaAssociationOverride extends AbstractJavaOverride
 	}
 	
 	protected void validateJoinColumns(List<IMessage> messages, CompilationUnit astRoot) {
-		for (Iterator<JavaJoinColumn> stream = this.getRelationshipReference().getJoinColumnJoiningStrategy().joinColumns(); stream.hasNext(); ) {
+		for (Iterator<JavaJoinColumn> stream = this.getJoinColumnJoiningStrategy().joinColumns(); stream.hasNext(); ) {
 			this.validateJoinColumn(stream.next(), messages, astRoot);
 		}
 	}
 
 	protected void validateJoinColumn(JavaJoinColumn joinColumn, List<IMessage> messages, CompilationUnit astRoot) {
 		String tableName = joinColumn.getTable();
-		if (this.getOwner().getTypeMapping().tableNameIsInvalid(tableName)) {
-			if (this.isVirtual()) {
+		if (this.getAssociationOverride().getOwner().getTypeMapping().tableNameIsInvalid(tableName)) {
+			if (this.getAssociationOverride().isVirtual()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_COLUMN_UNRESOLVED_TABLE,
-						new String[] {this.getName(), tableName, joinColumn.getName()},
+						new String[] {this.getAssociationOverride().getName(), tableName, joinColumn.getName()},
 						joinColumn, 
 						joinColumn.getTableTextRange(astRoot)
 					)
@@ -133,12 +116,12 @@ public class GenericJavaAssociationOverride extends AbstractJavaOverride
 		}
 		
 		if ( ! joinColumn.isResolved()) {
-			if (this.isVirtual()) {
+			if (this.getAssociationOverride().isVirtual()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_COLUMN_UNRESOLVED_NAME,
-						new String[] {this.getName(), joinColumn.getName()}, 
+						new String[] {this.getAssociationOverride().getName(), joinColumn.getName()}, 
 						joinColumn,
 						joinColumn.getNameTextRange(astRoot)
 					)
@@ -157,12 +140,12 @@ public class GenericJavaAssociationOverride extends AbstractJavaOverride
 		}
 		
 		if ( ! joinColumn.isReferencedColumnResolved()) {
-			if (this.isVirtual()) {
+			if (this.getAssociationOverride().isVirtual()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME,
-						new String[] {this.getName(), joinColumn.getReferencedColumnName(), joinColumn.getName()}, 
+						new String[] {this.getAssociationOverride().getName(), joinColumn.getReferencedColumnName(), joinColumn.getName()}, 
 						joinColumn,
 						joinColumn.getReferencedColumnNameTextRange(astRoot)
 					)
@@ -180,4 +163,48 @@ public class GenericJavaAssociationOverride extends AbstractJavaOverride
 			}
 		}
 	}
+
+	public TextRange getValidationTextRange(CompilationUnit astRoot) {
+		return getAssociationOverride().getValidationTextRange(astRoot);
+	}
+
+	// **************** join columns *******************************************
+	
+
+	public JavaJoinColumnInAssociationOverrideJoiningStrategy getJoinColumnJoiningStrategy() {
+		return this.joinColumnJoiningStrategy;
+	}
+	
+	public boolean usesJoinColumnJoiningStrategy() {
+		return getPredominantJoiningStrategy() == this.joinColumnJoiningStrategy;
+	}
+	
+	public void setJoinColumnJoiningStrategy() {
+		this.joinColumnJoiningStrategy.addStrategy();
+	}
+	
+	public void unsetJoinColumnJoiningStrategy() {
+		this.joinColumnJoiningStrategy.removeStrategy();
+	}
+	
+	public boolean mayHaveDefaultJoinColumn() {
+		return false;
+	}
+
+	public JoiningStrategy getPredominantJoiningStrategy() {
+		return this.joinColumnJoiningStrategy;
+	}
+
+	public RelationshipMapping getRelationshipMapping() {
+		return getAssociationOverride().getOwner().getRelationshipMapping(getAssociationOverride().getName());
+	}
+
+	public boolean isOwnedBy(RelationshipMapping mapping) {
+		return getRelationshipMapping().isOwnedBy(mapping);
+	}
+
+	public boolean isRelationshipOwner() {
+		return getRelationshipMapping().isRelationshipOwner();
+	}
+
 }

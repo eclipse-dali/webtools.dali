@@ -15,6 +15,7 @@ import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
+import org.eclipse.jpt.core.context.orm.OrmJoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
@@ -103,33 +104,34 @@ public class OrmAssociationOverrideTests extends ContextModelTestCase
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		entityResource.getAssociationOverrides().add(OrmFactory.eINSTANCE.createXmlAssociationOverride());
 		OrmAssociationOverride ormAssociationOverride = ormEntity.specifiedAssociationOverrides().next();
+		OrmJoinColumnJoiningStrategy joiningStrategy = ormAssociationOverride.getRelationshipReference().getJoinColumnJoiningStrategy();
 		
 		XmlAssociationOverride xmlAssociationOverride = entityResource.getAssociationOverrides().get(0);
 		
-		OrmJoinColumn joinColumn = ormAssociationOverride.addSpecifiedJoinColumn(0);
+		OrmJoinColumn joinColumn = joiningStrategy.addSpecifiedJoinColumn(0);
 		joinColumn.setSpecifiedName("FOO");
 				
 		assertEquals("FOO", xmlAssociationOverride.getJoinColumns().get(0).getName());
 		
-		OrmJoinColumn joinColumn2 = ormAssociationOverride.addSpecifiedJoinColumn(0);
+		OrmJoinColumn joinColumn2 = joiningStrategy.addSpecifiedJoinColumn(0);
 		joinColumn2.setSpecifiedName("BAR");
 		
 		assertEquals("BAR", xmlAssociationOverride.getJoinColumns().get(0).getName());
 		assertEquals("FOO", xmlAssociationOverride.getJoinColumns().get(1).getName());
 		
-		OrmJoinColumn joinColumn3 = ormAssociationOverride.addSpecifiedJoinColumn(1);
+		OrmJoinColumn joinColumn3 = joiningStrategy.addSpecifiedJoinColumn(1);
 		joinColumn3.setSpecifiedName("BAZ");
 		
 		assertEquals("BAR", xmlAssociationOverride.getJoinColumns().get(0).getName());
 		assertEquals("BAZ", xmlAssociationOverride.getJoinColumns().get(1).getName());
 		assertEquals("FOO", xmlAssociationOverride.getJoinColumns().get(2).getName());
 		
-		ListIterator<OrmJoinColumn> joinColumns = ormAssociationOverride.specifiedJoinColumns();
+		ListIterator<OrmJoinColumn> joinColumns = joiningStrategy.specifiedJoinColumns();
 		assertEquals(joinColumn2, joinColumns.next());
 		assertEquals(joinColumn3, joinColumns.next());
 		assertEquals(joinColumn, joinColumns.next());
 		
-		joinColumns = ormAssociationOverride.specifiedJoinColumns();
+		joinColumns = joiningStrategy.specifiedJoinColumns();
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
@@ -141,25 +143,26 @@ public class OrmAssociationOverrideTests extends ContextModelTestCase
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		entityResource.getAssociationOverrides().add(OrmFactory.eINSTANCE.createXmlAssociationOverride());
 		OrmAssociationOverride ormAssociationOverride = ormEntity.specifiedAssociationOverrides().next();
+		OrmJoinColumnJoiningStrategy joiningStrategy = ormAssociationOverride.getRelationshipReference().getJoinColumnJoiningStrategy();
 		
 		XmlAssociationOverride xmlAssociationOverride = entityResource.getAssociationOverrides().get(0);
 		
-		ormAssociationOverride.addSpecifiedJoinColumn(0).setSpecifiedName("FOO");
-		ormAssociationOverride.addSpecifiedJoinColumn(1).setSpecifiedName("BAR");
-		ormAssociationOverride.addSpecifiedJoinColumn(2).setSpecifiedName("BAZ");
+		joiningStrategy.addSpecifiedJoinColumn(0).setSpecifiedName("FOO");
+		joiningStrategy.addSpecifiedJoinColumn(1).setSpecifiedName("BAR");
+		joiningStrategy.addSpecifiedJoinColumn(2).setSpecifiedName("BAZ");
 		
 		assertEquals(3, xmlAssociationOverride.getJoinColumns().size());
 		
-		ormAssociationOverride.removeSpecifiedJoinColumn(0);
+		joiningStrategy.removeSpecifiedJoinColumn(0);
 		assertEquals(2, xmlAssociationOverride.getJoinColumns().size());
 		assertEquals("BAR", xmlAssociationOverride.getJoinColumns().get(0).getName());
 		assertEquals("BAZ", xmlAssociationOverride.getJoinColumns().get(1).getName());
 
-		ormAssociationOverride.removeSpecifiedJoinColumn(0);
+		joiningStrategy.removeSpecifiedJoinColumn(0);
 		assertEquals(1, xmlAssociationOverride.getJoinColumns().size());
 		assertEquals("BAZ", xmlAssociationOverride.getJoinColumns().get(0).getName());
 		
-		ormAssociationOverride.removeSpecifiedJoinColumn(0);
+		joiningStrategy.removeSpecifiedJoinColumn(0);
 		assertEquals(0, xmlAssociationOverride.getJoinColumns().size());
 	}
 	
@@ -169,18 +172,19 @@ public class OrmAssociationOverrideTests extends ContextModelTestCase
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		entityResource.getAssociationOverrides().add(OrmFactory.eINSTANCE.createXmlAssociationOverride());
 		OrmAssociationOverride ormAssociationOverride = ormEntity.specifiedAssociationOverrides().next();
+		OrmJoinColumnJoiningStrategy joiningStrategy = ormAssociationOverride.getRelationshipReference().getJoinColumnJoiningStrategy();
 		
 		XmlAssociationOverride xmlAssociationOverride = entityResource.getAssociationOverrides().get(0);
 
-		ormAssociationOverride.addSpecifiedJoinColumn(0).setSpecifiedName("FOO");
-		ormAssociationOverride.addSpecifiedJoinColumn(1).setSpecifiedName("BAR");
-		ormAssociationOverride.addSpecifiedJoinColumn(2).setSpecifiedName("BAZ");
+		joiningStrategy.addSpecifiedJoinColumn(0).setSpecifiedName("FOO");
+		joiningStrategy.addSpecifiedJoinColumn(1).setSpecifiedName("BAR");
+		joiningStrategy.addSpecifiedJoinColumn(2).setSpecifiedName("BAZ");
 		
 		assertEquals(3, xmlAssociationOverride.getJoinColumns().size());
 		
 		
-		ormAssociationOverride.moveSpecifiedJoinColumn(2, 0);
-		ListIterator<OrmJoinColumn> joinColumns = ormAssociationOverride.specifiedJoinColumns();
+		joiningStrategy.moveSpecifiedJoinColumn(2, 0);
+		ListIterator<OrmJoinColumn> joinColumns = joiningStrategy.specifiedJoinColumns();
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
@@ -190,8 +194,8 @@ public class OrmAssociationOverrideTests extends ContextModelTestCase
 		assertEquals("FOO", xmlAssociationOverride.getJoinColumns().get(2).getName());
 
 
-		ormAssociationOverride.moveSpecifiedJoinColumn(0, 1);
-		joinColumns = ormAssociationOverride.specifiedJoinColumns();
+		joiningStrategy.moveSpecifiedJoinColumn(0, 1);
+		joinColumns = joiningStrategy.specifiedJoinColumns();
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
@@ -207,6 +211,7 @@ public class OrmAssociationOverrideTests extends ContextModelTestCase
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		entityResource.getAssociationOverrides().add(OrmFactory.eINSTANCE.createXmlAssociationOverride());
 		OrmAssociationOverride ormAssociationOverride = ormEntity.specifiedAssociationOverrides().next();
+		OrmJoinColumnJoiningStrategy joiningStrategy = ormAssociationOverride.getRelationshipReference().getJoinColumnJoiningStrategy();
 		
 		XmlAssociationOverride xmlAssociationOverride = entityResource.getAssociationOverrides().get(0);
 	
@@ -218,38 +223,38 @@ public class OrmAssociationOverrideTests extends ContextModelTestCase
 		xmlAssociationOverride.getJoinColumns().get(1).setName("BAR");
 		xmlAssociationOverride.getJoinColumns().get(2).setName("BAZ");
 
-		ListIterator<OrmJoinColumn> joinColumns = ormAssociationOverride.specifiedJoinColumns();
+		ListIterator<OrmJoinColumn> joinColumns = joiningStrategy.specifiedJoinColumns();
 		assertEquals("FOO", joinColumns.next().getName());
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertFalse(joinColumns.hasNext());
 		
 		xmlAssociationOverride.getJoinColumns().move(2, 0);
-		joinColumns = ormAssociationOverride.specifiedJoinColumns();
+		joinColumns = joiningStrategy.specifiedJoinColumns();
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
 		assertFalse(joinColumns.hasNext());
 
 		xmlAssociationOverride.getJoinColumns().move(0, 1);
-		joinColumns = ormAssociationOverride.specifiedJoinColumns();
+		joinColumns = joiningStrategy.specifiedJoinColumns();
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
 		assertFalse(joinColumns.hasNext());
 
 		xmlAssociationOverride.getJoinColumns().remove(1);
-		joinColumns = ormAssociationOverride.specifiedJoinColumns();
+		joinColumns = joiningStrategy.specifiedJoinColumns();
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
 		assertFalse(joinColumns.hasNext());
 
 		xmlAssociationOverride.getJoinColumns().remove(1);
-		joinColumns = ormAssociationOverride.specifiedJoinColumns();
+		joinColumns = joiningStrategy.specifiedJoinColumns();
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertFalse(joinColumns.hasNext());
 		
 		xmlAssociationOverride.getJoinColumns().remove(0);
-		assertFalse(ormAssociationOverride.specifiedJoinColumns().hasNext());
+		assertFalse(joiningStrategy.specifiedJoinColumns().hasNext());
 	}
 }

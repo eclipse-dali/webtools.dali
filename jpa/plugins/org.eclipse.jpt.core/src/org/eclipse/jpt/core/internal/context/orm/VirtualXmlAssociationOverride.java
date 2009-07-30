@@ -11,8 +11,8 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
-import org.eclipse.jpt.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
@@ -50,8 +50,8 @@ public class VirtualXmlAssociationOverride extends XmlAssociationOverride
 		if (this.javaAssociationOverride == null) {
 			return joinColumns; //TODO need to handle building these without the javaAssociationOverride
 		}
-		for (JavaJoinColumn joinColumn : 
-				CollectionTools.iterable(this.javaAssociationOverride.joinColumns())) {
+		for (JoinColumn joinColumn : 
+				CollectionTools.iterable(this.javaAssociationOverride.getRelationshipReference().getJoinColumnJoiningStrategy().joinColumns())) {
 			XmlJoinColumn xmlJoinColumn = new VirtualXmlJoinColumn(joinColumn, this.isOrmMetadataComplete());
 			joinColumns.add(xmlJoinColumn);
 		}

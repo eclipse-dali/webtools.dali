@@ -20,6 +20,7 @@ import org.eclipse.jpt.core.context.BaseOverride;
 import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.JoinColumn;
+import org.eclipse.jpt.core.context.JoinColumnJoiningStrategy;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.mappings.JptUiMappingsMessages;
@@ -83,11 +84,12 @@ public class OverridesComposite extends FormPane<Entity>
 {
 	private Composite columnPane;
 	private Composite joinColumnsPane;
-	private JoinColumnsComposite<AssociationOverride> joinColumnsComposite;
+	private JoinColumnsComposite<JoinColumnJoiningStrategy> joinColumnsComposite;
 	private WritablePropertyValueModel<BaseOverride> selectedOverrideHolder;
 	private WritablePropertyValueModel<Boolean> overrideVirtualAttributeOverrideHolder;
 	private WritablePropertyValueModel<Boolean> overrideVirtualAssociationOverrideHolder;
 
+	private WritablePropertyValueModel<JoinColumnJoiningStrategy> selectedJoinColumnJoiningStrategyHolder;
 	/**
 	 * Creates a new <code>OverridesComposite</code>.
 	 *
@@ -118,6 +120,7 @@ public class OverridesComposite extends FormPane<Entity>
 	protected void initialize() {
 		super.initialize();
 		this.selectedOverrideHolder = buildSelectedOverrideHolder();
+		this.selectedJoinColumnJoiningStrategyHolder = buildJoinColumnJoiningStrategyHolder();
 	}
 
 	private WritablePropertyValueModel<BaseOverride> buildSelectedOverrideHolder() {
@@ -158,10 +161,12 @@ public class OverridesComposite extends FormPane<Entity>
 		{
 			@Override
 			protected void initializeButtonPane(Composite container, String helpId) {
+				//no buttons: no way to add/remove/edit overrides, they are all defaulted in
 			}
 
 			@Override
 			protected void updateButtons() {
+				//no buttons: no way to add/remove/edit overrides, they are all defaulted in
 			}
 		};
 	}
@@ -216,9 +221,9 @@ public class OverridesComposite extends FormPane<Entity>
 
 		// Join Columns list pane (for AssociationOverride)
 		this.joinColumnsComposite =
-			new JoinColumnsComposite<AssociationOverride>(
+			new JoinColumnsComposite<JoinColumnJoiningStrategy>(
 				this,
-				buildAssociationOverrideHolder(),
+				this.selectedJoinColumnJoiningStrategyHolder,
 				joinColumnsGroupPane,
 				buildJoinColumnsEditor(),
 				false
@@ -227,7 +232,7 @@ public class OverridesComposite extends FormPane<Entity>
 		installJoinColumnsPaneEnabler(this.joinColumnsComposite);
 	}
 
-	private void installJoinColumnsPaneEnabler(JoinColumnsComposite<AssociationOverride> pane) {
+	private void installJoinColumnsPaneEnabler(JoinColumnsComposite<JoinColumnJoiningStrategy> pane) {
 		pane.installJoinColumnsPaneEnabler(getOverrideVirtualAssociationOverrideHolder());
 	}
 
@@ -241,17 +246,17 @@ public class OverridesComposite extends FormPane<Entity>
 		);
 	}
 
-	private void addJoinColumn(AssociationOverride subject) {
+	private void addJoinColumn(JoinColumnJoiningStrategy subject) {
 
-		JoinColumnInAssociationOverrideDialog dialog =
-			new JoinColumnInAssociationOverrideDialog(getShell(), subject, null);
+		JoinColumnInJoiningStrategyDialog dialog =
+			new JoinColumnInJoiningStrategyDialog(getShell(), subject, null);
 
 		dialog.openDialog(buildAddJoinColumnPostExecution());
 	}
 
-	private PostExecution<JoinColumnInAssociationOverrideDialog> buildAddJoinColumnPostExecution() {
-		return new PostExecution<JoinColumnInAssociationOverrideDialog>() {
-			public void execute(JoinColumnInAssociationOverrideDialog dialog) {
+	private PostExecution<JoinColumnInJoiningStrategyDialog> buildAddJoinColumnPostExecution() {
+		return new PostExecution<JoinColumnInJoiningStrategyDialog>() {
+			public void execute(JoinColumnInJoiningStrategyDialog dialog) {
 				if (dialog.wasConfirmed()) {
 					addJoinColumn(dialog.getSubject());
 				}
@@ -259,16 +264,25 @@ public class OverridesComposite extends FormPane<Entity>
 		};
 	}
 
-	private void addJoinColumn(JoinColumnInAssociationOverrideStateObject stateObject) {
+	private void addJoinColumn(JoinColumnInJoiningStrategyStateObject stateObject) {
 
-		AssociationOverride associationOverride = stateObject.getOwner();
-		int index = associationOverride.specifiedJoinColumnsSize();
+		JoinColumnJoiningStrategy joiningStrategy = stateObject.getOwner();
+		int index = joiningStrategy.specifiedJoinColumnsSize();
 
-		JoinColumn joinColumn = associationOverride.addSpecifiedJoinColumn(index);
+		JoinColumn joinColumn = joiningStrategy.addSpecifiedJoinColumn(index);
 		stateObject.updateJoinColumn(joinColumn);
-		joinColumnsComposite.setSelectedJoinColumn(joinColumn);
+		this.joinColumnsComposite.setSelectedJoinColumn(joinColumn);
 	}
 
+	private WritablePropertyValueModel<JoinColumnJoiningStrategy> buildJoinColumnJoiningStrategyHolder() {
+		return new TransformationWritablePropertyValueModel<AssociationOverride, JoinColumnJoiningStrategy>(this.buildAssociationOverrideHolder()) {
+			@Override
+			protected JoinColumnJoiningStrategy transform_(AssociationOverride value) {
+				return value.getRelationshipReference().getJoinColumnJoiningStrategy();
+			}
+		};
+	}
+	
 	private WritablePropertyValueModel<AssociationOverride> buildAssociationOverrideHolder() {
 		return new TransformationWritablePropertyValueModel<BaseOverride, AssociationOverride>(this.selectedOverrideHolder) {
 			@Override
@@ -324,9 +338,9 @@ public class OverridesComposite extends FormPane<Entity>
 		};
 	}
 
-	private PostExecution<JoinColumnInAssociationOverrideDialog> buildEditJoinColumnPostExecution() {
-		return new PostExecution<JoinColumnInAssociationOverrideDialog>() {
-			public void execute(JoinColumnInAssociationOverrideDialog dialog) {
+	private PostExecution<JoinColumnInJoiningStrategyDialog> buildEditJoinColumnPostExecution() {
+		return new PostExecution<JoinColumnInJoiningStrategyDialog>() {
+			public void execute(JoinColumnInJoiningStrategyDialog dialog) {
 				if (dialog.wasConfirmed()) {
 					editJoinColumn(dialog.getSubject());
 				}
@@ -354,7 +368,7 @@ public class OverridesComposite extends FormPane<Entity>
 
 			@Override
 			protected Boolean transform_(AssociationOverride value) {
-				return !value.isVirtual();
+				return Boolean.valueOf(!value.isVirtual());
 			}
 		};
 	}
@@ -371,12 +385,12 @@ public class OverridesComposite extends FormPane<Entity>
 		return new CachingTransformationWritablePropertyValueModel<AttributeOverride, Boolean>(buildAttributeOverrideHolder()) {
 			@Override
 			public void setValue(Boolean value) {
-				updateOverride(value);
+				updateOverride(value.booleanValue());
 			}
 
 			@Override
 			protected Boolean transform_(AttributeOverride value) {
-				return !value.isVirtual();
+				return Boolean.valueOf(!value.isVirtual());
 			}
 		};
 	}
@@ -421,9 +435,11 @@ public class OverridesComposite extends FormPane<Entity>
 		return new AddRemoveListPane.AbstractAdapter() {
 
 			public void addNewItem(ObjectListSelectionModel listSelectionModel) {
+				//no way to add/remove/edit overrides, they are all defaulted in
 			}
 
 			public void removeSelectedItems(ObjectListSelectionModel listSelectionModel) {
+				//no way to add/remove/edit overrides, they are all defaulted in
 			}
 		};
 	}
@@ -449,11 +465,11 @@ public class OverridesComposite extends FormPane<Entity>
 			public Control transform(BaseOverride override) {
 
 				if (override instanceof AttributeOverride) {
-					return columnPane;
+					return OverridesComposite.this.columnPane;
 				}
 
 				if (override instanceof AssociationOverride) {
-					return joinColumnsPane;
+					return OverridesComposite.this.joinColumnsPane;
 				}
 
 				return null;
@@ -465,12 +481,12 @@ public class OverridesComposite extends FormPane<Entity>
 		return new ListAspectAdapter<Entity, AssociationOverride>(getSubjectHolder(), Entity.SPECIFIED_ASSOCIATION_OVERRIDES_LIST) {
 			@Override
 			protected ListIterator<AssociationOverride> listIterator_() {
-				return subject.specifiedAssociationOverrides();
+				return this.subject.specifiedAssociationOverrides();
 			}
 
 			@Override
 			protected int size_() {
-				return subject.specifiedAssociationOverridesSize();
+				return this.subject.specifiedAssociationOverridesSize();
 			}
 		};
 	}
@@ -479,29 +495,29 @@ public class OverridesComposite extends FormPane<Entity>
 		return new ListAspectAdapter<Entity, AttributeOverride>(getSubjectHolder(), Entity.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST) {
 			@Override
 			protected ListIterator<AttributeOverride> listIterator_() {
-				return subject.specifiedAttributeOverrides();
+				return this.subject.specifiedAttributeOverrides();
 			}
 
 			@Override
 			protected int size_() {
-				return subject.specifiedAttributeOverridesSize();
+				return this.subject.specifiedAttributeOverridesSize();
 			}
 		};
 	}
 
 	private void editJoinColumn(JoinColumn joinColumn) {
 
-		JoinColumnInAssociationOverrideDialog dialog =
-			new JoinColumnInAssociationOverrideDialog(
+		JoinColumnInJoiningStrategyDialog dialog =
+			new JoinColumnInJoiningStrategyDialog(
 				getShell(),
-				(AssociationOverride) this.selectedOverrideHolder.getValue(),
+				this.selectedJoinColumnJoiningStrategyHolder.getValue(),
 				joinColumn
 			);
 
 		dialog.openDialog(buildEditJoinColumnPostExecution());
 	}
 
-	private void editJoinColumn(JoinColumnInAssociationOverrideStateObject stateObject) {
+	private void editJoinColumn(JoinColumnInJoiningStrategyStateObject stateObject) {
 		stateObject.updateJoinColumn(stateObject.getJoinColumn());
 	}
 
@@ -525,44 +541,45 @@ public class OverridesComposite extends FormPane<Entity>
 		}
 	}
 
-	private class JoinColumnsProvider implements JoinColumnsEditor<AssociationOverride> {
+	private class JoinColumnsProvider implements JoinColumnsEditor<JoinColumnJoiningStrategy> {
 
-		public void addJoinColumn(AssociationOverride subject) {
+		public void addJoinColumn(JoinColumnJoiningStrategy subject) {
 			OverridesComposite.this.addJoinColumn(subject);
 		}
 
-		public JoinColumn getDefaultJoinColumn(AssociationOverride subject) {
+		public JoinColumn getDefaultJoinColumn(JoinColumnJoiningStrategy subject) {
+			//association overrides have no default join column
 			return null;
 		}
 
 		public String getDefaultPropertyName() {
-			return AssociationOverride.DEFAULT_JOIN_COLUMNS_LIST;
+			return JoinColumnJoiningStrategy.DEFAULT_JOIN_COLUMN_PROPERTY;
 		}
 
-		public void editJoinColumn(AssociationOverride subject, JoinColumn joinColumn) {
+		public void editJoinColumn(JoinColumnJoiningStrategy subject, JoinColumn joinColumn) {
 			OverridesComposite.this.editJoinColumn(joinColumn);
 		}
 
-		public boolean hasSpecifiedJoinColumns(AssociationOverride subject) {
-			return subject.containsSpecifiedJoinColumns();
+		public boolean hasSpecifiedJoinColumns(JoinColumnJoiningStrategy subject) {
+			return subject.hasSpecifiedJoinColumns();
 		}
 
-		public void removeJoinColumns(AssociationOverride subject, int[] selectedIndices) {
+		public void removeJoinColumns(JoinColumnJoiningStrategy subject, int[] selectedIndices) {
 			for (int index = selectedIndices.length; --index >= 0; ) {
 				subject.removeSpecifiedJoinColumn(selectedIndices[index]);
 			}
 		}
 
-		public ListIterator<JoinColumn> specifiedJoinColumns(AssociationOverride subject) {
+		public ListIterator<JoinColumn> specifiedJoinColumns(JoinColumnJoiningStrategy subject) {
 			return subject.specifiedJoinColumns();
 		}
 
-		public int specifiedJoinColumnsSize(AssociationOverride subject) {
+		public int specifiedJoinColumnsSize(JoinColumnJoiningStrategy subject) {
 			return subject.specifiedJoinColumnsSize();
 		}
 
 		public String getSpecifiedJoinColumnsListPropertyName() {
-			return AssociationOverride.SPECIFIED_JOIN_COLUMNS_LIST;
+			return JoinColumnJoiningStrategy.SPECIFIED_JOIN_COLUMNS_LIST;
 		}
 	}
 }

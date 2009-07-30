@@ -25,8 +25,6 @@ import org.eclipse.jpt.core.context.XmlContextNode;
 public interface OrmJoinTable
 	extends JoinTable, XmlContextNode
 {
-	OrmRelationshipMapping getRelationshipMapping();
-	
 	void update();
 		
 	void initializeFrom(JoinTable oldJoinTable);

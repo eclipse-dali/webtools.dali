@@ -9,17 +9,17 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
-import org.eclipse.jpt.core.context.java.JavaJoinColumn;
+import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
 import org.eclipse.jpt.core.utility.TextRange;
 
 public class VirtualXmlJoinColumn extends XmlJoinColumn
 {	
-	protected JavaJoinColumn javaJoinColumn;
+	protected JoinColumn javaJoinColumn;
 
 	protected boolean metadataComplete;
 
-	public VirtualXmlJoinColumn(JavaJoinColumn javaJoinColumn, boolean metadataComplete) {
+	public VirtualXmlJoinColumn(JoinColumn javaJoinColumn, boolean metadataComplete) {
 		super();
 		this.javaJoinColumn = javaJoinColumn;
 		this.metadataComplete = metadataComplete;

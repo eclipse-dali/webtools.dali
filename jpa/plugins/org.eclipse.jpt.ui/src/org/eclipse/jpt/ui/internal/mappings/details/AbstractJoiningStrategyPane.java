@@ -12,6 +12,7 @@ package org.eclipse.jpt.ui.internal.mappings.details;
 
 import org.eclipse.jpt.core.context.JoiningStrategy;
 import org.eclipse.jpt.core.context.RelationshipReference;
+import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.util.ControlSwitcher;
 import org.eclipse.jpt.ui.internal.widgets.FormPane;
 import org.eclipse.jpt.utility.internal.Transformer;
@@ -60,10 +61,17 @@ public abstract class AbstractJoiningStrategyPane
 	 * @param parentPane The parent form pane
 	 * @param parent The parent container
 	 */
-	public AbstractJoiningStrategyPane(
+	protected AbstractJoiningStrategyPane(
 			FormPane<? extends R> parentPane, 
 			Composite parent) {
 		super(parentPane, parent);
+	}
+	
+	protected AbstractJoiningStrategyPane(PropertyValueModel<? extends R> subjectHolder,
+        Composite parent,
+        WidgetFactory widgetFactory) {
+
+		super(subjectHolder, parent, widgetFactory);
 	}
 	
 	

@@ -21,7 +21,6 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.core.internal.resource.xml.translators.SimpleTranslator;
 import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
-import org.eclipse.jpt.core.resource.xml.JpaEObject;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -38,17 +37,15 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlAssociationOverride#getJoinColumns <em>Join Columns</em>}</li>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlAssociationOverride#getName <em>Name</em>}</li>
  * </ul>
  * </p>
  *
  * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAssociationOverride()
  * @model kind="class"
- * @extends JpaEObject
  * @generated
  */
-public class XmlAssociationOverride extends AbstractJpaEObject implements JpaEObject
+public class XmlAssociationOverride extends AbstractJpaEObject implements XmlJoinColumnsMapping
 {
 	/**
 	 * The cached value of the '{@link #getJoinColumns() <em>Join Columns</em>}' containment reference list.
@@ -111,8 +108,8 @@ public class XmlAssociationOverride extends AbstractJpaEObject implements JpaEOb
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Join Columns</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAssociationOverride_JoinColumns()
-	 * @model containment="true" required="true"
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlJoinColumnsMapping_JoinColumns()
+	 * @model containment="true"
 	 * @generated
 	 */
 	public EList<XmlJoinColumn> getJoinColumns()
@@ -288,7 +285,7 @@ public class XmlAssociationOverride extends AbstractJpaEObject implements JpaEOb
 	}
 	
 	protected static Translator buildJoinColumnTranslator() {
-		return XmlJoinColumn.buildTranslator(JPA.JOIN_COLUMN, OrmPackage.eINSTANCE.getXmlAssociationOverride_JoinColumns());
+		return XmlJoinColumn.buildTranslator(JPA.JOIN_COLUMN, OrmPackage.eINSTANCE.getXmlJoinColumnsMapping_JoinColumns());
 	}	
 
-} // XmlAssociationOverrideImpl
+} // XmlAssociationOverride

@@ -25,8 +25,6 @@ import org.eclipse.jpt.core.resource.java.JoinTableAnnotation;
 public interface JavaJoinTable
 	extends JoinTable, JavaJpaContextNode
 {
-	JavaRelationshipMapping getRelationshipMapping();
-
 	void initialize(JoinTableAnnotation joinTableAnnotation);
 
 	void update(JoinTableAnnotation joinTableAnnotation);

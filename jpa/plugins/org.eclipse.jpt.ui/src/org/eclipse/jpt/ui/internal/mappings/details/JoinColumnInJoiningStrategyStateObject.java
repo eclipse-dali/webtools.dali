@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2009 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -26,7 +26,7 @@ import org.eclipse.jpt.db.Table;
  * @see JoinColumnJoiningStrategy
  * @see JoinColumnInJoiningStrategyDialog
  *
- * @version 2.0
+ * @version 3.0
  * @since 2.0
  */
 public class JoinColumnInJoiningStrategyStateObject 
@@ -60,7 +60,7 @@ public class JoinColumnInJoiningStrategyStateObject
 	}
 	
 	private TypeMapping getTypeMapping() {
-		return getRelationshipMapping().getTypeMapping();
+		return getOwner().getTypeMapping();
 	}
 	
 	@Override
@@ -91,7 +91,12 @@ public class JoinColumnInJoiningStrategyStateObject
 	
 	@Override
 	public Table getReferencedNameTable() {
-		Entity targetEntity = getRelationshipMapping().getResolvedTargetEntity();
+		RelationshipMapping relationshipMapping = getRelationshipMapping();
+
+		if (relationshipMapping == null){
+			return null;
+		}
+		Entity targetEntity = relationshipMapping.getResolvedTargetEntity();
 
 		if (targetEntity != null) {
 			return targetEntity.getPrimaryDbTable();

@@ -165,9 +165,9 @@ public class JoinTableComposite extends FormPane<JoinTable>
 			null
 		);
 
-		this.overrideDefaultJoinColumnsCheckBox.addSelectionListener(
-			buildOverrideDefaultSelectionListener()
-		);
+//		this.overrideDefaultJoinColumnsCheckBox.addSelectionListener(
+//			buildOverrideDefaultSelectionListener()
+//		);
 
 		this.joinColumnsComposite = new JoinColumnsComposite<JoinTable>(
 			this,
@@ -191,9 +191,9 @@ public class JoinTableComposite extends FormPane<JoinTable>
 			null
 		);
 
-		this.overrideDefaultInverseJoinColumnsCheckBox.addSelectionListener(
-			buildOverrideDefaultInverseSelectionListener()
-		);
+//		this.overrideDefaultInverseJoinColumnsCheckBox.addSelectionListener(
+//			buildOverrideDefaultInverseSelectionListener()
+//		);
 
 		this.inverseJoinColumnsComposite = new JoinColumnsComposite<JoinTable>(
 			this,

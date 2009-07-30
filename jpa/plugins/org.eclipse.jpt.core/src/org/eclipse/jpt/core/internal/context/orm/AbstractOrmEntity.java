@@ -1002,8 +1002,8 @@ public abstract class AbstractOrmEntity
 		this.virtualAssociationOverrides.remove(defaultIndex);
 
 		newAssociationOverride.setName(oldAssociationOverride.getName());
-		for (JoinColumn joinColumn : CollectionTools.iterable(oldAssociationOverride.joinColumns())) {
-			JoinColumn newJoinColumn = newAssociationOverride.addSpecifiedJoinColumn(newAssociationOverride.specifiedJoinColumnsSize());
+		for (JoinColumn joinColumn : CollectionTools.iterable(oldAssociationOverride.getRelationshipReference().getJoinColumnJoiningStrategy().joinColumns())) {
+			JoinColumn newJoinColumn = newAssociationOverride.getRelationshipReference().getJoinColumnJoiningStrategy().addSpecifiedJoinColumn(newAssociationOverride.getRelationshipReference().getJoinColumnJoiningStrategy().specifiedJoinColumnsSize());
 			newJoinColumn.setSpecifiedName(joinColumn.getName());
 			newJoinColumn.setSpecifiedReferencedColumnName(joinColumn.getReferencedColumnName());
 		}

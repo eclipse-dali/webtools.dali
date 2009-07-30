@@ -201,9 +201,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlManyToMany" eSuperTypes="#//AbstractXmlMultiRelationshipMapping"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlTransient" eSuperTypes="#//AbstractXmlAttributeMapping"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlAssociationOverride">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="joinColumns" lowerBound="1"
-        upperBound="-1" eType="#//XmlJoinColumn" containment="true" resolveProxies="false"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlAssociationOverride" eSuperTypes="#//XmlJoinColumnsMapping">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlAttributeOverride">

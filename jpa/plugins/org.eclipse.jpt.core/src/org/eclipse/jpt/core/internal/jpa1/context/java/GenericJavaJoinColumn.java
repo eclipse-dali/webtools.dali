@@ -13,7 +13,6 @@ import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
-import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.internal.context.MappingTools;
@@ -171,15 +170,6 @@ public class GenericJavaJoinColumn extends AbstractJavaBaseColumn<JoinColumnAnno
 	
 	protected String buildDefaultReferencedColumnName() {
 		return MappingTools.buildJoinColumnDefaultReferencedColumnName(this.getOwner());
-	}
-	
-	@Override
-	protected String buildDefaultTable() {
-		RelationshipMapping relationshipMapping = getOwner().getRelationshipMapping();
-		if (relationshipMapping == null) {
-			return null;
-		}
-		return super.buildDefaultTable();
 	}
 
 	@Override

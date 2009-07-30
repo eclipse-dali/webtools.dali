@@ -2594,7 +2594,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ASSOCIATION_OVERRIDE__JOIN_COLUMNS = 0;
+	public static final int XML_ASSOCIATION_OVERRIDE__JOIN_COLUMNS = XML_JOIN_COLUMNS_MAPPING__JOIN_COLUMNS;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -2603,7 +2603,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ASSOCIATION_OVERRIDE__NAME = 1;
+	public static final int XML_ASSOCIATION_OVERRIDE__NAME = XML_JOIN_COLUMNS_MAPPING_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Xml Association Override</em>' class.
@@ -2612,7 +2612,7 @@ public class OrmPackage extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ASSOCIATION_OVERRIDE_FEATURE_COUNT = 2;
+	public static final int XML_ASSOCIATION_OVERRIDE_FEATURE_COUNT = XML_JOIN_COLUMNS_MAPPING_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Column</b></em>' containment reference.
@@ -6749,21 +6749,6 @@ public class OrmPackage extends EPackageImpl
 
 
 	/**
-	 * Returns the meta object for the containment reference list '{@link org.eclipse.jpt.core.resource.orm.XmlAssociationOverride#getJoinColumns <em>Join Columns</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference list '<em>Join Columns</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.XmlAssociationOverride#getJoinColumns()
-	 * @see #getXmlAssociationOverride()
-	 * @generated
-	 */
-	public EReference getXmlAssociationOverride_JoinColumns()
-	{
-		return (EReference)xmlAssociationOverrideEClass.getEStructuralFeatures().get(0);
-	}
-
-
-	/**
 	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.core.resource.orm.XmlAssociationOverride#getName <em>Name</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -6774,7 +6759,7 @@ public class OrmPackage extends EPackageImpl
 	 */
 	public EAttribute getXmlAssociationOverride_Name()
 	{
-		return (EAttribute)xmlAssociationOverrideEClass.getEStructuralFeatures().get(1);
+		return (EAttribute)xmlAssociationOverrideEClass.getEStructuralFeatures().get(0);
 	}
 
 
@@ -8690,7 +8675,6 @@ public class OrmPackage extends EPackageImpl
 		xmlTransientEClass = createEClass(XML_TRANSIENT);
 
 		xmlAssociationOverrideEClass = createEClass(XML_ASSOCIATION_OVERRIDE);
-		createEReference(xmlAssociationOverrideEClass, XML_ASSOCIATION_OVERRIDE__JOIN_COLUMNS);
 		createEAttribute(xmlAssociationOverrideEClass, XML_ASSOCIATION_OVERRIDE__NAME);
 
 		xmlAttributeOverrideEClass = createEClass(XML_ATTRIBUTE_OVERRIDE);
@@ -8933,6 +8917,7 @@ public class OrmPackage extends EPackageImpl
 		xmlOneToOneEClass.getESuperTypes().add(this.getXmlMappedByMapping());
 		xmlManyToManyEClass.getESuperTypes().add(this.getAbstractXmlMultiRelationshipMapping());
 		xmlTransientEClass.getESuperTypes().add(this.getAbstractXmlAttributeMapping());
+		xmlAssociationOverrideEClass.getESuperTypes().add(this.getXmlJoinColumnsMapping());
 		abstractXmlColumnEClass.getESuperTypes().add(this.getAbstractXmlNamedColumn());
 		xmlColumnEClass.getESuperTypes().add(this.getAbstractXmlColumn());
 		xmlDiscriminatorColumnEClass.getESuperTypes().add(this.getAbstractXmlNamedColumn());
@@ -9098,7 +9083,6 @@ public class OrmPackage extends EPackageImpl
 		initEClass(xmlTransientEClass, XmlTransient.class, "XmlTransient", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(xmlAssociationOverrideEClass, XmlAssociationOverride.class, "XmlAssociationOverride", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getXmlAssociationOverride_JoinColumns(), this.getXmlJoinColumn(), null, "joinColumns", null, 1, -1, XmlAssociationOverride.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getXmlAssociationOverride_Name(), theXMLTypePackage.getString(), "name", null, 1, 1, XmlAssociationOverride.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlAttributeOverrideEClass, XmlAttributeOverride.class, "XmlAttributeOverride", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -10251,14 +10235,6 @@ public class OrmPackage extends EPackageImpl
 		 * @generated
 		 */
 		public static final EClass XML_ASSOCIATION_OVERRIDE = eINSTANCE.getXmlAssociationOverride();
-
-		/**
-		 * The meta object literal for the '<em><b>Join Columns</b></em>' containment reference list feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference XML_ASSOCIATION_OVERRIDE__JOIN_COLUMNS = eINSTANCE.getXmlAssociationOverride_JoinColumns();
 
 		/**
 		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.

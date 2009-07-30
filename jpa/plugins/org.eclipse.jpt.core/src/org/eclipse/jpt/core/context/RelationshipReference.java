@@ -27,8 +27,6 @@ package org.eclipse.jpt.core.context;
 public interface RelationshipReference extends JpaContextNode
 {
 	RelationshipMapping getRelationshipMapping();
-		
-	void update();
 
 	/**
 	 * Return whether this is the owning side of the relationship.

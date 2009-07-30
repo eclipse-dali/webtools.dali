@@ -10,31 +10,36 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.context.orm;
 
+import org.eclipse.jpt.core.context.AssociationOverrideRelationshipReference;
+import org.eclipse.jpt.core.context.JoinColumnJoiningStrategy;
+import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.RelationshipReference;
 import org.eclipse.jpt.core.context.XmlContextNode;
+import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 
 /**
+ * An <code>AssociationOverrideRelationshipReference</code> is a type of 
+ * {@link RelationshipReference} that may utilize a {@link JoinColumnJoiningStrategy}.
+ * This cannot be an OrmRelationshipReference because referenced mapping comes
+ * from another class, the class of the attribute that the association override
+ * points to by name.
+ * <p>
+ * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
+ * 
+ * @see RelationshipMapping
  */
-public interface OrmRelationshipReference
-	extends XmlContextNode, RelationshipReference
+public interface OrmAssociationOverrideRelationshipReference 
+	extends AssociationOverrideRelationshipReference, XmlContextNode
 {
-	OrmRelationshipMapping getRelationshipMapping();
-	
-	void update();
+	OrmAssociationOverride getAssociationOverride();
 
-	void initializeOn(OrmRelationshipReference newRelationshipReference);
+	OrmJoinColumnJoiningStrategy getJoinColumnJoiningStrategy();
 	
-	void initializeFromOwnableRelationshipReference(
-		OrmOwnableRelationshipReference oldRelationshipReference);
+	void update(XmlAssociationOverride xao) ;
 	
-	void initializeFromJoinColumnEnabledRelationshipReference(
-		OrmJoinColumnEnabledRelationshipReference oldRelationshipReference);
-	
-	void initializeFromJoinTableEnabledRelationshipReference(
-		OrmJoinTableEnabledRelationshipReference oldRelationshipReference);
 }

@@ -9,25 +9,27 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
+import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
+import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
+import org.eclipse.jpt.core.context.orm.OrmAssociationOverrideRelationshipReference;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
-import org.eclipse.jpt.core.context.orm.OrmJoinColumnEnabledRelationshipReference;
+import org.eclipse.jpt.core.context.orm.OrmJoinColumnInAssociationOverrideJoiningStrategy;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumn.Owner;
-import org.eclipse.jpt.core.resource.orm.XmlJoinColumnsMapping;
+import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Table;
 
-public class GenericOrmJoinColumnJoiningStrategy 
+public class GenericOrmJoinColumnInAssociationOverrideJoiningStrategy 
 	extends AbstractOrmJoinColumnJoiningStrategy
+	implements OrmJoinColumnInAssociationOverrideJoiningStrategy
 {
 	
-	public GenericOrmJoinColumnJoiningStrategy(
-			OrmJoinColumnEnabledRelationshipReference parent,
-			XmlJoinColumnsMapping resource) {
-		super(parent, resource);
+	public GenericOrmJoinColumnInAssociationOverrideJoiningStrategy(OrmAssociationOverrideRelationshipReference parent, XmlAssociationOverride xao) {
+		super(parent, xao);
 	}
 	
 	@Override
@@ -36,25 +38,42 @@ public class GenericOrmJoinColumnJoiningStrategy
 	}
 	
 	public TypeMapping getTypeMapping() {
-		return getRelationshipMapping().getTypeMapping();
+		return getAssociationOverride().getOwner().getTypeMapping();
 	}
 	
+	protected OrmAssociationOverride getAssociationOverride() {
+		return this.getRelationshipReference().getAssociationOverride();
+	}
+
 	@Override
-	public OrmJoinColumnEnabledRelationshipReference getRelationshipReference() {
-		return (OrmJoinColumnEnabledRelationshipReference) super.getRelationshipReference();
+	public OrmAssociationOverrideRelationshipReference getRelationshipReference() {
+		return (OrmAssociationOverrideRelationshipReference) super.getRelationshipReference();
 	}
-		
+
 	public TextRange getValidationTextRange() {
-		return this.getRelationshipReference().getValidationTextRange();
+		return getRelationshipReference().getValidationTextRange();
 	}
+	
+	public void update(XmlAssociationOverride xao) {
+		//TODO can we make resource final and then just have an update() method?
+		//would need to update the association overrides with the same resource association override
+		this.resource = xao;
+		super.update();
+	}
+	
+	
 
 	// ********** join column owner adapter **********
 
 	protected class JoinColumnOwner
-		implements OrmJoinColumn.Owner 
+		implements OrmJoinColumn.Owner
 	{
 		protected JoinColumnOwner() {
 			super();
+		}
+
+		protected AssociationOverride getAssociationOverride() {
+			return GenericOrmJoinColumnInAssociationOverrideJoiningStrategy.this.getRelationshipReference().getAssociationOverride();
 		}
 		
 		/**
@@ -64,22 +83,28 @@ public class GenericOrmJoinColumnJoiningStrategy
 			return getTypeMapping().getPrimaryTableName();
 		}
 		
+		public String getDefaultColumnName() {
+			//built in MappingTools.buildJoinColumnDefaultName()
+			return null;
+		}
+		
 		public Entity getTargetEntity() {
-			return getRelationshipMapping().getResolvedTargetEntity();
+			RelationshipMapping relationshipMapping = getRelationshipMapping();
+			return relationshipMapping == null ? null : relationshipMapping.getResolvedTargetEntity();
 		}
-		
+
 		public String getAttributeName() {
-			return getRelationshipMapping().getName();
+			return getAssociationOverride().getName();
 		}
-		
+
 		public RelationshipMapping getRelationshipMapping() {
-			return GenericOrmJoinColumnJoiningStrategy.this.getRelationshipMapping();
+			return getAssociationOverride().getOwner().getRelationshipMapping(GenericOrmJoinColumnInAssociationOverrideJoiningStrategy.this.getRelationshipReference().getAssociationOverride().getName());
 		}
-		
+
 		public boolean tableNameIsInvalid(String tableName) {
 			return getTypeMapping().tableNameIsInvalid(tableName);
 		}
-		
+
 		/**
 		 * the join column can be on a secondary table
 		 */
@@ -88,35 +113,29 @@ public class GenericOrmJoinColumnJoiningStrategy
 		}
 
 		public TypeMapping getTypeMapping() {
-			return getRelationshipMapping().getTypeMapping();
+			return getAssociationOverride().getOwner().getTypeMapping();
 		}
-		
+
 		public Table getDbTable(String tableName) {
 			return getTypeMapping().getDbTable(tableName);
 		}
-		
+
 		public Table getReferencedColumnDbTable() {
 			Entity targetEntity = getTargetEntity();
 			return (targetEntity == null) ? null : targetEntity.getPrimaryDbTable();
 		}
 		
 		public boolean isVirtual(BaseJoinColumn joinColumn) {
-			return GenericOrmJoinColumnJoiningStrategy.this.defaultJoinColumn == joinColumn;
-		}
-		
-		public String getDefaultColumnName() {
-			//built in MappingTools.buildJoinColumnDefaultName()
-			return null;
+			return false;
 		}
 
 		public int joinColumnsSize() {
-			return GenericOrmJoinColumnJoiningStrategy.this.joinColumnsSize();
+			return GenericOrmJoinColumnInAssociationOverrideJoiningStrategy.this.joinColumnsSize();
 		}
 		
 		public TextRange getValidationTextRange() {
-			return GenericOrmJoinColumnJoiningStrategy.this.getValidationTextRange();
+			return null;
 		}
 
 	}
-
 }

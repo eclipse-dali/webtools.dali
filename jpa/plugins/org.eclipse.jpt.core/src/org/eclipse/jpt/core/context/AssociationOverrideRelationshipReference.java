@@ -8,24 +8,25 @@
  *  Contributors: 
  *  	Oracle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.core.context.java;
-
-import org.eclipse.jpt.core.context.RelationshipReference;
+package org.eclipse.jpt.core.context;
 
 /**
+ * An <code>AssociationOverrideRelationshipReference</code> is a type of 
+ * {@link RelationshipReference} that may utilize a 
+ * {@link JoinColumnJoiningStrategy}
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
+ * 
+ * @see AssociationOverride
  */
-public interface JavaRelationshipReference 
-	extends JavaJpaContextNode, RelationshipReference
+public interface AssociationOverrideRelationshipReference 
+	extends 
+		RelationshipReference,
+		JoinColumnEnabledRelationshipReference
 {
-	JavaRelationshipMapping getRelationshipMapping();
-	
-	void initialize();
-	
-	void update();
-
+	AssociationOverride getAssociationOverride();
 }

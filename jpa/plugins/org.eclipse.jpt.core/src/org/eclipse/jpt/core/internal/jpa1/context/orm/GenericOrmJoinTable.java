@@ -24,7 +24,6 @@ import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmJoinTable;
 import org.eclipse.jpt.core.context.orm.OrmJoinTableJoiningStrategy;
-import org.eclipse.jpt.core.context.orm.OrmRelationshipMapping;
 import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmTable;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
@@ -75,7 +74,7 @@ public class GenericOrmJoinTable
 		return new InverseJoinColumnOwner();
 	}
 
-	public OrmRelationshipMapping getRelationshipMapping() {
+	public RelationshipMapping getRelationshipMapping() {
 		return getParent().getRelationshipReference().getRelationshipMapping();
 	}
 
@@ -518,7 +517,7 @@ public class GenericOrmJoinTable
 	}
 
 	protected void validateAgainstDatabase(List<IMessage> messages, IReporter reporter) {
-		OrmRelationshipMapping mapping = this.getRelationshipMapping();
+		RelationshipMapping mapping = this.getRelationshipMapping();
 
 		if ( ! this.hasResolvedCatalog()) {
 			if (mapping.getPersistentAttribute().isVirtual()) {

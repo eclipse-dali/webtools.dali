@@ -24,6 +24,7 @@ import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.IdMapping;
 import org.eclipse.jpt.core.context.InheritanceType;
 import org.eclipse.jpt.core.context.JoinColumn;
+import org.eclipse.jpt.core.context.JoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.context.MappedSuperclass;
 import org.eclipse.jpt.core.context.NamedNativeQuery;
 import org.eclipse.jpt.core.context.NamedQuery;
@@ -2345,9 +2346,10 @@ public class JavaEntityTests extends ContextModelTestCase
 		
 		assertEquals(2, javaEntity.virtualAssociationOverridesSize());
 		AssociationOverride virtualAssociationOverride = javaEntity.virtualAssociationOverrides().next();
+		JoinColumnJoiningStrategy joiningStrategy = virtualAssociationOverride.getRelationshipReference().getJoinColumnJoiningStrategy();
 		assertEquals("oneToOne", virtualAssociationOverride.getName());
-		assertEquals(1, virtualAssociationOverride.joinColumnsSize());
-		JoinColumn virtualJoinColumn = virtualAssociationOverride.joinColumns().next();
+		assertEquals(1, joiningStrategy.joinColumnsSize());
+		JoinColumn virtualJoinColumn = joiningStrategy.joinColumns().next();
 		assertEquals("oneToOne_id", virtualJoinColumn.getName());
 		assertEquals("id", virtualJoinColumn.getReferencedColumnName());
 		assertEquals(SUB_TYPE_NAME, virtualJoinColumn.getTable());
@@ -2375,10 +2377,11 @@ public class JavaEntityTests extends ContextModelTestCase
 
 		assertEquals(2, javaEntity.virtualAssociationOverridesSize());
 		virtualAssociationOverride = javaEntity.virtualAssociationOverrides().next();
+		joiningStrategy = virtualAssociationOverride.getRelationshipReference().getJoinColumnJoiningStrategy();
 		assertEquals("oneToOne", virtualAssociationOverride.getName());
-		assertEquals(1, virtualAssociationOverride.joinColumnsSize());
+		assertEquals(1, joiningStrategy.joinColumnsSize());
 		virtualAssociationOverride = javaEntity.virtualAssociationOverrides().next();
-		virtualJoinColumn = virtualAssociationOverride.joinColumns().next();
+		virtualJoinColumn = joiningStrategy.joinColumns().next();
 		assertEquals("MY_JOIN_COLUMN", virtualJoinColumn.getName());
 		assertEquals("MY_REFERENCE_COLUMN", virtualJoinColumn.getReferencedColumnName());
 		assertEquals("BAR", virtualJoinColumn.getTable());
@@ -2388,7 +2391,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertEquals(true, virtualJoinColumn.isUnique());
 		assertEquals(false, virtualJoinColumn.isNullable());
 
-		assertEquals("MY_JOIN_COLUMN", virtualAssociationOverride.joinColumns().next().getName());
+		assertEquals("MY_JOIN_COLUMN", joiningStrategy.joinColumns().next().getName());
 
 
 		

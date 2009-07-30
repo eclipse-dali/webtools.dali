@@ -258,7 +258,7 @@ public class GenericJavaPrimaryKeyJoinColumnJoiningStrategy
 		 * by default, the join column is in the type mapping's primary table
 		 */
 		public String getDefaultTableName() {
-			return getRelationshipMapping().getTypeMapping().getPrimaryTableName();
+			return getTypeMapping().getPrimaryTableName();
 		}
 		
 		public Entity getTargetEntity() {

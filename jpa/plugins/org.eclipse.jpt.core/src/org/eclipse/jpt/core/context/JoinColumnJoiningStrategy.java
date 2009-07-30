@@ -31,6 +31,11 @@ public interface JoinColumnJoiningStrategy
 	extends JoiningStrategy
 {
 	/**
+	 * Return the TypeMapping that this join column is contained in.
+	 */
+	TypeMapping getTypeMapping();
+
+	/**
 	 * Return a list iterator of the join columns whether specified or default.
 	 * This will not be null.
 	 */

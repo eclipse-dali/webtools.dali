@@ -10,22 +10,34 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.context.java;
 
+import org.eclipse.jpt.core.context.AssociationOverrideRelationshipReference;
+import org.eclipse.jpt.core.context.JoinColumnJoiningStrategy;
+import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.RelationshipReference;
+import org.eclipse.jpt.core.resource.java.AssociationOverrideAnnotation;
 
 /**
+ * An <code>AssociationOverrideRelationshipReference</code> is a type of 
+ * {@link RelationshipReference} that may utilize a 
+ * {@link JoinColumnJoiningStrategy}
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
+ * 
+ * @see RelationshipMapping
  */
-public interface JavaRelationshipReference 
-	extends JavaJpaContextNode, RelationshipReference
+public interface JavaAssociationOverrideRelationshipReference 
+	extends AssociationOverrideRelationshipReference, JavaJpaContextNode
 {
-	JavaRelationshipMapping getRelationshipMapping();
+	JavaAssociationOverride getAssociationOverride();
 	
-	void initialize();
-	
-	void update();
+	JavaJoinColumnJoiningStrategy getJoinColumnJoiningStrategy();
 
+	void initialize(AssociationOverrideAnnotation associationOverride);
+	
+	void update(AssociationOverrideAnnotation associationOverride);
+	
 }

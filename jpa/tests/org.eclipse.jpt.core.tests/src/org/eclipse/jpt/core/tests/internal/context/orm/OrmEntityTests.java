@@ -25,6 +25,7 @@ import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
 import org.eclipse.jpt.core.context.java.JavaColumn;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.java.JavaJoinColumn;
+import org.eclipse.jpt.core.context.java.JavaJoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.context.java.JavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
@@ -34,6 +35,7 @@ import org.eclipse.jpt.core.context.orm.OrmEmbeddable;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.orm.OrmIdMapping;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
+import org.eclipse.jpt.core.context.orm.OrmJoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.context.orm.OrmManyToOneMapping;
 import org.eclipse.jpt.core.context.orm.OrmMappedSuperclass;
 import org.eclipse.jpt.core.context.orm.OrmNamedNativeQuery;
@@ -2030,9 +2032,11 @@ public class OrmEntityTests extends ContextModelTestCase
 		assertEquals(2, entity.virtualAssociationOverridesSize());
 		ListIterator<OrmAssociationOverride> virtualAssociationOverrides = entity.virtualAssociationOverrides();
 		OrmAssociationOverride associationOverride = virtualAssociationOverrides.next();
+		OrmJoinColumnJoiningStrategy joiningStrategy = associationOverride.getRelationshipReference().getJoinColumnJoiningStrategy();
+		
 		assertEquals("oneToOne", associationOverride.getName());
-		assertEquals(1, associationOverride.joinColumnsSize());
-		OrmJoinColumn joinColumn = associationOverride.joinColumns().next();
+		assertEquals(1, joiningStrategy.joinColumnsSize());
+		OrmJoinColumn joinColumn = joiningStrategy.joinColumns().next();
 		assertEquals("oneToOne_id", joinColumn.getName());
 		assertEquals("id", joinColumn.getReferencedColumnName());
 		assertEquals(CHILD_TYPE_NAME, joinColumn.getTable());
@@ -2065,7 +2069,8 @@ public class OrmEntityTests extends ContextModelTestCase
 		entity.setSpecifiedMetadataComplete(Boolean.FALSE);
 		entity.getJavaEntity().virtualAssociationOverrides().next().setVirtual(false);
 		JavaAssociationOverride javaAssociationOverride = entity.getJavaEntity().specifiedAssociationOverrides().next();
-		JavaJoinColumn javaJoinColumn = javaAssociationOverride.addSpecifiedJoinColumn(0);
+		JavaJoinColumnJoiningStrategy javaJoiningStrategy = javaAssociationOverride.getRelationshipReference().getJoinColumnJoiningStrategy();
+		JavaJoinColumn javaJoinColumn = javaJoiningStrategy.joinColumns().next();
 		javaJoinColumn.setSpecifiedName("FOO");
 		javaJoinColumn.setSpecifiedReferencedColumnName("REFERENCE");
 		javaJoinColumn.setSpecifiedTable("BAR");
@@ -2078,8 +2083,9 @@ public class OrmEntityTests extends ContextModelTestCase
 		assertEquals(2, entity.virtualAssociationOverridesSize());
 		virtualAssociationOverrides = entity.virtualAssociationOverrides();
 		associationOverride = virtualAssociationOverrides.next();
+		joiningStrategy = associationOverride.getRelationshipReference().getJoinColumnJoiningStrategy();
 		assertEquals("oneToOne", associationOverride.getName());
-		OrmJoinColumn ormJoinColumn = associationOverride.joinColumns().next();
+		OrmJoinColumn ormJoinColumn = joiningStrategy.joinColumns().next();
 		assertEquals("FOO", ormJoinColumn.getSpecifiedName());
 		assertEquals("REFERENCE", ormJoinColumn.getSpecifiedReferencedColumnName());
 		assertEquals("BAR", ormJoinColumn.getSpecifiedTable());
@@ -2090,8 +2096,9 @@ public class OrmEntityTests extends ContextModelTestCase
 		assertEquals(Boolean.FALSE, ormJoinColumn.getSpecifiedNullable());
 		
 		associationOverride = virtualAssociationOverrides.next();
+		joiningStrategy = associationOverride.getRelationshipReference().getJoinColumnJoiningStrategy();
 		assertEquals("manyToOne", associationOverride.getName());
-		assertEquals(null, associationOverride.joinColumns().next().getSpecifiedName());
+		assertEquals(null, joiningStrategy.joinColumns().next().getSpecifiedName());
 		
 		persistentType2.getAttributeNamed("manyToOne").makeSpecified();
 		OrmManyToOneMapping manyToOneMapping = (OrmManyToOneMapping) persistentType2.getAttributeNamed("manyToOne").getMapping();
@@ -2106,29 +2113,29 @@ public class OrmEntityTests extends ContextModelTestCase
 		joinColumn.setSpecifiedNullable(Boolean.FALSE);
 
 		
-		
 		assertEquals(2, entity.virtualAssociationOverridesSize());
 		virtualAssociationOverrides = entity.virtualAssociationOverrides();
-		assertEquals("oneToOne", associationOverride.getName());
-		ormJoinColumn = associationOverride.joinColumns().next();
-		assertEquals("FOO", ormJoinColumn.getSpecifiedName());
-		assertEquals("REFERENCE", ormJoinColumn.getSpecifiedReferencedColumnName());
-		assertEquals("BAR", ormJoinColumn.getSpecifiedTable());
-		assertEquals("COLUMN_DEF", ormJoinColumn.getColumnDefinition());
-		assertEquals(Boolean.FALSE, ormJoinColumn.getSpecifiedInsertable());
-		assertEquals(Boolean.FALSE, ormJoinColumn.getSpecifiedUpdatable());
-		assertEquals(Boolean.TRUE, ormJoinColumn.getSpecifiedUnique());
-		assertEquals(Boolean.FALSE, ormJoinColumn.getSpecifiedNullable());
-
-		
-		associationOverride = entity.virtualAssociationOverrides().next();
-		associationOverride = entity.virtualAssociationOverrides().next();
+		associationOverride = virtualAssociationOverrides.next();
+		joiningStrategy = associationOverride.getRelationshipReference().getJoinColumnJoiningStrategy();
 		assertEquals("manyToOne", associationOverride.getName());
-		ormJoinColumn = associationOverride.joinColumns().next();
+		ormJoinColumn = joiningStrategy.joinColumns().next();
 		assertEquals("MY_NAME", ormJoinColumn.getSpecifiedName());
 		assertEquals("MY_REFERNCE_NAME", ormJoinColumn.getSpecifiedReferencedColumnName());
 		assertEquals("BAR2", ormJoinColumn.getSpecifiedTable());
 		assertEquals("COLUMN_DEF2", ormJoinColumn.getColumnDefinition());
+		assertEquals(Boolean.FALSE, ormJoinColumn.getSpecifiedInsertable());
+		assertEquals(Boolean.FALSE, ormJoinColumn.getSpecifiedUpdatable());
+		assertEquals(Boolean.TRUE, ormJoinColumn.getSpecifiedUnique());
+		assertEquals(Boolean.FALSE, ormJoinColumn.getSpecifiedNullable());
+		
+		associationOverride = virtualAssociationOverrides.next();
+		joiningStrategy = associationOverride.getRelationshipReference().getJoinColumnJoiningStrategy();
+		assertEquals("oneToOne", associationOverride.getName());
+		ormJoinColumn = joiningStrategy.joinColumns().next();
+		assertEquals("FOO", ormJoinColumn.getSpecifiedName());
+		assertEquals("REFERENCE", ormJoinColumn.getSpecifiedReferencedColumnName());
+		assertEquals("BAR", ormJoinColumn.getSpecifiedTable());
+		assertEquals("COLUMN_DEF", ormJoinColumn.getColumnDefinition());
 		assertEquals(Boolean.FALSE, ormJoinColumn.getSpecifiedInsertable());
 		assertEquals(Boolean.FALSE, ormJoinColumn.getSpecifiedUpdatable());
 		assertEquals(Boolean.TRUE, ormJoinColumn.getSpecifiedUnique());
