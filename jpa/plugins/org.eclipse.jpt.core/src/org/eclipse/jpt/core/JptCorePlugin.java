@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core;
 
+import javax.xml.parsers.SAXParserFactory;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ProjectScope;
@@ -39,6 +41,7 @@ import org.eclipse.wst.common.project.facet.core.FacetedProjectFramework;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
+import org.osgi.util.tracker.ServiceTracker;
 
 /**
  * The JPT plug-in lifecycle implementation.
@@ -54,7 +57,6 @@ import org.osgi.service.prefs.Preferences;
 // (connection profile name, "discover" flag)
 // use listeners?
 public class JptCorePlugin extends Plugin {
-
 
 	// ********** public constants **********
 
@@ -173,6 +175,8 @@ public class JptCorePlugin extends Plugin {
 	private static IContentType getContentType(String contentType) {
 		return Platform.getContentTypeManager().getContentType(contentType);
 	}
+
+	private ServiceTracker parserTracker;
 
 	// ********** singleton **********
 
@@ -528,8 +532,24 @@ public class JptCorePlugin extends Plugin {
 	public void stop(BundleContext context) throws Exception {
 		try {
 			JpaModelManager.instance().stop();
+			if (parserTracker != null) {
+				parserTracker.close();
+				parserTracker = null;
+			}
 		} finally {
 			super.stop(context);
 		}
+	}
+	
+	public SAXParserFactory getSAXParserFactory() {
+		if (parserTracker == null) {
+			parserTracker = new ServiceTracker(getBundle().getBundleContext(), "javax.xml.parsers.SAXParserFactory", null);
+			
+			parserTracker.open();
+		}
+		SAXParserFactory theFactory = (SAXParserFactory) parserTracker.getService();
+		if (theFactory != null)
+			theFactory.setNamespaceAware(true);
+		return theFactory;
 	}
 }

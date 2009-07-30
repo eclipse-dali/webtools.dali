@@ -15,7 +15,7 @@ import java.io.StringReader;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-import org.eclipse.core.internal.content.Activator;
+import org.eclipse.jpt.core.JptCorePlugin;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -58,6 +58,7 @@ public final class XMLRootHandler extends DefaultHandler implements LexicalHandl
 		}
 	}
 
+
 	/**
 	 * Should we check the root element?
 	 */
@@ -81,9 +82,9 @@ public final class XMLRootHandler extends DefaultHandler implements LexicalHandl
 	 * successful to the point of finding the top-level element.
 	 */
 	private String namespaceFound = null;
-	
+
 	private String versionFound = null;
-	
+
 	public XMLRootHandler(boolean checkRoot) {
 		this.checkRoot = checkRoot;
 	}
@@ -176,20 +177,38 @@ public final class XMLRootHandler extends DefaultHandler implements LexicalHandl
 	public String getVersion() {
 		return this.versionFound;
 	}
-	
-	public boolean parseContents(InputSource contents) throws IOException, ParserConfigurationException, SAXException {
+
+
+	public boolean parseContents(InputSource contents) throws IOException,
+			ParserConfigurationException, SAXException {
 		// Parse the file into we have what we need (or an error occurs).
+		SAXParser parser = null;
+
+		/*
+		 * set context class loader while factories instantiate classes (for
+		 * minimal time) so proper classes, and classloaders, are used in IBM
+		 * JRE, with Xerces on the classpath. See bug 283721.
+		 * (https://bugs.eclipse.org/bugs/show_bug.cgi?id=283721)
+		 */
+		ClassLoader savedClassLoader = Thread.currentThread().getContextClassLoader();
 		try {
-			SAXParserFactory factory = Activator.getDefault().getFactory();
+			Thread.currentThread().setContextClassLoader(this.getClass().getClassLoader());
+			SAXParserFactory factory = JptCorePlugin.instance().getSAXParserFactory();
 			if (factory == null)
 				return false;
-			final SAXParser parser = createParser(factory);
-			// to support external entities specified as relative URIs (see bug 63298)
-			contents.setSystemId("/"); //$NON-NLS-1$
+			parser = createParser(factory);
+		} finally {
+			Thread.currentThread().setContextClassLoader(savedClassLoader);
+		}
+		// to support external entities specified as relative URIs (see
+		// bug 63298)
+		contents.setSystemId("/"); //$NON-NLS-1$
+		try {
 			parser.parse(contents, this);
 		} catch (StopParsingException e) {
 			// Abort the parsing normally. Fall through...
 		}
+
 		return true;
 	}
 
@@ -217,7 +236,7 @@ public final class XMLRootHandler extends DefaultHandler implements LexicalHandl
 	 * (non-Javadoc)
 	 * 
 	 * @see org.xml.sax.ext.LexicalHandler#startDTD(java.lang.String,
-	 *      java.lang.String, java.lang.String)
+	 * java.lang.String, java.lang.String)
 	 */
 	public final void startDTD(final String name, final String publicId, final String systemId) throws SAXException {
 		dtdFound = systemId;
@@ -230,7 +249,7 @@ public final class XMLRootHandler extends DefaultHandler implements LexicalHandl
 	 * (non-Javadoc)
 	 * 
 	 * @see org.xml.sax.ContentHandler#startElement(java.lang.String,
-	 *      java.lang.String, java.lang.String, org.xml.sax.Attributes)
+	 * java.lang.String, java.lang.String, org.xml.sax.Attributes)
 	 */
 	@Override
 	public final void startElement(final String uri, final String elementName, final String qualifiedName, final Attributes attributes) throws SAXException {
@@ -249,4 +268,3 @@ public final class XMLRootHandler extends DefaultHandler implements LexicalHandl
 		// Not interested.
 	}
 }
-
