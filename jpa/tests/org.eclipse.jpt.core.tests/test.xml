@@ -30,7 +30,7 @@
 			<property name="plugin-name" value="${plugin-name}"/>
 			<property name="classname" value="org.eclipse.jpt.core.tests.internal.JptCoreTests" />
 			<property name="plugin-path" value="${eclipse-home}/plugins/${plugin-name}"/>
-			<property name="extraVMargs" value="-Dorg.eclipse.jpt.jpa.jar=${testDir}/${jpt-persistence-jar}"/>
+			<property name="extraVMargs" value="-Dorg.eclipse.jpt.jpa.jar=${testDir}/${jpt-persistence10-jar}"/>
 		</ant>
 	</target>
 
