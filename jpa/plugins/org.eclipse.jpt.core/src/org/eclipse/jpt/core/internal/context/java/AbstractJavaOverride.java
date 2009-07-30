@@ -27,20 +27,20 @@ public abstract class AbstractJavaOverride extends AbstractJavaJpaContextNode im
 
 	protected final Owner owner;
 
-	protected OverrideAnnotation resourceOverride;
+	protected OverrideAnnotation overrideAnnotation;
 	
 	public AbstractJavaOverride(JavaJpaContextNode parent, Owner owner) {
 		super(parent);
 		this.owner = owner;
 	}
 	
-	protected void initialize(OverrideAnnotation resourceOverride) {
-		this.resourceOverride = resourceOverride;
-		this.name = this.name(resourceOverride);
+	protected void initialize(OverrideAnnotation overrideAnnotation) {
+		this.overrideAnnotation = overrideAnnotation;
+		this.name = this.getResourceName(overrideAnnotation);
 	}
 
-	protected OverrideAnnotation getResourceOverride() {
-		return this.resourceOverride;
+	protected OverrideAnnotation getOverrideAnnotation() {
+		return this.overrideAnnotation;
 	}
 	
 	public String getName() {
@@ -50,7 +50,7 @@ public abstract class AbstractJavaOverride extends AbstractJavaJpaContextNode im
 	public void setName(String newName) {
 		String oldName = this.name;
 		this.name = newName;
-		this.resourceOverride.setName(newName);
+		this.overrideAnnotation.setName(newName);
 		firePropertyChanged(NAME_PROPERTY, oldName, newName);
 	}
 	
@@ -61,12 +61,12 @@ public abstract class AbstractJavaOverride extends AbstractJavaJpaContextNode im
 	}
 
 	protected void update(OverrideAnnotation overrideResource) {
-		this.resourceOverride = overrideResource;
-		this.setName_(this.name(overrideResource));
+		this.overrideAnnotation = overrideResource;
+		this.setName_(this.getResourceName(overrideResource));
 	}
 
-	protected String name(OverrideAnnotation overrideResource) {
-		return overrideResource.getName();
+	protected String getResourceName(OverrideAnnotation overrideAnnotation) {
+		return overrideAnnotation.getName();
 	}
 
 	public boolean isVirtual() {
@@ -109,11 +109,11 @@ public abstract class AbstractJavaOverride extends AbstractJavaJpaContextNode im
 	}
 	
 	public boolean nameTouches(int pos, CompilationUnit astRoot) {
-		return this.resourceOverride.nameTouches(pos, astRoot);
+		return this.overrideAnnotation.nameTouches(pos, astRoot);
 	}
 	
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		TextRange textRange = this.resourceOverride.getTextRange(astRoot);
+		TextRange textRange = this.overrideAnnotation.getTextRange(astRoot);
 		return (textRange != null) ? textRange : this.getParent().getValidationTextRange(astRoot);
 	}
 	

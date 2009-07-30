@@ -47,8 +47,8 @@ public class GenericJavaAttributeOverride extends AbstractJavaOverride
 	}
 	
 	@Override
-	protected AttributeOverrideAnnotation getResourceOverride() {
-		return (AttributeOverrideAnnotation) super.getResourceOverride();
+	protected AttributeOverrideAnnotation getOverrideAnnotation() {
+		return (AttributeOverrideAnnotation) super.getOverrideAnnotation();
 	}
 	
 	@Override
@@ -57,11 +57,11 @@ public class GenericJavaAttributeOverride extends AbstractJavaOverride
 	}
 	
 	public ColumnAnnotation getResourceColumn() {
-		return this.getResourceOverride().getNonNullColumn();
+		return this.getOverrideAnnotation().getNonNullColumn();
 	}
 	
 	public ColumnAnnotation getResourceColumnOrNull() {
-		return this.getResourceOverride().getColumn();
+		return this.getOverrideAnnotation().getColumn();
 	}
 	
 	public String getDefaultColumnName() {
