@@ -34,6 +34,8 @@ public interface OrmAssociationOverride extends AssociationOverride, XmlContextN
 	@SuppressWarnings("unchecked")
 	ListIterator<OrmJoinColumn> specifiedJoinColumns();
 
+	OrmAssociationOverride setVirtual(boolean virtual);
+
 	OrmJoinColumn addSpecifiedJoinColumn(int index);
 
 	/**

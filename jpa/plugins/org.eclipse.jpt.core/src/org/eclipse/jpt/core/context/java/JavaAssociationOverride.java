@@ -32,6 +32,8 @@ public interface JavaAssociationOverride extends AssociationOverride, JavaJpaCon
 	ListIterator<JavaJoinColumn> defaultJoinColumns();
 	JavaJoinColumn addSpecifiedJoinColumn(int index);
 	
+	JavaAssociationOverride setVirtual(boolean virtual);
+	
 	void initialize(AssociationOverrideAnnotation associationOverride);
 	
 	/**
