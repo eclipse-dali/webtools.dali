@@ -90,8 +90,9 @@ public class GenericJavaJoinColumnInAssociationOverrideJoiningStrategy
 	}
 	
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.getRelationshipReference().getAssociationOverride().getValidationTextRange(astRoot);
+		return this.getRelationshipReference().getValidationTextRange(astRoot);
 	}
+	
 //	 ********** join column owner adapter **********
 	
 	protected class JoinColumnOwner
@@ -139,7 +140,7 @@ public class GenericJavaJoinColumnInAssociationOverrideJoiningStrategy
 		}
 
 		public TextRange getValidationTextRange(CompilationUnit astRoot) {
-			return null;
+			return GenericJavaJoinColumnInAssociationOverrideJoiningStrategy.this.getValidationTextRange(astRoot);
 		}
 
 		public TypeMapping getTypeMapping() {

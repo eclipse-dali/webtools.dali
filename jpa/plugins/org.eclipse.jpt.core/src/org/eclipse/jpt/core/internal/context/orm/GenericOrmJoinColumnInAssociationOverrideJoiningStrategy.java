@@ -134,7 +134,7 @@ public class GenericOrmJoinColumnInAssociationOverrideJoiningStrategy
 		}
 		
 		public TextRange getValidationTextRange() {
-			return null;
+			return GenericOrmJoinColumnInAssociationOverrideJoiningStrategy.this.getValidationTextRange();
 		}
 
 	}
