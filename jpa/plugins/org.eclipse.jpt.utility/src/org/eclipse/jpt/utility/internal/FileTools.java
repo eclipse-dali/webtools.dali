@@ -162,7 +162,7 @@ public final class FileTools {
 		throws IOException
 	{
 		File destinationFile = new File(destinationDirectory, sourceFile.getName());
-		if ( ! destinationFile.createNewFile()) {
+		if ( ! destinationFile.exists() && ! destinationFile.createNewFile()) {
 			throw new RuntimeException("createNewFile() failed: " + destinationFile); //$NON-NLS-1$
 		}
 		copyToFile(sourceFile, destinationFile);

@@ -135,6 +135,13 @@ public class FileToolsTests extends TestCase {
 		reader.close();
 		String readString = new String(readBuffer);
 		assertEquals(writeString, readString);
+		
+		FileTools.copyToDirectory(sourceFile, destDir); //Try again with the directory is already created
+		reader = new InputStreamReader(new FileInputStream(destFile));
+		reader.read(readBuffer);
+		reader.close();
+		readString = new String(readBuffer);
+		assertEquals(writeString, readString);
 	}
 
 	public void testFilter() throws IOException {
