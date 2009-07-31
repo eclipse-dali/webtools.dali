@@ -21,15 +21,11 @@ import junit.framework.TestSuite;
 public class JptEclipseLinkCoreContextModelTests extends TestCase
 {
 	public static Test suite() {
-		return suite(true);
-	}
-	
-	public static Test suite(boolean all) {
 		TestSuite suite = new TestSuite(JptEclipseLinkCoreContextModelTests.class.getName());
 		suite.addTestSuite(EclipseLinkJpaProjectTests.class);
-		suite.addTest(JptEclipseLinkCorePersistenceContextModelTests.suite(all));
-		suite.addTest(JptEclipseLinkCoreJavaContextModelTests.suite(all));
-		suite.addTest(JptEclipseLinkCoreOrmContextModelTests.suite(all));
+		suite.addTest(JptEclipseLinkCorePersistenceContextModelTests.suite());
+		suite.addTest(JptEclipseLinkCoreJavaContextModelTests.suite());
+		suite.addTest(JptEclipseLinkCoreOrmContextModelTests.suite());
 		return suite;
 	}
 

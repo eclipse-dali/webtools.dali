@@ -14,10 +14,6 @@ import org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.schem
 public class JptEclipseLinkCorePersistenceContextModelTests extends TestCase
 {
 	public static Test suite() {
-		return suite(true);
-	}
-
-	public static Test suite(boolean all) {
 		TestSuite suite = new TestSuite(JptEclipseLinkCorePersistenceContextModelTests.class.getName());
 		suite.addTestSuite(EclipseLinkPersistenceUnitTests.class);
 		suite.addTest(JptEclipseLinkPersistenceGeneralTests.suite());

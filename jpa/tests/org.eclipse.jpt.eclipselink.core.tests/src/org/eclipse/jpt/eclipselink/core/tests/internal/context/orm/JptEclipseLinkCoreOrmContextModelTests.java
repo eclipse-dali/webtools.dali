@@ -15,12 +15,8 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 public class JptEclipseLinkCoreOrmContextModelTests extends TestCase
-{
+{	
 	public static Test suite() {
-		return suite(true);
-	}
-	
-	public static Test suite(boolean all) {
 		TestSuite suite = new TestSuite(JptEclipseLinkCoreOrmContextModelTests.class.getName());
 		suite.addTestSuite(EclipseLinkEntityMappingsTests.class);
 		suite.addTestSuite(EclipseLinkPersistenceUnitMetadataTests.class);

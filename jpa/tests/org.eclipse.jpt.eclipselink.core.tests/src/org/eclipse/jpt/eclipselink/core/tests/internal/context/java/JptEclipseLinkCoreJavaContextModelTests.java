@@ -17,10 +17,6 @@ import junit.framework.TestSuite;
 public class JptEclipseLinkCoreJavaContextModelTests extends TestCase
 {
 	public static Test suite() {
-		return suite(true);
-	}
-
-	public static Test suite(boolean all) {
 		TestSuite suite = new TestSuite(JptEclipseLinkCoreJavaContextModelTests.class.getName());	
 		suite.addTestSuite(EclipseLinkJavaBasicMappingTests.class);
 		suite.addTestSuite(EclipseLinkJavaCachingTests.class);
