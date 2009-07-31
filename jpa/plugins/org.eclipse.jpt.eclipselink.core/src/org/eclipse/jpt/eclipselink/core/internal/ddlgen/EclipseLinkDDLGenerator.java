@@ -516,7 +516,7 @@ public class EclipseLinkDDLGenerator
 		this.buildProjectLocationProperty(elProperties, projectLocation);
 	    try {
 	        File file = new File(propertiesFile);
-			if ( ! file.createNewFile()) {
+			if (!file.exists() && ! file.createNewFile()) {
 				throw new RuntimeException("createNewFile() failed: " + file); //$NON-NLS-1$
 			}
 	        FileOutputStream stream = new FileOutputStream(file);
