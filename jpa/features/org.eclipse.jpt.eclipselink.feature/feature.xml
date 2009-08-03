@@ -25,7 +25,7 @@
    </url>
 
    <requires>
-      <import feature="org.eclipse.jpt.feature" version="2.2.0"/>
+      <import feature="org.eclipse.jpt.feature" version="3.0.0"/>
    </requires>
 
    <plugin
